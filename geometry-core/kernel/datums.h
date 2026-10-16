@@ -27,6 +27,9 @@ const GeoDatum *geo_datums_find(const GeoDatumStore *,uint32_t);
 bool geo_datums_put(GeoDatumStore *,uint32_t id,int axis,const GeoLinearExpression *);
 bool geo_datums_remove(GeoDatumStore *,uint32_t id);
 GeoLinearResult geo_datums_evaluate(GeoDatumStore *,size_t,GeoLinearResolver,void *);
+/* Evaluate returned authored data for the same stable identity. Only the
+ * existing position cache is updated, with the same OK/RANGE rule. */
+GeoLinearResult geo_datums_evaluate_definition(GeoDatumStore *,size_t,const GeoDatum *,GeoLinearResolver,void *);
 /* RANGE still supplies the unique (out-of-domain) intersection for rejected
  * candidate diagnostics. Other failures leave out unchanged. */
 GeoDatumIntersectionStatus geo_datum_intersection(const GeoDatum *,const GeoFrame *,GeoDatumIntersection *);

@@ -4,7 +4,8 @@ enum { APP_SOURCE_GUIDE=1, APP_SOURCE_MEMBER_POSE, APP_SOURCE_REFERENCE, APP_SOU
     APP_SOURCE_NAMED=6, APP_SOURCE_DATUM, APP_SOURCE_ENGINEERING_DIMENSION,
     APP_SOURCE_ENGINEERING_BINDING,APP_SOURCE_ENGINEERING_DEFINITION,APP_SOURCE_SECTION_PROFILE,
     APP_SOURCE_FINISH,APP_SOURCE_PLACEMENT,APP_SOURCE_REGION,APP_SOURCE_GRID,APP_SOURCE_CONTACT,APP_SOURCE_ASSEMBLY,
-    APP_SOURCE_ENCLOSURE,APP_SOURCE_WOOD_DEFINITION,APP_SOURCE_REGION_KEYS }; /* token 5 belongs to model roots */
+    APP_SOURCE_ENCLOSURE,APP_SOURCE_WOOD_DEFINITION,APP_SOURCE_REGION_KEYS,
+    APP_SOURCE_LINEAR_DEFINITION,APP_SOURCE_PARAMETER_DEFINITION,APP_SOURCE_VERSION }; /* token 5 belongs to model roots */
 typedef struct {
     uint32_t placement;
     uint32_t guide_id;
@@ -92,15 +93,13 @@ static bool reference_source_evaluate(void *opaque,GeoEvalContext *evaluation,co
         if(!reference_source_id(source,&id))return false;
         const GeoDatum *datum=geo_datums_find(&world->geo.datum_planes,id);if(!datum)return false;
         size_t at=(size_t)(datum-geo_datums_values(&world->geo.datum_planes));
-        if(!reference_compute_datum(ctx,at))return false;
-        value->kind=GEO_SOURCE_AXIS_POSITION;value->as.position=(GeoAxisPosition){datum->position,{false,0,datum->axis}};return true;
+        value->kind=GEO_SOURCE_AXIS_POSITION;return reference_compute_datum(ctx,at,&value->as.position);
     }
     if(source->provider==APP_SOURCE_GUIDE){
         if(!reference_source_id(source,&id))return false;
         int i=reference_source_guide_index(world,id);
-        if(i<0||!reference_compute_guide(ctx,(size_t)i))return false;
-        const GuideLine *g=&geo_guides_values(&world->geo.guide_lines)[i];value->kind=GEO_SOURCE_AXIS_POSITION;
-        value->as.position=(GeoAxisPosition){g->offset,{true,g->placement_id,g->direction==GUIDE_ALONG_V?0:1}};return true;
+        if(i<0)return false;value->kind=GEO_SOURCE_AXIS_POSITION;
+        return reference_compute_guide(ctx,(size_t)i,&value->as.position);
     }
     if(source->provider==APP_SOURCE_MEMBER_POSE){
         if(!reference_source_id(source,&id))return false;
@@ -214,7 +213,7 @@ static bool reference_derived_resolve(ReferenceEval *ctx,const PlacementSurface 
         direct.finish.engineering_operation=app_fs_engineering_operation;direct.finish.derived_operation=app_fs_derived_operation;
         WoodEngineeringContext *engineering=&direct.finish.engineering;engineering->sources=NULL;
         engineering->resolve_source=NULL;engineering->resolve_binding=NULL;engineering->source_named=NULL;
-        engineering->source_parameter=NULL;engineering->depend_definition=NULL;engineering->validate_application=NULL;
+        engineering->source_parameter=NULL;engineering->depend_definition=NULL;engineering->validate_application=NULL;engineering->source_version_field=NULL;engineering->source_version_definition=NULL;engineering->source_application=NULL;
         direct.placement_read=app_dp_read;direct.placement_write=app_dp_write;direct.placement_remove=app_dp_remove;
         direct.placement_count=app_dp_count;direct.remove_canvas_position=app_dp_remove_position;
         WoodDerivedValue value={0};value.id=p->id;value.derived_fill_id=p->derived_fill_id;value.derived_h=p->derived_h;
@@ -316,18 +315,22 @@ static bool reference_sources_ensure(ReferenceEval *ctx)
         ctx->parameter_snapshot=geo_parameters_clone(parameters);parameters=ctx->parameter_snapshot;
         if(!parameters){reference_sources_dispose(ctx);return false;}
     }
-    ctx->parameter_sources=geo_parameter_sources_register(ctx->sources,parameters,APP_SOURCE_PARAMETER,
+    ctx->parameter_sources=geo_parameter_sources_register_with_definitions(ctx->sources,parameters,APP_SOURCE_PARAMETER,APP_SOURCE_PARAMETER_DEFINITION,
         "core.parameter.field","geo261-parameter-ast-source/1");
     if(!ctx->parameter_sources){reference_sources_dispose(ctx);return false;}
+    ctx->linear_definition_sources=geo_linear_definition_sources_register(ctx->sources,&ctx->world->geo.datum_planes,&ctx->world->geo.guide_lines,APP_SOURCE_LINEAR_DEFINITION);
+    if(!ctx->linear_definition_sources){reference_sources_dispose(ctx);return false;}
     for(uint32_t token=APP_SOURCE_NAMED;token<=APP_SOURCE_DATUM;++token){
         GeoSourceProvider provider={token,token==APP_SOURCE_NAMED?"core.named-value":"core.datum.position",
             "geo261-linear-definition-source/1",ctx,reference_source_describe,reference_source_evaluate};
         if(!geo_eval_register(ctx->sources,&provider)){reference_sources_dispose(ctx);return false;}
     }
     WoodEngineeringContext engineering=app_eng_context(ctx->world);
+    ctx->version_sources=geo_version_sources_register(ctx->sources,app_eng_version_store(ctx->world),APP_SOURCE_VERSION);
+    if(!ctx->version_sources){reference_sources_dispose(ctx);return false;}
     ctx->engineering_sources=wood_engineering_sources_register(ctx->sources,&engineering,
         (WoodEngineeringSourceTokens){APP_SOURCE_ENGINEERING_DIMENSION,APP_SOURCE_ENGINEERING_BINDING,
-            APP_SOURCE_ENGINEERING_DEFINITION,APP_SOURCE_NAMED,APP_SOURCE_PARAMETER});
+            APP_SOURCE_ENGINEERING_DEFINITION,APP_SOURCE_NAMED,APP_SOURCE_PARAMETER,APP_SOURCE_VERSION});
     if(!ctx->engineering_sources){reference_sources_dispose(ctx);return false;}
     WoodAssemblyContext assembly=app_asm_context(ctx->world);reference_assembly_context(ctx,&assembly);
     ctx->assembly_sources=wood_assembly_sources_create(ctx->sources,APP_SOURCE_ASSEMBLY,&assembly);
@@ -518,19 +521,28 @@ static bool reference_member_dimension(ReferenceEval *ctx,uint32_t id,bool b,Coo
     }
     *out=b?member->size_b:member->size_a;return true;
 }
-static bool reference_eval_datum(ReferenceEval *ctx,size_t i)
+static bool reference_datum_position(ReferenceEval *ctx,size_t i,GeoAxisPosition *out)
 {
     const GeoDatum *datum=geo_datums_at(&ctx->world->geo.datum_planes,i);
     if(!datum||!reference_sources_ensure(ctx))return false;
     uint32_t id=datum->id;GeoSourceValue value;
-    return geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_DATUM,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK;
+    if(geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_DATUM,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||value.kind!=GEO_SOURCE_AXIS_POSITION||
+        value.as.position.context.has_placement||value.as.position.context.axis<0||value.as.position.context.axis>2)return false;
+    if(out)*out=value.as.position;return true;
 }
-static bool reference_eval_guide(ReferenceEval *ctx,size_t i)
+static bool reference_eval_datum(ReferenceEval *ctx,size_t i)
+{return reference_datum_position(ctx,i,NULL);}
+static bool reference_guide_position(ReferenceEval *ctx,size_t i,GeoAxisPosition *out)
 {
     if(i>=geo_guides_count(&ctx->world->geo.guide_lines)||!reference_sources_ensure(ctx))return false;
     uint32_t id=geo_guides_at(&ctx->world->geo.guide_lines,i)->id;GeoSourceValue value;
-    return geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_GUIDE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK;
+    if(geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_GUIDE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||value.kind!=GEO_SOURCE_AXIS_POSITION||
+        !value.as.position.context.has_placement||value.as.position.context.axis<0||value.as.position.context.axis>1)return false;
+    ctx->guide_values[i]=value.as.position;ctx->guide_values_valid[i]=true;
+    if(out)*out=value.as.position;return true;
 }
+static bool reference_eval_guide(ReferenceEval *ctx,size_t i)
+{return reference_guide_position(ctx,i,NULL);}
 static bool reference_eval_timber_relation(ReferenceEval *ctx,size_t i,GeoDependencyKind relation)
 {
     if(i>=ctx->world->wood.timber_count||!reference_sources_ensure(ctx))return false;

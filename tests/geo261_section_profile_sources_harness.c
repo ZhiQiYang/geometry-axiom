@@ -12,7 +12,7 @@ typedef struct {
     SectionProfileState state;EngineeringState engineering;WoodSectionProfileContext context;
     GeoEvalContext *graph;WoodSectionProfileSources *sources;
     char error[700];int events[256],event_count,host_calls,parameter_calls,active_failures;
-    bool fail_dimensions,fail_host,derived_host,long_error;
+    bool fail_dimensions,fail_host,derived_host,long_error,overflow_run_length;
     GeoFrame host_frame;WoodBoundaryRegion host_region;GeoCoord parameter;
 } Fixture;
 static bool node(Fixture *f,int kind,uint32_t id,GeoSourceNodeView *out,size_t *index)
@@ -37,6 +37,11 @@ static bool dimension(void *user,const EngDimensionSource *source,const EngTarge
     Fixture *f=user;int kind=0;uint32_t id=0;
     for(size_t i=0;i<f->state.member_count;++i){if(source==&f->state.members[i].a_source){kind=WOOD_SP_SOURCE_MEMBER_A;id=f->state.members[i].id;}if(source==&f->state.members[i].b_source){kind=WOOD_SP_SOURCE_MEMBER_B;id=f->state.members[i].id;}}
     for(size_t i=0;i<f->state.run_count;++i)if(source==&f->state.runs[i].length_source){kind=WOOD_SP_SOURCE_RUN_LENGTH;id=f->state.runs[i].id;}
+    /* Decoded definitions own their source structs. Observe the active typed
+     * leaf rather than requiring the provider to pass a raw-record address. */
+    if(f->graph)for(size_t i=0;i<geo_eval_node_count(f->graph);++i){GeoSourceNodeView n;WoodSectionProfileSourceKind k;uint32_t v;
+        if(geo_eval_node_at(f->graph,i,&n)&&n.state==GEO_NODE_ACTIVE&&n.source.provider==TOKEN&&wood_sp_source_decode(&n.source,&k,&v)&&
+           (k==WOOD_SP_SOURCE_MEMBER_A||k==WOOD_SP_SOURCE_MEMBER_B||k==WOOD_SP_SOURCE_RUN_LENGTH)){kind=k;id=v;}}
     f->events[f->event_count++]=kind*100+(int)id;
     if(f->graph&&!active(f,kind,id))++f->active_failures;
     if(f->fail_dimensions){
@@ -48,6 +53,7 @@ static bool dimension(void *user,const EngDimensionSource *source,const EngTarge
         if(f->graph){unsigned char key=5;GeoSourceValue value;if(geo_eval_source(f->graph,(GeoSourceRef){PARAM_TOKEN,&key,1},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK)return false;*out=value.as.quantity.num;}
         else *out=f->parameter;
     }else *out=source->value;
+    if(f->overflow_run_length&&kind==WOOD_SP_SOURCE_RUN_LENGTH&&id==5)*out=GEO_COORD_LIMIT+1;
     if(*out<=0||!geo_coord_in_range(*out)){snprintf(f->error,sizeof f->error,"dimension %u field %d outside positive D1",id,target->field);return false;}
     return true;
 }
@@ -68,6 +74,12 @@ static Fixture *fixture(void)
 }
 static bool record(Fixture *f,int kind,const char *text)
 {GeoJson j={0};if(!geo_json_parse(&j,text))return false;bool ok=kind==0?wood_sp_put_profile(&f->context,&j,0):kind==1?wood_sp_put_member(&f->context,&j,0):wood_sp_put_run(&f->context,&j,0);geo_json_free(&j);return ok;}
+static bool edit_record(char *content,size_t capacity,const char *before,const char *after)
+{
+    char *at=strstr(content,before);if(!at||strstr(at+strlen(before),before))return false;
+    size_t size=strlen(content)-strlen(before)+strlen(after);if(size>=capacity)return false;
+    memmove(at+strlen(after),at+strlen(before),strlen(at+strlen(before))+1);memcpy(at,after,strlen(after));return true;
+}
 static bool seed(Fixture *f)
 {
     return record(f,0,"{\"id\":1,\"name\":\"shape\",\"outline\":[[0,0],[100,0],[100,100],[0,100]]}")&&
@@ -125,6 +137,7 @@ static int diagnostics(void)
 {
     Fixture *plain=fixture(),*graph=fixture();CHECK("diagnostic-seed",plain&&graph&&seed(plain));
     plain->state.members[0].profile_id=88;plain->state.runs[0].profile_id=89;plain->fail_dimensions=true;plain->fail_host=true;
+    CHECK("diagnostic-canonical-fixture",edit_record(plain->state.members[0].content,SP_RECORD_MAX,"\"profileId\":1","\"profileId\":88")&&edit_record(plain->state.runs[0].content,SP_RUN_RECORD_MAX,"\"profileId\":1","\"profileId\":89"));
     memcpy(&graph->state,&plain->state,sizeof plain->state);graph->fail_dimensions=true;graph->fail_host=true;CHECK("diagnostic-connect",connect(graph));
     CHECK("both-paths-refuse",!rebuild(plain)&&!rebuild(graph));
     CHECK("diagnostic-first-order",!strcmp(plain->error,graph->error)&&!strcmp(graph->error,"I49: member 3 references missing profile 88"));
@@ -137,9 +150,10 @@ static int diagnostics(void)
     plain=fixture();graph=fixture();CHECK("long-error-seed",plain&&graph&&seed(plain));plain->state.member_count=1;plain->state.run_count=0;plain->fail_dimensions=plain->long_error=true;
     memcpy(&graph->state,&plain->state,sizeof plain->state);graph->fail_dimensions=graph->long_error=true;CHECK("long-error-connect",connect(graph));
     CHECK("diagnostic-no-extra-truncation",!rebuild(plain)&&!rebuild(graph)&&strlen(plain->error)==255&&!strcmp(plain->error,graph->error)&&!memcmp(&plain->state,&graph->state,sizeof plain->state));dispose(plain,false);dispose(graph,false);
-    plain=fixture();graph=fixture();CHECK("partial-write-seed",plain&&graph&&seed(plain));plain->parameter=-7;plain->state.members[0].b_source.value=0;plain->state.runs[0].length_source.value=GEO_COORD_LIMIT+1;
+    plain=fixture();graph=fixture();CHECK("partial-write-seed",plain&&graph&&seed(plain));plain->parameter=-7;plain->state.members[0].b_source.value=0;plain->overflow_run_length=true;
+    CHECK("partial-write-canonical-fixture",edit_record(plain->state.members[0].content,SP_RECORD_MAX,"\"B\":{\"kind\":\"literal\",\"value\":33}","\"B\":{\"kind\":\"literal\",\"value\":0}"));
     plain->state.members[0].a=71;plain->state.members[0].b=72;plain->state.runs[0].length=73;
-    memcpy(&graph->state,&plain->state,sizeof plain->state);graph->parameter=plain->parameter;CHECK("partial-write-connect",connect(graph));
+    memcpy(&graph->state,&plain->state,sizeof plain->state);graph->parameter=plain->parameter;graph->overflow_run_length=true;CHECK("partial-write-connect",connect(graph));
     CHECK("partial-write-both-refuse",!rebuild(plain)&&!rebuild(graph));
     CHECK("failed-member-dimension-cache-write",plain->state.members[0].a==-7&&plain->state.members[0].b==0&&graph->state.members[0].a==-7&&graph->state.members[0].b==0);
     CHECK("failed-run-length-cache-write",plain->state.runs[0].length==GEO_COORD_LIMIT+1&&graph->state.runs[0].length==GEO_COORD_LIMIT+1);
@@ -149,12 +163,13 @@ static int diagnostics(void)
 }
 static int region_guards(void)
 {
-    Fixture *f=fixture();CHECK("region-seed",f&&seed(f));f->state.members[0].u0=90;CHECK("region-connect",connect(f));
+    Fixture *f=fixture();CHECK("region-seed",f&&seed(f));f->state.members[0].u0=90;CHECK("region-canonical-fixture",edit_record(f->state.members[0].content,SP_RECORD_MAX,"\"u0\":10","\"u0\":90"));CHECK("region-connect",connect(f));
     CHECK("outside-is-real-region-failure",!rebuild(f)&&strstr(f->error,"V_PROFILE_OUTSIDE")&&f->state.members[0].resolved&&f->state.members[0].outside);
     GeoSourceNodeView n;CHECK("outside-source-refused",node(f,WOOD_SP_SOURCE_MEMBER_REGION,3,&n,NULL)&&n.state==GEO_NODE_FAILED&&n.value==NULL);
-    dispose(f,false);f=fixture();CHECK("overlap-seed",f&&seed(f));f->state.members[1].u0=20;f->state.runs[0].profile_id=88;CHECK("overlap-connect",connect(f));
+    dispose(f,false);f=fixture();CHECK("overlap-seed",f&&seed(f));f->state.members[1].u0=20;f->state.runs[0].profile_id=88;
+    CHECK("overlap-canonical-fixture",edit_record(f->state.members[1].content,SP_RECORD_MAX,"\"u0\":60","\"u0\":20")&&edit_record(f->state.runs[0].content,SP_RUN_RECORD_MAX,"\"profileId\":1","\"profileId\":88"));CHECK("overlap-connect",connect(f));
     CHECK("overlap-before-run-diagnostics",!rebuild(f)&&strstr(f->error,"V_PROFILE_OVERLAP")&&f->state.runs[0].missing_profile);dispose(f,false);
-    f=fixture();CHECK("run-range-seed",f&&seed(f));f->state.runs[0].simple=false;f->state.runs[0].frame=(GeoFrame){{GEO_COORD_LIMIT-50,0,0},{0,0,-1},{0,1,0},{1,0,0}};CHECK("run-range-connect",connect(f));
+    f=fixture();CHECK("run-range-seed",f&&seed(f));char advanced[1024];snprintf(advanced,sizeof advanced,"{\"id\":5,\"profileId\":1,\"length\":{\"kind\":\"literal\",\"value\":120},\"placement\":{\"kind\":\"advanced\",\"origin\":[%lld,0,0],\"N\":\"+X\",\"V\":\"+Y\"}}",(long long)(GEO_COORD_LIMIT-50));CHECK("run-range-canonical-fixture",record(f,2,advanced));CHECK("run-range-connect",connect(f));
     CHECK("range-is-real-run-failure",!rebuild(f)&&f->state.runs[0].range_error&&!f->state.runs[0].resolved&&strstr(f->error,"generated vertex"));
     CHECK("range-source-refused",node(f,WOOD_SP_SOURCE_RUN_REGION,5,&n,NULL)&&n.state==GEO_NODE_FAILED);dispose(f,true);return 0;
 }
@@ -163,14 +178,16 @@ static int hosts(void)
     Fixture *f=fixture();CHECK("host-seed",f&&seed(f));f->derived_host=true;CHECK("host-connect",connect(f));
     CHECK("derived-live-host-refused",!rebuild(f)&&!f->state.runs[0].placement_resolved&&strstr(f->state.runs[0].placement_error,"live host 10"));
     GeoSourceNodeView n;CHECK("derived-frame-never-published",node(f,WOOD_SP_SOURCE_HOST_FRAME,10,&n,NULL)&&n.state==GEO_NODE_FAILED&&!node(f,WOOD_SP_SOURCE_HOST_REGION,10,NULL,NULL));dispose(f,false);
-    f=fixture();CHECK("host-range-seed",f&&seed(f));f->state.runs[0].p=101;CHECK("host-range-connect",connect(f));
+    f=fixture();CHECK("host-range-seed",f&&seed(f));f->state.runs[0].p=101;CHECK("host-range-canonical-fixture",edit_record(f->state.runs[0].content,SP_RUN_RECORD_MAX,"\"p\":5","\"p\":101"));CHECK("host-range-connect",connect(f));
     CHECK("live-host-range-checked",!rebuild(f)&&strstr(f->state.runs[0].placement_error,"outside closed host range"));dispose(f,true);
-    f=fixture();CHECK("copied-host-seed",f&&seed(f));ProfileRun *r=&f->state.runs[0];r->copied_host=true;r->host_frame=f->host_frame;r->host_region=f->host_region;f->fail_host=true;CHECK("copied-host-connect",connect(f));
+    f=fixture();CHECK("copied-host-seed",f&&seed(f));
+    CHECK("copied-host-canonical-fixture",record(f,2,"{\"id\":5,\"profileId\":1,\"length\":{\"kind\":\"literal\",\"value\":120},\"placement\":{\"kind\":\"simple\",\"host\":{\"kind\":\"space-wall-values\",\"sourceDescription\":\"copied test wall\",\"frame\":{\"origin\":[10,20,30],\"U\":\"+X\",\"V\":\"+Y\",\"N\":\"+Z\"},\"region\":{\"outline\":[[0,0],[100,0],[100,100],[0,100]],\"holes\":[]}},\"dir\":\"+u\",\"p\":5,\"q\":7,\"up\":\"+Z\"}}"));f->fail_host=true;CHECK("copied-host-connect",connect(f));
     CHECK("copied-host-has-no-live-dependency",rebuild(f)&&f->host_calls==0&&!node(f,WOOD_SP_SOURCE_HOST_FRAME,10,NULL,NULL)&&edge(f,WOOD_SP_SOURCE_RUN_FRAME,5,WOOD_SP_SOURCE_RUN_DEFINITION,5,GEO_DEPENDENCY_DEFINITION_REQUIRED));dispose(f,false);return 0;
 }
 static int lifetime(void)
 {
-    Fixture *a=fixture(),*b=fixture();CHECK("isolation-seed",a&&b&&seed(a)&&seed(b));b->parameter=40;b->state.members[1].u0=70;b->state.members[1].width=20;CHECK("isolation-connect",connect(a)&&connect(b)&&rebuild(a)&&rebuild(b));
+    Fixture *a=fixture(),*b=fixture();CHECK("isolation-seed",a&&b&&seed(a)&&seed(b));b->parameter=40;b->state.members[1].u0=70;b->state.members[1].width=20;
+    CHECK("isolation-canonical-fixture",edit_record(b->state.members[1].content,SP_RECORD_MAX,"\"u0\":60","\"u0\":70")&&edit_record(b->state.members[1].content,SP_RECORD_MAX,"\"width\":30","\"width\":20"));CHECK("isolation-connect",connect(a)&&connect(b)&&rebuild(a)&&rebuild(b));
     GeoSourceValue av,bv;CHECK("candidate-values-isolated",value(a,WOOD_SP_SOURCE_MEMBER_A,3,&av)&&value(b,WOOD_SP_SOURCE_MEMBER_A,3,&bv)&&av.as.quantity.num==27&&bv.as.quantity.num==40);
     CHECK("bind-rejects-other-candidate",!wood_sp_sources_bind(a->sources,&b->context));
     GeoSourceValue region,host_region;CHECK("borrowed-region",value(a,WOOD_SP_SOURCE_MEMBER_REGION,3,&region)&&value(a,WOOD_SP_SOURCE_HOST_REGION,10,&host_region));const GeoPoint2 *points=region.as.regions.regions[0].outline.v,*host_points=host_region.as.regions.regions[0].outline.v;

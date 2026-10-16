@@ -48,7 +48,7 @@ static const char *wood_eng_version_schema(int kind)
 {return kind?"woodworking.method-version/1":"woodworking.material-version/1";}
 static GeoVersionIdentity wood_eng_version_identity(int kind,const EngVersionRef *ref,unsigned char key[ENG_ID_MAX+1])
 {size_t n=strlen(ref->id);key[0]=(unsigned char)(kind+1);memcpy(key+1,ref->id,n);return (GeoVersionIdentity){key,n+1,ref->version};}
-bool wood_eng_version_view(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out)
+bool wood_eng_version_view_direct(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out)
 {
     if(!w||!w->versions||!id||!out||(kind!=0&&kind!=1)||!wood_eng_id(id)||!version)return false;
     unsigned char key[ENG_ID_MAX+1];EngVersionRef ref={0};memcpy(ref.id,id,strlen(id)+1);ref.version=version;
@@ -57,11 +57,24 @@ bool wood_eng_version_view(const WoodEngineeringContext *w,int kind,const char *
        view.schema_length!=strlen(schema)||memcmp(view.schema,schema,view.schema_length))return false;
     *out=view;return true;
 }
+bool wood_eng_version_view(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out)
+{return wood_eng_version_view_direct(w,kind,id,version,out);}
+static bool wood_eng_read_version(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out,GeoVersionField fields[GEO_VERSION_FIELD_CAPACITY])
+{
+    if(!w||!id||!wood_eng_id(id)||!version)return false;
+    if(w->source_version_definition){EngVersionRef identity={0};memcpy(identity.id,id,strlen(id)+1);identity.version=version;
+        return w->source_version_definition(w->sources,kind,&identity,out,fields);}
+    return wood_eng_version_view_direct(w,kind,id,version,out);
+}
+static const GeoVersionField *wood_eng_view_field(const GeoVersionView *view,uint32_t id)
+{for(size_t i=0;i<view->field_count;++i)if(view->fields[i].id==id)return &view->fields[i];return NULL;}
+static bool wood_eng_view_integer(const GeoVersionView *view,uint32_t field,GeoQuantityUnit unit,GeoCoord minimum,GeoCoord maximum,GeoCoord *out)
+{const GeoVersionField *value=wood_eng_view_field(view,field);return value&&geo_version_field_integer(value,unit,minimum,maximum,out)==GEO_VERSION_OK;}
 bool wood_eng_material_integer(const WoodEngineeringContext *w,const EngMaterialVersion *material,uint32_t field,GeoCoord minimum,GeoCoord maximum,GeoCoord *out)
 {
     if(!w||!w->versions||!material||!out)return false;
-    unsigned char key[ENG_ID_MAX+1];
-    return geo_versions_integer(w->versions,wood_eng_version_identity(0,&material->ref,key),field,GEO_UNIT_LENGTH,minimum,maximum,out)==GEO_VERSION_OK;
+    GeoVersionView view;GeoVersionField fields[GEO_VERSION_FIELD_CAPACITY];
+    return wood_eng_read_version(w,0,material->ref.id,material->ref.version,&view,fields)&&wood_eng_view_integer(&view,field,GEO_UNIT_LENGTH,minimum,maximum,out);
 }
 static bool wood_eng_version_copy(const GeoVersionView *view,char *content,char *fingerprint)
 {
@@ -71,44 +84,43 @@ static bool wood_eng_version_copy(const GeoVersionView *view,char *content,char 
 }
 const EngMaterialVersion *wood_eng_material(const WoodEngineeringContext *w,const char *id,uint32_t version)
 {
-    GeoVersionView view;if(!w||!w->state||!wood_eng_version_view(w,0,id,version,&view))return NULL;
+    GeoVersionView view;GeoVersionField fields[GEO_VERSION_FIELD_CAPACITY];if(!w||!w->state||!wood_eng_read_version(w,0,id,version,&view,fields))return NULL;
     size_t at=0;while(at<w->state->material_count&&(w->state->materials[at].ref.version!=version||strcmp(w->state->materials[at].ref.id,id)))++at;
     if(at==w->state->material_count)return NULL;
     EngMaterialVersion next;memset(&next,0,sizeof next);next.ref=w->state->materials[at].ref;next.archived=w->state->materials[at].archived;
     int64_t kind;if(!wood_eng_version_copy(&view,next.content,next.fingerprint)||
-       geo_versions_integer(w->versions,view.identity,WOOD_ENG_VERSION_KIND,GEO_UNIT_SCALAR,0,1,&kind)!=GEO_VERSION_OK)return NULL;
+       !wood_eng_view_integer(&view,WOOD_ENG_VERSION_KIND,GEO_UNIT_SCALAR,0,1,&kind))return NULL;
     next.kind=(int)kind;
     if(next.kind){
-        if(!wood_eng_material_integer(w,&next,ENG_A,1,GEO_COORD_LIMIT,&next.a)||
-           !wood_eng_material_integer(w,&next,ENG_B,1,GEO_COORD_LIMIT,&next.b))return NULL;
+        if(!wood_eng_view_integer(&view,ENG_A,GEO_UNIT_LENGTH,1,GEO_COORD_LIMIT,&next.a)||
+           !wood_eng_view_integer(&view,ENG_B,GEO_UNIT_LENGTH,1,GEO_COORD_LIMIT,&next.b))return NULL;
     }else{
-        if(!wood_eng_material_integer(w,&next,ENG_WIDTH,1,GEO_COORD_LIMIT,&next.width)||
-           !wood_eng_material_integer(w,&next,ENG_LENGTH,1,GEO_COORD_LIMIT,&next.length))return NULL;
-        GeoVersionFieldView thickness;GeoVersionStatus status=geo_versions_field(w->versions,view.identity,WOOD_ENG_VERSION_THICKNESS,&thickness);
-        if(status==GEO_VERSION_OK){
-            const GeoVersionField *field=&thickness.field;
+        if(!wood_eng_view_integer(&view,ENG_WIDTH,GEO_UNIT_LENGTH,1,GEO_COORD_LIMIT,&next.width)||
+           !wood_eng_view_integer(&view,ENG_LENGTH,GEO_UNIT_LENGTH,1,GEO_COORD_LIMIT,&next.length))return NULL;
+        const GeoVersionField *field=wood_eng_view_field(&view,WOOD_ENG_VERSION_THICKNESS);
+        if(field){
             if(field->kind!=GEO_VERSION_DECIMAL_LITERAL||field->value.unit!=GEO_UNIT_LENGTH||field->literal_length>=sizeof next.thickness)return NULL;
             memcpy(next.thickness,field->literal,field->literal_length);next.has_thickness=true;
-        }else if(status!=GEO_VERSION_MISSING)return NULL;
+        }
     }
     memcpy(&w->state->materials[at],&next,sizeof next);return &w->state->materials[at];
 }
 const EngMethodVersion *wood_eng_method(const WoodEngineeringContext *w,const char *id,uint32_t version)
 {
-    GeoVersionView view;if(!w||!w->state||!wood_eng_version_view(w,1,id,version,&view))return NULL;
+    GeoVersionView view;GeoVersionField fields[GEO_VERSION_FIELD_CAPACITY];if(!w||!w->state||!wood_eng_read_version(w,1,id,version,&view,fields))return NULL;
     size_t at=0;while(at<w->state->method_count&&(w->state->methods[at].ref.version!=version||strcmp(w->state->methods[at].ref.id,id)))++at;
     if(at==w->state->method_count)return NULL;
     EngMethodVersion next;memset(&next,0,sizeof next);next.ref=w->state->methods[at].ref;next.archived=w->state->methods[at].archived;
     if(!wood_eng_version_copy(&view,next.content,next.fingerprint))return NULL;
     int64_t value;
-    if(geo_versions_integer(w->versions,view.identity,WOOD_ENG_VERSION_LONG_AXIS,GEO_UNIT_SCALAR,0,2,&value)!=GEO_VERSION_OK)return NULL;
+    if(!wood_eng_view_integer(&view,WOOD_ENG_VERSION_LONG_AXIS,GEO_UNIT_SCALAR,0,2,&value))return NULL;
     next.long_axis=(int)value;
-    if(geo_versions_integer(w->versions,view.identity,WOOD_ENG_VERSION_MAIN_ALONG,GEO_UNIT_SCALAR,0,2,&value)!=GEO_VERSION_OK)return NULL;
+    if(!wood_eng_view_integer(&view,WOOD_ENG_VERSION_MAIN_ALONG,GEO_UNIT_SCALAR,0,2,&value))return NULL;
     next.main_along=(int)value;
-    GeoVersionFieldView gap;GeoVersionStatus status=geo_versions_field(w->versions,view.identity,WOOD_ENG_VERSION_GAP,&gap);
-    if(status==GEO_VERSION_OK){
-        if(geo_version_field_integer(&gap.field,GEO_UNIT_LENGTH,0,GEO_COORD_LIMIT,&next.gap)!=GEO_VERSION_OK)return NULL;next.has_gap=true;
-    }else if(status!=GEO_VERSION_MISSING)return NULL;
+    const GeoVersionField *gap=wood_eng_view_field(&view,WOOD_ENG_VERSION_GAP);
+    if(gap){
+        if(geo_version_field_integer(gap,GEO_UNIT_LENGTH,0,GEO_COORD_LIMIT,&next.gap)!=GEO_VERSION_OK)return NULL;next.has_gap=true;
+    }
     GeoJson j;bool ok=geo_json_parse_n(&j,(const char *)view.content,view.content_length);
     if(ok)ok=wood_eng_ref_parse(&j,geo_json_member(&j,0,"panel"),&next.panel,true);
     int roles=ok?geo_json_member(&j,0,"roles"):-1;const char *names[]={"boundary","primary","secondary"};
@@ -120,11 +132,13 @@ const EngMaterialVersion *wood_eng_material_at(const WoodEngineeringContext *w,s
 {if(!w||!w->state||index>=w->state->material_count)return NULL;EngVersionRef ref=w->state->materials[index].ref;return wood_eng_material(w,ref.id,ref.version);}
 const EngMethodVersion *wood_eng_method_at(const WoodEngineeringContext *w,size_t index)
 {if(!w||!w->state||index>=w->state->method_count)return NULL;EngVersionRef ref=w->state->methods[index].ref;return wood_eng_method(w,ref.id,ref.version);}
-EngApplication *wood_eng_application(WoodEngineeringContext *w,const char *id)
+EngApplication *wood_eng_application_direct(WoodEngineeringContext *w,const char *id)
 {
     for (size_t i=0;i<w->state->application_count;++i) if (!strcmp(w->state->applications[i].id,id)) return &w->state->applications[i];
     return NULL;
 }
+EngApplication *wood_eng_application(WoodEngineeringContext *w,const char *id)
+{return w->source_application?w->source_application(w->sources,id):wood_eng_application_direct(w,id);}
 const char *const ENG_FIELDS[]={"width","length","A","B","u.panel","v.panel","u.gap","v.gap","boundary.A","boundary.B","primary.A","primary.B","secondary.A","secondary.B"};
 bool wood_eng_source_parse(WoodEngineeringContext *w,GeoJson *j,int t,EngDimensionSource *s,bool allow_app)
 {
@@ -288,6 +302,34 @@ bool wood_eng_archive(WoodEngineeringContext *w,GeoJson *j,int t)
     }else return wood_eng_fail(w,"I35: archive kind must be material/method");
     return true;
 }
+bool wood_eng_application_decode(const void *data,size_t size,EngApplication *out)
+{
+    if(!data||!out||!size||size>=ENG_RECORD_MAX)return false;
+    GeoJson j;bool ok=geo_json_parse_n(&j,data,size);EngApplication a;memset(&a,0,sizeof a);
+    char error[256];WoodEngineeringContext context={.error=error,.error_capacity=sizeof error};
+    if(ok)ok=geo_json_keys(&j,0,"id,placement_id,method","longAxis,mainAlong,overrides,anchorOptions")&&
+        geo_json_string(&j,geo_json_member(&j,0,"id"),a.id,sizeof a.id)&&wood_eng_id(a.id)&&
+        wood_eng_u32(&j,geo_json_member(&j,0,"placement_id"),&a.placement_id,false)&&
+        wood_eng_ref_parse(&j,geo_json_member(&j,0,"method"),&a.method,false)&&
+        wood_eng_axis(&j,geo_json_member(&j,0,"longAxis"),&a.long_axis)&&wood_eng_axis(&j,geo_json_member(&j,0,"mainAlong"),&a.main_along);
+    int overrides=ok?geo_json_member(&j,0,"overrides"):-1;
+    const char *names[]={"gap","boundary.A","boundary.B","primary.A","primary.B","secondary.A","secondary.B"};
+    if(ok&&overrides>=0){ok=geo_json_keys(&j,overrides,"","gap,boundary.A,boundary.B,primary.A,primary.B,secondary.A,secondary.B");
+        for(int i=0;i<7&&ok;++i){int v=geo_json_member(&j,overrides,names[i]);if(v<0)continue;a.overridden[i]=true;
+            ok=wood_eng_source_parse(&context,&j,v,&a.overrides[i],false)&&a.overrides[i].kind!=ENG_PARAMETER;}}
+    int anchors=ok?geo_json_member(&j,0,"anchorOptions"):-1;
+    if(ok&&anchors>=0){ok=geo_json_keys(&j,anchors,"","u,v");
+        for(int axis=0;axis<2&&ok;++axis){int v=geo_json_member(&j,anchors,axis?"v":"u");if(v<0||geo_json_is_null(&j,v))continue;
+            char kind[24],side[8];ok=geo_json_string(&j,geo_json_member(&j,v,"kind"),kind,sizeof kind);if(!ok)break;
+            if(!strcmp(kind,"coordinate")){int64_t value;
+                ok=geo_json_keys(&j,v,"kind,value","")&&geo_json_integer(&j,geo_json_member(&j,v,"value"),&value)&&geo_coord_in_range(value);
+                if(ok){a.anchor_kind[axis]=1;a.anchor[axis]=value;}}
+            else if(!strcmp(kind,"edge")){ok=geo_json_keys(&j,v,"kind,side","")&&geo_json_string(&j,geo_json_member(&j,v,"side"),side,sizeof side)&&(!strcmp(side,"min")||!strcmp(side,"max"));
+                if(ok)a.anchor_kind[axis]=!strcmp(side,"min")?2:3;}
+            else ok=false;}}
+    if(ok)ok=geo_json_canonical(&j,0,a.content,sizeof a.content)&&strlen(a.content)==size&&!memcmp(a.content,data,size);
+    geo_json_free(&j);if(!ok)return false;*out=a;return true;
+}
 bool wood_eng_put_application(WoodEngineeringContext *w,GeoJson *j,int t)
 {
     EngApplication a={0};
@@ -316,7 +358,7 @@ bool wood_eng_put_application(WoodEngineeringContext *w,GeoJson *j,int t)
             } else return wood_eng_fail(w,"D28: unknown anchor option");
         }
     }
-    EngApplication *existing=wood_eng_application(w,a.id);
+    EngApplication *existing=wood_eng_application_direct(w,a.id);
     if (existing && existing->placement_id!=a.placement_id) return wood_eng_fail(w,"D28: application identity cannot move to another placement");
     for (size_t i=0;i<w->state->application_count;++i) if (&w->state->applications[i]!=existing && w->state->applications[i].placement_id==a.placement_id) return wood_eng_fail(w,"D28: placement already has another application");
     if (!geo_json_canonical(j,t,a.content,sizeof a.content)) return wood_eng_fail(w,"I10: application content exceeds record capacity");
@@ -366,6 +408,7 @@ bool wood_eng_resolve_direct(WoodEngineeringContext *w,const EngDimensionSource 
             if (!m->kind || s->field!=(target->field?ENG_B:ENG_A)) return wood_eng_fail(w,"I35: timber dimension requires matching timber material A/B field");
             *value=target->field?m->b:m->a;
         }
+        if(w->source_version_field&&!w->source_version_field(w->sources,0,&m->ref,(uint32_t)s->field,value))return false;
         if (path) snprintf(path,cap,"material:%s@%u.%s",s->ref,s->version,ENG_FIELDS[s->field]);
     } else if (s->kind==ENG_APPLICATION) {
         EngApplication *a=wood_eng_application(w,s->ref);
@@ -377,7 +420,8 @@ bool wood_eng_resolve_direct(WoodEngineeringContext *w,const EngDimensionSource 
         if (!target->kind) {
             int field=target->field?(target->axis?ENG_V_GAP:ENG_U_GAP):(target->axis?ENG_V_PANEL:ENG_U_PANEL);
             if (s->field!=field) return wood_eng_fail(w,"I35: application field does not match target grid axis/field");
-            if (target->field) { override=0; if (!a->overridden[0] && !m->has_gap) return wood_eng_fail(w,"I35: gap is not set; enter an explicit gap"); nested.value=m->gap; }
+            if (target->field) { override=0; if (!a->overridden[0] && !m->has_gap) return wood_eng_fail(w,"I35: gap is not set; enter an explicit gap"); nested.value=m->gap;
+                if(!a->overridden[0]&&w->source_version_field&&!w->source_version_field(w->sources,1,&m->ref,WOOD_ENG_VERSION_GAP,&nested.value))return false; }
             else {
                 int axis=a->long_axis?a->long_axis:m->long_axis;
                 if (!axis || !m->panel.id[0]) return wood_eng_fail(w,"I35: panel material or length-axis mapping is not set");

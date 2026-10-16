@@ -121,6 +121,11 @@ typedef struct {
     bool (*depend_definition)(void *,int,const char *,uint32_t);
     bool (*validate_application)(void *,const EngApplication *);
     GeoVersionStore *versions;
+    /* Selected geometric use only. Lookup/description must not evaluate all
+     * fields of a material or inactive method slot. */
+    bool (*source_version_field)(void *,int,const EngVersionRef *,uint32_t,GeoCoord *);
+    bool (*source_version_definition)(void *,int,const EngVersionRef *,GeoVersionView *,GeoVersionField [GEO_VERSION_FIELD_CAPACITY]);
+    EngApplication *(*source_application)(void *,const char *);
 } WoodEngineeringContext;
 /* Fixed W schema field IDs. Existing dimension-source IDs remain unchanged. */
 enum {
@@ -141,9 +146,14 @@ const EngMethodVersion *wood_eng_method(const WoodEngineeringContext *w,const ch
 const EngMaterialVersion *wood_eng_material_at(const WoodEngineeringContext *w,size_t index);
 const EngMethodVersion *wood_eng_method_at(const WoodEngineeringContext *w,size_t index);
 bool wood_eng_version_view(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out);
+/* Non-evaluating immutable lookup for provider identity/description. Policy
+ * getters below use source_version_definition when a candidate is bound. */
+bool wood_eng_version_view_direct(const WoodEngineeringContext *w,int kind,const char *id,uint32_t version,GeoVersionView *out);
 bool wood_eng_material_integer(const WoodEngineeringContext *w,const EngMaterialVersion *material,uint32_t field,GeoCoord minimum,GeoCoord maximum,GeoCoord *out);
 bool wood_eng_archive(WoodEngineeringContext *w,GeoJson *j,int t);
 EngApplication *wood_eng_application(WoodEngineeringContext *w,const char *id);
+EngApplication *wood_eng_application_direct(WoodEngineeringContext *w,const char *id);
+bool wood_eng_application_decode(const void *,size_t,EngApplication *);
 bool wood_eng_source_parse(WoodEngineeringContext *w,GeoJson *j,int t,EngDimensionSource *s,bool allow_app);
 bool wood_eng_target_parse(WoodEngineeringContext *w,GeoJson *j,int t,EngTarget *target);
 bool wood_eng_same_target(const EngTarget *a,const EngTarget *b);

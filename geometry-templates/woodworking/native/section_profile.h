@@ -70,11 +70,12 @@ typedef struct {
     void (*begin)(void *,WoodSectionProfileContext *,char *,size_t);
     void (*member)(void *,WoodSectionProfileContext *,size_t,char *,size_t);
     void (*run)(void *,WoodSectionProfileContext *,size_t,char *,size_t);
-    void (*profile_definition)(void *,WoodSectionProfileContext *,uint32_t);
+    bool (*profile_definition)(void *,WoodSectionProfileContext *,uint32_t,SectionProfile **);
     bool (*member_dimension)(void *,WoodSectionProfileContext *,size_t,int,GeoCoord *);
     bool (*run_length)(void *,WoodSectionProfileContext *,size_t,GeoCoord *);
     bool (*run_placement)(void *,WoodSectionProfileContext *,size_t);
     bool (*live_host)(void *,uint32_t,GeoFrame *,WoodBoundaryRegion *,bool *);
+    void (*pair)(void *,WoodSectionProfileContext *,size_t,size_t,char *,size_t);
 } WoodSectionProfileEvaluation;
 struct WoodSectionProfileContext {
     SectionProfileState *state;
@@ -102,6 +103,10 @@ const char *wood_sp_axis_name(GeoVector3);
 bool wood_sp_put_profile(WoodSectionProfileContext *,GeoJson *,int);
 bool wood_sp_put_member(WoodSectionProfileContext *,GeoJson *,int);
 bool wood_sp_put_run(WoodSectionProfileContext *,GeoJson *,int);
+/* Parse one authored record without mutating the candidate or its caches. */
+bool wood_sp_parse_profile(WoodSectionProfileContext *,GeoJson *,int,SectionProfile *);
+bool wood_sp_parse_member(WoodSectionProfileContext *,GeoJson *,int,ProfileMember *);
+bool wood_sp_parse_run(WoodSectionProfileContext *,GeoJson *,int,ProfileRun *);
 GeoPoint3 wood_sp_point(const ProfileRun *,GeoCoord,GeoCoord,GeoCoord);
 size_t wood_sp_outside_regions(const WoodBoundaryLoop *,const GeoRect2 *,GeoRect2 out[SP_OUTSIDE_MAX]);
 bool wood_sp_intersection(const ProfileMember *,const ProfileMember *,GeoRect2 *);

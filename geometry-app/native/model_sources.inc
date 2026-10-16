@@ -175,6 +175,11 @@ static bool model_sources_build(ModelSources *state,World *world)
     for(size_t i=0;i<geo_guides_count(&world->geo.guide_lines);++i)if(!reference_eval_guide(&state->reference,i))return false;
     if(!wood_assembly_generation_check(&assembly_context)||!wood_assembly_sources_definitions(state->reference.assembly_sources))return false;
     if(!wood_engineering_sources_definitions(state->reference.engineering_sources)||
+        !wood_engineering_sources_metadata(state->reference.engineering_sources)||
+        !geo_version_sources_definitions(state->reference.version_sources)||
+        !wood_sp_sources_complete(state->reference.section_profile_sources)||
+        !geo_parameter_sources_definitions(state->reference.parameter_sources,&parameter_error)||
+        !geo_linear_definition_sources_complete(state->reference.linear_definition_sources)||
         !app_enclosure_sources_complete(&state->reference)||!wood_definition_sources_complete(state->reference.definition_sources)||
         !wood_finish_sources_definitions(state->reference.finish_sources)||
         !geo_region_key_sources_definitions(state->reference.region_key_sources)||

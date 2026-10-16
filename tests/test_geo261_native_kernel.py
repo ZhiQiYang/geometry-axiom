@@ -42,6 +42,8 @@ class NativeBuild:
         for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "clip.h", "clip.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "parameter_sources.h", "parameter_sources.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c", "regions.h", "regions.c", "region_key_sources.h", "region_key_sources.c", "guides.h", "guides.c", "grid_store.h", "grid_store.c", "candidate.h", "candidate.c", "placements.h", "placements.c", "placement_sources.h", "placement_sources.c", "versions.h", "versions.c", "enclosure.h", "enclosure.c", "enclosure_sources.h", "enclosure_sources.c", "document.h", "document.c"):
             shutil.copy2(ROOT / "geometry-core/kernel" / name, self.kernel / name)
         (self.kernel / "internal").mkdir()
+        for name in ("linear_definition_sources.h", "linear_definition_sources.c", "version_sources.h", "version_sources.c"):
+            shutil.copy2(ROOT / "geometry-core/kernel" / name, self.kernel / name)
         shutil.copy2(ROOT / "geometry-core/kernel/internal/parameter_store.h", self.kernel / "internal/parameter_store.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/named_values.h", self.kernel / "internal/named_values.h")
         shutil.copy2(ROOT / "geometry-core/kernel/internal/datums.h", self.kernel / "internal/datums.h")
@@ -99,6 +101,8 @@ class NativeBuild:
         self.regions_object = self.compile(self.kernel / "regions.c", "regions")
         self.grid_store_object = self.compile(self.kernel / "grid_store.c", "grid-store")
         self.guides_object = self.compile(self.kernel / "guides.c", "guides")
+        self.linear_definition_sources_object = self.compile(self.kernel / "linear_definition_sources.c", "linear-definition-sources")
+        self.version_sources_object = self.compile(self.kernel / "version_sources.c", "version-sources")
         if not kernel_only:
             self.host_history_object = self.compile(self.host / "history.c", "host-history")
             self.host_candidate_object = self.compile(self.host / "app_candidate.c", "host-candidate")
@@ -214,7 +218,7 @@ class NativeBuild:
 
     def kernel_objects(self):
         return [self.exact_object, self.codec_object, self.geometry_object, self.clip_object, self.grid_object,
-                self.parameters_object, self.parameter_sources_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object, self.candidate_object, self.placements_object, self.placement_sources_object, self.versions_object, self.enclosure_object, self.enclosure_sources_object, self.document_object, self.regions_object, self.kernel_region_key_sources_object, self.grid_store_object, self.guides_object]
+                self.parameters_object, self.parameter_sources_object, self.linear_object, self.named_values_object, self.datums_object, self.source_object, self.candidate_object, self.placements_object, self.placement_sources_object, self.versions_object, self.enclosure_object, self.enclosure_sources_object, self.document_object, self.regions_object, self.kernel_region_key_sources_object, self.grid_store_object, self.guides_object, self.linear_definition_sources_object, self.version_sources_object]
 
     def mutant(self, module, before, after, client_object=None):
         text = (self.kernel / (module + ".c")).read_text(encoding="utf-8")

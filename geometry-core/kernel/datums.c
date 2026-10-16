@@ -39,12 +39,14 @@ bool geo_datums_remove(GeoDatumStore *store,uint32_t id)
     memset(&store->values[--store->count],0,sizeof *store->values);return true;
 }
 GeoLinearResult geo_datums_evaluate(GeoDatumStore *store,size_t at,GeoLinearResolver resolve,void *state)
+{return geo_datums_evaluate_definition(store,at,geo_datums_at(store,at),resolve,state);}
+GeoLinearResult geo_datums_evaluate_definition(GeoDatumStore *store,size_t at,const GeoDatum *definition,GeoLinearResolver resolve,void *state)
 {
     GeoLinearResult result={GEO_LINEAR_INVALID,GEO_EXACT_OK,0,{0,1,GEO_UNIT_LENGTH}};
-    if(!store||at>=store->count)return result;
+    if(!store||at>=store->count||!definition)return result;
     GeoDatum *datum=&store->values[at];
-    if(datum->axis<0||datum->axis>2)return result;
-    result=geo_linear_evaluate(&datum->expression,resolve,state);
+    if(definition->id!=datum->id||definition->axis<0||definition->axis>2)return result;
+    result=geo_linear_evaluate(&definition->expression,resolve,state);
     if(result.status==GEO_LINEAR_OK||result.status==GEO_LINEAR_RANGE)datum->position=result.value.num;
     return result;
 }
