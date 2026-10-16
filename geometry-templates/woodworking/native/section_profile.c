@@ -93,7 +93,10 @@ bool wood_sp_host(const WoodSectionProfileContext *w,const ProfileRun *r,GeoFram
 {
     if(r->copied_host){*frame=r->host_frame;*region=r->host_region;return true;}
     bool derived=false;
-    if(!w->live_host(w->user,r->host_id,frame,region,&derived))return false;
+    bool ok=w->evaluation&&w->evaluation->live_host
+        ?w->evaluation->live_host(w->evaluation->user,r->host_id,frame,region,&derived)
+        :w->live_host(w->user,r->host_id,frame,region,&derived);
+    if(!ok)return false;
     if(derived)return wood_sp_error(w,"D4: derived placements cannot host D38 positioning");
     return geo_frame_is_valid(frame)&&wood_sp_region_valid(region);
 }
@@ -208,40 +211,67 @@ bool wood_sp_intersection(const ProfileMember *a,const ProfileMember *b,GeoRect2
 static void wood_sp_first_error(char *first,size_t cap,const char *message)
 {if(!first[0])snprintf(first,cap,"%s",message);}
 
-static bool wood_sp_resolve_dimension(WoodSectionProfileContext *w,const EngDimensionSource *source,const EngTarget *target,GeoCoord *out)
-{return w->resolve_dimension(w->user,source,target,out);}
+bool wood_sp_member_dimension_direct(WoodSectionProfileContext *w,size_t i,int field,GeoCoord *out)
+{
+    ProfileMember *m=&w->state->members[i];
+    if(m->panel){*out=field?wood_sp_panel_spec.thickness:m->width;return true;}
+    EngTarget target={1,0,0,field};return w->resolve_dimension(w->user,field?&m->b_source:&m->a_source,&target,out);
+}
+bool wood_sp_run_length_direct(WoodSectionProfileContext *w,size_t i,GeoCoord *out)
+{EngTarget target={1,0,0,0};return w->resolve_dimension(w->user,&w->state->runs[i].length_source,&target,out);}
+void wood_sp_evaluate_member_direct(WoodSectionProfileContext *w,size_t i,char *first,size_t capacity)
+{
+    SectionProfileState *s=w->state;GeoRect2 outside[SP_OUTSIDE_MAX];
+    ProfileMember *m=&s->members[i];SectionProfile *p=wood_sp_profile(w,m->profile_id);
+    if(w->evaluation&&w->evaluation->profile_definition)w->evaluation->profile_definition(w->evaluation->user,w,m->profile_id);
+    m->resolved=false;m->outside=false;m->range_error=false;m->missing_profile=!p;memset(m->source_error,0,sizeof m->source_error);
+    if(!p){wood_sp_error(w,"I49: member %u references missing profile %u",m->id,m->profile_id);wood_sp_first_error(first,capacity,w->error);}
+    bool dimensions=true;
+    for(int f=0;f<2;++f){
+        bool ok=w->evaluation&&w->evaluation->member_dimension
+            ?w->evaluation->member_dimension(w->evaluation->user,w,i,f,f?&m->b:&m->a)
+            :wood_sp_member_dimension_direct(w,i,f,f?&m->b:&m->a);
+        if(!ok){snprintf(m->source_error[f],sizeof m->source_error[f],"%s",w->error);wood_sp_first_error(first,capacity,w->error);dimensions=false;}}
+    if(!dimensions)return;
+    GeoCoord width=m->rotated?m->b:m->a,height=m->rotated?m->a:m->b;
+    m->rect=(GeoRect2){m->u0,m->v0,m->u0+width,m->v0+height};m->resolved=true;
+    m->range_error=!geo_coord_in_range(m->rect.max_u)||!geo_coord_in_range(m->rect.max_v);
+    if(m->range_error){wood_sp_error(w,"I46/D1: member %u rectangle endpoint exceeds coordinate range",m->id);wood_sp_first_error(first,capacity,w->error);}
+    /* I44: exact area test. poly_contains_rect (corners on/in + no edge through the interior) also accepts a rectangle that exactly fills a notch. */ if(p&&wood_sp_outside_regions(&p->outline,&m->rect,outside)){
+        m->outside=true;wood_sp_error(w,"V_PROFILE_OUTSIDE I44: member %u profile %u rectangle is not contained",m->id,p->id);wood_sp_first_error(first,capacity,w->error);}
 
+}
+void wood_sp_evaluate_run_direct(WoodSectionProfileContext *w,size_t i,char *first,size_t capacity)
+{
+    SectionProfileState *s=w->state;
+    ProfileRun *r=&s->runs[i];SectionProfile *p=wood_sp_profile(w,r->profile_id);
+    if(w->evaluation&&w->evaluation->profile_definition)w->evaluation->profile_definition(w->evaluation->user,w,r->profile_id);
+    r->resolved=false;r->range_error=false;r->missing_profile=!p;r->length_error[0]=0;
+    if(!p){wood_sp_error(w,"I49: run %u references missing profile %u",r->id,r->profile_id);wood_sp_first_error(first,capacity,w->error);}
+    r->length_resolved=w->evaluation&&w->evaluation->run_length
+        ?w->evaluation->run_length(w->evaluation->user,w,i,&r->length):wood_sp_run_length_direct(w,i,&r->length);
+    if(!r->length_resolved){snprintf(r->length_error,sizeof r->length_error,"I47: %.180s",w->error);wood_sp_first_error(first,capacity,r->length_error);}
+    if(!(w->evaluation&&w->evaluation->run_placement
+         ?w->evaluation->run_placement(w->evaluation->user,w,i):wood_sp_resolve_placement(w,r)))wood_sp_first_error(first,capacity,r->placement_error);
+    if(p&&r->length_resolved&&r->placement_resolved)for(size_t v=0;v<p->outline.count;++v)for(int end=0;end<2;++end){
+        GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,end?r->length:0);
+        if(!geo_coord_in_range(point.x)||!geo_coord_in_range(point.y)||!geo_coord_in_range(point.z)){r->range_error=true;wood_sp_error(w,"I47/I48/D1: run %u generated vertex [%lld,%lld,%lld] exceeds range",r->id,(long long)point.x,(long long)point.y,(long long)point.z);wood_sp_first_error(first,capacity,w->error);}}
+    r->resolved=p&&r->length_resolved&&r->placement_resolved&&!r->range_error;
+
+}
 bool wood_sp_rebuild(WoodSectionProfileContext *w,char *error,size_t capacity)
 {
-    SectionProfileState *s=w->state;char first[256]={0};GeoRect2 outside[SP_OUTSIDE_MAX];
-    for(size_t i=0;i<s->member_count;++i){ProfileMember *m=&s->members[i];SectionProfile *p=wood_sp_profile(w,m->profile_id);
-        m->resolved=false;m->outside=false;m->range_error=false;m->missing_profile=!p;memset(m->source_error,0,sizeof m->source_error);
-        if(!p){wood_sp_error(w,"I49: member %u references missing profile %u",m->id,m->profile_id);wood_sp_first_error(first,sizeof first,w->error);}
-        bool dimensions=true;
-        if(m->panel){m->a=m->width;m->b=wood_sp_panel_spec.thickness;}
-        else for(int f=0;f<2;++f){EngTarget target={1,0,0,f};
-            if(!wood_sp_resolve_dimension(w,f?&m->b_source:&m->a_source,&target,f?&m->b:&m->a)){
-                snprintf(m->source_error[f],sizeof m->source_error[f],"%s",w->error);wood_sp_first_error(first,sizeof first,w->error);dimensions=false;}}
-        if(!dimensions)continue;
-        GeoCoord width=m->rotated?m->b:m->a,height=m->rotated?m->a:m->b;
-        m->rect=(GeoRect2){m->u0,m->v0,m->u0+width,m->v0+height};m->resolved=true;
-        m->range_error=!geo_coord_in_range(m->rect.max_u)||!geo_coord_in_range(m->rect.max_v);
-        if(m->range_error){wood_sp_error(w,"I46/D1: member %u rectangle endpoint exceeds coordinate range",m->id);wood_sp_first_error(first,sizeof first,w->error);}
-        /* I44: exact area test. poly_contains_rect (corners on/in + no edge through the interior) also accepts a rectangle that exactly fills a notch. */ if(p&&wood_sp_outside_regions(&p->outline,&m->rect,outside)){
-            m->outside=true;wood_sp_error(w,"V_PROFILE_OUTSIDE I44: member %u profile %u rectangle is not contained",m->id,p->id);wood_sp_first_error(first,sizeof first,w->error);}
+    SectionProfileState *s=w->state;char first[256]={0};
+    if(w->evaluation&&w->evaluation->begin)w->evaluation->begin(w->evaluation->user,w,first,sizeof first);
+    for(size_t i=0;i<s->member_count;++i){
+        if(w->evaluation&&w->evaluation->member)w->evaluation->member(w->evaluation->user,w,i,first,sizeof first);
+        else wood_sp_evaluate_member_direct(w,i,first,sizeof first);
     }
     for(size_t i=0;i<s->member_count;++i)for(size_t j=0;j<i;++j){GeoRect2 overlap;if(wood_sp_intersection(&s->members[i],&s->members[j],&overlap)){
         wood_sp_error(w,"V_PROFILE_OVERLAP I45: members %u,%u intersection [%lld,%lld]x[%lld,%lld]",s->members[j].id,s->members[i].id,(long long)overlap.min_u,(long long)overlap.max_u,(long long)overlap.min_v,(long long)overlap.max_v);wood_sp_first_error(first,sizeof first,w->error);}}
-    for(size_t i=0;i<s->run_count;++i){ProfileRun *r=&s->runs[i];SectionProfile *p=wood_sp_profile(w,r->profile_id);EngTarget target={1,0,0,0};
-        r->resolved=false;r->range_error=false;r->missing_profile=!p;r->length_error[0]=0;
-        if(!p){wood_sp_error(w,"I49: run %u references missing profile %u",r->id,r->profile_id);wood_sp_first_error(first,sizeof first,w->error);}
-        r->length_resolved=wood_sp_resolve_dimension(w,&r->length_source,&target,&r->length);
-        if(!r->length_resolved){snprintf(r->length_error,sizeof r->length_error,"I47: %.180s",w->error);wood_sp_first_error(first,sizeof first,r->length_error);}
-        if(!wood_sp_resolve_placement(w,r))wood_sp_first_error(first,sizeof first,r->placement_error);
-        if(p&&r->length_resolved&&r->placement_resolved)for(size_t v=0;v<p->outline.count;++v)for(int end=0;end<2;++end){
-            GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,end?r->length:0);
-            if(!geo_coord_in_range(point.x)||!geo_coord_in_range(point.y)||!geo_coord_in_range(point.z)){r->range_error=true;wood_sp_error(w,"I47/I48/D1: run %u generated vertex [%lld,%lld,%lld] exceeds range",r->id,(long long)point.x,(long long)point.y,(long long)point.z);wood_sp_first_error(first,sizeof first,w->error);}}
-        r->resolved=p&&r->length_resolved&&r->placement_resolved&&!r->range_error;
+    for(size_t i=0;i<s->run_count;++i){
+        if(w->evaluation&&w->evaluation->run)w->evaluation->run(w->evaluation->user,w,i,first,sizeof first);
+        else wood_sp_evaluate_run_direct(w,i,first,sizeof first);
     }
     if(first[0]){snprintf(w->error,w->error_capacity,"%s",first);snprintf(error,capacity,"%s",first);return false;}
     return true;
