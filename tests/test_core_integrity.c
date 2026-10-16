@@ -84,7 +84,7 @@ static void test_new_placement_transaction(void)
     CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
     CHECK(command("delete space 1"));
     CHECK(command("placement 2 on boundary 1 origin 0 0 100 u +x v +y"));
-    CHECK(test_world.placement_count == 2); /* Multiple placements remain legal without Space. */
+    CHECK(world_placement_count(&test_world) == 2); /* Multiple placements remain legal without Space. */
 }
 
 static void test_grid_ref_rejects(void)
