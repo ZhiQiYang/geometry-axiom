@@ -17,6 +17,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 for directory in (ROOT, ROOT / "geometry-core"):
@@ -24,7 +25,9 @@ for directory in (ROOT, ROOT / "geometry-core"):
         sys.path.insert(0, str(directory))
 
 from modeling import ModelError
+from modeling import base as public_base
 from modeling.engine import evaluate as default_evaluate
+import geometry_kernel as kernel
 from geometry_app import model_native
 from geometry_app.bootstrap import default_provider
 from geometry_app.model_runtime import ModelingRuntime
@@ -142,9 +145,38 @@ class DefaultNativeIntegration(unittest.TestCase):
         return {(reference(edge["consumer"]), reference(edge["source"]), edge["kind"])
                 for edge in envelope["neutralSources"]["edges"]}
 
+    def evaluate_default(self, source_definitions, req):
+        """Observe the actual loader and K call without replacing native output."""
+        candidates, snapshots = [], []
+        real_loader = public_base.load_candidate
+
+        def observe_loader(*args, **kwargs):
+            candidate = real_loader(*args, **kwargs)
+            candidates.append(candidate)
+            snapshots.append(deepcopy(candidate.legacy_snapshot))
+            return candidate
+
+        with mock.patch.object(public_base, "load_candidate", side_effect=observe_loader) as loader, \
+             mock.patch.object(public_base, "load_base", side_effect=AssertionError("actual-default-must-not-load-legacy-snapshot")), \
+             mock.patch.object(kernel, "evaluate", wraps=kernel.evaluate) as evaluator:
+            result = default_evaluate(source_definitions, req, base_executable=self.base)
+        loader.assert_called_once_with(source_definitions["base_scene"], executable=self.base)
+        self.assertEqual(1, len(candidates), "actual-default-must-load-one-typed-candidate")
+        self.assertEqual(1, evaluator.call_count, "actual-default-must-evaluate-one-typed-program")
+        candidate, program = candidates[0], evaluator.call_args.args[0]
+        self.assertEqual(candidate.snapshot_identity, program.snapshot_identity)
+        self.assertEqual(tuple(source.key for source in candidate.sources),
+                         tuple(source.key for source in program.sources))
+        self.assertEqual(tuple((source.value_type, source.context, source.dependencies, source.status)
+                               for source in candidate.sources),
+                         tuple((source.value_type, source.context, source.dependencies, source.status)
+                               for source in program.sources))
+        self.assertEqual(snapshots[0], candidate.legacy_snapshot)
+        return result
+
     def compare_default(self, source_definitions, req):
         original = deepcopy((source_definitions, req))
-        result = default_evaluate(source_definitions, req, base_executable=self.base)
+        result = self.evaluate_default(source_definitions, req)
         legacy = ModelingRuntime(provider=default_provider(), native_loader=model_native.load_base,
                                  source_graph=False).evaluate(source_definitions, req, base_executable=self.base)
         self.assertEqual(legacy, result)
@@ -165,7 +197,7 @@ class DefaultNativeIntegration(unittest.TestCase):
                 input_bytes, output_bytes = input_path.read_bytes(), output_path.read_bytes()
                 original, frozen = json.loads(input_bytes), json.loads(output_bytes)
                 envelope, _, _ = self.capture(original["definitions"]["base_scene"])
-                actual = default_evaluate(original["definitions"], original["request"], base_executable=self.base)
+                actual = self.evaluate_default(original["definitions"], original["request"])
                 for field in ("definitions", "request", "derived", "diagnostics"):
                     self.assertEqual(frozen[field], actual[field], name + ": " + field)
                 self.assertEqual(sorted(envelope["legacySnapshot"].get("required_capabilities", [])),
@@ -389,9 +421,8 @@ class DefaultNativeIntegration(unittest.TestCase):
         for result in (candidate, moved_candidate, changed_candidate):
             self.assertEqual(self.identity, result.execution_identity)
             self.assertEqual(self.identity[2][2], sha256(Path(self.base).read_bytes()).hexdigest())
-        first = default_evaluate(definitions(fixtures.SCENE), request(), base_executable=self.base)
-        second = default_evaluate(definitions(fixtures.SCENE + "canvas-pos placement 1 31 29\n"),
-                                  request(), base_executable=self.base)
+        first = self.evaluate_default(definitions(fixtures.SCENE), request())
+        second = self.evaluate_default(definitions(fixtures.SCENE + "canvas-pos placement 1 31 29\n"), request())
         self.assertEqual(first, second)
 
 
