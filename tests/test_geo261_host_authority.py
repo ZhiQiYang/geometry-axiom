@@ -13,7 +13,7 @@ from tests import _bridge, test_panel_fill_host as host
 
 FLAGS = ['GEOMETRY_KERNEL_EXTERNAL=1', 'GEOMETRY_WOODWORKING_EXTERNAL=1',
          'GEOMETRY_HOST_HISTORY_EXTERNAL=1', 'GEOMETRY_HOST_CANDIDATE_EXTERNAL=1']
-FOOTPRINT_ANCHOR = 'if(ctx->use_current_values)return true;\n    uint32_t id=world->wood.timbers[index].id;'
+FOOTPRINT_ANCHOR = 'if(ctx->use_current_values)return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);'
 THRESHOLD_ANCHOR = '*out=value.as.quantity;return true;'
 GUIDE_ANCHOR = 'if(ctx->use_current_values)return true;\n    int index=reference_source_guide_index(ctx->world,id);'
 DATUM_CONTEXT_ANCHOR = 'if(!ctx->use_current_values){descriptor->context_from_value=true;descriptor->context.axis=-1;return true;}'

@@ -129,6 +129,7 @@ static bool reference_datum_position(ReferenceEval *,size_t,GeoAxisPosition *);
 static bool reference_guide_position(ReferenceEval *,size_t,GeoAxisPosition *);
 static bool reference_placement_frame(ReferenceEval *,uint32_t,GeoFrame *);
 static bool reference_member_placement(ReferenceEval *,PlacementSurface *,SpaceBoundarySurface *);
+static bool reference_host_read(ReferenceEval *,uint32_t,PlacementSurface *,SpaceBoundarySurface *,const SpaceBoundarySurface **);
 static bool reference_member_dimension(ReferenceEval *,uint32_t,bool,Coord *);
 static bool reference_member_owned(ReferenceEval *,uint32_t,bool *);
 static bool reference_member_footprint(ReferenceEval *,size_t,uint32_t,GeoRect2 *);
@@ -249,9 +250,8 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
     if (n==3 && (!strcmp(part[0],"edge") || !strcmp(part[0],"vertex") || !strcmp(part[0],"edge-key"))) {
         if (strcmp(part[2],axis==0?"u":"v")) return false;
         PlacementSurface source_placement;SpaceBoundarySurface source_boundary;
-        if(!app_placement_read(w,p->id,&source_placement))return false;
-        const SpaceBoundarySurface *source_b=app_placement_boundary(w,&source_placement,&source_boundary);
-        if(!reference_member_placement(ctx,&source_placement,source_b?&source_boundary:NULL))return false;
+        const SpaceBoundarySurface *source_b;
+        if(!reference_host_read(ctx,p->id,&source_placement,&source_boundary,&source_b))return false;
         p=&source_placement;b=placement_effective_boundary(p,source_b,&effective);
         PolygonLoop2 rect;
         const PolygonLoop2 *loop;
@@ -489,9 +489,10 @@ static bool app_member_reference_guide(void *user,size_t i,WoodMemberGuideFact *
 static bool app_member_reference_placement(void *user,uint32_t id,WoodMemberPlacementFact *out)
 {
     AppMemberReferenceContext *c=user;
-    if(!app_placement_read(c->world,id,&c->geometry->placement))return false;
-    const SpaceBoundarySurface *b=app_placement_boundary(c->world,&c->geometry->placement,&c->geometry->boundary);
-    if(c->evaluation&&!reference_member_placement(c->evaluation,&c->geometry->placement,b?&c->geometry->boundary:NULL))return false;
+    const SpaceBoundarySurface *b;
+    if(c->evaluation){if(!reference_host_read(c->evaluation,id,&c->geometry->placement,&c->geometry->boundary,&b))return false;}
+    else{if(!app_placement_read(c->world,id,&c->geometry->placement))return false;
+        b=app_placement_boundary(c->world,&c->geometry->placement,&c->geometry->boundary);}
     c->geometry->boundary_view=placement_effective_boundary(&c->geometry->placement,b,&c->geometry->effective);
     *out=(WoodMemberPlacementFact){id,c->geometry->placement.frame,c->geometry->placement.derived_fill_id!=0,c->geometry->placement.derived_h};return true;
 }
@@ -553,7 +554,7 @@ static bool app_member_reference_primary(void *user,uint32_t pid,const WoodMembe
 static bool app_member_reference_end(void *user,uint32_t pid,const WoodMember *member,const WoodMemberSpanRequest *r,Coord start,Coord end,const SurfaceRegion2 *rect,char *err,size_t cap)
 {
     AppMemberReferenceContext *c=user;(void)pid;const SpaceBoundarySurface *selected=placement_boundary_for_rect(&c->geometry->placement,c->geometry->boundary_view,rect);
-    return timber_end_face_check(c->world,&c->geometry->placement,selected,member,r->along_v,start,end,r->cross_lo,r->cross_hi,err,cap);
+    return app_reference_end_faces(c->world,&c->geometry->placement,selected,member,r->along_v,start,end,r->cross_lo,r->cross_hi,err,cap);
 }
 static bool app_member_reference_boundary(void *user,uint32_t pid,const WoodMember *member,const WoodMemberSpanRequest *r,Coord start,Coord end,const SurfaceRegion2 *rect,char *err,size_t cap)
 {
@@ -618,11 +619,13 @@ static bool reference_check_all(const World *w)
 {
     bool ok=true;
     for (size_t i=0;i<w->wood.timber_count;++i) {
-        const Timber *t=&w->wood.timbers[i]; const TimberAnchor *a=&w->wood.anchors[i];
+        const Timber *t=&w->wood.timbers[i];TimberAnchor actual_anchor;const TimberAnchor *a=&actual_anchor;
         if (!t->placed) continue;
-        const PlacementSurface *p=world_find_placement(w,a->placement_id); SurfaceRegion2 f;
-        if (!p || !timber_a0_footprint_uv(p,t,a,&f)) { ok=reference_issue(t->id,"I5","valid footprint on existing surface","missing footprint"); continue; }
-        const SpaceBoundarySurface *b=placement_boundary_for_rect(p,world_placement_boundary(w,p),&f);
+        PlacementSurface placement;SpaceBoundarySurface boundary;const SpaceBoundarySurface *host_boundary;SurfaceRegion2 f;
+        if(!app_reference_member_anchor(w,i,&actual_anchor)||!app_reference_host_read(w,a->placement_id,&placement,&boundary,&host_boundary)||
+           !app_reference_member_footprint(w,i,a->placement_id,&f)) { ok=reference_issue(t->id,"I5","valid footprint on existing surface","missing footprint"); continue; }
+        const PlacementSurface *p=&placement;
+        const SpaceBoundarySurface *b=placement_boundary_for_rect(p,host_boundary,&f);
         bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
         Coord lo=along?f.min_u:f.min_v,hi=along?f.max_u:f.max_v;
         Coord ends[2]={along?f.min_v:f.min_u,along?f.max_v:f.max_u};
@@ -635,11 +638,14 @@ static bool reference_check_all(const World *w)
             }
         }
         char err[256];
-        if (!timber_end_face_check(w,p,b,t,along,ends[0],ends[1],lo,hi,err,sizeof err)) { reference_issue(t->id,"I19/I22","higher-priority endpoint supports or defined exception",err); ok=false; }
+        if (!app_reference_end_faces(w,p,b,t,along,ends[0],ends[1],lo,hi,err,sizeof err)) { reference_issue(t->id,"I19/I22","higher-priority endpoint supports or defined exception",err); ok=false; }
         if (!timber_boundary_role_check(p,b,t,along,ends[0],ends[1],lo,hi,err,sizeof err)) { reference_issue(t->id,"I20/R18","full fixed-edge coverage for boundary",err); ok=false; }
         for (size_t j=i+1;j<w->wood.timber_count;++j) {
-            SurfaceRegion2 other;
-            if (!w->wood.timbers[j].placed || w->wood.anchors[j].placement_id!=a->placement_id || !timber_a0_footprint_uv(p,&w->wood.timbers[j],&w->wood.anchors[j],&other)) continue;
+            SurfaceRegion2 other;TimberAnchor other_anchor;
+            if(!w->wood.timbers[j].placed)continue;
+            if(!app_reference_member_anchor(w,j,&other_anchor)){ok=false;continue;}
+            if(other_anchor.placement_id!=a->placement_id)continue;
+            if(!app_reference_member_footprint(w,j,a->placement_id,&other)){ok=false;continue;}
             if (uv_rects_overlap(f.min_u,f.min_v,f.max_u,f.max_v,other.min_u,other.min_v,other.max_u,other.max_v)) {
                 char actual[180]; snprintf(actual,sizeof actual,"positive-area intersection with timber %u",w->wood.timbers[j].id);
                 reference_issue(t->id,"I11","zero positive-area overlap",actual); ok=false;

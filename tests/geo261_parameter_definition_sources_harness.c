@@ -192,6 +192,31 @@ static int graph_case(void)
     CHECK(geo_parameter_sources_definitions(binding.sources,&a)&&geo_eval_seal(binding.graph)&&geo_parameter_sources_value(binding.sources,ref(1,1),&out,&a)&&quantity(out,3,1,GEO_UNIT_LENGTH)&&geo_eval_node_count(binding.graph)==9&&geo_eval_edge_count(binding.graph)==8,"graph-completion-and-sealed-memo");
     dispose(&binding,true);geo_parameters_destroy(plain);geo_parameters_destroy(store);return 0;
 }
+static int cache_bytes_case(bool sourced)
+{
+    GeoParameterStore *store=geo_parameters_create();CHECK(store,"cache-bytes-store");
+    GeoParameterCard card={0};card.id=1;card.next_field_id=2;strcpy(card.name,"Cache");
+    GeoParameterField field;literal(&field,1,1,GEO_PARAMETER_DIMENSION,7,3);
+    /* Staging preserves a pre-existing cache. Seed all its bytes, then retain
+     * the actual staged representation so the oracle does not assume layout. */
+    memset(&field.value,0xa5,sizeof field.value);
+    field.value.num=101;field.value.den=13;field.value.unit=GEO_UNIT_LENGTH;
+    CHECK(geo_parameters_stage_card(store,&card)&&geo_parameters_stage_field(store,&field),"cache-bytes-stage");
+    GeoParameterField expected;memcpy(&expected,geo_parameters_fields(store),sizeof expected);
+    int64_t num=7,den=3;GeoQuantityUnit unit=GEO_UNIT_LENGTH;
+    memcpy(&expected.value.num,&num,sizeof num);memcpy(&expected.value.den,&den,sizeof den);
+    memcpy(&expected.value.unit,&unit,sizeof unit);
+    GeoParameterError error;
+    if(sourced){Binding binding={0};GeoQuantity out;
+        CHECK(bind(&binding,store,921)&&geo_parameter_sources_value(binding.sources,ref(1,1),&out,&error)&&quantity(out,7,3,GEO_UNIT_LENGTH),"source-cache-bytes-value");
+        CHECK(!memcmp(geo_parameters_fields(store),&expected,sizeof expected),"source-cache-writes-only-quantity-members");
+        dispose(&binding,true);
+    }else{
+        CHECK(geo_parameters_rebuild(store,&error),"plain-cache-bytes-value");
+        CHECK(!memcmp(geo_parameters_fields(store),&expected,sizeof expected),"plain-cache-writes-only-quantity-members");
+    }
+    geo_parameters_destroy(store);return 0;
+}
 static int descriptor_case(void)
 {
     for(unsigned which=0;which<3;++which){GeoParameterStore *store=geo_parameters_create();CHECK(store,"descriptor-store");GeoParameterField field;
@@ -328,6 +353,8 @@ int main(int argc,char **argv)
     if(!strcmp(argv[1],"definitions"))return definitions_case();
     if(!strcmp(argv[1],"typed"))return typed_case();
     if(!strcmp(argv[1],"graph"))return graph_case();
+    if(!strcmp(argv[1],"cache-plain"))return cache_bytes_case(false);
+    if(!strcmp(argv[1],"cache-source"))return cache_bytes_case(true);
     if(!strcmp(argv[1],"descriptor"))return descriptor_case();
     if(!strcmp(argv[1],"diagnostics"))return diagnostics_case();
     if(!strcmp(argv[1],"depth"))return depth_case();
