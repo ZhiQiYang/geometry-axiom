@@ -4,9 +4,9 @@
 #ifdef _WIN32
 #undef _WIN32
 #endif
-#define main geometry_bridge_main
+#define GEOMETRY_BRIDGE_ENTRYPOINT geometry_bridge_main
 #include "../geometry-web/web_bridge.c"
-#undef main
+#undef GEOMETRY_BRIDGE_ENTRYPOINT
 #define CHECK(value,label) do{if(!(value)){fprintf(stderr,"ASSERT:%s:%d\n",label,__LINE__);return 1;}}while(0)
 
 typedef enum {

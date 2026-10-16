@@ -1006,7 +1006,10 @@ static bool view_coord_in_range(Coord value)
     return value >= -4 * COORD_LIMIT && value <= 4 * COORD_LIMIT;
 }
 
-int main(void)
+#ifndef GEOMETRY_BRIDGE_ENTRYPOINT
+#define GEOMETRY_BRIDGE_ENTRYPOINT main
+#endif
+int GEOMETRY_BRIDGE_ENTRYPOINT(void)
 {
 #ifdef _WIN32
     /* 只有 Windows 需要關掉 CRLF 轉換;POSIX 的 stdio 本來就是位元組流。 */
