@@ -20,6 +20,15 @@ from tests.test_geo261_native_kernel import native
 from tests.test_geo261_engineering_sources import engineering_product_scene
 
 
+PRODUCT_PREVIEW_STDERR = (
+    "I8a preview 1: valid; confirm token to apply\n"
+    " timber 1 center 15 -> 15 length 1000 -> 1000\n"
+    "  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]\n"
+    " guide 1: surface 1 u=500 world [500,0,0] direction [0,1,0] -> surface 1 u=600 world [600,0,0] direction [0,1,0]\n"
+    " visible: {[500,0]-[500,1000]} -> {[600,0]-[600,1000]}\n"
+)
+
+
 class VersionFieldSourceVectors(unittest.TestCase):
     def test_version_key_vector_is_independently_big_endian_and_binary_safe(self):
         source = (ROOT / "tests/geo261_version_field_sources_harness.c").read_text(encoding="utf-8")
@@ -58,7 +67,10 @@ class VersionFieldSources(unittest.TestCase):
         self.assertIn(result.returncode, (0, 1), "Native crash/setup failure is not a version-field verdict: " + result.stderr)
         self.assertEqual(1 if failure else 0, result.returncode, result.stdout + "\n" + result.stderr)
         if failure:
-            self.assertRegex(result.stderr, r"^ASSERT:" + re.escape(failure) + r":\d+\n$")
+            # I8a product preview prints its exact change report before the
+            # witness assertion. Keep every byte and the first failure marker.
+            prefix = PRODUCT_PREVIEW_STDERR if product else ""
+            self.assertRegex(result.stderr, r"\A" + re.escape(prefix) + "ASSERT:" + re.escape(failure) + r":\d+\n\Z")
         return result
 
     def test_canonical_complete_version_codec_and_metadata_fail_without_partial_writes(self):
