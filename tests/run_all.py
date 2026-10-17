@@ -327,7 +327,7 @@ class Suite:
 
     @property
     def counted(self):
-        return self.kind not in ('node-script', 'mutation-check')
+        return self.kind not in ('node-script', 'python-script', 'mutation-check')
 
 
 class Row:
@@ -382,6 +382,9 @@ def build_suites():
         Suite('core:run_tests', 'run_tests', None, ['core'], 900, label='tests/run_tests.py <core>'),
         Suite('mutation:check', 'mutation-check', [py, str(HERE / 'mutate.py'), '--check'], [], 120,
               label='tests/mutate.py --check (saved current-source mutation receipts)'),
+        Suite('oracle:framing-selftest', 'python-script',
+              [py, str(ROOT / 'geometry-core/framing-template/oracle/selftest.py')], [], 300,
+              label='geometry-core/framing-template/oracle/selftest.py (mutants + golden + geometry sweep)'),
     ]
     for stem in sorted(PY_NEEDS):
         f = HERE / (stem + '.py')
@@ -452,7 +455,17 @@ def write_node_shim():
 # ------------------------------------------------------------------ result parsing
 
 def sac_hits(text):
-    return [face for face in SAC_FACES if face in text]
+    """Keep environment hints without treating oracle rule names as environment errors.
+
+    >>> sac_hits('[沒抓到!] C3_EDGE_UNSUPPORTED')
+    []
+    >>> sac_hits('UNSUPPORTED / BASE_COMPILER')
+    ['BASE_COMPILER', 'UNSUPPORTED']
+    >>> sac_hits('OSError: WinError 4551')
+    ['WinError 4551']
+    """
+    return [face for face in SAC_FACES if face in text and
+            (face != 'UNSUPPORTED' or re.search(r'(?<!\w)UNSUPPORTED(?!\w)', text))]
 
 
 def parse_node_spec(text, row):
@@ -565,6 +578,9 @@ def run_suite(suite, env, infos):
         mutation_env = dict(env)
         mutation_env['MUTATE_RESULTS'] = str(HERE / 'mutants_results.json')
         res = run_process(suite.cmd, mutation_env, suite.timeout)
+    elif suite.kind == 'python-script':
+        # The oracle reads rooms.json relative to its own directory.
+        res = run_process(suite.cmd, env, suite.timeout, cwd=Path(suite.cmd[1]).parent)
     elif suite.kind == 'node-canvas':
         shim = write_node_shim()
         marker = LOG_DIR / 'canvas_shim.marker'
@@ -656,11 +672,15 @@ def run_suite(suite, env, infos):
         if not parse_node_spec(out, row):
             row.crashed, row.total, row.failed = True, 1, 1
             row.note = 'node 沒有輸出摘要（exit %s）' % code
-    elif suite.kind == 'node-script':
+    elif suite.kind in ('node-script', 'python-script'):
         row.passed, row.failed = (1 if code == 0 else 0), (0 if code == 0 else 1)
         row.note = '僅結束碼：腳本式，無 test 級計數，以 exit code 判定'
         if code:
-            row.details.append(out.strip().splitlines()[-1][:200] if out.strip() else '')
+            if suite.kind == 'python-script':
+                # Keep the oracle's named mutant/check failure, even when the final sweep is green.
+                row.details.extend(line[:200] for line in out.strip().splitlines()[-12:])
+            else:
+                row.details.append(out.strip().splitlines()[-1][:200] if out.strip() else '')
     elif suite.kind == 'node-canvas':
         m = re.search(r'(\d+) pass / (\d+) fail', out)
         if m:
@@ -698,7 +718,7 @@ def run_suite(suite, env, infos):
         row.failed = max(row.failed, 1)
         row.note += '；子行程 exit %s 但沒有記到失敗的 test' % code
     if row.failed or row.crashed:
-        hits = sac_hits(out + ' '.join(row.details))
+        hits = sac_hits(out + '\n' + ' '.join(row.details))
         if hits:
             row.note += '；疑似環境阻擋（命中：%s）' % '、'.join(hits)
     if row.failed or row.crashed or row.skipped or row.env_problem:
