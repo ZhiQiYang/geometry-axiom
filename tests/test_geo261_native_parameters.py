@@ -34,6 +34,28 @@ class NativeParameters(unittest.TestCase):
     def test_cloned_candidates_own_every_definition_and_cache(self):self.check('clone')
     def test_missing_and_cyclic_sources_keep_full_identity_trace(self):self.check('references')
     def test_atomic_input_staging_owns_no_host_loading_state(self):self.check('staging')
+    def test_rebuilt_key_predicate_is_scoped_and_null_stays_strict(self):self.check('rebuilt')
+
+    # I38 same-candidate rebuild: each control changes exactly one K guard and
+    # must fail its own named harness assertion; the original passes before/after.
+    REBUILT_CONTROLS=(
+        ('answer-ignored','!(rebuilt&&rebuilt(state,card->id,v->id))','!rebuilt','rebuilt-false-rejects'),
+        ('never-permits','!(rebuilt&&rebuilt(state,card->id,v->id))','true','rebuilt-true-accepts'),
+        ('key-swapped','!(rebuilt&&rebuilt(state,card->id,v->id))','!(rebuilt&&rebuilt(state,v->id,card->id))','rebuilt-key-identity'),
+        ('null-permits','!(rebuilt&&rebuilt(state,card->id,v->id))','!(!rebuilt||rebuilt(state,card->id,v->id))','rebuilt-null-strict'),
+        ('check-put-commits','{GeoParameterCard validated;size_t slot;return geo_parameters_validate_put(s,card,fields,rebuilt,state,&validated,&slot,error);}',
+         '{return geo_parameters_put_rebuilt((GeoParameterStore *)s,card,fields,rebuilt,state,error);}','rebuilt-check-put-is-pure'),
+    )
+
+    def test_rebuilt_key_controls_fail_named_assertions(self):
+        build=native();self.check('rebuilt')
+        for name,before,after,label in self.REBUILT_CONTROLS:
+            with self.subTest(control=name):
+                client,_=build.mutant('parameters',before,after,self.client)
+                run=self.case('rebuilt',client)
+                self.assertEqual(1,run.returncode,run.stderr)
+                self.assertIn('ASSERT:'+label+' ',run.stderr)
+        self.check('rebuilt')
 
     def product_count(self,exe):
         with _bridge.BridgeSession(exe) as session:

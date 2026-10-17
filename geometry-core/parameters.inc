@@ -230,6 +230,38 @@ static bool parameters_rebuild(World *w,char *error,size_t cap)
     else{ok=geo_parameters_rebuild(&w->geo.parameters,&issue);if(!ok)parameter_kernel_error(w,&issue);}
     if(!ok)snprintf(error,cap,"%s",g_parameter_error);return ok;
 }
+/* H candidate-order types; the K store and the legacy type-name shim stay free of them. */
+#define PARAM_DECLARATION_MAX 512
+#define PARAM_FIELD_RETIREMENT_MAX (PARAM_FIELD_MAX * PARAM_FIELDS_PER_CARD)
+#define PARAM_DELETED_VALUE_MAX (PARAM_FIELD_RETIREMENT_MAX + PARAM_FIELD_MAX)
+typedef struct {
+    uint32_t parameter_id, field_id;
+    unsigned generation;
+    int type;
+    GeoQuantity value;
+} DeletedParameterValue;
+
+/* Candidate ordering, never incarnation marks or serialized identities. */
+typedef struct { uint32_t parameter_id, field_id; unsigned at; } ParameterFieldRetirement;
+typedef struct { int kind; uint32_t id; int slot; unsigned at; } ParameterDeclaration;
+enum { PARAM_OWNER_CARD, PARAM_OWNER_ENG_GRID, PARAM_OWNER_ENG_TIMBER,
+       PARAM_OWNER_ASSEMBLY, PARAM_OWNER_MEMBER, PARAM_OWNER_RUN,
+       PARAM_OWNER_GUIDE, PARAM_OWNER_DATUM, PARAM_OWNER_GRID_SYSTEM, PARAM_OWNER_GRID,
+       PARAM_OWNER_PANEL_FILL };
+/* P-062/P-065/P-121: H-owned scratch for exactly one tracked candidate
+ * evaluation (the bridge batch transaction or one interactive archive record).
+ * It is allocated beside the candidate, never inside World, a K store, a seal,
+ * history or an exchange format. Last-valid values before a card or its
+ * upstream disappears may be captured, but only explicitly unbound deleted
+ * sources can consume them. `world` is the candidate snapshot it belongs to. */
+typedef struct ParameterCandidateLedger {
+    const void *world;
+    struct ParameterCandidateLedger *outer; /* enclosing tracked candidate, if any */
+    DeletedParameterValue deleted_values[PARAM_DELETED_VALUE_MAX]; size_t deleted_value_count;
+    ParameterFieldRetirement field_retirements[PARAM_FIELD_RETIREMENT_MAX]; size_t field_retirement_count;
+    ParameterDeclaration declarations[PARAM_DECLARATION_MAX]; size_t declaration_count;
+    unsigned candidate_order;
+} ParameterCandidateLedger;
 /* P-062/P-065/P-121 candidate scratch. The ledger is H state beside exactly
  * one tracked candidate (see ParameterCandidateLedger); nothing here is ever
  * written into World, the K parameter store, a candidate seal or history.
@@ -238,18 +270,22 @@ static bool parameters_rebuild(World *w,char *error,size_t cap)
 static ParameterCandidateLedger *g_parameter_ledger;
 static ParameterCandidateLedger *parameter_ledger(const World *w)
 {return g_parameter_ledger&&g_parameter_ledger->world==(const void *)w?g_parameter_ledger:NULL;}
-typedef struct {ParameterCandidateLedger *ledger,*previous;} ParameterCandidateScope;
+typedef struct {ParameterCandidateLedger *ledger;} ParameterCandidateScope;
 static bool parameters_begin_candidate(World *w,ParameterCandidateScope *scope)
 {
-    scope->previous=g_parameter_ledger;scope->ledger=calloc(1,sizeof *scope->ledger);
+    scope->ledger=calloc(1,sizeof *scope->ledger);
     if(!scope->ledger)return parameter_fail("UNSUPPORTED/CAPACITY: candidate parameter ledger memory");
-    scope->ledger->world=w;g_parameter_ledger=scope->ledger;return true;
+    scope->ledger->world=w;scope->ledger->outer=g_parameter_ledger;g_parameter_ledger=scope->ledger;return true;
 }
 /* I39/P-062: the scratch ends with its candidate operations; no deleted value,
  * retirement or declaration reaches comparison, staging, or history. */
 static void parameters_end_candidate(ParameterCandidateScope *scope)
 {
-    if(g_parameter_ledger==scope->ledger)g_parameter_ledger=scope->previous;
+    /* Unlink from wherever it sits, so an out-of-order end can never leave an
+     * inner scope (or the global) pointing at freed memory. */
+    if(!scope->ledger)return;
+    for(ParameterCandidateLedger **at=&g_parameter_ledger;*at;at=&(*at)->outer)
+        if(*at==scope->ledger){*at=scope->ledger->outer;break;}
     free(scope->ledger);scope->ledger=NULL;
 }
 /* I38/R33: an intermediate unbind needs its current source closure, not unrelated fields.

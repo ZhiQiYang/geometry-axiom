@@ -224,6 +224,9 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         added.update({mid: "geometry-web/engineering_bridge.inc" for mid in ("M66", "M67")})
         self.assertEqual(17, len(added))
         self.assertEqual({**expected, **added}, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
+        # Exactly the ten preview-only guards run on the actual bridge (P-135/P-141).
+        self.assertEqual({"M%02d" % n for n in range(61, 71)},
+                         {m["id"] for m in mutate.MUTANTS if m.get("binary") == "bridge"})
         self.assertEqual({"M35", "M51", "M55"}, {m["id"] for m in mutate.MUTANTS if m.get("retired")})
         self.assertEqual({"M09", "M23", "M36", "M56"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})
         src = mutate.Sources(mutate.ROOT)
@@ -239,7 +242,6 @@ class LiveMutationAnchorMigration(unittest.TestCase):
                     if m.get("binary") == "bridge":
                         # Executed in place by tests/mutation_bridge.py on the actual bridge;
                         # the core pass never expands them from current_geometry.c.
-                        self.assertNotIn(m["id"], {c["id"] for c in mutate.MUTANTS if c.get("binary") != "bridge"})
                         continue
                     marker = "/* exact-mutation-target:" + m["id"] + " */"
                     marked = dict(m, new=marker + m["new"] + marker)
