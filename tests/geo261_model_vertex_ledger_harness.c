@@ -83,7 +83,7 @@ static int ledger_malformed_case(void)
         ledger_fault=fault;ModelSources state={0};CHECK("ledger-malformed-return-rejects-root",!model_sources_build(&state,world));
         for(size_t i=0;i<state.count;++i){ModelSourceItem *item=state.items[i];if(strcmp(item->slot,"placement.region"))continue;
             GeoSourceValue value,saved;memset(&value,0x5a,sizeof value);memcpy(&saved,&value,sizeof saved);
-            CHECK("ledger-malformed-output-is-atomic",!model_source_evaluate(&state,state.reference.sources,(GeoSourceRef){MODEL_SOURCE_PROVIDER,item->key,strlen(item->key)},&value)&&!memcmp(&value,&saved,sizeof value)&&!item->owned_vertex_keys&&(!item->vertex_keys||!item->vertex_keys[0]));
+            CHECK("ledger-malformed-output-is-atomic",!model_source_evaluate(&state,state.reference.sources,&(GeoSourceRef){MODEL_SOURCE_PROVIDER,item->key,strlen(item->key)},&value)&&!memcmp(&value,&saved,sizeof value)&&!item->owned_vertex_keys&&(!item->vertex_keys||!item->vertex_keys[0]));
         }
         CHECK("ledger-malformed-world-unchanged",!memcmp(before,world,sizeof *world));model_sources_free(&state);free(before);free(world);
     }return 0;
