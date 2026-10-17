@@ -1,0 +1,1123 @@
+{
+  "schema": "geo261-delivery-preparation-snapshot/1",
+  "snapshotUtc": "2026-10-17T00:56:17Z",
+  "status": "preparation-only-not-formally-delivered",
+  "scope": {
+    "written": [
+      "D:/geometry-axiom-work/geo261-research/final-delivery-plan.md",
+      "D:/geometry-axiom-work/geo261-research/delivery-state-20261017.json"
+    ],
+    "repoModified": false,
+    "gitMutated": false,
+    "existingReceiptsModified": false,
+    "testsExecuted": false,
+    "nativeExecuted": false,
+    "compilerExecuted": false,
+    "wslExecuted": false,
+    "browserExecuted": false,
+    "githubProgressOrDeliveryPublished": false,
+    "commandsOrDriversModified": false,
+    "dependenciesInstalled": false
+  },
+  "originalPlanRawSha256": "932e4f950a14d67b863fd3820b4ce2326d0eff20c2e619c03df1fe4fcb8c49e4",
+  "source": {
+    "integration": "43305271770760a690e360ce18ce11cc07f35ea2",
+    "pythonDefault": "8f36f1a0dd7e1244c92aca926c0a80079451e7f0",
+    "native": "4aec7f428b9307ed9596aba2ed893175b8db76a5",
+    "evidence": "7b278d598ad9d5066fa0d756440af88d92cca55a",
+    "main": "27f5c09bdd35b0ef9db2c6c636c8a63e47625de0",
+    "defaultIntegrationMergeBase": "9de9cd4f67417b7918842ce05ef11044f8a08b68",
+    "defaultMergedIntoIntegration": false,
+    "integrationMergedIntoDefault": false,
+    "nativeAncestorOfEvidence": false,
+    "finalCandidate": null,
+    "evidenceAncestorOfNative": false,
+    "historical599AncestorOfEvidence": true,
+    "historical599AncestorOfNative": true,
+    "mainAncestorOfIntegration": true,
+    "localIntegrationHead": "43305271770760a690e360ce18ce11cc07f35ea2",
+    "localIntegrationCleanAtRead": true
+  },
+  "prRead": {
+    "basis": "Fresh read-only gh pr list metadata including baseRefName/baseRefOid/state/isDraft; GitHub main ref via gh api; fixed-head local git merge-base --is-ancestor; no fetch or mutation",
+    "oursCount": 24,
+    "ours": [
+      {
+        "baseRefName": "main",
+        "baseRefOid": "1c80751150d0767ba52509537caf8d5542769ccb",
+        "headRefName": "architecture/geo261-proposal-20261016",
+        "headRefOid": "79c3f2b11e404abf8bf2ac461cb4d6d668d7cedb",
+        "isDraft": true,
+        "number": 261,
+        "state": "OPEN",
+        "title": "GEO-261 P0: geometry/template boundary and exact axiom proposal",
+        "updatedAt": "2026-10-16T04:42:39Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/261",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "main",
+        "baseRefOid": "a898ad6e12707104568679591fe1b21804bfc3df",
+        "headRefName": "architecture/geo261-adoption-20261016",
+        "headRefOid": "ddc6ee8383d2f822b17e47a82563aae5e73e9d69",
+        "isDraft": true,
+        "number": 266,
+        "state": "OPEN",
+        "title": "GEO-261: 採納核准分層條文與舊版本相容",
+        "updatedAt": "2026-10-16T16:40:14Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/266",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-adoption-20261016",
+        "baseRefOid": "c8ce964be623084af957dc2ff662abfdaf670c87",
+        "headRefName": "architecture/geo261-frontend-20261016",
+        "headRefOid": "a219ccd13f55a79515fe967b464730b905cfdcff",
+        "isDraft": true,
+        "number": 267,
+        "state": "OPEN",
+        "title": "GEO-261 F1: compose fixed woodworking frontend recipes and policies",
+        "updatedAt": "2026-10-16T08:41:13Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/267",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-adoption-20261016",
+        "baseRefOid": "c8ce964be623084af957dc2ff662abfdaf670c87",
+        "headRefName": "architecture/geo261-native-primitives-20261016",
+        "headRefOid": "74112ea90d77ea267d7f1a9499751889ce688a36",
+        "isDraft": true,
+        "number": 268,
+        "state": "OPEN",
+        "title": "GEO-261 N1: extract reusable native geometry and grid primitives",
+        "updatedAt": "2026-10-16T10:41:46Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/268",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-adoption-20261016",
+        "baseRefOid": "c8ce964be623084af957dc2ff662abfdaf670c87",
+        "headRefName": "architecture/geo261-python-geometry-20261016",
+        "headRefOid": "3a9dc84b118123e237d1ddc20ee70689d5f21352",
+        "isDraft": true,
+        "number": 269,
+        "state": "OPEN",
+        "title": "GEO-261 PY1: share neutral typed geometry and exact mesh evaluation",
+        "updatedAt": "2026-10-16T12:35:35Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/269",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-native-primitives-20261016",
+        "baseRefOid": "74112ea90d77ea267d7f1a9499751889ce688a36",
+        "headRefName": "architecture/geo261-region-fix-20261016",
+        "headRefOid": "a88d3c57917d22aa28e3357b2c22e08c586a9f71",
+        "isDraft": true,
+        "number": 270,
+        "state": "OPEN",
+        "title": "GEO-261: 修正共用區域演算法的交叉孔與一毫米孔包含判定",
+        "updatedAt": "2026-10-16T12:35:36Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/270",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-frontend-20261016",
+        "baseRefOid": "a219ccd13f55a79515fe967b464730b905cfdcff",
+        "headRefName": "architecture/geo261-frontend-policies-20261016",
+        "headRefOid": "9d1ca613d34dc3036fb7ef61e31bcf5ab9c7aecb",
+        "isDraft": true,
+        "number": 271,
+        "state": "OPEN",
+        "title": "GEO-261: 將組構實例建立與換版規則移入木工模板",
+        "updatedAt": "2026-10-16T14:42:55Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/271",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-native-primitives-20261016",
+        "baseRefOid": "74112ea90d77ea267d7f1a9499751889ce688a36",
+        "headRefName": "architecture/geo261-native-parameters-20261016",
+        "headRefOid": "4aabd21cf82d495f5ab4902bedc9330ca5ed4e3b",
+        "isDraft": true,
+        "number": 272,
+        "state": "OPEN",
+        "title": "GEO-261: 將原生參數儲存與求值移入中立核心",
+        "updatedAt": "2026-10-16T16:40:15Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/272",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-native-parameters-20261016",
+        "baseRefOid": "4aabd21cf82d495f5ab4902bedc9330ca5ed4e3b",
+        "headRefName": "architecture/geo261-native-annotations-20261016",
+        "headRefOid": "b370f753f22d0d119835c59d23b0a78344f8ee55",
+        "isDraft": true,
+        "number": 273,
+        "state": "OPEN",
+        "title": "GEO-261: 原生繪圖輸出結構化構件面身份",
+        "updatedAt": "2026-10-16T18:43:28Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/273",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-frontend-policies-20261016",
+        "baseRefOid": "9d1ca613d34dc3036fb7ef61e31bcf5ab9c7aecb",
+        "headRefName": "architecture/geo261-frontend-annotations-20261016",
+        "headRefOid": "107d4515c88fa8782c6f2f9ae77ea7b084a1259b",
+        "isDraft": true,
+        "number": 274,
+        "state": "OPEN",
+        "title": "GEO-261: 繪圖身份改用原生結構資料",
+        "updatedAt": "2026-10-16T18:43:27Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/274",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-template-base-20261016",
+        "baseRefOid": "c9a346c75c12be29b02e9582d419ffa72b3a80db",
+        "headRefName": "architecture/geo261-rectangular-template-20261016",
+        "headRefOid": "c65995221cf016cb02533a6cb0952f19c22bfeb9",
+        "isDraft": true,
+        "number": 275,
+        "state": "OPEN",
+        "title": "GEO-261: 以共用核心實作無木工依賴的矩形分格模板",
+        "updatedAt": "2026-10-16T20:43:25Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/275",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "main",
+        "baseRefOid": "a898ad6e12707104568679591fe1b21804bfc3df",
+        "headRefName": "architecture/geo261-grid-rename-20261016",
+        "headRefOid": "73aca666e779527bd096e7f09a9bc12cdc38d051",
+        "isDraft": true,
+        "number": 276,
+        "state": "OPEN",
+        "title": "GEO-261: 精簡網格更名保留 stagger 與參數來源",
+        "updatedAt": "2026-10-16T20:43:27Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/276",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-native-annotations-20261016",
+        "baseRefOid": "b370f753f22d0d119835c59d23b0a78344f8ee55",
+        "headRefName": "architecture/geo261-native-sources-20261016",
+        "headRefOid": "c28ea9639b79881f30995cd79ce843346373c31e",
+        "isDraft": true,
+        "number": 277,
+        "state": "OPEN",
+        "title": "GEO-261 N2: extract named dimensions, linear values and datums into kernel",
+        "updatedAt": "2026-10-16T22:34:43Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/277",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-python-geometry-20261016",
+        "baseRefOid": "3a9dc84b118123e237d1ddc20ee70689d5f21352",
+        "headRefName": "architecture/geo261-python-runtime-20261016",
+        "headRefOid": "a5945c4c98dd6de58de51d19d8a37e251641e9c0",
+        "isDraft": true,
+        "number": 278,
+        "state": "OPEN",
+        "title": "GEO-261 PY2: route modeling through typed kernel and shared candidate cell",
+        "updatedAt": "2026-10-16T22:34:44Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/278",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-native-sources-20261016",
+        "baseRefOid": "c28ea9639b79881f30995cd79ce843346373c31e",
+        "headRefName": "architecture/geo261-native-source-graph-20261016",
+        "headRefOid": "4aec7f428b9307ed9596aba2ed893175b8db76a5",
+        "isDraft": true,
+        "number": 279,
+        "state": "OPEN",
+        "title": "GEO-261: 原生分層與候選來源圖",
+        "updatedAt": "2026-10-17T00:40:15Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/279",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-python-runtime-20261016",
+        "baseRefOid": "a5945c4c98dd6de58de51d19d8a37e251641e9c0",
+        "headRefName": "architecture/geo261-python-native-host-20261016",
+        "headRefOid": "e7c6c38759634b543ee7be5bdf43372356512fba",
+        "isDraft": true,
+        "number": 280,
+        "state": "OPEN",
+        "title": "GEO-261 PY3: pin native host execution and preserve capability diagnostics",
+        "updatedAt": "2026-10-17T00:40:16Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/280",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-python-native-host-20261016",
+        "baseRefOid": "e7c6c38759634b543ee7be5bdf43372356512fba",
+        "headRefName": "architecture/geo261-python-typed-sources-20261016",
+        "headRefOid": "35408155818f4a2745d998b016344a6d3e6ebd71",
+        "isDraft": true,
+        "number": 281,
+        "state": "OPEN",
+        "title": "GEO-261 PY4: evaluate boxes through typed source references",
+        "updatedAt": "2026-10-16T02:27:41Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/281",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-adoption-20261016",
+        "baseRefOid": "c8ce964be623084af957dc2ff662abfdaf670c87",
+        "headRefName": "architecture/geo261-dependency-20261016",
+        "headRefOid": "7aeccc235958849a9927561a6ec57b48e347c527",
+        "isDraft": true,
+        "number": 282,
+        "state": "OPEN",
+        "title": "GEO-261: enforce K/W/H dependency direction with mutation evidence",
+        "updatedAt": "2026-10-16T03:09:37Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/282",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-python-typed-sources-20261016",
+        "baseRefOid": "35408155818f4a2745d998b016344a6d3e6ebd71",
+        "headRefName": "architecture/geo261-python-candidate-transport-20261016",
+        "headRefOid": "4b759d13adaf3d9259b5fb89b37bfced741d6c1d",
+        "isDraft": true,
+        "number": 283,
+        "state": "OPEN",
+        "title": "GEO-261: decode typed sources from one validated native candidate",
+        "updatedAt": "2026-10-16T03:14:32Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/283",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-python-candidate-transport-20261016",
+        "baseRefOid": "4b759d13adaf3d9259b5fb89b37bfced741d6c1d",
+        "headRefName": "architecture/geo261-python-source-runtime-20261016",
+        "headRefOid": "29eda28406dcd26277a2e246d8de7bfcae80209c",
+        "isDraft": true,
+        "number": 284,
+        "state": "OPEN",
+        "title": "GEO-261: compile woodworking models through core source references",
+        "updatedAt": "2026-10-16T03:14:35Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/284",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-python-source-runtime-20261016",
+        "baseRefOid": "29eda28406dcd26277a2e246d8de7bfcae80209c",
+        "headRefName": "architecture/geo261-python-rectangular-20261016",
+        "headRefOid": "5cc3be9327ed8f3191491578370203bd12e6b319",
+        "isDraft": true,
+        "number": 285,
+        "state": "OPEN",
+        "title": "GEO-261: compose rectangular results and preserve typed source definitions",
+        "updatedAt": "2026-10-16T05:05:43Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/285",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-native-source-graph-20261016",
+        "baseRefOid": "599f3414d333967dbd6c538a3ea50d1ac5b1baa6",
+        "headRefName": "architecture/geo261-native-receipts-20261016",
+        "headRefOid": "7b278d598ad9d5066fa0d756440af88d92cca55a",
+        "isDraft": true,
+        "number": 286,
+        "state": "OPEN",
+        "title": "evidence(geo261): preserve targeted receipts and candidate diagnostics",
+        "updatedAt": "2026-10-16T23:34:48Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/286",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "main",
+        "baseRefOid": "27f5c09bdd35b0ef9db2c6c636c8a63e47625de0",
+        "headRefName": "architecture/geo261-integration-20261016",
+        "headRefOid": "43305271770760a690e360ce18ce11cc07f35ea2",
+        "isDraft": true,
+        "number": 288,
+        "state": "OPEN",
+        "title": "GEO-261: verify the integrated product dependency closure",
+        "updatedAt": "2026-10-17T00:36:37Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/288",
+        "ancestorOfOrEqualToIntegration": true,
+        "ancestryCommandExit": 0
+      },
+      {
+        "baseRefName": "architecture/geo261-integration-20261016",
+        "baseRefOid": "9de9cd4f67417b7918842ce05ef11044f8a08b68",
+        "headRefName": "architecture/geo261-python-default-20261017",
+        "headRefOid": "8f36f1a0dd7e1244c92aca926c0a80079451e7f0",
+        "isDraft": true,
+        "number": 289,
+        "state": "OPEN",
+        "title": "GEO-261: prepare typed-source Python default with fail-closed transport",
+        "updatedAt": "2026-10-16T23:39:43Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/289",
+        "ancestorOfOrEqualToIntegration": false,
+        "ancestryCommandExit": 1
+      }
+    ],
+    "otherOwnerReadOnly": [
+      {
+        "baseRefName": "main",
+        "baseRefOid": "a898ad6e12707104568679591fe1b21804bfc3df",
+        "headRefName": "codex/train-20261016-19",
+        "headRefOid": "945ae87ccd6f49dbfc22d439b3f9c28fed4ac40c",
+        "isDraft": false,
+        "number": 287,
+        "state": "MERGED",
+        "title": "train/20261016-19: #265 精簡改名保留相位差與引用",
+        "updatedAt": "2026-10-16T22:05:40Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/287",
+        "ancestorExit": 0
+      },
+      {
+        "baseRefName": "main",
+        "baseRefOid": "27f5c09bdd35b0ef9db2c6c636c8a63e47625de0",
+        "headRefName": "codex/p67-wait-complete-state-20261017",
+        "headRefOid": "9d0aa6161fecfd713ab237287725b3ffe216c80d",
+        "isDraft": true,
+        "number": 290,
+        "state": "OPEN",
+        "title": "test: P67 完整狀態等待與 P-158 啟動記錄",
+        "updatedAt": "2026-10-17T00:16:41Z",
+        "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/290",
+        "ancestorExit": 1
+      }
+    ],
+    "baseOidMeaning": "baseRefOid retained exactly as reported by PR API; not substituted for the separately queried latest base branch or treated as absorbed-source proof",
+    "upstreamHeadChanges": [
+      {
+        "number": 279,
+        "previousHead": "599f3414d333967dbd6c538a3ea50d1ac5b1baa6",
+        "currentHead": "4aec7f428b9307ed9596aba2ed893175b8db76a5"
+      },
+      {
+        "number": 288,
+        "previousHead": "d4b22beb4bbf5b7938ad0a5349220e95b5d9b08b",
+        "currentHead": "43305271770760a690e360ce18ce11cc07f35ea2"
+      }
+    ],
+    "baseNameChanges": [],
+    "stateChanges": [],
+    "draftChanges": [],
+    "mainHeadChanged": false,
+    "fixedRelationships": [
+      {
+        "name": "default-to-integration",
+        "from": "8f36f1a0dd7e1244c92aca926c0a80079451e7f0",
+        "to": "43305271770760a690e360ce18ce11cc07f35ea2",
+        "exit": 1
+      },
+      {
+        "name": "integration-to-default",
+        "from": "43305271770760a690e360ce18ce11cc07f35ea2",
+        "to": "8f36f1a0dd7e1244c92aca926c0a80079451e7f0",
+        "exit": 1
+      },
+      {
+        "name": "native-to-evidence",
+        "from": "4aec7f428b9307ed9596aba2ed893175b8db76a5",
+        "to": "7b278d598ad9d5066fa0d756440af88d92cca55a",
+        "exit": 1
+      },
+      {
+        "name": "evidence-to-native",
+        "from": "7b278d598ad9d5066fa0d756440af88d92cca55a",
+        "to": "4aec7f428b9307ed9596aba2ed893175b8db76a5",
+        "exit": 1
+      },
+      {
+        "name": "599-to-evidence",
+        "from": "599f3414d333967dbd6c538a3ea50d1ac5b1baa6",
+        "to": "7b278d598ad9d5066fa0d756440af88d92cca55a",
+        "exit": 0
+      },
+      {
+        "name": "599-to-native",
+        "from": "599f3414d333967dbd6c538a3ea50d1ac5b1baa6",
+        "to": "4aec7f428b9307ed9596aba2ed893175b8db76a5",
+        "exit": 0
+      },
+      {
+        "name": "main-to-integration",
+        "from": "27f5c09bdd35b0ef9db2c6c636c8a63e47625de0",
+        "to": "43305271770760a690e360ce18ce11cc07f35ea2",
+        "exit": 0
+      },
+      {
+        "name": "290-to-integration",
+        "from": "9d0aa6161fecfd713ab237287725b3ffe216c80d",
+        "to": "43305271770760a690e360ce18ce11cc07f35ea2",
+        "exit": 1
+      }
+    ]
+  },
+  "currentRuntime": {
+    "coverageComplete": false,
+    "coverageEvidence": "D:/geometry-axiom-work/geo261-integration/geometry-app/native/model_sources.inc:385",
+    "defaultLoader": "load_base",
+    "defaultLoaderEvidence": "D:/geometry-axiom-work/geo261-integration/geometry-core/modeling/engine.py:14",
+    "defaultEnabled": false,
+    "source": "43305271770760a690e360ce18ce11cc07f35ea2"
+  },
+  "expectedRegistries": {
+    "integration": {
+      "source": "43305271770760a690e360ce18ce11cc07f35ea2",
+      "suites": 205,
+      "countedMixedUnitChecks": 4434,
+      "exitOnlySuites": 6
+    },
+    "defaultBranchAndAnticipatedFinal": {
+      "source": "8f36f1a0dd7e1244c92aca926c0a80079451e7f0",
+      "suites": 206,
+      "countedMixedUnitChecks": 4449,
+      "exitOnlySuites": 6
+    },
+    "basis": "Read JSON at each fixed commit; counted checks mix tests, C checkpoints, scenarios and assertions; not 4449 methods; final registry must be re-read after integration",
+    "executed": false
+  },
+  "native599": {
+    "status": "stopped-red-corrected-external-closeout-recorded-not-in-immutable-pack",
+    "source": "599f3414d333967dbd6c538a3ea50d1ac5b1baa6",
+    "tree": "5c09f35b1e84a74accd06c4fd56d7d9cada566cc",
+    "plannedMethods": 276,
+    "executedMethods": 37,
+    "passed": 36,
+    "failed": 1,
+    "errors": 0,
+    "unrun": 239,
+    "exit": 1,
+    "testExit": 1,
+    "stoppedReason": "first-failed-group-completed",
+    "groups": [
+      {
+        "name": "version-field-sources",
+        "executed": 19,
+        "passed": 19,
+        "failed": 0
+      },
+      {
+        "name": "host-authority",
+        "executed": 18,
+        "passed": 17,
+        "failed": 1
+      }
+    ],
+    "failedMethod": "tests.test_geo261_host_authority.HostAuthority.test_panel_support_projects_actual_member_boxes_without_authoring_changes",
+    "assertion": "ASSERT:host-pf-footprint-baseline",
+    "baselineExpectedExit": 0,
+    "baselineActualExit": 1,
+    "classification": "baseline failure, not a mutation kill or expected guard rejection",
+    "rawResult": "D:/geometry-axiom-work/geo261-evidence/p1/focused-599f3414-successor276-v1/result/test-result.json",
+    "includedInFourthImmutablePack": false,
+    "diagnosticStatus": "Existing diagnostic observed wanted=0; 062e2f351988e7a444d80e5639aa90d7ea1722a3 adds normal live-context setup in test harness only, merged into 4aec7f42 and integration. No corrected product PASS; original 599 RED remains.",
+    "startedUtc": "2026-10-16T23:58:30.946991Z",
+    "finishedUtc": "2026-10-17T00:01:27.379794Z",
+    "compilerCommands": 105,
+    "buildArtifacts": 279,
+    "byExecutionKind": {
+      "portable": {
+        "passed": 3,
+        "unrun": 38
+      },
+      "native": {
+        "passed": 33,
+        "failed": 1,
+        "unrun": 201
+      }
+    },
+    "correctedCloseout": {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/closeout-599f3414-corrected.json",
+      "bytes": 6788,
+      "rawSha256": "5ac9702a0d9d0dbabdb75cdb3909debeed0bc78cec9964499bc1cb2aafa12e43",
+      "originalPreserved": {
+        "path": "D:/geometry-axiom-work/geo261-evidence/p1/closeout-599f3414.json",
+        "bytes": 6201,
+        "rawSha256": "e0751c23985d73cd5686367cd56c18a1ba969851934030dc40a2cfa7b571087b"
+      },
+      "changedField": "limits",
+      "correction": "Only corrects all 276 executed to 276 planned / 37 executed; original counts, source, gate provenance and results unchanged"
+    },
+    "buildGate": {
+      "status": "REUSED-fa5",
+      "executionSource": "fa5deb703152e2120e0a3b039b482f4d6f4f4754",
+      "new599GateExecutions": 0
+    }
+  },
+  "defaultEight": {
+    "source": "8f36f1a0dd7e1244c92aca926c0a80079451e7f0",
+    "path": "tests/test_geo261_default_native.py",
+    "methods": 8,
+    "status": "UNRUN",
+    "strengthening": "Observe actual public native loader and K evaluator; same candidate snapshot identity and all Program.sources keys/types/contexts/dependencies/statuses; legacy_snapshot unchanged; no positive output replacement; forbid legacy fallback",
+    "requires": "same-source fresh native binaries, genuine complete coverage, zero skips"
+  },
+  "historicalDefault174": {
+    "source": "f3c71065a62f2f961a26367c04216c01377383c3",
+    "suites": 12,
+    "passed": 174,
+    "scope": "synthetic envelopes and mocked process boundary",
+    "provesRealNativeDefault": false
+  },
+  "architecture": {
+    "receiptSource": "47d3bb4bcccddeeb034dd5899a7aa15c9cab0768",
+    "refreshCommit": "277bfdd3b477491c97f3d56b357ed7d782e3c71c",
+    "historicalExecutableFiles": 576,
+    "historicalOwned": 332,
+    "historicalExactExclusions": 244,
+    "historicalEdges": 796,
+    "historicalDiagnostics": 0,
+    "historicalProductTestsPassed": 18,
+    "genericHistoricalPassed": 204,
+    "genericHistoricalSkipped": 1,
+    "currentFinalRefreshPending": true,
+    "newPythonPaths": [
+      "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/prepare_publication.py",
+      "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/finalize_publication.py",
+      "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/extract_evidence.py",
+      "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/verify_publication.py",
+      "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/readable/watchdog-envelope-v1/recovered-selftest-source-868c0864cbf91da304ca37e7ebee140cfe68542fccc3d6f764f0d27a7f8dd9ac.py"
+    ],
+    "noRuntimeProof": true,
+    "finalDriver": {
+      "path": "D:/geometry-axiom-work/geo261-research/refresh_product_architecture_final.py",
+      "bytes": 45758,
+      "rawSha256": "28d19479d6615f03cc9542571b98eb3b6d2dd62ccc808747ac10e7073ebb071c",
+      "status": "prepared-unexecuted",
+      "checks": "Reported AST/syntax, pure helper positive/negative cases and independent text review; not executed by this refresh",
+      "requiredEnvironment": [
+        "GEOMETRY_ARCH_AUDIT_HEAD full final commit",
+        "GEOMETRY_ARCH_AUDIT_WORK new external directory"
+      ],
+      "stageOrder": [
+        "before",
+        "refresh",
+        "product_tests",
+        "report",
+        "seal"
+      ],
+      "stagesExecuted": 0,
+      "scannerExecuted": false,
+      "productTestsExecuted": 0,
+      "requiredProductTests": 18,
+      "newProbes": 0,
+      "genericEvidence": "Historical reuse only: 204 pass + 1 skip"
+    }
+  },
+  "immutableP1": {
+    "packCount": 4,
+    "packs": [
+      {
+        "directory": "native-p1-20261016",
+        "receipts": 24,
+        "logicalOriginals": 868,
+        "uniqueBlobs": 483
+      },
+      {
+        "directory": "native-p1-followup-20261016",
+        "receipts": 4,
+        "logicalOriginals": 459,
+        "uniqueBlobs": 183
+      },
+      {
+        "directory": "native-p1-authority-20261017",
+        "receipts": 22,
+        "logicalOriginals": 536,
+        "uniqueBlobs": 435
+      },
+      {
+        "directory": "native-p1-closeouts-20261017",
+        "receipts": 12,
+        "logicalOriginals": 370,
+        "uniqueBlobs": 295,
+        "originalBytes": 99518011,
+        "uniqueBytes": 79097380
+      }
+    ],
+    "fourthManifest": "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/CONTENT-MANIFEST.json",
+    "fourthIndependentVerification": "Original owner confirmed via root coordinator: post-seal executions exist in tool transcripts, with no --report file; this task did not rerun",
+    "fourthEmbeddedVerification": {
+      "path": "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/VERIFICATION.json",
+      "packageFilesVerified": 0,
+      "packageSealChecked": false,
+      "meaning": "pre-seal readback"
+    },
+    "fourthExternalPostSealReceiptLocation": "D:/geometry-axiom-work/geo261-research/native-p1-closeouts-sealed-readback-20261017.json",
+    "fourthExternalPostSealReceiptNote": "Root separately reran retained-evidence consistency verification at a new time and saved this new report. It does not backfill either historical 23:33 transcript or replace the embedded pre-seal report. Historical failures and provenance limits remain.",
+    "predecessorPackageFilesUnchanged": 393,
+    "currentProductAcceptance": false,
+    "countsMustNotBeCombinedAcrossSources": true,
+    "fourthPostSealTranscripts": {
+      "basis": "Original owner report forwarded by root coordinator; not independently replayed in this preparation",
+      "main": {
+        "completedUtc": "2026-10-16T23:33:01.082871Z",
+        "exit": 0,
+        "packageFilesVerified": 67,
+        "packageSealChecked": true
+      },
+      "independent": {
+        "completedUtc": "2026-10-16T23:33:01.007806Z",
+        "exit": 0,
+        "childChecksPassed": 11,
+        "childChecksTotal": 11,
+        "logicalOriginals": 370,
+        "uniqueBlobs": 295,
+        "predecessorFilesUnchanged": 393
+      },
+      "separateMachineReadableFileCreated": false
+    },
+    "fourthNewSealedReadback": {
+      "path": "D:/geometry-axiom-work/geo261-research/native-p1-closeouts-sealed-readback-20261017.json",
+      "checkedUtc": "2026-10-17T00:06:56.400461Z",
+      "rawSha256": "7340471280223d4854790f19a76bd29622408eb0a484b804177d6288fdb1ee02",
+      "exitReportedByRoot": 0,
+      "ok": true,
+      "originalFilesByteCompared": 370,
+      "uniqueBlobsVerified": 295,
+      "sourceManifestFileHashesChecked": 2673,
+      "predecessorFilesVerified": 393,
+      "packageFilesVerified": 67,
+      "packageSealChecked": true,
+      "productTestsExecuted": false,
+      "currentProductAcceptanceClaimed": false,
+      "completeProvenanceClaimed": false,
+      "basis": "Original report read and raw hash computed in this preparation; verifier run separately by root"
+    }
+  },
+  "fourthPackOutcomes": [
+    {
+      "source": "15187e71fd9d5f645a63752ea744020df8abbfcf",
+      "passed": 0,
+      "failed": 4,
+      "unrun": 57
+    },
+    {
+      "source": "18edda3f2f4c08b5d7b192077637d16ce04940e6",
+      "passed": 61,
+      "failed": 0,
+      "unrun": 0
+    },
+    {
+      "source": "de62cd680d2cbc71df0becc111bc071c490eeb9b",
+      "passed": 37,
+      "failed": 4,
+      "unrun": 189,
+      "failureEvents": 6
+    },
+    {
+      "source": "f22dcccc5681418f99e5a55e60ef558e71dd0b31",
+      "passed": 52,
+      "failed": 2,
+      "unrun": 166
+    },
+    {
+      "source": "fa5deb703152e2120e0a3b039b482f4d6f4f4754",
+      "passed": 17,
+      "failed": 2,
+      "unrun": 257
+    }
+  ],
+  "preservedGaps": [
+    "fa5 stderr 431/407 bytes reconstructed from retained strings, not a new execution",
+    "fa5 successful baseline stdout/stderr and negative stdout not retained",
+    "de62/f22 diagnostic wrapper exit 0 means capture only; product cases exit 1",
+    "watchdog first round 9/1 failure and second 9/0; no per-method logs; restored source matches end-of-run disk hash only",
+    "fa5 build-gate launcher lacked original execution hash anchor",
+    "599 external corrected closeout is recorded; it remains outside the fourth immutable package"
+  ],
+  "toolPreparation": {
+    "version": "v2",
+    "resolverChecksPassed": 18,
+    "comparatorChecksPassed": 23,
+    "syntaxChecksPassed": 3,
+    "realPackageCodeImported": false,
+    "runtimeExecuted": false,
+    "firstPreparationRecordsUnchanged": true,
+    "record": "D:/geometry-axiom-work/geo261-evidence/p1/fixture-reopen/browser-originals/tool-preparation-checks-v2.json"
+  },
+  "fixtureGates": {
+    "baseline": "a898ad6e12707104568679591fe1b21804bfc3df",
+    "nativeUniqueInputs": 354,
+    "nativeOwnerRows": 2189,
+    "formatComparisons": 375,
+    "archiveUniqueInputs": 260,
+    "archiveOwnerRows": 270,
+    "packageUniqueInputs": 115,
+    "packageOwnerRows": 614,
+    "browserOriginalProjects": 10,
+    "browserVersions": 2,
+    "scoredOriginalOpens": 20,
+    "savedCopyColdReopens": 20,
+    "negativeControls": 2,
+    "unscoredSentinelOpens": 20,
+    "otherGcanvasNotCoveredByThisBrowserGate": 139,
+    "status": "prepared-unexecuted",
+    "separateGates": true
+  },
+  "remainingSequence": [
+    "Preserve 599 RED/corrected closeout; finish fresh same-source five-stage gate and all required coverage validation after 4aec harness setup correction",
+    "Only after complete coverage validation, enable coverage; validate real default eight and same-source compatibility, then merge #289 normally",
+    "On the final source after default merge, regenerate whole mutation ledger and run original check; execute final architecture driver and 18 product tests",
+    "Bind final source/tree, binaries, judges, tools and fixtures; perform exact aggregate, PF3/SP controls, fixture comparisons, original-project browser flows, Claude formal seven-job train and the bounded 25 owner/browser/diagnostic entries",
+    "Complete Claude final review without blockers; re-read final 24 PR heads/order and publish eight-item delivery only then"
+  ],
+  "observedEvidenceFiles": [
+    {
+      "path": "D:/geometry-axiom-work/geo261-integration/tests/run_all.expected.json",
+      "bytes": 23576,
+      "rawSha256": "4b3eee605d7c8d55c9c7f2e4e7af96f3832a10326f6a377d271fcb9591af03b2"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "bytes": 120425,
+      "rawSha256": "a4166fd433cb9477e87756f635b5491d5dfe457035974b10b03d6b33ddc676e7"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/NATIVE-P1-INDEX.md",
+      "bytes": 3765,
+      "rawSha256": "069ac2b028f337093726c4d09c676aba0fd07549418713c1fdde30b4a9017391"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/CONTENT-MANIFEST.json",
+      "bytes": 233220,
+      "rawSha256": "71a12f1140f43e56994b19184d59d49af81ed855a7378839dc8c7f348a0d1941"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/VERIFICATION.json",
+      "bytes": 1302,
+      "rawSha256": "9baec3032b09223ad40b03ec569c76e1683aca7753be4b1c7345cae49d5a51e5"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-integration/geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/PACKAGE-SHA256.json",
+      "bytes": 11416,
+      "rawSha256": "d500b347e5e66fce69e3ad016c188e9d5cf38dcd91cea6db8ec590ed9e51e0e8"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/focused-599f3414-successor276-v1/result/test-result.json",
+      "bytes": 125154,
+      "rawSha256": "bc38d329f65ba275004b38efd74c72db8ad1349582bfa6dc12bc3563123f46aa"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/focused-599f3414-successor276-v1/result/summary.json",
+      "bytes": 242581,
+      "rawSha256": "79cfc23118c92c6414e8448e09be9a9b85561e4f8670bd884b4e63119843d493"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/focused-599f3414-successor276-v1/result/unittest.log",
+      "bytes": 133753,
+      "rawSha256": "56c6eccdf145c0f6df55c32448b2c4e1247d2f742198027f54f0ea732e71667c"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/fixture-reopen/browser-originals/PREPARATION-TOOLING-V2.md",
+      "bytes": 4082,
+      "rawSha256": "b8da67991787b84cdcfca8c9eef2c7b2b07a9677b1b9c50257fc969c87315ccc"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/fixture-reopen/browser-originals/tool-preparation-checks-v2.json",
+      "bytes": 3549,
+      "rawSha256": "0ee18378145e2a105b9f069f2652377d26a99ca37388ff9f1c2d45292b5228c2"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-research/native-p1-closeouts-sealed-readback-20261017.json",
+      "bytes": 1302,
+      "rawSha256": "7340471280223d4854790f19a76bd29622408eb0a484b804177d6288fdb1ee02"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/closeout-599f3414.json",
+      "bytes": 6201,
+      "rawSha256": "e0751c23985d73cd5686367cd56c18a1ba969851934030dc40a2cfa7b571087b"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/closeout-599f3414-corrected.json",
+      "bytes": 6788,
+      "rawSha256": "5ac9702a0d9d0dbabdb75cdb3909debeed0bc78cec9964499bc1cb2aafa12e43"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/diagnostic-599-host-v1/result/cases.json",
+      "bytes": 2075,
+      "rawSha256": "1c0da3040173d3e8d4c4364d1ac9498b8434843d8c080fd9dd5a77976ca85fbb"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/successor-4aec7f42-preparation.json",
+      "bytes": 3255,
+      "rawSha256": "b4afa257d03fd7aa92c11cb003a5d019aec339584dc9b244d99a0290d5a46935"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/plan-4aec7f42-276.json",
+      "bytes": 100983,
+      "rawSha256": "ac6367c8269273843ef017eb1c7a7e86124275cfd53eb77bc88743a895536b98"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/python-playwright-prep-v1/result/summary.json",
+      "bytes": 7691,
+      "rawSha256": "f6faf14df7d57f9661b3b68a0111b37e9d3336564b3998849add9dab023b9d93"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/python-playwright-prep-v2/result/summary.json",
+      "bytes": 15227,
+      "rawSha256": "da1d6f6eb795cb5a9c290e23cf01b5985243980aa0d3d3f3cf977d26b3b9ff3a"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/python-playwright-map-check-v1/result/summary.json",
+      "bytes": 10834,
+      "rawSha256": "336839342ca9b03f59fcb7ec7f8efcbea37a732364b76d965adba6453f55471b"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/python-playwright-map-check-v2/result/summary.json",
+      "bytes": 12340,
+      "rawSha256": "8bef59faa0e05781d104e601d32d6024dd8df951fcbdc138a5132d6f06b5cdbb"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/python-playwright-map-check-v2/result/import.stdout",
+      "bytes": 1441,
+      "rawSha256": "b32b30df049b2310244bdd6603edb701bb2c8a98c0b1139cd9d6d4cbaca67728"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-research/final-owner-gates-commands.md",
+      "bytes": 21188,
+      "rawSha256": "7d2317ed36dd35009b1d47dc18ccd0400863cec4b9c795c6e3ce59740a3dc5c5"
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-research/refresh_product_architecture_final.py",
+      "bytes": 45758,
+      "rawSha256": "28d19479d6615f03cc9542571b98eb3b6d2dd62ccc808747ac10e7073ebb071c"
+    }
+  ],
+  "previousSnapshot": {
+    "snapshotUtc": "2026-10-17T00:07:24Z",
+    "planRawSha256": "e8aeb261f95c4cbd1e057350fc688564d2201ef3e95ce86cdf71000035bbfcde",
+    "stateRawSha256": "b8aae6b2f82a5183a089c212265489d3f361c5ff482993dba39fd69c54818b11",
+    "source": {
+      "integration": "d4b22beb4bbf5b7938ad0a5349220e95b5d9b08b",
+      "pythonDefault": "8f36f1a0dd7e1244c92aca926c0a80079451e7f0",
+      "native": "599f3414d333967dbd6c538a3ea50d1ac5b1baa6",
+      "evidence": "7b278d598ad9d5066fa0d756440af88d92cca55a",
+      "main": "27f5c09bdd35b0ef9db2c6c636c8a63e47625de0",
+      "defaultIntegrationMergeBase": "9de9cd4f67417b7918842ce05ef11044f8a08b68",
+      "defaultMergedIntoIntegration": false,
+      "integrationMergedIntoDefault": false,
+      "nativeAncestorOfEvidence": true,
+      "finalCandidate": null
+    }
+  },
+  "native4aec": {
+    "source": "4aec7f428b9307ed9596aba2ed893175b8db76a5",
+    "tree": "b50762ed6187041bd5a8256d9f2da9e55081245b",
+    "status": "fresh-five-queued-focused276-not-started",
+    "observedUtc": "2026-10-17T00:53:37Z",
+    "compilerExecutions": 0,
+    "originalProductTestMethodsExecuted": 0,
+    "plannedModules": 22,
+    "plannedMethods": 276,
+    "plannedPortableMethods": 41,
+    "plannedNativeMethods": 235,
+    "freshFiveRequired": true,
+    "freshFiveSummaryExists": false,
+    "focused276SummaryExists": false,
+    "sharedLock": {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/build-gate-4aec7f42-v1/shared-lock.log",
+      "state": "waiting",
+      "holderPid": 433,
+      "holderLabel": "train18p157-formal-r2",
+      "rawSha256": null,
+      "hashNote": "Actively written queue log; no stable hash asserted"
+    },
+    "fix": {
+      "commit": "062e2f351988e7a444d80e5639aa90d7ea1722a3",
+      "paths": [
+        "tests/geo261_host_authority_harness.c"
+      ],
+      "purpose": "Initialize normal ctx.wanted / live reference rebuild context before footprint oracle",
+      "productChangedFrom599": false,
+      "originalOracleAndMethodCountsRetained": true,
+      "doesNotTurn599RedGreen": true
+    },
+    "preparation": {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/successor-4aec7f42-preparation.json",
+      "bytes": 3255,
+      "rawSha256": "b4afa257d03fd7aa92c11cb003a5d019aec339584dc9b244d99a0290d5a46935"
+    },
+    "plan": {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/plan-4aec7f42-276.json",
+      "bytes": 100983,
+      "rawSha256": "ac6367c8269273843ef017eb1c7a7e86124275cfd53eb77bc88743a895536b98"
+    },
+    "diagnostic": {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/diagnostic-599-host-v1/result/cases.json",
+      "bytes": 2075,
+      "rawSha256": "1c0da3040173d3e8d4c4364d1ac9498b8434843d8c080fd9dd5a77976ca85fbb"
+    }
+  },
+  "browserLauncherPreparation": {
+    "source": "43305271770760a690e360ce18ce11cc07f35ea2",
+    "status": "syntax-and-independent-readback-only",
+    "files": [
+      "tests/room_multi_candidate_browser.js",
+      "tests/test_rule_case_app_browser.js",
+      "tests/test_rule_case_app_races.js",
+      "geometry-web/feedback_resize_observer_test.js"
+    ],
+    "changed": "Three gates honor GEOMETRY_CHROME; ResizeObserver launcher honors whitespace-separated GEOMETRY_CHROME_FLAGS",
+    "preserved": [
+      "existing defaults",
+      "assertions",
+      "counts",
+      "timeouts",
+      "isolation/runtime guards"
+    ],
+    "nodeSyntaxChecksReportedPassed": 4,
+    "diffCheckReportedPassed": true,
+    "independentReadbackReportedClear": true,
+    "verificationBasis": "Root coordinator report plus static commit/source readback; no browser run by this refresh",
+    "browserExecuted": false,
+    "systemOrBrowserSafetySettingsChanged": false
+  },
+  "pythonPlaywrightPreparation": {
+    "status": "PREPARED",
+    "pythonPlaywright": "1.62.0",
+    "nodePlaywright": "1.62.1",
+    "versionsIdentical": false,
+    "packages": {
+      "playwright": "1.62.0",
+      "greenlet": "3.5.6",
+      "pyee": "13.0.1",
+      "typing_extensions": "4.16.0"
+    },
+    "venv": "/var/tmp/geo261-python-playwright-1.62.0-v2/venv",
+    "wheelsOfficialShaVerifiedBeforeOfflineInstall": true,
+    "pipCheckPassed": true,
+    "summary": {
+      "path": "D:/geometry-axiom-work/geo261-evidence/p1/python-playwright-prep-v2/result/summary.json",
+      "bytes": 15227,
+      "rawSha256": "da1d6f6eb795cb5a9c290e23cf01b5985243980aa0d3d3f3cf977d26b3b9ff3a"
+    },
+    "startedUtc": "2026-10-17T00:43:55.388597+00:00",
+    "finishedUtc": "2026-10-17T00:44:13.031081+00:00",
+    "priorExact1621": {
+      "status": "FAILED-unavailable-on-official-PyPI",
+      "preserved": true,
+      "summary": {
+        "path": "D:/geometry-axiom-work/geo261-evidence/p1/python-playwright-prep-v1/result/summary.json",
+        "bytes": 7691,
+        "rawSha256": "f6faf14df7d57f9661b3b68a0111b37e9d3336564b3998849add9dab023b9d93"
+      }
+    },
+    "systemOrRepoInstallation": false,
+    "browserDownloaded": false,
+    "browserStarted": false,
+    "driverStarted": false,
+    "productTestsExecuted": false,
+    "systemPythonImportMapping": {
+      "status": "PASS-import-only",
+      "exit": 0,
+      "timeoutSeconds": 30,
+      "timedOut": false,
+      "startedUtc": "2026-10-17T00:46:34.857552+00:00",
+      "finishedUtc": "2026-10-17T00:46:36.199384+00:00",
+      "executable": "/usr/bin/python3",
+      "pythonVersion": "3.12.3",
+      "environmentOverrides": {
+        "PYTHONPATH": "/var/tmp/geo261-python-playwright-1.62.0-v2/venv/lib/python3.12/site-packages",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "modulePaths": {
+        "playwright.sync_api": "/var/tmp/geo261-python-playwright-1.62.0-v2/venv/lib/python3.12/site-packages/playwright/sync_api/__init__.py",
+        "greenlet": "/var/tmp/geo261-python-playwright-1.62.0-v2/venv/lib/python3.12/site-packages/greenlet/__init__.py",
+        "greenlet._greenlet": "/var/tmp/geo261-python-playwright-1.62.0-v2/venv/lib/python3.12/site-packages/greenlet/_greenlet.cpython-312-x86_64-linux-gnu.so",
+        "pyee": "/var/tmp/geo261-python-playwright-1.62.0-v2/venv/lib/python3.12/site-packages/pyee/__init__.py",
+        "typing_extensions": "/var/tmp/geo261-python-playwright-1.62.0-v2/venv/lib/python3.12/site-packages/typing_extensions.py"
+      },
+      "moduleCount": 5,
+      "packageVersionCount": 4,
+      "summary": {
+        "path": "D:/geometry-axiom-work/geo261-evidence/p1/python-playwright-map-check-v2/result/summary.json",
+        "bytes": 12340,
+        "rawSha256": "8bef59faa0e05781d104e601d32d6024dd8df951fcbdc138a5132d6f06b5cdbb"
+      },
+      "stdout": {
+        "path": "D:/geometry-axiom-work/geo261-evidence/p1/python-playwright-map-check-v2/result/import.stdout",
+        "bytes": 1441,
+        "rawSha256": "b32b30df049b2310244bdd6603edb701bb2c8a98c0b1139cd9d6d4cbaca67728"
+      },
+      "driverStarted": false,
+      "browserStarted": false,
+      "productTestsExecuted": false,
+      "futurePrivatePythonAliasObserved": false,
+      "previousMapCheck": {
+        "status": "FAILED-probe-name-shadowed-stdlib-inspect",
+        "preserved": true,
+        "notDependencyFailureProof": true,
+        "summary": {
+          "path": "D:/geometry-axiom-work/geo261-evidence/p1/python-playwright-map-check-v1/result/summary.json",
+          "bytes": 10834,
+          "rawSha256": "336839342ca9b03f59fcb7ec7f8efcbea37a732364b76d965adba6453f55471b"
+        }
+      }
+    }
+  },
+  "ownerGateCommands": {
+    "path": "D:/geometry-axiom-work/geo261-research/final-owner-gates-commands.md",
+    "bytes": 21188,
+    "rawSha256": "7d2317ed36dd35009b1d47dc18ccd0400863cec4b9c795c6e3ce59740a3dc5c5",
+    "status": "prepared-unexecuted",
+    "originalOwnerEntrypoints": 1,
+    "originalBrowserEntrypoints": 22,
+    "nativeDiagnostics": 2,
+    "totalEntrypoints": 25,
+    "independentlyReadBack": true,
+    "executedByThisRefresh": false,
+    "otherNodeExcludedProbesAdded": 0,
+    "limitations": [
+      "release_gate command-only receipt is not full completion proof",
+      "standalone workbench has no /runtime; cannot borrow another service identity",
+      "fresh context is not fresh native service",
+      "explicit injections and download fallback retain scope"
+    ],
+    "artifactModifiedByThisRefresh": false
+  },
+  "claudeFinalReview": {
+    "status": "not-completed-oauth-expired",
+    "basis": "Current root coordinator report; no authentication change or review invocation in this refresh",
+    "reviewCompleted": false,
+    "formalSevenJobTrainOwner": "Claude",
+    "finalCandidateReviewed": null
+  },
+  "preservedPreparedArtifacts": [
+    {
+      "path": "D:/geometry-axiom-work/geo261-research/final-owner-gates-commands.md",
+      "bytes": 21188,
+      "sha256": "7d2317ed36dd35009b1d47dc18ccd0400863cec4b9c795c6e3ce59740a3dc5c5",
+      "modifiedByThisRefresh": false
+    },
+    {
+      "path": "D:/geometry-axiom-work/geo261-research/refresh_product_architecture_final.py",
+      "bytes": 45758,
+      "sha256": "28d19479d6615f03cc9542571b98eb3b6d2dd62ccc808747ac10e7073ebb071c",
+      "modifiedByThisRefresh": false
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+diff --git a/geometry-app/native/model_sources.inc b/geometry-app/native/model_sources.inc
+--- a/geometry-app/native/model_sources.inc
++++ b/geometry-app/native/model_sources.inc
+@@ -1,5 +1,5 @@
+-/* Internal H transport over one validated candidate. The coverage declaration
+- * is deliberately incomplete until every definition edge is in the K graph. */
++/* Internal H transport over one validated candidate. Complete coverage retains
++ * definition and value dependencies; metadata-only source identities stay lazy. */
+ enum { MODEL_SOURCE_PROVIDER=5 };
+ typedef struct ModelSourceItem ModelSourceItem;
+ struct ModelSourceItem {
+@@ -382,7 +382,7 @@
+ {
+     GeoEvalContext *ctx=state->reference.sources;
+     fputs("{\"schema\":\"geometry-neutral-sources/1\",\"candidate\":{\"id\":",stdout);model_string(stdout,candidate);
+-    fputs(",\"baseRevision\":0},\"coverage\":{\"complete\":false,\"rootsComplete\":true,\"missingGroups\":[\"grid-fields-and-bindings\",\"material-source-overrides\",\"profile-definition-edges\",\"derived-region-provenance\",\"ordered-stop-features\"]},\"providers\":[",stdout);
++    fputs(",\"baseRevision\":0},\"coverage\":{\"complete\":true,\"rootsComplete\":true,\"missingGroups\":[]},\"providers\":[",stdout);
+     for(size_t i=0;i<geo_eval_provider_count(ctx);++i){const GeoSourceProvider *p=geo_eval_provider_at(ctx,i);if(i)putchar(',');fputs("{\"namespace\":",stdout);model_string(stdout,p->name_space);fputs(",\"implementationFingerprint\":",stdout);model_string(stdout,p->implementation_fingerprint);putchar('}');}
+     fputs("],\"nodes\":[",stdout);
+     static const char *const types[]={"quantity","axis-position","frame","region-set","box","feature","definition"};
+diff --git a/geometry-app/native/MODEL-SOURCES.md b/geometry-app/native/MODEL-SOURCES.md
+--- a/geometry-app/native/MODEL-SOURCES.md
++++ b/geometry-app/native/MODEL-SOURCES.md
+@@ -22,12 +22,14 @@
+ `neutralSources` has schema `geometry-neutral-sources/1`, the same `candidate`,
+ and these fields:
+ 
+-- `coverage: {complete: false, rootsComplete: true, missingGroups: [...]}`.
++- `coverage: {complete: true, rootsComplete: true, missingGroups: []}`.
+   `rootsComplete` covers every placement frame/region, column/beam/member box,
+-  named spec, and profile run envelope/member frame/region/length. It does not
+-  claim complete dependency semantics. Consumers must reject `complete: false`
+-  for production composition and must never silently fall back to snapshot-only
+-  geometry. Missing groups remain explicit until their real graph consumers move.
++  named spec, parameter field, and profile run envelope/member frame/region/length.
++  `complete` covers the supported source graph, including grid fields and bindings,
++  material sources and overrides, profile definitions, derived-region provenance,
++  and ordered stop features. It does not require unused value nodes to evaluate.
++  Consumers must reject incomplete coverage for production composition and must
++  never silently fall back to snapshot-only geometry.
+ - `providers`: unique `{namespace, implementationFingerprint}` records. The
+   fingerprint is the provider contract revision, not a self-verified binary hash.
+ - `nodes`: `{ref, descriptor, status, value}`. A ref is
+@@ -36,8 +38,9 @@
+ - `edges`: `{consumer: ref, source: ref, kind}`. `kind` is `value-required`,
+   `definition-required`, or `evaluate-before`. The last retains the historical
+   ordering policy and does not imply that a failed earlier candidate is required.
+-- `roots`: `{kind, id, slot, memberId, name, ref}`. `memberId` is null for a profile
+-  envelope and the real member ID for its members. Named specs use `id: 0` and
++- `roots`: `{kind, id, slot, memberId, name, ref}`. `kind` is `placement`, `column`,
++  `beam`, `timber`, `spec`, `parameter`, or `profile-run`. `memberId` is null for a
++  profile envelope and the real member ID for its members. Named specs use `id: 0` and
+   exact `name`; parameter fields use card `id` and field `memberId`. `slot` is
+   `placement.frame`, `placement.region`, `solid.box`, `spec.value`,
+   `parameter.value`, `profile.frame`, `profile.region`, or `profile.length`.
+@@ -47,12 +50,17 @@
+   provenance identities, not separately evaluated graph nodes.
+ 
+ Each descriptor is `{valueType, unit, context}`. Types are `quantity`,
+-`axis-position`, `frame`, `region-set`, `box`, and `feature`; units are `length`
+-or `scalar`. Context is `{placementId, axis, owner}`, using null where absent.
++`axis-position`, `frame`, `region-set`, `box`, `feature`, and `definition`; units
++are `length` or `scalar`. Context is `{placementId, axis, owner}`, using null where absent.
+ `owner` is an opaque ref for the local profile-run coordinate domain. It need not
+ be an evaluated graph node. Different local runs never share a coordinate domain.
+ 
+-Successful node values use these shapes (failed nodes have null values):
++A metadata-only dependency may retain a node with `status: "unevaluated"` and
++`value: null`, such as the world-frame identity of an unplaced profile run. These
++nodes are valid in complete coverage; all exported roots must have `status: "ok"`
++and their typed values. Failed nodes also have null values.
++
++Successful node values use these shapes:
+ 
+ - quantity: `{num, den, unit, quantityType}`; numerator/positive denominator are
+   exact decimal strings, and dimension/count/ratio remain distinct.
+@@ -64,7 +72,10 @@
+   when no authored boundary identity table exists, otherwise parallel loop arrays.
+ - box: `{frame, lo: [0,0,0], hi: [length,a,b]}` in its exact cardinal local frame.
+ - feature: `{keyBase64, segment: [start,end]}`.
++- definition: `{schema, contentBase64}`; `schema` identifies the definition codec,
++  and `contentBase64` preserves its exact canonical bytes, including binary data.
+ 
+ The producer builds and resolves all roots before emitting a successful envelope.
+-The old snapshot and typed roots share the candidate. The current dependency
+-coverage is deliberately incomplete; this transport alone is not N4 completion.
++The old snapshot and typed roots share the candidate. Complete native transport
++coverage does not replace the caller's executable pinning or the end-to-end
++native-to-Python adoption evidence; this declaration alone is not N4 completion.
+diff --git a/tests/test_geo261_model_sources.py b/tests/test_geo261_model_sources.py
+--- a/tests/test_geo261_model_sources.py
++++ b/tests/test_geo261_model_sources.py
+@@ -1,4 +1,4 @@
+-"""Actual same-process model envelope, exact roots and explicit partial coverage."""
++"""Actual same-process model envelope, exact roots and complete source coverage."""
+ import base64
+ import hashlib
+ import json
+@@ -64,8 +64,7 @@
+         for edge in bundle['edges']:
+             self.assertIn(self.ref(edge['consumer']),nodes);self.assertIn(self.ref(edge['source']),nodes)
+         for root in bundle['roots']:self.assertEqual('ok',nodes[self.ref(root['ref'])]['status'])
+-        self.assertFalse(bundle['coverage']['complete']);self.assertTrue(bundle['coverage']['rootsComplete'])
+-        self.assertIn('grid-fields-and-bindings',bundle['coverage']['missingGroups'])
++        self.assertEqual({'complete':True,'rootsComplete':True,'missingGroups':[]},bundle['coverage'])
+ 
+     def test_box_roots_keep_native_face_provenance_and_exact_extent(self):
+         envelope=self.execute(SCENE);nodes=self.nodes(envelope)
+@@ -126,7 +125,8 @@
+                          {edge for edge in edges if edge[0][0]=='core.parameter.field'})
+         for root in bundle['roots']:
+             if root['kind']=='parameter':self.assertIn((self.ref(root['ref']),core(root['memberId'])),edges)
+-        self.assertNotIn('parameter-ast-edges',bundle['coverage']['missingGroups']);self.assertFalse(bundle['coverage']['complete'])
++        self.assertNotIn('parameter-ast-edges',bundle['coverage']['missingGroups'])
++        self.assertEqual({'complete':True,'rootsComplete':True,'missingGroups':[]},bundle['coverage'])
+ 
+     def test_datum_sources_preserve_world_axis_and_named_expression_edges(self):
+         from tests.test_geo261_native_datums import SCENE as DATUM_SCENE
+@@ -141,7 +141,8 @@
+         self.assertIn((expression,named),edges)
+         root=next(root for root in bundle['roots'] if root['kind']=='spec')
+         self.assertIn((self.ref(root['ref']),named),edges)
+-        self.assertNotIn('datum-expression-edges',bundle['coverage']['missingGroups']);self.assertFalse(bundle['coverage']['complete'])
++        self.assertNotIn('datum-expression-edges',bundle['coverage']['missingGroups'])
++        self.assertEqual({'complete':True,'rootsComplete':True,'missingGroups':[]},bundle['coverage'])
+ 
+     def test_profile_envelope_and_members_keep_distinct_local_domains(self):
+         envelope=self.execute(profile_scene());nodes=self.nodes(envelope)

@@ -1,0 +1,4204 @@
+{
+  "preserved_roots": [
+    "/var/tmp/geo261-focused-4aec7f42-successor276-v1/build-artifacts/build-0",
+    "/var/tmp/geo261-focused-4aec7f42-successor276-v1/build-artifacts/build-1"
+  ],
+  "files": {
+    "0/assembly-authority-control-binding-authority": {
+      "sha256": "8a59135126366e356e9b2f5ecaf4be80682f8282eb2a34887da95d8d47f946b1",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-binding-authority.o": {
+      "sha256": "52552ae16c02f75e72b86a14ae62620b9b6cb5c3379787b8a90032024e46252a",
+      "bytes": 92712
+    },
+    "0/assembly-authority-control-binding-result-authority": {
+      "sha256": "54d3c9da0523c272514a14be033fa710757adbfb752bab754b4dee6afbf68616",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-binding-result-authority.o": {
+      "sha256": "9d33468baf22559a3247f17b03e10b1b78cff7beab09476b8f0cf375bc7e7e25",
+      "bytes": 92680
+    },
+    "0/assembly-authority-control-canonical-validation": {
+      "sha256": "ab886a2227115e9bd0e917f350338adee3b58a0ebb6890e0687eaf040b6ad4ac",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-canonical-validation.o": {
+      "sha256": "598097131da3f27d3bb2ead8d4e74709ca511145e28fef3aaa3f5cfca94345df",
+      "bytes": 92568
+    },
+    "0/assembly-authority-control-check-result-authority": {
+      "sha256": "c71b311cfff3b26975755ed55b75e4e4a907299de184e16bed8fcbfb079f8b3d",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-check-result-authority.o": {
+      "sha256": "57a2603965905f1385245ed3e3bfa394032147a790950a958fb07814c35452ae",
+      "bytes": 92680
+    },
+    "0/assembly-authority-control-depth-bound": {
+      "sha256": "9b322dfe5112ea1cf554915a3302f802ab6c42d66827d97583f67e2434ad99b8",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-depth-bound.o": {
+      "sha256": "a34b4c6a39985e50760330fb5966ef239f90c53d4b8eb12d47b6aad843aca3f5",
+      "bytes": 92656
+    },
+    "0/assembly-authority-control-generated-authority": {
+      "sha256": "3b76f311cdb9acc6bc94cac3364f46e30c1226ff131a18c12811c8f0a6ae728a",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-generated-authority.o": {
+      "sha256": "bf762e6a3b76c45dd5aa525d83727a652e1174cb47dfc0c370b2228da7f70bc5",
+      "bytes": 92736
+    },
+    "0/assembly-authority-control-instance-authority": {
+      "sha256": "a3f9096253ba56abdad709bf68321c0622a441a2e0605a7be1128d5a9a60e985",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-instance-authority.o": {
+      "sha256": "f18652ec4397a0b6fff7ba3b6b408e47a837c7167c680f08c5c04059e86f94d2",
+      "bytes": 92824
+    },
+    "0/assembly-authority-control-mapping-authority": {
+      "sha256": "76810ad6ce9a7c1688ffdd6d7ab7fe49fe814f1bce197bc8d902ab85df0d8da6",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-mapping-authority.o": {
+      "sha256": "6c212ff0ca1714e6618a69b5ed737ab5074d2fcedfa8b85e5ffb641ddab56b5d",
+      "bytes": 92824
+    },
+    "0/assembly-authority-control-result-authority": {
+      "sha256": "1e927ee2ec5ebb8ebd41b971bd6da67f0e4f34a5154793f7a0d9bdb80646af91",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-result-authority.o": {
+      "sha256": "b3f8b0be54f90518990306f03fe05cd528d006e781995be89d87b748e71c7ff2",
+      "bytes": 92840
+    },
+    "0/assembly-authority-control-rule-authority": {
+      "sha256": "5f00e5b13d256f6cc88ba605ae7e538da16281dfd71397387b41d30b60a647ba",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-rule-authority.o": {
+      "sha256": "69433ff46a35e64ced92926a520c4ae8cd7669c1cc26e14276975ff825a099ed",
+      "bytes": 92656
+    },
+    "0/assembly-authority-control-schema-validation": {
+      "sha256": "2b4f591e5635845450a5b89d0065eea6793656fe2af954b071de8c39d7b9e02a",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-schema-validation.o": {
+      "sha256": "30ad5618b9d560693c304608cdc7cc255c04e913f336132eb7818b2f781138ab",
+      "bytes": 92656
+    },
+    "0/assembly-authority-control-slot-authority": {
+      "sha256": "bfbedb02f326095fa8689bcc27cce4d27ea3e83dd84e6b7354b48102c7ad6dcb",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-slot-authority.o": {
+      "sha256": "ef5c9d60512d2daac81d4003a1fe63f9d7c4b37649a97313916d41620d0ffed1",
+      "bytes": 93032
+    },
+    "0/assembly-authority-control-width-bound": {
+      "sha256": "9a58faa16596b0399399f27b67cfbb506a3ecf27618b492b41088930aecced45",
+      "bytes": 396392
+    },
+    "0/assembly-authority-control-width-bound.o": {
+      "sha256": "314cb67699c12fcc7bc0d7ae950fdd3808bebde45464936e4364a17e03691407",
+      "bytes": 92656
+    },
+    "0/assembly-definition-authority-client": {
+      "sha256": "e9b1647dc3ecb333accca7a6c7107aff5d4224da2240923a24e984e6e7c0fa84",
+      "bytes": 396392
+    },
+    "0/assembly-definition-authority-client.o": {
+      "sha256": "38b5a1fcffea8aba92d91f8daa454d4a0c80ce8666f2dc629f1f2f50e83d8264",
+      "bytes": 92712
+    },
+    "0/assembly-definition-authority-fixture.json": {
+      "sha256": "63beacb892e8d6f43228280d7a7177858452d100ee47cc34a39bf0f4ce82474a",
+      "bytes": 7175
+    },
+    "0/assembly-definition-authority-policy.o": {
+      "sha256": "001a05f625e42b0e171556fa6262843f04f38b96f6e7922afec604522c5e12fc",
+      "bytes": 62000
+    },
+    "0/build-log.json": {
+      "sha256": "b5b0b88af901a87e32f4844ac6d397befd17a986328cd169f19c7d4bb67e546a",
+      "bytes": 566098
+    },
+    "0/candidate.o": {
+      "sha256": "bd3dab706e7d3cd134adcf09ac974f8fcb20d61b224d66eb76d265dd10f953be",
+      "bytes": 9864
+    },
+    "0/clip.o": {
+      "sha256": "41c5529ad94bf5164a88f7bfd219a4afe49ce372ed67d6a9f2436d588a8fc206",
+      "bytes": 10656
+    },
+    "0/codec-client": {
+      "sha256": "31ae8a677b0333d90b8118348d4dc9ce46732a0fb1d93fdbb2a421ec9004684d",
+      "bytes": 34952
+    },
+    "0/codec-client.c": {
+      "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13",
+      "bytes": 2857
+    },
+    "0/codec-client.o": {
+      "sha256": "88e8f87e9e7870760d0566f4c45c157bab327399ab57574f629dad0e41c11856",
+      "bytes": 7088
+    },
+    "0/codec.o": {
+      "sha256": "556bc1ec7b7e90a99f85e328a1c894b9421b8859d034f600a62adf923fb7ba2c",
+      "bytes": 24800
+    },
+    "0/datums.o": {
+      "sha256": "aadc247d537e14c703dae31e82847c1bbfdd4b0231b53587d6685cf9ed5405d3",
+      "bytes": 6072
+    },
+    "0/document.o": {
+      "sha256": "77d9fe5e44a8ff6d4bb87a7da3351501b2d338d8e254c4ffd40d34389461aa7e",
+      "bytes": 4616
+    },
+    "0/enclosure-sources.o": {
+      "sha256": "c948a097f66b51e33046c1bf8e3eb8da2edcd7ba165c475f0cd04b383cb7c430",
+      "bytes": 15792
+    },
+    "0/enclosure.o": {
+      "sha256": "71bb0da4cf1c39ae8a69a1be0a7ccc145feca9bb1c2d5a40d40f23136393e5dc",
+      "bytes": 8648
+    },
+    "0/engineering-parameter-authority-client": {
+      "sha256": "362a16907bd4f902b8e5df9e77ab46291f87e404aca6367cbf203e1f2e67ef16",
+      "bytes": 300208
+    },
+    "0/engineering-parameter-authority-client.o": {
+      "sha256": "7dc6c0fc7b790ba746dfe3afc8fde47945c0c5544e573ffe031eaaf6eb38ad9c",
+      "bytes": 22504
+    },
+    "0/engineering-parameter-authority-product-client": {
+      "sha256": "ec15524a3d749c7b8ff9a05c346809ff505a1923425a9beb73f1f3938db0fb7a",
+      "bytes": 1325496
+    },
+    "0/engineering-parameter-authority-product-client.o": {
+      "sha256": "6e107552d335db857c493070b6b6d1093207e44ec0c57e8535b21e7b74b03402",
+      "bytes": 891864
+    },
+    "0/engineering-parameter-authority.scene": {
+      "sha256": "a66aea052f271674fb86dca0313ee8f0e5b70c61283ebeacef81c2b109a38b1e",
+      "bytes": 626
+    },
+    "0/engineering-parameter-control-W-hook": {
+      "sha256": "8901a0f58168ea00e46b76bc5d451406f68b06102a57ecf4b86ac8f9f8a2ea37",
+      "bytes": 300232
+    },
+    "0/engineering-parameter-control-W-hook.o": {
+      "sha256": "058d6ec80ae2c97c8eb899cb68860f0f104d491e86e71712785f97736056a9f0",
+      "bytes": 59536
+    },
+    "0/engineering-parameter-control-edge-kind": {
+      "sha256": "25557bef801960e7b813c41f34046e93ccd6b208e880956273fb3c047b3bb2e0",
+      "bytes": 300224
+    },
+    "0/engineering-parameter-control-edge-kind.o": {
+      "sha256": "1b517b77c9a56fbbdb3e7711ea0dd871e68ff9257ceb0d6913d9ce8c5509ab5a",
+      "bytes": 31008
+    },
+    "0/engineering-parameter-control-returned-value": {
+      "sha256": "72c088820a0350fd3b82547e95757fcdbdd462ca55f62f25d8f4891d14595aca",
+      "bytes": 300232
+    },
+    "0/engineering-parameter-control-returned-value.o": {
+      "sha256": "b765017af261d0c78ba7a2b3d5419270ac6bcdef16b4337c8e208aa000ba1b6d",
+      "bytes": 31000
+    },
+    "0/engineering-parameter-product-control-W-hook": {
+      "sha256": "d38282c19964b73279ca4405fc18ca742b96eb4ee5244897afb7765223f54e6f",
+      "bytes": 1325528
+    },
+    "0/engineering-parameter-product-control-edge-kind": {
+      "sha256": "a7a102e3917beca2c0ba2cb285731214390086d28f92be8a7d7422d29f259ba8",
+      "bytes": 1325520
+    },
+    "0/engineering-parameter-product-control-returned-value": {
+      "sha256": "6c105df52dd2c979112c14cf571e3ec589bd38e79e5ecde35e808a38f82114bd",
+      "bytes": 1325528
+    },
+    "0/engineering.json": {
+      "sha256": "5efc097e9c44dcab19d3edb20a70b03944f29d9bf820bce858fac23681ede863",
+      "bytes": 374
+    },
+    "0/exact-client": {
+      "sha256": "787de89afc038e2d56eafd0cc1811a04daaf9504e03892b773263db37bf3f0e6",
+      "bytes": 16440
+    },
+    "0/exact-client.c": {
+      "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc",
+      "bytes": 919
+    },
+    "0/exact-client.o": {
+      "sha256": "ccc88f44ad072ee2fcee10e0813bfccc8f79abc661f07a9c9159fca6e72ffe49",
+      "bytes": 2768
+    },
+    "0/exact.o": {
+      "sha256": "a6014a4fe28167407a8051b268f06b4d76cbc667b41321d9502becabb87b0b4b",
+      "bytes": 3560
+    },
+    "0/finish-authority-control-definition-schema-ignored": {
+      "sha256": "3ea2aab075346fdef16be496243a321dcaac62d1e863cb84cf3c59a4cfd9ac3f",
+      "bytes": 440288
+    },
+    "0/finish-authority-control-definition-schema-ignored.o": {
+      "sha256": "62d2d62a368d82c932914a9c7705fa2479324b78624f9a89ffae2e5d54d9385f",
+      "bytes": 38808
+    },
+    "0/finish-authority-control-definition-status-ignored": {
+      "sha256": "9bc0f6ce6bade8a31d9452e0d30c1b4487572cb40cb6a9f6f79e642aa799336c",
+      "bytes": 440288
+    },
+    "0/finish-authority-control-definition-status-ignored.o": {
+      "sha256": "8bc454b8d193af81bd5b4468b91ab9bbf19334a48e38f7a9c27a121c5a2485c0",
+      "bytes": 38856
+    },
+    "0/finish-authority-control-definition-value-edge": {
+      "sha256": "ee75daebf210a8cd2c57eea7c0a31684d87a0d322524134a3ffeacd31a01598c",
+      "bytes": 440288
+    },
+    "0/finish-authority-control-definition-value-edge.o": {
+      "sha256": "198fbfbcf16a5155ff5037cc3e85b887b63201adc1c68c916d46a12fe8c4a9d6",
+      "bytes": 38864
+    },
+    "0/finish-authority-control-derived-definition-bypass": {
+      "sha256": "e7ea7b2d8b0b20539360f33e05226dcb9c3bbe967430f25edd44ecb020439f8d",
+      "bytes": 440288
+    },
+    "0/finish-authority-control-derived-definition-bypass.o": {
+      "sha256": "f680d463577b413490bb83be76174942198b0bcc65a0d60599cfe512d7f781b7",
+      "bytes": 38904
+    },
+    "0/finish-authority-control-dormant-fill-definition-omitted": {
+      "sha256": "f92ae5d243333af8ffe069211d7dea92006bf8c8a4845aaab1adc405ff464983",
+      "bytes": 440296
+    },
+    "0/finish-authority-control-dormant-fill-definition-omitted.o": {
+      "sha256": "6121a1ad65c3fb51f3f89621029fcae572dddd1360b001ee95e7dcb9746ab799",
+      "bytes": 38760
+    },
+    "0/finish-authority-control-fill-definition-bypass": {
+      "sha256": "dccb5b3427bb25c2b348828cbb9d9a7c66add6368809a036f922f8d4047082e3",
+      "bytes": 440288
+    },
+    "0/finish-authority-control-fill-definition-bypass.o": {
+      "sha256": "1a2d3bff9024d90d91d4ff19eee18150f640bfd34eb68254fe4b7a608935d768",
+      "bytes": 38912
+    },
+    "0/finish-authority-control-fill-origin-bypass": {
+      "sha256": "4d39cd8ceaaa55edb7028bd146cf3f34dc8abe845dca55108102e93d3a8dd3ba",
+      "bytes": 440312
+    },
+    "0/finish-authority-control-fill-origin-bypass.o": {
+      "sha256": "99da8199060995f4790d7ec953460787381ba8b411e894c20f727d2321492c2c",
+      "bytes": 40968
+    },
+    "0/finish-authority-control-fill-stagger-axis-bypass": {
+      "sha256": "f60898950effdc23075bc1c8e771a51f753721d33eac306392c1c4a275e5d993",
+      "bytes": 440320
+    },
+    "0/finish-authority-control-fill-stagger-axis-bypass.o": {
+      "sha256": "c7c42ab9db5fba36f0f00a9b36c4a35eceaabfe7d4579945fad53f65d8d141bb",
+      "bytes": 40984
+    },
+    "0/finish-authority-control-finish-definition-hook-bypass": {
+      "sha256": "6f3b4954cfbfc0975403125291285d313890394621660b57498ed0f3c307030a",
+      "bytes": 440296
+    },
+    "0/finish-authority-control-finish-definition-hook-bypass.o": {
+      "sha256": "17a811adf7d377c796ebc2b279d7456153e6e876de2ec1099d0045996222db5f",
+      "bytes": 38864
+    },
+    "0/finish-authority-control-panel-definition-schema-bypass": {
+      "sha256": "7cb257f656bdb7623a0ec26a40f4eb2d823f730f7d18a53df8e5034e8017f8ea",
+      "bytes": 440296
+    },
+    "0/finish-authority-control-panel-definition-schema-bypass.o": {
+      "sha256": "eb49cd09c1643f4f5b7a02c323c0d1d9cc86260fd2a428ad1b11cf99a8ea72e1",
+      "bytes": 38776
+    },
+    "0/finish-authority-control-panel-kind-policy-bypass": {
+      "sha256": "3cc5afbc05f1f4106d0e969488b7311fb5a198ddaf354e32490ce6a954bf4f3a",
+      "bytes": 440288
+    },
+    "0/finish-authority-control-panel-kind-policy-bypass.o": {
+      "sha256": "ad85259437ec3f7f48d327989143c61528f286e3ade18a71f60d746bf9437ad1",
+      "bytes": 38680
+    },
+    "0/finish-authority-control-returned-gap-bypass": {
+      "sha256": "b60870c823fd72360fb0b60959545306682acf57ae28c52a4659e2e7486c2758",
+      "bytes": 440288
+    },
+    "0/finish-authority-control-returned-gap-bypass.o": {
+      "sha256": "3252b9e3c2afd02582262f6dabc608b953fff6be3c127be3f58b05be22aa117a",
+      "bytes": 38864
+    },
+    "0/finish-authority-control-selected-k-field-edge-bypass": {
+      "sha256": "be7de6b426bff60b9f0c02272f2600ce6f566a4bb2c8913adcf72da7695060fc",
+      "bytes": 440296
+    },
+    "0/finish-authority-control-selected-k-field-edge-bypass.o": {
+      "sha256": "abe7eaea012f46c3784ae901327c489ea1d635177015146c3a9eadf8a2163e46",
+      "bytes": 38776
+    },
+    "0/finish-authority-control-selected-k-field-value-bypass": {
+      "sha256": "f932c4181775d53526645ea6ad85b0cf997ee763e38921db17b8090516729af6",
+      "bytes": 440296
+    },
+    "0/finish-authority-control-selected-k-field-value-bypass.o": {
+      "sha256": "c6ac19cf8784c6000c1a7933f4e52e0f9eb26946407b1f04c3901c8deda2804b",
+      "bytes": 38864
+    },
+    "0/finish-authority-control-shared-version-definition-bypass": {
+      "sha256": "733fd3144d21bf67747e5d6971e087630abfc75449dacfc02249a8a53969fb3b",
+      "bytes": 440296
+    },
+    "0/finish-authority-control-shared-version-definition-bypass.o": {
+      "sha256": "baa362ca5199c380d50f28e7f078dd6c3d336d8b8f5abb0b7432791a8a1df033",
+      "bytes": 38856
+    },
+    "0/finish-authority-control-surface-definition-bypass": {
+      "sha256": "2f17bf9f185a7b509e5d9f01ec16bcbe769ee42c190aa913fac8f59179c3be94",
+      "bytes": 440288
+    },
+    "0/finish-authority-control-surface-definition-bypass.o": {
+      "sha256": "d42d55dcca32b639c6f0a96d7c9898b821a7616abc901f92fe0885fc86fa74ab",
+      "bytes": 38816
+    },
+    "0/finish-authority-control-threshold-policy-bypass": {
+      "sha256": "bede0641ec8d9311a8b1a69e1f1fc617e172eb86f12d9f451e6848b7e1bd8533",
+      "bytes": 440320
+    },
+    "0/finish-authority-control-threshold-policy-bypass.o": {
+      "sha256": "69001a193cd246e568e8fd482556b40378a187eff78dfe413e03bd1d5c9b250e",
+      "bytes": 40848
+    },
+    "0/finish-definition-authority": {
+      "sha256": "32003120ed27cff5db998299351a6da699e2faf02d86d43ca3be8ce7420e4d96",
+      "bytes": 440280
+    },
+    "0/finish-definition-authority-client.o": {
+      "sha256": "51da890b0f5f3a3c556a8389a271d4e25be1461a43bf15371cf96ca085d5ac78",
+      "bytes": 65960
+    },
+    "0/finish-definition-authority-engineering.o": {
+      "sha256": "4c03f1547d6d0701a00e5921e6b344c6136b24b1e8d8c8d73b70570cf57fd5e0",
+      "bytes": 31008
+    },
+    "0/finish-definition-authority-provider.o": {
+      "sha256": "050bbda74a163fed69274f2a1d5ddae0df27b3ee28880f6da9ee87e8236c10bd",
+      "bytes": 38856
+    },
+    "0/geometry.o": {
+      "sha256": "f0c8d342e2b187642701ddf61b0f889b8d5c8f97420620b9e7c480a7312be409",
+      "bytes": 25992
+    },
+    "0/grid-authority-borrowed-rule-control": {
+      "sha256": "be7f1727382a3e1f8fb519cee54c4cea98281401572dcba74a6ec8755696c8e2",
+      "bytes": 423664
+    },
+    "0/grid-authority-borrowed-rule-control.o": {
+      "sha256": "92c8fb974c9cf05205ed1437dd83b42f954817ac8591796dfd33ffc555b6be21",
+      "bytes": 45320
+    },
+    "0/grid-authority-client": {
+      "sha256": "dbdee0c95eec27c26ed1a4d71d8c6a999bcfef413a73ed650b7e7bab1fde0bc9",
+      "bytes": 423640
+    },
+    "0/grid-authority-client.o": {
+      "sha256": "efdb237424484d6dd3bd44684b4512f41e8ab2e8115687e1a076d41864887843",
+      "bytes": 54424
+    },
+    "0/grid-authority-control": {
+      "sha256": "5973e97e7255e3dc4d01c49a9f81abeac68ee50502f351ac5a69614587188ff1",
+      "bytes": 423640
+    },
+    "0/grid-authority-control.o": {
+      "sha256": "1c993307bed382eea40cb2a35367367bf977f79fa83660d32ed33b809ade0607",
+      "bytes": 55552
+    },
+    "0/grid-authority-provider.o": {
+      "sha256": "c48306210277a4fa0fde038a7345f95a2fa25e87b557b95ea61cd2fcf2f24687",
+      "bytes": 45320
+    },
+    "0/grid-definition-codec-client": {
+      "sha256": "5ccae7c32994ca10c7111ffc5c23c66de295c95b3480e062ac0eeba93451971e",
+      "bytes": 55952
+    },
+    "0/grid-definition-codec-client.o": {
+      "sha256": "fede27b2284f55f750f0923242c092936e8b23d759d35d97564ff8be8497f6c2",
+      "bytes": 44760
+    },
+    "0/grid-definition-control-app-lattice": {
+      "sha256": "6764f47cb09ac6824b16e05603b44fc8933f6398c5ea26ef9c3ad33013973382",
+      "bytes": 55968
+    },
+    "0/grid-definition-control-app-lattice.o": {
+      "sha256": "b8f8a8c3854772f14894022af6d8750b242bd30709c147619e1b7a68f834c781",
+      "bytes": 14808
+    },
+    "0/grid-definition-control-bool": {
+      "sha256": "3ee1701a4eb4ffdb9ceb0001862f01293903eebc9162524ccdc9db6c489b4df2",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-bool.o": {
+      "sha256": "a97aa001f19d02fbd98ee7464c9f3d3e7c7ad62bb70db4d14b89bc37959eb7a9",
+      "bytes": 14816
+    },
+    "0/grid-definition-control-bound": {
+      "sha256": "478b00e2490938b9de7e9d1a8ffdd72adb18ac590c7b3b0a3807a02b3e0d9971",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-bound.o": {
+      "sha256": "409cc354a4b58a2254d686fa62d3fbd13ac0ddad5ead2c70ea433f99e8b5cd35",
+      "bytes": 14776
+    },
+    "0/grid-definition-control-cache": {
+      "sha256": "df71a227a68d772962fcd762452bb4bb218fb63e31b720da9d50efb080c39c23",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-cache.o": {
+      "sha256": "21a7086523737ae8ed16ff6e74f9e2fd3184f108739fa8ef792c84687ec9f323",
+      "bytes": 14824
+    },
+    "0/grid-definition-control-int": {
+      "sha256": "7a0d613ae4ab53f5e820273e4b7d0e88f41caa2812720de682033922b7f02bc2",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-int.o": {
+      "sha256": "e2baa48def56b19d206705bc65f8bb71e57b87739f5a87fdfed0c00aa33b4098",
+      "bytes": 14792
+    },
+    "0/grid-definition-control-logical-capacity": {
+      "sha256": "0a27cbcd10e4a335764f5118dfa9ce19a65907bd852cd7def687c2b0db117e16",
+      "bytes": 55968
+    },
+    "0/grid-definition-control-logical-capacity.o": {
+      "sha256": "9a173caf7d4590de5b90a442f16f9d73b1196912e91e6eb1cf40dc3869fac8ff",
+      "bytes": 14824
+    },
+    "0/grid-definition-control-masked": {
+      "sha256": "8b74c2f99768b2b5fc8de74635662ead54dc849330407a5c63e64f0cd4a1ce2f",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-masked.o": {
+      "sha256": "0547ea44515d7836f043dd5a81483b885a23ab48ce35efe1db47cf6284027cd7",
+      "bytes": 14816
+    },
+    "0/grid-definition-control-rule-key": {
+      "sha256": "1d9d33eba87c82a2791b55ee6b1032f7c5e7d54eb295e0c97df7db0ec0bad67b",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-rule-key.o": {
+      "sha256": "118b93175f3cae17d6e87ad530e473a63a0d05635e7d469249b8a4edd235cda9",
+      "bytes": 14824
+    },
+    "0/grid-definition-control-schema": {
+      "sha256": "1b1645032aa04d0ae6f082b2d1582f53d701ad97872bc439048f5c24824e7690",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-schema.o": {
+      "sha256": "d0f55b59100ef0651c369efa3baa688b393193983a05d91d35e0820f6a078bf5",
+      "bytes": 14752
+    },
+    "0/grid-definition-control-system-id": {
+      "sha256": "b6649486c9443632708ddacd239ad6f0bce4678377ef07a8a89311338b7bcaa3",
+      "bytes": 55968
+    },
+    "0/grid-definition-control-system-id.o": {
+      "sha256": "e35619c951d9b5d91f8ef0e18556ddb55d8690153c2b0d6149dece485c9248a0",
+      "bytes": 14824
+    },
+    "0/grid-definition-control-system-write": {
+      "sha256": "389ba2437af1e7b49bef8d420a1b93850755272568c61aac19ae699d205627da",
+      "bytes": 55968
+    },
+    "0/grid-definition-control-system-write.o": {
+      "sha256": "18c4f7944cf2626cd83d5bd61bd13f37eebd29096d26fb7c2a30cfb990eb959e",
+      "bytes": 14824
+    },
+    "0/grid-definition-control-trailing": {
+      "sha256": "b86a2af565bb7fda69a8ca4e7e990c0445cfba3d612aebfae0a4b03c119475bc",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-trailing.o": {
+      "sha256": "f305976abb6eb24a74d7847b077c1ed9dddbc8bc35416c3f9b9b7ef78ac1ba21",
+      "bytes": 14816
+    },
+    "0/grid-definition-control-u32": {
+      "sha256": "9b4f7af30c3f20293e1b1c1a9159aa0d481c8dca16caa18777e14319b2ae08e6",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-u32.o": {
+      "sha256": "f92d72d0d91dec4564d73a5cd7d1bf324173fe2dd75fd9e7ec0723edb95c6300",
+      "bytes": 14816
+    },
+    "0/grid-definition-control-unsigned": {
+      "sha256": "1cd355e41f9f6daf1c9f4c4d86f693897efdd6f517c377c50fea727ff18b8450",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-unsigned.o": {
+      "sha256": "b93ad75cf8e797bd037dbba9fdf8b193353bb3ec8bf3eb253a2841d25405b322",
+      "bytes": 14824
+    },
+    "0/grid-definition-control-utf8": {
+      "sha256": "5ca2d707c6048dbd80b544737151bf33f16604a45f701a00b8f23e76d24a65c7",
+      "bytes": 55960
+    },
+    "0/grid-definition-control-utf8.o": {
+      "sha256": "32272610f07a99ceedbb41602be90f08b173270ecb480a7e8da76ff90c9f394c",
+      "bytes": 14808
+    },
+    "0/grid-store.o": {
+      "sha256": "39f39572d38e98d92c533c75ae26393ea43e4e807e6f2072e79db4cda6940d4b",
+      "bytes": 18520
+    },
+    "0/grid.o": {
+      "sha256": "21484a94af3a36166f0d857a02f61376db0cc41a54bae554b5b9e81877c46304",
+      "bytes": 6736
+    },
+    "0/guides.o": {
+      "sha256": "71ccf0b66fbe1ab7dcba7c4eca51cf019ba19a707f263a60de2cd1c9d5213854",
+      "bytes": 6688
+    },
+    "0/host-authority-client": {
+      "sha256": "5ead3888a015901a4b19ef06e9b364701bc21e45aac250b58fae9d889e40997f",
+      "bytes": 1161928
+    },
+    "0/host-authority-client.o": {
+      "sha256": "60de66744633d9826652eeec65ae08588a60b4afc7cb965870739c9d1f33a5d1",
+      "bytes": 637448
+    },
+    "0/host-authority.scene": {
+      "sha256": "de5ac60a5c259bc7017c3c5badf882f0cc84e253f18945badbf860d57d4c585e",
+      "bytes": 1773
+    },
+    "0/host-candidate.o": {
+      "sha256": "7c0b5649c854abf3d5a6d492faea511f06d2e17de807a09446f38e5290938b24",
+      "bytes": 7080
+    },
+    "0/host-control-assembly-guide": {
+      "sha256": "3f809d1c189905df46d274eaef4e2ea5fac952862af4dfd8facae090d371a9ee",
+      "bytes": 1161960
+    },
+    "0/host-control-assembly-guide-current_geometry.c": {
+      "sha256": "75a0e127d0521f2d41f171a1c558ab49c75eb66e4782e583f588ccca6c7dc60e",
+      "bytes": 386305
+    },
+    "0/host-control-assembly-guide-geo261_host_authority_harness.c": {
+      "sha256": "c3636fb77d5810dc330dbc786f6a5156708fedc87e845b4557c79d0fae563515",
+      "bytes": 19335
+    },
+    "0/host-control-assembly-guide-panel_fill_support.inc": {
+      "sha256": "18a3a5474b764f704310be284dc661fa8e4a3f1a5172282b9e442c2f60ec3ec7",
+      "bytes": 5085
+    },
+    "0/host-control-assembly-guide-reference_sources.inc": {
+      "sha256": "7ac6aaac8671aa3aa7dde21471296adfa2865075a407300d6810ec2743353359",
+      "bytes": 56013
+    },
+    "0/host-control-assembly-guide-references.inc": {
+      "sha256": "ef3b3ad12570dfca11abd85211704df16cd001624cc5a5aa544cbae34d9da077",
+      "bytes": 62623
+    },
+    "0/host-control-assembly-guide.o": {
+      "sha256": "6e7e82956d8e34de2656f87c83b595c37961b34a162014a4d8cce9af26cb03dc",
+      "bytes": 637312
+    },
+    "0/host-control-context-datum": {
+      "sha256": "a403e4192034e13e69c7527b87d7d9d1e45583460ff6569e38de68c479480e41",
+      "bytes": 1161960
+    },
+    "0/host-control-context-datum-current_geometry.c": {
+      "sha256": "dda62253a01bcb9b9093c34448e2792740b30546509ab04ebcd305d461d7b858",
+      "bytes": 386303
+    },
+    "0/host-control-context-datum-geo261_host_authority_harness.c": {
+      "sha256": "5625f8e502c925d43da10fc49bbbe663c833d929f002d1f1cc8f8c01037e9d70",
+      "bytes": 19334
+    },
+    "0/host-control-context-datum-panel_fill_support.inc": {
+      "sha256": "18a3a5474b764f704310be284dc661fa8e4a3f1a5172282b9e442c2f60ec3ec7",
+      "bytes": 5085
+    },
+    "0/host-control-context-datum-reference_sources.inc": {
+      "sha256": "c7be2c86fb3a9894de987da69b8f3526b808f14c4aed9ebfa5f3473848e99994",
+      "bytes": 55996
+    },
+    "0/host-control-context-datum-references.inc": {
+      "sha256": "1ea1cc7ed35c45ccec423312e431e5f2222ec42d0522cf2c987a462d1c7b435d",
+      "bytes": 62622
+    },
+    "0/host-control-context-datum.o": {
+      "sha256": "4af046ef7c6d65960d7d9f4fc2b6de204396531ce8ec47595707a888e218acd5",
+      "bytes": 637440
+    },
+    "0/host-control-context-frame": {
+      "sha256": "cfd5693101d5f0a8a4945b5cad99b519a562748ec6567b3076d85246d1141cad",
+      "bytes": 1161960
+    },
+    "0/host-control-context-frame-current_geometry.c": {
+      "sha256": "1b7ae69a60c8ed13d24f5cfa0f3618c4e0723726122d40cf9c4a7ec6516db145",
+      "bytes": 386303
+    },
+    "0/host-control-context-frame-geo261_host_authority_harness.c": {
+      "sha256": "8a17f87321d564f15c368e25718c6d02f811310420e31b40926b4eca527de692",
+      "bytes": 19334
+    },
+    "0/host-control-context-frame-panel_fill_support.inc": {
+      "sha256": "18a3a5474b764f704310be284dc661fa8e4a3f1a5172282b9e442c2f60ec3ec7",
+      "bytes": 5085
+    },
+    "0/host-control-context-frame-reference_sources.inc": {
+      "sha256": "30b8e203d6be69a8267180f3894295695c77571e415d0c3fda8dcd0f211c0668",
+      "bytes": 55996
+    },
+    "0/host-control-context-frame-references.inc": {
+      "sha256": "04068fc8b96f81f78b0e589a3c1363e377454f7a2534da19a7d7306ecfc884b6",
+      "bytes": 62622
+    },
+    "0/host-control-context-frame.o": {
+      "sha256": "d3cd6ffc021397c6a3c5caf170436036234acd79d0217859aabbb22d5a5cf017",
+      "bytes": 637440
+    },
+    "0/host-control-context-guide": {
+      "sha256": "1e55d6a165a00499d761b719d217405a30e9308082b9ad6b5c6648c80dddf644",
+      "bytes": 1161960
+    },
+    "0/host-control-context-guide-current_geometry.c": {
+      "sha256": "cc67edd598de3be07136f936e1da01fba4d25c86cd84ff625435812a1f595238",
+      "bytes": 386303
+    },
+    "0/host-control-context-guide-geo261_host_authority_harness.c": {
+      "sha256": "6f469c5b7bcdf6955bbcd9a4d420c613d2f1da48af8085ba5d9e89fe71bacada",
+      "bytes": 19334
+    },
+    "0/host-control-context-guide-panel_fill_support.inc": {
+      "sha256": "18a3a5474b764f704310be284dc661fa8e4a3f1a5172282b9e442c2f60ec3ec7",
+      "bytes": 5085
+    },
+    "0/host-control-context-guide-reference_sources.inc": {
+      "sha256": "70e90726716cdd26a3e70d5463e337c74740faf623b1ffe71c70b0bcb008c7b2",
+      "bytes": 56032
+    },
+    "0/host-control-context-guide-references.inc": {
+      "sha256": "87de620a1397e7cec1ade429478febd6316990872a01bd53f488985de1785208",
+      "bytes": 62478
+    },
+    "0/host-control-context-guide.o": {
+      "sha256": "949985aba1fdd1f9a358b43e5da2b66e399c6538c6d2a74f5fa376c93063faf0",
+      "bytes": 637352
+    },
+    "0/host-control-origin": {
+      "sha256": "013dc5e247e8c9cd5d6a4d1f57fe5de0a28d39ba8a8a645fd660afb32b485f77",
+      "bytes": 1161952
+    },
+    "0/host-control-origin-current_geometry.c": {
+      "sha256": "908ffb91d1e438fc78cd5ba10b8b62c573a926cc44e42c32dbb3453ae4b994b8",
+      "bytes": 386289
+    },
+    "0/host-control-origin-geo261_host_authority_harness.c": {
+      "sha256": "c9b8f087740bd2c038971e303e0068423b868e5dd4e1f9051aea326fa9d53d3f",
+      "bytes": 19327
+    },
+    "0/host-control-origin-panel_fill_support.inc": {
+      "sha256": "18a3a5474b764f704310be284dc661fa8e4a3f1a5172282b9e442c2f60ec3ec7",
+      "bytes": 5085
+    },
+    "0/host-control-origin-reference_sources.inc": {
+      "sha256": "2237ec9a17993b5e25ed595e140ed21ecfa4419dec5fece5fb9ad74f08245378",
+      "bytes": 56013
+    },
+    "0/host-control-origin-references.inc": {
+      "sha256": "9db5392e99fa17fb2f68976dd21fa285adb430df835744c6920e09ac251bedb5",
+      "bytes": 62615
+    },
+    "0/host-control-origin.o": {
+      "sha256": "3c2c0271279db026304c71a2bdbb880cfcf208d0e1c44768c89ec9fc9a1f2a53",
+      "bytes": 636480
+    },
+    "0/host-control-pf-threshold": {
+      "sha256": "a78052d53e67d444d01b3809b9518795aafbda2e4f6a49dda6e6e7fc687a79a0",
+      "bytes": 1161952
+    },
+    "0/host-control-pf-threshold-current_geometry.c": {
+      "sha256": "db397770f54dbef00e6981fe76e2e0eeabc25ec7dbe0cecf41a3f39c9708d2e8",
+      "bytes": 386301
+    },
+    "0/host-control-pf-threshold-geo261_host_authority_harness.c": {
+      "sha256": "c60ad6e3bd1190c3183588098a11ec0d983891d470a4b24e5f256826c6c94299",
+      "bytes": 19333
+    },
+    "0/host-control-pf-threshold-panel_fill_support.inc": {
+      "sha256": "76333a4ed1753dc12148f20a6941509db8556600d8689a6ec5cf764c11e233a9",
+      "bytes": 5062
+    },
+    "0/host-control-pf-threshold-reference_sources.inc": {
+      "sha256": "70e90726716cdd26a3e70d5463e337c74740faf623b1ffe71c70b0bcb008c7b2",
+      "bytes": 56032
+    },
+    "0/host-control-pf-threshold-references.inc": {
+      "sha256": "02541c49eca93219a18169b7d056f4f4a0f19675029807e6b988f91260debedc",
+      "bytes": 62621
+    },
+    "0/host-control-pf-threshold.o": {
+      "sha256": "19be57f53291d633af418e854c27ef504bd68e309162e12778763fc248854b12",
+      "bytes": 637408
+    },
+    "0/host-history.o": {
+      "sha256": "3955e9950ed8c76b0fcb3dcdccbb99d7b2188cfa671127da011e341d9f85f0b3",
+      "bytes": 4280
+    },
+    "0/host-target-definition-control": {
+      "sha256": "6003027d440920cf3ae377f89f80fa679806e304fc9413c813ffc6123eb21883",
+      "bytes": 1161960
+    },
+    "0/host-target-definition-control.o": {
+      "sha256": "3375d0ee5c61f998e1fb970f4d529790ed216f68ada99cd1b69db051b62080fe",
+      "bytes": 18192
+    },
+    "0/isolated-host/app_candidate.c": {
+      "sha256": "8194219748cf3fff32bf60f30303c4972f6ffb738e2885d307e11a3e1505be6f",
+      "bytes": 7446
+    },
+    "0/isolated-host/app_candidate.h": {
+      "sha256": "7d91934d2e3ed441b7e28f38dfe83a6c725fd6f035ce58e63242c2f0ea6907e8",
+      "bytes": 2642
+    },
+    "0/isolated-host/history.c": {
+      "sha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595",
+      "bytes": 3945
+    },
+    "0/isolated-host/history.h": {
+      "sha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0",
+      "bytes": 1840
+    },
+    "0/isolated-kernel/candidate.c": {
+      "sha256": "3aa25e6adfa2f48e885576377a742f2160fa696b79b51f346233f195dba60d93",
+      "bytes": 11870
+    },
+    "0/isolated-kernel/candidate.h": {
+      "sha256": "17e273e2c5eed4d6a33f6b79234d4ed924cd7203435556ac11dbeece6c8cae81",
+      "bytes": 3890
+    },
+    "0/isolated-kernel/clip.c": {
+      "sha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea",
+      "bytes": 7551
+    },
+    "0/isolated-kernel/clip.h": {
+      "sha256": "31e2e53370e437073c098296a6f669ef5dd7959f1811c57c77604a34dc71c99c",
+      "bytes": 1597
+    },
+    "0/isolated-kernel/codec.c": {
+      "sha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a",
+      "bytes": 23308
+    },
+    "0/isolated-kernel/codec.h": {
+      "sha256": "81de17c90f814c798a271cad6a0b2f6fbcdc5e6c4e46af14a002be818f9feb14",
+      "bytes": 2393
+    },
+    "0/isolated-kernel/datums.c": {
+      "sha256": "f5d385df8d01b9d4399371ecd0dc02dfbe2ae0c62c988262ef5cd990676e065d",
+      "bytes": 4222
+    },
+    "0/isolated-kernel/datums.h": {
+      "sha256": "9b23a1c746c2a0f46d55e2bb19309167d76c7be34bed7ecc35a11df633d49607",
+      "bytes": 1829
+    },
+    "0/isolated-kernel/document.c": {
+      "sha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1",
+      "bytes": 2636
+    },
+    "0/isolated-kernel/document.h": {
+      "sha256": "603e684ca9c5ab2b8d23205cc3382a9e305c1e57441c0854367a57c441461e56",
+      "bytes": 2016
+    },
+    "0/isolated-kernel/enclosure.c": {
+      "sha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77",
+      "bytes": 7871
+    },
+    "0/isolated-kernel/enclosure.h": {
+      "sha256": "8e6162fee153af7ff6a1d8e13d8b3e01db90c51d9d41b846025876dfb3c5c7f5",
+      "bytes": 3604
+    },
+    "0/isolated-kernel/enclosure_sources.c": {
+      "sha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68",
+      "bytes": 17213
+    },
+    "0/isolated-kernel/enclosure_sources.h": {
+      "sha256": "c512b34721bcf1e428ffb19f665970c788292b542c1b8c8bf9b1257ab3c5f4b4",
+      "bytes": 3799
+    },
+    "0/isolated-kernel/exact.c": {
+      "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf",
+      "bytes": 3243
+    },
+    "0/isolated-kernel/exact.h": {
+      "sha256": "bca06ef8df48636d6a79b50dae0f9337b37d886ca4ff097fc03ce865e5cffb2d",
+      "bytes": 1104
+    },
+    "0/isolated-kernel/geometry.c": {
+      "sha256": "8e9ca0287d1141b7f534d520f15225b0f0a9e32b66d46824114cf7985b98ea9f",
+      "bytes": 29236
+    },
+    "0/isolated-kernel/geometry.h": {
+      "sha256": "72a6268999b3ee636a668e4d5fa6f74203dbb35de52b6b86f24dda48799ad3b1",
+      "bytes": 5583
+    },
+    "0/isolated-kernel/grid.c": {
+      "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f",
+      "bytes": 8062
+    },
+    "0/isolated-kernel/grid.h": {
+      "sha256": "2180b532a060a54572f3e352178326c425ad216e67bb6ee567ae6f62666b4454",
+      "bytes": 2696
+    },
+    "0/isolated-kernel/grid_store.c": {
+      "sha256": "123983e64599715f743815a339a5f7f9d0068edc018aaf26dcae1c4098bd922a",
+      "bytes": 21431
+    },
+    "0/isolated-kernel/grid_store.h": {
+      "sha256": "4f8d279b6d2e6e95d7ce02937e34018ee1ed635388b6bd8e72e5936b848e42b4",
+      "bytes": 7244
+    },
+    "0/isolated-kernel/guides.c": {
+      "sha256": "1548a5f72bf3e9904a64c871d2658409aab300786af598e7ca69a4fb82e4897e",
+      "bytes": 6022
+    },
+    "0/isolated-kernel/guides.h": {
+      "sha256": "14e7f9444057120309666923378240a28ea7f1607a0c780ac5279c60a1099be1",
+      "bytes": 3115
+    },
+    "0/isolated-kernel/internal/datums.h": {
+      "sha256": "244419b5c43ccadf48f8b9b2ac985496cc28453443acd3984dc2ee1e0683a55b",
+      "bytes": 178
+    },
+    "0/isolated-kernel/internal/document.h": {
+      "sha256": "db38e7ee5a0dde09e69f8290c5ba3ac042eeb979c8d742916da449211a88b489",
+      "bytes": 897
+    },
+    "0/isolated-kernel/internal/enclosures.h": {
+      "sha256": "d568b1b7ab0df12e65618a2b5a2ce909cddfbae7f0b88eccbfd1bbd693a0c0aa",
+      "bytes": 273
+    },
+    "0/isolated-kernel/internal/grid_store.h": {
+      "sha256": "499f879f4f9cf6c58cab360dc9273c90095b058880336cf147888072b1602ccd",
+      "bytes": 301
+    },
+    "0/isolated-kernel/internal/guides.h": {
+      "sha256": "aab50ff4e4ce23a258dbc1207bd44e80e8ce2008e9d9c547454041b4cf0fb114",
+      "bytes": 181
+    },
+    "0/isolated-kernel/internal/named_values.h": {
+      "sha256": "e1c0d76fed48cb8c6015735aa143b0c4edc90ccfcd3dd85548c6f130b90bd783",
+      "bytes": 219
+    },
+    "0/isolated-kernel/internal/parameter_store.h": {
+      "sha256": "5d3e31ce6cdee43056ae2ede68e902cb7368fb40108928c9ce9aff63dd4cb88d",
+      "bytes": 453
+    },
+    "0/isolated-kernel/internal/placements.h": {
+      "sha256": "ff2b4ea612c80b4ab76da4024d768493842b879133ef6598dc4b4f63503201da",
+      "bytes": 301
+    },
+    "0/isolated-kernel/internal/regions.h": {
+      "sha256": "6dc80e855f3248208fa4cc945141339631673e9d9d2414b11f649f9d48c5df36",
+      "bytes": 410
+    },
+    "0/isolated-kernel/internal/versions.h": {
+      "sha256": "19d2a7d32dd3c8b4adb0e4dab228f7b0f9aaaeec46bcc15453ca51664bded0ac",
+      "bytes": 704
+    },
+    "0/isolated-kernel/linear.c": {
+      "sha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c",
+      "bytes": 4333
+    },
+    "0/isolated-kernel/linear.h": {
+      "sha256": "7701f7e77f9ae34ee74004606a5c88bbc9158c0bb463ec55fa116d7d2ad245be",
+      "bytes": 1619
+    },
+    "0/isolated-kernel/linear_definition_sources.c": {
+      "sha256": "acc6312b9d438f0ef1e705e1b977e2ce8ad6ca2853248636eb241f40aab62266",
+      "bytes": 11033
+    },
+    "0/isolated-kernel/linear_definition_sources.h": {
+      "sha256": "c533ad62f5ddda634591ca42b5680c7e381fb0352c2f9c932eb900f3eb2f579f",
+      "bytes": 2013
+    },
+    "0/isolated-kernel/named_values.c": {
+      "sha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1",
+      "bytes": 2105
+    },
+    "0/isolated-kernel/named_values.h": {
+      "sha256": "9965267c054be1b5ca758189c91ffb79e52c6ef98e678acef824ec27fd0ca690",
+      "bytes": 891
+    },
+    "0/isolated-kernel/parameter_sources.c": {
+      "sha256": "60908674f3b6a6a820ef60279964a9862ea99e64db4c75478cbb0b63def8edd9",
+      "bytes": 21934
+    },
+    "0/isolated-kernel/parameter_sources.h": {
+      "sha256": "7da1bd225d939fe1e628a971b68102eb5e45ecebae4b5f00bf184e5975d88fac",
+      "bytes": 3907
+    },
+    "0/isolated-kernel/parameters.c": {
+      "sha256": "542275c3a6c7e3bda39619b97e350da3d74e6ab821c8a1c80ef92353628ba5bd",
+      "bytes": 17182
+    },
+    "0/isolated-kernel/parameters.h": {
+      "sha256": "5e2fe24a4dea28bfae25dbb0ef28db7ffbe86932d0b3847b21b254a1b8dee50d",
+      "bytes": 5193
+    },
+    "0/isolated-kernel/placement_sources.c": {
+      "sha256": "7b953719f5e75ed2e70f99c9e0a96588d398bd9220025a7b7a191c4dbaeb8e12",
+      "bytes": 13667
+    },
+    "0/isolated-kernel/placement_sources.h": {
+      "sha256": "ff52eb8121cff380de275aa97d8562e56d58d8e21968369fde2db67c04135a7a",
+      "bytes": 3297
+    },
+    "0/isolated-kernel/placements.c": {
+      "sha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2",
+      "bytes": 10229
+    },
+    "0/isolated-kernel/placements.h": {
+      "sha256": "07977950e771da87b908414c8c591b65af5a6166672b7001724b21ef397921f6",
+      "bytes": 3593
+    },
+    "0/isolated-kernel/region_key_sources.c": {
+      "sha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b",
+      "bytes": 9853
+    },
+    "0/isolated-kernel/region_key_sources.h": {
+      "sha256": "e147a513df0aae2e7ddcedac9d4df17695c6147fcd73305f18a503322c2d9146",
+      "bytes": 2876
+    },
+    "0/isolated-kernel/regions.c": {
+      "sha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59",
+      "bytes": 11576
+    },
+    "0/isolated-kernel/regions.h": {
+      "sha256": "795119199673378f7451411165000800b7a869283dbe87bbccfa0bf372819610",
+      "bytes": 3901
+    },
+    "0/isolated-kernel/source-context-control-axis-only.c": {
+      "sha256": "3882776f9b5375fe52388419df709043889c5493f7e7e2642f0717f011eb23d1",
+      "bytes": 12283
+    },
+    "0/isolated-kernel/source-context-control-axis-range.c": {
+      "sha256": "b8e07cba70b2caf7b0195236ebb9782c17109262343acacc3d6071c9f80912d4",
+      "bytes": 12280
+    },
+    "0/isolated-kernel/source-context-control-provider-failure.c": {
+      "sha256": "33c1a52bd8334121def910285e8efbd13bd23ab49cfad193b9b9befec09b7953",
+      "bytes": 12340
+    },
+    "0/isolated-kernel/source-context-control-publish-context.c": {
+      "sha256": "8b29664a519f6ce6c01c8f6519e224d9e79fc89b7a4e057dbb9ef143e672b58f",
+      "bytes": 12287
+    },
+    "0/isolated-kernel/source-context-control-publish-flag.c": {
+      "sha256": "270b49391b53b8a072f0f1b5d20973d4fe3734e3fc230a23fea4955398e5f43e",
+      "bytes": 12296
+    },
+    "0/isolated-kernel/source-context-control-strict-context.c": {
+      "sha256": "c3907797d2936086f758b650d4833cfa40296de78a27052a3d8a23d30fcfbe06",
+      "bytes": 12283
+    },
+    "0/isolated-kernel/source.c": {
+      "sha256": "b2e65a85776fed150c192c1e374b1d35baa82c4e68f14d529f6d4b30a9ae6ae0",
+      "bytes": 12338
+    },
+    "0/isolated-kernel/source.h": {
+      "sha256": "aa00bd5078495bc3c4165c81a58129a4216c6b40c87da91700f7b0c3bf9820a1",
+      "bytes": 5373
+    },
+    "0/isolated-kernel/types.h": {
+      "sha256": "8e2db361ebbd20b9cb58a57a10ac80897a622b244f421e86a95039428544458f",
+      "bytes": 394
+    },
+    "0/isolated-kernel/version-field-control-actual-returned-definition-controls-field.c": {
+      "sha256": "7d69effc9792b0883948246a6bb1d191448d83891464555764b47aec4b061d84",
+      "bytes": 11513
+    },
+    "0/isolated-kernel/version-field-control-version-field-definition-edge.c": {
+      "sha256": "b4ebf2dc74d85179f1d1200cef3440282f6f664712e00d6df4ddcac4bb968caa",
+      "bytes": 11545
+    },
+    "0/isolated-kernel/version_sources.c": {
+      "sha256": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236",
+      "bytes": 11550
+    },
+    "0/isolated-kernel/version_sources.h": {
+      "sha256": "7c2b12a089b4525ec9e1bfd1742fa31fd40baf686f1461ada82deb3ad2dca671",
+      "bytes": 2496
+    },
+    "0/isolated-kernel/versions.c": {
+      "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632",
+      "bytes": 14772
+    },
+    "0/isolated-kernel/versions.h": {
+      "sha256": "09f692bd6d3edd5e9edfff20129dd1adffad8c7e6589ebd8c0af354efba8d3e2",
+      "bytes": 5439
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/assembly.c": {
+      "sha256": "8c107cf9777be3a93dacfff73c39fa3c6b659a483abe78efb2a10859dbb657ce",
+      "bytes": 42094
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/assembly_sources.c": {
+      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a",
+      "bytes": 35784
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/assembly_sources.c": {
+      "sha256": "a85482aeeea01314934d1e0f02188b12adef8dcbc307f40bbe8ad90693d893e3",
+      "bytes": 35782
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-authority/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/assembly_sources.c": {
+      "sha256": "71574843643e449a9c3eea974730c601fa3d5c97de30c122eabce0b5e57fd0d1",
+      "bytes": 35780
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/binding-result-authority/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/assembly_sources.c": {
+      "sha256": "a993edf467c0493834c45d858fbf79fe85816cc8b42200726f1936051fad1d56",
+      "bytes": 35679
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/canonical-validation/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/assembly_sources.c": {
+      "sha256": "91593cabd540f420ed86d7c5278bd11873786414427ffef866be7756289217d4",
+      "bytes": 35777
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/check-result-authority/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/assembly_sources.c": {
+      "sha256": "b722249eb5121888884354de2328e1af229613b94103098e342b168cc68ed10d",
+      "bytes": 35761
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/depth-bound/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/assembly_sources.c": {
+      "sha256": "c65daea09caca457d25b8d15a4f6b6a0d577ae1fb04410e5bc9086eabe829908",
+      "bytes": 35813
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/generated-authority/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/assembly_sources.c": {
+      "sha256": "1680cb1c0147beb3d935090046e2e182fa42d4c116cf1eb35d4cff9768d05f68",
+      "bytes": 35878
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/instance-authority/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/assembly_sources.c": {
+      "sha256": "2a2bf30815364fb6be29389a9996b8f35117f631aa17063052a33278a1898ad6",
+      "bytes": 35881
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/mapping-authority/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/assembly_sources.c": {
+      "sha256": "f609eea4dcf222c36bb8dc8920fcab1a56fd42af24016347d00187c63c8bd453",
+      "bytes": 35878
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/result-authority/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/assembly_sources.c": {
+      "sha256": "d428805220cd7428e53b144f7b45945a50685b5e6c6289d991dd9ac5d6c90be1",
+      "bytes": 35766
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/rule-authority/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/assembly_sources.c": {
+      "sha256": "1d49ee6e43e276756b6ab879b90e88ab4892aa7b2c0a6e646ef99c9458399838",
+      "bytes": 35747
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/schema-validation/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/assembly_sources.c": {
+      "sha256": "0111eb4a8d2a58e468c119e812512738a4c42970b8225d74d95dffe8606fcb9f",
+      "bytes": 36029
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/slot-authority/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/assembly_sources.c": {
+      "sha256": "bbc2418676ade05dae4181631a22b57fee881b9947c091bee34e3b48fc0cf989",
+      "bytes": 35761
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/geo261_assembly_definition_authority_harness.c": {
+      "sha256": "55ea293d8cc728a178efb16e87dba8c3d117de4cbd53a8fb9b5ebf8f064ebe11",
+      "bytes": 12709
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/geo261_assembly_sources_harness.c": {
+      "sha256": "60323443782bddf5611c6689ea307844c2155229dc499f91339dd5783b34314e",
+      "bytes": 21013
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/width-bound/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly-definition-authority/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/isolated-woodworking/native/assembly.c": {
+      "sha256": "8c107cf9777be3a93dacfff73c39fa3c6b659a483abe78efb2a10859dbb657ce",
+      "bytes": 42094
+    },
+    "0/isolated-woodworking/native/assembly.h": {
+      "sha256": "4f578fddaf8a06b602d858a17e035ea5f70a511f2486bea778a631f416ba12b1",
+      "bytes": 7411
+    },
+    "0/isolated-woodworking/native/assembly_sources.c": {
+      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a",
+      "bytes": 35784
+    },
+    "0/isolated-woodworking/native/assembly_sources.h": {
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "bytes": 3302
+    },
+    "0/isolated-woodworking/native/boundary_policy.c": {
+      "sha256": "444b78261b8e52b0476bb065d04aaade5664379a55140c88054b4570701e73b6",
+      "bytes": 162
+    },
+    "0/isolated-woodworking/native/boundary_policy.h": {
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "bytes": 926
+    },
+    "0/isolated-woodworking/native/contact_sources.c": {
+      "sha256": "ea0fa63d05f9abac1a11ac4f780a2f3a1e10f8aea502df1fa7e7eb1aa681f659",
+      "bytes": 11561
+    },
+    "0/isolated-woodworking/native/contact_sources.h": {
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "bytes": 2853
+    },
+    "0/isolated-woodworking/native/contact_world.c": {
+      "sha256": "fb961338710375da2c4eeb4b8af56f67bd1cf581067f91a48b356722646c30f8",
+      "bytes": 9089
+    },
+    "0/isolated-woodworking/native/contact_world.h": {
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "bytes": 2096
+    },
+    "0/isolated-woodworking/native/contacts.c": {
+      "sha256": "4dc8dfdc591604c579c4c374306059aca315e5a8a37539f45043c8dafa0dd766",
+      "bytes": 2256
+    },
+    "0/isolated-woodworking/native/contacts.h": {
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "bytes": 1303
+    },
+    "0/isolated-woodworking/native/cut_list.c": {
+      "sha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f",
+      "bytes": 1562
+    },
+    "0/isolated-woodworking/native/cut_list.h": {
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/definition_sources.c": {
+      "sha256": "f22fe0aac839b4269a9c06f2ea0b266207cc8ef5a6c4031b35be3e0796505645",
+      "bytes": 16486
+    },
+    "0/isolated-woodworking/native/definition_sources.h": {
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "bytes": 2456
+    },
+    "0/isolated-woodworking/native/derived_placement.c": {
+      "sha256": "f593f27b6fd4910175990f8742c37ebc331c27c5dc8ea21dd280ed538eb0055c",
+      "bytes": 18770
+    },
+    "0/isolated-woodworking/native/derived_placement.h": {
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "bytes": 3282
+    },
+    "0/isolated-woodworking/native/document.h": {
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "bytes": 1413
+    },
+    "0/isolated-woodworking/native/domain_values.h": {
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "bytes": 691
+    },
+    "0/isolated-woodworking/native/engineering-parameter-authority-client.c": {
+      "sha256": "469c946ff5dafcb760d7e64cd1dd2f35ddbe587dea2bcab2b72314574ae3dc83",
+      "bytes": 15776
+    },
+    "0/isolated-woodworking/native/engineering-parameter-control-W-hook.c": {
+      "sha256": "a79ed653e28913de282c0dbd862b9219118a5b554838fe22dec4ee2776e2f629",
+      "bytes": 44163
+    },
+    "0/isolated-woodworking/native/engineering-parameter-control-edge-kind.c": {
+      "sha256": "0fd802819d5e56f3a6740fa610680542f322a72918c47017df82e53037d7614d",
+      "bytes": 34400
+    },
+    "0/isolated-woodworking/native/engineering-parameter-control-returned-value.c": {
+      "sha256": "6172f2691646a083fea20a237e5b1ca15a15603b3f43e161a9337b8c18e0c504",
+      "bytes": 34368
+    },
+    "0/isolated-woodworking/native/engineering.c": {
+      "sha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31",
+      "bytes": 44177
+    },
+    "0/isolated-woodworking/native/engineering.h": {
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "bytes": 9689
+    },
+    "0/isolated-woodworking/native/engineering_operations.c": {
+      "sha256": "aa557c69731db407139aee223bd06d537190f1334915c49cbb60111fc0ba672b",
+      "bytes": 6890
+    },
+    "0/isolated-woodworking/native/engineering_operations.h": {
+      "sha256": "df60f24cb3f7ec0beb99856b89be3c1369a2a069a73205512316763a32a4ce10",
+      "bytes": 818
+    },
+    "0/isolated-woodworking/native/engineering_sources.c": {
+      "sha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300",
+      "bytes": 34395
+    },
+    "0/isolated-woodworking/native/engineering_sources.h": {
+      "sha256": "6db63191a7dda06e3a4e9ec0f64ea2a2e9ec15a2be431421c70c15888a857298",
+      "bytes": 3624
+    },
+    "0/isolated-woodworking/native/finish-authority-control-definition-schema-ignored.c": {
+      "sha256": "bb1c8c656806b07dc6b59d7944550f19e21267f8762af3aa60ad821f497be1ec",
+      "bytes": 41172
+    },
+    "0/isolated-woodworking/native/finish-authority-control-definition-status-ignored.c": {
+      "sha256": "e7ee3463561ec791f01af78ca9f05907c9969e04ff65d4d095ae15883b15e751",
+      "bytes": 41233
+    },
+    "0/isolated-woodworking/native/finish-authority-control-definition-value-edge.c": {
+      "sha256": "ce88b2e59077966421e082be066a802bc2fd9e757ade904e2f2c112e8404d56e",
+      "bytes": 41239
+    },
+    "0/isolated-woodworking/native/finish-authority-control-derived-definition-bypass.c": {
+      "sha256": "d5bfcf0fb7f2e1320a1ff92da81068780c94742f68e070220d2ace5f7100b70d",
+      "bytes": 41271
+    },
+    "0/isolated-woodworking/native/finish-authority-control-dormant-fill-definition-omitted.c": {
+      "sha256": "396c58d376c0fbc0b51be9c7d1e1e646d8056e58b2e35e038b37e9db5fed1b39",
+      "bytes": 41115
+    },
+    "0/isolated-woodworking/native/finish-authority-control-fill-definition-bypass.c": {
+      "sha256": "e0f2405475ecb0a74a62a5447630f5c4fac98dbd2544365aa1d9b40830fb4394",
+      "bytes": 41274
+    },
+    "0/isolated-woodworking/native/finish-authority-control-fill-origin-bypass.c": {
+      "sha256": "4c2ade7ab6bf564fb64c6d583bce1e5aa0a5ae57744eabc8e93fadea82732950",
+      "bytes": 28816
+    },
+    "0/isolated-woodworking/native/finish-authority-control-fill-stagger-axis-bypass.c": {
+      "sha256": "d7f5ae43be1fef217a551992c3e6af7349f670e46494fc38b6baab3dcd136afb",
+      "bytes": 28822
+    },
+    "0/isolated-woodworking/native/finish-authority-control-finish-definition-hook-bypass.c": {
+      "sha256": "724a1df716c35aa5b44ab3ebc8f383e7abd3394c74f4cd4189c1b449c0500d7d",
+      "bytes": 41241
+    },
+    "0/isolated-woodworking/native/finish-authority-control-panel-definition-schema-bypass.c": {
+      "sha256": "95ab0781d0f0ec25e4c2aa826028c12b0eaa0493d17c6017b980ad8a6969acf8",
+      "bytes": 41136
+    },
+    "0/isolated-woodworking/native/finish-authority-control-panel-kind-policy-bypass.c": {
+      "sha256": "9dd3fd181f46015d22a86a1a736c0ad81cc0192bbca45f5bbec4e677de036731",
+      "bytes": 41233
+    },
+    "0/isolated-woodworking/native/finish-authority-control-returned-gap-bypass.c": {
+      "sha256": "fd5bddc5f7a9be0fba1a21ee3a97bb0c8c40a11549128e42959c592f8e234de8",
+      "bytes": 41234
+    },
+    "0/isolated-woodworking/native/finish-authority-control-selected-k-field-edge-bypass.c": {
+      "sha256": "ccca7a24fd675a29b05356eacee5417a6a05c837df6016c79ad84c89bb87ab71",
+      "bytes": 41183
+    },
+    "0/isolated-woodworking/native/finish-authority-control-selected-k-field-value-bypass.c": {
+      "sha256": "8fc1e345e88b8bc3fa93c9bd76660c184760ad998fd1ee2f7fbcecef966226e7",
+      "bytes": 41212
+    },
+    "0/isolated-woodworking/native/finish-authority-control-shared-version-definition-bypass.c": {
+      "sha256": "ca6e7fdfbe1bf76436a6b8f48c3192133928cc904a4eb55d9bc6e545f173f550",
+      "bytes": 41237
+    },
+    "0/isolated-woodworking/native/finish-authority-control-surface-definition-bypass.c": {
+      "sha256": "e6a9743e2db0811572a8a504b9648405c1c44cc2c39c691ea2bc5ce07f455857",
+      "bytes": 41226
+    },
+    "0/isolated-woodworking/native/finish-authority-control-threshold-policy-bypass.c": {
+      "sha256": "b470ae7a4b50a0b93a763b42eb43f18078858b03a722368950dd6115503813d8",
+      "bytes": 28825
+    },
+    "0/isolated-woodworking/native/finish-definition-authority-engineering.c": {
+      "sha256": "166ba6e4862839ff607a5b357e2e4a72c9a6b41b07dad487db46d4181fe259c7",
+      "bytes": 34573
+    },
+    "0/isolated-woodworking/native/finish-definition-authority-provider.c": {
+      "sha256": "038555f8ccf304a3acc5f1d31fa38dbd533f57850e6d32d2c5fd3e81e2031ebb",
+      "bytes": 41244
+    },
+    "0/isolated-woodworking/native/finish.c": {
+      "sha256": "3d51c6708c7ba227bb63d630ee3ccc1a7be720d922717f93e16cd244ffc25ab8",
+      "bytes": 28828
+    },
+    "0/isolated-woodworking/native/finish.h": {
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "bytes": 6537
+    },
+    "0/isolated-woodworking/native/finish_sources.c": {
+      "sha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d",
+      "bytes": 41066
+    },
+    "0/isolated-woodworking/native/finish_sources.h": {
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "bytes": 3568
+    },
+    "0/isolated-woodworking/native/geo261_finish_definition_authority_harness.c": {
+      "sha256": "d73ff108f826849e06368f3ca4698b5490cbe8e5a8562586a5d1d49469768474",
+      "bytes": 22548
+    },
+    "0/isolated-woodworking/native/geo261_finish_sources_harness.c": {
+      "sha256": "2d53513fdb796007a178cd6c31ab575df98dfc32af575e0ee7f18e7417e9e3eb",
+      "bytes": 22453
+    },
+    "0/isolated-woodworking/native/geo261_grid_definition_authority_harness.c": {
+      "sha256": "c398234c262b213480b6bc803d04bc30c7d4dd081c6a1c09c4572248b5eaa2ce",
+      "bytes": 11799
+    },
+    "0/isolated-woodworking/native/geo261_grid_sources_harness.c": {
+      "sha256": "57632b160548987e2ce3d535d03ec09573897872358486c1e3b9ef1ed8d50057",
+      "bytes": 24220
+    },
+    "0/isolated-woodworking/native/grid-authority-borrowed-rule-control.c": {
+      "sha256": "ea13dbc089168d8276cd5d98ea574399a6d0eedd743ed2547633f2534a5431a1",
+      "bytes": 43504
+    },
+    "0/isolated-woodworking/native/grid-definition-codec-client.c": {
+      "sha256": "6be50face2c26652b465fb552ed9a7a61cb58f9e4380331a54197d4d77eb5305",
+      "bytes": 32762
+    },
+    "0/isolated-woodworking/native/grid-definition-control-app-lattice.c": {
+      "sha256": "7e5bd9954f84508e5baa571bed0d4a2d6cc0b7e7a0174f9682e1814d9393527f",
+      "bytes": 16210
+    },
+    "0/isolated-woodworking/native/grid-definition-control-bool.c": {
+      "sha256": "4c0f89a4e0b9edf6f4e31b4cd3068d34bca3f5a3d4c7273711666e689eec10b5",
+      "bytes": 16231
+    },
+    "0/isolated-woodworking/native/grid-definition-control-bound.c": {
+      "sha256": "5b704b71ce367ee8b0de72f887bae94d8b1f2e53e0184cf2d16b7a2f848fe96a",
+      "bytes": 16192
+    },
+    "0/isolated-woodworking/native/grid-definition-control-cache.c": {
+      "sha256": "9298f2428a91372d30a2418f6a69e9952a58ef650fa04a302d56fd9595d3edd0",
+      "bytes": 16233
+    },
+    "0/isolated-woodworking/native/grid-definition-control-int.c": {
+      "sha256": "b58bf24f86688eda2c157e81306ef011434112cdf4fa57394b31ab8de78bf3c4",
+      "bytes": 16210
+    },
+    "0/isolated-woodworking/native/grid-definition-control-logical-capacity.c": {
+      "sha256": "3ba4425be401623eb5c7cf9d5e95bb513e82f4802ac4a5a464a3ab3af9733464",
+      "bytes": 16217
+    },
+    "0/isolated-woodworking/native/grid-definition-control-masked.c": {
+      "sha256": "9db3985480d5e7a4f1886f009a0fe909a590219a12eb7f429275eb61ec0aaac1",
+      "bytes": 16230
+    },
+    "0/isolated-woodworking/native/grid-definition-control-rule-key.c": {
+      "sha256": "bb4452b2194f1378ca797976381b515d059b17200a932cca5381134f578b9aec",
+      "bytes": 16211
+    },
+    "0/isolated-woodworking/native/grid-definition-control-schema.c": {
+      "sha256": "32d03baf8157299564c052a8a1ca7eba742ac566dae1c0193d8337c96becbfcc",
+      "bytes": 16217
+    },
+    "0/isolated-woodworking/native/grid-definition-control-system-id.c": {
+      "sha256": "6f394c1e4e7ecd7838248a87fcc6cb19d47a9a17a34526014528d5cd68e8566a",
+      "bytes": 16216
+    },
+    "0/isolated-woodworking/native/grid-definition-control-system-write.c": {
+      "sha256": "ef04dd1a5cb795ff1008722f4c0d10743d9fffa81c66ec4a7da552ebd7b36650",
+      "bytes": 16220
+    },
+    "0/isolated-woodworking/native/grid-definition-control-trailing.c": {
+      "sha256": "a9dbacce43392e644bf1ff615964df3e814ad556c7428e7a5bafdc8c8c7bb894",
+      "bytes": 16219
+    },
+    "0/isolated-woodworking/native/grid-definition-control-u32.c": {
+      "sha256": "9f7d69b9593af44b3041c05105b90e6bf592b0308cc1389d441f12c5893f8382",
+      "bytes": 16222
+    },
+    "0/isolated-woodworking/native/grid-definition-control-unsigned.c": {
+      "sha256": "4704be42afd4b0f06b309d0232d53b65fb3f44e14621c9b3b055b2c06c52e473",
+      "bytes": 16224
+    },
+    "0/isolated-woodworking/native/grid-definition-control-utf8.c": {
+      "sha256": "664153ae4f81e5145da3a603b92619a49b92b512cdb9e3c6030b1e0faedcf24e",
+      "bytes": 16215
+    },
+    "0/isolated-woodworking/native/grid_application.c": {
+      "sha256": "c3f90fca11c30c2b49fadfae30937b5a5610b6bdd1c3410a5c847a4654faf7cb",
+      "bytes": 28001
+    },
+    "0/isolated-woodworking/native/grid_application.h": {
+      "sha256": "418dd45fb114867615090ecb8340e37445f55ad527f2528a21868ae195ec5908",
+      "bytes": 9210
+    },
+    "0/isolated-woodworking/native/grid_cells.c": {
+      "sha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434",
+      "bytes": 19552
+    },
+    "0/isolated-woodworking/native/grid_definition_codec.c": {
+      "sha256": "94f2040f95f6de7fe4b29fa218aef02ff55c7a4fbb58d71f6691b07eebb42f91",
+      "bytes": 16240
+    },
+    "0/isolated-woodworking/native/grid_definition_codec.h": {
+      "sha256": "d99dbb566cd0f6ae5c9bb36b7911eba9fd2ca1139cd01e96c2aff64da014f020",
+      "bytes": 2803
+    },
+    "0/isolated-woodworking/native/grid_rules.c": {
+      "sha256": "14f552a9b0d893a7b6f36bcec46c698301bd1dcea5cbbbe0b7c11d21dd98d15a",
+      "bytes": 13797
+    },
+    "0/isolated-woodworking/native/grid_sources.c": {
+      "sha256": "2685686108a8a3da02618bd3ce8d7d84953a093e8441b87b1e1c84d87843daba",
+      "bytes": 43535
+    },
+    "0/isolated-woodworking/native/grid_sources.h": {
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "bytes": 3227
+    },
+    "0/isolated-woodworking/native/host-target-definition-control.c": {
+      "sha256": "0db066a5244ba80c625652c322ab83dccecd7cbec105343b726e6ba04ed4fb66",
+      "bytes": 16488
+    },
+    "0/isolated-woodworking/native/member_declaration.c": {
+      "sha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b",
+      "bytes": 2335
+    },
+    "0/isolated-woodworking/native/member_declaration.h": {
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "bytes": 894
+    },
+    "0/isolated-woodworking/native/member_placement.h": {
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "bytes": 1549
+    },
+    "0/isolated-woodworking/native/member_reference.c": {
+      "sha256": "90f3316777c181f3491ff01b4a06b6f3139f120452e74bbf02d78a323c6c024f",
+      "bytes": 30123
+    },
+    "0/isolated-woodworking/native/member_reference.h": {
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "bytes": 6430
+    },
+    "0/isolated-woodworking/native/members.c": {
+      "sha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d",
+      "bytes": 3533
+    },
+    "0/isolated-woodworking/native/members.h": {
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "bytes": 2131
+    },
+    "0/isolated-woodworking/native/obstacles.h": {
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "bytes": 682
+    },
+    "0/isolated-woodworking/native/panel_layout.c": {
+      "sha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638",
+      "bytes": 5350
+    },
+    "0/isolated-woodworking/native/panel_layout.h": {
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "bytes": 1566
+    },
+    "0/isolated-woodworking/native/panel_support.c": {
+      "sha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+      "bytes": 7069
+    },
+    "0/isolated-woodworking/native/panel_support.h": {
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "bytes": 1440
+    },
+    "0/isolated-woodworking/native/section_profile.c": {
+      "sha256": "a0fa9004ea689b0f4964dbe90f1ff80d0c968dde7e166993d675659ecfeec55d",
+      "bytes": 24441
+    },
+    "0/isolated-woodworking/native/section_profile.h": {
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "bytes": 6289
+    },
+    "0/isolated-woodworking/native/section_profile_sources.c": {
+      "sha256": "9c2b35639e1686c812285b248343717a431023cd02e4eeb3f2e0763d7425a12a",
+      "bytes": 29307
+    },
+    "0/isolated-woodworking/native/section_profile_sources.h": {
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "bytes": 2772
+    },
+    "0/isolated-woodworking/native/supports.c": {
+      "sha256": "1f3c8bfb51c86024b67b0af90f8c381fa38c8babb1cd1956b1cc4a7f022d0775",
+      "bytes": 4658
+    },
+    "0/isolated-woodworking/native/supports.h": {
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "bytes": 2727
+    },
+    "0/isolated-woodworking/native/version-field-control-actual-returned-application-controls-selection.c": {
+      "sha256": "04b7bc5ab5614edd9dba0bc1a434d043ab59476f34324c425b70e50f54455ab0",
+      "bytes": 44118
+    },
+    "0/isolated-woodworking/native/version-field-control-actual-returned-field-controls-wood-value.c": {
+      "sha256": "28cd7d43f2b83bbb308385718cadc1ce6f4a99ea29b989e5a93ce096500b7d0e",
+      "bytes": 34378
+    },
+    "0/isolated-woodworking/native/version-field-control-actual-returned-material-kind-controls-policy.c": {
+      "sha256": "1021c977579148f7335a92bec3159e319ff5d6a190ccc10499efc3ed2769119f",
+      "bytes": 44184
+    },
+    "0/isolated-woodworking/native/version-field-control-actual-returned-method-axis-controls-selection.c": {
+      "sha256": "1021c977579148f7335a92bec3159e319ff5d6a190ccc10499efc3ed2769119f",
+      "bytes": 44184
+    },
+    "0/isolated-woodworking/native/version-field-control-actual-returned-method-slot-controls-selection.c": {
+      "sha256": "1021c977579148f7335a92bec3159e319ff5d6a190ccc10499efc3ed2769119f",
+      "bytes": 44184
+    },
+    "0/isolated-woodworking/native/version-field-control-application-put-updates-authored-record-not-shadow.c": {
+      "sha256": "dec2b5164bcf4ba02f100ca620838870034beef24e23e24d029c59e7f3eb049c",
+      "bytes": 44170
+    },
+    "0/isolated-woodworking/native/version-field-control-inventory-includes-all-unused-metadata-and-versions.c": {
+      "sha256": "59c80ff1f0d7ddf08275cd7903c8360dfd8ff023335234da51a047c5f997e8cb",
+      "bytes": 34395
+    },
+    "0/isolated-woodworking/native/version-field-control-version-field-value-edge.c": {
+      "sha256": "a2f8818b5fcf85ecade808e50e2b6ad135634686befce0bddb57fd88a951d788",
+      "bytes": 34400
+    },
+    "0/isolated-woodworking/native/version-field-sources-client.c": {
+      "sha256": "78b49523b99817717aa21a8129969334d9b63255937580764a8907da7b501e63",
+      "bytes": 31395
+    },
+    "0/isolated-woodworking/native/world_validation.c": {
+      "sha256": "3a5d05ffdf45a142326f17b2173bda7c7cd157d9c32d8ea6e71a93b275a3c2fc",
+      "bytes": 7503
+    },
+    "0/isolated-woodworking/native/world_validation.h": {
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "bytes": 1935
+    },
+    "0/linear-definition-sources.o": {
+      "sha256": "e73ef73065ceec75d73e6d657bf45af41e8d21a9bfb3a0d3554011fcb9d061ea",
+      "bytes": 12288
+    },
+    "0/linear.o": {
+      "sha256": "87061489f4d7c1e410d3f3b4783ec1068a7ea94e02afdca0fd7559bd35c5ee99",
+      "bytes": 5328
+    },
+    "0/named-values.o": {
+      "sha256": "88a3751a5903e8d62b23c5f3a80c86b25df1a84e06d3de0e883d11c47e164783",
+      "bytes": 4352
+    },
+    "0/parameter-sources.o": {
+      "sha256": "b7a2a98adea531c4f28edb7c1a20777680211aa437dac4d7c676839f24e91b65",
+      "bytes": 19392
+    },
+    "0/parameters.o": {
+      "sha256": "760888647bfc29af128e0435840d9bf0e6633a2cdd1ac9e3bc9305eb1147297d",
+      "bytes": 19968
+    },
+    "0/placement-sources.o": {
+      "sha256": "653123ba9e2d5fcc459dac6f43d0170282bc3a307cea0a565d20dcbf77e28a51",
+      "bytes": 13440
+    },
+    "0/placements.o": {
+      "sha256": "0ae3207610413ef17c4884bea7d35b4eb9dd376ee04b671ed8490daeacc83d47",
+      "bytes": 10072
+    },
+    "0/product-bridge": {
+      "sha256": "1efbc6471e168e262bb88d41e75fd2554e3d2823153bc006514a3e9bf57cfd95",
+      "bytes": 1320952
+    },
+    "0/product-bridge.o": {
+      "sha256": "0800c123daa1f7acce522acc59aec0ee8082868aa39892214ce13653a5eeaf61",
+      "bytes": 885328
+    },
+    "0/region-key-sources.o": {
+      "sha256": "04b53c25191585570b2784756337451fdd7650e8ed59ef412ace9c7f6169d22e",
+      "bytes": 9664
+    },
+    "0/regions.o": {
+      "sha256": "f6883f748b5f8f0e1e0cd2e5272b3a7055759945e3c688f404b5a7f6abc74ecc",
+      "bytes": 11352
+    },
+    "0/scene.scene": {
+      "sha256": "aef7bba163b52762612a4033de484a6b2db5376e58859aba4398d55b2f1bbdee",
+      "bytes": 60
+    },
+    "0/source-context-client": {
+      "sha256": "eff92456afa7094201311c30df61c198c28ebb62de9605fbeb48f0b2ee4605ed",
+      "bytes": 30176
+    },
+    "0/source-context-client.o": {
+      "sha256": "a131e530790934cf935018c533191ee0be10cea1951b281064fe00dd16e6e6ce",
+      "bytes": 13960
+    },
+    "0/source-context-control-axis-only": {
+      "sha256": "9efb14ff953132650cc0a32608c4ca1fe198f6303c5957f42b41ca8e7bb2c390",
+      "bytes": 30200
+    },
+    "0/source-context-control-axis-only.o": {
+      "sha256": "2ae9169629efef4c1278b387b1b0d8ef4f47a74a23443735e8f78fb51eca5bba",
+      "bytes": 12176
+    },
+    "0/source-context-control-axis-range": {
+      "sha256": "409a31a44f47ae9156dab0912ac9096c9623d2327977aea39c304b31ed1438c0",
+      "bytes": 30200
+    },
+    "0/source-context-control-axis-range.o": {
+      "sha256": "909cae6acd0983bdf0b07fd6b57f08bc932672127a5d0916f4cda36fd4bf78b0",
+      "bytes": 12168
+    },
+    "0/source-context-control-provider-failure": {
+      "sha256": "2427c38c48221bac6eaabab2fa32a01e45b3ac8e84bc9a9ad7add5e98b5722a9",
+      "bytes": 30208
+    },
+    "0/source-context-control-provider-failure.o": {
+      "sha256": "143a3b976bc847f831b053572504543b629e94851ebe258f3c0c0f0d320f477e",
+      "bytes": 12176
+    },
+    "0/source-context-control-publish-context": {
+      "sha256": "94088fb36c4b44c13a25fdf2b7f2e7142602730099b4da39fd06ba2f0902309d",
+      "bytes": 30208
+    },
+    "0/source-context-control-publish-context.o": {
+      "sha256": "4139c2bd4c5932181916dc49de7698c84dc5985da02ff5acedc850d115b16606",
+      "bytes": 12184
+    },
+    "0/source-context-control-publish-flag": {
+      "sha256": "0cbc880d8e04895899ef81cf56190dbcdda79ab3c05bc67645632fae27d6ca41",
+      "bytes": 30208
+    },
+    "0/source-context-control-publish-flag.o": {
+      "sha256": "1acd8aa911a24f0c21b54471698d596b504590fd13651905a96dbb5cdbe0f305",
+      "bytes": 12200
+    },
+    "0/source-context-control-strict-context": {
+      "sha256": "b785daa3cdcabf2ba58e5a2f08f7b02ffb6ba072b129095195aace9d161d70e4",
+      "bytes": 30208
+    },
+    "0/source-context-control-strict-context.o": {
+      "sha256": "77faca7f7bb566c76d441a55c721c28a2a2848c9ed58ee0e068a7063a2274f42",
+      "bytes": 12152
+    },
+    "0/source.o": {
+      "sha256": "26b560d162bb3441fd49a49002945ea76a6b60ef4b118d211e895413b26f4e84",
+      "bytes": 12176
+    },
+    "0/transaction.json": {
+      "sha256": "04b01a2df4cfc984cce6bc133da2de9fa864c35acee09066a399a83aecc858fe",
+      "bytes": 154
+    },
+    "0/version-field-control-actual-returned-application-controls-selection": {
+      "sha256": "924ea381012c133860580bd472dea329074033c223ddb647bea59d60eb888e34",
+      "bytes": 316856
+    },
+    "0/version-field-control-actual-returned-application-controls-selection.o": {
+      "sha256": "90478befa6dd713349109fd04796464c58fc8d8089dd2f08c102dec49d1f5d09",
+      "bytes": 59632
+    },
+    "0/version-field-control-actual-returned-definition-controls-field": {
+      "sha256": "90a54c51181940e52a0936acaa24f80e9a398000b4ba9d0e4a1b2eb587099174",
+      "bytes": 316840
+    },
+    "0/version-field-control-actual-returned-definition-controls-field.o": {
+      "sha256": "4d90ad24ff1d2ce069b5d4a787782e6a049daed44afa101a93e9de8ee35010db",
+      "bytes": 12944
+    },
+    "0/version-field-control-actual-returned-field-controls-wood-value": {
+      "sha256": "e4cb7cb52f5d3d8183fbff754ffb660a88c7a45cd5678bb151d8c85f7ad6a591",
+      "bytes": 316840
+    },
+    "0/version-field-control-actual-returned-field-controls-wood-value.o": {
+      "sha256": "3fa1f07653507db3659cdd508f97a9caae3a8e9e00673606ff7e4a67005be7b4",
+      "bytes": 31016
+    },
+    "0/version-field-control-actual-returned-material-kind-controls-policy": {
+      "sha256": "2471f875ebb1b15b17347f9a47e320881add61eb0359551e8bb331accb241358",
+      "bytes": 312752
+    },
+    "0/version-field-control-actual-returned-material-kind-controls-policy.o": {
+      "sha256": "2ae692acbf50cc02fb2eef03bacbabd7816c1fc010b8ed4b215ea1894a5f1720",
+      "bytes": 59488
+    },
+    "0/version-field-control-actual-returned-method-axis-controls-selection": {
+      "sha256": "57145b7736c1a26adffd059bf4f11359cdae73141cdb642e5d8d6dd824ccb1c4",
+      "bytes": 312760
+    },
+    "0/version-field-control-actual-returned-method-axis-controls-selection.o": {
+      "sha256": "45e540cae4c206fe5d2294d3110c9bfc20dabf1b6226c81606435f849d42e7b9",
+      "bytes": 59488
+    },
+    "0/version-field-control-actual-returned-method-slot-controls-selection": {
+      "sha256": "a7581d83d1afd6eb7c6f729f67ae8ccc4e7e190c855f5d4cb1181d9817a60c95",
+      "bytes": 312760
+    },
+    "0/version-field-control-actual-returned-method-slot-controls-selection.o": {
+      "sha256": "366ede4c8395b49b0a6b91925316df54a2cf979c3ba2103993b7407ba76a32cf",
+      "bytes": 59488
+    },
+    "0/version-field-control-application-put-updates-authored-record-not-shadow": {
+      "sha256": "34fd6624dda49134b233bef8b85f72082d8a6ce6555de61e63bc041ea98c32bf",
+      "bytes": 316856
+    },
+    "0/version-field-control-application-put-updates-authored-record-not-shadow.o": {
+      "sha256": "0cb13c023b66ee42217447fbf608f65489521f0ea1586973c38de71fb48067fd",
+      "bytes": 59664
+    },
+    "0/version-field-control-inventory-includes-all-unused-metadata-and-versions": {
+      "sha256": "025407242386f6aa3ee685bdd39b4a8b647a805640b6fba6cff693d4b4927ebd",
+      "bytes": 316840
+    },
+    "0/version-field-control-inventory-includes-all-unused-metadata-and-versions.o": {
+      "sha256": "873d97b5325eb76625be1491e6ebe521aa46a740b164c27a49eb275d51f1a315",
+      "bytes": 31040
+    },
+    "0/version-field-control-version-field-definition-edge": {
+      "sha256": "2fc73be738b4d1d3cb38c121f5fdb433e3d0fc33f0c6a5adb55029fef3063b41",
+      "bytes": 316832
+    },
+    "0/version-field-control-version-field-definition-edge.o": {
+      "sha256": "6fa337095bb8b734f2be3e53ce87117602f6db0346b793a09e03ff938741ba32",
+      "bytes": 12920
+    },
+    "0/version-field-control-version-field-value-edge": {
+      "sha256": "03c004f7ec8e3b22f08499e5e5511259621240dea36455d11765c6406f9de5a9",
+      "bytes": 316824
+    },
+    "0/version-field-control-version-field-value-edge.o": {
+      "sha256": "eb44c0ab3475291f76643f7236921a8cad66cf2276e49e7a20b308c04876ae87",
+      "bytes": 31016
+    },
+    "0/version-field-product-control-version-field-value-edge": {
+      "sha256": "bb06f893b2d3a3c95c2da5ba60b9c3129b8843f91b952bac58c8761a670101a7",
+      "bytes": 1325416
+    },
+    "0/version-field-sources-client": {
+      "sha256": "650c8dd90824d1d39d5ca4df37e8f61786452c49c9813c2d55145b2e39b23cdf",
+      "bytes": 316792
+    },
+    "0/version-field-sources-client.o": {
+      "sha256": "ab511644fa6232dfdc4b6b5d639a4ddc01ed231f9f394ffcfa90084664ee3bb8",
+      "bytes": 41184
+    },
+    "0/version-field-sources-product-client": {
+      "sha256": "c46dcafcd781dafdc80dcad15258ecd9c43591ad77d4bde11c9916ed4c30491d",
+      "bytes": 1325384
+    },
+    "0/version-field-sources-product-client.o": {
+      "sha256": "3fe2612fba262b9bf0eb30a755bf81005fb5ade750a7ed430c185cc3c8614b76",
+      "bytes": 895944
+    },
+    "0/version-field-sources-product.scene": {
+      "sha256": "5a1e45e55603d51a085fc3a5d6f712a423e2ebb3bf2a8716efa8db87edc6c799",
+      "bytes": 567
+    },
+    "0/version-product-inventory-control": {
+      "sha256": "7feaf4c8314cacce370bfcbcdf5960041ca98dd25d41199da106f904380c91d9",
+      "bytes": 1325408
+    },
+    "0/version-product-inventory-control.o": {
+      "sha256": "f9fddfe8d2d04b11eb3081d2e95ed6a471a89d114611f38fa968dd48913ff11a",
+      "bytes": 895880
+    },
+    "0/version-product-inventory-current_geometry.c": {
+      "sha256": "0b859461757ebfddf67f5bd39232c5f1d40a7c1f365248ae60a6d47c9d94e9ad",
+      "bytes": 386305
+    },
+    "0/version-product-inventory-geo261_version_field_sources_harness.c": {
+      "sha256": "c25d1ff01583b723e36faf33e4e3dd1ea568205318e85eebb83b36734b7be083",
+      "bytes": 31507
+    },
+    "0/version-product-inventory-reference_sources.inc": {
+      "sha256": "d65cd1a47aa02747986ca7967d8ad1dc1ddd450239e0a6229832ffb6fe36ed75",
+      "bytes": 55971
+    },
+    "0/version-product-inventory-references.inc": {
+      "sha256": "8418b965daa18944026aceccddabd75183f2d0a3585e29ff99517e4e98f7f58f",
+      "bytes": 62621
+    },
+    "0/version-product-inventory-web_bridge.c": {
+      "sha256": "876248238234798521beda190c98877cd03643310b1578152d12a59ad503b3c9",
+      "bytes": 52869
+    },
+    "0/version-sources.o": {
+      "sha256": "af1e4183c949870e845366baf4d00602ad60439005eecee69ea0471b09650261",
+      "bytes": 12880
+    },
+    "0/versions.o": {
+      "sha256": "5f7aa61a2a9f83062e4b608c4990e48ae86fce008918b57d515f95cf45229532",
+      "bytes": 13808
+    },
+    "0/vertex-ledger-baseline-geo261_model_vertex_ledger_harness.c": {
+      "sha256": "652d640daf5ac6b72350d94bc75eacb7338d450ac14d9b9b48917746af0056a7",
+      "bytes": 11986
+    },
+    "0/vertex-ledger-baseline-model_base.c": {
+      "sha256": "93c0579bccdaf0749d15d3d178b9a3d2685f929d71d62f31707cb01f9ae5430f",
+      "bytes": 25515
+    },
+    "0/vertex-ledger-baseline-model_sources.inc": {
+      "sha256": "67b966dddfdbd4897a01a0fe095751f16a09faee39372d6690908617930419fc",
+      "bytes": 31099
+    },
+    "0/wood-assembly-sources.o": {
+      "sha256": "5e504b7976cc8f2e1c02b8975fbee19d071566aa570fff546f3536ecbfe7bb22",
+      "bytes": 39656
+    },
+    "0/wood-assembly.o": {
+      "sha256": "001a05f625e42b0e171556fa6262843f04f38b96f6e7922afec604522c5e12fc",
+      "bytes": 62000
+    },
+    "0/wood-boundary-policy.o": {
+      "sha256": "60fe3e1b16091b26729de5e4ba54699f8348c3ce61ff65b2be74f6b55a966102",
+      "bytes": 1312
+    },
+    "0/wood-contact-sources.o": {
+      "sha256": "80ababf0be9a4596c5fc1eb046cba6fe8145157dde6ca52a366610d31f471228",
+      "bytes": 10840
+    },
+    "0/wood-contact-world.o": {
+      "sha256": "57dd5eb5d328feb0f656ac8d8160c8a8858f2859e04996fddabb66edce085a43",
+      "bytes": 10168
+    },
+    "0/wood-contacts.o": {
+      "sha256": "57fa0e94138cc5422d16ec2153855b0340c1fda9dcbd57675cde99a3268df2b4",
+      "bytes": 2512
+    },
+    "0/wood-cut-list.o": {
+      "sha256": "a6419cf8b41e01c9ff36f268e550205ef61d01d97745729c29e770ae82454df1",
+      "bytes": 2968
+    },
+    "0/wood-definition-sources.o": {
+      "sha256": "a44d1312182f4ed67a16c3f2220985bedd9e018e7dbd9177060bd7a2dd0abded",
+      "bytes": 18184
+    },
+    "0/wood-derived-placement.o": {
+      "sha256": "cd13f0932074fe86b8d5efc525762d9436b7b012469048007bf1a90f002d32d6",
+      "bytes": 26792
+    },
+    "0/wood-engineering-operations.o": {
+      "sha256": "c3d67ce7c14e8f732fa7ea8f31d3e5265ce96cebdb4a4295712e86617f5ee616",
+      "bytes": 12664
+    },
+    "0/wood-engineering-sources.o": {
+      "sha256": "81600d6f8745818ad76f9f991ccc206c1ab2402e712db61fb68cffdc5c0bc16c",
+      "bytes": 30992
+    },
+    "0/wood-engineering.o": {
+      "sha256": "17681ed32ae1f6246e6040118acdd593531f57dddbf0ba4fff6a8530092a60fb",
+      "bytes": 59608
+    },
+    "0/wood-finish-sources.o": {
+      "sha256": "2ebe8dc507f4fa96d4691a21d79c0dc6d993dd7c30502cefc64ee0e100608ab1",
+      "bytes": 38832
+    },
+    "0/wood-finish.o": {
+      "sha256": "17c37c4e92895dbb4d64e474ce0e5d7f5d62c304d0d9e4b4a2e2cb43c2f8e363",
+      "bytes": 40952
+    },
+    "0/wood-grid-application.o": {
+      "sha256": "c9d9c9fd424e55a2c4e860ee7c4683657f2b9a5736064ea08cc8520e64c33248",
+      "bytes": 36824
+    },
+    "0/wood-grid-cells.o": {
+      "sha256": "b46c7210bb6d966515139bff3d7ee4064227e3e78d6a0e4977d54f35ab48e29b",
+      "bytes": 19184
+    },
+    "0/wood-grid-definition-codec.o": {
+      "sha256": "732766e6294411465eb167f492bd9ef33433c839df8cfd54fc22bb56878e3979",
+      "bytes": 14832
+    },
+    "0/wood-grid-rules.o": {
+      "sha256": "0310dee401a9d13efa7db9bfb89bbfd9a8d754d84920426df22ebcc74d57957d",
+      "bytes": 16384
+    },
+    "0/wood-grid-sources.o": {
+      "sha256": "2fd0a9961aac34ae1f0a746cd5b8dfa77c4068120d878f928dadefc5bd3b36ed",
+      "bytes": 45304
+    },
+    "0/wood-member-declaration.o": {
+      "sha256": "4c14422c95b2e2d8f2396995f708de3546622f72c90d22caa7ee7bccf1f4d2e5",
+      "bytes": 3920
+    },
+    "0/wood-member-reference.o": {
+      "sha256": "f7fdde2cc95f40d825f1635482e1218a9d59c75a33e0e36b3c8a79c523cc5e76",
+      "bytes": 30480
+    },
+    "0/wood-members.o": {
+      "sha256": "f17b0ad52b4c9c0ca986160081b4b630431fd1bb268b3e14719e96262a79bb64",
+      "bytes": 4544
+    },
+    "0/wood-panel-layout.o": {
+      "sha256": "b40e7bedcb010b385d875474aaa3187d521a0a43ed1cbf21431b4a35f2324861",
+      "bytes": 7800
+    },
+    "0/wood-panel-support.o": {
+      "sha256": "c69def54a540a0d774fbe2e1b5de00cff20743471dc92bf9c1faef2195e4f98e",
+      "bytes": 8656
+    },
+    "0/wood-section-profile-sources.o": {
+      "sha256": "a61d7c74d568fe84625cba4bc79c43bc6f909c850f162c2183e4128ef502483f",
+      "bytes": 27912
+    },
+    "0/wood-section-profile.o": {
+      "sha256": "e952a434897593bb1edc0836edba40c4371a9cadf22ba0792312eb63c2b0d1c3",
+      "bytes": 37848
+    },
+    "0/wood-supports.o": {
+      "sha256": "596d5de696c2b3b83481641a8f603473efc065ec09937ec20b2e5479dc11e23c",
+      "bytes": 3936
+    },
+    "0/wood-world-validation.o": {
+      "sha256": "e9e6304724a02ce6abaf676f0bc23274bad4eaa1e8e05ca84ee0e5e765524cf7",
+      "bytes": 9192
+    },
+    "1/build-log.json": {
+      "sha256": "a5da7e8927b9618d0152b64b62b493ac219834e27996937682ac46243c6ee42a",
+      "bytes": 78190
+    },
+    "1/candidate.o": {
+      "sha256": "bd3dab706e7d3cd134adcf09ac974f8fcb20d61b224d66eb76d265dd10f953be",
+      "bytes": 9864
+    },
+    "1/clip.o": {
+      "sha256": "41c5529ad94bf5164a88f7bfd219a4afe49ce372ed67d6a9f2436d588a8fc206",
+      "bytes": 10656
+    },
+    "1/codec-client": {
+      "sha256": "31ae8a677b0333d90b8118348d4dc9ce46732a0fb1d93fdbb2a421ec9004684d",
+      "bytes": 34952
+    },
+    "1/codec-client.c": {
+      "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13",
+      "bytes": 2857
+    },
+    "1/codec-client.o": {
+      "sha256": "88e8f87e9e7870760d0566f4c45c157bab327399ab57574f629dad0e41c11856",
+      "bytes": 7088
+    },
+    "1/codec.o": {
+      "sha256": "556bc1ec7b7e90a99f85e328a1c894b9421b8859d034f600a62adf923fb7ba2c",
+      "bytes": 24800
+    },
+    "1/datums.o": {
+      "sha256": "aadc247d537e14c703dae31e82847c1bbfdd4b0231b53587d6685cf9ed5405d3",
+      "bytes": 6072
+    },
+    "1/document.o": {
+      "sha256": "77d9fe5e44a8ff6d4bb87a7da3351501b2d338d8e254c4ffd40d34389461aa7e",
+      "bytes": 4616
+    },
+    "1/enclosure-authority-control-axis-raw-members": {
+      "sha256": "f4810741fbde331d852a54d61f86178eee82b0432df6234362def1ced15402bd",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-axis-raw-members.o": {
+      "sha256": "ed7f8d721d283332efa3b6229da79475ea1f5c4364a1d3b35621732277e5c7c5",
+      "bytes": 72760
+    },
+    "1/enclosure-authority-control-canonical-bool": {
+      "sha256": "c8b6382a7eabb2ac5426c6356d7ea4a9aa7dd99ed2b92780c908568a9c0c21f8",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-canonical-bool.o": {
+      "sha256": "252be9e1c48cec979fb2286f2fed7bc0d2872bdeda9e326a695f14497d819b57",
+      "bytes": 72672
+    },
+    "1/enclosure-authority-control-definition-kind": {
+      "sha256": "a3a8320a0153d00ff9c75485c64cb91f051c425d8e06164e2d9a1ba8d0b1a1bc",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-definition-kind.o": {
+      "sha256": "2188455e9980fdb0dd175d7e9282cdbce213729b4a846f2ab6691f04dda7791f",
+      "bytes": 72704
+    },
+    "1/enclosure-authority-control-exact-length": {
+      "sha256": "fb90d30c4dc0888fc1208184183ac69ecc108d5c229d5e9251a297fb699f930b",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-exact-length.o": {
+      "sha256": "79f8359120d78f542c06949efbe22829e316ab4919e473407b8cf33cf7c63b88",
+      "bytes": 72704
+    },
+    "1/enclosure-authority-control-expected-id": {
+      "sha256": "5d22f316bc2fc7cc353d8ab8a3556508b1077611628564f0aab1d8c72fa0cddc",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-expected-id.o": {
+      "sha256": "8aca6ea41c4613a5c27cd4a8da8a9e0ef008d93c0cf8dfa22debf94d92cca132",
+      "bytes": 72672
+    },
+    "1/enclosure-authority-control-full-capacity": {
+      "sha256": "3fec2710e127daadb5940e08fd34fdea0c4f1c3f515e45b7f4d7ff2ddf5e20fd",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-full-capacity.o": {
+      "sha256": "bf5bbca6e0955eed077042223980826a460b2fd21a4d265e11682458b8351916",
+      "bytes": 72704
+    },
+    "1/enclosure-authority-control-member-order": {
+      "sha256": "96faf09bf3ef2584c73f345c6ca11d21f4875133686aa94e3534431442d5a48a",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-member-order.o": {
+      "sha256": "48bbbd5a85a54b15f224dc48c04b2d38bf2ee8c53c3848ea2a6b8570df23eca3",
+      "bytes": 72704
+    },
+    "1/enclosure-authority-control-result-kind": {
+      "sha256": "c3a416d61fc79f1606aaa0686deebbfdd83c62772caacd468c4ed1e826c9ab4b",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-result-kind.o": {
+      "sha256": "fa5f128d7c47c47db13652673795121c2bd01f3f58d75861a7fc47118b683e27",
+      "bytes": 72672
+    },
+    "1/enclosure-authority-control-result-raw-members": {
+      "sha256": "6a851e0fc3bd727945461da3803ceb6b550f2cbded7476bde682ed788b9db2f2",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-result-raw-members.o": {
+      "sha256": "4000914f7bff2cc36dd60d4d977a78c68eba9ec8443373ed6f3053d24476391e",
+      "bytes": 72760
+    },
+    "1/enclosure-authority-control-result-sidecache": {
+      "sha256": "7bdbd8583dafbf30d87586ae44bc07227e551a7f5afd6942c8398a1f8689976f",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-result-sidecache.o": {
+      "sha256": "89c4e5ea013853baabc7f66eb34fe33b65a7030e64623a5b8ebfa5aac517bf3a",
+      "bytes": 72704
+    },
+    "1/enclosure-authority-control-schema": {
+      "sha256": "95776161a27201d1fe24a25757cda6213a84ae10c3cba6d672bd109c14c096fa",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-schema.o": {
+      "sha256": "97db31bce2210aa8062700bc1795610b9b8f4c0d8dc355a6bb5e281e2b5470f9",
+      "bytes": 72648
+    },
+    "1/enclosure-authority-control-signed-result": {
+      "sha256": "e5494430aaac54ed7f58a7a4b40d9195e8dc3f384c73c8d7186e732db6af1120",
+      "bytes": 263752
+    },
+    "1/enclosure-authority-control-signed-result.o": {
+      "sha256": "ebb88c2dd2b31fe729db50c68691bab37f6f5c4fa8cef8327c45252863da0a98",
+      "bytes": 72704
+    },
+    "1/enclosure-definition-authority/enclosure_sources.c": {
+      "sha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68",
+      "bytes": 17213
+    },
+    "1/enclosure-definition-authority/geo261_enclosure_definition_authority_harness.c": {
+      "sha256": "ea49a02c07e3380ba75de88d69fb008d803d91b30b36dc425e3a1f4d2f3a91d5",
+      "bytes": 14067
+    },
+    "1/enclosure-definition-authority/geo261_enclosure_sources_harness.c": {
+      "sha256": "fa41d09fe2692e39bd644198ddf3abdd1310faf34693205905685ae0ba7bea83",
+      "bytes": 21965
+    },
+    "1/enclosure-definition-authority-client": {
+      "sha256": "3aa28d2ef8e0e1a08ca99f74ecafd012d85f4da0563d55009c2c384989d3a1e3",
+      "bytes": 263752
+    },
+    "1/enclosure-definition-authority-client.o": {
+      "sha256": "41c7750d70ee0dcb7fcdc8182731d3f53c918a39bac5bc2c68148feeb3ac7eb0",
+      "bytes": 72704
+    },
+    "1/enclosure-sources.o": {
+      "sha256": "c948a097f66b51e33046c1bf8e3eb8da2edcd7ba165c475f0cd04b383cb7c430",
+      "bytes": 15792
+    },
+    "1/enclosure.o": {
+      "sha256": "71bb0da4cf1c39ae8a69a1be0a7ccc145feca9bb1c2d5a40d40f23136393e5dc",
+      "bytes": 8648
+    },
+    "1/exact-client": {
+      "sha256": "787de89afc038e2d56eafd0cc1811a04daaf9504e03892b773263db37bf3f0e6",
+      "bytes": 16440
+    },
+    "1/exact-client.c": {
+      "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc",
+      "bytes": 919
+    },
+    "1/exact-client.o": {
+      "sha256": "ccc88f44ad072ee2fcee10e0813bfccc8f79abc661f07a9c9159fca6e72ffe49",
+      "bytes": 2768
+    },
+    "1/exact.o": {
+      "sha256": "a6014a4fe28167407a8051b268f06b4d76cbc667b41321d9502becabb87b0b4b",
+      "bytes": 3560
+    },
+    "1/geometry.o": {
+      "sha256": "f0c8d342e2b187642701ddf61b0f889b8d5c8f97420620b9e7c480a7312be409",
+      "bytes": 25992
+    },
+    "1/grid-store.o": {
+      "sha256": "39f39572d38e98d92c533c75ae26393ea43e4e807e6f2072e79db4cda6940d4b",
+      "bytes": 18520
+    },
+    "1/grid.o": {
+      "sha256": "21484a94af3a36166f0d857a02f61376db0cc41a54bae554b5b9e81877c46304",
+      "bytes": 6736
+    },
+    "1/guides.o": {
+      "sha256": "71ccf0b66fbe1ab7dcba7c4eca51cf019ba19a707f263a60de2cd1c9d5213854",
+      "bytes": 6688
+    },
+    "1/isolated-kernel/candidate.c": {
+      "sha256": "3aa25e6adfa2f48e885576377a742f2160fa696b79b51f346233f195dba60d93",
+      "bytes": 11870
+    },
+    "1/isolated-kernel/candidate.h": {
+      "sha256": "17e273e2c5eed4d6a33f6b79234d4ed924cd7203435556ac11dbeece6c8cae81",
+      "bytes": 3890
+    },
+    "1/isolated-kernel/clip.c": {
+      "sha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea",
+      "bytes": 7551
+    },
+    "1/isolated-kernel/clip.h": {
+      "sha256": "31e2e53370e437073c098296a6f669ef5dd7959f1811c57c77604a34dc71c99c",
+      "bytes": 1597
+    },
+    "1/isolated-kernel/codec.c": {
+      "sha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a",
+      "bytes": 23308
+    },
+    "1/isolated-kernel/codec.h": {
+      "sha256": "81de17c90f814c798a271cad6a0b2f6fbcdc5e6c4e46af14a002be818f9feb14",
+      "bytes": 2393
+    },
+    "1/isolated-kernel/datums.c": {
+      "sha256": "f5d385df8d01b9d4399371ecd0dc02dfbe2ae0c62c988262ef5cd990676e065d",
+      "bytes": 4222
+    },
+    "1/isolated-kernel/datums.h": {
+      "sha256": "9b23a1c746c2a0f46d55e2bb19309167d76c7be34bed7ecc35a11df633d49607",
+      "bytes": 1829
+    },
+    "1/isolated-kernel/document.c": {
+      "sha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1",
+      "bytes": 2636
+    },
+    "1/isolated-kernel/document.h": {
+      "sha256": "603e684ca9c5ab2b8d23205cc3382a9e305c1e57441c0854367a57c441461e56",
+      "bytes": 2016
+    },
+    "1/isolated-kernel/enclosure.c": {
+      "sha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77",
+      "bytes": 7871
+    },
+    "1/isolated-kernel/enclosure.h": {
+      "sha256": "8e6162fee153af7ff6a1d8e13d8b3e01db90c51d9d41b846025876dfb3c5c7f5",
+      "bytes": 3604
+    },
+    "1/isolated-kernel/enclosure_sources.c": {
+      "sha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68",
+      "bytes": 17213
+    },
+    "1/isolated-kernel/enclosure_sources.h": {
+      "sha256": "c512b34721bcf1e428ffb19f665970c788292b542c1b8c8bf9b1257ab3c5f4b4",
+      "bytes": 3799
+    },
+    "1/isolated-kernel/exact.c": {
+      "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf",
+      "bytes": 3243
+    },
+    "1/isolated-kernel/exact.h": {
+      "sha256": "bca06ef8df48636d6a79b50dae0f9337b37d886ca4ff097fc03ce865e5cffb2d",
+      "bytes": 1104
+    },
+    "1/isolated-kernel/geometry.c": {
+      "sha256": "8e9ca0287d1141b7f534d520f15225b0f0a9e32b66d46824114cf7985b98ea9f",
+      "bytes": 29236
+    },
+    "1/isolated-kernel/geometry.h": {
+      "sha256": "72a6268999b3ee636a668e4d5fa6f74203dbb35de52b6b86f24dda48799ad3b1",
+      "bytes": 5583
+    },
+    "1/isolated-kernel/grid.c": {
+      "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f",
+      "bytes": 8062
+    },
+    "1/isolated-kernel/grid.h": {
+      "sha256": "2180b532a060a54572f3e352178326c425ad216e67bb6ee567ae6f62666b4454",
+      "bytes": 2696
+    },
+    "1/isolated-kernel/grid_store.c": {
+      "sha256": "123983e64599715f743815a339a5f7f9d0068edc018aaf26dcae1c4098bd922a",
+      "bytes": 21431
+    },
+    "1/isolated-kernel/grid_store.h": {
+      "sha256": "4f8d279b6d2e6e95d7ce02937e34018ee1ed635388b6bd8e72e5936b848e42b4",
+      "bytes": 7244
+    },
+    "1/isolated-kernel/guides.c": {
+      "sha256": "1548a5f72bf3e9904a64c871d2658409aab300786af598e7ca69a4fb82e4897e",
+      "bytes": 6022
+    },
+    "1/isolated-kernel/guides.h": {
+      "sha256": "14e7f9444057120309666923378240a28ea7f1607a0c780ac5279c60a1099be1",
+      "bytes": 3115
+    },
+    "1/isolated-kernel/internal/datums.h": {
+      "sha256": "244419b5c43ccadf48f8b9b2ac985496cc28453443acd3984dc2ee1e0683a55b",
+      "bytes": 178
+    },
+    "1/isolated-kernel/internal/document.h": {
+      "sha256": "db38e7ee5a0dde09e69f8290c5ba3ac042eeb979c8d742916da449211a88b489",
+      "bytes": 897
+    },
+    "1/isolated-kernel/internal/enclosures.h": {
+      "sha256": "d568b1b7ab0df12e65618a2b5a2ce909cddfbae7f0b88eccbfd1bbd693a0c0aa",
+      "bytes": 273
+    },
+    "1/isolated-kernel/internal/grid_store.h": {
+      "sha256": "499f879f4f9cf6c58cab360dc9273c90095b058880336cf147888072b1602ccd",
+      "bytes": 301
+    },
+    "1/isolated-kernel/internal/guides.h": {
+      "sha256": "aab50ff4e4ce23a258dbc1207bd44e80e8ce2008e9d9c547454041b4cf0fb114",
+      "bytes": 181
+    },
+    "1/isolated-kernel/internal/named_values.h": {
+      "sha256": "e1c0d76fed48cb8c6015735aa143b0c4edc90ccfcd3dd85548c6f130b90bd783",
+      "bytes": 219
+    },
+    "1/isolated-kernel/internal/parameter_store.h": {
+      "sha256": "5d3e31ce6cdee43056ae2ede68e902cb7368fb40108928c9ce9aff63dd4cb88d",
+      "bytes": 453
+    },
+    "1/isolated-kernel/internal/placements.h": {
+      "sha256": "ff2b4ea612c80b4ab76da4024d768493842b879133ef6598dc4b4f63503201da",
+      "bytes": 301
+    },
+    "1/isolated-kernel/internal/regions.h": {
+      "sha256": "6dc80e855f3248208fa4cc945141339631673e9d9d2414b11f649f9d48c5df36",
+      "bytes": 410
+    },
+    "1/isolated-kernel/internal/versions.h": {
+      "sha256": "19d2a7d32dd3c8b4adb0e4dab228f7b0f9aaaeec46bcc15453ca51664bded0ac",
+      "bytes": 704
+    },
+    "1/isolated-kernel/linear.c": {
+      "sha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c",
+      "bytes": 4333
+    },
+    "1/isolated-kernel/linear.h": {
+      "sha256": "7701f7e77f9ae34ee74004606a5c88bbc9158c0bb463ec55fa116d7d2ad245be",
+      "bytes": 1619
+    },
+    "1/isolated-kernel/linear_definition_sources.c": {
+      "sha256": "acc6312b9d438f0ef1e705e1b977e2ce8ad6ca2853248636eb241f40aab62266",
+      "bytes": 11033
+    },
+    "1/isolated-kernel/linear_definition_sources.h": {
+      "sha256": "c533ad62f5ddda634591ca42b5680c7e381fb0352c2f9c932eb900f3eb2f579f",
+      "bytes": 2013
+    },
+    "1/isolated-kernel/named_values.c": {
+      "sha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1",
+      "bytes": 2105
+    },
+    "1/isolated-kernel/named_values.h": {
+      "sha256": "9965267c054be1b5ca758189c91ffb79e52c6ef98e678acef824ec27fd0ca690",
+      "bytes": 891
+    },
+    "1/isolated-kernel/parameter_sources.c": {
+      "sha256": "60908674f3b6a6a820ef60279964a9862ea99e64db4c75478cbb0b63def8edd9",
+      "bytes": 21934
+    },
+    "1/isolated-kernel/parameter_sources.h": {
+      "sha256": "7da1bd225d939fe1e628a971b68102eb5e45ecebae4b5f00bf184e5975d88fac",
+      "bytes": 3907
+    },
+    "1/isolated-kernel/parameters.c": {
+      "sha256": "542275c3a6c7e3bda39619b97e350da3d74e6ab821c8a1c80ef92353628ba5bd",
+      "bytes": 17182
+    },
+    "1/isolated-kernel/parameters.h": {
+      "sha256": "5e2fe24a4dea28bfae25dbb0ef28db7ffbe86932d0b3847b21b254a1b8dee50d",
+      "bytes": 5193
+    },
+    "1/isolated-kernel/placement_sources.c": {
+      "sha256": "7b953719f5e75ed2e70f99c9e0a96588d398bd9220025a7b7a191c4dbaeb8e12",
+      "bytes": 13667
+    },
+    "1/isolated-kernel/placement_sources.h": {
+      "sha256": "ff52eb8121cff380de275aa97d8562e56d58d8e21968369fde2db67c04135a7a",
+      "bytes": 3297
+    },
+    "1/isolated-kernel/placements.c": {
+      "sha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2",
+      "bytes": 10229
+    },
+    "1/isolated-kernel/placements.h": {
+      "sha256": "07977950e771da87b908414c8c591b65af5a6166672b7001724b21ef397921f6",
+      "bytes": 3593
+    },
+    "1/isolated-kernel/region_key_sources.c": {
+      "sha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b",
+      "bytes": 9853
+    },
+    "1/isolated-kernel/region_key_sources.h": {
+      "sha256": "e147a513df0aae2e7ddcedac9d4df17695c6147fcd73305f18a503322c2d9146",
+      "bytes": 2876
+    },
+    "1/isolated-kernel/regions.c": {
+      "sha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59",
+      "bytes": 11576
+    },
+    "1/isolated-kernel/regions.h": {
+      "sha256": "795119199673378f7451411165000800b7a869283dbe87bbccfa0bf372819610",
+      "bytes": 3901
+    },
+    "1/isolated-kernel/source.c": {
+      "sha256": "b2e65a85776fed150c192c1e374b1d35baa82c4e68f14d529f6d4b30a9ae6ae0",
+      "bytes": 12338
+    },
+    "1/isolated-kernel/source.h": {
+      "sha256": "aa00bd5078495bc3c4165c81a58129a4216c6b40c87da91700f7b0c3bf9820a1",
+      "bytes": 5373
+    },
+    "1/isolated-kernel/types.h": {
+      "sha256": "8e2db361ebbd20b9cb58a57a10ac80897a622b244f421e86a95039428544458f",
+      "bytes": 394
+    },
+    "1/isolated-kernel/version_sources.c": {
+      "sha256": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236",
+      "bytes": 11550
+    },
+    "1/isolated-kernel/version_sources.h": {
+      "sha256": "7c2b12a089b4525ec9e1bfd1742fa31fd40baf686f1461ada82deb3ad2dca671",
+      "bytes": 2496
+    },
+    "1/isolated-kernel/versions.c": {
+      "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632",
+      "bytes": 14772
+    },
+    "1/isolated-kernel/versions.h": {
+      "sha256": "09f692bd6d3edd5e9edfff20129dd1adffad8c7e6589ebd8c0af354efba8d3e2",
+      "bytes": 5439
+    },
+    "1/linear-definition-sources.o": {
+      "sha256": "e73ef73065ceec75d73e6d657bf45af41e8d21a9bfb3a0d3554011fcb9d061ea",
+      "bytes": 12288
+    },
+    "1/linear.o": {
+      "sha256": "87061489f4d7c1e410d3f3b4783ec1068a7ea94e02afdca0fd7559bd35c5ee99",
+      "bytes": 5328
+    },
+    "1/named-values.o": {
+      "sha256": "88a3751a5903e8d62b23c5f3a80c86b25df1a84e06d3de0e883d11c47e164783",
+      "bytes": 4352
+    },
+    "1/parameter-sources.o": {
+      "sha256": "b7a2a98adea531c4f28edb7c1a20777680211aa437dac4d7c676839f24e91b65",
+      "bytes": 19392
+    },
+    "1/parameters.o": {
+      "sha256": "760888647bfc29af128e0435840d9bf0e6633a2cdd1ac9e3bc9305eb1147297d",
+      "bytes": 19968
+    },
+    "1/placement-sources.o": {
+      "sha256": "653123ba9e2d5fcc459dac6f43d0170282bc3a307cea0a565d20dcbf77e28a51",
+      "bytes": 13440
+    },
+    "1/placements.o": {
+      "sha256": "0ae3207610413ef17c4884bea7d35b4eb9dd376ee04b671ed8490daeacc83d47",
+      "bytes": 10072
+    },
+    "1/region-key-sources.o": {
+      "sha256": "04b53c25191585570b2784756337451fdd7650e8ed59ef412ace9c7f6169d22e",
+      "bytes": 9664
+    },
+    "1/regions.o": {
+      "sha256": "f6883f748b5f8f0e1e0cd2e5272b3a7055759945e3c688f404b5a7f6abc74ecc",
+      "bytes": 11352
+    },
+    "1/source.o": {
+      "sha256": "26b560d162bb3441fd49a49002945ea76a6b60ef4b118d211e895413b26f4e84",
+      "bytes": 12176
+    },
+    "1/version-sources.o": {
+      "sha256": "af1e4183c949870e845366baf4d00602ad60439005eecee69ea0471b09650261",
+      "bytes": 12880
+    },
+    "1/versions.o": {
+      "sha256": "5f7aa61a2a9f83062e4b608c4990e48ae86fce008918b57d515f95cf45229532",
+      "bytes": 13808
+    }
+  }
+}

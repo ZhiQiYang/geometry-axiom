@@ -1,0 +1,798 @@
+[
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/exact.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/exact.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/codec.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/codec.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/geometry.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/geometry.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/geometry.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/geometry.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/clip.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/clip.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/clip.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/clip.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/grid.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/grid.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/grid.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/grid.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/parameters.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/parameters.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/parameters.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/parameters.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/parameter_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/parameter-sources.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/parameter_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/parameter-sources.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/linear.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/linear.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/linear.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/linear.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/named_values.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/named-values.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/named_values.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/named-values.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/datums.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/datums.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/datums.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/datums.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/source.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/source.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/source.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/source.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/candidate.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/candidate.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/candidate.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/candidate.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/placements.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/placements.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/placements.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/placements.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/placement_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/placement-sources.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/placement_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/placement-sources.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/versions.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/versions.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/versions.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/versions.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/enclosure.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/enclosure.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/enclosure.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/enclosure.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/enclosure_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/enclosure-sources.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/enclosure_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/enclosure-sources.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/region_key_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/region-key-sources.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/region_key_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/region-key-sources.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/document.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/document.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/document.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/document.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/regions.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/regions.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/regions.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/regions.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/grid_store.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/grid-store.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/grid_store.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/grid-store.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/guides.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/guides.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/guides.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/guides.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/linear_definition_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/linear-definition-sources.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/linear_definition_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/linear-definition-sources.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/version_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/version-sources.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel/version_sources.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/version-sources.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact-client.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact-client.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact-client.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact-client.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec-client.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec-client.o"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/isolated-kernel",
+      "-c",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec-client.c",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec-client.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact-client.o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact.o",
+      "-lm",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact-client"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact-client.o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact.o",
+      "-lm",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/exact-client"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/usr/bin/cc",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec-client.o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec.o",
+      "-lm",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec-client"
+    ],
+    "arguments": [
+      "/usr/bin/cc",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec-client.o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec.o",
+      "-lm",
+      "-o",
+      "/tmp/geometry-tests/geo261-n1a-7zks041g/codec-client"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

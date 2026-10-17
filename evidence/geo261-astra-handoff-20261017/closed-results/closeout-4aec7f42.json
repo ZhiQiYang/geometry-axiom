@@ -1,0 +1,131 @@
+{
+  "kind": "bounded-4aec-host-setup276-evidence",
+  "source": "4aec7f428b9307ed9596aba2ed893175b8db76a5",
+  "tree": "b50762ed6187041bd5a8256d9f2da9e55081245b",
+  "gate": {
+    "status": "PASS",
+    "stages": 5,
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\build-gate-4aec7f42-v1\\result\\summary.json",
+    "sha256": "67159e1158fe9feddd540716903dae0ccbdb8af5832d3882b1de39a0776f12d1"
+  },
+  "focused": {
+    "status": "FAIL",
+    "planned_methods": 276,
+    "actual_methods": 131,
+    "counts": {
+      "passed": 131,
+      "UNRUN": 145
+    },
+    "by_execution_kind": {
+      "portable": {
+        "passed": 20,
+        "UNRUN": 21
+      },
+      "native": {
+        "passed": 111,
+        "UNRUN": 124
+      }
+    },
+    "groups": {
+      "version-field-sources": {
+        "passed": 19
+      },
+      "host-authority": {
+        "passed": 18
+      },
+      "engineering-parameter-authority": {
+        "passed": 17
+      },
+      "assembly-definition-authority": {
+        "passed": 15
+      },
+      "finish-definition-authority": {
+        "passed": 14
+      },
+      "grid-definition-codec": {
+        "passed": 13
+      },
+      "grid-definition-authority": {
+        "passed": 13
+      },
+      "source-context": {
+        "passed": 8
+      },
+      "enclosure-definition-authority": {
+        "passed": 14
+      },
+      "model-vertex-ledger": {
+        "UNRUN": 7
+      },
+      "host-placement-definition": {
+        "UNRUN": 7
+      },
+      "application-closure": {
+        "UNRUN": 14
+      },
+      "placement-definition": {
+        "UNRUN": 15
+      },
+      "parameter-sources": {
+        "UNRUN": 11
+      },
+      "model-semantics-authority": {
+        "UNRUN": 12
+      },
+      "host-facts-authority": {
+        "UNRUN": 16
+      },
+      "model-sources": {
+        "UNRUN": 12
+      },
+      "section-profile-sources": {
+        "UNRUN": 9
+      },
+      "section-profile-authority": {
+        "UNRUN": 15
+      },
+      "contact-sources": {
+        "UNRUN": 12
+      },
+      "grid-sources": {
+        "UNRUN": 11
+      },
+      "derived-policy-graph-product": {
+        "UNRUN": 4
+      }
+    },
+    "stopped_reason": "first-shared-NativeBuild-setup-or-compile-failed",
+    "failure_details": [
+      {
+        "test": "setUpClass (tests.test_geo261_model_vertex_ledger.ModelVertexLedger)",
+        "subtest": null,
+        "classification": "native-compile-or-link-failure",
+        "exceptionType": "AssertionError",
+        "message": "Native compile/link failed (not a valid negative control):\n/tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-geo261_model_vertex_ledger_harness.c: In function ‘ledger_malformed_case’:\n/tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-geo261_model_vertex_ledger_harness.c:86:123: error: incompatible type for argument 3 of ‘model_source_evaluate’\n   86 |             CHECK(\"ledger-malformed-output-is-atomic\",!model_source_evaluate(&state,state.reference.sources,(GeoSourceRef){MODEL_SOURCE_PROVIDER,item->key,strlen(item->key)},&value)&&!memcmp(&value,&saved,sizeof value)&&!item->owned_vertex_keys&&(!item->vertex_keys||!item->vertex_keys[0]));\n      |                                                                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n      |                                                                                                                           |\n      |                                                                                                                           GeoSourceRef\n/tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-geo261_model_vertex_ledger_harness.c:10:30: note: in definition of macro ‘CHECK’\n   10 | #define CHECK(tag,c) do{if(!(c)){fprintf(stderr,\"ASSERT:%s\\n\",tag);return 1;}}while(0)\n      |                              ^\nIn file included from /tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-model_base.c:416,\n                 from /tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-geo261_model_vertex_ledger_harness.c:8:\n/tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-model_sources.inc:81:88: note: expected ‘const GeoSourceRef *’ but argument is of type ‘GeoSourceRef’\n   81 | static bool model_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSourceRef *ref,GeoSourceValue *out)\n      |                                                                    ~~~~~~~~~~~~~~~~~~~~^~~\n",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/suite.py\", line 166, in _handleClassSetUp\n    setUpClass()\n  File \"/var/tmp/geo261-focused-4aec7f42-successor276-v1/source/tests/test_geo261_model_vertex_ledger.py\", line 97, in setUpClass\n    cls.exe = cls.harness('baseline')\n              ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-4aec7f42-successor276-v1/source/tests/test_geo261_model_vertex_ledger.py\", line 88, in harness\n    client = build.compile(paths[originals[-1].resolve()], 'vertex-ledger-' + name, FLAGS)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/geo261-focused-4aec7f42-successor276-v1/source/tests/test_geo261_native_kernel.py\", line 179, in compile\n    self.run_build(args)\n  File \"/var/tmp/geo261-focused-4aec7f42-successor276-v1/source/tests/test_geo261_native_kernel.py\", line 165, in run_build\n    raise AssertionError(\"Native compile/link failed (not a valid negative control):\\n\" + run.stdout + run.stderr)\nAssertionError: Native compile/link failed (not a valid negative control):\n/tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-geo261_model_vertex_ledger_harness.c: In function ‘ledger_malformed_case’:\n/tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-geo261_model_vertex_ledger_harness.c:86:123: error: incompatible type for argument 3 of ‘model_source_evaluate’\n   86 |             CHECK(\"ledger-malformed-output-is-atomic\",!model_source_evaluate(&state,state.reference.sources,(GeoSourceRef){MODEL_SOURCE_PROVIDER,item->key,strlen(item->key)},&value)&&!memcmp(&value,&saved,sizeof value)&&!item->owned_vertex_keys&&(!item->vertex_keys||!item->vertex_keys[0]));\n      |                                                                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n      |                                                                                                                           |\n      |                                                                                                                           GeoSourceRef\n/tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-geo261_model_vertex_ledger_harness.c:10:30: note: in definition of macro ‘CHECK’\n   10 | #define CHECK(tag,c) do{if(!(c)){fprintf(stderr,\"ASSERT:%s\\n\",tag);return 1;}}while(0)\n      |                              ^\nIn file included from /tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-model_base.c:416,\n                 from /tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-geo261_model_vertex_ledger_harness.c:8:\n/tmp/geometry-tests/geo261-n1a-9al1ukwn/vertex-ledger-baseline-model_sources.inc:81:88: note: expected ‘const GeoSourceRef *’ but argument is of type ‘GeoSourceRef’\n   81 | static bool model_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSourceRef *ref,GeoSourceValue *out)\n      |                                                                    ~~~~~~~~~~~~~~~~~~~~^~~\n\n"
+      }
+    ],
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\focused-4aec7f42-successor276-v1\\result\\summary.json",
+    "sha256": "3442cb15c969f7bca2a8629ea597172e95b57049f4a0d74a2b2efdbb400e77b7",
+    "started": "2026-10-17T01:13:46.577480+00:00",
+    "finished": "2026-10-17T01:17:53.864710+00:00",
+    "compiler_commands": 293,
+    "build_artifact_count": 1049,
+    "artifact_preservation": {
+      "status": "complete",
+      "error": null
+    }
+  },
+  "watchdog": {
+    "status": "COMPLETED",
+    "timeout_seconds": 3600.0,
+    "receipt": "D:\\geometry-axiom-work\\geo261-evidence\\p1\\focused-4aec7f42-successor276-v1\\result\\watchdog.json",
+    "sha256": "01e7a044c7bd80053dbebe3b4c12497566e52577ec47c1c7e5bab43501d7c7a8",
+    "source_sha256": "3a0b43973d2eeb3fe4f64135e28e1f136c015c30c07b9ffe59a7aeb0988c2c99",
+    "group_cleanup_complete": true
+  },
+  "source_runner_gate_unchanged": true,
+  "original_test_and_compiler_timeouts_modified": false,
+  "prior_cross_SHA_evidence_combined": false,
+  "limits": "The declared scope is 22 modules / 276 planned unique methods; actual execution is recorded above and all later methods remain UNRUN after stop. No all-provider, full native, full run_all, PF3, native6, compatibility or browser claim. Prior failed and prior cross-SHA receipts remain separate."
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "stage": "kernel-only-common-objects",
+    "status": "PASS",
+    "started_utc": "2026-10-17T01:13:14.662407+00:00",
+    "finished_utc": "2026-10-17T01:13:16.793025+00:00"
+  },
+  {
+    "stage": "default-common-objects",
+    "status": "PASS",
+    "started_utc": "2026-10-17T01:13:16.805810+00:00",
+    "finished_utc": "2026-10-17T01:13:22.542231+00:00"
+  },
+  {
+    "stage": "actual-bridge-compile-link",
+    "status": "PASS",
+    "started_utc": "2026-10-17T01:13:22.554842+00:00",
+    "finished_utc": "2026-10-17T01:13:25.981805+00:00"
+  },
+  {
+    "stage": "actual-cli-compile-link",
+    "status": "PASS",
+    "started_utc": "2026-10-17T01:13:25.989280+00:00",
+    "finished_utc": "2026-10-17T01:13:28.149536+00:00"
+  },
+  {
+    "stage": "actual-model-base-compile-link",
+    "status": "PASS",
+    "started_utc": "2026-10-17T01:13:28.157121+00:00",
+    "finished_utc": "2026-10-17T01:13:31.638819+00:00"
+  }
+]
