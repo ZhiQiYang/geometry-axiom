@@ -167,3 +167,8 @@
 - #295 `ba94f0a7`:審查有阻擋(閱讀器沒同步,`test_axiom_reader` 會紅)與須改(M86 被 M05/M06 涵蓋);改修子代理被打斷。
 - #296 已合併(main 02baea2c):把 S6 🔒 紀錄補進 main。
 - Grok 在 `D:/geometry-axiom-work/grok-core-probe` 做看板任務 26(core-probe),分支 `feat/framing-core-probe-20261017`。
+
+## 8. 2026-10-18 01:30 狀態(使用者在玩遊戲,WSL 已關;遊戲後佇列見下)
+- 各分支 head:#251/#254 列車 f1fd146f(canvas 待排他重跑)、#253 e180a268、#293 baa81f61、#294 8361aad1、#295 60c0f298、#260 e7ed1b56(三輪審查通過，待使用者看稿)、#279 6c3dc6f4、#288 20cafb1f(採雲端樹 + 審查修正)、#297 c2d218c2(核心探針已實跑：容量 64 與 custom 優先級 2<N<3 無整數解兩個發現)。
+- 遊戲後 WSL 佇列(依序):①下角材班 canvas 重跑 ②#279 6c3dc6f4 22 模組(預期 278)③#279 存活證明 04916c6c(本機分支，未推)④#298 刷新到 #294 8361aad1、#295 60c0f298 → 帳本整份重產 → 七項 ⑤#288 20cafb1f:22 模組 + native_parameters 9 + 第 18 班 11 套 + bridge 突變 + run_all --build。
+- 決策紀錄已合併為單一份(`decisions/provisional-decisions-log.md`),本機原 P-161..163 改編 P-170..172,新增 P-173(#288 採雲端樹)、P-174(ledger 放 H、孔頂點修正隨 GEO-261,皆為定義推論)。
