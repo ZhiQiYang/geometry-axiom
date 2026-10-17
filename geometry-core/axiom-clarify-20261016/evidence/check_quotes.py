@@ -5,19 +5,27 @@ PROPOSAL.md quotes the text it wants to change ("改前") and cites where it liv
 time main moves (they already rotted once: a898ad6e -> c144c013, after the K/M/W/H layering).  This script
 re-derives the truth from the files instead of trusting the proposal.
 
-Labels it reads from PROPOSAL.md (one per quote, the quote is the block-quote lines right below it):
+Labels it reads from PROPOSAL.md.  For the first three kinds the quote is the block-quote lines right below:
 
-    改前(公理層.md D29 第 625 行):                          quote must be on exactly that line
+    改前(公理層.md D29 第 625 行):                          text to be replaced; must be on exactly that line
     改前(公理層.md R18 第 2078–2079 行):                    multi-line quote, first line ends / last line starts it
+    現況(公理層.md I23 第 1358 行):                         text that stays as it is, cited as evidence; same checks
     新增於(白話版 R18 第 743 行「只看外輪廓…」之後):         insertion anchor: that line must begin with the text
+    外部核對(43305271 geometry-core/kernel/grid_store.c 第 228 行「static bool geo_grid_axis_stagger_valid」):
+                                                            line N of <path> at <git rev> must contain the text
+    外部核對無(43305271 geometry-templates/rectangular-grid 不含「stagger|alternat」):
+                                                            `git grep -i -E <regex> <rev> -- <path>` must find nothing
+(a label line may carry a leading "- " so it can sit in a bullet list)
 
-Per label it asserts
+Per 改前 / 現況 quote it asserts
   1. the quote is a substring of the LF-normalised file   (公理層.md is stored CRLF on Windows: AGENTS.md)
-  2. the quote occurs exactly once, and its first/last line are the cited line numbers
-  3. the nearest clause header above that line is the cited clause (D29, I24, ...)
-  4. the 改後 block under a 改前 opens with the same text as the 改前 (same replacement span)
+  2. its first/last line are the cited line numbers; a 改前 quote must also occur exactly once in the file (a
+     replacement span that occurs twice cannot be applied unambiguously); a 現況 quote may repeat elsewhere
+  3. the nearest clause header above that line is the cited clause (D29, I24, ...); the report shows whether the
+     line sits in the K (core) or W (wood template) block
+  4. (改前 only) the 改後 block under it opens with the same text as the 改前 (same replacement span)
 and globally
-  5. every label is parseable, every 改前 has a quote, and no "第 N 行" citation lives outside a label
+  5. every label is parseable, every 改前/現況 has a quote, and no "第 N 行" citation lives outside a label
      (an unchecked citation is exactly how stale line numbers survive).
 
 A multi-line quote is matched with the source's leading indentation ignored on continuation lines, because a
@@ -27,6 +35,7 @@ Usage:
     python check_quotes.py                 check ../PROPOSAL.md against the repo this file lives in
     python check_quotes.py --proposal P    check another proposal text (used by the mutation demo)
     python check_quotes.py --root R        use another repo root
+    python check_quotes.py --skip-external do not run the git-based 外部核對 labels (they are reported as SKIP)
     python check_quotes.py --selftest      prove the checks have teeth (each injected defect must be caught)
 Exit code 0 only if every check passes.
 """
@@ -35,6 +44,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -54,10 +64,14 @@ HEADER_RE = {
 }
 SCOPE_RE = re.compile(r"^[^\n：]{0,24}契約（([KWMH])）：")
 
+LABEL_START_RE = re.compile(r"^(?:- )?(?:改前|現況|新增於|外部核對)")
 LABEL_RE = re.compile(
-    r"^(改前|新增於)\((公理層\.md|白話版) ([DIR]\d+[a-z]?) 第 (\d+)(?:[–-](\d+))? 行(?:「([^」]*)」之後)?\):$"
+    r"^(改前|現況|新增於)\((公理層\.md|白話版) ([DIR]\d+[a-z]?) 第 (\d+)(?:[–-](\d+))? 行(?:「([^」]*)」之後)?\):$"
 )
+EXT_LINE_RE = re.compile(r"^外部核對\(([0-9a-f]{7,40}) (\S+) 第 (\d+) 行「([^」]+)」\):$")
+EXT_NONE_RE = re.compile(r"^外部核對無\(([0-9a-f]{7,40}) (\S+) 不含「([^」]+)」\):$")
 LINE_CITATION_RE = re.compile(r"第\s*\d+\s*(?:[–-]\s*\d+\s*)?行")
+QUOTE_KINDS = ("改前", "現況")
 
 
 def norm(raw: bytes) -> str:
@@ -85,49 +99,62 @@ def parse_quote_block(lines: list[str], start: int) -> tuple[list[str], int]:
 
 
 def parse_proposal(text: str):
-    """-> (items, problems).  item = dict(kind,file,clause,a,b,prefix,quote,after,label_line)"""
+    """-> (items, problems).  item = dict(kind,...) ; kinds: 改前 現況 新增於 外部行 外部無"""
     lines = text.split("\n")
     items, problems = [], []
     label_line_idx = set()
-    for idx, line in enumerate(lines):
-        if not re.match(r"^(改前|新增於)", line):
+    for idx, raw in enumerate(lines):
+        if not LABEL_START_RE.match(raw):
             continue
+        line = raw[2:] if raw.startswith("- ") else raw
         m = LABEL_RE.match(line)
-        if not m:
-            problems.append(f"PROPOSAL.md:{idx + 1}: unparseable label {line!r}")
-            continue
-        kind, f, clause, a, b, prefix = m.groups()
-        a = int(a)
-        b = int(b) if b else a
-        label_line_idx.add(idx)
-        qlines, nxt = parse_quote_block(lines, idx + 1)
-        item = dict(kind=kind, file=f, clause=clause, a=a, b=b, prefix=prefix, quote=qlines,
-                    after=None, label_line=idx + 1, label=line)
-        if kind == "改前":
-            if not qlines or not any(q.strip() for q in qlines):
-                problems.append(f"PROPOSAL.md:{idx + 1}: 改前 label has no block-quote below it")
-            # the 改後 block that belongs to it: next '改後:' before the next label / heading
-            j = nxt
-            while j < len(lines):
-                if lines[j] == "改後:":
-                    item["after"], _ = parse_quote_block(lines, j + 1)
-                    break
-                if re.match(r"^(改前|新增於)\(", lines[j]) or lines[j].startswith("#"):
-                    break
-                j += 1
-            if item["after"] is None:
-                problems.append(f"PROPOSAL.md:{idx + 1}: 改前 label has no 改後 block")
-        else:
-            if prefix is None:
+        if m:
+            kind, f, clause, a, b, prefix = m.groups()
+            a = int(a)
+            b = int(b) if b else a
+            label_line_idx.add(idx)
+            qlines, nxt = parse_quote_block(lines, idx + 1)
+            item = dict(kind=kind, file=f, clause=clause, a=a, b=b, prefix=prefix, quote=qlines,
+                        after=None, label_line=idx + 1, label=line)
+            if kind in QUOTE_KINDS:
+                if not qlines or not any(q.strip() for q in qlines):
+                    problems.append(f"PROPOSAL.md:{idx + 1}: {kind} label has no block-quote below it")
+            if kind == "改前":
+                # the 改後 block that belongs to it: next '改後:' before the next label / heading
+                j = nxt
+                while j < len(lines):
+                    if lines[j] == "改後:":
+                        item["after"], _ = parse_quote_block(lines, j + 1)
+                        break
+                    if LABEL_START_RE.match(lines[j]) or lines[j].startswith("#"):
+                        break
+                    j += 1
+                if item["after"] is None:
+                    problems.append(f"PROPOSAL.md:{idx + 1}: 改前 label has no 改後 block")
+            if kind == "新增於" and prefix is None:
                 problems.append(f"PROPOSAL.md:{idx + 1}: 新增於 label needs 「anchor text…」之後")
-        items.append(item)
+            items.append(item)
+            continue
+        m = EXT_LINE_RE.match(line)
+        if m:
+            label_line_idx.add(idx)
+            items.append(dict(kind="外部行", rev=m.group(1), path=m.group(2), a=int(m.group(3)), text=m.group(4),
+                              label_line=idx + 1, label=line))
+            continue
+        m = EXT_NONE_RE.match(line)
+        if m:
+            label_line_idx.add(idx)
+            items.append(dict(kind="外部無", rev=m.group(1), path=m.group(2), rx=m.group(3),
+                              label_line=idx + 1, label=line))
+            continue
+        problems.append(f"PROPOSAL.md:{idx + 1}: unparseable label {raw!r}")
     for idx, line in enumerate(lines):
         if idx in label_line_idx:
             continue
         for m in LINE_CITATION_RE.finditer(line):
             problems.append(
                 f"PROPOSAL.md:{idx + 1}: line citation {m.group(0)!r} outside a label is never checked; "
-                f"move it into a 改前(...)/新增於(...) label or drop the number"
+                f"move it into a label (改前/現況/新增於/外部核對) or drop the number"
             )
     return items, problems
 
@@ -166,22 +193,58 @@ def scope_above(src_lines: list[str], line_no: int, header_line: int | None) -> 
     return "-"
 
 
-def check(proposal_text: str, ssot: dict[str, str]):
-    """-> list of (ok, name, detail)"""
-    results: list[tuple[bool, str, str]] = []
+def git(root: Path, *args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", "-C", str(root), *args], capture_output=True)
+
+
+def check_external(it: dict, root: Path) -> tuple[bool, str]:
+    rev, path = it["rev"], it["path"]
+    if git(root, "cat-file", "-e", rev + "^{commit}").returncode != 0:
+        return False, f"cannot resolve {rev} in {root} (run `git fetch origin` first)"
+    if it["kind"] == "外部行":
+        p = git(root, "show", f"{rev}:{path}")
+        if p.returncode != 0:
+            return False, f"git show {rev}:{path} failed: {p.stderr.decode('utf-8', 'replace').strip()[:120]}"
+        lines = norm(p.stdout).split("\n")
+        n = it["a"]
+        if not (1 <= n <= len(lines)):
+            return False, f"line {n} is outside {path} at {rev} ({len(lines)} lines)"
+        if it["text"] not in lines[n - 1]:
+            return False, f"line {n} of {path} at {rev} does not contain {it['text']!r} (it is {lines[n - 1][:60]!r})"
+        return True, f"{path}:{n} at {rev} contains the cited text"
+    p = git(root, "grep", "-n", "-i", "-E", it["rx"], rev, "--", path)
+    if p.returncode == 1:
+        return True, f"git grep -i -E found nothing under {path} at {rev}"
+    if p.returncode == 0:
+        hits = p.stdout.decode("utf-8", "replace").strip().split("\n")
+        return False, f"{len(hits)} hit(s) under {path} at {rev}, first: {hits[0][:100]!r}"
+    return False, f"git grep failed: {p.stderr.decode('utf-8', 'replace').strip()[:120]}"
+
+
+def check(proposal_text: str, ssot: dict[str, str], root: Path = DEFAULT_ROOT, skip_external: bool = False):
+    """-> (list of (status, name, detail), items); status is PASS / FAIL / SKIP"""
+    results: list[tuple[str, str, str]] = []
     items, problems = parse_proposal(proposal_text)
     for p in problems:
-        results.append((False, "structure", p))
+        results.append(("FAIL", "structure", p))
     if not items:
-        results.append((False, "structure", "no 改前/新增於 label found in PROPOSAL.md"))
+        results.append(("FAIL", "structure", "no label found in PROPOSAL.md"))
     src_lines_by_file = {k: v.split("\n") for k, v in ssot.items()}
     for it in items:
+        if it["kind"] in ("外部行", "外部無"):
+            name = f"{it['kind'].replace('外部', '外部核對')} {it['rev']} {it['path']}" + (f":{it['a']}" if it["kind"] == "外部行" else "")
+            if skip_external:
+                results.append(("SKIP", name, "--skip-external"))
+                continue
+            ok, detail = check_external(it, root)
+            results.append(("PASS" if ok else "FAIL", name, detail))
+            continue
         name = f"{it['kind']} {it['file']} {it['clause']} L{it['a']}" + (f"-{it['b']}" if it["b"] != it["a"] else "")
         text = ssot[it["file"]]
         sl = src_lines_by_file[it["file"]]
         problems_here: list[str] = []
         detail = ""
-        if it["kind"] == "改前":
+        if it["kind"] in QUOTE_KINDS:
             q = it["quote"]
             quote = "\n".join(q)
             multi = len(q) > 1
@@ -194,13 +257,17 @@ def check(proposal_text: str, ssot: dict[str, str]):
                 problems_here.append("quote is NOT a substring of the current file (LF-normalised)")
             else:
                 hits = locate(sl, q, strip=(mode == "indent-stripped"))
-                if len(hits) != 1:
+                cited = (it["a"], it["b"])
+                if it["kind"] == "改前" and len(hits) != 1:
+                    # a replacement span that occurs twice cannot be applied unambiguously
                     problems_here.append(f"quote must occur exactly once, found {len(hits)} at {hits}")
-                elif hits[0] != (it["a"], it["b"]):
-                    problems_here.append(f"quote is at lines {hits[0][0]}-{hits[0][1]}, label says {it['a']}-{it['b']}")
+                elif cited not in hits:
+                    where = ", ".join(f"{h[0]}-{h[1]}" for h in hits)
+                    problems_here.append(f"quote is at lines {where}, label says {it['a']}-{it['b']}")
                 else:
-                    detail = f"mode={mode}"
-            if it["after"] is not None and q and it["after"]:
+                    others = [h for h in hits if h != cited]
+                    detail = f"mode={mode}" + (f" (evidence quote; also occurs at {others})" if others else "")
+            if it["kind"] == "改前" and it["after"] is not None and q and it["after"]:
                 if q[0][:8] != it["after"][0][:8]:
                     problems_here.append(f"改後 opens {it['after'][0][:8]!r} but 改前 opens {q[0][:8]!r}: not the same replacement span")
         else:  # 新增於 anchor
@@ -224,9 +291,9 @@ def check(proposal_text: str, ssot: dict[str, str]):
         else:
             problems_here.append(f"line {it['a']} is outside the file ({len(sl)} lines)")
         if problems_here:
-            results.append((False, name, "; ".join(problems_here)))
+            results.append(("FAIL", name, "; ".join(problems_here)))
         else:
-            results.append((True, name, detail.strip()))
+            results.append(("PASS", name, detail.strip()))
     return results, items
 
 
@@ -235,19 +302,22 @@ def report(results, items, ssot, out=sys.stdout) -> bool:
         h = hashlib.sha256(ssot[key].encode("utf-8")).hexdigest()[:16]
         print(f"# {key}: {len(ssot[key].split(chr(10)))} lines (LF-normalised), sha256 {h}...", file=out)
     ok_all = True
-    for ok, name, detail in results:
-        ok_all &= ok
-        print(f"{'PASS' if ok else 'FAIL'}  {name}  {detail}", file=out)
-    n_q = sum(1 for i in items if i["kind"] == "改前")
-    n_a = sum(1 for i in items if i["kind"] == "新增於")
-    bad = sum(1 for r in results if not r[0])
-    print(f"# {n_q} quotes + {n_a} anchors checked, {bad} failure(s)", file=out)
+    for status, name, detail in results:
+        ok_all &= status != "FAIL"
+        print(f"{status}  {name}  {detail}", file=out)
+    kinds = {}
+    for i in items:
+        kinds[i["kind"]] = kinds.get(i["kind"], 0) + 1
+    bad = sum(1 for r in results if r[0] == "FAIL")
+    skipped = sum(1 for r in results if r[0] == "SKIP")
+    print(f"# checked {', '.join(f'{v} {k}' for k, v in kinds.items())}; {bad} failure(s)"
+          + (f", {skipped} skipped" if skipped else ""), file=out)
     return ok_all
 
 
-def selftest(proposal_text: str, ssot: dict[str, str]) -> bool:
-    base, _ = check(proposal_text, ssot)
-    if not all(r[0] for r in base):
+def selftest(proposal_text: str, ssot: dict[str, str], root: Path) -> bool:
+    base, _ = check(proposal_text, ssot, root)
+    if any(r[0] != "PASS" for r in base):
         print("selftest: baseline is not green, fix that first")
         return False
 
@@ -260,16 +330,21 @@ def selftest(proposal_text: str, ssot: dict[str, str]) -> bool:
         ("one char of a 公理層.md quote changed (D29)", mutate("格線身分為（系統", "格線身份為（系統"), "改前 公理層.md D29"),
         ("one char of a 白話版 quote changed (I5)", mutate("矩形的四條邊也不能跟", "矩形的四條邊也不可跟"), "改前 白話版 I5"),
         ("second line of the two-line R18 quote changed", mutate("（邊界主支為真）但 coversEdge 恆為假（兩端", "（邊界主支為真）但 coversEdge 恆為假（雙端"), "改前 公理層.md R18"),
+        ("one char of a K-block quote changed (D10b K)", mutate("沒有 band 的單一位置若不唯一即拒絕。", "沒有 band 的單一位置若不唯一即拒決。"), "改前 公理層.md D10b"),
+        ("one char of a clause-title quote changed (I23)", mutate("> I23 網格引用的追溯與重算（2026-09-18 目的翻轉（分層契約）：", "> I23 網格引用的追溯與重算（2026-09-18 目的翻轉（分層合約）："), "改前 公理層.md I23"),
+        ("one char of a 現況 quote changed (R13 W lines)", mutate("「資料跟材料走」):", "「資料跟材料走」)；"), "現況 公理層.md R13"),
         ("line number off by one (I24 1385 -> 1386)", mutate("I24 第 1385 行", "I24 第 1386 行"), "改前 公理層.md I24"),
         ("right line, wrong clause (R22 cited as I24)", mutate("R22 第 2128 行", "I24 第 2128 行"), "改前 公理層.md I24 L2128"),
         ("insertion anchor text wrong", mutate("「band 的切開用另一軸未加相位差的格線…」", "「band 的切開用另一軸未加相位差的格網…」"), "新增於 公理層.md D10b"),
         ("unchecked line citation smuggled in", proposal_text + "\n(見公理層.md 第 625 行)\n", "structure"),
         ("改後 no longer opens like 改前 (prefix drift)", mutate("改後:\n> 相位差守門：", "改後:\n> I24 相位差守門："), "改前 公理層.md I24"),
+        ("外部核對 cited text wrong (kernel grid_store)", mutate("「static bool geo_grid_axis_stagger_valid」", "「static bool geo_grid_axis_stagger_validx」"), "外部核對行 43305271"),
+        ("外部核對無 regex made to match something real", mutate("不含「stagger|", "不含「geo_interval_subdivide|stagger|"), "外部核對無 43305271"),
     ]
     all_caught = True
     for desc, mutated, expect in cases:
-        res, _ = check(mutated, ssot)
-        failed = [r for r in res if not r[0]]
+        res, _ = check(mutated, ssot, root)
+        failed = [r for r in res if r[0] == "FAIL"]
         caught = any(expect in r[1] for r in failed)
         all_caught &= caught
         print(f"{'CAUGHT ' if caught else 'MISSED '} {desc}")
@@ -285,13 +360,14 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--proposal", type=Path, default=DEFAULT_PROPOSAL)
     ap.add_argument("--root", type=Path, default=DEFAULT_ROOT)
+    ap.add_argument("--skip-external", action="store_true")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
     ssot = load_ssot(args.root)
     proposal_text = norm(args.proposal.read_bytes())
     if args.selftest:
-        return 0 if selftest(proposal_text, ssot) else 1
-    results, items = check(proposal_text, ssot)
+        return 0 if selftest(proposal_text, ssot, args.root) else 1
+    results, items = check(proposal_text, ssot, args.root, args.skip_external)
     return 0 if report(results, items, ssot) else 1
 
 
