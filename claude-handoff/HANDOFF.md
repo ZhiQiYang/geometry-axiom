@@ -36,7 +36,7 @@
 | #253 GEO-262 B1/B2 整卡引用 | `feat/card-reference-core-20261015` / `33e655d6` | 已合 main c76737ec;卡片年代分三段:現行版本與 b3c79615 可帶整卡，更早的 19 組拒絕 | 與 #294、#295 同一班。突變帳本要整份重產，要跑到新的 M78–M87;另跑 `run_axiom_mutations.py`(V01–V05)、`run_mutations.py`(53 個自訂突變)、七項 |
 | #293 回執封存項容量(Fixes #264) | `fix/receipt-tombstone-capacity-20261017` / `6d5bb03c` | opus 審查無阻擋;作者正在補 2 個測試、修契約第 11、20 行與 PR body | 補完後確認新測試讓審查員的突變 M8b/M7b 轉紅，再上列車 |
 | #294 突變判決誠實性(看板任務 32) | `fix/mutation-bridge-crash-honesty-20261017` / `3adc84ff` | opus 審查中;合併後 tool 雜湊變更，64 筆全 stale | 審查意見處理完，併進 #253 那班 |
-| #295 S1/S7 核心場景(看板任務 29) | `test/s1-s7-core-scenes-20261017` / `46eac230`(作者正把 M78/M79 改號為 M86/M87) | opus 審查中;預期值是讀程式推的，**沒有原生實跑** | 原生實跑核對 7 個場景;併進 #253 那班 |
+| #295 S1/S7 核心場景(看板任務 29) | `test/s1-s7-core-scenes-20261017` / `ba94f0a7`(突變已改號為 M86/M87;與 #253 都改 `tests/mutate.py` 尾端與 `core:run_tests` 計數，後進者要解衝突並合計) | opus 審查中;預期值是讀程式推的，**沒有原生實跑** | 原生實跑核對 7 個場景;併進 #253 那班 |
 | #260 條文稿(給使用者看) | `proposal/stagger-one-axis-wording-20261016` / `3a524bd5`(作者還在加 commit) | A 區:「只准一軸」🔒,放 K 段，見 P-160。B 區:I5、R18 措辭。C 區:I23、R13 標題。D 區:Q-E 用詞。`evidence/check_quotes.py` 逐字驗引文 | 待最新 commit:K 段不得引用 W 段;白話版同步;D 區。之後派 opus 審查，**交使用者看稿**,不得自行採納 |
 | GEO-261 #279 原生來源圖 | `architecture/geo261-native-source-graph-20261016` / `96e06218` | 修了 `tests/geo261_model_vertex_ledger_harness.c:86` 改傳指標，這是讓 145 項沒跑的編譯錯誤 | 22 個模組 276 項重跑。WSL 已排隊，交接時還沒輪到;模組清單見 `tools/focused-modules.txt` |
 | GEO-261 #288 整合 | `architecture/geo261-integration-20261016` / `43305271` | 子代理正在把 main c144c013(第 18 班 #193 參數重宣告、#266 終版)合進來，是最高風險的移植，必讀 `tools/incoming-train18-overlap.md`;也會一併合進 96e06218 | 檢查遠端是否已推新 head;沒推就自己重做 |
