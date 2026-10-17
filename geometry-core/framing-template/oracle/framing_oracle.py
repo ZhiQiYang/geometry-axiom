@@ -18,7 +18,7 @@
   G4 RC 邊界一律有角材(側面固定在 RC 上)。其他角材的端面只頂角材,不頂 RC。
      與主支平行的柱面,其角材沿線延伸到兩端的牆,成為連續的支,讓兩側的副支都有角材可頂。
      與主支平行的外牆在凹角處(牆線越過牆端仍是室內:L 形內角、壁柱、壁龕)停在牆端,
-     改由凹角另一面的邊界材越過凹角延伸,停在最近的主支側面,沿牆料的端面頂在這段延伸上。
+     改由凹角另一面的邊界材越過凹角延伸,停在路上第一支角材的側面(主支、沿牆料或另一支邊界材;核心 I22 允許延伸段端面頂任何優先級的側面),沿牆料的端面頂在這段延伸上。
      這是核心 I22 / R19(e) 唯一接受的表示法(2026-10-16 P-145,原生探針 p1–p9):
      非 boundary 角材不得超出它貼的外牆;延伸段側面以優先級 2 計,主支不得頂它,
      所以頂在延伸段上的沿牆料核心角色是 custom、優先級 3;主支端面落在延伸段上的排法判衝突。
@@ -252,7 +252,7 @@ def build(room, layout, p, mut=frozenset()):
     # 與主支平行的 RC 面(G4)。
     # 牆與柱:沿線延伸,直到頂到邊界材或牆,讓兩側的副支都有角材可頂。
     # 外牆在凹角(該牆線越過牆端仍是室內)處停在牆端:核心 I22 不准非 boundary 角材超出它貼的那條外牆,
-    # 所以改由凹角另一面的邊界材越過凹角延伸,停在最近的主支側面(R19(e)),沿牆料的端面頂在這段延伸上。
+    # 所以改由凹角另一面的邊界材越過凹角延伸,停在路上第一支角材的側面(I22 允許頂任何優先級;R19(e) 的主支只是一例),沿牆料的端面頂在這段延伸上。
     # 頂在延伸段上的沿牆料,核心角色要用 custom、優先級 3(I22:延伸段側面以優先級 2 計,主支不得頂它)。
     bprims = []
     seen = set()
@@ -293,6 +293,9 @@ def build(room, layout, p, mut=frozenset()):
     # 碰到 RC:主支線碰到壁柱或獨立柱就停在那裡,分成幾段;每段兩端都接到 RC——外牆與壁柱停在它們的
     #   邊界材側面,獨立柱停在柱面(柱面的角材在主支兩側分段)。這就是「連續傳到 RC」;
     #   只有在室內中間斷開去接別的角材才不行(使用者 2026-10-14 第 3 題、2026-10-16)。
+    if lo_h - gl < X or hi_h - gu < X:
+        conflicts.append(dict(code="MAIN_BEARING_IMPOSSIBLE",
+                              why=f"一支 {w} mm 的主支置中在 {g} mm 的縫上,兩側承接只有 {lo_h - gl}/{hi_h - gu} mm,不到 {X} mm"))
     allow_lo = lo_h - gl - X  # 往 + 平移的上限:- 側板邊承接仍 >= X
     allow_hi = hi_h - gu - X  # 往 - 平移的上限:+ 側板邊承接仍 >= X
     mains, doublings = [], []
@@ -597,6 +600,15 @@ def build(room, layout, p, mut=frozenset()):
         for lo, hi, role, at in sorted(sups):
             add("secondary", mk(a, (sr["g0"], sr["g1"]), (lo, hi)), at=at, role=role, span=[tid, uid])
         marks_out.append(dict(span=[tid, uid], b_range=[sr["sb0"], sr["sb1"]], supports=[list(s) for s in sorted(sups)]))
+    if "drop_mark_row_at_column" in mut and room.get("holes"):
+        hb = [(min(q[b] for q in h) + max(q[b] for q in h)) / 2 for h in room["holes"]]
+        marks_ = [t_ for t_ in timbers if t_["kind"] == "secondary" and t_.get("role") == "mark"]
+        if marks_:
+            target = min({t_["at"] for t_ in marks_}, key=lambda v: min(abs(v - c) for c in hb))
+            for t_ in [t_ for t_ in marks_ if t_["at"] == target]:
+                timbers.remove(t_)
+            for i_, t_ in enumerate(timbers):
+                t_["id"] = i_
     if "one_sided_delete" in mut and mains:
         m0 = rng(mains[0]["rect"], a)
         right = [t_ for t_ in timbers if t_["kind"] == "secondary" and t_.get("role") == "mark" and rng(t_["rect"], a)[0] == m0[1]]
@@ -710,17 +722,20 @@ def check(res, p):
                     rest = leftover(band(seg), T)
                     if rest:
                         fails.append(dict(check="C3_EDGE_UNSUPPORTED", band=list(band(seg)), gap=list(rest[0])))
-    # C4 副支間距:沿 B 軸,角材之間的空檔 <= M - w
-    for cell, qs in by_cell.items():
-        for q in qs:
-            ar, br = rng(q, a), rng(q, b)
-            edges = sorted({ar[0], ar[1]} | {v for t in T for v in rng(t, a) if ar[0] < v < ar[1]})
-            for u0, u1 in zip(edges, edges[1:]):
-                um = (u0 + u1) / 2
-                if any(rng(t, a)[0] < um < rng(t, a)[1] and rng(t, b)[0] <= br[0] and rng(t, b)[1] >= br[1] for t in T):
+    # C4 副支間距:沿 B 軸,角材之間的空檔 <= M - w。
+    #    沿室內「整段連續」的區間量(reg.section),不先依輪廓/孔頂點切塊:否則跨過柱或凹角座標的超限空檔
+    #    會被切成幾段短的而漏抓(#251 審查 6daa997a 的反例:5000×4000 房、柱 [2415,2715]×[3000,3300]、板長沿 X)。
+    for cell in by_cell:
+        ar, br = rng(cell, a), rng(cell, b)
+        edges = sorted({ar[0], ar[1]} | {v for t in T for v in rng(t, a) if ar[0] < v < ar[1]}
+                       | {v for v in reg.coords[a] if ar[0] < v < ar[1]})
+        for u0, u1 in zip(edges, edges[1:]):
+            um = (u0 + u1) / 2
+            for s0, s1 in iv_intersect(reg.section(a, um), [br]):
+                if any(rng(t, a)[0] < um < rng(t, a)[1] and rng(t, b)[0] <= s0 and rng(t, b)[1] >= s1 for t in T):
                     continue  # 這一段被一支 B 向角材整段蓋住
                 cov = [rng(t, b) for t in T if rng(t, a)[0] < um < rng(t, a)[1]]
-                for f0, f1 in iv_subtract([br], cov):
+                for f0, f1 in iv_subtract([(s0, s1)], cov):
                     if f1 - f0 > M - w:
                         fails.append(dict(check="C4_SPACING", at=[um, f0, f1], free=f1 - f0))
     # C5 主支(G3):每條縫的主支段把整條縫線蓋滿(只有 RC 與外牆邊界材處可以斷);
