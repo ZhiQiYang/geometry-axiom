@@ -1,0 +1,20 @@
+✔ panel zero label uses effective phase while clicking still edits the raw anchor (5.437263ms)
+✔ unshifted lines remain continuous with unchanged schematic geometry (1.793568ms)
+✔ u signed stagger -60001 retains even and negative/positive odd bands (1.200637ms)
+✔ u signed stagger 60001 retains even and negative/positive odd bands (3.192796ms)
+✔ v signed stagger -60001 retains both band parities (1.162482ms)
+✔ v signed stagger 60001 retains both band parities (0.849878ms)
+✔ legal near-limit signed stagger keeps visible lines and bounded work (2.558544ms)
+✔ both shifted axes still cut segments at the other axis unshifted band boundaries (1.168861ms)
+✔ accepted unknown axis raw requires explicit reselection without invented geometry or prototype lookup failures (17.527456ms)
+✔ all-empty recoverable raw reports mode and direction errors instead of an unset-axis or valid-definition message (5.060312ms)
+✔ unknown main direction cannot label otherwise valid axes as main or secondary (4.242885ms)
+✔ explicit mode reselection restores existing repeat panel and none presentation without normalizing other raw fields (5.697232ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 140.02781

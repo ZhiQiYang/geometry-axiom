@@ -1,0 +1,29 @@
+✔ rejects missing both records (3.770934ms)
+✔ rejects missing native record (1.291851ms)
+✔ rejects missing local record (1.03208ms)
+✔ rejects failed native read (0.909648ms)
+✔ rejects unpersisted native coordinates (20.165732ms)
+✔ rejects unpositioned local record (19.504217ms)
+✔ rejects nonfinite native coordinate (0.939971ms)
+✔ rejects nonfinite local coordinate (1.1509ms)
+✔ rejects wrong native identity (2.35331ms)
+✔ first native position may settle from unpersisted to persisted (3.092712ms)
+✔ local position may settle after native persistence (3.141717ms)
+✔ unchanged native position cannot be replaced by optimistic local movement (20.018651ms)
+✔ waits for the same native move and then the local copy to converge (4.617864ms)
+✔ one-axis native movement is a valid persisted commit (1.15877ms)
+✔ deadline bounds an unresolved read without retrying it (15.311415ms)
+✔ a read that completes beyond deadline is never accepted (5.711074ms)
+✔ zero deadline issues no read (0.30547ms)
+✔ evaluation rejection remains an error instead of becoming a commit (0.641308ms)
+✔ requires finite prior positions and bounded timing arguments (0.248713ms)
+✔ all typed native lists and boundary identity are read through real expressions (6.422639ms)
+✔ merge preserves exact history-step helper and its browser identity oracle (1.3016ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 249.852028

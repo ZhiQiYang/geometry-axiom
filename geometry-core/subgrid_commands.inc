@@ -8,23 +8,30 @@ static bool grid_cell_ref_parse(const char *s,int *out)
     *out=(int)n; return true;
 }
 
+static bool subgrid_divisions_parse(const char *token,uint32_t *value,uint32_t id,uint32_t parent,int axis,char *detail,size_t cap)
+{
+    if(parse_u32(token,value)) return true;
+    snprintf(detail,cap,"D19/I25: subgrid %u parent %u divisions %c=%.80s must be a uint32 integer (I25 range 1..65)",id,parent,axis?'v':'u',token);
+    return false;
+}
+
 static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,World *world)
 {
-    ReferenceGrid candidate={0}; uint32_t du,dv;
+    ReferenceGrid candidate={0}; uint32_t du,dv; char detail[256]="";
     bool header=count>=5 && parse_u32(t[1],&candidate.id) && !strcmp(t[2],"parent") &&
         parse_u32(t[3],&candidate.parent_id);
     bool lattice=header && !strcmp(t[4],"lattice-cell");
     bool valid=header && (lattice ?
         (count==12 && parse_i64(t[5],&candidate.lattice_cell_index[0]) &&
             parse_i64(t[6],&candidate.lattice_cell_index[1]) && !strcmp(t[7],"divisions") &&
-            !strcmp(t[8],"u") && parse_u32(t[9],&du) && !strcmp(t[10],"v") && parse_u32(t[11],&dv)) :
+            !strcmp(t[8],"u") && subgrid_divisions_parse(t[9],&du,candidate.id,candidate.parent_id,0,detail,sizeof detail) && !strcmp(t[10],"v") && subgrid_divisions_parse(t[11],&dv,candidate.id,candidate.parent_id,1,detail,sizeof detail)) :
         (count==16 && !strcmp(t[4],"cell") && !strcmp(t[5],"u") &&
             grid_cell_ref_parse(t[6],&candidate.cell_ref[0][0]) && grid_cell_ref_parse(t[7],&candidate.cell_ref[0][1]) &&
             !strcmp(t[8],"v") && grid_cell_ref_parse(t[9],&candidate.cell_ref[1][0]) &&
             grid_cell_ref_parse(t[10],&candidate.cell_ref[1][1]) && !strcmp(t[11],"divisions") &&
-            !strcmp(t[12],"u") && parse_u32(t[13],&du) && !strcmp(t[14],"v") && parse_u32(t[15],&dv)));
+            !strcmp(t[12],"u") && subgrid_divisions_parse(t[13],&du,candidate.id,candidate.parent_id,0,detail,sizeof detail) && !strcmp(t[14],"v") && subgrid_divisions_parse(t[15],&dv,candidate.id,candidate.parent_id,1,detail,sizeof detail)));
     if (!valid) {
-        scene_error(path,line_no,"D19/I25: subgrid id parent id cell u lo hi v lo hi divisions u NU v NV; lattice parent uses lattice-cell I J divisions u NU v NV");
+        scene_error(path,line_no,detail[0]?detail:"D19/I25: subgrid id parent id cell u lo hi v lo hi divisions u NU v NV; lattice parent uses lattice-cell I J divisions u NU v NV");
         return false;
     }
     ReferenceGrid *existing=world_find_grid_mut(world,candidate.id);

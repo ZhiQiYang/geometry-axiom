@@ -1,0 +1,17 @@
+✔ held operation locks grid mutations without borrowing lesson controls or admitting a second operation (11.214185ms)
+✔ same-owner operation failures restore original grid bits and preserve raw input (5.655783ms)
+✔ successful owner replacement cannot carry disabled lesson nodes or unlock the new owner (3.633705ms)
+✔ project save locking is idempotent and restores only its owned controls after the lesson moves (2.417052ms)
+✔ retiring a project-save owner leaves replacement raw and locks unchanged (1.191775ms)
+✔ held confirmation admission waits for the result and connection, then preserves rejected raw (3.052614ms)
+✔ recovered native commit replaces the held owner without locking the shared lesson or releasing new controls (3.28314ms)
+✔ a replacement during held recovery read prevents old reveal or reopen and preserves new raw (3.25444ms)
+✔ orphan restrictions keep raw mutations locked and Discard available without disabling the shared lesson on repeat sync (6.809673ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 118.602006

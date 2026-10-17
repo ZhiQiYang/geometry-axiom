@@ -1,0 +1,441 @@
+{
+  "head": "fc4859bb2bddb3dcb343e66c7d895802e70cbee3",
+  "binary": "/tmp/geometry-198-review2/comparison/previous-bridge",
+  "binary_sha256": "ed6cb964200ecf802f72d840b96efb7c2b81c0cc5b1f295616411d1faab7c7df",
+  "cases": [
+    {
+      "name": "B1",
+      "fixture": [
+        {
+          "command": "line reset",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line column 1 at 45 0 size 10 40 z 0 100",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line column 2 at 30 50 size 30 30 z 0 100",
+          "response": {
+            "ok": true
+          }
+        }
+      ],
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "split",
+            "rect": [
+              45,
+              0,
+              55,
+              40
+            ]
+          },
+          {
+            "id": 2,
+            "type": "column",
+            "cls": "notch",
+            "rect": [
+              30,
+              50,
+              40,
+              80
+            ]
+          }
+        ]
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 45 0 size 10 40 z 0 100\ncolumn 2 at 30 50 size 30 30 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 14,
+        "definition_sha256": "a70cc64c2ee0ff1f10d8159a261838e0365731687e29447bf4893941174e814f"
+      },
+      "command": "apply-proj 1 c1 c2",
+      "result": {
+        "ok": true
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 100,0 100,100 60,100 60,40 55,40 55,0\nboundary 2 outline 45,40 40,40 40,50 30,50 30,80 40,80 40,100 0,100 0,0 45,0\nboundary 3 outline 45,0 55,0 55,40 45,40\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 0 u +x v +y\ncolumn 1 at 45 0 size 10 40 z 0 100\ncolumn 2 at 30 50 size 30 30 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 15,
+        "definition_sha256": "91922db85241b6167a2ef675cc8acdcef4f1bcbcf9bbe504d07668e8e0e8b00d"
+      },
+      "dump_equal": false,
+      "bridge_returncode": 0
+    },
+    {
+      "name": "B1-strip",
+      "fixture": [
+        {
+          "command": "line reset",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line surface 1 origin 0 0 100 u +x v +y outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line beam 2 along x from 30 to 60 at 65 width 30 depth 10 top 100",
+          "response": {
+            "ok": true
+          }
+        }
+      ],
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 2,
+            "type": "beam",
+            "cls": "strip",
+            "rect": [
+              30,
+              50,
+              60,
+              80
+            ]
+          }
+        ]
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 100 u +x v +y\nbeam 2 along x from 30 to 60 at 65 width 30 depth 10 top 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 13,
+        "definition_sha256": "75b3892760a7bfc53323fdb98c6bf516ce5ecfe73a74c330721d3983b7548a2b"
+      },
+      "command": "apply-proj 1 b2 cut-strip",
+      "result": {
+        "ok": true
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,50 30,50 30,80 40,80 40,100 0,100\nboundary 2 outline 0,0 30,0 30,30 0,30\nboundary 3 outline 0,0 30,0 30,10 0,10\nboundary 4 outline 0,0 10,0 10,30 0,30\nplacement 1 on boundary 1 origin 0 0 100 u +x v +y\nplacement 2 on boundary 2 origin 30 50 90 u +y v +x\nplacement 3 on boundary 3 origin 30 50 90 u +x v +z\nplacement 4 on boundary 4 origin 30 80 90 u +z v +x\nbeam 2 along x from 30 to 60 at 65 width 30 depth 10 top 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 14,
+        "definition_sha256": "be69cc80348a1aa7e6114a8525727df80944e7e209303c98c89c871f0b3626c0"
+      },
+      "dump_equal": false,
+      "bridge_returncode": 0
+    },
+    {
+      "name": "B1-point",
+      "fixture": [
+        {
+          "command": "line reset",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,0 100,0 100,100 60,100 60,80 80,80 80,40 40,40 40,100 0,100",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line column 1 at 30 50 size 30 30 z 0 100",
+          "response": {
+            "ok": true
+          }
+        }
+      ],
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "notch",
+            "rect": [
+              30,
+              50,
+              40,
+              80
+            ]
+          }
+        ]
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,80 80,80 80,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 30 50 size 30 30 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 13,
+        "definition_sha256": "8062a7bde74cb63984d12fe8d6bb06383ffc9846eee6224e71c96bc4efbff46b"
+      },
+      "command": "apply-proj 1 c1",
+      "result": {
+        "ok": true
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,80 80,80 80,40 40,40 40,50 30,50 30,80 40,80 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 30 50 size 30 30 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 14,
+        "definition_sha256": "20eaa768dcbaf6f6f8b317da2158ac91c0f2e4bc3e6cb9d9b69fde77f11914b9"
+      },
+      "dump_equal": false,
+      "bridge_returncode": 0
+    },
+    {
+      "name": "M1",
+      "fixture": [
+        {
+          "command": "line reset",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line surface 1 origin 0 0 100 u +x v +y outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100",
+          "response": {
+            "ok": true
+          }
+        }
+      ],
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "beam",
+            "cls": "strip",
+            "rect": [
+              30,
+              50,
+              70,
+              80
+            ]
+          }
+        ]
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 100 u +x v +y\nbeam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 13,
+        "definition_sha256": "c425ae071e884087cfc2b4affae3d0479e427738f2ee9efb5242b4f2679f11ba"
+      },
+      "command": "apply-proj 1 b1",
+      "result": {
+        "ok": false,
+        "error": "line 4: R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 100 u +x v +y\nbeam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 13,
+        "definition_sha256": "c425ae071e884087cfc2b4affae3d0479e427738f2ee9efb5242b4f2679f11ba"
+      },
+      "dump_equal": true,
+      "bridge_returncode": 0
+    },
+    {
+      "name": "M1-missing",
+      "fixture": [
+        {
+          "command": "line reset",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line surface 1 origin 0 0 100 u +x v +y outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100",
+          "response": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100",
+          "response": {
+            "ok": true
+          }
+        }
+      ],
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "beam",
+            "cls": "strip",
+            "rect": [
+              30,
+              50,
+              70,
+              80
+            ]
+          }
+        ]
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 100 u +x v +y\nbeam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 13,
+        "definition_sha256": "c425ae071e884087cfc2b4affae3d0479e427738f2ee9efb5242b4f2679f11ba"
+      },
+      "command": "apply-proj 1 b1 c99",
+      "result": {
+        "ok": false,
+        "error": "line 4: R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 100 u +x v +y\nbeam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 13,
+        "definition_sha256": "c425ae071e884087cfc2b4affae3d0479e427738f2ee9efb5242b4f2679f11ba"
+      },
+      "dump_equal": true,
+      "bridge_returncode": 0
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "geo246-weak-pin-probe/1",
+  "bridge_sha256": "b7be299c3055b30eb9126373881e2bdc2642912e47d4a7e4cf65ef90c98e8e1a",
+  "mode": "generic-message-mutant",
+  "pins": 7,
+  "reason_failures": 7,
+  "test_failures": 7,
+  "errors": 0,
+  "skips": 0,
+  "records": [
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_line_limit_applies_when_panel_system_gets_a_surface",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 212,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gaps 0 from 0 v none",
+      "expected": [
+        "D29/I37",
+        "u gap keyword must be gap (got gaps)"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u gap keyword must be gap (got gaps)' not found in 'line 1: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gaps 0 from 0 v none' was refused for a different reason: 'line 1: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_line_limit_applies_when_panel_system_gets_a_surface",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 212,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u repeat-panel 10 gaps 0 from 0 v none",
+      "expected": [
+        "D29/I37",
+        "u gap keyword must be gap (got gaps)"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u gap keyword must be gap (got gaps)' not found in 'line 2: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u repeat-panel 10 gaps 0 from 0 v none' was refused for a different reason: 'line 2: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_line_limit_applies_when_panel_system_gets_a_surface",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 212,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gap 0 origin 0 v none",
+      "expected": [
+        "D29/I37",
+        "u anchor requires explicit from"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u anchor requires explicit from' not found in 'line 3: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gap 0 origin 0 v none' was refused for a different reason: 'line 3: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_line_limit_applies_when_panel_system_gets_a_surface",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 212,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel ten gap 0 from 0 v none",
+      "expected": [
+        "D29/I37",
+        "u panel length requires an integer in D1 range"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u panel length requires an integer in D1 range' not found in 'line 4: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel ten gap 0 from 0 v none' was refused for a different reason: 'line 4: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_line_limit_applies_when_panel_system_gets_a_surface",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 212,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gap none from 0 v none",
+      "expected": [
+        "D29/I37",
+        "u gap requires an integer in D1 range"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u gap requires an integer in D1 range' not found in 'line 5: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gap none from 0 v none' was refused for a different reason: 'line 5: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_line_limit_applies_when_panel_system_gets_a_surface",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 212,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gap 0 from none v none",
+      "expected": [
+        "D29/I37",
+        "u anchor requires an integer in D1 range"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u anchor requires an integer in D1 range' not found in 'line 6: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gap 0 from none v none' was refused for a different reason: 'line 6: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_line_limit_applies_when_panel_system_gets_a_surface",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 212,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 v none",
+      "expected": [
+        "D29/I37",
+        "u panel definition requires length, gap and from anchor"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u panel definition requires length, gap and from anchor' not found in 'line 7: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 v none' was refused for a different reason: 'line 7: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    }
+  ],
+  "scope": "panel-grammar"
+}

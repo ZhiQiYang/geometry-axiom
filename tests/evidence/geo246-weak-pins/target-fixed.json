@@ -1,0 +1,21 @@
+{
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu-24.04",
+    "--cd",
+    "/mnt/d/geometry-axiom-geo246",
+    "--exec",
+    "unshare",
+    "--mount",
+    "--propagation",
+    "private",
+    "/bin/bash",
+    "_geo246_native.sh",
+    "python3",
+    "-u",
+    "_geo246_target.py"
+  ],
+  "exit_code": 0,
+  "seconds": 89.9
+}

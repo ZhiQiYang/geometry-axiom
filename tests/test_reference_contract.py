@@ -14,6 +14,258 @@ from tests import _bridge  # noqa: E402
 
 
 class ReferenceContract(unittest.TestCase):
+    def projection_fixture(self, outline, column):
+        self.ok('reset')
+        self.ok('surface 1 origin 0 0 0 u +x v +y outline ' + outline)
+        self.ok('column 1 at ' + column + ' z 0 100')
+
+    def notch_projection_fixture(self):
+        self.ok('reset')
+        self.ok('surface 1 origin 0 0 100 u +x v +y outline '
+                '0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100')
+
+    def test_rect_outline_rectangle_plus_isolated_line_transaction(self):
+        self.notch_projection_fixture()
+        self.ok('column 1 at 45 0 size 10 40 z 0 100')
+        self.ok('column 2 at 30 50 size 30 30 z 0 100')
+        before = self.dump()
+        query = self.s.send('obstacles 1')
+        with self.subTest(phase='query'):
+            self.assertFalse(query['ok'], 'R7 must retain the isolated x=60 contact line')
+            self.assertIn('R7', query['error'])
+        result = self.line('apply-proj 1 c1 c2')
+        with self.subTest(phase='apply'):
+            self.assertFalse(result['ok'], 'c2 must not lose contact with the right split piece')
+        self.assertEqual(before, self.dump(), 'R8 must roll back the earlier c1 split too')
+
+    def test_rect_outline_strip_plus_isolated_line(self):
+        for prior_split in (False, True):
+            with self.subTest(prior_split=prior_split):
+                self.notch_projection_fixture()
+                self.ok('column 1 at 45 0 size 10 40 z 0 100')
+                self.ok('beam 2 along x from 30 to 60 at 65 width 30 depth 10 top 100')
+                before = self.dump()
+                command = 'apply-proj 1 ' + ('c1 ' if prior_split else '') + 'b2 cut-strip'
+                result = self.line(command)
+                self.assertFalse(result['ok'], 'STRIP must retain the isolated contact line')
+                self.assertIn('R7', result['error'])
+                self.assertEqual(before, self.dump(), 'all earlier cuts must roll back')
+
+    def test_rect_outline_rectangle_plus_isolated_point(self):
+        self.projection_fixture('0,0 100,0 100,100 60,100 60,80 80,80 '
+                                '80,40 40,40 40,100 0,100', '30 50 size 30 30')
+        before = self.dump()
+        result = self.line('apply-proj 1 c1')
+        self.assertFalse(result['ok'], 'rectangle plus the isolated point (60,80) is degenerate')
+        self.assertIn('R7', result['error'])
+        self.assertEqual(before, self.dump())
+
+    def test_rect_outline_uncut_complex_strip_is_noop(self):
+        self.notch_projection_fixture()
+        self.ok('beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100')
+        self.assertEqual('strip', self.s.send('obstacles 1')['items'][0]['cls'])
+        before = self.dump()
+        self.ok('apply-proj 1 b1')
+        self.assertEqual(before, self.dump(), 'R12 uncut strip does not alter geometry')
+
+    def test_rect_outline_uncut_strip_continues_with_later_valid_item(self):
+        self.notch_projection_fixture()
+        self.ok('beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100')
+        self.ok('column 2 at 10 10 size 10 10 z 0 100')
+        self.ok('apply-proj 1 b1 c2')
+        self.assertIn('hole ', self.dump(), 'an uncut strip must not return before applying c2')
+
+    def test_rect_outline_uncut_strip_still_validates_later_missing_id(self):
+        self.notch_projection_fixture()
+        self.ok('beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100')
+        before = self.dump()
+        result = self.line('apply-proj 1 b1 c99')
+        self.assertFalse(result['ok'])
+        self.assertIn('不存在', result['error'], 'R15 must validate the item after an uncut strip')
+        self.assertEqual(before, self.dump())
+
+    def test_rect_outline_uncut_strip_still_requires_unique_piece(self):
+        self.notch_projection_fixture()
+        self.ok('column 1 at 45 0 size 10 40 z 0 100')
+        self.ok('beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100')
+        before = self.dump()
+        result = self.line('apply-proj 1 c1 b1')
+        self.assertFalse(result['ok'])
+        self.assertIn('橫跨拆分線', result['error'], 'R14 applies even without cut-strip')
+        self.assertEqual(before, self.dump())
+
+    def test_rect_outline_uncut_strip_still_requires_contact(self):
+        self.notch_projection_fixture()
+        self.ok('beam 1 along x from 110 to 120 at 65 width 10 depth 10 top 100')
+        before = self.dump()
+        result = self.line('apply-proj 1 b1')
+        self.assertFalse(result['ok'])
+        self.assertIn('不與任何面片接觸', result['error'])
+        self.assertEqual(before, self.dump())
+
+    def test_rect_outline_counterexample_A_rejects_disconnected_contact(self):
+        self.projection_fixture('0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100',
+                                '30 50 size 40 30')
+        before = self.dump()
+        result = self.s.send('obstacles 1')
+        self.assertFalse(result['ok'], 'counterexample A must not invent a hole across the notch')
+        self.assertIn('R7', result['error'])
+        self.assertIn('單一矩形', result['error'])
+        result = self.line('apply-proj 1 c1')
+        self.assertFalse(result['ok'])
+        self.assertIn('R7', result['error'])
+        self.assertEqual(before, self.dump(), 'counterexample A must roll back completely')
+
+    def test_rect_outline_counterexample_B_clips_ridge_and_applies_split(self):
+        self.projection_fixture('0,0 100,0 100,50 60,50 60,90 40,90 40,50 0,50',
+                                '20 70 size 60 10')
+        items = self.s.send('obstacles 1')['items']
+        self.assertEqual([{'id':1, 'type':'column', 'cls':'split', 'rect':[40,70,60,80]}],
+                         items, 'counterexample B must retain the positive-area ridge intersection')
+        self.ok('apply-proj 1 c1')
+        dump = self.dump()
+        self.assertIn('boundary 2', dump)
+        self.assertNotIn('hole ', dump)
+
+    def test_rect_outline_remote_flush_does_not_excuse_corner_tangency(self):
+        original = [(0,10),(10,10),(10,0),(20,0),(20,10),(30,10),
+                    (30,20),(20,20),(20,40),(10,40),(10,20),(0,20)]
+        for variant in range(16):
+            verts = original[::-1] if variant & 1 else original[:]
+            if variant & 4:
+                verts = verts[-1:] + verts[:-1]
+            offset = -50 if variant & 8 else 0
+            def point(x,y):
+                return ((y+offset,x+offset) if variant & 2 else (x+offset,y+offset))
+            outline = ' '.join('%d,%d' % point(x,y) for x,y in verts)
+            u0,v0 = point(10,10)
+            w,h = (20,10) if variant & 2 else (10,20)
+            hx,hy = point(12,2)
+            direction = 'x' if variant & 2 else 'y'
+            for strip in (False,True):
+                for prior_hole in (False,True):
+                    with self.subTest(variant=variant,strip=strip,prior_hole=prior_hole):
+                        self.ok('reset')
+                        self.ok('surface 1 origin 0 0 0 u +x v +y outline '+outline)
+                        if strip:
+                            self.ok(f'beam 1 along {direction} from {10+offset} to {30+offset} '
+                                    f'at {15+offset} width 10 depth 10 top 0')
+                        else:
+                            self.ok(f'column 1 at {u0} {v0} size {w} {h} z 0 100')
+                        if prior_hole:
+                            self.ok(f'column 2 at {hx} {hy} size 4 4 z 0 100')
+                        before,refs = self.dump(),self.refs()
+                        command = 'apply-proj 1 '+('c2 ' if prior_hole else '')
+                        command += 'b1 cut-strip' if strip else 'c1'
+                        result = self.line(command)
+                        self.assertFalse(result['ok'], 'R7: remote flush cannot excuse a point-only corner')
+                        self.assertIn('R7',result['error'])
+                        self.assertEqual(before,self.dump(), 'whole transaction, including prior hole, must roll back')
+                        self.assertEqual(refs,self.refs())
+                        self.ok('undo')
+                        self.ok('redo')
+                        self.assertEqual(before,self.dump(), 'rejected apply must not enter redo history')
+                        self.roundtrip()
+
+    def test_rect_outline_three_residual_components_rejects_and_rolls_back(self):
+        outline = ('0,10 10,10 10,0 20,0 20,10 30,10 30,0 '
+                   '40,0 40,20 20,20 20,30 10,30 10,20 0,20')
+        for strip in (False, True):
+            for prior_hole in (False, True):
+                with self.subTest(strip=strip, prior_hole=prior_hole):
+                    self.ok('reset')
+                    self.ok('surface 1 origin 0 0 0 u +x v +y outline ' + outline)
+                    if strip:
+                        self.ok('beam 1 along x from -10 to 50 at 15 width 10 depth 10 top 0')
+                    else:
+                        self.ok('column 1 at -10 10 size 60 10 z 0 100')
+                    if prior_hole:
+                        self.ok('column 2 at 12 2 size 4 4 z 0 100')
+                    before, refs = self.dump(), self.refs()
+                    command = 'apply-proj 1 ' + ('c2 ' if prior_hole else '')
+                    command += 'b1 cut-strip' if strip else 'c1'
+                    result = self.line(command)
+                    self.assertFalse(result['ok'], 'R3/R4: three residual components cannot become two rings')
+                    self.assertIn('拆分退化', result['error'])
+                    self.assertEqual(before, self.dump(), 'R8 must also roll back an earlier valid hole')
+                    self.assertEqual(refs, self.refs())
+                    self.ok('undo')
+                    self.ok('redo')
+                    self.assertEqual(before, self.dump(), 'failed apply must not leave a redo transaction')
+                    self.roundtrip()
+
+    def test_rect_outline_two_piece_difference_is_complete_after_redo_and_reopen(self):
+        fixtures = [
+            ('0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20',
+             '10 20 size 10 10', (10,20,20,30), 500),
+            ('0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,30 10,30 10,20 0,20',
+             '-10 10 size 60 10', (0,10,30,20), 200),
+            ('0,0 100,0 100,50 60,50 60,90 40,90 40,50 0,50',
+             '20 70 size 60 10', (40,70,60,80), 5600),
+        ]
+        def cells(verts):
+            l, b = min(x for x,y in verts), min(y for x,y in verts)
+            r, t = max(x for x,y in verts), max(y for x,y in verts)
+            def inside(x,y):
+                return sum(a[0] == e[0] and 2*min(a[1],e[1]) < 2*y+1 < 2*max(a[1],e[1])
+                           and 2*a[0] > 2*x+1 for a,e in zip(verts,verts[1:]+verts[:1])) % 2 == 1
+            return {(x,y) for x in range(l,r) for y in range(b,t) if inside(x,y)}
+        for outline, column, rect, area in fixtures:
+            with self.subTest(outline=outline):
+                self.projection_fixture(outline, column)
+                before = self.dump()
+                original = [list(map(int,p.split(','))) for p in outline.split()]
+                u0,v0,u1,v1 = rect
+                expected = cells(original) - {(x,y) for x in range(u0,u1) for y in range(v0,v1)}
+                self.assertEqual(area, len(expected))
+                def assert_difference():
+                    loops = [self.s.send('boundary '+str(i))['loops'][0]['verts'] for i in (1,2)]
+                    pieces = [cells(v) for v in loops]
+                    self.assertFalse(pieces[0] & pieces[1], 'split pieces must have disjoint interiors')
+                    self.assertEqual(expected, pieces[0] | pieces[1], 'full saved union must equal the exact difference')
+                    signed = [abs(sum(a[0]*e[1]-a[1]*e[0] for a,e in zip(v,v[1:]+v[:1]))) for v in loops]
+                    self.assertEqual(2*area, sum(signed), 'saved polygon area must equal the exact remainder')
+                    self.assertFalse(any(u0 <= x < u1 and v0 <= y < v1 for x,y in pieces[0] | pieces[1]))
+                self.ok('apply-proj 1 c1')
+                assert_difference()
+                after = self.dump()
+                self.ok('undo')
+                self.assertEqual(before, self.dump())
+                self.ok('redo')
+                self.assertEqual(after, self.dump())
+                assert_difference()
+                self.roundtrip()
+                assert_difference()
+
+    def test_rect_outline_unselected_complex_column_does_not_block_valid_item(self):
+        self.projection_fixture('0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100',
+                                '30 50 size 40 30')
+        self.ok('column 2 at 10 10 size 10 10 z 0 100')
+        self.ok('apply-proj 1 c2')
+        self.assertIn('hole ', self.dump())
+
+    def test_rect_outline_strip_reclassification_uses_exact_contact(self):
+        self.ok('reset')
+        self.ok('surface 1 origin 0 0 100 u +x v +y outline '
+                '0,0 100,0 100,50 60,50 60,90 40,90 40,50 0,50')
+        self.ok('beam 1 along x from 20 to 80 at 75 width 10 depth 10 top 100')
+        self.assertEqual('strip', self.s.send('obstacles 1')['items'][0]['cls'])
+        self.ok('apply-proj 1 b1 cut-strip')
+        self.assertIn('boundary 2', self.dump())
+
+    def test_rect_outline_real_hole_no_contact_and_notch_controls(self):
+        for column, expected in [('10 10 size 10 10', ('hole',[10,10,20,20])),
+                                 ('110 110 size 10 10', None),
+                                 ('-10 10 size 30 10', ('notch',[0,10,20,20]))]:
+            with self.subTest(column=column):
+                self.projection_fixture('0,0 100,0 100,100 0,100', column)
+                items = self.s.send('obstacles 1')['items']
+                if expected is None:
+                    self.assertEqual([], items)
+                else:
+                    self.assertEqual(expected, (items[0]['cls'], items[0]['rect']))
+                    self.ok('apply-proj 1 c1')
+
     def setUp(self):
         self.s = _bridge.BridgeSession()
         self.addCleanup(self.s.close)

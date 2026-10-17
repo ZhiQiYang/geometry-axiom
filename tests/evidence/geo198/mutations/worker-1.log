@@ -1,0 +1,33 @@
+Mutation scope: partial M02, M06, M60, M12, M16, M20, M24, M28, M32, M52, M55, M36, M40
+M55  RETIRED    D10a：縫寬奇數不再拒絕(改成只擋負數)
+BASELINE exe 已重編
+BASELINE OK: 147/147 全過(未變異原始碼)
+M02  exe 已重編
+M02  KILLED    I5：射線半開區間 [v_min,v_max) 改 (v_min,v_max)  <- _test_lshape.scene: FAIL 錯誤不符: 期望含「沒有擋面」實得「<repo>/_test_lshape.scene:17: R6/I5/I6 timber 2: 中線上沒有任何合法跨距」
+M06  exe 已重編
+M06  KILLED    I5：水平邊在矩形邊界上也算穿入(<= 改 <)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 中線上沒有任何合法跨距
+M60  exe 已重編
+M60  KILLED    I5：矩形中心的奇偶判定反轉(環內外互換)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 中線上沒有任何合法跨距
+M12  exe 已重編
+M12  KILLED    I11：正面積重疊:端點相接也算重疊(> 改 >=)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: R6/I5/I6 timber 1: 中線上沒有任何合法跨距
+M16  exe 已重編
+M16  KILLED    D11：擋面涵蓋檢查:丟掉 hi 側檢查(半寬也算涵蓋)  <- _edge_straddle_hi.scene: FAIL 錯誤不符: 期望含「端面懸空」實得「<repo>/_edge_straddle_hi.scene:11: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+M20  exe 已重編
+M20  CRASHED   R6(d)：拿掉「起點必須有擋面」檢查(懸空端放行)  <- 基準線已通過；連跑 3 次都在同一夾具以存取違規結束（_test_lshape.scene；INFRA abnormal executable exit -11: ）。算被偵測到，但不是斷言殺死。
+M24  exe 已重編
+M24  KILLED    R6(c)：at-edge 接觸範圍:端點相接也算重疊(< 改 <=)  <- _edge_face_touch_only.scene: FAIL 錯誤不符: 期望含「都不接觸引用的邊」實得「<repo>/_edge_face_touch_only.scene:10: R6/I5/I6 timber 1: 跨距起點沒有擋面（端面懸空）」
+M28  exe 已重編
+M28  KILLED    I13：奇數寬多的 1mm 改放 -cross 側  <- _test_grid_panel.scene: FAIL 輸出缺少「角材原點：(424, 20, 2500)」
+M32  exe 已重編
+M32  KILLED    I10：格線座標上下界改成嚴格(壓邊界的格線拒絕)  <- _edge_grid_at_border.scene: FAIL 錯誤不符: 期望含「沒有任何合法跨距」實得「<repo>/_edge_grid_at_border.scene:3: grid 座標不合法（u 軸）：座標要落在承載面外接範圍內」
+M52  exe 已重編
+M52  KILLED    I10：重宣告改成疊加而非整軸換掉  <- _test_grid_redeclare.scene: FAIL 應接受但拒絕: <repo>/_test_grid_redeclare.scene:12: grid 座標不合法（u 軸）：座標必須嚴格遞增
+M36  exe 已重編
+M36  EQUIVALENT R6(e)：重驗跳過端點擋面檢查  <- 等價變異(冗餘檢查,2026-10-01 實證):被變異的是 world_validate_derived 內的 R6(d)/R21 端面唯一擋面檢查,它唯一的呼叫者是 world_revalidate,而 world_revalidate 在它之前(同一個 candidate、reference_rebuild 之後)先跑 reference_check_all(references.inc:485-491),對每支已放角材算同一個 collect_stop_faces / count_legal_stops / 同一個 hits==0||(!has_between&&hits!=1) 條件,不過就 return false、根本到不了 world_validate_derived;兩處輸入(candidate 的 timbers/anchors/placements/boundaries)逐項相同,中間只改 candidate.spaces,不影響擋面。差分測試:基準 exe 與 M36 變異 exe 對 7143 個輸入(根目錄 143 個 .scene + tests/fuzz_scene.py 語料 3000 案 seed 1 + 4000 個 surface/grid 重宣告擾動,其中基準接受 362、重驗拒絕 612)比 exit code / stdout / stderr,零分歧;基準輸出從未出現 world_validate_derived 的專屬訊息「R6(d): 端面需要恰好一個涵蓋全寬的合法擋面」。另:同時拿掉兩處檢查 136/136 仍全過(前一輪探針)。此塊是 reference_check_all 的重複防線,不是獨立判定。
+M40  exe 已重編
+M40  KILLED    R6(b)：有效 cell 判定拿掉碰撞(只查包含)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC
+
+本次 13:殺死 killed 10 / 崩潰 crashed 1 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 1
+歷次紀錄(不是本次覆蓋)13:殺死 killed 10 / 崩潰 crashed 1 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 1 / 未跑 unrun 39
+  (過期明細用 --check 列出)
+崩潰（crashed）已算被偵測到，與斷言殺死分開計，不影響結束碼。

@@ -1,0 +1,13 @@
+core: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-11T15:57:37+00:00））
+bridge: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-11T15:57:50+00:00））
+model-base: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-11T15:58:03+00:00））
+LOCAL_RUNTIME {"root": "/workspace/geometry-axiom", "binaryDirectory": "/tmp/geometry-198-review/browser/tmp/geometry-runtime/b9bc23103ebb114398f3", "executables": {"core": "/tmp/geometry-198-review/browser/tmp/geometry-runtime/b9bc23103ebb114398f3/core", "bridge": "/tmp/geometry-198-review/browser/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge", "model-base": "/tmp/geometry-198-review/browser/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"}, "port": 18844, "managedPreview": false}
+http://localhost:18844  （Ctrl-C 結束；版本=1c5e262ae1b8；bridge=/tmp/geometry-198-review/browser/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge）
+I8a preview 1: valid; confirm token to apply
+ timber 11 center 1178 -> 1178 length 3633 -> 3633
+  surface 2 origin [5002,1165,2700] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 2 origin [5002,4538,2700] axes [1,0,0]/[0,-1,0]/[0,0,-1]
+input:79: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 2: valid; confirm token to apply
+ timber 0 center 13 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 321 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+input:113: I8a: impact preview required; inspect preview, then confirm token (World unchanged)

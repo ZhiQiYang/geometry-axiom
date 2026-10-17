@@ -421,6 +421,35 @@ class SectionProfileNative(unittest.TestCase):
         self.assertEqual(29, state["runs"][0]["length"])
         self.assertEqual(expected, state["members"][0]["value"])
 
+    def test_delete_parameter_names_section_profile_member_and_run_referrers(self):
+        # GEO-258:被斷面成員/擠出段引用的參數卡不得刪除,訊息指名引用者;先改成直接值再刪就通過。
+        parameter = {"id": 0, "name": "source", "fields": [{"id": 0, "name": "A", "type": "dimension", "input": "27"}]}
+        source = {"kind": "parameter", "parameterId": 0, "fieldId": 0}
+        self.apply([{"op": "put-parameter", "value": parameter}, put("profile", profile()),
+                    put("member", member(A=source)), put("run", run(length=source))])
+        self.reject([{"op": "delete-parameter", "id": 0}],
+                    "parameter 0 is still referenced by section-profile member 1 A; section-profile run 1 length")
+        self.reject([put("member", member()), {"op": "delete-parameter", "id": 0}],
+                    "parameter 0 is still referenced by section-profile run 1 length")
+        # Rebuilding the key cannot acknowledge either surviving reference owner.
+        deleted = {"op": "delete-parameter", "id": 0}
+        rebuilt = {"op": "put-parameter", "value": parameter}
+        declare_member = put("member", member(A=source))
+        declare_run = put("run", run(length=source))
+        self.reject([deleted, rebuilt], "section-profile member 1 A; section-profile run 1 length")
+        self.reject([deleted, rebuilt, declare_member], "section-profile run 1 length")
+        self.reject([deleted, rebuilt, declare_run], "section-profile member 1 A")
+        self.reject([deleted, rebuilt, declare_member, declare_run, deleted, rebuilt], "section-profile member 1 A")
+        preview, done = self.apply([deleted, rebuilt, declare_member, declare_run])
+        self.assertEqual([{"kind": "section-profile-member", "id": 1, "slot": 0},
+                          {"kind": "section-profile-run", "id": 1, "slot": 0}],
+                         [r["owner"] for r in preview["redeclaredReferences"]])
+        self.assertEqual([{"parameterId": 0, "fieldId": 0}] * 2,
+                         [r["source"] for r in preview["redeclaredReferences"]])
+        self.assertEqual([{"kind": "parameter-field", "parameterId": 0, "fieldId": 0}], done["deletedObjects"])
+        self.apply([put("member", member()), put("run", run()), deleted])
+        self.assertEqual([], self.command("engineering-read")["state"]["parameters"])
+
     def test_exact_dump_load_zero_ids_empty_profile_and_fail_closed(self):
         value = profile(0, [[-2, -2], [-1, -2], [-1, -1], [-2, -1]])
         self.apply([put("profile", value), put("member", member(0, -2, -2, profileId=0, A=literal(1), B=literal(1))),

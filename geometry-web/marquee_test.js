@@ -394,7 +394,10 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   await waitForUI(`!!document.querySelector('dialog.reference-impact[open] #impact-confirm')`,10000);
   const editImpact=await eval_(`!!document.querySelector('dialog.reference-impact[open] #impact-confirm')&&!$('impact-confirm').disabled`);
   if(!editImpact)throw Error('Timber edit did not expose a confirmable impact preview.');
-  await ctl('#impact-confirm');await waitForUI(`!oc.busy&&!document.querySelector('dialog.reference-impact[open]')`,10000);await sleep(300);
+  await ctl('#impact-confirm');
+  // history-end settles before feLoadGuides has repainted the edited timber.
+  // Keep the original 10s budget and geometry/selection contract; wait for it.
+  await waitForUI(`!oc.busy&&!document.querySelector('dialog.reference-impact[open]')&&fe.timbers.length===1&&fe.timbers[0].A===40&&fe.timbers[0].B===60&&fe.timbers[0].side==='-n'&&fe.sel?.id===10`,10000);
   if(!await eval_(`!oc.busy&&!document.querySelector('dialog.reference-impact[open]')`))throw Error('Timber edit did not complete after impact confirmation.');
   const edited=await eval_(`fe.timbers.length===1&&fe.timbers[0].A===40&&fe.timbers[0].B===60&&fe.timbers[0].side==='-n'&&fe.sel?.id===10`);
   await key('z','KeyZ',90,2);await ctl('#faceInspectorTabs [data-fi-tab="components"]');await ctl('[data-component-tab="timber"]');
