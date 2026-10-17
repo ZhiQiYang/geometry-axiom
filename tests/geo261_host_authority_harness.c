@@ -139,6 +139,16 @@ static int host_pf_case(const char *name,const char *scene)
         bool ok=pf_support_threshold(world,fill,&value);g_reference_active=previous;
         CHECK("host-pf-actual-threshold",ok&&value.num==17&&value.den==1&&value.unit==GEO_UNIT_LENGTH&&host_hits==1);
     }else{
+        /* Match reference_rebuild's live context lifecycle. A zeroed wanted[]
+         * rejects every member before this test reaches the footprint consumer. */
+        geo_guides_reset_resolved(&world->geo.guide_lines);
+        for(size_t i=0;i<world->wood.timber_count;++i){ctx.wanted[i]=world->wood.timbers[i].placed;world->wood.timbers[i].placed=false;}
+        CHECK("host-pf-setup-datums",reference_eval_datums(&ctx));
+        for(size_t i=0;i<world->wood.timber_count;++i)if(ctx.wanted[i])
+            CHECK("host-pf-setup-member",reference_eval_timber(&ctx,i));
+        for(size_t i=0;i<geo_guides_count(&world->geo.guide_lines);++i)
+            CHECK("host-pf-setup-guide",reference_eval_guide(&ctx,i));
+        CHECK("host-pf-setup-live-context",!ctx.use_current_values&&!ctx.source_failure&&host_fault==0&&host_hits==0);
         PfFootprint original[WORLD_MAX_TIMBERS],changed[WORLD_MAX_TIMBERS];size_t count=0,next=0;
         CHECK("host-pf-footprint-baseline",pf_support_footprints(world,fill,original,&count)&&count==3);
         WoodMemberPlacement anchors[WORLD_MAX_TIMBERS];memcpy(anchors,world->wood.anchors,sizeof anchors);host_fault=1;
