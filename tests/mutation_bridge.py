@@ -320,10 +320,19 @@ def execution_problems(mt, m, rec, verdict, src):
         if classify(e["baseline"], RESTORED) != "survived" or classify(e["restored"], RESTORED) != "survived":
             raise ValueError("bridge baseline/restoration did not pass every declared method")
         trials = e.get("mutant_attempts") or [e["mutant"]]
-        if (not isinstance(trials, list) or trials[-1] != e["mutant"] or len(trials) > mt.RUN_RETRIES
-                or any(classify(t, m["tests"]) != "blocked" or access_violation_tests(t, m["tests"], mt) is None
-                       for t in trials[:-1])):
+        if not isinstance(trials, list) or trials[-1] != e["mutant"]:
+            raise ValueError("bridge mutant_attempts must end with the recorded mutant run")
+        if len(trials) > mt.RUN_RETRIES:
+            raise ValueError("more bridge mutant runs than the repeat rule allows")
+        if any(classify(t, m["tests"]) != "blocked" or access_violation_tests(t, m["tests"], mt) is None
+               for t in trials[:-1]):
             raise ValueError("bridge mutant runs were repeated for a reason the rule does not allow")
+        # run_pass labels the runs mutant, mutant-2, mutant-3 and every run prints its own elapsed time, so one
+        # recorded receipt copied N times can neither carry those names nor N different outputs.
+        if [t.get("stdout_file") for t in trials] != ["mutant.stdout"] + ["mutant-%d.stdout" % n for n in range(2, len(trials) + 1)]:
+            raise ValueError("bridge mutant runs are not the outputs run_pass wrote, in order")
+        if len({t.get("stdout_sha256") for t in trials}) != len(trials):
+            raise ValueError("bridge mutant runs repeat one recorded output")
         actual, _, killers, crashed_on = judge_trials(mt, trials, m["tests"])
         if actual != verdict or verdict not in ("killed", "crashed", "survived"):
             raise ValueError("bridge verdict contradicts actual unittest results")
@@ -354,7 +363,7 @@ def execution_problems(mt, m, rec, verdict, src):
             artifact = mt.MUT_ROOT / m["id"] / "bridge-mutant" / ("bridge.exe" if os.name == "nt" else "bridge")
             if artifact.exists() and sha(artifact.read_bytes()) != e["mutant_identity"]["exe_sha256"]:
                 raise ValueError("bridge executable artifact changed")
-    except (KeyError, TypeError, ValueError, OSError) as exc:
+    except (KeyError, TypeError, ValueError, AttributeError, OSError) as exc:
         return [str(exc)]
     return []
 

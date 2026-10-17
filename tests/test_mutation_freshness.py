@@ -659,7 +659,7 @@ class Cases(unittest.TestCase):
                 self.assertIsNone(mutation_bridge.access_violation_tests(row, methods, mutate))
 
     def test_timeouts_and_exit_status_mismatches_are_blocked_never_crashed_or_killed(self):
-        death = [self.death(-9)]
+        death = [self.death(-11)]     # an access violation, so only the exit status can keep it from counting
         assertion = [self.failure("assertion", detail="AssertionError: u")]
         for label, row in [
                 ("timed out", dict(self.payload(death, exit_code=124), timed_out=True)),
@@ -684,44 +684,54 @@ class Cases(unittest.TestCase):
 
     # ---- the ledger side: --check accepts a crashed bridge record only on the core's evidence ----
 
+    def receipt(self, methods, failures, exit_code, label='mutant'):
+        """An oracle receipt shaped like mutation_bridge._run's: its own output file and its own output hash per run."""
+        return {"exit_code": exit_code, "stdout_file": label + ".stdout",
+                "stdout_sha256": mutation_bridge.sha(label.encode()), "stderr_sha256": '2' * 64,
+                "command": ["<python>", "-B", "tests/bridge_mutation_oracle.py", "<bridge>", *methods],
+                "result": {"schema": "geometry-bridge-mutation-tests/1", "requested": methods, "started": methods,
+                           "total": len(methods), "failures": failures, "errors": [], "skipped": [],
+                           "expected_failures": 0, "unexpected_successes": 0}}
+
+    def mutant_run(self, n, failures, exit_code=1):
+        """Run number n (1-based) of a mutant, labelled the way run_pass labels it."""
+        return self.receipt([self.METHOD], failures, exit_code, 'mutant' if n == 1 else 'mutant-%d' % n)
+
+    def fixture_mutant(self):
+        return dict(id='MB', desc='bridge ledger fixture', binary='bridge', file='current_geometry.c',
+                    old='anchor = 1', new='anchor = 2', tests=[self.METHOD])
+
     def test_check_accepts_a_crashed_bridge_record_only_on_repeated_access_violations(self):
         root = self.dir / 'repo'
         root.mkdir()
         (root / 'current_geometry.c').write_bytes(b'int anchor = 1;\n')
-        m = dict(id='MB', desc='bridge ledger fixture', binary='bridge', file='current_geometry.c',
-                 old='anchor = 1', new='anchor = 2', tests=[self.METHOD])
+        m = self.fixture_mutant()
         src = mutate.Sources(root)
         judge = mutation_bridge.oracle_hash(m, root)
         sha = mutation_bridge.sha
-
-        def receipt(methods, failures, exit_code):
-            return {"exit_code": exit_code, "stdout_sha256": '1' * 64, "stderr_sha256": '2' * 64,
-                    "command": ["<python>", "-B", "tests/bridge_mutation_oracle.py", "<bridge>", *methods],
-                    "result": {"schema": "geometry-bridge-mutation-tests/1", "requested": methods, "started": methods,
-                               "total": len(methods), "failures": failures, "errors": [], "skipped": [],
-                               "expected_failures": 0, "unexpected_successes": 0}}
 
         def identity(text, exe):
             return {"freshness": "fresh", "exe_sha256": exe * 64, "sidecar_sha256": '3' * 64,
                     "sidecar": {"exe_sha256": exe * 64, "files": {"current_geometry.c": sha(text)}}}
 
-        def evidence(attempts):
+        def evidence(attempts, mutant=None):
             build = {"exit_code": 0, "stdout_sha256": '4' * 64, "stderr_sha256": '5' * 64}
             out = {"schema": "geometry-bridge-mutation-execution/1", "head": 'a' * 40, "platform": os.name,
                    "tool_sha256": mutate.tool_hash(), "oracle_sha256": judge,
                    "methods": m["tests"], "restored_methods": mutation_bridge.RESTORED,
                    "baseline_build": build, "baseline_identity": identity(b'int anchor = 1;\n', 'b'),
-                   "baseline": receipt(mutation_bridge.RESTORED, [], 0),
-                   "mutant_build": build, "mutant_identity": identity(b'int anchor = 2;\n', 'c'), "mutant": attempts[-1],
+                   "baseline": self.receipt(mutation_bridge.RESTORED, [], 0, 'baseline'),
+                   "mutant_build": build, "mutant_identity": identity(b'int anchor = 2;\n', 'c'),
+                   "mutant": mutant or attempts[-1],
                    "restored_build": build, "restored_identity": identity(b'int anchor = 1;\n', 'b'),
-                   "restored": receipt(mutation_bridge.RESTORED, [], 0), "byte_restored": True}
+                   "restored": self.receipt(mutation_bridge.RESTORED, [], 0, 'restored'), "byte_restored": True}
             if len(attempts) > 1:
                 out["mutant_attempts"] = attempts
             return out
 
-        def check(verdict, attempts, **fields):
+        def check(verdict, attempts, mutant=None, **fields):
             rec = mutate.make_record(m, src, verdict, 'ledger fixture', '2026-10-17', judge,
-                                     execution=evidence(attempts), **fields)
+                                     execution=evidence(attempts, mutant), **fields)
             results = self.dir / 'results.json'
             mutate.save_records(results, {m['id']: rec})
             out = io.StringIO()
@@ -729,28 +739,109 @@ class Cases(unittest.TestCase):
                 code = mutate.check_pass([m], root=root, results_path=results, oracle=judge)
             return code, out.getvalue()
 
-        av = receipt(m["tests"], [self.death(-11)], 1)
-        exit7 = receipt(m["tests"], [self.death(7)], 1)
-        killed = receipt(m["tests"], [self.failure("assertion", detail="AssertionError: u")], 1)
+        violation = [self.death(-11)]
+        av = [self.mutant_run(n, violation) for n in (1, 2, 3)]
+        exit7 = [self.mutant_run(n, [self.death(7)]) for n in (1, 2, 3)]
+        killed = [self.mutant_run(n, [self.failure("assertion", detail="AssertionError: u")]) for n in (1, 2, 3, 4)]
+        crashed = dict(crashed_on=[self.METHOD])
 
-        code, text = check('crashed', [av, av, av], crashed_on=[self.METHOD])
+        code, text = check('crashed', av, **crashed)
         self.assertEqual(0, code, text)
         self.assertIn('crashed 1', text)
         self.assertNotIn('STALE', text)
-        for label, verdict, attempts, fields, wanted in [
-                ("a violation recorded as killed", 'killed', [av, av, av], dict(killed_by=[self.METHOD]), 'contradicts'),
-                ("crashed_on naming other tests", 'crashed', [av, av, av], dict(crashed_on=[self.OTHER]), 'crashed_on'),
-                ("crashed after a single run", 'crashed', [av], dict(crashed_on=[self.METHOD]), 'contradicts'),
-                ("crashed after two runs", 'crashed', [av, av], dict(crashed_on=[self.METHOD]), 'contradicts'),
-                ("crashed although the last run was an ordinary death", 'crashed', [av, av, exit7],
-                 dict(crashed_on=[self.METHOD]), 'contradicts'),
-                ("crashed on a single ordinary death", 'crashed', [exit7], dict(crashed_on=[self.METHOD]), 'contradicts'),
-                ("runs padded after a kill", 'killed', [av, killed, killed], dict(killed_by=[self.METHOD]), 'repeated'),
-                ("repeating a run that needed no repeat", 'crashed', [exit7, av, av], dict(crashed_on=[self.METHOD]), 'repeated')]:
+        same_output = dict(av[1], stdout_sha256=av[0]['stdout_sha256'])
+        for label, verdict, attempts, extra, fields, wanted in [
+                ("a violation recorded as killed", 'killed', av, {}, dict(killed_by=[self.METHOD]), 'contradicts'),
+                ("crashed_on naming other tests", 'crashed', av, {}, dict(crashed_on=[self.OTHER]), 'crashed_on'),
+                ("crashed after a single run", 'crashed', av[:1], {}, crashed, 'contradicts'),
+                ("crashed after two runs", 'crashed', av[:2], {}, crashed, 'contradicts'),
+                ("crashed although the last run was an ordinary death", 'crashed', av[:2] + exit7[2:], {}, crashed, 'contradicts'),
+                ("crashed on a single ordinary death", 'crashed', exit7[:1], {}, crashed, 'contradicts'),
+                ("runs padded after a kill", 'killed', av[:1] + killed[1:3], {}, dict(killed_by=[self.METHOD]), 'repeated'),
+                ("repeating a run that needed no repeat", 'crashed', exit7[:1] + av[1:], {}, crashed, 'repeated'),
+                # one recorded violation copied three times must not pass for three consecutive crashes
+                ("one receipt copied three times", 'crashed', [av[0]] * 3, {}, crashed, 'in order'),
+                ("right outputs in the wrong order", 'crashed', [av[1], av[0], av[2]], {}, crashed, 'in order'),
+                ("one output hash recorded for two runs", 'crashed', [av[0], same_output, av[2]], {}, crashed, 'repeat one recorded output'),
+                ("attempts that do not end with the recorded mutant run", 'crashed', av,
+                 dict(mutant=self.mutant_run(3, [], 0)), crashed, 'must end with'),
+                ("a fourth run after three violations", 'killed', av + killed[3:], {}, dict(killed_by=[self.METHOD]), 'more bridge')]:
             with self.subTest(label):
-                code, text = check(verdict, attempts, **fields)
+                code, text = check(verdict, attempts, **extra, **fields)
                 self.assertEqual(1, code, text)
                 self.assertIn(wanted, text)
+
+    def test_run_pass_repeats_a_dying_run_and_records_every_attempt(self):
+        """run_pass with stand-ins for the build and the oracle (real git checkout, real judging and recording)."""
+        repo = self.dir / 'passrepo'
+        (repo / 'tests').mkdir(parents=True)
+        (repo / 'current_geometry.c').write_bytes(b'int anchor = 1;\n')
+        (repo / 'tests' / 'keep.py').write_bytes(b'X = 1\n')
+
+        def git(*args):
+            subprocess.run(['git', '-c', 'core.autocrlf=false', '-c', 'user.name=t', '-c', 'user.email=t@example.invalid',
+                            *args], cwd=repo, check=True, capture_output=True)
+        git('init', '-q')
+        git('add', '-A')
+        git('commit', '-q', '-m', 'fixture')
+        m = self.fixture_mutant()
+        results = self.dir / 'pass-results.json'
+        sha = mutation_bridge.sha
+
+        def run_pass(script):
+            """script: (failures, exit_code) of each successive run of the mutant; returns (record, mutant run labels)."""
+            labels = []
+
+            def identity(work, out=None):
+                raw = (Path(work) / m['file']).read_bytes().replace(b'\r\n', b'\n')
+                return {"freshness": "fresh", "exe_sha256": sha(raw), "sidecar_sha256": '3' * 64,
+                        "sidecar": {"exe_sha256": sha(raw), "files": {m['file']: sha(raw)}}}
+
+            def build(work, out, env, folder, label, root, cache):
+                return {"exit_code": 0, "stdout_sha256": sha(label.encode()), "stderr_sha256": '5' * 64}, identity(work)
+
+            def oracle(work, binary, methods, env, folder, label, root, cache):
+                if methods == mutation_bridge.RESTORED:
+                    return self.receipt(methods, [], 0, label)
+                labels.append(label)
+                failures, code = script[len(labels) - 1]
+                return self.receipt(methods, failures, code, label)
+            real_run = subprocess.run     # keep git's own progress text out of the test output
+
+            def quiet_run(*args, **kwargs):
+                return real_run(*args, **{'stdout': subprocess.DEVNULL, 'stderr': subprocess.DEVNULL, **kwargs})
+            with contextlib.redirect_stdout(io.StringIO()), \
+                    mock.patch.object(subprocess, 'run', quiet_run), \
+                    mock.patch.object(mutate, 'MUT_ROOT', self.dir / 'pass-cache'), \
+                    mock.patch.object(mutation_bridge, '_build', build), \
+                    mock.patch.object(mutation_bridge, '_identity', identity), \
+                    mock.patch.object(mutation_bridge, '_test', oracle):
+                mutation_bridge.run_pass(mutate, [m], repo, results, today='2026-10-17')
+            return mutate.load_records(results)[m['id']], labels
+
+        violation = ([self.death(-11)], 1)
+        record, labels = run_pass([violation, violation, violation])
+        self.assertEqual(['mutant', 'mutant-2', 'mutant-3'], labels, 'a run that dies of an access violation is repeated')
+        self.assertEqual(('crashed', [self.METHOD]), (record['verdict'], record.get('crashed_on')), record.get('why'))
+        self.assertNotIn('killed_by', record)
+        attempts = record['execution']['mutant_attempts']
+        self.assertEqual(['mutant.stdout', 'mutant-2.stdout', 'mutant-3.stdout'], [a['stdout_file'] for a in attempts])
+        self.assertEqual(attempts[-1], record['execution']['mutant'])
+        # the saved record passes the same --check the ledger is read with
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out), mock.patch.object(mutate, 'MUT_ROOT', self.dir / 'pass-cache'):
+            code = mutate.check_pass([m], root=repo, results_path=results, oracle=mutation_bridge.oracle_hash(m, repo))
+        self.assertEqual(0, code, out.getvalue())
+        self.assertIn('crashed 1', out.getvalue())
+
+        record, labels = run_pass([([self.death(7)], 1), violation, violation])
+        self.assertEqual(['mutant'], labels, 'only an access violation is worth repeating')
+        self.assertEqual('blocked', record['verdict'])
+        self.assertNotIn('mutant_attempts', record['execution'])
+
+        record, labels = run_pass([violation, violation, ([self.failure("assertion", detail="AssertionError: u")], 1)])
+        self.assertEqual(('killed', ['mutant', 'mutant-2', 'mutant-3']), (record['verdict'], labels))
+        self.assertEqual([self.METHOD], record['killed_by'])
 
 
 if __name__ == '__main__':

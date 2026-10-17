@@ -10,10 +10,11 @@
   binary="bridge" 使用獨立的已提交稀疏 checkout、官方 binaries.py 編譯及 tests 指定的
          真 bridge unittest 方法。先跑基準，變異後只以完成的行為斷言判 killed；每筆還原
          來源、重新編譯並跑共用回歸。錯誤、略過、逾時與不完整方法清單都算 blocked。
-         bridge 行程在測試中死亡(tests/_bridge.py 的 BridgeClosed,帶結束碼)不是斷言失敗,
-         規則同核心:同一測試連續 RUN_RETRIES 次都以存取違規(is_access_violation_code)
-         結束、且沒有任何斷言失敗 -> crashed(死掉的測試才會重跑確認);其他結束碼(含外部
-         kill、OOM)、不足次數、前後不一致、或與斷言失敗並存 -> blocked,不算偵測。
+         bridge 行程在測試中死亡(tests/_bridge.py 的 BridgeClosed,帶結束碼)不是斷言失敗。
+         crashed 判準同核心:同一測試連續 RUN_RETRIES 次都以存取違規(is_access_violation_code)
+         結束、且沒有任何斷言失敗;重跑範圍較窄,只重跑存取違規(核心則重跑所有 blocked)。
+         其他結束碼(含外部 kill、OOM)、不足次數、前後不一致、或與斷言失敗並存 -> blocked,
+         不重跑、不算偵測。
 
 結果: killed(某測試失敗) / crashed(基準通過後,同一夾具連續存取違規;
       算被偵測到,但不是斷言殺死) / survived(全過) / equivalent / retired /
