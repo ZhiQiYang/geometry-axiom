@@ -23,6 +23,35 @@ ROOT = HERE.parent
 
 # Revised acceptance oracle: 2026-09-18 D7/I8a/I12/R2/R4.
 TESTS = [
+ # #240 P-143(看板任務 29):把 S7「I5 不得相交」與 S1「R18 凹角」的規則釘成核心場景。
+ # 放在清單最前面是有意的:mutate.py 的 killed_by 取 TESTS 順序的前 5 個失敗夾具,
+ # 放前面,日後翻突變帳本才看得到 M78/M79 的牙齒落在這幾個場景(而不是被更早的老夾具蓋住)。
+ #
+ # S7 三層:同一支 20×20、同一間 4000×3000 的房,各釘一條規則。
+ #   (a) 中線 v=10,足跡 v∈[0,20] 貼齊底牆、完全在內 → 接受(I5 閉區域:貼齊不算越界)。
+ #   (b) 中線 v=9,足跡 v∈[-1,19] 穿出底牆 1 mm → I5 拒絕;診斷帶 R6/I5/I6(沿線每個 cell 都不 ⊆ 有效範圍)。
+ #   (c) 位置同 (a)、角色改 primary → 仍通過 I5,但端面頂外輪廓 → I19 V_CUT_PRIORITY(貼齊是否合法不歸 I5 管)。
+ # M78 殺手 = (a):segment2_crosses_rect_interior 的開內部判定拿掉,貼齊的牆邊被誤判成穿入 → 誤拒。
+ # (b) 穿出的角點 (0,-1) 落在環外,擋它的是 poly_contains_rect 的「四角須在環內」;
+ #   「環邊穿入開內部」那一道(拿掉它 = M08)的牙齒在 _ax_i5_notch_edge_cuts_interior,不在這三層。
+ {'scene': '_s7a_flush_inside_accept.scene', 'expect': 'accept', 'lengths': [4000],
+  'contains': ['角材原點：(0, 0, 2500)', 'vertex[1] = (0, 20, 2500)']},
+ {'scene': '_s7b_poke_out_1mm_i5_reject.scene', 'expect': 'reject', 'error': 'R6/I5/I6 timber 1: 中線上沒有任何合法跨距'},
+ {'scene': '_s7c_non_boundary_end_on_outline_cut_priority.scene', 'expect': 'reject',
+  'error': 'V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）'},
+ # S1 凹角:#240 P-143 續的原生探針(main 1c807511 實跑)p3/p9 接受、p4/p8 拒絕。
+ # p3/p9 是下角材模板依賴的兩個合法表示法(R19(e):凹角內邊的邊界材可延伸過凹角、停在內部主支側面);
+ # p4/p8 是對照:primary 不能停在延伸段上(I22 以優先級 2 計 → V_CUT_PRIORITY)、
+ # primary 整支穿過凹角即有「超出定位邊」的延伸段,而延伸段只有 boundary 可有 → V_EXTENSION。
+ # M79 殺手 = p8:拿掉 timber_end_face_check 裡 V_EXTENSION 的拒絕。
+ {'scene': '_s1_p3_alcove_side_boundary_extension_accept.scene', 'expect': 'accept',
+  'lengths': [4000, 4000, 2946, 1287, 1287]},
+ {'scene': '_s1_p4_alcove_wall_primary_cut_priority.scene', 'expect': 'reject',
+  'error': 'V_CUT_PRIORITY：角材 6（優先級 2）端面頂到角材 4（優先級 2）側面'},
+ {'scene': '_s1_p8_l_room_primary_through_reflex_extension.scene', 'expect': 'reject',
+  'error': 'V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍'},
+ {'scene': '_s1_p9_l_room_custom_inner_wall_accept.scene', 'expect': 'accept',
+  'lengths': [5000, 3200, 4746, 2222, 1773]},
  {'scene': '_ax_r7_remote_flush_corner.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
  {'scene': '_ax_r7_remote_flush_strip.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
  {'scene': '_ax_r8_three_residual_components.scene', 'expect': 'reject', 'error': '拆分退化'},
