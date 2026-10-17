@@ -3,6 +3,11 @@
 Mutants run in a separate, sparse committed checkout. The invoking repository and
 its live runtime are never temporarily mutated. Every record includes baseline,
 real failing unittest results, restored results, binaries and official sidecars.
+
+Verdicts follow tests/mutate.py: only a failed test assertion is `killed`; a bridge process that died under the
+test (crash, abort, OOM kill: the oracle's `bridge_closed` failure kind) with no assertion failing is `crashed`
+(detected, counted apart from killed); infrastructure problems (build or launch errors, skips, timeouts,
+incomplete runs, a closed bridge whose exit status is unknown) are `blocked` and are never a detection.
 """
 import datetime
 import hashlib
@@ -60,10 +65,49 @@ def oracle_hash(m, root):
     return sha(json.dumps([m["tests"], RESTORED, rows], ensure_ascii=False, separators=(",", ":")).encode())
 
 
+# Last-resort reading of a failure entry that carries no structured `kind` (a receipt written before the oracle
+# labelled failures, or by some other oracle).  Source: tests/_bridge.py, BridgeSession.command, the
+# `raise BridgeClosed('bridge closed: ' + ...)` line.  Structured labels always win.  An unlabelled entry whose
+# text says the bridge closed becomes "unproven" (-> blocked): text can only lower trust, never raise it to
+# crashed.  An unlabelled entry without that text keeps its old meaning (an assertion failure), so receipts that
+# predate the labels and the hand-made unit fixtures stay valid.
+LEGACY_BRIDGE_CLOSED_TEXT = "bridge closed: "
+
+
+def failure_class(failure):
+    """What one entry of a result row's `failures` proves: "assertion", "crash" or "unproven".
+
+    assertion  a test assertion failed (oracle kind "assertion"): the only thing that can kill a mutant.
+    crash      the bridge process died under the test (oracle kind "bridge_closed" with an integer exit status).
+               Detected, but not an assertion kill; mirrors tests/mutate.py's `crashed`.
+    unproven   anything that cannot be shown to be either: a closed bridge whose exit status is unknown, an
+               unrecognised kind, or an unlabelled entry whose text says the bridge closed."""
+    kind = failure.get("kind")
+    if kind == "assertion":
+        return "assertion"
+    if kind == "bridge_closed":
+        return "crash" if type(failure.get("bridge_returncode")) is int else "unproven"
+    if kind is None and LEGACY_BRIDGE_CLOSED_TEXT not in failure.get("detail", ""):
+        return "assertion"          # unlabelled legacy entry with no sign of a dead bridge
+    return "unproven"
+
+
+def failure_tests(row, wanted):
+    """The `test` ids of the failures of a result row whose failure_class() is `wanted`, in report order."""
+    return [f["test"] for f in row["result"]["failures"] if failure_class(f) == wanted]
+
+
 def classify(receipt, methods):
-    """Only completed explicit unittest assertions can kill a mutant."""
+    """The honest verdict of one oracle run: killed, crashed, survived or blocked.
+
+    killed    at least one test assertion really failed (and the oracle ran to completion with exit status 1).
+    crashed   the bridge process died under the test and no assertion failed: detected, but not an assertion kill.
+    survived  every requested method ran and passed.
+    blocked   anything else: build/launch/lookup errors, skips, timeouts, incomplete runs, deaths whose exit status
+              is unknown.  Infrastructure never counts as a detection.
+    A timeout is blocked, as in tests/mutate.py: killing a slow or hung run says nothing about the bridge dying."""
     if (not methods or len(set(methods)) != len(methods)
-            or type(receipt.get("exit_code")) is not int):
+            or type(receipt.get("exit_code")) is not int or receipt.get("timed_out")):
         return "blocked"
     row = receipt.get("result")
     if not isinstance(row, dict) or row.get("schema") != "geometry-bridge-mutation-tests/1":
@@ -83,7 +127,10 @@ def classify(receipt, methods):
                     or not isinstance(failure.get("detail"), str) or not failure["detail"]
                     or not any(failure["test"] == name or failure["test"].startswith(name + " (") for name in methods)):
                 return "blocked"
-        return "killed" if receipt.get("exit_code") == 1 else "blocked"
+        classes = {failure_class(failure) for failure in row["failures"]}
+        if receipt.get("exit_code") != 1 or "unproven" in classes:
+            return "blocked"
+        return "killed" if "assertion" in classes else "crashed"
     return "survived" if receipt.get("exit_code") == 0 else "blocked"
 
 
@@ -210,11 +257,12 @@ def execution_problems(mt, m, rec, verdict, src):
             raise ValueError("bridge oracle methods changed")
         if classify(e["baseline"], RESTORED) != "survived" or classify(e["restored"], RESTORED) != "survived":
             raise ValueError("bridge baseline/restoration did not pass every declared method")
-        if classify(e["mutant"], m["tests"]) != verdict or verdict not in ("killed", "survived"):
+        if classify(e["mutant"], m["tests"]) != verdict or verdict not in ("killed", "crashed", "survived"):
             raise ValueError("bridge verdict contradicts actual unittest results")
-        killers = [x["test"] for x in e["mutant"]["result"]["failures"]][:mt.KILLED_BY_MAX]
-        if verdict == "killed" and rec.get("killed_by") != killers:
+        if verdict == "killed" and rec.get("killed_by") != failure_tests(e["mutant"], "assertion")[:mt.KILLED_BY_MAX]:
             raise ValueError("bridge killed_by contradicts raw assertion results")
+        if verdict == "crashed" and rec.get("crashed_on") != failure_tests(e["mutant"], "crash")[:mt.KILLED_BY_MAX]:
+            raise ValueError("bridge crashed_on contradicts raw bridge-death results")
         for build in (e["baseline_build"], e["mutant_build"], e["restored_build"]):
             if build["exit_code"] != 0:
                 raise ValueError("bridge build did not succeed")
@@ -291,6 +339,10 @@ def run_pass(mt, mutants, root, results_path, today=None):
             if _identity(work, folder / "bridge-mutant") != identity or oracle_hash(m, work) != judge or mt.tool_hash() != evidence["tool_sha256"]:
                 raise RuntimeError("bridge source/binary/judge changed during oracle")
             verdict = classify(trial, m["tests"]); reason = "actual explicit bridge unittest outcome"
+            if verdict == "crashed":
+                reason = ("the bridge process died under the test (exit status %s); detected, but not an assertion kill"
+                          % ", ".join(str(f["bridge_returncode"]) for f in trial["result"]["failures"]
+                                      if f.get("kind") == "bridge_closed"))
         except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
             verdict, reason = "blocked", str(exc)
         finally:
@@ -307,10 +359,10 @@ def run_pass(mt, mutants, root, results_path, today=None):
                 raise RuntimeError("restored bridge/judge did not match baseline")
         except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
             verdict, reason = "blocked", str(exc)
-        killers = ([x["test"] for x in evidence["mutant"]["result"]["failures"]][:mt.KILLED_BY_MAX]
-                   if verdict == "killed" else None)
-        rec = mt.make_record(m, src, verdict, reason, today, judge, killed_by=killers, execution=evidence)
-        if verdict in ("killed", "survived") and execution_problems(mt, m, rec, verdict, src):
+        killers = (failure_tests(evidence["mutant"], "assertion")[:mt.KILLED_BY_MAX] if verdict == "killed" else None)
+        crashed_on = (failure_tests(evidence["mutant"], "crash")[:mt.KILLED_BY_MAX] if verdict == "crashed" else None)
+        rec = mt.make_record(m, src, verdict, reason, today, judge, killed_by=killers, crashed_on=crashed_on, execution=evidence)
+        if verdict in ("killed", "crashed", "survived") and execution_problems(mt, m, rec, verdict, src):
             rec = mt.make_record(m, src, "blocked", ";".join(execution_problems(mt, m, rec, verdict, src)), today, judge, execution=evidence)
         records[m["id"]] = rec; mt.save_records(results_path, records)
         print(m["id"], rec["verdict"].upper(), m["desc"], flush=True)

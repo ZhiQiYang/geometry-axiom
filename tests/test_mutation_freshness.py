@@ -1,4 +1,5 @@
 """Non-destructive mutation receipts and preflight tests. All fixture launches are mocked."""
+import concurrent.futures
 import contextlib
 import copy
 import io
@@ -11,7 +12,10 @@ import unittest
 from unittest import mock
 
 import mutate
+import mutation_bridge
 import run_all
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class MutationFreshnessTests(unittest.TestCase):
@@ -365,6 +369,234 @@ class BridgeMutationHonestyTests(unittest.TestCase):
         before = mutate.mutant_key(m)
         m["tests"] = ["b"]
         self.assertNotEqual(before, mutate.mutant_key(m))
+
+
+class BridgeCrashHonestyTests(unittest.TestCase):
+    """Task 32: a bridge process that dies under a mutant is `crashed`; only a failed assertion is `killed`.
+
+    The oracle-driven tests run the real tests/bridge_mutation_oracle.py through mutation_bridge._test (the same call
+    run_pass makes) on tiny unittest methods.  Each method talks to a throwaway Python child process through the real
+    tests/_bridge.py BridgeSession, so no native bridge is built or started: the child plays "the mutated bridge"."""
+
+    FAKE = 'bridge_crash_fake_cases'
+    FAKE_SOURCE = r'''
+import json
+import subprocess
+import sys
+import unittest
+from unittest import mock
+
+from tests import _bridge
+
+DIES = "import os,sys; sys.stdin.readline(); os._exit(7)"
+DEAD_ON_ARRIVAL = "import os; os._exit(9)"
+ANSWERS_WRONG = "import json,sys; [print(json.dumps({'ok': False}), flush=True) for _ in sys.stdin]"
+ANSWERS_RIGHT = "import json,sys; [print(json.dumps({'ok': True}), flush=True) for _ in sys.stdin]"
+
+
+def ask(child, wait_for_exit=False):
+    """One command through the real BridgeSession; `child` (a Python one-liner) plays the bridge."""
+    real = subprocess.Popen
+    with mock.patch.object(subprocess, 'Popen', lambda argv, **kw: real([sys.executable, '-c', child], **kw)):
+        session = _bridge.BridgeSession(sys.executable)
+    try:
+        if wait_for_exit:
+            session.process.wait()
+        return session.command('ping')
+    finally:
+        session.stop()
+
+
+class Cases(unittest.TestCase):
+    def test_mutant_kills_the_bridge(self):
+        self.assertTrue(ask(DIES)['ok'])
+
+    def test_mutant_kills_the_bridge_before_the_next_command(self):
+        self.assertTrue(ask(DEAD_ON_ARRIVAL, wait_for_exit=True)['ok'])
+
+    def test_mutant_changes_the_answer(self):
+        self.assertTrue(ask(ANSWERS_WRONG)['ok'], 'the guard must still answer ok')
+
+    def test_mutant_goes_unnoticed(self):
+        self.assertTrue(ask(ANSWERS_RIGHT)['ok'])
+'''
+
+    CASES = ('test_mutant_kills_the_bridge', 'test_mutant_kills_the_bridge_before_the_next_command',
+             'test_mutant_changes_the_answer', 'test_mutant_goes_unnoticed')
+
+    @classmethod
+    def setUpClass(cls):
+        """Run the real oracle once per fake method (in parallel: each run is mostly Python start-up time)."""
+        cls.temp = tempfile.TemporaryDirectory(prefix='bridge-crash-honesty-')
+        cls.addClassCleanup(cls.temp.cleanup)
+        cls.dir = Path(cls.temp.name)
+        (cls.dir / (cls.FAKE + '.py')).write_text(cls.FAKE_SOURCE, encoding='utf-8')
+        env = {k: v for k, v in os.environ.items() if not k.startswith(('GEOMETRY_', 'MUTATE_')) and k != 'PYTHONOPTIMIZE'}
+        env.update(PYTHONPATH=os.pathsep.join(p for p in (str(cls.dir), os.environ.get('PYTHONPATH')) if p),
+                   PYTHONDONTWRITEBYTECODE='1', PYTHONIOENCODING='utf-8')
+
+        def run(case):
+            # exactly the call run_pass makes for a mutant trial
+            return mutation_bridge._test(ROOT, Path(__file__).resolve(), ['%s.Cases.%s' % (cls.FAKE, case)], env,
+                                         cls.dir / 'out', case, ROOT, cls.dir)
+        with concurrent.futures.ThreadPoolExecutor(len(cls.CASES)) as pool:
+            cls.receipts = dict(zip(cls.CASES, pool.map(run, cls.CASES)))
+
+    def oracle(self, case):
+        """(receipt, method id) of one fake method as the real oracle reported it."""
+        receipt = self.receipts[case]
+        self.assertIsNotNone(receipt['result'], 'the oracle printed no structured result: %r' % receipt)
+        return receipt, '%s.Cases.%s' % (self.FAKE, case)
+
+    # ---- (a) (b) (c): the three verdicts through the real oracle ----
+
+    def test_a_bridge_that_dies_is_crashed_not_killed(self):
+        receipt, method = self.oracle('test_mutant_kills_the_bridge')
+        failure = receipt['result']['failures'][0]
+        self.assertEqual(('bridge_closed', 7), (failure.get('kind'), failure.get('bridge_returncode')),
+                         'the oracle must label a dead bridge with its exit status instead of leaving it looking '
+                         'like an assertion failure')
+        verdict = mutation_bridge.classify(receipt, [method])
+        self.assertEqual('crashed', verdict,
+                         'the bridge process died (exit status 7) yet the verdict is %r: a crash was counted as an '
+                         'assertion kill (崩潰被算成 killed), which makes an undetected mutant look toothed' % verdict)
+
+    def test_a_bridge_already_dead_when_the_command_is_written_is_crashed_too(self):
+        receipt, method = self.oracle('test_mutant_kills_the_bridge_before_the_next_command')
+        self.assertEqual('crashed', mutation_bridge.classify(receipt, [method]),
+                         'a write to an already-dead bridge (BrokenPipe) must be judged as a bridge death, '
+                         'not as an assertion kill or an unexplained error')
+        self.assertEqual(9, receipt['result']['failures'][0].get('bridge_returncode'))
+
+    def test_b_a_failed_assertion_is_killed(self):
+        receipt, method = self.oracle('test_mutant_changes_the_answer')
+        failure = receipt['result']['failures'][0]
+        self.assertEqual('assertion', failure.get('kind'))
+        self.assertNotIn('bridge_returncode', failure)
+        self.assertEqual('killed', mutation_bridge.classify(receipt, [method]),
+                         'a real assertion failure caused by the mutant behaviour must stay a kill')
+
+    def test_c_a_passing_run_survives(self):
+        receipt, method = self.oracle('test_mutant_goes_unnoticed')
+        self.assertEqual([], receipt['result']['failures'])
+        self.assertEqual('survived', mutation_bridge.classify(receipt, [method]))
+
+    # ---- classify on structured receipts: what is and is not a detection ----
+
+    METHOD = 'tests.example.Case.test_guard'
+
+    def payload(self, failures, exit_code=1, **extra):
+        row = {"exit_code": exit_code, "result": {
+            "schema": "geometry-bridge-mutation-tests/1", "requested": [self.METHOD], "started": [self.METHOD],
+            "total": 1, "failures": failures, "errors": [], "skipped": [],
+            "expected_failures": 0, "unexpected_successes": 0}}
+        row.update(extra)
+        return row
+
+    def failure(self, kind, detail='Traceback ... tests._bridge.BridgeClosed', test=METHOD, **extra):
+        out = {"test": test, "detail": detail}
+        if kind is not None:
+            out["kind"] = kind
+        out.update(extra)
+        return out
+
+    def test_a_death_without_an_exit_status_is_never_a_detection(self):
+        for code in [None, "139", True, 1.5]:
+            with self.subTest(bridge_returncode=code):
+                row = self.payload([self.failure("bridge_closed", bridge_returncode=code)])
+                self.assertEqual("blocked", mutation_bridge.classify(row, [self.METHOD]))
+
+    def test_an_unlabelled_closed_bridge_is_not_trusted_as_a_kill(self):
+        # A receipt from before the oracle labelled failures: only the text says the bridge closed.
+        row = self.payload([self.failure(None, detail="AssertionError: bridge closed: ")])
+        self.assertEqual("blocked", mutation_bridge.classify(row, [self.METHOD]),
+                         "text alone can make an entry less trusted, never a kill")
+        row = self.payload([self.failure("surprise", detail="AssertionError")])
+        self.assertEqual("blocked", mutation_bridge.classify(row, [self.METHOD]))
+
+    def test_an_assertion_failure_beside_a_crash_is_still_a_kill_and_only_it_is_credited(self):
+        other = 'tests.example.Case.test_other'
+        methods = [self.METHOD, other]
+        row = self.payload([self.failure("bridge_closed", test=self.METHOD, bridge_returncode=-11),
+                            self.failure("assertion", test=other, detail="AssertionError: u")])
+        row["result"].update(requested=methods, started=methods, total=2)
+        self.assertEqual("killed", mutation_bridge.classify(row, methods))
+        self.assertEqual([other], mutation_bridge.failure_tests(row, "assertion"))
+        self.assertEqual([self.METHOD], mutation_bridge.failure_tests(row, "crash"))
+
+    def test_timeouts_and_exit_status_mismatches_are_blocked_never_crashed_or_killed(self):
+        crash = [self.failure("bridge_closed", bridge_returncode=-9)]
+        for label, row in [
+                ("timed out", dict(self.payload(crash, exit_code=124), timed_out=True)),
+                ("timed out with no result", {"exit_code": 124, "timed_out": True, "result": None}),
+                ("oracle says incomplete (2)", self.payload(crash, exit_code=2)),
+                ("oracle says clean (0)", self.payload(crash, exit_code=0)),
+                ("could not launch (127)", self.payload(crash, exit_code=127))]:
+            with self.subTest(label):
+                self.assertEqual("blocked", mutation_bridge.classify(row, [self.METHOD]))
+
+    def test_build_launch_and_lookup_errors_stay_blocked(self):
+        # Infrastructure the oracle reports under `errors` (unittest's error bucket) is never a detection,
+        # not even next to a bridge death.
+        row = self.payload([self.failure("bridge_closed", bridge_returncode=-11)])
+        row["result"]["errors"] = [{"test": self.METHOD, "detail": "FileNotFoundError: bridge.exe"}]
+        self.assertEqual("blocked", mutation_bridge.classify(row, [self.METHOD]))
+
+    # ---- the ledger side: --check accepts a crashed bridge record and refuses a mislabelled one ----
+
+    def test_check_accepts_a_crashed_bridge_record_and_refuses_it_relabelled_as_killed(self):
+        root = self.dir / 'repo'
+        root.mkdir()
+        (root / 'current_geometry.c').write_bytes(b'int anchor = 1;\n')
+        m = dict(id='MB', desc='bridge ledger fixture', binary='bridge', file='current_geometry.c',
+                 old='anchor = 1', new='anchor = 2', tests=[self.METHOD])
+        src = mutate.Sources(root)
+        judge = mutation_bridge.oracle_hash(m, root)
+        sha = mutation_bridge.sha
+
+        def survived_row(methods):
+            return {"exit_code": 0, "stdout_sha256": '1' * 64, "stderr_sha256": '2' * 64,
+                    "command": ["<python>", "-B", "tests/bridge_mutation_oracle.py", "<bridge>", *methods],
+                    "result": {"schema": "geometry-bridge-mutation-tests/1", "requested": methods, "started": methods,
+                               "total": len(methods), "failures": [], "errors": [], "skipped": [],
+                               "expected_failures": 0, "unexpected_successes": 0}}
+
+        def identity(text, exe):
+            return {"freshness": "fresh", "exe_sha256": exe * 64, "sidecar_sha256": '3' * 64,
+                    "sidecar": {"exe_sha256": exe * 64, "files": {"current_geometry.c": sha(text)}}}
+
+        build = {"exit_code": 0, "stdout_sha256": '4' * 64, "stderr_sha256": '5' * 64}
+        crash = survived_row(m["tests"])
+        crash.update(exit_code=1)
+        crash["result"]["failures"] = [self.failure("bridge_closed", test=self.METHOD, bridge_returncode=-11)]
+        evidence = {"schema": "geometry-bridge-mutation-execution/1", "head": 'a' * 40, "platform": os.name,
+                    "tool_sha256": mutate.tool_hash(), "oracle_sha256": judge,
+                    "methods": m["tests"], "restored_methods": mutation_bridge.RESTORED,
+                    "baseline_build": build, "baseline_identity": identity(b'int anchor = 1;\n', 'b'),
+                    "baseline": survived_row(mutation_bridge.RESTORED),
+                    "mutant_build": build, "mutant_identity": identity(b'int anchor = 2;\n', 'c'), "mutant": crash,
+                    "restored_build": build, "restored_identity": identity(b'int anchor = 1;\n', 'b'),
+                    "restored": survived_row(mutation_bridge.RESTORED), "byte_restored": True}
+
+        def check(verdict, **fields):
+            rec = mutate.make_record(m, src, verdict, 'ledger fixture', '2026-10-17', judge, execution=evidence, **fields)
+            results = self.dir / 'results.json'
+            mutate.save_records(results, {m['id']: rec})
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out), mock.patch.object(mutate, 'MUT_ROOT', self.dir / 'cache'):
+                code = mutate.check_pass([m], root=root, results_path=results, oracle=judge)
+            return code, out.getvalue()
+
+        code, text = check('crashed', crashed_on=[self.METHOD])
+        self.assertEqual(0, code, text)
+        self.assertIn('crashed 1', text)
+        self.assertNotIn('STALE', text)
+        code, text = check('killed', killed_by=[self.METHOD])
+        self.assertEqual(1, code, 'a bridge death recorded as killed must not pass --check')
+        self.assertIn('contradicts', text)
+        code, text = check('crashed', crashed_on=['tests.example.Case.test_other'])
+        self.assertEqual(1, code, 'crashed_on must name the tests whose bridge really died')
+        self.assertIn('crashed_on', text)
 
 
 if __name__ == '__main__':
