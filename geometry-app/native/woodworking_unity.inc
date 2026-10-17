@@ -40,7 +40,11 @@
 #include "../../geometry-templates/woodworking/native/world_validation.c"
 #include "../../geometry-templates/woodworking/native/boundary_policy.c"
 #include "../../geometry-templates/woodworking/native/engineering.c"
+/* Unity composition only: engineering_sources.c keeps a file-local definition
+ * key type whose name collides with definition_sources.h in one TU. */
+#define WoodDefinitionKey WoodEngineeringDefinitionKey
 #include "../../geometry-templates/woodworking/native/engineering_sources.c"
+#undef WoodDefinitionKey
 #include "../../geometry-templates/woodworking/native/panel_layout.c"
 #include "../../geometry-templates/woodworking/native/panel_support.c"
 #include "../../geometry-templates/woodworking/native/section_profile.c"

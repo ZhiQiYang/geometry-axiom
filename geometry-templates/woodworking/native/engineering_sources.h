@@ -1,7 +1,9 @@
 #ifndef WOOD_ENGINEERING_SOURCES_H
 #define WOOD_ENGINEERING_SOURCES_H
 #include "engineering.h"
+#ifndef GEO_KERNEL_VERSION_SOURCES_H
 #include "version_sources.h"
+#endif
 #ifndef GEO_KERNEL_SOURCE_H
 #include "source.h"
 #endif

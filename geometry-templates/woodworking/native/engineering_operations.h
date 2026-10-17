@@ -8,15 +8,14 @@ typedef struct {
     WoodMember *members;
     size_t *member_count, member_capacity;
     void *user;
-    bool (*rebuild_parameters)(void *,char *,size_t);
-    /* Optional unbind preparation on a local copy of the stored binding. The
-     * host may evaluate only that binding's current source closure and may
-     * replace an explicitly ended source with its last valid value. The stored
-     * binding is never rewritten by this callback. */
-    bool (*unbind_sources)(void *,EngBinding *,char *,size_t);
-    /* Optional notification after an explicit set-source (0) or
-     * set-override (1). The host orders reference redeclarations. */
-    bool (*source_declared)(void *,const EngTarget *,int);
+    /* I38/R33/P-065: before unbind, H/K resolves exactly the parameter sources of
+     * this local binding copy (live sources in their current closure; a source
+     * deleted earlier in this candidate as its last valid value). Unrelated
+     * fields are not evaluated. The stored binding is not touched here. */
+    bool (*unbind_sources)(void *,const EngTarget *,EngBinding *,char *,size_t);
+    /* P-121/P-129: an explicit source/override edit declares this owner slot
+     * (0 source, 1 override) in the candidate's ordering. */
+    bool (*declare_source)(void *,const EngTarget *,int);
     /* H initializes the corresponding source/placement record after W has
      * admitted and constructed this member at the supplied candidate slot. */
     void (*member_created)(void *,size_t);

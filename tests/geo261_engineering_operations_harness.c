@@ -11,6 +11,7 @@ typedef struct {
     WoodEngineeringOperations operations;char error[256],trace[128];size_t trace_count;
     bool missing_host,owned,fail_rebuild,fail_effective,fail_serial,write_saw_binding,write_bad;
     GeoCoord parameter_value;uint32_t parameter_id,field_id;size_t created_count;
+    size_t declared_count;int declared_override;EngTarget declared_target;
 } Fixture;
 static GeoVersionStore *version_stores[64];static size_t version_store_count;
 static void free_versions(void){for(size_t i=0;i<version_store_count;++i)geo_versions_destroy(version_stores[i]);version_store_count=0;}
@@ -40,8 +41,10 @@ static bool parameter(void *opaque,GeoParameterRef ref,GeoCoord *value,char *err
     Fixture *f=opaque;mark(f,'Q');if(!ref.set||ref.parameter_id!=f->parameter_id||ref.field_id!=f->field_id){snprintf(error,cap,"parameter identity mismatch");return false;}
     *value=f->parameter_value;return true;
 }
-static bool rebuild_parameters(void *opaque,char *error,size_t cap)
-{Fixture *f=opaque;mark(f,'P');if(f->fail_rebuild){snprintf(error,cap,"parameter rebuild rejected");return false;}return true;}
+static bool unbind_sources(void *opaque,const EngTarget *target,EngBinding *resolved,char *error,size_t cap)
+{Fixture *f=opaque;(void)target;(void)resolved;mark(f,'P');if(f->fail_rebuild){snprintf(error,cap,"parameter rebuild rejected");return false;}return true;}
+static bool declare_source(void *opaque,const EngTarget *target,int override)
+{Fixture *f=opaque;++f->declared_count;f->declared_override=override;f->declared_target=*target;return true;}
 static bool effective(void *opaque,const EngBinding *b,GeoCoord *value,char *path,size_t cap)
 {
     Fixture *f=opaque;mark(f,'E');if(f->fail_effective)return wood_eng_fail(&f->operations.grids.engineering,"effective rejected");
@@ -60,7 +63,7 @@ static void member_created(void *opaque,size_t index)
 static void wire(Fixture *f)
 {
     WoodEngineeringOperations *o=&f->operations;memset(o,0,sizeof *o);o->members=f->members;o->member_count=&f->count;o->member_capacity=4;
-    o->user=f;o->rebuild_parameters=rebuild_parameters;o->member_created=member_created;
+    o->user=f;o->unbind_sources=unbind_sources;o->declare_source=declare_source;o->member_created=member_created;
     o->grids.state=&f->grids;o->grids.user=f;o->grids.host=host;WoodEngineeringContext *w=&o->grids.engineering;
     w->state=&f->eng;w->user=f;w->error=f->error;w->error_capacity=sizeof f->error;w->placement=placement;w->target=target;
     w->named_value=named;w->parameter=parameter;w->member_owned=owned;w->write_dimension=write_dimension;w->serializable=serializable;
@@ -100,19 +103,23 @@ static int sources(void)
 {
     const char *set="{\"op\":\"set-source\",\"target\":{\"kind\":\"timber\",\"id\":1,\"field\":\"A\"},\"source\":{\"kind\":\"parameter\",\"parameterId\":17,\"fieldId\":23}}";
     Fixture f;init(&f);CHECK(add_member(&f,1,false,WOOD_MEMBER_ROLE_PRIMARY));
-    NAMED(!operation(&f,set)&&!strcmp(f.error,"D28: bind only an already placed timber"),"engineering-operations-unplaced-source");CHECK(f.eng.binding_count==0);
+    NAMED(!operation(&f,set)&&!strcmp(f.error,"D28: bind only an already placed timber"),"engineering-operations-unplaced-source");CHECK(f.eng.binding_count==0&&f.declared_count==0);
     CHECK(!operation(&f,"{\"op\":\"set-override\",\"target\":{\"kind\":\"timber\",\"id\":1,\"field\":\"A\"},\"value\":null}"));CHECK(!strcmp(f.error,"D28: bind only an already placed timber"));
     f.members[0].placed=true;
     CHECK(!operation(&f,"{\"op\":\"set-override\",\"target\":{\"kind\":\"timber\",\"id\":1,\"field\":\"A\"},\"value\":null}"));CHECK(!strcmp(f.error,"D28: object override requires an explicit source binding"));
+    CHECK(f.declared_count==0);
     CHECK(operation(&f,set));CHECK(f.eng.binding_count==1&&f.eng.bindings[0].source.kind==ENG_PARAMETER&&f.eng.bindings[0].source.parameter.parameter_id==17&&f.eng.bindings[0].source.parameter.field_id==23);
+    NAMED(f.declared_count==1&&f.declared_override==0&&f.declared_target.kind==1&&f.declared_target.id==1&&f.declared_target.field==0,"engineering-operations-declare-source");
     CHECK(operation(&f,"{\"op\":\"set-override\",\"target\":{\"kind\":\"timber\",\"id\":1,\"field\":\"A\"},\"value\":{\"kind\":\"parameter\",\"parameterId\":4,\"fieldId\":0}}"));
     EngBinding *b=&f.eng.bindings[0];CHECK(b->has_override&&b->override_value.kind==ENG_PARAMETER&&b->override_value.parameter.parameter_id==4&&b->override_value.parameter.field_id==0&&b->source.parameter.parameter_id==17);
+    CHECK(f.declared_count==2&&f.declared_override==1);
     CHECK(operation(&f,"{\"op\":\"set-source\",\"target\":{\"kind\":\"timber\",\"id\":1,\"field\":\"A\"},\"source\":{\"kind\":\"literal\",\"value\":29}}"));
     CHECK(f.eng.binding_count==1&&b->has_override&&b->source.kind==ENG_LITERAL&&b->source.value==29);
     CHECK(operation(&f,"{\"op\":\"set-override\",\"target\":{\"kind\":\"timber\",\"id\":1,\"field\":\"A\"},\"value\":null}"));
     EngDimensionSource zero={0};CHECK(!b->has_override&&!memcmp(&b->override_value,&zero,sizeof zero)&&b->source.value==29);
+    CHECK(f.declared_count==4&&f.declared_override==1);
     CHECK(!operation(&f,"{\"op\":\"set-override\",\"target\":{\"kind\":\"timber\",\"id\":1,\"field\":\"A\"},\"value\":{\"kind\":\"application\",\"id\":\"app\",\"field\":\"primary.A\"}}"));CHECK(!strcmp(f.error,"I35: application override cannot refer to another application"));
-    f.owned=true;CHECK(!operation(&f,set));CHECK(!strcmp(f.error,"I42: owned timber dimensions come from its assembly binding"));f.owned=false;
+    f.owned=true;CHECK(!operation(&f,set));CHECK(!strcmp(f.error,"I42: owned timber dimensions come from its assembly binding"));f.owned=false;CHECK(f.declared_count==4);
     CHECK(!operation(&f,"{\"op\":\"set-source\",\"target\":{\"kind\":\"timber\",\"id\":9,\"field\":\"A\"},\"source\":{\"kind\":\"literal\",\"value\":1}}"));CHECK(!strcmp(f.error,"I35: dimension target timber does not exist"));return 0;
 }
 static int unbind_order(void)

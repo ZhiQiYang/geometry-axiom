@@ -59,6 +59,7 @@ static bool apply_grid_binding_line(const char *path,int line_no,char **t,int co
         if(n>d) {
             snprintf(detail,sizeof detail,"D30/I37: grid-binding %u anchor %c numerator=%u exceeds denominator=%u",binding.id,a?'v':'u',n,d); goto invalid;
         }
+        /* K geo_grid_binding_normalize owns the reduction below. */
         binding.anchor_num[a]=n;binding.anchor_den[a]=d;
     }
     if(!geo_grid_binding_normalize(&binding))goto invalid;

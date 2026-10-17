@@ -87,11 +87,11 @@ static bool sp_operation(World *w,GeoJson *j,int t)
     if(!strcmp(op,"put-profile")||!strcmp(op,"put-member")||!strcmp(op,"put-run")){
         if(!geo_json_keys(j,t,"op,value",""))return sp_error("I49: invalid put operation fields");int value=geo_json_member(j,t,"value");
         if(!strcmp(op,"put-profile"))return sp_put_profile(w,j,value);
-        /* P-121/P-122: a stored member/run is an explicit reference declaration. */
+        /* P-121/P-129: a successful W member/run put is that owner's explicit declaration. */
         bool member=!strcmp(op,"put-member");uint32_t id;
+        if(!eng_u32(j,geo_json_member(j,value,"id"),&id,false))return false;
         if(!(member?sp_put_member(w,j,value):sp_put_run(w,j,value)))return false;
-        if(!eng_u32(j,geo_json_member(j,value,"id"),&id,false))return sp_error("I49: invalid put identity");
-        return parameter_declare(w,member?PARAM_OWNER_MEMBER:PARAM_OWNER_RUN,id,0)||sp_error("%s",g_parameter_error);
+        return parameter_declare(w,member?PARAM_OWNER_MEMBER:PARAM_OWNER_RUN,id,0);
     }
     if(!strcmp(op,"delete-profile")||!strcmp(op,"delete-member")||!strcmp(op,"delete-run")){
         uint32_t id;if(!geo_json_keys(j,t,"op,id","")||!eng_u32(j,geo_json_member(j,t,"id"),&id,false))return sp_error("I49: invalid delete identity");

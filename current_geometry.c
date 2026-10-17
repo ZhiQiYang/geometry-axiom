@@ -6614,7 +6614,9 @@ static bool apply_boundary_line(
 
     for (size_t i = 0; i < world_boundary_count(world); ++i) {
         if (geo_regions_at(&world->geo.region_data,i)->id == id) {
-            g_revalidate_error[0] = '\0';  /* staging failure must not report an older revalidation */
+            /* A staging rejection never reaches world_revalidate; do not
+             * report a stale diagnostic from an earlier command. */
+            g_revalidate_error[0] = '\0';
             if (!app_boundary_replace(world,&candidate)) {
                 char detail[512];
                 snprintf(detail,sizeof detail,"重宣告後有物件失效（承載面/參考線/角材/空間沒全過）: boundary %u: %s",

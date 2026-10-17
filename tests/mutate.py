@@ -343,7 +343,7 @@ MUTANTS = [
 MUTANTS += [
     dict(id="M61", desc="D60/K2a：恢復已刪卡片鍵保留，令無引用同鍵重建轉紅", binary="bridge",
          file="geometry-core/parameters.inc", old="    ParameterSet card;geo_parameters_begin_definition(&w->geo.parameters,id,&card);",
-         new='    {const ParameterCandidateOrder *order=parameter_order(w);for(size_t r=0;order&&r<order->field_retirement_count;++r)if(order->field_retirements[r].parameter_id==id)return parameter_fail("I38 DUPLICATE: a deleted identity cannot be declared again");}\n    ParameterSet card;geo_parameters_begin_definition(&w->geo.parameters,id,&card);',
+         new='    {const ParameterCandidateLedger *ledger=parameter_ledger(w);for(size_t r=0;ledger&&r<ledger->field_retirement_count;++r)if(ledger->field_retirements[r].parameter_id==id)return parameter_fail("I38 DUPLICATE: a deleted identity cannot be declared again");}\n    ParameterSet card;geo_parameters_begin_definition(&w->geo.parameters,id,&card);',
          tests=["tests.test_grid_system_contract.GridSystemContract.test_k2a_parameter_confirmation_receipt_includes_intermediate_deletion"]),
     dict(id="M62", desc="I38：同鍵卡片已重建就跳過未處理引用", binary="bridge",
          file="geometry-core/parameters.inc",

@@ -79,8 +79,8 @@ static char *eng_read_file(const char *path,size_t *size)
     *size=fread(text,1,(size_t)n,f);bool ok=*size==(size_t)n&&!ferror(f);fclose(f);if(!ok){free(text);eng_fail("Could not read complete engineering input");return NULL;}
     text[*size]=0;return text;
 }
-/* Serialization-only copy of one candidate's order metadata. It is never placed in
- * a World, a seal, history or an exchange record; preview output reads it only. */
+/* Serialization-only order metadata copied from the batch candidate's H ledger
+ * before validation. Never placed in a preview World, seal or history. */
 typedef struct {
     ParameterDeclaration declarations[PARAM_DECLARATION_MAX];size_t declaration_count;
     ParameterFieldRetirement retirements[PARAM_FIELD_RETIREMENT_MAX];size_t retirement_count;
@@ -90,12 +90,11 @@ static void json_parameter_rebindings(void)
 {
     fputs(",\"redeclaredReferences\":[",stdout);bool first=true;
     const ParameterPreviewOrder *p=g_parameter_preview_order;
-    const World *before=g_preview.transaction?&g_preview.transaction->before:NULL,*after=g_preview.transaction?&g_preview.transaction->after:NULL;
-    if(!before)p=NULL;
     if(p)for(size_t i=0;i<p->retirement_count;++i){const ParameterFieldRetirement *r=&p->retirements[i];bool last=true;
         for(size_t k=i+1;k<p->retirement_count;++k)if(p->retirements[k].parameter_id==r->parameter_id&&p->retirements[k].field_id==r->field_id){last=false;break;}
         if(!last)continue;
         for(size_t k=0;k<p->declaration_count;++k){const ParameterDeclaration *d=&p->declarations[k];
+            const World *before=&g_preview.transaction->before,*after=&g_preview.transaction->after;
             if(d->at<=r->at||!parameter_declared_owner_present(after,d)||(!parameter_declared_owner_uses(before,d,r->parameter_id,r->field_id)&&!parameter_declared_owner_uses(after,d,r->parameter_id,r->field_id)))continue;
             const char *kind=NULL;char label[160],message[320];
             switch(d->kind){
@@ -130,22 +129,22 @@ typedef struct {
 static bool app_batch_candidate_apply(void *after,GeoEvalContext *sources,void *opaque)
 {
     (void)sources;AppBatchCandidateCall *call=opaque;World *candidate=after;bool ok=true;
-    /* P-121/P-122/P-062: candidate order belongs to exactly this operation sequence. */
-    ParameterCandidateOrder *parameters=parameters_begin_candidate(candidate);
-    if(!parameters)ok=eng_fail("UNSUPPORTED/CAPACITY: candidate parameter order memory");
+    /* I38/P-062: candidate-order scratch lives beside this exact candidate. */
+    ParameterCandidateScope scope;
+    if(!parameters_begin_candidate(candidate,&scope))ok=eng_fail(g_parameter_error);
     for(int i=0;i<call->count&&ok;++i){
         ok=call->operation(candidate,call->json,geo_json_at(call->json,call->operations,i));
         if(ok)receipt_scan_candidate(candidate);
         if(ok)ok=assembly_versions_immutable(call->before,candidate);
     }
-    if(ok&&!parameter_retirements_valid(candidate))ok=eng_fail(g_parameter_error);
-    memset(call->order,0,sizeof *call->order);
-    if(parameters){
-        call->order->declaration_count=parameters->declaration_count;call->order->retirement_count=parameters->field_retirement_count;
-        memcpy(call->order->declarations,parameters->declarations,parameters->declaration_count*sizeof parameters->declarations[0]);
-        memcpy(call->order->retirements,parameters->field_retirements,parameters->field_retirement_count*sizeof parameters->field_retirements[0]);
+    if(scope.ledger){
+        if(ok&&!parameter_retirements_valid(candidate))ok=eng_fail(g_parameter_error);
+        ParameterPreviewOrder *order=call->order;
+        order->declaration_count=scope.ledger->declaration_count;order->retirement_count=scope.ledger->field_retirement_count;
+        memcpy(order->declarations,scope.ledger->declarations,order->declaration_count*sizeof order->declarations[0]);
+        memcpy(order->retirements,scope.ledger->field_retirements,order->retirement_count*sizeof order->retirements[0]);
+        parameters_end_candidate(&scope);  /* I39/P-062: no scratch reaches comparison, staging, or history */
     }
-    parameters_end_candidate(parameters);  /* I39/P-062: no scratch reaches comparison, staging, or history */
     if(ok){const World *previous=g_subgrid_before;bool capturing=g_reference_capturing;g_reference_capturing=true;g_reference_trial=*candidate;
         g_subgrid_before=call->before;ok=world_revalidate(candidate);g_subgrid_before=previous;g_reference_capturing=capturing;
         if(!ok){*candidate=g_reference_trial;if(!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}}
@@ -165,19 +164,19 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     }
     if((uint64_t)revision!=g_definition_revision){eng_bridge_error("STALE",stale_message);geo_json_free(&j);free(text);return;}
     int count=geo_json_size(&j,operations);if(count<1||count>ENG_OPERATION_MAX){eng_bridge_error("CAPACITY","Transaction needs 1..256 operations");geo_json_free(&j);free(text);return;}
-    ParameterPreviewOrder *order=calloc(1,sizeof *order);
-    AppWorldCandidate *transaction=order?app_world_candidate_create(&g_world):NULL;
-    if(!transaction){free(order);eng_bridge_error("MEMORY",memory_message);geo_json_free(&j);free(text);return;}
+    AppWorldCandidate *transaction=app_world_candidate_create(&g_world);
+    if(!transaction){eng_bridge_error("MEMORY",memory_message);geo_json_free(&j);free(text);return;}
     g_engineering_error[0]=0;g_scene_last_error[0]=0;g_reference_issue_count=0;
     g_deleted_field_count=0;g_deleted_fields_token=0;
-    AppBatchCandidateCall call={&j,operations,count,operation,&transaction->before,order};
+    ParameterPreviewOrder order={0};
+    AppBatchCandidateCall call={&j,operations,count,operation,&transaction->before,&order};
     bool ok=app_world_candidate_evaluate(transaction,app_batch_candidate_apply,&call)==GEO_CANDIDATE_OK;
     if(ok&&!app_world_candidate_seal(transaction)){ok=false;eng_fail("I8: candidate seal failed; World unchanged");}
     char *stage_label=(char *)label;reference_stage(transaction,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;g_preview.finish_batch=kind==3;
     g_deleted_fields_token=g_preview.token;
     if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
-    fputs("{\"ok\":true,\"preview\":",stdout);g_parameter_preview_order=order;write_preview();g_parameter_preview_order=NULL;fputs("}\n",stdout);
-    free(order);geo_json_free(&j);free(text);
+    fputs("{\"ok\":true,\"preview\":",stdout);g_parameter_preview_order=&order;write_preview();g_parameter_preview_order=NULL;fputs("}\n",stdout);
+    geo_json_free(&j);free(text);
 }
 static bool batch_token_kind(int kind)
 {

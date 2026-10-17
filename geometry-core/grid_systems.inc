@@ -166,6 +166,7 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a,int 
 }
 static bool apply_grid_system_line(const char *path,int line_no,char **t,int count,World *w)
 {
+    /* main-along is the W source role, not a K grid-system field (GEO-261). */
     GridSystem s={0}; s.next_rule_key=1; int main_along=0,i=6; g_grid_stagger_error[0]=0; g_grid_definition_error[0]=0;
     if (count<10) { grid_definition_error("declaration","requires name-hex, main-along and u/v definitions"); goto invalid; }
     if (!parse_u32(t[1],&s.id)) { grid_definition_error("id","must be uint32 (0..4294967295)"); goto invalid; }
@@ -180,6 +181,7 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
         if (!grid_system_read_axis(t,count,&i,&s.axis[axis],axis)) goto invalid;
     }
     if (i!=count) { grid_definition_error("declaration","has unexpected trailing tokens"); goto invalid; }
+    /* Diagnostics only: K validation plus the W main-along role stay authoritative. */
     if (!grid_system_valid(&s,main_along)) {
         if (grid_system_is_infinite(&s)) {
             for (int axis=0;axis<2;++axis) if (s.axis[axis].source && !grid_axis_is_infinite(&s.axis[axis])) {
@@ -196,7 +198,6 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
     if(!app_grid_system_redeclare(&candidate,&s,main_along,&detail)){
         if(detail.status==GEO_GRID_STORE_SPACE_CHANGE){scene_error(path,line_no,"D29/I37: legacy-finite and infinite identities cannot be converted implicitly");return false;}
         if(detail.status==GEO_GRID_STORE_CAPACITY){scene_error(path,line_no,"I37: grid-system capacity is 16");return false;}
-        grid_definition_error("definition","has invalid name or axis values");
         goto invalid;
     }
     reference_capture_trial(&candidate);
@@ -205,7 +206,9 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
     }
      return true;
 invalid:
-    scene_error(path,line_no,g_grid_stagger_error[0]?g_grid_stagger_error:g_grid_definition_error); return false;
+    /* Named diagnostics when one applies; otherwise the established generic rejection. */
+    scene_error(path,line_no,g_grid_stagger_error[0]?g_grid_stagger_error:g_grid_definition_error[0]?g_grid_definition_error:
+        "D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range"); return false;
 }
 
 static bool apply_grid_system_application(const char *path,int line_no,char **t,int count,World *w)

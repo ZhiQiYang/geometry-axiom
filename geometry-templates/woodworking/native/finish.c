@@ -1,6 +1,8 @@
 #include "finish.h"
 #include "section_profile.h"
+#ifndef GEOMETRY_KERNEL_GRID_H
 #include "grid.h"
+#endif
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
