@@ -73,7 +73,7 @@ static int ledger_case(const char *name)
             CHECK("ledger-root-owns-decoded-storage",keys->keys[0][0]==2&&keys->keys[1][3]==8);
         }else{GeoSourceValue geometry;CHECK("ledger-unkeyed-root-value",geo_eval_source(state.reference.sources,(GeoSourceRef){MODEL_SOURCE_PROVIDER,item->key,strlen(item->key)},GEO_DEPENDENCY_VALUE_REQUIRED,&geometry)==GEO_SOURCE_OK);
             CHECK("ledger-unkeyed-component-count",geometry.as.regions.count==(!strcmp(name,"components")?2:1));
-            for(size_t c=0;c<geometry.as.regions.count;++c)CHECK("ledger-absence-and-domains-remain-null",!item->vertex_keys||c>=item->region_count||!item->vertex_keys[c]);CHECK("ledger-unkeyed-root-has-no-ledger-edge",!ledger_edge(&state,item,7));}
+            for(size_t c=0;c<geometry.as.regions.count;++c)CHECK("ledger-absence-and-domains-remain-null",!item->vertex_keys||c>=item->region_count||!item->vertex_keys[c]);CHECK("ledger-unkeyed-root-has-no-ledger-edge",!ledger_edge(&state,item,7)&&!ledger_edge(&state,item,item->id));}
     }
     CHECK("ledger-root-count",roots==(!strcmp(name,"shared")?2:1));
     CHECK("ledger-world-unchanged",!memcmp(before,world,sizeof *world));

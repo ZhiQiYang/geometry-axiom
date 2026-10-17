@@ -29,6 +29,16 @@ CONTROLS = (
     ('placement-definition', 'if(!geo_placement_sources_definition(state->reference.placement_sources,item->id,&placement))return false;',
      'placement=*geo_placements_find(&state->reference.world->geo.placement_data,item->id);',
      'selection', 'ledger-selection-actual-definition-controls-attachment'),
+    # R41 gives each derived component the derived placement's id (9). Taking a
+    # ledger by that id is only observable when boundary 9 is keyed as well.
+    ('component-identity', 'if(item->region_count)item->vertex_keys[0]=NULL;return true;',
+     '{const GeoRegionKeys *component=placement.domain==GEO_PLACEMENT_REGION_SET?'
+     'geo_region_keys_find(&state->reference.world->geo.region_data,item->id):NULL;'
+     'if(component&&geometry->as.regions.count){const BoundaryVertexKeys **keys=calloc(geometry->as.regions.count,sizeof *keys);'
+     'if(!keys)return false;free(item->vertex_keys);item->vertex_keys=keys;item->region_count=geometry->as.regions.count;'
+     'for(size_t c=0;c<item->region_count;++c)keys[c]=component;return true;}}'
+     'if(item->region_count)item->vertex_keys[0]=NULL;return true;',
+     'components', 'ledger-absence-and-domains-remain-null'),
 )
 SCENE = ('boundary 7 outline 0,0 1000,0 1000,1000 0,1000 hole 100,100 200,100 200,200 100,200\n'
          'placement 9 on boundary 7 origin 0 0 30 u +x v +y\n'
@@ -38,6 +48,8 @@ SCENE = ('boundary 7 outline 0,0 1000,0 1000,1000 0,1000 hole 100,100 200,100 20
 # derived by R41. This is the product bridge's own dump of that fixture
 # (test_panel_fill_host second-component case) with boundary 7, placement 9
 # and boundary 7's key ledger; beam 20 splits the range into two components.
+# Trap: boundary 9 is keyed too, and 9 is also every derived component's id
+# (R41 copies the derived placement id), so an id-based ledger lookup leaks.
 COMPONENTS_SCENE = (
     'requires parameters/1\nparameters begin\n'
     'parameters card eyJpZCI6OTAsIm5hbWUiOiLploDmqrsiLCJuZXh0RmllbGRJZCI6Mn0=\n'
@@ -47,6 +59,8 @@ COMPONENTS_SCENE = (
     'boundary 7 outline 0,0 100,0 100,100 0,100 kind room_plan\n'
     'beam 20 along x from 40 to 60 at 50 width 120 depth 30 top 39\n'
     'boundary-vertex-keys 7 outer 1 2 3 4 next-key 5\n'
+    'boundary 9 outline 200,0 300,0 300,100 200,100\n'
+    'boundary-vertex-keys 9 outer 11 12 13 14 next-key 15\n'
     'requires panel-fill/1\n'
     'finish-surface 1 on boundary 7 origin 0 0 0 u +x v +y n +z side +n obstacles b20 name-hex e5a4a9e88ab1e5ae8ce68890e99da2\n'
     'panel-fill 1 definition-hex ' + json.dumps({'finishSurfaceId': 1, 'gap': 0, 'id': 1, 'lengthAlong': 'v', 'origin': [0, 0],

@@ -101,6 +101,31 @@ class ParameterSources(unittest.TestCase):
     def test_product_current_values_evaluates_cloned_parameters_without_live_writes(self):
         self.run_case("read-only", product=True)
 
+    def test_read_only_definition_edge_kind_control_fails_exact_edge_set(self):
+        # Same six nodes and five edges, but FIELD/CARD reads become value-required:
+        # the count oracle passes, so only the exact edge-set oracle can fail.
+        build = native()
+        self.run_case("read-only", product=True)
+        original = build.kernel / "parameter_sources.c"
+        before_bytes = original.read_bytes()
+        source = before_bytes.decode("utf-8")
+        needle = "GEO_DEPENDENCY_DEFINITION_REQUIRED,out);"
+        self.assertEqual(1, source.count(needle), "Definition-edge control must target exactly one K read")
+        changed_source = build.kernel / "parameter-sources-definition-edge-mutant.c"
+        changed_source.write_text(source.replace(needle, "GEO_DEPENDENCY_VALUE_REQUIRED,out);"), encoding="utf-8")
+        changed = build.compile(changed_source, "parameter-sources-definition-edge-mutant")
+        objects = build.product_objects()
+        self.assertEqual(1, objects.count(build.parameter_sources_object), "Exactly one K provider is replaced")
+        product = build.link("parameter-graph-product-definition-edge-mutant", [self.product_client,
+            *[changed if obj == build.parameter_sources_object else obj for obj in objects]])
+        result = subprocess.run([str(product), "read-only", str(self.scene)], capture_output=True, text=True,
+                                encoding="utf-8", timeout=30)
+        self.assertEqual(1, result.returncode, "Crash/setup is not an edge-set verdict: " + result.stderr)
+        self.assertRegex(result.stderr, r"\AASSERT:readonly-exact-native-parameter-edge-set:\d+\n\Z")
+        self.assertEqual("", result.stdout)
+        self.assertEqual(before_bytes, original.read_bytes(), "Mutation must not alter the baseline K source")
+        self.run_case("read-only", product=True)
+
     def test_same_kernel_resolver_bypass_fails_standalone_and_actual_candidate_edge(self):
         build = native()
         self.run_case("diamond")
