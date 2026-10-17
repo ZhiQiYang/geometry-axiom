@@ -405,3 +405,4 @@
 | 編號 | 分支 / 完整 SHA | 命令 | 回報到 | 狀態 |
 |---|---|---|---|---|
 | R-001 | `feat/framing-oracle-20261015` / `a32bcf2f146606484894f6bb59c0f719bbe6b9bf` | `cd geometry-core/framing-template/oracle && python3 selftest.py`,再到 repo 根目錄 `ulimit -s 16384; python3 -u tests/run_all.py --build` | #251 | 待領 |
+| R-002 | `feat/card-reference-core-20261015` / `4a7d9b5f4e7dbf81c710d205701386583cff0a25` | `ulimit -s 16384; python3 -u tests/run_all.py --build`;另跑 `python3 geometry-core/card-reference/run_mutations.py`(自訂 53 筆整卡反證，參數依 --help)。若 run_all 只有 mutation:check 紅(帳本待重產)照實回報即可 | #253 | 待領 |
