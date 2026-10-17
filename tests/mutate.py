@@ -391,6 +391,11 @@ MUTANTS += [
          old="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0)&&parameter_declare(w,PARAM_OWNER_GRID_SYSTEM,s.id,0);",
          new="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0);",
          tests=[S1_TEST]),
+    dict(id="M85", desc="I38/D29/P142-S1：網格系統 ParameterRef 指向已刪卡片時沿用快取長度，不拒絕", binary="bridge",
+         file="geometry-core/grid_systems.inc",
+         old="if(!grid_axis_is_infinite(a)||!parameter_coord(w,a->parameters[field],values[field])){",
+         new="if(!grid_axis_is_infinite(a)||(parameter_find(w,a->parameters[field].parameter_id)&&!parameter_coord(w,a->parameters[field],values[field]))){",
+         tests=["tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS"]),
 ]
 
 # GEO-262 / P-142 S2 after #193: the merged source rebuilds a card and unbinds a

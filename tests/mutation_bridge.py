@@ -49,6 +49,7 @@ RESTORED = [
         "test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES",
         # P-142 S1: grid-system field references rebound by put-grid-system.
         "test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE",
+        "test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS",
         # P-142 S2 on the merged source: rebuilt card read by field and card unbind.
         "test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99",
     ]],

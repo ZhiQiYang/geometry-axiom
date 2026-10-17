@@ -649,6 +649,18 @@ class GridCardReference(unittest.TestCase):
                                               for r in preview['preview']['redeclaredReferences'] if r['owner'] == owner},
                          'S1 preview discloses the put-grid-system redeclaration')
 
+    def test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS(self):
+        """P-142 S1 counterexample: [delete-parameter 10, put-grid-system still on card 10].
+        The post-delete put-grid-system satisfies the deletion guard's declaration order,
+        so the still-missing source itself must reject (I38 MISSING naming grid, card, field)."""
+        self.apply([parameter()])
+        self.apply_line('grid-system 4 name-hex 47 main-along none u repeat -5 param:10:3 v repeat 7 param:10:8')
+        still_on_10 = grid(ref=False, u='repeat -5 param:10:3', v='repeat 7 param:10:8')
+        self.reject([{'op': 'delete-parameter', 'id': 10}, still_on_10], 'I38 MISSING',
+                    'S1 redeclared reference to a deleted, unrebuilt card', identity=(4, 10, 3))
+        self.assertIn(10, [c['id'] for c in self.read()['state']['parameters']])
+        self.assertEqual((12, 30), self.lengths())
+
     def test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99(self):
         """P-142 S2 on the merged #193 source: one ordered candidate rebuilds card 10 and
         unbinds both the whole-card grid and a field-level timber source; both read 99."""
