@@ -530,6 +530,68 @@ class GridCardReference(unittest.TestCase):
         self.apply([parameter(), {'op': 'set-grid-card-reference', 'id': 4, 'value': source()}])
         self.apply([unbind(), package([parameter(a='18')])]); self.assertEqual((12, 30), self.lengths())
 
+    # P-142 B2: the whole-card grid owner and the D44 panel-fill owners are one
+    # parameter_uses enumeration and one I38 rejection; the fixture values match
+    # test_parameters_core's panel-fill owner fixture (board 100 x 100, refs = 8).
+    PANEL_BOARD = {'id': 'b2-board', 'version': 1, 'name': '板', 'kind': 'panel',
+                   'width': 100, 'length': 100, 'thickness': '9'}
+
+    def panel_fill_transaction(self, operation):
+        path = self.directory / 'panel-fill-owner.json'
+        path.write_text(json.dumps({'schema': 'panel-fill-transaction/1', 'expectedRevision': self.read()['revision'],
+                                    'operations': [operation]}, ensure_ascii=False), encoding='utf-8')
+        preview = self.command('panel-fill-preview ' + str(path))
+        self.assertTrue(preview['ok'] and preview['preview']['valid'], preview)
+        self.assertTrue(self.command('panel-fill-confirm ' + str(preview['preview']['token']))['ok'])
+
+    def put_panel_fill(self, target, ref):
+        keep = {'parameterId': 91, 'fieldId': 1}
+        value = {'id': 1, 'finishSurfaceId': 1, 'panel': {'id': 'b2-board', 'version': 1},
+                 'lengthAlong': 'v', 'origin': [0, 0], 'gap': ref if target == 'gap' else 3,
+                 'pattern': 'stagger' if target == 'stagger' else 'straight',
+                 'threshold': ref if target == 'threshold' else keep}
+        if target == 'stagger':
+            value['stagger'] = {'axis': 'u', 'value': ref}
+        return {'op': 'put-panel-fill', 'value': value}
+
+    @staticmethod
+    def i38_messages(result):
+        return [v.get('message', '') for v in result['preview']['violations'] if 'I38 MISSING' in v.get('message', '')]
+
+    def card_and_panel_fill_share_rejection(self, target):
+        self.seed(a='8')  # grid-system 4 card-reference 10 3 8; field 3 = 8 is also the panel-fill source
+        self.apply_line('boundary 8 outline 0,0 250,0 250,250 0,250 kind room_plan')
+        self.apply([{'op': 'publish-material', 'value': self.PANEL_BOARD}, card(91, 'threshold', [field(1, '8')])])
+        self.panel_fill_transaction({'op': 'put-finish-surface', 'value': {
+            'id': 1, 'name': '完成面', 'boundaryId': 8, 'frame': {'origin': [0, 0, 0], 'U': '+X', 'V': '+Y', 'N': '+Z'},
+            'structureSide': 1, 'obstacles': []}})
+        self.panel_fill_transaction(self.put_panel_fill(target, {'parameterId': 10, 'fieldId': 3}))
+        panel_owner = re.compile(r'\bpanel-fill 1 ' + target + r'\b')
+        card_owner = re.compile(r'\bgrid-system 4 card-reference u field 3\b')
+        delete = {'op': 'delete-parameter', 'id': 10}
+        both = self.i38_messages(self.reject([delete], 'I38 MISSING', 'B2 both owners', identity=(4, 10, 3)))
+        self.assertTrue(any(panel_owner.search(m) and card_owner.search(m) and '另成一筆後再刪' in m for m in both),
+                        ('B2: one I38 rejection names the panel-fill and the whole-card owner', both))
+        # The card owner is handled in this candidate; the native-only panel-fill owner still blocks.
+        native = self.i38_messages(self.reject([unbind(), delete], 'I38 MISSING', 'B2 panel-fill still unhandled'))
+        self.assertTrue(any(panel_owner.search(m) and '另成一筆後再刪' in m for m in native), native)
+        self.assertFalse(any(re.search(r'\bgrid-system 4\b', m) for m in native), ('B2: handled card owner listed', native))
+        # Panel-fill repointed in its own transaction: the card owner alone is the same I38 rejection.
+        self.panel_fill_transaction(self.put_panel_fill(target, {'parameterId': 91, 'fieldId': 1}))
+        card_only = self.i38_messages(self.reject([delete], 'I38 MISSING', 'B2 card owner alone', identity=(4, 10, 3)))
+        self.assertFalse(any(re.search(r'\bpanel-fill 1\b', m) or '另成一筆後再刪' in m for m in card_only), card_only)
+        self.apply([unbind(), delete])
+        self.assertNotIn(10, [c['id'] for c in self.read()['state']['parameters']])
+
+    def test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION(self):
+        self.card_and_panel_fill_share_rejection('gap')
+
+    def test_P142_B2_CARD_AND_PANEL_FILL_STAGGER_SHARE_I38_REJECTION(self):
+        self.card_and_panel_fill_share_rejection('stagger')
+
+    def test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION(self):
+        self.card_and_panel_fill_share_rejection('threshold')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -385,22 +385,25 @@ static bool parameter_put(World *w,EngJson *j,int t)
 /* I38: enumerate actual references in a complete candidate. Only the first
  * PARAMETER_USES_SHOWN referrers are named; the count is exact. References from the card's own fields vanish with it. */
 #define PARAMETER_USES_SHOWN 3
-typedef struct {char text[256],native_text[256];size_t count,native_count;} ParameterUses;
+/* text/count cover every owner; native_* and other_* split the same owners by
+ * whether this candidate can redeclare them. Each list names its first owners. */
+typedef struct {char text[256],native_text[256],other_text[256];size_t count,native_count,other_count;} ParameterUses;
+static void parameter_use_list(char *text,size_t cap,size_t *count,const char *owner)
+{
+    if((*count)++<PARAMETER_USES_SHOWN){size_t n=strlen(text);snprintf(text+n,cap-n,"%s%s",n?"; ":"",owner);}
+}
 static void parameter_use(ParameterUses *u,const char *format,...)
 {
-    if(u->count++<PARAMETER_USES_SHOWN){
-        size_t n=strlen(u->text);if(n&&n+2<sizeof u->text){u->text[n++]=';';u->text[n++]=' ';u->text[n]=0;}
-        va_list a;va_start(a,format);if(n<sizeof u->text)vsnprintf(u->text+n,sizeof u->text-n,format,a);va_end(a);
-    }
+    char owner[96];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
+    parameter_use_list(u->text,sizeof u->text,&u->count,owner);
+    parameter_use_list(u->other_text,sizeof u->other_text,&u->other_count,owner);
 }
 /* These owners have no declaration operation in an engineering candidate. */
 static void parameter_native_use(ParameterUses *u,const char *format,...)
 {
     char owner[96];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
-    parameter_use(u,"%s",owner);
-    if(u->native_count++<PARAMETER_USES_SHOWN){
-        size_t n=strlen(u->native_text);snprintf(u->native_text+n,sizeof u->native_text-n,"%s%s",n?"; ":"",owner);
-    }
+    parameter_use_list(u->text,sizeof u->text,&u->count,owner);
+    parameter_use_list(u->native_text,sizeof u->native_text,&u->native_count,owner);
 }
 static bool parameter_ast_uses(const EngJson *j,int t,uint32_t id,uint32_t field,int depth)
 {
@@ -490,7 +493,10 @@ static bool parameter_retirements_valid(const World *w)
             char more[40]="";if(uses.count>PARAMETER_USES_SHOWN)snprintf(more,sizeof more," and %zu more",uses.count-PARAMETER_USES_SHOWN);
             if(uses.native_count){
                 char native_more[40]="";if(uses.native_count>PARAMETER_USES_SHOWN)snprintf(native_more,sizeof native_more," and %zu more",uses.native_count-PARAMETER_USES_SHOWN);
-                return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: %zu)",id,uses.native_text,native_more,uses.count-uses.native_count);
+                /* I38/I74 (P-142 B2): every unhandled referrer is named, including the
+                 * redeclarable ones that share this field with a native-only owner. */
+                char other[300]="";if(uses.other_count)snprintf(other,sizeof other,": %s%s",uses.other_text,uses.other_count>PARAMETER_USES_SHOWN?" and more":"");
+                return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: %zu%s)",id,uses.native_text,native_more,uses.count-uses.native_count,other);
             }
             return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; unbind or repoint %s in the same complete candidate",id,uses.text,more,uses.count==1?"it":"them");
         }

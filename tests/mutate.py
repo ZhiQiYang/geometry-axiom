@@ -355,6 +355,24 @@ MUTANTS += [
 ]
 
 
+# GEO-262 / P-142 B2: whole-card grid owners share parameter_uses and the I38
+# rejection with the D44 panel-fill owners (bridge-backed, like P-141 above).
+B2_TESTS = ["tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_%s_SHARE_I38_REJECTION" % slot
+            for slot in ("GAP", "STAGGER", "THRESHOLD")]
+MUTANTS += [
+    dict(id="M78", desc="I38/I74 P142-B2：原生擁有者領頭的拒絕只計數、不指名同欄可改綁的引用者", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old='char other[300]="";if(uses.other_count)snprintf(',
+         new='char other[300]="";if(false)snprintf(',
+         tests=B2_TESTS),
+    dict(id="M79", desc="I38/P142-B2：整卡網格引用者不列入共用 parameter_uses", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="if(r->set&&r->parameter_id==id&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_CARD,s->id,0))",
+         new="if(false&&r->set&&r->parameter_id==id&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_CARD,s->id,0))",
+         tests=B2_TESTS[:1]),
+]
+
+
 def run_cmd(cmd, cwd, timeout=120):
     return subprocess.run(cmd, cwd=cwd, capture_output=True,
                           text=True, encoding="utf-8", errors="replace",

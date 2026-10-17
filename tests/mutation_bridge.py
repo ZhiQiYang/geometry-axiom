@@ -41,6 +41,12 @@ RESTORED = [
         "test_panel_fill_threshold_rebuild_requires_prior_reference_change",
         "test_separate_transaction_guidance_names_native_owner_after_other_referrers",
     ]],
+    # GEO-262 / P-142 B2: whole-card owners in the shared I38 rejection.
+    *["tests.test_grid_card_reference.GridCardReference." + name for name in [
+        "test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION",
+        "test_P142_B2_CARD_AND_PANEL_FILL_STAGGER_SHARE_I38_REJECTION",
+        "test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION",
+    ]],
 ]
 
 

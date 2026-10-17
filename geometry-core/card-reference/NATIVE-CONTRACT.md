@@ -41,6 +41,15 @@ put-grid-system 是完整宣告，包含其他維持不變的軸設定；不補 
 完整 put-grid-system 另對其實際宣告的逐欄來源記錄宣告。沿用 #193 的最後欄位刪除序列與每一引用者判斷，不更改匯入配號。
 轉成逐欄也明確宣告兩個新 ParameterRef：ordinary grid-system owner 的 slot 0 表示完整軸宣告，slot `axis*6+field+1` 只表示指定槽（field 次序 phase/step/panel/gap/anchor/stagger）。刪卡重建後的整組轉逐欄因此合法；它不會順帶處理原有 phase/gap/anchor 等其他引用。
 
+### 與面材試排共用 I38 使用處（P-142 B2）
+
+整卡引用者（`grid-system N card-reference u|v field F`）與 #193 P-141 的面材試排 gap／stagger／threshold 引用者，
+都在 `parameters.inc` 的同一個 `parameter_uses()` 列舉，並由同一個 `parameter_retirements_valid()` 在所有候選出口（engineering、assembly、section-profile、panel-fill 共用 `batch_preview`，及互動 archive）做 I38 刪除拒絕；沒有第二套列舉或拒絕。
+面材試排沒有混合候選改綁入口，仍是「另成一筆後再刪」的原生擁有者；同一欄位若同時有整卡引用者，拒絕訊息在 `(other references: N: …)` 內一併指名可在本候選處理的引用者，符合 I74「指名未處理者」。
+這是本 PR 對 #193 訊息的唯一改動：原本該處只計數、不指名。
+`test_P142_B2_CARD_AND_PANEL_FILL_{GAP,STAGGER,THRESHOLD}_SHARE_I38_REJECTION` 驗三種面材引用：兩種擁有者同則指名；本候選解除整卡後只剩面材擁有者；面材在自己的交易改指後只剩整卡擁有者且改用同候選指引，最後解除＋刪卡可提交。
+官方帳本 M78（不指名同欄引用者）、M79（整卡引用者漏列）以這三個方法為裁判。
+
 direct 解除只在該有序步驟依原生參數 evaluator 重算必要欄位並驗整卡。
 該步來源存在時取當下有效值，包括刪除後已重建的同鍵來源；例如 `[delete P, put P(a=99), 轉直接值]` 取得 99。
 該步來源不存在（刪除未重建）或來源不合法時拒絕，不因同候選曾刪除而一律拒絕。
@@ -85,7 +94,7 @@ geometry-parameters/1 的匯出／匯入仍只有卡片閉包，不包含網格�
 
 ## 驗收邊界
 
-`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法、3 個 P-146 方法及 2 個 P-154 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
+`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法、3 個 P-146 方法、2 個 P-154 方法及 3 個 P-142 B2 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
 拒絕測試逐則核對原因與完整 id token，要求同一則診斷同時具有原因及全部身分，不將 field 3 誤配到 field 30，也不拼接不同違規的身分。
 模型包在網頁正式開啟、恢復及方案載入時的原生驗證路徑與實際服務探針，見 `MODEL-ADMISSION-AUDIT.md`；結構驗證／ZIP 解包本身不冒稱通過原生版本核對。
 `tests/test_card_reference_project_store.js` 檢查 /18 的保存、降版、能力、未知版本及舊逐欄相容。
