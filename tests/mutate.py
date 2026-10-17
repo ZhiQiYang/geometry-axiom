@@ -10,6 +10,10 @@
   binary="bridge" 使用獨立的已提交稀疏 checkout、官方 binaries.py 編譯及 tests 指定的
          真 bridge unittest 方法。先跑基準，變異後只以完成的行為斷言判 killed；每筆還原
          來源、重新編譯並跑共用回歸。錯誤、略過、逾時與不完整方法清單都算 blocked。
+         bridge 行程在測試中死亡(tests/_bridge.py 的 BridgeClosed,帶結束碼)不是斷言失敗,
+         規則同核心:同一測試連續 RUN_RETRIES 次都以存取違規(is_access_violation_code)
+         結束、且沒有任何斷言失敗 -> crashed(死掉的測試才會重跑確認);其他結束碼(含外部
+         kill、OOM)、不足次數、前後不一致、或與斷言失敗並存 -> blocked,不算偵測。
 
 結果: killed(某測試失敗) / crashed(基準通過後,同一夾具連續存取違規;
       算被偵測到,但不是斷言殺死) / survived(全過) / equivalent / retired /
@@ -472,14 +476,20 @@ def failed_scenes(proc, limit=KILLED_BY_MAX):
 _AV_DETAIL = re.compile(r"^INFRA abnormal executable exit (-?\d+):")
 
 
-def is_access_violation_detail(detail):
-    match = _AV_DETAIL.match(detail or "")
-    if not match:
+def is_access_violation_code(code):
+    """程序結束碼是不是存取違規(POSIX -11,或 Windows 0xC0000005 的有號/無號形式)。
+
+    核心 exe 與 bridge 兩條路徑共用這一個判定;其他結束碼(含 1、-9、abort)都不是。"""
+    if type(code) is not int:
         return False
-    code = int(match.group(1))
     if code == -11:
         return True
     return (code & 0xFFFFFFFF) == 0xC0000005
+
+
+def is_access_violation_detail(detail):
+    match = _AV_DETAIL.match(detail or "")
+    return bool(match) and is_access_violation_code(int(match.group(1)))
 
 
 def access_violation_scenes(proc):
