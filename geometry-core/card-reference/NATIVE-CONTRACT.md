@@ -46,26 +46,26 @@ put-grid-system 是完整宣告，包含其他維持不變的軸設定；不補 
 整卡引用者（`grid-system N card-reference u|v field F`）與 #193 P-141 的面材試排 gap／stagger／threshold 引用者，
 都在 `parameters.inc` 的同一個 `parameter_uses()` 列舉，並由同一個 `parameter_retirements_valid()` 在所有候選出口（engineering、assembly、section-profile、panel-fill 共用 `batch_preview`，及互動 archive）做 I38 刪除拒絕；沒有第二套列舉或拒絕。
 面材試排沒有混合候選改綁入口，仍是「另成一筆後再刪」的原生擁有者；同一欄位若同時有整卡引用者，拒絕訊息在 `(other references: N: …)` 內一併指名可在本候選處理的引用者，符合 I74「指名未處理者」。
-這是本 PR 對 #193 訊息的唯一改動：原本該處只計數、不指名。
+本 PR 對 #193 的 I38 拒絕訊息共三處改動，指引文字本身不變：B2 在原生擁有者領頭的訊息內指名同欄可改綁的引用者（#193 原本只計數）；B2 審查後兩種訊息的名單都受 255 bytes 上限約束（見下段）；S1 把 grid-system 逐欄引用由原生擁有者改列為可同候選改綁（見下節）。
 `test_P142_B2_CARD_AND_PANEL_FILL_{GAP,STAGGER,THRESHOLD}_SHARE_I38_REJECTION` 驗三種面材引用：兩種擁有者同則指名；本候選解除整卡後只剩面材擁有者；面材在自己的交易改指後只剩整卡擁有者且改用同候選指引，最後解除＋刪卡可提交。
 I38 訊息經 `g_engineering_error`（256 bytes）回報。原生與非原生訊息的每份名單都只放剩餘長度容得下的**完整**名稱，其餘寫成 ` and N more`；連一個名稱都放不下時只留計數。整則保證不超過 255 bytes，不會把 `field 12` 截成 `field 1`。
 `test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES` 以 10 位數欄位／網格 id、三個整卡引用者加面材 stagger（未截斷全文超過 255 bytes）驗證：列出的每個名稱完整且欄位 id 與實際相符，`and N more` 補足精確數量。M84（拿掉剩餘長度檢查）已登錄 `tests/mutate.py`，待原生帳本重產。
-官方帳本 M78（不指名同欄引用者）、M79（整卡引用者漏列）以這三個方法為裁判。
+M78（不指名同欄引用者）、M79（整卡引用者漏列）以這三個方法為裁判；兩筆已登錄 `tests/mutate.py`，待原生帳本重產，目前帳本尚無其紀錄。
 
 ### 網格系統逐欄引用可同候選改綁（P-142 S1）
 
 #193 合併時網格系統沒有候選宣告入口，所以它的逐欄引用歸在「另成一筆後再刪」的原生擁有者。
 本 PR 的 `put-grid-system` 以 slot 0 宣告整個網格系統，`unbind-grid-card-reference` 的 parameter 模式宣告 `axis*6+field+1`；
 因此 `parameter_uses()` 把網格系統逐欄引用改列為可在同候選解除或改指的引用者，拒絕訊息改為 `unbind or repoint … in the same complete candidate`。
-guide、datum、direct grid 與面材試排仍是原生擁有者，訊息與 #193 相同。
+guide、datum、direct grid 與面材試排仍是原生擁有者，沿用 #193 的「另成一筆後再刪」指引（名單格式依上節 B2）。
 `test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE` 以原生 DSL 建立逐欄網格系統：只刪卡、刪卡＋同鍵重建都以 I38 拒絕並指名 `grid-system 4 u step`；
 同候選 `put-grid-system` 改指到另一張卡可提交；刪卡＋同鍵重建＋`put-grid-system` 明示重宣告可提交，預覽 `redeclaredReferences` 列出 slot 0 的兩個欄位。
 反例 `test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS`：`[delete-parameter 10, put-grid-system 仍指向 10]` 沒有重建來源；刪後宣告滿足刪除守門的順序，所以由網格求值的缺來源以 I38 MISSING 拒絕並指名 grid-system 4、parameter 10、field 3，World 不變。M85（指向已刪卡片時沿用快取長度）已登錄 `tests/mutate.py`，待原生帳本重產。
-`test_parameters_core` 的原生擁有者對照同步把 grid-system 改為非原生。官方帳本 M80（網格系統仍歸原生）、M81（put-grid-system 漏宣告逐欄來源）。
+`test_parameters_core` 的原生擁有者對照同步把 grid-system 改為非原生。M80（網格系統仍歸原生）、M81（put-grid-system 漏宣告逐欄來源）已登錄 `tests/mutate.py`，待原生帳本重產。
 
 合入 #193 的 P-142 S2 修正後，逐欄 `unbind-source` 與整卡 direct 解除在同一有序候選讀同一個當步來源：
 `test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99` 對同一張卡執行 `[delete P, put P(a=99, b=47, f9=99), 整卡轉直接值, unbind-source(timber A)]`，
-整卡捕捉與正式長度為 (99, 47)、角材讀 99（不是刪除前快取 27），一次 history。官方帳本 M82（已重建欄位仍走刪除快取）、M83（整卡因曾刪除一律拒絕）。
+整卡捕捉與正式長度為 (99, 47)、角材讀 99（不是刪除前快取 27），一次 history。M82（已重建欄位仍走刪除快取）、M83（整卡因曾刪除一律拒絕）已登錄 `tests/mutate.py`，待原生帳本重產。
 
 direct 解除只在該有序步驟依原生參數 evaluator 重算必要欄位並驗整卡。
 該步來源存在時取當下有效值，包括刪除後已重建的同鍵來源；例如 `[delete P, put P(a=99), 轉直接值]` 取得 99。
