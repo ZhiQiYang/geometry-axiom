@@ -159,6 +159,22 @@ static bool hf_actual_definition(HostFacts *f)
         node.value&&node.value->kind==GEO_SOURCE_DEFINITION&&node.value->as.definition.content_size==f->placement_size&&
         !memcmp(node.value->as.definition.content,f->placement,f->placement_size)&&f->placement_hits==1;
 }
+/* D6a(a) admits outline and hole vertex coordinates; geometry-core/README.md
+ * spells them vertex:v<j>:<axis> and vertex:h<i>v<j>:<axis>. Actual hole 0 of
+ * boundary 8 is (40,40) (40,60) (60,60) (60,40). Each index is read exactly:
+ * a missing, non-digit or absent hole/vertex index and a foreign axis fail. */
+static int hf_hole_vertex_grammar(HostFacts *f)
+{
+    GuideLine along_v={.id=1,.placement_id=7,.direction=GUIDE_ALONG_V},along_u={.id=1,.placement_id=7,.direction=GUIDE_ALONG_U};
+    Coord u=-1,v=-1;
+    CHECK("facts-hole-vertex-grammar-is-exact",reference_quantity(&f->ctx,&along_v,"vertex:h0v3:u",&u)&&u==60&&
+        reference_quantity(&f->ctx,&along_u,"vertex:h0v1:v",&v)&&v==60);
+    static const char *const malformed[]={"vertex:hxv0:u","vertex:hv0:u","vertex:h0:u","vertex:h0vx:u","vertex:h1v0:u","vertex:h0v4:u"};
+    for(size_t i=0;i<sizeof malformed/sizeof *malformed;++i){Coord value=-1;
+        CHECK("facts-hole-vertex-grammar-rejects-malformed",!reference_quantity(&f->ctx,&along_v,malformed[i],&value)&&value==-1);}
+    Coord value=-1;CHECK("facts-hole-vertex-axis-must-match",!reference_quantity(&f->ctx,&along_u,"vertex:h0v0:u",&value)&&value==-1);
+    return 0;
+}
 static int hf_host_case(unsigned mode)
 {
     HostFacts *f=hf_fixture(mode);CHECK("facts-fixture",f);PlacementSurface p;SpaceBoundarySurface b;const SpaceBoundarySurface *view;
@@ -186,7 +202,10 @@ static int hf_host_case(unsigned mode)
     if(mode==HF_RECT_REF)CHECK("facts-contact-preserves-hole",contacts->regions[0].hole_count==1);
     free(contacts);g_reference_active=&f->ctx;
     CHECK("facts-final-validator-host-consumes-same-host",app_validation_host(&f->world,7,NULL,&grid)&&grid.boundary_id==p.boundary_id);
-    CHECK("facts-host-world-unchanged",!memcmp(&f->world,&f->before,sizeof f->world));hf_free(f);return 0;
+    CHECK("facts-host-world-unchanged",!memcmp(&f->world,&f->before,sizeof f->world));
+    /* Last, so a control that reaches it has passed every earlier oracle. */
+    if(mode==HF_RECT_REF&&hf_hole_vertex_grammar(f))return 1;
+    hf_free(f);return 0;
 }
 static int hf_sp_case(bool lazy)
 {
@@ -295,6 +314,20 @@ static int hf_rc(bool malformed)
         CHECK("facts-rc-world-unchanged",!memcmp(&f->world,&f->before,sizeof f->world));hf_free(f);
     }return 0;
 }
+/* R5 snaps only to finite visible references; a hole vertex is one (D6a(a)).
+ * Outline vertices are far away, so only the hole can be within the radius. */
+static int hf_hole_snap(void)
+{
+    World *world=calloc(1,sizeof *world);CHECK("facts-snap-memory",world);
+    SpaceBoundarySurface b={.id=3,.outline={.v={{0,0},{1000,0},{1000,1000},{0,1000}},.count=4},.hole_count=1};
+    b.holes[0]=(PolygonLoop2){.v={{300,300},{300,600},{600,600},{600,300}},.count=4};
+    PlacementSurface p={.id=4,.frame={{0,0,0},{1,0,0},{0,1,0},{0,0,1}},.boundary_id=3};
+    CHECK("facts-snap-fixture",app_boundary_stage(world,&b)&&app_placement_stage(world,&p));
+    char expression[REF_EXPR_MAX]="";
+    CHECK("facts-snap-selects-hole-vertex-u",reference_snap(world,4,GUIDE_ALONG_V,0,303,8,expression)&&!strcmp(expression,"vertex:h0v0:u"));
+    CHECK("facts-snap-selects-hole-vertex-v",reference_snap(world,4,GUIDE_ALONG_U,0,597,8,expression)&&!strcmp(expression,"vertex:h0v1:v"));
+    free(world);return 0;
+}
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;
@@ -310,5 +343,6 @@ int main(int argc,char **argv)
     if(!strcmp(argv[1],"end-facts"))return hf_end_faces();
     if(!strcmp(argv[1],"rc"))return hf_rc(false);
     if(!strcmp(argv[1],"rc-malformed"))return hf_rc(true);
+    if(!strcmp(argv[1],"hole-snap"))return hf_hole_snap();
     return 2;
 }

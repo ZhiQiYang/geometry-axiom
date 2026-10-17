@@ -19,6 +19,7 @@ from tests.test_geo261_native_kernel import native
 SOURCE = ROOT / 'geometry-app/native/reference_sources.inc'
 VALIDATION = ROOT / 'geometry-app/native/world_validation.inc'
 HARNESS = ROOT / 'tests/geo261_host_facts_authority_harness.c'
+REFERENCES = ROOT / 'geometry-core/references.inc'
 FLAGS = ['GEOMETRY_KERNEL_EXTERNAL=1', 'GEOMETRY_WOODWORKING_EXTERNAL=1',
          'GEOMETRY_HOST_HISTORY_EXTERNAL=1', 'GEOMETRY_HOST_CANDIDATE_EXTERNAL=1']
 CONTROLS = (
@@ -64,7 +65,14 @@ CONTROLS = (
      '    /* isolated control preserves stale cached UV */',
      'end-facts', 'facts-probe-projects-actual-origin'),
 )
-CONTROL_SOURCES = {'probe-projection': VALIDATION}
+# D6a(a) hole-vertex grammar: the hole index must parse. Accepting a non-digit
+# index as hole 0 keeps every pre-existing oracle green; only the grammar
+# checks, placed after all of them in the rect-ref case, can reach this marker.
+HOLE_VERTEX_CONTROL = ('hole-index-digits',
+    "*v='\\0'; if (!parse_u32(q+1,&hi) || hi>=POLY_MAX_HOLES) return false;",
+    "*v='\\0'; (void)parse_u32(q+1,&hi); if (hi>=POLY_MAX_HOLES) return false;",
+    'rect-ref', 'facts-hole-vertex-grammar-rejects-malformed')
+CONTROL_SOURCES = {'probe-projection': VALIDATION, 'hole-index-digits': REFERENCES}
 
 
 class HostFactsAuthorityBoundary(unittest.TestCase):
@@ -156,6 +164,10 @@ class HostFactsAuthority(unittest.TestCase):
         for control in CONTROLS[:5]:
             with self.subTest(control=control[0]):
                 self.control(control)
+
+    def test_hole_vertex_snap_and_non_digit_hole_index_control(self):
+        self.case('hole-snap')
+        self.control(HOLE_VERTEX_CONTROL)
 
     def test_eight_contact_and_final_validator_controls_fail_exact_oracles(self):
         for control in CONTROLS[5:]:

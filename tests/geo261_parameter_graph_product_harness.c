@@ -100,6 +100,33 @@ static int parameter_graph_preview(void)
     CHECK(restored&&!strcmp(restored,before_dump)&&parameter_graph_values(&g_world,500)==0,"product-one-undo-restores-whole-definition");
     free(restored);free(before_dump);free(after_dump);free(before);return 0;
 }
+static bool parameter_graph_node(const GeoEvalContext *sources,GeoSourceRef ref,size_t *index)
+{
+    for(size_t i=0;i<geo_eval_node_count(sources);++i){GeoSourceNodeView node;
+        if(geo_eval_node_at(sources,i,&node)&&node.source.provider==ref.provider&&node.source.key_size==ref.key_size&&
+           !memcmp(node.source.key,ref.key,ref.key_size)){*index=i;return true;}}
+    return false;
+}
+/* parameter_sources.h: a quantity requires its FIELD definition, a FIELD its
+ * CARD, and (1,1)'s AST requires the value (2,1). Exactly these five
+ * (consumer, source, kind) edges among exactly these six nodes. */
+static bool parameter_graph_read_only_edges(const GeoEvalContext *sources)
+{
+    uint32_t quantity[2][2]={{1,1},{2,1}};GeoParameterDefinitionKey field[2],card[2];GeoSourceRef refs[6];size_t at[6];
+    for(unsigned c=0;c<2;++c){refs[c]=(GeoSourceRef){APP_SOURCE_PARAMETER,quantity[c],sizeof quantity[c]};
+        refs[2+c]=geo_parameter_definition_source_ref(APP_SOURCE_PARAMETER_DEFINITION,GEO_PARAMETER_DEFINITION_FIELD,c+1,1,&field[c]);
+        refs[4+c]=geo_parameter_definition_source_ref(APP_SOURCE_PARAMETER_DEFINITION,GEO_PARAMETER_DEFINITION_CARD,c+1,0,&card[c]);}
+    for(unsigned i=0;i<6;++i)if(!parameter_graph_node(sources,refs[i],&at[i]))return false;
+    static const struct {unsigned consumer,source;GeoDependencyKind kind;} want[]={
+        {0,1,GEO_DEPENDENCY_VALUE_REQUIRED},{0,2,GEO_DEPENDENCY_DEFINITION_REQUIRED},{2,4,GEO_DEPENDENCY_DEFINITION_REQUIRED},
+        {1,3,GEO_DEPENDENCY_DEFINITION_REQUIRED},{3,5,GEO_DEPENDENCY_DEFINITION_REQUIRED}};
+    const size_t wanted=sizeof want/sizeof *want;bool seen[sizeof want/sizeof *want]={false};
+    if(geo_eval_node_count(sources)!=6||geo_eval_edge_count(sources)!=wanted)return false;
+    for(size_t i=0;i<geo_eval_edge_count(sources);++i){GeoSourceEdge edge;size_t k=0;if(!geo_eval_edge_at(sources,i,&edge))return false;
+        while(k<wanted&&!(edge.consumer==at[want[k].consumer]&&edge.source==at[want[k].source]&&edge.kind==want[k].kind))++k;
+        if(k==wanted||seen[k])return false;seen[k]=true;}
+    return true;
+}
 static int parameter_graph_read_only(void)
 {
     /* Deliberately stale live caches make a write through the observational
@@ -120,6 +147,8 @@ static int parameter_graph_read_only(void)
      * are reached: 2 quantities + 2 field + 2 card definitions; one AST value
      * edge (1,1)->(2,1) plus two quantity->field->card definition chains. */
     CHECK(geo_eval_node_count(ctx.sources)==2+2+2&&geo_eval_edge_count(ctx.sources)==1+2*2&&geo_eval_seal(ctx.sources),"readonly-retains-and-seals-native-parameter-edge");
+    /* Counts alone survive a relation-kind or endpoint change; compare the set. */
+    CHECK(parameter_graph_read_only_edges(ctx.sources),"readonly-exact-native-parameter-edge-set");
     size_t nodes=geo_eval_node_count(ctx.sources),edges=geo_eval_edge_count(ctx.sources);
     CHECK(reference_parameter_quantity(&ctx,(ParameterRef){true,1,1},&value)&&parameter_graph_quantity(value,7,1)&&
         nodes==geo_eval_node_count(ctx.sources)&&edges==geo_eval_edge_count(ctx.sources)&&!memcmp(before,&g_world,sizeof *before),"readonly-sealed-read-is-observational");
