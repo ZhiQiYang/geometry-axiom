@@ -166,8 +166,10 @@ class EngineeringModelCompatibility(unittest.TestCase):
         self.assertEqual(package, self.saved_pre_card_reference_package())
 
     def pre_card_reference_versions(self):
+        # Accepted minus current minus the post-adoption pairs (GEO-261 retired b3c79615,
+        # which already contains D64/I74/R60); shared with the verifier itself.
         current = (modeling.AXIOM_REVISION, modeling.AXIOM_SHA256)
-        return sorted(modeling._accepted_axiom_versions(current) - {current})
+        return sorted(modeling._pre_card_reference_versions(current))
 
     def assert_card_requires_adopted_axioms(self, package, label):
         original = deepcopy(package)

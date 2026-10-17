@@ -1,0 +1,12 @@
+--- tests/test_domain_decoupling_adoption.py
++++ TEMP/approved_markdown/test_domain_decoupling_adoption.py
+@@ -40,8 +40,7 @@
+             and approval.get("proposalCommit") == PROPOSAL_COMMIT
+             and approval.get("axiomAnswer") == "批准此版本的逐條提案",
+             "APPROVAL", "the exact proposal requires its human approval")
+-    require(approval.get("proposalMarkdownSha256LF") == PROPOSAL_HASH == sha(markdown_bytes),
+-            "APPROVED_MARKDOWN", "approved review payload changed")
++    pass  # TEMP MUTANT: removed APPROVED_MARKDOWN guard
+     require(approval.get("clauseMapSha256LF") == MAP_HASH == sha(map_bytes),
+             "APPROVED_MAP", "approved before/after map changed")
+ 

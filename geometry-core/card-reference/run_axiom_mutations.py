@@ -18,7 +18,7 @@ TARGET = ROOT / 'geometry-core/modeling/__init__.py'
 TEST = ROOT / 'tests/test_engineering_model_compatibility.py'
 SCENE = 'GRID_CARD_CAPABILITY in scene_required_capabilities(definitions["base_scene"])'
 MANIFEST = 'isinstance(manifest["capabilities"], list) and GRID_CARD_CAPABILITY in manifest["capabilities"]'
-CONDITION = 'if (' + SCENE + ' or\n                ' + MANIFEST + '):'
+CONDITION = 'if (' + SCENE + ' or\n                    ' + MANIFEST + '):'
 BASE = 'tests.test_engineering_model_compatibility'
 CLASS = BASE + '.EngineeringModelCompatibility.'
 MUTATIONS = (
@@ -29,7 +29,7 @@ MUTATIONS = (
     ('V03-ignore-source', CONDITION, 'if (' + MANIFEST + '):',
      'test_pre_card_axioms_reject_scene_card_capability_before_rebuild', 'CARD_AXIOM_SOURCE'),
     ('V04-exempt-latest-pre-adoption', CONDITION,
-     'if supplied_version not in PRE_CARD_REFERENCE_AXIOM_VERSIONS and (' + SCENE + ' or\n                ' + MANIFEST + '):',
+     'if supplied_version not in PRE_CARD_REFERENCE_AXIOM_VERSIONS and (' + SCENE + ' or\n                    ' + MANIFEST + '):',
      'test_pre_card_axioms_reject_card_syntax_with_stripped_declarations', 'CARD_AXIOM_SYNTAX'),
 )
 

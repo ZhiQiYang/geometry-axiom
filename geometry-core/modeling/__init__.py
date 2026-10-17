@@ -16,8 +16,19 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "b3c79615d0cde89bbdca72c1223d214324bc5f8f"
-AXIOM_SHA256 = "e5e43ec5da2030669c9ecd7a67f8b250cfb7290cf663365b2b66c51814bb77b9"
+AXIOM_REVISION = "e744f5316fd7c896275bdee4c34ad22ae97d9d8e"
+AXIOM_SHA256 = "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5"
+# GEO-261 separates general geometry from the default woodworking template;
+# it does not change these saved packages' geometry, formats or capabilities.
+# Preserve the exact released pre-adoption pair, including every source-era gate.
+PRE_DECOUPLING_AXIOM_VERSIONS = frozenset({
+    ("b3c79615d0cde89bbdca72c1223d214324bc5f8f", "e5e43ec5da2030669c9ecd7a67f8b250cfb7290cf663365b2b66c51814bb77b9"),
+})
+# grid-card-reference/1 needs D64/I74/R60, adopted at b3c79615 (#256) and kept by
+# GEO-261. Besides the current revision, only these accepted pairs contain that
+# text; every other accepted pair predates it. A later adoption that retires the
+# current pair must add it here, otherwise its card packages fail closed.
+CARD_REFERENCE_AXIOM_VERSIONS = PRE_DECOUPLING_AXIOM_VERSIONS
 # The P-046 amendment (2026-10-11: I68 flag sentence aligned with R54's in-window undo)
 # replaced the ff18cb6 text before it reached main; that interim digest was never
 # declared by a main executor, so it is deliberately not listed as a compatible version.
@@ -231,7 +242,13 @@ def _accepted_axiom_versions(current_version):
             *PRE_STACK_CLARIFY_AXIOM_VERSIONS,
             *PRE_IDENTITY_TRACE_AXIOM_VERSIONS,
             *PRE_SPACE_MERGE_AXIOM_VERSIONS,
-            *PRE_CARD_REFERENCE_AXIOM_VERSIONS})
+            *PRE_CARD_REFERENCE_AXIOM_VERSIONS,
+            *PRE_DECOUPLING_AXIOM_VERSIONS})
+
+
+def _pre_card_reference_versions(current_version):
+    """Accepted versions whose axiom text predates D64/I74/R60 (shared with the regressions)."""
+    return _accepted_axiom_versions(current_version) - {current_version} - CARD_REFERENCE_AXIOM_VERSIONS
 
 
 def verify_package(package, *, max_cells=200000, base_executable=None):
@@ -255,25 +272,26 @@ def verify_package(package, *, max_cells=200000, base_executable=None):
         definitions = package["definitions"]
         if (not isinstance(definitions, dict) or type(definitions.get("base_scene")) is not str):
             raise ModelError("INVALID", "PACKAGE_SCHEMA", "D25", "Expected complete source definitions")
-        # Every accepted noncurrent version predates D64, including the latest
-        # PRE_CARD_REFERENCE release. Inspect source syntax as well as declarations
-        # so stripping either capability marker cannot grant the new semantics.
-        if (GRID_CARD_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or
-                isinstance(manifest["capabilities"], list) and GRID_CARD_CAPABILITY in manifest["capabilities"]):
-            raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "grid-card-reference/1 requires the adopted D64/I74/R60 axiom revision")
-        if supplied_version not in PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS and (
+        # Accepted versions older than the D64/I74/R60 adoption cannot carry card
+        # references. Inspect source syntax as well as declarations so stripping
+        # either capability marker cannot grant the new semantics.
+        if supplied_version in _pre_card_reference_versions(current_version):
+            if (GRID_CARD_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or
+                    isinstance(manifest["capabilities"], list) and GRID_CARD_CAPABILITY in manifest["capabilities"]):
+                raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "grid-card-reference/1 requires the adopted D64/I74/R60 axiom revision")
+        if supplied_version not in PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS | PRE_DECOUPLING_AXIOM_VERSIONS and (
                 SECTION_PROFILE_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or
                 isinstance(manifest["capabilities"], list) and SECTION_PROFILE_CAPABILITY in manifest["capabilities"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Section profiles require the adopted Q38 axiom revision")
-        if supplied_version not in PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS and "grid-subdivision-rules/1" in scene_required_capabilities(definitions["base_scene"]):
+        if supplied_version not in PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS | PRE_DECOUPLING_AXIOM_VERSIONS and "grid-subdivision-rules/1" in scene_required_capabilities(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Source subdivision requires its adopted axiom revision")
-        if supplied_version not in PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS and _scene_uses_stagger(definitions["base_scene"]):
+        if supplied_version not in PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS | PRE_DECOUPLING_AXIOM_VERSIONS and _scene_uses_stagger(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Stagger sources and band anchors require the stagger axiom revision")
-        if supplied_version not in PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS and (PARAMETER_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or PARAMETER_CAPABILITY in manifest["capabilities"]):
+        if supplied_version not in PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS | PRE_DECOUPLING_AXIOM_VERSIONS and (PARAMETER_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or PARAMETER_CAPABILITY in manifest["capabilities"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Parameter sources require the parameter axiom revision")
-        if supplied_version not in INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS and _scene_uses_infinite_grid(definitions["base_scene"]):
+        if supplied_version not in INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS | PRE_DECOUPLING_AXIOM_VERSIONS and _scene_uses_infinite_grid(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Infinite-grid sources require the infinite-grid axiom revision")
-        if supplied_version not in FINITE_GRID_AXIOM_VERSIONS | INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS and _scene_uses_grid_system(definitions["base_scene"]):
+        if supplied_version not in FINITE_GRID_AXIOM_VERSIONS | INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS | PRE_SECTION_PROFILE_AXIOM_VERSIONS | PRE_PANEL_FILL_AXIOM_VERSIONS | PRE_CUTTING_PLAN_AXIOM_VERSIONS | PRE_ZERO_ROOM_AXIOM_VERSIONS | PRE_DRAFTS_TOPOLOGY_AXIOM_VERSIONS | PRE_STACK_CLARIFY_AXIOM_VERSIONS | PRE_IDENTITY_TRACE_AXIOM_VERSIONS | PRE_SPACE_MERGE_AXIOM_VERSIONS | PRE_CARD_REFERENCE_AXIOM_VERSIONS | PRE_DECOUPLING_AXIOM_VERSIONS and _scene_uses_grid_system(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Grid-system sources require the grid-system axiom revision")
         if supplied_version in LEGACY_AXIOM_VERSIONS and (
                 scene_required_capabilities(definitions["base_scene"]) or

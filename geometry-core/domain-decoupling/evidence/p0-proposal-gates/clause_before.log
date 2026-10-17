@@ -1,0 +1,49 @@
+test_adoption_preamble_scopes_match_map_membership_and_order (__main__.ProposalContract.test_adoption_preamble_scopes_match_map_membership_and_order) ... ok
+test_checkout_crlf_is_not_a_semantic_change (__main__.ProposalContract.test_checkout_crlf_is_not_a_semantic_change) ... ok
+test_mixed_clauses_preserve_complete_legacy_body (__main__.ProposalContract.test_mixed_clauses_preserve_complete_legacy_body) ... ok
+test_original_clause_order_and_nonclause_layout (__main__.ProposalContract.test_original_clause_order_and_nonclause_layout) ... ok
+test_proposal_matches_independently_read_ssot (__main__.ProposalContract.test_proposal_matches_independently_read_ssot) ... ok
+test_rejects_changed_ssot_even_if_manifest_stays_self_consistent (__main__.ProposalContract.test_rejects_changed_ssot_even_if_manifest_stays_self_consistent) ... ok
+test_rejects_clause_before_drift (__main__.ProposalContract.test_rejects_clause_before_drift) ... FAIL
+test_rejects_empty_omitted_wrong_or_extra_after_clause (__main__.ProposalContract.test_rejects_empty_omitted_wrong_or_extra_after_clause) ... ok
+test_rejects_empty_or_clause_smuggling_section_after (__main__.ProposalContract.test_rejects_empty_or_clause_smuggling_section_after) ... ok
+test_rejects_empty_reason (__main__.ProposalContract.test_rejects_empty_reason) ... ok
+test_rejects_inaccurate_or_nonboolean_changed (__main__.ProposalContract.test_rejects_inaccurate_or_nonboolean_changed) ... ok
+test_rejects_invalid_scope (__main__.ProposalContract.test_rejects_invalid_scope) ... ok
+test_rejects_joint_map_and_review_legacy_deletion (__main__.ProposalContract.test_rejects_joint_map_and_review_legacy_deletion) ... ok
+test_rejects_joint_map_and_review_preamble_scope_drift (__main__.ProposalContract.test_rejects_joint_map_and_review_preamble_scope_drift) ... ok
+test_rejects_joint_ssot_map_and_review_baseline_rewrite (__main__.ProposalContract.test_rejects_joint_ssot_map_and_review_baseline_rewrite) ... ok
+test_rejects_missing_duplicate_or_unknown_review_block (__main__.ProposalContract.test_rejects_missing_duplicate_or_unknown_review_block) ... ok
+test_rejects_missing_duplicate_unknown_or_reordered_clauses (__main__.ProposalContract.test_rejects_missing_duplicate_unknown_or_reordered_clauses) ... ok
+test_rejects_missing_or_reordered_nonclause_sections (__main__.ProposalContract.test_rejects_missing_or_reordered_nonclause_sections) ... ok
+test_rejects_nonclause_before_drift (__main__.ProposalContract.test_rejects_nonclause_before_drift) ... ok
+test_rejects_review_after_drift (__main__.ProposalContract.test_rejects_review_after_drift) ... ok
+test_rejects_review_before_drift (__main__.ProposalContract.test_rejects_review_before_drift) ... ok
+test_rejects_review_metadata_drift (__main__.ProposalContract.test_rejects_review_metadata_drift) ... ok
+test_rejects_review_reason_drift (__main__.ProposalContract.test_rejects_review_reason_drift) ... ok
+test_rejects_review_section_trailing_newline_loss (__main__.ProposalContract.test_rejects_review_section_trailing_newline_loss) ... ok
+test_rejects_review_summary_count_drift (__main__.ProposalContract.test_rejects_review_summary_count_drift) ... ok
+test_rejects_scope_table_drift (__main__.ProposalContract.test_rejects_scope_table_drift) ... ok
+test_rejects_source_hash_drift (__main__.ProposalContract.test_rejects_source_hash_drift) ... ok
+test_rejects_wrong_schema_status_or_base (__main__.ProposalContract.test_rejects_wrong_schema_status_or_base) ... ok
+test_review_preserves_section_trailing_newlines (__main__.ProposalContract.test_review_preserves_section_trailing_newlines) ... ok
+
+======================================================================
+FAIL: test_rejects_clause_before_drift (__main__.ProposalContract.test_rejects_clause_before_drift)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-p0-mutants-e0ygm4qe\test_proposal_without_clause_before.py", line 349, in test_rejects_clause_before_drift
+    self.reject("CLAUSE_BEFORE")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-p0-mutants-e0ygm4qe\test_proposal_without_clause_before.py", line 272, in reject
+    self.assertEqual(code, caught.exception.code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'CLAUSE_BEFORE' != 'MARKDOWN_BEFORE'
+- CLAUSE_BEFORE
++ MARKDOWN_BEFORE
+ : MARKDOWN_BEFORE: D1: review before differs from JSON
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.672s
+
+FAILED (failures=1)
