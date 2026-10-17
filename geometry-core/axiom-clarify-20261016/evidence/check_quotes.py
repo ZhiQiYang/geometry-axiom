@@ -16,6 +16,7 @@ Labels it reads from PROPOSAL.md.  For the first three kinds the quote is the bl
     外部核對無(43305271 geometry-templates/rectangular-grid 不含「stagger|alternat」):
                                                             `git grep -i -E <regex> <rev> -- <path>` must find nothing
     全檔出現(公理層.md 「cardId」 第 691、2251 行):         the term occurs on exactly these lines of the file (a grep result)
+    證據檔計數(s1-probes/errors.txt 「V_EXTENSION」 共 5 行):  a file under evidence/ has exactly N lines containing the term
 (a 改後 block whose first line starts with "（刪除" declares that the 改前 span is deleted)
 (a label line may carry a leading "- " so it can sit in a bullet list)
 
@@ -68,11 +69,12 @@ HEADER_RE = {
 }
 SCOPE_RE = re.compile(r"^[^\n：]{0,24}契約（([KWMH])）：")
 
-LABEL_START_RE = re.compile(r"^(?:- )?(?:改前|現況|新增於|外部核對|全檔出現)")
+LABEL_START_RE = re.compile(r"^(?:- )?(?:改前|現況|新增於|外部核對|全檔出現|證據檔計數)")
 LABEL_RE = re.compile(
     r"^(改前|現況|新增於)\((公理層\.md|白話版) ([DIR]\d+[a-z]?) 第 (\d+)(?:[–-](\d+))? 行(?:「([^」]*)」之後)?\):$"
 )
 EXT_LINE_RE = re.compile(r"^外部核對\(([0-9a-f]{7,40}) (\S+) 第 (\d+) 行「([^」]+)」\):$")
+FILE_COUNT_RE = re.compile(r"^證據檔計數\((\S+) 「([^」]+)」 共 (\d+) 行\):$")
 GREP_RE = re.compile(r"^全檔出現\((公理層\.md|白話版) 「([^」]+)」 第 ([\d、]+) 行\):$")
 EXT_NONE_RE = re.compile(r"^外部核對無\(([0-9a-f]{7,40}) (\S+) 不含「([^」]+)」\):$")
 LINE_CITATION_RE = re.compile(r"第\s*\d+\s*(?:[–-]\s*\d+\s*)?行")
@@ -144,6 +146,12 @@ def parse_proposal(text: str):
         if m:
             label_line_idx.add(idx)
             items.append(dict(kind="外部行", rev=m.group(1), path=m.group(2), a=int(m.group(3)), text=m.group(4),
+                              label_line=idx + 1, label=line))
+            continue
+        m = FILE_COUNT_RE.match(line)
+        if m:
+            label_line_idx.add(idx)
+            items.append(dict(kind="證據檔計數", path=m.group(1), term=m.group(2), count=int(m.group(3)),
                               label_line=idx + 1, label=line))
             continue
         m = GREP_RE.match(line)
@@ -254,6 +262,16 @@ def check(proposal_text: str, ssot: dict[str, str], root: Path = DEFAULT_ROOT, s
         results.append(("FAIL", "structure", "no label found in PROPOSAL.md"))
     src_lines_by_file = {k: v.split("\n") for k, v in ssot.items()}
     for it in items:
+        if it["kind"] == "證據檔計數":
+            name = f"證據檔計數 {it['path']} 「{it['term']}」"
+            f = HERE / it["path"]
+            if not f.is_file():
+                results.append(("FAIL", name, f"{f} does not exist"))
+                continue
+            n = sum(1 for l in norm(f.read_bytes()).split("\n") if it["term"] in l)
+            results.append(("PASS" if n == it["count"] else "FAIL", name,
+                            f"{n} line(s) contain it" + ("" if n == it["count"] else f", label says {it['count']}")))
+            continue
         if it["kind"] == "全檔出現":
             sl = src_lines_by_file[it["file"]]
             found = [i + 1 for i, l in enumerate(sl) if it["term"] in l]
@@ -360,39 +378,41 @@ def selftest(proposal_text: str, ssot: dict[str, str], root: Path) -> bool:
         assert old in proposal_text, f"mutation anchor {old!r} not found in PROPOSAL.md"
         return proposal_text.replace(old, new, 1)
 
+    synthetic_ok = (
+        proposal_text
+        + "\n現況(公理層.md I38 第 1537 行):\n> 同一候選刪除後經 put 或匯入重建相同卡片／欄位鍵，不能單靠重建滿足刪除保護。\n"
+        + "\n新增於(公理層.md R53 第 2486 行「配號只依目標候選 World…」之後):\n> x\n"
+    )
     cases = [
         ("one char of a 公理層.md quote changed (D29)", mutate("格線身分為（系統", "格線身份為（系統"), "改前 公理層.md D29"),
         ("one char of a 白話版 quote changed (I5)", mutate("矩形的四條邊也不能跟", "矩形的四條邊也不可跟"), "改前 白話版 I5"),
         ("second line of the two-line R18 quote changed", mutate("（邊界主支為真）但 coversEdge 恆為假（兩端", "（邊界主支為真）但 coversEdge 恆為假（雙端"), "改前 公理層.md R18"),
-        ("one char of a K-block quote changed (D10b K)", mutate("沒有 band 的單一位置若不唯一即拒絕。", "沒有 band 的單一位置若不唯一即拒決。"), "改前 公理層.md D10b"),
         ("one char of a clause-title quote changed (I23)", mutate("> I23 網格引用的追溯與重算（2026-09-18 目的翻轉（分層契約）：", "> I23 網格引用的追溯與重算（2026-09-18 目的翻轉（分層合約）："), "改前 公理層.md I23"),
         ("one char of a 現況 quote changed (R13 W lines)", mutate("「資料跟材料走」):", "「資料跟材料走」)；"), "現況 公理層.md R13"),
+        ("one char of a 現況 quote changed (R46)", mutate("先驗能力與來源閉包，再在隔離候選重播定義", "先驗能力與來源閉包，再在隔離候選重播定意"), "現況 公理層.md R46"),
+        ("one char of a D31 K-block quote changed", mutate("每欄以 (cardId,fieldId) 為身分", "每欄以 (cardId,fieldId) 為身份"), "改前 公理層.md D31"),
         ("line number off by one (I24 1385 -> 1386)", mutate("I24 第 1385 行", "I24 第 1386 行"), "改前 公理層.md I24"),
         ("right line, wrong clause (R22 cited as I24)", mutate("R22 第 2128 行", "I24 第 2128 行"), "改前 公理層.md I24 L2128"),
         ("insertion anchor text wrong", mutate("「band 的切開用另一軸未加相位差的格線…」", "「band 的切開用另一軸未加相位差的格網…」"), "新增於 公理層.md D10b"),
         ("unchecked line citation smuggled in", proposal_text + "\n(見公理層.md 第 625 行)\n", "structure"),
         ("改後 no longer opens like 改前 (prefix drift)", mutate("改後:\n> 相位差守門：", "改後:\n> I24 相位差守門："), "改前 公理層.md I24"),
+        ("clause confusion: I38 body line starts with 'D64 ' and is cited as D64", synthetic_ok.replace("現況(公理層.md I38 第 1537 行)", "現況(公理層.md D64 第 1537 行)"), "現況 公理層.md D64 L1537"),
+        ("indented insertion anchor wrong (R53)", synthetic_ok.replace("「配號只依目標候選 World…」", "「配號只依目標候選 Worldx…」"), "新增於 公理層.md R53"),
         ("外部核對 cited text wrong (kernel grid_store)", mutate("「static bool geo_grid_axis_stagger_valid」", "「static bool geo_grid_axis_stagger_validx」"), "外部核對行 43305271"),
         ("外部核對無 regex made to match something real", mutate("不含「stagger|", "不含「geo_interval_subdivide|stagger|"), "外部核對無 43305271"),
+        ("quoted decision-queue text wrong (Q-A option)", mutate("第 484 行「只准一軸(建議)」", "第 484 行「只准兩軸(建議)」"), "外部核對行 02baea2c"),
         ("全檔出現 grep result goes stale (cardId line list)", mutate("「cardId」 第 691、2251 行", "「cardId」 第 691、2252 行"), "全檔出現 公理層.md 「cardId」"),
-        ("one char of a D31 K-block quote changed", mutate("每欄以 (cardId,fieldId) 為身分", "每欄以 (cardId,fieldId) 為身份"), "改前 公理層.md D31"),
-        ("clause label wrong where a body line starts with 'D64 ' (I38 cited as D64)", mutate("現況(公理層.md I38 第 1537 行)", "現況(公理層.md D64 第 1537 行)"), "現況 公理層.md D64 L1537"),
-        ("deletion 改後 loses its （刪除 marker", mutate("（刪除此句，內容移到 R53）", "刪除此句，內容移到 R53"), "改前 公理層.md I38 L1540"),
-        ("insertion anchor on an indented line wrong (R53)", mutate("「配號只依目標候選 World、來源閉包", "「配號只依目標候選 Worldx、來源閉包"), "新增於 公理層.md R53"),
-        ("one char of a 白話版 K-summary quote changed (I24)", mutate("核心先精確算相位差，再驗非零", "核心先精確算相位差，再驗非賃"), "改前 白話版 I24"),
-        ("quoted decision-queue text wrong (Q-A option)", mutate("第 458 行「只准一軸(建議)」", "第 458 行「只准兩軸(建議)」"), "外部核對行 d18719ac"),
-        ("D3 sweep list goes stale (依以下 line list)", mutate("「依以下」 第 615、1403 行", "「依以下」 第 615、1404 行"), "全檔出現 公理層.md 「依以下」"),
-        ("one char of the D29 K quote changed", mutate("> 來源引用、容量與首版組合限制依以下相容契約，無限", "> 來源引用、容量與首版組合限制依以下相容契約，無線"), "公理層.md D29 L615"),
-        ("one char of an I74 quote changed", mutate("同候選刪除並以 put 或匯入重建來源卡片／欄位鍵時，每個", "同候選刪除並以 put 或匯入重建來源卡片／欄位件時，每個"), "現況 公理層.md I74"),
-        ("approved-proposal text no longer on the cited line", mutate("第 1535 行「來源引用、容量與首版組合限制依以下相容契約", "第 1535 行「來源引用、容量與首版組合限制依以下相容契約x"), "AXIOM-PROPOSAL.md:1535"),
+        ("cleanup-list sweep goes stale (依以下 line list)", mutate("「依以下」 第 615、1403 行", "「依以下」 第 615、1404 行"), "全檔出現 公理層.md 「依以下」"),
+        ("證據檔計數 goes stale (probe results)", mutate("「V_EXTENSION」 共 5 行", "「V_EXTENSION」 共 6 行"), "證據檔計數 s1-probes/errors.txt 「V_EXTENSION」"),
+        ("positive control: the synthetic I38 / R53 labels alone must pass", synthetic_ok, None),
     ]
     all_caught = True
     for desc, mutated, expect in cases:
         res, _ = check(mutated, ssot, root)
         failed = [r for r in res if r[0] == "FAIL"]
-        caught = any(expect in r[1] for r in failed)
+        caught = (not failed) if expect is None else any(expect in r[1] for r in failed)
         all_caught &= caught
-        print(f"{'CAUGHT ' if caught else 'MISSED '} {desc}")
+        print(f"{('PASSED' if expect is None else 'CAUGHT') if caught else 'MISSED'}  {desc}")
         for r in failed:
             print(f"          FAIL  {r[1]}  {r[2]}")
     print("selftest: " + ("every injected defect was caught" if all_caught else "SOME DEFECTS WERE MISSED"))

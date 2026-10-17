@@ -9,8 +9,9 @@ What is scanned (公理層.md, CRLF normalised):
   * the "核心契約（K）：" block of every clause the list puts under M
 What is looked for:
   1. wording that points at the contract written below / at a template or host contract:
-       以下…契約 / 以下…schema,  以下限制,  模板契約驗證|指定|選取
+       以下…契約 / 以下…schema,  以下限制,  模板…契約(驗證|指定|選取|決定),  模板 schema
   2. a clause id (D/I/R number) that the scope list puts under W or H alone
+  3. (informational) host operations named in K text: 匯入, put, parser, bridge, DSL
 Not counted: "宿主" as a geometry word (host region, host hole ...), and "由以下任一來源求值" (an enumeration
 inside the same K sentence).  A keyword sweep proves nothing about wording it does not contain.
 
@@ -26,7 +27,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 HEAD = re.compile(r"^(?:\*\*(D\d+[a-z]?)|([IR]\d+[a-z]?))(?=[ 　（(*:：])")
 SCOPE_LINE = re.compile(r"^([^\n：]{0,24})契約（([KWMH])）：")
-POINTER = re.compile(r"以下[^，；。：（）]{0,10}?(?:契約|schema)|以下限制|模板契約(?:驗證|指定|選取)")
+POINTER = re.compile(
+    r"以下[^，；。：（）]{0,10}?(?:契約|schema)|以下限制|模板[^，；。：（）]{0,4}?契約(?:驗證|指定|選取|決定)?|模板 schema"
+)
+HOST_OP = re.compile(r"匯入|(?<![A-Za-z])put(?![A-Za-z])|parser|bridge|DSL")
 CLAUSE_ID = re.compile(r"(?<![A-Za-z0-9])([DIR]\d+[a-z]?)(?![A-Za-z0-9])")
 
 
@@ -82,6 +86,13 @@ def main() -> int:
     for i, c, r, s in refs:
         print(f"  L{i:<5} {c:<5} -> {r}({s})")
     print(f"  = {len(refs)} references")
+    print()
+
+    print("== 3. host operations named inside K text (informational: 匯入 / put / parser / bridge / DSL)")
+    ops = [(i, c, m.group(0)) for i, c, tx in ktext for m in HOST_OP.finditer(tx)]
+    for i, c, w in ops:
+        print(f"  L{i:<5} {c:<5} 「{w}」")
+    print(f"  = {len(ops)} mentions in {len({c for _, c, _ in ops})} clauses")
     return 0
 
 
