@@ -41,6 +41,18 @@ RESTORED = [
         "test_panel_fill_threshold_rebuild_requires_prior_reference_change",
         "test_separate_transaction_guidance_names_native_owner_after_other_referrers",
     ]],
+    # GEO-262 / P-142 B2: whole-card owners in the shared I38 rejection.
+    *["tests.test_grid_card_reference.GridCardReference." + name for name in [
+        "test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION",
+        "test_P142_B2_CARD_AND_PANEL_FILL_STAGGER_SHARE_I38_REJECTION",
+        "test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION",
+        "test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES",
+        # P-142 S1: grid-system field references rebound by put-grid-system.
+        "test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE",
+        "test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS",
+        # P-142 S2 on the merged source: rebuilt card read by field and card unbind.
+        "test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99",
+    ]],
 ]
 
 

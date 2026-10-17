@@ -1,0 +1,579 @@
+{
+  "ok": true,
+  "schema": "geometry-base-snapshot/1",
+  "base_scene": "boundary 1 outline 100,200 1300,200 1300,1000 100,1000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nboundary-vertex-keys 1 outer 1 2 3 4 next-key 5\ngrid-system 4 name-hex 47 main-along none u repeat 0 600 v repeat 0 400\ngrid-binding 2 on-boundary 1 from-system 4 vertex-key 1 cell -2 1 anchor 0 1 0 1\ngrid 10 on 1 from-binding 2\ntimber 90 20 33 role boundary\ntimber 91 20 33 role boundary\ntimber 1 27 33 role primary\nplace 90 on 1 at-face e0 +u +n\nplace 91 on 1 at-face e2 +u +n\nplace 1 on 1 at-line grid 10 u -1 +v +n\n",
+  "required_capabilities": [],
+  "specs": [],
+  "placements": [
+    {
+      "id": 1,
+      "boundary_id": 1,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "u": [
+        1,
+        0,
+        0
+      ],
+      "v": [
+        0,
+        1,
+        0
+      ],
+      "n": [
+        0,
+        0,
+        1
+      ],
+      "outline": [
+        [
+          100,
+          200
+        ],
+        [
+          1300,
+          200
+        ],
+        [
+          1300,
+          1000
+        ],
+        [
+          100,
+          1000
+        ]
+      ],
+      "holes": []
+    }
+  ],
+  "solids": [
+    {
+      "kind": "timber",
+      "id": 90,
+      "placement_id": 1,
+      "boundary_id": 1,
+      "faces": [
+        {
+          "feature": "A0",
+          "vertices": [
+            [
+              100,
+              200,
+              0
+            ],
+            [
+              100,
+              220,
+              0
+            ],
+            [
+              1300,
+              220,
+              0
+            ],
+            [
+              1300,
+              200,
+              0
+            ]
+          ]
+        },
+        {
+          "feature": "A1",
+          "vertices": [
+            [
+              100,
+              200,
+              33
+            ],
+            [
+              1300,
+              200,
+              33
+            ],
+            [
+              1300,
+              220,
+              33
+            ],
+            [
+              100,
+              220,
+              33
+            ]
+          ]
+        },
+        {
+          "feature": "B0",
+          "vertices": [
+            [
+              100,
+              200,
+              0
+            ],
+            [
+              1300,
+              200,
+              0
+            ],
+            [
+              1300,
+              200,
+              33
+            ],
+            [
+              100,
+              200,
+              33
+            ]
+          ]
+        },
+        {
+          "feature": "B1",
+          "vertices": [
+            [
+              100,
+              220,
+              0
+            ],
+            [
+              100,
+              220,
+              33
+            ],
+            [
+              1300,
+              220,
+              33
+            ],
+            [
+              1300,
+              220,
+              0
+            ]
+          ]
+        },
+        {
+          "feature": "START",
+          "vertices": [
+            [
+              100,
+              200,
+              0
+            ],
+            [
+              100,
+              200,
+              33
+            ],
+            [
+              100,
+              220,
+              33
+            ],
+            [
+              100,
+              220,
+              0
+            ]
+          ]
+        },
+        {
+          "feature": "END",
+          "vertices": [
+            [
+              1300,
+              200,
+              0
+            ],
+            [
+              1300,
+              220,
+              0
+            ],
+            [
+              1300,
+              220,
+              33
+            ],
+            [
+              1300,
+              200,
+              33
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "timber",
+      "id": 91,
+      "placement_id": 1,
+      "boundary_id": 1,
+      "faces": [
+        {
+          "feature": "A0",
+          "vertices": [
+            [
+              100,
+              980,
+              0
+            ],
+            [
+              100,
+              1000,
+              0
+            ],
+            [
+              1300,
+              1000,
+              0
+            ],
+            [
+              1300,
+              980,
+              0
+            ]
+          ]
+        },
+        {
+          "feature": "A1",
+          "vertices": [
+            [
+              100,
+              980,
+              33
+            ],
+            [
+              1300,
+              980,
+              33
+            ],
+            [
+              1300,
+              1000,
+              33
+            ],
+            [
+              100,
+              1000,
+              33
+            ]
+          ]
+        },
+        {
+          "feature": "B0",
+          "vertices": [
+            [
+              100,
+              980,
+              0
+            ],
+            [
+              1300,
+              980,
+              0
+            ],
+            [
+              1300,
+              980,
+              33
+            ],
+            [
+              100,
+              980,
+              33
+            ]
+          ]
+        },
+        {
+          "feature": "B1",
+          "vertices": [
+            [
+              100,
+              1000,
+              0
+            ],
+            [
+              100,
+              1000,
+              33
+            ],
+            [
+              1300,
+              1000,
+              33
+            ],
+            [
+              1300,
+              1000,
+              0
+            ]
+          ]
+        },
+        {
+          "feature": "START",
+          "vertices": [
+            [
+              100,
+              980,
+              0
+            ],
+            [
+              100,
+              980,
+              33
+            ],
+            [
+              100,
+              1000,
+              33
+            ],
+            [
+              100,
+              1000,
+              0
+            ]
+          ]
+        },
+        {
+          "feature": "END",
+          "vertices": [
+            [
+              1300,
+              980,
+              0
+            ],
+            [
+              1300,
+              1000,
+              0
+            ],
+            [
+              1300,
+              1000,
+              33
+            ],
+            [
+              1300,
+              980,
+              33
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "timber",
+      "id": 1,
+      "placement_id": 1,
+      "boundary_id": 1,
+      "faces": [
+        {
+          "feature": "A0",
+          "vertices": [
+            [
+              714,
+              220,
+              0
+            ],
+            [
+              687,
+              220,
+              0
+            ],
+            [
+              687,
+              980,
+              0
+            ],
+            [
+              714,
+              980,
+              0
+            ]
+          ]
+        },
+        {
+          "feature": "A1",
+          "vertices": [
+            [
+              714,
+              220,
+              33
+            ],
+            [
+              714,
+              980,
+              33
+            ],
+            [
+              687,
+              980,
+              33
+            ],
+            [
+              687,
+              220,
+              33
+            ]
+          ]
+        },
+        {
+          "feature": "B0",
+          "vertices": [
+            [
+              714,
+              220,
+              0
+            ],
+            [
+              714,
+              980,
+              0
+            ],
+            [
+              714,
+              980,
+              33
+            ],
+            [
+              714,
+              220,
+              33
+            ]
+          ]
+        },
+        {
+          "feature": "B1",
+          "vertices": [
+            [
+              687,
+              220,
+              0
+            ],
+            [
+              687,
+              220,
+              33
+            ],
+            [
+              687,
+              980,
+              33
+            ],
+            [
+              687,
+              980,
+              0
+            ]
+          ]
+        },
+        {
+          "feature": "START",
+          "vertices": [
+            [
+              714,
+              220,
+              0
+            ],
+            [
+              714,
+              220,
+              33
+            ],
+            [
+              687,
+              220,
+              33
+            ],
+            [
+              687,
+              220,
+              0
+            ]
+          ]
+        },
+        {
+          "feature": "END",
+          "vertices": [
+            [
+              714,
+              980,
+              0
+            ],
+            [
+              687,
+              980,
+              0
+            ],
+            [
+              687,
+              980,
+              33
+            ],
+            [
+              714,
+              980,
+              33
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "profile_runs": [],
+  "unplaced_timbers": [],
+  "dependencies": [
+    {
+      "kind": "placement",
+      "id": 1,
+      "refs": []
+    },
+    {
+      "kind": "timber",
+      "id": 90,
+      "refs": [
+        {
+          "kind": "placement",
+          "id": 1
+        }
+      ]
+    },
+    {
+      "kind": "timber",
+      "id": 91,
+      "refs": [
+        {
+          "kind": "placement",
+          "id": 1
+        },
+        {
+          "kind": "timber",
+          "id": 90
+        }
+      ]
+    },
+    {
+      "kind": "timber",
+      "id": 1,
+      "refs": [
+        {
+          "kind": "placement",
+          "id": 1
+        },
+        {
+          "kind": "timber",
+          "id": 90
+        },
+        {
+          "kind": "timber",
+          "id": 91
+        }
+      ]
+    }
+  ]
+}

@@ -78,7 +78,8 @@ class ModelingTransport(unittest.TestCase):
 
     def test_http_models_are_isolated_and_reconstructible(self):
         self.assertIn("engineering-spec/1", self.capabilities["capabilities"])
-        self.assertEqual(len(self.capabilities["capabilities"]), 8)
+        self.assertEqual(len(self.capabilities["capabilities"]), 9)
+        self.assertIn("grid-card-reference/1", self.capabilities["capabilities"])
         self.assertIn("parameters/1", self.capabilities["capabilities"])
         self.assertIn("section-profile/1", self.capabilities["capabilities"])
         self.assertTrue(self.post("/api", {"cmd": "line spec transport_sentinel 419"})["ok"])

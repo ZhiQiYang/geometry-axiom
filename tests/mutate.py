@@ -355,6 +355,66 @@ MUTANTS += [
 ]
 
 
+# GEO-262 / P-142 B2: whole-card grid owners share parameter_uses and the I38
+# rejection with the D44 panel-fill owners (bridge-backed, like P-141 above).
+B2_TESTS = ["tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_%s_SHARE_I38_REJECTION" % slot
+            for slot in ("GAP", "STAGGER", "THRESHOLD")]
+MUTANTS += [
+    dict(id="M78", desc="I38/I74 P142-B2：原生擁有者領頭的拒絕只計數、不指名同欄可改綁的引用者", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old='parameter_names_fit(other,used<limit?limit-used:0,uses.other_text,uses.other_count,": ");',
+         new='parameter_names_fit(other,used<limit?limit-used:0,uses.other_text,0,": ");',
+         tests=B2_TESTS),
+    dict(id="M84", desc="I38/P142-B2：引用者名單不檢查剩餘長度，名稱在255位元組處被截斷", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="        if(need>room)continue;",
+         new="        if(false)continue;",
+         tests=["tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES"]),
+    dict(id="M79", desc="I38/P142-B2：整卡網格引用者不列入共用 parameter_uses", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="if(r->set&&r->parameter_id==id&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_CARD,s->id,0))",
+         new="if(false&&r->set&&r->parameter_id==id&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_CARD,s->id,0))",
+         tests=B2_TESTS[:1]),
+]
+
+# GEO-262 / P-142 S1: grid-system field references are redeclared by put-grid-system,
+# so they are no longer native-only owners of the separate-transaction guidance.
+S1_TEST = "tests.test_grid_card_reference.GridCardReference.test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE"
+MUTANTS += [
+    dict(id="M80", desc="I38/P142-S1：網格系統逐欄引用仍歸為無法同候選改綁的原生擁有者", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old='parameter_use(u,"grid-system %u %c %s",',
+         new='parameter_native_use(u,"grid-system %u %c %s",',
+         tests=[S1_TEST, "tests.test_parameters_core.ParametersCore.test_native_consumers_require_explicit_rebinding_after_parameter_rebuild"]),
+    dict(id="M81", desc="I38/P129/P142-S1：put-grid-system 未宣告其逐欄來源，刪後重建同鍵無法改綁", binary="bridge",
+         file="geometry-core/card_reference.inc",
+         old="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0)&&parameter_declare(w,PARAM_OWNER_GRID_SYSTEM,s.id,0);",
+         new="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0);",
+         tests=[S1_TEST]),
+    dict(id="M85", desc="I38/D29/P142-S1：網格系統 ParameterRef 指向已刪卡片時沿用快取長度，不拒絕", binary="bridge",
+         file="geometry-core/grid_systems.inc",
+         old="if(!grid_axis_is_infinite(a)||!parameter_coord(w,a->parameters[field],values[field])){",
+         new="if(!grid_axis_is_infinite(a)||(parameter_find(w,a->parameters[field].parameter_id)&&!parameter_coord(w,a->parameters[field],values[field]))){",
+         tests=["tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS"]),
+]
+
+# GEO-262 / P-142 S2 after #193: the merged source rebuilds a card and unbinds a
+# field source and a whole-card grid in one ordered candidate (both must read 99).
+S2_TEST = "tests.test_grid_card_reference.GridCardReference.test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99"
+MUTANTS += [
+    dict(id="M82", desc="P065/P142-S2：同候選曾刪除的欄位即使已重建仍走刪除前快取（整合後逐欄得27非99）", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0)return false;",
+         new="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0&&!parameter_field_generation(w,ref.parameter_id,ref.field_id))return false;",
+         tests=[S2_TEST]),
+    dict(id="M83", desc="R60/P142-S2：整卡轉直接值因同候選曾刪除一律拒絕，不讀已重建的當步值", binary="bridge",
+         file="geometry-core/card_reference.inc",
+         old="                char error[512];",
+         new='                char error[512];for(int a=0;a<2;++a)if(parameter_field_generation(w,s->card_reference.parameter_id,s->card_reference.fields[a]))return grid_card_fail("R60 capture grid-system %u parameter %u: deleted earlier in this candidate",id,s->card_reference.parameter_id);',
+         tests=[S2_TEST]),
+]
+
+
 def run_cmd(cmd, cwd, timeout=120):
     return subprocess.run(cmd, cwd=cwd, capture_output=True,
                           text=True, encoding="utf-8", errors="replace",
