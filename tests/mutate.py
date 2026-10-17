@@ -308,6 +308,9 @@ MUTANTS = [
     dict(id="M87", desc="I22/S1：拿掉「非 boundary 角材的 footprint 不得超出定位邊」的拒絕(V_EXTENSION)；primary 整支穿過凹角的 _s1_p8 必轉紅",
          old="    if (has_edge && self->role != TIMBER_ROLE_BOUNDARY &&\n        (span_lo < edge_lo || span_hi > edge_hi)) {",
          new="    if (0 && has_edge && self->role != TIMBER_ROLE_BOUNDARY &&\n        (span_lo < edge_lo || span_hi > edge_hi)) {"),
+    dict(id="M88", desc="I22/S1(#295 審查須改 2):V_EXTENSION 只驗「超出起點」,拿掉「超出終點」那一半;凹角在定位邊高端的 _s1_p8b 必轉紅",
+         old="        (span_lo < edge_lo || span_hi > edge_hi)) {",
+         new="        (span_lo < edge_lo)) {"),
 ]
 
 
