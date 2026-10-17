@@ -386,3 +386,22 @@
 
 ## 共同規則
 不合併、不 force push、不關 PR/issue、不改 repo 設定。PR 留言開頭「【Codex】」;「【WSL 裁判】」是 Claude 的驗證,「【dot】」與「【ChatGPT 審查】」是審查意見。不得假稱跑過 WSL。
+
+## 雲端測試請求(2026-10-17 起;雲端 Codex 只跑測試、不改程式)
+
+使用者 2026-10-17 指示：雲端 Codex 只負責在指定的分支上跑測試並回報，不改程式;實作與修復都由 Claude 負責。
+
+**做法**:
+- 每筆請求寫明分支、完整 SHA、要跑的命令、回報到哪個 PR。
+- 領取前先在 #252 留「領取 R-xxx」,避免兩個工人重複跑。
+- 一律在乾淨的 checkout 上跑**指定的 SHA**,不 merge、不改檔、不推送。
+- 回報貼到指定 PR,開頭寫【雲端測試 R-xxx】,內容包括:
+  - 受測完整 SHA、環境(OS、gcc、python、node 版本)。
+  - 每個命令的 exit、通過/失敗/略過數、耗時。
+  - 失敗斷言原文前 30 行。
+  - 註明「雲端 native,非正式 WSL 收據」。
+- 跑不起來(例如缺 Chrome)就照實回報卡在哪一步，不要湊。
+
+| 編號 | 分支 / 完整 SHA | 命令 | 回報到 | 狀態 |
+|---|---|---|---|---|
+| R-001 | `feat/framing-oracle-20261015` / `a32bcf2f146606484894f6bb59c0f719bbe6b9bf` | `cd geometry-core/framing-template/oracle && python3 selftest.py`,再到 repo 根目錄 `ulimit -s 16384; python3 -u tests/run_all.py --build` | #251 | 待領 |
