@@ -100,14 +100,17 @@ geometry-parameters/1 的匯出／匯入仍只有卡片閉包，不包含網格�
 
 ### 採納前模型包的版本防線（P-142 B1）
 
-依 #256 已採納的 D64／I74／R60，執行器版本指向提交 A `b3c79615` 及其 LF 條文雜湊。
-所有已知採納前的相容版本（包括 `PRE_CARD_REFERENCE_AXIOM_VERSIONS`）只有在未宣告且未使用整卡能力時才相容。
+D64／I74／R60 於 #256 的提交 A `b3c79615` 採納；#266（GEO-261）之後執行器版本改指 `e744f531`（LF 雜湊 `18a9a75b…`），`b3c79615` 成為 `PRE_DECOUPLING_AXIOM_VERSIONS`。
+整卡語意的年代因此分成三段：現行 `e744f531` 與 `CARD_REFERENCE_AXIOM_VERSIONS`（= `PRE_DECOUPLING`，即採納提交本身）可帶整卡；
+`_pre_card_reference_versions()` = 允收集合 − 現行 − `CARD_REFERENCE_AXIOM_VERSIONS` 的 19 組版本早於 D64，只有在未宣告且未使用整卡能力時才相容。
+這 19 組恰等於 a898ad6e（當時現行即 `b3c79615`）凍結的 `historical-versions.json` 全部家族，可獨立核對。日後若再有採納讓 `e744f531` 退為舊版，須把它加入 `CARD_REFERENCE_AXIOM_VERSIONS`，否則其整卡包會 fail closed。
 `verify_package` 在重建之前檢查 manifest.capabilities 與 base_scene 的能力宣告／整卡語法；任一出現 `grid-card-reference/1` 語意即回 `UNSUPPORTED/AXIOM_VERSION`。
 兩處能力宣告都被移除但仍有 card-reference／card 語法，也不能藉此套用舊版公理。
 現行版本的完整整卡包仍可原樣重建；未知或混搭版本仍由原有精確版本配對拒絕。
 
-`tests/test_engineering_model_compatibility.py` 的五個具名方法涵蓋三條拒絕路徑、現行完整包與全部舊版無整卡對照。
-`run_axiom_mutations.py --output <新目錄>` 實際撤除整道防線、漏查 manifest、漏查來源或豁免最後一個採納前版本家族；每筆要求具名斷言轉紅、沒有 error／skip，逐 byte 還原後完整相容性 suite 回綠。
+`tests/test_engineering_model_compatibility.py` 的五個具名方法涵蓋三條拒絕路徑、現行完整包與全部舊版無整卡對照；
+GEO-261 合併後另加三個：年代分割等於凍結允收集合（純 Python）、以 a898ad6e 原件加整卡宣告在重建前驗證 19 組舊版全拒且 `b3c79615` 放行（純 Python，以 mock 截在重建前）、`b3c79615` 版整卡包原生重建只更新版本欄位（需原生）。
+`run_axiom_mutations.py --output <新目錄>` 實際撤除整道防線、漏查 manifest、漏查來源、豁免最後一個採納前版本家族，或把採納提交 `b3c79615` 當成採納前（V05）；每筆要求具名斷言轉紅、沒有 error／skip，逐 byte 還原後完整相容性 suite（39 題）回綠。
 
 ## 驗收邊界
 

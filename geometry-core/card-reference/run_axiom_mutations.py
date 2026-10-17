@@ -31,7 +31,13 @@ MUTATIONS = (
     ('V04-exempt-latest-pre-adoption', CONDITION,
      'if supplied_version not in PRE_CARD_REFERENCE_AXIOM_VERSIONS and (' + SCENE + ' or\n                    ' + MANIFEST + '):',
      'test_pre_card_axioms_reject_card_syntax_with_stripped_declarations', 'CARD_AXIOM_SYNTAX'),
+    # GEO-261 retired b3c79615, which already contains D64/I74/R60; treating that
+    # adoption pair as pre-adoption must turn the era test red.
+    ('V05-card-adoption-treated-as-pre', 'CARD_REFERENCE_AXIOM_VERSIONS = PRE_DECOUPLING_AXIOM_VERSIONS',
+     'CARD_REFERENCE_AXIOM_VERSIONS = frozenset()',
+     'test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild', 'CARD_AXIOM_ERA'),
 )
+SUITE_TESTS = 39
 
 
 def run(directory, selected):
@@ -64,7 +70,7 @@ def main(out):
     text = original.decode()
     assert text.count(CONDITION) == 1
     baseline, _ = run(out / 'baseline', BASE)
-    assert baseline['exit_code'] == 0 and baseline['tests'] == 36
+    assert baseline['exit_code'] == 0 and baseline['tests'] == SUITE_TESTS
     assert baseline['failures'] == baseline['errors'] == baseline['skips'] == 0
     report = dict(source_head=subprocess.check_output(
         ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
@@ -84,7 +90,7 @@ def main(out):
             killed = (red['exit_code'] == 1 and red['tests'] == 1 and
                       red['failures'] > 0 and red['errors'] == red['skips'] == 0 and
                       label in output and ('FAIL: ' + test) in output and
-                      restored['exit_code'] == 0 and restored['tests'] == 36 and
+                      restored['exit_code'] == 0 and restored['tests'] == SUITE_TESTS and
                       restored['errors'] == restored['skips'] == 0)
             row = dict(id=identifier, old=old, new=new, named_test=test,
                        mutant_sha256=hashlib.sha256(changed).hexdigest(),

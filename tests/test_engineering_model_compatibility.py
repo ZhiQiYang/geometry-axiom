@@ -230,6 +230,64 @@ class EngineeringModelCompatibility(unittest.TestCase):
                          (modeling.AXIOM_REVISION, modeling.AXIOM_SHA256))
         self.assertEqual(verify_package(package), package, 'CARD_AXIOM_CURRENT')
 
+    def card_claim_fixture(self):
+        # Untouched a898ad6e producer output at b3c79615 (the D64 adoption, now
+        # PRE_DECOUPLING); appending the card claim is a deliberate probe.
+        package = json.loads((ROOT / 'tests/fixtures/domain-decoupling-main-a898ad6e/parameter.json').read_bytes())
+        package['manifest']['capabilities'].append('grid-card-reference/1')
+        return package
+
+    def test_card_axiom_era_partition_matches_the_frozen_pre_adoption_allowlist(self):
+        current = (modeling.AXIOM_REVISION, modeling.AXIOM_SHA256)
+        accepted, pre = modeling._accepted_axiom_versions(current), modeling._pre_card_reference_versions(current)
+        # a898ad6e pinned the D64 adoption itself, so its frozen noncurrent families are
+        # exactly the versions older than D64/I74/R60 (an independent oracle).
+        frozen = json.loads((ROOT / 'tests/fixtures/domain-decoupling-main-a898ad6e/historical-versions.json').read_bytes())
+        self.assertEqual(frozenset(tuple(pair) for pairs in frozen.values() for pair in pairs), pre, 'CARD_AXIOM_ERA')
+        self.assertEqual(modeling.PRE_DECOUPLING_AXIOM_VERSIONS, modeling.CARD_REFERENCE_AXIOM_VERSIONS, 'CARD_AXIOM_ERA')
+        self.assertEqual(accepted, pre | modeling.CARD_REFERENCE_AXIOM_VERSIONS | {current}, 'CARD_AXIOM_ERA')
+        self.assertFalse(pre & modeling.CARD_REFERENCE_AXIOM_VERSIONS, 'CARD_AXIOM_ERA')
+        self.assertNotIn(current, pre, 'CARD_AXIOM_ERA')
+
+    def test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild(self):
+        class Reached(Exception):
+            pass
+        current = (modeling.AXIOM_REVISION, modeling.AXIOM_SHA256)
+        with mock.patch.object(modeling, 'build_package', side_effect=Reached):
+            for version in sorted(modeling._pre_card_reference_versions(current)):
+                package = self.card_claim_fixture()
+                package['manifest']['axiom_revision'], package['manifest']['axiom_sha256'] = version
+                with self.subTest(version=version):
+                    try:
+                        verify_package(package)
+                    except ModelError as error:
+                        self.assertEqual(('UNSUPPORTED', 'AXIOM_VERSION'), (error.status, error.code), 'CARD_AXIOM_ERA')
+                        self.assertIn('grid-card-reference/1', error.message, 'CARD_AXIOM_ERA')
+                    except Reached:
+                        self.fail('CARD_AXIOM_ERA: pre-D64 card claim reached the rebuild')
+                    else:
+                        self.fail('CARD_AXIOM_ERA: pre-D64 card claim was accepted')
+            # The frozen producer's own pair is the D64 adoption: its card claim is not refused.
+            package = self.card_claim_fixture()
+            try:
+                verify_package(package)
+            except Reached:
+                pass
+            except ModelError as error:
+                self.fail('CARD_AXIOM_ERA: post-adoption card claim was refused: ' + json.dumps(error.as_dict()))
+            else:
+                self.fail('CARD_AXIOM_ERA: rebuild was not reached')
+
+    def test_post_adoption_previous_revision_card_package_rebuilds(self):
+        package = self.card_reference_package()
+        package['manifest']['axiom_revision'], package['manifest']['axiom_sha256'] = next(iter(modeling.CARD_REFERENCE_AXIOM_VERSIONS))
+        supplied = deepcopy(package)
+        rebuilt = verify_package(package)
+        expected = deepcopy(supplied)
+        expected['manifest']['axiom_revision'], expected['manifest']['axiom_sha256'] = modeling.AXIOM_REVISION, modeling.AXIOM_SHA256
+        self.assertEqual(expected, rebuilt, 'CARD_AXIOM_ERA: b3c79615 already defines D64/I74/R60')
+        self.assertEqual(supplied, package, 'CARD_AXIOM_ERA: verification must not upgrade provenance in place')
+
     def test_pre_card_axioms_ignore_card_words_in_source_comments(self):
         package = self.build()
         definitions = deepcopy(package['definitions'])
