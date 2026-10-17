@@ -618,6 +618,24 @@ class GridCardReference(unittest.TestCase):
                                               for r in preview['preview']['redeclaredReferences'] if r['owner'] == owner},
                          'S1 preview discloses the put-grid-system redeclaration')
 
+    def test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99(self):
+        """P-142 S2 on the merged #193 source: one ordered candidate rebuilds card 10 and
+        unbinds both the whole-card grid and a field-level timber source; both read 99."""
+        self.seed(extras=[field(9, '27')])
+        self.apply_line('timber 1 27 33 role boundary')
+        self.apply_line('place 1 on 1 at-face e0 +u +n')  # same placement as test_parameters_core's verified 99 case
+        target = {'kind': 'timber', 'id': 1, 'field': 'A'}
+        self.apply([{'op': 'set-source', 'target': target, 'source': {'kind': 'parameter', 'parameterId': 10, 'fieldId': 9}}])
+        before = self.dump()
+        pending, _ = self.apply([{'op': 'delete-parameter', 'id': 10}, parameter(a='99', b='47', extras=[field(9, '99')]),
+                                 unbind(), {'op': 'unbind-source', 'target': target}])
+        self.assertEqual([99, 47], pending['preview']['cardCaptures'][0]['values'], 'card direct reads this ordered step')
+        self.assertEqual((99, 47), self.lengths())
+        self.assertNotIn('cardReference', self.systems()[4])
+        self.assertRegex(self.dump(), r'(?m)^timber 1 99 33 role boundary$', 'field unbind reads the rebuilt 99, not the deleted 27')
+        self.assertEqual([], self.read()['state']['sources'])
+        self.apply_line('undo'); self.assertEqual(before, self.dump(), 'one history step')
+
 
 if __name__ == '__main__':
     unittest.main()

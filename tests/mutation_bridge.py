@@ -48,6 +48,8 @@ RESTORED = [
         "test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION",
         # P-142 S1: grid-system field references rebound by put-grid-system.
         "test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE",
+        # P-142 S2 on the merged source: rebuilt card read by field and card unbind.
+        "test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99",
     ]],
 ]
 

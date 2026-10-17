@@ -388,6 +388,22 @@ MUTANTS += [
          tests=[S1_TEST]),
 ]
 
+# GEO-262 / P-142 S2 after #193: the merged source rebuilds a card and unbinds a
+# field source and a whole-card grid in one ordered candidate (both must read 99).
+S2_TEST = "tests.test_grid_card_reference.GridCardReference.test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99"
+MUTANTS += [
+    dict(id="M82", desc="P065/P142-S2：同候選曾刪除的欄位即使已重建仍走刪除前快取（整合後逐欄得27非99）", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0)return false;",
+         new="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0&&!parameter_field_generation(w,ref.parameter_id,ref.field_id))return false;",
+         tests=[S2_TEST]),
+    dict(id="M83", desc="R60/P142-S2：整卡轉直接值因同候選曾刪除一律拒絕，不讀已重建的當步值", binary="bridge",
+         file="geometry-core/card_reference.inc",
+         old="                char error[512];",
+         new='                char error[512];for(int a=0;a<2;++a)if(parameter_field_generation(w,s->card_reference.parameter_id,s->card_reference.fields[a]))return grid_card_fail("R60 capture grid-system %u parameter %u: deleted earlier in this candidate",id,s->card_reference.parameter_id);',
+         tests=[S2_TEST]),
+]
+
 
 def run_cmd(cmd, cwd, timeout=120):
     return subprocess.run(cmd, cwd=cwd, capture_output=True,

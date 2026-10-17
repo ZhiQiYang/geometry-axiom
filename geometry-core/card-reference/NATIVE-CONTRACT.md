@@ -60,6 +60,10 @@ guide、datum、direct grid 與面材試排仍是原生擁有者，訊息與 #19
 同候選 `put-grid-system` 改指到另一張卡可提交；刪卡＋同鍵重建＋`put-grid-system` 明示重宣告可提交，預覽 `redeclaredReferences` 列出 slot 0 的兩個欄位。
 `test_parameters_core` 的原生擁有者對照同步把 grid-system 改為非原生。官方帳本 M80（網格系統仍歸原生）、M81（put-grid-system 漏宣告逐欄來源）。
 
+合入 #193 的 P-142 S2 修正後，逐欄 `unbind-source` 與整卡 direct 解除在同一有序候選讀同一個當步來源：
+`test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99` 對同一張卡執行 `[delete P, put P(a=99, b=47, f9=99), 整卡轉直接值, unbind-source(timber A)]`，
+整卡捕捉與正式長度為 (99, 47)、角材讀 99（不是刪除前快取 27），一次 history。官方帳本 M82（已重建欄位仍走刪除快取）、M83（整卡因曾刪除一律拒絕）。
+
 direct 解除只在該有序步驟依原生參數 evaluator 重算必要欄位並驗整卡。
 該步來源存在時取當下有效值，包括刪除後已重建的同鍵來源；例如 `[delete P, put P(a=99), 轉直接值]` 取得 99。
 該步來源不存在（刪除未重建）或來源不合法時拒絕，不因同候選曾刪除而一律拒絕。
@@ -104,7 +108,7 @@ geometry-parameters/1 的匯出／匯入仍只有卡片閉包，不包含網格�
 
 ## 驗收邊界
 
-`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法、3 個 P-146 方法、2 個 P-154 方法、3 個 P-142 B2 方法及 1 個 P-142 S1 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
+`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法、3 個 P-146 方法、2 個 P-154 方法、3 個 P-142 B2 方法、1 個 P-142 S1 方法及 1 個整合後 P-142 S2 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
 拒絕測試逐則核對原因與完整 id token，要求同一則診斷同時具有原因及全部身分，不將 field 3 誤配到 field 30，也不拼接不同違規的身分。
 模型包在網頁正式開啟、恢復及方案載入時的原生驗證路徑與實際服務探針，見 `MODEL-ADMISSION-AUDIT.md`；結構驗證／ZIP 解包本身不冒稱通過原生版本核對。
 `tests/test_card_reference_project_store.js` 檢查 /18 的保存、降版、能力、未知版本及舊逐欄相容。
