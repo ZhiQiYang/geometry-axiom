@@ -1,0 +1,26 @@
+✔ native commit keeps busy until held settlement finishes and rejects a second transaction (5.931684ms)
+✔ native rejection keeps busy until held settlement finishes and rejects a second transaction (1.689236ms)
+✔ committed transaction releases every busy resource when settlement throws (1.42069ms)
+✔ committed transaction releases every busy resource when settlement rejects (1.441388ms)
+✔ rejected transaction releases every busy resource when settlement throws (1.544223ms)
+✔ rejected transaction releases every busy resource when settlement rejects (1.243881ms)
+✔ an existing busy owner is never cleaned or settled by an early rejected entrant (2.655133ms)
+✔ a stale preflight returns before acquiring busy, native history or settlement (0.997553ms)
+✔ native throw settles as uncommitted after its original abort and preserves the native error (1.199126ms)
+✔ history-end rejection never reports a committed settlement (1.180272ms)
+✔ callers without settlement keep successful, rejected and thrown native command semantics (2.495653ms)
+✔ a busy placement returns before allocating an ID or checking the half-loaded native cache (2.952186ms)
+✔ placement success reloads inside settlement and releases before any normal repaint (2.820897ms)
+✔ placement rejection reloads inside settlement and releases before any normal repaint (1.397287ms)
+✔ retired presentation prevents a committed old operation from loading or painting the replacement face (1.715266ms)
+✔ retired presentation prevents a rejected old operation from loading or painting the replacement face (1.070977ms)
+✔ same-face raw edits during successful cache loading survive without late inspector replacement (0.845923ms)
+✔ a presentation retired during a held successful read receives no late rendering (1.122014ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 119.002828

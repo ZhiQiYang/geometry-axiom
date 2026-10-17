@@ -9,8 +9,7 @@ substring (or a tuple of substrings, all required) of rejection_reason(response)
 is refused only because it was mistyped (unknown command) cannot pass as a rule rejection.
 test_infinite_grid_contract.py shares this reject().  A gated edit answers ok=false with the generic
 "I8a: impact preview required" and puts the real reason in preview.violations[].actual; the
-grid-system definition refusals all share one D29/I37 line, so those pins are weak (they prove the
-definition guard fired, not which field was wrong).
+definition refusals name the specific field and violated clause (GEO-246).
 """
 import json
 import os
@@ -162,22 +161,28 @@ class GridSystemContract(unittest.TestCase):
                         "series 0 9223372036854775807 2", "panel 0 gap 0 from 0",
                         "panel 10 gap -1 from 0", "panel 10 gap 0", "explicit 100000001",
                         "explicit " + " ".join(str(i) for i in range(65))]
-        # Weak pins: the bridge answers every malformed grid-system definition with one shared D29/I37 line
-        # (name/id/axis/main-along alike), so "D29/I37" shows the definition guard fired, not which field was
-        # wrong. Only the two D1 overflows have their own wording.
-        definition_guard = "D29/I37"
+        reasons = [
+            "u explicit coordinate[1]=1 must be greater than coordinate[0]=1",
+            "u explicit coordinate[1]=1 must be greater than coordinate[0]=2",
+            "u step=0 must be positive", "u step=-1 must be positive",
+            "u count=0 must be in 1..64", "u count=65 must be in 1..64",
+            "u series last coordinate exceeds D1 range", "超出支援範圍",
+            "u panel=0 must be positive", "u gap=-1 must be non-negative",
+            "u anchor requires explicit from", "超出支援範圍", "u explicit count exceeds 64 lines",
+        ]
         out_of_d1_range = {"series 0 9223372036854775807 2", "explicit 100000001"}
-        for axis in invalid_axes:
+        for axis, reason in zip(invalid_axes, reasons, strict=True):
             with self.subTest(axis=axis):
-                self.reject(system(u=axis, v="none"), "超出支援範圍" if axis in out_of_d1_range else definition_guard)
+                self.reject(system(u=axis, v="none"), reason if axis in out_of_d1_range else ("D29/I37", reason))
         needs_surface = "前面要先有 placement 或 surface"
-        for command, why in [(system(u="none", v="none"), definition_guard),
-                             (system(u="explicit 100", v="none", main="u"), definition_guard),
-                             (system(name=""), definition_guard), (system(name="界" * 33), definition_guard),
-                             (system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex ff"), definition_guard),
-                             (system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex 610a62"), definition_guard),
-                             (system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex 610062"), definition_guard),
-                             (system().replace("grid-system 0", "grid-system 4294967296"), definition_guard),
+        for command, why in [(system(u="none", v="none"), ("D29/I37", "u/v sources cannot both be none")),
+                             (system(u="explicit 100", v="none", main="u"), ("D29/I37", "main-along=u requires v source")),
+                             (system(name=""), ("D29/I37", "name-hex must be non-empty")),
+                             (system(name="界" * 33), ("D29/I37", "name-hex exceeds 96 bytes")),
+                             (system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex ff"), ("D29/I37", "name-hex requires valid UTF-8")),
+                             (system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex 610a62"), ("D29/I37", "name-hex contains control byte 0x0a")),
+                             (system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex 610062"), ("D29/I37", "name-hex contains control byte 0x00")),
+                             (system().replace("grid-system 0", "grid-system 4294967296"), ("D29/I37", "id must be uint32 (0..4294967295)")),
                              ("grid 1 on 1 from-system 0 origin 0 0", needs_surface)]:
             with self.subTest(command=command):
                 self.reject(command, why)
@@ -192,6 +197,19 @@ class GridSystemContract(unittest.TestCase):
         self.assertEqual(16, len(self.objects()["gridSystems"]))
 
     def test_line_limit_applies_when_panel_system_gets_a_surface(self):
+        # GEO-246 / dot P2: grammar failures name the actual field; a present
+        # `from` must never turn a misspelled `gap` into an anchor diagnosis.
+        for axis, why in [
+            ("panel 10 gaps 0 from 0", "u gap keyword must be gap (got gaps)"),
+            ("repeat-panel 10 gaps 0 from 0", "u gap keyword must be gap (got gaps)"),
+            ("panel 10 gap 0 origin 0", "u anchor requires explicit from"),
+            ("panel ten gap 0 from 0", "u panel length requires an integer in D1 range"),
+            ("panel 10 gap none from 0", "u gap requires an integer in D1 range"),
+            ("panel 10 gap 0 from none", "u anchor requires an integer in D1 range"),
+            ("panel 10", "u panel definition requires length, gap and from anchor"),
+        ]:
+            with self.subTest(panel_grammar=axis):
+                self.reject(system(u=axis, v="none"), ("D29/I37", why))
         self.surface(1)
         self.commit(system(u="series 0 1 64", v="none"))
         self.commit("grid 10 on 1 from-system 0 origin 0 0")

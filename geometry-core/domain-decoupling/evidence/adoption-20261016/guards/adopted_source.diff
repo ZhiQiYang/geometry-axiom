@@ -1,0 +1,11 @@
+--- tests/test_domain_decoupling_adoption.py
++++ TEMP/adopted_source/test_domain_decoupling_adoption.py
+@@ -154,7 +154,7 @@
+ 
+ 
+ def validate_current_document(current_bytes, expected):
+-    require(normalized(current_bytes) == expected, "ADOPTED_SOURCE", "current SSOT differs from the approved, upstream-preserving result")
++    pass  # TEMP MUTANT: removed ADOPTED_SOURCE guard
+     clauses, _, _ = source_layout(expected)
+     require(len(clauses) == len({row.id for row in clauses}) == 207,
+             "ADOPTED_LAYOUT", "the adopted document must preserve all 207 clauses")

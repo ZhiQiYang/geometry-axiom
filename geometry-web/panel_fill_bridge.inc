@@ -99,6 +99,7 @@ static void json_panel_fill_preview(void)
     fs_json_layer_pending();
     fputs(",\"before\":",stdout);json_panel_fill_state(&g_preview.before);
     fputs(",\"after\":",stdout);json_panel_fill_state(&g_preview.after);
+    json_parameter_rebindings();
     fputs(",\"changes\":",stdout);json_panel_fill_changes(&g_preview.before,&g_preview.after);
     if(g_preview.before.finish_surfaces.host_count||g_preview.after.finish_surfaces.host_count){
         fputs(",\"dependencies\":{\"before\":",stdout);json_engineering_state(&g_preview.before,true);

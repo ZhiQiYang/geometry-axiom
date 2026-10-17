@@ -1,0 +1,26 @@
+{
+  "schema": "geo246-message-only-patch/1",
+  "newline_policy": "Patch strings use LF; preserve each target file's existing LF or CRLF bytes.",
+  "replacements": [
+    {
+      "file": "geometry-core/grid_systems.inc",
+      "before": "scene_error(path,line_no,g_grid_stagger_error[0]?g_grid_stagger_error:g_grid_definition_error);",
+      "after": "scene_error(path,line_no,g_grid_stagger_error[0]?g_grid_stagger_error:\"D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range\");"
+    },
+    {
+      "file": "geometry-core/grid_bindings.inc",
+      "before": "scene_error(path,line_no,detail[0]?detail:\"D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration\");",
+      "after": "scene_error(path,line_no,\"D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration\");"
+    },
+    {
+      "file": "geometry-core/subgrid_commands.inc",
+      "before": "scene_error(path,line_no,detail[0]?detail:\"D19/I25: subgrid id parent id cell u lo hi v lo hi divisions u NU v NV; lattice parent uses lattice-cell I J divisions u NU v NV\");",
+      "after": "scene_error(path,line_no,\"D19/I25: subgrid id parent id cell u lo hi v lo hi divisions u NU v NV; lattice parent uses lattice-cell I J divisions u NU v NV\");"
+    },
+    {
+      "file": "current_geometry.c",
+      "before": "                char detail[512];\n                snprintf(detail,sizeof detail,\"重宣告後有物件失效（承載面/參考線/角材/空間沒全過）: boundary %u: %s\",\n                    id,g_revalidate_error[0]?g_revalidate_error:\"I8: dependent objects invalid\");\n                scene_error(path, line_no, detail);",
+      "after": "                scene_error(path, line_no,\"重宣告後有物件失效（承載面/參考線/角材/空間沒全過）\");"
+    }
+  ]
+}

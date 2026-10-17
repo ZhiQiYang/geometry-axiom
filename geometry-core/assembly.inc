@@ -139,7 +139,7 @@ static bool asm_put_binding(World *w,EngJson *j,int t)
 {
     AsmBinding value;if(!asm_binding_parse(w,j,t,&value,false))return false;AsmBinding *b=assembly_binding(w,value.id);
     if(!b){if(w->assembly.binding_count==ASM_BINDING_MAX)return asm_error("CAPACITY: at most 64 assembly bindings");b=&w->assembly.bindings[w->assembly.binding_count++];}
-    *b=value;return true;
+    *b=value;return parameter_declare(w,PARAM_OWNER_ASSEMBLY,value.id,0);
 }
 static bool assembly_rebuild(World *w,char *error,size_t cap)
 {

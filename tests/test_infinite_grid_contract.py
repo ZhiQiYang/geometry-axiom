@@ -244,17 +244,18 @@ class InfiniteGridContract(unittest.TestCase):
         self.commit(infinite())
         self.binding(anchor=(2, 4, 3, 6))
         self.assertIn("anchor 1 2 1 2", self.dump())
-        bad_fraction = ("D30/I37", "rational anchor declaration")   # weak: one line for every malformed fraction
-        for anchor, why in (((-1, 2, 0, 1), bad_fraction), ((3, 2, 0, 1), bad_fraction), ((0, 0, 0, 1), bad_fraction),
-                            ((0, -1, 0, 1), bad_fraction), ((1, 7, 0, 1), ("D1/I37", "integer-millimetre"))):
+        for anchor, why in (((-1, 2, 0, 1), ("D30/I37", "anchor u numerator=-1 must be uint32")),
+                            ((3, 2, 0, 1), ("D30/I37", "anchor u numerator=3 exceeds denominator=2")),
+                            ((0, 0, 0, 1), ("D30/I37", "anchor u denominator=0 must be positive")),
+                            ((0, -1, 0, 1), ("D30/I37", "anchor u denominator=-1 must be positive uint32")),
+                            ((1, 7, 0, 1), ("D1/I37", "integer-millimetre"))):
             with self.subTest(anchor=anchor):
                 self.reject(self.binding_command(1, anchor=anchor), why)
         self.commit(infinite(1, v="none"))
         self.reject(self.binding_command(1, source=1), ("D30/I37", "two infinite axes"))
-        # weak: the same D29/I37 definition-guard line for every malformed grid-system
-        self.reject(infinite(2, u="repeat 0 600", v="series 0 400 3"), "D29/I37")
-        self.reject(infinite(2, u="repeat 0 0"), "D29/I37")
-        self.reject(infinite(2, u="repeat 0 -1"), "D29/I37")
+        self.reject(infinite(2, u="repeat 0 600", v="series 0 400 3"), ("D29/I37", "v source cannot mix legacy-finite with infinite axes"))
+        self.reject(infinite(2, u="repeat 0 0"), ("D29/I37", "u step=0 must be positive"))
+        self.reject(infinite(2, u="repeat 0 -1"), ("D29/I37", "u step=-1 must be positive"))
 
     def test_geometry_hash_rejects_stale_initial_pick_and_keyed_edit(self):
         self.boundary()
@@ -300,9 +301,8 @@ class InfiniteGridContract(unittest.TestCase):
         self.fixture()
         keys = self.keymap()
         moved = [(200, 300), (1400, 300), (1400, 1100), (200, 1100)]
-        # Weak pin: an unkeyed `boundary` redeclaration is refused by the world-revalidation path, whose wording
-        # does not name D30/I37; this shows the refusal is the revalidation, not which rule.
-        self.reject("boundary 1 outline " + " ".join(f"{u},{v}" for u, v in moved), "重宣告後有物件失效")
+        self.reject("boundary 1 outline " + " ".join(f"{u},{v}" for u, v in moved),
+                    ("重宣告後有物件失效", "an identified vertex moved", "use boundary-keyed with the current geometry-hash", "D30", "boundary 1"))
         self.commit(self.keyed_command(1, [moved]))
         self.assertEqual([1400, -100], self.bindings()[0]["translation"])
         self.assertEqual(keys, self.keymap())
@@ -425,10 +425,10 @@ class InfiniteGridContract(unittest.TestCase):
             with self.subTest(rect=rect, limit=limit):
                 self.assertFalse(self.query(rect=rect, limit=limit)["ok"])
                 self.assertEqual(before, self.snapshot())
-        # INT64_MAX parses but its upper line index overflows; 2^63 and -2^63-1 are refused at declaration (weak pin).
+        # INT64_MAX parses but its upper line index overflows; the other two identify the invalid cell token.
         for cell, why in (((9223372036854775807, 0), ("D29/R32", "exceeds signed int64")),
-                          ((9223372036854775808, 0), ("D30/I37", "signed cell")),
-                          ((-9223372036854775809, 0), ("D30/I37", "signed cell"))):
+                          ((9223372036854775808, 0), ("D30/I37", "cell u=9223372036854775808 must be signed int64")),
+                          ((-9223372036854775809, 0), ("D30/I37", "cell u=-9223372036854775809 must be signed int64"))):
             self.reject(self.binding_command(identifier=1, cell=cell), why)
         edge = self.query(rect=(-100000000, -100000000, -99999000, -99999000))
         self.assertTrue(edge["ok"], edge)

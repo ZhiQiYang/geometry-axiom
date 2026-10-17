@@ -1,0 +1,913 @@
+{
+  "head": "dc4e929580228dcfbfe1e46a03192d5e6e1d71d3",
+  "url": "http://127.0.0.1:18842/",
+  "browserPlugin": "Browser plugin not available",
+  "browser": "/usr/bin/chromium",
+  "checks": [
+    {
+      "name": "B-column page identity",
+      "ok": true,
+      "detail": {
+        "title": "構形 Canvas · 工程規格與空間建模"
+      }
+    },
+    {
+      "name": "B-column meaningful page",
+      "ok": true
+    },
+    {
+      "name": "B-column no framework overlay",
+      "ok": true
+    },
+    {
+      "name": "B-column exact native contact",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "split",
+            "rect": [
+              40,
+              70,
+              60,
+              80
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "B-column exact clipped rectangle",
+      "ok": true,
+      "detail": {
+        "id": 1,
+        "type": "column",
+        "cls": "split",
+        "rect": [
+          40,
+          70,
+          60,
+          80
+        ]
+      }
+    },
+    {
+      "name": "B-column original pointer apply splits actual geometry",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,50 60,50 60,70 40,70 40,50 0,50\nboundary 2 outline 60,80 60,90 40,90 40,80\nboundary 3 outline 20,70 80,70 80,80 20,80\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 70 u +x v +y\ncolumn 1 at 20 70 size 60 10 z 0 100\ncanvas-pos boundary 1 60 60\ncanvas-pos column 1 440 60\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 74,
+        "definition_sha256": "9048f3c4488ecdc7ca6e9049c8c2e90397ac3c4c80f317ab28f0f182bcae2749"
+      }
+    },
+    {
+      "name": "B-column UI boundary follows actual native split",
+      "ok": true
+    },
+    {
+      "name": "B-beam page identity",
+      "ok": true,
+      "detail": {
+        "title": "構形 Canvas · 工程規格與空間建模"
+      }
+    },
+    {
+      "name": "B-beam meaningful page",
+      "ok": true
+    },
+    {
+      "name": "B-beam no framework overlay",
+      "ok": true
+    },
+    {
+      "name": "B-beam exact native contact",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "beam",
+            "cls": "strip",
+            "rect": [
+              20,
+              70,
+              80,
+              80
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "B-beam original pointer apply splits actual geometry",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,50 60,50 60,70 40,70 40,50 0,50\nboundary 2 outline 60,80 60,90 40,90 40,80\nboundary 3 outline 0,0 10,0 10,60 0,60\nboundary 4 outline 0,0 60,0 60,100 0,100\nboundary 5 outline 0,0 100,0 100,60 0,60\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 20 70 0 u +y v +x\nplacement 4 on boundary 4 origin 20 70 0 u +x v +z\nplacement 5 on boundary 5 origin 20 80 0 u +z v +x\nbeam 1 along x from 20 to 80 at 75 width 10 depth 100 top 100\ncanvas-pos boundary 1 60 60\ncanvas-pos beam 1 440 60\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 78,
+        "definition_sha256": "4e999ac7d593b26c9b97a48cc8c87c1cf5f667e5ddafd50ae9c5a466a763e7e4"
+      }
+    },
+    {
+      "name": "B-beam UI boundary follows actual native split",
+      "ok": true
+    },
+    {
+      "name": "B-mobile page identity",
+      "ok": true,
+      "detail": {
+        "title": "構形 Canvas · 工程規格與空間建模"
+      }
+    },
+    {
+      "name": "B-mobile meaningful page",
+      "ok": true
+    },
+    {
+      "name": "B-mobile no framework overlay",
+      "ok": true
+    },
+    {
+      "name": "B-mobile exact native contact",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "split",
+            "rect": [
+              40,
+              70,
+              60,
+              80
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "B-mobile exact clipped rectangle",
+      "ok": true,
+      "detail": {
+        "id": 1,
+        "type": "column",
+        "cls": "split",
+        "rect": [
+          40,
+          70,
+          60,
+          80
+        ]
+      }
+    },
+    {
+      "name": "B-mobile original pointer apply splits actual geometry",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,50 60,50 60,70 40,70 40,50 0,50\nboundary 2 outline 60,80 60,90 40,90 40,80\nboundary 3 outline 20,70 80,70 80,80 20,80\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 70 u +x v +y\ncolumn 1 at 20 70 size 60 10 z 0 100\ncanvas-pos boundary 1 60 60\ncanvas-pos column 1 60 360\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 82,
+        "definition_sha256": "9048f3c4488ecdc7ca6e9049c8c2e90397ac3c4c80f317ab28f0f182bcae2749"
+      }
+    },
+    {
+      "name": "B-mobile UI boundary follows actual native split",
+      "ok": true
+    },
+    {
+      "name": "A query explicit R7",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "error": "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      }
+    },
+    {
+      "name": "A selected invalid item rejected and rollback",
+      "ok": true,
+      "detail": {
+        "rejected": {
+          "ok": false,
+          "error": "line 140: R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+        }
+      }
+    },
+    {
+      "name": "A renders no fabricated ghost or selectable row",
+      "ok": true
+    },
+    {
+      "name": "A-mixed query explicit R7",
+      "ok": true,
+      "detail": {
+        "ok": false,
+        "error": "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      }
+    },
+    {
+      "name": "A-mixed selected invalid item rejected and rollback",
+      "ok": true,
+      "detail": {
+        "rejected": {
+          "ok": false,
+          "error": "line 148: R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+        }
+      }
+    },
+    {
+      "name": "A-mixed renders no fabricated ghost or selectable row",
+      "ok": true
+    },
+    {
+      "name": "A-mixed direct valid item accepted",
+      "ok": true,
+      "detail": {
+        "ok": true
+      }
+    },
+    {
+      "name": "no uncaught app exceptions",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "console health",
+      "ok": true,
+      "detail": []
+    }
+  ],
+  "cases": [
+    {
+      "name": "B-column",
+      "width": 1400,
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "split",
+            "rect": [
+              40,
+              70,
+              60,
+              80
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,50 60,50 60,70 40,70 40,50 0,50\nboundary 2 outline 60,80 60,90 40,90 40,80\nboundary 3 outline 20,70 80,70 80,80 20,80\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 70 u +x v +y\ncolumn 1 at 20 70 size 60 10 z 0 100\ncanvas-pos boundary 1 60 60\ncanvas-pos column 1 440 60\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 74,
+        "definition_sha256": "9048f3c4488ecdc7ca6e9049c8c2e90397ac3c4c80f317ab28f0f182bcae2749"
+      },
+      "boundary": {
+        "ok": true,
+        "id": 1,
+        "geometryFingerprint": "bbe7563895a19b7c609197da7126b005a68262c682997e250b41bba329716fe7",
+        "kind": "unspecified",
+        "keysPersisted": false,
+        "loops": [
+          {
+            "loop": -1,
+            "verts": [
+              [
+                0,
+                0
+              ],
+              [
+                100,
+                0
+              ],
+              [
+                100,
+                50
+              ],
+              [
+                60,
+                50
+              ],
+              [
+                60,
+                70
+              ],
+              [
+                40,
+                70
+              ],
+              [
+                40,
+                50
+              ],
+              [
+                0,
+                50
+              ]
+            ],
+            "fixity": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "vertices": [
+              {
+                "index": 0,
+                "key": null,
+                "uv": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "index": 1,
+                "key": null,
+                "uv": [
+                  100,
+                  0
+                ]
+              },
+              {
+                "index": 2,
+                "key": null,
+                "uv": [
+                  100,
+                  50
+                ]
+              },
+              {
+                "index": 3,
+                "key": null,
+                "uv": [
+                  60,
+                  50
+                ]
+              },
+              {
+                "index": 4,
+                "key": null,
+                "uv": [
+                  60,
+                  70
+                ]
+              },
+              {
+                "index": 5,
+                "key": null,
+                "uv": [
+                  40,
+                  70
+                ]
+              },
+              {
+                "index": 6,
+                "key": null,
+                "uv": [
+                  40,
+                  50
+                ]
+              },
+              {
+                "index": 7,
+                "key": null,
+                "uv": [
+                  0,
+                  50
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "postQuery": {
+        "ok": false,
+        "error": "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "ghostCount": 0
+    },
+    {
+      "name": "B-beam",
+      "width": 1400,
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "beam",
+            "cls": "strip",
+            "rect": [
+              20,
+              70,
+              80,
+              80
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,50 60,50 60,70 40,70 40,50 0,50\nboundary 2 outline 60,80 60,90 40,90 40,80\nboundary 3 outline 0,0 10,0 10,60 0,60\nboundary 4 outline 0,0 60,0 60,100 0,100\nboundary 5 outline 0,0 100,0 100,60 0,60\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 20 70 0 u +y v +x\nplacement 4 on boundary 4 origin 20 70 0 u +x v +z\nplacement 5 on boundary 5 origin 20 80 0 u +z v +x\nbeam 1 along x from 20 to 80 at 75 width 10 depth 100 top 100\ncanvas-pos boundary 1 60 60\ncanvas-pos beam 1 440 60\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 78,
+        "definition_sha256": "4e999ac7d593b26c9b97a48cc8c87c1cf5f667e5ddafd50ae9c5a466a763e7e4"
+      },
+      "boundary": {
+        "ok": true,
+        "id": 1,
+        "geometryFingerprint": "bbe7563895a19b7c609197da7126b005a68262c682997e250b41bba329716fe7",
+        "kind": "unspecified",
+        "keysPersisted": false,
+        "loops": [
+          {
+            "loop": -1,
+            "verts": [
+              [
+                0,
+                0
+              ],
+              [
+                100,
+                0
+              ],
+              [
+                100,
+                50
+              ],
+              [
+                60,
+                50
+              ],
+              [
+                60,
+                70
+              ],
+              [
+                40,
+                70
+              ],
+              [
+                40,
+                50
+              ],
+              [
+                0,
+                50
+              ]
+            ],
+            "fixity": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "vertices": [
+              {
+                "index": 0,
+                "key": null,
+                "uv": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "index": 1,
+                "key": null,
+                "uv": [
+                  100,
+                  0
+                ]
+              },
+              {
+                "index": 2,
+                "key": null,
+                "uv": [
+                  100,
+                  50
+                ]
+              },
+              {
+                "index": 3,
+                "key": null,
+                "uv": [
+                  60,
+                  50
+                ]
+              },
+              {
+                "index": 4,
+                "key": null,
+                "uv": [
+                  60,
+                  70
+                ]
+              },
+              {
+                "index": 5,
+                "key": null,
+                "uv": [
+                  40,
+                  70
+                ]
+              },
+              {
+                "index": 6,
+                "key": null,
+                "uv": [
+                  40,
+                  50
+                ]
+              },
+              {
+                "index": 7,
+                "key": null,
+                "uv": [
+                  0,
+                  50
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "postQuery": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "beam",
+            "cls": "strip",
+            "rect": [
+              20,
+              70,
+              80,
+              80
+            ]
+          }
+        ]
+      },
+      "ghostCount": 1,
+      "limitation": "Beam initial strip/bbox path can retain a ghost after applying; general exact ghost clipping is outside this fix."
+    },
+    {
+      "name": "B-mobile",
+      "width": 390,
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "split",
+            "rect": [
+              40,
+              70,
+              60,
+              80
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,50 60,50 60,70 40,70 40,50 0,50\nboundary 2 outline 60,80 60,90 40,90 40,80\nboundary 3 outline 20,70 80,70 80,80 20,80\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 70 u +x v +y\ncolumn 1 at 20 70 size 60 10 z 0 100\ncanvas-pos boundary 1 60 60\ncanvas-pos column 1 60 360\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 82,
+        "definition_sha256": "9048f3c4488ecdc7ca6e9049c8c2e90397ac3c4c80f317ab28f0f182bcae2749"
+      },
+      "boundary": {
+        "ok": true,
+        "id": 1,
+        "geometryFingerprint": "bbe7563895a19b7c609197da7126b005a68262c682997e250b41bba329716fe7",
+        "kind": "unspecified",
+        "keysPersisted": false,
+        "loops": [
+          {
+            "loop": -1,
+            "verts": [
+              [
+                0,
+                0
+              ],
+              [
+                100,
+                0
+              ],
+              [
+                100,
+                50
+              ],
+              [
+                60,
+                50
+              ],
+              [
+                60,
+                70
+              ],
+              [
+                40,
+                70
+              ],
+              [
+                40,
+                50
+              ],
+              [
+                0,
+                50
+              ]
+            ],
+            "fixity": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "vertices": [
+              {
+                "index": 0,
+                "key": null,
+                "uv": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "index": 1,
+                "key": null,
+                "uv": [
+                  100,
+                  0
+                ]
+              },
+              {
+                "index": 2,
+                "key": null,
+                "uv": [
+                  100,
+                  50
+                ]
+              },
+              {
+                "index": 3,
+                "key": null,
+                "uv": [
+                  60,
+                  50
+                ]
+              },
+              {
+                "index": 4,
+                "key": null,
+                "uv": [
+                  60,
+                  70
+                ]
+              },
+              {
+                "index": 5,
+                "key": null,
+                "uv": [
+                  40,
+                  70
+                ]
+              },
+              {
+                "index": 6,
+                "key": null,
+                "uv": [
+                  40,
+                  50
+                ]
+              },
+              {
+                "index": 7,
+                "key": null,
+                "uv": [
+                  0,
+                  50
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "postQuery": {
+        "ok": false,
+        "error": "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "ghostCount": 0
+    },
+    {
+      "name": "A",
+      "query": {
+        "ok": false,
+        "error": "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 30 50 size 40 30 z 0 100\ncanvas-pos boundary 1 60 60\ncanvas-pos column 1 440 60\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 85,
+        "definition_sha256": "b9679fd888eab29e0ee6e55dad0895f5c2168884abfac56e519fed569bc3d869"
+      },
+      "rejected": {
+        "ok": false,
+        "error": "line 140: R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 30 50 size 40 30 z 0 100\ncanvas-pos boundary 1 60 60\ncanvas-pos column 1 440 60\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 85,
+        "definition_sha256": "b9679fd888eab29e0ee6e55dad0895f5c2168884abfac56e519fed569bc3d869"
+      },
+      "valid": null,
+      "ui": "邊界\n外環\n8 頂點 · 8/8 邊 F\n參考線\n尚無參考線 · 開啟建立表單\n角材\n尚無角材 · 設定並放置\n網格\n尚無網格 · 開啟建立表單\n柱樑投影\n尚無投影 · 加入有柱樑的空間後顯示",
+      "limitation": "obstacles error suppresses the whole UI list; direct c2 success does not prove UI can select it."
+    },
+    {
+      "name": "A-mixed",
+      "query": {
+        "ok": false,
+        "error": "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 30 50 size 40 30 z 0 100\ncolumn 2 at 10 10 size 10 10 z 0 100\ncanvas-pos boundary 1 60 60\ncanvas-pos column 1 440 60\ncanvas-pos column 2 60 360\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 89,
+        "definition_sha256": "cbf4a5bcdec842ae3ee6cf12946573b8a3c972df2057d72692d381179b4d1291"
+      },
+      "rejected": {
+        "ok": false,
+        "error": "line 148: R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 30 50 size 40 30 z 0 100\ncolumn 2 at 10 10 size 10 10 z 0 100\ncanvas-pos boundary 1 60 60\ncanvas-pos column 1 440 60\ncanvas-pos column 2 60 360\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 89,
+        "definition_sha256": "cbf4a5bcdec842ae3ee6cf12946573b8a3c972df2057d72692d381179b4d1291"
+      },
+      "valid": {
+        "ok": true
+      },
+      "ui": "邊界\n外環\n8 頂點 · 8/8 邊 F\n參考線\n尚無參考線 · 開啟建立表單\n角材\n尚無角材 · 設定並放置\n網格\n尚無網格 · 開啟建立表單\n柱樑投影\n尚無投影 · 加入有柱樑的空間後顯示",
+      "limitation": "obstacles error suppresses the whole UI list; direct c2 success does not prove UI can select it."
+    }
+  ],
+  "consoleErrors": [],
+  "exceptions": [],
+  "scope": "Real rendered app; API-seeded independent native fixtures; pointer activates original shape tab and apply control. Not formal WSL or full seven jobs.",
+  "passed": 29,
+  "failed": 0
+}

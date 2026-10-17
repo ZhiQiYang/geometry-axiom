@@ -1,0 +1,3 @@
+# Frozen producer inputs, outputs and receipts are compared as original bytes.
+# Checkout line-ending conversion must not rewrite their provenance hashes.
+* -text

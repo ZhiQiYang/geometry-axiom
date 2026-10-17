@@ -1,0 +1,704 @@
+{
+  "receipt": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "tests/run_all.py",
+      "--build",
+      "--update-expected"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "returncode": 1,
+    "seconds": 608.6344569360008,
+    "stack_soft_limit_bytes": 16777216,
+    "log_sha256": "779ec2ac532b80b879b87b2e0d9a931b96d03d4f0299f42b7320883af39da5f8",
+    "sample_count": 602,
+    "receipt": "Direct Popen.poll returncode, not inferred from counts"
+  },
+  "totals": {
+    "total": 2994,
+    "passed": 2987,
+    "failed": 6,
+    "skipped": 1
+  },
+  "counted_suites": 77,
+  "all_suites": 83,
+  "failed_rows": [
+    {
+      "suite": "py:test_axiom_reader",
+      "total": 41,
+      "passed": 35,
+      "failed": 6,
+      "skipped": 0,
+      "display_seconds": 112.7
+    }
+  ],
+  "skipped_rows": [
+    {
+      "suite": "py:test_gdi_contract",
+      "total": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 1,
+      "display_seconds": 0.2
+    }
+  ],
+  "node": {
+    "suite": "node:tests-js",
+    "total": 651,
+    "passed": 651,
+    "failed": 0,
+    "skipped": 0,
+    "display_seconds": 75.0
+  },
+  "reader_failures": [
+    {
+      "test": "test_axiom_reader.CanonicalReader.test_color_contract_allows_unrelated_properties_and_untracked_selectors",
+      "kind": "failure",
+      "message": "AssertionError: '<!do[73504 chars]ace=\"ok\" data-ex=\"1\" data-wit=\"0\" data-hub=\"0\"[3910032 chars]tml>' != '<!do[73504 chars]ace=\"partial\" data-ex=\"1\" data-wit=\"0\" data-hu[3908622 chars]tml>'"
+    },
+    {
+      "test": "test_axiom_reader.CanonicalReader.test_current_layout_change_does_not_relock_historical_migration_tests",
+      "kind": "failure",
+      "message": "AssertionError: '<!do[74238 chars]ace=\"partial\" data-ex=\"1\" data-wit=\"0\" data-hu[3908298 chars]tml>' != '<!do[74238 chars]ace=\"ok\" data-ex=\"1\" data-wit=\"0\" data-hub=\"0\"[3909708 chars]tml>'"
+    },
+    {
+      "test": "test_axiom_reader.CanonicalReader.test_legacy_image_handler_retires_without_changing_live_svg_handler",
+      "kind": "failure",
+      "message": "AssertionError: '<!do[73504 chars]ace=\"ok\" data-ex=\"1\" data-wit=\"0\" data-hub=\"0\"[3909708 chars]tml>' != '<!do[73504 chars]ace=\"partial\" data-ex=\"1\" data-wit=\"0\" data-hu[3908298 chars]tml>'"
+    },
+    {
+      "test": "test_axiom_reader.CanonicalReader.test_rebuild_is_byte_idempotent_and_keeps_reviews",
+      "kind": "failure",
+      "message": "AssertionError: '<!do[73504 chars]ace=\"partial\" data-ex=\"1\" data-wit=\"0\" data-hu[3908298 chars]tml>' != '<!do[73504 chars]ace=\"ok\" data-ex=\"1\" data-wit=\"0\" data-hub=\"0\"[3909708 chars]tml>'"
+    },
+    {
+      "test": "test_axiom_reader.CanonicalReader.test_retired_color_migrations_allow_format_and_unrelated_layout_changes",
+      "kind": "failure",
+      "message": "AssertionError: '<!do[74238 chars]ace=\"partial\" data-ex=\"1\" data-wit=\"0\" data-hu[3908298 chars]tml>' != '<!do[74238 chars]ace=\"ok\" data-ex=\"1\" data-wit=\"0\" data-hub=\"0\"[3909708 chars]tml>'"
+    },
+    {
+      "test": "test_axiom_reader.CanonicalReader.test_traceability_lights_and_hub_badges_exist",
+      "kind": "failure",
+      "message": "AssertionError: 'data-clause=\"R4\" data-trace=\"ok\"' not found in '<!doctype html>\\n<html lang=\"zh-Hant\" data-theme=\"dark\" style=\"--text: 18px; --workspace-top: 77px;\"><head><!-- AXIOM REVIEW: authoritative annotation data is JSON in #axiom-review-data; human-readable comments are beside each [data-bl"
+    }
+  ],
+  "rows": [
+    {
+      "suite": "c:integrity",
+      "total": 432,
+      "passed": 432,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 15.8
+    },
+    {
+      "suite": "core:run_tests",
+      "total": 157,
+      "passed": 157,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 8.7
+    },
+    {
+      "suite": "py:test_assembly_candidate_impact",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.9
+    },
+    {
+      "suite": "py:test_assembly_capacity",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 2.1
+    },
+    {
+      "suite": "py:test_assembly_generation",
+      "total": 22,
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 4.6
+    },
+    {
+      "suite": "py:test_assembly_native_diagnostics",
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.9
+    },
+    {
+      "suite": "py:test_assembly_parameter_refs",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.9
+    },
+    {
+      "suite": "py:test_assembly_rules",
+      "total": 36,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 3.6
+    },
+    {
+      "suite": "py:test_axiom_reader",
+      "total": 41,
+      "passed": 35,
+      "failed": 6,
+      "skipped": 0,
+      "display_seconds": 112.7
+    },
+    {
+      "suite": "py:test_binaries",
+      "total": 32,
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.4
+    },
+    {
+      "suite": "py:test_bridge_integrity",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 23.9
+    },
+    {
+      "suite": "py:test_cli_args",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.8
+    },
+    {
+      "suite": "py:test_datum_contract",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 5.1
+    },
+    {
+      "suite": "py:test_engineering_core",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 2.8
+    },
+    {
+      "suite": "py:test_engineering_json",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.5
+    },
+    {
+      "suite": "py:test_engineering_model_compatibility",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 4.5
+    },
+    {
+      "suite": "py:test_engineering_model_sources",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 1.5
+    },
+    {
+      "suite": "py:test_engineering_transport",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "py:test_evidence_link_native",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.9
+    },
+    {
+      "suite": "py:test_feedback_store",
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.5
+    },
+    {
+      "suite": "py:test_gdi_contract",
+      "total": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 1,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "py:test_grid_subdivision_oracle",
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 7.4
+    },
+    {
+      "suite": "py:test_grid_system_contract",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 2.2
+    },
+    {
+      "suite": "py:test_grid_trial_contract",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.6
+    },
+    {
+      "suite": "py:test_guide_panels",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.3
+    },
+    {
+      "suite": "py:test_infinite_grid_contract",
+      "total": 25,
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 4.1
+    },
+    {
+      "suite": "py:test_local_launcher",
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 2.0
+    },
+    {
+      "suite": "py:test_model_update",
+      "total": 26,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 97.0
+    },
+    {
+      "suite": "py:test_modeling_degenerate",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 1.0
+    },
+    {
+      "suite": "py:test_modeling_runtime",
+      "total": 46,
+      "passed": 46,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 3.1
+    },
+    {
+      "suite": "py:test_modeling_transport",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 2.2
+    },
+    {
+      "suite": "py:test_mutation_freshness",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.6
+    },
+    {
+      "suite": "py:test_parameters_core",
+      "total": 22,
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 3.2
+    },
+    {
+      "suite": "py:test_reference_contract",
+      "total": 51,
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 11.6
+    },
+    {
+      "suite": "py:test_release_gate",
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.6
+    },
+    {
+      "suite": "py:test_rule_case_catalog",
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 1.2
+    },
+    {
+      "suite": "py:test_rule_case_definition",
+      "total": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "py:test_rule_case_executor",
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 2.8
+    },
+    {
+      "suite": "py:test_rule_case_host",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.7
+    },
+    {
+      "suite": "py:test_rule_case_request",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.7
+    },
+    {
+      "suite": "py:test_rule_case_workbench_http",
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 21.8
+    },
+    {
+      "suite": "py:test_runtime_version",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.6
+    },
+    {
+      "suite": "py:test_scenario_verify",
+      "total": 37,
+      "passed": 37,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 32.0
+    },
+    {
+      "suite": "py:test_scene_import",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 2.4
+    },
+    {
+      "suite": "py:test_section_profile_modeling",
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 3.3
+    },
+    {
+      "suite": "py:test_section_profile_native",
+      "total": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 7.5
+    },
+    {
+      "suite": "py:test_serve",
+      "total": 46,
+      "passed": 46,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 47.0
+    },
+    {
+      "suite": "py:test_source_inspector",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 2.7
+    },
+    {
+      "suite": "py:test_source_inspector_transport",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.3
+    },
+    {
+      "suite": "py:test_space_modeling",
+      "total": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 38.0
+    },
+    {
+      "suite": "py:test_subgrid_contract",
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 5.0
+    },
+    {
+      "suite": "py:test_timber_support_projection",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 16.1
+    },
+    {
+      "suite": "py:test_unittest_runner",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 4.1
+    },
+    {
+      "suite": "py:test_witness_diagnostics",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.3
+    },
+    {
+      "suite": "py:test_witness_marks",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.3
+    },
+    {
+      "suite": "node:tests-js",
+      "total": 651,
+      "passed": 651,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 75.0
+    },
+    {
+      "suite": "node:polydraft",
+      "total": 75,
+      "passed": 75,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 9.3
+    },
+    {
+      "suite": "node:canvas_direct",
+      "total": 408,
+      "passed": 408,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 3.4
+    },
+    {
+      "suite": "node:grid_lesson_control_ownership",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "node:parameter_confirmation_settlement",
+      "total": 16,
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "node:face_reference_settlement",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "node:workspace_shell_history",
+      "total": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "node:feedback_events",
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "node:space_test_floor",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.1
+    },
+    {
+      "suite": "node:history_operation",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.1
+    },
+    {
+      "suite": "node:context_operations",
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.1
+    },
+    {
+      "suite": "node:cdp_evaluation",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.1
+    },
+    {
+      "suite": "node:cdp_card_position",
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.3
+    },
+    {
+      "suite": "node:background_grid_viewport",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.1
+    },
+    {
+      "suite": "node:anchor_band_clip",
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "node:hover_pick_scheduler",
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "node:face_paint_scheduler",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "node:room_outline_worker",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "node:room_outline_closeout",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.3
+    },
+    {
+      "suite": "node:evidence_links",
+      "total": 29,
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    },
+    {
+      "suite": "node:evidence_project_store",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.3
+    },
+    {
+      "suite": "node:grid_definition_diagram",
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "display_seconds": 0.2
+    }
+  ],
+  "scope": "Original cloud-native aggregate; not final-SHA seven jobs/WSL/browser/GDI/isolation"
+}

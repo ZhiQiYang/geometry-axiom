@@ -1,0 +1,207 @@
+{
+  "url": "http://127.0.0.1:18844/",
+  "scope": {
+    "mode": "full-space-suite",
+    "filters": [],
+    "included": [
+      "space-height-library",
+      "projection-lifecycle",
+      "projection-placement",
+      "font-layout",
+      "space-flow"
+    ],
+    "omitted": [
+      "timber-material",
+      "timber-source-guards"
+    ],
+    "url": "http://127.0.0.1:18844/",
+    "feedbackDirectory": "/tmp/geometry-198-space-diagnosis/feedback"
+  },
+  "completed": false,
+  "groups": {
+    "setup": {
+      "expected": 2,
+      "passed": 2,
+      "failed": 0,
+      "completed": true
+    },
+    "space-height-library": {
+      "expected": 112,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    },
+    "projection-lifecycle": {
+      "expected": 18,
+      "passed": 18,
+      "failed": 0,
+      "completed": true
+    },
+    "projection-placement": {
+      "expected": 36,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    },
+    "font-layout": {
+      "expected": 19,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    },
+    "space-flow": {
+      "expected": 39,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    },
+    "browser-health": {
+      "expected": 2,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    }
+  },
+  "completenessProblems": [
+    "Space run did not finish",
+    "Group space-height-library did not complete",
+    "Group space-height-library: expected 112 passed assertions, got 0 passed / 0 failed",
+    "Group projection-placement did not complete",
+    "Group projection-placement: expected 36 passed assertions, got 0 passed / 0 failed",
+    "Group font-layout did not complete",
+    "Group font-layout: expected 19 passed assertions, got 0 passed / 0 failed",
+    "Group space-flow did not complete",
+    "Group space-flow: expected 39 passed assertions, got 0 passed / 0 failed",
+    "Group browser-health did not complete",
+    "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+  ],
+  "passed": 20,
+  "failed": 2,
+  "exceptions": [],
+  "consoleErrors": [],
+  "coverage": "Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.",
+  "results": [
+    {
+      "name": "server serves the intended space-model release",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "current release explicitly supports timber preview and engineering sources",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "a newly drawn face has no inferred projection definition",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "own-plan modeling visibly requires a definition before preview or create",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "projection definition works without importing a PDF or image",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "projection dialog defaults to general purpose without a saved projection or interior role",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "projection dialog shows source z and a visible outline container",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "cancel leaves the face definition and source geometry unchanged",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "explicit bottom-view interior projection records all four semantics",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "projection apply preserves previously entered wall bottom and height",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "source summary explains bottom view, interior and outward walls",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "bottom-view control selects bottom and the camera looks from negative world Z",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "changing projection during an in-flight preview rejects its late result and preserves fields",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "undo removes the projection definition without changing source geometry",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "redo restores the exact explicit projection definition",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "general purpose explicitly clears the projection and disables own-plan preview",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "deleting and recreating the same face and placement ids does not inherit metadata",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "a vertical face cannot be saved as a horizontal boundary plan",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "existing-face assembly bypasses only the plan-definition gate",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "an undefined vertical face can still be an explicit open-shell member",
+      "ok": true,
+      "group": "projection-lifecycle"
+    },
+    {
+      "name": "complete browser flow",
+      "ok": false,
+      "detail": "Error: DIAGNOSTIC STOP: lifecycle completed; remaining full-space groups intentionally unrun\n    at run (/workspace/geometry-axiom/geometry-web/space_model_test.js:1267:9)"
+    },
+    {
+      "name": "space group completeness",
+      "ok": false,
+      "detail": [
+        "Space run did not finish",
+        "Group space-height-library did not complete",
+        "Group space-height-library: expected 112 passed assertions, got 0 passed / 0 failed",
+        "Group projection-placement did not complete",
+        "Group projection-placement: expected 36 passed assertions, got 0 passed / 0 failed",
+        "Group font-layout did not complete",
+        "Group font-layout: expected 19 passed assertions, got 0 passed / 0 failed",
+        "Group space-flow did not complete",
+        "Group space-flow: expected 39 passed assertions, got 0 passed / 0 failed",
+        "Group browser-health did not complete",
+        "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+      ]
+    }
+  ]
+}
