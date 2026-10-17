@@ -15,6 +15,8 @@ Labels it reads from PROPOSAL.md.  For the first three kinds the quote is the bl
                                                             line N of <path> at <git rev> must contain the text
     外部核對無(43305271 geometry-templates/rectangular-grid 不含「stagger|alternat」):
                                                             `git grep -i -E <regex> <rev> -- <path>` must find nothing
+    全檔出現(公理層.md 「cardId」 第 691、2251 行):         the term occurs on exactly these lines of the file (a grep result)
+(a 改後 block whose first line starts with "（刪除" declares that the 改前 span is deleted)
 (a label line may carry a leading "- " so it can sit in a bullet list)
 
 Per 改前 / 現況 quote it asserts
@@ -59,16 +61,19 @@ SSOT_FILES = {
 
 # clause header detection (nearest one above the cited line is "the clause the line belongs to")
 HEADER_RE = {
-    "公理層.md": re.compile(r"^(?:\*\*)?([DIR]\d+[a-z]?)(?=[ 　（(*:：])"),
+    # D clauses open with bold "**D29 ...**"; I/R clauses open plain.  A plain body line that merely starts with
+    # "D64 引用來源卡片..." (inside I38) must not be taken for a header.
+    "公理層.md": re.compile(r"^(?:\*\*(D\d+[a-z]?)|([IR]\d+[a-z]?))(?=[ 　（(*:：])"),
     "白話版": re.compile(r"^## ([DIR]\d+[a-z]?)\s*$"),
 }
 SCOPE_RE = re.compile(r"^[^\n：]{0,24}契約（([KWMH])）：")
 
-LABEL_START_RE = re.compile(r"^(?:- )?(?:改前|現況|新增於|外部核對)")
+LABEL_START_RE = re.compile(r"^(?:- )?(?:改前|現況|新增於|外部核對|全檔出現)")
 LABEL_RE = re.compile(
     r"^(改前|現況|新增於)\((公理層\.md|白話版) ([DIR]\d+[a-z]?) 第 (\d+)(?:[–-](\d+))? 行(?:「([^」]*)」之後)?\):$"
 )
 EXT_LINE_RE = re.compile(r"^外部核對\(([0-9a-f]{7,40}) (\S+) 第 (\d+) 行「([^」]+)」\):$")
+GREP_RE = re.compile(r"^全檔出現\((公理層\.md|白話版) 「([^」]+)」 第 ([\d、]+) 行\):$")
 EXT_NONE_RE = re.compile(r"^外部核對無\(([0-9a-f]{7,40}) (\S+) 不含「([^」]+)」\):$")
 LINE_CITATION_RE = re.compile(r"第\s*\d+\s*(?:[–-]\s*\d+\s*)?行")
 QUOTE_KINDS = ("改前", "現況")
@@ -141,6 +146,13 @@ def parse_proposal(text: str):
             items.append(dict(kind="外部行", rev=m.group(1), path=m.group(2), a=int(m.group(3)), text=m.group(4),
                               label_line=idx + 1, label=line))
             continue
+        m = GREP_RE.match(line)
+        if m:
+            label_line_idx.add(idx)
+            items.append(dict(kind="全檔出現", file=m.group(1), term=m.group(2),
+                              lines=sorted({int(x) for x in m.group(3).split("、") if x}),
+                              label_line=idx + 1, label=line))
+            continue
         m = EXT_NONE_RE.match(line)
         if m:
             label_line_idx.add(idx)
@@ -180,7 +192,7 @@ def clause_above(src_lines: list[str], file_key: str, line_no: int) -> tuple[str
     for i in range(line_no - 1, -1, -1):
         m = rx.match(src_lines[i])
         if m:
-            return m.group(1), i + 1
+            return next(g for g in m.groups() if g), i + 1
     return None, None
 
 
@@ -197,7 +209,18 @@ def git(root: Path, *args: str) -> subprocess.CompletedProcess:
     return subprocess.run(["git", "-C", str(root), *args], capture_output=True)
 
 
+_EXT_CACHE: dict[tuple, tuple[bool, str]] = {}
+
+
 def check_external(it: dict, root: Path) -> tuple[bool, str]:
+    # memoised: --selftest re-checks the same unchanged labels once per injected defect, and each is a git process
+    key = (str(root), it["rev"], it["path"], it["kind"], it.get("a"), it.get("text"), it.get("rx"))
+    if key not in _EXT_CACHE:
+        _EXT_CACHE[key] = _check_external(it, root)
+    return _EXT_CACHE[key]
+
+
+def _check_external(it: dict, root: Path) -> tuple[bool, str]:
     rev, path = it["rev"], it["path"]
     if git(root, "cat-file", "-e", rev + "^{commit}").returncode != 0:
         return False, f"cannot resolve {rev} in {root} (run `git fetch origin` first)"
@@ -231,6 +254,15 @@ def check(proposal_text: str, ssot: dict[str, str], root: Path = DEFAULT_ROOT, s
         results.append(("FAIL", "structure", "no label found in PROPOSAL.md"))
     src_lines_by_file = {k: v.split("\n") for k, v in ssot.items()}
     for it in items:
+        if it["kind"] == "全檔出現":
+            sl = src_lines_by_file[it["file"]]
+            found = [i + 1 for i, l in enumerate(sl) if it["term"] in l]
+            name = f"全檔出現 {it['file']} 「{it['term']}」"
+            if found == it["lines"]:
+                results.append(("PASS", name, f"occurs on exactly lines {found}"))
+            else:
+                results.append(("FAIL", name, f"occurs on lines {found}, label says {it['lines']}"))
+            continue
         if it["kind"] in ("外部行", "外部無"):
             name = f"{it['kind'].replace('外部', '外部核對')} {it['rev']} {it['path']}" + (f":{it['a']}" if it["kind"] == "外部行" else "")
             if skip_external:
@@ -268,15 +300,17 @@ def check(proposal_text: str, ssot: dict[str, str], root: Path = DEFAULT_ROOT, s
                     others = [h for h in hits if h != cited]
                     detail = f"mode={mode}" + (f" (evidence quote; also occurs at {others})" if others else "")
             if it["kind"] == "改前" and it["after"] is not None and q and it["after"]:
-                if q[0][:8] != it["after"][0][:8]:
-                    problems_here.append(f"改後 opens {it['after'][0][:8]!r} but 改前 opens {q[0][:8]!r}: not the same replacement span")
+                if it["after"][0].startswith("（刪除"):
+                    detail += " (改後 deletes the span)"
+                elif q[0][:6] != it["after"][0][:6]:
+                    problems_here.append(f"改後 opens {it['after'][0][:6]!r} but 改前 opens {q[0][:6]!r}: not the same replacement span")
         else:  # 新增於 anchor
             prefix = (it["prefix"] or "").rstrip("…")
             if not prefix:
                 problems_here.append("empty anchor text")
             elif it["a"] != it["b"]:
                 problems_here.append("anchor must be a single line")
-            elif not (1 <= it["a"] <= len(sl)) or not sl[it["a"] - 1].startswith(prefix):
+            elif not (1 <= it["a"] <= len(sl)) or not sl[it["a"] - 1].lstrip(" \t").startswith(prefix):
                 got = sl[it["a"] - 1][:30] if 1 <= it["a"] <= len(sl) else "<past EOF>"
                 problems_here.append(f"line {it['a']} does not begin with {prefix!r} (begins {got!r})")
             else:
@@ -340,6 +374,13 @@ def selftest(proposal_text: str, ssot: dict[str, str], root: Path) -> bool:
         ("改後 no longer opens like 改前 (prefix drift)", mutate("改後:\n> 相位差守門：", "改後:\n> I24 相位差守門："), "改前 公理層.md I24"),
         ("外部核對 cited text wrong (kernel grid_store)", mutate("「static bool geo_grid_axis_stagger_valid」", "「static bool geo_grid_axis_stagger_validx」"), "外部核對行 43305271"),
         ("外部核對無 regex made to match something real", mutate("不含「stagger|", "不含「geo_interval_subdivide|stagger|"), "外部核對無 43305271"),
+        ("全檔出現 grep result goes stale (cardId line list)", mutate("「cardId」 第 691、2251 行", "「cardId」 第 691、2252 行"), "全檔出現 公理層.md 「cardId」"),
+        ("one char of a D31 K-block quote changed", mutate("每欄以 (cardId,fieldId) 為身分", "每欄以 (cardId,fieldId) 為身份"), "改前 公理層.md D31"),
+        ("clause label wrong where a body line starts with 'D64 ' (I38 cited as D64)", mutate("現況(公理層.md I38 第 1537 行)", "現況(公理層.md D64 第 1537 行)"), "現況 公理層.md D64 L1537"),
+        ("deletion 改後 loses its （刪除 marker", mutate("（刪除此句，內容移到 R53）", "刪除此句，內容移到 R53"), "改前 公理層.md I38 L1540"),
+        ("insertion anchor on an indented line wrong (R53)", mutate("「配號只依目標候選 World、來源閉包", "「配號只依目標候選 Worldx、來源閉包"), "新增於 公理層.md R53"),
+        ("one char of a 白話版 K-summary quote changed (I24)", mutate("核心先精確算相位差，再驗非零", "核心先精確算相位差，再驗非賃"), "改前 白話版 I24"),
+        ("quoted decision-queue text wrong (Q-A option)", mutate("第 458 行「只准一軸(建議)」", "第 458 行「只准兩軸(建議)」"), "外部核對行 d18719ac"),
     ]
     all_caught = True
     for desc, mutated, expect in cases:
