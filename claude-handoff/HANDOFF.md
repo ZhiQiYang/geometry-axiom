@@ -155,3 +155,15 @@
 | `tools/cloud_ci.sh`、`tools/cloud_ledger.sh` | 雲端預跑七項的單一 job、整份重產帳本(見 §0.5) |
 | `decisions/provisional-decisions-log.md` | Claude 代決紀錄(P-xxx);最終報告「照建議處理的部分」從這裡取 |
 | `decisions/user-decisions-batch.md` | 待使用者決定的題目(Q-A…Q-E) |
+
+## 7. 14:30 更新(本機子代理全部因每週額度停在 20:00 前)
+
+- 下角材班 f1fd146f:native/assembly/documents/grid/timber/space 綠(space 重跑 474 s 綠)。canvas 重跑:completed=true、2211 斷言過、0 失敗、golden matched,但 `uncaughtBrowserExceptions: 1` → exit 1。第一次跑是 P83 CSV 下載逾時。還沒查出是哪個例外(log 裡各段「no uncaught browser exceptions」都打勾);下一步：拿同一 job 在 main 上跑基線比對，或從 CDP 收據找例外原文。本班沒改前端。
+- GEO-261 #279 `96e06218` 完整 22 模組 276 項：255 過、21 列失敗(約 12 個測試，見 `D:/geometry-axiom-work/focused-geo261-276-96e06218/failures.txt`;雲端看不到就自己重跑)。修復子代理剛開工就被額度打斷，未推任何 commit。
+- #288 整合 merge 子代理被打斷，工作區 `D:/geometry-axiom-work/geo261-integration` 可能有未提交的半成品;遠端仍是 43305271。
+- #260:opus 審查 f796c5c9 有 2 阻擋 11 須改;裁定見 `decisions/provisional-decisions-log.md` 的 P-162(只准一軸改放 W、撤 K 補句;舊雙軸檔改值交使用者;C 補括號;D2/D3 移出)。改稿子代理被打斷,遠端仍是 f796c5c9。
+- #293 `baa81f61` 審查意見已全處理，可上列車。
+- #294 `157166f1` 已依審查改成「連三次存取違規才 crashed」;增量複審被打斷。
+- #295 `ba94f0a7`:審查有阻擋(閱讀器沒同步,`test_axiom_reader` 會紅)與須改(M86 被 M05/M06 涵蓋);改修子代理被打斷。
+- #296 已合併(main 02baea2c):把 S6 🔒 紀錄補進 main。
+- Grok 在 `D:/geometry-axiom-work/grok-core-probe` 做看板任務 26(core-probe),分支 `feat/framing-core-probe-20261017`。
