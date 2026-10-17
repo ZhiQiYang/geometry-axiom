@@ -464,6 +464,7 @@ window.ParameterUI = (() => {
         if (prior !== now) rows.push({label: `組構配置 ${b.value.id} 槽位 ${slot.slotId}.${axis}`, from: prior ?? '未設定', to: `${now ?? '未設定'} mm`});
       }
     }
+    for (const reference of p.redeclaredReferences || []) rows.push({label: reference.message, from: '舊引用已結束', to: '已明確改綁'});
     return rows;
   }
   const IMPACT_TITLE = '<h3 class="param-label">套用後的影響</h3>';

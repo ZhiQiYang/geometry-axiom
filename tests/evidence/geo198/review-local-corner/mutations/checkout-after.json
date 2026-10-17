@@ -1,0 +1,947 @@
+{
+  "head": "adfb5d87eb174cc19ffd15be7bbfdbf1ad607aa6",
+  "tree": "ba11f0271bcf1499ab2a26732440fb6d00ac2aef",
+  "checkout": "/workspace/geometry-axiom",
+  "tracked_diff": [
+    "tests/mutants_results.json"
+  ],
+  "status": [
+    " M tests/mutants_results.json"
+  ],
+  "sources": {
+    "current_geometry.c": {
+      "raw_sha256": "a21854a90dc127af4768f183c309db9709f13aad410fa736d0f3e7eed4aa2fcf",
+      "git_blob_sha256": "a21854a90dc127af4768f183c309db9709f13aad410fa736d0f3e7eed4aa2fcf",
+      "lf_normalized_sha256": "c249929f54953bf5df4983e49a304545299e66285a31f5f8feee88316ee47b27",
+      "git_lf_normalized_sha256": "c249929f54953bf5df4983e49a304545299e66285a31f5f8feee88316ee47b27",
+      "normalized_equal": true,
+      "crlf": 13192,
+      "bare_lf": 0
+    },
+    "geometry-core/grid_systems.inc": {
+      "raw_sha256": "89f68dedb27c06c6e6e733bc75875367cf7392e3876f9121e51a0201864d8a64",
+      "git_blob_sha256": "89f68dedb27c06c6e6e733bc75875367cf7392e3876f9121e51a0201864d8a64",
+      "lf_normalized_sha256": "89f68dedb27c06c6e6e733bc75875367cf7392e3876f9121e51a0201864d8a64",
+      "git_lf_normalized_sha256": "89f68dedb27c06c6e6e733bc75875367cf7392e3876f9121e51a0201864d8a64",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 381
+    },
+    "geometry-core/grid_bindings.inc": {
+      "raw_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "git_blob_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "lf_normalized_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "git_lf_normalized_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 329
+    },
+    "geometry-core/subgrid_commands.inc": {
+      "raw_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "git_blob_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "lf_normalized_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "git_lf_normalized_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 96
+    },
+    "tests/test_grid_system_contract.py": {
+      "raw_sha256": "c1a64192dddfe9048c62569352bd3a42898a4c3748a21763a42afde4d0287942",
+      "git_blob_sha256": "c1a64192dddfe9048c62569352bd3a42898a4c3748a21763a42afde4d0287942",
+      "lf_normalized_sha256": "c1a64192dddfe9048c62569352bd3a42898a4c3748a21763a42afde4d0287942",
+      "git_lf_normalized_sha256": "c1a64192dddfe9048c62569352bd3a42898a4c3748a21763a42afde4d0287942",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 402
+    },
+    "tests/test_infinite_grid_contract.py": {
+      "raw_sha256": "5fc18cb92e16a22b6de8d68f786fd1d9dbce93570fcbda48158a3fb35f3b29ce",
+      "git_blob_sha256": "5fc18cb92e16a22b6de8d68f786fd1d9dbce93570fcbda48158a3fb35f3b29ce",
+      "lf_normalized_sha256": "5fc18cb92e16a22b6de8d68f786fd1d9dbce93570fcbda48158a3fb35f3b29ce",
+      "git_lf_normalized_sha256": "5fc18cb92e16a22b6de8d68f786fd1d9dbce93570fcbda48158a3fb35f3b29ce",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 668
+    },
+    "tests/test_subgrid_contract.py": {
+      "raw_sha256": "671062f926b8f797161dd66d0b6ae471cd7e8008e87a56ad7843ca61a33d8968",
+      "git_blob_sha256": "671062f926b8f797161dd66d0b6ae471cd7e8008e87a56ad7843ca61a33d8968",
+      "lf_normalized_sha256": "671062f926b8f797161dd66d0b6ae471cd7e8008e87a56ad7843ca61a33d8968",
+      "git_lf_normalized_sha256": "671062f926b8f797161dd66d0b6ae471cd7e8008e87a56ad7843ca61a33d8968",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 671
+    },
+    "tests/run_all.py": {
+      "raw_sha256": "7d9d3347e01bc666bb6417ea46e03a5cce14a1ab1f52937e7afe185b565d7ff2",
+      "git_blob_sha256": "7d9d3347e01bc666bb6417ea46e03a5cce14a1ab1f52937e7afe185b565d7ff2",
+      "lf_normalized_sha256": "7d9d3347e01bc666bb6417ea46e03a5cce14a1ab1f52937e7afe185b565d7ff2",
+      "git_lf_normalized_sha256": "7d9d3347e01bc666bb6417ea46e03a5cce14a1ab1f52937e7afe185b565d7ff2",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 1008
+    },
+    "公理層.md": {
+      "raw_sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+      "git_blob_sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+      "lf_normalized_sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+      "git_lf_normalized_sha256": "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 1182
+    },
+    "geometry-guide/公理層-閱讀器.html": {
+      "raw_sha256": "b0c45777c7ee868d312714aa65cbc284a4b6f4fdd7228ef6c6d244602bd56ff1",
+      "git_blob_sha256": "b0c45777c7ee868d312714aa65cbc284a4b6f4fdd7228ef6c6d244602bd56ff1",
+      "lf_normalized_sha256": "b0c45777c7ee868d312714aa65cbc284a4b6f4fdd7228ef6c6d244602bd56ff1",
+      "git_lf_normalized_sha256": "b0c45777c7ee868d312714aa65cbc284a4b6f4fdd7228ef6c6d244602bd56ff1",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 4503
+    },
+    "tests/geo246_weak_pin_probe.py": {
+      "raw_sha256": "e5057af19291bfd0658df7e62e69881abd0aeb277b36fc331bfd25065a7ca884",
+      "git_blob_sha256": "e5057af19291bfd0658df7e62e69881abd0aeb277b36fc331bfd25065a7ca884",
+      "lf_normalized_sha256": "e5057af19291bfd0658df7e62e69881abd0aeb277b36fc331bfd25065a7ca884",
+      "git_lf_normalized_sha256": "e5057af19291bfd0658df7e62e69881abd0aeb277b36fc331bfd25065a7ca884",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 95
+    },
+    "tests/geo246/identity.py": {
+      "raw_sha256": "c3af5e7ffd074442bb55bd83347224bac2de0bf2fd34a394c5eed249d41b0ea3",
+      "git_blob_sha256": "c3af5e7ffd074442bb55bd83347224bac2de0bf2fd34a394c5eed249d41b0ea3",
+      "lf_normalized_sha256": "c3af5e7ffd074442bb55bd83347224bac2de0bf2fd34a394c5eed249d41b0ea3",
+      "git_lf_normalized_sha256": "c3af5e7ffd074442bb55bd83347224bac2de0bf2fd34a394c5eed249d41b0ea3",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 60
+    },
+    "tests/geo246/message_mutation.py": {
+      "raw_sha256": "a881a0ad89f7816cd6205ba474f47fab9fd7dd16a28646000eeca1c7aaa04900",
+      "git_blob_sha256": "a881a0ad89f7816cd6205ba474f47fab9fd7dd16a28646000eeca1c7aaa04900",
+      "lf_normalized_sha256": "a881a0ad89f7816cd6205ba474f47fab9fd7dd16a28646000eeca1c7aaa04900",
+      "git_lf_normalized_sha256": "a881a0ad89f7816cd6205ba474f47fab9fd7dd16a28646000eeca1c7aaa04900",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 102
+    },
+    "tests/geo246/generic_messages.json": {
+      "raw_sha256": "b0f2aaeaad03c1b3ce321005a9fa735009bb17be83673415247f408a0353dfc0",
+      "git_blob_sha256": "b0f2aaeaad03c1b3ce321005a9fa735009bb17be83673415247f408a0353dfc0",
+      "lf_normalized_sha256": "b0f2aaeaad03c1b3ce321005a9fa735009bb17be83673415247f408a0353dfc0",
+      "git_lf_normalized_sha256": "b0f2aaeaad03c1b3ce321005a9fa735009bb17be83673415247f408a0353dfc0",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 26
+    },
+    "tests/geo246/isolated_wsl.sh": {
+      "raw_sha256": "4e786e5f8b47f50341035d0478893d890740b3ec4cbae6848433babef527a541",
+      "git_blob_sha256": "4e786e5f8b47f50341035d0478893d890740b3ec4cbae6848433babef527a541",
+      "lf_normalized_sha256": "4e786e5f8b47f50341035d0478893d890740b3ec4cbae6848433babef527a541",
+      "git_lf_normalized_sha256": "4e786e5f8b47f50341035d0478893d890740b3ec4cbae6848433babef527a541",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 18
+    },
+    "tests/geo246/refresh_mutants.py": {
+      "raw_sha256": "cc79c32f822b9c659c4d147445438d08805bfe9105a722debaea1937bdc306f1",
+      "git_blob_sha256": "cc79c32f822b9c659c4d147445438d08805bfe9105a722debaea1937bdc306f1",
+      "lf_normalized_sha256": "cc79c32f822b9c659c4d147445438d08805bfe9105a722debaea1937bdc306f1",
+      "git_lf_normalized_sha256": "cc79c32f822b9c659c4d147445438d08805bfe9105a722debaea1937bdc306f1",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 49
+    },
+    "tests/geo246/ci_job.py": {
+      "raw_sha256": "1b8a42969fb20d838ee3659e94fd33b083b022c4ba12afc846d45ab588fce7f8",
+      "git_blob_sha256": "1b8a42969fb20d838ee3659e94fd33b083b022c4ba12afc846d45ab588fce7f8",
+      "lf_normalized_sha256": "1b8a42969fb20d838ee3659e94fd33b083b022c4ba12afc846d45ab588fce7f8",
+      "git_lf_normalized_sha256": "1b8a42969fb20d838ee3659e94fd33b083b022c4ba12afc846d45ab588fce7f8",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 178
+    },
+    "tests/geo246/parent_reader.py": {
+      "raw_sha256": "f5f60966639bef19e4bff78537b1e16468c50e34443286c7f245a9c3765c2519",
+      "git_blob_sha256": "f5f60966639bef19e4bff78537b1e16468c50e34443286c7f245a9c3765c2519",
+      "lf_normalized_sha256": "f5f60966639bef19e4bff78537b1e16468c50e34443286c7f245a9c3765c2519",
+      "git_lf_normalized_sha256": "f5f60966639bef19e4bff78537b1e16468c50e34443286c7f245a9c3765c2519",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 43
+    },
+    ".github/workflows/integration-tests.yml": {
+      "raw_sha256": "faddb699f3be004bbfc5a8fe5948cf58a621d0826db4cd3bf0a77dc097be9fd0",
+      "git_blob_sha256": "faddb699f3be004bbfc5a8fe5948cf58a621d0826db4cd3bf0a77dc097be9fd0",
+      "lf_normalized_sha256": "faddb699f3be004bbfc5a8fe5948cf58a621d0826db4cd3bf0a77dc097be9fd0",
+      "git_lf_normalized_sha256": "faddb699f3be004bbfc5a8fe5948cf58a621d0826db4cd3bf0a77dc097be9fd0",
+      "normalized_equal": true,
+      "crlf": 0,
+      "bare_lf": 125
+    }
+  },
+  "binaries": {
+    "/tmp/geometry-tests/mutants/M10/_mut.exe": {
+      "sha256": "22c1a4ff81d59bccd8bac744cbb2d50666e7cf23cd5cc1dfda09e62201ab353b",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "b1356a3a3a4051ce662872a6e1cbd3ecbb748ec9967f7025a48c6a51c18cf499",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "22c1a4ff81d59bccd8bac744cbb2d50666e7cf23cd5cc1dfda09e62201ab353b",
+        "note": "built",
+        "written": "2026-10-11T21:46:09"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M59/_mut.exe": {
+      "sha256": "48d1b36f9be45e4d78ef6b78b71ef06b9f3528f840808c9959a6ba7028da66a4",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "a79bb967573c2ef9c028b04be55288a68058942191e2ae67d2a7be06df614ee0",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "48d1b36f9be45e4d78ef6b78b71ef06b9f3528f840808c9959a6ba7028da66a4",
+        "note": "built",
+        "written": "2026-10-11T21:46:06"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M11/_mut.exe": {
+      "sha256": "faa498f8ee9eaf10ff4a57d43cf07691eeafceee2b927ecdbd2e30a02e1250ac",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "906ffbb1c748702b07ef73eb4adbc19503880df11603a5563bc4e639af1adcf3",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "faa498f8ee9eaf10ff4a57d43cf07691eeafceee2b927ecdbd2e30a02e1250ac",
+        "note": "built",
+        "written": "2026-10-11T21:46:21"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M17/_mut.exe": {
+      "sha256": "6b7eb1a9e5e9d7c8ed56a2cde7c2df11c5a37490c750440644692057eca633e1",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "0338932766ba4f87c488178d06bff00bd548c9544a9f510c9015791f7545482f",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "6b7eb1a9e5e9d7c8ed56a2cde7c2df11c5a37490c750440644692057eca633e1",
+        "note": "built",
+        "written": "2026-10-11T21:46:48"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M04/_mut.exe": {
+      "sha256": "4fed3bbc924339eec0fa722a2c48149bd30929c83bbcb34676a1e677ecc2648e",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "5936b5e5af45b23a7c73556b9080af268239032c092ace748e691c74175f30bc",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "4fed3bbc924339eec0fa722a2c48149bd30929c83bbcb34676a1e677ecc2648e",
+        "note": "built",
+        "written": "2026-10-11T21:45:21"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M05/_mut.exe": {
+      "sha256": "71262b186e99b8e08be118227e2fe7971b8b834ad33e7e5fa5ad0faa9785dead",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "a0d421686e0a6f4609f4fe8a0ef9ad48a995cf3b3cde2174ef4d712ccb39c45f",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "71262b186e99b8e08be118227e2fe7971b8b834ad33e7e5fa5ad0faa9785dead",
+        "note": "built",
+        "written": "2026-10-11T21:45:40"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M29/_mut.exe": {
+      "sha256": "5ba4cc7a00d9bdc1d33e2f781d01139e1b9d616a567e55d2bc7ba078d47d2b4b",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "7fab8731da7c92363f2eb752f4e5f4b860888e0f7e398ce10e5b47faa12a9513",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "5ba4cc7a00d9bdc1d33e2f781d01139e1b9d616a567e55d2bc7ba078d47d2b4b",
+        "note": "built",
+        "written": "2026-10-11T21:47:32"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M30/_mut.exe": {
+      "sha256": "ae08eb49bf91e77b66113f03d812dfa1141d18eac8c73540d53eac99faf2ed1c",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "6d414bf99d9c896277686ca029109b9d69bfc1df088639d90fe6b7b86e433ae7",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "ae08eb49bf91e77b66113f03d812dfa1141d18eac8c73540d53eac99faf2ed1c",
+        "note": "built",
+        "written": "2026-10-11T21:47:27"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M56/_mut.exe": {
+      "sha256": "047924e337192c6f962ac245a19f14c30bfe1279949f8d18c59451f878d3e392",
+      "bytes": 383344,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "570f1fc9fd9005c2595998fd62bdf6f916e4104f6055487b5b95f5a051baba92",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "047924e337192c6f962ac245a19f14c30bfe1279949f8d18c59451f878d3e392",
+        "note": "built",
+        "written": "2026-10-11T21:47:59"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M03/_mut.exe": {
+      "sha256": "193f3f75ce8e18aaa24a36daf223629716189ba38fb5601b2c9790d40f254f65",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "c8afc0fd8ec130f35d760fcec6096ed9155ba8367d7e0f1ae3fed4ed8ab52481",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "193f3f75ce8e18aaa24a36daf223629716189ba38fb5601b2c9790d40f254f65",
+        "note": "built",
+        "written": "2026-10-11T21:45:20"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M12/_mut.exe": {
+      "sha256": "0732d29cc8a6a2d3fd485dae23de1db0bdd5f0926e85e3b805f5f0d32d2686a1",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "6f3338036e7b7dcf7c9e242dd2d694668f26c0331e9f44bd31ded0b66d1da05c",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "0732d29cc8a6a2d3fd485dae23de1db0bdd5f0926e85e3b805f5f0d32d2686a1",
+        "note": "built",
+        "written": "2026-10-11T21:46:28"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M40/_mut.exe": {
+      "sha256": "9e05ee8b46eecddabb108b4637af750f413fc3ab408f079b99702a69f2751e05",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "b5a24e8846793126d6b86adfbad2dcf569a910731a50725e67bc8a4d0f0e62cf",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "9e05ee8b46eecddabb108b4637af750f413fc3ab408f079b99702a69f2751e05",
+        "note": "built",
+        "written": "2026-10-11T21:49:01"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M14/_mut.exe": {
+      "sha256": "a1501e2d28832a3b9248e3019a935902e4d19c9bc08ee21ceef1c1b5635d0471",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "c255f1c47e3868de98f6b19e5cd3ba34671df7e4b1ab3d0711c0c03b229f685f",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "a1501e2d28832a3b9248e3019a935902e4d19c9bc08ee21ceef1c1b5635d0471",
+        "note": "built",
+        "written": "2026-10-11T21:46:23"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M58/_mut.exe": {
+      "sha256": "f40d9addd70370bb2ec0bc5852add70d450060224745076c8c3ac14bdc90cfe4",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "4bbc7542d27c74057498ad0440beb3905da2ed0d2228e0de8101b8fd9ed95b4f",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "f40d9addd70370bb2ec0bc5852add70d450060224745076c8c3ac14bdc90cfe4",
+        "note": "built",
+        "written": "2026-10-11T21:47:44"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M31/_mut.exe": {
+      "sha256": "d702ee8b9f34c307e3012dcd2041589eb5624164e553b5be6015961f7354ae40",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "ce9a7c2cc5c09f1715231e63a643f61061cfe6b919428cdae0cb14104bd574dc",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "d702ee8b9f34c307e3012dcd2041589eb5624164e553b5be6015961f7354ae40",
+        "note": "built",
+        "written": "2026-10-11T21:47:31"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M34/_mut.exe": {
+      "sha256": "573e7bf54bdd6d82ee3c5141cf93fba49a18c9d462423da51705b35cee6dca44",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "4b721b9afbbdf8d63b78b375158891292614d093407b921f60e62695e93f0e9f",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "573e7bf54bdd6d82ee3c5141cf93fba49a18c9d462423da51705b35cee6dca44",
+        "note": "built",
+        "written": "2026-10-11T21:48:22"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M28/_mut.exe": {
+      "sha256": "91020dc7bed008cc62e9a5c1795427cc7495758523e8bf9f1d0bd143691b6c79",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "5f7c13c50d40ae599b5d951c9e9d720e4e16f6f845f349b37c558927fb753553",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "91020dc7bed008cc62e9a5c1795427cc7495758523e8bf9f1d0bd143691b6c79",
+        "note": "built",
+        "written": "2026-10-11T21:47:57"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M38/_mut.exe": {
+      "sha256": "7a6e4d8d9a0a75470ab49486c4fe5ce2e71fabda0042feaad6e861cb0f5a4e23",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "dc85a69c25e55c9b4b3a76c35d69bb42d6d6dcc69c94fc4f8b0ef44eea8c6632",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "7a6e4d8d9a0a75470ab49486c4fe5ce2e71fabda0042feaad6e861cb0f5a4e23",
+        "note": "built",
+        "written": "2026-10-11T21:48:36"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M18/_mut.exe": {
+      "sha256": "15661fdf5e696eb67de5e3081006f9130577456535ff49d4264c791b17232e75",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "f32f48552271af3ea6321e97572a6a24375d5116dd859e731eff1f4fe92226a6",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "15661fdf5e696eb67de5e3081006f9130577456535ff49d4264c791b17232e75",
+        "note": "built",
+        "written": "2026-10-11T21:46:36"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M62/_mut.exe": {
+      "sha256": "78db805983e1b7248e6e92ffa3f71968d1c2bc60817092a6eef4e17c5bda2c57",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "0261fbb45fd6ffc43be7b41d638354ea92a3e8b86b9a3ea86886f40b147c57f5",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "78db805983e1b7248e6e92ffa3f71968d1c2bc60817092a6eef4e17c5bda2c57",
+        "note": "built",
+        "written": "2026-10-11T21:48:54"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M65/_mut.exe": {
+      "sha256": "06f3a8bd0503fa6dd70c5a44fe6f36a5688598008dab0abdd1492a1942a7b92c",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "d3856d8253a8045da7fe8552235a6f2b432911aa5f0c750f66026df40e3ceeb9",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "06f3a8bd0503fa6dd70c5a44fe6f36a5688598008dab0abdd1492a1942a7b92c",
+        "note": "built",
+        "written": "2026-10-11T21:49:09"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M09/_mut.exe": {
+      "sha256": "e3b163c603c7dab19e6f95bb2cd566673dc434f1d982920d6eda42f6b616de2c",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "0a30f16585f0013f0a811e76053f85de15ee90ba5f549da2278e15f3a76354d1",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "e3b163c603c7dab19e6f95bb2cd566673dc434f1d982920d6eda42f6b616de2c",
+        "note": "built",
+        "written": "2026-10-11T21:46:09"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M15/_mut.exe": {
+      "sha256": "f056c2677f47b9823dbd2f3dd24d0d2dafe590fdd3779f6af66f1383c4d91b30",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "613083fb68232378dad0d7f113e34464d9ee15a2c19b30ce2d1a3f3c53415b7f",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "f056c2677f47b9823dbd2f3dd24d0d2dafe590fdd3779f6af66f1383c4d91b30",
+        "note": "built",
+        "written": "2026-10-11T21:46:34"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M20/_mut.exe": {
+      "sha256": "30109ad7ea0a1d6c8fee2d6706597166d811b21eca7f554aeefc84f36359e654",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "d38138c5de0bd3caa2a7a6626dcbc84147d2a51d1527e456141730a79aa424c3",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "30109ad7ea0a1d6c8fee2d6706597166d811b21eca7f554aeefc84f36359e654",
+        "note": "built",
+        "written": "2026-10-11T21:47:07"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M22/_mut.exe": {
+      "sha256": "6a6601d2c749fc32467d557807ac3181116ca4175327c65773bd82a134607c2b",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "391ffab2fa68e7087053cf782f2a3f2d01373b682d170d5067a2e7dc2c2e2f46",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "6a6601d2c749fc32467d557807ac3181116ca4175327c65773bd82a134607c2b",
+        "note": "built",
+        "written": "2026-10-11T21:46:48"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M52/_mut.exe": {
+      "sha256": "360a168f7eb7a1fd6b217d2f50b52bb383a5ed15fc05105fc2b855f0e1eb00d8",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "bafed119bde6b640d9253b8520492be45516586cb0c56c21175dc0590475e2b0",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "360a168f7eb7a1fd6b217d2f50b52bb383a5ed15fc05105fc2b855f0e1eb00d8",
+        "note": "built",
+        "written": "2026-10-11T21:48:33"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M08/_mut.exe": {
+      "sha256": "54e84bd0aaa000cf7b4c99cf440a11428f8deeca53d06d2b454a4866bd3d52a1",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "52590d545b6d64a49bb78f34a65091bb40c52f167956c784502fd2f2156e07f0",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "54e84bd0aaa000cf7b4c99cf440a11428f8deeca53d06d2b454a4866bd3d52a1",
+        "note": "built",
+        "written": "2026-10-11T21:45:43"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M64/_mut.exe": {
+      "sha256": "9cc006cccd4f62f1beb453c848204e4bbd5fdcb2e032d4def6a945621005aa8b",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "653f919f4e5bd25386e27231abeec7bc6979356cf4d622debaf53c3cf6e95364",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "9cc006cccd4f62f1beb453c848204e4bbd5fdcb2e032d4def6a945621005aa8b",
+        "note": "built",
+        "written": "2026-10-11T21:49:16"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M60/_mut.exe": {
+      "sha256": "058472507128cccb63eb54a2c0620b53cb397a6bbef5e8ef8407473889024b30",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "fa0df8332b2b795fd812eb7343347e934c0c5a7b33ce13159ae86ef6197f61e7",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "058472507128cccb63eb54a2c0620b53cb397a6bbef5e8ef8407473889024b30",
+        "note": "built",
+        "written": "2026-10-11T21:46:10"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M13/_mut.exe": {
+      "sha256": "77764c2e81e9912d5047cf2ef78c1877b4fa014bdba590463b971146cb8e8b93",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "d5d4cc60292eab5ed895d246b449c22b46d0f5b51a5ac41372a81d71747ed143",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "77764c2e81e9912d5047cf2ef78c1877b4fa014bdba590463b971146cb8e8b93",
+        "note": "built",
+        "written": "2026-10-11T21:46:28"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M33/_mut.exe": {
+      "sha256": "d20a21845be961b1b62bdb933749b2d42343364c9e6491778942dde765083d19",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "d8e4aa2a96774117b6fdb7a25e7b0c1288651bb3bd2782f4134b75a98109c973",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "d20a21845be961b1b62bdb933749b2d42343364c9e6491778942dde765083d19",
+        "note": "built",
+        "written": "2026-10-11T21:48:17"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M54/_mut.exe": {
+      "sha256": "dbdba8a069b1ac2b8af9f8a8ca03617ce60e3d274251bbceac3976da4ffde256",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "35dd01741c9cef7c529bf016d1682aa93a76f0ae883857537e894e35203215c3",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "dbdba8a069b1ac2b8af9f8a8ca03617ce60e3d274251bbceac3976da4ffde256",
+        "note": "built",
+        "written": "2026-10-11T21:47:47"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M57/_mut.exe": {
+      "sha256": "0c26a60d3cd41f052065d3849a845c075de969b4812f33f98d5cd4637fd76ede",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "2f04e96bc4e06187cebc8bbdb836fb34c9a04d12fbcf4a49177c44409b61f8b0",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "0c26a60d3cd41f052065d3849a845c075de969b4812f33f98d5cd4637fd76ede",
+        "note": "built",
+        "written": "2026-10-11T21:47:45"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M02/_mut.exe": {
+      "sha256": "a6e937d9e18cdd215374f7842eebc3b17b1918d8ceda73cbb913efe56444880c",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "eb37820358b0fb178168f468e3c67f734e62bb17966740f66393de92db1190c3",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "a6e937d9e18cdd215374f7842eebc3b17b1918d8ceda73cbb913efe56444880c",
+        "note": "built",
+        "written": "2026-10-11T21:45:20"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M39/_mut.exe": {
+      "sha256": "21f9debc57079cbef61880fd9229dd80f30c892600352acd5b2e4b598e474103",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "d61046c10861234fa589b5b3fad934fb0d3c654d3e405e92e7b1bc13da2cb14a",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "21f9debc57079cbef61880fd9229dd80f30c892600352acd5b2e4b598e474103",
+        "note": "built",
+        "written": "2026-10-11T21:48:00"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M24/_mut.exe": {
+      "sha256": "f56f9176e0d0e0fa703203ecce78b8c9c1b9473f3937dacd08ad50a2d6539a76",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "552a00013ac33518a2cbf0e54295b2b1193a932131d4cdb5ba017155b8fb88e1",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "f56f9176e0d0e0fa703203ecce78b8c9c1b9473f3937dacd08ad50a2d6539a76",
+        "note": "built",
+        "written": "2026-10-11T21:47:38"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M19/_mut.exe": {
+      "sha256": "fdb197277200a6e2bc2326a052c2b9decef7ebc807fc437e801bef44c059a7b4",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "d2585c2dc642cf6f745a09349b9de906f244db7d1c294f7a03db13d801dd0892",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "fdb197277200a6e2bc2326a052c2b9decef7ebc807fc437e801bef44c059a7b4",
+        "note": "built",
+        "written": "2026-10-11T21:46:47"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M21/_mut.exe": {
+      "sha256": "81f4bf08c32e56cd845cce9f75dedbd3a3625cb6b700882917bb63492c319aaf",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "4194657a4155d5304184e1a602fc40aceab8c5b8b8aeb282c91e58d8f2d109ff",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "81f4bf08c32e56cd845cce9f75dedbd3a3625cb6b700882917bb63492c319aaf",
+        "note": "built",
+        "written": "2026-10-11T21:47:01"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M25/_mut.exe": {
+      "sha256": "426c5fdac03eee38399a7f4bd2dac5ccce93bb252d0011e7c0a809fd896d463d",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "a3fa516cd72d8c23928914238d8ba22b93ce7ba07b84aa7ae0c48e1960f401fb",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "426c5fdac03eee38399a7f4bd2dac5ccce93bb252d0011e7c0a809fd896d463d",
+        "note": "built",
+        "written": "2026-10-11T21:47:18"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M36/_mut.exe": {
+      "sha256": "e5af837fc753bcb93c05ea1ac5b39442c240da6f1a0e33974d3e35dc62fe03d4",
+      "bytes": 383304,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "4d479111f4a39b8bac332d9011211ee8ecbe9cc8421b9bbdbbc5d091b8a4f241",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "e5af837fc753bcb93c05ea1ac5b39442c240da6f1a0e33974d3e35dc62fe03d4",
+        "note": "built",
+        "written": "2026-10-11T21:48:47"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M23/_mut.exe": {
+      "sha256": "383db72e15e23e44b61fa1cc3152a4146d3a8b005b190daf0504f2acdcdebe63",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "a5db3dc3a3c6dbfe7500081d9ebfdc9acc68f2473206ad06c18e347a88faa113",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "383db72e15e23e44b61fa1cc3152a4146d3a8b005b190daf0504f2acdcdebe63",
+        "note": "built",
+        "written": "2026-10-11T21:47:01"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M63/_mut.exe": {
+      "sha256": "ff8bd2f534fd7f3399833f33cec70d15cb232d13b2d4f01d365e7af06d6fea3c",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "b338c8ffde974a8d36fc67f8e222682347f75f3c832b38f22ab5e6e52d38fb12",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "ff8bd2f534fd7f3399833f33cec70d15cb232d13b2d4f01d365e7af06d6fea3c",
+        "note": "built",
+        "written": "2026-10-11T21:48:16"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M26/_mut.exe": {
+      "sha256": "a9db4c33f3cf9535db9adfabdda509fcb2bfba06bfc90571a4db15e15a33dc81",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "57f74daed563f3e2f594141f746261c7e6cedc86244e1a7a7fd339f38487642d",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "a9db4c33f3cf9535db9adfabdda509fcb2bfba06bfc90571a4db15e15a33dc81",
+        "note": "built",
+        "written": "2026-10-11T21:47:08"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M16/_mut.exe": {
+      "sha256": "0fa308a7e08ccc2b39589a27c346ffdad5a5b4c53aa129d3996c4d5ecf6b7374",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "0f0575851812ae0bf8e1eb789f2698dcbc5db2b8a7610892fb14cfd363db8690",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "0fa308a7e08ccc2b39589a27c346ffdad5a5b4c53aa129d3996c4d5ecf6b7374",
+        "note": "built",
+        "written": "2026-10-11T21:46:47"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M53/_mut.exe": {
+      "sha256": "083870e2d93e53b6d95956be2f5b44d42645001dca85754961ea1616f1f92f6b",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "598d2c41c25cafa8705492f9ea07cf0956e34f5aea90697a556dfc79b968d501",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "083870e2d93e53b6d95956be2f5b44d42645001dca85754961ea1616f1f92f6b",
+        "note": "built",
+        "written": "2026-10-11T21:48:03"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M07/_mut.exe": {
+      "sha256": "73e72de7f1b6ed9a8ac232776798ac7510bad0fe3b1a0df30c1969a080e75b9c",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "29f1d7295a8a6a5fd73ff8b13be58283844d74327962449d86593975899dba3f",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "73e72de7f1b6ed9a8ac232776798ac7510bad0fe3b1a0df30c1969a080e75b9c",
+        "note": "built",
+        "written": "2026-10-11T21:45:42"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M32/_mut.exe": {
+      "sha256": "14f35a2755958f205f6cac6a6d9f9e4da33f0764abed2311cb97b445f8ac7c24",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "8eafea1fdf987abd8fa473f45cea58c2917f8ac7ce747f11feec6b2e074f90c6",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "14f35a2755958f205f6cac6a6d9f9e4da33f0764abed2311cb97b445f8ac7c24",
+        "note": "built",
+        "written": "2026-10-11T21:48:15"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M61/_mut.exe": {
+      "sha256": "2ad358f38c7b272c7a42017fdca07d16dca64399d4aa157f6baf700ce465133b",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "b654dc9689d6498cc691ee957df8731aafb54ae898ae6a91926573ef7eb0fbfc",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "2ad358f38c7b272c7a42017fdca07d16dca64399d4aa157f6baf700ce465133b",
+        "note": "built",
+        "written": "2026-10-11T21:48:51"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M27/_mut.exe": {
+      "sha256": "8d7e182b27119b7758e6fd1a4cd6b9373c12adade8f4b02258a821ea7a4bb4ce",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "714be2601168637ab8f8a51b304a098aea567df9ccff4429ee2288e4244ca86d",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "8d7e182b27119b7758e6fd1a4cd6b9373c12adade8f4b02258a821ea7a4bb4ce",
+        "note": "built",
+        "written": "2026-10-11T21:47:18"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M67/_mut.exe": {
+      "sha256": "cc71c97dde8a13fdaccdf6b85b737cf272432a8e66fd8b27f6e65c0af4c6b728",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "b42acb9262e534182180ecffb881cb6a7f7a278e127287d1459f1bb79239e4dd",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "cc71c97dde8a13fdaccdf6b85b737cf272432a8e66fd8b27f6e65c0af4c6b728",
+        "note": "built",
+        "written": "2026-10-11T21:44:55"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M01/_mut.exe": {
+      "sha256": "d54f69131f9d995b424f827aaababc3de22c45b9fa65123c811134ccf70576bd",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "ae55a07300ae815dcdc0ec9a43b1c21fb548027626f3215662975b04ccea9186",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "d54f69131f9d995b424f827aaababc3de22c45b9fa65123c811134ccf70576bd",
+        "note": "built",
+        "written": "2026-10-11T21:45:21"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M37/_mut.exe": {
+      "sha256": "4855123c972bde6d9f02c2c78b5c9f03321c7c391bde5ef35dfd835715ab728d",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "9058138d4bb0af2308a222c655d92d19f934d6b33819e9e3c366200d96deff51",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "4855123c972bde6d9f02c2c78b5c9f03321c7c391bde5ef35dfd835715ab728d",
+        "note": "built",
+        "written": "2026-10-11T21:48:34"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M66/_mut.exe": {
+      "sha256": "0ca891b281eebe90210efed905e69f44979ff94c2868e2f2ac7ee548e8e3a0ac",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "c717657e94dde199a3cb412cbab6a5cc0a5ec052d82e5fff803143535d38ecd7",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "0ca891b281eebe90210efed905e69f44979ff94c2868e2f2ac7ee548e8e3a0ac",
+        "note": "built",
+        "written": "2026-10-11T21:49:12"
+      }
+    },
+    "/tmp/geometry-tests/mutants/M06/_mut.exe": {
+      "sha256": "0037e42bdd159b1b07cfbf5f0796f0523883680fe0b5ec22940f3a4b0a8c20a3",
+      "bytes": 383392,
+      "sidecar": {
+        "fingerprint": {
+          "mutant_sha256": "8e7ce972ee543bb08d95b6578353ca1a92df6972861bca37c988ba60faaa6465",
+          "closure_sha256": "835289175abb8b6abb7adb050be2f5b46741ab1069ed9ae78acd16d885230563",
+          "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+        },
+        "exe_sha256": "0037e42bdd159b1b07cfbf5f0796f0523883680fe0b5ec22940f3a4b0a8c20a3",
+        "note": "built",
+        "written": "2026-10-11T21:45:43"
+      }
+    }
+  },
+  "identity_executor": {
+    "path": "/workspace/geometry-axiom/tests/geo246/identity.py",
+    "sha256": "c3af5e7ffd074442bb55bd83347224bac2de0bf2fd34a394c5eed249d41b0ea3"
+  },
+  "newline_policy": "Raw byte hashes and Git blob hashes are separate; only CRLF-to-LF normalized hashes establish text identity."
+}

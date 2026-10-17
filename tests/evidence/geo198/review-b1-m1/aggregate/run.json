@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "python3",
+    "tests/run_all.py",
+    "--build",
+    "--update-expected"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 1,
+  "seconds": 784.5132817559988,
+  "stack_soft_limit_bytes": 16777216,
+  "log_sha256": "c7eb91de3310d3c7a855bf6acaa44dfefa113a21f165cd2511c7a9d956c615fe",
+  "receipt": "returncode comes directly from Popen.poll, not test result inference",
+  "sample_count": 781
+}

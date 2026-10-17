@@ -1,0 +1,16 @@
+{
+  "name": "freshness",
+  "ids": [
+    "--check"
+  ],
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-u",
+    "tests/mutate.py",
+    "--check"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 0,
+  "seconds": 0.31076068399852375,
+  "log_sha256": "87fbe75d58f1253f0021492ee97f7d51515e911cbea483bb9c58c2b932da872d"
+}

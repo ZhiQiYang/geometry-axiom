@@ -22,7 +22,24 @@ HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
 
 # Revised acceptance oracle: 2026-09-18 D7/I8a/I12/R2/R4.
-TESTS = [{'scene': '_wit_d30_infinite_grid_binding.scene', 'expect': 'accept'},
+TESTS = [
+ {'scene': '_ax_r7_remote_flush_corner.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
+ {'scene': '_ax_r7_remote_flush_strip.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
+ {'scene': '_ax_r8_three_residual_components.scene', 'expect': 'reject', 'error': '拆分退化'},
+ {'scene': '_ax_r8_three_residual_strip.scene', 'expect': 'reject', 'error': '拆分退化'},
+ {'scene': '_ax_r7_rectangle_plus_line.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
+ {'scene': '_ax_r7_strip_plus_line.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
+ {'scene': '_ax_r7_rectangle_plus_point.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
+ {'scene': '_ax_r12_uncut_complex_strip.scene', 'expect': 'accept'},
+ {'scene': '_ax_r15_uncut_strip_missing_item.scene', 'expect': 'reject', 'error': '不存在'},
+ {'scene': '_ax_r14_uncut_strip_multiple_pieces.scene', 'expect': 'reject', 'error': '橫跨拆分線'},
+ {'scene': '_ax_r7_notch_disconnected.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
+ {'scene': '_ax_r7_ridge_crossing.scene', 'expect': 'accept',
+  'contains': ['(60, 70)', '(40, 80)'], 'not_contains': ['孔 #0']},
+ {'scene': '_ax_r7_ridge_strip.scene', 'expect': 'accept',
+  'contains': ['(60, 70)', '(40, 80)'], 'not_contains': ['孔 #0']},
+ {'scene': '_ax_r7_point_tangent.scene', 'expect': 'reject', 'error': 'R7: 投影接觸非單一矩形'},
+ {'scene': '_wit_d30_infinite_grid_binding.scene', 'expect': 'accept'},
  {'scene': '_wit_d29_grid_system.scene', 'expect': 'accept'},
  {'scene': '_wit_i37_grid_system_missing.scene', 'expect': 'reject', 'error': 'existing surface and grid-system'},
  {'scene': 'subgrid-local.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960, 2960, 1980]},

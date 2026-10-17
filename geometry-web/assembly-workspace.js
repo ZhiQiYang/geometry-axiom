@@ -245,6 +245,7 @@ window.AssemblyWorkspace=(()=>{
     }
     if(unchanged.length)rows.push(['未變更角材',unchanged.join('、')]);
     for(const g of p.impact?.guides||[])if(identityValue(g.before)!==identityValue(g.after))rows.push([`定位線 #${g.id}`,`${JSON.stringify(g.before)} → ${JSON.stringify(g.after)}`]);
+    for(const reference of p.redeclaredReferences||[])rows.push(['刪後重宣告',reference.message]);
     return `<h4>${esc(title)}</h4>${rows.length?`<div class="asm-diff">${rows.map(([a,b])=>`<p><span>${esc(a)}</span><span>${esc(b)}</span></p>`).join('')}</div>`:'<p>正式內容不會改變。</p>'}`;
   }
   async function preview(){

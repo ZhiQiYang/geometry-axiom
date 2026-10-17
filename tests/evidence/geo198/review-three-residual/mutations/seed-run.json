@@ -1,0 +1,16 @@
+{
+  "name": "seed",
+  "ids": [
+    "M66"
+  ],
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-u",
+    "tests/mutate.py",
+    "M66"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 0,
+  "seconds": 26.71255835100237,
+  "log_sha256": "b8b1d8d3d5c9a22bd9c419a0f39c88653eafb5758420c0489531ff6f42de17e8"
+}
