@@ -19,7 +19,9 @@ SOURCE = ROOT / 'geometry-app/native/model_sources.inc'
 HARNESS = ROOT / 'tests/geo261_model_semantics_authority_harness.c'
 FLAGS = ['GEOMETRY_KERNEL_EXTERNAL=1', 'GEOMETRY_WOODWORKING_EXTERNAL=1',
          'GEOMETRY_HOST_HISTORY_EXTERNAL=1', 'GEOMETRY_HOST_CANDIDATE_EXTERNAL=1']
-INSTALL_HOOK = 'if(!reference_sources_ensure(&state->reference))return false;'
+# K closes registration at the first source request (source.h), so priming
+# FIELDDEF must follow the adapter's own provider registration.
+INSTALL_HOOK = 'if(!geo_eval_register(state->reference.sources,&provider))return false;'
 ALIAS_HOOK = 'for(size_t i=0;i<state->count;++i){ModelSourceItem *item=state->items[i];GeoSourceValue value;'
 TYPE_ASSIGNMENT = 'item->quantity_type=field.type==GEO_PARAMETER_COUNT?"count":field.type==GEO_PARAMETER_RATIO?"ratio":"dimension";'
 RAW_FIELD = ('geo_parameters_fields(&state->reference.world->geo.parameters)'

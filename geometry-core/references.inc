@@ -270,7 +270,7 @@ static bool reference_quantity_raw(ReferenceEval *ctx, const GuideLine *g, const
             if (*q=='h') {
                 char *v=strchr(q,'v'); if (!v) return false;
                 *v='\0'; if (!parse_u32(q+1,&hi) || hi>=POLY_MAX_HOLES) return false;
-                hole=(int)hi; q=v;
+                *v='v'; hole=(int)hi; q=v; /* D6a(a): h<i>v<j> keeps its v<j> part */
             }
             if (*q!='v' || !parse_u32(q+1,&vi) || vi>=POLY_MAX_VERTICES) return false;
             index=(int)vi;
