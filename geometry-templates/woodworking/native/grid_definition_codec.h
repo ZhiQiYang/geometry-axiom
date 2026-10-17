@@ -3,7 +3,9 @@
 #ifndef GEOMETRY_WOODWORKING_GRID_DEFINITION_CODEC_H
 #define GEOMETRY_WOODWORKING_GRID_DEFINITION_CODEC_H
 #include "grid_application.h"
+#ifndef GEO_KERNEL_SOURCE_H
 #include "source.h"
+#endif
 
 #define WOOD_GRID_CODEC_MAX_BYTES 16384
 #define WOOD_GRID_SYSTEM_VALUE_SCHEMA "wood.grid.system-value/1"

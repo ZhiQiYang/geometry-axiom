@@ -1,7 +1,9 @@
 #include "grid_sources.h"
 #include "grid_definition_codec.h"
 #include "engineering_sources.h"
+#ifndef GEO_KERNEL_REGION_KEY_SOURCES_H
 #include "region_key_sources.h"
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
