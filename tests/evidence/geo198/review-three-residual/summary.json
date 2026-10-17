@@ -1,0 +1,72 @@
+{
+  "aggregate": {
+    "total": 2863,
+    "passed": 2856,
+    "failed": 6,
+    "skipped": 1,
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "tests/run_all.py",
+      "--build",
+      "--update-expected"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "returncode": 1,
+    "seconds": 636.1503006790008,
+    "stack_soft_limit_bytes": 16777216,
+    "log_sha256": "cd1eb9afd96bad84bfa9215fb2b233b593670df0d4f475602fe3b4d74dd2a8b5",
+    "sample_count": 630,
+    "receipt": "Actual Popen.poll returncode, not inferred from counts"
+  },
+  "expected_changes": {
+    "c:integrity": {
+      "before": {
+        "mode": "count",
+        "count": 176,
+        "unit": "C 檢查點"
+      },
+      "after": {
+        "mode": "count",
+        "count": 304,
+        "unit": "C 檢查點"
+      }
+    },
+    "core:run_tests": {
+      "before": {
+        "mode": "count",
+        "count": 153,
+        "unit": "場景"
+      },
+      "after": {
+        "mode": "count",
+        "count": 155,
+        "unit": "場景"
+      }
+    },
+    "py:test_reference_contract": {
+      "before": {
+        "mode": "count",
+        "count": 48,
+        "unit": "test"
+      },
+      "after": {
+        "mode": "count",
+        "count": 50,
+        "unit": "test"
+      }
+    }
+  },
+  "source_bytes_equal": true,
+  "binary_and_sidecar_snapshots_equal": true,
+  "aggregate_before_clean": true,
+  "aggregate_after_expected_dirty": true,
+  "reader_failed_tests": [
+    "test_axiom_reader.CanonicalReader.test_color_contract_allows_unrelated_properties_and_untracked_selectors",
+    "test_axiom_reader.CanonicalReader.test_current_layout_change_does_not_relock_historical_migration_tests",
+    "test_axiom_reader.CanonicalReader.test_legacy_image_handler_retires_without_changing_live_svg_handler",
+    "test_axiom_reader.CanonicalReader.test_rebuild_is_byte_idempotent_and_keeps_reviews",
+    "test_axiom_reader.CanonicalReader.test_retired_color_migrations_allow_format_and_unrelated_layout_changes",
+    "test_axiom_reader.CanonicalReader.test_traceability_lights_and_hub_badges_exist"
+  ],
+  "cache_logs": "Cached log directory copied verbatim; log-index distinguishes files modified during this run from older unused cache files. Full run.log and per-suite current JSON/native logs identify the executed results."
+}

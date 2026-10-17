@@ -1,0 +1,5 @@
+結果檔 /workspace/geometry-axiom/tests/mutants_results.json
+變異表 52 筆,紀錄 52 筆
+殺死 killed 44 / 崩潰 crashed 1 / 存活 survived 0 / 等價 equivalent 4 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 3
+  CRASHED M20 [_test_lshape.scene]  R6(d)：拿掉「起點必須有擋面」檢查(懸空端放行)  <- 基準線已通過；連跑 3 次都在同一夾具以存取違規結束（_test_lshape.scene；INFRA abnormal executable exit -11: ）。算被偵測到，但不是斷言殺死。
+Merged 52 independently executed mutation records.

@@ -1,0 +1,35 @@
+{
+  "actor": "Codex",
+  "job": "native",
+  "head": "dc4e929580228dcfbfe1e46a03192d5e6e1d71d3",
+  "tree": "a52cda4a1d146454a01cfaa64107afeda6cbecd7",
+  "checkout": "/workspace/geometry-axiom",
+  "exit_code": 1,
+  "commands": [
+    {
+      "name": "run-all",
+      "argv": [
+        "python3",
+        "tests/run_all.py",
+        "--build"
+      ],
+      "exit_code": 1,
+      "seconds": 691.549,
+      "timeout": 1800,
+      "timed_out": false,
+      "log_sha256": "c2365d1a577e566f0f87937c315d4008607749961b5e980e6bb568291ed95779"
+    }
+  ],
+  "workflow_sha256": "faddb699f3be004bbfc5a8fe5948cf58a621d0826db4cd3bf0a77dc097be9fd0",
+  "environment_differences": [
+    "Owned free application/CDP ports and task-specific output paths",
+    "Existing installed Chrome/CJK fonts; no system package changes",
+    "Local native wall-time allowance is recorded; exceeding CI 900s is not a CI pass"
+  ],
+  "seconds": 693.113,
+  "ci_job_budget_seconds": 900,
+  "ci_timeout_exceeded": false,
+  "ci_native_timeout_exceeded": false,
+  "executor_error": null,
+  "approval": "No independent WSL-reviewer or merge approval is implied."
+}

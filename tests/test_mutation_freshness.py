@@ -298,5 +298,74 @@ class MutationFreshnessTests(unittest.TestCase):
         self.assertEqual(launches, ['baseline.exe'])
 
 
+class BridgeMutationHonestyTests(unittest.TestCase):
+    def payload(self, failures=None):
+        return {"exit_code": 1 if failures else 0, "result": {
+            "schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.example.Case.test_guard"],
+            "started": ["tests.example.Case.test_guard"], "total": 1,
+            "failures": failures or [], "errors": [], "skipped": [],
+            "expected_failures": 0, "unexpected_successes": 0}}
+
+    def classify(self, receipt):
+        import mutation_bridge
+        return mutation_bridge.classify(receipt, ["tests.example.Case.test_guard"])
+
+    def test_two_real_failing_subtests_are_a_kill(self):
+        row = self.payload([{"test": "tests.example.Case.test_guard (axis='u')", "detail": "AssertionError: u"},
+                            {"test": "tests.example.Case.test_guard (axis='v')", "detail": "AssertionError: v"}])
+        self.assertEqual("killed", self.classify(row))
+
+    def test_infrastructure_error_never_counts_as_a_kill(self):
+        row = self.payload([{"test": "tests.example.Case.test_guard", "detail": "AssertionError"}])
+        row["result"]["errors"] = [{"test": "tests.example.Case.test_guard", "detail": "compiler unavailable"}]
+        self.assertEqual("blocked", self.classify(row))
+
+    def test_missing_method_or_skip_never_counts_as_success(self):
+        for key, value in [("started", []), ("total", 0), ("skipped", [{"reason": "no bridge"}])]:
+            with self.subTest(key=key):
+                row = self.payload(); row["result"][key] = value
+                self.assertEqual("blocked", self.classify(row))
+
+    def test_assertion_result_and_actual_exit_must_agree(self):
+        row = self.payload([{"test": "tests.example.Case.test_guard", "detail": "AssertionError"}])
+        for code in [0, 2, -11, True]:
+            with self.subTest(code=code):
+                row["exit_code"] = code
+                self.assertEqual("blocked", self.classify(row))
+
+    def test_failure_must_name_the_requested_method(self):
+        for failure in [{}, {"test": "tests.other.Case.test_other", "detail": "AssertionError"}]:
+            self.assertEqual("blocked", self.classify(self.payload([failure])))
+
+    def test_judge_hash_tracks_shared_python_harness_and_method_selection(self):
+        import mutation_bridge
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root / "tests").mkdir()
+            helper = root / "tests/_bridge.py"; helper.write_text("SOURCE = 1\n")
+            m = {"tests": ["tests.example.Case.test_guard"]}
+            before = mutation_bridge.oracle_hash(m, root)
+            helper.write_text("SOURCE = 2\n")
+            self.assertNotEqual(before, mutation_bridge.oracle_hash(m, root))
+            after = mutation_bridge.oracle_hash(m, root)
+            m["tests"] = ["tests.example.Case.test_other"]
+            self.assertNotEqual(after, mutation_bridge.oracle_hash(m, root))
+
+    def test_bridge_source_closure_includes_preview_serializer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root / "current_geometry.c").write_text("int core;\n")
+            (root / "geometry-web").mkdir()
+            (root / "geometry-web/web_bridge.c").write_text('#include "engineering_bridge.inc"\n')
+            serializer = root / "geometry-web/engineering_bridge.inc"; serializer.write_text("int preview = 1;\n")
+            before = mutate.Sources(root).closure
+            serializer.write_text("int preview = 2;\n")
+            self.assertNotEqual(before, mutate.Sources(root).closure)
+
+    def test_bridge_method_selection_is_part_of_mutant_definition(self):
+        m = dict(file="geometry-web/engineering_bridge.inc", old="a", new="b", binary="bridge", tests=["a"])
+        before = mutate.mutant_key(m)
+        m["tests"] = ["b"]
+        self.assertNotEqual(before, mutate.mutant_key(m))
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

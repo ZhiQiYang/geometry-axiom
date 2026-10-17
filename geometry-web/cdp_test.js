@@ -86,6 +86,7 @@ function startBrowser() {
   "--window-size=1400,900", `--user-data-dir=${profile}`, ...EXTRA_FLAGS, "about:blank"
   ]);
   child.stderr.on('data',chunk=>{
+    _log('CHROME_STARTUP_STDERR '+JSON.stringify({utc:new Date().toISOString(),monotonicNs:process.hrtime.bigint().toString(),pid:child.pid,text:chunk.toString()}));
     browserStartupOutput=(browserStartupOutput+chunk.toString()).slice(-8192);
     const match=browserStartupOutput.match(/DevTools listening on (ws:\/\/\S+)/);
     if(match)browserEndpoint=match[1];
@@ -213,10 +214,12 @@ async function connect() {
   throw new Error("no CDP; Chrome startup output: " + browserStartupOutput);
 }
 function send(method, params = {}, sessionId = null) {
-  if(method==='Page.reload'||method==='Page.navigate')expectedBeforeUnloadUntil=Date.now()+15000;
+  const navigation=method==='Page.reload'||method==='Page.navigate';
+  if(navigation)expectedBeforeUnloadUntil=Date.now()+15000;
   return new Promise((res,rej) => {
     const id=++mid,timer=setTimeout(()=>{delete pending[id];rej(Error('CDP timed out: '+method+' at '+currentTestStep+(params.expression?' expression='+params.expression.slice(0,160):'')));},120000);
-    pending[id]=message=>{clearTimeout(timer);if(message.error)rej(Error('CDP '+method+' failed: '+JSON.stringify(message.error)));else res(message);};
+    pending[id]=message=>{clearTimeout(timer);if(navigation)_log('CDP_NAVIGATION '+JSON.stringify({phase:'reply',utc:new Date().toISOString(),monotonicNs:process.hrtime.bigint().toString(),id,method,message}));if(message.error)rej(Error('CDP '+method+' failed: '+JSON.stringify(message.error)));else res(message);};
+    if(navigation)_log('CDP_NAVIGATION '+JSON.stringify({phase:'send',utc:new Date().toISOString(),monotonicNs:process.hrtime.bigint().toString(),id,method,params,sessionId}));
     ws.send(JSON.stringify({id,method,params,...(sessionId?{sessionId}:{})}));
   });
 }
@@ -293,9 +296,13 @@ async function clickControl(selector) {
   await click(p.x,p.y);await sleep(150);
 }
 async function dblclick(x, y) {
+  // Preserve event order without making CDP acknowledgement latency part of
+  // the gesture: awaiting each reply can exceed the app's 450 ms window.
+  const events = [];
   for (const n of [1, 2])
     for (const type of ["mousePressed", "mouseReleased"])
-      await send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: n });
+      events.push(send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: n }));
+  await Promise.all(events);
 }
 async function drag(x0, y0, x1, y1, steps = 6) {
   await send("Input.dispatchMouseEvent", { type: "mousePressed", x: x0, y: y0, button: "left", clickCount: 1 });
@@ -4900,6 +4907,7 @@ async function main() {
      這個情況,所以雙擊點刻意避開浮動列涵蓋的範圍(邊改點邊上別的位置、頂列的角改把面往下平移),
      不代表雙擊互動本身只在特定位置才有效——feDblOpenFor 的邏輯與點擊位置無關。 */
   pt = await openFace44();
+  await requireFaceHit44('P44-7a double-click start', pt(4000, 300), 'e:0:1');
   await dblclick(pt(4000, 300).x, pt(4000, 300).y);   /* 右邊,避開邊中點附近的浮動列 */
   await sleep(200);
   const p44_7a = await eval_(`({ opType: fe.op && fe.op.type, panelHidden: document.getElementById('feOpPanel').hidden })`);

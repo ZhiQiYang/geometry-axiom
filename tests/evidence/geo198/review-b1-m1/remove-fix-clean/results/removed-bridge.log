@@ -1,0 +1,38 @@
+FFF..
+======================================================================
+FAIL: test_rect_outline_counterexample_A_rejects_disconnected_contact (tests.test_reference_contract.ReferenceContract.test_rect_outline_counterexample_A_rejects_disconnected_contact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_reference_contract.py", line 111, in test_rect_outline_counterexample_A_rejects_disconnected_contact
+    self.assertFalse(result['ok'], 'counterexample A must not invent a hole across the notch')
+AssertionError: True is not false : counterexample A must not invent a hole across the notch
+
+======================================================================
+FAIL: test_rect_outline_counterexample_B_clips_ridge_and_applies_split (tests.test_reference_contract.ReferenceContract.test_rect_outline_counterexample_B_clips_ridge_and_applies_split)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_reference_contract.py", line 123, in test_rect_outline_counterexample_B_clips_ridge_and_applies_split
+    self.assertEqual([{'id':1, 'type':'column', 'cls':'split', 'rect':[40,70,60,80]}],
+AssertionError: Lists differ: [{'id': 1, 'type': 'column', 'cls': 'split', 'rect': [40, 70, 60, 80]}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'id': 1, 'type': 'column', 'cls': 'split', 'rect': [40, 70, 60, 80]}
+
+- [{'cls': 'split', 'id': 1, 'rect': [40, 70, 60, 80], 'type': 'column'}]
++ [] : counterexample B must retain the positive-area ridge intersection
+
+======================================================================
+FAIL: test_rect_outline_strip_reclassification_uses_exact_contact (tests.test_reference_contract.ReferenceContract.test_rect_outline_strip_reclassification_uses_exact_contact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_reference_contract.py", line 143, in test_rect_outline_strip_reclassification_uses_exact_contact
+    self.ok('apply-proj 1 b1 cut-strip')
+  File "/workspace/geometry-axiom/tests/test_reference_contract.py", line 168, in ok
+    self.assertTrue(r['ok'], r)
+AssertionError: False is not true : {'ok': False, 'error': 'line 4: 投影項不與任何面片接觸'}
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.440s
+
+FAILED (failures=3)

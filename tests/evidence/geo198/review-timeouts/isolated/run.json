@@ -1,0 +1,22 @@
+{
+  "mode": "instrumented diagnostic, original tests and 5000ms timeouts retained; not formal acceptance",
+  "argv": [
+    "node",
+    "--require",
+    "/tmp/geometry-198-timeouts/preload.cjs",
+    "--test",
+    "--test-reporter=spec",
+    "tests/test_reference_workspace_races.js"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 0,
+  "seconds": 7.810256533000938,
+  "log_sha256": "b0bef664d4b7d4ae8b44c01722dbb50395870c0f9dd97ddf292f6c8ec482c125",
+  "geometry_environment": {
+    "GEOMETRY_TEST_CORE": "/tmp/geometry-tests/core",
+    "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-tests/bridge",
+    "GEOMETRY_ENGINEERING_BRIDGE": "/tmp/geometry-tests/bridge",
+    "GEOMETRY_MODEL_BASE": "/tmp/geometry-tests/model-base",
+    "GEOMETRY_TEST_ENGINEERING_JSON": "/tmp/geometry-tests/engineering-json-test"
+  }
+}

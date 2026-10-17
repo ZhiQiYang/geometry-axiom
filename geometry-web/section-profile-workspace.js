@@ -85,6 +85,7 @@ window.SectionProfileWorkspace = (() => {
         if(JSON.stringify(old)!==JSON.stringify(next))rows.push(`<li>${kind==='guides'?'參考線':'面內角材'} #${id}：${esc(JSON.stringify(old??null))} → ${esc(JSON.stringify(next??null))}</li>`);
       }
     }
+    for(const reference of p.redeclaredReferences||[])rows.push(`<li>${esc(reference.message)}</li>`);
     $('spImpact').hidden=false;
     $('spImpact').innerHTML=`<h2>${p.valid?'變更影響':'不能套用'}</h2>${rows.length?'<ul>'+rows.join('')+'</ul>':''}`;
     appendSectionProfileImpact($('spImpact'),p);

@@ -1,0 +1,40 @@
+{
+  "source_head": "e73ebcb3ae8d72de06ceb4df692404dad83f7d33",
+  "source_tree": "93b6049bcb94d6da90c9ea58f7b4f73e191d48ac",
+  "scope": "Historical four-source mutation receipt only; not current head or full parent/head comparison",
+  "newline_policy": "Compare content through CRLF-to-LF normalization; raw Git bytes and Windows checkout bytes are distinct domains.",
+  "sources": {
+    "current_geometry.c": {
+      "historical_recorded_raw_sha256": "9e2ae4fb4f133c5df604ddf3a30962f3c84da8fe5f8ba77b3b4145a78fe35f89",
+      "git_blob_sha256": "9e2ae4fb4f133c5df604ddf3a30962f3c84da8fe5f8ba77b3b4145a78fe35f89",
+      "lf_normalized_sha256": "bc8b149eb0e733070a52709395146d1eb3baa95947d0bfbd736c3ffe7654f7c2",
+      "crlf_checkout_sha256": "9e2ae4fb4f133c5df604ddf3a30962f3c84da8fe5f8ba77b3b4145a78fe35f89",
+      "historical_raw_matches_git": true,
+      "historical_raw_matches_crlf_checkout": true
+    },
+    "geometry-core/grid_systems.inc": {
+      "historical_recorded_raw_sha256": "86cc697178c42be46c72e211e1ae2644c7a6055b38c57547a6bb76965f106ed0",
+      "git_blob_sha256": "53080347d0a33440b36d55e61c376ef7abf07c90d2c9a8a1d354c6480db3a267",
+      "lf_normalized_sha256": "53080347d0a33440b36d55e61c376ef7abf07c90d2c9a8a1d354c6480db3a267",
+      "crlf_checkout_sha256": "86cc697178c42be46c72e211e1ae2644c7a6055b38c57547a6bb76965f106ed0",
+      "historical_raw_matches_git": false,
+      "historical_raw_matches_crlf_checkout": true
+    },
+    "geometry-core/grid_bindings.inc": {
+      "historical_recorded_raw_sha256": "ffa04e540ce697aef0fd0b35d910a023ece3d2d1abe6baa71e9bf99a873b5982",
+      "git_blob_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "lf_normalized_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "crlf_checkout_sha256": "ffa04e540ce697aef0fd0b35d910a023ece3d2d1abe6baa71e9bf99a873b5982",
+      "historical_raw_matches_git": false,
+      "historical_raw_matches_crlf_checkout": true
+    },
+    "geometry-core/subgrid_commands.inc": {
+      "historical_recorded_raw_sha256": "81c40e38f5daf77480478d439c37697ce505bbd0ef7a5b5a8b156e8faecca1af",
+      "git_blob_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "lf_normalized_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "crlf_checkout_sha256": "81c40e38f5daf77480478d439c37697ce505bbd0ef7a5b5a8b156e8faecca1af",
+      "historical_raw_matches_git": false,
+      "historical_raw_matches_crlf_checkout": true
+    }
+  }
+}

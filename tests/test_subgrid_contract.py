@@ -11,7 +11,7 @@ mistyped command that is refused for the wrong reason (usage text, unknown comma
 cannot pass as "the rule rejected it". A gated edit answers ok=false with the generic
 "I8a: impact preview required" and keeps the real reason in preview.violations[].actual;
 rejection_reason() reads that, not the generic line. Each rejection below supplies
-its expected reason; broad diagnostics are explicitly marked as weak pins.
+its expected reason; malformed division tokens and boundary revalidation name their specific cause (GEO-246).
 S14/S15 (visibility, hit testing, keyboard and responsive UI) live in cdp_test.js.
 """
 from pathlib import Path
@@ -201,12 +201,11 @@ class SubgridContract(unittest.TestCase):
         self.assertEqual(self.grid()['u'], list(range(2, 130, 2)))
         self.assertEqual(self.grid()['v'], [])
         self.assertEqual(len(self.grid()['lines']), 64)
-        # -1 and 2.5 never reach the I25 checks: the grammar refuses them with the D19/I25 usage line
-        # (same text for any malformed subgrid line), so those two pins are weak.
-        usage = ('D19/I25', 'subgrid id parent id cell')
+        # Invalid tokens fail parsing before geometric divisibility checks.
         for divisions, why in [((1, 1), ('I25', '至少一軸須大於 1 等分')),
                                ((0, 2), ('I25', '無法精確分成 0 等分')),
-                               ((-1, 2), usage), (('2.5', 2), usage),
+                               ((-1, 2), ('D19/I25', 'divisions u=-1 must be a uint32 integer', 'subgrid 2 parent 1')),
+                               (('2.5', 2), ('D19/I25', 'divisions u=2.5 must be a uint32 integer', 'subgrid 2 parent 1')),
                                ((66, 1), ('I25', '無法精確分成 66 等分')),
                                ((3, 1), ('I25', '無法精確分成 3 等分'))]:
             with self.subTest(divisions=divisions):
@@ -459,9 +458,8 @@ class SubgridContract(unittest.TestCase):
         self.surface()
         self.ok('grid 1 on 1 u panel 400 gap 5 from 0')
         self.ok(self.child(v=('min', 'max'), divisions=(3, 1)))
-        # Weak pin: the bridge only says "re-declaration invalidated objects" (the world-revalidation path);
-        # it does not name I23/I25, so this proves the refusal comes from revalidation, not which rule.
-        self.reject('boundary 1 outline 0,0 4100,0 4100,3000 0,3000', '重宣告後有物件失效')
+        self.reject('boundary 1 outline 0,0 4100,0 4100,3000 0,3000',
+                    ('重宣告後有物件失效', 'u 軸線數不可從 9 改成 10', 'I23', '父網格 1', 'boundary 1'))
 
     def test_s09_retarget_divisions_and_referenced_index_contract(self):
         self.basic()

@@ -63,6 +63,26 @@ class AssemblyParameterRefs(unittest.TestCase):
         for parameter_id, field_id in [(0, 1), (1, 0), (0, 0)]:
             _, bound = self.seed(parameter_id, field_id)
             self.reject([{"op": "put-binding", "value": bound}], "binding 1 slot 1.A")
+            # P121/P122: identical full binding declarations count only after deletion.
+            param, bound = self.seed(parameter_id, field_id)
+            self.apply([{"op": "put-parameter", "value": param}, {"op": "put-binding", "value": bound}])
+            param["fields"][0]["input"] = "29"
+            deleted = {"op": "delete-parameter", "id": parameter_id}
+            rebuilt = {"op": "put-parameter", "value": param}
+            declared = {"op": "put-binding", "value": bound}
+            self.reject([deleted, rebuilt], "binding 1 slot 1.A")
+            self.reject([declared, deleted, rebuilt], "binding 1 slot 1.A")
+            preview = self.request([deleted, rebuilt, declared])["preview"]
+            self.assertTrue(preview["valid"], preview)
+            self.assertEqual([{"kind": "assembly-binding", "id": 1, "slot": 0}],
+                             [r["owner"] for r in preview["redeclaredReferences"]])
+            self.assertEqual([{"parameterId": parameter_id, "fieldId": field_id}],
+                             [r["source"] for r in preview["redeclaredReferences"]])
+            done = self.command("assembly-confirm " + str(preview["token"]))
+            self.assertTrue(done["ok"], done)
+            self.assertEqual(29, self.read()["state"]["bindings"][0]["effective"][0]["A"]["value"])
+            self.assertEqual([{"kind": "parameter-field", "parameterId": parameter_id, "fieldId": field_id}], done["deletedObjects"])
+            self.apply([{"op": "delete-binding", "id": 1}, {"op": "delete-parameter", "id": parameter_id}])
 
 
 if __name__ == "__main__":
