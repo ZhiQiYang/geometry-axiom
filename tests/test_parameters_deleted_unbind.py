@@ -73,6 +73,8 @@ class DeletedSourceUnbind(unittest.TestCase):
         self.seed();self.accept([self.unbind(),self.delete()])
 
     def test_delete_then_unbind_has_identical_dump_to_legal_order(self):
+        # P-142/P-150: absent, unreconstructed source keeps its last valid 27.
+        # M70 disables the ended-generation cache; this named guard must fail.
         self.seed();before=self.command('dump')['text']
         first=self.accept([self.unbind(),self.delete()])
         self.apply_line('undo');self.assertEqual(before,self.command('dump')['text'])

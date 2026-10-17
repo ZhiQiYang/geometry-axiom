@@ -1,0 +1,48 @@
+{
+  "argv": [
+    "cc",
+    "-std=c11",
+    "-O2",
+    "geometry-web/web_bridge.c",
+    "-o",
+    "/tmp/geo246-review-pre-native/audit-final/generic-bridge",
+    "-lm"
+  ],
+  "cwd": "/tmp/geo246-review-pre-native/tmp/geo246-message-c0n0v1re/source",
+  "archive_head": "5e3430323ef93ab2735cf49669b5dc7400be413e",
+  "archive_tree": "b2710dd64be36372b6fefa2556281384595643de",
+  "archive_paths": [
+    "current_geometry.c",
+    "geometry-core",
+    "geometry-web/web_bridge.c"
+  ],
+  "archive_sha256": "00fe46fd3e6cedcee61c2339165fbcb2100ff81265e46ff999daa30448c52320",
+  "patch_sha256": "b0f2aaeaad03c1b3ce321005a9fa735009bb17be83673415247f408a0353dfc0",
+  "shell_display": "cc -std=c11 -O2 geometry-web/web_bridge.c -o /tmp/geo246-review-pre-native/audit-final/generic-bridge -lm",
+  "replacements": [
+    {
+      "file": "geometry-core/grid_systems.inc",
+      "before_raw_sha256": "89f68dedb27c06c6e6e733bc75875367cf7392e3876f9121e51a0201864d8a64",
+      "mutant_raw_sha256": "500de5b5791299e9dc0c4cccc94bb1d362b3f0fe2111cd1a94b22125bf6cef49",
+      "newline": "'\\n'"
+    },
+    {
+      "file": "geometry-core/grid_bindings.inc",
+      "before_raw_sha256": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "mutant_raw_sha256": "1bdf70ea54a62a68264309f09e76fcfd4721451368e8117e5482a19b7e4c690a",
+      "newline": "'\\n'"
+    },
+    {
+      "file": "geometry-core/subgrid_commands.inc",
+      "before_raw_sha256": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "mutant_raw_sha256": "556548fa62645e80cd19815a4777c20bd7f54cfa9de7480d678d35595bf5e377",
+      "newline": "'\\n'"
+    },
+    {
+      "file": "current_geometry.c",
+      "before_raw_sha256": "9e2ae4fb4f133c5df604ddf3a30962f3c84da8fe5f8ba77b3b4145a78fe35f89",
+      "mutant_raw_sha256": "729dbab3e9cc8d0fc3b153b3ac53b70895a307fd91b1b5dfa0d66413450aa9a2",
+      "newline": "'\\r\\n'"
+    }
+  ]
+}

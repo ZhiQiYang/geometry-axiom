@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "python3",
+    "tests/binaries.py",
+    "build"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 0,
+  "seconds": 23.187258626001494,
+  "stack_soft_limit_bytes": 16777216,
+  "log_sha256": "84336f30b73b953707ef1daa27d16e4924413d93be16d4dcaaf8996dd17b7649",
+  "receipt": "returncode comes directly from Popen.poll, not test result inference",
+  "sample_count": 24
+}

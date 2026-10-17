@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "text": "boundary 331 outline 0,0 4000,0 4000,3000 0,3000\nboundary 332 outline 0,0 2000,0 2000,2000 0,2000\nplacement 331 on boundary 331 origin 0 0 2500 u +x v +y\nplacement 332 on boundary 332 origin 0 0 2600 u +x v +y\ncanvas-pos boundary 331 60 60\ncanvas-pos boundary 332 440 60\n",
+  "capabilities": [
+    "engineering-spec/1",
+    "parameters/1",
+    "assembly-rule-authoring/1",
+    "assembly-timber-generation/1",
+    "grid-subdivision-rules/1",
+    "section-profile/1"
+  ],
+  "required_capabilities": [],
+  "native_capabilities": [
+    "section-profile-native/1"
+  ],
+  "revision": 133,
+  "definition_sha256": "1b70b92570c3b1b0e3f507659e8bb6d4c98fb9c6d2fa88bca791007f64535eb1"
+}

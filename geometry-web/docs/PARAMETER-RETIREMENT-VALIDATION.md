@@ -1,4 +1,41 @@
-# P129 同來源分段定向證明（正式整合驗收待第18班）
+# P150 測試補強與完整60筆帳本
+
+[Claude P150](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6201649988)核收P141/P142產品邏輯及舊PR層子命令事實；[續審](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6202605616)核對本輪M1–M3並要求全表check0。歷史P141 R1/R2 WSL1/1與foreign限制未改，正式排他驗收歸第18班。
+
+受測 `4b1d09e083a2b834e369cdd5dbd02cd05cbf765b`，只改5個tests檔：M1註解改成完整候選驗證；M2反例為 `[delete 1, put 1(=@9:1), unbind, put 9(99)]`，最終圖可解析，unbind當下缺9仍必須拒絕，M69錯讀快取27會錯誤接受並被否定斷言抓到；M3具名 `DeletedSourceUnbind.test_delete_then_unbind_has_identical_dump_to_legal_order` 守住只刪未重建得27，新增反方向M70與20方法還原集合。產品程式、SSOT、正典與期待值未改。
+
+90方法已補齊：P150 R1 core40中39通過／1模型案例因控制環境漏adapter而明確skip，實際WSL1；R2官方建adapter只補該1例，再跑deleted-unbind14與assembly36全部過，沒有重跑39。M61–M70十組真bridge變異皆由具名行為斷言殺死，errors／skip0；20方法基準綠，每組逐byte還原、官方重編20方法再綠，還原binary與基準同byte。實際失敗子案例數 `{"M61":1,"M62":2,"M63":1,"M64":1,"M65":2,"M66":1,"M67":1,"M68":6,"M69":1,"M70":1}`。
+
+依Claude續審6202605616要求全表check0，R3再對同一來源執行核心47個有效變異的裁判（3筆退役只核定義），刷新原先因tool_hash改變而過期的紀錄。只複製P141已封存且來源閉包／變異／編譯指紋／ELF SHA完全相符的48份binary到新cache；實際日誌確認48次沿用，沒有宣稱重編。bridge10帳本列逐字相同、未重跑。最終60筆：52 killed／1 crashed／4 equivalent／3 retired，stale／blocked／invalid／survived／unrun皆0，WSL全表`--check` exit0；Windows獨立全表check亦0。
+
+P150三段實際WSL退出 `[1, 1, 0]`，原值及日誌全保留。R2回歸及十組突變完成，但子表檢查誤用完整60筆ledger，把其餘50個id視為不在子表而退出1；R3依最新要求刷新並驗完整60筆，沒有重跑bridge10或回歸90。三段foreign取樣皆空，四共享runner逐byte不變。獨立唯讀核對291個Git來源、1500個bridge sidecar來源引用、全部bridge原始stdout/stderr/binary/sidecar及47份core binary指紋；R3 receipt SHA `9df1270e7d8a8b14457dc2a6e52321d1fc22888bfe9ca553ecb268cb6ea49df0`。
+
+原件 `D:/geometry-axiom-work/board-local-codex/pr193-p150-native-r1`、`pr193-p150-native-r2`、`pr193-p150-core-refresh-r3` 及各自queue；核對 `pr193-p150-full60-verified-r1/certificate.json`。這是同一4b1來源分段完成的PR層證據，非完整native或正式七項。固定整合head的全表重產、官方正典sync/check/原41與七項仍歸第18班。
+
+## 歷史P141交核紀錄（P150已限定採計，原始限制保留）
+
+受測來源 `2a54a7960ae53f57e88544175cca01594a1648ab`；本次證據提交只更新帳本、官方正典產物、實測期待值及本紀錄。17個定向Python suite共300方法全過（含core40、誠實性32、PF-1 22/PF-2 17、assembly36），另原生場景143、integrity130皆exit0。空私有cache實跑全表59變異，判決 `killed=51, crashed=1, equivalent=4, retired=3`；`--check`、官方sync、正典`--check`與原41全0。R2實際WSL1：所有子命令exit0，但最後排他性assert失敗。405次取樣觀察到外來geo261基準/候選的_unittest_runner、run_all.py與cc1等，exclusive_during_run=false；完整原字典保留，不認證整輪排他綠燈，交Claude裁決、不自行重跑。首輪R1實際WSL1，268方法過、純32有一個DrvFS奈秒時間戳前提失敗，原件保留，R2只於私有16MiB tmpfs重跑32，不重跑268，原始退出與日誌不改寫。這是定向子命令的事實結果，不是已驗收的排他證明、完整native或正式七項。
+
+M61–M69九個真bridge變異各由具名行為斷言殺死，非錯誤或skip；先跑19個基準，每組逐byte還原、官方重編、19方法全過，還原binary逐byte等於基準。M68覆蓋三種試排引用與整卡刪除/欄位省略；M69驗[delete P, put P(a=99), unbind-source]錯讀快取必紅。既有M63同類欄位退化不恢復已刪死函式。結果與完整raw stdout/stderr、sidecar/source、Git blob由另一支唯讀腳本獨立核對。
+
+實測ParameterState：main1c807511 570904 bytes，本候選 802352 bytes；每World增加231448 bytes，因World內嵌該POD結構。HISTORY_MAX=32，undo與redo兩組共64份，上限增量14812672 bytes（約14.13 MiB）。主要上限為4096欄位刪除事件、4352份最後有效值與512份宣告；出口清空scratch，容量仍占World大小。P141已接受約230KB/World、約15MB歷史的級距。
+
+原件 `D:/geometry-axiom-work/board-local-codex/pr193-p141-native-r2`；receipt SHA `f62e8ca8fb74b221b7850841206e138f0b757b4a4a51390f6f09c86f51c9730e`；獨立certificate `independently-verified-raw-foreign-limited.json`。核對33個實際步驟、294個Git來源、8個固定binary引用/402個sidecar來源引用，以及467份原始byte；外來程序終局取樣 `{"samples":405,"foreign_processes_seen_during_run":{"/usr/bin/python3 /var/tmp/geo261-baseline-1c807511/tests/_unittest_runner.py /tmp/geometry-runner-cl":1,"/usr/bin/python3 /var/tmp/geo261-baseline-1c807511/tests/_unittest_runner.py /var/tmp/geo261-baselin":145,"/usr/bin/python3 /var/tmp/geo261-candidate-17a25e92/tests/_unittest_runner.py /var/tmp/geo261-candid":47,"/usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -I /var/tmp/geo261-baseline-1c807511/geometry-web -i":5,"/usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -I /var/tmp/geo261-candidate-17a25e92/geometry-web -":1,"/usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -imultiarch x86_64-linux-gnu /var/tmp/geo261-baselin":12,"/usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -imultiarch x86_64-linux-gnu /var/tmp/geo261-candida":4,"/usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -imultiarch x86_64-linux-gnu geometry-web/web_bridge":4,"bash -lc ls -la /opt/node; ls -la /opt/node/bin; /opt/node/bin/node --version; /usr/bin/google-chrom":1,"python3 -u tests/run_all.py --build ":163},"exclusive_during_run":false,"max_loadavg_1min_sampled":7.87}`，四共享runner SHA不變。
+
+只依本次實測改期待值core35→40、誠實性24→32。正式瀏覽器與固定整合head七項留第18班，先交Claude審P141；不自行准入、不合併。第17班由Claude負責；#251新P145及#254承接/核對另有前置，不在本PR借舊綠。
+
+## P141 修正內容
+
+
+依 [P141](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6195362041)，補列面材試排 gap、stagger、threshold 的引用；此擁有者沒有 engineering 改綁入口，來源結束後仍有引用就拒絕。五類原生引用者的訊息改為指名物件，要求先在原生 DSL 或物件自己的交易改掉引用，另成一筆後再刪。未新增交易 op。
+
+刪除無讀取者的 retired[]、retired_count 與 parameter_retired()；候選欄位刪除事件及最後有效值保護仍保留。三個試排案例各覆蓋整卡刪除與欄位省略後重建，另驗引用者清單截斷時仍指出原生物件。P135 七種退化與漏列試排合計八個新變異已登錄 M61–M68；M63 以欄位重建後跳過保護重現舊第三種退化，不恢復已刪死函式。bridge 變異使用實際預覽序列化及 unittest 裁判，與既有核心場景變異合併成同一帳本。
+
+另依 [P141補充](https://github.com/ZhiQiYang/geometry-axiom/pull/193#issuecomment-6196035356)，明確 unbind 那一步若欄位已重建，改走當下求值，不用舊存在期的快取；[delete P, put P(a=99), unbind-source] 必須保存99，無效的新來源仍拒絕。舊期待915的重建案例改驗920／925，另補具名99案例與 M69 真反證。合計59個登錄變異，共用還原19方法。
+
+以上修正已有本頁開頭的固定新來源子命令結果；排他性未通過，不能當整輪驗收。下列6236結果仍只屬歷史來源，未改寫舊raw或退出碼。交Claude裁決後才談第18班。
+
+## P129 同來源分段定向證明（歷史來源6236；正式整合驗收待第18班）
 
 受測來源固定 `6236f5733052a19362132738a4eb79cac7924e0b`。R3的13模組188方法、core143/143、integrity130/130及4檔JavaScript語法均exit0，控制器誤讀total後實際WSL1、突變0。R4完成前三突變及第四反例/還原build後依使用者關機要求中止，WSL143、final foreign unknown。R5因還原檔案mtime與sidecar不符，在測試前退出WSL1、測試0。
 
@@ -12,11 +49,11 @@ R7官方build後補第五組還原14，再只跑第六、七個真突變，兩�
 
 七個真突變：恢復鍵保留、重佔鍵跳過保護（import/put各一紅）、省略欄位跳過保護、只看首次刪除、錯把u宣告套v（兩子案例）、隱藏預覽重宣告、預覽誤用首次刪除。最後四支執行檔逐byte等於原R3基準，sidecar/source均fresh。R7 foreign `{"samples": 48, "foreign_processes_seen_during_run": {}, "exclusive_during_run": true, "max_loadavg_1min_sampled": 9.2}`。
 
-只依實際core35更新期待值25→35；本版四JS僅語法，browser未驗、reader0。完整native、fresh全表帳本/check、官方sync/check/原41及固定整合head正式七項仍待Claude審查後的17班。K3-L兩個真記號未執行。R1/R2較早啟動/夾具失敗原件保留，不驗收本來源。
+只依實際core35更新期待值25→35；本版四JS僅語法，browser未驗、reader0。完整native、fresh全表帳本/check、官方sync/check/原41及固定整合head正式七項仍待Claude審查後的18班。K3-L兩個真記號未執行。R1/R2較早啟動/夾具失敗原件保留，不驗收本來源。
 
 原件 `D:/geometry-axiom-work/board-local-codex/pr193-p129-native-r3` 至 `-r7` 各段獨立保存；R3 certificate SHA `4f25a4e68501a9d1c051da7c61540a64c6ece66d8e67dfcc82422a589e623a9e`，R4 receipt SHA `d9a97c4a7602749d62df0ec85e3d84bd539c01a0be3226a5b2b85edad0a9ca75`，R6 receipt SHA `e1055ecc20d99691ce20ebd5729ec2990e4acdf1ade53e8930b3d5ada8e2cc43`，R7 receipt SHA `45122c2dd4205202b00868147ace435fbddce0ed210499a4dbb849265a143404`。獨立核對 `D:/geometry-axiom-work/board-local-codex/pr193-p129-native-r7/independently-verified-v2.json`。
 
-P132先診斷服務/bridge與系統、附對照及不確定處，修好後才同6a62隔離grid，環境失敗不計額度。15退役，193未自行准入17或合併。
+P132先診斷服務/bridge與系統、附對照及不確定處，修好後才同6a62隔離grid，環境失敗不計額度。15退役，193未自行准入列車或合併。
 
 依[P136](https://github.com/ZhiQiYang/geometry-axiom/pull/237#issuecomment-6193925984)，#193/#196/#202/#207鏈改搭第18班；第17班改為#227+#237，仍須先完成第16班P132 grid。此處只同步列車安排，既有受測來源6236、raw結果、各次退出、期待值35及證明內容不變。
 

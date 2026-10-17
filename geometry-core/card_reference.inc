@@ -36,7 +36,7 @@ static bool grid_card_put(World *w,EngJson *j,int t)
        !eng_json_string(j,eng_json_member(j,t,"v"),axes[1],sizeof axes[1]))return grid_card_fail("D29 GRID_DEFINITION: grid-system %u requires id, name, mainAlong, u and v with their declared types and no unknown keys",s.id);
     if(!strcmp(main,"u"))s.main_along=1;else if(!strcmp(main,"v"))s.main_along=2;else if(strcmp(main,"none"))return grid_card_fail("D29 GRID_DEFINITION: grid-system %u mainAlong must be none, u or v",s.id);
     for(int a=0;a<2;++a){char *tokens[SCENE_MAX_TOKENS];int at=0,count=split_tokens(axes[a],tokens,SCENE_MAX_TOKENS);
-        if(count<1||!grid_system_read_axis(tokens,count,&at,&s.axis[a])||at!=count)return eng_fail("I74 MODE_TRANSITION: invalid or incomplete axis definition");}
+        if(count<1||!grid_system_read_axis(tokens,count,&at,&s.axis[a],a)||at!=count)return eng_fail("I74 MODE_TRANSITION: invalid or incomplete axis definition");}
     int ref=eng_json_member(j,t,"cardReference");if(ref>=0&&!grid_card_read(j,ref,s.id,&s.card_reference))return false;
     GridSystem *old=grid_card_system(w,s.id);
     if(old){

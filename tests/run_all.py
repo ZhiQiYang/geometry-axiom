@@ -94,6 +94,7 @@ PY_NEEDS = {
     'test_parameters_upstream_unbind': ['bridge'],
     'test_parameters_candidate_value_history': ['bridge'],
     'test_reference_contract': ['bridge'],
+    'test_recorded_api_receipts': [],
     'test_release_gate': [],
     'test_local_launcher': ['core', 'bridge', 'model-base'],
     'test_rule_case_workbench_http': ['bridge'],
@@ -122,6 +123,7 @@ PY_BROWSER_GATES = {
     'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
 }
 NODE_TEST_FILES = [
+    'tests/test_grid_inspector_stagger.cjs',
     'tests/test_transport_failure_trace.js',
     'tests/test_section_profile_compat.js',
     'tests/test_assembly_project_store.js',

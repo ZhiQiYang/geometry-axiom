@@ -1,0 +1,63 @@
+176/176 integrity checks passed (World=2904880 bytes)
+I8a preview 1: valid; confirm token to apply
+ timber 1 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 2 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 3 center 500 -> 2000 length 2946 -> 2946
+  surface 1 origin [514,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ guide 1: surface 1 u=500 world [500,0,2500] direction [0,1,0] -> surface 1 u=2000 world [2000,0,2500] direction [0,1,0]
+ visible: {[500,0]-[500,3000]} -> {[2000,0]-[2000,3000]}
+integrity:1: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 2: valid; confirm token to apply
+ timber 1 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,3000] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 2 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,3000] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 3 center 2000 -> 2000 length 2946 -> 2946
+  surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,27,3000] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ guide 1: surface 1 u=2000 world [2000,0,2500] direction [0,1,0] -> surface 1 u=2000 world [2000,0,3000] direction [0,1,0]
+ visible: {[2000,0]-[2000,3000]} -> {[2000,0]-[2000,3000]}
+integrity:1: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+integrity:1: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）: boundary 1: R6/I5/I6 timber 3: 中線上沒有任何合法跨距
+I8a preview 3: invalid; cannot apply
+boundary 1 geometry-hash d8c0cf502d85aa9f4705b301c32fbf749d9326c23d151da64786d36814f23f04 kind 0 outer unkeyed:0,0/fixity=1 unkeyed:4000,0/fixity=1 unkeyed:4000,3000/fixity=1 unkeyed:0,3000/fixity=1 -> boundary 1 geometry-hash 62b30e49afb00d3027212c1180cc2eb1b736ce5c0f4eea599d8b5f06270ce7b4 kind 0 outer unkeyed:0,0/fixity=1 unkeyed:20,0/fixity=1 unkeyed:20,3000/fixity=1 unkeyed:0,3000/fixity=1
+ timber 1 center 13 -> 13 length 4000 -> 20
+  surface 1 origin [0,0,3000] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,3000] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 2 center 2986 -> 2986 length 4000 -> 20
+  surface 1 origin [0,2973,3000] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,3000] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 3 center 2000 -> 0 length 2946 -> 0 (unavailable/deleted)
+  surface 1 origin [2014,27,3000] axes [0,1,0]/[-1,0,0]/[0,0,1] -> unavailable
+ guide 1: surface 1 u=2000 world [2000,0,3000] direction [0,1,0] -> surface 1 u=10 world [10,0,3000] direction [0,1,0]
+ visible: {[2000,0]-[2000,3000]} -> {[10,0]-[10,3000]}
+ timber 3 R6/I5/I6 expected: one non-overlapping supported span; role and direction constraints satisfied; actual: 中線上沒有任何合法跨距
+integrity:1: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+integrity:1: 柱宣告後有物件失效（足跡越界/柱-柱重疊/空間不存在）
+integrity:1: 樑宣告後有物件失效（足跡越界/空間不存在）
+integrity:1: 重宣告後有物件失效（參考線/角材/空間沒全過）
+integrity:1: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）: boundary 1: 場景重驗失敗
+integrity:1: 新增承載面後有物件失效（已回滾）
+integrity:1: 新增承載面後有物件失效（已回滾）
+integrity:1: I13/I23 timber 4: missing grid or face/axis mismatch (垂直)
+I8a preview 4: valid; confirm token to apply
+grid 1 on 1 sample (not complete geometry) u stride 1 total 1: k=0@2000{[2000,0]-[2000,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]} -> grid 1 on 1 sample (not complete geometry) u stride 1 total 1: k=0@2500{[2500,0]-[2500,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]}
+ timber 1 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 2 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 3 center 500 -> 500 length 2946 -> 2946
+  surface 1 origin [514,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [514,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 4 center 2000 -> 2500 length 2946 -> 2946
+  surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2514,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+integrity:1: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+integrity:1: place 缺少長度方向與深度側，或有多餘欄位
+integrity:1: 刪除後 World 失效，已回滾
+I8a preview 5: invalid; cannot apply
+ timber 1 center 13 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 2 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 3 center 500 -> 0 length 2946 -> 0 (unavailable/deleted)
+  surface 1 origin [514,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> unavailable
+ timber 3 I19/I22 expected: each stop has strictly higher cut priority, subject to boundary exceptions; actual: V_CUT_PRIORITY：角材 3 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC
+integrity:1: I8a: impact preview required; inspect preview, then confirm token (World unchanged)

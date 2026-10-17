@@ -1,0 +1,50 @@
+{
+ "file": "tests/test_axiom_reader.py",
+ "total": 41,
+ "run": 41,
+ "passed": 35,
+ "failed": 6,
+ "skipped": 0,
+ "explicit_skipped": 0,
+ "unrun_skipped": 0,
+ "blocked_by_error": 0,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [
+  {
+   "test": "test_axiom_reader.CanonicalReader.test_color_contract_allows_unrelated_properties_and_untracked_selectors",
+   "kind": "failure",
+   "message": "AssertionError: '<!do[73504 chars]ace=\"ok\" data-ex=\"1\" data-wit=\"0\" data-hub=\"0\"[3910028 chars]tml>' != '<!do[73504 chars]ace=\"partial\" data-ex=\"1\" data-wit=\"0\" data-hu[3908622 chars]tml>'"
+  },
+  {
+   "test": "test_axiom_reader.CanonicalReader.test_current_layout_change_does_not_relock_historical_migration_tests",
+   "kind": "failure",
+   "message": "AssertionError: '<!do[74238 chars]ace=\"partial\" data-ex=\"1\" data-wit=\"0\" data-hu[3908298 chars]tml>' != '<!do[74238 chars]ace=\"ok\" data-ex=\"1\" data-wit=\"0\" data-hub=\"0\"[3909704 chars]tml>'"
+  },
+  {
+   "test": "test_axiom_reader.CanonicalReader.test_legacy_image_handler_retires_without_changing_live_svg_handler",
+   "kind": "failure",
+   "message": "AssertionError: '<!do[73504 chars]ace=\"ok\" data-ex=\"1\" data-wit=\"0\" data-hub=\"0\"[3909704 chars]tml>' != '<!do[73504 chars]ace=\"partial\" data-ex=\"1\" data-wit=\"0\" data-hu[3908298 chars]tml>'"
+  },
+  {
+   "test": "test_axiom_reader.CanonicalReader.test_rebuild_is_byte_idempotent_and_keeps_reviews",
+   "kind": "failure",
+   "message": "AssertionError: '<!do[73504 chars]ace=\"partial\" data-ex=\"1\" data-wit=\"0\" data-hu[3908298 chars]tml>' != '<!do[73504 chars]ace=\"ok\" data-ex=\"1\" data-wit=\"0\" data-hub=\"0\"[3909704 chars]tml>'"
+  },
+  {
+   "test": "test_axiom_reader.CanonicalReader.test_retired_color_migrations_allow_format_and_unrelated_layout_changes",
+   "kind": "failure",
+   "message": "AssertionError: '<!do[74238 chars]ace=\"partial\" data-ex=\"1\" data-wit=\"0\" data-hu[3908298 chars]tml>' != '<!do[74238 chars]ace=\"ok\" data-ex=\"1\" data-wit=\"0\" data-hub=\"0\"[3909704 chars]tml>'"
+  },
+  {
+   "test": "test_axiom_reader.CanonicalReader.test_traceability_lights_and_hub_badges_exist",
+   "kind": "failure",
+   "message": "AssertionError: 'data-clause=\"R4\" data-trace=\"ok\"' not found in '<!doctype html>\\n<html lang=\"zh-Hant\" data-theme=\"dark\" style=\"--text: 18px; --workspace-top: 77px;\"><head><!-- AXIOM REVIEW: authoritative annotation data is JSON in #axiom-review-data; human-readable comments are beside each [data-bl"
+  }
+ ],
+ "skip_reasons": {},
+ "skip_items": [],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 113.57
+}

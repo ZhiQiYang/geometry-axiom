@@ -1,0 +1,1812 @@
+{
+  "phase": "before",
+  "binary_sha256": "1d6978e8846d02b5726918dde75a042f91e8683b1b7730221db093ea5da5c63b",
+  "source_binding": {
+    "name": "bridge",
+    "fingerprint": "678ed77cd1cf6d6f6cb76c9f7fc1fbae78ebd9d0a8ca873b7ce9403edea933d3",
+    "command": "cc -std=c11 -O2 geometry-web/web_bridge.c -lm -> bridge",
+    "built_at": "2026-10-11T19:43:25+00:00",
+    "build_seconds": 13.3,
+    "exe": "bridge",
+    "exe_size": 579136,
+    "exe_mtime_ns": 1791747805669351004,
+    "exe_sha256": "1d6978e8846d02b5726918dde75a042f91e8683b1b7730221db093ea5da5c63b",
+    "files": {
+      "current_geometry.c": "a9e87854556a265939bcaa904b239d26225a4d3bc0b841da8ddab89b78bb5035",
+      "geometry-core/model_base.c": "d8842c087a03ee32a573d74ceb2c8bc3b6769d2dc8afed0516a0ab2d63b1a486",
+      "geometry-core/parameter_types.h": "b7e2576fa43f6cc0c25742b239bc75ebec112ddb84a59e984d018ddb516edd09",
+      "geometry-core/assembly_types.h": "952ce67924055a3dc74eceb70bd154ea20876881887481b2b08216ca90b5ac2d",
+      "geometry-core/engineering_types.h": "1c80317f00fb6b51426deb35324ce52ea1155bb8097ee7faa208a3957d90a63b",
+      "geometry-core/reference_types.h": "897fb363686547f9d520783ad3aa0aa73f5cca93b2cf9c53022e256a178b6675",
+      "geometry-core/section_profile_types.h": "5afdbed8e568a866130c9f78d9b6c108472466ff082836703461d07ca8c9792d",
+      "geometry-core/subgrid_commands.inc": "c01b4a006b182a25510d7ff49aa41727ada0adb39e93ee307611c10b0ad893a5",
+      "geometry-core/parameters.inc": "b580824db9b521db0a416976e0eef61d4383f0b8e3da28520ad2f6aefadc887a",
+      "geometry-core/grid_subdivision_query.inc": "d0d860a6bc9e3f19bad52fd548a229a967ff124c1a70fdd6050012e5fa221b87",
+      "geometry-core/subgrid_rebind.inc": "a50f2e79516806148bbee14e018b51cc26fe6788f9abf1d1ac2686aee6292d25",
+      "geometry-core/section_profile_placement.inc": "47ea510d9aee18796b187021086ba88588d8b1f472decfb531567762356561b3",
+      "geometry-core/engineering_json.inc": "78a75f77cfde2fffd12722d7c302ee6aef22496f1c518e59902e80a4e7ecec3b",
+      "geometry-core/references.inc": "06e80fe7d4f3869eb343eb27741a6b056c95ead679b90032cc1ce3453fe473ce",
+      "geometry-core/subgrid_world.inc": "3dbf7322d756629599b54553fcee72716096e14b1b2d828bc7dd3776637c642f",
+      "geometry-core/assembly.inc": "429bbfaf178ce1be9b4eec73131c761de8dcad89f307958b3bb98990cbd3684f",
+      "geometry-core/grid_systems.inc": "89f68dedb27c06c6e6e733bc75875367cf7392e3876f9121e51a0201864d8a64",
+      "geometry-core/section_profile_conversion.inc": "0eb378cb94dc4e2197bc4acd35cf1fa33c7caacc0534526b60aa81b2aff4110d",
+      "geometry-core/grid_bindings.inc": "ff9b1359e8471f171d2925de721a8a466ca8ea8b230ee3627bead1c2fb631e1d",
+      "geometry-core/assembly_generation.inc": "e58acee135f27c799aab83d9410ec6ce97f8b053d830ac28abed92aedd29b48e",
+      "geometry-core/subgrids.inc": "b20907d2b50b147491ae22cd7f2383e357df42be453773267570498177ee4436",
+      "geometry-core/transactions.inc": "f959d4d571c7bbb9295f91bc24a689de6848c9ff59f7c411b61d61d203b4cb43",
+      "geometry-core/engineering_commands.inc": "4c8dd5b71a7135db94d2b8ae2f4d2efbf5bb519d8b053804987409ec46a9c0c2",
+      "geometry-core/section_profile_validation.inc": "a5d1cc23265d94de9881dca4df563b5e072126d5d69d5b92a0f35e8dc7c0bb49",
+      "geometry-core/engineering.inc": "477f737de0335b217ae65b4de3eb8244338f1400d04be8d0fd0834c2047cbd4a",
+      "geometry-core/section_profiles.inc": "c0f72d950b0f7e2aff5ec3cebe75e5bb9e4610ceb7ccb19a338641b5e41b0c78",
+      "geometry-core/grid_subdivision.inc": "a1d37f00bdcf0532c574127ad12d4ec3ec911e8ed00355f51cb3b30801e19a6b",
+      "geometry-core/grid_lattice.inc": "163b836712f18c74b86e27c49ce473d0c271dd142c109e2081d662855eb2f598",
+      "geometry-core/boundary_vertex_keys.inc": "8d95a6e6ebb783eddd6f21abb6ffd37d27462a9cd36f69e6b90cf5818e5b9772",
+      "geometry-web/web_bridge.c": "e99e08a48ea7fe638c947a3cc1810e6df176ecfaa4fe464354cfd0391f026d53",
+      "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c": "e796808d125a6d683d9d5ebb6c0d3c74c929fed9e7ed2a7cf4eb3f683688ee51",
+      "geometry-web/grid_subdivision_bridge.inc": "1cfe0f48668a51f20f4d71f547923caae6f10dbc5d3c9f146b6a01dcaa6c1d2b",
+      "geometry-web/grid_binding_bridge.inc": "c28c35ea3d49da56d4b1b69ba78da1be6449f18196a801562a07d760cfb476bd",
+      "geometry-web/section_profile_diagnostics.inc": "edb80cd7fce7784c7201d10376428f2fe26b771058f353845b6c2b1cf083931d",
+      "geometry-web/engineering_bridge.inc": "71d5fd8d8870a0c66a1032c7655227dbec0ab900de601843744c713f82933df2",
+      "geometry-web/section_profile_source_index.inc": "ff316024b12606f7ec7c291527602a87bcf2e67a9f91a5ed8e2a822459b35912",
+      "geometry-web/grid_system_bridge.inc": "8c123b6ec7720642758a61b3adfdd4cbe11c156527acb97a463b56fb734ee339",
+      "geometry-web/parameter_bridge.inc": "1646a4b5f13b11293a73682241ac8574430d5e56fad42cae62f4e1a840d539c2",
+      "geometry-web/timber_support_projection.inc": "f5f20fa285f6bf47d9e4e807acb38349bbef86b01705263a7d62f99ad0a2845c",
+      "geometry-web/reference_bridge.inc": "dab2b87f0dd868c9202fa178086ba522224e24451f73f5b93da5b1e407303e76",
+      "geometry-web/section_profile_bridge.inc": "8989ea42b0861b0fa09c4862032671fdf7873f2fdf62e61b09d1778bdef9ac0d",
+      "geometry-web/source-inspector-bridge.inc": "4f7d035689920ee26c471b8e21d796958ec6878a0cfc6c21ec14fff6ae97ba46",
+      "geometry-web/assembly_bridge.inc": "25289581f4d2f3d563f77ea4bd9b66915797feb8b21a5b54b5b777a4a02c9f3f",
+      "geometry-web/scene-import-bridge.inc": "baeb2cbb08c470cd891751cad132b5c0e27fb652afd0ce0cbb9991d334f8b53f"
+    }
+  },
+  "source_c_sha256": "00342fb017fe0725dc11f4cd78ced66727112d676f9e80df1954e4a1f5e0ee4f",
+  "cases": [
+    {
+      "strip": false,
+      "prior_hole": false,
+      "fixture": [
+        {
+          "command": "line reset",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line column 1 at 10 10 size 10 20 z 0 100",
+          "result": {
+            "ok": true
+          }
+        }
+      ],
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "split",
+            "rect": [
+              10,
+              10,
+              20,
+              30
+            ]
+          }
+        ]
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 10 10 size 10 20 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 13,
+        "definition_sha256": "57274d0762012e92cb2f3221f677dd94baac194bd9fdc563e24e10bd7fa58a89"
+      },
+      "command": "line apply-proj 1 c1",
+      "result": {
+        "ok": true
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 10,10 20,10 20,30 10,30\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 10 u +x v +y\ncolumn 1 at 10 10 size 10 20 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 14,
+        "definition_sha256": "fff64c3bd3cb1e8a2491c222bbe17a359832f070b8edb3de34e42aca983743c0"
+      },
+      "dump_equal": false,
+      "pieces": [
+        {
+          "id": 1,
+          "result": {
+            "ok": true,
+            "id": 1,
+            "geometryFingerprint": "8a155e441d5c977f2794733c21fe2f9f4f6a29c6127a4861ddf33b49a85a74cc",
+            "kind": "unspecified",
+            "keysPersisted": false,
+            "loops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    10
+                  ],
+                  [
+                    10,
+                    10
+                  ],
+                  [
+                    10,
+                    0
+                  ],
+                  [
+                    20,
+                    0
+                  ],
+                  [
+                    20,
+                    10
+                  ],
+                  [
+                    30,
+                    10
+                  ],
+                  [
+                    30,
+                    20
+                  ],
+                  [
+                    20,
+                    20
+                  ],
+                  [
+                    10,
+                    20
+                  ],
+                  [
+                    0,
+                    20
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      10,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      10,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      20,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 4,
+                    "key": null,
+                    "uv": [
+                      20,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 5,
+                    "key": null,
+                    "uv": [
+                      30,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 6,
+                    "key": null,
+                    "uv": [
+                      30,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 7,
+                    "key": null,
+                    "uv": [
+                      20,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 8,
+                    "key": null,
+                    "uv": [
+                      10,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 9,
+                    "key": null,
+                    "uv": [
+                      0,
+                      20
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": 2,
+          "result": {
+            "ok": true,
+            "id": 2,
+            "geometryFingerprint": "9e86b53df0804e22253e2a16dd6a10a9c304145d1c10197fe55181b7d2fe6cbf",
+            "kind": "unspecified",
+            "keysPersisted": false,
+            "loops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    20,
+                    30
+                  ],
+                  [
+                    20,
+                    40
+                  ],
+                  [
+                    10,
+                    40
+                  ],
+                  [
+                    10,
+                    30
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      20,
+                      30
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      20,
+                      40
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      10,
+                      40
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      10,
+                      30
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "undo": {
+        "ok": true
+      },
+      "undo_dump": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 10 10 size 10 20 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 15,
+        "definition_sha256": "57274d0762012e92cb2f3221f677dd94baac194bd9fdc563e24e10bd7fa58a89"
+      },
+      "redo": {
+        "ok": true
+      },
+      "redo_dump": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 10,10 20,10 20,30 10,30\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 10 u +x v +y\ncolumn 1 at 10 10 size 10 20 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 16,
+        "definition_sha256": "fff64c3bd3cb1e8a2491c222bbe17a359832f070b8edb3de34e42aca983743c0"
+      },
+      "reload": {
+        "ok": true,
+        "revision": 18,
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "definition_sha256": "fff64c3bd3cb1e8a2491c222bbe17a359832f070b8edb3de34e42aca983743c0"
+      },
+      "reopened": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 10,10 20,10 20,30 10,30\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 10 u +x v +y\ncolumn 1 at 10 10 size 10 20 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 18,
+        "definition_sha256": "fff64c3bd3cb1e8a2491c222bbe17a359832f070b8edb3de34e42aca983743c0"
+      },
+      "geometry": {
+        "original_area": 600,
+        "expected_area": 400,
+        "piece_areas": [
+          400,
+          100
+        ],
+        "actual_union_area": 500,
+        "saved_difference_equal": false,
+        "removed_15_15_retained": true
+      },
+      "bridge_returncode": 0
+    },
+    {
+      "strip": false,
+      "prior_hole": true,
+      "fixture": [
+        {
+          "command": "line reset",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line column 1 at 10 10 size 10 20 z 0 100",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line column 2 at 12 2 size 4 4 z 0 100",
+          "result": {
+            "ok": true
+          }
+        }
+      ],
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "split",
+            "rect": [
+              10,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "id": 2,
+            "type": "column",
+            "cls": "hole",
+            "rect": [
+              12,
+              2,
+              16,
+              6
+            ]
+          }
+        ]
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 10 10 size 10 20 z 0 100\ncolumn 2 at 12 2 size 4 4 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 14,
+        "definition_sha256": "5661bf227e67f03f276653b0520b2c9a4d6b1e9353a6a3ce3b8383466f0e8360"
+      },
+      "command": "line apply-proj 1 c2 c1",
+      "result": {
+        "ok": true
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20 hole 12,2 16,2 16,6 12,6\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 10,10 20,10 20,30 10,30\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 10 u +x v +y\ncolumn 1 at 10 10 size 10 20 z 0 100\ncolumn 2 at 12 2 size 4 4 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 15,
+        "definition_sha256": "46b2b70c158484c764ca77bab8e779810c364af10509caeae9050ce73c0ac32c"
+      },
+      "dump_equal": false,
+      "pieces": [
+        {
+          "id": 1,
+          "result": {
+            "ok": true,
+            "id": 1,
+            "geometryFingerprint": "4ef7c640055b0f3201ee41f5d485468559e66ab1110db90f5bef06227c06903f",
+            "kind": "unspecified",
+            "keysPersisted": false,
+            "loops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    10
+                  ],
+                  [
+                    10,
+                    10
+                  ],
+                  [
+                    10,
+                    0
+                  ],
+                  [
+                    20,
+                    0
+                  ],
+                  [
+                    20,
+                    10
+                  ],
+                  [
+                    30,
+                    10
+                  ],
+                  [
+                    30,
+                    20
+                  ],
+                  [
+                    20,
+                    20
+                  ],
+                  [
+                    10,
+                    20
+                  ],
+                  [
+                    0,
+                    20
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      10,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      10,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      20,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 4,
+                    "key": null,
+                    "uv": [
+                      20,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 5,
+                    "key": null,
+                    "uv": [
+                      30,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 6,
+                    "key": null,
+                    "uv": [
+                      30,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 7,
+                    "key": null,
+                    "uv": [
+                      20,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 8,
+                    "key": null,
+                    "uv": [
+                      10,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 9,
+                    "key": null,
+                    "uv": [
+                      0,
+                      20
+                    ]
+                  }
+                ]
+              },
+              {
+                "loop": 0,
+                "verts": [
+                  [
+                    12,
+                    2
+                  ],
+                  [
+                    16,
+                    2
+                  ],
+                  [
+                    16,
+                    6
+                  ],
+                  [
+                    12,
+                    6
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      12,
+                      2
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      16,
+                      2
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      16,
+                      6
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      12,
+                      6
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": 2,
+          "result": {
+            "ok": true,
+            "id": 2,
+            "geometryFingerprint": "9e86b53df0804e22253e2a16dd6a10a9c304145d1c10197fe55181b7d2fe6cbf",
+            "kind": "unspecified",
+            "keysPersisted": false,
+            "loops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    20,
+                    30
+                  ],
+                  [
+                    20,
+                    40
+                  ],
+                  [
+                    10,
+                    40
+                  ],
+                  [
+                    10,
+                    30
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      20,
+                      30
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      20,
+                      40
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      10,
+                      40
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      10,
+                      30
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "undo": {
+        "ok": true
+      },
+      "undo_dump": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 1 at 10 10 size 10 20 z 0 100\ncolumn 2 at 12 2 size 4 4 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 16,
+        "definition_sha256": "5661bf227e67f03f276653b0520b2c9a4d6b1e9353a6a3ce3b8383466f0e8360"
+      },
+      "redo": {
+        "ok": true
+      },
+      "redo_dump": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20 hole 12,2 16,2 16,6 12,6\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 10,10 20,10 20,30 10,30\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 10 u +x v +y\ncolumn 1 at 10 10 size 10 20 z 0 100\ncolumn 2 at 12 2 size 4 4 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 17,
+        "definition_sha256": "46b2b70c158484c764ca77bab8e779810c364af10509caeae9050ce73c0ac32c"
+      },
+      "reload": {
+        "ok": true,
+        "revision": 19,
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "definition_sha256": "46b2b70c158484c764ca77bab8e779810c364af10509caeae9050ce73c0ac32c"
+      },
+      "reopened": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20 hole 12,2 16,2 16,6 12,6\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 10,10 20,10 20,30 10,30\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 0 0 10 u +x v +y\ncolumn 1 at 10 10 size 10 20 z 0 100\ncolumn 2 at 12 2 size 4 4 z 0 100\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 19,
+        "definition_sha256": "46b2b70c158484c764ca77bab8e779810c364af10509caeae9050ce73c0ac32c"
+      },
+      "geometry": {
+        "original_area": 600,
+        "expected_area": 384,
+        "piece_areas": [
+          384,
+          100
+        ],
+        "actual_union_area": 484,
+        "saved_difference_equal": false,
+        "removed_15_15_retained": true
+      },
+      "bridge_returncode": 0
+    },
+    {
+      "strip": true,
+      "prior_hole": false,
+      "fixture": [
+        {
+          "command": "line reset",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line beam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0",
+          "result": {
+            "ok": true
+          }
+        }
+      ],
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "beam",
+            "cls": "strip",
+            "rect": [
+              10,
+              10,
+              20,
+              30
+            ]
+          }
+        ]
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nbeam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 13,
+        "definition_sha256": "03e954306f862118ead2b879e03dd533c06639dd4dbd2c03ed876711caf47deb"
+      },
+      "command": "line apply-proj 1 b1 cut-strip",
+      "result": {
+        "ok": true
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 0,0 20,0 20,10 0,10\nboundary 4 outline 0,0 10,0 10,20 0,20\nboundary 5 outline 0,0 20,0 20,10 0,10\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 10 10 -10 u +y v +x\nplacement 4 on boundary 4 origin 10 10 -10 u +z v +y\nplacement 5 on boundary 5 origin 20 10 -10 u +y v +z\nbeam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 14,
+        "definition_sha256": "b0be632a17d7e6cc05d789a0a523fcf0e932296af8c732bcec431263d47eb839"
+      },
+      "dump_equal": false,
+      "pieces": [
+        {
+          "id": 1,
+          "result": {
+            "ok": true,
+            "id": 1,
+            "geometryFingerprint": "8a155e441d5c977f2794733c21fe2f9f4f6a29c6127a4861ddf33b49a85a74cc",
+            "kind": "unspecified",
+            "keysPersisted": false,
+            "loops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    10
+                  ],
+                  [
+                    10,
+                    10
+                  ],
+                  [
+                    10,
+                    0
+                  ],
+                  [
+                    20,
+                    0
+                  ],
+                  [
+                    20,
+                    10
+                  ],
+                  [
+                    30,
+                    10
+                  ],
+                  [
+                    30,
+                    20
+                  ],
+                  [
+                    20,
+                    20
+                  ],
+                  [
+                    10,
+                    20
+                  ],
+                  [
+                    0,
+                    20
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      10,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      10,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      20,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 4,
+                    "key": null,
+                    "uv": [
+                      20,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 5,
+                    "key": null,
+                    "uv": [
+                      30,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 6,
+                    "key": null,
+                    "uv": [
+                      30,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 7,
+                    "key": null,
+                    "uv": [
+                      20,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 8,
+                    "key": null,
+                    "uv": [
+                      10,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 9,
+                    "key": null,
+                    "uv": [
+                      0,
+                      20
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": 2,
+          "result": {
+            "ok": true,
+            "id": 2,
+            "geometryFingerprint": "9e86b53df0804e22253e2a16dd6a10a9c304145d1c10197fe55181b7d2fe6cbf",
+            "kind": "unspecified",
+            "keysPersisted": false,
+            "loops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    20,
+                    30
+                  ],
+                  [
+                    20,
+                    40
+                  ],
+                  [
+                    10,
+                    40
+                  ],
+                  [
+                    10,
+                    30
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      20,
+                      30
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      20,
+                      40
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      10,
+                      40
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      10,
+                      30
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "undo": {
+        "ok": true
+      },
+      "undo_dump": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nbeam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 15,
+        "definition_sha256": "03e954306f862118ead2b879e03dd533c06639dd4dbd2c03ed876711caf47deb"
+      },
+      "redo": {
+        "ok": true
+      },
+      "redo_dump": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 0,0 20,0 20,10 0,10\nboundary 4 outline 0,0 10,0 10,20 0,20\nboundary 5 outline 0,0 20,0 20,10 0,10\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 10 10 -10 u +y v +x\nplacement 4 on boundary 4 origin 10 10 -10 u +z v +y\nplacement 5 on boundary 5 origin 20 10 -10 u +y v +z\nbeam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 16,
+        "definition_sha256": "b0be632a17d7e6cc05d789a0a523fcf0e932296af8c732bcec431263d47eb839"
+      },
+      "reload": {
+        "ok": true,
+        "revision": 18,
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "definition_sha256": "b0be632a17d7e6cc05d789a0a523fcf0e932296af8c732bcec431263d47eb839"
+      },
+      "reopened": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 0,0 20,0 20,10 0,10\nboundary 4 outline 0,0 10,0 10,20 0,20\nboundary 5 outline 0,0 20,0 20,10 0,10\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 10 10 -10 u +y v +x\nplacement 4 on boundary 4 origin 10 10 -10 u +z v +y\nplacement 5 on boundary 5 origin 20 10 -10 u +y v +z\nbeam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 18,
+        "definition_sha256": "b0be632a17d7e6cc05d789a0a523fcf0e932296af8c732bcec431263d47eb839"
+      },
+      "geometry": {
+        "original_area": 600,
+        "expected_area": 400,
+        "piece_areas": [
+          400,
+          100
+        ],
+        "actual_union_area": 500,
+        "saved_difference_equal": false,
+        "removed_15_15_retained": true
+      },
+      "bridge_returncode": 0
+    },
+    {
+      "strip": true,
+      "prior_hole": true,
+      "fixture": [
+        {
+          "command": "line reset",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line surface 1 origin 0 0 0 u +x v +y outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line beam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "command": "line column 2 at 12 2 size 4 4 z 0 100",
+          "result": {
+            "ok": true
+          }
+        }
+      ],
+      "query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 2,
+            "type": "column",
+            "cls": "hole",
+            "rect": [
+              12,
+              2,
+              16,
+              6
+            ]
+          },
+          {
+            "id": 1,
+            "type": "beam",
+            "cls": "strip",
+            "rect": [
+              10,
+              10,
+              20,
+              30
+            ]
+          }
+        ]
+      },
+      "before": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 2 at 12 2 size 4 4 z 0 100\nbeam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 14,
+        "definition_sha256": "46a7000f9ac717a9fce5033b84b5a84d10818ca5f468e994249b99c77010426a"
+      },
+      "command": "line apply-proj 1 c2 b1 cut-strip",
+      "result": {
+        "ok": true
+      },
+      "after": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20 hole 12,2 16,2 16,6 12,6\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 0,0 20,0 20,10 0,10\nboundary 4 outline 0,0 10,0 10,20 0,20\nboundary 5 outline 0,0 20,0 20,10 0,10\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 10 10 -10 u +y v +x\nplacement 4 on boundary 4 origin 10 10 -10 u +z v +y\nplacement 5 on boundary 5 origin 20 10 -10 u +y v +z\ncolumn 2 at 12 2 size 4 4 z 0 100\nbeam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 15,
+        "definition_sha256": "f4eafad1e66b3bc285d4c9e82d568f339f65c079a14685416b080bd4c2fc8112"
+      },
+      "dump_equal": false,
+      "pieces": [
+        {
+          "id": 1,
+          "result": {
+            "ok": true,
+            "id": 1,
+            "geometryFingerprint": "4ef7c640055b0f3201ee41f5d485468559e66ab1110db90f5bef06227c06903f",
+            "kind": "unspecified",
+            "keysPersisted": false,
+            "loops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    0,
+                    10
+                  ],
+                  [
+                    10,
+                    10
+                  ],
+                  [
+                    10,
+                    0
+                  ],
+                  [
+                    20,
+                    0
+                  ],
+                  [
+                    20,
+                    10
+                  ],
+                  [
+                    30,
+                    10
+                  ],
+                  [
+                    30,
+                    20
+                  ],
+                  [
+                    20,
+                    20
+                  ],
+                  [
+                    10,
+                    20
+                  ],
+                  [
+                    0,
+                    20
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      0,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      10,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      10,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      20,
+                      0
+                    ]
+                  },
+                  {
+                    "index": 4,
+                    "key": null,
+                    "uv": [
+                      20,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 5,
+                    "key": null,
+                    "uv": [
+                      30,
+                      10
+                    ]
+                  },
+                  {
+                    "index": 6,
+                    "key": null,
+                    "uv": [
+                      30,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 7,
+                    "key": null,
+                    "uv": [
+                      20,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 8,
+                    "key": null,
+                    "uv": [
+                      10,
+                      20
+                    ]
+                  },
+                  {
+                    "index": 9,
+                    "key": null,
+                    "uv": [
+                      0,
+                      20
+                    ]
+                  }
+                ]
+              },
+              {
+                "loop": 0,
+                "verts": [
+                  [
+                    12,
+                    2
+                  ],
+                  [
+                    16,
+                    2
+                  ],
+                  [
+                    16,
+                    6
+                  ],
+                  [
+                    12,
+                    6
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      12,
+                      2
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      16,
+                      2
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      16,
+                      6
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      12,
+                      6
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": 2,
+          "result": {
+            "ok": true,
+            "id": 2,
+            "geometryFingerprint": "9e86b53df0804e22253e2a16dd6a10a9c304145d1c10197fe55181b7d2fe6cbf",
+            "kind": "unspecified",
+            "keysPersisted": false,
+            "loops": [
+              {
+                "loop": -1,
+                "verts": [
+                  [
+                    20,
+                    30
+                  ],
+                  [
+                    20,
+                    40
+                  ],
+                  [
+                    10,
+                    40
+                  ],
+                  [
+                    10,
+                    30
+                  ]
+                ],
+                "fixity": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "vertices": [
+                  {
+                    "index": 0,
+                    "key": null,
+                    "uv": [
+                      20,
+                      30
+                    ]
+                  },
+                  {
+                    "index": 1,
+                    "key": null,
+                    "uv": [
+                      20,
+                      40
+                    ]
+                  },
+                  {
+                    "index": 2,
+                    "key": null,
+                    "uv": [
+                      10,
+                      40
+                    ]
+                  },
+                  {
+                    "index": 3,
+                    "key": null,
+                    "uv": [
+                      10,
+                      30
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "undo": {
+        "ok": true
+      },
+      "undo_dump": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 20,40 10,40 10,20 0,20\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\ncolumn 2 at 12 2 size 4 4 z 0 100\nbeam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 16,
+        "definition_sha256": "46a7000f9ac717a9fce5033b84b5a84d10818ca5f468e994249b99c77010426a"
+      },
+      "redo": {
+        "ok": true
+      },
+      "redo_dump": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20 hole 12,2 16,2 16,6 12,6\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 0,0 20,0 20,10 0,10\nboundary 4 outline 0,0 10,0 10,20 0,20\nboundary 5 outline 0,0 20,0 20,10 0,10\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 10 10 -10 u +y v +x\nplacement 4 on boundary 4 origin 10 10 -10 u +z v +y\nplacement 5 on boundary 5 origin 20 10 -10 u +y v +z\ncolumn 2 at 12 2 size 4 4 z 0 100\nbeam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 17,
+        "definition_sha256": "f4eafad1e66b3bc285d4c9e82d568f339f65c079a14685416b080bd4c2fc8112"
+      },
+      "reload": {
+        "ok": true,
+        "revision": 19,
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "definition_sha256": "f4eafad1e66b3bc285d4c9e82d568f339f65c079a14685416b080bd4c2fc8112"
+      },
+      "reopened": {
+        "ok": true,
+        "text": "boundary 1 outline 0,10 10,10 10,0 20,0 20,10 30,10 30,20 20,20 10,20 0,20 hole 12,2 16,2 16,6 12,6\nboundary 2 outline 20,30 20,40 10,40 10,30\nboundary 3 outline 0,0 20,0 20,10 0,10\nboundary 4 outline 0,0 10,0 10,20 0,20\nboundary 5 outline 0,0 20,0 20,10 0,10\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 0 u +x v +y\nplacement 3 on boundary 3 origin 10 10 -10 u +y v +x\nplacement 4 on boundary 4 origin 10 10 -10 u +z v +y\nplacement 5 on boundary 5 origin 20 10 -10 u +y v +z\ncolumn 2 at 12 2 size 4 4 z 0 100\nbeam 1 along y from 10 to 30 at 15 width 10 depth 10 top 0\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [],
+        "native_capabilities": [
+          "section-profile-native/1"
+        ],
+        "revision": 19,
+        "definition_sha256": "f4eafad1e66b3bc285d4c9e82d568f339f65c079a14685416b080bd4c2fc8112"
+      },
+      "geometry": {
+        "original_area": 600,
+        "expected_area": 384,
+        "piece_areas": [
+          384,
+          100
+        ],
+        "actual_union_area": 484,
+        "saved_difference_equal": false,
+        "removed_15_15_retained": true
+      },
+      "bridge_returncode": 0
+    }
+  ]
+}
