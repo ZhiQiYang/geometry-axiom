@@ -26,6 +26,13 @@ sys.path.insert(0,str(Path(__file__).parent))
 from mutations import MUTATIONS
 
 
+def registered_test_count():
+    """Number of GridCardReference tests registered in tests/run_all.expected.json."""
+    suite=json.loads((ROOT/'tests/run_all.expected.json').read_text(encoding='utf-8'))['suites']['py:test_grid_card_reference']
+    if suite.get('mode')!='count' or suite.get('unit')!='test': raise RuntimeError('py:test_grid_card_reference is not a test count')
+    return suite['count']
+
+
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
@@ -91,7 +98,10 @@ def main(args):
     baseline=out/'baseline';baseline.mkdir()
     bridge=compile_binary(baseline,'bridge');model=compile_binary(baseline,'model')
     run,counts=test_case(baseline,bridge,model,'all')
-    if run['exit_code'] or counts['testsRun']!=36 or counts['skips']:
+    # The registered count is the single source (run_all checks it too); a hard-coded
+    # number went stale when B2/S1 added tests (36 -> 43) and blocked every proof.
+    expected=registered_test_count()
+    if run['exit_code'] or counts['testsRun']!=expected or counts['skips']:
         raise RuntimeError('instrumented full baseline is not green')
     report={'source_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
             'test_sha256':sha(ROOT/'tests/test_grid_card_reference.py'),'runner_sha256':sha(__file__),
