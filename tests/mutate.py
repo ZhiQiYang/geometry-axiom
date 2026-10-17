@@ -15,6 +15,9 @@
          結束、且沒有任何斷言失敗;重跑範圍較窄,只重跑存取違規(核心則重跑所有 blocked)。
          其他結束碼(含外部 kill、OOM)、不足次數、前後不一致、或與斷言失敗並存 -> blocked,
          不重跑、不算偵測。
+         死亡不只看最外層例外:例外鏈任一層的 BridgeClosed、run_once 的非 0 結束碼、測試的
+         子行程以當機狀態結束(oracle 的 ChildWatch)都算;只有文字說 bridge closed 而沒有結束碼
+         -> blocked。tests 指定的方法必須在基準線 mutation_bridge.RESTORED 內,否則 invalid。
 
 結果: killed(某測試失敗) / crashed(基準通過後,同一夾具連續存取違規;
       算被偵測到,但不是斷言殺死) / survived(全過) / equivalent / retired /
@@ -728,6 +731,13 @@ def definition_kind(m, src):
                 or any(not isinstance(name, str) or not re.fullmatch(r"tests\.\w+\.\w+\.test_\w+", name) for name in methods)
                 or len(set(methods)) != len(methods)):
             return "invalid", "bridge 變異需要互異的具名 unittest 方法"
+        # killed 與 crashed 都以「基準線先通過」為前提:基準線只跑 RESTORED,且必須全部通過
+        # (mutation_bridge.execution_problems 驗基準線收據)。不在 RESTORED 的方法基準線根本沒跑過。
+        import mutation_bridge
+        unproven = [name for name in methods if name not in mutation_bridge.RESTORED]
+        if unproven:
+            return "invalid", ("bridge 變異的測試方法不在基準線 mutation_bridge.RESTORED 內(基準線沒跑過、"
+                               "沒證明它先通過,killed/crashed 都不成立):" + ", ".join(unproven))
     n = text.count(m["old"])
     if m.get("retired"):
         if n:
