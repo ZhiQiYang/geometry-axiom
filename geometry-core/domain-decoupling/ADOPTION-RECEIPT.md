@@ -27,4 +27,4 @@
 
 其中 4 個方法不依賴原生 adapter；其餘 10 個依賴原生重建，本片因尚無對應來源的 verified adapter **UNRUN**，不使用任意舊 exe 代替，也不冒稱 14/14 綠燈。本片未編譯 C、未跑 WSL、未切換預設執行器、未啟停使用者服務。完整 `.gcanvas` 與 native source-graph 的產品整合仍由主整合驗收，不能以這些模型包 fixture 代替。
 
-採納測試為 15 項（含實際批准與實際 SSOT 正例），原提案測試 29 項，閱讀器測試 51 項。五組刪除真守門條件的負控制都必須在各自具名案例失敗、0 errors、正式輸入不變；此分支保留 `--skip-registration` 的 **preflight** 身分，因 aggregate registry 由整合分支擁有，不能把局部結果冒充正式整合通過。整合需更新閱讀器 41→51、採納 13→15，並登記新 compatibility 14；本片未自行修改 registry／expected manifest。
+採納測試為 15 項（含實際批准與實際 SSOT 正例），原提案測試 29 項，閱讀器測試 51 項。五組刪除真守門條件的負控制都必須在各自具名案例失敗、0 errors、正式輸入不變；此分支保留 `--skip-registration` 的 **preflight** 身分，因 aggregate registry 由整合分支擁有，不能把局部結果冒充正式整合通過。registry 與 expected 已在本 PR 登記：閱讀器 41→51、採納 13→15、新增 compatibility 14(2026-10-17 合入 main 後由 Claude 逐 suite 合成)。
