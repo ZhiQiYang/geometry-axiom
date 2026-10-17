@@ -226,8 +226,10 @@ TESTS = [
  #   (b) 中線 v=9,足跡 v∈[-1,19] 穿出底牆 1 mm → I5 拒絕;診斷帶 R6/I5/I6(沿線每個 cell 都不 ⊆ 有效範圍)。
  #   (c) 位置同 (a)、角色改 primary → 仍通過 I5,但端面頂外輪廓 → I19 V_CUT_PRIORITY(貼齊是否合法不歸 I5 管)。
  # M86 殺手 = (a):segment2_crosses_rect_interior 的開內部判定拿掉,貼齊的牆邊被誤判成穿入 → 誤拒。
- # (b) 穿出的角點 (0,-1) 落在環外,擋它的是 poly_contains_rect 的「四角須在環內」;
- #   「環邊穿入開內部」那一道(拿掉它 = M08)的牙齒在 _ax_i5_notch_edge_cuts_interior,不在這三層。
+ #   M86 被 M05/M06 涵蓋(它們各改其中一軸),對 (a) 沒有新增牙齒,只作回歸。
+ # (b) 有兩道擋得下:poly_contains_rect 的「四角須在環內」(角點 (0,-1) 在環外,先執行),
+ #   以及底牆 e0 穿入矩形開內部的檢查(segment2_crosses_rect_interior);任拿掉一道仍被另一道擋下,
+ #   所以 (b) 是回歸釘,不是哪個突變的專屬殺手。「環邊穿入」那一道的專屬牙齒在 _ax_i5_notch_edge_cuts_interior(M08)。
  {'scene': '_s7a_flush_inside_accept.scene', 'expect': 'accept', 'lengths': [4000],
   'contains': ['角材原點：(0, 0, 2500)', 'vertex[1] = (0, 20, 2500)']},
  {'scene': '_s7b_poke_out_1mm_i5_reject.scene', 'expect': 'reject', 'error': 'R6/I5/I6 timber 1: 中線上沒有任何合法跨距'},
