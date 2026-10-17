@@ -558,14 +558,18 @@ class GridCardReference(unittest.TestCase):
     def i38_messages(result):
         return [v.get('message', '') for v in result['preview']['violations'] if 'I38 MISSING' in v.get('message', '')]
 
-    def card_and_panel_fill_share_rejection(self, target):
-        self.seed(a='8')  # grid-system 4 card-reference 10 3 8; field 3 = 8 is also the panel-fill source
+    def panel_fill_owner(self, target, ref):
+        """Finish surface 1 on boundary 8 and panel-fill 1 whose `target` slot uses `ref`."""
         self.apply_line('boundary 8 outline 0,0 250,0 250,250 0,250 kind room_plan')
         self.apply([{'op': 'publish-material', 'value': self.PANEL_BOARD}, card(91, 'threshold', [field(1, '8')])])
         self.panel_fill_transaction({'op': 'put-finish-surface', 'value': {
             'id': 1, 'name': '完成面', 'boundaryId': 8, 'frame': {'origin': [0, 0, 0], 'U': '+X', 'V': '+Y', 'N': '+Z'},
             'structureSide': 1, 'obstacles': []}})
-        self.panel_fill_transaction(self.put_panel_fill(target, {'parameterId': 10, 'fieldId': 3}))
+        self.panel_fill_transaction(self.put_panel_fill(target, ref))
+
+    def card_and_panel_fill_share_rejection(self, target):
+        self.seed(a='8')  # grid-system 4 card-reference 10 3 8; field 3 = 8 is also the panel-fill source
+        self.panel_fill_owner(target, {'parameterId': 10, 'fieldId': 3})
         panel_owner = re.compile(r'\bpanel-fill 1 ' + target + r'\b')
         card_owner = re.compile(r'\bgrid-system 4 card-reference u field 3\b')
         delete = {'op': 'delete-parameter', 'id': 10}
@@ -591,6 +595,33 @@ class GridCardReference(unittest.TestCase):
 
     def test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION(self):
         self.card_and_panel_fill_share_rejection('threshold')
+
+    def test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES(self):
+        """B2 review: the message reaches callers through the 256-byte engineering error;
+        names that do not fit are counted, never cut (field 4000000012 must not become 40000)."""
+        F, grids = 4000000012, (4000000001, 4000000002, 4000000004)
+        self.apply([card(10, 'P', [field(F, '8', name='a'), field(8, '30', name='b')])] +
+                   [grid(identifier=g, ref=source(u=F, v=8)) for g in grids])
+        self.panel_fill_owner('stagger', {'parameterId': 10, 'fieldId': F})
+        guidance = '; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: '
+        untruncated = ('I38 MISSING: parameter 10 is still referenced by panel-fill 1 stagger' + guidance + '3: ' +
+                       '; '.join(f'grid-system {g} card-reference u field {F}' for g in grids) + ')')
+        self.assertGreater(len(untruncated.encode('utf-8')), 255, 'fixture must exceed the engineering error buffer')
+        messages = self.i38_messages(self.reject([{'op': 'delete-parameter', 'id': 10}], 'I38 MISSING', 'B2 long owner list'))
+        self.assertEqual(1, len(messages), messages)
+        message = messages[0]
+        self.assertLessEqual(len(message.encode('utf-8')), 255, message)
+        match = re.fullmatch(re.escape('I38 MISSING: parameter 10 is still referenced by panel-fill 1 stagger' + guidance + '3: ') +
+                             r'(.+?)(?: and (\d+) more)?\)', message)
+        self.assertTrue(match and match.group(2), ('complete names plus "and N more"', message))
+        listed = match.group(1).split('; ')
+        for name in listed:
+            owner = re.fullmatch(r'grid-system (\d+) card-reference u field (\d+)', name)
+            self.assertTrue(owner, ('truncated owner name', name, message))
+            self.assertIn(int(owner.group(1)), grids, message)
+            self.assertEqual(F, int(owner.group(2)), ('listed field id must be the real one', message))
+        self.assertEqual(len(set(listed)), len(listed), message)
+        self.assertEqual(len(grids), len(listed) + int(match.group(2)), ('exact owner count', message))
 
     def test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE(self):
         """P-142 S1: put-grid-system rebinds DSL grid-system field references inside the candidate."""

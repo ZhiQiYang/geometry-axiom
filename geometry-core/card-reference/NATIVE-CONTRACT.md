@@ -48,6 +48,8 @@ put-grid-system 是完整宣告，包含其他維持不變的軸設定；不補 
 面材試排沒有混合候選改綁入口，仍是「另成一筆後再刪」的原生擁有者；同一欄位若同時有整卡引用者，拒絕訊息在 `(other references: N: …)` 內一併指名可在本候選處理的引用者，符合 I74「指名未處理者」。
 這是本 PR 對 #193 訊息的唯一改動：原本該處只計數、不指名。
 `test_P142_B2_CARD_AND_PANEL_FILL_{GAP,STAGGER,THRESHOLD}_SHARE_I38_REJECTION` 驗三種面材引用：兩種擁有者同則指名；本候選解除整卡後只剩面材擁有者；面材在自己的交易改指後只剩整卡擁有者且改用同候選指引，最後解除＋刪卡可提交。
+I38 訊息經 `g_engineering_error`（256 bytes）回報。原生與非原生訊息的每份名單都只放剩餘長度容得下的**完整**名稱，其餘寫成 ` and N more`；連一個名稱都放不下時只留計數。整則保證不超過 255 bytes，不會把 `field 12` 截成 `field 1`。
+`test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES` 以 10 位數欄位／網格 id、三個整卡引用者加面材 stagger（未截斷全文超過 255 bytes）驗證：列出的每個名稱完整且欄位 id 與實際相符，`and N more` 補足精確數量。M84（拿掉剩餘長度檢查）已登錄 `tests/mutate.py`，待原生帳本重產。
 官方帳本 M78（不指名同欄引用者）、M79（整卡引用者漏列）以這三個方法為裁判。
 
 ### 網格系統逐欄引用可同候選改綁（P-142 S1）
@@ -108,7 +110,7 @@ geometry-parameters/1 的匯出／匯入仍只有卡片閉包，不包含網格�
 
 ## 驗收邊界
 
-`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法、3 個 P-146 方法、2 個 P-154 方法、3 個 P-142 B2 方法、1 個 P-142 S1 方法及 1 個整合後 P-142 S2 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
+`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法、3 個 P-146 方法、2 個 P-154 方法、4 個 P-142 B2 方法、1 個 P-142 S1 方法及 1 個整合後 P-142 S2 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
 拒絕測試逐則核對原因與完整 id token，要求同一則診斷同時具有原因及全部身分，不將 field 3 誤配到 field 30，也不拼接不同違規的身分。
 模型包在網頁正式開啟、恢復及方案載入時的原生驗證路徑與實際服務探針，見 `MODEL-ADMISSION-AUDIT.md`；結構驗證／ZIP 解包本身不冒稱通過原生版本核對。
 `tests/test_card_reference_project_store.js` 檢查 /18 的保存、降版、能力、未知版本及舊逐欄相容。

@@ -385,27 +385,51 @@ static bool parameter_put(World *w,EngJson *j,int t)
 /* I38: enumerate actual references in a complete candidate. Only the first
  * PARAMETER_USES_SHOWN referrers are named; the count is exact. References from the card's own fields vanish with it. */
 #define PARAMETER_USES_SHOWN 3
-/* text/count cover every owner; native_* and other_* split the same owners by
- * whether this candidate can redeclare them. Each list names its first owners. */
-typedef struct {char text[256],native_text[256],other_text[256];size_t count,native_count,other_count;} ParameterUses;
-static void parameter_use_list(char *text,size_t cap,size_t *count,const char *owner)
+#define PARAMETER_USE_NAME 96 /* longest owner name is 56 bytes (grid-system card-reference) */
+/* count covers every owner; native_* and other_* split the same owners by whether
+ * this candidate can redeclare them. Each list keeps its first complete names. */
+typedef struct {char text[PARAMETER_USES_SHOWN][PARAMETER_USE_NAME],native_text[PARAMETER_USES_SHOWN][PARAMETER_USE_NAME],
+                other_text[PARAMETER_USES_SHOWN][PARAMETER_USE_NAME];size_t count,native_count,other_count;} ParameterUses;
+static void parameter_use_list(char names[][PARAMETER_USE_NAME],size_t *count,const char *owner)
 {
-    if((*count)++<PARAMETER_USES_SHOWN){size_t n=strlen(text);snprintf(text+n,cap-n,"%s%s",n?"; ":"",owner);}
+    if(*count<PARAMETER_USES_SHOWN)snprintf(names[*count],PARAMETER_USE_NAME,"%s",owner);
+    ++*count;
 }
 static void parameter_use(ParameterUses *u,const char *format,...)
 {
-    char owner[96];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
-    parameter_use_list(u->text,sizeof u->text,&u->count,owner);
-    parameter_use_list(u->other_text,sizeof u->other_text,&u->other_count,owner);
+    char owner[PARAMETER_USE_NAME];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
+    parameter_use_list(u->text,&u->count,owner);
+    parameter_use_list(u->other_text,&u->other_count,owner);
 }
 /* These owners have no declaration operation in an engineering candidate:
  * guide, datum, direct grid DSL axis tokens and panel-fill. Grid-system field
  * references are not among them; put-grid-system redeclares them (P-142 S1). */
 static void parameter_native_use(ParameterUses *u,const char *format,...)
 {
-    char owner[96];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
-    parameter_use_list(u->text,sizeof u->text,&u->count,owner);
-    parameter_use_list(u->native_text,sizeof u->native_text,&u->native_count,owner);
+    char owner[PARAMETER_USE_NAME];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
+    parameter_use_list(u->text,&u->count,owner);
+    parameter_use_list(u->native_text,&u->native_count,owner);
+}
+static void parameter_append(char *out,size_t cap,const char *text)
+{
+    size_t n=strlen(out);if(n+1<cap)snprintf(out+n,cap-n,"%s",text);
+}
+/* P-142 B2 review: I38 diagnostics reach every caller through g_engineering_error.
+ * Write only complete owner names that fit in `room` bytes after `lead` and count the
+ * rest as " and N more"; when no name fits, write nothing (the caller states the count).
+ * `out` holds room+1 bytes. Returns the bytes written. */
+static size_t parameter_names_fit(char *out,size_t room,char names[][PARAMETER_USE_NAME],size_t count,const char *lead)
+{
+    out[0]=0;
+    for(size_t k=count<PARAMETER_USES_SHOWN?count:PARAMETER_USES_SHOWN;k>0;--k){
+        char more[40]="";if(count>k)snprintf(more,sizeof more," and %zu more",count-k);
+        size_t need=strlen(lead)+strlen(more);for(size_t i=0;i<k;++i)need+=(i?2:0)+strlen(names[i]);
+        if(need>room)continue;
+        parameter_append(out,room+1,lead);
+        for(size_t i=0;i<k;++i){if(i)parameter_append(out,room+1,"; ");parameter_append(out,room+1,names[i]);}
+        parameter_append(out,room+1,more);return strlen(out);
+    }
+    return 0;
 }
 static bool parameter_ast_uses(const EngJson *j,int t,uint32_t id,uint32_t field,int depth)
 {
@@ -494,15 +518,24 @@ static bool parameter_retirements_valid(const World *w)
         const ParameterFieldRetirement *r=&w->parameters.field_retirements[i];uint32_t id=r->parameter_id;ParameterUses uses;
         if(r->at!=parameter_field_generation(w,id,r->field_id))continue; /* last actual deletion */
         if(parameter_uses(w,id,r->field_id,&uses)){
-            char more[40]="";if(uses.count>PARAMETER_USES_SHOWN)snprintf(more,sizeof more," and %zu more",uses.count-PARAMETER_USES_SHOWN);
+            /* The whole message stays within the g_engineering_error copy (255 bytes). */
+            const size_t limit=sizeof g_engineering_error-1;
+            char head[64],names[sizeof g_engineering_error],other[sizeof g_engineering_error],count[24];
+            snprintf(head,sizeof head,"I38 MISSING: parameter %u is still referenced by ",id);
             if(uses.native_count){
-                char native_more[40]="";if(uses.native_count>PARAMETER_USES_SHOWN)snprintf(native_more,sizeof native_more," and %zu more",uses.native_count-PARAMETER_USES_SHOWN);
                 /* I38/I74 (P-142 B2): every unhandled referrer is named, including the
                  * redeclarable ones that share this field with a native-only owner. */
-                char other[300]="";if(uses.other_count)snprintf(other,sizeof other,": %s%s",uses.other_text,uses.other_count>PARAMETER_USES_SHOWN?" and more":"");
-                return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: %zu%s)",id,uses.native_text,native_more,uses.count-uses.native_count,other);
+                static const char guidance[]="; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: ";
+                snprintf(count,sizeof count,"%zu",uses.count-uses.native_count);
+                size_t used=strlen(head)+strlen(guidance)+strlen(count)+1; /* closing parenthesis */
+                used+=parameter_names_fit(names,used<limit?limit-used:0,uses.native_text,uses.native_count,"");
+                parameter_names_fit(other,used<limit?limit-used:0,uses.other_text,uses.other_count,": ");
+                return parameter_fail("%s%s%s%s%s)",head,names,guidance,count,other);
             }
-            return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; unbind or repoint %s in the same complete candidate",id,uses.text,more,uses.count==1?"it":"them");
+            const char *tail=uses.count==1?"; unbind or repoint it in the same complete candidate":"; unbind or repoint them in the same complete candidate";
+            size_t used=strlen(head)+strlen(tail);
+            parameter_names_fit(names,used<limit?limit-used:0,uses.text,uses.count,"");
+            return parameter_fail("%s%s%s",head,names,tail);
         }
     }
     return true;
