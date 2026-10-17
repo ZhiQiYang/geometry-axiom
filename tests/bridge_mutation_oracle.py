@@ -52,6 +52,17 @@ class ObservedResult(unittest.TextTestResult):
             self._label_new_failures(before, err)
 
 
+def failure_rows(result):
+    """The payload's `failures`: every unittest failure with its structured kind.
+
+    Refuses (RuntimeError, so no result line is printed and the run is blocked) when a failure has no label: zipping a
+    shorter label list would silently drop failures from the report."""
+    if len(result.failure_labels) != len(result.failures):
+        raise RuntimeError("every failure must carry a structured kind; the result would be ambiguous")
+    return [{"test": test.id(), "detail": detail[-3000:], **label}
+            for (test, detail), label in zip(result.failures, result.failure_labels)]
+
+
 def main(argv=None):
     if sys.flags.optimize:
         raise RuntimeError("optimized Python is not an assertion oracle")
@@ -65,13 +76,10 @@ def main(argv=None):
     os.environ["GEOMETRY_ENGINEERING_BRIDGE"] = args.binary
     suite = unittest.defaultTestLoader.loadTestsFromNames(args.methods)
     result = unittest.TextTestRunner(stream=sys.stdout, verbosity=2, resultclass=ObservedResult).run(suite)
-    if len(result.failure_labels) != len(result.failures):
-        raise RuntimeError("every failure must carry a structured kind; the result would be ambiguous")
     payload = {
         "schema": "geometry-bridge-mutation-tests/1", "requested": args.methods,
         "started": result.started, "total": result.testsRun,
-        "failures": [{"test": test.id(), "detail": detail[-3000:], **label}
-                     for (test, detail), label in zip(result.failures, result.failure_labels)],
+        "failures": failure_rows(result),
         "errors": [{"test": test.id(), "detail": detail[-3000:]} for test, detail in result.errors],
         "skipped": [{"test": test.id(), "reason": reason} for test, reason in result.skipped],
         "expected_failures": len(result.expectedFailures),
