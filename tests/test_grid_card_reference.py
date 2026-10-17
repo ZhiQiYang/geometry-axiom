@@ -592,6 +592,32 @@ class GridCardReference(unittest.TestCase):
     def test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION(self):
         self.card_and_panel_fill_share_rejection('threshold')
 
+    def test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE(self):
+        """P-142 S1: put-grid-system rebinds DSL grid-system field references inside the candidate."""
+        self.apply([parameter(), parameter(identifier=11, a='20', b='40')])
+        self.apply_line('grid-system 4 name-hex 47 main-along none u repeat -5 param:10:3 v repeat 7 param:10:8')
+        self.assertNotIn('cardReference', self.systems()[4]); self.assertEqual((12, 30), self.lengths())
+        field_grid = lambda identifier: grid(ref=False, u=f'repeat -5 param:{identifier}:3', v=f'repeat 7 param:{identifier}:8')
+        delete = {'op': 'delete-parameter', 'id': 10}
+        step_owner = re.compile(r'\bgrid-system 4 u step\b')
+        for operations, label in (([delete], 'S1 control: not rebound'),
+                                  ([delete, parameter()], 'S1 control: rebuilding the key is not a rebinding')):
+            messages = self.i38_messages(self.reject(operations, 'I38 MISSING', label))
+            self.assertTrue(any(step_owner.search(m) and 'unbind or repoint' in m for m in messages), (label, messages))
+            self.assertFalse(any('另成一筆後再刪' in m for m in messages), (label, 'grid-system is no longer native-only', messages))
+        self.apply([delete, field_grid(11)])
+        self.assertEqual((20, 40), self.lengths(), 'S1 rebound to another card in the same candidate')
+        self.assertNotIn(10, [c['id'] for c in self.read()['state']['parameters']])
+        self.assertIn('grid-system 4 name-hex 47 main-along none u repeat -5 param:11:3 v repeat 7 param:11:8', self.dump())
+        # Same key: deleted, rebuilt and explicitly redeclared by put-grid-system after the deletion.
+        self.apply([parameter(), field_grid(10)]); self.assertEqual((12, 30), self.lengths())
+        preview, _ = self.apply([delete, parameter(a='18'), field_grid(10)])
+        self.assertEqual((18, 30), self.lengths(), 'S1 explicit post-delete redeclaration of the rebuilt key')
+        owner = {'kind': 'grid-system', 'id': 4, 'slot': 0}
+        self.assertEqual({(10, 3), (10, 8)}, {(r['source']['parameterId'], r['source']['fieldId'])
+                                              for r in preview['preview']['redeclaredReferences'] if r['owner'] == owner},
+                         'S1 preview discloses the put-grid-system redeclaration')
+
 
 if __name__ == '__main__':
     unittest.main()

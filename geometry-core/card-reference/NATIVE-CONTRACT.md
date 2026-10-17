@@ -50,6 +50,16 @@ put-grid-system 是完整宣告，包含其他維持不變的軸設定；不補 
 `test_P142_B2_CARD_AND_PANEL_FILL_{GAP,STAGGER,THRESHOLD}_SHARE_I38_REJECTION` 驗三種面材引用：兩種擁有者同則指名；本候選解除整卡後只剩面材擁有者；面材在自己的交易改指後只剩整卡擁有者且改用同候選指引，最後解除＋刪卡可提交。
 官方帳本 M78（不指名同欄引用者）、M79（整卡引用者漏列）以這三個方法為裁判。
 
+### 網格系統逐欄引用可同候選改綁（P-142 S1）
+
+#193 合併時網格系統沒有候選宣告入口，所以它的逐欄引用歸在「另成一筆後再刪」的原生擁有者。
+本 PR 的 `put-grid-system` 以 slot 0 宣告整個網格系統，`unbind-grid-card-reference` 的 parameter 模式宣告 `axis*6+field+1`；
+因此 `parameter_uses()` 把網格系統逐欄引用改列為可在同候選解除或改指的引用者，拒絕訊息改為 `unbind or repoint … in the same complete candidate`。
+guide、datum、direct grid 與面材試排仍是原生擁有者，訊息與 #193 相同。
+`test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE` 以原生 DSL 建立逐欄網格系統：只刪卡、刪卡＋同鍵重建都以 I38 拒絕並指名 `grid-system 4 u step`；
+同候選 `put-grid-system` 改指到另一張卡可提交；刪卡＋同鍵重建＋`put-grid-system` 明示重宣告可提交，預覽 `redeclaredReferences` 列出 slot 0 的兩個欄位。
+`test_parameters_core` 的原生擁有者對照同步把 grid-system 改為非原生。官方帳本 M80（網格系統仍歸原生）、M81（put-grid-system 漏宣告逐欄來源）。
+
 direct 解除只在該有序步驟依原生參數 evaluator 重算必要欄位並驗整卡。
 該步來源存在時取當下有效值，包括刪除後已重建的同鍵來源；例如 `[delete P, put P(a=99), 轉直接值]` 取得 99。
 該步來源不存在（刪除未重建）或來源不合法時拒絕，不因同候選曾刪除而一律拒絕。
@@ -94,7 +104,7 @@ geometry-parameters/1 的匯出／匯入仍只有卡片閉包，不包含網格�
 
 ## 驗收邊界
 
-`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法、3 個 P-146 方法、2 個 P-154 方法及 3 個 P-142 B2 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
+`tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法、3 個 P-146 方法、2 個 P-154 方法、3 個 P-142 B2 方法及 1 個 P-142 S1 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。
 拒絕測試逐則核對原因與完整 id token，要求同一則診斷同時具有原因及全部身分，不將 field 3 誤配到 field 30，也不拼接不同違規的身分。
 模型包在網頁正式開啟、恢復及方案載入時的原生驗證路徑與實際服務探針，見 `MODEL-ADMISSION-AUDIT.md`；結構驗證／ZIP 解包本身不冒稱通過原生版本核對。
 `tests/test_card_reference_project_store.js` 檢查 /18 的保存、降版、能力、未知版本及舊逐欄相容。

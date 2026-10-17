@@ -372,6 +372,22 @@ MUTANTS += [
          tests=B2_TESTS[:1]),
 ]
 
+# GEO-262 / P-142 S1: grid-system field references are redeclared by put-grid-system,
+# so they are no longer native-only owners of the separate-transaction guidance.
+S1_TEST = "tests.test_grid_card_reference.GridCardReference.test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE"
+MUTANTS += [
+    dict(id="M80", desc="I38/P142-S1：網格系統逐欄引用仍歸為無法同候選改綁的原生擁有者", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old='parameter_use(u,"grid-system %u %c %s",',
+         new='parameter_native_use(u,"grid-system %u %c %s",',
+         tests=[S1_TEST, "tests.test_parameters_core.ParametersCore.test_native_consumers_require_explicit_rebinding_after_parameter_rebuild"]),
+    dict(id="M81", desc="I38/P129/P142-S1：put-grid-system 未宣告其逐欄來源，刪後重建同鍵無法改綁", binary="bridge",
+         file="geometry-core/card_reference.inc",
+         old="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0)&&parameter_declare(w,PARAM_OWNER_GRID_SYSTEM,s.id,0);",
+         new="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0);",
+         tests=[S1_TEST]),
+]
+
 
 def run_cmd(cmd, cwd, timeout=120):
     return subprocess.run(cmd, cwd=cwd, capture_output=True,

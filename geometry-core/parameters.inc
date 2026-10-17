@@ -398,7 +398,9 @@ static void parameter_use(ParameterUses *u,const char *format,...)
     parameter_use_list(u->text,sizeof u->text,&u->count,owner);
     parameter_use_list(u->other_text,sizeof u->other_text,&u->other_count,owner);
 }
-/* These owners have no declaration operation in an engineering candidate. */
+/* These owners have no declaration operation in an engineering candidate:
+ * guide, datum, direct grid DSL axis tokens and panel-fill. Grid-system field
+ * references are not among them; put-grid-system redeclares them (P-142 S1). */
 static void parameter_native_use(ParameterUses *u,const char *format,...)
 {
     char owner[96];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
@@ -461,8 +463,10 @@ static size_t parameter_uses(const World *w,uint32_t id,uint32_t field,Parameter
     for(size_t i=0;i<w->datum_count;++i)if(parameter_text_uses(w->datums[i].expression,id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_DATUM,w->datums[i].id,0))parameter_native_use(u,"datum %u",w->datums[i].id);
     for(size_t i=0;i<w->grid_system_count;++i){const GridSystem *s=&w->grid_systems[i];const GridCardReference *r=&s->card_reference;
         if(r->set&&r->parameter_id==id&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_CARD,s->id,0))for(int a=0;a<2;++a)if(r->fields[a]==field)parameter_use(u,"grid-system %u card-reference %c field %u",s->id,a?'v':'u',field);}
+    /* P-142 S1: put-grid-system (slot 0) and unbind-grid-card-reference parameter
+     * mode (axis*6+k+1) declare these in the candidate, so they are redeclarable. */
     for(size_t i=0;i<w->grid_system_count;++i)for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&w->grid_systems[i].axis[axis].parameters[k];
-        if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,w->grid_systems[i].id,0)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,w->grid_systems[i].id,axis*6+k+1))parameter_native_use(u,"grid-system %u %c %s",w->grid_systems[i].id,axis?'v':'u',axis_fields[k]);}
+        if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,w->grid_systems[i].id,0)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,w->grid_systems[i].id,axis*6+k+1))parameter_use(u,"grid-system %u %c %s",w->grid_systems[i].id,axis?'v':'u',axis_fields[k]);}
     for(size_t i=0;i<w->grid_count;++i){const ReferenceGrid *g=&w->grids[i];if(g->from_system)continue;  /* system-derived copies are the system's own refs */
         for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&g->axis[axis].parameters[k];
             if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID,g->id,0))parameter_native_use(u,"grid %u %c %s",g->id,axis?'v':'u',axis_fields[k]);}}
@@ -505,7 +509,9 @@ static bool parameter_retirements_valid(const World *w)
 }
 /* P-129: preview disclosure reads explicit owner declarations, including a
  * reference that the declaration replaced with a literal/different source.
- * It does not grant new declaration paths to native-DSL-only consumers. */
+ * It does not grant new declaration paths to native-DSL-only consumers.
+ * Grid-system owners are not native-only: GEO-262 put-grid-system and
+ * unbind-grid-card-reference are their declaration paths (P-142 S1). */
 static bool parameter_declared_owner_present(const World *w,const ParameterDeclaration *d)
 {
     if(d->kind==PARAM_OWNER_CARD)return parameter_find(w,d->id)!=NULL;

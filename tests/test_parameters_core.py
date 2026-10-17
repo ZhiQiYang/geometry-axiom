@@ -313,13 +313,16 @@ class ParametersCore(unittest.TestCase):
     def test_native_consumers_require_explicit_rebinding_after_parameter_rebuild(self):
         self.apply([card(0, "來源", [field(1, "915")])])
         baseline = self.command("dump")["text"]
+        # (line, owner, engineering source op, native-only owner). P-142 S1 / GEO-262:
+        # put-grid-system redeclares grid-system field references in the same
+        # candidate, so grid-system leaves the separate-transaction guidance.
         cases = [
-            ("guide 1 1 u param:0:1", "guide 1", False),
-            ("datum 1 x param:0:1", "datum 1", False),
-            ("grid-system 1 name-hex 47726964 main-along none u repeat 0 param:0:1 v none", "grid-system 1", False),
-            ("grid 1 on 1 u panel 915 gap 2 from 0 v 700", "grid 1 u panel", True),
+            ("guide 1 1 u param:0:1", "guide 1", False, True),
+            ("datum 1 x param:0:1", "datum 1", False, True),
+            ("grid-system 1 name-hex 47726964 main-along none u repeat 0 param:0:1 v none", "grid-system 1", False, False),
+            ("grid 1 on 1 u panel 915 gap 2 from 0 v 700", "grid 1 u panel", True, False),
         ]
-        for line, owner, engineering in cases:
+        for line, owner, engineering, native in cases:
             with self.subTest(owner=owner):
                 self.assertTrue(self.load_scene(baseline)["ok"])
                 self.apply_line(line)
@@ -331,8 +334,11 @@ class ParametersCore(unittest.TestCase):
                 revision = self.read()["revision"]
                 result = self.rejected([{"op": "delete-parameter", "id": 0},
                                         card(0, "重建來源", [field(1, "920")])], owner)
-                if not engineering:
+                if native:
                     self.assertIn("另成一筆後再刪", json.dumps(result, ensure_ascii=False))
+                elif not engineering:
+                    self.assertNotIn("另成一筆後再刪", json.dumps(result, ensure_ascii=False))
+                    self.assertIn("unbind or repoint", json.dumps(result, ensure_ascii=False))
                 self.assertEqual(revision, self.read()["revision"])
 
     def _panel_fill_rebuild_requires_prior_reference_change(self, target):
