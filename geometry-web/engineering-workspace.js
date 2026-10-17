@@ -735,6 +735,7 @@ window.EngineeringWorkspace = (() => {
   }
   function renderPreview() {
     const result=state.preview;if(!result)return;
+    result.rows=(result.rows||[]).filter(row=>row.collection!=='reference-redeclarations').concat((result.redeclaredReferences||[]).map(reference=>({collection:'reference-redeclarations',label:'刪後重宣告',before:{'引用':'來源刪除，舊引用已結束'},after:{'引用':reference.message}})));
     const rows=result.rows||[],faces=new Set(rows.map(row=>row.placement_id).filter(id=>id!=null));
     const grids=new Set(rows.flatMap(row=>row.collection==='grids'?[row.after?.id??row.before?.id]:(row.after?.target??row.before?.target)?.kind==='grid'?[(row.after?.target??row.before?.target).id]:[]));
     const timbers=new Set(rows.flatMap(row=>row.collection==='timbers'?[row.after?.id??row.before?.id]:(row.after?.target??row.before?.target)?.kind==='timber'?[(row.after?.target??row.before?.target).id]:[]));

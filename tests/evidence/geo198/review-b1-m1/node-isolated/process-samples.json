@@ -1,0 +1,46 @@
+{
+  "scope": "One-second /proc observations; sampling is not enforced exclusive isolation and may miss short processes. No formal WSL isolation claim.",
+  "runner_pid": 109924,
+  "samples": [
+    {
+      "monotonic_seconds": 16725.590346359,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16726.592711855,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16727.595128248,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16728.597165059,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16729.599926126,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16730.60554511,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16731.611813453,
+      "processes": [
+        {
+          "pid": 109977,
+          "ppid": 109976,
+          "argv": [
+            "/tmp/geometry-rule-case-uho6zwo5/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16732.614327149,
+      "processes": []
+    }
+  ]
+}

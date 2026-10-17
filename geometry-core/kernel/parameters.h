@@ -79,6 +79,18 @@ bool geo_parameters_accept_field(const GeoParameterStore *store,GeoParameterCard
 bool geo_parameters_next_field(GeoParameterCard *card,uint32_t next,GeoParameterError *error);
 bool geo_parameters_put(GeoParameterStore *store,const GeoParameterCard *card,
     const GeoParameterField *fields,GeoParameterError *error);
+/* I38: inside one caller-owned candidate a field key removed earlier in that
+ * same candidate may be rebuilt. The predicate answers only for keys the
+ * caller actually removed there; the store itself keeps no candidate history,
+ * and every other ended field identity remains non-reusable. A NULL predicate
+ * is exactly the plain operation above. check_put validates without mutation. */
+typedef bool (*GeoParameterRebuiltKey)(void *,uint32_t card,uint32_t field);
+bool geo_parameters_accept_rebuilt_field(const GeoParameterStore *store,GeoParameterCard *card,
+    const GeoParameterField *fields,size_t index,GeoParameterRebuiltKey rebuilt,void *state,GeoParameterError *error);
+bool geo_parameters_check_put(const GeoParameterStore *store,const GeoParameterCard *card,
+    const GeoParameterField *fields,GeoParameterRebuiltKey rebuilt,void *state,GeoParameterError *error);
+bool geo_parameters_put_rebuilt(GeoParameterStore *store,const GeoParameterCard *card,
+    const GeoParameterField *fields,GeoParameterRebuiltKey rebuilt,void *state,GeoParameterError *error);
 bool geo_parameters_remove(GeoParameterStore *store,uint32_t id,GeoParameterError *error);
 /* Atomic-input staging only: H owns the enclosing load transaction and must
  * finish/rebuild it before publishing. The store has no loading flag. */

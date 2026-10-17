@@ -1,0 +1,41 @@
+{
+  "source_head": "e73ebcb3ae8d72de06ceb4df692404dad83f7d33",
+  "binaries": {
+    "core": {
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-11T13:36:41+08:00）",
+      "sha256": "2a6b0568ae922d014b1279d0f9dac8a3046d29e91e713413fc7fc17e9a1b0b65"
+    },
+    "bridge": {
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-11T13:31:18+08:00）",
+      "sha256": "b85e2d8e5550a8d8e3a8c277c96b57cb1b15459bd530771057c918cced1c521a"
+    },
+    "integrity": {
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-11T13:37:05+08:00）",
+      "sha256": "745c18cad0937e91dde1b4dd15226dc5b126364247ba864c781a9aa0a16813b1"
+    },
+    "gdi": {
+      "state": "n/a",
+      "reason": "僅 Windows",
+      "sha256": null
+    },
+    "model-base": {
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-11T13:37:30+08:00）",
+      "sha256": "dd677bfaf87610c7d428ae471ae2f564564d474ac0388edb28abba94ea8f7e22"
+    },
+    "engjson": {
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-11T13:37:32+08:00）",
+      "sha256": "d9d026e837fe54dbcf2466a85e65b94f25d5439b87bc465746a300ae953fa50d"
+    }
+  },
+  "stack_limit": "unlimited",
+  "wsl_distribution": "Ubuntu-24.04",
+  "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "node_version": "v24.21.0",
+  "compiler_version": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "normalized_diff_exit": 0
+}

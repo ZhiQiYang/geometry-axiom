@@ -9,7 +9,8 @@ bool wood_engineering_operation(WoodEngineeringOperations *operations,GeoJson *j
         EngTarget target;GeoCoord value;
         if(!geo_json_keys(j,t,"op,target","")||!wood_eng_target_parse(w,j,geo_json_member(j,t,"target"),&target))return wood_eng_fail(w,"I38: invalid unbind target");
         EngBinding *b=wood_eng_binding(w,&target);if(!b)return wood_eng_fail(w,"I38: target has no source binding");
-        char error[512]="";if(!operations->rebuild_parameters(operations->user,error,sizeof error))return wood_eng_fail(w,error);if(!wood_eng_effective(w,b,&value,NULL,0))return false;
+        EngBinding resolved=*b;
+        char error[512]="";if(!operations->unbind_sources(operations->user,&target,&resolved,error,sizeof error))return wood_eng_fail(w,error);if(!wood_eng_effective(w,&resolved,&value,NULL,0))return false;
         w->write_dimension(w->user,&target,value);
         size_t k=(size_t)(b-w->state->bindings);memmove(b,b+1,(w->state->binding_count-k-1)*sizeof *b);memset(&w->state->bindings[--w->state->binding_count],0,sizeof *b);return true;
     }
@@ -26,11 +27,11 @@ bool wood_engineering_operation(WoodEngineeringOperations *operations,GeoJson *j
         if (!geo_json_keys(j,t,override?"op,target,value":"op,target,source","") || !wood_eng_target_parse(w,j,geo_json_member(j,t,"target"),&target)) return wood_eng_fail(w,"I35: invalid source/override operation");
         uint32_t pid; int role; if (!wood_eng_target_context(w,&target,&pid,&role)) return false;
         if (target.kind) { WoodEngineeringTargetInfo fact={0};w->target(w->user,&target,&fact);if (!fact.placed) return wood_eng_fail(w,"D28: bind only an already placed timber"); }
-        if (!override) { EngDimensionSource source; if (!wood_eng_source_parse(w,j,geo_json_member(j,t,"source"),&source,true)) return false; return wood_eng_bind(w,&target,&source); }
+        if (!override) { EngDimensionSource source; if (!wood_eng_source_parse(w,j,geo_json_member(j,t,"source"),&source,true)) return false; if (!wood_eng_bind(w,&target,&source)) return false; return operations->declare_source(operations->user,&target,0); }
         EngBinding *b=wood_eng_binding(w,&target); if (!b) return wood_eng_fail(w,"D28: object override requires an explicit source binding");
         int value=geo_json_member(j,t,"value");
-        if (geo_json_is_null(j,value)) { b->has_override=false; memset(&b->override_value,0,sizeof b->override_value); return true; }
-        if (!wood_eng_source_parse(w,j,value,&b->override_value,false)) return false; b->has_override=true; return true;
+        if (geo_json_is_null(j,value)) { b->has_override=false; memset(&b->override_value,0,sizeof b->override_value); return operations->declare_source(operations->user,&target,1); }
+        if (!wood_eng_source_parse(w,j,value,&b->override_value,false)) return false; b->has_override=true; return operations->declare_source(operations->user,&target,1);
     }
     if (!strcmp(op,"bind-grid") || !strcmp(op,"bind-timber")) {
         bool grid=!strcmp(op,"bind-grid"); uint32_t id; char appid[ENG_ID_MAX];

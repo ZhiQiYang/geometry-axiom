@@ -1,15 +1,36 @@
 /* Ordered engineering operations mutate only a caller-owned candidate. */
 #include "../geometry-templates/woodworking/native/engineering_operations.h"
 /* H binds storage and callbacks to exactly the command's candidate. */
-static bool app_eng_operation_parameters(void *user,char *error,size_t cap)
-{return parameters_rebuild((World *)user,error,cap);}
+/* I38/R33/P-065: resolve only this binding's own parameter sources, on W's
+ * local copy. A live source is evaluated in its current closure; a source that
+ * this candidate deleted (and the owner did not redeclare after the last
+ * deletion) becomes its last valid candidate value. The formal binding is never
+ * rewritten; the complete candidate is still rebuilt at validation. */
+static bool app_eng_operation_unbind_sources(void *user,const EngTarget *target,EngBinding *resolved,char *error,size_t cap)
+{
+    World *w=(World *)user;ParameterRef refs[2];size_t ref_count=0;
+    EngDimensionSource *sources[2]={&resolved->source,&resolved->override_value};
+    for(size_t i=0;i<(resolved->has_override?2u:1u);++i){
+        EngDimensionSource *source=sources[i];if(source->kind!=ENG_PARAMETER)continue;
+        unsigned generation;
+        if(parameter_unbind_generation(w,source->parameter,parameter_engineering_owner(target),target->id,parameter_engineering_slot(target,(int)i),&generation)){
+            if(!parameter_deleted_coord(w,source->parameter,generation,&source->value)){snprintf(error,cap,"%s",g_parameter_error);return false;}
+            source->kind=ENG_LITERAL;  /* local resolution only; never rewrite the formal binding */
+        }else refs[ref_count++]=source->parameter;
+    }
+    return parameters_evaluate_refs(w,refs,ref_count,error,cap);
+}
+/* P-121/P-129: an explicit set-source/set-override is the owner's declaration. */
+static bool app_eng_operation_declare_source(void *user,const EngTarget *target,int override)
+{return parameter_declare((World *)user,parameter_engineering_owner(target),target->id,parameter_engineering_slot(target,override));}
 static void app_eng_operation_member_created(void *user,size_t i)
 {World *w=(World *)user;memset(&w->wood.anchors[i],0,sizeof w->wood.anchors[i]);w->wood.anchors[i].span_mode=SPAN_AUTO;}
 static WoodEngineeringOperations app_eng_operations(World *w)
 {
     WoodEngineeringOperations o={0};o.grids=app_grid_context(w);o.grids.engineering=app_eng_context(w);
     o.members=w->wood.timbers;o.member_count=&w->wood.timber_count;o.member_capacity=WORLD_MAX_TIMBERS;
-    o.user=w;o.rebuild_parameters=app_eng_operation_parameters;o.member_created=app_eng_operation_member_created;return o;
+    o.user=w;o.unbind_sources=app_eng_operation_unbind_sources;o.declare_source=app_eng_operation_declare_source;
+    o.member_created=app_eng_operation_member_created;return o;
 }
 static bool eng_operation(World *w,GeoJson *j,int t)
 {
@@ -55,7 +76,20 @@ static bool apply_engineering_line(const char *path,int line_no,char **tokens,in
     }else if(!strcmp(tokens[1],"application"))ok=eng_put_application(w,&j,0);
     else if(!strcmp(tokens[1],"grid"))ok=eng_restore_grid(w,&j,0);
     else if(!strcmp(tokens[1],"timber"))ok=eng_restore_timber(w,&j,0);
-    else if(!strcmp(tokens[1],"archive"))ok=eng_operation(w,&j,0);
+    else if(!strcmp(tokens[1],"archive")){
+        ParameterCandidateScope scope;
+        if(!parameters_begin_candidate(w,&scope))ok=eng_fail(g_parameter_error);
+        else{
+            ok=eng_operation(w,&j,0);
+            if(ok&&!parameter_retirements_valid(w))ok=eng_fail(g_parameter_error);
+            parameters_end_candidate(&scope);
+        }
+        /* I8/I38: the interactive archive entry is one complete candidate.
+         * Scene loading defers its complete rebuild until all records are read. */
+        if(ok&&!g_parsing_scene_file&&!reference_checked(path,line_no,w)){
+            geo_json_free(&j);return false;
+        }
+    }
     if(!ok)scene_error(path,line_no,g_engineering_error[0]?g_engineering_error:"I36: invalid engineering record");
     geo_json_free(&j);return ok;
 }

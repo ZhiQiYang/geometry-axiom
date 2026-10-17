@@ -8,7 +8,14 @@ typedef struct {
     WoodMember *members;
     size_t *member_count, member_capacity;
     void *user;
-    bool (*rebuild_parameters)(void *,char *,size_t);
+    /* I38/R33/P-065: before unbind, H/K resolves exactly the parameter sources of
+     * this local binding copy (live sources in their current closure; a source
+     * deleted earlier in this candidate as its last valid value). Unrelated
+     * fields are not evaluated. The stored binding is not touched here. */
+    bool (*unbind_sources)(void *,const EngTarget *,EngBinding *,char *,size_t);
+    /* P-121/P-129: an explicit source/override edit declares this owner slot
+     * (0 source, 1 override) in the candidate's ordering. */
+    bool (*declare_source)(void *,const EngTarget *,int);
     /* H initializes the corresponding source/placement record after W has
      * admitted and constructed this member at the supplied candidate slot. */
     void (*member_created)(void *,size_t);

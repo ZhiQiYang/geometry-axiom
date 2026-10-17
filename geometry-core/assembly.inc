@@ -18,11 +18,14 @@ static void app_asm_drop_position(void *user,bool rule,uint32_t id)
 {asm_remove_position((World *)user,rule?CANVAS_POS_ASSEMBLY_RULE:CANVAS_POS_ASSEMBLY_BINDING,id);}
 static bool app_asm_other(void *user,GeoJson *j,int t)
 {return eng_operation((World *)user,j,t);}
+/* P-121/P-129: every successful binding put is that owner's explicit declaration. */
+static bool app_asm_declare_binding(void *user,uint32_t id)
+{return parameter_declare((World *)user,PARAM_OWNER_ASSEMBLY,id,0);}
 static bool app_assembly_sources_bind(const World *,WoodAssemblyContext *);
 static WoodAssemblyContext app_asm_context(const World *world)
 {
     World *w=(World *)world;WoodAssemblyContext c={0};c.state=&w->wood.assembly;c.engineering=app_eng_context(w);c.diagnostic=&g_asm_diagnostic;c.parameter_dimension_error=&g_parameter_dimension_error;c.user=w;c.scene_loading=g_parsing_scene_file;
-    c.json_parse=app_asm_json;c.drop_position=app_asm_drop_position;c.other_operation=app_asm_other;c.surface=app_asm_surface;c.guide=app_asm_guide;c.member=app_asm_member;c.footprint=app_asm_footprint;c.member_count=app_asm_member_count;c.member_capacity=WORLD_MAX_TIMBERS;c.allocate_member=app_asm_allocate;c.remove_member=app_asm_remove;c.write_member=app_asm_write;c.anchor_matches=app_asm_anchor_matches;c.instance_content=app_asm_instance_content;app_assembly_sources_bind(world,&c);return c;
+    c.json_parse=app_asm_json;c.drop_position=app_asm_drop_position;c.other_operation=app_asm_other;c.declare_binding=app_asm_declare_binding;c.surface=app_asm_surface;c.guide=app_asm_guide;c.member=app_asm_member;c.footprint=app_asm_footprint;c.member_count=app_asm_member_count;c.member_capacity=WORLD_MAX_TIMBERS;c.allocate_member=app_asm_allocate;c.remove_member=app_asm_remove;c.write_member=app_asm_write;c.anchor_matches=app_asm_anchor_matches;c.instance_content=app_asm_instance_content;app_assembly_sources_bind(world,&c);return c;
 }
 static bool asm_error(const char *format,...)
 {

@@ -155,7 +155,7 @@ bool wood_assembly_put_binding(WoodAssemblyContext *w,GeoJson *j,int t)
 {
     AsmBinding value;if(!wood_asm_binding_parse(w,j,t,&value,false))return false;AsmBinding *b=wood_assembly_binding(w,value.id);
     if(!b){if(w->state->binding_count==ASM_BINDING_MAX)return wood_asm_error(w,"CAPACITY: at most 64 assembly bindings");b=&w->state->bindings[w->state->binding_count++];}
-    *b=value;return true;
+    *b=value;return w->declare_binding?w->declare_binding(w->user,value.id):true;
 }
 bool wood_assembly_rebuild(WoodAssemblyContext *w,char *error,size_t cap)
 {

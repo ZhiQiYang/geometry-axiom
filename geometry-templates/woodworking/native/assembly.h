@@ -113,6 +113,9 @@ typedef struct {
     bool (*json_parse)(void *,GeoJson *,const char *);
     void (*drop_position)(void *,bool,uint32_t);
     bool (*other_operation)(void *,GeoJson *,int);
+    /* P-121/P-129: after a binding put succeeds, H records that owner's explicit
+     * parameter-source declaration in the candidate order (no-op when untracked). */
+    bool (*declare_binding)(void *,uint32_t);
     bool (*surface)(void *,uint32_t);
     bool (*guide)(void *,uint32_t,WoodAssemblyGuide *);
     bool (*member)(void *,uint32_t,WoodAssemblyMember *);

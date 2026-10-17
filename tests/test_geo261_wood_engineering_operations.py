@@ -83,8 +83,8 @@ class WoodEngineeringOperations(unittest.TestCase):
 
     def test_removed_rebuild_failure_guard_fails_named_assertion(self):
         self.case("unbind-failures")
-        before = "if(!operations->rebuild_parameters(operations->user,error,sizeof error))return wood_eng_fail(w,error);"
-        exe = self.mutant("unbind-rebuild", before, "(void)operations->rebuild_parameters(operations->user,error,sizeof error);")
+        before = "if(!operations->unbind_sources(operations->user,&target,&resolved,error,sizeof error))return wood_eng_fail(w,error);"
+        exe = self.mutant("unbind-rebuild", before, "(void)operations->unbind_sources(operations->user,&target,&resolved,error,sizeof error);")
         self.case("unbind-failures", exe, "engineering-operations-unbind-rebuild-failure")
         self.case("unbind-failures")
 

@@ -1,0 +1,42 @@
+{
+  "name": "worker-0",
+  "ids": [
+    "M01",
+    "M05",
+    "M59",
+    "M11",
+    "M15",
+    "M19",
+    "M23",
+    "M27",
+    "M31",
+    "M51",
+    "M54",
+    "M35",
+    "M39",
+    "M63"
+  ],
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-u",
+    "tests/mutate.py",
+    "M01",
+    "M05",
+    "M59",
+    "M11",
+    "M15",
+    "M19",
+    "M23",
+    "M27",
+    "M31",
+    "M51",
+    "M54",
+    "M35",
+    "M39",
+    "M63"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 0,
+  "seconds": 202.05212449700048,
+  "log_sha256": "089978adfc3f16311471da078d33f725ee7ee53f3506a9e66cdae9e89e9762e8"
+}

@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "node",
+    "--test",
+    "--test-reporter=spec",
+    "tests/test_reference_workspace_races.js"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 0,
+  "seconds": 7.026545990000159,
+  "stack_soft_limit_bytes": 16777216,
+  "log_sha256": "5574722bf26293f20926bc65118f4f5738a3fb6cf06dc88c97551429b318d165",
+  "receipt": "returncode comes directly from Popen.poll, not test result inference",
+  "sample_count": 8
+}

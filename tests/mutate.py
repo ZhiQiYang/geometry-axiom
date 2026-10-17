@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""輕量變異測試:對核心 C 原始碼做單點替換 -> 編譯 -> 跑測試套件。
+"""變異測試:對 C 原始碼做單點替換 -> 編譯 -> 跑真實裁判。
 
 變異定義 = (id, 說明, old, new[, file]);old 必須在目標檔中恰好出現一次。
   file   預設 current_geometry.c;邏輯搬到 K/W/H 實作時指名實際檔案。
@@ -7,6 +7,9 @@
          其餘 include 保留並改為 repo 根相對路徑；重複、缺失或越界路徑拒絕。
   equivalent  等價變異(理由文字),每輪仍編譯並跑完整 oracle;錨點須存在。
   retired     邏輯已從產品整個移除(寫明依據),不編譯;舊錨點若又出現會被判 invalid。
+  binary="bridge" 使用獨立的已提交稀疏 checkout、官方 binaries.py 編譯及 tests 指定的
+         真 bridge unittest 方法。先跑基準，變異後只以完成的行為斷言判 killed；每筆還原
+         來源、重新編譯並跑共用回歸。錯誤、略過、逾時與不完整方法清單都算 blocked。
 
 結果: killed(某測試失敗) / crashed(基準通過後,同一夾具連續存取違規;
       算被偵測到,但不是斷言殺死) / survived(全過) / equivalent / retired /
@@ -17,11 +20,13 @@
 誠實性規則(審查 2026-10-01 後立):
   - 錨點找不到或不唯一 -> invalid,覆蓋任何舊判決。
   - 每筆結果帶 source_file / source_sha256(被變異那個檔)/ closure_sha256(整個
-    #include 閉包)/ oracle_sha256(裁判)/ mutant_sha256(file+old+new)/ date。
+    core + bridge 的 #include 聯集閉包)/ oracle_sha256(裁判)/ mutant_sha256(定義)/ date。
   - oracle_sha256 = sha256(tests/run_tests.py + 依檔名排序、被 TESTS 引用的每個 .scene
     內容;全部 CRLF->LF)。它取代舊的 runner_sha256:裁判 = 判定邏輯 + 夾具,
     兩者任一改了,killed / survived 就不再是「這個裁判」下的判決。
     (equivalent 不是靠跑裁判得來的,不受 oracle 約束;retired 不帶來源類雜湊。)
+    bridge 裁判另外涵蓋指定方法、共用還原方法、tests/*.py 與根目錄場景；任何共用
+    harness 變更都使其過期，不能借核心場景裁判替預覽序列化背書。
   - 載入與彙總時,source_sha256、closure_sha256、mutant_sha256 任一與現況不符,
     killed / survived 的 oracle_sha256 與現行裁判不符,或根本沒帶雜湊 -> stale;
     stale 會寫回結果檔(原判決存 stale_from),原因消失(例如還原原始碼 / 夾具)後自動復原。
@@ -310,6 +315,82 @@ MUTANTS = [
          file='geometry-core/kernel/geometry.c',
          old='        ok=geo_region_set_contains_rect(domain,&cell);\n        for(size_t k=0;ok&&k<obstacle_count;++k)if(geo_rect_overlap_positive(&cell,&obstacles[k]))ok=false;',
          new='        ok=geo_region_set_contains_rect(domain,&cell);'),
+    dict(id="M71", desc="R7/#198 A：以 bbox 冒充單 slab 的多段交集",
+         old="            if (++intervals > 1) return -1;\n            left = l; right = r;",
+         new="            if (++intervals == 1) { left = l; right = r; }\n            else { left = coord_min(left,l); right = coord_max(right,r); }"),
+    dict(id="M72", desc="R7/#198 B：恢復四角全在外就丟棄的錯誤快退",
+         old="    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };",
+         new="    SurfacePoint2 legacy_corners[4] = {{in_u0,in_v0},{in_u1,in_v0},{in_u1,in_v1},{in_u0,in_v1}};\n    int legacy_inside = 0;\n    for (int i=0; i<4; ++i) legacy_inside += poly_contains_point(loop, legacy_corners[i]);\n    if (!legacy_inside) return 0;\n    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };"),
+    dict(id="M73", desc="R7/#202：丟棄正面積矩形外的孤立線／點接觸",
+         old="                (l < u0 || r > u1 || bottom < v0 || top > v1)) return -1;",
+         new="                (l < u0 || r > u1 || bottom < v0 || top > v1)) { /* discard closed contact */ }"),
+    dict(id="M74", desc="R12/#202：未 cut-strip 仍要求單矩形切削分類",
+         old="                if (items[i].cls == OBSTACLE_STRIP && !cut_strip) {",
+         new="                if (false) {"),
+    dict(id="M75", desc="R14/R15/#202：未裁切 strip 提前成功、忽略其餘項及選片",
+         old="            matched = true;\n            /* 選片:矩形應只與一片接觸;橫跨拆分線=無法歸屬,拒絕。 */",
+         new="            matched = true;\n            if (items[i].cls == OBSTACLE_STRIP && !cut_strip) return true;\n            /* 選片:矩形應只與一片接觸;橫跨拆分線=無法歸屬,拒絕。 */"),
+    dict(id="M76", desc="R3/R4/R8/#202：第三段覆蓋弧循環接回第一片",
+         old="            if (++covered_runs > 2) return false;",
+         new="            ++covered_runs; /* incorrectly reconnect third residue */"),
+    dict(id="M77", desc="R7/#202：以同側遠處貼邊豁免純角點接觸",
+         old="        if (!local_flush && poly_point_on_edge(loop, corners[i])) return -1;",
+         new="        if (!f[(i==0||i==3)?0:1] && !f[i<2?2:3] && poly_point_on_edge(loop, corners[i])) return -1;"),
+]
+
+
+# P-135/P-141: the preview-only guards require the actual bridge, not core.exe.
+MUTANTS += [
+    dict(id="M61", desc="D60/K2a：恢復已刪卡片鍵保留，令無引用同鍵重建轉紅", binary="bridge",
+         file="geometry-core/parameters.inc", old="    ParameterSet card;geo_parameters_begin_definition(&w->geo.parameters,id,&card);",
+         new='    {const ParameterCandidateLedger *ledger=parameter_ledger(w);for(size_t r=0;ledger&&r<ledger->field_retirement_count;++r)if(ledger->field_retirements[r].parameter_id==id)return parameter_fail("I38 DUPLICATE: a deleted identity cannot be declared again");}\n    ParameterSet card;geo_parameters_begin_definition(&w->geo.parameters,id,&card);',
+         tests=["tests.test_grid_system_contract.GridSystemContract.test_k2a_parameter_confirmation_receipt_includes_intermediate_deletion"]),
+    dict(id="M62", desc="I38：同鍵卡片已重建就跳過未處理引用", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="        if(r->at!=parameter_field_generation(w,id,r->field_id))continue; /* last actual deletion */",
+         new="        if(parameter_find(w,id))continue;\n        if(r->at!=parameter_field_generation(w,id,r->field_id))continue; /* last actual deletion */",
+         tests=["tests.test_parameters_core.ParametersCore.test_delete_then_import_or_redeclare_keeps_the_deletion_receipt",
+                "tests.test_parameters_core.ParametersCore.test_referenced_card_rebuild_without_referrer_declaration_rejects"]),
+    dict(id="M63", desc="I38：欄位鍵已重建就跳過省略重建的引用保護", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="        if(r->at!=parameter_field_generation(w,id,r->field_id))continue; /* last actual deletion */",
+         new="        if(parameter_field_index(w,id,r->field_id)>=0)continue;\n        if(r->at!=parameter_field_generation(w,id,r->field_id))continue; /* last actual deletion */",
+         tests=["tests.test_parameters_core.ParametersCore.test_referenced_field_omission_and_rebuild_requires_declaration"]),
+    dict(id="M64", desc="I38：引用處理錯看第一次而非最後一次欄位刪除", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="if(r->parameter_id==id&&r->field_id==field&&r->at>at)at=r->at;",
+         new="if(r->parameter_id==id&&r->field_id==field&&!at)at=r->at;",
+         tests=["tests.test_parameters_core.ParametersCore.test_referrer_must_be_declared_after_the_last_card_deletion"]),
+    dict(id="M65", desc="I38/P129：grid單軸宣告錯誤涵蓋未宣告軸", binary="bridge",
+         file="geometry-core/parameters.inc", old="d->kind==kind&&d->id==id&&d->slot==slot",
+         new="d->kind==kind&&d->id==id&&(kind==PARAM_OWNER_ENG_GRID||d->slot==slot)",
+         tests=["tests.test_parameters_core.ParametersCore.test_direct_grid_axis_redeclaration_is_local"]),
+    dict(id="M66", desc="I8a/P129：預覽隱藏刪除後明確重新宣告的引用者", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="if(p)for(size_t i=0;i<p->retirement_count;++i)",
+         new="if(0&&p)for(size_t i=0;i<p->retirement_count;++i)",
+         tests=["tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"]),
+    dict(id="M67", desc="I8a/P129：預覽誤用第一次刪除的處理資訊", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="for(size_t k=i+1;k<p->retirement_count;++k)", new="for(size_t k=0;k<i;++k)",
+         tests=["tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"]),
+    dict(id="M68", desc="I38/D44/P141：漏列面材試排gap/stagger/threshold參數引用", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="for(size_t i=0;i<w->wood.finish_surfaces.fill_count;++i)",
+         new="for(size_t i=0;false&&i<w->wood.finish_surfaces.fill_count;++i)",
+         tests=["tests.test_parameters_core.ParametersCore.test_panel_fill_gap_rebuild_requires_prior_reference_change",
+                "tests.test_parameters_core.ParametersCore.test_panel_fill_stagger_rebuild_requires_prior_reference_change",
+                "tests.test_parameters_core.ParametersCore.test_panel_fill_threshold_rebuild_requires_prior_reference_change"]),
+    dict(id="M69", desc="P065/P141：重建後解除來源錯用刪除前快取而非當下99", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0)return false;",
+         new="    /* mutation: let an old retirement override the currently present source */",
+         tests=["tests.test_parameters_core.ParametersCore.test_delete_rebuild_then_unbind_reads_current_99_instead_of_deleted_cache"]),
+    dict(id="M70", desc="P142/P150：來源只刪未重建時停用最後有效27快取", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0)return false;",
+         new="    /* mutation: never consume an ended-generation value */ return false;",
+         tests=["tests.test_parameters_deleted_unbind.DeletedSourceUnbind.test_delete_then_unbind_has_identical_dump_to_legal_order"]),
 ]
 
 
@@ -457,7 +538,7 @@ def _sha(data: bytes) -> str:
 
 
 class Sources:
-    """current_geometry.c 與它的 #include "…" 閉包(LF 正規化後的文字與雜湊)。
+    """Core 與 bridge 的 #include "…" 聯集閉包(LF 正規化後的文字與雜湊)。
 
     這份 CRLF 原始碼只能用二進位模式讀;雜湊算在 CRLF->LF 之後,與舊 provenance 相容。
     """
@@ -467,6 +548,9 @@ class Sources:
         self.texts = {}
         self.hashes = {}
         self._visit(self.root / MAIN_REL)
+        bridge = self.root / "geometry-web/web_bridge.c"
+        if bridge.is_file():
+            self._visit(bridge)
         self.closure = _sha("\n".join(f"{r} {self.hashes[r]}" for r in sorted(self.hashes)).encode("utf-8"))
 
     def _visit(self, path):
@@ -653,7 +737,10 @@ def mutant_file(m):
 
 def mutant_key(m):
     """變異定義本身的雜湊:改了 file/old/new 就不能沿用舊判決。"""
-    return _sha(json.dumps([mutant_file(m), m["old"], m["new"]], ensure_ascii=False).encode("utf-8"))
+    parts = [mutant_file(m), m["old"], m["new"]]
+    if m.get("binary") == "bridge":
+        parts += ["bridge", m["tests"]]
+    return _sha(json.dumps(parts, ensure_ascii=False).encode("utf-8"))
 
 
 def definition_kind(m, src):
@@ -666,7 +753,13 @@ def definition_kind(m, src):
     f = mutant_file(m)
     text = src.texts.get(f)
     if text is None:
-        return "invalid", f"目標檔 {f} 不在 {MAIN_REL} 的 #include 閉包內"
+        return "invalid", f"目標檔 {f} 不在 core/bridge 的 #include 聯集閉包內"
+    if m.get("binary") == "bridge":
+        methods = m.get("tests")
+        if (not isinstance(methods, list) or not methods
+                or any(not isinstance(name, str) or not re.fullmatch(r"tests\.\w+\.\w+\.test_\w+", name) for name in methods)
+                or len(set(methods)) != len(methods)):
+            return "invalid", "bridge 變異需要互異的具名 unittest 方法"
     n = text.count(m["old"])
     if m.get("retired"):
         if n:
@@ -793,6 +886,9 @@ def receipt_process(receipt):
 
 
 def execution_problems(m, rec, verdict, src):
+    if m.get("binary") == "bridge":
+        import mutation_bridge
+        return mutation_bridge.execution_problems(sys.modules[__name__], m, rec, verdict, src)
     evidence = rec.get("execution")
     if not isinstance(evidence, dict):
         return ["missing execution receipt (binary/command/exit/oracle)"]
@@ -850,7 +946,11 @@ def execution_problems(m, rec, verdict, src):
 
 
 def tool_hash():
-    return _sha((HERE / "mutate.py").read_bytes().replace(b"\r\n", b"\n"))
+    body = (HERE / "mutate.py").read_bytes().replace(b"\r\n", b"\n")
+    backend = HERE / "mutation_bridge.py"
+    if backend.is_file():
+        body += b"\0mutation_bridge.py\0" + backend.read_bytes().replace(b"\r\n", b"\n")
+    return _sha(body)
 
 
 def portable_compile_command():
@@ -881,6 +981,9 @@ def make_record(m, src, verdict, why, today, oracle_sha, killed_by=None, crashed
 
 def effective_record(m, rec, src, today, oracle_sha, require_execution=False):
     """把一筆既有紀錄對照現行來源與變異定義,必要時標 stale。"""
+    if m.get("binary") == "bridge":
+        import mutation_bridge
+        oracle_sha = mutation_bridge.oracle_hash(m, src.root)
     kind, why = definition_kind(m, src)
     if kind == "invalid":
         # 錨點現在就壞了:不論舊判決是什麼,都以 invalid 覆蓋。
@@ -1010,7 +1113,7 @@ def print_stale(table, ids=None):
 # ============================================================
 # 主流程
 # ============================================================
-def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=None, audit_equivalents=True):
+def _run_core_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=None, audit_equivalents=True):
     today = today or datetime.date.today().isoformat()
     root = pathlib.Path(root)
     src = Sources(root)
@@ -1204,6 +1307,37 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
     if counts["blocked"]:
         print("⚠ 有受阻的變異,這一輪的結果不完整——受阻的沒有被驗證過,"
               "不要當成殺死。等環境穩定後只重跑那幾個。")
+    return exit_code(counts, strict=not only)
+
+
+def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=None, audit_equivalents=True):
+    bridge = [m for m in mutants if m.get("binary") == "bridge"]
+    if not bridge:
+        return _run_core_pass(mutants, only, root, results_path, today, oracle, audit_equivalents)
+    core = [m for m in mutants if m.get("binary") != "bridge"]
+    selected = {m["id"] for m in mutants if not only or m["id"] in only}
+    core_ids = selected & {m["id"] for m in core}
+    # The legacy core writer evaluates exactly its table. Preserve bridge rows
+    # around it so a core-only subset never silently deletes other receipts.
+    previous = {k: v for k, v in load_records(results_path).items() if k in {m["id"] for m in bridge}}
+    if core_ids:
+        code = _run_core_pass(core, None if not only else core_ids, root, results_path, today, oracle, audit_equivalents)
+        records = load_records(results_path); records.update(previous); save_records(results_path, records)
+        if code == 2:
+            return 2
+    wanted = [m for m in bridge if m["id"] in selected]
+    if wanted:
+        import mutation_bridge
+        try:
+            mutation_bridge.run_pass(sys.modules[__name__], wanted, root, results_path, today)
+        except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+            print("BRIDGE BASELINE BLOCKED:", str(exc)); return 2
+    src = Sources(root)
+    table = evaluate_table(mutants, load_records(results_path), src, today or datetime.date.today().isoformat(),
+                           oracle or oracle_hash(), require_execution=audit_equivalents)
+    save_records(results_path, {k: v for k, v in table.items() if v is not None})
+    counts = tally(table, selected)
+    print("本次 " + str(len(selected)) + ":" + format_counts(counts))
     return exit_code(counts, strict=not only)
 
 

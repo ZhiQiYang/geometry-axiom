@@ -298,6 +298,8 @@ static bool oracle_loop(unsigned set, PolygonLoop2 *loop, bool merge_collinear, 
 static void test_poly_contains_rect_matches_cell_oracle(void)
 {
     long polygons[8] = {0}, wrong[8] = {0};
+    long contact_cases[8] = {0}, wrong_contact[8] = {0};
+    long wrong_closed_contact[8] = {0};
     for (unsigned set = 1; set < (1u << (ORACLE_N * ORACLE_N)); ++set) {
         for (int variant = 0; variant < 8; ++variant) {
             PolygonLoop2 loop = {0};
@@ -312,17 +314,221 @@ static void test_poly_contains_rect_matches_cell_oracle(void)
                         if (!oracle_cell(set, i, j)) { truth = false; break; }
                 if (poly_contains_rect(&loop, u0 * ORACLE_SCALE, v0 * ORACLE_SCALE, u1 * ORACLE_SCALE, v1 * ORACLE_SCALE) != truth)
                     ++wrong[variant];
+                /* Independent occupied-cell intersection oracle. Shrink by one mm
+                 * so rectangle corners cannot lie on polygon vertices/edges. */
+                int xmin=ORACLE_N, ymin=ORACLE_N, xmax=-1, ymax=-1, occupied=0;
+                for (int i=u0; i<u1; ++i) for (int j=v0; j<v1; ++j)
+                    if (oracle_cell(set,i,j)) {
+                        if (i<xmin) xmin=i; if (i>xmax) xmax=i;
+                        if (j<ymin) ymin=j; if (j>ymax) ymax=j;
+                        ++occupied;
+                    }
+                Coord l=u0*ORACLE_SCALE+1, r=u1*ORACLE_SCALE-1;
+                Coord bottom=v0*ORACLE_SCALE+1, top=v1*ORACLE_SCALE-1;
+                Coord a,b,c,d; ObstacleClass cls;
+                int contact=classify_rect_outline(&loop,l,bottom,r,top,&cls,&a,&b,&c,&d);
+                bool rectangle=occupied && occupied==(xmax-xmin+1)*(ymax-ymin+1);
+                ++contact_cases[variant];
+                if ((!occupied && contact!=0) || (occupied && !rectangle && contact>=0) ||
+                    (rectangle && (contact<=0 || a!=coord_max(l,xmin*ORACLE_SCALE) ||
+                     b!=coord_max(bottom,ymin*ORACLE_SCALE) || c!=coord_min(r,(xmax+1)*ORACLE_SCALE) ||
+                     d!=coord_min(top,(ymax+1)*ORACLE_SCALE)))) ++wrong_contact[variant];
+                /* Independent closed union of occupied cells, including cells
+                 * outside the query that meet it only at an edge or vertex. */
+                l=u0*ORACLE_SCALE; r=u1*ORACLE_SCALE;
+                bottom=v0*ORACLE_SCALE; top=v1*ORACLE_SCALE;
+                int closed=classify_rect_outline(&loop,l,bottom,r,top,&cls,&a,&b,&c,&d);
+                bool touches=false, extra=false;
+                for (int i=0; i<ORACLE_N; ++i) for (int j=0; j<ORACLE_N; ++j) {
+                    if (!oracle_cell(set,i,j)) continue;
+                    Coord x0=coord_max(l,i*ORACLE_SCALE), x1=coord_min(r,(i+1)*ORACLE_SCALE);
+                    Coord y0=coord_max(bottom,j*ORACLE_SCALE), y1=coord_min(top,(j+1)*ORACLE_SCALE);
+                    if (x0>x1 || y0>y1) continue;
+                    touches=true;
+                    if (closed>0 && (x0<a || x1>c || y0<b || y1>d)) extra=true;
+                }
+                if ((touches && closed==0) || (closed>0 && extra) ||
+                    (!touches && closed!=0)) ++wrong_closed_contact[variant];
             }
         }
     }
     for (int variant = 0; variant < 8; ++variant) {
         CHECK(polygons[variant] > 1000);   /* 真的測到了足夠多的多邊形(不是產生器默默什麼都沒產生) */
         CHECK(wrong[variant] == 0);
+        CHECK(contact_cases[variant] > 100000);
+        CHECK(wrong_contact[variant] == 0);
+        CHECK(wrong_closed_contact[variant] == 0);
+    }
+}
+
+/* #198: assertions name the two independently specified counterexamples. */
+static void test_rect_outline_counterexamples(void)
+{
+    PolygonLoop2 notch = { .count = 8, .v = {
+        {0,0},{100,0},{100,100},{60,100},{60,40},{40,40},{40,100},{0,100}
+    }};
+    PolygonLoop2 ridge = { .count = 8, .v = {
+        {0,0},{100,0},{100,50},{60,50},{60,90},{40,90},{40,50},{0,50}
+    }};
+    ObstacleClass cls;
+    Coord u0, v0, u1, v1;
+    int counterexample_A = classify_rect_outline(&notch, 30,50,70,80,
+        &cls, &u0,&v0,&u1,&v1);
+    CHECK(counterexample_A < 0); /* Two disconnected contacts cannot be one hole/rectangle. */
+    int counterexample_B = classify_rect_outline(&ridge, 20,70,80,80,
+        &cls, &u0,&v0,&u1,&v1);
+    CHECK(counterexample_B > 0);
+    CHECK(cls == OBSTACLE_SPLIT);
+    CHECK(u0 == 40 && v0 == 70 && u1 == 60 && v1 == 80);
+    CHECK(classify_rect_outline(&notch, 10,10,20,20,
+        &cls, &u0,&v0,&u1,&v1) > 0);
+    CHECK(cls == OBSTACLE_HOLE);
+    CHECK(u0 == 10 && v0 == 10 && u1 == 20 && v1 == 20);
+    CHECK(classify_rect_outline(&notch, 110,110,120,120,
+        &cls, &u0,&v0,&u1,&v1) == 0);
+    CHECK(classify_rect_outline(&notch, -10,10,20,20,
+        &cls, &u0,&v0,&u1,&v1) > 0);
+    CHECK(cls == OBSTACLE_NOTCH);
+    CHECK(u0 == 0 && v0 == 10 && u1 == 20 && v1 == 20);
+    /* Reverse winding, negative coordinates, one-mm slabs and collinear vertices. */
+    for (int reverse = 0; reverse < 2; ++reverse) {
+        PolygonLoop2 small = { .count = 9, .v = {
+            {-2,-2},{0,-2},{2,-2},{2,0},{1,0},{1,1},{0,1},{0,0},{-2,0}
+        }};
+        if (reverse) for (size_t i=0; i<small.count/2; ++i) {
+            SurfacePoint2 t=small.v[i]; small.v[i]=small.v[small.count-1-i];
+            small.v[small.count-1-i]=t;
+        }
+        /* The old wide footprint also touches the base at v=0 outside the
+         * ridge rectangle: it is another rectangle-plus-line case, not a
+         * valid positive control. Keep it as a rejection and add a true one. */
+        CHECK(classify_rect_outline(&small, -1,0,2,1,
+            &cls, &u0,&v0,&u1,&v1) < 0);
+        CHECK(classify_rect_outline(&small, 0,0,1,1,
+            &cls, &u0,&v0,&u1,&v1) > 0);
+        CHECK(cls == OBSTACLE_SPLIT);
+        CHECK(u0 == 0 && v0 == 0 && u1 == 1 && v1 == 1);
+    }
+    CHECK(classify_rect_outline(&notch, 100,100,110,110,
+        &cls, &u0,&v0,&u1,&v1) < 0); /* R7: isolated point tangency. */
+    int rectangle_plus_isolated_line = classify_rect_outline(&notch, 30,50,60,80,
+        &cls, &u0,&v0,&u1,&v1);
+    CHECK(rectangle_plus_isolated_line < 0);
+    PolygonLoop2 stepped = { .count = 10, .v = {
+        {0,0},{100,0},{100,100},{60,100},{60,80},
+        {80,80},{80,40},{40,40},{40,100},{0,100}
+    }};
+    int rectangle_plus_isolated_point = classify_rect_outline(&stepped, 30,50,60,80,
+        &cls, &u0,&v0,&u1,&v1);
+    CHECK(rectangle_plus_isolated_point < 0);
+}
+
+/* Integer orthogonal fixtures partition into whole 1 mm cells. Odd doubled
+ * centres enumerate their complete open interiors without engine predicates. */
+static bool split_oracle_cell(const PolygonLoop2 *loop, Coord u, Coord v)
+{
+    bool inside = false;
+    for (size_t i=0; i<loop->count; ++i) {
+        SurfacePoint2 a=loop->v[i], b=loop->v[(i+1)%loop->count];
+        if (a.u==b.u && 2*coord_min(a.v,b.v)<2*v+1 &&
+            2*v+1<2*coord_max(a.v,b.v) && 2*a.u>2*u+1) inside=!inside;
+    }
+    return inside;
+}
+
+static bool split_oracle_difference(const PolygonLoop2 *before,
+    const PolygonLoop2 *p1, const PolygonLoop2 *p2,
+    Coord u0, Coord v0, Coord u1, Coord v1, int *area)
+{
+    Coord l,b,r,t; poly_bbox(before,&l,&b,&r,&t);
+    bool exact=true; *area=0;
+    for (Coord u=l-1; u<=r; ++u) for (Coord v=b-1; v<=t; ++v) {
+        bool wanted=split_oracle_cell(before,u,v) && !(u>=u0 && u<u1 && v>=v0 && v<v1);
+        int actual=split_oracle_cell(p1,u,v)+split_oracle_cell(p2,u,v);
+        if (wanted) ++*area;
+        if (actual!=(int)wanted) exact=false; /* Also rejects overlap and extra cells. */
+    }
+    return exact;
+}
+
+static void test_projection_corner_contact_is_local(void)
+{
+    const PolygonLoop2 original={.count=12,.v={{0,10},{10,10},{10,0},{20,0},{20,10},{30,10},
+        {30,20},{20,20},{20,40},{10,40},{10,20},{0,20}}};
+    for (int variant=0; variant<16; ++variant) {
+        PolygonLoop2 loop=original;
+        Coord offset=(variant&8)?-50:0;
+        size_t shift=(variant&4)?original.count-1:0;
+        for (size_t i=0;i<loop.count;++i) {
+            size_t at=(variant&1)?(shift+loop.count-i)%loop.count:(shift+i)%loop.count;
+            SurfacePoint2 p=original.v[at];
+            loop.v[i]=(variant&2)?(SurfacePoint2){p.v+offset,p.u+offset}:
+                                    (SurfacePoint2){p.u+offset,p.v+offset};
+            loop.fixity[i]=EDGE_FIXED;
+        }
+        CHECK(poly_loop_is_valid(&loop));
+        Coord a,b,c,d; ObstacleClass cls;
+        int corner_only_despite_remote_side_contact=classify_rect_outline(&loop,
+            10+offset,10+offset,(variant&2)?30+offset:20+offset,
+            (variant&2)?20+offset:30+offset,&cls,&a,&b,&c,&d);
+        CHECK(corner_only_despite_remote_side_contact<0); /* R7: the corner itself has no positive edge. */
+        Coord l=(variant&2)?20+offset:10+offset, bottom=(variant&2)?10+offset:20+offset;
+        Coord r=(variant&2)?30+offset:20+offset, top=(variant&2)?20+offset:30+offset;
+        CHECK(classify_rect_outline(&loop,l,bottom,r,top,&cls,&a,&b,&c,&d)>0);
+        CHECK(cls==OBSTACLE_SPLIT); /* Same remote edges, but now positive contact begins at all corners. */
+        bool flush[4]; for(int side=0;side<4;++side)flush[side]=side_flush_outline(&loop,side,a,b,c,d);
+        PolygonLoop2 p1={0},p2={0};
+        CHECK(proj_split_loop(&loop,flush,a,b,c,d,&p1,&p2));
+        int area=0;
+        CHECK(split_oracle_difference(&loop,&p1,&p2,a,b,c,d,&area));
+        CHECK(area==500);
+        CHECK(proj_loop_area2(&p1)+proj_loop_area2(&p2)==1000);
+    }
+}
+
+static void test_projection_three_residual_components(void)
+{
+    const PolygonLoop2 fixtures[2] = {
+        {.count=14,.v={{0,10},{10,10},{10,0},{20,0},{20,10},{30,10},{30,0},
+                      {40,0},{40,20},{20,20},{20,30},{10,30},{10,20},{0,20}}},
+        {.count=12,.v={{0,10},{10,10},{10,0},{20,0},{20,10},{30,10},
+                      {30,20},{20,20},{20,30},{10,30},{10,20},{0,20}}}
+    };
+    for (int which=0; which<2; ++which) for (int variant=0; variant<8; ++variant) {
+        PolygonLoop2 loop=fixtures[which], p1={0}, p2={0};
+        size_t shift=(variant&4)?loop.count-1:0;
+        for (size_t i=0; i<loop.count; ++i) {
+            size_t at=(variant&1)?(shift+loop.count-i)%loop.count:(shift+i)%loop.count;
+            SurfacePoint2 a=fixtures[which].v[at];
+            loop.v[i]=(variant&2)?(SurfacePoint2){a.v-50,a.u-50}:(SurfacePoint2){a.u-50,a.v-50};
+            loop.fixity[i]=EDGE_FIXED;
+        }
+        CHECK(poly_loop_is_valid(&loop));
+        Coord u0=(variant&2)?-40:-60, v0=(variant&2)?-60:-40;
+        Coord u1=(variant&2)?-30:0, v1=(variant&2)?0:-30;
+        Coord a,b,c,d; ObstacleClass cls;
+        CHECK(classify_rect_outline(&loop,u0,v0,u1,v1,&cls,&a,&b,&c,&d)==1);
+        CHECK(cls==OBSTACLE_SPLIT);
+        bool flush[4]; for (int s=0;s<4;++s) flush[s]=side_flush_outline(&loop,s,a,b,c,d);
+        bool split=proj_split_loop(&loop,flush,a,b,c,d,&p1,&p2);
+        bool three_residual_components_rejected=(which==0)?!split:split;
+        CHECK(three_residual_components_rejected);
+        int area=0;
+        bool exact=split_oracle_difference(&loop,&p1,&p2,a,b,c,d,&area);
+        CHECK(area==(which==0?300:200));
+        bool saved_union_is_exact=!split||exact;
+        CHECK(saved_union_is_exact);
+        CHECK(!split||proj_loop_area2(&p1)+proj_loop_area2(&p2)==2*area);
+        SurfacePoint2 removed={-35,-35};
+        CHECK(!split||(!poly_contains_point(&p1,removed)&&!poly_contains_point(&p2,removed)));
     }
 }
 
 int main(void)
 {
+    test_projection_corner_contact_is_local();
+    test_projection_three_residual_components();
+    test_rect_outline_counterexamples();
     test_collinear_vertex_rect_corner();
     test_notch_rect_with_corners_on_ring_is_outside();
     test_poly_contains_rect_matches_cell_oracle();
