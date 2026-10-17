@@ -277,7 +277,7 @@ async function previewRecovery(){
 async function main(){
  run.browser='Browser plugin not available';run.runtimeBefore=await runtime();
  await check('fresh isolated exact checkout',run.runtimeBefore.fresh===true&&path.resolve(run.runtimeBefore.root)===ROOT);
- browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox','--no-proxy-server']});
+ browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--no-proxy-server']});
  context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});
  await context.addInitScript(()=>Object.defineProperty(window,'showSaveFilePicker',{value:undefined,configurable:true}));
  await attachPage();await check('page title',/構形 Canvas/.test(await page.title()));

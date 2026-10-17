@@ -6,7 +6,7 @@
  *   node geometry-web/feedback_resize_observer_test.js [--repo <repo 根>] [--keep]
  *
  * 環境變數:GEOMETRY_BRIDGE(bridge exe;預設找 %LOCALAPPDATA%/Temp/geometry-qa/bin/bridge-*.exe)、
- *           GEOMETRY_CHROME(Chrome 路徑)。
+ *           GEOMETRY_CHROME(Chrome 路徑)、GEOMETRY_CHROME_FLAGS(追加旗標，空白分隔)。
  *
  * 關鍵:RO 事件必須是「真實瀏覽器」產生的(isTrusted===true、error===null)——
  * 走真實匯入對話框:#fileMenuBtn → #btnImportReference → 攔截 file chooser 塞公開 PDF。
@@ -132,7 +132,7 @@ async function main() {
     const started = verifiedRuntime(PORT, identity, srv.pid);
     console.log('[identity:start] ' + JSON.stringify({ ...identity, runtime: started, native: nativeIdentity }));
     chrome = spawn(CHROME, ['--headless=new', '--disable-gpu', '--no-first-run', `--remote-debugging-port=${CDP}`,
-      '--window-size=1440,900', `--user-data-dir=${PROFILE}`, 'about:blank'], { stdio: 'ignore', windowsHide: true });
+      '--window-size=1440,900', `--user-data-dir=${PROFILE}`, ...(process.env.GEOMETRY_CHROME_FLAGS || '').split(/\s+/).filter(Boolean), 'about:blank'], { stdio: 'ignore', windowsHide: true });
     console.log(`[start] chrome PID=${chrome.pid} cdp=${CDP}`);
     let page = null;
     for (let i = 0; i < 80 && !page; i++) { try { page = (await fetch(`http://127.0.0.1:${CDP}/json`).then(r => r.json())).find(t => t.type === 'page'); } catch { } if (!page) await sleep(250); }
