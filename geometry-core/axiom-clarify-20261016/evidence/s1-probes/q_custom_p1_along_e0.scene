@@ -1,0 +1,8 @@
+# a priority-1 custom as a would-be end stop for a middle-edge primary: laid flush along collinear edge e0 -> it runs past e0 (non-boundary, I22)
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 300,0 700,0 1000,0 1000,1000 0,1000
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role custom priority 1
+place 1 on 1 at-face e5 -v +n
+place 2 on 1 at-face e3 +v +n
+place 3 on 1 at-face e0 +u +n

@@ -1,0 +1,9 @@
+# reviewer probe: wall v=0 split by two collinear vertices into e0/e1/e2; primary along u on grid v=13 spans boundary e5 to boundary e3; does it cover middle edge e1 (300..700)?
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 300,0 700,0 1000,0 1000,1000 0,1000
+grid 1 on 1 v 13
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+place 1 on 1 at-face e5 -v +n
+place 2 on 1 at-face e3 +v +n
+place 3 on 1 at-line grid 1 v 0 +u +n

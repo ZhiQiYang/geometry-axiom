@@ -1,10 +1,43 @@
-sha=1c80751150d0767ba52509537caf8d5542769ccb build_rc=0
-p1_alcove_wall_primary rc=1
-p2_two_alcoves_middle_edge rc=1
-p3_alcove_side_boundary_then_main rc=0
-p4_alcove_wall_main_lower_piece rc=1
-p5_wall_main_first_then_side_boundary rc=1
-p6_r14_notch rc=1
-p7_f1_boundary_first rc=1
-p8_f1_main_first rc=1
-p9_f1_custom_inner_wall rc=0
+head=3247d84469ac56af73aa5343588776c1a5bf0a41 current_geometry.c blob=cceb944d0a02d09a73d80985be175928e101b14b
+build: cc -std=c11 -O2 current_geometry.c -lm -o <tmp>/core
+stack: verdicts at 64 MiB (ulimit -s 65536); rc@8MiB only shows which probes need the larger stack (-11 = SIGSEGV before any output)
+OK  p1_alcove_wall_primary rc@64MiB=1 rc@8MiB=1 (expect rc=1 「V_EXTENSION」)
+OK  p2_two_alcoves_middle_edge rc@64MiB=1 rc@8MiB=1 (expect rc=1 「V_EXTENSION」)
+OK  p3_alcove_side_boundary_then_main rc@64MiB=0 rc@8MiB=-11 (expect rc=0 accepted)
+      4000x27x33 boundary x2（角材 1、2）
+      2946x27x33 primary x1（角材 3）
+      1287x27x33 boundary x2（角材 4、5）
+      合計 5 支，3 種規格，總長 13520 mm
+OK  p4_alcove_wall_main_lower_piece rc@64MiB=1 rc@8MiB=-11 (expect rc=1 「V_CUT_PRIORITY」)
+OK  p5_wall_main_first_then_side_boundary rc@64MiB=1 rc@8MiB=1 (expect rc=1 「V_EXTENSION」)
+OK  p6_r14_notch rc@64MiB=1 rc@8MiB=1 (expect rc=1 「V_EXTENSION」)
+OK  p7_f1_boundary_first rc@64MiB=1 rc@8MiB=1 (expect rc=1 「V_CUT_PRIORITY」)
+OK  p8_f1_main_first rc@64MiB=1 rc@8MiB=1 (expect rc=1 「V_EXTENSION」)
+OK  p9_f1_custom_inner_wall rc@64MiB=0 rc@8MiB=-11 (expect rc=0 accepted)
+      5000x27x33 boundary x1（角材 1）
+      4746x27x33 primary x1（角材 3）
+      3200x27x33 boundary x1（角材 2）
+      2222x27x33 boundary x1（角材 4）
+      1773x27x33 custom x1（角材 5）
+      合計 5 支，5 種規格，總長 16941 mm
+OK  q_collinear_mid_atface_e1 rc@64MiB=1 rc@8MiB=1 (expect rc=1 「V_EXTENSION」)
+OK  q_collinear_mid_edge_13 rc@64MiB=1 rc@8MiB=-11 (expect rc=1 「V_EXTENSION」)
+OK  q_collinear_mid_edge_14 rc@64MiB=0 rc@8MiB=-11 (expect rc=0 accepted)
+      1000x27x33 boundary x2（角材 1、2）
+      946x27x33 primary x1（角材 3）
+      合計 3 支，2 種規格，總長 2946 mm
+OK  q_collinear_mid_two_holes rc@64MiB=1 rc@8MiB=1 (expect rc=1 「跨距起點沒有擋面」)
+OK  q_custom_p1_across_wall rc@64MiB=1 rc@8MiB=-11 (expect rc=1 「只有 boundary 可頂 RC」)
+OK  q_custom_p1_along_e0 rc@64MiB=1 rc@8MiB=1 (expect rc=1 「V_EXTENSION」)
+OK  q_hole_1mm_off_wall_through rc@64MiB=1 rc@8MiB=1 (expect rc=1 「跨距起點沒有擋面」)
+OK  q_hole_touch_outer rc@64MiB=1 rc@8MiB=1 (expect rc=1 「邊界面輪廓不合法」)
+OK  q_notch_atline_113 rc@64MiB=1 rc@8MiB=-11 (expect rc=1 「V_EXTENSION」)
+OK  q_notch_atline_114 rc@64MiB=0 rc@8MiB=-11 (expect rc=0 accepted)
+      1000x27x33 boundary x2（角材 1、2）
+      946x27x33 primary x1（角材 3）
+      合計 3 支，2 種規格，總長 2946 mm
+OK  q_rect_primary_no_boundary rc@64MiB=1 rc@8MiB=1 (expect rc=1 「只有 boundary 可頂 RC」)
+OK  q_rect_with_boundaries rc@64MiB=0 rc@8MiB=0 (expect rc=0 accepted)
+      1000x27x33 boundary x2（角材 1、2）
+      946x27x33 primary x1（角材 3）
+      合計 3 支，2 種規格，總長 2946 mm

@@ -1,10 +1,11 @@
-OK  none: step 100/100                             enclosed=True  open_cells=0   overlap_mm2=0     hole_mm2=0
-OK  u-only δ50 (step 100/100)                      enclosed=True  open_cells=0   overlap_mm2=0     hole_mm2=0
-OK  v-only δ400 (D10b example 1830)                enclosed=True  open_cells=0   overlap_mm2=0     hole_mm2=0
-OK  both δ50/δ50 (R14 example)                     enclosed=False open_cells=56  overlap_mm2=12500 hole_mm2=10000
-OK  both δ-30/δ70                                  enclosed=False open_cells=56  overlap_mm2=10500 hole_mm2=8400
-OK  MUTANT drop one segment (no stagger)           enclosed=False open_cells=2   overlap_mm2=0     hole_mm2=0
-OK  MUTANT nudge one cell 1 mm (no stagger)        enclosed=False open_cells=1   overlap_mm2=100   hole_mm2=100
-sweep single-axis: 128/128 enclosed AND partition
-sweep biaxial    : 928/928 NOT enclosed AND NOT partition
+OK  none: step 100/100                             enclosed=True  open_cells=0   overlap_mm2=0     hole_mm2=0     band_edges=True
+OK  u-only δ50 (step 100/100)                      enclosed=True  open_cells=0   overlap_mm2=0     hole_mm2=0     band_edges=True
+OK  v-only δ400 (D10b example 1830)                enclosed=True  open_cells=0   overlap_mm2=0     hole_mm2=0     band_edges=True
+OK  both δ50/δ50 (R14 example)                     enclosed=False open_cells=56  overlap_mm2=12500 hole_mm2=10000 band_edges=True
+OK  both δ-30/δ70                                  enclosed=False open_cells=56  overlap_mm2=10500 hole_mm2=8400  band_edges=True
+OK  MUTANT drop one segment (no stagger)           enclosed=False open_cells=2   overlap_mm2=0     hole_mm2=0     band_edges=False
+OK  MUTANT nudge one cell 1 mm (no stagger)        enclosed=False open_cells=1   overlap_mm2=100   hole_mm2=100   band_edges=True
+OK  R14 example δ50/δ50: 25/81 cells still enclosed (expected 25/81)
+sweep single-axis: 128/128 enclosed AND partition AND band_edges
+sweep biaxial    : 928/928 NOT enclosed AND NOT partition, band_edges
 ALL EXPECTATIONS HOLD

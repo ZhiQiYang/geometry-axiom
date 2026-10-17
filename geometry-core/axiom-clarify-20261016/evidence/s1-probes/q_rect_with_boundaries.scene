@@ -1,0 +1,8 @@
+# control for the convex-corner case: boundaries on e3/e1 first, then primary at-face e0 -> accepted, 1000-27-27 = 946 long, so it does not cover e0 (I11)
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 1000,0 1000,1000 0,1000
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+place 1 on 1 at-face e3 -v +n
+place 2 on 1 at-face e1 +v +n
+place 3 on 1 at-face e0 +u +n

@@ -1,0 +1,4 @@
+# reviewer probe (rect, no boundary yet): primary at-face e0 would end on the outer edges -> I19 only boundary may abut an outer edge
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 1000,0 1000,1000 0,1000
+timber 1 27 33 role primary
+place 1 on 1 at-face e0 +u +n

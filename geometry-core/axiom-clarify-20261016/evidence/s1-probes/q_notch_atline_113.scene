@@ -1,0 +1,9 @@
+# reviewer probe: RC notch [0,100]x[300,700] (same outline as p6); primary placed at-line on grid u=113, collinear with notch face e5, between boundaries e0/e2
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 1000,0 1000,1000 0,1000 0,700 100,700 100,300 0,300
+grid 1 on 1 u 113
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 -u +n
+place 3 on 1 at-line grid 1 u 0 +v +n

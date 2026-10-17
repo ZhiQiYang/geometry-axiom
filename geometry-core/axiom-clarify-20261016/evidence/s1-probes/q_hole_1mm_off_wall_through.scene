@@ -1,0 +1,8 @@
+# hole [400,500]x[1,100] sits 1 mm off wall v=0; primary at-face e0 through 700 would start at the hole face -> not full width -> no stop (R6)
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 1000,0 1000,1000 0,1000 hole 400,1 500,1 500,100 400,100
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+place 1 on 1 at-face e3 -v +n
+place 2 on 1 at-face e1 +v +n
+place 3 on 1 at-face e0 through 700 +u +n

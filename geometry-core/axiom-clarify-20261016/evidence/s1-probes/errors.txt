@@ -7,3 +7,15 @@ p6_r14_notch: p6_r14_notch.scene:8: V_EXTENSION：非 boundary 角材（3）的 
 p7_f1_boundary_first: p7_f1_boundary_first.scene:11: V_CUT_PRIORITY：角材 4（優先級 2）端面頂到角材 3（優先級 2）側面——擋面擁有者優先級必須嚴格小於自己
 p8_f1_main_first: p8_f1_main_first.scene:10: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍
 p9_f1_custom_inner_wall: 
+q_collinear_mid_atface_e1: q_collinear_mid_atface_e1.scene:8: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍
+q_collinear_mid_edge_13: q_collinear_mid_edge_13.scene:9: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍
+q_collinear_mid_edge_14: 
+q_collinear_mid_two_holes: q_collinear_mid_two_holes.scene:9: R6/I5/I6 timber 3: 跨距起點沒有擋面（端面懸空）
+q_custom_p1_across_wall: q_custom_p1_across_wall.scene:9: V_CUT_PRIORITY：角材 3 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC
+q_custom_p1_along_e0: q_custom_p1_along_e0.scene:8: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍
+q_hole_1mm_off_wall_through: q_hole_1mm_off_wall_through.scene:8: R6/I5/I6 timber 3: 跨距起點沒有擋面（端面懸空）
+q_hole_touch_outer: q_hole_touch_outer.scene:2: 邊界面輪廓不合法：邊要軸平行、不零長、不自交；孔要在外輪廓內且互不重疊
+q_notch_atline_113: q_notch_atline_113.scene:9: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍
+q_notch_atline_114: 
+q_rect_primary_no_boundary: q_rect_primary_no_boundary.scene:4: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC
+q_rect_with_boundaries: 

@@ -1,0 +1,9 @@
+# a priority-1 custom as a would-be end stop for a middle-edge primary: standing across wall v=0 near u=300 -> its end hits the outer edge (I19)
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 300,0 700,0 1000,0 1000,1000 0,1000
+grid 1 on 1 u 313
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role custom priority 1
+place 1 on 1 at-face e5 -v +n
+place 2 on 1 at-face e3 +v +n
+place 3 on 1 at-line grid 1 u 0 +v +n
