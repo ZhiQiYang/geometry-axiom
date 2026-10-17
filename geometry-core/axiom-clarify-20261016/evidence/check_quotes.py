@@ -381,6 +381,10 @@ def selftest(proposal_text: str, ssot: dict[str, str], root: Path) -> bool:
         ("insertion anchor on an indented line wrong (R53)", mutate("「配號只依目標候選 World、來源閉包", "「配號只依目標候選 Worldx、來源閉包"), "新增於 公理層.md R53"),
         ("one char of a 白話版 K-summary quote changed (I24)", mutate("核心先精確算相位差，再驗非零", "核心先精確算相位差，再驗非賃"), "改前 白話版 I24"),
         ("quoted decision-queue text wrong (Q-A option)", mutate("第 458 行「只准一軸(建議)」", "第 458 行「只准兩軸(建議)」"), "外部核對行 d18719ac"),
+        ("D3 sweep list goes stale (依以下 line list)", mutate("「依以下」 第 615、1403 行", "「依以下」 第 615、1404 行"), "全檔出現 公理層.md 「依以下」"),
+        ("one char of the D29 K quote changed", mutate("> 來源引用、容量與首版組合限制依以下相容契約，無限", "> 來源引用、容量與首版組合限制依以下相容契約，無線"), "公理層.md D29 L615"),
+        ("one char of an I74 quote changed", mutate("同候選刪除並以 put 或匯入重建來源卡片／欄位鍵時，每個", "同候選刪除並以 put 或匯入重建來源卡片／欄位件時，每個"), "現況 公理層.md I74"),
+        ("approved-proposal text no longer on the cited line", mutate("第 1535 行「來源引用、容量與首版組合限制依以下相容契約", "第 1535 行「來源引用、容量與首版組合限制依以下相容契約x"), "AXIOM-PROPOSAL.md:1535"),
     ]
     all_caught = True
     for desc, mutated, expect in cases:
