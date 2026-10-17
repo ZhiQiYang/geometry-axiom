@@ -15,7 +15,7 @@ static bool grid_bindings_rebuild(World *w,char *err,size_t cap)
 
 static bool apply_grid_binding_line(const char *path,int line_no,char **t,int count,World *w)
 {
-    GridBinding binding={0};int at=6;World candidate=*w;
+    GridBinding binding={0};int at=6;World candidate=*w;char detail[256]="";
     if(count<16 || !parse_u32(t[1],&binding.id) || strcmp(t[2],"on-boundary") ||
         !parse_u32(t[3],&binding.boundary_id) || strcmp(t[4],"from-system") || !parse_u32(t[5],&binding.system_id))goto invalid;
     if(!strcmp(t[at],"vertex-key")){
@@ -39,11 +39,26 @@ static bool apply_grid_binding_line(const char *path,int line_no,char **t,int co
         if(loop>=keys->loop_count || index>=keys->counts[loop])goto invalid;
         binding.vertex_key=keys->keys[loop][index];at+=3;
     }else goto invalid;
-    if(at+8!=count || strcmp(t[at],"cell") || !parse_i64(t[at+1],&binding.cell[0]) ||
-        !parse_i64(t[at+2],&binding.cell[1]) || strcmp(t[at+3],"anchor"))goto invalid;
+    if(at+8!=count || strcmp(t[at],"cell"))goto invalid;
+    for(int a=0;a<2;++a) if(!parse_i64(t[at+1+a],&binding.cell[a])) {
+        snprintf(detail,sizeof detail,"D30/I37: grid-binding %u cell %c=%.80s must be signed int64",binding.id,a?'v':'u',t[at+1+a]);
+        goto invalid;
+    }
+    if(strcmp(t[at+3],"anchor"))goto invalid;
     for(int a=0;a<2;++a){
         uint32_t n,d;
-        if(!parse_u32(t[at+4+a*2],&n)||!parse_u32(t[at+5+a*2],&d)||!d||n>d)goto invalid;
+        if(!parse_u32(t[at+4+a*2],&n)) {
+            snprintf(detail,sizeof detail,"D30/I37: grid-binding %u anchor %c numerator=%.80s must be uint32",binding.id,a?'v':'u',t[at+4+a*2]); goto invalid;
+        }
+        if(!parse_u32(t[at+5+a*2],&d)) {
+            snprintf(detail,sizeof detail,"D30/I37: grid-binding %u anchor %c denominator=%.80s must be positive uint32",binding.id,a?'v':'u',t[at+5+a*2]); goto invalid;
+        }
+        if(!d) {
+            snprintf(detail,sizeof detail,"D30/I37: grid-binding %u anchor %c denominator=0 must be positive",binding.id,a?'v':'u'); goto invalid;
+        }
+        if(n>d) {
+            snprintf(detail,sizeof detail,"D30/I37: grid-binding %u anchor %c numerator=%u exceeds denominator=%u",binding.id,a?'v':'u',n,d); goto invalid;
+        }
         binding.anchor_num[a]=n;binding.anchor_den[a]=d;
     }
     if(!geo_grid_binding_normalize(&binding))goto invalid;
@@ -52,7 +67,7 @@ static bool apply_grid_binding_line(const char *path,int line_no,char **t,int co
     if(!app_world_revalidate_staged(w,&candidate)){scene_error(path,line_no,g_revalidate_error);return false;}
     return true;
 invalid:
-    scene_error(path,line_no,"D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration");return false;
+    scene_error(path,line_no,detail[0]?detail:"D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration");return false;
 }
 
 static bool apply_grid_binding_application(const char *path,int line_no,char **t,int count,World *w)

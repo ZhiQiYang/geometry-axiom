@@ -80,6 +80,14 @@ bool geo_parameters_next_field(GeoParameterCard *card,uint32_t next,GeoParameter
 bool geo_parameters_put(GeoParameterStore *store,const GeoParameterCard *card,
     const GeoParameterField *fields,GeoParameterError *error);
 bool geo_parameters_remove(GeoParameterStore *store,uint32_t id,GeoParameterError *error);
+/* I38: a key explicitly ended earlier in the caller's same candidate may be
+ * rebuilt there. The predicate names only those ended keys; every other reused
+ * key, next-id and definition rule is unchanged. NULL keeps the strict rule. */
+typedef bool (*GeoParameterEnded)(void *,GeoParameterRef);
+bool geo_parameters_accept_rebuilt_field(const GeoParameterStore *store,GeoParameterCard *card,
+    const GeoParameterField *fields,size_t index,GeoParameterEnded ended,void *state,GeoParameterError *error);
+bool geo_parameters_put_rebuilt(GeoParameterStore *store,const GeoParameterCard *card,
+    const GeoParameterField *fields,GeoParameterEnded ended,void *state,GeoParameterError *error);
 /* Atomic-input staging only: H owns the enclosing load transaction and must
  * finish/rebuild it before publishing. The store has no loading flag. */
 bool geo_parameters_stage_card(GeoParameterStore *store,const GeoParameterCard *card);

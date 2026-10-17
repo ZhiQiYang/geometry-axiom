@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "python3",
+    "tests/geo198/remove_fix.py",
+    "/tmp/geometry-198-review2/remove-fix-clean/results"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "returncode": 0,
+  "seconds": 43.74754105399916,
+  "stack_soft_limit_bytes": 16777216,
+  "log_sha256": "43b55256669b62c19f48ab7a4741b21efc13c888561d7e5dda7067a1bde9ef6d",
+  "receipt": "returncode comes directly from Popen.poll, not test result inference",
+  "sample_count": 44
+}

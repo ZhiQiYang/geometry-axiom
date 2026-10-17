@@ -1,0 +1,114 @@
+[
+  {
+    "phase": "before",
+    "ref": "ed877f5f05156511db24cc24cf6b90da1c4b0cda",
+    "source_c_sha256": "22d792302762431cb2c407977d359f9c35682765802c54a5c6f1cd379c4829dc",
+    "harness_sha256": "fdfa930697d3d9b2fbc1d8211e858e94ffadad31654f336e190fe38a2ab5d0c5",
+    "compile_argv": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "-I",
+      "/workspace/geometry-axiom",
+      "-DGEOMETRY_SOURCE=\"/tmp/geometry-198-review3/world-cmp/before-source.c\"",
+      "/tmp/geometry-198-review3/world-cmp/harness.c",
+      "-lm",
+      "-o",
+      "/tmp/geometry-198-review3/world-cmp/before-harness"
+    ],
+    "compile_returncode": 0,
+    "run_argv": [
+      "/tmp/geometry-198-review3/world-cmp/before-harness"
+    ],
+    "run_returncode": 1,
+    "seconds": 9.526979158999893,
+    "binary_sha256": "4dbe1c04ababf42224f382ec38168691dcb2619ad971a932ab8ec267d8f0d229",
+    "log_sha256": "30cf15bbf847b989c9a668b7fc8c081dd5f3b46082cbe3584182c17746a68d9d",
+    "results": [
+      {
+        "strip": 0,
+        "prior_hole": 0,
+        "accepted": true,
+        "world_bytes_equal": false,
+        "world_bytes": 2904880
+      },
+      {
+        "strip": 0,
+        "prior_hole": 1,
+        "accepted": true,
+        "world_bytes_equal": false,
+        "world_bytes": 2904880
+      },
+      {
+        "strip": 1,
+        "prior_hole": 0,
+        "accepted": true,
+        "world_bytes_equal": false,
+        "world_bytes": 2904880
+      },
+      {
+        "strip": 1,
+        "prior_hole": 1,
+        "accepted": true,
+        "world_bytes_equal": false,
+        "world_bytes": 2904880
+      }
+    ]
+  },
+  {
+    "phase": "after",
+    "ref": "299709e09974babff113718bfc3e32b853e09f4c",
+    "source_c_sha256": "00342fb017fe0725dc11f4cd78ced66727112d676f9e80df1954e4a1f5e0ee4f",
+    "harness_sha256": "fdfa930697d3d9b2fbc1d8211e858e94ffadad31654f336e190fe38a2ab5d0c5",
+    "compile_argv": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "-I",
+      "/workspace/geometry-axiom",
+      "-DGEOMETRY_SOURCE=\"/tmp/geometry-198-review3/world-cmp/after-source.c\"",
+      "/tmp/geometry-198-review3/world-cmp/harness.c",
+      "-lm",
+      "-o",
+      "/tmp/geometry-198-review3/world-cmp/after-harness"
+    ],
+    "compile_returncode": 0,
+    "run_argv": [
+      "/tmp/geometry-198-review3/world-cmp/after-harness"
+    ],
+    "run_returncode": 0,
+    "seconds": 12.174190689001989,
+    "binary_sha256": "2caa452de38a64cce544e61a9cf3d2f434c5c474025d1ee581304328e6783c4e",
+    "log_sha256": "f95eedf485ed7bef05ea7ab51bb238126233ab216efff38371c5e230f7dd0751",
+    "results": [
+      {
+        "strip": 0,
+        "prior_hole": 0,
+        "accepted": false,
+        "world_bytes_equal": true,
+        "world_bytes": 2904880
+      },
+      {
+        "strip": 0,
+        "prior_hole": 1,
+        "accepted": false,
+        "world_bytes_equal": true,
+        "world_bytes": 2904880
+      },
+      {
+        "strip": 1,
+        "prior_hole": 0,
+        "accepted": false,
+        "world_bytes_equal": true,
+        "world_bytes": 2904880
+      },
+      {
+        "strip": 1,
+        "prior_hole": 1,
+        "accepted": false,
+        "world_bytes_equal": true,
+        "world_bytes": 2904880
+      }
+    ]
+  }
+]

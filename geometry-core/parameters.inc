@@ -231,10 +231,158 @@ static bool parameters_rebuild(World *w,char *error,size_t cap)
     if(!ok)snprintf(error,cap,"%s",g_parameter_error);return ok;
 }
 
+/* I38/R33: an intermediate unbind needs its current source closure, not unrelated fields.
+ * Each required field uses a fresh K evaluation, so values changed earlier in this candidate
+ * are never read from an old cache. The complete candidate still goes through
+ * parameters_rebuild at transaction validation. */
+static bool parameter_current_closure_valid(const World *w,int index,bool visited[PARAM_FIELD_MAX]);
+static bool parameters_evaluate_refs(World *w,const ParameterRef *refs,size_t count,char *error,size_t cap)
+{
+    g_parameter_error[0]=0;bool ok=!w->app.parameter_loading;
+    if(!ok)parameter_fail("I39: unterminated parameter block");
+    for(size_t i=0;i<count&&ok;++i){
+        int index=parameter_field_index(w,refs[i].parameter_id,refs[i].field_id);
+        if(index<0)ok=parameter_fail("I38 MISSING: parameter %u field %u",refs[i].parameter_id,refs[i].field_id);
+        else {bool visited[PARAM_FIELD_MAX]={0};GeoParameterError issue;
+            ok=parameter_current_closure_valid(w,index,visited);
+            if(ok&&!geo_parameters_evaluate_field(&w->geo.parameters,refs[i],&issue))ok=parameter_kernel_error(w,&issue);}
+    }
+    if(!ok)snprintf(error,cap,"%s",g_parameter_error);return ok;
+}
 static bool parameter_name(GeoJson *j,int t,char out[PARAM_NAME_MAX])
 {
     if(!geo_json_string(j,t,out,PARAM_NAME_MAX)||!geo_utf8_name_valid((const unsigned char*)out,strlen(out),PARAM_NAME_MAX-1))return parameter_fail("I38 NAME: expected 1..96 UTF-8 bytes without control characters");return true;
 }
+/* P-121/P-122/P-062/P-065: operation-order scratch for exactly one candidate World.
+ * H owns it for the duration of one batch/archive operation sequence. It lives
+ * outside every World snapshot, so no comparison, seal, history entry, scene dump
+ * or exchange record can contain it, and nothing allocates identities from it.
+ * Native scene definitions do not create transaction-order metadata. */
+#define PARAM_DECLARATION_MAX 512
+#define PARAM_FIELD_RETIREMENT_MAX (PARAM_FIELD_MAX * PARAM_FIELDS_PER_CARD)
+#define PARAM_DELETED_VALUE_MAX (PARAM_FIELD_RETIREMENT_MAX + PARAM_FIELD_MAX)
+typedef struct {
+    uint32_t parameter_id, field_id;
+    unsigned generation;
+    int type;
+    GeoQuantity value;
+} DeletedParameterValue;
+/* Candidate ordering, never incarnation marks or serialized identities. */
+typedef struct { uint32_t parameter_id, field_id; unsigned at; } ParameterFieldRetirement;
+typedef struct { int kind; uint32_t id; int slot; unsigned at; } ParameterDeclaration;
+enum { PARAM_OWNER_CARD, PARAM_OWNER_ENG_GRID, PARAM_OWNER_ENG_TIMBER,
+       PARAM_OWNER_ASSEMBLY, PARAM_OWNER_MEMBER, PARAM_OWNER_RUN,
+       PARAM_OWNER_GUIDE, PARAM_OWNER_DATUM, PARAM_OWNER_GRID_SYSTEM, PARAM_OWNER_GRID,
+       PARAM_OWNER_PANEL_FILL };
+typedef struct ParameterCandidateOrder {
+    const World *world; /* the only candidate this order describes */
+    struct ParameterCandidateOrder *outer;
+    /* Last-valid values before a card or its upstream disappears. Live fields may be
+     * captured, but only explicitly unbound deleted sources can consume them. */
+    DeletedParameterValue deleted_values[PARAM_DELETED_VALUE_MAX]; size_t deleted_value_count;
+    ParameterFieldRetirement field_retirements[PARAM_FIELD_RETIREMENT_MAX]; size_t field_retirement_count;
+    ParameterDeclaration declarations[PARAM_DECLARATION_MAX]; size_t declaration_count;
+    unsigned candidate_order;
+} ParameterCandidateOrder;
+static ParameterCandidateOrder *g_parameter_candidate;
+static ParameterCandidateOrder *parameter_order(const World *w)
+{return g_parameter_candidate&&g_parameter_candidate->world==w?g_parameter_candidate:NULL;}
+static ParameterCandidateOrder *parameters_begin_candidate(const World *w)
+{
+    ParameterCandidateOrder *order=calloc(1,sizeof *order);if(!order)return NULL;
+    order->world=w;order->outer=g_parameter_candidate;g_parameter_candidate=order;return order;
+}
+static void parameters_end_candidate(ParameterCandidateOrder *order)
+{
+    if(!order)return;
+    for(ParameterCandidateOrder **at=&g_parameter_candidate;*at;at=&(*at)->outer)if(*at==order){*at=order->outer;break;}
+    free(order);
+}
+/* P-121/P-122: an ended field cannot silently reconnect an old referrer.
+ * Events are retained (including repeated deletion); only explicit declarations
+ * after the last deletion acknowledge the new source. Allocation never reads this. */
+static unsigned parameter_declared_at(const World *w,int kind,uint32_t id,int slot)
+{
+    const ParameterCandidateOrder *p=parameter_order(w);if(!p)return 0;
+    for(size_t i=0;i<p->declaration_count;++i){const ParameterDeclaration *d=&p->declarations[i];
+        if(d->kind==kind&&d->id==id&&d->slot==slot)return d->at;}
+    return 0;
+}
+static bool parameter_declare(World *w,int kind,uint32_t id,int slot)
+{
+    ParameterCandidateOrder *p=parameter_order(w);if(!p)return true;
+    size_t i=0;while(i<p->declaration_count&&(p->declarations[i].kind!=kind||p->declarations[i].id!=id||p->declarations[i].slot!=slot))++i;
+    if(i==p->declaration_count){if(i==PARAM_DECLARATION_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: candidate reference declarations");++p->declaration_count;}
+    p->declarations[i]=(ParameterDeclaration){kind,id,slot,++p->candidate_order};return true;
+}
+static unsigned parameter_field_generation(const World *w,uint32_t id,uint32_t field)
+{
+    unsigned at=0;const ParameterCandidateOrder *p=parameter_order(w);if(!p)return 0;
+    for(size_t i=0;i<p->field_retirement_count;++i){const ParameterFieldRetirement *r=&p->field_retirements[i];
+        if(r->parameter_id==id&&r->field_id==field&&r->at>at)at=r->at;}
+    return at;
+}
+static bool parameter_retire_field(World *w,uint32_t id,uint32_t field)
+{
+    ParameterCandidateOrder *p=parameter_order(w);if(!p)return true;
+    if(p->field_retirement_count==PARAM_FIELD_RETIREMENT_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: candidate field deletions");
+    p->field_retirements[p->field_retirement_count++]=(ParameterFieldRetirement){id,field,++p->candidate_order};return true;
+}
+/* D60/I38: K may rebuild only a field key that this same candidate explicitly ended. */
+static bool parameter_rebuilt_key(void *state,GeoParameterRef ref)
+{return parameter_field_generation((const World *)state,ref.parameter_id,ref.field_id)!=0;}
+static bool parameter_reference_unhandled(const World *w,uint32_t id,uint32_t field,int kind,uint32_t owner,int slot)
+{ return parameter_field_generation(w,id,field)>parameter_declared_at(w,kind,owner,slot); }
+static int parameter_engineering_owner(const EngTarget *target)
+{return target->kind?PARAM_OWNER_ENG_TIMBER:PARAM_OWNER_ENG_GRID;}
+static int parameter_engineering_slot(const EngTarget *target,int override)
+{return target->axis*2+target->field+override*4;}
+/* A cached deleted-source value must never be refreshed through an unrelated
+ * incarnation occupying the same key. Only the affected dependency closure is
+ * inspected; unrelated intermediate invalid definitions remain permitted. */
+static bool parameter_current_ast_valid(const World *w,const ParameterField *owner,const GeoJson *j,int t,bool visited[PARAM_FIELD_MAX],int depth)
+{
+    if(depth>32)return true;char op[16];
+    if(!geo_json_string(j,geo_json_member(j,t,"op"),op,sizeof op))return true;
+    if(!strcmp(op,"ref")){
+        int64_t id=-1,field=-1;
+        if(!geo_json_integer(j,geo_json_member(j,t,"parameterId"),&id)||!geo_json_integer(j,geo_json_member(j,t,"fieldId"),&field)||id<0||id>UINT32_MAX||field<0||field>UINT32_MAX)return true;
+        int next=parameter_field_index(w,(uint32_t)id,(uint32_t)field);
+        /* Missing targets retain the evaluator's existing named dependency path.
+         * This extra guard is needed when an unrelated definition reoccupies a key. */
+        if(next>=0&&parameter_reference_unhandled(w,(uint32_t)id,(uint32_t)field,PARAM_OWNER_CARD,owner->parameter_id,0)){
+            parameter_fail("I38 MISSING: parameter %u field %u was deleted; parameter %u field %u must be explicitly redeclared after the last deletion",(uint32_t)id,(uint32_t)field,owner->parameter_id,owner->id);
+            const ParameterSet *card=parameter_find(w,owner->parameter_id);
+            parameter_wrap_error(owner->parameter_id,owner->id,card?card->name:"",owner->name);return false;
+        }
+        return next<0||parameter_current_closure_valid(w,next,visited);
+    }
+    int left=geo_json_member(j,t,"left"),right=geo_json_member(j,t,"right");
+    return (left<0||parameter_current_ast_valid(w,owner,j,left,visited,depth+1))&&
+           (right<0||parameter_current_ast_valid(w,owner,j,right,visited,depth+1));
+}
+static bool parameter_current_closure_valid(const World *w,int index,bool visited[PARAM_FIELD_MAX])
+{
+    const ParameterCandidateOrder *p=parameter_order(w);
+    if(!p||!p->field_retirement_count||visited[index])return true;visited[index]=true;
+    const ParameterField *f=&geo_parameters_fields(&w->geo.parameters)[index];GeoJson j;
+    bool ok=app_json_parse_n(&j,f->expression,strlen(f->expression));
+    if(ok)ok=parameter_current_ast_valid(w,f,&j,0,visited,0);geo_json_free(&j);return ok;
+}
+/* P-065/P-141: a currently present source is evaluated at the unbind step.
+ * Only an actually absent field may use its binding's ended-generation value. */
+static bool parameter_unbind_generation(const World *w,ParameterRef ref,int kind,uint32_t owner,int slot,unsigned *generation)
+{
+    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0)return false;
+    const ParameterCandidateOrder *p=parameter_order(w);if(!p)return false;
+    unsigned declared=parameter_declared_at(w,kind,owner,slot),previous=0;
+    for(size_t i=0;i<p->field_retirement_count;++i){const ParameterFieldRetirement *r=&p->field_retirements[i];
+        if(r->parameter_id!=ref.parameter_id||r->field_id!=ref.field_id)continue;
+        if(r->at>declared){*generation=previous;return true;}previous=r->at;
+    }
+    return false;
+}
+static bool parameter_capture_deleted_values(World *w,uint32_t id);
 static bool parameter_put(World *w,GeoJson *j,int t)
 {
     uint32_t id;if(!geo_json_keys(j,t,"id,name,fields","nextFieldId")||!parameter_u32(j,geo_json_member(j,t,"id"),&id))return parameter_fail("I38 CARD: expected id, name and fields");
@@ -246,17 +394,262 @@ static bool parameter_put(World *w,GeoJson *j,int t)
         int input=geo_json_member(j,f,"input"),expr=geo_json_member(j,f,"expression");
         if((input>=0)==(expr>=0)||!geo_json_keys(j,f,input>=0?"id,name,type,input":"id,name,type,expression","")||!parameter_u32(j,geo_json_member(j,f,"id"),&v->id)||!parameter_name(j,geo_json_member(j,f,"name"),v->name)||!geo_json_string(j,geo_json_member(j,f,"type"),type,sizeof type)){ok=parameter_fail("I38 FIELD: invalid field definition");break;}
         v->type=!strcmp(type,"dimension")?0:!strcmp(type,"count")?1:!strcmp(type,"ratio")?2:-1;if(v->type<0){ok=parameter_fail("I38 TYPE: dimension/count/ratio required");break;}
-        if(!geo_parameters_accept_field(&w->geo.parameters,&card,fresh,k,&issue)){ok=parameter_kernel_error(w,&issue);break;}
+        if(!geo_parameters_accept_rebuilt_field(&w->geo.parameters,&card,fresh,k,parameter_rebuilt_key,w,&issue)){ok=parameter_kernel_error(w,&issue);break;}
         if(input>=0){char text[PARAM_EXPR_MAX];if(!geo_json_string(j,input,text,sizeof text))ok=parameter_fail("UNSUPPORTED/CAPACITY: parameter input exceeds 2047 bytes");else if(!parameter_input(text,v->type,v->expression))ok=false;}
         else if(!geo_json_canonical(j,expr,v->expression,sizeof v->expression))ok=parameter_fail("UNSUPPORTED/CAPACITY: expression record exceeds capacity");
         if(!ok)parameter_wrap_error(id,v->id,card.name,v->name);
     }
     uint32_t next;int nt=geo_json_member(j,t,"nextFieldId");if(ok&&nt>=0){if(!parameter_u32(j,nt,&next))ok=false;else if(!geo_parameters_next_field(&card,next,&issue))ok=parameter_kernel_error(w,&issue);}
-    if(ok&&!geo_parameters_put(&w->geo.parameters,&card,fresh,&issue))ok=parameter_kernel_error(w,&issue);
+    /* P-065/B5: preserve the current affected closure before overwriting its definitions.
+     * Only explicit unbind of an actually deleted source can consume this history. */
+    const ParameterSet *old=parameter_find(w,id);
+    if(ok&&old&&!parameter_capture_deleted_values(w,id))ok=false;
+    if(ok&&old)for(size_t i=0;i<old->count&&ok;++i){bool retained=false;
+        for(size_t k=0;k<card.count;++k)if(old->fields[i]==fresh[k].id)retained=true;
+        if(!retained)ok=parameter_retire_field(w,id,old->fields[i]);}
+    if(ok)ok=parameter_declare(w,PARAM_OWNER_CARD,id,0);
+    if(ok&&!geo_parameters_put_rebuilt(&w->geo.parameters,&card,fresh,parameter_rebuilt_key,w,&issue))ok=parameter_kernel_error(w,&issue);
     free(fresh);return ok;
+}
+/* I38: enumerate actual references in a complete candidate. Only the first
+ * PARAMETER_USES_SHOWN referrers are named; the count is exact. References from the card's own fields vanish with it. */
+#define PARAMETER_USES_SHOWN 3
+typedef struct {char text[256],native_text[256];size_t count,native_count;} ParameterUses;
+static void parameter_use(ParameterUses *u,const char *format,...)
+{
+    if(u->count++<PARAMETER_USES_SHOWN){
+        size_t n=strlen(u->text);if(n&&n+2<sizeof u->text){u->text[n++]=';';u->text[n++]=' ';u->text[n]=0;}
+        va_list a;va_start(a,format);if(n<sizeof u->text)vsnprintf(u->text+n,sizeof u->text-n,format,a);va_end(a);
+    }
+}
+/* These owners have no declaration operation in an engineering candidate. */
+static void parameter_native_use(ParameterUses *u,const char *format,...)
+{
+    char owner[96];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
+    parameter_use(u,"%s",owner);
+    if(u->native_count++<PARAMETER_USES_SHOWN){
+        size_t n=strlen(u->native_text);snprintf(u->native_text+n,sizeof u->native_text-n,"%s%s",n?"; ":"",owner);
+    }
+}
+static bool parameter_ast_uses(const GeoJson *j,int t,uint32_t id,uint32_t field,int depth)
+{
+    if(depth>32)return false;
+    char op[16];if(!geo_json_string(j,geo_json_member(j,t,"op"),op,sizeof op))return false;
+    if(!strcmp(op,"ref")){int64_t card=-1,f=-1;return geo_json_integer(j,geo_json_member(j,t,"parameterId"),&card)&&card==(int64_t)id&&geo_json_integer(j,geo_json_member(j,t,"fieldId"),&f)&&f==(int64_t)field;}
+    int left=geo_json_member(j,t,"left"),right=geo_json_member(j,t,"right");
+    return (left>=0&&parameter_ast_uses(j,left,id,field,depth+1))||(right>=0&&parameter_ast_uses(j,right,id,field,depth+1));
+}
+/* Position expressions (guides, datums) carry `param:<card>:<field>` tokens. */
+static bool parameter_text_uses(const char *text,uint32_t id,uint32_t field)
+{
+    for(const char *p=text;(p=strstr(p,"param:"))!=NULL;p+=6){
+        const char *q=p+6;uint64_t card=0;int digits=0;
+        while(*q>='0'&&*q<='9'&&digits<11){card=card*10+(uint64_t)(*q++-'0');++digits;}
+        if(digits&&digits<11&&*q==':'&&card==id){uint64_t f=0;int fd=0;++q;
+            while(*q>='0'&&*q<='9'&&fd<11){f=f*10+(uint64_t)(*q++-'0');++fd;}
+            if(fd&&fd<11&&f==field)return true;}
+    }
+    return false;
+}
+static size_t parameter_uses(const World *w,uint32_t id,uint32_t field,ParameterUses *u)
+{
+    static const char *const axis_fields[6]={"phase","step","panel","gap","anchor","stagger"};
+    memset(u,0,sizeof *u);
+    const ParameterField *fields=geo_parameters_fields(&w->geo.parameters);
+    for(size_t i=0;i<geo_parameters_field_count(&w->geo.parameters);++i){const ParameterField *f=&fields[i];
+        if(!parameter_reference_unhandled(w,id,field,PARAM_OWNER_CARD,f->parameter_id,0))continue;
+        GeoJson j;bool hit=app_json_parse_n(&j,f->expression,strlen(f->expression))&&parameter_ast_uses(&j,0,id,field,0);geo_json_free(&j);
+        if(hit)parameter_use(u,"parameter %u field %u",f->parameter_id,f->id);
+    }
+    for(size_t i=0;i<w->wood.engineering.binding_count;++i){const EngBinding *b=&w->wood.engineering.bindings[i];
+        for(int override=0;override<2;++override){const EngDimensionSource *s=override?&b->override_value:&b->source;
+            if((override&&!b->has_override)||s->kind!=ENG_PARAMETER||s->parameter.parameter_id!=id||s->parameter.field_id!=field||
+               !parameter_reference_unhandled(w,id,field,parameter_engineering_owner(&b->target),b->target.id,parameter_engineering_slot(&b->target,override)))continue;
+            if(b->target.kind)parameter_use(u,"timber %u %c%s",b->target.id,b->target.field?'B':'A',override?" override":"");
+            else parameter_use(u,"grid %u %c %s%s",b->target.id,b->target.axis?'v':'u',b->target.field?"gap":"panel",override?" override":"");
+        }
+    }
+    for(size_t i=0;i<w->wood.assembly.binding_count;++i){const AsmBinding *b=&w->wood.assembly.bindings[i];GeoJson j;
+        if(app_json_parse(&j,b->content)){int slots=geo_json_member(&j,0,"slots");
+            for(int k=0;k<geo_json_size(&j,slots);++k){int slot=geo_json_at(&j,slots,k);int64_t slot_id=0;
+                (void)geo_json_integer(&j,geo_json_member(&j,slot,"slotId"),&slot_id);
+                for(int axis=0;axis<2;++axis){int source=geo_json_member(&j,slot,axis?"B":"A");char kind[16];int64_t card=-1,f=-1;
+                    if(geo_json_string(&j,geo_json_member(&j,source,"kind"),kind,sizeof kind)&&!strcmp(kind,"parameter")&&
+                       geo_json_integer(&j,geo_json_member(&j,source,"parameterId"),&card)&&card==(int64_t)id&&
+                       geo_json_integer(&j,geo_json_member(&j,source,"fieldId"),&f)&&f==(int64_t)field&&
+                       parameter_reference_unhandled(w,id,field,PARAM_OWNER_ASSEMBLY,b->id,0))
+                        parameter_use(u,"binding %u slot %lld.%c",b->id,(long long)slot_id,axis?'B':'A');
+                }
+            }
+        }
+        geo_json_free(&j);
+    }
+    for(size_t i=0;i<geo_guides_count(&w->geo.guide_lines);++i){uint32_t owner=geo_guides_at(&w->geo.guide_lines,i)->id;
+        if(parameter_text_uses(app_guide_expression(w,owner),id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GUIDE,owner,0))parameter_native_use(u,"guide %u",owner);}
+    for(size_t i=0;i<geo_datums_count(&w->geo.datum_planes);++i){uint32_t owner=geo_datums_at(&w->geo.datum_planes,i)->id;
+        if(parameter_text_uses(app_datum_expression(w,owner),id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_DATUM,owner,0))parameter_native_use(u,"datum %u",owner);}
+    for(size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i){const GridSystem *s=geo_grid_systems_at(&w->geo.grid_store,i);
+        for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&s->axis[axis].parameters[k];
+            if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,s->id,0))parameter_native_use(u,"grid-system %u %c %s",s->id,axis?'v':'u',axis_fields[k]);}}
+    for(size_t i=0;i<w->wood.grid_applications.count;++i){const WoodGridApplication *g=&w->wood.grid_applications.items[i];if(g->from_system)continue;  /* system-derived copies are the system's own refs */
+        for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&g->axis[axis].parameters[k];
+            if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID,g->id,0))parameter_native_use(u,"grid %u %c %s",g->id,axis?'v':'u',axis_fields[k]);}}
+    /* P-141/D44: panel-fill has no declaration op in this candidate. */
+    for(size_t i=0;i<w->wood.finish_surfaces.fill_count;++i){const PanelFill *fill=&w->wood.finish_surfaces.fills[i];
+        const ParameterRef *refs[3]={&fill->gap_ref,&fill->stagger_ref,&fill->threshold};
+        static const char *const names[3]={"gap","stagger","threshold"};
+        for(int k=0;k<3;++k){const ParameterRef *r=refs[k];
+            if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_PANEL_FILL,fill->id,k))
+                parameter_native_use(u,"panel-fill %u %s",fill->id,names[k]);}
+    }
+    for(size_t i=0;i<w->wood.section_profiles.member_count;++i){const ProfileMember *m=&w->wood.section_profiles.members[i];
+        if(m->a_source.kind==ENG_PARAMETER&&m->a_source.parameter.parameter_id==id&&m->a_source.parameter.field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_MEMBER,m->id,0))parameter_use(u,"section-profile member %u A",m->id);
+        if(m->b_source.kind==ENG_PARAMETER&&m->b_source.parameter.parameter_id==id&&m->b_source.parameter.field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_MEMBER,m->id,0))parameter_use(u,"section-profile member %u B",m->id);
+    }
+    for(size_t i=0;i<w->wood.section_profiles.run_count;++i){const ProfileRun *r=&w->wood.section_profiles.runs[i];
+        if(r->length_source.kind==ENG_PARAMETER&&r->length_source.parameter.parameter_id==id&&r->length_source.parameter.field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_RUN,r->id,0))parameter_use(u,"section-profile run %u length",r->id);
+    }
+    return u->count;
+}
+/* I38/R33: inspect missing sources only after the complete candidate is defined. */
+static bool parameter_retirements_valid(const World *w)
+{
+    const ParameterCandidateOrder *p=parameter_order(w);if(!p)return true;
+    for(size_t i=0;i<p->field_retirement_count;++i){
+        const ParameterFieldRetirement *r=&p->field_retirements[i];uint32_t id=r->parameter_id;ParameterUses uses;
+        if(r->at!=parameter_field_generation(w,id,r->field_id))continue; /* last actual deletion */
+        if(parameter_uses(w,id,r->field_id,&uses)){
+            char more[40]="";if(uses.count>PARAMETER_USES_SHOWN)snprintf(more,sizeof more," and %zu more",uses.count-PARAMETER_USES_SHOWN);
+            if(uses.native_count){
+                char native_more[40]="";if(uses.native_count>PARAMETER_USES_SHOWN)snprintf(native_more,sizeof native_more," and %zu more",uses.native_count-PARAMETER_USES_SHOWN);
+                return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: %zu)",id,uses.native_text,native_more,uses.count-uses.native_count);
+            }
+            return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; unbind or repoint %s in the same complete candidate",id,uses.text,more,uses.count==1?"it":"them");
+        }
+    }
+    return true;
+}
+/* P-129: preview disclosure reads explicit owner declarations, including a
+ * reference that the declaration replaced with a literal/different source.
+ * It does not grant new declaration paths to native-DSL-only consumers. */
+static bool parameter_declared_owner_present(const World *w,const ParameterDeclaration *d)
+{
+    if(d->kind==PARAM_OWNER_CARD)return parameter_find(w,d->id)!=NULL;
+    if(d->kind==PARAM_OWNER_ENG_GRID||d->kind==PARAM_OWNER_ENG_TIMBER){
+        for(size_t i=0;i<w->wood.engineering.binding_count;++i){const EngBinding *b=&w->wood.engineering.bindings[i];
+            if(b->target.id==d->id&&parameter_engineering_owner(&b->target)==d->kind&&
+               parameter_engineering_slot(&b->target,0)==d->slot%4)return true;}
+    }else if(d->kind==PARAM_OWNER_ASSEMBLY){for(size_t i=0;i<w->wood.assembly.binding_count;++i)if(w->wood.assembly.bindings[i].id==d->id)return true;}
+    else if(d->kind==PARAM_OWNER_MEMBER){for(size_t i=0;i<w->wood.section_profiles.member_count;++i)if(w->wood.section_profiles.members[i].id==d->id)return true;}
+    else if(d->kind==PARAM_OWNER_RUN){for(size_t i=0;i<w->wood.section_profiles.run_count;++i)if(w->wood.section_profiles.runs[i].id==d->id)return true;}
+    return false;
+}
+static bool parameter_declared_owner_uses(const World *w,const ParameterDeclaration *d,uint32_t id,uint32_t field)
+{
+    if(d->kind==PARAM_OWNER_CARD){
+        const ParameterField *fields=geo_parameters_fields(&w->geo.parameters);
+        for(size_t i=0;i<geo_parameters_field_count(&w->geo.parameters);++i){const ParameterField *f=&fields[i];if(f->parameter_id!=d->id)continue;
+            GeoJson j;bool hit=app_json_parse_n(&j,f->expression,strlen(f->expression))&&parameter_ast_uses(&j,0,id,field,0);geo_json_free(&j);if(hit)return true;}
+    }else if(d->kind==PARAM_OWNER_ENG_GRID||d->kind==PARAM_OWNER_ENG_TIMBER){
+        for(size_t i=0;i<w->wood.engineering.binding_count;++i){const EngBinding *b=&w->wood.engineering.bindings[i];
+            if(b->target.id!=d->id||parameter_engineering_owner(&b->target)!=d->kind)continue;
+            for(int override=0;override<2;++override){const EngDimensionSource *s=override?&b->override_value:&b->source;
+                if((!override||b->has_override)&&parameter_engineering_slot(&b->target,override)==d->slot&&s->kind==ENG_PARAMETER&&s->parameter.parameter_id==id&&s->parameter.field_id==field)return true;}
+        }
+    }else if(d->kind==PARAM_OWNER_ASSEMBLY){
+        for(size_t i=0;i<w->wood.assembly.binding_count;++i){const AsmBinding *b=&w->wood.assembly.bindings[i];if(b->id!=d->id)continue;GeoJson j;bool hit=false;
+            if(app_json_parse(&j,b->content)){int slots=geo_json_member(&j,0,"slots");
+                for(int k=0;k<geo_json_size(&j,slots)&&!hit;++k)for(int axis=0;axis<2&&!hit;++axis){
+                    int source=geo_json_member(&j,geo_json_at(&j,slots,k),axis?"B":"A");char kind[16];int64_t card=-1,f=-1;
+                    hit=geo_json_string(&j,geo_json_member(&j,source,"kind"),kind,sizeof kind)&&!strcmp(kind,"parameter")&&geo_json_integer(&j,geo_json_member(&j,source,"parameterId"),&card)&&card==(int64_t)id&&geo_json_integer(&j,geo_json_member(&j,source,"fieldId"),&f)&&f==(int64_t)field;}}
+            geo_json_free(&j);if(hit)return true;
+        }
+    }else if(d->kind==PARAM_OWNER_MEMBER){
+        for(size_t i=0;i<w->wood.section_profiles.member_count;++i){const ProfileMember *m=&w->wood.section_profiles.members[i];if(m->id!=d->id)continue;
+            const EngDimensionSource *s[2]={&m->a_source,&m->b_source};for(int k=0;k<2;++k)if(s[k]->kind==ENG_PARAMETER&&s[k]->parameter.parameter_id==id&&s[k]->parameter.field_id==field)return true;}
+    }else if(d->kind==PARAM_OWNER_RUN){
+        for(size_t i=0;i<w->wood.section_profiles.run_count;++i){const ProfileRun *r=&w->wood.section_profiles.runs[i];if(r->id==d->id&&r->length_source.kind==ENG_PARAMETER&&r->length_source.parameter.parameter_id==id&&r->length_source.parameter.field_id==field)return true;}
+    }
+    return false;
+}
+/* P-065: query only the dependency paths affected by an overwritten or removed card.
+ * This is reachability, not evaluation: unrelated invalid definitions cannot block deletion. */
+static bool parameter_field_depends_on(const World *w,int index,uint32_t id,bool visited[PARAM_FIELD_MAX]);
+static bool parameter_ast_depends_on(const World *w,const GeoJson *j,int t,uint32_t id,bool visited[PARAM_FIELD_MAX],int depth)
+{
+    if(depth>32)return false;
+    char op[16];if(!geo_json_string(j,geo_json_member(j,t,"op"),op,sizeof op))return false;
+    if(!strcmp(op,"ref")){
+        int64_t card=-1,field=-1;
+        if(!geo_json_integer(j,geo_json_member(j,t,"parameterId"),&card)||
+           !geo_json_integer(j,geo_json_member(j,t,"fieldId"),&field)||card<0||card>UINT32_MAX||field<0||field>UINT32_MAX)return false;
+        if((uint32_t)card==id)return true;
+        int index=parameter_field_index(w,(uint32_t)card,(uint32_t)field);
+        return index>=0&&parameter_field_depends_on(w,index,id,visited);
+    }
+    int left=geo_json_member(j,t,"left"),right=geo_json_member(j,t,"right");
+    return (left>=0&&parameter_ast_depends_on(w,j,left,id,visited,depth+1))||
+           (right>=0&&parameter_ast_depends_on(w,j,right,id,visited,depth+1));
+}
+static bool parameter_field_depends_on(const World *w,int index,uint32_t id,bool visited[PARAM_FIELD_MAX])
+{
+    const ParameterField *f=&geo_parameters_fields(&w->geo.parameters)[index];
+    if(f->parameter_id==id)return true;
+    if(visited[index])return false;visited[index]=true;
+    GeoJson j;bool hit=app_json_parse_n(&j,f->expression,strlen(f->expression))&&
+        parameter_ast_depends_on(w,&j,0,id,visited,0);
+    geo_json_free(&j);return hit;
+}
+/* P-062/P-065: refresh overwritten/removed fields and their affected dependants while
+ * their current closures are still available. A later upstream deletion may make
+ * evaluation impossible; preserve an earlier valid candidate snapshot in that case.
+ * Ordinary evaluation and surviving unbind sources never read these snapshots. */
+static bool parameter_capture_deleted_values(World *w,uint32_t id)
+{
+    ParameterCandidateOrder *p=parameter_order(w);if(!p)return true;
+    GeoParameterStore *store=&w->geo.parameters;
+    for(size_t i=0;i<geo_parameters_field_count(store);++i){
+        const ParameterField *f=&geo_parameters_fields(store)[i];bool visited[PARAM_FIELD_MAX]={0};
+        if(!parameter_field_depends_on(w,(int)i,id,visited))continue;
+        g_parameter_error[0]=0;
+        bool current[PARAM_FIELD_MAX]={0};GeoParameterError issue;
+        if(!parameter_current_closure_valid(w,(int)i,current)||!geo_parameters_evaluate_field(store,(GeoParameterRef){true,f->parameter_id,f->id},&issue))continue;
+        unsigned generation=parameter_field_generation(w,f->parameter_id,f->id);
+        size_t saved_index=0;
+        while(saved_index<p->deleted_value_count&&(p->deleted_values[saved_index].parameter_id!=f->parameter_id||
+              p->deleted_values[saved_index].field_id!=f->id||p->deleted_values[saved_index].generation!=generation))++saved_index;
+        if(saved_index==p->deleted_value_count){
+            if(p->deleted_value_count==PARAM_DELETED_VALUE_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: deleted parameter values");
+            ++p->deleted_value_count;
+        }
+        DeletedParameterValue *saved=&p->deleted_values[saved_index];
+        memset(saved,0,sizeof *saved);saved->parameter_id=f->parameter_id;saved->field_id=f->id;saved->generation=generation;saved->type=f->type;
+        saved->value.num=f->value.num;saved->value.den=f->value.den;saved->value.unit=f->value.unit;
+    }
+    g_parameter_error[0]=0;return true;
+}
+/* This lookup is intentionally absent from the ordinary parameter evaluator.
+ * Surviving sources and all final definitions still require live references. */
+static bool parameter_deleted_coord(const World *w,ParameterRef ref,unsigned generation,Coord *out)
+{
+    const ParameterCandidateOrder *p=parameter_order(w);
+    for(size_t i=0;p&&i<p->deleted_value_count;++i){ /* Caller proved this binding still refers to an ended source generation. */
+        const DeletedParameterValue *saved=&p->deleted_values[i];
+        if(saved->parameter_id!=ref.parameter_id||saved->field_id!=ref.field_id||saved->generation!=generation)continue;
+        if(saved->type!=GEO_PARAMETER_DIMENSION)return parameter_fail("I38 UNIT: deleted parameter %u field %u is not a dimension",ref.parameter_id,ref.field_id);
+        if(saved->value.den!=1||!coord_in_range(saved->value.num))return parameter_fail("I38 GEOMETRY: deleted parameter %u field %u must resolve to integer mm in D1 range",ref.parameter_id,ref.field_id);
+        *out=saved->value.num;return true;
+    }
+    return parameter_fail("I38 MISSING: deleted parameter %u field %u has no valid value in this candidate",ref.parameter_id,ref.field_id);
 }
 static bool parameter_remove(World *w,uint32_t id)
 {
+    /* P-062/P-065: capture last-valid values and end every field of the removed card in this candidate. */
+    const ParameterSet *removed=parameter_find(w,id);
+    if(removed){
+        if(!parameter_capture_deleted_values(w,id))return false;
+        for(size_t i=0;i<removed->count;++i)if(!parameter_retire_field(w,id,removed->fields[i]))return false;
+    }
     GeoParameterError issue;if(!geo_parameters_remove(&w->geo.parameters,id,&issue))return parameter_kernel_error(w,&issue);
     size_t n=0;for(size_t i=0;i<w->app.canvas_pos_count;++i)if(w->app.canvas_pos[i].kind!=CANVAS_POS_PARAMETER||w->app.canvas_pos[i].id!=id)w->app.canvas_pos[n++]=w->app.canvas_pos[i];memset(w->app.canvas_pos+n,0,(w->app.canvas_pos_count-n)*sizeof(CanvasPos));w->app.canvas_pos_count=n;return true;
 }
@@ -289,6 +682,8 @@ static bool parameter_import(World *w,GeoJson *j,int t)
     for(int k=0;k<n;++k){
         int c=geo_json_at(j,cards,k);if(!parameter_u32(j,geo_json_member(j,c,"id"),&old[k]))return false;
         for(int q=0;q<k;++q)if(old[q]==old[k])return parameter_fail("I39 PACKAGE: duplicate card identity");
+        /* R53/P-122: first unused in the candidate plus this import's allocation.
+         * I38 protects old references independently of whether a key is reused. */
         while(parameter_find(w,candidate))++candidate;fresh[k]=candidate++;
     }
     char *buffer=malloc(PARAM_FIELDS_PER_CARD*(PARAM_EXPR_MAX+1000));if(!buffer)return parameter_fail("UNSUPPORTED/CAPACITY: package memory");bool ok=true;

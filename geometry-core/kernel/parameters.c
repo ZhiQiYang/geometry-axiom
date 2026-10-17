@@ -180,6 +180,9 @@ void geo_parameters_begin_definition(const GeoParameterStore *s,uint32_t id,GeoP
 {memset(card,0,sizeof *card);card->id=id;const GeoParameterCard *old=geo_parameters_find(s,id);card->next_field_id=old?old->next_field_id:1;}
 bool geo_parameters_accept_field(const GeoParameterStore *s,GeoParameterCard *card,
     const GeoParameterField *fields,size_t k,GeoParameterError *error)
+{return geo_parameters_accept_rebuilt_field(s,card,fields,k,NULL,NULL,error);}
+bool geo_parameters_accept_rebuilt_field(const GeoParameterStore *s,GeoParameterCard *card,
+    const GeoParameterField *fields,size_t k,GeoParameterEnded ended,void *state,GeoParameterError *error)
 {
     if(error)memset(error,0,sizeof *error);
     if(k>=GEO_PARAMETER_FIELDS_PER_CARD)return geo_parameter_error(error,GEO_PARAMETER_CAPACITY,card->id,0);
@@ -187,7 +190,8 @@ bool geo_parameters_accept_field(const GeoParameterStore *s,GeoParameterCard *ca
     if(v->parameter_id!=card->id||v->type<0||v->type>2)return geo_parameter_error(error,GEO_PARAMETER_INVALID_DEFINITION,card->id,v->id);
     for(size_t q=0;q<k;++q)if(fields[q].id==v->id||!strcmp(fields[q].name,v->name))return geo_parameter_error(error,GEO_PARAMETER_DUPLICATE_FIELD,card->id,v->id);
     card->fields[k]=v->id;
-    if(old&&geo_parameters_field_index(s,card->id,v->id)<0&&(old->next_field_id==0||v->id<old->next_field_id))return geo_parameter_error(error,GEO_PARAMETER_REUSED_FIELD,card->id,v->id);
+    if(old&&geo_parameters_field_index(s,card->id,v->id)<0&&(old->next_field_id==0||v->id<old->next_field_id)&&
+       !(ended&&ended(state,(GeoParameterRef){true,card->id,v->id})))return geo_parameter_error(error,GEO_PARAMETER_REUSED_FIELD,card->id,v->id);
     if(v->id==UINT32_MAX)card->next_field_id=0;else if(card->next_field_id&&v->id>=card->next_field_id)card->next_field_id=v->id+1;
     return true;
 }
@@ -198,6 +202,9 @@ bool geo_parameters_next_field(GeoParameterCard *card,uint32_t next,GeoParameter
     card->next_field_id=next;return true;
 }
 bool geo_parameters_put(GeoParameterStore *s,const GeoParameterCard *card,const GeoParameterField *fields,GeoParameterError *error)
+{return geo_parameters_put_rebuilt(s,card,fields,NULL,NULL,error);}
+bool geo_parameters_put_rebuilt(GeoParameterStore *s,const GeoParameterCard *card,const GeoParameterField *fields,
+    GeoParameterEnded ended,void *state,GeoParameterError *error)
 {
     if(error)memset(error,0,sizeof *error);
     if(!s||!card||!fields||!card->count||card->count>GEO_PARAMETER_FIELDS_PER_CARD)return geo_parameter_error(error,GEO_PARAMETER_INVALID_DEFINITION,0,0);
@@ -207,7 +214,7 @@ bool geo_parameters_put(GeoParameterStore *s,const GeoParameterCard *card,const 
         if(!memchr(fields[k].expression,0,GEO_PARAMETER_EXPR_MAX))return geo_parameter_error(error,GEO_PARAMETER_INVALID_DEFINITION,card->id,fields[k].id);
     }
     GeoParameterCard validated;geo_parameters_begin_definition(s,card->id,&validated);validated.count=card->count;
-    for(size_t k=0;k<card->count;++k)if(!geo_parameters_accept_field(s,&validated,fields,k,error))return false;
+    for(size_t k=0;k<card->count;++k)if(!geo_parameters_accept_rebuilt_field(s,&validated,fields,k,ended,state,error))return false;
     if(!geo_parameters_next_field(&validated,card->next_field_id,error))return false;
     size_t slot=0;while(slot<s->card_count&&s->cards[slot].id!=card->id)++slot;
     size_t existing=0;for(size_t i=0;i<s->field_count;++i)existing+=s->fields[i].parameter_id==card->id;

@@ -216,8 +216,18 @@ class LiveMutationAnchorMigration(unittest.TestCase):
             "geometry-templates/woodworking/native/world_validation.c": ["M36", "M37", "M56"],
             "current_geometry.c": ["M27", "M35", "M38", "M51", "M52", "M55"],
         }
+        # Train 18 (#291) adds R7/R8 core guards and preview-only bridge guards.
+        incoming = {
+            "current_geometry.c": ["M71", "M72", "M73", "M74", "M75", "M76", "M77"],
+            "geometry-core/parameters.inc": ["M61", "M62", "M63", "M64", "M65", "M68", "M69", "M70"],
+            "geometry-web/engineering_bridge.inc": ["M66", "M67"],
+        }
         expected = {mid: path for path, ids in groups.items() for mid in ids}
         self.assertEqual(50, len(expected))
+        expected.update({mid: path for path, ids in incoming.items() for mid in ids})
+        self.assertEqual(67, len(expected))
+        self.assertEqual({mid for ids in incoming.values() for mid in ids if mid not in ("M71", "M72", "M73", "M74", "M75", "M76", "M77")},
+                         {m["id"] for m in mutate.MUTANTS if m.get("binary") == "bridge"})
         self.assertEqual(expected, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
         self.assertEqual({"M35", "M51", "M55"}, {m["id"] for m in mutate.MUTANTS if m.get("retired")})
         self.assertEqual({"M09", "M23", "M36", "M56"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})
@@ -231,6 +241,8 @@ class LiveMutationAnchorMigration(unittest.TestCase):
                         self.assertEqual("retired", kind)
                         continue
                     self.assertEqual("equivalent" if m.get("equivalent") else "run", kind)
+                    if m.get("binary") == "bridge":
+                        continue  # mutation_bridge.py edits the committed file in a clean clone
                     marker = "/* exact-mutation-target:" + m["id"] + " */"
                     marked = dict(m, new=marker + m["new"] + marker)
                     emitted = mutate.build_mutant_source(marked, src)

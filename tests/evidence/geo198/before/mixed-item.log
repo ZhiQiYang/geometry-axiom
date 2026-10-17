@@ -1,0 +1,15 @@
+F
+======================================================================
+FAIL: test_rect_outline_unselected_complex_column_does_not_block_valid_item (tests.test_reference_contract.ReferenceContract.test_rect_outline_unselected_complex_column_does_not_block_valid_item)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_reference_contract.py", line 50, in test_rect_outline_unselected_complex_column_does_not_block_valid_item
+    self.ok('apply-proj 1 c2')
+  File "/workspace/geometry-axiom/tests/test_reference_contract.py", line 84, in ok
+    self.assertTrue(r['ok'], r)
+AssertionError: False is not true : {'ok': False, 'error': 'line 5: R7: 投影接觸非單一矩形或僅相切（退化，不猜）'}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.257s
+
+FAILED (failures=1)
