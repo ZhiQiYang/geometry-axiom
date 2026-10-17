@@ -1,0 +1,15 @@
+# 公理:I22(只有 boundary 可有延伸段)、R18(primary 的 coversEdge 恆為假)。#240 P-143 S1 探針 p8(原生核心 main 1c807511 實跑:拒絕)。
+# 使用者的 L 形客廳 F1:凹角在 (3200,3000)。先放 e0、e4 兩支邊界材,
+# 再把內牆 e3(u=3200,v 3000..4800)的邊界主支一整支從 v=27 沿牆走到 v=4773——整支穿過凹角。
+# e3 是它的定位邊(v 3000..4800),但足跡 v∈[27,4773] 超出定位邊起點 3000;超出的部分就是延伸段,
+# 而延伸段只有 boundary 可有(I22)→ V_EXTENSION。
+# 這是舊下角材 oracle 的排法;核心唯一接受的表示法是 _s1_p9_l_room_custom_inner_wall_accept.scene。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 5000,0 5000,3000 3200,3000 3200,4800 0,4800
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+timber 4 27 33 role boundary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e4 -u +n
+place 3 on 1 at-face e3 +v +n
+place 4 on 1 at-face e2 -u +n
