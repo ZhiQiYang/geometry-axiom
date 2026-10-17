@@ -2,6 +2,7 @@
 import concurrent.futures
 import contextlib
 import copy
+import inspect
 import io
 import json
 import os
@@ -9,10 +10,12 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import time
 import types
 import unittest
 from unittest import mock
 
+import _bridge
 import mutate
 import mutation_bridge
 import run_all
@@ -373,6 +376,68 @@ class BridgeMutationHonestyTests(unittest.TestCase):
         self.assertNotEqual(before, mutate.mutant_key(m))
 
 
+class BridgeSessionStopTests(unittest.TestCase):
+    """tests/_bridge.py BridgeSession.stop(): the bridge's only orderly end is status 0 after EOF on stdin, so a bridge
+    that ends by itself with another status died under the test and stop() must say so (BridgeClosed), instead of
+    letting a run whose every answer was right read as a clean pass.  A Python one-liner plays the bridge."""
+
+    ECHO = "import json,sys; [print(json.dumps({'ok': True}), flush=True) for _ in sys.stdin]"
+    EXIT_3_AT_EOF = ECHO + "; import os; os._exit(3)"
+    SEGFAULT_AT_EOF = (ECHO + "; import os; "
+                       "(os._exit(-1073741819) if os.name == 'nt' else os.kill(os.getpid(), 11))")
+    HANGS_AT_EOF = ECHO + "; import time; time.sleep(60)"
+    EXIT_7 = "import os,sys; sys.stdin.readline(); os._exit(7)"
+
+    def session(self, child, **kwargs):
+        real = subprocess.Popen
+        with mock.patch.object(subprocess, 'Popen', lambda argv, **kw: real([sys.executable, '-c', child], **kw)):
+            session = _bridge.BridgeSession(sys.executable, **kwargs)
+        self.addCleanup(lambda: session.process.poll() is None and session.process.kill())
+        return session
+
+    def test_a_bridge_ending_with_a_nonzero_status_at_eof_makes_stop_raise_with_the_status(self):
+        for label, child, wanted in [("status 3", self.EXIT_3_AT_EOF, 3), ("a segfault", self.SEGFAULT_AT_EOF, None)]:
+            with self.subTest(label):
+                session = self.session(child)
+                self.assertEqual({'ok': True}, session.command('ping'))
+                with self.assertRaises(_bridge.BridgeClosed) as raised:
+                    session.stop()
+                self.assertTrue(raised.exception.bridge_closed)
+                self.assertEqual(session.process.returncode, raised.exception.returncode)
+                self.assertNotEqual(0, raised.exception.returncode)
+                if wanted is not None:
+                    self.assertEqual(wanted, raised.exception.returncode)
+                self.assertIn('at stop', str(raised.exception))
+                self.assertTrue(session.process.stdout.closed and session.stderr.closed,
+                                'stop() must release the pipes even when it raises')
+                session.stop()                      # already stopped: nothing more to report
+
+    def test_a_bridge_that_ends_with_status_0_stops_quietly(self):
+        session = self.session(self.ECHO)
+        self.assertEqual({'ok': True}, session.command('ping'))
+        session.stop()
+        self.assertEqual(0, session.process.returncode)
+
+    def test_a_bridge_that_had_to_be_killed_says_nothing_about_itself(self):
+        session = self.session(self.HANGS_AT_EOF, stop_timeout=0.5)
+        self.assertEqual({'ok': True}, session.command('ping'))
+        session.stop()                              # does not raise: the kill's status (1, -9) is ours, not the bridge's
+        self.assertNotEqual(0, session.process.returncode)
+
+    def test_a_death_command_already_reported_is_not_reported_twice(self):
+        session = self.session(self.EXIT_7)
+        with self.assertRaises(_bridge.BridgeClosed) as raised:
+            session.command('ping')
+        self.assertEqual(7, raised.exception.returncode)
+        session.stop()                              # the same death: command() has said it
+
+    def test_with_block_reports_the_death_found_when_it_stops(self):
+        with self.assertRaises(_bridge.BridgeClosed) as raised:
+            with self.session(self.EXIT_3_AT_EOF) as session:
+                self.assertEqual({'ok': True}, session.command('ping'))
+        self.assertEqual(3, raised.exception.returncode)
+
+
 class BridgeCrashHonestyTests(unittest.TestCase):
     """Task 32: only a failed assertion kills a bridge mutant; a bridge that dies is `crashed` only by the core's rule
     (AGENTS.md: the same tests die of an access violation in RUN_RETRIES consecutive runs), otherwise `blocked`.
@@ -403,8 +468,12 @@ SEGFAULT_AFTER_ALL = ("import os,sys; sys.stdin.read(); "
 EXIT_7_AFTER_ALL = "import os,sys; sys.stdin.read(); os._exit(7)"
 # stdout closes first, the death comes a moment later: the OS reports the exit status after the test already failed.
 # SIGKILL / STATUS_STACK_BUFFER_OVERRUN: a crash status that writes no core dump, so its timing is the sleep alone.
-CLOSE_THEN_KILLED = ("import os,sys,time; sys.stdin.readline(); os.close(1); time.sleep(0.2); "
-                     "(os._exit(-1073740791) if os.name == 'nt' else os.kill(os.getpid(), 9))")
+# 1.6 s is beyond the 1.0 s the oracle once waited and inside the 5 s BridgeSession._exit_status waits.
+CLOSE_THEN_KILLED_LATE = ("import os,sys,time; sys.stdin.readline(); os.close(1); time.sleep(1.6); "
+                          "(os._exit(-1073740791) if os.name == 'nt' else os.kill(os.getpid(), 9))")
+SEGFAULT_NOW = "import os; (os._exit(-1073741819) if os.name == 'nt' else os.kill(os.getpid(), 11))"
+# answers every command, then ends with status 3 once stdin is closed: nothing fails until the session is stopped
+EXIT_3_AT_EOF = "import json,os,sys; [print(json.dumps({'ok': True}), flush=True) for _ in sys.stdin]; os._exit(3)"
 LONG_STDERR_EXIT_0 = ("import os,sys; sys.stdin.readline(); sys.stderr.write('x' * 5000); sys.stderr.flush(); "
                       "os._exit(0)")
 ANSWERS_WRONG = "import json,sys; [print(json.dumps({'ok': False}), flush=True) for _ in sys.stdin]"
@@ -472,6 +541,14 @@ class Cases(unittest.TestCase):
         with self.subTest(axis='u'):
             self.assertTrue(ask(EXIT_7)['ok'])
 
+    def test_mutant_exits_3_after_eof(self):
+        self.assertTrue(ask(EXIT_3_AT_EOF)['ok'])      # every answer is right; the death is found when it is stopped
+
+    def test_unrelated_helper_crashes_and_the_mutant_answers_wrong(self):
+        helper = subprocess.Popen([sys.executable, '-c', SEGFAULT_NOW])       # not the bridge, nothing to do with it
+        helper.wait()
+        self.assertTrue(ask(ANSWERS_WRONG)['ok'], 'the guard must still answer ok')
+
     # ---- other ways a test meets a dead bridge (review of PR #294) ----
 
     def test_run_once_segfaults_the_bridge(self):
@@ -505,11 +582,10 @@ class Cases(unittest.TestCase):
         self.assertTrue(raw, 'the bridge must answer')
 
     def test_private_copy_bridge_dies_after_closing_stdout(self):
-        raw, p, err = private_ask(CLOSE_THEN_KILLED)
+        raw, p, err = private_ask(CLOSE_THEN_KILLED_LATE)
         self.assertTrue(raw, 'the bridge must answer')
 
     def test_private_copy_of_the_oracle_bridge_exits_7(self):
-        # the oracle for this case is given sys.executable as its bridge binary (BridgeCrashHonestyTests.BINARY)
         raw, p, err = private_ask(EXIT_7, program=os.environ['GEOMETRY_TEST_BRIDGE'])
         p.wait()
         self.assertTrue(raw, 'the bridge must answer')
@@ -528,10 +604,16 @@ class Cases(unittest.TestCase):
              'test_closed_bridge_caught_and_refailed', 'test_exit_7_caught_and_refailed_without_its_text',
              'test_private_copy_raises_bridge_closed', 'test_private_copy_asserts_on_silence',
              'test_private_copy_bridge_dies_after_closing_stdout', 'test_private_copy_of_the_oracle_bridge_exits_7',
-             'test_private_copy_says_bridge_closed_before_a_long_stderr')
-    # The oracle's bridge binary per case (default: this file, which no fake child runs).  With sys.executable the
-    # fake child IS the oracle's bridge binary, so ChildWatch holds it to "exit status 0 or it died".
-    BINARY = {'test_private_copy_of_the_oracle_bridge_exits_7': Path(sys.executable)}
+             'test_private_copy_says_bridge_closed_before_a_long_stderr', 'test_mutant_exits_3_after_eof',
+             'test_unrelated_helper_crashes_and_the_mutant_answers_wrong')
+    # The oracle's bridge binary per case.  Default: this file, which no fake child runs, so every `python -c` child is
+    # an unrelated process to ChildWatch and only tests/_bridge.py's BridgeClosed can report a death.  The hand-written
+    # copies of the line protocol start the oracle's own bridge binary in production, so for them sys.executable IS
+    # the bridge binary and ChildWatch holds it to "exit status 0 or it died".
+    BINARY = {case: Path(sys.executable) for case in (
+        'test_private_copy_raises_bridge_closed', 'test_private_copy_asserts_on_silence',
+        'test_private_copy_bridge_dies_after_closing_stdout', 'test_private_copy_of_the_oracle_bridge_exits_7',
+        'test_private_copy_says_bridge_closed_before_a_long_stderr')}
 
     @classmethod
     def method(cls, case):
@@ -556,7 +638,7 @@ class Cases(unittest.TestCase):
                 mutate, lambda n: mutation_bridge._test(ROOT, binary, [cls.method(case)], env,
                                                         cls.dir / 'out', '%s-%d' % (case, n), ROOT, cls.dir),
                 [cls.method(case)])
-        with concurrent.futures.ThreadPoolExecutor(len(cls.CASES)) as pool:
+        with concurrent.futures.ThreadPoolExecutor(8) as pool:     # bounded: each run is a Python start-up
             cls.trials = dict(zip(cls.CASES, pool.map(run, cls.CASES)))
 
     def oracle(self, case):
@@ -725,15 +807,47 @@ class Cases(unittest.TestCase):
         self.assert_crashed('test_private_copy_asserts_on_silence', 'child exit status',
                             'a test asserting that a segfaulted bridge it started itself answered')
 
-    def test_a_death_the_os_reports_after_the_failure_is_still_seen(self):
+    def test_a_death_the_os_reports_long_after_the_failure_is_still_seen(self):
         import bridge_mutation_oracle as oracle
         trials, method = self.oracle('test_private_copy_bridge_dies_after_closing_stdout')
         failure = self.first_failure(trials[0], 'test_private_copy_bridge_dies_after_closing_stdout')
         self.assertEqual(('bridge_closed', ['child exit status']), (failure.get('kind'), failure.get('death_seen_by')),
-                         'the bridge closed stdout and was killed 0.2 s after the test failed: ChildWatch.GRACE must '
-                         'wait for the exit status instead of calling the failure an assertion')
-        self.assertTrue(oracle.is_crash_status(failure.get('bridge_returncode')), failure)
+                         'the bridge closed stdout and was killed 1.6 s after the test failed (the oracle once waited '
+                         '1.0 s): ChildWatch.GRACE must wait for the exit status instead of calling the failure an '
+                         'assertion, which would be a kill')
+        self.assertNotIn(failure.get('bridge_returncode'), (None, 0), failure)
         self.assertEqual((1, 'blocked'), (len(trials), self.judge(trials, method)))
+
+    def test_child_watch_waits_at_least_as_long_as_the_session_does(self):
+        import bridge_mutation_oracle as oracle
+        session_wait = inspect.signature(_bridge.BridgeSession._exit_status).parameters['timeout'].default
+        self.assertGreaterEqual(oracle.ChildWatch.GRACE, session_wait,
+                                'a test that talks to the bridge itself must get the patience BridgeSession gives')
+        self.assertGreater(oracle.ChildWatch.GRACE, 1.6)
+
+    def test_a_bridge_that_exits_3_after_eof_is_a_death_never_a_survivor(self):
+        trials, method = self.oracle('test_mutant_exits_3_after_eof')
+        self.assertNotEqual('survived', self.judge(trials, method),
+                            'every answer was right and the bridge ended with status 3 once stopped, yet the mutant is '
+                            'judged survived: nobody noticed that the bridge died (死亡被算成存活)')
+        failure = self.first_failure(trials[0], 'test_mutant_exits_3_after_eof')
+        self.assertEqual(('bridge_closed', 3, ['BridgeClosed']),
+                         (failure.get('kind'), failure.get('bridge_returncode'), failure.get('death_seen_by')),
+                         'every answer was right and the bridge ended with status 3 when stopped: stop() must raise '
+                         'BridgeClosed with the status, or the run reads as a clean pass')
+        self.assertIn('at stop', failure['detail'])
+        verdict = self.judge(trials, method)
+        self.assertEqual((1, 'blocked'), (len(trials), verdict),
+                         'a mutant whose bridge ends with status 3 after EOF was judged %r (survived = no one noticed '
+                         'the bridge died)' % verdict)
+
+    def test_an_unrelated_helper_crash_does_not_turn_a_real_assertion_into_a_death(self):
+        trials, method = self.oracle('test_unrelated_helper_crashes_and_the_mutant_answers_wrong')
+        failure = self.first_failure(trials[0], 'test_unrelated_helper_crashes_and_the_mutant_answers_wrong')
+        self.assertEqual({'kind': 'assertion'}, {k: v for k, v in failure.items() if k in ('kind', 'death_seen_by', 'bridge_returncode')},
+                         'a helper process that is not the bridge crashed, but the failure is a wrong answer from '
+                         'the bridge: it must stay an assertion (and a kill)')
+        self.assertEqual((1, 'killed'), (len(trials), self.judge(trials, method)))
 
     def test_the_oracle_bridge_binary_ending_with_any_status_but_0_is_a_death(self):
         trials, method = self.oracle('test_private_copy_of_the_oracle_bridge_exits_7')
@@ -780,13 +894,6 @@ class Cases(unittest.TestCase):
                 self.assertEqual(wanted, oracle.failure_label(exc, deaths),
                                  '%s: a death needs the one exit status all the evidence agrees on' % label)
 
-    def test_crash_statuses_are_signals_and_windows_ntstatus_errors(self):
-        import bridge_mutation_oracle as oracle
-        for code in (-11, -9, -6, 3221225477, -1073741819, 0xC0000409):
-            self.assertTrue(oracle.is_crash_status(code), code)
-        for code in (0, 1, 3, 7, 139, 255, None, True, '-11'):
-            self.assertFalse(oracle.is_crash_status(code), code)
-
     def test_child_watch_counts_only_children_that_die_under_the_current_test(self):
         import bridge_mutation_oracle as oracle
         segfault = ("import os; (os._exit(-1073741819) if os.name == 'nt' else os.kill(os.getpid(), 11))")
@@ -798,6 +905,7 @@ class Cases(unittest.TestCase):
             return proc
 
         watch = oracle.ChildWatch(bridge=sys.executable)    # here every `python -c` child is "the bridge binary"
+        self.assertEqual([], watch.deaths())
         child(watch, segfault)
         self.assertEqual(1, len(watch.deaths()))
         self.assertTrue(mutate.is_access_violation_code(watch.deaths()[0]), watch.deaths())
@@ -813,7 +921,23 @@ class Cases(unittest.TestCase):
         child(other, 'import os; os._exit(7)')
         self.assertEqual([], other.deaths(), 'another program ending with 7 is not a crash')
         child(other, segfault)
-        self.assertEqual(1, len(other.deaths()), 'any child that crashes under the test is a death')
+        self.assertEqual([], other.deaths(), 'a helper that is not the bridge crashing is not the bridge dying')
+        watch.mark()
+        child(watch, segfault)
+        self.assertEqual(1, len(watch.deaths()), 'the same crash of the bridge binary is a death')
+
+    def test_child_watch_does_not_wait_for_a_live_child_that_is_not_the_bridge(self):
+        import bridge_mutation_oracle as oracle
+        watch = oracle.ChildWatch(bridge=Path(__file__))
+        watch.GRACE = 30
+        alive = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])
+        self.addCleanup(alive.wait)
+        self.addCleanup(alive.kill)
+        watch.children.append(alive)
+        watch.mark()
+        started = time.monotonic()
+        self.assertEqual([], watch.deaths())
+        self.assertLess(time.monotonic() - started, 10, 'a live helper must cost no grace')
 
     def test_child_watch_gives_a_live_child_its_grace_once_per_test(self):
         import bridge_mutation_oracle as oracle

@@ -15,8 +15,10 @@
          結束、且沒有任何斷言失敗;重跑範圍較窄,只重跑存取違規(核心則重跑所有 blocked)。
          其他結束碼(含外部 kill、OOM)、不足次數、前後不一致、或與斷言失敗並存 -> blocked,
          不重跑、不算偵測。
-         死亡不只看最外層例外:例外鏈任一層的 BridgeClosed、run_once 的非 0 結束碼、測試的
-         子行程以當機狀態結束(oracle 的 ChildWatch)都算;只有文字說 bridge closed 而沒有結束碼
+         死亡不只看最外層例外:例外鏈任一層的 BridgeClosed(含 BridgeSession.stop() 發現 bridge
+         讀到 EOF 後以非 0 結束)、run_once 的非 0 結束碼、測試啟動的 bridge 行程(程式 = oracle 的
+         bridge 二進位)以非 0 結束(oracle 的 ChildWatch,最多等 5 秒取得結束碼,與
+         BridgeSession 一致)都算;無關子行程當機不算;只有文字說 bridge closed 而沒有結束碼
          -> blocked。tests 指定的方法必須在基準線 mutation_bridge.RESTORED 內,否則 invalid。
 
 結果: killed(某測試失敗) / crashed(基準通過後,同一夾具連續存取違規;
