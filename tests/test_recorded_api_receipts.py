@@ -1,5 +1,6 @@
 """#240 S9 / P-151: T1 receipt contracts without importing or starting the server."""
 import ast
+import importlib.util
 import json
 from pathlib import Path
 import re
@@ -7,10 +8,19 @@ import threading
 from types import SimpleNamespace
 import unittest
 import uuid
-from unittest.mock import Mock, call
+from unittest.mock import Mock, call, patch
 
 
 SOURCE = Path(__file__).resolve().parents[1] / 'geometry-web' / 'serve.py'
+NATIVE_SOURCE = SOURCE.with_name('native_context.py')
+
+
+def load_native_context_class():
+    """The real NativeContext (it imports nothing from the server); only Popen is replaced per use."""
+    spec = importlib.util.spec_from_file_location('receipts_native_context_under_test', NATIVE_SOURCE)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.NativeContext
 
 
 def load_receipt_functions():
@@ -311,6 +321,66 @@ class RecordedApiReceipts(unittest.TestCase):
         self.assertEqual(self.result, self.send(requestId=str(uuid.uuid4()), cmd='dump'), msg='T1_SEALED_FULL')
         self.assert_bridge_calls('dump')
         self.assert_sealed_unchanged(before)
+
+    def test_sealed_id_still_answers_unsent_and_late_command_does_not_run_when_result_table_is_full(self):
+        sealed_ids = [str(uuid.uuid4()), str(uuid.uuid4())]
+        for request_id in sealed_ids:
+            self.assertFalse(self.send(receipt=request_id)['result']['ok'], msg='T1_SEALED_TABLE_FULL')
+        # 256 bound, unacknowledged results: the result table is at its limit.
+        self.native.api_receipts.update((str(uuid.UUID(int=i + 1)), ('dump', self.encode(self.result)))
+                                        for i in range(256))
+        results_before, sealed_before = self.native.api_receipts.copy(), set(self.native.api_sealed)
+        unsent = json.loads(self.api['err_json']('操作未送達，場景未變更；請重新操作。'))
+        why = ('T1_SEALED_TABLE_FULL: 待 ack 表已滿時，已封存 id 的查詢與晚到命令必須仍回「操作未送達」，'
+               '不得被「未確認的操作結果過多」取代，更不得執行')
+        for request_id in sealed_ids:
+            with self.subTest(request_id=request_id):
+                self.assertEqual({'ok': True, 'result': unsent}, self.send(receipt=request_id), msg=why)
+                self.assertEqual(unsent, self.send(requestId=request_id, cmd='engineering-confirm 17'), msg=why)
+                self.assertEqual(unsent, self.send(requestId=request_id, cmd='engineering-confirm 18'), msg=why)
+        # The table stayed full throughout; no seal changed and nothing ran.
+        self.assertEqual(results_before, self.native.api_receipts, msg='T1_SEALED_TABLE_FULL')
+        self.assertEqual(sealed_before, self.native.api_sealed, msg='T1_SEALED_TABLE_FULL')
+        self.assert_bridge_calls()
+
+    def test_new_session_has_an_empty_sealed_set_and_old_session_keeps_its_own(self):
+        context_class = load_native_context_class()  # one class: a class-level set would be shared
+
+        def real_context():
+            process = Mock()
+            process.stdout.readline.return_value = b''  # the reader thread ends at once
+            with patch('subprocess.Popen', return_value=process):
+                native = context_class(['unused-bridge'])
+            native.reader.join(timeout=2)
+            self.assertFalse(native.reader.is_alive(), msg='T1_SESSION_SEALED')
+            return native
+
+        old, new = real_context(), real_context()
+        self.assertNotEqual(old.session, new.session, msg='T1_SESSION_SEALED')
+        self.assertIsNot(old.api_sealed, new.api_sealed, msg='T1_SESSION_SEALED: 封存集合是每個 context 自己的，不得共用')
+        request_id = str(uuid.uuid4())
+        unsent = json.loads(self.api['err_json']('操作未送達，場景未變更；請重新操作。'))
+        self.native = old
+        self.assertEqual({'ok': True, 'result': unsent}, self.send(receipt=request_id), msg='T1_SESSION_SEALED')
+        self.assertEqual({request_id}, old.api_sealed, msg='T1_SESSION_SEALED')
+        self.native = new
+        self.assertEqual(set(), new.api_sealed, msg='T1_SESSION_SEALED: 新 session 的封存集合必須是空的')
+        rejected = self.send(session=old.session, requestId=request_id, cmd='engineering-confirm 17')
+        self.assertFalse(rejected['ok'], msg='T1_SESSION_SEALED')
+        self.assertIn('服務已重啟或請求識別不合法', rejected['error'], msg='T1_SESSION_SEALED')
+        self.assert_bridge_calls()
+        self.assertEqual(self.result, self.send(requestId=request_id, cmd='engineering-confirm 17'),
+                         msg='T1_SESSION_SEALED: 舊 session 的封存不得擋住新 session 的同 id 命令')
+        self.assert_bridge_calls('engineering-confirm 17')
+        self.assertEqual(set(), new.api_sealed, msg='T1_SESSION_SEALED')
+        self.assertIn(request_id, new.api_receipts, msg='T1_SESSION_SEALED')
+        # Back on the old session: its seal is untouched and its late command still does not run.
+        self.native = old
+        self.assertEqual({request_id}, old.api_sealed, msg='T1_SESSION_SEALED')
+        self.assertEqual({}, old.api_receipts, msg='T1_SESSION_SEALED')
+        self.assertEqual(unsent, self.send(requestId=request_id, cmd='engineering-confirm 17'), msg='T1_SESSION_SEALED')
+        self.assertEqual({'ok': True, 'result': unsent}, self.send(receipt=request_id), msg='T1_SESSION_SEALED')
+        self.assert_bridge_calls('engineering-confirm 17')
 
     def test_full_table_rejects_lookup_of_new_id_without_sealing_or_calling_bridge(self):
         self.native.api_receipts.update((str(uuid.UUID(int=i + 1)), ('dump', self.encode(self.result)))

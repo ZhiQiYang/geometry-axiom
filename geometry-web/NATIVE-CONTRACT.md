@@ -8,7 +8,7 @@
 
 ### T1：命令結果取回
 
-入口是 [`serve.py::recorded_api`](serve.py)，狀態屬於 [`NativeContext`](native_context.py) 的 `session`、`api_receipts` 與 `receipt_lock`。
+入口是 [`serve.py::recorded_api`](serve.py)，狀態屬於 [`NativeContext`](native_context.py) 的 `session`、`api_receipts`、`api_sealed` 與 `receipt_lock`。
 
 - 命令請求帶 `session`、`requestId`、`cmd`，可帶 `ack` 清單。`requestId` 須符合現有的 36 字元小寫十六進位／連字號格式；session 須等於目前原生 context 的 session。沒有 requestId／receipt 的舊式請求直接轉發 bridge，不享有這個結果取回保證。
 - 回執以該 context 的 session 加 requestId 識別，並綁定原命令字串。**結果仍在表內時**，相同 id／命令取得原結果；同 id 改命令拒絕，不能把它當成另一個操作。這是防重執行守門，不是鼓勵前端重送；I64／I67 仍要求未知結果時查回執、不重送。
@@ -17,12 +17,12 @@
 - 容量分兩個互不侵佔的計數，都在每個 context 的記憶體內：
   - **待 ack 結果表**（`api_receipts`）上限 256 筆（`MAX_RECEIPTS`），**只計已綁命令的結果**，不含提早查詢的封存項。先處理本請求 `ack` 清單的前 256 項，清除其中的結果；**處理後仍滿**才拒絕新 id 的命令及查詢（含尚未封存的新 id 早查詢），回「未確認的操作結果過多」，不呼叫 bridge，既有 id 仍可查詢。若表內 256 筆皆為已綁命令結果，同一新 id 命令請求帶其中一筆 ack，會先騰出空位，再執行新命令並保存結果。
   - **封存集合**（`api_sealed`，只存 id）上限 4096 筆（`MAX_SEALED_RECEIPTS`）。早查詢再多也不會讓新命令被「未確認的操作結果過多」擋下。封存項一直有效：**ack 不會清除、也不會被淘汰**，否則晚到的同 id 命令會被執行。集合滿時，對**新 id** 的早查詢回「早查詢封存項已達上限，已暫停新增查詢；本次查詢未被受理，不能據此推定操作結果。」，不呼叫 bridge、不新增也不淘汰封存項、**不封存該 id**；此回覆不是「未送達」，不能據此判定操作未執行。已封存 id 的查詢與其晚到命令不受影響，新 id 的命令也照常執行（走待 ack 結果表）。只有換 session 才能取得空集合。這是容量耗盡的後果，不是恢復保證。
-- 後續請求的 `ack` 最多處理前 256 筆。它清除已綁命令的結果；提早查詢封存的 id 不會被 ack 清除，也不會因同一請求的 ack 讓晚到的同 id 命令得以執行。已清除結果的 id 無永久歷史可查：再查詢會得到新封存的未送達結果（此時該 id 進封存集合，之後同 id 命令不再執行）。因此收到結果後應完成當地核對再 ack，不能把 ack 後的查詢當成舊操作的證據。
+- 後續請求的 `ack` 最多處理前 256 筆。它清除已綁命令的結果；提早查詢封存的 id 不會被 ack 清除，也不會因同一請求的 ack 讓晚到的同 id 命令得以執行。已清除結果的 id 無永久歷史可查：再查詢通常會得到新封存的未送達結果（此時該 id 進封存集合，之後同 id 命令不再執行）。**兩個例外**：封存集合已滿（4096）時，或待 ack 表已滿（256）時，對這個尚未封存的 id，這次查詢拿到的是**外層拒絕**（前者「早查詢封存項已達上限…」，後者「未確認的操作結果過多…」），不是未送達，也不封存該 id，不能據此推定操作結果；已封存 id 的查詢與晚到命令不受這兩種容量影響，仍回未送達、不執行。因此收到結果後應完成當地核對再 ack，不能把 ack 後的查詢當成舊操作的證據。
 - **ack 清除後若直接以相同 id 重送相同命令，命令會再執行一次。** 例如 X 執行、Y 帶 ack 清除 X、同 id 再送 X，bridge 序列為 X、Y、X。客戶端 ack 後不得再用同一 id 重送；前一項的「先查詢而封存取消」不能被誤讀成 ack 仍保有原結果。
 - `receipt_lock` 在 `ask_bridge` 執行期間仍被持有。同一 context 的其他回執請求最多等待 `BRIDGE_TIMEOUT = 30` 秒，逾時回「操作結果仍在處理」，不能據此推定原操作結果。
 - 原生 context 建立時產生新 session。換 context／服務重啟後，舊 session 請求拒絕；這不是跨重啟的耐久回執或永久交易日誌。
 
-這層保證只涉及傳輸結果與防重執行，不證明 JS 附件、dirty 或 history 已同步完成。正式函式測試見 [`tests/test_recorded_api_receipts.py`](../tests/test_recorded_api_receipts.py)：執行目前原函式與受控 context／bridge，不啟動服務；涵蓋六組基本情境及上述邊界（含 #264 的封存項與待 ack 結果分開計數、ack 不清封存項、封存集合滿時的明確拒絕），皆核對 bridge 的命令與呼叫次數。換 session 與鎖逾時是受控 fixture，不是實際重啟或 30 秒併發壓力測試。
+這層保證只涉及傳輸結果與防重執行，不證明 JS 附件、dirty 或 history 已同步完成。正式函式測試見 [`tests/test_recorded_api_receipts.py`](../tests/test_recorded_api_receipts.py)：執行目前原函式與受控 context／bridge，不啟動服務；涵蓋六組基本情境及上述邊界（含 #264 的封存項與待 ack 結果分開計數、ack 不清封存項、封存集合滿時的明確拒絕、待 ack 表滿時已封存 id 仍回未送達、每個 context／session 各有自己的封存集合），皆核對 bridge 的命令與呼叫次數。換 session 與鎖逾時是受控 fixture，不是實際重啟或 30 秒併發壓力測試。
 
 ### T2：原生提交回覆
 
