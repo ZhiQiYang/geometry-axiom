@@ -29,16 +29,19 @@ static GeoSourceStatus ledger_eval(GeoEvalContext *graph,GeoSourceRef ref,GeoDep
     if(ledger_fault==8)return GEO_SOURCE_FAILED;
     out->as.definition.content=ledger_content;out->as.definition.content_size=size;return status;
 }
+static const char *ledger_components_scene;
 static World *ledger_world(const char *name)
 {
     World *world=calloc(1,sizeof *world);if(!world)return NULL;
+    /* D4: only the derived (panel-fill/1) variant has a region-set range, and
+     * R41 derives it; a stored component copy is not an admissible placement.
+     * The driver's scene derives two components on keyed boundary 7. */
+    if(!strcmp(name,"components")){if(!ledger_components_scene||!parse_scene_file(ledger_components_scene,world)){free(world);return NULL;}return world;}
     SpaceBoundarySurface boundary={.id=7,.outline={.v={{0,0},{1000,0},{1000,1000},{0,1000}},.count=4},.hole_count=1};
     boundary.holes[0]=(PolygonLoop2){.v={{100,100},{200,100},{200,200},{100,200}},.count=4};
     if(!app_boundary_stage(world,&boundary)){free(world);return NULL;}
     GeoPlacementDefinition placement={.id=9,.frame={{0,0,30},{1,0,0},{0,1,0},{0,0,1}},.domain=GEO_PLACEMENT_REGION_REF,.region_id=7};
     if(!strcmp(name,"rectangle")){placement.domain=GEO_PLACEMENT_RECT;placement.id=7;placement.rect=(GeoRect2){0,0,100,100};}
-    if(!strcmp(name,"components")){placement.domain=GEO_PLACEMENT_REGION_SET;placement.component_count=2;
-        placement.components[0]=*geo_regions_find(&world->geo.region_data,7);placement.components[1]=placement.components[0];}
     if(!geo_placements_stage(&world->geo.placement_data,&placement)){free(world);return NULL;}
     if(!strcmp(name,"shared")){placement.id=10;if(!geo_placements_stage(&world->geo.placement_data,&placement)){free(world);return NULL;}}
     if(strcmp(name,"absent")){GeoRegionKeys keys={.boundary_id=7,.loop_count=2,.counts={4,4},.keys={{1,2,3,4},{5,6,7,8}},.next_key=9};
@@ -119,4 +122,4 @@ static int ledger_selection_case(void)
     }return 0;
 }
 int main(int argc,char **argv)
-{if(argc!=2)return 2;return !strcmp(argv[1],"malformed")?ledger_malformed_case():!strcmp(argv[1],"selection")?ledger_selection_case():ledger_case(argv[1]);}
+{if(argc==3&&!strcmp(argv[1],"components"))ledger_components_scene=argv[2];else if(argc!=2)return 2;return !strcmp(argv[1],"malformed")?ledger_malformed_case():!strcmp(argv[1],"selection")?ledger_selection_case():ledger_case(argv[1]);}

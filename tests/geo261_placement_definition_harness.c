@@ -145,14 +145,25 @@ static bool binding(void *opaque,uint32_t id,GeoPlacementSourceKind kind,GeoSour
     s->key=9;*out=(GeoSourceRef){33,&s->key,1};return true;
 }
 typedef struct {GeoEvalContext *graph;GeoPlacementSources *sources;GeoPlacementStore *placements;GeoRegionStore *regions;} Fixture;
+static bool attach(Fixture *f,Replacement *replacement)
+{
+    if(replacement){GeoSourceProvider provider={33,"test.replacement","test/1",replacement,replacement_describe,replacement_evaluate};if(!geo_eval_register(f->graph,&provider))return false;}
+    f->sources=geo_placement_sources_register(f->graph,f->placements,f->regions,11,22,replacement?binding:NULL,replacement);
+    return f->sources!=NULL;
+}
 static bool fixture(Fixture *f,Replacement *replacement)
 {
     memset(f,0,sizeof *f);f->graph=geo_eval_create(71,13);f->placements=geo_placements_create();f->regions=geo_regions_create();
     if(!f->graph||!f->placements||!f->regions)return false;
     GeoPlacementDefinition raw;expected(&raw,GEO_PLACEMENT_RECT);if(!geo_placements_stage(f->placements,&raw))return false;
-    if(replacement){GeoSourceProvider provider={33,"test.replacement","test/1",replacement,replacement_describe,replacement_evaluate};if(!geo_eval_register(f->graph,&provider))return false;}
-    f->sources=geo_placement_sources_register(f->graph,f->placements,f->regions,11,22,replacement?binding:NULL,replacement);
-    return f->sources!=NULL;
+    return attach(f,replacement);
+}
+/* K's geo_eval_reset drops every provider registration (source.c clear):
+ * destroy this generation's handle and register the same candidate anew. */
+static bool reset(Fixture *f,Replacement *replacement)
+{
+    if(!geo_eval_reset(f->graph))return false;
+    geo_placement_sources_destroy(f->sources);f->sources=NULL;return attach(f,replacement);
 }
 static void destroy(Fixture *f,bool graph_first)
 {
@@ -207,11 +218,11 @@ static int typed_invalid_case(void)
     Replacement s;memset(&s,0,sizeof s);s.kind=GEO_SOURCE_DEFINITION;s.schema=GEO_PLACEMENT_DEFINITION_SCHEMA;fixed_vector(&s.wire,GEO_PLACEMENT_REGION_SET);
     Fixture f;CHECK(fixture(&f,&s),"invalid-typed-fixture-created");s.wire.bytes[3]=5;
     CHECK(accessor_rejects(&f,TEST_ID),"replacement-id-mismatch-is-atomic");
-    CHECK(geo_eval_reset(f.graph),"invalid-id-reset");fixed_vector(&s.wire,GEO_PLACEMENT_REGION_SET);s.schema="other.schema/1";
+    CHECK(reset(&f,&s),"invalid-id-reset");fixed_vector(&s.wire,GEO_PLACEMENT_REGION_SET);s.schema="other.schema/1";
     CHECK(accessor_rejects(&f,TEST_ID),"replacement-schema-mismatch-is-atomic");
-    CHECK(geo_eval_reset(f.graph),"invalid-schema-reset");s.schema=GEO_PLACEMENT_DEFINITION_SCHEMA;--s.wire.size;
+    CHECK(reset(&f,&s),"invalid-schema-reset");s.schema=GEO_PLACEMENT_DEFINITION_SCHEMA;--s.wire.size;
     CHECK(accessor_rejects(&f,TEST_ID),"replacement-malformed-wire-is-atomic");
-    CHECK(geo_eval_reset(f.graph),"invalid-wire-reset");fixed_vector(&s.wire,GEO_PLACEMENT_REGION_SET);s.kind=GEO_SOURCE_FRAME;
+    CHECK(reset(&f,&s),"invalid-wire-reset");fixed_vector(&s.wire,GEO_PLACEMENT_REGION_SET);s.kind=GEO_SOURCE_FRAME;
     CHECK(accessor_rejects(&f,TEST_ID),"replacement-wrong-value-kind-is-atomic");
     CHECK(accessor_rejects(&f,999),"missing-definition-is-atomic");
     CHECK(!s.frame_calls&&!s.region_calls,"failed-definition-reads-never-request-geometry");destroy(&f,true);return 0;
@@ -221,7 +232,7 @@ static int lifecycle_case(void)
     Fixture a,b;CHECK(fixture(&a,NULL)&&fixture(&b,NULL),"isolated-candidates-created");GeoPlacementDefinition out,raw;expected(&raw,GEO_PLACEMENT_REGION_REF);
     CHECK(geo_placements_stage(b.placements,&raw)&&geo_placement_sources_definition(a.sources,TEST_ID,&out)&&out.domain==GEO_PLACEMENT_RECT&&
         geo_placement_sources_definition(b.sources,TEST_ID,&out)&&out.domain==GEO_PLACEMENT_REGION_REF,"candidate-definition-storage-is-isolated");
-    CHECK(geo_eval_reset(a.graph)&&geo_placements_stage(a.placements,&raw)&&geo_placement_sources_definition(a.sources,TEST_ID,&out)&&out.domain==GEO_PLACEMENT_REGION_REF,"reset-reencodes-candidate-definition");
+    CHECK(reset(&a,NULL)&&geo_placements_stage(a.placements,&raw)&&geo_placement_sources_definition(a.sources,TEST_ID,&out)&&out.domain==GEO_PLACEMENT_REGION_REF,"reset-reencodes-candidate-definition");
     /* Definition addition must not change the established FRAME/REGIONS keys. */
     raw.frame=(GeoFrame){{1,2,3},{1,0,0},{0,1,0},{0,0,1}};raw.domain=GEO_PLACEMENT_RECT;raw.rect=(GeoRect2){0,0,100,200};raw.id=99;
     CHECK(geo_placements_stage(a.placements,&raw),"legacy-domains-staged");GeoPlacementSourceKey key;GeoSourceValue value;
@@ -255,12 +266,12 @@ static int local_geometry_case(void)
         regions.as.regions.count==1&&regions.as.regions.regions[0].outline.count==4&&regions.as.regions.regions[0].outline.v[0].u==-51&&
         regions.as.regions.regions[0].outline.v[0].v==-52&&regions.as.regions.regions[0].outline.v[2].u==53&&regions.as.regions.regions[0].outline.v[2].v==54,"local-rect-uses-actual-definition");
     CHECK(s.calls==1&&geometry_has_definition_edge(f.graph,GEO_PLACEMENT_SOURCE_FRAME)&&geometry_has_definition_edge(f.graph,GEO_PLACEMENT_SOURCE_REGIONS),"local-geometry-shares-memoized-definition");
-    CHECK(geo_eval_reset(f.graph),"local-reference-reset");fixed_vector(&s.wire,GEO_PLACEMENT_REGION_REF);
+    CHECK(reset(&f,&s),"local-reference-reset");fixed_vector(&s.wire,GEO_PLACEMENT_REGION_REF);
     GeoRegionDefinition target;memset(&target,0,sizeof target);target.id=UINT32_MAX;target.outline.count=1;target.outline.v[0]=(GeoPoint2){661,662};
     CHECK(geo_regions_stage(f.regions,&target),"actual-reference-region-staged");
     CHECK(geo_eval_source(f.graph,geo_placement_source_ref(11,GEO_PLACEMENT_SOURCE_REGIONS,TEST_ID,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&regions)==GEO_SOURCE_OK&&
         regions.as.regions.count==1&&regions.as.regions.regions[0].outline.count==1&&regions.as.regions.regions[0].outline.v[0].u==661,"local-region-reference-uses-actual-definition");
-    CHECK(geo_eval_reset(f.graph),"local-components-reset");fixed_vector(&s.wire,GEO_PLACEMENT_REGION_SET);
+    CHECK(reset(&f,&s),"local-components-reset");fixed_vector(&s.wire,GEO_PLACEMENT_REGION_SET);
     CHECK(geo_eval_source(f.graph,geo_placement_source_ref(11,GEO_PLACEMENT_SOURCE_REGIONS,TEST_ID,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&regions)==GEO_SOURCE_OK&&
         regions.as.regions.count==2&&regions.as.regions.regions[0].outline.count==2&&regions.as.regions.regions[0].outline.v[1].u==43&&
         regions.as.regions.regions[0].hole_count==2&&regions.as.regions.regions[0].holes[0].v[0].u==INT64_MIN&&regions.as.regions.regions[1].outline.count==0,"local-components-use-actual-definition");
@@ -279,10 +290,10 @@ static int bound_geometry_case(void)
     Fixture f;CHECK(fixture(&f,&s),"bound-geometry-fixture-created");GeoPlacementSourceKey key;GeoSourceValue value;
     CHECK(geo_eval_source(f.graph,geo_placement_source_ref(11,GEO_PLACEMENT_SOURCE_FRAME,TEST_ID,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK&&
         value.as.frame.origin.x==91&&s.calls==1&&geo_eval_node_count(f.graph)==2,"bound-frame-precedes-authored-definition");
-    CHECK(geo_eval_reset(f.graph),"bound-regions-reset");s.kind=GEO_SOURCE_REGION_SET;
+    CHECK(reset(&f,&s),"bound-regions-reset");s.kind=GEO_SOURCE_REGION_SET;
     CHECK(geo_eval_source(f.graph,geo_placement_source_ref(11,GEO_PLACEMENT_SOURCE_REGIONS,TEST_ID,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK&&
         value.as.regions.count==1&&value.as.regions.regions[0].outline.v[0].u==81&&geo_eval_node_count(f.graph)==2,"bound-regions-precede-authored-definition");
-    CHECK(geo_eval_reset(f.graph),"bound-failure-reset");s.fail_geometry=true;s.kind=GEO_SOURCE_FRAME;
+    CHECK(reset(&f,&s),"bound-failure-reset");s.fail_geometry=true;s.kind=GEO_SOURCE_FRAME;
     CHECK(geo_eval_source(f.graph,geo_placement_source_ref(11,GEO_PLACEMENT_SOURCE_FRAME,TEST_ID,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_FAILED&&
         geo_eval_node_count(f.graph)==2,"bound-failure-does-not-fall-back-to-definition");
     destroy(&f,true);return 0;

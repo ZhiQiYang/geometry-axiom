@@ -1,4 +1,5 @@
 """Placement transport consumes actual ledger bytes while preserving D30 absence."""
+import json
 from pathlib import Path
 import re
 import struct
@@ -33,6 +34,26 @@ SCENE = ('boundary 7 outline 0,0 1000,0 1000,1000 0,1000 hole 100,100 200,100 20
          'placement 9 on boundary 7 origin 0 0 30 u +x v +y\n'
          'placement 10 on boundary 7 origin 0 0 40 u +x v +y\n'
          'boundary-vertex-keys 7 outer 1 2 3 4 hole 5 6 7 8 next-key 9\n')
+# D4: a region-set range belongs only to the derived (panel-fill/1) placement,
+# derived by R41. This is the product bridge's own dump of that fixture
+# (test_panel_fill_host second-component case) with boundary 7, placement 9
+# and boundary 7's key ledger; beam 20 splits the range into two components.
+COMPONENTS_SCENE = (
+    'requires parameters/1\nparameters begin\n'
+    'parameters card eyJpZCI6OTAsIm5hbWUiOiLploDmqrsiLCJuZXh0RmllbGRJZCI6Mn0=\n'
+    'parameters field eyJwYXJhbWV0ZXJJZCI6OTAsImlkIjoxLCJuYW1lIjoiWCIsInR5cGUiOjAsImV4cHJlc3Npb24iOnsiZGVuIjoiMSIsIm51bSI6IjgiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\n'
+    'parameters end\nrequires engineering-spec/1\n'
+    'engineering material eyJmaW5nZXJwcmludCI6ImQ4YjY3OGMxNzM2ZmNhYTBiNTQxOGY0NDdkMThlYzI4Yjg3ZDRhNjQ1MTFhNmRiNDgwYTVlYjdhMmU5MDVhYTciLCJ2YWx1ZSI6eyJpZCI6InBmLWJvYXJkIiwia2luZCI6InBhbmVsIiwibGVuZ3RoIjoxODMwLCJuYW1lIjoi5p2/IiwidGhpY2tuZXNzIjoiOSIsInZlcnNpb24iOjEsIndpZHRoIjo5MTV9fQ==\n'
+    'boundary 7 outline 0,0 100,0 100,100 0,100 kind room_plan\n'
+    'beam 20 along x from 40 to 60 at 50 width 120 depth 30 top 39\n'
+    'boundary-vertex-keys 7 outer 1 2 3 4 next-key 5\n'
+    'requires panel-fill/1\n'
+    'finish-surface 1 on boundary 7 origin 0 0 0 u +x v +y n +z side +n obstacles b20 name-hex e5a4a9e88ab1e5ae8ce68890e99da2\n'
+    'panel-fill 1 definition-hex ' + json.dumps({'finishSurfaceId': 1, 'gap': 0, 'id': 1, 'lengthAlong': 'v', 'origin': [0, 0],
+        'panel': {'id': 'pf-board', 'version': 1}, 'pattern': 'straight', 'threshold': {'fieldId': 1, 'parameterId': 90}},
+        sort_keys=True, separators=(',', ':')).encode().hex() + '\n'
+    'derived-placement 9 definition-hex ' + json.dumps({'fillId': 1, 'h': 30, 'id': 9},
+        sort_keys=True, separators=(',', ':')).encode().hex() + '\n')
 
 
 class ModelVertexLedgerBoundary(unittest.TestCase):
@@ -95,9 +116,12 @@ class ModelVertexLedger(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.exe = cls.harness('baseline')
+        cls.components_scene = native().work / 'vertex-ledger-components.scene'
+        cls.components_scene.write_text(COMPONENTS_SCENE, encoding='utf-8')
 
     def case(self, name, exe=None, marker=None):
-        run = subprocess.run([str(exe or self.exe), name], capture_output=True, text=True, encoding='utf-8', timeout=30)
+        scene = [str(self.components_scene)] if name == 'components' else []
+        run = subprocess.run([str(exe or self.exe), name, *scene], capture_output=True, text=True, encoding='utf-8', timeout=30)
         self.assertEqual(1 if marker else 0, run.returncode, 'Crash/setup is not an authority verdict: ' + run.stdout + run.stderr)
         self.assertEqual('ASSERT:' + marker + '\n' if marker else '', run.stderr)
         self.assertEqual('', run.stdout)

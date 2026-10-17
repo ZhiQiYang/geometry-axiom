@@ -115,7 +115,11 @@ static int parameter_graph_read_only(void)
         geo_parameter_sources_context(ctx.parameter_sources)==ctx.sources,"readonly-provider-uses-clone-and-own-resolver");
     GeoQuantity value;CHECK(reference_parameter_quantity(&ctx,(ParameterRef){true,1,1},&value)&&parameter_graph_quantity(value,7,1),"readonly-computes-exact-value-from-definitions");
     CHECK(!memcmp(before,&g_world,sizeof *before),"readonly-recompute-keeps-live-bytes");
-    CHECK(geo_eval_node_count(ctx.sources)==2&&geo_eval_edge_count(ctx.sources)==1&&geo_eval_seal(ctx.sources),"readonly-retains-and-seals-native-parameter-edge");
+    /* Full K registration: each quantity requires its FIELD definition, which
+     * requires its CARD definition (parameter_sources.h). Exactly two fields
+     * are reached: 2 quantities + 2 field + 2 card definitions; one AST value
+     * edge (1,1)->(2,1) plus two quantity->field->card definition chains. */
+    CHECK(geo_eval_node_count(ctx.sources)==2+2+2&&geo_eval_edge_count(ctx.sources)==1+2*2&&geo_eval_seal(ctx.sources),"readonly-retains-and-seals-native-parameter-edge");
     size_t nodes=geo_eval_node_count(ctx.sources),edges=geo_eval_edge_count(ctx.sources);
     CHECK(reference_parameter_quantity(&ctx,(ParameterRef){true,1,1},&value)&&parameter_graph_quantity(value,7,1)&&
         nodes==geo_eval_node_count(ctx.sources)&&edges==geo_eval_edge_count(ctx.sources)&&!memcmp(before,&g_world,sizeof *before),"readonly-sealed-read-is-observational");

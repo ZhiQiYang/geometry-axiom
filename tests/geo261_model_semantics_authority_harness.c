@@ -83,7 +83,8 @@ static bool sem_sp_provider(void *state,GeoEvalContext *graph,const GeoSourceRef
     }
     return true;
 }
-/* Inserted immediately after the real reference_sources_ensure succeeds. */
+/* Inserted immediately after the adapter registers its model provider: K
+ * closes registration at the first source request, so priming must follow. */
 static bool semantics_install(ReferenceEval *reference)
 {
     bool parameter=false,profile=false;sem_hits=0;
@@ -122,7 +123,8 @@ static bool semantics_before_aliases(ModelSources *state)
 static World *sem_parameter_world(bool ratio)
 {
     World *world=calloc(1,sizeof *world);if(!world)return NULL;
-    GeoParameterCard card={.id=8,.next_field_id=2,.fields={1},.count=1};strcpy(card.name,"authored card");
+    /* K stages an empty card; geo_parameters_stage_field appends field 1. */
+    GeoParameterCard card={.id=8,.next_field_id=2};strcpy(card.name,"authored card");
     GeoParameterField field={.parameter_id=8,.id=1,.type=ratio?GEO_PARAMETER_RATIO:GEO_PARAMETER_COUNT};
     strcpy(field.name,"authored field");strcpy(field.expression,"{\"op\":\"literal\",\"num\":\"3\",\"den\":\"1\",\"unit\":\"1\"}");
     if(!geo_parameters_stage_card(&world->geo.parameters,&card)||!geo_parameters_stage_field(&world->geo.parameters,&field)){free(world);return NULL;}
