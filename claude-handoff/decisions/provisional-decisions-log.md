@@ -644,3 +644,75 @@
 - **B1 補 K/W 衝突句**:I5 K 段(L1137)已說邊界重合不算越界，W 段(L1142)仍寫「四邊不得與輪廓/孔邊相交」→ B1 改後文字同時消除條內矛盾。
 - **C 標題排版**:I23(L1352)、R13(L2016)標題括號不成對;批准版 17a25e92 修改後原文就是如此(SSOT 與批准一致),所以修正是新條文改動 → 放進 #260 給使用者看，不自行改 SSOT。I3 單行條文不改。
 - 如何推翻：使用者看 #260 稿時指示即可。
+
+## P-161(2026-10-17 06:00 UTC,雲端 Claude)列車組成:#253+#293+#294+#295 同一班
+- 題目:使用者在雲端交接指示寫「#253 + #294 + #295 組成同一班」;#293 的作者留言(issuecomment-6230163028)與 HANDOFF §3 都說 #293 補完測試後上同一班。
+- 選項:(a) 只放三個;(b) 四個一起。
+- 採用:(b)。分支 `train/geo262-honesty-20261017`,從 main `02baea2c` 起,逐一 merge commit。
+- 理由:#294 讓整份突變帳本重產,#293 若另開一班要再整份重產一次並再跑七項;#293 只動 serve.py 回執與其測試,與其他三個沒有衝突(synth_expected 逐 suite 合成 = git 自動合併)。
+- 影響:列車 PR;四個 PR 一起進 main。
+- 如何推翻:列車 PR 合併前把 #293 的 merge commit revert 掉,另開一班。
+- 審查:#293 的 opus 審查(本機)無阻擋;M8b/M7b 由雲端 Claude 重建兩種寫法,各自讓新測試轉紅。
+
+## P-162(2026-10-17 06:10 UTC,雲端 Claude)雲端瀏覽器 job 用 npm 的 Chromium 153
+- 題目:雲端內建 Playwright Chromium 141;documents job 在 141 上 20 過 1 敗,原因是內附 pdf.js 用到 `Map.prototype.getOrInsertComputed`(141 沒有)。另外 TMPDIR 路徑過長時 Chrome 直接 Trace/breakpoint trap,CDP 起不來。
+- 選項:(a) 照實記 documents 失敗;(b) 從可連線的 npm registry 取 `@sparticuz/chromium@153.0.0`(Chromium 153.0.8010.0),TMPDIR 改 `/tmp/gci/<sha8>-<job>` 短路徑。
+- 採用:(b)。同一 head 上 documents 改成 47/47。屬環境判定,不改產品碼。
+- 理由:WSL 用的是 google-chrome 穩定版,141 比它舊;用舊瀏覽器的失敗不是程式失敗。
+- 影響:雲端預跑腳本 `cloud_ci.sh`(雲端 scratchpad,未進 repo);只影響雲端預跑,不影響正式 WSL 收據。
+- 如何推翻:要求雲端改用 141 重跑,documents 的 PDF 那一項會照實記為環境失敗。
+- 審查:無(環境選擇);證據是 141 上 `typeof Map.prototype.getOrInsertComputed === "undefined"` 與 153 上 47/47。
+
+## P-163(2026-10-17 06:20 UTC,雲端 Claude)#253 run_mutations.py 的測試數不再寫死
+- 題目:`geometry-core/card-reference/run_mutations.py` 寫死 `testsRun != 36`;10-17 B2/S1 commit 讓 `test_grid_card_reference.py` 變 43 項,工具每次都在基準線報「not green」(實際 43/43 綠)。
+- 選項:(a) 改成 43;(b) 從測試類別自己數;(c) 讀 `tests/run_all.expected.json` 的 `py:test_grid_card_reference`。
+- 採用:(c)(`e180a268`,已推到 #253)。屬定義推論:run_all 對同一登記數做嚴格相等比對,是單一來源。
+- 理由:(a) 下次加測試又會過期;(b) 自我參照,擋不住刪測試。
+- 影響:#253;列車上 53 筆整卡突變全數 killed、每個還原控制組重新編譯皆綠。
+- 如何推翻:revert `e180a268`。
+- 審查:opus 獨立審查無阻擋(守門擋得住略過、藏、登記不符;刪測試同時改登記可繞過,run_all 也一樣)。記錄:報告可加 expected 數與登記 sha;錯誤訊息印出預期與實得。
+
+## P-164(2026-10-17 07:10 UTC,雲端 Claude)#295 依審查補 M88、修 p9、場景排到 TESTS 最後
+- 題目:#295 的 opus 審查(雲端)無阻擋,須改:V_EXTENSION「超出終點」那一半沒有場景擋;p9 的主支格線 2764 與 #251 golden 不一致;p8 註解說 p9 是「唯一」表示法推不出來。複核又指出新場景排在 TESTS 最前面會把 M05–M08 等舊突變的 killed_by 擠掉。
+- 採用:新增 `_s1_p8b_*_hi.scene` 與突變 M88;p9 改 u=2750(e2 邊界材 2236,與 golden 逐支相符);p8 改「之一」;p8/p8b 只釘 V_EXTENSION 前綴;8 個新場景移到 TESTS 最後。`core:run_tests` 164→165。commit `69d07082`、`cdd7290c`、`a03c2dab`,已推到 #295。
+- 理由:I22 兩端都不得超出定位邊;D16 延伸段是超出任一端點的部分。golden 是使用者 F1 客廳的正式排法。
+- 證據:M88 由 p8b 殺(應拒絕但接受 L=3200/5000/4746);拿掉 p8b 那一列 M88 存活 164/164。M05/M06 的 killed_by 回到與 main 帳本相同。
+- 如何推翻:revert 上列 commit。
+- 審查:opus 兩輪複核無阻擋。記錄:兩端 1mm 容差(X2/X8)存活,是既有缺口;M86 是複合突變,水平分支 `lo<hi→lo<=hi`(R12)與 I19 嚴格小於等一階突變建議補成 M89 以後;核心 V_EXTENSION 訊息未指名定位邊與超出區間(I22 要求),另案。
+
+## P-165(2026-10-17 07:30 UTC,雲端 Claude)#294 審查須改由 Claude 子代理實作
+- 題目:#294 沒有貼審查;雲端派 opus 審查得到 5 個須改(基準線前提沒驗突變自己的方法、三條路徑會把死掉的 bridge 判 killed、帳本測試比對字串太寬、結束碼前提沒測、docstring 過時)。作者(本機子代理)不在。
+- 採用:另派一個實作子代理(不同於審查員)修,commit `f5981035`,原審查員複審後推到 #294。
+- 證據:審查員的 MB1–MB22 全數轉紅(原存活的 MB4、MB10、MB14、MB21 轉紅);新突變 NB1–NB15 與複審員的 RN1–RN15 全數轉紅;真的 M61–M70 用原生 bridge 跑仍是 killed,killed_by 與帳本相同。`test_mutation_freshness.py` 64/64;`--selftest` 113。
+- 如何推翻:revert `f5981035`。
+- 審查:opus 複審無阻擋。記錄成後續(不影響現行 M61–M70,都是審查員自己構造的情境):(1) ChildWatch 會把「測試自己 terminate/執行的子行程非 0 結束」與「訊息碰巧含 bridge closed:」的真斷言判成 blocked(方向是看得見的 blocked,不掩蓋存活);Windows `exit(-1)` 的 0xFFFFFFFF 被當成當機。(2) bridge 先關 stdout、超過 1 秒 GRACE 才 SIGSEGV 時仍會判 killed;建議 EOF 後等 5 秒,與 `_exit_status` 一致。另:容器預設 8MB stack 下未變異 bridge 有 2 個 RESTORED 方法 SIGSEGV,16384 全過(CI 與 WSL 都用 16384)。
+
+## P-166(2026-10-17 07:40 UTC,雲端 Claude)GEO-261 #279:21 個失敗的根因與孔頂點修正
+- 題目:#279 `96e06218` 的 22 模組在雲端 276 項有 21 個失敗(本機 WSL 還沒跑到)。
+- 採用:子代理追到 5 個根因並修(`1fc45f73`,推到 `claude/wip-geo261-279-fix-20261017`,獨立審查中):
+  - 產品 1 行:`geometry-core/references.inc` 解析 `vertex:h<i>v<j>` 時抹掉分隔字元後又檢查它,孔頂點引用一律被拒。依 D6a(a)「與輪廓／孔頂點的該軸座標」為定義推論,隨 #279 修。此 bug 在 main `02baea2c` 也存在。
+  - 夾具 4 項:語意 harness 的參數卡要先 stage 空卡、鉤子要在 provider 登記後(K:第一次求值後不再註冊);placement harness 在 `geo_eval_reset` 後要重新註冊;參數圖唯讀 oracle 依 1e437e12 設計改成 6 節點 5 邊;vertex ledger 的兩分量世界改載真實場景(D4:多分量範圍只屬衍生承載面、不另存輪廓副本)。
+- 證據:22 模組 276/276、0 skip;每個修正還原後對應測試轉紅,失敗聯集正好等於原 21 項;ASan+UBSan 乾淨。
+- 如何推翻:不合入 `1fc45f73`;若要 K 的 REGION_SET 成為不依賴 W 的通用 domain,需另立條文(使用者決定)。
+- 審查:opus 獨立審查(雲端)修正本身無阻擋;run_all 對照只少那 21 項、無新增失敗;已快轉推到 #279(`1fc45f73`),PR 留言 6232558618 寫明孔頂點修正改變 main 行為。須改未做:孔頂點回歸測試(突變「h 後非數字放行」存活)、參數圖 oracle 改比 (consumer,source,kind) 邊集合、vertex ledger 場景補「分量 id = 有帳 boundary id」陷阱。
+
+## P-167(2026-10-17 07:50 UTC,雲端 Claude)GEO-261 #288 整合在雲端重做
+- 題目:HANDOFF 說本機子代理正把 main 合進 #288;遠端沒有推新 head。
+- 採用:雲端子代理在本地分支重做:merge `96e06218` → merge main `02baea2c`(15 個衝突檔)→ 修 unity 建置 → merge `1fc45f73` → 登記 M61–M77 的遷移釘選。head `f62ebb8b`,推到 `claude/wip-geo261-288-integrate-20261017`。**未審查**,沒有推到 #288 分支。
+- 要點:第 18 班參數行為(刪除代次、明確重宣告、最後有效值快取、引用保護、redeclaredReferences)接到 H 端 `ParameterCandidateLedger` 與 K/W 新擁有者,沒有 `ParameterState`、沒有舊 `g_preview.before/after`;`run_all.expected.json` 三方合成 213 suites 無 UNRESOLVED。
+- 證據:22 模組 276/276;第 18 班七套參數測試 60/60;parameters_core 40、assembly_rules 36、section_profile_native 28;grid 三個 contract 全過;reader 三道全過。完整 run_all 只跑到 13/213(使用者要求收尾,停止)。
+- 待決定:(1) 候選順序 ledger 放 H 還是 K(I38 列在 K);(2) unity 建置修法(4 個 W 檔補 `#ifndef` guard、`woodworking_unity.inc` 用 macro 改名重複的 `WoodDefinitionKey`);(3) 既有失敗三項沒修:M11 錨點、`test_assembly_candidate_impact` 0/4(I9/I13 timber 92)、W ops unplaced negative control——三項在 `ab609924`(只合 96e06218)上就失敗。
+- 如何推翻:捨棄該 WIP 分支,本機重做。
+- 審查:無(收尾停止);下一步要 opus 對抗審查與完整 run_all。
+
+## P-168(2026-10-17 08:00 UTC,雲端 Claude)#260 阻擋「什麼算舊檔」交使用者決定
+- 題目:#260 的 opus 審查(雲端)阻擋項:稿用了「讀入/既有來源/舊檔」但沒定義,兩種讀法結果相反(新寫的兩軸檔被放行,或舊檔打不開)。
+- 採用:改稿列出三個選項並標建議(選項一:以交易種類區分,只守提交、不守整體取代),**不寫成既定條文**;其餘 7 項須改與記錄項已改。commit `4e7bdf5c`(含 merge main `02baea2c`,撤掉與 #296 重複的決策佇列 +40 行),推到 `claude/wip-pr260-revise-20261017`,**未複審**、未推到 #260。
+- 如何推翻:使用者選定選項後,照該選項補條文;或要求擋下新寫的兩軸檔(選項二、三)。
+- 審查:原審查 1 阻擋 6 須改;改稿未複審(使用者要求收尾)。
+
+## P-169(2026-10-17 08:00 UTC,雲端 Claude)列車最終 head 重跑七項,不沿用中途的瀏覽器結果
+- 題目:六個瀏覽器 job 在列車 `89c83359` 雲端全綠;之後的 commit 動了 `tests/`、根目錄場景檔、`run_mutations.py`,也重同步了正典閱讀器。
+- 選項:(a) 依決策 M 視為測試類,只重跑 native、沿用瀏覽器結果;(b) 最終 head 重跑七項。
+- 採用:(b)。依 P-114 更正,正典閱讀器不算文件類,改到它就跑七項。
+- 如何推翻:無需推翻;七項結果見列車 PR。

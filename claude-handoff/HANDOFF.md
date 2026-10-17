@@ -1,6 +1,75 @@
-# 本機 Claude → 雲端 Claude 交接(2026-10-17 13:20 台北)
+# 雲端 Claude → 本機 Claude 交回(2026-10-17 18:00 台北)
 
-本檔記錄交接當下的狀態。在途的子代理之後可能又推了新 commit,**一律以遠端分支的實際 head 為準**:先 `git ls-remote` 或 `gh pr view` 核對，再動手。
+本檔原是本機 Claude 13:20 交給雲端的交接。雲端 Claude 在 13:49–18:00 依使用者指示接手，使用者要求「階段性完成後停止」,所以這一段做完列車就收工。**新增的第 0 節是雲端這一段的交回**;第 1–6 節保留原交接，其中第 3 節表格已改成收工時的狀態。
+
+本機回來時：一律以遠端分支的實際 head 為準(`git ls-remote`),本檔只是收工當下的快照。
+
+## 0. 雲端這一段(13:49–18:00)
+
+所有雲端結果都是「**雲端預跑，非正式 WSL 收據**」。環境:Ubuntu 24.04.5、gcc 13.3.0、Python 3.13.16、Node 22.22.0、Chromium 153.0.8010.0(P-162)、`ulimit -s 16384`。
+
+### 0.1 收工時的分支 head
+
+| 項目 | 分支 | 交接時 | 收工時 | 誰改的 |
+|---|---|---|---|---|
+| main | `main` | `c144c013` | `02baea2c` | #296(S6 🔒 決定落 main,交接後由他人合併) |
+| 列車(新) | `train/geo262-honesty-20261017` | — | `eeb9d239` | 雲端 Claude |
+| #253 | `feat/card-reference-core-20261015` | `33e655d6` | `e180a268` | 雲端:run_mutations.py 不再寫死 36(P-163) |
+| #293 | `fix/receipt-tombstone-capacity-20261017` | `6d5bb03c` | `baa81f61` | 本機(交接前一刻) |
+| #294 | `fix/mutation-bridge-crash-honesty-20261017` | `3adc84ff` | `f5981035` | 本機 `157166f1`(交接後)+ 雲端審查修正(P-165) |
+| #295 | `test/s1-s7-core-scenes-20261017` | `ba94f0a7` | `a03c2dab` | 雲端審查修正(P-164) |
+| #260 | `proposal/stagger-one-axis-wording-20261016` | `3a524bd5` | `f796c5c9`(本機)| 雲端改稿在 `claude/wip-pr260-revise-20261017` `4e7bdf5c`,**未複審、未推到 #260**(P-168) |
+| #279 | `architecture/geo261-native-source-graph-20261016` | `96e06218` | `1fc45f73` | 雲端修正 `1fc45f73`(P-166) |
+| #288 | `architecture/geo261-integration-20261016` | `43305271` | `43305271` | 雲端整合在 `claude/wip-geo261-288-integrate-20261017` `f62ebb8b`,**未審查、未推到 #288**(P-167) |
+| 下角材班 | `train/framing-20261017` | `f1fd146f` | `f1fd146f` | 沒動 |
+
+### 0.2 做完的
+
+- **列車** `train/geo262-honesty-20261017`(PR #298,draft,**未合併**):main `02baea2c` + #253 + #293 + #294 + #295(P-161),全部 merge commit。
+  - 每次合併都用 `synth_expected.py` 三方合成,結果都等於 git 自動合併。
+  - 正典閱讀器只用 `sync_axiom_reader.py` 重同步(只動追溯資料),`--check` 與 `test_axiom_reader.py` 51/51。
+  - 突變帳本整份重產:78 筆,killed 70 / crashed 1(M20,同以往)/ survived 0 / equivalent 4 / stale 0 / blocked 0 / invalid 0 / retired 3,`--check` exit 0。M78–M88 全數 killed。
+  - `run_axiom_mutations.py`:V01–V05 全數 killed。`run_mutations.py`:53 筆全數 killed,每個還原控制組重新編譯皆綠。
+  - 最終 head 七項(P-169):
+
+  | job | exit | pass | fail | skip | 秒 | CI 時限(分) |
+  |---|---:|---:|---:|---:|---:|---:|
+  | native | 0 | 3525 | 0 | 1(GDI,具名允許) | 1089 | 15(超出，在 3 倍內) |
+  | assembly | 0 | 150 | 0 | — | 217 | 15 |
+  | documents | 0 | 47 | 0 | — | 48 | 10 |
+  | grid | 0 | 350 | 0 | — | 507 | 15 |
+  | canvas | 0 | 2211 | 0 | — | 2103 | 35(超出 3 秒，在 3 倍內;84 段與 golden 相符) |
+  | space | 0 | 242 | 0 | — | 258 | 15 |
+  | timber | 0 | 79 | 0 | — | 117 | 20 |
+
+  兩個 job 並行，同時有審查子代理在編譯，不是排他執行。
+- **#293**:審查員的 M8b、M7b 各以兩種寫法重建,新測試都轉紅、訊息指得出病因;還原後 17/17。契約第 11、20 行已更正。
+- **#295**:7 個場景原生實跑，輸出與讀程式推出的預期逐字一致。opus 審查後補 p8b/M88、p9 改 u=2750(對齊 #251 golden)、新場景移到 TESTS 最後(舊突變的 killed_by 不被擠掉)。
+- **#294**:opus 審查(5 須改)→ 子代理修 → 原審查員複審無阻擋。兩項後續見 P-165(都是現行測試沒有的構造情境)。
+- **#253**:ChatGPT 審查要的「最終 head 完整驗證」由本列車提供(雲端預跑);正文與 `review-p154-20261016/summary.json` 仍描述舊 head `300cb953`,PR 正文已在最前面加「目前狀態」段，原文保留為歷史。
+- **GEO-261 #279**:22 模組在雲端跑出 276 項 21 敗;追到 5 個根因(1 產品 + 4 夾具)修好，276/276(P-166)。opus 獨立審查：修正本身無阻擋;run_all 對照(96e06218 vs 1fc45f73)少掉的正好是那 21 項，沒有新增失敗。已快轉推到 #279,PR 留言寫明孔頂點修正改變 main 行為。須改未做:孔頂點回歸測試(突變「h 後非數字」存活)、參數圖 oracle 改比邊集合、vertex ledger 場景補「分量 id = 有帳 boundary id」陷阱。#279 本身另有既有阻擋:`tests/binaries.py` 的 unity 建置在 gcc 編不過(#288 WIP 的 `169ecf4c` 有修法，未審查);22 模組以外的 GEO-261 suite 在 base 與 fix 同樣失敗:placement_sources 8、timber_support_projection 13、domain_decoupling_proposal 23、candidate_cache 2、wood_grid_application 2、assembly_candidate_impact 4、axiom_reader 6、binaries 5 等，名單在審查報告。
+- **GEO-261 #288**:雲端重做 main + #279 合併(P-167),22 模組 276/276、第 18 班七套參數測試 60/60;完整 run_all 只跑到 13/213。**未審查**。
+- **#260**:三件事查核 + opus 審查(1 阻擋 6 須改)+ 改稿(P-168)。改稿未複審。
+
+### 0.3 沒做完／卡住
+
+- 列車:正式 WSL 七項沒跑(雲端碰不到 WSL)。合併需要使用者同意以雲端結果代替，或本機用 WSL 收。
+- #288:要 opus 對抗審查、完整 `run_all.py --build`、瀏覽器 gates、整份重產帳本。三項既有失敗沒修(M11 錨點、`test_assembly_candidate_impact` 0/4、W ops unplaced negative control),都在 `ab609924` 就失敗。
+- #260 改稿:要再一輪 opus 複審，通過後快轉推到 #260。
+- #294 後續兩項(P-165)、#295 記錄項(1mm 容差、I19 嚴格小於等一階突變補 M89 起、核心 V_EXTENSION 訊息未指名定位邊與區間)、#253 記錄項(報告加 expected 數與登記 sha、錯誤訊息印預期/實得;7 個 P142 測試沒有對應突變)。
+- 下角材班 `train/framing-20261017` `f1fd146f`:雲端沒動。canvas 在本機 WSL 為 P83 的 CSV 下載逾時(2177 斷言全過、0 失敗),判定環境問題，需要**排他重跑**;grid/space/timber 結果請以本機紀錄為準。
+
+### 0.4 待使用者決定(集中一批)
+
+1. 列車要不要以雲端結果代替 WSL 收據合併(或等本機 WSL)。
+2. #260「什麼算舊檔」三選一(建議選項一：只守提交，不守整體取代)。全文在 `claude/wip-pr260-revise-20261017` 的 PROPOSAL.md 第 43–177 行。
+3. #279 孔頂點引用修正會改變 main 的現行行為(由「一律拒絕」變「可引用」,依 D6a(a)),是隨 #279 進還是另開單修 main。
+4. #288 兩個設計點：候選順序 ledger 放 H 還是 K;unity 建置的修法。
+
+### 0.5 雲端工具(本次新增，見 `tools/`)
+
+- `tools/cloud_ci.sh <sha> <job> <port>`:照該 SHA 的 workflow 跑一個 job(native 或六個瀏覽器之一),每個 job 自己的乾淨 worktree 與**短 TMPDIR**(長路徑會讓 Chrome 崩潰)。瀏覽器用 `CLOUD_CHROME` 指定(雲端內建 141 跑不了 pdf.js,見 P-162)。
+- `tools/cloud_ledger.sh <worktree> <out> <stack>`:整份重產帳本，核心兩組 + bridge 一組各自 worktree 平行跑，用 `mutate.save_records` 合併後 `--check`。
 
 ## 1. 角色與分工
 
@@ -28,19 +97,16 @@
 - 對 `tests/*.py` 的任何改動，都會讓 bridge 突變 M61–M70 過期。
 - 只改不被建置或測試讀取的文件(BACKLOG、決策佇列)時，不必重跑。
 
-## 3. 在途工作(交接當下)
+## 3. 在途工作(2026-10-17 18:00 雲端收工時;原 13:20 版本見 git 歷史)
 
 | 項目 | 分支 / head | 狀態 | 下一步 |
 |---|---|---|---|
-| 下角材班 = #251 oracle + #254 native suite | `train/framing-20261017` / `f1fd146f` | WSL 七項:native、assembly、documents 綠;**canvas exit=1**:2177 斷言全過、0 失敗，但 P83 的 CSV 下載逾時(fatal: No completed actual CSV download)。判定為環境逾時:本班沒改前端，跑的時候 Windows 上有子代理在跑測試。grid/space/timber 交接時還在跑 | canvas 排他重跑;七項全綠就開列車 PR → 合併 → 關 #251/#254 |
-| #253 GEO-262 B1/B2 整卡引用 | `feat/card-reference-core-20261015` / `33e655d6` | 已合 main c76737ec;卡片年代分三段:現行版本與 b3c79615 可帶整卡，更早的 19 組拒絕 | 與 #294、#295 同一班。突變帳本要整份重產，要跑到新的 M78–M87;另跑 `run_axiom_mutations.py`(V01–V05)、`run_mutations.py`(53 個自訂突變)、七項 |
-| #293 回執封存項容量(Fixes #264) | `fix/receipt-tombstone-capacity-20261017` / `6d5bb03c` | opus 審查無阻擋;作者正在補 2 個測試、修契約第 11、20 行與 PR body | 補完後確認新測試讓審查員的突變 M8b/M7b 轉紅，再上列車 |
-| #294 突變判決誠實性(看板任務 32) | `fix/mutation-bridge-crash-honesty-20261017` / `3adc84ff` | opus 審查中;合併後 tool 雜湊變更，64 筆全 stale | 審查意見處理完，併進 #253 那班 |
-| #295 S1/S7 核心場景(看板任務 29) | `test/s1-s7-core-scenes-20261017` / `ba94f0a7`(突變已改號為 M86/M87;與 #253 都改 `tests/mutate.py` 尾端與 `core:run_tests` 計數，後進者要解衝突並合計) | opus 審查中;預期值是讀程式推的，**沒有原生實跑** | 原生實跑核對 7 個場景;併進 #253 那班 |
-| #260 條文稿(給使用者看) | `proposal/stagger-one-axis-wording-20261016` / `3a524bd5`(作者還在加 commit) | A 區:「只准一軸」🔒,放 K 段，見 P-160。B 區:I5、R18 措辭。C 區:I23、R13 標題。D 區:Q-E 用詞。`evidence/check_quotes.py` 逐字驗引文 | 待最新 commit:K 段不得引用 W 段;白話版同步;D 區。之後派 opus 審查，**交使用者看稿**,不得自行採納 |
-| GEO-261 #279 原生來源圖 | `architecture/geo261-native-source-graph-20261016` / `96e06218` | 修了 `tests/geo261_model_vertex_ledger_harness.c:86` 改傳指標，這是讓 145 項沒跑的編譯錯誤 | 22 個模組 276 項重跑。WSL 已排隊，交接時還沒輪到;模組清單見 `tools/focused-modules.txt` |
-| GEO-261 #288 整合 | `architecture/geo261-integration-20261016` / `43305271` | 子代理正在把 main c144c013(第 18 班 #193 參數重宣告、#266 終版)合進來，是最高風險的移植，必讀 `tools/incoming-train18-overlap.md`;也會一併合進 96e06218 | 檢查遠端是否已推新 head;沒推就自己重做 |
-| GEO-261 其餘 | 見 Astra 交接 §3 | coverage-activation 補丁待套用;#289 Python 預設尚未合入;要整份重產突變帳本;`run_all.py --build` 全量;產品架構稽核刷新;舊夾具重開;瀏覽器 gates | 照 `tools/geo261-queue.md` |
+| 列車 #253+#293+#294+#295 | `train/geo262-honesty-20261017` / `eeb9d239`,PR #298(draft) | 雲端七項全綠、帳本 78 筆 `--check` 0、53+5 筆 GEO-262 自訂突變全 killed(雲端預跑) | 使用者同意以雲端代替就合併;否則本機 WSL 七項(`tools/wsl_ci.sh eeb9d239 all`),綠就合併、關 #253/#293/#294/#295 |
+| 下角材班 = #251 + #254 | `train/framing-20261017` / `f1fd146f` | 雲端沒動。WSL:native、assembly、documents 綠;canvas P83 CSV 下載逾時(2177 斷言全過、0 失敗),判定環境 | canvas 排他重跑;grid/space/timber 以本機紀錄為準;七項綠就開列車 PR。注意列車 #298 先進 main 的話要 merge main 並重產帳本 |
+| #260 條文稿 | PR 分支 `f796c5c9`;改稿 `claude/wip-pr260-revise-20261017` / `4e7bdf5c` | 審查 1 阻擋 6 須改都已改稿;「什麼算舊檔」三選項待使用者(P-168);改稿**未複審** | opus 複審改稿 → 快轉推到 #260 → 交使用者看稿與選選項 |
+| GEO-261 #279 | `architecture/geo261-native-source-graph-20261016` / `1fc45f73` | 22 模組 276/276(雲端);修正無阻擋;PR 層級既有阻擋(unity 建置) | 補孔頂點回歸測試等 3 項須改;unity 建置修法隨 #288 審查 |
+| GEO-261 #288 | PR 分支 `43305271`;整合 `claude/wip-geo261-288-integrate-20261017` / `f62ebb8b` | main 02baea2c + #279 修正已合入(15 衝突檔、第 18 班移植);22 模組 276/276;run_all 只跑 13/213;**未審查** | opus 對抗審查 → 完整 run_all → 推到 #288;設計兩點待使用者(P-167) |
+| GEO-261 其餘 | 見 Astra 交接 §3 | 同交接時 | 照 `tools/geo261-queue.md` |
 
 看板上的其他任務:
 - 26:oracle → 核心探針。#251 合入後才能做。
@@ -86,5 +152,6 @@
 | `tools/focused_unittest.sh`、`tools/focused-modules.txt` | GEO-261 的 22 個模組 276 項 |
 | `tools/geo261-queue.md` | GEO-261 切片順序 |
 | `tools/incoming-train18-overlap.md` | 第 18 班 × GEO-261 重疊風險，含必須保留的行為 |
+| `tools/cloud_ci.sh`、`tools/cloud_ledger.sh` | 雲端預跑七項的單一 job、整份重產帳本(見 §0.5) |
 | `decisions/provisional-decisions-log.md` | Claude 代決紀錄(P-xxx);最終報告「照建議處理的部分」從這裡取 |
 | `decisions/user-decisions-batch.md` | 待使用者決定的題目(Q-A…Q-E) |
