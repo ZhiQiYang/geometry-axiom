@@ -218,7 +218,12 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         }
         expected = {mid: path for path, ids in groups.items() for mid in ids}
         self.assertEqual(50, len(expected))
-        self.assertEqual(expected, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
+        # main 02baea2c (train 17/18) adds M61-M77; they stay at their current owners.
+        added = {"M%02d" % n: "current_geometry.c" for n in range(71, 78)}
+        added.update({mid: "geometry-core/parameters.inc" for mid in ("M61", "M62", "M63", "M64", "M65", "M68", "M69", "M70")})
+        added.update({mid: "geometry-web/engineering_bridge.inc" for mid in ("M66", "M67")})
+        self.assertEqual(17, len(added))
+        self.assertEqual({**expected, **added}, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
         self.assertEqual({"M35", "M51", "M55"}, {m["id"] for m in mutate.MUTANTS if m.get("retired")})
         self.assertEqual({"M09", "M23", "M36", "M56"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})
         src = mutate.Sources(mutate.ROOT)
@@ -231,6 +236,11 @@ class LiveMutationAnchorMigration(unittest.TestCase):
                         self.assertEqual("retired", kind)
                         continue
                     self.assertEqual("equivalent" if m.get("equivalent") else "run", kind)
+                    if m.get("binary") == "bridge":
+                        # Executed in place by tests/mutation_bridge.py on the actual bridge;
+                        # the core pass never expands them from current_geometry.c.
+                        self.assertNotIn(m["id"], {c["id"] for c in mutate.MUTANTS if c.get("binary") != "bridge"})
+                        continue
                     marker = "/* exact-mutation-target:" + m["id"] + " */"
                     marked = dict(m, new=marker + m["new"] + marker)
                     emitted = mutate.build_mutant_source(marked, src)
