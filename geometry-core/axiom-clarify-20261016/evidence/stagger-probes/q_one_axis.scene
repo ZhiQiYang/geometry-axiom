@@ -1,0 +1,3 @@
+# reviewer probe: grid system with stagger on the v axis only (step 100, stagger 50) -> loads
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 1000,0 1000,1000 0,1000
+grid-system 0 name-hex 61 main-along none u repeat 0 100 v repeat 0 100 stagger 50

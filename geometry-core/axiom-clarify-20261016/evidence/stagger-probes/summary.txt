@@ -1,0 +1,5 @@
+head=3247d84469ac56af73aa5343588776c1a5bf0a41 current_geometry.c blob=cceb944d0a02d09a73d80985be175928e101b14b
+build: cc -std=c11 -O2 current_geometry.c -lm -o <tmp>/core
+stack: verdicts at 64 MiB (ulimit -s 65536); rc@8MiB only shows which probes need the larger stack (-11 = SIGSEGV before any output)
+OK  q_one_axis rc@64MiB=0 rc@8MiB=0 (expect rc=0 accepted)
+OK  q_two_axis rc@64MiB=0 rc@8MiB=0 (expect rc=0 accepted)

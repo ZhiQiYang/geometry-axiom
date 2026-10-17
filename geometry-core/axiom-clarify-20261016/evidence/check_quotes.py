@@ -404,6 +404,13 @@ def selftest(proposal_text: str, ssot: dict[str, str], root: Path) -> bool:
         ("全檔出現 grep result goes stale (cardId line list)", mutate("「cardId」 第 691、2251 行", "「cardId」 第 691、2252 行"), "全檔出現 公理層.md 「cardId」"),
         ("cleanup-list sweep goes stale (依以下 line list)", mutate("「依以下」 第 615、1403 行", "「依以下」 第 615、1404 行"), "全檔出現 公理層.md 「依以下」"),
         ("證據檔計數 goes stale (probe results)", mutate("「V_EXTENSION」 共 5 行", "「V_EXTENSION」 共 6 行"), "證據檔計數 s1-probes/errors.txt 「V_EXTENSION」"),
+        ("H insertion anchor text wrong (R4)", mutate("「重放只還原記號、不配發…」", "「重放只還原記號、不配法…」"), "新增於 公理層.md R4"),
+        ("白話版 insertion anchor text wrong (R4)", mutate("「啟用身分帳後…」", "「啟用身份帳後…」"), "新增於 白話版 R4"),
+        ("one char of a 現況 quote changed (R56 提交 definition)", mutate("提交是成功改變既有正式 World 的一筆", "提交是成功改變既有正式 World 的一比"), "現況 公理層.md R56"),
+        ("one char of a 現況 quote changed (D29 W, parameter unlink)", mutate("解除參數引用須明示轉為當下有效整數", "解除參數引用須明示轉為當下有效整樹"), "現況 公理層.md D29 L636"),
+        ("two-axis search made to match (drop the v half of the regex)", mutate("stagger[^\"]* v repeat[a-z-]*[^\"]*stagger」", "stagger」"), "外部核對無 02baea2c ."),
+        ("oracle output count stale (25/81)", mutate("「25/81 cells still enclosed」 共 1 行", "「25/81 cells still enclosed」 共 2 行"), "證據檔計數 s6_stagger_oracle.out"),
+        ("cellAtPoint line number off by one", mutate("第 764 行「function cellAtPoint(s, event)」", "第 765 行「function cellAtPoint(s, event)」"), "geometry-web/grid-system-workspace.js:765"),
         ("positive control: the synthetic I38 / R53 labels alone must pass", synthetic_ok, None),
     ]
     all_caught = True
