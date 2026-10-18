@@ -26,6 +26,18 @@ HOST_PREFIX = ('#include "app_candidate.h"\n'
 KERNEL_PREFIX = ('#include <stddef.h>\n'
                  'void hk_product_state_sha(const void *,size_t,char [65]);\n'
                  'void hk_product_provider_sha(const void *,size_t,char [65]);\n')
+# The original product fixture previews spec x from 500 to 600. I8a reports
+# that valid preview on stderr; accepting it must not hide any extra output.
+PREVIEW_STDERR = (
+    'I8a preview 1: valid; confirm token to apply\n'
+    ' timber 1 center 20 -> 20 length 1000 -> 1000\n'
+    '  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> '
+    'surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]\n'
+    ' guide 1: surface 1 u=500 world [500,0,0] direction [0,1,0] -> '
+    'surface 1 u=600 world [600,0,0] direction [0,1,0]\n'
+    ' visible: {[500,0]-[500,1000]} -> {[600,0]-[600,1000]}\n'
+)
+EXPECTED_STDERR = {'factory': '', 'lifecycle': PREVIEW_STDERR, 'core-first': PREVIEW_STDERR}
 
 
 def observe(source, kind):
@@ -92,7 +104,7 @@ class DeferredProduct(unittest.TestCase):
     def pass_case(self, name):
         result = self.run_case(name)
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-        self.assertEqual('', result.stderr)
+        self.assertEqual(EXPECTED_STDERR[name], result.stderr)
         # 真 parser/preview 可能輸出原有 protocol 行，成功標記固定在最後。
         self.assertTrue(result.stdout.endswith('PASS ' + name + '\n'), result.stdout)
 
@@ -115,7 +127,7 @@ class DeferredProduct(unittest.TestCase):
         objects['kernel'] = build.compile(path, 'deferred-product-kernel-accept-fallback')
         result = self.run_case('core-first', self.link('deferred-product-accept-fallback', objects))
         self.assertEqual(1, result.returncode, result.stdout + result.stderr)
-        self.assertEqual('ASSERT:product-core-first-rejects-bound-byte\n', result.stderr)
+        self.assertEqual(PREVIEW_STDERR + 'ASSERT:product-core-first-rejects-bound-byte\n', result.stderr)
         self.assertNotIn('PASS core-first\n', result.stdout)
         self.pass_case('core-first')
 
