@@ -2,7 +2,11 @@
 
 > 依 opus 審查與 ChatGPT 審查對 #297 的意見更正（2026-10-18）。更正處標「依 opus 審查更正」。
 >
-> **golden 已換成 oracle `60785906`（2026-10-18）：** 角材總數 3093 → 2957（淨少 136 支（極短料）），10 支主支改成貼住相鄰料，頂沿牆料的副支種類加 `:custom4`，64 個排法裡 24 個有變。下面凡是「現行」的數字都是這個 golden 的；「實跑結果摘要」是舊 golden（3093 支，`c2d218c2`）的實測，標明舊。
+> **golden 已換成 oracle `5610d217`（2026-10-18），共 2947 支、64 個排法。** 沿革：
+> - `60785906`：3093 → 2957 支（淨少 136 支極短料），10 支主支改成貼住相鄰料，頂沿牆料的副支種類加 `:custom4`。
+> - `5610d217`（使用者拍板「短格記號用同一治具 367」）：36 個排法有變，2957 → 2947 支。secondary:mark 少 26，新增 16 支 `secondary:fill`（撞掉的記號旁補的那一支，不算記號）。
+>
+> 下面凡是「現行」的數字都是 `5610d217` 的 golden；「實跑結果摘要」裡兩次實跑（`c2d218c2` 的 3093 支、`94eae4a3` 的 2957 支）都是舊 golden 的實測，標明舊。現行 golden 還沒有實跑過。
 
 ## 做了什麼
 
@@ -10,10 +14,10 @@
 
 - `gen_scenes.py` 讀 `oracle/oracle-golden.json`。8 個房間 × 8 種排法裡，64 個都可施工，各產一個 `.scene`（`scenes/` 與 `index.json`）。
 - 每支角材一個 `place`。沒有為了讓核心接受而改座標、縮短延伸段或改角色（唯一的角色改寫是下面「使用者拍板」那一項，它是角色宣告，不動座標）。
-- **依 opus 審查更正：「矩形逐支相同，測試鎖住」這句原本講過頭。** 舊測試比的是產生器內部抄自 golden 的 rect，等於自己比自己。現在的範圍是：`scene_reader.py`（不 import `gen_scenes`）只讀場景檔文字，從錨（`at-face`／`at-line`）、截面寬、`between` 擋面獨立算出每支的 `[x0,y0,x1,y1]`，寬向與長度方向都和 golden 逐支比對。這份 golden 的 2957 支全部是 `between`，沒有 `through`，所以長度每支都推得出來。測試**沒有**涵蓋的是核心實際推導出的 L 與足跡，那要實跑，由 `parse_results.py` 的幾何等值檢查負責（見下）。
+- **依 opus 審查更正：「矩形逐支相同，測試鎖住」這句原本講過頭。** 舊測試比的是產生器內部抄自 golden 的 rect，等於自己比自己。現在的範圍是：`scene_reader.py`（不 import `gen_scenes`）只讀場景檔文字，從錨（`at-face`／`at-line`）、截面寬、`between` 擋面獨立算出每支的 `[x0,y0,x1,y1]`，寬向與長度方向都和 golden 逐支比對。這份 golden 的 2947 支全部是 `between`，沒有 `through`，所以長度每支都推得出來。測試**沒有**涵蓋的是核心實際推導出的 L 與足跡，那要實跑，由 `parse_results.py` 的幾何等值檢查負責（見下）。
 - 貼到外輪廓或孔、而且與該邊有正長度交集的料用 `at-face`。沒有貼邊的用 `at-line`，中線 = 寬向 lo + ⌊w/2⌋。
 - 放置順序不是把全部邊界材機械地放在主支前面。依端面的全寬角材擋面做拓撲排序：不延伸的外輪廓 boundary → primary → 有延伸的 boundary → custom priority 3 → secondary（含改宣告 custom 4 的副支）。同階用 golden 原序。同階 boundary 的轉角互頂不建依賴。這份 golden 的環數是 0，沒有 `# probe-cycle`。
-- **使用者拍板（2026-10-18，🔒，`決策佇列.md`「凹角沿牆料的排序」，#301）：** 端面頂到沿牆料（`rc_parallel:custom`，含 F1 與凹角牆線共線的併料）的副支，改宣告 `custom priority 4`，條文不改；沿牆料本身維持 custom 3。角色**直接讀 golden 的 `:custom4` 標籤**（`secondary:mark:custom4`、`secondary:seam:custom4`），現行 golden 共 63 支（F1 53、F2 10）。產生器另保留依實際擋面的獨立判定（`timber_stops`：端面座標相接、擋面角材在寬向蓋住整段，只拿 custom 3 當擋面），作為交叉核對：標籤與實際擋面不一致時，`build()` 回報 `disagreements`，`gen_scenes.py` 不寫出場景（結束碼 2），測試也紅。測試另用 `scene_reader` 從場景文字獨立算一次，所以是標籤、產生器判定、場景文字幾何三方互核。其餘副支仍是 secondary。`:custom4` 加在副支以外的種類上，產生器直接報錯。
+- **使用者拍板（2026-10-18，🔒，`決策佇列.md`「凹角沿牆料的排序」，#301）：** 端面頂到沿牆料（`rc_parallel:custom`，含 F1 與凹角牆線共線的併料）的副支，改宣告 `custom priority 4`，條文不改；沿牆料本身維持 custom 3。角色**直接讀 golden 的 `:custom4` 標籤**（`secondary:mark:custom4`、`secondary:seam:custom4`），現行 golden 共 60 支（F1 52、F2 8）。**`secondary:fill`（oracle `5610d217` 新增，16 支：F1 5、F2 3、F5 8）也是副支**，角色 secondary / 3，端面頂到 custom 3 時照同一規則升格 custom 4、以 `secondary:fill:custom4` 標籤為準並交叉核對；現行 golden 的 16 支 fill 都沒有頂到 custom，所以都是 secondary（有測試造 `secondary:fill:custom4` 與漏標的 golden 驗證這條規則）。產生器另保留依實際擋面的獨立判定（`timber_stops`：端面座標相接、擋面角材在寬向蓋住整段，只拿 custom 3 當擋面），作為交叉核對：標籤與實際擋面不一致時，`build()` 回報 `disagreements`，`gen_scenes.py` 不寫出場景（結束碼 2），測試也紅。測試另用 `scene_reader` 從場景文字獨立算一次，所以是標籤、產生器判定、場景文字幾何三方互核。其餘副支仍是 secondary。`:custom4` 加在副支以外的種類上，產生器直接報錯。
 - `mapping.md` 是種類對角色的對照，每列有條號，測試直接讀這張表當依據。
 - `run_probe.sh` 給之後在 WSL 執行：編譯原生核心一次；整場通過就整場記接受；否則逐支前綴，被拒的不留在後面的前綴裡；被拒的保留條號與 stderr 原文。輸出在呼叫者給的目錄（預設 `/var/tmp/framing-core-probe`），不覆蓋 repo 裡的 `scenes/`。**依審查更正：** 拒絕只可能是結束碼 1（`current_geometry.c` 的 `main()` 只回 0 或 1），但 **1 也涵蓋參數錯、讀檔失敗、場景語法錯**，不一定是規則拒絕（ChatGPT 複審）。所以 rc=1 還要 stderr 第一行（去掉「路徑:行號:」）帶核心規則診斷才算「拒絕」，判定式 `V_[A-Z0-9_]+`、`[IRD]\d+` 加選用的字母或括號字母（`I25a`、`R6(d)`、`D7/I18`）、或「超過上限」。這是我對 `current_geometry.c` 與 `references.inc` 全部 `scene_error` 訊息字面的盤點：規則／驗證訊息都帶 `V_*` 違規碼（`V_CUT_PRIORITY`、`V_BOUNDARY_ROLE`、`V_PRIMARY_AXIS`、`V_EXTENSION`、`V_FREE_EDGE_END`、`V_GRID_LOCKED`、`V_DERIVED_TIMBER`）或條文編號，容量訊息是「…超過上限」；語法、參數、讀檔錯誤（「timber 行有多餘欄位」「不認得的指令」「無法開啟場景檔」…）都沒有這些記號。沒有記號的語意訊息（例如「這支角材不存在」）保守歸「錯誤」。其他非 0（139 崩潰、2、124 逾時…）與沒有規則診斷的 1 一律是「錯誤」，不計成拒絕，整體結束碼為 3。`run_probe.sh` 的 `rule_diag()` 用同一個判定式，計數與 `parse_results.py` 一致（有測試比對兩邊對同一批真實訊息的判斷）。每次呼叫核心加 `timeout`（預設 120 秒）。新增測試用環境變數 `CORE_BIN`、`PROBE_SCENES_DIR`、`PYTHON`、`CORE_TIMEOUT`、`TMPDIR`，平常不用設。
 - `parse_results.py` 產出 `results.json` 與 `RESULTS.md`。整場失敗又沒有逐支前綴時，沒被點名的列是「同場未提交」。**依審查新增：**
@@ -22,12 +26,19 @@
   - 每列記探測方式（原場景／省略後探測），`RESULTS.md` 開頭統計把「拒絕（容量）」與「拒絕（規則）」分開、原場景與省略後探測分開。
 - `fixtures/`：#240 的四個探針場景（p3、p4、p8、p9）從 PR 留言複製成檔，解析測試改讀這裡，不再指向使用者的暫存區。內容只有輪廓座標與角色宣告，沒有路徑、帳號或其他資訊。
 - `.gitattributes`：`scenes/*.scene`、`fixtures/*.scene`、`index.json` 固定 LF。這樣逐位元比對在 Windows `core.autocrlf=true` 的 checkout 也成立。
-- `test_gen_scenes.py`：`python geometry-core/framing-template/core-probe/test_gen_scenes.py`，Ran 59 tests，OK（其中 10 項用 bash 假核心端到端跑 `run_probe.sh`，在負載下約 60 秒；沒有 bash 或設 `PROBE_SKIP_FAKE_CORE=1` 就跳過那 10 項，約 8 秒）。沒有編譯、沒有跑原生核心、沒有跑 oracle selftest、沒有用 WSL。假核心是一支 bash 腳本，回 139／2／逾時／1（規則診斷、容量、語法錯、讀檔失敗、無 stderr）／0（三項齊全、L 錯、缺欄）。
+- `test_gen_scenes.py`：`python geometry-core/framing-template/core-probe/test_gen_scenes.py`，Ran 60 tests，OK（其中 10 項用 bash 假核心端到端跑 `run_probe.sh`，在負載下約 60 秒；沒有 bash 或設 `PROBE_SKIP_FAKE_CORE=1` 就跳過那 10 項，約 8 秒）。沒有編譯、沒有跑原生核心、沒有跑 oracle selftest、沒有用 WSL。假核心是一支 bash 腳本，回 139／2／逾時／1（規則診斷、容量、語法錯、讀檔失敗、無 stderr）／0（三項齊全、L 錯、缺欄）。
 - `mutation_check.py`：`python geometry-core/framing-template/core-probe/mutation_check.py`。在暫存複本套一個突變、跑測試，確認每個突變都轉紅。見下面「突變檢查」。
 
 ## 實跑結果摘要
 
-### 目前的 head `94eae4a3`（新 golden，2957 支）的實跑
+### 現行 golden `5610d217`（2947 支）：還沒實跑，預期如下
+
+下面是推算，不是實測。oracle 的 jig-367 版審查後還要再改，補位副支的規則與 golden 會再變，所以以下數字等新 golden 出來、重產場景後可能要改：
+
+- F1 八個排法是 95、97、96、98、108、115、109、111 支，合計 829。每個排法收 64 支，容量拒絕預期 829 − 8×64 = 317 支。F2 以下最多 58 支，不受容量影響。規則拒絕預期仍是 0。
+- 16 支 `secondary:fill`（F1 5、F2 3、F5 8）在放置序裡都排得很前面：F1 的 5 支在 f1-05 的第 16 到 20 位、F2 在第 13 到 15 位、F5 在第 12 到 15 位，全在 64 支容量之內，所以會被核心實際評估。它們是新種類，實跑的 `secondary:fill` 列是這次要特別看的。
+
+### `94eae4a3`（golden `60785906`，2957 支）的實跑：上一版 golden
 
 來源：`94eae4a3068ec3a1df75c7a0122beeb03ed1e26a` 在 WSL 排他實跑，輸出在 `D:/geometry-axiom-work/core-probe-94eae4a3/run/`（`summary.txt`、`RESULTS.md`、`results.json`），核心建置 rc=0，`parse_rc=0`，`total_core_errors=0`。
 
@@ -65,7 +76,7 @@
 
 64/64 可施工，`conflict_codes` 都是空的，跳過清單是空的。程式仍會跳過 `buildable` 為假，或 `conflict_codes` 非空的排法。合成小 golden 的測試蓋到這兩種，證明跳過不是死碼。
 
-F1 客廳八個排法的支數是 95、97、96、98、108、116、109、111（舊 golden 是 108、116、109、111、108、116、109、111），全部寫出，沒有為了 64 支上限抽料；八個都超過 64，場景標了 `# probe-capacity`。F2 主臥最多 62 支。讀 `current_geometry.c` 的 `WORLD_MAX_TIMBERS`（64）與錯誤字串「角材的數量超過上限」，並已由實跑證實（見上）。
+F1 客廳八個排法的支數是 95、97、96、98、108、115、109、111（`3093` 支的最初 golden 是 108、116、109、111、108、116、109、111），全部寫出，沒有為了 64 支上限抽料；八個都超過 64，場景標了 `# probe-capacity`。其他房間最多 58 支。讀 `current_geometry.c` 的 `WORLD_MAX_TIMBERS`（64）與錯誤字串「角材的數量超過上限」，並已由實跑證實（見上）。
 
 孔邊上、golden 種類仍是 `boundary` 的 32 支（整條 24、被主支截短 8；舊 golden 是 40 支，整條 24、截短 16，少的 8 支是極短料）暫寫 `secondary`，`pending` 為 `hole-perpendicular`。
 
@@ -116,8 +127,10 @@ F1 客廳八個排法的支數是 95、97、96、98、108、116、109、111（�
 | m21 `run_probe.sh` 把結束碼 1 一律計成拒絕 | `test_rc1_with_a_parse_error_is_an_error_not_a_rejection`（假核心，`rejected=0 errors=1` 對不上） |
 | m22 `run_probe.sh` 的判定式漏掉 D 編號 | `test_shell_and_python_rule_predicates_agree` |
 | m23 `parse_results` 的判定式漏掉 D 編號 | `test_rc1_with_a_rule_diagnostic_is_a_rejection` |
+| m24 產生器不認得 `secondary:fill` | 三個 `setUpClass`（場景載不進來） |
+| m25 `secondary:fill` 不納入 `:custom4` 交叉核對 | `test_secondary_fill_follows_the_same_custom4_rule` |
 
-**整組在 `454ac10e` 上跑過：對照組（不突變）59 個測試全綠，26 個突變項（m1 到 m23，其中 m5 分 a 到 d）全部轉紅。** 輸出在 `C:\Users\Yang\AppData\Local\Temp\claude\D--geometry-axiom\f46787ac-6918-4891-81a1-b3d8a9aa653c\scratchpad\mutation-454ac10e.txt`（本機，不在 repo）。其中 m8、m10、m18 到 m23 是這一輪（rc=1 分類、缺欄）新增或改寫的，先前遊戲期間已單獨跑過一次，整組補跑時結果相同。
+**整組在併入 oracle `5610d217` 之後的程式上跑過：對照組（不突變）60 個測試全綠，28 個突變項（m1 到 m25，其中 m5 分 a 到 d）全部轉紅。** 輸出在 `C:\Users\Yang\AppData\Local\Temp\claude\D--geometry-axiom\f46787ac-6918-4891-81a1-b3d8a9aa653c\scratchpad\mutation-5610d217.txt`（m1 到 m23，26 項；本機，不在 repo）。m24、m25 是在那之後加的，另外單跑，兩個都轉紅，輸出沒有存檔。上一個 head `454ac10e` 的整組（59 個測試、26 項）也全紅。oracle 的 jig-367 版還會再改，golden 一換就要重產場景並重跑整組。
 
 一個要老實講的地方：m4（拓撲排序取 min→max）**不會**被「每支料的擋面都先放」這一條抓到，因為取 max 仍然是合法的拓撲序，擋面還是都在前面。抓到它的是「每一步放下的那支，必須是擋面都已放置的未放角材裡 (階, golden 序號) 最小的」這一條。兩條都在測試裡。
 

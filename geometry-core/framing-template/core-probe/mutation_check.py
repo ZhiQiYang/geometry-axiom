@@ -119,6 +119,11 @@ MUTATIONS = [
      replace_once(SH, "[IRD][0-9]+", "[IR][0-9]+"), True),
     ("m23", "parse_results 的規則診斷判定式漏掉 D 編號",
      replace_once(PARSE, r"(?<![A-Za-z0-9])[IRD]\d+", r"(?<![A-Za-z0-9])[IR]\d+"), False),
+    ("m24", "產生器不認得 secondary:fill（oracle 5610d217 新增的補位副支）",
+     replace_once(GEN, 'if kind.startswith("secondary:"):', 'if kind.startswith("secondary:") and kind != "secondary:fill":'), False),
+    ("m25", "secondary:fill 不納入 :custom4 交叉核對的副支範圍（只認 mark、seam）",
+     replace_once(GEN, 'if not (member.role == "secondary" or member.custom4_label):\n            continue\n        if any(',
+                  'if not ((member.role == "secondary" and member.kind != "secondary:fill") or member.custom4_label):\n            continue\n        if any('), False),
 ]
 
 

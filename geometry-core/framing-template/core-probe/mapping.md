@@ -8,7 +8,10 @@
 > 測試以本檔「已對上」表為角色與優先級的依據（`test_gen_scenes.py` 的 `mapping_declarations()` 直接讀這張表）；
 > 改表就要同時改產生器，兩邊不一致測試會紅。
 >
-> golden 版本：oracle `60785906`（2957 支。相對舊版 3093 支，淨少 136 支：副支 secondary:mark 少 108、secondary:seam 少 20、孔邊上的 boundary 料少 8，是短於 `min_piece` 的極短料；主支、沿牆料、rc_parallel 的支數不變，但 10 支主支改成貼住相鄰料、座標變了（全部 64 個排法裡 24 個有變）；頂沿牆料的副支種類加 `:custom4`，共 63 支，舊版同型是 64 支，少的 1 支隨極短料一起消失。支數是我對兩份 golden 逐種類數出來的，不是引用 oracle 分支的說明）。
+> golden 版本：oracle `5610d217`（2947 支，64 個排法）。沿革，支數是我對各版 golden 逐種類數出來的，不是引用 oracle 分支的說明：
+>
+> - `60785906`（2957 支）相對最初的 3093 支淨少 136 支：副支 secondary:mark 少 108、secondary:seam 少 20、孔邊上的 boundary 料少 8，是短於 `min_piece` 的極短料；10 支主支改成貼住相鄰料、座標變了；頂沿牆料的副支種類加 `:custom4`（63 支）。
+> - `5610d217`（2947 支）依使用者 2026-10-18 拍板「短格記號用同一治具 367」：36 個排法有變，secondary:mark 少 26（含 `:custom4` 的 mark 少 3）、新增 16 支 `secondary:fill`（撞掉的記號旁補的那一支，不算記號），共淨少 10 支。`:custom4` 共 60 支（F1 52、F2 8）。secondary:seam、主支、沿牆料、rc_parallel、孔邊 boundary 料的支數不變。
 
 ## 已對上
 
@@ -21,10 +24,11 @@
 | `rc_parallel:custom` | 端面頂在凹角延伸段。這份 golden 有 20 支貼外輪廓；另外 4 支（F1 的四種排法各一支）與凹角牆線共線，但和該邊沒有正長度交集，整段落在另一肢 | `custom priority 3` | oracle 的種類標籤就是這個核心角色。D15：custom 必須明寫 `priority N`（N≥1），且沒有 I20、D16、I22 的專屬權利。I22：延伸段側面以優先級 2 計，主支（2）不能頂；能頂的是平行主支軸、優先級大於 2 的 custom。既有探針 p9 用 3。沒有正長度交集的那 4 支不能 at-face（R6(c) 要求與引用邊重疊），場景改 at-line，矩形不變。 |
 | `secondary:mark` | 室內，垂直主支軸，端面沒有頂到 `custom` | `secondary` | D15 優先級 3。D17：secondary 必須垂直主支軸，且在主支軸出現之後。R19(f)：長度是相鄰主支側面的距離。R18：secondary 的 onBoundary 必為 false（只看外輪廓）。 |
 | `secondary:seam` | 室內，垂直主支軸，端面沒有頂到 `custom` | `secondary` | 同上。mark 與 seam 是 oracle 的副支原因，不是另一個核心 role。 |
+| `secondary:fill` | 室內，垂直主支軸，端面沒有頂到 `custom`。撞掉的記號旁補的那一支（oracle `5610d217` 新增，現行 golden 16 支：F1 5、F2 3、F5 8），不算記號 | `secondary` | D15 優先級 3：它是副支，只是 oracle 用來補位的副支，與 mark、seam 一樣不是另一個核心 role（oracle README 的標籤對照表同列 secondary / 3）。其餘依據同 `secondary:mark`。現行 golden 的 16 支都沒有頂到 `custom`；若有，依下一列的規則升格。 |
 | `secondary:mark:custom4` | 室內，垂直主支軸，**端面頂到 `custom`**（沿牆料 `rc_parallel:custom`，或 F1 與凹角牆線共線的併料） | `custom priority 4` | 使用者 2026-10-18 拍板（🔒，main 的 `決策佇列.md`「2026-10-18 凹角沿牆料的排序」，#301）：條文不改，沿牆料本身維持 custom 3，端面頂它的副支改宣告 custom 4。I19：擋面擁有者優先級須嚴格小於自己，3 < 4 成立（副支 3 頂 custom 3 則不成立）。D15：custom 沒有 I20、D16、I22 的專屬權利，只參與 I19 的數值比較，所以改宣告不帶來新義務。角色讀 golden 的 `:custom4` 標籤（oracle `60785906`）；產生器另依實際擋面（`timber_stops`：端面座標相接、擋面角材在寬向蓋住整段，只拿 custom 3 當擋面）獨立判定，兩者不一致就不產生場景，測試也會紅。 |
 | `secondary:seam:custom4` | 室內，垂直主支軸，**端面頂到 `custom`** | `custom priority 4` | 同上。 |
 
-孔邊上、暫寫 secondary 的 `boundary` 料若帶 `boundary:custom4`，同樣宣告 custom 4（現行 golden 沒有這種）。`:custom4` 只能加在副支上，加在別的角色上產生器直接報錯。
+升格規則對所有副支種類一視同仁：端面頂到 custom 3 的副支，不論是 mark、seam、**fill**，或孔邊上暫寫 secondary 的 `boundary` 料，都改宣告 custom 4。golden 以 `:custom4` 標籤標出（`secondary:fill:custom4`、`boundary:custom4` 這兩種現行 golden 沒有實例，所以表裡沒有列；若出現，產生器與測試照同一規則處理，以標籤為準並與實際擋面交叉核對）。`:custom4` 只能加在副支上，加在別的角色上產生器直接報錯。
 
 截面 A 取 golden 的 `w`（這份是 27）。B=33、承載面 `origin 0 0 2500` 不在 golden，沿用既有天花場景（`_demo_ceiling.scene`、s1 p9）。golden 是平面矩形，不另造高度。
 
