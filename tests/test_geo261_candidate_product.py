@@ -135,4 +135,31 @@ class CandidateProduct(unittest.TestCase):
     def test_line_readiness_uses_real_describe_failure_and_active_source_verdict(self):
         self.replay_result('replay-source-guards')
 
+    def default_result(self,name):
+        result=self.case(name)
+        print('DEFAULT_REPLAY_JSON:'+json.dumps({'case':name,'argv':result.args,'exit_code':result.returncode,
+              'stdout':result.stdout,'stderr':result.stderr},ensure_ascii=False))
+        self.assertEqual(0,result.returncode,result.stderr)
+        return result
+
+    def test_owned_default_replay_keeps_only_spec_guide_inner_candidates_and_final_graph(self):
+        self.default_result('default-cost')
+
+    def test_default_optional_scratch_oom_keeps_original_nine_line_revisions(self):
+        self.default_result('default-scratch-oom')
+
+    def test_default_standalone_call_preserves_original_nine_candidates(self):
+        self.default_result('default-standalone')
+
+    def test_default_and_reset_preserve_revision_history_and_preview_policies(self):
+        self.default_result('default-policy')
+
+    def test_default_required_owner_failures_preserve_user_state_and_recover(self):
+        for name in ('default-inner-oom','default-outer-oom'):
+            with self.subTest(case=name):
+                self.default_result(name)
+
+    def test_default_replay_rejects_changed_or_truncated_builtin_program(self):
+        self.default_result('default-program-guard')
+
 if __name__=='__main__':unittest.main(verbosity=2)

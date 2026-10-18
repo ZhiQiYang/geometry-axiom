@@ -4,11 +4,14 @@
 #endif
 #include <stdlib.h>
 static void *replay_malloc(size_t size);
+static void *default_replay_calloc(size_t count,size_t size);
+#define calloc default_replay_calloc
 #define malloc replay_malloc
 #define GEOMETRY_BRIDGE_ENTRYPOINT geometry_bridge_main
 #include "../geometry-web/web_bridge.c"
 #undef GEOMETRY_BRIDGE_ENTRYPOINT
 #undef malloc
+#undef calloc
 #define CHECK(value,label) do{if(!(value)){fprintf(stderr,"ASSERT:%s\n",label);return 1;}}while(0)
 static bool line(const char *value){return feed_line("candidate-witness",1,value,&g_world);}
 static bool prepare(const char *path)
@@ -242,9 +245,158 @@ static int replay_standalone(const char *path)
     CHECK(!g_scene_file_replay&&geo_named_values_find(&g_world.geo.named_values,"x")->value==500,"standalone-original-parser-value");
     return 0;
 }
+
+/* Default replay witnesses keep the actual bridge and all original CHECKs. */
+static bool default_observe_candidates,default_fail_candidate;
+static uint64_t default_fail_revision,default_candidate_revisions[16];
+static size_t default_candidate_count;
+static unsigned default_candidate_failures;
+static void *default_replay_calloc(size_t count,size_t size)
+{
+    if(count==1&&size==sizeof(AppWorldCandidate)){
+        if(default_observe_candidates){
+            if(default_candidate_count<16)default_candidate_revisions[default_candidate_count]=g_definition_revision;
+            ++default_candidate_count;
+        }
+        if(default_fail_candidate&&g_definition_revision==default_fail_revision){
+            default_fail_candidate=false;++default_candidate_failures;return NULL;
+        }
+    }
+    return calloc(count,size);
+}
+static bool default_literals(const World *world)
+{
+    const GeoNamedValue *value=geo_named_values_find(&world->geo.named_values,"主支中線");
+    return world->wood.timber_count==3&&world->wood.timbers[0].placed&&
+        world->wood.timbers[1].placed&&world->wood.timbers[2].placed&&value&&value->value==500;
+}
+static int default_owned_candidate(const char *path,bool scratch_oom)
+{
+    CHECK(prepare(path),"default-fixture");g_definition_revision=41;
+    World *before=malloc(sizeof *before);CHECK(before,"default-before-memory");memcpy(before,&g_world,sizeof *before);
+    AppWorldCandidate *owner=app_world_candidate_create(&g_world);CHECK(owner,"default-owner");
+    memset(&owner->operation,0xa5,sizeof owner->operation);owner->operation.boundary_keyed=false;owner->operation.boundary_id=91;
+    unsigned char operation_bytes[sizeof owner->operation];memcpy(operation_bytes,&owner->operation,sizeof operation_bytes);
+    AppReplacement operation={true,g_definition_revision};uint64_t revision=g_definition_revision,serial=g_app_candidate_serial;
+    default_candidate_count=0;default_observe_candidates=true;
+    if(scratch_oom){replay_fail_size=sizeof(World);replay_fail_remaining=1;replay_allocation_failures=0;}
+    GeoCandidateStatus status=app_world_candidate_evaluate(owner,app_replace_evaluate,&operation);
+    default_observe_candidates=false;
+    CHECK(status==GEO_CANDIDATE_OK,"default-evaluation-succeeded");
+    CHECK(g_app_candidate_serial-serial==(scratch_oom?9:2),"default-owned-inner-candidate-cost");
+    CHECK(default_candidate_count==(scratch_oom?9:2),"default-real-candidate-allocation-count");
+    if(scratch_oom){
+        CHECK(replay_fail_remaining==0&&replay_allocation_failures==1,"default-optional-scratch-oom-fallback");
+        for(size_t i=0;i<9;++i)CHECK(default_candidate_revisions[i]==revision+i,"default-fallback-per-line-revisions");
+    }else{
+        CHECK(default_candidate_revisions[0]==revision+5&&default_candidate_revisions[1]==revision+6,
+              "default-spec-guide-keep-original-revisions");
+    }
+    CHECK(g_definition_revision==revision&&operation.completed_revision==revision+9,"default-callback-revision-restored");
+    CHECK(!memcmp(before,&g_world,sizeof *before),"default-callback-live-unpublished");
+    CHECK(!memcmp(operation_bytes,&owner->operation,sizeof operation_bytes),"default-operation-all-bytes-preserved");
+    CHECK(!g_default_replay&&!g_scene_file_replay&&!g_parsing_scene_file,"default-scope-restored-before-final-graph");
+    GeoCandidate *core=app_candidate_core(owner->control);GeoEvalContext *sources=geo_candidate_sources(core);
+    CHECK(geo_candidate_state(core)==GEO_CANDIDATE_EVALUATED&&geo_candidate_evaluation_generation(core)==1,
+          "default-one-outer-evaluation");
+    CHECK(geo_eval_candidate_id(sources)==geo_candidate_id(core)&&geo_eval_base_revision(sources)==revision,
+          "default-final-graph-has-original-outer-identity");
+    CHECK(app_candidate_evaluation_state(owner->control)&&geo_eval_provider_count(sources)>=4&&geo_eval_node_count(sources)>=3,
+          "default-final-graph-retained");
+    CHECK(default_literals(&owner->after)&&replay_has_guide_value(sources,500),"default-literal-final-geometry");
+    CHECK(app_world_candidate_seal(owner)&&geo_eval_is_sealed(sources),"default-final-seal");
+    CHECK(app_world_candidate_publish(owner,&g_world,false),"default-single-publication");
+    CHECK(geo_candidate_state(core)==GEO_CANDIDATE_PUBLISHED&&geo_candidate_sources(core)==sources&&default_literals(&g_world),
+          "default-publishes-same-owner-and-complete-root");
+    CHECK(!app_world_candidate_publish(owner,&g_world,false),"default-no-second-publication");
+    printf("DEFAULT_FACTS inner=%llu completed=%llu restored=%llu generation=%llu\n",
+        (unsigned long long)(g_app_candidate_serial-serial),(unsigned long long)operation.completed_revision,
+        (unsigned long long)g_definition_revision,(unsigned long long)geo_candidate_evaluation_generation(core));
+    app_world_candidate_destroy(owner);free(before);return 0;
+}
+static int default_standalone(const char *path)
+{
+    CHECK(prepare(path),"default-standalone-fixture");g_definition_revision=41;
+    uint64_t serial=g_app_candidate_serial;
+    CHECK(!g_active_app_candidate&&reference_default_world_owned(&g_world),"default-standalone-original-path");
+    CHECK(g_app_candidate_serial==serial+9&&g_definition_revision==50,"default-standalone-nine-revisions-and-candidates");
+    CHECK(default_literals(&g_world)&&!g_default_replay&&!g_scene_file_replay&&!g_parsing_scene_file,"default-standalone-no-frame-leak");
+    return 0;
+}
+static int default_publication_policy(const char *path)
+{
+    CHECK(prepare(path),"default-policy-fixture");g_definition_revision=41;
+    CHECK(line("spec default_unused 7")&&g_history.undo_count>0,"default-policy-existing-history");
+    CHECK(line("canvas-pos placement 1 17 29")&&preview(),"default-policy-existing-presentation-and-preview");
+    CHECK(line("history-begin")&&g_history.grouping,"default-policy-existing-history-group");
+    uint64_t revision=g_definition_revision;uint32_t token=g_preview.token,preview_serial=g_preview_serial;
+    AppWorldCandidate *preview_owner=g_preview.transaction;
+    CHECK(world_default(&g_world),"default-policy-real-replacement");
+    CHECK(g_definition_revision==revision+10,"default-policy-exact-nine-plus-publication");
+    CHECK(default_literals(&g_world)&&g_world.app.canvas_pos_count==0,"default-policy-complete-root-replaced");
+    CHECK(!g_history.undo_count&&!g_history.redo_count&&!g_history.grouping&&!g_history.group_dirty,
+          "default-policy-clears-history-only-on-success");
+    CHECK(!g_preview.ready&&g_preview.token==token&&g_preview_serial==preview_serial&&g_preview.transaction==preview_owner,
+          "default-policy-preserves-original-preview-disposal-policy");
+    CHECK(!confirm(),"default-policy-old-preview-cannot-confirm");
+    revision=g_definition_revision;uint64_t serial=g_app_candidate_serial;
+    CHECK(app_replace_world(&g_world,false),"default-policy-reset-success");
+    CHECK(g_definition_revision==revision+1&&g_app_candidate_serial==serial+1,"default-policy-reset-single-revision-and-owner");
+    CHECK(!g_world.wood.timber_count&&!world_boundary_count(&g_world)&&!geo_guides_count(&g_world.geo.guide_lines),
+          "default-policy-reset-empty-definitions");
+    CHECK(!g_history.undo_count&&!g_history.redo_count&&!g_history.grouping&&!g_preview.ready,
+          "default-policy-reset-retains-history-preview-policy");
+    return 0;
+}
+static int default_required_failure(const char *path,bool inner)
+{
+    CHECK(prepare(path),"default-failure-fixture");g_definition_revision=41;
+    CHECK(line("spec default_unused 7")&&preview()&&line("history-begin"),"default-failure-existing-user-state");
+    World *before=malloc(sizeof *before);CHECK(before,"default-failure-memory");memcpy(before,&g_world,sizeof *before);
+    AppHistory history;ReferencePreview pending;
+    memcpy(&history,&g_history,sizeof history);memcpy(&pending,&g_preview,sizeof pending);
+    uint64_t revision=g_definition_revision;uint32_t preview_serial=g_preview_serial;
+    snprintf(g_scene_last_error,sizeof g_scene_last_error,"prior-default-diagnostic");
+    default_candidate_failures=0;default_fail_revision=revision+(inner?5:0);default_fail_candidate=true;
+    bool accepted=world_default(&g_world);
+    CHECK(!accepted&&!default_fail_candidate&&default_candidate_failures==1,"default-required-allocation-fails-real-owner");
+    CHECK(!memcmp(before,&g_world,sizeof *before)&&g_definition_revision==revision,"default-failure-atomic-live-and-revision");
+    CHECK(!memcmp(&history,&g_history,sizeof history)&&!memcmp(&pending,&g_preview,sizeof pending)&&g_preview_serial==preview_serial,
+          "default-failure-keeps-history-and-pending-preview");
+    CHECK(!g_default_replay&&!g_scene_file_replay&&!g_parsing_scene_file,"default-failure-restores-scope");
+    CHECK(!strcmp(scene_last_error(),inner?"line 6: I32: candidate World allocation failed":"prior-default-diagnostic"),
+          "default-failure-preserves-original-first-diagnostic");
+    CHECK(line("history-abort")&&confirm(),"default-failure-original-preview-still-usable");
+    revision=g_definition_revision;
+    CHECK(world_default(&g_world)&&g_definition_revision==revision+10&&default_literals(&g_world),"default-failure-recovery-original-revision-policy");
+    free(before);return 0;
+}
+static int default_program_guard(void)
+{
+    const char *lines[]={
+        "surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+        "timber 1 27 33 role boundary", "place 1 on 1 at-face e0 +u +n",
+        "timber 2 27 33 role boundary", "place 2 on 1 at-face e2 +u +n",
+        "spec 主支中線 500", "guide 1 1 v spec:主支中線",
+        "timber 3 27 33 role primary", "place 3 on 1 at-line guide 1 +v +n"
+    };
+    CHECK(app_default_replay_lines_match(lines,9),"default-original-program-recognized");
+    CHECK(!app_default_replay_lines_match(lines,8),"default-truncated-program-rejected");
+    lines[5]="spec 主支中線 600";
+    CHECK(!app_default_replay_lines_match(lines,9),"default-changed-program-rejected");
+    return 0;
+}
+
 int main(int argc,char **argv)
 {
     if(argc!=3)return 2;
+    if(!strcmp(argv[1],"default-cost"))return default_owned_candidate(argv[2],false);
+    if(!strcmp(argv[1],"default-scratch-oom"))return default_owned_candidate(argv[2],true);
+    if(!strcmp(argv[1],"default-standalone"))return default_standalone(argv[2]);
+    if(!strcmp(argv[1],"default-policy"))return default_publication_policy(argv[2]);
+    if(!strcmp(argv[1],"default-inner-oom"))return default_required_failure(argv[2],true);
+    if(!strcmp(argv[1],"default-outer-oom"))return default_required_failure(argv[2],false);
+    if(!strcmp(argv[1],"default-program-guard"))return default_program_guard();
     if(!strcmp(argv[1],"replay-cost"))return replay_load(argv[2],0);
     if(!strcmp(argv[1],"replay-unscoped"))return replay_load(argv[2],1);
     if(!strcmp(argv[1],"replay-scratch-oom"))return replay_load(argv[2],2);
