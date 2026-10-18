@@ -1,0 +1,315 @@
+{
+  "schema": "geo261-assembly-guide-regression-manual-evidence/1",
+  "base": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+  "test_strengthening": "97bc7c0cf612b7bbbb4362e27441579a97aa3a00",
+  "withdraw_control": "6360f8e5f0b81bd99e3b149281219b4a7aba58b4",
+  "classification": "產品缺陷已由上游1987修正；本分支僅加強回歸守門",
+  "scope": "當輪4方法suite、四階段；before是上游修正後原套綠，不是產品修前紅",
+  "historical_e64_is_separate": true,
+  "functional_timing_only": true,
+  "stages": [
+    {
+      "id": "before",
+      "head": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "tests/run_all.py",
+        "--build",
+        "--only",
+        "py:test_assembly_candidate_impact"
+      ],
+      "claim": {
+        "methods_run": 4,
+        "passed_methods": 4,
+        "failed_methods": 0,
+        "unittest_failure_records": 0,
+        "unittest_error_records": 0,
+        "skipped_methods": 0,
+        "method_bodies_executed": 4,
+        "unittest_seconds": 3.593,
+        "suite_json_seconds": 3.7,
+        "outer_seconds": 29.873039218000486,
+        "returncode": 0,
+        "valid_expected_failure": false,
+        "infrastructure_error_observed": false,
+        "functional_not_performance": true,
+        "meaning": "上游產品已修後的原測試綠；不是本題修前紅"
+      },
+      "receipt_sha256": "b53afad96fe6f3596999e3ac66da67a40c0dec2494b086db5956bc5658be0c71",
+      "suite_files": [
+        {
+          "path": "before/suite-logs/py_test_assembly_candidate_impact.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "before/suite-logs/py_test_assembly_candidate_impact.unittest.log",
+          "bytes": 102,
+          "sha256": "d5bcb7d95f9fe86b85be95a7480b24daa0108aa40910ed5e7f165c7cff39676c"
+        },
+        {
+          "path": "before/suite-logs/py_test_assembly_candidate_impact.json",
+          "bytes": 356,
+          "sha256": "44bf948a20fda5a60cfe1fe9caa8d0eafb457f1e6d34da13d122602d24f2f178"
+        }
+      ],
+      "observed_failure_guide_repr": [],
+      "source_stable": true,
+      "head_stable": true,
+      "status_and_diff_stable": true
+    },
+    {
+      "id": "after",
+      "head": "97bc7c0cf612b7bbbb4362e27441579a97aa3a00",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "tests/run_all.py",
+        "--build",
+        "--only",
+        "py:test_assembly_candidate_impact"
+      ],
+      "claim": {
+        "methods_run": 4,
+        "passed_methods": 4,
+        "failed_methods": 0,
+        "unittest_failure_records": 0,
+        "unittest_error_records": 0,
+        "skipped_methods": 0,
+        "method_bodies_executed": 4,
+        "unittest_seconds": 3.987,
+        "suite_json_seconds": 4.11,
+        "outer_seconds": 4.654592034003144,
+        "returncode": 0,
+        "valid_expected_failure": false,
+        "infrastructure_error_observed": false,
+        "functional_not_performance": true,
+        "meaning": "只強化測試後四方法完整通過"
+      },
+      "receipt_sha256": "ee179ec3167541a8b1cb9b4be7afe68c499dadfbee736c810cd512723637a5a2",
+      "suite_files": [
+        {
+          "path": "after/suite-logs/py_test_assembly_candidate_impact.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "after/suite-logs/py_test_assembly_candidate_impact.unittest.log",
+          "bytes": 102,
+          "sha256": "9851a8b145ad7a3c549c19022a81014e433060be16535e98c89d2f9b245dfde6"
+        },
+        {
+          "path": "after/suite-logs/py_test_assembly_candidate_impact.json",
+          "bytes": 357,
+          "sha256": "ca24f007dcdebc59a904d06628054eef6d3bcac093780f692e8947c54133b5e9"
+        }
+      ],
+      "observed_failure_guide_repr": [],
+      "source_stable": true,
+      "head_stable": true,
+      "status_and_diff_stable": true
+    },
+    {
+      "id": "withdrawn",
+      "head": "6360f8e5f0b81bd99e3b149281219b4a7aba58b4",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "tests/run_all.py",
+        "--build",
+        "--only",
+        "py:test_assembly_candidate_impact"
+      ],
+      "claim": {
+        "methods_run": 4,
+        "passed_methods": 0,
+        "failed_methods": 4,
+        "unittest_failure_records": 4,
+        "unittest_error_records": 0,
+        "skipped_methods": 0,
+        "method_bodies_executed": 0,
+        "unittest_seconds": 3.234,
+        "suite_json_seconds": 3.35,
+        "outer_seconds": 32.68329301999984,
+        "returncode": 1,
+        "valid_expected_failure": true,
+        "infrastructure_error_observed": false,
+        "functional_not_performance": true,
+        "meaning": "只撤上游七行，四TestCase在各自setUp近因assertFAIL，方法body未執行"
+      },
+      "receipt_sha256": "f6b4751e8ef9c8304db33157f688e2601e95dc82d2a65871b4a52c403892d48f",
+      "suite_files": [
+        {
+          "path": "withdrawn/suite-logs/py_test_assembly_candidate_impact.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "withdrawn/suite-logs/py_test_assembly_candidate_impact.unittest.log",
+          "bytes": 3873,
+          "sha256": "37122f22ea4f4bcc1cee169c1b178eb66b962743fe85e60f4470e88ddec16890"
+        },
+        {
+          "path": "withdrawn/suite-logs/py_test_assembly_candidate_impact.json",
+          "bytes": 2255,
+          "sha256": "de62e640b7ca939489948005a952a7e4194634fa9b0e656b8555de9877c06420"
+        }
+      ],
+      "observed_failure_guide_repr": [
+        "[None, None, None, {'id': 4, 'surface': 1, 'source': 'local', 'datum': 0, 'axis': 'u', 'off': 1000, 'expression': 'spec:externalY', 'worldPoint': [0, 1000, 2500], 'worldDirection': [1, 0, 0], 'segments': [[[0, 1000], [4000, 1000]]]}]",
+        "[None, None, None, {'id': 4, 'surface': 1, 'source': 'local', 'datum': 0, 'axis': 'u', 'off': 1000, 'expression': 'spec:externalY', 'worldPoint': [0, 1000, 2500], 'worldDirection': [1, 0, 0], 'segments': [[[0, 1000], [4000, 1000]]]}]",
+        "[None, None, None, {'id': 4, 'surface': 1, 'source': 'local', 'datum': 0, 'axis': 'u', 'off': 1000, 'expression': 'spec:externalY', 'worldPoint': [0, 1000, 2500], 'worldDirection': [1, 0, 0], 'segments': [[[0, 1000], [4000, 1000]]]}]",
+        "[None, None, None, {'id': 4, 'surface': 1, 'source': 'local', 'datum': 0, 'axis': 'u', 'off': 1000, 'expression': 'spec:externalY', 'worldPoint': [0, 1000, 2500], 'worldDirection': [1, 0, 0], 'segments': [[[0, 1000], [4000, 1000]]]}]"
+      ],
+      "source_stable": true,
+      "head_stable": true,
+      "status_and_diff_stable": true
+    },
+    {
+      "id": "restored",
+      "head": "97bc7c0cf612b7bbbb4362e27441579a97aa3a00",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "tests/run_all.py",
+        "--build",
+        "--only",
+        "py:test_assembly_candidate_impact"
+      ],
+      "claim": {
+        "methods_run": 4,
+        "passed_methods": 4,
+        "failed_methods": 0,
+        "unittest_failure_records": 0,
+        "unittest_error_records": 0,
+        "skipped_methods": 0,
+        "method_bodies_executed": 4,
+        "unittest_seconds": 3.607,
+        "suite_json_seconds": 3.72,
+        "outer_seconds": 32.08866536400092,
+        "returncode": 0,
+        "valid_expected_failure": false,
+        "infrastructure_error_observed": false,
+        "functional_not_performance": true,
+        "meaning": "恢復精確97bc測試與上游產品、重建fresh bridge，四方法完整通過"
+      },
+      "receipt_sha256": "c743a7b7ff65e1632d90f15a23d5a0a6959628dd5039ccf549b277813da2997b",
+      "suite_files": [
+        {
+          "path": "restored/suite-logs/py_test_assembly_candidate_impact.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "restored/suite-logs/py_test_assembly_candidate_impact.unittest.log",
+          "bytes": 102,
+          "sha256": "2bae3b6533c0f13c544823dc1e890e55f503bed60cd825e9ad0f158ae185103c"
+        },
+        {
+          "path": "restored/suite-logs/py_test_assembly_candidate_impact.json",
+          "bytes": 357,
+          "sha256": "1d1a2651229693ea03ef6605f6013a7a99b085a2c09604e5615bda610b044343"
+        }
+      ],
+      "observed_failure_guide_repr": [],
+      "source_stable": true,
+      "head_stable": true,
+      "status_and_diff_stable": true
+    }
+  ],
+  "binary_observations": [
+    {
+      "stage": "before",
+      "when": "before",
+      "name": "bridge",
+      "state": "stale",
+      "bytes": 1078840,
+      "sha256": "3e7ee9ec03f04c9238330e45320adae27ca109667e17842825b98cd677561f03",
+      "sidecar_sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122",
+      "source_fingerprint": "efdf57302c69520ddf5cf2ea5910b5a7df00fbef51544b60217fc63eb1f326c2"
+    },
+    {
+      "stage": "before",
+      "when": "after",
+      "name": "bridge",
+      "state": "fresh",
+      "bytes": 1078840,
+      "sha256": "3e7ee9ec03f04c9238330e45320adae27ca109667e17842825b98cd677561f03",
+      "sidecar_sha256": "239cfa2e5e5e4d9f66311ec5cd04707a6c23d881a043cc55fe81f5299acd692e",
+      "source_fingerprint": "efdf57302c69520ddf5cf2ea5910b5a7df00fbef51544b60217fc63eb1f326c2"
+    },
+    {
+      "stage": "after",
+      "when": "before",
+      "name": "bridge",
+      "state": "fresh",
+      "bytes": 1078840,
+      "sha256": "3e7ee9ec03f04c9238330e45320adae27ca109667e17842825b98cd677561f03",
+      "sidecar_sha256": "239cfa2e5e5e4d9f66311ec5cd04707a6c23d881a043cc55fe81f5299acd692e",
+      "source_fingerprint": "efdf57302c69520ddf5cf2ea5910b5a7df00fbef51544b60217fc63eb1f326c2"
+    },
+    {
+      "stage": "after",
+      "when": "after",
+      "name": "bridge",
+      "state": "fresh",
+      "bytes": 1078840,
+      "sha256": "3e7ee9ec03f04c9238330e45320adae27ca109667e17842825b98cd677561f03",
+      "sidecar_sha256": "239cfa2e5e5e4d9f66311ec5cd04707a6c23d881a043cc55fe81f5299acd692e",
+      "source_fingerprint": "efdf57302c69520ddf5cf2ea5910b5a7df00fbef51544b60217fc63eb1f326c2"
+    },
+    {
+      "stage": "withdrawn",
+      "when": "before",
+      "name": "bridge",
+      "state": "stale",
+      "bytes": 1078840,
+      "sha256": "3e7ee9ec03f04c9238330e45320adae27ca109667e17842825b98cd677561f03",
+      "sidecar_sha256": "239cfa2e5e5e4d9f66311ec5cd04707a6c23d881a043cc55fe81f5299acd692e",
+      "source_fingerprint": "1a3f64cd93ed67289bce2166144cf23945935ff4c8f66671fe3341559d01d9c7"
+    },
+    {
+      "stage": "withdrawn",
+      "when": "after",
+      "name": "bridge",
+      "state": "fresh",
+      "bytes": 1078840,
+      "sha256": "1a3e5775b1a66567c1debe639842eb78c2e2e240e1e5e7b80a8a5d3c636fee76",
+      "sidecar_sha256": "a827b6912ee35c2ff6dbcee54254db9f72ba4cc926d447967e1472df94e4ccb6",
+      "source_fingerprint": "1a3f64cd93ed67289bce2166144cf23945935ff4c8f66671fe3341559d01d9c7"
+    },
+    {
+      "stage": "restored",
+      "when": "before",
+      "name": "bridge",
+      "state": "stale",
+      "bytes": 1078840,
+      "sha256": "1a3e5775b1a66567c1debe639842eb78c2e2e240e1e5e7b80a8a5d3c636fee76",
+      "sidecar_sha256": "a827b6912ee35c2ff6dbcee54254db9f72ba4cc926d447967e1472df94e4ccb6",
+      "source_fingerprint": "efdf57302c69520ddf5cf2ea5910b5a7df00fbef51544b60217fc63eb1f326c2"
+    },
+    {
+      "stage": "restored",
+      "when": "after",
+      "name": "bridge",
+      "state": "fresh",
+      "bytes": 1078840,
+      "sha256": "3e7ee9ec03f04c9238330e45320adae27ca109667e17842825b98cd677561f03",
+      "sidecar_sha256": "ff69ae82f96b480bf96d3d0affb9861e6ced1550bc6b49f6cbe1c05555fad812",
+      "source_fingerprint": "efdf57302c69520ddf5cf2ea5910b5a7df00fbef51544b60217fc63eb1f326c2"
+    }
+  ],
+  "limits": [
+    "四方法當輪較廣current-cache／world-cache-decoy專套未額外重跑。",
+    "未在此主題執行全量run_all／browser／完整mutation。",
+    "內層bridge protocol與所有binary ELF未另行封存；run_all原suite三logs與外層raw保留。",
+    "大型before/after.source.json及recorder源碼只保留外部，公開receipt轉錄身份不等於公開完整可重算閉包。"
+  ],
+  "bridge_green_sha256": "3e7ee9ec03f04c9238330e45320adae27ca109667e17842825b98cd677561f03",
+  "bridge_withdraw_sha256": "1a3e5775b1a66567c1debe639842eb78c2e2e240e1e5e7b80a8a5d3c636fee76"
+}
