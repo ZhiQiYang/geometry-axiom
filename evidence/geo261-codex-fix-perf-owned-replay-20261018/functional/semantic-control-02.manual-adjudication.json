@@ -1,0 +1,39 @@
+{
+  "schema": "geo261-B-control02-manual-adjudication/1",
+  "tested_sha": "9c29bc8890f60e264e8aee78f2a31d7c9a1a0332",
+  "base_sha": "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6",
+  "change": "只移除app_scene_file_line_eligible中的!reference_may_affect；真patch與固定Git diff逐bytes相同。",
+  "run_count": 1,
+  "subtest_failures": 2,
+  "unittest_seconds": 9.033,
+  "outer_seconds": 9.249860804000491,
+  "fixtures": [
+    {
+      "case": "replay-i8a-valid",
+      "first_assert": "file-replay-i8a-refused",
+      "verdict": "有效I8a拒絕語義kill；evaluate未回傳預期EVALUATION_FAILED，但不從此斷言推造未觀測的實際enum。"
+    },
+    {
+      "case": "replay-i8a-invalid",
+      "first_assert": "file-replay-i8a-keeps-inner-owner",
+      "verdict": "原D6b/D1範圍錯誤仍拒絕且134行evaluate拒絕檢查已過；135行serial+3檢查先紅。不得宣稱invalid被接受，亦不得推造實際serial值；137–140行original error/prefix/live-preview/scope後續assert未執行。"
+    }
+  ],
+  "source_basis": "固定8ab:tests/geo261_candidate_product_harness.c:129–141；原Python method line123→replay_result104由真native exit1記subTest failure。",
+  "receipt": {
+    "path": "semantic-control-02/receipt.json",
+    "bytes": 13530,
+    "sha256": "88ede0758d6d3881469381e7ce709425e3256b5ce96b223ba12a35037ed02f8f"
+  },
+  "stdout": {
+    "path": "semantic-control-02/command.stdout",
+    "bytes": 529,
+    "sha256": "1e9fb98fa42125b05bb7fa60aafbeb74c0153f10cfd38ab2c99f6121ed3001f6"
+  },
+  "stderr": {
+    "path": "semantic-control-02/command.stderr",
+    "bytes": 2839,
+    "sha256": "a477088508bef5ffda491a84293a6603c58e6a1d99efff0c9b83ce29e6283228"
+  },
+  "classification": "有效valid fixture語義kill＋invalid fixture較早計數差異；二者分列，原件不改。"
+}

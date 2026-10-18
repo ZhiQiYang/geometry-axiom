@@ -1,0 +1,18 @@
+test_owned_file_replay_does_not_leak_keyed_operation_or_padding (tests.test_geo261_candidate_product.CandidateProduct.test_owned_file_replay_does_not_leak_keyed_operation_or_padding) ... FAIL
+
+======================================================================
+FAIL: test_owned_file_replay_does_not_leak_keyed_operation_or_padding (tests.test_geo261_candidate_product.CandidateProduct.test_owned_file_replay_does_not_leak_keyed_operation_or_padding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_candidate_product.py", line 133, in test_owned_file_replay_does_not_leak_keyed_operation_or_padding
+    self.replay_result('replay-operation')
+  File "/workspace/geometry-axiom/tests/test_geo261_candidate_product.py", line 104, in replay_result
+    self.assertEqual(0,result.returncode,result.stderr)
+AssertionError: 0 != 1 : ASSERT:file-replay-operation-bytes-restored
+ASSERT:file-replay-frame-verdict
+
+
+----------------------------------------------------------------------
+Ran 1 test in 6.657s
+
+FAILED (failures=1)
