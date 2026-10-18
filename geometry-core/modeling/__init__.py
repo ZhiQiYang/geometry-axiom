@@ -16,17 +16,14 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "1e7aaa19a49ed39bfbd3d8562d2b0d41b35d8ef8"
-AXIOM_SHA256 = "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d"
+AXIOM_REVISION = "0d9015bc5a83fbb0b39e52555ce2da78f1c668ea"
+AXIOM_SHA256 = "f10ef7ca8a4c1e5154fc705116f30be31e7d9374dd963b9f99d9c2268d34981c"
 # GEO-261 separates general geometry from the default woodworking template;
 # it does not change these saved packages' geometry, formats or capabilities.
 # Preserve the exact released pre-adoption pair, including every source-era gate.
 PRE_DECOUPLING_AXIOM_VERSIONS = frozenset({
     ("b3c79615d0cde89bbdca72c1223d214324bc5f8f", "e5e43ec5da2030669c9ecd7a67f8b250cfb7290cf663365b2b66c51814bb77b9"),
 })
-# The #260 C/D1 fixes (I23/R13 title parentheses, D31/R33 parameterId) replaced
-# the 0d9015b A/B text before it reached main; that interim digest was never
-# declared by a main executor, so it is deliberately not listed as a compatible version.
 # #260 (2026-10-18) allows a stagger on at most one axis per grid system for new
 # commits only (D10b/I24 template text) and clarifies I5/R18 wording. Whole-World
 # replacement and isolated replay never compare stagger axes, and this executor's
