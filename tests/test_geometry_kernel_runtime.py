@@ -168,6 +168,60 @@ FROZEN_DIGESTS = {
 
 
 class KernelRuntimeTests(unittest.TestCase):
+    def test_policy_error_cause_supports_standard_unittest_reporting(self):
+        from io import StringIO
+        from geometry_woodworking.model_policy import PolicyIssue
+        from tests.test_geometry_source_runtime import decode, envelope
+
+        # Keep the real typed geometry, but provide inconsistent R37 metadata.
+        # The actual W provider must reject it and H must preserve that cause.
+        base, definitions, req, options = deepcopy(cases()["local_profile"])
+        base["profile_runs"][0]["members"][0]["dimensions_mm"][0] += 1
+        candidate = decode(envelope(base))
+        captured = []
+
+        def rejected_profile():
+            with mock.patch("modeling.base.load_candidate", return_value=candidate):
+                try:
+                    evaluate(definitions, req, **options)
+                except ModelError as error:
+                    captured.append((error, error.__cause__))
+                    raise
+
+        stream = StringIO()
+        protocol_error = None
+        try:
+            # The normal Python runner formats/cleans the complete cause chain.
+            # No custom collector, exception replacement or cause suppression.
+            result = unittest.TextTestRunner(stream=stream, verbosity=2).run(
+                unittest.FunctionTestCase(rejected_profile))
+        except Exception as error:
+            protocol_error = (type(error).__module__ + "." + type(error).__qualname__, str(error))
+        # Assert outside the handler, so a runner failure is an ordinary red
+        # test rather than a second failure while rendering a frozen cause.
+        self.assertIsNone(protocol_error, "POLICY_EXCEPTION_STANDARD_PROTOCOL: " + repr(protocol_error))
+        self.assertEqual(1, result.testsRun)
+        self.assertEqual([], result.failures)
+        self.assertEqual(1, len(result.errors))
+        self.assertEqual([], result.skipped)
+        self.assertFalse(result.wasSuccessful())
+        self.assertEqual(1, len(captured))
+        error, original_cause = captured[0]
+        self.assertIs(type(error), ModelError)
+        self.assertIs(type(original_cause), PolicyIssue)
+        self.assertIs(original_cause, error.__cause__)
+        expected = ("INVALID", "PROFILE_VOLUME", "R37",
+                    "Native dimensions and derived exact member volume disagree")
+        for failure in (error, original_cause):
+            self.assertEqual(expected, (failure.status, failure.code, failure.clause, failure.message))
+        self.assertEqual({"kind": "profile-run", "id": 8}, error.root)
+        self.assertEqual(("profile-run", 8), original_cause.root)
+        self.assertIsNotNone(original_cause.__traceback__)
+        self.assertIn("geometry_woodworking.model_policy.PolicyIssue", stream.getvalue())
+        self.assertIn("geometry_app.model_common.ModelError", stream.getvalue())
+        self.assertIn(expected[3], stream.getvalue())
+        self.assertNotIn("FrozenInstanceError", stream.getvalue())
+
     def test_public_build_capabilities_gate_export_after_full_definition_validation(self):
         import geometry_kernel
         from modeling import build_package
