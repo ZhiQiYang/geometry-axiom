@@ -28,8 +28,8 @@ PRE_ONE_AXIS_STAGGER_MAIN_VERSION = ("e744f5316fd7c896275bdee4c34ad22ae97d9d8e",
 # produced natively by make_fixture.sh in a clean clone with that main's own adapter;
 # see each fixture's provenance.  Pin the SHA-256 the producer recorded when committing.
 PRE_ONE_AXIS_STAGGER_FIXTURES = {
-    "model-package-main-e980cb0d-profile.json": "",
-    "model-package-main-e980cb0d-stagger.json": "",
+    "model-package-main-e980cb0d-profile.json": "34682e2fa04c734e361c1518276d404dc8219343162086ee4f83b3f5f5db6080",
+    "model-package-main-e980cb0d-stagger.json": "fd60c8c5d5e052a504e304b0e870ac8bd4033f22e623c89e4a510503526492b8",
 }
 PRE_ONE_AXIS_STAGGER_READY = all((ROOT / "tests/fixtures" / name).is_file() for name in PRE_ONE_AXIS_STAGGER_FIXTURES)
 CASE = json.loads((ROOT / "geometry-core/modeling-cases.json").read_text())["cases"][0]
