@@ -1,0 +1,3194 @@
+[
+  {
+    "function": "__memmove_avx512_unaligned_erms",
+    "self_seconds": 21.44,
+    "inclusive_seconds": 21.44,
+    "calls": null
+  },
+  {
+    "function": "__memcmp_evex_movbe",
+    "self_seconds": 6.42,
+    "inclusive_seconds": 6.42,
+    "calls": null
+  },
+  {
+    "function": "__memset_avx512_unaligned_erms",
+    "self_seconds": 1.1,
+    "inclusive_seconds": 1.1,
+    "calls": null
+  },
+  {
+    "function": "brk",
+    "self_seconds": 0.33,
+    "inclusive_seconds": 0.33,
+    "calls": null
+  },
+  {
+    "function": "__write_nocancel",
+    "self_seconds": 0.33,
+    "inclusive_seconds": 0.33,
+    "calls": null
+  },
+  {
+    "function": "main",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.31,
+    "calls": 251
+  },
+  {
+    "function": "__libc_start_call_main",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.31,
+    "calls": null
+  },
+  {
+    "function": "world_validate_derived",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.23,
+    "calls": 6951
+  },
+  {
+    "function": "mprotect",
+    "self_seconds": 0.18,
+    "inclusive_seconds": 0.18,
+    "calls": null
+  },
+  {
+    "function": "munmap",
+    "self_seconds": 0.18,
+    "inclusive_seconds": 0.18,
+    "calls": null
+  },
+  {
+    "function": "app_replace_world.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.14,
+    "calls": 355
+  },
+  {
+    "function": "wood_world_validate_members",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.12,
+    "calls": 3474
+  },
+  {
+    "function": "reference_checked <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.08,
+    "calls": 1169
+  },
+  {
+    "function": "reference_member_footprint",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.07,
+    "calls": 21656
+  },
+  {
+    "function": "reference_check_all",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.06999999999999999,
+    "calls": 3477
+  },
+  {
+    "function": "apply_surface_combined_line <cycle 2>",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.060000000000000005,
+    "calls": 600
+  },
+  {
+    "function": "_int_malloc",
+    "self_seconds": 0.05,
+    "inclusive_seconds": 0.05,
+    "calls": null
+  },
+  {
+    "function": "geo_eval_source <cycle 1>",
+    "self_seconds": 0.02,
+    "inclusive_seconds": 0.05,
+    "calls": 885145
+  },
+  {
+    "function": "cmd_replace_world",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.04,
+    "calls": 104
+  },
+  {
+    "function": "profil",
+    "self_seconds": 0.04,
+    "inclusive_seconds": 0.04,
+    "calls": null
+  },
+  {
+    "function": "__strcmp_evex",
+    "self_seconds": 0.04,
+    "inclusive_seconds": 0.04,
+    "calls": null
+  },
+  {
+    "function": "app_world_candidate_create",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.04,
+    "calls": 1440
+  },
+  {
+    "function": "app_reference_member_anchor",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.03,
+    "calls": 29386
+  },
+  {
+    "function": "arena_get_retry",
+    "self_seconds": 0.03,
+    "inclusive_seconds": 0.03,
+    "calls": null
+  },
+  {
+    "function": "mmap",
+    "self_seconds": 0.03,
+    "inclusive_seconds": 0.03,
+    "calls": null
+  },
+  {
+    "function": "sysmalloc",
+    "self_seconds": 0.03,
+    "inclusive_seconds": 0.03,
+    "calls": null
+  },
+  {
+    "function": "geo_sha_block",
+    "self_seconds": 0.03,
+    "inclusive_seconds": 0.03,
+    "calls": 103135
+  },
+  {
+    "function": "geo_sha256",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.03,
+    "calls": 7392
+  },
+  {
+    "function": "wood_contact_source_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.03,
+    "calls": 119006
+  },
+  {
+    "function": "wood_contact_collect_stops",
+    "self_seconds": 0.03,
+    "inclusive_seconds": 0.03,
+    "calls": 29712
+  },
+  {
+    "function": "geo_candidate_evaluate <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.03,
+    "calls": 1440
+  },
+  {
+    "function": "apply_scene_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.02,
+    "calls": 2385
+  },
+  {
+    "function": "apply_reference_guide <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.02,
+    "calls": 361
+  },
+  {
+    "function": "apply_spec_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.02,
+    "calls": 357
+  },
+  {
+    "function": "reference_contact_facts <cycle 1>",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.02,
+    "calls": 44568
+  },
+  {
+    "function": "app_validation_member",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.02,
+    "calls": 20513
+  },
+  {
+    "function": "geo_candidate_provider_hash",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.02,
+    "calls": 19821
+  },
+  {
+    "function": "malloc_consolidate",
+    "self_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": null
+  },
+  {
+    "function": "__internal_syscall_cancel",
+    "self_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": null
+  },
+  {
+    "function": "_dl_tunable_set_hugetlb",
+    "self_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": null
+  },
+  {
+    "function": "geo_source_node",
+    "self_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": 885350
+  },
+  {
+    "function": "clip_loop_order",
+    "self_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": 174937
+  },
+  {
+    "function": "wood_definition_sources_placement <cycle 1>",
+    "self_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": 133259
+  },
+  {
+    "function": "app_contact_facts",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.02,
+    "calls": 74280
+  },
+  {
+    "function": "write",
+    "self_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": null
+  },
+  {
+    "function": "__close_nocancel",
+    "self_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": null
+  },
+  {
+    "function": "app_validation_host",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 14289
+  },
+  {
+    "function": "apply_placement_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 199
+  },
+  {
+    "function": "reference_placement_frame <cycle 1>",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 111907
+  },
+  {
+    "function": "apply_scene_line_candidate.constprop.0 <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 928
+  },
+  {
+    "function": "reference_host_read <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 89081
+  },
+  {
+    "function": "app_grid_context",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 26879
+  },
+  {
+    "function": "app_validation_stops",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 4949
+  },
+  {
+    "function": "app_dp_context",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 6959
+  },
+  {
+    "function": "app_validation_place",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 4949
+  },
+  {
+    "function": "app_validation_end_faces",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 4949
+  },
+  {
+    "function": "geo_candidate_digest_matches",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 92623
+  },
+  {
+    "function": "app_candidate_create_with_deferred_sha",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 1440
+  },
+  {
+    "function": "parse_boundary_body",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 814
+  },
+  {
+    "function": "gettid",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "malloc",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "realloc",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "sbrk",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "__printf_buffer",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "__strtol_internal",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "__uflow",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "_init",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "_int_realloc",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "geo_source_edge",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 885350
+  },
+  {
+    "function": "timber_a0_footprint_uv",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 206150
+  },
+  {
+    "function": "wood_definition_sources_boundary <cycle 1>",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 178138
+  },
+  {
+    "function": "wood_grid_policy_definitions <cycle 1>",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 7122
+  },
+  {
+    "function": "geo_linear_definition_sources_guide <cycle 1>",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 1182
+  },
+  {
+    "function": "apply_beam_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 161
+  },
+  {
+    "function": "parse_scene_file <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 154
+  },
+  {
+    "function": "app_world_candidate_publish",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 1370
+  },
+  {
+    "function": "reference_sources_ensure",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 311221
+  },
+  {
+    "function": "app_validation_boundary_role",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 4949
+  },
+  {
+    "function": "wood_grid_world_valid_hook",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "geo_candidate_seal",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2746
+  },
+  {
+    "function": "app_reference_end_faces <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14856
+  },
+  {
+    "function": "wood_grid_rules_valid_hook",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "apply_grid_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 65
+  },
+  {
+    "function": "apply_boundary_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 218
+  },
+  {
+    "function": "app_reference_validation_obstacle",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2343
+  },
+  {
+    "function": "wood_definition_sources_beam",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2258
+  },
+  {
+    "function": "apply_column_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 39
+  },
+  {
+    "function": "eng_definition_hash",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 460
+  },
+  {
+    "function": "cmd_drag",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3
+  },
+  {
+    "function": "scene_draw_view",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1026
+  },
+  {
+    "function": "app_candidate_check",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1375
+  },
+  {
+    "function": "resolve_auto_span <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "scene_render",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 146
+  },
+  {
+    "function": "app_asm_context",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 23694
+  },
+  {
+    "function": "app_world_revalidate_staged <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 20
+  },
+  {
+    "function": "wood_grid_line_coord_in",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1148
+  },
+  {
+    "function": "app_fs_context",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15154
+  },
+  {
+    "function": "app_batch_candidate_apply",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3
+  },
+  {
+    "function": "reference_sources_dispose",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3479
+  },
+  {
+    "function": "apply_applyproj_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12
+  },
+  {
+    "function": "reference_sources_owned_free",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3474
+  },
+  {
+    "function": "app_contact_resolve_stops <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 29712
+  },
+  {
+    "function": "wood_grid_world_valid_direct",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "grid_sample_indices_in.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 648
+  },
+  {
+    "function": "world_replace_object <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9
+  },
+  {
+    "function": "world_dump_dsl",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 775
+  },
+  {
+    "function": "reference_default_world <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 301
+  },
+  {
+    "function": "wood_finish_sources_bind",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "geo_enclosure_sources_value",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 381
+  },
+  {
+    "function": "apply_delete_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6
+  },
+  {
+    "function": "wood_grid_sources_application",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 329
+  },
+  {
+    "function": "app_world_candidate_destroy",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1594
+  },
+  {
+    "function": "boundary_geometry_hash",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 70
+  },
+  {
+    "function": "apply_reference_move <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "reference_source_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8519
+  },
+  {
+    "function": "reference_dump",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 775
+  },
+  {
+    "function": "reference_boundary_geometry_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 27
+  },
+  {
+    "function": "reference_eval_timber_relation <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8907
+  },
+  {
+    "function": "reference_geometry_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 656
+  },
+  {
+    "function": "reference_quantity_raw <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1198
+  },
+  {
+    "function": "apply_subgrid_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "apply_datum_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "reference_grid_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "wood_world_validate_obstacles",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3474
+  },
+  {
+    "function": "validation_obstacle",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2341
+  },
+  {
+    "function": "app_validation_room",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 112
+  },
+  {
+    "function": "reference_preview_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9
+  },
+  {
+    "function": "world_revalidate <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3476
+  },
+  {
+    "function": "reference_member_owned",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "reference_binding_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14
+  },
+  {
+    "function": "json_reference_preview",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "wood_definition_sources_column",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 85
+  },
+  {
+    "function": "reference_sources_begin_candidate",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "apply_space_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 69
+  },
+  {
+    "function": "app_scene_candidate_apply <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4491
+  },
+  {
+    "function": "apply_timber_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1172
+  },
+  {
+    "function": "apply_reference_place <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1170
+  },
+  {
+    "function": "assembly_owned",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1170
+  },
+  {
+    "function": "wood_member_declare",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1170
+  },
+  {
+    "function": "app_boundary_replace <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  },
+  {
+    "function": "json_boundary_preview",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "json_engineering_capabilities",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 460
+  },
+  {
+    "function": "wood_grid_valid_in",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 613
+  },
+  {
+    "function": "wood_grid_bindings_rebuild",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "reference_guide_position <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1908
+  },
+  {
+    "function": "wood_grid_systems_rebuild",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "grid_axis_lines_in.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 32
+  },
+  {
+    "function": "app_scene_load_evaluate <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 154
+  },
+  {
+    "function": "reference_quantity <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1198
+  },
+  {
+    "function": "reference_named_quantity <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1176
+  },
+  {
+    "function": "wood_grid_system_hook",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 26
+  },
+  {
+    "function": "cmd_objects",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 36
+  },
+  {
+    "function": "json_reference_grid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "cmd_newid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 19
+  },
+  {
+    "function": "app_world_candidate_revalidate <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  },
+  {
+    "function": "app_grid_host",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 72
+  },
+  {
+    "function": "json_reference_geometry",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 52
+  },
+  {
+    "function": "json_candidate_timbers",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "wood_grid_install_binding <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 70
+  },
+  {
+    "function": "wood_grid_direct_check",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 56
+  },
+  {
+    "function": "space_construct",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 322
+  },
+  {
+    "function": "geo_aabb_project_uv",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 32
+  },
+  {
+    "function": "reference_subgrid_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "reference_query_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "wood_grid_source_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 930
+  },
+  {
+    "function": "app_member_reference_grid <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 170
+  },
+  {
+    "function": "reference_grid_definition",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 170
+  },
+  {
+    "function": "wd_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 25147
+  },
+  {
+    "function": "proj_rebind_aux",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "app_candidate_reopen",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  },
+  {
+    "function": "reference_fragment_candidate",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "wood_grid_parameter_definitions",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 648
+  },
+  {
+    "function": "reference_stage",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9
+  },
+  {
+    "function": "reference_guide_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "wood_grid_binding_definition_depend",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1098
+  },
+  {
+    "function": "json_reference_guide",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 13
+  },
+  {
+    "function": "json_candidate_guides",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "wood_grid_parent_count_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12
+  },
+  {
+    "function": "reference_datum_position <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 28
+  },
+  {
+    "function": "geo_ld_evaluate",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1192
+  },
+  {
+    "function": "apply_grid_binding_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "wood_grid_apply_system",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "wood_grid_child_check",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "apply_canvaspos_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 13
+  },
+  {
+    "function": "reference_guide_clip_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "cmd_proj",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  },
+  {
+    "function": "cmd_uv",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  },
+  {
+    "function": "wd_read_text.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 399777
+  },
+  {
+    "function": "wood_grid_coordinate_source <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 267919
+  },
+  {
+    "function": "wd_write",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 241760
+  },
+  {
+    "function": "wood_contact_source_decode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 238012
+  },
+  {
+    "function": "geo_loop_point_on_edge",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 222359
+  },
+  {
+    "function": "geo_loop_contains_point",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 221323
+  },
+  {
+    "function": "geo_frame_direction",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 167866
+  },
+  {
+    "function": "geo_source_copy_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 167608
+  },
+  {
+    "function": "geo_rectangle_footprint",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 162912
+  },
+  {
+    "function": "wd_reader <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 124752
+  },
+  {
+    "function": "wood_contact_source_collection_view",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 119006
+  },
+  {
+    "function": "wood_contact_source_describe",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 119006
+  },
+  {
+    "function": "utf8_seq_len",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 115891
+  },
+  {
+    "function": "geo_placement_definition_decode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 99545
+  },
+  {
+    "function": "geo_placement_sources_definition <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 99545
+  },
+  {
+    "function": "app_eng_context",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 98580
+  },
+  {
+    "function": "placement_effective_boundary",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 96797
+  },
+  {
+    "function": "wood_grid_codec_axis",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 94479
+  },
+  {
+    "function": "reference_region_geometry",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 89069
+  },
+  {
+    "function": "geo_eval_register_many",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 62676
+  },
+  {
+    "function": "wood_grid_codec_bool",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 54592
+  },
+  {
+    "function": "wood_grid_codec_u32",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 52811
+  },
+  {
+    "function": "app_fs_obstacle_box",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 52536
+  },
+  {
+    "function": "geo_loop_contains_rect",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 52484
+  },
+  {
+    "function": "geo_region_contains_rect",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 52484
+  },
+  {
+    "function": "asm_error.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 41870
+  },
+  {
+    "function": "app_reference_host_read",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 39038
+  },
+  {
+    "function": "geo_frame_point",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 43775
+  },
+  {
+    "function": "wood_definition_sources_member <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 33340
+  },
+  {
+    "function": "app_boundary_compose",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 30957
+  },
+  {
+    "function": "wood_contact_sources_collect <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 29712
+  },
+  {
+    "function": "wood_member_end_contact_check",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 29604
+  },
+  {
+    "function": "wd_describe",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 25147
+  },
+  {
+    "function": "wood_definition_source_decode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 25147
+  },
+  {
+    "function": "app_member_reference_at <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 23432
+  },
+  {
+    "function": "wood_grid_def_number",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21192
+  },
+  {
+    "function": "wood_contact_boundary_interval",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 20255
+  },
+  {
+    "function": "wood_stop_count_legal",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 19804
+  },
+  {
+    "function": "placement_outline",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 18603
+  },
+  {
+    "function": "polygon_loop_bounds",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16724
+  },
+  {
+    "function": "wood_grid_codec_rule",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 33389
+  },
+  {
+    "function": "wd_text.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16035
+  },
+  {
+    "function": "app_reference_end_stops <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14856
+  },
+  {
+    "function": "timber_boundary_role_check",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14856
+  },
+  {
+    "function": "wood_contact_end_faces_with_sources <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14856
+  },
+  {
+    "function": "wood_member_boundary_role_check",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14856
+  },
+  {
+    "function": "parse_coord",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 13267
+  },
+  {
+    "function": "app_candidate_bind_core",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12960
+  },
+  {
+    "function": "app_validation_footprint",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12783
+  },
+  {
+    "function": "loop_edge_outward_normal",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12206
+  },
+  {
+    "function": "wood_grid_codec_int",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 11867
+  },
+  {
+    "function": "geo_pd_vector_write",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 11820
+  },
+  {
+    "function": "app_sp_context",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 11241
+  },
+  {
+    "function": "geo_placement_sources_describe",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 11100
+  },
+  {
+    "function": "geo_placement_sources_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 11100
+  },
+  {
+    "function": "wood_grid_rule_u32",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 10670
+  },
+  {
+    "function": "wood_member_face_room",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 10620
+  },
+  {
+    "function": "wood_member_primary_axis_check",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9915
+  },
+  {
+    "function": "wood_definition_sources_dimension <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9908
+  },
+  {
+    "function": "geo_region_contains_point",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9902
+  },
+  {
+    "function": "timber_place_a0_on_surface",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9902
+  },
+  {
+    "function": "wood_member_place_a0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9902
+  },
+  {
+    "function": "wood_stop_pick",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9876
+  },
+  {
+    "function": "js_string_body",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9804
+  },
+  {
+    "function": "reference_source_describe",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8520
+  },
+  {
+    "function": "geo_eval_clear",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8478
+  },
+  {
+    "function": "reference_placement_binding <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8193
+  },
+  {
+    "function": "geo_loop_is_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7922
+  },
+  {
+    "function": "geo_region_is_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7421
+  },
+  {
+    "function": "app_candidate_hash_matches",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6932
+  },
+  {
+    "function": "reference_may_affect",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6649
+  },
+  {
+    "function": "wood_sp_rebuild",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9503
+  },
+  {
+    "function": "geo_frame_is_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6407
+  },
+  {
+    "function": "wood_contact_owner_extension",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 5591
+  },
+  {
+    "function": "parameter_reference_edit",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 5143
+  },
+  {
+    "function": "app_validation_placement_id",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4961
+  },
+  {
+    "function": "app_member_reference_issue_count",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4955
+  },
+  {
+    "function": "app_assembly_saved_dimensions",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "app_member_reference_boundary",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "app_member_reference_end <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "app_member_reference_placement <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "app_member_reference_primary",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "app_member_reference_span <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "geo_strip_intervals",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "surface_primary_axis_check",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "wood_assembly_sources_owned",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "wood_member_anchor_corner",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "wood_member_reference_compute <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "wood_member_reference_place <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "wood_member_resolve_span",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4954
+  },
+  {
+    "function": "app_member_reference_place",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4953
+  },
+  {
+    "function": "app_member_reference_write",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4953
+  },
+  {
+    "function": "geo_frame_project_uv",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4949
+  },
+  {
+    "function": "app_world_candidate_describe_sources",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4930
+  },
+  {
+    "function": "jt_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4857
+  },
+  {
+    "function": "app_scene_direct_dimensions_allowed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4491
+  },
+  {
+    "function": "app_member_reference_edge",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4058
+  },
+  {
+    "function": "app_member_reference_evaluate",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3953
+  },
+  {
+    "function": "app_scene_find_boundary",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3870
+  },
+  {
+    "function": "app_scene_file_sources_ready",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3557
+  },
+  {
+    "function": "parse_uv",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3493
+  },
+  {
+    "function": "geo_enclosure_sources_register",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "geo_linear_definition_sources_register",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "geo_parameter_sources_register_with_definitions",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "geo_placement_sources_register",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "geo_region_key_sources_register",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "geo_version_sources_register",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "wood_assembly_sources_create",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "wood_contact_sources_create",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "wood_definition_sources_create",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "wood_engineering_sources_register",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "wood_finish_sources_create",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "wood_grid_sources_create",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "wood_sp_sources_create",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3482
+  },
+  {
+    "function": "app_eng_serializable",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "boundary_keys_reconcile.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "engineering_serializable",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "geo_parameter_source_bound",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "geo_parameter_sources_rebuild",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "wood_assembly_generation_prepare",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "wood_assembly_rebuild",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "wood_dp_rebuild",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "wood_engineering_rebuild",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "wood_fs_rebuild",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "wood_grid_rules_world_valid_direct",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "wood_sp_source_begin",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "wood_sp_source_context_matches",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3477
+  },
+  {
+    "function": "geo_version_sources_definitions",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3470
+  },
+  {
+    "function": "wood_assembly_generation_check",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3470
+  },
+  {
+    "function": "wood_engineering_sources_definitions",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3470
+  },
+  {
+    "function": "wood_engineering_sources_metadata",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3470
+  },
+  {
+    "function": "jt_polygon",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3318
+  },
+  {
+    "function": "wood_assembly_dimensions_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3033
+  },
+  {
+    "function": "geo_placement_definition_encode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2955
+  },
+  {
+    "function": "world_definitions_equal",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2923
+  },
+  {
+    "function": "wood_grid_axis_lines",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2896
+  },
+  {
+    "function": "app_placement_boundary",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2745
+  },
+  {
+    "function": "geo_finite_sequence",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2668
+  },
+  {
+    "function": "wood_assembly_generation_integrity",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2489
+  },
+  {
+    "function": "reference_source_is_dimension",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2394
+  },
+  {
+    "function": "jt_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2389
+  },
+  {
+    "function": "geo_linear_definition_source_decode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2384
+  },
+  {
+    "function": "reference_source_name",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2351
+  },
+  {
+    "function": "scene_emit_polygon",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2139
+  },
+  {
+    "function": "wood_grid_source_get <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2126
+  },
+  {
+    "function": "geo_regions_stage",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2118
+  },
+  {
+    "function": "geo_loop_clip_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1982
+  },
+  {
+    "function": "wood_grid_axis_lines_in_resolved <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1949
+  },
+  {
+    "function": "geo_linear_append",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1929
+  },
+  {
+    "function": "wood_grid_source_decode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1860
+  },
+  {
+    "function": "eng_target_json",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1832
+  },
+  {
+    "function": "timber_project_faces",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1770
+  },
+  {
+    "function": "wood_grid_codec_application_prefix",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1685
+  },
+  {
+    "function": "app_scene_file_graph_empty",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1664
+  },
+  {
+    "function": "app_member_reference_guide",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1609
+  },
+  {
+    "function": "guide_line_get_local_segments",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1578
+  },
+  {
+    "function": "geo_ld_expression_read",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1562
+  },
+  {
+    "function": "wood_grid_line_coord_in_resolved <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1477
+  },
+  {
+    "function": "geo_enclosure_evaluate",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1472
+  },
+  {
+    "function": "wood_grid_decode_application_value",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1960
+  },
+  {
+    "function": "geo_placements_stage",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1444
+  },
+  {
+    "function": "placement_structure",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1444
+  },
+  {
+    "function": "app_candidate_call",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1440
+  },
+  {
+    "function": "app_candidate_evaluate <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1440
+  },
+  {
+    "function": "geo_candidate_destroy",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1432
+  },
+  {
+    "function": "grid_subdivision_used",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1380
+  },
+  {
+    "function": "app_world_candidate_equal",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1373
+  },
+  {
+    "function": "geo_regions_put",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1264
+  },
+  {
+    "function": "engineering_used",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1235
+  },
+  {
+    "function": "geo_linear_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1198
+  },
+  {
+    "function": "reference_resolve_linear",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1198
+  },
+  {
+    "function": "geo_ld_describe",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1192
+  },
+  {
+    "function": "geo_guide_definition_decode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1182
+  },
+  {
+    "function": "geo_guide_definition_encode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1182
+  },
+  {
+    "function": "geo_guides_evaluate_definition <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1182
+  },
+  {
+    "function": "geo_ld_expression_write",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1174
+  },
+  {
+    "function": "app_member_declaration_owned",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1170
+  },
+  {
+    "function": "apply_place_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1170
+  },
+  {
+    "function": "wood_member_construct",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1170
+  },
+  {
+    "function": "wood_member_declaration_role",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1170
+  },
+  {
+    "function": "wood_grid_decode_application",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1148
+  },
+  {
+    "function": "wood_grid_result",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1132
+  },
+  {
+    "function": "app_boundary_region_definition",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 978
+  },
+  {
+    "function": "rc_aabb_project",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 960
+  },
+  {
+    "function": "reference_face_format",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 944
+  },
+  {
+    "function": "wood_grid_source_describe",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 930
+  },
+  {
+    "function": "jt_annotated_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 885
+  },
+  {
+    "function": "app_boundary_policy",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 854
+  },
+  {
+    "function": "app_boundary_stage",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 854
+  },
+  {
+    "function": "app_placement_stage",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 812
+  },
+  {
+    "function": "parse_placement_body",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 798
+  },
+  {
+    "function": "reference_face_parse",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 781
+  },
+  {
+    "function": "world_dump_grids",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 775
+  },
+  {
+    "function": "parse_edge_ref",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 774
+  },
+  {
+    "function": "app_member_reference_evaluate_guide",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 726
+  },
+  {
+    "function": "geo_named_value_name_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 714
+  },
+  {
+    "function": "wood_grid_codec_write_axis",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 702
+  },
+  {
+    "function": "app_replace_evaluate <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 645
+  },
+  {
+    "function": "wood_grid_publish_application_cache",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 635
+  },
+  {
+    "function": "reference_dp_write <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 632
+  },
+  {
+    "function": "geo_enclosure_source_decode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 620
+  },
+  {
+    "function": "wood_grid_def_axis",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 594
+  },
+  {
+    "function": "wood_grid_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 587
+  },
+  {
+    "function": "geo_enclosure_source_decode_definition",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 536
+  },
+  {
+    "function": "reference_grid_host <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 500
+  },
+  {
+    "function": "wood_grid_line_source_ref",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 498
+  },
+  {
+    "function": "wood_grid_host_source",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 487
+  },
+  {
+    "function": "jt_begin_view",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 438
+  },
+  {
+    "function": "jt_end_view",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 438
+  },
+  {
+    "function": "jt_rect",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 438
+  },
+  {
+    "function": "app_history_record",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 416
+  },
+  {
+    "function": "geo_grid_copy_axis",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 386
+  },
+  {
+    "function": "reference_dump_guide",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 376
+  },
+  {
+    "function": "reference_guide_ready",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 376
+  },
+  {
+    "function": "geo_guides_put",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 371
+  },
+  {
+    "function": "app_guide_put",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 368
+  },
+  {
+    "function": "apply_guide_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 361
+  },
+  {
+    "function": "geo_named_values_put",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 357
+  },
+  {
+    "function": "wood_grid_anchor_line_coord_resolved",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 333
+  },
+  {
+    "function": "wood_grid_application_hook",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 329
+  },
+  {
+    "function": "json_deleted_objects",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 328
+  },
+  {
+    "function": "wood_grid_application_value",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 325
+  },
+  {
+    "function": "wood_grid_encode_application_value",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 325
+  },
+  {
+    "function": "geo_enclosure_source_members",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 310
+  },
+  {
+    "function": "geo_enclosure_sources_describe",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 310
+  },
+  {
+    "function": "geo_enclosure_sources_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 310
+  },
+  {
+    "function": "wood_grid_application_evaluate_direct <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 306
+  },
+  {
+    "function": "geo_region_keys_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 242
+  },
+  {
+    "function": "geo_enclosures_stage",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 226
+  },
+  {
+    "function": "geo_lattice_coord",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 216
+  },
+  {
+    "function": "wood_grid_lattice_coord",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 216
+  },
+  {
+    "function": "cpos_json",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 194
+  },
+  {
+    "function": "geo_grid_systems_put",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 241
+  },
+  {
+    "function": "wood_grid_dimension_source_ref",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 180
+  },
+  {
+    "function": "app_member_reference_grid_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 170
+  },
+  {
+    "function": "wood_grid_sources_definition <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 170
+  },
+  {
+    "function": "wood_grid_sources_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 170
+  },
+  {
+    "function": "wood_grid_codec_utf8",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 159
+  },
+  {
+    "function": "geo_enclosure_source_result <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 155
+  },
+  {
+    "function": "engineering_dump_grid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 148
+  },
+  {
+    "function": "geo_loop_rect_area2",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 136
+  },
+  {
+    "function": "geo_region_set_intersects_rect_positive",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 136
+  },
+  {
+    "function": "wood_grid_cell_bounds",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 136
+  },
+  {
+    "function": "apply_grid_source_rule_highwater",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 133
+  },
+  {
+    "function": "wood_grid_codec_system",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 133
+  },
+  {
+    "function": "wood_grid_codec_text.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 133
+  },
+  {
+    "function": "wood_grid_source_put",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 133
+  },
+  {
+    "function": "geo_region_key_source_decode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 114
+  },
+  {
+    "function": "geo_interval_subdivide",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 108
+  },
+  {
+    "function": "geo_region_vertex_by_key",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 104
+  },
+  {
+    "function": "side_flush_outline",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 104
+  },
+  {
+    "function": "geo_lattice_index_at",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 96
+  },
+  {
+    "function": "geo_region_key_source_ref",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 95
+  },
+  {
+    "function": "geo_grid_axis_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 88
+  },
+  {
+    "function": "wood_fs_trim_tail",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 74
+  },
+  {
+    "function": "wood_grid_decode_binding",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 70
+  },
+  {
+    "function": "boundary_vertex_by_key",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 66
+  },
+  {
+    "function": "app_history_unrecord",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 60
+  },
+  {
+    "function": "wood_grid_application_dimension_direct",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 60
+  },
+  {
+    "function": "wood_grid_dimension_hook",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 60
+  },
+  {
+    "function": "wood_grid_sources_dimension <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 60
+  },
+  {
+    "function": "geo_region_key_describe",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 57
+  },
+  {
+    "function": "geo_region_key_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 57
+  },
+  {
+    "function": "geo_region_key_ledger_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 57
+  },
+  {
+    "function": "wood_grid_begin_direct",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 57
+  },
+  {
+    "function": "wood_grid_direct_declared",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 56
+  },
+  {
+    "function": "geo_lattice_window",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 48
+  },
+  {
+    "function": "grid_lattice_window",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 48
+  },
+  {
+    "function": "geo_enclosure_axis_bound",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 41
+  },
+  {
+    "function": "space_axis_bound",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 41
+  },
+  {
+    "function": "geo_region_key_ledger_decode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 38
+  },
+  {
+    "function": "proj_edge_covered",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 36
+  },
+  {
+    "function": "reference_axis_definition_equal",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 36
+  },
+  {
+    "function": "wood_grid_binding_cache",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 32
+  },
+  {
+    "function": "wood_grid_binding_hook <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 32
+  },
+  {
+    "function": "wood_stop_ref_candidates",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 32
+  },
+  {
+    "function": "geo_region_keys_put",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 31
+  },
+  {
+    "function": "geo_grid_system_validate",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 30
+  },
+  {
+    "function": "proj_sort_coords",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 30
+  },
+  {
+    "function": "geo_region_keys_reconcile",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 27
+  },
+  {
+    "function": "geo_grid_rules_validate",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 26
+  },
+  {
+    "function": "geo_grid_system_evaluate",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 26
+  },
+  {
+    "function": "wood_grid_codec_write_text.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 26
+  },
+  {
+    "function": "wood_grid_encode_system_value",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 26
+  },
+  {
+    "function": "wood_grid_rules_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 26
+  },
+  {
+    "function": "wood_grid_system_evaluate_direct",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 26
+  },
+  {
+    "function": "guide_offset_in_range",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 24
+  },
+  {
+    "function": "geo_enclosures_find",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21
+  },
+  {
+    "function": "app_world_swap",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 20
+  },
+  {
+    "function": "geo_grid_binding_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 19
+  },
+  {
+    "function": "geo_region_key_ledger_encode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 19
+  },
+  {
+    "function": "geo_region_key_sources_vertex <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 19
+  },
+  {
+    "function": "reference_grid_vertex",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 19
+  },
+  {
+    "function": "wood_grid_binding_cache_direct <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 19
+  },
+  {
+    "function": "wood_grid_vertex_source",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 19
+  },
+  {
+    "function": "geo_datum_intersection",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 18
+  },
+  {
+    "function": "json_section_profile_state",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16
+  },
+  {
+    "function": "proj_add_surface",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16
+  },
+  {
+    "function": "wood_asm_binding_slot_values",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16
+  },
+  {
+    "function": "world_next_surface_id",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16
+  },
+  {
+    "function": "classify_rect_outline",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15
+  },
+  {
+    "function": "reference_system_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14
+  },
+  {
+    "function": "geo_datum_definition_decode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 10
+  },
+  {
+    "function": "geo_datum_definition_encode",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 10
+  },
+  {
+    "function": "geo_datums_evaluate_definition <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 10
+  },
+  {
+    "function": "geo_linear_definition_sources_datum <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 10
+  },
+  {
+    "function": "wood_grid_root_get <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 10
+  },
+  {
+    "function": "grid_cell_ref_parse",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "json_grid_axis_definition",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "json_section_profile_impact",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "proj_space_drop_member",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "wood_grid_rule_i64",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "wood_grid_sources_cell <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "wood_sp_intersection",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "proj_redistribute_holes",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "proj_split_loop",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "scene_error",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "set_revalidate_error",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "wood_engineering_follow_fragment",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "history_restore_world",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6
+  },
+  {
+    "function": "wood_engineering_drop_owned",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6
+  },
+  {
+    "function": "wood_fs_reference_owner",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6
+  },
+  {
+    "function": "app_member_reference_grid_scope",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "app_world_revalidate_evaluate",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "apply_boundary_keys_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "apply_grid_system_line <cycle 2>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "apply_move_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "geo_grid_binding_normalize",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "geo_grid_systems_redeclare",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "grid_system_read_name",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "subgrid_divisions_parse.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "view_unproject_on_surface_near",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "wood_grid_apply_binding",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "wood_grid_cell_resolve",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "wood_grid_source_redeclare",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "world_drop_canvas_pos",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "pf_find",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3
+  },
+  {
+    "function": "proj_spawn_face",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3
+  },
+  {
+    "function": "geo_datums_put",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "geo_enclosures_remove",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "wood_grid_prepare_child",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "app_member_reference_first_error",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  },
+  {
+    "function": "app_member_reference_issue",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  },
+  {
+    "function": "apply_span_auto_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  },
+  {
+    "function": "scene_pick_at",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  }
+]

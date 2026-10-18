@@ -1,0 +1,999 @@
+{
+  "repository_prefix": "evidence/geo261-codex-suite-performance-diagnostic-20261018",
+  "publication_base_requested": "a25d975bdcc809bc63593d5b434663083395444b",
+  "inventory_excludes_itself": true,
+  "total_bytes": 12092668,
+  "omissions": {
+    "raw_measured_gmon": {
+      "count": 1004,
+      "bytes": 508913252,
+      "reason": "原始profiling資料非executable；完整hash公開，避免重複508.9MB入Git"
+    },
+    "actual_binaries": {
+      "count": 6,
+      "reason": "保留精確binary/sidecar/source identity，不公開executable"
+    },
+    "frozen_tool_source": "僅SHA與兩處static差異；未以改名形式把工具或來源快照放入公開包"
+  },
+  "source_inventory": {
+    "path": "/workspace/geo261-validation-20261018/performance/suite-diagnostic-publication-v1/inventory.json",
+    "sha256": "1d79057e3fb796a56fe8ac3ddd368ad218f6eba1b248261015d18647b76b833c",
+    "bytes": 57440,
+    "mapping": "files.path -> public_files.destination_relative; payload bytes unchanged"
+  },
+  "public_count": 162,
+  "public_files": [
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-diagnostic-publication-v1/payload/README.md",
+      "destination_relative": "README.md",
+      "bytes": 8263,
+      "sha256": "0d66f11fc3bee39a88f2b8dc64ae8b6470de68180781cc1ebb3a72e228cea1b4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/analysis-v1/profile-verification.json",
+      "destination_relative": "analysis/dynamic-profile-verification.json",
+      "bytes": 122778,
+      "sha256": "585ecabc2a3bd554ec0afc3c1f64ad6c965a827d72ce80e1b261c8f225580340"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/analysis-normal-v1/normal-analysis.json",
+      "destination_relative": "analysis/normal-analysis.json",
+      "bytes": 13951,
+      "sha256": "c89ba0c74f0878d56a127fae3bf962936ee30c43caba4afbbf1f3dcc77031aae"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/analysis-normal-v1/case-child-cpu.csv",
+      "destination_relative": "analysis/normal-case-child-cpu.csv",
+      "bytes": 5502,
+      "sha256": "9857d05d146c45a71954b65758557bac2354cab06644f2451e5a31e53445136a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/analysis-normal-v1/event-scoped-known-probe.csv",
+      "destination_relative": "analysis/normal-event-scoped-known-probe.csv",
+      "bytes": 477349,
+      "sha256": "3f2cc3278b91da41328c3b2fd6d832a3890cf7b038d8830dc0a227927b053f8a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/analysis-v1/profil-timer-inputs.json",
+      "destination_relative": "analysis/profil-timer-inputs.json",
+      "bytes": 570,
+      "sha256": "57ee95d16dd440e1d4c4a0354f3aa1d31d589519798f2277e33f9d61d204b454"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/analysis-v1/profil-timer-readonly.txt",
+      "destination_relative": "analysis/profil-timer-readonly.txt",
+      "bytes": 6565,
+      "sha256": "f49030657073c3e18b075e4b3df9a86323ad0ee45efe1826b25657cc8cc946c0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/analysis-v1/verification.json",
+      "destination_relative": "analysis/static-profile-verification.json",
+      "bytes": 13232,
+      "sha256": "63b0fc40526cbd6d5e6bf88870d7d8ef196877bd54a21e32c54070702ab252d9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/callgraph.stderr",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/callgraph.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/callgraph.txt",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/callgraph.txt",
+      "bytes": 277988,
+      "sha256": "5eefbb179c0bc66e4d2d0b2b70fc7fb06d2b5262efe6ed2ec77f1d8a254d4008"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/commands.json",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/commands.json",
+      "bytes": 139299,
+      "sha256": "c739b0802a0f4e164289e7947be5e64fec60df8fad19474f8764e294a8ff7c2e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/flat.stderr",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/flat.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/flat.txt",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/flat.txt",
+      "bytes": 39445,
+      "sha256": "4c186df76d27fba443d9d5e68cf94b1e2504a6a83a2b5a010da18266a26423d0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/full.stderr",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/full.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/full.txt",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/full.txt",
+      "bytes": 317435,
+      "sha256": "2e9a596fd4f78b68bacc7e8402d4bd29afbcd7f7aafdc37306608ea7f3166670"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/functions.json",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/functions.json",
+      "bytes": 63763,
+      "sha256": "7cb46fa4446eb9c74558d721f2e13fd5e56fdc2439e2f18dda40986072650d1d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/inputs.json",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/inputs.json",
+      "bytes": 449714,
+      "sha256": "9f957396708ff0717b2a2ecc7c578ca94f368294115f509250bc529bc1d2e48a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/top20-calls.csv",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/top20-calls.csv",
+      "bytes": 882,
+      "sha256": "7370d8578f0c82bedca58c053fd9d3143241c8ced821e5b71d5bff04c7d16834"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/top20-inclusive_seconds.csv",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/top20-inclusive_seconds.csv",
+      "bytes": 838,
+      "sha256": "4bbfbad02263824119603eb5d15dc63769c858784f00beff9d02335ca4b6aeea"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/gprof-report/top20-self_seconds.csv",
+      "destination_relative": "dynamic/gprof-candidate/gprof-report/top20-self_seconds.csv",
+      "bytes": 857,
+      "sha256": "ea9532a0b69f193da4e9d72aece7f447cbd98a418c7f41fb37833b2d350aca2d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/observer-errors.json",
+      "destination_relative": "dynamic/gprof-candidate/observer-errors.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/receipt.json",
+      "destination_relative": "dynamic/gprof-candidate/receipt.json",
+      "bytes": 2653,
+      "sha256": "a1edd7ecab4b91f85c6a68942ee1a5266e3329b5e07d7a7acb135c37cd456d3d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/suite.json",
+      "destination_relative": "dynamic/gprof-candidate/suite.json",
+      "bytes": 352,
+      "sha256": "0fa9b7e69233a5836fceb2e72af2735def659681e1b001a7c4032b75287fc23d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/suite.unittest.log",
+      "destination_relative": "dynamic/gprof-candidate/suite.unittest.log",
+      "bytes": 124,
+      "sha256": "29dbcb4cd8a83c9aea5614274d1bc3ba2aa11126631a746add050b9a621fffa8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/worker-process.json",
+      "destination_relative": "dynamic/gprof-candidate/worker-process.json",
+      "bytes": 1124,
+      "sha256": "1dd5cefd2d58f898f9337792f7e13e1f1da197fccb78aaffc36b6d69c7c125d4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/worker.stderr",
+      "destination_relative": "dynamic/gprof-candidate/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153919-4bf89481-candidate-gprof-profile/worker.stdout",
+      "destination_relative": "dynamic/gprof-candidate/worker.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/callgraph.stderr",
+      "destination_relative": "dynamic/gprof-main/gprof-report/callgraph.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/callgraph.txt",
+      "destination_relative": "dynamic/gprof-main/gprof-report/callgraph.txt",
+      "bytes": 99462,
+      "sha256": "268c3a843cddf3d911cedcd14e1a0862b655eec654f0606fc313c663a2f88f7b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/commands.json",
+      "destination_relative": "dynamic/gprof-main/gprof-report/commands.json",
+      "bytes": 135519,
+      "sha256": "9c2878e52c22302cf71e9cb8e1cbba20c36318300cc0fcc0e5d3485ae5a3f428"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/flat.stderr",
+      "destination_relative": "dynamic/gprof-main/gprof-report/flat.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/flat.txt",
+      "destination_relative": "dynamic/gprof-main/gprof-report/flat.txt",
+      "bytes": 14201,
+      "sha256": "50b64891f1b24a2edbd8f1fc60e02f53ae53c97ff5da3b0dfad7af7cd43aaa47"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/full.stderr",
+      "destination_relative": "dynamic/gprof-main/gprof-report/full.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/full.txt",
+      "destination_relative": "dynamic/gprof-main/gprof-report/full.txt",
+      "bytes": 113665,
+      "sha256": "2189874186aec360746e0f17f0d90c027562cbd2d59d72ddd543174933f1c6f4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/functions.json",
+      "destination_relative": "dynamic/gprof-main/gprof-report/functions.json",
+      "bytes": 23023,
+      "sha256": "340329ebb50f05df94b19d10e81d66a6c4f8c9e88b84148b5338579e15529001"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/inputs.json",
+      "destination_relative": "dynamic/gprof-main/gprof-report/inputs.json",
+      "bytes": 444684,
+      "sha256": "1161e40a00c67137aa56e695866f40385e46fd8ec4468405907e7441df0bd479"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/top20-calls.csv",
+      "destination_relative": "dynamic/gprof-main/gprof-report/top20-calls.csv",
+      "bytes": 803,
+      "sha256": "179dd100c765b66ae469e3c93255e1998832ce9c435c6fa9cc92d403be49275d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/top20-inclusive_seconds.csv",
+      "destination_relative": "dynamic/gprof-main/gprof-report/top20-inclusive_seconds.csv",
+      "bytes": 780,
+      "sha256": "1e1b9e53e82c2543b60b064ccb3b681b38f7f8eaba8c3b28be3681256f78db92"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/gprof-report/top20-self_seconds.csv",
+      "destination_relative": "dynamic/gprof-main/gprof-report/top20-self_seconds.csv",
+      "bytes": 860,
+      "sha256": "df10d388ad87fc8620a344c25f5f280e8391141952bb2746b07e35697c1eff6a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/observer-errors.json",
+      "destination_relative": "dynamic/gprof-main/observer-errors.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/receipt.json",
+      "destination_relative": "dynamic/gprof-main/receipt.json",
+      "bytes": 2613,
+      "sha256": "0d6a71feb1669f96ef99b30eafdcbc73ac76e81631dd430e3ebba7ab3ef26566"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/suite.json",
+      "destination_relative": "dynamic/gprof-main/suite.json",
+      "bytes": 352,
+      "sha256": "d49946366706daf94282bc4be900a99f6471fc4de7e57713ee54c131cdc41702"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/suite.unittest.log",
+      "destination_relative": "dynamic/gprof-main/suite.unittest.log",
+      "bytes": 124,
+      "sha256": "9ce493a76a7caab0ec0dceb46384b2c26402fca4ffe7b014b4da06028704a775"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/worker-process.json",
+      "destination_relative": "dynamic/gprof-main/worker-process.json",
+      "bytes": 1109,
+      "sha256": "a8de36f740a6b1fe78457d3503e9f430eba1b0fa1bafaf4a3237bb14d713f172"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/worker.stderr",
+      "destination_relative": "dynamic/gprof-main/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153816-6147b903-main-gprof-profile/worker.stdout",
+      "destination_relative": "dynamic/gprof-main/worker.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153621-0968be8e-candidate-normal-normal/children.json",
+      "destination_relative": "dynamic/normal-candidate/children.json",
+      "bytes": 352399,
+      "sha256": "790e731742269a41b94983a72750ed690e504dc2c87b8aa68b75e6049f42142c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153621-0968be8e-candidate-normal-normal/events.json",
+      "destination_relative": "dynamic/normal-candidate/events.json",
+      "bytes": 1668732,
+      "sha256": "e662e757a28aa4c119398e064db474657dc10da6a5cbca039794d94650133f33"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153621-0968be8e-candidate-normal-normal/observer-errors.json",
+      "destination_relative": "dynamic/normal-candidate/observer-errors.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153621-0968be8e-candidate-normal-normal/receipt.json",
+      "destination_relative": "dynamic/normal-candidate/receipt.json",
+      "bytes": 2545,
+      "sha256": "80aa38cd136be8953922da9305eec24932094b2940a44a3e95494d02663c28bc"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153621-0968be8e-candidate-normal-normal/suite.json",
+      "destination_relative": "dynamic/normal-candidate/suite.json",
+      "bytes": 352,
+      "sha256": "74559fa266f365e28601d404db1e997f3060543e1863407413e03911d4feccbd"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153621-0968be8e-candidate-normal-normal/suite.unittest.log",
+      "destination_relative": "dynamic/normal-candidate/suite.unittest.log",
+      "bytes": 124,
+      "sha256": "3561c53768d112081da0fd637a6b7a686747b517a3d0d44e129bbcaaffa4bf76"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153621-0968be8e-candidate-normal-normal/worker-process.json",
+      "destination_relative": "dynamic/normal-candidate/worker-process.json",
+      "bytes": 1122,
+      "sha256": "30a5947420d595f515c592422b368b192ee796ad9e7e3e9011eddbcca7302b33"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153621-0968be8e-candidate-normal-normal/worker.stderr",
+      "destination_relative": "dynamic/normal-candidate/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153621-0968be8e-candidate-normal-normal/worker.stdout",
+      "destination_relative": "dynamic/normal-candidate/worker.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153520-d2366489-main-normal-normal/children.json",
+      "destination_relative": "dynamic/normal-main/children.json",
+      "bytes": 348383,
+      "sha256": "66dc787e4c6ce94a040100bd3a1a92c490d59e126469bbe90663c4ffd14e5f1f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153520-d2366489-main-normal-normal/events.json",
+      "destination_relative": "dynamic/normal-main/events.json",
+      "bytes": 1663940,
+      "sha256": "c035b95b183ae88ee203dbe77afd589fc009da0a23a4e41f80ece2617b4d87ba"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153520-d2366489-main-normal-normal/observer-errors.json",
+      "destination_relative": "dynamic/normal-main/observer-errors.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153520-d2366489-main-normal-normal/receipt.json",
+      "destination_relative": "dynamic/normal-main/receipt.json",
+      "bytes": 2503,
+      "sha256": "843e5017d9b3dd1bd7b33ef40b3f847a84b415013e487a6a06ac7e78ce046ae6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153520-d2366489-main-normal-normal/suite.json",
+      "destination_relative": "dynamic/normal-main/suite.json",
+      "bytes": 352,
+      "sha256": "3e1a2aafccf27d01b01fbd576fe0416aa84523773aceda8bc2d44c27a73bd89d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153520-d2366489-main-normal-normal/suite.unittest.log",
+      "destination_relative": "dynamic/normal-main/suite.unittest.log",
+      "bytes": 124,
+      "sha256": "626ab30b214257cbc0bf9db44cb5cf20f5c1bf7d81c12eb3ed384c72c820242e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153520-d2366489-main-normal-normal/worker-process.json",
+      "destination_relative": "dynamic/normal-main/worker-process.json",
+      "bytes": 1109,
+      "sha256": "5b8c3c04bc4c0a63d38855165663d81e5c8aa137176e8ba36a2b4c913c5a9955"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153520-d2366489-main-normal-normal/worker.stderr",
+      "destination_relative": "dynamic/normal-main/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153520-d2366489-main-normal-normal/worker.stdout",
+      "destination_relative": "dynamic/normal-main/worker.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-candidate-registry/command.process.json",
+      "destination_relative": "formal/integration/command.process.json",
+      "bytes": 1096,
+      "sha256": "f7db3b653d4c2e36edfadb3edbf440e7739fd2f946c36a6d198bf6946ff58d82"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-candidate-registry/command.stderr",
+      "destination_relative": "formal/integration/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-candidate-registry/command.stdout",
+      "destination_relative": "formal/integration/command.stdout",
+      "bytes": 6870,
+      "sha256": "d6f9d59808720c445005a79c5ea4be44b2c46b3f29bf4980bab892fa1c7c46de"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-candidate-registry/receipt.json",
+      "destination_relative": "formal/integration/receipt.json",
+      "bytes": 14274,
+      "sha256": "da5153f9bb951b9550e56bea886e8a54b3a45a19cad4f58633c4161495e09a9e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-candidate-registry/suite-logs/py_test_bridge_integrity.json",
+      "destination_relative": "formal/integration/suite-logs/py_test_bridge_integrity.json",
+      "bytes": 352,
+      "sha256": "a4d7a66b1e2af35d73f8ec812817fb515e071f8f7ab53b5f6c8288fa4876b7b2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-candidate-registry/suite-logs/py_test_bridge_integrity.unittest.log",
+      "destination_relative": "formal/integration/suite-logs/py_test_bridge_integrity.unittest.log",
+      "bytes": 124,
+      "sha256": "c7633733ab1de89a15aa7eae99ec6c9a125c35d161c408d54be4e3caf443ab7b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-main-registry/command.process.json",
+      "destination_relative": "formal/main/command.process.json",
+      "bytes": 1095,
+      "sha256": "f70f8eb938c3e8d201ad1c61f426302399ce6be0635a7d13d9250d6d0e22f840"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-main-registry/command.stderr",
+      "destination_relative": "formal/main/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-main-registry/command.stdout",
+      "destination_relative": "formal/main/command.stdout",
+      "bytes": 6870,
+      "sha256": "107436af2dbd8f33ab5246c273645c33838dfd7039cde9696ca553f1e02145af"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-main-registry/receipt.json",
+      "destination_relative": "formal/main/receipt.json",
+      "bytes": 14258,
+      "sha256": "19a038d95295dfcd313f3a076ccce8d82124959f22fe874972404fe36cd5e25e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-main-registry/suite-logs/py_test_bridge_integrity.json",
+      "destination_relative": "formal/main/suite-logs/py_test_bridge_integrity.json",
+      "bytes": 352,
+      "sha256": "13e8b48ab56dfef723c8a2aaa109adebf61c81726675d908ae325302608dede0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/bridge-integrity-adbd-main-registry/suite-logs/py_test_bridge_integrity.unittest.log",
+      "destination_relative": "formal/main/suite-logs/py_test_bridge_integrity.unittest.log",
+      "bytes": 124,
+      "sha256": "7fc5c9d18e507d30cca3a9291c819e8f99a1f45d02ef15395619046e1390dd1b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/analysis-adbd-68eed6fb/bridge-registry-verification.json",
+      "destination_relative": "formal/verification.json",
+      "bytes": 4724,
+      "sha256": "c9af1938c58e983d91b3c389fc6bc8faef99d620f0276a519d19fe7555b39177"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-diagnostic-publication-v1/payload/identity/binaries-retained-externally.json",
+      "destination_relative": "identity/binaries-retained-externally.json",
+      "bytes": 5053,
+      "sha256": "956d1311a420b2266ddbf46db9e8a451973ffaaff79be268d03b9819ef1999c3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T152959-6573bdd6-main-normal-build/worker-process.json",
+      "destination_relative": "identity/dynamic/build-workers/20261018T152959-6573bdd6-main-normal-build/worker-process.json",
+      "bytes": 1108,
+      "sha256": "f4689cde19bfbc36a8c6948681db6c8392ca83950dea88bc70935b1b950856a9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T152959-6573bdd6-main-normal-build/worker.stderr",
+      "destination_relative": "identity/dynamic/build-workers/20261018T152959-6573bdd6-main-normal-build/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T152959-6573bdd6-main-normal-build/worker.stdout",
+      "destination_relative": "identity/dynamic/build-workers/20261018T152959-6573bdd6-main-normal-build/worker.stdout",
+      "bytes": 149,
+      "sha256": "8bfacac31720eef61ee2256a3b7972353a7c2607980bec7693c282bd41bca19e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153019-bb7e3b55-candidate-normal-build/worker-process.json",
+      "destination_relative": "identity/dynamic/build-workers/20261018T153019-bb7e3b55-candidate-normal-build/worker-process.json",
+      "bytes": 1122,
+      "sha256": "c3136dea7e3183a116248969cdad02d850cd9345cb9ade7bb40a3f41a5bc2890"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153019-bb7e3b55-candidate-normal-build/worker.stderr",
+      "destination_relative": "identity/dynamic/build-workers/20261018T153019-bb7e3b55-candidate-normal-build/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153019-bb7e3b55-candidate-normal-build/worker.stdout",
+      "destination_relative": "identity/dynamic/build-workers/20261018T153019-bb7e3b55-candidate-normal-build/worker.stdout",
+      "bytes": 154,
+      "sha256": "8a8b29926eab938c559bce3d6a62a2b3d256419af18aeff1c4ecdb0074301acf"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153059-f1391bfa-main-gprof-build/worker-process.json",
+      "destination_relative": "identity/dynamic/build-workers/20261018T153059-f1391bfa-main-gprof-build/worker-process.json",
+      "bytes": 1106,
+      "sha256": "77ec2e8117aa7d4202ee04b030385c361ac5d63bc143121e16bc51cc6bdb773c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153059-f1391bfa-main-gprof-build/worker.stderr",
+      "destination_relative": "identity/dynamic/build-workers/20261018T153059-f1391bfa-main-gprof-build/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153059-f1391bfa-main-gprof-build/worker.stdout",
+      "destination_relative": "identity/dynamic/build-workers/20261018T153059-f1391bfa-main-gprof-build/worker.stdout",
+      "bytes": 148,
+      "sha256": "f22bf645989e9d64e53d435b0e3e3c3721af0d5a1885bbc74d3fe67693bdc943"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153122-ea212e24-candidate-gprof-build/worker-process.json",
+      "destination_relative": "identity/dynamic/build-workers/20261018T153122-ea212e24-candidate-gprof-build/worker-process.json",
+      "bytes": 1120,
+      "sha256": "69be949a50e0dec690f87c6270c55ddcedd46705b52621ae073b6e09e05204b3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153122-ea212e24-candidate-gprof-build/worker.stderr",
+      "destination_relative": "identity/dynamic/build-workers/20261018T153122-ea212e24-candidate-gprof-build/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T153122-ea212e24-candidate-gprof-build/worker.stdout",
+      "destination_relative": "identity/dynamic/build-workers/20261018T153122-ea212e24-candidate-gprof-build/worker.stdout",
+      "bytes": 153,
+      "sha256": "31704f57db33b49585d14520d5318795d4114632693bab2d5819f6b3a6065174"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/configuration.json",
+      "destination_relative": "identity/dynamic/configuration.json",
+      "bytes": 870,
+      "sha256": "82e1563b76d664143105af68eb1d7b7428c013494a0da4eb0edeb768e029e71a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/gprof/bridge.fingerprint.json",
+      "destination_relative": "identity/dynamic/gprof-candidate/bridge.fingerprint.json",
+      "bytes": 22707,
+      "sha256": "d2d6e375c33e0b10d74d364f4114819b07fb6fff1135ac481720a612967cf2e0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/gprof/diagnostic-build.json",
+      "destination_relative": "identity/dynamic/gprof-candidate/diagnostic-build.json",
+      "bytes": 1408,
+      "sha256": "6083fdedde9d2e9d1075df7f14f52c87c9674072d08b4b92d7b61060923efbd1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/main/gprof/bridge.fingerprint.json",
+      "destination_relative": "identity/dynamic/gprof-main/bridge.fingerprint.json",
+      "bytes": 6144,
+      "sha256": "87e79e0d3092f83d2d16cc3ff828322e9ff20474422be91646ced4ed026ed6ee"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/main/gprof/diagnostic-build.json",
+      "destination_relative": "identity/dynamic/gprof-main/diagnostic-build.json",
+      "bytes": 1398,
+      "sha256": "f0c34ba968df4ca0e8d9cdc1a3d458c7fc2814b506b9eb5006d941ba3dceac12"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/normal/bridge.fingerprint.json",
+      "destination_relative": "identity/dynamic/normal-candidate/bridge.fingerprint.json",
+      "bytes": 22676,
+      "sha256": "18249b2a2f444c1c2a0291cdfc316d804af86f843cedd32d6a082c91c7f97103"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/normal/diagnostic-build.json",
+      "destination_relative": "identity/dynamic/normal-candidate/diagnostic-build.json",
+      "bytes": 1328,
+      "sha256": "2b977a20fb76e87451d780235bfe9bf8b4e8008619d5e9b46db4a4780c3ee98c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/main/normal/bridge.fingerprint.json",
+      "destination_relative": "identity/dynamic/normal-main/bridge.fingerprint.json",
+      "bytes": 6112,
+      "sha256": "8d901a8c142c004ec1a174df149f11ae1f3da5ac26e9b3eb64de126cc6266819"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/main/normal/diagnostic-build.json",
+      "destination_relative": "identity/dynamic/normal-main/diagnostic-build.json",
+      "bytes": 1317,
+      "sha256": "31f84f8adc0f02994be1ea9772ea92d4683f6b92a52399746457fcb2192cd0ec"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/sources/candidate.json",
+      "destination_relative": "identity/dynamic/source-candidate.json",
+      "bytes": 34109,
+      "sha256": "d191834d1411fc71c1954f85d1ecb2982f2a3b7ea3b7317213b9c305c8eb297a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/sources/main.json",
+      "destination_relative": "identity/dynamic/source-main.json",
+      "bytes": 17260,
+      "sha256": "8cdacd4c3562ff838f5c1b939bfce2248c0d9fd056db1e3f6981ab4181d8b0df"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-diagnostic-publication-v1/payload/identity/measured-gmon-manifest.json",
+      "destination_relative": "identity/measured-gmon-manifest.json",
+      "bytes": 783572,
+      "sha256": "e1d3620bf7c5226c28581e47b5ec86960d3efadd6dfea338549eb92533aa4add"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-diagnostic-publication-v1/payload/identity/run-files-manifest.json",
+      "destination_relative": "identity/run-files-manifest.json",
+      "bytes": 2027991,
+      "sha256": "2b5d2869133933b0f56a5ed13054176d707facf99bd56ab69daee87b8a134355"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/STATIC-DIFF-REVIEW.json",
+      "destination_relative": "identity/static/STATIC-DIFF-REVIEW.json",
+      "bytes": 1166,
+      "sha256": "bee40a797770a041a54cbbb599987cabdddb39f0854cabedcb02ad4cc607b177"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T154610-091113a7-main-gprof-build/worker-process.json",
+      "destination_relative": "identity/static/build-workers/20261018T154610-091113a7-main-gprof-build/worker-process.json",
+      "bytes": 1133,
+      "sha256": "500d8c36111f19636434a720707951b5cec1748568a38236147bc69f521ca669"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T154610-091113a7-main-gprof-build/worker.stderr",
+      "destination_relative": "identity/static/build-workers/20261018T154610-091113a7-main-gprof-build/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T154610-091113a7-main-gprof-build/worker.stdout",
+      "destination_relative": "identity/static/build-workers/20261018T154610-091113a7-main-gprof-build/worker.stdout",
+      "bytes": 155,
+      "sha256": "ee2013682f812483b3f71dfae9632b13d1aea9c95425c3c5fc0f1bb291bd44c2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T154628-0369c9cc-candidate-gprof-build/worker-process.json",
+      "destination_relative": "identity/static/build-workers/20261018T154628-0369c9cc-candidate-gprof-build/worker-process.json",
+      "bytes": 1149,
+      "sha256": "074274190ddd3a6861547e738561434d75060ec3de840d80c82c3ed6aa8863a9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T154628-0369c9cc-candidate-gprof-build/worker.stderr",
+      "destination_relative": "identity/static/build-workers/20261018T154628-0369c9cc-candidate-gprof-build/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T154628-0369c9cc-candidate-gprof-build/worker.stdout",
+      "destination_relative": "identity/static/build-workers/20261018T154628-0369c9cc-candidate-gprof-build/worker.stdout",
+      "bytes": 160,
+      "sha256": "91be73ff0bbec6e60b62c00ff270deff7a6c3f4e889e22928b0eef2dd7bf09c9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/candidate-static-libc-symbols.txt",
+      "destination_relative": "identity/static/candidate-static-libc-symbols.txt",
+      "bytes": 1798,
+      "sha256": "d948c593595a17d159fff1b3cd64bec69d4d7d5ea6863b4043b76f7f9cc03618"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/candidate-static-readelf.txt",
+      "destination_relative": "identity/static/candidate-static-readelf.txt",
+      "bytes": 2381,
+      "sha256": "9123b347549f0bccc2af9c7f6ecffe087a98c2e4666841aaf88267585cfd7053"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/configuration.json",
+      "destination_relative": "identity/static/configuration.json",
+      "bytes": 887,
+      "sha256": "ae96b30f37980e3b438302ab173649c7649b6c6295919d604905188d544c5a3c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/build/candidate/gprof/bridge.fingerprint.json",
+      "destination_relative": "identity/static/gprof-candidate/bridge.fingerprint.json",
+      "bytes": 22715,
+      "sha256": "50036972dceafacb1b4091d0d9bc50d4852ddee34a71647932c7e26fdbe081bb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/build/candidate/gprof/diagnostic-build.json",
+      "destination_relative": "identity/static/gprof-candidate/diagnostic-build.json",
+      "bytes": 1445,
+      "sha256": "25064b3c4eb3dde408ad2ef5786bd2093b775b0b1607529c914c4dd9938c58f7"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/build/main/gprof/bridge.fingerprint.json",
+      "destination_relative": "identity/static/gprof-main/bridge.fingerprint.json",
+      "bytes": 6152,
+      "sha256": "7b42996a8b5269feebe4b94e07201f71bec003953fe9ddb8fb7600c00b13d957"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/build/main/gprof/diagnostic-build.json",
+      "destination_relative": "identity/static/gprof-main/diagnostic-build.json",
+      "bytes": 1435,
+      "sha256": "44ad694f4cf1dd17e66e9d533a70254c93c5b711d881a3b30e443cea2bdc88d5"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/main-static-libc-symbols.txt",
+      "destination_relative": "identity/static/main-static-libc-symbols.txt",
+      "bytes": 1798,
+      "sha256": "a880d000a6e40d37ae0107543384b94fcfeddd6793643bc90889190aef415d3f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/main-static-readelf.txt",
+      "destination_relative": "identity/static/main-static-readelf.txt",
+      "bytes": 2381,
+      "sha256": "27d023e96da982b2a872d2dacb8b2acf40896637d7f67746f27d7d4d3b2b6b33"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/sources/candidate.json",
+      "destination_relative": "identity/static/source-candidate.json",
+      "bytes": 34116,
+      "sha256": "8a544824340efedffe6363b6e8b5e6bbefbb5ef4816d590ea49af0084cd0ba63"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/sources/main.json",
+      "destination_relative": "identity/static/source-main.json",
+      "bytes": 17267,
+      "sha256": "2e1454a28f1991c024179d9fd000c1c989f99d6f8e57328d715e9ddedbde53eb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/static-link-verification.json",
+      "destination_relative": "identity/static/static-link-verification.json",
+      "bytes": 665,
+      "sha256": "ca08cee18307d842d1cbf3a6d4f6b0ab911a6a294d3c4765f0928ad007c87185"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-diagnostic-publication-v1/payload/identity/tool-identities.json",
+      "destination_relative": "identity/tool-identities.json",
+      "bytes": 642,
+      "sha256": "c41078d6a5620cb0ffbd1b6718510e3ddc3fdb9b100286254d0b5243f275383f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-diagnostic-publication-v1/payload/results.json",
+      "destination_relative": "results.json",
+      "bytes": 655,
+      "sha256": "0ad542a75417f94f5091a4c445c1e74a396a6fdc8ba1d71ab0704ba345b976bb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/callgraph.stderr",
+      "destination_relative": "static/gprof-candidate/gprof-report/callgraph.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/callgraph.txt",
+      "destination_relative": "static/gprof-candidate/gprof-report/callgraph.txt",
+      "bytes": 283684,
+      "sha256": "746b1e1e04a9385737ce4c2955e45587d9d266653b12991917d12b0914f0c0ad"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/commands.json",
+      "destination_relative": "static/gprof-candidate/gprof-report/commands.json",
+      "bytes": 144591,
+      "sha256": "9ff5fdcb91dd363773034f4e9d92bd073a40098e29c8f0f487533268531a27cb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/flat.stderr",
+      "destination_relative": "static/gprof-candidate/gprof-report/flat.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/flat.txt",
+      "destination_relative": "static/gprof-candidate/gprof-report/flat.txt",
+      "bytes": 41266,
+      "sha256": "d5c3b421c169cc5e89100f964e716a192bd7a02151211a54dc128b91fd07e983"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/full.stderr",
+      "destination_relative": "static/gprof-candidate/gprof-report/full.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/full.txt",
+      "destination_relative": "static/gprof-candidate/gprof-report/full.txt",
+      "bytes": 324952,
+      "sha256": "6ffb0f4054713993ee3cca82a54d5118a6de8237afb4d86dae3ebb195ab12223"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/functions.json",
+      "destination_relative": "static/gprof-candidate/gprof-report/functions.json",
+      "bytes": 66934,
+      "sha256": "d165c044b8e9cccce2ca857114b00a01a638dc68baf04795fad651b35e80f652"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/inputs.json",
+      "destination_relative": "static/gprof-candidate/gprof-report/inputs.json",
+      "bytes": 458772,
+      "sha256": "31de0631672df326ce00510ebbcc468813cd01810d01add0894adf6af38f775d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/top20-calls.csv",
+      "destination_relative": "static/gprof-candidate/gprof-report/top20-calls.csv",
+      "bytes": 887,
+      "sha256": "bf49a4b515419894e61a98309217dc61b56935df78efd5153600b951de19ff67"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/top20-inclusive_seconds.csv",
+      "destination_relative": "static/gprof-candidate/gprof-report/top20-inclusive_seconds.csv",
+      "bytes": 773,
+      "sha256": "150c0fa45d3d67208e65e7cd5f6f0e17d248d57364ab75c5cf054b673ad286eb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/gprof-report/top20-self_seconds.csv",
+      "destination_relative": "static/gprof-candidate/gprof-report/top20-self_seconds.csv",
+      "bytes": 644,
+      "sha256": "35896f6eadc5fef5523595adee5a4df55f81ce14ecb776ea571bb3650a197ac1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/observer-errors.json",
+      "destination_relative": "static/gprof-candidate/observer-errors.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/receipt.json",
+      "destination_relative": "static/gprof-candidate/receipt.json",
+      "bytes": 2732,
+      "sha256": "8b04b9cecef7e7e7cf5800d943ce380c229d1d0b1a4ace082dfa03eccaf240c6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/suite.json",
+      "destination_relative": "static/gprof-candidate/suite.json",
+      "bytes": 352,
+      "sha256": "1d90c5e56c59dbe2429f62dc1d51b50973487a70421dbb13e3d4592ec3ba07cd"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/suite.unittest.log",
+      "destination_relative": "static/gprof-candidate/suite.unittest.log",
+      "bytes": 124,
+      "sha256": "c23c34a0a95b3ed834791a4db55d88b88fda73655cd04eeada06d1e70de12d67"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/worker-process.json",
+      "destination_relative": "static/gprof-candidate/worker-process.json",
+      "bytes": 1152,
+      "sha256": "0343042885b58abf6bb4b033f406860cacf9632f89082904be8e20d9e458884f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/worker.stderr",
+      "destination_relative": "static/gprof-candidate/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155426-4b455feb-candidate-gprof-profile/worker.stdout",
+      "destination_relative": "static/gprof-candidate/worker.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/callgraph.stderr",
+      "destination_relative": "static/gprof-main/gprof-report/callgraph.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/callgraph.txt",
+      "destination_relative": "static/gprof-main/gprof-report/callgraph.txt",
+      "bytes": 101857,
+      "sha256": "7fac85988349f40d587938b7dd4682871d4b668b1230cd83fe3016fce76173ef"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/commands.json",
+      "destination_relative": "static/gprof-main/gprof-report/commands.json",
+      "bytes": 140811,
+      "sha256": "9dfff177592e5dfe1f3bb0af33bdb3fd2b5f9c02f8f9ca06dcef88425392b2ae"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/flat.stderr",
+      "destination_relative": "static/gprof-main/gprof-report/flat.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/flat.txt",
+      "destination_relative": "static/gprof-main/gprof-report/flat.txt",
+      "bytes": 14949,
+      "sha256": "ec99f21141683c523ad1a2fe2825623e06e05c318c654672aa59a898d2af4fb8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/full.stderr",
+      "destination_relative": "static/gprof-main/gprof-report/full.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/full.txt",
+      "destination_relative": "static/gprof-main/gprof-report/full.txt",
+      "bytes": 116808,
+      "sha256": "90540b9bb19907f34f7d85df6e409fef5fc6c9fdeb5caf352a3bea774b15fec0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/functions.json",
+      "destination_relative": "static/gprof-main/gprof-report/functions.json",
+      "bytes": 24322,
+      "sha256": "00b95515de9016a8810d3ef4ef29c31c076d9b2c017b38177cccb9fdd0b8faa6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/inputs.json",
+      "destination_relative": "static/gprof-main/gprof-report/inputs.json",
+      "bytes": 453742,
+      "sha256": "23ec64b6be8ed6ee4be1501e2f79d5ec152c870f87feecdcea2a4fa9c7243f96"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/top20-calls.csv",
+      "destination_relative": "static/gprof-main/gprof-report/top20-calls.csv",
+      "bytes": 804,
+      "sha256": "a81e783a7a65ce4ca110a45fe0579aa463dbb108eea5a803859f0e4be7ef6701"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/top20-inclusive_seconds.csv",
+      "destination_relative": "static/gprof-main/gprof-report/top20-inclusive_seconds.csv",
+      "bytes": 673,
+      "sha256": "b9d1832636484b2a03f2c50a2b4bf4f8fd1c27746986a6838090831414fdca69"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/gprof-report/top20-self_seconds.csv",
+      "destination_relative": "static/gprof-main/gprof-report/top20-self_seconds.csv",
+      "bytes": 708,
+      "sha256": "fad69d153fb5ed2c4929e2128c5dfc5929893180cd133e195b6b81a87431ad6b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/observer-errors.json",
+      "destination_relative": "static/gprof-main/observer-errors.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/receipt.json",
+      "destination_relative": "static/gprof-main/receipt.json",
+      "bytes": 2692,
+      "sha256": "1d726aeb52fb1c64cfcd23f7c5baec8f45dfabc9e730922cf5ae149cd0eae880"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/suite.json",
+      "destination_relative": "static/gprof-main/suite.json",
+      "bytes": 352,
+      "sha256": "fad7b11d98f40622267a24c4e9512eeb057c72996a1ead01d5f4122f1c1f2d7a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/suite.unittest.log",
+      "destination_relative": "static/gprof-main/suite.unittest.log",
+      "bytes": 124,
+      "sha256": "18f96114b9ac27909fc6336d660c0db99b37b6f885cfd8a2f1714121443a6bd9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/worker-process.json",
+      "destination_relative": "static/gprof-main/worker-process.json",
+      "bytes": 1137,
+      "sha256": "803da45314bc7e4c81b7a9b6021ac562197f3d3b23412539ebe1e41c5a5ff1c7"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/worker.stderr",
+      "destination_relative": "static/gprof-main/worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/runs/20261018T155309-abc98389-main-gprof-profile/worker.stdout",
+      "destination_relative": "static/gprof-main/worker.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "pins": {
+    "main": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+    "candidate": "68eed6fb0e488003ca0a4d8614a9460a637d979e"
+  },
+  "repo": "/workspace/geometry-axiom",
+  "compiler": "/usr/bin/x86_64-linux-gnu-gcc-14",
+  "compiler_sha256": "a23ecab8ff08f09ad8c80602c2c5df7f49e09c25905cb8975902e101bf72635f",
+  "tool_sha256": "48d53f2edd26dddc1a11dfad8ebf4134404299f9b060d253eea8e3b9656f3905",
+  "flags": {
+    "normal": [
+      "-std=c11",
+      "-O2"
+    ],
+    "gprof": [
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-pg",
+      "-fno-omit-frame-pointer",
+      "-static"
+    ]
+  },
+  "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "os_uname": [
+    "Linux",
+    "9c8d35df5ae7",
+    "6.18.55",
+    "#1 SMP Wed Oct 14 19:45:18 UTC 2026",
+    "x86_64"
+  ]
+}

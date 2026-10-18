@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "objdump",
+    "-dr",
+    "--disassemble=__profil",
+    "/usr/lib/x86_64-linux-gnu/libc.a"
+  ],
+  "exit_code": 0,
+  "raw_stdout_sha256": "d341bb3359d6b69fae60c17118962230209320f86673f5f0f526c8ac15346a11",
+  "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "libc_a_sha256": "679612af043ab6a3eb9af24136b8d0c9ba1e10114f047271386ee7fa37031326",
+  "sys_time_header_sha256": "e1a8a0f3c2b3824f537f691dafbd3be9fabf3a5c82bb4577df7e32157d96e18c",
+  "scope": "read-only disassembly/header; no compilation or profiling"
+}

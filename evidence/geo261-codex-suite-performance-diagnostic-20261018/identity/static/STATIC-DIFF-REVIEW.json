@@ -1,0 +1,30 @@
+{
+  "parent_tool": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/suite_profile.py",
+  "parent_tool_sha256": "0e34ddcfe7241c6d2545eeb1902bc7ebf2c8030d36afff2372cd3b326d0f1dd2",
+  "new_tool_sha256": "48d53f2edd26dddc1a11dfad8ebf4134404299f9b060d253eea8e3b9656f3905",
+  "exact_replacements": [
+    {
+      "before": "\"gprof\": [\"-std=c11\", \"-O2\", \"-g\", \"-pg\", \"-fno-omit-frame-pointer\"]}",
+      "after": "\"gprof\": [\"-std=c11\", \"-O2\", \"-g\", \"-pg\", \"-fno-omit-frame-pointer\", \"-static\"]}"
+    },
+    {
+      "before": "modes = (\"normal\", \"gprof\") if args.stage == \"build\" else ((\"normal\",) if args.stage == \"normal\" else (\"gprof\",))",
+      "after": "modes = (\"gprof\",) if args.stage == \"build\" else ((\"normal\",) if args.stage == \"normal\" else (\"gprof\",))"
+    }
+  ],
+  "top_level_ast_changes": [
+    {
+      "top_level_index": 24,
+      "kind": "Assign",
+      "name": null
+    },
+    {
+      "top_level_index": 49,
+      "kind": "FunctionDef",
+      "name": "main"
+    }
+  ],
+  "reverse_exact_replacements_restores_parent_bytes": true,
+  "ast_parse_pass": true,
+  "executed_stages": []
+}

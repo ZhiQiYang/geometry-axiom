@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/suite_profile.py",
+    "build",
+    "--repo",
+    "/workspace/geometry-axiom",
+    "--output",
+    "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts",
+    "--cc",
+    "/usr/bin/x86_64-linux-gnu-gcc-14",
+    "--worker",
+    "main",
+    "normal",
+    "--run-directory",
+    "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/runs/20261018T152959-6573bdd6-main-normal-build"
+  ],
+  "returncode": 0,
+  "cwd": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/sources/main-e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+  "exception_type": null,
+  "timeout_seconds": 3600,
+  "output_complete": true,
+  "wall_seconds": 20.272881859000336,
+  "stdout_sha256": "8bfacac31720eef61ee2256a3b7972353a7c2607980bec7693c282bd41bca19e",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,21 @@
+function,self_seconds,inclusive_seconds,calls
+main,0.0,0.07,
+apply_scene_line_candidate <cycle 1>,0.02,0.03,4493
+reference_default_world,0.0,0.03,301
+parse_scene_file,0.0,0.02,154
+apply_boundary_keyed_line,0.01,0.01,
+apply_surface_combined_line <cycle 1>,0.01,0.01,600
+apply_timber_line,0.01,0.01,1172
+cmd_render,0.0,0.01,146
+cmd_replace_world,0.0,0.01,104
+eng_definition_hash,0.0,0.01,460
+loop_edge_outward_normal,0.01,0.01,11604
+parameters_dump,0.01,0.01,775
+scene_draw_view,0.0,0.01,1026
+scene_render,0.0,0.01,146
+view_unproject_on_surface_near,0.01,0.01,5460
+world_dump_dsl,0.0,0.01,775
+world_revalidate_candidate <cycle 1>,0.0,0.01,3122
+world_validate_derived,0.0,0.01,3119
+apply_applyproj_line <cycle 1>,0.0,0.0,12
+apply_beam_line <cycle 1>,0.0,0.0,161

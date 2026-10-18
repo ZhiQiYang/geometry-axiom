@@ -1,0 +1,21 @@
+function,self_seconds,inclusive_seconds,calls
+__memmove_avx512_unaligned_erms,21.44,21.44,
+__memcmp_evex_movbe,6.42,6.42,
+__memset_avx512_unaligned_erms,1.1,1.1,
+__write_nocancel,0.33,0.33,
+brk,0.33,0.33,
+__libc_start_call_main,0.0,0.31,
+main,0.0,0.31,251
+world_validate_derived,0.01,0.23,6951
+mprotect,0.18,0.18,
+munmap,0.18,0.18,
+app_replace_world.constprop.0,0.0,0.14,355
+wood_world_validate_members,0.0,0.12,3474
+reference_checked <cycle 2>,0.0,0.08,1169
+reference_member_footprint,0.0,0.07,21656
+reference_check_all,0.01,0.06999999999999999,3477
+apply_surface_combined_line <cycle 2>,0.01,0.060000000000000005,600
+_int_malloc,0.05,0.05,
+geo_eval_source <cycle 1>,0.02,0.05,885145
+__strcmp_evex,0.04,0.04,
+app_world_candidate_create,0.01,0.04,1440

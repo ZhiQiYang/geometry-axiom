@@ -1,0 +1,22 @@
+{
+  "pin": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+  "mode": "normal",
+  "flags": [
+    "-std=c11",
+    "-O2"
+  ],
+  "compiler": "/usr/bin/x86_64-linux-gnu-gcc-14",
+  "compiler_sha256": "a23ecab8ff08f09ad8c80602c2c5df7f49e09c25905cb8975902e101bf72635f",
+  "compiler_version": "x86_64-linux-gnu-gcc-14 (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "removed_geometry_variable_names": [],
+  "binary": {
+    "path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/main/normal/bridge",
+    "sha256": "6ccde845b4676f192935735d01288703abaf1b67c43d6ad7d7cd435aaf116af8",
+    "sidecar_path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/main/normal/bridge.fingerprint.json",
+    "sidecar_sha256": "8d901a8c142c004ec1a174df149f11ae1f3da5ac26e9b3eb64de126cc6266819",
+    "source_fingerprint": "4b0ac373d94f9f52a595f2e283806ad97a88938418ecd35240f31f14db660710",
+    "command": "/usr/bin/x86_64-linux-gnu-gcc-14 -std=c11 -O2 geometry-web/web_bridge.c -lm -> bridge",
+    "exe_size": 660440,
+    "exe_mtime_ns": 1792337419259390084
+  }
+}

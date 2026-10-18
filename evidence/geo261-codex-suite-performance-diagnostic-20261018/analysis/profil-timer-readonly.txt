@@ -1,0 +1,144 @@
+唯讀 argv: objdump -dr --disassemble=__profil /usr/lib/x86_64-linux-gnu/libc.a
+以下為原 stdout 的 __profil 完整函式節錄；未執行 profiler。
+
+<__profil>:
+  50:	41 56                	push   %r14
+  52:	41 55                	push   %r13
+  54:	41 54                	push   %r12
+  56:	55                   	push   %rbp
+  57:	53                   	push   %rbx
+  58:	48 81 ec c0 00 00 00 	sub    $0xc0,%rsp
+  5f:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
+  66:	00 00 
+  68:	48 89 84 24 b8 00 00 	mov    %rax,0xb8(%rsp)
+  6f:	00 
+  70:	48 8b 05 00 00 00 00 	mov    0x0(%rip),%rax        # 77 <__profil+0x27>
+			73: R_X86_64_PC32	.bss+0xd4
+  77:	48 85 ff             	test   %rdi,%rdi
+  7a:	0f 84 20 01 00 00    	je     1a0 <__profil+0x150>
+  80:	48 89 fb             	mov    %rdi,%rbx
+  83:	48 89 f5             	mov    %rsi,%rbp
+  86:	49 89 d4             	mov    %rdx,%r12
+  89:	41 89 cd             	mov    %ecx,%r13d
+  8c:	48 85 c0             	test   %rax,%rax
+  8f:	0f 84 fb 00 00 00    	je     190 <__profil+0x140>
+  95:	31 d2                	xor    %edx,%edx
+  97:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 9e <__profil+0x4e>
+			9a: R_X86_64_PC32	.bss+0x9c
+  9e:	bf 02 00 00 00       	mov    $0x2,%edi
+  a3:	e8 00 00 00 00       	call   a8 <__profil+0x58>
+			a4: R_X86_64_PLT32	__setitimer-0x4
+  a8:	85 c0                	test   %eax,%eax
+  aa:	0f 88 60 01 00 00    	js     210 <__profil+0x1c0>
+  b0:	4c 8d 35 00 00 00 00 	lea    0x0(%rip),%r14        # b7 <__profil+0x67>
+			b3: R_X86_64_PC32	.bss-0x4
+  b7:	31 d2                	xor    %edx,%edx
+  b9:	bf 1b 00 00 00       	mov    $0x1b,%edi
+  be:	4c 89 f6             	mov    %r14,%rsi
+  c1:	e8 00 00 00 00       	call   c6 <__profil+0x76>
+			c2: R_X86_64_PLT32	__libc_sigaction-0x4
+  c6:	85 c0                	test   %eax,%eax
+  c8:	0f 88 42 01 00 00    	js     210 <__profil+0x1c0>
+  ce:	48 89 ee             	mov    %rbp,%rsi
+  d1:	48 8d 05 28 ff ff ff 	lea    -0xd8(%rip),%rax        # 0 <__profil_counter>
+  d8:	4c 89 f2             	mov    %r14,%rdx
+  db:	bf 1b 00 00 00       	mov    $0x1b,%edi
+  e0:	48 d1 ee             	shr    $1,%rsi
+  e3:	48 89 1d 00 00 00 00 	mov    %rbx,0x0(%rip)        # ea <__profil+0x9a>
+			e6: R_X86_64_PC32	.bss+0xd4
+  ea:	48 89 35 00 00 00 00 	mov    %rsi,0x0(%rip)        # f1 <__profil+0xa1>
+			ed: R_X86_64_PC32	.bss+0xcc
+  f1:	48 8d 74 24 20       	lea    0x20(%rsp),%rsi
+  f6:	4c 89 25 00 00 00 00 	mov    %r12,0x0(%rip)        # fd <__profil+0xad>
+			f9: R_X86_64_PC32	.bss+0xc4
+  fd:	44 89 2d 00 00 00 00 	mov    %r13d,0x0(%rip)        # 104 <__profil+0xb4>
+			100: R_X86_64_PC32	.bss+0xbc
+ 104:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
+ 109:	c7 84 24 a8 00 00 00 	movl   $0x10000004,0xa8(%rsp)
+ 110:	04 00 00 10 
+ 114:	48 c7 44 24 28 ff ff 	movq   $0xffffffffffffffff,0x28(%rsp)
+ 11b:	ff ff 
+ 11d:	e8 00 00 00 00       	call   122 <__profil+0xd2>
+			11e: R_X86_64_PLT32	__libc_sigaction-0x4
+ 122:	85 c0                	test   %eax,%eax
+ 124:	0f 88 e6 00 00 00    	js     210 <__profil+0x1c0>
+ 12a:	48 c7 44 24 10 00 00 	movq   $0x0,0x10(%rsp)
+ 131:	00 00 
+ 133:	e8 00 00 00 00       	call   138 <__profil+0xe8>
+			134: R_X86_64_PLT32	__profile_frequency-0x4
+ 138:	31 d2                	xor    %edx,%edx
+ 13a:	48 89 e6             	mov    %rsp,%rsi
+ 13d:	bf 02 00 00 00       	mov    $0x2,%edi
+ 142:	89 c1                	mov    %eax,%ecx
+ 144:	b8 40 42 0f 00       	mov    $0xf4240,%eax
+ 149:	f7 f9                	idiv   %ecx
+ 14b:	48 8d 15 00 00 00 00 	lea    0x0(%rip),%rdx        # 152 <__profil+0x102>
+			14e: R_X86_64_PC32	.bss+0x9c
+ 152:	48 98                	cltq
+ 154:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
+ 159:	66 0f 6f 44 24 10    	movdqa 0x10(%rsp),%xmm0
+ 15f:	0f 29 04 24          	movaps %xmm0,(%rsp)
+ 163:	e8 00 00 00 00       	call   168 <__profil+0x118>
+			164: R_X86_64_PLT32	__setitimer-0x4
+ 168:	48 8b 94 24 b8 00 00 	mov    0xb8(%rsp),%rdx
+ 16f:	00 
+ 170:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
+ 177:	00 00 
+ 179:	0f 85 9b 00 00 00    	jne    21a <__profil+0x1ca>
+ 17f:	48 81 c4 c0 00 00 00 	add    $0xc0,%rsp
+ 186:	5b                   	pop    %rbx
+ 187:	5d                   	pop    %rbp
+ 188:	41 5c                	pop    %r12
+ 18a:	41 5d                	pop    %r13
+ 18c:	41 5e                	pop    %r14
+ 18e:	c3                   	ret
+ 18f:	90                   	nop
+ 190:	4c 8d 35 00 00 00 00 	lea    0x0(%rip),%r14        # 197 <__profil+0x147>
+			193: R_X86_64_PC32	.bss-0x4
+ 197:	e9 32 ff ff ff       	jmp    ce <__profil+0x7e>
+ 19c:	0f 1f 40 00          	nopl   0x0(%rax)
+ 1a0:	48 85 c0             	test   %rax,%rax
+ 1a3:	74 5b                	je     200 <__profil+0x1b0>
+ 1a5:	31 d2                	xor    %edx,%edx
+ 1a7:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 1ae <__profil+0x15e>
+			1aa: R_X86_64_PC32	.bss+0x9c
+ 1ae:	bf 02 00 00 00       	mov    $0x2,%edi
+ 1b3:	e8 00 00 00 00       	call   1b8 <__profil+0x168>
+			1b4: R_X86_64_PLT32	__setitimer-0x4
+ 1b8:	85 c0                	test   %eax,%eax
+ 1ba:	78 54                	js     210 <__profil+0x1c0>
+ 1bc:	48 c7 05 00 00 00 00 	movq   $0x0,0x0(%rip)        # 1c7 <__profil+0x177>
+ 1c3:	00 00 00 00 
+			1bf: R_X86_64_PC32	.bss+0xd0
+ 1c7:	48 8b 84 24 b8 00 00 	mov    0xb8(%rsp),%rax
+ 1ce:	00 
+ 1cf:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
+ 1d6:	00 00 
+ 1d8:	75 40                	jne    21a <__profil+0x1ca>
+ 1da:	48 81 c4 c0 00 00 00 	add    $0xc0,%rsp
+ 1e1:	31 d2                	xor    %edx,%edx
+ 1e3:	bf 1b 00 00 00       	mov    $0x1b,%edi
+ 1e8:	5b                   	pop    %rbx
+ 1e9:	48 8d 35 00 00 00 00 	lea    0x0(%rip),%rsi        # 1f0 <__profil+0x1a0>
+			1ec: R_X86_64_PC32	.bss-0x4
+ 1f0:	5d                   	pop    %rbp
+ 1f1:	41 5c                	pop    %r12
+ 1f3:	41 5d                	pop    %r13
+ 1f5:	41 5e                	pop    %r14
+ 1f7:	e9 00 00 00 00       	jmp    1fc <__profil+0x1ac>
+			1f8: R_X86_64_PLT32	__libc_sigaction-0x4
+ 1fc:	0f 1f 40 00          	nopl   0x0(%rax)
+ 200:	31 c0                	xor    %eax,%eax
+ 202:	e9 61 ff ff ff       	jmp    168 <__profil+0x118>
+ 207:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
+ 20e:	00 00 
+ 210:	b8 ff ff ff ff       	mov    $0xffffffff,%eax
+ 215:	e9 4e ff ff ff       	jmp    168 <__profil+0x118>
+ 21a:	e8 00 00 00 00       	call   21f <samples+0x147>
+			21b: R_X86_64_PLT32	__stack_chk_fail-0x4
+
+/usr/include/x86_64-linux-gnu/sys/time.h 原文：
+122:     /* Timers run when the process is executing and when
+123:        the system is executing on behalf of the process.  */
+124:     ITIMER_PROF = 2
+125: #define ITIMER_PROF ITIMER_PROF

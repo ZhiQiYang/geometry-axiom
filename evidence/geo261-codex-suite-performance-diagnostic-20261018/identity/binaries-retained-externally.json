@@ -1,0 +1,77 @@
+{
+  "count": 6,
+  "binaries": [
+    {
+      "variant": "dynamic",
+      "label": "normal-main",
+      "path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/main/normal/bridge",
+      "sha256": "6ccde845b4676f192935735d01288703abaf1b67c43d6ad7d7cd435aaf116af8",
+      "sidecar_path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/main/normal/bridge.fingerprint.json",
+      "sidecar_sha256": "8d901a8c142c004ec1a174df149f11ae1f3da5ac26e9b3eb64de126cc6266819",
+      "source_fingerprint": "4b0ac373d94f9f52a595f2e283806ad97a88938418ecd35240f31f14db660710",
+      "command": "/usr/bin/x86_64-linux-gnu-gcc-14 -std=c11 -O2 geometry-web/web_bridge.c -lm -> bridge",
+      "exe_size": 660440,
+      "exe_mtime_ns": 1792337419259390084
+    },
+    {
+      "variant": "dynamic",
+      "label": "normal-candidate",
+      "path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/normal/bridge",
+      "sha256": "bf33d33755722c6f95397c4c06dbed03a4b07e774e338c465655d8d422a8fbf0",
+      "sidecar_path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/normal/bridge.fingerprint.json",
+      "sidecar_sha256": "18249b2a2f444c1c2a0291cdfc316d804af86f843cedd32d6a082c91c7f97103",
+      "source_fingerprint": "48384f1c2cdd6c54295cc3982bafa4bf47373f86098646f7582450c125c79eb2",
+      "command": "/usr/bin/x86_64-linux-gnu-gcc-14 -std=c11 -O2 geometry-web/web_bridge.c -lm -> bridge",
+      "exe_size": 1083344,
+      "exe_mtime_ns": 1792337459436157422
+    },
+    {
+      "variant": "dynamic",
+      "label": "gprof-main",
+      "path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/main/gprof/bridge",
+      "sha256": "102fc86b98c11e7df13d5852eaa3b2846cff9bc3103da33ef8793ce796d0f10e",
+      "sidecar_path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/main/gprof/bridge.fingerprint.json",
+      "sidecar_sha256": "87e79e0d3092f83d2d16cc3ff828322e9ff20474422be91646ced4ed026ed6ee",
+      "source_fingerprint": "92c9fe9e4f7f96762d2c7e374d6cb0568a1f88989542acf61c8461100275e68a",
+      "command": "/usr/bin/x86_64-linux-gnu-gcc-14 -std=c11 -O2 -g -pg -fno-omit-frame-pointer geometry-web/web_bridge.c -lm -> bridge",
+      "exe_size": 2368888,
+      "exe_mtime_ns": 1792337482323842595
+    },
+    {
+      "variant": "dynamic",
+      "label": "gprof-candidate",
+      "path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/gprof/bridge",
+      "sha256": "714d0dae62a472abe926055ed69a53741f1a4c5c83442f39c154773752fc2253",
+      "sidecar_path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/gprof/bridge.fingerprint.json",
+      "sidecar_sha256": "d2d6e375c33e0b10d74d364f4114819b07fb6fff1135ac481720a612967cf2e0",
+      "source_fingerprint": "5db0aefb5aaca6b1fb47be63ddbaddf17ae5550a800862c7de5614fea997d8ec",
+      "command": "/usr/bin/x86_64-linux-gnu-gcc-14 -std=c11 -O2 -g -pg -fno-omit-frame-pointer geometry-web/web_bridge.c -lm -> bridge",
+      "exe_size": 4234784,
+      "exe_mtime_ns": 1792337519871608658
+    },
+    {
+      "variant": "static",
+      "label": "gprof-main",
+      "path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/build/main/gprof/bridge",
+      "sha256": "dd24ce94d656f742afe0c020e2bbe6ee2fbe9232bf9f943fd4b37b02b5d7beba",
+      "sidecar_path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/build/main/gprof/bridge.fingerprint.json",
+      "sidecar_sha256": "7b42996a8b5269feebe4b94e07201f71bec003953fe9ddb8fb7600c00b13d957",
+      "source_fingerprint": "2056c804b2b3a6042758716cdddc84532f0c883e61aeba8280f26f22a45e0045",
+      "command": "/usr/bin/x86_64-linux-gnu-gcc-14 -std=c11 -O2 -g -pg -fno-omit-frame-pointer -static geometry-web/web_bridge.c -lm -> bridge",
+      "exe_size": 3278008,
+      "exe_mtime_ns": 1792338388723690468
+    },
+    {
+      "variant": "static",
+      "label": "gprof-candidate",
+      "path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/build/candidate/gprof/bridge",
+      "sha256": "7c414da8788cc66d34e17dd4f899c9887b1334892eba84d9ed320783f1dc2d81",
+      "sidecar_path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-static-v1/artifacts/build/candidate/gprof/bridge.fingerprint.json",
+      "sidecar_sha256": "50036972dceafacb1b4091d0d9bc50d4852ddee34a71647932c7e26fdbe081bb",
+      "source_fingerprint": "4669ef9b3d41f1a0b0bc5f580d48f05bc062fa34e17022d1ad8d8aeb86d673dd",
+      "command": "/usr/bin/x86_64-linux-gnu-gcc-14 -std=c11 -O2 -g -pg -fno-omit-frame-pointer -static geometry-web/web_bridge.c -lm -> bridge",
+      "exe_size": 5135736,
+      "exe_mtime_ns": 1792338421154650596
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "pin": "68eed6fb0e488003ca0a4d8614a9460a637d979e",
+  "label": "candidate",
+  "mode": "gprof",
+  "run_id": "20261018T153919-4bf89481-candidate-gprof-profile",
+  "source_root": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/sources/candidate-68eed6fb0e488003ca0a4d8614a9460a637d979e",
+  "tool_sha256": "0e34ddcfe7241c6d2545eeb1902bc7ebf2c8030d36afff2372cd3b326d0f1dd2",
+  "flags": [
+    "-std=c11",
+    "-O2",
+    "-g",
+    "-pg",
+    "-fno-omit-frame-pointer"
+  ],
+  "removed_geometry_variable_names": [],
+  "CC": "/usr/bin/x86_64-linux-gnu-gcc-14",
+  "registry_overrides": {
+    "GEOMETRY_TEST_BRIDGE": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/gprof/bridge"
+  },
+  "stack_limit": [
+    16777216,
+    -1
+  ],
+  "binary_before": {
+    "path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/gprof/bridge",
+    "sha256": "714d0dae62a472abe926055ed69a53741f1a4c5c83442f39c154773752fc2253",
+    "sidecar_path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/gprof/bridge.fingerprint.json",
+    "sidecar_sha256": "d2d6e375c33e0b10d74d364f4114819b07fb6fff1135ac481720a612967cf2e0",
+    "source_fingerprint": "5db0aefb5aaca6b1fb47be63ddbaddf17ae5550a800862c7de5614fea997d8ec",
+    "command": "/usr/bin/x86_64-linux-gnu-gcc-14 -std=c11 -O2 -g -pg -fno-omit-frame-pointer geometry-web/web_bridge.c -lm -> bridge",
+    "exe_size": 4234784,
+    "exe_mtime_ns": 1792337519871608658
+  },
+  "binary_after": {
+    "path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/gprof/bridge",
+    "sha256": "714d0dae62a472abe926055ed69a53741f1a4c5c83442f39c154773752fc2253",
+    "sidecar_path": "/workspace/geo261-validation-20261018/performance/suite-profile-diagnostic-v2/artifacts/build/candidate/gprof/bridge.fingerprint.json",
+    "sidecar_sha256": "d2d6e375c33e0b10d74d364f4114819b07fb6fff1135ac481720a612967cf2e0",
+    "source_fingerprint": "5db0aefb5aaca6b1fb47be63ddbaddf17ae5550a800862c7de5614fea997d8ec",
+    "command": "/usr/bin/x86_64-linux-gnu-gcc-14 -std=c11 -O2 -g -pg -fno-omit-frame-pointer geometry-web/web_bridge.c -lm -> bridge",
+    "exe_size": 4234784,
+    "exe_mtime_ns": 1792337519871608658
+  },
+  "suite_verdict_pass": true,
+  "diagnostic_complete": true,
+  "actual_run_once_count": 251,
+  "actual_popen_count": 251,
+  "actual_inspect_count": 252,
+  "note": "診斷 wall 非正式退化比；case wall 包含區間外收據 I/O；child CPU 是 scoped reap 增量。"
+}

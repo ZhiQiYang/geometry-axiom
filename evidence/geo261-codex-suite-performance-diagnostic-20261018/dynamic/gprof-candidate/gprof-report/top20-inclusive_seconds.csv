@@ -1,0 +1,21 @@
+function,self_seconds,inclusive_seconds,calls
+main,0.0,0.3,
+world_validate_derived,0.0,0.18,6951
+app_replace_world.constprop.0,0.0,0.14,355
+wood_world_validate_members,0.0,0.11,3474
+reference_member_footprint,0.01,0.06999999999999999,21656
+reference_checked <cycle 2>,0.0,0.06,1169
+geo_sha256,0.01,0.05,7392
+reference_check_all,0.0,0.05,3477
+apply_surface_combined_line <cycle 2>,0.01,0.04,600
+cmd_replace_world,0.0,0.04,104
+geo_sha_block,0.04,0.04,103135
+_init,0.03,0.03,
+app_reference_member_anchor,0.0,0.03,29386
+app_world_candidate_create,0.01,0.03,1440
+apply_scene_line_candidate.constprop.0 <cycle 2>,0.0,0.03,928
+geo_candidate_provider_hash,0.0,0.03,19821
+geo_eval_source <cycle 1>,0.0,0.03,885145
+geo_source_node,0.03,0.03,885350
+reference_sources_ensure,0.01,0.03,311221
+app_validation_member,0.0,0.02,20513

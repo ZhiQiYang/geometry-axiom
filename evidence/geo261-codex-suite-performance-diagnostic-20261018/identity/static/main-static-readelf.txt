@@ -1,0 +1,46 @@
+
+Elf file type is EXEC (Executable file)
+Entry point 0x404ee0
+There are 11 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset             VirtAddr           PhysAddr
+                 FileSiz            MemSiz              Flags  Align
+  LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
+                 0x0000000000000530 0x0000000000000530  R      0x1000
+  LOAD           0x0000000000001000 0x0000000000401000 0x0000000000401000
+                 0x0000000000117e85 0x0000000000117e85  R E    0x1000
+  LOAD           0x0000000000119000 0x0000000000519000 0x0000000000519000
+                 0x0000000000045738 0x0000000000045738  R      0x1000
+  LOAD           0x000000000015ec30 0x000000000055fc30 0x000000000055fc30
+                 0x0000000000006f10 0x00000000117255d8  RW     0x1000
+  NOTE           0x00000000000002a8 0x00000000004002a8 0x00000000004002a8
+                 0x0000000000000020 0x0000000000000020  R      0x8
+  NOTE           0x00000000000002c8 0x00000000004002c8 0x00000000004002c8
+                 0x0000000000000024 0x0000000000000024  R      0x4
+  NOTE           0x000000000015e718 0x000000000055e718 0x000000000055e718
+                 0x0000000000000020 0x0000000000000020  R      0x4
+  TLS            0x000000000015ec30 0x000000000055fc30 0x000000000055fc30
+                 0x0000000000000030 0x0000000000000058  R      0x8
+  GNU_PROPERTY   0x00000000000002a8 0x00000000004002a8 0x00000000004002a8
+                 0x0000000000000020 0x0000000000000020  R      0x8
+  GNU_STACK      0x0000000000000000 0x0000000000000000 0x0000000000000000
+                 0x0000000000000000 0x0000000000000000  RW     0x10
+  GNU_RELRO      0x000000000015ec30 0x000000000055fc30 0x000000000055fc30
+                 0x00000000000053d0 0x00000000000053d0  R      0x1
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .note.gnu.property .note.gnu.build-id .rela.plt 
+   01     .init .plt .text .fini 
+   02     .rodata rodata.cst32 .eh_frame .gcc_except_table .note.ABI-tag 
+   03     .tdata .init_array .fini_array .data.rel.ro .got .got.plt .data .bss 
+   04     .note.gnu.property 
+   05     .note.gnu.build-id 
+   06     .note.ABI-tag 
+   07     .tdata .tbss 
+   08     .note.gnu.property 
+   09     
+   10     .tdata .init_array .fini_array .data.rel.ro .got 
+
+There is no dynamic section in this file.

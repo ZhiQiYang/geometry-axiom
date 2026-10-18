@@ -1,0 +1,1202 @@
+[
+  {
+    "function": "__memmove_avx512_unaligned_erms",
+    "self_seconds": 19.24,
+    "inclusive_seconds": 19.24,
+    "calls": null
+  },
+  {
+    "function": "__memcmp_evex_movbe",
+    "self_seconds": 0.6,
+    "inclusive_seconds": 0.6,
+    "calls": null
+  },
+  {
+    "function": "brk",
+    "self_seconds": 0.34,
+    "inclusive_seconds": 0.34,
+    "calls": null
+  },
+  {
+    "function": "__write_nocancel",
+    "self_seconds": 0.34,
+    "inclusive_seconds": 0.34,
+    "calls": null
+  },
+  {
+    "function": "main",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.05,
+    "calls": 251
+  },
+  {
+    "function": "mprotect",
+    "self_seconds": 0.05,
+    "inclusive_seconds": 0.05,
+    "calls": null
+  },
+  {
+    "function": "munmap",
+    "self_seconds": 0.05,
+    "inclusive_seconds": 0.05,
+    "calls": null
+  },
+  {
+    "function": "__libc_start_call_main",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.05,
+    "calls": null
+  },
+  {
+    "function": "__memset_avx512_unaligned_erms",
+    "self_seconds": 0.05,
+    "inclusive_seconds": 0.05,
+    "calls": null
+  },
+  {
+    "function": "sysmalloc",
+    "self_seconds": 0.04,
+    "inclusive_seconds": 0.04,
+    "calls": null
+  },
+  {
+    "function": "__printf_buffer",
+    "self_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": null
+  },
+  {
+    "function": "world_revalidate_candidate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.02,
+    "calls": 3122
+  },
+  {
+    "function": "reference_default_world",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.02,
+    "calls": 301
+  },
+  {
+    "function": "world_validate_derived",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 3119
+  },
+  {
+    "function": "apply_scene_line_candidate <cycle 1>",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 4493
+  },
+  {
+    "function": "parse_scene_file",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 154
+  },
+  {
+    "function": "poly_contains_point",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 169751
+  },
+  {
+    "function": "eng_sha_block",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 4411
+  },
+  {
+    "function": "scene_draw_view",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 1026
+  },
+  {
+    "function": "eng_sha256",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 530
+  },
+  {
+    "function": "arena_get_retry",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "_IO_seekmark",
+    "self_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": null
+  },
+  {
+    "function": "cmd_render",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 146
+  },
+  {
+    "function": "boundary_contains_rect",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 39999
+  },
+  {
+    "function": "eng_definition_hash",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 460
+  },
+  {
+    "function": "scene_render",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 146
+  },
+  {
+    "function": "reference_eval_timber",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7101
+  },
+  {
+    "function": "reference_place_geometry",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4051
+  },
+  {
+    "function": "boundary_edge_interval",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15740
+  },
+  {
+    "function": "timber_end_face_check.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12147
+  },
+  {
+    "function": "cmd_replace_world",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 104
+  },
+  {
+    "function": "timber_place_a0_on_surface.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8096
+  },
+  {
+    "function": "timber_boundary_role_check.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12147
+  },
+  {
+    "function": "reference_check_all",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3122
+  },
+  {
+    "function": "resolve_auto_span.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4051
+  },
+  {
+    "function": "boundary_geometry_hash",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 70
+  },
+  {
+    "function": "asm_hash_token",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 27
+  },
+  {
+    "function": "reference_binding_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14
+  },
+  {
+    "function": "boundary_contains_point",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8096
+  },
+  {
+    "function": "json_reference_preview",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "reference_grid_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "boundary_is_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 5856
+  },
+  {
+    "function": "cmd_drag",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3
+  },
+  {
+    "function": "reference_snap.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3
+  },
+  {
+    "function": "cmd_pick",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  },
+  {
+    "function": "parse_boundary_body",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 814
+  },
+  {
+    "function": "apply_surface_combined_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 600
+  },
+  {
+    "function": "apply_boundary_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 218
+  },
+  {
+    "function": "apply_applyproj_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12
+  },
+  {
+    "function": "proj_redistribute_holes",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "poly_point_on_edge",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 170785
+  },
+  {
+    "function": "utf8_seq_len",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 114121
+  },
+  {
+    "function": "surface_direction_vector",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 73672
+  },
+  {
+    "function": "timber_a0_footprint_uv",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 61525
+  },
+  {
+    "function": "placement_effective_boundary",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 55024
+  },
+  {
+    "function": "json_schedule_support_owner",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 49345
+  },
+  {
+    "function": "grid_system_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 27465
+  },
+  {
+    "function": "json_reference_geometry",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 24354
+  },
+  {
+    "function": "surface_contains_rect",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 24259
+  },
+  {
+    "function": "count_legal_stops",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16192
+  },
+  {
+    "function": "parse_coord",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 13267
+  },
+  {
+    "function": "loop_edge_outward_normal",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 11604
+  },
+  {
+    "function": "timber_get_face_room",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 10620
+  },
+  {
+    "function": "parse_u32",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9467
+  },
+  {
+    "function": "surface_primary_axis_check",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8711
+  },
+  {
+    "function": "pick_stop",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8070
+  },
+  {
+    "function": "js_string_body",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7149
+  },
+  {
+    "function": "poly_loop_is_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6104
+  },
+  {
+    "function": "view_unproject_on_surface_near",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 5460
+  },
+  {
+    "function": "jt_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4857
+  },
+  {
+    "function": "parameter_reference_edit",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4493
+  },
+  {
+    "function": "parse_uv",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3493
+  },
+  {
+    "function": "feed_line.constprop.0 <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3428
+  },
+  {
+    "function": "jt_polygon",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3318
+  },
+  {
+    "function": "jt_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3274
+  },
+  {
+    "function": "assembly_rebuild.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3122
+  },
+  {
+    "function": "dp_rebuild",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3122
+  },
+  {
+    "function": "engineering_serializable",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3122
+  },
+  {
+    "function": "parameters_rebuild",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3122
+  },
+  {
+    "function": "sp_rebuild.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3122
+  },
+  {
+    "function": "world_revalidate <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3107
+  },
+  {
+    "function": "sp_capture_diagnostics.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6088
+  },
+  {
+    "function": "grid_axis_lines",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2910
+  },
+  {
+    "function": "placement_local_bounds",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2881
+  },
+  {
+    "function": "polygon_loop_bounds",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2881
+  },
+  {
+    "function": "scene_emit_polygon",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2139
+  },
+  {
+    "function": "assembly_generation_integrity",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2134
+  },
+  {
+    "function": "placement_outline",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2078
+  },
+  {
+    "function": "grid_axis_lines_in",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1955
+  },
+  {
+    "function": "dump_loop",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1824
+  },
+  {
+    "function": "timber_project_faces",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1770
+  },
+  {
+    "function": "guide_line_get_local_segments",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1578
+  },
+  {
+    "function": "grid_line_coord_in.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1483
+  },
+  {
+    "function": "grid_subdivision_used",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1380
+  },
+  {
+    "function": "reference_eval_guide",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1306
+  },
+  {
+    "function": "apply_timber_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1172
+  },
+  {
+    "function": "apply_place_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1170
+  },
+  {
+    "function": "apply_reference_place <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1170
+  },
+  {
+    "function": "reference_checked <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1169
+  },
+  {
+    "function": "grid_line_segments.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1144
+  },
+  {
+    "function": "rc_aabb_project",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 960
+  },
+  {
+    "function": "reference_face_format",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 944
+  },
+  {
+    "function": "reference_eval_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 897
+  },
+  {
+    "function": "reference_quantity",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 897
+  },
+  {
+    "function": "parse_placement_body",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 798
+  },
+  {
+    "function": "reference_face_parse",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 781
+  },
+  {
+    "function": "engineering_dump_versions",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 775
+  },
+  {
+    "function": "parameters_dump",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 775
+  },
+  {
+    "function": "reference_dump",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 775
+  },
+  {
+    "function": "sp_dump",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 775
+  },
+  {
+    "function": "world_dump_dsl",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 775
+  },
+  {
+    "function": "world_dump_grids",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 775
+  },
+  {
+    "function": "parse_edge_ref",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 774
+  },
+  {
+    "function": "grid_sample_indices_in.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 648
+  },
+  {
+    "function": "grid_is_valid_in",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 613
+  },
+  {
+    "function": "json_engineering_capabilities",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 460
+  },
+  {
+    "function": "jt_begin_view",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 438
+  },
+  {
+    "function": "jt_end_view",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 438
+  },
+  {
+    "function": "jt_rect",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 438
+  },
+  {
+    "function": "grid_lattice_coord",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 432
+  },
+  {
+    "function": "history_record",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 416
+  },
+  {
+    "function": "reference_dump_guide",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 376
+  },
+  {
+    "function": "reference_guide_ready",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 376
+  },
+  {
+    "function": "apply_guide_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 361
+  },
+  {
+    "function": "apply_reference_guide <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 361
+  },
+  {
+    "function": "apply_spec_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 357
+  },
+  {
+    "function": "reference_name",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 357
+  },
+  {
+    "function": "grid_anchor_line_coord",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 339
+  },
+  {
+    "function": "json_deleted_objects",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 328
+  },
+  {
+    "function": "space_construct",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 281
+  },
+  {
+    "function": "apply_placement_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 199
+  },
+  {
+    "function": "apply_beam_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 161
+  },
+  {
+    "function": "cpos_json",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 160
+  },
+  {
+    "function": "engineering_dump_grid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 148
+  },
+  {
+    "function": "grid_cell_bounds",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 140
+  },
+  {
+    "function": "grid_loop_rect_area2",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 140
+  },
+  {
+    "function": "boundary_keys_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 129
+  },
+  {
+    "function": "side_flush_outline",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 104
+  },
+  {
+    "function": "grid_system_axis_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 88
+  },
+  {
+    "function": "boundary_vertex_by_key",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 79
+  },
+  {
+    "function": "utf8_trim_tail",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 74
+  },
+  {
+    "function": "apply_space_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 69
+  },
+  {
+    "function": "apply_grid_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 65
+  },
+  {
+    "function": "grid_lattice_window",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 48
+  },
+  {
+    "function": "space_axis_bound",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 41
+  },
+  {
+    "function": "apply_column_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 39
+  },
+  {
+    "function": "cmd_objects",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 36
+  },
+  {
+    "function": "proj_edge_covered",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 36
+  },
+  {
+    "function": "reference_axis_definition_equal",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 36
+  },
+  {
+    "function": "schedule_support_local_face",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 34
+  },
+  {
+    "function": "grid_binding_cache",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 32
+  },
+  {
+    "function": "stop_ref_candidates",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 32
+  },
+  {
+    "function": "proj_sort_coords",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 30
+  },
+  {
+    "function": "guide_offset_in_range",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 24
+  },
+  {
+    "function": "box_project_uv",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 20
+  },
+  {
+    "function": "world_placement_boundary",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 18
+  },
+  {
+    "function": "json_section_profile_state",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16
+  },
+  {
+    "function": "proj_add_surface",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16
+  },
+  {
+    "function": "world_next_surface_id",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16
+  },
+  {
+    "function": "classify_rect_outline",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15
+  },
+  {
+    "function": "reference_system_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14
+  },
+  {
+    "function": "apply_canvaspos_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 13
+  },
+  {
+    "function": "json_reference_guide",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 13
+  },
+  {
+    "function": "subgrid_parent_count_valid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12
+  },
+  {
+    "function": "world_face_obstacles.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12
+  },
+  {
+    "function": "world_replace_object <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 11
+  },
+  {
+    "function": "reference_stage",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9
+  },
+  {
+    "function": "eng_read_file",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "grid_cell_ref_parse",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "json_candidate_guides.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "json_grid_axis_definition",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "json_section_profile_impact.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "parse_i64",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "proj_space_drop_member",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8
+  },
+  {
+    "function": "proj_rebind_aux",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "proj_split_loop",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "reference_guide_changed",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "scene_error",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "set_revalidate_error",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7
+  },
+  {
+    "function": "apply_delete_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6
+  },
+  {
+    "function": "apply_move_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 5
+  },
+  {
+    "function": "history_restore_world.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 5
+  },
+  {
+    "function": "apply_boundary_keys_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "apply_grid_binding_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "apply_grid_system_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "grid_query.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "grid_system_read_name",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "json_reference_grid",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "reference_query_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "reference_subgrid_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "subgrid_divisions_parse.constprop.0",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "world_drop_canvas_pos",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 4
+  },
+  {
+    "function": "eng_axis",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3
+  },
+  {
+    "function": "proj_spawn_face",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3
+  },
+  {
+    "function": "apply_datum_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "apply_subgrid_line <cycle 1>",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "reference_fragment_candidate",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "reference_guide_clip_text",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2
+  },
+  {
+    "function": "apply_span_auto_line",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  },
+  {
+    "function": "scene_pick_at",
+    "self_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1
+  }
+]

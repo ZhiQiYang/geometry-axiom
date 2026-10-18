@@ -1,0 +1,21 @@
+function,self_seconds,inclusive_seconds,calls
+__memmove_avx512_unaligned_erms,19.24,19.24,
+__memcmp_evex_movbe,0.6,0.6,
+__write_nocancel,0.34,0.34,
+brk,0.34,0.34,
+__libc_start_call_main,0.0,0.05,
+__memset_avx512_unaligned_erms,0.05,0.05,
+main,0.0,0.05,251
+mprotect,0.05,0.05,
+munmap,0.05,0.05,
+sysmalloc,0.04,0.04,
+__printf_buffer,0.02,0.02,
+reference_default_world,0.0,0.02,301
+world_revalidate_candidate <cycle 1>,0.0,0.02,3122
+_IO_seekmark,0.01,0.01,
+apply_scene_line_candidate <cycle 1>,0.01,0.01,4493
+arena_get_retry,0.01,0.01,
+boundary_contains_rect,0.0,0.01,39999
+cmd_render,0.0,0.01,146
+eng_definition_hash,0.0,0.01,460
+eng_sha256,0.0,0.01,530

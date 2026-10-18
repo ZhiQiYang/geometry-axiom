@@ -1,0 +1,1322 @@
+			Call graph
+
+
+granularity: each sample hit covers 2 byte(s) for 12.50% of 0.08 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     87.5    0.00    0.07                 main [1]
+                0.00    0.03     251/301         reference_default_world [3]
+                0.00    0.02     154/154         parse_scene_file [5]
+                0.00    0.01     146/146         cmd_render [16]
+                0.00    0.01     460/460         eng_definition_hash [17]
+                0.00    0.01     104/104         cmd_replace_world [19]
+                0.00    0.00     315/775         world_dump_dsl [12]
+                0.00    0.00     287/4673        feed_line.constprop.0 <cycle 1> [58]
+                0.00    0.00       8/8           json_reference_preview [24]
+                0.00    0.00       3/3           cmd_drag [25]
+                0.00    0.00       1/1           cmd_pick [27]
+                0.00    0.00       1/5460        view_unproject_on_surface_near [9]
+                0.00    0.00    3830/7149        js_string_body [50]
+                0.00    0.00     460/460         json_engineering_capabilities [100]
+                0.00    0.00     224/328         json_deleted_objects [113]
+                0.00    0.00     145/416         history_record [105]
+                0.00    0.00      36/36          cmd_objects [132]
+                0.00    0.00       1/49345       json_schedule_support_owner [34]
+-----------------------------------------------
+[2]     66.2    0.03    0.02    4673+13934   <cycle 1 as a whole> [2]
+                0.02    0.01    4492+1           apply_scene_line_candidate <cycle 1> [4]
+                0.00    0.01    3122             world_revalidate_candidate <cycle 1> [6]
+                0.01    0.00     600             apply_surface_combined_line <cycle 1> [7]
+                0.00    0.00     199             apply_placement_line <cycle 1> [23]
+                0.00    0.00    3428             feed_line.constprop.0 <cycle 1> [58]
+                0.00    0.00    3107             world_revalidate <cycle 1> [67]
+                0.00    0.00    1170             apply_reference_place <cycle 1> [83]
+                0.00    0.00    1169             reference_checked <cycle 1> [84]
+                0.00    0.00     361             apply_reference_guide <cycle 1> [109]
+                0.00    0.00     357             apply_spec_line <cycle 1> [110]
+                0.00    0.00     218             apply_boundary_line <cycle 1> [115]
+                0.00    0.00     161             apply_beam_line <cycle 1> [116]
+                0.00    0.00      69             apply_space_line <cycle 1> [127]
+                0.00    0.00      65             apply_grid_line <cycle 1> [128]
+                0.00    0.00      39             apply_column_line <cycle 1> [131]
+                0.00    0.00      12             apply_applyproj_line <cycle 1> [151]
+                0.00    0.00      11             world_replace_object <cycle 1> [154]
+                0.00    0.00       6             apply_delete_line <cycle 1> [170]
+                0.00    0.00       5             apply_move_line <cycle 1> [171]
+                0.00    0.00       4             apply_grid_system_line <cycle 1> [175]
+                0.00    0.00       4             apply_boundary_keys_line <cycle 1> [173]
+                0.00    0.00       4             apply_grid_binding_line <cycle 1> [174]
+                0.00    0.00       2             apply_datum_line <cycle 1> [185]
+                0.00    0.00       2             apply_subgrid_line <cycle 1> [186]
+-----------------------------------------------
+                0.00    0.01      50/301         cmd_replace_world [19]
+                0.00    0.03     251/301         main [1]
+[3]     38.4    0.00    0.03     301         reference_default_world [3]
+                0.02    0.01    2709/4673        apply_scene_line_candidate <cycle 1> [4]
+                0.00    0.00    2709/49345       json_schedule_support_owner [34]
+-----------------------------------------------
+                                   1             apply_scene_line_candidate <cycle 1> [4]
+                                 273             feed_line.constprop.0 <cycle 1> [58]
+                0.01    0.01    1510/4673        parse_scene_file [5]
+                0.02    0.01    2709/4673        reference_default_world [3]
+[4]     37.5    0.02    0.01    4492+1       apply_scene_line_candidate <cycle 1> [4]
+                0.01    0.00    1172/1172        apply_timber_line [10]
+                0.00    0.00    4490/4490        parameter_reference_edit [54]
+                0.00    0.00    2672/9467        parse_u32 [45]
+                0.00    0.00    1170/1170        apply_place_line [82]
+                0.00    0.00     361/361         apply_guide_line [108]
+                0.00    0.00      73/49345       json_schedule_support_owner [34]
+                0.00    0.00      56/61525       timber_a0_footprint_uv [32]
+                0.00    0.00      14/74          utf8_trim_tail [125]
+                0.00    0.00      13/13          apply_canvaspos_line [149]
+                0.00    0.00      10/14          reference_binding_changed [147]
+                0.00    0.00       9/9           reference_stage [155]
+                0.00    0.00       9/27          asm_hash_token [139]
+                0.00    0.00       8/8           reference_grid_changed [163]
+                0.00    0.00       7/7           reference_guide_changed [167]
+                0.00    0.00       4/4           reference_subgrid_text [180]
+                0.00    0.00       2/2           reference_guide_clip_text [188]
+                0.00    0.00       1/1           apply_span_auto_line [189]
+                                1170             apply_reference_place <cycle 1> [83]
+                                 600             apply_surface_combined_line <cycle 1> [7]
+                                 361             apply_reference_guide <cycle 1> [109]
+                                 357             apply_spec_line <cycle 1> [110]
+                                 218             apply_boundary_line <cycle 1> [115]
+                                 199             apply_placement_line <cycle 1> [23]
+                                 161             apply_beam_line <cycle 1> [116]
+                                  69             apply_space_line <cycle 1> [127]
+                                  65             apply_grid_line <cycle 1> [128]
+                                  39             apply_column_line <cycle 1> [131]
+                                  12             apply_applyproj_line <cycle 1> [151]
+                                   6             apply_delete_line <cycle 1> [170]
+                                   5             apply_move_line <cycle 1> [171]
+                                   4             apply_grid_binding_line <cycle 1> [174]
+                                   4             apply_boundary_keys_line <cycle 1> [173]
+                                   4             apply_grid_system_line <cycle 1> [175]
+                                   2             apply_subgrid_line <cycle 1> [186]
+                                   2             apply_datum_line <cycle 1> [185]
+                                   1             apply_scene_line_candidate <cycle 1> [4]
+-----------------------------------------------
+                0.00    0.02     154/154         main [1]
+[5]     23.5    0.00    0.02     154         parse_scene_file [5]
+                0.01    0.01    1510/4673        apply_scene_line_candidate <cycle 1> [4]
+                0.00    0.00     145/4673        world_revalidate <cycle 1> [67]
+                0.00    0.00   87052/114121      utf8_seq_len [30]
+                0.00    0.00    1883/49345       json_schedule_support_owner [34]
+                0.00    0.00     145/2134        assembly_generation_integrity [73]
+                0.00    0.00     145/1380        grid_subdivision_used [80]
+                0.00    0.00       1/74          utf8_trim_tail [125]
+-----------------------------------------------
+                                   4             apply_grid_system_line <cycle 1> [175]
+                                   8             apply_grid_line <cycle 1> [128]
+                                3107             world_revalidate <cycle 1> [67]
+                0.00    0.00       3/4673        reference_snap.constprop.0 [26]
+[6]     14.4    0.00    0.01    3122         world_revalidate_candidate <cycle 1> [6]
+                0.00    0.01    3119/3119        world_validate_derived [14]
+                0.00    0.00    4051/4051        reference_eval_timber [20]
+                0.00    0.00    3122/3122        parameters_rebuild [64]
+                0.00    0.00    3122/3122        assembly_rebuild.constprop.0 [61]
+                0.00    0.00    3122/3122        sp_rebuild.constprop.0 [66]
+                0.00    0.00    3122/3122        dp_rebuild [62]
+                0.00    0.00    3122/3122        reference_check_all [65]
+                0.00    0.00    2974/3048        sp_capture_diagnostics.constprop.0 [68]
+                0.00    0.00    1989/2134        assembly_generation_integrity [73]
+                0.00    0.00     879/1306        reference_eval_guide [81]
+                0.00    0.00     306/613         grid_is_valid_in [98]
+                0.00    0.00     114/281         space_construct [114]
+                0.00    0.00      46/129         boundary_keys_valid [121]
+                0.00    0.00      32/32          grid_binding_cache [136]
+                0.00    0.00      26/27465       grid_system_valid [36]
+                0.00    0.00      20/88          grid_system_axis_valid [123]
+                0.00    0.00      19/79          boundary_vertex_by_key [124]
+                0.00    0.00      12/12          subgrid_parent_count_valid [152]
+                0.00    0.00      10/897         reference_eval_text [88]
+                0.00    0.00       7/74          utf8_trim_tail [125]
+                0.00    0.00       7/7           set_revalidate_error [169]
+                                3122             feed_line.constprop.0 <cycle 1> [58]
+-----------------------------------------------
+                                 600             apply_scene_line_candidate <cycle 1> [4]
+[7]     13.9    0.01    0.00     600         apply_surface_combined_line <cycle 1> [7]
+                0.00    0.00     599/798         parse_placement_body [22]
+                0.00    0.00     600/9467        parse_u32 [45]
+                0.00    0.00     598/814         parse_boundary_body [90]
+                0.00    0.00       1/74          utf8_trim_tail [125]
+                                 599             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                0.00    0.00    3456/11604       reference_place_geometry [21]
+                0.01    0.00    8148/11604       scene_draw_view [15]
+[8]     12.5    0.01    0.00   11604         loop_edge_outward_normal [8]
+-----------------------------------------------
+                0.00    0.00       1/5460        main [1]
+                0.00    0.00       3/5460        cmd_drag [25]
+                0.00    0.00     796/5460        parse_placement_body [22]
+                0.01    0.00    4660/5460        world_validate_derived [14]
+[9]     12.5    0.01    0.00    5460         view_unproject_on_surface_near [9]
+-----------------------------------------------
+                0.01    0.00    1172/1172        apply_scene_line_candidate <cycle 1> [4]
+[10]    12.5    0.01    0.00    1172         apply_timber_line [10]
+                0.00    0.00    2340/13267       parse_coord [41]
+                0.00    0.00    1170/9467        parse_u32 [45]
+                0.00    0.00       2/74          utf8_trim_tail [125]
+-----------------------------------------------
+                0.01    0.00     775/775         world_dump_dsl [12]
+[11]    12.5    0.01    0.00     775         parameters_dump [11]
+-----------------------------------------------
+                0.00    0.00     315/775         main [1]
+                0.00    0.01     460/775         eng_definition_hash [17]
+[12]    12.5    0.00    0.01     775         world_dump_dsl [12]
+                0.01    0.00     775/775         parameters_dump [11]
+                0.00    0.00    1824/1824        dump_loop [76]
+                0.00    0.00     775/775         engineering_dump_versions [92]
+                0.00    0.00     775/1380        grid_subdivision_used [80]
+                0.00    0.00     775/775         sp_dump [94]
+                0.00    0.00     775/775         world_dump_grids [95]
+                0.00    0.00     775/775         reference_dump [93]
+-----------------------------------------------
+                                                 <spontaneous>
+[13]    12.5    0.01    0.00                 apply_boundary_keyed_line [13]
+-----------------------------------------------
+                0.00    0.01    3119/3119        world_revalidate_candidate <cycle 1> [6]
+[14]    10.7    0.00    0.01    3119         world_validate_derived [14]
+                0.01    0.00    4660/5460        view_unproject_on_surface_near [9]
+                0.00    0.00   10074/61525       timber_a0_footprint_uv [32]
+                0.00    0.00    8092/16192       count_legal_stops [39]
+                0.00    0.00    5044/5856        boundary_is_valid [52]
+                0.00    0.00    4660/8711        surface_primary_axis_check [46]
+                0.00    0.00    4046/8096        timber_place_a0_on_surface.constprop.0 [48]
+                0.00    0.00    4046/24302       json_reference_geometry [37]
+                0.00    0.00    4046/12147       timber_end_face_check.constprop.0 [43]
+                0.00    0.00    4046/12147       timber_boundary_role_check.constprop.0 [42]
+                0.00    0.00     305/613         grid_is_valid_in [98]
+                0.00    0.00     169/1483        grid_line_coord_in.constprop.0 [79]
+                0.00    0.00     169/339         grid_anchor_line_coord [112]
+                0.00    0.00     114/281         space_construct [114]
+                0.00    0.00       4/140         grid_cell_bounds [119]
+-----------------------------------------------
+                                 441             scene_draw_view [15]
+                0.00    0.00       1/585         cmd_pick [27]
+                0.00    0.00     146/585         cmd_render [16]
+                0.00    0.01     438/585         scene_render [18]
+[15]     8.8    0.00    0.01     585+441     scene_draw_view [15]
+                0.01    0.00    8148/11604       loop_edge_outward_normal [8]
+                0.00    0.00   34313/49345       json_schedule_support_owner [34]
+                0.00    0.00    4857/4857        jt_line [53]
+                0.00    0.00    3318/3318        jt_polygon [59]
+                0.00    0.00    2836/3274        jt_text [60]
+                0.00    0.00    2139/2139        scene_emit_polygon [72]
+                0.00    0.00    1935/2078        placement_outline [74]
+                0.00    0.00    1770/1770        timber_project_faces [77]
+                0.00    0.00    1104/1144        grid_line_segments.constprop.0 [85]
+                0.00    0.00     960/960         rc_aabb_project [86]
+                0.00    0.00     648/648         grid_sample_indices_in.constprop.0 [97]
+                0.00    0.00     402/1578        guide_line_get_local_segments [78]
+                                 441             scene_draw_view [15]
+-----------------------------------------------
+                0.00    0.01     146/146         main [1]
+[16]     8.8    0.00    0.01     146         cmd_render [16]
+                0.00    0.01     146/146         scene_render [18]
+                0.00    0.00     146/585         scene_draw_view [15]
+-----------------------------------------------
+                0.00    0.01     460/460         main [1]
+[17]     7.4    0.00    0.01     460         eng_definition_hash [17]
+                0.00    0.01     460/775         world_dump_dsl [12]
+                0.00    0.00     460/530         eng_sha256 [99]
+-----------------------------------------------
+                0.00    0.01     146/146         cmd_render [16]
+[18]     6.6    0.00    0.01     146         scene_render [18]
+                0.00    0.01     438/585         scene_draw_view [15]
+                0.00    0.00     438/438         jt_begin_view [101]
+                0.00    0.00     438/438         jt_rect [103]
+                0.00    0.00     438/3274        jt_text [60]
+                0.00    0.00     438/438         jt_end_view [102]
+-----------------------------------------------
+                0.00    0.01     104/104         main [1]
+[19]     6.4    0.00    0.01     104         cmd_replace_world [19]
+                0.00    0.01      50/301         reference_default_world [3]
+                0.00    0.00     104/328         json_deleted_objects [113]
+-----------------------------------------------
+                                3050             reference_eval_timber [20]
+                0.00    0.00    4051/4051        world_revalidate_candidate <cycle 1> [6]
+[20]     3.7    0.00    0.00    4051+3050    reference_eval_timber [20]
+                0.00    0.00    4051/4051        reference_place_geometry [21]
+                0.00    0.00     425/1306        reference_eval_guide [81]
+                                3050             reference_eval_timber [20]
+-----------------------------------------------
+                0.00    0.00    4051/4051        reference_eval_timber [20]
+[21]     3.7    0.00    0.00    4051         reference_place_geometry [21]
+                0.00    0.00    3456/11604       loop_edge_outward_normal [8]
+                0.00    0.00    4051/55024       placement_effective_boundary [33]
+                0.00    0.00    4051/4051        resolve_auto_span.constprop.0 [56]
+                0.00    0.00    4051/73672       surface_direction_vector [31]
+                0.00    0.00    4051/8711        surface_primary_axis_check [46]
+                0.00    0.00    4051/12147       timber_end_face_check.constprop.0 [43]
+                0.00    0.00    4051/12147       timber_boundary_role_check.constprop.0 [42]
+                0.00    0.00    4050/8096        timber_place_a0_on_surface.constprop.0 [48]
+                0.00    0.00     170/1483        grid_line_coord_in.constprop.0 [79]
+                0.00    0.00     170/339         grid_anchor_line_coord [112]
+                0.00    0.00       4/140         grid_cell_bounds [119]
+                0.00    0.00       2/74          utf8_trim_tail [125]
+                0.00    0.00       1/3           eng_axis [183]
+-----------------------------------------------
+                0.00    0.00     199/798         apply_placement_line <cycle 1> [23]
+                0.00    0.00     599/798         apply_surface_combined_line <cycle 1> [7]
+[22]     1.8    0.00    0.00     798         parse_placement_body [22]
+                0.00    0.00     796/5460        view_unproject_on_surface_near [9]
+                0.00    0.00    2393/13267       parse_coord [41]
+                0.00    0.00     199/9467        parse_u32 [45]
+                0.00    0.00       2/74          utf8_trim_tail [125]
+-----------------------------------------------
+                                 199             apply_scene_line_candidate <cycle 1> [4]
+[23]     0.5    0.00    0.00     199         apply_placement_line <cycle 1> [23]
+                0.00    0.00     199/798         parse_placement_body [22]
+                0.00    0.00     199/9467        parse_u32 [45]
+                                 197             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                0.00    0.00       8/8           main [1]
+[24]     0.2    0.00    0.00       8         json_reference_preview [24]
+                0.00    0.00      16/4673        feed_line.constprop.0 <cycle 1> [58]
+                0.00    0.00      26/7149        js_string_body [50]
+                0.00    0.00      16/70          boundary_geometry_hash [126]
+                0.00    0.00       8/24302       json_reference_geometry [37]
+                0.00    0.00       8/8           json_candidate_guides.constprop.0 [158]
+                0.00    0.00       8/8           json_section_profile_impact.constprop.0 [160]
+                0.00    0.00       4/4           json_reference_grid [178]
+-----------------------------------------------
+                0.00    0.00       3/3           main [1]
+[25]     0.1    0.00    0.00       3         cmd_drag [25]
+                0.00    0.00       3/3           reference_snap.constprop.0 [26]
+                0.00    0.00       3/4673        feed_line.constprop.0 <cycle 1> [58]
+                0.00    0.00       3/5460        view_unproject_on_surface_near [9]
+-----------------------------------------------
+                0.00    0.00       3/3           cmd_drag [25]
+[26]     0.0    0.00    0.00       3         reference_snap.constprop.0 [26]
+                0.00    0.00       3/4673        world_revalidate_candidate <cycle 1> [6]
+                0.00    0.00      24/897         reference_eval_text [88]
+                0.00    0.00      24/24          guide_offset_in_range [140]
+                0.00    0.00       3/2078        placement_outline [74]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[27]     0.0    0.00    0.00       1         cmd_pick [27]
+                0.00    0.00       1/585         scene_draw_view [15]
+                0.00    0.00       1/7149        js_string_body [50]
+                0.00    0.00       1/1           scene_pick_at [190]
+-----------------------------------------------
+                0.00    0.00      20/170785      classify_rect_outline [146]
+                0.00    0.00      28/170785      boundary_contains_point [47]
+                0.00    0.00      38/170785      boundary_contains_rect [35]
+                0.00    0.00     948/170785      boundary_is_valid [52]
+                0.00    0.00  169751/170785      poly_contains_point [29]
+[28]     0.0    0.00    0.00  170785         poly_point_on_edge [28]
+-----------------------------------------------
+                0.00    0.00       1/169751      proj_redistribute_holes [165]
+                0.00    0.00       2/169751      apply_applyproj_line <cycle 1> [151]
+                0.00    0.00    1028/169751      boundary_is_valid [52]
+                0.00    0.00    8554/169751      boundary_contains_point [47]
+                0.00    0.00  160166/169751      boundary_contains_rect [35]
+[29]     0.0    0.00    0.00  169751         poly_contains_point [29]
+                0.00    0.00  169751/170785      poly_point_on_edge [28]
+-----------------------------------------------
+                0.00    0.00   11905/114121      js_string_body [50]
+                0.00    0.00   15164/114121      feed_line.constprop.0 <cycle 1> [58]
+                0.00    0.00   87052/114121      parse_scene_file [5]
+[30]     0.0    0.00    0.00  114121         utf8_seq_len [30]
+-----------------------------------------------
+                0.00    0.00    4051/73672       reference_place_geometry [21]
+                0.00    0.00    8096/73672       timber_place_a0_on_surface.constprop.0 [48]
+                0.00    0.00   61525/73672       timber_a0_footprint_uv [32]
+[31]     0.0    0.00    0.00   73672         surface_direction_vector [31]
+-----------------------------------------------
+                0.00    0.00      56/61525       apply_scene_line_candidate <cycle 1> [4]
+                0.00    0.00      96/61525       cmd_objects [132]
+                0.00    0.00    1402/61525       reference_dump [93]
+                0.00    0.00    3593/61525       timber_end_face_check.constprop.0 [43]
+                0.00    0.00    7067/61525       reference_check_all [65]
+                0.00    0.00    9027/61525       resolve_auto_span.constprop.0 [56]
+                0.00    0.00   10074/61525       world_validate_derived [14]
+                0.00    0.00   30210/61525       json_reference_geometry [37]
+[32]     0.0    0.00    0.00   61525         timber_a0_footprint_uv [32]
+                0.00    0.00   61525/73672       surface_direction_vector [31]
+-----------------------------------------------
+                0.00    0.00      96/55024       cmd_objects [132]
+                0.00    0.00     887/55024       reference_quantity [89]
+                0.00    0.00    1402/55024       reference_dump [93]
+                0.00    0.00    4051/55024       reference_place_geometry [21]
+                0.00    0.00   12147/55024       timber_end_face_check.constprop.0 [43]
+                0.00    0.00   12147/55024       timber_boundary_role_check.constprop.0 [42]
+                0.00    0.00   24294/55024       json_reference_geometry [37]
+[33]     0.0    0.00    0.00   55024         placement_effective_boundary [33]
+-----------------------------------------------
+                0.00    0.00       1/49345       main [1]
+                0.00    0.00      73/49345       apply_scene_line_candidate <cycle 1> [4]
+                0.00    0.00     288/49345       feed_line.constprop.0 <cycle 1> [58]
+                0.00    0.00    1883/49345       parse_scene_file [5]
+                0.00    0.00    1982/49345       guide_line_get_local_segments [78]
+                0.00    0.00    2709/49345       reference_default_world [3]
+                0.00    0.00    8096/49345       timber_place_a0_on_surface.constprop.0 [48]
+                0.00    0.00   34313/49345       scene_draw_view [15]
+[34]     0.0    0.00    0.00   49345         json_schedule_support_owner [34]
+-----------------------------------------------
+                0.00    0.00    5966/39999       resolve_auto_span.constprop.0 [56]
+                0.00    0.00    8096/39999       timber_place_a0_on_surface.constprop.0 [48]
+                0.00    0.00   10197/39999       timber_boundary_role_check.constprop.0 [42]
+                0.00    0.00   15740/39999       boundary_edge_interval [40]
+[35]     0.0    0.00    0.00   39999         boundary_contains_rect [35]
+                0.00    0.00  160166/169751      poly_contains_point [29]
+                0.00    0.00      38/170785      poly_point_on_edge [28]
+-----------------------------------------------
+                0.00    0.00       4/27465       apply_grid_system_line <cycle 1> [175]
+                0.00    0.00      26/27465       world_revalidate_candidate <cycle 1> [6]
+                0.00    0.00      96/27465       cmd_objects [132]
+                0.00    0.00    1402/27465       reference_dump [93]
+                0.00    0.00   10197/27465       timber_boundary_role_check.constprop.0 [42]
+                0.00    0.00   15740/27465       boundary_edge_interval [40]
+[36]     0.0    0.00    0.00   27465         grid_system_valid [36]
+                0.00    0.00      60/88          grid_system_axis_valid [123]
+                0.00    0.00      30/34          schedule_support_local_face [135]
+-----------------------------------------------
+                                  52             json_reference_geometry [37]
+                0.00    0.00       8/24302       json_reference_preview [24]
+                0.00    0.00    4046/24302       world_validate_derived [14]
+                0.00    0.00    4050/24302       reference_check_all [65]
+                0.00    0.00    4051/24302       resolve_auto_span.constprop.0 [56]
+                0.00    0.00   12147/24302       timber_end_face_check.constprop.0 [43]
+[37]     0.0    0.00    0.00   24302+52      json_reference_geometry [37]
+                0.00    0.00   30210/61525       timber_a0_footprint_uv [32]
+                0.00    0.00   24294/55024       placement_effective_boundary [33]
+                                  52             json_reference_geometry [37]
+-----------------------------------------------
+                0.00    0.00    5966/24259       resolve_auto_span.constprop.0 [56]
+                0.00    0.00    8096/24259       timber_place_a0_on_surface.constprop.0 [48]
+                0.00    0.00   10197/24259       timber_boundary_role_check.constprop.0 [42]
+[38]     0.0    0.00    0.00   24259         surface_contains_rect [38]
+-----------------------------------------------
+                0.00    0.00    8092/16192       world_validate_derived [14]
+                0.00    0.00    8100/16192       reference_check_all [65]
+[39]     0.0    0.00    0.00   16192         count_legal_stops [39]
+-----------------------------------------------
+                0.00    0.00   15740/15740       timber_end_face_check.constprop.0 [43]
+[40]     0.0    0.00    0.00   15740         boundary_edge_interval [40]
+                0.00    0.00   15740/39999       boundary_contains_rect [35]
+                0.00    0.00   15740/27465       grid_system_valid [36]
+-----------------------------------------------
+                0.00    0.00      16/13267       apply_grid_system_line <cycle 1> [175]
+                0.00    0.00      26/13267       apply_canvaspos_line [149]
+                0.00    0.00      26/13267       apply_reference_place <cycle 1> [83]
+                0.00    0.00     104/13267       apply_grid_line <cycle 1> [128]
+                0.00    0.00     173/13267       apply_column_line <cycle 1> [131]
+                0.00    0.00     357/13267       apply_spec_line <cycle 1> [110]
+                0.00    0.00     922/13267       apply_beam_line <cycle 1> [116]
+                0.00    0.00    2340/13267       apply_timber_line [10]
+                0.00    0.00    2393/13267       parse_placement_body [22]
+                0.00    0.00    6910/13267       parse_uv [57]
+[41]     0.0    0.00    0.00   13267         parse_coord [41]
+-----------------------------------------------
+                0.00    0.00    4046/12147       world_validate_derived [14]
+                0.00    0.00    4050/12147       reference_check_all [65]
+                0.00    0.00    4051/12147       reference_place_geometry [21]
+[42]     0.0    0.00    0.00   12147         timber_boundary_role_check.constprop.0 [42]
+                0.00    0.00   12147/55024       placement_effective_boundary [33]
+                0.00    0.00   10197/39999       boundary_contains_rect [35]
+                0.00    0.00   10197/24259       surface_contains_rect [38]
+                0.00    0.00   10197/27465       grid_system_valid [36]
+-----------------------------------------------
+                0.00    0.00    4046/12147       world_validate_derived [14]
+                0.00    0.00    4050/12147       reference_check_all [65]
+                0.00    0.00    4051/12147       reference_place_geometry [21]
+[43]     0.0    0.00    0.00   12147         timber_end_face_check.constprop.0 [43]
+                0.00    0.00   15740/15740       boundary_edge_interval [40]
+                0.00    0.00   12147/55024       placement_effective_boundary [33]
+                0.00    0.00   12147/24302       json_reference_geometry [37]
+                0.00    0.00    3593/61525       timber_a0_footprint_uv [32]
+-----------------------------------------------
+                0.00    0.00   10620/10620       timber_project_faces [77]
+[44]     0.0    0.00    0.00   10620         timber_get_face_room [44]
+-----------------------------------------------
+                0.00    0.00       2/9467        apply_datum_line <cycle 1> [185]
+                0.00    0.00       4/9467        apply_grid_system_line <cycle 1> [175]
+                0.00    0.00       4/9467        apply_subgrid_line <cycle 1> [186]
+                0.00    0.00       5/9467        apply_move_line <cycle 1> [171]
+                0.00    0.00       6/9467        apply_delete_line <cycle 1> [170]
+                0.00    0.00       8/9467        grid_cell_ref_parse [157]
+                0.00    0.00      12/9467        reference_quantity [89]
+                0.00    0.00      13/9467        apply_canvaspos_line [149]
+                0.00    0.00      24/9467        apply_applyproj_line <cycle 1> [151]
+                0.00    0.00      32/9467        apply_grid_binding_line <cycle 1> [174]
+                0.00    0.00      36/9467        apply_boundary_keys_line <cycle 1> [173]
+                0.00    0.00      69/9467        apply_space_line <cycle 1> [127]
+                0.00    0.00      74/9467        apply_column_line <cycle 1> [131]
+                0.00    0.00     138/9467        apply_grid_line <cycle 1> [128]
+                0.00    0.00     187/9467        apply_beam_line <cycle 1> [116]
+                0.00    0.00     199/9467        parse_placement_body [22]
+                0.00    0.00     199/9467        apply_placement_line <cycle 1> [23]
+                0.00    0.00     218/9467        apply_boundary_line <cycle 1> [115]
+                0.00    0.00     307/9467        parameter_reference_edit [54]
+                0.00    0.00     600/9467        apply_surface_combined_line <cycle 1> [7]
+                0.00    0.00     728/9467        apply_reference_guide <cycle 1> [109]
+                0.00    0.00    1170/9467        apply_timber_line [10]
+                0.00    0.00    2672/9467        apply_scene_line_candidate <cycle 1> [4]
+                0.00    0.00    2760/9467        apply_reference_place <cycle 1> [83]
+[45]     0.0    0.00    0.00    9467         parse_u32 [45]
+-----------------------------------------------
+                0.00    0.00    4051/8711        reference_place_geometry [21]
+                0.00    0.00    4660/8711        world_validate_derived [14]
+[46]     0.0    0.00    0.00    8711         surface_primary_axis_check [46]
+-----------------------------------------------
+                0.00    0.00    8096/8096        timber_place_a0_on_surface.constprop.0 [48]
+[47]     0.0    0.00    0.00    8096         boundary_contains_point [47]
+                0.00    0.00    8554/169751      poly_contains_point [29]
+                0.00    0.00      28/170785      poly_point_on_edge [28]
+-----------------------------------------------
+                0.00    0.00    4046/8096        world_validate_derived [14]
+                0.00    0.00    4050/8096        reference_place_geometry [21]
+[48]     0.0    0.00    0.00    8096         timber_place_a0_on_surface.constprop.0 [48]
+                0.00    0.00    8096/8096        boundary_contains_point [47]
+                0.00    0.00    8096/73672       surface_direction_vector [31]
+                0.00    0.00    8096/39999       boundary_contains_rect [35]
+                0.00    0.00    8096/24259       surface_contains_rect [38]
+                0.00    0.00    8096/49345       json_schedule_support_owner [34]
+-----------------------------------------------
+                0.00    0.00    8070/8070        resolve_auto_span.constprop.0 [56]
+[49]     0.0    0.00    0.00    8070         pick_stop [49]
+-----------------------------------------------
+                0.00    0.00       1/7149        cmd_pick [27]
+                0.00    0.00       6/7149        eng_read_file [156]
+                0.00    0.00      12/7149        json_reference_guide [150]
+                0.00    0.00      26/7149        json_reference_preview [24]
+                0.00    0.00    3274/7149        jt_text [60]
+                0.00    0.00    3830/7149        main [1]
+[50]     0.0    0.00    0.00    7149         js_string_body [50]
+                0.00    0.00   11905/114121      utf8_seq_len [30]
+-----------------------------------------------
+                0.00    0.00       7/6104        proj_split_loop [166]
+                0.00    0.00       8/6104        apply_applyproj_line <cycle 1> [151]
+                0.00    0.00    6089/6104        boundary_is_valid [52]
+[51]     0.0    0.00    0.00    6104         poly_loop_is_valid [51]
+-----------------------------------------------
+                0.00    0.00     812/5856        parse_boundary_body [90]
+                0.00    0.00    5044/5856        world_validate_derived [14]
+[52]     0.0    0.00    0.00    5856         boundary_is_valid [52]
+                0.00    0.00    6089/6104        poly_loop_is_valid [51]
+                0.00    0.00    1028/169751      poly_contains_point [29]
+                0.00    0.00     948/170785      poly_point_on_edge [28]
+-----------------------------------------------
+                0.00    0.00    4857/4857        scene_draw_view [15]
+[53]     0.0    0.00    0.00    4857         jt_line [53]
+-----------------------------------------------
+                                   3             parameter_reference_edit [54]
+                0.00    0.00    4490/4490        apply_scene_line_candidate <cycle 1> [4]
+[54]     0.0    0.00    0.00    4490+3       parameter_reference_edit [54]
+                0.00    0.00     307/9467        parse_u32 [45]
+                                   3             parameter_reference_edit [54]
+-----------------------------------------------
+                0.00    0.00    4411/4411        eng_sha256 [99]
+[55]     0.0    0.00    0.00    4411         eng_sha_block [55]
+-----------------------------------------------
+                0.00    0.00    4051/4051        reference_place_geometry [21]
+[56]     0.0    0.00    0.00    4051         resolve_auto_span.constprop.0 [56]
+                0.00    0.00    9027/61525       timber_a0_footprint_uv [32]
+                0.00    0.00    8070/8070        pick_stop [49]
+                0.00    0.00    5966/39999       boundary_contains_rect [35]
+                0.00    0.00    5966/24259       surface_contains_rect [38]
+                0.00    0.00    4051/24302       json_reference_geometry [37]
+                0.00    0.00      32/32          stop_ref_candidates [137]
+-----------------------------------------------
+                0.00    0.00    3493/3493        parse_boundary_body [90]
+[57]     0.0    0.00    0.00    3493         parse_uv [57]
+                0.00    0.00    6910/13267       parse_coord [41]
+-----------------------------------------------
+                                3122             world_revalidate_candidate <cycle 1> [6]
+                0.00    0.00       3/4673        cmd_drag [25]
+                0.00    0.00      16/4673        json_reference_preview [24]
+                0.00    0.00     287/4673        main [1]
+[58]     0.0    0.00    0.00    3428         feed_line.constprop.0 <cycle 1> [58]
+                0.00    0.00   15164/114121      utf8_seq_len [30]
+                0.00    0.00    3122/3122        engineering_serializable [63]
+                0.00    0.00     288/49345       json_schedule_support_owner [34]
+                0.00    0.00     271/416         history_record [105]
+                0.00    0.00       5/5           history_restore_world.constprop.0 [172]
+                0.00    0.00       3/74          utf8_trim_tail [125]
+                                 273             apply_scene_line_candidate <cycle 1> [4]
+-----------------------------------------------
+                0.00    0.00    3318/3318        scene_draw_view [15]
+[59]     0.0    0.00    0.00    3318         jt_polygon [59]
+-----------------------------------------------
+                0.00    0.00     438/3274        scene_render [18]
+                0.00    0.00    2836/3274        scene_draw_view [15]
+[60]     0.0    0.00    0.00    3274         jt_text [60]
+                0.00    0.00    3274/7149        js_string_body [50]
+-----------------------------------------------
+                0.00    0.00    3122/3122        world_revalidate_candidate <cycle 1> [6]
+[61]     0.0    0.00    0.00    3122         assembly_rebuild.constprop.0 [61]
+-----------------------------------------------
+                0.00    0.00    3122/3122        world_revalidate_candidate <cycle 1> [6]
+[62]     0.0    0.00    0.00    3122         dp_rebuild [62]
+-----------------------------------------------
+                0.00    0.00    3122/3122        feed_line.constprop.0 <cycle 1> [58]
+[63]     0.0    0.00    0.00    3122         engineering_serializable [63]
+-----------------------------------------------
+                0.00    0.00    3122/3122        world_revalidate_candidate <cycle 1> [6]
+[64]     0.0    0.00    0.00    3122         parameters_rebuild [64]
+-----------------------------------------------
+                0.00    0.00    3122/3122        world_revalidate_candidate <cycle 1> [6]
+[65]     0.0    0.00    0.00    3122         reference_check_all [65]
+                0.00    0.00    8100/16192       count_legal_stops [39]
+                0.00    0.00    7067/61525       timber_a0_footprint_uv [32]
+                0.00    0.00    4050/24302       json_reference_geometry [37]
+                0.00    0.00    4050/12147       timber_end_face_check.constprop.0 [43]
+                0.00    0.00    4050/12147       timber_boundary_role_check.constprop.0 [42]
+-----------------------------------------------
+                0.00    0.00    3122/3122        world_revalidate_candidate <cycle 1> [6]
+[66]     0.0    0.00    0.00    3122         sp_rebuild.constprop.0 [66]
+-----------------------------------------------
+                                   2             apply_subgrid_line <cycle 1> [186]
+                                   2             apply_datum_line <cycle 1> [185]
+                                   4             apply_boundary_keys_line <cycle 1> [173]
+                                   4             apply_grid_binding_line <cycle 1> [174]
+                                   5             apply_move_line <cycle 1> [171]
+                                   6             apply_delete_line <cycle 1> [170]
+                                  11             world_replace_object <cycle 1> [154]
+                                  12             apply_applyproj_line <cycle 1> [151]
+                                  34             apply_column_line <cycle 1> [131]
+                                  47             apply_grid_line <cycle 1> [128]
+                                 152             apply_beam_line <cycle 1> [116]
+                                 197             apply_placement_line <cycle 1> [23]
+                                 357             apply_spec_line <cycle 1> [110]
+                                 361             apply_reference_guide <cycle 1> [109]
+                                 599             apply_surface_combined_line <cycle 1> [7]
+                                1169             reference_checked <cycle 1> [84]
+                0.00    0.00     145/4673        parse_scene_file [5]
+[67]     0.0    0.00    0.00    3107         world_revalidate <cycle 1> [67]
+                                3107             world_revalidate_candidate <cycle 1> [6]
+-----------------------------------------------
+                                3040             sp_capture_diagnostics.constprop.0 [68]
+                0.00    0.00       2/3048        apply_subgrid_line <cycle 1> [186]
+                0.00    0.00       4/3048        apply_grid_binding_line <cycle 1> [174]
+                0.00    0.00       4/3048        apply_grid_system_line <cycle 1> [175]
+                0.00    0.00      64/3048        apply_grid_line <cycle 1> [128]
+                0.00    0.00    2974/3048        world_revalidate_candidate <cycle 1> [6]
+[68]     0.0    0.00    0.00    3048+3040    sp_capture_diagnostics.constprop.0 [68]
+                                3040             sp_capture_diagnostics.constprop.0 [68]
+-----------------------------------------------
+                0.00    0.00       4/2910        grid_query.constprop.0 [176]
+                0.00    0.00      16/2910        reference_grid_changed [163]
+                0.00    0.00      16/2910        json_reference_grid [178]
+                0.00    0.00      40/2910        subgrid_parent_count_valid [152]
+                0.00    0.00      64/2910        apply_grid_line <cycle 1> [128]
+                0.00    0.00     280/2910        grid_cell_bounds [119]
+                0.00    0.00     576/2910        grid_sample_indices_in.constprop.0 [97]
+                0.00    0.00     679/2910        grid_is_valid_in [98]
+                0.00    0.00    1235/2910        grid_line_coord_in.constprop.0 [79]
+[69]     0.0    0.00    0.00    2910         grid_axis_lines [69]
+                0.00    0.00    2682/2881        polygon_loop_bounds [71]
+                0.00    0.00    2682/2881        placement_local_bounds [70]
+-----------------------------------------------
+                0.00    0.00       3/2881        apply_grid_line <cycle 1> [128]
+                0.00    0.00       4/2881        json_reference_grid [178]
+                0.00    0.00       4/2881        reference_subgrid_text [180]
+                0.00    0.00      48/2881        grid_sample_indices_in.constprop.0 [97]
+                0.00    0.00     140/2881        grid_cell_bounds [119]
+                0.00    0.00    2682/2881        grid_axis_lines [69]
+[70]     0.0    0.00    0.00    2881         placement_local_bounds [70]
+-----------------------------------------------
+                0.00    0.00       3/2881        apply_grid_line <cycle 1> [128]
+                0.00    0.00       4/2881        json_reference_grid [178]
+                0.00    0.00       4/2881        reference_subgrid_text [180]
+                0.00    0.00      48/2881        grid_sample_indices_in.constprop.0 [97]
+                0.00    0.00     140/2881        grid_cell_bounds [119]
+                0.00    0.00    2682/2881        grid_axis_lines [69]
+[71]     0.0    0.00    0.00    2881         polygon_loop_bounds [71]
+-----------------------------------------------
+                0.00    0.00    2139/2139        scene_draw_view [15]
+[72]     0.0    0.00    0.00    2139         scene_emit_polygon [72]
+-----------------------------------------------
+                0.00    0.00     145/2134        parse_scene_file [5]
+                0.00    0.00    1989/2134        world_revalidate_candidate <cycle 1> [6]
+[73]     0.0    0.00    0.00    2134         assembly_generation_integrity [73]
+-----------------------------------------------
+                0.00    0.00       3/2078        reference_snap.constprop.0 [26]
+                0.00    0.00     140/2078        grid_cell_bounds [119]
+                0.00    0.00    1935/2078        scene_draw_view [15]
+[74]     0.0    0.00    0.00    2078         placement_outline [74]
+-----------------------------------------------
+                0.00    0.00       4/1955        grid_query.constprop.0 [176]
+                0.00    0.00      16/1955        reference_grid_changed [163]
+                0.00    0.00      16/1955        json_reference_grid [178]
+                0.00    0.00      52/1955        grid_is_valid_in [98]
+                0.00    0.00     600/1955        grid_sample_indices_in.constprop.0 [97]
+                0.00    0.00    1267/1955        grid_line_coord_in.constprop.0 [79]
+[75]     0.0    0.00    0.00    1955         grid_axis_lines_in [75]
+                0.00    0.00     108/140         grid_cell_bounds [119]
+-----------------------------------------------
+                0.00    0.00    1824/1824        world_dump_dsl [12]
+[76]     0.0    0.00    0.00    1824         dump_loop [76]
+-----------------------------------------------
+                0.00    0.00    1770/1770        scene_draw_view [15]
+[77]     0.0    0.00    0.00    1770         timber_project_faces [77]
+                0.00    0.00   10620/10620       timber_get_face_room [44]
+-----------------------------------------------
+                0.00    0.00       2/1578        reference_guide_clip_text [188]
+                0.00    0.00       2/1578        reference_fragment_candidate [187]
+                0.00    0.00       4/1578        grid_query.constprop.0 [176]
+                0.00    0.00      12/1578        json_reference_guide [150]
+                0.00    0.00      12/1578        reference_guide_changed [167]
+                0.00    0.00     402/1578        scene_draw_view [15]
+                0.00    0.00    1144/1578        grid_line_segments.constprop.0 [85]
+[78]     0.0    0.00    0.00    1578         guide_line_get_local_segments [78]
+                0.00    0.00    1982/49345       json_schedule_support_owner [34]
+-----------------------------------------------
+                0.00    0.00     169/1483        world_validate_derived [14]
+                0.00    0.00     170/1483        reference_place_geometry [21]
+                0.00    0.00    1144/1483        grid_line_segments.constprop.0 [85]
+[79]     0.0    0.00    0.00    1483         grid_line_coord_in.constprop.0 [79]
+                0.00    0.00    1267/1955        grid_axis_lines_in [75]
+                0.00    0.00    1235/2910        grid_axis_lines [69]
+                0.00    0.00     216/432         grid_lattice_coord [104]
+-----------------------------------------------
+                0.00    0.00     145/1380        parse_scene_file [5]
+                0.00    0.00     460/1380        json_engineering_capabilities [100]
+                0.00    0.00     775/1380        world_dump_dsl [12]
+[80]     0.0    0.00    0.00    1380         grid_subdivision_used [80]
+-----------------------------------------------
+                0.00    0.00       2/1306        reference_fragment_candidate [187]
+                0.00    0.00     425/1306        reference_eval_timber [20]
+                0.00    0.00     879/1306        world_revalidate_candidate <cycle 1> [6]
+[81]     0.0    0.00    0.00    1306         reference_eval_guide [81]
+                0.00    0.00     863/897         reference_eval_text [88]
+                0.00    0.00       4/74          utf8_trim_tail [125]
+                0.00    0.00       2/3           eng_axis [183]
+-----------------------------------------------
+                0.00    0.00    1170/1170        apply_scene_line_candidate <cycle 1> [4]
+[82]     0.0    0.00    0.00    1170         apply_place_line [82]
+-----------------------------------------------
+                                1170             apply_scene_line_candidate <cycle 1> [4]
+[83]     0.0    0.00    0.00    1170         apply_reference_place <cycle 1> [83]
+                0.00    0.00    2760/9467        parse_u32 [45]
+                0.00    0.00     781/781         reference_face_parse [91]
+                0.00    0.00     765/774         parse_edge_ref [96]
+                0.00    0.00      26/13267       parse_coord [41]
+                0.00    0.00       1/74          utf8_trim_tail [125]
+                                1169             reference_checked <cycle 1> [84]
+-----------------------------------------------
+                                1169             apply_reference_place <cycle 1> [83]
+[84]     0.0    0.00    0.00    1169         reference_checked <cycle 1> [84]
+                0.00    0.00       1/74          utf8_trim_tail [125]
+                                1169             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                0.00    0.00       4/1144        json_reference_grid [178]
+                0.00    0.00      36/1144        reference_grid_changed [163]
+                0.00    0.00    1104/1144        scene_draw_view [15]
+[85]     0.0    0.00    0.00    1144         grid_line_segments.constprop.0 [85]
+                0.00    0.00    1144/1483        grid_line_coord_in.constprop.0 [79]
+                0.00    0.00    1144/1578        guide_line_get_local_segments [78]
+                0.00    0.00      24/140         grid_cell_bounds [119]
+-----------------------------------------------
+                0.00    0.00     960/960         scene_draw_view [15]
+[86]     0.0    0.00    0.00     960         rc_aabb_project [86]
+-----------------------------------------------
+                0.00    0.00     944/944         reference_dump [93]
+[87]     0.0    0.00    0.00     944         reference_face_format [87]
+-----------------------------------------------
+                0.00    0.00      10/897         world_revalidate_candidate <cycle 1> [6]
+                0.00    0.00      24/897         reference_snap.constprop.0 [26]
+                0.00    0.00     863/897         reference_eval_guide [81]
+[88]     0.0    0.00    0.00     897         reference_eval_text [88]
+                0.00    0.00     897/897         reference_quantity [89]
+-----------------------------------------------
+                0.00    0.00     897/897         reference_eval_text [88]
+[89]     0.0    0.00    0.00     897         reference_quantity [89]
+                0.00    0.00     887/55024       placement_effective_boundary [33]
+                0.00    0.00      12/9467        parse_u32 [45]
+                0.00    0.00       9/774         parse_edge_ref [96]
+-----------------------------------------------
+                0.00    0.00     216/814         apply_boundary_line <cycle 1> [115]
+                0.00    0.00     598/814         apply_surface_combined_line <cycle 1> [7]
+[90]     0.0    0.00    0.00     814         parse_boundary_body [90]
+                0.00    0.00    3493/3493        parse_uv [57]
+                0.00    0.00     812/5856        boundary_is_valid [52]
+                0.00    0.00       2/74          utf8_trim_tail [125]
+-----------------------------------------------
+                0.00    0.00     781/781         apply_reference_place <cycle 1> [83]
+[91]     0.0    0.00    0.00     781         reference_face_parse [91]
+-----------------------------------------------
+                0.00    0.00     775/775         world_dump_dsl [12]
+[92]     0.0    0.00    0.00     775         engineering_dump_versions [92]
+-----------------------------------------------
+                0.00    0.00     775/775         world_dump_dsl [12]
+[93]     0.0    0.00    0.00     775         reference_dump [93]
+                0.00    0.00    1402/61525       timber_a0_footprint_uv [32]
+                0.00    0.00    1402/55024       placement_effective_boundary [33]
+                0.00    0.00    1402/27465       grid_system_valid [36]
+                0.00    0.00     944/944         reference_face_format [87]
+                0.00    0.00     376/376         reference_guide_ready [107]
+                0.00    0.00     376/376         reference_dump_guide [106]
+-----------------------------------------------
+                0.00    0.00     775/775         world_dump_dsl [12]
+[94]     0.0    0.00    0.00     775         sp_dump [94]
+-----------------------------------------------
+                0.00    0.00     775/775         world_dump_dsl [12]
+[95]     0.0    0.00    0.00     775         world_dump_grids [95]
+                0.00    0.00     148/148         engineering_dump_grid [118]
+-----------------------------------------------
+                0.00    0.00       9/774         reference_quantity [89]
+                0.00    0.00     765/774         apply_reference_place <cycle 1> [83]
+[96]     0.0    0.00    0.00     774         parse_edge_ref [96]
+-----------------------------------------------
+                0.00    0.00     648/648         scene_draw_view [15]
+[97]     0.0    0.00    0.00     648         grid_sample_indices_in.constprop.0 [97]
+                0.00    0.00     600/1955        grid_axis_lines_in [75]
+                0.00    0.00     576/2910        grid_axis_lines [69]
+                0.00    0.00      48/2881        polygon_loop_bounds [71]
+                0.00    0.00      48/2881        placement_local_bounds [70]
+                0.00    0.00      48/48          grid_lattice_window [129]
+-----------------------------------------------
+                0.00    0.00       2/613         apply_subgrid_line <cycle 1> [186]
+                0.00    0.00     305/613         world_validate_derived [14]
+                0.00    0.00     306/613         world_revalidate_candidate <cycle 1> [6]
+[98]     0.0    0.00    0.00     613         grid_is_valid_in [98]
+                0.00    0.00     679/2910        grid_axis_lines [69]
+                0.00    0.00      52/1955        grid_axis_lines_in [75]
+-----------------------------------------------
+                0.00    0.00      70/530         boundary_geometry_hash [126]
+                0.00    0.00     460/530         eng_definition_hash [17]
+[99]     0.0    0.00    0.00     530         eng_sha256 [99]
+                0.00    0.00    4411/4411        eng_sha_block [55]
+-----------------------------------------------
+                0.00    0.00     460/460         main [1]
+[100]    0.0    0.00    0.00     460         json_engineering_capabilities [100]
+                0.00    0.00     460/1380        grid_subdivision_used [80]
+-----------------------------------------------
+                0.00    0.00     438/438         scene_render [18]
+[101]    0.0    0.00    0.00     438         jt_begin_view [101]
+-----------------------------------------------
+                0.00    0.00     438/438         scene_render [18]
+[102]    0.0    0.00    0.00     438         jt_end_view [102]
+-----------------------------------------------
+                0.00    0.00     438/438         scene_render [18]
+[103]    0.0    0.00    0.00     438         jt_rect [103]
+-----------------------------------------------
+                0.00    0.00     216/432         grid_lattice_window [129]
+                0.00    0.00     216/432         grid_line_coord_in.constprop.0 [79]
+[104]    0.0    0.00    0.00     432         grid_lattice_coord [104]
+-----------------------------------------------
+                0.00    0.00     145/416         main [1]
+                0.00    0.00     271/416         feed_line.constprop.0 <cycle 1> [58]
+[105]    0.0    0.00    0.00     416         history_record [105]
+-----------------------------------------------
+                0.00    0.00     376/376         reference_dump [93]
+[106]    0.0    0.00    0.00     376         reference_dump_guide [106]
+-----------------------------------------------
+                0.00    0.00     376/376         reference_dump [93]
+[107]    0.0    0.00    0.00     376         reference_guide_ready [107]
+-----------------------------------------------
+                0.00    0.00     361/361         apply_scene_line_candidate <cycle 1> [4]
+[108]    0.0    0.00    0.00     361         apply_guide_line [108]
+-----------------------------------------------
+                                 361             apply_scene_line_candidate <cycle 1> [4]
+[109]    0.0    0.00    0.00     361         apply_reference_guide <cycle 1> [109]
+                0.00    0.00     728/9467        parse_u32 [45]
+                0.00    0.00       2/74          utf8_trim_tail [125]
+                                 361             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                                 357             apply_scene_line_candidate <cycle 1> [4]
+[110]    0.0    0.00    0.00     357         apply_spec_line <cycle 1> [110]
+                0.00    0.00     357/357         reference_name [111]
+                0.00    0.00     357/13267       parse_coord [41]
+                                 357             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                0.00    0.00     357/357         apply_spec_line <cycle 1> [110]
+[111]    0.0    0.00    0.00     357         reference_name [111]
+-----------------------------------------------
+                0.00    0.00     169/339         world_validate_derived [14]
+                0.00    0.00     170/339         reference_place_geometry [21]
+[112]    0.0    0.00    0.00     339         grid_anchor_line_coord [112]
+-----------------------------------------------
+                0.00    0.00     104/328         cmd_replace_world [19]
+                0.00    0.00     224/328         main [1]
+[113]    0.0    0.00    0.00     328         json_deleted_objects [113]
+-----------------------------------------------
+                0.00    0.00      53/281         apply_space_line <cycle 1> [127]
+                0.00    0.00     114/281         world_validate_derived [14]
+                0.00    0.00     114/281         world_revalidate_candidate <cycle 1> [6]
+[114]    0.0    0.00    0.00     281         space_construct [114]
+-----------------------------------------------
+                                 218             apply_scene_line_candidate <cycle 1> [4]
+[115]    0.0    0.00    0.00     218         apply_boundary_line <cycle 1> [115]
+                0.00    0.00     218/9467        parse_u32 [45]
+                0.00    0.00     216/814         parse_boundary_body [90]
+                0.00    0.00       2/74          utf8_trim_tail [125]
+                                   1             world_replace_object <cycle 1> [154]
+-----------------------------------------------
+                                 161             apply_scene_line_candidate <cycle 1> [4]
+[116]    0.0    0.00    0.00     161         apply_beam_line <cycle 1> [116]
+                0.00    0.00     922/13267       parse_coord [41]
+                0.00    0.00     187/9467        parse_u32 [45]
+                0.00    0.00      11/74          utf8_trim_tail [125]
+                0.00    0.00       9/41          space_axis_bound [130]
+                0.00    0.00       5/7           scene_error [168]
+                                 152             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                0.00    0.00     160/160         cmd_objects [132]
+[117]    0.0    0.00    0.00     160         cpos_json [117]
+-----------------------------------------------
+                0.00    0.00     148/148         world_dump_grids [95]
+[118]    0.0    0.00    0.00     148         engineering_dump_grid [118]
+-----------------------------------------------
+                0.00    0.00       4/140         reference_place_geometry [21]
+                0.00    0.00       4/140         world_validate_derived [14]
+                0.00    0.00      24/140         grid_line_segments.constprop.0 [85]
+                0.00    0.00     108/140         grid_axis_lines_in [75]
+[119]    0.0    0.00    0.00     140         grid_cell_bounds [119]
+                0.00    0.00     280/2910        grid_axis_lines [69]
+                0.00    0.00     140/2881        polygon_loop_bounds [71]
+                0.00    0.00     140/2881        placement_local_bounds [70]
+                0.00    0.00     140/140         grid_loop_rect_area2 [120]
+                0.00    0.00     140/2078        placement_outline [74]
+-----------------------------------------------
+                0.00    0.00     140/140         grid_cell_bounds [119]
+[120]    0.0    0.00    0.00     140         grid_loop_rect_area2 [120]
+-----------------------------------------------
+                0.00    0.00       4/129         apply_boundary_keys_line <cycle 1> [173]
+                0.00    0.00      46/129         world_revalidate_candidate <cycle 1> [6]
+                0.00    0.00      79/129         boundary_vertex_by_key [124]
+[121]    0.0    0.00    0.00     129         boundary_keys_valid [121]
+-----------------------------------------------
+                0.00    0.00      44/104         apply_applyproj_line <cycle 1> [151]
+                0.00    0.00      60/104         classify_rect_outline [146]
+[122]    0.0    0.00    0.00     104         side_flush_outline [122]
+-----------------------------------------------
+                0.00    0.00       8/88          apply_grid_system_line <cycle 1> [175]
+                0.00    0.00      20/88          world_revalidate_candidate <cycle 1> [6]
+                0.00    0.00      60/88          grid_system_valid [36]
+[123]    0.0    0.00    0.00      88         grid_system_axis_valid [123]
+-----------------------------------------------
+                0.00    0.00      19/79          world_revalidate_candidate <cycle 1> [6]
+                0.00    0.00      28/79          reference_binding_changed [147]
+                0.00    0.00      32/79          grid_binding_cache [136]
+[124]    0.0    0.00    0.00      79         boundary_vertex_by_key [124]
+                0.00    0.00      79/129         boundary_keys_valid [121]
+-----------------------------------------------
+                0.00    0.00       1/74          reference_checked <cycle 1> [84]
+                0.00    0.00       1/74          apply_grid_line <cycle 1> [128]
+                0.00    0.00       1/74          parse_scene_file [5]
+                0.00    0.00       1/74          apply_span_auto_line [189]
+                0.00    0.00       1/74          apply_reference_place <cycle 1> [83]
+                0.00    0.00       1/74          apply_surface_combined_line <cycle 1> [7]
+                0.00    0.00       2/74          reference_place_geometry [21]
+                0.00    0.00       2/74          parse_boundary_body [90]
+                0.00    0.00       2/74          parse_placement_body [22]
+                0.00    0.00       2/74          apply_reference_guide <cycle 1> [109]
+                0.00    0.00       2/74          apply_timber_line [10]
+                0.00    0.00       2/74          apply_boundary_line <cycle 1> [115]
+                0.00    0.00       3/74          feed_line.constprop.0 <cycle 1> [58]
+                0.00    0.00       4/74          reference_eval_guide [81]
+                0.00    0.00       4/74          apply_space_line <cycle 1> [127]
+                0.00    0.00       6/74          eng_axis [183]
+                0.00    0.00       7/74          world_revalidate_candidate <cycle 1> [6]
+                0.00    0.00       7/74          apply_column_line <cycle 1> [131]
+                0.00    0.00      11/74          apply_beam_line <cycle 1> [116]
+                0.00    0.00      14/74          apply_scene_line_candidate <cycle 1> [4]
+[125]    0.0    0.00    0.00      74         utf8_trim_tail [125]
+-----------------------------------------------
+                0.00    0.00      16/70          json_reference_preview [24]
+                0.00    0.00      54/70          asm_hash_token [139]
+[126]    0.0    0.00    0.00      70         boundary_geometry_hash [126]
+                0.00    0.00      70/530         eng_sha256 [99]
+-----------------------------------------------
+                                  69             apply_scene_line_candidate <cycle 1> [4]
+[127]    0.0    0.00    0.00      69         apply_space_line <cycle 1> [127]
+                0.00    0.00      69/9467        parse_u32 [45]
+                0.00    0.00      53/281         space_construct [114]
+                0.00    0.00       4/74          utf8_trim_tail [125]
+                                   1             world_replace_object <cycle 1> [154]
+-----------------------------------------------
+                                  65             apply_scene_line_candidate <cycle 1> [4]
+[128]    0.0    0.00    0.00      65         apply_grid_line <cycle 1> [128]
+                0.00    0.00     138/9467        parse_u32 [45]
+                0.00    0.00     104/13267       parse_coord [41]
+                0.00    0.00      64/3048        sp_capture_diagnostics.constprop.0 [68]
+                0.00    0.00      64/2910        grid_axis_lines [69]
+                0.00    0.00       3/2881        polygon_loop_bounds [71]
+                0.00    0.00       3/2881        placement_local_bounds [70]
+                0.00    0.00       1/74          utf8_trim_tail [125]
+                                  47             world_revalidate <cycle 1> [67]
+                                   9             world_replace_object <cycle 1> [154]
+                                   8             world_revalidate_candidate <cycle 1> [6]
+-----------------------------------------------
+                0.00    0.00      48/48          grid_sample_indices_in.constprop.0 [97]
+[129]    0.0    0.00    0.00      48         grid_lattice_window [129]
+                0.00    0.00     216/432         grid_lattice_coord [104]
+-----------------------------------------------
+                0.00    0.00       9/41          apply_beam_line <cycle 1> [116]
+                0.00    0.00      32/41          apply_column_line <cycle 1> [131]
+[130]    0.0    0.00    0.00      41         space_axis_bound [130]
+-----------------------------------------------
+                                  39             apply_scene_line_candidate <cycle 1> [4]
+[131]    0.0    0.00    0.00      39         apply_column_line <cycle 1> [131]
+                0.00    0.00     173/13267       parse_coord [41]
+                0.00    0.00      74/9467        parse_u32 [45]
+                0.00    0.00      32/41          space_axis_bound [130]
+                0.00    0.00       7/74          utf8_trim_tail [125]
+                0.00    0.00       2/7           scene_error [168]
+                                  34             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                0.00    0.00      36/36          main [1]
+[132]    0.0    0.00    0.00      36         cmd_objects [132]
+                0.00    0.00     160/160         cpos_json [117]
+                0.00    0.00      96/61525       timber_a0_footprint_uv [32]
+                0.00    0.00      96/55024       placement_effective_boundary [33]
+                0.00    0.00      96/27465       grid_system_valid [36]
+-----------------------------------------------
+                0.00    0.00      36/36          proj_split_loop [166]
+[133]    0.0    0.00    0.00      36         proj_edge_covered [133]
+-----------------------------------------------
+                0.00    0.00       8/36          reference_grid_changed [163]
+                0.00    0.00      28/36          reference_system_changed [148]
+[134]    0.0    0.00    0.00      36         reference_axis_definition_equal [134]
+-----------------------------------------------
+                0.00    0.00       4/34          grid_system_read_name [177]
+                0.00    0.00      30/34          grid_system_valid [36]
+[135]    0.0    0.00    0.00      34         schedule_support_local_face [135]
+-----------------------------------------------
+                0.00    0.00      32/32          world_revalidate_candidate <cycle 1> [6]
+[136]    0.0    0.00    0.00      32         grid_binding_cache [136]
+                0.00    0.00      32/79          boundary_vertex_by_key [124]
+-----------------------------------------------
+                0.00    0.00      32/32          resolve_auto_span.constprop.0 [56]
+[137]    0.0    0.00    0.00      32         stop_ref_candidates [137]
+-----------------------------------------------
+                0.00    0.00      30/30          classify_rect_outline [146]
+[138]    0.0    0.00    0.00      30         proj_sort_coords [138]
+-----------------------------------------------
+                0.00    0.00       4/27          reference_grid_changed [163]
+                0.00    0.00       9/27          apply_scene_line_candidate <cycle 1> [4]
+                0.00    0.00      14/27          reference_binding_changed [147]
+[139]    0.0    0.00    0.00      27         asm_hash_token [139]
+                0.00    0.00      54/70          boundary_geometry_hash [126]
+-----------------------------------------------
+                0.00    0.00      24/24          reference_snap.constprop.0 [26]
+[140]    0.0    0.00    0.00      24         guide_offset_in_range [140]
+-----------------------------------------------
+                0.00    0.00       6/20          apply_applyproj_line <cycle 1> [151]
+                0.00    0.00      14/20          world_face_obstacles.constprop.0 [153]
+[141]    0.0    0.00    0.00      20         box_project_uv [141]
+-----------------------------------------------
+                0.00    0.00       2/18          apply_subgrid_line <cycle 1> [186]
+                0.00    0.00      16/18          reference_grid_changed [163]
+[142]    0.0    0.00    0.00      18         world_placement_boundary [142]
+-----------------------------------------------
+                0.00    0.00      16/16          json_section_profile_impact.constprop.0 [160]
+[143]    0.0    0.00    0.00      16         json_section_profile_state [143]
+-----------------------------------------------
+                0.00    0.00       3/16          proj_spawn_face [184]
+                0.00    0.00      13/16          apply_applyproj_line <cycle 1> [151]
+[144]    0.0    0.00    0.00      16         proj_add_surface [144]
+-----------------------------------------------
+                0.00    0.00       3/16          proj_spawn_face [184]
+                0.00    0.00      13/16          apply_applyproj_line <cycle 1> [151]
+[145]    0.0    0.00    0.00      16         world_next_surface_id [145]
+-----------------------------------------------
+                0.00    0.00       4/15          world_face_obstacles.constprop.0 [153]
+                0.00    0.00      11/15          apply_applyproj_line <cycle 1> [151]
+[146]    0.0    0.00    0.00      15         classify_rect_outline [146]
+                0.00    0.00      60/104         side_flush_outline [122]
+                0.00    0.00      30/30          proj_sort_coords [138]
+                0.00    0.00      20/170785      poly_point_on_edge [28]
+-----------------------------------------------
+                0.00    0.00       4/14          reference_grid_changed [163]
+                0.00    0.00      10/14          apply_scene_line_candidate <cycle 1> [4]
+[147]    0.0    0.00    0.00      14         reference_binding_changed [147]
+                0.00    0.00      28/79          boundary_vertex_by_key [124]
+                0.00    0.00      14/14          reference_system_changed [148]
+                0.00    0.00      14/27          asm_hash_token [139]
+-----------------------------------------------
+                0.00    0.00      14/14          reference_binding_changed [147]
+[148]    0.0    0.00    0.00      14         reference_system_changed [148]
+                0.00    0.00      28/36          reference_axis_definition_equal [134]
+-----------------------------------------------
+                0.00    0.00      13/13          apply_scene_line_candidate <cycle 1> [4]
+[149]    0.0    0.00    0.00      13         apply_canvaspos_line [149]
+                0.00    0.00      26/13267       parse_coord [41]
+                0.00    0.00      13/9467        parse_u32 [45]
+-----------------------------------------------
+                0.00    0.00      13/13          json_candidate_guides.constprop.0 [158]
+[150]    0.0    0.00    0.00      13         json_reference_guide [150]
+                0.00    0.00      12/7149        js_string_body [50]
+                0.00    0.00      12/1578        guide_line_get_local_segments [78]
+-----------------------------------------------
+                                  12             apply_scene_line_candidate <cycle 1> [4]
+[151]    0.0    0.00    0.00      12         apply_applyproj_line <cycle 1> [151]
+                0.00    0.00      44/104         side_flush_outline [122]
+                0.00    0.00      24/9467        parse_u32 [45]
+                0.00    0.00      13/16          world_next_surface_id [145]
+                0.00    0.00      13/16          proj_add_surface [144]
+                0.00    0.00      12/12          world_face_obstacles.constprop.0 [153]
+                0.00    0.00      11/15          classify_rect_outline [146]
+                0.00    0.00       8/6104        poly_loop_is_valid [51]
+                0.00    0.00       8/8           proj_space_drop_member [162]
+                0.00    0.00       7/7           proj_split_loop [166]
+                0.00    0.00       7/7           proj_redistribute_holes [165]
+                0.00    0.00       7/7           proj_rebind_aux [164]
+                0.00    0.00       6/20          box_project_uv [141]
+                0.00    0.00       3/3           proj_spawn_face [184]
+                0.00    0.00       2/169751      poly_contains_point [29]
+                                  12             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                0.00    0.00      12/12          world_revalidate_candidate <cycle 1> [6]
+[152]    0.0    0.00    0.00      12         subgrid_parent_count_valid [152]
+                0.00    0.00      40/2910        grid_axis_lines [69]
+-----------------------------------------------
+                0.00    0.00      12/12          apply_applyproj_line <cycle 1> [151]
+[153]    0.0    0.00    0.00      12         world_face_obstacles.constprop.0 [153]
+                0.00    0.00      14/20          box_project_uv [141]
+                0.00    0.00       4/15          classify_rect_outline [146]
+-----------------------------------------------
+                                   1             apply_boundary_line <cycle 1> [115]
+                                   1             apply_space_line <cycle 1> [127]
+                                   9             apply_grid_line <cycle 1> [128]
+[154]    0.0    0.00    0.00      11         world_replace_object <cycle 1> [154]
+                                  11             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                0.00    0.00       9/9           apply_scene_line_candidate <cycle 1> [4]
+[155]    0.0    0.00    0.00       9         reference_stage [155]
+-----------------------------------------------
+                0.00    0.00       8/8           json_section_profile_impact.constprop.0 [160]
+[156]    0.0    0.00    0.00       8         eng_read_file [156]
+                0.00    0.00       6/7149        js_string_body [50]
+-----------------------------------------------
+                0.00    0.00       8/8           apply_subgrid_line <cycle 1> [186]
+[157]    0.0    0.00    0.00       8         grid_cell_ref_parse [157]
+                0.00    0.00       8/9467        parse_u32 [45]
+-----------------------------------------------
+                0.00    0.00       8/8           json_reference_preview [24]
+[158]    0.0    0.00    0.00       8         json_candidate_guides.constprop.0 [158]
+                0.00    0.00      13/13          json_reference_guide [150]
+-----------------------------------------------
+                0.00    0.00       8/8           json_reference_grid [178]
+[159]    0.0    0.00    0.00       8         json_grid_axis_definition [159]
+-----------------------------------------------
+                0.00    0.00       8/8           json_reference_preview [24]
+[160]    0.0    0.00    0.00       8         json_section_profile_impact.constprop.0 [160]
+                0.00    0.00      16/16          json_section_profile_state [143]
+                0.00    0.00       8/8           eng_read_file [156]
+-----------------------------------------------
+                0.00    0.00       8/8           apply_grid_binding_line <cycle 1> [174]
+[161]    0.0    0.00    0.00       8         parse_i64 [161]
+-----------------------------------------------
+                0.00    0.00       8/8           apply_applyproj_line <cycle 1> [151]
+[162]    0.0    0.00    0.00       8         proj_space_drop_member [162]
+-----------------------------------------------
+                0.00    0.00       8/8           apply_scene_line_candidate <cycle 1> [4]
+[163]    0.0    0.00    0.00       8         reference_grid_changed [163]
+                0.00    0.00      36/1144        grid_line_segments.constprop.0 [85]
+                0.00    0.00      16/18          world_placement_boundary [142]
+                0.00    0.00      16/2910        grid_axis_lines [69]
+                0.00    0.00      16/1955        grid_axis_lines_in [75]
+                0.00    0.00       8/36          reference_axis_definition_equal [134]
+                0.00    0.00       4/14          reference_binding_changed [147]
+                0.00    0.00       4/27          asm_hash_token [139]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_applyproj_line <cycle 1> [151]
+[164]    0.0    0.00    0.00       7         proj_rebind_aux [164]
+                0.00    0.00       2/2           reference_fragment_candidate [187]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_applyproj_line <cycle 1> [151]
+[165]    0.0    0.00    0.00       7         proj_redistribute_holes [165]
+                0.00    0.00       1/169751      poly_contains_point [29]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_applyproj_line <cycle 1> [151]
+[166]    0.0    0.00    0.00       7         proj_split_loop [166]
+                0.00    0.00      36/36          proj_edge_covered [133]
+                0.00    0.00       7/6104        poly_loop_is_valid [51]
+-----------------------------------------------
+                0.00    0.00       7/7           apply_scene_line_candidate <cycle 1> [4]
+[167]    0.0    0.00    0.00       7         reference_guide_changed [167]
+                0.00    0.00      12/1578        guide_line_get_local_segments [78]
+-----------------------------------------------
+                0.00    0.00       2/7           apply_column_line <cycle 1> [131]
+                0.00    0.00       5/7           apply_beam_line <cycle 1> [116]
+[168]    0.0    0.00    0.00       7         scene_error [168]
+-----------------------------------------------
+                0.00    0.00       7/7           world_revalidate_candidate <cycle 1> [6]
+[169]    0.0    0.00    0.00       7         set_revalidate_error [169]
+-----------------------------------------------
+                                   6             apply_scene_line_candidate <cycle 1> [4]
+[170]    0.0    0.00    0.00       6         apply_delete_line <cycle 1> [170]
+                0.00    0.00       6/9467        parse_u32 [45]
+                0.00    0.00       4/4           world_drop_canvas_pos [182]
+                                   6             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                                   5             apply_scene_line_candidate <cycle 1> [4]
+[171]    0.0    0.00    0.00       5         apply_move_line <cycle 1> [171]
+                0.00    0.00       5/9467        parse_u32 [45]
+                                   5             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                0.00    0.00       5/5           feed_line.constprop.0 <cycle 1> [58]
+[172]    0.0    0.00    0.00       5         history_restore_world.constprop.0 [172]
+-----------------------------------------------
+                                   4             apply_scene_line_candidate <cycle 1> [4]
+[173]    0.0    0.00    0.00       4         apply_boundary_keys_line <cycle 1> [173]
+                0.00    0.00      36/9467        parse_u32 [45]
+                0.00    0.00       4/129         boundary_keys_valid [121]
+                                   4             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                                   4             apply_scene_line_candidate <cycle 1> [4]
+[174]    0.0    0.00    0.00       4         apply_grid_binding_line <cycle 1> [174]
+                0.00    0.00      32/9467        parse_u32 [45]
+                0.00    0.00       8/8           parse_i64 [161]
+                0.00    0.00       4/3048        sp_capture_diagnostics.constprop.0 [68]
+                                   4             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                                   4             apply_scene_line_candidate <cycle 1> [4]
+[175]    0.0    0.00    0.00       4         apply_grid_system_line <cycle 1> [175]
+                0.00    0.00      16/13267       parse_coord [41]
+                0.00    0.00       8/88          grid_system_axis_valid [123]
+                0.00    0.00       4/9467        parse_u32 [45]
+                0.00    0.00       4/4           grid_system_read_name [177]
+                0.00    0.00       4/27465       grid_system_valid [36]
+                0.00    0.00       4/3048        sp_capture_diagnostics.constprop.0 [68]
+                                   4             world_revalidate_candidate <cycle 1> [6]
+-----------------------------------------------
+                0.00    0.00       4/4           reference_query_text [179]
+[176]    0.0    0.00    0.00       4         grid_query.constprop.0 [176]
+                0.00    0.00       4/2910        grid_axis_lines [69]
+                0.00    0.00       4/1955        grid_axis_lines_in [75]
+                0.00    0.00       4/1578        guide_line_get_local_segments [78]
+-----------------------------------------------
+                0.00    0.00       4/4           apply_grid_system_line <cycle 1> [175]
+[177]    0.0    0.00    0.00       4         grid_system_read_name [177]
+                0.00    0.00       4/34          schedule_support_local_face [135]
+-----------------------------------------------
+                0.00    0.00       4/4           json_reference_preview [24]
+[178]    0.0    0.00    0.00       4         json_reference_grid [178]
+                0.00    0.00      16/2910        grid_axis_lines [69]
+                0.00    0.00      16/1955        grid_axis_lines_in [75]
+                0.00    0.00       8/8           json_grid_axis_definition [159]
+                0.00    0.00       4/1144        grid_line_segments.constprop.0 [85]
+                0.00    0.00       4/2881        polygon_loop_bounds [71]
+                0.00    0.00       4/2881        placement_local_bounds [70]
+-----------------------------------------------
+                0.00    0.00       4/4           reference_subgrid_text [180]
+[179]    0.0    0.00    0.00       4         reference_query_text [179]
+                0.00    0.00       4/4           grid_query.constprop.0 [176]
+-----------------------------------------------
+                0.00    0.00       4/4           apply_scene_line_candidate <cycle 1> [4]
+[180]    0.0    0.00    0.00       4         reference_subgrid_text [180]
+                0.00    0.00       4/2881        polygon_loop_bounds [71]
+                0.00    0.00       4/2881        placement_local_bounds [70]
+                0.00    0.00       4/4           reference_query_text [179]
+-----------------------------------------------
+                0.00    0.00       4/4           apply_subgrid_line <cycle 1> [186]
+[181]    0.0    0.00    0.00       4         subgrid_divisions_parse.constprop.0 [181]
+-----------------------------------------------
+                0.00    0.00       4/4           apply_delete_line <cycle 1> [170]
+[182]    0.0    0.00    0.00       4         world_drop_canvas_pos [182]
+-----------------------------------------------
+                0.00    0.00       1/3           reference_place_geometry [21]
+                0.00    0.00       2/3           reference_eval_guide [81]
+[183]    0.0    0.00    0.00       3         eng_axis [183]
+                0.00    0.00       6/74          utf8_trim_tail [125]
+-----------------------------------------------
+                0.00    0.00       3/3           apply_applyproj_line <cycle 1> [151]
+[184]    0.0    0.00    0.00       3         proj_spawn_face [184]
+                0.00    0.00       3/16          world_next_surface_id [145]
+                0.00    0.00       3/16          proj_add_surface [144]
+-----------------------------------------------
+                                   2             apply_scene_line_candidate <cycle 1> [4]
+[185]    0.0    0.00    0.00       2         apply_datum_line <cycle 1> [185]
+                0.00    0.00       2/9467        parse_u32 [45]
+                                   2             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                                   2             apply_scene_line_candidate <cycle 1> [4]
+[186]    0.0    0.00    0.00       2         apply_subgrid_line <cycle 1> [186]
+                0.00    0.00       8/8           grid_cell_ref_parse [157]
+                0.00    0.00       4/9467        parse_u32 [45]
+                0.00    0.00       4/4           subgrid_divisions_parse.constprop.0 [181]
+                0.00    0.00       2/3048        sp_capture_diagnostics.constprop.0 [68]
+                0.00    0.00       2/18          world_placement_boundary [142]
+                0.00    0.00       2/613         grid_is_valid_in [98]
+                                   2             world_revalidate <cycle 1> [67]
+-----------------------------------------------
+                0.00    0.00       2/2           proj_rebind_aux [164]
+[187]    0.0    0.00    0.00       2         reference_fragment_candidate [187]
+                0.00    0.00       2/1306        reference_eval_guide [81]
+                0.00    0.00       2/1578        guide_line_get_local_segments [78]
+-----------------------------------------------
+                0.00    0.00       2/2           apply_scene_line_candidate <cycle 1> [4]
+[188]    0.0    0.00    0.00       2         reference_guide_clip_text [188]
+                0.00    0.00       2/1578        guide_line_get_local_segments [78]
+-----------------------------------------------
+                0.00    0.00       1/1           apply_scene_line_candidate <cycle 1> [4]
+[189]    0.0    0.00    0.00       1         apply_span_auto_line [189]
+                0.00    0.00       1/74          utf8_trim_tail [125]
+-----------------------------------------------
+                0.00    0.00       1/1           cmd_pick [27]
+[190]    0.0    0.00    0.00       1         scene_pick_at [190]
+-----------------------------------------------
+
+Index by function name
+
+ [151] apply_applyproj_line (current_geometry.c) [129] grid_lattice_window (grid_lattice.inc) [65] reference_check_all (references.inc)
+ [116] apply_beam_line (current_geometry.c) [79] grid_line_coord_in.constprop.0 (subgrids.inc) [84] reference_checked (references.inc)
+  [13] apply_boundary_keyed_line (boundary_vertex_keys.inc) [85] grid_line_segments.constprop.0 (subgrids.inc) [3] reference_default_world (transactions.inc)
+ [173] apply_boundary_keys_line (boundary_vertex_keys.inc) [120] grid_loop_rect_area2 (subgrids.inc) [93] reference_dump (references.inc)
+ [115] apply_boundary_line (current_geometry.c) [176] grid_query.constprop.0 (grid_bindings.inc) [106] reference_dump_guide (references.inc)
+ [149] apply_canvaspos_line (current_geometry.c) [97] grid_sample_indices_in.constprop.0 (subgrids.inc) [81] reference_eval_guide (references.inc)
+ [131] apply_column_line (current_geometry.c) [80] grid_subdivision_used (grid_subdivision.inc) [88] reference_eval_text (references.inc)
+ [185] apply_datum_line (references.inc) [123] grid_system_axis_valid (grid_systems.inc) [20] reference_eval_timber (references.inc)
+ [170] apply_delete_line (current_geometry.c) [177] grid_system_read_name (grid_systems.inc) [87] reference_face_format (references.inc)
+ [174] apply_grid_binding_line (grid_bindings.inc) [36] grid_system_valid (grid_systems.inc) [91] reference_face_parse (references.inc)
+ [128] apply_grid_line (current_geometry.c) [78] guide_line_get_local_segments (current_geometry.c) [187] reference_fragment_candidate (subgrid_rebind.inc)
+ [175] apply_grid_system_line (grid_systems.inc) [140] guide_offset_in_range (current_geometry.c) [163] reference_grid_changed (transactions.inc)
+ [108] apply_guide_line (current_geometry.c) [105] history_record (current_geometry.c) [167] reference_guide_changed (transactions.inc)
+ [171] apply_move_line (current_geometry.c) [172] history_restore_world.constprop.0 (current_geometry.c) [188] reference_guide_clip_text (transactions.inc)
+  [82] apply_place_line (current_geometry.c) [50] js_string_body (web_bridge.c) [107] reference_guide_ready (references.inc)
+  [23] apply_placement_line (current_geometry.c) [158] json_candidate_guides.constprop.0 (reference_bridge.inc) [111] reference_name (references.inc)
+ [109] apply_reference_guide (references.inc) [113] json_deleted_objects (web_bridge.c) [21] reference_place_geometry (references.inc)
+  [83] apply_reference_place (references.inc) [100] json_engineering_capabilities (engineering_bridge.inc) [89] reference_quantity (references.inc)
+   [4] apply_scene_line_candidate (transactions.inc) [159] json_grid_axis_definition (grid_system_bridge.inc) [179] reference_query_text (transactions.inc)
+ [127] apply_space_line (current_geometry.c) [37] json_reference_geometry (reference_bridge.inc) [26] reference_snap.constprop.0 (references.inc)
+ [189] apply_span_auto_line (current_geometry.c) [178] json_reference_grid (reference_bridge.inc) [155] reference_stage (transactions.inc)
+ [110] apply_spec_line (references.inc) [150] json_reference_guide (reference_bridge.inc) [180] reference_subgrid_text (transactions.inc)
+ [186] apply_subgrid_line (subgrid_commands.inc) [24] json_reference_preview (reference_bridge.inc) [148] reference_system_changed (transactions.inc)
+   [7] apply_surface_combined_line (current_geometry.c) [34] json_schedule_support_owner (timber_support_projection.inc) [56] resolve_auto_span.constprop.0 (current_geometry.c)
+  [10] apply_timber_line (current_geometry.c) [160] json_section_profile_impact.constprop.0 (section_profile_bridge.inc) [15] scene_draw_view (current_geometry.c)
+ [139] asm_hash_token (assembly_generation.inc) [143] json_section_profile_state (section_profile_bridge.inc) [72] scene_emit_polygon (current_geometry.c)
+  [73] assembly_generation_integrity (assembly_generation.inc) [101] jt_begin_view (web_bridge.c) [168] scene_error (current_geometry.c)
+  [61] assembly_rebuild.constprop.0 (assembly.inc) [102] jt_end_view (web_bridge.c) [190] scene_pick_at (current_geometry.c)
+  [47] boundary_contains_point (current_geometry.c) [53] jt_line (web_bridge.c) [18] scene_render (current_geometry.c)
+  [35] boundary_contains_rect (current_geometry.c) [59] jt_polygon (web_bridge.c) [135] schedule_support_local_face (timber_support_projection.inc)
+  [40] boundary_edge_interval (current_geometry.c) [103] jt_rect (web_bridge.c) [169] set_revalidate_error (current_geometry.c)
+ [126] boundary_geometry_hash (boundary_vertex_keys.inc) [60] jt_text (web_bridge.c) [122] side_flush_outline (current_geometry.c)
+  [52] boundary_is_valid (current_geometry.c) [8] loop_edge_outward_normal (current_geometry.c) [68] sp_capture_diagnostics.constprop.0 (section_profile_validation.inc)
+ [121] boundary_keys_valid (boundary_vertex_keys.inc) [54] parameter_reference_edit (transactions.inc) [94] sp_dump (section_profiles.inc)
+ [124] boundary_vertex_by_key (boundary_vertex_keys.inc) [11] parameters_dump (parameters.inc) [66] sp_rebuild.constprop.0 (section_profile_validation.inc)
+ [141] box_project_uv (current_geometry.c) [64] parameters_rebuild (parameters.inc) [130] space_axis_bound (current_geometry.c)
+ [146] classify_rect_outline (current_geometry.c) [90] parse_boundary_body (current_geometry.c) [114] space_construct (current_geometry.c)
+  [25] cmd_drag (web_bridge.c) [41] parse_coord (current_geometry.c) [137] stop_ref_candidates (current_geometry.c)
+ [132] cmd_objects (web_bridge.c) [96] parse_edge_ref (current_geometry.c) [181] subgrid_divisions_parse.constprop.0 (subgrid_commands.inc)
+  [27] cmd_pick (web_bridge.c) [161] parse_i64 (current_geometry.c) [152] subgrid_parent_count_valid (subgrid_world.inc)
+  [16] cmd_render (web_bridge.c) [22] parse_placement_body (current_geometry.c) [38] surface_contains_rect (current_geometry.c)
+  [19] cmd_replace_world (web_bridge.c) [5] parse_scene_file (current_geometry.c) [31] surface_direction_vector (current_geometry.c)
+  [39] count_legal_stops (current_geometry.c) [45] parse_u32 (current_geometry.c) [46] surface_primary_axis_check (current_geometry.c)
+ [117] cpos_json (web_bridge.c) [57] parse_uv (current_geometry.c) [32] timber_a0_footprint_uv (current_geometry.c)
+  [62] dp_rebuild (derived_placements.inc) [49] pick_stop (current_geometry.c) [42] timber_boundary_role_check.constprop.0 (current_geometry.c)
+  [76] dump_loop (current_geometry.c) [33] placement_effective_boundary (current_geometry.c) [43] timber_end_face_check.constprop.0 (current_geometry.c)
+ [183] eng_axis (engineering.inc) [70] placement_local_bounds (current_geometry.c) [44] timber_get_face_room (current_geometry.c)
+  [17] eng_definition_hash (engineering_bridge.inc) [74] placement_outline (current_geometry.c) [48] timber_place_a0_on_surface.constprop.0 (current_geometry.c)
+ [156] eng_read_file (engineering_bridge.inc) [29] poly_contains_point (current_geometry.c) [77] timber_project_faces (current_geometry.c)
+  [99] eng_sha256 (engineering_json.inc) [51] poly_loop_is_valid (current_geometry.c) [30] utf8_seq_len (current_geometry.c)
+  [55] eng_sha_block (engineering_json.inc) [28] poly_point_on_edge (current_geometry.c) [125] utf8_trim_tail (current_geometry.c)
+ [118] engineering_dump_grid (engineering.inc) [71] polygon_loop_bounds (current_geometry.c) [9] view_unproject_on_surface_near (current_geometry.c)
+  [92] engineering_dump_versions (engineering.inc) [144] proj_add_surface (current_geometry.c) [182] world_drop_canvas_pos (current_geometry.c)
+  [63] engineering_serializable (engineering.inc) [133] proj_edge_covered (current_geometry.c) [12] world_dump_dsl (current_geometry.c)
+  [58] feed_line.constprop.0 (web_bridge.c) [164] proj_rebind_aux (current_geometry.c) [95] world_dump_grids (current_geometry.c)
+ [112] grid_anchor_line_coord (subgrids.inc) [165] proj_redistribute_holes (current_geometry.c) [153] world_face_obstacles.constprop.0 (current_geometry.c)
+  [69] grid_axis_lines (current_geometry.c) [138] proj_sort_coords (current_geometry.c) [145] world_next_surface_id (current_geometry.c)
+  [75] grid_axis_lines_in (subgrids.inc) [162] proj_space_drop_member (current_geometry.c) [142] world_placement_boundary (current_geometry.c)
+ [136] grid_binding_cache (grid_bindings.inc) [184] proj_spawn_face (current_geometry.c) [154] world_replace_object (current_geometry.c)
+ [119] grid_cell_bounds (subgrids.inc) [166] proj_split_loop (current_geometry.c) [67] world_revalidate (current_geometry.c)
+ [157] grid_cell_ref_parse (subgrid_commands.inc) [86] rc_aabb_project (current_geometry.c) [6] world_revalidate_candidate (current_geometry.c)
+  [98] grid_is_valid_in (subgrids.inc) [134] reference_axis_definition_equal (transactions.inc) [14] world_validate_derived (current_geometry.c)
+ [104] grid_lattice_coord (grid_lattice.inc) [147] reference_binding_changed (transactions.inc) [2] <cycle 1>
