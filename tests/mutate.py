@@ -143,10 +143,10 @@ MUTANTS = [
          file='geometry-core/kernel/geometry.c',
          old="if (p.u > min_u && p.u < max_u &&\n                p.v > min_v && p.v < max_v) {",
          new="if (p.u >= min_u && p.u <= max_u &&\n                p.v >= min_v && p.v <= max_v) {"),
-    dict(id="M11", desc="I5：孔罩住矩形判定:inside==4 改 inside==0(罩住反而放行)",
+    dict(id="M11", desc="I5：停用孔完全罩住矩形的精確中心檢查（孔內矩形錯誤放行）",
          file='geometry-core/kernel/geometry.c',
-         old="            if (inside == 4) {\n                return false;",
-         new="            if (inside == 0) {\n                return false;"),
+         old="        if (geo_loop_rect_center_inside(hole, min_u, min_v, max_u, max_v)) {\n            return false; /* GEO261_HOLE_RECT_CENTER */",
+         new="        if (0 && geo_loop_rect_center_inside(hole, min_u, min_v, max_u, max_v)) {\n            return false; /* GEO261_HOLE_RECT_CENTER */"),
     # ---- uv_rects_overlap / world_footprint_collides:碰撞 ----
     dict(id="M12", desc="I11：正面積重疊:端點相接也算重疊(> 改 >=)",
          file='geometry-core/kernel/geometry.c',
