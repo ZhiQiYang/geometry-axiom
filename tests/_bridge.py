@@ -139,6 +139,7 @@ class BridgeSession:
         self.bridge = _checked_explicit(bridge) if bridge is not None else find_bridge()
         self.stop_timeout = stop_timeout
         self._stopped = False
+        self._death_reported = False     # command() already raised BridgeClosed with an exit status
         self.stderr = tempfile.TemporaryFile(mode='w+b')
         try:
             self.process = subprocess.Popen([self.bridge], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -161,10 +162,12 @@ class BridgeSession:
             code = self._exit_status()
             if code is None:
                 raise
+            self._death_reported = True
             raise BridgeClosed('bridge closed: ' + self.stderr_text(), code) from None
         line = self.process.stdout.readline()
         if not line:
             code = self._exit_status()      # reap first so stderr below is complete
+            self._death_reported = code is not None
             raise BridgeClosed('bridge closed: ' + self.stderr_text(), code)
         return json.loads(line)
 
@@ -182,20 +185,33 @@ class BridgeSession:
         return self.command('line ' + text)
 
     def stop(self):
+        """Close stdin and reap the bridge.  The bridge's only orderly end is exit status 0 after EOF on stdin
+        (web_bridge.c `main`), so a child that ends by itself with any other status died under the test (a mutant
+        that crashes on EOF, an outside kill): that raises BridgeClosed with the status, exactly as a death during
+        command() does, unless command() already reported this death.  A child that had to be killed here (it hung)
+        says nothing about itself and raises nothing."""
         if self._stopped:
             return
         self._stopped = True
+        code, stderr, failed = None, '', False
         try:
-            self.process.stdin.close()
-        except OSError:
-            pass    # the child already died and the pipe is broken: closing re-flushes a command nobody can read
-        try:
-            self.process.wait(timeout=self.stop_timeout)
-        except subprocess.TimeoutExpired:
-            self.process.kill()
-            self.process.wait()
-        self.process.stdout.close()
-        self.stderr.close()
+            try:
+                self.process.stdin.close()
+            except OSError:
+                pass    # the child already died and the pipe is broken: closing re-flushes a command nobody can read
+            try:
+                code = self.process.wait(timeout=self.stop_timeout)
+            except subprocess.TimeoutExpired:
+                self.process.kill()
+                self.process.wait()
+            failed = type(code) is int and code != 0       # (a mocked Popen hands back a non-int: no status, no death)
+            if failed:
+                stderr = self.stderr_text()
+        finally:
+            self.process.stdout.close()
+            self.stderr.close()
+        if failed and not self._death_reported:
+            raise BridgeClosed('bridge closed: exit status %d at stop: %s' % (code, stderr), code)
 
     close = stop
 

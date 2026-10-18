@@ -45,8 +45,8 @@ def failure_label(exc, child_deaths=()):
     A failure is a death of the bridge ("bridge_closed") when any of these holds:
       - tests/_bridge.py::BridgeClosed (class-level `bridge_closed` flag, exit status in `returncode`) is anywhere in
         the exception chain: a test that catches it and calls self.fail(...) still failed because the bridge died;
-      - a child process of the test died (`child_deaths`: exit statuses from ChildWatch, i.e. from the OS), which
-        covers tests that run the bridge without tests/_bridge.py;
+      - a bridge process the test started died (`child_deaths`: exit statuses from ChildWatch, i.e. from the OS),
+        which covers tests that run the bridge without tests/_bridge.py;
       - some message in the chain says the bridge closed (BRIDGE_CLOSED_TEXT).  That text alone carries no exit
         status, so `bridge_returncode` stays None and the failure can never count as a detection.
     `bridge_returncode` is the one exit status all the evidence agrees on; None when there is none or they disagree.
@@ -73,24 +73,21 @@ def _program(argv):
         return None
 
 
-def is_crash_status(code):
-    """An exit status no orderly exit produces: killed by a signal (POSIX, negative) or a Windows NTSTATUS error
-    such as 0xC0000005 (either signedness)."""
-    return type(code) is int and (code < 0 or (code & 0xFFFFFFFF) >= 0xC0000000)
-
-
 class ChildWatch:
-    """Every child process this oracle process starts (subprocess.Popen, and so subprocess.run), so a failing test can
-    be checked against what the OS says happened to its children, whatever helper the test used to talk to the bridge.
+    """The bridge processes this oracle process's tests start, so a failing test can be checked against what the OS
+    says happened to the bridge, whatever helper the test used to talk to it.
 
-    A child counts as dead under a test when it was still alive (or not yet reaped) when the test started and, by the
-    time the failure is reported, it ended with
-      - any status other than 0 if it runs the oracle's bridge binary (web_bridge.c's only orderly end is 0), or
-      - a crash status (is_crash_status) whatever program it runs.
-    A child still running when a failure is reported gets up to GRACE seconds (shared by the children, once per test,
-    so many failing subtests do not wait again) to finish dying: its stdout can close before the OS reports how it
-    ended.  Children of children (e.g. a bridge started by a server the test started) are not seen."""
-    GRACE = 1.0
+    "The bridge" is a child whose program is the oracle's bridge binary (the one path every test is given through
+    GEOMETRY_TEST_BRIDGE); any other child (a helper script, a server, a compiler) is none of the watch's business: its
+    crash is not the bridge's death and is never counted, however it ended.  A bridge child counts as dead under a test
+    when it was still alive (or not yet reaped) when the test started and, by the time the failure is reported, it
+    ended with any status but 0 (web_bridge.c's only orderly end is 0 after EOF on stdin).
+    A bridge still running when a failure is reported gets up to GRACE seconds (shared by the bridge children, once per
+    test, so many failing subtests do not wait again) to finish dying: its stdout can close before the OS reports how
+    it ended.  GRACE equals the wait tests/_bridge.py BridgeSession._exit_status gives a bridge whose stdout closed
+    (5 s), so a test that talks to the bridge itself is held to the same patience as one that uses the session.
+    Children of children (e.g. a bridge started by a server the test started) are not seen."""
+    GRACE = 5.0
 
     def __init__(self, bridge=None):
         self.bridge = _program([bridge]) if bridge is not None else None
@@ -108,21 +105,19 @@ class ChildWatch:
         subprocess.Popen = WatchedPopen
         return self
 
+    def is_bridge(self, child):
+        return self.bridge is not None and _program(child.args) == self.bridge
+
     def mark(self):
-        """At the start of a test: children that already ended belong to earlier tests."""
+        """At the start of a test: bridges that already ended belong to earlier tests."""
         self.settled = {id(child) for child in self.children if child.poll() is not None}
         self.graced = set()
 
-    def is_death(self, child, code):
-        if self.bridge is not None and _program(child.args) == self.bridge and code != 0:
-            return True
-        return is_crash_status(code)
-
     def deaths(self):
-        """Exit statuses of the children that died since mark()."""
+        """Exit statuses of the bridge children that died since mark()."""
         deadline, codes = time.monotonic() + self.GRACE, []
         for child in self.children:
-            if id(child) in self.settled:
+            if id(child) in self.settled or not self.is_bridge(child):
                 continue
             code = child.poll()
             if code is None:
@@ -133,7 +128,7 @@ class ChildWatch:
                 except subprocess.TimeoutExpired:
                     self.graced.add(id(child))
                     continue
-            if self.is_death(child, code):
+            if code != 0:
                 codes.append(code)
         return codes
 
