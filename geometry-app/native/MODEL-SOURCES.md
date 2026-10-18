@@ -79,3 +79,23 @@ The producer builds and resolves all roots before emitting a successful envelope
 The old snapshot and typed roots share the candidate. Complete native transport
 coverage does not replace the caller's executable pinning or the end-to-end
 native-to-Python adoption evidence; this declaration alone is not N4 completion.
+
+
+The H consumer independently derives the exact root association set from the
+snapshot catalogs: placements have two roots, solids one, named specs one,
+parameter fields one, and each profile run envelope/member three. The snapshot
+includes `parameter_fields: [{parameterId, fieldId, name}]`, read directly from
+the canonical parameter store in both invocation modes. This additive identity
+catalog contains no evaluated quantity or duplicate parameter parser. Duplicate
+catalog identities, missing roots, extra roots and wrong associations are errors;
+coverage booleans cannot substitute for this comparison.
+
+Generic typed decoding preserves opaque provider keys and INCOMPLETE values for
+independent program consumers. The actual native process boundary additionally
+requires every root to be COMPLETE and to use `app.model-snapshot` with provider
+fingerprint `geo261-model-snapshot/1`. This H adapter encodes named specs as UTF-8
+`spec:<name>` and other root keys as
+`<kind>:<id>:<slot>:envelope:0` or `<kind>:<id>:<slot>:member:<memberId>`.
+The private native decoder verifies the association-to-key binding before the
+candidate reaches the product runtime. K and W continue to treat keys as opaque;
+there is no configurable bypass or snapshot fallback.

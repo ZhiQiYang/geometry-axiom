@@ -339,6 +339,51 @@ class _Decoder:
         return tuple(result)
 
 
+def _snapshot_root_associations(snapshot):
+    """Read identities from independent snapshot catalogs, never graph roots."""
+    expected = set()
+
+    def record(value, fields):
+        if type(value) is not dict or not set(fields) <= set(value):
+            _fail("Native snapshot root catalog has an invalid record.")
+        return value
+
+    def add(kind, identity, slot, member=None, name=None):
+        association = (kind, identity, slot, member, name)
+        if association in expected:
+            _fail("Native snapshot root catalog contains duplicate identities.")
+        expected.add(association)
+
+    for item in _array(snapshot["placements"]):
+        identity = _uint(record(item, ("id",))["id"])
+        for slot in ("placement.frame", "placement.region"):
+            add("placement", identity, slot)
+    for item in _array(snapshot["solids"]):
+        record(item, ("kind", "id"))
+        add(_text(item["kind"]), _uint(item["id"]), "solid.box")
+    for item in _array(snapshot["specs"]):
+        add("spec", 0, "spec.value", name=_text(record(item, ("name",))["name"]))
+    capabilities = _array(snapshot.get("required_capabilities", []))
+    fields = snapshot.get("parameter_fields", None if "parameters/1" in capabilities else [])
+    field_ids = set()
+    for item in _array(fields):
+        _shape(item, ("parameterId", "fieldId", "name"))
+        identity, member = _uint(item["parameterId"]), _uint(item["fieldId"])
+        if (identity, member) in field_ids:
+            _fail("Native snapshot parameter field identities must be unique.")
+        field_ids.add((identity, member))
+        add("parameter", identity, "parameter.value", member, _text(item["name"]))
+    runs = snapshot.get("profile_runs", None if "section-profile/1" in capabilities else [])
+    for run in _array(runs):
+        record(run, ("id", "members"))
+        identity = _uint(run["id"])
+        members = [None] + [_uint(record(member, ("id",))["id"]) for member in _array(run["members"])]
+        for member in members:
+            for slot in ("profile.frame", "profile.region", "profile.length"):
+                add("profile-run", identity, slot, member)
+    return frozenset(expected)
+
+
 def decode_candidate(payload, *, source_bytes, execution_identity):
     """Decode a complete same-candidate envelope without executing a process."""
     try:
@@ -375,6 +420,8 @@ def decode_candidate(payload, *, source_bytes, execution_identity):
         decoder = _Decoder(graph["providers"])
         descriptors = decoder.descriptors(graph["nodes"], graph["edges"])
         roots = decoder.roots(graph["roots"], descriptors)
+        if frozenset(root.association for root in roots) != _snapshot_root_associations(snapshot):
+            _fail("Native roots do not exactly match the snapshot identity catalogs.", code="BASE_SOURCE_BINDING")
         descriptors = decoder.face_values(descriptors, roots)
         result = NativeCandidate(canonical_bytes(snapshot), identity, revision, original,
             tuple(sorted(decoder.providers.items())), descriptors, roots, execution_identity)
@@ -382,3 +429,26 @@ def decode_candidate(payload, *, source_bytes, execution_identity):
         return result
     except EvaluationError as error:
         raise ModelError("UNSUPPORTED", "BASE_SOURCE_PROTOCOL", "I32", "Invalid typed native source graph: " + error.code) from error
+
+
+def _decode_native_candidate(payload, *, source_bytes, execution_identity):
+    """Enforce this H adapter's provider binding at the actual process boundary.
+
+    Generic decoding retains opaque keys and typed INCOMPLETE values. A native
+    success envelope additionally promises the known adapter root identities
+    and complete exported roots; this private entry has no bypass option.
+    """
+    candidate = decode_candidate(payload, source_bytes=source_bytes,
+                                 execution_identity=execution_identity)
+    sources = {source.key: source for source in candidate.sources}
+    for root in candidate.roots:
+        if root.kind == "spec":
+            key = "spec:" + root.name
+        else:
+            member = "envelope:0" if root.member is None else "member:" + str(root.member)
+            key = f"{root.kind}:{root.identity}:{root.slot}:{member}"
+        expected = SourceKey("app.model-snapshot", ("geo261-model-snapshot/1", key.encode("utf-8").hex()))
+        if (root.kind not in ("placement", "column", "beam", "timber", "spec", "parameter", "profile-run")
+                or root.source.key != expected or sources[root.source.key].status != SourceStatus.COMPLETE):
+            _fail("Native root identity disagrees with its complete adapter source.", code="BASE_SOURCE_BINDING")
+    return candidate
