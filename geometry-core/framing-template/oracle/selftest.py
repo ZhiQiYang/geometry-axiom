@@ -40,6 +40,12 @@ STEP20 = {"outer": [[0, 0], [4100, 0], [4100, 3680], [2600, 3680], [2600, 3700],
 JIG1470 = RECT(2000, 3301)
 # 板端縫端餘數 < 27 的合成格:板長改 1468(縫距 1470),板端縫 1469、2939、4409;縫到縫那一格 1470 = 367×4 + 2,最後一支會碰到下一條縫的縫上副支
 JIGSEAM = dict(RECT(2000, 4500), params={"L": 1468})
+# P-180:柱面料 [1816,1843] 蓋住板端縫 1831,比置中的縫上副支短 2 mm;這一跨的縫上副支要貼著柱面料放在 [1843,1870]
+COLUMN = lambda W, H, x, y, cs: {"outer": [[0, 0], [W, 0], [W, H], [0, H]], "holes": [[[x, y], [x + cs, y], [x + cs, y + cs], [x, y + cs]]]}
+COL2MM = COLUMN(3600, 3000, 1366, 500, 450)
+LROOM = lambda W, H, cw, ch: {"outer": [[0, 0], [W, 0], [W, H - ch], [W - cw, H - ch], [W - cw, H], [0, H]]}
+# P-180 的 L 形版:外牆凹角面 y=1846 落在板端縫 1831 之後 15 mm(審查員 exp7)
+L1846 = LROOM(4000, 4500, 1500, 4500 - 1846)
 # 40 mm 牆階:牆階面 y 3660–3700 被 y=3700 牆的邊界材蓋掉 27 mm,只剩 13 mm,不放沿牆料
 #   (柱面是使用者 10-18 的決定,選項原文「不放(短於 27 一律不放)」;牆面比照是推論)
 STEP40 = {"outer": [[0, 0], [4100, 0], [4100, 3660], [2600, 3660], [2600, 3700], [0, 3700]]}
@@ -67,10 +73,14 @@ MUTANTS = [
     ("misalign_marks", R["F3次臥"], "C9_MARKS_NOT_ALIGNED", "第一支主支右側的記號副支整組偏 20 mm:兩側不對齊"),
     ("no_fill", R["F2主臥"], "C4_SPACING", "記號撞到壁柱邊界材拿掉後,不在旁邊補一支:間距超過上限", "左上起鋪,板長沿Y"),
     ("shift_mark_rects", R["F3次臥"], "C12_MARK_OFF_JIG", "記號副支的矩形整排移 -8 mm、at 標籤不動:C12 要看實際位置"),
-    ("fill_relabel", R["F2主臥"], "C13_FILL_OFF_RULE", "把一支記號移 -8 mm 後改標 fill:fill 沒有貼著擋料", "左上起鋪,板長沿Y"),
-    ("fill_extra", R["F2主臥"], "C13_FILL_UNNEEDED", "在兩支記號中間憑空多放一支 fill:拿掉它間距也不超上限", "左上起鋪,板長沿Y"),
-    ("fill_double", R["F2主臥"], "C13_FILL_DOUBLED", "fill 改成貼著旁邊那支記號:雙拼", "左上起鋪,板長沿Y"),
+    ("fill_relabel", R["F2主臥"], "C13_EXTRA_OFF_RULE", "把一支記號移 -8 mm 後改標 fill:fill 沒有貼著擋料", "左上起鋪,板長沿Y"),
+    ("fill_extra", R["F2主臥"], "C13_EXTRA_UNNEEDED", "在兩支記號中間憑空多放一支 fill:拿掉它間距也不超上限", "左上起鋪,板長沿Y"),
+    ("fill_double", R["F2主臥"], "C13_EXTRA_DOUBLED", "fill 改成貼著旁邊那支記號:雙拼", "左上起鋪,板長沿Y"),
     ("no_seam_window", R["F1客廳"], "C4_SPACING", "縫上副支的範圍不受「與鄰近記號的間距上限」約束:為了對齊挪到 3151,與記號 3536 空檔 345", "右上起鋪,板長沿X"),
+    ("extra_seam_mid", R["F3次臥"], "C13_EXTRA_OFF_RULE", "兩支記號正中間多放一支、標成 seam:不在縫上、不貼擋料"),
+    ("extra_norole_mid", R["F3次臥"], "C13_EXTRA_OFF_RULE", "同上,但不給 role"),
+    ("seam_relabel", R["F3次臥"], "C12_JIG_MARK_MISSING", "把一支記號移 -8 mm 後改標 seam:治具位置空了,改標的那支不算合法擋料"),
+    ("no_seam_at_end", COL2MM, "C4_SPACING", "P-180 拿掉:柱面料蓋住縫時不放縫上副支,空檔 342", "左上起鋪,板長沿X"),
     ("no_merge_seam_end", JIGSEAM, "C12_JIG_MARK_MISSING", "板端縫端不合併平分:1470 那格最後一支碰到下一條縫的縫上副支,掉了"),
     ("even_split", R["F3次臥"], "C12_MARK_OFF_JIG", "記號退回逐格均分(舊公式 m=⌈L/n⌉):F3 最後一格 1449 mm 用 363,不是同一治具 367"),
     ("no_merge_split", JIG1470, "C12_JIG_MARK_MISSING", "拿掉「最後一支記號碰到格端就合併平分」:1470 mm 那格的最後一支掉了,3117 沒有記號"),
@@ -163,6 +173,16 @@ got_ = {f["check"] for f in fo.check(res, p)}
 ok = "C7_G7_TOO_CLOSE" in got_
 failed |= not ok
 print(f"[{'紅' if ok else '沒抓到!'}] tamper_seam        預期 C7_G7_TOO_CLOSE          實得 {sorted(got_)}  雙牆階的板端縫改回 3614:離 x>3300 的對牆只剩 13 mm")
+# C13 的「那支治具記號確實放不下」:F2 右上 X 有一支記號 [8624,8651] 離上面的邊界材 [8673,8700] 只差 22 mm、本來放得下;
+#   把它換成一支貼著邊界材的 fill [8646,8673],離治具位置 < w、也貼著擋料,只有這一條能判它不合規則。
+res = fo.build(R["F2主臥"], next(l for l in fo.LAYOUTS if fo.layout_name(l) == "右上起鋪,板長沿X"), p)
+tgt = [t for t in res["timbers"] if t.get("role") == "mark" and tuple(t["rect"]) == (8624, 930, 8651, 1820)]
+if tgt:
+    tgt[0]["rect"], tgt[0]["role"] = (8646, 930, 8673, 1820), "fill"
+got_ = {f["check"] for f in fo.check(res, p)}
+ok = bool(tgt) and "C13_EXTRA_OFF_RULE" in got_
+failed |= not ok
+print(f"[{'紅' if ok else '沒抓到!'}] tamper_fill_plausible 預期 C13_EXTRA_OFF_RULE   實得 {sorted(got_)}  F2 右上 X 把放得下的記號換成貼邊界材的 fill")
 # 平移退回置中仍要有效:照舊縫位(bbox_ft02,縫 3659)時,40 mm 牆階的主支被推去撞 y=3700 的牆料就要退回置中,
 #   原因要是核心限制(主支頂延伸段),不是碰撞
 res = fo.build(STEP40, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X"), p, frozenset({"bbox_ft02"}))
@@ -205,6 +225,35 @@ nfill = sum(1 for t in res["timbers"] if t.get("role") == "fill")
 ok = seam_lo == [3146, 3156] and nfill == 0 and not res["conflicts"] and not fo.check(res, p)
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] 縫上副支受間距上限約束:F1 右上 X 板端縫 3169 的副支起點 {seam_lo}(要 [3146, 3156]),fill {nfill} 支(要 0)")
+# P-180:柱面料或外牆凹角面蓋住板端縫、少了縫上副支下一格空檔會超上限時,縫上副支貼著擋料放(不是 fill)
+for room_, lay_, want_ in ((COL2MM, "左上起鋪,板長沿X", [1818, 1843]), (L1846, "左上起鋪,板長沿Y", None)):
+    res = fo.build(room_, next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay_), p)
+    seam_lo = sorted({fo.rng(t["rect"], res["b"])[0] for t in res["timbers"] if t.get("role") == "seam" and t.get("at") == 1831})
+    nfill = sum(1 for t in res["timbers"] if t.get("role") == "fill")
+    ok = not res["conflicts"] and not fo.check(res, p) and nfill == 0 and (want_ is None or seam_lo == want_)
+    failed |= not ok
+    print(f"[{'綠' if ok else '錯!'}] P-180 {room_['outer'][2]} {lay_}:可施工,縫 1831 的縫上副支起點 {seam_lo}"
+          f"{'(要 ' + str(want_) + ')' if want_ else ''},fill {nfill} 支")
+# 掃描斷言的牙齒:拿掉 P-180,柱房那幾個原本可施工的排法退化成 MARK_NO_ROOM,和預期清單比對要不一致
+_mini = [(f"C:3600,3000,1366,{y},450", COLUMN(3600, 3000, 1366, y, 450)) for y in (500, 1021, 1542)]
+_exp_all = json.load(open(HERE / "sweep-expected-unbuildable.json", encoding="utf-8")) if (HERE / "sweep-expected-unbuildable.json").exists() else {"reflex": [], "step": []}
+_exp_mini = {(r_, l_, tuple(c_)) for r_, l_, c_ in _exp_all["reflex"] if any(r_ == i_ for i_, _ in _mini)}
+
+
+def _unbuildable(rooms_, mut_=frozenset()):
+    out_ = set()
+    for rid_, room_ in rooms_:
+        pp_ = dict(p, **room_.get("params", {}))
+        for l_ in fo.LAYOUTS:
+            r_ = fo.build(room_, l_, pp_, mut_)
+            if r_["conflicts"]:
+                out_.add((rid_, fo.layout_name(l_), tuple(sorted({c["code"] for c in r_["conflicts"]}))))
+    return out_
+
+
+ok = _unbuildable(_mini) == _exp_mini and _unbuildable(_mini, frozenset({"no_seam_at_end"})) != _exp_mini
+failed |= not ok
+print(f"[{'紅' if ok else '沒抓到!'}] sweep_assert       預期 不可施工清單不一致  拿掉 P-180 時柱房退化成 MARK_NO_ROOM,和預期清單比對抓得到")
 # 剛好 min_piece 的料必須放(建構端兩處邊界:跨寬、柱面料切段),而且全部檢查通過
 res = fo.build(T27, LT_Y, p)
 fails = fo.check(res, p)
@@ -283,22 +332,23 @@ for W in edge_w:
 # 凹角房:L 形(缺一角)與壁龕(牆上內凹),8 種排法;可施工的排法都要通過全部檢查(含 C8 核心可表示)
 LROOM = lambda W, H, cw, ch: {"outer": [[0, 0], [W, 0], [W, H - ch], [W - cw, H - ch], [W - cw, H], [0, H]]}
 ALCOVE = lambda W, H, y0, y1, dep: {"outer": [[dep, 0], [W, 0], [W, H], [dep, H], [dep, y1], [0, y1], [0, y0], [dep, y0]]}
-reflex_rooms = [LROOM(W, H, cw, ch) for W in (3000, 4100, 5000) for H in (2600, 3700, 4800)
+reflex_rooms = [(f"L:{W},{H},{cw},{ch}", LROOM(W, H, cw, ch)) for W in (3000, 4100, 5000) for H in (2600, 3700, 4800)
                 for cw in range(300, W - 299, 457) for ch in range(300, H - 299, 613)]
-reflex_rooms += [ALCOVE(W, 3000, y0, y0 + L, dep) for W in (3000, 4400) for y0 in (400, 1000, 1700)
+reflex_rooms += [(f"A:{W},{y0},{L},{dep}", ALCOVE(W, 3000, y0, y0 + L, dep)) for W in (3000, 4400) for y0 in (400, 1000, 1700)
                  for L in (400, 900) for dep in (300, 600) if y0 + L <= 2600]
-COLUMN = lambda W, H, x, y, cs: {"outer": [[0, 0], [W, 0], [W, H], [0, H]], "holes": [[[x, y], [x + cs, y], [x + cs, y + cs], [x, y + cs]]]}
-reflex_rooms += [COLUMN(W, H, x, y, cs) for W, H in ((3600, 3000), (5000, 4200)) for cs in (300, 450)
+reflex_rooms += [(f"C:{W},{H},{x},{y},{cs}", COLUMN(W, H, x, y, cs)) for W, H in ((3600, 3000), (5000, 4200)) for cs in (300, 450)
                  for x in range(500, W - cs - 499, 433) for y in range(500, H - cs - 499, 521)]
 rb, rbuild = [], 0
 codes = {}
-for room in reflex_rooms:
+unb = {"reflex": set(), "step": set()}
+for rid, room in reflex_rooms:
     for l in fo.LAYOUTS:
         runs += 1
         res = fo.build(room, l, p)
         if res["conflicts"]:
             for c in res["conflicts"]:
                 codes[c["code"]] = codes.get(c["code"], 0) + 1
+            unb["reflex"].add((rid, fo.layout_name(l), tuple(sorted({c["code"] for c in res["conflicts"]}))))
             continue
         rbuild += 1
         fails = fo.check(res, p)
@@ -306,19 +356,20 @@ for room in reflex_rooms:
             rb.append((room["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
 # 牆階 1–100 mm:L 形缺角很淺(橫向或縱向)與很淺的壁龕,8 種排法。可施工的排法都要通過全部檢查。
 #   (#251 審查 60785906:牆階 13–24 mm 時沿牆料端面頂延伸段,原本沒宣告 custom 3,C8_I19_PRIORITY 會紅。)
-step_rooms = ([LROOM(4100, 3700, 1500, s) for s in range(1, 101)] + [LROOM(4100, 3700, s, 1200) for s in range(1, 101)]
-              + [ALCOVE(4100, 3000, 1000, 1900, s) for s in range(1, 101)]
+step_rooms = ([(f"L_ch:{s}", LROOM(4100, 3700, 1500, s)) for s in range(1, 101)] + [(f"L_cw:{s}", LROOM(4100, 3700, s, 1200)) for s in range(1, 101)]
+              + [(f"alcove:{s}", ALCOVE(4100, 3000, 1000, 1900, s)) for s in range(1, 101)]
               # 雙牆階(#251 審查 98cb7da0):牆 y=s1(x 2600–3300)、y=s2(x 3300–4100),s2 < s1
-              + [{"outer": [[0, 0], [4100, 0], [4100, s2], [3300, s2], [3300, s1], [2600, s1], [2600, 3700], [0, 3700]]}
+              + [(f"DS:{s1},{s2}", {"outer": [[0, 0], [4100, 0], [4100, s2], [3300, s2], [3300, s1], [2600, s1], [2600, 3700], [0, 3700]]})
                  for s1 in range(3604, 3700, 9) for s2 in range(s1 - 88, s1, 9)])
 sbuild, sbad, scodes = 0, 0, {}
-for room in step_rooms:
+for rid, room in step_rooms:
     for l in fo.LAYOUTS:
         runs += 1
         res = fo.build(room, l, p)
         if res["conflicts"]:
             for c in {c["code"] for c in res["conflicts"]}:
                 scodes[c] = scodes.get(c, 0) + 1
+            unb["step"].add((rid, fo.layout_name(l), tuple(sorted({c["code"] for c in res["conflicts"]}))))
             continue
         sbuild += 1
         fails = fo.check(res, p)
@@ -327,6 +378,20 @@ for room in step_rooms:
             rb.append((room["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
 print(f"牆階 1–100 mm 的 L 形、壁龕與雙牆階 {len(step_rooms)} 間 × 8 種排法:可施工 {sbuild} 個,其中檢查失敗 {sbad} 個;"
       f"不可施工的排法數(依原因){scodes}")
+# 不可施工的排法要和明列的預期清單(每筆附原因代碼)完全一樣;清單空的就要 0 個。--write-expected 只在人工覆核後重寫清單。
+EXP_PATH = HERE / "sweep-expected-unbuildable.json"
+if "--write-expected" in sys.argv:
+    json.dump({fam: sorted([list(x[:2]) + [list(x[2])] for x in v]) for fam, v in unb.items()}, open(EXP_PATH, "w", encoding="utf-8", newline="\n"),
+              ensure_ascii=False, indent=0)
+expected_unb = json.load(open(EXP_PATH, encoding="utf-8"))
+for fam in ("reflex", "step"):
+    want_ = {(r_, l_, tuple(c_)) for r_, l_, c_ in expected_unb[fam]}
+    extra_, missing_ = sorted(unb[fam] - want_), sorted(want_ - unb[fam])
+    ok = not extra_ and not missing_
+    failed |= not ok
+    print(f"[{'綠' if ok else '錯!'}] {fam} 掃描的不可施工清單:實得 {len(unb[fam])} 個,預期 {len(want_)} 個;多出 {len(extra_)}、少了 {len(missing_)}")
+    for x in (extra_ + missing_)[:10]:
+        print("    ", x)
 # 奇數縫寬:縫寬 1、3 的矩形房,8 種排法(反向起鋪首縫取上界)
 p_odd = [dict(p, gap=gg) for gg in (1, 3)]
 odd_bad = odd_runs = 0
