@@ -37,7 +37,10 @@ ADOPTED_HASH = "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5
 # in the whole document and inside that clause; no edit may add, drop, reorder
 # or rename clauses, or touch the preamble, chapter headings or exclusions.
 # "proposal" and "approval" record the reviewed bytes (not in this tree) and the
-# human answer; they are provenance, not something this test can re-derive.
+# human answer.  "decision" must point at that answer in 決策佇列.md: a heading
+# that occurs exactly once and each answer quoted verbatim as its own "> ..."
+# line inside that section (REVISION_APPROVAL).  A revision whose answer is not
+# recorded there keeps the actual-SSOT test red: it is not adopted yet.
 POST_APPROVAL_REVISIONS = (
     {
         "id": "pr260-ab",
@@ -45,6 +48,8 @@ POST_APPROVAL_REVISIONS = (
         "approval": "決策佇列.md「2026-10-18 #260 條文稿第一批回覆 🔒」: 第 1 題 A 區「同意」；"
                     "第 2 題依 10-16 所選說明寫成定義推論；第 3 題「改回選項一(建議)」；"
                     "第 4 題 B 區「同意(建議)」",
+        "decision": {"heading": "### 2026-10-18 #260 條文稿第一批回覆 🔒",
+                     "answers": ("> 同意", "> 改回選項一(建議)", "> 同意(建議)")},
         "edits": (
             ("D29",
                 "未設相位差時，格線身分為（系統、軸、signed k）。設了 D10b 相位差時，段的身分是（系統、軸、signed k、另一軸 cell 索引）。"
@@ -250,6 +255,26 @@ def apply_post_approval_revisions(adopted, revisions):
     return result
 
 
+def verify_revision_decisions(queue_bytes, revisions):
+    """Each later revision must point at the user's own recorded answers in 決策佇列.md."""
+    lines = normalized(queue_bytes).split("\n")
+    for revision in revisions:
+        decision = revision.get("decision")
+        heading = decision.get("heading", "") if isinstance(decision, dict) else ""
+        answers = decision.get("answers", ()) if isinstance(decision, dict) else ()
+        starts = [index for index, line in enumerate(lines) if line == heading]
+        section = set()
+        if heading.startswith("### ") and len(starts) == 1:
+            end = next((index for index in range(starts[0] + 1, len(lines))
+                        if lines[index].startswith(("### ", "## "))), len(lines))
+            section = {line.strip() for line in lines[starts[0] + 1:end]}
+        require(bool(section) and bool(answers)
+                and all(answer.startswith("> ") and answer in section for answer in answers),
+                "REVISION_APPROVAL",
+                f"{revision['id']}: 決策佇列.md must hold exactly one section {heading!r} "
+                f"quoting each of the user's answers {answers!r}")
+
+
 def validate_current_document(current_bytes, expected):
     require(normalized(current_bytes) == expected, "ADOPTED_SOURCE", "current SSOT differs from the approved, upstream-preserving result")
     clauses, _, _ = source_layout(expected)
@@ -352,6 +377,7 @@ class AdoptionIntegrity(unittest.TestCase):
         verify_addendum_approval(self.approval)
 
     def test_actual_ssot_is_the_full_approved_upstream_preserving_adoption(self):
+        verify_revision_decisions((ROOT / "決策佇列.md").read_bytes(), POST_APPROVAL_REVISIONS)
         actual = (ROOT / "公理層.md").read_bytes()
         validate_current_document(actual, self.current)
         self.assertEqual(CURRENT_HASH, sha(actual))
@@ -388,6 +414,34 @@ class AdoptionIntegrity(unittest.TestCase):
                 self.reject(code, apply_post_approval_revisions, self.expected, earlier + (last | fields,))
         self.reject("REVISION_RECORD", apply_post_approval_revisions, self.expected,
                     POST_APPROVAL_REVISIONS + (last,))
+        first = source_layout(self.expected)[0][0]
+        header = first.before.split("\n", 1)[0]
+        for code, edits in (("REVISION_ANCHOR", ((clause, before, before),)),
+                            ("REVISION_LAYOUT", ((first.id, header, "偷渡前言\n\n" + header),))):
+            with self.subTest(code=code, edit=edits[0][0]):
+                self.reject(code, apply_post_approval_revisions, self.expected,
+                            earlier + (last | {"edits": edits},))
+        # the approval must be the user's answer recorded in the decision queue
+        queue = (ROOT / "決策佇列.md").read_bytes()
+        approved = POST_APPROVAL_REVISIONS[0]
+        verify_revision_decisions(queue, (approved,))
+        decision = approved["decision"]
+        elsewhere = "> 只准一軸(建議)"
+        self.assertIn(elsewhere, normalized(queue))
+        for case, revision, record in (
+                ("no decision", {k: v for k, v in approved.items() if k != "decision"}, queue),
+                ("unknown heading", approved | {"decision": decision | {"heading": decision["heading"] + "x"}}, queue),
+                ("not a section heading", approved | {"decision": decision | {"heading": decision["heading"][4:]}}, queue),
+                ("no answers", approved | {"decision": decision | {"answers": ()}}, queue),
+                ("answer not given", approved | {"decision": decision | {"answers": decision["answers"] + ("> 不同意",)}}, queue),
+                ("answer from another section", approved | {"decision": decision | {"answers": (elsewhere,)}}, queue),
+                ("answer not quoted", approved | {"decision": decision | {"answers": (decision["answers"][0][2:],)}}, queue),
+                ("section duplicated", approved,
+                 queue + ("\n" + decision["heading"] + "\n\n" + decision["answers"][0] + "\n").encode("utf-8")),
+                ("answer removed from the record", approved,
+                 normalized(queue).replace("  " + decision["answers"][1] + "\n", "\n", 1).encode("utf-8"))):
+            with self.subTest(case=case):
+                self.reject("REVISION_APPROVAL", verify_revision_decisions, record, (revision,))
 
     def test_crlf_is_the_only_ignored_source_difference(self):
         validate_current_document(self.current.replace("\n", "\r\n").encode(), self.current)
