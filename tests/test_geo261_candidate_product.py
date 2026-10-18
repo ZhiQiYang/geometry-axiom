@@ -1,4 +1,5 @@
 """Real preview/import paths retain and publish the validated candidate exactly once."""
+import json
 import subprocess
 import sys
 import unittest
@@ -9,6 +10,19 @@ from tests import _bridge
 from tests.test_geo261_native_kernel import native
 from tests.test_geo261_wood_product import SCENE
 
+# Same support/primary dependency as the existing room_a scene. The primary
+# member really moves with guide 1; an unused guide is not an implicit I8a edit.
+REPLAY_IMPACT_SCENE="""surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 90 20 20 role boundary
+place 90 on 1 at-face e0 +u +n
+timber 91 20 20 role boundary
+place 91 on 1 at-face e2 +u +n
+spec x 500
+guide 1 1 v spec:x
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n
+"""
+
 class CandidateProduct(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -17,8 +31,8 @@ class CandidateProduct(unittest.TestCase):
             ['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1','GEOMETRY_HOST_HISTORY_EXTERNAL=1','GEOMETRY_HOST_CANDIDATE_EXTERNAL=1'])
         cls.exe=b.link('candidate-product-client',[cls.client,*b.product_objects()])
 
-    def case(self,name,exe=None):
-        r=subprocess.run([str(exe or self.exe),name,str(self.scene)],capture_output=True,text=True,timeout=30)
+    def case(self,name,exe=None,path=None):
+        r=subprocess.run([str(exe or self.exe),name,str(path or self.scene)],capture_output=True,text=True,timeout=30)
         self.assertIn(r.returncode,(0,1),'Crash/setup failure is not a candidate verdict: '+r.stderr)
         if r.returncode:self.assertIn('ASSERT:',r.stderr)
         return r
@@ -81,5 +95,71 @@ class CandidateProduct(unittest.TestCase):
             self.assertTrue(session.command('default')['ok'])
             self.assertEqual(initial,session.command('dump')['text'])
             self.assertFalse(session.line('undo')['ok'])
+
+    def replay_result(self,name,tail="",scene=SCENE):
+        path=native().work/'candidate-file-replay.scene';path.write_text(scene+tail,encoding='utf-8')
+        result=self.case(name,path=path)
+        print('FILE_REPLAY_JSON:'+json.dumps({'case':name,'exit_code':result.returncode,
+              'stdout':result.stdout,'stderr':result.stderr},ensure_ascii=False))
+        self.assertEqual(0,result.returncode,result.stderr)
+        return result
+
+    def test_owned_file_replay_avoids_inner_candidates_and_retains_final_graph(self):
+        self.replay_result('replay-cost')
+
+    def test_unscoped_parse_inside_outer_still_creates_each_inner_candidate(self):
+        self.replay_result('replay-unscoped')
+
+    def test_standalone_model_style_parse_keeps_five_lines_and_final_candidate(self):
+        self.replay_result('replay-standalone')
+
+    def test_optional_file_scratch_oom_falls_back_to_original_candidates(self):
+        self.replay_result('replay-scratch-oom')
+
+    def test_owned_file_replay_keeps_valid_and_invalid_i8a_original_refusal(self):
+        for case,tail,preview in [('replay-i8a-valid','spec x 700\n','valid; confirm token to apply'),
+                                  ('replay-i8a-invalid','spec x 100000001\n','invalid; cannot apply')]:
+            with self.subTest(case=case):
+                result=self.replay_result(case,tail,REPLAY_IMPACT_SCENE)
+                self.assertIn('I8a preview 1: '+preview,result.stderr)
+
+    def test_owned_file_replay_restores_all_bytes_after_real_partial_datum_failure(self):
+        self.replay_result('replay-rollback')
+
+    def test_owned_file_replay_releases_each_graph_across_real_preview_fallback(self):
+        self.replay_result('replay-lifetime')
+
+    def test_owned_file_replay_does_not_leak_keyed_operation_or_padding(self):
+        self.replay_result('replay-operation')
+
+    def test_line_readiness_uses_real_describe_failure_and_active_source_verdict(self):
+        self.replay_result('replay-source-guards')
+
+    def default_result(self,name):
+        result=self.case(name)
+        print('DEFAULT_REPLAY_JSON:'+json.dumps({'case':name,'argv':result.args,'exit_code':result.returncode,
+              'stdout':result.stdout,'stderr':result.stderr},ensure_ascii=False))
+        self.assertEqual(0,result.returncode,result.stderr)
+        return result
+
+    def test_owned_default_replay_keeps_only_spec_guide_inner_candidates_and_final_graph(self):
+        self.default_result('default-cost')
+
+    def test_default_optional_scratch_oom_keeps_original_nine_line_revisions(self):
+        self.default_result('default-scratch-oom')
+
+    def test_default_standalone_call_preserves_original_nine_candidates(self):
+        self.default_result('default-standalone')
+
+    def test_default_and_reset_preserve_revision_history_and_preview_policies(self):
+        self.default_result('default-policy')
+
+    def test_default_required_owner_failures_preserve_user_state_and_recover(self):
+        for name in ('default-inner-oom','default-outer-oom'):
+            with self.subTest(case=name):
+                self.default_result(name)
+
+    def test_default_replay_rejects_changed_or_truncated_builtin_program(self):
+        self.default_result('default-program-guard')
 
 if __name__=='__main__':unittest.main(verbosity=2)

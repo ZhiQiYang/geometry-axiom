@@ -1,6 +1,6 @@
 【Codex】候選 SHA 效能修正：`57d916fb1d2c980769c3438172849bb3a3f03c00` 已完成新增測試 **73/73**、修前／撤回負控、正常量測、gprof 與相同微測試比較。修正分支為 `codex/geo261-fix-perf-candidate-sha-20261018`；本檔是待發布的證據報告，不代表已留言或合併。**bridge_integrity 兩側皆 24/24 功能通過，但 A/D 仍為 main 的 3.222 倍，未達 ≤2 倍效能門檻；完整驗收尚未重跑。**
 
-A 保留完整快照，在完整 bytes 相等時延後 SHA；不同時仍雜湊保存原件與目前 bytes，不把篡改值當預期，不修改 const 封印。eager constructor、optional cache OOM 後備 SHA、必要配置失敗拒絕，以及 metadata／revision／狀態／完整 H snapshot 守門均保留。D 只移除 World publish 的一次重複 H 檢查；World 的 null／operation seal、泛用 H publish、K mark-published 仍保留。direct World 成本測試要求 H check=1、K check=2、provider metadata malloc/SHA 各=2；20 個判定情境、兩個 metadata OOM 點與持續 OOM 保留拒絕及重試契約。
+A 保留完整快照，在完整 bytes 相等時延後 SHA；不同時仍雜湊保存原件與目前 bytes，不把篡改值當預期，不修改 const 封印。eager constructor、optional cache OOM 後備 SHA、必要配置失敗拒絕，以及 metadata／revision／狀態／完整 H snapshot 守門均保留。D 移除 World publish 中一次完整、重複的 `app_candidate_check`；正常成功路徑因此少做 before／after 兩次 H 快照檢查、一次 K 檢查及一次 live／before 相等比較。World 的 null／operation seal、泛用 H publish、K mark-published 仍保留。direct World 成本測試要求 H check=1、K check=2、provider metadata malloc/SHA 各=2；20 個判定情境、兩個 metadata OOM 點與持續 OOM 保留拒絕及重試契約。
 
 | 測試來源／階段 | 實際結果 | 原始輸出 |
 |---|---|---|
@@ -47,7 +47,7 @@ bridge_integrity 使用相同 `tests/test_bridge_integrity.py` 與 `tests/_bridg
 | main `e980cb0d` | 33.819 s | 34.0 s | 51.229 s | [stdout](performance/bridge-integrity-main/command.stdout)、[unittest](performance/bridge-integrity-main/suite-logs/py_test_bridge_integrity.unittest.log) |
 | A/D `57d916fb` | 108.959 s | 109.2 s | 135.845 s | [stdout](performance/bridge-integrity-ad/command.stdout)、[unittest](performance/bridge-integrity-ad/suite-logs/py_test_bridge_integrity.unittest.log) |
 
-以 unittest 時間比為 **3.222×**，**未達 ≤2× 門檻**。功能斷言通過與效能驗收分開：本修正顯著改善成本，但不能稱效能全過；此處未用含建置外層時間算 suite 退化倍率。
+以同輪、同一 Linux 環境兩側的 unittest 時間相除，A/D 為 main 的 **3.222×**，**未達 ≤2× 門檻**；不能與其他環境先前約 10 倍的數字拼成改善倍率。功能斷言通過與效能驗收分開：本修正顯著改善成本，但不能稱效能全過；此處未用含建置外層時間算 suite 退化倍率。
 
 A/D [build 原收據](performance/after-ad-build-invocation.json) 的 `prepare_argv` 因記錄器共用 list，後續 stage=build 誤改了原欄；[獨立 correction](performance/after-ad-build-invocation.correction.json) 保留實際 prepare/build argv 與原檔 hash，原檔未改，[stdout](performance/after-ad-build.stdout) 前兩行亦有來源 prepare 證據。此瑕疵不隱藏、不以重寫原始收據修飾。
 
@@ -56,3 +56,5 @@ A/D [build 原收據](performance/after-ad-build-invocation.json) 的 `prepare_a
 環境：Debian 13、Linux 6.18.55 x86_64、GCC 14.2.0、Python 3.12.14、Node 24.19.0、Google Chrome 155.0.8059.84；本階段沒有跑瀏覽器。尚未完成：bridge_integrity ≤2× 效能門檻、修後全量非瀏覽器、六 browser jobs、Windows/MSVC/GDI、完整舊包 UI/native 驗收。既有 baseline 失敗／逾時仍需各自重驗，這份效能結果不能取代它們。
 
 新增 **73 methods／3 suites 尚未更新 expected**；本分支不能當作 CI 全綠。最終全部修正完成後，仍須實跑完整 `python3 tests/run_all.py --build --update-expected`，再以普通 strict 全量 `python3 tests/run_all.py --build` 驗證；兩輪均保留 16 MiB stack 與完整原始收據，不能只改 expected 省略實跑。
+
+文字勘誤：本次只釐清上文 D 的完整重複檢查範圍與同輪 3.222 倍的比較口徑；[原始報告 `875235e2`](https://github.com/ZhiQiYang/geometry-axiom/blob/875235e2227d93336b798d9b4548e2c2fa67c3fe/evidence/geo261-codex-fix-perf-candidate-sha-20261018/README.md) 保留可追溯原文。原始測試、效能、stderr 收據及其 hash 不變，本勘誤不增加任何已通過項目。

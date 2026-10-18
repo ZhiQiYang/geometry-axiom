@@ -55,13 +55,18 @@ static void app_world_candidate_replace(void *live,const void *after,void *opaqu
     if(opaque)history_restore_world(live,after);
     else memcpy(live,after,sizeof(World));
 }
-static bool app_world_candidate_seal(AppWorldCandidate *candidate)
+static bool app_world_candidate_describe_sources(AppWorldCandidate *candidate)
 {
     GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(candidate->control));
     for(size_t i=0;i<geo_eval_node_count(sources);++i){GeoSourceNodeView node;GeoSourceDescriptor descriptor;
         if(!geo_eval_node_at(sources,i,&node)||(!node.described&&
             geo_eval_describe(sources,node.source,&descriptor)!=GEO_SOURCE_OK))return false;
     }
+    return true;
+}
+static bool app_world_candidate_seal(AppWorldCandidate *candidate)
+{
+    if(!app_world_candidate_describe_sources(candidate))return false;
     if(app_candidate_seal(candidate->control)!=GEO_CANDIDATE_OK)return false;
     geo_sha256(&candidate->operation,sizeof candidate->operation,candidate->operation_seal);return true;
 }

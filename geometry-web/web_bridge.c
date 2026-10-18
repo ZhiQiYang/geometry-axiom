@@ -203,7 +203,7 @@ static bool app_replace_evaluate(void *after,GeoEvalContext *sources,void *opaqu
 {
     (void)sources;AppReplacement *operation=opaque;uint64_t revision=g_definition_revision;
     bool ok=true;
-    if(operation->use_default)ok=reference_default_world(after);
+    if(operation->use_default)ok=reference_default_world_owned(after);
     else memset(after,0,sizeof(World));
     /* Default construction historically advances through its constituent DSL
      * definitions. Preserve that count, but publish it only with the full root. */
@@ -415,7 +415,7 @@ static bool app_scene_load_evaluate(void *after,GeoEvalContext *sources,void *op
     *saved=g_preview;memset(&g_preview,0,sizeof g_preview);
     uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
     const World *previous=g_subgrid_before;g_subgrid_before=NULL;
-    bool ok=parse_scene_file(path,after);
+    bool ok=app_scene_replay_file(path,after);
     app_world_candidate_destroy(g_preview.transaction);g_preview=*saved;
     g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
     return ok;

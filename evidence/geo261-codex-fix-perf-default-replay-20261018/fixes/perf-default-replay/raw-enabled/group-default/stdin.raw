@@ -1,0 +1,13 @@
+dump
+loadfile /workspace/geo261-validation-20261018/proposed-fixes/default-owned-replay/raw-fixtures/candidate-default.scene
+dump
+line history-begin
+line spec default_unused 7
+dump
+default
+dump
+line history-end
+line history-abort
+line undo
+line redo
+dump
