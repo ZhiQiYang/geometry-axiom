@@ -308,7 +308,7 @@ MUTANTS = [
          old="        if (!local_flush && poly_point_on_edge(loop, corners[i])) return -1;",
          new="        if (!f[(i==0||i==3)?0:1] && !f[i<2?2:3] && poly_point_on_edge(loop, corners[i])) return -1;"),
     # ---- #240 P-143(看板任務 29):S7 / S1 核心場景的牙齒 ----
-    dict(id="M86", desc="I5/S7：開內部判定拿掉——邊落在矩形邊上、或與矩形只零長度接觸，也算穿入內部(兩軸的嚴格不等號與 lo<hi 全改含邊界)；貼齊的場景 _s7a 必轉紅",
+    dict(id="M86", desc="I5/S7：開內部判定拿掉——邊落在矩形邊上、或與矩形只零長度接觸，也算穿入內部(兩軸的嚴格不等號與 lo<hi 全改含邊界)；貼齊的場景 _s7a 必轉紅(被 M05/M06 涵蓋，只作回歸)",
          old="        if (a.u <= min_u || a.u >= max_u) {\n            return false;\n        }\n        Coord lo = coord_max(coord_min(a.v, b.v), min_v);\n        Coord hi = coord_min(coord_max(a.v, b.v), max_v);\n        return lo < hi;\n    }\n\n    if (a.v <= min_v || a.v >= max_v) {\n        return false;\n    }\n    Coord lo = coord_max(coord_min(a.u, b.u), min_u);\n    Coord hi = coord_min(coord_max(a.u, b.u), max_u);\n    return lo < hi;",
          new="        if (a.u < min_u || a.u > max_u) {\n            return false;\n        }\n        Coord lo = coord_max(coord_min(a.v, b.v), min_v);\n        Coord hi = coord_min(coord_max(a.v, b.v), max_v);\n        return lo <= hi;\n    }\n\n    if (a.v < min_v || a.v > max_v) {\n        return false;\n    }\n    Coord lo = coord_max(coord_min(a.u, b.u), min_u);\n    Coord hi = coord_min(coord_max(a.u, b.u), max_u);\n    return lo <= hi;"),
     dict(id="M87", desc="I22/S1：拿掉「非 boundary 角材的 footprint 不得超出定位邊」的拒絕(V_EXTENSION)；primary 整支穿過凹角的 _s1_p8 必轉紅",

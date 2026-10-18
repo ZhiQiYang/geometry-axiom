@@ -4,8 +4,9 @@
 #   20×20 的足跡變成 v∈[-1,19],底牆 e0(v=0)以下的 1 mm 在房間外 → 沿線每一個 cell 的矩形都不 ⊆ 有效範圍
 #   → 中線上沒有任何合法跨距(診斷帶 R6/I5/I6)。
 # 貼齊(差 0 mm)接受、穿出 1 mm 拒絕:界線恰在「點落在 F 之外」,不在「與邊界有交集」。
-# 注意:此例矩形四角之一(0,-1)落在環外,擋下它的是四角/環內判定;
-#   「環邊穿入開內部」那一道的牙齒在 _ax_i5_notch_edge_cuts_interior.scene(M08)。
+# 擋下它的有兩道:poly_contains_rect 的「四角須在環內」(角點 (0,-1) 在環外,先執行),
+#   以及底牆 e0 穿入矩形開內部的檢查(segment2_crosses_rect_interior);任拿掉一道仍被另一道擋下,此例作回歸釘。
+#   「環邊穿入」那一道的專屬牙齒在 _ax_i5_notch_edge_cuts_interior.scene(M08)。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 grid 1 on 1 v 9
 timber 1 20 20 role boundary

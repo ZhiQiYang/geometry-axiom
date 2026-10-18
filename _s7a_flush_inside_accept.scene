@@ -6,7 +6,7 @@
 #   boundary 的固定段整條蓋住 e0(I20)、boundary 的端面可頂外輪廓邊(I19),整支合法 → L=4000。
 # 三層同一支料、同一間房:(b) 把中線往牆外挪 1 mm → I5 拒絕(_s7b_poke_out_1mm_i5_reject.scene);
 #   (c) 位置同 (a)、改成非 boundary → 不是 I5,是 I19 的 V_CUT_PRIORITY(_s7c_non_boundary_end_on_outline_cut_priority.scene)。
-# 變異殺手 M86(segment2_crosses_rect_interior 的開內部判定拿掉):貼齊的底牆邊被誤判成穿入內部 → 本例被誤拒。
+# 變異 M86(segment2_crosses_rect_interior 的開內部判定拿掉):貼齊的底牆邊被誤判成穿入內部 → 本例被誤拒;與 M05/M06 同一類(各改一軸),只作回歸。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 grid 1 on 1 v 10
 timber 1 20 20 role boundary
