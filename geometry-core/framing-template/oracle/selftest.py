@@ -38,6 +38,8 @@ T27 = {"outer": [[0, 0], [3600, 0], [3600, 3000], [0, 3000]], "holes": [[[1793, 
 STEP20 = {"outer": [[0, 0], [4100, 0], [4100, 3680], [2600, 3680], [2600, 3700], [0, 3700]]}
 # 40 mm 牆階:牆階面 y 3660–3700 被 y=3700 牆的邊界材蓋掉 27 mm,只剩 13 mm,照「短於 27 一律不放」不放沿牆料
 STEP40 = {"outer": [[0, 0], [4100, 0], [4100, 3660], [2600, 3660], [2600, 3700], [0, 3700]]}
+# 45 mm 牆階:牆階牆 y=3655 在縫 3659 前面,縫線不伸進淺的那段,FT02 不挪;用來留住兩類仍不可施工的例子
+STEP45 = {"outer": [[0, 0], [4100, 0], [4100, 3655], [2600, 3655], [2600, 3700], [0, 3700]]}
 
 failed = False
 # (1) 突變
@@ -76,12 +78,14 @@ MUTANTS = [
     ("sliver_le", T27, "C3_EDGE_UNSUPPORTED", "同上:剛好 27 mm 的柱面料也不放,柱面與板端縫邊沒有承接"),
     ("no_ext_custom3", STEP20, "C8_I19_PRIORITY", "牆階 20 mm:沿牆料端面頂延伸段卻沒宣告 custom 3(primary 2 頂延伸段 2)", "左下起鋪,板長沿X"),
     ("short_face_conflict", STEP40, "C10_SHORT_PIECE", "牆階 40 mm:牆階面只剩 13 mm 也放沿牆料(不照「短於 27 一律不放」)", "左下起鋪,板長沿Y"),
-    ("no_push_fallback", STEP40, "C1_OVERLAP", "牆階 40 mm:讓開牆料的平移撞到 y=3700 的牆料,沒有退回置中", "左上起鋪,板長沿X"),
+    ("bbox_ft02", STEP20, "C7_SEAMS_NOT_FROM_START", "FT02 退回照外框挪縫(3659):縫線上最近的對牆是 x>2600 的 y=3680 牆,應挪到 3639", "左上起鋪,板長沿X"),
+    ("bbox_ft02", STEP40, "C7_SEAMS_NOT_FROM_START", "同上,板端縫(B 軸):40 mm 牆階應挪到 3619", "左上起鋪,板長沿Y"),
+    ("bbox_ft02+no_push_fallback", STEP40, "C1_OVERLAP", "照外框挪縫時,讓開牆料的平移撞到 y=3700 的牆料,沒有退回置中", "左上起鋪,板長沿X"),
 ]
 for mut, room, want, why, *lay in MUTANTS:
     lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
     pp = dict(p, **room.get("params", {}))
-    res = fo.build(room, lt, pp, frozenset({mut, "skip_conflict_scan"}))
+    res = fo.build(room, lt, pp, frozenset(set(mut.split("+")) | {"skip_conflict_scan"}))
     got = {f["check"] for f in fo.check(res, pp)}
     ok = want in got
     failed |= not ok
@@ -113,24 +117,35 @@ fails = fo.check(res, p)
 ok = not res["conflicts"] and not fails
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] 對照 20 mm 牆階 左下 X(沿牆料端面頂延伸段,宣告 custom 3){sorted({f['check'] for f in fails})}")
-res = fo.build(STEP40, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左下起鋪,板長沿Y"), p)
-fails = fo.check(res, p)
-ok = not res["conflicts"] and not fails
+# 牆階:這些排法要可施工、全部檢查通過(短段不放料、FT02 照縫線上最近的對牆挪縫)
+for room_, lay_, why_ in (
+        (STEP40, "左下起鋪,板長沿Y", "牆階面剩 13 mm 不放料"),
+        (STEP20, "左上起鋪,板長沿X", "FT02 照 y=3680 牆挪縫到 3639,主支貼住 x>2600 的牆料"),
+        (STEP40, "左上起鋪,板長沿X", "FT02 挪縫到 3619"),
+        (STEP40, "左上起鋪,板長沿Y", "板端縫 FT02 挪到 3619")):
+    res = fo.build(room_, next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay_), p)
+    fails = fo.check(res, p)
+    ok = not res["conflicts"] and not fails
+    failed |= not ok
+    print(f"[{'綠' if ok else '錯!'}] 對照 {3700 - room_['outer'][2][1]} mm 牆階 {lay_}:可施工({why_})"
+          f"{sorted({c['code'] for c in res['conflicts']})}{sorted({f['check'] for f in fails})}")
+# 平移退回置中仍要有效:照舊縫位(bbox_ft02,縫 3659)時,40 mm 牆階的主支被推去撞 y=3700 的牆料就要退回置中,
+#   原因要是核心限制(主支頂延伸段),不是碰撞
+res = fo.build(STEP40, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X"), p, frozenset({"bbox_ft02"}))
+got_ = sorted({c["code"] for c in res["conflicts"]})
+ok = got_ == ["CORE_LIMIT_MAIN_ON_EXTENSION"]
 failed |= not ok
-print(f"[{'綠' if ok else '錯!'}] 對照 40 mm 牆階 左下 Y(牆階面剩 13 mm 不放料,可施工){sorted({c['code'] for c in res['conflicts']})}"
-      f"{sorted({f['check'] for f in fails})}")
-# 牆階掃描裡仍判不可施工的四類,各挑一個,原因代碼要完全一致(理由寫在 README 的掃描說明)
+print(f"[{'綠' if ok else '錯!'}] 對照 40 mm 牆階 左上 X、照舊縫位:平移撞牆料時退回置中,原因要是核心限制 {got_}")
+# 牆階掃描裡仍判不可施工的三類,各挑一個,原因代碼要完全一致(理由寫在 README 的核心限制清單與掃描說明)
 for room_, lay_, want_, why_ in (
-        (STEP40, "左上起鋪,板長沿X", ["CORE_LIMIT_MAIN_ON_EXTENSION"], "核心限制(主支頂延伸段),不是碰撞"),
-        (STEP20, "左上起鋪,板長沿X", ["MAIN_DOUBLING_BLOCKED"], "縫 3659 的 + 側板邊沒有料:主支與牆料之間只剩 20 mm,放不下併料"),
-        (STEP40, "左上起鋪,板長沿Y", ["SHORT_FACE_SEAM_EDGE_UNSUPPORTED"], "板端縫 3659 的板邊落在牆階面沒被蓋住的 13 mm 裡"),
+        (STEP45, "左上起鋪,板長沿X", ["CORE_LIMIT_MAIN_ON_EXTENSION"], "核心限制(主支頂延伸段),不是碰撞"),
+        (STEP45, "左上起鋪,板長沿Y", ["SHORT_FACE_SEAM_EDGE_UNSUPPORTED"], "板端縫 3659 的板邊落在牆階面沒被蓋住的 18 mm 裡"),
         (STEP20, "左上起鋪,板長沿Y", ["CORE_LIMIT_BOUNDARY_END_FREE", "SPAN_END_NOT_ON_BOUNDARY"], "核心限制(邊界材端面懸空,延伸會撞另一支牆邊界材)")):
     res = fo.build(room_, next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay_), p)
     got_ = sorted({c["code"] for c in res["conflicts"]})
     ok = got_ == want_
     failed |= not ok
-    step_ = 3700 - room_["outer"][2][1]
-    print(f"[{'綠' if ok else '錯!'}] 對照 {step_} mm 牆階 {lay_}:不可施工,原因要是{why_} {got_}")
+    print(f"[{'綠' if ok else '錯!'}] 對照 {3700 - room_['outer'][2][1]} mm 牆階 {lay_}:不可施工,原因要是{why_} {got_}")
 # 剛好 min_piece 的料必須放(建構端兩處邊界:跨寬、柱面料切段),而且全部檢查通過
 res = fo.build(T27, LT_Y, p)
 fails = fo.check(res, p)
