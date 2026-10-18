@@ -1,0 +1,72 @@
+{
+  "schema": "geo261-policy-exception-source-review/1",
+  "source_commits": {
+    "base": "a25d975bdcc809bc63593d5b434663083395444b",
+    "tests_support": "82dd8dcc075b6b7a989ca16eeb67b04e8141f77e",
+    "product": "a55b87d1a1f1a98bc5606148454961325b563478",
+    "withdraw": "a68eecbd24fadac295b1ea64dbc04aab8cb2b8c6",
+    "historical_full42": "c4a04e0792a795603e6e227651c369732885633c"
+  },
+  "files": {
+    "a25d975bdcc809bc63593d5b434663083395444b": {
+      "geometry-templates/woodworking/geometry_woodworking/model_policy.py": {
+        "bytes": 2706,
+        "sha256": "4038fb2497cf9ea6979db67e5672cef31428a8cc42e4a063dc492c969cf9f5bc"
+      },
+      "tests/test_geometry_kernel_runtime.py": {
+        "bytes": 23437,
+        "sha256": "ac7e94e66224f7791af53bd1d9af1a7ee0b62d1692023b4a259af08c04779c87"
+      }
+    },
+    "82dd8dcc075b6b7a989ca16eeb67b04e8141f77e": {
+      "geometry-templates/woodworking/geometry_woodworking/model_policy.py": {
+        "bytes": 2706,
+        "sha256": "4038fb2497cf9ea6979db67e5672cef31428a8cc42e4a063dc492c969cf9f5bc"
+      },
+      "tests/test_geometry_kernel_runtime.py": {
+        "bytes": 26404,
+        "sha256": "6d88891cfe769dff568177693d85faf5cf49a6591eebfb763ba776720ceaec86"
+      }
+    },
+    "a55b87d1a1f1a98bc5606148454961325b563478": {
+      "geometry-templates/woodworking/geometry_woodworking/model_policy.py": {
+        "bytes": 2693,
+        "sha256": "ba9a4ec05709e921af344f1a0ea67eac388e5eeafb689bb76e678754f4e986e9"
+      },
+      "tests/test_geometry_kernel_runtime.py": {
+        "bytes": 26404,
+        "sha256": "6d88891cfe769dff568177693d85faf5cf49a6591eebfb763ba776720ceaec86"
+      }
+    },
+    "a68eecbd24fadac295b1ea64dbc04aab8cb2b8c6": {
+      "geometry-templates/woodworking/geometry_woodworking/model_policy.py": {
+        "bytes": 2706,
+        "sha256": "4038fb2497cf9ea6979db67e5672cef31428a8cc42e4a063dc492c969cf9f5bc"
+      },
+      "tests/test_geometry_kernel_runtime.py": {
+        "bytes": 26404,
+        "sha256": "6d88891cfe769dff568177693d85faf5cf49a6591eebfb763ba776720ceaec86"
+      }
+    },
+    "c4a04e0792a795603e6e227651c369732885633c": {
+      "geometry-templates/woodworking/geometry_woodworking/model_policy.py": {
+        "bytes": 2706,
+        "sha256": "4038fb2497cf9ea6979db67e5672cef31428a8cc42e4a063dc492c969cf9f5bc"
+      },
+      "tests/test_geometry_kernel_runtime.py": {
+        "bytes": 23437,
+        "sha256": "ac7e94e66224f7791af53bd1d9af1a7ee0b62d1692023b4a259af08c04779c87"
+      }
+    }
+  },
+  "checks": {
+    "product_change_exactly_one_decorator": true,
+    "tests_identical_support_product_withdraw": true,
+    "withdraw_product_equals_base": true,
+    "historical_relevant_files_equal_base": true,
+    "original_8_method_AST_preserved": true,
+    "new_method_count": 9
+  },
+  "new_method": "test_policy_error_cause_supports_standard_unittest_reporting",
+  "scope": "只讀固定Git bytes與stdlib AST，不import或執行產品；原八方法assert保留。移除frozen同時使資料欄可寫且不再自動hash；現行消費點未找到依賴其hash/不可變性。"
+}
