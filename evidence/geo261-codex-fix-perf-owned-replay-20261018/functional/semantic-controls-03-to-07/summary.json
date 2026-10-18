@@ -1,0 +1,92 @@
+[
+  {
+    "name": "03-drop-line-rollback",
+    "base": "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6",
+    "source_sha": "8a27c29076f2c3ec014c258c539a64d259e034ca",
+    "method": "tests.test_geo261_candidate_product.CandidateProduct.test_owned_file_replay_restores_all_bytes_after_real_partial_datum_failure",
+    "expected_first_assert": "file-replay-failed-line-byte-rollback",
+    "raw_native_results": [
+      {
+        "case": "replay-rollback",
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "file-replay-witness:2: D6c/I7a timber 0: datum 7: missing spec, bare mm, unsupported reference or rational overflow\nASSERT:file-replay-failed-line-byte-rollback\nASSERT:file-replay-frame-verdict\n"
+      }
+    ],
+    "recognized_expected_failure": true,
+    "manual_verdict": "待人工核對原始輸出及收據",
+    "recorder_returncode": 1
+  },
+  {
+    "name": "04-drop-operation-restore",
+    "base": "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6",
+    "source_sha": "0e26fbbe1f598a444f7ea6ecd6f82b5f472c7b17",
+    "method": "tests.test_geo261_candidate_product.CandidateProduct.test_owned_file_replay_does_not_leak_keyed_operation_or_padding",
+    "expected_first_assert": "file-replay-operation-bytes-restored",
+    "raw_native_results": [
+      {
+        "case": "replay-operation",
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "ASSERT:file-replay-operation-bytes-restored\nASSERT:file-replay-frame-verdict\n"
+      }
+    ],
+    "recognized_expected_failure": true,
+    "manual_verdict": "待人工核對原始輸出及收據",
+    "recorder_returncode": 1
+  },
+  {
+    "name": "05-drop-line-graph-cleanup",
+    "base": "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6",
+    "source_sha": "0896a58171d91eba78b50213579dded693e5d20a",
+    "method": "tests.test_geo261_candidate_product.CandidateProduct.test_owned_file_replay_releases_each_graph_across_real_preview_fallback",
+    "expected_first_assert": "file-replay-line-graph-released",
+    "raw_native_results": [
+      {
+        "case": "replay-lifetime",
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "ASSERT:file-replay-line-graph-released\nASSERT:file-replay-frame-verdict\n"
+      }
+    ],
+    "recognized_expected_failure": true,
+    "manual_verdict": "待人工核對原始輸出及收據",
+    "recorder_returncode": 1
+  },
+  {
+    "name": "06-drop-describe-guard",
+    "base": "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6",
+    "source_sha": "77cc4f99cc55e9f0440a05b521fda8b8a463a5c4",
+    "method": "tests.test_geo261_candidate_product.CandidateProduct.test_line_readiness_uses_real_describe_failure_and_active_source_verdict",
+    "expected_first_assert": "file-replay-describe-rejection",
+    "raw_native_results": [
+      {
+        "case": "replay-source-guards",
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "ASSERT:file-replay-describe-rejection\nASSERT:file-replay-source-verdict\n"
+      }
+    ],
+    "recognized_expected_failure": true,
+    "manual_verdict": "待人工核對原始輸出及收據",
+    "recorder_returncode": 1
+  },
+  {
+    "name": "07-drop-active-guard",
+    "base": "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6",
+    "source_sha": "486d0d080f47881fd0ea454290182263c5dcf285",
+    "method": "tests.test_geo261_candidate_product.CandidateProduct.test_line_readiness_uses_real_describe_failure_and_active_source_verdict",
+    "expected_first_assert": "file-replay-active-source-rejected",
+    "raw_native_results": [
+      {
+        "case": "replay-source-guards",
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "ASSERT:file-replay-active-source-rejected\nASSERT:file-replay-source-verdict\n"
+      }
+    ],
+    "recognized_expected_failure": true,
+    "manual_verdict": "待人工核對原始輸出及收據",
+    "recorder_returncode": 1
+  }
+]

@@ -1,0 +1,18 @@
+test_line_readiness_uses_real_describe_failure_and_active_source_verdict (tests.test_geo261_candidate_product.CandidateProduct.test_line_readiness_uses_real_describe_failure_and_active_source_verdict) ... FAIL
+
+======================================================================
+FAIL: test_line_readiness_uses_real_describe_failure_and_active_source_verdict (tests.test_geo261_candidate_product.CandidateProduct.test_line_readiness_uses_real_describe_failure_and_active_source_verdict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_candidate_product.py", line 136, in test_line_readiness_uses_real_describe_failure_and_active_source_verdict
+    self.replay_result('replay-source-guards')
+  File "/workspace/geometry-axiom/tests/test_geo261_candidate_product.py", line 104, in replay_result
+    self.assertEqual(0,result.returncode,result.stderr)
+AssertionError: 0 != 1 : ASSERT:file-replay-describe-rejection
+ASSERT:file-replay-source-verdict
+
+
+----------------------------------------------------------------------
+Ran 1 test in 6.085s
+
+FAILED (failures=1)

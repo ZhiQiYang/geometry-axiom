@@ -1,0 +1,841 @@
+dataset,run,label,workload,ranking,rank,function,self_seconds,children_seconds,inclusive_seconds,calls,direct_calls,recursive_calls
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,1,geo_sha_block,4.15,0.0,4.15,15304751,15304751,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,2,_init,0.01,0.0,0.01,0,0,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,3,geo_json_space,0.01,0.0,0.01,0,0,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,4,app_asm_context,0.0,0.0,0.0,385,385,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,5,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,6,app_boundary_compose,0.0,0.0,0.0,175,175,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,7,app_boundary_policy,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,8,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,9,app_boundary_stage,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,10,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,11,app_candidate_call,0.0,0.0,0.0,70,70,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,12,app_candidate_check,0.0,0.43,0.43,210,140,70
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,13,app_candidate_create,0.0,0.16,0.16,70,70,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,14,app_candidate_evaluate <cycle 2>,0.0,0.16,0.16,70,70,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,15,app_contact_facts,0.0,0.0,0.0,1365,1365,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,16,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,546,546,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,17,app_dp_context,0.0,0.0,0.0,98,98,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,18,app_eng_context,0.0,0.0,0.0,1505,1505,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,19,app_eng_serializable,0.0,0.0,0.0,49,49,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,self,20,app_fs_context,0.0,0.0,0.0,217,217,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,1,geo_sha256,0.0,4.15,4.15,1827,1827,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,2,geo_sha_block,4.15,0.0,4.15,15304751,15304751,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,3,main,0.0,4.15,4.15,0,0,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,4,app_replace_world.constprop.0,0.0,4.13,4.13,7,7,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,5,geo_candidate_provider_hash,0.0,2.06,2.06,1470,1050,420
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,6,geo_candidate_evaluate <cycle 2>,0.0,1.57,1.57,70,70,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,7,app_world_candidate_create,0.0,1.4,1.4,70,70,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,8,apply_scene_line <cycle 2>,0.0,1.26,1.26,63,63,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,9,apply_scene_line_candidate.constprop.0 <cycle 2>,0.0,0.91,0.91,63,63,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,10,app_world_candidate_publish,0.0,0.57,0.57,70,70,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,11,app_candidate_check,0.0,0.43,0.43,210,140,70
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,12,app_world_candidate_seal,0.0,0.43,0.43,70,70,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,13,geo_candidate_seal,0.0,0.28,0.28,140,70,70
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,14,app_candidate_create,0.0,0.16,0.16,70,70,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,15,app_candidate_evaluate <cycle 2>,0.0,0.16,0.16,70,70,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,16,eng_definition_hash,0.0,0.02,0.02,7,7,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,17,_init,0.01,0.0,0.01,0,0,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,18,geo_json_space,0.01,0.0,0.01,0,0,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,19,app_asm_context,0.0,0.0,0.0,385,385,0
+e64,20261018T201033419459-gprof,integration,bridge-cold,inclusive,20,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,1,geo_sha_block,14.5,0.0,14.5,53019413,53019413,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,2,geo_sha256,0.02,14.5,14.52,6306,6306,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,3,app_candidate_bind_core,0.01,0.0,0.01,2250,2250,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,4,geo_candidate_provider_hash,0.01,7.24,7.25,4935,3615,1320
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,5,geo_json_space,0.01,0.0,0.01,0,0,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,6,app_asm_context,0.0,0.0,0.0,1301,1301,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,7,app_assembly_saved_dimensions,0.0,0.0,0.0,343,343,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,8,app_boundary_compose,0.0,0.0,0.0,1030,1030,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,9,app_boundary_policy,0.0,0.0,0.0,16,16,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,10,app_boundary_region_definition,0.0,0.0,0.0,16,16,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,11,app_boundary_stage,0.0,0.0,0.0,16,16,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,12,app_candidate_call,0.0,0.0,0.0,235,235,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,13,app_candidate_check,0.0,1.39,1.39,660,440,220
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,14,app_candidate_create,0.0,0.58,0.58,250,250,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,15,app_candidate_evaluate <cycle 2>,0.0,0.54,0.54,235,235,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,16,app_contact_facts,0.0,0.0,0.0,5145,5145,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,17,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,2058,2058,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,18,app_dp_context,0.0,0.0,0.0,344,344,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,19,app_eng_context,0.0,0.0,0.0,5469,5469,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,self,20,app_eng_serializable,0.0,0.0,0.0,172,172,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,1,main,0.0,14.54,14.54,0,0,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,2,geo_sha256,0.02,14.5,14.52,6306,6306,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,3,geo_sha_block,14.5,0.0,14.5,53019413,53019413,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,4,geo_candidate_provider_hash,0.01,7.24,7.25,4935,3615,1320
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,5,geo_candidate_evaluate <cycle 2>,0.0,5.34,5.34,235,235,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,6,app_world_candidate_create,0.0,5.1,5.1,250,250,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,7,apply_scene_line <cycle 2>,0.0,4.47,4.47,219,219,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,8,apply_scene_line_candidate.constprop.0 <cycle 2>,0.0,2.93,2.93,219,219,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,9,app_replace_world.constprop.0,0.0,2.56,2.56,16,16,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,10,cmd_replace_world,0.0,2.4,2.4,15,15,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,11,app_world_candidate_publish,0.0,1.83,1.83,220,220,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,12,app_world_candidate_seal,0.0,1.48,1.48,235,235,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,13,app_candidate_check,0.0,1.39,1.39,660,440,220
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,14,geo_candidate_seal,0.0,0.94,0.94,470,235,235
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,15,app_candidate_create,0.0,0.58,0.58,250,250,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,16,app_candidate_evaluate <cycle 2>,0.0,0.54,0.54,235,235,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,17,boundary_geometry_hash,0.0,0.14,0.14,60,60,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,18,eng_definition_hash,0.0,0.11,0.11,46,46,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,19,json_boundary_preview,0.0,0.07,0.07,15,15,0
+e64,20261018T201033419459-gprof,integration,bridge-resident,inclusive,20,json_reference_preview,0.0,0.07,0.07,15,15,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,1,geo_sha_block,4.32,0.0,4.32,15304688,15304688,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,2,geo_candidate_provider_hash,0.01,2.17,2.1799999999999997,1470,1050,420
+e64,20261018T201033419459-gprof,integration,model-legacy,self,3,geo_sha256,0.01,4.32,4.33,1820,1820,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,4,geo_source_copy_text,0.01,0.0,0.01,2856,2856,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,5,app_asm_context,0.0,0.0,0.0,378,378,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,6,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,7,app_boundary_compose,0.0,0.0,0.0,154,154,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,8,app_boundary_policy,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,9,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,10,app_boundary_stage,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,11,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,12,app_candidate_call,0.0,0.0,0.0,70,70,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,13,app_candidate_check,0.0,0.46,0.46,210,140,70
+e64,20261018T201033419459-gprof,integration,model-legacy,self,14,app_candidate_create,0.0,0.17,0.17,70,70,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,15,app_candidate_evaluate <cycle 2>,0.0,0.17,0.17,70,70,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,16,app_contact_facts,0.0,0.0,0.0,1365,1365,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,17,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,546,546,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,18,app_dp_context,0.0,0.0,0.0,98,98,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,19,app_eng_context,0.0,0.0,0.0,1456,1456,0
+e64,20261018T201033419459-gprof,integration,model-legacy,self,20,app_eng_serializable,0.0,0.0,0.0,49,49,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,1,main,0.0,4.35,4.35,0,0,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,2,parse_scene_file,0.0,4.35,4.35,7,7,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,3,geo_sha256,0.01,4.32,4.33,1820,1820,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,4,geo_sha_block,4.32,0.0,4.32,15304688,15304688,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,5,apply_scene_line,0.0,4.14,4.14,63,63,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,6,apply_scene_line_candidate.constprop.0,0.0,2.82,2.82,63,63,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,7,geo_candidate_provider_hash,0.01,2.17,2.1799999999999997,1470,1050,420
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,8,geo_candidate_evaluate <cycle 2>,0.0,1.65,1.65,70,70,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,9,app_world_candidate_create,0.0,1.47,1.47,70,70,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,10,app_world_candidate_publish,0.0,0.6,0.6,70,70,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,11,app_candidate_check,0.0,0.46,0.46,210,140,70
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,12,app_world_candidate_seal,0.0,0.46,0.46,70,70,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,13,geo_candidate_seal,0.0,0.29,0.29,140,70,70
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,14,world_revalidate <cycle 2>,0.0,0.25,0.25,49,49,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,15,app_candidate_create,0.0,0.17,0.17,70,70,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,16,app_candidate_evaluate <cycle 2>,0.0,0.17,0.17,70,70,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,17,geo_eval_register_many,0.0,0.01,0.01,882,882,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,18,geo_source_copy_text,0.01,0.0,0.01,2856,2856,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,19,reference_sources_ensure,0.0,0.01,0.01,5481,5481,0
+e64,20261018T201033419459-gprof,integration,model-legacy,inclusive,20,world_validate_derived,0.0,0.01,0.01,98,49,49
+e64,20261018T201033419459-gprof,integration,model-neutral,self,1,geo_sha_block,4.11,0.0,4.11,15304814,15304814,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,2,_init,0.01,0.0,0.01,0,0,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,3,geo_sha256,0.01,4.11,4.12,1841,1841,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,4,geo_source_edge,0.01,0.0,0.01,16520,16520,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,5,app_asm_context,0.0,0.0,0.0,392,392,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,6,app_assembly_saved_dimensions,0.0,0.0,0.0,112,112,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,7,app_boundary_compose,0.0,0.0,0.0,161,161,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,8,app_boundary_policy,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,9,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,10,app_boundary_stage,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,11,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,12,app_candidate_call,0.0,0.0,0.0,70,70,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,13,app_candidate_check,0.0,0.43,0.43,210,140,70
+e64,20261018T201033419459-gprof,integration,model-neutral,self,14,app_candidate_create,0.0,0.16,0.16,70,70,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,15,app_candidate_evaluate <cycle 2>,0.0,0.16,0.16,70,70,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,16,app_contact_facts,0.0,0.0,0.0,1470,1470,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,17,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,588,588,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,18,app_dp_context,0.0,0.0,0.0,112,112,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,19,app_eng_context,0.0,0.0,0.0,1568,1568,0
+e64,20261018T201033419459-gprof,integration,model-neutral,self,20,app_eng_serializable,0.0,0.0,0.0,56,56,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,1,main,0.0,4.13,4.13,0,0,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,2,geo_sha256,0.01,4.11,4.12,1841,1841,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,3,geo_sha_block,4.11,0.0,4.11,15304814,15304814,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,4,parse_scene_file,0.0,4.08,4.08,7,7,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,5,apply_scene_line,0.0,3.89,3.89,63,63,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,6,apply_scene_line_candidate.constprop.0,0.0,2.65,2.65,63,63,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,7,geo_candidate_provider_hash,0.0,2.04,2.04,1470,1050,420
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,8,geo_candidate_evaluate <cycle 2>,0.0,1.55,1.55,70,70,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,9,app_world_candidate_create,0.0,1.38,1.38,70,70,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,10,app_world_candidate_publish,0.0,0.56,0.56,70,70,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,11,app_candidate_check,0.0,0.43,0.43,210,140,70
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,12,app_world_candidate_seal,0.0,0.43,0.43,70,70,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,13,geo_candidate_seal,0.0,0.27,0.27,140,70,70
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,14,world_revalidate <cycle 2>,0.0,0.24,0.24,49,49,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,15,app_candidate_create,0.0,0.16,0.16,70,70,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,16,app_candidate_evaluate <cycle 2>,0.0,0.16,0.16,70,70,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,17,model_source_fingerprint,0.0,0.03,0.03,14,14,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,18,_init,0.01,0.0,0.01,0,0,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,19,geo_eval_source <cycle 1>,0.0,0.01,0.01,16520,16520,0
+e64,20261018T201033419459-gprof,integration,model-neutral,inclusive,20,geo_source_edge,0.01,0.0,0.01,16520,16520,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,1,apply_guide_line,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,2,apply_place_line,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,3,apply_reference_guide,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,4,apply_reference_place,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,5,apply_scene_line_candidate,0.0,0.0,0.0,63,63,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,6,apply_spec_line,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,7,apply_surface_combined_line,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,8,apply_timber_line,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,9,assembly_generation_integrity,0.0,0.0,0.0,42,42,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,10,assembly_rebuild.constprop.0,0.0,0.0,0.0,42,42,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,11,boundary_contains_point,0.0,0.0,0.0,140,140,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,12,boundary_contains_rect,0.0,0.0,0.0,665,665,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,13,boundary_edge_interval,0.0,0.0,0.0,252,252,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,14,boundary_is_valid,0.0,0.0,0.0,49,49,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,15,count_legal_stops,0.0,0.0,0.0,280,280,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,16,dp_rebuild,0.0,0.0,0.0,42,42,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,17,dump_loop,0.0,0.0,0.0,14,14,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,18,eng_definition_hash,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,19,eng_sha256,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,self,20,eng_sha_block,0.0,0.0,0.0,63,63,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,1,apply_guide_line,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,2,apply_place_line,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,3,apply_reference_guide,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,4,apply_reference_place,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,5,apply_scene_line_candidate,0.0,0.0,0.0,63,63,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,6,apply_spec_line,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,7,apply_surface_combined_line,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,8,apply_timber_line,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,9,assembly_generation_integrity,0.0,0.0,0.0,42,42,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,10,assembly_rebuild.constprop.0,0.0,0.0,0.0,42,42,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,11,boundary_contains_point,0.0,0.0,0.0,140,140,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,12,boundary_contains_rect,0.0,0.0,0.0,665,665,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,13,boundary_edge_interval,0.0,0.0,0.0,252,252,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,14,boundary_is_valid,0.0,0.0,0.0,49,49,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,15,count_legal_stops,0.0,0.0,0.0,280,280,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,16,dp_rebuild,0.0,0.0,0.0,42,42,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,17,dump_loop,0.0,0.0,0.0,14,14,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,18,eng_definition_hash,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,19,eng_sha256,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,bridge-cold,inclusive,20,eng_sha_block,0.0,0.0,0.0,63,63,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,1,apply_canvaspos_line,0.0,0.0,0.0,15,15,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,2,apply_guide_line,0.0,0.0,0.0,16,16,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,3,apply_place_line,0.0,0.0,0.0,48,48,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,4,apply_reference_guide <cycle 1>,0.0,0.0,0.0,16,16,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,5,apply_reference_place <cycle 1>,0.0,0.0,0.0,48,48,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,6,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,219,219,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,7,apply_spec_line <cycle 1>,0.0,0.0,0.0,61,61,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,8,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,16,16,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,9,apply_timber_line,0.0,0.0,0.0,48,48,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,10,asm_hash_token,0.0,0.0,0.0,15,15,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,11,assembly_generation_integrity,0.0,0.0,0.0,66,66,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,12,assembly_rebuild.constprop.0,0.0,0.0,0.0,156,156,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,13,boundary_contains_point,0.0,0.0,0.0,680,680,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,14,boundary_contains_rect,0.0,0.0,0.0,3440,3440,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,15,boundary_edge_interval,0.0,0.0,0.0,1476,1476,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,16,boundary_geometry_hash,0.0,0.0,0.0,60,60,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,17,boundary_is_valid,0.0,0.0,0.0,172,172,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,18,cmd_replace_world,0.0,0.0,0.0,15,15,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,19,count_legal_stops,0.0,0.0,0.0,1360,1360,0
+e64,20261018T201033419459-gprof,main,bridge-resident,self,20,dp_rebuild,0.0,0.0,0.0,156,156,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,1,apply_canvaspos_line,0.0,0.0,0.0,15,15,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,2,apply_guide_line,0.0,0.0,0.0,16,16,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,3,apply_place_line,0.0,0.0,0.0,48,48,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,4,apply_reference_guide <cycle 1>,0.0,0.0,0.0,16,16,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,5,apply_reference_place <cycle 1>,0.0,0.0,0.0,48,48,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,6,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,219,219,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,7,apply_spec_line <cycle 1>,0.0,0.0,0.0,61,61,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,8,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,16,16,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,9,apply_timber_line,0.0,0.0,0.0,48,48,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,10,asm_hash_token,0.0,0.0,0.0,15,15,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,11,assembly_generation_integrity,0.0,0.0,0.0,66,66,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,12,assembly_rebuild.constprop.0,0.0,0.0,0.0,156,156,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,13,boundary_contains_point,0.0,0.0,0.0,680,680,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,14,boundary_contains_rect,0.0,0.0,0.0,3440,3440,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,15,boundary_edge_interval,0.0,0.0,0.0,1476,1476,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,16,boundary_geometry_hash,0.0,0.0,0.0,60,60,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,17,boundary_is_valid,0.0,0.0,0.0,172,172,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,18,cmd_replace_world,0.0,0.0,0.0,15,15,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,19,count_legal_stops,0.0,0.0,0.0,1360,1360,0
+e64,20261018T201033419459-gprof,main,bridge-resident,inclusive,20,dp_rebuild,0.0,0.0,0.0,156,156,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,1,apply_guide_line,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,2,apply_place_line,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,3,apply_reference_guide <cycle 1>,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,4,apply_reference_place <cycle 1>,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,5,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,112,112,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,6,apply_spec_line <cycle 1>,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,7,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,8,apply_timber_line,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,9,assembly_generation_integrity,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,10,assembly_rebuild.constprop.0,0.0,0.0,0.0,49,49,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,11,boundary_contains_point,0.0,0.0,0.0,182,182,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,12,boundary_contains_rect,0.0,0.0,0.0,889,889,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,13,boundary_edge_interval,0.0,0.0,0.0,357,357,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,14,boundary_is_valid,0.0,0.0,0.0,56,56,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,15,count_legal_stops,0.0,0.0,0.0,364,364,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,16,dp_rebuild,0.0,0.0,0.0,49,49,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,17,dump_loop,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,18,engineering_dump_versions.constprop.0,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,19,engineering_serializable,0.0,0.0,0.0,49,49,0
+e64,20261018T201033419459-gprof,main,model-legacy,self,20,engineering_used.constprop.0,0.0,0.0,0.0,14,14,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,1,apply_guide_line,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,2,apply_place_line,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,3,apply_reference_guide <cycle 1>,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,4,apply_reference_place <cycle 1>,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,5,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,112,112,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,6,apply_spec_line <cycle 1>,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,7,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,8,apply_timber_line,0.0,0.0,0.0,21,21,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,9,assembly_generation_integrity,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,10,assembly_rebuild.constprop.0,0.0,0.0,0.0,49,49,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,11,boundary_contains_point,0.0,0.0,0.0,182,182,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,12,boundary_contains_rect,0.0,0.0,0.0,889,889,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,13,boundary_edge_interval,0.0,0.0,0.0,357,357,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,14,boundary_is_valid,0.0,0.0,0.0,56,56,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,15,count_legal_stops,0.0,0.0,0.0,364,364,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,16,dp_rebuild,0.0,0.0,0.0,49,49,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,17,dump_loop,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,18,engineering_dump_versions.constprop.0,0.0,0.0,0.0,7,7,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,19,engineering_serializable,0.0,0.0,0.0,49,49,0
+e64,20261018T201033419459-gprof,main,model-legacy,inclusive,20,engineering_used.constprop.0,0.0,0.0,0.0,14,14,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,1,app_asm_context,0.0,0.0,0.0,385,385,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,2,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,3,app_boundary_compose,0.0,0.0,0.0,175,175,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,4,app_boundary_policy,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,5,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,6,app_boundary_stage,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,7,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,8,app_candidate_call,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,9,app_candidate_check,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,10,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,11,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,12,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,13,app_contact_facts,0.0,0.0,0.0,1365,1365,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,14,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,546,546,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,15,app_dp_context,0.0,0.0,0.0,98,98,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,16,app_eng_context,0.0,0.0,0.0,1505,1505,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,17,app_eng_serializable,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,18,app_fs_context,0.0,0.0,0.0,217,217,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,19,app_fs_obstacle_box,0.0,0.0,0.0,931,931,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,self,20,app_grid_context,0.0,0.0,0.0,378,378,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,1,app_asm_context,0.0,0.0,0.0,385,385,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,2,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,3,app_boundary_compose,0.0,0.0,0.0,175,175,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,4,app_boundary_policy,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,5,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,6,app_boundary_stage,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,7,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,8,app_candidate_call,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,9,app_candidate_check,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,10,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,11,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,12,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,13,app_contact_facts,0.0,0.0,0.0,1365,1365,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,14,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,546,546,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,15,app_dp_context,0.0,0.0,0.0,98,98,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,16,app_eng_context,0.0,0.0,0.0,1505,1505,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,17,app_eng_serializable,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,18,app_fs_context,0.0,0.0,0.0,217,217,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,19,app_fs_obstacle_box,0.0,0.0,0.0,931,931,0
+AD,20261018T203445910138-gprof,integration,bridge-cold,inclusive,20,app_grid_context,0.0,0.0,0.0,378,378,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,1,app_candidate_create_with_deferred_sha,0.01,0.0,0.01,250,250,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,2,app_candidate_evaluate <cycle 2>,0.01,0.0,0.01,235,235,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,3,app_candidate_hash_matches,0.01,0.0,0.01,1145,1145,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,4,app_reference_member_anchor,0.01,0.0,0.01,1930,1930,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,5,app_world_candidate_create,0.01,0.01,0.02,250,250,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,6,wood_contact_source_evaluate <cycle 1>,0.01,0.0,0.01,8330,8330,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,7,app_asm_context,0.0,0.0,0.0,1301,1301,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,8,app_assembly_saved_dimensions,0.0,0.0,0.0,343,343,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,9,app_boundary_compose,0.0,0.0,0.0,1030,1030,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,10,app_boundary_policy,0.0,0.0,0.0,16,16,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,11,app_boundary_region_definition,0.0,0.0,0.0,16,16,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,12,app_boundary_stage,0.0,0.0,0.0,16,16,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,13,app_candidate_bind_core,0.0,0.0,0.0,2250,2250,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,14,app_candidate_call,0.0,0.0,0.0,235,235,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,15,app_candidate_check,0.0,0.0,0.0,220,220,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,16,app_contact_facts,0.0,0.0,0.0,5145,5145,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,17,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,2058,2058,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,18,app_dp_context,0.0,0.0,0.0,344,344,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,19,app_eng_context,0.0,0.0,0.0,5469,5469,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,self,20,app_eng_serializable,0.0,0.0,0.0,172,172,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,1,main,0.0,0.05,0.05,0,0,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,2,app_scene_candidate_apply,0.0,0.02,0.02,204,204,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,3,app_world_candidate_create,0.01,0.01,0.02,250,250,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,4,geo_candidate_evaluate <cycle 2>,0.0,0.02,0.02,235,235,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,5,world_validate_derived,0.0,0.02,0.02,344,172,172
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,6,app_candidate_create_with_deferred_sha,0.01,0.0,0.01,250,250,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,7,app_candidate_evaluate <cycle 2>,0.01,0.0,0.01,235,235,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,8,app_candidate_hash_matches,0.01,0.0,0.01,1145,1145,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,9,app_reference_member_anchor,0.01,0.0,0.01,1930,1930,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,10,app_replace_world.constprop.0,0.0,0.01,0.01,16,16,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,11,app_validation_member,0.0,0.01,0.01,1308,1308,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,12,apply_reference_place,0.0,0.01,0.01,48,48,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,13,apply_scene_line <cycle 2>,0.0,0.01,0.01,219,219,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,14,apply_spec_line,0.0,0.01,0.01,61,61,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,15,cmd_replace_world,0.0,0.01,0.01,15,15,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,16,reference_check_all,0.0,0.01,0.01,172,172,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,17,reference_checked,0.0,0.01,0.01,48,48,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,18,wood_contact_source_evaluate <cycle 1>,0.01,0.0,0.01,8330,8330,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,19,wood_world_validate_members,0.0,0.01,0.01,172,172,0
+AD,20261018T203445910138-gprof,integration,bridge-resident,inclusive,20,app_asm_context,0.0,0.0,0.0,1301,1301,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,1,wood_contact_source_evaluate <cycle 1>,0.01,0.0,0.01,2030,2030,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,2,app_asm_context,0.0,0.0,0.0,378,378,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,3,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,4,app_boundary_compose,0.0,0.0,0.0,154,154,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,5,app_boundary_policy,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,6,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,7,app_boundary_stage,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,8,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,9,app_candidate_call,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,10,app_candidate_check,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,11,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,12,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,13,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,14,app_contact_facts,0.0,0.0,0.0,1365,1365,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,15,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,546,546,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,16,app_dp_context,0.0,0.0,0.0,98,98,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,17,app_eng_context,0.0,0.0,0.0,1456,1456,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,18,app_eng_serializable,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,19,app_fs_context,0.0,0.0,0.0,210,210,0
+AD,20261018T203445910138-gprof,integration,model-legacy,self,20,app_fs_obstacle_box,0.0,0.0,0.0,931,931,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,1,apply_scene_line,0.0,0.01,0.01,63,63,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,2,apply_scene_line_candidate.constprop.0,0.0,0.01,0.01,63,63,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,3,main,0.0,0.01,0.01,0,0,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,4,parse_scene_file,0.0,0.01,0.01,7,7,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,5,wood_contact_source_evaluate <cycle 1>,0.01,0.0,0.01,2030,2030,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,6,wood_world_validate_members,0.0,0.01,0.01,49,49,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,7,world_validate_derived,0.0,0.01,0.01,98,49,49
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,8,app_asm_context,0.0,0.0,0.0,378,378,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,9,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,10,app_boundary_compose,0.0,0.0,0.0,154,154,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,11,app_boundary_policy,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,12,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,13,app_boundary_stage,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,14,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,15,app_candidate_call,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,16,app_candidate_check,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,17,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,18,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,19,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+AD,20261018T203445910138-gprof,integration,model-legacy,inclusive,20,app_contact_facts,0.0,0.0,0.0,1365,1365,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,1,app_asm_context,0.0,0.0,0.0,392,392,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,2,app_assembly_saved_dimensions,0.0,0.0,0.0,112,112,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,3,app_boundary_compose,0.0,0.0,0.0,161,161,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,4,app_boundary_policy,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,5,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,6,app_boundary_stage,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,7,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,8,app_candidate_call,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,9,app_candidate_check,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,10,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,11,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,12,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,13,app_contact_facts,0.0,0.0,0.0,1470,1470,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,14,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,588,588,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,15,app_dp_context,0.0,0.0,0.0,112,112,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,16,app_eng_context,0.0,0.0,0.0,1568,1568,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,17,app_eng_serializable,0.0,0.0,0.0,56,56,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,18,app_fs_context,0.0,0.0,0.0,224,224,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,19,app_fs_obstacle_box,0.0,0.0,0.0,1043,1043,0
+AD,20261018T203445910138-gprof,integration,model-neutral,self,20,app_grid_context,0.0,0.0,0.0,392,392,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,1,app_asm_context,0.0,0.0,0.0,392,392,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,2,app_assembly_saved_dimensions,0.0,0.0,0.0,112,112,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,3,app_boundary_compose,0.0,0.0,0.0,161,161,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,4,app_boundary_policy,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,5,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,6,app_boundary_stage,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,7,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,8,app_candidate_call,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,9,app_candidate_check,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,10,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,11,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,12,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,13,app_contact_facts,0.0,0.0,0.0,1470,1470,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,14,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,588,588,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,15,app_dp_context,0.0,0.0,0.0,112,112,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,16,app_eng_context,0.0,0.0,0.0,1568,1568,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,17,app_eng_serializable,0.0,0.0,0.0,56,56,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,18,app_fs_context,0.0,0.0,0.0,224,224,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,19,app_fs_obstacle_box,0.0,0.0,0.0,1043,1043,0
+AD,20261018T203445910138-gprof,integration,model-neutral,inclusive,20,app_grid_context,0.0,0.0,0.0,392,392,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,1,apply_guide_line,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,2,apply_place_line,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,3,apply_reference_guide,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,4,apply_reference_place,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,5,apply_scene_line_candidate,0.0,0.0,0.0,63,63,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,6,apply_spec_line,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,7,apply_surface_combined_line,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,8,apply_timber_line,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,9,assembly_generation_integrity,0.0,0.0,0.0,42,42,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,10,assembly_rebuild.constprop.0,0.0,0.0,0.0,42,42,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,11,boundary_contains_point,0.0,0.0,0.0,140,140,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,12,boundary_contains_rect,0.0,0.0,0.0,665,665,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,13,boundary_edge_interval,0.0,0.0,0.0,252,252,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,14,boundary_is_valid,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,15,count_legal_stops,0.0,0.0,0.0,280,280,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,16,dp_rebuild,0.0,0.0,0.0,42,42,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,17,dump_loop,0.0,0.0,0.0,14,14,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,18,eng_definition_hash,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,19,eng_sha256,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,self,20,eng_sha_block,0.0,0.0,0.0,63,63,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,1,apply_guide_line,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,2,apply_place_line,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,3,apply_reference_guide,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,4,apply_reference_place,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,5,apply_scene_line_candidate,0.0,0.0,0.0,63,63,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,6,apply_spec_line,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,7,apply_surface_combined_line,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,8,apply_timber_line,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,9,assembly_generation_integrity,0.0,0.0,0.0,42,42,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,10,assembly_rebuild.constprop.0,0.0,0.0,0.0,42,42,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,11,boundary_contains_point,0.0,0.0,0.0,140,140,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,12,boundary_contains_rect,0.0,0.0,0.0,665,665,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,13,boundary_edge_interval,0.0,0.0,0.0,252,252,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,14,boundary_is_valid,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,15,count_legal_stops,0.0,0.0,0.0,280,280,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,16,dp_rebuild,0.0,0.0,0.0,42,42,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,17,dump_loop,0.0,0.0,0.0,14,14,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,18,eng_definition_hash,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,19,eng_sha256,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,bridge-cold,inclusive,20,eng_sha_block,0.0,0.0,0.0,63,63,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,1,apply_canvaspos_line,0.0,0.0,0.0,15,15,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,2,apply_guide_line,0.0,0.0,0.0,16,16,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,3,apply_place_line,0.0,0.0,0.0,48,48,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,4,apply_reference_guide <cycle 1>,0.0,0.0,0.0,16,16,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,5,apply_reference_place <cycle 1>,0.0,0.0,0.0,48,48,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,6,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,219,219,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,7,apply_spec_line <cycle 1>,0.0,0.0,0.0,61,61,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,8,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,16,16,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,9,apply_timber_line,0.0,0.0,0.0,48,48,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,10,asm_hash_token,0.0,0.0,0.0,15,15,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,11,assembly_generation_integrity,0.0,0.0,0.0,66,66,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,12,assembly_rebuild.constprop.0,0.0,0.0,0.0,156,156,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,13,boundary_contains_point,0.0,0.0,0.0,680,680,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,14,boundary_contains_rect,0.0,0.0,0.0,3440,3440,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,15,boundary_edge_interval,0.0,0.0,0.0,1476,1476,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,16,boundary_geometry_hash,0.0,0.0,0.0,60,60,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,17,boundary_is_valid,0.0,0.0,0.0,172,172,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,18,cmd_replace_world,0.0,0.0,0.0,15,15,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,19,count_legal_stops,0.0,0.0,0.0,1360,1360,0
+AD,20261018T203445910138-gprof,main,bridge-resident,self,20,dp_rebuild,0.0,0.0,0.0,156,156,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,1,apply_canvaspos_line,0.0,0.0,0.0,15,15,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,2,apply_guide_line,0.0,0.0,0.0,16,16,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,3,apply_place_line,0.0,0.0,0.0,48,48,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,4,apply_reference_guide <cycle 1>,0.0,0.0,0.0,16,16,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,5,apply_reference_place <cycle 1>,0.0,0.0,0.0,48,48,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,6,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,219,219,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,7,apply_spec_line <cycle 1>,0.0,0.0,0.0,61,61,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,8,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,16,16,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,9,apply_timber_line,0.0,0.0,0.0,48,48,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,10,asm_hash_token,0.0,0.0,0.0,15,15,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,11,assembly_generation_integrity,0.0,0.0,0.0,66,66,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,12,assembly_rebuild.constprop.0,0.0,0.0,0.0,156,156,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,13,boundary_contains_point,0.0,0.0,0.0,680,680,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,14,boundary_contains_rect,0.0,0.0,0.0,3440,3440,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,15,boundary_edge_interval,0.0,0.0,0.0,1476,1476,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,16,boundary_geometry_hash,0.0,0.0,0.0,60,60,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,17,boundary_is_valid,0.0,0.0,0.0,172,172,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,18,cmd_replace_world,0.0,0.0,0.0,15,15,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,19,count_legal_stops,0.0,0.0,0.0,1360,1360,0
+AD,20261018T203445910138-gprof,main,bridge-resident,inclusive,20,dp_rebuild,0.0,0.0,0.0,156,156,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,1,apply_guide_line,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,2,apply_place_line,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,3,apply_reference_guide <cycle 1>,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,4,apply_reference_place <cycle 1>,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,5,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,112,112,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,6,apply_spec_line <cycle 1>,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,7,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,8,apply_timber_line,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,9,assembly_generation_integrity,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,10,assembly_rebuild.constprop.0,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,11,boundary_contains_point,0.0,0.0,0.0,182,182,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,12,boundary_contains_rect,0.0,0.0,0.0,889,889,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,13,boundary_edge_interval,0.0,0.0,0.0,357,357,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,14,boundary_is_valid,0.0,0.0,0.0,56,56,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,15,count_legal_stops,0.0,0.0,0.0,364,364,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,16,dp_rebuild,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,17,dump_loop,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,18,engineering_dump_versions.constprop.0,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,19,engineering_serializable,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,main,model-legacy,self,20,engineering_used.constprop.0,0.0,0.0,0.0,14,14,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,1,apply_guide_line,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,2,apply_place_line,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,3,apply_reference_guide <cycle 1>,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,4,apply_reference_place <cycle 1>,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,5,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,112,112,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,6,apply_spec_line <cycle 1>,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,7,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,8,apply_timber_line,0.0,0.0,0.0,21,21,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,9,assembly_generation_integrity,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,10,assembly_rebuild.constprop.0,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,11,boundary_contains_point,0.0,0.0,0.0,182,182,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,12,boundary_contains_rect,0.0,0.0,0.0,889,889,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,13,boundary_edge_interval,0.0,0.0,0.0,357,357,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,14,boundary_is_valid,0.0,0.0,0.0,56,56,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,15,count_legal_stops,0.0,0.0,0.0,364,364,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,16,dp_rebuild,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,17,dump_loop,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,18,engineering_dump_versions.constprop.0,0.0,0.0,0.0,7,7,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,19,engineering_serializable,0.0,0.0,0.0,49,49,0
+AD,20261018T203445910138-gprof,main,model-legacy,inclusive,20,engineering_used.constprop.0,0.0,0.0,0.0,14,14,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,1,app_asm_context,0.0,0.0,0.0,385,385,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,2,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,3,app_boundary_compose,0.0,0.0,0.0,175,175,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,4,app_boundary_policy,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,5,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,6,app_boundary_stage,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,7,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,8,app_candidate_call,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,9,app_candidate_check,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,10,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,11,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,12,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,13,app_contact_facts,0.0,0.0,0.0,1365,1365,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,14,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,546,546,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,15,app_dp_context,0.0,0.0,0.0,98,98,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,16,app_eng_context,0.0,0.0,0.0,1505,1505,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,17,app_eng_serializable,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,18,app_fs_context,0.0,0.0,0.0,217,217,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,19,app_fs_obstacle_box,0.0,0.0,0.0,931,931,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,self,20,app_grid_context,0.0,0.0,0.0,378,378,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,1,app_asm_context,0.0,0.0,0.0,385,385,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,2,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,3,app_boundary_compose,0.0,0.0,0.0,175,175,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,4,app_boundary_policy,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,5,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,6,app_boundary_stage,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,7,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,8,app_candidate_call,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,9,app_candidate_check,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,10,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,11,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,12,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,13,app_contact_facts,0.0,0.0,0.0,1365,1365,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,14,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,546,546,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,15,app_dp_context,0.0,0.0,0.0,98,98,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,16,app_eng_context,0.0,0.0,0.0,1505,1505,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,17,app_eng_serializable,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,18,app_fs_context,0.0,0.0,0.0,217,217,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,19,app_fs_obstacle_box,0.0,0.0,0.0,931,931,0
+ADB,20261018T215825197230-gprof,integration,bridge-cold,inclusive,20,app_grid_context,0.0,0.0,0.0,378,378,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,1,geo_region_is_valid,0.01,0.0,0.01,173,173,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,2,reference_contact_facts <cycle 1>,0.01,0.0,0.01,3087,3087,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,3,reference_guide_clip_text,0.01,0.0,0.01,30,30,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,4,wd_write,0.01,0.0,0.01,14143,14143,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,5,wood_contact_collect_stops,0.01,0.0,0.01,2058,2058,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,6,wood_eng_version_definition,0.01,0.0,0.01,0,0,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,7,app_asm_context,0.0,0.0,0.0,1091,1091,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,8,app_assembly_saved_dimensions,0.0,0.0,0.0,343,343,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,9,app_boundary_compose,0.0,0.0,0.0,1030,1030,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,10,app_boundary_policy,0.0,0.0,0.0,16,16,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,11,app_boundary_region_definition,0.0,0.0,0.0,16,16,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,12,app_boundary_stage,0.0,0.0,0.0,16,16,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,13,app_candidate_bind_core,0.0,0.0,0.0,1305,1305,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,14,app_candidate_call,0.0,0.0,0.0,130,130,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,15,app_candidate_check,0.0,0.0,0.0,115,115,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,16,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,145,145,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,17,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,130,130,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,18,app_candidate_hash_matches,0.0,0.0,0.0,620,620,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,19,app_contact_facts,0.0,0.0,0.0,5145,5145,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,self,20,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,2058,2058,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,1,main,0.0,0.04,0.04,0,0,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,2,world_validate_derived,0.0,0.03,0.03,344,172,172
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,3,app_scene_candidate_apply,0.0,0.02,0.02,204,204,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,4,wood_world_validate_members,0.0,0.02,0.02,172,172,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,5,app_replace_world.constprop.0,0.0,0.01,0.01,16,16,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,6,apply_reference_place,0.0,0.01,0.01,48,48,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,7,apply_scene_line <cycle 2>,0.0,0.01,0.01,219,219,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,8,apply_scene_line_candidate.constprop.0 <cycle 2>,0.0,0.01,0.01,114,114,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,9,apply_spec_line,0.0,0.01,0.01,61,61,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,10,geo_candidate_evaluate <cycle 2>,0.0,0.01,0.01,130,130,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,11,geo_region_is_valid,0.01,0.0,0.01,173,173,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,12,reference_check_all,0.0,0.01,0.01,172,172,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,13,reference_checked,0.0,0.01,0.01,48,48,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,14,reference_contact_facts <cycle 1>,0.01,0.0,0.01,3087,3087,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,15,reference_guide_clip_text,0.01,0.0,0.01,30,30,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,16,reference_member_footprint,0.0,0.01,0.01,1523,1523,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,17,reference_preview_text,0.0,0.01,0.01,15,15,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,18,wd_evaluate <cycle 1>,0.0,0.01,0.01,1513,1513,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,19,wd_write,0.01,0.0,0.01,14143,14143,0
+ADB,20261018T215825197230-gprof,integration,bridge-resident,inclusive,20,wood_contact_collect_stops,0.01,0.0,0.01,2058,2058,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,1,app_asm_context,0.0,0.0,0.0,378,378,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,2,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,3,app_boundary_compose,0.0,0.0,0.0,154,154,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,4,app_boundary_policy,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,5,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,6,app_boundary_stage,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,7,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,8,app_candidate_call,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,9,app_candidate_check,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,10,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,11,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,12,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,13,app_contact_facts,0.0,0.0,0.0,1365,1365,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,14,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,546,546,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,15,app_dp_context,0.0,0.0,0.0,98,98,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,16,app_eng_context,0.0,0.0,0.0,1456,1456,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,17,app_eng_serializable,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,18,app_fs_context,0.0,0.0,0.0,210,210,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,19,app_fs_obstacle_box,0.0,0.0,0.0,931,931,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,self,20,app_grid_context,0.0,0.0,0.0,378,378,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,1,app_asm_context,0.0,0.0,0.0,378,378,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,2,app_assembly_saved_dimensions,0.0,0.0,0.0,91,91,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,3,app_boundary_compose,0.0,0.0,0.0,154,154,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,4,app_boundary_policy,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,5,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,6,app_boundary_stage,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,7,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,8,app_candidate_call,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,9,app_candidate_check,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,10,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,11,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,12,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,13,app_contact_facts,0.0,0.0,0.0,1365,1365,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,14,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,546,546,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,15,app_dp_context,0.0,0.0,0.0,98,98,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,16,app_eng_context,0.0,0.0,0.0,1456,1456,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,17,app_eng_serializable,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,18,app_fs_context,0.0,0.0,0.0,210,210,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,19,app_fs_obstacle_box,0.0,0.0,0.0,931,931,0
+ADB,20261018T215825197230-gprof,integration,model-legacy,inclusive,20,app_grid_context,0.0,0.0,0.0,378,378,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,1,_init,0.01,0.0,0.01,0,0,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,2,app_asm_context,0.0,0.0,0.0,392,392,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,3,app_assembly_saved_dimensions,0.0,0.0,0.0,112,112,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,4,app_boundary_compose,0.0,0.0,0.0,161,161,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,5,app_boundary_policy,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,6,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,7,app_boundary_stage,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,8,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,9,app_candidate_call,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,10,app_candidate_check,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,11,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,12,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,13,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,14,app_contact_facts,0.0,0.0,0.0,1470,1470,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,15,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,588,588,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,16,app_dp_context,0.0,0.0,0.0,112,112,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,17,app_eng_context,0.0,0.0,0.0,1568,1568,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,18,app_eng_serializable,0.0,0.0,0.0,56,56,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,19,app_fs_context,0.0,0.0,0.0,224,224,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,self,20,app_fs_obstacle_box,0.0,0.0,0.0,1043,1043,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,1,_init,0.01,0.0,0.01,0,0,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,2,app_asm_context,0.0,0.0,0.0,392,392,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,3,app_assembly_saved_dimensions,0.0,0.0,0.0,112,112,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,4,app_boundary_compose,0.0,0.0,0.0,161,161,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,5,app_boundary_policy,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,6,app_boundary_region_definition,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,7,app_boundary_stage,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,8,app_candidate_bind_core,0.0,0.0,0.0,630,630,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,9,app_candidate_call,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,10,app_candidate_check,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,11,app_candidate_create_with_deferred_sha,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,12,app_candidate_evaluate <cycle 2>,0.0,0.0,0.0,70,70,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,13,app_candidate_hash_matches,0.0,0.0,0.0,350,350,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,14,app_contact_facts,0.0,0.0,0.0,1470,1470,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,15,app_contact_resolve_stops <cycle 1>,0.0,0.0,0.0,588,588,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,16,app_dp_context,0.0,0.0,0.0,112,112,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,17,app_eng_context,0.0,0.0,0.0,1568,1568,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,18,app_eng_serializable,0.0,0.0,0.0,56,56,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,19,app_fs_context,0.0,0.0,0.0,224,224,0
+ADB,20261018T215825197230-gprof,integration,model-neutral,inclusive,20,app_fs_obstacle_box,0.0,0.0,0.0,1043,1043,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,1,apply_scene_line_candidate,0.01,0.0,0.01,63,63,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,2,apply_guide_line,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,3,apply_place_line,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,4,apply_reference_guide,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,5,apply_reference_place,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,6,apply_spec_line,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,7,apply_surface_combined_line,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,8,apply_timber_line,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,9,assembly_generation_integrity,0.0,0.0,0.0,42,42,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,10,assembly_rebuild.constprop.0,0.0,0.0,0.0,42,42,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,11,boundary_contains_point,0.0,0.0,0.0,140,140,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,12,boundary_contains_rect,0.0,0.0,0.0,665,665,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,13,boundary_edge_interval,0.0,0.0,0.0,252,252,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,14,boundary_is_valid,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,15,count_legal_stops,0.0,0.0,0.0,280,280,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,16,dp_rebuild,0.0,0.0,0.0,42,42,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,17,dump_loop,0.0,0.0,0.0,14,14,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,18,eng_definition_hash,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,19,eng_sha256,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,self,20,eng_sha_block,0.0,0.0,0.0,63,63,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,1,apply_scene_line_candidate,0.01,0.0,0.01,63,63,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,2,main,0.0,0.01,0.01,0,0,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,3,reference_default_world,0.0,0.01,0.01,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,4,apply_guide_line,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,5,apply_place_line,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,6,apply_reference_guide,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,7,apply_reference_place,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,8,apply_spec_line,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,9,apply_surface_combined_line,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,10,apply_timber_line,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,11,assembly_generation_integrity,0.0,0.0,0.0,42,42,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,12,assembly_rebuild.constprop.0,0.0,0.0,0.0,42,42,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,13,boundary_contains_point,0.0,0.0,0.0,140,140,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,14,boundary_contains_rect,0.0,0.0,0.0,665,665,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,15,boundary_edge_interval,0.0,0.0,0.0,252,252,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,16,boundary_is_valid,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,17,count_legal_stops,0.0,0.0,0.0,280,280,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,18,dp_rebuild,0.0,0.0,0.0,42,42,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,19,dump_loop,0.0,0.0,0.0,14,14,0
+ADB,20261018T215825197230-gprof,main,bridge-cold,inclusive,20,eng_definition_hash,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,1,apply_canvaspos_line,0.0,0.0,0.0,15,15,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,2,apply_guide_line,0.0,0.0,0.0,16,16,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,3,apply_place_line,0.0,0.0,0.0,48,48,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,4,apply_reference_guide <cycle 1>,0.0,0.0,0.0,16,16,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,5,apply_reference_place <cycle 1>,0.0,0.0,0.0,48,48,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,6,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,219,219,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,7,apply_spec_line <cycle 1>,0.0,0.0,0.0,61,61,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,8,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,16,16,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,9,apply_timber_line,0.0,0.0,0.0,48,48,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,10,asm_hash_token,0.0,0.0,0.0,15,15,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,11,assembly_generation_integrity,0.0,0.0,0.0,66,66,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,12,assembly_rebuild.constprop.0,0.0,0.0,0.0,156,156,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,13,boundary_contains_point,0.0,0.0,0.0,680,680,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,14,boundary_contains_rect,0.0,0.0,0.0,3440,3440,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,15,boundary_edge_interval,0.0,0.0,0.0,1476,1476,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,16,boundary_geometry_hash,0.0,0.0,0.0,60,60,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,17,boundary_is_valid,0.0,0.0,0.0,172,172,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,18,cmd_replace_world,0.0,0.0,0.0,15,15,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,19,count_legal_stops,0.0,0.0,0.0,1360,1360,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,self,20,dp_rebuild,0.0,0.0,0.0,156,156,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,1,apply_canvaspos_line,0.0,0.0,0.0,15,15,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,2,apply_guide_line,0.0,0.0,0.0,16,16,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,3,apply_place_line,0.0,0.0,0.0,48,48,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,4,apply_reference_guide <cycle 1>,0.0,0.0,0.0,16,16,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,5,apply_reference_place <cycle 1>,0.0,0.0,0.0,48,48,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,6,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,219,219,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,7,apply_spec_line <cycle 1>,0.0,0.0,0.0,61,61,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,8,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,16,16,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,9,apply_timber_line,0.0,0.0,0.0,48,48,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,10,asm_hash_token,0.0,0.0,0.0,15,15,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,11,assembly_generation_integrity,0.0,0.0,0.0,66,66,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,12,assembly_rebuild.constprop.0,0.0,0.0,0.0,156,156,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,13,boundary_contains_point,0.0,0.0,0.0,680,680,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,14,boundary_contains_rect,0.0,0.0,0.0,3440,3440,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,15,boundary_edge_interval,0.0,0.0,0.0,1476,1476,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,16,boundary_geometry_hash,0.0,0.0,0.0,60,60,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,17,boundary_is_valid,0.0,0.0,0.0,172,172,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,18,cmd_replace_world,0.0,0.0,0.0,15,15,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,19,count_legal_stops,0.0,0.0,0.0,1360,1360,0
+ADB,20261018T215825197230-gprof,main,bridge-resident,inclusive,20,dp_rebuild,0.0,0.0,0.0,156,156,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,1,_init,0.01,0.0,0.01,0,0,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,2,apply_guide_line,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,3,apply_place_line,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,4,apply_reference_guide <cycle 1>,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,5,apply_reference_place <cycle 1>,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,6,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,112,112,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,7,apply_spec_line <cycle 1>,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,8,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,9,apply_timber_line,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,10,assembly_generation_integrity,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,11,assembly_rebuild.constprop.0,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,12,boundary_contains_point,0.0,0.0,0.0,182,182,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,13,boundary_contains_rect,0.0,0.0,0.0,889,889,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,14,boundary_edge_interval,0.0,0.0,0.0,357,357,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,15,boundary_is_valid,0.0,0.0,0.0,56,56,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,16,count_legal_stops,0.0,0.0,0.0,364,364,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,17,dp_rebuild,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,18,dump_loop,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,19,engineering_dump_versions.constprop.0,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,self,20,engineering_serializable,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,1,_init,0.01,0.0,0.01,0,0,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,2,apply_guide_line,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,3,apply_place_line,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,4,apply_reference_guide <cycle 1>,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,5,apply_reference_place <cycle 1>,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,6,apply_scene_line_candidate <cycle 1>,0.0,0.0,0.0,112,112,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,7,apply_spec_line <cycle 1>,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,8,apply_surface_combined_line <cycle 1>,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,9,apply_timber_line,0.0,0.0,0.0,21,21,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,10,assembly_generation_integrity,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,11,assembly_rebuild.constprop.0,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,12,boundary_contains_point,0.0,0.0,0.0,182,182,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,13,boundary_contains_rect,0.0,0.0,0.0,889,889,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,14,boundary_edge_interval,0.0,0.0,0.0,357,357,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,15,boundary_is_valid,0.0,0.0,0.0,56,56,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,16,count_legal_stops,0.0,0.0,0.0,364,364,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,17,dp_rebuild,0.0,0.0,0.0,49,49,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,18,dump_loop,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,19,engineering_dump_versions.constprop.0,0.0,0.0,0.0,7,7,0
+ADB,20261018T215825197230-gprof,main,model-legacy,inclusive,20,engineering_serializable,0.0,0.0,0.0,49,49,0
