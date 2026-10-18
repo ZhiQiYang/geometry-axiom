@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass
 class PolicyIssue(ValueError):
     code: str
     clause: str
