@@ -405,4 +405,4 @@
 | 編號 | 分支 / 完整 SHA | 命令 | 回報到 | 狀態 |
 |---|---|---|---|---|
 | R-001(已取消:Claude 已在本機實跑 oracle 自測全綠,框架班改走 WSL) | `feat/framing-oracle-20261015` / `a32bcf2f146606484894f6bb59c0f719bbe6b9bf` | `cd geometry-core/framing-template/oracle && python3 selftest.py`,再到 repo 根目錄 `ulimit -s 16384; python3 -u tests/run_all.py --build` | #251 | 取消 |
-| R-002 | `feat/card-reference-core-20261015` / `ff3b1b428bbc2de656a7abe7efdfd2c1d0e73fea`(已更新為合入 main 後的 head) | `ulimit -s 16384; python3 -u tests/run_all.py --build`;另跑 `python3 geometry-core/card-reference/run_mutations.py`(自訂 53 筆整卡反證，參數依 --help)。若 run_all 只有 mutation:check 紅(帳本待重產)照實回報即可 | #253 | 待領 |
+| R-002(已取消:#253 已併入列車 #298,再併入新列車 train/20261018-geo262-axiom260,由 Claude 在 WSL 跑 7 項與 run_mutations.py) | `feat/card-reference-core-20261015` / `ff3b1b428bbc2de656a7abe7efdfd2c1d0e73fea`(已更新為合入 main 後的 head) | `ulimit -s 16384; python3 -u tests/run_all.py --build`;另跑 `python3 geometry-core/card-reference/run_mutations.py`(自訂 53 筆整卡反證，參數依 --help)。若 run_all 只有 mutation:check 紅(帳本待重產)照實回報即可 | #253 | 取消 |
