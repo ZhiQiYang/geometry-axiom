@@ -20,6 +20,12 @@ typedef bool (*GeoCandidateEvaluate)(void *,GeoEvalContext *);
  * context, not the caller's buffers. It never copies data into a live root. */
 GeoCandidate *geo_candidate_create(uint64_t candidate_id,uint64_t base_revision,
                                   const char *provider_stamp);
+/* Explicit opt-in: an owned, exact POD copy may defer its expected digest
+ * until a byte mismatch. Missing optional copies retain eager digests.
+ * All lifecycle, provider metadata and publication contracts are unchanged;
+ * the policy is fixed for this handle. The default constructor remains eager. */
+GeoCandidate *geo_candidate_create_deferred_sha(uint64_t candidate_id,uint64_t base_revision,
+                                               const char *provider_stamp);
 void geo_candidate_destroy(GeoCandidate *);
 /* Bind actual POD stores before the first evaluation. Names are opaque,
  * nonempty and copied. All before/current ranges must be nonempty, distinct

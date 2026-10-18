@@ -23,7 +23,7 @@ static AppWorldCandidate *app_world_candidate_create(const World *live)
 {
     AppWorldCandidate *candidate=calloc(1,sizeof *candidate);
     if(!candidate)return NULL;
-    candidate->control=app_candidate_create(&candidate->before,&candidate->after,live,sizeof(World),
+    candidate->control=app_candidate_create_deferred_sha(&candidate->before,&candidate->after,live,sizeof(World),
         ++g_app_candidate_serial,g_definition_revision,app_world_provider_stamp());
     if(!candidate->control){free(candidate);return NULL;}
 #define APP_BIND_CORE(field) \

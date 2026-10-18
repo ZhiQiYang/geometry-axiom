@@ -17,6 +17,12 @@ typedef void (*AppCandidateDisposeState)(void *);
  * these same buffers and this same handle until publish/discard. */
 AppCandidate *app_candidate_create(void *before,void *after,const void *live,
     size_t snapshot_size,uint64_t candidate_id,uint64_t base_revision,const char *provider_stamp);
+/* Explicit opt-in: complete H snapshots and explicitly bound K state copies
+ * defer expected SHA until an exact-byte cache miss. Missing optional copies
+ * retain eager digests. Provider metadata remains eager. Both policies are
+ * fixed at construction; the original constructor retains eager behavior. */
+AppCandidate *app_candidate_create_deferred_sha(void *before,void *after,const void *live,
+    size_t snapshot_size,uint64_t candidate_id,uint64_t base_revision,const char *provider_stamp);
 void app_candidate_destroy(AppCandidate *);
 GeoCandidateStatus app_candidate_bind_core(AppCandidate *,const char *name,size_t offset,size_t size);
 GeoCandidateStatus app_candidate_evaluate(AppCandidate *,AppCandidateEvaluate,void *opaque);

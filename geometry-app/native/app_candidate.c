@@ -11,7 +11,7 @@ struct AppCandidate {
     GeoCandidate *core;
     char before_hash[65],after_hash[65];
     unsigned char *before_bytes,*after_bytes;
-    bool sealed;
+    bool sealed,deferred_snapshot_sha;
     void *evaluation_state;
     AppCandidateDisposeState dispose_state;
 };
@@ -21,22 +21,37 @@ static bool app_candidate_overlap(const void *a,const void *b,size_t size)
     if(size>UINTPTR_MAX-x||size>UINTPTR_MAX-y)return true;
     return x<y+size&&y<x+size;
 }
-AppCandidate *app_candidate_create(void *before,void *after,const void *live,
-    size_t size,uint64_t id,uint64_t revision,const char *stamp)
+/* Saved bytes are candidate-owned and immutable until the next successful
+ * capture. An empty digest is pending only when that complete copy exists. */
+static void app_candidate_capture_snapshot(const void *bytes,size_t size,char expected[65],
+    unsigned char *saved,bool deferred)
+{
+    if(saved)memcpy(saved,bytes,size);
+    if(deferred&&saved){expected[0]='\0';return;}
+    geo_sha256(bytes,size,expected);
+}
+static AppCandidate *app_candidate_create_with_deferred_sha(void *before,void *after,const void *live,
+    size_t size,uint64_t id,uint64_t revision,const char *stamp,bool deferred)
 {
     if(!before||!after||!live||!size||app_candidate_overlap(before,after,size)||
        app_candidate_overlap(before,live,size)||app_candidate_overlap(after,live,size))return NULL;
     AppCandidate *candidate=calloc(1,sizeof *candidate);
     if(!candidate)return NULL;
-    candidate->core=geo_candidate_create(id,revision,stamp);
+    if(deferred)candidate->core=geo_candidate_create_deferred_sha(id,revision,stamp);
+    else candidate->core=geo_candidate_create(id,revision,stamp);
     if(!candidate->core){free(candidate);return NULL;}
-    candidate->before=before;candidate->after=after;candidate->snapshot_size=size;
+    candidate->before=before;candidate->after=after;candidate->snapshot_size=size;candidate->deferred_snapshot_sha=deferred;
     memcpy(before,live,size);memcpy(after,live,size);
-    geo_sha256(before,size,candidate->before_hash);
     candidate->before_bytes=malloc(size);
-    if(candidate->before_bytes)memcpy(candidate->before_bytes,before,size);
+    app_candidate_capture_snapshot(before,size,candidate->before_hash,candidate->before_bytes,candidate->deferred_snapshot_sha);
     return candidate;
 }
+AppCandidate *app_candidate_create(void *before,void *after,const void *live,
+    size_t size,uint64_t id,uint64_t revision,const char *stamp)
+{return app_candidate_create_with_deferred_sha(before,after,live,size,id,revision,stamp,false);}
+AppCandidate *app_candidate_create_deferred_sha(void *before,void *after,const void *live,
+    size_t size,uint64_t id,uint64_t revision,const char *stamp)
+{return app_candidate_create_with_deferred_sha(before,after,live,size,id,revision,stamp,true);}
 void app_candidate_set_evaluation_state(AppCandidate *candidate,void *state,AppCandidateDisposeState dispose)
 {
     if(!candidate)return;
@@ -74,18 +89,22 @@ GeoCandidateStatus app_candidate_evaluate(AppCandidate *candidate,AppCandidateEv
     AppCandidateCall call={candidate,evaluate,opaque};
     GeoCandidateStatus status=geo_candidate_evaluate(candidate->core,app_candidate_call,&call);
     if(status==GEO_CANDIDATE_OK){
-        geo_sha256(candidate->after,candidate->snapshot_size,candidate->after_hash);
         if(!candidate->after_bytes)candidate->after_bytes=malloc(candidate->snapshot_size);
-        if(candidate->after_bytes)memcpy(candidate->after_bytes,candidate->after,candidate->snapshot_size);
+        app_candidate_capture_snapshot(candidate->after,candidate->snapshot_size,candidate->after_hash,
+            candidate->after_bytes,candidate->deferred_snapshot_sha);
     }
     return status;
 }
 static bool app_candidate_hash_matches(const void *bytes,size_t size,const char expected[65],const void *hashed_bytes)
 {
-    /* The private copy contains exactly the bytes used for expected. This is
-     * an exact cache-key comparison, never a weaker digest. Any changed byte
-     * takes the original SHA path; allocation failure merely disables caching. */
+    /* Exact equality proves the same digest. A deferred miss hashes the
+     * saved original first, never the changed caller-owned bytes as expected.
+     * Allocation failure keeps an eager digest; checks never mutate the seal. */
     if(hashed_bytes&&!memcmp(bytes,hashed_bytes,size))return true;
+    char saved_expected[65];
+    if(hashed_bytes&&!expected[0]){
+        geo_sha256(hashed_bytes,size,saved_expected);expected=saved_expected;
+    }
     char actual[65];geo_sha256(bytes,size,actual);return !strcmp(actual,expected);
 }
 GeoCandidateStatus app_candidate_seal(AppCandidate *candidate)

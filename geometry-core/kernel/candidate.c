@@ -18,6 +18,7 @@ struct GeoCandidate {
     GeoCandidateBinding *bindings;
     size_t binding_count;
     bool bindings_closed;
+    bool deferred_state_sha;
     GeoEvalContext *sources;
     char providers_hash[65];
 };
@@ -40,6 +41,13 @@ GeoCandidate *geo_candidate_create(uint64_t candidate_id,uint64_t base_revision,
     if(!candidate){free(stamp);return NULL;}
     candidate->candidate_id=candidate_id;candidate->base_revision=base_revision;
     candidate->provider_stamp=stamp;candidate->state=GEO_CANDIDATE_OPEN;
+    return candidate;
+}
+GeoCandidate *geo_candidate_create_deferred_sha(uint64_t candidate_id,uint64_t base_revision,
+                                               const char *provider_stamp)
+{
+    GeoCandidate *candidate=geo_candidate_create(candidate_id,base_revision,provider_stamp);
+    if(candidate)candidate->deferred_state_sha=true;
     return candidate;
 }
 void geo_candidate_destroy(GeoCandidate *candidate)
@@ -84,15 +92,25 @@ GeoCandidateStatus geo_candidate_bind_state(GeoCandidate *candidate,const char *
     GeoCandidateBinding *binding=&bindings[candidate->binding_count++];
     memset(binding,0,sizeof *binding);binding->name=copy;
     binding->before=before;binding->current=current;binding->size=size;
-    geo_sha256(before,size,binding->before_hash);
     binding->before_bytes=malloc(size);
     if(binding->before_bytes)memcpy(binding->before_bytes,before,size);
+    if(!candidate->deferred_state_sha||!binding->before_bytes)
+        geo_sha256(before,size,binding->before_hash);
+    else binding->before_hash[0]='\0';
     return GEO_CANDIDATE_OK;
 }
 static bool geo_candidate_digest_matches(const void *bytes,size_t size,const char expected[65],const void *hashed_bytes)
 {
     if(hashed_bytes&&!memcmp(bytes,hashed_bytes,size))return true;
-    char hash[65];geo_sha256(bytes,size,hash);return !strcmp(hash,expected);
+    char hash[65],saved_expected[65];
+    bool pending=hashed_bytes&&!expected[0];
+    const void *inputs[2]={hashed_bytes,bytes};
+    for(unsigned i=pending?0:1;i<2;++i){
+        char *out=i?hash:saved_expected;
+        geo_sha256(inputs[i],size,out);
+    }
+    if(pending)expected=saved_expected;
+    return !strcmp(hash,expected);
 }
 static GeoCandidateStatus geo_candidate_check_state(const GeoCandidate *candidate,bool include_current)
 {
@@ -124,9 +142,11 @@ GeoCandidateStatus geo_candidate_evaluate(GeoCandidate *candidate,GeoCandidateEv
     if(!ok)return GEO_CANDIDATE_EVALUATION_FAILED;
     for(size_t i=0;i<candidate->binding_count;++i){
         GeoCandidateBinding *binding=&candidate->bindings[i];
-        geo_sha256(binding->current,binding->size,binding->current_hash);
         if(!binding->current_bytes)binding->current_bytes=malloc(binding->size);
         if(binding->current_bytes)memcpy(binding->current_bytes,binding->current,binding->size);
+        if(!candidate->deferred_state_sha||!binding->current_bytes)
+            geo_sha256(binding->current,binding->size,binding->current_hash);
+        else binding->current_hash[0]='\0';
     }
     return GEO_CANDIDATE_OK;
 }
