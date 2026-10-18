@@ -19,7 +19,7 @@
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 5000,0 5000,3000 3200,3000 3200,4800 0,4800 hole 2300,1300 2700,1300 2700,1700 2300,1700
 
 # 格線只收 at-line 用到的中線，嚴格遞增。不寫 main-along，避免格線角色預設蓋過 timber 宣告。
-grid 1 on 1 u 416 1333 2250 3159 3186 4084 v 282 567 852 1137 1501 1868 2235 2602 2959 2969 3336 3703 4070 4437
+grid 1 on 1 u 416 1333 2250 3159 3186 4084 v 201 403 770 1137 1501 1868 2235 2602 2959 2969 3336 3703 4070 4437
 
 # probe-member {"anchor":"e0","cover":"full","golden":0,"id":1,"kind":"boundary","pending":null,"priority":null,"rect":[0,0,5000,27],"role":"boundary","tier":0,"where":"outer"}
 timber 1 27 33 role boundary
@@ -85,15 +85,15 @@ place 15 on 1 at-face h0e0 between t8 t9 +u +n
 timber 16 27 33 role secondary
 place 16 on 1 at-face h0e2 between t8 t9 -u +n
 
-# probe-member {"anchor":"grid:v:282","cover":null,"golden":16,"id":17,"kind":"secondary:mark","pending":null,"priority":null,"rect":[27,269,403,296],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:201","cover":null,"golden":16,"id":17,"kind":"secondary:mark","pending":null,"priority":null,"rect":[27,188,403,215],"role":"secondary","tier":4,"where":"interior"}
 timber 17 27 33 role secondary
 place 17 on 1 at-line grid 1 v 0 between t7 t3 +u +n
 
-# probe-member {"anchor":"grid:v:567","cover":null,"golden":17,"id":18,"kind":"secondary:mark","pending":null,"priority":null,"rect":[27,554,403,581],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:403","cover":null,"golden":17,"id":18,"kind":"secondary:mark","pending":null,"priority":null,"rect":[27,390,403,417],"role":"secondary","tier":4,"where":"interior"}
 timber 18 27 33 role secondary
 place 18 on 1 at-line grid 1 v 1 between t7 t3 +u +n
 
-# probe-member {"anchor":"grid:v:852","cover":null,"golden":18,"id":19,"kind":"secondary:mark","pending":null,"priority":null,"rect":[27,839,403,866],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:770","cover":null,"golden":18,"id":19,"kind":"secondary:mark","pending":null,"priority":null,"rect":[27,757,403,784],"role":"secondary","tier":4,"where":"interior"}
 timber 19 27 33 role secondary
 place 19 on 1 at-line grid 1 v 2 between t7 t3 +u +n
 
@@ -129,15 +129,15 @@ place 26 on 1 at-line grid 1 v 12 between t7 t3 +u +n
 timber 27 27 33 role secondary
 place 27 on 1 at-line grid 1 v 13 between t7 t3 +u +n
 
-# probe-member {"anchor":"grid:v:282","cover":null,"golden":27,"id":28,"kind":"secondary:mark","pending":null,"priority":null,"rect":[430,269,1320,296],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:201","cover":null,"golden":27,"id":28,"kind":"secondary:mark","pending":null,"priority":null,"rect":[430,188,1320,215],"role":"secondary","tier":4,"where":"interior"}
 timber 28 27 33 role secondary
 place 28 on 1 at-line grid 1 v 0 between t3 t4 +u +n
 
-# probe-member {"anchor":"grid:v:567","cover":null,"golden":28,"id":29,"kind":"secondary:mark","pending":null,"priority":null,"rect":[430,554,1320,581],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:403","cover":null,"golden":28,"id":29,"kind":"secondary:mark","pending":null,"priority":null,"rect":[430,390,1320,417],"role":"secondary","tier":4,"where":"interior"}
 timber 29 27 33 role secondary
 place 29 on 1 at-line grid 1 v 1 between t3 t4 +u +n
 
-# probe-member {"anchor":"grid:v:852","cover":null,"golden":29,"id":30,"kind":"secondary:mark","pending":null,"priority":null,"rect":[430,839,1320,866],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:770","cover":null,"golden":29,"id":30,"kind":"secondary:mark","pending":null,"priority":null,"rect":[430,757,1320,784],"role":"secondary","tier":4,"where":"interior"}
 timber 30 27 33 role secondary
 place 30 on 1 at-line grid 1 v 2 between t3 t4 +u +n
 
@@ -173,15 +173,15 @@ place 37 on 1 at-line grid 1 v 12 between t3 t4 +u +n
 timber 38 27 33 role secondary
 place 38 on 1 at-line grid 1 v 13 between t3 t4 +u +n
 
-# probe-member {"anchor":"grid:v:282","cover":null,"golden":38,"id":39,"kind":"secondary:mark","pending":null,"priority":null,"rect":[1347,269,2237,296],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:201","cover":null,"golden":38,"id":39,"kind":"secondary:mark","pending":null,"priority":null,"rect":[1347,188,2237,215],"role":"secondary","tier":4,"where":"interior"}
 timber 39 27 33 role secondary
 place 39 on 1 at-line grid 1 v 0 between t4 t5 +u +n
 
-# probe-member {"anchor":"grid:v:567","cover":null,"golden":39,"id":40,"kind":"secondary:mark","pending":null,"priority":null,"rect":[1347,554,2237,581],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:403","cover":null,"golden":39,"id":40,"kind":"secondary:mark","pending":null,"priority":null,"rect":[1347,390,2237,417],"role":"secondary","tier":4,"where":"interior"}
 timber 40 27 33 role secondary
 place 40 on 1 at-line grid 1 v 1 between t4 t5 +u +n
 
-# probe-member {"anchor":"grid:v:852","cover":null,"golden":40,"id":41,"kind":"secondary:mark","pending":null,"priority":null,"rect":[1347,839,2237,866],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:770","cover":null,"golden":40,"id":41,"kind":"secondary:mark","pending":null,"priority":null,"rect":[1347,757,2237,784],"role":"secondary","tier":4,"where":"interior"}
 timber 41 27 33 role secondary
 place 41 on 1 at-line grid 1 v 2 between t4 t5 +u +n
 
@@ -217,15 +217,15 @@ place 48 on 1 at-line grid 1 v 12 between t4 t5 +u +n
 timber 49 27 33 role secondary
 place 49 on 1 at-line grid 1 v 13 between t4 t5 +u +n
 
-# probe-member {"anchor":"grid:v:282","cover":null,"golden":49,"id":50,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2300,269,2700,296],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:201","cover":null,"golden":49,"id":50,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2300,188,2700,215],"role":"secondary","tier":4,"where":"interior"}
 timber 50 27 33 role secondary
 place 50 on 1 at-line grid 1 v 0 between t8 t9 +u +n
 
-# probe-member {"anchor":"grid:v:567","cover":null,"golden":50,"id":51,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2300,554,2700,581],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:403","cover":null,"golden":50,"id":51,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2300,390,2700,417],"role":"secondary","tier":4,"where":"interior"}
 timber 51 27 33 role secondary
 place 51 on 1 at-line grid 1 v 1 between t8 t9 +u +n
 
-# probe-member {"anchor":"grid:v:852","cover":null,"golden":51,"id":52,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2300,839,2700,866],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:770","cover":null,"golden":51,"id":52,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2300,757,2700,784],"role":"secondary","tier":4,"where":"interior"}
 timber 52 27 33 role secondary
 place 52 on 1 at-line grid 1 v 2 between t8 t9 +u +n
 
@@ -257,15 +257,15 @@ place 58 on 1 at-line grid 1 v 12 between t8 t9 +u +n
 timber 59 27 33 role secondary
 place 59 on 1 at-line grid 1 v 13 between t8 t9 +u +n
 
-# probe-member {"anchor":"grid:v:282","cover":null,"golden":59,"id":60,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2727,269,3146,296],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:201","cover":null,"golden":59,"id":60,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2727,188,3146,215],"role":"secondary","tier":4,"where":"interior"}
 timber 60 27 33 role secondary
 place 60 on 1 at-line grid 1 v 0 between t9 t6 +u +n
 
-# probe-member {"anchor":"grid:v:567","cover":null,"golden":60,"id":61,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2727,554,3146,581],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:403","cover":null,"golden":60,"id":61,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2727,390,3146,417],"role":"secondary","tier":4,"where":"interior"}
 timber 61 27 33 role secondary
 place 61 on 1 at-line grid 1 v 1 between t9 t6 +u +n
 
-# probe-member {"anchor":"grid:v:852","cover":null,"golden":61,"id":62,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2727,839,3146,866],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:770","cover":null,"golden":61,"id":62,"kind":"secondary:mark","pending":null,"priority":null,"rect":[2727,757,3146,784],"role":"secondary","tier":4,"where":"interior"}
 timber 62 27 33 role secondary
 place 62 on 1 at-line grid 1 v 2 between t9 t6 +u +n
 
@@ -301,15 +301,15 @@ place 69 on 1 at-line grid 1 v 12 between t9 t6 +u +n
 timber 70 27 33 role secondary
 place 70 on 1 at-line grid 1 v 13 between t9 t6 +u +n
 
-# probe-member {"anchor":"grid:v:282","cover":null,"golden":70,"id":71,"kind":"secondary:mark","pending":null,"priority":null,"rect":[4098,269,4973,296],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:201","cover":null,"golden":70,"id":71,"kind":"secondary:mark","pending":null,"priority":null,"rect":[4098,188,4973,215],"role":"secondary","tier":4,"where":"interior"}
 timber 71 27 33 role secondary
 place 71 on 1 at-line grid 1 v 0 between t11 t12 +u +n
 
-# probe-member {"anchor":"grid:v:567","cover":null,"golden":71,"id":72,"kind":"secondary:mark","pending":null,"priority":null,"rect":[4098,554,4973,581],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:403","cover":null,"golden":71,"id":72,"kind":"secondary:mark","pending":null,"priority":null,"rect":[4098,390,4973,417],"role":"secondary","tier":4,"where":"interior"}
 timber 72 27 33 role secondary
 place 72 on 1 at-line grid 1 v 1 between t11 t12 +u +n
 
-# probe-member {"anchor":"grid:v:852","cover":null,"golden":72,"id":73,"kind":"secondary:mark","pending":null,"priority":null,"rect":[4098,839,4973,866],"role":"secondary","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:770","cover":null,"golden":72,"id":73,"kind":"secondary:mark","pending":null,"priority":null,"rect":[4098,757,4973,784],"role":"secondary","tier":4,"where":"interior"}
 timber 73 27 33 role secondary
 place 73 on 1 at-line grid 1 v 2 between t11 t12 +u +n
 
@@ -329,15 +329,15 @@ place 76 on 1 at-line grid 1 v 6 between t11 t12 +u +n
 timber 77 27 33 role secondary
 place 77 on 1 at-line grid 1 v 7 between t11 t12 +u +n
 
-# probe-member {"anchor":"grid:v:282","cover":null,"custom4":"golden-label","golden":77,"id":78,"kind":"secondary:mark:custom4","pending":null,"priority":4,"rect":[3200,269,4071,296],"role":"custom","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:201","cover":null,"custom4":"golden-label","golden":77,"id":78,"kind":"secondary:mark:custom4","pending":null,"priority":4,"rect":[3200,188,4071,215],"role":"custom","tier":4,"where":"interior"}
 timber 78 27 33 role custom priority 4
 place 78 on 1 at-line grid 1 v 0 between t13 t11 +u +n
 
-# probe-member {"anchor":"grid:v:567","cover":null,"custom4":"golden-label","golden":78,"id":79,"kind":"secondary:mark:custom4","pending":null,"priority":4,"rect":[3200,554,4071,581],"role":"custom","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:403","cover":null,"custom4":"golden-label","golden":78,"id":79,"kind":"secondary:mark:custom4","pending":null,"priority":4,"rect":[3200,390,4071,417],"role":"custom","tier":4,"where":"interior"}
 timber 79 27 33 role custom priority 4
 place 79 on 1 at-line grid 1 v 1 between t13 t11 +u +n
 
-# probe-member {"anchor":"grid:v:852","cover":null,"custom4":"golden-label","golden":79,"id":80,"kind":"secondary:mark:custom4","pending":null,"priority":4,"rect":[3200,839,4071,866],"role":"custom","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:770","cover":null,"custom4":"golden-label","golden":79,"id":80,"kind":"secondary:mark:custom4","pending":null,"priority":4,"rect":[3200,757,4071,784],"role":"custom","tier":4,"where":"interior"}
 timber 80 27 33 role custom priority 4
 place 80 on 1 at-line grid 1 v 2 between t13 t11 +u +n
 

@@ -166,7 +166,8 @@ HOLE_BOUNDARY_DECLARATION = ("secondary", None)
 # 使用者 2026-10-18 拍板（🔒，決策佇列「凹角沿牆料的排序」，#301）：端面頂到 custom 的副支改宣告 custom 4。
 SECONDARY_ON_CUSTOM_DECLARATION = ("custom", 4)
 CUSTOM4_SUFFIX = ":custom4"
-SECONDARY_BASE_KINDS = ("secondary:mark", "secondary:seam")
+SECONDARY_BASE_KINDS = ("secondary:mark", "secondary:seam", "secondary:fill")  # fill = 撞掉的記號旁補的那一支（oracle 5610d217）
+SECONDARY_KINDS_WITH_CUSTOM4_IN_GOLDEN = ("secondary:mark", "secondary:seam")  # 現行 golden 裡 :custom4 只出現在這兩種
 
 
 def split_label(kind: str) -> tuple[str, bool]:
@@ -185,8 +186,16 @@ def is_secondary_like(kind: str, on_hole: bool) -> bool:
 def expected_declaration(kind: str, on_hole: bool, table: dict) -> tuple[str, int | None]:
     """某支角材在場景裡該宣告的 (role, priority)。依 golden 種類（含 :custom4 標籤）與 mapping.md 的表。"""
     base, labelled = split_label(kind)
+    if labelled:
+        # :custom4 只能加在副支上（含孔邊暫寫 secondary 的料）；任何副支種類加上去都是 custom 4。
+        # mapping.md 若為這個帶標籤的種類列了一行，那一行必須就是 custom 4。
+        if not is_secondary_like(kind, on_hole):
+            raise AssertionError(f"{kind}：:custom4 只能加在副支上")
+        if kind in table and table[kind] != {SECONDARY_ON_CUSTOM_DECLARATION}:
+            raise AssertionError(f"mapping.md 對 {kind} 列的角色不是 custom 4：{sorted(table[kind], key=str)}")
+        return SECONDARY_ON_CUSTOM_DECLARATION
     if base == "boundary" and on_hole:
-        return SECONDARY_ON_CUSTOM_DECLARATION if labelled else HOLE_BOUNDARY_DECLARATION
+        return HOLE_BOUNDARY_DECLARATION
     declared = table[kind]
     if len(declared) != 1:
         raise AssertionError(f"mapping.md 對 {kind} 列了不只一種角色：{sorted(declared, key=str)}")
@@ -420,6 +429,34 @@ class GenScenesTest(unittest.TestCase):
         self.assertEqual(len(built.disagreements), 1)
         self.assertIn("golden 有 :custom4 標籤，但依實際擋面沒有頂到 custom", built.disagreements[0])
 
+    def test_secondary_fill_follows_the_same_custom4_rule(self):
+        """secondary:fill 也是副支：端面頂到 custom 3 時，標 :custom4 才對；沒標或標錯，交叉核對都要報。"""
+        # 把一支真的頂到 custom 的 mark 改名成 fill，標籤照舊 → 角色 custom 4，沒有分歧
+        def as_fill_labelled(timbers):
+            at = next(i for i, (kind, _r) in enumerate(timbers) if kind.endswith(":custom4"))
+            timbers[at][0] = "secondary:fill:custom4"
+
+        built = gen_scenes.build(self._golden_with_label_edit(as_fill_labelled))
+        self.assertEqual(built.disagreements, [])
+        fills = [m for s in built.scenes for m in s.members if m.kind == "secondary:fill:custom4" and s.room == "F2主臥" and s.layout == 0]
+        self.assertEqual(len(fills), 1)
+        self.assertEqual((fills[0].role, fills[0].priority), ("custom", 4))
+
+        # 同一支改名成 fill 且拿掉標籤 → 實際擋面頂到 custom，卻沒有標籤 → 報分歧
+        def as_fill_unlabelled(timbers):
+            at = next(i for i, (kind, _r) in enumerate(timbers) if kind.endswith(":custom4"))
+            timbers[at][0] = "secondary:fill"
+
+        built = gen_scenes.build(self._golden_with_label_edit(as_fill_unlabelled))
+        self.assertEqual(len(built.disagreements), 1)
+        self.assertIn("secondary:fill", built.disagreements[0])
+        self.assertIn("沒有 :custom4 標籤，但依實際擋面有頂到 custom", built.disagreements[0])
+
+        # 真實 golden 的 fill 沒有一支頂到 custom，也沒有標籤
+        real = [m for s in self.built.scenes for m in s.members if m.kind.startswith("secondary:fill")]
+        self.assertGreater(len(real), 0)  # 支數會隨 golden 變，不寫死；HANDBACK／mapping.md 記現行支數
+        self.assertTrue(all(m.role == "secondary" and not m.custom4_label for m in real))
+
     def test_custom4_label_on_a_non_secondary_is_rejected(self):
         def edit(timbers):
             at = next(i for i, (kind, _r) in enumerate(timbers) if kind == "main")
@@ -614,6 +651,7 @@ class CommittedScenesTest(unittest.TestCase):
                 "rc_parallel:custom": {("custom", 3)},
                 "secondary:mark": {("secondary", None)},
                 "secondary:seam": {("secondary", None)},
+                "secondary:fill": {("secondary", None)},
                 "secondary:mark:custom4": {("custom", 4)},
                 "secondary:seam:custom4": {("custom", 4)},
             },
@@ -684,11 +722,12 @@ class CommittedScenesTest(unittest.TestCase):
                 if base in SECONDARY_BASE_KINDS:
                     key = (base, analysis.stops_on_custom(member.id), (member.role, member.priority))
                     seen[key] = seen.get(key, 0) + 1
-        for base in SECONDARY_BASE_KINDS:
-            self.assertGreater(seen.get((base, True, ("custom", 4)), 0), 0, f"{base} 頂到 custom 的沒有改寫 custom 4")
+        for base in SECONDARY_BASE_KINDS:  # 含 secondary:fill：頂到 custom 的一律 custom 4，沒頂到的一律 secondary
             self.assertGreater(seen.get((base, False, ("secondary", None)), 0), 0, f"{base} 沒頂到 custom 的應仍是 secondary")
             self.assertEqual(seen.get((base, True, ("secondary", None)), 0), 0)
             self.assertEqual(seen.get((base, False, ("custom", 4)), 0), 0)
+        for base in SECONDARY_KINDS_WITH_CUSTOM4_IN_GOLDEN:  # 這兩種在現行 golden 裡兩邊都有實例，確認測試沒有空轉
+            self.assertGreater(seen.get((base, True, ("custom", 4)), 0), 0, f"{base} 頂到 custom 的沒有改寫 custom 4")
         for analysis in self.analyses["已提交"].values():
             for member in analysis.scene.members:
                 if analysis.golden_of[member.id][1] == "rc_parallel:custom":
