@@ -254,12 +254,15 @@ static int tamper(bool before,bool last_only)
             size_t mark=host_count;unsigned equalities=fixture.equalities;
             REQUIRE(before?"deferred-before-tamper-rejected":"deferred-after-tamper-rejected",check(&fixture)==GEO_CANDIDATE_STATE_CHANGED);
             REQUIRE("deferred-pending-inputs-complete",h_pair(mark,saved,actual,original));
+            REQUIRE("h-only-rejection-keeps-kernel-provider",kernel_counts(0,0,1));
             REQUIRE("h-rejection-before-equality",fixture.equalities==equalities);
             mark=host_count;REQUIRE("tamper-publication-rejected",publish(&fixture)==GEO_CANDIDATE_STATE_CHANGED);
             REQUIRE("tamper-publication-hashes-original-pair",h_pair(mark,saved,actual,original)&&fixture.publications==0);
+            REQUIRE("h-only-publication-rejection-keeps-kernel-provider",kernel_counts(0,0,1));
             actual[i]^=change;if(before)fixture.live[i]^=change;mark=host_count;
             REQUIRE("restoration-keeps-seal",check(&fixture)==GEO_CANDIDATE_OK);
             REQUIRE("restoration-no-sha",host_count==mark);
+            REQUIRE("restoration-keeps-kernel-provider",kernel_counts(0,0,1));
         }
     }
     REQUIRE("tamper-keeps-state",fixture.evaluations==1&&geo_candidate_evaluation_generation(fixture.core)==1&&

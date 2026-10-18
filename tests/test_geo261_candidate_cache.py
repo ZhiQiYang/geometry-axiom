@@ -27,7 +27,7 @@ from tests.test_geo261_native_kernel import native
 SPECS = {
     "kernel": {
         "path": "geometry-core/kernel/candidate.c",
-        "sha_calls": 4,
+        "sha_calls": 5,
         "allocations": (
             ("binding->before_bytes=malloc(size);", "binding->before_bytes=candidate_cache_test_alloc(size,1);"),
             ("binding->current_bytes=malloc(binding->size);", "binding->current_bytes=candidate_cache_test_alloc(binding->size,2);"),

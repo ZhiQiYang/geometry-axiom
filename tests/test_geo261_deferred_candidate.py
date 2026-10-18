@@ -1,6 +1,6 @@
 """單一 H opt-in 同時選 H/K deferred：真物件、獨立 SHA oracle 與精確負控。
 
-不修改既有 eager suite、counts 或 instrumentation spec。只改隔離副本的
+既有 eager runtime 斷言與呼叫計數不變；共用 instrumentation 精確釘選真呼叫點。只改隔離副本的
 SHA 呼叫名稱、既有四個 optional caches、constructor 與 provider metadata 配置。
 負控逐一指定第一個正常 ASSERT；編譯失敗、crash、timeout、skip 均非 killed。
 四格來源使用同一個 client／API／功能期望；成本斷言獨立，不能放寬成任意失敗。
@@ -21,7 +21,12 @@ if str(ROOT) not in sys.path:
 from tests.test_geo261_candidate_cache import CACHE_GATE, SPECS, instrument, preamble, replace_once
 from tests.test_geo261_native_kernel import native
 
-EXPECTED_METHODS = 52
+EXPECTED_METHODS = 53
+LEGACY_HOST_CASES = (
+    "ownership", "bindings", "failed-evaluation", "before-evaluation",
+    "before-seal", "after-before-seal", "sealed-before", "sealed-after",
+    "live-policy", "publication", "revision-provider", "state-lifetime",
+)
 EXTRA_PREAMBLE = "void *candidate_deferred_test_calloc(size_t,size_t,unsigned);\n"
 CONSTRUCTOR_ALLOCATIONS = {
     "host": (("AppCandidate *candidate=calloc(1,sizeof *candidate);",
@@ -197,6 +202,17 @@ class NativeDeferredCandidate(unittest.TestCase):
             path.write_text(source, encoding="utf-8")
             cls.objects[kind] = build.compile(path, "deferred-candidate-" + kind)
         cls.exe = cls.link("deferred-candidate-client", cls.objects)
+        # Reuse every original H client assertion; change only the constructor
+        # in this isolated copy, including all six invalid argument cases.
+        legacy = (ROOT / "tests/geo261_app_candidate_harness.c").read_text(encoding="utf-8")
+        if legacy.count("app_candidate_create(") != 7:
+            raise AssertionError("Expected all seven original H constructor calls; no legacy assertion may change")
+        legacy = legacy.replace("app_candidate_create(", "app_candidate_create_deferred_sha(")
+        legacy_path = build.work / "deferred-host-legacy-client.c"
+        legacy_path.write_text(legacy, encoding="utf-8")
+        legacy_object = build.compile(legacy_path, "deferred-host-legacy-client")
+        cls.legacy = build.link("deferred-host-legacy", [legacy_object, build.host_candidate_object,
+                                                       build.candidate_object, build.source_object, build.codec_object])
 
     @classmethod
     def link(cls, name, objects):
@@ -230,6 +246,14 @@ class NativeDeferredCandidate(unittest.TestCase):
             self.assertEqual(int(length), len(data))
             self.assertEqual(hashlib.sha256(data).hexdigest(), actual, f"record {index} 的獨立 SHA oracle")
         self.assertTrue(result.stdout.endswith("\n"))
+
+    def test_existing_host_guards_use_opt_in_without_changing_assertions(self):
+        for name in LEGACY_HOST_CASES:
+            with self.subTest(case=name):
+                result = subprocess.run([str(self.legacy), name], capture_output=True, text=True, timeout=10)
+                self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+                self.assertEqual("", result.stdout)
+                self.assertEqual("", result.stderr)
 
     def changed_object(self, name, kind, before, after):
         build = native()

@@ -103,13 +103,10 @@ static bool geo_candidate_digest_matches(const void *bytes,size_t size,const cha
 {
     if(hashed_bytes&&!memcmp(bytes,hashed_bytes,size))return true;
     char hash[65],saved_expected[65];
-    bool pending=hashed_bytes&&!expected[0];
-    const void *inputs[2]={hashed_bytes,bytes};
-    for(unsigned i=pending?0:1;i<2;++i){
-        char *out=i?hash:saved_expected;
-        geo_sha256(inputs[i],size,out);
+    if(hashed_bytes&&!expected[0]){
+        geo_sha256(hashed_bytes,size,saved_expected);expected=saved_expected;
     }
-    if(pending)expected=saved_expected;
+    geo_sha256(bytes,size,hash);
     return !strcmp(hash,expected);
 }
 static GeoCandidateStatus geo_candidate_check_state(const GeoCandidate *candidate,bool include_current)
