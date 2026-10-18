@@ -40,6 +40,10 @@ STEP20 = {"outer": [[0, 0], [4100, 0], [4100, 3680], [2600, 3680], [2600, 3700],
 STEP40 = {"outer": [[0, 0], [4100, 0], [4100, 3660], [2600, 3660], [2600, 3700], [0, 3700]]}
 # 45 mm 牆階:牆階牆 y=3655 在縫 3659 前面,縫線不伸進淺的那段,FT02 不挪;用來留住兩類仍不可施工的例子
 STEP45 = {"outer": [[0, 0], [4100, 0], [4100, 3655], [2600, 3655], [2600, 3700], [0, 3700]]}
+# 30 mm 牆階:牆階面只剩 3 mm,縫 3659 的承接帶碰不到它,不會觸發退縫;只有 G7 照縫線上最近的對牆(y=3670)才會把板端縫挪到 3629
+STEP30 = {"outer": [[0, 0], [4100, 0], [4100, 3670], [2600, 3670], [2600, 3700], [0, 3700]]}
+# 41 mm 牆階:G7 第一次把縫挪到 3659,剛好落在 y=3659 那面牆的牆線上;那面牆要算在縫前面,再挪到 3618
+STEP41 = {"outer": [[0, 0], [4100, 0], [4100, 3659], [2600, 3659], [2600, 3700], [0, 3700]]}
 
 failed = False
 # (1) 突變
@@ -79,7 +83,7 @@ MUTANTS = [
     ("no_ext_custom3", STEP20, "C8_I19_PRIORITY", "牆階 20 mm:沿牆料端面頂延伸段卻沒宣告 custom 3(primary 2 頂延伸段 2)", "左下起鋪,板長沿X"),
     ("short_face_conflict", STEP40, "C10_SHORT_PIECE", "牆階 40 mm:牆階面只剩 13 mm 也放沿牆料(不照「短於 27 一律不放」)", "左下起鋪,板長沿Y"),
     ("bbox_ft02", STEP20, "C7_SEAMS_NOT_FROM_START", "FT02 退回照外框挪縫(3659):縫線上最近的對牆是 x>2600 的 y=3680 牆,應挪到 3639", "左上起鋪,板長沿X"),
-    ("bbox_ft02", STEP40, "C7_SEAMS_NOT_FROM_START", "同上,板端縫(B 軸):40 mm 牆階應挪到 3619", "左上起鋪,板長沿Y"),
+    ("bbox_ft02", STEP30, "C7_SEAMS_NOT_FROM_START", "同上,板端縫(B 軸):30 mm 牆階應挪到 3629(40 mm 牆階時退縫規則也會退到同一處,抓不出差別,所以換這間)", "左上起鋪,板長沿Y"),
     ("bbox_ft02+no_push_fallback", STEP40, "C1_OVERLAP", "照外框挪縫時,讓開牆料的平移撞到 y=3700 的牆料,沒有退回置中", "左上起鋪,板長沿X"),
     ("no_seam_retreat", STEP45, "C7_SEAMS_NOT_FROM_START", "45 mm 牆階:板端縫 3659 的承接帶落在牆階面沒料的 18 mm 裡,沒有往內退到 3614", "左上起鋪,板長沿Y"),
 ]
@@ -124,7 +128,8 @@ for room_, lay_, why_ in (
         (STEP20, "左上起鋪,板長沿X", "FT02 照 y=3680 牆挪縫到 3639,主支貼住 x>2600 的牆料"),
         (STEP40, "左上起鋪,板長沿X", "FT02 挪縫到 3619"),
         (STEP40, "左上起鋪,板長沿Y", "板端縫 FT02 挪到 3619"),
-        (STEP45, "左上起鋪,板長沿Y", "板端縫退到 y=3655 牆的 G7 位置 3614,承接帶不落在牆階短段")):
+        (STEP45, "左上起鋪,板長沿Y", "板端縫退到 y=3655 牆的 G7 位置 3614,承接帶不落在牆階短段"),
+        (STEP41, "左上起鋪,板長沿X", "縫挪到 3659 時剛好落在牆線上,那面牆算在縫前面,再挪到 3618")):
     res = fo.build(room_, next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay_), p)
     fails = fo.check(res, p)
     ok = not res["conflicts"] and not fails
@@ -138,6 +143,12 @@ got_ = sorted({c["code"] for c in res["conflicts"]})
 ok = got_ == ["CORE_LIMIT_MAIN_ON_EXTENSION"]
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] 對照 40 mm 牆階 左上 X、照舊縫位:平移撞牆料時退回置中,原因要是核心限制 {got_}")
+# 退縫做不到時要報衝突、寫明理由,不能默默排出板邊沒料的排法:關掉退縫,45 mm 牆階左上 Y 要報 SHORT_FACE_SEAM_EDGE_UNSUPPORTED
+res = fo.build(STEP45, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿Y"), p, frozenset({"no_seam_retreat"}))
+got_ = sorted({c["code"] for c in res["conflicts"]})
+ok = got_ == ["SHORT_FACE_SEAM_EDGE_UNSUPPORTED"]
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] 對照 45 mm 牆階 左上 Y、不退縫:板端縫承接帶落在牆階短段要報衝突 {got_}")
 # 牆階掃描裡仍判不可施工的兩類(都是核心限制),各挑一個,原因代碼要完全一致(理由寫在 README 的核心限制清單)
 for room_, lay_, want_, why_ in (
         (STEP45, "左上起鋪,板長沿X", ["CORE_LIMIT_MAIN_ON_EXTENSION"], "核心限制(主支頂延伸段),不是碰撞"),
