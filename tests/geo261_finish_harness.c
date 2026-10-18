@@ -1,5 +1,6 @@
 /* Public W finish/fill policy: independent D41-D44 / R41-R43 oracles. */
 #include "finish.h"
+#include "version_sources.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -133,11 +134,40 @@ static int relations(void)
  return 0;
 }
 
+/* 同一公開 K provider 在原版及單點整數檢查突變版都須保留精確分數。 */
+static int fractional_thickness_source(void)
+{
+ GeoVersionView version;
+ REQUIRE(wood_eng_version_view(&context.engineering,0,"board",3,&version),"fractional-source-material-version");
+ GeoEvalContext *graph=geo_eval_create(261,73);
+ REQUIRE(graph,"fractional-source-candidate");
+ GeoVersionSources *sources=geo_version_sources_register(graph,versions,91);
+ REQUIRE(sources,"fractional-source-provider");
+ GeoVersionSourceKey field_key,definition_key;
+ GeoSourceRef field=geo_version_source_ref(91,GEO_VERSION_SOURCE_FIELD,version.identity,WOOD_ENG_VERSION_THICKNESS,&field_key);
+ GeoSourceRef definition=geo_version_source_ref(91,GEO_VERSION_SOURCE_DEFINITION,version.identity,0,&definition_key);
+ GeoSourceValue value;
+ REQUIRE(geo_eval_source(graph,field,GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK&&
+   value.kind==GEO_SOURCE_QUANTITY&&value.as.quantity.unit==GEO_UNIT_LENGTH&&
+   value.as.quantity.num==19&&value.as.quantity.den==2,"fractional-source-retains-nineteen-over-two-mm");
+ GeoSourceEdge edge;GeoSourceNodeView consumer,source;
+ REQUIRE(geo_eval_node_count(graph)==2&&geo_eval_edge_count(graph)==1&&geo_eval_edge_at(graph,0,&edge)&&
+   edge.kind==GEO_DEPENDENCY_DEFINITION_REQUIRED&&geo_eval_node_at(graph,edge.consumer,&consumer)&&
+   geo_eval_node_at(graph,edge.source,&source)&&consumer.source.provider==field.provider&&
+   consumer.source.key_size==field.key_size&&!memcmp(consumer.source.key,field.key,field.key_size)&&
+   source.source.provider==definition.provider&&source.source.key_size==definition.key_size&&
+   !memcmp(source.source.key,definition.key,definition.key_size)&&source.value&&
+   source.value->kind==GEO_SOURCE_DEFINITION&&!strcmp(source.value->as.definition.schema,"geometry.version/1"),
+   "fractional-source-consumes-exact-version-definition");
+ geo_eval_destroy(graph);geo_version_sources_destroy(sources);return 0;
+}
+
 static int materials(void)
 {
  PanelFill p;WoodFinishLayout d={0};state.items[0]=finish(1);state.count=1;
  REQUIRE(json_record("{\"id\":\"board\",\"version\":1,\"kind\":\"panel\",\"name\":\"board\",\"width\":40,\"length\":60,\"thickness\":\"9.000\"}",3,NULL)&&json_record(fill_json,2,&p)&&wood_pf_values(&context,&p,&d)&&d.t==9,"thickness-exact-decimal-integer");
  REQUIRE(material(2,"12.000")&&material(3,"9.5")&&material(4,NULL)&&material(5,"100000001"),"material-fixed-versions");
+ if(fractional_thickness_source())return 1;
  REQUIRE(wood_pf_values(&context,&p,&d)&&d.t==9&&d.layout.size[0]==40&&d.layout.size[1]==60,"material-fixed-selected-version");
  p.length_axis=0;REQUIRE(wood_pf_values(&context,&p,&d)&&d.layout.size[0]==60&&d.layout.size[1]==40,"material-length-field-axis");
  p.panel.version=2;REQUIRE(wood_pf_values(&context,&p,&d)&&d.t==12,"material-second-version");
