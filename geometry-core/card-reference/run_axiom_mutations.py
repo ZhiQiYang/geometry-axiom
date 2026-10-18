@@ -32,12 +32,14 @@ MUTATIONS = (
      'if supplied_version not in PRE_CARD_REFERENCE_AXIOM_VERSIONS and (' + SCENE + ' or\n                    ' + MANIFEST + '):',
      'test_pre_card_axioms_reject_card_syntax_with_stripped_declarations', 'CARD_AXIOM_SYNTAX'),
     # GEO-261 retired b3c79615, which already contains D64/I74/R60; treating that
-    # adoption pair as pre-adoption must turn the era test red.
-    ('V05-card-adoption-treated-as-pre', 'CARD_REFERENCE_AXIOM_VERSIONS = PRE_DECOUPLING_AXIOM_VERSIONS',
+    # adoption pair as pre-adoption must turn the era test red.  (The #260 adoption
+    # added e744f531 and 0d9015bc to the same set; the whole set is emptied here.)
+    ('V05-card-adoption-treated-as-pre',
+     'CARD_REFERENCE_AXIOM_VERSIONS = PRE_DECOUPLING_AXIOM_VERSIONS | PRE_ONE_AXIS_STAGGER_AXIOM_VERSIONS | PRE_PARAMETER_ID_WORDING_AXIOM_VERSIONS',
      'CARD_REFERENCE_AXIOM_VERSIONS = frozenset()',
      'test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild', 'CARD_AXIOM_ERA'),
 )
-SUITE_TESTS = 39
+SUITE_TESTS = 42
 
 
 def run(directory, selected):
