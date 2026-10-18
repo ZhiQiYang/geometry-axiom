@@ -1,7 +1,7 @@
 """Explicit K-only deferred state digests retain all candidate verdicts.
 
-The default cache/native suites remain unchanged. Their four SHA call-site,
-two optional allocation and exact fallback pins are reused verbatim. The new
+All runtime assertions remain unchanged. The shared count of five SHA call
+sites, two optional allocation sites and exact fallback pin are reused. The new
 client links only isolated K candidate/source/codec objects; proxies execute
 the real codec and preserve each input, pointer, size and resulting digest.
 Resource faults and guard mutations affect only isolated local source copies.
@@ -173,8 +173,8 @@ class NativeDeferredCandidate(unittest.TestCase):
         controls = (
             ("ignore-byte-key", "tamper", CACHE_GATE, "if(hashed_bytes)return true;",
              "deferred-before-tamper-rejected", None),
-            ("hash-actual-twice", "tamper", "const void *inputs[2]={hashed_bytes,bytes};",
-             "const void *inputs[2]={bytes,bytes};", "deferred-before-tamper-rejected", None),
+            ("hash-actual-twice", "tamper", "geo_sha256(hashed_bytes,size,saved_expected);",
+             "geo_sha256(bytes,size,saved_expected);", "deferred-before-tamper-rejected", None),
             ("skip-before-oom-sha", "oom", "if(!candidate->deferred_state_sha||!binding->before_bytes)",
              "if(!candidate->deferred_state_sha)", "before-oom-captured", 1),
             ("skip-current-oom-sha", "oom", "if(!candidate->deferred_state_sha||!binding->current_bytes)",
