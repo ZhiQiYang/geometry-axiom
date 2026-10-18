@@ -1,0 +1,37 @@
+commit 1987af507c6f387d7986325da6c29b2ec6246944
+Author:     Yang <b10102230@gmail.com>
+AuthorDate: Sun Oct 18 17:35:14 2026 +0800
+Commit:     Yang <b10102230@gmail.com>
+CommitDate: Sun Oct 18 17:35:14 2026 +0800
+
+    geo261: restore resolved on guides memoized before the candidate rebuild
+    
+    Second root cause behind py:test_assembly_candidate_impact (1/4 on
+    e64aa635: three tests raised TypeError 'NoneType' object is not
+    subscriptable once the scene loaded).  Diagnosed statically; nothing
+    native was built or run here.
+    
+    Inside one candidate revalidation the shared source graph is reset once
+    (reference_parameters_rebuild).  Assembly rebuild/generation then reads
+    the member guides through reference_asm_guide -> reference_guide_position
+    (138595e0); the guide provider runs and writes offset/resolved into the
+    candidate world.  reference_rebuild later calls geo_guides_reset_resolved
+    and re-requests every guide, but those values are memoized, so the
+    provider never runs again and the assembly guides stay resolved=false.
+    json_reference_guide prints null for them, so the 'references' guide list
+    and the impact 'after' guides contain null, and the tests' `g['id']` /
+    `['after']['off']` subscripts fail (the cancel test never reads guides).
+    Every published world goes through a candidate, so the live world after
+    the scene load carries the same nulls.
+    
+    reference_guide_position now restores only the resolved flag when the
+    stored offset is exactly the returned graph value.  Snapshot reads
+    (use_current_values) and any differing world cache are left untouched,
+    which keeps geo261_source_product_harness (observational current cache)
+    and geo261_linear_definition_product_harness (world-cache-decoy-unchanged)
+    exact.  Member poses already write back their returned box the same way.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+ geometry-app/native/reference_sources.inc | 7 +++++++
+ 1 file changed, 7 insertions(+)
