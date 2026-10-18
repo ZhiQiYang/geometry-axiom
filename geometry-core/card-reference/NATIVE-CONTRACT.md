@@ -106,8 +106,9 @@ D64／I74／R60 於 #256 的提交 A `b3c79615` 採納；#266（GEO-261）之後
 這 19 組恰等於 a898ad6e（當時現行即 `b3c79615`）凍結的 `historical-versions.json` 全部家族，可獨立核對。日後若再有採納讓現行版本退為舊版，須把它加入 `CARD_REFERENCE_AXIOM_VERSIONS`，否則其整卡包會 fail closed。
 #260 的採納（現行改指 `a00ba9e9`，LF 雜湊 `7794a778…`）即是這種情形：它退役了 `e744f531`（`PRE_ONE_AXIS_STAGGER_AXIOM_VERSIONS`）。
 `b3c79615`、`e744f531`、`a00ba9e9` 三版的 D64／I74／R60 區塊逐位元組相同，三版之間改的字（A/B 一軸錯縫、I5/R18、I23/R13 標題括號、D31/R33 cardId→parameterId）都不在整卡條文內，
-所以 `CARD_REFERENCE_AXIOM_VERSIONS` = `b3c79615`、`e744f531` 兩組。這個「逐位元組相同」由 `tests/test_engineering_model_compatibility.py` 的 `CARD_CLAUSE_SHA256`（三版各自記錄的 D64／I74／R60 區塊 SHA-256）執行核對：
-現行條文的這三條一動，測試即轉紅，清單內每一組都要重新核對；清單內多一組而沒有記錄雜湊，同樣轉紅。
+所以 `CARD_REFERENCE_AXIOM_VERSIONS` = `b3c79615`、`e744f531` 兩組。`tests/test_engineering_model_compatibility.py` 的 `CARD_CLAUSE_SHA256` 記錄 D64／I74／R60 區塊的 SHA-256：
+測試只實算現行 `公理層.md`，現行條文的這三條一動即轉紅，清單內多一組而沒有記錄雜湊也轉紅；三個歷史版本的雜湊是整合時以 `git show` 逐版核對後記錄的（三版相同），測試不重算。
+這道雜湊只是絆線，不是完整的整卡語意守門：它只涵蓋三條的條頭區塊，其他條文行中帶整卡語意的句子（例如 D29、D25、I38、R33 內提到 D64／I74 的行）改了不會轉紅。日後升版、要把版本加進 `CARD_REFERENCE_AXIOM_VERSIONS` 時，仍須人工審過全部提到 D64／I74／R60 的行。
 #309 提交的執行器版本 `0d9015bc`（LF 雜湊 `f10ef7ca…`）不在其中，也不在允收集合：#309 只以 merge commit 第二親代進 main，main 的 first-parent 狀態從來沒有宣告過它（P-181），依「過渡版本不列入」的先例刻意不收，帶它的包回 `UNSUPPORTED/AXIOM_VERSION`。
 `verify_package` 在重建之前檢查 manifest.capabilities 與 base_scene 的能力宣告／整卡語法；任一出現 `grid-card-reference/1` 語意即回 `UNSUPPORTED/AXIOM_VERSION`。
 兩處能力宣告都被移除但仍有 card-reference／card 語法，也不能藉此套用舊版公理。
