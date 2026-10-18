@@ -23,6 +23,15 @@ FINITE_GRID_VERSION = ("b4fe75f7f03ed81b4bc9f85a044282f91bd27cb6", "2d31868524cb
 CLARIFIED_MAIN_VERSION = ("a393a0f01284433ca20fe8b10d9f21111026e7f1", "b06ffecf4f3b7a907a50d329f2073799d9514daa26b9056380f62ad37e5725ee")
 K3_MAIN_VERSION = ('d1db88ae99ca9b6858b0ada34d082e902f00c9f9', '9d4f90aacbc863941c1065a6b962f760e7e842c4d7dda55a56c4dc321f9a0f93')
 PRE_CARD_REFERENCE_MAIN_VERSION = ("651c661b2c4c224c58bb4a2ed0a42ed929a16aa6", "ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004")
+PRE_ONE_AXIS_STAGGER_MAIN_VERSION = ("e744f5316fd7c896275bdee4c34ad22ae97d9d8e", "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5")
+# Frozen, unmodified build_package output of main e980cb0d (the GEO-261 release),
+# produced natively by make_fixture.sh in a clean clone with that main's own adapter;
+# see each fixture's provenance.  Pin the SHA-256 the producer recorded when committing.
+PRE_ONE_AXIS_STAGGER_FIXTURES = {
+    "model-package-main-e980cb0d-profile.json": "",
+    "model-package-main-e980cb0d-stagger.json": "",
+}
+PRE_ONE_AXIS_STAGGER_READY = all((ROOT / "tests/fixtures" / name).is_file() for name in PRE_ONE_AXIS_STAGGER_FIXTURES)
 CASE = json.loads((ROOT / "geometry-core/modeling-cases.json").read_text())["cases"][0]
 
 
@@ -164,6 +173,57 @@ class EngineeringModelCompatibility(unittest.TestCase):
                 verify_package(altered)
             self.assertEqual(caught.exception.code, "AXIOM_VERSION")
         self.assertEqual(package, self.saved_pre_card_reference_package())
+
+    def saved_pre_one_axis_stagger_packages(self):
+        packages = {}
+        for name, pinned in PRE_ONE_AXIS_STAGGER_FIXTURES.items():
+            raw = (ROOT / "tests/fixtures" / name).read_bytes()
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), pinned,
+                             f"{name}: pin the SHA-256 recorded by make_fixture.sh")
+            package = json.loads(raw)
+            manifest = package["manifest"]
+            self.assertEqual((manifest["axiom_revision"], manifest["axiom_sha256"]),
+                             PRE_ONE_AXIS_STAGGER_MAIN_VERSION)
+            packages[name] = package
+        profile = packages["model-package-main-e980cb0d-profile.json"]
+        self.assertIn("section-profile/1", profile["manifest"]["capabilities"])
+        self.assertIn(" stagger 400", packages["model-package-main-e980cb0d-stagger.json"]["definitions"]["base_scene"])
+        return packages
+
+    @unittest.skipUnless(PRE_ONE_AXIS_STAGGER_READY, "e980cb0d fixtures not committed yet (make_fixture.sh)")
+    def test_released_pre_one_axis_stagger_packages_reopen_and_only_update_axiom_version(self):
+        for name, package in self.saved_pre_one_axis_stagger_packages().items():
+            with self.subTest(fixture=name):
+                original = deepcopy(package)
+                try:
+                    rebuilt = verify_package(package)
+                except ModelError as exc:
+                    self.fail("released pre-one-axis-stagger package must reopen and rebuild: "
+                              f"{exc.status}/{exc.code} ({exc.clause})")
+                self.assertEqual(package, original, "opening must preserve the saved package")
+                self.assertNotEqual(original["manifest"]["axiom_revision"], modeling.AXIOM_REVISION)
+                self.assertNotEqual(original["manifest"]["axiom_sha256"], modeling.AXIOM_SHA256)
+                expected = deepcopy(original)
+                expected["manifest"]["axiom_revision"] = modeling.AXIOM_REVISION
+                expected["manifest"]["axiom_sha256"] = modeling.AXIOM_SHA256
+                self.assertEqual(rebuilt, expected, "rebuild may change only axiom_revision and axiom_sha256")
+
+    @unittest.skipUnless(PRE_ONE_AXIS_STAGGER_READY, "e980cb0d fixtures not committed yet (make_fixture.sh)")
+    def test_pre_one_axis_stagger_packages_reject_unknown_and_mixed_axiom_versions(self):
+        packages = self.saved_pre_one_axis_stagger_packages()
+        revision, sha256 = PRE_ONE_AXIS_STAGGER_MAIN_VERSION
+        for name, package in packages.items():
+            for version in (("0" * 40, "0" * 64), ("0" * 40, sha256),
+                            (revision, "0" * 64), (revision, modeling.AXIOM_SHA256),
+                            (modeling.AXIOM_REVISION, sha256),
+                            (revision, PRE_CARD_REFERENCE_MAIN_VERSION[1]),
+                            (PRE_CARD_REFERENCE_MAIN_VERSION[0], sha256)):
+                altered = deepcopy(package)
+                altered["manifest"]["axiom_revision"], altered["manifest"]["axiom_sha256"] = version
+                with self.subTest(fixture=name, version=version), self.assertRaises(ModelError) as caught:
+                    verify_package(altered)
+                self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+        self.assertEqual(packages, self.saved_pre_one_axis_stagger_packages())
 
     def test_released_main_package_rejects_rehashed_false_geometry(self):
         package = self.saved_main_package()
