@@ -1,0 +1,41 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "import sys; sys.path.insert(0, 'tests'); import mutate; m = next(m for m in mutate.MUTANTS if m['id'] == 'M11'); sys.exit(mutate.check_pass([m], killers=True))"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T15:09:54.173508+00:00",
+  "started_ns": 1792336194173523563,
+  "timeout_seconds": 120.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 0,
+  "launch_error": null,
+  "pid": 195734,
+  "ended_utc": "2026-10-18T15:09:54.438763+00:00",
+  "ended_ns": 1792336194438785659,
+  "seconds": 0.2652597730011621,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1574816,
+      "bytes": 407,
+      "mtime_ns": 1792336194396064060,
+      "ctime_ns": 1792336194396064060,
+      "sha256": "0ab51c58f64042c247900664a71b210c50b01796c1732c8b08ecd56c73e5a017",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1574817,
+      "bytes": 0,
+      "mtime_ns": 1792336194173183799,
+      "ctime_ns": 1792336194173183799,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    }
+  }
+}
