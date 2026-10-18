@@ -1,0 +1,99 @@
+{
+  "receipts": [
+    {
+      "kind": "registry",
+      "name": "core",
+      "path": "/tmp/geometry-tests/core",
+      "inspection": {
+        "name": "core",
+        "state": "stale",
+        "reason": "來源指紋不符（exe 建於 2026-10-18T08:19:55+00:00，指紋 3e5142cfa5… ≠ 現在 e6de2463b0…）；變動：geometry-app/native/reference_sources.inc",
+        "path": "/tmp/geometry-tests/core"
+      },
+      "source_fingerprint": "e6de2463b0e3d5c5db46b541b42079a042a84ba1970b9e5abfe5c13fbb0b6e37",
+      "binary": {
+        "device": 34,
+        "inode": 1150,
+        "bytes": 864728,
+        "mtime_ns": 1792311595188208212,
+        "ctime_ns": 1792311595188218999,
+        "sha256": "3c58c1f2cc12cab009d3690b8136cc66e71fd9fd680b3585999d98661df75f2e",
+        "exists": true
+      },
+      "sidecar": {
+        "device": 34,
+        "inode": 1153,
+        "bytes": 22632,
+        "mtime_ns": 1792311595386842107,
+        "ctime_ns": 1792311595386842107,
+        "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64",
+        "exists": true
+      },
+      "sidecar_copy": "after.binary-00.sidecar.json"
+    },
+    {
+      "kind": "registry",
+      "name": "bridge",
+      "path": "/tmp/geometry-tests/bridge",
+      "inspection": {
+        "name": "bridge",
+        "state": "stale",
+        "reason": "來源指紋不符（exe 建於 2026-10-18T12:53:27+00:00，指紋 f0d96d0190… ≠ 現在 c066e3ed00…）；變動：geometry-core/grid_subdivision.inc, geometry-templates/woodworking/native/grid_rules.c",
+        "path": "/tmp/geometry-tests/bridge"
+      },
+      "source_fingerprint": "c066e3ed00ee0de9408c1a845a477070e79092947fe785ba6c435f53f796ae83",
+      "binary": {
+        "device": 34,
+        "inode": 118261,
+        "bytes": 1078560,
+        "mtime_ns": 1792328006319393589,
+        "ctime_ns": 1792328006319408125,
+        "sha256": "bfa16bacdf45c4b439467b45da43bdeeb998c09fe8b95b2473ef63070aa02161",
+        "exists": true
+      },
+      "sidecar": {
+        "device": 34,
+        "inode": 118263,
+        "bytes": 22646,
+        "mtime_ns": 1792328007625133418,
+        "ctime_ns": 1792328007625133418,
+        "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445",
+        "exists": true
+      },
+      "sidecar_copy": "after.binary-01.sidecar.json"
+    },
+    {
+      "kind": "registry",
+      "name": "model-base",
+      "path": "/tmp/geometry-tests/model-base",
+      "inspection": {
+        "name": "model-base",
+        "state": "fresh",
+        "reason": "來源與 binary SHA-256 相符（建於 2026-10-18T12:33:15+00:00）",
+        "path": "/tmp/geometry-tests/model-base"
+      },
+      "source_fingerprint": "621c77a405ac57ad097a997b226e7ebe903dbf0c555d28787f5a3674edfb9077",
+      "binary": {
+        "device": 34,
+        "inode": 111569,
+        "bytes": 929176,
+        "mtime_ns": 1792326794918362788,
+        "ctime_ns": 1792326794918375164,
+        "sha256": "bf93d555212f54b49b54be44f06ed5aed9c6eb69205f6800649ee6e37a797fee",
+        "exists": true
+      },
+      "sidecar": {
+        "device": 34,
+        "inode": 111573,
+        "bytes": 22658,
+        "mtime_ns": 1792326795305875141,
+        "ctime_ns": 1792326795305875141,
+        "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6",
+        "exists": true
+      },
+      "sidecar_copy": "after.binary-02.sidecar.json"
+    }
+  ],
+  "captured_utc": "2026-10-18T13:03:06.538900+00:00",
+  "coverage": "僅前後可讀的持久 binary；不宣稱含 child 已清除的 transient mutant binary"
+}
