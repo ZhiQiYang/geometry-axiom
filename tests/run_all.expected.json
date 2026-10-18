@@ -309,9 +309,14 @@
       "count": 18,
       "unit": "test"
     },
-    "py:test_geo261_candidate_product": {
+    "py:test_geo261_candidate_deferred_sha": {
       "mode": "count",
       "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo261_candidate_product": {
+      "mode": "count",
+      "count": 26,
       "unit": "test"
     },
     "py:test_geo261_contact_sources": {
@@ -322,6 +327,16 @@
     "py:test_geo261_default_native": {
       "mode": "count",
       "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_deferred_candidate": {
+      "mode": "count",
+      "count": 53,
+      "unit": "test"
+    },
+    "py:test_geo261_deferred_product": {
+      "mode": "count",
+      "count": 10,
       "unit": "test"
     },
     "py:test_geo261_definition_graph_product": {
@@ -741,7 +756,7 @@
     },
     "py:test_geometry_host_native": {
       "mode": "count",
-      "count": 22,
+      "count": 30,
       "unit": "test"
     },
     "py:test_geometry_host_sources": {
