@@ -15,12 +15,16 @@ EXTRA = {
 
 
 def kind_label(t):
-    """golden 裡的種類標籤。頂在凹角延伸段上的沿牆料標 rc_parallel:custom(核心角色 custom、優先級 3)。"""
-    if t["kind"] == "secondary":
-        return "secondary:" + t["role"]
+    """golden 裡的種類標籤。
+    頂在凹角延伸段上的沿牆料與併料標 rc_parallel:custom(核心角色 custom、優先級 3)。
+    端面頂到 custom 側面的副支(含與主支垂直的柱面料)在原標籤後加 :custom4(核心角色 custom、優先級 4;
+    使用者 2026-10-18 拍板,決策佇列「凹角沿牆料的排序」選項 C)。其餘照舊;核心角色對照見 README。"""
+    if t["kind"] == "rc_parallel" and t.get("core_role") == "custom":
+        return "rc_parallel:custom"
+    base = "secondary:" + t["role"] if t["kind"] == "secondary" else t["kind"]
     if t.get("core_role") == "custom":
-        return t["kind"] + ":custom"
-    return t["kind"]
+        base += f":custom{t['priority']}"
+    return base
 
 
 def snapshot(spec):

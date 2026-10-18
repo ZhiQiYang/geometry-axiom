@@ -15,13 +15,20 @@
      每段兩端都接到 RC(外牆與壁柱停在邊界材側面,獨立柱停在柱面),這仍是連續傳到 RC;
      只有在室內中間斷開去接別的角材才不行(使用者 2026-10-14 第 3 題、2026-10-16)。
      主支位置預設置中在縫上,但只要縫兩側板邊承接 >= X 就可以平移(G1 才是要求)。
+     R-butt:主支與相鄰平行料之間有 0 < 間隙、平移這段間隙後承接仍 >= X,就平移到貼住(使用者的平釘慣例:
+     主骨剛好頂住壁邊材,不留 1 mm 縫;2026-10-18)。
+  R-nosliver:副支段長 < min_piece(params,預設 = w,終值待使用者確認)一律不放,那條窄縫兩側的板由縫兩邊的料承接
+     (1–23 mm 的角材現場不存在,也釘不上去;2026-10-18)。檢查 C3/C4/C9 對這種窄縫用 bridged() 判為由兩側承接。
   G4 RC 邊界一律有角材(側面固定在 RC 上)。其他角材的端面只頂角材,不頂 RC。
      與主支平行的柱面,其角材沿線延伸到兩端的牆,成為連續的支,讓兩側的副支都有角材可頂。
      與主支平行的外牆在凹角處(牆線越過牆端仍是室內:L 形內角、壁柱、壁龕)停在牆端,
      改由凹角另一面的邊界材越過凹角延伸,停在路上第一支角材的側面(主支、沿牆料或另一支邊界材;核心 I22 允許延伸段端面頂任何優先級的側面),沿牆料的端面頂在這段延伸上。
-     這是核心 I22 / R19(e) 唯一接受的表示法(2026-10-16 P-145,原生探針 p1–p9):
+     這是核心 I22 / R19(e) 接受的表示法(2026-10-16 P-145,原生探針 p1–p9):
      非 boundary 角材不得超出它貼的外牆;延伸段側面以優先級 2 計,主支不得頂它,
      所以頂在延伸段上的沿牆料核心角色是 custom、優先級 3;主支端面落在延伸段上的排法判衝突。
+     I19 另要求端面所頂擋面的優先級嚴格小於自己,副支 3 頂不了 custom 3:端面頂到沿牆料或併料的副支
+     改宣告 custom、優先級 4,條文不改(使用者 2026-10-18 拍板,決策佇列「凹角沿牆料的排序」選項 C,#301)。
+     檢查 C8_I19_PRIORITY 做這條數值比較;custom 4 在原生核心是否接受,本檔沒有實跑。
   G5 角材之間、角材與 RC 之間不得有正面積重疊(碰撞);端面相貼是零面積,允許。
   G6 封板從起鋪角整片鋪,只在對牆收邊,不置中。
   G7 最後一條縫若讓縫上的角材撞到對牆的角材(距離 d > D - 1.5w),
@@ -208,6 +215,8 @@ def seam_centers(lo, hi, start, ps, g, w, mut):
 # ---------------------------------------------------------------- 建構
 def build(room, layout, p, mut=frozenset()):
     P, Lp, g, w, M, X = p["P"], p["L"], p["gap"], p["w"], p["M"], p["X"]
+    minp = p.get("min_piece", w)  # R-nosliver 的最短料長;預設 = 角材寬,終值待使用者確認
+    sliver = 100 if "nosliver_too_wide" in mut else minp  # 突變:門檻誤設成 100,連 93 mm 寬的跨也不放副支
     gl, gu = g // 2, g - g // 2  # 縫在世界座標佔 [c-gl, c+gu]:下側板邊 c-gl、上側板邊 c+gu(兩個起鋪方向都一樣)
     reg = Region(room["outer"], room.get("holes", []))
     a = 0 if layout["A"] == "x" else 1
@@ -282,7 +291,7 @@ def build(room, layout, p, mut=frozenset()):
         seen.add(r)
         t = add("rc_parallel", r, rc_line=e)
         if ends:
-            t["core_role"] = "custom"
+            t["core_role"], t["priority"] = "custom", 3
             reflex.extend((e, s) for s in ends)
         bprims.append(t)
 
@@ -323,6 +332,27 @@ def build(room, layout, p, mut=frozenset()):
             continue
         s = push_lo - push_hi
         ar = (ar[0] + s, ar[1] + s)
+        # R-butt(由「支撐可以移動」加使用者的平釘慣例「主骨剛好頂住壁邊材」推得):
+        #   主支與相鄰平行料之間有 0 < 間隙,而平移這段間隙後縫兩側板邊承接仍 >= X,就把主支平移到貼住那支料,
+        #   不留 1–5 mm 的縫。兩側都可貼時貼間隙小的那側(同分貼 - 側)。平移後主支在室內的範圍要不變;做不到就不移。
+        if not (push_lo or push_hi) and "no_r_butt" not in mut:
+            foot = reg.strip_set(a, *ar)
+            near = {}
+            for q in bprims:
+                qa = rng(q["rect"], a)
+                if not iv_intersect(foot, [rng(q["rect"], b)]):
+                    continue
+                if qa[1] <= ar[0]:
+                    near[-1] = min(near.get(-1, ar[0] - qa[1]), ar[0] - qa[1])
+                elif qa[0] >= ar[1]:
+                    near[1] = min(near.get(1, qa[0] - ar[1]), qa[0] - ar[1])
+            if 0 not in near.values():
+                opts = sorted((gap_, d) for d, gap_ in near.items() if gap_ <= (allow_hi if d < 0 else allow_lo))
+                for gap_, d in opts:
+                    ar2 = (ar[0] + d * gap_, ar[1] + d * gap_)
+                    if reg.strip_set(a, *ar2) == foot:
+                        s, ar = s + d * gap_, ar2
+                        break
         for _ in range(3):
             hit = [q for q in outer_blocks if max(ar[0], rng(q["rect"], a)[0]) < min(ar[1], rng(q["rect"], a)[1])]
             pieces = iv_subtract(reg.strip_set(a, *ar), [rng(q["rect"], b) for q in hit])
@@ -371,7 +401,8 @@ def build(room, layout, p, mut=frozenset()):
                 and max(ta[0], rng(q["rect"], a)[0]) < min(ta[1], rng(q["rect"], a)[1])]
         if not cuts:
             continue
-        parts = iv_subtract([ta], cuts)
+        # R-nosliver:被主支切剩 < min_piece 的那一段不放(那段柱面由兩端的沿柱料與主支承接)
+        parts = [q for q in iv_subtract([ta], cuts) if q[1] - q[0] >= minp or "allow_short_pieces" in mut]
         astrips.remove(t)
         t["rect"] = mk(a, parts[0], tb) if parts else None
         if parts:
@@ -421,7 +452,7 @@ def build(room, layout, p, mut=frozenset()):
                 if seg is None:
                     conflicts.append(dict(code="MAIN_DOUBLING_BLOCKED", seam=c, at=[u0, u1]))
                     continue
-                made.append(add("rc_parallel", mk(a, da, seg), rc_line=da[0], doubling=True, core_role="custom"))
+                made.append(add("rc_parallel", mk(a, da, seg), rc_line=da[0], doubling=True, core_role="custom", priority=3))
     bprims += made
     # 主支端面落在凹角延伸段上:核心 I22 把延伸段側面當優先級 2,主支不得頂它 → 這個起鋪角/方向不能用
     ext_rects = [mk(a, tuple(x), rng(t["rect"], b)) for t in astrips for x in t.get("ext", [])]
@@ -472,6 +503,8 @@ def build(room, layout, p, mut=frozenset()):
             g0, g1 = rng(t["rect"], a)[1], rng(u["rect"], a)[0]
             if g1 <= g0:
                 continue
+            if g1 - g0 < sliver and "allow_short_pieces" not in mut:
+                continue  # R-nosliver:副支會短於 min_piece,不放;這條窄縫兩側的板由縫兩邊的料承接
             inside = iv_intersect(sec, [(g0, g1)])
             if not inside:
                 continue
@@ -616,6 +649,23 @@ def build(room, layout, p, mut=frozenset()):
             timbers.remove(right[len(right) // 2])
             for i_, t_ in enumerate(timbers):
                 t_["id"] = i_
+    # 核心角色:端面頂到 custom 側面(凹角沿牆料、併料,custom 優先級 3)的副支,改宣告 custom、優先級 4,條文不改
+    #   (使用者 2026-10-18 拍板,決策佇列「凹角沿牆料的排序」選項 C,#301)。I19 要擋面擁有者優先級嚴格小於自己,
+    #   副支 3 頂不了 custom 3。依實際擋面判定:端面座標等於那支 custom 料的側面,且它在寬向蓋住整個端面;
+    #   只拿原本就是 custom 的料當擋面,升格後的 custom 4 不再讓別人升格。核心角色是副支的料都適用
+    #   (secondary,以及與主支垂直的柱面料)。
+    if "no_custom4" not in mut:
+        customs = [q for q in timbers if q.get("core_role") == "custom"]
+        for t in timbers:
+            if not (t["kind"] == "secondary" or (t["kind"] == "boundary" and not t["outer"])):
+                continue
+            lo, hi = rng(t["rect"], a)
+            o = rng(t["rect"], b)
+            for q in customs:
+                qa, qb = rng(q["rect"], a), rng(q["rect"], b)
+                if qb[0] <= o[0] and o[1] <= qb[1] and (qa[1] == lo or qa[0] == hi):
+                    t["core_role"], t["priority"] = "custom", q["priority"] + 1
+                    break
     # 碰撞與入 RC 都是排板衝突(G5):這個起鋪角/方向不能用
     if "skip_conflict_scan" not in mut:
         R = reg.rects()
@@ -662,10 +712,25 @@ def pos_edge_outer(reg, rect, k):
     return False
 
 
+def bridged(q, T, minp, k):
+    """空檔 q 沿軸 k 夾在兩處角材之間,兩處相距 < minp(R-nosliver 不放料的窄縫):由兩側的料直接承接。
+    兩處都要在 q 的另一軸範圍內整片有料(端面外 1 mm 的帶子被角材蓋滿)。只沿軸 k 判斷,不沿另一軸。"""
+    o = rng(q, 1 - k)
+    lo, hi = rng(q, k)
+
+    def covered(v0, v1):
+        return not leftover((v0, o[0], v1, o[1]) if k == 0 else (o[0], v0, o[1], v1), T)
+
+    L = max((rng(t, k)[1] for t in T if lo - minp < rng(t, k)[1] <= lo and covered(rng(t, k)[1] - 1, rng(t, k)[1])), default=None)
+    R_ = min((rng(t, k)[0] for t in T if hi <= rng(t, k)[0] < hi + minp and covered(rng(t, k)[0], rng(t, k)[0] + 1)), default=None)
+    return L is not None and R_ is not None and R_ - L < minp
+
+
 # ---------------------------------------------------------------- 檢查(與建構分開,用來抓錯)
 def check(res, p):
     reg, a, b = res["region"], res["a"], res["b"]
     w, M, X, g = p["w"], p["M"], p["X"], p["gap"]
+    minp = p.get("min_piece", w)
     T = [t["rect"] for t in res["timbers"]]
     fails = []
     # C7 縫位必須等於獨立推算的起鋪結果(G6/G7)。之後的 C3/C4/C5 也改用這組獨立縫位,
@@ -709,17 +774,19 @@ def check(res, p):
     by_cell = {}
     for cell, q in pieces:
         by_cell.setdefault(cell, []).append(q)
-    # C3 每條面材邊都有支撐,承接寬度 >= X
+    # C3 每條面材邊都有支撐,承接寬度 >= X。
+    #    唯一的例外是 R-nosliver:板邊沿著邊的方向跨過一條 < min_piece 的窄縫(縫裡不放料),
+    #    那一小段由縫兩邊的料承接(bridged 只沿板邊方向判斷,承接寬度不足 X 不在例外內)。
     for cell, qs in by_cell.items():
         for q in qs:
             x0, y0, x1, y1 = q
-            sides = [((x0 - 1, y0, x0, y1), lambda s: (x0, s[1], min(x0 + X, x1), s[3])),
-                     ((x1, y0, x1 + 1, y1), lambda s: (max(x1 - X, x0), s[1], x1, s[3])),
-                     ((x0, y0 - 1, x1, y0), lambda s: (s[0], y0, s[2], min(y0 + X, y1))),
-                     ((x0, y1, x1, y1 + 1), lambda s: (s[0], max(y1 - X, y0), s[2], y1))]
-            for strip, band in sides:
+            sides = [((x0 - 1, y0, x0, y1), lambda s: (x0, s[1], min(x0 + X, x1), s[3]), 1),
+                     ((x1, y0, x1 + 1, y1), lambda s: (max(x1 - X, x0), s[1], x1, s[3]), 1),
+                     ((x0, y0 - 1, x1, y0), lambda s: (s[0], y0, s[2], min(y0 + X, y1)), 0),
+                     ((x0, y1, x1, y1 + 1), lambda s: (s[0], max(y1 - X, y0), s[2], y1), 0)]
+            for strip, band, along in sides:
                 for seg in leftover(strip, qs):
-                    rest = leftover(band(seg), T)
+                    rest = [r for r in leftover(band(seg), T) if not bridged(r, T, minp, along)]
                     if rest:
                         fails.append(dict(check="C3_EDGE_UNSUPPORTED", band=list(band(seg)), gap=list(rest[0])))
     # C4 副支間距:沿 B 軸,角材之間的空檔 <= M - w。
@@ -736,7 +803,8 @@ def check(res, p):
                     continue  # 這一段被一支 B 向角材整段蓋住
                 cov = [rng(t, b) for t in T if rng(t, a)[0] < um < rng(t, a)[1]]
                 for f0, f1 in iv_subtract([(s0, s1)], cov):
-                    if f1 - f0 > M - w:
+                    # R-nosliver:夾在兩支相距 < min_piece 的平行料之間的窄條,板由兩側的料承接,不量副支間距
+                    if f1 - f0 > M - w and not bridged(mk(a, (u0, u1), (f0, f1)), T, minp, a):
                         fails.append(dict(check="C4_SPACING", at=[um, f0, f1], free=f1 - f0))
     # C5 主支(G3):每條縫的主支段把整條縫線蓋滿(只有 RC 與外牆邊界材處可以斷);
     #    每段兩端都接到 RC:端面外是 RC,或頂在外牆/壁柱的邊界材上。不能在室內中間斷開。
@@ -783,8 +851,41 @@ def check(res, p):
                 if leftover(probe, R) or any(overlap(probe, s["rect"]) for s in res["timbers"]
                                              if not (s["kind"] == "secondary" and s.get("role") == "mark")):
                     continue  # 另一側那裡是 RC 或別的角材(含縫上副支),那支記號本來就放不下
+                if bridged(probe, T, minp, a):
+                    continue  # 另一側是 < min_piece 的窄縫(R-nosliver 不放副支),不是可以放副支的跨
                 fails.append(dict(check="C9_MARKS_NOT_ALIGNED", main=mt["id"], at=list(br), side=side,
                                   other=[list(s) for s in other if max(s[0], br[0] - w) < min(s[1], br[1] + w)]))
+    # C10 R-nosliver:不得有長度 < min_piece 的副支(含與主支垂直的柱面料;它在核心是副支)。
+    for t in res["timbers"]:
+        if t["kind"] == "secondary" or (t["kind"] == "boundary" and not pos_edge_outer(reg, t["rect"], a)):
+            ln = rng(t["rect"], a)[1] - rng(t["rect"], a)[0]
+            if ln < minp:
+                fails.append(dict(check="C10_SHORT_PIECE", id=t["id"], kind=t["kind"], length=ln, min_piece=minp))
+    # C11 R-butt:主支和相鄰平行料(主支、沿牆料、孔邊料、併料)之間有 0 < 間隙,而把主支平移這段間隙後,
+    #     縫兩側板邊承接仍 >= X(縫位用獨立推算的 exp_a 驗過的那條),就必須貼住;已經貼住某一支就不再要求。
+    gl, gu = g // 2, g - g // 2
+    par = [t for t in res["timbers"] if t["kind"] in ("main", "rc_parallel")]
+    for t in [t for t in res["timbers"] if t["kind"] == "main"]:
+        ma, mb = rng(t["rect"], a), rng(t["rect"], b)
+        c = t["seam"]
+        near, touching = {}, False
+        for q in par:
+            qa, qb = rng(q["rect"], a), rng(q["rect"], b)
+            if q is t or min(qb[1], mb[1]) - max(qb[0], mb[0]) <= 0:
+                continue
+            if qa[1] <= ma[0]:
+                d, gap_ = -1, ma[0] - qa[1]
+            elif qa[0] >= ma[1]:
+                d, gap_ = 1, qa[0] - ma[1]
+            else:
+                continue
+            touching |= gap_ == 0
+            near[d] = min(near.get(d, gap_), gap_)
+        if touching:
+            continue
+        for d, gap_ in sorted(near.items()):
+            if ma[0] + d * gap_ <= c - gl - X and ma[1] + d * gap_ >= c + gu + X:
+                fails.append(dict(check="C11_MAIN_NOT_BUTTED", id=t["id"], gap=gap_, side=d, seam=c))
     # C8 核心可表示(只查外牆;孔邊在核心沒有定位邊與延伸段)。與建構分開,直接照核心的規則重算:
     #   定位邊 = 與角材某側面共線、長度區間正重疊的外牆邊;有整條覆蓋者優先,其次重疊最長,同分取先出現者
     #   (current_geometry.c timber_role_props)。
@@ -846,6 +947,34 @@ def check(res, p):
             free = any(leftover(q, [s["rect"] for s in others if s["kind"] == "boundary"]) for q in indoor)
             if bad or free:
                 fails.append(dict(check="C8_I19_BOUNDARY_END", id=t["id"], end=at, on=bad))
+    #   C8d I19 數值比較:除了外牆 boundary(端面由 C8b 管),每支料每個端面所頂擋面的擁有者,
+    #       優先級必須嚴格小於自己。擋面落在延伸段上以 2 計(I22);孔邊、柱面 = 0(端面外是 RC,沒有擁有者)。
+    #       優先級照核心宣告:boundary 1、主支與沿牆/孔邊料(primary)2、副支與柱面料 3、custom 明寫(build 的 core_role/priority)。
+    #       這條補上 2026-10-18 以前漏掉的「端面頂 custom 側面」比較(副支 3 頂 custom 3 會被核心以 V_CUT_PRIORITY 拒絕)。
+    def core_prio(t):
+        if t.get("core_role") == "custom":
+            return t["priority"]
+        if t["kind"] == "boundary":
+            return 1 if pos_edge_outer(reg, t["rect"], a) else 3
+        return {"main": 2, "rc_parallel": 2, "secondary": 3}[t["kind"]]
+
+    for t in res["timbers"]:
+        if t["kind"] == "boundary" and pos_edge_outer(reg, t["rect"], a):
+            continue
+        k = b if t["kind"] in ("main", "rc_parallel") else a
+        mine = core_prio(t)
+        for at, slab in end_slabs(t["rect"], k):
+            indoor = leftover(slab, leftover(slab, R))
+            for s in res["timbers"]:
+                contact = [(max(q[0], s["rect"][0]), max(q[1], s["rect"][1]), min(q[2], s["rect"][2]), min(q[3], s["rect"][3]))
+                           for q in indoor if s is not t and overlap(q, s["rect"])]
+                if not contact:
+                    continue
+                theirs = core_prio(s)
+                if any(overlap(cq, x) for cq in contact for x in exts):
+                    theirs = max(theirs, 2)
+                if not theirs < mine:
+                    fails.append(dict(check="C8_I19_PRIORITY", id=t["id"], end=at, on=s["id"], mine=mine, theirs=theirs))
     for t in res["timbers"]:
         if t["kind"] != "main":
             continue
@@ -894,7 +1023,7 @@ def export(room_name, l, res, fails):
                 seams_a=res["seams_a"], seams_b=res["seams_b"], moved_a=res["moved_a"], moved_b=res["moved_b"],
                 conflicts=res["conflicts"], check_failures=fails,
                 timbers=[dict(id=t["id"], kind=t["kind"], rect=list(t["rect"]),
-                              **{k: v for k, v in t.items() if k in ("seam", "at", "role", "rc_line")})
+                              **{k: v for k, v in t.items() if k in ("seam", "at", "role", "rc_line", "core_role", "priority")})
                          for t in res["timbers"]],
                 spans=res["spans"])
 
