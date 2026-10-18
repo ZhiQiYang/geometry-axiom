@@ -24,7 +24,7 @@
      板跨過那麼窄的縫也不會垂(edge-rule.md §4 也寫收邊格「無副骨,薄板由主骨+壁邊材直接夾持」)。
      min_piece = w = 27 mm 是使用者 2026-10-18 拍板(決策佇列「副支最短長度」,#302);
      RC 柱面上短於 27 mm 的段落也不放邊界材,是同日補拍板(#302 補充),選項原文「不放(短於 27 一律不放)」;
-     牆面上的短段比照柱面,是由「一律」推得(協調 agent 2026-10-18)。
+     牆面上的短段比照柱面,是由「一律」推得的推論,不是使用者原話(協調 agent 2026-10-18)。
      檢查 C3/C4/C9 對這種窄縫用 bridged() 判為由兩側承接。
   G4 RC 邊界一律有角材(側面固定在 RC 上)。其他角材的端面只頂角材,不頂 RC。
      與主支平行的柱面,其角材沿線延伸到兩端的牆,成為連續的支,讓兩側的副支都有角材可頂。
@@ -41,11 +41,12 @@
   G6 封板從起鋪角整片鋪,只在對牆收邊,不置中。
   G7 最後一條縫若讓縫上的角材撞到對牆的角材(距離 d > D - 1.5w),
      把該縫往內挪到 floor(D - 1.5w),留一條收邊板。第一條縫也適用同一規則。
-     D 是「縫線上最近的對牆」離起鋪牆的距離(只看外牆;矩形房就是房深)。由平釘工法挪縫目的與使用者『能調就調』原則推得:
+     D 是「縫線上最近的對牆」離起鋪牆的距離(只看外牆;矩形房就是房深)。由平釘工法挪縫目的,
+     加上由使用者 10-15 原話「左下起鋪,板長沿Y 衝突 板端縫太靠近 RC,縫上的副支撞到邊界角材 這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好」推得的原則(推論,不是使用者原話):支撐能調整就調整,找不到調整位置才報衝突:
      挪縫是為了讓主支剛好貼住它實際會碰到的那面牆的壁邊材(edge-rule.md §4 的「房深 − 40.5」);
      有牆階的房間,縫線上實際的對牆不是外框,照外框挪會在可以調整的地方報衝突。挪了縫線變長就重算到穩定。
      最後一條板端縫的承接帶若落進牆階面上沒料的短段(短於 min_piece 不放),再照那面牆階凹角那端的牆退到 ⌊D′ − 1.5w⌋
-     (由使用者「只有找不到任何調整位置時才報衝突」與 G7 推得;建構端在 bedges 之後,C7 用 expected_seam_retreat 另算)。
+     (由上面那條推論原則與 G7 推得;退縫之後再照 G7 挪到穩定。建構端在 bedges 之後,C7 用 expected_seam_retreat 另算)。
 不處理:樑高度、交丁、角材怎麼固定(與幾何無關)。
 
 座標:世界座標,整數 mm。A 軸 = 板寬方向(主支之間的方向),B 軸 = 板長方向(主支的長度方向)。
@@ -211,7 +212,8 @@ def seam_centers(lo, hi, start, ps, g, w, mut, local=None):
     """從起鋪側整片鋪,回傳縫中心(世界座標)。G6、G7。
     G7 的 D:最後一條縫「縫線上最近的對牆」離起鋪牆多遠(local(d) 給;沒有就用外框深度)。
     由平釘工法挪縫目的(主支剛好貼住它實際會碰到的那面牆的壁邊材,edge-rule.md §4 的「房深 − 40.5」)與
-    使用者「能調就調」原則推得:有牆階的房間,縫線上實際的對牆不是外框,照外框挪會在可以調整的地方報衝突。
+    由使用者 10-15 原話「左下起鋪,板長沿Y 衝突 板端縫太靠近 RC,縫上的副支撞到邊界角材 這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好」推得的原則(推論,不是使用者原話):支撐能調整就調整,找不到調整位置才報衝突。
+    有牆階的房間,縫線上實際的對牆不是外框,照外框挪會在可以調整的地方報衝突。
     挪了之後縫線可能伸進更淺的那一段,所以重算到不再需要挪為止;不會挪過前一條縫。"""
     T, D = ps + g, hi - lo
     half = g // 2 if (start == "min" or "gap_floor_both" in mut) else g - g // 2  # FT01:正向取下界、反向取上界
@@ -233,6 +235,19 @@ def seam_centers(lo, hi, start, ps, g, w, mut, local=None):
             ds[-1] = new
     out = [lo + d if start == "min" else hi - d for d in ds]
     return out, moved
+
+
+def g7_settle(d, d_prev, depth, w):
+    """G7 重算到穩定:d > D(d) − 1.5w 就挪到 ⌊D(d) − 1.5w⌋,D 由 depth(d) 給;不挪過前一條縫(d_prev)。整數運算。"""
+    for _ in range(8):
+        D = depth(d)
+        if d * 2 <= 2 * D - 3 * w:
+            break
+        new = (2 * D - 3 * w) // 2
+        if d_prev is not None and new <= d_prev:
+            break
+        d = new
+    return d
 
 
 def local_depth_fn(reg_outer, k, lo, hi, start):
@@ -364,7 +379,8 @@ def build(room, layout, p, mut=frozenset()):
                 if comp[1] > s1:
                     ends.append(s1)
                 comp = (max(comp[0], s0), min(comp[1], s1))
-        # 短於 min_piece 一律不放(使用者 2026-10-18「短於 27 一律不放」,決策佇列 #302 補充;牆面比照柱面):
+        # 短於 min_piece 一律不放。柱面:使用者 2026-10-18 的決定,選項原文「不放(短於 27 一律不放)」(決策佇列 #302 補充);
+        #   牆面比照柱面是由「一律」推得的推論,不是使用者原話(協調 agent 2026-10-18):
         #   牆階、短柱面這種 RC 面,沿牆料整段被兩端垂直的料蓋住,或剩下的一段短於 min_piece,就不放料、不報衝突。
         #   這一面的板邊由兩端的料承接(剩下那一小段沿板邊方向跨過);凹角那一端照樣讓另一面的邊界材越過凹角延伸,接住板的轉角。
         if comp is None or (too_short(comp[1] - comp[0]) and "short_face_conflict" not in mut):
@@ -382,7 +398,7 @@ def build(room, layout, p, mut=frozenset()):
             reflex.extend((e, s) for s in ends)
         bprims.append(t)
 
-    # 板端縫落在牆階短段(G7 的延伸,能調就調):最後一條板端縫的承接帶若落進牆面上那段沒料的短段
+    # 板端縫落在牆階短段(G7 的延伸;依推論原則:支撐能調整就調整,找不到調整位置才報衝突,見檔頭):最後一條板端縫的承接帶若落進牆面上那段沒料的短段
     #   (短於 min_piece 不放沿牆料),縫上副支在那裡沒有東西可頂,那條板邊就沒有料承接。
     #   往內調整:把那面牆階凹角那一端的牆(淺的那段的牆)當成這條縫的對牆,照 G7 退到 ⌊D' − 1.5w⌋,
     #   D' = 起鋪牆到凹角那端的距離。這是離原位最近、又不違反 G7 的位置:縫線一退到凹角那端之前,
@@ -411,6 +427,12 @@ def build(room, layout, p, mut=frozenset()):
             past_prev = prev is not None and (c_new <= prev if start_min else c_new >= prev)
             if not inward or past_prev:
                 break
+            # 退縫之後縫線伸進淺的那段,可能又碰到更近的對牆(例:雙牆階),照 G7 再挪到穩定
+            if "no_resettle" not in mut:
+                dfun = local_depth_fn(reg_outer, b, Bmin, Bmax, layout["b_start"])
+                dd = g7_settle(c_new - Bmin if start_min else Bmax - c_new,
+                               None if prev is None else (prev - Bmin if start_min else Bmax - prev), dfun, w)
+                c_new = Bmin + dd if start_min else Bmax - dd
             moved_b = (moved_b[0] if moved_b else last, c_new)
             seams_b = seams_b[:-1] + [c_new]
     for r_ in remnants:
@@ -461,7 +483,7 @@ def build(room, layout, p, mut=frozenset()):
             return any(max(ar_[0], rng(q["rect"], a)[0]) < min(ar_[1], rng(q["rect"], a)[1])
                        and iv_intersect(foot_, [rng(q["rect"], b)]) for q in bprims)
 
-        # 能調就調:讓開 RC 角材的平移若反而撞到另一支(例:牆階 28–53 mm,縫線在牆階外側那段落在沿牆料上,
+        # 依推論原則(支撐能調整就調整,找不到調整位置才報衝突,見檔頭):讓開 RC 角材的平移若反而撞到另一支(例:牆階 28–53 mm,縫線在牆階外側那段落在沿牆料上,
         #   但主支在那段本來就在 RC 裡、不存在),而置中的主支在它實際存在的範圍不撞任何料,就不平移。
         if (push_lo or push_hi) and "no_push_fallback" not in mut:
             sh = push_lo - push_hi
@@ -841,6 +863,31 @@ def build(room, layout, p, mut=frozenset()):
 
 
 # ---------------------------------------------------------------- 檢查用的獨立縫位推算(不呼叫 seam_centers)
+def edge_depth(reg, k, lo, hi, start, d):
+    """檢查用:軸 k 上離起鋪牆 d 的縫,掃外環牆邊找「縫線上最近的對牆」離起鋪牆的距離:
+    與縫平行、在縫的鋪板方向那一側、牆面朝向縫(室內在靠縫那側)、長度方向與縫線的室內段有正長度重疊,取最近的一面。"""
+    span = hi - lo
+    c = (lo + d - 0.5) if start == "min" else (hi - d + 0.5)  # 往起鋪側偏半 mm:牆剛好在縫上也算在縫前面
+    line = reg.section(k, c)
+    best = span
+    for p0, p1 in reg.outer_edges():
+        if p0[k] != p1[k]:
+            continue
+        e = p0[k]
+        if (start == "min" and e <= c) or (start == "max" and e >= c):
+            continue
+        e0, e1 = sorted((p0[1 - k], p1[1 - k]))
+        for y0, y1 in line:
+            o0, o1 = max(e0, y0), min(e1, y1)
+            if o1 <= o0:
+                continue
+            probe = e - 0.5 if start == "min" else e + 0.5
+            pt = (probe, (o0 + o1) / 2) if k == 0 else ((o0 + o1) / 2, probe)
+            if reg.inside(*pt):
+                best = min(best, e - lo if start == "min" else hi - e)
+    return best
+
+
 def expected_seam_positions(lo, hi, start, panel, gap, width, reg=None, k=None):
     """G6/G7 另寫一次:從起鋪側量起,第 k 條縫中心距起鋪牆 k·(panel+gap)+panel+gap/2,
     只要下一片板的起點仍在對牆之內就有這條縫;最後一條縫距起鋪牆超過 D-1.5w 時挪到 floor(D-1.5w)。
@@ -856,27 +903,7 @@ def expected_seam_positions(lo, hi, start, panel, gap, width, reg=None, k=None):
         j += 1
 
     def depth(d):
-        if reg is None:
-            return span
-        c = (lo + d - 0.5) if start == "min" else (hi - d + 0.5)  # 往起鋪側偏半 mm:牆剛好在縫上也算在縫前面
-        line = reg.section(k, c)
-        best = span
-        for p0, p1 in reg.outer_edges():
-            if p0[k] != p1[k]:
-                continue
-            e = p0[k]
-            if (start == "min" and e <= c) or (start == "max" and e >= c):
-                continue
-            e0, e1 = sorted((p0[1 - k], p1[1 - k]))
-            for y0, y1 in line:
-                o0, o1 = max(e0, y0), min(e1, y1)
-                if o1 <= o0:
-                    continue
-                probe = e - 0.5 if start == "min" else e + 0.5
-                pt = (probe, (o0 + o1) / 2) if k == 0 else ((o0 + o1) / 2, probe)
-                if reg.inside(*pt):
-                    best = min(best, e - lo if start == "min" else hi - e)
-        return best
+        return span if reg is None else edge_depth(reg, k, lo, hi, start, d)
 
     for _ in range(8):
         if not dist:
@@ -940,7 +967,11 @@ def expected_seam_retreat(seams, reg_o, a, b, start, lo, hi, p):
         if (c_new >= last if start == "min" else c_new <= last) or (
                 prev is not None and (c_new <= prev if start == "min" else c_new >= prev)):
             break
-        out[-1] = c_new
+        # 退縫之後再照 G7(縫線上最近的對牆)挪到穩定
+        dd = g7_settle(c_new - lo if start == "min" else hi - c_new,
+                       None if prev is None else (prev - lo if start == "min" else hi - prev),
+                       lambda d_: edge_depth(reg_o, b, lo, hi, start, d_), w)
+        out[-1] = lo + dd if start == "min" else hi - dd
     return out
 
 
@@ -987,6 +1018,17 @@ def check(res, p):
         fails.append(dict(check="C7_SEAMS_NOT_FROM_START", axis="A", expected=sorted(exp_a), got=sorted(res["seams_a"])))
     if sorted(exp_b) != sorted(res["seams_b"]):
         fails.append(dict(check="C7_SEAMS_NOT_FROM_START", axis="B", expected=sorted(exp_b), got=sorted(res["seams_b"])))
+    # C7b G7 性質(不看演算法,直接驗結果):兩軸的最後一條縫,離「縫線上最近的對牆」都不得少於 1.5w。
+    #     例:退縫之後忘了再跑 G7,雙牆階房會剩 13 mm 的收邊板條(#251 審查 98cb7da0)。
+    for ax_, k_, seams_, st_ in (("A", a, res["seams_a"], lay["a_start"]), ("B", b, res["seams_b"], lay["b_start"])):
+        if not seams_:
+            continue
+        lo_, hi_ = reg.bbox[k_], reg.bbox[k_ + 2]
+        last_ = max(seams_) if st_ == "min" else min(seams_)
+        d_ = last_ - lo_ if st_ == "min" else hi_ - last_
+        D_ = edge_depth(reg_o, k_, lo_, hi_, st_, d_)
+        if d_ * 2 > 2 * D_ - 3 * w:
+            fails.append(dict(check="C7_G7_TOO_CLOSE", axis=ax_, seam=last_, opposite_wall_distance=D_ - d_))
     # C1 不碰撞
     for i in range(len(T)):
         for j in range(i + 1, len(T)):
@@ -1100,7 +1142,8 @@ def check(res, p):
                     continue  # 另一側是 < min_piece 的窄縫(R-nosliver 不放副支),不是可以放副支的跨
                 fails.append(dict(check="C9_MARKS_NOT_ALIGNED", main=mt["id"], at=list(br), side=side,
                                   other=[list(s) for s in other if max(s[0], br[0] - w) < min(s[1], br[1] + w)]))
-    # C10 R-nosliver:任何料都不得短於 min_piece(使用者 2026-10-18「短於 27 一律不放」:副支、柱面料、牆面上的料都一樣)。
+    # C10 R-nosliver:任何料都不得短於 min_piece。副支與柱面料:使用者 2026-10-18 的決定(選項原文「不放(短於 27 一律不放)」);
+    #     牆面上的料比照,是由「一律」推得的推論,不是使用者原話。
     for t in res["timbers"]:
         k = b if t["kind"] in ("main", "rc_parallel") else a
         ln = rng(t["rect"], k)[1] - rng(t["rect"], k)[0]
