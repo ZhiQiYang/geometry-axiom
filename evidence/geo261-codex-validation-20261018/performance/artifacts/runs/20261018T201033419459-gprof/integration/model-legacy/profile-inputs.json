@@ -1,0 +1,35 @@
+{
+  "binary": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/model-base",
+  "binary_sha256": "01ce7682f2a596fda2a64aa9dd9787a66b5f181eade7a40e8bd0d8aac108f16e",
+  "gmon_files": [
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-000/gmon.out",
+      "sha256": "bd1f11d8f90cb1de20a687c4bdc18eab38650d7905b73fd2a25a7e1a13a925de"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-001/gmon.out",
+      "sha256": "90a2e4cb9cf65d7b983783e0759dc2fc179371e4296ccbb65175598ddd609c34"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-002/gmon.out",
+      "sha256": "b0a8c874c708639475bb9a66baec396d2b51e82f343554e529e0ee2cbb2967f3"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-003/gmon.out",
+      "sha256": "ea4e35dcbdd0ceee8279a3802819df7999e556fb1d958a52aab476ef1c50ca13"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-004/gmon.out",
+      "sha256": "8d8e192a7dce373cc4450d471fd3b585be588b2d9899ad410b7651c0c559fb7b"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-005/gmon.out",
+      "sha256": "61d07045af40697dc36f321ad22da854669585b9eb43dd0a1cf43f4027216bd4"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-006/gmon.out",
+      "sha256": "b491f43cb2a181d7fd914d48cf2b9a4a8d157cd3ff69e4d6e2f8976df7833d4e"
+    }
+  ],
+  "note": "累積欄為 self + children；不是 flat profile 從上往下相加的 cumulative seconds。"
+}

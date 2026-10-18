@@ -1,0 +1,35 @@
+{
+  "binary": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/model-base",
+  "binary_sha256": "01ce7682f2a596fda2a64aa9dd9787a66b5f181eade7a40e8bd0d8aac108f16e",
+  "gmon_files": [
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-000/gmon.out",
+      "sha256": "053c226a3fed683b5772e380764c2b51d88761d5aa3631d28a80ac83b72c8fbd"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-001/gmon.out",
+      "sha256": "4d225fd3014b8694a6a89792463c21de044aeedb2623d651c40ea819ba44630d"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-002/gmon.out",
+      "sha256": "4bc7dcc89aa5eaa60572b5d66aad1f3aae7d301257ca51ad7f635d10919d3d1a"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-003/gmon.out",
+      "sha256": "492a991cad61a70191a1535a8d0fc7702d8bb5f2dafa2fd82e287e739915e067"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-004/gmon.out",
+      "sha256": "427b60480e1f00e28d6dc2976bf4351294186c6862166e6b6e866a5824354d2f"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-005/gmon.out",
+      "sha256": "b6f09a3884f5b36add8d3354c0870d3aae7e774a518bd525b54fa0e391af6205"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-006/gmon.out",
+      "sha256": "298ba8da7bca2069f851a9e73f4878e42d07b4497ac7a391804d6f531aefd858"
+    }
+  ],
+  "note": "累積欄為 self + children；不是 flat profile 從上往下相加的 cumulative seconds。"
+}

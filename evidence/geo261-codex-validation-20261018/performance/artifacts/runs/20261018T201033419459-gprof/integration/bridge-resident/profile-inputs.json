@@ -1,0 +1,11 @@
+{
+  "binary": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge",
+  "binary_sha256": "0e9a58d96e0079cef3c7897911cf2dc52636b41d1430af22a0d9770b3479190c",
+  "gmon_files": [
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/session/gmon.out",
+      "sha256": "a74853cdcd953755281e47a657bc6d1a854f95efd3ff6c093d537f3bbcffe46f"
+    }
+  ],
+  "note": "累積欄為 self + children；不是 flat profile 從上往下相加的 cumulative seconds。"
+}

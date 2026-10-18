@@ -1,0 +1,21 @@
+function,self_seconds,children_seconds,inclusive_seconds,calls,direct_calls,recursive_calls
+main,0.0,4.13,4.13,0,0,0
+geo_sha256,0.01,4.11,4.12,1841,1841,0
+geo_sha_block,4.11,0.0,4.11,15304814,15304814,0
+parse_scene_file,0.0,4.08,4.08,7,7,0
+apply_scene_line,0.0,3.89,3.89,63,63,0
+apply_scene_line_candidate.constprop.0,0.0,2.65,2.65,63,63,0
+geo_candidate_provider_hash,0.0,2.04,2.04,1470,1050,420
+geo_candidate_evaluate <cycle 2>,0.0,1.55,1.55,70,70,0
+app_world_candidate_create,0.0,1.38,1.38,70,70,0
+app_world_candidate_publish,0.0,0.56,0.56,70,70,0
+app_candidate_check,0.0,0.43,0.43,210,140,70
+app_world_candidate_seal,0.0,0.43,0.43,70,70,0
+geo_candidate_seal,0.0,0.27,0.27,140,70,70
+world_revalidate <cycle 2>,0.0,0.24,0.24,49,49,0
+app_candidate_create,0.0,0.16,0.16,70,70,0
+app_candidate_evaluate <cycle 2>,0.0,0.16,0.16,70,70,0
+model_source_fingerprint,0.0,0.03,0.03,14,14,0
+_init,0.01,0.0,0.01,0,0,0
+geo_eval_source <cycle 1>,0.0,0.01,0.01,16520,16520,0
+geo_source_edge,0.01,0.0,0.01,16520,16520,0

@@ -1,0 +1,1294 @@
+
+Merging program properties
+
+Removed property 0xc0000002 to merge /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o (not found) and /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o (0x3)
+Removed property 0xc0000002 to merge /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o (not found) and /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o (0x3)
+
+As-needed library included to satisfy reference by file (symbol)
+
+libc.so.6                     /tmp/ccQDQbLu.o (fgetc@@GLIBC_2.2.5)
+
+Discarded input sections
+
+ .note.gnu.property
+                0x0000000000000000       0x20 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+ .note.gnu.property
+                0x0000000000000000       0x20 /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crti.o
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+LOAD /tmp/ccQDQbLu.o
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libm.so
+START GROUP
+LOAD /lib/x86_64-linux-gnu/libm.so.6
+LOAD /lib/x86_64-linux-gnu/libmvec.so.1
+END GROUP
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so
+START GROUP
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgcc_s.so.1
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a
+END GROUP
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libc.so
+START GROUP
+LOAD /lib/x86_64-linux-gnu/libc.so.6
+LOAD /usr/lib/x86_64-linux-gnu/libc_nonshared.a
+LOAD /lib64/ld-linux-x86-64.so.2
+END GROUP
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so
+START GROUP
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgcc_s.so.1
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a
+END GROUP
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o
+LOAD /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crtn.o
+                [!provide]                        PROVIDE (__executable_start = SEGMENT_START ("text-segment", 0x0))
+                0x0000000000000350                . = (SEGMENT_START ("text-segment", 0x0) + SIZEOF_HEADERS)
+
+.note.gnu.property
+                0x0000000000000350       0x20
+ .note.gnu.property
+                0x0000000000000350       0x20 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.note.gnu.build-id
+                0x0000000000000370       0x24
+ *(.note.gnu.build-id)
+ .note.gnu.build-id
+                0x0000000000000370       0x24 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.interp         0x0000000000000394       0x1c
+ *(.interp)
+ .interp        0x0000000000000394       0x1c /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.hash
+ *(.hash)
+
+.gnu.hash       0x00000000000003b0       0x30
+ *(.gnu.hash)
+ .gnu.hash      0x00000000000003b0       0x30 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.dynsym         0x00000000000003e0      0x4e0
+ *(.dynsym)
+ .dynsym        0x00000000000003e0      0x4e0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.dynstr         0x00000000000008c0      0x1e8
+ *(.dynstr)
+ .dynstr        0x00000000000008c0      0x1e8 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.gnu.version    0x0000000000000aa8       0x68
+ *(.gnu.version)
+ .gnu.version   0x0000000000000aa8       0x68 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.gnu.version_d  0x0000000000000b10        0x0
+ *(.gnu.version_d)
+ .gnu.version_d
+                0x0000000000000b10        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.gnu.version_r  0x0000000000000b10       0x60
+ *(.gnu.version_r)
+ .gnu.version_r
+                0x0000000000000b10       0x60 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.rela.dyn       0x0000000000000b70     0x2118
+ *(.rela.init)
+ *(.rela.text .rela.text.* .rela.gnu.linkonce.t.*)
+ .rela.text     0x0000000000000b70        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ .rela.text.startup
+                0x0000000000000b70        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ *(.rela.fini)
+ *(.rela.rodata .rela.rodata.* .rela.gnu.linkonce.r.*)
+ *(.rela.data .rela.data.* .rela.gnu.linkonce.d.*)
+ .rela.data.rel.ro
+                0x0000000000000b70        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ .rela.data.rel.local
+                0x0000000000000b70       0x18 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ .rela.data.rel.ro.local
+                0x0000000000000b88     0x2028 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*)
+ *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*)
+ *(.rela.ctors)
+ *(.rela.dtors)
+ *(.rela.got)
+ .rela.got      0x0000000000002bb0       0x78 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ *(.rela.bss .rela.bss.* .rela.gnu.linkonce.b.*)
+ .rela.bss      0x0000000000002c28       0x30 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ *(.rela.ldata .rela.ldata.* .rela.gnu.linkonce.l.*)
+ *(.rela.lbss .rela.lbss.* .rela.gnu.linkonce.lb.*)
+ *(.rela.lrodata .rela.lrodata.* .rela.gnu.linkonce.lr.*)
+ *(.rela.ifunc)
+ .rela.ifunc    0x0000000000002c58        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ .rela.fini_array
+                0x0000000000002c58       0x18 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ .rela.init_array
+                0x0000000000002c70       0x18 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.rela.plt       0x0000000000002c88      0x420
+ *(.rela.plt)
+ .rela.plt      0x0000000000002c88      0x420 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ *(.rela.iplt)
+
+.relr.dyn
+ *(.relr.dyn)
+                0x0000000000004000                . = ALIGN (CONSTANT (MAXPAGESIZE))
+
+.init           0x0000000000004000       0x17
+ *(SORT_NONE(.init))
+ .init          0x0000000000004000       0x12 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crti.o
+                0x0000000000004000                _init
+ .init          0x0000000000004012        0x5 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crtn.o
+
+.plt            0x0000000000004020      0x2d0
+ *(.plt)
+ .plt           0x0000000000004020      0x2d0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                0x0000000000004030                free@@GLIBC_2.2.5
+                0x0000000000004040                putchar@@GLIBC_2.2.5
+                0x0000000000004050                __errno_location@@GLIBC_2.2.5
+                0x0000000000004060                remove@@GLIBC_2.2.5
+                0x0000000000004070                strncmp@@GLIBC_2.2.5
+                0x0000000000004080                puts@@GLIBC_2.2.5
+                0x0000000000004090                ferror@@GLIBC_2.2.5
+                0x00000000000040a0                qsort@@GLIBC_2.2.5
+                0x00000000000040b0                fread@@GLIBC_2.2.5
+                0x00000000000040c0                vsnprintf@@GLIBC_2.2.5
+                0x00000000000040d0                fclose@@GLIBC_2.2.5
+                0x00000000000040e0                strlen@@GLIBC_2.2.5
+                0x00000000000040f0                strchr@@GLIBC_2.2.5
+                0x0000000000004100                printf@@GLIBC_2.2.5
+                0x0000000000004110                snprintf@@GLIBC_2.2.5
+                0x0000000000004120                fputs@@GLIBC_2.2.5
+                0x0000000000004130                memset@@GLIBC_2.2.5
+                0x0000000000004140                fgetc@@GLIBC_2.2.5
+                0x0000000000004150                fputc@@GLIBC_2.2.5
+                0x0000000000004160                memchr@@GLIBC_2.2.5
+                0x0000000000004170                memcmp@@GLIBC_2.2.5
+                0x0000000000004180                fgets@@GLIBC_2.2.5
+                0x0000000000004190                calloc@@GLIBC_2.2.5
+                0x00000000000041a0                tmpfile@@GLIBC_2.2.5
+                0x00000000000041b0                strcmp@@GLIBC_2.2.5
+                0x00000000000041c0                putc@@GLIBC_2.2.5
+                0x00000000000041d0                strtoll@@GLIBC_2.2.5
+                0x00000000000041e0                fprintf@@GLIBC_2.2.5
+                0x00000000000041f0                ftell@@GLIBC_2.2.5
+                0x0000000000004200                feof@@GLIBC_2.2.5
+                0x0000000000004210                stat@@GLIBC_2.33
+                0x0000000000004220                strtol@@GLIBC_2.2.5
+                0x0000000000004230                memcpy@@GLIBC_2.14
+                0x0000000000004240                malloc@@GLIBC_2.2.5
+                0x0000000000004250                fflush@@GLIBC_2.2.5
+                0x0000000000004260                fseek@@GLIBC_2.2.5
+                0x0000000000004270                realloc@@GLIBC_2.2.5
+                0x0000000000004280                memmove@@GLIBC_2.2.5
+                0x0000000000004290                fopen@@GLIBC_2.2.5
+                0x00000000000042a0                strtoul@@GLIBC_2.2.5
+                0x00000000000042b0                fwrite@@GLIBC_2.2.5
+                0x00000000000042c0                strstr@@GLIBC_2.2.5
+                0x00000000000042d0                __ctype_tolower_loc@@GLIBC_2.3
+                0x00000000000042e0                __ctype_b_loc@@GLIBC_2.3
+ *(.iplt)
+
+.plt.got        0x00000000000042f0        0x8
+ *(.plt.got)
+ .plt.got       0x00000000000042f0        0x8 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000042f0                __cxa_finalize@@GLIBC_2.2.5
+
+.plt.sec
+ *(.plt.sec)
+
+.text           0x0000000000004300    0x9fffe
+ *(.text.unlikely .text.*_unlikely .text.unlikely.*)
+ .text.unlikely
+                0x0000000000004300      0x34a /tmp/ccQDQbLu.o
+ *(.text.exit .text.exit.*)
+ *(.text.startup .text.startup.*)
+ *fill*         0x000000000000464a       0x36 
+ .text.startup  0x0000000000004680     0x3e2c /tmp/ccQDQbLu.o
+                0x0000000000004680                main
+ *(.text.hot .text.hot.*)
+ *(SORT_BY_NAME(.text.sorted.*))
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+ *fill*         0x00000000000084ac        0x4 
+ .text          0x00000000000084b0       0x22 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000084b0                _start
+ .text          0x00000000000084d2        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crti.o
+ *fill*         0x00000000000084d2        0xe 
+ .text          0x00000000000084e0       0xb9 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+ *fill*         0x0000000000008599       0x27 
+ .text          0x00000000000085c0    0x9bd3e /tmp/ccQDQbLu.o
+                0x000000000000e2d0                wood_fs_obstacle_compare
+                0x000000000001a5a0                geo_json_sorted_keys
+                0x000000000001a680                geo_json_free
+                0x000000000001a710                geo_utf8_scalar
+                0x000000000001c770                geo_json_parse_n
+                0x000000000001cce0                geo_json_parse
+                0x000000000001cd10                geo_json_valid_token
+                0x000000000001cd30                geo_json_is_object
+                0x000000000001cd60                geo_json_is_array
+                0x000000000001cd90                geo_json_is_null
+                0x000000000001cdc0                geo_json_size
+                0x000000000001ce00                geo_json_member
+                0x000000000001cea0                geo_json_at
+                0x000000000001cef0                geo_json_string
+                0x000000000001d7a0                geo_json_integer
+                0x000000000001d7f0                geo_json_boolean
+                0x000000000001d840                geo_json_csv_has
+                0x000000000001da30                geo_json_keys
+                0x000000000001dc20                geo_json_quote
+                0x000000000001dc90                geo_json_canonical
+                0x000000000001e080                geo_sha256
+                0x000000000001f5d0                geo_base64_encode
+                0x0000000000020410                geo_base64_decode
+                0x00000000000209e0                geo_utf8_name_valid
+                0x0000000000020a00                geo_integer_multiply
+                0x0000000000020a60                geo_integer_add
+                0x0000000000020ae0                geo_quantity_normalize
+                0x0000000000020b70                geo_quantity_binary
+                0x0000000000021b60                geo_coord_in_range
+                0x0000000000021b80                geo_vector_dot
+                0x0000000000021bb0                geo_vector_cross
+                0x0000000000021c10                geo_vector_negate
+                0x0000000000021c40                geo_vector_equal
+                0x0000000000021c70                geo_frame_is_valid
+                0x0000000000022590                geo_loop_is_valid
+                0x0000000000023770                geo_loop_point_on_edge
+                0x0000000000023f70                geo_loop_contains_point
+                0x0000000000024110                geo_segment_crosses_rect_interior
+                0x0000000000024190                geo_loop_contains_rect
+                0x0000000000024320                geo_loop_bbox
+                0x00000000000243e0                geo_loop_clip_line
+                0x0000000000025140                geo_region_is_valid
+                0x0000000000026060                geo_region_contains_point
+                0x00000000000260f0                geo_region_contains_rect
+                0x0000000000026470                geo_frame_point
+                0x0000000000026850                geo_frame_direction
+                0x00000000000268f0                geo_frame_project_uv
+                0x0000000000026940                geo_rectangle_footprint
+                0x0000000000026f40                geo_rect_overlap_positive
+                0x0000000000026f90                geo_box_face
+                0x0000000000026fd0                geo_aabb_project_uv
+                0x0000000000027180                geo_region_set_contains_rect
+                0x0000000000027200                geo_strip_intervals
+                0x00000000000277b0                geo_loop_rect_area2
+                0x0000000000027a90                geo_region_set_intersects_rect_positive
+                0x0000000000027bb0                geo_loop_rect_complement
+                0x0000000000027f80                geo_aabb_project_interval
+                0x0000000000027ff0                geo_loop_rect_intersection_area
+                0x00000000000282d0                geo_loop_touches_rect
+                0x0000000000028380                geo_collinear_segment_overlap
+                0x0000000000028420                geo_clip_result_free
+                0x00000000000284c0                geo_clip_point_order
+                0x00000000000284f0                geo_region_clip_rect_minus_rects
+                0x00000000000293d0                geo_i64_add
+                0x0000000000029430                geo_floor_div
+                0x0000000000029440                geo_ceil_div
+                0x0000000000029460                geo_period_pitch
+                0x0000000000029470                geo_period_body
+                0x0000000000029480                geo_period_center
+                0x00000000000294b0                geo_alternating_shift
+                0x00000000000294c0                geo_lattice_coord
+                0x0000000000029580                geo_lattice_window
+                0x0000000000029bc0                geo_coordinates_increasing
+                0x0000000000029c10                geo_finite_sequence
+                0x0000000000029e90                geo_interval_subdivide
+                0x0000000000029f70                geo_parameters_create
+                0x0000000000029f80                geo_parameters_clone
+                0x0000000000029fc0                geo_parameters_destroy
+                0x0000000000029fd0                geo_parameters_equal
+                0x000000000002a010                geo_parameters_card_count
+                0x000000000002a020                geo_parameters_field_count
+                0x000000000002a030                geo_parameters_cards
+                0x000000000002a040                geo_parameters_fields
+                0x000000000002a060                geo_parameters_find
+                0x000000000002a0b0                geo_parameters_field_index
+                0x000000000002a110                geo_parameters_dimension_value
+                0x000000000002a4b0                geo_parameters_coordinate
+                0x000000000002a530                geo_parameter_evaluation_create
+                0x000000000002a580                geo_parameter_evaluation_destroy
+                0x000000000002a590                geo_parameter_evaluation_error
+                0x000000000002a5b0                geo_parameter_evaluation_field
+                0x000000000002aad0                geo_parameters_rebuild
+                0x000000000002abf0                geo_parameters_evaluate_field
+                0x000000000002afa0                geo_parameters_begin_definition
+                0x000000000002b040                geo_parameters_accept_rebuilt_field
+                0x000000000002b300                geo_parameters_accept_field
+                0x000000000002b320                geo_parameters_next_field
+                0x000000000002b780                geo_parameters_check_put
+                0x000000000002b7b0                geo_parameters_put_rebuilt
+                0x000000000002ba20                geo_parameters_put
+                0x000000000002c840                geo_parameters_remove
+                0x000000000002ca30                geo_parameters_stage_card
+                0x000000000002cb80                geo_parameters_stage_field
+                0x000000000002d3a0                geo_parameter_definition_source_ref
+                0x000000000002d460                geo_parameter_definition_source_decode
+                0x000000000002d580                geo_parameter_card_definition_encode
+                0x000000000002d660                geo_parameter_card_definition_decode
+                0x000000000002d8c0                geo_parameter_field_definition_encode
+                0x000000000002dcb0                geo_parameter_field_definition_decode
+                0x000000000002e080                geo_parameter_sources_destroy
+                0x000000000002e0e0                geo_parameter_sources_store
+                0x000000000002e100                geo_parameter_sources_context
+                0x000000000002e120                geo_linear_begin
+                0x000000000002e160                geo_linear_append
+                0x000000000002e9b0                geo_linear_finish
+                0x000000000002e9c0                geo_linear_evaluate
+                0x000000000002f270                geo_named_values_create
+                0x000000000002f280                geo_named_values_clone
+                0x000000000002f2c0                geo_named_values_destroy
+                0x000000000002f2d0                geo_named_values_count
+                0x000000000002f2e0                geo_named_values_at
+                0x000000000002f310                geo_named_values_find
+                0x000000000002f380                geo_named_value_name_valid
+                0x000000000002f400                geo_named_values_put
+                0x000000000002f650                geo_named_values_remove
+                0x000000000002f760                geo_datums_create
+                0x000000000002f770                geo_datums_clone
+                0x000000000002f7b0                geo_datums_destroy
+                0x000000000002f7c0                geo_datums_count
+                0x000000000002f7d0                geo_datums_at
+                0x000000000002f800                geo_datums_values
+                0x000000000002f810                geo_datums_find
+                0x000000000002f870                geo_datums_put
+                0x000000000002fac0                geo_datums_remove
+                0x000000000002fae0                geo_datums_evaluate_definition
+                0x000000000002fbc0                geo_datums_evaluate
+                0x000000000002fc00                geo_datum_intersection
+                0x000000000002fd30                geo_eval_create
+                0x000000000002fd70                geo_eval_destroy
+                0x000000000002fda0                geo_eval_register_many
+                0x0000000000030030                geo_parameter_sources_register_with_definitions
+                0x00000000000301a0                geo_eval_register
+                0x00000000000301b0                geo_parameter_sources_register
+                0x00000000000302e0                geo_eval_candidate_id
+                0x00000000000302f0                geo_eval_base_revision
+                0x0000000000030300                geo_eval_provider_count
+                0x0000000000030310                geo_eval_provider_at
+                0x0000000000030340                geo_eval_describe
+                0x0000000000030730                geo_eval_depend
+                0x00000000000307b0                geo_eval_source
+                0x0000000000030e90                geo_parameter_sources_definitions
+                0x0000000000031440                geo_parameter_sources_value
+                0x0000000000031590                geo_parameter_sources_rebuild
+                0x0000000000032370                geo_eval_node_count
+                0x0000000000032380                geo_eval_node_at
+                0x0000000000033510                geo_eval_edge_count
+                0x0000000000033520                geo_eval_edge_at
+                0x0000000000033560                geo_eval_seal
+                0x00000000000335b0                geo_eval_is_sealed
+                0x00000000000335c0                geo_eval_reset
+                0x0000000000033600                geo_candidate_create
+                0x0000000000033660                geo_candidate_destroy
+                0x00000000000337a0                geo_candidate_bind_state
+                0x00000000000337e0                geo_candidate_evaluate
+                0x0000000000033990                geo_candidate_seal
+                0x0000000000033c30                geo_candidate_check
+                0x0000000000033c50                geo_candidate_mark_published
+                0x0000000000033c80                geo_candidate_reopen
+                0x0000000000033cf0                geo_candidate_discard
+                0x0000000000033d60                geo_candidate_sources
+                0x0000000000033d80                geo_candidate_state
+                0x0000000000033da0                geo_candidate_id
+                0x0000000000033db0                geo_candidate_base_revision
+                0x0000000000033dc0                geo_candidate_evaluation_generation
+                0x0000000000033dd0                geo_placements_create
+                0x0000000000033de0                geo_placements_clone
+                0x0000000000033e20                geo_placements_destroy
+                0x0000000000033e30                geo_placements_count
+                0x0000000000033e40                geo_placements_at
+                0x0000000000033e70                geo_placements_find
+                0x0000000000033ed0                geo_placements_stage
+                0x00000000000346b0                geo_placement_is_valid
+                0x0000000000034970                geo_placements_put
+                0x00000000000349b0                geo_placements_remove
+                0x0000000000034ba0                geo_placement_domain_view
+                0x0000000000034eb0                geo_placement_contains_point
+                0x0000000000034f90                geo_placement_component_for_rect
+                0x00000000000350b0                geo_placement_contains_rect
+                0x00000000000350c0                geo_placement_local_bounds
+                0x0000000000035240                geo_placement_definition_encode
+                0x00000000000355f0                geo_placement_definition_decode
+                0x0000000000035b60                geo_placement_source_ref
+                0x0000000000035ba0                geo_region_source_ref
+                0x0000000000035bc0                geo_placement_source_decode
+                0x0000000000035c30                geo_region_source_decode
+                0x0000000000035c80                geo_placement_sources_register
+                0x0000000000035de0                geo_placement_sources_definition
+                0x0000000000036460                geo_placement_sources_destroy
+                0x00000000000364b0                geo_versions_create
+                0x00000000000364f0                geo_versions_clone
+                0x0000000000036550                geo_versions_destroy
+                0x0000000000036560                geo_versions_count
+                0x0000000000036570                geo_versions_equal
+                0x0000000000036690                geo_versions_at
+                0x0000000000036740                geo_versions_find
+                0x0000000000036890                geo_versions_field
+                0x0000000000036b50                geo_version_field_quantity
+                0x0000000000037000                geo_version_field_integer
+                0x00000000000371d0                geo_versions_integer
+                0x0000000000037250                geo_versions_check
+                0x00000000000372a0                geo_versions_put
+                0x00000000000373d0                geo_regions_create
+                0x00000000000373e0                geo_regions_clone
+                0x0000000000037420                geo_regions_destroy
+                0x0000000000037430                geo_regions_count
+                0x0000000000037440                geo_regions_at
+                0x0000000000037470                geo_regions_find
+                0x00000000000374d0                geo_regions_stage
+                0x0000000000037700                geo_regions_put
+                0x0000000000037c20                geo_regions_remove
+                0x0000000000037c40                geo_region_keys_count
+                0x0000000000037c50                geo_region_keys_at
+                0x0000000000037c80                geo_region_keys_find
+                0x0000000000037cd0                geo_region_keys_has
+                0x0000000000037d40                geo_region_keys_valid
+                0x0000000000037f20                geo_region_keys_put
+                0x0000000000038140                geo_region_keys_remove
+                0x0000000000038160                geo_region_keys_initialize
+                0x00000000000382d0                geo_region_vertex_by_key
+                0x0000000000038790                geo_region_keys_same
+                0x0000000000038840                geo_region_keys_reconcile
+                0x0000000000039270                geo_region_key_source_ref
+                0x0000000000039400                geo_region_key_source_decode
+                0x0000000000039590                geo_region_key_ledger_encode
+                0x00000000000396b0                geo_region_key_ledger_decode
+                0x000000000003a8a0                geo_region_key_sources_register
+                0x000000000003a9a0                geo_region_key_sources_definitions
+                0x000000000003aa70                geo_region_key_sources_vertex
+                0x000000000003abf0                geo_region_key_sources_destroy
+                0x000000000003ac40                geo_linear_definition_source_ref
+                0x000000000003aca0                geo_linear_definition_source_decode
+                0x000000000003ae40                geo_datum_definition_encode
+                0x000000000003aed0                geo_datum_definition_decode
+                0x000000000003afd0                geo_guide_definition_encode
+                0x000000000003b370                geo_guide_definition_decode
+                0x000000000003b520                geo_linear_definition_sources_register
+                0x000000000003b610                geo_linear_definition_sources_destroy
+                0x000000000003b660                geo_linear_definition_sources_datum
+                0x000000000003b780                geo_linear_definition_sources_guide
+                0x000000000003b8a0                geo_linear_definition_sources_complete
+                0x000000000003ba00                geo_version_source_ref
+                0x000000000003bb60                geo_version_source_decode
+                0x000000000003bde0                geo_version_definition_encode
+                0x000000000003c200                geo_version_definition_decode
+                0x000000000003cb30                geo_version_sources_register
+                0x000000000003cc10                geo_version_sources_destroy
+                0x000000000003cc60                geo_version_sources_definitions
+                0x000000000003cd80                geo_version_sources_store
+                0x000000000003cda0                geo_version_sources_context
+                0x000000000003cdc0                geo_guides_create
+                0x000000000003cdd0                geo_guides_clone
+                0x000000000003ce10                geo_guides_destroy
+                0x000000000003ce20                geo_guides_count
+                0x000000000003ce30                geo_guides_at
+                0x000000000003ce60                geo_guides_values
+                0x000000000003ce70                geo_guides_find
+                0x000000000003cee0                geo_guides_put
+                0x000000000003d290                geo_guides_remove
+                0x000000000003d2b0                geo_guides_reset_resolved
+                0x000000000003d320                geo_guides_evaluate_definition
+                0x000000000003d5a0                geo_guides_evaluate
+                0x000000000003d5f0                geo_grid_store_create
+                0x000000000003d600                geo_grid_store_clone
+                0x000000000003d640                geo_grid_store_destroy
+                0x000000000003d650                geo_grid_systems_count
+                0x000000000003d660                geo_grid_systems_at
+                0x000000000003d690                geo_grid_systems_values
+                0x000000000003d6a0                geo_grid_systems_find
+                0x000000000003d6f0                geo_grid_systems_put
+                0x000000000003dbd0                geo_grid_systems_remove
+                0x000000000003dbf0                geo_grid_systems_redeclare
+                0x000000000003de40                geo_grid_bindings_count
+                0x000000000003de50                geo_grid_bindings_at
+                0x000000000003de80                geo_grid_bindings_values
+                0x000000000003dea0                geo_grid_bindings_find
+                0x000000000003def0                geo_grid_bindings_put
+                0x000000000003df10                geo_grid_bindings_remove
+                0x000000000003df30                geo_grid_binding_normalize
+                0x000000000003e000                geo_grid_axis_is_infinite
+                0x000000000003e020                geo_grid_system_is_infinite
+                0x000000000003e050                geo_grid_axis_pitch
+                0x000000000003e080                geo_grid_axis_phase
+                0x000000000003e0c0                geo_grid_axis_valid
+                0x000000000003e280                geo_grid_system_validate
+                0x000000000003e3f0                geo_grid_system_evaluate
+                0x000000000003e960                geo_grid_rule_find
+                0x000000000003e9b0                geo_grid_rule_matches
+                0x000000000003e9f0                geo_grid_rules_validate
+                0x000000000003ed50                geo_grid_binding_evaluate
+                0x000000000003f140                geo_grid_binding_translation
+                0x000000000003f3f0                geo_enclosures_create
+                0x000000000003f400                geo_enclosures_clone
+                0x000000000003f440                geo_enclosures_destroy
+                0x000000000003f450                geo_enclosures_count
+                0x000000000003f460                geo_enclosures_at
+                0x000000000003f490                geo_enclosures_values
+                0x000000000003f4a0                geo_enclosures_find
+                0x000000000003f4f0                geo_enclosures_stage
+                0x000000000003f7f0                geo_enclosures_remove
+                0x000000000003f8d0                geo_enclosure_evaluate
+                0x0000000000040810                geo_enclosure_axis_bound
+                0x00000000000409d0                geo_enclosure_source_ref
+                0x0000000000040a90                geo_enclosure_source_decode
+                0x0000000000040c50                geo_enclosure_source_encode_definition
+                0x0000000000040db0                geo_enclosure_source_decode_definition
+                0x0000000000041490                geo_enclosure_sources_register
+                0x00000000000415f0                geo_enclosure_sources_destroy
+                0x0000000000041600                geo_enclosure_sources_count
+                0x0000000000041620                geo_enclosure_sources_at
+                0x0000000000041660                geo_enclosure_sources_value
+                0x00000000000417c0                geo_enclosure_sources_axis_bound
+                0x0000000000041860                geo_document_create
+                0x0000000000041870                geo_document_clone
+                0x00000000000418b0                geo_document_destroy
+                0x00000000000418c0                geo_document_clear
+                0x00000000000418e0                geo_document_parameters
+                0x0000000000041900                geo_document_parameters_view
+                0x0000000000041920                geo_document_named_values
+                0x0000000000041930                geo_document_named_values_view
+                0x0000000000041940                geo_document_datums
+                0x0000000000041960                geo_document_datums_view
+                0x0000000000041980                geo_document_guides
+                0x00000000000419a0                geo_document_guides_view
+                0x00000000000419c0                geo_document_regions
+                0x00000000000419e0                geo_document_regions_view
+                0x0000000000041a00                geo_document_placements
+                0x0000000000041a20                geo_document_placements_view
+                0x0000000000041a40                geo_document_grids
+                0x0000000000041a60                geo_document_grids_view
+                0x0000000000041a80                geo_document_versions
+                0x0000000000041aa0                geo_document_versions_view
+                0x0000000000041ac0                geo_document_enclosures
+                0x0000000000041ae0                geo_document_enclosures_view
+                0x0000000000041b00                wood_member_face_valid
+                0x0000000000041b10                wood_member_face_spec
+                0x0000000000041b50                wood_member_face_name
+                0x0000000000041b70                wood_member_face_short_name
+                0x0000000000041b90                wood_member_role_name
+                0x0000000000041bd0                wood_member_construct
+                0x0000000000041c90                wood_member_face_room
+                0x0000000000041cc0                wood_stop_matches_ref
+                0x0000000000041d20                wood_stop_ref_candidates
+                0x0000000000041e30                wood_stop_shadowed
+                0x0000000000041ea0                wood_stop_pick
+                0x0000000000041f70                wood_stop_count_legal
+                0x0000000000042040                wood_member_boundary_props
+                0x00000000000420b0                wood_member_span_extension_check
+                0x0000000000042110                wood_member_end_contact_check
+                0x00000000000421d0                wood_contact_footprint_collides
+                0x0000000000042290                wood_contact_collect_stops
+                0x0000000000042a70                wood_contact_boundary_interval
+                0x0000000000042c50                wood_contact_owner_extension
+                0x0000000000042d30                wood_contact_end_faces_with_sources
+                0x00000000000430a0                wood_contact_end_faces
+                0x00000000000432f0                wood_contact_source_ref
+                0x0000000000043370                wood_contact_source_decode
+                0x0000000000043c70                wood_contact_sources_create
+                0x0000000000043d60                wood_contact_sources_collect
+                0x0000000000044230                wood_contact_sources_destroy
+                0x0000000000044290                wood_cut_list_collect
+                0x00000000000442d0                wood_member_declaration_capacity
+                0x0000000000044350                wood_member_declaration_role
+                0x0000000000044400                wood_member_declaration_priority
+                0x0000000000044450                wood_member_declare
+                0x0000000000044a20                wood_definition_source_ref
+                0x0000000000044a90                wood_definition_source_decode
+                0x0000000000044b10                wood_definition_sources_member
+                0x0000000000045bf0                wood_definition_sources_placement
+                0x0000000000046ce0                wood_definition_sources_dimension
+                0x0000000000046d40                wood_definition_sources_column
+                0x0000000000047000                wood_definition_sources_beam
+                0x00000000000473f0                wood_definition_sources_boundary
+                0x0000000000047980                wood_definition_sources_create
+                0x0000000000047a80                wood_definition_sources_destroy
+                0x0000000000047ae0                wood_definition_sources_complete
+                0x0000000000047c80                wood_world_validate_obstacles
+                0x0000000000047d90                wood_boundary_default_fixity
+                0x0000000000047de0                wood_eng_fail
+                0x0000000000048c70                wood_eng_id
+                0x0000000000048ce0                wood_eng_u32
+                0x00000000000498c0                wood_eng_coord
+                0x0000000000049910                wood_eng_optional_text
+                0x0000000000049e20                wood_eng_ref_parse
+                0x0000000000049f10                wood_eng_axis
+                0x0000000000049fa0                wood_eng_version_view_direct
+                0x000000000004a5b0                wood_eng_version_view
+                0x000000000004a5c0                wood_eng_read_version
+                0x000000000004a790                wood_eng_material_integer
+                0x000000000004a7c0                wood_eng_material
+                0x000000000004ac40                wood_eng_method
+                0x000000000004b150                wood_eng_material_at
+                0x000000000004b1d0                wood_eng_method_at
+                0x000000000004b250                wood_eng_application_direct
+                0x000000000004b2c0                wood_eng_application
+                0x000000000004b350                wood_eng_source_parse
+                0x000000000004b870                wood_eng_target_parse
+                0x000000000004baa0                wood_eng_same_target
+                0x000000000004bad0                wood_eng_binding
+                0x000000000004bb50                wood_eng_bind
+                0x000000000004bc90                wood_eng_object_bound
+                0x000000000004bcf0                wood_engineering_used
+                0x000000000004d230                wood_eng_material_decode
+                0x000000000004d3d0                wood_eng_publish_material
+                0x000000000004d860                wood_eng_publish_method
+                0x000000000004df30                wood_eng_archive
+                0x000000000004e100                wood_eng_application_decode
+                0x000000000004eaf0                wood_eng_put_application
+                0x000000000004f270                wood_eng_target_context
+                0x000000000004f350                wood_eng_resolve_direct
+                0x000000000004fbc0                wood_eng_resolve
+                0x0000000000050260                wood_eng_effective_direct
+                0x0000000000050460                wood_eng_effective
+                0x0000000000050480                wood_engineering_drop_owned
+                0x0000000000050650                wood_engineering_follow_fragment
+                0x0000000000050c60                wood_eng_validate_application_direct
+                0x0000000000050dc0                wood_engineering_rebuild
+                0x0000000000050f90                wood_engineering_version_metadata_encode
+                0x00000000000510e0                wood_engineering_version_metadata_decode
+                0x00000000000512d0                wood_engineering_binding_encode
+                0x0000000000051390                wood_engineering_binding_decode
+                0x00000000000514c0                wood_engineering_binding_source_ref
+                0x00000000000516f0                wood_engineering_binding_source_decode
+                0x0000000000052b10                wood_engineering_sources_bind
+                0x0000000000052bc0                wood_engineering_sources_register
+                0x0000000000052e40                wood_engineering_sources_destroy
+                0x0000000000052e90                wood_engineering_sources_definitions
+                0x00000000000532e0                wood_engineering_sources_metadata
+                0x0000000000053470                wood_engineering_sources_state
+                0x0000000000053490                wood_engineering_sources_context
+                0x00000000000534b0                wood_panel_layout_free
+                0x0000000000053540                wood_panel_layout_build
+                0x00000000000540a0                wood_panel_support_free
+                0x00000000000540d0                wood_panel_support_evaluate
+                0x0000000000054d60                wood_sp_used
+                0x0000000000054d90                wood_sp_profile
+                0x0000000000054df0                wood_sp_member
+                0x0000000000054e50                wood_sp_run
+                0x0000000000054eb0                wood_sp_coord
+                0x0000000000054f10                wood_sp_axis
+                0x0000000000055220                wood_sp_host_json
+                0x00000000000555f0                wood_sp_host
+                0x00000000000557a0                wood_sp_scaled
+                0x00000000000557d0                wood_sp_resolve_placement
+                0x0000000000055de0                wood_sp_parse_profile
+                0x00000000000560e0                wood_sp_put_profile
+                0x00000000000561b0                wood_sp_parse_member
+                0x0000000000056670                wood_sp_put_member
+                0x0000000000056760                wood_sp_parse_run
+                0x00000000000572c0                wood_sp_put_run
+                0x00000000000578b0                wood_sp_point
+                0x0000000000057960                wood_sp_outside_regions
+                0x00000000000579b0                wood_sp_intersection
+                0x0000000000057a50                wood_sp_member_dimension_direct
+                0x0000000000057ad0                wood_sp_run_length_direct
+                0x0000000000057b20                wood_sp_evaluate_member_direct
+                0x00000000000580e0                wood_sp_evaluate_run_direct
+                0x0000000000058670                wood_sp_rebuild
+                0x0000000000058d40                wood_sp_axis_name
+                0x0000000000058da0                wood_sp_remove
+                0x0000000000058fb0                wood_sp_begin_conversion
+                0x00000000000590b0                wood_sp_conversion_fields
+                0x0000000000059550                wood_sp_source_ref
+                0x0000000000059590                wood_sp_source_decode
+                0x0000000000059600                wood_sp_pair_source_ref
+                0x0000000000059630                wood_sp_pair_source_decode
+                0x000000000005a750                wood_sp_sources_profile_definition
+                0x000000000005a7f0                wood_sp_sources_member_definition
+                0x000000000005a8a0                wood_sp_sources_run_definition
+                0x000000000005a960                wood_sp_sources_create
+                0x000000000005abd0                wood_sp_sources_bind
+                0x000000000005ac00                wood_sp_sources_complete
+                0x000000000005ad30                wood_sp_sources_destroy
+                0x000000000005ad50                wood_assembly_rule
+                0x000000000005c0d0                wood_assembly_binding
+                0x000000000005c130                wood_assembly_used
+                0x000000000005c150                wood_assembly_rule_parse
+                0x000000000005c160                wood_assembly_publish
+                0x000000000005c2b0                wood_assembly_versions_immutable
+                0x000000000005c380                wood_assembly_put_binding
+                0x000000000005c4a0                wood_assembly_binding_rebuild_direct
+                0x000000000005c540                wood_assembly_rebuild
+                0x000000000005c6b0                wood_assembly_slot_dimension_direct
+                0x000000000005ca40                wood_assembly_dimensions_changed
+                0x000000000005cdb0                wood_assembly_operation
+                0x000000000005d7c0                wood_assembly_instance
+                0x000000000005d810                wood_assembly_owned
+                0x000000000005d870                wood_assembly_instance_definition_parse
+                0x000000000005db20                wood_assembly_generation_integrity
+                0x000000000005dd10                wood_assembly_member_definition_direct
+                0x000000000005e810                wood_assembly_generated_dimension_direct
+                0x000000000005f2e0                wood_assembly_generation_prepare
+                0x000000000005f520                wood_assembly_instance_check_direct
+                0x000000000005f820                wood_assembly_generation_check
+                0x000000000005f8a0                wood_assembly_generation_operation
+                0x0000000000060210                wood_assembly_instance_load
+                0x0000000000060ec0                wood_assembly_source_ref
+                0x0000000000062ea0                wood_assembly_source_decode
+                0x0000000000064480                wood_assembly_sources_generated
+                0x0000000000064a90                wood_assembly_sources_member_dimensions
+                0x0000000000064b50                wood_assembly_sources_owned_dimensions
+                0x0000000000064cf0                wood_assembly_sources_owned
+                0x0000000000064e30                wood_assembly_sources_definitions
+                0x0000000000065500                wood_assembly_sources_create
+                0x0000000000065720                wood_assembly_sources_bind
+                0x0000000000065740                wood_assembly_sources_destroy
+                0x00000000000657b0                wood_fs_error
+                0x00000000000659d0                wood_fs_capacity_error
+                0x0000000000065d80                wood_fs_name_check
+                0x0000000000065e30                wood_fs_used
+                0x0000000000065e40                wood_fs_index
+                0x0000000000065e80                wood_fs_find
+                0x0000000000065ed0                wood_fs_obstacle_text
+                0x0000000000065f00                wood_fs_obstacle_parse
+                0x0000000000065fd0                wood_fs_obstacles_normalize
+                0x0000000000066090                wood_fs_relation_name
+                0x00000000000660c0                wood_fs_relation
+                0x0000000000066270                wood_fs_boundary
+                0x0000000000066680                wood_fs_obstacle_box
+                0x00000000000666c0                wood_fs_obstacle_view
+                0x0000000000066940                wood_fs_check_direct
+                0x0000000000066b20                wood_fs_check
+                0x0000000000066c20                wood_fs_rebuild
+                0x0000000000066d90                wood_fs_reference_owner
+                0x0000000000066e90                wood_fs_from_json
+                0x0000000000067330                wood_fs_put
+                0x0000000000067480                wood_fs_delete
+                0x0000000000067550                wood_pf_find
+                0x00000000000675c0                wood_pf_free
+                0x0000000000067600                wood_pf_parse
+                0x0000000000067ab0                wood_pf_field_direct
+                0x0000000000067e00                wood_pf_values_direct
+                0x0000000000068160                wood_pf_values
+                0x0000000000068610                wood_pf_region_view
+                0x0000000000068680                wood_pf_selected_cuts
+                0x0000000000068700                wood_pf_point_order
+                0x0000000000068720                wood_pf_clip_status
+                0x0000000000068890                wood_pf_clip
+                0x0000000000068a10                wood_pf_build
+                0x0000000000068d70                wood_pf_rebuild
+                0x0000000000068e00                wood_pf_operation
+                0x0000000000069090                wood_fs_operation
+                0x00000000000694e0                wood_fs_load
+                0x0000000000069c80                wood_pf_load
+                0x000000000006a0c0                wood_dp_find
+                0x000000000006a110                wood_dp_parse
+                0x000000000006aef0                wood_dp_operation
+                0x000000000006b2c0                wood_dp_height_direct
+                0x000000000006b320                wood_dp_frame_direct
+                0x000000000006b460                wood_dp_edge_key_direct
+                0x000000000006bc10                wood_dp_value_direct
+                0x000000000006c750                wood_dp_rebuild
+                0x000000000006cc20                wood_dp_fixities_direct
+                0x000000000006e040                wood_dp_edge_key
+                0x000000000006e0e0                wood_dp_edge_resolve
+                0x000000000006e300                wood_dp_load
+                0x000000000006e4c0                wood_finish_source_ref
+                0x000000000006e500                wood_finish_source_decode
+                0x000000000006e570                wood_finish_sources_surface_definition
+                0x000000000006e610                wood_finish_sources_fill_definition
+                0x000000000006e6c0                wood_finish_sources_derived_definition
+                0x000000000006e780                wood_finish_sources_read_derived
+                0x000000000006e880                wood_finish_sources_edge_key
+                0x000000000006e9c0                wood_finish_sources_edge_resolve
+                0x000000000006eab0                wood_finish_sources_definitions
+                0x000000000006ebc0                wood_finish_sources_create
+                0x000000000006ee30                wood_finish_sources_bind_finish
+                0x000000000006ee50                wood_finish_sources_bind
+                0x00000000000704a0                wood_finish_sources_destroy
+                0x00000000000704c0                wood_grid_find
+                0x0000000000070510                wood_grid_find_mut
+                0x0000000000070570                wood_grid_stage
+                0x0000000000070600                wood_grid_source_main_along
+                0x0000000000070650                wood_grid_source_main_valid
+                0x0000000000070690                wood_grid_source_put
+                0x0000000000070bd0                wood_grid_source_redeclare
+                0x0000000000070ca0                wood_grid_source_remove
+                0x0000000000070d60                wood_grid_begin_direct
+                0x0000000000070ef0                wood_grid_apply_system
+                0x0000000000071160                wood_grid_direct_declared
+                0x0000000000071230                wood_grid_apply_binding
+                0x0000000000071380                wood_grid_prepare_child
+                0x0000000000071550                wood_grid_binding_cache_direct
+                0x0000000000071800                wood_grid_binding_cache
+                0x0000000000071830                wood_grid_bindings_rebuild
+                0x0000000000071b00                wood_grid_delete
+                0x0000000000072080                wood_grid_application_dimension_direct
+                0x00000000000721d0                wood_grid_application_evaluate_direct
+                0x0000000000072690                wood_grid_bind_engineering
+                0x0000000000072d00                wood_grid_dimension_read
+                0x0000000000072ea0                wood_grid_restore_engineering
+                0x0000000000073630                wood_grid_source_ref
+                0x0000000000073690                wood_grid_dimension_source_ref
+                0x0000000000073700                wood_grid_line_source_ref
+                0x00000000000737b0                wood_grid_rule_source_ref
+                0x00000000000738a0                wood_grid_rule_definition_source_ref
+                0x00000000000738e0                wood_grid_source_decode
+                0x0000000000073eb0                wood_grid_sources_dimension
+                0x0000000000074090                wood_grid_sources_line
+                0x0000000000074250                wood_grid_sources_cell
+                0x0000000000074340                wood_grid_sources_rule_line
+                0x00000000000744e0                wood_grid_sources_create
+                0x0000000000079090                wood_grid_sources_bind
+                0x00000000000790b0                wood_grid_sources_definitions
+                0x0000000000079500                wood_grid_sources_destroy
+                0x0000000000079570                wood_grid_decode_system
+                0x00000000000795a0                wood_grid_decode_system_value
+                0x00000000000795d0                wood_grid_decode_binding
+                0x0000000000079990                wood_grid_decode_rule
+                0x0000000000079d50                wood_grid_decode_application
+                0x0000000000079f00                wood_grid_sources_definition
+                0x000000000007a2a0                wood_grid_decode_application_value
+                0x000000000007a600                wood_grid_sources_application
+                0x000000000007b010                wood_grid_encode_system_value
+                0x000000000007b460                wood_grid_encode_application_value
+                0x000000000007bb80                wood_member_anchor_corner
+                0x000000000007bca0                wood_member_reference_place
+                0x000000000007d440                wood_member_reference_compute
+                0x000000000007d740                wood_member_primary_axis_check
+                0x000000000007daf0                wood_member_boundary_role_check
+                0x000000000007e8c0                wood_member_place_a0
+                0x000000000007f2f0                wood_member_resolve_span
+                0x00000000000800c0                wood_grid_lattice_coord
+                0x00000000000801a0                wood_grid_lattice_coord_band
+                0x00000000000802b0                wood_grid_axis_lines
+                0x0000000000080530                wood_grid_valid
+                0x0000000000080670                wood_grid_cell_bounds
+                0x0000000000081190                wood_grid_axis_lines_in
+                0x00000000000811b0                wood_grid_line_coord_in_resolved
+                0x0000000000081350                wood_grid_line_coord_in
+                0x0000000000086440                wood_grid_anchor_line_coord_resolved
+                0x00000000000865f0                wood_grid_anchor_line_coord
+                0x00000000000867f0                wood_grid_valid_in
+                0x0000000000086a60                wood_grid_child_check
+                0x0000000000086b60                wood_grid_parent_count_valid
+                0x0000000000086da0                wood_grid_direct_check
+                0x0000000000086f60                wood_grid_world_valid_direct
+                0x0000000000087280                wood_grid_world_valid
+                0x00000000000872c0                wood_grid_family_fits
+                0x0000000000087c70                wood_grid_rules_valid
+                0x0000000000087d90                wood_grid_system_evaluate_direct
+                0x0000000000088010                wood_grid_systems_rebuild
+                0x00000000000881e0                wood_grid_rule_used
+                0x00000000000882b0                wood_grid_rule_change_allowed
+                0x00000000000883f0                wood_grid_rules_world_valid_direct
+                0x0000000000088970                wood_grid_rules_world_valid
+                0x00000000000889b0                wood_grid_rule_target
+                0x0000000000088e80                wood_grid_rule_cell_direct
+                0x00000000000890e0                wood_grid_rule_cell
+                0x00000000000891a0                wood_grid_rule_line_direct
+                0x000000000008bb00                wood_grid_rule_line
+                0x000000000008bb40                wood_world_validate_members
+                0x0000000000090360                wood_grid_rule_edit_begin
+                0x00000000000904e0                wood_grid_rule_edit
+                0x0000000000090840                wood_engineering_operation
+                0x00000000000920e0                wood_engineering_restore_member
+                0x00000000000924d0                app_history_init
+                0x0000000000092500                app_history_record
+                0x0000000000092590                app_history_unrecord
+                0x0000000000092600                app_history_clear
+                0x0000000000092610                app_history_peek_undo
+                0x0000000000092640                app_history_undo
+                0x00000000000926f0                app_history_redo
+                0x00000000000927a0                app_history_group_begin
+                0x00000000000927d0                app_history_group_mark_dirty
+                0x00000000000927e0                app_history_group_end
+                0x0000000000092830                app_history_group_abort
+                0x0000000000092860                app_candidate_create
+                0x0000000000092a00                app_candidate_set_evaluation_state
+                0x0000000000092a50                app_candidate_evaluation_state
+                0x0000000000092a70                app_candidate_destroy
+                0x0000000000092ae0                app_candidate_bind_core
+                0x0000000000092d40                app_candidate_evaluate
+                0x0000000000092ea0                app_candidate_seal
+                0x0000000000092ec0                app_candidate_check
+                0x00000000000a0f50                app_candidate_publish
+                0x00000000000a1010                app_candidate_reopen
+                0x00000000000a2b20                app_candidate_discard
+                0x00000000000a2b80                app_candidate_before
+                0x00000000000a2ba0                app_candidate_after
+                0x00000000000a2bc0                app_candidate_core
+                0x00000000000a2be0                geometry_legacy_main
+ .text          0x00000000000a42fe        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o
+ .text          0x00000000000a42fe        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crtn.o
+ *(.gnu.warning)
+
+.fini           0x00000000000a4300        0x9
+ *(SORT_NONE(.fini))
+ .fini          0x00000000000a4300        0x4 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crti.o
+                0x00000000000a4300                _fini
+ .fini          0x00000000000a4304        0x5 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crtn.o
+                [!provide]                        PROVIDE (__etext = .)
+                [!provide]                        PROVIDE (_etext = .)
+                [!provide]                        PROVIDE (etext = .)
+                0x00000000000a5000                . = ALIGN (CONSTANT (MAXPAGESIZE))
+                0x00000000000a5000                . = SEGMENT_START ("rodata-segment", (ALIGN (CONSTANT (MAXPAGESIZE)) + (. & (CONSTANT (MAXPAGESIZE) - 0x1))))
+
+.rodata         0x00000000000a5000    0x123d2
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata.cst4   0x00000000000a5000        0x8 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                                          0x4 (size before relaxing)
+                0x00000000000a5000                _IO_stdin_used
+ .rodata.str1.1
+                0x00000000000a5008     0x3c31 /tmp/ccQDQbLu.o
+                                       0x4117 (size before relaxing)
+ *fill*         0x00000000000a8c39        0x7 
+ .rodata        0x00000000000a8c40      0x6c4 /tmp/ccQDQbLu.o
+ *fill*         0x00000000000a9304        0x4 
+ .rodata.str1.8
+                0x00000000000a9308     0xd9fb /tmp/ccQDQbLu.o
+ *fill*         0x00000000000b6d03        0xd 
+ .rodata.cst16  0x00000000000b6d10      0x650 /tmp/ccQDQbLu.o
+ .rodata.cst8   0x00000000000b7360       0x70 /tmp/ccQDQbLu.o
+ .rodata.cst4   0x00000000000b73d0        0x4 /tmp/ccQDQbLu.o
+ .rodata.cst2   0x00000000000b73d0        0x2 /tmp/ccQDQbLu.o
+
+.rodata1
+ *(.rodata1)
+
+.eh_frame_hdr   0x00000000000b73d4     0x2ca4
+ *(.eh_frame_hdr)
+ .eh_frame_hdr  0x00000000000b73d4     0x2ca4 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000b73d4                __GNU_EH_FRAME_HDR
+ *(.eh_frame_entry .eh_frame_entry.*)
+
+.eh_frame       0x00000000000ba078    0x140f8
+ *(.eh_frame)
+ .eh_frame      0x00000000000ba078       0x30 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                                         0x2c (size before relaxing)
+ *fill*         0x00000000000ba0a8        0x0 
+ .eh_frame      0x00000000000ba0a8       0x40 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ .eh_frame      0x00000000000ba0e8       0x18 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                                         0x30 (size before relaxing)
+ .eh_frame      0x00000000000ba100    0x1406c /tmp/ccQDQbLu.o
+                                      0x14088 (size before relaxing)
+ .eh_frame      0x00000000000ce16c        0x4 /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o
+ *(.eh_frame.*)
+
+.sframe         0x00000000000ce170        0x0
+ *(.sframe)
+ .sframe        0x00000000000ce170        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ .sframe        0x00000000000ce170        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ *(.sframe.*)
+
+.gcc_except_table
+ *(.gcc_except_table .gcc_except_table.*)
+
+.gnu_extab
+ *(.gnu_extab*)
+
+.exception_ranges
+ *(.exception_ranges*)
+
+.note.build-id
+ *(.note.build-id)
+
+.note.GNU-stack
+                0x00000000000ce170        0x0
+ *(.note.GNU-stack)
+ .note.GNU-stack
+                0x00000000000ce170        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ .note.GNU-stack
+                0x00000000000ce170        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crti.o
+ .note.GNU-stack
+                0x00000000000ce170        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+ .note.GNU-stack
+                0x00000000000ce170        0x0 /tmp/ccQDQbLu.o
+ .note.GNU-stack
+                0x00000000000ce170        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o
+ .note.GNU-stack
+                0x00000000000ce170        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crtn.o
+
+.note.gnu-property
+ *(.note.gnu-property)
+
+.note.ABI-tag   0x00000000000ce170       0x20
+ *(.note.ABI-tag)
+ .note.ABI-tag  0x00000000000ce170       0x20 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.note.package
+ *(.note.package)
+
+.note.dlopen
+ *(.note.dlopen)
+
+.note.netbsd.ident
+ *(.note.netbsd.ident)
+
+.note.openbsd.ident
+ *(.note.openbsd.ident)
+                0x00000000000cfdd0                . = DATA_SEGMENT_ALIGN (CONSTANT (MAXPAGESIZE), CONSTANT (COMMONPAGESIZE))
+
+.eh_frame
+ *(.eh_frame)
+ *(.eh_frame.*)
+
+.sframe
+ *(.sframe)
+ *(.sframe.*)
+
+.gnu_extab
+ *(.gnu_extab)
+
+.gcc_except_table
+ *(.gcc_except_table .gcc_except_table.*)
+
+.exception_ranges
+ *(.exception_ranges*)
+
+.tdata          0x00000000000cfdd0        0x0
+                [!provide]                        PROVIDE (__tdata_start = .)
+ *(.tdata .tdata.* .gnu.linkonce.td.*)
+
+.tbss
+ *(.tbss .tbss.* .gnu.linkonce.tb.*)
+ *(.tcommon)
+
+.preinit_array  0x00000000000cfdd0        0x0
+                [!provide]                        PROVIDE (__preinit_array_start = .)
+ *(.preinit_array)
+                [!provide]                        PROVIDE (__preinit_array_end = .)
+
+.init_array     0x00000000000cfdd0        0x8
+                [!provide]                        PROVIDE (__init_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*))
+ *(.init_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
+ .init_array    0x00000000000cfdd0        0x8 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+                [!provide]                        PROVIDE (__init_array_end = .)
+
+.fini_array     0x00000000000cfdd8        0x8
+                [!provide]                        PROVIDE (__fini_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*))
+ *(.fini_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
+ .fini_array    0x00000000000cfdd8        0x8 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+                [!provide]                        PROVIDE (__fini_array_end = .)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+ *(SORT_BY_NAME(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *crtbegin?.o(.dtors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+ *(SORT_BY_NAME(.dtors.*))
+ *(.dtors)
+
+.jcr
+ *(.jcr)
+
+.data.rel.ro    0x00000000000cfde0      0xff8
+ *(.data.rel.ro.local* .gnu.linkonce.d.rel.ro.local.*)
+ .data.rel.ro.local
+                0x00000000000cfde0      0xff8 /tmp/ccQDQbLu.o
+                0x00000000000d08c0                wood_sp_panel_spec
+                0x00000000000d0900                ENG_FIELDS
+ *(.data.rel.ro .data.rel.ro.* .gnu.linkonce.d.rel.ro.*)
+ .data.rel.ro   0x00000000000d0dd8        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+
+.dynamic        0x00000000000d0dd8      0x1e0
+ *(.dynamic)
+ .dynamic       0x00000000000d0dd8      0x1e0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000d0dd8                _DYNAMIC
+
+.got            0x00000000000d0fb8       0x28
+ *(.got)
+ .got           0x00000000000d0fb8       0x28 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ *(.igot)
+                0x00000000000d0fe8                . = DATA_SEGMENT_RELRO_END (., (SIZEOF (.got.plt) >= 0x18)?0x18:0x0)
+
+.got.plt        0x00000000000d0fe8      0x178
+ *(.got.plt)
+ .got.plt       0x00000000000d0fe8      0x178 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000d0fe8                _GLOBAL_OFFSET_TABLE_
+ *(.igot.plt)
+
+.data           0x00000000000d1160       0x11
+ *(.data .data.* .gnu.linkonce.d.*)
+ .data          0x00000000000d1160        0x4 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000d1160                data_start
+                0x00000000000d1160                __data_start
+ .data          0x00000000000d1164        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crti.o
+ .data          0x00000000000d1164        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+ *fill*         0x00000000000d1164        0x4 
+ .data.rel.local
+                0x00000000000d1168        0x8 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+                0x00000000000d1168                __dso_handle
+ .data          0x00000000000d1170        0x1 /tmp/ccQDQbLu.o
+ .data          0x00000000000d1171        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o
+ .data          0x00000000000d1171        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crtn.o
+
+.tm_clone_table
+                0x00000000000d1178        0x0
+ .tm_clone_table
+                0x00000000000d1178        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+ .tm_clone_table
+                0x00000000000d1178        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o
+
+.data1
+ *(.data1)
+                0x00000000000d1171                _edata = .
+                [!provide]                        PROVIDE (edata = .)
+                0x00000000000d1178                . = ALIGN (ALIGNOF (NEXT_SECTION))
+                0x00000000000d1180                __bss_start = .
+
+.bss            0x00000000000d1180   0xe1aa48
+ *(.dynbss)
+ .dynbss        0x00000000000d1180       0x28 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000d1180                stdout@@GLIBC_2.2.5
+                0x00000000000d11a0                stderr@@GLIBC_2.2.5
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x00000000000d11a8        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o
+ .bss           0x00000000000d11a8        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crti.o
+ .bss           0x00000000000d11a8        0x1 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+ *fill*         0x00000000000d11a9       0x17 
+ .bss           0x00000000000d11c0   0xe1aa08 /tmp/ccQDQbLu.o
+ .bss           0x0000000000eebbc8        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o
+ .bss           0x0000000000eebbc8        0x0 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crtn.o
+ *(COMMON)
+                0x0000000000eebbc8                . = ALIGN ((. != 0x0)?0x8:0x1)
+
+.lbss
+ *(.dynlbss)
+ *(.lbss .lbss.* .gnu.linkonce.lb.*)
+ *(LARGE_COMMON)
+                0x0000000000eebbc8                . = ALIGN (0x8)
+                0x0000000000eebbc8                . = SEGMENT_START ("ldata-segment", .)
+
+.lrodata
+ *(.lrodata .lrodata.* .gnu.linkonce.lr.*)
+
+.ldata          0x0000000000eedbc8        0x0
+ *(.ldata .ldata.* .gnu.linkonce.l.*)
+                0x0000000000eedbc8                . = ALIGN ((. != 0x0)?0x8:0x1)
+                0x0000000000eedbc8                . = ALIGN (0x8)
+                0x0000000000eebbc8                _end = .
+                [!provide]                        PROVIDE (end = .)
+                0x0000000000eedbc8                . = DATA_SEGMENT_END (.)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000       0x1f
+ *(.comment)
+ .comment       0x0000000000000000       0x1f /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+                                         0x20 (size before relaxing)
+ .comment       0x000000000000001f       0x20 /tmp/ccQDQbLu.o
+ .comment       0x000000000000001f       0x20 /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o
+
+.gnu.build.attributes
+ *(.gnu.build.attributes .gnu.build.attributes.*)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges
+ *(.debug_aranges)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info
+ *(.debug_info .gnu.linkonce.wi.*)
+
+.debug_abbrev
+ *(.debug_abbrev)
+
+.debug_line
+ *(.debug_line .debug_line.* .debug_line_end)
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str
+ *(.debug_str)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+
+.debug_ranges
+ *(.debug_ranges)
+
+.debug_addr
+ *(.debug_addr)
+
+.debug_line_str
+ *(.debug_line_str)
+
+.debug_loclists
+ *(.debug_loclists)
+
+.debug_macro
+ *(.debug_macro)
+
+.debug_names
+ *(.debug_names)
+
+.debug_rnglists
+ *(.debug_rnglists)
+
+.debug_str_offsets
+ *(.debug_str_offsets)
+
+.debug_sup
+ *(.debug_sup)
+
+.gnu.attributes
+ *(.gnu.attributes)
+
+/DISCARD/
+ *(.note.GNU-stack)
+ *(.gnu_debuglink)
+ *(.gnu.lto_*)
+ *(.gnu_object_only)
+OUTPUT(/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/model-base elf64-x86-64)

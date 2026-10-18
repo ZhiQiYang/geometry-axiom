@@ -1,0 +1,828 @@
+[
+  {
+    "phase": "excluded_startup_dump",
+    "command": "dump",
+    "seconds": 1.111557968,
+    "process_to_response_seconds": 1.112119326
+  },
+  {
+    "phase": "world_size",
+    "command": "section-profile-read",
+    "seconds": 0.000109222,
+    "process_to_response_seconds": null,
+    "native_bytes": {
+      "world": 4759192,
+      "sectionProfiles": 875800
+    }
+  },
+  {
+    "phase": "0:reset",
+    "command": "reset",
+    "seconds": 0.079085481,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "0:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.916082693,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "0:read_dump",
+    "command": "dump",
+    "seconds": 0.000498164,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "0:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.07455827,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "0:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.083135176,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "0:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.081760618,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "0:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.085234243,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "0:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.051753106,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "0:read_final_dump",
+    "command": "dump",
+    "seconds": 0.00078492,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "1:reset",
+    "command": "reset",
+    "seconds": 0.082895934,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "1:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.955596372,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "1:read_dump",
+    "command": "dump",
+    "seconds": 0.000907232,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "1:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.087774727,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "1:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.097016047,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "1:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.086395211,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "1:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.080910179,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "1:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.043193153,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "1:read_final_dump",
+    "command": "dump",
+    "seconds": 0.00108176,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "2:reset",
+    "command": "reset",
+    "seconds": 0.0845388,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "2:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.824278635,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "2:read_dump",
+    "command": "dump",
+    "seconds": 0.0005401,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "2:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.078555943,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "2:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.087723436,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "2:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.079924455,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "2:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.081366859,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "2:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.048449959,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "2:read_final_dump",
+    "command": "dump",
+    "seconds": 0.001360959,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "3:reset",
+    "command": "reset",
+    "seconds": 0.080378121,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "3:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.888324306,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "3:read_dump",
+    "command": "dump",
+    "seconds": 0.000607877,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "3:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.081245869,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "3:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.080070757,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "3:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.082961218,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "3:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.098209133,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "3:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.038123382,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "3:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000571215,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "4:reset",
+    "command": "reset",
+    "seconds": 0.072333456,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "4:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.831183345,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "4:read_dump",
+    "command": "dump",
+    "seconds": 0.000818357,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "4:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.088330545,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "4:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.094456168,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "4:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.083526713,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "4:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.071080135,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "4:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.03727682,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "4:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000971485,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "5:reset",
+    "command": "reset",
+    "seconds": 0.076450733,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "5:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.807331335,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "5:read_dump",
+    "command": "dump",
+    "seconds": 0.001253233,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "5:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.069549682,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "5:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.081469985,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "5:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.09500744,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "5:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.073001501,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "5:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.034697447,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "5:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000837843,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "6:reset",
+    "command": "reset",
+    "seconds": 0.088459383,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "6:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.784894242,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "6:read_dump",
+    "command": "dump",
+    "seconds": 0.001062547,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "6:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.077401113,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "6:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.106607357,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "6:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.08041809,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "6:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.080786338,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "6:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.038324178,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "6:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000726098,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "7:reset",
+    "command": "reset",
+    "seconds": 0.081413812,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "7:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.845680844,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "7:read_dump",
+    "command": "dump",
+    "seconds": 0.00048082,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "7:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.100675974,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "7:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.086375621,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "7:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.083747922,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "7:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.097717747,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "7:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.050968633,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "7:read_final_dump",
+    "command": "dump",
+    "seconds": 0.001334253,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "8:reset",
+    "command": "reset",
+    "seconds": 0.080577859,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "8:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.819585124,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "8:read_dump",
+    "command": "dump",
+    "seconds": 0.000715265,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "8:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.073161969,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "8:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.087892793,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "8:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.076184556,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "8:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.070606125,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "8:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.037530949,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "8:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000582178,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "9:reset",
+    "command": "reset",
+    "seconds": 0.085615798,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "9:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.844280569,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "9:read_dump",
+    "command": "dump",
+    "seconds": 0.000537203,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "9:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.078867936,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "9:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.086036856,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "9:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.078183735,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "9:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.074702775,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "9:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.039888633,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "9:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000730864,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "10:reset",
+    "command": "reset",
+    "seconds": 0.083428385,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "10:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.839312947,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "10:read_dump",
+    "command": "dump",
+    "seconds": 0.000604484,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "10:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.08679844,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "10:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.086642544,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "10:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.077502439,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "10:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.082457668,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "10:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.036519177,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "10:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000574363,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "11:reset",
+    "command": "reset",
+    "seconds": 0.074827618,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "11:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.804407653,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "11:read_dump",
+    "command": "dump",
+    "seconds": 0.000666494,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "11:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.090106391,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "11:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.094284317,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "11:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.077285917,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "11:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.081427218,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "11:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.038939715,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "11:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000612073,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "12:reset",
+    "command": "reset",
+    "seconds": 0.077770363,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "12:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.803813776,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "12:read_dump",
+    "command": "dump",
+    "seconds": 0.000478963,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "12:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.085737505,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "12:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.076475848,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "12:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.07665022,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "12:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.081039979,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "12:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.044709242,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "12:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000703574,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "13:reset",
+    "command": "reset",
+    "seconds": 0.077646966,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "13:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.867591283,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "13:read_dump",
+    "command": "dump",
+    "seconds": 0.000865169,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "13:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.08882183,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "13:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.081830216,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "13:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.086859962,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "13:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.083452316,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "13:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.037906062,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "13:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000774099,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "14:reset",
+    "command": "reset",
+    "seconds": 0.094559852,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "14:load_scene",
+    "command": "loadfile /workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+    "seconds": 0.782722892,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "14:read_dump",
+    "command": "dump",
+    "seconds": 0.000511823,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "14:canvas_position",
+    "command": "line canvas-pos boundary 1 60 60",
+    "seconds": 0.081933163,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "14:unused_spec_create",
+    "command": "line spec PERF_VALUE 100",
+    "seconds": 0.08750492,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "14:unused_spec_replace",
+    "command": "line spec PERF_VALUE 200",
+    "seconds": 0.084125267,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "14:preview_spec",
+    "command": "line preview spec 主支1中線 900",
+    "seconds": 0.077665321,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "14:cancel_preview",
+    "command": "line cancel-preview",
+    "seconds": 0.038825826,
+    "process_to_response_seconds": null
+  },
+  {
+    "phase": "14:read_final_dump",
+    "command": "dump",
+    "seconds": 0.000733131,
+    "process_to_response_seconds": null
+  }
+]

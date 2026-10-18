@@ -1,0 +1,149 @@
+{
+  "schema": "geo261-performance-analysis/1",
+  "baseline_only": true,
+  "normal_run": "20261018T200850689427-normal",
+  "gprof_run": "20261018T201033419459-gprof",
+  "source_pins": {
+    "main": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+    "integration": "e64aa6359d600f43313ec9d7ba1112c465b6a40c"
+  },
+  "normal_summary_sha256": "3770e6c06db595015571cf3a2fd67917bb41e1cc38136ca3c7f9cf5f30e458d5",
+  "profile_summary_sha256": "937acccf39c27c367655e83ae0d9026ffd07836c028a5a7e3b5ef759d3b27b03",
+  "raw_success_recheck": [
+    {
+      "run": "20261018T200850689427-normal",
+      "bridge_ok_responses": 288,
+      "model_success_payloads": 21,
+      "failure_json_files": 0
+    },
+    {
+      "run": "20261018T201033419459-gprof",
+      "bridge_ok_responses": 288,
+      "model_success_payloads": 21,
+      "failure_json_files": 0
+    }
+  ],
+  "resident_rounds": {
+    "main": {
+      "iteration_sums_seconds": [
+        0.08891613200000001,
+        0.055075166,
+        0.048081892,
+        0.047724391,
+        0.048972865,
+        0.054945938,
+        0.051616565999999996,
+        0.050076722,
+        0.053111036,
+        0.049802172,
+        0.060654828,
+        0.055664452,
+        0.052323805,
+        0.052997103999999996,
+        0.058187855999999996
+      ],
+      "median_seconds": 0.052997103999999996
+    },
+    "integration": {
+      "iteration_sums_seconds": [
+        1.372892671,
+        1.435770615,
+        1.286739146,
+        1.350491878,
+        1.2799770240000001,
+        1.239599199,
+        1.258679346,
+        1.348395626,
+        1.246836818,
+        1.288844369,
+        1.293840447,
+        1.2625573959999998,
+        1.24737947,
+        1.325747903,
+        1.248582195
+      ],
+      "median_seconds": 1.286739146
+    }
+  },
+  "resident_round_median_ratio": 24.279423758701984,
+  "profile_observations": [
+    {
+      "label": "main",
+      "workload": "bridge-cold",
+      "gmon_processes": 7,
+      "flat_last_cumulative_seconds": 0,
+      "sha_block_self_seconds": null,
+      "sha_block_symbol_calls": 63,
+      "sha_api_symbol_calls": 7,
+      "sha_block_raw_percent": null
+    },
+    {
+      "label": "main",
+      "workload": "bridge-resident",
+      "gmon_processes": 1,
+      "flat_last_cumulative_seconds": 0,
+      "sha_block_self_seconds": null,
+      "sha_block_symbol_calls": 534,
+      "sha_api_symbol_calls": 106,
+      "sha_block_raw_percent": null
+    },
+    {
+      "label": "main",
+      "workload": "model-legacy",
+      "gmon_processes": 7,
+      "flat_last_cumulative_seconds": 0,
+      "sha_block_self_seconds": null,
+      "sha_block_symbol_calls": null,
+      "sha_api_symbol_calls": null,
+      "sha_block_raw_percent": null
+    },
+    {
+      "label": "integration",
+      "workload": "bridge-cold",
+      "gmon_processes": 7,
+      "flat_last_cumulative_seconds": 4.16,
+      "sha_block_self_seconds": 4.15,
+      "sha_block_symbol_calls": 15304751,
+      "sha_api_symbol_calls": 1827,
+      "sha_block_raw_percent": 99.64
+    },
+    {
+      "label": "integration",
+      "workload": "bridge-resident",
+      "gmon_processes": 1,
+      "flat_last_cumulative_seconds": 14.55,
+      "sha_block_self_seconds": 14.5,
+      "sha_block_symbol_calls": 53019413,
+      "sha_api_symbol_calls": 6306,
+      "sha_block_raw_percent": 99.66
+    },
+    {
+      "label": "integration",
+      "workload": "model-legacy",
+      "gmon_processes": 7,
+      "flat_last_cumulative_seconds": 4.35,
+      "sha_block_self_seconds": 4.32,
+      "sha_block_symbol_calls": 15304688,
+      "sha_api_symbol_calls": 1820,
+      "sha_block_raw_percent": 99.31
+    },
+    {
+      "label": "integration",
+      "workload": "model-neutral",
+      "gmon_processes": 7,
+      "flat_last_cumulative_seconds": 4.14,
+      "sha_block_self_seconds": 4.11,
+      "sha_block_symbol_calls": 15304814,
+      "sha_api_symbol_calls": 1841,
+      "sha_block_raw_percent": 99.28
+    }
+  ],
+  "limitations": [
+    "gprof inclusive按callcount平均分攤，非payload加權",
+    "O2 clone/tailcall instrumentation歸屬失真，不把provider圖計數當metadata真次數",
+    "main三組無時間samples",
+    "libc/libm未pg",
+    "normal與profile不可混算ns/candidate",
+    "MB/s與hardware cycles未量測"
+  ]
+}

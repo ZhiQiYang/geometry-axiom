@@ -1,0 +1,21 @@
+function,self_seconds,children_seconds,inclusive_seconds,calls,direct_calls,recursive_calls
+main,0.0,14.54,14.54,0,0,0
+geo_sha256,0.02,14.5,14.52,6306,6306,0
+geo_sha_block,14.5,0.0,14.5,53019413,53019413,0
+geo_candidate_provider_hash,0.01,7.24,7.25,4935,3615,1320
+geo_candidate_evaluate <cycle 2>,0.0,5.34,5.34,235,235,0
+app_world_candidate_create,0.0,5.1,5.1,250,250,0
+apply_scene_line <cycle 2>,0.0,4.47,4.47,219,219,0
+apply_scene_line_candidate.constprop.0 <cycle 2>,0.0,2.93,2.93,219,219,0
+app_replace_world.constprop.0,0.0,2.56,2.56,16,16,0
+cmd_replace_world,0.0,2.4,2.4,15,15,0
+app_world_candidate_publish,0.0,1.83,1.83,220,220,0
+app_world_candidate_seal,0.0,1.48,1.48,235,235,0
+app_candidate_check,0.0,1.39,1.39,660,440,220
+geo_candidate_seal,0.0,0.94,0.94,470,235,235
+app_candidate_create,0.0,0.58,0.58,250,250,0
+app_candidate_evaluate <cycle 2>,0.0,0.54,0.54,235,235,0
+boundary_geometry_hash,0.0,0.14,0.14,60,60,0
+eng_definition_hash,0.0,0.11,0.11,46,46,0
+json_boundary_preview,0.0,0.07,0.07,15,15,0
+json_reference_preview,0.0,0.07,0.07,15,15,0

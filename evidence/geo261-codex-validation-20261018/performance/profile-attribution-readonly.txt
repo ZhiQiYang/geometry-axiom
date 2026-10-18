@@ -1,0 +1,885 @@
+唯讀局部反組譯；未重建或執行目標 binary。
+binary: /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge
+binary_sha256: 0e9a58d96e0079cef3c7897911cf2dc52636b41d1430af22a0d9770b3479190c
+profile_input_binary_sha256: 0e9a58d96e0079cef3c7897911cf2dc52636b41d1430af22a0d9770b3479190c
+hash_matches: True
+
+## 相關符號
+$ nm -an /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge（保存符合 'geo_candidate_(provider_hash|bind_state|check_state|check)|app_(world_)?candidate_(create|bind_core)|mcount' 的原文行）
+                 U mcount@GLIBC_2.2.5
+00000000000279f0 t geo_candidate_provider_hash
+0000000000027c70 t geo_candidate_bind_state.part.0
+0000000000027ea0 t geo_candidate_check_state.isra.0
+0000000000027fc0 t geo_candidate_check.part.0
+000000000003df10 T geo_candidate_bind_state
+000000000003e470 T geo_candidate_check
+00000000000b8910 T app_candidate_create
+00000000000b8bd0 T app_candidate_bind_core
+00000000000b8c60 t app_world_candidate_create
+
+## ELF clone 符號
+$ readelf -Ws /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge（保存符合 'geo_candidate_(provider_hash|bind_state\\.part|check_state\\.isra|check\\.part)' 的原文行）
+   455: 00000000000279f0   634 FUNC    LOCAL  DEFAULT   14 geo_candidate_provider_hash
+   456: 0000000000027c70   552 FUNC    LOCAL  DEFAULT   14 geo_candidate_bind_state.part.0
+   457: 0000000000027ea0   281 FUNC    LOCAL  DEFAULT   14 geo_candidate_check_state.isra.0
+   458: 0000000000027fc0   196 FUNC    LOCAL  DEFAULT   14 geo_candidate_check.part.0
+
+## geo_candidate_provider_hash
+$ objdump -d --no-show-raw-insn --disassemble=geo_candidate_provider_hash /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge
+
+/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+00000000000279f0 <geo_candidate_provider_hash>:
+   279f0:	push   %rbp
+   279f1:	mov    %rsp,%rbp
+   279f4:	push   %r15
+   279f6:	push   %r14
+   279f8:	push   %r13
+   279fa:	push   %r12
+   279fc:	push   %rbx
+   279fd:	sub    $0x28,%rsp
+   27a01:	call   4260 <mcount@plt>
+   27a06:	mov    %rsi,-0x40(%rbp)
+   27a0a:	mov    %rdi,%r12
+   27a0d:	test   %rdi,%rdi
+   27a10:	je     27c38 <geo_candidate_provider_hash+0x248>
+   27a16:	mov    0x18(%rdi),%r13
+   27a1a:	test   %r13,%r13
+   27a1d:	je     27c60 <geo_candidate_provider_hash+0x270>
+   27a23:	mov    0x10(%rdi),%r15
+   27a27:	mov    $0x8,%ebx
+   27a2c:	xor    %r14d,%r14d
+   27a2f:	test   %r15,%r15
+   27a32:	je     27c50 <geo_candidate_provider_hash+0x260>
+   27a38:	mov    0x8(%r15),%rdi
+   27a3c:	test   %rdi,%rdi
+   27a3f:	je     27c50 <geo_candidate_provider_hash+0x260>
+   27a45:	mov    0x10(%r15),%rcx
+   27a49:	test   %rcx,%rcx
+   27a4c:	je     27c50 <geo_candidate_provider_hash+0x260>
+   27a52:	cmp    $0xffffffffffffffe7,%rbx
+   27a56:	ja     27c20 <geo_candidate_provider_hash+0x230>
+   27a5c:	mov    %rcx,-0x38(%rbp)
+   27a60:	add    $0x18,%rbx
+   27a64:	call   4130 <strlen@plt>
+   27a69:	add    %rax,%rbx
+   27a6c:	jb     27c20 <geo_candidate_provider_hash+0x230>
+   27a72:	mov    -0x38(%rbp),%rdi
+   27a76:	call   4130 <strlen@plt>
+   27a7b:	add    %rax,%rbx
+   27a7e:	jb     27c20 <geo_candidate_provider_hash+0x230>
+   27a84:	add    $0x1,%r14
+   27a88:	add    $0x30,%r15
+   27a8c:	cmp    %r14,%r13
+   27a8f:	jne    27a2f <geo_candidate_provider_hash+0x3f>
+   27a91:	mov    %rbx,%rdi
+   27a94:	call   40d0 <malloc@plt>
+   27a99:	mov    %rax,-0x48(%rbp)
+   27a9d:	test   %rax,%rax
+   27aa0:	je     27c20 <geo_candidate_provider_hash+0x230>
+   27aa6:	mov    $0x38,%ecx
+   27aab:	data16 cs nopw 0x0(%rax,%rax,1)
+   27ab6:	cs nopw 0x0(%rax,%rax,1)
+   27ac0:	mov    %r13,%rsi
+   27ac3:	add    $0x1,%rax
+   27ac7:	shr    %cl,%rsi
+   27aca:	sub    $0x8,%ecx
+   27acd:	mov    %sil,-0x1(%rax)
+   27ad1:	cmp    $0xfffffff8,%ecx
+   27ad4:	jne    27ac0 <geo_candidate_provider_hash+0xd0>
+   27ad6:	mov    -0x48(%rbp),%rax
+   27ada:	lea    0x8(%rax),%r15
+   27ade:	test   %r13,%r13
+   27ae1:	je     27bfb <geo_candidate_provider_hash+0x20b>
+   27ae7:	mov    0x10(%r12),%r14
+   27aec:	lea    0x0(%r13,%r13,2),%r13
+   27af1:	shl    $0x4,%r13
+   27af5:	lea    0x0(%r13,%r14,1),%rax
+   27afa:	mov    %rax,-0x38(%rbp)
+   27afe:	xchg   %ax,%ax
+   27b00:	mov    (%r14),%edi
+   27b03:	mov    %r15,%rax
+   27b06:	mov    $0x38,%ecx
+   27b0b:	data16 cs nopw 0x0(%rax,%rax,1)
+   27b16:	cs nopw 0x0(%rax,%rax,1)
+   27b20:	mov    %rdi,%rdx
+   27b23:	add    $0x1,%rax
+   27b27:	shr    %cl,%rdx
+   27b2a:	sub    $0x8,%ecx
+   27b2d:	mov    %dl,-0x1(%rax)
+   27b30:	cmp    $0xfffffff8,%ecx
+   27b33:	jne    27b20 <geo_candidate_provider_hash+0x130>
+   27b35:	mov    0x8(%r14),%r12
+   27b39:	mov    %r12,%rdi
+   27b3c:	call   4130 <strlen@plt>
+   27b41:	mov    $0x38,%ecx
+   27b46:	mov    %rax,%r13
+   27b49:	lea    0x8(%r15),%rax
+   27b4d:	data16 cs nopw 0x0(%rax,%rax,1)
+   27b58:	nopl   0x0(%rax,%rax,1)
+   27b60:	mov    %r13,%rdx
+   27b63:	add    $0x1,%rax
+   27b67:	shr    %cl,%rdx
+   27b6a:	sub    $0x8,%ecx
+   27b6d:	mov    %dl,-0x1(%rax)
+   27b70:	cmp    $0xfffffff8,%ecx
+   27b73:	jne    27b60 <geo_candidate_provider_hash+0x170>
+   27b75:	lea    0x10(%r15),%rcx
+   27b79:	mov    %r13,%rdx
+   27b7c:	mov    %r12,%rsi
+   27b7f:	mov    %rcx,%rdi
+   27b82:	call   4350 <memcpy@plt>
+   27b87:	mov    0x10(%r14),%r12
+   27b8b:	add    %rax,%r13
+   27b8e:	mov    %r12,%rdi
+   27b91:	call   4130 <strlen@plt>
+   27b96:	mov    $0x38,%ecx
+   27b9b:	mov    %rax,%r15
+   27b9e:	mov    %r13,%rax
+   27ba1:	data16 cs nopw 0x0(%rax,%rax,1)
+   27bac:	data16 cs nopw 0x0(%rax,%rax,1)
+   27bb7:	nopw   0x0(%rax,%rax,1)
+   27bc0:	mov    %r15,%rdx
+   27bc3:	add    $0x1,%rax
+   27bc7:	shr    %cl,%rdx
+   27bca:	sub    $0x8,%ecx
+   27bcd:	mov    %dl,-0x1(%rax)
+   27bd0:	cmp    $0xfffffff8,%ecx
+   27bd3:	jne    27bc0 <geo_candidate_provider_hash+0x1d0>
+   27bd5:	lea    0x8(%r13),%rcx
+   27bd9:	mov    %r15,%rdx
+   27bdc:	mov    %r12,%rsi
+   27bdf:	add    $0x30,%r14
+   27be3:	mov    %rcx,%rdi
+   27be6:	call   4350 <memcpy@plt>
+   27beb:	add    %rax,%r15
+   27bee:	mov    -0x38(%rbp),%rax
+   27bf2:	cmp    %rax,%r14
+   27bf5:	jne    27b00 <geo_candidate_provider_hash+0x110>
+   27bfb:	mov    %rbx,%rsi
+   27bfe:	mov    -0x48(%rbp),%rbx
+   27c02:	mov    -0x40(%rbp),%rdx
+   27c06:	mov    %rbx,%rdi
+   27c09:	call   25a80 <geo_sha256>
+   27c0e:	mov    %rbx,%rdi
+   27c11:	call   4120 <free@plt>
+   27c16:	xor    %eax,%eax
+   27c18:	jmp    27c25 <geo_candidate_provider_hash+0x235>
+   27c1a:	nopw   0x0(%rax,%rax,1)
+   27c20:	mov    $0x3,%eax
+   27c25:	add    $0x28,%rsp
+   27c29:	pop    %rbx
+   27c2a:	pop    %r12
+   27c2c:	pop    %r13
+   27c2e:	pop    %r14
+   27c30:	pop    %r15
+   27c32:	pop    %rbp
+   27c33:	ret
+   27c34:	nopl   0x0(%rax)
+   27c38:	add    $0x28,%rsp
+   27c3c:	mov    $0x1,%eax
+   27c41:	pop    %rbx
+   27c42:	pop    %r12
+   27c44:	pop    %r13
+   27c46:	pop    %r14
+   27c48:	pop    %r15
+   27c4a:	pop    %rbp
+   27c4b:	ret
+   27c4c:	nopl   0x0(%rax)
+   27c50:	mov    $0x7,%eax
+   27c55:	jmp    27c25 <geo_candidate_provider_hash+0x235>
+   27c57:	nopw   0x0(%rax,%rax,1)
+   27c60:	mov    $0x8,%ebx
+   27c65:	jmp    27a91 <geo_candidate_provider_hash+0xa1>
+
+Disassembly of section .fini:
+
+## geo_candidate_bind_state.part.0
+$ objdump -d --no-show-raw-insn --disassemble=geo_candidate_bind_state.part.0 /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge
+
+/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+0000000000027c70 <geo_candidate_bind_state.part.0>:
+   27c70:	push   %rbp
+   27c71:	mov    %rsp,%rbp
+   27c74:	push   %r15
+   27c76:	push   %r14
+   27c78:	push   %r13
+   27c7a:	push   %r12
+   27c7c:	push   %rbx
+   27c7d:	sub    $0x38,%rsp
+   27c81:	call   4260 <mcount@plt>
+   27c86:	mov    %rdi,-0x58(%rbp)
+   27c8a:	mov    %rdx,%r15
+   27c8d:	mov    %rcx,%r14
+   27c90:	mov    %r8,%rbx
+   27c93:	mov    %rsi,-0x38(%rbp)
+   27c97:	test   %rdx,%rdx
+   27c9a:	je     27da0 <geo_candidate_bind_state.part.0+0x130>
+   27ca0:	test   %r8,%r8
+   27ca3:	je     27da0 <geo_candidate_bind_state.part.0+0x130>
+   27ca9:	mov    %rdx,%rax
+   27cac:	add    %r8,%rax
+   27caf:	mov    %rax,-0x40(%rbp)
+   27cb3:	mov    $0x1,%eax
+   27cb8:	jb     27d8d <geo_candidate_bind_state.part.0+0x11d>
+   27cbe:	test   %rcx,%rcx
+   27cc1:	je     27d8d <geo_candidate_bind_state.part.0+0x11d>
+   27cc7:	mov    %rcx,%rdx
+   27cca:	add    %r8,%rdx
+   27ccd:	setb   %r12b
+   27cd1:	mov    %rdx,-0x48(%rbp)
+   27cd5:	movzbl %r12b,%r12d
+   27cd9:	jb     27d8d <geo_candidate_bind_state.part.0+0x11d>
+   27cdf:	cmp    %rdx,%r15
+   27ce2:	jae    27cf6 <geo_candidate_bind_state.part.0+0x86>
+   27ce4:	mov    -0x40(%rbp),%rdx
+   27ce8:	mov    $0x5,%eax
+   27ced:	cmp    %rdx,%rcx
+   27cf0:	jb     27d8d <geo_candidate_bind_state.part.0+0x11d>
+   27cf6:	mov    -0x58(%rbp),%rcx
+   27cfa:	mov    0x30(%rcx),%rax
+   27cfe:	mov    %rax,-0x50(%rbp)
+   27d02:	test   %rax,%rax
+   27d05:	je     27dd7 <geo_candidate_bind_state.part.0+0x167>
+   27d0b:	mov    0x28(%rcx),%r13
+   27d0f:	jmp    27d77 <geo_candidate_bind_state.part.0+0x107>
+   27d11:	nopl   0x0(%rax)
+   27d18:	mov    0x18(%r13),%rax
+   27d1c:	mov    0x8(%r13),%rsi
+   27d20:	mov    0x10(%r13),%rdi
+   27d24:	lea    (%rsi,%rax,1),%r8
+   27d28:	add    %rdi,%rax
+   27d2b:	cmp    %r8,%r15
+   27d2e:	jae    27d39 <geo_candidate_bind_state.part.0+0xc9>
+   27d30:	mov    -0x40(%rbp),%rcx
+   27d34:	cmp    %rcx,%rsi
+   27d37:	jb     27db8 <geo_candidate_bind_state.part.0+0x148>
+   27d39:	cmp    %rax,%r15
+   27d3c:	jae    27d47 <geo_candidate_bind_state.part.0+0xd7>
+   27d3e:	mov    -0x40(%rbp),%rdx
+   27d42:	cmp    %rdx,%rdi
+   27d45:	jb     27db8 <geo_candidate_bind_state.part.0+0x148>
+   27d47:	cmp    %r8,%r14
+   27d4a:	jae    27d55 <geo_candidate_bind_state.part.0+0xe5>
+   27d4c:	mov    -0x48(%rbp),%rcx
+   27d50:	cmp    %rcx,%rsi
+   27d53:	jb     27db8 <geo_candidate_bind_state.part.0+0x148>
+   27d55:	cmp    %rax,%r14
+   27d58:	jae    27d63 <geo_candidate_bind_state.part.0+0xf3>
+   27d5a:	mov    -0x48(%rbp),%rax
+   27d5e:	cmp    %rax,%rdi
+   27d61:	jb     27db8 <geo_candidate_bind_state.part.0+0x148>
+   27d63:	mov    -0x50(%rbp),%rax
+   27d67:	add    $0x1,%r12
+   27d6b:	add    $0xb8,%r13
+   27d72:	cmp    %rax,%r12
+   27d75:	je     27dc0 <geo_candidate_bind_state.part.0+0x150>
+   27d77:	mov    0x0(%r13),%rsi
+   27d7b:	mov    -0x38(%rbp),%rdi
+   27d7f:	call   4250 <strcmp@plt>
+   27d84:	test   %eax,%eax
+   27d86:	jne    27d18 <geo_candidate_bind_state.part.0+0xa8>
+   27d88:	mov    $0x4,%eax
+   27d8d:	add    $0x38,%rsp
+   27d91:	pop    %rbx
+   27d92:	pop    %r12
+   27d94:	pop    %r13
+   27d96:	pop    %r14
+   27d98:	pop    %r15
+   27d9a:	pop    %rbp
+   27d9b:	ret
+   27d9c:	nopl   0x0(%rax)
+   27da0:	add    $0x38,%rsp
+   27da4:	mov    $0x1,%eax
+   27da9:	pop    %rbx
+   27daa:	pop    %r12
+   27dac:	pop    %r13
+   27dae:	pop    %r14
+   27db0:	pop    %r15
+   27db2:	pop    %rbp
+   27db3:	ret
+   27db4:	nopl   0x0(%rax)
+   27db8:	mov    $0x5,%eax
+   27dbd:	jmp    27d8d <geo_candidate_bind_state.part.0+0x11d>
+   27dbf:	nop
+   27dc0:	movabs $0x1642c8590b21641,%rax
+   27dca:	mov    -0x50(%rbp),%rcx
+   27dce:	cmp    %rcx,%rax
+   27dd1:	jb     27e8e <geo_candidate_bind_state.part.0+0x21e>
+   27dd7:	mov    -0x38(%rbp),%rdi
+   27ddb:	call   f810 <geo_candidate_copy_text>
+   27de0:	mov    %rax,%r13
+   27de3:	test   %rax,%rax
+   27de6:	je     27e8e <geo_candidate_bind_state.part.0+0x21e>
+   27dec:	mov    -0x50(%rbp),%rsi
+   27df0:	mov    -0x58(%rbp),%rax
+   27df4:	add    $0x1,%rsi
+   27df8:	mov    0x28(%rax),%rdi
+   27dfc:	imul   $0xb8,%rsi,%rsi
+   27e03:	call   4310 <realloc@plt>
+   27e08:	test   %rax,%rax
+   27e0b:	je     27e86 <geo_candidate_bind_state.part.0+0x216>
+   27e0d:	mov    -0x58(%rbp),%rdi
+   27e11:	mov    %rbx,%rsi
+   27e14:	mov    0x30(%rdi),%rdx
+   27e18:	mov    %rax,0x28(%rdi)
+   27e1c:	lea    0x1(%rdx),%rcx
+   27e20:	imul   $0xb8,%rdx,%rdx
+   27e27:	mov    %rcx,0x30(%rdi)
+   27e2b:	mov    $0x13,%ecx
+   27e30:	lea    (%rax,%rdx,1),%r12
+   27e34:	xor    %eax,%eax
+   27e36:	lea    0x20(%r12),%rdx
+   27e3b:	mov    %rdx,%rdi
+   27e3e:	rep stos %rax,%es:(%rdi)
+   27e41:	mov    %r13,(%r12)
+   27e45:	mov    %r15,%rdi
+   27e48:	mov    %r15,0x8(%r12)
+   27e4d:	mov    %r14,0x10(%r12)
+   27e52:	mov    %rbx,0x18(%r12)
+   27e57:	call   25a80 <geo_sha256>
+   27e5c:	mov    %rbx,%rdi
+   27e5f:	call   40d0 <malloc@plt>
+   27e64:	mov    %rax,0xa8(%r12)
+   27e6c:	mov    %rax,%rdi
+   27e6f:	test   %rax,%rax
+   27e72:	je     27e7f <geo_candidate_bind_state.part.0+0x20f>
+   27e74:	mov    %rbx,%rdx
+   27e77:	mov    %r15,%rsi
+   27e7a:	call   4350 <memcpy@plt>
+   27e7f:	xor    %eax,%eax
+   27e81:	jmp    27d8d <geo_candidate_bind_state.part.0+0x11d>
+   27e86:	mov    %r13,%rdi
+   27e89:	call   4120 <free@plt>
+   27e8e:	mov    $0x3,%eax
+   27e93:	jmp    27d8d <geo_candidate_bind_state.part.0+0x11d>
+
+Disassembly of section .fini:
+
+## geo_candidate_check_state.isra.0
+$ objdump -d --no-show-raw-insn --disassemble=geo_candidate_check_state.isra.0 /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge
+
+/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+0000000000027ea0 <geo_candidate_check_state.isra.0>:
+   27ea0:	push   %rbp
+   27ea1:	mov    %rsp,%rbp
+   27ea4:	push   %r15
+   27ea6:	push   %r14
+   27ea8:	push   %r13
+   27eaa:	push   %r12
+   27eac:	push   %rbx
+   27ead:	sub    $0x78,%rsp
+   27eb1:	call   4260 <mcount@plt>
+   27eb6:	mov    %rsi,-0x90(%rbp)
+   27ebd:	mov    %dl,-0x81(%rbp)
+   27ec3:	test   %rsi,%rsi
+   27ec6:	je     27fa8 <geo_candidate_check_state.isra.0+0x108>
+   27ecc:	lea    0x20(%rdi),%r15
+   27ed0:	xor    %r12d,%r12d
+   27ed3:	lea    -0x80(%rbp),%r13
+   27ed7:	jmp    27efb <geo_candidate_check_state.isra.0+0x5b>
+   27ed9:	nopl   0x0(%rax)
+   27ee0:	mov    -0x90(%rbp),%rax
+   27ee7:	add    $0x1,%r12
+   27eeb:	add    $0xb8,%r15
+   27ef2:	cmp    %rax,%r12
+   27ef5:	je     27fa8 <geo_candidate_check_state.isra.0+0x108>
+   27efb:	mov    0x88(%r15),%rsi
+   27f02:	mov    -0x8(%r15),%rbx
+   27f06:	mov    -0x18(%r15),%r14
+   27f0a:	test   %rsi,%rsi
+   27f0d:	je     27f1e <geo_candidate_check_state.isra.0+0x7e>
+   27f0f:	mov    %rbx,%rdx
+   27f12:	mov    %r14,%rdi
+   27f15:	call   4280 <memcmp@plt>
+   27f1a:	test   %eax,%eax
+   27f1c:	je     27f3b <geo_candidate_check_state.isra.0+0x9b>
+   27f1e:	mov    %rbx,%rsi
+   27f21:	mov    %r14,%rdi
+   27f24:	mov    %r13,%rdx
+   27f27:	call   25a80 <geo_sha256>
+   27f2c:	mov    %r15,%rsi
+   27f2f:	mov    %r13,%rdi
+   27f32:	call   4250 <strcmp@plt>
+   27f37:	test   %eax,%eax
+   27f39:	jne    27f91 <geo_candidate_check_state.isra.0+0xf1>
+   27f3b:	cmpb   $0x0,-0x81(%rbp)
+   27f42:	je     27ee0 <geo_candidate_check_state.isra.0+0x40>
+   27f44:	mov    0x90(%r15),%rsi
+   27f4b:	mov    -0x10(%r15),%rdi
+   27f4f:	test   %rsi,%rsi
+   27f52:	je     27f72 <geo_candidate_check_state.isra.0+0xd2>
+   27f54:	mov    %rbx,%rdx
+   27f57:	mov    %rdi,-0x98(%rbp)
+   27f5e:	call   4280 <memcmp@plt>
+   27f63:	mov    -0x98(%rbp),%rdi
+   27f6a:	test   %eax,%eax
+   27f6c:	je     27ee0 <geo_candidate_check_state.isra.0+0x40>
+   27f72:	mov    %rbx,%rsi
+   27f75:	mov    %r13,%rdx
+   27f78:	call   25a80 <geo_sha256>
+   27f7d:	lea    0x41(%r15),%rsi
+   27f81:	mov    %r13,%rdi
+   27f84:	call   4250 <strcmp@plt>
+   27f89:	test   %eax,%eax
+   27f8b:	je     27ee0 <geo_candidate_check_state.isra.0+0x40>
+   27f91:	add    $0x78,%rsp
+   27f95:	mov    $0x8,%eax
+   27f9a:	pop    %rbx
+   27f9b:	pop    %r12
+   27f9d:	pop    %r13
+   27f9f:	pop    %r14
+   27fa1:	pop    %r15
+   27fa3:	pop    %rbp
+   27fa4:	ret
+   27fa5:	nopl   (%rax)
+   27fa8:	add    $0x78,%rsp
+   27fac:	xor    %eax,%eax
+   27fae:	pop    %rbx
+   27faf:	pop    %r12
+   27fb1:	pop    %r13
+   27fb3:	pop    %r14
+   27fb5:	pop    %r15
+   27fb7:	pop    %rbp
+   27fb8:	ret
+
+Disassembly of section .fini:
+
+## geo_candidate_check.part.0
+$ objdump -d --no-show-raw-insn --disassemble=geo_candidate_check.part.0 /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge
+
+/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+0000000000027fc0 <geo_candidate_check.part.0>:
+   27fc0:	push   %rbp
+   27fc1:	mov    %rsp,%rbp
+   27fc4:	push   %r13
+   27fc6:	push   %r12
+   27fc8:	push   %rbx
+   27fc9:	sub    $0x58,%rsp
+   27fcd:	call   4260 <mcount@plt>
+   27fd2:	cmpl   $0x3,0x20(%rdi)
+   27fd6:	mov    %rdi,%rbx
+   27fd9:	jne    28058 <geo_candidate_check.part.0+0x98>
+   27fdb:	mov    $0x6,%r12d
+   27fe1:	cmp    %rsi,0x8(%rdi)
+   27fe5:	jne    28045 <geo_candidate_check.part.0+0x85>
+   27fe7:	mov    0x18(%rdi),%rsi
+   27feb:	mov    %rdx,%rdi
+   27fee:	call   4250 <strcmp@plt>
+   27ff3:	test   %eax,%eax
+   27ff5:	jne    28070 <geo_candidate_check.part.0+0xb0>
+   27ff7:	mov    0x30(%rbx),%rsi
+   27ffb:	mov    0x28(%rbx),%rdi
+   27fff:	mov    $0x1,%edx
+   28004:	mov    $0x8,%r12d
+   2800a:	call   27ea0 <geo_candidate_check_state.isra.0>
+   2800f:	test   %eax,%eax
+   28011:	jne    28045 <geo_candidate_check.part.0+0x85>
+   28013:	mov    0x40(%rbx),%rdi
+   28017:	test   %rdi,%rdi
+   2801a:	je     28058 <geo_candidate_check.part.0+0x98>
+   2801c:	cmpb   $0x0,0x49(%rdi)
+   28020:	je     28058 <geo_candidate_check.part.0+0x98>
+   28022:	lea    -0x70(%rbp),%r13
+   28026:	mov    %r13,%rsi
+   28029:	call   279f0 <geo_candidate_provider_hash>
+   2802e:	mov    %eax,%r12d
+   28031:	test   %eax,%eax
+   28033:	jne    28045 <geo_candidate_check.part.0+0x85>
+   28035:	lea    0x48(%rbx),%rsi
+   28039:	mov    %r13,%rdi
+   2803c:	call   4250 <strcmp@plt>
+   28041:	test   %eax,%eax
+   28043:	jne    28070 <geo_candidate_check.part.0+0xb0>
+   28045:	add    $0x58,%rsp
+   28049:	mov    %r12d,%eax
+   2804c:	pop    %rbx
+   2804d:	pop    %r12
+   2804f:	pop    %r13
+   28051:	pop    %rbp
+   28052:	ret
+   28053:	nopl   0x0(%rax,%rax,1)
+   28058:	add    $0x58,%rsp
+   2805c:	mov    $0x2,%r12d
+   28062:	pop    %rbx
+   28063:	mov    %r12d,%eax
+   28066:	pop    %r12
+   28068:	pop    %r13
+   2806a:	pop    %rbp
+   2806b:	ret
+   2806c:	nopl   0x0(%rax)
+   28070:	add    $0x58,%rsp
+   28074:	mov    $0x7,%r12d
+   2807a:	pop    %rbx
+   2807b:	mov    %r12d,%eax
+   2807e:	pop    %r12
+   28080:	pop    %r13
+   28082:	pop    %rbp
+   28083:	ret
+
+Disassembly of section .fini:
+
+## app_world_candidate_create
+$ objdump -d --no-show-raw-insn --disassemble=app_world_candidate_create /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge
+
+/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+00000000000b8c60 <app_world_candidate_create>:
+   b8c60:	push   %rbp
+   b8c61:	mov    %rsp,%rbp
+   b8c64:	push   %r12
+   b8c66:	push   %rbx
+   b8c67:	call   4260 <mcount@plt>
+   b8c6c:	mov    $0x913d88,%esi
+   b8c71:	mov    %rdi,%r12
+   b8c74:	mov    $0x1,%edi
+   b8c79:	call   42a0 <calloc@plt>
+   b8c7e:	mov    %rax,%rbx
+   b8c81:	test   %rax,%rax
+   b8c84:	je     b8e18 <app_world_candidate_create+0x1b8>
+   b8c8a:	sub    $0x8,%rsp
+   b8c8e:	mov    %r12,%rdx
+   b8c91:	mov    %rbx,%rdi
+   b8c94:	mov    $0x489e98,%ecx
+   b8c99:	mov    0xe5c510(%rip),%rax        # f151b0 <g_app_candidate_serial>
+   b8ca0:	mov    0x139eab79(%rip),%r9        # 13aa3820 <g_definition_revision>
+   b8ca7:	lea    0x489e98(%rbx),%rsi
+   b8cae:	lea    0x1(%rax),%r8
+   b8cb2:	lea    0x2635f(%rip),%rax        # df018 <WOOD_MEMBER_FACE_SPEC+0xc700>
+   b8cb9:	mov    %r8,0xe5c4f0(%rip)        # f151b0 <g_app_candidate_serial>
+   b8cc0:	push   %rax
+   b8cc1:	call   b8910 <app_candidate_create>
+   b8cc6:	mov    %rax,%rdi
+   b8cc9:	mov    %rax,0x913d30(%rbx)
+   b8cd0:	pop    %rax
+   b8cd1:	pop    %rdx
+   b8cd2:	test   %rdi,%rdi
+   b8cd5:	je     b8e30 <app_world_candidate_create+0x1d0>
+   b8cdb:	mov    $0x8b610,%ecx
+   b8ce0:	mov    $0x1960c8,%edx
+   b8ce5:	lea    0x1814a(%rip),%rsi        # d0e36 <_IO_stdin_used+0x3e36>
+   b8cec:	call   b8bd0 <app_candidate_bind_core>
+   b8cf1:	test   %eax,%eax
+   b8cf3:	jne    b8e10 <app_world_candidate_create+0x1b0>
+   b8cf9:	mov    0x913d30(%rbx),%rdi
+   b8d00:	xor    %edx,%edx
+   b8d02:	mov    $0x1a08,%ecx
+   b8d07:	lea    0x18138(%rip),%rsi        # d0e46 <_IO_stdin_used+0x3e46>
+   b8d0e:	call   b8bd0 <app_candidate_bind_core>
+   b8d13:	test   %eax,%eax
+   b8d15:	jne    b8e10 <app_world_candidate_create+0x1b0>
+   b8d1b:	mov    0x913d30(%rbx),%rdi
+   b8d22:	mov    $0x40c08,%ecx
+   b8d27:	mov    $0x1a08,%edx
+   b8d2c:	lea    0x18125(%rip),%rsi        # d0e58 <_IO_stdin_used+0x3e58>
+   b8d33:	call   b8bd0 <app_candidate_bind_core>
+   b8d38:	test   %eax,%eax
+   b8d3a:	jne    b8e10 <app_world_candidate_create+0x1b0>
+   b8d40:	mov    0x913d30(%rbx),%rdi
+   b8d47:	mov    $0x10408,%ecx
+   b8d4c:	mov    $0x1030b8,%edx
+   b8d51:	lea    0x18112(%rip),%rsi        # d0e6a <_IO_stdin_used+0x3e6a>
+   b8d58:	call   b8bd0 <app_candidate_bind_core>
+   b8d5d:	test   %eax,%eax
+   b8d5f:	jne    b8e10 <app_world_candidate_create+0x1b0>
+   b8d65:	mov    0x913d30(%rbx),%rdi
+   b8d6c:	mov    $0x17390,%ecx
+   b8d71:	mov    $0x42610,%edx
+   b8d76:	lea    0x180fe(%rip),%rsi        # d0e7b <_IO_stdin_used+0x3e7b>
+   b8d7d:	call   b8bd0 <app_candidate_bind_core>
+   b8d82:	test   %eax,%eax
+   b8d84:	jne    b8e10 <app_world_candidate_create+0x1b0>
+   b8d8a:	mov    0x913d30(%rbx),%rdi
+   b8d91:	mov    $0x93588,%ecx
+   b8d96:	mov    $0x6fb30,%edx
+   b8d9b:	lea    0x180ea(%rip),%rsi        # d0e8c <_IO_stdin_used+0x3e8c>
+   b8da2:	call   b8bd0 <app_candidate_bind_core>
+   b8da7:	test   %eax,%eax
+   b8da9:	jne    b8e10 <app_world_candidate_create+0x1b0>
+   b8dab:	mov    0x913d30(%rbx),%rdi
+   b8db2:	mov    $0x16190,%ecx
+   b8db7:	mov    $0x599a0,%edx
+   b8dbc:	lea    0x180dd(%rip),%rsi        # d0ea0 <_IO_stdin_used+0x3ea0>
+   b8dc3:	call   b8bd0 <app_candidate_bind_core>
+   b8dc8:	test   %eax,%eax
+   b8dca:	jne    b8e10 <app_world_candidate_create+0x1b0>
+   b8dcc:	mov    0x913d30(%rbx),%rdi
+   b8dd3:	mov    $0x82c08,%ecx
+   b8dd8:	mov    $0x1134c0,%edx
+   b8ddd:	lea    0x180cc(%rip),%rsi        # d0eb0 <_IO_stdin_used+0x3eb0>
+   b8de4:	call   b8bd0 <app_candidate_bind_core>
+   b8de9:	test   %eax,%eax
+   b8deb:	jne    b8e10 <app_world_candidate_create+0x1b0>
+   b8ded:	mov    0x913d30(%rbx),%rdi
+   b8df4:	mov    $0x1a8,%ecx
+   b8df9:	mov    $0x2216d8,%edx
+   b8dfe:	lea    0x180be(%rip),%rsi        # d0ec3 <_IO_stdin_used+0x3ec3>
+   b8e05:	call   b8bd0 <app_candidate_bind_core>
+   b8e0a:	test   %eax,%eax
+   b8e0c:	je     b8e1a <app_world_candidate_create+0x1ba>
+   b8e0e:	xchg   %ax,%ax
+   b8e10:	mov    %rbx,%rdi
+   b8e13:	call   3dcb0 <app_world_candidate_destroy>
+   b8e18:	xor    %ebx,%ebx
+   b8e1a:	lea    -0x10(%rbp),%rsp
+   b8e1e:	mov    %rbx,%rax
+   b8e21:	pop    %rbx
+   b8e22:	pop    %r12
+   b8e24:	pop    %rbp
+   b8e25:	ret
+   b8e26:	cs nopw 0x0(%rax,%rax,1)
+   b8e30:	mov    %rbx,%rdi
+   b8e33:	call   4120 <free@plt>
+   b8e38:	jmp    b8e18 <app_world_candidate_create+0x1b8>
+
+Disassembly of section .fini:
+
+## app_candidate_bind_core
+$ objdump -d --no-show-raw-insn --disassemble=app_candidate_bind_core /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge
+
+/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+00000000000b8bd0 <app_candidate_bind_core>:
+   b8bd0:	push   %rbp
+   b8bd1:	mov    %rsp,%rbp
+   b8bd4:	call   4260 <mcount@plt>
+   b8bd9:	mov    %rdi,%rax
+   b8bdc:	mov    %rsi,%r9
+   b8bdf:	test   %rdi,%rdi
+   b8be2:	je     b8c0e <app_candidate_bind_core+0x3e>
+   b8be4:	mov    0x10(%rdi),%rsi
+   b8be8:	cmp    %rdx,%rsi
+   b8beb:	jb     b8c0e <app_candidate_bind_core+0x3e>
+   b8bed:	sub    %rdx,%rsi
+   b8bf0:	mov    $0x1,%edi
+   b8bf5:	cmp    %rcx,%rsi
+   b8bf8:	jae    b8c00 <app_candidate_bind_core+0x30>
+   b8bfa:	mov    %edi,%eax
+   b8bfc:	pop    %rbp
+   b8bfd:	ret
+   b8bfe:	xchg   %ax,%ax
+   b8c00:	mov    0x18(%rax),%r10
+   b8c04:	test   %r10,%r10
+   b8c07:	je     b8c0e <app_candidate_bind_core+0x3e>
+   b8c09:	test   %r9,%r9
+   b8c0c:	jne    b8c20 <app_candidate_bind_core+0x50>
+   b8c0e:	mov    $0x1,%edi
+   b8c13:	pop    %rbp
+   b8c14:	mov    %edi,%eax
+   b8c16:	ret
+   b8c17:	nopw   0x0(%rax,%rax,1)
+   b8c20:	cmpb   $0x0,(%r9)
+   b8c24:	je     b8bfa <app_candidate_bind_core+0x2a>
+   b8c26:	mov    0x20(%r10),%esi
+   b8c2a:	test   %esi,%esi
+   b8c2c:	jne    b8c58 <app_candidate_bind_core+0x88>
+   b8c2e:	cmpb   $0x0,0x38(%r10)
+   b8c33:	jne    b8c58 <app_candidate_bind_core+0x88>
+   b8c35:	mov    0x8(%rax),%rsi
+   b8c39:	mov    %rcx,%r8
+   b8c3c:	mov    %r10,%rdi
+   b8c3f:	pop    %rbp
+   b8c40:	add    %rdx,%rsi
+   b8c43:	add    (%rax),%rdx
+   b8c46:	mov    %rsi,%rcx
+   b8c49:	mov    %r9,%rsi
+   b8c4c:	jmp    27c70 <geo_candidate_bind_state.part.0>
+   b8c51:	nopl   0x0(%rax)
+   b8c58:	mov    $0x2,%edi
+   b8c5d:	jmp    b8bfa <app_candidate_bind_core+0x2a>
+
+Disassembly of section .fini:
+
+## geo_candidate_check
+$ objdump -d --no-show-raw-insn --disassemble=geo_candidate_check /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge
+
+/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+000000000003e470 <geo_candidate_check>:
+   3e470:	push   %rbp
+   3e471:	mov    %rsp,%rbp
+   3e474:	call   4260 <mcount@plt>
+   3e479:	test   %rdi,%rdi
+   3e47c:	je     3e490 <geo_candidate_check+0x20>
+   3e47e:	test   %rdx,%rdx
+   3e481:	je     3e490 <geo_candidate_check+0x20>
+   3e483:	pop    %rbp
+   3e484:	jmp    27fc0 <geo_candidate_check.part.0>
+   3e489:	nopl   0x0(%rax)
+   3e490:	mov    $0x1,%eax
+   3e495:	pop    %rbp
+   3e496:	ret
+
+Disassembly of section .fini:
+
+## geo_candidate_mark_published
+$ objdump -d --no-show-raw-insn --disassemble=geo_candidate_mark_published /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge
+
+/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+000000000003e4a0 <geo_candidate_mark_published>:
+   3e4a0:	push   %rbp
+   3e4a1:	mov    %rsp,%rbp
+   3e4a4:	push   %rbx
+   3e4a5:	sub    $0x8,%rsp
+   3e4a9:	call   4260 <mcount@plt>
+   3e4ae:	mov    %rdi,%rbx
+   3e4b1:	test   %rdi,%rdi
+   3e4b4:	je     3e4d8 <geo_candidate_mark_published+0x38>
+   3e4b6:	test   %rdx,%rdx
+   3e4b9:	je     3e4d8 <geo_candidate_mark_published+0x38>
+   3e4bb:	call   27fc0 <geo_candidate_check.part.0>
+   3e4c0:	test   %eax,%eax
+   3e4c2:	jne    3e4cb <geo_candidate_mark_published+0x2b>
+   3e4c4:	movl   $0x4,0x20(%rbx)
+   3e4cb:	mov    -0x8(%rbp),%rbx
+   3e4cf:	leave
+   3e4d0:	ret
+   3e4d1:	nopl   0x0(%rax)
+   3e4d8:	mov    -0x8(%rbp),%rbx
+   3e4dc:	mov    $0x1,%eax
+   3e4e1:	leave
+   3e4e2:	ret
+
+Disassembly of section .fini:
+
+## geo_sha256 呼叫與返回行
+$ objdump -d --no-show-raw-insn --disassemble=geo_sha256 /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge（保存符合 '^[0-9]|call|jmp.*<|ret' 的原文行）
+0000000000025a80 <geo_sha256>:
+   25a94:	call   4260 <mcount@plt>
+   25b3e:	call   7b50 <geo_sha_block>
+   25bbc:	call   7b50 <geo_sha_block>
+   25c56:	ret
+   25c86:	jmp    25b48 <geo_sha256+0xc8>
+   25cf6:	jmp    25b6a <geo_sha256+0xea>
+   25d02:	call   7b50 <geo_sha_block>
+   25d07:	jmp    25bd2 <geo_sha256+0x152>
+   25d29:	jmp    25cce <geo_sha256+0x24e>
+   25d44:	jmp    25cef <geo_sha256+0x26f>
+   25d58:	jmp    25d2b <geo_sha256+0x2ab>
+
+## geo_sha_block 呼叫與返回行
+$ objdump -d --no-show-raw-insn --disassemble=geo_sha_block /workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge（保存符合 '^[0-9]|call|jmp.*<|ret' 的原文行）
+0000000000007b50 <geo_sha_block>:
+    7b64:	call   4260 <mcount@plt>
+    7e40:	jmp    7e59 <geo_sha_block+0x309>
+    7f46:	ret
+
+## 既有 gprof 的局部原文
+file: /workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/callgraph.txt
+lines 26–35
+26:                 0.00    0.11      46/6306        eng_definition_hash [19]
+27:                 0.00    0.14      60/6306        boundary_geometry_hash [18]
+28:                 0.00    0.51     220/6306        app_candidate_check [14]
+29:                 0.00    0.54     235/6306        app_world_candidate_seal [13]
+30:                 0.00    0.54     235/6306        app_candidate_evaluate <cycle 2> [17]
+31:                 0.00    0.57     250/6306        app_candidate_create [16]
+32:                 0.01    4.86    2115/6306        geo_candidate_evaluate <cycle 2> [6]
+33:                 0.01    7.23    3145/6306        geo_candidate_provider_hash [5]
+34: [2]     99.8    0.02   14.50    6306         geo_sha256 [2]
+35:                14.50    0.00 53019413/53019413     geo_sha_block [3]
+lines 50–59
+50:                                 1320             geo_candidate_provider_hash [5]
+51:                 0.00    0.44     220/3615        app_world_candidate_publish [12]
+52:                 0.00    0.47     235/3615        geo_candidate_evaluate <cycle 2> [6]
+53:                 0.00    0.88     440/3615        app_candidate_check [14]
+54:                 0.00    0.94     470/3615        geo_candidate_seal [15]
+55:                 0.01    4.51    2250/3615        app_world_candidate_create [7]
+56: [5]     49.8    0.01    7.24    3615+1320    geo_candidate_provider_hash [5]
+57:                 0.01    7.23    3145/6306        geo_sha256 [2]
+58:                 0.00    0.00    2250/10068       geo_source_copy_text [41]
+59:                                 1320             geo_candidate_provider_hash [5]
+lines 70–79
+70:                                   15             app_scene_load_evaluate <cycle 2> [223]
+71: -----------------------------------------------
+72:                 0.00    0.31      15/250         main [1]
+73:                 0.00    0.33      16/250         app_replace_world.constprop.0 [10]
+74:                 0.00    4.47     219/250         apply_scene_line <cycle 2> [8]
+75: [7]     35.0    0.00    5.10     250         app_world_candidate_create [7]
+76:                 0.01    4.51    2250/3615        geo_candidate_provider_hash [5]
+77:                 0.00    0.58     250/250         app_candidate_create [16]
+78:                 0.01    0.00    2250/2250        app_candidate_bind_core [24]
+79: -----------------------------------------------
+lines 194–200
+194:                 0.00    0.00      30/30          reference_guide_clip_text [255]
+195:                 0.00    0.00      15/15          reference_guide_changed [279]
+196: -----------------------------------------------
+197:                 0.01    0.00    2250/2250        app_world_candidate_create [7]
+198: [24]     0.1    0.01    0.00    2250         app_candidate_bind_core [24]
+199: -----------------------------------------------
+200:                                                  <spontaneous>

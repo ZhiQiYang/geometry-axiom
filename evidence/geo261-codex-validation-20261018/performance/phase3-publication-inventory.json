@@ -1,0 +1,2528 @@
+{
+  "schema": "geo261-publication-inventory/1",
+  "repository_prefix": "evidence/geo261-codex-validation-20261018",
+  "scope": "僅兩個固定 baseline run；含全部 raw gmon，排除 executable。此清單本身是額外公開 metadata，不含自我雜湊。",
+  "normal_run": "20261018T200850689427-normal",
+  "profile_run": "20261018T201033419459-gprof",
+  "public_count": 408,
+  "public_bytes": 16481275,
+  "gmon_count": 37,
+  "gmon_bytes": 12095019,
+  "public_files": [
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/README.md",
+      "destination_relative": "performance/README.md",
+      "bytes": 7861,
+      "sha256": "e1c2b6b48ee0655c57021ae61695dc3d5bfca0fe8f6ba45d03af23600511deab"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge.build.stderr",
+      "destination_relative": "performance/artifacts/build/integration/gprof/bridge.build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge.build.stdout",
+      "destination_relative": "performance/artifacts/build/integration/gprof/bridge.build.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge.command.json",
+      "destination_relative": "performance/artifacts/build/integration/gprof/bridge.command.json",
+      "bytes": 1044,
+      "sha256": "fb2c065b9b946d03f7ce6c9c04ba4d35c99f6965666872d6091f1a5449855c28"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge.d",
+      "destination_relative": "performance/artifacts/build/integration/gprof/bridge.d",
+      "bytes": 38984,
+      "sha256": "26893400ae7fefeec4d964ca715c3edc94e581fbb5ec11bea58e6011a25fe108"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge.link-map",
+      "destination_relative": "performance/artifacts/build/integration/gprof/bridge.link-map",
+      "bytes": 80597,
+      "sha256": "7ee75aed4b17559758c121dc18a3c80ed8cbfac9eb8268a7a225c79e99233dae"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge.manifest.json",
+      "destination_relative": "performance/artifacts/build/integration/gprof/bridge.manifest.json",
+      "bytes": 11105,
+      "sha256": "bd681e7af4654bb5a713878a4e41c5cd79088ba55d3ba9d98b786a480e1165b3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge.undefined-symbols.txt",
+      "destination_relative": "performance/artifacts/build/integration/gprof/bridge.undefined-symbols.txt",
+      "bytes": 2287,
+      "sha256": "6cb266eec9282b46ecb96fc896949e851cd0042a1ef9a4f6b62d68ce7eb348a1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/model-base.build.stderr",
+      "destination_relative": "performance/artifacts/build/integration/gprof/model-base.build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/model-base.build.stdout",
+      "destination_relative": "performance/artifacts/build/integration/gprof/model-base.build.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/model-base.command.json",
+      "destination_relative": "performance/artifacts/build/integration/gprof/model-base.command.json",
+      "bytes": 1062,
+      "sha256": "0e6aaee9b09158dd4d39f26e2298f98c0709775253f18f2ea336bb91140ffff4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/model-base.d",
+      "destination_relative": "performance/artifacts/build/integration/gprof/model-base.d",
+      "bytes": 37409,
+      "sha256": "87db2ddea51497d7a95876e0210ebb7040895df6835d7c41510ff910fc097199"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/model-base.link-map",
+      "destination_relative": "performance/artifacts/build/integration/gprof/model-base.link-map",
+      "bytes": 78887,
+      "sha256": "2bad6606c30c61e8e8b979a7a77cec724cb146fb7a4be01dc5f980b6afa090df"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/model-base.manifest.json",
+      "destination_relative": "performance/artifacts/build/integration/gprof/model-base.manifest.json",
+      "bytes": 11123,
+      "sha256": "1053292e743c7b35908cb79f3b3b304c2d0a60063659da5b7f48c8e24483dc29"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/model-base.undefined-symbols.txt",
+      "destination_relative": "performance/artifacts/build/integration/gprof/model-base.undefined-symbols.txt",
+      "bytes": 2089,
+      "sha256": "66079f35b44a001bcf41085ac1c975af915985cd11379e15ca0328783f378aa7"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/bridge.build.stderr",
+      "destination_relative": "performance/artifacts/build/integration/normal/bridge.build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/bridge.build.stdout",
+      "destination_relative": "performance/artifacts/build/integration/normal/bridge.build.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/bridge.command.json",
+      "destination_relative": "performance/artifacts/build/integration/normal/bridge.command.json",
+      "bytes": 997,
+      "sha256": "6f4474c6c60d15962a19aa49356b238720e7bc57f88e3fbfcfe9ff65c137f608"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/bridge.d",
+      "destination_relative": "performance/artifacts/build/integration/normal/bridge.d",
+      "bytes": 38985,
+      "sha256": "4cb02ccd00743e080f73f4b94a1679b2b623f9e21e1f2efce1d790489adb4167"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/bridge.link-map",
+      "destination_relative": "performance/artifacts/build/integration/normal/bridge.link-map",
+      "bytes": 77269,
+      "sha256": "1c13c60043202a140d49c850c5b71f7766b4e2e01e74730042c87b50348bff3d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/bridge.manifest.json",
+      "destination_relative": "performance/artifacts/build/integration/normal/bridge.manifest.json",
+      "bytes": 11112,
+      "sha256": "7a6b8f470da7bc4891f63c053ff377aa6bc5f6938353b3b60ee764a12cdae079"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/bridge.undefined-symbols.txt",
+      "destination_relative": "performance/artifacts/build/integration/normal/bridge.undefined-symbols.txt",
+      "bytes": 2108,
+      "sha256": "45627b4fb86ab4a2977fd312c9d60acb49c21cca76904d941e651148b9ea875d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/model-base.build.stderr",
+      "destination_relative": "performance/artifacts/build/integration/normal/model-base.build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/model-base.build.stdout",
+      "destination_relative": "performance/artifacts/build/integration/normal/model-base.build.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/model-base.command.json",
+      "destination_relative": "performance/artifacts/build/integration/normal/model-base.command.json",
+      "bytes": 1015,
+      "sha256": "288cc4d406bc8e7b054f65994d5b736c76d528e0358a58b694a96d9ff8be6d89"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/model-base.d",
+      "destination_relative": "performance/artifacts/build/integration/normal/model-base.d",
+      "bytes": 37410,
+      "sha256": "b0693ba18748d4f826923b334c4e16d59829a5cdd5021d0e3bbdb65883991a8f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/model-base.link-map",
+      "destination_relative": "performance/artifacts/build/integration/normal/model-base.link-map",
+      "bytes": 75496,
+      "sha256": "3780ee3039bc3f6d9b73b6fe92c756c97b568a28577b89a62bce4f26ede0a9c6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/model-base.manifest.json",
+      "destination_relative": "performance/artifacts/build/integration/normal/model-base.manifest.json",
+      "bytes": 11131,
+      "sha256": "00a91f838af6cbb612fa5c07228480438674a4c036ced4c57894b47d01c88a84"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/model-base.undefined-symbols.txt",
+      "destination_relative": "performance/artifacts/build/integration/normal/model-base.undefined-symbols.txt",
+      "bytes": 1910,
+      "sha256": "0728f2eefbf887cf44b3a401d37d58bfd3d56343b4fdb97866b316926376e3e3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/bridge.build.stderr",
+      "destination_relative": "performance/artifacts/build/main/gprof/bridge.build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/bridge.build.stdout",
+      "destination_relative": "performance/artifacts/build/main/gprof/bridge.build.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/bridge.command.json",
+      "destination_relative": "performance/artifacts/build/main/gprof/bridge.command.json",
+      "bytes": 995,
+      "sha256": "db67c023a1eb483963a9d34610be8c898de6fa56f9075bb199fac3125508b5d9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/bridge.d",
+      "destination_relative": "performance/artifacts/build/main/gprof/bridge.d",
+      "bytes": 6644,
+      "sha256": "358ac5e00450fca0b5ad078d51a3e8a9b717fb92443d2e4462e7c255aa9880fb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/bridge.link-map",
+      "destination_relative": "performance/artifacts/build/main/gprof/bridge.link-map",
+      "bytes": 29213,
+      "sha256": "e4b39ec9eebd41edaad660f3331ee30ecb057b23b454be9e9fc843d6adff8839"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/bridge.manifest.json",
+      "destination_relative": "performance/artifacts/build/main/gprof/bridge.manifest.json",
+      "bytes": 1577,
+      "sha256": "5a20f76dfad8e6d0a6f023990673a69ba886ea65fbf6aef5270ff4e6575d105f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/bridge.undefined-symbols.txt",
+      "destination_relative": "performance/artifacts/build/main/gprof/bridge.undefined-symbols.txt",
+      "bytes": 2287,
+      "sha256": "6cb266eec9282b46ecb96fc896949e851cd0042a1ef9a4f6b62d68ce7eb348a1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/model-base.build.stderr",
+      "destination_relative": "performance/artifacts/build/main/gprof/model-base.build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/model-base.build.stdout",
+      "destination_relative": "performance/artifacts/build/main/gprof/model-base.build.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/model-base.command.json",
+      "destination_relative": "performance/artifacts/build/main/gprof/model-base.command.json",
+      "bytes": 1013,
+      "sha256": "2e5bd5dfff9d12ea183450c87492575e821ff79411f90b79cfadaec59219d20c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/model-base.d",
+      "destination_relative": "performance/artifacts/build/main/gprof/model-base.d",
+      "bytes": 4833,
+      "sha256": "29241f9f003e447009dd29a72232d7482adced693392b31045410d4fc6a85149"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/model-base.link-map",
+      "destination_relative": "performance/artifacts/build/main/gprof/model-base.link-map",
+      "bytes": 27560,
+      "sha256": "1b1bf8f7d1977ac2a0cb8b4f34e83b9da498d6f24628ff469a9b3402d7ed4364"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/model-base.manifest.json",
+      "destination_relative": "performance/artifacts/build/main/gprof/model-base.manifest.json",
+      "bytes": 1595,
+      "sha256": "1dffb619602c1e5ac2c67fc524bb4e2db5d8ba9a5bc0da97dcb29f0bc6c97701"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/model-base.undefined-symbols.txt",
+      "destination_relative": "performance/artifacts/build/main/gprof/model-base.undefined-symbols.txt",
+      "bytes": 2052,
+      "sha256": "2f16816a6df2de1465839fba64bd22f0194cfe97bd5e0152a5aaa601b8d401da"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/bridge.build.stderr",
+      "destination_relative": "performance/artifacts/build/main/normal/bridge.build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/bridge.build.stdout",
+      "destination_relative": "performance/artifacts/build/main/normal/bridge.build.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/bridge.command.json",
+      "destination_relative": "performance/artifacts/build/main/normal/bridge.command.json",
+      "bytes": 948,
+      "sha256": "db975a1fe637d2aff8cc2d90313284552610c6ae782eadc25c37c2459539f1cb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/bridge.d",
+      "destination_relative": "performance/artifacts/build/main/normal/bridge.d",
+      "bytes": 6645,
+      "sha256": "ecf760486fe3a62aa26bed931cdc49cf5edd9006ce449f93077fa90905bc3d8e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/bridge.link-map",
+      "destination_relative": "performance/artifacts/build/main/normal/bridge.link-map",
+      "bytes": 25885,
+      "sha256": "8f6e1667dfede877f3ab2c1777906987e00855213037db116d31f457b1a89302"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/bridge.manifest.json",
+      "destination_relative": "performance/artifacts/build/main/normal/bridge.manifest.json",
+      "bytes": 1530,
+      "sha256": "0ab5625ea0573e4c758a2c7de5ee6ed37e7405409916f142887aeb954400ab4e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/bridge.undefined-symbols.txt",
+      "destination_relative": "performance/artifacts/build/main/normal/bridge.undefined-symbols.txt",
+      "bytes": 2108,
+      "sha256": "45627b4fb86ab4a2977fd312c9d60acb49c21cca76904d941e651148b9ea875d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/model-base.build.stderr",
+      "destination_relative": "performance/artifacts/build/main/normal/model-base.build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/model-base.build.stdout",
+      "destination_relative": "performance/artifacts/build/main/normal/model-base.build.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/model-base.command.json",
+      "destination_relative": "performance/artifacts/build/main/normal/model-base.command.json",
+      "bytes": 966,
+      "sha256": "768a44093fb5b876c13404aae738489426b87f8cbe857f3c85fe01864bead7a8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/model-base.d",
+      "destination_relative": "performance/artifacts/build/main/normal/model-base.d",
+      "bytes": 4834,
+      "sha256": "05de1a7b22c80a91acb3d7e88703ea465fdff1e64d8ab4cbeacf6d1d1717926c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/model-base.link-map",
+      "destination_relative": "performance/artifacts/build/main/normal/model-base.link-map",
+      "bytes": 24169,
+      "sha256": "329e08d706fab9d763882bca3802728d1adb6967bc303c332525e738a7c8001d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/model-base.manifest.json",
+      "destination_relative": "performance/artifacts/build/main/normal/model-base.manifest.json",
+      "bytes": 1549,
+      "sha256": "fce28dd6feed5d9d171215c5a0c515dddd811a359857e0d681d7fc7f339eb58b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/model-base.undefined-symbols.txt",
+      "destination_relative": "performance/artifacts/build/main/normal/model-base.undefined-symbols.txt",
+      "bytes": 1873,
+      "sha256": "13a869e16a7264afc554a49328b9c6515fc0b09f3e5da449cb5385f0d1ef9c1d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/inputs/manifest.json",
+      "destination_relative": "performance/artifacts/inputs/manifest.json",
+      "bytes": 964,
+      "sha256": "b91378f12afc820fd9b988b452a65d85c22ce1bc423f348988d1098ef3258cfa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/inputs/room_a.scene",
+      "destination_relative": "performance/artifacts/inputs/room_a.scene",
+      "bytes": 370,
+      "sha256": "c3c0ba589285ef5ecd835b89a38174ebe050c85c4b8814510e139f72550f1f7c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/environment.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/environment.json",
+      "bytes": 1395,
+      "sha256": "f7939cb5f0000b4e61de13bdc2e7170ab48608b6831364359f4469e24a780b0f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-000/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-000/responses.jsonl",
+      "bytes": 1100,
+      "sha256": "25c021ae4a8a04991696057c5f7ed31b86faf0adf7d41f32dfc4f3cceb456b8d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-000/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-000/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-000/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-000/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-001/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-001/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "d22bef150cb592443b5e2eae7a7a75c4ce54f40cae30ecbb8b41296c99b8d6ac"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-001/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-001/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-001/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-002/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-002/responses.jsonl",
+      "bytes": 1100,
+      "sha256": "792740443af9157c0d8e3b304a786c65869ffd95e4bd1fe3d2664fa72197a0ed"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-002/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-002/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-002/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-002/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-003/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-003/responses.jsonl",
+      "bytes": 1100,
+      "sha256": "c1bfd663e3cb038208ca04e0d449ef4ae545a0e74c9105ff73f6e36ea8670aa1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-003/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-003/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-003/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-004/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-004/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "f7cff919278fe803ad97e0ff5d53827e87528b274177bdb138ea7c40c62dc4b3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-004/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-004/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-004/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-004/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-005/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-005/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "5826dd153ed26469dd9d1d2bd0245560415c61f2932e7c56681b0a66778b010d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-005/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-005/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-005/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-005/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-006/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-006/responses.jsonl",
+      "bytes": 1100,
+      "sha256": "d39638b0dde01b2703d75a0752684282350a88db641ec434c43300ababb857ef"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-006/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-006/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-006/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-cold/sample-006/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-resident/session/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-resident/session/responses.jsonl",
+      "bytes": 97000,
+      "sha256": "db74d8b6651be3086073847335b7d06e13be1522c62617ddb2186ef1ccbbc020"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-resident/session/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-resident/session/stderr.log",
+      "bytes": 11046,
+      "sha256": "49331617dc112fca2a968f4676695b57192672003ee02375b4e18caaab6920f4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-resident/session/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-resident/session/stdout.raw",
+      "bytes": 69276,
+      "sha256": "4d0cd11de9bd6786ad5657e3ed700985af44fafd3ac628ec1c27bd072fb634b3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-resident/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/bridge-resident/timing.json",
+      "bytes": 21211,
+      "sha256": "d9f5a11d8ab0bfc6ea227e066e223b4003f798c42c7ffdbb6a5c4f5c658f392d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-000/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-000/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-000/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-000/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-000/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-000/timing.json",
+      "bytes": 261,
+      "sha256": "e41b6ec10515b3f4270781145f86ddef551b7b34e863d7ff21670289f837432e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-001/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-001/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-001/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-001/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-001/timing.json",
+      "bytes": 262,
+      "sha256": "b671f5f35030b4438a43e46b1e3aec64f92dff32c518a6e084ebbadc3606bb66"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-002/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-002/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-002/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-002/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-002/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-002/timing.json",
+      "bytes": 262,
+      "sha256": "1e43a9b8c7ec9b3b7334791cf193d0e67eb0d3480ac842eb37a0b1c5d0073aed"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-003/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-003/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-003/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-003/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-003/timing.json",
+      "bytes": 261,
+      "sha256": "c41bd6e33fedfd6fac3fa78696f0d67bd202b84570c54e46a8183772c2e9caa8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-004/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-004/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-004/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-004/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-004/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-004/timing.json",
+      "bytes": 262,
+      "sha256": "eab2aa64e088c5f24b31eec77651704b1beb5409089297ae56d2ed1b257c3af0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-005/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-005/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-005/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-005/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-005/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-005/timing.json",
+      "bytes": 262,
+      "sha256": "c636704551b23cccdb3373c3fd81d9ed08349ef5c2b1288beeda5ba53edf7c60"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-006/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-006/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-006/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-006/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-006/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-legacy/sample-006/timing.json",
+      "bytes": 262,
+      "sha256": "b6daa5142267c05cdccbc9d60c57d34367901b2f23ebeb5c40f3060a9182a9c3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-000/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-000/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-000/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-000/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-000/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-000/timing.json",
+      "bytes": 288,
+      "sha256": "672d801acc213af92d620f9ff39a9e64d7faee2830572ebd99daefec4bf55b1f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-001/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-001/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-001/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-001/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-001/timing.json",
+      "bytes": 288,
+      "sha256": "1bc75a6784045c9c7fa701f80377397a7991da71c07ca597b81a531efbf241c3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-002/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-002/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-002/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-002/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-002/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-002/timing.json",
+      "bytes": 288,
+      "sha256": "0f2234bf8f1b2eccbec61ce220feafbe9003e9241c2ada9eaf87ee352bb60d2f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-003/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-003/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-003/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-003/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-003/timing.json",
+      "bytes": 288,
+      "sha256": "070462118a1d423f8c0baf8abdfa7decb238c4fdbd9ad668b672c21699a0ed50"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-004/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-004/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-004/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-004/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-004/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-004/timing.json",
+      "bytes": 288,
+      "sha256": "361b5ae71da1995c69f7484e0939bb387e45dbca4a36f75dd51b0aaba5bf45ff"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-005/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-005/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-005/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-005/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-005/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-005/timing.json",
+      "bytes": 288,
+      "sha256": "2bcfecb6f2450e0e763d4e51825c4605abbe3c650fe920f71b955b7b91bb5fcb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-006/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-006/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-006/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-006/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-006/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/integration/model-neutral/sample-006/timing.json",
+      "bytes": 288,
+      "sha256": "2a51f366fdd1ad004273244e44c50133b35547cee3e75acccc342289ab74e4c1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-000/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-000/responses.jsonl",
+      "bytes": 1099,
+      "sha256": "9d25540d6b1c671a68daecd17a4f70f80fef820d047bd67ea83e4436f8f1491e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-000/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-000/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-000/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-000/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-001/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-001/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "e69e86dc07b20f508cdb92e47db2ac1e5f3de9e37bedaacb24285a9c60622129"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-001/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-001/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-001/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-002/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-002/responses.jsonl",
+      "bytes": 1100,
+      "sha256": "15bac04d3f4adafc96e1d7c21bf907a00de495fb06d664ab976aad5ea3c1b0ca"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-002/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-002/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-002/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-002/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-003/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-003/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "ee254bf6a308ae9d60024dde296662554520db486e12dec05f9d23ed3cd75821"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-003/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-003/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-003/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-004/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-004/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "8030051be190dd01c47fbc8605f87bcb7b705a643ee64db59d01edb928197e14"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-004/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-004/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-004/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-004/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-005/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-005/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "29418dfab64d6f7f63f712fb876ab6c461edd1ae28799249454c48576f587fa3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-005/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-005/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-005/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-005/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-006/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-006/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "388b355d19ddb7b1cdbc3b1b88d32d72578c3a009a57ea3ae68fd1af9835dc9f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-006/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-006/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-006/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-cold/sample-006/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-resident/session/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-resident/session/responses.jsonl",
+      "bytes": 96999,
+      "sha256": "5b375eda5a5d8277dd0b812998b87a461d8a5a551bb60d1eda8457ad012975d1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-resident/session/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-resident/session/stderr.log",
+      "bytes": 11046,
+      "sha256": "49331617dc112fca2a968f4676695b57192672003ee02375b4e18caaab6920f4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-resident/session/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-resident/session/stdout.raw",
+      "bytes": 69276,
+      "sha256": "f368fc18d5101b77737c735ab6d2483362861c5e27a4a3a03afa7ad273376bf8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/bridge-resident/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/bridge-resident/timing.json",
+      "bytes": 21210,
+      "sha256": "fd2601b88225ac9f37dde9a572770d5244d6f3840a29a65f85c8b60bae7459c2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-000/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-000/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-000/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-000/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-000/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-000/timing.json",
+      "bytes": 255,
+      "sha256": "a9606fbb9186083fdf1d15e42d6be343630299debb25a270e1904af259260501"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-001/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-001/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-001/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-001/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-001/timing.json",
+      "bytes": 255,
+      "sha256": "19773aa96117139e7bbecd3547e55f9a2227301ff2338b28e1b0007060672bf8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-002/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-002/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-002/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-002/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-002/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-002/timing.json",
+      "bytes": 255,
+      "sha256": "bba1336f738b9ec62ae771ee01a581b6bfe26e816b96c277f98c8c3e3a0e1c76"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-003/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-003/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-003/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-003/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-003/timing.json",
+      "bytes": 255,
+      "sha256": "50b88de9919bcbbfae87a66d0185bd480d21d9e1f7908495543b07117fb783a3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-004/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-004/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-004/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-004/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-004/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-004/timing.json",
+      "bytes": 255,
+      "sha256": "fc3831d204b3e8eb008a4f68316f9b2b6eeee8a1181254275440c327b6c3e322"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-005/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-005/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-005/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-005/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-005/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-005/timing.json",
+      "bytes": 255,
+      "sha256": "5c6ed2c7f7c9731f83e7750a7f3b4745e09642948571e5e0c7197d349659777b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-006/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-006/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-006/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-006/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-006/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/main/model-legacy/sample-006/timing.json",
+      "bytes": 255,
+      "sha256": "077db5e9f9d6d40001237db362d3211b7d245eeb49e15a315d1113067aca32dc"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/samples.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/samples.json",
+      "bytes": 44376,
+      "sha256": "70a10b736cb2af8feb0d9dc3aecc6a7e9ac2b09d407db746ad4d3266dd396885"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/summary.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/summary.csv",
+      "bytes": 2687,
+      "sha256": "06442e6e66dcf37822c0edacdb02ec10e9b1c1210685487058f56ec6a45425eb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/summary.json",
+      "destination_relative": "performance/artifacts/runs/20261018T200850689427-normal/summary.json",
+      "bytes": 7928,
+      "sha256": "3770e6c06db595015571cf3a2fd67917bb41e1cc38136ca3c7f9cf5f30e458d5"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/environment.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/environment.json",
+      "bytes": 1390,
+      "sha256": "2bbf738c70f3b565361dc1948f6eb359ae1e04e868c76111dc7aa2987314d3c2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/callgraph.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/callgraph.txt",
+      "bytes": 119180,
+      "sha256": "c1232cd1ffd5980b5db81b30fc6591429c6886853f6b6226adad832fd3947ad3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/cycles.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/cycles.json",
+      "bytes": 414,
+      "sha256": "bde64fec04a6b15f820037b2cefe713f6e0bc9fe2808d0d797d0e79f1ace0d87"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/flat-profile.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/flat-profile.txt",
+      "bytes": 20018,
+      "sha256": "d73a097b05c0be92b0b860f6e54533c0c7d6dd8ae0ebfeaf344def9d5973be30"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/full-gprof.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/full-gprof.txt",
+      "bytes": 139200,
+      "sha256": "fd5ef12f3649b054b997e241e09a4199c7a29bf8bda4e5363405253e4e7bf547"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/functions.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/functions.json",
+      "bytes": 52613,
+      "sha256": "a03ecfb0f71d20c3591d5a17bf4e1147d7f3f54ffedc1768cf020d545075a112"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/profile-inputs.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/profile-inputs.json",
+      "bytes": 2076,
+      "sha256": "d0be54615be6bc1c1ff7500dd4f8526b0b357bf9262de4542a61eeb3be7e335a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-000/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-000/gmon.out",
+      "bytes": 430864,
+      "sha256": "22590e945610154f76aa58635832a4ad19370d3a8cbdb600dbf30356a83a6037"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-000/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-000/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "4d34b10b962e9ea8dd6c8b421136488b52fe35375b85838e5ceab78ead667585"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-000/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-000/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-000/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-000/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-001/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-001/gmon.out",
+      "bytes": 430864,
+      "sha256": "e0af3981e481ca89ce15d55aa7c5175ec9e02204eab9b4cf7057e27a33f4c1ab"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-001/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-001/responses.jsonl",
+      "bytes": 1100,
+      "sha256": "41e4da9a73edeb1d6f0a91158a4ec141320cec2bbf87cab8f3845b8ea5fb8387"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-001/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-001/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-001/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-002/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-002/gmon.out",
+      "bytes": 430864,
+      "sha256": "7e322d0f791e17933f0e2081d6f8000278323a4d97796b4f5905842b4e112e57"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-002/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-002/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "5459e069fcdd0cbe2ad2308e7345ec51ff0c0880fea570a98fe92ec55e1532bd"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-002/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-002/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-002/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-002/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-003/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-003/gmon.out",
+      "bytes": 430864,
+      "sha256": "07dd86f67fca50ffaef732371981d5eff80f25bb71ffc004289c988b204095d5"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-003/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-003/responses.jsonl",
+      "bytes": 1100,
+      "sha256": "65f711c90881332fd621c9b052a1387e72a08efb18acdcc5a995d8d7a91815a7"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-003/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-003/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-003/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-004/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-004/gmon.out",
+      "bytes": 430864,
+      "sha256": "d32aec989ba769dcf383196ff85986ab5a8d81a50c8141f2fc3efd72b8a5ec24"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-004/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-004/responses.jsonl",
+      "bytes": 1099,
+      "sha256": "c7faff8ace600963126646cf0bb887b0b58eb5cb31011df91e3fce3f0962f2a2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-004/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-004/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-004/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-004/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-005/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-005/gmon.out",
+      "bytes": 430864,
+      "sha256": "c43388c84e0d930d22fe2863a2c2dd892637d385392e243b653524841860d0f2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-005/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-005/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "1dca71029025a7996fc140ec6e1a514bc9b96af9be1548f06746ed922f4b0a76"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-005/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-005/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-005/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-005/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-006/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-006/gmon.out",
+      "bytes": 430864,
+      "sha256": "6e3998879f2974f3638bb397cea8e8eccf8e94313c1226f250c0a50b40d73683"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-006/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-006/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "48ab9da60c2edf87ba24138c6e7dcc674736aed06d5a5c5f71ff98b01efddbe3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-006/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-006/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-006/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-006/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/top20-calls.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/top20-calls.csv",
+      "bytes": 1102,
+      "sha256": "b01858f023a368bbadd11dc58edccb78a81a6b9eb0d9abc9301b21af0674d176"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/top20-inclusive.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/top20-inclusive.csv",
+      "bytes": 1023,
+      "sha256": "f9afa0bcdb90fdcfc322425cec4bdd5268330491a2b71a8c85429fff28973cfe"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/top20-self.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/top20-self.csv",
+      "bytes": 958,
+      "sha256": "8f96f46a26c6fb80ef6d9b4161df01257c8ec3ff20f3f6ffdc46150c089d0b08"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/callgraph.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/callgraph.txt",
+      "bytes": 134941,
+      "sha256": "c0a9b7cc81ac7a9ad1433177194f459cbcb0be85f6426823122c5a19a5b4bdd9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/cycles.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/cycles.json",
+      "bytes": 422,
+      "sha256": "eb2290c9cdaf8eda86c6c5c9281104523d949df270acd42ad60154401998cedc"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/flat-profile.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/flat-profile.txt",
+      "bytes": 21977,
+      "sha256": "6034bcc483c2aee5f3bd309e6812b033e6cb0c34245e58f16a10a108051675bb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/full-gprof.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/full-gprof.txt",
+      "bytes": 156920,
+      "sha256": "aa9a0834d69a46169bcae6e219b92c45998fe05b9c2f55f14dfd5b2309a40dd4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/functions.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/functions.json",
+      "bytes": 58066,
+      "sha256": "cd97b1d3f49132cd566d2c7cf716cd4c65b48df38d22b46c383faab50eda86de"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/profile-inputs.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/profile-inputs.json",
+      "bytes": 577,
+      "sha256": "831efcf0a302dec6d1e67eac6dcb7046a75f38a3346cc2d8eab9638bbe504319"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/session/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/session/gmon.out",
+      "bytes": 432922,
+      "sha256": "a74853cdcd953755281e47a657bc6d1a854f95efd3ff6c093d537f3bbcffe46f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/session/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/session/responses.jsonl",
+      "bytes": 96993,
+      "sha256": "7eb29aa7a4cc93dd0cc39b32434f1e79b94e636fccfdfe566e94d49e5c524c4a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/session/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/session/stderr.log",
+      "bytes": 11046,
+      "sha256": "49331617dc112fca2a968f4676695b57192672003ee02375b4e18caaab6920f4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/session/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/session/stdout.raw",
+      "bytes": 69276,
+      "sha256": "4d0cd11de9bd6786ad5657e3ed700985af44fafd3ac628ec1c27bd072fb634b3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/timing.json",
+      "bytes": 21204,
+      "sha256": "60461f316e2276c68babef1d21bd25479b495e39bb2e86925c71409a9120506a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/top20-calls.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/top20-calls.csv",
+      "bytes": 1127,
+      "sha256": "a1c4fc66d6148c05eb35ada33a9d47397744c05a42ef0d25df465411c5d50fd2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/top20-inclusive.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/top20-inclusive.csv",
+      "bytes": 1075,
+      "sha256": "8ebe4cde6f630082dd090693744e7f1516c137fd065289b09e7ef66ef51f78f5"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/top20-self.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-resident/top20-self.csv",
+      "bytes": 1021,
+      "sha256": "27e7bb9af7565dda1e9f2b476d90f7b6f69f8467aadcec2136a15d59d7f5f322"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/callgraph.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/callgraph.txt",
+      "bytes": 121306,
+      "sha256": "984bec41c42f731374757bea86dcd6eaeb1af61e035ab686468710c65855d3d9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/cycles.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/cycles.json",
+      "bytes": 417,
+      "sha256": "bdabe856e5deb008af0260c4555b9278b0a9ebd1f703449b89c88670454e8baa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/flat-profile.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/flat-profile.txt",
+      "bytes": 19899,
+      "sha256": "523df80b80c3d4f985cfd684b57c6e4a4d9317cf501c122112a8a65a6d61d680"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/full-gprof.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/full-gprof.txt",
+      "bytes": 141207,
+      "sha256": "020721bc9d26653ed7002edfa56704dafe1f1ab2d3cd5219df2052e522f0538b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/functions.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/functions.json",
+      "bytes": 52298,
+      "sha256": "6b6dd7bd4b94717eb56d069af783ffe3fe01f171d5216449725a61b6c584f2d9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/profile-inputs.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/profile-inputs.json",
+      "bytes": 2087,
+      "sha256": "2d7c212f97963332e417d3780c33554b84c15b9d6d8260c1d2dcfd7bc70bdb80"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-000/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-000/gmon.out",
+      "bytes": 370168,
+      "sha256": "bd1f11d8f90cb1de20a687c4bdc18eab38650d7905b73fd2a25a7e1a13a925de"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-000/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-000/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-000/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-000/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-000/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-000/timing.json",
+      "bytes": 261,
+      "sha256": "0a93d44b9f87a2516829a542bf73732bff432c419c02555675187d3be760929f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-001/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-001/gmon.out",
+      "bytes": 370168,
+      "sha256": "90a2e4cb9cf65d7b983783e0759dc2fc179371e4296ccbb65175598ddd609c34"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-001/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-001/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-001/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-001/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-001/timing.json",
+      "bytes": 261,
+      "sha256": "d1d820891f8878730bc8e7a890a3c7358ef11d144c5b8c0c8910bea20572cf9f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-002/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-002/gmon.out",
+      "bytes": 370168,
+      "sha256": "b0a8c874c708639475bb9a66baec396d2b51e82f343554e529e0ee2cbb2967f3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-002/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-002/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-002/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-002/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-002/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-002/timing.json",
+      "bytes": 261,
+      "sha256": "20efabe0eb1624a1506a35524a00412a5b03f390388141e0266d387aa35b153c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-003/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-003/gmon.out",
+      "bytes": 370168,
+      "sha256": "ea4e35dcbdd0ceee8279a3802819df7999e556fb1d958a52aab476ef1c50ca13"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-003/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-003/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-003/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-003/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-003/timing.json",
+      "bytes": 260,
+      "sha256": "3460d326b7fd489003c2bc2eb5855856009fa240b3bfab82035ad5334406148b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-004/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-004/gmon.out",
+      "bytes": 370168,
+      "sha256": "8d8e192a7dce373cc4450d471fd3b585be588b2d9899ad410b7651c0c559fb7b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-004/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-004/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-004/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-004/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-004/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-004/timing.json",
+      "bytes": 259,
+      "sha256": "55985872007e3c2eb83bc8801e21c0d6f29e3b3659e906e943508e3487738c4e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-005/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-005/gmon.out",
+      "bytes": 370168,
+      "sha256": "61d07045af40697dc36f321ad22da854669585b9eb43dd0a1cf43f4027216bd4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-005/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-005/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-005/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-005/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-005/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-005/timing.json",
+      "bytes": 261,
+      "sha256": "537be5068e74122b9e14bc3759a6d31afccc768b2791d436b735f1f3823b40f9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-006/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-006/gmon.out",
+      "bytes": 370168,
+      "sha256": "b491f43cb2a181d7fd914d48cf2b9a4a8d157cd3ff69e4d6e2f8976df7833d4e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-006/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-006/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-006/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-006/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-006/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/sample-006/timing.json",
+      "bytes": 261,
+      "sha256": "075afda6520d95e74894990a53822f84f0d62fd71d60348da5393575552e64bc"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/top20-calls.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/top20-calls.csv",
+      "bytes": 1090,
+      "sha256": "c893a6ed26b0e5bd54939d76261e2419133b62992c76cfc07fa702019effe9a6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/top20-inclusive.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/top20-inclusive.csv",
+      "bytes": 1057,
+      "sha256": "fe7ae6d0fe341402fab832a97184fe83ab5e179eb4467645410398e854f3aac4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/top20-self.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-legacy/top20-self.csv",
+      "bytes": 1016,
+      "sha256": "205c100143cee9451b3387ddbaf00604bd4066f48c3baa54085f30542cd4784a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/callgraph.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/callgraph.txt",
+      "bytes": 135708,
+      "sha256": "7a7518fd5f2f455dc043bed61e1babb2bb335481e205bbdc0edddc5f3564a35f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/cycles.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/cycles.json",
+      "bytes": 417,
+      "sha256": "d1b5b40d4447a1af18e119f3fa1ac804423baf0f8c32d14262c1524ece3b20c0"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/flat-profile.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/flat-profile.txt",
+      "bytes": 21861,
+      "sha256": "33951b81cf07fa8a47ca088c54f7da1031b267ba38c4819cf2aa124798e24578"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/full-gprof.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/full-gprof.txt",
+      "bytes": 157571,
+      "sha256": "7f84a5be52dca8d27f651d2ecd9fe018f6d5fd84617dfed122d66e61116ea1d4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/functions.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/functions.json",
+      "bytes": 57415,
+      "sha256": "078182508ef6e205be91e88bf597d430bb8055638f3a9582cfe4319621a9c855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/profile-inputs.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/profile-inputs.json",
+      "bytes": 2094,
+      "sha256": "87458a46a91c1d7765403e43d8ffab6465ee4890fc8b5045a7cb121f102260b2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-000/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-000/gmon.out",
+      "bytes": 372499,
+      "sha256": "053c226a3fed683b5772e380764c2b51d88761d5aa3631d28a80ac83b72c8fbd"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-000/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-000/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-000/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-000/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-000/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-000/timing.json",
+      "bytes": 287,
+      "sha256": "008766aba7db9d1ccd2437d505e8582a69fae2e77379f558af9fa99c45a2a0ea"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-001/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-001/gmon.out",
+      "bytes": 372499,
+      "sha256": "4d225fd3014b8694a6a89792463c21de044aeedb2623d651c40ea819ba44630d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-001/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-001/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-001/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-001/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-001/timing.json",
+      "bytes": 287,
+      "sha256": "a1d7e50c9f35d2f03a83bc784476b16e0ce00a99864a4f15bc9f12078605017c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-002/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-002/gmon.out",
+      "bytes": 372499,
+      "sha256": "4bc7dcc89aa5eaa60572b5d66aad1f3aae7d301257ca51ad7f635d10919d3d1a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-002/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-002/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-002/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-002/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-002/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-002/timing.json",
+      "bytes": 287,
+      "sha256": "078382743cbf35833f3ea52ef5b6b67f5722cd3807932a0dd106d953aa92fdb8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-003/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-003/gmon.out",
+      "bytes": 372499,
+      "sha256": "492a991cad61a70191a1535a8d0fc7702d8bb5f2dafa2fd82e287e739915e067"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-003/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-003/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-003/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-003/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-003/timing.json",
+      "bytes": 287,
+      "sha256": "04a50ddd4eab79a49aa2d2bf6fde0f567ce4c006ccdc720d17cab55d47e7406f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-004/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-004/gmon.out",
+      "bytes": 372499,
+      "sha256": "427b60480e1f00e28d6dc2976bf4351294186c6862166e6b6e866a5824354d2f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-004/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-004/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-004/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-004/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-004/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-004/timing.json",
+      "bytes": 287,
+      "sha256": "cdb437d973f1933d8fb7dc370d7cf413e5f76da3251ff8314970b8ad13cd9125"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-005/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-005/gmon.out",
+      "bytes": 372499,
+      "sha256": "b6f09a3884f5b36add8d3354c0870d3aae7e774a518bd525b54fa0e391af6205"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-005/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-005/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-005/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-005/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-005/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-005/timing.json",
+      "bytes": 287,
+      "sha256": "398a145bf2b8fa26ffb0c62b45c6b4e42151865d555bb6a18a2b2cfbde7eb6dc"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-006/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-006/gmon.out",
+      "bytes": 372499,
+      "sha256": "298ba8da7bca2069f851a9e73f4878e42d07b4497ac7a391804d6f531aefd858"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-006/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-006/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-006/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-006/stdout.json",
+      "bytes": 55216,
+      "sha256": "5c967f659427976f9c0b2bbe97ce44eef50619da9f35ee91b1dd4fe11add877a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-006/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/sample-006/timing.json",
+      "bytes": 287,
+      "sha256": "c9902ad2d88d9154927d76e30e818a57d032b785175cb7ba3d8730d0f01d9b69"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/top20-calls.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/top20-calls.csv",
+      "bytes": 1040,
+      "sha256": "192c00e20356a009e79c600b610c3c1fbaca689166b2a46ea7c8195dacb53f8e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/top20-inclusive.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/top20-inclusive.csv",
+      "bytes": 1024,
+      "sha256": "9cb0811398d0b93d3326701b438e56c66c78bc5fbab08a870fe618c2be57682a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/top20-self.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/integration/model-neutral/top20-self.csv",
+      "bytes": 972,
+      "sha256": "79d2c4074e09c69aa40c80fa23a0cc7dc47a3c8996d916b7c5e9e748d74142b2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/callgraph.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/callgraph.txt",
+      "bytes": 31522,
+      "sha256": "12b7578cd8f8ac36dd6bf012bc11f9522f382b84ea27510e10f7181e07a57c99"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/cycles.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/cycles.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/flat-profile.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/flat-profile.txt",
+      "bytes": 5913,
+      "sha256": "e4c8ce1da7fc36674d569ba028c1981ef095472e22801e6ef155a0f8443cafe8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/full-gprof.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/full-gprof.txt",
+      "bytes": 37437,
+      "sha256": "7c65c6a3cf25dd058d08f3133922c92c7dbfab358c423149091bf965d3c626b6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/functions.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/functions.json",
+      "bytes": 15168,
+      "sha256": "71c7e0d5442b30d0c08dc2c2550cb3bf53b15bbdc720fdc6dba9fbb6414e1017"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/profile-inputs.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/profile-inputs.json",
+      "bytes": 2020,
+      "sha256": "8b46c05e449205959b7e6e8fe05c81c8f63cd702ddf51145a3b2c1e96477cb1f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-000/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-000/gmon.out",
+      "bytes": 263969,
+      "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-000/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-000/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "c7575998549cf38ba8ad948813d21501e0bedcf559d3f03dff3865caa38c8530"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-000/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-000/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-000/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-000/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-001/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-001/gmon.out",
+      "bytes": 263969,
+      "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-001/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-001/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "dfe160b7bc68dccfdf7c61804be51d9c465865920eb3dc28a3c4c5afbca368bf"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-001/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-001/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-001/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-002/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-002/gmon.out",
+      "bytes": 263969,
+      "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-002/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-002/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "e2f5e23568ca2e761fd462cfb2c0d62e7824632ed6770fb37a8a9813fc8dcd6a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-002/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-002/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-002/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-002/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-003/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-003/gmon.out",
+      "bytes": 263969,
+      "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-003/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-003/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "cb45a560f3f952e0888e1a5f2eb31926a44aaeae60c3515e269a6edbbd0f2697"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-003/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-003/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-003/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-004/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-004/gmon.out",
+      "bytes": 263969,
+      "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-004/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-004/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "f115bab29b663e70838a2b0c2907415b934b4cb415a1e35a28441f53980f2392"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-004/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-004/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-004/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-004/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-005/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-005/gmon.out",
+      "bytes": 263969,
+      "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-005/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-005/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "1630463ce769de18aa0cd887b9356cb48ae5aebb83b4c879e99ad8519202052e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-005/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-005/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-005/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-005/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-006/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-006/gmon.out",
+      "bytes": 263969,
+      "sha256": "f7fb40e97f209faed55bf45447431de1a9fc8384ff2d5cdfce6e081691ade0ec"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-006/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-006/responses.jsonl",
+      "bytes": 1101,
+      "sha256": "e83047b9021b326cc3dd4c701a86a6e3dd5f0516ca35949f2c7f847883dcc741"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-006/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-006/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-006/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/sample-006/stdout.raw",
+      "bytes": 919,
+      "sha256": "d2e638c59a3c3eabe7353a7e963e8c72f37453c664f503943aa3491b06d422aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/top20-calls.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/top20-calls.csv",
+      "bytes": 1021,
+      "sha256": "09cdfd4aed71a362b8c28313de65fcc39803cab3b1d093ba2acb9696273513ee"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/top20-inclusive.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/top20-inclusive.csv",
+      "bytes": 907,
+      "sha256": "73c9d29c9f1e2711abce0c70f5d4b9434d53a4ae4a1293e7deecc66e0156a73e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/top20-self.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-cold/top20-self.csv",
+      "bytes": 907,
+      "sha256": "73c9d29c9f1e2711abce0c70f5d4b9434d53a4ae4a1293e7deecc66e0156a73e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/callgraph.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/callgraph.txt",
+      "bytes": 42021,
+      "sha256": "5a074545ce4d62872f2212863d3e26b1aecf566f32ca95b3927bdbc498842572"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/cycles.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/cycles.json",
+      "bytes": 206,
+      "sha256": "c7eb40faae52d95c950c651aa6260187c1d9cc40990716039c4d1193fc03ea72"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/flat-profile.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/flat-profile.txt",
+      "bytes": 7216,
+      "sha256": "58bc92dd471a500be484853a3ed0ebde633253b2d65a740bd0889bb174218136"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/full-gprof.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/full-gprof.txt",
+      "bytes": 49239,
+      "sha256": "a20c703e97686ae4d4024e321755b0d8ad463e8890d0d2f53621f7ecb7c7d1b4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/functions.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/functions.json",
+      "bytes": 18976,
+      "sha256": "7169b72cc581d817b3fb16bfe917e644e5f719d26b8063b18bf2021aed721c54"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/profile-inputs.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/profile-inputs.json",
+      "bytes": 563,
+      "sha256": "fb83a670f29d12f8de29801e59e117de703c6cb0e2eaaf5f8086ffd640d6fe5a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/session/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/session/gmon.out",
+      "bytes": 265229,
+      "sha256": "8f8ee7a49e9c0cc2024290530d746db42e5654f788131ee9528ab0c3343a8824"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/session/responses.jsonl",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/session/responses.jsonl",
+      "bytes": 97000,
+      "sha256": "1bda69a1247096c4459b0959059df7e6f549ff8843555d5b855d4550c5769ea8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/session/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/session/stderr.log",
+      "bytes": 11046,
+      "sha256": "49331617dc112fca2a968f4676695b57192672003ee02375b4e18caaab6920f4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/session/stdout.raw",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/session/stdout.raw",
+      "bytes": 69276,
+      "sha256": "f368fc18d5101b77737c735ab6d2483362861c5e27a4a3a03afa7ad273376bf8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/timing.json",
+      "bytes": 21211,
+      "sha256": "f76f5c9d7c0afeb871687d95a06ad7b9a81fcd00f90ba069375bca23d8f11b75"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/top20-calls.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/top20-calls.csv",
+      "bytes": 1057,
+      "sha256": "a24927f875200635a45161b680c23548f4789c36643e6042cc68d262aba2966b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/top20-inclusive.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/top20-inclusive.csv",
+      "bytes": 1005,
+      "sha256": "492d43321e70b439dfc1b830f5c320a49e56d2d993ee22d0949525d7ea12908a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/top20-self.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/bridge-resident/top20-self.csv",
+      "bytes": 1005,
+      "sha256": "492d43321e70b439dfc1b830f5c320a49e56d2d993ee22d0949525d7ea12908a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/callgraph.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/callgraph.txt",
+      "bytes": 32603,
+      "sha256": "e6bb81e1d385827aba7ad3123d22284a177b64038aedc8540ca49d2927ee495b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/cycles.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/cycles.json",
+      "bytes": 205,
+      "sha256": "9e3af8f28f6575f81cb444e1bfeea41235a53be784f09cec60152f29cd1e4df1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/flat-profile.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/flat-profile.txt",
+      "bytes": 6082,
+      "sha256": "f40756ec7b5640d56f5ea9b16689c6e884881765dcfc901ca651a9263434313f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/full-gprof.txt",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/full-gprof.txt",
+      "bytes": 38687,
+      "sha256": "d9198314e51c0eff26de25bd1cbb446066d18b84b9f6e8ff2271df8719132ce8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/functions.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/functions.json",
+      "bytes": 15741,
+      "sha256": "44dbb67cee8f617f32423756a40701c82e24eb8fae9e219b1564255e6d8c715a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/profile-inputs.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/profile-inputs.json",
+      "bytes": 2031,
+      "sha256": "fc2aea4efd3d81e4696e3e126519ee9688919c5adf316c42e72484be43ba4ba1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-000/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-000/gmon.out",
+      "bytes": 190624,
+      "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-000/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-000/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-000/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-000/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-000/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-000/timing.json",
+      "bytes": 254,
+      "sha256": "2484d7aca20d283a6b2e0152f8dcdf45ababccf166ee577e8af0c5aaac394027"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-001/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-001/gmon.out",
+      "bytes": 190624,
+      "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-001/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-001/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-001/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-001/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-001/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-001/timing.json",
+      "bytes": 254,
+      "sha256": "677450fdaab65e90444a4e590f6d590251be72eeb4c5127e31775051e5b390a3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-002/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-002/gmon.out",
+      "bytes": 190624,
+      "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-002/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-002/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-002/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-002/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-002/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-002/timing.json",
+      "bytes": 254,
+      "sha256": "c682f2879ca0e18b411931969d6090b9312cde0ea210e2aa3e76c76806c2833b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-003/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-003/gmon.out",
+      "bytes": 190624,
+      "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-003/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-003/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-003/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-003/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-003/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-003/timing.json",
+      "bytes": 254,
+      "sha256": "8f67910baafcf99f73fc47dca6a68c812d543bb4e6a773ffc0894517e2c97a5f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-004/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-004/gmon.out",
+      "bytes": 190624,
+      "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-004/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-004/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-004/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-004/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-004/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-004/timing.json",
+      "bytes": 254,
+      "sha256": "d71356391c8e92db96c83e910f32fca58cdcb5b69b7ccc1a78755d2f32f178e8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-005/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-005/gmon.out",
+      "bytes": 190624,
+      "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-005/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-005/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-005/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-005/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-005/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-005/timing.json",
+      "bytes": 254,
+      "sha256": "e3c2f1dfc3d1ac3d47456aecc6125d715b1745a98846d1bf893038e4b9291144"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-006/gmon.out",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-006/gmon.out",
+      "bytes": 190624,
+      "sha256": "ed38c005473f7bc9fd2c532996d26a412433f9811325a421abd31e61b9cf6514"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-006/stderr.log",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-006/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-006/stdout.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-006/stdout.json",
+      "bytes": 2815,
+      "sha256": "c0c6a51a71f4a9faef1180a0a963f2aafc86c62e8e8a51465a0d4fbf81e69f46"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-006/timing.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/sample-006/timing.json",
+      "bytes": 254,
+      "sha256": "61e2f6106de7ff62027371285d4788fcd7e699bf01f7fc1504438cb92858057e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/top20-calls.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/top20-calls.csv",
+      "bytes": 1022,
+      "sha256": "5b56a6d2991e8d9560ffaf65b15d742f75396ecbd8a3aaa7eaeb7d62c7a4318d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/top20-inclusive.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/top20-inclusive.csv",
+      "bytes": 1004,
+      "sha256": "7c39cc5a800ca7b0da492814415eba2d6052835f641509f091d9aac10f309fe9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/top20-self.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/main/model-legacy/top20-self.csv",
+      "bytes": 1004,
+      "sha256": "7c39cc5a800ca7b0da492814415eba2d6052835f641509f091d9aac10f309fe9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/samples.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/samples.json",
+      "bytes": 44372,
+      "sha256": "4a0df62d89b2869bcd64d206c3279d3481dc48b31c2f9d3989040ef5ed3275ef"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/summary.csv",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/summary.csv",
+      "bytes": 2503,
+      "sha256": "f0278026dba03f3f33d866a9ed11a8867d727274eedb8f82997936cc3c5d66c3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/summary.json",
+      "destination_relative": "performance/artifacts/runs/20261018T201033419459-gprof/summary.json",
+      "bytes": 7832,
+      "sha256": "937acccf39c27c367655e83ae0d9026ffd07836c028a5a7e3b5ef759d3b27b03"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/sources/integration-e64aa635/source-manifest.json",
+      "destination_relative": "performance/artifacts/sources/integration-e64aa635/source-manifest.json",
+      "bytes": 33093,
+      "sha256": "eb802fb4751e207621055fc7c9e3930a070651f577b56fd72a953e4efcf70dd4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/sources/main-e980cb0d/source-manifest.json",
+      "destination_relative": "performance/artifacts/sources/main-e980cb0d/source-manifest.json",
+      "bytes": 6711,
+      "sha256": "732db835f99f52788ca9fe5a31ea0acf77b8ebd124cba8ddd69776b57433eb93"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/build-stage.exit",
+      "destination_relative": "performance/build-stage.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/build-stage.log",
+      "destination_relative": "performance/build-stage.log",
+      "bytes": 3676,
+      "sha256": "bbf7487bae5377fc7803dae7ba95d3cc073572f9c314d47693828a2c0b515abb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/measure_geo261.py",
+      "destination_relative": "performance/measure_geo261.py",
+      "bytes": 29056,
+      "sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/normal-invocation.json",
+      "destination_relative": "performance/normal-invocation.json",
+      "bytes": 599,
+      "sha256": "35b2b1952fcc99607740641ab75da899c3094e7ce82d88f5fafd87a5429283b1"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/normal.stderr.log",
+      "destination_relative": "performance/normal.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/normal.stdout.log",
+      "destination_relative": "performance/normal.stdout.log",
+      "bytes": 366,
+      "sha256": "1a82cbedea95dbfc8907c79365dafea8eea0992af5de8ca90329b71db6ed8d26"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/phase3-performance-report.md",
+      "destination_relative": "performance/phase3-performance-report.md",
+      "bytes": 21079,
+      "sha256": "b11d40d1a63f96d7bf836390d8fbe0708931eee15769d5769dddc2fdc376fd7f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/phase3-results.json",
+      "destination_relative": "performance/phase3-results.json",
+      "bytes": 4242,
+      "sha256": "0c212930060c260133e1ecc9a5c472e90eac5ec39341fbfba36a8110dff90642"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/profile-attribution-readonly.md",
+      "destination_relative": "performance/profile-attribution-readonly.md",
+      "bytes": 2923,
+      "sha256": "431ec7a577412e1710f53e982d65001f5c9402a70d2976e521f8260e58806774"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/profile-attribution-readonly.txt",
+      "destination_relative": "performance/profile-attribution-readonly.txt",
+      "bytes": 32109,
+      "sha256": "f8585c1f56d4ce7183d778d95dfc04876edf3d659342d6e6266ef7930ecf69da"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/profile-invocation.json",
+      "destination_relative": "performance/profile-invocation.json",
+      "bytes": 558,
+      "sha256": "653fcf412a7cbf075489e9af7bfab3374f9ae63a2cfbddfe1c9e14e6c80cb932"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/profile.stderr.log",
+      "destination_relative": "performance/profile.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/profile.stdout.log",
+      "destination_relative": "performance/profile.stdout.log",
+      "bytes": 361,
+      "sha256": "418fb2561a5edf9f050faf54569074079588eec063286229305687cca02ed441"
+    }
+  ],
+  "excluded_executables": [
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/bridge",
+      "bytes": 660440,
+      "sha256": "fd1e9daaac9ab2dea139654d413313057784d98a453a0696d657904605c9a034",
+      "hash_basis": "既有 build manifest；其量測身分已由工具核對",
+      "reason": "可重建 executable 不公開；對應 compiler command、source identities 與 link map 公開"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/normal/model-base",
+      "bytes": 477720,
+      "sha256": "b482bb80759ee3be2f6d99c6bdf6f89286bc158718416a70ed5f9389fd949c8c",
+      "hash_basis": "既有 build manifest；其量測身分已由工具核對",
+      "reason": "可重建 executable 不公開；對應 compiler command、source identities 與 link map 公開"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/bridge",
+      "bytes": 2368584,
+      "sha256": "3c2b04b25ae03386b18091d7e2780ac2757a8480dfddec3612cef5a22e4824d4",
+      "hash_basis": "既有 build manifest；其量測身分已由工具核對",
+      "reason": "可重建 executable 不公開；對應 compiler command、source identities 與 link map 公開"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/main/gprof/model-base",
+      "bytes": 1696264,
+      "sha256": "4346f9e3b47454958e1f57b4fd1ba5cbb77b99b420163a27a062d6b2cfe29a9a",
+      "hash_basis": "既有 build manifest；其量測身分已由工具核對",
+      "reason": "可重建 executable 不公開；對應 compiler command、source identities 與 link map 公開"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/bridge",
+      "bytes": 1078560,
+      "sha256": "bab9572a0f46cd5030a748d93238dc5cda3a51c15139a68532e20fdda8ad690a",
+      "hash_basis": "既有 build manifest；其量測身分已由工具核對",
+      "reason": "可重建 executable 不公開；對應 compiler command、source identities 與 link map 公開"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/normal/model-base",
+      "bytes": 929176,
+      "sha256": "7cbdfcef4fbc5e2e1e6790f86505ba1ace7784b72c9879c6cd438c2fb7e8b7ed",
+      "hash_basis": "既有 build manifest；其量測身分已由工具核對",
+      "reason": "可重建 executable 不公開；對應 compiler command、source identities 與 link map 公開"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge",
+      "bytes": 4208976,
+      "sha256": "0e9a58d96e0079cef3c7897911cf2dc52636b41d1430af22a0d9770b3479190c",
+      "hash_basis": "既有 build manifest；其量測身分已由工具核對",
+      "reason": "可重建 executable 不公開；對應 compiler command、source identities 與 link map 公開"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/model-base",
+      "bytes": 3572880,
+      "sha256": "01ce7682f2a596fda2a64aa9dd9787a66b5f181eade7a40e8bd0d8aac108f16e",
+      "hash_basis": "既有 build manifest；其量測身分已由工具核對",
+      "reason": "可重建 executable 不公開；對應 compiler command、source identities 與 link map 公開"
+    }
+  ],
+  "existing_dependency": {
+    "path": "browser-e64aa635/environment.json",
+    "reason": "同一證據分支第二階段已公開；報告引用版本收據"
+  },
+  "pending_comment": {
+    "path": "/workspace/geo261-validation-20261018/report-publication/pr288-performance-comment.pending.md",
+    "required_finalization": "純報告commit建立後，將唯一 EVIDENCE_COMMIT 代號全部替換為真證據commit再發布；不得當被測source SHA。",
+    "not_in_public_files": true
+  }
+}

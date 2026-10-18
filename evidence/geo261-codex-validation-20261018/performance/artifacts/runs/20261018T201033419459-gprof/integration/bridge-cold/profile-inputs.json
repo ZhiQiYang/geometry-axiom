@@ -1,0 +1,35 @@
+{
+  "binary": "/workspace/geo261-validation-20261018/performance/artifacts/build/integration/gprof/bridge",
+  "binary_sha256": "0e9a58d96e0079cef3c7897911cf2dc52636b41d1430af22a0d9770b3479190c",
+  "gmon_files": [
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-000/gmon.out",
+      "sha256": "22590e945610154f76aa58635832a4ad19370d3a8cbdb600dbf30356a83a6037"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-001/gmon.out",
+      "sha256": "e0af3981e481ca89ce15d55aa7c5175ec9e02204eab9b4cf7057e27a33f4c1ab"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-002/gmon.out",
+      "sha256": "7e322d0f791e17933f0e2081d6f8000278323a4d97796b4f5905842b4e112e57"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-003/gmon.out",
+      "sha256": "07dd86f67fca50ffaef732371981d5eff80f25bb71ffc004289c988b204095d5"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-004/gmon.out",
+      "sha256": "d32aec989ba769dcf383196ff85986ab5a8d81a50c8141f2fc3efd72b8a5ec24"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-005/gmon.out",
+      "sha256": "c43388c84e0d930d22fe2863a2c2dd892637d385392e243b653524841860d0f2"
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/integration/bridge-cold/sample-006/gmon.out",
+      "sha256": "6e3998879f2974f3638bb397cea8e8eccf8e94313c1226f250c0a50b40d73683"
+    }
+  ],
+  "note": "累積欄為 self + children；不是 flat profile 從上往下相加的 cumulative seconds。"
+}
