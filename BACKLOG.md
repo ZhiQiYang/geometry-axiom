@@ -1,5 +1,66 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-10-19 帳本續補（本輪 GitHub 來源快照）
+
+- 基底 main `a63e1999b5ebdc29ee30f25db6b319d6469bdac3`。依 `gh pr list --state merged --search "merged:>=2026-10-15" --limit 200 --json number,title,mergedAt,mergeCommit,body` 回讀 **24 張**。上一節表格裡的 PR 編號都不在這 24 張裡，所以下表 24 列、沒有排除後的空缺。日期把 GitHub `mergedAt` 換算成 Asia/Taipei。八碼是該 PR 的 merge commit，不是受測 head。這是帳本查核，沒有重跑那些 PR 的測試。
+- 下表各列只記該 PR 正文寫明的事。正文沒寫的測試、產品完成度與因果，不補。列車展開到正文點名的來源 PR。來源 PR 若 GitHub `mergedAt` 為 null，只記在下方「尚未落地」，不另造合併日或 merge commit。
+- 2026-10-19 以 `gh pr view 312 --json state,mergedAt` 回得 state=OPEN、mergedAt=null。#312 還沒合併，所以不把它的來源展開成已合併列。
+- 本次只新增。上一節、各工單舊文，以及既有鎖定行，都沒改。GitHub Actions 計費阻擋照各 PR 正文保留，不把 GitHub CI 寫成已綠。
+
+### 上一節表格未列、且本次回讀到的已合併 PR
+
+| PR | 合併日（臺北）／提交 | 工單／段落 | 可記入的事實與限制（來源：該 PR 正文） |
+|---|---|---|---|
+| [#247](https://github.com/ZhiQiYang/geometry-axiom/pull/247) | 2026-10-15／`839063b9` | 帳本／GEO-245～GEO-262 | 指定任務 17：67 張 merged PR 對帳、列車來源，以及 GEO-261／GEO-262 排程入帳。相對 base 只改 BACKLOG。正式 native 依 P-125 沿用 e832696b 的 WSL 收據；正文寫明不在最終 head 重跑，也不把該收據稱作七項 |
+| [#257](https://github.com/ZhiQiYang/geometry-axiom/pull/257) | 2026-10-16／`1c807511` | GEO-255／#128 | 第 16 班，展開為 #242。WSL 七項綠；grid 是 P-138 的排他重跑。本樹是受測 `6a62bb05` 加上 #247 的 BACKLOG。Windows 原生與實機不在本次範圍 |
+| [#242](https://github.com/ZhiQiYang/geometry-axiom/pull/242) | 2026-10-16／`63a8b2de` | GEO-255／#128 | 已發布的合法 9 mm（64／127-byte 表示）不再被 PF-2 誤報成 I52；發布與求值共用 `ENG_THICKNESS_CAPACITY=128`。R10 的 P1～P5 本次不實作。雲端 native 是 2779 過／0 敗／1 個允許的 Windows GDI skip；正文寫明這不替代列車的 browser 驗收。正式七項見 #257 |
+| [#262](https://github.com/ZhiQiYang/geometry-axiom/pull/262) | 2026-10-16／`a898ad6e` | GEO-255／GEO-262／#209 | 第 17 班，展開為 #226（正文標 PF-3，內含 #227）、#237、#256。WSL 七項綠，收據 `6a0f5386-train17-claude`。Windows 原生與實機不在本次範圍。#226 自己沒有 merge commit，見下方 |
+| [#256](https://github.com/ZhiQiYang/geometry-axiom/pull/256) | 2026-10-16／`bbc59d40` | GEO-262 | 整卡參數引用寫入公理：新增 D64／I74／R60，條文 204→207，並同步白話、正典與決策佇列。正文寫提交 B（`AXIOM_SHA256` 與相容版本表）還沒做，完成前建模測試會因雜湊不符而紅，當時維持 draft。第 17 班正文另寫 `py:test_engineering_model_compatibility` 29→31 來自 #256。兩份正文並陳，本列不把提交 B 補成已完成 |
+| [#237](https://github.com/ZhiQiYang/geometry-axiom/pull/237) | 2026-10-16／`2445e1af` | #209 | 等待追蹤預設關閉，設 `GEOMETRY_WAIT_TRACE=1` 才開啟；B1 要求四個計數為非負 JSON 整數。正文寫該 PR head 的正式 WSL 七項未跑；雲端 native 2852 過／0 敗／1 skip 在 `3642e67d`。組合樹的七項見 #262 |
+| [#227](https://github.com/ZhiQiYang/geometry-axiom/pull/227) | 2026-10-16／`5f1149da` | GEO-255 | PF-H 接入 D4／R41／D7：具型別 h 來源、衍生宿主、source-only 保存與重開。無新可見 UI。正文寫正式 WSL 七項未跑，當時維持 draft；雲端 native 2857 過／0 敗／1 具名略過，固定受測 head `4be9ff34`。組合樹的七項見 #262 |
+| [#287](https://github.com/ZhiQiYang/geometry-axiom/pull/287) | 2026-10-17／`27f5c09b` | #263 | 第 19 班，展開為 #265。固定 head `945ae87c` 的 WSL 七項綠。canvas 2211 過／0 敗、84 段 golden matched；uncaughtBrowserExceptions 原值 1，正文沒有把它寫成零例外。本班不含第 18 班核心鏈、#276、#258。#276 的互補測試與重複產品 hunk 仍待取捨 |
+| [#265](https://github.com/ZhiQiYang/geometry-axiom/pull/265) | 2026-10-17／`945ae87c` | #263 | 精簡網格只改名稱或直接間距時，保留 stagger 與 ParameterRef；完整工作區明確移除仍解除來源。golden 的 P70 由 117 改為 121，total 由 2207 改為 2211。證據目錄標題使用 GEO-263 這個名字。正式七項見 #287 |
+| [#291](https://github.com/ZhiQiYang/geometry-axiom/pull/291) | 2026-10-17／`772b97f5` | GEO-258／GEO-246／#198／閱讀器 | 第 18 班，展開為 #193、#196、#202、#207、#258、#290。R2 七項綠，受測 head `e8eb1da5`。canvas 的 uncaughtBrowserExceptions 原值 1；native 具名平台 skip 1。不含 #251、#254 或 GEO-261 架構堆疊。R1 的 P76 根因未定案。#193、#196、#202、#207 沒有各自的 merge commit，見下方 |
+| [#290](https://github.com/ZhiQiYang/geometry-axiom/pull/290) | 2026-10-17／`e8eb1da5` | 驗收基礎 | P67 在角材影響確認後改等斷言所需的完整幾何與選取；期限仍是 10000ms。只改 `marquee_test.js` 與 `cdp_test.js`。三組延遲控制做在舊 head `1b887c74`；正文寫沒有在新 head 重跑那些控制。整合七項見 #291 |
+| [#258](https://github.com/ZhiQiYang/geometry-axiom/pull/258) | 2026-10-17／`4676d9c3` | 回執契約 | 釘住同一請求的 ack 可先騰出回執容量這件既有行為；`py:test_recorded_api_receipts` 11→12。雲端 native 不是正式 WSL 收據。正文記錄第 20 班 R2 為六綠一紅，canvas 在第一個 section 前逾時，該 PR 當時未宣稱七項達標。這筆紅燈保留。其後的正式七項見 #291 |
+| [#266](https://github.com/ZhiQiYang/geometry-axiom/pull/266) | 2026-10-17／`c76737ec` | GEO-261 | 採納幾何核心 K、預設木工模板 W、宿主 H。D64／I74 歸 K，R60 歸 H，追加的三條正文不變。同步公理、白話與唯一正典，並保留已發布版本的 revision／hash 相容集合。正文點名的是採納來源提交 A `e744f531` 與證據提交 B `108307e8`，沒有另一張來源 PR 編號，所以不再往下展開。閱讀器 51／51、提案 29／29、採納 15／15、純 Python 相容 4／4；另有 10 項需要原生 adapter 的方法未執行。完整 run_all、原生舊包重建、其他實作切片與 Claude 品質審查，正文寫尚未完成。實體 iOS 未驗 |
+| [#292](https://github.com/ZhiQiYang/geometry-axiom/pull/292) | 2026-10-17／`c144c013` | GEO-261／決策佇列 | 決策佇列新增一節，記錄 GEO-261 由 Claude 接手。只新增 24 行，只動 `決策佇列.md`。正文沒有附測試收據 |
+| [#296](https://github.com/ZhiQiYang/geometry-axiom/pull/296) | 2026-10-17／`02baea2c` | #240 S6／#260／決策佇列 | 使用者 2026-10-16 的一軸錯開拍板原先只在 #260 分支的 `d18719ac`。本 PR 把該節逐字搬進 main，並加一行補記：為什麼補，以及原文裡有一句是協調 agent 的推論。只新增 42 行。這是決策紀錄，不是 #309 的條文採納 |
+| [#289](https://github.com/ZhiQiYang/geometry-axiom/pull/289) | 2026-10-18／`00428c5b` | GEO-261 | 產品模型入口改選釘選的候選 loader 與 source-reference compiler；覆蓋不足、舊 adapter 或身分不符時 fail closed，不回退到舊 snapshot。正文寫本 draft 依賴 #279 的完整原生覆蓋與 #288 的最終整合，實際 C→Python 與舊包重放通過前不要發布。後來加上的八個原生方法仍是 UNRUN。歷史 174／174 在 `f3c71065`，用的是合成信封與 mocked process，沒有 C、WSL、瀏覽器或真舊包重放。主程式與使用者服務沒有切換 |
+| [#301](https://github.com/ZhiQiYang/geometry-axiom/pull/301) | 2026-10-18／`c00e9839` | 決策佇列 | 記錄凹角沿牆料排序選 C：端面頂到沿牆料或併料的副支改宣告為 custom、優先級 4，不改條文。只在決策佇列新增 18 行 |
+| [#302](https://github.com/ZhiQiYang/geometry-axiom/pull/302) | 2026-10-18／`c38e01e9` | 決策佇列 | 記錄副支最短長度 min_piece = 27 mm（料寬）。只新增決策佇列，既有鎖定行未改 |
+| [#303](https://github.com/ZhiQiYang/geometry-axiom/pull/303) | 2026-10-18／`81d29894` | 決策佇列 | 記錄 RC 柱面上短於 27 mm 的段落也不放邊界材。只新增決策佇列 |
+| [#304](https://github.com/ZhiQiYang/geometry-axiom/pull/304) | 2026-10-18／`2c3236a9` | #260／決策佇列 | 記錄 #260 條文稿的第一批回答：舊檔怎麼認，當時選選項二；B 區措辭澄清同意；第 1 題要先看全文；第 2 題當時待確認。同日稍後的 #306 另記改選選項一。只新增 |
+| [#305](https://github.com/ZhiQiYang/geometry-axiom/pull/305) | 2026-10-18／`12b25f91` | #260／決策佇列 | 記錄 #260 A 區條文文字的同意。只新增。同日最終三段的紀錄見 #311 |
+| [#306](https://github.com/ZhiQiYang/geometry-axiom/pull/306) | 2026-10-18／`e980cb0d` | #260／決策佇列 | 記錄選項說明更正之後，舊檔規則改選選項一，取代同日稍早的選項二。只新增 |
+| [#311](https://github.com/ZhiQiYang/geometry-axiom/pull/311) | 2026-10-18／`b1759bab` | #260／決策佇列 | 記錄三題拍板：#260 A 區最終三段同意、C／D1 同意、短格記號用同一治具 367 加餘數。只新增。這是決策紀錄，#309／#310 尚未因此進 main |
+| [#313](https://github.com/ZhiQiYang/geometry-axiom/pull/313) | 2026-10-18／`a63e1999` | 決策佇列／#251 | 把使用者台北 2026-10-16 01:29 的原話逐字補進決策佇列。正文寫下角材 oracle（#251）有三處規則靠這句話：縫上副支的可放範圍、補位副支、柱面料蓋住縫時怎麼處理。背景與落實在該 PR 標成協調 agent 的推論。只新增一節。CI 受帳號計費阻擋 |
+
+### 列車內的非 merged PR 與仍待落地項
+
+- **第 17 班裡的 #226**（CLOSED，`mergedAt` 為 null；`gh pr view 226`，2026-10-19）。[#262](https://github.com/ZhiQiYang/geometry-axiom/pull/262) 正文寫本班落地 #226，並把它標成 PF-3、內含 #227，head `7da7e0a7`。#226 自己的正文是 P-134 的固定來源對照，加上同一 SHA 的雲端 native exit 0（2877 過／0 敗／1 既有略過）；原失敗本輪未重現，成因未確定，沒有產品修正。不能給 #226 補一筆合併日或 merge commit。#227 另有已合併列。
+- **第 18 班裡的 #193、#196、#202、#207**（四張都是 CLOSED，`mergedAt` 為 null；2026-10-19 的 `gh pr view`）。[#291](https://github.com/ZhiQiYang/geometry-axiom/pull/291) 正文寫核心鏈是 #193 head `cb6e2c43`，並另合入 #196、#202、#207。標題分別是參數刪除後同鍵重建（GEO-258）、GEO-246 的網格拒絕訊息、#198 的凹口與尖脊矩形接觸、GEO-198 來源的正典閱讀器同步。內容是否入 main，只依 #291 這句話；四張都沒有自己的 merge commit。
+- **#266 的採納**沒有可再展開的來源 PR。正文只給提交 A／B，見上表該列。整合分支是另一件事，見下條。
+- **GEO-261 整合仍在 #288**。2026-10-19 `gh pr view 288`：state=OPEN、isDraft=true、mergedAt=null，還沒進 main。同日 #279（原生分層與候選來源圖）也是 OPEN draft。已合併的 #289 正文寫明仍依賴這兩張，不把 #289 當成整合已完成。工單處另有 2026-10-19 註記。
+- **GEO-262 的後續隨 #312 而定**。2026-10-19 `gh pr view 312 --json state,mergedAt`：state=OPEN、mergedAt=null。#312 標題是列車 #298 + #309 + #310，還沒進 main，所以不展開成已合併列。它的正文把組成寫成：
+  - #298（GEO-262 誠實性列車：#253、#293、#294、#295，`grid-card-reference/1`，未改 `公理層.md`），分支 head 的測試／實作 `0368b6aa`，帳本重產 `6d2c795b`。
+  - #309（#260 A／B：一軸錯縫、I5／R18 用詞），head `59d90026`。
+  - #310（#260 C／D1：I23／R13 標題括號、D31／R33 的 cardId 改 parameterId；疊在 #309 上），head `8c3da210`。
+  - 基底是已合併的 #313，main `a63e1999`。
+  - 同日另查 #253、#293、#294、#295、#298、#309、#310、#260：全部是 OPEN、draft、mergedAt=null。因此 #253、#293、#294、#295、#309、#310、#260 都還在這一段，不寫進已合併表。#256 的條文採納已經隨第 17 班進 main，與這班還沒落地的誠實性／#260 措辭分開記。
+- **下角材 oracle #251／#254／#297**。列車是 [#307](https://github.com/ZhiQiYang/geometry-axiom/pull/307)（標題 train/framing-20261018: #251 + #254 + #297）。2026-10-19 `gh pr view 307`：state=OPEN、isDraft=true、mergedAt=null，還沒進 main。同日 #251、#254、#297 也都是 OPEN draft。#313 正文把 #251 稱為下角材 oracle，並寫縫上副支、補位副支、柱面料蓋縫三處規則靠已補進決策佇列的那句原話；該句入決策佇列，不等於這三張 PR 已進 main。
+
+### 2026-10-19 新開的工單
+
+`git grep` 在 tracked 的 md／py／js／c／h／inc／json 裡，GEO 號最大已到 GEO-263（`geometry-web/docs/evidence/geo263-20261016/README.md` 與 `geometry-web/grid_system_test.js`）。GEO-264、GEO-265、GEO-266、GEO-267 在同一組副檔名裡沒有命中，從 GEO-264 接下去配。四張來源 issue 當日都是 OPEN。全文在各工單節。
+
+| 工單 | 內容 | 狀態 | 依據 |
+|---|---|---|---|
+| GEO-264 | V_EXTENSION 診斷要指名定位邊與超出區間 | 未開始 | issue #299；等 #288 合入 main |
+| GEO-265 | 角材容量 64→512，並收斂五個容量常數 | 未開始 | issue #300；等 GEO-261 合入後的 main |
+| GEO-266 | 淺壁柱與牆階被報成不可施工且沒附理由 | 未開始 | issue #308；正文沒有寫合併依賴 |
+| GEO-267 | 一軸相位差的原生提交檢查，含 R60 整卡路徑 | 未開始 | issue #314；等 #288 合入 main |
+
 ## 2026-10-15 帳本續補（指定任務 17；本輪 GitHub 來源快照）
 
 - 基底 main `ea034facc455ba779b81a5be864eaf0dcc6d89ed`；依 `gh pr list --state merged --search "merged:>=2026-10-05" --limit 200 --json number,title,mergedAt,mergeCommit,body` 回讀 **67 張**，逐張比對下表及對應工單。日期一律將 GitHub `mergedAt` 換算成 Asia/Taipei；八碼是合併提交，不是受測 head。這是帳本查核，未重新驗證舊 PR 的測試結果。
@@ -328,6 +389,8 @@
 
 ### GEO-261 — 幾何核心與木工模板解耦（2026-10-15）
 
+> **2026-10-19 狀態更新**：採納 PR [#266](https://github.com/ZhiQiYang/geometry-axiom/pull/266) 已合併（2026-10-17，`c76737ec`）。整合分支仍在 [#288](https://github.com/ZhiQiYang/geometry-axiom/pull/288)。2026-10-19 `gh pr view 288` 回 state=OPEN、isDraft=true、mergedAt=null，還沒進 main。[#289](https://github.com/ZhiQiYang/geometry-axiom/pull/289)（2026-10-18，`00428c5b`）已進 main；它的正文寫明仍依賴 [#279](https://github.com/ZhiQiYang/geometry-axiom/pull/279) 的完整原生覆蓋與 #288 的最終整合，實際 C→Python 與舊包重放通過前不要發布。
+
 - **狀態**：2026-10-16 使用者於原對話回答「批准此版本的逐條提案」與「批准此更名缺陷修正」（原話見決策佇列），綁定 `17a25e92`；同日 23:23:52 再回答「批准此追加分層提案」，綁定 `c8ce964` 的 204→207 與 K＝D64／I74、H＝R60。正式公理已依批准採納，同步白話／唯一閱讀器及版本相容；保留第 17 班列車 main `a898ad6e` 的完整上游契約。實際指紋、A/B 版本及驗收界線見 [採納收據](geometry-core/domain-decoupling/ADOPTION-RECEIPT.md)。獨立更名修正及 C／Python 接線各按其切片驗收；**核心解耦尚未完成，原生舊包重建與最終整合裁判仍待執行**。追蹤 [issue #248](https://github.com/ZhiQiYang/geometry-axiom/issues/248)；[提案入口](geometry-core/domain-decoupling/PROPOSAL.md)。
 - **本次委任**：使用者在本地對話要求從最新 main 完成 GEO-261，工程切片與架構由 Astra 負責，Claude 做最終品質審查及列車合併；[Claude 已於 #248 記錄接手](https://github.com/ZhiQiYang/geometry-axiom/issues/248#issuecomment-6199027870)。這項委任不取代逐條公理差異批准。下列原排程的提案責任改由 Astra，其他規範不變。
 - **本次切片**：P0 提案／完整條文差異／提案契約測試；批准後 P1 採納與 C 核心，P2 木工／Python／相容轉接，P3 前端與第二模板，P4 主線整合／全量突變／交付。必要時細分，每片 draft PR。只有 Claude 審查無品質阻擋、只差排列車，才能稱完成。
@@ -346,6 +409,8 @@
 
 ### GEO-262 — 網格系統直接引用整張參數卡（卡片級引用，2026-10-15）
 
+> **2026-10-19 狀態更新**：整卡條文 [#256](https://github.com/ZhiQiYang/geometry-axiom/pull/256) 已隨第 17 班 [#262](https://github.com/ZhiQiYang/geometry-axiom/pull/262) 進 main（2026-10-16，列車 merge `a898ad6e`，#256 的 merge `bbc59d40`）。後續誠實性與 #260 的措辭是否落地，隨 [#312](https://github.com/ZhiQiYang/geometry-axiom/pull/312) 而定。2026-10-19 `gh pr view 312 --json state,mergedAt` 回 state=OPEN、mergedAt=null，還沒進 main，所以 #253、#293、#294、#295、#309、#310、#260 仍列在本檔首節的尚未落地。
+
 - **狀態**：公理差異提案中(雲端指定任務 18)；追蹤 [issue #249](https://github.com/ZhiQiYang/geometry-axiom/issues/249)。
 - **依據**：使用者 2026-10-15 選擇「B 整張卡當引用單位」（#246 決策佇列補登第 15 項）；依 [P-118 追加 M3](https://github.com/ZhiQiYang/geometry-axiom/pull/247#issuecomment-6178923118) 入帳。以下只摘要 #249 的「需求」「現況」「排程」。
 - **需求**：網格系統能直接引用整張參數卡，把整張卡當引用單位；不是每個網格欄位各挑一個參數欄位。
@@ -355,6 +420,38 @@
   - **2 審查**：Claude 派 opus 對抗審查。
   - **3 拍板**：使用者看逐條差異後決定。
   - **4 實作**：Codex 實作核心與介面，走合併列車跑 7 項。
+
+### GEO-264 — V_EXTENSION 診斷未指名定位邊與超出區間（2026-10-19 開單，未開始）
+
+- **狀態**：未開始。
+- **來源**：[issue #299](https://github.com/ZhiQiYang/geometry-axiom/issues/299)（2026-10-19 查為 OPEN）。正文寫：I22 的 W 段要求違反時拒絕，訊息要指名料件、定位邊與超出的區間；核心 `timber_end_face_check` 目前的訊息沒有指名是哪條定位邊、超出的區間是多少。#295 的 p8、p8b 只驗訊息前綴。
+- **排程依賴**（照 issue 正文）：等 GEO-261（#288）合入 main 之後再修。GEO-261 改了核心放置程式的結構，現在改 `current_geometry.c`，整合時還得再移植一次。#295 只釘前綴，並在正文註明這個依賴。2026-10-19 #288 與 #295 都仍是 OPEN、mergedAt=null。
+- **要做**（照 issue 正文）：訊息補上定位邊與實際超出的區間（mm）；p8（低端）、p8b（高端）各自驗完整的必要欄位；拿掉任一欄位，對應場景要轉紅。
+- **拿掉／合併（GEO-219）**：無新增可見 UI。
+
+### GEO-265 — 角材容量由 64 放大到 512（2026-10-19 開單，未開始）
+
+- **狀態**：未開始。
+- **來源**：[issue #300](https://github.com/ZhiQiYang/geometry-axiom/issues/300)（2026-10-19 查為 OPEN）。正文寫：一個 World 最多 64 支角材（`WORLD_MAX_TIMBERS`）。#297 探針實跑時，F1 客廳要 108–116 支，第 65 支起被拒；五房整套要 266–310 支。條文沒有規定這個數字（I33 只規定容量不足要回 CAPACITY）。
+- **排程依賴**（照 issue 正文）：只在 GEO-261 合入後的 main 上做一次，避免和檔案搬移衝突。2026-10-19 #288 仍是 OPEN，這個條件還沒成立。
+- **issue 裡已經寫出的做法**：正文標成 Claude 代決、可以推翻。放大到 512。GEO-261 整合分支有五處各自寫死 64，要收斂成單一來源，以模板的 `WOOD_MEMBER_CAPACITY` 為準，並加上 `_Static_assert`。一併修 `print_cut_list` 隨 N 平方成長的堆疊陣列，補第 N 支接受、第 N+1 支拒絕的邊界測試與突變，重跑突變帳本，放大後重跑 #297。參考線上限、空間上限與載入時間另開單。這段是 issue 裡的代決，不是本帳本新記的使用者拍板。
+- **拿掉／合併（GEO-219）**：無新增可見 UI。
+
+### GEO-266 — 淺壁柱與牆階被報成不可施工且沒附理由（2026-10-19 開單，未開始）
+
+- **狀態**：未開始。
+- **來源**：[issue #308](https://github.com/ZhiQiYang/geometry-axiom/issues/308)（2026-10-19 查為 OPEN）。正文寫：opus 審查 #251 的 `98cb7da0` 發現，4100×3700 的房、壁柱 x 1500–1900、深 29–53 mm，四種板長沿 Y 的排法都報 `SPAN_PARTLY_RC`，而且沒附理由；側牆版本也一樣，共 312 次。牆階在房間中段的房型裡，`MAIN_HITS_RC_TIMBER` 30 次、`SHORT_FACE_SEAM_EDGE_UNSUPPORTED` 160 次。正文要求這些情況逐類修正或附理由。
+- **排程依賴**：issue 正文沒有寫要等哪一張 PR 合併。本工單不另補依賴，也不轉引正文裡的使用者原話。
+- **拿掉／合併（GEO-219）**：無新增可見 UI。
+
+### GEO-267 — 一軸相位差的原生提交檢查（2026-10-19 開單，未開始）
+
+- **狀態**：未開始。
+- **來源**：[issue #314](https://github.com/ZhiQiYang/geometry-axiom/issues/314)（2026-10-19 查為 OPEN）。
+- **排程依賴**（照 issue 正文）：等 GEO-261（#288）合入 main 之後再做。GEO-261 改了原生核心的提交結構，現在做的話，整合時還得再移植一次。2026-10-19 #288 仍是 OPEN、mergedAt=null。
+- **要做**（照 issue 正文，以採納後的公理層為準）：新提交若讓網格的兩軸都有相位差，就拒絕，診斷指名條號。已經兩軸都錯開的舊網格，若提交後仍是兩軸、而且相位差數值有變，也拒絕；要改，須在同一筆先移除一軸。開檔、載入、恢復不檢查，舊的兩軸檔案照樣可以開。提交路徑包括 #298／#312 新增的 R60 整卡提交路徑。驗收是每條路徑的正例與反例、拿掉檢查要紅的突變、舊兩軸 fixture 仍可開，以及 WSL 七項。
+- **帳本限制**：issue 正文寫 #309 已採納 #260 的 A／B 條文，也寫目前 main 和列車 #312 只改了條文與 Python 執行器的版本宣告。2026-10-19 的 `gh pr view` 裡，#309、#310、#312 都是 OPEN、mergedAt=null。本工單不把那句話記成條文已經進 main。已進 main 的是決策佇列裡的拍板紀錄（#296、#304、#305、#306、#311、#313），見本檔首節。
+- **拿掉／合併（GEO-219）**：無新增可見 UI。
 
 ## 2026-10-09 收尾核收更新（各 scope 分列）
 
