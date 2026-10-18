@@ -1,0 +1,49 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-validation-20261018/proposed-fixes/default-owned-replay/raw_compare_default.py",
+    "capture",
+    "--bridge",
+    "/workspace/geo261-validation-20261018/fixes/perf-default-replay/binaries-withdrawn/bridge",
+    "--source-sha",
+    "44da901dcee604b37b512c3d66c2a90caac055b4",
+    "--state",
+    "withdrawn",
+    "--output",
+    "/workspace/geo261-validation-20261018/fixes/perf-default-replay/raw-withdrawn"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T14:45:57.664993+00:00",
+  "started_ns": 1792334757665008299,
+  "timeout_seconds": 900.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 0,
+  "launch_error": null,
+  "pid": 181885,
+  "ended_utc": "2026-10-18T14:46:00.530120+00:00",
+  "ended_ns": 1792334760530145811,
+  "seconds": 2.8651364230026957,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1573808,
+      "bytes": 904,
+      "mtime_ns": 1792334760480627424,
+      "ctime_ns": 1792334760480627424,
+      "sha256": "e9c3982d0b6f069a7cee1fc832dbea811155c28a0d9a52babee306a2b4f38733",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1573809,
+      "bytes": 0,
+      "mtime_ns": 1792334757664958171,
+      "ctime_ns": 1792334757664958171,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    }
+  }
+}

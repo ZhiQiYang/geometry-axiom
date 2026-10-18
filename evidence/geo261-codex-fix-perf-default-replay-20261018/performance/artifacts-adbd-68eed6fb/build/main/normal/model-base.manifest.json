@@ -1,0 +1,35 @@
+{
+  "sha": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+  "binary_sha256": "8d36776937a4045cfa52f99b54f8cc1b69cc3f46958ae0ba70138bc658b786f8",
+  "compiler": "/usr/bin/gcc",
+  "compiler_version": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "build_seconds": 13.356862542001181,
+  "registry": "tests/binaries.py::_compile",
+  "native_sources": [
+    {
+      "path": "current_geometry.c",
+      "sha256": "75db8d975e55f0aa46aed56848638e9741da29d99061692fce26d6dfec5b261b",
+      "pg": false
+    },
+    {
+      "path": "geometry-core/model_base.c",
+      "sha256": "020e1b34b0783fa80cb10b0e2f6283b30b569ff3301d94e0494e786088844374",
+      "pg": false
+    }
+  ],
+  "command": [
+    "/usr/bin/gcc",
+    "-MMD",
+    "-MF",
+    "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/build/main/normal/model-base.d",
+    "-Wl,-Map=/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/build/main/normal/model-base.link-map",
+    "-std=c11",
+    "-O2",
+    "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/sources/main-e980cb0d/geometry-core/model_base.c",
+    "-o",
+    "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/build/main/normal/model-base",
+    "-lm"
+  ],
+  "link_map": "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/build/main/normal/model-base.link-map",
+  "timestamp": "2026-10-18T22:45:04+08:00"
+}

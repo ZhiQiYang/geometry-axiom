@@ -1,0 +1,29 @@
+{
+  "registry_command": [
+    "/usr/bin/gcc",
+    "-std=c11",
+    "-O2",
+    "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/sources/integration-68eed6fb/geometry-core/model_base.c",
+    "-o",
+    "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/build/integration/gprof/model-base",
+    "-lm"
+  ],
+  "actual_command": [
+    "/usr/bin/gcc",
+    "-MMD",
+    "-MF",
+    "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/build/integration/gprof/model-base.d",
+    "-Wl,-Map=/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/build/integration/gprof/model-base.link-map",
+    "-g",
+    "-pg",
+    "-fno-omit-frame-pointer",
+    "-std=c11",
+    "-O2",
+    "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/sources/integration-68eed6fb/geometry-core/model_base.c",
+    "-o",
+    "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/build/integration/gprof/model-base",
+    "-lm"
+  ],
+  "cwd": "/workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/sources/integration-68eed6fb",
+  "mode": "gprof"
+}
