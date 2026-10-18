@@ -41,14 +41,17 @@ ADOPTED_HASH = "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5
 # (REVISION_APPROVAL): a section heading that occurs exactly once and backs no
 # other revision; each answer names its bullet by the bullet's full head line,
 # which occurs once among the section's top-level bullets, quotes the user's
-# reply as a "> ..." line of that bullet, and lists the clauses it authorizes,
-# each named in that same bullet; a revision cites a bullet at most once and
-# every edited clause must be authorized.  One revision per decision section.
-# This ties a revision to a recorded answer about those very clauses; it cannot
-# tell what the answer means (an unrelated reply in a bullet that happens to
-# name the clause would pass), and it cannot stop a coordinated edit of this
-# file, the SSOT and the queue.  An unrecorded answer keeps the actual-SSOT
-# test red.
+# reply as a "> ..." line of that bullet's body, the reply being one of
+# APPROVAL_REPLIES, and lists the clauses it authorizes, each named in that
+# head line (never in the body, where question stems and narration live); a
+# revision cites a bullet at most once and every edited clause must be
+# authorized.  One revision per decision section.  This ties a revision to a
+# recorded approval of those very clauses; it cannot stop a coordinated edit of
+# this file, the SSOT and the queue, nor a changed edit inside an approved
+# revision.  An unrecorded approval keeps the actual-SSOT test red.
+# Only replies some existing binding uses are approvals; add one only together
+# with the binding that needs it.
+APPROVAL_REPLIES = ("> 同意", "> 同意(建議)")
 POST_APPROVAL_REVISIONS = (
     {
         "id": "pr260-b",
@@ -77,9 +80,9 @@ POST_APPROVAL_REVISIONS = (
     {
         "id": "pr260-final",
         "proposal": "PR #260 head ba7b60236d29061711edd5fb873acedebb2a4a87, geometry-core/axiom-clarify-20261016/PROPOSAL.md, LF SHA-256 833710a170a98583d112b1590de4117ac49b4654ea54679ca8749ebe8aa0da8c: A1-A4 (one staggered axis per grid system), C1-C2 (I23, R13 title parentheses), D1 (D31, R33 parameterId)",
-        "approval": "決策佇列.md「2026-10-18 #260 最終文字確認、標題與用詞修正、短格記號治具 🔒」第 1 題「同意」(A2、A3、A5 最終全文，連同先前已同意的 D29、R22)；"
-                    "第 2 題的定義推論與第 3 題「改回選項一(建議)」見「2026-10-18 #260 條文稿第一批回覆」；"
-                    "第 2 題「同意」(I23、R13、D31、R33)",
+        "approval": "決策佇列.md「2026-10-18 #260 最終文字確認、標題與用詞修正、短格記號治具 🔒」第 1 題「同意」(A2、A3、A5 最終全文，連同先前已同意的 D29、R22)。"
+                    "D29、R22 與 D10b 首句的出處是「2026-10-18 #260 條文稿第一批回覆」第 1 題的「> 同意」：這幾段從選項二版(9f80f113)到最終版(ba7b6023)逐字未變。"
+                    "第 2 題的定義推論與第 3 題「改回選項一(建議)」也見該節；第 2 題「同意」(I23、R13、D31、R33)",
         "decision": {"heading": "### 2026-10-18 #260 最終文字確認、標題與用詞修正、短格記號治具 🔒",
                      # (bullet head line, the user's quoted reply in it, clauses it names and authorizes)
                      "answers": (
@@ -295,7 +298,7 @@ def apply_post_approval_revisions(adopted, revisions):
 
 
 def verify_revision_decisions(queue_bytes, revisions):
-    """Bind each later revision to its own recorded answers in 決策佇列.md, bullet by bullet."""
+    """Bind each later revision to its own recorded approvals in 決策佇列.md, bullet by bullet."""
     lines = normalized(queue_bytes).split("\n")
     used = set()
     for revision in revisions:
@@ -321,16 +324,19 @@ def verify_revision_decisions(queue_bytes, revisions):
             ok_shape = (isinstance(answer, tuple) and len(answer) == 3 and isinstance(answer[0], str)
                         and isinstance(answer[1], str) and isinstance(answer[2], tuple))
             head, quote, clauses = answer if ok_shape else ("", "", ())
-            text = "\n".join(bullets[heads.index(head)]) if heads.count(head) == 1 else ""
-            answered = answered and ok_shape and head.startswith("- ") and quote.startswith("> ") and bool(text) \
-                and quote in {line.strip() for line in text.split("\n")} and all(
-                    re.search(r"(?<![0-9A-Za-z])" + re.escape(clause) + r"(?![0-9a-z])", text) for clause in clauses)
+            if ok_shape and quote.startswith("> "):
+                require(quote in APPROVAL_REPLIES, "REVISION_APPROVAL",
+                        f"{revision['id']}: 原話不是同意: {quote!r} is not one of the approval replies {APPROVAL_REPLIES!r}")
+            bullet = bullets[heads.index(head)] if heads.count(head) == 1 else []
+            answered = answered and ok_shape and head.startswith("- ") and quote.startswith("> ") and bool(bullet) \
+                and quote in {line.strip() for line in bullet[1:]} and all(
+                    re.search(r"(?<![0-9A-Za-z])" + re.escape(clause) + r"(?![0-9a-z])", head) for clause in clauses)
             authorized |= set(clauses)
         edited = {edit[0] for edit in revision.get("edits", ())}
         require(answered and bool(edited) and edited <= authorized, "REVISION_APPROVAL",
                 f"{revision['id']}: needs its own section {heading!r} in 決策佇列.md, each answer citing one "
-                f"bullet that quotes the reply and names the clauses it authorizes, and every edited clause "
-                f"{sorted(edited)} authorized (authorized: {sorted(authorized)})")
+                f"bullet that quotes the approval and names in its head line the clauses it authorizes, and every "
+                f"edited clause {sorted(edited)} authorized (authorized: {sorted(authorized)})")
         used.add(heading)
 
 
@@ -508,6 +514,26 @@ class AdoptionIntegrity(unittest.TestCase):
                            "edits": (("I23", "x", "y"),)}
         verify_revision_decisions(queue, (second_on_final,))
         with_decision = lambda revision, **fields: revision | {"decision": revision["decision"] | fields}
+        # opus re-review of #309/#310: attack D (a bullet that names I5, reply "> 先給我看稿再說") passed 44/44,
+        # and attack C (a clause named only in a bullet's body) was accepted
+        first_a_head = "- **第 1 題 A 區條文文字：同意 🔒**(同日)"
+        s6_bullet2 = next(line for line in text.split(other_heading, 1)[1].split("\n### ", 1)[0].split("\n")
+                          if line.startswith("- **2. 條文措辭澄清"))
+        self.assertIn("I5", s6_bullet2)
+        self.assertIn("\n  > 先給我看稿再說\n", text)
+        self.assertIn("A3 I24", text.split(decision["heading"], 1)[1].split("\n### ", 1)[0])
+        attack_d = {"id": "sneak", "proposal": "x", "approval": "x",
+                    "decision": {"heading": other_heading, "answers": ((s6_bullet2, "> 先給我看稿再說", ("I5",)),)},
+                    "edits": (("I5", "只有 Q 的點落在 F 之外才失敗。", "只有 Q 的點落在 F 之外才失敗，但端點相接一律算越界。"),)}
+        with self.assertRaises(ProposalContractError) as caught:
+            verify_revision_decisions(queue, (attack_d,))
+        self.assertEqual("REVISION_APPROVAL", caught.exception.code)
+        self.assertIn("原話不是同意", str(caught.exception))
+        # attack C alone: the section is otherwise unused, so only the body-only clause is wrong
+        attack_c = {"id": "body-only", "proposal": "x", "approval": "x",
+                    "decision": {"heading": decision["heading"], "answers": ((first_a_head, "> 同意", ("I24",)),)},
+                    "edits": (("I24", "x", "y"),)}
+        self.reject("REVISION_APPROVAL", verify_revision_decisions, queue, (attack_c,))
         for case, revisions, record in (
                 ("no decision", ({k: v for k, v in approved.items() if k != "decision"},), queue),
                 ("unknown heading", (with_decision(approved, heading=decision["heading"] + "x"),), queue),
@@ -515,7 +541,11 @@ class AdoptionIntegrity(unittest.TestCase):
                 ("no answers", (with_decision(approved, answers=()),), queue),
                 ("old two-field answer", (with_decision(approved, answers=((reply, clauses),)),), queue),
                 ("reply not given", (with_decision(approved, answers=((head, "> 不同意", clauses),)),), queue),
-                ("reply from another section", (with_decision(approved, answers=((head, elsewhere, clauses),)),), queue),
+                ("reply not an approval (another section's)", (with_decision(approved, answers=((head, elsewhere, clauses),)),), queue),
+                ("approval reply that is not in this bullet", (with_decision(approved, answers=((head, "> 同意", clauses),)),), queue),
+                ("C: clause named only in the bullet body",
+                 (with_decision(approved, answers=decision["answers"] + ((first_a_head, "> 同意", ("I24",)),)),), queue),
+                ("D: reply that is not an approval", (approved, attack_d), queue),
                 ("bullet from another section", (with_decision(approved, answers=((other_head, elsewhere, clauses),)),), queue),
                 ("reply not quoted", (with_decision(approved, answers=((head, reply[2:], clauses),)),), queue),
                 ("bullet not named by its head line", (with_decision(approved, answers=((head[2:], reply, clauses),)),), queue),
