@@ -16,7 +16,7 @@
      只有在室內中間斷開去接別的角材才不行(使用者 台北 10-15 05:51 第 3 題、2026-10-16)。
      主支位置預設置中在縫上,但只要縫兩側板邊承接 >= X 就可以平移(G1 才是要求)。
      R-butt:主支與相鄰平行料之間有 0 < 間隙、平移這段間隙後承接仍 >= X,就平移到貼住,不留 1 mm 縫。
-     依據:使用者 台北 10-16 01:29 講的是「副支」位置可以調整(原話:「左下起鋪,板長沿Y 衝突 板端縫太靠近 RC,縫上的副支撞到邊界角材 這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好」);
+     依據:使用者 台北 10-16 01:29 講的是「副支」位置可以調整(原話:「…這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好…」);
      主支在承接 >= X 內平移、貼住,是 Claude 由同一原則推論出來的,不是使用者原話;
      另依平釘天花工法知識(skill flat-nailed-ceiling,references/edge-rule.md §4「挪縫到主骨剛好 butt 壁邊材」)。
   R-nosliver:副支段長 < min_piece 一律不放,那條窄縫兩側的板由縫兩邊的料承接。
@@ -42,7 +42,7 @@
   G7 最後一條縫若讓縫上的角材撞到對牆的角材(距離 d > D - 1.5w),
      把該縫往內挪到 floor(D - 1.5w),留一條收邊板。第一條縫也適用同一規則。
      D 是「縫線上最近的對牆」離起鋪牆的距離(只看外牆;矩形房就是房深)。由平釘工法挪縫目的,
-     加上由使用者 台北 10-16 01:29 的原話「左下起鋪,板長沿Y 衝突 板端縫太靠近 RC,縫上的副支撞到邊界角材 這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好」推得的原則(推論,不是使用者原話):支撐能調整就調整,找不到調整位置才報衝突:
+     加上由使用者 台北 10-16 01:29 的原話「…這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好…」推得的原則(推論,不是使用者原話):支撐能調整就調整,找不到調整位置才報衝突:
      挪縫是為了讓主支剛好貼住它實際會碰到的那面牆的壁邊材(edge-rule.md §4 的「房深 − 40.5」);
      有牆階的房間,縫線上實際的對牆不是外框,照外框挪會在可以調整的地方報衝突。挪了縫線變長就重算到穩定。
      最後一條板端縫的承接帶若落進牆階面上沒料的短段(短於 min_piece 不放),再照那面牆階凹角那端的牆退到 ⌊D′ − 1.5w⌋
@@ -212,7 +212,7 @@ def seam_centers(lo, hi, start, ps, g, w, mut, local=None):
     """從起鋪側整片鋪,回傳縫中心(世界座標)。G6、G7。
     G7 的 D:最後一條縫「縫線上最近的對牆」離起鋪牆多遠(local(d) 給;沒有就用外框深度)。
     由平釘工法挪縫目的(主支剛好貼住它實際會碰到的那面牆的壁邊材,edge-rule.md §4 的「房深 − 40.5」)與
-    由使用者 台北 10-16 01:29 的原話「左下起鋪,板長沿Y 衝突 板端縫太靠近 RC,縫上的副支撞到邊界角材 這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好」推得的原則(推論,不是使用者原話):支撐能調整就調整,找不到調整位置才報衝突。
+    由使用者 台北 10-16 01:29 的原話「…這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好…」推得的原則(推論,不是使用者原話):支撐能調整就調整,找不到調整位置才報衝突。
     有牆階的房間,縫線上實際的對牆不是外框,照外框挪會在可以調整的地方報衝突。
     挪了之後縫線可能伸進更淺的那一段,所以重算到不再需要挪為止;不會挪過前一條縫。"""
     T, D = ps + g, hi - lo
@@ -744,16 +744,23 @@ def build(room, layout, p, mut=frozenset()):
     for key, bl in bands.items():
         for sb0, sb1 in iv_norm(bl):
             spans.append((key, sb0, sb1))
-    # 全室共用的記號(每排面材一組)。先算每一跨的端點與縫上副支,再逐格用同一治具 M 畫記號(jig_marks)。
-    # 記號撞到 RC 角材或縫上副支就拿掉;拿掉後那一跨的空檔若超過上限,在撞掉的那支旁邊、貼著擋住它的料補一支
-    # 「補位副支」(role fill,不是記號,其他跨的記號照治具位置不動)。這取代舊的整排加密:加密會改模數,
-    # 和使用者 2026-10-18 拍板的「乙 同一治具 367」衝突(協調 agent 推論,不是使用者原話)。
+    # 全室共用的記號(每排面材一組),逐格用同一治具 M 畫(jig_marks)。記號撞到擋料或縫上副支就拿掉;
+    # 只有擋料(這一跨端點那支不是副支的料)把治具記號撞掉、空檔超過上限時,才貼著那支擋料補一支補位副支(role fill)。
+    # 這取代舊的整排加密:加密會改模數,和使用者 2026-10-18 拍板的「乙 同一治具 367」衝突(Claude 推論,不是使用者原話)。
     start_low = layout["b_start"] == "min"
 
     def gaps(sups, sb0, sb1):
         edges = [sb0] + [v for s in sorted(sups) for v in (s[0], s[1])] + [sb1]
         return [(edges[i], edges[i + 1]) for i in range(0, len(edges), 2)]
 
+    # 治具記號只看格界(使用者 2026-10-18 拍板「乙 同一治具 367」),先算好,縫上副支才能照它定可放範圍。
+    rbounds = [(Bmin, "rc")] + [(e, "seam") for e in sorted(seams_b)] + [(Bmax, "rc")]
+    row_marks = []
+    for (c0, k0), (c1, k1) in zip(rbounds, rbounds[1:]):
+        ms = jig_marks(c0, k0, c1, k1, start_low, M, w, lo_h, hi_h, mut)
+        if "drop_mark" in mut:
+            ms = ms[1:]
+        row_marks += ms
     span_rows = []
     for (tid, uid), sb0, sb1 in sorted(spans, key=lambda s: (s[1], s[0])):
         g0, g1 = rng(timbers[tid]["rect"], a)[1], rng(timbers[uid]["rect"], a)[0]
@@ -766,11 +773,31 @@ def build(room, layout, p, mut=frozenset()):
         if not ok:
             continue
         feas = {}
+        ends_forced = set()
         for e in seams_b:
             need = [(max(x0, sb0), min(x1, sb1)) for x0, x1 in ((e - gl - X, e - gl), (e + gu, e + gu + X))
                     if min(x1, sb1) > max(x0, sb0)]
             if not need:
-                continue  # 縫兩側板邊都已在這一跨的端部角材上
+                # 縫兩側板邊都已在這一跨端點的料(柱面料、牆邊料)上。P-180(協調者推論,不是使用者原話):
+                #   板邊雖有承接,但少了縫上副支,這一端到下一支治具記號的空檔會超過 M − w,所以縫上副支仍然需要;
+                #   它會撞到那支擋料,依使用者台北 10-16 01:29 原話(副支位置可以調整,在副支間距上限之下就好)挪到貼著擋料。
+                #   挪過的副支仍垂直於主支,台北 10-15 05:51 原話講的「連接角材正交/平行」這個目的沒有被違反。
+                #   這不是補位副支(fill)。例:3600×3000 柱房,柱面料 [1816,1843] 蓋住縫 1831,這一跨的縫上副支放 [1843,1870],
+                #   鄰跨在 [1818,1845],兩者差 25 mm。
+                if "no_seam_at_end" not in mut:
+                    for end, sg in ((sb0, 1), (sb1, -1)):
+                        if abs(e - end) >= w:
+                            continue
+                        fit_ = [c for c in row_marks if sb0 <= c - lo_h and c + hi_h <= sb1 and (c > end if sg > 0 else c < end)]
+                        if not fit_:
+                            continue
+                        c = min(fit_) if sg > 0 else max(fit_)
+                        gap_ = (c - lo_h - end) if sg > 0 else (end - (c + hi_h))
+                        if gap_ > M - w:
+                            lo = end if sg > 0 else end - w
+                            feas[e] = (lo, lo)
+                            ends_forced.add(e)
+                continue
             lo_min = max(sb0, max(n1 for n0, n1 in need) - w)
             lo_max = min(sb1 - w, min(n0 for n0, n1 in need))
             if lo_min > lo_max:
@@ -778,24 +805,18 @@ def build(room, layout, p, mut=frozenset()):
                                       why=f"板端縫 {e} 兩側板邊要的承接 {need} 一支 {w} mm 的副支蓋不住"))
                 continue
             feas[e] = (lo_min, lo_max)
-        span_rows.append(dict(key=(tid, uid), sb0=sb0, sb1=sb1, g0=g0, g1=g1, feas=feas, sups=[]))
-    # 治具記號只看格界(使用者 2026-10-18 拍板「乙 同一治具 367」),先算好,縫上副支才能照它定可放範圍。
-    rbounds = [(Bmin, "rc")] + [(e, "seam") for e in sorted(seams_b)] + [(Bmax, "rc")]
-    row_marks = []
-    for (c0, k0), (c1, k1) in zip(rbounds, rbounds[1:]):
-        ms = jig_marks(c0, k0, c1, k1, start_low, M, w, lo_h, hi_h, mut)
-        if "drop_mark" in mut:
-            ms = ms[1:]
-        row_marks += ms
+        span_rows.append(dict(key=(tid, uid), sb0=sb0, sb1=sb1, g0=g0, g1=g1, feas=feas, sups=[], ends_forced=ends_forced))
     # 縫上副支的可放範圍再加一個條件:與這一跨裡相鄰的治具記號,空檔不超過 M − w。
-    #   依使用者台北 10-16 01:29 原話「…縫上的副支撞到邊界角材 這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好」
+    #   依使用者台北 10-16 01:29 原話「…這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好…」
     #   推得(推論,不是使用者原話):縫上副支可以挪,但挪了之後與鄰近記號的間距仍要在上限以內;記號照治具不動。
     #   例:F1 右上起鋪板長沿 X,貼內牆那幾跨的縫上副支被逼到 [3146,3173];其他跨若為了對齊跟著挪到 [3151,3178],
-    #   與記號 3536 的空檔變 345 mm,超上限。加了這個條件,其他跨只能在 [3156,3160] 裡選,取 3156。
+    #   與記號 3536 的空檔變 345 mm,超上限。加了這個條件,其他跨的範圍是 [3156,3156](上下各與記號 3536、2802 空 340)。
     #   加上之後沒有可放的位置,就退回原本的範圍(之後由空檔檢查判斷)。
     if "no_seam_window" not in mut:
         for sr in span_rows:
             for e, (f0, f1) in list(sr["feas"].items()):
+                if e in sr["ends_forced"]:
+                    continue  # 貼擋料的縫上副支位置已定
                 inside = [c for c in row_marks if sr["sb0"] < c < sr["sb1"]]
                 above = [c for c in inside if c > e]
                 below = [c for c in inside if c < e]
@@ -901,6 +922,23 @@ def build(room, layout, p, mut=frozenset()):
                 mid = (rng(t0_["rect"], b)[1] + rng(t1_["rect"], b)[0]) // 2 - w // 2
                 add("secondary", mk(a, rng(t0_["rect"], a), (mid, mid + w)), at=mid + lo_h, role="fill", span=t0_["span"])
                 break
+    for tag_, role_ in (("extra_seam_mid", "seam"), ("extra_norole_mid", None)):
+        if tag_ in mut:  # 突變:在兩支記號正中間多放一支,標成 seam 或不給 role
+            ms_ = sorted((t_ for t_ in timbers if t_["kind"] == "secondary" and t_.get("role") == "mark"),
+                         key=lambda t_: (rng(t_["rect"], a), rng(t_["rect"], b)))
+            for t0_, t1_ in zip(ms_, ms_[1:]):
+                if rng(t0_["rect"], a) == rng(t1_["rect"], a):
+                    mid = (rng(t0_["rect"], b)[1] + rng(t1_["rect"], b)[0]) // 2 - w // 2
+                    nt_ = add("secondary", mk(a, rng(t0_["rect"], a), (mid, mid + w)), at=mid + lo_h, span=t0_["span"])
+                    if role_:
+                        nt_["role"] = role_
+                    break
+    if "seam_relabel" in mut:  # 突變:把一支記號移 -8 mm 後改標成 seam
+        ms_ = [t_ for t_ in timbers if t_["kind"] == "secondary" and t_.get("role") == "mark"]
+        if ms_:
+            t_ = ms_[len(ms_) // 2]
+            t_["rect"] = mk(a, rng(t_["rect"], a), (rng(t_["rect"], b)[0] - 8, rng(t_["rect"], b)[1] - 8))
+            t_["role"] = "seam"
     if "fill_double" in mut:  # 突變:把 fill 改成貼著旁邊那支記號(雙拼),不貼擋料
         for t_ in [t_ for t_ in timbers if t_["kind"] == "secondary" and t_.get("role") == "fill"]:
             ta_, tb_ = rng(t_["rect"], a), rng(t_["rect"], b)
@@ -1251,47 +1289,89 @@ def check(res, p):
                 pos[-1] = org + sg * (M * (steps - 2) + -(-(M + rem) // 2))
         jig += pos
     jig_set = set(jig)
-    marks_ = [t for t in res["timbers"] if t["kind"] == "secondary" and t.get("role") == "mark"]
-    mid_ = lambda t: rng(t["rect"], b)[0] + lo_m  # 角材矩形的中線位置(不看 at 標籤)
-    for t in marks_:
-        if mid_(t) not in jig_set:
-            fails.append(dict(check="C12_MARK_OFF_JIG", id=t["id"], at=mid_(t)))
-    have = {mid_(t) for t in marks_}
-    for e_ in jig:
-        if e_ in have:
-            continue
-        band_ = (e_ - lo_m, e_ + hi_m)
-        free_ = reg.strip_set(b, *band_)
-        blk = [rng(t["rect"], a) for t in res["timbers"] if not (t["kind"] == "secondary" and t.get("role") == "mark")
-               and min(rng(t["rect"], b)[1], band_[1]) > max(rng(t["rect"], b)[0], band_[0])]
-        room_ = [iv for iv in iv_subtract(free_, blk) if iv[1] - iv[0] >= minp]
-        if room_:
-            fails.append(dict(check="C12_JIG_MARK_MISSING", at=e_, room=[list(iv) for iv in room_[:2]]))
-    # C13 補位副支(fill,Claude 推論的規則,見 README 推論表):fill 不是記號,但不能當豁免牌。
-    #   (a) 必要:拿掉它,它所在那一條(主支之間的那一跨)沿 B 軸的空檔就會超過 M − w;
-    #   (b) 不雙拼:與同一跨的其他副支之間至少留 w;
-    #   (c) 位置:中線離某個治具記號位置 < w(它是替那支被撞掉的記號補的),而且有一端貼著一支不是副支的料(擋住記號的那支)。
+    gl, gu = g // 2, g - g // 2
+    mid_ = lambda t: rng(t["rect"], b)[0] + lo_m  # 角材矩形的中線位置(不看 at、不看 role)
     secs_ = [t for t in res["timbers"] if t["kind"] == "secondary"]
-    for t in [t for t in secs_ if t.get("role") == "fill"]:
+    nonsec_ = [t for t in res["timbers"] if t["kind"] != "secondary"]
+    a_ov = lambda r1, r2: min(rng(r1, a)[1], rng(r2, a)[1]) > max(rng(r1, a)[0], rng(r2, a)[0])
+    b_ov = lambda r1, iv: min(rng(r1, b)[1], iv[1]) > max(rng(r1, b)[0], iv[0])
+
+    def seam_rest(t, e):
+        """縫 e 兩側板邊承接帶中,在這一條(t 的 A 範圍)室內、又沒有非副支料蓋住的部分:這部分要靠縫上副支。"""
+        ta = rng(t["rect"], a)
+        um = (ta[0] + ta[1]) / 2
+        cov = [rng(q["rect"], b) for q in nonsec_ if rng(q["rect"], a)[0] <= ta[0] and ta[1] <= rng(q["rect"], a)[1]]
+        rest = []
+        for x0, x1 in ((e - gl - X, e - gl), (e + gu, e + gu + X)):
+            rest += iv_intersect(iv_subtract([(x0, x1)], cov), reg.section(a, um))
+        return rest
+
+    def butts(t):
+        """t 一端貼著的非副支料(同一條有 A 向重疊、B 向端面相接)。"""
+        tb = rng(t["rect"], b)
+        return [q for q in nonsec_ if a_ov(q["rect"], t["rect"]) and (rng(q["rect"], b)[0] == tb[1] or rng(q["rect"], b)[1] == tb[0])]
+
+    def needed(t):
+        """拿掉 t,它那一條沿 B 軸的空檔就超過 M − w。"""
         ta, tb = rng(t["rect"], a), rng(t["rect"], b)
         um = (ta[0] + ta[1]) / 2
-        others = [q["rect"] for q in res["timbers"] if q is not t]
-        cov = [rng(r_, b) for r_ in others if rng(r_, a)[0] < um < rng(r_, a)[1]]
-        free_b = iv_subtract(reg.section(a, um), cov)
-        run = [iv for iv in free_b if iv[0] <= tb[0] and tb[1] <= iv[1]]
-        if not run or run[0][1] - run[0][0] <= M - w:
-            fails.append(dict(check="C13_FILL_UNNEEDED", id=t["id"], rect=list(t["rect"])))
+        cov = [rng(q["rect"], b) for q in res["timbers"] if q is not t and rng(q["rect"], a)[0] < um < rng(q["rect"], a)[1]]
+        run = [iv for iv in iv_subtract(reg.section(a, um), cov) if iv[0] <= tb[0] and tb[1] <= iv[1]]
+        return bool(run) and run[0][1] - run[0][0] > M - w
+
+    def kind_of(t):
+        """不在治具記號上的副支是哪一種(只看幾何):'seam' 真的在縫上、'seam_end' 依 P-180 貼著擋料的縫上副支、'fill' 補位副支,都不是就 None。"""
+        tb = rng(t["rect"], b)
+        for e_ in exp_b:
+            rest = seam_rest(t, e_)
+            if rest and all(tb[0] <= x0 and x1 <= tb[1] for x0, x1 in rest):
+                return "seam"
+        for q in butts(t):
+            touch = rng(q["rect"], b)[0] if rng(q["rect"], b)[0] == tb[1] else rng(q["rect"], b)[1]
+            for e_ in exp_b:
+                if abs(e_ - touch) < w and not seam_rest(t, e_):
+                    return "seam_end"
+            for j_ in jig:
+                band_ = (j_ - lo_m, j_ + hi_m)
+                if abs(mid_(t) - j_) < w and b_ov(q["rect"], band_):
+                    return "fill"  # 那支治具記號的位置確實被這支擋料佔住(放不下),補位副支貼著它
+        return None
+
+    on_jig = lambda t: mid_(t) in jig_set
+    marks_ = [t for t in secs_ if t.get("role") == "mark"]
+    for t in marks_:
+        if not on_jig(t):
+            fails.append(dict(check="C12_MARK_OFF_JIG", id=t["id"], at=mid_(t)))
+    # C13 不在治具記號上的副支(不看 role 標籤):(c) 位置要合規則——真的在縫上、依 P-180 貼著擋料的縫上副支、
+    #     或貼著擋料的補位副支(那支治具記號確實被擋料佔住);(a) 後兩種要「必要」:拿掉它空檔就超過 M − w;
+    #     (b) 都不得與同一條的其他副支雙拼(至少留 w)。
+    kinds_ = {}
+    for t in secs_:
+        if on_jig(t):
+            continue
+        k_ = kinds_[t["id"]] = kind_of(t)
+        if k_ is None:
+            fails.append(dict(check="C13_EXTRA_OFF_RULE", id=t["id"], role=t.get("role"), rect=list(t["rect"])))
+        if k_ != "seam" and not needed(t):
+            fails.append(dict(check="C13_EXTRA_UNNEEDED", id=t["id"], role=t.get("role"), rect=list(t["rect"])))
+        tb = rng(t["rect"], b)
         for q in secs_:
-            if q is t or min(rng(q["rect"], a)[1], ta[1]) <= max(rng(q["rect"], a)[0], ta[0]):
+            if q is t or not a_ov(q["rect"], t["rect"]):
                 continue
             qb = rng(q["rect"], b)
             if max(qb[0] - tb[1], tb[0] - qb[1]) < w:
-                fails.append(dict(check="C13_FILL_DOUBLED", id=t["id"], with_=q["id"]))
-        near_jig = any(abs(mid_(t) - j_) < w for j_ in jig)
-        butt = any(q["kind"] != "secondary" and min(rng(q["rect"], a)[1], ta[1]) > max(rng(q["rect"], a)[0], ta[0])
-                   and (rng(q["rect"], b)[0] == tb[1] or rng(q["rect"], b)[1] == tb[0]) for q in res["timbers"])
-        if not (near_jig and butt):
-            fails.append(dict(check="C13_FILL_OFF_RULE", id=t["id"], near_jig=near_jig, butts_non_secondary=butt))
+                fails.append(dict(check="C13_EXTRA_DOUBLED", id=t["id"], with_=q["id"]))
+    # C12 (b) 每一條都驗:治具位置上,扣掉合法的擋料(非副支料、真的在縫上或依 P-180 貼擋料的縫上副支)
+    #     與已經在那裡的記號,還剩 >= min_piece 的室內寬度,那裡就少了記號。補位副支與其他副支不算擋料。
+    legit_ = [t for t in secs_ if kinds_.get(t["id"]) in ("seam", "seam_end")]
+    for e_ in sorted(jig_set):
+        band_ = (e_ - lo_m, e_ + hi_m)
+        free_ = reg.strip_set(b, *band_)
+        blk = [rng(t["rect"], a) for t in nonsec_ + legit_ if b_ov(t["rect"], band_)]
+        blk += [rng(t["rect"], a) for t in secs_ if on_jig(t) and mid_(t) == e_]
+        room_ = [iv for iv in iv_subtract(free_, blk) if iv[1] - iv[0] >= minp]
+        if room_:
+            fails.append(dict(check="C12_JIG_MARK_MISSING", at=e_, room=[list(iv) for iv in room_[:2]]))
     # C10 R-nosliver:任何料都不得短於 min_piece。副支與柱面料:使用者 2026-10-18 的決定(選項原文「不放(短於 27 一律不放)」);
     #     牆面上的料比照,是由「一律」推得的推論,不是使用者原話。
     for t in res["timbers"]:
