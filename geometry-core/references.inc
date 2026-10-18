@@ -590,7 +590,8 @@ static bool reference_place_geometry(ReferenceEval *evaluation,World *w,size_t t
     g_reference_active=evaluation;bool ok=wood_member_reference_place(&context,ti);g_reference_active=previous;
     return ok&&(!evaluation||!evaluation->source_failure);
 }
-static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
+/* H 轉接：僅以權威來源更新尺寸快取；放置策略仍委由 W。 */
+static bool app_member_reference_materialize_dimensions(ReferenceEval *ctx,size_t i)
 {
     if(!ctx->use_current_values&&!app_assembly_saved_dimensions(ctx->world,ctx->world->wood.timbers[i].id)&&ctx->wanted[i]){
         Timber *member=&ctx->world->wood.timbers[i];bool owned;
@@ -610,6 +611,11 @@ static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
             }
         }
     }
+    return true;
+}
+static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
+{
+    if(!app_member_reference_materialize_dimensions(ctx,i))return false;
     AppMemberReferenceContext c={0};c.evaluation=ctx;c.world=ctx->world;WoodMemberReferenceContext context=app_member_reference_context(&c);bool place=false;if(!wood_member_reference_compute(&context,i,&place))return false;return !place||reference_place_geometry(ctx,ctx->world,i);
 }
 
