@@ -2,6 +2,9 @@
 
 Historical proposal bytes stay immutable. No before text is rebuilt from the
 proposal itself, and an upstream merge cannot silently discard either contract.
+Later SSOT adoptions are listed in POST_APPROVAL_REVISIONS and applied on top
+of the frozen approved result as exact, clause-scoped replacements, each with
+its own human approval record; the current SSOT must equal that, byte for byte.
 """
 from copy import deepcopy
 import hashlib
@@ -28,6 +31,74 @@ ADDENDUM_MAP_HASH = "6f17044c3b554595268ba5fa63499b3e9c691a102a6bbe4dba8d758a415
 ADDENDUM_COMMIT = "c8ce964be623084af957dc2ff662abfdaf670c87"
 ADDENDUM_APPROVED_AT = "2026-10-16T15:23:52.328994Z"
 ADOPTED_HASH = "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5"
+# Later adoptions, approved after GEO-261, applied in order to the frozen
+# approved result above (ADOPTED_HASH stays its fingerprint).  Each edit is
+# (clause, exact before, exact after): the before text must occur exactly once
+# in the whole document and inside that clause; no edit may add, drop, reorder
+# or rename clauses, or touch the preamble, chapter headings or exclusions.
+# "proposal" and "approval" record the reviewed bytes (not in this tree) and the
+# human answer; they are provenance, not something this test can re-derive.
+POST_APPROVAL_REVISIONS = (
+    {
+        "id": "pr260-ab",
+        "proposal": "PR #260 head ba7b60236d29061711edd5fb873acedebb2a4a87, geometry-core/axiom-clarify-20261016/PROPOSAL.md, LF SHA-256 833710a170a98583d112b1590de4117ac49b4654ea54679ca8749ebe8aa0da8c: A1-A4 (one staggered axis per grid system), B1-B2 (I5, R18 wording)",
+        "approval": "決策佇列.md「2026-10-18 #260 條文稿第一批回覆 🔒」: 第 1 題 A 區「同意」；"
+                    "第 2 題依 10-16 所選說明寫成定義推論；第 3 題「改回選項一(建議)」；"
+                    "第 4 題 B 區「同意(建議)」",
+        "edits": (
+            ("D29",
+                "未設相位差時，格線身分為（系統、軸、signed k）。設了 D10b 相位差時，段的身分是（系統、軸、signed k、另一軸 cell 索引）。"
+                "未設相位差時，cell(i,j) 由 u_i/u_(i+1)、v_j/v_(j+1) 圍成；"
+                "有相位差時，圍成格子的線座標依 D10b，格子仍由未錯開的相鄰線切開。",
+                "未設相位差時，格線身分為（系統、軸、signed k）。設了 D10b 相位差時，段的身分是（系統、軸、signed k、另一軸 cell 索引）。"
+                "未設相位差時，cell(i,j) 由 u_i/u_(i+1)、v_j/v_(j+1) 圍成；"
+                "有相位差時（同一系統至多一軸，D10b），圍成格子的線座標依 D10b，格子仍由未錯開的相鄰線切開。"),
+            ("D10b",
+                "相鄰單位是另一軸既有的帶符號 cell 索引，DSL 稱 band。不另建「排」或第二條軸。"
+                "另一軸必須存在，且同為無限排法。兩軸可各自有相位差。",
+                "相鄰單位是另一軸既有的帶符號 cell 索引，DSL 稱 band。不另建「排」或第二條軸。"
+                "另一軸必須存在，且同為無限排法。同一份網格系統至多一軸有相位差（2026-10-16 使用者拍板）。"
+                "兩軸同時錯開時，有些 cell 的四邊不是畫出的格線段，圍不成封閉的區域；板子以同一方向平行鋪滿一個面時，板縫也只能在一個方向錯開。"),
+            ("D10b",
+                "band 的切開用另一軸未加相位差的格線。u 線（常數 u、沿 v 延伸）在 band j 的沿線範圍是未錯開的 v(j)…v(j+1)；"
+                "v 線同理。因此 cell(i,j) 仍是軸對齊矩形：它在某一軸上的兩條邊界，共用該軸對另一軸索引的同一個 δ。"
+                "矩形邊長仍是兩軸間距。",
+                "band 的切開用另一軸未加相位差的格線。u 線（常數 u、沿 v 延伸）在 band j 的沿線範圍是未錯開的 v(j)…v(j+1)；"
+                "v 線同理。因此 cell(i,j) 仍是軸對齊矩形：它在某一軸上的兩條邊界，共用該軸對另一軸索引的同一個 δ。"
+                "矩形邊長仍是兩軸間距。\n"
+                "\n"
+                "相容例外：相位差軸數的比較只在提交（R56）時做。整體取代（D61：開新、恢復內建場景、載入場景檔、確認場景匯入、恢復資料、載入方案快照）、隔離重放（R46 重開、I31 交換包重建）及復原／重做（D60）不是提交，不做此比較，其中兩軸都已有相位差的系統照舊成立，求值、dump 與存回行為不變。"
+                "兩軸系統上，提交後仍為兩軸而相位差值不變的編輯（例如改名稱、改間距）照常，移除一軸的編輯照常；"
+                "提交後仍為兩軸而任一軸的相位差值有變者拒絕，要改須在同一筆編輯裡先移除一軸，再改剩下那軸的值。"
+                "此時有些 cell 的四邊不全是畫出的格線段，相鄰 cell 可重疊或留空；不得把 cell 一律當成格線圍出的區域。"),
+            ("I24",
+                "相位差守門：相位差只接受 D29 無限軸上的一個整數毫米。省略為貫通線。另一軸不存在、不是無限排法，或本軸不是 REPEAT／REPEAT_PANEL，一律拒絕。",
+                "相位差守門：相位差只接受 D29 無限軸上的一個整數毫米。省略為貫通線。另一軸不存在、不是無限排法，或本軸不是 REPEAT／REPEAT_PANEL，一律拒絕。"
+                "每一筆提交（R56）比較提交前後同一網格系統的相位差：由不足兩軸變為兩軸（含新建時兩軸都填、一軸已有再加另一軸）→ 拒絕，訊息說明同一份網格只能有一軸錯開；"
+                "提交後仍為兩軸而任一軸的相位差值有變 → 拒絕，訊息說明要先在同一筆編輯裡移除一軸；"
+                "要改成錯開另一個方向，請在同一筆編輯裡移除這一軸的相位差、再設另一軸。提交後仍為兩軸而相位差值不變（改名稱、改間距等）、以及移除一軸，照常。"
+                "整體取代、隔離重放及復原／重做不是提交，不做此比較。相位差值以該系統自己的相位差欄位求出的值為準；"
+                "相位差若引用參數欄位，改那張參數卡的值不算改相位差值。"),
+            ("R22",
+                "相位差求值：未錯開座標 c(k) 沿用 D29。已設相位差時，band 最低位元為 1 的段座標為 c(k)+δ，最低位元為 0 的段座標為 c(k)。"
+                "另一軸的 band 邊界用該軸未加相位差的格線，即使該軸自己也有相位差。",
+                "相位差求值：未錯開座標 c(k) 沿用 D29。已設相位差時，band 最低位元為 1 的段座標為 c(k)+δ，最低位元為 0 的段座標為 c(k)。"
+                "另一軸的 band 邊界用該軸未加相位差的格線，即使該軸自己也有相位差（只會出現在 D10b 相容例外的舊系統）。"),
+            ("I5",
+                "（多邊形下不再是「兩角點」捷徑——矩形四邊不得與輪廓/孔邊相交。）",
+                "（多邊形下不再是「兩角點」捷徑——角材整支要在界內：有效範圍是外環內部與邊界、扣掉孔內部（D3），所以任何部分都不得在外輪廓之外（含輪廓上的凹口），也不得進入孔。"
+                "RC 牆面在輪廓之外，不能穿過；柱子要先投影進這個面（apply-proj，R8），之後它的範圍不在有效範圍內，才同樣不能穿過。"
+                "貼著邊、切齊仍在界內。貼上去合不合法（端面能不能頂、哪種角色可以頂）另依 I6、I19、I20。"
+                "與已放角材之間同樣不能互相穿過，見 I11。）"),
+            ("R18",
+                "`primary` 的 onBoundary 可真可假\n"
+                "    （邊界主支為真）但 coversEdge 恆為假（兩端被層級 1 佔掉料寬，I11 不重疊）；",
+                "`primary` 的 onBoundary 可真可假（邊界主支為真）但 coversEdge 恆為假：凸角處兩端被層級 1 佔掉料寬（I11 不重疊）；"
+                "凹角處 primary 不得超出它貼的外牆（I22），延伸段側面以優先級 2 計、primary 端面不得頂它（I22、I19）；"),
+        ),
+    },
+)
+CURRENT_HASH = "f10ef7ca8a4c1e5154fc705116f30be31e7d9374dd963b9f99d9c2268d34981c"
 
 
 def sha(raw):
@@ -153,6 +224,32 @@ def verify_addendum_approval(approval):
             "ADDENDUM_APPROVAL", "three new scope assignments require their exact human approval")
 
 
+def apply_post_approval_revisions(adopted, revisions):
+    """The frozen approved result plus the listed later revisions, and nothing else."""
+    clauses, sections, headings = source_layout(adopted)
+    result, seen = adopted, set()
+    for revision in revisions:
+        require(revision["id"] not in seen and bool(revision["approval"]) and bool(revision["edits"]),
+                "REVISION_RECORD", f"{revision['id']}: needs a unique id, its approval record and its edits")
+        seen.add(revision["id"])
+        for clause, before, after in revision["edits"]:
+            rows = {row.id: row for row in source_layout(result)[0]}
+            require(clause in rows, "REVISION_CLAUSE", f"{revision['id']}: no clause {clause}")
+            row = rows[clause]
+            require(bool(before) and before != after and result.count(before) == 1
+                    and row.before.count(before) == 1, "REVISION_ANCHOR",
+                    f"{revision['id']} {clause}: before text must occur exactly once, inside {clause}")
+            at = row.start + row.before.index(before)
+            result = result[:at] + after + result[at + len(before):]
+    new_clauses, new_sections, new_headings = source_layout(result)
+    require([row.id for row in new_clauses] == [row.id for row in clauses]
+            and [title for title, _ in new_headings] == [title for title, _ in headings]
+            and result[slice(*new_sections["preamble"])] == adopted[slice(*sections["preamble"])]
+            and result[slice(*new_sections["exclusions"])] == adopted[slice(*sections["exclusions"])],
+            "REVISION_LAYOUT", "a later revision may only rewrite text inside existing clauses")
+    return result
+
+
 def validate_current_document(current_bytes, expected):
     require(normalized(current_bytes) == expected, "ADOPTED_SOURCE", "current SSOT differs from the approved, upstream-preserving result")
     clauses, _, _ = source_layout(expected)
@@ -175,6 +272,7 @@ class AdoptionIntegrity(unittest.TestCase):
         cls.merged = merged_proposal(cls.base, cls.upstream, cls.proposal, cls.markdown)
         cls.before, cls.after = expected_addendum_before_and_after(cls.merged, cls.proposal)
         cls.expected = apply_scope_addendum(cls.merged, cls.proposal, cls.before, cls.after)
+        cls.current = apply_post_approval_revisions(cls.expected, POST_APPROVAL_REVISIONS)
 
     def reject(self, code, function, *args):
         with self.assertRaises(ProposalContractError) as caught:
@@ -255,19 +353,45 @@ class AdoptionIntegrity(unittest.TestCase):
 
     def test_actual_ssot_is_the_full_approved_upstream_preserving_adoption(self):
         actual = (ROOT / "公理層.md").read_bytes()
-        validate_current_document(actual, self.expected)
-        self.assertEqual(ADOPTED_HASH, sha(actual))
+        validate_current_document(actual, self.current)
+        self.assertEqual(CURRENT_HASH, sha(actual))
+        self.assertEqual(ADOPTED_HASH, hashlib.sha256(self.expected.encode("utf-8")).hexdigest())
 
     def test_current_source_tamper_deletion_and_layout_drift_are_rejected(self):
-        original = self.expected.encode("utf-8")
-        validate_current_document(original, self.expected)
+        original = self.current.encode("utf-8")
+        validate_current_document(original, self.current)
+        # dropping any later revision, or the GEO-261 result alone, is not the current document
+        dropped = [apply_post_approval_revisions(self.expected, POST_APPROVAL_REVISIONS[:count]).encode("utf-8")
+                   for count in range(len(POST_APPROVAL_REVISIONS))]
+        last = POST_APPROVAL_REVISIONS[-1]
+        earlier = POST_APPROVAL_REVISIONS[:-1]
+        clause, before, after = last["edits"][0]
+        retouched = apply_post_approval_revisions(
+            self.expected, earlier + (last | {"edits": ((clause, before, after + "x"),) + last["edits"][1:]},))
         for altered in (original + b"\n", original.replace(b"100,000,000", b"100,000,001", 1),
-                        original.replace("## 三、推演規則".encode(), "## 篡改章節".encode(), 1)):
-            self.reject("ADOPTED_SOURCE", validate_current_document, altered, self.expected)
+                        original.replace("## 三、推演規則".encode(), "## 篡改章節".encode(), 1),
+                        *dropped, retouched.encode("utf-8")):
+            self.reject("ADOPTED_SOURCE", validate_current_document, altered, self.current)
+        # a later revision is only the exact, clause-scoped replacement it records
+        other = next(row.id for row in source_layout(self.expected)[0] if before not in row.before)
+        for code, fields in (
+                ("REVISION_RECORD", {"approval": ""}),
+                ("REVISION_RECORD", {"edits": ()}),
+                ("REVISION_CLAUSE", {"edits": (("X99", before, after),)}),
+                ("REVISION_ANCHOR", {"edits": ((clause, before + "\u3000", after),)}),
+                ("REVISION_ANCHOR", {"edits": ((other, before, after),)}),
+                ("REVISION_ANCHOR", {"edits": ((clause, "", after),)}),
+                ("REVISION_ANCHOR", {"edits": ((clause, "（分層契約）：", after),)}),
+                ("REVISION_LAYOUT", {"edits": ((clause, before, after + "\nR99 偷渡條文（分層契約）："),)}),
+                ("REVISION_LAYOUT", {"edits": ((clause, before, after + "\n## 偷渡章節"),)})):
+            with self.subTest(code=code, fields=sorted(fields)):
+                self.reject(code, apply_post_approval_revisions, self.expected, earlier + (last | fields,))
+        self.reject("REVISION_RECORD", apply_post_approval_revisions, self.expected,
+                    POST_APPROVAL_REVISIONS + (last,))
 
     def test_crlf_is_the_only_ignored_source_difference(self):
-        validate_current_document(self.expected.replace("\n", "\r\n").encode(), self.expected)
-        self.reject("ADOPTED_SOURCE", validate_current_document, self.expected.replace("\n", "\r\r\n").encode(), self.expected)
+        validate_current_document(self.current.replace("\n", "\r\n").encode(), self.current)
+        self.reject("ADOPTED_SOURCE", validate_current_document, self.current.replace("\n", "\r\r\n").encode(), self.current)
 
 
 if __name__ == "__main__":
