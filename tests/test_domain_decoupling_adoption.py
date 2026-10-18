@@ -76,14 +76,17 @@ POST_APPROVAL_REVISIONS = (
     },
     {
         "id": "pr260-final",
-        "proposal": "PR #260 head ba7b60236d29061711edd5fb873acedebb2a4a87, geometry-core/axiom-clarify-20261016/PROPOSAL.md, LF SHA-256 833710a170a98583d112b1590de4117ac49b4654ea54679ca8749ebe8aa0da8c: A1-A4 (one staggered axis per grid system)",
+        "proposal": "PR #260 head ba7b60236d29061711edd5fb873acedebb2a4a87, geometry-core/axiom-clarify-20261016/PROPOSAL.md, LF SHA-256 833710a170a98583d112b1590de4117ac49b4654ea54679ca8749ebe8aa0da8c: A1-A4 (one staggered axis per grid system), C1-C2 (I23, R13 title parentheses), D1 (D31, R33 parameterId)",
         "approval": "決策佇列.md「2026-10-18 #260 最終文字確認、標題與用詞修正、短格記號治具 🔒」第 1 題「同意」(A2、A3、A5 最終全文，連同先前已同意的 D29、R22)；"
-                    "第 2 題的定義推論與第 3 題「改回選項一(建議)」見「2026-10-18 #260 條文稿第一批回覆」",
+                    "第 2 題的定義推論與第 3 題「改回選項一(建議)」見「2026-10-18 #260 條文稿第一批回覆」；"
+                    "第 2 題「同意」(I23、R13、D31、R33)",
         "decision": {"heading": "### 2026-10-18 #260 最終文字確認、標題與用詞修正、短格記號治具 🔒",
                      # (bullet head line, the user's quoted reply in it, clauses it names and authorizes)
                      "answers": (
                          ("- **第 1 題「上面 A2、A3、A5 三段最終文字，可以寫進公理層嗎?」**(條號 D10b、I24;連同先前已同意的 D29、R22 與白話 D10b、R22)",
                           "> 同意", ("D10b", "I24", "D29", "R22")),
+                         ("- **第 2 題「補右括號、cardId 改 parameterId 這兩處小修正，可以寫進公理層嗎?」**(條號 I23、R13、D31、R33)",
+                          "> 同意", ("I23", "R13", "D31", "R33")),
                      )},
         "edits": (
             ("D29",
@@ -124,16 +127,6 @@ POST_APPROVAL_REVISIONS = (
                 "另一軸的 band 邊界用該軸未加相位差的格線，即使該軸自己也有相位差。",
                 "相位差求值：未錯開座標 c(k) 沿用 D29。已設相位差時，band 最低位元為 1 的段座標為 c(k)+δ，最低位元為 0 的段座標為 c(k)。"
                 "另一軸的 band 邊界用該軸未加相位差的格線，即使該軸自己也有相位差（只會出現在 D10b 相容例外的舊系統）。"),
-        ),
-    },
-    {
-        "id": "pr260-cd1",
-        "proposal": "PR #260 head ba7b60236d29061711edd5fb873acedebb2a4a87, geometry-core/axiom-clarify-20261016/PROPOSAL.md, LF SHA-256 833710a170a98583d112b1590de4117ac49b4654ea54679ca8749ebe8aa0da8c: C1-C2 (I23, R13 title parentheses), D1 (D31, R33 cardId -> parameterId)",
-        "approval": "稿中 C 區、D1 列為「已依定義處理，你不必決定，只需知道」；使用者尚未明確確認。"
-                    "decision 是待填的占位：確認記入決策佇列前，本修訂不算已採納，實際 SSOT 測試保持紅",
-        "decision": {"heading": "### （待記入）#260 C 區、D1 使用者確認 🔒",
-                     "answers": (("> （待記入：使用者確認 C 區、D1 的原話）", ("I23", "R13", "D31", "R33")),)},
-        "edits": (
             ("I23",
                 "I23 網格引用的追溯與重算（2026-09-18 目的翻轉（分層契約）：",
                 "I23 網格引用的追溯與重算（2026-09-18 目的翻轉）（分層契約）："),
