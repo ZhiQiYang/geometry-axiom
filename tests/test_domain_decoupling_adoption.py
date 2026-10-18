@@ -39,26 +39,52 @@ ADOPTED_HASH = "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5
 # "proposal" and "approval" record the reviewed bytes (not in this tree) and the
 # human answer.  "decision" must point at that answer in 決策佇列.md
 # (REVISION_APPROVAL): a section heading that occurs exactly once and backs no
-# other revision; each answer quoted verbatim as its own "> ..." line in exactly
-# one top-level bullet of that section, the clauses it authorizes named in that
-# same bullet; every edited clause authorized by some answer.  An answer with no
-# clauses is recorded context and authorizes nothing.  This ties a revision to a
-# recorded answer about those very clauses; it cannot tell what the answer means
-# (an unrelated reply in a bullet that happens to name the clause would pass),
-# and it cannot stop a coordinated edit of this file, the SSOT and the queue.
-# A revision whose answer is not recorded keeps the actual-SSOT test red.
+# other revision; each answer names its bullet by the bullet's full head line,
+# which occurs once among the section's top-level bullets, quotes the user's
+# reply as a "> ..." line of that bullet, and lists the clauses it authorizes,
+# each named in that same bullet; a revision cites a bullet at most once and
+# every edited clause must be authorized.  One revision per decision section.
+# This ties a revision to a recorded answer about those very clauses; it cannot
+# tell what the answer means (an unrelated reply in a bullet that happens to
+# name the clause would pass), and it cannot stop a coordinated edit of this
+# file, the SSOT and the queue.  An unrecorded answer keeps the actual-SSOT
+# test red.
 POST_APPROVAL_REVISIONS = (
     {
-        "id": "pr260-ab",
-        "proposal": "PR #260 head ba7b60236d29061711edd5fb873acedebb2a4a87, geometry-core/axiom-clarify-20261016/PROPOSAL.md, LF SHA-256 833710a170a98583d112b1590de4117ac49b4654ea54679ca8749ebe8aa0da8c: A1-A4 (one staggered axis per grid system), B1-B2 (I5, R18 wording)",
-        "approval": "決策佇列.md「2026-10-18 #260 條文稿第一批回覆 🔒」: 第 1 題 A 區「同意」；"
-                    "第 2 題依 10-16 所選說明寫成定義推論；第 3 題「改回選項一(建議)」；"
-                    "第 4 題 B 區「同意(建議)」",
+        "id": "pr260-b",
+        "proposal": "PR #260 head ba7b60236d29061711edd5fb873acedebb2a4a87, geometry-core/axiom-clarify-20261016/PROPOSAL.md, LF SHA-256 833710a170a98583d112b1590de4117ac49b4654ea54679ca8749ebe8aa0da8c: B1-B2 (I5, R18 wording)",
+        "approval": "決策佇列.md「2026-10-18 #260 條文稿第一批回覆 🔒」第 4 題 B 區「同意(建議)」",
         "decision": {"heading": "### 2026-10-18 #260 條文稿第一批回覆 🔒",
-                     # (the user's quoted reply, clauses its bullet names and it authorizes)
-                     "answers": (("> 同意", ("D29", "D10b", "I24", "R22")),
-                                 ("> 同意(建議)", ("I5", "R18")),
-                                 ("> 改回選項一(建議)", ()))},
+                     # (bullet head line, the user's quoted reply in it, clauses it names and authorizes)
+                     "answers": (
+                         ("- **第 4 題 B 區措辭澄清(I5 界內/界外與貼上去是否合法分開寫;R18 補凹角處由哪些規則管)**:所選",
+                          "> 同意(建議)", ("I5", "R18")),
+                     )},
+        "edits": (
+            ("I5",
+                "（多邊形下不再是「兩角點」捷徑——矩形四邊不得與輪廓/孔邊相交。）",
+                "（多邊形下不再是「兩角點」捷徑——角材整支要在界內：有效範圍是外環內部與邊界、扣掉孔內部（D3），所以任何部分都不得在外輪廓之外（含輪廓上的凹口），也不得進入孔。"
+                "RC 牆面在輪廓之外，不能穿過；柱子要先投影進這個面（apply-proj，R8），之後它的範圍不在有效範圍內，才同樣不能穿過。"
+                "貼著邊、切齊仍在界內。貼上去合不合法（端面能不能頂、哪種角色可以頂）另依 I6、I19、I20。"
+                "與已放角材之間同樣不能互相穿過，見 I11。）"),
+            ("R18",
+                "`primary` 的 onBoundary 可真可假\n"
+                "    （邊界主支為真）但 coversEdge 恆為假（兩端被層級 1 佔掉料寬，I11 不重疊）；",
+                "`primary` 的 onBoundary 可真可假（邊界主支為真）但 coversEdge 恆為假：凸角處兩端被層級 1 佔掉料寬（I11 不重疊）；"
+                "凹角處 primary 不得超出它貼的外牆（I22），延伸段側面以優先級 2 計、primary 端面不得頂它（I22、I19）；"),
+        ),
+    },
+    {
+        "id": "pr260-final",
+        "proposal": "PR #260 head ba7b60236d29061711edd5fb873acedebb2a4a87, geometry-core/axiom-clarify-20261016/PROPOSAL.md, LF SHA-256 833710a170a98583d112b1590de4117ac49b4654ea54679ca8749ebe8aa0da8c: A1-A4 (one staggered axis per grid system)",
+        "approval": "決策佇列.md「2026-10-18 #260 最終文字確認、標題與用詞修正、短格記號治具 🔒」第 1 題「同意」(A2、A3、A5 最終全文，連同先前已同意的 D29、R22)；"
+                    "第 2 題的定義推論與第 3 題「改回選項一(建議)」見「2026-10-18 #260 條文稿第一批回覆」",
+        "decision": {"heading": "### 2026-10-18 #260 最終文字確認、標題與用詞修正、短格記號治具 🔒",
+                     # (bullet head line, the user's quoted reply in it, clauses it names and authorizes)
+                     "answers": (
+                         ("- **第 1 題「上面 A2、A3、A5 三段最終文字，可以寫進公理層嗎?」**(條號 D10b、I24;連同先前已同意的 D29、R22 與白話 D10b、R22)",
+                          "> 同意", ("D10b", "I24", "D29", "R22")),
+                     )},
         "edits": (
             ("D29",
                 "未設相位差時，格線身分為（系統、軸、signed k）。設了 D10b 相位差時，段的身分是（系統、軸、signed k、另一軸 cell 索引）。"
@@ -98,17 +124,6 @@ POST_APPROVAL_REVISIONS = (
                 "另一軸的 band 邊界用該軸未加相位差的格線，即使該軸自己也有相位差。",
                 "相位差求值：未錯開座標 c(k) 沿用 D29。已設相位差時，band 最低位元為 1 的段座標為 c(k)+δ，最低位元為 0 的段座標為 c(k)。"
                 "另一軸的 band 邊界用該軸未加相位差的格線，即使該軸自己也有相位差（只會出現在 D10b 相容例外的舊系統）。"),
-            ("I5",
-                "（多邊形下不再是「兩角點」捷徑——矩形四邊不得與輪廓/孔邊相交。）",
-                "（多邊形下不再是「兩角點」捷徑——角材整支要在界內：有效範圍是外環內部與邊界、扣掉孔內部（D3），所以任何部分都不得在外輪廓之外（含輪廓上的凹口），也不得進入孔。"
-                "RC 牆面在輪廓之外，不能穿過；柱子要先投影進這個面（apply-proj，R8），之後它的範圍不在有效範圍內，才同樣不能穿過。"
-                "貼著邊、切齊仍在界內。貼上去合不合法（端面能不能頂、哪種角色可以頂）另依 I6、I19、I20。"
-                "與已放角材之間同樣不能互相穿過，見 I11。）"),
-            ("R18",
-                "`primary` 的 onBoundary 可真可假\n"
-                "    （邊界主支為真）但 coversEdge 恆為假（兩端被層級 1 佔掉料寬，I11 不重疊）；",
-                "`primary` 的 onBoundary 可真可假（邊界主支為真）但 coversEdge 恆為假：凸角處兩端被層級 1 佔掉料寬（I11 不重疊）；"
-                "凹角處 primary 不得超出它貼的外牆（I22），延伸段側面以優先級 2 計、primary 端面不得頂它（I22、I19）；"),
         ),
     },
     {
@@ -287,7 +302,7 @@ def apply_post_approval_revisions(adopted, revisions):
 
 
 def verify_revision_decisions(queue_bytes, revisions):
-    """Bind each later revision to its own recorded answers in 決策佇列.md, clause by clause."""
+    """Bind each later revision to its own recorded answers in 決策佇列.md, bullet by bullet."""
     lines = normalized(queue_bytes).split("\n")
     used = set()
     for revision in revisions:
@@ -304,21 +319,24 @@ def verify_revision_decisions(queue_bytes, revisions):
                     bullets.append([line])
                 elif bullets:
                     bullets[-1].append(line)
-        answered = bool(bullets) and bool(answers) and heading not in used
+        heads = [bullet[0] for bullet in bullets]
+        cited = [answer[0] for answer in answers if isinstance(answer, tuple) and answer]
+        answered = (bool(bullets) and bool(answers) and heading not in used
+                    and len(cited) == len(set(cited)) == len(answers))
         authorized = set()
         for answer in answers:
-            ok_shape = (isinstance(answer, tuple) and len(answer) == 2 and isinstance(answer[0], str)
-                        and isinstance(answer[1], tuple))
-            quote, clauses = answer if ok_shape else ("", ())
-            holders = [bullet for bullet in bullets if quote in {line.strip() for line in bullet}]
-            text = "\n".join(holders[0]) if len(holders) == 1 else ""
-            answered = answered and ok_shape and quote.startswith("> ") and bool(text) and all(
-                re.search(r"(?<![0-9A-Za-z])" + re.escape(clause) + r"(?![0-9a-z])", text) for clause in clauses)
+            ok_shape = (isinstance(answer, tuple) and len(answer) == 3 and isinstance(answer[0], str)
+                        and isinstance(answer[1], str) and isinstance(answer[2], tuple))
+            head, quote, clauses = answer if ok_shape else ("", "", ())
+            text = "\n".join(bullets[heads.index(head)]) if heads.count(head) == 1 else ""
+            answered = answered and ok_shape and head.startswith("- ") and quote.startswith("> ") and bool(text) \
+                and quote in {line.strip() for line in text.split("\n")} and all(
+                    re.search(r"(?<![0-9A-Za-z])" + re.escape(clause) + r"(?![0-9a-z])", text) for clause in clauses)
             authorized |= set(clauses)
         edited = {edit[0] for edit in revision.get("edits", ())}
         require(answered and bool(edited) and edited <= authorized, "REVISION_APPROVAL",
-                f"{revision['id']}: needs its own section {heading!r} in 決策佇列.md, each answer quoted in "
-                f"one bullet that names the clauses it authorizes, and every edited clause "
+                f"{revision['id']}: needs its own section {heading!r} in 決策佇列.md, each answer citing one "
+                f"bullet that quotes the reply and names the clauses it authorizes, and every edited clause "
                 f"{sorted(edited)} authorized (authorized: {sorted(authorized)})")
         used.add(heading)
 
@@ -471,39 +489,60 @@ class AdoptionIntegrity(unittest.TestCase):
                             earlier + (last | {"edits": edits},))
         # the approval must be the user's own recorded answer about the edited clauses
         queue = (ROOT / "決策佇列.md").read_bytes()
-        approved = POST_APPROVAL_REVISIONS[0]
-        verify_revision_decisions(queue, (approved,))
+        verify_revision_decisions(queue, POST_APPROVAL_REVISIONS)
+        approved, final = POST_APPROVAL_REVISIONS[0], POST_APPROVAL_REVISIONS[-1]
         decision = approved["decision"]
-        (agree, agreed), (recommended, recommended_clauses), (context, _) = decision["answers"]
+        (head, reply, clauses), = decision["answers"]
+        final_head, final_reply, final_clauses = final["decision"]["answers"][0]
         elsewhere = "> 只准一軸(建議)"
         other_heading = "### 2026-10-16 #240 S6:網格只准一軸相位差 🔒；措辭澄清待使用者看稿"
-        self.assertIn("\n  " + elsewhere + "\n", normalized(queue))
-        self.assertIn("\n" + other_heading + "\n", normalized(queue))
-        # opus review of #309: a second revision reusing pr260-ab's decision to rewrite I5 passed 44/44
+        other_head = "- **1. 同一份網格系統只准一軸有相位差 🔒**"
+        text = normalized(queue)
+        for line in ("\n  " + elsewhere + "\n", "\n" + other_heading + "\n", "\n" + other_head + "\n",
+                     "\n" + head + "\n", "\n" + final_head + "\n"):
+            self.assertIn(line, text)
+        # the final-confirmation section quotes "> 同意" under several bullets: the bullet must be named
+        self.assertGreater(text.split(final["decision"]["heading"], 1)[1].split("\n### ", 1)[0].count("\n  " + final_reply + "\n"), 1)
+        sibling_heads = [line for line in text.split(final["decision"]["heading"], 1)[1].split("\n### ", 1)[0].split("\n")
+                         if line.startswith("- ") and line != final_head]
+        # opus review of #309: a second revision reusing a decision to rewrite I5 passed 44/44
         sneak = {"id": "sneak", "proposal": "x", "approval": "x", "decision": decision,
                  "edits": (("I5", "角材整支要在界內", "角材大致在界內"),)}
-        unrelated = sneak | {"decision": {"heading": other_heading, "answers": ((elsewhere, ("I5",)),)}}
+        unrelated = sneak | {"decision": {"heading": other_heading, "answers": ((other_head, elsewhere, ("I5",)),)}}
+        # valid in every respect except that the section already backs pr260-final
+        second_on_final = {"id": "second", "proposal": "x", "approval": "x",
+                           "decision": final["decision"] | {"answers": ((sibling_heads[0], final_reply, ("I23",)),)},
+                           "edits": (("I23", "x", "y"),)}
+        verify_revision_decisions(queue, (second_on_final,))
+        with_decision = lambda revision, **fields: revision | {"decision": revision["decision"] | fields}
         for case, revisions, record in (
                 ("no decision", ({k: v for k, v in approved.items() if k != "decision"},), queue),
-                ("unknown heading", (approved | {"decision": decision | {"heading": decision["heading"] + "x"}},), queue),
-                ("not a section heading", (approved | {"decision": decision | {"heading": decision["heading"][4:]}},), queue),
-                ("no answers", (approved | {"decision": decision | {"answers": ()}},), queue),
-                ("answer not given", (approved | {"decision": decision | {"answers": decision["answers"] + (("> 不同意", ()),)}},), queue),
-                ("answer from another section", (approved | {"decision": decision | {"answers": ((elsewhere, agreed),)}},), queue),
-                ("answer not quoted", (approved | {"decision": decision | {"answers": ((agree[2:], agreed),)}},), queue),
-                ("answer in the wrong shape", (approved | {"decision": decision | {"answers": (agree, recommended)}},), queue),
-                ("clause named in no bullet", (approved | {"decision": decision | {"answers": (
-                    (agree, agreed), (recommended, recommended_clauses + ("D31",)))}},), queue),
-                ("clause named only in another bullet", (approved | {"decision": decision | {"answers": (
-                    (agree, agreed + ("I5",)), (recommended, ("R18",)))}},), queue),
+                ("unknown heading", (with_decision(approved, heading=decision["heading"] + "x"),), queue),
+                ("not a section heading", (with_decision(approved, heading=decision["heading"][4:]),), queue),
+                ("no answers", (with_decision(approved, answers=()),), queue),
+                ("old two-field answer", (with_decision(approved, answers=((reply, clauses),)),), queue),
+                ("reply not given", (with_decision(approved, answers=((head, "> 不同意", clauses),)),), queue),
+                ("reply from another section", (with_decision(approved, answers=((head, elsewhere, clauses),)),), queue),
+                ("bullet from another section", (with_decision(approved, answers=((other_head, elsewhere, clauses),)),), queue),
+                ("reply not quoted", (with_decision(approved, answers=((head, reply[2:], clauses),)),), queue),
+                ("bullet not named by its head line", (with_decision(approved, answers=((head[2:], reply, clauses),)),), queue),
+                ("same bullet cited twice", (with_decision(approved, answers=((head, reply, clauses[:1]), (head, reply, clauses[1:]))),), queue),
+                ("clause named in no bullet", (with_decision(approved, answers=((head, reply, clauses + ("D31",)),)),), queue),
+                ("duplicated reply, clause only in a sibling bullet",
+                 (approved, with_decision(final, answers=((final_head, final_reply, final_clauses + ("I23",)),) + final["decision"]["answers"][1:])), queue),
+                ("duplicated reply, sibling bullet cited for these clauses",
+                 (approved, with_decision(final, answers=tuple((sibling, final_reply, final_clauses) for sibling in sibling_heads[:1]))), queue),
                 ("edited clause not authorized", (approved | {"edits": approved["edits"] + (("D31", "x", "y"),)},), queue),
-                ("context answer authorizes nothing", (approved | {"decision": decision | {"answers": ((context, ()),)}},), queue),
-                ("sneak revision shares the approved decision", (approved, sneak), queue),
+                ("answer authorizing nothing", (with_decision(approved, answers=((head, reply, ()),)),), queue),
+                ("sneak revision shares a decision", (approved, sneak), queue),
                 ("sneak revision borrows an unrelated answer", (approved, unrelated), queue),
+                ("second revision on the final-confirmation section", (approved, final, second_on_final), queue),
+                ("bullet head duplicated in the section", (approved,),
+                 text.replace("\n" + head + "\n", "\n" + head + "\n\n  x\n\n" + head + "\n", 1).encode("utf-8")),
                 ("section duplicated", (approved,),
-                 queue + ("\n" + decision["heading"] + "\n\n- x\n\n  " + agree + "\n").encode("utf-8")),
-                ("answer removed from the record", (approved,),
-                 normalized(queue).replace("\n  " + recommended + "\n", "\n\n", 1).encode("utf-8"))):
+                 queue + ("\n" + decision["heading"] + "\n\n" + head + "\n\n  " + reply + "\n").encode("utf-8")),
+                ("reply removed from the record", (approved,),
+                 text.replace("\n  " + reply + "\n", "\n\n", 1).encode("utf-8"))):
             with self.subTest(case=case):
                 self.reject("REVISION_APPROVAL", verify_revision_decisions, record, revisions)
 
