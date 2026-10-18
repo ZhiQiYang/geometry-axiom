@@ -1,0 +1,60 @@
+{
+ "file": "tests/test_geo261_placement_sources.py",
+ "total": 21,
+ "run": 21,
+ "passed": 13,
+ "failed": 8,
+ "skipped": 0,
+ "explicit_skipped": 0,
+ "unrun_skipped": 0,
+ "blocked_by_error": 0,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [
+  {
+   "test": "test_geo261_placement_sources.NativePlacementSources.test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata",
+   "kind": "failure",
+   "message": "AssertionError: 0 != 1 : ASSERT:explicit-leaves-have-no-upstream-edges"
+  },
+  {
+   "test": "test_geo261_placement_sources.NativePlacementSources.test_binding_value_discard_control_fails_named_consumption_assertion",
+   "kind": "failure",
+   "message": "AssertionError: 1 != 0 : Negative control must hit one real expression"
+  },
+  {
+   "test": "test_geo261_placement_sources.NativePlacementSources.test_declined_binding_uses_explicit_values_and_region_reference_edge",
+   "kind": "failure",
+   "message": "AssertionError: 0 != 1 : ASSERT:declined-binding-never-reads-upstream"
+  },
+  {
+   "test": "test_geo261_placement_sources.NativePlacementSources.test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable",
+   "kind": "failure",
+   "message": "AssertionError: 0 != 1 : ASSERT:inline-set-borrows-its-own-store"
+  },
+  {
+   "test": "test_geo261_placement_sources.NativePlacementSources.test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs",
+   "kind": "failure",
+   "message": "AssertionError: 0 != 1 : ASSERT:unknown-key-kind-rejected"
+  },
+  {
+   "test": "test_geo261_placement_sources.NativePlacementSources.test_region_reference_consumes_core_region_and_records_required_value_edge",
+   "kind": "failure",
+   "message": "AssertionError: 0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge"
+  },
+  {
+   "test": "test_geo261_placement_sources.NativePlacementSources.test_same_geometry_without_region_edge_control_fails_named_edge_assertion",
+   "kind": "failure",
+   "message": "AssertionError: 0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge"
+  },
+  {
+   "test": "test_geo261_placement_sources.PlacementSourcesBoundary.test_every_negative_control_hits_exactly_one_live_expression (control='binding-value')",
+   "kind": "failure",
+   "message": "AssertionError: 1 != 0"
+  }
+ ],
+ "skip_reasons": {},
+ "skip_items": [],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 5.54
+}

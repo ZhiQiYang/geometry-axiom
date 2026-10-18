@@ -1,0 +1,47 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-u",
+    "tests/run_all.py",
+    "--only",
+    "py:test_geo261_placement_sources",
+    "--only",
+    "py:test_geo261_placement_definition",
+    "--only",
+    "py:test_geo261_host_placement_definition"
+  ],
+  "shell": false,
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-18T14:24:30.954152+00:00",
+  "started_ns": 1792333470954173232,
+  "timeout_seconds": 600.0,
+  "timed_out": false,
+  "interrupted": false,
+  "returncode": 1,
+  "launch_error": null,
+  "pid": 167738,
+  "ended_utc": "2026-10-18T14:24:50.779102+00:00",
+  "ended_ns": 1792333490779124428,
+  "seconds": 19.824949298003048,
+  "streams": {
+    "stdout": {
+      "device": 27,
+      "inode": 1460451,
+      "bytes": 8553,
+      "mtime_ns": 1792333490727064684,
+      "ctime_ns": 1792333490727064684,
+      "sha256": "e7bc0d3553ad4aea63e07dc7e073d2cc78ed0bb49c83dc63de05926db0a9be00",
+      "exists": true
+    },
+    "stderr": {
+      "device": 27,
+      "inode": 1460452,
+      "bytes": 0,
+      "mtime_ns": 1792333470952634257,
+      "ctime_ns": 1792333470952634257,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    }
+  }
+}
