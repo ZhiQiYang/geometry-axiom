@@ -357,6 +357,7 @@ class EngineeringModelCompatibility(unittest.TestCase):
                 self.assertEqual(caught.exception.code, "AXIOM_VERSION")
 
     def test_base_required_capability_reaches_manifest_and_cannot_be_removed(self):
+        from tests.test_geometry_source_runtime import decode, envelope
         base = load_base(CASE["definitions"]["base_scene"])
         base["base_scene"] = "requires engineering-spec/1\n" + base["base_scene"]
         base["required_capabilities"] = ["engineering-spec/1"]
@@ -364,7 +365,7 @@ class EngineeringModelCompatibility(unittest.TestCase):
         definitions["base_scene"] = base["base_scene"]
         # Only adapter transport is substituted here; actual engineering source
         # evaluation is covered by native core fixtures, not this boundary test.
-        with mock.patch("modeling.base.load_base", return_value=base):
+        with mock.patch("modeling.base.load_candidate", return_value=decode(envelope(base))):
             package = build_package(definitions, CASE["request"])
             self.assertIn("engineering-spec/1", package["manifest"]["capabilities"])
             self.assertEqual(package["definitions"]["base_scene"], base["base_scene"])

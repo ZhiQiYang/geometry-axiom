@@ -180,7 +180,7 @@ class RectangularSharedEngineTests(unittest.TestCase):
                             "geometry-templates/woodworking/geometry_woodworking","geometry-templates/rectangular-grid/geometry_rectangular"):
                 shutil.copytree(ROOT/package,copied/package,ignore=shutil.ignore_patterns("__pycache__"))
             (copied/"tests").mkdir();(copied/"tests/__init__.py").write_text("",encoding="utf-8")
-            for name in ("test_rectangular_python.py","test_geometry_kernel_runtime.py"):
+            for name in ("test_rectangular_python.py","test_geometry_kernel_runtime.py","test_geometry_source_runtime.py"):
                 shutil.copyfile(ROOT/"tests"/name,copied/"tests"/name)
             source=copied/"geometry-core/geometry_kernel/geometry.py"
             original=source.read_text(encoding="utf-8")

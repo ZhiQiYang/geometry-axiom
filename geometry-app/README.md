@@ -7,7 +7,9 @@ Its `build_package` and `verify_package` authority is passed into the host world
 no second copy of the version constants or historical exact pairs exists here.
 
 The product path is `modeling.engine.evaluate` → explicitly assembled
-`ModelingRuntime` → `geometry_kernel.evaluate`. The host compiles shell,
+`ModelingRuntime(source_graph=True)` → `geometry_kernel.evaluate`. Its native
+loader is `modeling.base.load_candidate`, preserving the historical builder and
+literal argv seams. The host compiles shell,
 extrusion, KEEP, Boolean and composite-space wire records to typed K nodes.
 Woodworking admission and profile member/envelope policy reside in
 `geometry_woodworking`; K never selects behavior from those names.
@@ -28,14 +30,15 @@ bytes before and after the call. Source capability admission comes from the
 explicit woodworking provider. The native-host tests use real temporary file
 bytes with a mocked process boundary and include five removed-guard controls.
 
-`model_native.load_candidate` is the opt-in, one-invocation typed source
+`model_native.load_candidate` is the one-invocation typed source
 transport. `model_sources` decodes the schema fixed by native source commit
 `a6d383bc6a7d7254ff3f2b61291cb280c6a8a78f`, validates the original input hash,
 canonical candidate identity, provider identities, exact source values, complete
 dependency graph and root associations, then supplies immutable K descriptors.
 Box face keys and local coordinate owners retain their complete opaque identity.
 Incomplete coverage is rejected; there is no snapshot-only fallback on this API.
-The existing `load_base` API and the product's current loader remain unchanged.
+The existing `load_base` snapshot API remains available to explicit historical
+callers; it is never retried after the product candidate loader rejects input.
 
 The decoder also accepts declared-but-unevaluated native nodes: status
 `unevaluated` requires `value: null` and maps to K `INCOMPLETE`. The full typed
@@ -51,8 +54,8 @@ immutable, complete bytes. Empty content is valid; schema is nonempty valid
 Unicode without NUL, and whitespace is not trimmed. Base64 must be canonical.
 K preserves the provider's encoding without parsing domain content or treating
 a definition as a geometric feature. Candidate fingerprints include its schema
-and every content byte. The native producer's coverage remains incomplete, so
-none of these additions selects this opt-in path as the default loader.
+and every content byte. Complete native coverage is a required transport gate,
+not a Python flag that can be used to fill absent source definitions.
 
 `ModelingRuntime(source_graph=True)` is the explicit source-reference compile
 path. It requires a `NativeCandidate`; a snapshot or incomplete DTO cannot
@@ -68,11 +71,11 @@ closure, rotated box frames, all region components, strict binding and three
 copied-production guard removals. The `source-runtime` preset runs 146 tests.
 These remain synthetic transport fixtures, not actual native replay evidence.
 The legacy wire cannot encode a multi-component extrusion's complete feature
-identity; this opt-in path rejects that output explicitly instead of truncating
+identity; the source path rejects that output explicitly instead of truncating
 the source. K still receives and evaluates the full region set. Existing source
 capabilities have not expanded.
 
-The current 26 source transport tests use synthetic envelopes at a mocked
+The current 29 source transport tests use synthetic envelopes at a mocked
 process boundary and feed decoded descriptors to the actual K evaluator. Eight
 named production-source mutation controls must fail their behavioral oracles,
 including unevaluated/value mismatches, ok/null, canonical Base64 and complete
@@ -82,10 +85,15 @@ The historical `source-transport` preset retains its original 136-case census.
 These tests are not actual native execution evidence; the C producer/consumer
 integration cases remain unrun in this Python-only validation phase.
 
-The default product loader still uses the PY2 checkpoint until the native
-producer's graph coverage and source-matched integration replay are complete.
-There is no Python scene parser. This checkpoint must not be described as
-complete source decoupling or a real native replay result.
+The isolated default-source candidate adds seven tests and a `default-sources`
+receipt preset of 174 methods. It exercises the actual public facade and
+transport selection, typed value changes with an unchanged legacy snapshot,
+complete dependency retention, and rejection without fallback. Two copied
+production controls restore legacy loading or discard the graph; both must fail
+the same default-path oracle. The 27 historical wire digests remain unchanged.
+These synthetic checks do not establish native coverage or old-package replay.
+Native coverage, source-matched C→Python replay and complete product validation
+remain release prerequisites for this candidate. There is no Python scene parser.
 
 `tests/test_geometry_kernel_runtime.py` pins 27 full success/error wire digests
 captured from the pre-controller-extraction `3a9dc84` source through the native

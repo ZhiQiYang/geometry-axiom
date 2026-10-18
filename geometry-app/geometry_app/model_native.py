@@ -251,8 +251,8 @@ def load_base(scene_text: str, executable=None, *, builder=None, command_builder
 def load_candidate(scene_text: str, executable=None, *, builder=None, command_builder=None, provider=None):
     """Read one complete typed candidate in one pinned native invocation.
 
-    An old adapter or incomplete native graph is rejected. This opt-in transport
-    is not the product default until the native source coverage gate is complete.
+    The product facade uses this transport and rejects an old adapter or an
+    incomplete native graph instead of falling back to snapshot evaluation.
     """
     return _load_base_or_candidate(scene_text, executable, builder=builder,
         command_builder=command_builder, provider=provider, neutral_sources=True)
