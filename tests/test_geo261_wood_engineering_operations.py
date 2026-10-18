@@ -114,16 +114,26 @@ class WoodEngineeringOperations(unittest.TestCase):
         self.case("restore-members", exe, "engineering-operations-restore-identity")
         self.case("restore-members")
 
-    def unplaced_source_bridge(self, exe):
+    def timber_source_bridge(self, exe, placed=False):
         with tempfile.TemporaryDirectory(prefix="geometry-eng-operations-") as directory, _bridge.BridgeSession(exe) as session:
             self.assertTrue(session.command("reset")["ok"])
-            declared = session.command("line timber 1 27 33 role primary")
-            if "preview" in declared:
-                self.assertTrue(declared["preview"]["valid"], declared)
-                declared = session.command("line confirm " + str(declared["preview"]["token"]))
-            self.assertTrue(declared["ok"], declared)
+            if placed:
+                scene = Path(directory) / "placed-timber.scene"
+                scene.write_text(
+                    "surface 1 origin 0 0 0 u +x v +y outline 0,0 1000,0 1000,1000 0,1000\n"
+                    "timber 1 27 33 role boundary\n"
+                    "place 1 on 1 at-face e0 +u +n\n", encoding="utf-8")
+                loaded = session.command("loadfile " + str(scene))
+                self.assertTrue(loaded["ok"], loaded)
+            else:
+                declared = session.command("line timber 1 27 33 role primary")
+                if "preview" in declared:
+                    self.assertTrue(declared["preview"]["valid"], declared)
+                    declared = session.command("line confirm " + str(declared["preview"]["token"]))
+                self.assertTrue(declared["ok"], declared)
             read = session.command("engineering-read")
             self.assertTrue(read["ok"], read)
+            self.assertEqual([], read["state"]["sources"])
             payload = {"schema": "engineering-transaction/1", "expectedRevision": read["revision"], "operations": [
                 {"op": "set-source", "target": {"kind": "timber", "id": 1, "field": "A"}, "source": {"kind": "literal", "value": 55}},
             ]}
@@ -131,34 +141,66 @@ class WoodEngineeringOperations(unittest.TestCase):
             request.write_text(json.dumps(payload), encoding="utf-8")
             original = session.command("dump")["text"]
             response = session.command("engineering-preview " + str(request))
+            self.assertTrue(response["ok"], response)
+            self.assertEqual(read["revision"], response["preview"]["revision"])
+            self.assertEqual(placed, response["preview"]["before"]["geometry"]["timbers"][0]["geometry"] is not None)
             self.assertEqual(original, session.command("dump")["text"])
+            self.assertEqual(read, session.command("engineering-read"), "Preview changed live definitions, revision or sources")
             accepted = bool(response.get("preview", {}).get("valid", False))
             if accepted:
                 confirmed = session.command("engineering-confirm " + str(response["preview"]["token"]))
                 self.assertTrue(confirmed["ok"], confirmed)
+                self.assertTrue(confirmed["history_changed"], confirmed)
+                self.assertEqual(read["revision"], confirmed["before_revision"])
+                self.assertEqual(read["revision"] + 1, confirmed["revision"])
                 sources = session.command("engineering-read")["state"]["sources"]
                 self.assertEqual(1, len(sources))
                 self.assertEqual({"kind": "timber", "id": 1, "field": "A"}, sources[0]["target"])
                 self.assertEqual({"kind": "literal", "value": 55}, sources[0]["source"])
                 self.assertEqual(55, sources[0]["effective"])
                 self.assertIsNone(sources[0]["override"])
+            else:
+                confirmed = session.command("engineering-confirm " + str(response["preview"]["token"]))
+                self.assertFalse(confirmed["ok"], confirmed)
+                self.assertEqual("TOKEN", confirmed["code"])
+                self.assertEqual(original, session.command("dump")["text"])
+                self.assertEqual(read, session.command("engineering-read"), "Invalid confirm changed live definitions, revision or sources")
             return accepted, response
 
     def test_removed_unplaced_guard_fails_named_client_and_actual_bridge(self):
         build = native()
         self.case("sources")
-        accepted, response = self.unplaced_source_bridge(build.bridge())
+        accepted, response = self.timber_source_bridge(build.bridge())
         self.assertFalse(accepted, response)
         self.assertIn("bind only an already placed timber", json.dumps(response))
+        self.assertEqual({"code": "ENGINEERING_INVALID", "clause": "I8/I35", "message": "D28: bind only an already placed timber"}, response["preview"]["violations"][0])
+        self.assertEqual([], response["preview"]["after"]["sources"])
         before = 'if (!fact.placed) return wood_eng_fail(w,"D28: bind only an already placed timber");'
         exe, bridge = self.mutant("unplaced-source", before, "if (false) return false;", bridge=True)
         self.case("sources", exe, "engineering-operations-unplaced-source")
-        accepted, response = self.unplaced_source_bridge(bridge)
-        self.assertTrue(accepted, response)
+        accepted, response = self.timber_source_bridge(bridge)
+        # D28 變異已寫入候選；I9 終態守門仍必須拒絕，不得要求未放材提交。
+        self.assertFalse(accepted, response)
+        self.assertEqual({"code": "ENGINEERING_INVALID", "clause": "I8/I35", "message": "I9: candidate still contains an unplaced timber"}, response["preview"]["violations"][0])
+        self.assertNotIn("bind only an already placed timber", json.dumps(response))
+        self.assertEqual([], response["preview"]["before"]["sources"])
+        sources = response["preview"]["after"]["sources"]
+        self.assertEqual(1, len(sources))
+        self.assertEqual({"kind": "timber", "id": 1, "field": "A"}, sources[0]["target"])
+        self.assertEqual({"kind": "literal", "value": 55}, sources[0]["source"])
+        self.assertEqual(55, sources[0]["effective"])
+        self.assertIsNone(sources[0]["override"])
+        # 原接受／確認後來源斷言保留於合法已放角材，原物件與變異物件都須通過。
+        for label, product in (("original", build.bridge()), ("mutant", bridge)):
+            with self.subTest(placed_positive_control=label):
+                accepted, response = self.timber_source_bridge(product, placed=True)
+                self.assertTrue(accepted, response)
         self.case("sources")
-        accepted, response = self.unplaced_source_bridge(build.bridge())
+        accepted, response = self.timber_source_bridge(build.bridge())
         self.assertFalse(accepted, response)
         self.assertIn("bind only an already placed timber", json.dumps(response))
+        self.assertEqual({"code": "ENGINEERING_INVALID", "clause": "I8/I35", "message": "D28: bind only an already placed timber"}, response["preview"]["violations"][0])
+        self.assertEqual([], response["preview"]["after"]["sources"])
 
 
 if __name__ == "__main__":
