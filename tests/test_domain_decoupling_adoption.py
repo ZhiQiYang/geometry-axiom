@@ -37,10 +37,16 @@ ADOPTED_HASH = "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5
 # in the whole document and inside that clause; no edit may add, drop, reorder
 # or rename clauses, or touch the preamble, chapter headings or exclusions.
 # "proposal" and "approval" record the reviewed bytes (not in this tree) and the
-# human answer.  "decision" must point at that answer in 決策佇列.md: a heading
-# that occurs exactly once and each answer quoted verbatim as its own "> ..."
-# line inside that section (REVISION_APPROVAL).  A revision whose answer is not
-# recorded there keeps the actual-SSOT test red: it is not adopted yet.
+# human answer.  "decision" must point at that answer in 決策佇列.md
+# (REVISION_APPROVAL): a section heading that occurs exactly once and backs no
+# other revision; each answer quoted verbatim as its own "> ..." line in exactly
+# one top-level bullet of that section, the clauses it authorizes named in that
+# same bullet; every edited clause authorized by some answer.  An answer with no
+# clauses is recorded context and authorizes nothing.  This ties a revision to a
+# recorded answer about those very clauses; it cannot tell what the answer means
+# (an unrelated reply in a bullet that happens to name the clause would pass),
+# and it cannot stop a coordinated edit of this file, the SSOT and the queue.
+# A revision whose answer is not recorded keeps the actual-SSOT test red.
 POST_APPROVAL_REVISIONS = (
     {
         "id": "pr260-ab",
@@ -49,7 +55,10 @@ POST_APPROVAL_REVISIONS = (
                     "第 2 題依 10-16 所選說明寫成定義推論；第 3 題「改回選項一(建議)」；"
                     "第 4 題 B 區「同意(建議)」",
         "decision": {"heading": "### 2026-10-18 #260 條文稿第一批回覆 🔒",
-                     "answers": ("> 同意", "> 改回選項一(建議)", "> 同意(建議)")},
+                     # (the user's quoted reply, clauses its bullet names and it authorizes)
+                     "answers": (("> 同意", ("D29", "D10b", "I24", "R22")),
+                                 ("> 同意(建議)", ("I5", "R18")),
+                                 ("> 改回選項一(建議)", ()))},
         "edits": (
             ("D29",
                 "未設相位差時，格線身分為（系統、軸、signed k）。設了 D10b 相位差時，段的身分是（系統、軸、signed k、另一軸 cell 索引）。"
@@ -256,23 +265,40 @@ def apply_post_approval_revisions(adopted, revisions):
 
 
 def verify_revision_decisions(queue_bytes, revisions):
-    """Each later revision must point at the user's own recorded answers in 決策佇列.md."""
+    """Bind each later revision to its own recorded answers in 決策佇列.md, clause by clause."""
     lines = normalized(queue_bytes).split("\n")
+    used = set()
     for revision in revisions:
         decision = revision.get("decision")
         heading = decision.get("heading", "") if isinstance(decision, dict) else ""
-        answers = decision.get("answers", ()) if isinstance(decision, dict) else ()
+        answers = tuple(decision.get("answers", ())) if isinstance(decision, dict) else ()
         starts = [index for index, line in enumerate(lines) if line == heading]
-        section = set()
+        bullets = []
         if heading.startswith("### ") and len(starts) == 1:
             end = next((index for index in range(starts[0] + 1, len(lines))
                         if lines[index].startswith(("### ", "## "))), len(lines))
-            section = {line.strip() for line in lines[starts[0] + 1:end]}
-        require(bool(section) and bool(answers)
-                and all(answer.startswith("> ") and answer in section for answer in answers),
-                "REVISION_APPROVAL",
-                f"{revision['id']}: 決策佇列.md must hold exactly one section {heading!r} "
-                f"quoting each of the user's answers {answers!r}")
+            for line in lines[starts[0] + 1:end]:
+                if line.startswith("- "):
+                    bullets.append([line])
+                elif bullets:
+                    bullets[-1].append(line)
+        answered = bool(bullets) and bool(answers) and heading not in used
+        authorized = set()
+        for answer in answers:
+            ok_shape = (isinstance(answer, tuple) and len(answer) == 2 and isinstance(answer[0], str)
+                        and isinstance(answer[1], tuple))
+            quote, clauses = answer if ok_shape else ("", ())
+            holders = [bullet for bullet in bullets if quote in {line.strip() for line in bullet}]
+            text = "\n".join(holders[0]) if len(holders) == 1 else ""
+            answered = answered and ok_shape and quote.startswith("> ") and bool(text) and all(
+                re.search(r"(?<![0-9A-Za-z])" + re.escape(clause) + r"(?![0-9a-z])", text) for clause in clauses)
+            authorized |= set(clauses)
+        edited = {edit[0] for edit in revision.get("edits", ())}
+        require(answered and bool(edited) and edited <= authorized, "REVISION_APPROVAL",
+                f"{revision['id']}: needs its own section {heading!r} in 決策佇列.md, each answer quoted in "
+                f"one bullet that names the clauses it authorizes, and every edited clause "
+                f"{sorted(edited)} authorized (authorized: {sorted(authorized)})")
+        used.add(heading)
 
 
 def validate_current_document(current_bytes, expected):
@@ -421,27 +447,43 @@ class AdoptionIntegrity(unittest.TestCase):
             with self.subTest(code=code, edit=edits[0][0]):
                 self.reject(code, apply_post_approval_revisions, self.expected,
                             earlier + (last | {"edits": edits},))
-        # the approval must be the user's answer recorded in the decision queue
+        # the approval must be the user's own recorded answer about the edited clauses
         queue = (ROOT / "決策佇列.md").read_bytes()
         approved = POST_APPROVAL_REVISIONS[0]
         verify_revision_decisions(queue, (approved,))
         decision = approved["decision"]
+        (agree, agreed), (recommended, recommended_clauses), (context, _) = decision["answers"]
         elsewhere = "> 只准一軸(建議)"
-        self.assertIn(elsewhere, normalized(queue))
-        for case, revision, record in (
-                ("no decision", {k: v for k, v in approved.items() if k != "decision"}, queue),
-                ("unknown heading", approved | {"decision": decision | {"heading": decision["heading"] + "x"}}, queue),
-                ("not a section heading", approved | {"decision": decision | {"heading": decision["heading"][4:]}}, queue),
-                ("no answers", approved | {"decision": decision | {"answers": ()}}, queue),
-                ("answer not given", approved | {"decision": decision | {"answers": decision["answers"] + ("> 不同意",)}}, queue),
-                ("answer from another section", approved | {"decision": decision | {"answers": (elsewhere,)}}, queue),
-                ("answer not quoted", approved | {"decision": decision | {"answers": (decision["answers"][0][2:],)}}, queue),
-                ("section duplicated", approved,
-                 queue + ("\n" + decision["heading"] + "\n\n" + decision["answers"][0] + "\n").encode("utf-8")),
-                ("answer removed from the record", approved,
-                 normalized(queue).replace("  " + decision["answers"][1] + "\n", "\n", 1).encode("utf-8"))):
+        other_heading = "### 2026-10-16 #240 S6:網格只准一軸相位差 🔒；措辭澄清待使用者看稿"
+        self.assertIn("\n  " + elsewhere + "\n", normalized(queue))
+        self.assertIn("\n" + other_heading + "\n", normalized(queue))
+        # opus review of #309: a second revision reusing pr260-ab's decision to rewrite I5 passed 44/44
+        sneak = {"id": "sneak", "proposal": "x", "approval": "x", "decision": decision,
+                 "edits": (("I5", "角材整支要在界內", "角材大致在界內"),)}
+        unrelated = sneak | {"decision": {"heading": other_heading, "answers": ((elsewhere, ("I5",)),)}}
+        for case, revisions, record in (
+                ("no decision", ({k: v for k, v in approved.items() if k != "decision"},), queue),
+                ("unknown heading", (approved | {"decision": decision | {"heading": decision["heading"] + "x"}},), queue),
+                ("not a section heading", (approved | {"decision": decision | {"heading": decision["heading"][4:]}},), queue),
+                ("no answers", (approved | {"decision": decision | {"answers": ()}},), queue),
+                ("answer not given", (approved | {"decision": decision | {"answers": decision["answers"] + (("> 不同意", ()),)}},), queue),
+                ("answer from another section", (approved | {"decision": decision | {"answers": ((elsewhere, agreed),)}},), queue),
+                ("answer not quoted", (approved | {"decision": decision | {"answers": ((agree[2:], agreed),)}},), queue),
+                ("answer in the wrong shape", (approved | {"decision": decision | {"answers": (agree, recommended)}},), queue),
+                ("clause named in no bullet", (approved | {"decision": decision | {"answers": (
+                    (agree, agreed), (recommended, recommended_clauses + ("D31",)))}},), queue),
+                ("clause named only in another bullet", (approved | {"decision": decision | {"answers": (
+                    (agree, agreed + ("I5",)), (recommended, ("R18",)))}},), queue),
+                ("edited clause not authorized", (approved | {"edits": approved["edits"] + (("D31", "x", "y"),)},), queue),
+                ("context answer authorizes nothing", (approved | {"decision": decision | {"answers": ((context, ()),)}},), queue),
+                ("sneak revision shares the approved decision", (approved, sneak), queue),
+                ("sneak revision borrows an unrelated answer", (approved, unrelated), queue),
+                ("section duplicated", (approved,),
+                 queue + ("\n" + decision["heading"] + "\n\n- x\n\n  " + agree + "\n").encode("utf-8")),
+                ("answer removed from the record", (approved,),
+                 normalized(queue).replace("\n  " + recommended + "\n", "\n\n", 1).encode("utf-8"))):
             with self.subTest(case=case):
-                self.reject("REVISION_APPROVAL", verify_revision_decisions, record, (revision,))
+                self.reject("REVISION_APPROVAL", verify_revision_decisions, record, revisions)
 
     def test_crlf_is_the_only_ignored_source_difference(self):
         validate_current_document(self.current.replace("\n", "\r\n").encode(), self.current)
