@@ -411,6 +411,11 @@ def selftest(proposal_text: str, ssot: dict[str, str], root: Path) -> bool:
         ("two-axis search made to match (drop the v half of the regex)", mutate("stagger[^\"]* v repeat[a-z-]*[^\"]*stagger」", "stagger」"), "外部核對無 02baea2c ."),
         ("oracle output count stale (25/81)", mutate("「25/81 cells still enclosed」 共 1 行", "「25/81 cells still enclosed」 共 2 行"), "證據檔計數 s6_stagger_oracle.out"),
         ("cellAtPoint line number off by one", mutate("第 764 行「function cellAtPoint(s, event)」", "第 765 行「function cellAtPoint(s, event)」"), "geometry-web/grid-system-workspace.js:765"),
+        ("decision-queue answer text wrong (option two, main 12b25f91)", mutate("第 610 行「選項二 全面版本制」", "第 610 行「選項一 全面版本制」"), "外部核對行 12b25f91 決策佇列.md:610"),
+        ("line number of 'unsupported required scene capability' off by one", mutate("第 194 行「I32: unsupported required scene capability」", "第 195 行「I32: unsupported required scene capability」"), "engineering_commands.inc:195"),
+        ("project-format rejection message quoted wrong", mutate("第 33 行「專案版本不支援，請使用相容版本開啟。」", "第 33 行「專案版本不支援，請使用相容版本開起。」"), "geometry-web/project-store.js:33"),
+        ("one char of a 現況 quote changed (I39 unknown capability)", mutate("未知新能力或缺少必要宣告須在替換現有 World／專案前拒絕", "未知新能力或缺少必要宣告須在替換現有 World／專案後拒絕"), "現況 公理層.md I39"),
+        ("one char of a 現況 quote changed (D25 manifest)", mutate("manifest 明寫 schema 版本、公理版本／內容摘要", "manifest 明寫 schema 版本、公理版本／內容摘要x"), "現況 公理層.md D25"),
         ("positive control: the synthetic I38 / R53 labels alone must pass", synthetic_ok, None),
     ]
     all_caught = True
