@@ -1,0 +1,13 @@
+diff --git a/geometry-core/grid_subdivision.inc b/geometry-core/grid_subdivision.inc
+index 4fb24f1d..07de408a 100644
+--- a/geometry-core/grid_subdivision.inc
++++ b/geometry-core/grid_subdivision.inc
+@@ -15,7 +15,7 @@ static bool grid_rule_ref_text(const char *text,GridRuleLineRef *r)
+     if(strlen(text)>=REF_EXPR_MAX)return false;
+     char buf[REF_EXPR_MAX],*parts[8];size_t n=0;snprintf(buf,sizeof buf,"%s",text);
+     char *p=buf;
+-    while(n<8){parts[n++]=p;char *colon=strchr(p,':');if(!colon || n==8)break;*colon=0;p=colon+1;}
++    while(n<8){parts[n++]=p;char *colon=strchr(p,':');if(!colon)break;*colon=0;p=colon+1;}
+     if(n!=8 || strchr(parts[7],':') || strcmp(parts[0],"gridrule") ||
+         !parse_u32(parts[1],&r->grid_id) || !parse_u32(parts[2],&r->system_id) ||
+         !parse_u32(parts[3],&r->rule_key) || !r->rule_key || !parse_i64(parts[4],&r->cell[0]) ||

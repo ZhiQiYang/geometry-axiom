@@ -64,7 +64,9 @@ static int references(void)
     facts.references[1]=(WoodGridReference){.kind=WOOD_GRID_REFERENCE_TIMBER,.active=false,.is_rule=true,
         .rule={.system_id=5,.rule_key=7}};facts.reference_count=2;
     CHECK(!wood_grid_rule_used(&c,5,7));facts.references[1].active=true;CHECK(wood_grid_rule_used(&c,5,7));
-    facts.references[1].is_rule=false;CHECK(!wood_grid_rule_used(&c,5,7));return 0;
+    facts.references[1].is_rule=false;CHECK(!wood_grid_rule_used(&c,5,7));
+    facts.references[0].expression="gridrule:9:5:7:0:0:u:0:";
+    CHECK_NAMED(!wood_grid_rule_used(&c,5,7),"rule-reference-empty-trailing-field-rejected");return 0;
 }
 static int edits(void)
 {

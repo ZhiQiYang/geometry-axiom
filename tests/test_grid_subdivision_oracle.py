@@ -981,6 +981,8 @@ class NativeSubdivisionOracle(unittest.TestCase):
                                         if not line.startswith("grid-source-rule 0 key 1 ")) + "\n", "RULE_MISSING"),
             "wrong-source": (dump.replace("gridrule:10:0:1:-2:1:u:0", "gridrule:10:1:1:-2:1:u:0"), "WRONG_SOURCE"),
             "wrong-inner-index": (dump.replace("gridrule:10:0:1:-2:1:u:0", "gridrule:10:0:1:-2:1:u:2"), "INDEX_RANGE"),
+            "extra-reference-field": (dump.replace("gridrule:10:0:1:-2:1:u:0", "gridrule:10:0:1:-2:1:u:0:extra"), "invalid/missing reference"),
+            "empty-extra-reference-field": (dump.replace("gridrule:10:0:1:-2:1:u:0", "gridrule:10:0:1:-2:1:u:0:"), "invalid/missing reference"),
         }
         for identifier, (text, reason) in fixtures.items():
             with self.subTest(fixture=identifier):

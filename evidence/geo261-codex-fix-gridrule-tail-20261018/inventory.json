@@ -1,0 +1,746 @@
+{
+  "schema": "geo261-gridrule-tail-publication-inventory/1",
+  "repository_prefix": "evidence/geo261-codex-fix-gridrule-tail-20261018",
+  "status": "可公開精確清單；尚未複製／commit／push",
+  "product_sha": "c2bad7f3bd9024583b5314f968dafaba1abb626f",
+  "public_count": 102,
+  "public_bytes": 853148,
+  "inventory_itself": "本檔另行加入；不自指hash",
+  "public_files": [
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/publication/README.md",
+      "destination_relative": "README.md",
+      "bytes": 4798,
+      "sha256": "28839db36b59f7c032841219721b971f8dac0ed6f01f7cf0abd79ce29a9649b4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/after.binaries.json",
+      "destination_relative": "after-focused/after.binaries.json",
+      "bytes": 3671,
+      "sha256": "39d8d38df9a7e2c877bcc724b5ebf50df90466a24eaa11787eb814002b2ef620"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/after.binary-00.sidecar.json",
+      "destination_relative": "after-focused/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/after.binary-01.sidecar.json",
+      "destination_relative": "after-focused/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "1b2ba49febd8b7f8a45b1bc3f1f2ca5b3466b56b4f4598b53c383560f62445f2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/after.binary-02.sidecar.json",
+      "destination_relative": "after-focused/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/before.binaries.json",
+      "destination_relative": "after-focused/before.binaries.json",
+      "bytes": 3811,
+      "sha256": "f221e1cfa795c2137b928cfd7f9c0f7884366f7f34398c125b3a2d12c753da6b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/before.binary-00.sidecar.json",
+      "destination_relative": "after-focused/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/before.binary-01.sidecar.json",
+      "destination_relative": "after-focused/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "d759d8618ad99a7e8fa058f694169855ba1914b1557e447bdc995c1a5141a930"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/before.binary-02.sidecar.json",
+      "destination_relative": "after-focused/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/command.process.json",
+      "destination_relative": "after-focused/command.process.json",
+      "bytes": 1226,
+      "sha256": "db5f2e3930cdbc59b098788249679523ac1edfa673b8aef20e72331746d868b2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/command.stderr",
+      "destination_relative": "after-focused/command.stderr",
+      "bytes": 2003,
+      "sha256": "048aa11670a84a03ab41f7c7d9068bd4e2c8c0ce7df47ae410ea7a21bba00cda"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/command.stdout",
+      "destination_relative": "after-focused/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/receipt.json",
+      "destination_relative": "after-focused/receipt.json",
+      "bytes": 13618,
+      "sha256": "23f5a9122ad764e31fdaac2234b1e170b2e2bc1ae59df1a475caf5b840896363"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/suite-logs.manifest.json",
+      "destination_relative": "after-focused/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/tool-chrome.stdout",
+      "destination_relative": "after-focused/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/tool-chromium.stdout",
+      "destination_relative": "after-focused/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/tool-gcc.stdout",
+      "destination_relative": "after-focused/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/tool-node.stdout",
+      "destination_relative": "after-focused/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/after-focused/tool-python.stdout",
+      "destination_relative": "after-focused/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/after.binaries.json",
+      "destination_relative": "before/after.binaries.json",
+      "bytes": 3446,
+      "sha256": "4761f858f8d18455df2b69ebd5792c1c34f6bd76c33b2282793d646134cb1f6e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/after.binary-00.sidecar.json",
+      "destination_relative": "before/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/after.binary-01.sidecar.json",
+      "destination_relative": "before/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "d759d8618ad99a7e8fa058f694169855ba1914b1557e447bdc995c1a5141a930"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/after.binary-02.sidecar.json",
+      "destination_relative": "before/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/before.binaries.json",
+      "destination_relative": "before/before.binaries.json",
+      "bytes": 3660,
+      "sha256": "2c0159422f08fd92fb6c3a0c78bfce3efeb9a6a9e86216ec5f20a891d69c95eb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/before.binary-00.sidecar.json",
+      "destination_relative": "before/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/before.binary-01.sidecar.json",
+      "destination_relative": "before/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "938c445c692cd228eea896bb739dae10a060b0657d1864540b551fbb01516b64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/before.binary-02.sidecar.json",
+      "destination_relative": "before/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/command.process.json",
+      "destination_relative": "before/command.process.json",
+      "bytes": 1224,
+      "sha256": "b478d70e9ff8ec2a052711cb3d291983d85ef4feb6ac0a343121743c2604204b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/command.stderr",
+      "destination_relative": "before/command.stderr",
+      "bytes": 5615,
+      "sha256": "05e024e89b7959aee41a93fe2d052b38aaeb86d772361d939b0b862447901c0e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/command.stdout",
+      "destination_relative": "before/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/receipt.json",
+      "destination_relative": "before/receipt.json",
+      "bytes": 13595,
+      "sha256": "fad704a7086b7f9f56f6cd5568113b21f9f69ca2c96306e564dc40502568baae"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/suite-logs.manifest.json",
+      "destination_relative": "before/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/tool-chrome.stdout",
+      "destination_relative": "before/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/tool-chromium.stdout",
+      "destination_relative": "before/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/tool-gcc.stdout",
+      "destination_relative": "before/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/tool-node.stdout",
+      "destination_relative": "before/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/before/tool-python.stdout",
+      "destination_relative": "before/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/after.binaries.json",
+      "destination_relative": "restored-full/after.binaries.json",
+      "bytes": 3671,
+      "sha256": "4bf64b7ff17654a5dc47a639c5b566c0bd2cdd14cfb63f0bdccf4e5883fa3616"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/after.binary-00.sidecar.json",
+      "destination_relative": "restored-full/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/after.binary-01.sidecar.json",
+      "destination_relative": "restored-full/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "f8d6ca5d8e6d9b4d1978b6b5afe4013b510e92c6fbf0a84dd28663d7f9611445"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/after.binary-02.sidecar.json",
+      "destination_relative": "restored-full/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/before.binaries.json",
+      "destination_relative": "restored-full/before.binaries.json",
+      "bytes": 3759,
+      "sha256": "06393d6eab17619502464cda5ab64c19c804b73e6619afc427620c7ac34f3c60"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/before.binary-00.sidecar.json",
+      "destination_relative": "restored-full/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/before.binary-01.sidecar.json",
+      "destination_relative": "restored-full/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "7b2b2a080537f9d40fa5749317e4158c3f3349412cffcf0c6dba6432293165ad"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/before.binary-02.sidecar.json",
+      "destination_relative": "restored-full/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/command.process.json",
+      "destination_relative": "restored-full/command.process.json",
+      "bytes": 1152,
+      "sha256": "ebce18211ba75afaec41b7f131ea60c836e8f1ba936efe1797bff78410469f35"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/command.stderr",
+      "destination_relative": "restored-full/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/command.stdout",
+      "destination_relative": "restored-full/command.stdout",
+      "bytes": 6973,
+      "sha256": "701b8a16cf8a5f88792dd01df6ca4bddac52ff1afe4891ae0eb1f9944b074aa4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/receipt.json",
+      "destination_relative": "restored-full/receipt.json",
+      "bytes": 15361,
+      "sha256": "32886ef316bc34c0ef42bb43bf8c70a71c5e77b602e90a60493fa59a1836af32"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/suite-logs.manifest.json",
+      "destination_relative": "restored-full/suite-logs.manifest.json",
+      "bytes": 5307,
+      "sha256": "b6ab44453927a26435a8958471bde6a49da87f42b39e522c31553e66ef594b99"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/suite-logs/py_test_geo261_native_grid_rules.json",
+      "destination_relative": "restored-full/suite-logs/py_test_geo261_native_grid_rules.json",
+      "bytes": 356,
+      "sha256": "ab548efbd38bf1be7077c9469f2dbcb055323539cfa2a352acd802a9752dd3ba"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/suite-logs/py_test_geo261_native_grid_rules.log",
+      "destination_relative": "restored-full/suite-logs/py_test_geo261_native_grid_rules.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/suite-logs/py_test_geo261_native_grid_rules.unittest.log",
+      "destination_relative": "restored-full/suite-logs/py_test_geo261_native_grid_rules.unittest.log",
+      "bytes": 107,
+      "sha256": "b6e746328422115d9711dc1bbfd4ae0f9e2f79aef0b45bd3d3770b10fd3363d3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/suite-logs/py_test_grid_subdivision_oracle.json",
+      "destination_relative": "restored-full/suite-logs/py_test_grid_subdivision_oracle.json",
+      "bytes": 360,
+      "sha256": "49feed32eff04a5bc00daf4eef9d6afe7e42374f4941311629dc2e3d08d67acb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/suite-logs/py_test_grid_subdivision_oracle.log",
+      "destination_relative": "restored-full/suite-logs/py_test_grid_subdivision_oracle.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/suite-logs/py_test_grid_subdivision_oracle.unittest.log",
+      "destination_relative": "restored-full/suite-logs/py_test_grid_subdivision_oracle.unittest.log",
+      "bytes": 142,
+      "sha256": "8d84ffccd7ca56de55c42539c26d6bac1618887ece3e585488e2a7cff098b26e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/tool-chrome.stdout",
+      "destination_relative": "restored-full/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/tool-chromium.stdout",
+      "destination_relative": "restored-full/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/tool-gcc.stdout",
+      "destination_relative": "restored-full/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/tool-node.stdout",
+      "destination_relative": "restored-full/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/restored-full/tool-python.stdout",
+      "destination_relative": "restored-full/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/publication/results.json",
+      "destination_relative": "results.json",
+      "bytes": 27556,
+      "sha256": "0ea9741ca67d03a5ecd03ef44caccb64ae14c4e069affe43d65d1fc8ce3a3c9b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-commit.txt",
+      "destination_relative": "withdraw-h-commit.txt",
+      "bytes": 270,
+      "sha256": "57c8085d3504023eea32b6b762147e34c9abbbe8f8acc1b49591fb9198df8725"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/after.binaries.json",
+      "destination_relative": "withdraw-h-only/after.binaries.json",
+      "bytes": 3599,
+      "sha256": "cd6a4ddaafddd523572e2a127306982fe01fd7b47055710bd5355f052e5902ed"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/after.binary-00.sidecar.json",
+      "destination_relative": "withdraw-h-only/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/after.binary-01.sidecar.json",
+      "destination_relative": "withdraw-h-only/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "7b2b2a080537f9d40fa5749317e4158c3f3349412cffcf0c6dba6432293165ad"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/after.binary-02.sidecar.json",
+      "destination_relative": "withdraw-h-only/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/before.binaries.json",
+      "destination_relative": "withdraw-h-only/before.binaries.json",
+      "bytes": 3687,
+      "sha256": "2ea20f845240ed36801dbccb6a5fda668077d16d80e592ef4c4531232c1a0445"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/before.binary-00.sidecar.json",
+      "destination_relative": "withdraw-h-only/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/before.binary-01.sidecar.json",
+      "destination_relative": "withdraw-h-only/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "1b2ba49febd8b7f8a45b1bc3f1f2ca5b3466b56b4f4598b53c383560f62445f2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/before.binary-02.sidecar.json",
+      "destination_relative": "withdraw-h-only/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/command.process.json",
+      "destination_relative": "withdraw-h-only/command.process.json",
+      "bytes": 1182,
+      "sha256": "ffd75019ed149d47cd6d0e9826e8451d1f1a121a03127abc8664f99855f83c7e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/command.stderr",
+      "destination_relative": "withdraw-h-only/command.stderr",
+      "bytes": 3085,
+      "sha256": "f40028e9911bd61b66c56208dafef7e14412b56edde678066ea92b5d75ce4d28"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/command.stdout",
+      "destination_relative": "withdraw-h-only/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/receipt.json",
+      "destination_relative": "withdraw-h-only/receipt.json",
+      "bytes": 13535,
+      "sha256": "5d291cadea6b75cd030465ee9f50b216bd960287c5cf945438131a94856476d2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/suite-logs.manifest.json",
+      "destination_relative": "withdraw-h-only/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/tool-chrome.stdout",
+      "destination_relative": "withdraw-h-only/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/tool-chromium.stdout",
+      "destination_relative": "withdraw-h-only/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/tool-gcc.stdout",
+      "destination_relative": "withdraw-h-only/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/tool-node.stdout",
+      "destination_relative": "withdraw-h-only/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h-only/tool-python.stdout",
+      "destination_relative": "withdraw-h-only/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-h.patch",
+      "destination_relative": "withdraw-h.patch",
+      "bytes": 881,
+      "sha256": "dce4fddba3f16638b565c2750b099097e9552c4ceca669c3da120a4f78c403bf"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-commit.txt",
+      "destination_relative": "withdraw-w-commit.txt",
+      "bytes": 270,
+      "sha256": "cdfbdf816d556860b829c4e2b9998fbc500d053480c97df6ba8b49b3e72bbca7"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/after.binaries.json",
+      "destination_relative": "withdraw-w-only/after.binaries.json",
+      "bytes": 3668,
+      "sha256": "d5cbd5e586a1bc257feccf8ba2e872c9930f6b4a5261a7dfe07729eada419598"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/after.binary-00.sidecar.json",
+      "destination_relative": "withdraw-w-only/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/after.binary-01.sidecar.json",
+      "destination_relative": "withdraw-w-only/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "1b2ba49febd8b7f8a45b1bc3f1f2ca5b3466b56b4f4598b53c383560f62445f2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/after.binary-02.sidecar.json",
+      "destination_relative": "withdraw-w-only/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/before.binaries.json",
+      "destination_relative": "withdraw-w-only/before.binaries.json",
+      "bytes": 3671,
+      "sha256": "cc61ce303f6ea1f21ffbe2bf650209b03cac0a94cf820bb08c9751d089cfcd1a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/before.binary-00.sidecar.json",
+      "destination_relative": "withdraw-w-only/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/before.binary-01.sidecar.json",
+      "destination_relative": "withdraw-w-only/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "1b2ba49febd8b7f8a45b1bc3f1f2ca5b3466b56b4f4598b53c383560f62445f2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/before.binary-02.sidecar.json",
+      "destination_relative": "withdraw-w-only/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/command.process.json",
+      "destination_relative": "withdraw-w-only/command.process.json",
+      "bytes": 1158,
+      "sha256": "541eb5fdc169627541bb7f1c9b3d2eb2cb3c401dd7508240861af068ee5afd1f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/command.stderr",
+      "destination_relative": "withdraw-w-only/command.stderr",
+      "bytes": 1154,
+      "sha256": "277850ad8271f420e4d3cd62e8768a07646f63ecadf430bba1aeb1b3d29d4b0a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/command.stdout",
+      "destination_relative": "withdraw-w-only/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/receipt.json",
+      "destination_relative": "withdraw-w-only/receipt.json",
+      "bytes": 13487,
+      "sha256": "0c11108afef33c71c6bca6a434af472cdde0e706c78fe70c714129272a47ddfe"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/suite-logs.manifest.json",
+      "destination_relative": "withdraw-w-only/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/tool-chrome.stdout",
+      "destination_relative": "withdraw-w-only/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/tool-chromium.stdout",
+      "destination_relative": "withdraw-w-only/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/tool-gcc.stdout",
+      "destination_relative": "withdraw-w-only/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/tool-node.stdout",
+      "destination_relative": "withdraw-w-only/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w-only/tool-python.stdout",
+      "destination_relative": "withdraw-w-only/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/gridrule-tail/withdraw-w.patch",
+      "destination_relative": "withdraw-w.patch",
+      "bytes": 988,
+      "sha256": "f31c4e932f9ab0b2ce1a643ff3d7e576d75a350e88af1c3ae50b41fbe2c45bf3"
+    }
+  ],
+  "excluded_recorded_identities": [
+    {
+      "relative_path": "before/before.source.json",
+      "bytes": 1370282,
+      "sha256": "55fa1c0002dd2dee18bc8fccbe755633c1954bed6ce7615f77fc45a7184a6518",
+      "identity_source": "before/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "before/after.source.json",
+      "bytes": 1370282,
+      "sha256": "ddae6f4c06929b5da5e9ab21f5764d8d9ad269a91b8fc159ec6d612aab71cae3",
+      "identity_source": "before/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "before/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "before/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "after-focused/before.source.json",
+      "bytes": 1370282,
+      "sha256": "8e4b42041d238a9f613c37b10ece86b2980b1e267cf51437860fd7c5f1c522ac",
+      "identity_source": "after-focused/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "after-focused/after.source.json",
+      "bytes": 1370282,
+      "sha256": "24f4c6c3d4107f2b329ec02d0c5fcfcaaafb26800936fbfa99c6c1332b797807",
+      "identity_source": "after-focused/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "after-focused/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "after-focused/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "withdraw-w-only/before.source.json",
+      "bytes": 1370243,
+      "sha256": "d53aa5ff8aa7452abe99e4fa1adc5917866ddc7862551a587f0a345a570f0914",
+      "identity_source": "withdraw-w-only/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "withdraw-w-only/after.source.json",
+      "bytes": 1370243,
+      "sha256": "5706a614496e6a90077854efe05b59288381eb58fc1fec72f8d858c667e09d95",
+      "identity_source": "withdraw-w-only/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "withdraw-w-only/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "withdraw-w-only/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "withdraw-h-only/before.source.json",
+      "bytes": 1370243,
+      "sha256": "3db937fa79ec0fb3930c59689f5288b533c3207ee8f9c62ec1b034be7aeef020",
+      "identity_source": "withdraw-h-only/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "withdraw-h-only/after.source.json",
+      "bytes": 1370243,
+      "sha256": "540f2d880f49ff2623e6fc08b11f1ea8826d0c1d23c397ee8095a23d2b6e26d5",
+      "identity_source": "withdraw-h-only/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "withdraw-h-only/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "withdraw-h-only/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "restored-full/before.source.json",
+      "bytes": 1370282,
+      "sha256": "e94d1e1738846b16ad0bfc6d9a164faa3433f7e495b3ed128bc9fad1847ba3e3",
+      "identity_source": "restored-full/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "restored-full/after.source.json",
+      "bytes": 1370282,
+      "sha256": "c0f09afe751db7de26ad2412608dea0566f56ec7473f6c5d115dc996aef0fce3",
+      "identity_source": "restored-full/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    },
+    {
+      "relative_path": "restored-full/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "restored-full/receipt.json:evidence_files",
+      "rehash_for_this_publication": false,
+      "reason": "不複製大型來源清單／Python 擷取工具；保留原收據記錄的身份"
+    }
+  ],
+  "scope": "原raw command、receipt、suite logs、binary sidecars、版本輸出、報告及兩負控patch/commit；其他收據列檔均不在本公開集合"
+}
