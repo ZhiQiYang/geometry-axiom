@@ -4,6 +4,7 @@ import base64
 import hashlib
 import json
 from pathlib import Path
+import re
 import sys
 from types import SimpleNamespace
 import unittest
@@ -24,13 +25,55 @@ CLARIFIED_MAIN_VERSION = ("a393a0f01284433ca20fe8b10d9f21111026e7f1", "b06ffecf4
 K3_MAIN_VERSION = ('d1db88ae99ca9b6858b0ada34d082e902f00c9f9', '9d4f90aacbc863941c1065a6b962f760e7e842c4d7dda55a56c4dc321f9a0f93')
 PRE_CARD_REFERENCE_MAIN_VERSION = ("651c661b2c4c224c58bb4a2ed0a42ed929a16aa6", "ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004")
 PRE_ONE_AXIS_STAGGER_MAIN_VERSION = ("e744f5316fd7c896275bdee4c34ad22ae97d9d8e", "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5")
-PRE_PARAMETER_ID_WORDING_MAIN_VERSION = ("0d9015bc5a83fbb0b39e52555ce2da78f1c668ea", "f10ef7ca8a4c1e5154fc705116f30be31e7d9374dd963b9f99d9c2268d34981c")
 D64_ADOPTION_MAIN_VERSION = ("b3c79615d0cde89bbdca72c1223d214324bc5f8f", "e5e43ec5da2030669c9ecd7a67f8b250cfb7290cf663365b2b66c51814bb77b9")
+# The #309 commit's executor pair (#260 A/B text). #309 reaches main only as the second parent
+# of a merge commit, so no first-parent state of main ever declared it (P-181): like the
+# interim digests listed in modeling/__init__.py it is deliberately NOT an accepted version.
+NEVER_DECLARED_309_AB_VERSION = ("0d9015bc5a83fbb0b39e52555ce2da78f1c668ea", "f10ef7ca8a4c1e5154fc705116f30be31e7d9374dd963b9f99d9c2268d34981c")
 # Every accepted pair whose axiom text already contains D64/I74/R60 byte for byte as the
 # current revision does. Spelled out here (not read back from modeling) so that dropping a
 # pair from CARD_REFERENCE_AXIOM_VERSIONS cannot also shrink the list that checks it.
-POST_D64_MAIN_VERSIONS = (D64_ADOPTION_MAIN_VERSION, PRE_ONE_AXIS_STAGGER_MAIN_VERSION,
-                          PRE_PARAMETER_ID_WORDING_MAIN_VERSION)
+POST_D64_MAIN_VERSIONS = (D64_ADOPTION_MAIN_VERSION, PRE_ONE_AXIS_STAGGER_MAIN_VERSION)
+# SHA-256 of the D64 / I74 / R60 blocks of 公理層.md (see card_clause_sha256), recorded per
+# revision from `git show <revision>:公理層.md` (LF). The three pairs that may carry
+# grid-card-reference/1 -- b3c79615 (adoption), e744f531 (GEO-261 release) and the current
+# a00ba9e9 -- hold byte-identical clause text, which is what makes the first two safe to
+# list in CARD_REFERENCE_AXIOM_VERSIONS. If the current text of these clauses ever changes,
+# the pinned current entry goes red and every listed pair has to be re-verified.
+_CARD_CLAUSES = {
+    'D64': 'e490bb7ecf9cd9630a7a32071e1fd51d368b731de1ec61fff7d21482e5abf6cf',
+    'I74': '9925536849dd62c9f52a7d2e02c49c88c820b29be4404ca39d952b404adba551',
+    'R60': '8c1513dfa65831b34a54a53ad3d6000b3234d4d09945a43071fe5992e70d50e7',
+}
+CARD_CLAUSE_SHA256 = {
+    D64_ADOPTION_MAIN_VERSION[0]: _CARD_CLAUSES,
+    PRE_ONE_AXIS_STAGGER_MAIN_VERSION[0]: _CARD_CLAUSES,
+    'a00ba9e95fa9be65339af167d4ab611083d269f5': _CARD_CLAUSES,
+}
+
+
+def card_clause_sha256(text):
+    """SHA-256 per clause id of every block that starts with D64 / I74 / R60.
+
+    A block runs from its first line to the line before the next clause head
+    ('D12 ', '**D12 ', 'I74 ', 'R60 ' ...) or the next '## ' heading. `text` is LF-normalised.
+    """
+    start = re.compile(r'^(?:\*\*)?([DIR]\d+[a-z]?)[ \u3000（(：:*]')
+    lines = text.split('\n')
+    marks = []
+    for number, line in enumerate(lines):
+        found = start.match(line)
+        if found:
+            marks.append((number, found.group(1)))
+        elif line.startswith('## '):
+            marks.append((number, '##'))
+    blocks = {clause: [] for clause in ('D64', 'I74', 'R60')}
+    for index, (number, clause) in enumerate(marks):
+        if clause in blocks:
+            end = marks[index + 1][0] if index + 1 < len(marks) else len(lines)
+            blocks[clause].append('\n'.join(lines[number:end]))
+    return {clause: hashlib.sha256('\n'.join(parts).encode('utf-8')).hexdigest()
+            for clause, parts in blocks.items()}
 # Frozen, unmodified build_package output of main e980cb0d (the GEO-261 release),
 # produced natively by make_fixture.sh in a clean clone with that main's own adapter;
 # see each fixture's provenance.  Pin the SHA-256 the producer recorded when committing.
@@ -260,12 +303,14 @@ class EngineeringModelCompatibility(unittest.TestCase):
         # exactly the versions older than D64/I74/R60 (an independent oracle).
         frozen = json.loads((ROOT / 'tests/fixtures/domain-decoupling-main-a898ad6e/historical-versions.json').read_bytes())
         self.assertEqual(frozenset(tuple(pair) for pairs in frozen.values() for pair in pairs), pre, 'CARD_AXIOM_ERA')
-        # b3c79615 adopted D64/I74/R60; the #260 adoption retired e744f531 and 0d9015bc, whose
-        # D64/I74/R60 text is byte-identical to the current revision's (see the train PR).
+        # b3c79615 adopted D64/I74/R60; the #260 adoption retired e744f531, whose D64/I74/R60
+        # text is byte-identical to the current revision's (CARD_CLAUSE_SHA256 below).
         self.assertEqual(frozenset(POST_D64_MAIN_VERSIONS), modeling.CARD_REFERENCE_AXIOM_VERSIONS,
                          'CARD_AXIOM_ERA: expected ' + repr(sorted(POST_D64_MAIN_VERSIONS)) +
                          ' but CARD_REFERENCE_AXIOM_VERSIONS is ' + repr(sorted(modeling.CARD_REFERENCE_AXIOM_VERSIONS)))
         self.assertEqual(accepted, pre | modeling.CARD_REFERENCE_AXIOM_VERSIONS | {current}, 'CARD_AXIOM_ERA')
+        self.assertNotIn(NEVER_DECLARED_309_AB_VERSION, accepted,
+                         'CARD_AXIOM_ERA: %s was never declared by a main executor (P-181)' % (NEVER_DECLARED_309_AB_VERSION,))
         self.assertFalse(pre & modeling.CARD_REFERENCE_AXIOM_VERSIONS, 'CARD_AXIOM_ERA')
         self.assertNotIn(current, pre, 'CARD_AXIOM_ERA')
 
@@ -315,7 +360,7 @@ class EngineeringModelCompatibility(unittest.TestCase):
 
     def test_card_packages_under_every_post_d64_pair_pass_the_version_gate(self):
         # Pure Python: stop at the rebuild. Each accepted pair that already carries
-        # D64/I74/R60 -- including the two pairs the #260 adoption retired -- must pass
+        # D64/I74/R60 -- including e744f531, which the #260 adoption retired -- must pass
         # the card gate; a refusal names the pair, so a dropped pair is identifiable.
         class Reached(Exception):
             pass
@@ -332,6 +377,50 @@ class EngineeringModelCompatibility(unittest.TestCase):
                         self.fail('CARD_AXIOM_ERA: card claim under %s was refused as %s/%s: %s' % (
                             version, error.status, error.code, error.message))
                     self.fail('CARD_AXIOM_ERA: the rebuild was not reached under %s' % (version,))
+
+    def test_the_never_declared_309_pair_is_refused_as_an_unknown_axiom_revision(self):
+        # 0d9015bc was only ever the executor of the #309 commit, a second parent of the train's
+        # merge commit; main never declared it (P-181), so it is not an accepted version at all --
+        # neither for plain packages nor for card claims -- and the refusal is the generic one,
+        # not the card gate's (which would mean the pair had been accepted as pre-D64).
+        class Reached(Exception):
+            pass
+        current = (modeling.AXIOM_REVISION, modeling.AXIOM_SHA256)
+        self.assertNotIn(NEVER_DECLARED_309_AB_VERSION, modeling._accepted_axiom_versions(current),
+                         'AXIOM_309_UNDECLARED: %s must stay unlisted' % (NEVER_DECLARED_309_AB_VERSION,))
+        plain = json.loads((ROOT / 'tests/fixtures/domain-decoupling-main-a898ad6e/parameter.json').read_bytes())
+        for label, package in (('plain', plain), ('card claim', self.card_claim_fixture())):
+            package['manifest']['axiom_revision'], package['manifest']['axiom_sha256'] = NEVER_DECLARED_309_AB_VERSION
+            original = deepcopy(package)
+            with self.subTest(package=label), mock.patch.object(modeling, 'build_package', side_effect=Reached):
+                try:
+                    verify_package(package)
+                except Reached:
+                    self.fail('AXIOM_309_UNDECLARED: %s package under %s reached the rebuild' % (label, NEVER_DECLARED_309_AB_VERSION))
+                except ModelError as error:
+                    self.assertEqual(('UNSUPPORTED', 'AXIOM_VERSION', 'I32'), (error.status, error.code, error.clause),
+                                     'AXIOM_309_UNDECLARED: %s under %s' % (label, NEVER_DECLARED_309_AB_VERSION))
+                    self.assertIn('does not implement the supplied axiom revision', error.message,
+                                  'AXIOM_309_UNDECLARED: %s under %s' % (label, NEVER_DECLARED_309_AB_VERSION))
+                else:
+                    self.fail('AXIOM_309_UNDECLARED: %s package under %s was accepted' % (label, NEVER_DECLARED_309_AB_VERSION))
+            self.assertEqual(package, original, 'a refusal must not rewrite the supplied package')
+
+    def test_card_clause_text_is_pinned_for_every_pair_that_may_carry_card_references(self):
+        ssot = (ROOT / '公理層.md').read_bytes().replace(b'\r\n', b'\n').decode('utf-8')
+        current = modeling.AXIOM_REVISION
+        self.assertEqual(CARD_CLAUSE_SHA256[current], card_clause_sha256(ssot),
+                         'CARD_CLAUSE_TEXT: D64/I74/R60 changed in 公理層.md; the pairs in '
+                         'CARD_REFERENCE_AXIOM_VERSIONS %s were verified against the old text -- '
+                         're-verify them (git show <revision>:公理層.md) before updating the pin' %
+                         (sorted(modeling.CARD_REFERENCE_AXIOM_VERSIONS),))
+        listed = {revision for revision, _ in modeling.CARD_REFERENCE_AXIOM_VERSIONS} | {current}
+        self.assertEqual(listed, set(CARD_CLAUSE_SHA256),
+                         'CARD_CLAUSE_TEXT: every pair that may carry card references needs recorded clause hashes '
+                         '(and only those): listed %s, recorded %s' % (sorted(listed), sorted(CARD_CLAUSE_SHA256)))
+        for revision, hashes in CARD_CLAUSE_SHA256.items():
+            self.assertEqual(CARD_CLAUSE_SHA256[current], hashes,
+                             'CARD_CLAUSE_TEXT: %s does not carry the current D64/I74/R60 text' % (revision,))
 
     def test_pre_card_axioms_ignore_card_words_in_source_comments(self):
         package = self.build()

@@ -101,20 +101,24 @@ geometry-parameters/1 的匯出／匯入仍只有卡片閉包，不包含網格�
 ### 採納前模型包的版本防線（P-142 B1）
 
 D64／I74／R60 於 #256 的提交 A `b3c79615` 採納；#266（GEO-261）之後執行器版本改指 `e744f531`（LF 雜湊 `18a9a75b…`），`b3c79615` 成為 `PRE_DECOUPLING_AXIOM_VERSIONS`。
-整卡語意的年代因此分成三段：現行版本與 `CARD_REFERENCE_AXIOM_VERSIONS`（採納提交本身）可帶整卡；
+整卡語意的年代因此分成三段：現行版本，以及 `CARD_REFERENCE_AXIOM_VERSIONS` 內已含 D64／I74／R60 的執行器版本（採納提交 `b3c79615`，與 #260 採納前最後一個發佈到 main 的 `e744f531`），可帶整卡；
 `_pre_card_reference_versions()` = 允收集合 − 現行 − `CARD_REFERENCE_AXIOM_VERSIONS` 的 19 組版本早於 D64，只有在未宣告且未使用整卡能力時才相容。
 這 19 組恰等於 a898ad6e（當時現行即 `b3c79615`）凍結的 `historical-versions.json` 全部家族，可獨立核對。日後若再有採納讓現行版本退為舊版，須把它加入 `CARD_REFERENCE_AXIOM_VERSIONS`，否則其整卡包會 fail closed。
-#260 的採納（現行改指 `a00ba9e9`，LF 雜湊 `7794a778…`）即是這種情形：它退役了 `e744f531`（`PRE_ONE_AXIS_STAGGER_AXIOM_VERSIONS`）與 #309 的 `0d9015bc`（`PRE_PARAMETER_ID_WORDING_AXIOM_VERSIONS`），
-這兩版的 D64／I74／R60 與 `a00ba9e9` 逐位元組相同，兩版之間改的字（A/B 一軸錯縫、I5/R18、I23/R13 標題括號、D31/R33 cardId→parameterId）都不在整卡條文內，
-所以現在 `CARD_REFERENCE_AXIOM_VERSIONS` = `b3c79615`、`e744f531`、`0d9015bc` 三組。
+#260 的採納（現行改指 `a00ba9e9`，LF 雜湊 `7794a778…`）即是這種情形：它退役了 `e744f531`（`PRE_ONE_AXIS_STAGGER_AXIOM_VERSIONS`）。
+`b3c79615`、`e744f531`、`a00ba9e9` 三版的 D64／I74／R60 區塊逐位元組相同，三版之間改的字（A/B 一軸錯縫、I5/R18、I23/R13 標題括號、D31/R33 cardId→parameterId）都不在整卡條文內，
+所以 `CARD_REFERENCE_AXIOM_VERSIONS` = `b3c79615`、`e744f531` 兩組。這個「逐位元組相同」由 `tests/test_engineering_model_compatibility.py` 的 `CARD_CLAUSE_SHA256`（三版各自記錄的 D64／I74／R60 區塊 SHA-256）執行核對：
+現行條文的這三條一動，測試即轉紅，清單內每一組都要重新核對；清單內多一組而沒有記錄雜湊，同樣轉紅。
+#309 提交的執行器版本 `0d9015bc`（LF 雜湊 `f10ef7ca…`）不在其中，也不在允收集合：#309 只以 merge commit 第二親代進 main，main 的 first-parent 狀態從來沒有宣告過它（P-181），依「過渡版本不列入」的先例刻意不收，帶它的包回 `UNSUPPORTED/AXIOM_VERSION`。
 `verify_package` 在重建之前檢查 manifest.capabilities 與 base_scene 的能力宣告／整卡語法；任一出現 `grid-card-reference/1` 語意即回 `UNSUPPORTED/AXIOM_VERSION`。
 兩處能力宣告都被移除但仍有 card-reference／card 語法，也不能藉此套用舊版公理。
 現行版本的完整整卡包仍可原樣重建；未知或混搭版本仍由原有精確版本配對拒絕。
 
 `tests/test_engineering_model_compatibility.py` 的五個具名方法涵蓋三條拒絕路徑、現行完整包與全部舊版無整卡對照；
 GEO-261 合併後另加三個：年代分割等於凍結允收集合（純 Python）、以 a898ad6e 原件加整卡宣告在重建前驗證 19 組舊版全拒且 `b3c79615` 放行（純 Python，以 mock 截在重建前）、`b3c79615` 版整卡包原生重建只更新版本欄位（需原生）。
-#260 列車再把後兩者擴為逐一檢查採納提交與兩個被退役的版本（`b3c79615`、`e744f531`、`0d9015bc`；清單寫死在測試裡，不從 `modeling` 讀回），並加一個純 Python 的版本閘測試；拒絕訊息指名版本配對。
-`run_axiom_mutations.py --output <新目錄>` 實際撤除整道防線、漏查 manifest、漏查來源、豁免最後一個採納前版本家族，或把整個採納後集合（V05）當成採納前；每筆要求具名斷言轉紅、沒有 error／skip，逐 byte 還原後完整相容性 suite（42 題）回綠。
+#260 列車再把後兩者擴為逐一檢查採納提交與被退役的 `e744f531`（`b3c79615`、`e744f531`；清單寫死在測試裡，不從 `modeling` 讀回），並加三個：純 Python 的版本閘測試、`0d9015bc` 必須以 `AXIOM_VERSION`（通用訊息，不是整卡閘的訊息）被拒的測試、D64／I74／R60 區塊雜湊釘住的測試；失敗訊息都指名版本配對。
+`run_axiom_mutations.py --output <新目錄>` 實際撤除整道防線、漏查 manifest、漏查來源、豁免最後一個採納前版本家族，或把整個採納後集合（V05）當成採納前；每筆要求具名斷言轉紅、沒有 error／skip，逐 byte 還原後完整相容性 suite（44 題）回綠。
+每個變異的目標字串必須在原始檔中恰好出現一次，否則該工具以「目標字串遺失或不唯一」的訊息停下，不會拿未變異的原始碼冒充變異。
+該工具以 `\n` 比對多行目標，需在 LF 行尾的檔案上執行（Windows 簽出為 CRLF 時，先用 `core.autocrlf=false` 另行簽出）。
 
 ## 驗收邊界
 
