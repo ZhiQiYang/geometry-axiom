@@ -1,0 +1,642 @@
+{
+  "schema": "geo261-topic14-browser-preflight/1",
+  "started_utc": "2026-10-18T15:00:22.873900+00:00",
+  "baseline_sha": "e64aa6359d600f43313ec9d7ba1112c465b6a40c",
+  "tested_sha": "2585fa9aef20366086dc3334012d70e204e2a669",
+  "repo": "/workspace/geometry-axiom",
+  "ordered_suites": [
+    "canvas",
+    "assembly",
+    "documents",
+    "grid",
+    "space",
+    "timber"
+  ],
+  "baseline_runner_sha256": "800f680e17e55d20599fa3e3cff184ea172973bbee26104d01e59bc8bebf576f",
+  "status": "compatible_reviewed_topic14",
+  "differences": [
+    {
+      "path": "geometry-web/assembly_generation_test.js",
+      "baseline_sha256": "5889de038059b3e5d5e875c90246c1cf9dcb1399335f74fafb3fb79403a7905a",
+      "target_sha256": "6017884b8b6085e76dd5ab6ef2635c7693a98b4d7aa3826e0f46817173eaddc9",
+      "equal": false,
+      "reason": "harness／literal require 依賴／golden bytes 不同",
+      "unified_diff": "--- e64/geometry-web/assembly_generation_test.js\n+++ C1/geometry-web/assembly_generation_test.js\n@@ -32,7 +32,11 @@\n  const changed=(await state()).instances[0];check('G03 配置與定位來源改變由原生重算',same(changed.value.mapping,mapping)&&changed.members.map(m=>m.geometry.length).join(',')==='2960,2960,2260'&&changed.members.every(m=>m.geometry.A===40&&m.geometry.B===50));\n  await ctl('[data-asm-binding=\"1\"]');await ctl('#asmInstanceEdit1');await fill('#asmInstanceName','保留未完成來源');await choose('#asmInstanceGuide1',0);await ctl('#asmClose');\n  const saved=await read(`(async()=>{window.__generationBytes=await ReferenceWorkspace.exportBytes();const p=await GeometryProject.unpack(window.__generationBytes,fflate);return {format:p.manifest.format,drafts:p.manifest.assemblyDrafts.records};})()`);\n- check('G07 未完成實例草稿保存第8版',saved.format==='geometry-canvas/8'&&saved.drafts.some(d=>d.kind==='instance'&&d.data.members[0].guideId===0));\n+ const g07Directory=path.join(os.tmpdir(),'geometry-tests');fs.mkdirSync(g07Directory,{recursive:true});\n+ const g07Bytes=Buffer.from(await read(`Array.from(window.__generationBytes)`));\n+ fs.writeFileSync(path.join(g07Directory,'assembly-generation-g07-before.gcanvas'),g07Bytes);\n+ fs.writeFileSync(path.join(g07Directory,'assembly-generation-g07-before.json'),JSON.stringify(saved,null,2)+'\\n');\n+ check('G07 未完成實例草稿保存第8版',saved.format==='geometry-canvas/8'&&saved.drafts.some(d=>d.kind==='instance'&&d.data.members[0].guideId===0),saved);\n  await read(`(async()=>{await ReferenceWorkspace.importBytes(window.__generationBytes,'生成重開.gcanvas');await renderObjects();})()`);check('G07 保存重開原生來源映射幾何精確一致',same((await state()).instances[0],changed));\n  await ctl('#btnNewAssembly');await ctl('[data-asm-draft]');await ctl('#asmPreview');await wait(`$('asmConfirm').disabled&&$('asmPreviewResult').textContent.includes('I42')`);check('G06 未選定位線不能套用',same((await state()).instances[0],changed));await ctl('#asmDeleteDraft');\n  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await ctl('[data-asm-binding=\"1\"]');await ctl('#asmInstanceEdit1');await fill('#asmInstanceName','390px 角材來源');await ctl('#asmPreview');await wait(`!$('asmConfirm').disabled`);",
+      "diff_truncated": false,
+      "diff_total_lines": 15
+    }
+  ],
+  "checks": [
+    {
+      "path": "geometry-web/assembly_candidate_impact_test.js",
+      "baseline_sha256": "7110fd3c71d901465d2697c09723ece7fa4f3e38133edadf995fc3e2cf975c37",
+      "target_sha256": "7110fd3c71d901465d2697c09723ece7fa4f3e38133edadf995fc3e2cf975c37",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/assembly_context_entry_test.js",
+      "baseline_sha256": "a02e10d6b53dd2f63efba797333057bf18a029c680a1dfb905c42a6899fe7bc7",
+      "target_sha256": "a02e10d6b53dd2f63efba797333057bf18a029c680a1dfb905c42a6899fe7bc7",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/assembly_generation_test.js",
+      "baseline_sha256": "5889de038059b3e5d5e875c90246c1cf9dcb1399335f74fafb3fb79403a7905a",
+      "target_sha256": "6017884b8b6085e76dd5ab6ef2635c7693a98b4d7aa3826e0f46817173eaddc9",
+      "equal": false
+    },
+    {
+      "path": "geometry-web/assembly_id_test.js",
+      "baseline_sha256": "6d7c8ebb721b0f697016a8eb12e1ba5b16e6298745a8f85acb259e8261b931ad",
+      "target_sha256": "6d7c8ebb721b0f697016a8eb12e1ba5b16e6298745a8f85acb259e8261b931ad",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/assembly_review_test.js",
+      "baseline_sha256": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950",
+      "target_sha256": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/assembly_workflow_test.js",
+      "baseline_sha256": "be1eaf009660cf8e7d05a6a643040a62abc4af11fdd01ae665d96e48bab048a7",
+      "target_sha256": "be1eaf009660cf8e7d05a6a643040a62abc4af11fdd01ae665d96e48bab048a7",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/async_reply_ui_test.js",
+      "baseline_sha256": "152c23ab908bc4c205a22d1fb2064536e3af121d4bcd2dbc7e1edad60f3553aa",
+      "target_sha256": "152c23ab908bc4c205a22d1fb2064536e3af121d4bcd2dbc7e1edad60f3553aa",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/cdp_confirmation_gate.js",
+      "baseline_sha256": "59a839da0785adc43b05c0c4234b714bbf6581306954d083b3007beafb85c851",
+      "target_sha256": "59a839da0785adc43b05c0c4234b714bbf6581306954d083b3007beafb85c851",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/cdp_evaluation.js",
+      "baseline_sha256": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e",
+      "target_sha256": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/cdp_floor.js",
+      "baseline_sha256": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e",
+      "target_sha256": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/cdp_helpers.js",
+      "baseline_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+      "target_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/cdp_navigation.js",
+      "baseline_sha256": "64be1d676aec784f275a27f621b17a5e5440fdb4f56a0c786036b2e3708692ae",
+      "target_sha256": "64be1d676aec784f275a27f621b17a5e5440fdb4f56a0c786036b2e3708692ae",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/cdp_sections.golden.json",
+      "baseline_sha256": "5cc618e50027750e4ea22286d4c08bffac3760b80ece57140d7d790a3b81c5ac",
+      "target_sha256": "5cc618e50027750e4ea22286d4c08bffac3760b80ece57140d7d790a3b81c5ac",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/cdp_test.js",
+      "baseline_sha256": "e43e31731073878ad0ca02315f333d0a070116f2ebf1e97d8c292db70d43cc0f",
+      "target_sha256": "e43e31731073878ad0ca02315f333d0a070116f2ebf1e97d8c292db70d43cc0f",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/composition_canvas_test.js",
+      "baseline_sha256": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea",
+      "target_sha256": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/documents_browser_test.js",
+      "baseline_sha256": "0ab5cec0dd5f497e9501c68dce6970658f1d39c1f8a2c62183744b47b5826886",
+      "target_sha256": "0ab5cec0dd5f497e9501c68dce6970658f1d39c1f8a2c62183744b47b5826886",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/engineering_workflow_test.js",
+      "baseline_sha256": "2ff9c6257b2a1c5ad8bffd5a6791c454c6d6e7ba717489697f6807bac9e834c6",
+      "target_sha256": "2ff9c6257b2a1c5ad8bffd5a6791c454c6d6e7ba717489697f6807bac9e834c6",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/evidence-links.js",
+      "baseline_sha256": "70345645f0b0b7ecc967a8b82270e29f16678c34cb4e012b331186ec15e43232",
+      "target_sha256": "70345645f0b0b7ecc967a8b82270e29f16678c34cb4e012b331186ec15e43232",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/feature-attachments.js",
+      "baseline_sha256": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "target_sha256": "4c1c1acc2183d7c8560cdd7b9b4bd758f1e3e1b7dad7d386bab8d20942823b72",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/grid_inspector_rename_test.js",
+      "baseline_sha256": "f89b28087f6576010488c4cff44b76264e1e680692efe5adbc34ae16e3dbb27a",
+      "target_sha256": "f89b28087f6576010488c4cff44b76264e1e680692efe5adbc34ae16e3dbb27a",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/grid_material_entry_test.js",
+      "baseline_sha256": "9b0c7ed79a8107601fbd894f3a9839901248ec25157fb7ddc00893ae7314a229",
+      "target_sha256": "9b0c7ed79a8107601fbd894f3a9839901248ec25157fb7ddc00893ae7314a229",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/grid_rule_editor_test.js",
+      "baseline_sha256": "ba2ee897e05d862a44ec275c098626627a90bd83dedf6ca2c7f377a58729cc53",
+      "target_sha256": "ba2ee897e05d862a44ec275c098626627a90bd83dedf6ca2c7f377a58729cc53",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/grid_rule_lines_test.js",
+      "baseline_sha256": "4c380e38b0bb8300e556df4b7b1d511724d5670a930d6d5d7093b9c861240735",
+      "target_sha256": "4c380e38b0bb8300e556df4b7b1d511724d5670a930d6d5d7093b9c861240735",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/grid_system_test.js",
+      "baseline_sha256": "f6802f13bc59fbc2058eef4138074bb88af51f07666c635d429da8f43789670f",
+      "target_sha256": "f6802f13bc59fbc2058eef4138074bb88af51f07666c635d429da8f43789670f",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/grid_trial_test.js",
+      "baseline_sha256": "2493c5aeb2ca31168277a882538991b50707ac39aab9a91f70586c9901607139",
+      "target_sha256": "2493c5aeb2ca31168277a882538991b50707ac39aab9a91f70586c9901607139",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/grid_workspace_draft_test.js",
+      "baseline_sha256": "7d7f831cbf1a9a3c6353cdf1028b7701c56628681b24eebe5f0ad1e36b733822",
+      "target_sha256": "7d7f831cbf1a9a3c6353cdf1028b7701c56628681b24eebe5f0ad1e36b733822",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/infinite_grid_face_test.js",
+      "baseline_sha256": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf",
+      "target_sha256": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/marquee_test.js",
+      "baseline_sha256": "9a5099424fb2945e29adba60684c68994523f0058bf4d7549324d1e36e484736",
+      "target_sha256": "9a5099424fb2945e29adba60684c68994523f0058bf4d7549324d1e36e484736",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/model_snapshot_navigation_test.js",
+      "baseline_sha256": "891d0d6626130b1a0d26bbafa5233e3e80819df8542cfc0d8ab59f1b6d12989d",
+      "target_sha256": "891d0d6626130b1a0d26bbafa5233e3e80819df8542cfc0d8ab59f1b6d12989d",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/model_snapshot_schedule_test.js",
+      "baseline_sha256": "e071e23ce689eb2c23ce8cd829e0c5dbd982ce619464e78ea3569839d204a4a6",
+      "target_sha256": "e071e23ce689eb2c23ce8cd829e0c5dbd982ce619464e78ea3569839d204a4a6",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/parameter_confirmation_test.js",
+      "baseline_sha256": "50a814d5abf0cb79506b6be33a64e53a07723bbc7fd911c3529f5d41db54910b",
+      "target_sha256": "50a814d5abf0cb79506b6be33a64e53a07723bbc7fd911c3529f5d41db54910b",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/parameter_preview_ownership_test.js",
+      "baseline_sha256": "d0e3f70b51907d4f27126e362abbe1dcf0a73f913ebf75da71d9d890373baf63",
+      "target_sha256": "d0e3f70b51907d4f27126e362abbe1dcf0a73f913ebf75da71d9d890373baf63",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/parameter_workflow_test.js",
+      "baseline_sha256": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8",
+      "target_sha256": "7c017128b7dbfb917305c8b56e3e9ca6ab0f8fd2afbd2b97b92cb71ce4edbdd8",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/pdf_tracing_snap_test.js",
+      "baseline_sha256": "1aed4e91049e839612323f76fd76bbceebd6dda051b8c9e6fdb0f184020817d4",
+      "target_sha256": "1aed4e91049e839612323f76fd76bbceebd6dda051b8c9e6fdb0f184020817d4",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/project-store.js",
+      "baseline_sha256": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "target_sha256": "7b998fea23698849cd5948b220ae5bc7d4c85e70ad00e145be91c45ca3fc02dd",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/project_audit_test.js",
+      "baseline_sha256": "23bcafd0cb111785abb6608cbe19ed31dce8ac4cf7933cd73078e3303fbbae67",
+      "target_sha256": "23bcafd0cb111785abb6608cbe19ed31dce8ac4cf7933cd73078e3303fbbae67",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/project_import_final_objects_test.js",
+      "baseline_sha256": "7012ef97b6805cff348bf1c6e44945fcc72662bff1ef0c2cd800a42864595be1",
+      "target_sha256": "7012ef97b6805cff348bf1c6e44945fcc72662bff1ef0c2cd800a42864595be1",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/projection_close_probe.js",
+      "baseline_sha256": "168a321b1521e5837d260d62e3961278ec240394b685deab576c2838658406a9",
+      "target_sha256": "168a321b1521e5837d260d62e3961278ec240394b685deab576c2838658406a9",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/reference-display.js",
+      "baseline_sha256": "6e584dcb09c9dddf1469a6fd50723b008c79c296cdd1ebeea69736d9133a2341",
+      "target_sha256": "6e584dcb09c9dddf1469a6fd50723b008c79c296cdd1ebeea69736d9133a2341",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/room_outline_test.js",
+      "baseline_sha256": "a388f9a976b3c8af0fc217274c340b0ffe0d9bf2fccedd1533acf984196aba3a",
+      "target_sha256": "a388f9a976b3c8af0fc217274c340b0ffe0d9bf2fccedd1533acf984196aba3a",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/rule-case-data.js",
+      "baseline_sha256": "ee0e81832fd10bcd3dc240c1c456ed0f9d31839ccbbef35ee50ad9663c9c8c3e",
+      "target_sha256": "ee0e81832fd10bcd3dc240c1c456ed0f9d31839ccbbef35ee50ad9663c9c8c3e",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/save_reopen_synthetic_test.js",
+      "baseline_sha256": "2eda7db51ca8f44d15eddb94251dd57b904a27e924f455c39bd76400bf46b4c0",
+      "target_sha256": "2eda7db51ca8f44d15eddb94251dd57b904a27e924f455c39bd76400bf46b4c0",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/scenario-catalog.js",
+      "baseline_sha256": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1",
+      "target_sha256": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/selection_cursor_test.js",
+      "baseline_sha256": "28db3b2594c8be1f32ea36a989caba2f2c3978cfc0e987ef83e98a768f228556",
+      "target_sha256": "28db3b2594c8be1f32ea36a989caba2f2c3978cfc0e987ef83e98a768f228556",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/source-plane.js",
+      "baseline_sha256": "caed8443df9fb3d7ab1caafc1952208bc839a2072c7126b529041eced19ca30b",
+      "target_sha256": "caed8443df9fb3d7ab1caafc1952208bc839a2072c7126b529041eced19ca30b",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/source_navigation_test.js",
+      "baseline_sha256": "92b4b250a07d96878d665b6e710ff84410f69b3b11d3ce06b7408ba9a6e582a6",
+      "target_sha256": "92b4b250a07d96878d665b6e710ff84410f69b3b11d3ce06b7408ba9a6e582a6",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/space_model_test.js",
+      "baseline_sha256": "f1a0129baddedfe8aa56f0e5e1d8d960e5d6ee77c117acfd8740390cd832cfad",
+      "target_sha256": "f1a0129baddedfe8aa56f0e5e1d8d960e5d6ee77c117acfd8740390cd832cfad",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/space_test_floor.js",
+      "baseline_sha256": "9fb7c364efe9037a1264b01ca7c4a38c40c9cad173238e05259e80ee4d8a35a2",
+      "target_sha256": "9fb7c364efe9037a1264b01ca7c4a38c40c9cad173238e05259e80ee4d8a35a2",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/timber_schedule_test.js",
+      "baseline_sha256": "6371b7abf2e1f75f259805f33ab3ea258cb71fe852540774aac6daddb128134c",
+      "target_sha256": "6371b7abf2e1f75f259805f33ab3ea258cb71fe852540774aac6daddb128134c",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/timber_supports_browser_test.js",
+      "baseline_sha256": "b18a593c4c073768d77e2b4130fdeae451ce42ab7a1b0dc6c4759de28d99604e",
+      "target_sha256": "b18a593c4c073768d77e2b4130fdeae451ce42ab7a1b0dc6c4759de28d99604e",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/transport_failure_trace.js",
+      "baseline_sha256": "23ddb860213285cb6ab900c10a7009ce4e225bad24898d88836657e7d381e8f4",
+      "target_sha256": "23ddb860213285cb6ab900c10a7009ce4e225bad24898d88836657e7d381e8f4",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/uiux_review_test.js",
+      "baseline_sha256": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "target_sha256": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/ux_refinement_test.js",
+      "baseline_sha256": "cd3f8fa12d9d23b18291421be02e5c6e51b6274f9f0e232f16b033fcd093c6db",
+      "target_sha256": "cd3f8fa12d9d23b18291421be02e5c6e51b6274f9f0e232f16b033fcd093c6db",
+      "equal": true
+    },
+    {
+      "path": "geometry-web/vendor/fflate/umd/index.js",
+      "baseline_sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83",
+      "target_sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83",
+      "equal": true
+    },
+    {
+      "path": "tests/reference_pdf_fixture.js",
+      "baseline_sha256": "e9a080dbb26ea4959e19d168012dbba484a9c18876dadf9c0bf882cb144a3740",
+      "target_sha256": "e9a080dbb26ea4959e19d168012dbba484a9c18876dadf9c0bf882cb144a3740",
+      "equal": true
+    },
+    {
+      "path": "tests/room_outline_fixture.js",
+      "baseline_sha256": "f6984e3e4f381995471aa8796c86518914cb3a546c23dfb6d068fe9780f73f46",
+      "target_sha256": "f6984e3e4f381995471aa8796c86518914cb3a546c23dfb6d068fe9780f73f46",
+      "equal": true
+    }
+  ],
+  "limits": [
+    "完整 browser job YAML 語意相同才接受；native job 的其他變更不影響此契約。",
+    "三個入口及所有 literal relative require 依賴（含少數產品模組）、golden 一律逐 byte 比較。",
+    "這是保守拒絕策略；即使只有 harness 註解改變仍拒絕，須另行審閱新 runner，不提供跳過旗標。",
+    "未覆蓋 dynamic require 的一般解析；入口逐 byte 不變，且已讀的固定 e64 入口只使用上述 literal 依賴。",
+    "預檢不代表任何 browser job 已執行或通過。"
+  ],
+  "actual_head": "2585fa9aef20366086dc3334012d70e204e2a669",
+  "resolved_commit": "2585fa9aef20366086dc3334012d70e204e2a669",
+  "source_status": "",
+  "workflow": {
+    "baseline_sha256": "3815c1cd50016a4299b46d8f46f458282692b7234e8d819ac6ca44f0298ca4ad",
+    "target_sha256": "3815c1cd50016a4299b46d8f46f458282692b7234e8d819ac6ca44f0298ca4ad",
+    "browser_job_semantically_equal": true,
+    "baseline_browser_job": {
+      "name": "browser (${{ matrix.suite }})",
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": "${{ matrix.timeout }}",
+      "strategy": {
+        "fail-fast": false,
+        "max-parallel": 2,
+        "matrix": {
+          "include": [
+            {
+              "suite": "assembly",
+              "timeout": 15
+            },
+            {
+              "suite": "documents",
+              "timeout": 10
+            },
+            {
+              "suite": "grid",
+              "timeout": 15
+            },
+            {
+              "suite": "canvas",
+              "timeout": 35
+            },
+            {
+              "suite": "space",
+              "timeout": 15
+            },
+            {
+              "suite": "timber",
+              "timeout": 20
+            }
+          ]
+        }
+      },
+      "env": {
+        "GEOMETRY_TEST_URL": "http://127.0.0.1:18839/",
+        "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-integration-feedback",
+        "GEOMETRY_CHROME": "/usr/bin/google-chrome",
+        "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+        "GEOMETRY_BROWSER_SUITE": "${{ matrix.suite }}",
+        "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/geometry-grid-screens",
+        "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/geometry-document-screens"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "with": {
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Build current native executables",
+          "run": "npm run build"
+        },
+        {
+          "name": "Install Chinese fonts for visual verification",
+          "run": "sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update\nsudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk\n"
+        },
+        {
+          "name": "Run actual browser regression group",
+          "shell": "bash",
+          "run": "ulimit -s 16384\ntest -x \"$GEOMETRY_CHROME\"\n# WSL canvas wait trace\n# Clear inherited flags for all other jobs.\nunset GEOMETRY_WAIT_TRACE\nunset GEOMETRY_WAIT_TRACE_RUN_ID\ncase \"$GEOMETRY_BROWSER_SUITE:$(uname -r)\" in\n  canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;\nesac\nif [ \"${GEOMETRY_WAIT_TRACE-}\" = 1 ]; then\n  export GEOMETRY_WAIT_TRACE_RUN_ID=\"$(python3 geometry-web/prepare_wait_trace.py)\"\nfi\nif [ -n \"${GITHUB_ENV-}\" ]; then\n  printf 'GEOMETRY_WAIT_TRACE=%s\\n' \"${GEOMETRY_WAIT_TRACE-}\" >> \"$GITHUB_ENV\"\nfi\npython3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &\nserver=$!\ncleanup() {\n  original_status=$?\n  set +e\n  kill \"$server\" 2>/dev/null || true\n  wait \"$server\" 2>/dev/null || true\n  if [ \"$GEOMETRY_BROWSER_SUITE\" = canvas ]; then\n    python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact\n    archive_status=$?\n    if [ \"$original_status\" -eq 0 ] && [ \"$archive_status\" -ne 0 ]; then original_status=$archive_status; fi\n  fi\n  exit \"$original_status\"\n}\ntrap cleanup EXIT\nfor attempt in $(seq 1 30); do\n  if ! kill -0 \"$server\" 2>/dev/null; then\n    cat /tmp/geometry-integration-server.log\n    exit 1\n  fi\n  if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi\n  sleep 1\ndone\npython3 geometry-web/runtime_version.py --probe 18839\n# Independent matrix jobs expose each result promptly. They use\n# separate runners/servers and do not cancel siblings on failure.\n# The full canvas run retains its strict golden comparison.\nset +e\ncase \"$GEOMETRY_BROWSER_SUITE\" in\n  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;\n  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;\n  canvas) node geometry-web/cdp_test.js ;;\n  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;\n  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;\n  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;\n  *) echo \"Unknown browser suite\"; exit 2 ;;\nesac\nstatus=$?\ncat /tmp/geometry-integration-server.log\nexit \"$status\"\n"
+        },
+        {
+          "name": "Preserve canvas wait trace",
+          "if": "always() && matrix.suite == 'canvas'",
+          "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "with": {
+            "name": "canvas-wait-trace",
+            "path": "/tmp/geometry-wait-trace-artifact/",
+            "if-no-files-found": "error",
+            "retention-days": 7
+          }
+        },
+        {
+          "name": "Preserve assembly authoring screenshots",
+          "if": "always() && matrix.suite == 'assembly'",
+          "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "with": {
+            "name": "assembly-review-screens",
+            "path": "/tmp/geometry-tests/assembly-*.png",
+            "if-no-files-found": "ignore",
+            "retention-days": 7
+          }
+        },
+        {
+          "name": "Preserve grid trial screenshots",
+          "if": "always() && (matrix.suite == 'grid' || matrix.suite == 'canvas')",
+          "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "with": {
+            "name": "grid-trial-screens-${{ matrix.suite }}",
+            "path": "/tmp/geometry-grid-screens/grid-trial-*.png",
+            "if-no-files-found": "ignore",
+            "retention-days": 7
+          }
+        },
+        {
+          "name": "Preserve document reader screenshots",
+          "if": "always() && matrix.suite == 'documents'",
+          "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "with": {
+            "name": "document-reader-screens",
+            "path": "/tmp/geometry-document-screens/*.png",
+            "if-no-files-found": "ignore",
+            "retention-days": 7
+          }
+        }
+      ]
+    },
+    "target_browser_job": {
+      "name": "browser (${{ matrix.suite }})",
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": "${{ matrix.timeout }}",
+      "strategy": {
+        "fail-fast": false,
+        "max-parallel": 2,
+        "matrix": {
+          "include": [
+            {
+              "suite": "assembly",
+              "timeout": 15
+            },
+            {
+              "suite": "documents",
+              "timeout": 10
+            },
+            {
+              "suite": "grid",
+              "timeout": 15
+            },
+            {
+              "suite": "canvas",
+              "timeout": 35
+            },
+            {
+              "suite": "space",
+              "timeout": 15
+            },
+            {
+              "suite": "timber",
+              "timeout": 20
+            }
+          ]
+        }
+      },
+      "env": {
+        "GEOMETRY_TEST_URL": "http://127.0.0.1:18839/",
+        "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-integration-feedback",
+        "GEOMETRY_CHROME": "/usr/bin/google-chrome",
+        "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+        "GEOMETRY_BROWSER_SUITE": "${{ matrix.suite }}",
+        "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/geometry-grid-screens",
+        "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/geometry-document-screens"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "with": {
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Build current native executables",
+          "run": "npm run build"
+        },
+        {
+          "name": "Install Chinese fonts for visual verification",
+          "run": "sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update\nsudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk\n"
+        },
+        {
+          "name": "Run actual browser regression group",
+          "shell": "bash",
+          "run": "ulimit -s 16384\ntest -x \"$GEOMETRY_CHROME\"\n# WSL canvas wait trace\n# Clear inherited flags for all other jobs.\nunset GEOMETRY_WAIT_TRACE\nunset GEOMETRY_WAIT_TRACE_RUN_ID\ncase \"$GEOMETRY_BROWSER_SUITE:$(uname -r)\" in\n  canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;\nesac\nif [ \"${GEOMETRY_WAIT_TRACE-}\" = 1 ]; then\n  export GEOMETRY_WAIT_TRACE_RUN_ID=\"$(python3 geometry-web/prepare_wait_trace.py)\"\nfi\nif [ -n \"${GITHUB_ENV-}\" ]; then\n  printf 'GEOMETRY_WAIT_TRACE=%s\\n' \"${GEOMETRY_WAIT_TRACE-}\" >> \"$GITHUB_ENV\"\nfi\npython3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &\nserver=$!\ncleanup() {\n  original_status=$?\n  set +e\n  kill \"$server\" 2>/dev/null || true\n  wait \"$server\" 2>/dev/null || true\n  if [ \"$GEOMETRY_BROWSER_SUITE\" = canvas ]; then\n    python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact\n    archive_status=$?\n    if [ \"$original_status\" -eq 0 ] && [ \"$archive_status\" -ne 0 ]; then original_status=$archive_status; fi\n  fi\n  exit \"$original_status\"\n}\ntrap cleanup EXIT\nfor attempt in $(seq 1 30); do\n  if ! kill -0 \"$server\" 2>/dev/null; then\n    cat /tmp/geometry-integration-server.log\n    exit 1\n  fi\n  if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi\n  sleep 1\ndone\npython3 geometry-web/runtime_version.py --probe 18839\n# Independent matrix jobs expose each result promptly. They use\n# separate runners/servers and do not cancel siblings on failure.\n# The full canvas run retains its strict golden comparison.\nset +e\ncase \"$GEOMETRY_BROWSER_SUITE\" in\n  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;\n  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;\n  canvas) node geometry-web/cdp_test.js ;;\n  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;\n  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;\n  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;\n  *) echo \"Unknown browser suite\"; exit 2 ;;\nesac\nstatus=$?\ncat /tmp/geometry-integration-server.log\nexit \"$status\"\n"
+        },
+        {
+          "name": "Preserve canvas wait trace",
+          "if": "always() && matrix.suite == 'canvas'",
+          "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "with": {
+            "name": "canvas-wait-trace",
+            "path": "/tmp/geometry-wait-trace-artifact/",
+            "if-no-files-found": "error",
+            "retention-days": 7
+          }
+        },
+        {
+          "name": "Preserve assembly authoring screenshots",
+          "if": "always() && matrix.suite == 'assembly'",
+          "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "with": {
+            "name": "assembly-review-screens",
+            "path": "/tmp/geometry-tests/assembly-*.png",
+            "if-no-files-found": "ignore",
+            "retention-days": 7
+          }
+        },
+        {
+          "name": "Preserve grid trial screenshots",
+          "if": "always() && (matrix.suite == 'grid' || matrix.suite == 'canvas')",
+          "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "with": {
+            "name": "grid-trial-screens-${{ matrix.suite }}",
+            "path": "/tmp/geometry-grid-screens/grid-trial-*.png",
+            "if-no-files-found": "ignore",
+            "retention-days": 7
+          }
+        },
+        {
+          "name": "Preserve document reader screenshots",
+          "if": "always() && matrix.suite == 'documents'",
+          "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "with": {
+            "name": "document-reader-screens",
+            "path": "/tmp/geometry-document-screens/*.png",
+            "if-no-files-found": "ignore",
+            "retention-days": 7
+          }
+        }
+      ]
+    }
+  },
+  "ended_utc": "2026-10-18T15:00:23.373703+00:00",
+  "baseline_comparison_status": "rejected",
+  "contract_id": "topic14-g07-diagnostic-only-v1",
+  "contract_sha256": "59c0cb5ce333c63b2fa508406c3d10d19ad5dd434aa37fe0a1ad404e18bd866f",
+  "contract_target_binding": {
+    "expected_sha": "2585fa9aef20366086dc3334012d70e204e2a669",
+    "contract_sha256": "59c0cb5ce333c63b2fa508406c3d10d19ad5dd434aa37fe0a1ad404e18bd866f"
+  },
+  "reviewed_changes": [
+    {
+      "path": "geometry-web/assembly_generation_test.js",
+      "baseline_sha256": "5889de038059b3e5d5e875c90246c1cf9dcb1399335f74fafb3fb79403a7905a",
+      "target_sha256": "6017884b8b6085e76dd5ab6ef2635c7693a98b4d7aa3826e0f46817173eaddc9",
+      "equal": false,
+      "reason": "harness／literal require 依賴／golden bytes 不同",
+      "unified_diff": "--- e64/geometry-web/assembly_generation_test.js\n+++ C1/geometry-web/assembly_generation_test.js\n@@ -32,7 +32,11 @@\n  const changed=(await state()).instances[0];check('G03 配置與定位來源改變由原生重算',same(changed.value.mapping,mapping)&&changed.members.map(m=>m.geometry.length).join(',')==='2960,2960,2260'&&changed.members.every(m=>m.geometry.A===40&&m.geometry.B===50));\n  await ctl('[data-asm-binding=\"1\"]');await ctl('#asmInstanceEdit1');await fill('#asmInstanceName','保留未完成來源');await choose('#asmInstanceGuide1',0);await ctl('#asmClose');\n  const saved=await read(`(async()=>{window.__generationBytes=await ReferenceWorkspace.exportBytes();const p=await GeometryProject.unpack(window.__generationBytes,fflate);return {format:p.manifest.format,drafts:p.manifest.assemblyDrafts.records};})()`);\n- check('G07 未完成實例草稿保存第8版',saved.format==='geometry-canvas/8'&&saved.drafts.some(d=>d.kind==='instance'&&d.data.members[0].guideId===0));\n+ const g07Directory=path.join(os.tmpdir(),'geometry-tests');fs.mkdirSync(g07Directory,{recursive:true});\n+ const g07Bytes=Buffer.from(await read(`Array.from(window.__generationBytes)`));\n+ fs.writeFileSync(path.join(g07Directory,'assembly-generation-g07-before.gcanvas'),g07Bytes);\n+ fs.writeFileSync(path.join(g07Directory,'assembly-generation-g07-before.json'),JSON.stringify(saved,null,2)+'\\n');\n+ check('G07 未完成實例草稿保存第8版',saved.format==='geometry-canvas/8'&&saved.drafts.some(d=>d.kind==='instance'&&d.data.members[0].guideId===0),saved);\n  await read(`(async()=>{await ReferenceWorkspace.importBytes(window.__generationBytes,'生成重開.gcanvas');await renderObjects();})()`);check('G07 保存重開原生來源映射幾何精確一致',same((await state()).instances[0],changed));\n  await ctl('#btnNewAssembly');await ctl('[data-asm-draft]');await ctl('#asmPreview');await wait(`$('asmConfirm').disabled&&$('asmPreviewResult').textContent.includes('I42')`);check('G06 未選定位線不能套用',same((await state()).instances[0],changed));await ctl('#asmDeleteDraft');\n  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await ctl('[data-asm-binding=\"1\"]');await ctl('#asmInstanceEdit1');await fill('#asmInstanceName','390px 角材來源');await ctl('#asmPreview');await wait(`!$('asmConfirm').disabled`);",
+      "diff_truncated": false,
+      "diff_total_lines": 15
+    }
+  ],
+  "unapproved_differences": [],
+  "selected_job": {
+    "name": "assembly",
+    "minutes": 15,
+    "cdp_port": 9367,
+    "script": "cdp_test.js",
+    "scope": {
+      "GEOMETRY_ASSEMBLY_ONLY": "1"
+    }
+  },
+  "expected_assembly_census": {
+    "P77": 134,
+    "P82": 16
+  },
+  "diagnostic_only": true,
+  "contract_copy": "/workspace/geo261-validation-20261018/topic14-e9-withdraw-guide.contract.json",
+  "wrapper_sha256": "6cf1093f1f0a4f33df4a7332b87271c540685d237648569c46c0edbeb44c0041",
+  "c1_wrapper_sha256": "5be392c987d198940c0fa6496cdb975072dfb3754542c0d13cd38214b05da6c6"
+}
