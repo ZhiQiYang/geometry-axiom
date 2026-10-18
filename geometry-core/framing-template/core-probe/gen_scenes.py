@@ -205,6 +205,7 @@ class Member:
         self.direction = None
         self.span = None
         self.span_note = None
+        self.promoted = False  # 副支因端面頂到 custom，改宣告 custom priority 4
 
     def length_bounds(self) -> tuple[int, int]:
         return axis_interval(self.rect, self.length_axis)
@@ -283,7 +284,31 @@ def build_members(kind_rects, edges: list[Edge], width: int) -> list[Member]:
         member = Member(index, kind, rect, hit, role, priority, pending, tier)
         _finish_axes(member, width)
         prepared.append(member)
+    promote_secondaries_on_custom(prepared)
     return prepared
+
+
+SECONDARY_ON_CUSTOM_PRIORITY = 4
+
+
+def promote_secondaries_on_custom(members: list[Member]) -> None:
+    """端面頂到 custom 的副支，改宣告 custom priority 4（條文不改；沿牆料本身維持 custom 3）。
+
+    使用者 2026-10-18 拍板（🔒，main 的 決策佇列.md「凹角沿牆料的排序」，#301）。
+    理由：I19 要求擋面擁有者優先級嚴格小於自己；副支是 3，頂不了 3 的 custom 側面。
+    判定依實際擋面（timber_stops：端面座標相接、擋面角材在寬向蓋住整段），不看 kind 字串。
+    只拿升格前就是 custom 的料當擋面（快照），升格後的 custom 4 不再當別人的擋面。
+    """
+    walls = [m for m in members if m.role == "custom"]
+    for member in members:
+        if member.role != "secondary":
+            continue
+        for end in ("lo", "hi"):
+            if timber_stops(member, walls, end):
+                member.role = "custom"
+                member.priority = SECONDARY_ON_CUSTOM_PRIORITY
+                member.promoted = True  # tier 維持 4：仍是副支那一階，排在 custom 3 之後
+                break
 
 
 def order_members(members: list[Member], edges: list[Edge]) -> list[int]:
@@ -379,8 +404,10 @@ def render_scene(room: str, layout_index: int, name: str, members: list[Member],
     out.append("# 1. tier 0 不延伸的外輪廓 boundary。D15 優先級 1；別的料的端面要頂它的側面（I19、R19(d)）。")
     out.append("# 2. tier 1 primary（main，以及未標 custom 的 rc_parallel）。R19(d) 端面頂 boundary 側面，所以 boundary 先在。第一支 primary 定義主支軸（D17、I21）。")
     out.append("# 3. tier 2 有延伸的外輪廓 boundary。延伸端要先有被頂的料（R19(e)、I22）。")
-    out.append("# 4. tier 3 custom priority 3。I22 把延伸段側面當優先級 2，同為 2 的 primary 不能頂；D15 要求 custom 明寫 priority。這裡寫 3，與 oracle 標籤及既有探針相同，不是「只能是 3」的裁定。")
+    out.append("# 4. tier 3 custom priority 3（沿牆料）。I22 把延伸段側面當優先級 2，同為 2 的 primary 不能頂；D15 要求 custom 明寫 priority。")
     out.append("# 5. tier 4 secondary，含孔邊上種類仍是 boundary、暫寫 secondary 的料。D17 副支在主支軸之後；R19(f) 長度由相鄰主支側面量出。")
+    out.append("#    端面頂到 custom 的副支改宣告 custom priority 4（仍在這一階）：使用者 2026-10-18 拍板（決策佇列「凹角沿牆料的排序」，#301），條文不改；")
+    out.append("#    I19 要擋面擁有者優先級嚴格小於自己，副支 3 頂不了 custom 3。判定依實際擋面，probe-member 的 promoted 標出這類料。")
     out.append("# 同一階以 golden 原序打破平手。兩支同階 boundary 的轉角互頂不建角材依賴（I19 例外，避免環）。")
     out.append("# 有環就強制取出 tier 最小者，標 probe-cycle，不刪料。被省略的拒絕料會改變後面的擋面，見 run_probe.sh。")
     out.append("# place 不寫長度（D7）。貼邊用 at-face，引用該邊，深度 +n。室內用 at-line，中線 = 寬向 lo + w//2（I13，奇數寬多的 1 mm 在 +cross）。")
@@ -429,6 +456,8 @@ def render_scene(room: str, layout_index: int, name: str, members: list[Member],
             "tier": member.tier,
             "where": member.where,
         }
+        if member.promoted:
+            payload["promoted"] = "stops-on-custom"
         out.append("# probe-member " + json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
         if member.span_note:
             out.append(f"# probe-span {member.span_note}")
@@ -569,37 +598,55 @@ def write_build(built: Build, out_dir: Path, index_path: Path, golden_name: str)
 
 
 def assert_member_rects(golden: dict, built: Build) -> None:
-    """註解 rect 與 golden 逐支相等。不符時列出房間、排法、編號、種類與兩個矩形。"""
+    """場景檔文字重算的足跡必須和 golden 逐支相等（寬向與長度方向都比）。
+
+    依 opus 審查更正：舊版拿產生器內部的 rect（抄自 golden）去比 golden，等於自己比自己。
+    現在只讀 scene.text：scene_reader 從錨（at-face／at-line）、截面寬、between 擋面
+    獨立算出每支的 [x0,y0,x1,y1]，再配對 golden 的矩形。scene_reader 不 import 本檔。
+    不符時列出房間、排法、編號、種類與兩個矩形。
+    """
+    import scene_reader
+
     lines = []
     by_key = {(scene.room, scene.layout): scene for scene in built.scenes}
     for room_name, room in golden["rooms"].items():
         for index, layout in enumerate(room["layouts"]):
             if not layout_kept(layout):
                 continue
+            label = f"{room_name} / {layout.get('name') or ''}"
             scene = by_key.get((room_name, index))
             expected = [(kind, rect_of(raw)) for kind, raw in layout["timbers"]]
             if scene is None:
-                lines.append(f"{room_name} / {layout.get('name') or ''} / 場景缺失 / 共 {len(expected)} 支")
+                lines.append(f"{label} / 場景缺失 / 共 {len(expected)} 支")
                 continue
-            got = {}
-            for member in scene.members:
-                got[member.golden] = (member.kind, tuple(member.rect))
-            if len(scene.members) != len(expected) or set(got) != set(range(len(expected))):
+            try:
+                parsed = scene_reader.parse_scene(scene.text)
+                derived = scene_reader.derive_footprints(parsed)
+            except scene_reader.SceneError as exc:
+                lines.append(f"{label} / 場景文字讀不出足跡：{exc}")
+                continue
+            unmatched = list(range(len(expected)))
+            for member in parsed.members:
+                rect = derived[member.id]
+                if rect is None:
+                    lines.append(f"{label} / 場景角材 {member.id} / 長度無法由場景文字推出（through 或擋面未解）")
+                    continue
+                hit = next((n for n in unmatched if expected[n][1] == rect), None)
+                if hit is None:
+                    lines.append(f"{label} / 場景角材 {member.id} / 場景文字算出 {list(rect)} / golden 沒有這個矩形")
+                    continue
+                unmatched.remove(hit)
+                note = member.meta  # 註解只做一致性比對，不參與足跡計算
+                if note is not None and (note.get("golden") != hit or note.get("kind") != expected[hit][0]):
+                    lines.append(
+                        f"{label} / 場景角材 {member.id} / 註解寫 golden {note.get('golden')} {note.get('kind')}"
+                        f"，但足跡對到 golden {hit} {expected[hit][0]}"
+                    )
+            for number in unmatched:
+                kind, rect = expected[number]
                 lines.append(
-                    f"{room_name} / {scene.name} / 支數 oracle {len(expected)} scene {len(scene.members)}"
+                    f"{label} / 編號 {number} / {kind} / oracle {list(rect)} / 場景文字沒有算出這個矩形"
                 )
-            for number, (kind, rect) in enumerate(expected):
-                have = got.get(number)
-                if have is None:
-                    lines.append(
-                        f"{room_name} / {layout.get('name') or ''} / 編號 {number} / {kind}"
-                        f" / oracle {list(rect)} / scene 缺失"
-                    )
-                elif have != (kind, rect):
-                    lines.append(
-                        f"{room_name} / {layout.get('name') or ''} / 編號 {number} / {kind}"
-                        f" / oracle {list(rect)} / scene {list(have[1])}"
-                    )
     if lines:
         raise AssertionError("\n".join(lines + [f"共 {len(lines)} 支不符"]))
 

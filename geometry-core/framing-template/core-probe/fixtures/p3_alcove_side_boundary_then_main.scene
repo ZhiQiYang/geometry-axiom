@@ -1,0 +1,13 @@
+# S1 probe 3: alcove side wall e6 (v=1000, u 0..400) gets its boundary first; an interior main at u=1300 stops its extension (R19(e)).
+surface 1 origin 0 0 2500 u +x v +y outline 400,0 4400,0 4400,3000 400,3000 400,2000 0,2000 0,1000 400,1000
+grid 1 on 1 u 1300
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+timber 4 27 33 role boundary
+timber 5 27 33 role boundary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 -u +n
+place 3 on 1 at-line grid 1 u 0 +v +n
+place 4 on 1 at-face e6 +u +n
+place 5 on 1 at-face e4 +u -n
