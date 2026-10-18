@@ -203,7 +203,7 @@ static bool app_replace_evaluate(void *after,GeoEvalContext *sources,void *opaqu
 {
     (void)sources;AppReplacement *operation=opaque;uint64_t revision=g_definition_revision;
     bool ok=true;
-    if(operation->use_default)ok=reference_default_world(after);
+    if(operation->use_default)ok=reference_default_world_owned(after);
     else memset(after,0,sizeof(World));
     /* Default construction historically advances through its constituent DSL
      * definitions. Preserve that count, but publish it only with the full root. */
