@@ -1,0 +1,2549 @@
+[
+  {
+    "function": "main",
+    "self_seconds": 0.0,
+    "children_seconds": 0.05,
+    "inclusive_seconds": 0.05,
+    "calls": 0,
+    "direct_calls": 0,
+    "recursive_calls": 0
+  },
+  {
+    "function": "<cycle 2 as a whole>",
+    "self_seconds": 0.01,
+    "children_seconds": 0.04,
+    "inclusive_seconds": 0.05,
+    "calls": 1030,
+    "direct_calls": 106,
+    "recursive_calls": 924
+  },
+  {
+    "function": "world_validate_derived",
+    "self_seconds": 0.0,
+    "children_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": 344,
+    "direct_calls": 172,
+    "recursive_calls": 172
+  },
+  {
+    "function": "geo_candidate_evaluate <cycle 2>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": 235,
+    "direct_calls": 235,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_scene_candidate_apply",
+    "self_seconds": 0.0,
+    "children_seconds": 0.02,
+    "inclusive_seconds": 0.02,
+    "calls": 204,
+    "direct_calls": 204,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_world_candidate_create",
+    "self_seconds": 0.01,
+    "children_seconds": 0.01,
+    "inclusive_seconds": 0.02,
+    "calls": 250,
+    "direct_calls": 250,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_world_validate_members",
+    "self_seconds": 0.0,
+    "children_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_scene_line <cycle 2>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 219,
+    "direct_calls": 219,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_reference_member_anchor",
+    "self_seconds": 0.01,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 1930,
+    "direct_calls": 1930,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_candidate_evaluate <cycle 2>",
+    "self_seconds": 0.01,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 235,
+    "direct_calls": 235,
+    "recursive_calls": 0
+  },
+  {
+    "function": "<cycle 1 as a whole>",
+    "self_seconds": 0.01,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 153028,
+    "direct_calls": 11330,
+    "recursive_calls": 141698
+  },
+  {
+    "function": "wood_contact_source_evaluate <cycle 1>",
+    "self_seconds": 0.01,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 8330,
+    "direct_calls": 8330,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_replace_world.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_validation_member",
+    "self_seconds": 0.0,
+    "children_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 1308,
+    "direct_calls": 1308,
+    "recursive_calls": 0
+  },
+  {
+    "function": "cmd_replace_world",
+    "self_seconds": 0.0,
+    "children_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_spec_line",
+    "self_seconds": 0.0,
+    "children_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 61,
+    "direct_calls": 61,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_check_all",
+    "self_seconds": 0.0,
+    "children_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_reference_place",
+    "self_seconds": 0.0,
+    "children_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 48,
+    "direct_calls": 48,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_checked",
+    "self_seconds": 0.0,
+    "children_seconds": 0.01,
+    "inclusive_seconds": 0.01,
+    "calls": 48,
+    "direct_calls": 48,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_candidate_hash_matches",
+    "self_seconds": 0.01,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 1145,
+    "direct_calls": 1145,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_candidate_create_with_deferred_sha",
+    "self_seconds": 0.01,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.01,
+    "calls": 250,
+    "direct_calls": 250,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_member_footprint",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1523,
+    "direct_calls": 1523,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_scene_line_candidate.constprop.0 <cycle 2>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 219,
+    "direct_calls": 219,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_world_candidate_seal",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 235,
+    "direct_calls": 235,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_candidate_seal",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 470,
+    "direct_calls": 235,
+    "recursive_calls": 235
+  },
+  {
+    "function": "app_candidate_check",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 220,
+    "direct_calls": 220,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_world_candidate_publish",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 220,
+    "direct_calls": 220,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_reference_guide",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_surface_combined_line",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_scene_file <cycle 2>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_validation_host",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 965,
+    "direct_calls": 965,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_validation_end_faces",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_validation_place",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_validation_stops",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_validation_boundary_role",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_eval_source <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 60810,
+    "direct_calls": 60810,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_source_edge",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 60810,
+    "direct_calls": 60810,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_source_node",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 60810,
+    "direct_calls": 60810,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wd_read_text.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 27675,
+    "direct_calls": 27675,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_sources_ensure",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 21183,
+    "direct_calls": 21183,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_coordinate_source <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 18294,
+    "direct_calls": 18294,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_contact_source_decode",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16660,
+    "direct_calls": 16660,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_loop_contains_point",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15498,
+    "direct_calls": 15498,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_loop_point_on_edge",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15498,
+    "direct_calls": 15498,
+    "recursive_calls": 0
+  },
+  {
+    "function": "timber_a0_footprint_uv",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14205,
+    "direct_calls": 14205,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wd_write",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 14143,
+    "direct_calls": 14143,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_sha_block",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12842,
+    "direct_calls": 12842,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_frame_direction",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12124,
+    "direct_calls": 12124,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_rectangle_footprint",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 11781,
+    "direct_calls": 11781,
+    "recursive_calls": 0
+  },
+  {
+    "function": "clip_loop_order",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 11085,
+    "direct_calls": 11085,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_source_copy_text",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 10068,
+    "direct_calls": 10068,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_definition_sources_placement <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 9225,
+    "direct_calls": 9225,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wd_reader <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8383,
+    "direct_calls": 8383,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_contact_source_collection_view",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8330,
+    "direct_calls": 8330,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_contact_source_describe",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 8330,
+    "direct_calls": 8330,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_placement_frame <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 7726,
+    "direct_calls": 7726,
+    "recursive_calls": 0
+  },
+  {
+    "function": "utf8_seq_len",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6959,
+    "direct_calls": 6959,
+    "recursive_calls": 0
+  },
+  {
+    "function": "placement_effective_boundary",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6841,
+    "direct_calls": 6841,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_placement_definition_decode",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6674,
+    "direct_calls": 6674,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_placement_sources_definition <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6674,
+    "direct_calls": 6674,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_host_read <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6110,
+    "direct_calls": 6110,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_region_geometry",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 6110,
+    "direct_calls": 6110,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_definition_sources_boundary <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 12220,
+    "direct_calls": 6110,
+    "recursive_calls": 6110
+  },
+  {
+    "function": "wood_grid_codec_axis",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 5708,
+    "direct_calls": 5708,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_eng_context",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 5469,
+    "direct_calls": 5469,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_contact_facts",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 5145,
+    "direct_calls": 5145,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_fs_obstacle_box",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3703,
+    "direct_calls": 3703,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_loop_contains_rect",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3703,
+    "direct_calls": 3703,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_region_contains_rect",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3703,
+    "direct_calls": 3703,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_eval_register_many",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3096,
+    "direct_calls": 3096,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_contact_facts <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3087,
+    "direct_calls": 3087,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_candidate_provider_hash",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 3365,
+    "direct_calls": 2925,
+    "recursive_calls": 440
+  },
+  {
+    "function": "asm_error.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2844,
+    "direct_calls": 2844,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_reference_host_read",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2680,
+    "direct_calls": 2680,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_definition_sources_member <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2273,
+    "direct_calls": 2273,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_candidate_bind_core",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2250,
+    "direct_calls": 2250,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_contact_resolve_stops <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2058,
+    "direct_calls": 2058,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_contact_collect_stops",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2058,
+    "direct_calls": 2058,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_contact_sources_collect <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2058,
+    "direct_calls": 2058,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_end_contact_check",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 2058,
+    "direct_calls": 2058,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_at <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1587,
+    "direct_calls": 1587,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wd_describe",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1513,
+    "direct_calls": 1513,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wd_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1513,
+    "direct_calls": 1513,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_definition_source_decode",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1513,
+    "direct_calls": 1513,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_contact_boundary_interval",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1491,
+    "direct_calls": 1491,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_stop_count_legal",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1372,
+    "direct_calls": 1372,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_grid_context",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1314,
+    "direct_calls": 1314,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_asm_context",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1301,
+    "direct_calls": 1301,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_sha256",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1236,
+    "direct_calls": 1236,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_boundary_compose",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1030,
+    "direct_calls": 1030,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_reference_end_faces <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1029,
+    "direct_calls": 1029,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_reference_end_stops <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1029,
+    "direct_calls": 1029,
+    "recursive_calls": 0
+  },
+  {
+    "function": "timber_boundary_role_check",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1029,
+    "direct_calls": 1029,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wd_text.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1029,
+    "direct_calls": 1029,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_contact_end_faces_with_sources <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1029,
+    "direct_calls": 1029,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_boundary_role_check",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1029,
+    "direct_calls": 1029,
+    "recursive_calls": 0
+  },
+  {
+    "function": "placement_outline",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 965,
+    "direct_calls": 965,
+    "recursive_calls": 0
+  },
+  {
+    "function": "polygon_loop_bounds",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 965,
+    "direct_calls": 965,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_codec_rule",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1930,
+    "direct_calls": 965,
+    "recursive_calls": 965
+  },
+  {
+    "function": "geo_candidate_digest_matches",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15175,
+    "direct_calls": 910,
+    "recursive_calls": 14265
+  },
+  {
+    "function": "app_validation_footprint",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 901,
+    "direct_calls": 901,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_fs_context",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 812,
+    "direct_calls": 812,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_frame_point",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 686,
+    "direct_calls": 686,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_region_contains_point",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 686,
+    "direct_calls": 686,
+    "recursive_calls": 0
+  },
+  {
+    "function": "timber_place_a0_on_surface",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 686,
+    "direct_calls": 686,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_definition_sources_dimension <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 686,
+    "direct_calls": 686,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_place_a0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 686,
+    "direct_calls": 686,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_stop_pick",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 686,
+    "direct_calls": 686,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_eval_timber_relation <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 622,
+    "direct_calls": 622,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_source_describe",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 622,
+    "direct_calls": 622,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_source_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 622,
+    "direct_calls": 622,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_sp_context",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 609,
+    "direct_calls": 609,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_pd_vector_write",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 564,
+    "direct_calls": 564,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_placement_sources_describe",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 564,
+    "direct_calls": 564,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_placement_sources_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 564,
+    "direct_calls": 564,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_primary_axis_check",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 500,
+    "direct_calls": 500,
+    "recursive_calls": 0
+  },
+  {
+    "function": "js_string_body",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 478,
+    "direct_calls": 478,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_contact_owner_extension",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 462,
+    "direct_calls": 462,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_placement_binding <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 423,
+    "direct_calls": 423,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_eval_clear",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 407,
+    "direct_calls": 407,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_placement_boundary",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 384,
+    "direct_calls": 384,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_coord",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 363,
+    "direct_calls": 363,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_dp_context",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 344,
+    "direct_calls": 344,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_policy_definitions",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 344,
+    "direct_calls": 344,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_assembly_saved_dimensions",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_boundary",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_end <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_issue_count",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_place",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_placement <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_primary",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_span <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_write",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_frame_project_uv",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_strip_intervals",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_member_owned",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "resolve_auto_span <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "surface_primary_axis_check",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_assembly_sources_owned",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_anchor_corner",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_reference_compute <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_reference_place <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_resolve_span",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 343,
+    "direct_calls": 343,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_rule_u32",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 336,
+    "direct_calls": 336,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_sp_rebuild",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 454,
+    "direct_calls": 313,
+    "recursive_calls": 141
+  },
+  {
+    "function": "app_member_reference_evaluate",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 279,
+    "direct_calls": 279,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_edge",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 266,
+    "direct_calls": 266,
+    "recursive_calls": 0
+  },
+  {
+    "function": "loop_edge_outward_normal",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 266,
+    "direct_calls": 266,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_world_candidate_destroy",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 265,
+    "direct_calls": 265,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_candidate_destroy",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 249,
+    "direct_calls": 249,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_candidate_call",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 235,
+    "direct_calls": 235,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_world_candidate_equal",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 220,
+    "direct_calls": 220,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parameter_reference_edit",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 189,
+    "direct_calls": 189,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_assembly_dimensions_changed",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 189,
+    "direct_calls": 189,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_linear_definition_source_decode",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 186,
+    "direct_calls": 186,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_source_is_dimension",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 186,
+    "direct_calls": 186,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_source_name",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 186,
+    "direct_calls": 186,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_frame_is_valid",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 173,
+    "direct_calls": 173,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_loop_is_valid",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 173,
+    "direct_calls": 173,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_region_is_valid",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 173,
+    "direct_calls": 173,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_eng_serializable",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "boundary_keys_reconcile.constprop.0",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "engineering_serializable",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_enclosure_sources_register",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_linear_definition_sources_register",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_parameter_source_bound",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_parameter_sources_rebuild",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_parameter_sources_register_with_definitions",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_placement_sources_register",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_region_key_sources_register",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_version_sources_definitions",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_version_sources_register",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_sources_begin_candidate",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_sources_dispose",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_sources_owned_free",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_assembly_generation_check",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_assembly_generation_prepare",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_assembly_rebuild",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_assembly_sources_create",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_contact_sources_create",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_definition_sources_create",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_dp_rebuild",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_engineering_rebuild",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_engineering_sources_definitions",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_engineering_sources_metadata",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_engineering_sources_register",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_finish_sources_bind",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_finish_sources_create",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_fs_rebuild",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_bindings_rebuild",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_rules_valid_hook",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_rules_world_valid_direct",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_sources_create",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_systems_rebuild",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_world_valid_direct",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_world_valid_hook",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_sp_source_begin",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_sp_source_context_matches",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_sp_sources_create",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_world_validate_obstacles",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "world_revalidate",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 172,
+    "direct_calls": 172,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_guide_position <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 170,
+    "direct_calls": 170,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_validation_placement_id",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 157,
+    "direct_calls": 157,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_guide",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 154,
+    "direct_calls": 154,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_face_format",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 154,
+    "direct_calls": 154,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_placement_definition_encode",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 141,
+    "direct_calls": 141,
+    "recursive_calls": 0
+  },
+  {
+    "function": "grid_subdivision_used",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 139,
+    "direct_calls": 139,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_linear_append",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 125,
+    "direct_calls": 125,
+    "recursive_calls": 0
+  },
+  {
+    "function": "engineering_used",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 124,
+    "direct_calls": 124,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_named_value_name_valid",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 122,
+    "direct_calls": 122,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_ld_expression_read",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 109,
+    "direct_calls": 109,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_guide_definition_decode",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_guide_definition_encode",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_guides_evaluate_definition <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_ld_describe",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_ld_evaluate",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_ld_expression_write",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_linear_definition_sources_guide <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_linear_evaluate <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_named_quantity <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_quantity <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_quantity_raw <cycle 1>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_resolve_linear",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 93,
+    "direct_calls": 93,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_scene_load_evaluate <cycle 2>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 90,
+    "direct_calls": 90,
+    "recursive_calls": 0
+  },
+  {
+    "function": "json_reference_geometry",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 90,
+    "direct_calls": 90,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_assembly_generation_integrity",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 82,
+    "direct_calls": 82,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_reference_evaluate_guide",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 77,
+    "direct_calls": 77,
+    "recursive_calls": 0
+  },
+  {
+    "function": "eng_target_json",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 77,
+    "direct_calls": 77,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_dump",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 77,
+    "direct_calls": 77,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_dump_guide",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 77,
+    "direct_calls": 77,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_guide_ready",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 77,
+    "direct_calls": 77,
+    "recursive_calls": 0
+  },
+  {
+    "function": "world_dump_dsl",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 77,
+    "direct_calls": 77,
+    "recursive_calls": 0
+  },
+  {
+    "function": "world_dump_grids",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 77,
+    "direct_calls": 77,
+    "recursive_calls": 0
+  },
+  {
+    "function": "json_deleted_objects",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 75,
+    "direct_calls": 75,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_uv",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 64,
+    "direct_calls": 64,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_named_values_put",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 61,
+    "direct_calls": 61,
+    "recursive_calls": 0
+  },
+  {
+    "function": "boundary_geometry_hash",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 60,
+    "direct_calls": 60,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_loop_clip_line",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 60,
+    "direct_calls": 60,
+    "recursive_calls": 0
+  },
+  {
+    "function": "guide_line_get_local_segments",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 60,
+    "direct_calls": 60,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_member_declaration_owned",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 48,
+    "direct_calls": 48,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_place_line",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 48,
+    "direct_calls": 48,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_timber_line",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 48,
+    "direct_calls": 48,
+    "recursive_calls": 0
+  },
+  {
+    "function": "assembly_owned",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 48,
+    "direct_calls": 48,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_construct",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 48,
+    "direct_calls": 48,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_declaration_role",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 48,
+    "direct_calls": 48,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_member_declare",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 48,
+    "direct_calls": 48,
+    "recursive_calls": 0
+  },
+  {
+    "function": "json_engineering_capabilities",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 47,
+    "direct_calls": 47,
+    "recursive_calls": 0
+  },
+  {
+    "function": "eng_definition_hash",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 46,
+    "direct_calls": 46,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_history_record",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 45,
+    "direct_calls": 45,
+    "recursive_calls": 0
+  },
+  {
+    "function": "world_definitions_equal",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 39,
+    "direct_calls": 39,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_edge_ref",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 32,
+    "direct_calls": 32,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_face_parse",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 32,
+    "direct_calls": 32,
+    "recursive_calls": 0
+  },
+  {
+    "function": "json_section_profile_state",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 31,
+    "direct_calls": 31,
+    "recursive_calls": 0
+  },
+  {
+    "function": "json_reference_guide",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 30,
+    "direct_calls": 30,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_guide_clip_text",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 30,
+    "direct_calls": 30,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_asm_binding_slot_values",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 30,
+    "direct_calls": 30,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_grid_binding_definition_depend",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 30,
+    "direct_calls": 30,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_boundary_policy",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_boundary_region_definition",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_boundary_stage",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_guide_put",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_placement_stage",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "app_replace_evaluate <cycle 2>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_guide_line",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_guides_put",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_placements_stage",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_regions_stage",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_boundary_body",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "parse_placement_body",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "placement_structure",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 16,
+    "direct_calls": 16,
+    "recursive_calls": 0
+  },
+  {
+    "function": "apply_canvaspos_line",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "geo_candidate_discard",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "json_boundary_preview",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "json_candidate_guides",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "json_candidate_timbers",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "json_reference_preview",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "json_section_profile_impact",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_boundary_geometry_changed",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_guide_changed",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_preview_text",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_stage",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "wood_sp_intersection",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 15,
+    "direct_calls": 15,
+    "recursive_calls": 0
+  },
+  {
+    "function": "reference_default_world <cycle 2>",
+    "self_seconds": 0.0,
+    "children_seconds": 0.0,
+    "inclusive_seconds": 0.0,
+    "calls": 1,
+    "direct_calls": 1,
+    "recursive_calls": 0
+  }
+]

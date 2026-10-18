@@ -1,0 +1,13 @@
+diff --git a/geometry-app/native/app_candidate.c b/geometry-app/native/app_candidate.c
+index a38b1c4c..3d220525 100644
+--- a/geometry-app/native/app_candidate.c
++++ b/geometry-app/native/app_candidate.c
+@@ -51,7 +51,7 @@ AppCandidate *app_candidate_create(void *before,void *after,const void *live,
+ {return app_candidate_create_with_deferred_sha(before,after,live,size,id,revision,stamp,false);}
+ AppCandidate *app_candidate_create_deferred_sha(void *before,void *after,const void *live,
+     size_t size,uint64_t id,uint64_t revision,const char *stamp)
+-{return app_candidate_create_with_deferred_sha(before,after,live,size,id,revision,stamp,true);}
++{return app_candidate_create_with_deferred_sha(before,after,live,size,id,revision,stamp,false);}
+ void app_candidate_set_evaluation_state(AppCandidate *candidate,void *state,AppCandidateDisposeState dispose)
+ {
+     if(!candidate)return;

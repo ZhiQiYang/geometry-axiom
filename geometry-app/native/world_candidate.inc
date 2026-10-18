@@ -23,7 +23,7 @@ static AppWorldCandidate *app_world_candidate_create(const World *live)
 {
     AppWorldCandidate *candidate=calloc(1,sizeof *candidate);
     if(!candidate)return NULL;
-    candidate->control=app_candidate_create(&candidate->before,&candidate->after,live,sizeof(World),
+    candidate->control=app_candidate_create_deferred_sha(&candidate->before,&candidate->after,live,sizeof(World),
         ++g_app_candidate_serial,g_definition_revision,app_world_provider_stamp());
     if(!candidate->control){free(candidate);return NULL;}
 #define APP_BIND_CORE(field) \
@@ -74,7 +74,9 @@ static bool app_world_candidate_current(const AppWorldCandidate *candidate,const
 }
 static bool app_world_candidate_publish(AppWorldCandidate *candidate,World *live,bool preserve_canvas)
 {
-    if(!app_world_candidate_current(candidate,live))return false;
+    if(!candidate)return false;
+    char hash[65];geo_sha256(&candidate->operation,sizeof candidate->operation,hash);
+    if(strcmp(hash,candidate->operation_seal))return false;
     return app_candidate_publish(candidate->control,live,g_definition_revision,app_world_provider_stamp(),
         app_world_candidate_equal,app_world_candidate_replace,preserve_canvas?(void*)candidate:NULL)==GEO_CANDIDATE_OK;
 }
