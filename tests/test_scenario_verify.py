@@ -173,20 +173,18 @@ class ScenarioNativeAcceptance(unittest.TestCase):
 
     def model_fault_worker(self, executable, directory, *, timeout=3):
         # Inject the fault below the public freshness gate in a private worker.
+        # Exercise the real --model-worker path, including its bounded transport.
         # Production verify_project and its --model-worker retain that gate.
         worker = "\n".join([
-            "import json, sys",
+            "import sys",
             "sys.path.insert(0, " + repr(str(ROOT / "geometry-web")) + ")",
             "import scenario_verify as verifier",
-            "from modeling import ModelError",
-            "verifier.base_module.subprocess = verifier._BoundedModelAdapter",
-            "try:",
-            "    data = json.load(sys.stdin)",
-            "    result = {'ok': True, 'requiredCapabilities': verifier._models(data['models'], sys.argv[1])}",
-            "except ModelError as error:",
-            "    result = verifier._error(error)",
-            "print(json.dumps(result))",
-            "sys.exit(0 if result['ok'] else 2)",
+            "def fault_program(value, *, base=False):",
+            "    if not base or value != sys.argv[1]:",
+            "        raise AssertionError('unexpected fault fixture program lookup')",
+            "    return str(value), 'fault-fixture'",
+            "verifier._program = fault_program",
+            "sys.exit(verifier.main(['--model-worker', '--base', sys.argv[1]]))",
         ])
         raw = verifier._run_bounded([sys.executable, "-c", worker, str(executable)],
                                     json.dumps({"models": [deepcopy(self.model)]}).encode(),
