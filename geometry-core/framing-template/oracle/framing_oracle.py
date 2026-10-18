@@ -16,13 +16,15 @@
      只有在室內中間斷開去接別的角材才不行(使用者 2026-10-14 第 3 題、2026-10-16)。
      主支位置預設置中在縫上,但只要縫兩側板邊承接 >= X 就可以平移(G1 才是要求)。
      R-butt:主支與相鄰平行料之間有 0 < 間隙、平移這段間隙後承接仍 >= X,就平移到貼住,不留 1 mm 縫。
-     推論自使用者 2026-10-16 確認的規則(P-147 摘要:支撐可以在承接 >= X 內移動)與平釘天花工法知識(skill flat-nailed-ceiling,
-     references/edge-rule.md §4「挪縫到主骨剛好 butt 壁邊材」),不是使用者原話。
+     依據:使用者 2026-10-15 講的是「副支」位置可以調整(原話:「左下起鋪,板長沿Y 衝突 板端縫太靠近 RC,縫上的副支撞到邊界角材 這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好」);
+     主支在承接 >= X 內平移、貼住,是 Claude 由同一原則推論出來的,不是使用者原話;
+     另依平釘天花工法知識(skill flat-nailed-ceiling,references/edge-rule.md §4「挪縫到主骨剛好 butt 壁邊材」)。
   R-nosliver:副支段長 < min_piece 一律不放,那條窄縫兩側的板由縫兩邊的料承接。
      理由是協調 agent 的物理推論(2026-10-18,不是使用者原話):1–23 mm 的角材現場不存在、釘不上去,
      板跨過那麼窄的縫也不會垂(edge-rule.md §4 也寫收邊格「無副骨,薄板由主骨+壁邊材直接夾持」)。
      min_piece = w = 27 mm 是使用者 2026-10-18 拍板(決策佇列「副支最短長度」,#302);
-     RC 柱面上短於 27 mm 的段落也不放邊界材,是同日補拍板(#302 補充)。
+     RC 柱面上短於 27 mm 的段落也不放邊界材,是同日補拍板(#302 補充),選項原文「不放(短於 27 一律不放)」;
+     牆面上的短段比照柱面,是由「一律」推得(協調 agent 2026-10-18)。
      檢查 C3/C4/C9 對這種窄縫用 bridged() 判為由兩側承接。
   G4 RC 邊界一律有角材(側面固定在 RC 上)。其他角材的端面只頂角材,不頂 RC。
      與主支平行的柱面,其角材沿線延伸到兩端的牆,成為連續的支,讓兩側的副支都有角材可頂。
@@ -307,17 +309,41 @@ def build(room, layout, p, mut=frozenset()):
             conflicts.append(dict(code="RC_FACE_STRIP_OUTSIDE", at=[e, s0, s1]))
             continue
         blocks = [rng(s["rect"], b) for s in astrips if max(ar[0], rng(s["rect"], a)[0]) < min(ar[1], rng(s["rect"], a)[1])]
-        comp = iv_find(iv_subtract([iv], blocks), (s0 + s1) / 2)
+        free = iv_subtract([iv], blocks)
+        comp = iv_find(free, (s0 + s1) / 2)
         if comp is None:
-            conflicts.append(dict(code="RC_FACE_STRIP_BLOCKED", at=[e, s0, s1]))
+            on_face = [c_ for c_ in free if min(c_[1], s1) > max(c_[0], s0)]
+            comp = max(on_face, key=lambda c_: min(c_[1], s1) - max(c_[0], s0)) if on_face else None
+        if comp is None and "short_face_conflict" in mut:
+            conflicts.append(dict(code="RC_FACE_STRIP_BLOCKED", at=[e, s0, s1]))  # 突變:回到舊行為,短牆面整段被蓋住就報衝突
             continue
         ends = []
         if is_outer and "rc_through_reflex" not in mut:
-            if comp[0] < s0:
-                ends.append(s0)
-            if comp[1] > s1:
-                ends.append(s1)
-            comp = (max(comp[0], s0), min(comp[1], s1))
+            if comp is None:  # 這面 RC 整段已被兩端垂直的料蓋住:凹角那一端仍要讓另一面的邊界材越過凹角
+                ends = [v for v, beyond in ((s0, iv[0] < s0), (s1, iv[1] > s1)) if beyond]
+            else:
+                if comp[0] < s0:
+                    ends.append(s0)
+                if comp[1] > s1:
+                    ends.append(s1)
+                comp = (max(comp[0], s0), min(comp[1], s1))
+        # 短於 min_piece 一律不放(使用者 2026-10-18「短於 27 一律不放」,決策佇列 #302 補充;牆面比照柱面):
+        #   牆階、短柱面這種 RC 面,沿牆料整段被兩端垂直的料蓋住,或剩下的一段短於 min_piece,就不放料、不報衝突。
+        #   這一面的板邊由兩端的料承接(剩下那一小段沿板邊方向跨過);凹角那一端照樣讓另一面的邊界材越過凹角延伸,接住板的轉角。
+        if comp is None or (too_short(comp[1] - comp[0]) and "short_face_conflict" not in mut):
+            reflex.extend((e, s) for s in ends)
+            # 剩下沒被蓋住的那一小段若有板端縫的板邊承接帶落進去:那條板邊要靠縫上副支,副支端面卻只能頂這面 RC
+            #   (這一小段短於 min_piece,不放沿牆料),旁邊的料又蓋不到 → 那條板邊沒有料承接,判衝突並寫明。
+            if comp is not None:
+                for sb in seams_b:
+                    for x0, x1, side in ((sb - gl - X, sb - gl, "-"), (sb + gu, sb + gu + X, "+")):
+                        if min(x1, comp[1]) > max(x0, comp[0]):
+                            conflicts.append(dict(
+                                code="SHORT_FACE_SEAM_EDGE_UNSUPPORTED", at=[e, s0, s1], seam=sb,
+                                why=f"板端縫 {sb} 的 {side} 側板邊(承接帶 {x0}–{x1})落在這面 RC({e},{s0}–{s1})沒被蓋住的那 "
+                                    f"{comp[1] - comp[0]} mm({comp[0]}–{comp[1]})裡:短於 {minp} 不放沿牆料,縫上副支的端面只能頂 RC,"
+                                    f"兩旁的料也蓋不到這條板邊"))
+            continue
         r = mk(a, ar, comp)
         if r in seen:
             continue
@@ -359,13 +385,26 @@ def build(room, layout, p, mut=frozenset()):
                 push_hi = max(push_hi, ar[1] - qa[0])
         if "no_main_shift" in mut:
             push_lo = push_hi = 0
+
+        def collides(ar_):
+            """主支放在 ar_ 時,在它實際存在的範圍(整條帶子都在室內的那幾段)會不會撞到與主支平行的 RC 角材。"""
+            foot_ = reg.strip_set(a, *ar_)
+            return any(max(ar_[0], rng(q["rect"], a)[0]) < min(ar_[1], rng(q["rect"], a)[1])
+                       and iv_intersect(foot_, [rng(q["rect"], b)]) for q in bprims)
+
+        # 能調就調:讓開 RC 角材的平移若反而撞到另一支(例:牆階 28–53 mm,縫線在牆階外側那段落在沿牆料上,
+        #   但主支在那段本來就在 RC 裡、不存在),而置中的主支在它實際存在的範圍不撞任何料,就不平移。
+        if (push_lo or push_hi) and "no_push_fallback" not in mut:
+            sh = push_lo - push_hi
+            if collides((ar[0] + sh, ar[1] + sh)) and not collides(ar):
+                push_lo = push_hi = 0
         if push_lo and push_hi:
             conflicts.append(dict(code="MAIN_SQUEEZED", seam=c,
                                   why=f"縫 {c} 兩側都有平行的 RC 角材,主支要往兩邊各讓 {push_lo}/{push_hi} mm,放不下"))
             continue
         s = push_lo - push_hi
         ar = (ar[0] + s, ar[1] + s)
-        # R-butt(由使用者確認的規則 P-147〔支撐可以在承接 >= X 內移動〕加平釘天花工法知識 edge-rule.md §4「主骨剛好 butt 壁邊材」推得):
+        # R-butt(推論:使用者 2026-10-15 說副支位置可以調整;主支在承接 >= X 內平移、貼住是同一原則的推論,加平釘天花工法 edge-rule.md §4):
         #   主支與相鄰平行料之間有 0 < 間隙,而平移這段間隙後縫兩側板邊承接仍 >= X,就把主支平移到貼住那支料,
         #   不留 1–5 mm 的縫。兩側都可貼時貼間隙小的那側(同分貼 - 側)。平移後主支在室內的範圍要不變;做不到就不移。
         if not (push_lo or push_hi) and "no_r_butt" not in mut:
@@ -403,6 +442,8 @@ def build(room, layout, p, mut=frozenset()):
                     break
             if not fix or "no_end_push" in mut:
                 break
+            if collides((ar[0] + fix, ar[1] + fix)) and "no_push_fallback" not in mut:
+                break  # 推進牆段會撞到與主支平行的 RC 角材:不推,交給後面的延伸段檢查(物理可行時標核心限制)
             s += fix
             ar = (ar[0] + fix, ar[1] + fix)
         if "split_main_mid" in mut and pieces and c == seams_a[0]:
@@ -467,6 +508,19 @@ def build(room, layout, p, mut=frozenset()):
                 if d > 0 and qa[0] >= e:
                     stop = min(stop, qa[0])
             if stop == e:
+                # 延伸不出去(凹角另一側緊貼著另一支外牆邊界材,例:牆階 < 27 mm,兩支牆邊料前後錯開、寬向重疊 27−階 mm):
+                # 這支邊界材在牆端的端面若有一段落在室內又沒有別的 boundary 可頂,核心 I19 不接受(端面室內部分只能頂另一支
+                # boundary),這是核心表示法的限制。這支邊界材本身側面釘牆,端面懸空不影響它承接板邊;旁邊的跨能不能收頭另由
+                # SPAN_END_NOT_ON_BOUNDARY 等判斷。
+                slab = mk(a, (e - 1, e) if d < 0 else (e, e + 1), br)
+                indoor = leftover(slab, leftover(slab, reg.rects()))
+                others = [q["rect"] for q in astrips if q is not t]
+                free_ = [r_ for q in indoor for r_ in leftover(q, others)]
+                if free_ and "no_end_free_flag" not in mut:
+                    fb = rng(free_[0], b)
+                    conflicts.append(dict(code="CORE_LIMIT_BOUNDARY_END_FREE", id=t["id"], at=[e, s], free=list(fb),
+                                          why=f"邊界材 {list(t['rect'])} 在牆端 {e} 的端面有 {fb[1] - fb[0]} mm 落在室內、沒有別的 boundary 可頂;"
+                                              f"越過凹角延伸會撞到另一支外牆邊界材(兩支寬向重疊)。核心 I19 只准 boundary 端面的室內部分頂另一支 boundary"))
                 continue
             t["rect"] = mk(a, (stop, hi) if d < 0 else (lo, stop), br)
             t["ext"] = t.get("ext", []) + [[min(e, stop), max(e, stop)]]
@@ -887,12 +941,12 @@ def check(res, p):
                     continue  # 另一側是 < min_piece 的窄縫(R-nosliver 不放副支),不是可以放副支的跨
                 fails.append(dict(check="C9_MARKS_NOT_ALIGNED", main=mt["id"], at=list(br), side=side,
                                   other=[list(s) for s in other if max(s[0], br[0] - w) < min(s[1], br[1] + w)]))
-    # C10 R-nosliver:不得有長度 < min_piece 的副支(含與主支垂直的柱面料;它在核心是副支)。
+    # C10 R-nosliver:任何料都不得短於 min_piece(使用者 2026-10-18「短於 27 一律不放」:副支、柱面料、牆面上的料都一樣)。
     for t in res["timbers"]:
-        if t["kind"] == "secondary" or (t["kind"] == "boundary" and not pos_edge_outer(reg, t["rect"], a)):
-            ln = rng(t["rect"], a)[1] - rng(t["rect"], a)[0]
-            if ln < minp:
-                fails.append(dict(check="C10_SHORT_PIECE", id=t["id"], kind=t["kind"], length=ln, min_piece=minp))
+        k = b if t["kind"] in ("main", "rc_parallel") else a
+        ln = rng(t["rect"], k)[1] - rng(t["rect"], k)[0]
+        if ln < minp:
+            fails.append(dict(check="C10_SHORT_PIECE", id=t["id"], kind=t["kind"], length=ln, min_piece=minp))
     # C11 R-butt:主支和相鄰平行料(主支、沿牆料、孔邊料、併料)之間有 0 < 間隙,而把主支平移這段間隙後,
     #     縫兩側板邊承接仍 >= X(縫位用獨立推算的 exp_a 驗過的那條),就必須貼住;已經貼住某一支就不再要求。
     gl, gu = g // 2, g - g // 2

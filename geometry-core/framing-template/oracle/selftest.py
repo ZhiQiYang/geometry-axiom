@@ -36,6 +36,8 @@ MUTANTS_ONLY = "--mutants-only" in sys.argv  # 只跑 (1) 突變與 (2) 標準�
 T27 = {"outer": [[0, 0], [3600, 0], [3600, 3000], [0, 3000]], "holes": [[[1793, 1200], [2093, 1200], [2093, 1500], [1793, 1500]]]}
 # 20 mm 牆階(#251 審查 60785906 的反例):牆 y=3700 的沿牆料寬 27,比牆階寬,端面有 7 mm 落在牆階邊界材越過凹角的延伸段上
 STEP20 = {"outer": [[0, 0], [4100, 0], [4100, 3680], [2600, 3680], [2600, 3700], [0, 3700]]}
+# 40 mm 牆階:牆階面 y 3660–3700 被 y=3700 牆的邊界材蓋掉 27 mm,只剩 13 mm,照「短於 27 一律不放」不放沿牆料
+STEP40 = {"outer": [[0, 0], [4100, 0], [4100, 3660], [2600, 3660], [2600, 3700], [0, 3700]]}
 
 failed = False
 # (1) 突變
@@ -73,6 +75,8 @@ MUTANTS = [
     ("sliver_le", T27, "C4_SPACING", "R-nosliver 邊界誤寫成 <=:剛好 27 mm 的跨不放副支;檢查端 bridged 若也誤寫成 <= 就抓不到"),
     ("sliver_le", T27, "C3_EDGE_UNSUPPORTED", "同上:剛好 27 mm 的柱面料也不放,柱面與板端縫邊沒有承接"),
     ("no_ext_custom3", STEP20, "C8_I19_PRIORITY", "牆階 20 mm:沿牆料端面頂延伸段卻沒宣告 custom 3(primary 2 頂延伸段 2)", "左下起鋪,板長沿X"),
+    ("short_face_conflict", STEP40, "C10_SHORT_PIECE", "牆階 40 mm:牆階面只剩 13 mm 也放沿牆料(不照「短於 27 一律不放」)", "左下起鋪,板長沿Y"),
+    ("no_push_fallback", STEP40, "C1_OVERLAP", "牆階 40 mm:讓開牆料的平移撞到 y=3700 的牆料,沒有退回置中", "左上起鋪,板長沿X"),
 ]
 for mut, room, want, why, *lay in MUTANTS:
     lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
@@ -109,6 +113,24 @@ fails = fo.check(res, p)
 ok = not res["conflicts"] and not fails
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] 對照 20 mm 牆階 左下 X(沿牆料端面頂延伸段,宣告 custom 3){sorted({f['check'] for f in fails})}")
+res = fo.build(STEP40, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左下起鋪,板長沿Y"), p)
+fails = fo.check(res, p)
+ok = not res["conflicts"] and not fails
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] 對照 40 mm 牆階 左下 Y(牆階面剩 13 mm 不放料,可施工){sorted({c['code'] for c in res['conflicts']})}"
+      f"{sorted({f['check'] for f in fails})}")
+# 牆階掃描裡仍判不可施工的四類,各挑一個,原因代碼要完全一致(理由寫在 README 的掃描說明)
+for room_, lay_, want_, why_ in (
+        (STEP40, "左上起鋪,板長沿X", ["CORE_LIMIT_MAIN_ON_EXTENSION"], "核心限制(主支頂延伸段),不是碰撞"),
+        (STEP20, "左上起鋪,板長沿X", ["MAIN_DOUBLING_BLOCKED"], "縫 3659 的 + 側板邊沒有料:主支與牆料之間只剩 20 mm,放不下併料"),
+        (STEP40, "左上起鋪,板長沿Y", ["SHORT_FACE_SEAM_EDGE_UNSUPPORTED"], "板端縫 3659 的板邊落在牆階面沒被蓋住的 13 mm 裡"),
+        (STEP20, "左上起鋪,板長沿Y", ["CORE_LIMIT_BOUNDARY_END_FREE", "SPAN_END_NOT_ON_BOUNDARY"], "核心限制(邊界材端面懸空,延伸會撞另一支牆邊界材)")):
+    res = fo.build(room_, next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay_), p)
+    got_ = sorted({c["code"] for c in res["conflicts"]})
+    ok = got_ == want_
+    failed |= not ok
+    step_ = 3700 - room_["outer"][2][1]
+    print(f"[{'綠' if ok else '錯!'}] 對照 {step_} mm 牆階 {lay_}:不可施工,原因要是{why_} {got_}")
 # 剛好 min_piece 的料必須放(建構端兩處邊界:跨寬、柱面料切段),而且全部檢查通過
 res = fo.build(T27, LT_Y, p)
 fails = fo.check(res, p)
