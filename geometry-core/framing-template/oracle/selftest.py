@@ -1,5 +1,6 @@
 """framing_oracle 的自我測試。
 (1) 突變:拿掉或弄偏某條規則,對應的檢查必須轉紅;未突變的對照組必須全綠。
+    另跑 no_custom4(不套副支 custom 4):F1、F2 那 14 種排法都要被 C8_I19_PRIORITY 抓到,不多不少。
 (2) 標準答案:F1–F5 與三個額外例子、8 種排法的輸出,必須與 oracle-golden.json 逐支相同。
 (3b) 凹角、壁龕、獨立柱房 579 間與奇數縫寬矩形房,可施工的排法都要通過全部檢查。
 (3) 掃描:矩形房。
@@ -53,6 +54,13 @@ MUTANTS = [
     ("rc_through_reflex", R["F1客廳"], "C8_I22_NON_BOUNDARY_EXTENDS", "凹角處沿牆料穿過凹角(舊排法):核心 I22 不接受"),
     ("rc_through_reflex", R["F1客廳"], "C8_I19_BOUNDARY_END", "同上:凹角另一面的邊界材端面頂到沿牆料,核心 I19 不接受"),
     ("no_boundary_extension", R["F1客廳"], "C6_END_NOT_ON_TIMBER", "凹角處邊界材不延伸:沿牆料端面懸空"),
+    ("no_r_butt", RECT(3700, 2000), "C11_MAIN_NOT_BUTTED", "拿掉 R-butt:挪縫後主支離左牆沿牆料 1 mm,沒有貼住", "右上起鋪,板長沿Y"),
+    ("no_r_butt", R["F5廚房"], "C11_MAIN_NOT_BUTTED", "拿掉 R-butt:主支離柱面沿柱料 2 mm,沒有貼住", "左下起鋪,板長沿X"),
+    ("allow_short_pieces", R["F5廚房"], "C10_SHORT_PIECE", "拿掉 R-nosliver:沿柱料與主支之間 23 mm 的縫裡放 23 mm 長的副支與柱面料", "左上起鋪,板長沿X"),
+    ("allow_short_pieces", R["F1客廳"], "C10_SHORT_PIECE", "拿掉 R-nosliver:沿柱料與主支之間 10 mm 的縫裡放 10 mm 長的副支", "左上起鋪,板長沿Y"),
+    ("nosliver_too_wide", R["F1客廳"], "C4_SPACING", "R-nosliver 門檻誤設 100:93 mm 寬的跨也不放副支(窄縫豁免只到 min_piece)", "左上起鋪,板長沿X"),
+    ("nosliver_too_wide", R["F1客廳"], "C3_EDGE_UNSUPPORTED", "同上:板端縫跨過 93 mm 的空檔沒有承接", "左上起鋪,板長沿X"),
+    ("no_custom4", R["F2主臥"], "C8_I19_PRIORITY", "不套 custom 4:副支(3)端面頂壁柱沿牆料(custom 3),I19 要嚴格小於", "左上起鋪,板長沿Y"),
 ]
 for mut, room, want, why, *lay in MUTANTS:
     lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
@@ -62,6 +70,22 @@ for mut, room, want, why, *lay in MUTANTS:
     ok = want in got
     failed |= not ok
     print(f"[{'紅' if ok else '沒抓到!'}] {mut:18s} 預期 {want:24s} 實得 {sorted(got)}  {why}")
+# 凹角沿牆料/併料的排序(使用者 2026-10-18 拍板,決策佇列選項 C):不套 custom 4 時,端面頂 custom 3 的副支
+# 在 I19 數值比較(C8_I19_PRIORITY)轉紅。F1 全部 8 種、F2 的 6 種排法(右上/右下板長沿 X 沒有副支頂它)都要被抓到,
+# 不多不少;套用時這 14 種都要全綠(由標準答案與掃描驗)。
+want14 = ({("F1客廳", fo.layout_name(l)) for l in fo.LAYOUTS}
+          | {("F2主臥", fo.layout_name(l)) for l in fo.LAYOUTS if fo.layout_name(l) not in ("右上起鋪,板長沿X", "右下起鋪,板長沿X")})
+caught, promoted = set(), 0
+for name in ("F1客廳", "F2主臥"):
+    for l in fo.LAYOUTS:
+        promoted += sum(1 for t in fo.build(R[name], l, p)["timbers"] if t.get("core_role") == "custom" and t["kind"] != "rc_parallel")
+        res = fo.build(R[name], l, p, frozenset({"no_custom4"}))
+        if "C8_I19_PRIORITY" in {f["check"] for f in fo.check(res, p)}:
+            caught.add((name, fo.layout_name(l)))
+ok = caught == want14
+failed |= not ok
+print(f"[{'紅' if ok else '錯!'}] no_custom4         {len(caught)}/{len(want14)} 個排法被 C8_I19_PRIORITY 抓到"
+      f"(多抓 {sorted(caught - want14)},漏抓 {sorted(want14 - caught)});套用時升格 custom 4 的副支 {promoted} 支")
 for name in ("F1客廳", "F2主臥", "F3次臥", "F5廚房"):
     res = fo.build(R[name], LT_Y, p)
     fails = fo.check(res, p)
