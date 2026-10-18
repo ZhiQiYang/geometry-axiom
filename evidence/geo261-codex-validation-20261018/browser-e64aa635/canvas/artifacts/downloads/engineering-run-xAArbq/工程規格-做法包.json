@@ -1,0 +1,104 @@
+{
+  "schema": "engineering-package/1",
+  "materials": [
+    {
+      "value": {
+        "brand": null,
+        "id": "material-18037cbb-b016-40f1-a1c1-cad0569f296e",
+        "kind": "panel",
+        "length": 1830,
+        "model": null,
+        "name": "驗收面材",
+        "notes": null,
+        "thickness": "6.5",
+        "version": 1,
+        "width": 915
+      },
+      "fingerprint": "39c4946283391a5f70ece9a81ecd0bf6017781a72bba7ee07308dc8681251400",
+      "archived": false
+    },
+    {
+      "value": {
+        "A": 27,
+        "B": 33,
+        "brand": null,
+        "id": "material-a86721fe-9a85-43fe-90b9-18b97d79d643",
+        "kind": "timber",
+        "model": null,
+        "name": "驗收角材",
+        "notes": null,
+        "version": 1
+      },
+      "fingerprint": "2b950b63bc6a5ce458eda53cee611b17d921feeab82167d804c9f12c0a929a37",
+      "archived": false
+    },
+    {
+      "value": {
+        "brand": null,
+        "id": "material-18037cbb-b016-40f1-a1c1-cad0569f296e",
+        "kind": "panel",
+        "length": 1820,
+        "model": null,
+        "name": "驗收面材",
+        "notes": null,
+        "thickness": "6.5",
+        "version": 2,
+        "width": 910
+      },
+      "fingerprint": "d33dab730f9ee24099b32c31e1a5dd4ad3ce8a51c6e32125eda27fa2705f1d6c",
+      "archived": false
+    }
+  ],
+  "methods": [
+    {
+      "value": {
+        "gap": 3,
+        "id": "method-6c786197-52ff-449a-9c69-6b2eea85a2ce",
+        "longAxis": "v",
+        "mainAlong": "u",
+        "name": "驗收天花做法",
+        "notes": null,
+        "panel": {
+          "id": "material-18037cbb-b016-40f1-a1c1-cad0569f296e",
+          "version": 1
+        },
+        "roles": {
+          "boundary": {
+            "id": "material-a86721fe-9a85-43fe-90b9-18b97d79d643",
+            "version": 1
+          },
+          "primary": null,
+          "secondary": null
+        },
+        "version": 1
+      },
+      "fingerprint": "1f72e716a1df41f8c28a95815cba0576e8f5340da889af2e42c17c3a7faba7aa",
+      "archived": false
+    },
+    {
+      "value": {
+        "gap": 4,
+        "id": "method-6c786197-52ff-449a-9c69-6b2eea85a2ce",
+        "longAxis": "v",
+        "mainAlong": "u",
+        "name": "驗收天花做法",
+        "notes": null,
+        "panel": {
+          "id": "material-18037cbb-b016-40f1-a1c1-cad0569f296e",
+          "version": 2
+        },
+        "roles": {
+          "boundary": {
+            "id": "material-a86721fe-9a85-43fe-90b9-18b97d79d643",
+            "version": 1
+          },
+          "primary": null,
+          "secondary": null
+        },
+        "version": 2
+      },
+      "fingerprint": "06f3b318b5feef4968ebf141ba114c3cfa02cc206e02c5228bb03a2d07b3c935",
+      "archived": false
+    }
+  ]
+}

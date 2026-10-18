@@ -1,0 +1,135 @@
+{
+  "scene": "requires grid-subdivision-rules/1\ngrid-system 1 name-hex 53796e74686574696320736f757263652072756c6573 main-along none u repeat 0 600 v repeat 0 400\ngrid-source-rule 1 key 2 name-hex 4e6567617469766520617574686f7265642063656c6c selector cell -2 1 divide 3 2\ngrid-source-rule 1 key 3 name-hex e4be86e6ba90e7b4b0e58886 selector cell 9007199254740993 -9007199254740995 divide 3 2\ngrid-source-rule-highwater 1 next 4\ncanvas-pos grid-system 1 -311 -98\n",
+  "raw": {
+    "schema": "grid-editor-draft/2",
+    "draftId": "55488bf3-b056-43b2-9c99-2e0ab6143f6d",
+    "kind": "source",
+    "intent": "edit",
+    "baseRef": {
+      "kind": "grid-system",
+      "id": 1,
+      "fingerprint": "0cbe5af7a18d25795d832fbe392a18339afb262a4504c5fced7825dadc4d847d"
+    },
+    "inputRefs": [],
+    "rawForm": {
+      "igName": "Synthetic source rules",
+      "igMainAlong": "none",
+      "igUSource": "repeat",
+      "igUStep": "600",
+      "igUStepSource": "",
+      "igUPhase": "0",
+      "igUPhaseSource": "",
+      "igUPanel": "600",
+      "igUPanelSource": "",
+      "igUGap": "0",
+      "igUGapSource": "",
+      "igUAnchor": "0",
+      "igUAnchorSource": "",
+      "igUStagger": "",
+      "igUStaggerSource": "",
+      "igVSource": "repeat",
+      "igVStep": "400",
+      "igVStepSource": "",
+      "igVPhase": "0",
+      "igVPhaseSource": "",
+      "igVPanel": "600",
+      "igVPanelSource": "",
+      "igVGap": "0",
+      "igVGapSource": "",
+      "igVAnchor": "0",
+      "igVAnchorSource": "",
+      "igVStagger": "",
+      "igVStaggerSource": ""
+    },
+    "ruleDraft": {
+      "intent": "create",
+      "ruleKey": null,
+      "rawForm": {
+        "name": "Pending raw",
+        "selector": "cell",
+        "cellI": "9007199254740997",
+        "cellJ": " - ",
+        "divisionsU": " 7 ",
+        "divisionsV": ""
+      }
+    }
+  },
+  "manifest": {
+    "projectId": "2ca07d4a-f1f3-4532-a44a-036687a540bc",
+    "name": "未命名專案",
+    "sources": [],
+    "faces": [],
+    "featureAttachments": {
+      "schema": "geometry-feature-attachments/1",
+      "records": [
+        {
+          "kind": "grid-draft",
+          "schema": "grid-editor-draft/2",
+          "value": {
+            "schema": "grid-editor-draft/2",
+            "draftId": "55488bf3-b056-43b2-9c99-2e0ab6143f6d",
+            "kind": "source",
+            "intent": "edit",
+            "baseRef": {
+              "kind": "grid-system",
+              "id": 1,
+              "fingerprint": "0cbe5af7a18d25795d832fbe392a18339afb262a4504c5fced7825dadc4d847d"
+            },
+            "inputRefs": [],
+            "rawForm": {
+              "igName": "Synthetic source rules",
+              "igMainAlong": "none",
+              "igUSource": "repeat",
+              "igUStep": "600",
+              "igUStepSource": "",
+              "igUPhase": "0",
+              "igUPhaseSource": "",
+              "igUPanel": "600",
+              "igUPanelSource": "",
+              "igUGap": "0",
+              "igUGapSource": "",
+              "igUAnchor": "0",
+              "igUAnchorSource": "",
+              "igUStagger": "",
+              "igUStaggerSource": "",
+              "igVSource": "repeat",
+              "igVStep": "400",
+              "igVStepSource": "",
+              "igVPhase": "0",
+              "igVPhaseSource": "",
+              "igVPanel": "600",
+              "igVPanelSource": "",
+              "igVGap": "0",
+              "igVGapSource": "",
+              "igVAnchor": "0",
+              "igVAnchorSource": "",
+              "igVStagger": "",
+              "igVStaggerSource": ""
+            },
+            "ruleDraft": {
+              "intent": "create",
+              "ruleKey": null,
+              "rawForm": {
+                "name": "Pending raw",
+                "selector": "cell",
+                "cellI": "9007199254740997",
+                "cellJ": " - ",
+                "divisionsU": " 7 ",
+                "divisionsV": ""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "format": "geometry-canvas/13",
+    "models": [],
+    "faceProjections": [],
+    "sceneHash": "460b36096fc7a117ebed1cf5e240e676013f15702b2d70efccd58e3008a3e562",
+    "requiredCapabilities": [
+      "grid-editor-draft/2",
+      "grid-subdivision-rules/1"
+    ]
+  },
+  "sourceId": 1
+}

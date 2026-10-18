@@ -1,0 +1,85 @@
+{
+  "width": 390,
+  "scene": "boundary 1 outline 0,0 1200,0 1200,800 0,800\nboundary 2 outline 0,0 1200,0 1200,800 800,800 800,600 0,600 hole 170,80 170,280 230,280 230,80\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 2 origin 0 0 2000 u +x v +y\nspec support_91 120\nspec support_92 480\nboundary-vertex-keys 1 outer 1 2 3 4 next-key 5\nboundary-vertex-keys 2 outer 1 2 3 4 5 6 hole 7 8 9 10 next-key 11\nrequires grid-subdivision-rules/1\ngrid-system 1 name-hex 417574686f726564207368617265642072756c6520333930 main-along none u repeat 0 600 v repeat 0 400\ngrid-source-rule 1 key 1 name-hex 4e617469766520696e6e6572206c696e6573 selector all-cells divide 3 2\ngrid-source-rule-highwater 1 next 2\ngrid-binding 1 on-boundary 1 from-system 1 vertex-key 1 cell -2 1 anchor 0 1 0 1\ngrid-binding 2 on-boundary 2 from-system 1 vertex-key 1 cell 9007199254740993 -9007199254740995 anchor 0 1 0 1\ngrid 1 on 1 from-binding 1\ngrid 2 on 2 from-binding 2\ntimber 81 20 20 role boundary\ntimber 82 20 20 role boundary\ntimber 91 20 20 role primary\ntimber 92 20 20 role primary\ntimber 93 20 20 role secondary\nguide 91 1 v spec:support_91\nguide 92 1 v spec:support_92\nguide 93 1 u gridrule:1:1:1:-2:1:v:0\nplace 81 on 1 at-face e0 +u +n\n# R18 角材 81: onBoundary=true coversEdge=true boundaryEdge=0\nplace 82 on 1 at-face e2 +u +n\n# R18 角材 82: onBoundary=true coversEdge=true boundaryEdge=2\nplace 91 on 1 at-line guide 91 +v +n\n# R18 角材 91: onBoundary=false coversEdge=false boundaryEdge=-1\nplace 92 on 1 at-line guide 92 +v +n\n# R18 角材 92: onBoundary=false coversEdge=false boundaryEdge=-1\nplace 93 on 1 at-line rule 1 1 1 -2 1 v 0 between t91 t92 +u +n\n# R18 角材 93: onBoundary=false coversEdge=false boundaryEdge=-1\ncanvas-pos boundary 1 60 60\ncanvas-pos boundary 2 60 360\ncanvas-pos grid-system 1 60 660\ncanvas-pos grid-binding 1 500 360\ncanvas-pos grid-binding 2 500 810\n",
+  "manifest": {
+    "projectId": "35bb7094-b062-4ae1-b2b0-ee1c857f7e54",
+    "name": "未命名專案",
+    "sources": [],
+    "faces": [],
+    "featureAttachments": {
+      "schema": "geometry-feature-attachments/1",
+      "records": [
+        {
+          "kind": "grid-draft",
+          "schema": "grid-editor-draft/2",
+          "value": {
+            "schema": "grid-editor-draft/2",
+            "draftId": "3fe2c3f5-64ce-4331-be93-179240a69995",
+            "kind": "source",
+            "intent": "edit",
+            "baseRef": {
+              "kind": "grid-system",
+              "id": 1,
+              "fingerprint": "5e2f15e75a1a8f033ece323de014026a980983054d737fe3512103d8f3a138db"
+            },
+            "inputRefs": [],
+            "rawForm": {
+              "igName": "Authored shared rule 390",
+              "igMainAlong": "none",
+              "igUSource": "repeat",
+              "igUStep": "600",
+              "igUStepSource": "",
+              "igUPhase": "0",
+              "igUPhaseSource": "",
+              "igUPanel": "600",
+              "igUPanelSource": "",
+              "igUGap": "0",
+              "igUGapSource": "",
+              "igUAnchor": "0",
+              "igUAnchorSource": "",
+              "igUStagger": "",
+              "igUStaggerSource": "",
+              "igVSource": "repeat",
+              "igVStep": "400",
+              "igVStepSource": "",
+              "igVPhase": "0",
+              "igVPhaseSource": "",
+              "igVPanel": "600",
+              "igVPanelSource": "",
+              "igVGap": "0",
+              "igVGapSource": "",
+              "igVAnchor": "0",
+              "igVAnchorSource": "",
+              "igVStagger": "",
+              "igVStaggerSource": ""
+            },
+            "ruleDraft": null
+          }
+        }
+      ]
+    },
+    "format": "geometry-canvas/13",
+    "models": [],
+    "faceProjections": [],
+    "sceneHash": "b7273be9fcda2794cc36f388db16192c1181c6642bf90e16fb5adfae45aeed24",
+    "requiredCapabilities": [
+      "grid-editor-draft/2",
+      "grid-subdivision-rules/1"
+    ]
+  },
+  "sourceId": 1,
+  "grids": [
+    1,
+    2
+  ],
+  "cells": [
+    [
+      "-2",
+      "1"
+    ],
+    [
+      "9007199254740993",
+      "-9007199254740995"
+    ]
+  ]
+}

@@ -1,0 +1,33 @@
+boundary 1 outline 0,0 6000,0 6000,3000 4200,3000 4200,4500 0,4500 kind room_plan
+boundary 2 outline 0,0 6000,0 6000,3000 0,3000
+boundary 3 outline 0,0 3000,0 3000,3000 0,3000
+boundary 4 outline 0,0 1800,0 1800,3000 0,3000
+boundary 5 outline 0,0 1500,0 1500,3000 0,3000
+boundary 6 outline 0,0 4200,0 4200,3000 0,3000
+boundary 7 outline 0,0 4500,0 4500,3000 0,3000
+boundary 8 outline 0,0 6000,0 6000,3000 4200,3000 4200,4500 0,4500
+boundary 9 outline 0,0 6000,0 6000,3000 4200,3000 4200,4500 0,4500
+boundary 18 outline -100,-100 0,-100 0,0 -100,0
+boundary 20 outline 6000,-100 6100,-100 6100,0 6000,0
+boundary 22 outline 6000,3000 6100,3000 6100,3100 6000,3100
+boundary 24 outline 4200,4500 4300,4500 4300,4600 4200,4600
+boundary 26 outline -100,4500 0,4500 0,4600 -100,4600
+boundary 28 outline 0,0 6000,0 6000,3000 4200,3000 4200,4500 0,4500
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+placement 2 on boundary 2 origin 0 0 0 u +x v +z
+placement 3 on boundary 3 origin 6000 0 0 u +y v +z
+placement 4 on boundary 4 origin 6000 3000 0 u -x v +z
+placement 5 on boundary 5 origin 4200 3000 0 u +y v +z
+placement 6 on boundary 6 origin 4200 4500 0 u -x v +z
+placement 7 on boundary 7 origin 0 4500 0 u -y v +z
+placement 8 on boundary 8 origin 0 0 0 u +x v +y
+placement 9 on boundary 9 origin 0 0 3000 u +x v +y
+placement 18 on boundary 18 origin 0 0 0 u +x v +y
+placement 20 on boundary 20 origin 0 0 0 u +x v +y
+placement 22 on boundary 22 origin 0 0 0 u +x v +y
+placement 24 on boundary 24 origin 0 0 0 u +x v +y
+placement 26 on boundary 26 origin 0 0 0 u +x v +y
+placement 28 on boundary 28 origin 0 0 0 u +x v +y
+spec space_near 0
+spec space_wall_thickness 100
+spec space_height 3000

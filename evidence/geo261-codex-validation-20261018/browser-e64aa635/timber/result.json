@@ -1,0 +1,287 @@
+{
+  "suite": "timber",
+  "started_utc": "2026-10-18T11:59:33.688636+00:00",
+  "ci_timeout_minutes": 20,
+  "timeout_scope": "建置、啟動、runtime probe 與 harness 共用 CI job 時限；清理及封存另記",
+  "status": "failed",
+  "steps": [
+    {
+      "label": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "shell_display": "npm run build",
+      "cwd": "/workspace/geometry-axiom",
+      "log": "/workspace/geo261-validation-20261018/browser-e64aa635/timber/build.log",
+      "started_utc": "2026-10-18T11:59:33.807013+00:00",
+      "timed_out": false,
+      "exit_code": 0,
+      "timeout_seconds": 1199.881614684,
+      "pid": 107190,
+      "pgid": 107190,
+      "cleanup": {
+        "pid": 107190,
+        "pgid": 107190,
+        "exit_code_before_cleanup": 0,
+        "signals": [],
+        "exit_code_after_cleanup": 0
+      },
+      "ended_utc": "2026-10-18T12:01:08.191119+00:00",
+      "elapsed_seconds": 94.384
+    },
+    {
+      "label": "runtime_probe_1",
+      "command": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18839"
+      ],
+      "shell_display": "python3 geometry-web/runtime_version.py --probe 18839",
+      "cwd": "/workspace/geometry-axiom",
+      "log": "/workspace/geo261-validation-20261018/browser-e64aa635/timber/runtime-probe.log",
+      "started_utc": "2026-10-18T12:01:08.198280+00:00",
+      "timed_out": false,
+      "exit_code": 1,
+      "timeout_seconds": 1105.4903487379997,
+      "pid": 107693,
+      "pgid": 107693,
+      "cleanup": {
+        "pid": 107693,
+        "pgid": 107693,
+        "exit_code_before_cleanup": 1,
+        "signals": [],
+        "exit_code_after_cleanup": 1
+      },
+      "ended_utc": "2026-10-18T12:01:08.313150+00:00",
+      "elapsed_seconds": 0.115
+    },
+    {
+      "label": "runtime_probe_2",
+      "command": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18839"
+      ],
+      "shell_display": "python3 geometry-web/runtime_version.py --probe 18839",
+      "cwd": "/workspace/geometry-axiom",
+      "log": "/workspace/geo261-validation-20261018/browser-e64aa635/timber/runtime-probe.log",
+      "started_utc": "2026-10-18T12:01:09.314033+00:00",
+      "timed_out": false,
+      "exit_code": 0,
+      "timeout_seconds": 1104.3745543719997,
+      "pid": 107703,
+      "pgid": 107703,
+      "cleanup": {
+        "pid": 107703,
+        "pgid": 107703,
+        "exit_code_before_cleanup": 0,
+        "signals": [],
+        "exit_code_after_cleanup": 0
+      },
+      "ended_utc": "2026-10-18T12:01:09.780233+00:00",
+      "elapsed_seconds": 0.466
+    },
+    {
+      "label": "runtime_final_probe",
+      "command": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18839"
+      ],
+      "shell_display": "python3 geometry-web/runtime_version.py --probe 18839",
+      "cwd": "/workspace/geometry-axiom",
+      "log": "/workspace/geo261-validation-20261018/browser-e64aa635/timber/runtime-final-probe.log",
+      "started_utc": "2026-10-18T12:01:09.781230+00:00",
+      "timed_out": false,
+      "exit_code": 0,
+      "timeout_seconds": 1103.9073990069992,
+      "pid": 107705,
+      "pgid": 107705,
+      "cleanup": {
+        "pid": 107705,
+        "pgid": 107705,
+        "exit_code_before_cleanup": 0,
+        "signals": [],
+        "exit_code_after_cleanup": 0
+      },
+      "ended_utc": "2026-10-18T12:01:10.146448+00:00",
+      "elapsed_seconds": 0.365
+    },
+    {
+      "label": "browser_harness",
+      "command": [
+        "node",
+        "geometry-web/space_model_test.js"
+      ],
+      "shell_display": "node geometry-web/space_model_test.js",
+      "cwd": "/workspace/geometry-axiom",
+      "log": "/workspace/geo261-validation-20261018/browser-e64aa635/timber/test.log",
+      "started_utc": "2026-10-18T12:01:10.147858+00:00",
+      "timed_out": false,
+      "exit_code": 1,
+      "timeout_seconds": 1103.5407635619995,
+      "pid": 107707,
+      "pgid": 107707,
+      "cleanup": {
+        "pid": 107707,
+        "pgid": 107707,
+        "exit_code_before_cleanup": 1,
+        "signals": [
+          "SIGTERM",
+          "SIGKILL"
+        ],
+        "exit_code_after_cleanup": 1
+      },
+      "ended_utc": "2026-10-18T12:03:48.053820+00:00",
+      "elapsed_seconds": 157.906
+    }
+  ],
+  "environment": {
+    "TMPDIR": "/tmp/g261-timber-_6_t_p7w",
+    "TMP": "/tmp/g261-timber-_6_t_p7w",
+    "TEMP": "/tmp/g261-timber-_6_t_p7w",
+    "XDG_CACHE_HOME": "/tmp/g261-timber-_6_t_p7w/cache",
+    "XDG_CONFIG_HOME": "/tmp/g261-timber-_6_t_p7w/config",
+    "XDG_DATA_HOME": "/tmp/g261-timber-_6_t_p7w/data",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONUNBUFFERED": "1",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18839/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/g261-timber-_6_t_p7w/feedback",
+    "GEOMETRY_CHROME": "/workspace/geo261-tools/google-chrome-155.0.8059.84/opt/google/chrome/google-chrome",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CHROME_PROFILE": "/tmp/g261-timber-_6_t_p7w/chrome-profile",
+    "GEOMETRY_BROWSER_SUITE": "timber",
+    "GEOMETRY_CDP_PORT": "9348",
+    "GEOMETRY_TEST_SERVER_PATH_STYLE": "native",
+    "GEOMETRY_TEST_SCREENSHOT": "/tmp/g261-timber-_6_t_p7w/screens/phase1-shell.png",
+    "GEOMETRY_SPACE_TEST_DIR": "/tmp/g261-timber-_6_t_p7w/space-results",
+    "GEOMETRY_EVIDENCE_TEST_DIR": "/tmp/g261-timber-_6_t_p7w/evidence-results",
+    "GEOMETRY_ENGINEERING_DOWNLOAD_DIR": "/tmp/g261-timber-_6_t_p7w/downloads",
+    "GEOMETRY_TIMBER_ONLY": "1",
+    "GEOMETRY_ASSEMBLY_CONTEXT_SCREENSHOTS": "/tmp/g261-timber-_6_t_p7w/screens/assembly_context_screenshots",
+    "GEOMETRY_COMPOSITION_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/composition_screenshot_dir",
+    "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/document_screenshot_dir",
+    "GEOMETRY_ENGINEERING_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/engineering_screenshot_dir",
+    "GEOMETRY_GRID_RENAME_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/grid_rename_screenshot_dir",
+    "GEOMETRY_GRID_RULE_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/grid_rule_screenshot_dir",
+    "GEOMETRY_GRID_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/grid_screenshot_dir",
+    "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/grid_system_screenshot_dir",
+    "GEOMETRY_MARQUEE_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/marquee_screenshot_dir",
+    "GEOMETRY_MODEL_SNAPSHOT_SCREENSHOTS": "/tmp/g261-timber-_6_t_p7w/screens/model_snapshot_screenshots",
+    "GEOMETRY_PROJECT_AUDIT_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/project_audit_screenshot_dir",
+    "GEOMETRY_REPAIR_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/repair_screenshot_dir",
+    "GEOMETRY_ROOM_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/room_screenshot_dir",
+    "GEOMETRY_SCHEDULE_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/schedule_screenshot_dir",
+    "GEOMETRY_SELECTION_CURSOR_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/selection_cursor_screenshot_dir",
+    "GEOMETRY_SOURCE_NAVIGATION_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/source_navigation_screenshot_dir",
+    "GEOMETRY_SUPPORT_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/support_screenshot_dir",
+    "GEOMETRY_UIUX_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/uiux_screenshot_dir",
+    "GEOMETRY_UX_REFINEMENT_SCREENSHOT_DIR": "/tmp/g261-timber-_6_t_p7w/screens/ux_refinement_screenshot_dir"
+  },
+  "cleared_inherited_geometry_variable_names": [],
+  "source_before": {
+    "sha": "e64aa6359d600f43313ec9d7ba1112c465b6a40c",
+    "status": "",
+    "tracked_changes": []
+  },
+  "browser": "/workspace/geo261-tools/google-chrome-155.0.8059.84/opt/google/chrome/google-chrome",
+  "browser_difference": "CI 指定 /usr/bin/google-chrome；本次使用明列的瀏覽器，版本見 environment.json",
+  "timed_out": false,
+  "harness_exit_code": 1,
+  "port_checks": [
+    {
+      "label": "before_build",
+      "utc": "2026-10-18T11:59:33.806883+00:00",
+      "host": "127.0.0.1",
+      "port": 18839,
+      "connect_errno": 111,
+      "no_listener_observed": true
+    },
+    {
+      "label": "before_start",
+      "utc": "2026-10-18T12:01:08.195389+00:00",
+      "host": "127.0.0.1",
+      "port": 18839,
+      "connect_errno": 111,
+      "no_listener_observed": true
+    }
+  ],
+  "server": {
+    "command": [
+      "python3",
+      "-u",
+      "geometry-web/start_local.py",
+      "--port",
+      "18839"
+    ],
+    "shell_display": "python3 -u geometry-web/start_local.py --port 18839",
+    "pid": 107692,
+    "pgid": 107692,
+    "started_utc": "2026-10-18T12:01:08.198164+00:00",
+    "log": "/workspace/geo261-validation-20261018/browser-e64aa635/timber/server.log",
+    "cleanup": {
+      "pid": 107692,
+      "pgid": 107692,
+      "exit_code_before_cleanup": null,
+      "signals": [
+        "SIGTERM",
+        "SIGKILL"
+      ],
+      "exit_code_after_cleanup": -15
+    },
+    "exit_code": -15,
+    "ended_utc": "2026-10-18T12:03:50.059530+00:00"
+  },
+  "initial_server_ownership": {
+    "verified_utc": "2026-10-18T12:01:09.781120+00:00",
+    "expected_pid": 107692,
+    "runtime_pid": 107692,
+    "launcher_uses_execve": true,
+    "server_running": true,
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "0de633fe53c442d1f7578f86840a848ce1378823514548483ee83cddc65e94ee",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 107692,
+      "session": "2c66f34e6dcc47ebb1f0ea7c420b5973"
+    }
+  },
+  "final_server_ownership": {
+    "verified_utc": "2026-10-18T12:01:10.146657+00:00",
+    "expected_pid": 107692,
+    "runtime_pid": 107692,
+    "launcher_uses_execve": true,
+    "server_running": true,
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "0de633fe53c442d1f7578f86840a848ce1378823514548483ee83cddc65e94ee",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 107692,
+      "session": "2c66f34e6dcc47ebb1f0ea7c420b5973"
+    }
+  },
+  "work_elapsed_seconds": 254.365,
+  "artifact_archive": {
+    "path": "/workspace/geo261-validation-20261018/browser-e64aa635/timber/artifacts",
+    "manifest": "/workspace/geo261-validation-20261018/browser-e64aa635/timber/artifact-manifest.json",
+    "source_tmp_directory": "/tmp/g261-timber-_6_t_p7w",
+    "file_count": 455,
+    "bytes": 4281583,
+    "errors": []
+  },
+  "source_after": {
+    "sha": "e64aa6359d600f43313ec9d7ba1112c465b6a40c",
+    "status": "",
+    "tracked_changes": []
+  },
+  "source_unchanged": true,
+  "ended_utc": "2026-10-18T12:03:50.445277+00:00",
+  "elapsed_seconds": 256.757
+}

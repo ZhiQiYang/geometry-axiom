@@ -1,0 +1,214 @@
+{
+  "url": "http://127.0.0.1:18839/",
+  "scope": {
+    "mode": "partial",
+    "filters": [
+      "GEOMETRY_TIMBER_ONLY"
+    ],
+    "included": [
+      "timber-material",
+      "timber-source-guards",
+      "font-layout"
+    ],
+    "omitted": [
+      "space-height-library",
+      "projection-lifecycle",
+      "projection-placement",
+      "space-flow",
+      "projection-close"
+    ],
+    "url": "http://127.0.0.1:18839/",
+    "feedbackDirectory": "/tmp/g261-timber-_6_t_p7w/feedback"
+  },
+  "completed": false,
+  "groups": {
+    "setup": {
+      "expected": 2,
+      "passed": 2,
+      "failed": 0,
+      "completed": true
+    },
+    "timber-material": {
+      "expected": 48,
+      "passed": 22,
+      "failed": 0,
+      "completed": false
+    },
+    "timber-source-guards": {
+      "expected": 8,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    },
+    "font-layout": {
+      "expected": 19,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    },
+    "browser-health": {
+      "expected": 2,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    }
+  },
+  "completenessProblems": [
+    "Space run did not finish",
+    "Group timber-material did not complete",
+    "Group timber-material: expected 48 passed assertions, got 22 passed / 0 failed",
+    "Group timber-source-guards did not complete",
+    "Group timber-source-guards: expected 8 passed assertions, got 0 passed / 0 failed",
+    "Group font-layout did not complete",
+    "Group font-layout: expected 19 passed assertions, got 0 passed / 0 failed",
+    "Group browser-health did not complete",
+    "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+  ],
+  "passed": 24,
+  "failed": 2,
+  "exceptions": [],
+  "consoleErrors": [],
+  "coverage": "Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.",
+  "results": [
+    {
+      "name": "server serves the intended space-model release",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "current release explicitly supports timber preview and engineering sources",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "GEO208 own source preserves legal placement zero and defaults to its one timber",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 candidate identifies timber zero with real dimensions and world z range",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 another placement of the same boundary has only its own timber",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 explicit exclusion leaves timber quantity absent and clearly reports not included",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 excluded source keeps legacy preview shape without a hidden empty timber request",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 including timber does not alter space, clearance or material-wall quantity",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 selected timber has separate count and exact 4000x27x33 material volume",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 isolated timber is a real closed cuboid at z2500..2533",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 hiding enclosure roof retains all timber caps",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 all three layers can be independently hidden",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 bottom camera sees the same real timber bounds and complete mesh",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 saved input has exact typed timber zero and source placement zero",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 saved timber geometry independently verifies dimensions, bounds and material volume",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 own no-PDF creation preserves the complete original world",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 deleting live timber does not rewrite included or excluded saved snapshots",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 saved timber model can preview 3200 height after its live timber was deleted",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 cancelling height edit leaves the entire original timber model immutable",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 height update retains id, source, typed timber roots and byte-equivalent timber geometry",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 undo restores the former height and exact original timber snapshot",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 redo restores updated height with the same timber snapshot",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 deleted current timber produces explicit zero-candidate guidance without affecting sibling placement",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 zero-timber source still previews a closed space normally",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "complete browser flow",
+      "ok": false,
+      "detail": "Error: Timed out: example preview. UI: {\"status\":\"正在推導各面、檢查封閉狀態與材料幾何…\",\"snapshot\":{\"phase\":\"previewing\",\"sourceKind\":\"example\",\"resultSummary\":null,\"createdId\":null,\"editingId\":null,\"supportsTimbers\":true,\"timberCandidates\":[{\"A\":27,\"B\":33,\"id\":10,\"length\":4000,\"placement_id\":1,\"role\":\"boundary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":11,\"length\":4000,\"placement_id\":1,\"role\":\"boundary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":12,\"length\":2946,\"placement_id\":1,\"role\":\"primary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":13,\"length\":2946,\"placement_id\":1,\"role\":\"primary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":20,\"length\":2946,\"placement_id\":1,\"role\":\"primary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":30,\"length\":1960,\"placement_id\":1,\"role\":\"secondary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":31,\"length\":1959,\"placement_id\":1,\"role\":\"secondary\",\"z_max\":2533,\"z_min\":2500}],\"stale\":true,\"previewRevision\":-1,\"inputRevision\":20,\"viewer\":{\"objectCount\":0,\"triangleCount\":0,\"bounds\":null,\"labels\":[],\"view\":\"bottom\",\"yaw\":0,\"pitch\":-1.5707963267948966,\"zoom\":1,\"pan\":{\"x\":0,\"y\":0},\"width\":980,\"height\":692.875,\"destroyed\":false,\"selection\":null}},\"connection\":\"ready\"}\n    at wait (/workspace/geometry-axiom/geometry-web/space_model_test.js:138:9)\n    at async example (/workspace/geometry-axiom/geometry-web/space_model_test.js:316:3)\n    at async timberRegression (/workspace/geometry-axiom/geometry-web/space_model_test.js:1118:3)\n    at async Object.run (/workspace/geometry-axiom/geometry-web/space_test_floor.js:34:9)\n    at async run (/workspace/geometry-axiom/geometry-web/space_model_test.js:1256:5)"
+    },
+    {
+      "name": "space group completeness",
+      "ok": false,
+      "detail": [
+        "Space run did not finish",
+        "Group timber-material did not complete",
+        "Group timber-material: expected 48 passed assertions, got 22 passed / 0 failed",
+        "Group timber-source-guards did not complete",
+        "Group timber-source-guards: expected 8 passed assertions, got 0 passed / 0 failed",
+        "Group font-layout did not complete",
+        "Group font-layout: expected 19 passed assertions, got 0 passed / 0 failed",
+        "Group browser-health did not complete",
+        "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+      ]
+    }
+  ]
+}

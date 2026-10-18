@@ -1,0 +1,213 @@
+{
+  "kind": "controlled delivery of real native close callbacks; not natural recurrence of an earlier failure",
+  "cases": [
+    {
+      "phase": "during-source-read",
+      "held": {
+        "armed": true,
+        "heldEvent": {
+          "at": 4308.300000000745,
+          "eventTime": 4250.700000001118,
+          "trusted": true
+        },
+        "callbackCount": 0,
+        "nativeEvents": [
+          {
+            "at": 3354.300000000745,
+            "eventTime": 3308.800000000745,
+            "trusted": true
+          },
+          {
+            "at": 4308.300000000745,
+            "eventTime": 4250.700000001118,
+            "trusted": true
+          }
+        ],
+        "deliveries": []
+      },
+      "overlap": {
+        "open": false,
+        "observation": {
+          "calls": 3,
+          "finished": 2
+        },
+        "source": {
+          "phase": "held",
+          "claimed": 1,
+          "nativeOK": true,
+          "caller": "Error\n    at intercepted (eval at <anonymous> (:1:143), <anonymous>:8:20)\n    at apiRequest (http://127.0.0.1:18839/app.js:650:21)\n    at api (http://127.0.0.1:18839/app.js:702:24)\n    at readSource (http://127.0.0.1:18839/app.js:84:23)\n    at Object.open (http://127.0.0.1:18839/app.js:91:28)\n    at FaceProjection.open (eval at <anonymous> (:1:143), <anonymous>:7:32)\n    at HTMLButtonElement.editProjection (http://127.0.0.1:18839/space-workspace.js:544:31)"
+        }
+      },
+      "delivery": {
+        "releasedAt": 4647.60000000149,
+        "armed": true,
+        "heldEvent": {
+          "at": 4308.300000000745,
+          "eventTime": 4250.700000001118,
+          "trusted": true
+        },
+        "callbackCount": 0,
+        "nativeEvents": [
+          {
+            "at": 3354.300000000745,
+            "eventTime": 3308.800000000745,
+            "trusted": true
+          },
+          {
+            "at": 4308.300000000745,
+            "eventTime": 4250.700000001118,
+            "trusted": true
+          }
+        ],
+        "deliveries": []
+      },
+      "reopened": true,
+      "saved": true
+    },
+    {
+      "phase": "after-reopen",
+      "held": {
+        "armed": true,
+        "heldEvent": {
+          "at": 9286.900000000373,
+          "eventTime": 9279.200000001118,
+          "trusted": true
+        },
+        "callbackCount": 0,
+        "nativeEvents": [
+          {
+            "at": 3354.300000000745,
+            "eventTime": 3308.800000000745,
+            "trusted": true
+          },
+          {
+            "at": 4308.300000000745,
+            "eventTime": 4250.700000001118,
+            "trusted": true
+          },
+          {
+            "at": 5648.10000000149,
+            "eventTime": 5601.9000000003725,
+            "trusted": true
+          },
+          {
+            "at": 8424.400000000373,
+            "eventTime": 8383.5,
+            "trusted": true
+          },
+          {
+            "at": 9286.900000000373,
+            "eventTime": 9279.200000001118,
+            "trusted": true
+          }
+        ],
+        "deliveries": []
+      },
+      "overlap": {
+        "open": true,
+        "observation": {
+          "calls": 6,
+          "finished": 6
+        },
+        "source": {
+          "phase": "released",
+          "claimed": 1,
+          "nativeOK": true,
+          "caller": "Error\n    at intercepted (eval at <anonymous> (:1:143), <anonymous>:8:20)\n    at apiRequest (http://127.0.0.1:18839/app.js:650:21)\n    at api (http://127.0.0.1:18839/app.js:702:24)\n    at readSource (http://127.0.0.1:18839/app.js:84:23)\n    at Object.open (http://127.0.0.1:18839/app.js:91:28)\n    at FaceProjection.open (eval at <anonymous> (:1:143), <anonymous>:7:32)\n    at HTMLButtonElement.editProjection (http://127.0.0.1:18839/space-workspace.js:544:31)"
+        }
+      },
+      "delivery": {
+        "releasedAt": 9652.800000000745,
+        "armed": true,
+        "heldEvent": {
+          "at": 9286.900000000373,
+          "eventTime": 9279.200000001118,
+          "trusted": true
+        },
+        "callbackCount": 0,
+        "nativeEvents": [
+          {
+            "at": 3354.300000000745,
+            "eventTime": 3308.800000000745,
+            "trusted": true
+          },
+          {
+            "at": 4308.300000000745,
+            "eventTime": 4250.700000001118,
+            "trusted": true
+          },
+          {
+            "at": 5648.10000000149,
+            "eventTime": 5601.9000000003725,
+            "trusted": true
+          },
+          {
+            "at": 8424.400000000373,
+            "eventTime": 8383.5,
+            "trusted": true
+          },
+          {
+            "at": 9286.900000000373,
+            "eventTime": 9279.200000001118,
+            "trusted": true
+          }
+        ],
+        "deliveries": []
+      },
+      "reopened": true,
+      "saved": true
+    }
+  ],
+  "tail": {
+    "armed": false,
+    "heldEvent": {
+      "at": 9286.900000000373,
+      "eventTime": 9279.200000001118,
+      "trusted": true
+    },
+    "callbackCount": 0,
+    "nativeEvents": [
+      {
+        "at": 3354.300000000745,
+        "eventTime": 3308.800000000745,
+        "trusted": true
+      },
+      {
+        "at": 4308.300000000745,
+        "eventTime": 4250.700000001118,
+        "trusted": true
+      },
+      {
+        "at": 5648.10000000149,
+        "eventTime": 5601.9000000003725,
+        "trusted": true
+      },
+      {
+        "at": 8424.400000000373,
+        "eventTime": 8383.5,
+        "trusted": true
+      },
+      {
+        "at": 9286.900000000373,
+        "eventTime": 9279.200000001118,
+        "trusted": true
+      },
+      {
+        "at": 10526.400000000373,
+        "eventTime": 10464.60000000149,
+        "trusted": true
+      },
+      {
+        "at": 13335.10000000149,
+        "eventTime": 13252.10000000149,
+        "trusted": true
+      },
+      {
+        "at": 14453.300000000745,
+        "eventTime": 14447.10000000149,
+        "trusted": true
+      }
+    ],
+    "deliveries": []
+  }
+}

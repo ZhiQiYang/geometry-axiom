@@ -1,0 +1,16 @@
+
+> geometry-axiom-dev@0.0.0 build
+> python3 geometry-web/start_local.py --build-only
+
+  core：建置（找不到 /tmp/g261-canvas-d_bka_fe/geometry-runtime/b9bc23103ebb114398f3/core）…
+  bridge：建置（找不到 /tmp/g261-canvas-d_bka_fe/geometry-runtime/b9bc23103ebb114398f3/bridge）…
+  model-base：建置（找不到 /tmp/g261-canvas-d_bka_fe/geometry-runtime/b9bc23103ebb114398f3/model-base）…
+core: built — 建好 /tmp/g261-canvas-d_bka_fe/geometry-runtime/b9bc23103ebb114398f3/core
+bridge: built — 建好 /tmp/g261-canvas-d_bka_fe/geometry-runtime/b9bc23103ebb114398f3/bridge
+model-base: built — 建好 /tmp/g261-canvas-d_bka_fe/geometry-runtime/b9bc23103ebb114398f3/model-base
+LOCAL_RUNTIME {"root": "/workspace/geometry-axiom", "binaryDirectory": "/tmp/g261-canvas-d_bka_fe/geometry-runtime/b9bc23103ebb114398f3", "executables": {"core": "/tmp/g261-canvas-d_bka_fe/geometry-runtime/b9bc23103ebb114398f3/core", "bridge": "/tmp/g261-canvas-d_bka_fe/geometry-runtime/b9bc23103ebb114398f3/bridge", "model-base": "/tmp/g261-canvas-d_bka_fe/geometry-runtime/b9bc23103ebb114398f3/model-base"}, "port": null, "managedPreview": false}
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

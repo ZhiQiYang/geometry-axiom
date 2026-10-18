@@ -1,0 +1,14 @@
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+spec 主支中線 500
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+guide 1 1 v spec:主支中線
+place 1 on 1 at-face e0 +u +n
+# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0
+place 2 on 1 at-face e2 +u +n
+# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2
+place 3 on 1 at-line guide 1 +v +n
+# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1
+canvas-pos boundary 1 60 60

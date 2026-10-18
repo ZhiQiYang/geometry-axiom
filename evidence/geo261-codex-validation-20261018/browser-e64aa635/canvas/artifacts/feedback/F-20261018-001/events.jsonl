@@ -1,0 +1,1000 @@
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321808905}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 84, "t": 1792321808966}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 194, "t": 1792321809100}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 9, "t": 1792321809120}
+{"k": "status", "msg": "工具：選取", "t": 1792321809130}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321809138}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 148, "t": 1792321809427}
+{"k": "api", "cmd": "line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 192, "t": 1792321809619}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 196, "t": 1792321809622}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 66, "t": 1792321809684}
+{"k": "api", "cmd": "line spec 起點 300", "ok": true, "ms": 211, "t": 1792321809830}
+{"k": "api", "cmd": "line spec 目標 900", "ok": true, "ms": 157, "t": 1792321809987}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 161, "t": 1792321809990}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 84, "t": 1792321810071}
+{"k": "api", "cmd": "line spec 再移 1200", "ok": true, "ms": 234, "t": 1792321810221}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 69, "t": 1792321810289}
+{"k": "api", "cmd": "line guide 1 1 u spec:起點", "ok": true, "ms": 222, "t": 1792321810443}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 5, "t": 1792321810448}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 11, "t": 1792321810459}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 8, "t": 1792321810467}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 82, "t": 1792321810524}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 196, "t": 1792321810663}
+{"k": "status", "msg": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回", "t": 1792321810675}
+{"k": "api", "cmd": "render", "ok": true, "ms": 21, "t": 1792321810695}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 12, "t": 1792321810716}
+{"k": "api", "cmd": "render", "ok": true, "ms": 8, "t": 1792321810724}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 6, "t": 1792321810755}
+{"k": "api", "cmd": "proj 2 2500 300 1", "ok": true, "ms": 70, "t": 1792321810827}
+{"k": "api", "cmd": "proj 2 2500 900 1", "ok": true, "ms": 58, "t": 1792321810885}
+{"k": "api", "cmd": "proj 2 2500 1200 1", "ok": true, "ms": 57, "t": 1792321810942}
+{"k": "click", "el": "line < g[data-view-index=\"2\"] < g#world", "text": "", "x": 523.4699096679688, "y": 496.9447021484375, "t": 1792321810945}
+{"k": "api", "cmd": "pick 2 2500 300 72", "ok": true, "ms": 10, "t": 1792321810957}
+{"k": "api", "cmd": "line history-begin", "ok": true, "ms": 68, "t": 1792321811024}
+{"k": "api", "cmd": "drag 0 2 2500 900", "ok": true, "ms": 277, "t": 1792321811357}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 108, "t": 1792321811464}
+{"k": "api", "cmd": "line history-end", "ok": true, "ms": 181, "t": 1792321811538}
+{"k": "api", "cmd": "render", "ok": true, "ms": 5, "t": 1792321811543}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 7, "t": 1792321811590}
+{"k": "key", "key": "Ctrl+z", "el": "section#canvasViewport", "t": 1792321811594}
+{"k": "api", "cmd": "line undo", "ok": true, "ms": 87, "t": 1792321811681}
+{"k": "api", "cmd": "render", "ok": true, "ms": 20, "t": 1792321811702}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 13, "t": 1792321811722}
+{"k": "status", "msg": "✓ 已復原", "t": 1792321811722}
+{"k": "toast", "type": "ok", "msg": "已復原", "t": 1792321811722}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 81, "t": 1792321811761}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 5, "t": 1792321811961}
+{"k": "key", "key": "Ctrl+Shift+z", "el": "section#canvasViewport", "t": 1792321811964}
+{"k": "api", "cmd": "line redo", "ok": true, "ms": 86, "t": 1792321812051}
+{"k": "api", "cmd": "render", "ok": true, "ms": 11, "t": 1792321812063}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 11, "t": 1792321812077}
+{"k": "status", "msg": "✓ 已重做", "t": 1792321812077}
+{"k": "toast", "type": "ok", "msg": "已重做", "t": 1792321812077}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 64, "t": 1792321812114}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 4, "t": 1792321812330}
+{"k": "click", "el": "line < g[data-view-index=\"2\"] < g#world", "text": "", "x": 523.4699096679688, "y": 564.029052734375, "t": 1792321812333}
+{"k": "api", "cmd": "pick 2 2500 900 72", "ok": true, "ms": 12, "t": 1792321812346}
+{"k": "api", "cmd": "line history-begin", "ok": true, "ms": 58, "t": 1792321812404}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 4, "t": 1792321812547}
+{"k": "api", "cmd": "line history-abort", "ok": true, "ms": 72, "t": 1792321812623}
+{"k": "api", "cmd": "render", "ok": true, "ms": 7, "t": 1792321812631}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 9, "t": 1792321812657}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 4, "t": 1792321812668}
+{"k": "click", "el": "line < g[data-view-index=\"2\"] < g#world", "text": "", "x": 523.4699096679688, "y": 564.029052734375, "t": 1792321812670}
+{"k": "api", "cmd": "pick 2 2500 900 72", "ok": true, "ms": 15, "t": 1792321812686}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 78, "t": 1792321812701}
+{"k": "api", "cmd": "line history-begin", "ok": true, "ms": 78, "t": 1792321812764}
+{"k": "api", "cmd": "line history-end", "ok": true, "ms": 67, "t": 1792321812831}
+{"k": "api", "cmd": "render", "ok": true, "ms": 5, "t": 1792321812836}
+{"k": "key", "key": "Ctrl+z", "el": "section#canvasViewport", "t": 1792321812849}
+{"k": "api", "cmd": "line undo", "ok": true, "ms": 58, "t": 1792321812907}
+{"k": "api", "cmd": "render", "ok": true, "ms": 13, "t": 1792321812921}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 6, "t": 1792321812931}
+{"k": "status", "msg": "✓ 已復原", "t": 1792321812931}
+{"k": "toast", "type": "ok", "msg": "已復原", "t": 1792321812931}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 71, "t": 1792321812977}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 4, "t": 1792321813161}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321813167}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 7, "t": 1792321813174}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 3, "t": 1792321813177}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321813182}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 163, "t": 1792321813348}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 75, "t": 1792321813422}
+{"k": "api", "cmd": "line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 231, "t": 1792321813579}
+{"k": "api", "cmd": "line spec 起點 300", "ok": true, "ms": 151, "t": 1792321813730}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 152, "t": 1792321813730}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 59, "t": 1792321813789}
+{"k": "api", "cmd": "line spec 目標 900", "ok": true, "ms": 209, "t": 1792321813938}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 64, "t": 1792321814002}
+{"k": "api", "cmd": "line guide 1 1 u spec:起點", "ok": true, "ms": 201, "t": 1792321814140}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 59, "t": 1792321814197}
+{"k": "api", "cmd": "line space 1 boundary 1", "ok": true, "ms": 195, "t": 1792321814335}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 11, "t": 1792321814346}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 3, "t": 1792321814349}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321814354}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 62, "t": 1792321814396}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 190, "t": 1792321814544}
+{"k": "api", "cmd": "line canvas-pos space 1 440 60", "ok": true, "ms": 141, "t": 1792321814685}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 22, "t": 1792321814737}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 10, "t": 1792321814765}
+{"k": "api", "cmd": "references", "ok": true, "ms": 8, "t": 1792321814773}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 3, "t": 1792321814776}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 22, "t": 1792321814798}
+{"k": "status", "msg": "工具：選取", "t": 1792321814799}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321814810}
+{"k": "click", "el": "summary#projToggle", "text": "投影視圖（仰視）", "x": 1233, "y": 891.9296875, "t": 1792321814847}
+{"k": "api", "cmd": "render", "ok": true, "ms": 6, "t": 1792321814868}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 5, "t": 1792321815290}
+{"k": "api", "cmd": "render", "ok": true, "ms": 5, "t": 1792321815485}
+{"k": "api", "cmd": "proj 2 2500 300 1", "ok": true, "ms": 66, "t": 1792321815551}
+{"k": "api", "cmd": "proj 2 2500 900 1", "ok": true, "ms": 58, "t": 1792321815608}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 4, "t": 1792321815615}
+{"k": "click", "el": "line < g[data-view=\"2\"] < svg.proj-svg < div#projViews", "text": "", "x": 1262.945068359375, "y": 709.9491577148438, "t": 1792321815618}
+{"k": "api", "cmd": "pick 2 2500 300 12", "ok": true, "ms": 14, "t": 1792321815633}
+{"k": "api", "cmd": "line history-begin", "ok": true, "ms": 59, "t": 1792321815692}
+{"k": "api", "cmd": "drag 0 2 2500 900", "ok": true, "ms": 229, "t": 1792321815971}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 67, "t": 1792321816036}
+{"k": "api", "cmd": "line history-end", "ok": true, "ms": 128, "t": 1792321816099}
+{"k": "api", "cmd": "render", "ok": true, "ms": 4, "t": 1792321816104}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 3, "t": 1792321816125}
+{"k": "key", "key": "Ctrl+z", "el": "body < html", "t": 1792321816128}
+{"k": "api", "cmd": "line undo", "ok": true, "ms": 126, "t": 1792321816254}
+{"k": "api", "cmd": "render", "ok": true, "ms": 26, "t": 1792321816272}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 18, "t": 1792321816273}
+{"k": "api", "cmd": "render", "ok": true, "ms": 11, "t": 1792321816279}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 6, "t": 1792321816280}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 9, "t": 1792321816288}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 6, "t": 1792321816298}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 6, "t": 1792321816304}
+{"k": "api", "cmd": "references", "ok": true, "ms": 3, "t": 1792321816307}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 3, "t": 1792321816310}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 13, "t": 1792321816324}
+{"k": "status", "msg": "✓ 已復原", "t": 1792321816338}
+{"k": "toast", "type": "ok", "msg": "已復原", "t": 1792321816338}
+{"k": "api", "cmd": "render", "ok": true, "ms": 24, "t": 1792321816357}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 103, "t": 1792321816357}
+{"k": "api", "cmd": "render", "ok": true, "ms": 10, "t": 1792321816358}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 5, "t": 1792321816564}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 163, "t": 1792321816732}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 86, "t": 1792321816818}
+{"k": "api", "cmd": "line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 229, "t": 1792321816961}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 67, "t": 1792321817028}
+{"k": "api", "cmd": "line spec 起點 300", "ok": true, "ms": 211, "t": 1792321817171}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 111, "t": 1792321817282}
+{"k": "api", "cmd": "line spec 目標 900", "ok": true, "ms": 259, "t": 1792321817430}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 81, "t": 1792321817511}
+{"k": "api", "cmd": "line guide 1 1 u spec:起點", "ok": true, "ms": 217, "t": 1792321817648}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 64, "t": 1792321817711}
+{"k": "api", "cmd": "line space 1 boundary 1", "ok": true, "ms": 207, "t": 1792321817854}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 13, "t": 1792321817867}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 6, "t": 1792321817873}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321817876}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 73, "t": 1792321817926}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 209, "t": 1792321818085}
+{"k": "api", "cmd": "line canvas-pos space 1 440 60", "ok": true, "ms": 168, "t": 1792321818253}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 16, "t": 1792321818283}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 6, "t": 1792321818288}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321818292}
+{"k": "api", "cmd": "render", "ok": true, "ms": 5, "t": 1792321818301}
+{"k": "api", "cmd": "render", "ok": true, "ms": 2, "t": 1792321818306}
+{"k": "status", "msg": "空間 1：成員面清單 · 點面卡進入面編輯 · Esc 返回", "t": 1792321818309}
+{"k": "click", "el": "button.ss-tab[data-ss-tab=\"proj\"] < nav#spaceStageTabs", "text": "三視圖", "x": 398.7734375, "y": 93.0625, "t": 1792321818322}
+{"k": "api", "cmd": "render", "ok": true, "ms": 5, "t": 1792321818709}
+{"k": "api", "cmd": "proj 2 2500 300 1", "ok": true, "ms": 101, "t": 1792321818810}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 7, "t": 1792321818860}
+{"k": "api", "cmd": "proj 2 2500 900 1", "ok": true, "ms": 86, "t": 1792321818896}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 12, "t": 1792321818911}
+{"k": "click", "el": "line < g[data-view-index=\"2\"] < svg#spaceProjSvg", "text": "", "x": 538.7710571289062, "y": 500.81793212890625, "t": 1792321818915}
+{"k": "api", "cmd": "pick 2 2500 300 12", "ok": true, "ms": 15, "t": 1792321818930}
+{"k": "api", "cmd": "line history-begin", "ok": true, "ms": 79, "t": 1792321819009}
+{"k": "api", "cmd": "drag 0 2 2500 900", "ok": true, "ms": 421, "t": 1792321819434}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 89, "t": 1792321819522}
+{"k": "api", "cmd": "line history-end", "ok": true, "ms": 190, "t": 1792321819625}
+{"k": "api", "cmd": "render", "ok": true, "ms": 7, "t": 1792321819632}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 127, "t": 1792321819975}
+{"k": "key", "key": "Ctrl+z", "el": "body < html", "t": 1792321820025}
+{"k": "api", "cmd": "line undo", "ok": true, "ms": 487, "t": 1792321820516}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 138, "t": 1792321820654}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 32, "t": 1792321820687}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 19, "t": 1792321820706}
+{"k": "api", "cmd": "render", "ok": true, "ms": 1728, "t": 1792321822446}
+{"k": "status", "msg": "✓ 已復原", "t": 1792321822493}
+{"k": "toast", "type": "ok", "msg": "已復原", "t": 1792321822493}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 1990, "t": 1792321822502}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 5, "t": 1792321822710}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 212, "t": 1792321822929}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 87, "t": 1792321823015}
+{"k": "api", "cmd": "line boundary 99 outline 0,0 100,0 100,100 0,100", "ok": true, "ms": 225, "t": 1792321823154}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 8, "t": 1792321823162}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 7, "t": 1792321823169}
+{"k": "api", "cmd": "boundary 99", "ok": true, "ms": 3, "t": 1792321823172}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 67, "t": 1792321823220}
+{"k": "api", "cmd": "line canvas-pos boundary 99 60 60", "ok": true, "ms": 303, "t": 1792321823475}
+{"k": "click", "el": "span.file-menu-label < button#fileMenuBtn", "text": "檔案", "x": 991.7109375, "y": 27.5, "t": 1792321823500}
+{"k": "click", "el": "button#exampleMenuBtn", "text": "範例 ▸", "x": 1108.203125, "y": 547.3125, "t": 1792321823884}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 9, "t": 1792321824084}
+{"k": "click", "el": "button#btnEx", "text": "載入預設場景範例", "x": 1112.203125, "y": 706.3125, "t": 1792321824521}
+{"k": "api", "cmd": "loadfile /workspace/geometry-axiom/room_a.scene", "ok": true, "ms": 2064, "t": 1792321826603}
+{"k": "status", "msg": "✓ 已載入 room_a.scene", "t": 1792321826604}
+{"k": "toast", "type": "ok", "msg": "已載入 room_a.scene", "t": 1792321826604}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 35, "t": 1792321826639}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 13, "t": 1792321826652}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321826657}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 215, "t": 1792321826817}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 707, "t": 1792321827364}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 152, "t": 1792321828063}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 154, "t": 1792321828216}
+{"k": "api", "cmd": "line boundary 99 outline 0,0 100,0 100,100 0,100", "ok": true, "ms": 461, "t": 1792321828523}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 17, "t": 1792321828540}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 10, "t": 1792321828550}
+{"k": "api", "cmd": "boundary 99", "ok": true, "ms": 7, "t": 1792321828557}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 73, "t": 1792321828595}
+{"k": "api", "cmd": "line canvas-pos boundary 99 60 60", "ok": true, "ms": 188, "t": 1792321828746}
+{"k": "click", "el": "span.file-menu-label < button#fileMenuBtn", "text": "檔案", "x": 808.7265625, "y": 27.5, "t": 1792321828895}
+{"k": "click", "el": "button#exampleMenuBtn", "text": "範例 ▸", "x": 925.21875, "y": 547.3125, "t": 1792321829154}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 8, "t": 1792321829353}
+{"k": "click", "el": "button#btnEx", "text": "載入預設場景範例", "x": 929.21875, "y": 706.3125, "t": 1792321829401}
+{"k": "api", "cmd": "loadfile /workspace/geometry-axiom/room_a.scene", "ok": true, "ms": 940, "t": 1792321830354}
+{"k": "status", "msg": "✓ 已載入 room_a.scene", "t": 1792321830355}
+{"k": "toast", "type": "ok", "msg": "已載入 room_a.scene", "t": 1792321830355}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 10, "t": 1792321830365}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 7, "t": 1792321830372}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321830375}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 80, "t": 1792321830433}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 222, "t": 1792321830596}
+{"k": "api", "cmd": "default", "ok": true, "ms": 818, "t": 1792321831664}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 17, "t": 1792321831681}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 3, "t": 1792321831685}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321831688}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 74, "t": 1792321831737}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 170, "t": 1792321831858}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 12, "t": 1792321831873}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 13, "t": 1792321831909}
+{"k": "api", "cmd": "references", "ok": true, "ms": 6, "t": 1792321831915}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 4, "t": 1792321831918}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 6, "t": 1792321831924}
+{"k": "status", "msg": "工具：選取", "t": 1792321831925}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321831944}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 8, "t": 1792321832003}
+{"k": "api", "cmd": "references", "ok": true, "ms": 14, "t": 1792321832023}
+{"k": "api", "cmd": "line spec 主支中線 900", "ok": false, "error": "line 653: I8a: impact preview required; inspect preview, then confirm token (World unchanged)", "preview": true, "ms": 145, "t": 1792321832183}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 6, "t": 1792321832464}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 8, "t": 1792321832661}
+{"k": "click", "el": "button#impact-confirm", "text": "確認套用", "x": 962, "y": 648.515625, "t": 1792321832669}
+{"k": "api", "cmd": "line confirm 5", "ok": true, "ms": 200, "t": 1792321832872}
+{"k": "status", "msg": "✓ spec 主支中線 900", "t": 1792321832872}
+{"k": "toast", "type": "ok", "msg": "spec 主支中線 900", "t": 1792321832872}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 28, "t": 1792321832900}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 13, "t": 1792321832913}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 10, "t": 1792321832923}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 13, "t": 1792321832943}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 13, "t": 1792321832956}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 12, "t": 1792321832968}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 102, "t": 1792321832973}
+{"k": "api", "cmd": "references", "ok": true, "ms": 19, "t": 1792321833186}
+{"k": "api", "cmd": "line spec 主支中線 1200", "ok": false, "error": "line 655: I8a: impact preview required; inspect preview, then confirm token (World unchanged)", "preview": true, "ms": 233, "t": 1792321833427}
+{"k": "click", "el": "button.btn < div.impact-actions < dialog.reference-impact < body < html", "text": "取消，保留原狀", "x": 867.5, "y": 648.515625, "t": 1792321833467}
+{"k": "api", "cmd": "line cancel-preview", "ok": true, "ms": 112, "t": 1792321833583}
+{"k": "api", "cmd": "references", "ok": true, "ms": 33, "t": 1792321833878}
+{"k": "api", "cmd": "line spec 主支中線 0", "ok": false, "error": "line 657: I8a: impact preview required; inspect preview, then confirm token (World unchanged)", "preview": true, "ms": 224, "t": 1792321834107}
+{"k": "click", "el": "button.btn < div.impact-actions < dialog.reference-impact < body < html", "text": "返回修改", "x": 884, "y": 743.78125, "t": 1792321834157}
+{"k": "api", "cmd": "line cancel-preview", "ok": true, "ms": 131, "t": 1792321834292}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 154, "t": 1792321834729}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 74, "t": 1792321834802}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 400,0 400,300 0,300", "ok": true, "ms": 218, "t": 1792321834946}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 71, "t": 1792321835016}
+{"k": "api", "cmd": "line canvas-pos boundary 1 71 81", "ok": true, "ms": 193, "t": 1792321835139}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 4, "t": 1792321835143}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 5, "t": 1792321835148}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321835151}
+{"k": "api", "cmd": "line boundary 2 outline 0,0 200,0 200,300 0,300", "ok": true, "ms": 144, "t": 1792321835304}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 16, "t": 1792321835320}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 14, "t": 1792321835334}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 8, "t": 1792321835342}
+{"k": "api", "cmd": "boundary 2", "ok": true, "ms": 4, "t": 1792321835346}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 70, "t": 1792321835372}
+{"k": "api", "cmd": "line canvas-pos boundary 2 440 60", "ok": true, "ms": 180, "t": 1792321835526}
+{"k": "click", "el": "span.row-copy < div.object-row[data-kind=\"boundary\"][data-id=\"1\"] < section.object-group[data-object-group=\"sources\"] < div#objectList", "text": "面 1一般面 · 用途未指定 · 尚未放置", "x": 138.5, "y": 471.6484375, "t": 1792321835551}
+{"k": "key", "key": ":", "el": "body.canvas-composition.canvas-has-inspector < html", "typed": true, "t": 1792321835927}
+{"k": "key", "key": "Enter", "el": "input#cmd", "t": 1792321836097}
+{"k": "api", "cmd": "line spec 測試尺寸 123", "ok": true, "ms": 150, "t": 1792321836247}
+{"k": "status", "msg": "✓ 已套用", "t": 1792321836247}
+{"k": "toast", "type": "ok", "msg": "已套用", "t": 1792321836247}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 8, "t": 1792321836255}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 10, "t": 1792321836265}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321836268}
+{"k": "api", "cmd": "boundary 2", "ok": true, "ms": 3, "t": 1792321836271}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 91, "t": 1792321836338}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 5, "t": 1792321836516}
+{"k": "key", "key": "Escape", "el": "input#cmd", "t": 1792321836520}
+{"k": "toast", "type": "ok", "msg": "畫布頂部驗證", "t": 1792321836686}
+{"k": "click", "el": "text < g.card-enter < g.ocard.selected[data-kind=\"boundary\"][data-id=\"1\"] < g#cardLayer", "text": "進入 ›", "x": 571, "y": 310, "canvas": [293, 255], "t": 1792321836717}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 6, "t": 1792321836736}
+{"k": "status", "msg": "工具：選取", "t": 1792321836759}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321836769}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 18, "t": 1792321836869}
+{"k": "click", "el": "input#edgeLength0", "text": "邊 0 長度 mm", "x": 1179, "y": 694.9765625, "t": 1792321837098}
+{"k": "key", "key": "Ctrl+a", "el": "input#edgeLength0", "t": 1792321837304}
+{"k": "key", "key": "Tab", "el": "input#edgeLength0", "t": 1792321837468}
+{"k": "change", "el": "input#edgeLength0", "value": "500", "t": 1792321837468}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 500,0 500,300 0,300", "ok": true, "ms": 173, "t": 1792321837642}
+{"k": "status", "msg": "✓ boundary 1 outline 0,0 500,0 500,300 0,300", "t": 1792321837642}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 0,0 500,0 500,300 0,300", "t": 1792321837642}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 13, "t": 1792321837656}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 8, "t": 1792321837663}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321837667}
+{"k": "api", "cmd": "boundary 2", "ok": true, "ms": 8, "t": 1792321837675}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321837685}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 79, "t": 1792321837721}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 8, "t": 1792321838258}
+{"k": "click", "el": "svg < span[data-icon=\"inspect\"] < button#workspaceToggleRight", "text": "", "x": 374.984375, "y": 28, "t": 1792321838394}
+{"k": "key", "key": "Escape", "el": "button.drawer-close.right-toggle[data-close-panel=\"right\"] < aside.inner-panel.face-inspector-panel < div#faceWorkspaceLayout", "t": 1792321838639}
+{"k": "click", "el": "svg < span[data-icon=\"layers\"] < button#workspaceToggleLeft", "text": "", "x": 342.984375, "y": 28, "t": 1792321838855}
+{"k": "click", "el": "span#workspaceBackLabel", "text": "物件畫布", "x": 31.5, "y": 28, "t": 1792321839054}
+{"k": "status", "msg": "物件畫布：點選卡片 · 空白拖曳框選 · 選「平移」拖曳視角 · ＋／−縮放", "t": 1792321839078}
+{"k": "click", "el": "svg < span[data-icon=\"layers\"] < button#toggleLeft", "text": "", "x": 127, "y": 28, "t": 1792321839268}
+{"k": "key", "key": "Escape", "el": "button.drawer-close.left-toggle[data-close-panel=\"left\"] < aside.sidebar.sidebar-left < main.workspace < div#app", "t": 1792321839461}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 176, "t": 1792321839800}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 76, "t": 1792321839875}
+{"k": "api", "cmd": "line space 1", "ok": true, "ms": 305, "t": 1792321840108}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 13, "t": 1792321840121}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 4, "t": 1792321840125}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 65, "t": 1792321840173}
+{"k": "api", "cmd": "line canvas-pos space 1 60 60", "ok": true, "ms": 283, "t": 1792321840408}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 16, "t": 1792321840438}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 3, "t": 1792321840440}
+{"k": "api", "cmd": "render", "ok": true, "ms": 8, "t": 1792321840451}
+{"k": "api", "cmd": "render", "ok": true, "ms": 3, "t": 1792321840455}
+{"k": "status", "msg": "空間 1：成員面清單 · 點面卡進入面編輯 · Esc 返回", "t": 1792321840455}
+{"k": "click", "el": "svg < span[data-icon=\"inspect\"] < button#workspaceToggleRight", "text": "", "x": 374.984375, "y": 28, "t": 1792321840473}
+{"k": "click", "el": "span.slot-action < button.slot-empty[data-slot-preset=\"地板\"][data-slot-label=\"地板\"] < div.slot.slot-row < div.slot-list < div.inspector-block < div#spaceInspectorContent", "text": "＋放置", "x": 535, "y": 318.9765625, "t": 1792321840659}
+{"k": "status", "msg": "物件畫布：點選卡片 · 空白拖曳框選 · 選「平移」拖曳視角 · ＋／−縮放", "t": 1792321840670}
+{"k": "status", "msg": "工具：矩形", "t": 1792321840672}
+{"k": "click", "el": "svg#ocv", "text": "空間 10／6 面開放天花+Z地板-Z前牆-Y後牆+Y左牆-X右牆+X空容器 ·", "x": 330, "y": 430, "canvas": [330, 374], "t": 1792321840852}
+{"k": "api", "cmd": "newid", "ok": true, "ms": 72, "t": 1792321841021}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 18, "t": 1792321841026}
+{"k": "api", "cmd": "line boundary 1 outline 330,374 510,374 510,544 330,544", "ok": true, "ms": 153, "t": 1792321841174}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 88, "t": 1792321841262}
+{"k": "api", "cmd": "line canvas-pos boundary 1 330 374", "ok": true, "ms": 272, "t": 1792321841446}
+{"k": "status", "msg": "✓ 面 1 已建立 · 4 頂點 · 180×170 mm · Ctrl+Z 復原", "t": 1792321841447}
+{"k": "toast", "type": "ok", "msg": "面 1 已建立 · 4 頂點 · 180×170 mm · Ctrl+Z 復原", "t": 1792321841447}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 6, "t": 1792321841453}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 7, "t": 1792321841460}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 11, "t": 1792321841471}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 14, "t": 1792321841512}
+{"k": "status", "msg": "工具：選取", "t": 1792321841539}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321841559}
+{"k": "status", "msg": "空間 1 · 地板：確認尺寸與原點後放置", "t": 1792321841599}
+{"k": "click", "el": "input#edgeLength0", "text": "邊 0 長度 mm", "x": 397, "y": 381.9765625, "t": 1792321841788}
+{"k": "key", "key": "Ctrl+a", "el": "input#edgeLength0", "t": 1792321841971}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 12, "t": 1792321842058}
+{"k": "key", "key": "Tab", "el": "input#edgeLength0", "t": 1792321842282}
+{"k": "change", "el": "input#edgeLength0", "value": "800", "t": 1792321842282}
+{"k": "api", "cmd": "line boundary 1 outline 330,374 1130,374 1130,544 330,544", "ok": true, "ms": 198, "t": 1792321842481}
+{"k": "status", "msg": "✓ boundary 1 outline 330,374 1130,374 1130,544 330,544", "t": 1792321842481}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 330,374 1130,374 1130,544 330,544", "t": 1792321842481}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 8, "t": 1792321842489}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 7, "t": 1792321842496}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321842500}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 11, "t": 1792321842517}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 88, "t": 1792321842567}
+{"k": "click", "el": "input#edgeLength1", "text": "邊 1 長度 mm", "x": 397, "y": 415.9765625, "t": 1792321842967}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 6, "t": 1792321843086}
+{"k": "key", "key": "Ctrl+a", "el": "input#edgeLength1", "t": 1792321843249}
+{"k": "key", "key": "Tab", "el": "input#edgeLength1", "t": 1792321843413}
+{"k": "change", "el": "input#edgeLength1", "value": "600", "t": 1792321843414}
+{"k": "api", "cmd": "line boundary 1 outline 330,374 1130,374 1130,974 330,974", "ok": true, "ms": 157, "t": 1792321843571}
+{"k": "status", "msg": "✓ boundary 1 outline 330,374 1130,374 1130,974 330,974", "t": 1792321843571}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 330,374 1130,374 1130,974 330,974", "t": 1792321843571}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 29, "t": 1792321843600}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 4, "t": 1792321843605}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321843608}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 9, "t": 1792321843622}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 83, "t": 1792321843653}
+{"k": "click", "el": "button#placeSubmit", "text": "放置地板並收進空間 1", "x": 433, "y": 754, "t": 1792321844063}
+{"k": "api", "cmd": "line history-begin", "ok": true, "ms": 65, "t": 1792321844131}
+{"k": "api", "cmd": "line placement 1 on boundary 1 origin 0 0 0 u +y v +x", "ok": true, "ms": 203, "t": 1792321844333}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 69, "t": 1792321844402}
+{"k": "api", "cmd": "line space 1 boundary 1", "ok": true, "ms": 290, "t": 1792321844623}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 74, "t": 1792321844696}
+{"k": "api", "cmd": "line history-end", "ok": true, "ms": 144, "t": 1792321844767}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 3, "t": 1792321844770}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 3, "t": 1792321844773}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321844776}
+{"k": "status", "msg": "工具：選取", "t": 1792321844784}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 7, "t": 1792321844792}
+{"k": "api", "cmd": "references", "ok": true, "ms": 4, "t": 1792321844796}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 3, "t": 1792321844799}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 3, "t": 1792321844802}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 12, "t": 1792321844835}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 6, "t": 1792321844841}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321844846}
+{"k": "api", "cmd": "render", "ok": true, "ms": 3, "t": 1792321844852}
+{"k": "api", "cmd": "render", "ok": true, "ms": 8, "t": 1792321844867}
+{"k": "status", "msg": "空間 1：成員面清單 · 點面卡進入面編輯 · Esc 返回", "t": 1792321844869}
+{"k": "status", "msg": "✓ 地板已放置並收進空間 1", "t": 1792321844870}
+{"k": "toast", "type": "ok", "msg": "地板已放置並收進空間 1", "t": 1792321844870}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 7, "t": 1792321845230}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 4, "t": 1792321845560}
+{"k": "key", "key": "Ctrl+z", "el": "body < html", "t": 1792321845565}
+{"k": "api", "cmd": "line undo", "ok": true, "ms": 65, "t": 1792321845631}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 2, "t": 1792321845633}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 14, "t": 1792321845648}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321845652}
+{"k": "api", "cmd": "render", "ok": true, "ms": 6, "t": 1792321845660}
+{"k": "status", "msg": "✓ 已復原", "t": 1792321845661}
+{"k": "toast", "type": "ok", "msg": "已復原", "t": 1792321845661}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 106, "t": 1792321845736}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 6, "t": 1792321846234}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 4, "t": 1792321846438}
+{"k": "click", "el": "svg < span[data-icon=\"inspect\"] < button#workspaceToggleRight", "text": "", "x": 374.984375, "y": 28, "t": 1792321846449}
+{"k": "click", "el": "span.slot-action < button.slot-empty[data-slot-preset=\"地板\"][data-slot-label=\"地板\"] < div.slot.slot-row < div.slot-list < div.inspector-block < div#spaceInspectorContent", "text": "＋放置", "x": 535, "y": 318.9765625, "t": 1792321846639}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 6, "t": 1792321846649}
+{"k": "status", "msg": "工具：選取", "t": 1792321846659}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321846669}
+{"k": "status", "msg": "槽位「地板」：已選游離面 1，已帶入「地板」預設 u/v", "t": 1792321846676}
+{"k": "click", "el": "small < button.preset-card[data-place-preset=\"天花\"] < div.place-presets < div.inspector-block.place-block[data-placement-id=\"\"] < div[data-fi-pane=\"prop\"] < div#faceInspectorContent", "text": "u +x · v +y", "x": 339, "y": 620.59375, "t": 1792321847034}
+{"k": "key", "key": "Escape", "el": "button.preset-card[data-place-preset=\"天花\"] < div.place-presets < div.inspector-block.place-block[data-placement-id=\"\"] < div[data-fi-pane=\"prop\"] < div#faceInspectorContent", "t": 1792321847220}
+{"k": "click", "el": "span#workspaceBackLabel", "text": "物件畫布", "x": 31.5, "y": 28, "t": 1792321847391}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 7, "t": 1792321847405}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 6, "t": 1792321847411}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 7, "t": 1792321847418}
+{"k": "api", "cmd": "render", "ok": true, "ms": 3, "t": 1792321847424}
+{"k": "api", "cmd": "render", "ok": true, "ms": 8, "t": 1792321847432}
+{"k": "status", "msg": "空間 1：成員面清單 · 點面卡進入面編輯 · Esc 返回", "t": 1792321847432}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 186, "t": 1792321847848}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 74, "t": 1792321847921}
+{"k": "api", "cmd": "line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 266, "t": 1792321848115}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 85, "t": 1792321848199}
+{"k": "api", "cmd": "line space 1 boundary 1", "ok": true, "ms": 221, "t": 1792321848336}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 6, "t": 1792321848342}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 9, "t": 1792321848351}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321848354}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 85, "t": 1792321848418}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 205, "t": 1792321848559}
+{"k": "api", "cmd": "line canvas-pos space 1 440 60", "ok": true, "ms": 135, "t": 1792321848694}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321848716}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 10, "t": 1792321848740}
+{"k": "api", "cmd": "references", "ok": true, "ms": 6, "t": 1792321848745}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 4, "t": 1792321848749}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 3, "t": 1792321848753}
+{"k": "status", "msg": "工具：選取", "t": 1792321848753}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321848760}
+{"k": "click", "el": "input#tbA", "text": "27", "x": 1144.25, "y": 537.78125, "t": 1792321848800}
+{"k": "key", "key": "Ctrl+a", "el": "input#tbA", "t": 1792321848982}
+{"k": "click", "el": "button#tbPlace", "text": "放置角材", "x": 1215, "y": 690.234375, "t": 1792321849169}
+{"k": "change", "el": "input#tbA", "value": "35", "t": 1792321849170}
+{"k": "api", "cmd": "newid", "ok": true, "ms": 88, "t": 1792321849265}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 6, "t": 1792321849271}
+{"k": "api", "cmd": "line history-begin", "ok": true, "ms": 64, "t": 1792321849335}
+{"k": "api", "cmd": "line timber 1 35 33 role boundary", "ok": true, "ms": 259, "t": 1792321849594}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 86, "t": 1792321849679}
+{"k": "api", "cmd": "line place 1 on 1 at-face e0  +u +n", "ok": true, "ms": 325, "t": 1792321849919}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 70, "t": 1792321849988}
+{"k": "api", "cmd": "line history-end", "ok": true, "ms": 245, "t": 1792321850164}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 5, "t": 1792321850169}
+{"k": "api", "cmd": "references", "ok": true, "ms": 3, "t": 1792321850173}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 3, "t": 1792321850176}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 7, "t": 1792321850183}
+{"k": "click", "el": "button.fi-tab[data-fi-tab=\"prop\"] < nav#faceInspectorTabs", "text": "屬性", "x": 1106.25, "y": 78.6953125, "t": 1792321850454}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 13, "t": 1792321850531}
+{"k": "click", "el": "summary < details#placeDetails", "text": "位置與朝向 · 天花 z=2500 · 修改…", "x": 1215, "y": 699.5390625, "t": 1792321850716}
+{"k": "click", "el": "summary#projToggle", "text": "投影視圖（仰視）", "x": 1215, "y": 699.7578125, "t": 1792321850905}
+{"k": "api", "cmd": "render", "ok": true, "ms": 6, "t": 1792321850918}
+{"k": "api", "cmd": "render", "ok": true, "ms": 25, "t": 1792321851119}
+{"k": "api", "cmd": "render", "ok": true, "ms": 8, "t": 1792321851119}
+{"k": "click", "el": "span#workspaceBackLabel", "text": "物件畫布", "x": 56, "y": 28, "t": 1792321851138}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321851155}
+{"k": "click", "el": "span < button#btnObj", "text": "三視圖", "x": 871.1953125, "y": 27.5, "t": 1792321851342}
+{"k": "status", "msg": "三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回", "t": 1792321851347}
+{"k": "api", "cmd": "render", "ok": true, "ms": 24, "t": 1792321851372}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 8, "t": 1792321851391}
+{"k": "click", "el": "span < button#btnObj", "text": "三視圖", "x": 900.6953125, "y": 27.5, "t": 1792321851592}
+{"k": "click", "el": "span < button#btnCanvasView", "text": "物件畫布", "x": 813.6796875, "y": 27.5, "t": 1792321851837}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321851845}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 17, "t": 1792321851862}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 10, "t": 1792321851872}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321851875}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 171, "t": 1792321852254}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 68, "t": 1792321852321}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 400,0 400,300 0,300", "ok": true, "ms": 220, "t": 1792321852474}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 62, "t": 1792321852535}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 243, "t": 1792321852717}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 7, "t": 1792321852723}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 6, "t": 1792321852729}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321852732}
+{"k": "click", "el": "input#mainEdgeLength0", "text": "邊 0 長度 mm", "x": 407, "y": 686.0859375, "t": 1792321853071}
+{"k": "key", "key": "Ctrl+a", "el": "input#mainEdgeLength0", "t": 1792321853251}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 35, "t": 1792321853353}
+{"k": "key", "key": "Tab", "el": "input#mainEdgeLength0", "t": 1792321853545}
+{"k": "change", "el": "input#mainEdgeLength0", "value": "500", "t": 1792321853546}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 500,0 500,300 0,300", "ok": true, "ms": 186, "t": 1792321853738}
+{"k": "status", "msg": "✓ boundary 1 outline 0,0 500,0 500,300 0,300", "t": 1792321853738}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 0,0 500,0 500,300 0,300", "t": 1792321853738}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 7, "t": 1792321853745}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 7, "t": 1792321853752}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 53, "t": 1792321853806}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 133, "t": 1792321853870}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 6, "t": 1792321854343}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321854558}
+{"k": "click", "el": "button#mainEdgeFree1", "text": "自由邊 1", "x": 518.375, "y": 685.09375, "t": 1792321854569}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 500,0 500,300 0,300 fixity F X F F", "ok": true, "ms": 157, "t": 1792321854730}
+{"k": "status", "msg": "✓ boundary 1 outline 0,0 500,0 500,300 0,300 fixity F X F F", "t": 1792321854730}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 0,0 500,0 500,300 0,300 fixity F X F F", "t": 1792321854730}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 12, "t": 1792321854742}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 12, "t": 1792321854754}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321854757}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 93, "t": 1792321854822}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321855008}
+{"k": "click", "el": "button#mainEdgeFixed1", "text": "固定邊 1", "x": 490.375, "y": 685.09375, "t": 1792321855014}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 500,0 500,300 0,300", "ok": true, "ms": 151, "t": 1792321855167}
+{"k": "status", "msg": "✓ boundary 1 outline 0,0 500,0 500,300 0,300", "t": 1792321855168}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 0,0 500,0 500,300 0,300", "t": 1792321855168}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 7, "t": 1792321855175}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 7, "t": 1792321855182}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321855186}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 75, "t": 1792321855242}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321855434}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321855441}
+{"k": "click", "el": "input#mainEdgeLength0", "text": "邊 0 長度 mm", "x": 407, "y": 651.0859375, "t": 1792321855446}
+{"k": "key", "key": "Ctrl+a", "el": "input#mainEdgeLength0", "t": 1792321855634}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 5, "t": 1792321855772}
+{"k": "key", "key": "Tab", "el": "input#mainEdgeLength0", "t": 1792321855946}
+{"k": "change", "el": "input#mainEdgeLength0", "value": "0", "t": 1792321855946}
+{"k": "status", "msg": "邊長要是正整數", "t": 1792321855947}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321856425}
+{"k": "click", "el": "input#mainEdgeLength0", "text": "邊 0 長度 mm", "x": 407, "y": 651.0859375, "t": 1792321856435}
+{"k": "key", "key": "Ctrl+a", "el": "input#mainEdgeLength0", "t": 1792321856615}
+{"k": "key", "key": "Tab", "el": "input#mainEdgeLength0", "t": 1792321856932}
+{"k": "change", "el": "input#mainEdgeLength0", "value": "-50", "t": 1792321856934}
+{"k": "status", "msg": "邊長要是正整數", "t": 1792321856935}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321857417}
+{"k": "status", "msg": "邊長要是正整數", "t": 1792321857421}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 6, "t": 1792321857430}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 13, "t": 1792321857454}
+{"k": "status", "msg": "工具：選取", "t": 1792321857473}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321857482}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321857833}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 150, "t": 1792321858575}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 26, "t": 1792321858603}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 5, "t": 1792321858608}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 12, "t": 1792321858652}
+{"k": "key", "key": "p", "el": "body.canvas-composition < html", "typed": true, "t": 1792321858653}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 98, "t": 1792321858673}
+{"k": "api", "cmd": "newid", "ok": true, "ms": 80, "t": 1792321858733}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 152, "t": 1792321858885}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 73, "t": 1792321858957}
+{"k": "api", "cmd": "line canvas-pos boundary 1 431 398", "ok": true, "ms": 208, "t": 1792321859095}
+{"k": "status", "msg": "✓ 面 1 已建立 · Ctrl+Z 復原", "t": 1792321859095}
+{"k": "toast", "type": "ok", "msg": "面 1 已建立 · Ctrl+Z 復原", "t": 1792321859095}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 6, "t": 1792321859101}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 4, "t": 1792321859105}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321859107}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 18, "t": 1792321859135}
+{"k": "status", "msg": "工具：選取", "t": 1792321859162}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321859171}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321859187}
+{"k": "status", "msg": "面 1 已建立預設矩形；逐點畫出外環，完成草稿後取代。Esc 返回會保留此面，Ctrl+Z 可復原建立。", "t": 1792321859207}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 19, "t": 1792321859714}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 5, "t": 1792321860282}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 6, "t": 1792321860288}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm", "x": 360, "y": 257, "t": 1792321860314}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 300", "x": 960, "y": 257, "t": 1792321860419}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "600 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊", "x": 960, "y": 557, "t": 1792321860519}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "600 mm300 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪", "x": 660, "y": 557, "t": 1792321860619}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "600 mm300 mm300 mm0 mm外輪廓第 1 邊 · 4000 mm", "x": 660, "y": 857, "t": 1792321860733}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "600 mm300 mm300 mm300 mm0 mm外輪廓第 1 邊 · 4", "x": 360, "y": 857, "t": 1792321860833}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "600 mm300 mm300 mm300 mm300 mm0 mm外輪廓第 1", "x": 360, "y": 257, "t": 1792321860933}
+{"k": "api", "cmd": "line boundary 1 outline 100,100 700,100 700,400 400,400 400,700 100,700", "ok": true, "ms": 171, "t": 1792321861105}
+{"k": "status", "msg": "✓ boundary 1 outline 100,100 700,100 700,400 400,400 400,700 100,700", "t": 1792321861105}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 100,100 700,100 700,400 400,400 400,700 100,700", "t": 1792321861106}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 4, "t": 1792321861110}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 21, "t": 1792321861131}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 7, "t": 1792321861138}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 14, "t": 1792321861160}
+{"k": "status", "msg": "工具：選取", "t": 1792321861179}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 103, "t": 1792321861207}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 5, "t": 1792321861708}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 8, "t": 1792321861904}
+{"k": "key", "key": "Escape", "el": "section#faceEditorViewport", "t": 1792321861909}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321861927}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 243, "t": 1792321862842}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 96, "t": 1792321862938}
+{"k": "api", "cmd": "line space 1", "ok": true, "ms": 253, "t": 1792321863098}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 17, "t": 1792321863115}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 3, "t": 1792321863118}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 68, "t": 1792321863165}
+{"k": "api", "cmd": "line canvas-pos space 1 60 60", "ok": true, "ms": 222, "t": 1792321863339}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 17, "t": 1792321863373}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 4, "t": 1792321863377}
+{"k": "api", "cmd": "render", "ok": true, "ms": 14, "t": 1792321863394}
+{"k": "api", "cmd": "render", "ok": true, "ms": 3, "t": 1792321863398}
+{"k": "status", "msg": "空間 1：成員面清單 · 點面卡進入面編輯 · Esc 返回", "t": 1792321863399}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321863820}
+{"k": "status", "msg": "工具：矩形 · V 選取 · H 平移 · F 全圖 · Esc 取消", "t": 1792321863821}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 5, "t": 1792321863944}
+{"k": "key", "key": "p", "el": "body.canvas-composition < html", "typed": true, "t": 1792321864239}
+{"k": "api", "cmd": "newid", "ok": true, "ms": 68, "t": 1792321864307}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 247, "t": 1792321864554}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 68, "t": 1792321864622}
+{"k": "api", "cmd": "line canvas-pos boundary 1 431 398", "ok": true, "ms": 209, "t": 1792321864765}
+{"k": "status", "msg": "✓ 面 1 已建立 · Ctrl+Z 復原", "t": 1792321864765}
+{"k": "toast", "type": "ok", "msg": "面 1 已建立 · Ctrl+Z 復原", "t": 1792321864765}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 16, "t": 1792321864781}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 5, "t": 1792321864786}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321864789}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 20, "t": 1792321864819}
+{"k": "status", "msg": "工具：選取", "t": 1792321864847}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321864857}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321864877}
+{"k": "status", "msg": "面 1 已建立預設矩形；逐點畫出外環，完成草稿後取代。Esc 返回會保留此面，Ctrl+Z 可復原建立。", "t": 1792321864894}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 9, "t": 1792321865374}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321865980}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 213, "t": 1792321866616}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 70, "t": 1792321866685}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 213, "t": 1792321866831}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 8, "t": 1792321866839}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 7, "t": 1792321866846}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321866849}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 65, "t": 1792321866896}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 188, "t": 1792321867037}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321867049}
+{"k": "status", "msg": "工具：選取", "t": 1792321867061}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321867071}
+{"k": "key", "key": "e", "el": "body < html", "typed": true, "t": 1792321867355}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321867355}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm", "x": 273, "y": 265, "t": 1792321867584}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 176, "t": 1792321867928}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 85, "t": 1792321868013}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 221, "t": 1792321868149}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 4, "t": 1792321868153}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 17, "t": 1792321868170}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321868174}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 71, "t": 1792321868220}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 283, "t": 1792321868457}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 11, "t": 1792321868490}
+{"k": "status", "msg": "工具：選取", "t": 1792321868508}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321868517}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321868801}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm", "x": 360, "y": 257, "t": 1792321868854}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 300", "x": 760, "y": 257, "t": 1792321868957}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊", "x": 760, "y": 557, "t": 1792321869060}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 191, "t": 1792321869511}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 67, "t": 1792321869577}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 219, "t": 1792321869730}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 7, "t": 1792321869737}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 11, "t": 1792321869748}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321869750}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 72, "t": 1792321869801}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 234, "t": 1792321869984}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321870002}
+{"k": "status", "msg": "工具：選取", "t": 1792321870016}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321870025}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321870313}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm", "x": 360, "y": 257, "t": 1792321870373}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 300", "x": 660, "y": 257, "t": 1792321870478}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "300 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊", "x": 660, "y": 557, "t": 1792321870581}
+{"k": "key", "key": "Enter", "el": "section#faceEditorViewport", "t": 1792321870684}
+{"k": "api", "cmd": "line boundary 1 outline 100,100 400,100 400,400 100,400", "ok": true, "ms": 174, "t": 1792321870858}
+{"k": "status", "msg": "✓ boundary 1 outline 100,100 400,100 400,400 100,400", "t": 1792321870858}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 100,100 400,100 400,400 100,400", "t": 1792321870858}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 17, "t": 1792321870876}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 6, "t": 1792321870882}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 6, "t": 1792321870887}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 14, "t": 1792321870909}
+{"k": "status", "msg": "工具：選取", "t": 1792321870928}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 96, "t": 1792321870953}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 32, "t": 1792321871497}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321871865}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 266, "t": 1792321872138}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 104, "t": 1792321872240}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 281, "t": 1792321872418}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 5, "t": 1792321872424}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 16, "t": 1792321872440}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 7, "t": 1792321872448}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 83, "t": 1792321872501}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 309, "t": 1792321872756}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 30, "t": 1792321872801}
+{"k": "status", "msg": "工具：選取", "t": 1792321872819}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321872833}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321873121}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm", "x": 360, "y": 206.5, "t": 1792321873170}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 300", "x": 360, "y": 606.5, "t": 1792321873274}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊", "x": 760, "y": 606.5, "t": 1792321873384}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm400 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪", "x": 760, "y": 306.5, "t": 1792321873488}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm400 mm300 mm450 mm外輪廓第 1 邊 · 4000 ", "x": 310, "y": 306.5, "t": 1792321873746}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 10, "t": 1792321873921}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 215, "t": 1792321874160}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 132, "t": 1792321874291}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 362, "t": 1792321874522}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 35, "t": 1792321874559}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 11, "t": 1792321874570}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 12, "t": 1792321874582}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 195, "t": 1792321874714}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 319, "t": 1792321874902}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 16, "t": 1792321874928}
+{"k": "status", "msg": "工具：選取", "t": 1792321874940}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321874949}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321875247}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm", "x": 360, "y": 257, "t": 1792321875283}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 300", "x": 760, "y": 257, "t": 1792321875391}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊", "x": 760, "y": 557, "t": 1792321875489}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm300 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪", "x": 360, "y": 557, "t": 1792321875589}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm300 mm400 mm0 mm外輪廓第 1 邊 · 4000 mm", "x": 360, "y": 257, "t": 1792321875706}
+{"k": "api", "cmd": "line boundary 1 outline 100,100 500,100 500,400 100,400", "ok": true, "ms": 186, "t": 1792321875892}
+{"k": "status", "msg": "✓ boundary 1 outline 100,100 500,100 500,400 100,400", "t": 1792321875893}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 100,100 500,100 500,400 100,400", "t": 1792321875893}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 9, "t": 1792321875902}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 11, "t": 1792321875913}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321875916}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 17, "t": 1792321875940}
+{"k": "status", "msg": "工具：選取", "t": 1792321875969}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 109, "t": 1792321876000}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 7, "t": 1792321876460}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 199, "t": 1792321876672}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 79, "t": 1792321876751}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 588, "t": 1792321877262}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 23, "t": 1792321877285}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 7, "t": 1792321877292}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321877295}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 102, "t": 1792321877356}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 251, "t": 1792321877547}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321877566}
+{"k": "status", "msg": "工具：選取", "t": 1792321877592}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321877602}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321877894}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm", "x": 360, "y": 206.5, "t": 1792321877947}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 300", "x": 760, "y": 206.5, "t": 1792321878047}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊", "x": 760, "y": 506.5, "t": 1792321878157}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm300 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪", "x": 360, "y": 506.5, "t": 1792321878264}
+{"k": "key", "key": "Enter", "el": "section#faceEditorViewport", "t": 1792321878363}
+{"k": "api", "cmd": "line boundary 1 outline 100,100 500,100 500,400 100,400", "ok": true, "ms": 204, "t": 1792321878568}
+{"k": "status", "msg": "✓ boundary 1 outline 100,100 500,100 500,400 100,400", "t": 1792321878571}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 100,100 500,100 500,400 100,400", "t": 1792321878571}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 55, "t": 1792321878627}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 20, "t": 1792321878646}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 9, "t": 1792321878656}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 26, "t": 1792321878691}
+{"k": "status", "msg": "工具：選取", "t": 1792321878711}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 217, "t": 1792321878783}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 9, "t": 1792321879172}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321879698}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 171, "t": 1792321879876}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 87, "t": 1792321879962}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 220, "t": 1792321880095}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 6, "t": 1792321880102}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 13, "t": 1792321880115}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321880118}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 93, "t": 1792321880188}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 281, "t": 1792321880400}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 19, "t": 1792321880448}
+{"k": "status", "msg": "工具：選取", "t": 1792321880471}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321880482}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321880776}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm", "x": 360, "y": 206.5, "t": 1792321880836}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 300", "x": 560, "y": 206.5, "t": 1792321880943}
+{"k": "key", "key": "42", "el": "section#faceEditorViewport", "typed": true, "t": 1792321881218}
+{"k": "key", "key": "Escape", "el": "section#faceEditorViewport", "t": 1792321881712}
+{"k": "key", "key": "Escape", "el": "section#faceEditorViewport", "t": 1792321882046}
+{"k": "toast", "type": "ok", "msg": "草稿已清除，原面保留；再按 Esc 返回", "t": 1792321882050}
+{"k": "key", "key": "Escape", "el": "section#faceEditorViewport", "t": 1792321882465}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321882485}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 174, "t": 1792321883137}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 77, "t": 1792321883214}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 233, "t": 1792321883370}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 22, "t": 1792321883393}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 3, "t": 1792321883396}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321883399}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 73, "t": 1792321883443}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 230, "t": 1792321883629}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 10, "t": 1792321883649}
+{"k": "status", "msg": "工具：選取", "t": 1792321883663}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321883671}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321883964}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm", "x": 360, "y": 257, "t": 1792321884017}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 300", "x": 760, "y": 257, "t": 1792321884122}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊", "x": 760, "y": 557, "t": 1792321884222}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm300 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪", "x": 360, "y": 557, "t": 1792321884322}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm300 mm400 mm0 mm外輪廓第 1 邊 · 4000 mm", "x": 360, "y": 257, "t": 1792321884423}
+{"k": "api", "cmd": "line boundary 1 outline 100,100 500,100 500,400 100,400", "ok": true, "ms": 192, "t": 1792321884616}
+{"k": "status", "msg": "✓ boundary 1 outline 100,100 500,100 500,400 100,400", "t": 1792321884616}
+{"k": "toast", "type": "ok", "msg": "boundary 1 outline 100,100 500,100 500,400 100,400", "t": 1792321884616}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 30, "t": 1792321884646}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 8, "t": 1792321884654}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321884658}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 7, "t": 1792321884672}
+{"k": "status", "msg": "工具：選取", "t": 1792321884691}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 106, "t": 1792321884721}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 173, "t": 1792321885316}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 84, "t": 1792321885399}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 239, "t": 1792321885555}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 9, "t": 1792321885564}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 7, "t": 1792321885571}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321885575}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 70, "t": 1792321885625}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 193, "t": 1792321885768}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321885784}
+{"k": "status", "msg": "工具：選取", "t": 1792321885799}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321885820}
+{"k": "status", "msg": "工具：重畫外環", "t": 1792321886102}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm", "x": 360, "y": 206.5, "t": 1792321886148}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 300", "x": 360, "y": 606.5, "t": 1792321886250}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊", "x": 760, "y": 606.5, "t": 1792321886351}
+{"k": "click", "el": "svg#faceEditorSvg", "text": "400 mm400 mm0 mm外輪廓第 1 邊 · 4000 mm4000外輪", "x": 760, "y": 306.5, "t": 1792321886450}
+{"k": "key", "key": "450", "el": "section#faceEditorViewport", "typed": true, "t": 1792321887030}
+{"k": "key", "key": "Enter", "el": "section#faceEditorViewport", "t": 1792321887200}
+{"k": "status", "msg": "✗ 這段會與既有邊交叉", "t": 1792321887201}
+{"k": "toast", "type": "error", "msg": "這段會與既有邊交叉", "t": 1792321887201}
+{"k": "key", "key": "Escape", "el": "section#faceEditorViewport", "t": 1792321887670}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321888015}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 209, "t": 1792321888243}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 108, "t": 1792321888351}
+{"k": "api", "cmd": "line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 307, "t": 1792321888551}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 13, "t": 1792321888564}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 4, "t": 1792321888568}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 2, "t": 1792321888570}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 66, "t": 1792321888615}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 178, "t": 1792321888748}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 12, "t": 1792321888769}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 15, "t": 1792321888796}
+{"k": "api", "cmd": "references", "ok": true, "ms": 9, "t": 1792321888805}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 3, "t": 1792321888808}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 5, "t": 1792321888813}
+{"k": "status", "msg": "工具：選取", "t": 1792321888813}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321888822}
+{"k": "click", "el": "summary < details#placeDetails", "text": "位置與朝向 · 天花 z=2500 · 修改…", "x": 1233, "y": 875.5390625, "t": 1792321888868}
+{"k": "click", "el": "input#placeOZ", "text": "2500", "x": 1162.25, "y": 826.1875, "t": 1792321889051}
+{"k": "key", "key": "Ctrl+a", "el": "input#placeOZ", "t": 1792321889260}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 10, "t": 1792321889359}
+{"k": "click", "el": "button#placeSubmit", "text": "更新放置", "x": 1233, "y": 899.0625, "t": 1792321891135}
+{"k": "change", "el": "input#placeOZ", "value": "3000", "t": 1792321891136}
+{"k": "api", "cmd": "line placement 1 on boundary 1 origin 0 0 3000 u +x v +y", "ok": true, "ms": 234, "t": 1792321891375}
+{"k": "status", "msg": "✓ placement 1 on boundary 1 origin 0 0 3000 u +x v +y", "t": 1792321891375}
+{"k": "toast", "type": "ok", "msg": "placement 1 on boundary 1 origin 0 0 3000 u +x v +y", "t": 1792321891375}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 7, "t": 1792321891382}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 12, "t": 1792321891394}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321891398}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 4, "t": 1792321891408}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 9, "t": 1792321891417}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321891420}
+{"k": "status", "msg": "工具：選取", "t": 1792321891425}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 8, "t": 1792321891434}
+{"k": "api", "cmd": "references", "ok": true, "ms": 19, "t": 1792321891453}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 4, "t": 1792321891457}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 5, "t": 1792321891462}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 117, "t": 1792321891491}
+{"k": "click", "el": "path < svg < span[data-icon=\"undo\"] < button#faceUndoButton", "text": "", "x": 1029.484375, "y": 28, "t": 1792321891696}
+{"k": "api", "cmd": "line undo", "ok": true, "ms": 1809, "t": 1792321893524}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 63, "t": 1792321893587}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 35, "t": 1792321893626}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 24, "t": 1792321893651}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 16, "t": 1792321893675}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 179, "t": 1792321893701}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 26, "t": 1792321893701}
+{"k": "api", "cmd": "references", "ok": true, "ms": 19, "t": 1792321893720}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 12, "t": 1792321893732}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 14, "t": 1792321893746}
+{"k": "status", "msg": "✓ 已復原", "t": 1792321893934}
+{"k": "toast", "type": "ok", "msg": "已復原", "t": 1792321893934}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 10, "t": 1792321894199}
+{"k": "click", "el": "path < svg < span[data-icon=\"redo\"] < button#faceRedoButton", "text": "", "x": 1066.484375, "y": 28, "t": 1792321894398}
+{"k": "api", "cmd": "line redo", "ok": true, "ms": 110, "t": 1792321894512}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 19, "t": 1792321894531}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 8, "t": 1792321894539}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 7, "t": 1792321894546}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321894553}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 9, "t": 1792321894562}
+{"k": "api", "cmd": "references", "ok": true, "ms": 8, "t": 1792321894570}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 8, "t": 1792321894578}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 21, "t": 1792321894599}
+{"k": "status", "msg": "✓ 已重做", "t": 1792321894614}
+{"k": "toast", "type": "ok", "msg": "已重做", "t": 1792321894614}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 119, "t": 1792321894630}
+{"k": "click", "el": "input#placeOZ", "text": "3000", "x": 1162.25, "y": 762.1875, "t": 1792321894822}
+{"k": "key", "key": "Ctrl+a", "el": "input#placeOZ", "t": 1792321895015}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 14, "t": 1792321895110}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321895338}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 10, "t": 1792321895348}
+{"k": "api", "cmd": "references", "ok": true, "ms": 6, "t": 1792321895354}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 8, "t": 1792321895362}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 6, "t": 1792321895368}
+{"k": "change", "el": "input#placeOZ", "value": "3100", "t": 1792321895379}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 206, "t": 1792321895642}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 115, "t": 1792321895755}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 234, "t": 1792321895876}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 71, "t": 1792321895947}
+{"k": "api", "cmd": "line boundary 2 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 199, "t": 1792321896075}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 15, "t": 1792321896091}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 10, "t": 1792321896101}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321896105}
+{"k": "api", "cmd": "boundary 2", "ok": true, "ms": 10, "t": 1792321896115}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 78, "t": 1792321896153}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 179, "t": 1792321896294}
+{"k": "api", "cmd": "line canvas-pos boundary 2 440 60", "ok": true, "ms": 141, "t": 1792321896434}
+{"k": "api", "cmd": "boundary 2", "ok": true, "ms": 4, "t": 1792321896455}
+{"k": "status", "msg": "工具：選取", "t": 1792321896471}
+{"k": "status", "msg": "面 2 · 選取", "t": 1792321896481}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 11, "t": 1792321896527}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 6, "t": 1792321896533}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321896537}
+{"k": "click", "el": "line[data-face-hit=\"e:0:0\"] < g#faceEditorRoot", "text": "", "x": 670, "y": 208.5, "t": 1792321896567}
+{"k": "api", "cmd": "boundary 2", "ok": true, "ms": 4, "t": 1792321896794}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 159, "t": 1792321896968}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 78, "t": 1792321897045}
+{"k": "api", "cmd": "line boundary 1 outline 0,0 4000,0 4000,3000 0,3000", "ok": true, "ms": 202, "t": 1792321897170}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 15, "t": 1792321897186}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 4, "t": 1792321897190}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 5, "t": 1792321897195}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 125, "t": 1792321897295}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 262, "t": 1792321897458}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321897475}
+{"k": "status", "msg": "工具：選取", "t": 1792321897487}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321897495}
+{"k": "click", "el": "path < svg < span[data-icon=\"undo\"] < button#faceUndoButton", "text": "", "x": 1029.484375, "y": 28, "t": 1792321897534}
+{"k": "api", "cmd": "line undo", "ok": true, "ms": 92, "t": 1792321897629}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 10, "t": 1792321897639}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 13, "t": 1792321897653}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321897661}
+{"k": "status", "msg": "✓ 已復原", "t": 1792321897661}
+{"k": "toast", "type": "ok", "msg": "已復原", "t": 1792321897661}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 80, "t": 1792321897709}
+{"k": "api", "cmd": "reset", "ok": true, "ms": 149, "t": 1792321898033}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 79, "t": 1792321898112}
+{"k": "api", "cmd": "line space 1", "ok": true, "ms": 231, "t": 1792321898265}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 5, "t": 1792321898270}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 12, "t": 1792321898282}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 76, "t": 1792321898340}
+{"k": "api", "cmd": "line canvas-pos space 1 60 60", "ok": true, "ms": 190, "t": 1792321898472}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 13, "t": 1792321898494}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 4, "t": 1792321898498}
+{"k": "api", "cmd": "render", "ok": true, "ms": 3, "t": 1792321898506}
+{"k": "api", "cmd": "render", "ok": true, "ms": 5, "t": 1792321898512}
+{"k": "status", "msg": "空間 1：成員面清單 · 點面卡進入面編輯 · Esc 返回", "t": 1792321898512}
+{"k": "click", "el": "path < svg < span[data-icon=\"undo\"] < button#faceUndoButton", "text": "", "x": 1066.484375, "y": 28, "t": 1792321898520}
+{"k": "api", "cmd": "line undo", "ok": true, "ms": 61, "t": 1792321898583}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 5, "t": 1792321898588}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 12, "t": 1792321898600}
+{"k": "status", "msg": "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移", "t": 1792321898610}
+{"k": "status", "msg": "✓ 已復原", "t": 1792321898610}
+{"k": "toast", "type": "ok", "msg": "已復原", "t": 1792321898610}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 73, "t": 1792321898656}
+{"k": "click", "el": "svg < span[data-icon=\"layers\"] < button#toggleLeft", "text": "", "x": 30, "y": 70, "t": 1792321899090}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 10, "t": 1792321899191}
+{"k": "click", "el": "input#searchInput", "text": "搜尋物件名稱或編號", "x": 137.1875, "y": 447, "t": 1792321899375}
+{"k": "key", "key": "Escape", "el": "input#searchInput", "t": 1792321899561}
+{"k": "click", "el": "svg < span[data-icon=\"layers\"] < button#toggleLeft", "text": "", "x": 28, "y": 68, "t": 1792321900041}
+{"k": "click", "el": "input#searchInput", "text": "搜尋物件名稱或編號", "x": 137.1875, "y": 447, "t": 1792321900223}
+{"k": "key", "key": "Escape", "el": "input#searchInput", "t": 1792321900407}
+{"k": "click", "el": "svg < span[data-icon=\"layers\"] < button#toggleLeft", "text": "", "x": 127, "y": 26, "t": 1792321900586}
+{"k": "click", "el": "button#btnCreateObject", "text": "建立物件", "x": 138.5, "y": 134, "t": 1792321900842}
+{"k": "click", "el": "span < button#btnBox6", "text": "知道尺寸 → 六面盒輸入寬・深・高，一次建好", "x": 146, "y": 758.8515625, "t": 1792321901002}
+{"k": "click", "el": "input#box6W", "text": "4000", "x": 168.25, "y": 363.578125, "t": 1792321901191}
+{"k": "click", "el": "button#box6Cancel", "text": "取消", "x": 481.984375, "y": 539.296875, "t": 1792321901396}
+{"k": "click", "el": "svg < span[data-icon=\"layers\"] < button#toggleLeft", "text": "", "x": 127, "y": 26, "t": 1792321901603}
+{"k": "click", "el": "button#btnCreateObject", "text": "建立物件", "x": 138.5, "y": 134, "t": 1792321901866}
+{"k": "click", "el": "button#btnNewColumn", "text": "＋柱:RC 柱 w×d", "x": 146, "y": 641.0703125, "t": 1792321902026}
+{"k": "click", "el": "input#rcW", "text": "", "x": 168.25, "y": 389.4375, "t": 1792321902212}
+{"k": "click", "el": "button#rcCancel", "text": "取消", "x": 481.984375, "y": 664.4375, "t": 1792321902401}
+{"k": "api", "cmd": "default", "ok": true, "ms": 874, "t": 1792321903481}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 8, "t": 1792321903489}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 10, "t": 1792321903499}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 4, "t": 1792321903502}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 98, "t": 1792321903577}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 206, "t": 1792321903709}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 10, "t": 1792321903723}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 8, "t": 1792321903741}
+{"k": "api", "cmd": "references", "ok": true, "ms": 6, "t": 1792321903747}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 4, "t": 1792321903751}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 3, "t": 1792321903755}
+{"k": "status", "msg": "工具：選取", "t": 1792321903755}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321903768}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 7, "t": 1792321903824}
+{"k": "click", "el": "button#refParameterOpen", "text": "建立／編輯參數", "x": 1144.5, "y": 355.953125, "t": 1792321903832}
+{"k": "api", "cmd": "references", "ok": true, "ms": 9, "t": 1792321903842}
+{"k": "change", "el": "select#paramSpec", "value": "主支中線", "t": 1792321904021}
+{"k": "click", "el": "input#paramSpecValue", "text": "500", "x": 1240.5, "y": 312.34375, "t": 1792321904039}
+{"k": "key", "key": "Ctrl+a", "el": "input#paramSpecValue", "t": 1792321904220}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 5, "t": 1792321904314}
+{"k": "click", "el": "button#paramSpecSave", "text": "預覽更新原規格", "x": 1130.5, "y": 356.34375, "t": 1792321904536}
+{"k": "change", "el": "input#paramSpecValue", "value": "900", "t": 1792321904537}
+{"k": "api", "cmd": "line spec 主支中線 900", "ok": false, "error": "line 734: I8a: impact preview required; inspect preview, then confirm token (World unchanged)", "preview": true, "ms": 147, "t": 1792321904688}
+{"k": "key", "key": "Escape", "el": "button.btn < div.impact-actions < dialog.reference-impact < body < html", "t": 1792321904870}
+{"k": "api", "cmd": "line cancel-preview", "ok": true, "ms": 108, "t": 1792321904978}
+{"k": "status", "msg": "✗ 已取消；場景保持原狀", "t": 1792321904984}
+{"k": "toast", "type": "error", "msg": "已取消；場景保持原狀", "t": 1792321904984}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 4, "t": 1792321905184}
+{"k": "api", "cmd": "default", "ok": true, "ms": 845, "t": 1792321906037}
+{"k": "api", "cmd": "objects", "ok": true, "ms": 15, "t": 1792321906052}
+{"k": "api", "cmd": "surfaces", "ok": true, "ms": 8, "t": 1792321906060}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 3, "t": 1792321906063}
+{"k": "api", "cmd": "section-profile-read", "ok": true, "ms": 77, "t": 1792321906113}
+{"k": "api", "cmd": "line canvas-pos boundary 1 60 60", "ok": true, "ms": 245, "t": 1792321906309}
+{"k": "api", "cmd": "boundary 1", "ok": true, "ms": 10, "t": 1792321906323}
+{"k": "api", "cmd": "obstacles 1", "ok": true, "ms": 7, "t": 1792321906344}
+{"k": "api", "cmd": "references", "ok": true, "ms": 7, "t": 1792321906350}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 3, "t": 1792321906353}
+{"k": "api", "cmd": "source-inspect", "ok": true, "ms": 3, "t": 1792321906356}
+{"k": "status", "msg": "工具：選取", "t": 1792321906357}
+{"k": "status", "msg": "面 1 · 選取", "t": 1792321906368}
+{"k": "api", "cmd": "line place 999 on 1 at-line guide 1", "ok": false, "error": "line 737: 欄位數不對，用法：place 角材id on 承載面id at-line guide 線id｜grid 網id u|v 索引 或 at-face e索引｜h孔e邊｜t角材，可加 through 座標 或 between 擋面 擋面）", "ms": 136, "t": 1792321906542}
+{"k": "api", "cmd": "dump", "ok": true, "ms": 7, "t": 1792321906915}

@@ -1,0 +1,55 @@
+{
+ "id": "F-20261018-002",
+ "kind": "auto",
+ "status": "open",
+ "resolution": "",
+ "created": "2026-10-18 11:12:18",
+ "note": "",
+ "auto_reason": "JS 例外:Uncaught Error: fb-auto-probe",
+ "target": null,
+ "context": {
+  "view": "面工作區 · 面 1(工具 select)",
+  "scene": "room_a.scene(/workspace/geometry-axiom/room_a.scene)",
+  "viewport": "1382×900 @1x",
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+  "state": {
+   "oc": {
+    "on": true,
+    "tool": "select",
+    "drawTool": null,
+    "focus": {
+     "t": "face",
+     "id": 1
+    },
+    "stack": [],
+    "sel": null,
+    "zoom": 1,
+    "counts": {
+     "faces": 1,
+     "spaces": 0,
+     "columns": 0,
+     "beams": 0
+    }
+   },
+   "fe": {
+    "tool": "select",
+    "fiTab": "prop",
+    "draftPts": 0,
+    "lenBuf": ""
+   },
+   "threeView": {
+    "open": false,
+    "tool": "view"
+   },
+   "pendingSlot": null,
+   "dialogs": [],
+   "bodyClass": "",
+   "activeElement": "body < html"
+  }
+ },
+ "t_mark": 1792321938247,
+ "version": {
+  "commit": "e64aa635",
+  "dirty": false
+ }
+}

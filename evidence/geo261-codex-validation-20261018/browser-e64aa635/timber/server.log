@@ -1,0 +1,38 @@
+core: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-18T11:59:58+00:00））
+bridge: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-18T12:00:46+00:00））
+model-base: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-18T12:01:07+00:00））
+LOCAL_RUNTIME {"root": "/workspace/geometry-axiom", "binaryDirectory": "/tmp/g261-timber-_6_t_p7w/geometry-runtime/b9bc23103ebb114398f3", "executables": {"core": "/tmp/g261-timber-_6_t_p7w/geometry-runtime/b9bc23103ebb114398f3/core", "bridge": "/tmp/g261-timber-_6_t_p7w/geometry-runtime/b9bc23103ebb114398f3/bridge", "model-base": "/tmp/g261-timber-_6_t_p7w/geometry-runtime/b9bc23103ebb114398f3/model-base"}, "port": 18839, "managedPreview": false}
+http://localhost:18839  （Ctrl-C 結束；版本=0de633fe53c4；bridge=/tmp/g261-timber-_6_t_p7w/geometry-runtime/b9bc23103ebb114398f3/bridge）
+I8a preview 1: valid; confirm token to apply
+ timber 0 center 13 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 0 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 1 center 13 -> 13 length 4000 -> 4000
+  surface 2 origin [0,0,3500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 2 origin [0,0,3500] axes [1,0,0]/[0,1,0]/[0,0,1]
+input:9: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 54704)
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/workspace/geometry-axiom/geometry-web/serve.py", line 476, in do_POST
+    return self._do_POST()
+           ^^^^^^^^^^^^^^^
+  File "/workspace/geometry-axiom/geometry-web/serve.py", line 702, in _do_POST
+    self._send(canonical_bytes(result))
+  File "/workspace/geometry-axiom/geometry-web/serve.py", line 339, in _send
+    return self._send_body(body, ctype, status)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geometry-axiom/geometry-web/serve.py", line 357, in _send_body
+    self.wfile.write(body)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+BrokenPipeError: [Errno 32] Broken pipe
+----------------------------------------

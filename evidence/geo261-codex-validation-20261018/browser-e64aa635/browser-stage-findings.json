@@ -1,0 +1,446 @@
+{
+  "schema": "geo261-browser-stage-findings/1",
+  "source_sha": "e64aa6359d600f43313ec9d7ba1112c465b6a40c",
+  "generated_utc": "2026-10-18T12:04:44.812055+00:00",
+  "all_jobs_finished": true,
+  "report_evidence": [
+    {
+      "relative_path": "browser-stage-report.md",
+      "bytes": 16537,
+      "sha256": "5697eb333e94a2a8b57f5083ce45eccd899eb4ac0bab37dbd14d408e8628a910"
+    },
+    {
+      "relative_path": "browser-stage-results.json",
+      "bytes": 199147,
+      "sha256": "7126497a455d0e0f7b23b92dfcec4f64d182081dfbc7cb87ec2193fa6e2a1337"
+    }
+  ],
+  "jobs": [
+    {
+      "job": "canvas",
+      "status": "failed",
+      "verified_pass": false,
+      "harness_completed": false,
+      "harness_exit_code": 1,
+      "timed_out": false,
+      "work_elapsed_seconds": 1839.618,
+      "elapsed_seconds": 1842.06,
+      "passed_assertions": 1593,
+      "failed_assertions": 1,
+      "fatal": "Unexpected native dialog at === P72B. 更名保留相位差及來源 ===: confirm 建立一份空白新專案，切換為新的專案識別及「未命名專案」。目前尚未保存的變更不會自動寫入檔案。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+      "evidence_issues": [],
+      "raw_evidence": [
+        {
+          "relative_path": "canvas/test.log",
+          "bytes": 187657,
+          "sha256": "f78f81c88ee64c7604b75cd6fd88aeb2907ae877304a7d51c5ed494abb65dd1d"
+        },
+        {
+          "relative_path": "canvas/result.json",
+          "bytes": 11608,
+          "sha256": "98613774d1a5fa9f328945af72406cae3a5c99da0615417c88e6e8c71a053ed9"
+        }
+      ],
+      "classification": [
+        "測試寫錯",
+        "預期過時（靜態確認，原始執行尚未比 golden）"
+      ],
+      "classification_status": "已定位測試接線根因；修正尚未實跑",
+      "evidence_limit": "consoleAPICalled 僅列印 [console]，未保留類型，也沒有獨立 console.error gate。非預期例外會增加 failedAssertions；僅 full canvas 的 P38 刻意注入 fb-auto-probe，仍會計入 uncaughtBrowserExceptions，因此該欄不等於非預期例外數。",
+      "fix_branch": null,
+      "fix_sha": null,
+      "after_fix_verified": false,
+      "mutation_verified": false,
+      "topic": 13,
+      "cause": "P72B 的共用 newProject 直接點新專案，沒有傳入及登記既有 expectNativeDialog；產品按 dirty 狀態顯示正式完整 confirm，原 strict handler 正確拒絕。",
+      "proposed_change": "只替兩次共用 newProject 登記精確 type/message/accept:true，保留其餘對話框 fatal 與全部斷言。",
+      "census": {
+        "unchanged_check_callsites": 17,
+        "expanded_new_assertions": 50,
+        "before_P72": 52,
+        "proposed_P72": 102,
+        "before_full_total": 2211,
+        "proposed_full_total": 2261,
+        "unchanged_other_sections": 83,
+        "actual_completed_full_after_fix": false
+      },
+      "history": [
+        "2f015dfd62779baba066f503f21422f8472a0ae8",
+        "0e7c38bb8bf719f0084d24ce73ef65f016d6ddde",
+        "83727e223735491c07312910837b45805cf5de6e"
+      ],
+      "proposed_branch": "codex/geo261-fix-canvas-dialog-census-20261018",
+      "branch_status": "僅外部已二審提案；本階段未建立／未推分支",
+      "remaining": "P72B 後續與整個 canvas 尚未跑完；50 是獨立靜態枚舉，不是修後實測。修後、撤回轉紅及完整 golden 全待另輪。"
+    },
+    {
+      "job": "assembly",
+      "status": "failed",
+      "verified_pass": false,
+      "harness_completed": false,
+      "harness_exit_code": 1,
+      "timed_out": false,
+      "work_elapsed_seconds": 309.483,
+      "elapsed_seconds": 311.804,
+      "passed_assertions": 115,
+      "failed_assertions": 1,
+      "fatal": "P77 assertion failed: G07 未完成實例草稿保存第8版 false",
+      "evidence_issues": [],
+      "raw_evidence": [
+        {
+          "relative_path": "assembly/test.log",
+          "bytes": 18965,
+          "sha256": "0346520c9b6a1050a360ccb1247523a75a0d35c383e339d1040912661c21b849"
+        },
+        {
+          "relative_path": "assembly/result.json",
+          "bytes": 10729,
+          "sha256": "38f778e616b4830492370547ac6bf86a35ff5e0f2eaf7a53f9165d561bd6250c"
+        }
+      ],
+      "classification": null,
+      "classification_status": "待定位（格式預期過時只是候選）；兩個子條件何者為 false 尚未知",
+      "evidence_limit": "consoleAPICalled 僅列印 [console]，未保留類型，也沒有獨立 console.error gate。非預期例外會增加 failedAssertions；僅 full canvas 的 P38 刻意注入 fb-auto-probe，仍會計入 uncaughtBrowserExceptions，因此該欄不等於非預期例外數。",
+      "fix_branch": null,
+      "fix_sha": null,
+      "after_fix_verified": false,
+      "mutation_verified": false,
+      "topic": 14,
+      "cause": "原 G07 複合斷言為 false；baseline.saved 只留在頁面記憶體，原 check 沒有列印完整值，工作結束後無原始保存包可供判讀。",
+      "observed": "實際只確認 115 個通過斷言、1 個失敗斷言及完整原 fatal；不能宣稱已觀測 format16/17，也不能宣稱草稿內容完整。",
+      "proposed_change": "下一輪先保留原斷言與上限，加診斷保存真正 bytes／format／drafts，再依實際值分類；不直接放寬版本或刪除草稿斷言。",
+      "diagnostic_proposal": {
+        "patch": "14-assembly-g07-diagnostic-only.patch",
+        "patch_sha256": "c0f135d9bcfaf21d21309b6ae9e7823d1ba6e0d08e290e8b8ae613d1af28bc31",
+        "static_reviewed": true,
+        "applied": false,
+        "executed": false,
+        "scope": "原 check 完整 AND 不變，只列印 saved 診斷並在 check 前封存同一 __generationBytes 的真 gcanvas 與 JSON。"
+      },
+      "main_limit": "main/e64 該測試與 project-store 同 bytes，但 main 未動態跑，不能據此判為既有問題。",
+      "remaining": "G07 失敗後未執行範圍、原保存資料診斷、正式修法、修後與撤回證據均未完成。"
+    },
+    {
+      "job": "documents",
+      "status": "passed",
+      "verified_pass": true,
+      "harness_completed": true,
+      "harness_exit_code": 0,
+      "timed_out": false,
+      "work_elapsed_seconds": 90.117,
+      "elapsed_seconds": 92.344,
+      "passed_assertions": 47,
+      "failed_assertions": 0,
+      "fatal": null,
+      "evidence_issues": [],
+      "raw_evidence": [
+        {
+          "relative_path": "documents/test.log",
+          "bytes": 2404,
+          "sha256": "8000c00782e42cb2d748b761c8ef513ac25f4383a9423a182c1f0a6179978f11"
+        },
+        {
+          "relative_path": "documents/result.json",
+          "bytes": 10764,
+          "sha256": "2ba4520239d35b2d096b4d39cb71e5d002ef0edbfc403ed718ed893e145bc5e2"
+        }
+      ],
+      "classification": null,
+      "classification_status": "無已見失敗；僅適用該 CI scope",
+      "evidence_limit": "未監聽 consoleAPICalled，不能宣稱 console 無錯；只檢查 Runtime 例外、HTTP >=400 與外部請求，未監聽 Network.loadingFailed。成功 footer 沒有 schema、scope 或 completed，完整性依成功專用 footer、零失敗與正常退出判讀。",
+      "fix_branch": null,
+      "fix_sha": null,
+      "after_fix_verified": false,
+      "mutation_verified": false
+    },
+    {
+      "job": "grid",
+      "status": "passed",
+      "verified_pass": true,
+      "harness_completed": true,
+      "harness_exit_code": 0,
+      "timed_out": false,
+      "work_elapsed_seconds": 639.684,
+      "elapsed_seconds": 642.101,
+      "passed_assertions": 350,
+      "failed_assertions": 0,
+      "fatal": null,
+      "evidence_issues": [],
+      "raw_evidence": [
+        {
+          "relative_path": "grid/test.log",
+          "bytes": 42390,
+          "sha256": "67b099b5ee83517fe71d94588f5935b8a392a347ddd44eaae46481a230652a98"
+        },
+        {
+          "relative_path": "grid/result.json",
+          "bytes": 10568,
+          "sha256": "98d7fabd5a05d79eb1ff65a3049f710b46d04b3243cb0b078aa7a36c84c41946"
+        }
+      ],
+      "classification": null,
+      "classification_status": "無已見失敗；僅適用該 CI scope",
+      "evidence_limit": "consoleAPICalled 僅列印 [console]，未保留類型，也沒有獨立 console.error gate。非預期例外會增加 failedAssertions；僅 full canvas 的 P38 刻意注入 fb-auto-probe，仍會計入 uncaughtBrowserExceptions，因此該欄不等於非預期例外數。",
+      "fix_branch": null,
+      "fix_sha": null,
+      "after_fix_verified": false,
+      "mutation_verified": false
+    },
+    {
+      "job": "space",
+      "status": "failed",
+      "verified_pass": false,
+      "harness_completed": false,
+      "harness_exit_code": 1,
+      "timed_out": false,
+      "work_elapsed_seconds": 472.037,
+      "elapsed_seconds": 474.37,
+      "passed_assertions": 127,
+      "failed_assertions": 2,
+      "fatal": null,
+      "evidence_issues": [],
+      "raw_evidence": [
+        {
+          "relative_path": "space/test.log",
+          "bytes": 12344,
+          "sha256": "8a53863e9af67bad8b75fe77a46f94f891dbe46fd9650f3de6df7d1af10d0aa6"
+        },
+        {
+          "relative_path": "space/result.json",
+          "bytes": 10616,
+          "sha256": "37a2152aa38cb23bc760b54d2afdc4e372f584442ec93ca2cbc56e6fe04d5fbd"
+        }
+      ],
+      "classification": null,
+      "classification_status": "待根因定位：頁面 fetch signal 逾時；效能退化為候選",
+      "evidence_limit": "原 browser-health 群組要求未捕捉例外及 console.error 都為零；另以固定群組斷言 census 核對完整性。timber 的限定範圍仍會跑 browser-health。",
+      "fix_branch": null,
+      "fix_sha": null,
+      "after_fix_verified": false,
+      "mutation_verified": false,
+      "failure_details": [
+        {
+          "name": "complete browser flow",
+          "ok": false,
+          "detail": "Error: TimeoutError: signal timed out\n    at /workspace/geometry-axiom/geometry-web/space_model_test.js:129:38\n    at evaluate (/workspace/geometry-axiom/geometry-web/cdp_evaluation.js:18:14)\n    at async /workspace/geometry-axiom/geometry-web/space_model_test.js:1457:20\n    at async Object.run (/workspace/geometry-axiom/geometry-web/space_test_floor.js:34:9)\n    at async run (/workspace/geometry-axiom/geometry-web/space_model_test.js:1276:3)"
+        },
+        {
+          "name": "space group completeness",
+          "ok": false,
+          "detail": [
+            "Space run did not finish",
+            "Group space-height-library did not complete",
+            "Group space-height-library: expected 112 passed assertions, got 93 passed / 0 failed",
+            "Group projection-placement did not complete",
+            "Group projection-placement: expected 36 passed assertions, got 0 passed / 0 failed",
+            "Group font-layout did not complete",
+            "Group font-layout: expected 19 passed assertions, got 0 passed / 0 failed",
+            "Group space-flow did not complete",
+            "Group space-flow: expected 39 passed assertions, got 0 passed / 0 failed",
+            "Group browser-health did not complete",
+            "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+          ]
+        }
+      ],
+      "failure_details_evidence": {
+        "relative_path": "space/artifacts/space-results/result.json",
+        "bytes": 22995,
+        "sha256": "a737dd4fe0df84cb7a7d7bc4b899e5a107645727516ee9c1141da46744856f6e"
+      },
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "space-height-library": {
+          "expected": 112,
+          "passed": 93,
+          "failed": 0,
+          "completed": false
+        },
+        "projection-lifecycle": {
+          "expected": 18,
+          "passed": 18,
+          "failed": 0,
+          "completed": true
+        },
+        "projection-placement": {
+          "expected": 36,
+          "passed": 0,
+          "failed": 0,
+          "completed": false
+        },
+        "font-layout": {
+          "expected": 19,
+          "passed": 0,
+          "failed": 0,
+          "completed": false
+        },
+        "space-flow": {
+          "expected": 39,
+          "passed": 0,
+          "failed": 0,
+          "completed": false
+        },
+        "projection-close": {
+          "expected": 14,
+          "passed": 14,
+          "failed": 0,
+          "completed": true
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 0,
+          "failed": 0,
+          "completed": false
+        }
+      },
+      "completeness_problems": [
+        "Space run did not finish",
+        "Group space-height-library did not complete",
+        "Group space-height-library: expected 112 passed assertions, got 93 passed / 0 failed",
+        "Group projection-placement did not complete",
+        "Group projection-placement: expected 36 passed assertions, got 0 passed / 0 failed",
+        "Group font-layout did not complete",
+        "Group font-layout: expected 19 passed assertions, got 0 passed / 0 failed",
+        "Group space-flow did not complete",
+        "Group space-flow: expected 39 passed assertions, got 0 passed / 0 failed",
+        "Group browser-health did not complete",
+        "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+      ],
+      "observed": "1457 行 importBytes 的頁面運算拋出 TimeoutError: signal timed out；原全域兩個 FAIL 是 flow fatal 與由此產生的 completeness 診斷，不是兩個獨立產品缺陷。",
+      "timeout_boundary": {
+        "outer_job_timed_out": false,
+        "outer_job_seconds": 900,
+        "cdp_watchdog_seconds": 120,
+        "cdp_watchdog_message": "CDP timeout: Runtime.evaluate",
+        "observed_message": "TimeoutError: signal timed out",
+        "candidate_page_model_fetch_seconds": 30,
+        "candidate_endpoints": [
+          "/model/verify",
+          "/model/space-replay"
+        ],
+        "actual_request_endpoint_proven": false
+      },
+      "cause": "readProjectContext 逐個驗證保存模型；verifyStoredModel 的 verify/replay fetch 各設 AbortSignal.timeout(30000)，是候選。現有收據不能證實唯一 endpoint 或 native 熱點。",
+      "server_evidence": "server.log 有三個 serve.py:702 model 路由寫回的 BrokenPipe；serve.py:333 log_message 靜音，沒有逐 HTTP path/time，space harness 也未保存 Network 事件，因此不能把最後 BrokenPipe 唯一配對 fatal，亦可能含先前取消預覽的寫回。",
+      "remaining": "保留全部 30 秒頁面 fetch、120 秒 CDP 與 900 秒 job 上限；待效能根因與修正後原時限重測。未完成 groups 的 expected 數不是 passed，不新增第二個 completeness 產品缺陷。"
+    },
+    {
+      "job": "timber",
+      "status": "failed",
+      "verified_pass": false,
+      "harness_completed": false,
+      "harness_exit_code": 1,
+      "timed_out": false,
+      "work_elapsed_seconds": 254.365,
+      "elapsed_seconds": 256.757,
+      "passed_assertions": 24,
+      "failed_assertions": 2,
+      "fatal": null,
+      "evidence_issues": [],
+      "raw_evidence": [
+        {
+          "relative_path": "timber/test.log",
+          "bytes": 6309,
+          "sha256": "2a0ac2bae463b7e4849b6d3f76478a4c04f26583693ecb6215d5a007bac44981"
+        },
+        {
+          "relative_path": "timber/result.json",
+          "bytes": 10694,
+          "sha256": "55cb5dc042eea52e8a4c3d671774b5d20377788196f2563754ce4add6197c9b5"
+        }
+      ],
+      "classification": null,
+      "classification_status": "待根因定位：example preview 的 UI 等待逾時；效能退化為候選",
+      "evidence_limit": "原 browser-health 群組要求未捕捉例外及 console.error 都為零；另以固定群組斷言 census 核對完整性。timber 的限定範圍仍會跑 browser-health。",
+      "fix_branch": null,
+      "fix_sha": null,
+      "after_fix_verified": false,
+      "mutation_verified": false,
+      "failure_details": [
+        {
+          "name": "complete browser flow",
+          "ok": false,
+          "detail": "Error: Timed out: example preview. UI: {\"status\":\"正在推導各面、檢查封閉狀態與材料幾何…\",\"snapshot\":{\"phase\":\"previewing\",\"sourceKind\":\"example\",\"resultSummary\":null,\"createdId\":null,\"editingId\":null,\"supportsTimbers\":true,\"timberCandidates\":[{\"A\":27,\"B\":33,\"id\":10,\"length\":4000,\"placement_id\":1,\"role\":\"boundary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":11,\"length\":4000,\"placement_id\":1,\"role\":\"boundary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":12,\"length\":2946,\"placement_id\":1,\"role\":\"primary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":13,\"length\":2946,\"placement_id\":1,\"role\":\"primary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":20,\"length\":2946,\"placement_id\":1,\"role\":\"primary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":30,\"length\":1960,\"placement_id\":1,\"role\":\"secondary\",\"z_max\":2533,\"z_min\":2500},{\"A\":27,\"B\":33,\"id\":31,\"length\":1959,\"placement_id\":1,\"role\":\"secondary\",\"z_max\":2533,\"z_min\":2500}],\"stale\":true,\"previewRevision\":-1,\"inputRevision\":20,\"viewer\":{\"objectCount\":0,\"triangleCount\":0,\"bounds\":null,\"labels\":[],\"view\":\"bottom\",\"yaw\":0,\"pitch\":-1.5707963267948966,\"zoom\":1,\"pan\":{\"x\":0,\"y\":0},\"width\":980,\"height\":692.875,\"destroyed\":false,\"selection\":null}},\"connection\":\"ready\"}\n    at wait (/workspace/geometry-axiom/geometry-web/space_model_test.js:138:9)\n    at async example (/workspace/geometry-axiom/geometry-web/space_model_test.js:316:3)\n    at async timberRegression (/workspace/geometry-axiom/geometry-web/space_model_test.js:1118:3)\n    at async Object.run (/workspace/geometry-axiom/geometry-web/space_test_floor.js:34:9)\n    at async run (/workspace/geometry-axiom/geometry-web/space_model_test.js:1256:5)"
+        },
+        {
+          "name": "space group completeness",
+          "ok": false,
+          "detail": [
+            "Space run did not finish",
+            "Group timber-material did not complete",
+            "Group timber-material: expected 48 passed assertions, got 22 passed / 0 failed",
+            "Group timber-source-guards did not complete",
+            "Group timber-source-guards: expected 8 passed assertions, got 0 passed / 0 failed",
+            "Group font-layout did not complete",
+            "Group font-layout: expected 19 passed assertions, got 0 passed / 0 failed",
+            "Group browser-health did not complete",
+            "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+          ]
+        }
+      ],
+      "failure_details_evidence": {
+        "relative_path": "timber/artifacts/space-results/result.json",
+        "bytes": 8359,
+        "sha256": "b4df15a915b0244bd4992b3d4345f3bb8b0abeca713984548a9071eb1381a0e7"
+      },
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "timber-material": {
+          "expected": 48,
+          "passed": 22,
+          "failed": 0,
+          "completed": false
+        },
+        "timber-source-guards": {
+          "expected": 8,
+          "passed": 0,
+          "failed": 0,
+          "completed": false
+        },
+        "font-layout": {
+          "expected": 19,
+          "passed": 0,
+          "failed": 0,
+          "completed": false
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 0,
+          "failed": 0,
+          "completed": false
+        }
+      },
+      "completeness_problems": [
+        "Space run did not finish",
+        "Group timber-material did not complete",
+        "Group timber-material: expected 48 passed assertions, got 22 passed / 0 failed",
+        "Group timber-source-guards did not complete",
+        "Group timber-source-guards: expected 8 passed assertions, got 0 passed / 0 failed",
+        "Group font-layout did not complete",
+        "Group font-layout: expected 19 passed assertions, got 0 passed / 0 failed",
+        "Group browser-health did not complete",
+        "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+      ],
+      "observed": "space_model_test.js:1118→example:316→wait:138；預設 30000ms UI wait 等不到 resultSummary 非空且 stale=false。實際 UI 為 previewing、resultSummary=null、stale=true、connection=ready。",
+      "timeout_boundary": {
+        "ui_wait_seconds": 30,
+        "outer_job_timed_out": false,
+        "outer_job_seconds": 1200,
+        "cdp_watchdog_seconds": 120,
+        "actual_request_endpoint_proven": false
+      },
+      "remaining": "24 passed 是 setup2+timber-material22；79 只是原完整 scope census，不列通過。兩個 FAIL 是流程逾時與衍生 completeness，不新增第二個產品缺陷；保留原全部上限，待效能根因後重測。"
+    }
+  ],
+  "applied_fixes": [],
+  "limit": "本附錄是原始基準的根因與未驗說明；提案不是已套用修正，沒有修後／突變通過聲明。"
+}
