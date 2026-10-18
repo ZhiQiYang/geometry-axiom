@@ -144,6 +144,13 @@ for room_, tag_, lay_, why_, want_seam in (
     seam_txt = "" if want_seam is None else f",最後一條{'板端縫' if want_seam[0] == 'b' else '縫'}要在 {want_seam[1]}(實得 {got_seam})"
     print(f"[{'綠' if ok else '錯!'}] 對照 {tag_} {lay_}:可施工({why_}{seam_txt})"
           f"{sorted({c['code'] for c in res['conflicts']})}{sorted({f['check'] for f in fails})}")
+# C7b 專屬:把雙牆階的最後一條板端縫改回 3614(x>3300 那段只剩 13 mm),C7_G7_TOO_CLOSE 要報。只拿掉 C7b 時這一行轉紅。
+res = fo.build(DSTEP, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿Y"), p)
+res["seams_b"] = res["seams_b"][:-1] + [3614]
+got_ = {f["check"] for f in fo.check(res, p)}
+ok = "C7_G7_TOO_CLOSE" in got_
+failed |= not ok
+print(f"[{'紅' if ok else '沒抓到!'}] tamper_seam        預期 C7_G7_TOO_CLOSE          實得 {sorted(got_)}  雙牆階的板端縫改回 3614:離 x>3300 的對牆只剩 13 mm")
 # 平移退回置中仍要有效:照舊縫位(bbox_ft02,縫 3659)時,40 mm 牆階的主支被推去撞 y=3700 的牆料就要退回置中,
 #   原因要是核心限制(主支頂延伸段),不是碰撞
 res = fo.build(STEP40, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X"), p, frozenset({"bbox_ft02"}))
