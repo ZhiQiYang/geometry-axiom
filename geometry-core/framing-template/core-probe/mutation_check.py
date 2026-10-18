@@ -93,14 +93,18 @@ MUTATIONS = [
      replace_once(SH, 'elif [ "$one" -eq "$core_reject_rc" ]; then', 'elif [ "$one" -ne 0 ]; then'), True),
     ("m11", "parse_results.main 有錯誤列也回 0",
      replace_once(PARSE, "        return EXIT_PROBE_ERRORS", "        return 0"), False),
-    ("m12", "不升格：端面頂到 custom 的副支仍寫 secondary（2026-10-18 拍板前的樣子）",
-     replace_once(GEN, "if timber_stops(member, walls, end):", "if False:"), False),
+    ("m12", "產生器忽略 golden 的 :custom4 標籤（副支一律 secondary）",
+     replace_once(GEN, "base_kind, labelled = split_custom4(kind)", "base_kind, labelled = split_custom4(kind)[0], False"), False),
     ("m13", "升格過頭：所有副支都改 custom 4",
-     replace_once(GEN, "if timber_stops(member, walls, end):", "if True:"), False),
-    ("m14", "只看 kind 字串升格：secondary:seam 一律 custom 4，不看實際擋面",
-     replace_once(GEN, "if timber_stops(member, walls, end):", 'if member.kind == "secondary:seam":'), False),
+     replace_once(GEN, "        if labelled:\n", '        if labelled or role == "secondary":\n'), False),
+    ("m14", "關掉標籤與實際擋面的交叉核對（custom4_disagreements 永遠不報）",
+     replace_once(GEN, "if on_custom != member.custom4_label:", "if False:"), False),
     ("m15", "升格後的優先級寫成 5",
      replace_once(GEN, "SECONDARY_ON_CUSTOM_PRIORITY = 4", "SECONDARY_ON_CUSTOM_PRIORITY = 5"), False),
+    ("m16", "golden 少標一個 :custom4（標籤與實際擋面不一致）",
+     edit_bytes("../oracle/oracle-golden.json", b'"secondary:mark:custom4"', b'"secondary:mark"'), False),
+    ("m17", "golden 多標一個 :custom4（該支端面沒有頂到 custom）",
+     edit_bytes("../oracle/oracle-golden.json", b'"secondary:seam"', b'"secondary:seam:custom4"'), False),
 ]
 
 

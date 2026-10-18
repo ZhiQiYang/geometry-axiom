@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -205,7 +206,7 @@ class Member:
         self.direction = None
         self.span = None
         self.span_note = None
-        self.promoted = False  # 副支因端面頂到 custom，改宣告 custom priority 4
+        self.custom4_label = False  # golden 種類帶 :custom4，副支改宣告 custom priority 4
 
     def length_bounds(self) -> tuple[int, int]:
         return axis_interval(self.rect, self.length_axis)
@@ -280,35 +281,66 @@ def build_members(kind_rects, edges: list[Edge], width: int) -> list[Member]:
         hit = match_edge(rect, edges, width)
         where = hit[0].kind if hit else None
         cover = hit[2] if hit else None
-        role, priority, pending, tier = assign_role(kind, where, cover)
+        base_kind, labelled = split_custom4(kind)
+        role, priority, pending, tier = assign_role(base_kind, where, cover)
         member = Member(index, kind, rect, hit, role, priority, pending, tier)
+        if labelled:
+            # golden 的 :custom4 標籤（oracle 60785906）：副支端面頂到 custom 3，改宣告 custom 4。
+            # tier 維持 4：仍是副支那一階，排在 custom 3 之後。
+            if role != "secondary":
+                raise ProbeError(f"{kind}：:custom4 只能加在副支上，這支的角色是 {role}")
+            member.role = "custom"
+            member.priority = SECONDARY_ON_CUSTOM_PRIORITY
+            member.custom4_label = True
         _finish_axes(member, width)
         prepared.append(member)
-    promote_secondaries_on_custom(prepared)
     return prepared
 
 
 SECONDARY_ON_CUSTOM_PRIORITY = 4
+CUSTOM4_SUFFIX = ":custom4"
 
 
-def promote_secondaries_on_custom(members: list[Member]) -> None:
-    """端面頂到 custom 的副支，改宣告 custom priority 4（條文不改；沿牆料本身維持 custom 3）。
+def split_custom4(kind: str) -> tuple[str, bool]:
+    if kind.endswith(CUSTOM4_SUFFIX):
+        return kind[: -len(CUSTOM4_SUFFIX)], True
+    return kind, False
 
-    使用者 2026-10-18 拍板（🔒，main 的 決策佇列.md「凹角沿牆料的排序」，#301）。
-    理由：I19 要求擋面擁有者優先級嚴格小於自己；副支是 3，頂不了 3 的 custom 側面。
-    判定依實際擋面（timber_stops：端面座標相接、擋面角材在寬向蓋住整段），不看 kind 字串。
-    只拿升格前就是 custom 的料當擋面（快照），升格後的 custom 4 不再當別人的擋面。
+
+def secondaries_stopping_on_custom(members: list[Member]) -> set[int]:
+    """獨立判定：哪些副支（golden 序號）的端面頂在 custom 3 的側面上。
+
+    使用者 2026-10-18 拍板（🔒，main 的 決策佇列.md「凹角沿牆料的排序」，#301）：這類副支改宣告
+    custom priority 4，條文不改，沿牆料本身維持 custom 3。理由：I19 要求擋面擁有者優先級嚴格小於
+    自己，副支是 3，頂不了 3 的 custom 側面。
+    角色本身讀 golden 的 :custom4 標籤；這個函式依實際擋面（timber_stops：端面座標相接、擋面角材在
+    寬向蓋住整段），不看 kind 字串，用來和標籤交叉核對。只拿本來就是 custom 3 的料當擋面。
     """
-    walls = [m for m in members if m.role == "custom"]
+    walls = [m for m in members if m.role == "custom" and not m.custom4_label]
+    found = set()
     for member in members:
-        if member.role != "secondary":
+        if not (member.role == "secondary" or member.custom4_label):
             continue
-        for end in ("lo", "hi"):
-            if timber_stops(member, walls, end):
-                member.role = "custom"
-                member.priority = SECONDARY_ON_CUSTOM_PRIORITY
-                member.promoted = True  # tier 維持 4：仍是副支那一階，排在 custom 3 之後
-                break
+        if any(timber_stops(member, walls, end) for end in ("lo", "hi")):
+            found.add(member.golden)
+    return found
+
+
+def custom4_disagreements(room: str, name: str, members: list[Member]) -> list[str]:
+    """golden 的 :custom4 標籤與實際擋面不一致的料。有任何一支就不該產生場景。"""
+    stopping = secondaries_stopping_on_custom(members)
+    lines = []
+    for member in members:
+        if not (member.role == "secondary" or member.custom4_label):
+            continue
+        on_custom = member.golden in stopping
+        if on_custom != member.custom4_label:
+            lines.append(
+                f"{room} / {name} / 編號 {member.golden} / {member.kind} / golden "
+                f"{'有' if member.custom4_label else '沒有'} {CUSTOM4_SUFFIX} 標籤，"
+                f"但依實際擋面{'有' if on_custom else '沒有'}頂到 custom"
+            )
+    return lines
 
 
 def order_members(members: list[Member], edges: list[Edge]) -> list[int]:
@@ -406,8 +438,8 @@ def render_scene(room: str, layout_index: int, name: str, members: list[Member],
     out.append("# 3. tier 2 有延伸的外輪廓 boundary。延伸端要先有被頂的料（R19(e)、I22）。")
     out.append("# 4. tier 3 custom priority 3（沿牆料）。I22 把延伸段側面當優先級 2，同為 2 的 primary 不能頂；D15 要求 custom 明寫 priority。")
     out.append("# 5. tier 4 secondary，含孔邊上種類仍是 boundary、暫寫 secondary 的料。D17 副支在主支軸之後；R19(f) 長度由相鄰主支側面量出。")
-    out.append("#    端面頂到 custom 的副支改宣告 custom priority 4（仍在這一階）：使用者 2026-10-18 拍板（決策佇列「凹角沿牆料的排序」，#301），條文不改；")
-    out.append("#    I19 要擋面擁有者優先級嚴格小於自己，副支 3 頂不了 custom 3。判定依實際擋面，probe-member 的 promoted 標出這類料。")
+    out.append("#    golden 種類帶 :custom4 的副支（端面頂到 custom 3）改宣告 custom priority 4（仍在這一階）：使用者 2026-10-18 拍板（決策佇列「凹角沿牆料的排序」，#301），條文不改；")
+    out.append("#    I19 要擋面擁有者優先級嚴格小於自己，副支 3 頂不了 custom 3。產生器另依實際擋面獨立判定，和標籤不一致就不產生場景；probe-member 的 custom4 標出這類料。")
     out.append("# 同一階以 golden 原序打破平手。兩支同階 boundary 的轉角互頂不建角材依賴（I19 例外，避免環）。")
     out.append("# 有環就強制取出 tier 最小者，標 probe-cycle，不刪料。被省略的拒絕料會改變後面的擋面，見 run_probe.sh。")
     out.append("# place 不寫長度（D7）。貼邊用 at-face，引用該邊，深度 +n。室內用 at-line，中線 = 寬向 lo + w//2（I13，奇數寬多的 1 mm 在 +cross）。")
@@ -456,8 +488,8 @@ def render_scene(room: str, layout_index: int, name: str, members: list[Member],
             "tier": member.tier,
             "where": member.where,
         }
-        if member.promoted:
-            payload["promoted"] = "stops-on-custom"
+        if member.custom4_label:
+            payload["custom4"] = "golden-label"
         out.append("# probe-member " + json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
         if member.span_note:
             out.append(f"# probe-span {member.span_note}")
@@ -506,9 +538,11 @@ class Scene:
 
 
 class Build:
-    def __init__(self, scenes: list[Scene], skipped: list[dict]):
+    def __init__(self, scenes: list[Scene], skipped: list[dict], disagreements: list[str] | None = None):
         self.scenes = scenes
         self.skipped = skipped
+        # golden 的 :custom4 標籤與實際擋面不一致的料。非空代表 golden 或產生器有錯，不得寫出場景。
+        self.disagreements = disagreements or []
 
 
 def build(golden: dict, delta: int | None = None) -> Build:
@@ -518,6 +552,7 @@ def build(golden: dict, delta: int | None = None) -> Build:
     base = data["params"]
     scenes: list[Scene] = []
     skipped: list[dict] = []
+    disagreements: list[str] = []
     seen = set()
     for room_name, room in data["rooms"].items():
         slug = slug_for(room_name)
@@ -539,6 +574,7 @@ def build(golden: dict, delta: int | None = None) -> Build:
                 })
                 continue
             members = build_members(layout["timbers"], edges, width)
+            disagreements.extend(custom4_disagreements(room_name, layout.get("name") or "", members))
             placed, forced = order_members(members, edges)
             for order, golden_index in enumerate(placed, start=1):
                 next(m for m in members if m.golden == golden_index).id = order
@@ -560,7 +596,7 @@ def build(golden: dict, delta: int | None = None) -> Build:
                 pending=sum(1 for m in members if m.pending),
                 over_cap=len(members) > CORE_MAX_TIMBERS,
             ))
-    return Build(scenes, skipped)
+    return Build(scenes, skipped, disagreements)
 
 
 def index_document(built: Build, golden_name: str) -> dict:
@@ -810,6 +846,11 @@ def main() -> None:
     args = parser.parse_args()
     golden = load_golden(args.golden)
     built = build(golden, delta=args.delta)
+    if built.disagreements:
+        print(f"golden 的 {CUSTOM4_SUFFIX} 標籤與實際擋面不一致，不產生場景：", file=sys.stderr)
+        for line in built.disagreements:
+            print(f"  {line}", file=sys.stderr)
+        sys.exit(2)
     write_build(built, args.out, args.index, args.golden.name)
     if built.skipped:
         print("跳過：")

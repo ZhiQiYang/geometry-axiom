@@ -149,18 +149,28 @@ HOLE_BOUNDARY_DECLARATION = ("secondary", None)
 
 # 使用者 2026-10-18 拍板（🔒，決策佇列「凹角沿牆料的排序」，#301）：端面頂到 custom 的副支改宣告 custom 4。
 SECONDARY_ON_CUSTOM_DECLARATION = ("custom", 4)
-SECONDARY_KINDS = ("secondary:mark", "secondary:seam")
+CUSTOM4_SUFFIX = ":custom4"
+SECONDARY_BASE_KINDS = ("secondary:mark", "secondary:seam")
 
 
-def expected_declaration(kind: str, on_hole: bool, table: dict, stops_on_custom: bool) -> tuple[str, int | None]:
-    """某支角材在場景裡該宣告的 (role, priority)。stops_on_custom 由呼叫者從足跡幾何獨立算出。"""
-    secondary_like = kind in SECONDARY_KINDS or (kind == "boundary" and on_hole)
-    if secondary_like:
-        if kind in SECONDARY_KINDS and table[kind] != {("secondary", None), SECONDARY_ON_CUSTOM_DECLARATION}:
-            raise AssertionError(f"mapping.md 對 {kind} 列的角色不是 secondary／custom 4：{sorted(table[kind], key=str)}")
-        if stops_on_custom:
-            return SECONDARY_ON_CUSTOM_DECLARATION
-        return HOLE_BOUNDARY_DECLARATION if kind == "boundary" else ("secondary", None)
+def split_label(kind: str) -> tuple[str, bool]:
+    """golden 種類 → (去掉 :custom4 的種類, 是否帶 :custom4 標籤)。"""
+    if kind.endswith(CUSTOM4_SUFFIX):
+        return kind[: -len(CUSTOM4_SUFFIX)], True
+    return kind, False
+
+
+def is_secondary_like(kind: str, on_hole: bool) -> bool:
+    """副支，或孔邊上暫寫 secondary 的 boundary 料。:custom4 只可能出現在這兩類。"""
+    base, _ = split_label(kind)
+    return base in SECONDARY_BASE_KINDS or (base == "boundary" and on_hole)
+
+
+def expected_declaration(kind: str, on_hole: bool, table: dict) -> tuple[str, int | None]:
+    """某支角材在場景裡該宣告的 (role, priority)。依 golden 種類（含 :custom4 標籤）與 mapping.md 的表。"""
+    base, labelled = split_label(kind)
+    if base == "boundary" and on_hole:
+        return SECONDARY_ON_CUSTOM_DECLARATION if labelled else HOLE_BOUNDARY_DECLARATION
     declared = table[kind]
     if len(declared) != 1:
         raise AssertionError(f"mapping.md 對 {kind} 列了不只一種角色：{sorted(declared, key=str)}")
@@ -360,6 +370,68 @@ class GenScenesTest(unittest.TestCase):
         gen_scenes.assert_member_rects(golden, built)
         gen_scenes.audit_scene(built.scenes[0].text)
 
+    # ---- golden 的 :custom4 標籤與產生器依實際擋面的獨立判定互相核對 ----
+
+    def _golden_with_label_edit(self, edit):
+        """複製 golden，對 F2 第 0 種排法的 timbers 套 edit(timbers)，其餘不動。"""
+        import copy
+
+        golden = copy.deepcopy(self.golden)
+        edit(golden["rooms"]["F2主臥"]["layouts"][0]["timbers"])
+        return golden
+
+    def test_cross_check_is_quiet_on_the_real_golden(self):
+        self.assertEqual(self.built.disagreements, [])
+        labelled = sum(1 for s in self.built.scenes for m in s.members if m.custom4_label)
+        self.assertGreater(labelled, 0)
+
+    def test_missing_custom4_label_is_detected(self):
+        def edit(timbers):
+            at = next(i for i, (kind, _r) in enumerate(timbers) if kind.endswith(":custom4"))
+            timbers[at][0] = timbers[at][0][: -len(":custom4")]
+
+        built = gen_scenes.build(self._golden_with_label_edit(edit))
+        self.assertEqual(len(built.disagreements), 1)
+        self.assertIn("golden 沒有 :custom4 標籤，但依實際擋面有頂到 custom", built.disagreements[0])
+
+    def test_custom4_label_without_a_custom_stop_face_is_detected(self):
+        def edit(timbers):
+            # 沒標 :custom4 的 secondary:mark，真實 golden 裡它的端面都沒有頂到 custom（上一個測試證明兩邊一致）
+            at = next(i for i, (kind, _r) in enumerate(timbers) if kind == "secondary:mark")
+            timbers[at][0] = "secondary:mark:custom4"
+
+        built = gen_scenes.build(self._golden_with_label_edit(edit))
+        self.assertEqual(len(built.disagreements), 1)
+        self.assertIn("golden 有 :custom4 標籤，但依實際擋面沒有頂到 custom", built.disagreements[0])
+
+    def test_custom4_label_on_a_non_secondary_is_rejected(self):
+        def edit(timbers):
+            at = next(i for i, (kind, _r) in enumerate(timbers) if kind == "main")
+            timbers[at][0] = "main:custom4"
+
+        with self.assertRaises(gen_scenes.ProbeError) as caught:
+            gen_scenes.build(self._golden_with_label_edit(edit))
+        self.assertIn(":custom4 只能加在副支上", str(caught.exception))
+
+    def test_cli_refuses_to_write_scenes_when_labels_disagree(self):
+        def edit(timbers):
+            at = next(i for i, (kind, _r) in enumerate(timbers) if kind.endswith(":custom4"))
+            timbers[at][0] = timbers[at][0][: -len(":custom4")]
+
+        golden = self._golden_with_label_edit(edit)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "g.json").write_text(json.dumps(golden, ensure_ascii=False), encoding="utf-8")
+            done = subprocess.run(
+                [sys.executable, str(HERE / "gen_scenes.py"), "--golden", str(root / "g.json"),
+                 "--out", str(root / "scenes"), "--index", str(root / "index.json")],
+                capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=120,
+            )
+            wrote = (root / "scenes").exists() or (root / "index.json").exists()
+        self.assertEqual(done.returncode, 2)
+        self.assertIn("不產生場景", done.stderr)
+        self.assertFalse(wrote)
+
     def test_shifted_golden_is_detected(self):
         shifted = gen_scenes.build(self.golden, delta=1)
         with self.assertRaises(AssertionError) as caught:
@@ -524,49 +596,83 @@ class CommittedScenesTest(unittest.TestCase):
                 "main": {("primary", None)},
                 "rc_parallel": {("primary", None)},
                 "rc_parallel:custom": {("custom", 3)},
-                "secondary:mark": {("secondary", None), ("custom", 4)},
-                "secondary:seam": {("secondary", None), ("custom", 4)},
+                "secondary:mark": {("secondary", None)},
+                "secondary:seam": {("secondary", None)},
+                "secondary:mark:custom4": {("custom", 4)},
+                "secondary:seam:custom4": {("custom", 4)},
             },
         )
         self.assertIn("場景暫寫 `secondary`", MAPPING_MD.read_text(encoding="utf-8"))
 
     def test_declared_roles_and_priorities_follow_mapping_md(self):
+        """三方一致：場景宣告 = mapping.md 對 golden 種類（含 :custom4）的對應 = 從足跡幾何獨立算出的擋面。"""
+
         def check(analysis):
             lines = []
             for member in analysis.scene.members:
                 index, kind = analysis.golden_of[member.id]
-                where = "，孔邊" if analysis.on_hole(member) else ""
-                on_custom = analysis.stops_on_custom(member.id)
-                if on_custom:
-                    where += "，端面頂到 custom"
-                want = expected_declaration(kind, analysis.on_hole(member), self.table, on_custom)
+                on_hole = analysis.on_hole(member)
+                where = "，孔邊" if on_hole else ""
+                want = expected_declaration(kind, on_hole, self.table)
                 have = (member.role, member.priority)
                 if have != want:
                     lines.append(
                         f"{analysis.name}：角材 {member.id}（golden {index} {kind}{where}）"
                         f"場景寫 role {have[0]} priority {have[1]}，mapping.md 要 role {want[0]} priority {want[1]}"
                     )
-                promoted = (member.meta or {}).get("promoted")
-                if (promoted == "stops-on-custom") != (have == SECONDARY_ON_CUSTOM_DECLARATION):
-                    lines.append(f"{analysis.name}：角材 {member.id} 的 promoted 註解 {promoted!r} 與宣告 {have} 不一致")
+                if is_secondary_like(kind, on_hole):
+                    geometric = SECONDARY_ON_CUSTOM_DECLARATION if analysis.stops_on_custom(member.id) else ("secondary", None)
+                    if have != geometric:
+                        lines.append(
+                            f"{analysis.name}：角材 {member.id}（golden {index} {kind}{where}）"
+                            f"場景寫 role {have[0]} priority {have[1]}，但從足跡算出的實際擋面要 {geometric}"
+                        )
+                marker = (member.meta or {}).get("custom4")
+                if (marker == "golden-label") != (have == SECONDARY_ON_CUSTOM_DECLARATION):
+                    lines.append(f"{analysis.name}：角材 {member.id} 的 custom4 註解 {marker!r} 與宣告 {have} 不一致")
             return lines
 
         self._assert_clean(self._problems(check))
 
+    def test_golden_custom4_labels_agree_with_actual_stop_faces(self):
+        """golden 的 :custom4 標籤 vs 場景文字算出的實際擋面。不一致就紅（oracle 與探針各算各的，互相核對）。"""
+
+        def check(analysis):
+            lines = []
+            for member in analysis.scene.members:
+                index, kind = analysis.golden_of[member.id]
+                _base, labelled = split_label(kind)
+                if not is_secondary_like(kind, analysis.on_hole(member)):
+                    if labelled:
+                        lines.append(f"{analysis.name}：角材 {member.id}（golden {index} {kind}）不是副支卻帶 :custom4")
+                    continue
+                if labelled != analysis.stops_on_custom(member.id):
+                    lines.append(
+                        f"{analysis.name}：角材 {member.id}（golden {index} {kind}）golden "
+                        f"{'有' if labelled else '沒有'} :custom4，但實際擋面{'沒有' if labelled else '有'}頂到 custom"
+                    )
+            return lines
+
+        self._assert_clean(self._problems(check))
+
+    def test_generator_cross_check_reports_no_disagreement(self):
+        self.assertEqual(self.built.disagreements, [], "\n".join(self.built.disagreements[:6]))
+
     def test_secondaries_on_custom_are_custom_4_and_other_secondaries_stay_secondary(self):
-        """使用者 2026-10-18 拍板：判定看實際擋面，不看 kind 字串。同一個 kind 兩種宣告都得出現。"""
+        """使用者 2026-10-18 拍板：同一個基底種類，頂到 custom 的是 custom 4，沒頂到的仍是 secondary。"""
         seen = {}
         for analysis in self.analyses["已提交"].values():
             for member in analysis.scene.members:
                 _index, kind = analysis.golden_of[member.id]
-                if kind in SECONDARY_KINDS:
-                    key = (kind, analysis.stops_on_custom(member.id), (member.role, member.priority))
+                base, labelled = split_label(kind)
+                if base in SECONDARY_BASE_KINDS:
+                    key = (base, analysis.stops_on_custom(member.id), (member.role, member.priority))
                     seen[key] = seen.get(key, 0) + 1
-        for kind in SECONDARY_KINDS:
-            self.assertGreater(seen.get((kind, True, ("custom", 4)), 0), 0, f"{kind} 頂到 custom 的沒有改寫 custom 4")
-            self.assertGreater(seen.get((kind, False, ("secondary", None)), 0), 0, f"{kind} 沒頂到 custom 的應仍是 secondary")
-            self.assertEqual(seen.get((kind, True, ("secondary", None)), 0), 0)
-            self.assertEqual(seen.get((kind, False, ("custom", 4)), 0), 0)
+        for base in SECONDARY_BASE_KINDS:
+            self.assertGreater(seen.get((base, True, ("custom", 4)), 0), 0, f"{base} 頂到 custom 的沒有改寫 custom 4")
+            self.assertGreater(seen.get((base, False, ("secondary", None)), 0), 0, f"{base} 沒頂到 custom 的應仍是 secondary")
+            self.assertEqual(seen.get((base, True, ("secondary", None)), 0), 0)
+            self.assertEqual(seen.get((base, False, ("custom", 4)), 0), 0)
         for analysis in self.analyses["已提交"].values():
             for member in analysis.scene.members:
                 if analysis.golden_of[member.id][1] == "rc_parallel:custom":
@@ -581,6 +687,8 @@ class CommittedScenesTest(unittest.TestCase):
                 seen.add((kind, analysis.on_hole(member)))
         for kind in self.table:
             self.assertTrue(any(k == kind for k, _ in seen), f"場景裡沒有 {kind}")
+        self.assertTrue(any(k == "secondary:mark:custom4" for k, _ in seen))
+        self.assertTrue(any(k == "secondary:seam:custom4" for k, _ in seen))
         self.assertIn(("boundary", True), seen)
         self.assertIn(("rc_parallel", True), seen)
 

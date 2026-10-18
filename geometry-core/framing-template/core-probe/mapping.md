@@ -7,6 +7,8 @@
 > 依 opus 審查更正（#297）：孔邊 `rc_parallel` 的預期、待裁第 2 項、座標寫法裡的延伸段說明共三處已改，各處標「依 opus 審查更正」。
 > 測試以本檔「已對上」表為角色與優先級的依據（`test_gen_scenes.py` 的 `mapping_declarations()` 直接讀這張表）；
 > 改表就要同時改產生器，兩邊不一致測試會紅。
+>
+> golden 版本：oracle `60785906`（2957 支。相對舊版 3093 支，淨少 136 支：副支 secondary:mark 少 108、secondary:seam 少 20、孔邊上的 boundary 料少 8，是短於 `min_piece` 的極短料；主支、沿牆料、rc_parallel 的支數不變，但 10 支主支改成貼住相鄰料、座標變了（全部 64 個排法裡 24 個有變）；頂沿牆料的副支種類加 `:custom4`，共 63 支，舊版同型是 64 支，少的 1 支隨極短料一起消失。支數是我對兩份 golden 逐種類數出來的，不是引用 oracle 分支的說明）。
 
 ## 已對上
 
@@ -19,8 +21,10 @@
 | `rc_parallel:custom` | 端面頂在凹角延伸段。這份 golden 有 20 支貼外輪廓；另外 4 支（F1 的四種排法各一支）與凹角牆線共線，但和該邊沒有正長度交集，整段落在另一肢 | `custom priority 3` | oracle 的種類標籤就是這個核心角色。D15：custom 必須明寫 `priority N`（N≥1），且沒有 I20、D16、I22 的專屬權利。I22：延伸段側面以優先級 2 計，主支（2）不能頂；能頂的是平行主支軸、優先級大於 2 的 custom。既有探針 p9 用 3。沒有正長度交集的那 4 支不能 at-face（R6(c) 要求與引用邊重疊），場景改 at-line，矩形不變。 |
 | `secondary:mark` | 室內，垂直主支軸，端面沒有頂到 `custom` | `secondary` | D15 優先級 3。D17：secondary 必須垂直主支軸，且在主支軸出現之後。R19(f)：長度是相鄰主支側面的距離。R18：secondary 的 onBoundary 必為 false（只看外輪廓）。 |
 | `secondary:seam` | 室內，垂直主支軸，端面沒有頂到 `custom` | `secondary` | 同上。mark 與 seam 是 oracle 的副支原因，不是另一個核心 role。 |
-| `secondary:mark` | 室內，垂直主支軸，**端面頂到 `custom`**（沿牆料 `rc_parallel:custom`，或 F1 與凹角牆線共線的併料） | `custom priority 4` | 使用者 2026-10-18 拍板（🔒，main 的 `決策佇列.md`「2026-10-18 凹角沿牆料的排序」，#301）：條文不改，沿牆料本身維持 custom 3，端面頂它的副支改宣告 custom 4。I19：擋面擁有者優先級須嚴格小於自己，3 < 4 成立（副支 3 頂 custom 3 則不成立）。D15：custom 沒有 I20、D16、I22 的專屬權利，只參與 I19 的數值比較，所以改宣告不帶來新義務。判定依產生器的實際擋面（`timber_stops`：端面座標相接、擋面角材在寬向蓋住整段），不看 kind 字串；其餘副支維持 `secondary`。 |
-| `secondary:seam` | 室內，垂直主支軸，**端面頂到 `custom`** | `custom priority 4` | 同上。 |
+| `secondary:mark:custom4` | 室內，垂直主支軸，**端面頂到 `custom`**（沿牆料 `rc_parallel:custom`，或 F1 與凹角牆線共線的併料） | `custom priority 4` | 使用者 2026-10-18 拍板（🔒，main 的 `決策佇列.md`「2026-10-18 凹角沿牆料的排序」，#301）：條文不改，沿牆料本身維持 custom 3，端面頂它的副支改宣告 custom 4。I19：擋面擁有者優先級須嚴格小於自己，3 < 4 成立（副支 3 頂 custom 3 則不成立）。D15：custom 沒有 I20、D16、I22 的專屬權利，只參與 I19 的數值比較，所以改宣告不帶來新義務。角色讀 golden 的 `:custom4` 標籤（oracle `60785906`）；產生器另依實際擋面（`timber_stops`：端面座標相接、擋面角材在寬向蓋住整段，只拿 custom 3 當擋面）獨立判定，兩者不一致就不產生場景，測試也會紅。 |
+| `secondary:seam:custom4` | 室內，垂直主支軸，**端面頂到 `custom`** | `custom priority 4` | 同上。 |
+
+孔邊上、暫寫 secondary 的 `boundary` 料若帶 `boundary:custom4`，同樣宣告 custom 4（現行 golden 沒有這種）。`:custom4` 只能加在副支上，加在別的角色上產生器直接報錯。
 
 截面 A 取 golden 的 `w`（這份是 27）。B=33、承載面 `origin 0 0 2500` 不在 golden，沿用既有天花場景（`_demo_ceiling.scene`、s1 p9）。golden 是平面矩形，不另造高度。
 
@@ -44,7 +48,7 @@
 | `secondary` | I21：孔邊料可以是 secondary。D17：本就該垂直主支軸。R18：孔邊不算外輪廓，onBoundary 仍是 false。oracle 建構註解把柱面料稱為 secondary。 |
 | `custom priority N`（N≥1，若要頂延伸段則 N>2） | D15：custom 沒有軸向義務，也沒有「必須在邊界上」的推導。I19 只拿 priority 做數值比較。沒有條文說孔邊短料必須是 secondary。 |
 
-場景暫寫 `secondary`，`# probe-member` 的 `pending` 為 `hole-perpendicular`。這只是讓場景有一個合法的 role 欄位可以送進核心，不是裁定。因此這批探針量不到 custom 方案。這批料的端面若頂到 `custom`，同樣依上面的拍板改寫 custom 4（現行 golden 沒有這種情形）。
+場景暫寫 `secondary`，`# probe-member` 的 `pending` 為 `hole-perpendicular`。這只是讓場景有一個合法的 role 欄位可以送進核心，不是裁定。因此這批探針量不到 custom 方案。這批料的端面若頂到 `custom`，同樣依上面的拍板改寫 custom 4（現行 golden 沒有這種情形；golden 的種類會寫成 `boundary:custom4`）。
 
 ### 2. `custom` 的 priority 取多少（依 opus 審查更正；已於 2026-10-18 拍板，見「已對上」表最後兩列）
 
@@ -58,7 +62,7 @@
 - 反方向也走不通：這支 custom 自己的端面要頂延伸段，I22 把延伸段側面按優先級 2 計，所以要 2 < N，即 N ≥ 3。
 - 「N < 3」與「N > 2」之間沒有整數，所以整數無解。**這個結論的前提是副支必須是 secondary（優先級 3）。** 頂它側面的料若可以是優先級更大的 custom，或副支的優先級另有定義，就有解。要裁的是角色對應或條文，不是 N 取幾。
 
-實跑（`c2d218c2`，WSL 排他，副支仍寫 secondary）看到的 I19 拒絕有 24 支，全是副支端面頂 `rc_parallel:custom` 的側面。同型的副支另有約 40 支被容量上限遮住，那是推算不是實測，見 `HANDBACK.md` 的「實跑結果摘要」。拍板後這類副支（現行 golden 共 64 支）改寫 custom 4，預期這 24 支 I19 拒絕消失；要實跑才算數。
+實跑（`c2d218c2`，WSL 排他，副支仍寫 secondary）看到的 I19 拒絕有 24 支，全是副支端面頂 `rc_parallel:custom` 的側面。同型的副支另有約 40 支被容量上限遮住，那是推算不是實測，見 `HANDBACK.md` 的「實跑結果摘要」。拍板後這類副支改寫 custom 4，預期這 24 支 I19 拒絕消失；要實跑才算數。現行 golden（oracle `60785906`，2957 支）標 `:custom4` 的共 63 支（F1 53、F2 10）；舊 golden（3093 支）是 64 支，少的 1 支是被去掉的極短料。
 
 ## 放置順序
 
@@ -82,6 +86,6 @@ D7：長度不宣告，錨點是引用，不存凍結 uv。所以 `place` 裡沒
 - 貼邊而且長度伸出該邊（外輪廓 boundary 的延伸、或孔邊沿牆料伸出孔邊）仍用 `at-face`，不改成 `at-line`，也不把 `through` 縮進固定段。外輪廓 boundary 的延伸段由 D16／I22 管。孔邊沿牆料原先預期被 I22 拒絕；**依 opus 審查更正：實跑 32 支全部接受**（核心的延伸段只看外輪廓邊）。
 - 沒有貼邊用 `at-line`。寬向中線 = 矩形寬向 lo + ⌊w/2⌋。w=27 時核心足跡是 [c−13, c+14]（I13，多的 1 mm 在 +cross），還原成 [lo, lo+27]。格線只放用到的中線，嚴格遞增，不寫 `main-along`。
 - 一支料同時貼到兩條邊會直接失敗，不猜第一條。
-- 跨距：兩端都恰有一個全寬擋面才用 `between`（R6(d)、R21）。角材側面優先於輪廓或孔邊，因為 I19 要頂 boundary 的側面，不是外牆。擋面要在寬向上蓋住整段，點接觸不算。引用的角材必須已經放置。否則 `through`，取長度開區間內的點 lo+(hi−lo)//2。長度只有 1 mm 時沒有整數內點，`through` 退回 lo，並在場景註明。這份 golden 的 3093 支全部是 `between`，沒有任何 `through`。
+- 跨距：兩端都恰有一個全寬擋面才用 `between`（R6(d)、R21）。角材側面優先於輪廓或孔邊，因為 I19 要頂 boundary 的側面，不是外牆。擋面要在寬向上蓋住整段，點接觸不算。引用的角材必須已經放置。否則 `through`，取長度開區間內的點 lo+(hi−lo)//2。長度只有 1 mm 時沒有整數內點，`through` 退回 lo，並在場景註明。這份 golden 的 2957 支全部是 `between`，沒有任何 `through`。
 
 I5：整個足跡要在有效範圍內、不跨孔。I6：端面若貼在輪廓邊上，該邊必須是 FIXED。本探針的輪廓邊沒有改成 FREE。

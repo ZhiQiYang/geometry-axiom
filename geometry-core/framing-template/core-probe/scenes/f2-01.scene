@@ -6,8 +6,8 @@
 # 3. tier 2 有延伸的外輪廓 boundary。延伸端要先有被頂的料（R19(e)、I22）。
 # 4. tier 3 custom priority 3（沿牆料）。I22 把延伸段側面當優先級 2，同為 2 的 primary 不能頂；D15 要求 custom 明寫 priority。
 # 5. tier 4 secondary，含孔邊上種類仍是 boundary、暫寫 secondary 的料。D17 副支在主支軸之後；R19(f) 長度由相鄰主支側面量出。
-#    端面頂到 custom 的副支改宣告 custom priority 4（仍在這一階）：使用者 2026-10-18 拍板（決策佇列「凹角沿牆料的排序」，#301），條文不改；
-#    I19 要擋面擁有者優先級嚴格小於自己，副支 3 頂不了 custom 3。判定依實際擋面，probe-member 的 promoted 標出這類料。
+#    golden 種類帶 :custom4 的副支（端面頂到 custom 3）改宣告 custom priority 4（仍在這一階）：使用者 2026-10-18 拍板（決策佇列「凹角沿牆料的排序」，#301），條文不改；
+#    I19 要擋面擁有者優先級嚴格小於自己，副支 3 頂不了 custom 3。產生器另依實際擋面獨立判定，和標籤不一致就不產生場景；probe-member 的 custom4 標出這類料。
 # 同一階以 golden 原序打破平手。兩支同階 boundary 的轉角互頂不建角材依賴（I19 例外，避免環）。
 # 有環就強制取出 tier 最小者，標 probe-cycle，不刪料。被省略的拒絕料會改變後面的擋面，見 run_probe.sh。
 # place 不寫長度（D7）。貼邊用 at-face，引用該邊，深度 +n。室內用 at-line，中線 = 寬向 lo + w//2（I13，奇數寬多的 1 mm 在 +cross）。
@@ -243,6 +243,6 @@ place 55 on 1 at-line grid 1 v 4 between t3 t4 +u +n
 timber 56 27 33 role secondary
 place 56 on 1 at-line grid 1 v 4 between t4 t5 +u +n
 
-# probe-member {"anchor":"grid:v:1769","cover":null,"golden":56,"id":57,"kind":"secondary:seam","pending":null,"priority":4,"promoted":"stops-on-custom","rect":[7884,1756,8673,1783],"role":"custom","tier":4,"where":"interior"}
+# probe-member {"anchor":"grid:v:1769","cover":null,"custom4":"golden-label","golden":56,"id":57,"kind":"secondary:seam:custom4","pending":null,"priority":4,"rect":[7884,1756,8673,1783],"role":"custom","tier":4,"where":"interior"}
 timber 57 27 33 role custom priority 4
 place 57 on 1 at-line grid 1 v 4 between t5 t13 +u +n
