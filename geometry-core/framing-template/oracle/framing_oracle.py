@@ -17,7 +17,7 @@
      主支位置預設置中在縫上,但只要縫兩側板邊承接 >= X 就可以平移(G1 才是要求)。
      R-butt:主支與相鄰平行料之間有 0 < 間隙、平移這段間隙後承接仍 >= X,就平移到貼住(使用者的平釘慣例:
      主骨剛好頂住壁邊材,不留 1 mm 縫;2026-10-18)。
-  R-nosliver:副支段長 < min_piece(params,預設 = w,終值待使用者確認)一律不放,那條窄縫兩側的板由縫兩邊的料承接
+  R-nosliver:副支段長 < min_piece(params,= w;使用者 2026-10-18 拍板 27 mm(決策佇列))一律不放,那條窄縫兩側的板由縫兩邊的料承接
      (1–23 mm 的角材現場不存在,也釘不上去;2026-10-18)。檢查 C3/C4/C9 對這種窄縫用 bridged() 判為由兩側承接。
   G4 RC 邊界一律有角材(側面固定在 RC 上)。其他角材的端面只頂角材,不頂 RC。
      與主支平行的柱面,其角材沿線延伸到兩端的牆,成為連續的支,讓兩側的副支都有角材可頂。
@@ -215,7 +215,7 @@ def seam_centers(lo, hi, start, ps, g, w, mut):
 # ---------------------------------------------------------------- 建構
 def build(room, layout, p, mut=frozenset()):
     P, Lp, g, w, M, X = p["P"], p["L"], p["gap"], p["w"], p["M"], p["X"]
-    minp = p.get("min_piece", w)  # R-nosliver 的最短料長;預設 = 角材寬,終值待使用者確認
+    minp = p.get("min_piece", w)  # R-nosliver 的最短料長;= 角材寬,使用者 2026-10-18 拍板 27 mm(決策佇列)
     sliver = 100 if "nosliver_too_wide" in mut else minp  # 突變:門檻誤設成 100,連 93 mm 寬的跨也不放副支
     gl, gu = g // 2, g - g // 2  # 縫在世界座標佔 [c-gl, c+gu]:下側板邊 c-gl、上側板邊 c+gu(兩個起鋪方向都一樣)
     reg = Region(room["outer"], room.get("holes", []))
