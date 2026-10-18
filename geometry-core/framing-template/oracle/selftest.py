@@ -2,7 +2,7 @@
 (1) 突變:拿掉或弄偏某條規則,對應的檢查必須轉紅;未突變的對照組必須全綠。
     另跑 no_custom4(不套副支 custom 4):F1、F2 那 14 種排法都要被 C8_I19_PRIORITY 抓到,不多不少。
     剛好 min_piece(27 mm)的副支與柱面料必須放(T27 房);custom 4 的柱面料分支與寬向條件用合成案例驗。
-(3c) 牆階 1–100 mm 的 L 形與壁龕 300 間 × 8 種排法,可施工的排法都要通過全部檢查。
+(3c) 牆階 1–100 mm 的 L 形與壁龕 300 間、雙牆階 110 間,各 8 種排法,可施工的排法都要通過全部檢查。
 用法另有 --mutants-only:只跑 (1)(2),跳過掃描。
 (2) 標準答案:F1–F5 與三個額外例子、8 種排法的輸出,必須與 oracle-golden.json 逐支相同。
 (3b) 凹角、壁龕、獨立柱房 579 間與奇數縫寬矩形房,可施工的排法都要通過全部檢查。
@@ -36,7 +36,8 @@ MUTANTS_ONLY = "--mutants-only" in sys.argv  # 只跑 (1) 突變與 (2) 標準�
 T27 = {"outer": [[0, 0], [3600, 0], [3600, 3000], [0, 3000]], "holes": [[[1793, 1200], [2093, 1200], [2093, 1500], [1793, 1500]]]}
 # 20 mm 牆階(#251 審查 60785906 的反例):牆 y=3700 的沿牆料寬 27,比牆階寬,端面有 7 mm 落在牆階邊界材越過凹角的延伸段上
 STEP20 = {"outer": [[0, 0], [4100, 0], [4100, 3680], [2600, 3680], [2600, 3700], [0, 3700]]}
-# 40 mm 牆階:牆階面 y 3660–3700 被 y=3700 牆的邊界材蓋掉 27 mm,只剩 13 mm,照「短於 27 一律不放」不放沿牆料
+# 40 mm 牆階:牆階面 y 3660–3700 被 y=3700 牆的邊界材蓋掉 27 mm,只剩 13 mm,不放沿牆料
+#   (柱面是使用者 10-18 的決定,選項原文「不放(短於 27 一律不放)」;牆面比照是推論)
 STEP40 = {"outer": [[0, 0], [4100, 0], [4100, 3660], [2600, 3660], [2600, 3700], [0, 3700]]}
 # 45 mm 牆階:牆階牆 y=3655 在縫 3659 前面,縫線不伸進淺的那段,FT02 不挪;用來留住兩類仍不可施工的例子
 STEP45 = {"outer": [[0, 0], [4100, 0], [4100, 3655], [2600, 3655], [2600, 3700], [0, 3700]]}
@@ -44,6 +45,8 @@ STEP45 = {"outer": [[0, 0], [4100, 0], [4100, 3655], [2600, 3655], [2600, 3700],
 STEP30 = {"outer": [[0, 0], [4100, 0], [4100, 3670], [2600, 3670], [2600, 3700], [0, 3700]]}
 # 41 mm 牆階:G7 第一次把縫挪到 3659,剛好落在 y=3659 那面牆的牆線上;那面牆要算在縫前面,再挪到 3618
 STEP41 = {"outer": [[0, 0], [4100, 0], [4100, 3659], [2600, 3659], [2600, 3700], [0, 3700]]}
+# 雙牆階(#251 審查 98cb7da0 的反例):45 mm 牆階退縫到 3614 後,縫線伸進 x>3300 那段,那裡的對牆在 3628,只剩 13 mm;G7 要再挪到 3587
+DSTEP = {"outer": [[0, 0], [4100, 0], [4100, 3628], [3300, 3628], [3300, 3655], [2600, 3655], [2600, 3700], [0, 3700]]}
 
 failed = False
 # (1) 突變
@@ -81,11 +84,12 @@ MUTANTS = [
     ("sliver_le", T27, "C4_SPACING", "R-nosliver 邊界誤寫成 <=:剛好 27 mm 的跨不放副支;檢查端 bridged 若也誤寫成 <= 就抓不到"),
     ("sliver_le", T27, "C3_EDGE_UNSUPPORTED", "同上:剛好 27 mm 的柱面料也不放,柱面與板端縫邊沒有承接"),
     ("no_ext_custom3", STEP20, "C8_I19_PRIORITY", "牆階 20 mm:沿牆料端面頂延伸段卻沒宣告 custom 3(primary 2 頂延伸段 2)", "左下起鋪,板長沿X"),
-    ("short_face_conflict", STEP40, "C10_SHORT_PIECE", "牆階 40 mm:牆階面只剩 13 mm 也放沿牆料(不照「短於 27 一律不放」)", "左下起鋪,板長沿Y"),
+    ("short_face_conflict", STEP40, "C10_SHORT_PIECE", "牆階 40 mm:牆階面只剩 13 mm 也放沿牆料(不照短於 27 不放的規則;牆面比照柱面是推論)", "左下起鋪,板長沿Y"),
     ("bbox_ft02", STEP20, "C7_SEAMS_NOT_FROM_START", "FT02 退回照外框挪縫(3659):縫線上最近的對牆是 x>2600 的 y=3680 牆,應挪到 3639", "左上起鋪,板長沿X"),
     ("bbox_ft02", STEP30, "C7_SEAMS_NOT_FROM_START", "同上,板端縫(B 軸):30 mm 牆階應挪到 3629(40 mm 牆階時退縫規則也會退到同一處,抓不出差別,所以換這間)", "左上起鋪,板長沿Y"),
     ("bbox_ft02+no_push_fallback", STEP40, "C1_OVERLAP", "照外框挪縫時,讓開牆料的平移撞到 y=3700 的牆料,沒有退回置中", "左上起鋪,板長沿X"),
     ("no_seam_retreat", STEP45, "C7_SEAMS_NOT_FROM_START", "45 mm 牆階:板端縫 3659 的承接帶落在牆階面沒料的 18 mm 裡,沒有往內退到 3614", "左上起鋪,板長沿Y"),
+    ("no_resettle", DSTEP, "C7_SEAMS_NOT_FROM_START", "雙牆階:退縫到 3614 後沒有再跑 G7,x>3300 那段只剩 13 mm 的收邊板條(應挪到 3587)", "左上起鋪,板長沿Y"),
 ]
 for mut, room, want, why, *lay in MUTANTS:
     lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
@@ -123,18 +127,22 @@ ok = not res["conflicts"] and not fails
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] 對照 20 mm 牆階 左下 X(沿牆料端面頂延伸段,宣告 custom 3){sorted({f['check'] for f in fails})}")
 # 牆階:這些排法要可施工、全部檢查通過(短段不放料、FT02 照縫線上最近的對牆挪縫)
-for room_, lay_, why_ in (
-        (STEP40, "左下起鋪,板長沿Y", "牆階面剩 13 mm 不放料"),
-        (STEP20, "左上起鋪,板長沿X", "FT02 照 y=3680 牆挪縫到 3639,主支貼住 x>2600 的牆料"),
-        (STEP40, "左上起鋪,板長沿X", "FT02 挪縫到 3619"),
-        (STEP40, "左上起鋪,板長沿Y", "板端縫 FT02 挪到 3619"),
-        (STEP45, "左上起鋪,板長沿Y", "板端縫退到 y=3655 牆的 G7 位置 3614,承接帶不落在牆階短段"),
-        (STEP41, "左上起鋪,板長沿X", "縫挪到 3659 時剛好落在牆線上,那面牆算在縫前面,再挪到 3618")):
+for room_, tag_, lay_, why_, want_seam in (
+        (STEP40, "40 mm 牆階", "左下起鋪,板長沿Y", "牆階面剩 13 mm 不放料", None),
+        (STEP20, "20 mm 牆階", "左上起鋪,板長沿X", "G7 照 y=3680 牆挪縫,主支貼住 x>2600 的牆料", ("a", 3639)),
+        (STEP40, "40 mm 牆階", "左上起鋪,板長沿X", "G7 挪縫", ("a", 3619)),
+        (STEP40, "40 mm 牆階", "左上起鋪,板長沿Y", "板端縫 G7 挪縫", ("b", 3619)),
+        (STEP45, "45 mm 牆階", "左上起鋪,板長沿Y", "板端縫退到 y=3655 牆的 G7 位置,承接帶不落在牆階短段", ("b", 3614)),
+        (STEP41, "41 mm 牆階", "左上起鋪,板長沿X", "縫挪到 3659 時剛好落在牆線上,那面牆算在縫前面,再挪", ("a", 3618)),
+        (STEP30, "30 mm 牆階", "左上起鋪,板長沿Y", "板端縫 G7 照 y=3670 牆挪縫", ("b", 3629)),
+        (DSTEP, "雙牆階", "左上起鋪,板長沿Y", "板端縫先退到 3614,縫線伸進 x>3300 那段(對牆 3628),G7 再挪", ("b", 3587))):
     res = fo.build(room_, next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay_), p)
     fails = fo.check(res, p)
-    ok = not res["conflicts"] and not fails
+    got_seam = None if want_seam is None else res["seams_" + want_seam[0]][-1]
+    ok = not res["conflicts"] and not fails and (want_seam is None or got_seam == want_seam[1])
     failed |= not ok
-    print(f"[{'綠' if ok else '錯!'}] 對照 {3700 - room_['outer'][2][1]} mm 牆階 {lay_}:可施工({why_})"
+    seam_txt = "" if want_seam is None else f",最後一條{'板端縫' if want_seam[0] == 'b' else '縫'}要在 {want_seam[1]}(實得 {got_seam})"
+    print(f"[{'綠' if ok else '錯!'}] 對照 {tag_} {lay_}:可施工({why_}{seam_txt})"
           f"{sorted({c['code'] for c in res['conflicts']})}{sorted({f['check'] for f in fails})}")
 # 平移退回置中仍要有效:照舊縫位(bbox_ft02,縫 3659)時,40 mm 牆階的主支被推去撞 y=3700 的牆料就要退回置中,
 #   原因要是核心限制(主支頂延伸段),不是碰撞
@@ -260,7 +268,10 @@ for room in reflex_rooms:
 # 牆階 1–100 mm:L 形缺角很淺(橫向或縱向)與很淺的壁龕,8 種排法。可施工的排法都要通過全部檢查。
 #   (#251 審查 60785906:牆階 13–24 mm 時沿牆料端面頂延伸段,原本沒宣告 custom 3,C8_I19_PRIORITY 會紅。)
 step_rooms = ([LROOM(4100, 3700, 1500, s) for s in range(1, 101)] + [LROOM(4100, 3700, s, 1200) for s in range(1, 101)]
-              + [ALCOVE(4100, 3000, 1000, 1900, s) for s in range(1, 101)])
+              + [ALCOVE(4100, 3000, 1000, 1900, s) for s in range(1, 101)]
+              # 雙牆階(#251 審查 98cb7da0):牆 y=s1(x 2600–3300)、y=s2(x 3300–4100),s2 < s1
+              + [{"outer": [[0, 0], [4100, 0], [4100, s2], [3300, s2], [3300, s1], [2600, s1], [2600, 3700], [0, 3700]]}
+                 for s1 in range(3604, 3700, 9) for s2 in range(s1 - 88, s1, 9)])
 sbuild, sbad, scodes = 0, 0, {}
 for room in step_rooms:
     for l in fo.LAYOUTS:
@@ -275,7 +286,7 @@ for room in step_rooms:
         if fails:
             sbad += 1
             rb.append((room["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
-print(f"牆階 1–100 mm 的 L 形與壁龕 {len(step_rooms)} 間 × 8 種排法:可施工 {sbuild} 個,其中檢查失敗 {sbad} 個;"
+print(f"牆階 1–100 mm 的 L 形、壁龕與雙牆階 {len(step_rooms)} 間 × 8 種排法:可施工 {sbuild} 個,其中檢查失敗 {sbad} 個;"
       f"不可施工的排法數(依原因){scodes}")
 # 奇數縫寬:縫寬 1、3 的矩形房,8 種排法(反向起鋪首縫取上界)
 p_odd = [dict(p, gap=gg) for gg in (1, 3)]
