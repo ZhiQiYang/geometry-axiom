@@ -24,10 +24,10 @@ CONTROLS = (
     (
         "binding-value", "placement_sources", "binding-values", "placement-binding-consumes-upstream-frame",
         "if(s->binding&&s->binding(s->user,id,kind,&upstream))\n"
-        "        return geo_eval_source(graph,upstream,GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;",
+        "        return geo_eval_source(graph,upstream,kind==GEO_PLACEMENT_SOURCE_DEFINITION?GEO_DEPENDENCY_DEFINITION_REQUIRED:GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;",
         "if(s->binding&&s->binding(s->user,id,kind,&upstream)){\n"
         "        GeoSourceValue ignored;\n"
-        "        if(geo_eval_source(graph,upstream,GEO_DEPENDENCY_VALUE_REQUIRED,&ignored)!=GEO_SOURCE_OK)return false;\n"
+        "        if(geo_eval_source(graph,upstream,kind==GEO_PLACEMENT_SOURCE_DEFINITION?GEO_DEPENDENCY_DEFINITION_REQUIRED:GEO_DEPENDENCY_VALUE_REQUIRED,&ignored)!=GEO_SOURCE_OK)return false;\n"
         "    }",
     ),
     (
