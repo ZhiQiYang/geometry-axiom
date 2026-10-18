@@ -75,19 +75,52 @@ def fixture():
     return {"ok": True, "schema": "geometry-neutral-source-envelope/1", "candidate": candidate,
         "source": {"sha256Before": digest, "sha256After": digest},
         "legacySnapshot": {"ok": True, "schema": "geometry-base-snapshot/1", "base_scene": CANONICAL_SCENE,
-            "specs": [], "placements": [], "solids": [], "unplaced_timbers": [], "dependencies": []},
+            "specs": [{"name": "H", "value": 20}], "placements": [{"id": 1}],
+            "solids": [{"kind": "column", "id": 1}], "parameter_fields": [],
+            "unplaced_timbers": [], "dependencies": []},
         "neutralSources": {"schema": "geometry-neutral-sources/1", "candidate": deepcopy(candidate),
             "coverage": {"complete": True, "rootsComplete": True, "missingGroups": []},
             "providers": [{"namespace": "fixture.provider", "implementationFingerprint": "contract/1"}],
             "nodes": nodes, "edges": [
                 {"consumer": ref(b"box"), "source": ref(b"height"), "kind": kind}
                 for kind in ("value-required", "definition-required", "evaluate-before")],
-            "roots": [root(b"frame\0\xff", "placement.frame"), root(b"region", "placement.region"),
-                      root(b"height", "spec.value", 0, kind="spec", name="H"), root(b"box", "solid.box")]}}
+            "roots": [root(b"frame\0\xff", "placement.frame", kind="placement"), root(b"region", "placement.region", kind="placement"),
+                      root(b"height", "spec.value", 0, kind="spec", name="H"), root(b"box", "solid.box", kind="column")]}}
 
 
 def decode(value):
     return decode_candidate(json.dumps(value), source_bytes=RAW_SOURCE, execution_identity=EXECUTION)
+
+
+def native_wire(value):
+    """Adapt synthetic provider refs to the native H wire, never an oracle.
+
+    Snapshot catalogs are authored independently by each fixture. This helper
+    only changes opaque transport refs for mocked process-boundary tests.
+    """
+    value = deepcopy(value)
+    if value.get("schema") != "geometry-neutral-source-envelope/1":
+        return value
+    graph = value["neutralSources"]
+    mapping = {}
+    for item in graph["roots"]:
+        key = ("spec:" + item["name"] if item["kind"] == "spec" else
+               f'{item["kind"]}:{item["id"]}:{item["slot"]}:' +
+               ("envelope:0" if item["memberId"] is None else "member:" + str(item["memberId"])))
+        old = item["ref"]
+        mapping[old["namespace"], old["keyBase64"]] = ref(key.encode(), "app.model-snapshot")
+    def replace_refs(item):
+        if type(item) is dict:
+            if set(item) == {"namespace", "keyBase64"}:
+                return mapping.get((item["namespace"], item["keyBase64"]), item)
+            return {key: replace_refs(part) for key, part in item.items()}
+        if type(item) is list:
+            return [replace_refs(part) for part in item]
+        return item
+    value["neutralSources"] = replace_refs(graph)
+    value["neutralSources"]["providers"].append({"namespace": "app.model-snapshot",
+        "implementationFingerprint": "geo261-model-snapshot/1"})
+    return value
 
 
 def definition_closure_fixture():
@@ -166,6 +199,7 @@ class NativeSourceTests(unittest.TestCase):
             key = f"local:{identity}".encode()
             value["neutralSources"]["nodes"].append(node(key, "box", {"frame": frame(owner), "lo": [0, 0, 0], "hi": [20, 20, 20]}, owner=owner))
             value["neutralSources"]["roots"].append(root(key, "solid.box", identity+10))
+            value["legacySnapshot"]["solids"].append({"kind": "fixture", "id": identity+10})
         candidate = decode(value)
         self.assertNotEqual(candidate.sources[-1].context.domain, candidate.sources[-2].context.domain)
         builder = ProgramBuilder(candidate.sources)
@@ -399,6 +433,129 @@ class NativeSourceTests(unittest.TestCase):
             self.rejected(value)
 
 
+class NativeRootCatalogTests(unittest.TestCase):
+    def rejected(self, value, code="BASE_SOURCE_BINDING"):
+        with self.assertRaises(ModelError) as error:
+            decode(value)
+        self.assertEqual(("UNSUPPORTED", code, "I32"),
+            (error.exception.status, error.exception.code, error.exception.clause))
+
+    def test_missing_extra_and_equal_count_wrong_roots_fail_with_true_flags(self):
+        original = fixture()
+        expected = {("placement", 1, "placement.frame", None, None),
+                    ("placement", 1, "placement.region", None, None),
+                    ("spec", 0, "spec.value", None, "H"),
+                    ("column", 1, "solid.box", None, None)}
+        self.assertEqual(expected, {item.association for item in decode(original).roots})
+        for index in range(4):
+            with self.subTest(missing=index):
+                changed = deepcopy(original)
+                del changed["neutralSources"]["roots"][index]
+                self.rejected(changed)
+        for mode in ("extra", "wrong-id", "wrong-name"):
+            with self.subTest(mode=mode):
+                changed = deepcopy(original)
+                roots = changed["neutralSources"]["roots"]
+                if mode == "extra":
+                    roots.append({**roots[-1], "id": 999})
+                elif mode == "wrong-id":
+                    roots[0]["id"] = 999
+                else:
+                    roots[2]["name"] = "not-H"
+                self.assertEqual({"complete": True, "rootsComplete": True, "missingGroups": []},
+                                 changed["neutralSources"]["coverage"])
+                self.rejected(changed)
+        reordered = deepcopy(original)
+        reordered["neutralSources"]["roots"].reverse()
+        self.assertEqual(expected, {item.association for item in decode(reordered).roots})
+
+    def test_parameter_catalog_is_independent_of_optional_root_selection(self):
+        original = fixture()
+        original["legacySnapshot"]["required_capabilities"] = ["parameters/1"]
+        original["legacySnapshot"]["parameter_fields"] = [
+            {"parameterId": 8, "fieldId": 3, "name": "ratio_field"}]
+        graph = original["neutralSources"]
+        graph["nodes"].append(node(b"parameter\0field", "quantity",
+            {"num": "3", "den": "7", "unit": "scalar", "quantityType": "ratio"}, unit="scalar"))
+        graph["roots"].append(root(b"parameter\0field", "parameter.value", 8,
+            kind="parameter", member=3, name="ratio_field"))
+        self.assertEqual(("parameter", 8, "parameter.value", 3, "ratio_field"), decode(original).roots[-1].association)
+        for mode in ("missing-root", "extra-root", "wrong-name", "missing-catalog", "duplicate-catalog"):
+            with self.subTest(mode=mode):
+                changed = deepcopy(original)
+                roots = changed["neutralSources"]["roots"]
+                code = "BASE_SOURCE_BINDING"
+                if mode == "missing-root":
+                    roots.pop()
+                elif mode == "extra-root":
+                    roots.append({**roots[-1], "memberId": 99})
+                elif mode == "wrong-name":
+                    roots[-1]["name"] = "other_name"
+                elif mode == "missing-catalog":
+                    del changed["legacySnapshot"]["parameter_fields"]
+                    code = "BASE_SOURCE_PROTOCOL"
+                else:
+                    changed["legacySnapshot"]["parameter_fields"].append(
+                        {"parameterId": 8, "fieldId": 3, "name": "another_name"})
+                    code = "BASE_SOURCE_PROTOCOL"
+                self.rejected(changed, code)
+
+    def test_duplicate_snapshot_identity_is_not_hidden_by_set_conversion(self):
+        changed = fixture()
+        changed["legacySnapshot"]["placements"].append({"id": 1})
+        self.rejected(changed, "BASE_SOURCE_PROTOCOL")
+
+    def test_public_native_loader_rejects_equal_value_quantity_ref_swaps(self):
+        value = fixture()
+        value["legacySnapshot"]["specs"].append({"name": "L", "value": 20})
+        graph = value["neutralSources"]
+        graph["nodes"].append(node(b"other-height", "quantity",
+            {"num": "20", "den": "1", "unit": "length", "quantityType": "dimension"}))
+        graph["roots"].append(root(b"other-height", "spec.value", 0, kind="spec", name="L"))
+        original = native_wire(value)
+        actual = [item["ref"]["keyBase64"] for item in original["neutralSources"]["roots"] if item["kind"] == "spec"]
+        self.assertEqual([encoded(b"spec:H"), encoded(b"spec:L")], actual)
+        def invoke(wire):
+            def process(command, **options):
+                self.assertEqual(RAW_SOURCE, Path(command[-1]).read_bytes())
+                return subprocess.CompletedProcess(command, 0, json.dumps(wire).encode(), b"")
+            with mock.patch.object(model_native, "_execution_identity", return_value=EXECUTION), \
+                 mock.patch.object(model_native.subprocess, "run", side_effect=process) as run:
+                result = model_native.load_candidate(RAW_SOURCE.decode(), executable="fixture-not-executed")
+            self.assertEqual(1, run.call_count)
+            return result
+        self.assertEqual(5, len(invoke(original).roots))
+        changed = deepcopy(original)
+        specs = [item for item in changed["neutralSources"]["roots"] if item["kind"] == "spec"]
+        specs[0]["ref"], specs[1]["ref"] = specs[1]["ref"], specs[0]["ref"]
+        self.assertEqual({root.association for root in decode(original).roots},
+                         {root.association for root in decode(changed).roots})
+        with self.assertRaises(ModelError) as error:
+            invoke(changed)
+        self.assertEqual(("UNSUPPORTED", "BASE_SOURCE_BINDING", "I32"),
+                         (error.exception.status, error.exception.code, error.exception.clause))
+        for mode in ("fingerprint", "provider", "incomplete"):
+            with self.subTest(mode=mode):
+                changed = deepcopy(original)
+                if mode == "fingerprint":
+                    changed["neutralSources"]["providers"][-1]["implementationFingerprint"] = "geo261-model-snapshot/999"
+                elif mode == "provider":
+                    # Keep a declared, consistently renamed provider so only
+                    # the native adapter binding, not basic shape, rejects it.
+                    def rename(item):
+                        if type(item) is dict:
+                            return {key: ("alternate.provider" if key == "namespace" and part == "app.model-snapshot" else rename(part))
+                                    for key, part in item.items()}
+                        return [rename(part) for part in item] if type(item) is list else item
+                    changed["neutralSources"] = rename(changed["neutralSources"])
+                else:
+                    changed["neutralSources"]["nodes"][-1].update(status="missing", value=None)
+                self.assertEqual(5, len(decode(changed).roots))
+                with self.assertRaises(ModelError) as error:
+                    invoke(changed)
+                self.assertEqual("BASE_SOURCE_BINDING", error.exception.code)
+
+
 class NativeSourceGuardControls(unittest.TestCase):
     def test_removed_transport_guards_fail_the_same_real_consumers(self):
         with tempfile.TemporaryDirectory(prefix="geo261-source-guards-") as directory:
@@ -461,6 +618,7 @@ class NativeSourceGuardControls(unittest.TestCase):
 class NativeCandidateTransportTests(unittest.TestCase):
     def invoke(self, value, *, command_builder=None, returncode=0, identities=None):
         calls = []
+        value = native_wire(value)
 
         def process(command, **options):
             calls.append(command)
@@ -519,7 +677,7 @@ class NativeCandidateTransportTests(unittest.TestCase):
         def process(command, **options):
             commands.append(command)
             self.assertEqual(RAW_SOURCE, Path(command[-1]).read_bytes())
-            return subprocess.CompletedProcess(command, 0, json.dumps(fixture()).encode(), b"")
+            return subprocess.CompletedProcess(command, 0, json.dumps(native_wire(fixture())).encode(), b"")
         def argv(program, source, **options):
             return ["transport", "--literal-program", program, str(source)]
         with mock.patch.dict(os.environ, {}, clear=True), \
@@ -582,7 +740,7 @@ class NativeCandidateTransportTests(unittest.TestCase):
         def process(command, **ignored):
             self.assertEqual(["fixture-not-executed", "--neutral-sources"], command[:-1])
             self.assertEqual(definitions["base_scene"].encode(), Path(command[-1]).read_bytes())
-            return subprocess.CompletedProcess(command, 0, json.dumps(envelope(base)).encode(), b"")
+            return subprocess.CompletedProcess(command, 0, json.dumps(native_wire(envelope(base))).encode(), b"")
         with mock.patch.object(model_native, "_execution_identity", return_value=EXECUTION) as pin, \
              mock.patch.object(model_native.subprocess, "run", side_effect=process) as run:
             output = default_evaluate(definitions, req, base_executable="fixture-not-executed", **options)

@@ -3,7 +3,7 @@
 Requires explicit, registry-verified GEOMETRY_MODEL_BASE and (for finish) a
 GEOMETRY_TEST_BRIDGE built from this checkout. This module never builds a native
 binary. Missing configuration skips; stale configuration fails. A release gate
-must require all eight tests with zero skips. The independent legacy runtime is
+must require all ten tests with zero skips. The independent legacy runtime is
 only a comparison oracle, never a fallback when the default runtime rejects.
 """
 import base64
@@ -376,6 +376,65 @@ class DefaultNativeIntegration(unittest.TestCase):
         self.assertEqual(("UNSUPPORTED", "CAPABILITY", "I32"),
                          (caught.exception.status, caught.exception.code, caught.exception.clause))
         self.assertEqual(definitions(scene), original)
+
+    def reject_native_wire(self, value, scene):
+        """Tamper a captured real response only on the negative input path."""
+        def process(command, **options):
+            self.assertEqual(scene.encode(), Path(command[-1]).read_bytes())
+            return subprocess.CompletedProcess(command, 0, json.dumps(value).encode(), b"")
+        with mock.patch.object(model_native.subprocess, "run", side_effect=process) as run, \
+             mock.patch.object(model_native, "load_base", side_effect=AssertionError("root-catalog-fallback")):
+            with self.assertRaises(ModelError) as caught:
+                model_native.load_candidate(scene, executable=self.base)
+        self.assertEqual(1, run.call_count)
+        self.assertEqual(("UNSUPPORTED", "BASE_SOURCE_BINDING", "I32"),
+                         (caught.exception.status, caught.exception.code, caught.exception.clause))
+
+    def test_actual_catalog_covers_every_authored_root_and_rejects_missing_extra(self):
+        # Expected identities come from these small authored scenes, not from
+        # producer roots or the product's catalog-building helper.
+        scenes = (
+            (fixtures.SCENE, {("placement", 1, "placement.frame", None, None),
+                ("placement", 1, "placement.region", None, None),
+                ("timber", 1, "solid.box", None, None), ("spec", 0, "spec.value", None, "x")}),
+            (fixtures.parameter_scene(), {("parameter", 8, "parameter.value", i, str(i)) for i in (1, 2, 3)}),
+            (fixtures.profile_scene(), {("profile-run", run, slot, member, None)
+                for run in (1, 2) for member in (None, 4)
+                for slot in ("profile.frame", "profile.region", "profile.length")}),
+        )
+        for scene, expected in scenes:
+            envelope, candidate, _ = self.capture(scene)
+            self.assertEqual(expected, {root.association for root in candidate.roots})
+            roots = envelope["neutralSources"]["roots"]
+            for index, root in enumerate(roots):
+                with self.subTest(missing=(root["kind"], root["id"], root["slot"], root["memberId"])):
+                    changed = deepcopy(envelope)
+                    del changed["neutralSources"]["roots"][index]
+                    self.assertEqual(envelope["neutralSources"]["coverage"], changed["neutralSources"]["coverage"])
+                    self.reject_native_wire(changed, scene)
+            changed = deepcopy(envelope)
+            changed["neutralSources"]["roots"].append({**deepcopy(roots[0]), "id": 999})
+            self.reject_native_wire(changed, scene)
+
+    def test_actual_same_type_ref_and_id_swaps_cannot_rebind_native_roots(self):
+        scene = fixtures.profile_scene()
+        envelope, candidate, _ = self.capture(scene)
+        expected = {root.association for root in candidate.roots}
+        for slot in ("profile.frame", "profile.region", "profile.length"):
+            for mode in ("ref", "id"):
+                with self.subTest(slot=slot, mode=mode):
+                    changed = deepcopy(envelope)
+                    roots = [root for root in changed["neutralSources"]["roots"]
+                             if root["slot"] == slot and root["memberId"] is None]
+                    self.assertEqual([1, 2], [root["id"] for root in roots])
+                    roots[0][mode], roots[1][mode] = roots[1][mode], roots[0][mode]
+                    # Shape, types, node existence, count and associations all
+                    # still pass generic opaque decoding; the real adapter
+                    # boundary must reject the mismatched source binding.
+                    decoded = decode_candidate(json.dumps(changed), source_bytes=scene.encode(),
+                                               execution_identity=self.identity)
+                    self.assertEqual(expected, {root.association for root in decoded.roots})
+                    self.reject_native_wire(changed, scene)
 
     def test_actual_wire_rejects_incomplete_coverage_and_each_missing_group(self):
         envelope, _, _ = self.capture(fixtures.SCENE)

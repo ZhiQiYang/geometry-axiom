@@ -103,6 +103,8 @@ class ModelSources(unittest.TestCase):
 
     def test_parameter_quantities_retain_exact_fractions_and_field_types(self):
         envelope=self.execute(parameter_scene());nodes=self.nodes(envelope)
+        self.assertEqual([{'parameterId':8,'fieldId':i,'name':str(i)} for i in (1,2,3)],
+            envelope['legacySnapshot']['parameter_fields'])
         fields={root['memberId']:nodes[self.ref(root['ref'])]['value'] for root in envelope['neutralSources']['roots'] if root['kind']=='parameter'}
         self.assertEqual({1:('dimension','7','2','length'),2:('count','3','1','scalar'),3:('ratio','1','3','scalar')},
             {key:(value['quantityType'],value['num'],value['den'],value['unit']) for key,value in fields.items()})
