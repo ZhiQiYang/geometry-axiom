@@ -22,12 +22,14 @@ the native process does not claim to prove its own binary identity.
 `neutralSources` has schema `geometry-neutral-sources/1`, the same `candidate`,
 and these fields:
 
-- `coverage: {complete: false, rootsComplete: true, missingGroups: [...]}`.
+- `coverage: {complete: true, rootsComplete: true, missingGroups: []}`.
   `rootsComplete` covers every placement frame/region, column/beam/member box,
-  named spec, and profile run envelope/member frame/region/length. It does not
-  claim complete dependency semantics. Consumers must reject `complete: false`
-  for production composition and must never silently fall back to snapshot-only
-  geometry. Missing groups remain explicit until their real graph consumers move.
+  named spec, parameter field, and profile run envelope/member frame/region/length.
+  `complete` covers the supported source graph, including grid fields and bindings,
+  material sources and overrides, profile definitions, derived-region provenance,
+  and ordered stop features. It does not require unused value nodes to evaluate.
+  Consumers must reject incomplete coverage for production composition and must
+  never silently fall back to snapshot-only geometry.
 - `providers`: unique `{namespace, implementationFingerprint}` records. The
   fingerprint is the provider contract revision, not a self-verified binary hash.
 - `nodes`: `{ref, descriptor, status, value}`. A ref is
@@ -36,8 +38,9 @@ and these fields:
 - `edges`: `{consumer: ref, source: ref, kind}`. `kind` is `value-required`,
   `definition-required`, or `evaluate-before`. The last retains the historical
   ordering policy and does not imply that a failed earlier candidate is required.
-- `roots`: `{kind, id, slot, memberId, name, ref}`. `memberId` is null for a profile
-  envelope and the real member ID for its members. Named specs use `id: 0` and
+- `roots`: `{kind, id, slot, memberId, name, ref}`. `kind` is `placement`, `column`,
+  `beam`, `timber`, `spec`, `parameter`, or `profile-run`. `memberId` is null for a
+  profile envelope and the real member ID for its members. Named specs use `id: 0` and
   exact `name`; parameter fields use card `id` and field `memberId`. `slot` is
   `placement.frame`, `placement.region`, `solid.box`, `spec.value`,
   `parameter.value`, `profile.frame`, `profile.region`, or `profile.length`.
@@ -47,12 +50,17 @@ and these fields:
   provenance identities, not separately evaluated graph nodes.
 
 Each descriptor is `{valueType, unit, context}`. Types are `quantity`,
-`axis-position`, `frame`, `region-set`, `box`, and `feature`; units are `length`
-or `scalar`. Context is `{placementId, axis, owner}`, using null where absent.
+`axis-position`, `frame`, `region-set`, `box`, `feature`, and `definition`; units
+are `length` or `scalar`. Context is `{placementId, axis, owner}`, using null where absent.
 `owner` is an opaque ref for the local profile-run coordinate domain. It need not
 be an evaluated graph node. Different local runs never share a coordinate domain.
 
-Successful node values use these shapes (failed nodes have null values):
+A metadata-only dependency may retain a node with `status: "unevaluated"` and
+`value: null`, such as the world-frame identity of an unplaced profile run. These
+nodes are valid in complete coverage; all exported roots must have `status: "ok"`
+and their typed values. Failed nodes also have null values.
+
+Successful node values use these shapes:
 
 - quantity: `{num, den, unit, quantityType}`; numerator/positive denominator are
   exact decimal strings, and dimension/count/ratio remain distinct.
@@ -64,7 +72,10 @@ Successful node values use these shapes (failed nodes have null values):
   when no authored boundary identity table exists, otherwise parallel loop arrays.
 - box: `{frame, lo: [0,0,0], hi: [length,a,b]}` in its exact cardinal local frame.
 - feature: `{keyBase64, segment: [start,end]}`.
+- definition: `{schema, contentBase64}`; `schema` identifies the definition codec,
+  and `contentBase64` preserves its exact canonical bytes, including binary data.
 
 The producer builds and resolves all roots before emitting a successful envelope.
-The old snapshot and typed roots share the candidate. The current dependency
-coverage is deliberately incomplete; this transport alone is not N4 completion.
+The old snapshot and typed roots share the candidate. Complete native transport
+coverage does not replace the caller's executable pinning or the end-to-end
+native-to-Python adoption evidence; this declaration alone is not N4 completion.

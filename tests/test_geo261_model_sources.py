@@ -1,4 +1,4 @@
-"""Actual same-process model envelope, exact roots and explicit partial coverage."""
+"""Actual same-process model envelope, exact roots and complete source coverage."""
 import base64
 import hashlib
 import json
@@ -64,8 +64,7 @@ class ModelSources(unittest.TestCase):
         for edge in bundle['edges']:
             self.assertIn(self.ref(edge['consumer']),nodes);self.assertIn(self.ref(edge['source']),nodes)
         for root in bundle['roots']:self.assertEqual('ok',nodes[self.ref(root['ref'])]['status'])
-        self.assertFalse(bundle['coverage']['complete']);self.assertTrue(bundle['coverage']['rootsComplete'])
-        self.assertIn('grid-fields-and-bindings',bundle['coverage']['missingGroups'])
+        self.assertEqual({'complete':True,'rootsComplete':True,'missingGroups':[]},bundle['coverage'])
 
     def test_box_roots_keep_native_face_provenance_and_exact_extent(self):
         envelope=self.execute(SCENE);nodes=self.nodes(envelope)
@@ -126,7 +125,8 @@ class ModelSources(unittest.TestCase):
                          {edge for edge in edges if edge[0][0]=='core.parameter.field'})
         for root in bundle['roots']:
             if root['kind']=='parameter':self.assertIn((self.ref(root['ref']),core(root['memberId'])),edges)
-        self.assertNotIn('parameter-ast-edges',bundle['coverage']['missingGroups']);self.assertFalse(bundle['coverage']['complete'])
+        self.assertNotIn('parameter-ast-edges',bundle['coverage']['missingGroups'])
+        self.assertEqual({'complete':True,'rootsComplete':True,'missingGroups':[]},bundle['coverage'])
 
     def test_datum_sources_preserve_world_axis_and_named_expression_edges(self):
         from tests.test_geo261_native_datums import SCENE as DATUM_SCENE
@@ -141,7 +141,8 @@ class ModelSources(unittest.TestCase):
         self.assertIn((expression,named),edges)
         root=next(root for root in bundle['roots'] if root['kind']=='spec')
         self.assertIn((self.ref(root['ref']),named),edges)
-        self.assertNotIn('datum-expression-edges',bundle['coverage']['missingGroups']);self.assertFalse(bundle['coverage']['complete'])
+        self.assertNotIn('datum-expression-edges',bundle['coverage']['missingGroups'])
+        self.assertEqual({'complete':True,'rootsComplete':True,'missingGroups':[]},bundle['coverage'])
 
     def test_profile_envelope_and_members_keep_distinct_local_domains(self):
         envelope=self.execute(profile_scene());nodes=self.nodes(envelope)

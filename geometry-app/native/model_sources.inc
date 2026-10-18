@@ -1,5 +1,5 @@
-/* Internal H transport over one validated candidate. The coverage declaration
- * is deliberately incomplete until every definition edge is in the K graph. */
+/* Internal H transport over one validated candidate. Complete coverage retains
+ * definition and value dependencies; metadata-only source identities stay lazy. */
 enum { MODEL_SOURCE_PROVIDER=5 };
 typedef struct ModelSourceItem ModelSourceItem;
 struct ModelSourceItem {
@@ -382,7 +382,7 @@ static void model_sources_write(ModelSources *state,const char *candidate)
 {
     GeoEvalContext *ctx=state->reference.sources;
     fputs("{\"schema\":\"geometry-neutral-sources/1\",\"candidate\":{\"id\":",stdout);model_string(stdout,candidate);
-    fputs(",\"baseRevision\":0},\"coverage\":{\"complete\":false,\"rootsComplete\":true,\"missingGroups\":[\"grid-fields-and-bindings\",\"material-source-overrides\",\"profile-definition-edges\",\"derived-region-provenance\",\"ordered-stop-features\"]},\"providers\":[",stdout);
+    fputs(",\"baseRevision\":0},\"coverage\":{\"complete\":true,\"rootsComplete\":true,\"missingGroups\":[]},\"providers\":[",stdout);
     for(size_t i=0;i<geo_eval_provider_count(ctx);++i){const GeoSourceProvider *p=geo_eval_provider_at(ctx,i);if(i)putchar(',');fputs("{\"namespace\":",stdout);model_string(stdout,p->name_space);fputs(",\"implementationFingerprint\":",stdout);model_string(stdout,p->implementation_fingerprint);putchar('}');}
     fputs("],\"nodes\":[",stdout);
     static const char *const types[]={"quantity","axis-position","frame","region-set","box","feature","definition"};
