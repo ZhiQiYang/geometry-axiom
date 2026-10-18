@@ -11,11 +11,11 @@ from dataclasses import replace
 import heapq
 
 from .common import (ModelError, canonical_bytes, ENGINEERING_CAPABILITY,
-                     PARAMETER_CAPABILITY, SECTION_PROFILE_CAPABILITY)
+                     PARAMETER_CAPABILITY, GRID_CARD_CAPABILITY, SECTION_PROFILE_CAPABILITY)
 
 CAPABILITIES = (
     "composite-space/1", "extrusion/1", "model-export/1", "shell/1",
-    "solid-composition/1", ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, SECTION_PROFILE_CAPABILITY,
+    "solid-composition/1", ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, GRID_CARD_CAPABILITY, SECTION_PROFILE_CAPABILITY,
 )
 _EXTENSION_KINDS = {"extrusion", "shell", "composite_space", "composition"}
 _PRIMITIVE_SOLIDS = {"column", "beam", "timber", "extrusion"}

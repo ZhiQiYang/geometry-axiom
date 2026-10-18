@@ -18,6 +18,7 @@ class NativeContext:
         self.upload_lock = threading.Lock()
         self.session = uuid.uuid4().hex
         self.api_receipts = {}
+        self.api_sealed = set()
         self.editor_creations = {}
         self.editor_sequence = 0
         self.receipt_lock = threading.Lock()

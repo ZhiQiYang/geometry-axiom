@@ -21,8 +21,8 @@ static void json_engineering_capabilities(const World *w)
      * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset. */
     bool fs=fs_used(w),eng=engineering_used(w)||fs,par=w->parameters.card_count||fs,first=true;
     const struct {bool used;const char *name;} required[]={{eng,"engineering-spec/1"},{par,"parameters/1"},{assembly_used(w),ASM_CAPABILITY},
-        {w->assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY}};
-    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\"],\"required_capabilities\":[",stdout);
+        {w->assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY},{grid_card_used(w),GRID_CARD_CAPABILITY}};
+    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[",stdout);
     for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
     putchar(']');
     fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\"]",stdout);
@@ -83,6 +83,7 @@ static char *eng_read_file(const char *path,size_t *size)
 typedef struct {
     ParameterDeclaration declarations[PARAM_DECLARATION_MAX];size_t declaration_count;
     ParameterFieldRetirement retirements[PARAM_FIELD_RETIREMENT_MAX];size_t retirement_count;
+    GridCardCapture captures[256];size_t capture_count;
 } ParameterPreviewOrder;
 static const ParameterPreviewOrder *g_parameter_preview_order;
 static void json_parameter_rebindings(void)
@@ -96,6 +97,10 @@ static void json_parameter_rebindings(void)
             if(d->at<=r->at||!parameter_declared_owner_present(&g_preview.after,d)||(!parameter_declared_owner_uses(&g_preview.before,d,r->parameter_id,r->field_id)&&!parameter_declared_owner_uses(&g_preview.after,d,r->parameter_id,r->field_id)))continue;
             const char *kind=NULL;char label[160],message[320];
             switch(d->kind){
+            case PARAM_OWNER_GRID_CARD:kind="grid-system";snprintf(label,sizeof label,"網格整卡來源 %u",d->id);break;
+            case PARAM_OWNER_GRID_SYSTEM:kind="grid-system";
+                if(d->slot){const char *fields[]={"phase","step","panel","gap","anchor","stagger"};snprintf(label,sizeof label,"網格 %u %c.%s 來源",d->id,(d->slot-1)/6?'v':'u',fields[(d->slot-1)%6]);}
+                else snprintf(label,sizeof label,"網格 %u 完整軸來源",d->id);break;
             case PARAM_OWNER_CARD:kind="parameter";snprintf(label,sizeof label,"參數卡片 %u",d->id);break;
             case PARAM_OWNER_ENG_GRID:kind="grid";snprintf(label,sizeof label,"網格 %u %c.%s%s",d->id,(d->slot%4)/2?'v':'u',d->slot%2?"gap":"panel",d->slot>=4?" 覆寫":" 來源");break;
             case PARAM_OWNER_ENG_TIMBER:kind="timber";snprintf(label,sizeof label,"角材 %u %c%s",d->id,d->slot%2?'B':'A',d->slot>=4?" 覆寫":" 來源");break;
@@ -108,6 +113,9 @@ static void json_parameter_rebindings(void)
             snprintf(message,sizeof message,"刪除參數 %u 欄位 %u 後，%s已明確重新宣告。",r->parameter_id,r->field_id,label);js_string(message);putchar('}');first=false;
         }
     }
+    fputs("],\"cardCaptures\":[",stdout);
+    if(p)for(size_t i=0;i<p->capture_count;++i){const GridCardCapture *c=&p->captures[i];
+        printf("%s{\"gridSystemId\":%u,\"parameterId\":%u,\"uFieldId\":%u,\"vFieldId\":%u,\"timing\":\"ordered-candidate-step\",\"order\":%u,\"values\":[%lld,%lld]}",i?",":"",c->id,c->parameter_id,c->fields[0],c->fields[1],c->at,(long long)c->values[0],(long long)c->values[1]);}
     putchar(']');
 }
 static void json_engineering_preview(void)
@@ -143,6 +151,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     ParameterPreviewOrder order={0};order.declaration_count=candidate->parameters.declaration_count;order.retirement_count=candidate->parameters.field_retirement_count;
     memcpy(order.declarations,candidate->parameters.declarations,order.declaration_count*sizeof order.declarations[0]);
     memcpy(order.retirements,candidate->parameters.field_retirements,order.retirement_count*sizeof order.retirements[0]);
+    order.capture_count=candidate->parameters.card_capture_count;memcpy(order.captures,candidate->parameters.card_captures,order.capture_count*sizeof order.captures[0]);
     parameters_clear_candidate_scratch(candidate);  /* I39/P-062: no scratch reaches comparison, staging, or history */
     if(ok){const World *previous=g_subgrid_before;bool capturing=g_reference_capturing;g_reference_capturing=true;g_reference_trial=*candidate;
         g_subgrid_before=&g_world;ok=world_revalidate(candidate);g_subgrid_before=previous;g_reference_capturing=capturing;

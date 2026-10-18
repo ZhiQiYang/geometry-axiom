@@ -15,7 +15,7 @@ import sys
 import tempfile
 
 from .common import (ModelError, ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY,
-                     SECTION_PROFILE_CAPABILITY, scene_required_capabilities)
+                     GRID_CARD_CAPABILITY, SECTION_PROFILE_CAPABILITY, scene_required_capabilities)
 
 _BUILD_DIRS: list[tempfile.TemporaryDirectory] = []
 _MAX_SCENE_BYTES = 1024 * 1024
@@ -102,7 +102,7 @@ def load_base(scene_text: str, executable=None) -> dict:
     if len(encoded) > _MAX_SCENE_BYTES:
         raise ModelError("UNSUPPORTED", "BASE_CAPACITY", "I33", "Scene exceeds adapter 1 MiB capacity.")
     source_capabilities = scene_required_capabilities(scene_text)
-    supported = {ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, SECTION_PROFILE_CAPABILITY}
+    supported = {ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, GRID_CARD_CAPABILITY, SECTION_PROFILE_CAPABILITY}
     if source_capabilities - supported:
         raise ModelError("UNSUPPORTED", "CAPABILITY", "I32", "Unsupported required scene capability")
     program = executable or os.environ.get("GEOMETRY_MODEL_BASE") or _build_adapter()

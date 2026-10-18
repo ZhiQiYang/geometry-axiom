@@ -71,9 +71,13 @@ class DomainDecouplingCompatibility(unittest.TestCase):
                 self.assertEqual(hashlib.sha256(content).hexdigest(), expected["sha256"])
 
     def test_package_format_generator_and_declared_capabilities_are_unchanged(self):
+        # GEO-261 changes none of these. GEO-262 (#253) later appends exactly
+        # grid-card-reference/1; the frozen a898ad6e fixture itself stays untouched.
+        contract = fixture("model-contract")
+        contract["capabilities"] = contract["capabilities"] + ["grid-card-reference/1"]
         self.assertEqual({"schema": modeling.SCHEMA, "profile": modeling.PROFILE,
                           "generator": modeling.GENERATOR, "capabilities": list(modeling.CAPABILITIES)},
-                         fixture("model-contract"))
+                         contract)
 
     def test_all_existing_historical_pairs_keep_their_era_and_rebuild(self):
         versions = fixture("historical-versions")
