@@ -23,11 +23,10 @@ import tempfile
 import threading
 
 import space_modeling
-from geometry_app import source_closure
+from geometry_app import model_native, source_closure
 from modeling import ModelError, canonical_bytes, verify_package
 from modeling.base import load_base
 from modeling.common import scene_required_capabilities
-from modeling import base as base_module
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -616,12 +615,13 @@ def main(argv=None):
         if args.model_worker:
             _keys(data, ("models",))
             base, _ = _program(args.base, base=True)
-            previous = base_module.subprocess
+            # Bound the H transport owner; the historical facade only re-exports it.
+            previous = model_native.subprocess
             try:
-                base_module.subprocess = _BoundedModelAdapter
+                model_native.subprocess = _BoundedModelAdapter
                 result = {"ok": True, "requiredCapabilities": _models(data["models"], base)}
             finally:
-                base_module.subprocess = previous
+                model_native.subprocess = previous
         else:
             result = verify_project(data, bridge_executable=args.bridge, base_executable=args.base)
     except ModelError as exc:
