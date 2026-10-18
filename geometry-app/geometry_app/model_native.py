@@ -41,14 +41,22 @@ def _compiler_command() -> tuple[str, ...]:
     return tuple(compiler)
 
 
+def _project_include_dirs(source):
+    # model_base.c lives beside K. Conservative discovery also visits guarded
+    # standalone header includes in inactive unity arms; hash their real owner.
+    return (Path(source).resolve().parent / "kernel",)
+
+
 def _project_source_closure(source):
     """Hash every recursively quoted project include, retaining stable path order.
 
-    Project includes are literal relative files. A missing dependency fails closed;
+    Search the referring directory first, then the explicit K include root.
+    A missing dependency fails closed;
     it cannot silently become an untracked compiler search-path dependency.
     System headers are provided by the selected compiler installation.
     """
     pending = [Path(source).resolve()]
+    include_dirs = _project_include_dirs(source)
     entries = {}
     while pending:
         path = pending.pop()
@@ -60,7 +68,14 @@ def _project_source_closure(source):
         for directive in re.findall(rb'^\s*#\s*include\b([^\n]*)', data, re.M):
             relative = re.match(rb'\s*"([^"\r\n]+)"', directive)
             if relative is not None:
-                pending.append((path.parent / relative.group(1).decode("utf-8")).resolve())
+                quoted = relative.group(1).decode("utf-8")
+                for directory in (path.parent, *include_dirs):
+                    dependency = (directory / quoted).resolve()
+                    if dependency.is_file():
+                        pending.append(dependency)
+                        break
+                else:
+                    raise FileNotFoundError(path.parent / quoted)
             elif not re.match(rb'\s*<[^>\r\n]+>', directive):
                 raise ValueError("Project include is not a literal file")
     return tuple(sorted(entries.items()))
