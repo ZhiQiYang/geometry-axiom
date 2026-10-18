@@ -1,6 +1,9 @@
 """framing_oracle 的自我測試。
 (1) 突變:拿掉或弄偏某條規則,對應的檢查必須轉紅;未突變的對照組必須全綠。
     另跑 no_custom4(不套副支 custom 4):F1、F2 那 14 種排法都要被 C8_I19_PRIORITY 抓到,不多不少。
+    剛好 min_piece(27 mm)的副支與柱面料必須放(T27 房);custom 4 的柱面料分支與寬向條件用合成案例驗。
+(3c) 牆階 1–100 mm 的 L 形與壁龕 300 間 × 8 種排法,可施工的排法都要通過全部檢查。
+用法另有 --mutants-only:只跑 (1)(2),跳過掃描。
 (2) 標準答案:F1–F5 與三個額外例子、8 種排法的輸出,必須與 oracle-golden.json 逐支相同。
 (3b) 凹角、壁龕、獨立柱房 579 間與奇數縫寬矩形房,可施工的排法都要通過全部檢查。
 (3) 掃描:矩形房。
@@ -11,7 +14,7 @@
     完整(--full,約 10 分鐘以上):
       - 一維逐 mm 掃描改跑全部 8 種排法。
       - 二維改為寬 917k±45、深 1832k±45 的整段邊界帶,加上每 97/211 mm 的網格。
-用法: python selftest.py [--full]
+用法: python selftest.py [--full | --mutants-only]
 """
 import json
 import sys
@@ -27,6 +30,12 @@ R = spec["rooms"]
 LT_Y = dict(A="x", a_start="min", b_start="min")
 RECT = lambda W, H: {"outer": [[0, 0], [W, 0], [W, H], [0, H]]}
 FULL = "--full" in sys.argv
+MUTANTS_ONLY = "--mutants-only" in sys.argv  # 只跑 (1) 突變與 (2) 標準答案,跳過掃描(檢查紅燈用)
+# 剛好 27 mm 的邊界(R-nosliver「< min_piece 不放」,剛好 min_piece 要放):左上起鋪板長沿 Y 的第二支主支 [1820,1847]
+# 離柱左面沿柱料 [1766,1793] 剛好 27 mm(這一跨的副支長 27),主支切過柱上下面的柱面料,左邊剩 [1793,1820] 剛好 27 mm。
+T27 = {"outer": [[0, 0], [3600, 0], [3600, 3000], [0, 3000]], "holes": [[[1793, 1200], [2093, 1200], [2093, 1500], [1793, 1500]]]}
+# 20 mm 牆階(#251 審查 60785906 的反例):牆 y=3700 的沿牆料寬 27,比牆階寬,端面有 7 mm 落在牆階邊界材越過凹角的延伸段上
+STEP20 = {"outer": [[0, 0], [4100, 0], [4100, 3680], [2600, 3680], [2600, 3700], [0, 3700]]}
 
 failed = False
 # (1) 突變
@@ -61,6 +70,9 @@ MUTANTS = [
     ("nosliver_too_wide", R["F1客廳"], "C4_SPACING", "R-nosliver 門檻誤設 100:93 mm 寬的跨也不放副支(窄縫豁免只到 min_piece)", "左上起鋪,板長沿X"),
     ("nosliver_too_wide", R["F1客廳"], "C3_EDGE_UNSUPPORTED", "同上:板端縫跨過 93 mm 的空檔沒有承接", "左上起鋪,板長沿X"),
     ("no_custom4", R["F2主臥"], "C8_I19_PRIORITY", "不套 custom 4:副支(3)端面頂壁柱沿牆料(custom 3),I19 要嚴格小於", "左上起鋪,板長沿Y"),
+    ("sliver_le", T27, "C4_SPACING", "R-nosliver 邊界誤寫成 <=:剛好 27 mm 的跨不放副支;檢查端 bridged 若也誤寫成 <= 就抓不到"),
+    ("sliver_le", T27, "C3_EDGE_UNSUPPORTED", "同上:剛好 27 mm 的柱面料也不放,柱面與板端縫邊沒有承接"),
+    ("no_ext_custom3", STEP20, "C8_I19_PRIORITY", "牆階 20 mm:沿牆料端面頂延伸段卻沒宣告 custom 3(primary 2 頂延伸段 2)", "左下起鋪,板長沿X"),
 ]
 for mut, room, want, why, *lay in MUTANTS:
     lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
@@ -92,6 +104,38 @@ for name in ("F1客廳", "F2主臥", "F3次臥", "F5廚房"):
     ok = not res["conflicts"] and not fails
     failed |= not ok
     print(f"[{'綠' if ok else '錯!'}] 對照 {name} 左上 Y")
+res = fo.build(STEP20, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左下起鋪,板長沿X"), p)
+fails = fo.check(res, p)
+ok = not res["conflicts"] and not fails
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] 對照 20 mm 牆階 左下 X(沿牆料端面頂延伸段,宣告 custom 3){sorted({f['check'] for f in fails})}")
+# 剛好 min_piece 的料必須放(建構端兩處邊界:跨寬、柱面料切段),而且全部檢查通過
+res = fo.build(T27, LT_Y, p)
+fails = fo.check(res, p)
+ln = lambda t: fo.rng(t["rect"], res["a"])[1] - fo.rng(t["rect"], res["a"])[0]
+sec27 = [t for t in res["timbers"] if t["kind"] == "secondary" and ln(t) == p["min_piece"]]
+col27 = [t for t in res["timbers"] if t["kind"] == "boundary" and not t["outer"] and ln(t) == p["min_piece"]]
+ok = not res["conflicts"] and not fails and len(sec27) > 0 and len(col27) == 2
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] 剛好 {p['min_piece']} mm 要放:副支 {len(sec27)} 支、柱面料 {len(col27)} 支(要 2),"
+      f"衝突 {sorted({c['code'] for c in res['conflicts']})},檢查失敗 {sorted({f['check'] for f in fails})}")
+# 副支 custom 4 的兩個條件(合成案例,直接呼叫 promote_custom4;A 軸 = x、B 軸 = y):
+#   柱面料(boundary、不貼外牆)端面頂 custom 3 → 升格;寬向沒有被 custom 料蓋住的副支,端面座標再巧合也不升格;
+#   外牆 boundary、主支不升格。拿掉柱面料分支或寬向條件都要轉紅。
+cust = dict(kind="rc_parallel", rect=(100, 0, 127, 1000), core_role="custom", priority=3)
+cases = dict(
+    col=dict(kind="boundary", rect=(127, 500, 400, 527), outer=False),
+    sec=dict(kind="secondary", rect=(127, 700, 600, 727), role="mark"),
+    sec_far=dict(kind="secondary", rect=(127, 1200, 600, 1227), role="mark"),
+    sec_part=dict(kind="secondary", rect=(127, 990, 600, 1017), role="mark"),
+    outer=dict(kind="boundary", rect=(127, 0, 600, 27), outer=True),
+    main=dict(kind="main", rect=(127, 0, 154, 1000)),
+)
+fo.promote_custom4([cust] + list(cases.values()), 0, 1)
+got = {k for k, t in cases.items() if t.get("core_role") == "custom" and t.get("priority") == 4}
+ok = got == {"col", "sec"}
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] custom 4 合成案例:升格 {sorted(got)}(要 ['col', 'sec'];柱面料分支與寬向條件都有走到)")
 
 # (2) 標準答案
 sys.path.insert(0, str(HERE))
@@ -110,6 +154,9 @@ failed |= bool(diff)
 print(f"[{'綠' if not diff else '錯!'}] 標準答案逐支比對:{len(golden['rooms'])} 個房間 × 8 種排法,不一致 {len(diff)}")
 for d in diff[:20]:
     print("   ", d)
+if MUTANTS_ONLY:
+    print("(--mutants-only:跳過掃描)")
+    sys.exit(1 if failed else 0)
 
 # (3) 掃描
 t0 = time.time()
@@ -161,6 +208,26 @@ for room in reflex_rooms:
         fails = fo.check(res, p)
         if fails:
             rb.append((room["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
+# 牆階 1–100 mm:L 形缺角很淺(橫向或縱向)與很淺的壁龕,8 種排法。可施工的排法都要通過全部檢查。
+#   (#251 審查 60785906:牆階 13–24 mm 時沿牆料端面頂延伸段,原本沒宣告 custom 3,C8_I19_PRIORITY 會紅。)
+step_rooms = ([LROOM(4100, 3700, 1500, s) for s in range(1, 101)] + [LROOM(4100, 3700, s, 1200) for s in range(1, 101)]
+              + [ALCOVE(4100, 3000, 1000, 1900, s) for s in range(1, 101)])
+sbuild, sbad, scodes = 0, 0, {}
+for room in step_rooms:
+    for l in fo.LAYOUTS:
+        runs += 1
+        res = fo.build(room, l, p)
+        if res["conflicts"]:
+            for c in {c["code"] for c in res["conflicts"]}:
+                scodes[c] = scodes.get(c, 0) + 1
+            continue
+        sbuild += 1
+        fails = fo.check(res, p)
+        if fails:
+            sbad += 1
+            rb.append((room["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
+print(f"牆階 1–100 mm 的 L 形與壁龕 {len(step_rooms)} 間 × 8 種排法:可施工 {sbuild} 個,其中檢查失敗 {sbad} 個;"
+      f"不可施工的排法數(依原因){scodes}")
 # 奇數縫寬:縫寬 1、3 的矩形房,8 種排法(反向起鋪首縫取上界)
 p_odd = [dict(p, gap=gg) for gg in (1, 3)]
 odd_bad = odd_runs = 0

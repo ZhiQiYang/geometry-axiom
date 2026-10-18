@@ -15,10 +15,15 @@
      每段兩端都接到 RC(外牆與壁柱停在邊界材側面,獨立柱停在柱面),這仍是連續傳到 RC;
      只有在室內中間斷開去接別的角材才不行(使用者 2026-10-14 第 3 題、2026-10-16)。
      主支位置預設置中在縫上,但只要縫兩側板邊承接 >= X 就可以平移(G1 才是要求)。
-     R-butt:主支與相鄰平行料之間有 0 < 間隙、平移這段間隙後承接仍 >= X,就平移到貼住(使用者的平釘慣例:
-     主骨剛好頂住壁邊材,不留 1 mm 縫;2026-10-18)。
-  R-nosliver:副支段長 < min_piece(params,= w;使用者 2026-10-18 拍板 27 mm(決策佇列))一律不放,那條窄縫兩側的板由縫兩邊的料承接
-     (1–23 mm 的角材現場不存在,也釘不上去;2026-10-18)。檢查 C3/C4/C9 對這種窄縫用 bridged() 判為由兩側承接。
+     R-butt:主支與相鄰平行料之間有 0 < 間隙、平移這段間隙後承接仍 >= X,就平移到貼住,不留 1 mm 縫。
+     推論自使用者 2026-10-16 確認的規則(P-147 摘要:支撐可以在承接 >= X 內移動)與平釘天花工法知識(skill flat-nailed-ceiling,
+     references/edge-rule.md §4「挪縫到主骨剛好 butt 壁邊材」),不是使用者原話。
+  R-nosliver:副支段長 < min_piece 一律不放,那條窄縫兩側的板由縫兩邊的料承接。
+     理由是協調 agent 的物理推論(2026-10-18,不是使用者原話):1–23 mm 的角材現場不存在、釘不上去,
+     板跨過那麼窄的縫也不會垂(edge-rule.md §4 也寫收邊格「無副骨,薄板由主骨+壁邊材直接夾持」)。
+     min_piece = w = 27 mm 是使用者 2026-10-18 拍板(決策佇列「副支最短長度」,#302);
+     RC 柱面上短於 27 mm 的段落也不放邊界材,是同日補拍板(#302 補充)。
+     檢查 C3/C4/C9 對這種窄縫用 bridged() 判為由兩側承接。
   G4 RC 邊界一律有角材(側面固定在 RC 上)。其他角材的端面只頂角材,不頂 RC。
      與主支平行的柱面,其角材沿線延伸到兩端的牆,成為連續的支,讓兩側的副支都有角材可頂。
      與主支平行的外牆在凹角處(牆線越過牆端仍是室內:L 形內角、壁柱、壁龕)停在牆端,
@@ -28,7 +33,8 @@
      所以頂在延伸段上的沿牆料核心角色是 custom、優先級 3;主支端面落在延伸段上的排法判衝突。
      I19 另要求端面所頂擋面的優先級嚴格小於自己,副支 3 頂不了 custom 3:端面頂到沿牆料或併料的副支
      改宣告 custom、優先級 4,條文不改(使用者 2026-10-18 拍板,決策佇列「凹角沿牆料的排序」選項 C,#301)。
-     檢查 C8_I19_PRIORITY 做這條數值比較;custom 4 在原生核心是否接受,本檔沒有實跑。
+     檢查 C8_I19_PRIORITY 做這條數值比較。原生核心接受 custom 4:PR #297 在 WSL 實跑 94eae4a3 的 64 個場景,
+     接受 2639 支、容量上限拒絕 318 支(沒有走到規則檢查),規則拒絕 0、錯誤 0、幾何不符 0。
   G5 角材之間、角材與 RC 之間不得有正面積重疊(碰撞);端面相貼是零面積,允許。
   G6 封板從起鋪角整片鋪,只在對牆收邊,不置中。
   G7 最後一條縫若讓縫上的角材撞到對牆的角材(距離 d > D - 1.5w),
@@ -212,11 +218,38 @@ def seam_centers(lo, hi, start, ps, g, w, mut):
     return out, moved
 
 
+# ---------------------------------------------------------------- 核心角色:副支頂 custom 3 → custom 4
+def promote_custom4(timbers, a, b):
+    """端面頂到 custom 側面的副支改宣告 custom、優先級 = 擋面 + 1(現行只有 custom 3 → 4)。
+    使用者 2026-10-18 拍板(決策佇列「凹角沿牆料的排序」選項 C,#301),條文不改。
+    適用對象:核心角色是副支的料——secondary,以及與主支垂直的柱面料(boundary 且不貼外牆;
+    這個條件存在,但 golden 與掃描房間目前沒有實例,由 selftest 的合成案例驗)。
+    「頂到」:端面座標等於 custom 料的側面座標(A 軸),而且 custom 料在寬向(B 軸)蓋住整個端面。
+    只拿原本就是 custom 的料當擋面(先拍快照),升格後的料不再讓別人升格。"""
+    customs = [q for q in timbers if q.get("core_role") == "custom"]
+    for t in timbers:
+        if not (t["kind"] == "secondary" or (t["kind"] == "boundary" and not t["outer"])):
+            continue
+        lo, hi = rng(t["rect"], a)
+        o = rng(t["rect"], b)
+        for q in customs:
+            qa, qb = rng(q["rect"], a), rng(q["rect"], b)
+            if qb[0] <= o[0] and o[1] <= qb[1] and (qa[1] == lo or qa[0] == hi):
+                t["core_role"], t["priority"] = "custom", q["priority"] + 1
+                break
+
+
 # ---------------------------------------------------------------- 建構
 def build(room, layout, p, mut=frozenset()):
     P, Lp, g, w, M, X = p["P"], p["L"], p["gap"], p["w"], p["M"], p["X"]
     minp = p.get("min_piece", w)  # R-nosliver 的最短料長;= 角材寬,使用者 2026-10-18 拍板 27 mm(決策佇列)
     sliver = 100 if "nosliver_too_wide" in mut else minp  # 突變:門檻誤設成 100,連 93 mm 寬的跨也不放副支
+
+    def too_short(n):
+        """R-nosliver:長度 n 的副支段不放?剛好 min_piece 要放(突變 sliver_le 把邊界弄錯成 <=)。"""
+        if "allow_short_pieces" in mut:
+            return False
+        return n <= sliver if "sliver_le" in mut else n < sliver
     gl, gu = g // 2, g - g // 2  # 縫在世界座標佔 [c-gl, c+gu]:下側板邊 c-gl、上側板邊 c+gu(兩個起鋪方向都一樣)
     reg = Region(room["outer"], room.get("holes", []))
     a = 0 if layout["A"] == "x" else 1
@@ -332,7 +365,7 @@ def build(room, layout, p, mut=frozenset()):
             continue
         s = push_lo - push_hi
         ar = (ar[0] + s, ar[1] + s)
-        # R-butt(由「支撐可以移動」加使用者的平釘慣例「主骨剛好頂住壁邊材」推得):
+        # R-butt(由使用者確認的規則 P-147〔支撐可以在承接 >= X 內移動〕加平釘天花工法知識 edge-rule.md §4「主骨剛好 butt 壁邊材」推得):
         #   主支與相鄰平行料之間有 0 < 間隙,而平移這段間隙後縫兩側板邊承接仍 >= X,就把主支平移到貼住那支料,
         #   不留 1–5 mm 的縫。兩側都可貼時貼間隙小的那側(同分貼 - 側)。平移後主支在室內的範圍要不變;做不到就不移。
         if not (push_lo or push_hi) and "no_r_butt" not in mut:
@@ -401,8 +434,9 @@ def build(room, layout, p, mut=frozenset()):
                 and max(ta[0], rng(q["rect"], a)[0]) < min(ta[1], rng(q["rect"], a)[1])]
         if not cuts:
             continue
-        # R-nosliver:被主支切剩 < min_piece 的那一段不放(那段柱面由兩端的沿柱料與主支承接)
-        parts = [q for q in iv_subtract([ta], cuts) if q[1] - q[0] >= minp or "allow_short_pieces" in mut]
+        # R-nosliver:被主支切剩 < min_piece 的那一段柱面料不放(那段柱面由兩端的沿柱料與主支承接)。
+        #   使用者 2026-10-18 補拍板(決策佇列,#302 補充):RC 柱面上短於 27 mm 的段落也不放邊界材。
+        parts = [q for q in iv_subtract([ta], cuts) if not too_short(q[1] - q[0])]
         astrips.remove(t)
         t["rect"] = mk(a, parts[0], tb) if parts else None
         if parts:
@@ -461,6 +495,14 @@ def build(room, layout, p, mut=frozenset()):
         o = rng(r, a)
         return [x for e0, e1 in ((lo - 1, lo), (hi, hi + 1)) for x in ext_rects if overlap(mk(a, o, (e0, e1)), x)]
 
+    # 沿牆料、沿柱料(與主支平行、還不是 custom 的 rc_parallel)端面頂到延伸段:核心 I22 把延伸段側面當優先級 2,
+    #   primary 2 頂不了它,改宣告 custom、優先級 3,與 P-145 凹角沿牆料、2026-10-18 凹角沿牆料排序的決定同一表示法。
+    #   例:20 mm 的牆階,27 mm 寬的沿牆料比牆階寬,端面有 7 mm 落在牆階邊界材越過凹角的延伸段上(#251 審查 60785906)。
+    if "no_ext_custom3" not in mut:
+        for t in bprims:
+            if t.get("core_role") != "custom" and end_on_ext(t["rect"]):
+                t["core_role"], t["priority"] = "custom", 3
+
     for t in mains:
         hits = end_on_ext(t["rect"])
         if not hits:
@@ -503,7 +545,7 @@ def build(room, layout, p, mut=frozenset()):
             g0, g1 = rng(t["rect"], a)[1], rng(u["rect"], a)[0]
             if g1 <= g0:
                 continue
-            if g1 - g0 < sliver and "allow_short_pieces" not in mut:
+            if too_short(g1 - g0):
                 continue  # R-nosliver:副支會短於 min_piece,不放;這條窄縫兩側的板由縫兩邊的料承接
             inside = iv_intersect(sec, [(g0, g1)])
             if not inside:
@@ -655,17 +697,7 @@ def build(room, layout, p, mut=frozenset()):
     #   只拿原本就是 custom 的料當擋面,升格後的 custom 4 不再讓別人升格。核心角色是副支的料都適用
     #   (secondary,以及與主支垂直的柱面料)。
     if "no_custom4" not in mut:
-        customs = [q for q in timbers if q.get("core_role") == "custom"]
-        for t in timbers:
-            if not (t["kind"] == "secondary" or (t["kind"] == "boundary" and not t["outer"])):
-                continue
-            lo, hi = rng(t["rect"], a)
-            o = rng(t["rect"], b)
-            for q in customs:
-                qa, qb = rng(q["rect"], a), rng(q["rect"], b)
-                if qb[0] <= o[0] and o[1] <= qb[1] and (qa[1] == lo or qa[0] == hi):
-                    t["core_role"], t["priority"] = "custom", q["priority"] + 1
-                    break
+        promote_custom4(timbers, a, b)
     # 碰撞與入 RC 都是排板衝突(G5):這個起鋪角/方向不能用
     if "skip_conflict_scan" not in mut:
         R = reg.rects()
