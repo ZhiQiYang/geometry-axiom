@@ -540,6 +540,16 @@ static void reference_preview_text(void)
     }
 }
 
+static bool app_scene_direct_dimensions_allowed(const char *path,int line_no,char **tokens,int count,const World *world)
+{
+    if (count>1 && (!strcmp(tokens[0],"grid") || !strcmp(tokens[0],"timber"))) {
+        uint32_t id;
+        if (parse_u32(tokens[1],&id) && eng_object_bound(world,!strcmp(tokens[0],"timber"),id)) {
+            scene_error(path,line_no,"D28: this object has engineering sources; edit its engineering source or explicit override instead of replacing it with direct dimensions"); return false;
+        }
+    }
+    return true;
+}
 typedef struct {
     const char *path;int line_no;char **tokens;int count;World *before;
 } AppSceneCandidateCall;
@@ -586,12 +596,7 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         if (count<2 || !strcmp(tokens[1],"preview") || !strcmp(tokens[1],"confirm")) return false;
         ++tokens; --count;
     }
-    if (count>1 && (!strcmp(tokens[0],"grid") || !strcmp(tokens[0],"timber"))) {
-        uint32_t id;
-        if (parse_u32(tokens[1],&id) && eng_object_bound(world,!strcmp(tokens[0],"timber"),id)) {
-            scene_error(path,line_no,"D28: this object has engineering sources; edit its engineering source or explicit override instead of replacing it with direct dimensions"); return false;
-        }
-    }
+    if(!app_scene_direct_dimensions_allowed(path,line_no,tokens,count,world))return false;
     g_scene_last_error[0]='\0'; g_engineering_error[0]='\0'; g_reference_issue_count=0;
     AppSceneCandidateCall call={path,line_no,tokens,count,world};
     bool ok=app_world_candidate_evaluate(transaction,app_scene_candidate_apply,&call)==GEO_CANDIDATE_OK;
@@ -633,12 +638,87 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     if(changed)++g_definition_revision;return true;
 }
 
+/* Only app_scene_load_evaluate opts into this private file replay frame.
+ * The retained outer owns all definitions; each line still has its own before
+ * bytes and resolver lifetime. Interactive and standalone parser callers do not. */
+typedef struct {
+    AppWorldCandidate *owner;GeoEvalContext *sources;World *before;
+} AppSceneFileReplay;
+static AppSceneFileReplay *g_scene_file_replay;
+static bool app_scene_file_graph_empty(const AppSceneFileReplay *frame)
+{
+    return !app_candidate_evaluation_state(frame->owner->control)&&
+        !geo_eval_provider_count(frame->sources)&&!geo_eval_node_count(frame->sources)&&!geo_eval_edge_count(frame->sources);
+}
+static bool app_scene_file_line_eligible(World *world,char **tokens,int count)
+{
+    AppSceneFileReplay *frame=g_scene_file_replay;
+    if(!frame||!frame->before||frame->owner!=g_active_app_candidate||world!=&frame->owner->after||
+       frame->sources!=geo_candidate_sources(app_candidate_core(frame->owner->control))||
+       geo_candidate_state(app_candidate_core(frame->owner->control))!=GEO_CANDIDATE_EVALUATING||
+       !g_parsing_scene_file||!count||!app_scene_file_graph_empty(frame))return false;
+    return strcmp(tokens[0],"preview")&&strcmp(tokens[0],"confirm")&&strcmp(tokens[0],"cancel-preview")&&
+        !world->wood.assembly.binding_count&&!reference_may_affect(world,tokens,count);
+}
+static bool app_scene_file_sources_ready(AppWorldCandidate *owner)
+{
+    if(!app_world_candidate_describe_sources(owner))return false;
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(owner->control));
+    for(size_t i=0;i<geo_eval_node_count(sources);++i){GeoSourceNodeView node;
+        if(!geo_eval_node_at(sources,i,&node)||node.state==GEO_NODE_ACTIVE)return false;
+    }
+    return true;
+}
+static bool app_scene_file_line(const char *path,int line_no,char **tokens,int count,World *world)
+{
+    AppSceneFileReplay *frame=g_scene_file_replay;
+    if(!app_scene_direct_dimensions_allowed(path,line_no,tokens,count,world))return false;
+    memcpy(frame->before,world,sizeof *world);
+    unsigned char operation[sizeof frame->owner->operation];
+    memcpy(operation,&frame->owner->operation,sizeof operation);
+    g_scene_last_error[0]='\0';g_engineering_error[0]='\0';g_reference_issue_count=0;
+    AppSceneCandidateCall call={path,line_no,tokens,count,frame->before};
+    bool ok=app_scene_candidate_apply(world,frame->sources,&call);
+    if(ok&&!app_scene_file_sources_ready(frame->owner)){
+        ok=false;scene_error(path,line_no,"I8: candidate seal failed; World unchanged");
+    }
+    memcpy(&frame->owner->operation,operation,sizeof operation);
+    app_candidate_set_evaluation_state(frame->owner->control,NULL,NULL);
+    if(!geo_eval_reset(frame->sources)){
+        if(ok)scene_error(path,line_no,"I8: candidate seal failed; World unchanged");
+        ok=false;
+    }
+    if(!ok){
+        memcpy(world,frame->before,sizeof *world);
+        if(!g_scene_last_error[0])scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
+    }
+    return ok;
+}
+
 static bool apply_scene_line(const char *path,int line_no,char *tokens[],int count,World *world)
 {
+    if(app_scene_file_line_eligible(world,tokens,count))return app_scene_file_line(path,line_no,tokens,count,world);
     AppWorldCandidate *candidate=app_world_candidate_create(world);
     if(!candidate){scene_error(path,line_no,"I32: candidate World allocation failed");return false;}
     bool retained=false;bool ok=apply_scene_line_candidate(path,line_no,tokens,count,world,candidate,&retained);
     if(!retained)app_world_candidate_destroy(candidate);return ok;
+}
+
+/* Optional scratch allocation: failure preserves the original per-line path.
+ * parse_scene_file keeps its full closing validation outside the line frames,
+ * so the final outer resolver is retained for the normal seal/publication. */
+static bool app_scene_replay_file(const char *path,World *world)
+{
+    AppSceneFileReplay frame={0},*previous=g_scene_file_replay;
+    frame.owner=g_active_app_candidate;
+    if(frame.owner&&world==&frame.owner->after&&
+       geo_candidate_state(app_candidate_core(frame.owner->control))==GEO_CANDIDATE_EVALUATING){
+        frame.sources=geo_candidate_sources(app_candidate_core(frame.owner->control));
+        if(frame.sources&&app_scene_file_graph_empty(&frame))frame.before=malloc(sizeof *frame.before);
+    }
+    g_scene_file_replay=frame.before?&frame:NULL;
+    bool ok=parse_scene_file(path,world);
+    g_scene_file_replay=previous;free(frame.before);return ok;
 }
 
 static bool reference_default_world(World *world)

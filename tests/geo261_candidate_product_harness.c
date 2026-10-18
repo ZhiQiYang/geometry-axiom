@@ -2,9 +2,13 @@
 #ifdef _WIN32
 #undef _WIN32
 #endif
+#include <stdlib.h>
+static void *replay_malloc(size_t size);
+#define malloc replay_malloc
 #define GEOMETRY_BRIDGE_ENTRYPOINT geometry_bridge_main
 #include "../geometry-web/web_bridge.c"
 #undef GEOMETRY_BRIDGE_ENTRYPOINT
+#undef malloc
 #define CHECK(value,label) do{if(!(value)){fprintf(stderr,"ASSERT:%s\n",label);return 1;}}while(0)
 static bool line(const char *value){return feed_line("candidate-witness",1,value,&g_world);}
 static bool prepare(const char *path)
@@ -79,9 +83,175 @@ static int imports(const char *path)
     CHECK(geo_candidate_state(core)==GEO_CANDIDATE_PUBLISHED&&geo_candidate_sources(core)==sources&&geo_candidate_id(core)==id,"import-publishes-same-candidate");
     CHECK(geo_named_values_find(&g_world.geo.named_values,"x")->value==500,"import-complete-root");return 0;
 }
+/* B witnesses extend this actual bridge harness; no alternate parser. */
+static size_t replay_fail_size;
+static unsigned replay_fail_remaining,replay_allocation_failures;
+static void *replay_malloc(size_t size)
+{
+    if(replay_fail_remaining&&size==replay_fail_size){
+        --replay_fail_remaining;++replay_allocation_failures;return NULL;
+    }
+    return malloc(size);
+}
+static bool replay_plain_parse(void *after,GeoEvalContext *sources,void *path)
+{(void)sources;memset(after,0,sizeof(World));return parse_scene_file(path,after);}
+static bool replay_has_guide_value(GeoEvalContext *sources,Coord expected)
+{
+    for(size_t i=0;i<geo_eval_node_count(sources);++i){GeoSourceNodeView node;
+        if(geo_eval_node_at(sources,i,&node)&&node.source.provider==APP_SOURCE_GUIDE&&
+           node.state==GEO_NODE_VALID&&node.value&&node.value->kind==GEO_SOURCE_AXIS_POSITION&&
+           node.value->as.position.coordinate==expected)return true;
+    }
+    return false;
+}
+static int replay_load(const char *path,int mode)
+{
+    memset(&g_world,0,sizeof g_world);g_definition_revision=0;
+    AppWorldCandidate *owner=app_world_candidate_create(&g_world);CHECK(owner,"replay-owner");
+    World *live=malloc(sizeof *live);CHECK(live,"replay-live-memory");memcpy(live,&g_world,sizeof *live);
+    uint64_t serial=g_app_candidate_serial;
+    if(mode==2){replay_fail_size=sizeof(World);replay_fail_remaining=1;replay_allocation_failures=0;}
+    GeoCandidateStatus status=app_world_candidate_evaluate(owner,mode==1?replay_plain_parse:app_scene_load_evaluate,(void*)path);
+    CHECK(status==GEO_CANDIDATE_OK,"replay-loaded");
+    CHECK(g_app_candidate_serial-serial==(mode?5:0),"file-replay-inner-candidate-cost");
+    if(mode==2)CHECK(!replay_fail_remaining&&replay_allocation_failures==1,"optional-scratch-oom-original-path");
+    CHECK(!memcmp(live,&g_world,sizeof *live),"file-replay-does-not-publish-during-parse");
+    CHECK(!g_scene_file_replay,"file-replay-scope-restored");
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(owner->control));
+    CHECK(geo_eval_provider_count(sources)>=4&&geo_eval_node_count(sources)>=3,"file-replay-final-graph-retained");
+    CHECK(replay_has_guide_value(sources,500),"file-replay-literal-guide-value");
+    CHECK(app_world_candidate_seal(owner)&&geo_eval_is_sealed(sources),"file-replay-final-seal");
+    CHECK(app_world_candidate_publish(owner,&g_world,false),"file-replay-one-publication");
+    CHECK(geo_candidate_state(app_candidate_core(owner->control))==GEO_CANDIDATE_PUBLISHED,"file-replay-published-state");
+    CHECK(!app_world_candidate_publish(owner,&g_world,false),"file-replay-no-second-publication");
+    app_world_candidate_destroy(owner);free(live);return 0;
+}
+static int replay_i8a(const char *path,bool invalid)
+{
+    memset(&g_world,0,sizeof g_world);g_definition_revision=0;
+    AppWorldCandidate *owner=app_world_candidate_create(&g_world);CHECK(owner,"i8a-replay-owner");
+    uint64_t serial=g_app_candidate_serial;
+    CHECK(app_world_candidate_evaluate(owner,app_scene_load_evaluate,(void*)path)==GEO_CANDIDATE_EVALUATION_FAILED,"file-replay-i8a-refused");
+    CHECK(g_app_candidate_serial==serial+3,"file-replay-i8a-keeps-inner-owner");
+    const char *message=scene_last_error();
+    CHECK(strstr(message,invalid?"I8a: impact preview required (World unchanged);":"I8a: impact preview required; inspect preview, then confirm token (World unchanged)"),"file-replay-i8a-original-error");
+    CHECK(geo_named_values_find(&owner->after.geo.named_values,"x")->value==500,"file-replay-i8a-keeps-prefix");
+    CHECK(!g_world.wood.timber_count&&!g_definition_revision&&!g_preview.ready&&!g_preview.transaction,"file-replay-i8a-no-live-or-preview-leak");
+    CHECK(!g_scene_file_replay,"file-replay-i8a-scope-restored");
+    fprintf(stderr,"REPLAY_ERROR:%s\n",message);app_world_candidate_destroy(owner);return 0;
+}
+#define FRAME_CHECK(value,label) do{if(!(value)){fprintf(stderr,"ASSERT:%s\n",label);ok=false;goto cleanup;}}while(0)
+static bool replay_frame(void *after,GeoEvalContext *sources,void *opaque)
+{
+    const char *which=opaque;World *world=after;bool ok=true;
+    AppSceneFileReplay frame={g_active_app_candidate,sources,malloc(sizeof(World))};
+    if(!frame.before)return false;
+    AppSceneFileReplay *previous=g_scene_file_replay;bool previous_file=g_parsing_scene_file;
+    ReferencePreview previous_preview=g_preview;memset(&g_preview,0,sizeof g_preview);
+    g_scene_file_replay=&frame;g_parsing_scene_file=true;memset(world,0,sizeof *world);
+    uint64_t serial=g_app_candidate_serial;
+    FRAME_CHECK(feed_line("file-replay-witness",1,"spec x 500",world),"replay-frame-prefix");
+    FRAME_CHECK(!app_candidate_evaluation_state(frame.owner->control)&&!geo_eval_provider_count(sources)&&!geo_eval_node_count(sources),"file-replay-line-graph-released");
+    if(!strcmp(which,"rollback")){
+        World *before=malloc(sizeof *before);FRAME_CHECK(before,"replay-rollback-memory");memcpy(before,world,sizeof *before);
+        bool accepted=feed_line("file-replay-witness",2,"datum 7 x spec:missing",world);
+        bool unchanged=!memcmp(before,world,sizeof *before);free(before);
+        FRAME_CHECK(!accepted,"file-replay-partial-write-refused");
+        FRAME_CHECK(unchanged,"file-replay-failed-line-byte-rollback");
+        FRAME_CHECK(scene_last_error()[0],"file-replay-first-error-retained");
+        FRAME_CHECK(g_app_candidate_serial==serial,"file-replay-failed-line-used-frame");
+        fprintf(stderr,"REPLAY_ERROR:%s\n",scene_last_error());
+    }else if(!strcmp(which,"lifetime")){
+        FRAME_CHECK(feed_line("file-replay-witness",2,"surface 1 origin 0 0 0 u +x v +y outline 0,0 1000,0 1000,1000 0,1000",world),"replay-lifetime-surface");
+        FRAME_CHECK(feed_line("file-replay-witness",3,"guide 1 1 v spec:x",world),"replay-lifetime-guide");
+        FRAME_CHECK(feed_line("file-replay-witness",4,"preview spec x 900",world)&&g_preview.ready&&g_preview.valid,"replay-lifetime-real-preview-fallback");
+        FRAME_CHECK(g_preview.transaction!=frame.owner,"replay-preview-has-own-owner");
+        FRAME_CHECK(feed_line("file-replay-witness",5,"cancel-preview",world),"replay-lifetime-cancel-fallback");
+        FRAME_CHECK(feed_line("file-replay-witness",6,"spec x 800",world),"replay-lifetime-final-fast-line");
+        FRAME_CHECK(g_app_candidate_serial==serial+2,"file-replay-fast-fallback-fast-cost");
+        FRAME_CHECK(!app_candidate_evaluation_state(frame.owner->control)&&!geo_eval_node_count(sources),"file-replay-no-stale-line-graph");
+    }else if(!strcmp(which,"operation")){
+        unsigned char before[sizeof frame.owner->operation];
+        memset(&frame.owner->operation,0xa5,sizeof frame.owner->operation);
+        frame.owner->operation.boundary_keyed=false;frame.owner->operation.boundary_id=91;
+        memcpy(before,&frame.owner->operation,sizeof before);
+        FRAME_CHECK(feed_line("file-replay-witness",2,"boundary 1 outline 0,0 1000,0 1000,1000 0,1000",world),"replay-keyed-boundary");
+        FRAME_CHECK(feed_line("file-replay-witness",3,"boundary-vertex-keys 1 outer 1 2 3 4 next-key 5",world),"replay-keyed-keys");
+        SpaceBoundarySurface boundary;char hash[65],command[512];
+        FRAME_CHECK(app_boundary_read(world,1,&boundary),"replay-keyed-read");boundary_geometry_hash(&boundary,hash);
+        snprintf(command,sizeof command,"boundary-keyed 1 geometry-hash %s outline 1:10,0 2:1010,0 3:1010,1000 4:10,1000",hash);
+        FRAME_CHECK(feed_line("file-replay-witness",4,command,world),"replay-keyed-update");
+        FRAME_CHECK(g_app_candidate_serial==serial,"file-replay-keyed-used-frame");
+        FRAME_CHECK(!memcmp(before,&frame.owner->operation,sizeof before),"file-replay-operation-bytes-restored");
+    }else{FRAME_CHECK(false,"unknown-replay-frame-case");}
+cleanup:
+    if(g_preview.transaction!=previous_preview.transaction)app_world_candidate_destroy(g_preview.transaction);
+    g_preview=previous_preview;g_scene_file_replay=previous;g_parsing_scene_file=previous_file;free(frame.before);
+    return ok&&world_revalidate(world);
+}
+static int replay_frame_case(const char *which)
+{
+    memset(&g_world,0,sizeof g_world);g_definition_revision=0;
+    AppWorldCandidate *owner=app_world_candidate_create(&g_world);CHECK(owner,"replay-frame-owner");
+    CHECK(app_world_candidate_evaluate(owner,replay_frame,(void*)which)==GEO_CANDIDATE_OK,"file-replay-frame-verdict");
+    if(!strcmp(which,"lifetime"))CHECK(replay_has_guide_value(geo_candidate_sources(app_candidate_core(owner->control)),800),"file-replay-final-guide-is-not-cached-500");
+    CHECK(app_world_candidate_seal(owner),"file-replay-frame-final-seal");
+    app_world_candidate_destroy(owner);return 0;
+}
+typedef struct {bool allow_description,active_seen,ready_while_active;unsigned describe_calls;} ReplaySource;
+static bool replay_source_describe(void *opaque,const GeoSourceRef *ref,GeoSourceDescriptor *out)
+{
+    (void)ref;ReplaySource *source=opaque;++source->describe_calls;
+    if(!source->allow_description)return false;
+    memset(out,0,sizeof *out);out->kind=GEO_SOURCE_QUANTITY;out->unit=GEO_UNIT_LENGTH;return true;
+}
+static bool replay_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSourceRef *ref,GeoSourceValue *out)
+{
+    (void)ctx;(void)ref;ReplaySource *source=opaque;source->active_seen=true;
+    source->ready_while_active=app_scene_file_sources_ready(g_active_app_candidate);
+    out->kind=GEO_SOURCE_QUANTITY;out->as.quantity=(GeoQuantity){17,1,GEO_UNIT_LENGTH};return true;
+}
+static bool replay_source_guards(void *after,GeoEvalContext *sources,void *opaque)
+{
+    (void)after;ReplaySource *source=opaque;
+    GeoSourceProvider provider={900001,"replay-witness","replay-witness/1",source,replay_source_describe,replay_source_evaluate};
+    unsigned char key=1;GeoSourceRef ref={900001,&key,sizeof key};
+    if(!geo_eval_register(sources,&provider)||geo_eval_depend(sources,ref,GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
+    if(app_scene_file_sources_ready(g_active_app_candidate)||source->describe_calls!=1){fprintf(stderr,"ASSERT:file-replay-describe-rejection\n");return false;}
+    source->allow_description=true;GeoSourceValue value;
+    if(geo_eval_source(sources,ref,GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||!source->active_seen||source->ready_while_active){fprintf(stderr,"ASSERT:file-replay-active-source-rejected\n");return false;}
+    if(!app_scene_file_sources_ready(g_active_app_candidate)||value.as.quantity.num!=17){fprintf(stderr,"ASSERT:file-replay-completed-source-accepted\n");return false;}
+    return true;
+}
+static int replay_source_case(void)
+{
+    memset(&g_world,0,sizeof g_world);g_definition_revision=0;ReplaySource source={0};
+    AppWorldCandidate *owner=app_world_candidate_create(&g_world);CHECK(owner,"replay-source-owner");
+    CHECK(app_world_candidate_evaluate(owner,replay_source_guards,&source)==GEO_CANDIDATE_OK,"file-replay-source-verdict");
+    CHECK(app_world_candidate_seal(owner),"file-replay-source-final-seal");app_world_candidate_destroy(owner);return 0;
+}
+
+static int replay_standalone(const char *path)
+{
+    memset(&g_world,0,sizeof g_world);g_definition_revision=0;uint64_t serial=g_app_candidate_serial;
+    CHECK(parse_scene_file(path,&g_world),"replay-standalone-parse");
+    CHECK(g_app_candidate_serial==serial+6,"standalone-five-lines-plus-final-candidate");
+    CHECK(!g_scene_file_replay&&geo_named_values_find(&g_world.geo.named_values,"x")->value==500,"standalone-original-parser-value");
+    return 0;
+}
 int main(int argc,char **argv)
 {
     if(argc!=3)return 2;
+    if(!strcmp(argv[1],"replay-cost"))return replay_load(argv[2],0);
+    if(!strcmp(argv[1],"replay-unscoped"))return replay_load(argv[2],1);
+    if(!strcmp(argv[1],"replay-scratch-oom"))return replay_load(argv[2],2);
+    if(!strcmp(argv[1],"replay-standalone"))return replay_standalone(argv[2]);
+    if(!strcmp(argv[1],"replay-i8a-valid"))return replay_i8a(argv[2],false);
+    if(!strcmp(argv[1],"replay-i8a-invalid"))return replay_i8a(argv[2],true);
+    if(!strcmp(argv[1],"replay-rollback"))return replay_frame_case("rollback");
+    if(!strcmp(argv[1],"replay-lifetime"))return replay_frame_case("lifetime");
+    if(!strcmp(argv[1],"replay-operation"))return replay_frame_case("operation");
+    if(!strcmp(argv[1],"replay-source-guards"))return replay_source_case();
     if(!strcmp(argv[1],"lifecycle"))return lifecycle(argv[2]);
     if(!strcmp(argv[1],"wood-tamper"))return tamper(argv[2],0);
     if(!strcmp(argv[1],"host-tamper"))return tamper(argv[2],1);
