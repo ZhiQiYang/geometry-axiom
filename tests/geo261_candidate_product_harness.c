@@ -153,8 +153,11 @@ static bool replay_frame(void *after,GeoEvalContext *sources,void *opaque)
     FRAME_CHECK(feed_line("file-replay-witness",1,"spec x 500",world),"replay-frame-prefix");
     FRAME_CHECK(!app_candidate_evaluation_state(frame.owner->control)&&!geo_eval_provider_count(sources)&&!geo_eval_node_count(sources),"file-replay-line-graph-released");
     if(!strcmp(which,"rollback")){
+        char text[]="datum 7 x spec:missing",*tokens[SCENE_MAX_TOKENS];
+        int count=split_tokens(text,tokens,SCENE_MAX_TOKENS);
+        FRAME_CHECK(count==4,"file-replay-datum-token-count");
         World *before=malloc(sizeof *before);FRAME_CHECK(before,"replay-rollback-memory");memcpy(before,world,sizeof *before);
-        bool accepted=feed_line("file-replay-witness",2,"datum 7 x spec:missing",world);
+        bool accepted=apply_scene_line("file-replay-witness",2,tokens,count,world);
         bool unchanged=!memcmp(before,world,sizeof *before);free(before);
         FRAME_CHECK(!accepted,"file-replay-partial-write-refused");
         FRAME_CHECK(unchanged,"file-replay-failed-line-byte-rollback");
