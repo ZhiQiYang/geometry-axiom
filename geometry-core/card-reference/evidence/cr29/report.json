@@ -1,0 +1,114 @@
+{
+  "status": "BLOCKED_SCOPE_REVIEW",
+  "exit_code": 2,
+  "source_head": "9a04d90547aa50727b8947131efedf7e17ebbf40",
+  "source_sha256": {
+    "geometry-core/model_base.c": "d8842c087a03ee32a573d74ceb2c8bc3b6769d2dc8afed0516a0ab2d63b1a486",
+    "geometry-core/modeling/engine.py": "9d05531bdac11a38090a54264697f760db0bdec42e8cc97b5d99f82543e965ea",
+    "geometry-core/modeling/base.py": "3e720d8d1861b1b4520a43c3ca59a9e0eeb6ae918251daf5b4caef74ae717088",
+    "current_geometry.c": "56962848b50acd8b3791204ae53edd1c8e2004743f46af8d24d9ed64409e2044"
+  },
+  "probe_sha256": "1cbe3fb0633d3974956c48ab84173653a85b498ecd94109dd1b7b8d6fd9d041f",
+  "adapter_sha256": "e16045f631ae7e00a8ad0abe807bb20f12e2af1f76190cbcb7ee5427da7a1abd",
+  "environment": {
+    "os": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "python": "3.12.14",
+    "stack_limit_bytes": 16777216
+  },
+  "request": {
+    "roots": [
+      {
+        "kind": "timber",
+        "id": 1
+      }
+    ],
+    "role": "geometry",
+    "target": "solid-set",
+    "allow_partial": false
+  },
+  "export_status": "COMPLETE",
+  "verify_package": "returned successfully",
+  "adapter_dependencies": [
+    {
+      "kind": "placement",
+      "id": 1,
+      "refs": []
+    },
+    {
+      "kind": "timber",
+      "id": 90,
+      "refs": [
+        {
+          "kind": "placement",
+          "id": 1
+        }
+      ]
+    },
+    {
+      "kind": "timber",
+      "id": 91,
+      "refs": [
+        {
+          "kind": "placement",
+          "id": 1
+        },
+        {
+          "kind": "timber",
+          "id": 90
+        }
+      ]
+    },
+    {
+      "kind": "timber",
+      "id": 1,
+      "refs": [
+        {
+          "kind": "placement",
+          "id": 1
+        },
+        {
+          "kind": "timber",
+          "id": 90
+        },
+        {
+          "kind": "timber",
+          "id": 91
+        }
+      ]
+    }
+  ],
+  "actual_evaluate_selected": [
+    [
+      "placement",
+      1
+    ],
+    [
+      "timber",
+      1
+    ],
+    [
+      "timber",
+      90
+    ],
+    [
+      "timber",
+      91
+    ]
+  ],
+  "missing_kinds_in_root_traversal": [
+    "grid",
+    "grid-binding",
+    "grid-system"
+  ],
+  "definitions_preserved": {
+    "D10": true,
+    "D30": true,
+    "D29": true
+  },
+  "unrelated_control_root": {
+    "kind": "timber",
+    "id": 90
+  },
+  "control_and_test_base_scene_equal": true,
+  "limitation": "完整場景保留 D10/D29/D30；缺少的是根依賴走訪圖節點。需 Claude 核對看板前提是否以此圖為準，不宣稱交換包遺失定義。"
+}

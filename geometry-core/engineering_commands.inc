@@ -1,7 +1,18 @@
 /* Ordered engineering operations mutate only a caller-owned candidate. */
+#include "card_reference.inc"
 static bool eng_operation(World *w,EngJson *j,int t)
 {
     char op[40]; if (!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op)) return eng_fail("I35: operation requires an op name");
+    if(!strcmp(op,"put-grid-system")||!strcmp(op,"set-grid-card-reference")||!strcmp(op,"swap-grid-card-reference")||!strcmp(op,"unbind-grid-card-reference"))return grid_card_operation(w,j,t,op);
+    if(!strcmp(op,"parameter-package")){
+        int ops=eng_json_member(j,t,"operations");if(!eng_json_keys(j,t,"op,operations","")||!eng_json_is_array(j,ops))return eng_fail("R60 PARAMETER_PACKAGE_BOUNDARY: invalid parameter package");
+        for(int i=0;i<eng_json_size(j,ops);++i){int item=eng_json_at(j,ops,i);char name[40];
+            if(!eng_json_string(j,eng_json_member(j,item,"op"),name,sizeof name)||
+               (strcmp(name,"put-parameter")&&strcmp(name,"delete-parameter")&&strcmp(name,"import-parameters")))return eng_fail("R60 PARAMETER_PACKAGE_BOUNDARY: only parameter operations inside package");
+            if(!eng_operation(w,j,item))return false;
+        }
+        char error[512];return parameters_rebuild(w,error,sizeof error)?true:eng_fail(error);
+    }
     if(!strcmp(op,"import-parameters")){
         if(!eng_json_keys(j,t,"op,value","")||!parameter_import(w,j,eng_json_member(j,t,"value")))return eng_fail(g_parameter_error[0]?g_parameter_error:"I39: invalid parameter package");return true;
     }
@@ -183,10 +194,12 @@ static bool apply_engineering_line(const char *path,int line_no,char **tokens,in
     eng_json_free(&j);return ok;
 }
 static bool sp_scene_required;
+static bool grid_card_scene_required;
 /* I56: panel-fill/1 is usable only together with engineering-spec/1 and parameters/1. */
 static bool fs_scene_required, fs_scene_engineering, fs_scene_parameters;
 static bool apply_requires_line(const char *path,int line_no,char **tokens,int count,World *w)
 {
+    if(!strcmp(tokens[1],GRID_CARD_CAPABILITY)){grid_card_scene_required=true;return true;}
     if(!strcmp(tokens[1],SP_CAPABILITY)){sp_scene_required=true;return true;}
     if(!strcmp(tokens[1],FS_CAPABILITY)){fs_scene_required=true;return true;}
     if(!strcmp(tokens[1],"engineering-spec/1"))fs_scene_engineering=true;

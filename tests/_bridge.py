@@ -7,7 +7,7 @@ JSON line -> stop".  This module is the one copy.
     path = _bridge.find_bridge()         # unittest.SkipTest (with a how-to-build hint) when there is no trustworthy exe
     with _bridge.BridgeSession() as s:   # or BridgeSession(path); s.command('reset') -> parsed JSON (s.send is an alias)
         s.line('surface 1 ...')          # == s.command('line surface 1 ...')
-    p = _bridge.run_once('reset\\ndump\\n')  # one-shot batch (stdin in, CompletedProcess out)
+    p = _bridge.run_once('reset\\ndump\\n')  # one-shot batch (stdin in, CompletedProcess out; BridgeClosed if it died)
 
 Which exe (find_bridge), first match wins:
   1. $GEOMETRY_TEST_BRIDGE (run_all.py sets it to a fresh exe). Its sidecar and actual bytes must be fresh.
@@ -106,6 +106,28 @@ def _checked_explicit(value):
     return path
 
 
+class BridgeClosed(AssertionError):
+    """The bridge child died under the test (crash, abort, OOM kill, or an unexpected exit): a session's stdout hit
+    EOF while a reply was still owed, or a run_once() batch ended with an exit status other than 0.
+
+    It is still an AssertionError carrying the same message as before, so every existing caller, `assertRaises`
+    and unittest's failure/error split behaves exactly as it did (run_once's callers all assert exit status 0 right
+    after the call, so they still record a failure, one line earlier).  What it adds is the *structured* fact the
+    mutation oracle needs to tell "the mutated bridge died" from "an assertion about the bridge's answer failed"
+    (tests/bridge_mutation_oracle.py labels it, tests/mutation_bridge.py::classify reads the label):
+      bridge_closed  class-level marker, so the oracle recognises the type without importing this module
+                     (`tests._bridge` and `_bridge` would be two class objects);
+      returncode     the dead child's exit status; None when stdout closed but the child had not exited yet,
+                     i.e. its death is not established;
+      completed      run_once() only: the subprocess.CompletedProcess of the batch (stdout, stderr), else None."""
+    bridge_closed = True
+
+    def __init__(self, message, returncode=None, completed=None):
+        super().__init__(message)
+        self.returncode = returncode
+        self.completed = completed
+
+
 class BridgeSession:
     """One bridge child process speaking the line protocol: one command line in, one JSON line out.
 
@@ -117,6 +139,7 @@ class BridgeSession:
         self.bridge = _checked_explicit(bridge) if bridge is not None else find_bridge()
         self.stop_timeout = stop_timeout
         self._stopped = False
+        self._death_reported = False     # command() already raised BridgeClosed with an exit status
         self.stderr = tempfile.TemporaryFile(mode='w+b')
         try:
             self.process = subprocess.Popen([self.bridge], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -130,12 +153,30 @@ class BridgeSession:
         return self.stderr.read().decode('utf-8', errors='replace')
 
     def command(self, text):
-        self.process.stdin.write(text + '\n')
-        self.process.stdin.flush()
+        try:
+            self.process.stdin.write(text + '\n')
+            self.process.stdin.flush()
+        except OSError:
+            # BrokenPipeError / EINVAL: the child was already gone when the command was written.  Only a child that
+            # really has exited is "bridge closed"; any other write failure stays the OSError it was.
+            code = self._exit_status()
+            if code is None:
+                raise
+            self._death_reported = True
+            raise BridgeClosed('bridge closed: ' + self.stderr_text(), code) from None
         line = self.process.stdout.readline()
         if not line:
-            raise AssertionError('bridge closed: ' + self.stderr_text())
+            code = self._exit_status()      # reap first so stderr below is complete
+            self._death_reported = code is not None
+            raise BridgeClosed('bridge closed: ' + self.stderr_text(), code)
         return json.loads(line)
+
+    def _exit_status(self, timeout=5):
+        """Exit status of the child after its stdout closed; None when it is still running after `timeout` seconds."""
+        try:
+            return self.process.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            return None
 
     send = command
 
@@ -144,17 +185,33 @@ class BridgeSession:
         return self.command('line ' + text)
 
     def stop(self):
+        """Close stdin and reap the bridge.  The bridge's only orderly end is exit status 0 after EOF on stdin
+        (web_bridge.c `main`), so a child that ends by itself with any other status died under the test (a mutant
+        that crashes on EOF, an outside kill): that raises BridgeClosed with the status, exactly as a death during
+        command() does, unless command() already reported this death.  A child that had to be killed here (it hung)
+        says nothing about itself and raises nothing."""
         if self._stopped:
             return
         self._stopped = True
-        self.process.stdin.close()
+        code, stderr, failed = None, '', False
         try:
-            self.process.wait(timeout=self.stop_timeout)
-        except subprocess.TimeoutExpired:
-            self.process.kill()
-            self.process.wait()
-        self.process.stdout.close()
-        self.stderr.close()
+            try:
+                self.process.stdin.close()
+            except OSError:
+                pass    # the child already died and the pipe is broken: closing re-flushes a command nobody can read
+            try:
+                code = self.process.wait(timeout=self.stop_timeout)
+            except subprocess.TimeoutExpired:
+                self.process.kill()
+                self.process.wait()
+            failed = type(code) is int and code != 0       # (a mocked Popen hands back a non-int: no status, no death)
+            if failed:
+                stderr = self.stderr_text()
+        finally:
+            self.process.stdout.close()
+            self.stderr.close()
+        if failed and not self._death_reported:
+            raise BridgeClosed('bridge closed: exit status %d at stop: %s' % (code, stderr), code)
 
     close = stop
 
@@ -169,8 +226,18 @@ class BridgeSession:
 def run_once(data, *, text=True, timeout=20, bridge=None):
     """Feed all of `data` to a fresh bridge on stdin and collect everything (subprocess.CompletedProcess).
 
-    text=True: `data` is str, output decoded as UTF-8.  text=False: bytes in, bytes out (for deliberately invalid UTF-8)."""
+    text=True: `data` is str, output decoded as UTF-8.  text=False: bytes in, bytes out (for deliberately invalid UTF-8).
+
+    The bridge's only orderly end is exit status 0 after EOF on stdin (web_bridge.c `main`).  Any other status means it
+    died before finishing the batch (crash, abort, exit(), an outside kill), so it raises BridgeClosed with that status
+    and the CompletedProcess, as a session whose bridge dies does: a test asserting on the output of a dead bridge
+    must not read as an assertion about its answers (tests/bridge_mutation_oracle.py).  A bridge that exits 0 early
+    cannot be told apart from one that answered less, so status 0 is returned as before."""
     kwargs = dict(input=data, capture_output=True, timeout=timeout)
     if text:
         kwargs.update(text=True, encoding='utf-8')
-    return subprocess.run([_checked_explicit(bridge) if bridge is not None else find_bridge()], **kwargs)
+    p = subprocess.run([_checked_explicit(bridge) if bridge is not None else find_bridge()], **kwargs)
+    if type(p.returncode) is int and p.returncode != 0:
+        stderr = p.stderr.decode('utf-8', errors='replace') if isinstance(p.stderr, bytes) else (p.stderr or '')
+        raise BridgeClosed('bridge closed: exit status %d: %s' % (p.returncode, stderr), p.returncode, completed=p)
+    return p

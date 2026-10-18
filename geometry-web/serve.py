@@ -88,6 +88,10 @@ from native_context import NativeContext
 
 BRIDGE_TIMEOUT = 30.0
 MAX_RECEIPTS = 256
+# Ids sealed by an early receipt lookup are kept apart from unacknowledged results
+# and only ever hold the id. They are never evicted or acknowledged away: a late
+# command carrying a sealed id must stay unexecuted (I64/I67 recover by receipt).
+MAX_SEALED_RECEIPTS = 4096
 root_context = wait_trace.native(NativeContext(BRIDGE_CMD))
 request_context = threading.local()
 scenario_contexts = {}
@@ -180,6 +184,8 @@ def recorded_api(data):
     Clients acknowledge received results on their next request. A lookup arriving
     before its command seals that id as cancelled, so a late command cannot run.
     Unacknowledged results are bounded; capacity failure never reaches the core.
+    Sealed ids live in their own id-only set with a separate bound: an ack never
+    clears one, nothing evicts one, and they never use the result capacity.
     """
     native = current_native_context()
     request_id = data.get("receipt", data.get("requestId"))
@@ -192,19 +198,26 @@ def recorded_api(data):
         return err_json("操作結果仍在處理，請稍後重試。")
     try:
         for ack in data.get("ack", [])[:MAX_RECEIPTS]:
-            if isinstance(ack, str) and native.api_receipts.get(ack, (None,))[0] is not None:
+            # Only bound results are acknowledgeable; api_sealed is deliberately untouched.
+            if isinstance(ack, str):
                 native.api_receipts.pop(ack, None)
-        cached = native.api_receipts.get(request_id)
-        if cached is None:
-            if len(native.api_receipts) >= MAX_RECEIPTS:
-                return err_json("未確認的操作結果過多，已暫停新增操作。")
-            if "receipt" in data:
-                cached = (None, err_json("操作未送達，場景未變更；請重新操作。"))
-            else:
-                cached = (data["cmd"], ask_bridge(data["cmd"]))
-            native.api_receipts[request_id] = cached
-        elif "receipt" not in data and cached[0] not in (None, data["cmd"]):
-            return err_json("同一操作識別不得用於不同指令。")
+        if request_id in native.api_sealed:
+            cached = (None, err_json("操作未送達，場景未變更；請重新操作。"))
+        else:
+            cached = native.api_receipts.get(request_id)
+            if cached is None:
+                if len(native.api_receipts) >= MAX_RECEIPTS:
+                    return err_json("未確認的操作結果過多，已暫停新增操作。")
+                if "receipt" in data:
+                    if len(native.api_sealed) >= MAX_SEALED_RECEIPTS:
+                        return err_json("早查詢封存項已達上限，已暫停新增查詢；本次查詢未被受理，不能據此推定操作結果。")
+                    native.api_sealed.add(request_id)
+                    cached = (None, err_json("操作未送達，場景未變更；請重新操作。"))
+                else:
+                    cached = (data["cmd"], ask_bridge(data["cmd"]))
+                    native.api_receipts[request_id] = cached
+            elif "receipt" not in data and cached[0] != data["cmd"]:
+                return err_json("同一操作識別不得用於不同指令。")
         if "receipt" in data:
             return json.dumps({"ok": True, "result": json.loads(cached[1])}, ensure_ascii=False).encode("utf-8")
         return cached[1]
