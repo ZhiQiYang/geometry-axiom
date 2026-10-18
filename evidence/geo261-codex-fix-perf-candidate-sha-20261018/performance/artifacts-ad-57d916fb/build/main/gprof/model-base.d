@@ -1,0 +1,36 @@
+/workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/build/main/gprof/model-base: \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/model_base.c \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../current_geometry.c \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/reference_types.h \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/parameter_types.h \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/engineering_types.h \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/assembly_types.h \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/section_profile_types.h \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/finish_surface_types.h \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/panel_layout_math.h \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/grid_lattice.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/subgrids.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/subgrid_world.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/grid_systems.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/subgrid_commands.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/parameters.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/engineering_json.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/references.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/engineering.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/boundary_vertex_keys.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/grid_bindings.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/grid_subdivision.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/grid_subdivision_query.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/engineering_commands.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/assembly.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/assembly_generation.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/section_profiles.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/section_profile_placement.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/section_profile_validation.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/section_profile_conversion.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/finish_surfaces.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/panel_fill_layout.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/derived_placements.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/panel_fill_support.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/subgrid_rebind.inc \
+ /workspace/geo261-validation-20261018/performance/artifacts-ad-57d916fb/sources/main-e980cb0d/geometry-core/../geometry-core/transactions.inc

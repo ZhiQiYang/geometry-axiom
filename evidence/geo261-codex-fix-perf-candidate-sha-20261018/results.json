@@ -1,0 +1,1060 @@
+{
+  "schema": "geo261-perf-candidate-sha-report/1",
+  "status": "已完成證據整理，待審查與發布；bridge_integrity 功能通過但 A/D 約 main 3.222 倍，未達 ≤2 倍門檻",
+  "fix_branch": "codex/geo261-fix-perf-candidate-sha-20261018",
+  "tested_ad_sha": "57d916fb1d2c980769c3438172849bb3a3f03c00",
+  "tested_a_only_sha": "dfb130e8ca725158afbba7cf15f58be13922d76c",
+  "baseline_tested_sha": "e64aa6359d600f43313ec9d7ba1112c465b6a40c",
+  "main_sha": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+  "baseline_report_commit": "d5423381bcdfa7c67366bedca92eb47a06209879",
+  "generated_utc": "2026-10-18T12:47:41.228983+00:00",
+  "baseline_references": [
+    {
+      "path": "evidence/geo261-codex-validation-20261018/performance/phase3-performance-report.md",
+      "commit": "d5423381bcdfa7c67366bedca92eb47a06209879",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/d5423381bcdfa7c67366bedca92eb47a06209879/evidence/geo261-codex-validation-20261018/performance/phase3-performance-report.md",
+      "bytes": 21079,
+      "sha256": "b11d40d1a63f96d7bf836390d8fbe0708931eee15769d5769dddc2fdc376fd7f"
+    },
+    {
+      "path": "evidence/geo261-codex-validation-20261018/performance/phase3-results.json",
+      "commit": "d5423381bcdfa7c67366bedca92eb47a06209879",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/d5423381bcdfa7c67366bedca92eb47a06209879/evidence/geo261-codex-validation-20261018/performance/phase3-results.json",
+      "bytes": 4242,
+      "sha256": "0c212930060c260133e1ecc9a5c472e90eac5ec39341fbfba36a8110dff90642"
+    },
+    {
+      "path": "evidence/geo261-codex-validation-20261018/performance/phase3-publication-inventory.json",
+      "commit": "d5423381bcdfa7c67366bedca92eb47a06209879",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/d5423381bcdfa7c67366bedca92eb47a06209879/evidence/geo261-codex-validation-20261018/performance/phase3-publication-inventory.json",
+      "bytes": 162723,
+      "sha256": "69211b8469b8c16ab5b216e1ed27e353eaa9b5bbc2d24969f39fcd002f90c74b"
+    },
+    {
+      "path": "evidence/geo261-codex-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/summary.json",
+      "commit": "d5423381bcdfa7c67366bedca92eb47a06209879",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/d5423381bcdfa7c67366bedca92eb47a06209879/evidence/geo261-codex-validation-20261018/performance/artifacts/runs/20261018T200850689427-normal/summary.json",
+      "bytes": 7928,
+      "sha256": "3770e6c06db595015571cf3a2fd67917bb41e1cc38136ca3c7f9cf5f30e458d5"
+    },
+    {
+      "path": "evidence/geo261-codex-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/summary.json",
+      "commit": "d5423381bcdfa7c67366bedca92eb47a06209879",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/d5423381bcdfa7c67366bedca92eb47a06209879/evidence/geo261-codex-validation-20261018/performance/artifacts/runs/20261018T201033419459-gprof/summary.json",
+      "bytes": 7832,
+      "sha256": "937acccf39c27c367655e83ae0d9026ffd07836c028a5a7e3b5ef759d3b27b03"
+    }
+  ],
+  "test_stages": [
+    {
+      "id": "after-a-initial",
+      "source_sha": "1492606c4efd985f70b4786e46205369f0183c72",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_candidate_deferred_sha",
+        "tests.test_geo261_deferred_candidate",
+        "tests.test_geo261_deferred_product"
+      ],
+      "utc_start": "2026-10-18T12:14:46.267216+00:00",
+      "utc_end": "2026-10-18T12:14:58.005877+00:00",
+      "wall_seconds": 11.738665947999834,
+      "unittest_seconds": 11.569,
+      "exit_code": 1,
+      "timed_out": false,
+      "interrupted": false,
+      "method_count": 67,
+      "passed_methods": 64,
+      "failed_methods": 3,
+      "failed_subtests": 0,
+      "runner_original_suite_rows": [],
+      "raw_assertion_lines": [
+        "AssertionError: '' != 'I8a preview 1: valid; confirm token to ap[332 chars]]}\\n'",
+        "AssertionError: '' != 'I8a preview 1: valid; confirm token to ap[332 chars]]}\\n'",
+        "AssertionError: '' != 'I8a preview 1: valid; confirm token to ap[332 chars]]}\\n'"
+      ],
+      "evidence": [
+        {
+          "relative_path": "after-a-initial/command.process.json",
+          "bytes": 1173,
+          "sha256": "2b9ac8b15e5926370c7a62a8e61e488035ee50d4aafb1a243e748312090424f7"
+        },
+        {
+          "relative_path": "after-a-initial/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "after-a-initial/command.stderr",
+          "bytes": 16162,
+          "sha256": "7e0fe12b09d9eef09a8a71234993b5470cca638cf7ef704c2cbcc7631e50911e"
+        },
+        {
+          "relative_path": "after-a-initial/receipt.json",
+          "bytes": 13531,
+          "sha256": "d068f09f55d89fa33f8dc6ffca1a7e71f4b0d70886f3c1b81f5574d622c6070e"
+        }
+      ],
+      "recorder_source_stable": true,
+      "recorder_head_stable": true,
+      "recorder_status_and_diff_stable": true,
+      "classification": "3 個新增 product 測試錯把合法 I8a stderr 預期為空；產品 native 正控制 exit 0 已先通過"
+    },
+    {
+      "id": "product-after-oracle-correction",
+      "source_sha": "dfb130e8ca725158afbba7cf15f58be13922d76c",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_deferred_product"
+      ],
+      "utc_start": "2026-10-18T12:16:23.278603+00:00",
+      "utc_end": "2026-10-18T12:16:30.182182+00:00",
+      "wall_seconds": 6.903586415000973,
+      "unittest_seconds": 6.748,
+      "exit_code": 0,
+      "timed_out": false,
+      "interrupted": false,
+      "method_count": 4,
+      "passed_methods": 4,
+      "failed_methods": 0,
+      "failed_subtests": 0,
+      "runner_original_suite_rows": [],
+      "raw_assertion_lines": [],
+      "evidence": [
+        {
+          "relative_path": "product-after-oracle-correction/command.process.json",
+          "bytes": 1077,
+          "sha256": "4bd1b2c1005060c08773dac26fbd981a3f75e7f8c0a211172015113b32240254"
+        },
+        {
+          "relative_path": "product-after-oracle-correction/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "product-after-oracle-correction/command.stderr",
+          "bytes": 880,
+          "sha256": "e8c1ce0395a2867595f178ce88d9244827c2985506c3636f3f2619a4702a687e"
+        },
+        {
+          "relative_path": "product-after-oracle-correction/receipt.json",
+          "bytes": 13384,
+          "sha256": "556478dcc5632bd806a873289ed06ee26ab4efd70af3167727fad3b348fd9d3a"
+        }
+      ],
+      "recorder_source_stable": true,
+      "recorder_head_stable": true,
+      "recorder_status_and_diff_stable": true,
+      "classification": "所選範圍通過；不外推完整驗收"
+    },
+    {
+      "id": "original-candidate-regressions",
+      "source_sha": "dfb130e8ca725158afbba7cf15f58be13922d76c",
+      "argv": [
+        "python3",
+        "-B",
+        "tests/run_all.py",
+        "--only",
+        "py:test_geo261_candidate_cache",
+        "--only",
+        "py:test_geo261_native_candidate",
+        "--only",
+        "py:test_geo261_host_candidate",
+        "--only",
+        "py:test_geo261_candidate_product",
+        "--only",
+        "py:test_geo261_staged_candidate_graph"
+      ],
+      "utc_start": "2026-10-18T12:17:22.540481+00:00",
+      "utc_end": "2026-10-18T12:17:58.745444+00:00",
+      "wall_seconds": 36.2050231860012,
+      "unittest_seconds": null,
+      "exit_code": 0,
+      "timed_out": false,
+      "interrupted": false,
+      "method_count": 70,
+      "passed_methods": 70,
+      "failed_methods": 0,
+      "failed_subtests": 0,
+      "runner_original_suite_rows": [
+        "py:test_geo261_candidate_cache             18    18     0     0   5.7",
+        "py:test_geo261_candidate_product           11    11     0     0  14.2",
+        "py:test_geo261_host_candidate              17    17     0     0   4.4",
+        "py:test_geo261_native_candidate            17    17     0     0   4.1",
+        "py:test_geo261_staged_candidate_graph       7     7     0     0   7.4"
+      ],
+      "raw_assertion_lines": [],
+      "evidence": [
+        {
+          "relative_path": "original-candidate-regressions/command.process.json",
+          "bytes": 1293,
+          "sha256": "aa6fc04fed4a31cbef537ee32ed92e589778b2adec4f07abb6fdfb3d80821d40"
+        },
+        {
+          "relative_path": "original-candidate-regressions/command.stdout",
+          "bytes": 7043,
+          "sha256": "39121181c80d012a556767c5ed9c2aa58319f46b8064dace5022923dc0f5ed23"
+        },
+        {
+          "relative_path": "original-candidate-regressions/command.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "original-candidate-regressions/receipt.json",
+          "bytes": 18534,
+          "sha256": "3255f29ecf4659a15c236b7acfaa615b0d148d9e056ac12505b88fc84dd535d0"
+        }
+      ],
+      "recorder_source_stable": true,
+      "recorder_head_stable": true,
+      "recorder_status_and_diff_stable": true,
+      "classification": "所選範圍通過；不外推完整驗收"
+    },
+    {
+      "id": "withdraw-both-policies",
+      "source_sha": "c00c9fc0f68dd6744f6d3228169b8076e65c5591",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_deferred_candidate.NativeDeferredCandidate.test_create_and_bind_cost_assertions_are_separate"
+      ],
+      "utc_start": "2026-10-18T12:19:16.044554+00:00",
+      "utc_end": "2026-10-18T12:19:20.799354+00:00",
+      "wall_seconds": 4.75480456600053,
+      "unittest_seconds": 4.6,
+      "exit_code": 1,
+      "timed_out": false,
+      "interrupted": false,
+      "method_count": 1,
+      "passed_methods": 0,
+      "failed_methods": 1,
+      "failed_subtests": 2,
+      "runner_original_suite_rows": [],
+      "raw_assertion_lines": [
+        "AssertionError: 0 != 1 : ASSERT:deferred-create-no-sha line=493 expr=deferred?host_count==mark:host_count==mark+1&&h_input(mark,f.before,f.original)",
+        "AssertionError: 0 != 1 : ASSERT:deferred-bind-skips-state-sha line=501 expr=kernel_counts(0,0,0)"
+      ],
+      "evidence": [
+        {
+          "relative_path": "withdraw-both-policies/command.process.json",
+          "bytes": 1153,
+          "sha256": "0a83cf9265e2b4f13e1b25b5ee77abb12f7eb6f6b28e1641590e5482cd1aa940"
+        },
+        {
+          "relative_path": "withdraw-both-policies/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "withdraw-both-policies/command.stderr",
+          "bytes": 2306,
+          "sha256": "7b175f049a53a29f341754ed76707b413b6eb9c4ef2798d26f65d19031d007b5"
+        },
+        {
+          "relative_path": "withdraw-both-policies/receipt.json",
+          "bytes": 13510,
+          "sha256": "b306da8c4265a10ed230d1f693325d22704818f9b62c0ddd3bfcb9c6ab9b42db"
+        }
+      ],
+      "recorder_source_stable": true,
+      "recorder_head_stable": true,
+      "recorder_status_and_diff_stable": true,
+      "classification": "有意撤回兩 policy 的成本負控；1 個方法、2 個子測試真紅，不是產品新缺陷"
+    },
+    {
+      "id": "restored-cost-guards",
+      "source_sha": "dfb130e8ca725158afbba7cf15f58be13922d76c",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_deferred_candidate.NativeDeferredCandidate.test_create_and_bind_cost_assertions_are_separate"
+      ],
+      "utc_start": "2026-10-18T12:19:57.378895+00:00",
+      "utc_end": "2026-10-18T12:20:01.506289+00:00",
+      "wall_seconds": 4.127363049999985,
+      "unittest_seconds": 3.922,
+      "exit_code": 0,
+      "timed_out": false,
+      "interrupted": false,
+      "method_count": 1,
+      "passed_methods": 1,
+      "failed_methods": 0,
+      "failed_subtests": 0,
+      "runner_original_suite_rows": [],
+      "raw_assertion_lines": [],
+      "evidence": [
+        {
+          "relative_path": "restored-cost-guards/command.process.json",
+          "bytes": 1153,
+          "sha256": "95a25083fe55dc717452b0f93e35fd96b8d35aab64f29818e6ff4d53acb8c91a"
+        },
+        {
+          "relative_path": "restored-cost-guards/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "restored-cost-guards/command.stderr",
+          "bytes": 267,
+          "sha256": "021f6800239c847d0232c0ac297a9a11a0f8feb7f5ad76b888f3ff3087272cd8"
+        },
+        {
+          "relative_path": "restored-cost-guards/receipt.json",
+          "bytes": 13503,
+          "sha256": "c722a5c1589a58faaf0df6ddc9784479df625deca43bfff2128b46b0ab1c15fa"
+        }
+      ],
+      "recorder_source_stable": true,
+      "recorder_head_stable": true,
+      "recorder_status_and_diff_stable": true,
+      "classification": "所選範圍通過；不外推完整驗收"
+    },
+    {
+      "id": "before-d",
+      "source_sha": "169f1849142e4dac35aadd0108430adce97c6aaf",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_deferred_product.DeferredProduct.test_direct_world_publish_has_one_host_two_kernel_and_two_metadata_checks"
+      ],
+      "utc_start": "2026-10-18T12:28:56.708783+00:00",
+      "utc_end": "2026-10-18T12:29:02.789899+00:00",
+      "wall_seconds": 6.081148179999218,
+      "unittest_seconds": 5.89,
+      "exit_code": 1,
+      "timed_out": false,
+      "interrupted": false,
+      "method_count": 1,
+      "passed_methods": 0,
+      "failed_methods": 1,
+      "failed_subtests": 0,
+      "native_control_results": [],
+      "evidence": [
+        {
+          "relative_path": "before-d/command.process.json",
+          "bytes": 1168,
+          "sha256": "0d3617f08cc4c63e2fafb0cb6100daeb1df1c33104bbc6a89f212533bc2bf1a6"
+        },
+        {
+          "relative_path": "before-d/command.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "relative_path": "before-d/command.stderr",
+          "bytes": 1506,
+          "sha256": "09a1ae2eb9b475913e5470f22c5bb329221ab780862729c71303621478e0dce6"
+        },
+        {
+          "relative_path": "before-d/receipt.json",
+          "bytes": 13491,
+          "sha256": "044a5ea5f9f72e3179bcbcb98d46a5f288dacbf5aade2a9ab384f716854fe4ee"
+        }
+      ],
+      "recorder_source_stable": true,
+      "recorder_head_stable": true,
+      "recorder_status_and_diff_stable": true,
+      "classification": "只加入 D 測試、產品仍無 D；真 direct 成本斷言轉紅"
+    },
+    {
+      "id": "after-ad",
+      "source_sha": "57d916fb1d2c980769c3438172849bb3a3f03c00",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_geo261_candidate_deferred_sha",
+        "tests.test_geo261_deferred_candidate",
+        "tests.test_geo261_deferred_product"
+      ],
+      "utc_start": "2026-10-18T12:29:12.915232+00:00",
+      "utc_end": "2026-10-18T12:29:42.398545+00:00",
+      "wall_seconds": 29.48335244900045,
+      "unittest_seconds": 29.261,
+      "exit_code": 0,
+      "timed_out": false,
+      "interrupted": false,
+      "method_count": 73,
+      "passed_methods": 73,
+      "failed_methods": 0,
+      "failed_subtests": 0,
+      "native_control_results": [
+        {
+          "assertion": "publish-host-after-tamper-rejected",
+          "argv": [
+            "/tmp/geometry-tests/geo261-n1a-lyir_280/direct-world-no-host-publish-guard",
+            "direct-host-after",
+            "/tmp/geometry-tests/geo261-n1a-lyir_280/deferred-product.scene"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "I8a preview 1: valid; confirm token to apply\n timber 1 center 20 -> 20 length 1000 -> 1000\n  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]\n guide 1: surface 1 u=500 world [500,0,0] direction [0,1,0] -> surface 1 u=600 world [600,0,0] direction [0,1,0]\n visible: {[500,0]-[500,1000]} -> {[600,0]-[600,1000]}\nASSERT:publish-host-after-tamper-rejected\n"
+        },
+        {
+          "assertion": "publish-operation-tamper-rejected",
+          "argv": [
+            "/tmp/geometry-tests/geo261-n1a-lyir_280/direct-world-no-operation-guard",
+            "direct-operation-keyed",
+            "/tmp/geometry-tests/geo261-n1a-lyir_280/deferred-product.scene"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "I8a preview 1: valid; confirm token to apply\n timber 1 center 20 -> 20 length 1000 -> 1000\n  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]\n guide 1: surface 1 u=500 world [500,0,0] direction [0,1,0] -> surface 1 u=600 world [600,0,0] direction [0,1,0]\n visible: {[500,0]-[500,1000]} -> {[600,0]-[600,1000]}\nASSERT:publish-operation-tamper-rejected\n"
+        },
+        {
+          "assertion": "publish-single-host-check",
+          "argv": [
+            "/tmp/geometry-tests/geo261-n1a-lyir_280/direct-world-withdraw-d",
+            "direct-cost",
+            "/tmp/geometry-tests/geo261-n1a-lyir_280/deferred-product.scene"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "I8a preview 1: valid; confirm token to apply\n timber 1 center 20 -> 20 length 1000 -> 1000\n  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]\n guide 1: surface 1 u=500 world [500,0,0] direction [0,1,0] -> surface 1 u=600 world [600,0,0] direction [0,1,0]\n visible: {[500,0]-[500,1000]} -> {[600,0]-[600,1000]}\nASSERT:publish-single-host-check\n"
+        }
+      ],
+      "evidence": [
+        {
+          "relative_path": "after-ad/command.process.json",
+          "bytes": 1174,
+          "sha256": "d330796b3cf49b575ec495eeeac1c39f9505a5bfed5644be5cc3eaed1b0e310d"
+        },
+        {
+          "relative_path": "after-ad/command.stdout",
+          "bytes": 2083,
+          "sha256": "b47ae42c33c7b0ba687019f5788b3e6060fa6f22dcb74000a099c1c17887fbc4"
+        },
+        {
+          "relative_path": "after-ad/command.stderr",
+          "bytes": 13791,
+          "sha256": "1daf8fc807c68559e5767531f924861b6bb6d3ea0b28983256a69c1e8d93177e"
+        },
+        {
+          "relative_path": "after-ad/receipt.json",
+          "bytes": 13507,
+          "sha256": "97b20e1e3f5021f6556c155d82b5bce779679a85b81d8c9d8d73188b1f2314b3"
+        }
+      ],
+      "recorder_source_stable": true,
+      "recorder_head_stable": true,
+      "recorder_status_and_diff_stable": true,
+      "classification": "A+D 三套共73方法單次全過；內含三個真子程序預期 exit1 負控及其恢復正控制"
+    }
+  ],
+  "normal_measurements": [
+    {
+      "workload": "bridge-cold",
+      "phase": "cold_start_dump",
+      "count": 7,
+      "e64_median_seconds": 1.09169284,
+      "a_median_seconds": 0.194082244,
+      "ad_median_seconds": 0.184419345,
+      "e64_over_ad": 5.919622152437425,
+      "ad_over_paired_main": 3.650513118437263
+    },
+    {
+      "workload": "bridge-resident",
+      "phase": "reset",
+      "count": 15,
+      "e64_median_seconds": 0.080577859,
+      "a_median_seconds": 0.009601189,
+      "ad_median_seconds": 0.00789832,
+      "e64_over_ad": 10.201898504998532,
+      "ad_over_paired_main": 13.10604715529987
+    },
+    {
+      "workload": "bridge-resident",
+      "phase": "load_scene",
+      "count": 15,
+      "e64_median_seconds": 0.831183345,
+      "a_median_seconds": 0.097292068,
+      "ad_median_seconds": 0.092893289,
+      "e64_over_ad": 8.947722208436392,
+      "ad_over_paired_main": 3.4226606303618343
+    },
+    {
+      "workload": "bridge-resident",
+      "phase": "read_dump",
+      "count": 15,
+      "e64_median_seconds": 0.000607877,
+      "a_median_seconds": 0.000551956,
+      "ad_median_seconds": 0.000599598,
+      "e64_over_ad": 1.0138075844148913,
+      "ad_over_paired_main": 0.3493385209927167
+    },
+    {
+      "workload": "bridge-resident",
+      "phase": "canvas_position",
+      "count": 15,
+      "e64_median_seconds": 0.081933163,
+      "a_median_seconds": 0.008803277,
+      "ad_median_seconds": 0.007646384,
+      "e64_over_ad": 10.715282282448802,
+      "ad_over_paired_main": 2.8257178407810506
+    },
+    {
+      "workload": "bridge-resident",
+      "phase": "unused_spec_create",
+      "count": 15,
+      "e64_median_seconds": 0.086642544,
+      "a_median_seconds": 0.011550034,
+      "ad_median_seconds": 0.010884087,
+      "e64_over_ad": 7.960478816459295,
+      "ad_over_paired_main": 2.3569241130205807
+    },
+    {
+      "workload": "bridge-resident",
+      "phase": "unused_spec_replace",
+      "count": 15,
+      "e64_median_seconds": 0.081760618,
+      "a_median_seconds": 0.011460154,
+      "ad_median_seconds": 0.010883147,
+      "e64_over_ad": 7.512589694874102,
+      "ad_over_paired_main": 3.344578171813051
+    },
+    {
+      "workload": "bridge-resident",
+      "phase": "preview_spec",
+      "count": 15,
+      "e64_median_seconds": 0.081039979,
+      "a_median_seconds": 0.006651659,
+      "ad_median_seconds": 0.007212722,
+      "e64_over_ad": 11.23569978158038,
+      "ad_over_paired_main": 2.169096832419158
+    },
+    {
+      "workload": "bridge-resident",
+      "phase": "cancel_preview",
+      "count": 15,
+      "e64_median_seconds": 0.038825826,
+      "a_median_seconds": 0.003219952,
+      "ad_median_seconds": 0.003356491,
+      "e64_over_ad": 11.567385701317239,
+      "ad_over_paired_main": 8.745143455650163
+    },
+    {
+      "workload": "bridge-resident",
+      "phase": "read_final_dump",
+      "count": 15,
+      "e64_median_seconds": 0.000733131,
+      "a_median_seconds": 0.000637776,
+      "ad_median_seconds": 0.000567131,
+      "e64_over_ad": 1.2927013335543287,
+      "ad_over_paired_main": 1.2566524042605522
+    },
+    {
+      "workload": "model-legacy",
+      "phase": "process_total",
+      "count": 7,
+      "e64_median_seconds": 0.878460495,
+      "a_median_seconds": 0.1835797,
+      "ad_median_seconds": 0.170291754,
+      "e64_over_ad": 5.158561553133102,
+      "ad_over_paired_main": 3.643588561205367
+    },
+    {
+      "workload": "model-neutral",
+      "phase": "process_total",
+      "count": 7,
+      "e64_median_seconds": 0.899644327,
+      "a_median_seconds": 0.178402544,
+      "ad_median_seconds": 0.163509093,
+      "e64_over_ad": 5.502105788086048,
+      "ad_over_paired_main": null
+    }
+  ],
+  "run_receipts": {
+    "a": {
+      "path": "performance/artifacts-a-dfb130e8/runs/20261018T202803818534-normal",
+      "source_pins": {
+        "main": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+        "integration": "dfb130e8ca725158afbba7cf15f58be13922d76c"
+      },
+      "complete": true,
+      "samples": 305,
+      "bridge_responses": 288,
+      "model_outputs": 21,
+      "cold_repeats": 7,
+      "rounds": 15,
+      "model_repeats": 7,
+      "stack_bytes": 16777216,
+      "script_sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b",
+      "gmon_count": 0,
+      "profile": false
+    },
+    "ad": {
+      "path": "performance/artifacts-ad-57d916fb/runs/20261018T203438052503-normal",
+      "source_pins": {
+        "main": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+        "integration": "57d916fb1d2c980769c3438172849bb3a3f03c00"
+      },
+      "complete": true,
+      "samples": 305,
+      "bridge_responses": 288,
+      "model_outputs": 21,
+      "cold_repeats": 7,
+      "rounds": 15,
+      "model_repeats": 7,
+      "stack_bytes": 16777216,
+      "script_sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b",
+      "gmon_count": 0,
+      "profile": false
+    },
+    "ad_gprof": {
+      "path": "performance/artifacts-ad-57d916fb/runs/20261018T203445910138-gprof",
+      "source_pins": {
+        "main": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+        "integration": "57d916fb1d2c980769c3438172849bb3a3f03c00"
+      },
+      "complete": true,
+      "samples": 305,
+      "bridge_responses": 288,
+      "model_outputs": 21,
+      "cold_repeats": 7,
+      "rounds": 15,
+      "model_repeats": 7,
+      "stack_bytes": 16777216,
+      "script_sha256": "46b806df559fc54fe8d00ebab2a342f4eef5506dc8c241e74306e32b3f1dff7b",
+      "gmon_count": 37,
+      "profile": true
+    }
+  },
+  "microbenchmark": {
+    "e64": {
+      "source_sha": "e64aa6359d600f43313ec9d7ba1112c465b6a40c",
+      "sha": {
+        "world": {
+          "bytes_per_call": 4759192,
+          "completed_calls": 11,
+          "total_input_bytes": 52351112,
+          "wall_s": 0.24433421,
+          "process_cpu_s": 0.244265873,
+          "wall_MB_per_s": 214.26026261324603,
+          "process_cpu_MB_per_s": 214.3202050988105
+        },
+        "version_store": {
+          "bytes_per_call": 535560,
+          "completed_calls": 11,
+          "total_input_bytes": 5891160,
+          "wall_s": 0.026986695,
+          "process_cpu_s": 0.026980715,
+          "wall_MB_per_s": 218.29868385143124,
+          "process_cpu_MB_per_s": 218.34706752582355
+        }
+      },
+      "candidate": {
+        "create_and_9_bind": {
+          "wall_ms_per_candidate": {
+            "mean": 37.64284722222222,
+            "median": 37.366800999999995,
+            "min": 36.048296,
+            "max": 40.931273
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 37.641181777777774,
+            "median": 37.367861000000005,
+            "min": 36.048525999999995,
+            "max": 40.932137
+          }
+        },
+        "noop_evaluate": {
+          "wall_ms_per_candidate": {
+            "mean": 36.42022544444445,
+            "median": 36.185806,
+            "min": 33.493918,
+            "max": 41.915468
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 36.41622944444445,
+            "median": 36.184248000000004,
+            "min": 33.492687000000004,
+            "max": 41.91302
+          }
+        },
+        "seal": {
+          "wall_ms_per_candidate": {
+            "mean": 1.2372311111111112,
+            "median": 1.191139,
+            "min": 0.991879,
+            "max": 1.837334
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 1.236070888888889,
+            "median": 1.189862,
+            "min": 0.9909420000000001,
+            "max": 1.836046
+          }
+        },
+        "publish": {
+          "wall_ms_per_candidate": {
+            "mean": 3.8406445555555555,
+            "median": 3.809687,
+            "min": 3.493223,
+            "max": 4.18049
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 3.839534222222222,
+            "median": 3.808638,
+            "min": 3.492287,
+            "max": 4.1794579999999995
+          }
+        },
+        "destroy": {
+          "wall_ms_per_candidate": {
+            "mean": 0.008412222222222222,
+            "median": 0.008209999999999999,
+            "min": 0.007469999999999999,
+            "max": 0.009726
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 0.006782666666666667,
+            "median": 0.006717,
+            "min": 0.006085,
+            "max": 0.007730000000000001
+          }
+        },
+        "lifecycle_including_harness_checks": {
+          "wall_ms_per_candidate": {
+            "mean": 80.55238233333333,
+            "median": 80.11106899999999,
+            "min": 77.107118,
+            "max": 84.710522
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 80.55078866666666,
+            "median": 80.1021,
+            "min": 77.10079,
+            "max": 84.71393400000001
+          }
+        },
+        "completed_candidates": 9
+      }
+    },
+    "ad": {
+      "source_sha": "57d916fb1d2c980769c3438172849bb3a3f03c00",
+      "sha": {
+        "world": {
+          "bytes_per_call": 4759192,
+          "completed_calls": 11,
+          "total_input_bytes": 52351112,
+          "wall_s": 0.245019591,
+          "process_cpu_s": 0.24496421899999998,
+          "wall_MB_per_s": 213.66092313818285,
+          "process_cpu_MB_per_s": 213.70921930439158
+        },
+        "version_store": {
+          "bytes_per_call": 535560,
+          "completed_calls": 11,
+          "total_input_bytes": 5891160,
+          "wall_s": 0.029176108,
+          "process_cpu_s": 0.029144786,
+          "wall_MB_per_s": 201.91726737507278,
+          "process_cpu_MB_per_s": 202.13426854463782
+        }
+      },
+      "candidate": {
+        "create_and_9_bind": {
+          "wall_ms_per_candidate": {
+            "mean": 1.7083294444444443,
+            "median": 1.645257,
+            "min": 1.6112520000000001,
+            "max": 2.035386
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 1.707222888888889,
+            "median": 1.644147,
+            "min": 1.610192,
+            "max": 2.034071
+          }
+        },
+        "noop_evaluate": {
+          "wall_ms_per_candidate": {
+            "mean": 1.1441462222222223,
+            "median": 1.113204,
+            "min": 1.011906,
+            "max": 1.376905
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 1.1416232222222222,
+            "median": 1.110733,
+            "min": 1.009341,
+            "max": 1.374818
+          }
+        },
+        "seal": {
+          "wall_ms_per_candidate": {
+            "mean": 1.1502620000000001,
+            "median": 1.155433,
+            "min": 0.9667490000000001,
+            "max": 1.390232
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 1.1491584444444445,
+            "median": 1.15417,
+            "min": 0.965723,
+            "max": 1.388927
+          }
+        },
+        "publish": {
+          "wall_ms_per_candidate": {
+            "mean": 2.1729205555555553,
+            "median": 2.091532,
+            "min": 2.009511,
+            "max": 2.541181
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 2.171883111111111,
+            "median": 2.090423,
+            "min": 2.008459,
+            "max": 2.540067
+          }
+        },
+        "destroy": {
+          "wall_ms_per_candidate": {
+            "mean": 0.006863555555555556,
+            "median": 0.006972000000000001,
+            "min": 0.005464,
+            "max": 0.00799
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 0.005046333333333333,
+            "median": 0.005128,
+            "min": 0.004205,
+            "max": 0.005729
+          }
+        },
+        "lifecycle_including_harness_checks": {
+          "wall_ms_per_candidate": {
+            "mean": 7.299164,
+            "median": 7.321304,
+            "min": 6.74221,
+            "max": 7.78418
+          },
+          "process_cpu_ms_per_candidate": {
+            "mean": 7.2992318888888885,
+            "median": 7.321422999999999,
+            "min": 6.742243,
+            "max": 7.784295
+          }
+        },
+        "completed_candidates": 9
+      }
+    }
+  },
+  "bridge_integrity": {
+    "main": {
+      "status": "所選 suite 24/24 功能通過；效能另比較",
+      "source_sha": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+      "tests": 24,
+      "passed": 24,
+      "failed": 0,
+      "unittest_seconds": 33.819,
+      "suite_line": "py:test_bridge_integrity      24    24     0     0  34.0",
+      "suite_seconds_displayed": 34.0,
+      "outer_seconds": 51.22928455699912,
+      "exit_code": 0,
+      "timed_out": false,
+      "interrupted": false,
+      "command": [
+        "python3",
+        "-B",
+        "-u",
+        "tests/run_all.py",
+        "--build",
+        "--only",
+        "py:test_bridge_integrity"
+      ],
+      "started_utc": "2026-10-18T12:41:39.441551+00:00",
+      "ended_utc": "2026-10-18T12:42:30.670820+00:00",
+      "evidence": "performance/bridge-integrity-main"
+    },
+    "ad": {
+      "status": "所選 suite 24/24 功能通過；效能另比較",
+      "source_sha": "57d916fb1d2c980769c3438172849bb3a3f03c00",
+      "tests": 24,
+      "passed": 24,
+      "failed": 0,
+      "unittest_seconds": 108.959,
+      "suite_line": "py:test_bridge_integrity      24    24     0     0  109.2",
+      "suite_seconds_displayed": 109.2,
+      "outer_seconds": 135.8453687860001,
+      "exit_code": 0,
+      "timed_out": false,
+      "interrupted": false,
+      "command": [
+        "python3",
+        "-B",
+        "-u",
+        "tests/run_all.py",
+        "--build",
+        "--only",
+        "py:test_bridge_integrity"
+      ],
+      "started_utc": "2026-10-18T12:43:54.754846+00:00",
+      "ended_utc": "2026-10-18T12:46:10.599940+00:00",
+      "evidence": "performance/bridge-integrity-ad"
+    },
+    "ratio_ad_over_main_unittest": 3.2218279665276914,
+    "acceptance_max_ratio": 2,
+    "performance_accepted": false,
+    "test_source_identity": [
+      {
+        "path": "tests/test_bridge_integrity.py",
+        "main_sha256": "58e2536b657a77d0c1dbd5e3067e6e29bba4aa6007a42db7ae16096b08e34a1b",
+        "ad_sha256": "58e2536b657a77d0c1dbd5e3067e6e29bba4aa6007a42db7ae16096b08e34a1b",
+        "bytes_equal": true
+      },
+      {
+        "path": "tests/_bridge.py",
+        "main_sha256": "bb34d61a288772f9defa9136a58f9102effe40e6f325338ef2abc01862508df9",
+        "ad_sha256": "bb34d61a288772f9defa9136a58f9102effe40e6f325338ef2abc01862508df9",
+        "bytes_equal": true
+      }
+    ]
+  },
+  "source_references": [
+    {
+      "sha": "e64aa6359d600f43313ec9d7ba1112c465b6a40c",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/tree/e64aa6359d600f43313ec9d7ba1112c465b6a40c"
+    },
+    {
+      "sha": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/tree/e980cb0dbf39beb40f6f3002a9ffbc43ee38c425"
+    },
+    {
+      "sha": "dfb130e8ca725158afbba7cf15f58be13922d76c",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/tree/dfb130e8ca725158afbba7cf15f58be13922d76c"
+    },
+    {
+      "sha": "57d916fb1d2c980769c3438172849bb3a3f03c00",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/tree/57d916fb1d2c980769c3438172849bb3a3f03c00"
+    }
+  ],
+  "limitations": [
+    "e64→AD 也包含 1987af507c6f387d7986325da6c29b2ec6246944 guide 修正，不能把全部差額歸給單一 A/D 因子。",
+    "CLOCK_PROCESS_CPUTIME_ID 是處理程序 CPU 時間，不是 hardware cycles；CLOCK_MONOTONIC 為 wall 時間。",
+    "noop evaluator 保證 0 provider、0 node；不能代表幾何來源圖計算成本。",
+    "gprof 有插樁與取樣限制，不以其 elapsed 當效能退化倍率；libc memcpy/memcmp 等無可歸屬 self profile，0.00 不代表沒有成本。",
+    "A/D build-invocation 的 prepare_argv 曾因 list alias 誤記為 build；原檔與獨立 correction 並存，stdout 有 prepare 證據。",
+    "尚未以 A/D 重新完成全量非瀏覽器、六瀏覽器、Windows/MSVC/GDI 或完整舊包 UI/native 驗收。"
+  ],
+  "gprof_sha_block": {
+    "bridge-cold": {
+      "e64": {
+        "function": "geo_sha_block",
+        "self_seconds": 4.15,
+        "children_seconds": 0.0,
+        "inclusive_seconds": 4.15,
+        "calls": 15304751,
+        "direct_calls": 15304751,
+        "recursive_calls": 0
+      },
+      "ad": {
+        "function": "geo_sha_block",
+        "self_seconds": 0.0,
+        "children_seconds": 0.0,
+        "inclusive_seconds": 0.0,
+        "calls": 3794,
+        "direct_calls": 3794,
+        "recursive_calls": 0
+      }
+    },
+    "bridge-resident": {
+      "e64": {
+        "function": "geo_sha_block",
+        "self_seconds": 14.5,
+        "children_seconds": 0.0,
+        "inclusive_seconds": 14.5,
+        "calls": 53019413,
+        "direct_calls": 53019413,
+        "recursive_calls": 0
+      },
+      "ad": {
+        "function": "geo_sha_block",
+        "self_seconds": 0.0,
+        "children_seconds": 0.0,
+        "inclusive_seconds": 0.0,
+        "calls": 12842,
+        "direct_calls": 12842,
+        "recursive_calls": 0
+      }
+    },
+    "model-legacy": {
+      "e64": {
+        "function": "geo_sha_block",
+        "self_seconds": 4.32,
+        "children_seconds": 0.0,
+        "inclusive_seconds": 4.32,
+        "calls": 15304688,
+        "direct_calls": 15304688,
+        "recursive_calls": 0
+      },
+      "ad": {
+        "function": "geo_sha_block",
+        "self_seconds": 0.0,
+        "children_seconds": 0.0,
+        "inclusive_seconds": 0.0,
+        "calls": 3731,
+        "direct_calls": 3731,
+        "recursive_calls": 0
+      }
+    },
+    "model-neutral": {
+      "e64": {
+        "function": "geo_sha_block",
+        "self_seconds": 4.11,
+        "children_seconds": 0.0,
+        "inclusive_seconds": 4.11,
+        "calls": 15304814,
+        "direct_calls": 15304814,
+        "recursive_calls": 0
+      },
+      "ad": {
+        "function": "geo_sha_block",
+        "self_seconds": 0.0,
+        "children_seconds": 0.0,
+        "inclusive_seconds": 0.0,
+        "calls": 3857,
+        "direct_calls": 3857,
+        "recursive_calls": 0
+      }
+    }
+  },
+  "test_evidence_root": "tests",
+  "expected_counts": {
+    "new_methods": 73,
+    "new_suites": 3,
+    "updated": false,
+    "required_final_sequence": [
+      "ulimit -s 16384; python3 tests/run_all.py --build --update-expected",
+      "ulimit -s 16384; python3 tests/run_all.py --build"
+    ],
+    "status": "最終全部修正完成後才實跑更新，再普通 strict 全量；此分支不代表 CI 全綠"
+  },
+  "a_withdrawal": {
+    "source_sha": "c00c9fc0f68dd6744f6d3228169b8076e65c5591",
+    "pushed": false,
+    "scope": "本地真 commit；公開 dfb→c00 patch 與 commit 原件供重建",
+    "patch": "tests/A-withdrawal.patch",
+    "commit_object": "tests/A-withdrawal-commit.txt"
+  }
+}
