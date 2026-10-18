@@ -38,6 +38,8 @@ T27 = {"outer": [[0, 0], [3600, 0], [3600, 3000], [0, 3000]], "holes": [[[1793, 
 STEP20 = {"outer": [[0, 0], [4100, 0], [4100, 3680], [2600, 3680], [2600, 3700], [0, 3700]]}
 # 記號合成格長:深 3301,左上起鋪板長沿 Y,板端縫 1831,第二格 1831–3301 長 1470 = 367×4 + 2,餘數 2 mm,最後一支會碰到牆邊界材
 JIG1470 = RECT(2000, 3301)
+# 板端縫端餘數 < 27 的合成格:板長改 1468(縫距 1470),板端縫 1469、2939、4409;縫到縫那一格 1470 = 367×4 + 2,最後一支會碰到下一條縫的縫上副支
+JIGSEAM = dict(RECT(2000, 4500), params={"L": 1468})
 # 40 mm 牆階:牆階面 y 3660–3700 被 y=3700 牆的邊界材蓋掉 27 mm,只剩 13 mm,不放沿牆料
 #   (柱面是使用者 10-18 的決定,選項原文「不放(短於 27 一律不放)」;牆面比照是推論)
 STEP40 = {"outer": [[0, 0], [4100, 0], [4100, 3660], [2600, 3660], [2600, 3700], [0, 3700]]}
@@ -64,6 +66,12 @@ MUTANTS = [
     ("seam_centered", R["F1客廳"], "C1_OVERLAP", "板端縫副支一律置中、不貼著 RC 角材挪:撞到凹角邊界材", "左下起鋪,板長沿Y"),
     ("misalign_marks", R["F3次臥"], "C9_MARKS_NOT_ALIGNED", "第一支主支右側的記號副支整組偏 20 mm:兩側不對齊"),
     ("no_fill", R["F2主臥"], "C4_SPACING", "記號撞到壁柱邊界材拿掉後,不在旁邊補一支:間距超過上限", "左上起鋪,板長沿Y"),
+    ("shift_mark_rects", R["F3次臥"], "C12_MARK_OFF_JIG", "記號副支的矩形整排移 -8 mm、at 標籤不動:C12 要看實際位置"),
+    ("fill_relabel", R["F2主臥"], "C13_FILL_OFF_RULE", "把一支記號移 -8 mm 後改標 fill:fill 沒有貼著擋料", "左上起鋪,板長沿Y"),
+    ("fill_extra", R["F2主臥"], "C13_FILL_UNNEEDED", "在兩支記號中間憑空多放一支 fill:拿掉它間距也不超上限", "左上起鋪,板長沿Y"),
+    ("fill_double", R["F2主臥"], "C13_FILL_DOUBLED", "fill 改成貼著旁邊那支記號:雙拼", "左上起鋪,板長沿Y"),
+    ("no_seam_window", R["F1客廳"], "C4_SPACING", "縫上副支的範圍不受「與鄰近記號的間距上限」約束:為了對齊挪到 3151,與記號 3536 空檔 345", "右上起鋪,板長沿X"),
+    ("no_merge_seam_end", JIGSEAM, "C12_JIG_MARK_MISSING", "板端縫端不合併平分:1470 那格最後一支碰到下一條縫的縫上副支,掉了"),
     ("even_split", R["F3次臥"], "C12_MARK_OFF_JIG", "記號退回逐格均分(舊公式 m=⌈L/n⌉):F3 最後一格 1449 mm 用 363,不是同一治具 367"),
     ("no_merge_split", JIG1470, "C12_JIG_MARK_MISSING", "拿掉「最後一支記號碰到格端就合併平分」:1470 mm 那格的最後一支掉了,3117 沒有記號"),
     ("no_main_shift", R["F1客廳"], "C1_OVERLAP", "主支不平移:撞到內牆的沿牆角材", "右上起鋪,板長沿Y"),
@@ -182,12 +190,21 @@ for room_, tag_, cell_, want_ in (
         (R["F3次臥"], "F3 第一格 1831(牆到板端縫)", (3720, 5551), [4083, 4450, 4817, 5184]),
         (R["F1客廳"], "F1 第一格 1831", (0, 1831), [363, 730, 1097, 1464]),
         (R["F1客廳"], "F1 第二格 1832(板端縫到板端縫)", (1831, 3663), [2198, 2565, 2932, 3299]),
-        (JIG1470, "合成格 1470(餘數 2)", (1831, 3301), [2198, 2565, 2932, 3117])):
-    res = fo.build(room_, LT_Y, p)
+        (JIG1470, "合成格 1470(牆端,餘數 2)", (1831, 3301), [2198, 2565, 2932, 3117]),
+        (JIGSEAM, "合成格 1470(板端縫端,餘數 2)", (1469, 2939), [1836, 2203, 2570, 2755])):
+    pp_ = dict(p, **room_.get("params", {}))
+    res = fo.build(room_, LT_Y, pp_)
     got_ = sorted({t["at"] for t in res["timbers"] if t.get("role") == "mark" and cell_[0] < t["at"] < cell_[1]})
-    ok = got_ == want_ and not res["conflicts"] and not fo.check(res, p)
+    ok = got_ == want_ and not res["conflicts"] and not fo.check(res, pp_)
     failed |= not ok
     print(f"[{'綠' if ok else '錯!'}] 記號 {tag_} 左上 Y:要 {want_},實得 {got_}")
+# 縫上副支平移不再觸發補位:F1 右上 X 的板端縫 3169,貼內牆那幾跨被逼到 3146,其他跨要在 3156(與記號 3536、2802 各空 340),整個排法沒有 fill
+res = fo.build(R["F1客廳"], next(l for l in fo.LAYOUTS if fo.layout_name(l) == "右上起鋪,板長沿X"), p)
+seam_lo = sorted({fo.rng(t["rect"], res["b"])[0] for t in res["timbers"] if t.get("role") == "seam" and t.get("at") == 3169})
+nfill = sum(1 for t in res["timbers"] if t.get("role") == "fill")
+ok = seam_lo == [3146, 3156] and nfill == 0 and not res["conflicts"] and not fo.check(res, p)
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] 縫上副支受間距上限約束:F1 右上 X 板端縫 3169 的副支起點 {seam_lo}(要 [3146, 3156]),fill {nfill} 支(要 0)")
 # 剛好 min_piece 的料必須放(建構端兩處邊界:跨寬、柱面料切段),而且全部檢查通過
 res = fo.build(T27, LT_Y, p)
 fails = fo.check(res, p)
