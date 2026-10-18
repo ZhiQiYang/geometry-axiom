@@ -111,8 +111,30 @@ POST_APPROVAL_REVISIONS = (
                 "凹角處 primary 不得超出它貼的外牆（I22），延伸段側面以優先級 2 計、primary 端面不得頂它（I22、I19）；"),
         ),
     },
+    {
+        "id": "pr260-cd1",
+        "proposal": "PR #260 head ba7b60236d29061711edd5fb873acedebb2a4a87, geometry-core/axiom-clarify-20261016/PROPOSAL.md, LF SHA-256 833710a170a98583d112b1590de4117ac49b4654ea54679ca8749ebe8aa0da8c: C1-C2 (I23, R13 title parentheses), D1 (D31, R33 cardId -> parameterId)",
+        "approval": "稿中 C 區、D1 列為「已依定義處理，你不必決定，只需知道」；使用者尚未明確確認。"
+                    "decision 是待填的占位：確認記入決策佇列前，本修訂不算已採納，實際 SSOT 測試保持紅",
+        "decision": {"heading": "### （待記入）#260 C 區、D1 使用者確認 🔒",
+                     "answers": (("> （待記入：使用者確認 C 區、D1 的原話）", ("I23", "R13", "D31", "R33")),)},
+        "edits": (
+            ("I23",
+                "I23 網格引用的追溯與重算（2026-09-18 目的翻轉（分層契約）：",
+                "I23 網格引用的追溯與重算（2026-09-18 目的翻轉）（分層契約）："),
+            ("R13",
+                "R13 拆分時承載面輔助資料跟著含錨點的那片走（與 R10 同一條（分層契約）：",
+                "R13 拆分時承載面輔助資料跟著含錨點的那片走（與 R10 同一條「資料跟材料走」）（分層契約）："),
+            ("D31",
+                "參數卡保存獨立 id、顯示名稱、欄位及順序；每欄以 (cardId,fieldId) 為身分",
+                "參數卡保存獨立 id、顯示名稱、欄位及順序；每欄以 (parameterId,fieldId) 為身分"),
+            ("R33",
+                "核心契約（K）：參數候選以 (cardId,fieldId) 建立欄位依賴圖",
+                "核心契約（K）：參數候選以 (parameterId,fieldId) 建立欄位依賴圖"),
+        ),
+    },
 )
-CURRENT_HASH = "f10ef7ca8a4c1e5154fc705116f30be31e7d9374dd963b9f99d9c2268d34981c"
+CURRENT_HASH = "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d"
 
 
 def sha(raw):
