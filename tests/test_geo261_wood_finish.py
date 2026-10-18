@@ -19,6 +19,8 @@ from tests import _bridge
 from tests.test_geo261_native_kernel import native
 
 MODULE = ROOT / "geometry-templates/woodworking/native"
+THICKNESS_POLICY_ERROR = "I52: panel-fill thickness must be explicitly set positive integer mm in D1; no rounding"
+THICKNESS_SOURCE_ERROR = "I35: effective dimension violates its positive/nonnegative integer mm range"
 
 
 class FinishBoundary(unittest.TestCase):
@@ -151,7 +153,7 @@ class WoodFinish(unittest.TestCase):
                 self.assertIn("ASSERT:" + control[5], result.stderr)
                 self.assertEqual(0, self.case(control[4]).returncode)
 
-    def preview_fractional_thickness(self, exe, suffix):
+    def preview_panel_thickness(self, exe, suffix, *, thickness="9.5", expected_message=THICKNESS_POLICY_ERROR):
         build = native()
         with _bridge.BridgeSession(exe) as bridge:
             self.assertTrue(bridge.command("reset")["ok"])
@@ -174,7 +176,7 @@ class WoodFinish(unittest.TestCase):
                 return response["preview"]
 
             material = {"id": "pf-board", "version": 1, "name": "board", "kind": "panel",
-                        "width": 100, "length": 100, "thickness": "9.5"}
+                        "width": 100, "length": 100, "thickness": thickness}
             parameter = {"id": 90, "name": "threshold", "fields": [{"id": 1, "name": "X", "type": "dimension", "input": "8"}]}
             result = preview("engineering", [{"op": "publish-material", "value": material}, {"op": "put-parameter", "value": parameter}])
             self.assertTrue(result["valid"], result)
@@ -188,6 +190,7 @@ class WoodFinish(unittest.TestCase):
                     "origin": [0, 0], "gap": 3, "pattern": "straight", "threshold": {"parameterId": 90, "fieldId": 1}}
             before = snapshot()
             result = preview("panel-fill", [{"op": "put-panel-fill", "value": fill}])
+            self.assertEqual(expected_message is None, result["valid"], result)
             if result["valid"]:
                 self.assertTrue(bridge.command("panel-fill-confirm " + str(result["token"]))["ok"])
                 stored = bridge.command("panel-fill-read")["state"]["panelFills"][0]
@@ -197,15 +200,16 @@ class WoodFinish(unittest.TestCase):
                 violation = result["violations"][0]
                 self.assertEqual("INVALID", violation["status"])
                 self.assertEqual("PANEL_FILL_INVALID", violation["code"])
-                self.assertIn("thickness must be explicitly set positive integer mm in D1; no rounding", violation["message"])
+                self.assertEqual(expected_message, violation["message"])
+                self.assertEqual(expected_message.split(":", 1)[0], violation["clause"])
                 self.assertFalse(bridge.command("panel-fill-confirm " + str(result["token"]))["ok"])
                 self.assertEqual(before, snapshot())
             return result["valid"]
 
-    def test_same_fractional_thickness_guard_controls_actual_preview_and_commit(self):
+    def test_fractional_thickness_guards_preserve_actual_preview_and_commit_atomicity(self):
         build = native()
         baseline = build.bridge()
-        self.assertFalse(self.preview_fractional_thickness(baseline, "baseline"))
+        self.assertFalse(self.preview_panel_thickness(baseline, "baseline"))
         changed = self.mutant(CONTROLS[6])
         client = build.link("finish-fraction-product-client", self.objects(build, changed, "versions"))
         result = self.case("materials", client)
@@ -215,8 +219,11 @@ class WoodFinish(unittest.TestCase):
         self.assertEqual(1, objects.count(build.versions_object))
         bridge = build.link("finish-fraction-product-bridge", [build.bridge_object,
             *[changed if obj == build.versions_object else obj for obj in objects]])
-        self.assertTrue(self.preview_fractional_thickness(bridge, "mutant"))
-        self.assertFalse(self.preview_fractional_thickness(baseline, "restored"))
+        # 單點突變仍由真實 typed version source 的 19/2 mm 值擋下。
+        self.assertFalse(self.preview_panel_thickness(bridge, "mutant", expected_message=THICKNESS_SOURCE_ERROR))
+        # 原有成功確認、厚度 9 與九片斷言移至合法整數厚度，保留正控制。
+        self.assertTrue(self.preview_panel_thickness(bridge, "mutant-integer", thickness="9.000", expected_message=None))
+        self.assertFalse(self.preview_panel_thickness(baseline, "restored"))
 
 
 if __name__ == "__main__":
