@@ -44,6 +44,8 @@
      D 是「縫線上最近的對牆」離起鋪牆的距離(只看外牆;矩形房就是房深)。由平釘工法挪縫目的與使用者『能調就調』原則推得:
      挪縫是為了讓主支剛好貼住它實際會碰到的那面牆的壁邊材(edge-rule.md §4 的「房深 − 40.5」);
      有牆階的房間,縫線上實際的對牆不是外框,照外框挪會在可以調整的地方報衝突。挪了縫線變長就重算到穩定。
+     最後一條板端縫的承接帶若落進牆階面上沒料的短段(短於 min_piece 不放),再照那面牆階凹角那端的牆退到 ⌊D′ − 1.5w⌋
+     (由使用者「只有找不到任何調整位置時才報衝突」與 G7 推得;建構端在 bedges 之後,C7 用 expected_seam_retreat 另算)。
 不處理:樑高度、交丁、角材怎麼固定(與幾何無關)。
 
 座標:世界座標,整數 mm。A 軸 = 板寬方向(主支之間的方向),B 軸 = 板長方向(主支的長度方向)。
@@ -335,6 +337,7 @@ def build(room, layout, p, mut=frozenset()):
     bprims = []
     seen = set()
     reflex = []
+    remnants = []  # 牆面上沒被蓋住、短於 min_piece 而不放料的那一小段:(面, 段, 凹角端)
     for e, (s0, s1), plus, is_outer in bedges:
         ar = (e, e + w) if plus else (e - w, e)
         line = reg.strip_set(a, *ar)
@@ -366,17 +369,8 @@ def build(room, layout, p, mut=frozenset()):
         #   這一面的板邊由兩端的料承接(剩下那一小段沿板邊方向跨過);凹角那一端照樣讓另一面的邊界材越過凹角延伸,接住板的轉角。
         if comp is None or (too_short(comp[1] - comp[0]) and "short_face_conflict" not in mut):
             reflex.extend((e, s) for s in ends)
-            # 剩下沒被蓋住的那一小段若有板端縫的板邊承接帶落進去:那條板邊要靠縫上副支,副支端面卻只能頂這面 RC
-            #   (這一小段短於 min_piece,不放沿牆料),旁邊的料又蓋不到 → 那條板邊沒有料承接,判衝突並寫明。
-            if comp is not None:
-                for sb in seams_b:
-                    for x0, x1, side in ((sb - gl - X, sb - gl, "-"), (sb + gu, sb + gu + X, "+")):
-                        if min(x1, comp[1]) > max(x0, comp[0]):
-                            conflicts.append(dict(
-                                code="SHORT_FACE_SEAM_EDGE_UNSUPPORTED", at=[e, s0, s1], seam=sb,
-                                why=f"板端縫 {sb} 的 {side} 側板邊(承接帶 {x0}–{x1})落在這面 RC({e},{s0}–{s1})沒被蓋住的那 "
-                                    f"{comp[1] - comp[0]} mm({comp[0]}–{comp[1]})裡:短於 {minp} 不放沿牆料,縫上副支的端面只能頂 RC,"
-                                    f"兩旁的料也蓋不到這條板邊"))
+            if comp is not None and is_outer:
+                remnants.append(dict(e=e, face=(s0, s1), comp=comp, ends=list(ends)))
             continue
         r = mk(a, ar, comp)
         if r in seen:
@@ -387,6 +381,47 @@ def build(room, layout, p, mut=frozenset()):
             t["core_role"], t["priority"] = "custom", 3
             reflex.extend((e, s) for s in ends)
         bprims.append(t)
+
+    # 板端縫落在牆階短段(G7 的延伸,能調就調):最後一條板端縫的承接帶若落進牆面上那段沒料的短段
+    #   (短於 min_piece 不放沿牆料),縫上副支在那裡沒有東西可頂,那條板邊就沒有料承接。
+    #   往內調整:把那面牆階凹角那一端的牆(淺的那段的牆)當成這條縫的對牆,照 G7 退到 ⌊D' − 1.5w⌋,
+    #   D' = 起鋪牆到凹角那端的距離。這是離原位最近、又不違反 G7 的位置:縫線一退到凹角那端之前,
+    #   就伸進淺的那段,G7 照那面牆要求 d <= D' − 1.5w(退到只讓承接帶落在延伸段上,淺的那段會剩 8–17 mm 的板條)。
+    #   不退過前一條縫;退了還是落在短段裡就維持衝突。退縫之後的副支、記號、碰撞照常由後面的程序判斷。
+    def band_hits(cv, cp):
+        return [(x0, x1, sd) for x0, x1, sd in ((cv - gl - X, cv - gl, "-"), (cv + gu, cv + gu + X, "+"))
+                if min(x1, cp[1]) > max(x0, cp[0])]
+
+    if seams_b and "no_seam_retreat" not in mut:
+        start_min = layout["b_start"] == "min"
+        for _ in range(4):
+            last = seams_b[-1]
+            hit = [r_ for r_ in remnants if band_hits(last, r_["comp"])]
+            if not hit:
+                break
+            r_ = hit[0]
+            qs = [q for q in r_["ends"] if (q <= r_["comp"][0] if start_min else q >= r_["comp"][1])]
+            if not qs:
+                break
+            q = max(qs) if start_min else min(qs)
+            d_new = math.floor((q - Bmin if start_min else Bmax - q) - 1.5 * w)
+            c_new = Bmin + d_new if start_min else Bmax - d_new
+            prev = seams_b[-2] if len(seams_b) > 1 else None
+            inward = c_new < last if start_min else c_new > last
+            past_prev = prev is not None and (c_new <= prev if start_min else c_new >= prev)
+            if not inward or past_prev:
+                break
+            moved_b = (moved_b[0] if moved_b else last, c_new)
+            seams_b = seams_b[:-1] + [c_new]
+    for r_ in remnants:
+        for sb in seams_b:
+            for x0, x1, sd in band_hits(sb, r_["comp"]):
+                cp = r_["comp"]
+                conflicts.append(dict(
+                    code="SHORT_FACE_SEAM_EDGE_UNSUPPORTED", at=[r_["e"], *r_["face"]], seam=sb,
+                    why=f"板端縫 {sb} 的 {sd} 側板邊(承接帶 {x0}–{x1})落在這面 RC({r_['e']},{r_['face'][0]}–{r_['face'][1]})沒被蓋住的那 "
+                        f"{cp[1] - cp[0]} mm({cp[0]}–{cp[1]})裡:短於 {minp} 不放沿牆料,縫上副支的端面只能頂 RC,"
+                        f"兩旁的料也蓋不到這條板邊;往內退縫也退不開(會退過前一條縫,或凹角那端不在內側)"))
 
     # 主支:每條 A 向縫一支(G3)。
     # 位置:預設置中在縫上;支撐只要求縫兩側板邊各有 >= X 的承接(G1),所以主支可以平移。
@@ -856,6 +891,59 @@ def expected_seam_positions(lo, hi, start, panel, gap, width, reg=None, k=None):
     return [lo + d for d in dist] if start == "min" else [hi - d for d in dist]
 
 
+def expected_seam_retreat(seams, reg_o, a, b, start, lo, hi, p):
+    """C7 用,另寫一次「板端縫落在牆階短段就往內退」:不看建構出來的角材,直接掃外牆邊。
+    短段:與主支平行(固定 A 座標)的外牆面,在凸角那一端被垂直那面牆的邊界材蓋掉 w,剩下 0 < 長 < min_piece 的那段;
+    凹角那一端沒有料蓋(另一面牆的邊界材往遠離這條牆線的方向越過凹角)。
+    最後一條板端縫的承接帶若碰到短段,就退到 ⌊(起鋪牆到凹角那端) − 1.5w⌋;不退過前一條縫。"""
+    w, X, g = p["w"], p["X"], p["gap"]
+    minp = p.get("min_piece", w)
+    gl, gu = g // 2, g - g // 2
+    edges = reg_o.outer_edges()
+    n = len(edges)
+    shorts = []
+    for i, (p0, p1) in enumerate(edges):
+        if p0[a] != p1[a]:
+            continue
+        e = p0[a]
+        mid = (p0[b] + p1[b]) / 2
+        probe = (e + 0.5, mid) if a == 0 else (mid, e + 0.5)
+        room = 1 if reg_o.inside(*probe) else -1  # 室內在這面牆的 +A 或 -A 側
+        lo_e, hi_e = sorted((p0[b], p1[b]))
+        cut = {lo_e: 0, hi_e: 0}
+        reflex = []
+        for pt_, nb in ((p0, edges[i - 1][0]), (p1, edges[(i + 1) % n][1])):
+            if (nb[a] - pt_[a]) * room > 0:  # 相鄰那面牆往室內那側走:凸角,那面牆的邊界材蓋住這一端 w
+                cut[pt_[b]] = w
+            else:
+                reflex.append(pt_[b])
+        u0, u1 = lo_e + cut[lo_e], hi_e - cut[hi_e]
+        if 0 < u1 - u0 < minp:
+            shorts.append((u0, u1, reflex))
+    out = list(seams)
+    for _ in range(4):
+        if not out:
+            break
+        last = out[-1]
+        hit = [sh for sh in shorts if any(min(x1, sh[1]) > max(x0, sh[0])
+                                          for x0, x1 in ((last - gl - X, last - gl), (last + gu, last + gu + X)))]
+        if not hit:
+            break
+        u0, u1, rf = hit[0]
+        qs = [q for q in rf if (q <= u0 if start == "min" else q >= u1)]
+        if not qs:
+            break
+        q = max(qs) if start == "min" else min(qs)
+        dist = (2 * ((q - lo) if start == "min" else (hi - q)) - 3 * w) // 2
+        c_new = lo + dist if start == "min" else hi - dist
+        prev = out[-2] if len(out) > 1 else None
+        if (c_new >= last if start == "min" else c_new <= last) or (
+                prev is not None and (c_new <= prev if start == "min" else c_new >= prev)):
+            break
+        out[-1] = c_new
+    return out
+
+
 def pos_edge_outer(reg, rect, k):
     """與角材某側面共線、長度區間正重疊的外牆邊(沿軸 k)存在嗎。"""
     span, side = rng(rect, k), rng(rect, 1 - k)
@@ -894,6 +982,7 @@ def check(res, p):
     reg_o = Region(reg.rings[0], [])  # 只看外環:柱不是收邊的對牆
     exp_a = expected_seam_positions(reg.bbox[a], reg.bbox[a + 2], lay["a_start"], p["P"], g, w, reg_o, a)
     exp_b = expected_seam_positions(reg.bbox[b], reg.bbox[b + 2], lay["b_start"], p["L"], g, w, reg_o, b)
+    exp_b = expected_seam_retreat(exp_b, reg_o, a, b, lay["b_start"], reg.bbox[b], reg.bbox[b + 2], p)
     if sorted(exp_a) != sorted(res["seams_a"]):
         fails.append(dict(check="C7_SEAMS_NOT_FROM_START", axis="A", expected=sorted(exp_a), got=sorted(res["seams_a"])))
     if sorted(exp_b) != sorted(res["seams_b"]):

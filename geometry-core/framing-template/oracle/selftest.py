@@ -81,6 +81,7 @@ MUTANTS = [
     ("bbox_ft02", STEP20, "C7_SEAMS_NOT_FROM_START", "FT02 退回照外框挪縫(3659):縫線上最近的對牆是 x>2600 的 y=3680 牆,應挪到 3639", "左上起鋪,板長沿X"),
     ("bbox_ft02", STEP40, "C7_SEAMS_NOT_FROM_START", "同上,板端縫(B 軸):40 mm 牆階應挪到 3619", "左上起鋪,板長沿Y"),
     ("bbox_ft02+no_push_fallback", STEP40, "C1_OVERLAP", "照外框挪縫時,讓開牆料的平移撞到 y=3700 的牆料,沒有退回置中", "左上起鋪,板長沿X"),
+    ("no_seam_retreat", STEP45, "C7_SEAMS_NOT_FROM_START", "45 mm 牆階:板端縫 3659 的承接帶落在牆階面沒料的 18 mm 裡,沒有往內退到 3614", "左上起鋪,板長沿Y"),
 ]
 for mut, room, want, why, *lay in MUTANTS:
     lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
@@ -122,7 +123,8 @@ for room_, lay_, why_ in (
         (STEP40, "左下起鋪,板長沿Y", "牆階面剩 13 mm 不放料"),
         (STEP20, "左上起鋪,板長沿X", "FT02 照 y=3680 牆挪縫到 3639,主支貼住 x>2600 的牆料"),
         (STEP40, "左上起鋪,板長沿X", "FT02 挪縫到 3619"),
-        (STEP40, "左上起鋪,板長沿Y", "板端縫 FT02 挪到 3619")):
+        (STEP40, "左上起鋪,板長沿Y", "板端縫 FT02 挪到 3619"),
+        (STEP45, "左上起鋪,板長沿Y", "板端縫退到 y=3655 牆的 G7 位置 3614,承接帶不落在牆階短段")):
     res = fo.build(room_, next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay_), p)
     fails = fo.check(res, p)
     ok = not res["conflicts"] and not fails
@@ -136,10 +138,9 @@ got_ = sorted({c["code"] for c in res["conflicts"]})
 ok = got_ == ["CORE_LIMIT_MAIN_ON_EXTENSION"]
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] 對照 40 mm 牆階 左上 X、照舊縫位:平移撞牆料時退回置中,原因要是核心限制 {got_}")
-# 牆階掃描裡仍判不可施工的三類,各挑一個,原因代碼要完全一致(理由寫在 README 的核心限制清單與掃描說明)
+# 牆階掃描裡仍判不可施工的兩類(都是核心限制),各挑一個,原因代碼要完全一致(理由寫在 README 的核心限制清單)
 for room_, lay_, want_, why_ in (
         (STEP45, "左上起鋪,板長沿X", ["CORE_LIMIT_MAIN_ON_EXTENSION"], "核心限制(主支頂延伸段),不是碰撞"),
-        (STEP45, "左上起鋪,板長沿Y", ["SHORT_FACE_SEAM_EDGE_UNSUPPORTED"], "板端縫 3659 的板邊落在牆階面沒被蓋住的 18 mm 裡"),
         (STEP20, "左上起鋪,板長沿Y", ["CORE_LIMIT_BOUNDARY_END_FREE", "SPAN_END_NOT_ON_BOUNDARY"], "核心限制(邊界材端面懸空,延伸會撞另一支牆邊界材)")):
     res = fo.build(room_, next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay_), p)
     got_ = sorted({c["code"] for c in res["conflicts"]})
