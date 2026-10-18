@@ -4,10 +4,14 @@
 有逐支前綴（mNNN.rc）時，前綴結果優先於整場結果。
 
 依 opus／ChatGPT 對 #297 的審查更正：
-- 結束碼只有 0（接受）與核心明確的拒絕碼 1（CORE_REJECT_RC）有意義；其他非 0（崩潰、訊號、
-  逾時、沒有結束碼檔）標成「錯誤」，不得算拒絕。
-- 結束碼 0 的列，若有 oracle 矩形（# probe-member 的 rect），核心輸出的 L 必須等於矩形長邊；
-  stdout 有印角材原點與 A0 接觸面頂點時一併比對。對不上標「幾何不符」，不得算接受。
+- 結束碼只有 0（接受）與 1（CORE_REJECT_RC）有意義；其他非 0（崩潰、訊號、逾時、沒有結束碼檔）
+  標成「錯誤」，不得算拒絕。
+- 但結束碼 1 也涵蓋參數錯、讀檔失敗、場景語法錯，不一定是規則拒絕。只有 stderr 的第一行診斷帶
+  核心規則診斷（見 is_rule_diagnostic：V_* 代碼、I／R／D 加編號、或「超過上限」容量訊息）才算
+  「拒絕」；其餘結束碼 1 標成「錯誤」。
+- 結束碼 0 的列，若有 oracle 矩形（# probe-member 的 rect），核心 stdout 必須同時有 L、角材原點、
+  A0 接觸面頂點，缺任何一項都標「幾何不符」（缺欄），不得算接受；三項都有時 L 必須等於矩形長邊、
+  原點必須是矩形的一個角、頂點外框必須等於矩形，對不上同樣標「幾何不符」。
 - 有「錯誤」或「幾何不符」列時 main() 回 3，run_probe.sh 原樣傳出。
 - 每列記探測方式：原場景，或先前被拒的料已省略後再試。
 """
@@ -29,8 +33,17 @@ V_MAP = {
     "V_GRID_LOCKED": "I23",
 }
 
-EXPLICIT = re.compile(r"(?<![A-Za-z0-9])(R\d+(?:\([a-z]\))?|I\d+)(?![A-Za-z0-9])")
+EXPLICIT = re.compile(r"(?<![A-Za-z0-9])([RID]\d+(?:[a-z]|\([a-z]\))?)(?![A-Za-z0-9])")
 VCODE = re.compile(r"V_[A-Z0-9_]+")
+# 核心規則診斷的判定式。依 2026-10-18 對 current_geometry.c 與 references.inc 全部拒絕訊息字面的盤點：
+# 規則／驗證訊息都帶 V_ 開頭的違規碼（V_CUT_PRIORITY、V_BOUNDARY_ROLE、V_PRIMARY_AXIS、V_EXTENSION、
+# V_FREE_EDGE_END、V_GRID_LOCKED、V_DERIVED_TIMBER），或帶條文編號（I9、I13、R6(d)、D7/I18、I25a…）；
+# 容量訊息是「…的數量／座標／面數超過上限」。語法、參數、讀檔錯誤（「timber 行有多餘欄位」「不認得的指令」
+# 「無法開啟場景檔」…）沒有這些記號。沒有記號的語意訊息（例如「這支角材不存在」）保守地歸「錯誤」，
+# 寧可讓整體結束碼非 0 被看見，也不把它混進規則拒絕。
+RULE_CODE = re.compile(
+    r"V_[A-Z0-9_]+|(?<![A-Za-z0-9])[IRD]\d+(?:[a-z]|\([a-z]\))?(?![A-Za-z0-9])"
+)
 NAMED = re.compile(r"角材(?:\s*|（)(\d+)")
 LENGTH = re.compile(r"角材 ID：(\d+)\n尺寸：L=(\d+)")
 ORIGIN = re.compile(r"角材原點：\((-?\d+), (-?\d+), (-?\d+)\)")
@@ -38,7 +51,7 @@ A0_FACE = re.compile(
     r"角材 (\d+) 的 A0[^\n]*：\n((?:[ \t]+vertex\[\d+\] = \(-?\d+, -?\d+, -?\d+\)\n?){4})"
 )
 VERTEX = re.compile(r"vertex\[\d+\] = \((-?\d+), (-?\d+), (-?\d+)\)")
-CAPACITY_MARK = "數量超過上限"  # WORLD_MAX_TIMBERS 的拒絕訊息；是容量，不是放置規則
+CAPACITY_MARK = "超過上限"  # 例：角材的數量超過上限（WORLD_MAX_TIMBERS = 64）；是容量，不是放置規則
 PREFIX = re.compile(r"^(.*?):(\d+):\s*(.*)$")
 TIMBER = re.compile(
     r"^timber (\d+) \d+ \d+ role (boundary|primary|secondary|custom)(?: priority (\d+))?\s*$"
@@ -53,16 +66,22 @@ MODE_ORIGINAL = "原場景"  # 這一列的結果來自整場原樣，或前面�
 MODE_OMITTED = "省略後探測"  # 前面被拒的料已拿掉再試，擋面可能和原場景不同
 
 # current_geometry.c 的 main()：成功 return 0；場景被拒、參數錯、讀檔失敗一律 return 1，
-# 沒有其他回傳值（2026-10-18 讀 main 的每個 return 核對）。所以只有 1 是「核心明確的拒絕」。
+# 沒有其他回傳值（2026-10-18 讀 main 的每個 return 核對）。所以拒絕只可能是 1，但 1 不一定是規則拒絕：
+# 還要 stderr 的診斷帶核心規則記號（is_rule_diagnostic）。
 # 其他非 0（崩潰 139／134、逾時 124、找不到執行檔 127、其他）不是規則拒絕，標成「錯誤」。
 CORE_REJECT_RC = 1
 EXIT_PROBE_ERRORS = 3  # 有任何「錯誤」或「幾何不符」列時，parse_results 的結束碼；run_probe.sh 會原樣傳出
 
 
-def classify_rc(rc) -> str:
+def is_rule_diagnostic(message: str) -> bool:
+    """去掉「路徑:行號:」前綴後的診斷，是否是核心的規則診斷或容量訊息。"""
+    return bool(RULE_CODE.search(message)) or CAPACITY_MARK in message
+
+
+def classify_rc(rc, stderr: str = "") -> str:
     if rc == 0:
         return ACCEPT
-    if rc == CORE_REJECT_RC:
+    if rc == CORE_REJECT_RC and is_rule_diagnostic(first_diagnostic(stderr or "")):
         return REJECT
     return ERROR
 
@@ -74,6 +93,8 @@ def describe_error_rc(rc) -> str:
         return "結束碼 124，逾時"
     if rc > 128:
         return f"結束碼 {rc}，被訊號 {rc - 128} 終止"
+    if rc == CORE_REJECT_RC:
+        return f"結束碼 {rc}，但 stderr 沒有核心規則診斷（V_* 代碼、I／R／D 編號、超過上限），是語法、參數或讀檔錯誤"
     return f"結束碼 {rc}，不是核心的拒絕碼 {CORE_REJECT_RC}"
 
 
@@ -110,7 +131,8 @@ def first_diagnostic(stderr: str) -> str:
 def core_timbers(stdout: str) -> dict[int, dict]:
     """核心 stdout 裡每支已放置角材的 L、角材原點、A0 接觸面四個頂點的 x/y 外框。
 
-    原點和足跡只在 stdout 有印時才有值；沒印就是 None，不拿來比。
+    原點和足跡沒印（或格式對不上）就是 None；呼叫者 `_accepted_row` 會把缺欄的接受列標成「幾何不符」，
+    不會靜默略過。
     """
     found: dict[int, dict] = {}
     text = (stdout or "").replace("\r\n", "\n")
@@ -139,14 +161,31 @@ def lengths_of(stdout: str) -> dict[int, int]:
     return {ident: info["length"] for ident, info in core_timbers(stdout).items()}
 
 
+def missing_fields(info: dict) -> list[str]:
+    """接受列必須同時拿得到 L、角材原點、A0 接觸面頂點。缺哪些。"""
+    names = []
+    if info["length"] is None:
+        names.append("L")
+    if info["origin"] is None:
+        names.append("角材原點")
+    if info["footprint"] is None:
+        names.append("A0 接觸面頂點")
+    return names
+
+
 def geometry_problems(rect, info: dict) -> tuple[list[str], list[str]]:
-    """核心輸出對 oracle 矩形 [x0,y0,x1,y1]：回傳 (不符清單, 實際比對了哪些項目)。"""
+    """核心輸出對 oracle 矩形 [x0,y0,x1,y1]：回傳 (不符清單, 比對了哪些項目)。缺欄也算不符。"""
     x0, y0, x1, y1 = rect
     problems = []
-    checked = ["L"]
+    checked = []
+    missing = missing_fields(info)
+    if missing:
+        problems.append(f"核心 stdout 缺欄：沒有{'、'.join(missing)}，無法完整比對 oracle 矩形 {list(rect)}（缺欄不算接受）")
     long_side = max(x1 - x0, y1 - y0)
-    if info["length"] != long_side:
-        problems.append(f"核心 L={info['length']}，oracle 矩形 {list(rect)} 長邊 {long_side}")
+    if info["length"] is not None:
+        checked.append("L")
+        if info["length"] != long_side:
+            problems.append(f"核心 L={info['length']}，oracle 矩形 {list(rect)} 長邊 {long_side}")
     if info["footprint"] is not None:
         checked.append("足跡")
         if list(info["footprint"]) != list(rect):
@@ -213,18 +252,25 @@ def _row(member: dict, status: str, clause: str, message: str, length, omitted: 
 
 
 def _accepted_row(member: dict, found: dict, omitted: list[int]) -> dict:
-    """結束碼 0 還不夠：有 oracle 矩形的列，核心輸出必須和它對得上，否則不是「接受」。"""
+    """結束碼 0 還不夠。接受列必須同時拿得到 L、角材原點、A0 接觸面頂點，缺任何一項都是「幾何不符」；
+    有 oracle 矩形的列還要和它逐項對得上，否則不是「接受」。"""
     info = found.get(member["id"])
     rect = member.get("rect")
-    if rect is None:
-        # 沒有 oracle 矩形（手寫的探針場景）：只記核心長度，不比對。
-        return _row(member, ACCEPT, "—", "", info["length"] if info else None, omitted)
     if info is None:
         return _row(
             member, MISMATCH, "—",
-            "核心結束碼 0，但 stdout 沒有這支角材的輸出，無法比對 oracle 矩形",
+            "核心結束碼 0，但 stdout 沒有這支角材的輸出，無法比對 oracle 矩形（缺欄不算接受）",
             None, omitted,
         )
+    if rect is None:
+        # 沒有 oracle 矩形（手寫的探針場景）：沒有東西可比，但欄位仍要齊全。
+        missing = missing_fields(info)
+        if missing:
+            return _row(
+                member, MISMATCH, "—", f"核心 stdout 缺欄：沒有{'、'.join(missing)}（缺欄不算接受）",
+                info["length"], omitted,
+            )
+        return _row(member, ACCEPT, "—", "沒有 oracle 矩形，欄位齊全但未比對幾何", info["length"], omitted)
     problems, checked = geometry_problems(rect, info)
     if problems:
         return _row(member, MISMATCH, "—", "；".join(problems), info["length"], omitted, checked)
@@ -244,7 +290,7 @@ def interpret_scene(scene_name: str, scene_text: str, stdout: str = "", stderr: 
                 rows.append(row)
                 continue
             omitted = list(attempt.get("omit") or [])
-            verdict = classify_rc(attempt["rc"])
+            verdict = classify_rc(attempt["rc"], attempt.get("err") or "")
             if verdict == ACCEPT:
                 found = core_timbers(attempt.get("out") or "")
                 rows.append(_accepted_row(member, found, omitted))
@@ -256,11 +302,11 @@ def interpret_scene(scene_name: str, scene_text: str, stdout: str = "", stderr: 
             else:
                 message = error_message(attempt["rc"], attempt.get("err") or "")
                 rows.append(_row(member, ERROR, "—", message, None, omitted))
-    elif classify_rc(rc) == ACCEPT:
+    elif classify_rc(rc, stderr or "") == ACCEPT:
         found = core_timbers(stdout or "")
         for member in members:
             rows.append(_accepted_row(member, found, []))
-    elif classify_rc(rc) == ERROR:
+    elif classify_rc(rc, stderr or "") == ERROR:
         # 整場異常結束又沒有逐支前綴：無法歸到哪一支，每一列都是「錯誤」，不是拒絕。
         message = error_message(rc, stderr or "")
         for member in members:
@@ -352,7 +398,8 @@ def render_markdown(document: dict) -> str:
         "",
         "每一列是一支角材。整場失敗且沒有逐支前綴時，沒被錯誤訊息點名的列是「同場未提交」，不是接受。",
         "有 mNNN 前綴時，以該前綴的結束碼為準。省略先前被拒的料會改變後面的擋面。",
-        f"「拒絕」只指核心明確的拒絕碼（結束碼 {CORE_REJECT_RC}）。其他非 0（崩潰、訊號、逾時、沒有結束碼檔）是「錯誤」，不是規則拒絕。",
+        f"「拒絕」= 結束碼 {CORE_REJECT_RC} 且 stderr 第一行是核心規則診斷（V_* 代碼、I／R／D 編號、「{CAPACITY_MARK}」）。",
+        f"結束碼 {CORE_REJECT_RC} 但沒有規則診斷（語法、參數、讀檔錯誤），以及其他非 0（崩潰、訊號、逾時、沒有結束碼檔），都是「錯誤」，不是規則拒絕。",
         "",
         f"「{MISMATCH}」= 結束碼 0，但核心輸出的 L／足跡／原點和 oracle 矩形對不上；不計成接受，整體結束碼非 0。",
         f"「{MODE_ORIGINAL}」= 這一列前面沒有被省略的料；「{MODE_OMITTED}」= 先前被拒（或異常）的料已拿掉再試。",

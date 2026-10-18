@@ -87,6 +87,22 @@ def _core_block(ident: int, length: int, origin=None, footprint=None) -> str:
     return text
 
 
+def _full_block(ident: int, rect, length: int | None = None, origin=None) -> str:
+    """核心 stdout 的一支角材，三項（L、原點、A0 頂點）齊全且與 oracle 矩形一致；可蓋掉 length／origin 製造不符。"""
+    x0, y0, x1, y1 = rect
+    return _core_block(
+        ident,
+        max(x1 - x0, y1 - y0) if length is None else length,
+        (x0, y0) if origin is None else origin,
+        list(rect),
+    )
+
+
+def _loose_blocks(*pairs: tuple[int, int]) -> str:
+    """手寫探針場景（沒有 oracle 矩形）用：每支三項齊全，內容不拿來比。"""
+    return "".join(_core_block(tid, length, (0, 0), [0, 0, length, 27]) for tid, length in pairs)
+
+
 def _kept_count(golden: dict) -> int:
     return sum(
         1
@@ -721,7 +737,7 @@ class ParseResultsTest(unittest.TestCase):
         p3 = parse_results.interpret_scene(
             "p3_alcove_side_boundary_then_main",
             self.scenes["p3_alcove_side_boundary_then_main.scene"],
-            stdout=_lengths((1, 4000), (2, 4000), (3, 2946), (4, 1287), (5, 1287)),
+            stdout=_loose_blocks((1, 4000), (2, 4000), (3, 2946), (4, 1287), (5, 1287)),
             stderr="",
             rc=0,
         )
@@ -739,7 +755,7 @@ class ParseResultsTest(unittest.TestCase):
         p9 = parse_results.interpret_scene(
             "p9_f1_custom_inner_wall",
             self.scenes["p9_f1_custom_inner_wall.scene"],
-            stdout=_lengths((1, 5000), (2, 3200), (3, 4746), (4, 2222), (5, 1773)),
+            stdout=_loose_blocks((1, 5000), (2, 3200), (3, 4746), (4, 2222), (5, 1773)),
             stderr="",
             rc=0,
         )
@@ -796,7 +812,7 @@ class ParseResultsTest(unittest.TestCase):
                 "full.err": "synth.scene:3: V_CUT_PRIORITY：角材 1（優先級 2）端面頂到角材 1\n",
                 "full.out": "",
                 "m001.rc": "0\n",
-                "m001.out": _lengths((1, 100)),
+                "m001.out": _full_block(1, [0, 0, 100, 27]),
                 "m001.err": "",
                 "m001.omit": "",
                 "m002.rc": "1\n",
@@ -814,12 +830,12 @@ class ParseResultsTest(unittest.TestCase):
         self.assertEqual(document["scenes"][0]["room"], "合成房")
         self.assertEqual(document["scenes"][0]["name"], "合成")
 
-    # ---- 結束碼分類：只有核心的拒絕碼 1 算拒絕 ----
+    # ---- 結束碼分類：rc=1 且 stderr 帶核心規則診斷才算拒絕 ----
 
     def test_only_the_core_reject_code_is_a_rejection(self):
         self.assertEqual(parse_results.CORE_REJECT_RC, 1)
         attempts = {
-            1: {"rc": 0, "out": _core_block(1, 100), "err": "", "omit": []},
+            1: {"rc": 0, "out": _full_block(1, [0, 0, 100, 27]), "err": "", "omit": []},
             2: {"rc": 1, "out": "", "err": "synth.scene:8: " + P8_MESSAGE + "\n", "omit": [1]},
         }
         item = parse_results.interpret_scene("synth", SYNTH_SCENE, rc=1, attempts=attempts)
@@ -835,6 +851,58 @@ class ParseResultsTest(unittest.TestCase):
                 self.assertIn(expect, row["message"])
                 self.assertIn("不是規則拒絕", row["message"])
 
+    # 取自 current_geometry.c／references.inc 的真實訊息形狀。rc=1 的 stderr 第一行（去掉「路徑:行號:」）
+    # 帶 V_* 代碼、I／R／D 編號或「超過上限」才是規則診斷。
+    RULE_DIAGNOSTICS = (
+        "scenes/x.scene:15: " + P4_MESSAGE,
+        "scenes/x.scene:10: " + P8_MESSAGE,
+        "scenes/x.scene:9: R6(d): 端面需要恰好一個涵蓋全寬的合法擋面",
+        "scenes/x.scene:9: D7/I18: timber id A尺寸 B尺寸 role 必填",
+        "scenes/x.scene:9: D4: placement variant cannot change",  # 只有 D 編號，沒有 I／R／V_
+        "scenes/x.scene:9: I25a: source rule capability/highwater closure missing",
+        "scenes/x.scene:9: I13/R6：子格 [0,100] 內沒有兩端獲得支撐的完整跨距",
+        "scenes/x.scene:65: 角材的數量超過上限",
+        "scenes/x.scene:7: grid u 座標超過上限",
+    )
+    NON_RULE_DIAGNOSTICS = (
+        "scenes/x.scene:3: timber 行有多餘欄位",
+        "scenes/x.scene:4: 不認得的指令（boundary placement surface space guide timber place move column beam delete reset canvas-pos）",
+        "scenes/x.scene:5: outline 後面要接至少四個 u,v 頂點",
+        "/var/tmp/D1/I22/x.scene:0: 無法開啟場景檔",  # 路徑裡的 D1／I22 不算
+        "場景裡沒有任何物件。",
+        "--scene 後面要接場景檔路徑。",
+        "不認得的參數：--bogus；請用 --help 查看用法。",
+        "scenes/x.scene:8: 這支角材不存在",  # 沒有記號的語意訊息保守歸「錯誤」
+        "",
+    )
+
+    def test_rc1_with_a_parse_or_usage_error_is_an_error_not_a_rejection(self):
+        for text in self.NON_RULE_DIAGNOSTICS:
+            with self.subTest(stderr=text):
+                self.assertEqual(parse_results.classify_rc(1, text + "\n"), "錯誤")
+                attempts = {
+                    1: {"rc": 0, "out": _full_block(1, [0, 0, 100, 27]), "err": "", "omit": []},
+                    2: {"rc": 1, "out": "", "err": text + "\n", "omit": [1]},
+                }
+                row = parse_results.interpret_scene("synth", SYNTH_SCENE, rc=1, attempts=attempts)["members"][1]
+                self.assertEqual(row["status"], "錯誤")
+                self.assertEqual(row["clause"], "—")
+                self.assertIn("沒有核心規則診斷", row["message"])
+                self.assertIn("不是規則拒絕", row["message"])
+
+    def test_rc1_with_a_rule_diagnostic_is_a_rejection(self):
+        for text in self.RULE_DIAGNOSTICS:
+            with self.subTest(stderr=text):
+                self.assertEqual(parse_results.classify_rc(1, text + "\n"), "拒絕")
+                self.assertEqual(parse_results.classify_rc(2, text + "\n"), "錯誤")  # 規則記號救不了錯的結束碼
+                self.assertEqual(parse_results.classify_rc(139, text + "\n"), "錯誤")
+
+    def test_whole_scene_rc1_parse_error_without_prefix_is_error(self):
+        item = parse_results.interpret_scene("synth", SYNTH_SCENE, stdout="", stderr="synth.scene:3: timber 行有多餘欄位\n", rc=1)
+        self.assertEqual([row["status"] for row in item["members"]], ["錯誤", "錯誤"])
+        item = parse_results.interpret_scene("synth", SYNTH_SCENE, stdout="", stderr="", rc=1)
+        self.assertEqual([row["status"] for row in item["members"]], ["錯誤", "錯誤"])
+
     def test_whole_scene_crash_without_prefix_is_error_not_rejection(self):
         for bad_rc in (139, 2, 124, None):
             with self.subTest(rc=bad_rc):
@@ -842,7 +910,16 @@ class ParseResultsTest(unittest.TestCase):
                 self.assertEqual([row["status"] for row in item["members"]], ["錯誤", "錯誤"])
 
     def test_parse_run_exit_code_is_nonzero_for_core_errors(self):
-        for label, rc_text, expect_failure in (("segv", "139\n", True), ("usage", "2\n", True), ("timeout", "124\n", True), ("reject", "1\n", False)):
+        parse_error = "synth.scene:8: timber 行有多餘欄位\n"
+        rule_error = "synth.scene:8: " + P8_MESSAGE + "\n"
+        for label, rc_text, err_text, expect_failure in (
+            ("segv", "139\n", rule_error, True),
+            ("usage", "2\n", rule_error, True),
+            ("timeout", "124\n", rule_error, True),
+            ("rc1-parse-error", "1\n", parse_error, True),
+            ("rc1-no-stderr", "1\n", "", True),
+            ("reject", "1\n", rule_error, False),
+        ):
             with self.subTest(core=label), tempfile.TemporaryDirectory() as tmp:
                 root = Path(tmp)
                 scenes = root / "scenes"
@@ -850,8 +927,8 @@ class ParseResultsTest(unittest.TestCase):
                 (scenes / "synth.scene").write_text(SYNTH_SCENE, encoding="utf-8", newline="\n")
                 _write_bucket(root / "synth", {
                     "full.rc": rc_text, "full.out": "", "full.err": "boom\n",
-                    "m001.rc": "0\n", "m001.out": _core_block(1, 100), "m001.err": "", "m001.omit": "",
-                    "m002.rc": rc_text, "m002.out": "", "m002.err": "synth.scene:8: " + P8_MESSAGE + "\n", "m002.omit": "\n",
+                    "m001.rc": "0\n", "m001.out": _full_block(1, [0, 0, 100, 27]), "m001.err": "", "m001.omit": "",
+                    "m002.rc": rc_text, "m002.out": "", "m002.err": err_text, "m002.omit": "\n",
                 })
                 code = _quiet_main(["--run-dir", str(root), "--scenes", str(scenes)])
                 results = json.loads((root / "results.json").read_text(encoding="utf-8"))
@@ -886,32 +963,59 @@ class ParseResultsTest(unittest.TestCase):
         problems, checked = parse_results.geometry_problems([903, 27, 930, 1973], found[3])
         self.assertEqual((problems, checked), ([], ["L", "足跡", "原點"]))
 
+    R1 = [0, 0, 100, 27]  # SYNTH_SCENE 的兩支 oracle 矩形
+    R2 = [73, 0, 100, 80]
+
     def test_accepted_rows_match_oracle_rect(self):
-        stdout = _core_block(1, 100, (0, 0), [0, 0, 100, 27]) + _core_block(2, 80, (100, 0), [73, 0, 100, 80])
-        rows = self._accepted(stdout)
+        rows = self._accepted(_full_block(1, self.R1) + _full_block(2, self.R2, origin=(100, 0)))
         self.assertEqual([row["status"] for row in rows], ["接受", "接受"])
         self.assertEqual(rows[0]["geometry_checked"], ["L", "足跡", "原點"])
 
     def test_legal_but_wrong_length_is_not_accepted(self):
         # 核心結束碼 0、輸出看起來合法，只是 L 差 1 mm：必須是「幾何不符」。
-        rows = self._accepted(_core_block(1, 100) + _core_block(2, 79))
+        rows = self._accepted(_full_block(1, self.R1) + _full_block(2, self.R2, length=79))
         self.assertEqual([row["status"] for row in rows], ["接受", "幾何不符"])
         self.assertIn("核心 L=79", rows[1]["message"])
         self.assertIn("長邊 80", rows[1]["message"])
 
     def test_wrong_footprint_or_origin_is_not_accepted(self):
-        good_origin = (0, 0)
-        rows = self._accepted(_core_block(1, 100, good_origin, [0, 0, 99, 27]) + _core_block(2, 80))
+        rows = self._accepted(_core_block(1, 100, (0, 0), [0, 0, 99, 27]) + _full_block(2, self.R2))
         self.assertEqual(rows[0]["status"], "幾何不符")
         self.assertIn("核心足跡 [0, 0, 99, 27]", rows[0]["message"])
-        rows = self._accepted(_core_block(1, 100, (5, 5), [0, 0, 100, 27]) + _core_block(2, 80))
+        rows = self._accepted(_core_block(1, 100, (5, 5), self.R1) + _full_block(2, self.R2))
         self.assertEqual(rows[0]["status"], "幾何不符")
         self.assertIn("不在 oracle 矩形", rows[0]["message"])
 
     def test_accepted_member_missing_from_core_output_is_not_accepted(self):
-        rows = self._accepted(_core_block(1, 100))
+        rows = self._accepted(_full_block(1, self.R1))
         self.assertEqual([row["status"] for row in rows], ["接受", "幾何不符"])
         self.assertIn("沒有這支角材的輸出", rows[1]["message"])
+
+    def test_accepted_rows_must_have_length_origin_and_footprint(self):
+        """缺任何一項都不算接受（ChatGPT 複審：缺欄不得被靜默接受）。反轉舊測試「只有 L 也接受」。"""
+        good2 = _full_block(2, self.R2)
+        cases = {
+            "只有 L": (_core_block(1, 100), ["角材原點", "A0 接觸面頂點"]),
+            "缺原點": (_core_block(1, 100, None, self.R1), ["角材原點"]),
+            "缺 A0 頂點": (_core_block(1, 100, (0, 0), None), ["A0 接觸面頂點"]),
+        }
+        for label, (block1, missing) in cases.items():
+            with self.subTest(case=label):
+                rows = self._accepted(block1 + good2)
+                self.assertEqual([row["status"] for row in rows], ["幾何不符", "接受"])
+                self.assertIn("缺欄", rows[0]["message"])
+                for name in missing:
+                    self.assertIn(name, rows[0]["message"])
+                self.assertEqual(parse_results.status_label(rows[0]), "幾何不符")
+
+    def test_missing_fields_are_also_rejected_without_an_oracle_rect(self):
+        scene = self.scenes["p3_alcove_side_boundary_then_main.scene"]
+        pairs = ((1, 4000), (2, 4000), (3, 2946), (4, 1287), (5, 1287))
+        loose = parse_results.interpret_scene("p3", scene, stdout=_lengths(*pairs), rc=0)
+        self.assertEqual([row["status"] for row in loose["members"]], ["幾何不符"] * 5)
+        full = parse_results.interpret_scene("p3", scene, stdout=_loose_blocks(*pairs), rc=0)
+        self.assertEqual([row["status"] for row in full["members"]], ["接受"] * 5)
+        self.assertEqual(full["members"][0]["geometry_checked"], [])  # 沒有 oracle 矩形：欄位齊全但沒比
 
     def test_geometry_mismatch_makes_the_exit_code_nonzero(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -919,7 +1023,11 @@ class ParseResultsTest(unittest.TestCase):
             scenes = root / "scenes"
             scenes.mkdir()
             (scenes / "synth.scene").write_text(SYNTH_SCENE, encoding="utf-8", newline="\n")
-            _write_bucket(root / "synth", {"full.rc": "0\n", "full.out": _core_block(1, 100) + _core_block(2, 79), "full.err": ""})
+            _write_bucket(root / "synth", {
+                "full.rc": "0\n",
+                "full.out": _full_block(1, self.R1) + _full_block(2, self.R2, length=79),
+                "full.err": "",
+            })
             code = _quiet_main(["--run-dir", str(root), "--scenes", str(scenes)])
         self.assertEqual(code, parse_results.EXIT_PROBE_ERRORS)
 
@@ -958,15 +1066,26 @@ def _find_git_or_posix_bash() -> str | None:
     return None
 
 
-FAKE_CORE = """#!/bin/bash
+FAKE_CORE = r"""#!/bin/bash
 # 假核心：行為由 FAKE_MODE 決定，用來測 run_probe.sh 的結束碼分類。不是原生核心。
+# 對 ONE_MEMBER_SCENE 的角材 1（oracle 矩形 [0,0,100,27]）印出核心 stdout 的三項：L、角材原點、A0 接觸面頂點。
+block_l()      { printf '\n=== 已放置的完整角材 ===\n角材 ID：1\n尺寸：L=%s，A=27，B=33 mm\n' "$1"; }
+block_origin() { printf '角材原點：(0, 0, 2500)\n'; }
+block_a0()     { printf '\n角材 1 的 A0（接觸面）：\n  vertex[0] = (0, 0, 2500)\n  vertex[1] = (0, 27, 2500)\n  vertex[2] = (100, 27, 2500)\n  vertex[3] = (100, 0, 2500)\n'; }
 case "${FAKE_MODE:-}" in
-  segv)   echo "Segmentation fault (fake)" >&2; exit 139 ;;
-  usage)  echo "usage: core [options] (fake)" >&2; exit 2 ;;
-  hang)   exec sleep 30 ;;
-  reject) echo "fake.scene:5: V_CUT_PRIORITY：角材 1（優先級 2）端面頂到角材 1（優先級 2）側面" >&2; exit 1 ;;
-  accept) printf '\\n=== 已放置的完整角材 ===\\n角材 ID：1\\n尺寸：L=100，A=27，B=33 mm\\n'; exit 0 ;;
-  wrongL) printf '\\n=== 已放置的完整角材 ===\\n角材 ID：1\\n尺寸：L=99，A=27，B=33 mm\\n'; exit 0 ;;
+  segv)     echo "Segmentation fault (fake)" >&2; exit 139 ;;
+  usage)    echo "usage: core [options] (fake)" >&2; exit 2 ;;
+  hang)     exec sleep 30 ;;
+  reject)   echo "fake.scene:5: V_CUT_PRIORITY：角材 1（優先級 2）端面頂到角材 1（優先級 2）側面" >&2; exit 1 ;;
+  capacity) echo "fake.scene:5: 角材的數量超過上限" >&2; exit 1 ;;
+  parseerr) echo "fake.scene:3: timber 行有多餘欄位" >&2; exit 1 ;;
+  nofile)   echo "fake.scene:0: 無法開啟場景檔" >&2; exit 1 ;;
+  silent1)  exit 1 ;;
+  accept)   block_l 100; block_origin; block_a0; exit 0 ;;
+  wrongL)   block_l 99; block_origin; block_a0; exit 0 ;;
+  onlyL)    block_l 100; exit 0 ;;
+  noorigin) block_l 100; block_a0; exit 0 ;;
+  nofoot)   block_l 100; block_origin; exit 0 ;;
 esac
 exit 99
 """
@@ -1059,6 +1178,48 @@ class RunProbeFakeCoreTest(unittest.TestCase):
         self.assertEqual(statuses, ["幾何不符"])
         self.assertIn("長邊 100", messages)
         self.assertEqual(rc, parse_results.EXIT_PROBE_ERRORS)
+
+    def test_accept_with_missing_fields_fails_the_run(self):
+        for mode in ("onlyL", "noorigin", "nofoot"):
+            with self.subTest(mode=mode):
+                rc, statuses, messages, _summary = self._run(mode)
+                self.assertEqual(statuses, ["幾何不符"])
+                self.assertIn("缺欄", messages)
+                self.assertEqual(rc, parse_results.EXIT_PROBE_ERRORS)
+
+    def test_rc1_with_a_parse_error_is_an_error_not_a_rejection(self):
+        for mode in ("parseerr", "nofile", "silent1"):
+            with self.subTest(mode=mode):
+                rc, statuses, messages, summary = self._run(mode)
+                self.assertEqual(statuses, ["錯誤"])
+                self.assertIn("沒有核心規則診斷", messages)
+                self.assertEqual(rc, parse_results.EXIT_PROBE_ERRORS)
+                self.assertIn("rejected=0 errors=1", summary)  # run_probe.sh 的計數與 parse_results 一致
+
+    def test_rc1_with_a_capacity_message_is_a_rejection_not_an_error(self):
+        rc, statuses, messages, summary = self._run("capacity")
+        self.assertEqual(statuses, ["拒絕"])
+        self.assertIn("超過上限", messages)
+        self.assertEqual(rc, 0)
+        self.assertIn("rejected=1 errors=0", summary)
+
+    def test_shell_and_python_rule_predicates_agree(self):
+        """run_probe.sh 的 rule_diag 與 parse_results.is_rule_diagnostic 對同一批真實訊息的判斷必須相同。"""
+        text = (HERE / "run_probe.sh").read_text(encoding="utf-8")
+        match = re.search(r"^rule_diag\(\) \{\n.*?^\}\n", text, re.M | re.S)
+        self.assertIsNotNone(match, "找不到 run_probe.sh 的 rule_diag 函式")
+        samples = ParseResultsTest.RULE_DIAGNOSTICS + ParseResultsTest.NON_RULE_DIAGNOSTICS
+        for sample in samples:
+            with self.subTest(stderr=sample):
+                path = self.root / "diag.err"
+                path.write_text(sample + "\n", encoding="utf-8", newline="\n")
+                done = subprocess.run(
+                    [self.bash, "-c", match.group(0) + f'\nrule_diag "{path.as_posix()}"'],
+                    capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60,
+                )
+                shell_says = done.returncode == 0
+                python_says = parse_results.classify_rc(1, sample + "\n") == "拒絕"
+                self.assertEqual(shell_says, python_says, f"shell {shell_says} / python {python_says}：{sample!r}")
 
 
 if __name__ == "__main__":

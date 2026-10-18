@@ -4,9 +4,11 @@
 # 本機 Windows 不跑這支腳本、不編譯。
 #
 # 結束碼分類（依 opus／ChatGPT 對 #297 的審查更正）：
-#   current_geometry.c 的 main() 只回 0（接受）或 1（拒絕、參數錯、讀檔失敗），沒有別的回傳值。
-#   所以只有 1 算規則拒絕。其他非 0（139／134 崩潰、124 逾時、127 找不到執行檔…）是「錯誤」，
-#   不得計成拒絕；腳本最後的結束碼由 parse_results.py 決定，有任何「錯誤」或「幾何不符」列就非 0。
+#   current_geometry.c 的 main() 只回 0（接受）或 1（拒絕、參數錯、讀檔失敗、語法錯），沒有別的回傳值。
+#   所以規則拒絕只可能是 1；但 1 不一定是規則拒絕：還要 stderr 第一行（去掉「路徑:行號:」）帶核心規則診斷，
+#   也就是 V_* 違規碼、I／R／D 加編號、或「超過上限」容量訊息（判定式與 parse_results.is_rule_diagnostic 相同）。
+#   其他非 0（139／134 崩潰、124 逾時、127 找不到執行檔…），以及沒有規則診斷的 1（語法、參數、讀檔錯誤），
+#   都是「錯誤」，不得計成拒絕；腳本最後的結束碼由 parse_results.py 決定，有任何「錯誤」或「幾何不符」列就非 0。
 #
 # 測試用環境變數（平常不用設）：
 #   CORE_BIN          用這個現成的執行檔（或假核心）代替編譯 current_geometry.c
@@ -68,10 +70,19 @@ else
   echo "沒有 timeout 指令，核心呼叫不設上限" >> "$out/summary.txt"
 fi
 
-# 呼叫核心一次。結束碼由呼叫者分類：0 接受、$core_reject_rc 拒絕、其餘 = 錯誤。
+# 呼叫核心一次。結束碼由呼叫者分類：0 接受；$core_reject_rc 且 stderr 帶規則診斷 = 拒絕；其餘 = 錯誤。
 run_core() {
   # shellcheck disable=SC2086
   $timeout_cmd ./core --scene "$1" --no-window --out "$w/out.svg"
+}
+
+# stderr 檔的第一個非空行（去掉「xxx.scene:行號:」前綴）是否帶核心規則診斷。
+# 與 parse_results.is_rule_diagnostic 同一個判定式；兩邊不一致時以 parse_results 的結果為準。
+rule_diag() {
+  local line
+  line=$(grep -m1 -v '^[[:space:]]*$' "$1" 2>/dev/null) || return 1
+  line=$(printf '%s\n' "$line" | sed -E 's/^.*\.scene:[0-9]+:[[:space:]]*//')
+  printf '%s\n' "$line" | grep -Eq 'V_[A-Z0-9_]+|(^|[^A-Za-z0-9])[IRD][0-9]+([a-z]|\([a-z]\))?([^A-Za-z0-9]|$)|超過上限'
 }
 
 shopt -s nullglob
@@ -126,12 +137,12 @@ for s in "$out/scenes"/*.scene; do
     echo "$rejected" > "$d/$k.omit"
     if [ "$one" -eq 0 ]; then
       retained="$retained $num"
-    elif [ "$one" -eq "$core_reject_rc" ]; then
+    elif [ "$one" -eq "$core_reject_rc" ] && rule_diag "$d/$k.err"; then
       rejected="$rejected $num"
       rej_count=$((rej_count + 1))
     else
-      # 崩潰、訊號、逾時：不是規則拒絕。仍從後面的前綴拿掉，免得一支異常拖垮整場；
-      # parse_results.py 會把這一列標成「錯誤」。
+      # 崩潰、訊號、逾時，或沒有規則診斷的結束碼 1（語法、參數、讀檔錯誤）：不是規則拒絕。
+      # 仍從後面的前綴拿掉，免得一支異常拖垮整場；parse_results.py 會把這一列標成「錯誤」。
       rejected="$rejected $num"
       err_count=$((err_count + 1))
     fi
