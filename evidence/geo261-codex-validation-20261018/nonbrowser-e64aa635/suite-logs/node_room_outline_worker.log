@@ -1,0 +1,14 @@
+✔ worker returns the same PDF interior, warnings and manual barriers as local analysis (5.015143ms)
+✔ worker preserves explicit errors and never fabricates a rectangle (2.570266ms)
+✔ image worker preserves page-coordinate scaling and does not detach caller geometry (14.344105ms)
+✔ overlapping boxes and repeated strokes retain the exact union at high density (13.787462ms)
+✔ cancel/new acquisition terminates the old worker; late old messages cannot settle the new result (4.432974ms)
+✔ worker startup/message failure rejects cleanly and releases its resource (1.217045ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 120.477026

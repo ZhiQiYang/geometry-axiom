@@ -1,0 +1,21 @@
+E
+======================================================================
+ERROR: setUpClass (test_product_architecture.ProductArchitecture)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_product_architecture.py", line 40, in setUpClass
+    snapshot_product_sources(ROOT, cls.root, cls.manifest)
+  File "/workspace/geometry-axiom/tests/test_product_architecture.py", line 25, in snapshot_product_sources
+    Scanner(source_root, manifest).validate_manifest()
+  File "/workspace/geometry-axiom/tests/architecture_contract.py", line 728, in validate_manifest
+    self.check_digest(path, entry["sha256"], "EXCLUSION_DIGEST", mode=mode)
+  File "/workspace/geometry-axiom/tests/architecture_contract.py", line 892, in check_digest
+    require(isinstance(digest, str) and re.fullmatch(r"[0-9a-f]{64}", digest)
+  File "/workspace/geometry-axiom/tests/architecture_contract.py", line 144, in require
+    raise ContractError(Diagnostic(path, max(1, line), code, message, direction, tuple(chain)))
+architecture_contract.ContractError: geometry-web/cdp_test.js:1: EXCLUSION_DIGEST: immutable lf digest is absent or mismatched
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.151s
+
+FAILED (errors=1)

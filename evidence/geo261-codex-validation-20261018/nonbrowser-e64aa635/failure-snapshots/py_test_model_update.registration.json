@@ -1,0 +1,121 @@
+{
+  "source_sha": "e64aa6359d600f43313ec9d7ba1112c465b6a40c",
+  "suite": "py:test_model_update",
+  "source_path": "/workspace/geometry-axiom/tests/test_model_update.py",
+  "source_file_sha256": "06b445d8d07a871f17ee5ed38fc9c90087ba439bd2dc6454925198f5cb55fa99",
+  "registry_path": "/workspace/geometry-axiom/tests/run_all.expected.json",
+  "registry_file_sha256": "eff9b2da89ac295351c430269d4a22fb5bd7829d9f250ccb1ed87945f5a312b7",
+  "registry_entry": {
+    "mode": "count",
+    "count": 26,
+    "unit": "test"
+  },
+  "ast_method_count": 26,
+  "methods": [
+    {
+      "test": "test_model_update.ModelUpdate.test_real_27_to_29_full_replacement_typed_diff_and_actual_runtime_pins",
+      "line": 79
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_native_update_bridge_only_replays_with_compiler_result_and_actual_pins",
+      "line": 116
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_explicit_different_and_same_ids_never_claim_identity_continuity",
+      "line": 133
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_no_selection_field_is_inferred_from_old_record",
+      "line": 147
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_empty_current_material_and_obstacles_are_explicit_removal_not_old_fallback",
+      "line": 156
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_explicit_nonempty_column_and_beam_sources_replay_complete_clearance_change",
+      "line": 173
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_edges_reselected_and_original_other_settings_preserved",
+      "line": 201
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_source_missing_wrong_boundary_wrong_kind_and_bad_edges_fail",
+      "line": 211
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_projection_is_explicit_retained_removed_and_validated",
+      "line": 221
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_old_full_result_summary_package_input_and_metadata_must_replay_exactly",
+      "line": 232
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_inline_rect_supports_no_timber_model_but_rejects_unsavable_timber_combination",
+      "line": 250
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_faces_assembly_owned_unknown_capability_and_unplaced_sources_reject",
+      "line": 270
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_capacity_native_timeout_exit_protocol_and_missing_binary_are_never_green",
+      "line": 279
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_isolated_native_children_leave_live_world_revision_pending_preview_and_ids_unchanged",
+      "line": 298
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_isolated_producer_preserves_live_pending_assembly_preview",
+      "line": 316
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_fixed_material_method_upgrade_same_geometry_is_rejected_but_unused_catalogue_versions_are_allowed",
+      "line": 358
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_same_value_fixed_A_B_version_swap_rejects_per_field_including_inactive_override_sources",
+      "line": 396
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_same_value_fixed_versions_swapped_between_two_explicit_timber_roots_reject",
+      "line": 404
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_unselected_I9_candidate_fixed_versions_do_not_block_selected_literal_timber",
+      "line": 410
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_unselected_actual_native_support_fixed_material_upgrade_is_rejected",
+      "line": 418
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_placed_timber_nonexact_native_projection_refuses_without_writing_record_or_live_world",
+      "line": 447
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_different_protected_root_keys_require_explicit_correspondence",
+      "line": 484
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_runtime_changes_during_candidate_are_rejected",
+      "line": 498
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_real_historical_missing_wall_record_can_be_replaced_by_complete_legal_source",
+      "line": 510
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_historical_replay_does_not_allow_tampering_or_another_incomplete_replacement",
+      "line": 525
+    },
+    {
+      "test": "test_model_update.ModelUpdate.test_legal_historical_package_provenance_does_not_prevent_strict_replacement",
+      "line": 542
+    }
+  ],
+  "method": "AST parse only; no import or test execution"
+}

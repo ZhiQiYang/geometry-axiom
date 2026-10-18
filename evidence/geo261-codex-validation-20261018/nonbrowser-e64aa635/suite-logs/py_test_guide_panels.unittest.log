@@ -1,0 +1,15 @@
+F
+======================================================================
+FAIL: test_every_panel_and_callout_resolves (test_guide_panels.GuidePanels.test_every_panel_and_callout_resolves)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_guide_panels.py", line 24, in test_every_panel_and_callout_resolves
+    self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+AssertionError: 1 != 0 : panels: 39
+unresolved: [('callout', '基礎幾何型別', 'lines 63-75', '\\} Point3;'), ('callout', '基礎幾何型別', 'lines 63-75', '\\} Vector3;'), ('callout', '基礎幾何型別', 'lines 63-75', '\\} Quad3;'), ('callout', '基礎幾何型別', 'lines 63-75', '\\} Plane3;'), ('callout', 'vector_cross', 'lines 86-89', '\\.x = a\\.y \\* b\\.z'), ('panel', 'SurfaceFrame'), ('callout', 'surface_point_to_room', 'lines 377-386', '\\.x = surface->frame\\.origin\\.x'), ('callout', 'surface_point_to_room', 'lines 377-386', 'w \\* surface->frame\\.normal\\.x'), ('callout', 'surface_frame_is_valid', 'lines 136-140', 'return vector_dot\\(frame->axis_u, frame->axis_u\\) '), ('callout', 'surface_frame_is_valid', 'lines 136-140', 'vector_dot\\(frame->axis_u, frame->axis_v\\) == 0 &&'), ('callout', 'surface_frame_is_valid', 'lines 136-140', 'vector_cross\\(frame->axis_u, frame->axis_v\\),'), ('panel', 'PolygonLoop2'), ('panel', 'SpaceBoundarySurface'), ('panel', 'GuideLine'), ('panel', 'Timber'), ('callout', 'timber_place_a0_on_surface', 'lines 1018-1065', 'Vector3 axis_length = surface_direction_vector\\('), ('callout', 'timber_place_a0_on_surface', 'lines 1018-1065', '\\? surface->frame\\.normal'), ('callout', 'timber_place_a0_on_surface', 'lines 1018-1065', 'Vector3 axis_a = vector_cross\\(axis_b, axis_length'), ('callout', 'timber_place_a0_on_surface', 'lines 1018-1065', 'SurfacePoint2 far_corner = \\{'), ('callout', 'timber_place_a0_on_surface', 'lines 1018-1065', 'surface_contains_rect'), ('callout', 'timber_place_a0_on_surface', 'lines 1018-1065', 'timber->placed = true;'), ('callout', 'timber_local_to_room', 'lines 1067-1077', 'length_coordinate \\* timber->axis_length\\.x'), ('callout', 'timber_get_face_room', 'lines 1079-1087', 'const int k = TIMBER_FACE_SPEC\\[face\\]\\.axis;'), ('callout', 'timber_get_face_room', 'lines 1079-1087', 'local\\[u\\] = TIMBER_FACE_WALK\\[s\\]\\[i\\]\\[0\\]'), ('callout', 'timber_get_face_room', 'lines 1079-1087', 'out_face->vertices\\[i\\] = timber_local_to_room\\('), ('callout', 'World', 'lines 2786-2790', 'SpaceBoundarySurface boundaries\\[WORLD_MAX_BOUNDAR'), ('callout', 'World', 'lines 2786-2790', 'TimberAnchor anchors\\[WORLD_MAX_TIMBERS\\];'), ('callout', 'World', 'lines 2786-2790', 'Timber timbers\\[WORLD_MAX_TIMBERS\\];'), ('callout', 'parse_scene_file', 'lines 9978-10108', '!out_world->timbers\\[i\\]\\.placed')]
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.087s
+
+FAILED (failures=1)

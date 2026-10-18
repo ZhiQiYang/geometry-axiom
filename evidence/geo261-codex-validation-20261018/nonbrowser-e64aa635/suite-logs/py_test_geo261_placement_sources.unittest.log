@@ -1,0 +1,91 @@
+F.F.F..FF.....FF...F.
+======================================================================
+FAIL: test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata (test_geo261_placement_sources.NativePlacementSources.test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 104, in test_actual_frame_rectangle_and_region_leaves_have_exact_typed_metadata
+    self.pass_case("leaves")
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 96, in pass_case
+    self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+AssertionError: 0 != 1 : ASSERT:explicit-leaves-have-no-upstream-edges
+
+
+======================================================================
+FAIL: test_binding_value_discard_control_fails_named_consumption_assertion (test_geo261_placement_sources.NativePlacementSources.test_binding_value_discard_control_fails_named_consumption_assertion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 159, in test_binding_value_discard_control_fails_named_consumption_assertion
+    self.control("binding-value")
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 147, in control
+    self.assertEqual(1, original.count(before), "Negative control must hit one real expression")
+AssertionError: 1 != 0 : Negative control must hit one real expression
+
+======================================================================
+FAIL: test_declined_binding_uses_explicit_values_and_region_reference_edge (test_geo261_placement_sources.NativePlacementSources.test_declined_binding_uses_explicit_values_and_region_reference_edge)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 116, in test_declined_binding_uses_explicit_values_and_region_reference_edge
+    self.pass_case("binding-declines")
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 96, in pass_case
+    self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+AssertionError: 0 != 1 : ASSERT:declined-binding-never-reads-upstream
+
+
+======================================================================
+FAIL: test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable (test_geo261_placement_sources.NativePlacementSources.test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 110, in test_empty_region_set_ordered_components_and_borrowed_holes_remain_stable
+    self.pass_case("views")
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 96, in pass_case
+    self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+AssertionError: 0 != 1 : ASSERT:inline-set-borrows-its-own-store
+
+
+======================================================================
+FAIL: test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs (test_geo261_placement_sources.NativePlacementSources.test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 101, in test_exact_binary_keys_decode_full_uint32_and_preserve_failed_outputs
+    self.pass_case("keys")
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 96, in pass_case
+    self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+AssertionError: 0 != 1 : ASSERT:unknown-key-kind-rejected
+
+
+======================================================================
+FAIL: test_region_reference_consumes_core_region_and_records_required_value_edge (test_geo261_placement_sources.NativePlacementSources.test_region_reference_consumes_core_region_and_records_required_value_edge)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 107, in test_region_reference_consumes_core_region_and_records_required_value_edge
+    self.pass_case("region-edge")
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 96, in pass_case
+    self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+AssertionError: 0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge
+
+
+======================================================================
+FAIL: test_same_geometry_without_region_edge_control_fails_named_edge_assertion (test_geo261_placement_sources.NativePlacementSources.test_same_geometry_without_region_edge_control_fails_named_edge_assertion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 162, in test_same_geometry_without_region_edge_control_fails_named_edge_assertion
+    self.control("region-edge")
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 144, in control
+    self.pass_case(case)
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 96, in pass_case
+    self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+AssertionError: 0 != 1 : ASSERT:region-reference-has-two-nodes-one-value-edge
+
+
+======================================================================
+FAIL: test_every_negative_control_hits_exactly_one_live_expression (test_geo261_placement_sources.PlacementSourcesBoundary.test_every_negative_control_hits_exactly_one_live_expression) (control='binding-value')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_placement_sources.py", line 69, in test_every_negative_control_hits_exactly_one_live_expression
+    self.assertEqual(1, (KERNEL / (module + ".c")).read_text(encoding="utf-8").count(before))
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 21 tests in 4.694s
+
+FAILED (failures=8)

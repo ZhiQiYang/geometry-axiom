@@ -1,0 +1,30 @@
+{
+ "file": "tests/test_scenario_verify.py",
+ "total": 37,
+ "run": 37,
+ "passed": 36,
+ "failed": 1,
+ "skipped": 0,
+ "explicit_skipped": 0,
+ "unrun_skipped": 0,
+ "blocked_by_error": 0,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [
+  {
+   "test": "test_scenario_verify.ScenarioNativeAcceptance.test_model_base_stdout_and_stderr_are_bounded_inside_worker (descriptor=1)",
+   "kind": "error",
+   "message": "geometry_app.model_common.ModelError: Isolated verification exceeded its execution budget."
+  },
+  {
+   "test": "test_scenario_verify.ScenarioNativeAcceptance.test_model_base_stdout_and_stderr_are_bounded_inside_worker (descriptor=2)",
+   "kind": "error",
+   "message": "geometry_app.model_common.ModelError: Isolated verification exceeded its execution budget."
+  }
+ ],
+ "skip_reasons": {},
+ "skip_items": [],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 462.53
+}

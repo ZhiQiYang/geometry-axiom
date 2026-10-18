@@ -1,0 +1,34 @@
+{
+  "suite": "node:tests-js",
+  "status": "timeout/incomplete",
+  "timeout_limit_seconds": 900,
+  "outer_timeout_confirmed": true,
+  "registered_count": 730,
+  "unit": "node test",
+  "registered_count_source": "/workspace/geo261-validation-20261018/nonbrowser-e64aa635/failure-snapshots/node_tests-js.registration.json",
+  "actual_executed_total": null,
+  "partial_observed_named_failures": [
+    {
+      "line": 105,
+      "original": "✖ delivered engineering project reopens through a private real service, retains seven bound sources and rejects tampering atomically (51060.389569ms)"
+    },
+    {
+      "line": 312,
+      "original": "✖ native old27/live29 receipt updates the same complete model once; source settings remain fixed (80398.102013ms)"
+    },
+    {
+      "line": 313,
+      "original": "✖ native complete record survives actual workspace save ZIP reopen, fresh verify, undo and redo (60115.598269ms)"
+    }
+  ],
+  "runner_progress_evidence": "已走到 node:polydraft；node:tests-js 輸出沒有完整 summary，待最終 runner note 確認 timeout。",
+  "interpretation": "3 個具名失敗為 partial 原文直接觀測；不從730登錄或部分通過標記推算實際執行總數／全部通過。無完整失敗traceback，根因另查。",
+  "partial_log": {
+    "path": "/workspace/geo261-validation-20261018/nonbrowser-e64aa635/failure-snapshots/node_tests-js.log",
+    "bytes": 31232,
+    "sha256": "91e448082dfedf31637d0b873755d6856663bfbcf4c85ea53d9bd4d044fe9417"
+  },
+  "recorded_at_utc": "2026-10-18T10:54:56.938810+00:00",
+  "runner_note_original": "逾時（900 秒）被終止，已終止整棵行程樹（killpg SIGKILL）（900.1 秒後收完）；日誌 /tmp/geometry-tests/run_all-logs/node_tests-js.log",
+  "runner_wall_seconds_rounded": 900.1
+}

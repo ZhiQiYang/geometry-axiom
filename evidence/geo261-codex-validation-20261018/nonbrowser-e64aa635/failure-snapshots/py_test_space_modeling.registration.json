@@ -1,0 +1,177 @@
+{
+  "source_sha": "e64aa6359d600f43313ec9d7ba1112c465b6a40c",
+  "suite": "py:test_space_modeling",
+  "source_path": "/workspace/geometry-axiom/tests/test_space_modeling.py",
+  "source_file_sha256": "12520e1dfe467fd04f2c377d312cc58647e7c8fab53115c7f2a82ee169c29480",
+  "registry_path": "/workspace/geometry-axiom/tests/run_all.expected.json",
+  "registry_file_sha256": "eff9b2da89ac295351c430269d4a22fb5bd7829d9f250ccb1ed87945f5a312b7",
+  "registry_entry": {
+    "mode": "count",
+    "unit": "test",
+    "count": 40
+  },
+  "ast_method_count": 40,
+  "methods": [
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_rectangle_exact_space_and_joined_material",
+      "line": 144
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_l_shape_keeps_concavity_and_unions_overlap",
+      "line": 163
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_concavity_and_outward_walls_occupy_the_specified_regions",
+      "line": 171
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_projection_z_does_not_set_room_height",
+      "line": 184
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_open_room_keeps_geometry_but_no_volume_or_clearance",
+      "line": 193
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_one_selected_edge_is_valid_open_space",
+      "line": 204
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_hole_requires_explicit_role_and_through_survives",
+      "line": 213
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_through_hole_retains_its_exact_location_at_all_heights",
+      "line": 224
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_reversed_frame_keeps_world_orientation",
+      "line": 236
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_faces_mode_reuses_existing_placements_and_purposes",
+      "line": 243
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_selected_obstacle_changes_clearance_only",
+      "line": 257
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_selected_wall_capacity_rejects_whole_request_before_building_packages",
+      "line": 268
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_exact_native_limit_remains_admitted_and_placement_capacity_is_independent",
+      "line": 294
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_selected_material_specs_are_preflighted_without_changing_requirement",
+      "line": 306
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_material_solver_failure_is_not_downgraded_to_success",
+      "line": 315
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_all_namespaces_and_uint_max_ids_are_preserved",
+      "line": 326
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_missing_negative_noninteger_and_unknown_settings_rejected",
+      "line": 335
+    },
+    {
+      "test": "test_space_modeling.SpaceModelingAcceptance.test_nonhorizontal_missing_source_and_invalid_face_use_rejected",
+      "line": 354
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t01_true_material_dimensions_coplanarity_and_replay",
+      "line": 376
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t02_world_orientation_and_translated_origin",
+      "line": 398
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t03_placement_zero_and_shared_boundary_do_not_mix_material",
+      "line": 410
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t04_selected_root_keeps_support_specs_and_original_roles",
+      "line": 423
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t04_main_and_child_grid_dependencies_are_preserved",
+      "line": 440
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t07_material_selection_does_not_change_space_walls_or_clearance",
+      "line": 458
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t08_height_bottom_thickness_changes_leave_timber_geometry_exact",
+      "line": 477
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t12_empty_duplicate_unknown_wrong_type_and_unplaced_are_rejected",
+      "line": 487
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t12_capacity_and_verification_failures_do_not_return_partial_success",
+      "line": 511
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t12_reconstructed_package_must_contain_every_requested_root",
+      "line": 528
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t14_ready_example_is_complete_and_candidates_match_real_material",
+      "line": 539
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t14_each_saved_member_has_its_own_exact_world_geometry",
+      "line": 556
+    },
+    {
+      "test": "test_space_modeling.SpaceTimberAcceptance.test_t15_material_never_closes_an_open_room",
+      "line": 569
+    },
+    {
+      "test": "test_space_modeling.HistoricalWallReplay.test_actual_old_archive_replays_both_records_without_changing_requests",
+      "line": 588
+    },
+    {
+      "test": "test_space_modeling.HistoricalWallReplay.test_historical_missing_walls_still_require_exact_geometry_settings_and_diagnostics",
+      "line": 600
+    },
+    {
+      "test": "test_space_modeling.HistoricalWallReplay.test_removing_a_complete_wall_package_cannot_forge_a_historical_failure",
+      "line": 617
+    },
+    {
+      "test": "test_space_modeling.HistoricalWallReplay.test_supported_historical_package_metadata_is_verified_and_preserved",
+      "line": 626
+    },
+    {
+      "test": "test_space_modeling.SpaceModelWithSectionProfileSource.test_q17_control_world_has_no_section_markers",
+      "line": 741
+    },
+    {
+      "test": "test_space_modeling.SpaceModelWithSectionProfileSource.test_q17_section_source_builds_plain_v1_space_model_for_every_run_mix",
+      "line": 750
+    },
+    {
+      "test": "test_space_modeling.SpaceModelWithSectionProfileSource.test_q17_faces_mode_keeps_working_with_section_definitions",
+      "line": 823
+    },
+    {
+      "test": "test_space_modeling.SpaceModelWithSectionProfileSource.test_q17_explicit_timbers_and_section_definitions_coexist",
+      "line": 845
+    },
+    {
+      "test": "test_space_modeling.SpaceModelWithSectionProfileSource.test_q17_section_bearing_packages_still_require_the_adopted_axiom_revision",
+      "line": 869
+    }
+  ],
+  "method": "AST parse only; no import or test execution"
+}

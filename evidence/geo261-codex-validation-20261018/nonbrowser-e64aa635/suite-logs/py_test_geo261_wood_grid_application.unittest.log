@@ -1,0 +1,29 @@
+..F..F.....
+======================================================================
+FAIL: test_child_parent_type_index_space_and_stagger_order (test_geo261_wood_grid_application.WoodGridApplication.test_child_parent_type_index_space_and_stagger_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_wood_grid_application.py", line 53, in test_child_parent_type_index_space_and_stagger_order
+    self.assertEqual(0, self.case("child"))
+                        ^^^^^^^^^^^^^^^^^^
+  File "/workspace/geometry-axiom/tests/test_geo261_wood_grid_application.py", line 38, in case
+    self.assertEqual(1 if marker else 0, result.returncode, name + ": " + result.stderr)
+AssertionError: 0 != 1 : child: ASSERT:child:134
+
+
+======================================================================
+FAIL: test_removed_child_identity_guard_fails_parent_change_assertion (test_geo261_wood_grid_application.WoodGridApplication.test_removed_child_identity_guard_fails_parent_change_assertion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_wood_grid_application.py", line 86, in test_removed_child_identity_guard_fails_parent_change_assertion
+    self.assertEqual(0, self.case("child"))
+                        ^^^^^^^^^^^^^^^^^^
+  File "/workspace/geometry-axiom/tests/test_geo261_wood_grid_application.py", line 38, in case
+    self.assertEqual(1 if marker else 0, result.returncode, name + ": " + result.stderr)
+AssertionError: 0 != 1 : child: ASSERT:child:134
+
+
+----------------------------------------------------------------------
+Ran 11 tests in 23.112s
+
+FAILED (failures=2)

@@ -1,0 +1,25 @@
+{
+  "suite": "py:test_space_modeling",
+  "status": "timeout/incomplete",
+  "timeout_limit_seconds": 1200,
+  "outer_timeout_confirmed": true,
+  "registered_methods": 40,
+  "registered_methods_source": "/workspace/geo261-validation-20261018/nonbrowser-e64aa635/failure-snapshots/py_test_space_modeling.registration.json",
+  "observed_partial_unittest_output": "................................",
+  "json_present": false,
+  "runner_progress_evidence": "[177/214] py:test_subgrid_contract 已啟動；space_modeling 無完整 JSON，待最終 runner note 確認 timeout。",
+  "interpretation": "進度點不作已驗通過計數或方法身分；runner synthetic failure 也不作實際 assertion failure。",
+  "files": [
+    {
+      "path": "/workspace/geo261-validation-20261018/nonbrowser-e64aa635/failure-snapshots/py_test_space_modeling.log",
+      "bytes": 0
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/nonbrowser-e64aa635/failure-snapshots/py_test_space_modeling.unittest.log",
+      "bytes": 32
+    }
+  ],
+  "recorded_at_utc": "2026-10-18T10:37:33.494816+00:00",
+  "runner_note_original": "逾時（1200 秒）被終止，已終止整棵行程樹（killpg SIGKILL）（1200.1 秒後收完）；日誌 /tmp/geometry-tests/run_all-logs/py_test_space_modeling.log",
+  "runner_wall_seconds_rounded": 1200.1
+}

@@ -1,0 +1,37 @@
+✔ bounded typed field0 + exact conflicting observations, source refs deduplicated (4.253265ms)
+✔ unknown schema/kind/id/hash/page/rect/incarnation and model cache reject (1.256755ms)
+✔ duplicate IDs, capacity, exotic objects and executable/accessor data reject (5.403046ms)
+✔ document is copied from existing reference without second calibration (0.524287ms)
+✔ new PDF descriptors require explicit matching canonical source metadata (1.107972ms)
+✔ PDF descriptor rejects source/page getters and toJSON without invocation (0.438112ms)
+✔ add rejects plain-data accessors and toJSON before any caller callback (1.341045ms)
+✔ rebind rejects target accessor/toJSON without invocation or annotation write (2.067228ms)
+✔ positive subnormal extent at the page edge cannot pass rounded addition (4.265833ms)
+✔ identical content alone never proves same target incarnation (1.666409ms)
+✔ source hash change, reordered page, source and target missing never inherit review (0.81891ms)
+✔ four rotations and crop/zoom/DPR presentation keep full original region (0.561284ms)
+✔ create/review are annotation history writes; model current stays separate (1.665482ms)
+✔ reopen preserves confirmation record but requires explicit reassociation (1.584437ms)
+✔ same ID same pins after native revision changes remains unknown (1.230606ms)
+✔ fresh read revision rejects stale cached stamp before annotation write (0.536193ms)
+✔ asynchronous attachment setter rejected before any delayed mutation (0.217373ms)
+✔ synchronous completed commit remains success if its notification cancels the view (0.534406ms)
+✔ cross project scope rejected before writing (0.227018ms)
+✔ cancelled, late page and context/hash/revision changes reject before write (1.852945ms)
+✔ cancelled view and late navigation callback cannot paint wrong context (12.763535ms)
+✔ navigation during the initial current read rejects before detached locator starts (0.931719ms)
+✔ staged locator guards every detached await and makes one synchronous navigation (1.525349ms)
+✔ cancel/source/basis/page/context/native changes during either load block all navigation and paint (3.16906ms)
+✔ locator checks final returned prepare even when injected prepare omits its own guard (0.85185ms)
+✔ source-only closure requires original bytes/hash/type/page dimensions (2.424871ms)
+✔ asynchronous closure validates its immutable link snapshot after input mutation (0.588684ms)
+✔ closure page parser uses the verified copied bytes during a delayed hash (2.192162ms)
+✔ otherwise valid closure rejects a changed candidate before acceptance (0.841962ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 131.589409

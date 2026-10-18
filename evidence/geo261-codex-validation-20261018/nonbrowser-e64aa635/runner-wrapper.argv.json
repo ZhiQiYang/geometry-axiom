@@ -1,0 +1,5 @@
+[
+  "/bin/bash",
+  "-lc",
+  "mkdir -p /workspace/geo261-validation-20261018/nonbrowser-e64aa635\nulimit -s 16384\ngit rev-parse HEAD > /workspace/geo261-validation-20261018/nonbrowser-e64aa635/source-sha.txt\ngit status --porcelain=v1 --untracked-files=all > /workspace/geo261-validation-20261018/nonbrowser-e64aa635/status-before.txt\ndate -u +%FT%TZ > /workspace/geo261-validation-20261018/nonbrowser-e64aa635/started-at.txt\npython3 -u tests/run_all.py --build > /workspace/geo261-validation-20261018/nonbrowser-e64aa635/run_all.log 2>&1\ngeo261_status=$?\ndate -u +%FT%TZ > /workspace/geo261-validation-20261018/nonbrowser-e64aa635/finished-at.txt\nprintf '%s\\n' \"$geo261_status\" > /workspace/geo261-validation-20261018/nonbrowser-e64aa635/exit-code.txt\ncp -a /tmp/geometry-tests/run_all-logs /workspace/geo261-validation-20261018/nonbrowser-e64aa635/suite-logs\ngit status --porcelain=v1 --untracked-files=all > /workspace/geo261-validation-20261018/nonbrowser-e64aa635/status-after.txt\nexit \"$geo261_status\""
+]

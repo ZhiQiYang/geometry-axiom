@@ -1,0 +1,25 @@
+{
+ "file": "tests/test_geo261_wood_finish.py",
+ "total": 12,
+ "run": 12,
+ "passed": 11,
+ "failed": 1,
+ "skipped": 0,
+ "explicit_skipped": 0,
+ "unrun_skipped": 0,
+ "blocked_by_error": 0,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [
+  {
+   "test": "test_geo261_wood_finish.WoodFinish.test_same_fractional_thickness_guard_controls_actual_preview_and_commit",
+   "kind": "failure",
+   "message": "AssertionError: 'thickness must be explicitly set positive integer mm in D1; no rounding' not found in 'I35: effective dimension violates its positive/nonnegative integer mm range'"
+  }
+ ],
+ "skip_reasons": {},
+ "skip_items": [],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 21.47
+}

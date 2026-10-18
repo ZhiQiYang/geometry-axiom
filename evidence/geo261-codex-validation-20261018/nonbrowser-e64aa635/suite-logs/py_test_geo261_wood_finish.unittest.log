@@ -1,0 +1,16 @@
+...........F
+======================================================================
+FAIL: test_same_fractional_thickness_guard_controls_actual_preview_and_commit (test_geo261_wood_finish.WoodFinish.test_same_fractional_thickness_guard_controls_actual_preview_and_commit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_geo261_wood_finish.py", line 218, in test_same_fractional_thickness_guard_controls_actual_preview_and_commit
+    self.assertTrue(self.preview_fractional_thickness(bridge, "mutant"))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geometry-axiom/tests/test_geo261_wood_finish.py", line 200, in preview_fractional_thickness
+    self.assertIn("thickness must be explicitly set positive integer mm in D1; no rounding", violation["message"])
+AssertionError: 'thickness must be explicitly set positive integer mm in D1; no rounding' not found in 'I35: effective dimension violates its positive/nonnegative integer mm range'
+
+----------------------------------------------------------------------
+Ran 12 tests in 21.110s
+
+FAILED (failures=1)

@@ -1,0 +1,25 @@
+{
+ "file": "tests/test_section_profile_mutation_check.py",
+ "total": 29,
+ "run": 29,
+ "passed": 28,
+ "failed": 1,
+ "skipped": 0,
+ "explicit_skipped": 0,
+ "unrun_skipped": 0,
+ "blocked_by_error": 0,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [
+  {
+   "test": "test_section_profile_mutation_check.ExceptionCollector.test_collector_preserves_actual_module_qualified_modelerror",
+   "kind": "failure",
+   "message": "+ modeling.common.ModelError"
+  }
+ ],
+ "skip_reasons": {},
+ "skip_items": [],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 1.62
+}

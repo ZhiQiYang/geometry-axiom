@@ -1,0 +1,16 @@
+F............................
+======================================================================
+FAIL: test_collector_preserves_actual_module_qualified_modelerror (test_section_profile_mutation_check.ExceptionCollector.test_collector_preserves_actual_module_qualified_modelerror)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/tests/test_section_profile_mutation_check.py", line 220, in test_collector_preserves_actual_module_qualified_modelerror
+    self.assertEqual(e['exception_type'],'modeling.common.ModelError')
+AssertionError: 'geometry_app.model_common.ModelError' != 'modeling.common.ModelError'
+- geometry_app.model_common.ModelError
++ modeling.common.ModelError
+
+
+----------------------------------------------------------------------
+Ran 29 tests in 1.324s
+
+FAILED (failures=1)

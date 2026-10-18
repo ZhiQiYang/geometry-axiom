@@ -1,0 +1,90 @@
+{
+  "coverage": {
+    "registered_suites": 214,
+    "progress_rows": 214,
+    "summary_rows": 214,
+    "reported_suites": 214,
+    "sets_equal": true,
+    "unique_names": true
+  },
+  "suite_status_counts": {
+    "pass": 197,
+    "fail": 12,
+    "skip": 1,
+    "timeout_incomplete": 3,
+    "setup_error_blocked": 1
+  },
+  "unit_totals": {
+    "C 檢查點": {
+      "suites": 1,
+      "total": 432,
+      "passed": 432,
+      "failed": 0,
+      "skipped": 0
+    },
+    "場景": {
+      "suites": 1,
+      "total": 157,
+      "passed": 157,
+      "failed": 0,
+      "skipped": 0
+    },
+    "test": {
+      "suites": 176,
+      "total": 2651,
+      "passed": 2611,
+      "failed": 39,
+      "skipped": 1
+    },
+    "unittest": {
+      "suites": 1,
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "node test": {
+      "suites": 25,
+      "total": 432,
+      "passed": 432,
+      "failed": 0,
+      "skipped": 0
+    },
+    "斷言": {
+      "suites": 1,
+      "total": 408,
+      "passed": 408,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "python_totals": {
+    "total": 2662,
+    "run": 2644,
+    "passed": 2622,
+    "failed": 39,
+    "skipped": 1,
+    "explicit_skipped": 1,
+    "unrun_skipped": 0,
+    "blocked_by_error": 18,
+    "expected_failed": 0,
+    "extra_errors": 0
+  },
+  "wall_seconds": 9449.0,
+  "report_characters": 49532,
+  "report_path": "/workspace/geo261-validation-20261018/nonbrowser-e64aa635/native-stage-report.md",
+  "final_audit": {
+    "json_csv_order_and_names_equal": true,
+    "raw_log_hashes_verified": 570,
+    "relative_markdown_links_verified": 233,
+    "three_timeouts_confirmed_from_outer_notes": true,
+    "partial_node_named_failures": 3,
+    "original_runner_aggregate_checked": true,
+    "clean_status_before_and_after": true,
+    "source_sha_distinct_from_unverified_upstream": true,
+    "actual_command_verified_against_wrapper_argv": true,
+    "requested_command_kept_separate": true,
+    "report_utf8_bytes": 55048,
+    "report_below_64k_bytes": true
+  }
+}

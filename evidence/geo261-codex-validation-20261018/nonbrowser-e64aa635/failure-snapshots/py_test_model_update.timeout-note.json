@@ -1,0 +1,24 @@
+{
+  "suite": "py:test_model_update",
+  "status": "timeout/incomplete",
+  "timeout_limit_seconds": 1200,
+  "registered_methods": 26,
+  "registered_methods_source": "/workspace/geo261-validation-20261018/nonbrowser-e64aa635/failure-snapshots/py_test_model_update.registration.json",
+  "observed_partial_unittest_output": "............",
+  "json_present": false,
+  "interpretation": "無完整 unittest JSON；runner synthetic failure 不是實際單項測試失敗；12 個進度點不作已驗通過計數。",
+  "files": [
+    {
+      "path": "/workspace/geo261-validation-20261018/nonbrowser-e64aa635/failure-snapshots/py_test_model_update.log",
+      "bytes": 0
+    },
+    {
+      "path": "/workspace/geo261-validation-20261018/nonbrowser-e64aa635/failure-snapshots/py_test_model_update.unittest.log",
+      "bytes": 12
+    }
+  ],
+  "recorded_at_utc": "2026-10-18T09:44:19.586196+00:00",
+  "outer_timeout_confirmed": true,
+  "runner_note_original": "逾時（1200 秒）被終止，已終止整棵行程樹（killpg SIGKILL）（1200.1 秒後收完）；日誌 /tmp/geometry-tests/run_all-logs/py_test_model_update.log",
+  "runner_wall_seconds_rounded": 1200.1
+}

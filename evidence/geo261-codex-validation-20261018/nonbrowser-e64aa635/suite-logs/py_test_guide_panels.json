@@ -1,0 +1,25 @@
+{
+ "file": "tests/test_guide_panels.py",
+ "total": 1,
+ "run": 1,
+ "passed": 0,
+ "failed": 1,
+ "skipped": 0,
+ "explicit_skipped": 0,
+ "unrun_skipped": 0,
+ "blocked_by_error": 0,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [
+  {
+   "test": "test_guide_panels.GuidePanels.test_every_panel_and_callout_resolves",
+   "kind": "failure",
+   "message": "unresolved: [('callout', '基礎幾何型別', 'lines 63-75', '\\\\} Point3;'), ('callout', '基礎幾何型別', 'lines 63-75', '\\\\} Vector3;'), ('callout', '基礎幾何型別', 'lines 63-75', '\\\\} Quad3;'), ('callout', '基礎幾何型別', 'lines 63-75', '\\\\} Plane3;'), ('callout', 'vector_cross', 'lines 86-89', '\\\\.x = a\\\\.y \\\\* b\\\\.z'), ('pan"
+  }
+ ],
+ "skip_reasons": {},
+ "skip_items": [],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 0.37
+}

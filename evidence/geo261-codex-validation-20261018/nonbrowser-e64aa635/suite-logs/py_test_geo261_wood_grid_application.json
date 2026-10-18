@@ -1,0 +1,30 @@
+{
+ "file": "tests/test_geo261_wood_grid_application.py",
+ "total": 11,
+ "run": 11,
+ "passed": 9,
+ "failed": 2,
+ "skipped": 0,
+ "explicit_skipped": 0,
+ "unrun_skipped": 0,
+ "blocked_by_error": 0,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [
+  {
+   "test": "test_geo261_wood_grid_application.WoodGridApplication.test_child_parent_type_index_space_and_stagger_order",
+   "kind": "failure",
+   "message": "AssertionError: 0 != 1 : child: ASSERT:child:134"
+  },
+  {
+   "test": "test_geo261_wood_grid_application.WoodGridApplication.test_removed_child_identity_guard_fails_parent_change_assertion",
+   "kind": "failure",
+   "message": "AssertionError: 0 != 1 : child: ASSERT:child:134"
+  }
+ ],
+ "skip_reasons": {},
+ "skip_items": [],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 23.5
+}
