@@ -178,13 +178,17 @@ static int tampering(bool host)
     REQUIRE("fixture-sealed",evaluate_and_seal(&fixture,0)==0);
     for(unsigned side=0;side<2;++side){
         unsigned char *bytes=side?fixture.after:fixture.before;
+        /* H check also compares live with before. A before-only change would be
+         * caught by that equality, so live moves with it: H's before key/SHA is
+         * then the only guard deciding the verdict for that byte. */
+        unsigned char *mirror=host&&!side?fixture.live:NULL;
         for(size_t i=0;i<SNAPSHOT_SIZE;++i){
-            bytes[i]^=0x5a;reset_counts();
+            bytes[i]^=0x5a;if(mirror)mirror[i]^=0x5a;reset_counts();
             REQUIRE(host?"host-tamper-rejected":"kernel-tamper-rejected",check(&fixture)==GEO_CANDIDATE_STATE_CHANGED);
             bool bound=!host||(i>=CORE_OFFSET&&i<CORE_OFFSET+CORE_SIZE);
             REQUIRE("every-changed-byte-takes-real-sha",counts(bound&&!side,bound&&side,host&&!bound,
                 host&&!bound&&!side,host&&!bound&&side,0));
-            bytes[i]^=0x5a;reset_counts();
+            bytes[i]^=0x5a;if(mirror)mirror[i]^=0x5a;reset_counts();
             REQUIRE("restoration-preserves-original-seal",check(&fixture)==GEO_CANDIDATE_OK);
             REQUIRE("restoration-reuses-original-byte-key",counts(0,0,1,0,0,0));
             REQUIRE("tamper-checks-never-reseal-or-reevaluate",geo_candidate_state(fixture.core)==GEO_CANDIDATE_SEALED&&
@@ -250,7 +254,8 @@ static int allocation_fallback(bool host,unsigned failures)
      * it independently. Kernel mode binds all bytes, including this byte. */
     for(unsigned side=0;side<2;++side){
         unsigned char *bytes=side?fixture.after:fixture.before;
-        bytes[0]^=0x80;reset_counts();
+        unsigned char *mirror=host&&!side?fixture.live:NULL; /* same live/before rule as tampering() */
+        bytes[0]^=0x80;if(mirror)mirror[0]^=0x80;reset_counts();
         REQUIRE(host?"host-tamper-rejected":"kernel-tamper-rejected",check(&fixture)==GEO_CANDIDATE_STATE_CHANGED);
         if(host){
             REQUIRE("host-fallback-still-computes-real-sha",counts(!!(failures&K_BEFORE),!!(failures&K_AFTER),1,
@@ -258,7 +263,7 @@ static int allocation_fallback(bool host,unsigned failures)
         }else{
             REQUIRE("kernel-fallback-still-computes-real-sha",counts(side?!!(failures&K_BEFORE):1,side?1:0,0,0,0,0));
         }
-        bytes[0]^=0x80;reset_counts();
+        bytes[0]^=0x80;if(mirror)mirror[0]^=0x80;reset_counts();
         REQUIRE("fallback-restoration-keeps-original-seal",check(&fixture)==GEO_CANDIDATE_OK);
         REQUIRE("fallback-restoration-hashes-only-missing-caches",checked_counts(host,failures,1));
     }

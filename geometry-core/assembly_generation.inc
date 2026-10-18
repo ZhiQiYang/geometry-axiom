@@ -1,6 +1,18 @@
 /* H: legacy placement encoding and storage callbacks; W owns D34/I42/R35. */
 static bool g_assembly_replay;
 static bool app_assembly_replaying(void){return g_assembly_replay;}
+/* Owned scene records precede their assembly blocks. Until the owning instance
+ * record loads, the saved dimensions are the only ones: neither literal nor yet
+ * resolvable from assembly sources. EOF integrity rejects an owner that never
+ * gains its instance; EOF revalidation then resolves every owned dimension. */
+static bool app_assembly_saved_dimensions(const World *w,uint32_t id)
+{
+    if(g_assembly_replay)return true;if(!g_parsing_scene_file)return false;
+    for(size_t i=0;i<w->wood.assembly.owner_count;++i){const AsmOwner *o=&w->wood.assembly.owners[i];if(o->timber!=id)continue;
+        for(size_t k=0;k<w->wood.assembly.instance_count;++k)if(w->wood.assembly.instances[k].id==o->instance)return false;
+        return true;}
+    return false;
+}
 static bool app_asm_surface(void *user,uint32_t id)
 {return world_find_placement((World *)user,id)!=NULL;}
 static bool app_asm_guide(void *user,uint32_t id,WoodAssemblyGuide *out)

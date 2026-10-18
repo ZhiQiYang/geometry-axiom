@@ -1,6 +1,7 @@
 """Actual product geometry consumes the shared candidate source graph."""
 import base64
 from pathlib import Path
+import struct
 import sys
 import unittest
 
@@ -74,8 +75,15 @@ class GraphProduct(unittest.TestCase):
             self.assertEqual(500, node['value']['coordinate'])
             self.assertTrue(any(a == ref and b[0] == 'wood.grid' and b[1][0] == 12
                                 for a, b, relation in edges if relation == 'value-required'))
-        self.assertTrue(any(a[0] == 'wood.grid' and b[0] == 'core.region'
-                            for a, b, relation in edges if relation == 'value-required'))
+        # The binding consumes the region through its typed vertex-key coordinates
+        # (72d6835c); each coordinate consumes the owned core.region value.
+        binding = ('wood.grid', bytes([4]) + struct.pack('>I', 0) + bytes(59))
+        region = ('core.region', struct.pack('>I', 1))
+        for axis, value in enumerate((100, 200)):
+            coordinate = ('core.region-key', struct.pack('>4I', 2, 1, 1, axis))
+            self.assertEqual(str(value), nodes[coordinate]['value']['num'])
+            self.assertIn((binding, coordinate, 'value-required'), edges)
+            self.assertIn((coordinate, region, 'value-required'), edges)
         self.assertTrue(any(a[0] == 'woodworking.member.pose' and b[0] == 'wood.grid'
                             for a, b, relation in edges if relation == 'value-required'))
 

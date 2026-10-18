@@ -63,6 +63,9 @@ static int assembly_pose_case(unsigned mode)
     ReferenceEval ctx={0};ctx.world=world;ctx.sources=geo_eval_create(9200+mode,27);CHECK("assembly-h-graph",ctx.sources);input.graph=ctx.sources;
     ctx.placement_sources=geo_placement_sources_register(ctx.sources,&world->geo.placement_data,&world->geo.region_data,
         APP_SOURCE_PLACEMENT,APP_SOURCE_REGION,NULL,NULL);CHECK("assembly-h-k-placement",ctx.placement_sources);
+    WoodDefinitionContext definitions={&world->wood,&world->geo.region_data,APP_SOURCE_ENCLOSURE,APP_SOURCE_REGION};
+    ctx.definition_sources=wood_definition_sources_create(ctx.sources,APP_SOURCE_WOOD_DEFINITION,&definitions);
+    CHECK("assembly-h-real-authored-definition-provider",ctx.definition_sources);
     GeoSourceProvider pose={APP_SOURCE_MEMBER_POSE,"woodworking.member.pose","assembly-pose-input/1",&input,assembly_pose_describe,assembly_pose_evaluate};
     CHECK("assembly-h-pose-input",geo_eval_register(ctx.sources,&pose));ctx.sources_registered=true;
     WoodAssemblyContext assembly=app_asm_context(world);reference_assembly_context(&ctx,&assembly);

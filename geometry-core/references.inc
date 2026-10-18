@@ -61,6 +61,7 @@ static bool app_eng_named(void *,const char *,GeoCoord *);
 static bool app_eng_parameter(void *,GeoParameterRef,GeoCoord *,char *,size_t);
 static bool app_eng_owned(void *,uint32_t);
 static bool app_assembly_replaying(void);
+static bool app_assembly_saved_dimensions(const World *,uint32_t);
 static void app_eng_write(void *,const EngTarget *,GeoCoord);
 static bool app_eng_serializable(void *,char *,size_t);
 static WoodSectionProfileContext app_sp_context(const World *);
@@ -591,7 +592,7 @@ static bool reference_place_geometry(ReferenceEval *evaluation,World *w,size_t t
 }
 static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
 {
-    if(!ctx->use_current_values&&!app_assembly_replaying()&&ctx->wanted[i]){
+    if(!ctx->use_current_values&&!app_assembly_saved_dimensions(ctx->world,ctx->world->wood.timbers[i].id)&&ctx->wanted[i]){
         Timber *member=&ctx->world->wood.timbers[i];bool owned;
         if(!reference_member_owned(ctx,member->id,&owned))return false;
         if(owned){
