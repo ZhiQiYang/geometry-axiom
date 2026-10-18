@@ -128,7 +128,7 @@ static int child(void)
     GeoGridStore *store=geo_grid_store_create();CHECK(store);WoodGridState state={0};EngineeringState eng={0};Facts facts={0};
     WoodGridContext c=context(&state,store,&eng,&facts);WoodGridApplication parent=direct_value(1,10),other=direct_value(3,11),g={0};
     CHECK(wood_grid_stage(&state,&parent));CHECK(wood_grid_stage(&state,&other));g.id=2;g.parent_id=1;
-    for(int a=0;a<2;++a){g.cell_ref[a][0]=0;g.cell_ref[a][1]=1;}
+    for(int a=0;a<2;++a){g.cell_ref[a][0]=WOOD_GRID_CELL_MIN;g.cell_ref[a][1]=1;}
     char error[256]="";CHECK(wood_grid_prepare_child(&c,&g,false,2,2,error,sizeof error));
     CHECK(g.is_subgrid && !g.lattice_cell && g.placement_id==10 && g.divisions[0]==2);
     CHECK(wood_grid_child_check(&c,&g,error,sizeof error));CHECK(wood_grid_stage(&state,&g));WoodGridState snapshot;memcpy(&snapshot,&state,sizeof snapshot);
