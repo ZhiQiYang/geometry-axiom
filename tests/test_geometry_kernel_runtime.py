@@ -222,6 +222,44 @@ class KernelRuntimeTests(unittest.TestCase):
         self.assertIn(expected[3], stream.getvalue())
         self.assertNotIn("FrozenInstanceError", stream.getvalue())
 
+    def test_policy_issue_keeps_the_standard_exception_identity_protocol(self):
+        import contextlib
+        from geometry_woodworking.model_policy import PolicyIssue
+        from tests.test_geometry_source_runtime import decode, envelope
+
+        # A real W rejection raised through the product path, as above.
+        base, definitions, req, options = deepcopy(cases()["local_profile"])
+        base["profile_runs"][0]["members"][0]["dimensions_mm"][0] += 1
+        candidate = decode(envelope(base))
+        with mock.patch("modeling.base.load_candidate", return_value=candidate):
+            with self.assertRaises(ModelError) as raised:
+                evaluate(definitions, req, **options)
+        issue = raised.exception.__cause__
+        self.assertIs(type(issue), PolicyIssue)
+        twin = PolicyIssue(issue.code, issue.clause, issue.message, issue.path, issue.root, issue.status)
+        try:
+            identity = hash(issue)
+        except TypeError as error:
+            self.fail("POLICY_EXCEPTION_IDENTITY_HASH: PolicyIssue must stay hashable like "
+                      "every exception (dataclass eq=True sets __hash__ = None): " + str(error))
+        self.assertEqual(object.__hash__(issue), identity, "POLICY_EXCEPTION_IDENTITY_HASH")
+        self.assertNotEqual(issue, twin, "POLICY_EXCEPTION_IDENTITY_EQ: field-equal issues are distinct exceptions")
+        self.assertEqual(2, len({issue, twin}))
+
+        @contextlib.contextmanager
+        def scope():
+            yield
+
+        escaped = None
+        try:
+            with scope():
+                raise twin
+        except BaseException as error:  # noqa: BLE001 - the protocol failure is the subject
+            escaped = error
+        # contextlib writes __traceback__ on the propagating exception.
+        self.assertIs(twin, escaped, "POLICY_EXCEPTION_STANDARD_PROTOCOL: " + repr(escaped))
+        self.assertIsNotNone(twin.__traceback__)
+
     def test_public_build_capabilities_gate_export_after_full_definition_validation(self):
         import geometry_kernel
         from modeling import build_package

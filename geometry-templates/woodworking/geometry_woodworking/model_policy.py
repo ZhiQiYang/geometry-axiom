@@ -2,7 +2,10 @@
 from dataclasses import dataclass
 
 
-@dataclass
+# Not frozen: Python writes __traceback__ on chained exceptions (unittest,
+# contextlib).  eq=False keeps BaseException's identity __eq__/__hash__;
+# the dataclass default eq=True would set __hash__ to None.
+@dataclass(eq=False)
 class PolicyIssue(ValueError):
     code: str
     clause: str

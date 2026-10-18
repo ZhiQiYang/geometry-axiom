@@ -14,7 +14,9 @@ from geometry_kernel import (DependencyEdge, EvaluationError, FrameDef,
 from . import GridCell, RectangularGridView
 
 
-@dataclass(frozen=True)
+# Not frozen: Python writes __traceback__ on chained exceptions (unittest,
+# contextlib).  eq=False keeps BaseException's identity __eq__/__hash__.
+@dataclass(eq=False)
 class RejectedView(ValueError):
     code: str
     message: str

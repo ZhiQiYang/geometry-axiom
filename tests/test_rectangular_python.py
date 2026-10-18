@@ -132,6 +132,60 @@ class RectangularPythonTests(unittest.TestCase):
             decode_view(json.dumps(aliased))
 
 
+class RectangularRejectionProtocolTests(unittest.TestCase):
+    """RejectedView must behave like a standard exception (not frozen, identity hash)."""
+
+    def test_rejection_keeps_the_standard_exception_protocol(self):
+        import contextlib
+        from io import StringIO
+        captured = []
+
+        def host_wraps_rejection():
+            try:
+                decode_view('{"number":1.0}')
+            except RejectedView as error:
+                captured.append(error)
+                raise RuntimeError("host could not use the rectangular view") from error
+
+        stream = StringIO()
+        runner_error = None
+        try:
+            # The standard runner rewrites __traceback__ on every chained cause.
+            result = unittest.TextTestRunner(stream=stream, verbosity=2).run(
+                unittest.FunctionTestCase(host_wraps_rejection))
+        except Exception as error:  # noqa: BLE001 - the protocol failure is the subject
+            runner_error = (type(error).__module__ + "." + type(error).__qualname__, str(error))
+        self.assertIsNone(runner_error, "REJECTED_VIEW_STANDARD_PROTOCOL: " + repr(runner_error))
+        self.assertEqual(1, len(result.errors))
+        self.assertEqual(1, len(captured))
+        rejection = captured[0]
+        self.assertEqual("INVALID_VIEW", rejection.code)
+        self.assertIn("geometry_rectangular.protocol.RejectedView", stream.getvalue())
+        self.assertNotIn("FrozenInstanceError", stream.getvalue())
+
+        @contextlib.contextmanager
+        def scope():
+            yield
+
+        escaped = None
+        try:
+            with scope():
+                decode_view('{"number":1.0}')
+        except BaseException as error:  # noqa: BLE001 - the protocol failure is the subject
+            escaped = error
+        self.assertIs(type(escaped), RejectedView, "REJECTED_VIEW_STANDARD_PROTOCOL: " + repr(escaped))
+        self.assertIsNotNone(escaped.__traceback__)
+
+        twin = RejectedView(rejection.code, rejection.message)
+        try:
+            identity = hash(rejection)
+        except TypeError as error:
+            self.fail("REJECTED_VIEW_IDENTITY_HASH: RejectedView must stay hashable like "
+                      "every exception (dataclass eq=True sets __hash__ = None): " + str(error))
+        self.assertEqual(object.__hash__(rejection), identity, "REJECTED_VIEW_IDENTITY_HASH")
+        self.assertNotEqual(rejection, twin, "REJECTED_VIEW_IDENTITY_EQ: field-equal rejections are distinct exceptions")
+
+
 class RectangularPythonIsolationTests(unittest.TestCase):
     def test_clean_install_runs_without_application_or_first_template(self):
         with tempfile.TemporaryDirectory(prefix="rectangular-python-only-") as directory:
