@@ -223,9 +223,17 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         added.update({mid: "geometry-core/parameters.inc" for mid in ("M61", "M62", "M63", "M64", "M65", "M68", "M69", "M70")})
         added.update({mid: "geometry-web/engineering_bridge.inc" for mid in ("M66", "M67")})
         self.assertEqual(17, len(added))
+        # main 4b975a3d (#312: GEO-262 #253 and #295) adds M78-M88 at their GEO-261 owners.
+        added.update({mid: "geometry-core/parameters.inc" for mid in ("M78", "M79", "M80", "M82", "M84")})
+        added.update({mid: "geometry-core/card_reference.inc" for mid in ("M81", "M83")})
+        added.update({"M85": "geometry-core/kernel/grid_store.c", "M86": "geometry-core/kernel/geometry.c",
+                      "M87": "geometry-templates/woodworking/native/contacts.c",
+                      "M88": "geometry-templates/woodworking/native/contacts.c"})
+        self.assertEqual(28, len(added))
         self.assertEqual({**expected, **added}, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
-        # Exactly the ten preview-only guards run on the actual bridge (P-135/P-141).
-        self.assertEqual({"M%02d" % n for n in range(61, 71)},
+        # The ten P-135/P-141 preview-only guards and the eight GEO-262 P-142
+        # guards (M78-M85) run on the actual bridge.
+        self.assertEqual({"M%02d" % n for n in [*range(61, 71), *range(78, 86)]},
                          {m["id"] for m in mutate.MUTANTS if m.get("binary") == "bridge"})
         self.assertEqual({"M35", "M51", "M55"}, {m["id"] for m in mutate.MUTANTS if m.get("retired")})
         self.assertEqual({"M09", "M23", "M36", "M56"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})

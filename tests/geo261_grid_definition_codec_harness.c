@@ -11,7 +11,7 @@
 enum { SYSTEM, BINDING, APPLICATION, RULE };
 typedef struct {
     size_t source,count,coordinate[64],set[6],parameter[6],field[6],bound[6],number[6];
-    size_t series,anchor,stagger;
+    size_t series,anchor,stagger,card;
 } AxisPositions;
 typedef struct {size_t key,name_size,name,all,cell[2],division[2];} RulePositions;
 typedef struct {
@@ -19,7 +19,7 @@ typedef struct {
     size_t id,name_size,name,main,rule_count,next;
     size_t boundary,system,vertex,cell[2],numerator[2],denominator[2];
     size_t placement,flags[4],binding,parent,origin[2],cell_index[2],division[2],ref[2][2];
-    AxisPositions axis[2];RulePositions rules[32];
+    AxisPositions axis[2];RulePositions rules[32];size_t card[4];
 } Vector;
 typedef union {GeoGridSystem system;GeoGridBinding binding;WoodGridApplication application;GeoGridRule rule;} Decoded;
 
@@ -31,6 +31,9 @@ static size_t text(Vector *v,const unsigned char *s,size_t n,size_t *length)
 {*length=number(v,n);size_t at=v->size;if(n)memcpy(v->bytes+v->size,s,n);v->size+=n;return at;}
 static const GeoCoord numbers[2][6]={{INT64_MIN,INT64_MAX,-24,25,-26,27},{31,-32,33,-34,35,-36}};
 static const bool parameter_set[2][6]={{true,false,false,false,false,true},{false,true,false,true,true,false}};
+static const bool card_length[2]={false,true};
+static bool card_slot(int a,size_t i){return card_length[a]&&i==2;} /* neither source is repeat */
+static const uint32_t card_ids[3]={UINT32_MAX,7,0}; /* parameter, u field, v field */
 static void axis_vector(Vector *v,int a,bool direct,bool evaluated,bool maximal)
 {
     AxisPositions *p=&v->axis[a];p->source=number(v,a?4:(uint64_t)-17);
@@ -40,9 +43,9 @@ static void axis_vector(Vector *v,int a,bool direct,bool evaluated,bool maximal)
         bool bound=direct&&!evaluated&&((a==0&&i==2)||(a==1&&i==3));
         p->set[i]=number(v,parameter_set[a][i]);p->parameter[i]=number(v,101+100*a+i);
         p->field[i]=number(v,301+100*a+i);p->bound[i]=number(v,bound);
-        p->number[i]=number(v,!evaluated&&(parameter_set[a][i]||bound)?0:(uint64_t)numbers[a][i]);
+        p->number[i]=number(v,!evaluated&&(parameter_set[a][i]||bound||card_slot(a,i))?0:(uint64_t)numbers[a][i]);
     }
-    p->series=number(v,SIZE_MAX);p->anchor=number(v,a==0);p->stagger=number(v,a==1);
+    p->series=number(v,SIZE_MAX);p->anchor=number(v,a==0);p->stagger=number(v,a==1);p->card=number(v,card_length[a]);
 }
 static void rule_vector(Vector *v,size_t index,const unsigned char *name,size_t length)
 {
@@ -63,6 +66,7 @@ static void system_vector(Vector *v,bool evaluated,bool maximal)
     v->rule_count=number(v,maximal?32:2);v->next=number(v,0);
     const unsigned char rule_name[]={0xe6,0xa0,0xbc};
     for(size_t i=0;i<(maximal?32:2);++i)rule_vector(v,i,maximal?long_name:rule_name,maximal?96:(i?0:sizeof rule_name));
+    v->card[0]=number(v,1);for(int i=0;i<3;++i)v->card[i+1]=number(v,card_ids[i]);
 }
 static void binding_vector(Vector *v)
 {
@@ -102,11 +106,11 @@ static void expected_axis(GeoGridAxisDef *out,int a,bool direct,bool evaluated,b
 {
     memset(out,0,sizeof *out);out->source=a?4:-17;out->count=a?1:2;
     out->coords[0]=a?33:INT64_MIN;if(!a)out->coords[1]=INT64_MAX;
-    GeoCoord values[6];for(size_t i=0;i<6;++i){bool masked=parameter_set[a][i]||(direct&&((a==0&&i==2)||(a==1&&i==3)));
+    GeoCoord values[6];for(size_t i=0;i<6;++i){bool masked=parameter_set[a][i]||(direct&&((a==0&&i==2)||(a==1&&i==3)))||card_slot(a,i);
         values[i]=!evaluated&&masked?(with_prior?(GeoCoord)(701+100*a+i):0):numbers[a][i];
         out->parameters[i].set=parameter_set[a][i];out->parameters[i].parameter_id=(uint32_t)(101+100*a+i);out->parameters[i].field_id=(uint32_t)(301+100*a+i);}
     out->start=values[0];out->step=values[1];out->body=values[2];out->gap=values[3];out->anchor=values[4];out->stagger=values[5];
-    out->series_count=SIZE_MAX;out->anchor_explicit=a==0;out->stagger_set=a==1;
+    out->series_count=SIZE_MAX;out->anchor_explicit=a==0;out->stagger_set=a==1;out->card_length=card_length[a];
 }
 static void expected_rule(GeoGridRule *out,size_t i)
 {
@@ -120,6 +124,7 @@ static void expected_system(GeoGridSystem *out,bool evaluated,bool with_prior)
     memset(out,0,sizeof *out);out->id=TEST_ID;memcpy(out->name,"\xe7\xb3\xbb\xe7\xb5\xb1",7);
     for(int a=0;a<2;++a)expected_axis(&out->axis[a],a,false,evaluated,with_prior);
     out->rule_count=2;out->next_rule_key=0;for(size_t i=0;i<2;++i)expected_rule(&out->rules[i],i);
+    out->card_reference=(GeoGridCardReference){true,card_ids[0],{card_ids[1],card_ids[2]}};
 }
 static void seed_axis(GeoGridAxisDef *out,int a)
 {
@@ -150,7 +155,8 @@ static void expected_application(WoodGridApplication *out,unsigned flags,bool ev
 static bool same_axis(const GeoGridAxisDef *a,const GeoGridAxisDef *b)
 {
     if(a->source!=b->source||a->count!=b->count||a->start!=b->start||a->step!=b->step||a->body!=b->body||a->gap!=b->gap||
-       a->anchor!=b->anchor||a->stagger!=b->stagger||a->series_count!=b->series_count||a->anchor_explicit!=b->anchor_explicit||a->stagger_set!=b->stagger_set)return false;
+       a->anchor!=b->anchor||a->stagger!=b->stagger||a->series_count!=b->series_count||a->anchor_explicit!=b->anchor_explicit||a->stagger_set!=b->stagger_set||
+       a->card_length!=b->card_length)return false;
     for(size_t i=0;i<a->count;++i)if(a->coords[i]!=b->coords[i])return false;
     for(size_t i=0;i<6;++i)if(a->parameters[i].set!=b->parameters[i].set||a->parameters[i].parameter_id!=b->parameters[i].parameter_id||a->parameters[i].field_id!=b->parameters[i].field_id)return false;
     return true;
@@ -159,7 +165,9 @@ static bool same_rule(const GeoGridRule *a,const GeoGridRule *b)
 {return a->key==b->key&&!strcmp(a->name,b->name)&&a->all_cells==b->all_cells&&a->cell[0]==b->cell[0]&&a->cell[1]==b->cell[1]&&a->divisions[0]==b->divisions[0]&&a->divisions[1]==b->divisions[1];}
 static bool same_system(const GeoGridSystem *a,const GeoGridSystem *b)
 {
-    if(a->id!=b->id||strcmp(a->name,b->name)||a->rule_count!=b->rule_count||a->next_rule_key!=b->next_rule_key)return false;
+    if(a->id!=b->id||strcmp(a->name,b->name)||a->rule_count!=b->rule_count||a->next_rule_key!=b->next_rule_key||
+       a->card_reference.set!=b->card_reference.set||a->card_reference.parameter_id!=b->card_reference.parameter_id||
+       a->card_reference.fields[0]!=b->card_reference.fields[0]||a->card_reference.fields[1]!=b->card_reference.fields[1])return false;
     for(int i=0;i<2;++i)if(!same_axis(&a->axis[i],&b->axis[i]))return false;
     for(size_t i=0;i<a->rule_count;++i)if(!same_rule(&a->rules[i],&b->rules[i]))return false;return true;
 }
@@ -221,7 +229,7 @@ static int scalars_case(void)
     Vector original,v;binding_vector(&original);
     size_t u32[]={original.boundary,original.id,original.system,original.vertex,original.numerator[0],original.denominator[0],original.numerator[1],original.denominator[1]};
     for(size_t i=0;i<sizeof u32/sizeof *u32;++i){v=original;number_at(&v,u32[i],UINT64_C(0x100000000)+(i==1?TEST_ID:UINT32_MAX));CHECK(rejected_vector(BINDING,&v),"u32-overflow-rejected");}
-    system_vector(&original,false,false);size_t system_u32[]={original.next,original.axis[0].parameter[0],original.axis[0].field[0],original.rules[0].key};
+    system_vector(&original,false,false);size_t system_u32[]={original.next,original.axis[0].parameter[0],original.axis[0].field[0],original.rules[0].key,original.card[1],original.card[2],original.card[3]};
     for(size_t i=0;i<sizeof system_u32/sizeof *system_u32;++i){v=original;number_at(&v,system_u32[i],UINT64_C(0x100000000));CHECK(rejected_vector(SYSTEM,&v),"system-u32-overflow-rejected");}
     authored_vector(&original,RULE);v=original;number_at(&v,original.rules[0].division[0],(uint64_t)UINT_MAX+1);
     CHECK(rejected_vector(RULE,&v),"unsigned-overflow-rejected");
@@ -234,7 +242,7 @@ static int scalars_case(void)
         CHECK(wood_grid_decode_system(&input,TEST_ID,NULL,&out,&main)&&main==(extreme?INT_MAX:INT_MIN)&&out.axis[0].source==(extreme?INT_MIN:INT_MAX),"representable-int-extremes-retained");}
     application_vector(&original,0,false);for(int a=0;a<2;++a)for(int j=0;j<2;++j){v=original;number_at(&v,v.ref[a][j],(uint64_t)INT_MAX+1);CHECK(rejected_vector(APPLICATION,&v),"application-int-overflow-rejected");}
     system_vector(&original,false,false);v=original;number_at(&v,v.axis[0].anchor,2);CHECK(rejected_vector(SYSTEM,&v),"boolean-overflow-rejected");
-    size_t bools[]={original.axis[0].stagger,original.axis[0].set[0],original.axis[0].bound[2],original.rules[0].all};
+    size_t bools[]={original.axis[0].stagger,original.axis[0].set[0],original.axis[0].bound[2],original.rules[0].all,original.axis[1].card,original.card[0]};
     for(size_t i=0;i<sizeof bools/sizeof *bools;++i){v=original;number_at(&v,bools[i],2);CHECK(rejected_vector(SYSTEM,&v),"system-boolean-overflow-rejected");}
     application_vector(&original,0,false);for(int i=0;i<4;++i){v=original;number_at(&v,v.flags[i],2);CHECK(rejected_vector(APPLICATION,&v),"application-boolean-overflow-rejected");}
     if(SIZE_MAX<UINT64_MAX){system_vector(&v,false,false);number_at(&v,v.axis[0].series,(uint64_t)SIZE_MAX+1);CHECK(rejected_vector(SYSTEM,&v),"size-t-overflow-rejected");}
@@ -265,6 +273,10 @@ static int malformed_case(void)
         CHECK(wood_grid_decode_rule(&input,TEST_ID,UINT32_MAX,&rule)&&!memcmp(rule.name,valid_names[i],valid_lengths[i])&&rule.name[valid_lengths[i]]==0,"utf8-boundary-codepoints-accepted");}
     standalone_rule_vector(&v,NULL,0);input=value(&v,RULE);CHECK(wood_grid_decode_rule(&input,TEST_ID,UINT32_MAX,&rule)&&!rule.name[0],"empty-incomplete-name-retained");
     system_vector(&v,false,false);number_at(&v,v.axis[0].number[0],1);CHECK(rejected_vector(SYSTEM,&v),"masked-number-nonzero-rejected");
+    system_vector(&v,false,false);number_at(&v,v.axis[1].number[2],1);CHECK(rejected_vector(SYSTEM,&v),"card-masked-number-nonzero-rejected");
+    system_vector(&v,false,false);number_at(&v,v.axis[1].card,0);number_at(&v,v.axis[1].number[2],1);GeoDefinitionValue plain=value(&v,SYSTEM);
+    GeoGridSystem unmasked;int unmasked_main=0;
+    CHECK(wood_grid_decode_system(&plain,TEST_ID,NULL,&unmasked,&unmasked_main)&&!unmasked.axis[1].card_length&&unmasked.axis[1].body==1,"card-free-slot-keeps-authored-number");
     application_vector(&v,0,false);number_at(&v,v.axis[0].bound[0],1);CHECK(rejected_vector(APPLICATION,&v),"engineering-bound-slot-rejected");
     system_vector(&v,false,false);number_at(&v,v.axis[0].bound[2],1);number_at(&v,v.axis[0].number[2],0);CHECK(rejected_vector(SYSTEM,&v),"system-engineering-bound-rejected");
     application_vector(&v,0,false);number_at(&v,v.axis[0].number[2],1);CHECK(rejected_vector(APPLICATION,&v),"bound-cache-wire-number-must-be-zero");return 0;
@@ -279,7 +291,7 @@ static int bounds_case(void)
     standalone_rule_vector(&v,name,96);GeoDefinitionValue input=value(&v,RULE);GeoGridRule rule;
     CHECK(wood_grid_decode_rule(&input,TEST_ID,UINT32_MAX,&rule)&&strlen(rule.name)==96,"maximum-name-accepted");
     system_vector(&v,false,true);input=value(&v,SYSTEM);GeoGridSystem system;int main=0;
-    CHECK(v.size==6584&&wood_grid_decode_system(&input,TEST_ID,NULL,&system,&main)&&system.rule_count==32&&system.axis[0].count==64&&system.axis[1].count==64&&strlen(system.rules[31].name)==96,"maximum-structural-system-accepted");
+    CHECK(v.size==6632&&wood_grid_decode_system(&input,TEST_ID,NULL,&system,&main)&&system.rule_count==32&&system.axis[0].count==64&&system.axis[1].count==64&&strlen(system.rules[31].name)==96,"maximum-structural-system-accepted");
     unsigned char output[WOOD_GRID_CODEC_MAX_BYTES];size_t size=0;
     CHECK(wood_grid_encode_system_value(&system,main,output,sizeof output,&size)&&size==v.size&&!memcmp(output,v.bytes,size),"maximum-system-value-fits-bound");return 0;
 }
@@ -290,7 +302,7 @@ static void paint_axis(GeoGridAxisDef *out,const GeoGridAxisDef *in,unsigned cha
 {
     memset(out,byte,sizeof *out);out->source=in->source;out->count=in->count;for(size_t i=0;i<in->count;++i)out->coords[i]=in->coords[i];
     out->start=in->start;out->step=in->step;out->body=in->body;out->gap=in->gap;out->anchor=in->anchor;out->stagger=in->stagger;
-    out->series_count=in->series_count;out->anchor_explicit=in->anchor_explicit;out->stagger_set=in->stagger_set;
+    out->series_count=in->series_count;out->anchor_explicit=in->anchor_explicit;out->stagger_set=in->stagger_set;out->card_length=in->card_length;
     for(size_t i=0;i<6;++i){out->parameters[i].set=in->parameters[i].set;out->parameters[i].parameter_id=in->parameters[i].parameter_id;out->parameters[i].field_id=in->parameters[i].field_id;}
 }
 static void paint_rule(GeoGridRule *out,const GeoGridRule *in,unsigned char byte)
@@ -301,6 +313,8 @@ static void paint_rule(GeoGridRule *out,const GeoGridRule *in,unsigned char byte
 static void paint_system(GeoGridSystem *out,const GeoGridSystem *in,unsigned char byte)
 {
     memset(out,byte,sizeof *out);out->id=in->id;memcpy(out->name,in->name,strlen(in->name)+1);out->rule_count=in->rule_count;out->next_rule_key=in->next_rule_key;
+    out->card_reference.set=in->card_reference.set;out->card_reference.parameter_id=in->card_reference.parameter_id;
+    out->card_reference.fields[0]=in->card_reference.fields[0];out->card_reference.fields[1]=in->card_reference.fields[1];
     for(int a=0;a<2;++a)paint_axis(&out->axis[a],&in->axis[a],byte);
     for(size_t i=0;i<in->rule_count;++i)paint_rule(&out->rules[i],&in->rules[i],byte);
 }

@@ -357,6 +357,7 @@ static void model_legacy_snapshot(World *world,const char *canonical)
     fputs(",\"required_capabilities\":[",stdout);
     if(engineering_used(world))model_string(stdout,"engineering-spec/1");
     if(geo_parameters_card_count(&world->geo.parameters)){if(engineering_used(world))fputc(',',stdout);model_string(stdout,"parameters/1");}
+    if(grid_card_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters))fputc(',',stdout);model_string(stdout,GRID_CARD_CAPABILITY);}
     if(grid_subdivision_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters))fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
     if(sp_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters)||grid_subdivision_used(world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
     if(fs_used(world)){if(engineering_used(world)||geo_parameters_card_count(&world->geo.parameters)||grid_subdivision_used(world)||sp_used(world))fputc(',',stdout);model_string(stdout,FS_CAPABILITY);}

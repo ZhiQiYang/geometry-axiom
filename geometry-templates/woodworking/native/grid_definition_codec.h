@@ -11,7 +11,10 @@
 #define WOOD_GRID_SYSTEM_VALUE_SCHEMA "wood.grid.system-value/1"
 #define WOOD_GRID_APPLICATION_VALUE_SCHEMA "wood.grid.application-value/1"
 
-/* Authored schemas and field order match grid_sources.c. Every integer is
+/* Authored schemas and field order match grid_sources.c. Each axis ends with
+ * card_length and each system with its D64 card reference (set, parameter id,
+ * u field id, v field id); a card-controlled step/body slot is masked on the
+ * authored wire like a parameter slot. Every integer is
  * BE64, signed fields use two's-complement bits, and strings are byte-length
  * prefixed UTF-8 without embedded NUL. Array counts are bounded by the public
  * grid capacities; scalar fields are checked before narrowing to their type.

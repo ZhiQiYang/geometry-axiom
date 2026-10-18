@@ -28,7 +28,15 @@ typedef struct {
     GeoParameterRef parameters[6];
     GeoCoord stagger;
     bool stagger_set;
+    /* D64/I74: the step (repeat) or body (repeat-body-gap) slot takes its
+     * length from the system card reference; the numeric field is a cache. */
+    bool card_length;
 } GeoGridAxisDef;
+/* D64: one parameter card supplies the controlled length of both axes. */
+typedef struct {
+    bool set;
+    uint32_t parameter_id, fields[2]; /* u, v field ids */
+} GeoGridCardReference;
 typedef struct {
     uint32_t key;
     char name[GEO_GRID_NAME_CAPACITY];
@@ -40,6 +48,7 @@ typedef struct {
     uint32_t id;
     char name[GEO_GRID_NAME_CAPACITY];
     GeoGridAxisDef axis[2];
+    GeoGridCardReference card_reference;
     GeoGridRule rules[GEO_GRID_RULE_CAPACITY];
     size_t rule_count;
     uint32_t next_rule_key; /* 0 is exhausted; clone restores this exact value. */
@@ -73,7 +82,11 @@ typedef enum {
     GEO_GRID_STORE_RULE_CELL_RANGE, GEO_GRID_STORE_RULE_OVERLAP,
     GEO_GRID_STORE_BINDING_SOURCE, GEO_GRID_STORE_BINDING_CELL_RANGE,
     GEO_GRID_STORE_BINDING_ANCHOR, GEO_GRID_STORE_BINDING_SHIFT_RANGE,
-    GEO_GRID_STORE_BINDING_TRANSLATION_RANGE
+    GEO_GRID_STORE_BINDING_TRANSLATION_RANGE,
+    /* I74 card reference: complete mapping, distinct fields, infinite axes,
+     * card-only controlled slot, resolvable source, positive length. */
+    GEO_GRID_STORE_CARD_MAPPING, GEO_GRID_STORE_CARD_FIELDS, GEO_GRID_STORE_CARD_MODE,
+    GEO_GRID_STORE_CARD_EXCLUSIVE, GEO_GRID_STORE_CARD_SOURCE, GEO_GRID_STORE_CARD_POSITIVE
 } GeoGridStoreStatus;
 typedef struct {
     GeoGridStoreStatus status;
@@ -125,6 +138,12 @@ bool geo_grid_axis_valid(const GeoGridAxisDef *axis);
  * checks remain separate so the host can keep its intervening role check. */
 bool geo_grid_system_validate(const GeoGridSystem *system, GeoGridStoreError *error);
 bool geo_grid_system_evaluate(GeoGridStore *store, size_t index,
+    GeoGridCoordinateResolver resolve, void *state, GeoGridStoreError *error);
+/* D64/I74: resolves only the card-controlled step/body slots, in the order
+ * evaluate uses before any per-field ParameterRef. Without a card reference
+ * it only rejects a card token. Earlier-axis writes survive a later failure;
+ * error->axis/field/value name the failing slot. */
+bool geo_grid_system_resolve_card(GeoGridSystem *system,
     GeoGridCoordinateResolver resolve, void *state, GeoGridStoreError *error);
 const GeoGridRule *geo_grid_rule_find(const GeoGridSystem *system, uint32_t key);
 bool geo_grid_rule_matches(const GeoGridRule *rule, const int64_t cell[2]);

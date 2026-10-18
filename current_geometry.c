@@ -866,6 +866,9 @@ typedef GeoGridAxisDef GridAxisDef;
 #define GRID_SYSTEM_NAME_MAX (GEO_GRID_NAME_CAPACITY-1)
 #define GRID_MAX_SUBDIVISION_RULES GEO_GRID_RULE_CAPACITY
 #define GRID_SUBDIVISION_CAPABILITY "grid-subdivision-rules/1"
+/* D64/I74 (GEO-262): the card reference is part of the K grid-system definition. */
+#define GRID_CARD_CAPABILITY "grid-card-reference/1"
+typedef GeoGridCardReference GridCardReference;
 typedef GeoGridRule GridSubdivisionRule;
 typedef GeoGridRuleLineRef GridRuleLineRef;
 typedef GeoGridSystem GridSystem;
@@ -6038,6 +6041,10 @@ typedef enum {
     (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1) + WORLD_MAX_TIMBERS * 2)
 
 typedef GeoInterval SpanInterval;
+/* Compile-time checks (span status ABI, span scratch bound) written without
+ * C11 _Static_assert: the Windows MSVC builds compile in its default C mode. */
+typedef char app_span_status_abi_check[(int)SPAN_BETWEEN_AMBIGUOUS==(int)WOOD_SPAN_BETWEEN_AMBIGUOUS?1:-1];
+typedef char app_span_scratch_bound_check[SPAN_CUT_MAX==WOOD_MEMBER_SPAN_CUT_CAPACITY?1:-1];
 
 /*
  * 解析 auto 跨距。
@@ -6095,8 +6102,6 @@ static SpanStatus resolve_auto_span(
         between!=NULL,{{0},{0}},scope!=NULL,{0}};
     if(between){request.stops[0]=between[0];request.stops[1]=between[1];}
     if(scope)request.scope=*scope;
-    _Static_assert(SPAN_BETWEEN_AMBIGUOUS==WOOD_SPAN_BETWEEN_AMBIGUOUS,"span status ABI");
-    _Static_assert(SPAN_CUT_MAX==WOOD_MEMBER_SPAN_CUT_CAPACITY,"span scratch bound");
     return (SpanStatus)wood_member_resolve_span(&facts,&request,out_start,out_end,err,err_cap);
 }
 
@@ -9634,6 +9639,7 @@ static void world_dump_dsl(const World *world, FILE *out)
         fprintf(out, "spec %s %lld\n", geo_named_values_at(&world->geo.named_values,i)->name, (long long)geo_named_values_at(&world->geo.named_values,i)->value);
 
     boundary_keys_dump(world,out);
+    if(grid_card_used(world)) fputs("requires " GRID_CARD_CAPABILITY "\n",out);
     if(grid_subdivision_used(world)) fputs("requires " GRID_SUBDIVISION_CAPABILITY "\n",out);
     grid_systems_dump(world,out);
     grid_bindings_dump(world,out);
@@ -9990,6 +9996,7 @@ static bool parse_scene_file(const char *path, World *out_world)
     g_rule_scene_required=false;
     sp_scene_required=false;
     fs_scene_required=false; fs_scene_engineering=false; fs_scene_parameters=false;
+    grid_card_scene_required=false;
     g_rule_scene_encountered=false;
     g_parameter_scene_loading = true;
 
@@ -10089,6 +10096,7 @@ static bool parse_scene_file(const char *path, World *out_world)
         }
     }
 
+    if(ok && grid_card_used(out_world) && (!grid_card_scene_required||!fs_scene_parameters)){scene_error(path,line_no,"I74 CAPABILITY: card reference requires grid-card-reference/1 and parameters/1 declarations");ok=false;}
     if (ok && !grid_rules_scene_integrity(out_world)) { scene_error(path,line_no,"I25a: source rule capability/highwater closure missing"); ok=false; }
     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
     if (ok && !fs_scene_integrity()) { scene_error(path,line_no,"I56: panel-fill/1 also requires engineering-spec/1 and parameters/1 declarations"); ok=false; }

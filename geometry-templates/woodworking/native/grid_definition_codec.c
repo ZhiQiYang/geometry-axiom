@@ -89,6 +89,7 @@ static bool wood_grid_codec_axis(WoodGridReader *reader,const GeoGridAxisDef *pr
     GeoCoord cache[6]={0};
     if(prior){cache[0]=prior->start;cache[1]=prior->step;cache[2]=prior->body;
         cache[3]=prior->gap;cache[4]=prior->anchor;cache[5]=prior->stagger;}
+    bool masked[6];int64_t numbers[6];
     for(size_t i=0;i<6;++i){
         GeoParameterRef *parameter=&axis.parameters[i];bool bound;int64_t number;
         if(!wood_grid_codec_bool(reader,&parameter->set)||
@@ -96,14 +97,21 @@ static bool wood_grid_codec_axis(WoodGridReader *reader,const GeoGridAxisDef *pr
            !wood_grid_codec_u32(reader,&parameter->field_id)||
            !wood_grid_codec_bool(reader,&bound)||!wood_grid_codec_i64(reader,&number))return false;
         if(bound&&(!direct_application||evaluated||(i!=2&&i!=3)))return false;
-        if(!evaluated&&(parameter->set||bound)){
+        masked[i]=!evaluated&&(parameter->set||bound);numbers[i]=number;
+    }
+    if(!wood_grid_codec_size(reader,SIZE_MAX,&axis.series_count)||
+       !wood_grid_codec_bool(reader,&axis.anchor_explicit)||
+       !wood_grid_codec_bool(reader,&axis.stagger_set)||
+       !wood_grid_codec_bool(reader,&axis.card_length))return false;
+    /* D64: a card-controlled step/body slot is an evaluated cache as well. */
+    if(!evaluated&&axis.card_length)masked[axis.source==GEO_GRID_SOURCE_REPEAT?1:2]=true;
+    for(size_t i=0;i<6;++i){
+        int64_t number=numbers[i];
+        if(masked[i]){
             if(number)return false;
             *values[i]=cache[i];
         }else *values[i]=number;
     }
-    if(!wood_grid_codec_size(reader,SIZE_MAX,&axis.series_count)||
-       !wood_grid_codec_bool(reader,&axis.anchor_explicit)||
-       !wood_grid_codec_bool(reader,&axis.stagger_set))return false;
     *out=axis;return true;
 }
 static bool wood_grid_codec_rule(WoodGridReader *reader,GeoGridRule *out)
@@ -131,6 +139,10 @@ static bool wood_grid_codec_system(const GeoDefinitionValue *value,const char *s
        !wood_grid_codec_u32(&reader,&system.next_rule_key))return false;
     for(size_t i=0;i<system.rule_count;++i)
         if(!wood_grid_codec_rule(&reader,&system.rules[i]))return false;
+    if(!wood_grid_codec_bool(&reader,&system.card_reference.set)||
+       !wood_grid_codec_u32(&reader,&system.card_reference.parameter_id)||
+       !wood_grid_codec_u32(&reader,&system.card_reference.fields[0])||
+       !wood_grid_codec_u32(&reader,&system.card_reference.fields[1]))return false;
     if(reader.offset!=reader.size)return false;
     *out=system;*main_along=main;return true;
 }
@@ -248,6 +260,7 @@ static void wood_grid_codec_write_axis(WoodGridWriter *writer,const GeoGridAxisD
     wood_grid_codec_write_number(writer,(uint64_t)axis->series_count);
     wood_grid_codec_write_number(writer,axis->anchor_explicit);
     wood_grid_codec_write_number(writer,axis->stagger_set);
+    wood_grid_codec_write_number(writer,axis->card_length);
 }
 static void wood_grid_codec_write_rule(WoodGridWriter *writer,const GeoGridRule *rule)
 {
@@ -277,6 +290,10 @@ bool wood_grid_encode_system_value(const GeoGridSystem *system,int main_along,
     wood_grid_codec_write_number(&writer,(uint64_t)system->rule_count);
     wood_grid_codec_write_number(&writer,system->next_rule_key);
     for(size_t i=0;i<system->rule_count;++i)wood_grid_codec_write_rule(&writer,&system->rules[i]);
+    wood_grid_codec_write_number(&writer,system->card_reference.set);
+    wood_grid_codec_write_number(&writer,system->card_reference.parameter_id);
+    wood_grid_codec_write_number(&writer,system->card_reference.fields[0]);
+    wood_grid_codec_write_number(&writer,system->card_reference.fields[1]);
     return wood_grid_codec_finish(&writer,bytes,capacity,size);
 }
 bool wood_grid_encode_application_value(const WoodGridApplication *application,

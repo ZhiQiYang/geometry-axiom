@@ -29,6 +29,19 @@ static bool app_grid_coordinate(void *state,GeoParameterRef ref,GeoCoord *out)
 static bool grid_systems_rebuild(World *w,char *error,size_t cap)
 {WoodGridContext c=app_grid_context(w);return wood_grid_systems_rebuild(&c,error,cap);}
 
+/* D64/I74 (GEO-262): GridSystem.card_reference is one K source definition. */
+static bool grid_card_used(const World *w)
+{for(size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i)if(geo_grid_systems_at(&w->geo.grid_store,i)->card_reference.set)return true;return false;}
+/* R60: resolve s's two card-controlled lengths from THIS candidate's live
+ * parameters (the same K resolution the rebuild performs); I74 diagnostics. */
+static bool grid_card_resolve(World *w,GridSystem *s,char *error,size_t cap)
+{
+    GeoGridStoreError detail;g_parameter_error[0]=0;
+    if(geo_grid_system_resolve_card(s,app_grid_coordinate,w,&detail))return true;
+    if(!wood_grid_card_error(s,&detail,g_parameter_error,error,cap))snprintf(error,cap,"I74: grid-system %u card reference is invalid",s->id);
+    return false;
+}
+
 
 static int grid_system_hex_digit(char c)
 {
@@ -93,7 +106,9 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a,int 
     else if (!strcmp(t[i],"repeat")) {
         if(i+2>=count) return grid_axis_definition_error(axis,"repeat","requires phase and step");
         if(!grid_parameter_token(t[i+1],&a->start,&a->parameters[0],true)) return grid_axis_definition_error(axis,"phase","requires an integer in D1 range or ParameterRef");
-        if(!grid_parameter_token(t[i+2],&a->step,&a->parameters[1],true)) return grid_axis_definition_error(axis,"step","requires an integer in D1 range or ParameterRef");
+        /* I74: the controlled `card` token takes its length from GridSystem.card_reference. */
+        if(!strcmp(t[i+2],"card")) { a->card_length=true; a->step=1; }
+        else if(!grid_parameter_token(t[i+2],&a->step,&a->parameters[1],true)) return grid_axis_definition_error(axis,"step","requires an integer in D1 range or ParameterRef");
         a->source=GRID_SRC_REPEAT; i+=3;
     }
     else if (!strcmp(t[i],"series")) {
@@ -116,7 +131,11 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a,int 
             return grid_axis_definition_error(axis,"gap keyword",detail);
         }
         if (strcmp(t[i+4],"from")) return grid_axis_definition_error(axis,"anchor","requires explicit from after panel and gap");
-        if (!grid_parameter_token(t[i+1],&a->body,&a->parameters[2],!strcmp(t[i],"repeat-panel"))) return grid_axis_definition_error(axis,"panel length","requires an integer in D1 range");
+        if (!strcmp(t[i+1],"card")) {
+            /* I74: only the infinite repeat-panel may carry a card-controlled length. */
+            if (strcmp(t[i],"repeat-panel")) return grid_axis_definition_error(axis,"panel length","requires an integer in D1 range");
+            a->card_length=true; a->body=1;
+        } else if (!grid_parameter_token(t[i+1],&a->body,&a->parameters[2],!strcmp(t[i],"repeat-panel"))) return grid_axis_definition_error(axis,"panel length","requires an integer in D1 range");
         if (!grid_parameter_token(t[i+3],&a->gap,&a->parameters[3],!strcmp(t[i],"repeat-panel"))) return grid_axis_definition_error(axis,"gap","requires an integer in D1 range");
         if (!grid_parameter_token(t[i+5],&a->anchor,&a->parameters[4],!strcmp(t[i],"repeat-panel"))) return grid_axis_definition_error(axis,"anchor","requires an integer in D1 range");
         a->source=!strcmp(t[i],"panel")?GRID_SRC_PANEL:GRID_SRC_REPEAT_PANEL; a->anchor_explicit=true; i+=6;
@@ -176,6 +195,12 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
     if (!strcmp(t[5],"u")) main_along=1;
     else if (!strcmp(t[5],"v")) main_along=2;
     else if (strcmp(t[5],"none")) { grid_definition_error("main-along","must be none, u or v"); goto invalid; }
+    if(i<count && !strcmp(t[i],"card-reference")){
+        if(i+3>=count||!parse_u32(t[i+1],&s.card_reference.parameter_id)||!parse_u32(t[i+2],&s.card_reference.fields[0])||!parse_u32(t[i+3],&s.card_reference.fields[1])) {
+            grid_definition_error("card-reference","requires uint32 parameter id and u/v field ids"); goto invalid;
+        }
+        s.card_reference.set=true;i+=4;
+    }
     for (int axis=0;axis<2;++axis) {
         if (i>=count || strcmp(t[i++],axis?"v":"u")) { grid_axis_definition_error(axis,"definition","keyword is missing"); goto invalid; }
         if (!grid_system_read_axis(t,count,&i,&s.axis[axis],axis)) goto invalid;
@@ -200,6 +225,9 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
         if(detail.status==GEO_GRID_STORE_CAPACITY){scene_error(path,line_no,"I37: grid-system capacity is 16");return false;}
         goto invalid;
     }
+    /* I74: a redeclaration keeps (or explicitly replaces) the whole card source. */
+    const GridSystem *previous=world_find_grid_system(w,s.id);
+    if(previous && previous->card_reference.set && !s.card_reference.set){scene_error(path,line_no,"I74 CONTROLLED_TOKEN_REJECT: explicitly unbind the whole card reference first");return false;}
     reference_capture_trial(&candidate);
     if (!app_world_revalidate_staged(w,&candidate)) {
         scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I37: grid-system dependencies invalid; unchanged"); return false;
@@ -239,6 +267,7 @@ static void grid_systems_dump(const World *w,FILE *out)
         const GridSystem *s=geo_grid_systems_at(&w->geo.grid_store,i); fprintf(out,"grid-system %u name-hex ",s->id);
         for (size_t k=0;s->name[k];++k) fprintf(out,"%02x",(unsigned char)s->name[k]);
         fprintf(out," main-along %s",app_grid_system_main_along(w,s->id)==1?"u":app_grid_system_main_along(w,s->id)==2?"v":"none");
+        if(s->card_reference.set)fprintf(out," card-reference %u %u %u",s->card_reference.parameter_id,s->card_reference.fields[0],s->card_reference.fields[1]);
         for (int axis=0;axis<2;++axis) {
             const GridAxisDef *a=&s->axis[axis]; fprintf(out," %c",axis?'v':'u');
             if (a->source==GRID_SRC_NONE) fputs(" none",out);
@@ -246,10 +275,10 @@ static void grid_systems_dump(const World *w,FILE *out)
                 fputs(" explicit",out); for (size_t k=0;k<a->count;++k) fprintf(out," %lld",(long long)a->coords[k]);
             } else if (a->source==GRID_SRC_SERIES) fprintf(out," series %lld %lld %u",(long long)a->start,(long long)a->step,(unsigned)a->series_count);
             else if(a->source==GRID_SRC_REPEAT) {
-                fputs(" repeat ",out);grid_parameter_dump(out,a->start,a->parameters[0]);fputc(' ',out);grid_parameter_dump(out,a->step,a->parameters[1]);
+                fputs(" repeat ",out);grid_parameter_dump(out,a->start,a->parameters[0]);fputc(' ',out);if(a->card_length)fputs("card",out);else grid_parameter_dump(out,a->step,a->parameters[1]);
                 if(a->stagger_set){fputs(" stagger ",out);grid_parameter_dump(out,a->stagger,a->parameters[5]);}
             } else {
-                fprintf(out," %s ",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel");grid_parameter_dump(out,a->body,a->parameters[2]);
+                fprintf(out," %s ",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel");if(a->card_length)fputs("card",out);else grid_parameter_dump(out,a->body,a->parameters[2]);
                 fputs(" gap ",out);grid_parameter_dump(out,a->gap,a->parameters[3]);fputs(" from ",out);grid_parameter_dump(out,a->anchor,a->parameters[4]);
                 if(a->source==GRID_SRC_REPEAT_PANEL && a->stagger_set){fputs(" stagger ",out);grid_parameter_dump(out,a->stagger,a->parameters[5]);}
             }

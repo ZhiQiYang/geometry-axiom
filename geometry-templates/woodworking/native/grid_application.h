@@ -98,6 +98,11 @@ bool wood_grid_apply_binding(WoodGridContext *,const WoodGridApplication *,char 
 bool wood_grid_prepare_child(const WoodGridContext *,WoodGridApplication *,bool,unsigned,unsigned,char *,size_t);
 bool wood_grid_child_check(const WoodGridContext *,const WoodGridApplication *,char *,size_t);
 bool wood_grid_systems_rebuild(WoodGridContext *,char *,size_t);
+/* D64/I74 card-reference diagnostics for a K grid store status. Returns false
+ * without writing when the status is not a card-reference status. The system
+ * supplies the card's parameter and field ids; parameter_error the source cause. */
+bool wood_grid_card_error(const GeoGridSystem *system,const GeoGridStoreError *detail,
+    const char *parameter_error,char *error,size_t cap);
 bool wood_grid_system_evaluate_direct(WoodGridContext *,uint32_t,char *,size_t);
 bool wood_grid_binding_cache(const WoodGridContext *,const GeoGridBinding *,WoodGridApplication *,char *,size_t);
 bool wood_grid_binding_cache_direct(const WoodGridContext *,const GeoGridBinding *,WoodGridApplication *,char *,size_t);

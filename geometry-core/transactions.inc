@@ -48,7 +48,7 @@ static void reference_object_preview(FILE *);
 static bool grid_axis_stagger_equal(const GridAxisDef *,const GridAxisDef *);
 static bool reference_axis_definition_equal(const GridAxisDef *a,const GridAxisDef *z)
 {
-    if (a->source!=z->source || !grid_axis_stagger_equal(a,z)) return false;
+    if (a->source!=z->source || a->card_length!=z->card_length || !grid_axis_stagger_equal(a,z)) return false;
     if (a->source==GRID_SRC_NONE) return true;
     if (a->source==GRID_SRC_EXPLICIT)
         return a->count==z->count && a->count<=GRID_MAX_LINES &&
@@ -72,7 +72,9 @@ static bool reference_system_changed(const World *before,const World *after,uint
 {
     const GridSystem *a=world_find_grid_system(before,id),*z=world_find_grid_system(after,id);
     if (!a || !z) return a!=z;
-    return a->rule_count!=z->rule_count || a->next_rule_key!=z->next_rule_key ||
+    const GridCardReference *ac=&a->card_reference,*zc=&z->card_reference;
+    return ac->set!=zc->set || ac->parameter_id!=zc->parameter_id || ac->fields[0]!=zc->fields[0] || ac->fields[1]!=zc->fields[1] ||
+        a->rule_count!=z->rule_count || a->next_rule_key!=z->next_rule_key ||
         memcmp(a->rules,z->rules,sizeof a->rules) || strcmp(a->name,z->name) || app_grid_system_main_along(before,id)!=app_grid_system_main_along(after,id) ||
         !reference_axis_definition_equal(&a->axis[0],&z->axis[0]) ||
         !reference_axis_definition_equal(&a->axis[1],&z->axis[1]);
@@ -319,6 +321,7 @@ static void reference_system_text(const World *w,uint32_t id,FILE *out)
     if (!s) { fprintf(out,"grid-system %u unavailable",id); return; }
     fprintf(out,"grid-system %u name %s mode %s main-along %s",id,s->name,
         grid_system_is_infinite(s)?"infinite":"legacy-finite",app_grid_system_main_along(w,s->id)==1?"u":app_grid_system_main_along(w,s->id)==2?"v":"none");
+    if(s->card_reference.set)fprintf(out," card-reference %u u-field %u v-field %u",s->card_reference.parameter_id,s->card_reference.fields[0],s->card_reference.fields[1]);
     for (int axis=0;axis<2;++axis) {
         const GridAxisDef *a=&s->axis[axis]; fprintf(out," %c",axis?'v':'u');
         if (a->source==GRID_SRC_NONE) fputs(" none",out);
@@ -463,7 +466,7 @@ static bool parameter_reference_edit(const World *w,char **tokens,int count)
     if(g_parsing_scene_file || count<2)return false;
     const char *command=tokens[0];
     if(!strcmp(command,"guide") || !strcmp(command,"move") || !strcmp(command,"datum") || !strcmp(command,"grid-system")){
-        for(int i=1;i<count;++i)if(strstr(tokens[i],"param:"))return true;
+        for(int i=1;i<count;++i)if(strstr(tokens[i],"param:") || !strcmp(tokens[i],"card-reference"))return true;
         uint32_t id;if(!parse_u32(tokens[1],&id))return false;
         if(!strcmp(command,"guide") || !strcmp(command,"move")){
             const GuideLine *g=world_find_guide(w,id);return g && strstr(app_guide_expression(w,g->id),"param:")!=NULL;

@@ -177,8 +177,31 @@ bool wood_grid_delete(WoodGridContext *c,const char *kind,uint32_t id,char *err,
     memmove(c->state->items+slot,c->state->items+slot+1,(c->state->count-slot-1)*sizeof *c->state->items);--c->state->count;return true;
 }
 
+bool wood_grid_card_error(const GeoGridSystem *s,const GeoGridStoreError *detail,
+    const char *parameter_error,char *error,size_t cap)
+{
+    if(!detail)return false;
+    uint32_t id=detail->system_id,pid=s?s->card_reference.parameter_id:0;
+    int a=detail->axis==1?1:0;uint32_t field=s?s->card_reference.fields[a]:0;char axis=a?'v':'u';
+    switch(detail->status){
+    case GEO_GRID_STORE_CARD_MAPPING:
+        snprintf(error,cap,"I74 COMPLETE_MAPPING: grid-system %u has card token without card reference",id);return true;
+    case GEO_GRID_STORE_CARD_FIELDS:
+        snprintf(error,cap,"I74 DISTINCT_FIELDS: grid-system %u parameter %u requires two different field ids",id,pid);return true;
+    case GEO_GRID_STORE_CARD_MODE:
+        snprintf(error,cap,"I74 MODE_SCOPE: grid-system %u %c requires repeat or repeat-panel",id,axis);return true;
+    case GEO_GRID_STORE_CARD_EXCLUSIVE:
+        snprintf(error,cap,"I74 SOURCE_EXCLUSIVITY: grid-system %u %c controlled token must be card",id,axis);return true;
+    case GEO_GRID_STORE_CARD_SOURCE:
+        snprintf(error,cap,"I74 grid-system %u %c parameter %u field %u: %.160s",id,axis,pid,field,parameter_error?parameter_error:"");return true;
+    case GEO_GRID_STORE_CARD_POSITIVE:
+        snprintf(error,cap,"I74 POSITIVE: grid-system %u %c parameter %u field %u requires positive length",id,axis,pid,field);return true;
+    default:return false;
+    }
+}
 static bool wood_grid_system_error(const WoodGridContext *c,const GeoGridStoreError *detail,char *error,size_t cap)
 {
+    if(wood_grid_card_error(geo_grid_systems_find(c->sources,detail->system_id),detail,c->parameter_error,error,cap))return false;
     switch(detail->status){
     case GEO_GRID_STORE_PARAMETER_AXIS: case GEO_GRID_STORE_PARAMETER_SOURCE:
         snprintf(error,cap,"grid-system %u %c: %.190s",detail->system_id,detail->axis?'v':'u',c->parameter_error?c->parameter_error:"");break;

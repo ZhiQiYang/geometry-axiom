@@ -10,6 +10,16 @@
   binary="bridge" 使用獨立的已提交稀疏 checkout、官方 binaries.py 編譯及 tests 指定的
          真 bridge unittest 方法。先跑基準，變異後只以完成的行為斷言判 killed；每筆還原
          來源、重新編譯並跑共用回歸。錯誤、略過、逾時與不完整方法清單都算 blocked。
+         bridge 行程在測試中死亡(tests/_bridge.py 的 BridgeClosed,帶結束碼)不是斷言失敗。
+         crashed 判準同核心:同一測試連續 RUN_RETRIES 次都以存取違規(is_access_violation_code)
+         結束、且沒有任何斷言失敗;重跑範圍較窄,只重跑存取違規(核心則重跑所有 blocked)。
+         其他結束碼(含外部 kill、OOM)、不足次數、前後不一致、或與斷言失敗並存 -> blocked,
+         不重跑、不算偵測。
+         死亡不只看最外層例外:例外鏈任一層的 BridgeClosed(含 BridgeSession.stop() 發現 bridge
+         讀到 EOF 後以非 0 結束)、run_once 的非 0 結束碼、測試啟動的 bridge 行程(程式 = oracle 的
+         bridge 二進位)以非 0 結束(oracle 的 ChildWatch,最多等 5 秒取得結束碼,與
+         BridgeSession 一致)都算;無關子行程當機不算;只有文字說 bridge closed 而沒有結束碼
+         -> blocked。tests 指定的方法必須在基準線 mutation_bridge.RESTORED 內,否則 invalid。
 
 結果: killed(某測試失敗) / crashed(基準通過後,同一夾具連續存取違規;
       算被偵測到,但不是斷言殺死) / survived(全過) / equivalent / retired /
@@ -336,6 +346,21 @@ MUTANTS = [
     dict(id="M77", desc="R7/#202：以同側遠處貼邊豁免純角點接觸",
          old="        if (!local_flush && poly_point_on_edge(loop, corners[i])) return -1;",
          new="        if (!f[(i==0||i==3)?0:1] && !f[i<2?2:3] && poly_point_on_edge(loop, corners[i])) return -1;"),
+    # ---- #240 P-143(看板任務 29):S7 / S1 核心場景的牙齒 ----
+    # GEO-261: the predicate is K geo_segment_crosses_rect_interior (same text, Geo* names).
+    dict(id="M86", desc="I5/S7：開內部判定拿掉——邊落在矩形邊上、或與矩形只零長度接觸，也算穿入內部(兩軸的嚴格不等號與 lo<hi 全改含邊界)；貼齊的場景 _s7a 必轉紅(被 M05/M06 涵蓋，只作回歸)",
+         file="geometry-core/kernel/geometry.c",
+         old="        if (a.u <= min_u || a.u >= max_u) {\n            return false;\n        }\n        GeoCoord lo = geo_coord_max(geo_coord_min(a.v, b.v), min_v);\n        GeoCoord hi = geo_coord_min(geo_coord_max(a.v, b.v), max_v);\n        return lo < hi;\n    }\n\n    if (a.v <= min_v || a.v >= max_v) {\n        return false;\n    }\n    GeoCoord lo = geo_coord_max(geo_coord_min(a.u, b.u), min_u);\n    GeoCoord hi = geo_coord_min(geo_coord_max(a.u, b.u), max_u);\n    return lo < hi;",
+         new="        if (a.u < min_u || a.u > max_u) {\n            return false;\n        }\n        GeoCoord lo = geo_coord_max(geo_coord_min(a.v, b.v), min_v);\n        GeoCoord hi = geo_coord_min(geo_coord_max(a.v, b.v), max_v);\n        return lo <= hi;\n    }\n\n    if (a.v < min_v || a.v > max_v) {\n        return false;\n    }\n    GeoCoord lo = geo_coord_max(geo_coord_min(a.u, b.u), min_u);\n    GeoCoord hi = geo_coord_min(geo_coord_max(a.u, b.u), max_u);\n    return lo <= hi;"),
+    # GEO-261: the V_EXTENSION span check is W wood_member_span_extension_check.
+    dict(id="M87", desc="I22/S1：拿掉「非 boundary 角材的 footprint 不得超出定位邊」的拒絕(V_EXTENSION)；primary 整支穿過凹角的 _s1_p8 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old="    if (has_edge && self->role != WOOD_MEMBER_ROLE_BOUNDARY &&\n        (span_lo < edge_lo || span_hi > edge_hi)) {",
+         new="    if (0 && has_edge && self->role != WOOD_MEMBER_ROLE_BOUNDARY &&\n        (span_lo < edge_lo || span_hi > edge_hi)) {"),
+    dict(id="M88", desc="I22/S1(#295 審查須改 2):V_EXTENSION 只驗「超出起點」,拿掉「超出終點」那一半;凹角在定位邊高端的 _s1_p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old="        (span_lo < edge_lo || span_hi > edge_hi)) {",
+         new="        (span_lo < edge_lo)) {"),
 ]
 
 
@@ -391,6 +416,68 @@ MUTANTS += [
          old="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0)return false;",
          new="    /* mutation: never consume an ended-generation value */ return false;",
          tests=["tests.test_parameters_deleted_unbind.DeletedSourceUnbind.test_delete_then_unbind_has_identical_dump_to_legal_order"]),
+]
+
+
+# GEO-262 / P-142 B2: whole-card grid owners share parameter_uses and the I38
+# rejection with the D44 panel-fill owners (bridge-backed, like P-141 above).
+B2_TESTS = ["tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_%s_SHARE_I38_REJECTION" % slot
+            for slot in ("GAP", "STAGGER", "THRESHOLD")]
+MUTANTS += [
+    dict(id="M78", desc="I38/I74 P142-B2：原生擁有者領頭的拒絕只計數、不指名同欄可改綁的引用者", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old='parameter_names_fit(other,used<limit?limit-used:0,uses.other_text,uses.other_count,": ");',
+         new='parameter_names_fit(other,used<limit?limit-used:0,uses.other_text,0,": ");',
+         tests=B2_TESTS),
+    dict(id="M84", desc="I38/P142-B2：引用者名單不檢查剩餘長度，名稱在255位元組處被截斷", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="        if(need>room)continue;",
+         new="        if(false)continue;",
+         tests=["tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES"]),
+    dict(id="M79", desc="I38/P142-B2：整卡網格引用者不列入共用 parameter_uses", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="if(r->set&&r->parameter_id==id&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_CARD,s->id,0))",
+         new="if(false&&r->set&&r->parameter_id==id&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_CARD,s->id,0))",
+         tests=B2_TESTS[:1]),
+]
+
+# GEO-262 / P-142 S1: grid-system field references are redeclared by put-grid-system,
+# so they are no longer native-only owners of the separate-transaction guidance.
+S1_TEST = "tests.test_grid_card_reference.GridCardReference.test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE"
+MUTANTS += [
+    dict(id="M80", desc="I38/P142-S1：網格系統逐欄引用仍歸為無法同候選改綁的原生擁有者", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old='parameter_use(u,"grid-system %u %c %s",',
+         new='parameter_native_use(u,"grid-system %u %c %s",',
+         tests=[S1_TEST, "tests.test_parameters_core.ParametersCore.test_native_consumers_require_explicit_rebinding_after_parameter_rebuild"]),
+    dict(id="M81", desc="I38/P129/P142-S1：put-grid-system 未宣告其逐欄來源，刪後重建同鍵無法改綁", binary="bridge",
+         file="geometry-core/card_reference.inc",
+         old="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0)&&parameter_declare(w,PARAM_OWNER_GRID_SYSTEM,s.id,0);",
+         new="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0);",
+         tests=[S1_TEST]),
+    # GEO-261: K geo_grid_system_evaluate consumes the resolver for both the direct
+    # and the source-graph path; ignoring its failure keeps the cached length.
+    dict(id="M85", desc="I38/D29/P142-S1：網格系統 ParameterRef 指向已刪卡片時沿用快取長度，不拒絕", binary="bridge",
+         file="geometry-core/kernel/grid_store.c",
+         old="            if (!resolve || !resolve(state, a->parameters[field], values[field]))",
+         new="            if (!resolve || (!resolve(state, a->parameters[field], values[field]) && false))",
+         tests=["tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS"]),
+]
+
+# GEO-262 / P-142 S2 after #193: the merged source rebuilds a card and unbinds a
+# field source and a whole-card grid in one ordered candidate (both must read 99).
+S2_TEST = "tests.test_grid_card_reference.GridCardReference.test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99"
+MUTANTS += [
+    dict(id="M82", desc="P065/P142-S2：同候選曾刪除的欄位即使已重建仍走刪除前快取（整合後逐欄得27非99）", binary="bridge",
+         file="geometry-core/parameters.inc",
+         old="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0)return false;",
+         new="    if(parameter_field_index(w,ref.parameter_id,ref.field_id)>=0&&!parameter_field_generation(w,ref.parameter_id,ref.field_id))return false;",
+         tests=[S2_TEST]),
+    dict(id="M83", desc="R60/P142-S2：整卡轉直接值因同候選曾刪除一律拒絕，不讀已重建的當步值", binary="bridge",
+         file="geometry-core/card_reference.inc",
+         old="                char error[512];",
+         new='                char error[512];for(int a=0;a<2;++a)if(parameter_field_generation(w,s->card_reference.parameter_id,s->card_reference.fields[a]))return grid_card_fail("R60 capture grid-system %u parameter %u: deleted earlier in this candidate",id,s->card_reference.parameter_id);',
+         tests=[S2_TEST]),
 ]
 
 
@@ -451,14 +538,20 @@ def failed_scenes(proc, limit=KILLED_BY_MAX):
 _AV_DETAIL = re.compile(r"^INFRA abnormal executable exit (-?\d+):")
 
 
-def is_access_violation_detail(detail):
-    match = _AV_DETAIL.match(detail or "")
-    if not match:
+def is_access_violation_code(code):
+    """程序結束碼是不是存取違規(POSIX -11,或 Windows 0xC0000005 的有號/無號形式)。
+
+    核心 exe 與 bridge 兩條路徑共用這一個判定;其他結束碼(含 1、-9、abort)都不是。"""
+    if type(code) is not int:
         return False
-    code = int(match.group(1))
     if code == -11:
         return True
     return (code & 0xFFFFFFFF) == 0xC0000005
+
+
+def is_access_violation_detail(detail):
+    match = _AV_DETAIL.match(detail or "")
+    return bool(match) and is_access_violation_code(int(match.group(1)))
 
 
 def access_violation_scenes(proc):
@@ -760,6 +853,13 @@ def definition_kind(m, src):
                 or any(not isinstance(name, str) or not re.fullmatch(r"tests\.\w+\.\w+\.test_\w+", name) for name in methods)
                 or len(set(methods)) != len(methods)):
             return "invalid", "bridge 變異需要互異的具名 unittest 方法"
+        # killed 與 crashed 都以「基準線先通過」為前提:基準線只跑 RESTORED,且必須全部通過
+        # (mutation_bridge.execution_problems 驗基準線收據)。不在 RESTORED 的方法基準線根本沒跑過。
+        import mutation_bridge
+        unproven = [name for name in methods if name not in mutation_bridge.RESTORED]
+        if unproven:
+            return "invalid", ("bridge 變異的測試方法不在基準線 mutation_bridge.RESTORED 內(基準線沒跑過、"
+                               "沒證明它先通過,killed/crashed 都不成立):" + ", ".join(unproven))
     n = text.count(m["old"])
     if m.get("retired"):
         if n:

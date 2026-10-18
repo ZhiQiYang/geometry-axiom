@@ -91,9 +91,10 @@ static void wood_grid_def_axis(WoodGridDefinition *d,const GeoGridAxisDef *a,boo
     if(a->count>GEO_GRID_COORDINATE_CAPACITY){d->ok=false;return;}
     for(size_t i=0;i<a->count;++i)wood_grid_def_number(d,(uint64_t)a->coords[i]);
     const GeoCoord values[]={a->start,a->step,a->body,a->gap,a->anchor,a->stagger};
+    size_t card=a->card_length?(a->source==GEO_GRID_SOURCE_REPEAT?1:2):6;
     for(size_t i=0;i<6;++i){GeoParameterRef p=a->parameters[i];wood_grid_def_number(d,p.set);wood_grid_def_number(d,p.parameter_id);wood_grid_def_number(d,p.field_id);
-        bool bound=(i==2&&body_bound)||(i==3&&gap_bound);wood_grid_def_number(d,bound);wood_grid_def_number(d,p.set||bound?0:(uint64_t)values[i]);}
-    wood_grid_def_number(d,a->series_count);wood_grid_def_number(d,a->anchor_explicit);wood_grid_def_number(d,a->stagger_set);
+        bool bound=(i==2&&body_bound)||(i==3&&gap_bound);wood_grid_def_number(d,bound);wood_grid_def_number(d,p.set||bound||i==card?0:(uint64_t)values[i]);}
+    wood_grid_def_number(d,a->series_count);wood_grid_def_number(d,a->anchor_explicit);wood_grid_def_number(d,a->stagger_set);wood_grid_def_number(d,a->card_length);
 }
 static bool wood_grid_definition_depend(WoodGridSources *s,WoodGridSourceKind kind,uint32_t id)
 {WoodGridSourceKey key;return geo_eval_depend(s->graph,wood_grid_source_ref(s->tokens.grid,kind,id,&key),GEO_DEPENDENCY_DEFINITION_REQUIRED)==GEO_SOURCE_OK;}
@@ -101,6 +102,14 @@ static bool wood_grid_parameter_definitions(WoodGridSources *s,const GeoGridAxis
 {
     if(!s->tokens.parameter)return true;
     for(size_t i=0;i<6;++i)if(axis->parameters[i].set){uint32_t key[]={axis->parameters[i].parameter_id,axis->parameters[i].field_id};
+        if(geo_eval_depend(s->graph,(GeoSourceRef){s->tokens.parameter,key,sizeof key},GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;}
+    return true;
+}
+/* D64: both mapped card fields are definition inputs of the grid system. */
+static bool wood_grid_card_definitions(WoodGridSources *s,const GeoGridCardReference *card)
+{
+    if(!s->tokens.parameter||!card->set)return true;
+    for(int a=0;a<2;++a){uint32_t key[]={card->parameter_id,card->fields[a]};
         if(geo_eval_depend(s->graph,(GeoSourceRef){s->tokens.parameter,key,sizeof key},GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;}
     return true;
 }
@@ -121,6 +130,9 @@ static bool wood_grid_definition(WoodGridSources *s,WoodGridSourceKind kind,uint
         for(int a=0;a<2;++a){wood_grid_def_axis(&d,&g->axis[a],false,false);if(!wood_grid_parameter_definitions(s,&g->axis[a]))return false;}
         wood_grid_def_number(&d,g->rule_count);wood_grid_def_number(&d,g->next_rule_key);if(g->rule_count>GEO_GRID_RULE_CAPACITY)return false;
         for(size_t i=0;i<g->rule_count;++i){const GeoGridRule *v=&g->rules[i];wood_grid_def_number(&d,v->key);wood_grid_def_text(&d,v->name,sizeof v->name);wood_grid_def_number(&d,v->all_cells);for(int a=0;a<2;++a){wood_grid_def_number(&d,(uint64_t)v->cell[a]);wood_grid_def_number(&d,v->divisions[a]);}}
+        wood_grid_def_number(&d,g->card_reference.set);wood_grid_def_number(&d,g->card_reference.parameter_id);
+        wood_grid_def_number(&d,g->card_reference.fields[0]);wood_grid_def_number(&d,g->card_reference.fields[1]);
+        if(!wood_grid_card_definitions(s,&g->card_reference))return false;
     }else if(kind==WOOD_GRID_SOURCE_RULE_DEFINITION){
         GeoSourceValue parent;GeoGridSystem decoded;int main;
         if(!wood_grid_root_get(s,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&parent,NULL,0)||
@@ -246,7 +258,8 @@ static void wood_grid_publish_system_cache(WoodGridSources *s,uint32_t id)
     for(int axis=0;axis<2;++axis){GeoGridAxisDef *to=&next.axis[axis];const GeoGridAxisDef *from=&computed->axis[axis];
         GeoCoord *slots[]={&to->start,&to->step,&to->body,&to->gap,&to->anchor,&to->stagger};
         const GeoCoord values[]={from->start,from->step,from->body,from->gap,from->anchor,from->stagger};
-        for(int field=0;field<6;++field)if(to->parameters[field].set)*slots[field]=values[field];}
+        int card=to->card_length?(to->source==GEO_GRID_SOURCE_REPEAT?1:2):6;
+        for(int field=0;field<6;++field)if(to->parameters[field].set||field==card)*slots[field]=values[field];}
     (void)geo_grid_systems_put(s->base.sources,&next);
 }
 static void wood_grid_publish_application_cache(WoodGridSources *s,const WoodGridApplication *computed)

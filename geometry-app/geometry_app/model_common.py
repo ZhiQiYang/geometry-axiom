@@ -6,6 +6,7 @@ import json
 
 ENGINEERING_CAPABILITY = "engineering-spec/1"
 PARAMETER_CAPABILITY = "parameters/1"
+GRID_CARD_CAPABILITY = "grid-card-reference/1"
 GRID_SUBDIVISION_CAPABILITY = "grid-subdivision-rules/1"
 SECTION_PROFILE_CAPABILITY = "section-profile/1"
 PANEL_FILL_CAPABILITY = "panel-fill/1"
@@ -22,6 +23,8 @@ def scene_required_capabilities(scene):
         tokens = raw.split("#", 1)[0].split()
         if not tokens:
             continue
+        if tokens[0] == "grid-system" and ("card-reference" in tokens or "card" in tokens):
+            result.update({GRID_CARD_CAPABILITY, PARAMETER_CAPABILITY})
         if tokens[0] == "requires":
             if len(tokens) != 2:
                 raise ModelError("INVALID", "CAPABILITY_DECLARATION", "I32", "Expected one required capability")

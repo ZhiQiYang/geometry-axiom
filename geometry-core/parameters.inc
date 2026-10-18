@@ -244,10 +244,14 @@ typedef struct {
 /* Candidate ordering, never incarnation marks or serialized identities. */
 typedef struct { uint32_t parameter_id, field_id; unsigned at; } ParameterFieldRetirement;
 typedef struct { int kind; uint32_t id; int slot; unsigned at; } ParameterDeclaration;
+/* R60: one direct unbind of a whole-card grid source, read at its ordered step.
+ * At most one per engineering operation (ENG_OPERATION_MAX); preview-only. */
+#define PARAM_CARD_CAPTURE_MAX 256
+typedef struct { uint32_t id, parameter_id, fields[2]; Coord values[2]; unsigned at; } GridCardCapture;
 enum { PARAM_OWNER_CARD, PARAM_OWNER_ENG_GRID, PARAM_OWNER_ENG_TIMBER,
        PARAM_OWNER_ASSEMBLY, PARAM_OWNER_MEMBER, PARAM_OWNER_RUN,
        PARAM_OWNER_GUIDE, PARAM_OWNER_DATUM, PARAM_OWNER_GRID_SYSTEM, PARAM_OWNER_GRID,
-       PARAM_OWNER_PANEL_FILL };
+       PARAM_OWNER_PANEL_FILL, PARAM_OWNER_GRID_CARD };
 /* P-062/P-065/P-121: H-owned scratch for exactly one tracked candidate
  * evaluation (the bridge batch transaction or one interactive archive record).
  * It is allocated beside the candidate, never inside World, a K store, a seal,
@@ -260,6 +264,7 @@ typedef struct ParameterCandidateLedger {
     DeletedParameterValue deleted_values[PARAM_DELETED_VALUE_MAX]; size_t deleted_value_count;
     ParameterFieldRetirement field_retirements[PARAM_FIELD_RETIREMENT_MAX]; size_t field_retirement_count;
     ParameterDeclaration declarations[PARAM_DECLARATION_MAX]; size_t declaration_count;
+    GridCardCapture card_captures[PARAM_CARD_CAPTURE_MAX]; size_t card_capture_count;
     unsigned candidate_order;
 } ParameterCandidateLedger;
 /* P-062/P-065/P-121 candidate scratch. The ledger is H state beside exactly
@@ -431,22 +436,51 @@ static bool parameter_put(World *w,GeoJson *j,int t)
 /* I38: enumerate actual references in a complete candidate. Only the first
  * PARAMETER_USES_SHOWN referrers are named; the count is exact. References from the card's own fields vanish with it. */
 #define PARAMETER_USES_SHOWN 3
-typedef struct {char text[256],native_text[256];size_t count,native_count;} ParameterUses;
+#define PARAMETER_USE_NAME 96 /* longest owner name is 56 bytes (grid-system card-reference) */
+/* count covers every owner; native_* and other_* split the same owners by whether
+ * this candidate can redeclare them. Each list keeps its first complete names. */
+typedef struct {char text[PARAMETER_USES_SHOWN][PARAMETER_USE_NAME],native_text[PARAMETER_USES_SHOWN][PARAMETER_USE_NAME],
+                other_text[PARAMETER_USES_SHOWN][PARAMETER_USE_NAME];size_t count,native_count,other_count;} ParameterUses;
+static void parameter_use_list(char names[][PARAMETER_USE_NAME],size_t *count,const char *owner)
+{
+    if(*count<PARAMETER_USES_SHOWN)snprintf(names[*count],PARAMETER_USE_NAME,"%s",owner);
+    ++*count;
+}
 static void parameter_use(ParameterUses *u,const char *format,...)
 {
-    if(u->count++<PARAMETER_USES_SHOWN){
-        size_t n=strlen(u->text);if(n&&n+2<sizeof u->text){u->text[n++]=';';u->text[n++]=' ';u->text[n]=0;}
-        va_list a;va_start(a,format);if(n<sizeof u->text)vsnprintf(u->text+n,sizeof u->text-n,format,a);va_end(a);
-    }
+    char owner[PARAMETER_USE_NAME];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
+    parameter_use_list(u->text,&u->count,owner);
+    parameter_use_list(u->other_text,&u->other_count,owner);
 }
-/* These owners have no declaration operation in an engineering candidate. */
+/* These owners have no declaration operation in an engineering candidate:
+ * guide, datum, direct grid DSL axis tokens and panel-fill. Grid-system field
+ * references are not among them; put-grid-system redeclares them (P-142 S1). */
 static void parameter_native_use(ParameterUses *u,const char *format,...)
 {
-    char owner[96];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
-    parameter_use(u,"%s",owner);
-    if(u->native_count++<PARAMETER_USES_SHOWN){
-        size_t n=strlen(u->native_text);snprintf(u->native_text+n,sizeof u->native_text-n,"%s%s",n?"; ":"",owner);
+    char owner[PARAMETER_USE_NAME];va_list a;va_start(a,format);vsnprintf(owner,sizeof owner,format,a);va_end(a);
+    parameter_use_list(u->text,&u->count,owner);
+    parameter_use_list(u->native_text,&u->native_count,owner);
+}
+static void parameter_append(char *out,size_t cap,const char *text)
+{
+    size_t n=strlen(out);if(n+1<cap)snprintf(out+n,cap-n,"%s",text);
+}
+/* P-142 B2 review: I38 diagnostics reach every caller through g_engineering_error.
+ * Write only complete owner names that fit in `room` bytes after `lead` and count the
+ * rest as " and N more"; when no name fits, write nothing (the caller states the count).
+ * `out` holds room+1 bytes. Returns the bytes written. */
+static size_t parameter_names_fit(char *out,size_t room,char names[][PARAMETER_USE_NAME],size_t count,const char *lead)
+{
+    out[0]=0;
+    for(size_t k=count<PARAMETER_USES_SHOWN?count:PARAMETER_USES_SHOWN;k>0;--k){
+        char more[40]="";if(count>k)snprintf(more,sizeof more," and %zu more",count-k);
+        size_t need=strlen(lead)+strlen(more);for(size_t i=0;i<k;++i)need+=(i?2:0)+strlen(names[i]);
+        if(need>room)continue;
+        parameter_append(out,room+1,lead);
+        for(size_t i=0;i<k;++i){if(i)parameter_append(out,room+1,"; ");parameter_append(out,room+1,names[i]);}
+        parameter_append(out,room+1,more);return strlen(out);
     }
+    return 0;
 }
 static bool parameter_ast_uses(const GeoJson *j,int t,uint32_t id,uint32_t field,int depth)
 {
@@ -508,9 +542,13 @@ static size_t parameter_uses(const World *w,uint32_t id,uint32_t field,Parameter
         if(parameter_text_uses(app_guide_expression(w,g->id),id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GUIDE,g->id,0))parameter_native_use(u,"guide %u",g->id);}
     for(size_t i=0;i<geo_datums_count(&w->geo.datum_planes);++i){const GeoDatum *d=geo_datums_at(&w->geo.datum_planes,i);
         if(parameter_text_uses(app_datum_expression(w,d->id),id,field)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_DATUM,d->id,0))parameter_native_use(u,"datum %u",d->id);}
+    for(size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i){const GridSystem *s=geo_grid_systems_at(&w->geo.grid_store,i);const GridCardReference *r=&s->card_reference;
+        if(r->set&&r->parameter_id==id&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_CARD,s->id,0))for(int a=0;a<2;++a)if(r->fields[a]==field)parameter_use(u,"grid-system %u card-reference %c field %u",s->id,a?'v':'u',field);}
+    /* P-142 S1: put-grid-system (slot 0) and unbind-grid-card-reference parameter
+     * mode (axis*6+k+1) declare these in the candidate, so they are redeclarable. */
     for(size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i){const GridSystem *s=geo_grid_systems_at(&w->geo.grid_store,i);
         for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&s->axis[axis].parameters[k];
-            if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,s->id,0))parameter_native_use(u,"grid-system %u %c %s",s->id,axis?'v':'u',axis_fields[k]);}}
+            if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,s->id,0)&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID_SYSTEM,s->id,axis*6+k+1))parameter_use(u,"grid-system %u %c %s",s->id,axis?'v':'u',axis_fields[k]);}}
     for(size_t i=0;i<w->wood.grid_applications.count;++i){const ReferenceGrid *g=&w->wood.grid_applications.items[i];if(g->from_system)continue;  /* system-derived copies are the system's own refs */
         for(int axis=0;axis<2;++axis)for(int k=0;k<6;++k){const ParameterRef *r=&g->axis[axis].parameters[k];
             if(r->set&&r->parameter_id==id&&r->field_id==field&&parameter_reference_unhandled(w,id,field,PARAM_OWNER_GRID,g->id,0))parameter_native_use(u,"grid %u %c %s",g->id,axis?'v':'u',axis_fields[k]);}}
@@ -539,22 +577,37 @@ static bool parameter_retirements_valid(const World *w)
         const ParameterFieldRetirement *r=&p->field_retirements[i];uint32_t id=r->parameter_id;ParameterUses uses;
         if(r->at!=parameter_field_generation(w,id,r->field_id))continue; /* last actual deletion */
         if(parameter_uses(w,id,r->field_id,&uses)){
-            char more[40]="";if(uses.count>PARAMETER_USES_SHOWN)snprintf(more,sizeof more," and %zu more",uses.count-PARAMETER_USES_SHOWN);
+            /* The whole message stays within the g_engineering_error copy (255 bytes). */
+            const size_t limit=sizeof g_engineering_error-1;
+            char head[64],names[sizeof g_engineering_error],other[sizeof g_engineering_error],count[24];
+            snprintf(head,sizeof head,"I38 MISSING: parameter %u is still referenced by ",id);
             if(uses.native_count){
-                char native_more[40]="";if(uses.native_count>PARAMETER_USES_SHOWN)snprintf(native_more,sizeof native_more," and %zu more",uses.native_count-PARAMETER_USES_SHOWN);
-                return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: %zu)",id,uses.native_text,native_more,uses.count-uses.native_count);
+                /* I38/I74 (P-142 B2): every unhandled referrer is named, including the
+                 * redeclarable ones that share this field with a native-only owner. */
+                static const char guidance[]="; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: ";
+                snprintf(count,sizeof count,"%zu",uses.count-uses.native_count);
+                size_t used=strlen(head)+strlen(guidance)+strlen(count)+1; /* closing parenthesis */
+                used+=parameter_names_fit(names,used<limit?limit-used:0,uses.native_text,uses.native_count,"");
+                parameter_names_fit(other,used<limit?limit-used:0,uses.other_text,uses.other_count,": ");
+                return parameter_fail("%s%s%s%s%s)",head,names,guidance,count,other);
             }
-            return parameter_fail("I38 MISSING: parameter %u is still referenced by %s%s; unbind or repoint %s in the same complete candidate",id,uses.text,more,uses.count==1?"it":"them");
+            const char *tail=uses.count==1?"; unbind or repoint it in the same complete candidate":"; unbind or repoint them in the same complete candidate";
+            size_t used=strlen(head)+strlen(tail);
+            parameter_names_fit(names,used<limit?limit-used:0,uses.text,uses.count,"");
+            return parameter_fail("%s%s%s",head,names,tail);
         }
     }
     return true;
 }
 /* P-129: preview disclosure reads explicit owner declarations, including a
  * reference that the declaration replaced with a literal/different source.
- * It does not grant new declaration paths to native-DSL-only consumers. */
+ * It does not grant new declaration paths to native-DSL-only consumers.
+ * Grid-system owners are not native-only: GEO-262 put-grid-system and
+ * unbind-grid-card-reference are their declaration paths (P-142 S1). */
 static bool parameter_declared_owner_present(const World *w,const ParameterDeclaration *d)
 {
     if(d->kind==PARAM_OWNER_CARD)return parameter_find(w,d->id)!=NULL;
+    if(d->kind==PARAM_OWNER_GRID_CARD||d->kind==PARAM_OWNER_GRID_SYSTEM)return world_find_grid_system(w,d->id)!=NULL;
     if(d->kind==PARAM_OWNER_ENG_GRID||d->kind==PARAM_OWNER_ENG_TIMBER){
         for(size_t i=0;i<w->wood.engineering.binding_count;++i){const EngBinding *b=&w->wood.engineering.bindings[i];
             if(b->target.id==d->id&&parameter_engineering_owner(&b->target)==d->kind&&
@@ -566,6 +619,9 @@ static bool parameter_declared_owner_present(const World *w,const ParameterDecla
 }
 static bool parameter_declared_owner_uses(const World *w,const ParameterDeclaration *d,uint32_t id,uint32_t field)
 {
+    const GridSystem *gs=(d->kind==PARAM_OWNER_GRID_CARD||d->kind==PARAM_OWNER_GRID_SYSTEM)?world_find_grid_system(w,d->id):NULL;
+    if(gs&&d->kind==PARAM_OWNER_GRID_CARD)return gs->card_reference.set&&gs->card_reference.parameter_id==id&&(gs->card_reference.fields[0]==field||gs->card_reference.fields[1]==field);
+    if(gs&&d->kind==PARAM_OWNER_GRID_SYSTEM){for(int a=0;a<2;++a)for(int k=0;k<6;++k){if(d->slot&&d->slot!=a*6+k+1)continue;ParameterRef r=gs->axis[a].parameters[k];if(r.set&&r.parameter_id==id&&r.field_id==field)return true;}return false;}
     if(d->kind==PARAM_OWNER_CARD){
         const ParameterField *fields=geo_parameters_fields(&w->geo.parameters);
         for(size_t i=0;i<geo_parameters_field_count(&w->geo.parameters);++i){const ParameterField *f=&fields[i];if(f->parameter_id!=d->id)continue;

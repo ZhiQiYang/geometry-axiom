@@ -3,6 +3,17 @@
 Mutants run in a separate, sparse committed checkout. The invoking repository and
 its live runtime are never temporarily mutated. Every record includes baseline,
 real failing unittest results, restored results, binaries and official sidecars.
+
+Verdicts follow tests/mutate.py: only a failed test assertion is `killed`. A bridge process that died under
+the test (the oracle's `bridge_closed` failure kind, with its exit status) is not an assertion: it is `crashed`
+(detected, counted apart from killed) only when the same tests died of an access violation
+(mutate.is_access_violation_code: 0xC0000005 either signedness, or -11) in mt.RUN_RETRIES consecutive runs and no
+assertion failed; the dying run is repeated for that. Every other death (exit status 1 from an external kill,
+-9/OOM, abort, Smart App Control), fewer repeats, inconsistent repeats, a death beside assertion failures,
+a failure whose text says the bridge closed but carries no exit status, build or launch errors, skips, timeouts and
+incomplete runs are `blocked` and are never a detection.  Both killed and crashed presuppose that the mutant's own
+test methods passed in the baseline run: they must be among RESTORED (tests/mutate.py::definition_kind), which the
+baseline runs and must pass completely before any mutant is judged.
 """
 import datetime
 import hashlib
@@ -41,6 +52,18 @@ RESTORED = [
         "test_panel_fill_threshold_rebuild_requires_prior_reference_change",
         "test_separate_transaction_guidance_names_native_owner_after_other_referrers",
     ]],
+    # GEO-262 / P-142 B2: whole-card owners in the shared I38 rejection.
+    *["tests.test_grid_card_reference.GridCardReference." + name for name in [
+        "test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION",
+        "test_P142_B2_CARD_AND_PANEL_FILL_STAGGER_SHARE_I38_REJECTION",
+        "test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION",
+        "test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES",
+        # P-142 S1: grid-system field references rebound by put-grid-system.
+        "test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE",
+        "test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS",
+        # P-142 S2 on the merged source: rebuilt card read by field and card unbind.
+        "test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99",
+    ]],
 ]
 
 
@@ -60,31 +83,180 @@ def oracle_hash(m, root):
     return sha(json.dumps([m["tests"], RESTORED, rows], ensure_ascii=False, separators=(",", ":")).encode())
 
 
-def classify(receipt, methods):
-    """Only completed explicit unittest assertions can kill a mutant."""
+# What a closed bridge says in a failure's text.  Sources: tests/_bridge.py (BridgeSession.command and run_once,
+# `raise BridgeClosed('bridge closed: ' + ...)`) and the hand-written copies of its line protocol, e.g.
+# tests/integration/assembly_ownership_probe.py (`raise AssertionError('bridge closed: ' + ...)`).  Text can only
+# lower trust, never raise it: an entry labelled "assertion" or not labelled at all (a receipt written before the
+# oracle labelled failures, or by some other oracle) whose detail says the bridge closed becomes "unproven"
+# (-> blocked), never killed and never crashed.  An unlabelled entry without that text keeps its old meaning (an
+# assertion failure), so receipts that predate the labels and the hand-made unit fixtures stay valid.
+LEGACY_BRIDGE_CLOSED_TEXT = "bridge closed:"
+
+
+def failure_class(failure):
+    """What one entry of a result row's `failures` proves: "assertion", "death" or "unproven".
+
+    assertion  a test assertion failed (oracle kind "assertion"): the only thing that can kill a mutant.
+    death      the bridge process died under the test (oracle kind "bridge_closed" with an integer exit status).
+               Not an assertion; it can become `crashed` only through access_violation_tests() and the repeat rule.
+    unproven   anything that cannot be shown to be either: a closed bridge whose exit status is unknown, an
+               unrecognised kind, or an entry labelled "assertion" or unlabelled whose text says the bridge closed."""
+    kind = failure.get("kind")
+    if kind == "assertion" and LEGACY_BRIDGE_CLOSED_TEXT not in failure.get("detail", ""):
+        return "assertion"
+    if kind == "bridge_closed":
+        return "death" if type(failure.get("bridge_returncode")) is int else "unproven"
+    if kind is None and LEGACY_BRIDGE_CLOSED_TEXT not in failure.get("detail", ""):
+        return "assertion"          # unlabelled legacy entry with no sign of a dead bridge
+    return "unproven"
+
+
+def failure_tests(row, wanted):
+    """The `test` ids of the failures of a result row whose failure_class() is `wanted`, in report order."""
+    return [f["test"] for f in row["result"]["failures"] if failure_class(f) == wanted]
+
+
+def _complete_row(receipt, methods):
+    """The structured result row when `receipt` is a complete, unambiguous oracle report of exactly `methods`
+    (every method started and counted, no errors, skips or unexpected outcomes, well-formed failures); else None."""
     if (not methods or len(set(methods)) != len(methods)
-            or type(receipt.get("exit_code")) is not int):
-        return "blocked"
+            or type(receipt.get("exit_code")) is not int or receipt.get("timed_out")):
+        return None
     row = receipt.get("result")
     if not isinstance(row, dict) or row.get("schema") != "geometry-bridge-mutation-tests/1":
-        return "blocked"
+        return None
     if (row.get("requested") != methods or row.get("started") != methods
             or type(row.get("total")) is not int or row["total"] != len(methods)):
-        return "blocked"
+        return None
     for name in ("errors", "skipped", "failures"):
         if not isinstance(row.get(name), list):
-            return "blocked"
+            return None
     if (row["errors"] or row["skipped"] or any(type(row.get(k)) is not int or row[k] != 0
                                              for k in ("expected_failures", "unexpected_successes"))):
+        return None
+    for failure in row["failures"]:
+        if (not isinstance(failure, dict) or not isinstance(failure.get("test"), str)
+                or not isinstance(failure.get("detail"), str) or not failure["detail"]
+                or not any(failure["test"] == name or failure["test"].startswith(name + " (") for name in methods)):
+            return None
+    return row
+
+
+def classify(receipt, methods):
+    """The verdict of ONE oracle run: killed, survived or blocked (the same three as mutate.classify_test_run).
+
+    killed    the oracle ran to completion (exit status 1) and every failure is a real test assertion.
+    survived  every requested method ran and passed (exit status 0).
+    blocked   anything else: build/launch/lookup errors, skips, timeouts, incomplete runs, a bridge that died
+              (whatever the exit status: a single death is not yet `crashed`), and any failure list that mixes
+              assertions with a death or with something unproven.  Infrastructure is never a detection.
+    `crashed` needs repeated evidence; it is only produced by judge_trials()."""
+    row = _complete_row(receipt, methods)
+    if row is None:
         return "blocked"
     if row["failures"]:
-        for failure in row["failures"]:
-            if (not isinstance(failure, dict) or not isinstance(failure.get("test"), str)
-                    or not isinstance(failure.get("detail"), str) or not failure["detail"]
-                    or not any(failure["test"] == name or failure["test"].startswith(name + " (") for name in methods)):
-                return "blocked"
-        return "killed" if receipt.get("exit_code") == 1 else "blocked"
-    return "survived" if receipt.get("exit_code") == 0 else "blocked"
+        every_failure_is_an_assertion = all(failure_class(f) == "assertion" for f in row["failures"])
+        return "killed" if every_failure_is_an_assertion and receipt["exit_code"] == 1 else "blocked"
+    return "survived" if receipt["exit_code"] == 0 else "blocked"
+
+
+def access_violation_tests(receipt, methods, mt=None):
+    """The tests whose bridge died of an access violation, when that is the ONLY problem of this run; else None.
+
+    Mirrors mutate.access_violation_scenes: a complete oracle report (exit status 1) whose failures are all bridge
+    deaths with an access-violation exit status (mutate.is_access_violation_code, the same predicate the core uses).
+    Any assertion failure beside them, any other exit status (1 from an external kill, -9, abort, SAC), unknown
+    status or incompleteness gives None."""
+    if mt is None:
+        import mutate as mt    # tests/mutate.py owns what counts as an access violation
+    row = _complete_row(receipt, methods)
+    if row is None or receipt["exit_code"] != 1 or not row["failures"]:
+        return None
+    tests = []
+    for failure in row["failures"]:
+        if failure_class(failure) != "death" or not mt.is_access_violation_code(failure["bridge_returncode"]):
+            return None
+        if failure["test"] not in tests:
+            tests.append(failure["test"])
+    return tuple(tests)
+
+
+def run_trials(mt, run_trial, methods):
+    """Run the oracle for one mutant; repeat ONLY while it keeps dying of an access violation, at most
+    mt.RUN_RETRIES runs (the core's rule).  `run_trial(n)` performs run number n (1-based); returns the receipts."""
+    trials = []
+    for n in range(1, mt.RUN_RETRIES + 1):
+        trial = run_trial(n)
+        trials.append(trial)
+        if classify(trial, methods) != "blocked" or access_violation_tests(trial, methods, mt) is None:
+            break
+    return trials
+
+
+def run_why(trial, methods, mt):
+    """One oracle run in words, with its actual exit statuses: what it shows and why it is or is not a verdict."""
+    outcome, code, row = classify(trial, methods), trial.get("exit_code"), _complete_row(trial, methods)
+    if outcome == "killed":
+        return "assertion failed in " + ", ".join(failure_tests(trial, "assertion"))
+    if outcome == "survived":
+        return "all %d methods passed" % len(methods)
+    if trial.get("timed_out"):
+        return "oracle timed out (exit status %r)" % (code,)
+    result = trial.get("result")
+    if row is None:
+        if not isinstance(result, dict):
+            return "oracle printed no structured result (exit status %r)" % (code,)
+        problems = []
+        for name in ("errors", "skipped"):
+            items = result.get(name)
+            if isinstance(items, list) and items:
+                problems.append("%d %s (%s)" % (len(items), name, ", ".join(
+                    str(i.get("test", "?")) if isinstance(i, dict) else "?" for i in items[:3])))
+        if result.get("started") != methods:
+            problems.append("started %r of the %d requested methods" % (result.get("started"), len(methods)))
+        return "incomplete oracle report: %s (exit status %r)" % ("; ".join(problems) or "malformed result", code)
+    parts, classes = [], [failure_class(f) for f in row["failures"]]
+    for failure, status in zip(row["failures"], classes):
+        kind, test = failure.get("kind"), failure["test"]
+        if status == "death":
+            rc = failure["bridge_returncode"]
+            parts.append("bridge died in %s with exit status %d (%s)" % (
+                test, rc, "an access violation" if mt.is_access_violation_code(rc) else "not an access violation"))
+        elif status == "assertion":
+            parts.append("assertion failed in %s" % test)
+        elif kind == "bridge_closed":
+            parts.append("bridge closed in %s but no exit status was observed" % test)
+        elif kind in ("assertion", None):
+            parts.append("failure in %s says the bridge closed, with no exit status (text only)" % test)
+        else:
+            parts.append("unrecognised failure kind %r in %s" % (kind, test))
+    if not classes:
+        parts.append("no failure reported, yet the run is not clean")
+    elif set(classes) == {"assertion"}:
+        parts.append("the oracle exit status contradicts a completed assertion run")
+    elif "assertion" in classes:
+        parts.append("an assertion failure beside a death is not a kill")
+    return "%s (oracle exit status %r)" % ("; ".join(parts), code)
+
+
+def judge_trials(mt, trials, methods):
+    """(verdict, why, killers, crashed_on) of the oracle runs of one mutant, by tests/mutate.py's own
+    verdict_from_attempts: the last run decides if it is killed or survived; otherwise `crashed` needs
+    mt.RUN_RETRIES runs that all died of an access violation in the same tests; everything else is blocked,
+    and its `why` lists every run with the exit statuses actually seen."""
+    attempts = []
+    for trial in trials:
+        outcome = classify(trial, methods)
+        tests = access_violation_tests(trial, methods, mt)
+        attempts.append((outcome, run_why(trial, methods, mt), tests,
+                         failure_tests(trial, "assertion") if outcome == "killed" else []))
+    verdict, why, killers, crashed_on = mt.verdict_from_attempts(attempts)
+    if verdict == "blocked":
+        why = ("blocked after %d oracle run(s), not a detection: %s.  Only a run whose bridge died of an access "
+               "violation is repeated, and crashed needs %d such runs in a row in the same tests" % (
+                   len(attempts), " | ".join("run %d: %s" % (n, a[1]) for n, a in enumerate(attempts, 1)),
+                   mt.RUN_RETRIES)) if attempts else "no oracle run"
+    return verdict, why, killers, crashed_on
 
 
 def _portable(value, root, work, cache):
@@ -210,11 +382,27 @@ def execution_problems(mt, m, rec, verdict, src):
             raise ValueError("bridge oracle methods changed")
         if classify(e["baseline"], RESTORED) != "survived" or classify(e["restored"], RESTORED) != "survived":
             raise ValueError("bridge baseline/restoration did not pass every declared method")
-        if classify(e["mutant"], m["tests"]) != verdict or verdict not in ("killed", "survived"):
+        trials = e.get("mutant_attempts") or [e["mutant"]]
+        if not isinstance(trials, list) or trials[-1] != e["mutant"]:
+            raise ValueError("bridge mutant_attempts must end with the recorded mutant run")
+        if len(trials) > mt.RUN_RETRIES:
+            raise ValueError("more bridge mutant runs than the repeat rule allows")
+        if any(classify(t, m["tests"]) != "blocked" or access_violation_tests(t, m["tests"], mt) is None
+               for t in trials[:-1]):
+            raise ValueError("bridge mutant runs were repeated for a reason the rule does not allow")
+        # run_pass labels the runs mutant, mutant-2, mutant-3 and every run prints its own elapsed time, so one
+        # recorded receipt copied N times can neither carry those names nor N different outputs.
+        if [t.get("stdout_file") for t in trials] != ["mutant.stdout"] + ["mutant-%d.stdout" % n for n in range(2, len(trials) + 1)]:
+            raise ValueError("bridge mutant runs are not the outputs run_pass wrote, in order")
+        if len({t.get("stdout_sha256") for t in trials}) != len(trials):
+            raise ValueError("bridge mutant runs repeat one recorded output")
+        actual, _, killers, crashed_on = judge_trials(mt, trials, m["tests"])
+        if actual != verdict or verdict not in ("killed", "crashed", "survived"):
             raise ValueError("bridge verdict contradicts actual unittest results")
-        killers = [x["test"] for x in e["mutant"]["result"]["failures"]][:mt.KILLED_BY_MAX]
-        if verdict == "killed" and rec.get("killed_by") != killers:
+        if verdict == "killed" and rec.get("killed_by") != killers[:mt.KILLED_BY_MAX]:
             raise ValueError("bridge killed_by contradicts raw assertion results")
+        if verdict == "crashed" and rec.get("crashed_on") != crashed_on:
+            raise ValueError("bridge crashed_on contradicts repeated access violations")
         for build in (e["baseline_build"], e["mutant_build"], e["restored_build"]):
             if build["exit_code"] != 0:
                 raise ValueError("bridge build did not succeed")
@@ -225,11 +413,11 @@ def execution_problems(mt, m, rec, verdict, src):
             _metadata_sources(identity["sidecar"], m, src.root, mutated)
         if e["platform"] == "posix" and e["baseline_identity"]["exe_sha256"] != e["restored_identity"]["exe_sha256"]:
             raise ValueError("restored bridge bytes differ from baseline")
-        for row in (e["baseline"], e["mutant"], e["restored"], e["baseline_build"], e["mutant_build"], e["restored_build"]):
+        for row in (e["baseline"], *trials, e["restored"], e["baseline_build"], e["mutant_build"], e["restored_build"]):
             for key in ("stdout_sha256", "stderr_sha256"):
                 if not re.fullmatch(r"[0-9a-f]{64}", row[key]):
                     raise ValueError("missing bridge raw output hash")
-        for row, methods in [(e["baseline"], RESTORED), (e["mutant"], m["tests"]), (e["restored"], RESTORED)]:
+        for row, methods in [(e["baseline"], RESTORED), *[(t, m["tests"]) for t in trials], (e["restored"], RESTORED)]:
             if row["command"][2] != "tests/bridge_mutation_oracle.py" or row["command"][-len(methods):] != methods:
                 raise ValueError("bridge oracle command differs from declared methods")
         if not e.get("byte_restored") or e["oracle_sha256"] != oracle_hash(m, src.root):
@@ -238,7 +426,7 @@ def execution_problems(mt, m, rec, verdict, src):
             artifact = mt.MUT_ROOT / m["id"] / "bridge-mutant" / ("bridge.exe" if os.name == "nt" else "bridge")
             if artifact.exists() and sha(artifact.read_bytes()) != e["mutant_identity"]["exe_sha256"]:
                 raise ValueError("bridge executable artifact changed")
-    except (KeyError, TypeError, ValueError, OSError) as exc:
+    except (KeyError, TypeError, ValueError, AttributeError, OSError) as exc:
         return [str(exc)]
     return []
 
@@ -281,16 +469,21 @@ def run_pass(mt, mutants, root, results_path, today=None):
         evidence = {"schema": "geometry-bridge-mutation-execution/1", "head": head, "platform": os.name,
                     "tool_sha256": mt.tool_hash(), "oracle_sha256": judge, "methods": m["tests"], "restored_methods": RESTORED,
                     "baseline_build": baseline_build, "baseline_identity": baseline_identity, "baseline": baseline}
-        verdict, reason = "blocked", "not executed"
+        verdict, reason, judged_killers, judged_crashed_on = "blocked", "not executed", [], []
         try:
             path.write_bytes(fixed.replace(old, new, 1))
             b, identity = _build(work, folder / "bridge-mutant", env, folder, "mutant-build", root, cache)
             evidence.update(mutant_build=b, mutant_identity=identity)
-            trial = _test(work, folder / "bridge-mutant" / binary_name, m["tests"], env, folder, "mutant", root, cache)
-            evidence["mutant"] = trial
+            trials = run_trials(mt, lambda n: _test(work, folder / "bridge-mutant" / binary_name, m["tests"], env, folder,
+                                                    "mutant" if n == 1 else "mutant-%d" % n, root, cache), m["tests"])
+            evidence["mutant"] = trials[-1]
+            if len(trials) > 1:
+                evidence["mutant_attempts"] = trials
             if _identity(work, folder / "bridge-mutant") != identity or oracle_hash(m, work) != judge or mt.tool_hash() != evidence["tool_sha256"]:
                 raise RuntimeError("bridge source/binary/judge changed during oracle")
-            verdict = classify(trial, m["tests"]); reason = "actual explicit bridge unittest outcome"
+            verdict, reason, judged_killers, judged_crashed_on = judge_trials(mt, trials, m["tests"])
+            if verdict in ("killed", "survived"):
+                reason = "actual explicit bridge unittest outcome"
         except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
             verdict, reason = "blocked", str(exc)
         finally:
@@ -307,10 +500,10 @@ def run_pass(mt, mutants, root, results_path, today=None):
                 raise RuntimeError("restored bridge/judge did not match baseline")
         except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
             verdict, reason = "blocked", str(exc)
-        killers = ([x["test"] for x in evidence["mutant"]["result"]["failures"]][:mt.KILLED_BY_MAX]
-                   if verdict == "killed" else None)
-        rec = mt.make_record(m, src, verdict, reason, today, judge, killed_by=killers, execution=evidence)
-        if verdict in ("killed", "survived") and execution_problems(mt, m, rec, verdict, src):
+        killers = judged_killers[:mt.KILLED_BY_MAX] if verdict == "killed" else None
+        crashed_on = judged_crashed_on if verdict == "crashed" else None
+        rec = mt.make_record(m, src, verdict, reason, today, judge, killed_by=killers, crashed_on=crashed_on, execution=evidence)
+        if verdict in ("killed", "crashed", "survived") and execution_problems(mt, m, rec, verdict, src):
             rec = mt.make_record(m, src, "blocked", ";".join(execution_problems(mt, m, rec, verdict, src)), today, judge, execution=evidence)
         records[m["id"]] = rec; mt.save_records(results_path, records)
         print(m["id"], rec["verdict"].upper(), m["desc"], flush=True)

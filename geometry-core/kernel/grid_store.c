@@ -43,7 +43,14 @@ static bool geo_grid_copy_axis(GeoGridAxisDef *out, const GeoGridAxisDef *in)
         out->parameters[i].field_id = in->parameters[i].field_id;
     }
     out->stagger = in->stagger; out->stagger_set = in->stagger_set;
+    out->card_length = in->card_length;
     return true;
+}
+/* Field copies keep store bytes (and their padding) deterministic. */
+static void geo_grid_copy_card(GeoGridCardReference *out, const GeoGridCardReference *in)
+{
+    out->set = in->set; out->parameter_id = in->parameter_id;
+    out->fields[0] = in->fields[0]; out->fields[1] = in->fields[1];
 }
 static bool geo_grid_copy_system(GeoGridSystem *out, const GeoGridSystem *in)
 {
@@ -52,6 +59,7 @@ static bool geo_grid_copy_system(GeoGridSystem *out, const GeoGridSystem *in)
     out->id = in->id;
     for (int axis = 0; axis < 2; ++axis)
         if (!geo_grid_copy_axis(&out->axis[axis], &in->axis[axis])) return false;
+    geo_grid_copy_card(&out->card_reference, &in->card_reference);
     out->rule_count = in->rule_count; out->next_rule_key = in->next_rule_key;
     for (size_t i = 0; i < in->rule_count; ++i) {
         GeoGridRule *next = &out->rules[i]; const GeoGridRule *rule = &in->rules[i];
@@ -118,6 +126,7 @@ bool geo_grid_systems_redeclare(GeoGridStore *store, const GeoGridSystem *defini
     if (!geo_grid_copy_name(next.name, definition->name) ||
         !geo_grid_copy_axis(&next.axis[0], &definition->axis[0]) ||
         !geo_grid_copy_axis(&next.axis[1], &definition->axis[1])) return geo_grid_error(error, GEO_GRID_STORE_INVALID);
+    geo_grid_copy_card(&next.card_reference, &definition->card_reference); /* authored definition */
     next.next_rule_key = 1;
     if (old) {
         next.rule_count = old->rule_count; next.next_rule_key = old->next_rule_key;
@@ -253,6 +262,45 @@ static bool geo_grid_axis_stagger_valid(const GeoGridSystem *system, int axis, G
         return geo_grid_error(error, GEO_GRID_STORE_STAGGER_OVERFLOW);
     return true;
 }
+/* D64/I74: the card reference is one source for both controlled lengths.
+ * Same order as the per-system rebuild: mapping, fields, then each axis. */
+static bool geo_grid_card_resolve(GeoGridSystem *system,
+    GeoGridCoordinateResolver resolve, void *state, GeoGridStoreError *error)
+{
+    const GeoGridCardReference *r = &system->card_reference;
+    if (!r->set) {
+        for (int axis = 0; axis < 2; ++axis) if (system->axis[axis].card_length) {
+            if (error) error->axis = axis;
+            return geo_grid_error(error, GEO_GRID_STORE_CARD_MAPPING);
+        }
+        return true;
+    }
+    if (r->fields[0] == r->fields[1]) return geo_grid_error(error, GEO_GRID_STORE_CARD_FIELDS);
+    for (int axis = 0; axis < 2; ++axis) {
+        GeoGridAxisDef *a = &system->axis[axis];
+        int slot = a->source == GEO_GRID_SOURCE_REPEAT ? 1 : 2;
+        if (error) { error->axis = axis; error->field = slot; }
+        if (!geo_grid_axis_is_infinite(a)) return geo_grid_error(error, GEO_GRID_STORE_CARD_MODE);
+        if (!a->card_length || a->parameters[slot].set) return geo_grid_error(error, GEO_GRID_STORE_CARD_EXCLUSIVE);
+        GeoParameterRef ref = {true, r->parameter_id, r->fields[axis]};
+        GeoCoord value = 0;
+        if (!resolve || !resolve(state, ref, &value)) return geo_grid_error(error, GEO_GRID_STORE_CARD_SOURCE);
+        if (value <= 0) {
+            if (error) error->value = value;
+            return geo_grid_error(error, GEO_GRID_STORE_CARD_POSITIVE);
+        }
+        if (slot == 1) a->step = value; else a->body = value;
+    }
+    return true;
+}
+bool geo_grid_system_resolve_card(GeoGridSystem *system,
+    GeoGridCoordinateResolver resolve, void *state, GeoGridStoreError *error)
+{
+    geo_grid_error_begin(error);
+    if (!system) return geo_grid_error(error, GEO_GRID_STORE_SYSTEM_MISSING);
+    if (error) error->system_id = system->id;
+    return geo_grid_card_resolve(system, resolve, state, error);
+}
 bool geo_grid_system_evaluate(GeoGridStore *store, size_t index,
     GeoGridCoordinateResolver resolve, void *state, GeoGridStoreError *error)
 {
@@ -260,6 +308,8 @@ bool geo_grid_system_evaluate(GeoGridStore *store, size_t index,
     if (!store || index >= store->system_count) return geo_grid_error(error, GEO_GRID_STORE_SYSTEM_MISSING);
     GeoGridSystem *system = &store->systems[index];
     if (error) error->system_id = system->id;
+    if (!geo_grid_card_resolve(system, resolve, state, error)) return false;
+    if (error) { error->axis = error->field = -1; }
     for (int axis = 0; axis < 2; ++axis) {
         GeoGridAxisDef *a = &system->axis[axis];
         GeoCoord *values[] = {&a->start, &a->step, &a->body, &a->gap, &a->anchor, &a->stagger};

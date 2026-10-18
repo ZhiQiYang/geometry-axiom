@@ -14,14 +14,15 @@ static void json_grid_axis_definition(const GridAxisDef *d,bool subgrid,unsigned
         printf(",\"start\":%lld,\"step\":%lld,\"count\":%zu",
             (long long)d->start,(long long)d->step,d->series_count);
     } else if (d->source==GRID_SRC_REPEAT) {
-        printf(",\"phase\":%lld,\"step\":%lld",(long long)d->start,(long long)d->step);
+        printf(",\"phase\":%lld,\"%s\":%lld",(long long)d->start,d->card_length?"effectiveStep":"step",(long long)d->step);
         if (d->stagger_set) printf(",\"stagger\":%lld",(long long)d->stagger);
     } else if (d->source==GRID_SRC_PANEL || d->source==GRID_SRC_REPEAT_PANEL) {
-        printf(",\"panel\":%lld,\"gap\":%lld,\"anchor\":%lld,\"anchorExplicit\":%s",
-            (long long)d->body,(long long)d->gap,(long long)d->anchor,
+        printf(",\"%s\":%lld,\"gap\":%lld,\"anchor\":%lld,\"anchorExplicit\":%s",
+            d->card_length?"effectivePanel":"panel",(long long)d->body,(long long)d->gap,(long long)d->anchor,
             d->anchor_explicit?"true":"false");
         if (d->stagger_set) printf(",\"stagger\":%lld",(long long)d->stagger);
     }
+    if(d->card_length)printf(",\"%sSource\":\"card\"",d->source==GRID_SRC_REPEAT?"step":"panel");
     bool first=true;const char *names[]={"phase","step","panel","gap","anchor","stagger"};
     for(int i=0;i<6;++i)if(d->parameters[i].set){if(first)fputs(",\"parameterRefs\":{",stdout);printf("%s\"%s\":{\"kind\":\"parameter\",\"parameterId\":%u,\"fieldId\":%u}",first?"":",",names[i],d->parameters[i].parameter_id,d->parameters[i].field_id);first=false;}
     if(!first)putchar('}');putchar('}');
@@ -32,6 +33,7 @@ static void json_grid_system(const World *w,const GridSystem *system)
     printf("{\"kind\":\"grid-system\",\"id\":%u,\"name\":",system->id);
     js_string(system->name);
     printf(",\"mode\":\"%s\"",grid_system_is_infinite(system)?"infinite":"legacy-finite");
+    if(system->card_reference.set)printf(",\"cardReference\":{\"parameterId\":%u,\"uFieldId\":%u,\"vFieldId\":%u}",system->card_reference.parameter_id,system->card_reference.fields[0],system->card_reference.fields[1]);
     fputs(",\"mainAlong\":",stdout);
     if (app_grid_system_main_along(w,system->id)==1) fputs("\"u\"",stdout);
     else if (app_grid_system_main_along(w,system->id)==2) fputs("\"v\"",stdout);

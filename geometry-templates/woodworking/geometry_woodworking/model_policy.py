@@ -17,7 +17,7 @@ class PolicyIssue(ValueError):
 
 class WoodworkingModelProvider:
     identity = ("woodworking-model", 1)
-    source_capabilities = frozenset({"engineering-spec/1", "parameters/1", "section-profile/1"})
+    source_capabilities = frozenset({"engineering-spec/1", "parameters/1", "grid-card-reference/1", "section-profile/1"})
     extension_kinds = frozenset({"extrusion", "shell", "composite_space", "composition"})
     primitive_solids = frozenset({"column", "beam", "timber", "extrusion"})
     geometry_kinds = frozenset({"placement", "shell", "composition"}) | primitive_solids
@@ -28,7 +28,8 @@ class WoodworkingModelProvider:
     }
     capabilities = (
         "composite-space/1", "extrusion/1", "model-export/1", "shell/1",
-        "solid-composition/1", "engineering-spec/1", "parameters/1", "section-profile/1",
+        "solid-composition/1", "engineering-spec/1", "parameters/1", "grid-card-reference/1",
+        "section-profile/1",
     )
 
     def admit_root(self, key, records, target, role, path=()):
