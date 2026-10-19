@@ -5,16 +5,16 @@
 (3c) 牆階 1–100 mm 的 L 形與壁龕 300 間、雙牆階 110 間,各 8 種排法,可施工的排法都要通過全部檢查。
      同一批房間再上下、左右各翻一次(鏡像),8 種排法:可施工的都要通過全部檢查,不可施工的要等於原房間的清單照鏡像對應
      (左上 ↔ 左下、左上 ↔ 右上),也要等於預期清單的 step_mirror 部分(#251 審查 392d4aa7 阻擋 1)。
-用法另有 --mutants-only:只跑 (1)(2),跳過掃描。(1) 也包括引文逐字檢查(quote_check.py,讀 origin/main 的 決策佇列.md)
+用法另有 --mutants-only:只跑 (1)(2),跳過掃描。(1) 也包括引文逐字檢查(quote_check.py,讀受測這棵樹自己的 決策佇列.md)
     與掃描斷言比對函式 compare_unbuildable 的直接測試。
 (2) 標準答案:F1–F5 與三個額外例子、8 種排法的輸出,必須與 oracle-golden.json 逐支相同。
 (3b) 凹角、壁龕、獨立柱房 579 間與奇數縫寬矩形房,可施工的排法都要通過全部檢查。
 (3) 掃描:矩形房。
-    快速(預設,約 1–2 分鐘):
+    快速(預設):2026-10-19 實測時間見 README(和其他程序並行時明顯變慢)。
       - 一維逐 mm:寬 300–4000 × 深 2500,以及寬 2000 × 深 300–6000,只跑左上起鋪、板長沿 Y。
       - 二維 × 8 種排法:寬取 917k+{-43…-39,-1…2}(k=1–4,挪縫臨界帶)與每 331 mm;
         深取 1832k+{-43…-39,-1…2}(k=1–3)與每 617 mm。
-    完整(--full,約 10 分鐘以上):
+    完整(--full):2026-10-19 在 b6856356 實跑 11684 秒(約 3 小時 15 分,nice 10)。
       - 一維逐 mm 掃描改跑全部 8 種排法。
       - 二維改為寬 917k±45、深 1832k±45 的整段邊界帶,加上每 97/211 mm 的網格。
 用法: python selftest.py [--full | --mutants-only]
@@ -55,6 +55,8 @@ STEP40 = {"outer": [[0, 0], [4100, 0], [4100, 3660], [2600, 3660], [2600, 3700],
 # 45 mm 牆階:牆階牆 y=3655 在縫 3659 前面,縫線不伸進淺的那段,只看縫線的 G7 不挪。
 #   板端縫(板長沿 Y)由退縫規則退到 3614;主支縫(板長沿 X)的主支 [3646,3673] 跨過 y=3655,由 P-182 退到 3614
 STEP45 = {"outer": [[0, 0], [4100, 0], [4100, 3655], [2600, 3655], [2600, 3700], [0, 3700]]}
+# 外框深 3720、x>2600 那段只到 3690:縫線上的對牆是 3690(G7 挪到 3649);照外框則留在 3667,主支推開 18 mm、補併料也排得出
+STEP3720 = {"outer": [[0, 0], [4100, 0], [4100, 3690], [2600, 3690], [2600, 3720], [0, 3720]]}
 # 雙牆階(牆 y=s1 在 x 2600–3300、y=s2 在 x 3300–4100),和掃描裡的 DS:s1,s2 同一族
 DSROOM = lambda s1, s2: {"outer": [[0, 0], [4100, 0], [4100, s2], [3300, s2], [3300, s1], [2600, s1], [2600, 3700], [0, 3700]]}
 
@@ -79,6 +81,14 @@ def MIR_LAYOUT(name, k):
 
 # 鏡像的 54 mm 牆階(審查員的反例):置中主支 [28,55] 只跨過 y=54 一 mm(⌊w/2⌋ 與 ⌈w/2⌉ 不對稱),R-butt 平移 1 mm 就不跨,不該退縫
 MIR54 = MIRROR(LROOM(4100, 3700, 1500, 54), 1)
+# 牆中段的壁柱(左牆 x 0–dx、y y0–y1),和審查員 r15 的 PIL 同一族
+PILW = lambda W, H, y0, y1, dx: {"outer": [[0, 0], [W, 0], [W, H], [0, H], [0, y1], [dx, y1], [dx, y0], [0, y0]]}
+# 1b6b34f9 審查的兩個退步(P-182 兩段式之後要恢復):
+#   (1) 牆階 + 柱:主支要讓開 y=3656 那面牆得往上推 2 mm,但會壓到柱下面的柱面料 [3681,3708];舊規則排不出,第二段退到 3615
+T9COL = lambda ch: {"outer": [[0, 0], [4100, 0], [4100, 4000 - ch], [2600, 4000 - ch], [2600, 4000], [0, 4000]],
+                    "holes": [[[1000, 3708], [1400, 3708], [1400, 3900], [1000, 3900]]]}
+#   (2) 左牆中段的壁柱 y 2745–2900:舊規則把主支推開 8 mm、補 3846 mm 併料就排得出,不該退縫多裁一整排板
+PIL2745 = PILW(4100, 3200, 2745, 2900, 200)
 # 30 mm 牆階:牆階面只剩 3 mm,縫 3659 的承接帶碰不到它,不會觸發退縫;只有 G7 照縫線上最近的對牆(y=3670)才會把板端縫挪到 3629
 STEP30 = {"outer": [[0, 0], [4100, 0], [4100, 3670], [2600, 3670], [2600, 3700], [0, 3700]]}
 # 41 mm 牆階:G7 第一次把縫挪到 3659,剛好落在 y=3659 那面牆的牆線上;那面牆要算在縫前面,再挪到 3618
@@ -135,14 +145,16 @@ MUTANTS = [
     ("sliver_le", T27, "C3_EDGE_UNSUPPORTED", "同上:剛好 27 mm 的柱面料也不放,柱面與板端縫邊沒有承接"),
     ("no_ext_custom3", STEP20, "C8_I19_PRIORITY", "牆階 20 mm:沿牆料端面頂延伸段卻沒宣告 custom 3(primary 2 頂延伸段 2)", "左下起鋪,板長沿X"),
     ("short_face_conflict", STEP40, "C10_SHORT_PIECE", "牆階 40 mm:牆階面只剩 13 mm 也放沿牆料(不照短於 27 不放的規則;牆面比照柱面是推論)", "左下起鋪,板長沿Y"),
-    ("bbox_ft02", STEP20, "C7_SEAMS_NOT_FROM_START", "FT02 退回照外框挪縫(3659):縫線上最近的對牆是 x>2600 的 y=3680 牆,應挪到 3639", "左上起鋪,板長沿X"),
+    ("bbox_ft02", STEP3720, "C7_SEAMS_NOT_FROM_START", "FT02 退回照外框挪縫:外框深 3720,縫留在 3667;縫線上最近的對牆是 x>2600 的 y=3690 牆,應挪到 3649"
+     "(這間的主支推開 18 mm、補併料就排得出,P-182 第二段不會補救;牆階 20–40 mm 那幾間第一段排不出,第二段照主支寬度退到同一處,照外框挪縫的錯在那裡看不出來)", "左上起鋪,板長沿X"),
     ("bbox_ft02", STEP30, "C7_SEAMS_NOT_FROM_START", "同上,板端縫(B 軸):30 mm 牆階應挪到 3629(40 mm 牆階時退縫規則也會退到同一處,抓不出差別,所以換這間)", "左上起鋪,板長沿Y"),
     ("bbox_ft02+no_push_fallback", STEP40, "C1_OVERLAP", "照外框挪縫時,讓開牆料的平移撞到 y=3700 的牆料,沒有退回置中", "左上起鋪,板長沿X"),
     ("no_seam_retreat", STEP45, "C7_SEAMS_NOT_FROM_START", "45 mm 牆階:板端縫 3659 的承接帶落在牆階面沒料的 18 mm 裡,沒有往內退到 3614", "左上起鋪,板長沿Y"),
     ("no_resettle", DSTEP, "C7_SEAMS_NOT_FROM_START", "雙牆階:退縫到 3614 後沒有再跑 G7,x>3300 那段只剩 13 mm 的收邊板條(應挪到 3587)", "左上起鋪,板長沿Y"),
     ("no_main_band_depth", STEP45, "C7_SEAMS_NOT_FROM_START", "拿掉 P-182:主支縫只看縫線,y=3655 那面牆落在最後一支主支 [3646,3673] 的寬度裡,沒有退到 3614", "左上起鋪,板長沿X"),
     ("no_main_band_depth", STEP45, "C7_G7_TOO_CLOSE", "同上,C7b 直接驗結果:主支起鋪側側面那條線上的對牆 y=3655 離縫 3659 不到 1.5w", "左上起鋪,板長沿X"),
-    ("no_main_slide", MIR54, "C7_SEAMS_NOT_FROM_START", "P-182 拿掉平移判斷:鏡像的 54 mm 牆階置中主支 [28,55] 只跨過 y=54 一 mm,平移 1 mm 就不跨,卻退縫到 95;"
+    ("p182_always", PIL2745, "C7_SEAMS_NOT_FROM_START", "P-182 跳過第一段(主支寬度一跨牆就退):左牆壁柱 y 2745–2900,舊規則推開 8 mm、補併料就排得出,卻退縫到 2704", "左上起鋪,板長沿X"),
+    ("p182_always", MIR54, "C7_SEAMS_NOT_FROM_START", "同上,上下鏡像的 54 mm 牆階:R-butt 平移 1 mm 就排得出,卻退縫到 95;"
      "退縫後副支 [27,81] 的中線剛好在 y=54 牆線上,檢查也不能當掉", "左下起鋪,板長沿X"),
 ]
 for mut, room, want, why, *lay in MUTANTS:
@@ -191,6 +203,7 @@ for room_, tag_, lay_, why_, want_seam in (
         (STEP40, "40 mm 牆階", "左上起鋪,板長沿Y", "板端縫 G7 挪縫", ("b", 3619)),
         (STEP45, "45 mm 牆階", "左上起鋪,板長沿Y", "板端縫退到 y=3655 牆的 G7 位置,承接帶不落在牆階短段", ("b", 3614)),
         (STEP41, "41 mm 牆階", "左上起鋪,板長沿X", "縫挪到 3659 時剛好落在牆線上,那面牆算在縫前面,再挪", ("a", 3618)),
+        (STEP3720, "外框 3720、牆階牆 3690", "左上起鋪,板長沿X", "G7 照縫線上的對牆 3690 挪縫", ("a", 3649)),
         (STEP30, "30 mm 牆階", "左上起鋪,板長沿Y", "板端縫 G7 照 y=3670 牆挪縫", ("b", 3629)),
         (DSTEP, "雙牆階", "左上起鋪,板長沿Y", "板端縫先退到 3614,縫線伸進 x>3300 那段(對牆 3628),G7 再挪", ("b", 3587)),
         # P-182(推論):主支縫的對牆看主支整條寬度。審查員舉的例子與一個先由縫線 G7 挪、再由主支寬度退的例子
@@ -203,7 +216,15 @@ for room_, tag_, lay_, why_, want_seam in (
         # 鏡像(上下翻轉、反向起鋪):縫位要是原房間的鏡像(3700 − 原值)
         (MIR54, "54 mm 牆階(上下鏡像)", "左下起鋪,板長沿X", "置中主支跨過 y=54 一 mm,R-butt 平移 1 mm 就不跨,不退(原房間 3659 的鏡像)", ("a", 41)),
         (MIRROR(LROOM(4100, 3700, 1500, 53), 1), "53 mm 牆階(上下鏡像)", "左下起鋪,板長沿X", "P-182 退到原房間 3606 的鏡像", ("a", 94)),
-        (MIRROR(DSROOM(3649, 3597), 1), "雙牆階 3649/3597(上下鏡像)", "左下起鋪,板長沿X", "P-182 退到原房間 3556 的鏡像", ("a", 144))):
+        (MIRROR(DSROOM(3649, 3597), 1), "雙牆階 3649/3597(上下鏡像)", "左下起鋪,板長沿X", "P-182 退到原房間 3556 的鏡像", ("a", 144)),
+        # P-182 兩段式(#251 審查 1b6b34f9):舊規則排不出才退縫
+        (T9COL(344), "牆階 344 mm + 柱", "左上起鋪,板長沿X", "舊規則往上推 2 mm 會壓到柱面料 [3681,3708],排不出;第二段照 y=3656 退", ("a", 3615)),
+        (T9COL(342), "牆階 342 mm + 柱", "左上起鋪,板長沿X", "同上,照 y=3658 退", ("a", 3617)),
+        (PIL2745, "左牆壁柱 y 2745–2900", "左上起鋪,板長沿X", "舊規則排得出(推開 8 mm、補併料),不退", ("a", 2750)),
+        (PILW(4100, 3200, 2750, 2900, 200), "左牆壁柱 y 2750–2900", "左上起鋪,板長沿X", "縫線本身碰到壁柱面,照縫線上的對牆(G7)退,這是既有的不連續", ("a", 2709)),
+        # 縫線「往起鋪側偏半 mm」的獨立期望值(#251 審查 1b6b34f9 須改 4):左牆壁柱下緣 y=1831 剛好在板端縫 1831 上,
+        #   牆算在縫前面,G7 照它挪到 ⌊1831 − 40.5⌋ = 1790;探測線改成往對牆偏(建構端或兩邊一起)就停在 1831
+        (PILW(3600, 3000, 1831, 2000, 200), "左牆壁柱 y 1831–2000", "左上起鋪,板長沿Y", "壁柱下緣剛好在縫線上,算在縫前面,板端縫挪到 1790", ("b", 1790))):
     res = fo.build(room_, next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay_), p)
     fails = fo.check(res, p)
     got_seam = None if want_seam is None else res["seams_" + want_seam[0]][-1]
@@ -212,6 +233,35 @@ for room_, tag_, lay_, why_, want_seam in (
     seam_txt = "" if want_seam is None else f",最後一條{'板端縫' if want_seam[0] == 'b' else '縫'}要在 {want_seam[1]}(實得 {got_seam})"
     print(f"[{'綠' if ok else '錯!'}] 對照 {tag_} {lay_}:可施工({why_}{seam_txt})"
           f"{sorted({c['code'] for c in res['conflicts']})}{sorted({f['check'] for f in fails})}")
+# P-182 第一段的實際排法要釘住(#251 審查 1b6b34f9):左牆壁柱 y 2745–2900,最後一支主支推開 8 mm 到 [2745,2772]、
+#   併料 [2718,2745] 長 3846 mm(x 227–4073),整板 915、收邊板 449(2751–3200)
+res = fo.build(PIL2745, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X"), p)
+_m = [t for t in res["timbers"] if t["kind"] == "main" and t.get("seam") == 2750]
+_d = [t for t in res["timbers"] if t.get("doubling")]
+_ma = sorted({fo.rng(t["rect"], res["a"]) for t in _m})
+_dl = sum(fo.rng(t["rect"], res["b"])[1] - fo.rng(t["rect"], res["b"])[0] for t in _d)
+ok = (_ma == [(2745, 2772)] and [fo.rng(t["rect"], res["a"]) for t in _d] == [(2718, 2745)] and _dl == 3846
+      and res["seams_a"][-1] == 2750 and not res["conflicts"] and not fo.check(res, p))
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] P-182 第一段:左牆壁柱 y 2745–2900 左上 X,主支 {_ma}(要 [(2745, 2772)]),併料 {[fo.rng(t['rect'], res['a']) for t in _d]} 長 {_dl}(要 3846),"
+      f"縫 {res['seams_a'][-1]}(要 2750,收邊 449)")
+# P-182 第一段的併料放不下(MAIN_DOUBLING_BLOCKED)也要進第二段,C7 的獨立推算(expected_main_feasible 的併料那一條)也要判排不出:
+#   外框深 3720、x>2600 那段只到 3665,縫 3667 的主支要往上推 11 mm 才不跨 y=3665,超過容許量要補併料 [3638,3665],
+#   但柱 x 1000–1400、y 3200–3620 上面的柱面料 [3620,3647] 擋住併料;第二段照 y=3665 退到 3624(之後主支壓到柱面料,
+#   這間仍不可施工,報 TIMBERS_COLLIDE)。只看縫位與 C7:兩邊都要是 3624
+DBLCOL = {"outer": [[0, 0], [4100, 0], [4100, 3665], [2600, 3665], [2600, 3720], [0, 3720]],
+          "holes": [[[1000, 3200], [1400, 3200], [1400, 3620], [1000, 3620]]]}
+res = fo.build(DBLCOL, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X"), p)
+_f = {f["check"] for f in fo.check(res, p)}
+ok = res["seams_a"][-1] == 3624 and "C7_SEAMS_NOT_FROM_START" not in _f and "C7_G7_TOO_CLOSE" not in _f
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] P-182 第一段併料放不下:縫 {res['seams_a'][-1]}(要 3624),C7 {sorted(x for x in _f if x.startswith('C7'))}(要沒有)")
+# 牆線上取區間(檢查端 section_both_sides,#251 審查 1b6b34f9 建議 6):剛好在牆線上時取兩側都在室內的部分,正反兩個方向都要對
+for room_, m_, want_ in ((LROOM(4100, 3700, 1500, 54), 3646, [(0, 2600)]), (MIR54, 54, [(0, 2600)])):
+    got_ = [tuple(iv) for iv in fo.section_both_sides(fo.Region(room_["outer"], []), 1, m_)]
+    ok = got_ == want_
+    failed |= not ok
+    print(f"[{'綠' if ok else '錯!'}] 牆線 y={m_} 上的室內區間取兩側交集:要 {want_},實得 {got_}")
 # C7b 專屬:把雙牆階的最後一條板端縫改回 3614(x>3300 那段只剩 13 mm),C7_G7_TOO_CLOSE 要報。只拿掉 C7b 時這一行轉紅。
 res = fo.build(DSTEP, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿Y"), p)
 res["seams_b"] = res["seams_b"][:-1] + [3614]
@@ -237,8 +287,8 @@ ok = bool(tgt) and "C13_EXTRA_OFF_RULE" in got_
 failed |= not ok
 print(f"[{'紅' if ok else '沒抓到!'}] tamper_fill_plausible 預期 C13_EXTRA_OFF_RULE   實得 {sorted(got_)}  F2 右上 X 把放得下的記號換成貼邊界材的 fill")
 # 平移退回置中仍要有效:照舊縫位(bbox_ft02,縫 3659)時,40 mm 牆階的主支被推去撞 y=3700 的牆料就要退回置中,
-#   原因要是核心限制(主支頂延伸段),不是碰撞
-res = fo.build(STEP40, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X"), p, frozenset({"bbox_ft02"}))
+#   原因要是核心限制(主支頂延伸段),不是碰撞。P-182 第二段會把這種情形退縫解掉,所以這裡關掉第二段(no_main_band_depth),只看第一段。
+res = fo.build(STEP40, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X"), p, frozenset({"bbox_ft02", "no_main_band_depth"}))
 got_ = sorted({c["code"] for c in res["conflicts"]})
 ok = got_ == ["CORE_LIMIT_MAIN_ON_EXTENSION"]
 failed |= not ok
@@ -293,6 +343,34 @@ for room_, lay_, want_ in ((COL2MM, "左上起鋪,板長沿X", [1818, 1843]), (L
 #   退化成 MARK_NO_ROOM,和預期清單比對要不一致;(c) 照原樣建構,比對要一致。
 
 
+def sweep_family(rooms_, mirror=False):
+    """牆階這類房間的掃描:回傳 (不可施工集合, 可施工數, 檢查失敗清單, 原因次數, 建構次數)。
+    mirror=True 時每間房上下、左右各翻一次,id 加上 |上下、|左右。正式掃描與 --mutants-only 的小型掃描共用這一個函式。"""
+    unb_, nb_, bad_, codes_, n_ = set(), 0, [], {}, 0
+    for rid_, room_ in rooms_:
+        variants = [(rid_, room_)] if not mirror else [(f"{rid_}|{t_}", MIRROR(room_, k_)) for k_, t_ in ((1, "上下"), (0, "左右"))]
+        for vid_, vroom_ in variants:
+            for l_ in fo.LAYOUTS:
+                n_ += 1
+                r_ = fo.build(vroom_, l_, p)
+                if r_["conflicts"]:
+                    cs_ = tuple(sorted({c["code"] for c in r_["conflicts"]}))
+                    for c in cs_:
+                        codes_[c] = codes_.get(c, 0) + 1
+                    unb_.add((vid_, fo.layout_name(l_), cs_))
+                    continue
+                nb_ += 1
+                f_ = fo.check(r_, p)
+                if f_:
+                    bad_.append((vroom_["outer"], fo.layout_name(l_), sorted({f["check"] for f in f_})))
+    return unb_, nb_, bad_, codes_, n_
+
+
+def mirror_map(unb_step):
+    """原房間的不可施工清單照鏡像對應(上下翻轉 上↔下、左右翻轉 左↔右)。"""
+    return {(f"{r_}|{t_}", MIR_LAYOUT(l_, k_), c_) for r_, l_, c_ in unb_step for k_, t_ in ((1, "上下"), (0, "左右"))}
+
+
 def compare_unbuildable(got, want):
     """掃描斷言:實得的不可施工集合與預期清單逐筆比對(排法 id、排法、原因代碼都要一樣),回傳 (多出, 少了),兩個都空才算一致。"""
     got, want = set(got), set(want)
@@ -330,23 +408,37 @@ ok = not _x0 and not _m0 and bool(_x1 or _m1)
 failed |= not ok
 print(f"[{'紅' if ok else '沒抓到!'}] sweep_assert       預期 不可施工清單不一致  拿掉 P-180 時柱房退化成 MARK_NO_ROOM:"
       f"多出 {len(_x1)} 筆(第一筆 {(_x1 or [None])[0]}),少了 {len(_m1)} 筆;照原樣建構時多出 {len(_x0)}、少了 {len(_m0)}")
-# 引文逐字(#251 審查 178ba084 第 2、3 項):標成使用者原話的引文都要逐字出現在 origin/main 的 決策佇列.md;反例要抓到、正例要過
+# 小型牆階與鏡像掃描(#251 審查 1b6b34f9 建議 5):--mutants-only 也要打到掃描端的翻轉、對應與比對;結果要和預期清單的對應部分一致
+_ministeps = [("L_ch:20", LROOM(4100, 3700, 1500, 20)), ("L_ch:45", LROOM(4100, 3700, 1500, 45)),
+              ("L_cw:20", LROOM(4100, 3700, 20, 1200)), ("DS:3649,3597", DSROOM(3649, 3597))]
+_ids = {r_ for r_, _ in _ministeps}
+_u0, _n0, _b0, _, _ = sweep_family(_ministeps)
+_u1, _n1, _b1, _, _ = sweep_family(_ministeps, mirror=True)
+_e0 = {(r_, l_, tuple(c_)) for r_, l_, c_ in _exp_all.get("step", []) if r_ in _ids}
+_e1 = {(r_, l_, tuple(c_)) for r_, l_, c_ in _exp_all.get("step_mirror", []) if r_.split("|")[0] in _ids}
+_cmp = [compare_unbuildable(_u0, _e0), compare_unbuildable(_u1, _e1), compare_unbuildable(_u1, mirror_map(_u0))]
+ok = all(not x_ and not m_ for x_, m_ in _cmp) and not _b0 and not _b1 and _u0 and _u1
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] 小型牆階/鏡像掃描 {len(_ministeps)} 間:原房 {_n0} 次、鏡像 {_n1} 次,檢查失敗 {len(_b0) + len(_b1)};"
+      f"和預期清單、鏡像對應的差異 {[(len(x_), len(m_)) for x_, m_ in _cmp]}")
+# 引文逐字(#251 審查 178ba084 第 2、3 項):標成使用者原話的引文都要逐字出現在受測這棵樹的 決策佇列.md;缺了某一節的佇列要紅,而且要指出缺了哪一節;反例要抓到、正例要過
 sys.path.insert(0, str(HERE))
 import quote_check  # noqa: E402
 
 try:
-    _queue = quote_check.queue_from_origin_main()
-except Exception as e_:  # 沒有 origin/main(例:淺層 clone)就算失敗,不默默略過
+    _queue = quote_check.queue_from_tree()
+except Exception as e_:  # 這棵樹沒有 決策佇列.md 就算失敗,不默默略過
     _queue = None
     failed = True
-    print(f"[錯!] 引文逐字:讀不到 origin/main 的 決策佇列.md({e_.__class__.__name__});先 git fetch origin main")
+    print(f"[錯!] 引文逐字:讀不到 {quote_check.queue_source()}({e_.__class__.__name__})")
 if _queue is not None:
     _nq, _badq = quote_check.scan(_queue)
-    _wrongq = quote_check.self_check(_queue)
+    _wrongq = quote_check.self_check(_queue) + quote_check.missing_section_check(_queue)
     ok = not _badq and not _wrongq
     failed |= not ok
     print(f"[{'綠' if ok else '錯!'}] 引文逐字({quote_check.queue_source()}):標成原話的引文 {_nq} 段都逐字出現在 決策佇列.md(不一致 {len(_badq)});"
-          f"反例 {sum(1 for _, b in quote_check.SAMPLES if b)} 個都抓到、正例 {sum(1 for _, b in quote_check.SAMPLES if not b)} 個都過(判錯 {len(_wrongq)})")
+          f"反例 {sum(1 for _, b in quote_check.SAMPLES if b)} 個都抓到、正例 {sum(1 for _, b in quote_check.SAMPLES if not b)} 個都過,"
+          f"拿掉「{quote_check.MISSING_SECTION}」那一節的佇列要指出缺了這一節(判錯 {len(_wrongq)})")
     for x in _badq + _wrongq:
         print("    ", x)
 # 剛好 min_piece 的料必須放(建構端兩處邊界:跨寬、柱面料切段),而且全部檢查通過
@@ -456,45 +548,20 @@ step_rooms = ([(f"L_ch:{s}", LROOM(4100, 3700, 1500, s)) for s in range(1, 101)]
               # 雙牆階(#251 審查 98cb7da0):牆 y=s1(x 2600–3300)、y=s2(x 3300–4100),s2 < s1
               + [(f"DS:{s1},{s2}", {"outer": [[0, 0], [4100, 0], [4100, s2], [3300, s2], [3300, s1], [2600, s1], [2600, 3700], [0, 3700]]})
                  for s1 in range(3604, 3700, 9) for s2 in range(s1 - 88, s1, 9)])
-sbuild, sbad, scodes = 0, 0, {}
-for rid, room in step_rooms:
-    for l in fo.LAYOUTS:
-        runs += 1
-        res = fo.build(room, l, p)
-        if res["conflicts"]:
-            for c in {c["code"] for c in res["conflicts"]}:
-                scodes[c] = scodes.get(c, 0) + 1
-            unb["step"].add((rid, fo.layout_name(l), tuple(sorted({c["code"] for c in res["conflicts"]}))))
-            continue
-        sbuild += 1
-        fails = fo.check(res, p)
-        if fails:
-            sbad += 1
-            rb.append((room["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
+unb["step"], sbuild, _sb, scodes, _n = sweep_family(step_rooms)
+runs += _n
+sbad = len(_sb)
+rb += _sb
 print(f"牆階 1–100 mm 的 L 形、壁龕與雙牆階 {len(step_rooms)} 間 × 8 種排法:可施工 {sbuild} 個,其中檢查失敗 {sbad} 個;"
       f"不可施工的排法數(依原因){scodes}")
 # 鏡像:同一批房間上下、左右各翻一次。⌊w/2⌋ 與 ⌈w/2⌉ 不對稱,反向起鋪那半邊(back = ⌈w/2⌉)原本只有鏡像房才測得到。
-mbuild, mbad, mcodes = 0, 0, {}
-for rid, room in step_rooms:
-    for k_, tag_ in ((1, "上下"), (0, "左右")):
-        mroom = MIRROR(room, k_)
-        for l in fo.LAYOUTS:
-            runs += 1
-            res = fo.build(mroom, l, p)
-            if res["conflicts"]:
-                for c in {c["code"] for c in res["conflicts"]}:
-                    mcodes[c] = mcodes.get(c, 0) + 1
-                unb["step_mirror"].add((f"{rid}|{tag_}", fo.layout_name(l), tuple(sorted({c["code"] for c in res["conflicts"]}))))
-                continue
-            mbuild += 1
-            fails = fo.check(res, p)
-            if fails:
-                mbad += 1
-                rb.append((mroom["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
+unb["step_mirror"], mbuild, _mb, mcodes, _n = sweep_family(step_rooms, mirror=True)
+runs += _n
+mbad = len(_mb)
+rb += _mb
 print(f"鏡像(上下、左右)的牆階與雙牆階 {2 * len(step_rooms)} 間 × 8 種排法:可施工 {mbuild} 個,其中檢查失敗 {mbad} 個;"
       f"不可施工的排法數(依原因){mcodes}")
-_mapped = {(f"{r_}|{t_}", MIR_LAYOUT(l_, k_), c_) for r_, l_, c_ in unb["step"] for k_, t_ in ((1, "上下"), (0, "左右"))}
-_x2, _m2 = compare_unbuildable(unb["step_mirror"], _mapped)
+_x2, _m2 = compare_unbuildable(unb["step_mirror"], mirror_map(unb["step"]))
 ok = not _x2 and not _m2
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] 鏡像對稱:鏡像房的不可施工清單等於原房間清單照鏡像對應;多出 {len(_x2)}、少了 {len(_m2)}")
