@@ -157,15 +157,18 @@ MUTANTS = [
          file='geometry-core/kernel/geometry.c',
          old="        if (geo_loop_rect_center_inside(hole, min_u, min_v, max_u, max_v)) {\n            return false; /* GEO261_HOLE_RECT_CENTER */",
          new="        if (0 && geo_loop_rect_center_inside(hole, min_u, min_v, max_u, max_v)) {\n            return false; /* GEO261_HOLE_RECT_CENTER */"),
-    # ---- uv_rects_overlap / world_footprint_collides:碰撞 ----
+    # ---- geo_rect_overlap_positive / resolve_auto_span 的碰撞障礙:碰撞 ----
     dict(id="M12", desc="I11：正面積重疊:端點相接也算重疊(> 改 >=)",
          file='geometry-core/kernel/geometry.c',
          old='return geo_coord_min(a->max_u,b->max_u)>geo_coord_max(a->min_u,b->min_u)&&\n        geo_coord_min(a->max_v,b->max_v)>geo_coord_max(a->min_v,b->min_v);',
          new='return geo_coord_min(a->max_u,b->max_u)>=geo_coord_max(a->min_u,b->min_u)&&\n        geo_coord_min(a->max_v,b->max_v)>=geo_coord_max(a->min_v,b->min_v);'),
-    dict(id="M13", desc="I11：碰撞只看同承載面 -> 看不同承載面(!= 改 ==)",
-         file='geometry-templates/woodworking/native/contact_world.c',
-         old='        if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;\n        if(geo_rect_overlap_positive(rect,&fact->footprint))return true;',
-         new='        if(!member->placed||member==exclude||fact->placement_id==world->placement_id||!fact->footprint_valid)continue;\n        if(geo_rect_overlap_positive(rect,&fact->footprint))return true;'),
+    # main 的 M13 打在 world_footprint_collides,它唯一的呼叫點是 resolve_auto_span 的逐 cell 碰撞。
+    # GEO-261 51e9045b 把逐 cell 檢查移到 K geo_strip_intervals,同承載面過濾改在 resolve_auto_span
+    # 收 obstacles 的這一行;world_footprint_collides(→ W wood_contact_footprint_collides)從此沒有呼叫點,
+    # 打在那裡的突變不會被執行。
+    dict(id="M13", desc="I11：auto 跨距的碰撞障礙只收同承載面已放角材 -> 改收不同承載面(!= 改 ==)",
+         old='        if(!t->placed||a->placement_id!=placement->id)continue;\n        if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;',
+         new='        if(!t->placed||a->placement_id==placement->id)continue;\n        if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;'),
     # ---- collect_stop_faces:擋面枚舉 ----
     dict(id="M14", desc="D11：只收垂直邊 -> 只收平行邊(along_v 分支)",
          file='geometry-templates/woodworking/native/contact_world.c',

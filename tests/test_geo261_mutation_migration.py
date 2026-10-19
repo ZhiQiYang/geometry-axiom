@@ -210,11 +210,13 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         groups = {
             "geometry-core/kernel/geometry.c": ["M%02d" % n for n in range(1, 13)] + ["M39", "M40", "M59", "M60"],
             "geometry-core/kernel/grid.c": ["M31", "M32", "M53", "M54"],
-            "geometry-templates/woodworking/native/contact_world.c": ["M13", "M14", "M15"],
+            # M13 follows the live I11 obstacle filter in resolve_auto_span (current_geometry.c);
+            # contact_world.c's collision filter has had no caller since 51e9045b.
+            "geometry-templates/woodworking/native/contact_world.c": ["M14", "M15"],
             "geometry-templates/woodworking/native/supports.c": ["M16", "M17", "M18", "M57"],
             "geometry-templates/woodworking/native/member_reference.c": ["M%02d" % n for n in range(19, 27)] + ["M28", "M29", "M30", "M33", "M34", "M58"],
             "geometry-templates/woodworking/native/world_validation.c": ["M36", "M37", "M56"],
-            "current_geometry.c": ["M27", "M35", "M38", "M51", "M52", "M55"],
+            "current_geometry.c": ["M13", "M27", "M35", "M38", "M51", "M52", "M55"],
         }
         expected = {mid: path for path, ids in groups.items() for mid in ids}
         self.assertEqual(50, len(expected))
