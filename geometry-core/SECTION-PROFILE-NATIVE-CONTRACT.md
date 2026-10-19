@@ -211,6 +211,34 @@ native 組另須重編 binary 與基準線不同；model 組只變異 Python 製
 
 後續裁判複核發現整份 log 搜尋會借用 traceback 原碼或其他方法的 cause。現行 child runner 透過 unittest `addFailure`／`addError`／`addSubTest` 保存具名方法、子例身分、完整例外型別及 `str(exception)`；只匹配同一筆指定方法的終端例外。SPM38／SPM40 明列 ModelError 的實際定義身分（GEO-261 起為 H 的 `geometry_app.model_common.ModelError`；`modeling.common` 只是 re-export 同一個類別的 facade，收集器記錄的是定義模組而不是 import 別名），其他 ERROR 不算 killed。缺漏、重複、格式錯誤、與實際 exit／unittest 計數不符都受阻；原 traceback 另存，不能替代結構化例外。此更正不把舊 ERROR 改稱 FAIL，也不證明歷史整份 log 裁判的所有判定都有效。
 
+#### GEO-261 之後的錨點（2026-10-20）
+
+閘門在 GEO-261 整合分支（`1908115e`）上有兩處失效：
+
+1. **model 組基準線一 import 就失敗。** `copy_sources` 只複製 `geometry-core/modeling/*.py` 等，沒有 GEO-261 的三個 Python 套件，基準線報 `ModuleNotFoundError: geometry_app`。現在一併複製 `geometry-core/geometry_kernel`、`geometry-app/geometry_app`、`geometry-templates/woodworking/geometry_woodworking`。補上之後，`test_q23_q38_legacy_project_and_profile_packages_reopen_unchanged` 還缺它讀的 `tests/fixtures/q38-legacy-space-model.json`，所以 `tests/fixtures` 也一併複製。
+2. **8 個案例的錨點已不存在。** model 組 SPM36～SPM40 全部失效：MS／ME 只剩 3 行與 17 行的 facade。native 組的 SPM28、SPM29、SPM33 也失效，因為 `25c9af58` 與 `1e437e12` 改寫了 W 求值器。這三個不在原任務單上，是實跑時發現的。
+
+改錨的條件是每一筆都打同一條規則、同一種錯誤：
+
+- 行號只用來定位。runner 只做精確字串比對，開跑前會檢查每個錨點都恰好出現一次（`anchor_problems`，不符就 exit 2，不編譯、不跑測試）。
+- killed 判準沒有改。新增兩項機制：
+  - `more`：GEO-261 用好幾層執行同一條規則時，一個案例同時拿掉每一層，比照 card-reference 的 M11。只拿掉一層的話，突變不是等價，就是只換了錯誤碼。
+  - SPM36、SPM39 改的是 C。它們的 model 案例會用複本自己的 `tests/binaries.py` 重編 model-base，所以 sidecar 描述的正是那份複本。這支 adapter 的雜湊必須和基準 adapter 不同。
+- 其餘 34 個 native 案例的錨點沒有改。
+
+| 案例 | main `4b975a3d` 原本打的位置 | 整合分支改打的位置 | 為什麼是同一條規則、同一種錯誤 |
+|---|---|---|---|
+| SPM28（I49） | `section_profile_validation.inc:45` `if(!p){sp_error("I49: member …` 拿掉 | `woodworking/native/section_profile.c:244` `if(!exists){wood_sp_error(w,"I49: member …` 拿掉；另兩層：`:242` 對已刪斷面不再要求 profile 定義（`exists&&`），`section_profile_sources.c:235` 構件區域來源不再因 `missing_profile` 拒絕 | main 的錯誤是「引用已刪斷面的構件被接受」。GEO-261 由三層拒絕：W 求值器的 I49 錯誤、來源圖對 profile 定義的 definition-required 邊、構件區域來源。只拿掉 I49 錯誤時，候選仍被拒，拒絕內容也仍含 I49，殺手測試照樣通過，所以是等價（對照組 XC28L1 存活）。三層都拿掉，候選才會被接受，與 main 相同。 |
+| SPM29（I49） | `:63` run 版同一行 | `section_profile.c:268` run 版同一行；另兩層：`:266`（`exists&&`），`section_profile_sources.c:289` run 根不再把只因斷面缺失而失敗的區域來源報成來源圖錯誤 | 同上，對象是 run。run 區域來源要求 `r->resolved`，而 `resolved` 本來就要求斷面存在，所以第三層在 run 根。只拿掉 I49 錯誤時存活（XC29L1）。 |
+| SPM33（D40/R37） | `:64` `r->length_resolved=sp_resolve_dimension(…)` 後面接 `&&r->length<=1830` | `section_profile.c:271` `wood_sp_evaluate_run_direct` 的 `length_resolved` 三元式，hook 與 direct 兩個分支都接 `&&r->length<=sheet_length` | 同一個 `length_resolved` 指派。GEO-261 只把長度解析拆成來源圖 hook 與直接解析兩條；失敗同樣寫入 `length_error`，報 `RUN_LENGTH_INVALID`。 |
+| SPM36（R37） | `modeling/section_profile.py:31` 包絡 `outline=deepcopy(run["outline"])` 換成外接矩形 | `woodworking/native/section_profile_sources.c:254` run 區域來源 `run_regions[i]` 原本指向斷面 outline，換成外接矩形 | `build_package` 走來源圖，包絡的 `profile.region` 根（memberId 為 null）就是這個 W 原生來源的值，K 依它擠出包絡。W `section_profile.py:56` 同語意的 `RegionDef(run["outline"])` 只在 legacy 分支（`sources is None`），這條路不會經過：對照組 XC36 在那裡換外接矩形，結果存活。 |
+| SPM37（R39） | `:60` `details["material_volume_mm3"] = "0" if reference else obj[…]` | `woodworking/geometry_woodworking/section_profile.py:73` `annotate_profile` 的同一行（`obj` 改名 `mesh`） | 同一個 R39 metadata 欄位。H runtime 對每個 profile 物件都呼叫 `annotate_profile`。 |
+| SPM38（R37/D40） | `:23` 面材的擠出長度改成 `min(L,1830)` | `section_profile.py:40` `profile_objects` 的構件迴圈，在建 `ProvenanceTemplate` 前把面材的 `length` 換成 `min(run["length"],1830)` | 每個構件的擠出長度在這行之前決定：來源圖是 `profile.length` 根，legacy 是 `run["length"]`，兩條都蓋到。H 把它原樣放進 `ExtrusionDef(placed, 0, item.length)`。錯誤同樣由 `annotate_profile` 的 PROFILE_VOLUME 抓到，型別是 H 的 ModelError。 |
+| SPM39（R36/R37） | `:20` `u0, v0, u1, v1 = member["rect"]` 讀成 u／v 對調 | `section_profile_sources.c:236` 構件區域來源由 `m->rect` 建四點，u／v 對調 | 來源圖路徑上，構件區域只在這裡由矩形建出。W `section_profile.py:35` 同字樣的那一行在 legacy 分支，對照組 XC39 存活。同一個來源也供 I45 成對重疊判斷使用；殺手測試只有單一構件，不受影響。 |
+| SPM40（D39） | `engine.py:442` `profile_grid = (grid if True else …)` | `geometry_kernel/evaluate.py:276` 改用世界座標域的排列網格（沒有就用空網格），加上 `geometry_kernel/geometry.py:484` 拿掉 `mesh_objects` 的座標域守門 | GEO-261 把「未定位 run 有自己的座標空間」一般化為 K 的「每個座標域一張排列網格」，`mesh_objects` 再擋一次。只改 `:276` 時，錯誤變成 COORDINATE_DOMAIN「A mesh requires an arrangement from its coordinate domain」（對照組 XC40A，判為 unlabelled）；只改 `:484` 是等價（XC40B 存活）。兩層都拿掉，局部 run 才會在世界排列中求網格、得不到完整實體，與 main 的錯誤相同。 |
+
+對照組（XC 開頭）只在 WSL 實驗中跑，沒有進閘門。
+
 #### 歷史 --explore 實測：逐案例紅燈與提案 AC16 的差異
 
 `--explore` 對每個案例跑整個測試類別，收據是 `q38-mutations-explore.json`（日誌 `mutation-explore-logs.tgz`），逐案例的紅燈測試與失敗訊息在 `ac16-per-case-red-tests.md`。測試方法本身不帶提案 AC 編號，下表的 AC 欄是人工讀測試內容對應的結果，而且是方法層級：一個方法含多個 AC 場景，「含」不等於「該場景是導致轉紅的那一行」，失敗訊息才是實際斷言。

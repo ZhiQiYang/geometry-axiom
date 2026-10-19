@@ -19,8 +19,18 @@ Two groups of single-point faults are injected into a disposable copy of the sou
 
   native  W section-profile policy, K exact complement and H protocol/bridge adapters: the bridge is
           compiled from the copy and tests/test_section_profile_native.py runs against the mutated bridge;
-  model   the Python producer (geometry-core/modeling/section_profile.py, engine.py): tests/
-          test_section_profile_modeling.py runs inside the mutated copy against the unmutated native adapter.
+  model   the producer of the R37/R39/D39 solids: tests/test_section_profile_modeling.py runs inside the
+          mutated copy.  GEO-261 left geometry-core/modeling/section_profile.py and engine.py as 3- and 17-line
+          facades; the producer is now W geometry_woodworking/section_profile.py (member/envelope requests,
+          R39 metadata), K geometry_kernel (one exact arrangement per coordinate domain) and the W native
+          region sources the model-base adapter evaluates.  A Python case runs against the unmutated fresh
+          adapter.  A case that patches native code (SPM36, SPM39) rebuilds model-base from its own mutated copy
+          through tests/binaries.py, so the adapter is fresh for exactly that copy.
+
+A case is one fault.  Where GEO-261 enforces the same rule in more than one layer, the case patches every
+layer (``more``), as M11 of geometry-core/card-reference/mutations.py does, so the injected fault is main's
+fault and not only a different error code.  Every anchor must occur exactly once.  The main -> GEO-261 anchor
+table is in geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md.
 
 The baseline of each group must pass with zero skips first.  A mutant counts as KILLED only when ALL hold:
 
@@ -29,8 +39,9 @@ The baseline of each group must pass with zero skips first.  A mutant counts as 
     ("expected rejection 'V_PANEL_WIDTH' but the candidate was accepted", "R38: V must be -up", ...).
     Printed stdout, traceback source, other methods and separate subtest exceptions cannot supply causes.
     Missing/duplicate/malformed exception records or exit/count inconsistencies block detection;
-  * for native cases only, the recompiled mutant binary differs from the baseline binary; model cases mutate
-    Python source and use the same fresh, unmutated native adapter (there is no mutant-adapter hash comparison).
+  * for native cases, and for model cases that patch native code, the recompiled mutant binary (bridge or
+    model-base adapter) differs from its baseline binary; a Python-only model case uses the same fresh,
+    unmutated adapter as the model baseline (there is no adapter hash comparison for it).
 
 Historical f0c4c71 results: 39 cases detected by AssertionError (FAIL), two model cases SPM38/SPM40
 by cause-labelled ModelError (ERROR), plus one equivalent native case. Do not relabel the ERROR logs as FAIL.
@@ -38,7 +49,8 @@ by cause-labelled ModelError (ERROR), plus one equivalent native case. Do not re
 A case marked ``equivalent`` is compiled and run like the others but must NOT be killed; the reason has to be given.
 Exit 0 only if every case behaves as declared, 1 if a mutant survived / was mislabelled, 2 if a baseline failed,
 the environment is missing, or --only / --group select no case (an unknown --only id included: it is rejected before
-anything runs, because a run that selects nothing builds no baseline and would report success).
+anything runs, because a run that selects nothing builds no baseline and would report success), or an anchor of a
+selected case does not occur exactly once (checked before anything is copied or compiled).
 Not part of tests/run_all.py (it compiles one bridge per case), like tests/assembly_mutation_check.py;
 the selection and exception-evidence guards are covered by tests/test_section_profile_mutation_check.py.
 Anything that survives is a hole in the tests: add the assertion, never delete the case.
@@ -70,8 +82,14 @@ V = P = PL = CV = 'geometry-templates/woodworking/native/section_profile.c'
 H = 'geometry-core/section_profiles.inc'
 K = 'geometry-core/kernel/geometry.c'
 BR = 'geometry-web/section_profile_bridge.inc'
-MS = 'geometry-core/modeling/section_profile.py'
-ME = 'geometry-core/modeling/engine.py'
+# Model producer after GEO-261 (main 4b975a3d: geometry-core/modeling/section_profile.py and engine.py).
+WP = 'geometry-templates/woodworking/geometry_woodworking/section_profile.py'
+WS = 'geometry-templates/woodworking/native/section_profile_sources.c'
+KE = 'geometry-core/geometry_kernel/evaluate.py'
+KG = 'geometry-core/geometry_kernel/geometry.py'
+NATIVE_SUFFIXES = ('.c', '.h', '.inc')
+MODEL_DIRECTORIES = ('geometry-core/geometry_kernel', 'geometry-app/geometry_app',
+                  'geometry-templates/woodworking/geometry_woodworking', 'tests/fixtures')
 # The collector records type(exc).__module__ + '.' + __qualname__, i.e. where the class is defined, never the
 # alias it was imported through.  GEO-261 defines ModelError in H (geometry_app.model_common); modeling.common
 # re-exports that same class object as a compatibility facade, so a ModelError raised via either import path is
@@ -101,11 +119,19 @@ MLOCAL = 'test_local_runs_do_not_cut_other_local_or_world_mesh_grids'
 MADV = 'test_advanced_native_frame_controls_world_axes_and_bounds'
 
 
-def case(identifier, clause, desc, file, before, after, tests, cause, equivalent=None, group='native', error_types=()):
-    """before occurs once; one named method's terminal exception must contain every cause string."""
+def case(identifier, clause, desc, file, before, after, tests, cause, equivalent=None, group='native', error_types=(),
+         more=()):
+    """Every (file, before) occurs once; one named method's terminal exception must contain every cause string.
+
+    ``more`` holds further (file, before, after) patches of the same fault, one per additional layer."""
+    patches = [[file, before, after], *[list(item) for item in more]]
     return {'group': group, 'id': identifier, 'clause': clause, 'desc': desc, 'file': file, 'before': before,
-            'after': after, 'tests': list(tests), 'cause': list(cause), 'equivalent': equivalent,
+            'after': after, 'patches': patches, 'tests': list(tests), 'cause': list(cause), 'equivalent': equivalent,
             'error_types': list(error_types)}
+
+
+def patches_native(case):
+    return any(Path(file).suffix in NATIVE_SUFFIXES for file, _, _ in case['patches'])
 
 
 ACCEPT = 'expected the candidate to be accepted'
@@ -194,12 +220,25 @@ CASES = [
     case('SPM27', 'I44', 'outside-region split drops the right-hand remainder', K,
          'if(cursor<r->max_u){if(n==capacity)', 'if(0&&cursor<r->max_u){if(n==capacity)',
          [CONCAVE], ["expected rejection 'V_PROFILE_OUTSIDE'"]),
+    # SPM28/SPM29: GEO-261 rejects a dangling profile reference in three layers -- the I49 error of the W evaluator,
+    # the source graph's definition-required edge to the (deleted) profile definition, and the W region source /
+    # run root that refuses the unresolved object.  Removing only the I49 error is equivalent (measured: the
+    # candidate stays rejected and the PROFILE_MISSING diagnostic still names I49), so each case removes all
+    # three for its object kind, as M11 of the card mutants does.
     case('SPM28', 'I49', 'a member may reference a deleted profile', V,
-         'if(!p){wood_sp_error(w,"I49: member %u references missing profile %u"', 'if(0&&!p){wood_sp_error(w,"I49: member %u references missing profile %u"',
-         [NAMED], ["expected rejection 'I49'"]),
+         'if(!exists){wood_sp_error(w,"I49: member %u references missing profile %u"', 'if(0&&!exists){wood_sp_error(w,"I49: member %u references missing profile %u"',
+         [NAMED], ["expected rejection 'I49'"],
+         more=[(V, 'if(w->evaluation&&w->evaluation->profile_definition)profile_ok=w->evaluation->profile_definition(w->evaluation->user,w,m->profile_id,&p);',
+                'if(exists&&w->evaluation&&w->evaluation->profile_definition)profile_ok=w->evaluation->profile_definition(w->evaluation->user,w,m->profile_id,&p);'),
+               (WS, 'if(!m->resolved||m->missing_profile||m->outside||m->range_error)return false;',
+                'if(!m->resolved||m->outside||m->range_error)return false;')]),
     case('SPM29', 'I49', 'a run may reference a deleted profile', V,
-         'if(!p){wood_sp_error(w,"I49: run %u references missing profile %u"', 'if(0&&!p){wood_sp_error(w,"I49: run %u references missing profile %u"',
-         [NAMED], ["expected rejection 'I49'"]),
+         'if(!exists){wood_sp_error(w,"I49: run %u references missing profile %u"', 'if(0&&!exists){wood_sp_error(w,"I49: run %u references missing profile %u"',
+         [NAMED], ["expected rejection 'I49'"],
+         more=[(V, 'if(w->evaluation&&w->evaluation->profile_definition)profile_ok=w->evaluation->profile_definition(w->evaluation->user,w,r->profile_id,&p);',
+                'if(exists&&w->evaluation&&w->evaluation->profile_definition)profile_ok=w->evaluation->profile_definition(w->evaluation->user,w,r->profile_id,&p);'),
+               (WS, 'if(status!=GEO_SOURCE_OK&&!s->run_errors[i][0])wood_sp_source_graph_error(s,first,capacity);',
+                'if(status!=GEO_SOURCE_OK&&!s->run_errors[i][0]&&!w->state->runs[i].missing_profile)wood_sp_source_graph_error(s,first,capacity);')]),
     case('SPM30', 'I47/D1', 'generated run vertices are not range-checked', V,
          'if(!geo_coord_in_range(point.x)||!geo_coord_in_range(point.y)||!geo_coord_in_range(point.z)){r->range_error=true;',
          'if(0&&(!geo_coord_in_range(point.x)||!geo_coord_in_range(point.y)||!geo_coord_in_range(point.z))){r->range_error=true;',
@@ -211,8 +250,9 @@ CASES = [
          'm.rotated=!strcmp(orientation,"thickness-u");', 'm.rotated=!strcmp(orientation,"thickness-v");',
          [PANEL], [ACCEPT, 'V_PROFILE_OUTSIDE']),
     case('SPM33', 'D40/R37', 'the 1830 mm sheet length is misused as an upper bound for the run length', V,
-         'r->length_resolved=wood_sp_resolve_dimension(w,&r->length_source,&target,&r->length);',
-         'r->length_resolved=wood_sp_resolve_dimension(w,&r->length_source,&target,&r->length)&&r->length<=wood_sp_panel_spec.sheet_length;',
+         '?w->evaluation->run_length(w->evaluation->user,w,i,&r->length):wood_sp_run_length_direct(w,i,&r->length);',
+         '?w->evaluation->run_length(w->evaluation->user,w,i,&r->length)&&r->length<=wood_sp_panel_spec.sheet_length'
+         ':wood_sp_run_length_direct(w,i,&r->length)&&r->length<=wood_sp_panel_spec.sheet_length;',
          [PANEL], [ACCEPT, 'RUN_LENGTH_INVALID']),
     case('SPM34', 'I51', 'scene load accepts a duplicate profile id', H,
          'if(!strcmp(tokens[1],"profile")&&!sp_profile(w,id))ok=', 'if(!strcmp(tokens[1],"profile"))ok=',
@@ -229,30 +269,45 @@ CASES = [
          'GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,end?r->length:0);',
          'GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,0);',
          [AC09], ["expected rejection 'I47/I48/D1'"]),
-    # ---- model group: the Python producer (R37 / R39 / D39) against the unmutated native adapter ----
-    case('SPM36', 'R37', 'the reference envelope becomes the bounding rectangle of the outline (L shape lost)', MS,
-         'placement = dict(frame, outline=deepcopy(run["outline"]))',
-         'placement = dict(frame, outline=(lambda o: [[min(p[0] for p in o), min(p[1] for p in o)], '
-         '[max(p[0] for p in o), min(p[1] for p in o)], [max(p[0] for p in o), max(p[1] for p in o)], '
-         '[min(p[0] for p in o), max(p[1] for p in o)]])(run["outline"]))',
+    # ---- model group: the producer of the R37 / R39 / D39 solids (see the module docstring) ----
+    # SPM36/SPM39: in the source-graph path the W native region sources produce the envelope and member regions
+    # (W section_profile.py only binds the typed roots); its legacy RegionDef branch is not on that path.
+    case('SPM36', 'R37', 'the reference envelope becomes the bounding rectangle of the outline (L shape lost)', WS,
+         's->run_regions[i]=(GeoRegionView){{p->outline.v,p->outline.count},NULL,0};',
+         'GeoPoint2 *box=malloc(4*sizeof *box);if(!box)return false;'
+         'GeoCoord u0=p->outline.v[0].u,v0=p->outline.v[0].v,u1=u0,v1=v0;'
+         'for(size_t k=1;k<p->outline.count;++k){if(p->outline.v[k].u<u0)u0=p->outline.v[k].u;if(p->outline.v[k].u>u1)u1=p->outline.v[k].u;'
+         'if(p->outline.v[k].v<v0)v0=p->outline.v[k].v;if(p->outline.v[k].v>v1)v1=p->outline.v[k].v;}'
+         'box[0]=(GeoPoint2){u0,v0};box[1]=(GeoPoint2){u1,v0};box[2]=(GeoPoint2){u1,v1};box[3]=(GeoPoint2){u0,v1};'
+         's->run_regions[i]=(GeoRegionView){{box,4},NULL,0};',
          [M3], ['R37: exact mesh volume of the envelope object'], group='model'),
-    case('SPM37', 'R39', 'the reference envelope is counted as material volume', MS,
-         'details["material_volume_mm3"] = "0" if reference else obj["volume_mm3"]',
-         'details["material_volume_mm3"] = obj["volume_mm3"]',
+    case('SPM37', 'R39', 'the reference envelope is counted as material volume', WP,
+         'details["material_volume_mm3"] = "0" if reference else mesh["volume_mm3"]',
+         'details["material_volume_mm3"] = mesh["volume_mm3"]',
          [M3], ['R37/R39: the envelope is a reference object and carries no material volume'], group='model'),
-    case('SPM38', 'R37/D40', 'a panel is cut at the 1830 mm sheet length', MS,
-         'geometry = geo.extrusion_geometry(placement, 0, run["length"], source)',
-         'geometry = geo.extrusion_geometry(placement, 0, min(run["length"], 1830) if member["kind"] == "panel" else run["length"], source)',
+    case('SPM38', 'R37/D40', 'a panel is cut at the 1830 mm sheet length', WP,
+         'source = ProvenanceTemplate((*identity, None, None), identity, ("members", str(member["id"])))',
+         'length = min(run["length"], 1830) if member["kind"] == "panel" else length; '
+         'source = ProvenanceTemplate((*identity, None, None), identity, ("members", str(member["id"])))',
          [MLONG], ['Native dimensions and derived exact member volume disagree'], group='model',
          error_types=[MODEL_ERROR]),
-    case('SPM39', 'R36/R37', 'member rectangles are read with u and v swapped', MS,
-         'u0, v0, u1, v1 = member["rect"]', 'v0, u0, v1, u1 = member["rect"]',
+    case('SPM39', 'R36/R37', 'member rectangles are read with u and v swapped', WS,
+         'GeoPoint2 *p=s->member_points[i];p[0]=(GeoPoint2){m->rect.min_u,m->rect.min_v};p[1]=(GeoPoint2){m->rect.max_u,m->rect.min_v};'
+         'p[2]=(GeoPoint2){m->rect.max_u,m->rect.max_v};p[3]=(GeoPoint2){m->rect.min_u,m->rect.max_v};',
+         'GeoPoint2 *p=s->member_points[i];p[0]=(GeoPoint2){m->rect.min_v,m->rect.min_u};p[1]=(GeoPoint2){m->rect.max_v,m->rect.min_u};'
+         'p[2]=(GeoPoint2){m->rect.max_v,m->rect.max_u};p[3]=(GeoPoint2){m->rect.min_v,m->rect.max_u};',
          [MADV], ['R36/R37: bounds of the'], group='model'),
-    case('SPM40', 'D39', 'an unplaced (local) run is cut by the world grid', ME,
-         'profile_grid = (grid if run["coordinate_space"] == "world" else',
-         'profile_grid = (grid if True else',
+    # SPM40: K meshes each geometry in the arrangement of its own coordinate domain, and mesh_objects refuses an
+    # arrangement of another domain.  Patching only the first layer turns the fault into COORDINATE_DOMAIN
+    # (a different error); main's fault is that the local run is meshed in the world arrangement.
+    case('SPM40', 'D39', 'an unplaced (local) run is cut by the world grid', KE,
+         'mesh_records = geo.mesh_objects(geometry, grids[geometry.domain], volume_known=volume_known, max_cells=limits.max_cells)',
+         'mesh_records = geo.mesh_objects(geometry, grids.get(CoordinateDomain()) or geo.build_grid([], max_cells=limits.max_cells), '
+         'volume_known=volume_known, max_cells=limits.max_cells)',
          [MLOCAL], ['A section-profile object must produce one complete solid'], group='model',
-         error_types=[MODEL_ERROR]),
+         error_types=[MODEL_ERROR],
+         more=[(KG, 'if not isinstance(grid, _Arrangement) or grid.domain != geometry.domain:',
+                'if not isinstance(grid, _Arrangement):')]),
 ]
 
 
@@ -286,6 +341,14 @@ def copy_sources(destination: Path, python=False):
                 target = destination / path.relative_to(ROOT)
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(path, target)
+        # GEO-261 K/H/W packages the modeling facade imports (geometry_app first), data files included, and the
+        # saved packages the model tests reopen (tests/fixtures/q38-legacy-space-model.json).
+        for package in MODEL_DIRECTORIES:
+            for path in (ROOT / package).rglob('*'):
+                if path.is_file() and '__pycache__' not in path.parts:
+                    target = destination / path.relative_to(ROOT)
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(path, target)
         shutil.copyfile(ROOT / '公理層.md', destination / '公理層.md')
 
 
@@ -425,11 +488,12 @@ def save_log(identifier, log, evidence):
 
 
 def mutate_file(tree: Path, case):
-    target = tree / case['file']
-    original = target.read_bytes()
-    before = case['before'].encode('utf-8')
-    assert original.count(before) == 1, (case['id'], 'mutation anchor changed or not unique')
-    target.write_bytes(original.replace(before, case['after'].encode('utf-8')))
+    for file, before, after in case['patches']:
+        target = tree / file
+        original = target.read_bytes()
+        before = before.encode('utf-8')
+        assert original.count(before) == 1, (case['id'], file, 'mutation anchor changed or not unique')
+        target.write_bytes(original.replace(before, after.encode('utf-8')))
 
 
 def prepare_native(case, base_source: Path, work: Path):
@@ -497,13 +561,45 @@ def judge_native(case, exe, error, baseline_hash, explore):
     return record
 
 
-def judge_model(case, model_tree: Path, model_base: str, work: Path, explore):
+ADAPTER_BUILD = ('import sys\nfrom pathlib import Path\nfrom tests import binaries\n'
+                 'binaries.OUT_DIR = Path(sys.argv[1])\nraise SystemExit(binaries.main(["build", "model-base"]))\n')
+
+
+def build_model_adapter(tree: Path, directory: Path, name: str):
+    """model-base built by the copy's own tests/binaries.py, so its sidecar describes exactly that copy."""
+    argv = [sys.executable, '-c', ADAPTER_BUILD, str(directory)]
+    result = subprocess.run(argv, cwd=tree, env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'),
+                            capture_output=True, text=True, timeout=900)
+    exe = directory / 'model-base'
+    if LOG_DIR:
+        receipt = dict(argv=argv[:2] + ['<ADAPTER_BUILD>'] + argv[3:], cwd=str(tree), exit=result.returncode,
+                       stdout=result.stdout, stderr=result.stderr, source_tree_sha256=tree_digest(tree),
+                       binary_sha256=sha256(exe) if exe.exists() else None)
+        (LOG_DIR / (name + '.model-base.compile.json')).write_text(json.dumps(receipt, indent=2), encoding='utf-8')
+    if result.returncode != 0 or not exe.is_file():
+        raise RuntimeError('model-base build failed: ' + (result.stderr or result.stdout)[-1500:])
+    return exe
+
+
+def judge_model(case, model_tree: Path, model_base: str, baseline_adapter_hash: str, work: Path, explore):
     record = {'id': case['id'], 'group': 'model', 'clause': case['clause'], 'desc': case['desc']}
     tree = work / case['id']
     shutil.copytree(model_tree, tree)
     try:
-        mutate_file(tree, case)
-        code, log, evidence = run_model(tree, model_base, None if explore else case['tests'])
+        try:
+            mutate_file(tree, case)
+            adapter = model_base
+            if patches_native(case):
+                adapter = build_model_adapter(tree, work / ('model-base-' + case['id']), case['id'])
+        except Exception as error:  # noqa: BLE001 - reported as an invalid mutant
+            record.update(verdict='invalid', note=str(error)[-400:])
+            return record
+        if patches_native(case):
+            record['adapter_sha256'] = sha256(Path(adapter))
+            if record['adapter_sha256'] == baseline_adapter_hash:
+                record.update(verdict='invalid', note='mutant adapter equals baseline adapter')
+                return record
+        code, log, evidence = run_model(tree, str(adapter), None if explore else case['tests'])
     except subprocess.TimeoutExpired:
         record.update(verdict='blocked', note='timeout')
         return record
@@ -539,6 +635,20 @@ def select_cases(only, groups):
     return cases
 
 
+def anchor_problems(cases, root=ROOT):
+    """Every patch anchor of the selected cases must occur exactly once in the checkout, checked before any copy,
+    compile or test run (a drifted anchor otherwise surfaces only as an 'invalid' record at the end)."""
+    problems = []
+    for item in cases:
+        for file, before, _ in item['patches']:
+            path = root / file
+            count = path.read_bytes().count(before.encode('utf-8')) if path.is_file() else None
+            if count != 1:
+                problems.append('%s: anchor in %s occurs %s' % (item['id'], file, 'nowhere (no file)' if count is None
+                                                                 else '%d times' % count))
+    return problems
+
+
 def main(argv=None):
     global LOG_DIR
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
@@ -563,6 +673,11 @@ def main(argv=None):
         for item in CASES:
             print(item['id'], item['group'], item['clause'], item['desc'])
         return 0
+    drifted = anchor_problems(cases)
+    if drifted:
+        for problem in drifted:
+            print('PROBLEM:', problem)
+        return 2
     if args.logs:
         LOG_DIR = Path(args.logs)
         LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -603,7 +718,8 @@ def main(argv=None):
             copy_sources(model_tree, python=True)
             digest = tree_digest(model_tree)
             code, log, evidence = run_model(model_tree, model_base, None)
-            baselines['model'] = dict(exit=code, source_tree_sha256=digest, adapter_sha256=sha256(Path(model_base)),
+            adapter_hash = sha256(Path(model_base))
+            baselines['model'] = dict(exit=code, source_tree_sha256=digest, adapter_sha256=adapter_hash,
                                       exception_evidence=evidence)
             save_log('model-baseline', log, evidence)
             print('model baseline: exit', code, flush=True)
@@ -611,7 +727,8 @@ def main(argv=None):
                 print(log[-3000:])
                 problems.append('model baseline must pass with zero skips before any mutant is judged')
             else:
-                records += list(pool.map(lambda c: judge_model(c, model_tree, model_base, work, args.explore), model_cases))
+                records += list(pool.map(lambda c: judge_model(c, model_tree, model_base, adapter_hash, work, args.explore),
+                                         model_cases))
                 if tree_digest(model_tree) != digest:
                     problems.append('the shared model copy changed while mutants were judged')
         pool.shutdown()
