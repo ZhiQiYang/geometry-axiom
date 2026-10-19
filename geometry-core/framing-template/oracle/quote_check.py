@@ -1,17 +1,22 @@
-"""引文逐字檢查:文件與程式裡引用使用者的話、決策佇列標題、佇列原文的「…」,必須逐字(位元組相同)出現在 origin/main 的
+"""引文逐字檢查:文件與程式裡引用使用者的話、決策佇列標題、佇列原文的引號,必須逐字(位元組相同)出現在 origin/main 的
 `決策佇列.md` 裡對的地方。
 
-每一段「」先分種類(看引號前 10 個字;句子 = 同一行裡以 。;；| 切開的一段):
-- 標題:前面有「決策佇列」(例:決策佇列「2026-10-16 縫上副支撞到邊界角材」)→ 要出現在佇列的標題行(# 開頭)。
-- 佇列原文:前面有「逐字」(例:第 3 題記的是(逐字):「…」)→ 要出現在佇列的任一行。
-- 使用者的話:前面有 原話、原文、拍板,或這一句(拿掉所有引號內文之後)提到「使用者」,或在 README「使用者講過的規則」
-  那張表的第一欄 → 要出現在佇列的使用者原話行(去掉行首空白後以 > 開頭的引用行)。協調 agent 整理的要點、題目文字都不算。
+引號:「」、『』、“”;.md 與內建樣本另認 ASCII "…"(.py 檔裡 ASCII 引號是程式字串,不認,列為已知限制)。
+每一段引號先分種類(看開引號前 10 個字;「這一行」指整行,拿掉所有引號內文之後的文字):
+- 標題:前面有「決策佇列」→ 要出現在佇列的標題行(# 開頭)。
+- 佇列原文:前面有「逐字」→ 要出現在佇列的任一行。
 - 緊接在另一段後面(」「)的,與前一段同種類。
-- 「不是使用者原話」之類的字樣不會讓引號免檢:只要句子提到使用者,引號裡就必須是逐字的原話(或改用別的寫法)。
+- 使用者的話:下列任一成立 → 要出現在佇列的使用者原話行(去掉行首空白後以 > 開頭的引用行)。協調 agent 整理的要點、題目文字都不算。
+  - 前面有 原話、原文、拍板;或開引號前 4 個字內有說、講、回答、表示、寫道這類引述動詞;
+  - 這一行提到使用者(使用者、Yang);這一行以引號開頭時,上一行提到使用者或有上述標記也算;
+  - 這一行是 > 開頭的引用區塊;或在 README「使用者講過的規則」那張表的第一欄。
+- 寫了 不是使用者原話 之類的字樣也不豁免。
+另外兩種寫法直接報錯:引號跨行(同一行開、關引號數目不同);「原話」後面接括號或冒號、卻不是引號(轉述冒充原話)。
 
-比對:引文裡的「…」(U+2026)代表省略,切開的各段要依序出現在同一行;切成兩段以上時每段至少 MIN_FRAG 個字
-(防止「主…支…斷」這種碎片)。其他字元(含全形/半形、空白個數、半形 ...)都要一模一樣。
-同一行「與」數目不同(引文跨行),而這一行有上述標記或提到使用者時也報錯:引文要寫在同一行。
+比對:引文裡的「…」(U+2026)代表省略,切開的各段要依序出現在同一行;切成兩段以上時每段至少 MIN_FRAG 個字。
+其他字元(含全形/半形、空白個數、半形 ...)都要一模一樣。
+已知限制(查不到的寫法):真的原話配上錯的時間或出處;〈〉、《》、‘’ 這類括號不當引號;.py 檔的 ASCII 引號;
+引述動詞或使用者離開引號太遠、又不在同一行或上一行。
 
 用法:python quote_check.py [--queue 檔案];不給 --queue 時用 `git show origin/main:決策佇列.md`。
 原始碼突變在 repo 外的副本裡跑(沒有 git),由環境變數 FRAMING_QUOTE_QUEUE 指定一份事先從 origin/main 取出的同一個檔。"""
@@ -24,10 +29,12 @@ HERE = pathlib.Path(__file__).resolve().parent
 TPL = HERE.parent  # geometry-core/framing-template
 FILES = [TPL / "oracle" / "README.md", TPL / "PROPOSAL.md", TPL / "oracle" / "framing_oracle.py", TPL / "oracle" / "selftest.py"]
 USER_MARKERS = ("原話", "原文", "拍板")
+USER_WORDS = ("使用者", "Yang")
+SPEECH = ("說", "講", "回答", "表示", "寫道")
 TITLE_MARKER = "決策佇列"
 QUEUE_MARKER = "逐字"
 USER_TABLE = "## 使用者講過的規則"
-SEP = "。;；|"
+CJK = {"「": "」", "『": "』", "“": "”"}
 MIN_FRAG = 6
 
 
@@ -52,46 +59,70 @@ def sources(queue):
                 queue=lines)
 
 
-def pairs(line):
-    """同一行裡配對好的「」(可巢狀),回傳 (開, 關) 的位置,依開的位置排序。"""
+def pairs(line, ascii_quotes=True):
+    """同一行裡配對好的引號(「」『』“” 可巢狀;ASCII " 兩兩配對),回傳 (開, 關),依開的位置排序;另回傳沒配上的開引號數。"""
     st, out = [], []
     for i, ch in enumerate(line):
-        if ch == "「":
-            st.append(i)
-        elif ch == "」" and st:
-            out.append((st.pop(), i))
-    return sorted(out)
+        if ch in CJK:
+            st.append((i, CJK[ch]))
+        elif st and ch == st[-1][1]:
+            out.append((st.pop()[0], i))
+    if ascii_quotes:
+        qs = [i for i, ch in enumerate(line) if ch == '"']
+        out += [(qs[k], qs[k + 1]) for k in range(0, len(qs) - 1, 2)]
+    return sorted(out), len(st)
 
 
-def unquoted(seg):
-    """句子拿掉所有「」內文(含巢狀)之後的文字。"""
-    out, depth = [], 0
-    for ch in seg:
-        if ch == "「":
-            depth += 1
-        elif ch == "」" and depth:
-            depth -= 1
-        elif depth == 0:
-            out.append(ch)
-    return "".join(out)
+def unquoted(line, prs):
+    """這一行拿掉所有引號內文之後的文字。"""
+    keep = [True] * len(line)
+    for j, i in prs:
+        for k in range(j + 1, i):
+            keep[k] = False
+    return "".join(ch for ch, k in zip(line, keep) if k)
 
 
-def segment(line, j):
-    lo = max([line.rfind(c, 0, j) for c in SEP]) + 1
-    his = [k for k in (line.find(c, j) for c in SEP) if k >= 0]
-    return line[lo:min(his) if his else len(line)]
+def bad_paraphrase(line):
+    """「原話」後面接括號或冒號、卻不是引號:轉述冒充原話。前面是「不是」「非」的不算(那是在說不是原話)。"""
+    out, k = [], line.find("原話")
+    while k >= 0:
+        pre = line[max(0, k - 6):k]
+        j = k + 2
+        moved = False
+        if j < len(line) and line[j] in "(（":
+            close = min([x for x in (line.find(")", j), line.find("）", j)) if x >= 0], default=-1)
+            if close >= 0:
+                j, moved = close + 1, True
+        if j < len(line) and line[j] in ":：":
+            j, moved = j + 1, True
+        if moved and "不是" not in pre and "非" not in pre and not (j < len(line) and (line[j] in CJK or line[j] == '"')):
+            out.append(line[k:k + 30])
+        k = line.find("原話", k + 2)
+    return out
 
 
-def claimed(text, user_table=False):
-    """回傳 [(行號, 種類, 引文)] 與跨行的可疑行 [(行號, 該行)]。"""
-    out, split = [], []
+def claimed(text, user_table=False, ascii_quotes=True):
+    """回傳 [(行號, 種類, 引文)] 與其他問題 [(行號, 原因, 文字)]。"""
+    out, other = [], []
     in_table = False
-    for ln, line in enumerate(text.splitlines(), 1):
+    lines = text.splitlines()
+    for ln, line in enumerate(lines, 1):
         if user_table and line.startswith("## "):
             in_table = line.startswith(USER_TABLE)
         cell_end = line.find("|", 1) if (in_table and line.startswith("|")) else -1
-        kinds = {}  # 關引號位置 → 種類(給緊接的下一段)
-        for j, i in pairs(line):
+        prs, open_left = pairs(line, ascii_quotes)
+        if open_left or sum(line.count(c) for c in CJK.values()) > sum(line.count(c) for c in CJK):
+            other.append((ln, "引號跨行(要寫在同一行)", line[:60]))
+        for para in bad_paraphrase(line):
+            other.append((ln, "原話後面不是引號(轉述冒充原話)", para))
+        ctx = unquoted(line, prs)
+        prev = lines[ln - 2] if ln >= 2 else ""
+        body = line.lstrip(" >-*|0123456789.")
+        starts_with_quote = bool(body) and (body[0] in CJK or body[0] == '"')
+        user_ctx = (any(u in ctx for u in USER_WORDS) or line.lstrip().startswith(">")
+                    or (starts_with_quote and any(u in prev for u in USER_WORDS + USER_MARKERS)))
+        kinds = {}
+        for j, i in prs:
             pre = line[max(0, j - 10):j]
             kind = None
             if TITLE_MARKER in pre:
@@ -100,14 +131,13 @@ def claimed(text, user_table=False):
                 kind = "queue"
             elif (j - 1) in kinds:
                 kind = kinds[j - 1]
-            elif any(m in pre for m in USER_MARKERS) or "使用者" in unquoted(segment(line, j)) or 0 < j < cell_end:
+            elif (any(m in pre for m in USER_MARKERS) or any(v in line[max(0, j - 4):j] for v in SPEECH)
+                  or user_ctx or 0 < j < cell_end):
                 kind = "user"
             if kind:
                 out.append((ln, kind, line[j + 1:i]))
                 kinds[i] = kind
-        if line.count("「") != line.count("」") and (any(m in line for m in USER_MARKERS + (TITLE_MARKER, QUEUE_MARKER)) or "使用者" in line):
-            split.append((ln, line))
-    return out, split
+    return out, other
 
 
 def found(q, lines):
@@ -133,11 +163,11 @@ WHERE = dict(user="使用者原話行(> 引用行)", title="佇列標題行", qu
 
 
 def scan_text(name, text, queue, user_table=False):
-    """回傳 (檢查的引文數, 問題清單 [(檔名:行號, 原因, 引文)])。"""
+    """回傳 (檢查的引文數, 問題清單 [(檔名:行號, 原因, 引文)])。.py 檔不認 ASCII 引號。"""
     src = sources(queue)
-    qs, split = claimed(text, user_table)
+    qs, other = claimed(text, user_table, ascii_quotes=not name.endswith(".py"))
     bad = [(f"{name}:{ln}", f"不在{WHERE[k]}裡(要逐字)", q) for ln, k, q in qs if not found(q, src[k])]
-    bad += [(f"{name}:{ln}", "引文跨行(要寫在同一行)", line[:60]) for ln, line in split]
+    bad += [(f"{name}:{ln}", why, t) for ln, why, t in other]
     return len(qs), bad
 
 
@@ -151,7 +181,9 @@ def scan(queue, files=FILES):
 
 
 # 反例與正例(用真的佇列內容)。反例:空白個數不同、錯一個字、改寫、引用協調 agent 整理的要點、用 … 切碎片、
-# 沒有標記詞但句子提到使用者、前面寫「不是使用者原話」想豁免、緊接的第二段捏造、標記詞離得遠、標題不存在。
+# 沒有標記詞但句子提到使用者、前面寫「不是使用者原話」想豁免、緊接的第二段捏造、標記詞離得遠、標題不存在;
+# 另加 1b6b34f9 審查的 7 種寫法:『』、ASCII 引號、彎引號、標記在上一行且引號拆兩行、標記與引文在表格兩欄、主詞換成人名、句號切開;
+# 以及 > 引用區塊偽裝、轉述冒充原話。
 SAMPLES = [
     ("原話「端面頂的是角材才能固定 ...那你讓」", True),   # 佇列是兩個空白
     ("原話「端面頂的是角材才能固定  ...那你讓」", False),
@@ -160,6 +192,7 @@ SAMPLES = [
     ("使用者原話(兩行):「??? 主支為什麼要斷開 ?」「不能斷開啊」", True),  # 第二段錯一個字(阿→啊)
     ("使用者原話(兩行):「??? 主支為什麼要斷開 ?」「不能斷開阿」", False),
     ("| 「間隔差了1~2mm 影響不大」(台北 10-15 05:51) | x |", True),   # 使用者規則表第一欄,多一個空白
+    ("| 第一欄 「間隔差了1~2mm 影響不大」 | x |", True),   # 同上,引號不在行首:只靠「使用者規則表第一欄」那條規則
     ("使用者原話「封板裁切只在對牆，不置中」", True),       # 佇列裡是協調 agent 整理的要點,不是 > 原話行
     ("使用者回答「對,只在對牆、不置中」", False),          # 這才是 > 原話行
     ("使用者原話「主…支…斷」", True),                      # 用 … 切成單字碎片
@@ -171,6 +204,18 @@ SAMPLES = [
     ("決策佇列「不存在的標題」", True),
     ("決策佇列「2026-10-16 縫上副支撞到邊界角材」", False),
     ("推論原則「支撐能調整就調整」", False),               # 沒提使用者、沒有標記:不是引用使用者
+    ("使用者原話『完全捏造的一句話』", True),
+    ('使用者原話"完全捏造的一句話"', True),
+    ("使用者原話“完全捏造的一句話”", True),
+    ("使用者原話如下:\n「完全捏造\n的一句話」", True),     # 標記在上一行、引號拆兩行
+    ("使用者原話如下:\n「完全捏造的一句話」", True),       # 標記在上一行、引號在下一行開頭
+    ("| 使用者 10-15 05:51 講的 | 「完全捏造的一句話」 |", True),  # 標記與引文在表格兩欄
+    ("Yang 在 10-15 說「完全捏造的一句話」", True),        # 主詞換成人名
+    ("Yang 的意思是「完全捏造的一句話」", True),           # 人名,沒有引述動詞
+    ("他在 10-15 回答「完全捏造的一句話」", True),        # 引述動詞,沒有人名
+    ("這是使用者講的。「完全捏造的一句話」是他的意思", True),  # 句號切開
+    ("> 「完全捏造的一句話」", True),                      # > 引用區塊偽裝成原話
+    ("依使用者台北 10-16 01:29 原話(副支位置可以調整,在副支間距上限之下就好)挪到貼著擋料", True),  # 轉述冒充原話
 ]
 
 
