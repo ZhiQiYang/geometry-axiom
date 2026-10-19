@@ -122,7 +122,7 @@
   :998 的自動清稿分支也要一起移除；這點 A7 沒有明寫。
 - R6 既有公理缺口（不是 K2a 造成的，但與物理機制審查有關）：L 形房凹角那一側、平行主支的牆（BR03 的 e3）上，依 I22 與「延伸段以優先級 2 計」，放不下任何 primary；
   但依 flat-nailed-ceiling §④，壁邊材應該一圈都有。建議交給 SSOT owner 另案處理。
-- R7 Q31 已採納的第一版是「每專案一份 active draft」（geometry-guide/IMPLEMENTATION-QUEUE-20261004.md:10，屬使用者核准範圍）。K2a 會取代它，寫入時須在 BACKLOG 留下 🔒 逐條差異。
+- R7 Q31 已採納的第一版是〈每專案一份 active draft〉(Q31 第一版建議文字，協調 agent 整理，非使用者原話；使用者以 CONT-8 整體採納，見決策佇列 :885)（geometry-guide/IMPLEMENTATION-QUEUE-20261004.md:10，屬使用者核准範圍）。K2a 會取代它，寫入時須在 BACKLOG 留下 🔒 逐條差異。
 - R8 PROPOSAL.md:156 的「5 支主支、8 支副支」實際指的是線數（4000×3000 依 917／366 排，副支有 40 支）。另外 WORLD_MAX_GUIDES=16（current_geometry.c:3612）反而支持「需要格線定位」的論點。
 
 ## 已查，未發現問題
