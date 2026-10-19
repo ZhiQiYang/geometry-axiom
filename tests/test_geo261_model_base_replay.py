@@ -11,8 +11,10 @@ witnesses use the actual adapter source linked to the product objects:
   fingerprints read one buffer. Restoring the original adapter turns each red.
 * equivalence: the original adapter (per-line parse_scene_file, one freed
   fingerprint buffer per digest, no block reuse), rebuilt from the same source,
-  returns byte-identical stdout and stderr, including the I8a preview text and
-  the final World digest, in both output modes.
+  returns byte-identical stdout and stderr, including the I8a preview text, in
+  both output modes. Raw World bytes are compared out of suite (gcc -O2): under
+  MSVC the original adapter already leaves stack bytes in WoodMember padding,
+  so a raw World digest differs between two runs of one build.
 """
 import json
 from pathlib import Path
@@ -32,9 +34,6 @@ FLAGS = ['GEOMETRY_KERNEL_EXTERNAL=1', 'GEOMETRY_WOODWORKING_EXTERNAL=1',
 MODEL = ROOT / 'geometry-core/model_base.c'
 HARNESS = ROOT / 'tests/geo261_model_base_replay_harness.c'
 MAIN = 'int main(int argc, char **argv)'
-WORLD_HOOK = '    world.app.canvas_pos_count = 0;  /* D12: presentation never enters source identity. */\n'
-WORLD_DIGEST = ('    {char world_hash[65];geo_sha256(&world,sizeof world,world_hash);'
-                'fprintf(stderr,"WORLD %s\\n",world_hash);}\n')
 # (current adapter, original adapter) for the three GEO-261 cost changes.
 ORIGINAL = (
     ('if (!model_parse_scene(path, &world)) {', 'if (!parse_scene_file(path, &world)) {'),
@@ -85,11 +84,10 @@ class ModelBaseOwnedReplay(unittest.TestCase):
         saved = {p: p.read_bytes() for p in originals}
         texts = {p: b.replace(b'\r\n', b'\n').decode('utf-8') for p, b in saved.items()}
         model = texts[MODEL]
-        for anchor in (MAIN, WORLD_HOOK, *(current for current, _ in ORIGINAL)):
+        for anchor in (MAIN, *(current for current, _ in ORIGINAL)):
             if model.count(anchor) != 1:
                 raise AssertionError('Actual adapter anchor must occur exactly once: ' + anchor.strip())
         model = model.replace(MAIN, 'int replay_model_command_main(int argc, char **argv)')
-        model = model.replace(WORLD_HOOK, WORLD_DIGEST + WORLD_HOOK)
         if original:
             for current, before in ORIGINAL:
                 model = model.replace(current, before)
@@ -126,12 +124,11 @@ class ModelBaseOwnedReplay(unittest.TestCase):
         command = [str(exe), *(['--neutral-sources'] if neutral else []), str(scene)]
         run = subprocess.run(command, capture_output=True, timeout=120)
         self.assertIn(run.returncode, (0, 1), 'crash is not a verdict: ' + run.stderr.decode('utf-8', 'replace'))
-        lines = run.stderr.split(b'\n')
-        self.assertEqual(b'', lines[-1])
-        match = re.fullmatch(rb'COST (\d+) (\d+) (\d+)', lines[-2])
+        # The witness line is last; text-mode stderr ends it with CRLF on Windows.
+        match = re.search(rb'(?:^|\n)(COST (\d+) (\d+) (\d+)\r?\n)\Z', run.stderr)
         self.assertIsNotNone(match, run.stderr)
-        cost = tuple(int(value) for value in match.groups())
-        return run.returncode, run.stdout, b'\n'.join(lines[:-2]) + b'\n', cost
+        cost = tuple(int(value) for value in match.groups()[1:])
+        return run.returncode, run.stdout, run.stderr[:len(run.stderr) - len(match.group(1))], cost
 
     def test_admitted_definition_lines_share_one_owner_candidate(self):
         for neutral in (False, True):
@@ -139,7 +136,6 @@ class ModelBaseOwnedReplay(unittest.TestCase):
                 status, stdout, stderr, (candidates, _, _) = self.run_adapter(self.current, self.scenes['admitted'], neutral)
                 self.assertEqual(0, status, stdout + stderr)
                 self.assertEqual(1, candidates, 'owned replay keeps every admitted line in the owner')
-                self.assertIn(b'WORLD ', stderr)
 
     def test_lines_outside_the_frame_keep_inner_candidates_in_one_reused_block(self):
         status, stdout, stderr, (candidates, blocks, _) = self.run_adapter(self.current, self.scenes['outside'])
@@ -171,10 +167,10 @@ class ModelBaseOwnedReplay(unittest.TestCase):
                     self.assertEqual(expected, actual)
                     if expected[0] == 0:
                         accepted += 1
-                        self.assertIn(b'WORLD ', expected[2])
+                        self.assertIn(b'"ok":true', expected[1])
                     else:
                         rejected += 1
-                        self.assertNotIn(b'WORLD ', expected[2])
+                        self.assertIn(b'"ok":false', expected[1])
         self.assertGreaterEqual(accepted, 8)
         self.assertGreaterEqual(rejected, 8)
 

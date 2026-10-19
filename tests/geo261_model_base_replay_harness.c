@@ -1,6 +1,6 @@
-/* Includes the real model adapter; Python only renames its command main, adds
- * one final-World digest line, and for the reference build restores the
- * original adapter (per-line parse, freed fingerprint buffer, no block reuse).
+/* Includes the real model adapter; Python only renames its command main and,
+ * for the reference build, restores the original adapter (per-line parse,
+ * freed fingerprint buffer, no block reuse).
  * The harness reports cost witnesses after the command: H candidates opened,
  * H candidate blocks allocated, and 1 MiB fingerprint buffers allocated. */
 #ifdef _WIN32
