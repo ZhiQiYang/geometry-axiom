@@ -1310,9 +1310,9 @@ def check(res, p, _cand=False):
                 elif dc not in cset:
                     fails.append(dict(check="C7_P182_NOT_CANDIDATE", seam=last_got, candidates=cset))
                 else:
-                    if (dc not in ents or not ents[dc]["ok"]) and tr.get("chosen") is not None:
+                    if (dc not in ents or not ents[dc]["ok"]) and (tr or {}).get("chosen") is not None:
                         fails.append(dict(check="C7_P182_CHOSE_FAILED", seam=last_got))
-                    if tr.get("chosen") is None and dc != d0_:
+                    if (tr or {}).get("chosen") is None and dc != d0_:
                         fails.append(dict(check="C7_P182_CHOSE_FAILED", seam=last_got))
                     for d_ in ents:
                         if d_ not in cset:  # trace 試過的每一個都要在 C7 自己算的候選集合裡

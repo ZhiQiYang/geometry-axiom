@@ -172,11 +172,11 @@ MUTANTS = [
 for mut, room, want, why, *lay in MUTANTS:
     lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
     pp = dict(p, **room.get("params", {}))
-    res = fo.build(room, lt, pp, frozenset(set(mut.split("+")) | {"skip_conflict_scan"}))
     try:
+        res = fo.build(room, lt, pp, frozenset(set(mut.split("+")) | {"skip_conflict_scan"}))
         got = {f["check"] for f in fo.check(res, pp)}
-    except AssertionError as e_:  # 檢查本身當掉(例:中線剛好在牆線上)要明確報出來,不能只靠 exit 碼
-        got = {"CHECK_CRASHED: " + (str(e_) or "AssertionError")}
+    except AssertionError as e_:  # 建構或檢查本身當掉(例:中線剛好在牆線上;P-182 評估候選時也會跑檢查)要明確報出來,不能只靠 exit 碼
+        got = {"CRASHED: " + (str(e_) or "AssertionError")}
     ok = want in got
     failed |= not ok
     print(f"[{'紅' if ok else '沒抓到!'}] {mut:18s} 預期 {want:24s} 實得 {sorted(got)}  {why}")
