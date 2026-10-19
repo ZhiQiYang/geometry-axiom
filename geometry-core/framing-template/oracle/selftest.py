@@ -83,12 +83,22 @@ def MIR_LAYOUT(name, k):
 MIR54 = MIRROR(LROOM(4100, 3700, 1500, 54), 1)
 # 牆中段的壁柱(左牆 x 0–dx、y y0–y1),和審查員 r15 的 PIL 同一族
 PILW = lambda W, H, y0, y1, dx: {"outer": [[0, 0], [W, 0], [W, H], [0, H], [0, y1], [dx, y1], [dx, y0], [0, y0]]}
-# 1b6b34f9 審查的兩個退步(P-182 兩段式之後要恢復):
+# 1b6b34f9 審查的兩個退步(P-182 之後要恢復,第三版照樣要對):
 #   (1) 牆階 + 柱:主支要讓開 y=3656 那面牆得往上推 2 mm,但會壓到柱下面的柱面料 [3681,3708];舊規則排不出,第二段退到 3615
 T9COL = lambda ch: {"outer": [[0, 0], [4100, 0], [4100, 4000 - ch], [2600, 4000 - ch], [2600, 4000], [0, 4000]],
                     "holes": [[[1000, 3708], [1400, 3708], [1400, 3900], [1000, 3900]]]}
 #   (2) 左牆中段的壁柱 y 2745–2900:舊規則把主支推開 8 mm、補 3846 mm 併料就排得出,不該退縫多裁一整排板
 PIL2745 = PILW(4100, 3200, 2745, 2900, 200)
+# P-182 第三版(#251 審查 718cc9a3)的對照房:
+#   壁柱 y 2745 加柱 x0–x0+300、y 2650–2850:原縫位沒有衝突碼,但檢查紅(C8 I19、C10),要退縫
+PILCOL = lambda x0: dict(PILW(4100, 3200, 2745, 2900, 200), holes=[[[x0, 2650], [x0 + 300, 2650], [x0 + 300, 2850], [x0, 2850]]])
+#   45 mm 牆階加柱 x 1000–1400、y 3440–3640:原縫位報 MAIN_HITS_RC_TIMBER(任何衝突碼都要試下一個候選),要退到 3614
+S45COL = dict({"outer": [[0, 0], [4100, 0], [4100, 3655], [2600, 3655], [2600, 3700], [0, 3700]]},
+              holes=[[[1000, 3440], [1400, 3440], [1400, 3640], [1000, 3640]]])
+#   分辨房:x 0–300 的牆 y=3655 是背向起鋪側的牆(室內在它上面),x 3800–4100 的牆 y=3654;兩面都在主支寬度裡
+DISTR = {"outer": [[300, 0], [4100, 0], [4100, 3654], [3800, 3654], [3800, 3720], [0, 3720], [0, 3655], [300, 3655]]}
+#   三段牆階:兩面牆都在主支寬度裡,近的那個候選(3614)不可行、遠的(3609)可行;由遠到近試會漏掉 3614
+TRIPLE = {"outer": [[0, 0], [4100, 0], [4100, 3650], [2600, 3650], [2600, 3655], [1500, 3655], [1500, 3700], [0, 3700]]}
 # 30 mm 牆階:牆階面只剩 3 mm,縫 3659 的承接帶碰不到它,不會觸發退縫;只有 G7 照縫線上最近的對牆(y=3670)才會把板端縫挪到 3629
 STEP30 = {"outer": [[0, 0], [4100, 0], [4100, 3670], [2600, 3670], [2600, 3700], [0, 3700]]}
 # 41 mm 牆階:G7 第一次把縫挪到 3659,剛好落在 y=3659 那面牆的牆線上;那面牆要算在縫前面,再挪到 3618
@@ -148,14 +158,16 @@ MUTANTS = [
     ("bbox_ft02", STEP3720, "C7_SEAMS_NOT_FROM_START", "FT02 退回照外框挪縫:外框深 3720,縫留在 3667;縫線上最近的對牆是 x>2600 的 y=3690 牆,應挪到 3649"
      "(這間的主支推開 18 mm、補併料就排得出,P-182 第二段不會補救;牆階 20–40 mm 那幾間第一段排不出,第二段照主支寬度退到同一處,照外框挪縫的錯在那裡看不出來)", "左上起鋪,板長沿X"),
     ("bbox_ft02", STEP30, "C7_SEAMS_NOT_FROM_START", "同上,板端縫(B 軸):30 mm 牆階應挪到 3629(40 mm 牆階時退縫規則也會退到同一處,抓不出差別,所以換這間)", "左上起鋪,板長沿Y"),
-    ("bbox_ft02+no_push_fallback", STEP40, "C1_OVERLAP", "照外框挪縫時,讓開牆料的平移撞到 y=3700 的牆料,沒有退回置中", "左上起鋪,板長沿X"),
+    ("bbox_ft02+no_push_fallback+no_main_band_depth", STEP40, "C1_OVERLAP", "照外框挪縫時,讓開牆料的平移撞到 y=3700 的牆料,沒有退回置中", "左上起鋪,板長沿X"),
     ("no_seam_retreat", STEP45, "C7_SEAMS_NOT_FROM_START", "45 mm 牆階:板端縫 3659 的承接帶落在牆階面沒料的 18 mm 裡,沒有往內退到 3614", "左上起鋪,板長沿Y"),
     ("no_resettle", DSTEP, "C7_SEAMS_NOT_FROM_START", "雙牆階:退縫到 3614 後沒有再跑 G7,x>3300 那段只剩 13 mm 的收邊板條(應挪到 3587)", "左上起鋪,板長沿Y"),
-    ("no_main_band_depth", STEP45, "C7_SEAMS_NOT_FROM_START", "拿掉 P-182:主支縫只看縫線,y=3655 那面牆落在最後一支主支 [3646,3673] 的寬度裡,沒有退到 3614", "左上起鋪,板長沿X"),
-    ("no_main_band_depth", STEP45, "C7_G7_TOO_CLOSE", "同上,C7b 直接驗結果:主支起鋪側側面那條線上的對牆 y=3655 離縫 3659 不到 1.5w", "左上起鋪,板長沿X"),
-    ("p182_always", PIL2745, "C7_SEAMS_NOT_FROM_START", "P-182 跳過第一段(主支寬度一跨牆就退):左牆壁柱 y 2745–2900,舊規則推開 8 mm、補併料就排得出,卻退縫到 2704", "左上起鋪,板長沿X"),
-    ("p182_always", MIR54, "C7_SEAMS_NOT_FROM_START", "同上,上下鏡像的 54 mm 牆階:R-butt 平移 1 mm 就排得出,卻退縫到 95;"
+    ("no_main_band_depth", STEP45, "C7_P182_TRACE_MISSING", "拿掉 P-182:y=3655 那面牆落在最後一支主支 [3646,3673] 的寬度裡,建構端卻沒有候選 trace", "左上起鋪,板長沿X"),
+    ("p182_always", PIL2745, "C7_P182_FALSE_FAIL", "P-182 跳過第一段(主支寬度一跨牆就退):左牆壁柱 y 2745–2900,舊規則推開 8 mm、補併料就排得出,卻退縫到 2704", "左上起鋪,板長沿X"),
+    ("p182_always", MIR54, "C7_P182_FALSE_FAIL", "同上,上下鏡像的 54 mm 牆階:R-butt 平移 1 mm 就排得出,卻退縫到 95;"
      "退縫後副支 [27,81] 的中線剛好在 y=54 牆線上,檢查也不能當掉", "左下起鋪,板長沿X"),
+    ("p182_no_backface", DISTR, "C7_P182_TRACE_MISSING", "建構端不認背向起鋪側的牆:分辨房 x 0–300 的 y=3655 那面牆沒當成擋料,沒有候選", "左上起鋪,板長沿X"),
+    ("p182_far_first", TRIPLE, "C7_P182_TRACE_INCOMPLETE", "候選由遠到近試:三段牆階先試 3609 就成功,比它優先的 3614 沒試", "左上起鋪,板長沿X"),
+    ("p182_conflicts_only", PILCOL(1000), "C8_I19_PRIORITY", "候選只看衝突碼、不跑 check():壁柱加柱那間原縫位沒有衝突碼卻檢查紅,沒有退縫", "左上起鋪,板長沿X"),
 ]
 for mut, room, want, why, *lay in MUTANTS:
     lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
@@ -217,11 +229,20 @@ for room_, tag_, lay_, why_, want_seam in (
         (MIR54, "54 mm 牆階(上下鏡像)", "左下起鋪,板長沿X", "置中主支跨過 y=54 一 mm,R-butt 平移 1 mm 就不跨,不退(原房間 3659 的鏡像)", ("a", 41)),
         (MIRROR(LROOM(4100, 3700, 1500, 53), 1), "53 mm 牆階(上下鏡像)", "左下起鋪,板長沿X", "P-182 退到原房間 3606 的鏡像", ("a", 94)),
         (MIRROR(DSROOM(3649, 3597), 1), "雙牆階 3649/3597(上下鏡像)", "左下起鋪,板長沿X", "P-182 退到原房間 3556 的鏡像", ("a", 144)),
-        # P-182 兩段式(#251 審查 1b6b34f9):舊規則排不出才退縫
+        # P-182(#251 審查 1b6b34f9、718cc9a3):原縫位不可行才退縫
         (T9COL(344), "牆階 344 mm + 柱", "左上起鋪,板長沿X", "舊規則往上推 2 mm 會壓到柱面料 [3681,3708],排不出;第二段照 y=3656 退", ("a", 3615)),
         (T9COL(342), "牆階 342 mm + 柱", "左上起鋪,板長沿X", "同上,照 y=3658 退", ("a", 3617)),
         (PIL2745, "左牆壁柱 y 2745–2900", "左上起鋪,板長沿X", "舊規則排得出(推開 8 mm、補併料),不退", ("a", 2750)),
         (PILW(4100, 3200, 2750, 2900, 200), "左牆壁柱 y 2750–2900", "左上起鋪,板長沿X", "縫線本身碰到壁柱面,照縫線上的對牆(G7)退,這是既有的不連續", ("a", 2709)),
+        # P-182 第三版(#251 審查 718cc9a3)
+        (PILCOL(1000), "壁柱 y 2745 加柱 x 1000", "左上起鋪,板長沿X", "原縫位檢查紅(C8 I19),退到 ⌊2745 − 40.5⌋", ("a", 2704)),
+        (PILCOL(265), "壁柱 y 2745 加柱 x 265", "左上起鋪,板長沿X", "原縫位檢查紅(C8 I19、C10),退到 2704", ("a", 2704)),
+        (S45COL, "45 mm 牆階加柱", "左上起鋪,板長沿X", "原縫位報 MAIN_HITS_RC_TIMBER,退到 3614", ("a", 3614)),
+        (DISTR, "分辨房", "左上起鋪,板長沿X", "背向起鋪側的 y=3655 給 3614,但 3614 離 y=3654 那面牆不到 1.5w(C7b),再試 3613", ("a", 3613)),
+        (DISTR, "分辨房", "右上起鋪,板長沿X", "同上", ("a", 3613)),
+        (MIRROR(DISTR, 1), "分辨房(上下鏡像)", "左下起鋪,板長沿X", "鏡像:3720 − 3613", ("a", 107)),
+        (MIRROR(DISTR, 1), "分辨房(上下鏡像)", "右下起鋪,板長沿X", "鏡像:3720 − 3613", ("a", 107)),
+        (TRIPLE, "三段牆階", "左上起鋪,板長沿X", "近的候選 3614 不可行(C7b),3609 可行", ("a", 3609)),
         # 縫線「往起鋪側偏半 mm」的獨立期望值(#251 審查 1b6b34f9 須改 4):左牆壁柱下緣 y=1831 剛好在板端縫 1831 上,
         #   牆算在縫前面,G7 照它挪到 ⌊1831 − 40.5⌋ = 1790;探測線改成往對牆偏(建構端或兩邊一起)就停在 1831
         (PILW(3600, 3000, 1831, 2000, 200), "左牆壁柱 y 1831–2000", "左上起鋪,板長沿Y", "壁柱下緣剛好在縫線上,算在縫前面,板端縫挪到 1790", ("b", 1790))):
@@ -245,17 +266,18 @@ ok = (_ma == [(2745, 2772)] and [fo.rng(t["rect"], res["a"]) for t in _d] == [(2
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] P-182 第一段:左牆壁柱 y 2745–2900 左上 X,主支 {_ma}(要 [(2745, 2772)]),併料 {[fo.rng(t['rect'], res['a']) for t in _d]} 長 {_dl}(要 3846),"
       f"縫 {res['seams_a'][-1]}(要 2750,收邊 449)")
-# P-182 第一段的併料放不下(MAIN_DOUBLING_BLOCKED)也要進第二段,C7 的獨立推算(expected_main_feasible 的併料那一條)也要判排不出:
-#   外框深 3720、x>2600 那段只到 3665,縫 3667 的主支要往上推 11 mm 才不跨 y=3665,超過容許量要補併料 [3638,3665],
-#   但柱 x 1000–1400、y 3200–3620 上面的柱面料 [3620,3647] 擋住併料;第二段照 y=3665 退到 3624(之後主支壓到柱面料,
-#   這間仍不可施工,報 TIMBERS_COLLIDE)。只看縫位與 C7:兩邊都要是 3624
+# P-182 第三版:都不可行時才報衝突,trace 的每個候選都要真的失敗(#251 審查 718cc9a3)。外框深 3720、x>2600 那段只到 3665,
+#   柱 x 1000–1400、y 3200–3620:原縫位 3667、退到 3624(y=3665)、再退到 3579(柱上面那面)都撞料;要報 P182_NO_FEASIBLE_CANDIDATE,
+#   C7 自己算的候選集合也要是這三個,trace 每一個 C7 重跑 check() 都要失敗
 DBLCOL = {"outer": [[0, 0], [4100, 0], [4100, 3665], [2600, 3665], [2600, 3720], [0, 3720]],
           "holes": [[[1000, 3200], [1400, 3200], [1400, 3620], [1000, 3620]]]}
 res = fo.build(DBLCOL, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X"), p)
-_f = {f["check"] for f in fo.check(res, p)}
-ok = res["seams_a"][-1] == 3624 and "C7_SEAMS_NOT_FROM_START" not in _f and "C7_G7_TOO_CLOSE" not in _f
+_tr = [e["seam"] for e in (res.get("p182") or {}).get("cands", [])]
+_cs = fo.expected_p182_candidates(res["region"], res["a"], "min", 0, 3720, 3667, 2750, p["w"])
+_pb = fo.p182_trace_problems(res, p)
+ok = ("P182_NO_FEASIBLE_CANDIDATE" in {c["code"] for c in res["conflicts"]} and _tr == [3667, 3624, 3579] and _cs == [3667, 3624, 3579] and not _pb)
 failed |= not ok
-print(f"[{'綠' if ok else '錯!'}] P-182 第一段併料放不下:縫 {res['seams_a'][-1]}(要 3624),C7 {sorted(x for x in _f if x.startswith('C7'))}(要沒有)")
+print(f"[{'綠' if ok else '錯!'}] P-182 都不可行:trace {_tr}、C7 候選 {_cs}(都要 [3667, 3624, 3579]),trace 重跑 check() 沒失敗的 {_pb}(要沒有)")
 # 牆線上取區間(檢查端 section_both_sides,#251 審查 1b6b34f9 建議 6):剛好在牆線上時取兩側都在室內的部分,正反兩個方向都要對
 for room_, m_, want_ in ((LROOM(4100, 3700, 1500, 54), 3646, [(0, 2600)]), (MIR54, 54, [(0, 2600)])):
     got_ = [tuple(iv) for iv in fo.section_both_sides(fo.Region(room_["outer"], []), 1, m_)]
@@ -269,13 +291,53 @@ got_ = {f["check"] for f in fo.check(res, p)}
 ok = "C7_G7_TOO_CLOSE" in got_
 failed |= not ok
 print(f"[{'紅' if ok else '沒抓到!'}] tamper_seam        預期 C7_G7_TOO_CLOSE          實得 {sorted(got_)}  雙牆階的板端縫改回 3614:離 x>3300 的對牆只剩 13 mm")
-# C7b 的主支寬度那一半(P-182):把 45 mm 牆階左上 X 的最後一條主支縫改回 3659,主支 [3646,3673] 跨過 y=3655,C7_G7_TOO_CLOSE 要報
-res = fo.build(STEP45, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X"), p)
-res["seams_a"] = res["seams_a"][:-1] + [3659]
-got_ = {f["check"] for f in fo.check(res, p)}
-ok = "C7_G7_TOO_CLOSE" in got_
-failed |= not ok
-print(f"[{'紅' if ok else '沒抓到!'}] tamper_main_seam   預期 C7_G7_TOO_CLOSE          實得 {sorted(got_)}  45 mm 牆階的主支縫改回 3659:主支寬度跨過 y=3655 那面牆")
+# P-182 第三版 C7 的裁決(#251 審查 718cc9a3):對建構端的 candidate trace 動手腳,C7 都要抓到
+import copy as _copy  # noqa: E402
+
+_lx = next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X")
+_base45 = fo.build(STEP45, _lx, p)
+_baseds = fo.build(DSROOM(3649, 3597), _lx, p)
+
+
+def _tamper(base_, how):
+    r_ = _copy.deepcopy(base_)
+    how(r_)
+    return {f["check"] for f in fo.check(r_, p)}
+
+
+def _t_seam(r_):  # 主支縫改回 trace 判為失敗的原縫位
+    r_["seams_a"] = r_["seams_a"][:-1] + [3659]
+
+
+def _t_falsefail(r_):  # 原縫位那一筆換成選中的(可行的)佈局,仍標失敗
+    r_["p182"]["cands"][0]["res"] = r_["p182"]["cands"][-1]["res"]
+
+
+def _t_drop(r_):  # 雙牆階:拿掉 3608 那一筆
+    r_["p182"]["cands"] = [e for e in r_["p182"]["cands"] if e["d"] != 3608]
+
+
+def _t_noncand(r_):  # 選中一個不在候選集合裡的位置
+    r_["seams_a"] = r_["seams_a"][:-1] + [3600]
+    r_["p182"]["cands"].append(dict(_copy.copy(r_["p182"]["cands"][-1]), d=3600, seam=3600, ok=True))
+
+
+def _t_skip(r_):  # 雙牆階:3608 標成可行卻沒選
+    for e in r_["p182"]["cands"]:
+        if e["d"] == 3608:
+            e["ok"] = True
+
+
+for nm_, base_, how_, want_, why_ in (
+        ("tamper_main_seam", _base45, _t_seam, "C7_P182_CHOSE_FAILED", "45 mm 牆階的主支縫改回 3659(trace 判它不可行)"),
+        ("tamper_false_fail", _base45, _t_falsefail, "C7_P182_FALSE_FAIL", "trace 把可行的佈局標成失敗"),
+        ("tamper_trace_drop", _baseds, _t_drop, "C7_P182_TRACE_INCOMPLETE", "雙牆階 3649/3597:比選中的 3556 優先的 3608 不在 trace"),
+        ("tamper_noncandidate", _base45, _t_noncand, "C7_P182_NOT_CANDIDATE", "選中 3600:不在 C7 自己算的候選集合"),
+        ("tamper_skip_feasible", _baseds, _t_skip, "C7_P182_SKIPPED_FEASIBLE", "trace 說 3608 可行,卻選了 3556")):
+    got_ = _tamper(base_, how_)
+    ok = want_ in got_
+    failed |= not ok
+    print(f"[{'紅' if ok else '沒抓到!'}] {nm_:18s} 預期 {want_:24s} 實得 {sorted(got_)}  {why_}")
 # C13 的「那支治具記號確實放不下」:F2 右上 X 有一支記號 [8624,8651] 離上面的邊界材 [8673,8700] 只差 22 mm、本來放得下;
 #   把它換成一支貼著邊界材的 fill [8646,8673],離治具位置 < w、也貼著擋料,只有這一條能判它不合規則。
 res = fo.build(R["F2主臥"], next(l for l in fo.LAYOUTS if fo.layout_name(l) == "右上起鋪,板長沿X"), p)
@@ -287,7 +349,7 @@ ok = bool(tgt) and "C13_EXTRA_OFF_RULE" in got_
 failed |= not ok
 print(f"[{'紅' if ok else '沒抓到!'}] tamper_fill_plausible 預期 C13_EXTRA_OFF_RULE   實得 {sorted(got_)}  F2 右上 X 把放得下的記號換成貼邊界材的 fill")
 # 平移退回置中仍要有效:照舊縫位(bbox_ft02,縫 3659)時,40 mm 牆階的主支被推去撞 y=3700 的牆料就要退回置中,
-#   原因要是核心限制(主支頂延伸段),不是碰撞。P-182 第二段會把這種情形退縫解掉,所以這裡關掉第二段(no_main_band_depth),只看第一段。
+#   原因要是核心限制(主支頂延伸段),不是碰撞。P-182 會把這種情形退縫解掉,所以這裡關掉 P-182(no_main_band_depth),只看原縫位。
 res = fo.build(STEP40, next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X"), p, frozenset({"bbox_ft02", "no_main_band_depth"}))
 got_ = sorted({c["code"] for c in res["conflicts"]})
 ok = got_ == ["CORE_LIMIT_MAIN_ON_EXTENSION"]
@@ -358,6 +420,9 @@ def sweep_family(rooms_, mirror=False):
                     for c in cs_:
                         codes_[c] = codes_.get(c, 0) + 1
                     unb_.add((vid_, fo.layout_name(l_), cs_))
+                    pb_ = fo.p182_trace_problems(r_, p)  # 不可施工時,trace 裡每個候選都要真的失敗
+                    if pb_:
+                        bad_.append((vroom_["outer"], fo.layout_name(l_), ["P182_TRACE"] + [x[0] for x in pb_]))
                     continue
                 nb_ += 1
                 f_ = fo.check(r_, p)
@@ -437,7 +502,7 @@ if _queue is not None:
     ok = not _badq and not _wrongq
     failed |= not ok
     print(f"[{'綠' if ok else '錯!'}] 引文逐字({quote_check.queue_source()}):標成原話的引文 {_nq} 段都逐字出現在 決策佇列.md(不一致 {len(_badq)});"
-          f"反例 {sum(1 for _, b in quote_check.SAMPLES if b)} 個都抓到、正例 {sum(1 for _, b in quote_check.SAMPLES if not b)} 個都過,"
+          f"反例 {sum(1 for x_ in quote_check.SAMPLES if x_[1])} 個都抓到、正例 {sum(1 for x_ in quote_check.SAMPLES if not x_[1])} 個都過,"
           f"拿掉「{quote_check.MISSING_SECTION}」那一節的佇列要指出缺了這一節(判錯 {len(_wrongq)})")
     for x in _badq + _wrongq:
         print("    ", x)
@@ -536,6 +601,8 @@ for rid, room in reflex_rooms:
             for c in res["conflicts"]:
                 codes[c["code"]] = codes.get(c["code"], 0) + 1
             unb["reflex"].add((rid, fo.layout_name(l), tuple(sorted({c["code"] for c in res["conflicts"]}))))
+            if fo.p182_trace_problems(res, p):
+                rb.append((room["outer"], fo.layout_name(l), ["P182_TRACE"]))
             continue
         rbuild += 1
         fails = fo.check(res, p)
@@ -569,6 +636,66 @@ for x in _x2[:10]:
     print("     多出", x)
 for x in _m2[:10]:
     print("     少了", x)
+# P-182 第三版的候選掃描(#251 審查 718cc9a3 的四族;快速模式取樣,--full 全跑)。可施工的都要通過全部檢查(含 C7 裁決),
+#   不可施工的 trace 每個候選都要真的失敗;分辨房那一族另外要上下鏡像互為鏡像。
+def _p182_family(name_, rooms_, mirror_pairs=False):
+    """回傳 (次數, 可施工, 不可施工, 問題清單, 已知缺陷 C11 次數)。只有 C11_MAIN_NOT_BUTTED 的檢查失敗算已知缺陷
+    (牆階加主支下方的柱,主支該貼住卻沒貼住;另開工單,本版不修),另外計數,不算失敗。"""
+    n_ = nb_ = nu_ = k11_ = 0
+    bad_ = []
+    for key_, room_, lays_ in rooms_:
+        for ln_ in lays_:
+            l_ = next(l for l in fo.LAYOUTS if fo.layout_name(l) == ln_)
+            r_ = fo.build(room_, l_, p)
+            n_ += 1
+            if r_["conflicts"]:
+                nu_ += 1
+                if fo.p182_trace_problems(r_, p):
+                    bad_.append((key_, ln_, "trace"))
+            else:
+                nb_ += 1
+                f_ = sorted({f["check"] for f in fo.check(r_, p)})
+                if f_ == ["C11_MAIN_NOT_BUTTED"]:
+                    k11_ += 1
+                elif f_:
+                    bad_.append((key_, ln_, f_))
+            if mirror_pairs:
+                m_ = fo.build(MIRROR(room_, 1), next(l for l in fo.LAYOUTS if fo.layout_name(l) == MIR_LAYOUT(ln_, 1)), p)
+                c0_, c1_ = sorted({c["code"] for c in r_["conflicts"]}), sorted({c["code"] for c in m_["conflicts"]})
+                if c0_ != c1_ or (not c0_ and abs(r_["seams_a"][-1] + m_["seams_a"][-1] - 3720) > 1):
+                    bad_.append((key_, ln_, "mirror", r_["seams_a"][-1], m_["seams_a"][-1], c0_, c1_))
+                elif not c1_ and fo.check(m_, p):
+                    bad_.append((key_, ln_, "mirror-check"))
+    return n_, nb_, nu_, bad_, k11_
+
+
+_stp = 1 if FULL else 3
+_fam = {}
+_fam["t16 牆階 338–346 加柱"] = [((ch, kd, yc), {"outer": [[0, 0], [4100, 0], [4100, 4000 - ch], [2600, 4000 - ch], [2600, 4000], [0, 4000]],
+                                               "holes": [[[1000, y0], [1400, y0], [1400, y1], [1000, y1]]]}, ["左上起鋪,板長沿X"])
+                              for ch in (338, 340, 341, 342, 343, 344, 345, 346) for kd in ("below", "above") for yc in range(3600, 3740, 2 * _stp)
+                              for y0, y1 in [((yc - 200, yc) if kd == "below" else (yc, yc + 200))] if y1 <= 3970 and y0 >= 2800]
+_fam["t14 壁柱加柱"] = [((y0, x0), dict(PILW(4100, 3200, y0, 2900, 200), holes=[[[x0, 2650], [x0 + 300, 2650], [x0 + 300, 2850], [x0, 2850]]]),
+                         [fo.layout_name(l) for l in fo.LAYOUTS]) for y0 in range(2741, 2750) for x0 in (400, 1000, 2000, 3000)]
+_fam["t10 分辨房族(含鏡像)"] = [((e, F), {"outer": [[300, 0], [4100, 0], [4100, 3720], [0, 3720], [0, e], [300, e]] if F is None else
+                                       [[300, 0], [4100, 0], [4100, F], [3800, F], [3800, 3720], [0, 3720], [0, e], [300, e]]},
+                              ["左上起鋪,板長沿X", "右上起鋪,板長沿X", "左下起鋪,板長沿X", "右下起鋪,板長沿X"])
+                             for e in range(3650, 3692, _stp) for F in (None, 3652, 3653, 3654, 3655, 3656, 3660)]
+_fam["t4 牆階加柱"] = [((top, ch, kd, yc, cx), {"outer": [[0, 0], [4100, 0], [4100, top - ch], [2600, top - ch], [2600, top], [0, top]],
+                                               "holes": [[[cx[0], y0], [cx[1], y0], [cx[1], y1], [cx[0], y1]]]}, ["左上起鋪,板長沿X"])
+                       for top in (3700, 3720, 3740) for ch in range(1, 70, 2 * _stp) for kd in ("below", "above") for yc in range(3590, 3740, 3 * _stp)
+                       for cx in ((1000, 1400), (3000, 3400))
+                       for y0, y1 in [((yc - 200, yc) if kd == "below" else (yc, yc + 200))]
+                       if y1 <= ((top - ch) if cx[0] >= 2600 else top) - 30 and y0 >= 2800]
+for _nm, _rooms in _fam.items():
+    _n, _nb, _nu, _bad, _k11 = _p182_family(_nm, _rooms, mirror_pairs=_nm.startswith("t10"))
+    runs += _n
+    ok = not _bad
+    failed |= not ok
+    print(f"[{'綠' if ok else '錯!'}] P-182 候選掃描 {_nm}:{_n} 次,可施工 {_nb}、不可施工 {_nu};檢查失敗、trace 沒真的失敗、鏡像不對稱 {len(_bad)}"
+          f"(已知缺陷 C11_MAIN_NOT_BUTTED {_k11} 次,另開工單)")
+    for x in _bad[:8]:
+        print("    ", x)
 # 不可施工的排法要和明列的預期清單(每筆附原因代碼)完全一樣;清單空的就要 0 個。--write-expected 只在人工覆核後重寫清單。
 if "--write-expected" in sys.argv:
     json.dump({fam: sorted([list(x[:2]) + [list(x[2])] for x in v]) for fam, v in unb.items()}, open(EXP_PATH, "w", encoding="utf-8", newline="\n"),
