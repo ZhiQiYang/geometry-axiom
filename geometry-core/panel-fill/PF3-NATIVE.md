@@ -69,3 +69,35 @@ python tests/run_all.py --build
 
 具體受測 head、退出碼與原始輸出由本輪 evidence 索引記錄。
 **雲端 native,非正式 WSL 收據**；正式七項由本機列車於整合樹執行。
+
+## GEO-261 之後的故障注入錨點（2026-10-20）
+
+整合分支 `7e36543b` 上，`tests/test_mutation_anchors.py` 報出 `unplaced`、`host-identity` 兩個案例的錨點不存在：承接足跡的篩選從 `w->timbers[i]` 改成 `w->wood.timbers[i]`，原本的單一條件被拆成幾個敘述。另外 17 個案例的錨點沒動，實跑也全部仍被殺。
+
+承接規則「只有放在本填板衍生宿主上的已放角材才算承接」在 GEO-261 有兩處把關。工具的案例本來就是補丁清單，`host-identity` 這次改成兩個補丁，`unplaced` 一個。
+
+| 案例 | main `adbaebf9` 原本打的位置 | 整合分支改打的位置 | 層數與對照組 | 為什麼是同一條規則、同一種錯誤 |
+|---|---|---|---|---|
+| unplaced（R43） | `geometry-core/panel_fill_support.inc:30` `if(!w->timbers[i].placed||w->anchors[i].placement_id!=host->id)continue;` 拿掉 `!…placed||` | 同檔 `:23` `if(!w->wood.timbers[i].placed)continue;uint32_t placement=…;` 拿掉前半句，留下 `placement` 宣告 | 1 層，單層即被殺 | 規則是「沒有 D7 放置的角材沒有足跡，不算承接」，仍只靠這一句。測試場景的零 id 宿主與未放置角材 99（錨點的 `placement_id` 預設 0）剛好 id 相同，篩掉 `placed` 之後角材 99 進入足跡計算，得到 `R43: timber 99 footprint unavailable`。失敗在 `test_panel_fill_support.py:186` → `derived()` 的 `assertNotIn("error", …, "PF3_UNPLACED…")`（`:29`），與 main 完全相同。 |
+| host-identity（R43） | `:30` 同一行拿掉 `||w->anchors[i].placement_id!=host->id` | 同檔 `:25` `if(placement!=host->id)continue;` 整行拿掉（`placement` 在來源圖路徑取自 `wood_definition_sources_placement`）；另一層 `geometry-app/native/reference_sources.inc:496` `reference_member_footprint` 內的 `anchor.placement_id!=placement_id||` | 2 層。只拿迴圈篩選（XP1）：候選被拒 `R43: timber 1 footprint unavailable`（`PANEL_FILL_INVALID`），測試在 `:168` 的 `apply` 失敗，到不了指名的 `PF3_HOST_FILTER` 斷言，工具判 not-killed。只拿足跡檢查（XP2）：存活，結束碼 0。兩層都拿掉才被殺 | 規則是「只有放在本填板衍生宿主 id 上的角材算承接，共面但不同宿主不算」。main 只有迴圈這一道；GEO-261 另在足跡計算裡再驗一次（角材放置 id 必須等於要投影的宿主），所以只拿掉迴圈，別的宿主的角材會變成「足跡不可用」的候選拒絕，而不是被悄悄算進去。兩層都拿掉後，別的宿主的角材被當成承接，`widths` 變成 `[[0,27,100,900,True],[27,273,10,20,True],[273,300,100,900,True]]`，期望是 `[[0,300,0,0,False]]`，失敗在 `:170` 的 `PF3_HOST_FILTER`，與 main 完全相同。 |
+
+第二層所在的 `reference_member_footprint` 是共用函式，`references.inc` 的其他檢查與世界驗證（經 `app_reference_member_footprint`）也呼叫它。補丁只用在這個案例的暫存副本，案例的裁判只有指名的那一個測試；其他呼叫端受到的影響沒有逐一分析。
+
+### WSL 實跑收據（2026-10-20）
+
+受驗提交是 `bda11f1430a19c88e0b0474dfe5034d3cf35b9f5`，`git status` 乾淨。環境：WSL Ubuntu-24.04、GCC 13.3.0，ext4 clone `/var/tmp/anchor-drift-geo261/repo`，經 WSL 鎖。指令 `python3 tests/pf3_mutation_check.py --out … --jobs 3`，結束碼 0，587 秒。
+
+- 基準線 pass：20 個測試，0 fail、0 error、0 skip。
+- 19 個案例全部 killed：每個都是 1 個測試、1 個 failure、0 error、0 skip，stderr 含指定標記；沒有 identical-binary。
+- 還原後 pass：20 個測試；原始碼逐位元組未變（`originalSourcesUnchanged: true`）。
+- main 對照（`adbaebf9`，main 原本的 `unplaced`、`host-identity`）：都 killed，失敗位置與訊息和上表相同。
+- 改錨前對照（`7e36543b`，工具未改）：基準線 pass 後，在 `unplaced` 的錨點斷言停下，工具結束碼 1。
+
+收據在 `D:/geometry-axiom-work/anchor-drift-20261020/`，沒有提交進 repo：
+
+| 目錄 | 內容 |
+|---|---|
+| `final-tools/out/pf3/` | 受驗提交；`summary.json` sha256 `38f480d99c5d22231c426f38a8e507f0a7e904cacaa972aac3a7c2e4b49a705d`，每個案例一個子目錄（結果、stderr、建置收據） |
+| `controls/out/pf3/` | XP1、XP2；`summary.json` sha256 `5de279eeeeddc443ef888714968f7cc91c124a45cd9511f78e345b859445a659` |
+| `main-compare/out/pf3/` | main 的原突變；`summary.json` sha256 `6f601c215104e42831e6bbf3e09fac6649debbb435313e915946afaded5a0aef` |
+| `before-tools/` | 改錨前的失敗，`pf3.out` sha256 `7f0cdbe3787de304380531e7a00cdac95c7bb017757bfae81843805b6cbfed01` |

@@ -159,6 +159,43 @@ python geometry-web/serve.py 8848
 另以 `GEOMETRY_ASSEMBLY_ONLY=1 GEOMETRY_ASSEMBLY_INJECT_SWAP=1` 跑 CDP，攔截交換按鈕、只改文字：
 P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數；完整模式禁止此注入。
 
+### GEO-261 之後的錨點（2026-10-20）
+
+整合分支 `7e36543b` 上，`tests/test_mutation_anchors.py` 報出 `conflict`、`missing-source` 兩個錨點已不存在：I40 的規則驗證與束縛解析搬進了 `geometry-templates/woodworking/native/assembly.c`。把工具實際跑起來，另外發現兩件閘門看不到的事：
+
+1. **來源副本缺檔，基準線編不過。** 工具只複製 `geometry-core`、`geometry-web` 的 C 檔，而 `current_geometry.c` 現在 include `geometry-app/native/…` 與 `geometry-templates/woodworking/native/…`，gcc 報 `fatal error: geometry-app/native/legacy_json.inc: No such file`（8 秒就停）。現在一併複製這兩個目錄。
+2. **`cancelled-preview` 的錨點還在，突變卻存活。** 只拿掉確認時的 `g_preview.ready` 守門，取消後的確認仍被擋下：取消現在還會丟棄候選（`app_candidate_discard`），候選失效後 `app_world_candidate_current` 為假。錨點存在不代表突變還咬得到，這一類只有實跑看得出來。
+
+案例格式因此改成 `(名稱, [(檔, 前, 後), …], 殺手測試)`，一個案例可以對每一層各打一個補丁。killed 判準沒有改（結束碼 1、有 AssertionError、沒有 errors 與 skipped）。
+
+| 案例 | main `adbaebf9` 原本打的位置 | 整合分支改打的位置 | 層數與對照組 | 為什麼是同一條規則、同一種錯誤 |
+|---|---|---|---|---|
+| conflict（I40） | `geometry-core/assembly.inc:65` `if(!strcmp(scopes[k],scopes[i]))` 換成 `if(false)` | `geometry-templates/woodworking/native/assembly.c:66` 同一段文字，函式改名 `wood_asm_validate_rule`、錯誤函式改名 `wood_asm_error` | 1 層，單層即被殺 | 規則是「同一個規則版本內，兩個接合點不得共用 junction scope」。迴圈、`strcmp` 與訊息「I40: joints %u and %u conflict at scope %s」都是整段搬家。殺手測試的 scope 變體在 `test_assembly_rules.py:218` 以 `preview.valid` 為 True 失敗，與 main 完全相同。 |
+| missing-source（I40） | `assembly.inc:123` `(resolve&&!eng_resolve(…))` 換成 `false` | `assembly.c:115` `(resolve&&!(評估鉤子 ? 鉤子(…) : wood_eng_resolve(…)))` 換成 `false` | 1 層，單層即被殺 | 規則是「束縛的尺寸來源必須解析得出來（0、負值、不存在的材料或參數、application 來源），解析不了就拒絕，不能當成未完成」。GEO-261 把 `eng_resolve` 換成「來源圖的 slot 鉤子，沒有鉤子才直接 `wood_eng_resolve`」，整個 `resolve&&!解析` 項換成 `false`，與 main 的替換同形。殺手測試在 `:452` 以 `preview.valid` 為 True 失敗（slot 1 的 A 被當成 `None`），與 main 完全相同。 |
+| cancelled-preview（不在原漂移清單，實跑時發現） | `geometry-web/engineering_bridge.inc:173` 確認時 `…||!g_preview.ready||!mine||…` 拿掉 `!g_preview.ready` | 同檔 `:197` 同一個守門；另一層 `:217` 取消時的 `app_candidate_discard(g_preview.transaction->control);` 一併拿掉 | 2 層。只拿守門：存活（XA1）。只拿丟棄：存活（XA2）。守門加 `:198` 的 `app_world_candidate_current`：仍存活（XA3），表示丟棄後的候選在重驗或發佈還會被拒（沒有逐一拆開確認是哪一道）。兩層都拿掉才被殺（XA4） | main 的取消只做 `ready=false`，確認的 `ready` 守門是唯一防線。GEO-261 在取消時多丟棄候選，所以守門單獨拿掉不再重現 main 的錯。兩層都拿掉後行為回到 main 拿掉守門的樣子：取消後的 `assembly-confirm` 回 `ok:true`，殺手測試在 `:472` 失敗，與 main 完全相同。 |
+
+「與 main 完全相同」是實測：在 `adbaebf9` 跑 main 原本的三個突變，失敗位置與斷言都和上表一致（收據在下面）。
+
+#### GEO-261 WSL 實跑收據（2026-10-20）
+
+受驗提交是 `bda11f1430a19c88e0b0474dfe5034d3cf35b9f5`，`git status` 乾淨。環境：WSL Ubuntu-24.04、GCC 13.3.0，ext4 clone `/var/tmp/anchor-drift-geo261/repo`，經 WSL 鎖。
+
+- `python3 tests/assembly_mutation_check.py` 結束碼 0，153 秒。
+- 基準線 3 個測試 OK、0 skip。`conflict`、`missing-source`、`cancelled-preview` 各以 1 個測試、1 個 AssertionError 被殺，失敗位置依序是 `test_assembly_rules.py` 的 `:218`、`:452`、`:472`。
+- 還原後基準線 3 個測試 OK，且還原後 bridge 的 sha256 與基準線相同（`ce9fd031…`）。
+- 改錨前對照（`7e36543b`，工具未改）：基準線編譯在 8 秒內失敗。
+- main 對照（`adbaebf9`，main 原本的三個突變）：三個都被殺，位置與上面相同。
+- 單層對照組（同一提交，不進工具）：XA1、XA2、XA3 結束碼 0（存活），XA4 結束碼 1（被殺）。
+
+收據沒有提交進 repo，在 `D:/geometry-axiom-work/anchor-drift-20261020/`：
+
+| 目錄 | 內容 |
+|---|---|
+| `final-tools/` | 受驗提交的完整輸出，`assembly.out` sha256 `3ac2d1f0e40c3e7e74424ffb1c0fc81ab2e48a4c4e71cb885a085dd998229bf3` |
+| `controls/` | XA1～XA4 與 PF3 的對照組，`cmd.log` sha256 `9675a07f85a493642d0f2f0f265f042cf2774f3e719853e9a3271fd2813451db` |
+| `main-compare/` | main 的原突變，`cmd.log` sha256 `63a9f884d75b138e48148315c43d6b46b62ecb7222d51a6c1393e017ed88a3e3` |
+| `before-tools/` | 改錨前的失敗 |
+
 ## 環境限制與計數紀律
 
 Windows SAC 仍阻擋部分預設路徑 core／bridge／完整性檢查執行檔；未停用安全設定。
