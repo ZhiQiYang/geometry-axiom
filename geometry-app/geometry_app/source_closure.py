@@ -2,6 +2,16 @@
 
 Consumers receive individual path/hash pairs and keep their own receipt formats.
 This inventory never replaces a model's legacy source or geometry digest.
+
+The source inventory is reused within a process while stat signatures hold
+(GEO-261 cost). Two known blind spots, both measured on NTFS: a write through
+a memory-mapped view that leaves size, mtime and ChangeTime unchanged, and a
+same-size rewrite after which a program restores both mtime and ChangeTime
+(SetFileInformationByHandle). They are accepted for sources because developers
+and tools change sources through ordinary writes, which always move mtime; the
+guard catches stale code in a running process, not a local actor who can
+already rewrite the sources. The native adapter has no such reuse:
+binary_identity() hashes the executable bytes on every call.
 """
 from hashlib import sha256
 from importlib.util import find_spec
@@ -15,14 +25,13 @@ from geometry_kernel import __file__ as kernel_file
 
 _FACADE = None
 _LOADED = None
-# Process-local reuse of complete inventories and binary digests (GEO-261 cost).
-# An entry is reused only while every watched directory and every listed file
-# still reports the stat signature captured with it; any difference recomputes
-# the whole result. A signature whose timestamps are within _RACY_NS of the
+# Process-local reuse of complete source inventories (GEO-261 cost). An entry
+# is reused only while every watched directory and every listed file still
+# reports the stat signature captured with it; any difference recomputes the
+# whole result. A signature whose timestamps are within _RACY_NS of the
 # capture is never stored, so a later write inside the same timestamp tick
 # cannot hide behind unchanged metadata.
 _INVENTORIES = {}
-_BINARIES = {}
 _RACY_NS = 3_000_000_000
 _now_ns = time.time_ns
 
@@ -218,33 +227,15 @@ def current_identity():
     return {"loaded": _LOADED, "current": current, "fresh": _LOADED is not None and _LOADED == current}
 
 
-def _binary_signature(path):
-    try:
-        return _file_signature(path)
-    except OSError:
-        return None
-
-
-def _binary_memo_valid(path, memo):
-    return _binary_signature(path) == memo[0]
-
-
 def binary_identity(program, *, wsl_distro=None):
+    """Digest of the adapter's actual bytes, recomputed on every call.
+
+    Never reused by stat signature: an in-place mapped write or restored
+    timestamps would otherwise hide a changed executable from I30.
+    """
     path = Path(program)
     if wsl_distro is not None:
         if not re.fullmatch(r"[A-Za-z0-9._-]+", wsl_distro) or not str(program).startswith("/"):
             raise ValueError("Invalid WSL adapter identity")
         path = Path("//wsl.localhost") / wsl_distro / str(program).lstrip("/")
-    key = (str(program), wsl_distro, str(path))
-    memo = _BINARIES.get(key)
-    if memo is not None and _binary_memo_valid(path, memo):
-        return (str(program), wsl_distro, memo[1])
-    now = _now_ns()
-    before = _binary_signature(path)
-    digest = _hash(path, text=False)
-    if (before is not None and before[3] < now - _RACY_NS and before[4] < now - _RACY_NS
-            and _binary_signature(path) == before):
-        _BINARIES[key] = (before, digest)
-    else:
-        _BINARIES.pop(key, None)
-    return (str(program), wsl_distro, digest)
+    return (str(program), wsl_distro, _hash(path, text=False))

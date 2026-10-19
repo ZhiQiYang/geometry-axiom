@@ -1,12 +1,23 @@
-"""GEO-261 cost: process-local reuse of the host source inventory and binary digest.
+"""GEO-261 cost: process-local reuse of the host source inventory; the adapter is always rehashed.
 
 source_closure.current_identity() runs before and after every native model call. It may
 reuse a complete inventory only while every watched directory and listed file keeps the
 stat signature captured with it. These negative controls edit real files in one process
-and require the change to be seen; the last test re-runs the same controls with a memo
-that always hits and requires every one of them to fail.
+and require the change to be seen; one test re-runs the same controls with a memo that
+always hits and requires every one of them to fail.
+
+binary_identity() (the I30 adapter pin) is never reused: every call hashes the
+executable bytes, so an in-place mapped write or a same-size rewrite with restored
+timestamps is still seen. Its controls require exactly one hash per call.
+
+Known, documented blind spots of the source memo (see source_closure's module text),
+not exercised here because the memo is expected to miss them: on NTFS a write through a
+memory-mapped view that leaves size, mtime and ChangeTime unchanged, and a same-size
+rewrite after which a program restores both mtime and ChangeTime
+(SetFileInformationByHandle). Ordinary edits always move mtime.
 """
 from contextlib import ExitStack
+import mmap
 import os
 from pathlib import Path
 import sys
@@ -27,6 +38,7 @@ FILES = {
     "geometry-core/modeling/__init__.py": b"value = 'facade-a'\n",
     "geometry-app/geometry_app/provider.py": b"value = 'host-a'\n",
     "geometry-templates/woodworking/geometry_woodworking/catalog.json": b"{\"value\": \"template-a\"}\n",
+    "geometry-templates/woodworking/geometry_woodworking/nested/existing.py": b"value = 'nested-a'\n",
     "current_geometry.c": b"int core_a;\n",
     "geometry-core/kernel/candidate.c": b"int kernel_a;\n",
     "geometry-core/deep/nested/rules.inc": b"int nested_a;\n",
@@ -41,6 +53,51 @@ def reference(root):
     return tuple((name, source_closure._hash(path, text=True)) for name, path in source_closure.source_paths(root))
 
 
+def restore_times(path, saved):
+    """Put back every timestamp the stat signature reads (mtime, and NTFS ChangeTime on Windows)."""
+    if os.name != "nt":
+        os.utime(path, ns=(saved.st_atime_ns, saved.st_mtime_ns))
+        return
+    import ctypes
+    from ctypes import wintypes
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.CreateFileW.restype = wintypes.HANDLE
+    kernel32.CreateFileW.argtypes = (wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD, ctypes.c_void_p,
+                                     wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE)
+    kernel32.SetFileInformationByHandle.argtypes = (wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD)
+    kernel32.CloseHandle.argtypes = (wintypes.HANDLE,)
+    handle = kernel32.CreateFileW(str(path), 0x100, 0x7, None, 3, 0x02000000, None)  # FILE_WRITE_ATTRIBUTES
+    if handle is None or handle == ctypes.c_void_p(-1).value:
+        raise OSError(ctypes.get_last_error(), "cannot open for attributes")
+    try:
+        if not kernel32.SetFileInformationByHandle(handle, 0, ctypes.byref(saved), ctypes.sizeof(saved)):
+            raise OSError(ctypes.get_last_error(), "cannot restore times")
+    finally:
+        kernel32.CloseHandle(handle)
+
+
+def saved_times(path):
+    """What restore_times() needs: os.stat on POSIX, FILE_BASIC_INFO on Windows."""
+    if os.name != "nt":
+        return os.stat(path)
+    import ctypes
+    from ctypes import wintypes
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.CreateFileW.restype = wintypes.HANDLE
+    kernel32.CreateFileW.argtypes = (wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD, ctypes.c_void_p,
+                                     wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE)
+    kernel32.GetFileInformationByHandleEx.argtypes = (wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD)
+    kernel32.CloseHandle.argtypes = (wintypes.HANDLE,)
+    handle = kernel32.CreateFileW(str(path), 0x80, 0x7, None, 3, 0x02000000, None)
+    info = source_closure._FileBasicInfo()
+    try:
+        if not kernel32.GetFileInformationByHandleEx(handle, 0, ctypes.byref(info), ctypes.sizeof(info)):
+            raise OSError(ctypes.get_last_error(), "cannot read times")
+    finally:
+        kernel32.CloseHandle(handle)
+    return info
+
+
 class MemoFixture:
     def __init__(self, test):
         self.test = test
@@ -52,14 +109,13 @@ class MemoFixture:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)
         self.program = self.root / "adapter.bin"
-        self.program.write_bytes(b"native-adapter-a")
+        self.program.write_bytes(b"native-adapter-a" * 256)
         # Timestamps written above are within the racy window of the real clock.
         # Advance only the memo's clock so this process may store them: detection
         # must then come from the signatures themselves, not from racy refusal.
         stack.enter_context(mock.patch.object(source_closure, "_now_ns",
                                               side_effect=lambda: time.time_ns() + 10 * source_closure._RACY_NS))
         stack.enter_context(mock.patch.dict(source_closure._INVENTORIES, clear=True))
-        stack.enter_context(mock.patch.dict(source_closure._BINARIES, clear=True))
         self.hashes = 0
         original = source_closure._hash
 
@@ -116,12 +172,34 @@ class SourceClosureMemoTests(unittest.TestCase):
     def control_added_file_in_new_nested_directory(self):
         fixture = MemoFixture(self)
         before = fixture.armed()
-        path = fixture.root / "geometry-templates/woodworking/geometry_woodworking/nested/new_adapter.py"
+        path = fixture.root / "geometry-templates/woodworking/geometry_woodworking/fresh/new_adapter.py"
         path.parent.mkdir()
         path.write_bytes(b"new adapter\n")
         after = fixture.inventory()
         self.assertNotEqual(before, after)
-        self.assertIn("geometry-templates/woodworking/geometry_woodworking/nested/new_adapter.py", dict(after))
+        self.assertIn("geometry-templates/woodworking/geometry_woodworking/fresh/new_adapter.py", dict(after))
+        self.assertEqual(reference(fixture.root), after)
+
+    def control_added_file_in_existing_nested_native_directory(self):
+        # Only the nested directory's own signature moves: its parent and the tree
+        # root keep theirs, so every level of the walk has to be watched.
+        fixture = MemoFixture(self)
+        before = fixture.armed()
+        path = fixture.root / "geometry-core/deep/nested/added.inc"
+        path.write_bytes(b"int added;\n")
+        after = fixture.inventory()
+        self.assertNotEqual(before, after)
+        self.assertIn("geometry-core/deep/nested/added.inc", dict(after))
+        self.assertEqual(reference(fixture.root), after)
+
+    def control_added_file_in_existing_nested_package_directory(self):
+        fixture = MemoFixture(self)
+        before = fixture.armed()
+        path = fixture.root / "geometry-templates/woodworking/geometry_woodworking/nested/added.py"
+        path.write_bytes(b"value = 'added'\n")
+        after = fixture.inventory()
+        self.assertNotEqual(before, after)
+        self.assertIn("geometry-templates/woodworking/geometry_woodworking/nested/added.py", dict(after))
         self.assertEqual(reference(fixture.root), after)
 
     def control_removed_file(self):
@@ -162,24 +240,11 @@ class SourceClosureMemoTests(unittest.TestCase):
         os.utime(path, ns=(status.st_atime_ns, status.st_mtime_ns))
         self.assertFalse(source_closure.current_identity()["fresh"])
 
-    def control_binary_same_size_rewrite(self):
-        fixture = MemoFixture(self)
-        first = source_closure.binary_identity(fixture.program)
-        fixture.hashes = 0
-        self.assertEqual(first, source_closure.binary_identity(fixture.program))
-        self.assertEqual(0, fixture.hashes, "an unchanged adapter must be reused without rehashing")
-        time.sleep(TICK)
-        status = fixture.program.stat()
-        fixture.program.write_bytes(b"native-adapter-b")
-        os.utime(fixture.program, ns=(status.st_atime_ns, status.st_mtime_ns))
-        second = source_closure.binary_identity(fixture.program)
-        self.assertNotEqual(first, second)
-        self.assertEqual(source_closure._hash(fixture.program, text=False), second[2])
-
     CONTROLS = ("control_content_edit", "control_same_size_edit_with_restored_mtime",
                 "control_mtime_only_change_rehashes", "control_added_file_in_new_nested_directory",
-                "control_removed_file", "control_replaced_file", "control_current_identity_turns_stale",
-                "control_binary_same_size_rewrite")
+                "control_added_file_in_existing_nested_native_directory",
+                "control_added_file_in_existing_nested_package_directory",
+                "control_removed_file", "control_replaced_file", "control_current_identity_turns_stale")
 
     def test_content_edit_is_detected(self):
         self.control_content_edit()
@@ -193,6 +258,12 @@ class SourceClosureMemoTests(unittest.TestCase):
     def test_added_file_in_new_nested_directory_is_detected(self):
         self.control_added_file_in_new_nested_directory()
 
+    def test_added_file_in_existing_nested_native_directory_is_detected(self):
+        self.control_added_file_in_existing_nested_native_directory()
+
+    def test_added_file_in_existing_nested_package_directory_is_detected(self):
+        self.control_added_file_in_existing_nested_package_directory()
+
     def test_removed_file_is_detected(self):
         self.control_removed_file()
 
@@ -202,8 +273,35 @@ class SourceClosureMemoTests(unittest.TestCase):
     def test_current_identity_turns_stale_after_same_size_edit(self):
         self.control_current_identity_turns_stale()
 
-    def test_binary_identity_detects_same_size_rewrite(self):
-        self.control_binary_same_size_rewrite()
+    # ---- the adapter pin is never reused ----
+    def test_binary_identity_hashes_the_adapter_on_every_call(self):
+        fixture = MemoFixture(self)
+        first = source_closure.binary_identity(fixture.program)
+        fixture.hashes = 0
+        self.assertEqual(first, source_closure.binary_identity(fixture.program))
+        self.assertEqual(1, fixture.hashes, "every adapter identity reads the actual bytes")
+
+    def test_binary_identity_sees_a_mapped_in_place_write(self):
+        fixture = MemoFixture(self)
+        first = source_closure.binary_identity(fixture.program)
+        time.sleep(TICK)
+        with open(fixture.program, "r+b") as handle, mmap.mmap(handle.fileno(), 0) as view:
+            view[3:4] = b"X"
+            view.flush()
+        second = source_closure.binary_identity(fixture.program)
+        self.assertNotEqual(first, second)
+        self.assertEqual(source_closure._hash(fixture.program, text=False), second[2])
+
+    def test_binary_identity_sees_a_same_size_rewrite_with_restored_timestamps(self):
+        fixture = MemoFixture(self)
+        first = source_closure.binary_identity(fixture.program)
+        time.sleep(TICK)
+        saved = saved_times(fixture.program)
+        fixture.program.write_bytes(b"native-adapter-b" * 256)
+        restore_times(fixture.program, saved)
+        second = source_closure.binary_identity(fixture.program)
+        self.assertNotEqual(first, second)
+        self.assertEqual(source_closure._hash(fixture.program, text=False), second[2])
 
     # ---- positive and racy behaviour ----
     def test_memoized_inventory_equals_the_original_computation(self):
@@ -218,10 +316,6 @@ class SourceClosureMemoTests(unittest.TestCase):
             fixture.hashes = 0
             fixture.inventory()
             self.assertEqual(len(FILES), fixture.hashes, "just-written sources stay within the racy window")
-            source_closure.binary_identity(fixture.program)
-            fixture.hashes = 0
-            source_closure.binary_identity(fixture.program)
-            self.assertEqual(1, fixture.hashes)
 
     def test_real_repository_inventory_matches_original(self):
         with mock.patch.dict(source_closure._INVENTORIES, clear=True):
@@ -231,9 +325,7 @@ class SourceClosureMemoTests(unittest.TestCase):
     # ---- mutation: a memo that always hits must turn every control red ----
     def test_every_control_fails_when_the_memo_always_hits(self):
         for name in self.CONTROLS:
-            with self.subTest(control=name), \
-                    mock.patch.object(source_closure, "_memo_valid", return_value=True), \
-                    mock.patch.object(source_closure, "_binary_memo_valid", return_value=True):
+            with self.subTest(control=name), mock.patch.object(source_closure, "_memo_valid", return_value=True):
                 with self.assertRaises(AssertionError):
                     getattr(self, name)()
 
