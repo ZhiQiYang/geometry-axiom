@@ -244,7 +244,7 @@
 1. 依上列位置由檔尾往檔頭插入（避免行號位移），佔位符換成最終編號（全檔取代，含交叉引用與 `SELF_SUPPORT` 診斷所附條號）。
 2. `geometry-guide/sync_axiom_reader.py` 原位同步正典閱讀器；五道完整性 assert 必須全過（見 AGENTS.md）。
 3. 更新 `geometry-core/modeling/__init__.py` 的 `AXIOM_REVISION`；跑 `test_axiom_reader`、AxiomSourceIdentity。
-4. `BACKLOG.md` 記採納、減項，及 Q31「每專案一份 active draft」被取代的 🔒 逐條差異；不在同一提交改產品碼。
+4. `BACKLOG.md` 記採納、減項，及 Q31〈每專案一份 active draft〉(Q31 第一版建議文字，協調 agent 整理，非使用者原話；見決策佇列 :885、:892)被取代的 🔒 逐條差異；不在同一提交改產品碼。
 
 ## 7. 自檢指路
 
