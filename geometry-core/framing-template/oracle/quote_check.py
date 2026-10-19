@@ -16,13 +16,18 @@
 
 比對:引文裡的「…」(U+2026)代表省略,切開的各段要依序出現在同一行;切成兩段以上時每段至少 MIN_FRAG 個字。
 其他字元(含全形/半形、空白個數、半形 ...)都要一模一樣。
-已知限制(查不到的寫法):真的原話配上錯的時間或出處;〈〉、《》、‘’ 這類括號不當引號;.py 檔的 ASCII 引號;
-引述動詞或使用者離開引號太遠、又不在同一行或上一行。
+已知限制(查不到的寫法):真的原話配上錯的時間或出處;〈〉、《》、‘’ 這類括號不當引號(只有緊接在原話、原文後面時報錯);
+.py 檔的 ASCII 引號(只有緊接在原話、原文後面時報錯);引述動詞或使用者離開引號太遠、又不在同一行或上一行;
+佇列自我引用:比對的是受測這棵樹自己的佇列,同一個 PR 往佇列加一行 > 原話行就能讓引文過關(要比對 merge-base 那一份才能擋,
+但 merge-base 取決於 remote ref,在 WSL 的乾淨 clone 裡不可靠,本版不做;靠審查看佇列的 diff)。
+另外先把 HTML 實體(&#12300;、&lcorner; 這類)與 .py 裡的 \\u 跳脫換成真的字再查。
 
 用法:python quote_check.py [--queue 檔案];不給 --queue 時讀 repo 根目錄的 `決策佇列.md`(本檔往上三層)。
 原始碼突變在 repo 外的副本裡跑,由環境變數 FRAMING_QUOTE_QUEUE 指定一份事先從受測工作樹複製出來的同一個檔。"""
+import html
 import os
 import pathlib
+import re
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -34,7 +39,8 @@ SPEECH = ("說", "講", "回答", "表示", "寫道")
 TITLE_MARKER = "決策佇列"
 QUEUE_MARKER = "逐字"
 USER_TABLE = "## 使用者講過的規則"
-CJK = {"「": "」", "『": "』", "“": "”"}
+CJK = {"「": "」", "『": "』", "“": "”", "｢": "｣", "⌜": "⌝", "⌞": "⌟"}
+NONSTD = "〈《‘'`[&\""  # 原話、原文後面接這些(而不是上面的引號),判成轉述冒充原話;& 是解不開的 HTML 實體(例 &lcorner;)
 MIN_FRAG = 6
 
 
@@ -85,30 +91,47 @@ def unquoted(line, prs):
     return "".join(ch for ch, k in zip(line, keep) if k)
 
 
-def bad_paraphrase(line):
-    """「原話」後面接括號或冒號、卻不是引號:轉述冒充原話。前面是「不是」「非」的不算(那是在說不是原話)。"""
-    out, k = [], line.find("原話")
-    while k >= 0:
-        pre = line[max(0, k - 6):k]
-        j = k + 2
-        moved = False
-        if j < len(line) and line[j] in "(（":
-            close = min([x for x in (line.find(")", j), line.find("）", j)) if x >= 0], default=-1)
-            if close >= 0:
-                j, moved = close + 1, True
-        if j < len(line) and line[j] in ":：":
-            j, moved = j + 1, True
-        if moved and "不是" not in pre and "非" not in pre and not (j < len(line) and (line[j] in CJK or line[j] == '"')):
-            out.append(line[k:k + 30])
-        k = line.find("原話", k + 2)
+def bad_paraphrase(line, ascii_ok=True):
+    """「原話」「原文」後面接括號或冒號、卻不是引號,或直接接〈〉、《》、‘’、ASCII 引號(.py 裡)、反引號、[:轉述冒充原話。
+    前面是「不是」「非」的不算(那是在說不是原話)。"""
+    out = []
+    for word in ("原話", "原文"):
+        k = line.find(word)
+        while k >= 0:
+            pre = line[max(0, k - 6):k]
+            j = k + 2
+            moved = False
+            while j < len(line) and line[j] == " ":
+                j += 1
+            if j < len(line) and line[j] in "(（":
+                close = min([x for x in (line.find(")", j), line.find("）", j)) if x >= 0], default=-1)
+                if close >= 0:
+                    j, moved = close + 1, True
+            if j < len(line) and line[j] in ":：":
+                j, moved = j + 1, True
+            while j < len(line) and line[j] == " ":
+                j += 1
+            nxt = line[j] if j < len(line) else ""
+            valid = nxt in CJK or (ascii_ok and nxt == '"')
+            if "不是" not in pre and "非" not in pre and not valid and (moved or nxt in NONSTD):
+                out.append(line[k:k + 30])
+            k = line.find(word, k + 2)
     return out
+
+
+def normalize(line, is_py):
+    """先把寫法換成真的字再查:HTML 實體(&#12300;、&lcorner; 這類);.py 裡的 \\u300c 這類跳脫。"""
+    line = html.unescape(line)
+    if is_py:
+        line = re.sub(r"\\u([0-9a-fA-F]{4})", lambda m: chr(int(m.group(1), 16)), line)
+    return line
 
 
 def claimed(text, user_table=False, ascii_quotes=True):
     """回傳 [(行號, 種類, 引文)] 與其他問題 [(行號, 原因, 文字)]。"""
     out, other = [], []
     in_table = False
-    lines = text.splitlines()
+    lines = [normalize(l, not ascii_quotes) for l in text.splitlines()]
     for ln, line in enumerate(lines, 1):
         if user_table and line.startswith("## "):
             in_table = line.startswith(USER_TABLE)
@@ -116,7 +139,7 @@ def claimed(text, user_table=False, ascii_quotes=True):
         prs, open_left = pairs(line, ascii_quotes)
         if open_left or sum(line.count(c) for c in CJK.values()) > sum(line.count(c) for c in CJK):
             other.append((ln, "引號跨行(要寫在同一行)", line[:60]))
-        for para in bad_paraphrase(line):
+        for para in bad_paraphrase(line, ascii_quotes):
             other.append((ln, "原話後面不是引號(轉述冒充原話)", para))
         ctx = unquoted(line, prs)
         prev = lines[ln - 2] if ln >= 2 else ""
@@ -219,6 +242,18 @@ SAMPLES = [
     ("這是使用者講的。「完全捏造的一句話」是他的意思", True),  # 句號切開
     ("> 「完全捏造的一句話」", True),                      # > 引用區塊偽裝成原話
     ("依使用者台北 10-16 01:29 原話(副支位置可以調整,在副支間距上限之下就好)挪到貼著擋料", True),  # 轉述冒充原話
+    # 718cc9a3 審查的新假綠寫法
+    ("使用者原話&#12300;完全捏造的一句話&#12301;", True),     # HTML 數字實體
+    ("使用者原話&lcorner;完全捏造的一句話&rcorner;", True),   # HTML 具名實體
+    ("使用者原話〈完全捏造的一句話〉", True),                  # 〈〉冒充原話
+    ("使用者原話｢完全捏造的一句話｣", True),                   # 半形角括號
+    ("使用者原話 `完全捏造的一句話`", True),                   # 反引號內文
+    ('why = "使用者原話\\u300c完全捏造的一句話\\u300d"', True, "py"),  # .py 字串裡的 \u 跳脫
+    ("why = \"使用者原話 '完全捏造的一句話'\"", True, "py"),  # .py 字串裡的 ASCII 單引號
+    ('# 使用者原話 "完全捏造的一句話"', True, "py"),          # .py 註解裡的 ASCII 雙引號
+    ("原話見 `決策佇列.md` 的那一節", False),                  # 指出處、沒有引用:不算
+    ('Yang 說 "完全捏造的一句話"', True),                       # ASCII 引號、不緊接原話:只靠 .md 認 ASCII 引號那條規則
+    ("Yang 說&#12300;完全捏造的一句話&#12301;", True),          # HTML 實體、不緊接原話:只靠先解 HTML 實體那條規則
 ]
 
 
@@ -257,9 +292,9 @@ def missing_section_check(queue, files=FILES):
 def self_check(queue):
     """回傳判錯的樣本;空的代表反例都抓到、正例都過。"""
     wrong = []
-    for s, want_bad in SAMPLES:
+    for s, want_bad, *kind in SAMPLES:
         text = USER_TABLE + "\n" + s if s.startswith("|") else s
-        _, bad = scan_text("sample", text, queue, user_table=True)
+        _, bad = scan_text("sample.py" if kind == ["py"] else "sample", text, queue, user_table=True)
         if bool(bad) != want_bad:
             wrong.append((s, "應報錯" if want_bad else "不應報錯", bad))
     return wrong

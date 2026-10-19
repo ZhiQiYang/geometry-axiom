@@ -47,12 +47,14 @@
      有牆階的房間,縫線上實際的對牆不是外框,照外框挪會在可以調整的地方報衝突。挪了縫線變長就重算到穩定。
      最後一條板端縫的承接帶若落進牆階面上沒料的短段(短於 min_piece 不放),再照那面牆階凹角那端的牆退到 ⌊D′ − 1.5w⌋
      (由上面那條推論原則與 G7 推得;退縫之後再照 G7 挪到穩定。建構端在 bedges 之後,C7 用 expected_seam_retreat 另算)。
-     P-182(協調 agent 的推論,在授權 L 下先做,可推翻;不是使用者原話),兩段式:
-       第一段照舊規則排最後一支主支(推開、超過承接容許量就補併料;FT03/G5);
-       只有最後一支主支報 CORE_LIMIT_MAIN_ON_EXTENSION 或 MAIN_DOUBLING_BLOCKED 時,第二段才看主支整條寬度:
-       主支起鋪側側面往對牆偏半 mm 那條線上最近的外牆也算對牆,照它退到 ⌊D′ − 1.5w⌋ 再重算到穩定。
-       先調支撐、不動板:舊規則已經排得出時,不為了一支不在對牆上的壁柱多裁一整排板(#251 審查 1b6b34f9)。
-       建構端在 build 結尾重建一次;C7 用 expected_main_feasible 另算第一段排不排得出。
+     P-182 第三版(協調 agent 定的設計,協調者推論,在授權 L 下先做,可推翻;不是使用者原話):建構端提案、檢查端裁決。
+       最後一條主支縫的候選依偏好排:原縫位(舊規則:推開主支、超過容許量補併料)優先;再來是主支寬度裡每一面擋料
+       (與主支平行的牆、孔邊,連同它室內那側 w 寬的料;朝向或背向起鋪側都算)各取 ⌊D′ − 1.5w⌋,由近到遠;
+       某個候選不可行時,它自己寬度裡的擋料再補進候選。每個候選完整建構一次,再跑完整的 check():
+       沒有任何衝突碼、也沒有任何檢查失敗才算可行;選第一個可行的。都不可行才報衝突(P182_NO_FEASIBLE_CANDIDATE),
+       理由列出每個候選與它失敗的碼。候選與結果記成 candidate trace(res["p182"])。
+       C7 從幾何另算候選集合(expected_p182_candidates),核對 trace:比選中者更優先的候選都在 trace 裡、而且都真的失敗
+       (C7 對 trace 裡那份佈局重跑 check());選中的屬於候選集合。先調支撐、不動板(#251 審查 1b6b34f9、718cc9a3)。
 不處理:樑高度、交丁、角材怎麼固定(與幾何無關)。
 
 座標:世界座標,整數 mm。A 軸 = 板寬方向(主支之間的方向),B 軸 = 板長方向(主支的長度方向)。
@@ -256,12 +258,9 @@ def g7_settle(d, d_prev, depth, w):
     return d
 
 
-def local_depth_fn(reg_outer, k, lo, hi, start, back=None):
+def local_depth_fn(reg_outer, k, lo, hi, start):
     """建構用:軸 k 上離起鋪牆 d 的縫線,沿縫線(另一軸)逐段找鋪板方向上第一面外牆,回傳最近那面離起鋪牆的距離。
-    只看外環(柱是房間中間的障礙物,由 FT03 主支平移/併料處理,不是收邊的對牆)。
-    back(P-182,主支縫才給):主支起鋪側側面離縫中心多遠。多探一條「主支起鋪側側面、往對牆偏半 mm」的線,
-    兩條線找到的牆取近的那面:主支整條寬度(縫 ± w/2)碰到的最近外牆才是它的對牆,不是只看縫線。
-    只在 P-182 第二段用(第一段排不出最後一支主支時)。"""
+    只看外環(柱是房間中間的障礙物,由 FT03 主支平移/併料處理,不是收邊的對牆)。"""
     def at(t):
         c = (lo + t) if start == "min" else (hi - t)
         best = None
@@ -278,13 +277,30 @@ def local_depth_fn(reg_outer, k, lo, hi, start, back=None):
     def f(d):
         # 縫線往起鋪側偏半 mm:牆剛好在縫上也算在縫前面
         line = at(d - 0.5)
-        D0 = hi - lo if line is None else line
-        if back is None:
-            return D0
-        # 主支起鋪側側面往對牆偏半 mm:牆剛好貼著主支側面不算擋到主支
-        band = at(d - back + 0.5)
-        return D0 if band is None else min(D0, band)
+        return hi - lo if line is None else line
     return f
+
+
+def p182_blockers(reg, a, lo, hi, start, d, w):
+    """建構端:縫離起鋪牆 d 時,最後一支主支寬度裡的每一面擋料,回傳它們離起鋪牆的距離。
+    主支寬度取對稱的 [c − ⌈w/2⌉, c + ⌈w/2⌉]:置中的主支兩側差 1 mm(⌊w/2⌋、⌈w/2⌉),只看實際那一側會讓鏡像的房間得到不同的候選
+    (#251 審查 718cc9a3 的分辨房族);多看的那 1 mm 只會多一個候選,原縫位可行時照樣選原縫位。
+    擋料 = 與主支平行的牆或孔邊(外環與孔都算,朝向或背向起鋪側都算),連同它室內那側 w 寬的料;那條料與主支寬度有正寬度重疊就算。"""
+    hw = w - w // 2
+    c = lo + d if start == "min" else hi - d
+    L, U = c - hw, c + hw
+    b = 1 - a
+    out = set()
+    for e0, e1 in reg.edges():
+        if e0[a] != e1[a]:
+            continue
+        q = e0[a]
+        mid = (e0[b] + e1[b]) / 2
+        plus = reg.inside(*((q + 0.5, mid) if a == 0 else (mid, q + 0.5)))
+        s0, s1 = (q, q + w) if plus else (q - w, q)
+        if s0 < U and s1 > L:
+            out.add(q - lo if start == "min" else hi - q)
+    return out
 
 
 # ---------------------------------------------------------------- 記號(FT04)
@@ -373,7 +389,7 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
     # 縫(G6、G7)
     shift = 20 if "shift_origin" in mut else 0  # 突變:起鋪點整組錯移 20 mm,其餘幾何照樣自洽
     reg_outer = Region(room["outer"], [])
-    # 主支縫照縫線上的對牆(G7)。P-182 的第二段(看主支整條寬度退縫)在 build 結尾,第一段排不出最後一支主支時才做。
+    # 主支縫照縫線上的對牆(G7)。最後一條主支縫的 P-182 候選(原縫位不可行時退到哪裡)在 build 結尾。
     seams_a, moved_a = seam_centers(Amin + shift, Amax + shift, layout["a_start"], P, g, w, mut,
                                     local_depth_fn(reg_outer, a, Amin + shift, Amax + shift, layout["a_start"]))
     if _p182 is not None and seams_a:
@@ -1002,33 +1018,67 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
                             "TIMBERS_COLLIDE")
                     conflicts.append(dict(code=code, ids=[i, j], kinds=sorted(ks),
                                           rects=[list(timbers[i]["rect"]), list(timbers[j]["rect"])]))
-    # P-182 第二段(協調 agent 的推論,在授權 L 下先做,可推翻;不是使用者原話):
-    #   第一段(舊規則:主支推開、超過承接容許量就補併料)排不出最後一支主支(CORE_LIMIT_MAIN_ON_EXTENSION、MAIN_DOUBLING_BLOCKED)時,
-    #   才看主支整條寬度:牆階或淺壁柱的牆剛好落在主支寬度裡,主支端面有一部分只能頂到凹角延伸段(核心 I22 不准),
-    #   推進牆段又撞牆料;照平釘收邊的同一個機制(最後一支料貼住它實際會碰到的那面牆的壁邊材,edge-rule.md §4 的「房深 − 40.5」),
-    #   把那面牆當成這條縫的對牆,退到 ⌊D′ − 1.5w⌋,再照 G7 重算到穩定;不退過前一條縫。退了就整個重建一次。
-    #   先調支撐、不動板:第一段排得出就不退(例:左側牆中段的壁柱 y 2745–2900,主支推開 8 mm、補 3846 mm 併料,不為它多裁一整排板)。
+    res = dict(region=reg, a=a, b=b, layout=dict(layout), seams_a=seams_a, seams_b=seams_b, moved_a=moved_a, moved_b=moved_b,
+               timbers=timbers, conflicts=conflicts, spans=marks_out)
+    # P-182 第三版(協調 agent 定的設計,協調者推論,在授權 L 下先做,可推翻;不是使用者原話):建構端提案、檢查端裁決(見檔頭)。
+    #   最後一條主支縫:原縫位優先,再來是主支寬度裡每一面擋料的 ⌊D′ − 1.5w⌋,由近到遠;每個候選完整建構、跑完整 check(),
+    #   沒有衝突碼、也沒有檢查失敗才算可行,選第一個可行的。原縫位寬度裡沒有擋料(只有原縫位一個候選)時照舊,不另外判可行與否。
     if _p182 is None and seams_a and "no_main_band_depth" not in mut:
-        last = seams_a[-1]
-        fail = any(c_.get("seam") == last and c_["code"] in ("CORE_LIMIT_MAIN_ON_EXTENSION", "MAIN_DOUBLING_BLOCKED") for c_ in conflicts)
-        if fail or "p182_always" in mut:  # 突變 p182_always:跳過第一段,主支寬度一跨牆就退(392d4aa7 的做法)
-            st_min = layout["a_start"] == "min"
-            lo_, hi_ = Amin + shift, Amax + shift
-            dfun = local_depth_fn(reg_outer, a, lo_, hi_, layout["a_start"], lo_h if st_min else hi_h)
-            d1 = last - lo_ if st_min else hi_ - last
-            prev = seams_a[-2] if len(seams_a) > 1 else None
-            d2 = g7_settle(d1, None if prev is None else (prev - lo_ if st_min else hi_ - prev), dfun, w)
-            if d2 != d1:
-                return build(room, layout, p, mut, _p182=lo_ + d2 if st_min else hi_ - d2)
-    return dict(region=reg, a=a, b=b, layout=dict(layout), seams_a=seams_a, seams_b=seams_b, moved_a=moved_a, moved_b=moved_b,
-                timbers=timbers, conflicts=conflicts, spans=marks_out)
+        st_min = layout["a_start"] == "min"
+        lo_, hi_ = Amin + shift, Amax + shift
+        tdist = (lambda c_: c_ - lo_) if st_min else (lambda c_: hi_ - c_)
+        world = (lambda d_: lo_ + d_) if st_min else (lambda d_: hi_ - d_)
+        d0 = tdist(seams_a[-1])
+        dprev = tdist(seams_a[-2]) if len(seams_a) > 1 else None
+
+        def cands_from(d_):
+            ts = p182_blockers(reg, a, lo_, hi_, layout["a_start"], d_, w)
+            if "p182_no_backface" in mut:  # 突變:只認朝向起鋪側(對牆)的那幾面,背向起鋪側的牆不算擋料
+                ts = {t_ for t_ in ts if t_ > d_}
+            out_ = {(2 * t_ - 3 * w) // 2 for t_ in ts}
+            return {x for x in out_ if x < d_ and (dprev is None or x > dprev)}
+
+        pending = cands_from(d0)
+        if pending:
+            def trial(d_, r_):
+                f_ = check(r_, p, _cand=True)
+                ok_ = not r_["conflicts"] and (not f_ or "p182_conflicts_only" in mut)  # 突變:只看衝突碼,不跑 check()
+                return dict(d=d_, seam=world(d_), ok=ok_, codes=sorted({c_["code"] for c_ in r_["conflicts"]}),
+                            checks=sorted({f["check"] for f in f_}), res=r_)
+            trace = [trial(d0, res)]
+            if "p182_always" in mut:  # 突變:跳過原縫位(主支寬度裡一有擋料就退)
+                trace[0]["ok"] = False
+            chosen = trace[0] if trace[0]["ok"] else None
+            tried = {d0}
+            while chosen is None and pending:
+                d_ = min(pending) if "p182_far_first" in mut else max(pending)  # 突變:由遠到近
+                pending.discard(d_)
+                tried.add(d_)
+                e_ = trial(d_, build(room, layout, p, mut, _p182=world(d_)))
+                trace.append(e_)
+                if e_["ok"]:
+                    chosen = e_
+                else:
+                    pending |= {x for x in cands_from(d_) if x not in tried}
+            info = dict(c0=world(d0), d0=d0, cands=trace, chosen=None if chosen is None else chosen["d"])
+            if chosen is None:
+                # 都不可行:回傳原縫位的佈局,衝突只報這一條(各候選自己的衝突碼與檢查失敗寫在理由與 trace 裡),
+                #   原縫位本身的衝突碼在鏡像的房間會因為主支兩側差 1 mm 而不同,不拿來當這個排法的判定
+                return dict(res, p182=info, conflicts=[dict(
+                    code="P182_NO_FEASIBLE_CANDIDATE", seam=world(d0),
+                    candidates=[[e["seam"], e["codes"] + e["checks"]] for e in trace],
+                    why="最後一條主支縫的候選都不可行:" + ";".join(
+                        f"縫 {e['seam']}:{','.join(e['codes'] + e['checks']) or '跳過'}" for e in trace))])
+            out = chosen["res"]
+            out["p182"] = info
+            return out
+    return res
 
 
 # ---------------------------------------------------------------- 檢查用的獨立縫位推算(不呼叫 seam_centers)
-def edge_depth(reg, k, lo, hi, start, d, back=None):
+def edge_depth(reg, k, lo, hi, start, d):
     """檢查用:軸 k 上離起鋪牆 d 的縫,掃外環牆邊找「縫線上最近的對牆」離起鋪牆的距離:
-    與縫平行、在縫的鋪板方向那一側、牆面朝向縫(室內在靠縫那側)、長度方向與縫線的室內段有正長度重疊,取最近的一面。
-    back(P-182 第二段):主支起鋪側側面離縫中心的距離;另以「主支起鋪側側面往對牆偏半 mm」那條線找一次,取近的那面。"""
+    與縫平行、在縫的鋪板方向那一側、牆面朝向縫(室內在靠縫那側)、長度方向與縫線的室內段有正長度重疊,取最近的一面。"""
     span = hi - lo
 
     def scan_(t):
@@ -1052,11 +1102,8 @@ def edge_depth(reg, k, lo, hi, start, d, back=None):
                     best = min(best, e - lo if start == "min" else hi - e)
         return best
 
-    # 縫線往起鋪側偏半 mm:牆剛好在縫上也算在縫前面;主支側面那條線往對牆偏半 mm:牆剛好貼著主支側面不算
-    D0 = scan_(d - 0.5)
-    if back is None:
-        return D0
-    return min(D0, scan_(d - back + 0.5))
+    # 縫線往起鋪側偏半 mm:牆剛好在縫上也算在縫前面
+    return scan_(d - 0.5)
 
 
 def expected_seam_positions(lo, hi, start, panel, gap, width, reg=None, k=None):
@@ -1089,65 +1136,56 @@ def expected_seam_positions(lo, hi, start, panel, gap, width, reg=None, k=None):
     return [lo + d for d in dist] if start == "min" else [hi - d for d in dist]
 
 
-def expected_main_feasible(reg, a, c, p):
-    """C7 用,另寫一次 P-182 的第一段:舊規則(主支推開、超過承接容許量就補一支併料)排得出縫 c 上的主支嗎。不呼叫建構端。
-    置中主支 [c − ⌊w/2⌋, c + ⌈w/2⌉] 的寬度裡沒有外牆就算排得出。有的話,找一個平移量 s(往 + 最多 容許量 + w,往 − 同理;
-    超過容許量時承接不足那一側貼一支併料),同時滿足:
-    (1) 平移後主支整條寬度都在室內的那幾段(主支所在),蓋得住縫線在室內的每一段;
-    (2) 平移後主支的寬度裡沒有外牆(外牆與主支所在那幾段相接或重疊就算:主支端面會有一部分懸在凹角外);
-    (3) 主支不壓到與它平行的牆料/柱面料(面長 >= min_piece 的外牆、孔邊,料在室內那側,寬 w);
-    (4) 有併料時,併料也不壓到這些料(本身就蓋住那條承接帶的料除外)。
-    有一個 s 都成立就算排得出。"""
-    w, g, X = p["w"], p["gap"], p["X"]
-    minp = p.get("min_piece", w)
+def expected_p182_candidates(reg, a, start, lo, hi, d0, dprev, w):
+    """C7 用,另寫一次 P-182 第三版的候選集合(不呼叫建構端):從原縫位 d0 起,主支寬度(縫兩側各 ⌈w/2⌉)裡每一面擋料
+    (掃各環的邊:與主支平行的牆或孔邊,料在室內那側 w 寬,與主支寬度有正寬度重疊)各給一個 ⌊D′ − 1.5w⌋;
+    對每個候選再做一次,直到沒有新的。只留比原縫位近起鋪牆、又在前一條縫之後的。回傳由近到遠(d 由大到小)的清單,第一個是 d0。"""
     b = 1 - a
-    lo_h, hi_h = w // 2, w - w // 2
-    gl, gu = g // 2, g - g // 2
-    allow_p, allow_m = lo_h - gl - X, hi_h - gu - X  # 往 + / 往 - 平移、不補併料的上限
+    half = (w + 1) // 2  # 對稱的主支寬度:縫兩側各 ⌈w/2⌉
 
-    def par_edges(rings):
-        out = []
-        for ring in rings:
-            for i in range(len(ring)):
-                p0, p1 = ring[i], ring[(i + 1) % len(ring)]
-                if p0[a] == p1[a]:
-                    out.append((p0[a], tuple(sorted((p0[b], p1[b])))))
-        return out
+    def blockers(d):
+        c = lo + d if start == "min" else hi - d
+        L, U = c - half, c + half
+        ts = []
+        for ring in reg.rings:
+            n = len(ring)
+            for i in range(n):
+                p0, p1 = ring[i], ring[(i + 1) % n]
+                if p0[a] != p1[a]:
+                    continue
+                q = p0[a]
+                m = (p0[b] + p1[b]) / 2
+                room_plus = iv_find(reg.section(a, q + 0.5), m) is not None  # 牆線外半 mm 那條線上,邊的中點在不在室內
+                lo_s, hi_s = (q, q + w) if room_plus else (q - w, q)
+                if max(lo_s, L) < min(hi_s, U):
+                    ts.append(q - lo if start == "min" else hi - q)
+        return ts
 
-    walls = par_edges(reg.rings[:1])
-    strips = []
-    for q, (e0, e1) in par_edges(reg.rings):
-        if e1 - e0 < minp:
-            continue
-        mid = (e0 + e1) / 2
-        side = [sg for sg in (1, -1) if reg.inside(*((q + sg * 0.5, mid) if a == 0 else (mid, q + sg * 0.5)))]
-        if side:
-            strips.append(((q, q + w) if side[0] > 0 else (q - w, q), (e0, e1)))
-    need_run = reg.section(a, c + 0.5) if c in reg.coords[a] else reg.section(a, c)
+    seen, todo = {d0}, [d0]
+    while todo:
+        d = todo.pop()
+        for t in blockers(d):
+            x = (2 * t - 3 * w) // 2
+            if x < d0 and (dprev is None or x > dprev) and x not in seen:
+                seen.add(x)
+                todo.append(x)
+    return sorted(seen, reverse=True)
 
-    def cut(L, run):
-        return any(L < q < L + w and any(e0 <= r1 and r0 <= e1 for r0, r1 in run) for q, (e0, e1) in walls)
 
-    def hits(A, run, keep=None):
-        return any(max(A[0], sa[0]) < min(A[1], sa[1]) and any(max(r0, sb[0]) < min(r1, sb[1]) for r0, r1 in run)
-                   and not (keep and sa[0] <= keep[0] and keep[1] <= sa[1]) for sa, sb in strips)
-
-    L0 = c - lo_h
-    if not cut(L0, reg.strip_set(a, L0, L0 + w)):
-        return True
-    for s_ in range(-(allow_m + w), allow_p + w + 1):
-        L = L0 + s_
-        run = reg.strip_set(a, L, L + w)
-        if not run or not all(any(r0 <= n0 and n1 <= r1 for r0, r1 in run) for n0, n1 in need_run):
+def p182_trace_problems(res, p):
+    """trace 裡標成失敗的每個候選,C7 對那份候選佈局重跑 check(),確定真的失敗;回傳問題清單(空的代表都真的失敗)。
+    只有衝突碼、check() 卻全過的,報 FAIL_UNCONFIRMED(建構端的衝突在檢查端沒有對應的檢查)。"""
+    out = []
+    for e in (res.get("p182") or {}).get("cands", []):
+        if e["res"]["seams_a"][-1:] != [e["seam"]]:  # 存的那份佈局要真的是這個候選(最後一條主支縫在這個位置)
+            out.append(("C7_P182_TRACE_LAYOUT_MISMATCH", e["seam"], e["codes"]))
             continue
-        if cut(L, run) or hits((L, L + w), run):
+        if e["ok"]:
             continue
-        if s_ > allow_p and hits((L - w, L), run, (c - gl - X, L)):
-            continue
-        if s_ < -allow_m and hits((L + w, L + 2 * w), run, (L + w, c + gu + X)):
-            continue
-        return True
-    return False
+        f = check(e["res"], p, _cand=True)
+        if not f:
+            out.append(("C7_P182_FALSE_FAIL" if not e["res"]["conflicts"] else "C7_P182_FAIL_UNCONFIRMED", e["seam"], e["codes"]))
+    return out
 
 
 def expected_seam_retreat(seams, reg_o, a, b, start, lo, hi, p):
@@ -1241,7 +1279,7 @@ def bridged(q, T, minp, k):
 
 
 # ---------------------------------------------------------------- 檢查(與建構分開,用來抓錯)
-def check(res, p):
+def check(res, p, _cand=False):
     reg, a, b = res["region"], res["a"], res["b"]
     w, M, X, g = p["w"], p["M"], p["X"], p["gap"]
     minp = p.get("min_piece", w)
@@ -1251,16 +1289,46 @@ def check(res, p):
     # 不拿建構輸出當「期望」,所以整組錯移但彼此自洽的幾何會在這裡被抓到。
     lay = res["layout"]
     reg_o = Region(reg.rings[0], [])  # 只看外環:柱不是收邊的對牆
-    # 主支縫(A):先照縫線上的對牆(G7)。P-182 兩段式(推論):這組縫的最後一支主支,舊規則排得出(expected_main_feasible)就照用;
-    #   排不出才看主支整條寬度(主支起鋪側側面離縫中心 ⌊w/2⌋(正向)/ ⌈w/2⌉(反向))退縫,再照 G7 重算到穩定。
-    back_a = w // 2 if lay["a_start"] == "min" else w - w // 2
+    # 主支縫(A):照縫線上的對牆(G7)。最後一條主支縫依 P-182 第三版(推論)可以退到候選位置之一:
+    #   C7 另算候選集合(expected_p182_candidates),核對建構端的 candidate trace(_cand=True 是建構端評估候選時用,只驗前面幾條縫)。
     exp_a = expected_seam_positions(reg.bbox[a], reg.bbox[a + 2], lay["a_start"], p["P"], g, w, reg_o, a)
     loA, hiA, stA = reg.bbox[a], reg.bbox[a + 2], lay["a_start"]
-    if exp_a and not expected_main_feasible(reg, a, exp_a[-1], p):
-        d1_ = exp_a[-1] - loA if stA == "min" else hiA - exp_a[-1]
-        dp_ = None if len(exp_a) < 2 else (exp_a[-2] - loA if stA == "min" else hiA - exp_a[-2])
-        d2_ = g7_settle(d1_, dp_, lambda d_: edge_depth(reg_o, a, loA, hiA, stA, d_, back_a), w)
-        exp_a = exp_a[:-1] + [loA + d2_ if stA == "min" else hiA - d2_]
+    tA = (lambda c_: c_ - loA) if stA == "min" else (lambda c_: hiA - c_)
+    if exp_a and res["seams_a"] and len(exp_a) == len(res["seams_a"]):
+        last_got = res["seams_a"][-1]
+        if _cand:
+            exp_a = exp_a[:-1] + [last_got]
+        else:
+            d0_ = tA(exp_a[-1])
+            tr0 = res.get("p182")
+            if tr0 and tr0.get("c0") != exp_a[-1]:  # 建構端的原縫位(候選的起點)要等於獨立推算的 G7 縫位
+                fails.append(dict(check="C7_SEAMS_NOT_FROM_START", axis="A", expected=exp_a[-1], got=tr0.get("c0"), note="P-182 trace 的原縫位"))
+            cset = expected_p182_candidates(reg, a, stA, loA, hiA, d0_, tA(exp_a[-2]) if len(exp_a) > 1 else None, w)
+            if len(cset) > 1:
+                tr = res.get("p182")
+                dc = tA(last_got)
+                ents = {e["d"]: e for e in (tr or {}).get("cands", [])}
+                if not tr or d0_ not in ents:
+                    fails.append(dict(check="C7_P182_TRACE_MISSING", seam=exp_a[-1], candidates=cset))
+                elif dc not in cset:
+                    fails.append(dict(check="C7_P182_NOT_CANDIDATE", seam=last_got, candidates=cset))
+                else:
+                    if (dc not in ents or not ents[dc]["ok"]) and (tr or {}).get("chosen") is not None:
+                        fails.append(dict(check="C7_P182_CHOSE_FAILED", seam=last_got))
+                    if (tr or {}).get("chosen") is None and dc != d0_:
+                        fails.append(dict(check="C7_P182_CHOSE_FAILED", seam=last_got))
+                    for d_ in ents:
+                        if d_ not in cset:  # trace 試過的每一個都要在 C7 自己算的候選集合裡
+                            fails.append(dict(check="C7_P182_NOT_CANDIDATE", seam=ents[d_]["seam"], candidates=cset, note="trace 裡的候選"))
+                    miss = [d_ for d_ in cset if d_ > dc and d_ not in ents]
+                    if miss:
+                        fails.append(dict(check="C7_P182_TRACE_INCOMPLETE", missing=miss))
+                    for d_ in cset:
+                        if d_ > dc and d_ in ents and ents[d_]["ok"]:
+                            fails.append(dict(check="C7_P182_SKIPPED_FEASIBLE", d=d_))
+                    for code_, seam_, codes_ in p182_trace_problems(res, p):
+                        fails.append(dict(check=code_, seam=seam_, codes=codes_))
+                    exp_a = exp_a[:-1] + [last_got]
     exp_b = expected_seam_positions(reg.bbox[b], reg.bbox[b + 2], lay["b_start"], p["L"], g, w, reg_o, b)
     exp_b = expected_seam_retreat(exp_b, reg_o, a, b, lay["b_start"], reg.bbox[b], reg.bbox[b + 2], p)
     if sorted(exp_a) != sorted(res["seams_a"]):
@@ -1269,15 +1337,13 @@ def check(res, p):
         fails.append(dict(check="C7_SEAMS_NOT_FROM_START", axis="B", expected=sorted(exp_b), got=sorted(res["seams_b"])))
     # C7b G7 性質(不看演算法,直接驗結果):兩軸的最後一條縫,離「縫線上最近的對牆」都不得少於 1.5w。
     #     例:退縫之後忘了再跑 G7,雙牆階房會剩 13 mm 的收邊板條(#251 審查 98cb7da0)。
-    #     主支縫:最後一支主支若舊規則排不出(expected_main_feasible),還要看主支整條寬度碰到的最近外牆(P-182,推論)。
     for ax_, k_, seams_, st_ in (("A", a, res["seams_a"], lay["a_start"]), ("B", b, res["seams_b"], lay["b_start"])):
         if not seams_:
             continue
         lo_, hi_ = reg.bbox[k_], reg.bbox[k_ + 2]
         last_ = max(seams_) if st_ == "min" else min(seams_)
         d_ = last_ - lo_ if st_ == "min" else hi_ - last_
-        bk_ = back_a if ax_ == "A" and not expected_main_feasible(reg, a, last_, p) else None
-        D_ = edge_depth(reg_o, k_, lo_, hi_, st_, d_, bk_)
+        D_ = edge_depth(reg_o, k_, lo_, hi_, st_, d_)
         if d_ * 2 > 2 * D_ - 3 * w:
             fails.append(dict(check="C7_G7_TOO_CLOSE", axis=ax_, seam=last_, opposite_wall_distance=D_ - d_))
     # C1 不碰撞
