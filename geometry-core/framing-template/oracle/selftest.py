@@ -297,6 +297,7 @@ import copy as _copy  # noqa: E402
 _lx = next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿X")
 _base45 = fo.build(STEP45, _lx, p)
 _baseds = fo.build(DSROOM(3649, 3597), _lx, p)
+_basepil = fo.build(PIL2745, _lx, p)
 
 
 def _tamper(base_, how):
@@ -309,8 +310,8 @@ def _t_seam(r_):  # 主支縫改回 trace 判為失敗的原縫位
     r_["seams_a"] = r_["seams_a"][:-1] + [3659]
 
 
-def _t_falsefail(r_):  # 原縫位那一筆換成選中的(可行的)佈局,仍標失敗
-    r_["p182"]["cands"][0]["res"] = r_["p182"]["cands"][-1]["res"]
+def _t_falsefail(r_):  # 左牆壁柱 y 2745:原縫位可行(選中的就是它),trace 卻標成失敗
+    r_["p182"]["cands"][0]["ok"] = False
 
 
 def _t_drop(r_):  # 雙牆階:拿掉 3608 那一筆
@@ -322,6 +323,12 @@ def _t_noncand(r_):  # 選中一個不在候選集合裡的位置
     r_["p182"]["cands"].append(dict(_copy.copy(r_["p182"]["cands"][-1]), d=3600, seam=3600, ok=True))
 
 
+def _t_swap(r_):  # 雙牆階:3608 那一筆存成原縫位 3659 的佈局(會失敗的別份佈局冒充這個候選)
+    for e in r_["p182"]["cands"]:
+        if e["d"] == 3608:
+            e["res"] = r_["p182"]["cands"][0]["res"]
+
+
 def _t_skip(r_):  # 雙牆階:3608 標成可行卻沒選
     for e in r_["p182"]["cands"]:
         if e["d"] == 3608:
@@ -330,10 +337,11 @@ def _t_skip(r_):  # 雙牆階:3608 標成可行卻沒選
 
 for nm_, base_, how_, want_, why_ in (
         ("tamper_main_seam", _base45, _t_seam, "C7_P182_CHOSE_FAILED", "45 mm 牆階的主支縫改回 3659(trace 判它不可行)"),
-        ("tamper_false_fail", _base45, _t_falsefail, "C7_P182_FALSE_FAIL", "trace 把可行的佈局標成失敗"),
+        ("tamper_false_fail", _basepil, _t_falsefail, "C7_P182_FALSE_FAIL", "左牆壁柱 y 2745:trace 把可行的原縫位標成失敗"),
         ("tamper_trace_drop", _baseds, _t_drop, "C7_P182_TRACE_INCOMPLETE", "雙牆階 3649/3597:比選中的 3556 優先的 3608 不在 trace"),
         ("tamper_noncandidate", _base45, _t_noncand, "C7_P182_NOT_CANDIDATE", "選中 3600:不在 C7 自己算的候選集合"),
-        ("tamper_skip_feasible", _baseds, _t_skip, "C7_P182_SKIPPED_FEASIBLE", "trace 說 3608 可行,卻選了 3556")):
+        ("tamper_skip_feasible", _baseds, _t_skip, "C7_P182_SKIPPED_FEASIBLE", "trace 說 3608 可行,卻選了 3556"),
+        ("tamper_layout_swap", _baseds, _t_swap, "C7_P182_TRACE_LAYOUT_MISMATCH", "trace 的 3608 那一筆存的是原縫位的佈局")):
     got_ = _tamper(base_, how_)
     ok = want_ in got_
     failed |= not ok

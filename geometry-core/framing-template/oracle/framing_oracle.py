@@ -1177,6 +1177,9 @@ def p182_trace_problems(res, p):
     只有衝突碼、check() 卻全過的,報 FAIL_UNCONFIRMED(建構端的衝突在檢查端沒有對應的檢查)。"""
     out = []
     for e in (res.get("p182") or {}).get("cands", []):
+        if e["res"]["seams_a"][-1:] != [e["seam"]]:  # 存的那份佈局要真的是這個候選(最後一條主支縫在這個位置)
+            out.append(("C7_P182_TRACE_LAYOUT_MISMATCH", e["seam"], e["codes"]))
+            continue
         if e["ok"]:
             continue
         f = check(e["res"], p, _cand=True)
