@@ -9,6 +9,8 @@
     與掃描斷言比對函式 compare_unbuildable 的直接測試。
     P-182(最後一條主支縫的候選):手算對照組 HAND182(座標由規則手算,不從程式讀回;建構端與 C7 若一起算錯候選集合只靠它們抓得到)、
     trace 造假與檢查端盲點的 tamper 測試(C7 自己重建每個候選,不信 trace;check() 與 p182_trace_problems 都要報)。
+    第 21 輪(#251 審查 92e64028):H6(退縫後的候選要補併料)與 TR182(15 間 P-182 對照房加 H6 轉置成板長沿 Y,各 4 種排法,縫位、trace 候選、衝突碼寫成常數),
+    抓 build_candidate 只在板長沿 Y 出錯(BC_ax0)、候選不放併料(BC_no_doubling_cand);expected_for_scan 的過濾(只有 CI 取掃到的房間)直接測。
 (2) 標準答案:F1–F5 與三個額外例子、8 種排法的輸出,必須與 oracle-golden.json 逐支相同。
 (3b) 凹角、壁龕、獨立柱房 579 間與奇數縫寬矩形房,可施工的排法都要通過全部檢查。
 (3) 掃描:矩形房。
@@ -93,6 +95,19 @@ def MIR_LAYOUT(name, k):
     if k == 1:
         return name[0] + {"上": "下", "下": "上"}[name[1]] + name[2:]
     return {"左": "右", "右": "左"}[name[0]] + name[1:]
+
+
+def TRANSPOSE(room):
+    """x、y 對調(沿對角線翻轉),頂點順序反過來(對調是鏡射,不反過來頂點方向會變),孔一起轉。
+    原本板長沿 X(主支縫沿 y,A 軸 = y)的房間變成板長沿 Y(主支縫沿 x,A 軸 = x)的房間;原房間的 y 就是新房間的 x。"""
+    sw = lambda q: [q[1], q[0]]
+    out = dict(room, outer=[sw(q) for q in reversed(room["outer"])])
+    if room.get("holes"):
+        out["holes"] = [[sw(q) for q in reversed(h)] for h in room["holes"]]
+    return out
+
+
+LAY = {fo.layout_name(l): l for l in fo.LAYOUTS}  # 排法名稱 → 排法
 
 
 # 鏡像的 54 mm 牆階(審查員的反例):置中主支 [28,55] 只跨過 y=54 一 mm(⌊w/2⌋ 與 ⌈w/2⌉ 不對稱),R-butt 平移 1 mm 就不跨,不該退縫
@@ -326,6 +341,12 @@ HAND182 = [
      "原縫位 3667 不可行(主支撞到 [3650,3677]),3609 可行(寬度 [3595,3623] 裡沒有擋料)。選 3609"),
     ("H5 寬度 w 對 ⌈w/2⌉(可行時)", HAND_LNOTCH(3645), "左上起鋪,板長沿X", None, 3667,
      "牆 y=3645,擋料 [3618,3645];離主支寬度 [3653,3681] 差 8 mm,不是擋料(若主支寬度誤算成 [3640,3694] 就會是,於是多出 trace)。沒有 trace,3667"),
+    # 第 21 輪(#251 審查 92e64028):退縫後的候選自己也要補併料(審查員的 BC_no_doubling_cand:候選不放併料),以前沒有任何對照房抓得到
+    ("H6 退縫後的候選要補併料", HAND_POCKET(3646, 3600), "左上起鋪,板長沿X", [3667, 3605], 3605,
+     "x 0–300 的室內從 y=3646 起(牆 y=3646,室內在上方),擋料 [3646,3673] 與原縫位 3667 的主支寬度 [3653,3681] 重疊 20 mm,是擋料:候選多一個 ⌊3646 − 40.5⌋ = 3605。"
+     "x 3800–4100 的天花只到 y=3600(室內在下方),擋料 [3573,3600] 離 [3653,3681] 很遠,不是原縫位的擋料。原縫位 3667 不可行(主支撞到 [3646,3673])。"
+     "候選 3605 的主支置中 [3592,3619],與 y=3600 的擋料 [3573,3600] 重疊 8 mm,超過承接容許量(往上平移上限 ⌊27/2⌋ − 1 − 8 = 4 mm),"
+     "主支往上貼到 [3600,3627],下面那一側的板邊承接要補併料 [3573,3600](下面的 H6 實際排法斷言)。選 3605"),
 ]
 for nm_, room_, lay_, want_trace_, want_seam_, why_ in HAND182:
     res = fo.build(room_, next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay_), p)
@@ -344,6 +365,71 @@ for nm_, room_, lay_, want_trace_, want_seam_ in (
     ok = (got_trace_ == want_trace_ and res["seams_a"][-1] == want_seam_ and not res["conflicts"] and not fo.check(res, p))
     failed |= not ok
     print(f"[{'綠' if ok else '錯!'}] P-182 手算 {nm_}:trace 縫位 {got_trace_}(要 {want_trace_}),最後一條主支縫 {res['seams_a'][-1]}(要 {want_seam_})")
+# H6 的實際排法要釘住(退縫後的候選自己要補併料):選中的 3605 的最後一支主支 [3600,3627](置中 [3592,3619] 往上貼到 y=3600 的擋料 [3573,3600]),
+#   併料恰一支、貼在主支下面 y 3573–3600。候選建構若不放併料(審查員的 BC_no_doubling_cand),下面那一側板邊承接不足(C3),候選變成不可行,選到別處
+_h6 = HAND_POCKET(3646, 3600)
+res = fo.build(_h6, LAY["左上起鋪,板長沿X"], p)
+_m = sorted({fo.rng(t["rect"], res["a"]) for t in res["timbers"] if t["kind"] == "main" and t.get("seam") == 3605})
+_d = sorted(fo.rng(t["rect"], res["a"]) for t in res["timbers"] if t.get("doubling"))
+ok = _m == [(3600, 3627)] and _d == [(3573, 3600)] and res["seams_a"][-1] == 3605 and not res["conflicts"] and not fo.check(res, p)
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] P-182 H6:選中的 3605 的主支 {_m}(要 [(3600, 3627)]),併料 {_d}(要 [(3573, 3600)],恰一支),縫 {res['seams_a'][-1]}(要 3605)")
+# P-182 板長沿 Y(#251 審查 92e64028 須改 1):上面的 P-182 對照房全是板長沿 X(主支縫沿 y,A 軸 = y)。板長沿 Y 時主支縫沿 x(A 軸 = x),
+#   建構端的 build_candidate 若只在 A 軸 = x 才出錯(審查員的 BC_ax0:非原縫位候選的最後一支主支移 15 mm),上面全綠。
+#   這一組把 15 間 P-182 對照房加上 H6 轉置(x、y 對調,頂點反序,孔一起轉)後各跑 4 種排法,用手寫的常數釘住:最後一條主支縫、
+#   trace 的候選縫位、衝突碼。期望值是常數,不從程式讀回,也不在這裡從原房間現算。來源:
+#   - 左上、左下起鋪(從 x 小的那一側起鋪)對應原房間從 y 小的那一側起鋪:縫位與候選就是上面各房釘過的值(HAND182 與 want_seam 那一串),轉置只換座標軸;
+#   - 右上、右下起鋪(從 x 大的那一側起鋪)的對牆是 x = 0 那面平的牆(轉置前的 y = 0),沒有 P-182、沒有 trace。縫距 917,縫在離起鋪牆 916、1833、2750、3667:
+#     房深 ≥ 3720 時最後一條縫離起鋪牆 3667(深 3720 → 縫在 3720 − 3667 = 53,深 4000 → 333);深 3700 時 3667 > ⌊3700 − 40.5⌋ = 3659,G7 挪到 3659(縫在 3700 − 3659 = 41);
+#     深 3200 的壁柱房只有 916、1833、2750 三條(下一條 3667 > 3200),縫在 3200 − 2750 = 450;
+#   - DBLCOL 從 x 大的那一側起鋪:牆 y=3665 的擋料 [3638,3665] 與柱上緣的柱面料 [3620,3647] 重疊 9 mm(兩支沿牆料互撞),報 TIMBERS_COLLIDE。
+#   (房間, 左上/左下 Y 的 trace 縫位, 左上/左下 Y 的最後一條主支縫, 左上/左下 Y 的衝突碼, 右上/右下 Y 的最後一條主支縫, 右上/右下 Y 的衝突碼)
+TR182 = [
+    ("STEP45", STEP45, [3659, 3614], 3614, [], 41, []),
+    ("L53", LROOM(4100, 3700, 1500, 53), [3659, 3606], 3606, [], 41, []),
+    ("DS3649,3597", DSROOM(3649, 3597), [3659, 3608, 3556], 3556, [], 41, []),
+    ("DS3658,3570", DSROOM(3658, 3570), [3659, 3617], 3617, [], 41, []),
+    ("DS3667,3615", DSROOM(3667, 3615), [3626, 3574], 3574, [], 41, []),
+    ("T9COL344", T9COL(344), [3667, 3615], 3615, [], 333, []),
+    ("PILCOL1000", PILCOL(1000), [2750, 2704], 2704, [], 450, []),
+    ("PILCOL265", PILCOL(265), [2750, 2704], 2704, [], 450, []),
+    ("S45COL", S45COL, [3659, 3614], 3614, [], 41, []),
+    ("DISTR", DISTR, [3667, 3614, 3613], 3613, [], 53, []),
+    ("TRIPLE", TRIPLE, [3659, 3614, 3609], 3609, [], 41, []),
+    ("DBLCOL", DBLCOL, [3667, 3624, 3579], 3667, ["P182_NO_FEASIBLE_CANDIDATE"], 53, ["TIMBERS_COLLIDE"]),
+    ("H3", HAND_POCKET(3650, 3652), [3667, 3609], 3609, [], 53, []),
+    ("H4", HAND_POCKET(3650, 3653), [3667, 3609], 3609, [], 53, []),
+    ("PIL2745", PIL2745, [2750], 2750, [], 450, []),
+    ("H6", HAND_POCKET(3646, 3600), [3667, 3605], 3605, [], 53, []),
+]
+#   併料(左上、左下起鋪,只列手算得出的兩間):H6 的併料 y 3573–3600 轉置後是 x 3573–3600(貼在主支 [3600,3627] 的低側);
+#   PIL2745 原縫位 2750 的主支推開 8 mm 到 [2745,2772],併料 [2718,2745] 長 3846(上面 X 版已釘)。審查員的 BC_no_doubling_cand 在轉置版
+#   會讓候選 3605 的 C3 照樣全過(第 21 輪發現:C3 的承接帶被房間分塊截斷,見 README 已知缺口),所以這裡要直接釘併料,不能只靠 check()
+TR182_DBL = {"H6": [(3573, 3600)], "PIL2745": [(2718, 2745)]}
+for nm_, room_, tr_min_, seam_min_, cs_min_, seam_max_, cs_max_ in TR182:
+    troom_, bad_ = TRANSPOSE(room_), []
+    for lay_, from_min_ in (("左上起鋪,板長沿Y", True), ("左下起鋪,板長沿Y", True), ("右上起鋪,板長沿Y", False), ("右下起鋪,板長沿Y", False)):
+        want_ = (tr_min_, seam_min_, cs_min_) if from_min_ else (None, seam_max_, cs_max_)
+        try:
+            res = fo.build(troom_, LAY[lay_], p)
+            got_ = (None if not res.get("p182") else [e["seam"] for e in res["p182"]["cands"]], res["seams_a"][-1],
+                    sorted({c["code"] for c in res["conflicts"]}))
+            if from_min_ and nm_ in TR182_DBL:  # 併料的 A 軸範圍(沿 x)與長度
+                dbl_ = sorted(fo.rng(t["rect"], res["a"]) for t in res["timbers"] if t.get("doubling"))
+                if dbl_ != TR182_DBL[nm_] or (nm_ == "PIL2745" and sum(fo.rng(t["rect"], res["b"])[1] - fo.rng(t["rect"], res["b"])[0]
+                                                                  for t in res["timbers"] if t.get("doubling")) != 3846):
+                    got_ = got_ + ("併料", dbl_)
+            # 可施工的要通過全部檢查(C7 的 P-182 裁決在內);不可施工的,trace 的每個候選 C7 重建後都要真的失敗
+            why_ = fo.p182_trace_problems(res, p) if res["conflicts"] else fo.check(res, p)
+        except AssertionError as e_:  # 建構或檢查當掉也要明確報出來
+            got_, why_ = None, [("CRASHED", str(e_) or "AssertionError")]
+        if got_ != want_ or why_:
+            bad_.append((lay_, got_, want_, [x if isinstance(x, tuple) else x["check"] for x in why_]))
+    ok = not bad_
+    failed |= not ok
+    print(f"[{'綠' if ok else '錯!'}] P-182 板長沿 Y(轉置){nm_:12s} 4 種排法:左上/左下 trace {tr_min_} 縫 {seam_min_}{cs_min_ or ''},右上/右下縫 {seam_max_}{cs_max_ or ''}")
+    for x_ in bad_:
+        print("     ", x_)
 # 牆線上取區間(檢查端 section_both_sides,#251 審查 1b6b34f9 建議 6):剛好在牆線上時取兩側都在室內的部分,正反兩個方向都要對
 for room_, m_, want_ in ((LROOM(4100, 3700, 1500, 54), 3646, [(0, 2600)]), (MIR54, 54, [(0, 2600)])):
     got_ = [tuple(iv) for iv in fo.section_both_sides(fo.Region(room_["outer"], []), 1, m_)]
@@ -595,6 +681,13 @@ def compare_unbuildable(got, want):
     return sorted(got - want), sorted(want - got)
 
 
+def expected_for_scan(expected_fam, ids_scan, ci):
+    """掃描斷言要比對的預期清單(一族)。CI 模式只掃抽樣的房間,預期清單也只取這些房間的部分(鏡像的 id 是 房間|上下 或 房間|左右);
+    --quick、--full 掃全部房間,預期清單整份逐筆比對:產生器少掃了哪一間房,那間房的不可施工排法就會報〈少了〉
+    (#251 審查 92e64028:原本任何模式都拿〈這次掃到的房間〉過濾預期清單,產生器漏掉一間房,過濾後預期清單跟著少,漏掉的房間就不會被發現)。"""
+    return {(r_, l_, tuple(c_)) for r_, l_, c_ in expected_fam if not ci or r_.split("|")[0] in ids_scan}
+
+
 EXP_PATH = HERE / "sweep-expected-unbuildable.json"
 _mini = [(f"C:3600,3000,1366,{y},450", COLUMN(3600, 3000, 1366, y, 450)) for y in (500, 1021, 1542)]
 _exp_all = json.load(open(EXP_PATH, encoding="utf-8")) if EXP_PATH.exists() else {"reflex": [], "step": []}
@@ -607,6 +700,14 @@ _x, _m = compare_unbuildable(_syn_got, _syn)
 ok = _x == [_syn_got[1]] and _m == sorted([_syn[1], _syn[2]])
 failed |= not ok
 print(f"[{'紅' if ok else '沒抓到!'}] compare_unbuildable 合成:預期 3 筆、實得少一筆又改掉一筆的原因代碼;多出 {_x},少了 {_m}")
+# 產生器漏掉一間房(#251 審查 92e64028):--quick、--full 的預期清單整份逐筆比對,漏掉的房間要報〈少了〉;只有 CI 才取〈這次掃到的房間〉
+_fe = [("A", "左上起鋪,板長沿Y", ["C1"]), ("B|上下", "左下起鋪,板長沿X", ["C2"]), ("B|左右", "右下起鋪,板長沿X", ["C2"])]
+_got_a = {("A", "左上起鋪,板長沿Y", ("C1",))}  # 實得只有房間 A:產生器漏掉了房間 B
+_x_all, _m_all = compare_unbuildable(_got_a, expected_for_scan(_fe, {"A"}, False))
+_x_ci, _m_ci = compare_unbuildable(_got_a, expected_for_scan(_fe, {"A"}, True))
+ok = not _x_all and _m_all == [("B|上下", "左下起鋪,板長沿X", ("C2",)), ("B|左右", "右下起鋪,板長沿X", ("C2",))] and not _x_ci and not _m_ci
+failed |= not ok
+print(f"[{'紅' if ok else '沒抓到!'}] expected_for_scan  預期 --quick/--full 報少了漏掉的房間、CI 只比對掃到的房間:非 CI 少了 {len(_m_all)} 筆(要 2)、CI 少了 {len(_m_ci)} 筆(要 0)")
 
 
 def _unbuildable(rooms_, mut_=frozenset()):
@@ -879,8 +980,8 @@ if "--write-expected" in sys.argv:
 expected_unb = json.load(open(EXP_PATH, encoding="utf-8"))
 _ids_scan = {"reflex": {r_ for r_, _ in reflex_rooms}, "step": {r_ for r_, _ in step_rooms}, "step_mirror": {r_ for r_, _ in step_rooms}}
 for fam in ("reflex", "step", "step_mirror"):
-    # CI 模式只掃抽樣的房間:預期清單也只取這些房間的部分(鏡像的 id 是 房間|上下 或 房間|左右)
-    want_ = {(r_, l_, tuple(c_)) for r_, l_, c_ in expected_unb[fam] if r_.split("|")[0] in _ids_scan[fam]}
+    # CI 模式只掃抽樣的房間:預期清單也只取這些房間的部分;--quick、--full 整份逐筆比對(expected_for_scan)
+    want_ = expected_for_scan(expected_unb[fam], _ids_scan[fam], CI)
     extra_, missing_ = compare_unbuildable(unb[fam], want_)
     ok = not extra_ and not missing_
     failed |= not ok
