@@ -1,5 +1,6 @@
-"""引文逐字檢查:文件與程式裡引用使用者的話、決策佇列標題、佇列原文的引號,必須逐字(位元組相同)出現在 origin/main 的
-`決策佇列.md` 裡對的地方。
+"""引文逐字檢查:文件與程式裡引用使用者的話、決策佇列標題、佇列原文的引號,必須逐字(位元組相同)出現在受測這棵樹自己的
+`決策佇列.md`(repo 根目錄)裡對的地方。驗受測的那份:不讀任何 remote ref,也不用 git;讀不到就失敗,不略過
+(#251 下角材列車 cd4da2fd:WSL 的乾淨 clone 裡 origin/main 指向過時的本機 main,讀 origin/main 會整批誤判)。
 
 引號:「」、『』、“”;.md 與內建樣本另認 ASCII "…"(.py 檔裡 ASCII 引號是程式字串,不認,列為已知限制)。
 每一段引號先分種類(看開引號前 10 個字;「這一行」指整行,拿掉所有引號內文之後的文字):
@@ -18,11 +19,10 @@
 已知限制(查不到的寫法):真的原話配上錯的時間或出處;〈〉、《》、‘’ 這類括號不當引號;.py 檔的 ASCII 引號;
 引述動詞或使用者離開引號太遠、又不在同一行或上一行。
 
-用法:python quote_check.py [--queue 檔案];不給 --queue 時用 `git show origin/main:決策佇列.md`。
-原始碼突變在 repo 外的副本裡跑(沒有 git),由環境變數 FRAMING_QUOTE_QUEUE 指定一份事先從 origin/main 取出的同一個檔。"""
+用法:python quote_check.py [--queue 檔案];不給 --queue 時讀 repo 根目錄的 `決策佇列.md`(本檔往上三層)。
+原始碼突變在 repo 外的副本裡跑,由環境變數 FRAMING_QUOTE_QUEUE 指定一份事先從受測工作樹複製出來的同一個檔。"""
 import os
 import pathlib
-import subprocess
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -38,17 +38,20 @@ CJK = {"「": "」", "『": "』", "“": "”"}
 MIN_FRAG = 6
 
 
+QUEUE_PATH = TPL.parent.parent / "決策佇列.md"  # repo 根目錄:oracle → framing-template → geometry-core → 根
+
+
+def queue_path():
+    return pathlib.Path(os.environ["FRAMING_QUOTE_QUEUE"]) if os.environ.get("FRAMING_QUOTE_QUEUE") else QUEUE_PATH
+
+
 def queue_source():
-    return ("FRAMING_QUOTE_QUEUE=" + os.environ["FRAMING_QUOTE_QUEUE"]) if os.environ.get("FRAMING_QUOTE_QUEUE") else "origin/main"
+    return ("FRAMING_QUOTE_QUEUE=" if os.environ.get("FRAMING_QUOTE_QUEUE") else "工作樹 ") + str(queue_path())
 
 
-def queue_from_origin_main():
-    if os.environ.get("FRAMING_QUOTE_QUEUE"):
-        return pathlib.Path(os.environ["FRAMING_QUOTE_QUEUE"]).read_text(encoding="utf-8")
-    top = subprocess.run(["git", "-C", str(HERE), "rev-parse", "--show-toplevel"],
-                         capture_output=True, check=True).stdout.decode("utf-8").strip()
-    out = subprocess.run(["git", "-C", top, "show", "origin/main:決策佇列.md"], capture_output=True, check=True).stdout
-    return out.decode("utf-8")
+def queue_from_tree():
+    """讀受測這棵樹的 決策佇列.md;沒有這個檔就丟例外(呼叫端要當成失敗)。"""
+    return queue_path().read_text(encoding="utf-8")
 
 
 def sources(queue):
@@ -159,14 +162,14 @@ def found(q, lines):
     return False
 
 
-WHERE = dict(user="使用者原話行(> 引用行)", title="佇列標題行", queue="佇列")
+WHY = dict(user="不在使用者原話行(> 引用行)裡(要逐字)", title="佇列裡沒有這一節(標題行找不到,要逐字)", queue="不在佇列裡(要逐字)")
 
 
 def scan_text(name, text, queue, user_table=False):
     """回傳 (檢查的引文數, 問題清單 [(檔名:行號, 原因, 引文)])。.py 檔不認 ASCII 引號。"""
     src = sources(queue)
     qs, other = claimed(text, user_table, ascii_quotes=not name.endswith(".py"))
-    bad = [(f"{name}:{ln}", f"不在{WHERE[k]}裡(要逐字)", q) for ln, k, q in qs if not found(q, src[k])]
+    bad = [(f"{name}:{ln}", WHY[k], q) for ln, k, q in qs if not found(q, src[k])]
     bad += [(f"{name}:{ln}", why, t) for ln, why, t in other]
     return len(qs), bad
 
@@ -219,6 +222,38 @@ SAMPLES = [
 ]
 
 
+def drop_section(queue, title_part):
+    """把佇列裡標題含 title_part 的那一節(到下一個同級或更高的標題為止)整節拿掉。"""
+    lines = queue.splitlines(keepends=True)
+    out, skip, level = [], False, 0
+    for l in lines:
+        st = l.lstrip()
+        if st.startswith("#"):
+            lv = len(st) - len(st.lstrip("#"))
+            if skip and lv <= level:
+                skip = False
+            if not skip and title_part in st:
+                skip, level = True, lv
+                continue
+        if not skip:
+            out.append(l)
+    return "".join(out)
+
+
+MISSING_SECTION = "2026-10-16 縫上副支撞到邊界角材"
+
+
+def missing_section_check(queue, files=FILES):
+    """反例:給一份缺了「2026-10-16 縫上副支撞到邊界角材」那一節的佇列,檢查必須紅,而且訊息要指出缺的是這一節
+    (引用這個標題的地方報「佇列裡沒有這一節」)。回傳判錯的說明;空的代表抓到了。"""
+    cut = drop_section(queue, MISSING_SECTION)
+    if cut == queue:
+        return ["佇列裡本來就沒有這一節,反例做不出來"]
+    _, bad = scan(cut, files)
+    named = [b for b in bad if "沒有這一節" in b[1] and MISSING_SECTION in b[2]]
+    return [] if named else [f"拿掉「{MISSING_SECTION}」那一節後,沒有一筆問題指出缺了這一節(共 {len(bad)} 筆問題)"]
+
+
 def self_check(queue):
     """回傳判錯的樣本;空的代表反例都抓到、正例都過。"""
     wrong = []
@@ -234,10 +269,10 @@ if __name__ == "__main__":
     if "--queue" in sys.argv:
         queue = pathlib.Path(sys.argv[sys.argv.index("--queue") + 1]).read_text(encoding="utf-8")
     else:
-        queue = queue_from_origin_main()
+        queue = queue_from_tree()
     n, bad = scan(queue)
-    wrong = self_check(queue)
-    print(f"檢查的引文 {n} 段,不在 origin/main 決策佇列.md 對應位置的 {len(bad)} 段;反例/正例判錯 {len(wrong)} 個")
+    wrong = self_check(queue) + missing_section_check(queue)
+    print(f"檢查的引文 {n} 段,不在 {queue_source()} 對應位置的 {len(bad)} 段;反例/正例判錯 {len(wrong)} 個")
     for x in bad + wrong:
         print("   ", x)
     sys.exit(1 if bad or wrong else 0)

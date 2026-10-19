@@ -5,7 +5,7 @@
 (3c) 牆階 1–100 mm 的 L 形與壁龕 300 間、雙牆階 110 間,各 8 種排法,可施工的排法都要通過全部檢查。
      同一批房間再上下、左右各翻一次(鏡像),8 種排法:可施工的都要通過全部檢查,不可施工的要等於原房間的清單照鏡像對應
      (左上 ↔ 左下、左上 ↔ 右上),也要等於預期清單的 step_mirror 部分(#251 審查 392d4aa7 阻擋 1)。
-用法另有 --mutants-only:只跑 (1)(2),跳過掃描。(1) 也包括引文逐字檢查(quote_check.py,讀 origin/main 的 決策佇列.md)
+用法另有 --mutants-only:只跑 (1)(2),跳過掃描。(1) 也包括引文逐字檢查(quote_check.py,讀受測這棵樹自己的 決策佇列.md)
     與掃描斷言比對函式 compare_unbuildable 的直接測試。
 (2) 標準答案:F1–F5 與三個額外例子、8 種排法的輸出,必須與 oracle-golden.json 逐支相同。
 (3b) 凹角、壁龕、獨立柱房 579 間與奇數縫寬矩形房,可施工的排法都要通過全部檢查。
@@ -421,23 +421,24 @@ ok = all(not x_ and not m_ for x_, m_ in _cmp) and not _b0 and not _b1 and _u0 a
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] 小型牆階/鏡像掃描 {len(_ministeps)} 間:原房 {_n0} 次、鏡像 {_n1} 次,檢查失敗 {len(_b0) + len(_b1)};"
       f"和預期清單、鏡像對應的差異 {[(len(x_), len(m_)) for x_, m_ in _cmp]}")
-# 引文逐字(#251 審查 178ba084 第 2、3 項):標成使用者原話的引文都要逐字出現在 origin/main 的 決策佇列.md;反例要抓到、正例要過
+# 引文逐字(#251 審查 178ba084 第 2、3 項):標成使用者原話的引文都要逐字出現在受測這棵樹的 決策佇列.md;缺了某一節的佇列要紅,而且要指出缺了哪一節;反例要抓到、正例要過
 sys.path.insert(0, str(HERE))
 import quote_check  # noqa: E402
 
 try:
-    _queue = quote_check.queue_from_origin_main()
-except Exception as e_:  # 沒有 origin/main(例:淺層 clone)就算失敗,不默默略過
+    _queue = quote_check.queue_from_tree()
+except Exception as e_:  # 這棵樹沒有 決策佇列.md 就算失敗,不默默略過
     _queue = None
     failed = True
-    print(f"[錯!] 引文逐字:讀不到 origin/main 的 決策佇列.md({e_.__class__.__name__});先 git fetch origin main")
+    print(f"[錯!] 引文逐字:讀不到 {quote_check.queue_source()}({e_.__class__.__name__})")
 if _queue is not None:
     _nq, _badq = quote_check.scan(_queue)
-    _wrongq = quote_check.self_check(_queue)
+    _wrongq = quote_check.self_check(_queue) + quote_check.missing_section_check(_queue)
     ok = not _badq and not _wrongq
     failed |= not ok
     print(f"[{'綠' if ok else '錯!'}] 引文逐字({quote_check.queue_source()}):標成原話的引文 {_nq} 段都逐字出現在 決策佇列.md(不一致 {len(_badq)});"
-          f"反例 {sum(1 for _, b in quote_check.SAMPLES if b)} 個都抓到、正例 {sum(1 for _, b in quote_check.SAMPLES if not b)} 個都過(判錯 {len(_wrongq)})")
+          f"反例 {sum(1 for _, b in quote_check.SAMPLES if b)} 個都抓到、正例 {sum(1 for _, b in quote_check.SAMPLES if not b)} 個都過,"
+          f"拿掉「{quote_check.MISSING_SECTION}」那一節的佇列要指出缺了這一節(判錯 {len(_wrongq)})")
     for x in _badq + _wrongq:
         print("    ", x)
 # 剛好 min_piece 的料必須放(建構端兩處邊界:跨寬、柱面料切段),而且全部檢查通過
