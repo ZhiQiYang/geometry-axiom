@@ -226,7 +226,8 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         # main 4b975a3d (#312: GEO-262 #253 and #295) adds M78-M88 at their GEO-261 owners.
         added.update({mid: "geometry-core/parameters.inc" for mid in ("M78", "M79", "M80", "M82", "M84")})
         added.update({mid: "geometry-core/card_reference.inc" for mid in ("M81", "M83")})
-        added.update({"M85": "geometry-core/kernel/grid_store.c", "M86": "geometry-core/kernel/geometry.c",
+        # M85 targets the H coordinate resolver (deleted-card cause only), not the K evaluator.
+        added.update({"M85": "geometry-core/grid_systems.inc", "M86": "geometry-core/kernel/geometry.c",
                       "M87": "geometry-templates/woodworking/native/contacts.c",
                       "M88": "geometry-templates/woodworking/native/contacts.c"})
         self.assertEqual(28, len(added))

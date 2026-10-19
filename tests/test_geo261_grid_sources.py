@@ -110,6 +110,10 @@ class GridSources(unittest.TestCase):
         result=self.case('rule-definition')
         self.assertEqual(0,result.returncode,result.stderr)
 
+    def test_card_controlled_lengths_reach_the_authored_cache_through_the_graph(self):
+        result=self.case('card-cache')
+        self.assertEqual(0,result.returncode,result.stderr)
+
     def test_definition_enumeration_controls_fail_exact_named_assertions(self):
         build=native();source=(build.woodworking/'grid_sources.c').read_text(encoding='utf-8')
         controls=[
@@ -119,6 +123,9 @@ class GridSources(unittest.TestCase):
              'WOOD_GRID_SOURCE_SYSTEM_DEFINITION,id,GEO_DEPENDENCY_VALUE_REQUIRED,&parent','unused-rule-keeps-owner-definition'),
             ('engineering-definition','if(!s->tokens.engineering_binding)return true;',
              'return true;','unused-engineering-binding-definition-edge'),
+            # D64: without the card definition inputs the first missing edge is named.
+            ('card-definition','if(!wood_grid_card_definitions(s,&g->card_reference))return false;',
+             '','unused-card-definition-requires-field-90:1'),
         ]
         for name,before,after,marker in controls:
             with self.subTest(control=name):

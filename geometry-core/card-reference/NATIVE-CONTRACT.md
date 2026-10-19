@@ -130,6 +130,81 @@ GEO-261 合併後另加三個：年代分割等於凍結允收集合（純 Pytho
 每個變異的目標字串必須在原始檔中恰好出現一次，否則該工具以「目標字串遺失或不唯一」的訊息停下，不會拿未變異的原始碼冒充變異。
 該工具以 `\n` 比對多行目標，需在 LF 行尾的檔案上執行（Windows 簽出為 CRLF 時，先用 `core.autocrlf=false` 另行簽出）。
 
+## §7 整卡突變在 GEO-261 之後的錨點
+
+`run_mutations.py` 執行 `mutations.py` 的 53 筆突變（現為 67 個 patch）。開跑前，它會逐一確認每個 `old` 字串在原始檔中恰好出現一次，有一個不符就停。
+
+GEO-261 把整卡規則搬到 K／W／H 之後，main `4b975a3d` 這張表有 26 筆突變（29 個 patch）在整合分支上找不到錨點，runner 在 M01 就停了。下表列出這 26 筆的改錨位置，條件是每一筆都打同一個 CR 案例、同一條規則、同一種錯誤。
+
+- 行號是改錨當時的位置，只用來定位。runner 只做字串的精確比對，不讀行號。
+- 判定 killed 的準則（`run_mutations.py`）沒有改。
+- 其餘 27 筆的錨點沒有改。其中 4 筆的注入程式碼改用新 API，見下方「錨點仍在、注入碼編不過的 4 筆」。
+
+| 突變（CR） | main `4b975a3d` 原本打的位置 | 整合分支改打的位置 | 為什麼是同一條規則 |
+|---|---|---|---|
+| M01（CR01） | `card_reference.inc:50` `*old=s;` 存入後改成兩個 ParameterRef | `card_reference.inc:50` `GeoGridStoreError detail;` 之前，對要存入的 `s` 做同樣的轉換 | 同樣是 put-grid-system 把整卡存成兩個獨立的 ParameterRef，幾何結果相同。GEO-261 改成先編輯複本，再經 `app_grid_system_redeclare` 寫回 K。 |
+| M02-order／name／value（CR25） | `card_reference.inc:41` `grid_card_system` 找既有系統之前，依欄位順序、名稱或數值重排映射 | `card_reference.inc:47` `world_find_grid_system` 之前，做同樣的重排；名稱改由 `geo_parameters_fields` 讀取 | 同一個函式的同一個時點，同樣把使用者明確指定的 (8,3) 映射改掉。 |
+| M03-distinct（CR07） | `grid_systems.inc:73` `grid_card_resolve` 的 DISTINCT_FIELDS 判斷 | `kernel/grid_store.c:278` `geo_grid_card_resolve` 回傳 `GEO_GRID_STORE_CARD_FIELDS` | 同一個兩欄必須不同的判斷，已搬到 K resolver。I74 文字改由 W `wood_grid_card_error` 產生。 |
+| M03-complete（CR11）、M03-same-card（CR07） | `card_reference.inc:10/11/13` 的 JSON 讀取 | `card_reference.inc:13/14/16` 同樣的判斷 | 只是 `eng_json_*` 改名為 `geo_json_*`，邏輯沒變。 |
+| M04-source（CR11） | `grid_systems.inc:76` SOURCE_EXCLUSIVITY | `kernel/grid_store.c:284` `GEO_GRID_STORE_CARD_EXCLUSIVE` | 同一個單一來源守門，已搬到 K resolver。 |
+| M04-token（CR31） | `grid_systems.inc:333` 場景重宣告拿掉整卡時的 CONTROLLED_TOKEN_REJECT | `grid_systems.inc:230` 同一個函式，改成比對候選複本與正式的 `previous` | 同一個場景 DSL 守門。 |
+| M05-dimension（CR08） | `parameters.inc:71` `parameter_value` 的 dimension 檢查 | `kernel/parameters.c:36` `geo_parameters_dimension_value` | evaluator 已搬到 K。H 仍把 `GEO_PARAMETER_NOT_DIMENSION` 格式化成 `not a dimension`。 |
+| M05-positive（CR09） | `grid_systems.inc:79` POSITIVE；`:21`／`:22` 兩個軸驗證器 | `kernel/grid_store.c:288` `value <= 0`；`:203`／`:204` `geo_grid_axis_valid`（panel 改名為 body） | resolver 與軸驗證器都已搬到 K，三處要一起放寬，才會讓 ≤0 的卡長通過。 |
+| M05-integer、M05-range（CR09） | `parameters.inc:78` `parameter_coord`；range 另打 `grid_systems.inc:21` | `kernel/parameters.c:42` `geo_parameters_coordinate`；range 另打 `kernel/grid_store.c:203` | 同一個整數 mm／D1 判斷，已搬到 K。 |
+| M05-precision（CR10） | `parameters.inc:17` `parameter_mul` 的溢位檢查 | `kernel/exact.c:21` `geo_integer_multiply` | H 的 `parameter_mul` 與 K evaluator 都委派給它。 |
+| M06-extra-field（CR06） | `parameters.inc:208` AST `ref` 缺欄位時回 MISSING | `kernel/parameters.c:88` `geo_parameter_eval_ast` 同一分支 | AST evaluator 已搬到 K。突變同樣把缺欄位當成 7 mm。 |
+| M07（CR12） | `engineering_bridge.inc:159` `batch_preview` 重驗之後、檢查未放置角材之前，把失敗的候選寫回 `g_world` | `engineering_bridge.inc:160` `app_batch_candidate_apply` 的同一點 | 這段順序已移進 candidate evaluate callback。破壞的仍是同一個原子性。 |
+| M10（CR15） | `grid_bindings.inc:74` 第一迴圈只跑第一筆 | `grid_application.c:138` W `wood_grid_bindings_rebuild` 的同一個迴圈 | H 的 `grid_bindings_rebuild` 已改為委派給 W。 |
+| M11-expiry（CR17） | `engineering_bridge.inc:174` confirm 的過期判斷 | `engineering_bridge.inc:198`、`kernel/candidate.c:207`（base_revision）、`app_candidate.c:128`（`equal(live,before)`） | 見下方「M11 的三層」。 |
+| M11-revalidation（CR17） | `engineering_bridge.inc:176` `world_revalidate(&g_preview.after)` | `engineering_bridge.inc:200`（`app_world_candidate_revalidate`）、`app_candidate.c:127`（after 雜湊）、`kernel/candidate.c:118`（current 摘要） | 見下方「M11 的三層」。 |
+| M11-undo（CR17） | `current_geometry.c:4089` `history_undo` 的 restore | `current_geometry.c:3031` `history_undo` 呼叫 `app_history_undo` 的前後 | 同樣讓 undo 只還原 u 欄、v 欄留在對調後。 |
+| M13-unused（CR19） | `grid_systems.inc:391` dump 迴圈 | `grid_systems.inc:267` 同一個迴圈，改走 K store | 同樣讓沒有被綁定的網格系統不寫入 dump。 |
+| M14-legacy（CR21） | `grid_systems.inc:90` 重建迴圈裡、解析整卡之前，就地把同卡的兩個 ParameterRef 併成整卡 | `grid_systems.inc:30` H `grid_systems_rebuild` 進入 W 之前，對 K store 做同樣的合併 | GEO-261 的 K／W 求值只在候選自有的解碼複本上進行，只把快取槽寫回，碰不到 authored 定義。所以「重驗時靜默改寫舊定義」唯一的位置，是 `world_revalidate` 每個候選都會呼叫的 H 重建入口。 |
+| M18-closure（CR29） | `parameters.inc:746` `parameters_dump` 的卡片迴圈 | `parameters.inc:795` 同一個迴圈，改走 K parameter store | 同樣只輸出整卡直接引用的卡片，丟掉遞移閉包。 |
+| M18-capability（CR29） | `model_base.c:401` required_capabilities | `model_base.c:360` `model_legacy_snapshot` 的同一行 | 函式已改名，參數改成 `const World *`。 |
+| M20（CR30） | `grid_systems.inc:165` stagger 重驗 | `kernel/grid_store.c:241` `geo_grid_axis_stagger_valid` | 同樣讓整卡系統跳過 D10b 重驗。 |
+| M22（CR32） | `parameters.inc:380`（不變）＋`:365` 的 `!parameter_field_generation` 重用判斷 | `parameters.inc:431`（不變）＋`:352` H 的 `parameter_rebuilt_key` callback | 重用判斷已改由 K `geo_parameters_accept_rebuilt_field` 執行，它向 H 詢問這個鍵是否在本候選刪過。突變讓 callback 在受追蹤的候選內一律回答「是」，等同 main 的 `!w->parameters.tracking`。 |
+
+### M11 的三層
+
+main 的 confirm 只有一道判斷。GEO-261 把它拆成三層，三層都會擋：
+
+1. bridge 的 `batch_confirm`。
+2. H 的 `app_candidate_check`：比對 before／after 雜湊，以及 `equal(live,before)`。
+3. K 的 `geo_candidate_check`：比對 base_revision 與 current 摘要。
+
+`app_world_candidate_revalidate` 與 `app_world_candidate_publish` 都會再呼叫第 2、3 層。所以只拿掉其中一層的突變，仍會被其他層擋下。
+
+- **M11-revalidation**：CR17 的探針在 seal 之後，竄改待確認 after 的 K binding。只拿掉 `app_world_candidate_revalidate`，publish 仍會因 after 雜湊不符而拒絕，世界不變。這是等價突變；Windows 實跑的結果見下方〈本機驗證〉。突變改成同時拿掉重新求值與 seal 完整性檢查：被竄改的 after 會被發布，與 main「confirm 不重驗」的錯誤相同。
+- **M11-expiry**：只拿掉 bridge 那一道，過期的預覽仍會被第 2、3 層以 INVALID 擋下，只有錯誤碼與 STALE 不同。突變改成同時拿掉三層的過期判斷：過期的預覽會被確認成功，與 main 的錯誤相同。
+
+這兩筆因此各從 1 個 patch 變成 3 個，總數由 63 變為 67，每個 patch 都恰好出現一次。
+
+### 錨點仍在、注入碼編不過的 4 筆
+
+M14-import（CR22）、M17（CR13）、M19-axis-scope（CR13）、M19-partial-owner（CR27）的 `old` 錨點仍恰好出現一次，所以錨點檢查抓不到它們。但它們注入的 `new` 程式碼用到 GEO-261 已移除的 `World.parameters` 與 `eng_json_*`，突變原始碼編不過，runner 會在編譯階段停下。
+
+修法只改 API 名稱，錨點與語意都不變：
+
+- `w->parameters.cards`／`card_count` 改為 `geo_parameters_cards`／`geo_parameters_card_count`；
+- `eng_json_*` 改為 `geo_json_*`；
+- 候選宣告改從 H 的候選 ledger（`parameter_ledger(w)->declarations`）讀取。
+
+### 本機驗證（Windows／MSVC，不是正式結果）
+
+2026-10-19 以 `run_mutations.py` 的 Windows 移植版，在拋棄式複本上實跑。
+
+- 移植版用同樣的預檢與 killed 判準。紅燈在突變原始碼還在時跑，CR17 探針與修改測試檔的突變都會讀到突變後的檔案。CR17 的 `cc` 只在子行程中改用 MSVC。
+- 基準：43/43 綠。
+- 53 筆中，52 筆在這個執行順序下 killed，每筆還原後的控制組都是綠的。
+- M01-index 的新編執行檔連續被 SAC（WinError 4551）擋下。它的錨點與注入碼都沒有改。先前一輪已 killed：那一輪在還原原始碼之後才跑紅燈，但 CR04 只執行突變後的 bridge，結果不受影響。
+- 單層對照：
+  - 只拿掉 `app_world_candidate_revalidate`：CR17 仍然是綠的，是等價突變。
+  - 只拿掉 bridge 的過期判斷：只因為錯誤碼 `INVALID` 不等於 `STALE` 而轉紅，過期的預覽並沒有被發布。
+  - 三層版本：M11-revalidation 讓探針報告「World/metadata/history changed」；M11-expiry 讓過期預覽確認成功。
+
+正式結果以 WSL 上 `run_mutations.py --output <新目錄>` 的收據為準。
+
 ## 驗收邊界
 
 `tests/test_grid_card_reference.py` 登記 31 個具名 CR 核心方法、3 個 P-146 方法、2 個 P-154 方法、4 個 P-142 B2 方法、2 個 P-142 S1 方法及 1 個整合後 P-142 S2 方法；CR19 會用實際 ZIP writer/reader，開到新原生 context 並逐字核 dump。

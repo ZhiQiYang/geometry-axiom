@@ -455,12 +455,18 @@ MUTANTS += [
          old="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0)&&parameter_declare(w,PARAM_OWNER_GRID_SYSTEM,s.id,0);",
          new="return parameter_declare(w,PARAM_OWNER_GRID_CARD,s.id,0);",
          tests=[S1_TEST]),
-    # GEO-261: K geo_grid_system_evaluate consumes the resolver for both the direct
-    # and the source-graph path; ignoring its failure keeps the cached length.
-    dict(id="M85", desc="I38/D29/P142-S1：網格系統 ParameterRef 指向已刪卡片時沿用快取長度，不拒絕", binary="bridge",
-         file="geometry-core/kernel/grid_store.c",
-         old="            if (!resolve || !resolve(state, a->parameters[field], values[field]))",
-         new="            if (!resolve || (!resolve(state, a->parameters[field], values[field]) && false))",
+    # GEO-261: main 4b975a3d skipped parameter_coord only when the referenced card
+    # no longer exists (grid_systems.inc rebuild loop). The same single cause now sits
+    # in the H coordinate resolver every K grid evaluation calls: a deleted card
+    # reports success and leaves the cached length untouched; missing field, unit and
+    # D1 failures still reject. The candidate's source graph re-reads the parameter
+    # source (W wood_grid_coordinate_source) and still rejects, but without the
+    # I38 MISSING diagnostic and its grid/card/field identity, which is what the
+    # named test asserts (Windows/MSVC: "grid-system 4 u: " instead of I38 MISSING).
+    dict(id="M85", desc="I38/D29/P142-S1：網格系統引用的參數卡片已刪除時，H 座標解析器回報成功並保留快取長度（病因只限卡片不存在；缺欄位、單位、D1 仍拒絕）。來源圖對參數來源的二次檢查仍會拒絕，但診斷失去 I38 MISSING 與 grid／card／field 身分", binary="bridge",
+         file="geometry-core/grid_systems.inc",
+         old="{ return parameter_coord((const World *)state,ref,out); }",
+         new="{ if(!parameter_find((const World *)state,ref.parameter_id))return true; return parameter_coord((const World *)state,ref,out); }",
          tests=["tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS"]),
 ]
 

@@ -11,6 +11,14 @@ if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from tests.test_geo261_native_kernel import native
 from tests import test_geo261_model_sources as model_sources
 
+# D64: one parameter card supplies both controlled lengths of grid-system 4.
+CARD_SCENE=('requires parameters/1\nrequires grid-card-reference/1\nparameters begin\n'
+    'parameters card '+model_sources.encoded({'id':10,'name':'P','nextFieldId':9})+'\n'+
+    ''.join('parameters field '+model_sources.encoded({'parameterId':10,'id':field,'name':name,'type':0,
+        'expression':{'op':'literal','num':value,'den':'1','unit':'mm'}})+'\n' for field,name,value in ((3,'a','12'),(8,'b','30')))+
+    'parameters end\n'
+    'grid-system 4 name-hex 47 main-along none card-reference 10 3 8 u repeat -5 card v repeat-panel card gap 3 from 7\n')
+
 SCENE=('surface 1 origin 0 0 0 u +x v +y outline 10,20 510,20 510,520 10,520\n'
        'boundary-vertex-keys 1 outer 1 2 3 4 next-key 5\n'
        'grid-system 2 name-hex 6c617474696365 main-along none u repeat 0 100 v repeat 0 100\n'
@@ -39,6 +47,14 @@ class GridDefinitionsProduct(unittest.TestCase):
         self.assertNotIn(self.grid(6,6),nodes,'Unused child must not gain an application value evaluation')
         edges={(self.ref(e['consumer']),self.ref(e['source']),e['kind']) for e in envelope['neutralSources']['edges']}
         self.assertIn((self.grid(5,6),self.grid(5,5),'definition-required'),edges)
+
+    def test_unused_card_reference_fields_are_definition_inputs_of_the_grid_system(self):
+        envelope=self.execute(CARD_SCENE);nodes=self.nodes(envelope)
+        self.assertEqual('wood.grid.system/1',nodes[self.grid(1,4)]['value']['schema'])
+        edges={(self.ref(e['consumer']),self.ref(e['source']),e['kind']) for e in envelope['neutralSources']['edges']}
+        for field in (3,8):
+            edge=(self.grid(1,4),('core.parameter.field',struct.pack('=II',10,field)),'definition-required')
+            self.assertIn(edge,edges,'D64: grid-system 4 definition must require card parameter 10 field %d' % field)
 
     def test_actual_binding_uses_both_vertex_quantities_and_full_key_ledger(self):
         envelope=self.execute(SCENE);nodes=self.nodes(envelope)

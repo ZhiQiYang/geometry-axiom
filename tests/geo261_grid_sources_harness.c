@@ -84,6 +84,21 @@ static bool rect(GeoRect2 value,GeoCoord a,GeoCoord b,GeoCoord c,GeoCoord d)
 {return value.min_u==a&&value.min_v==b&&value.max_u==c&&value.max_v==d;}
 static bool get(Fixture *f,WoodGridSourceKind kind,uint32_t id,GeoSourceValue *out)
 {WoodGridSourceKey key;return geo_eval_source(f->graph,wood_grid_source_ref(GS_GRID,kind,id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,out)==GEO_SOURCE_OK;}
+/* D64: one card (parameter 90) controls both lengths, u repeat and v repeat-panel.
+ * The `card` token leaves the numeric slots at the placeholder 1 (a cache). */
+static bool card_system(Fixture *f,uint32_t u_field,uint32_t v_field)
+{
+    GeoGridSystem s={.id=6,.next_rule_key=1,.card_reference={true,90,{u_field,v_field}}};strcpy(s.name,"card");
+    s.axis[0]=(GeoGridAxisDef){.source=GEO_GRID_SOURCE_REPEAT,.step=1,.card_length=true};
+    s.axis[1]=(GeoGridAxisDef){.source=GEO_GRID_SOURCE_REPEAT_BODY_GAP,.body=1,.gap=10,.anchor_explicit=true,.card_length=true};
+    return wood_grid_source_put(&f->context,&s,0);
+}
+static bool card_field_definition(Fixture *f,uint32_t field)
+{
+    uint32_t key[]={90,field};size_t node=node_index(f->graph,(GeoSourceRef){GS_PARAMETER,key,sizeof key});GeoSourceNodeView view;
+    return edge_at(f,grid_index(f,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,6),node,GEO_DEPENDENCY_DEFINITION_REQUIRED)&&
+        geo_eval_node_at(f->graph,node,&view)&&view.state==GEO_NODE_NEW;
+}
 static int graph_case(void)
 {
     Fixture *f=fixture(100),*plain=fixture(100);CHECK(f&&plain&&attach(f),"graph-fixtures");GeoCoord value=0;size_t total=19;char error[1024]="";
@@ -153,7 +168,7 @@ static int lifetime_case(void)
 }
 static int definitions_case(void)
 {
-    Fixture *f=fixture(100);CHECK(f,"unused-definition-fixture");
+    Fixture *f=fixture(100);CHECK(f&&card_system(f,1,2),"unused-definition-fixture");
     WoodGridState before;memcpy(&before,&f->state,sizeof before);f->coordinate_ok=f->vertex_ok=false;
     CHECK(attach(f),"unused-definition-attach");char error[1024]="sentinel";
     CHECK(wood_grid_sources_definitions(f->sources,error,sizeof error),"unused-definitions-enumerate");
@@ -173,6 +188,9 @@ static int definitions_case(void)
     uint32_t parameter[]={90,1};size_t field=node_index(f->graph,(GeoSourceRef){GS_PARAMETER,parameter,sizeof parameter});
     CHECK(edge_at(f,grid_index(f,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,1),field,GEO_DEPENDENCY_DEFINITION_REQUIRED)&&
         geo_eval_node_at(f->graph,field,&node)&&node.state==GEO_NODE_NEW,"unused-parameter-definition-stays-unevaluated");
+    /* D64/R60: both mapped card fields are definition inputs of the unused card system. */
+    CHECK(card_field_definition(f,1),"unused-card-definition-requires-field-90:1");
+    CHECK(card_field_definition(f,2),"unused-card-definition-requires-field-90:2");
     WoodGridSourceKey rule;size_t index=node_index(f->graph,wood_grid_rule_definition_source_ref(GS_GRID,1,7,&rule));
     CHECK(geo_eval_node_at(f->graph,index,&node)&&node.value&&node.value->kind==GEO_SOURCE_DEFINITION&&
         !strcmp(node.value->as.definition.schema,"wood.grid.rule/1"),"unused-rule-definition-present");
@@ -180,6 +198,32 @@ static int definitions_case(void)
     size_t nodes=geo_eval_node_count(f->graph),edges=geo_eval_edge_count(f->graph);
     CHECK(wood_grid_sources_definitions(f->sources,error,sizeof error)&&geo_eval_node_count(f->graph)==nodes&&
         geo_eval_edge_count(f->graph)==edges,"unused-definition-enumeration-idempotent");
+    /* A swap changes the mapping (a definition) but not the set of definition inputs. */
+    Fixture *g=fixture(100);CHECK(g&&card_system(g,2,1),"swapped-card-fixture");g->coordinate_ok=g->vertex_ok=false;
+    CHECK(attach(g)&&wood_grid_sources_definitions(g->sources,error,sizeof error),"swapped-card-definitions-enumerate");
+    GeoSourceNodeView mapped,swapped;
+    CHECK(geo_eval_node_at(f->graph,grid_index(f,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,6),&mapped)&&mapped.value&&
+        geo_eval_node_at(g->graph,grid_index(g,WOOD_GRID_SOURCE_SYSTEM_DEFINITION,6),&swapped)&&swapped.value&&
+        (mapped.value->as.definition.content_size!=swapped.value->as.definition.content_size||
+         memcmp(mapped.value->as.definition.content,swapped.value->as.definition.content,mapped.value->as.definition.content_size)),"swapped-card-mapping-changes-definition");
+    CHECK(card_field_definition(g,1),"swapped-card-definition-requires-field-90:1");
+    CHECK(card_field_definition(g,2),"swapped-card-definition-requires-field-90:2");
+    CHECK(g->host_calls==0&&g->vertex_calls==0&&g->coordinate_calls==0&&g->region_calls==0,"swapped-card-definitions-do-not-evaluate");
+    dispose(f,false);dispose(g,false);return 0;
+}
+/* I74: evaluating the card system through the graph publishes the effective
+ * lengths into the authored store's cache slots; the placeholder 1 must not stay. */
+static int card_cache_case(void)
+{
+    Fixture *f=fixture(100);CHECK(f&&card_system(f,1,2)&&attach(f),"card-cache-fixture");
+    const GeoGridSystem *raw=geo_grid_systems_find(f->store,6);
+    CHECK(raw&&raw->axis[0].step==1&&raw->axis[1].body==1,"card-cache-placeholder-before-evaluation");
+    GeoSourceValue value;CHECK(get(f,WOOD_GRID_SOURCE_SYSTEM,6,&value),"card-cache-system-evaluates-through-graph");
+    raw=geo_grid_systems_find(f->store,6);
+    CHECK(raw&&raw->axis[0].step==100,"card-cache-u-step-is-card-field-90:1");
+    CHECK(raw&&raw->axis[1].body==50,"card-cache-v-panel-is-card-field-90:2");
+    CHECK(raw->card_reference.set&&raw->axis[0].card_length&&raw->axis[1].card_length&&
+        !raw->axis[0].parameters[1].set&&!raw->axis[1].parameters[2].set,"card-cache-keeps-authored-card-source");
     dispose(f,false);return 0;
 }
 static int rule_definition_case(void)
@@ -198,4 +242,4 @@ static int rule_definition_case(void)
     dispose(f,true);return 0;
 }
 int main(int argc,char **argv)
-{if(argc!=2)return 2;if(!strcmp(argv[1],"definitions"))return definitions_case();if(!strcmp(argv[1],"rule-definition"))return rule_definition_case();if(!strcmp(argv[1],"graph"))return graph_case();if(!strcmp(argv[1],"engineering"))return engineering_case();if(!strcmp(argv[1],"diagnostics"))return diagnostic_case();if(!strcmp(argv[1],"failure-output"))return failure_output_case();if(!strcmp(argv[1],"child-value"))return child_value_case();if(!strcmp(argv[1],"lifetime"))return lifetime_case();return 2;}
+{if(argc!=2)return 2;if(!strcmp(argv[1],"definitions"))return definitions_case();if(!strcmp(argv[1],"card-cache"))return card_cache_case();if(!strcmp(argv[1],"rule-definition"))return rule_definition_case();if(!strcmp(argv[1],"graph"))return graph_case();if(!strcmp(argv[1],"engineering"))return engineering_case();if(!strcmp(argv[1],"diagnostics"))return diagnostic_case();if(!strcmp(argv[1],"failure-output"))return failure_output_case();if(!strcmp(argv[1],"child-value"))return child_value_case();if(!strcmp(argv[1],"lifetime"))return lifetime_case();return 2;}
