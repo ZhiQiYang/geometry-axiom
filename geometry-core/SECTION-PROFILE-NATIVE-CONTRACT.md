@@ -246,6 +246,39 @@ native 組另須重編 binary 與基準線不同；model 組只變異 Python 製
 
 對照組（XC 開頭）只在 WSL 實驗中跑，沒有進閘門。
 
+#### GEO-261 WSL 實跑收據（2026-10-20）
+
+受驗提交是 `94247f6b1cfb363eea2ac4053026c52a9c66cacc`。執行環境：
+
+- WSL Ubuntu-24.04、GCC，在 ext4 clone `/var/tmp/q38-geo261/repo` 中執行，經 WSL 鎖。
+- model-base 由 `tests/binaries.py build model-base` 建置，fresh，sha256 `56dd9edb…5365c`。
+- 指令：`python3 tests/section_profile_mutation_check.py --jobs 8 --receipt … --logs …`。
+
+結果：
+
+- native 基準線 exit 0：27 個方法，0 fail、0 error、0 skip。
+- model 基準線 exit 0：20 個方法，0 fail、0 error、0 skip。
+- 42 例中 41 killed，1 equivalent（SPM24，理由同上），沒有 survived、unlabelled、invalid 或 blocked。閘門 exit 0，耗時 374 秒。
+- SPM38、SPM40 由明列型別 `geometry_app.model_common.ModelError` 的 ERROR 偵測，其餘 killed 都是 AssertionError。
+- SPM36、SPM39 的變異 adapter 雜湊（`ba57115d…`、`446fc663…`）都和基準 adapter 不同。
+
+收據沒有提交進 repo，位置在 `D:/geometry-axiom-work/q38-full-94247f6b/`：
+
+- `receipt.json`：sha256 `57ceb3ab05fd36e77a58dbf3054e6754adc2a74353c276873031c3281e46718b`。
+- `logs/`：每個案例的日誌、結構化例外與編譯收據。
+- `run.log`、`gate.log`。
+
+對照組與改錨前的實跑放在同一個資料夾的兄弟目錄：
+
+| 目錄 | 受驗內容 | 結果 |
+|---|---|---|
+| `q38-exp1-1908115e` | 單點版 SPM28／SPM29 | 存活 |
+| `q38-controls-e32994bf` | XC28L1／L12／L13、XC29L1／L12／L13、XC36、XC39、XC40B | 存活 |
+| `q38-controls-e32994bf` | XC40A | unlabelled |
+| `q38-full-e32994bf` | 舊錨點的 SPM02～SPM04 | 存活 |
+| `q38-full-e32994bf` | 只有第一層的 SPM20 | unlabelled |
+| `q38-exp3-e32994bf` | XC03L1、XC04L1 | unlabelled |
+
 #### 歷史 --explore 實測：逐案例紅燈與提案 AC16 的差異
 
 `--explore` 對每個案例跑整個測試類別，收據是 `q38-mutations-explore.json`（日誌 `mutation-explore-logs.tgz`），逐案例的紅燈測試與失敗訊息在 `ac16-per-case-red-tests.md`。測試方法本身不帶提案 AC 編號，下表的 AC 欄是人工讀測試內容對應的結果，而且是方法層級：一個方法含多個 AC 場景，「含」不等於「該場景是導致轉紅的那一行」，失敗訊息才是實際斷言。
