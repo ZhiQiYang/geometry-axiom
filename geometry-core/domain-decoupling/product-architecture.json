@@ -3745,6 +3745,14 @@
           "H"
         ],
         "purpose": "Optional installed browser driver used by the separate work-manager screenshot command; no K/W access"
+      },
+      {
+        "language": "python",
+        "name": "ctypes",
+        "layers": [
+          "H"
+        ],
+        "purpose": "Windows-only file change-time stat for the host source-inventory memo in geometry-app/geometry_app/source_closure.py (import ctypes and from ctypes import wintypes under os.name == \"nt\"); exact H-only allowance, not available to K/W"
       }
     ],
     "forbiddenIdentifiers": [
@@ -4373,6 +4381,8 @@
       "wood_grid_binding_hook",
       "wood_grid_binding_index",
       "wood_grid_bindings_rebuild",
+      "wood_grid_card_definitions",
+      "wood_grid_card_error",
       "wood_grid_cell_bounds",
       "wood_grid_cell_has_area",
       "wood_grid_cell_resolve",

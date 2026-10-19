@@ -16,7 +16,7 @@ runtime import blocking, mutation receipts, browser acceptance, or SSOT checks.
 
 ## Complete inventory and responsibilities
 
-The current inventory contains 576 executable files: 332 owned sources and 244
+The current inventory contains 591 executable files: 333 owned sources and 258
 individually named exclusions. The five complete roots are `geometry-core`,
 `geometry-app`, `geometry-templates`, `geometry-web`, and `geometry-guide`.
 `current_geometry.c` is an additional standalone source. The real
@@ -28,10 +28,10 @@ New executable files anywhere under these roots fail until accounted for.
 |---|---:|---|
 | K | 69 | Public neutral C stores/evaluators/source/transaction APIs and the Python geometry kernel, including their private implementation headers |
 | W | 67 | Woodworking policy, material/recipe interpretation, construction, layout, support and presentation; rectangular-grid second-template witness |
-| H | 190 | Native World/scene/command/transaction adapters and composition, Python application and compatibility facades, browser/server UI, guide authoring, and workspace tooling |
+| H | 191 | Native World/scene/command/transaction adapters and composition, Python application and compatibility facades, browser/server UI, guide authoring, and workspace tooling |
 | vendor | 6 | Individually digest-locked browser PDF and ZIP dependencies, accessible only from H |
 
-The 332 sources contain 189 C/header/include files, 75 Python files, 64 JavaScript
+The 333 sources contain 190 C/header/include files, 75 Python files, 64 JavaScript
 files, and 4 HTML files. The canonical self-contained axiom reader and its
 generator are included. The separate work-manager is included as H tooling,
 although its own instructions distinguish it from the Geometry product UI.
@@ -45,8 +45,8 @@ dependency scanning alone cannot prove that every remaining H function is free
 of misplaced domain policy. It must not be cited as that stronger result.
 
 All exclusions have an exact path, individual reason, and SHA-256 using explicitly
-declared CRLF-to-LF normalization. There are 115 historical evidence programs,
-38 other documentation/reproduction/snapshot programs, 66 dedicated test drivers,
+declared CRLF-to-LF normalization. There are 120 historical evidence programs,
+47 other documentation/reproduction/snapshot/GEO-262 tooling programs, 66 dedicated test drivers,
 and 25 engineering-spec prototype files. The prototype's `AGENTS.md` explicitly
 states it is not the production application. The manifest has no directory
 exemption. An owned dependency on any excluded file fails. Historical evidence
@@ -55,8 +55,9 @@ and prototype programs have not been certified as active product dependencies.
 The six vendor files have raw-byte digests and an explicit H-only trust bundle.
 Their internal code, runtime loaders, WebAssembly and non-source assets are
 **trusted, not statically verified**. K/W access to that bundle is rejected.
-Only exact existing Windows/process C headers and the optional H-only
-`playwright.sync_api` screenshot driver receive external-module allowances.
+Only exact existing Windows/process C headers, the optional H-only
+`playwright.sync_api` screenshot driver and the H-only Windows file-time stat
+import `ctypes` receive external-module allowances.
 
 ## Audited host routes
 
@@ -161,7 +162,7 @@ rejected with the expected guard, while a neutral identifier remains accepted.
 These in-memory probes neither modify source/test files nor increase the
 18-test product-suite count.
 
-The latest host-authority and train19-evidence refresh freezes source HEAD
+The preceding host-authority and train19-evidence refresh froze source HEAD
 `47d3bb4bcccddeeb034dd5899a7aa15c9cab0768`. The previous manifest's actual CLI
 run exits 1 with `EXCLUSION_DIGEST` for
 `geometry-web/cdp_test.js`. Independent
@@ -197,7 +198,61 @@ double-click/hit checks and stagger-rename coverage. Their exact paths and
 test-only responsibilities remain unchanged; the receipt records old/new LF
 digests, raw digests and current Git blobs. All other exclusion, vendor and
 embed-route digests remain current. The Python default
-change in #289 is not part of this frozen source and is not certified here.
+change in #289 was not part of that 47d3bb4 frozen source and was not certified by that historical audit.
+
+The final GEO-261 integration refresh freezes source HEAD
+`8394ef601c3d2407f51191339fad261929c1769a`. The merge of main `4b975a3d` (train
+#312, GEO-262) and the GEO-262 re-anchor had already registered every new
+executable file in the manifest, so independent enumeration finds 591 files,
+none unregistered, none missing and no stale exclusion, vendor, driver or router
+digest. Compared with the previous sealed manifest those commits added one H
+source, `geometry-core/card_reference.inc`, 14 individually named exclusions
+(nine GEO-262 tooling files under `geometry-core/card-reference/` and five
+retained native-P1 evidence helpers) and updated five pinned digests:
+
+- `geometry-web/assembly_generation_test.js` (exclusion LF digest)
+- `geometry-web/cdp_test.js` (exclusion LF digest)
+- `geometry-web/feedback_resize_observer_test.js` (exclusion LF digest)
+- `geometry-web/marquee_test.js` (exclusion LF digest)
+- `geometry-web/serve.py` (pinned scenario-route router digest)
+
+The reviewed reason for each is recorded in the receipt. The router change
+touches only `recorded_api` receipt handling; the scenario iframe route the
+digest protects is not in that diff, and the iframe controls still pass against
+the new digest.
+
+Running that manifest through the actual CLI nevertheless exits 1 with one
+`DEPENDENCY_UNRESOLVED`: `geometry-app/geometry_app/source_closure.py:40`
+imports `ctypes` (and `ctypes.wintypes`) under `os.name == "nt"` for the
+stat-signature source-inventory memo introduced by `c8de5a40`. The product suite
+failed its complete-graph test for the same reason. This audit resolves it with
+an exact **H-only** external-module allowance for `ctypes`, not the all-layer
+standard-library list, because `ctypes` can load native libraries and K/W must
+not gain that capability. In-memory probes append `import ctypes` to an actual K
+and an actual W Python source and both are rejected; the actual H file is
+accepted. This is a policy decision recorded for review, not a change to any
+product source.
+
+A fresh lexical inventory of all 60 W-owned native C files finds two W
+identifiers added by the GEO-262 card reference, `wood_grid_card_definitions`
+and `wood_grid_card_error`, and no new string guard. All 916 previous forbidden
+identifiers and 55 strings are retained (9 identifiers and 3 strings no longer
+occur in current W sources and are kept anyway), for totals of 918 and 55. Two
+in-memory K-source probes reject the new identifiers and a neutral probe passes;
+the HEAD manifest accepted the same text, so the new guards are what reject it.
+
+69 previously sealed executable inputs changed (45 H, 6 K, 14 W and 4 excluded
+test drivers), and 15 executable files are new. The Python default source commit
+`8f36f1a0dd7e1244c92aca926c0a80079451e7f0` that the previous report left outside
+its frozen source is now an ancestor of this HEAD (`git merge-base
+--is-ancestor` exit 0); its runtime behavior and native coverage still require
+their independent execution receipts, which this audit does not certify. No
+scanner, product test or product source changes in this audit.
+
+The previous four audit outputs are preserved byte-for-byte in the external run
+directory and the previous sealed outputs were re-read from Git commit
+`277bfdd3`. The new receipt links their raw/LF digests, the previous receipt
+creation time and source head.
 
 The manifest, scan, report and receipt are excluded from the product
 input closure because they are derived audit artifacts. Manifest and scan are
@@ -224,15 +279,13 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-At the latest sealed source HEAD, the actual CLI scan exits 0 with 332 owned sources,
-796 dependency edges and no diagnostics; all 18 product tests pass with no
-skips. Independent enumeration after the run matches every one of the 576
-sealed source hashes, both raw and LF-normalized. The generic scanner's previous 205-test result (204 pass,
-one Windows symlink-permission skip) is reused only because both its scanner
-and test source hashes remain unchanged; the receipt records the previous
-receipt's LF-normalized hash and original validation provenance. HEAD and every
-product/scanner/test input hash remain unchanged from before the fail-closed
-run through final verification.
+At the latest sealed source HEAD `8394ef601c3d2407f51191339fad261929c1769a`, the
+actual CLI scan exits 0 with 333 owned sources, 796 dependency edges and no
+diagnostics. All 18 actual product tests pass with no skips. Independent
+enumeration matches all 591 input hashes, both raw and LF-normalized. The
+generic scanner suite was executed at this HEAD: 205 tests, 204 passed, 0 failed
+and 1 skipped (a skip is not a pass). HEAD and all product, scanner and test raw
+and LF hashes remain fixed throughout this finite refresh.
 
 When new provider files are integrated, the root inventory must first fail
 closed, then receive individually reviewed source entries. Re-run the product
