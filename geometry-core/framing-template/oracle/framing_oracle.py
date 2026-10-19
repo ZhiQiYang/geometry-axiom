@@ -52,9 +52,15 @@
        (與主支平行的牆、孔邊,連同它室內那側 w 寬的料;朝向或背向起鋪側都算)各取 ⌊D′ − 1.5w⌋,由近到遠;
        某個候選不可行時,它自己寬度裡的擋料再補進候選。每個候選完整建構一次,再跑完整的 check():
        沒有任何衝突碼、也沒有任何檢查失敗才算可行;選第一個可行的。都不可行才報衝突(P182_NO_FEASIBLE_CANDIDATE),
-       理由列出每個候選與它失敗的碼。候選與結果記成 candidate trace(res["p182"])。
-       C7 從幾何另算候選集合(expected_p182_candidates),核對 trace:比選中者更優先的候選都在 trace 裡、而且都真的失敗
-       (C7 對 trace 裡那份佈局重跑 check());選中的屬於候選集合。先調支撐、不動板(#251 審查 1b6b34f9、718cc9a3)。
+       理由列出每個候選各自的衝突碼與檢查失敗碼(衝突碼與檢查失敗碼分開寫)。候選與結果記成 candidate trace(res["p182"]):
+       trace 只是建構端宣稱的候選清單與各候選的失敗碼,不存佈局。
+       C7(p182_trace_problems)不信 trace:候選集合與選擇規則由 C7 自己算(expected_p182_candidates,不呼叫建構端的決策),
+       再對每個候選呼叫建構端〈給定縫位就建構〉的純函式(build_candidate,決定性)自己重建、跑完整 check(),
+       和 trace 宣稱的可行與失敗碼逐一比對:宣稱失敗卻重建可行、失敗碼不一致、宣稱可行卻重建失敗,都報錯;
+       比選中者更優先的候選(都不可行時是全部候選)必須全在 trace 裡、而且重建後都真的失敗;選中的屬於候選集合且重建後可行。
+       先調支撐、不動板(#251 審查 1b6b34f9、718cc9a3、4e1f1161)。
+       已知限制:〈可行〉= 沒有衝突碼且通過完整 check(),建構端既有的缺陷(例:C11 的 2 mm 縫、柱跨牆階的 C3/C6/C8)
+       也會讓候選被淘汰,變成排法決策;這個缺陷不在本輪修,理由與例子見 README 已知限制。
 不處理:樑高度、交丁、角材怎麼固定(與幾何無關)。
 
 座標:世界座標,整數 mm。A 軸 = 板寬方向(主支之間的方向),B 軸 = 板長方向(主支的長度方向)。
@@ -392,7 +398,7 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
     # 主支縫照縫線上的對牆(G7)。最後一條主支縫的 P-182 候選(原縫位不可行時退到哪裡)在 build 結尾。
     seams_a, moved_a = seam_centers(Amin + shift, Amax + shift, layout["a_start"], P, g, w, mut,
                                     local_depth_fn(reg_outer, a, Amin + shift, Amax + shift, layout["a_start"]))
-    if _p182 is not None and seams_a:
+    if _p182 is not None and seams_a and _p182 != seams_a[-1]:  # 給定縫位就建構(build_candidate);等於原縫位時整個結果和不給時一樣
         moved_a = (moved_a[0] if moved_a else seams_a[-1], _p182)
         seams_a = seams_a[:-1] + [_p182]
     seams_b, moved_b = seam_centers(Bmin, Bmax, layout["b_start"], Lp, g, w, mut,
@@ -1041,38 +1047,54 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
         pending = cands_from(d0)
         if pending:
             def trial(d_, r_):
+                """評估一個候選:回傳 trace 的一筆(不存佈局;C7 不信 trace,自己重建)。"""
                 f_ = check(r_, p, _cand=True)
                 ok_ = not r_["conflicts"] and (not f_ or "p182_conflicts_only" in mut)  # 突變:只看衝突碼,不跑 check()
-                return dict(d=d_, seam=world(d_), ok=ok_, codes=sorted({c_["code"] for c_ in r_["conflicts"]}),
-                            checks=sorted({f["check"] for f in f_}), res=r_)
-            trace = [trial(d0, res)]
+                codes_, checks_ = sorted({c_["code"] for c_ in r_["conflicts"]}), sorted({f["check"] for f in f_})
+                return dict(d=d_, seam=world(d_), ok=ok_, codes=codes_, checks=checks_, why=p182_reason(codes_, checks_))
+            ent0 = trial(d0, res)
             if "p182_always" in mut:  # 突變:跳過原縫位(主支寬度裡一有擋料就退)
-                trace[0]["ok"] = False
-            chosen = trace[0] if trace[0]["ok"] else None
+                ent0["ok"] = False
+            trace = [ent0]
+            chosen, chosen_res = (ent0, res) if ent0["ok"] else (None, None)
             tried = {d0}
             while chosen is None and pending:
                 d_ = min(pending) if "p182_far_first" in mut else max(pending)  # 突變:由遠到近
                 pending.discard(d_)
                 tried.add(d_)
-                e_ = trial(d_, build(room, layout, p, mut, _p182=world(d_)))
+                r_ = build_candidate(room, layout, p, world(d_), mut)
+                e_ = trial(d_, r_)
                 trace.append(e_)
                 if e_["ok"]:
-                    chosen = e_
+                    chosen, chosen_res = e_, r_
                 else:
                     pending |= {x for x in cands_from(d_) if x not in tried}
             info = dict(c0=world(d0), d0=d0, cands=trace, chosen=None if chosen is None else chosen["d"])
             if chosen is None:
-                # 都不可行:回傳原縫位的佈局,衝突只報這一條(各候選自己的衝突碼與檢查失敗寫在理由與 trace 裡),
-                #   原縫位本身的衝突碼在鏡像的房間會因為主支兩側差 1 mm 而不同,不拿來當這個排法的判定
+                # 都不可行:回傳原縫位的佈局,衝突只報這一條。原縫位本身的衝突碼在鏡像的房間會因為主支兩側差 1 mm 而不同,
+                #   不拿來當這個排法的判定;但每個候選各自的衝突碼與檢查失敗碼(分開寫)都保留在 candidates 與理由裡,不蓋掉。
                 return dict(res, p182=info, conflicts=[dict(
                     code="P182_NO_FEASIBLE_CANDIDATE", seam=world(d0),
-                    candidates=[[e["seam"], e["codes"] + e["checks"]] for e in trace],
-                    why="最後一條主支縫的候選都不可行:" + ";".join(
-                        f"縫 {e['seam']}:{','.join(e['codes'] + e['checks']) or '跳過'}" for e in trace))])
-            out = chosen["res"]
+                    candidates=[dict(seam=e["seam"], conflict_codes=e["codes"], check_failures=e["checks"]) for e in trace],
+                    why="最後一條主支縫的候選都不可行(每個候選各自的衝突碼與檢查失敗碼如下;〈可行〉= 沒有衝突碼且通過完整檢查,"
+                        "檢查失敗也可能是建構端既有的缺陷,見 README 已知限制):" + ";".join(f"縫 {e['seam']}:{e['why']}" for e in trace))])
+            out = chosen_res
             out["p182"] = info
             return out
     return res
+
+
+def build_candidate(room, layout, p, seam, mut=frozenset()):
+    """P-182:最後一條主支縫放在世界座標 seam 時的完整建構。純函式、決定性,不展開候選、不跑 check()。
+    建構端試每個候選、檢查端 C7 重建每個候選,呼叫的都是這一個;seam 等於 G7 算出的原縫位時,結果和不給縫位的 build 完全一樣(除了沒有 trace)。"""
+    return build(room, layout, p, mut, _p182=seam)
+
+
+def p182_reason(codes, checks):
+    """候選被淘汰的理由:衝突碼與檢查失敗碼分開寫(檢查失敗可能是建構端既有的缺陷,見 README 已知限制)。"""
+    if not codes and not checks:
+        return "可行"
+    return f"衝突碼 {','.join(codes) or '無'};檢查失敗 {','.join(checks) or '無'}"
 
 
 # ---------------------------------------------------------------- 檢查用的獨立縫位推算(不呼叫 seam_centers)
@@ -1172,20 +1194,96 @@ def expected_p182_candidates(reg, a, start, lo, hi, d0, dprev, w):
     return sorted(seen, reverse=True)
 
 
-def p182_trace_problems(res, p):
-    """trace 裡標成失敗的每個候選,C7 對那份候選佈局重跑 check(),確定真的失敗;回傳問題清單(空的代表都真的失敗)。
-    只有衝突碼、check() 卻全過的,報 FAIL_UNCONFIRMED(建構端的衝突在檢查端沒有對應的檢查)。"""
+def _p182_rebuild(res, p, d, world):
+    """C7 用:自己重建 P-182 候選 d(最後一條主支縫放在 world(d))並跑完整 check()。不讀 trace 裡的任何東西:
+    房間取自 res 的區域、排法取自 res 的 layout,縫位是 C7 自己算的;建構呼叫建構端〈給定縫位就建構〉的純函式。
+    回傳 (可行, 衝突碼, 檢查失敗碼)。"""
+    reg = res["region"]
+    room = {"outer": [list(q) for q in reg.rings[0]], "holes": [[list(q) for q in h] for h in reg.rings[1:]]}
+    r = build_candidate(room, res["layout"], p, world(d))
+    f = check(r, p, _cand=True)
+    return (not r["conflicts"] and not f), sorted({c["code"] for c in r["conflicts"]}), sorted({x["check"] for x in f})
+
+
+def _p182_audit(res, p):
+    """C7 對 P-182 candidate trace 的裁決。回傳 (問題清單 [(碼, 縫, 細節)], 採用)。採用 = trace 在、而且最後一條主支縫是 C7 候選集合裡的一個
+    (check() 才拿它當期望縫位)。trace 只當成建構端〈宣稱的候選清單與失敗碼〉,不信它:
+    - 候選集合由 expected_p182_candidates 從幾何另算(不呼叫建構端的決策);選擇規則是〈偏好順序裡第一個可行的〉。
+    - 比選中者更優先的候選(都不可行時是全部候選)必須全在 trace 裡;trace 試過的每一個都要屬於候選集合。
+    - 每個候選由 C7 自己重建(build_candidate)、跑完整 check(),再和 trace 的宣稱比對:宣稱失敗但重建可行、失敗碼不一致、
+      宣稱可行但重建失敗,都報錯;更優先的候選重建後必須全部失敗;選中的候選重建後必須可行。
+    trace 裡原本存的佈局不再使用(也不再存):只比對最後一條縫擋不住〈刪一支併料〉〈換前面的縫〉這類偽造(#251 審查 4e1f1161)。"""
     out = []
-    for e in (res.get("p182") or {}).get("cands", []):
-        if e["res"]["seams_a"][-1:] != [e["seam"]]:  # 存的那份佈局要真的是這個候選(最後一條主支縫在這個位置)
-            out.append(("C7_P182_TRACE_LAYOUT_MISMATCH", e["seam"], e["codes"]))
+    seams = res["seams_a"]
+    reg, a, lay = res["region"], res["a"], res["layout"]
+    w = p["w"]
+    loA, hiA, stA = reg.bbox[a], reg.bbox[a + 2], lay["a_start"]
+    exp = expected_seam_positions(loA, hiA, stA, p["P"], p["gap"], w, Region(reg.rings[0], []), a)
+    if not exp or not seams or len(exp) != len(seams):
+        return out, False
+    tA = (lambda c_: c_ - loA) if stA == "min" else (lambda c_: hiA - c_)
+    world = (lambda d_: loA + d_) if stA == "min" else (lambda d_: hiA - d_)
+    d0 = tA(exp[-1])
+    tr = res.get("p182")
+    if tr and tr.get("c0") != exp[-1]:  # 建構端的原縫位(候選的起點)要等於獨立推算的 G7 縫位
+        out.append(("C7_SEAMS_NOT_FROM_START", exp[-1], ["P-182 trace 的原縫位", tr.get("c0")]))
+    cset = expected_p182_candidates(reg, a, stA, loA, hiA, d0, tA(exp[-2]) if len(exp) > 1 else None, w)
+    if len(cset) <= 1:
+        return out, False
+    last = seams[-1]
+    dc = tA(last)
+    ents = {e["d"]: e for e in (tr or {}).get("cands", [])}
+    if not tr or d0 not in ents:
+        out.append(("C7_P182_TRACE_MISSING", exp[-1], cset))
+        return out, False
+    if dc not in cset:
+        out.append(("C7_P182_NOT_CANDIDATE", last, cset))
+        return out, False
+    for d_ in ents:
+        if d_ not in cset:  # trace 試過的每一個都要在 C7 自己算的候選集合裡
+            out.append(("C7_P182_NOT_CANDIDATE", ents[d_]["seam"], cset))
+    chosen = (tr or {}).get("chosen")
+    if chosen is None:
+        # 都不可行:結果要是原縫位、報 P182_NO_FEASIBLE_CANDIDATE;trace 要涵蓋 C7 算出的全部候選,而且每一個重建後都真的失敗
+        if dc != d0 or not any(c["code"] == "P182_NO_FEASIBLE_CANDIDATE" for c in res["conflicts"]):
+            out.append(("C7_P182_CHOSE_FAILED", last, ["trace 說沒有可行的候選,結果卻不是原縫位或沒報 P182_NO_FEASIBLE_CANDIDATE"]))
+        preferred = list(cset)
+    else:
+        if chosen != dc or dc not in ents or not ents[dc]["ok"]:
+            out.append(("C7_P182_CHOSE_FAILED", last, [chosen, dc]))
+        preferred = [d_ for d_ in cset if d_ > dc]  # 比選中者更優先的候選
+    miss = [d_ for d_ in preferred if d_ not in ents]
+    if miss:
+        out.append(("C7_P182_TRACE_INCOMPLETE", exp[-1], miss))
+    # 逐一重建:更優先的候選(含 trace 漏掉的)、trace 裡其餘屬於候選集合的(選中的在內)
+    todo = sorted(set(preferred) | {d_ for d_ in ents if d_ in cset and (chosen is None or d_ >= dc)}, reverse=True)
+    for d_ in todo:
+        ok_r, codes_r, checks_r = _p182_rebuild(res, p, d_, world)
+        claim = ents.get(d_)
+        seam_ = world(d_)
+        if not ok_r and codes_r and not checks_r:  # 建構端的衝突在檢查端沒有對應的檢查
+            out.append(("C7_P182_FAIL_UNCONFIRMED", seam_, codes_r))
+        if d_ in preferred and ok_r:
+            out.append(("C7_P182_SKIPPED_FEASIBLE", seam_, d_))  # 比選中者更優先的候選重建後可行,卻沒選它
+        elif chosen is not None and d_ == dc and not ok_r:
+            out.append(("C7_P182_CHOSE_FAILED", seam_, codes_r + checks_r))  # 選中的候選重建後不可行
+        if claim is None:
             continue
-        if e["ok"]:
-            continue
-        f = check(e["res"], p, _cand=True)
-        if not f:
-            out.append(("C7_P182_FALSE_FAIL" if not e["res"]["conflicts"] else "C7_P182_FAIL_UNCONFIRMED", e["seam"], e["codes"]))
-    return out
+        if not claim["ok"] and ok_r:
+            out.append(("C7_P182_FALSE_FAIL", seam_, claim["codes"] + claim["checks"]))  # 宣稱失敗,重建可行
+        elif not claim["ok"] and (claim["codes"], claim["checks"]) != (codes_r, checks_r):
+            out.append(("C7_P182_CODES_MISMATCH", seam_, dict(claimed=[claim["codes"], claim["checks"]], rebuilt=[codes_r, checks_r])))
+        elif claim["ok"] and not ok_r:
+            out.append(("C7_P182_FALSE_OK", seam_, codes_r + checks_r))  # 宣稱可行,重建失敗
+        if d_ in preferred and claim["ok"]:
+            out.append(("C7_P182_SKIPPED_FEASIBLE", seam_, d_))  # trace 自己說可行,卻沒選
+    return out, True
+
+
+def p182_trace_problems(res, p):
+    """P-182 trace 的問題清單 [(碼, 縫, 細節)];空的代表 C7 的裁決通過。可施工與不可施工(P182_NO_FEASIBLE_CANDIDATE)的結果都能用:
+    check() 只在可施工時跑,掃描與測試對不可施工的結果直接呼叫這個函式。"""
+    return _p182_audit(res, p)[0]
 
 
 def expected_seam_retreat(seams, reg_o, a, b, start, lo, hi, p):
@@ -1290,45 +1388,19 @@ def check(res, p, _cand=False):
     lay = res["layout"]
     reg_o = Region(reg.rings[0], [])  # 只看外環:柱不是收邊的對牆
     # 主支縫(A):照縫線上的對牆(G7)。最後一條主支縫依 P-182 第三版(推論)可以退到候選位置之一:
-    #   C7 另算候選集合(expected_p182_candidates),核對建構端的 candidate trace(_cand=True 是建構端評估候選時用,只驗前面幾條縫)。
+    #   C7 另算候選集合(expected_p182_candidates),對每個候選自己重建(build_candidate)、跑完整 check(),
+    #   和建構端的 candidate trace 宣稱逐一比對(_p182_audit;_cand=True 是建構端評估候選、C7 重建候選時用,只驗前面幾條縫)。
     exp_a = expected_seam_positions(reg.bbox[a], reg.bbox[a + 2], lay["a_start"], p["P"], g, w, reg_o, a)
-    loA, hiA, stA = reg.bbox[a], reg.bbox[a + 2], lay["a_start"]
-    tA = (lambda c_: c_ - loA) if stA == "min" else (lambda c_: hiA - c_)
     if exp_a and res["seams_a"] and len(exp_a) == len(res["seams_a"]):
         last_got = res["seams_a"][-1]
         if _cand:
             exp_a = exp_a[:-1] + [last_got]
         else:
-            d0_ = tA(exp_a[-1])
-            tr0 = res.get("p182")
-            if tr0 and tr0.get("c0") != exp_a[-1]:  # 建構端的原縫位(候選的起點)要等於獨立推算的 G7 縫位
-                fails.append(dict(check="C7_SEAMS_NOT_FROM_START", axis="A", expected=exp_a[-1], got=tr0.get("c0"), note="P-182 trace 的原縫位"))
-            cset = expected_p182_candidates(reg, a, stA, loA, hiA, d0_, tA(exp_a[-2]) if len(exp_a) > 1 else None, w)
-            if len(cset) > 1:
-                tr = res.get("p182")
-                dc = tA(last_got)
-                ents = {e["d"]: e for e in (tr or {}).get("cands", [])}
-                if not tr or d0_ not in ents:
-                    fails.append(dict(check="C7_P182_TRACE_MISSING", seam=exp_a[-1], candidates=cset))
-                elif dc not in cset:
-                    fails.append(dict(check="C7_P182_NOT_CANDIDATE", seam=last_got, candidates=cset))
-                else:
-                    if (dc not in ents or not ents[dc]["ok"]) and (tr or {}).get("chosen") is not None:
-                        fails.append(dict(check="C7_P182_CHOSE_FAILED", seam=last_got))
-                    if (tr or {}).get("chosen") is None and dc != d0_:
-                        fails.append(dict(check="C7_P182_CHOSE_FAILED", seam=last_got))
-                    for d_ in ents:
-                        if d_ not in cset:  # trace 試過的每一個都要在 C7 自己算的候選集合裡
-                            fails.append(dict(check="C7_P182_NOT_CANDIDATE", seam=ents[d_]["seam"], candidates=cset, note="trace 裡的候選"))
-                    miss = [d_ for d_ in cset if d_ > dc and d_ not in ents]
-                    if miss:
-                        fails.append(dict(check="C7_P182_TRACE_INCOMPLETE", missing=miss))
-                    for d_ in cset:
-                        if d_ > dc and d_ in ents and ents[d_]["ok"]:
-                            fails.append(dict(check="C7_P182_SKIPPED_FEASIBLE", d=d_))
-                    for code_, seam_, codes_ in p182_trace_problems(res, p):
-                        fails.append(dict(check=code_, seam=seam_, codes=codes_))
-                    exp_a = exp_a[:-1] + [last_got]
+            probs, adopt = _p182_audit(res, p)
+            for code_, seam_, det_ in probs:
+                fails.append(dict(check=code_, seam=seam_, detail=det_))
+            if adopt:
+                exp_a = exp_a[:-1] + [last_got]
     exp_b = expected_seam_positions(reg.bbox[b], reg.bbox[b + 2], lay["b_start"], p["L"], g, w, reg_o, b)
     exp_b = expected_seam_retreat(exp_b, reg_o, a, b, lay["b_start"], reg.bbox[b], reg.bbox[b + 2], p)
     if sorted(exp_a) != sorted(res["seams_a"]):
@@ -1740,6 +1812,9 @@ def export(room_name, l, res, fails):
     return dict(room=room_name, layout=l, name=layout_name(l),
                 seams_a=res["seams_a"], seams_b=res["seams_b"], moved_a=res["moved_a"], moved_b=res["moved_b"],
                 conflicts=res["conflicts"], check_failures=fails,
+                p182=None if not res.get("p182") else dict(
+                    original_seam=res["p182"]["c0"], chosen_seam=None if res["p182"]["chosen"] is None else res["seams_a"][-1],
+                    candidates=[dict(seam=e["seam"], feasible=e["ok"], conflict_codes=e["codes"], check_failures=e["checks"]) for e in res["p182"]["cands"]]),
                 timbers=[dict(id=t["id"], kind=t["kind"], rect=list(t["rect"]),
                               **{k: v for k, v in t.items() if k in ("seam", "at", "role", "rc_line", "core_role", "priority")})
                          for t in res["timbers"]],

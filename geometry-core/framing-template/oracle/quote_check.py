@@ -16,11 +16,17 @@
 
 比對:引文裡的「…」(U+2026)代表省略,切開的各段要依序出現在同一行;切成兩段以上時每段至少 MIN_FRAG 個字。
 其他字元(含全形/半形、空白個數、半形 ...)都要一模一樣。
-已知限制(查不到的寫法):真的原話配上錯的時間或出處;〈〉、《》、‘’ 這類括號不當引號(只有緊接在原話、原文後面時報錯);
-.py 檔的 ASCII 引號(只有緊接在原話、原文後面時報錯);引述動詞或使用者離開引號太遠、又不在同一行或上一行;
-佇列自我引用:比對的是受測這棵樹自己的佇列,同一個 PR 往佇列加一行 > 原話行就能讓引文過關(要比對 merge-base 那一份才能擋,
-但 merge-base 取決於 remote ref,在 WSL 的乾淨 clone 裡不可靠,本版不做;靠審查看佇列的 diff)。
-另外先把 HTML 實體(&#12300;、&lcorner; 這類)與 .py 裡的 \\u 跳脫換成真的字再查。
+**本檢查是輔助,不是保證**:它只擋得住下面列出的寫法,擋不住有意繞過的人,使用者原話的把關最後仍靠審查。
+先正規化再查:HTML 實體(&#12300;、&lcorner; 這類)換成真的字;<q>…</q> 當引號;.py 裡的 \\u、\\U、\\N{名稱}、\\x 跳脫換成真的字。
+標記詞(原話、原文,以及使用者或 Yang 加說、講、回答、表示、寫道)後面可以夾 Unicode 空白(全形空白、tab、nbsp)、零寬字元、
+括號說明、冒號、破折號、〈是、為、如下〉這類連接詞;夾完之後下一個字若不是引號,而是括號類(〈《‘'`[<*_ 等)就報錯(轉述冒充原話)。
+已知限制(查不到的寫法;README 也列了同一份):
+- 真的原話配上錯的時間或出處:只要逐字出現在佇列任一行 > 原話行就過,不驗是哪一天哪一題說的。
+- 沒有任何標記詞、也沒有引號的轉述;標記詞離引號太遠(超過上面列的夾法,或不在同一行、上一行);其他語言的標記詞(例 User said)。
+- 沒列入的括號與引號形狀(例 ‹›、零寬字元夾在引號字元中間)、圖片與截圖裡的字、程式碼區塊裡的字。
+- .py 檔的 ASCII 引號是程式字串,不認(只有緊接在原話、原文後面時報錯)。
+- 佇列自我引用:比對的是受測這棵樹自己的佇列,同一個 PR 往佇列加一行 > 原話行就能讓引文過關(要比對 merge-base 那一份才能擋,
+  但 merge-base 取決於 remote ref,在 WSL 的乾淨 clone 裡不可靠,本版不做;靠審查看佇列的 diff)。
 
 用法:python quote_check.py [--queue 檔案];不給 --queue 時讀 repo 根目錄的 `決策佇列.md`(本檔往上三層)。
 原始碼突變在 repo 外的副本裡跑,由環境變數 FRAMING_QUOTE_QUEUE 指定一份事先從受測工作樹複製出來的同一個檔。"""
@@ -29,6 +35,7 @@ import os
 import pathlib
 import re
 import sys
+import unicodedata
 
 HERE = pathlib.Path(__file__).resolve().parent
 TPL = HERE.parent  # geometry-core/framing-template
@@ -39,8 +46,11 @@ SPEECH = ("說", "講", "回答", "表示", "寫道")
 TITLE_MARKER = "決策佇列"
 QUEUE_MARKER = "逐字"
 USER_TABLE = "## 使用者講過的規則"
-CJK = {"「": "」", "『": "』", "“": "”", "｢": "｣", "⌜": "⌝", "⌞": "⌟"}
-NONSTD = "〈《‘'`[&\""  # 原話、原文後面接這些(而不是上面的引號),判成轉述冒充原話;& 是解不開的 HTML 實體(例 &lcorner;)
+CJK = {"「": "」", "『": "』", "“": "”", "｢": "｣", "⌜": "⌝", "⌞": "⌟", "〝": "〞", "﹁": "﹂", "﹃": "﹄", "«": "»", "❝": "❞"}
+FULLQ = "＂"  # 全形雙引號 U+FF02:前後同一個字,和 ASCII " 一樣兩兩配對(.py 裡也認,它不會是程式字串的引號)
+NONSTD = "〈《‘'`[<*_&\""  # 原話、原文後面接這些(而不是上面的引號),判成轉述冒充原話;& 是解不開的 HTML 實體(例 &lcorner;)
+DASHES = "—―─-"  # 標記詞後面的破折號:夾完還不是引號就算轉述
+CONNECT = ("就是", "如下", "是", "為", "即")  # 標記詞後面的連接詞:原話是〈…〉
 MIN_FRAG = 6
 
 
@@ -79,7 +89,9 @@ def pairs(line, ascii_quotes=True):
     if ascii_quotes:
         qs = [i for i, ch in enumerate(line) if ch == '"']
         out += [(qs[k], qs[k + 1]) for k in range(0, len(qs) - 1, 2)]
-    return sorted(out), len(st)
+    fw = [i for i, ch in enumerate(line) if ch == FULLQ]  # 全形雙引號:.py 裡也認
+    out += [(fw[k], fw[k + 1]) for k in range(0, len(fw) - 1, 2)]
+    return sorted(out), len(st) + len(fw) % 2
 
 
 def unquoted(line, prs):
@@ -91,39 +103,89 @@ def unquoted(line, prs):
     return "".join(ch for ch, k in zip(line, keep) if k)
 
 
+MARK_RE = re.compile(r"原話|原文|(?:使用者|Yang)\s*(?:說|講|回答|表示|寫道)")  # 標記詞:原話、原文,以及使用者(或 Yang)加引述動詞
+
+
+def _gap(ch):
+    """標記詞和引號之間可以夾的空白類字元:Unicode 空白(全形空白 U+3000、tab、nbsp)與零寬字元(類別 Cf)。"""
+    return ch.isspace() or unicodedata.category(ch) == "Cf"
+
+
+def _skip(line, j):
+    """從 j 起跳過標記詞後面可以夾的東西:空白類字元、括號說明、冒號、破折號、連接詞(是、為、如下…)。
+    回傳 (新位置, 夾了括號/冒號/破折號嗎, 夾了連接詞嗎)。"""
+    strict = soft = False
+    while True:
+        j0 = j
+        while j < len(line) and _gap(line[j]):
+            j += 1
+        if j < len(line) and line[j] in "(（":
+            close = min([x for x in (line.find(")", j), line.find("）", j)) if x >= 0], default=-1)
+            if close >= 0:
+                j, strict = close + 1, True
+        if j < len(line) and line[j] in ":：":
+            j, strict = j + 1, True
+        while j < len(line) and line[j] in DASHES:
+            j, strict = j + 1, True
+        for c in CONNECT:
+            if line.startswith(c, j):
+                j, soft = j + len(c), True
+                break
+        if j == j0:
+            return j, strict, soft
+
+
 def bad_paraphrase(line, ascii_ok=True):
-    """「原話」「原文」後面接括號或冒號、卻不是引號,或直接接〈〉、《》、‘’、ASCII 引號(.py 裡)、反引號、[:轉述冒充原話。
+    """標記詞(原話、原文;使用者或 Yang 加說、講、回答、表示、寫道)後面夾完空白類字元、連接詞之後,下一個字是〈〉、《》、‘’、ASCII 引號(.py 裡)、
+    反引號、[、<、*、_ 這類括號,而不是引號:轉述冒充原話。原話、原文後面夾了括號說明、冒號或破折號、卻不是引號,也算(說了要引、沒有引)。
     前面是「不是」「非」的不算(那是在說不是原話)。"""
     out = []
-    for word in ("原話", "原文"):
-        k = line.find(word)
-        while k >= 0:
-            pre = line[max(0, k - 6):k]
-            j = k + 2
-            moved = False
-            while j < len(line) and line[j] == " ":
-                j += 1
-            if j < len(line) and line[j] in "(（":
-                close = min([x for x in (line.find(")", j), line.find("）", j)) if x >= 0], default=-1)
-                if close >= 0:
-                    j, moved = close + 1, True
-            if j < len(line) and line[j] in ":：":
-                j, moved = j + 1, True
-            while j < len(line) and line[j] == " ":
-                j += 1
-            nxt = line[j] if j < len(line) else ""
-            valid = nxt in CJK or (ascii_ok and nxt == '"')
-            if "不是" not in pre and "非" not in pre and not valid and (moved or nxt in NONSTD):
-                out.append(line[k:k + 30])
-            k = line.find(word, k + 2)
+    for m in MARK_RE.finditer(line):
+        pre = line[max(0, m.start() - 6):m.start()]
+        j, strict, soft = _skip(line, m.end())
+        nxt = line[j] if j < len(line) else ""
+        valid = nxt in CJK or nxt == FULLQ or (ascii_ok and nxt == '"')
+        is_word = m.group(0) in ("原話", "原文")  # 說、講…那一類只在下一個字是括號類時報(「使用者說:」常見於正常敘述)
+        if "不是" not in pre and "非" not in pre and not valid and ((is_word and strict) or nxt in NONSTD):
+            out.append(line[m.start():m.start() + 30])
     return out
 
 
+def _chr(code):
+    try:
+        return chr(int(code, 16))
+    except (ValueError, OverflowError):
+        return None
+
+
+def _py_unescape(line):
+    """.py 裡的跳脫換成真的字:\\uXXXX、\\UXXXXXXXX、\\N{名稱}、連續的 \\xHH(當成 UTF-8 位元組解,解不開就當 Latin-1)。"""
+    line = re.sub(r"\\u([0-9a-fA-F]{4})", lambda m: _chr(m.group(1)) or m.group(0), line)
+    line = re.sub(r"\\U([0-9a-fA-F]{8})", lambda m: _chr(m.group(1)) or m.group(0), line)
+
+    def named(m):
+        try:
+            return unicodedata.lookup(m.group(1))
+        except KeyError:
+            return m.group(0)
+
+    def xs(m):
+        b = bytes(int(h, 16) for h in re.findall(r"\\x([0-9a-fA-F]{2})", m.group(0)))
+        try:
+            return b.decode("utf-8")
+        except UnicodeDecodeError:
+            return b.decode("latin-1")
+
+    line = re.sub(r"\\N\{([^}]+)\}", named, line)
+    return re.sub(r"(?:\\x[0-9a-fA-F]{2})+", xs, line)
+
+
 def normalize(line, is_py):
-    """先把寫法換成真的字再查:HTML 實體(&#12300;、&lcorner; 這類);.py 裡的 \\u300c 這類跳脫。"""
+    """先把寫法換成真的字再查:HTML 實體(&#12300;、&lcorner; 這類)、<q>…</q>(當成引號);.py 裡的 \\u300c、\\U0000300c、\\N{LEFT CORNER BRACKET}、\\xe3\\x80\\x8c 這類跳脫。"""
     line = html.unescape(line)
+    line = line.replace("<q>", "「").replace("</q>", "」")
     if is_py:
-        line = re.sub(r"\\u([0-9a-fA-F]{4})", lambda m: chr(int(m.group(1), 16)), line)
+        line = _py_unescape(line)
     return line
 
 
@@ -144,7 +206,7 @@ def claimed(text, user_table=False, ascii_quotes=True):
         ctx = unquoted(line, prs)
         prev = lines[ln - 2] if ln >= 2 else ""
         body = line.lstrip(" >-*|0123456789.")
-        starts_with_quote = bool(body) and (body[0] in CJK or body[0] == '"')
+        starts_with_quote = bool(body) and (body[0] in CJK or body[0] in ('"', FULLQ))
         user_ctx = (any(u in ctx for u in USER_WORDS) or line.lstrip().startswith(">")
                     or (starts_with_quote and any(u in prev for u in USER_WORDS + USER_MARKERS)))
         kinds = {}
@@ -254,6 +316,26 @@ SAMPLES = [
     ("原話見 `決策佇列.md` 的那一節", False),                  # 指出處、沒有引用:不算
     ('Yang 說 "完全捏造的一句話"', True),                       # ASCII 引號、不緊接原話:只靠 .md 認 ASCII 引號那條規則
     ("Yang 說&#12300;完全捏造的一句話&#12301;", True),          # HTML 實體、不緊接原話:只靠先解 HTML 實體那條規則
+    # 4e1f1161 審查(q6)的繞法:標記詞和引號之間夾 Unicode 空白、連接詞、破折號;其他括號形狀;.py 的其他跳脫
+    ("使用者原話　〈完全捏造的一句話〉", True),               # 全形空白(U+3000)
+    ("使用者原話\t`完全捏造的一句話`", True),                     # tab
+    ("使用者原話 〈完全捏造的一句話〉", True),               # nbsp
+    ("使用者原話​〈完全捏造的一句話〉", True),               # 零寬空白(類別 Cf)
+    ("使用者原話＂完全捏造的一句話＂", True),                     # 全形雙引號(U+FF02)
+    ("使用者原話是〈完全捏造的一句話〉", True),                   # 連接詞「是」
+    ("使用者原話如下〈完全捏造的一句話〉", True),                 # 連接詞「如下」
+    ("使用者說〈完全捏造的一句話〉", True),                       # 使用者加引述動詞,直接接〈
+    ("使用者說 `完全捏造的一句話`", True),                        # 同上,反引號
+    ("使用者原話<q>完全捏造的一句話</q>", True),                  # <q> 標籤
+    ("使用者原話*完全捏造的一句話*", True),                       # markdown 強調
+    ("使用者原話_完全捏造的一句話_", True),
+    ("使用者原話——完全捏造的一句話", True),                       # 破折號,沒有引號
+    ('why = "使用者原話\\U0000300c完全捏造的一句話\\U0000300d"', True, "py"),   # .py 的 \U 跳脫
+    ('why = "使用者原話\\N{LEFT CORNER BRACKET}完全捏造的一句話\\N{RIGHT CORNER BRACKET}"', True, "py"),  # .py 的 \N{名稱}
+    ('why = "使用者原話\\xe3\\x80\\x8c完全捏造的一句話"', True, "py"),          # .py 的 \x 位元組(UTF-8 的「),引號沒關
+    ("使用者原話　「間隔差了1~2mm影響不大」", False),         # 正例:夾全形空白但接的是真的引號,內文在佇列裡
+    ("使用者原話是「間隔差了1~2mm影響不大」", False),             # 正例:連接詞加真的引號
+    ("使用者說明了做法,沒有引用任何話", False),                  # 正例:說明、不是引述動詞加括號
 ]
 
 
