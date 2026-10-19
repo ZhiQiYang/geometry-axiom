@@ -361,7 +361,9 @@ int main(int argc, char **argv)
     char error[512] = ""; bool capacity = false, unsupported = false;
     if (!model_source_check(argv[1], &capacity, &unsupported, error, sizeof error))
         return model_error(capacity||unsupported ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : unsupported ? "CAPABILITY" : "BASE_SOURCE", capacity ? "I33" : unsupported ? "I32" : "I9", error);
-    World world = {0};
+    /* One process-owned World; nested transactions retain the 16 MiB stack budget. */
+    static World world;
+    memset(&world,0,sizeof world);
     if (!parse_scene_file(argv[1], &world)) {
         const char *why = scene_last_error();
         capacity = strstr(why, "超過上限") || strstr(why, "capacity exceeded") || strstr(why, "CAPACITY");
@@ -396,6 +398,7 @@ int main(int argc, char **argv)
     fputs(",\"required_capabilities\":[",stdout);
     if(engineering_used(&world))model_string(stdout,"engineering-spec/1");
     if(world.parameters.card_count){if(engineering_used(&world))fputc(',',stdout);model_string(stdout,"parameters/1");}
+    if(grid_card_used(&world)){if(engineering_used(&world)||world.parameters.card_count)fputc(',',stdout);model_string(stdout,GRID_CARD_CAPABILITY);}
     if(grid_subdivision_used(&world)){if(engineering_used(&world)||world.parameters.card_count)fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
     if(sp_used(&world)){if(engineering_used(&world)||world.parameters.card_count||grid_subdivision_used(&world))fputc(',',stdout);model_string(stdout,SP_CAPABILITY);}
     fputs("],\"specs\":[", stdout);

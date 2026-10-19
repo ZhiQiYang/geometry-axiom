@@ -1,0 +1,22 @@
+import hashlib,json,os,resource,shutil,subprocess,sys,time
+from pathlib import Path
+FIRST=Path('/tmp/p134-comparison');OUT=Path('/tmp/p134-suite-comparison');OUT.mkdir(exist_ok=False);ACTIVE=Path('/tmp/p134-active-binaries')
+ENV={k:v for k,v in os.environ.items() if not k.startswith('GEOMETRY_')};ENV.update(GEOMETRY_TEST_BRIDGE=str(ACTIVE/'bridge'),GEOMETRY_MODEL_BASE=str(ACTIVE/'model-base'))
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]));eh=hashlib.sha256(json.dumps(ENV,sort_keys=True).encode()).hexdigest()
+ARGV=[sys.executable,'tests/_unittest_runner.py','tests/test_scenario_verify.py','--json-out','/tmp/p134-active-scenario.json','--log','/tmp/p134-active-scenario.log']
+def write(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
+plan=dict(rounds=3,order='base then pf3; all three paired complete-scenario-suite rounds retained',argv=ARGV,environmentSha256=eh,stackBytes=16777216,
+          reason='Both trees passed 60 standalone named trials. Compare the unchanged official suite runner and preceding test context without altering any test.')
+write(OUT/'plan.json',plan);results=[]
+for trial in range(1,4):
+    for name in ['base','pf3']:
+        root=Path('/tmp/p134-'+name);out=OUT/name/f'trial-{trial:02d}';out.mkdir(parents=True)
+        for p in (FIRST/name/'binaries').iterdir():shutil.copy2(p,ACTIVE/p.name)
+        head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip();start=time.monotonic()
+        with (out/'stdout').open('wb') as so,(out/'stderr').open('wb') as se:p=subprocess.run(ARGV,cwd=root,env=ENV,stdout=so,stderr=se,timeout=300)
+        for src,name2 in [('/tmp/p134-active-scenario.json','result.json'),('/tmp/p134-active-scenario.log','run.log')]:shutil.copy2(src,out/name2)
+        data=json.loads((out/'result.json').read_text());result=dict(tree=name,trial=trial,sourceHead=head,argv=ARGV,cwd=str(root),environmentSha256=eh,exit=p.returncode,seconds=time.monotonic()-start,
+            targetFailures=[r for r in data['failures'] if 'test_model_timeout_stops_its_base_child_before_it_can_finish_late' in r['test']],suiteResult=data)
+        write(out/'receipt.json',result);results.append(result);print(json.dumps({k:result[k] for k in ['tree','trial','exit','targetFailures']}),flush=True)
+        assert data['total']==37 and data['skipped']==0 and p.returncode in (0,1),result
+write(OUT/'summary.json',dict(plan=plan,results=results))

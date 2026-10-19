@@ -1,0 +1,404 @@
+{
+  "schema": "geo246-weak-pin-probe/1",
+  "bridge_sha256": "666e2be23d139fba59142577f21c3dd74b9e23e2d54e58eccc5f8e7737cd03d6",
+  "mode": "generic-message-mutant",
+  "pins": 32,
+  "reason_failures": 32,
+  "test_failures": 32,
+  "errors": 0,
+  "skips": 0,
+  "records": [
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 1 1 v none",
+      "expected": [
+        "D29/I37",
+        "u explicit coordinate[1]=1 must be greater than coordinate[0]=1"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u explicit coordinate[1]=1 must be greater than coordinate[0]=1' not found in 'line 1: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 1 1 v none' was refused for a different reason: 'line 1: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 2 1 v none",
+      "expected": [
+        "D29/I37",
+        "u explicit coordinate[1]=1 must be greater than coordinate[0]=2"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u explicit coordinate[1]=1 must be greater than coordinate[0]=2' not found in 'line 2: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 2 1 v none' was refused for a different reason: 'line 2: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 0 0 2 v none",
+      "expected": [
+        "D29/I37",
+        "u step=0 must be positive"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u step=0 must be positive' not found in 'line 3: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 0 0 2 v none' was refused for a different reason: 'line 3: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 0 -1 2 v none",
+      "expected": [
+        "D29/I37",
+        "u step=-1 must be positive"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u step=-1 must be positive' not found in 'line 4: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 0 -1 2 v none' was refused for a different reason: 'line 4: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 0 1 0 v none",
+      "expected": [
+        "D29/I37",
+        "u count=0 must be in 1..64"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u count=0 must be in 1..64' not found in 'line 5: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 0 1 0 v none' was refused for a different reason: 'line 5: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 0 1 65 v none",
+      "expected": [
+        "D29/I37",
+        "u count=65 must be in 1..64"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u count=65 must be in 1..64' not found in 'line 6: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 0 1 65 v none' was refused for a different reason: 'line 6: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 99999999 2 2 v none",
+      "expected": [
+        "D29/I37",
+        "u series last coordinate exceeds D1 range"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u series last coordinate exceeds D1 range' not found in 'line 7: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 99999999 2 2 v none' was refused for a different reason: 'line 7: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 0 gap 0 from 0 v none",
+      "expected": [
+        "D29/I37",
+        "u panel=0 must be positive"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u panel=0 must be positive' not found in 'line 9: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 0 gap 0 from 0 v none' was refused for a different reason: 'line 9: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gap -1 from 0 v none",
+      "expected": [
+        "D29/I37",
+        "u gap=-1 must be non-negative"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u gap=-1 must be non-negative' not found in 'line 10: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gap -1 from 0 v none' was refused for a different reason: 'line 10: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gap 0 v none",
+      "expected": [
+        "D29/I37",
+        "u anchor requires explicit from"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u anchor requires explicit from' not found in 'line 11: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u panel 10 gap 0 v none' was refused for a different reason: 'line 11: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 176,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 v none",
+      "expected": [
+        "D29/I37",
+        "u explicit count exceeds 64 lines"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u explicit count exceeds 64 lines' not found in 'line 13: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u explicit 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 v none' was refused for a different reason: 'line 13: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 188,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u none v none",
+      "expected": [
+        "D29/I37",
+        "u/v sources cannot both be none"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u/v sources cannot both be none' not found in 'line 14: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u none v none' was refused for a different reason: 'line 14: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 188,
+      "input": "grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along u u explicit 100 v none",
+      "expected": [
+        "D29/I37",
+        "main-along=u requires v source"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'main-along=u requires v source' not found in 'line 15: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along u u explicit 100 v none' was refused for a different reason: 'line 15: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 188,
+      "input": "grid-system 0 name-hex  main-along none u series 100 200 3 v explicit 200 600",
+      "expected": [
+        "D29/I37",
+        "name-hex must be non-empty"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'name-hex must be non-empty' not found in 'line 16: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex  main-along none u series 100 200 3 v explicit 200 600' was refused for a different reason: 'line 16: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 188,
+      "input": "grid-system 0 name-hex e7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958c main-along none u series 100 200 3 v explicit 200 600",
+      "expected": [
+        "D29/I37",
+        "name-hex exceeds 96 bytes"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'name-hex exceeds 96 bytes' not found in 'line 17: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex e7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958ce7958c main-along none u series 100 200 3 v explicit 200 600' was refused for a different reason: 'line 17: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 188,
+      "input": "grid-system 0 name-hex ff main-along none u series 100 200 3 v explicit 200 600",
+      "expected": [
+        "D29/I37",
+        "name-hex requires valid UTF-8"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'name-hex requires valid UTF-8' not found in 'line 18: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex ff main-along none u series 100 200 3 v explicit 200 600' was refused for a different reason: 'line 18: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 188,
+      "input": "grid-system 0 name-hex 610a62 main-along none u series 100 200 3 v explicit 200 600",
+      "expected": [
+        "D29/I37",
+        "name-hex contains control byte 0x0a"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'name-hex contains control byte 0x0a' not found in 'line 19: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex 610a62 main-along none u series 100 200 3 v explicit 200 600' was refused for a different reason: 'line 19: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 188,
+      "input": "grid-system 0 name-hex 610062 main-along none u series 100 200 3 v explicit 200 600",
+      "expected": [
+        "D29/I37",
+        "name-hex contains control byte 0x00"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'name-hex contains control byte 0x00' not found in 'line 20: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 0 name-hex 610062 main-along none u series 100 200 3 v explicit 200 600' was refused for a different reason: 'line 20: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_grid_system_contract.GridSystemContract.test_invalid_definitions_limits_and_missing_sources_are_atomic",
+      "file": "tests/test_grid_system_contract.py",
+      "line": 188,
+      "input": "grid-system 4294967296 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 100 200 3 v explicit 200 600",
+      "expected": [
+        "D29/I37",
+        "id must be uint32 (0..4294967295)"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'id must be uint32 (0..4294967295)' not found in 'line 21: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 4294967296 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 100 200 3 v explicit 200 600' was refused for a different reason: 'line 21: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_infinite_grid_contract.InfiniteGridContract.test_fraction_reduction_invalid_fractions_and_one_axis_cannot_make_cell",
+      "file": "tests/test_infinite_grid_contract.py",
+      "line": 253,
+      "input": "grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell -2 1 anchor -1 2 0 1",
+      "expected": [
+        "D30/I37",
+        "anchor u numerator=-1 must be uint32"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'anchor u numerator=-1 must be uint32' not found in 'line 5: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration' : 'grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell -2 1 anchor -1 2 0 1' was refused for a different reason: 'line 5: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration'"
+    },
+    {
+      "test": "tests.test_infinite_grid_contract.InfiniteGridContract.test_fraction_reduction_invalid_fractions_and_one_axis_cannot_make_cell",
+      "file": "tests/test_infinite_grid_contract.py",
+      "line": 253,
+      "input": "grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell -2 1 anchor 3 2 0 1",
+      "expected": [
+        "D30/I37",
+        "anchor u numerator=3 exceeds denominator=2"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'anchor u numerator=3 exceeds denominator=2' not found in 'line 7: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration' : 'grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell -2 1 anchor 3 2 0 1' was refused for a different reason: 'line 7: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration'"
+    },
+    {
+      "test": "tests.test_infinite_grid_contract.InfiniteGridContract.test_fraction_reduction_invalid_fractions_and_one_axis_cannot_make_cell",
+      "file": "tests/test_infinite_grid_contract.py",
+      "line": 253,
+      "input": "grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell -2 1 anchor 0 0 0 1",
+      "expected": [
+        "D30/I37",
+        "anchor u denominator=0 must be positive"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'anchor u denominator=0 must be positive' not found in 'line 9: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration' : 'grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell -2 1 anchor 0 0 0 1' was refused for a different reason: 'line 9: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration'"
+    },
+    {
+      "test": "tests.test_infinite_grid_contract.InfiniteGridContract.test_fraction_reduction_invalid_fractions_and_one_axis_cannot_make_cell",
+      "file": "tests/test_infinite_grid_contract.py",
+      "line": 253,
+      "input": "grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell -2 1 anchor 0 -1 0 1",
+      "expected": [
+        "D30/I37",
+        "anchor u denominator=-1 must be positive uint32"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'anchor u denominator=-1 must be positive uint32' not found in 'line 11: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration' : 'grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell -2 1 anchor 0 -1 0 1' was refused for a different reason: 'line 11: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration'"
+    },
+    {
+      "test": "tests.test_infinite_grid_contract.InfiniteGridContract.test_fraction_reduction_invalid_fractions_and_one_axis_cannot_make_cell",
+      "file": "tests/test_infinite_grid_contract.py",
+      "line": 256,
+      "input": "grid-system 2 name-hex e784a1e9999020e6a0bce7b6b22041 main-along none u repeat 0 600 v series 0 400 3",
+      "expected": [
+        "D29/I37",
+        "v source cannot mix legacy-finite with infinite axes"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'v source cannot mix legacy-finite with infinite axes' not found in 'line 18: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 2 name-hex e784a1e9999020e6a0bce7b6b22041 main-along none u repeat 0 600 v series 0 400 3' was refused for a different reason: 'line 18: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_infinite_grid_contract.InfiniteGridContract.test_fraction_reduction_invalid_fractions_and_one_axis_cannot_make_cell",
+      "file": "tests/test_infinite_grid_contract.py",
+      "line": 257,
+      "input": "grid-system 2 name-hex e784a1e9999020e6a0bce7b6b22041 main-along none u repeat 0 0 v repeat 0 400",
+      "expected": [
+        "D29/I37",
+        "u step=0 must be positive"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u step=0 must be positive' not found in 'line 20: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 2 name-hex e784a1e9999020e6a0bce7b6b22041 main-along none u repeat 0 0 v repeat 0 400' was refused for a different reason: 'line 20: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_infinite_grid_contract.InfiniteGridContract.test_fraction_reduction_invalid_fractions_and_one_axis_cannot_make_cell",
+      "file": "tests/test_infinite_grid_contract.py",
+      "line": 258,
+      "input": "grid-system 2 name-hex e784a1e9999020e6a0bce7b6b22041 main-along none u repeat 0 -1 v repeat 0 400",
+      "expected": [
+        "D29/I37",
+        "u step=-1 must be positive"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u step=-1 must be positive' not found in 'line 22: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range' : 'grid-system 2 name-hex e784a1e9999020e6a0bce7b6b22041 main-along none u repeat 0 -1 v repeat 0 400' was refused for a different reason: 'line 22: D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range'"
+    },
+    {
+      "test": "tests.test_infinite_grid_contract.InfiniteGridContract.test_keyed_vertex_move_tracks_anchor_and_ambiguous_identity_is_rejected",
+      "file": "tests/test_infinite_grid_contract.py",
+      "line": 304,
+      "input": "boundary 1 outline 200,300 1400,300 1400,1100 200,1100",
+      "expected": [
+        "重宣告後有物件失效",
+        "an identified vertex moved",
+        "use boundary-keyed with the current geometry-hash",
+        "D30",
+        "boundary 1"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'an identified vertex moved' not found in 'line 5: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）' : 'boundary 1 outline 200,300 1400,300 1400,1100 200,1100' was refused for a different reason: 'line 5: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）'"
+    },
+    {
+      "test": "tests.test_infinite_grid_contract.InfiniteGridContract.test_query_input_limits_and_signed_overflow_never_mutate_world",
+      "file": "tests/test_infinite_grid_contract.py",
+      "line": 432,
+      "input": "grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell 9223372036854775808 0 anchor 0 1 0 1",
+      "expected": [
+        "D30/I37",
+        "cell u=9223372036854775808 must be signed int64"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'cell u=9223372036854775808 must be signed int64' not found in 'line 7: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration' : 'grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell 9223372036854775808 0 anchor 0 1 0 1' was refused for a different reason: 'line 7: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration'"
+    },
+    {
+      "test": "tests.test_infinite_grid_contract.InfiniteGridContract.test_query_input_limits_and_signed_overflow_never_mutate_world",
+      "file": "tests/test_infinite_grid_contract.py",
+      "line": 432,
+      "input": "grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell -9223372036854775809 0 anchor 0 1 0 1",
+      "expected": [
+        "D30/I37",
+        "cell u=-9223372036854775809 must be signed int64"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'cell u=-9223372036854775809 must be signed int64' not found in 'line 9: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration' : 'grid-binding 1 on-boundary 1 from-system 0 vertex outer 0 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 cell -9223372036854775809 0 anchor 0 1 0 1' was refused for a different reason: 'line 9: D30/I37: invalid grid-binding vertex, signed cell or rational anchor declaration'"
+    },
+    {
+      "test": "tests.test_subgrid_contract.SubgridContract.test_s03_exact_divisions_one_axis_empty_and_64_line_limit",
+      "file": "tests/test_subgrid_contract.py",
+      "line": 212,
+      "input": "subgrid 2 parent 1 cell u min line:0 v min line:0 divisions u -1 v 2",
+      "expected": [
+        "D19/I25",
+        "divisions u=-1 must be a uint32 integer",
+        "subgrid 2 parent 1"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'divisions u=-1 must be a uint32 integer' not found in 'line 9: D19/I25: subgrid id parent id cell u lo hi v lo hi divisions u NU v NV; lattice parent uses lattice-cell I J divisions u NU v NV' : 'subgrid 2 parent 1 cell u min line:0 v min line:0 divisions u -1 v 2' was refused for a different reason: 'line 9: D19/I25: subgrid id parent id cell u lo hi v lo hi divisions u NU v NV; lattice parent uses lattice-cell I J divisions u NU v NV'"
+    },
+    {
+      "test": "tests.test_subgrid_contract.SubgridContract.test_s03_exact_divisions_one_axis_empty_and_64_line_limit",
+      "file": "tests/test_subgrid_contract.py",
+      "line": 212,
+      "input": "subgrid 2 parent 1 cell u min line:0 v min line:0 divisions u 2.5 v 2",
+      "expected": [
+        "D19/I25",
+        "divisions u=2.5 must be a uint32 integer",
+        "subgrid 2 parent 1"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'divisions u=2.5 must be a uint32 integer' not found in 'line 11: D19/I25: subgrid id parent id cell u lo hi v lo hi divisions u NU v NV; lattice parent uses lattice-cell I J divisions u NU v NV' : 'subgrid 2 parent 1 cell u min line:0 v min line:0 divisions u 2.5 v 2' was refused for a different reason: 'line 11: D19/I25: subgrid id parent id cell u lo hi v lo hi divisions u NU v NV; lattice parent uses lattice-cell I J divisions u NU v NV'"
+    },
+    {
+      "test": "tests.test_subgrid_contract.SubgridContract.test_s09_boundary_growth_cannot_change_panel_count_behind_children",
+      "file": "tests/test_subgrid_contract.py",
+      "line": 461,
+      "input": "boundary 1 outline 0,0 4100,0 4100,3000 0,3000",
+      "expected": [
+        "重宣告後有物件失效",
+        "u 軸線數不可從 9 改成 10",
+        "I23",
+        "父網格 1",
+        "boundary 1"
+      ],
+      "outcome": "reason-failure",
+      "failure": "'u 軸線數不可從 9 改成 10' not found in 'line 5: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）' : 'boundary 1 outline 0,0 4100,0 4100,3000 0,3000' was refused for a different reason: 'line 5: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）'"
+    }
+  ]
+}

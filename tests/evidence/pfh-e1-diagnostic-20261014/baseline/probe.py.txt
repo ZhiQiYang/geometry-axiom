@@ -1,0 +1,33 @@
+from pathlib import Path
+import sys,json,tempfile,hashlib,subprocess,time
+root=Path('/tmp/geometry-pf3-current');sys.path.insert(0,str(root))
+from tests._bridge import BridgeSession
+import tests.binaries as binaries
+binary=Path('/tmp/pf3-current-binaries/bridge');info=binaries.inspect_one(binaries.BY_NAME['bridge'],path=binary)
+assert info.state=='fresh',info
+out=Path(sys.argv[2]);out.mkdir(parents=True,exist_ok=True)
+records=[]
+with tempfile.TemporaryDirectory(prefix='pfh-e1-oracle-') as d:
+ for role in ['boundary','primary','secondary','custom priority 4']:
+  scene=json.loads((root/'tests/evidence/pfh-e1-oracle-20261013/results.json').read_text())['records'][0]['scene'].replace('role boundary','role '+role)
+  if role=="secondary": scene=scene.replace("spec center","timber 2 30 30 role boundary\nplace 2 on 1 at-face e3 +v +n\nspec center")
+  if sys.argv[1]=='broken': scene=scene.replace('place 1 on','unknown-placement 1 on')
+  path=Path(d)/'fixture.scene';path.write_text(scene)
+  s=BridgeSession(str(binary),cwd=d)
+  try:
+   s.command('reset'); before=s.command('dump'); start=time.monotonic(); reply=s.command('loadfile '+str(path)); elapsed=time.monotonic()-start; after=s.command('dump')
+  finally:s.stop()
+  print(json.dumps({'role':role,'reply':reply},ensure_ascii=False),flush=True)
+  assert not reply['ok'],(role,reply)
+  error=reply.get('error','')
+  expected_code='V_BOUNDARY_ROLE' if role=='boundary' else 'V_CUT_PRIORITY'
+  expected_line=7 if role=='secondary' else 5
+  assert expected_code in error,('PFH_DIAGNOSTIC_CODE',role,error)
+  assert '角材 1' in error,('PFH_DIAGNOSTIC_TARGET',role,error)
+  assert ('line %d:' % expected_line) in error,('PFH_DIAGNOSTIC_LINE',role,error)
+  assert before['text']==after['text'],role
+  records.append({'role':role,'scene':scene,'reply':reply,'elapsed_seconds':elapsed,'world_unchanged':True})
+record={'source_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),'source_base':'077165010377cca974bece7fcda930cd005490a9','binary_sha256':hashlib.sha256(binary.read_bytes()).hexdigest(),'scope':'General D7 necessary-invariant probe only; NOT a derived-host witness or PF23 support run','wrapper_exit':0,'records':records}
+(out/'results.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+(out/'probe.py.txt').write_bytes(Path(__file__).read_bytes())
+print(json.dumps(record,ensure_ascii=False))

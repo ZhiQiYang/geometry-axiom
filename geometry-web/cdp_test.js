@@ -6,6 +6,8 @@ const floor = require('./cdp_floor.js');
 const cdp = require('./cdp_helpers.js');
 const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
+const {createTransportFailureTrace,installClientTransportTrace} = require('./transport_failure_trace.js');
+let transportFailureTrace;
 const SCOPE_FLAGS = ['GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 function runConfiguration(env = process.env) {
@@ -84,6 +86,7 @@ function startBrowser() {
   "--window-size=1400,900", `--user-data-dir=${profile}`, ...EXTRA_FLAGS, "about:blank"
   ]);
   child.stderr.on('data',chunk=>{
+    _log('CHROME_STARTUP_STDERR '+JSON.stringify({utc:new Date().toISOString(),monotonicNs:process.hrtime.bigint().toString(),pid:child.pid,text:chunk.toString()}));
     browserStartupOutput=(browserStartupOutput+chunk.toString()).slice(-8192);
     const match=browserStartupOutput.match(/DevTools listening on (ws:\/\/\S+)/);
     if(match)browserEndpoint=match[1];
@@ -113,6 +116,8 @@ let expectedException=null, scope, skipped=[];
 const assetRequests=new Map(), assetFailures=[];
 const _log = console.log;
 function observeAssetNetwork(message) {
+  if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin);
+  transportFailureTrace.observe(message, currentTestStep);
   const p=message.params,key=(message.sessionId||'main')+':'+p.requestId;
   if(message.method==='Network.requestWillBeSent'){
     let url;try {url=new URL(p.request.url);}catch{return;}
@@ -160,6 +165,13 @@ async function connect() {
           const m = JSON.parse(ev.data);
           if (m.id && pending[m.id]) { pending[m.id](m); delete pending[m.id]; }
           else if (['Network.requestWillBeSent','Network.responseReceived','Network.loadingFailed','Network.loadingFinished'].includes(m.method))observeAssetNetwork(m);
+          else if (m.method === 'Runtime.bindingCalled' && m.params.name === '__geometryCdpTransportFailure') {
+            try {
+              if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin);
+              transportFailureTrace.observeApiFailure({...JSON.parse(m.params.payload),sessionId:m.sessionId||null,step:currentTestStep});
+              _log('[API TRANSPORT FAILURE]',JSON.stringify(transportFailureTrace.apiFirst()));
+            } catch(error) {_log('[TRANSPORT DIAGNOSTIC ERROR]',error.message);}
+          }
           else if (m.method === "Runtime.consoleAPICalled")
             console.log("[console]", m.params.args.map(a => a.value ?? a.description).join(" "));
           else if (m.method === "Runtime.exceptionThrown") {
@@ -202,10 +214,12 @@ async function connect() {
   throw new Error("no CDP; Chrome startup output: " + browserStartupOutput);
 }
 function send(method, params = {}, sessionId = null) {
-  if(method==='Page.reload'||method==='Page.navigate')expectedBeforeUnloadUntil=Date.now()+15000;
+  const navigation=method==='Page.reload'||method==='Page.navigate';
+  if(navigation)expectedBeforeUnloadUntil=Date.now()+15000;
   return new Promise((res,rej) => {
     const id=++mid,timer=setTimeout(()=>{delete pending[id];rej(Error('CDP timed out: '+method+' at '+currentTestStep+(params.expression?' expression='+params.expression.slice(0,160):'')));},120000);
-    pending[id]=message=>{clearTimeout(timer);if(message.error)rej(Error('CDP '+method+' failed: '+JSON.stringify(message.error)));else res(message);};
+    pending[id]=message=>{clearTimeout(timer);if(navigation)_log('CDP_NAVIGATION '+JSON.stringify({phase:'reply',utc:new Date().toISOString(),monotonicNs:process.hrtime.bigint().toString(),id,method,message}));if(message.error)rej(Error('CDP '+method+' failed: '+JSON.stringify(message.error)));else res(message);};
+    if(navigation)_log('CDP_NAVIGATION '+JSON.stringify({phase:'send',utc:new Date().toISOString(),monotonicNs:process.hrtime.bigint().toString(),id,method,params,sessionId}));
     ws.send(JSON.stringify({id,method,params,...(sessionId?{sessionId}:{})}));
   });
 }
@@ -282,9 +296,13 @@ async function clickControl(selector) {
   await click(p.x,p.y);await sleep(150);
 }
 async function dblclick(x, y) {
+  // Preserve event order without making CDP acknowledgement latency part of
+  // the gesture: awaiting each reply can exceed the app's 450 ms window.
+  const events = [];
   for (const n of [1, 2])
     for (const type of ["mousePressed", "mouseReleased"])
-      await send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: n });
+      events.push(send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: n }));
+  await Promise.all(events);
 }
 async function drag(x0, y0, x1, y1, steps = 6) {
   await send("Input.dispatchMouseEvent", { type: "mousePressed", x: x0, y: y0, button: "left", clickCount: 1 });
@@ -349,6 +367,13 @@ async function main() {
   await send("Runtime.enable");
   await send("Page.enable");
   await send("Network.enable");
+  await send('Runtime.addBinding',{name:'__geometryCdpTransportFailure'});
+  await send('Page.addScriptToEvaluateOnNewDocument',{source:`(()=>{
+    const install=${installClientTransportTrace.toString()};
+    const start=()=>install(window,record=>window.__geometryCdpTransportFailure(JSON.stringify(record)));
+    if(typeof window.apiRequest==='function')start();
+    else document.addEventListener('DOMContentLoaded',start,{once:true});
+  })()`});
   // A reused Chrome profile can restore a narrow window. Pin the desktop
   // baseline explicitly; responsive cases restore this same viewport.
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
@@ -4882,6 +4907,7 @@ async function main() {
      這個情況,所以雙擊點刻意避開浮動列涵蓋的範圍(邊改點邊上別的位置、頂列的角改把面往下平移),
      不代表雙擊互動本身只在特定位置才有效——feDblOpenFor 的邏輯與點擊位置無關。 */
   pt = await openFace44();
+  await requireFaceHit44('P44-7a double-click start', pt(4000, 300), 'e:0:1');
   await dblclick(pt(4000, 300).x, pt(4000, 300).y);   /* 右邊,避開邊中點附近的浮動列 */
   await sleep(200);
   const p44_7a = await eval_(`({ opType: fe.op && fe.op.type, panelHidden: document.getElementById('feOpPanel').hidden })`);
@@ -7126,7 +7152,7 @@ async function main() {
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
   _log(`\n=== 結果:${passN} 通過斷言 / ${failN} 失敗斷言 / ${skipped.length} 略過群組 (${scope.mode}) ===`);
-  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),goldenCompare,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
+  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,firstNetworkFailure:transportFailureTrace?.first()||null,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),goldenCompare,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
   process.exit(failN > 0 ? 1 : 0);
 }
 async function fatal(e) {
@@ -7144,7 +7170,7 @@ async function fatal(e) {
     }
   } catch(captureError) {_log('FATAL_CAPTURE_FAILED:',captureError.message);}
   finally {
-    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),currentSection,goldenCompare:'not compared (run did not complete)'}));
+    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,firstTransportFailure:transportFailureTrace?.apiFirst()||null,firstNetworkFailure:transportFailureTrace?.first()||null,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),currentSection,goldenCompare:'not compared (run did not complete)'}));
     chrome?.kill();process.exit(1);
   }
 }

@@ -1,0 +1,25 @@
+from pathlib import Path
+import sys,json,tempfile,hashlib,subprocess,time
+root=Path('/tmp/geometry-pf3-current');sys.path.insert(0,str(root))
+from tests._bridge import BridgeSession
+import tests.binaries as binaries
+binary=Path('/tmp/pf3-current-binaries/bridge');info=binaries.inspect_one(binaries.BY_NAME['bridge'],path=binary)
+assert info.state=='fresh',info
+out=root/'tests/evidence/pfh-e1-oracle-20261013';out.mkdir(parents=True,exist_ok=True)
+records=[]
+with tempfile.TemporaryDirectory(prefix='pfh-e1-oracle-') as d:
+ for role in ['boundary','primary','secondary','custom priority 4']:
+  scene=Path('/tmp/pfh-e1-d7.scene').read_text().replace('role boundary','role '+role)
+  if role=="secondary": scene=scene.replace("spec center","timber 2 30 30 role boundary\nplace 2 on 1 at-face e3 +v +n\nspec center")
+  path=Path(d)/'fixture.scene';path.write_text(scene)
+  s=BridgeSession(str(binary),cwd=d)
+  try:
+   s.command('reset'); before=s.command('dump'); start=time.monotonic(); reply=s.command('loadfile '+str(path)); elapsed=time.monotonic()-start; after=s.command('dump')
+  finally:s.stop()
+  assert not reply['ok'],(role,reply)
+  assert before['text']==after['text'],role
+  records.append({'role':role,'scene':scene,'reply':reply,'elapsed_seconds':elapsed,'world_unchanged':True})
+record={'source_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),'source_base':'077165010377cca974bece7fcda930cd005490a9','binary_sha256':hashlib.sha256(binary.read_bytes()).hexdigest(),'scope':'General D7 necessary-invariant probe only; NOT a derived-host witness or PF23 support run','wrapper_exit':0,'records':records}
+(out/'results.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+(out/'probe.py.txt').write_bytes(Path(__file__).read_bytes())
+print(json.dumps(record,ensure_ascii=False))

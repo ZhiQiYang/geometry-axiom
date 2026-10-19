@@ -1,0 +1,25 @@
+{
+  "scope": "PF-H native D4/D7 and independent test-only R43 consumer; PF-3 runtime remains pending",
+  "head": "f22aa8ba58bd484e4a6d6c4a111a85f5f4248df9",
+  "binarySha256": "07d815df1397adcd6cc26a60edced82ba21f7a3b107341da9e7e81538c5f3b7c",
+  "records": [
+    {
+      "case": "E1",
+      "segments": 5,
+      "coldReopen": true,
+      "sourceOnlyHost": true
+    },
+    {
+      "case": "E2",
+      "segments": 3,
+      "coldReopen": true,
+      "sourceOnlyHost": true
+    },
+    {
+      "case": "E3",
+      "segments": 3,
+      "coldReopen": true,
+      "sourceOnlyHost": true
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+--- tests/test_domain_decoupling_adoption.py
++++ TEMP/addendum_after/test_domain_decoupling_adoption.py
+@@ -119,7 +119,7 @@
+ def apply_scope_addendum(merged, proposal, before, after):
+     expected_before, expected_after = expected_addendum_before_and_after(merged, proposal)
+     require(before == expected_before, "ADDENDUM_BEFORE", "review before differs from independently merged source")
+-    require(after == expected_after, "ADDENDUM_AFTER", "only the reviewed three scope entries and count may change")
++    pass  # TEMP MUTANT: removed ADDENDUM_AFTER guard
+     _, sections, _ = source_layout(merged)
+     start, end = sections["preamble"]
+     return merged[:start] + after + merged[end:]

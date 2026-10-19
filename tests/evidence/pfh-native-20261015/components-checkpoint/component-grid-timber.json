@@ -1,0 +1,518 @@
+{
+  "records": [
+    {
+      "command": "line grid 1 on 10 u 95",
+      "reply": {
+        "ok": true,
+        "deletedObjects": []
+      }
+    },
+    {
+      "command": "line timber 1 10 30 role boundary",
+      "reply": {
+        "ok": true,
+        "deletedObjects": []
+      }
+    },
+    {
+      "command": "line place 1 on 10 at-line grid 1 u 0 +v +n",
+      "reply": {
+        "ok": true,
+        "deletedObjects": []
+      }
+    },
+    {
+      "command": "references",
+      "reply": {
+        "ok": true,
+        "sourceFingerprint": "a6db2aebaa86a86ce26465fdfd4ee36c87aef19dc41ee73d2fd2168ae125a6b1",
+        "guides": [],
+        "grids": [
+          {
+            "id": 1,
+            "surface": 10,
+            "bindingId": null,
+            "indexSpace": "ordinal",
+            "sourceSystem": null,
+            "origin": [
+              0,
+              0
+            ],
+            "kind": "main",
+            "parentId": null,
+            "cell": null,
+            "divisions": null,
+            "bounds": {
+              "u": [
+                0,
+                100
+              ],
+              "v": [
+                0,
+                100
+              ]
+            },
+            "mainAlong": null,
+            "geometryMode": "exact",
+            "geometryExact": true,
+            "u": [
+              95
+            ],
+            "uDefinition": {
+              "source": "explicit",
+              "coordinates": [
+                95
+              ]
+            },
+            "v": [],
+            "vDefinition": {
+              "source": "none"
+            },
+            "lines": [
+              {
+                "axis": "u",
+                "index": 0,
+                "coordinate": 95,
+                "role": null,
+                "priority": null,
+                "segments": [
+                  [
+                    [
+                      95,
+                      0
+                    ],
+                    [
+                      95,
+                      100
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "dependencies": {
+              "children": [],
+              "guides": [],
+              "timbers": [
+                1
+              ]
+            }
+          }
+        ],
+        "timbers": [
+          {
+            "id": 1,
+            "role": "boundary",
+            "geometry": {
+              "surface": 10,
+              "centerline": 95,
+              "length": 100,
+              "u": 100,
+              "v": 0,
+              "dir": "+v",
+              "side": "+n",
+              "A": 10,
+              "B": 30,
+              "origin": [
+                100,
+                0,
+                9
+              ],
+              "axes": [
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ]
+            },
+            "definition": {
+              "anchor": "at-line grid 1 u 0",
+              "selector": "",
+              "priority": 1
+            }
+          }
+        ],
+        "timberSupports": {
+          "schema": "native-timber-supports/1",
+          "sourceFingerprint": "a6db2aebaa86a86ce26465fdfd4ee36c87aef19dc41ee73d2fd2168ae125a6b1",
+          "entries": [
+            {
+              "id": 1,
+              "surface": 10,
+              "owner": null,
+              "start": {
+                "status": "exact",
+                "at": 0,
+                "crossRange": [
+                  90,
+                  100
+                ],
+                "relation": {
+                  "kind": "derived-edge",
+                  "source": {
+                    "kind": "placement",
+                    "id": 10
+                  },
+                  "edgeKey": [
+                    [
+                      "e0",
+                      1,
+                      2
+                    ]
+                  ],
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 10,
+                  "stop": {
+                    "axis": "v",
+                    "at": 0,
+                    "range": [
+                      60,
+                      100
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              },
+              "finish": {
+                "status": "exact",
+                "at": 100,
+                "crossRange": [
+                  90,
+                  100
+                ],
+                "relation": {
+                  "kind": "derived-edge",
+                  "source": {
+                    "kind": "placement",
+                    "id": 10
+                  },
+                  "edgeKey": [
+                    [
+                      "e2",
+                      0,
+                      2
+                    ]
+                  ],
+                  "localFace": null,
+                  "normalWorld": null,
+                  "owner": null,
+                  "surface": 10,
+                  "stop": {
+                    "axis": "v",
+                    "at": 100,
+                    "range": [
+                      60,
+                      100
+                    ],
+                    "fixity": "fixed"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "specs": [],
+        "datums": [],
+        "engineeringSources": [],
+        "assembly": {
+          "capabilities": [
+            "assembly-rule-authoring/1",
+            "assembly-timber-generation/1"
+          ],
+          "rules": [],
+          "bindings": [],
+          "instances": []
+        }
+      }
+    },
+    {
+      "command": "dump",
+      "reply": {
+        "ok": true,
+        "text": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6OTAsIm5hbWUiOiLploDmqrsiLCJuZXh0RmllbGRJZCI6Mn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6OTAsImlkIjoxLCJuYW1lIjoiWCIsInR5cGUiOjAsImV4cHJlc3Npb24iOnsiZGVuIjoiMSIsIm51bSI6IjgiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters end\nrequires engineering-spec/1\nengineering material eyJmaW5nZXJwcmludCI6ImQ4YjY3OGMxNzM2ZmNhYTBiNTQxOGY0NDdkMThlYzI4Yjg3ZDRhNjQ1MTFhNmRiNDgwYTVlYjdhMmU5MDVhYTciLCJ2YWx1ZSI6eyJpZCI6InBmLWJvYXJkIiwia2luZCI6InBhbmVsIiwibGVuZ3RoIjoxODMwLCJuYW1lIjoi5p2/IiwidGhpY2tuZXNzIjoiOSIsInZlcnNpb24iOjEsIndpZHRoIjo5MTV9fQ==\nboundary 8 outline 0,0 100,0 100,100 0,100 kind room_plan\nbeam 20 along x from 40 to 60 at 50 width 120 depth 30 top 39\nrequires panel-fill/1\nfinish-surface 1 on boundary 8 origin 0 0 0 u +x v +y n +z side +n obstacles b20 name-hex e5a4a9e88ab1e5ae8ce68890e99da2\npanel-fill 1 definition-hex 7b2266696e697368537572666163654964223a312c22676170223a302c226964223a312c226c656e677468416c6f6e67223a2276222c226f726967696e223a5b302c305d2c2270616e656c223a7b226964223a2270662d626f617264222c2276657273696f6e223a317d2c227061747465726e223a227374726169676874222c227468726573686f6c64223a7b226669656c644964223a312c22706172616d657465724964223a39307d7d\nderived-placement 10 definition-hex 7b2266696c6c4964223a312c2268223a33302c226964223a31307d\ngrid 1 on 10 u 95\ntimber 1 10 30 role boundary\nplace 1 on 10 at-line grid 1 u 0 +v +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=[[\"e1\",0,1]]\n",
+        "capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1",
+          "grid-subdivision-rules/1",
+          "section-profile/1"
+        ],
+        "required_capabilities": [
+          "engineering-spec/1",
+          "parameters/1",
+          "panel-fill/1"
+        ],
+        "native_capabilities": [
+          "section-profile-native/1",
+          "panel-fill-native/1"
+        ],
+        "revision": 20,
+        "definition_sha256": "a6db2aebaa86a86ce26465fdfd4ee36c87aef19dc41ee73d2fd2168ae125a6b1"
+      }
+    },
+    {
+      "command": "line grid 1 on 10 u 94",
+      "reply": {
+        "ok": false,
+        "error": "line 4: I8a: impact preview required; inspect preview, then confirm token (World unchanged)",
+        "preview": {
+          "token": 5,
+          "valid": false,
+          "command": "grid 1 on 10 u 94",
+          "timbers": [
+            {
+              "id": 1,
+              "before": {
+                "surface": 10,
+                "centerline": 95,
+                "length": 100,
+                "u": 100,
+                "v": 0,
+                "dir": "+v",
+                "side": "+n",
+                "A": 10,
+                "B": 30,
+                "origin": [
+                  100,
+                  0,
+                  9
+                ],
+                "axes": [
+                  [
+                    0,
+                    1,
+                    0
+                  ],
+                  [
+                    -1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    1
+                  ]
+                ]
+              },
+              "after": null
+            }
+          ],
+          "guides": [],
+          "grids": [
+            {
+              "id": 1,
+              "before": {
+                "id": 1,
+                "surface": 10,
+                "bindingId": null,
+                "indexSpace": "ordinal",
+                "sourceSystem": null,
+                "origin": [
+                  0,
+                  0
+                ],
+                "kind": "main",
+                "parentId": null,
+                "cell": null,
+                "divisions": null,
+                "bounds": {
+                  "u": [
+                    0,
+                    100
+                  ],
+                  "v": [
+                    0,
+                    100
+                  ]
+                },
+                "mainAlong": null,
+                "geometryMode": "exact",
+                "geometryExact": true,
+                "u": [
+                  95
+                ],
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    95
+                  ]
+                },
+                "v": [],
+                "vDefinition": {
+                  "source": "none"
+                },
+                "lines": [
+                  {
+                    "axis": "u",
+                    "index": 0,
+                    "coordinate": 95,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          95,
+                          0
+                        ],
+                        [
+                          95,
+                          100
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                "dependencies": {
+                  "children": [],
+                  "guides": [],
+                  "timbers": [
+                    1
+                  ]
+                }
+              },
+              "after": {
+                "id": 1,
+                "surface": 10,
+                "bindingId": null,
+                "indexSpace": "ordinal",
+                "sourceSystem": null,
+                "origin": [
+                  0,
+                  0
+                ],
+                "kind": "main",
+                "parentId": null,
+                "cell": null,
+                "divisions": null,
+                "bounds": {
+                  "u": [
+                    0,
+                    100
+                  ],
+                  "v": [
+                    0,
+                    100
+                  ]
+                },
+                "mainAlong": null,
+                "geometryMode": "exact",
+                "geometryExact": true,
+                "u": [
+                  94
+                ],
+                "uDefinition": {
+                  "source": "explicit",
+                  "coordinates": [
+                    94
+                  ]
+                },
+                "v": [],
+                "vDefinition": {
+                  "source": "none"
+                },
+                "lines": [
+                  {
+                    "axis": "u",
+                    "index": 0,
+                    "coordinate": 94,
+                    "role": null,
+                    "priority": null,
+                    "segments": [
+                      [
+                        [
+                          94,
+                          0
+                        ],
+                        [
+                          94,
+                          100
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                "dependencies": {
+                  "children": [],
+                  "guides": [],
+                  "timbers": []
+                }
+              }
+            }
+          ],
+          "datums": [],
+          "gridSystems": [],
+          "gridBindings": [],
+          "boundaries": [],
+          "assembly": {
+            "before": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            },
+            "after": {
+              "capabilities": [
+                "assembly-rule-authoring/1",
+                "assembly-timber-generation/1"
+              ],
+              "rules": [],
+              "bindings": [],
+              "instances": []
+            }
+          },
+          "sectionProfiles": {
+            "before": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "after": {
+              "profiles": [],
+              "members": [],
+              "runs": []
+            },
+            "warnings": [],
+            "diagnosticsComplete": true,
+            "violations": [
+              {
+                "code": "SECTION_PROFILE_INVALID",
+                "clause": "I43-I49",
+                "message": "line 4: I8a: impact preview required; inspect preview, then confirm token (World unchanged)",
+                "expected": "valid atomic transaction",
+                "actual": "rejected input or upstream dependency"
+              }
+            ]
+          },
+          "violations": [
+            {
+              "timber": 1,
+              "clause": "I20/R18",
+              "expected": "boundary covers its full fixed outline edge",
+              "actual": "V_BOUNDARY_ROLE：角材 1 宣告 boundary，但沒有任何側面貼在外輪廓邊上"
+            }
+          ]
+        },
+        "deletedObjects": []
+      }
+    }
+  ],
+  "sourceOnlyReopen": true,
+  "atomicInvalidMove": true
+}

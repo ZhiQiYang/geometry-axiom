@@ -1,0 +1,385 @@
+{
+  "baseline": {
+    "id": "baseline",
+    "verdict": "pass",
+    "exit": 0,
+    "counts": {
+      "run": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "requiredMarker": "",
+    "artifacts": {
+      "tests.json": "09d81e8adc48c288465b635a3e986dfe4f6efb0a9241ece16c22116313ecb81e",
+      "pf3-algorithm.fingerprint.json": "3e892230e1fa23c63ddbd656806340e76e1356ea654e851873f9dd2ebc15edbf",
+      "pf3-algorithm": "94dd5c2ba1b9113b3005a3f3cb642cf6438b67cdf327fb5ee12e6f28108afa13",
+      "bridge.fingerprint.json": "c8590cf101bac3a69dd06a479844f9fd280590ade66e4e167fc6c4410ca3dfbd",
+      "bridge": "730af31506ce10de03d1ac7fa47ad48fad690d8cb07e7b720b54345fa98a5ed0",
+      "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "mutations": [
+    {
+      "id": "two-sides",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "D43_TWO_SIDES",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "274df43c2cb423df90442bccc81fa6c7ac14c6e52770facad6dfee235d610045",
+        "pf3-algorithm": "e70c8adf40ab9869799c0d37c3f49c65baed9b6585fbf0c58a5bbe378ea6b639",
+        "bridge.fingerprint.json": "734c85c29f9cc2db61bf4a465243d60278c3b5464da32864bb52aa62862d35e3",
+        "bridge": "81bf779fc1eb6fda9b0ffa1785d99609c495a78bdcc9bc9d77b6e6b996ab0abb",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "board-vertices",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF23_ORIGINAL",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "1285c8540e3a51b7af5a41e4654dca601773cb9ac0a1e845705f0f1d5797dd7e",
+        "pf3-algorithm": "8f0db69c573adeaebc6bcd15ee789a94bffc6f947136ce2f326a4d279d6cabcd",
+        "bridge.fingerprint.json": "4445a55e76b2ceb6ed40621d5a942a727c0fbf954bb792f42f36780ea6023263",
+        "bridge": "874c88805642ba65d947da26fe21aa8f995ed2d775bf2de062d5c37ae324dc37",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "footprint-vertices",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF23_LEGAL",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "2f361c05871372694d648aff9daf2a5d1b64ca1f6ade554cd96fb2e48a3c64ba",
+        "pf3-algorithm": "c5c9f5ddd25f2fd3cfe401cab01577494bec779b3ad480cd093ddcccea09d2f9",
+        "bridge.fingerprint.json": "8bc5d241275e0b94bbf8e851faa2fbafbf3dd08e8bd8320c682b78fdae1619a6",
+        "bridge": "3980b5b3c2b04ec2d1727aba3cd98886f8c915caa1469b35a8450f12b9f6bcae",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "maximal-merge",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF24",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "7b16b0870d31507ff5a306dc23ba6baf6a1bf30cf73faad81ad2711abeb2e0a8",
+        "pf3-algorithm": "5b00bc537ecbbb337d89029346d8b0b1a29d1069e59da1b910b3b54a55f3e874",
+        "bridge.fingerprint.json": "f5811af20f7e37287b53962951332f9480a71590b4543e3c536be5e0f6195dd5",
+        "bridge": "295b506b6167c1d4ae387be2ca9910ecdb4287ef2c5b17688cbffdc16f23dc54",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "merge-colours",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF23_LEGAL",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "16bdc8fb45f2c4ca4ac8911040b47e40b6a568aecc0af3ce0d88df394ebf2b03",
+        "pf3-algorithm": "fb78753abeb8f1b32c4bd002d70be39e8ace83ad262da0d5ff7c0db15ec719aa",
+        "bridge.fingerprint.json": "6b2fd19e650d850201efe0036b650b97350805eedff75c6c31fec6c2aa6629fb",
+        "bridge": "afde85650ed41bc274b7834ca7a17d750b4451f79016be9e3babc8366868ed32",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "open-sample",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF23_LEGAL",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "2f229a50e8ac829adc25c799efc52affc5187796f82e762d5407f98d1e2ba5b8",
+        "pf3-algorithm": "076c6a39b214b06c23d5f0098605c30f073ca2be3dae2f3b8ed847c3b0e0e3a1",
+        "bridge.fingerprint.json": "6b316e04f3701946b3f7e2c03158bdf89da55b5a9424ffdc9af8df4c0aef04fa",
+        "bridge": "b009faae1f4853be8d76ac89bb43c952d31dc56d73e85d59a7d57639a9ac22c2",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "footprint-union",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "R43_UNION",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "5d367010c57d54d0d8ba9bae9c9f4d9fc2cd08868a6166bd7957ac73791e541a",
+        "pf3-algorithm": "0a7f32cf3b5a7eebe14fa9edc3f7e45976021e48b0843c258dd892f740efa7b1",
+        "bridge.fingerprint.json": "9d86fa4e79535019142c86ab8003c7fcc4adc71b5d69812204c09a66828f8722",
+        "bridge": "f8b76b6be175a92223142de521300b3caab1634176e17eabc85b82b49c1ddbcb",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "continuous-width",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "R43_GAP",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "19d71e7d7b17f4f384c3fb4a85e8b4588d6bb7f6c23313a51da219876c05efe1",
+        "pf3-algorithm": "c26f17d0b3dc48d14a795de1059cbb8cf87d30deac844f88d6f1e7fb8305e0f7",
+        "bridge.fingerprint.json": "92c9d792cd0f968b96c8391b61957886d72bb7ff5e57b93627f3d3ec85dcdb65",
+        "bridge": "a10972943b70a912d4d624ae1d15f32b0547fbe1db18c7102b1605053cd6fd53",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "host-identity",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF3_HOST_FILTER",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "b4d48104a7ac8a44f6e744e29f87477bdbe8715312927b652c368d4c2796f207",
+        "pf3-algorithm": "cffbe109c2353d2470f324333907d35e68a7495a4955ee10708504d90233bef4",
+        "bridge.fingerprint.json": "bce3c6e9ba285727aa01df7348a5e09258e2a500112c07d849547a224151b575",
+        "bridge": "c4ae06cdeb7b26ec053277122a912df1c685056680b2df2fe9d285ccc8026221",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "finish-reflection",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "R43_FRAME",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "6dad42b3682036088a09e86763aa09087263f3574fac1c5bcb729d8c5c948f61",
+        "pf3-algorithm": "0f0ddd3c50beb9d7c15700b75fad71b8dea3ea1b246f6a6d04fa3d40d8fe7bdb",
+        "bridge.fingerprint.json": "c9d39ae667d9fbae5c2f2e4c1ad6296ce516c8602097d1d880a2f3d554988c97",
+        "bridge": "c938ae16ed81360bdd81417b06adb830063928cbe91cb2af0591f1061dfcf255",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "hidden-threshold",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF06_RATIONAL",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "e7ebb4fc7eb8490ce1c09472c73bd0a4891f4f92710e8f066ef89068bf94b061",
+        "pf3-algorithm": "e8836f34e62851f93d7e405c8b1059b1725e3853c1aae56da6656b8556fd8175",
+        "bridge.fingerprint.json": "61a9e958629e01a4a79a68fd964d956a0f5323fa870652eb9214d0a87e9f6bf5",
+        "bridge": "c67c49d0d53dc72fb6aad27713e467d459269dfe4818c57ebc1a01b8ab27d901",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "rounded-threshold",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF06_RATIONAL",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "1d2a7659ac8e953e2fafdfe33253691a6af69d485c2fc05860b46a32e8939891",
+        "pf3-algorithm": "9169f4bf73a01bc706cea67a89c2f74237dd9ee72db74621fa0dd6d6bf465296",
+        "bridge.fingerprint.json": "9b9b2433cbfd8e21efd6a51dc4192028dcea637c5e810c1c3263337e9433c4e0",
+        "bridge": "a53dc1f0f482c6fd22380d21e47cbf7887ace0a38a96fd7a53910899621ae4f5",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "overflow-comparison",
+      "verdict": "not-killed",
+      "exit": 0,
+      "counts": {
+        "run": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF06_OVERFLOW",
+      "artifacts": {
+        "tests.json": "ca1b79f89920050a63990a90f64041f391e8ebc162a8b34ffb176a36182e930c",
+        "pf3-algorithm.fingerprint.json": "3e237803603822baf94ae196ae333ec0009eca8906632ce282e7861324459fc2",
+        "pf3-algorithm": "fc631c639aa8b88b227f4ca3ffa6a34051bed2ddbfef604025f3746036d4b3ad",
+        "bridge.fingerprint.json": "6be0b505c997b07cbe1f512b50f4d6bcc7ae396bba4310e27f01b75ff3dbb12e",
+        "bridge": "93f7b32c89e6cfea987403c0894d7e3ba5b7cc7d48e9f1a1cde58abbaa413a7f",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "odd-gap-edges",
+      "verdict": "not-killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "D43_ODD_GAP",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "eb0fe30867fc5ad5b7a87b6048f27ea00bb6d0d35bd955e422b8ca5c60163be3",
+        "pf3-algorithm": "08a3236b3140903579a1fb8eb87281267858841321195a77df0940cdf26fafef",
+        "bridge.fingerprint.json": "a16036557e8d6f48272108c7d84762e37a481649e9223314865dcaf0cc7b7ee5",
+        "bridge": "158f6f53f8fc4f1968864d370d731a30aa3df7ac4304f15cdc408229b14eb3e7",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "band-range",
+      "verdict": "not-killed",
+      "exit": 0,
+      "counts": {
+        "run": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "D43_NEGATIVE_BAND",
+      "artifacts": {
+        "tests.json": "ca1b79f89920050a63990a90f64041f391e8ebc162a8b34ffb176a36182e930c",
+        "pf3-algorithm.fingerprint.json": "4b0fad6580abbfccdb713152f93d4aafd3f971a1134f8ef1160edccf6fac017e",
+        "pf3-algorithm": "3496299d0f37664c97dfead39e9fd7f582647d711808dd76cc9b1d44907cd81f",
+        "bridge.fingerprint.json": "fef0d575b997a13c751b00c10bd73f1a5f6061eaef3cfb4d1385373757db6d94",
+        "bridge": "81a99bcd822dde35826763fac2da26fad1dcf48575a5e4f9122d07a257a1497c",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "capacity-early",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF3_CAPACITY_N",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "2e4451385a82b7be6707607499e8b088703ab6c1d2973b4df79d1ae6821bfd1f",
+        "pf3-algorithm": "a057fc28ab054a395e351aeb0b079d6466b8386326bfe11d9e856ffe4a87aacf",
+        "bridge.fingerprint.json": "8eb3488c05ac5167d72388006efef8ab95fde21686f6f3623f82775498384ba0",
+        "bridge": "94a3ccb76d2a63e68fca9a6f27e6f5da610a77381087c77238b99721ed844e1f",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "capacity-truncate",
+      "verdict": "killed",
+      "exit": 1,
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "PF3_CAPACITY_N1",
+      "artifacts": {
+        "tests.json": "8428d8b06eb74ca41dc76b0906669f160aeebec5788fb6d5f292debba2ff45ea",
+        "pf3-algorithm.fingerprint.json": "e5a49e7c49dabc874b6b5138197dc0bde8fff2ae1f29b5acb51330a7ead29b03",
+        "pf3-algorithm": "ae6ffefa9573092aa8535465bd42fb1cc4a5cc2a3efa3b2c5b1e36b12f332c9f",
+        "bridge.fingerprint.json": "3bd8f72a809b8f1cb0e0c9801cb37655774848a4b52a622dbf0dfc443a543ec7",
+        "bridge": "8225f1438eea472ce17a6a934007e446b58d1ff903ce1a59de6e039a32ab7557",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "restored": {
+    "id": "restored",
+    "verdict": "pass",
+    "exit": 0,
+    "counts": {
+      "run": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "requiredMarker": "",
+    "artifacts": {
+      "tests.json": "09d81e8adc48c288465b635a3e986dfe4f6efb0a9241ece16c22116313ecb81e",
+      "pf3-algorithm.fingerprint.json": "9b8d56b73662807b5f9b99439e80891e04c2ca441b6d367c4465d19e7add18e3",
+      "pf3-algorithm": "68a35f3bfea70188a8634e0c255b5b3a64aebaf89ad4b8914eac6f1ed9af4157",
+      "bridge.fingerprint.json": "d2bc8bbff8fb44f679d6b563abbcb36b7670b4a6ec969288fd7350f755986511",
+      "bridge": "940a6d1cc3c4ae4e4c7cd17ce040b95b6ce9868454d25a1e081da3ed625d86b0",
+      "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "originalSourcesUnchanged": true
+}

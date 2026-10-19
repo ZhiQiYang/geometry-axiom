@@ -40,7 +40,7 @@ MAX_MODELS = 64
 BRIDGE_TIMEOUT = 20
 MODEL_TIMEOUT = 60
 NATIVE_CAPABILITIES = frozenset(("engineering-spec/1", "parameters/1",
-                               "assembly-rule-authoring/1", "assembly-timber-generation/1", "section-profile/1"))
+                               "assembly-rule-authoring/1", "assembly-timber-generation/1", "section-profile/1", "grid-card-reference/1"))
 # Scene capture follows the current portable reader. Model producer input
 # retains its own narrower capability contract below.
 BRIDGE_CAPABILITIES = NATIVE_CAPABILITIES | {"grid-subdivision-rules/1"}

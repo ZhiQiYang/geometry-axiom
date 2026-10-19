@@ -25,9 +25,12 @@ HERE = pathlib.Path(__file__).resolve().parent
 SCENE_DIR = HERE.parent                      # *.scene 都在 knowledgebase 根目錄
 sys.path.insert(0, str(HERE))
 import feedback_store  # noqa: E402
+import wait_trace
 from runtime_version import RuntimeSnapshot, RESTART_MESSAGE
 
 RUNTIME = RuntimeSnapshot(SCENE_DIR)
+if wait_trace.ENABLED:
+    RUNTIME._lock = wait_trace.wrap_lock(RUNTIME._lock, 'source_lock')
 FEEDBACK_MAX_BYTES = 32 * 1024 * 1024
 API_MAX_BYTES = 64 * 1024  # Escaped 4094-byte command, 256 receipt acknowledgements.
 UPLOAD_MAX_BYTES = 16 * 1024 * 1024
@@ -85,7 +88,11 @@ from native_context import NativeContext
 
 BRIDGE_TIMEOUT = 30.0
 MAX_RECEIPTS = 256
-root_context = NativeContext(BRIDGE_CMD)
+# Ids sealed by an early receipt lookup are kept apart from unacknowledged results
+# and only ever hold the id. They are never evicted or acknowledged away: a late
+# command carrying a sealed id must stay unexecuted (I64/I67 recover by receipt).
+MAX_SEALED_RECEIPTS = 4096
+root_context = wait_trace.native(NativeContext(BRIDGE_CMD))
 request_context = threading.local()
 scenario_contexts = {}
 scenario_context_lock = threading.Lock()
@@ -133,9 +140,14 @@ def ask_bridge(cmd: str) -> bytes:
         if native.bridge_failure is not None:
             return err_json(native.bridge_failure)
         try:
-            native.bridge.stdin.write(payload + b"\n")
-            native.bridge.stdin.flush()
-            response = native.bridge_responses.get(timeout=BRIDGE_TIMEOUT)
+            if wait_trace.ENABLED:
+                wait_trace.call('stdin_write', lambda: native.bridge.stdin.write(payload + b"\n"))
+                wait_trace.call('stdin_flush', native.bridge.stdin.flush)
+                response = wait_trace.call('response_queue', lambda: native.bridge_responses.get(timeout=BRIDGE_TIMEOUT))
+            else:
+                native.bridge.stdin.write(payload + b"\n")
+                native.bridge.stdin.flush()
+                response = native.bridge_responses.get(timeout=BRIDGE_TIMEOUT)
         except queue.Empty:
             native.bridge_failure = "橋接器回應逾時，請重新啟動服務"
         except (OSError, ValueError):
@@ -172,6 +184,8 @@ def recorded_api(data):
     Clients acknowledge received results on their next request. A lookup arriving
     before its command seals that id as cancelled, so a late command cannot run.
     Unacknowledged results are bounded; capacity failure never reaches the core.
+    Sealed ids live in their own id-only set with a separate bound: an ack never
+    clears one, nothing evicts one, and they never use the result capacity.
     """
     native = current_native_context()
     request_id = data.get("receipt", data.get("requestId"))
@@ -184,19 +198,26 @@ def recorded_api(data):
         return err_json("操作結果仍在處理，請稍後重試。")
     try:
         for ack in data.get("ack", [])[:MAX_RECEIPTS]:
-            if isinstance(ack, str) and native.api_receipts.get(ack, (None,))[0] is not None:
+            # Only bound results are acknowledgeable; api_sealed is deliberately untouched.
+            if isinstance(ack, str):
                 native.api_receipts.pop(ack, None)
-        cached = native.api_receipts.get(request_id)
-        if cached is None:
-            if len(native.api_receipts) >= MAX_RECEIPTS:
-                return err_json("未確認的操作結果過多，已暫停新增操作。")
-            if "receipt" in data:
-                cached = (None, err_json("操作未送達，場景未變更；請重新操作。"))
-            else:
-                cached = (data["cmd"], ask_bridge(data["cmd"]))
-            native.api_receipts[request_id] = cached
-        elif "receipt" not in data and cached[0] not in (None, data["cmd"]):
-            return err_json("同一操作識別不得用於不同指令。")
+        if request_id in native.api_sealed:
+            cached = (None, err_json("操作未送達，場景未變更；請重新操作。"))
+        else:
+            cached = native.api_receipts.get(request_id)
+            if cached is None:
+                if len(native.api_receipts) >= MAX_RECEIPTS:
+                    return err_json("未確認的操作結果過多，已暫停新增操作。")
+                if "receipt" in data:
+                    if len(native.api_sealed) >= MAX_SEALED_RECEIPTS:
+                        return err_json("早查詢封存項已達上限，已暫停新增查詢；本次查詢未被受理，不能據此推定操作結果。")
+                    native.api_sealed.add(request_id)
+                    cached = (None, err_json("操作未送達，場景未變更；請重新操作。"))
+                else:
+                    cached = (data["cmd"], ask_bridge(data["cmd"]))
+                    native.api_receipts[request_id] = cached
+            elif "receipt" not in data and cached[0] != data["cmd"]:
+                return err_json("同一操作識別不得用於不同指令。")
         if "receipt" in data:
             return json.dumps({"ok": True, "result": json.loads(cached[1])}, ensure_ascii=False).encode("utf-8")
         return cached[1]
@@ -326,6 +347,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
         pass
 
     def _send(self, body: bytes, ctype="application/json; charset=utf-8", status=200):
+        if wait_trace.ENABLED:
+            return wait_trace.call('http_write', lambda: self._send_body(body, ctype, status))
+        return self._send_body(body, ctype, status)
+
+    def send_error(self, *args, **kwargs):
+        if wait_trace.ENABLED:
+            return wait_trace.call('http_write', lambda: super(Handler, self).send_error(*args, **kwargs))
+        return super().send_error(*args, **kwargs)
+
+    def _send_body(self, body: bytes, ctype="application/json; charset=utf-8", status=200):
         self.send_response(status)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
@@ -339,6 +370,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
+        if not wait_trace.ENABLED:
+            return self._do_GET()
+        wait_trace.begin(self.path)
+        wait_trace.command(self.path)
+        try:
+            return self._do_GET()
+        finally:
+            wait_trace.end()
+
+    def _do_GET(self):
         # Same Host rule as POST, before any dispatch: a DNS-rebinding page is same-origin with its
         # own name, so only the Host header tells it apart from the real local UI.
         if not self._host_allowed():
@@ -444,6 +485,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
         return True
 
     def do_POST(self):
+        if not wait_trace.ENABLED:
+            return self._do_POST()
+        wait_trace.begin(self.path)
+        try:
+            return self._do_POST()
+        finally:
+            wait_trace.end()
+
+    def _do_POST(self):
         if self._local_only():
             return
         if not self._select_native():
@@ -461,6 +511,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_error(413)
             return
         body = self.rfile.read(length)
+        if wait_trace.ENABLED:
+            try:
+                trace_data = json.loads(body)
+                if isinstance(trace_data, dict):
+                    wait_trace.command('receipt' if 'receipt' in trace_data else trace_data.get('cmd', self.path),
+                                       trace_data.get('receipt', trace_data.get('requestId')))
+            except (ValueError, UnicodeDecodeError):
+                pass
 
         # Keep dump/receipts available so a stale server can still be saved.
         # All geometry mutations and derived previews require a current runtime.
@@ -549,7 +607,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                         if previous:
                             native=scenario_contexts[previous['context']]
                         else:
-                            native = NativeContext([command])
+                            native = wait_trace.native(NativeContext([command]))
                             scenario_contexts[native.session] = native
                             root_context.editor_sequence=data['sequence']
                             root_context.editor_creations[data['requestId']]={'sequence':data['sequence'],'context':native.session}
@@ -688,6 +746,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    if wait_trace.ENABLED:
+        import signal
+        def stop_traced_service(signum, frame):
+            # SIGTERM previously bypassed finally/business-lock cleanup. Keep
+            # that termination path, adding only the bounded diagnostic drain.
+            wait_trace.close()
+            os._exit(0)
+        signal.signal(signal.SIGTERM, stop_traced_service)
     try:
         host = "0.0.0.0" if os.environ.get("GEOMETRY_MANAGED_PREVIEW") == "1" and PORT == 4173 else "127.0.0.1"
         server = PreviewHTTPServer((host, PORT), Handler)
@@ -697,3 +763,5 @@ if __name__ == "__main__":
         root_context.close()
         for context in list(scenario_contexts.values()):
             context.close()
+        if wait_trace.ENABLED:
+            wait_trace.close()

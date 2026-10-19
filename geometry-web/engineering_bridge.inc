@@ -21,8 +21,8 @@ static void json_engineering_capabilities(const World *w)
      * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset. */
     bool fs=fs_used(w),eng=engineering_used(w)||fs,par=w->parameters.card_count||fs,first=true;
     const struct {bool used;const char *name;} required[]={{eng,"engineering-spec/1"},{par,"parameters/1"},{assembly_used(w),ASM_CAPABILITY},
-        {w->assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY}};
-    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\"],\"required_capabilities\":[",stdout);
+        {w->assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY},{grid_card_used(w),GRID_CARD_CAPABILITY}};
+    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[",stdout);
     for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
     putchar(']');
     fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\"]",stdout);
@@ -79,11 +79,50 @@ static char *eng_read_file(const char *path,size_t *size)
     *size=fread(text,1,(size_t)n,f);bool ok=*size==(size_t)n&&!ferror(f);fclose(f);if(!ok){free(text);eng_fail("Could not read complete engineering input");return NULL;}
     text[*size]=0;return text;
 }
+/* Serialization-only order metadata. Never placed in a preview World/history. */
+typedef struct {
+    ParameterDeclaration declarations[PARAM_DECLARATION_MAX];size_t declaration_count;
+    ParameterFieldRetirement retirements[PARAM_FIELD_RETIREMENT_MAX];size_t retirement_count;
+    GridCardCapture captures[256];size_t capture_count;
+} ParameterPreviewOrder;
+static const ParameterPreviewOrder *g_parameter_preview_order;
+static void json_parameter_rebindings(void)
+{
+    fputs(",\"redeclaredReferences\":[",stdout);bool first=true;
+    const ParameterPreviewOrder *p=g_parameter_preview_order;
+    if(p)for(size_t i=0;i<p->retirement_count;++i){const ParameterFieldRetirement *r=&p->retirements[i];bool last=true;
+        for(size_t k=i+1;k<p->retirement_count;++k)if(p->retirements[k].parameter_id==r->parameter_id&&p->retirements[k].field_id==r->field_id){last=false;break;}
+        if(!last)continue;
+        for(size_t k=0;k<p->declaration_count;++k){const ParameterDeclaration *d=&p->declarations[k];
+            if(d->at<=r->at||!parameter_declared_owner_present(&g_preview.after,d)||(!parameter_declared_owner_uses(&g_preview.before,d,r->parameter_id,r->field_id)&&!parameter_declared_owner_uses(&g_preview.after,d,r->parameter_id,r->field_id)))continue;
+            const char *kind=NULL;char label[160],message[320];
+            switch(d->kind){
+            case PARAM_OWNER_GRID_CARD:kind="grid-system";snprintf(label,sizeof label,"網格整卡來源 %u",d->id);break;
+            case PARAM_OWNER_GRID_SYSTEM:kind="grid-system";
+                if(d->slot){const char *fields[]={"phase","step","panel","gap","anchor","stagger"};snprintf(label,sizeof label,"網格 %u %c.%s 來源",d->id,(d->slot-1)/6?'v':'u',fields[(d->slot-1)%6]);}
+                else snprintf(label,sizeof label,"網格 %u 完整軸來源",d->id);break;
+            case PARAM_OWNER_CARD:kind="parameter";snprintf(label,sizeof label,"參數卡片 %u",d->id);break;
+            case PARAM_OWNER_ENG_GRID:kind="grid";snprintf(label,sizeof label,"網格 %u %c.%s%s",d->id,(d->slot%4)/2?'v':'u',d->slot%2?"gap":"panel",d->slot>=4?" 覆寫":" 來源");break;
+            case PARAM_OWNER_ENG_TIMBER:kind="timber";snprintf(label,sizeof label,"角材 %u %c%s",d->id,d->slot%2?'B':'A',d->slot>=4?" 覆寫":" 來源");break;
+            case PARAM_OWNER_ASSEMBLY:kind="assembly-binding";snprintf(label,sizeof label,"組構配置 %u",d->id);break;
+            case PARAM_OWNER_MEMBER:kind="section-profile-member";snprintf(label,sizeof label,"斷面構件 %u",d->id);break;
+            case PARAM_OWNER_RUN:kind="section-profile-run";snprintf(label,sizeof label,"拉伸件 %u",d->id);break;
+            default:continue;
+            }
+            printf("%s{\"owner\":{\"kind\":",first?"":",");js_string(kind);printf(",\"id\":%u,\"slot\":%d},\"source\":{\"parameterId\":%u,\"fieldId\":%u},\"message\":",d->id,d->slot,r->parameter_id,r->field_id);
+            snprintf(message,sizeof message,"刪除參數 %u 欄位 %u 後，%s已明確重新宣告。",r->parameter_id,r->field_id,label);js_string(message);putchar('}');first=false;
+        }
+    }
+    fputs("],\"cardCaptures\":[",stdout);
+    if(p)for(size_t i=0;i<p->capture_count;++i){const GridCardCapture *c=&p->captures[i];
+        printf("%s{\"gridSystemId\":%u,\"parameterId\":%u,\"uFieldId\":%u,\"vFieldId\":%u,\"timing\":\"ordered-candidate-step\",\"order\":%u,\"values\":[%lld,%lld]}",i?",":"",c->id,c->parameter_id,c->fields[0],c->fields[1],c->at,(long long)c->values[0],(long long)c->values[1]);}
+    putchar(']');
+}
 static void json_engineering_preview(void)
 {
     char error[512];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:scene_last_error());
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"before\":",g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
-    json_engineering_state(&g_preview.before,true);fputs(",\"after\":",stdout);json_engineering_state(&g_preview.after,true);json_section_profile_impact(&g_preview.before,&g_preview.after);fputs(",\"violations\":[",stdout);
+    json_engineering_state(&g_preview.before,true);fputs(",\"after\":",stdout);json_engineering_state(&g_preview.after,true);json_parameter_rebindings();json_section_profile_impact(&g_preview.before,&g_preview.after);fputs(",\"violations\":[",stdout);
     if(!g_preview.valid){fputs("{\"code\":\"ENGINEERING_INVALID\",\"clause\":\"I8/I35\",\"message\":",stdout);js_string(error);putchar('}');}
     for(size_t i=0;i<g_preview.issue_count;++i){const ReferenceIssue *e=&g_preview.issues[i];printf("%s{\"timber\":%u,\"clause\":",(!g_preview.valid||i)?",":"",e->timber);js_string(e->clause);fputs(",\"expected\":",stdout);js_string(e->expected);fputs(",\"message\":",stdout);js_string(e->actual);putchar('}');}fputs("]}",stdout);
 }
@@ -100,7 +139,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     }
     if((uint64_t)revision!=g_definition_revision){eng_bridge_error("STALE",stale_message);eng_json_free(&j);free(text);return;}
     int count=eng_json_size(&j,operations);if(count<1||count>ENG_OPERATION_MAX){eng_bridge_error("CAPACITY","Transaction needs 1..256 operations");eng_json_free(&j);free(text);return;}
-    World *candidate=malloc(sizeof *candidate);if(!candidate){eng_bridge_error("MEMORY",memory_message);eng_json_free(&j);free(text);return;}*candidate=g_world;
+    World *candidate=malloc(sizeof *candidate);if(!candidate){eng_bridge_error("MEMORY",memory_message);eng_json_free(&j);free(text);return;}*candidate=g_world;parameters_begin_candidate(candidate);
     g_engineering_error[0]=0;g_scene_last_error[0]=0;g_reference_issue_count=0;bool ok=true;
     g_deleted_field_count=0;g_deleted_fields_token=0;
     for(int i=0;i<count&&ok;++i){
@@ -108,6 +147,12 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
         if(ok)receipt_scan_candidate(candidate);
         if(ok)ok=assembly_versions_immutable(&g_world,candidate);
     }
+    if(ok&&!parameter_retirements_valid(candidate))ok=eng_fail(g_parameter_error);
+    ParameterPreviewOrder order={0};order.declaration_count=candidate->parameters.declaration_count;order.retirement_count=candidate->parameters.field_retirement_count;
+    memcpy(order.declarations,candidate->parameters.declarations,order.declaration_count*sizeof order.declarations[0]);
+    memcpy(order.retirements,candidate->parameters.field_retirements,order.retirement_count*sizeof order.retirements[0]);
+    order.capture_count=candidate->parameters.card_capture_count;memcpy(order.captures,candidate->parameters.card_captures,order.capture_count*sizeof order.captures[0]);
+    parameters_clear_candidate_scratch(candidate);  /* I39/P-062: no scratch reaches comparison, staging, or history */
     if(ok){const World *previous=g_subgrid_before;bool capturing=g_reference_capturing;g_reference_capturing=true;g_reference_trial=*candidate;
         g_subgrid_before=&g_world;ok=world_revalidate(candidate);g_subgrid_before=previous;g_reference_capturing=capturing;
         if(!ok){*candidate=g_reference_trial;if(!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}}
@@ -115,7 +160,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     char *stage_label=(char *)label;reference_stage(&g_world,candidate,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;g_preview.finish_batch=kind==3;
     g_deleted_fields_token=g_preview.token;
     if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
-    fputs("{\"ok\":true,\"preview\":",stdout);write_preview();fputs("}\n",stdout);
+    fputs("{\"ok\":true,\"preview\":",stdout);g_parameter_preview_order=&order;write_preview();g_parameter_preview_order=NULL;fputs("}\n",stdout);
     free(candidate);eng_json_free(&j);free(text);
 }
 static bool batch_token_kind(int kind)

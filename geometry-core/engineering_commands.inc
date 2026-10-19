@@ -1,7 +1,18 @@
 /* Ordered engineering operations mutate only a caller-owned candidate. */
+#include "card_reference.inc"
 static bool eng_operation(World *w,EngJson *j,int t)
 {
     char op[40]; if (!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op)) return eng_fail("I35: operation requires an op name");
+    if(!strcmp(op,"put-grid-system")||!strcmp(op,"set-grid-card-reference")||!strcmp(op,"swap-grid-card-reference")||!strcmp(op,"unbind-grid-card-reference"))return grid_card_operation(w,j,t,op);
+    if(!strcmp(op,"parameter-package")){
+        int ops=eng_json_member(j,t,"operations");if(!eng_json_keys(j,t,"op,operations","")||!eng_json_is_array(j,ops))return eng_fail("R60 PARAMETER_PACKAGE_BOUNDARY: invalid parameter package");
+        for(int i=0;i<eng_json_size(j,ops);++i){int item=eng_json_at(j,ops,i);char name[40];
+            if(!eng_json_string(j,eng_json_member(j,item,"op"),name,sizeof name)||
+               (strcmp(name,"put-parameter")&&strcmp(name,"delete-parameter")&&strcmp(name,"import-parameters")))return eng_fail("R60 PARAMETER_PACKAGE_BOUNDARY: only parameter operations inside package");
+            if(!eng_operation(w,j,item))return false;
+        }
+        char error[512];return parameters_rebuild(w,error,sizeof error)?true:eng_fail(error);
+    }
     if(!strcmp(op,"import-parameters")){
         if(!eng_json_keys(j,t,"op,value","")||!parameter_import(w,j,eng_json_member(j,t,"value")))return eng_fail(g_parameter_error[0]?g_parameter_error:"I39: invalid parameter package");return true;
     }
@@ -16,7 +27,17 @@ static bool eng_operation(World *w,EngJson *j,int t)
         EngTarget target;Coord value;
         if(!eng_json_keys(j,t,"op,target","")||!eng_target_parse(j,eng_json_member(j,t,"target"),&target))return eng_fail("I38: invalid unbind target");
         EngBinding *b=eng_binding(w,&target);if(!b)return eng_fail("I38: target has no source binding");
-        char error[512]="";if(!parameters_rebuild(w,error,sizeof error))return eng_fail(error);if(!eng_effective(w,b,&value,NULL,0))return false;
+        EngBinding resolved=*b;ParameterRef refs[2];size_t ref_count=0;
+        EngDimensionSource *sources[2]={&resolved.source,&resolved.override_value};
+        for(size_t i=0;i<(b->has_override?2u:1u);++i){
+            EngDimensionSource *source=sources[i];if(source->kind!=ENG_PARAMETER)continue;
+            unsigned generation;
+            if(parameter_unbind_generation(w,source->parameter,parameter_engineering_owner(&target),target.id,parameter_engineering_slot(&target,(int)i),&generation)){
+                if(!parameter_deleted_coord(w,source->parameter,generation,&source->value))return eng_fail(g_parameter_error);
+                source->kind=ENG_LITERAL;  /* local resolution only; never rewrite the formal binding */
+            }else refs[ref_count++]=source->parameter;
+        }
+        char error[512]="";if(!parameters_evaluate_refs(w,refs,ref_count,error,sizeof error))return eng_fail(error);if(!eng_effective(w,&resolved,&value,NULL,0))return false;
         if(target.kind){int i=reference_timber_index(w,target.id);if(target.field)w->timbers[i].size_b=value;else w->timbers[i].size_a=value;}
         else {GridAxisDef *a=&world_find_grid_mut(w,target.id)->axis[target.axis];if(target.field)a->gap=value;else a->panel=value;}
         size_t k=(size_t)(b-w->engineering.bindings);memmove(b,b+1,(w->engineering.binding_count-k-1)*sizeof *b);memset(&w->engineering.bindings[--w->engineering.binding_count],0,sizeof *b);return true;
@@ -42,11 +63,11 @@ static bool eng_operation(World *w,EngJson *j,int t)
         if (!eng_json_keys(j,t,override?"op,target,value":"op,target,source","") || !eng_target_parse(j,eng_json_member(j,t,"target"),&target)) return eng_fail("I35: invalid source/override operation");
         uint32_t pid; int role; if (!eng_target_context(w,&target,&pid,&role)) return false;
         if (target.kind) { int i=reference_timber_index(w,target.id); if (!w->timbers[i].placed) return eng_fail("D28: bind only an already placed timber"); }
-        if (!override) { EngDimensionSource source; if (!eng_source_parse(j,eng_json_member(j,t,"source"),&source,true)) return false; return eng_bind(w,&target,&source); }
+        if (!override) { EngDimensionSource source; if (!eng_source_parse(j,eng_json_member(j,t,"source"),&source,true)) return false; if(!eng_bind(w,&target,&source))return false;return parameter_declare(w,parameter_engineering_owner(&target),target.id,parameter_engineering_slot(&target,0)); }
         EngBinding *b=eng_binding(w,&target); if (!b) return eng_fail("D28: object override requires an explicit source binding");
         int value=eng_json_member(j,t,"value");
-        if (eng_json_is_null(j,value)) { b->has_override=false; memset(&b->override_value,0,sizeof b->override_value); return true; }
-        if (!eng_source_parse(j,value,&b->override_value,false)) return false; b->has_override=true; return true;
+        if (eng_json_is_null(j,value)) { b->has_override=false; memset(&b->override_value,0,sizeof b->override_value); return parameter_declare(w,parameter_engineering_owner(&target),target.id,parameter_engineering_slot(&target,1)); }
+        if (!eng_source_parse(j,value,&b->override_value,false)) return false; b->has_override=true; return parameter_declare(w,parameter_engineering_owner(&target),target.id,parameter_engineering_slot(&target,1));
     }
     if (!strcmp(op,"bind-grid") || !strcmp(op,"bind-timber")) {
         bool grid=!strcmp(op,"bind-grid"); uint32_t id; char appid[ENG_ID_MAX];
@@ -159,15 +180,26 @@ static bool apply_engineering_line(const char *path,int line_no,char **tokens,in
     }else if(!strcmp(tokens[1],"application"))ok=eng_put_application(w,&j,0);
     else if(!strcmp(tokens[1],"grid"))ok=eng_restore_grid(w,&j,0);
     else if(!strcmp(tokens[1],"timber"))ok=eng_restore_timber(w,&j,0);
-    else if(!strcmp(tokens[1],"archive"))ok=eng_operation(w,&j,0);
+    else if(!strcmp(tokens[1],"archive")){
+        parameters_begin_candidate(w);ok=eng_operation(w,&j,0);
+        if(ok&&!parameter_retirements_valid(w))ok=eng_fail(g_parameter_error);
+        parameters_clear_candidate_scratch(w);
+        /* I8/I38: the interactive archive entry is one complete candidate.
+         * Scene loading defers its complete rebuild until all records are read. */
+        if(ok&&!g_parsing_scene_file&&!reference_checked(path,line_no,w)){
+            eng_json_free(&j);return false;
+        }
+    }
     if(!ok)scene_error(path,line_no,g_engineering_error[0]?g_engineering_error:"I36: invalid engineering record");
     eng_json_free(&j);return ok;
 }
 static bool sp_scene_required;
+static bool grid_card_scene_required;
 /* I56: panel-fill/1 is usable only together with engineering-spec/1 and parameters/1. */
 static bool fs_scene_required, fs_scene_engineering, fs_scene_parameters;
 static bool apply_requires_line(const char *path,int line_no,char **tokens,int count,World *w)
 {
+    if(!strcmp(tokens[1],GRID_CARD_CAPABILITY)){grid_card_scene_required=true;return true;}
     if(!strcmp(tokens[1],SP_CAPABILITY)){sp_scene_required=true;return true;}
     if(!strcmp(tokens[1],FS_CAPABILITY)){fs_scene_required=true;return true;}
     if(!strcmp(tokens[1],"engineering-spec/1"))fs_scene_engineering=true;

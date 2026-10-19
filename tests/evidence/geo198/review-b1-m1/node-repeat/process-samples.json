@@ -1,0 +1,1401 @@
+{
+  "scope": "One-second /proc observations; sampling is not enforced exclusive isolation and may miss short processes. No formal WSL isolation claim.",
+  "runner_pid": 110136,
+  "samples": [
+    {
+      "monotonic_seconds": 16776.231406823,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16777.242823418,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16778.24665385,
+      "processes": [
+        {
+          "pid": 110201,
+          "ppid": 110179,
+          "argv": [
+            "python",
+            "geometry-web/serve.py",
+            "38223"
+          ]
+        },
+        {
+          "pid": 110220,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16779.250861494,
+      "processes": [
+        {
+          "pid": 110201,
+          "ppid": 110179,
+          "argv": [
+            "python",
+            "geometry-web/serve.py",
+            "38223"
+          ]
+        },
+        {
+          "pid": 110220,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 110293,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-8ojr0uwv/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16780.254830178,
+      "processes": [
+        {
+          "pid": 110201,
+          "ppid": 110179,
+          "argv": [
+            "python",
+            "geometry-web/serve.py",
+            "38223"
+          ]
+        },
+        {
+          "pid": 110220,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 110315,
+          "ppid": 110298,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-4nu3gdc8/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16781.258354018,
+      "processes": [
+        {
+          "pid": 110201,
+          "ppid": 110179,
+          "argv": [
+            "python",
+            "geometry-web/serve.py",
+            "38223"
+          ]
+        },
+        {
+          "pid": 110220,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 110338,
+          "ppid": 110321,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-6oxm2n7j/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16782.266981014,
+      "processes": [
+        {
+          "pid": 110201,
+          "ppid": 110179,
+          "argv": [
+            "python",
+            "geometry-web/serve.py",
+            "38223"
+          ]
+        },
+        {
+          "pid": 110220,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 110378,
+          "ppid": 110321,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16783.271392084,
+      "processes": [
+        {
+          "pid": 110201,
+          "ppid": 110179,
+          "argv": [
+            "python",
+            "geometry-web/serve.py",
+            "38223"
+          ]
+        },
+        {
+          "pid": 110220,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 110413,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-cnzd76fz/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16784.284570529,
+      "processes": [
+        {
+          "pid": 110201,
+          "ppid": 110179,
+          "argv": [
+            "python",
+            "geometry-web/serve.py",
+            "38223"
+          ]
+        },
+        {
+          "pid": 110220,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 110421,
+          "ppid": 110383,
+          "argv": [
+            "python",
+            "/workspace/geometry-axiom/geometry-web/serve.py",
+            "40033"
+          ]
+        },
+        {
+          "pid": 110429,
+          "ppid": 110421,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 110433,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-vpayn_ah/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16785.286865496,
+      "processes": [
+        {
+          "pid": 110201,
+          "ppid": 110179,
+          "argv": [
+            "python",
+            "geometry-web/serve.py",
+            "38223"
+          ]
+        },
+        {
+          "pid": 110220,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16786.297534879,
+      "processes": [
+        {
+          "pid": 110201,
+          "ppid": 110179,
+          "argv": [
+            "python",
+            "geometry-web/serve.py",
+            "38223"
+          ]
+        },
+        {
+          "pid": 110220,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 110485,
+          "ppid": 110412,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-cc89e7ai/input.scene"
+          ]
+        },
+        {
+          "pid": 110486,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-hgd9lmw9/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16787.299726982,
+      "processes": [
+        {
+          "pid": 110201,
+          "ppid": 110179,
+          "argv": [
+            "python",
+            "geometry-web/serve.py",
+            "38223"
+          ]
+        },
+        {
+          "pid": 110220,
+          "ppid": 110201,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16788.302080805,
+      "processes": [
+        {
+          "pid": 110540,
+          "ppid": 110539,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-zyzyn78i/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16789.304441076,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16790.306658803,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16791.308920188,
+      "processes": [
+        {
+          "pid": 110605,
+          "ppid": 110582,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-llwnwr2b/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16792.311282284,
+      "processes": [
+        {
+          "pid": 110630,
+          "ppid": 110582,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-hmf8le7a/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16793.313845753,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16794.316150662,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16795.318826294,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16796.321793787,
+      "processes": [
+        {
+          "pid": 110711,
+          "ppid": 110679,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-4t71cmbf/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16797.32512751,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16798.328270074,
+      "processes": [
+        {
+          "pid": 110763,
+          "ppid": 110740,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-y52excxb/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16799.330837728,
+      "processes": [
+        {
+          "pid": 110788,
+          "ppid": 110740,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-b3vhbw0y/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16800.334167758,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16801.33688205,
+      "processes": [
+        {
+          "pid": 110874,
+          "ppid": 110804,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-6i1h4u3q/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16802.339384567,
+      "processes": [
+        {
+          "pid": 110911,
+          "ppid": 110902,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-wm04z31x/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16803.342148473,
+      "processes": [
+        {
+          "pid": 110967,
+          "ppid": 110912,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-woy7pvgc/input.scene"
+          ]
+        },
+        {
+          "pid": 110971,
+          "ppid": 110902,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-vybz4w7s/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16804.34467481,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16805.350972468,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16806.353204586,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16807.358977532,
+      "processes": [
+        {
+          "pid": 111201,
+          "ppid": 111162,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-afyk4qku/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16808.361310372,
+      "processes": [
+        {
+          "pid": 111263,
+          "ppid": 111162,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-5hu7a_nd/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16809.367063974,
+      "processes": [
+        {
+          "pid": 111326,
+          "ppid": 111306,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-s6l0w85l/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16810.369449016,
+      "processes": [
+        {
+          "pid": 111371,
+          "ppid": 111343,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-tv8fbi8g/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16811.372649956,
+      "processes": [
+        {
+          "pid": 111410,
+          "ppid": 111409,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-wcunztn3/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16812.383620522,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16813.386699111,
+      "processes": [
+        {
+          "pid": 111506,
+          "ppid": 111458,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-0h__mkco/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16814.389253811,
+      "processes": [
+        {
+          "pid": 111546,
+          "ppid": 111529,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-kpd8liik/input.scene"
+          ]
+        },
+        {
+          "pid": 111547,
+          "ppid": 111535,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-gz5l_za6/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16815.396491622,
+      "processes": [
+        {
+          "pid": 111578,
+          "ppid": 111529,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-k6qqdqf9/input.scene"
+          ]
+        },
+        {
+          "pid": 111579,
+          "ppid": 111573,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-rxslavs_/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16816.399055229,
+      "processes": [
+        {
+          "pid": 111635,
+          "ppid": 111573,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-jcp6jvxl/input.scene"
+          ]
+        },
+        {
+          "pid": 111639,
+          "ppid": 111535,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-uz0usjbt/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16817.402274857,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 111694,
+          "ppid": 111650,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-5e1xslm1/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16818.404903317,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 111740,
+          "ppid": 111650,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-pnp6lb3f/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16819.410761009,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 111798,
+          "ppid": 111719,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-i44ah275/input.scene"
+          ]
+        },
+        {
+          "pid": 111802,
+          "ppid": 111789,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-5ird2cyz/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16820.414659964,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 111848,
+          "ppid": 111789,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-_o9zdgpv/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16821.417379461,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 111902,
+          "ppid": 111789,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-xni0hv95/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16822.42312318,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 111946,
+          "ppid": 111943,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 111950,
+          "ppid": 111916,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-xxz4wd7m/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16823.427568525,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 111978,
+          "ppid": 111916,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-pw145kc9/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16824.430039844,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112011,
+          "ppid": 111990,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-nl5vaji2/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16825.434250961,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112036,
+          "ppid": 111990,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-ck13n5ci/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16826.438799112,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112083,
+          "ppid": 112064,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-w4i61gw7/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16827.441987399,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16828.450920491,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112178,
+          "ppid": 110768,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16829.458167532,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112233,
+          "ppid": 112176,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-h85j0vch/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16830.461807584,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112294,
+          "ppid": 112176,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-27ri77sz/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16831.466378713,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112344,
+          "ppid": 112311,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-96g1os0j/input.scene"
+          ]
+        },
+        {
+          "pid": 112347,
+          "ppid": 112341,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16832.476792387,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112400,
+          "ppid": 112311,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-tbrkq2jd/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16833.479624981,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16834.482305171,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112478,
+          "ppid": 112441,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-iuhdfyjo/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16835.488616573,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16836.49087691,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16837.493529023,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112529,
+          "ppid": 112521,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-aywc7rdn/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16838.496634905,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112545,
+          "ppid": 112521,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-kfj97zob/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16839.50258923,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112558,
+          "ppid": 112548,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-249gnlou/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16840.505392618,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        },
+        {
+          "pid": 112574,
+          "ppid": 112548,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-1mkzpzbd/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16841.507941711,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16842.510309613,
+      "processes": [
+        {
+          "pid": 111668,
+          "ppid": 111658,
+          "argv": [
+            "python3",
+            "geometry-web/serve.py",
+            "44537"
+          ]
+        },
+        {
+          "pid": 111686,
+          "ppid": 111668,
+          "argv": [
+            "/tmp/geometry-tests/bridge"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16843.51309214,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16844.515706446,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16845.518159816,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16846.520715817,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16847.523632405,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16848.527096582,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16849.530018866,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16850.533066177,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16851.537771297,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16852.540791647,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16853.542959428,
+      "processes": [
+        {
+          "pid": 112597,
+          "ppid": 112575,
+          "argv": [
+            "/tmp/geometry-tests/model-base",
+            "/tmp/geometry-model-scene-fx94937g/input.scene"
+          ]
+        }
+      ]
+    },
+    {
+      "monotonic_seconds": 16854.54556131,
+      "processes": []
+    },
+    {
+      "monotonic_seconds": 16855.54811369,
+      "processes": []
+    }
+  ]
+}

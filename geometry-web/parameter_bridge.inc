@@ -39,5 +39,10 @@ static void json_parameter_uses(const World *w)
             }
         }
     }
+    for(size_t i=0;i<w->grid_system_count;++i){const GridSystem *s=&w->grid_systems[i];const GridCardReference *r=&s->card_reference;if(!r->set)continue;
+        printf("%s{\"parameterId\":%u,\"kind\":\"grid-card-reference\",\"id\":%u,\"paths\":[",first?"":",",r->parameter_id,s->id);first=false;
+        for(int a=0;a<2;++a)printf("%s{\"fieldId\":%u,\"axis\":\"%c\",\"slot\":\"%s\"}",a?",":"",r->fields[a],a?'v':'u',s->axis[a].source==GRID_SRC_REPEAT?"step":"panel");
+        printf("],\"canvasTargets\":[{\"kind\":\"grid-system\",\"id\":%u}]}",s->id);
+    }
     putchar(']');
 }

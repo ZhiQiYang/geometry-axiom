@@ -1,0 +1,9 @@
+Mutation scope: partial M67
+BASELINE exe 已重編
+BASELINE OK: 157/157 全過(未變異原始碼)
+M67  exe 已重編
+M67  KILLED    R7/#202：以同側遠處貼邊豁免純角點接觸  <- _ax_r7_remote_flush_corner.scene: FAIL 應拒絕但接受 (L=[])
+
+本次 1:殺死 killed 1 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
+歷次紀錄(不是本次覆蓋)1:殺死 killed 1 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0 / 未跑 unrun 56
+  (過期明細用 --check 列出)

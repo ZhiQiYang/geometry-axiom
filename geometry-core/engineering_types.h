@@ -1,6 +1,7 @@
 /* D26-D28: fixed-capacity definitions, copied with the native World/history. */
 #define ENG_ID_MAX 65
 #define ENG_RECORD_MAX 1024
+#define ENG_THICKNESS_CAPACITY 128 /* D26 decimal source, including the terminating NUL. */
 #define ENG_MATERIAL_MAX 64
 #define ENG_METHOD_MAX 32
 #define ENG_APPLICATION_MAX 16

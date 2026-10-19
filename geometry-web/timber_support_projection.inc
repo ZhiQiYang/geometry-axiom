@@ -75,12 +75,21 @@ static void json_schedule_support_face(const World *w,const PlacementSurface *p,
     } else {
         /* Effective self-contained rect edges belong to the placement, not
          * to a fabricated boundary 0. Boundary and placement IDs are typed. */
+        if(p->derived_fill_id){
+            int hole=f->kind==STOP_HOLE_EDGE?f->hole_index:-1;
+            size_t component=hole<0?(size_t)f->edge_index/POLY_MAX_VERTICES:(size_t)hole/POLY_MAX_HOLES;
+            size_t edge=hole<0?(size_t)f->edge_index%POLY_MAX_VERTICES:(size_t)f->edge_index;char key[512];
+            printf("{\"kind\":\"derived-edge\",\"source\":{\"kind\":\"placement\",\"id\":%u},\"edgeKey\":",p->id);
+            if(dp_edge_key(w,p,component,hole<0?-1:hole%POLY_MAX_HOLES,edge,key,sizeof key))fputs(key,stdout);else fputs("null",stdout);
+            fputs(",\"localFace\":null,\"normalWorld\":null,\"owner\":null",stdout);
+        } else {
         bool embedded=p->boundary_id==0;
         printf("{\"kind\":\"%s\",\"source\":{\"kind\":\"%s\",\"id\":%u},\"edgeIndex\":%d,\"holeIndex\":",
                f->kind==STOP_HOLE_EDGE?"hole-edge":"outline-edge",embedded?"placement":"boundary",
                embedded?p->id:f->boundary_id,f->edge_index);
         if(f->kind==STOP_HOLE_EDGE) printf("%d",f->hole_index); else fputs("null",stdout);
         fputs(",\"localFace\":null,\"normalWorld\":null,\"owner\":null",stdout);
+        }
     }
     printf(",\"surface\":%u,\"stop\":{\"axis\":\"%c\",\"at\":%lld,\"range\":[%lld,%lld],\"fixity\":\"fixed\"}}",
            p->id,along_v?'v':'u',(long long)f->fixed,(long long)f->lo,(long long)f->hi);
@@ -95,7 +104,8 @@ static void json_schedule_support_endpoint(const World *w,const PlacementSurface
          * At the known native end coordinate, retain only the selected faces
          * that pass the same core full-width/non-FREE candidate filter. */
         for(int k=0;k<2;++k) {
-            StopFaceRef ref={a->between[k].kind,a->between[k].hole,a->between[k].edge,a->between[k].timber};
+            StopFaceRef ref={a->between[k].kind==1,a->between[k].hole,a->between[k].edge,a->between[k].timber};
+            if(a->between[k].kind==2&&!dp_edge_resolve(w,p,a->between[k].key,&ref.hole,&ref.edge))continue;
             const StopFace *candidates[STOP_FACE_MAX]; bool free_edge=false,narrow=false;
             size_t n=stop_ref_candidates(faces,count,&ref,lo,hi,candidates,STOP_FACE_MAX,&free_edge,&narrow);
             for(size_t i=0;i<n;++i) if(candidates[i]->fixed==at) { found=candidates[i]; ++hits; }

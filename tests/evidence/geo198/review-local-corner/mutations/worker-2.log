@@ -1,0 +1,35 @@
+Mutation scope: partial M03, M07, M09, M13, M17, M21, M25, M29, M57, M56, M33, M37, M61, M65
+BASELINE exe 沿用快取(來源與編譯指令沒變)
+BASELINE OK: 157/157 全過(未變異原始碼)
+M03  exe 已重編
+M03  KILLED    I5：射線只數直立邊 -> 改數水平邊  <- _wit_d30_infinite_grid_binding.scene: FAIL 應接受但拒絕: <repo>/_wit_d30_infinite_grid_binding.scene:3: 邊界面輪廓不合法：邊要軸平行、不零長、不自交；孔要在外輪廓內且互不重疊
+M07  exe 已重編
+M07  KILLED    I5：直立邊 v 區間零長度接觸也算穿入(< 改 <=)  <- _test_lshape.scene: FAIL 錯誤不符: 期望含「沒有擋面」實得「<repo>/_test_lshape.scene:17: R6/I5/I6 timber 2: 中線上沒有任何合法跨距」
+M09  exe 已重編
+M09  EQUIVALENT I5：孔 bbox 邊界相接也當相交(<= 改 <)  <- 等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。
+M13  exe 已重編
+M13  KILLED    I11：碰撞只看同承載面 -> 看不同承載面(!= 改 ==)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC
+M17  exe 已重編
+M17  KILLED    D11：擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 跨距起點沒有擋面（端面懸空）
+M21  exe 已重編
+M21  KILLED    R6(d)：拿掉「終點必須有擋面」檢查  <- _edge_straddle.scene: FAIL 錯誤不符: 期望含「端面懸空」實得「<repo>/_edge_straddle.scene:7: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+M25  exe 已重編
+M25  KILLED    R6(c)：跨距歧義放行:多區間自動選第一段  <- _test_ambiguous.scene: FAIL 錯誤不符: 期望含「跨距歧義」實得「<repo>/_test_ambiguous.scene:10: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+M29  exe 已重編
+M29  KILLED    I13：外輪廓材料側反轉(footprint 長到面外)  <- _demo_ceiling.scene: FAIL 應接受但拒絕: <repo>/_demo_ceiling.scene:33: R6/I5/I6 timber 2: 中線上沒有任何合法跨距
+M57  exe 已重編
+M57  KILLED    R21：between 的 FREE 邊檢查反轉(明寫就放行自由邊)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:17: R6/I5/I6 timber 3: between 指名的擋面是自由邊（頂到空氣）
+M56  exe 已重編
+M56  EQUIVALENT I23：I23(b) 不再檢查被錨定的索引是否仍推導得出  <- 等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/axis/index/has_band/band;boundary 若為自帶 rect 的合成輪廓,其 bounds/area 與 NULL boundary 的 rect 路徑相同),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。
+M33  exe 已重編
+M33  KILLED    I13：at-grid 軸向守門員反轉  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: I13/I23 timber 1: missing grid or face/axis mismatch (垂直)
+M37  exe 已重編
+M37  KILLED    I11：碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: 場景重驗失敗
+M61  exe 已重編
+M61  KILLED    R7/#198 A：以 bbox 冒充單 slab 的多段交集  <- _ax_r7_notch_disconnected.scene: FAIL 錯誤不符: 期望含「R7: 投影接觸非單一矩形」實得「<repo>/_ax_r7_notch_disconnected.scene:4: 套用投影後有物件失效（輪廓退化/空間成員衝突）」
+M65  exe 已重編
+M65  KILLED    R14/R15/#202：未裁切 strip 提前成功、忽略其餘項及選片  <- _ax_r15_uncut_strip_missing_item.scene: FAIL 應拒絕但接受 (L=[])
+
+本次 14:殺死 killed 12 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 2 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
+歷次紀錄(不是本次覆蓋)14:殺死 killed 12 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 2 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0 / 未跑 unrun 43
+  (過期明細用 --check 列出)

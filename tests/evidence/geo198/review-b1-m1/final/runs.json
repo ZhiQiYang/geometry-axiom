@@ -1,0 +1,21 @@
+{
+  "native": {
+    "argv": [
+      "/tmp/geometry-tests/integrity"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "returncode": 0,
+    "seconds": 20.6240657620001,
+    "log_sha256": "ced87b42d2b8457209506aaf7905743c8e4f943f6158c2711676396de4b95650"
+  },
+  "reference": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "tests/test_reference_contract.py"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "returncode": 0,
+    "seconds": 9.753944840000258,
+    "log_sha256": "7251ef08f9c534f1f2139cdd4273f1f49f329662b3f43f0e23854d316ac82ff3"
+  }
+}

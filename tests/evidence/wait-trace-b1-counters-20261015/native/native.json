@@ -1,0 +1,28 @@
+{
+  "headBefore": "fa713704aac53b40b46cb0ee4acdcbf38f6b9c59",
+  "headAfter": "fa713704aac53b40b46cb0ee4acdcbf38f6b9c59",
+  "argv": [
+    "python3",
+    "-u",
+    "tests/run_all.py",
+    "--build",
+    "--update-expected"
+  ],
+  "exit": 0,
+  "seconds": 879.2043218860053,
+  "trackedRegularFiles": 14989,
+  "trackedExcluded": [
+    "tests/run_all.expected.json"
+  ],
+  "trackedBeforeAfterEqual": true,
+  "statusAfter": "M tests/run_all.expected.json",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "node": "v24.19.0",
+  "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+  "stackBytes": 16777216,
+  "mutationCache": "/tmp/geometry-wake38/empty-mutation-cache",
+  "mutationCacheExistedBefore": false,
+  "currentRunLogMembers": 204,
+  "archiveSha256": "aa8cda60b14cd1ab13d73e2755fc51305222570c0376f50c0c797b422d3ad87c"
+}

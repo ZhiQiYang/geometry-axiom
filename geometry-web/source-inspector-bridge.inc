@@ -79,11 +79,19 @@ static void si_axis(SiIndex *s,const char *from,const GridAxisDef *d,const char 
 {
     si_text(s,"axis:%s:%d:",axis,d->source);
     Coord values[6]={d->start,d->step,d->panel,d->gap,d->anchor,d->stagger};const char *names[6]={"phase","step","panel","gap","anchor","stagger"};
-    for(int k=0;k<6;++k){const ParameterRef *r=&d->parameters[k];if(bound&&bound[k])si_text(s,"engineering-bound;");else if(r->set){si_text(s,"p%u:%u;",r->parameter_id,r->field_id);char field[80];snprintf(field,sizeof field,"%s.%s",axis,names[k]);si_ref(s,from,"parameter-field",r->parameter_id,0,r->field_id,"dimension",field);}else si_text(s,"%lld;",(long long)values[k]);}
+    for(int k=0;k<6;++k){const ParameterRef *r=&d->parameters[k];if(d->card_length&&k==(d->source==GRID_SRC_REPEAT?1:2))si_text(s,"card-length;");else if(bound&&bound[k])si_text(s,"engineering-bound;");else if(r->set){si_text(s,"p%u:%u;",r->parameter_id,r->field_id);char field[80];snprintf(field,sizeof field,"%s.%s",axis,names[k]);si_ref(s,from,"parameter-field",r->parameter_id,0,r->field_id,"dimension",field);}else si_text(s,"%lld;",(long long)values[k]);}
     si_text(s,"%zu:%d:",d->series_count,d->stagger_set);if(d->source==GRID_SRC_EXPLICIT){si_text(s,"%zu:",d->count);for(size_t k=0;k<d->count;++k)si_text(s,"%lld,",(long long)d->coords[k]);}
 }
 static void si_axis_value(SiIndex *s,const GridAxisDef *d)
 {si_text(s,"%lld:%lld:%lld:%lld:%lld:%lld:%zu:",(long long)d->start,(long long)d->step,(long long)d->panel,(long long)d->gap,(long long)d->anchor,(long long)d->stagger,d->count);for(size_t k=0;k<d->count;++k)si_text(s,"%lld,",(long long)d->coords[k]);}
+static void si_grid_card(SiIndex *s,const char *from,const GridSystem *g)
+{
+    const GridCardReference *r=&g->card_reference;if(!r->set)return;
+    si_text(s,"card-reference:%u:%u:%u;",r->parameter_id,r->fields[0],r->fields[1]);
+    si_ref(s,from,"parameter",r->parameter_id,0,0,"dimension","card-reference");
+    for(int a=0;a<2;++a){char path[32];snprintf(path,sizeof path,"%c.%s",a?'v':'u',g->axis[a].source==GRID_SRC_REPEAT?"step":"panel");
+        si_ref(s,from,"parameter-field",r->parameter_id,0,r->fields[a],"dimension",path);}
+}
 static void si_subdivision(SiIndex *s,const GridSystem *g)
 {
     if(!g->rule_count && g->next_rule_key==1)return;
@@ -152,7 +160,7 @@ static SiIndex *si_build(const World *w)
         si_reset(s);si_text(s,"%lld/%lld:%d",(long long)f->value.num,(long long)f->value.den,f->value.unit);si_value(s,n);EngJson j;if(eng_json_parse(&j,f->expression))si_ast(s,from,&j,0,"expression");else s->complete=false;eng_json_free(&j);}
     for(size_t i=0;i<w->datum_count;++i){const DatumPlane *d=&w->datums[i];si_numkey(from,"datum",d->id,0,0);si_reset(s);si_text(s,"%d:%s",d->axis,d->expression);n=si_nnode(s,"datum",d->id,0,0,"共用基準");si_reset(s);si_text(s,"%d:%lld",d->axis,(long long)d->position);si_value(s,n);si_expression(s,from,d->expression,0,false);}
     for(size_t i=0;i<w->guide_count;++i){const GuideLine *g=&w->guides[i];si_numkey(from,"guide",g->id,0,0);si_reset(s);si_text(s,"%u:%d:%u:%d:%s",g->placement_id,g->source,g->datum_id,g->source==GUIDE_DATUM?0:g->direction,g->expression);n=si_nnode(s,"guide",g->id,0,0,"參考線");si_reset(s);si_text(s,"%d:%lld",g->direction,(long long)g->offset);si_value(s,n);si_ref(s,from,"placement",g->placement_id,0,0,"position","surface");if(g->source==GUIDE_DATUM)si_ref(s,from,"datum",g->datum_id,0,0,"position","datum");else si_expression(s,from,g->expression,g->placement_id,true);}
-    for(size_t i=0;i<w->grid_system_count;++i){const GridSystem *g=&w->grid_systems[i];si_numkey(from,"grid-system",g->id,0,0);si_reset(s);si_text(s,"%d;",g->main_along);si_axis(s,from,&g->axis[0],"u",NULL);si_axis(s,from,&g->axis[1],"v",NULL);si_subdivision(s,g);n=si_nnode(s,"grid-system",g->id,0,0,g->name);si_reset(s);si_axis_value(s,&g->axis[0]);si_axis_value(s,&g->axis[1]);si_subdivision(s,g);si_value(s,n);}
+    for(size_t i=0;i<w->grid_system_count;++i){const GridSystem *g=&w->grid_systems[i];si_numkey(from,"grid-system",g->id,0,0);si_reset(s);si_text(s,"%d;",g->main_along);si_grid_card(s,from,g);si_axis(s,from,&g->axis[0],"u",NULL);si_axis(s,from,&g->axis[1],"v",NULL);si_subdivision(s,g);n=si_nnode(s,"grid-system",g->id,0,0,g->name);si_reset(s);si_axis_value(s,&g->axis[0]);si_axis_value(s,&g->axis[1]);si_subdivision(s,g);si_value(s,n);}
     for(size_t i=0;i<w->grid_binding_count;++i){const GridBinding *b=&w->grid_bindings[i];si_numkey(from,"grid-binding",b->id,0,0);si_reset(s);si_text(s,"%u:%u:%u:%lld:%lld:%u/%u:%u/%u",b->boundary_id,b->system_id,b->vertex_key,(long long)b->cell[0],(long long)b->cell[1],b->anchor_num[0],b->anchor_den[0],b->anchor_num[1],b->anchor_den[1]);si_nnode(s,"grid-binding",b->id,0,0,"網格配置");si_ref(s,from,"boundary",b->boundary_id,0,0,"position","vertex");si_ref(s,from,"grid-system",b->system_id,0,0,"position","system");}
     for(size_t i=0;i<w->grid_count;++i){const ReferenceGrid *g=&w->grids[i];bool bound[2][6]={{false}};for(size_t k=0;k<w->engineering.binding_count;++k){const EngBinding *b=&w->engineering.bindings[k];if(b->target.kind==0&&b->target.id==g->id)bound[b->target.axis][2+b->target.field]=true;}
         si_numkey(from,"grid",g->id,0,0);si_reset(s);si_text(s,"%u:%d:%d:%d;",g->placement_id,g->main_along,g->is_subgrid,g->from_binding);si_axis(s,from,&g->axis[0],"u",bound[0]);si_axis(s,from,&g->axis[1],"v",bound[1]);

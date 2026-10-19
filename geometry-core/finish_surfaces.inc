@@ -11,6 +11,8 @@ static FsDiagnosticKind g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
 static bool pf_rebuild(const World *);
 static bool pf_operation(World *,EngJson *,int,bool);
 static void pf_dump(const World *,FILE *);
+static bool dp_operation(World *,EngJson *,int,bool);
+static void dp_dump(const World *,FILE *);
 static bool fs_error(const char *format,...)
 {
     g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
@@ -169,6 +171,7 @@ static bool fs_rebuild(World *w,char *error,size_t capacity)
         if(!fs_check(w,&s->items[i])){snprintf(error,capacity,"%s",g_engineering_error);utf8_trim_tail(error);return false;}
     }
     if(!pf_rebuild(w)){snprintf(error,capacity,"%s",g_engineering_error);return false;}
+    if(!dp_rebuild(w)){snprintf(error,capacity,"%s",g_engineering_error);return false;}
     return true;
 }
 /* I55 delete guard for the DSL `delete` line: name the first finish surface that still references the source. */
@@ -235,6 +238,10 @@ static bool fs_operation(World *w,EngJson *j,int t)
 {
     char op[40];uint32_t id;
     if(!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op))return fs_error("I55: panel-fill operation needs op");
+    if(!strcmp(op,"put-derived-placement")||!strcmp(op,"delete-derived-placement"))return dp_operation(w,j,t,!strcmp(op,"delete-derived-placement"));
+    /* I53/I55: a host h change and the explicit B source changes may form one
+     * candidate. PF-H previews disclose these dependencies before confirmation. */
+    if(w->finish_surfaces.host_count&&(!strcmp(op,"set-source")||!strcmp(op,"set-override")||!strcmp(op,"unbind-source")||!strcmp(op,"put-parameter")))return eng_operation(w,j,t);
     if(!strcmp(op,"put-panel-fill")||!strcmp(op,"delete-panel-fill"))return pf_operation(w,j,t,!strcmp(op,"delete-panel-fill"));
     if(!strcmp(op,"put-finish-surface")){
         if(!eng_json_keys(j,t,"op,value",""))return fs_error("I55: put-finish-surface takes op and value");
@@ -244,9 +251,9 @@ static bool fs_operation(World *w,EngJson *j,int t)
         if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true))return fs_error("I55: delete-finish-surface needs a positive id");
         return fs_delete(w,id);
     }
-    /* PF-1 scope (I8a/I55): the panel-fill preview discloses finish surfaces only, so a panel-fill transaction must
+    /* PF-2 scope (I8a/I55): the panel-fill preview discloses finish surfaces and panel-fill definitions only, so it must
      * not carry any other definition change (parameters, materials, sources) that confirm would commit unseen. */
-    return fs_error("PF-1 scope (I8a/I55): panel-fill transactions accept only put-finish-surface and delete-finish-surface; "
+    return fs_error("PF-2 scope (I8a/I55): panel-fill transactions accept only put-finish-surface, delete-finish-surface, put-panel-fill and delete-panel-fill; "
                     "send %s through its own previewed transaction",op);
 }
 /* ---- scene records (I56 / R4) ---- */
@@ -273,6 +280,7 @@ static void fs_dump(const World *w,FILE *out)
         fputc('\n',out);
     }
     pf_dump(w,out);
+    dp_dump(w,out);
 }
 static bool apply_finish_surface_line(const char *path,int line_no,char **t,int count,World *w)
 {

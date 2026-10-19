@@ -1,0 +1,7 @@
+{
+  "file": "geometry-core/finish_surfaces.inc",
+  "old": "return dp_operation(w,j,t,!strcmp(op,\"delete-derived-placement\"));",
+  "new": "return fs_error(\"PFH_HOST_DISABLED: native integration removed\");",
+  "beforeSha256": "dcab4707db005c2686ade30f31303f5b09911ee840a11230ac1fb778bb079334",
+  "afterSha256": "6f4c2a51451faa44e5711cc67a8f1c4bcaacb71d831fa09833470e708585cfec"
+}

@@ -3,12 +3,12 @@
   "suites": {
     "c:integrity": {
       "mode": "count",
-      "count": 130,
+      "count": 432,
       "unit": "C 檢查點"
     },
     "core:run_tests": {
       "mode": "count",
-      "count": 143,
+      "count": 165,
       "unit": "場景"
     },
     "mutation:check": {
@@ -142,7 +142,7 @@
     "node:tests-js": {
       "mode": "count",
       "unit": "node test",
-      "count": 704
+      "count": 731
     },
     "node:workspace_shell_history": {
       "mode": "count",
@@ -176,12 +176,12 @@
     },
     "py:test_assembly_rules": {
       "mode": "count",
-      "count": 35,
+      "count": 36,
       "unit": "test"
     },
     "py:test_axiom_reader": {
       "mode": "count",
-      "count": 41,
+      "count": 51,
       "unit": "test"
     },
     "py:test_binaries": {
@@ -204,6 +204,21 @@
       "count": 9,
       "unit": "test"
     },
+    "py:test_domain_decoupling_adoption": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_domain_decoupling_compatibility": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_domain_decoupling_proposal": {
+      "mode": "count",
+      "count": 29,
+      "unit": "test"
+    },
     "py:test_engineering_core": {
       "mode": "count",
       "count": 18,
@@ -217,7 +232,7 @@
     "py:test_engineering_model_compatibility": {
       "mode": "count",
       "unit": "test",
-      "count": 29
+      "count": 44
     },
     "py:test_engineering_model_sources": {
       "mode": "count",
@@ -242,6 +257,11 @@
     "py:test_gdi_contract": {
       "mode": "count",
       "count": 1,
+      "unit": "test"
+    },
+    "py:test_grid_card_reference": {
+      "mode": "count",
+      "count": 43,
       "unit": "test"
     },
     "py:test_grid_subdivision_oracle": {
@@ -296,27 +316,77 @@
     },
     "py:test_mutation_freshness": {
       "mode": "count",
-      "count": 24,
-      "unit": "test"
+      "unit": "test",
+      "count": 73
     },
     "py:test_panel_fill_finish_surface": {
       "mode": "count",
       "unit": "test",
       "count": 22
     },
+    "py:test_panel_fill_host": {
+      "mode": "count",
+      "unit": "test",
+      "count": 32
+    },
     "py:test_panel_fill_layout": {
       "mode": "count",
       "unit": "test",
-      "count": 17
+      "count": 18
+    },
+    "py:test_panel_fill_support": {
+      "mode": "count",
+      "unit": "test",
+      "count": 20
+    },
+    "py:test_parameter_netzero": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_parameter_retirement_scope": {
+      "mode": "count",
+      "count": 6,
+      "unit": "test"
+    },
+    "py:test_parameters_candidate_value_history": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
     },
     "py:test_parameters_core": {
       "mode": "count",
-      "count": 20,
+      "count": 40,
+      "unit": "test"
+    },
+    "py:test_parameters_deleted_unbind": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_parameters_final_candidate": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_parameters_unbind_scope": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_parameters_upstream_unbind": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_recorded_api_receipts": {
+      "mode": "count",
+      "count": 17,
       "unit": "test"
     },
     "py:test_reference_contract": {
       "mode": "count",
-      "count": 35,
+      "count": 51,
       "unit": "test"
     },
     "py:test_release_gate": {
@@ -381,7 +451,7 @@
     },
     "py:test_section_profile_native": {
       "mode": "count",
-      "count": 27,
+      "count": 28,
       "unit": "test"
     },
     "py:test_serve": {
@@ -417,6 +487,11 @@
     "py:test_unittest_runner": {
       "mode": "count",
       "count": 1,
+      "unit": "test"
+    },
+    "py:test_wait_trace": {
+      "mode": "count",
+      "count": 20,
       "unit": "test"
     },
     "py:test_witness_diagnostics": {

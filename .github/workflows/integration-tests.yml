@@ -71,9 +71,34 @@ jobs:
         run: |
           ulimit -s 16384
           test -x "$GEOMETRY_CHROME"
+          # WSL canvas wait trace
+          # Clear inherited flags for all other jobs.
+          unset GEOMETRY_WAIT_TRACE
+          unset GEOMETRY_WAIT_TRACE_RUN_ID
+          case "$GEOMETRY_BROWSER_SUITE:$(uname -r)" in
+            canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;
+          esac
+          if [ "${GEOMETRY_WAIT_TRACE-}" = 1 ]; then
+            export GEOMETRY_WAIT_TRACE_RUN_ID="$(python3 geometry-web/prepare_wait_trace.py)"
+          fi
+          if [ -n "${GITHUB_ENV-}" ]; then
+            printf 'GEOMETRY_WAIT_TRACE=%s\n' "${GEOMETRY_WAIT_TRACE-}" >> "$GITHUB_ENV"
+          fi
           python3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &
           server=$!
-          trap 'kill "$server" 2>/dev/null || true' EXIT
+          cleanup() {
+            original_status=$?
+            set +e
+            kill "$server" 2>/dev/null || true
+            wait "$server" 2>/dev/null || true
+            if [ "$GEOMETRY_BROWSER_SUITE" = canvas ]; then
+              python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact
+              archive_status=$?
+              if [ "$original_status" -eq 0 ] && [ "$archive_status" -ne 0 ]; then original_status=$archive_status; fi
+            fi
+            exit "$original_status"
+          }
+          trap cleanup EXIT
           for attempt in $(seq 1 30); do
             if ! kill -0 "$server" 2>/dev/null; then
               cat /tmp/geometry-integration-server.log
@@ -99,6 +124,14 @@ jobs:
           status=$?
           cat /tmp/geometry-integration-server.log
           exit "$status"
+      - name: Preserve canvas wait trace
+        if: always() && matrix.suite == 'canvas'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: canvas-wait-trace
+          path: /tmp/geometry-wait-trace-artifact/
+          if-no-files-found: error
+          retention-days: 7
       - name: Preserve assembly authoring screenshots
         if: always() && matrix.suite == 'assembly'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

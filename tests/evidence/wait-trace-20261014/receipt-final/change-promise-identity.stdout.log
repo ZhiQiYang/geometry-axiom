@@ -1,0 +1,82 @@
+✔ first API transport failure survives later failures and other sessions (1.451961ms)
+✔ successful API and asset failures do not become API transport failures (0.65916ms)
+✔ first non-api business fetch failure survives later api failure (0.254403ms)
+✖ frontend transport flag is recorded even without a failed network event (1.821052ms)
+✔ observer preserves success and rejection and does not replay either (3.083078ms)
+✖ a broken diagnostic sink cannot alter a transport result (0.655882ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 4
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 80.251134
+
+✖ failing tests:
+
+test at tests/test_transport_failure_trace.js:41:1
+✖ frontend transport flag is recorded even without a failed network event (1.821052ms)
+  AssertionError [ERR_ASSERTION]: API_PROMISE_IDENTITY_CHANGED
+  + actual - expected
+  
+    Promise {
+  +   <pending>,
+  +   Symbol(async_id_symbol): 130,
+  +   Symbol(trigger_async_id_symbol): 127
+  -   Symbol(async_id_symbol): 127,
+  -   Symbol(trigger_async_id_symbol): 27,
+  -   {
+  -     error: 'first bridge failure',
+  -     ok: false,
+  -     transport: true
+  -   }
+    }
+  
+      at TestContext.<anonymous> (/tmp/geometry-wait-trace/tests/test_transport_failure_trace.js:51:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [Promise],
+    expected: [Promise],
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/test_transport_failure_trace.js:77:1
+✖ a broken diagnostic sink cannot alter a transport result (0.655882ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be reference-equal to "expected":
+  + actual - expected
+  
+    Promise {
+  +   <pending>,
+  +   Symbol(async_id_symbol): 183,
+  +   Symbol(trigger_async_id_symbol): 181
+  -   Symbol(async_id_symbol): 181,
+  -   Symbol(trigger_async_id_symbol): 33,
+  -   {
+  -     error: 'original',
+  -     ok: false,
+  -     transport: true
+  -   }
+    }
+  
+      at TestContext.<anonymous> (/tmp/geometry-wait-trace/tests/test_transport_failure_trace.js:83:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Promise],
+    expected: [Promise],
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

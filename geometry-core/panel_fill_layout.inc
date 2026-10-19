@@ -13,7 +13,7 @@ typedef struct {
     PfTile *tiles; size_t count,fragments,vertices,whole;
     PfSeamLine *seams;size_t seam_count;
     Coord size[2],gap,stagger,t; const FinishSurface *finish;
-    FsObstacleView obstacles[FS_OBSTACLE_MAX]; bool cuts[FS_OBSTACLE_MAX];
+    FsObstacleView obstacles[FS_OBSTACLE_MAX]; bool cuts[FS_OBSTACLE_MAX]; bool keep_collinear;
 } PfLayout;
 static const PanelFill *pf_find(const World *w,uint32_t id)
 { for(uint64_t i=0;i<w->finish_surfaces.fill_count;++i)if(w->finish_surfaces.fills[i].id==id)return &w->finish_surfaces.fills[i];return NULL; }
@@ -51,7 +51,7 @@ static bool pf_values(const World *w,const PanelFill *p,PfLayout *d)
     if(!d->finish)return fs_error("I55: panel-fill %u references missing finish surface %u",p->id,p->finish_id);
     if(!m||m->kind!=0)return fs_error("I52: panel-fill %u needs an existing fixed panel material version",p->id);
     d->size[p->length_axis]=m->length;d->size[1-p->length_axis]=m->width;
-    EngJson j;bool ok=eng_json_parse(&j,m->content);char thickness[64];
+    EngJson j;bool ok=eng_json_parse(&j,m->content);char thickness[ENG_THICKNESS_CAPACITY];
     if(ok)ok=eng_json_string(&j,eng_json_member(&j,0,"thickness"),thickness,sizeof thickness);eng_json_free(&j);
     d->t=0;
     if(ok){bool decimal=false;for(char *s=thickness;*s&&ok;++s){if(*s=='.')decimal=true;else if(decimal)ok=*s=='0';else if(*s<'0'||*s>'9'||d->t>(COORD_LIMIT-(*s-'0'))/10)ok=false;else d->t=d->t*10+(*s-'0');}}
@@ -112,7 +112,7 @@ static bool pf_clip(const World *w,PfLayout *d,PfTile *t)
             if(!ok){free(points);break;}
             /* Remove collinear subdivision vertices, then rotate to the lexicographically smallest point. */
             SurfacePoint2 *corners=malloc(np*sizeof *corners);if(!corners){free(points);ok=fs_capacity_error("I33 CAPACITY: contour corners unavailable");break;}
-            size_t count=0;for(size_t k=0;k<np;++k){SurfacePoint2 a=points[(k+np-1)%np],v=points[k],z=points[(k+1)%np];if(!((a.u==v.u&&v.u==z.u)||(a.v==v.v&&v.v==z.v)))corners[count++]=v;}free(points);points=corners;
+            size_t count=0;for(size_t k=0;k<np;++k){SurfacePoint2 a=points[(k+np-1)%np],v=points[k],z=points[(k+1)%np];if(d->keep_collinear||!((a.u==v.u&&v.u==z.u)||(a.v==v.v&&v.v==z.v)))corners[count++]=v;}free(points);points=corners;
             size_t min=0;for(size_t k=1;k<count;++k)if(pf_point_order(points[k],points[min])<0)min=k;
             SurfacePoint2 *ordered=malloc(count*sizeof *ordered);if(!ordered){free(points);ok=fs_capacity_error("I33 CAPACITY: ordered loop unavailable");break;}for(size_t k=0;k<count;++k)ordered[k]=points[(min+k)%count];free(points);
             if(d->vertices+count>PF_VERTEX_MAX){free(ordered);ok=fs_capacity_error("I33 CAPACITY: layout vertex limit is %d",PF_VERTEX_MAX);break;}d->vertices+=count;

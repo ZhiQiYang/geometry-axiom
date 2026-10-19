@@ -200,7 +200,8 @@ static bool surface_frame_is_valid(const SurfaceFrame *frame)
 #define POLY_MAX_HOLES     8
 /* A line may gain one interval per hole interval; this conservative
  * bound covers the outline and every allowed hole without truncation. */
-#define GUIDE_MAX_SEGMENTS (POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1))
+#define DP_COMPONENT_MAX 8
+#define GUIDE_MAX_SEGMENTS (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1))
 
 typedef enum {
     EDGE_FREE = 0,      /* 外側無垂直實體面可釘（挑空/陽角/門洞…） */
@@ -793,7 +794,21 @@ typedef struct {
     SurfaceFrame frame;
     SurfaceId boundary_id;
     SurfaceRegion2 rect;
+    /* Read-only R41 reconstruction cache. Only the separate D4 source definition is dumped. */
+    uint32_t derived_fill_id;
+    Coord derived_h;
+    size_t component_count;
+    SpaceBoundarySurface components[DP_COMPONENT_MAX];
 } PlacementSurface;
+
+static const SpaceBoundarySurface *placement_boundary_for_rect(
+    const PlacementSurface *p, const SpaceBoundarySurface *b, const SurfaceRegion2 *r)
+{
+    if (!p || !p->derived_fill_id) return b;
+    for (size_t c=0;c<p->component_count;++c)
+        if (boundary_contains_rect(&p->components[c],r->min_u,r->min_v,r->max_u,r->max_v)) return &p->components[c];
+    return NULL;
+}
 /* 公理 D4：承載面——frame + 有效範圍（引用邊界面輪廓，或自帶 rect）。 */
 
 static bool placement_is_valid(const PlacementSurface *p)
@@ -802,6 +817,7 @@ static bool placement_is_valid(const PlacementSurface *p)
         return false;
     }
 
+    if (p->derived_fill_id) return p->component_count<=DP_COMPONENT_MAX;
     if (p->boundary_id == 0) {
         return p->rect.min_u < p->rect.max_u &&
                p->rect.min_v < p->rect.max_v;
@@ -846,6 +862,12 @@ static void placement_outline(
     PolygonLoop2 *out
 )
 {
+    if (p->derived_fill_id) {
+        memset(out,0,sizeof *out);
+        if (boundary) *out=boundary->outline;
+        else if (p->component_count) *out=p->components[0].outline;
+        return;
+    }
     if (boundary != NULL) {
         *out = boundary->outline;
         return;
@@ -865,6 +887,11 @@ static void placement_outline(
 static const SpaceBoundarySurface *placement_effective_boundary(
     const PlacementSurface *p, const SpaceBoundarySurface *b, SpaceBoundarySurface *storage)
 {
+    if (p->derived_fill_id) {
+        for(size_t c=0;c<p->component_count;++c) if(b==&p->components[c]) return b;
+        if (p->component_count) return &p->components[0];
+        memset(storage,0,sizeof *storage); return storage;
+    }
     if (b) return b;
     memset(storage,0,sizeof *storage);
     placement_outline(p,NULL,&storage->outline);
@@ -882,6 +909,10 @@ static bool surface_contains_point(
         return false;
     }
 
+    if (surface->derived_fill_id) {
+        for(size_t c=0;c<surface->component_count;++c) if(boundary_contains_point(&surface->components[c],point)) return true;
+        return false;
+    }
     if (boundary != NULL) {
         return boundary_contains_point(boundary, point);
     }
@@ -899,6 +930,10 @@ static bool surface_contains_rect(
     Coord min_u, Coord min_v, Coord max_u, Coord max_v
 )
 {
+    if (surface && surface->derived_fill_id) {
+        SurfaceRegion2 r={min_u,min_v,max_u,max_v};
+        return placement_boundary_for_rect(surface,boundary,&r)!=NULL;
+    }
     if (boundary != NULL) {
         return boundary_contains_rect(boundary, min_u, min_v, max_u, max_v);
     }
@@ -943,6 +978,14 @@ static bool placement_local_bounds(
         return false;
     }
 
+    if (surface->derived_fill_id) {
+        if(!surface->component_count) return false;
+        polygon_loop_bounds(&surface->components[0].outline,out);
+        for(size_t c=1;c<surface->component_count;++c){SurfaceRegion2 r;polygon_loop_bounds(&surface->components[c].outline,&r);
+            out->min_u=coord_min(out->min_u,r.min_u);out->min_v=coord_min(out->min_v,r.min_v);
+            out->max_u=coord_max(out->max_u,r.max_u);out->max_v=coord_max(out->max_v,r.max_v);}
+        return true;
+    }
     if (boundary != NULL) {
         return polygon_loop_bounds(&boundary->outline, out);
     }
@@ -1170,6 +1213,14 @@ static size_t guide_line_get_local_segments(
         return 0;
     }
 
+    if(surface->derived_fill_id){
+        PlacementSurface *ordinary=malloc(sizeof *ordinary); if(!ordinary) return 0;
+        *ordinary=*surface; ordinary->derived_fill_id=0;
+        size_t total=0;
+        for(size_t c=0;c<surface->component_count;++c)
+            total+=guide_line_get_local_segments(ordinary,&surface->components[c],guide,out+total,out_cap-total);
+        free(ordinary);return total;
+    }
     bool along_u = guide->direction == GUIDE_ALONG_U;
 
     if (boundary == NULL) {
@@ -1326,6 +1377,7 @@ typedef struct {
     Coord anchor;
     bool anchor_explicit;   /* 只影響 dump 是否輸出 from，不影響推導 */
     ParameterRef parameters[6]; /* phase, step, panel, gap, anchor, stagger (D10b) */
+    bool card_length;
     Coord stagger;          /* D10b: odd-band offset; meaningful only when stagger_set */
     bool stagger_set;
 } GridAxisDef;
@@ -1351,6 +1403,7 @@ typedef struct {
     uint32_t id;
     char name[GRID_SYSTEM_NAME_MAX+1];
     GridAxisDef axis[2];
+    GridCardReference card_reference;
     int main_along;
     GridSubdivisionRule rules[GRID_MAX_SUBDIVISION_RULES];
     size_t rule_count;
@@ -1917,6 +1970,9 @@ static bool timber_place_a0_on_surface(
         return false;
     }
 
+    SurfaceRegion2 footprint={rect_min_u,rect_min_v,rect_max_u,rect_max_v};
+    boundary=placement_boundary_for_rect(surface,boundary,&footprint);
+
     /*
      * 端面（START/END，長度軸的兩端）若正好貼在外輪廓邊上，
      * 該邊必須是 FIXED：自由邊外側沒有垂直實體面，釘不住。
@@ -2377,6 +2433,7 @@ static const SpaceBoundarySurface *scene_placement_boundary(
     const PlacementSurface *placement
 )
 {
+    if(placement->derived_fill_id) return placement->component_count?&placement->components[0]:NULL;
     if (placement->boundary_id == 0) {
         return NULL;
     }
@@ -2743,6 +2800,11 @@ static void scene_draw_view(
         const SpaceBoundarySurface *boundary =
             scene_placement_boundary(scene, surface);
 
+        /* R41: a surface is a component set. Draw every real loop; guides and
+         * grids below are clipped once against the whole set. */
+        bool surface_has_area = false;
+        for(size_t component=0;component<(surface->derived_fill_id?surface->component_count:1);++component) {
+        if(surface->derived_fill_id) boundary=&surface->components[component];
         /* 1. 有效輪廓（邊界面的外輪廓，或自帶矩形） */
         PolygonLoop2 outline;
         placement_outline(surface, boundary, &outline);
@@ -2755,7 +2817,8 @@ static void scene_draw_view(
         }
 
         /* 輪廓在此視圖中是不是有面積（否則它只是一條線，邊與參考線的文字就不標）。 */
-        bool surface_has_area = view_poly_area2(outline_pts, outline.count) != 0;
+        bool component_has_area = view_poly_area2(outline_pts, outline.count) != 0;
+        surface_has_area = surface_has_area || component_has_area;
 
         scene_emit_polygon(
             target, bounds, outline_pts, outline.count, STYLE_SURFACE);
@@ -2796,7 +2859,7 @@ static void scene_draw_view(
             scene_emit_line(target, bounds, a, b,
                 outline.fixity[i] == EDGE_FIXED ? STYLE_EDGE : STYLE_EDGE_FREE);
 
-            if (!surface_has_area) {
+            if (!component_has_area) {
                 continue;
             }
 
@@ -2822,6 +2885,8 @@ static void scene_draw_view(
             scene_emit_text(target, at, STYLE_LABEL, label, a.x == b.x ? -90 : 0);
         }
 
+        }
+        boundary=scene_placement_boundary(scene,surface);
         /* 4. 這片面的參考線：虛線，多邊形下可能被截成多段 */
         for (size_t i = 0; i < scene->guide_count; ++i) {
             const GuideLine *guide = &scene->guides[i];
@@ -3713,6 +3778,7 @@ typedef struct {
     Coord through;          /* R6(c) span selector */
     uint32_t ref_guide, ref_timber;
     bool ref_is_timber;
+    char ref_derived_key[512]; /* R41 source/segment/total identity, never a cached edge index. */
     uint64_t order;         /* placement dependency order (I9) */
     bool has_between;
     ReferenceFace between[2];
@@ -3842,6 +3908,11 @@ static uint64_t g_definition_revision;
 static char g_engineering_error[256];
 static bool sp_rebuild(World *,char *,size_t);
 static bool fs_rebuild(World *,char *,size_t);
+static bool pf_support_rebuild(const World *);
+static bool dp_rebuild(World *);
+static bool dp_edge_resolve(const World *,const PlacementSurface *,const char *,int *,int *);
+static bool dp_edge_key(const World *,const PlacementSurface *,size_t,int,size_t,char *,size_t);
+static bool apply_derived_placement_line(const char *,int,char **,int,World *);
 static void sp_capture_diagnostics(World *);
 static bool assembly_rebuild(World *,char *,size_t);
 static bool assembly_owned(const World *,uint32_t);
@@ -6577,6 +6648,7 @@ static const SpaceBoundarySurface *world_placement_boundary(
     const PlacementSurface *placement
 )
 {
+    if(placement && placement->derived_fill_id) return placement->component_count?&placement->components[0]:NULL;
     if (placement == NULL || placement->boundary_id == 0) {
         return NULL;
     }
@@ -7062,7 +7134,7 @@ typedef struct {
 } StopFace;
 
 #define STOP_FACE_MAX \
-    (POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1) + WORLD_MAX_TIMBERS * 2)
+    (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1) + WORLD_MAX_TIMBERS * 2)
 
 /*
  * D18 擋面參照：DSL 指名一個 D11 擋面的寫法。
@@ -7159,7 +7231,9 @@ static size_t collect_stop_faces(
 
     size_t count = 0;
 
-    if (boundary != NULL) {
+    for(size_t component=0;component<(placement->derived_fill_id?placement->component_count:1);++component) {
+        if(placement->derived_fill_id) boundary=&placement->components[component];
+        if(!boundary) continue;
         const PolygonLoop2 *loops[1 + POLY_MAX_HOLES];
         int hole_of[1 + POLY_MAX_HOLES];
         size_t loop_count = 0;
@@ -7194,8 +7268,8 @@ static size_t collect_stop_faces(
                     hole_of[li] < 0 ? STOP_OUTLINE_EDGE : STOP_HOLE_EDGE,
                     boundary->id,
                     0,
-                    hole_of[li],
-                    (int)i,
+                    hole_of[li]<0?-1:(int)(component*POLY_MAX_HOLES)+hole_of[li],
+                    hole_of[li]<0?(int)(component*POLY_MAX_VERTICES+i):(int)i,
                     loop->fixity[i],
                     along_v ? a.v : a.u,
                     along_v ? coord_min(a.u, b.u) : coord_min(a.v, b.v),
@@ -7831,7 +7905,7 @@ typedef enum {
 } SpanStatus;
 
 #define SPAN_CUT_MAX \
-    (POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1) + WORLD_MAX_TIMBERS * 2)
+    (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1) + WORLD_MAX_TIMBERS * 2)
 
 typedef struct {
     Coord start;
@@ -7878,6 +7952,8 @@ static SpanStatus resolve_auto_span(
     }
 
     /* --- 切點：輪廓與孔的所有頂點在長度軸上的座標 --- */
+    for(size_t component=0;component<(placement->derived_fill_id?placement->component_count:1);++component) {
+        if(placement->derived_fill_id) boundary=&placement->components[component];
     if (boundary != NULL) {
         const PolygonLoop2 *loops[1 + POLY_MAX_HOLES];
         size_t loop_count = 0;
@@ -7901,6 +7977,7 @@ static SpanStatus resolve_auto_span(
             ? placement->rect.min_v : placement->rect.min_u;
         cuts[cut_count++] = along_v
             ? placement->rect.max_v : placement->rect.max_u;
+    }
     }
 
     /* --- 切點：同面已放角材 footprint 在長度軸上的兩端 --- */
@@ -8490,6 +8567,7 @@ static bool world_validate_derived(const World *world)
                 return false;
             }
 
+            b=placement_boundary_for_rect(p,b,&f);
             /* I13/D19: final-world containment is independent of rebuild order. */
             if (a->anchor_kind==ANCHOR_AT_GRID) {
                 const ReferenceGrid *g=world_find_grid(world,a->ref_grid);
@@ -8710,6 +8788,10 @@ static bool world_revalidate_candidate(World *world,World *candidate)
     if (!rebuilt || !all_checks) {
         if (!rebuilt && rebuild_error[0]) set_revalidate_error(rebuild_error);
         return false;
+    }
+
+    if (!pf_support_rebuild(candidate)) {
+        set_revalidate_error(g_engineering_error); return false;
     }
 
     for (size_t i = 0; i < candidate->space_count; ++i) {
@@ -8995,8 +9077,10 @@ static bool apply_boundary_line(
             if (!world_replace_object(
                     world, &world->boundaries[i],
                     &candidate, sizeof candidate)) {
-                scene_error(path, line_no,
-                    "重宣告後有物件失效（承載面/參考線/角材/空間沒全過）");
+                char detail[512];
+                snprintf(detail,sizeof detail,"重宣告後有物件失效（承載面/參考線/角材/空間沒全過）: boundary %u: %s",
+                    id,g_revalidate_error[0]?g_revalidate_error:"I8: dependent objects invalid");
+                scene_error(path, line_no, detail);
                 return false;
             }
             return true;
@@ -9155,13 +9239,15 @@ static bool apply_placement_line(
         return false;
     }
 
-    PlacementSurface candidate;
+    PlacementSurface candidate = {0};
 
     if (!parse_placement_body(path, line_no, tokens, 2, count, &candidate)) {
         return false;
     }
 
     candidate.id = id;
+    const PlacementSurface *existing=world_find_placement(world,id);
+    if(existing&&existing->derived_fill_id){scene_error(path,line_no,"D4: placement variant cannot change");return false;}
 
     if (candidate.boundary_id == 0 &&
         (candidate.rect.min_u >= candidate.rect.max_u ||
@@ -9230,6 +9316,9 @@ static bool apply_surface_combined_line(
         return false;
     }
 
+    const PlacementSurface *existing=world_find_placement(world,id);
+    if(existing&&existing->derived_fill_id){scene_error(path,line_no,"D4: placement variant cannot change");return false;}
+
     /* 掃一下有沒有 outline：有 = 合體，沒有 = 等同 placement。 */
     bool has_outline = false;
 
@@ -9250,7 +9339,7 @@ static bool apply_surface_combined_line(
 
     if (!has_outline) {
         /* 等同 placement：借 placement 的解析，把 tokens[0] 當作沒看見。 */
-        PlacementSurface candidate;
+        PlacementSurface candidate = {0};
 
         if (!parse_placement_body(
                 path, line_no, tokens, 2, count, &candidate)) {
@@ -9377,7 +9466,7 @@ static bool apply_surface_combined_line(
     boundary.id = id;
 
     /* 建 placement candidate：frame 段 + on boundary id。 */
-    PlacementSurface placement;
+    PlacementSurface placement = {0};
 
     if (!parse_placement_body(path, line_no, p_tokens, 0, p_count, &placement)) {
         return false;
@@ -10085,6 +10174,8 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/section_profiles.inc"
 #include "geometry-core/finish_surfaces.inc"
 #include "geometry-core/panel_fill_layout.inc"
+#include "geometry-core/derived_placements.inc"
+#include "geometry-core/panel_fill_support.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
@@ -10432,7 +10523,8 @@ typedef enum {
     OBSTACLE_SPLIT,
     OBSTACLE_STRIP,
     OBSTACLE_TOP_NOTCH,
-    OBSTACLE_TOP_DROP
+    OBSTACLE_TOP_DROP,
+    OBSTACLE_DEGENERATE
 } ObstacleClass;
 
 typedef struct {
@@ -10511,83 +10603,145 @@ static bool side_flush_outline(
     return false;
 }
 
-/* 矩形與輪廓的接觸分類：R 會先被輪廓邊界線裁切到內部
- * （直角切法，涵蓋孔/凹口/角/拆分全部案例）,再按貼邊數分類。
- * 回傳是否有正接觸；有時 out_* 為裁切後的 uv 矩形。 */
-static bool classify_rect_outline(
+/* R7: exact orthogonal intersection, not a corner/offset-point proxy.
+ * The obstacle contract carries one rectangle. A disconnected/nonrectangular
+ * intersection (or zero-area tangency) is reported explicitly, never replaced
+ * by a bounding rectangle or silently treated as a missing obstacle. */
+#define RECT_CONTACT_ERROR "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+
+static void proj_sort_coords(Coord *values, size_t n)
+{
+    for (size_t i = 1; i < n; ++i) {
+        Coord value = values[i];
+        size_t j = i;
+        while (j > 0 && values[j - 1] > value) {
+            values[j] = values[j - 1];
+            --j;
+        }
+        values[j] = value;
+    }
+}
+
+/* Closed contact suffices for R14 ownership of an R12 uncut strip. It need
+ * not be representable as a single cutting rectangle. */
+static bool proj_rect_outline_touches(const PolygonLoop2 *loop,
+    Coord u0, Coord v0, Coord u1, Coord v1)
+{
+    if (poly_contains_point(loop, (SurfacePoint2){u0,v0})) return true;
+    for (size_t i = 0; i < loop->count; ++i) {
+        SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];
+        if (coord_max(coord_min(a.u,b.u),u0) <= coord_min(coord_max(a.u,b.u),u1) &&
+            coord_max(coord_min(a.v,b.v),v0) <= coord_min(coord_max(a.v,b.v),v1))
+            return true;
+    }
+    return false;
+}
+
+/* 0 = disjoint; 1 = exact single rectangular contact; -1 = R7 degeneration.
+ * Every polygon vertex splits the v-axis into topology-constant open slabs.
+ * Pairing sorted vertical-edge crossings gives the entire interior in a slab;
+ * clipping those intervals is exact, including half-mm midlines. We accept a
+ * rectangle only if every nonempty slab has the same single u interval and the
+ * v intervals are consecutive. No area multiplication or geometric sampling. */
+static int classify_rect_outline(
     const PolygonLoop2 *loop,
     Coord in_u0, Coord in_v0, Coord in_u1, Coord in_v1,
     ObstacleClass *cls,
     Coord *out_u0, Coord *out_v0, Coord *out_u1, Coord *out_v1
 )
 {
-    Coord u0 = in_u0, v0 = in_v0, u1 = in_u1, v1 = in_v1;
-    size_t inside = 0;
+    if (loop == NULL || loop->count < 4 || loop->count > POLY_MAX_VERTICES ||
+            in_u0 >= in_u1 || in_v0 >= in_v1) return 0;
+    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };
+    size_t nc = 2;
+    for (size_t i = 0; i < loop->count; ++i)
+        if (loop->v[i].v > in_v0 && loop->v[i].v < in_v1)
+            cuts[nc++] = loop->v[i].v;
+    proj_sort_coords(cuts, nc);
 
-    {
-        SurfacePoint2 corners[4] = {
-            { u0, v0 }, { u1, v0 }, { u1, v1 }, { u0, v1 }
-        };
-        for (int i = 0; i < 4; ++i) {
-            if (poly_contains_point(loop, corners[i])) ++inside;
-        }
-    }
-    if (inside == 0) return false;
-
-    if (inside < 4) {
-        /* 矩形跨出輪廓：每條切過 R 內部的輪廓邊把 R 裁向內側。 */
+    bool found = false;
+    Coord u0 = 0, v0 = 0, u1 = 0, v1 = 0;
+    for (size_t slab = 1; slab < nc; ++slab) {
+        Coord lo = cuts[slab - 1], hi = cuts[slab];
+        if (lo == hi) continue;
+        Coord mid2 = lo + hi;
+        Coord crossings[POLY_MAX_VERTICES];
+        size_t count = 0;
         for (size_t i = 0; i < loop->count; ++i) {
-            SurfacePoint2 a = loop->v[i];
-            SurfacePoint2 e = loop->v[(i + 1) % loop->count];
-            Coord lo, hi, mid;
-
-            if (a.u == e.u) {
-                lo = coord_min(a.v, e.v);
-                hi = coord_max(a.v, e.v);
-                if (coord_min(v1, hi) <= coord_max(v0, lo)) continue;
-                if (a.u <= u0 || a.u >= u1) continue;
-                mid = (lo + hi) / 2;
-                if (poly_contains_point(
-                        loop, (SurfacePoint2){ a.u + 1, mid }))
-                    u0 = a.u;
-                else
-                    u1 = a.u;
-            } else if (a.v == e.v) {
-                lo = coord_min(a.u, e.u);
-                hi = coord_max(a.u, e.u);
-                if (coord_min(u1, hi) <= coord_max(u0, lo)) continue;
-                if (a.v <= v0 || a.v >= v1) continue;
-                mid = (lo + hi) / 2;
-                if (poly_contains_point(
-                        loop, (SurfacePoint2){ mid, a.v + 1 }))
-                    v0 = a.v;
-                else
-                    v1 = a.v;
-            }
+            SurfacePoint2 a = loop->v[i], b = loop->v[(i + 1) % loop->count];
+            if (a.u == b.u && mid2 > 2 * coord_min(a.v,b.v) &&
+                    mid2 < 2 * coord_max(a.v,b.v)) crossings[count++] = a.u;
         }
-        if (u0 >= u1 || v0 >= v1) return false;
+        if (count % 2) return -1; /* Valid simple orthogonal loops have paired crossings. */
+        proj_sort_coords(crossings, count);
+        int intervals = 0;
+        Coord left = 0, right = 0;
+        for (size_t i = 0; i < count; i += 2) {
+            Coord l = coord_max(in_u0, crossings[i]);
+            Coord r = coord_min(in_u1, crossings[i + 1]);
+            if (l >= r) continue;
+            if (++intervals > 1) return -1;
+            left = l; right = r;
+        }
+        if (intervals == 0) continue;
+        if (found && (left != u0 || right != u1 || lo != v1)) return -1;
+        if (!found) { u0 = left; u1 = right; v0 = lo; found = true; }
+        v1 = hi;
+    }
+    if (!found) {
+        /* Distinguish closed boundary tangency from a genuinely absent item. */
+        for (size_t i = 0; i < loop->count; ++i) {
+            SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];
+            if (coord_max(coord_min(a.u,b.u),in_u0) <= coord_min(coord_max(a.u,b.u),in_u1) &&
+                coord_max(coord_min(a.v,b.v),in_v0) <= coord_min(coord_max(a.v,b.v),in_v1))
+                return -1;
+        }
+        return 0;
     }
 
-    {
-        int flush = 0;
-        bool f[4];
-        for (int s = 0; s < 4; ++s) {
-            f[s] = side_flush_outline(loop, s, u0, v0, u1, v1);
-            if (f[s]) ++flush;
-        }
-        if (flush == 0) {
-            *cls = OBSTACLE_HOLE;
-        } else if (flush == 1) {
-            *cls = OBSTACLE_NOTCH;
-        } else if (flush == 2) {
-            bool opposite = (f[0] && f[1]) || (f[2] && f[3]);
-            *cls = opposite ? OBSTACLE_SPLIT : OBSTACLE_CORNER;
-        } else {
-            *cls = OBSTACLE_SPLIT;
-        }
+    /* Open slabs omit zero-area components. Every closed edge contact with
+     * the original footprint must also lie in the positive-area rectangle. */
+    for (size_t i = 0; i < loop->count; ++i) {
+        SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];
+        Coord l = coord_max(coord_min(a.u,b.u),in_u0);
+        Coord r = coord_min(coord_max(a.u,b.u),in_u1);
+        Coord bottom = coord_max(coord_min(a.v,b.v),in_v0);
+        Coord top = coord_min(coord_max(a.v,b.v),in_v1);
+        if (l <= r && bottom <= top &&
+                (l < u0 || r > u1 || bottom < v0 || top > v1)) return -1;
     }
+
+    int flush = 0;
+    bool f[4];
+    for (int side = 0; side < 4; ++side) {
+        f[side] = side_flush_outline(loop, side, u0, v0, u1, v1);
+        if (f[side]) ++flush;
+    }
+    /* R7: positive contact must begin at this corner, not elsewhere on its side. */
+    SurfacePoint2 corners[4] = {{u0,v0},{u1,v0},{u1,v1},{u0,v1}};
+    for (int i = 0; i < 4; ++i) {
+        bool local_flush = false;
+        for (size_t edge = 0; edge < loop->count; ++edge) {
+            SurfacePoint2 a = loop->v[edge], b = loop->v[(edge+1)%loop->count];
+            if (a.u == b.u && a.u == corners[i].u &&
+                    coord_min(a.v,b.v) <= corners[i].v && corners[i].v <= coord_max(a.v,b.v) &&
+                    coord_min(v1,coord_max(a.v,b.v)) > coord_max(v0,coord_min(a.v,b.v)))
+                local_flush = true;
+            if (a.v == b.v && a.v == corners[i].v &&
+                    coord_min(a.u,b.u) <= corners[i].u && corners[i].u <= coord_max(a.u,b.u) &&
+                    coord_min(u1,coord_max(a.u,b.u)) > coord_max(u0,coord_min(a.u,b.u)))
+                local_flush = true;
+        }
+        if (!local_flush && poly_point_on_edge(loop, corners[i])) return -1;
+    }
+
+    if (flush == 0) *cls = OBSTACLE_HOLE;
+    else if (flush == 1) *cls = OBSTACLE_NOTCH;
+    else if (flush == 2 && !((f[0] && f[1]) || (f[2] && f[3])))
+        *cls = OBSTACLE_CORNER;
+    else *cls = OBSTACLE_SPLIT;
     *out_u0 = u0; *out_v0 = v0; *out_u1 = u1; *out_v1 = v1;
-    return true;
+    return 1;
 }
 
 /* 面的所屬空間 id（非成員回 0，對應游離柱樑）。 */
@@ -10641,8 +10795,15 @@ static size_t world_face_obstacles(
             /* 平面面：柱足跡 vs 輪廓接觸 → hole/notch/corner/split */
             ObstacleClass cls;
             Coord cu0, cv0, cu1, cv1;
-            if (!classify_rect_outline(&b->outline, u0, v0, u1, v1,
-                    &cls, &cu0, &cv0, &cu1, &cv1)) continue;
+            int contact = classify_rect_outline(&b->outline, u0, v0, u1, v1,
+                    &cls, &cu0, &cv0, &cu1, &cv1);
+            if (contact == 0) continue;
+            if (contact < 0) {
+                /* Keep the identity for R15, but never claim a clipped rectangle.
+                 * Unselected invalid items must not block a valid explicit item. */
+                cls = OBSTACLE_DEGENERATE;
+                cu0 = u0; cv0 = v0; cu1 = u1; cv1 = v1;
+            }
             out[n++] = (FaceObstacle){
                 c->id, 0, cls, cu0, cv0, cu1, cv1
             };
@@ -10893,6 +11054,7 @@ static bool proj_split_loop(
     (void)u1;
     PolygonLoop2 *pieces[2] = { p1, p2 };
     size_t pc = 0, n = loop->count;
+    size_t covered_runs = 0;
     bool in_run = false;
 
     p1->count = p2->count = 0;
@@ -10931,6 +11093,9 @@ static bool proj_split_loop(
         SurfacePoint2 ent = proj_pt_on_edge(a, e, s0);
         SurfacePoint2 ext = proj_pt_on_edge(a, e, s1);
         if (!in_run) {
+            /* A third covered arc separates a third residue. Cycling back
+             * to pieces[0] would reconnect it through the removed rectangle. */
+            if (++covered_runs > 2) return false;
             in_run = true;
             /* a 若在弧外先收進本片;進點是本片邊界的一部分 */
             if (ent.u != a.u || ent.v != a.v) {
@@ -11221,6 +11386,10 @@ static bool proj_apply_one(
 {
     Coord u0 = it->u_lo, v0 = it->v_lo, u1 = it->u_hi, v1 = it->v_hi;
     if (out_new_bid) *out_new_bid = 0;
+    if (it->cls == OBSTACLE_DEGENERATE) {
+        scene_error(path, line_no, RECT_CONTACT_ERROR);
+        return false;
+    }
 
     if (it->cls == OBSTACLE_HOLE) {
         if (b->hole_count >= POLY_MAX_HOLES) {
@@ -11296,9 +11465,10 @@ static bool proj_apply_one(
         /* 條帶矩形自身再分類 → 依接觸切天花 */
         ObstacleClass sc;
         Coord cu0, cv0, cu1, cv1;
-        if (!classify_rect_outline(&b->outline, u0, v0, u1, v1,
-                &sc, &cu0, &cv0, &cu1, &cv1)) {
-            scene_error(path, line_no, "條帶不與輪廓接觸");
+        int contact = classify_rect_outline(&b->outline, u0, v0, u1, v1,
+                &sc, &cu0, &cv0, &cu1, &cv1);
+        if (contact <= 0) {
+            scene_error(path, line_no, contact < 0 ? RECT_CONTACT_ERROR : "條帶不與輪廓接觸");
             return false;
         }
         bool sf[4];
@@ -11567,10 +11737,24 @@ static bool apply_applyproj_line(
             for (size_t j = 0; j < np; ++j) {
                 ObstacleClass pc;
                 Coord t0, t1, t2, t3;
-                if (!classify_rect_outline(&pb[j]->outline,
-                        items[i].u_lo, items[i].v_lo,
-                        items[i].u_hi, items[i].v_hi,
-                        &pc, &t0, &t1, &t2, &t3)) continue;
+                int contact;
+                if (items[i].cls == OBSTACLE_STRIP && !cut_strip) {
+                    /* R12 skips cutting, not R14 ownership or later R15 items. */
+                    contact = proj_rect_outline_touches(&pb[j]->outline,
+                            items[i].u_lo, items[i].v_lo,
+                            items[i].u_hi, items[i].v_hi) ? 1 : 0;
+                } else {
+                    contact = classify_rect_outline(&pb[j]->outline,
+                            items[i].u_lo, items[i].v_lo,
+                            items[i].u_hi, items[i].v_hi,
+                            &pc, &t0, &t1, &t2, &t3);
+                }
+                if (contact < 0) {
+                    *world = backup;
+                    scene_error(path, line_no, RECT_CONTACT_ERROR);
+                    return false;
+                }
+                if (contact == 0) continue;
                 if (tb != NULL) {
                     *world = backup;
                     scene_error(path, line_no,
@@ -11651,6 +11835,8 @@ static bool apply_delete_line(
     }
 
     const char *kind = tokens[1];
+    const PlacementSurface *derived=!strcmp(kind,"placement")?world_find_placement(world,id):NULL;
+    if(derived&&derived->derived_fill_id){scene_error(path,line_no,"D4/I55: delete a derived placement through its atomic source transaction");return false;}
     if (!strcmp(kind,"timber") && assembly_owned(world,id)) { scene_error(path,line_no,"I42: delete the owning assembly instance"); return false; }
     uint32_t finish_owner = fs_reference_owner(world, kind, id);
     if (finish_owner != 0) {
@@ -12095,57 +12281,8 @@ static void dump_loop(FILE *out, const PolygonLoop2 *loop)
     fputs(buf, out);
 }
 
-static void world_dump_dsl(const World *world, FILE *out)
+static void world_dump_grids(const World *world,FILE *out)
 {
-    parameters_dump(world,out);
-    engineering_dump_versions(world,out);
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        const SpaceBoundarySurface *b = &world->boundaries[i];
-
-        fprintf(out, "boundary %u outline ", (unsigned)b->id);
-        dump_loop(out, &b->outline);
-
-        if (b->kind != BOUNDARY_UNSPECIFIED) {
-            fprintf(out, " kind %s", b->kind == BOUNDARY_ROOM_PLAN
-                    ? "room_plan" : "wall_elevation");
-        }
-
-        for (size_t h = 0; h < b->hole_count; ++h) {
-            fputs(" hole ", out);
-            dump_loop(out, &b->holes[h]);
-        }
-        fputc('\n', out);
-    }
-
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        const PlacementSurface *p = &world->placements[i];
-
-        fprintf(out, "placement %u ", (unsigned)p->id);
-        if (p->boundary_id != 0) {
-            fprintf(out, "on boundary %u ", (unsigned)p->boundary_id);
-        }
-        fprintf(out, "origin %lld %lld %lld u %s v %s",
-                (long long)p->frame.origin.x,
-                (long long)p->frame.origin.y,
-                (long long)p->frame.origin.z,
-                axis_word(p->frame.axis_u),
-                axis_word(p->frame.axis_v));
-        if (p->boundary_id == 0) {
-            fprintf(out, " rect %lld %lld %lld %lld",
-                    (long long)p->rect.min_u, (long long)p->rect.min_v,
-                    (long long)p->rect.max_u, (long long)p->rect.max_v);
-        }
-        fputc('\n', out);
-    }
-
-    for (size_t i = 0; i < world->spec_count; ++i)
-        fprintf(out, "spec %s %lld\n", world->specs[i].name, (long long)world->specs[i].value);
-
-    boundary_keys_dump(world,out);
-    if(grid_subdivision_used(world)) fputs("requires " GRID_SUBDIVISION_CAPABILITY "\n",out);
-    grid_systems_dump(world,out);
-    grid_bindings_dump(world,out);
-    engineering_dump_applications(world,out);
     for (size_t i = 0; i < world->grid_count; ++i) {
         const ReferenceGrid *g = &world->grids[i];
 
@@ -12211,8 +12348,64 @@ static void world_dump_dsl(const World *world, FILE *out)
         fprintf(out,"subgrid %u parent %u cell u %s %s v %s %s divisions u %u v %u\n",
             g->id,g->parent_id,refs[0][0],refs[0][1],refs[1][0],refs[1][1],g->divisions[0],g->divisions[1]);
     }
+}
+
+static void world_dump_dsl(const World *world, FILE *out)
+{
+    parameters_dump(world,out);
+    engineering_dump_versions(world,out);
+    for (size_t i = 0; i < world->boundary_count; ++i) {
+        const SpaceBoundarySurface *b = &world->boundaries[i];
+
+        fprintf(out, "boundary %u outline ", (unsigned)b->id);
+        dump_loop(out, &b->outline);
+
+        if (b->kind != BOUNDARY_UNSPECIFIED) {
+            fprintf(out, " kind %s", b->kind == BOUNDARY_ROOM_PLAN
+                    ? "room_plan" : "wall_elevation");
+        }
+
+        for (size_t h = 0; h < b->hole_count; ++h) {
+            fputs(" hole ", out);
+            dump_loop(out, &b->holes[h]);
+        }
+        fputc('\n', out);
+    }
+
+    for (size_t i = 0; i < world->placement_count; ++i) {
+        const PlacementSurface *p = &world->placements[i];
+
+        if(p->derived_fill_id) continue;
+        fprintf(out, "placement %u ", (unsigned)p->id);
+        if (p->boundary_id != 0) {
+            fprintf(out, "on boundary %u ", (unsigned)p->boundary_id);
+        }
+        fprintf(out, "origin %lld %lld %lld u %s v %s",
+                (long long)p->frame.origin.x,
+                (long long)p->frame.origin.y,
+                (long long)p->frame.origin.z,
+                axis_word(p->frame.axis_u),
+                axis_word(p->frame.axis_v));
+        if (p->boundary_id == 0) {
+            fprintf(out, " rect %lld %lld %lld %lld",
+                    (long long)p->rect.min_u, (long long)p->rect.min_v,
+                    (long long)p->rect.max_u, (long long)p->rect.max_v);
+        }
+        fputc('\n', out);
+    }
+
+    for (size_t i = 0; i < world->spec_count; ++i)
+        fprintf(out, "spec %s %lld\n", world->specs[i].name, (long long)world->specs[i].value);
+
+    boundary_keys_dump(world,out);
+    if(grid_card_used(world)) fputs("requires " GRID_CARD_CAPABILITY "\n",out);
+    if(grid_subdivision_used(world)) fputs("requires " GRID_SUBDIVISION_CAPABILITY "\n",out);
+    grid_systems_dump(world,out);
+    grid_bindings_dump(world,out);
+    engineering_dump_applications(world,out);
+    if(!world->finish_surfaces.host_count) world_dump_grids(world,out);
     if(world->assembly.instance_count)fputs("requires assembly-timber-generation/1\n",out);
-    reference_dump(world, out);
+    if(!world->finish_surfaces.host_count) reference_dump(world, out);
 
     for (size_t i = 0; i < world->space_count; ++i) {
         const Space *s = &world->spaces[i];
@@ -12269,6 +12462,7 @@ static void world_dump_dsl(const World *world, FILE *out)
     assembly_dump(world,out);
     sp_dump(world,out);
     fs_dump(world,out);
+    if(world->finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);}
     /* 畫布座標最後寫：它引用的物件要先存在。 */
     for (size_t i = 0; i < world->canvas_pos_count; ++i) {
         const CanvasPos *p = &world->canvas_pos[i];
@@ -12396,6 +12590,7 @@ static const struct {
     { "owned", 5, 20, false, "owned timber|place instance member native-arguments", apply_assembly_owned_line },
     { "section-profile", 3, 3, false, "section-profile profile|member|run base64-json (atomic scene only)", apply_section_profile_line },
     { "panel-fill", 4, 4, false, "panel-fill id definition-hex HEX (atomic scene only)", apply_panel_fill_line },
+    { "derived-placement", 4, 4, false, "derived-placement id definition-hex HEX (atomic scene only)", apply_derived_placement_line },
     { "finish-surface", 19, SCENE_MAX_TOKENS, false, "finish-surface id on boundary B origin x y z u A v A n A side +n|-n [obstacles c<id>|b<id> ...] name-hex HEX (atomic scene only)", apply_finish_surface_line },
     { "assembly", 2, 3, false, "assembly begin|record|data|commit|end", apply_assembly_line },
     { "parameters", 2, 3, false, "parameters begin|card|field|end", apply_parameters_line },
@@ -12560,6 +12755,7 @@ static bool parse_scene_file(const char *path, World *out_world)
     g_rule_scene_required=false;
     sp_scene_required=false;
     fs_scene_required=false; fs_scene_engineering=false; fs_scene_parameters=false;
+    grid_card_scene_required=false;
     g_rule_scene_encountered=false;
     g_parameter_scene_loading = true;
 
@@ -12659,6 +12855,7 @@ static bool parse_scene_file(const char *path, World *out_world)
         }
     }
 
+    if(ok && grid_card_used(out_world) && (!grid_card_scene_required||!fs_scene_parameters)){scene_error(path,line_no,"I74 CAPABILITY: card reference requires grid-card-reference/1 and parameters/1 declarations");ok=false;}
     if (ok && !grid_rules_scene_integrity(out_world)) { scene_error(path,line_no,"I25a: source rule capability/highwater closure missing"); ok=false; }
     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
     if (ok && !fs_scene_integrity()) { scene_error(path,line_no,"I56: panel-fill/1 also requires engineering-spec/1 and parameters/1 declarations"); ok=false; }
@@ -12853,7 +13050,10 @@ int main(int argc, char **argv)
         }
     }
 
-    World world = { 0 };
+    /* The CLI owns one World, like the bridge. Keep its bounded R41 caches
+     * off the 16 MiB call stack used by nested atomic reconstruction. */
+    static World world;
+    memset(&world,0,sizeof world);
 
     if (scene_path != NULL) {
         if (!parse_scene_file(scene_path, &world)) {

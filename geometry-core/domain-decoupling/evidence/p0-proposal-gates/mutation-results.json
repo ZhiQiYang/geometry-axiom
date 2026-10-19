@@ -1,0 +1,131 @@
+{
+  "schema": "geo261-p0-mutation-evidence/1",
+  "createdAt": "2026-10-15T18:53:57.928870+00:00",
+  "pythonExecutable": "C:\\Python314\\python.exe",
+  "runnerScriptSha256": "3e914f47872d5cee2e92bb29b00ece44e3c9deb200e0da7e764fe529eed162b0",
+  "runnerScriptLfSha256": "3e914f47872d5cee2e92bb29b00ece44e3c9deb200e0da7e764fe529eed162b0",
+  "expectedTests": 29,
+  "officialTestSha256": "295d9eeb4187f3bde4146f10cabe21190e629cd091759ed405efabd4f6e5fe92",
+  "officialTestLfSha256": "295d9eeb4187f3bde4146f10cabe21190e629cd091759ed405efabd4f6e5fe92",
+  "proposalMapSha256": "51841370641ea38d45d4d46a1767f8c4fd4b4fb4c47c0deb4ce82d0476fa5ca4",
+  "proposalMapLfSha256": "51841370641ea38d45d4d46a1767f8c4fd4b4fb4c47c0deb4ce82d0476fa5ca4",
+  "proposalReviewSha256": "905e49111b5bb8c4fadecb46c89c0d9ff59deb7d3064b602ae23bfc72ca6b609",
+  "proposalReviewLfSha256": "905e49111b5bb8c4fadecb46c89c0d9ff59deb7d3064b602ae23bfc72ca6b609",
+  "ssotLfSha256": "ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004",
+  "hashNormalization": "lfSha256 replaces CRLF with LF only; raw sha256 is also retained.",
+  "inputFiles": {
+    "test": {
+      "path": "tests/test_domain_decoupling_proposal.py",
+      "sha256": "295d9eeb4187f3bde4146f10cabe21190e629cd091759ed405efabd4f6e5fe92",
+      "lfSha256": "295d9eeb4187f3bde4146f10cabe21190e629cd091759ed405efabd4f6e5fe92"
+    },
+    "map": {
+      "path": "geometry-core/domain-decoupling/clause-map.json",
+      "sha256": "51841370641ea38d45d4d46a1767f8c4fd4b4fb4c47c0deb4ce82d0476fa5ca4",
+      "lfSha256": "51841370641ea38d45d4d46a1767f8c4fd4b4fb4c47c0deb4ce82d0476fa5ca4"
+    },
+    "review": {
+      "path": "geometry-core/domain-decoupling/AXIOM-PROPOSAL.md",
+      "sha256": "905e49111b5bb8c4fadecb46c89c0d9ff59deb7d3064b602ae23bfc72ca6b609",
+      "lfSha256": "905e49111b5bb8c4fadecb46c89c0d9ff59deb7d3064b602ae23bfc72ca6b609"
+    },
+    "ssot": {
+      "path": "公理層.md",
+      "sha256": "8d483b6ffddf9beaa375496348bf3081b787f8cee471c084d4c76ceea069338a",
+      "lfSha256": "ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004"
+    },
+    "expected": {
+      "path": "tests/run_all.expected.json",
+      "sha256": "09598aad1f370921747d010e8322895079aac1222517c5793275217ac7d89561",
+      "lfSha256": "ee3de791392b577949132435392f269b9685e61e35d6fb263d9c50bce8aeb88a"
+    }
+  },
+  "temporaryPolicy": "Only controlled copies are mutated; the system temporary directory is deleted on exit.",
+  "temporaryCopiesDeleted": true,
+  "baseline": {
+    "exit": 0,
+    "testsRun": 29,
+    "failedCases": [],
+    "errors": 0,
+    "cleanOK": true,
+    "log": "baseline.log",
+    "logSha256": "97e9116e5b8e00bbab85420d42d19b1c94f20db0cbcf7a811594bc176bcafdb2"
+  },
+  "mutants": [
+    {
+      "exit": 1,
+      "testsRun": 29,
+      "failedCases": [
+        "test_rejects_changed_ssot_even_if_manifest_stays_self_consistent",
+        "test_rejects_joint_ssot_map_and_review_baseline_rewrite",
+        "test_rejects_source_hash_drift"
+      ],
+      "errors": 0,
+      "cleanOK": false,
+      "log": "source_hash.log",
+      "logSha256": "86783bff3171380dea19708f9ebd0647c47c8ad32fb84c88afd2ba971d92dcb6",
+      "guard": "SOURCE_HASH",
+      "removedStatements": 1,
+      "mutantSha256": "afa92f691604476eea6a4fa1e615a695f6b0f4778db841cb61dcc6d0d6ff10ec",
+      "mutantLfSha256": "afa92f691604476eea6a4fa1e615a695f6b0f4778db841cb61dcc6d0d6ff10ec"
+    },
+    {
+      "exit": 1,
+      "testsRun": 29,
+      "failedCases": [
+        "test_rejects_clause_before_drift"
+      ],
+      "errors": 0,
+      "cleanOK": false,
+      "log": "clause_before.log",
+      "logSha256": "48db07bf62ef5e4c06f61c324424055b5ab8fd2b98ceb770a6fff7bd06c8539c",
+      "guard": "CLAUSE_BEFORE",
+      "removedStatements": 1,
+      "mutantSha256": "3a14ddd3f5352ad01c5f3d4630f58dce71b56d809043e248c118ed2e3e8a6fc0",
+      "mutantLfSha256": "3a14ddd3f5352ad01c5f3d4630f58dce71b56d809043e248c118ed2e3e8a6fc0"
+    },
+    {
+      "exit": 1,
+      "testsRun": 29,
+      "failedCases": [
+        "test_rejects_joint_map_and_review_legacy_deletion"
+      ],
+      "errors": 0,
+      "cleanOK": false,
+      "log": "mixed_legacy.log",
+      "logSha256": "34119a8eac8042ce167a04da1294dc9894e6ce95790adeb27b9c3fbcb0316afd",
+      "guard": "MIXED_LEGACY",
+      "removedStatements": 2,
+      "mutantSha256": "f65a4253aec74701a099ddacd23772b20e72dd306c61cf51b022e59c67ae4e90",
+      "mutantLfSha256": "f65a4253aec74701a099ddacd23772b20e72dd306c61cf51b022e59c67ae4e90"
+    },
+    {
+      "exit": 1,
+      "testsRun": 29,
+      "failedCases": [
+        "test_rejects_joint_map_and_review_preamble_scope_drift",
+        "test_rejects_joint_map_and_review_preamble_scope_drift",
+        "test_rejects_joint_map_and_review_preamble_scope_drift"
+      ],
+      "errors": 0,
+      "cleanOK": false,
+      "log": "preamble_scopes.log",
+      "logSha256": "8bce4f22e7084a386491d121122f680fc6b7dc1d87fc3f9f33bfb435bf204b2c",
+      "guard": "PREAMBLE_SCOPES",
+      "removedStatements": 1,
+      "mutantSha256": "d587a090b6e0c1f76c49b468118e172891f648bd917ff16cbb2b527744d3c26c",
+      "mutantLfSha256": "d587a090b6e0c1f76c49b468118e172891f648bd917ff16cbb2b527744d3c26c"
+    }
+  ],
+  "inputsUnchanged": {
+    "test": true,
+    "map": true,
+    "review": true,
+    "ssot": true,
+    "expected": true
+  },
+  "officialTestUnchanged": true,
+  "ssotUnchanged": true,
+  "runnerExit": 0,
+  "status": "passed"
+}

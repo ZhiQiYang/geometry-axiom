@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_trace_sigterm_does_not_enter_business_lock_cleanup (__main__.WaitTraceTests.test_trace_sigterm_does_not_enter_business_lock_cleanup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/geometry-wait-trace/tests/test_wait_trace.py", line 73, in test_trace_sigterm_does_not_enter_business_lock_cleanup
+    self.assertTrue(bounded, 'WAIT_TRACE_SIGTERM_MUST_NOT_WAIT_FOR_BUSINESS_CLEANUP')
+AssertionError: False is not true : WAIT_TRACE_SIGTERM_MUST_NOT_WAIT_FOR_BUSINESS_CLEANUP
+
+----------------------------------------------------------------------
+Ran 1 test in 0.527s
+
+FAILED (failures=1)

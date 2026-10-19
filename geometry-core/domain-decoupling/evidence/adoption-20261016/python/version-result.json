@@ -1,0 +1,14 @@
+{
+  "suite": "compatibility-final-version",
+  "command": [
+    "C:\\Python314\\python.exe",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_domain_decoupling_compatibility.DomainDecouplingCompatibility.test_unknown_and_crossed_axiom_pairs_cannot_enter_replay"
+  ],
+  "exit": 0,
+  "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderrSha256": "4650462844f604d9a32a5f19fce52b78dc3d3627eafc3a9ea56e760570232ce1"
+}
