@@ -440,7 +440,7 @@ static bool model_load_evaluate(void *after,GeoEvalContext *sources,void *opaque
 {
     (void)sources;const char *path=opaque;
     ReferencePreview *saved=malloc(sizeof *saved);
-    if(!saved){scene_error(path,0,"Cannot allocate scene import candidate");return false;}
+    if(!saved){scene_error(path,0,"I32: candidate World allocation failed");return false;}
     memset(after,0,sizeof(World));
     *saved=g_preview;memset(&g_preview,0,sizeof g_preview);
     uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
@@ -450,12 +450,19 @@ static bool model_load_evaluate(void *after,GeoEvalContext *sources,void *opaque
     g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
     return ok;
 }
+/* A failed line keeps its own diagnostic. A failure of the owner itself gets
+ * the per-line path's I32/I8 wording instead of the generic adapter text. */
 static bool model_parse_scene(const char *path,World *world)
 {
     AppWorldCandidate *owner=app_world_candidate_create(world);
     if(!owner)return parse_scene_file(path,world);
-    bool ok=app_world_candidate_evaluate(owner,model_load_evaluate,(void*)path)==GEO_CANDIDATE_OK&&
-        app_world_candidate_seal(owner)&&app_world_candidate_publish(owner,world,false);
+    GeoCandidateStatus status=app_world_candidate_evaluate(owner,model_load_evaluate,(void*)path);
+    bool ok=status==GEO_CANDIDATE_OK;
+    if(!ok&&status!=GEO_CANDIDATE_EVALUATION_FAILED)
+        scene_error(path,0,status==GEO_CANDIDATE_MEMORY?"I32: candidate World allocation failed":"I8: candidate seal failed; World unchanged");
+    if(ok&&!(app_world_candidate_seal(owner)&&app_world_candidate_publish(owner,world,false))){
+        ok=false;scene_error(path,0,"I8: candidate seal failed; World unchanged");
+    }
     app_world_candidate_destroy(owner);return ok;
 }
 

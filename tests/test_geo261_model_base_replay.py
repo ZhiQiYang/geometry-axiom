@@ -12,11 +12,17 @@ witnesses use the actual adapter source linked to the product objects:
 * equivalence: the original adapter (per-line parse_scene_file, one freed
   fingerprint buffer per digest, no block reuse), rebuilt from the same source,
   returns byte-identical stdout and stderr, including the I8a preview text, in
-  both output modes. Raw World bytes are compared out of suite (gcc -O2): under
-  MSVC the original adapter already leaves stack bytes in WoodMember padding,
-  so a raw World digest differs between two runs of one build.
+  both output modes, and the same final World. The World is compared field by
+  field: every byte except WoodMember padding, which is rebuilt from the
+  member's declared fields (parsed from members.h). Two runs of one build give
+  identical raw bytes, but under MSVC the two paths leave different stack bytes
+  in that padding (for example 15 bytes for room_a), so the raw World digest is
+  compared as well only where the compiler is not MSVC.
+* diagnostics: when the owner itself fails after a successful replay, the
+  adapter reports the per-line path's I8 text, never the generic one.
 """
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -33,7 +39,11 @@ FLAGS = ['GEOMETRY_KERNEL_EXTERNAL=1', 'GEOMETRY_WOODWORKING_EXTERNAL=1',
          'GEOMETRY_HOST_HISTORY_EXTERNAL=1', 'GEOMETRY_HOST_CANDIDATE_EXTERNAL=1']
 MODEL = ROOT / 'geometry-core/model_base.c'
 HARNESS = ROOT / 'tests/geo261_model_base_replay_harness.c'
+MEMBERS = ROOT / 'geometry-templates/woodworking/native/members.h'
 MAIN = 'int main(int argc, char **argv)'
+WORLD_HOOK = '    world.app.canvas_pos_count = 0;  /* D12: presentation never enters source identity. */\n'
+OWNER_SEAL = 'if(ok&&!(app_world_candidate_seal(owner)&&'
+OWNER_SEAL_FAULT = 'if(ok&&!(!getenv("REPLAY_FAIL_OWNER_SEAL")&&app_world_candidate_seal(owner)&&'
 # (current adapter, original adapter) for the three GEO-261 cost changes.
 ORIGINAL = (
     ('if (!model_parse_scene(path, &world)) {', 'if (!parse_scene_file(path, &world)) {'),
@@ -76,6 +86,35 @@ def remap(text, original, replacements):
     return re.sub(r'^#include "([^"]+)"', include, text, flags=re.MULTILINE)
 
 
+def member_fields():
+    """Declared WoodMember fields, from the header the adapter compiles."""
+    text = MEMBERS.read_bytes().replace(b'\r\n', b'\n').decode('utf-8')
+    body = re.search(r'typedef struct \{([^{}]*)\} WoodMember;', text)
+    if body is None:
+        raise AssertionError('WoodMember declaration not found in ' + str(MEMBERS))
+    body = re.sub(r'/\*.*?\*/', '', body.group(1), flags=re.S)
+    fields = []
+    for declaration in body.split(';'):
+        declaration = declaration.strip()
+        if declaration:
+            fields += [re.findall(r'[A-Za-z_]\w*', part)[-1] for part in declaration.split(',')]
+    if not {'id', 'length', 'placed', 'origin'} <= set(fields):
+        raise AssertionError('WoodMember fields not parsed: ' + repr(fields))
+    return fields
+
+
+def world_digests():
+    """C that prints a padding-free World digest and the raw World digest on stderr."""
+    copies = ''.join('clean.%s=from->%s;' % (name, name) for name in member_fields())
+    return ('    {static World replay_fields;memcpy(&replay_fields,&world,sizeof world);\n'
+            '     for(size_t i=0;i<sizeof world.wood.timbers/sizeof world.wood.timbers[0];++i){\n'
+            '         const WoodMember *from=&world.wood.timbers[i];WoodMember clean;memset(&clean,0,sizeof clean);\n'
+            '         ' + copies + '\n'
+            '         memcpy(&replay_fields.wood.timbers[i],&clean,sizeof clean);}\n'
+            '     char fields[65],raw[65];geo_sha256(&replay_fields,sizeof replay_fields,fields);\n'
+            '     geo_sha256(&world,sizeof world,raw);fprintf(stderr,"WORLD-FIELDS %s\\nWORLD-RAW %s\\n",fields,raw);}\n')
+
+
 class ModelBaseOwnedReplay(unittest.TestCase):
     @classmethod
     def harness(cls, name, original=False):
@@ -84,13 +123,16 @@ class ModelBaseOwnedReplay(unittest.TestCase):
         saved = {p: p.read_bytes() for p in originals}
         texts = {p: b.replace(b'\r\n', b'\n').decode('utf-8') for p, b in saved.items()}
         model = texts[MODEL]
-        for anchor in (MAIN, *(current for current, _ in ORIGINAL)):
+        for anchor in (MAIN, WORLD_HOOK, OWNER_SEAL, *(current for current, _ in ORIGINAL)):
             if model.count(anchor) != 1:
                 raise AssertionError('Actual adapter anchor must occur exactly once: ' + anchor.strip())
         model = model.replace(MAIN, 'int replay_model_command_main(int argc, char **argv)')
+        model = model.replace(WORLD_HOOK, world_digests() + WORLD_HOOK)
         if original:
             for current, before in ORIGINAL:
                 model = model.replace(current, before)
+        else:
+            model = model.replace(OWNER_SEAL, OWNER_SEAL_FAULT)
         texts[MODEL] = model
         paths = {p.resolve(): build.work / ('model-base-replay-' + name + '-' + p.name) for p in originals}
         for p in originals:
@@ -106,6 +148,7 @@ class ModelBaseOwnedReplay(unittest.TestCase):
     def setUpClass(cls):
         cls.current = cls.harness('current')
         cls.original = cls.harness('original', original=True)
+        cls.msvc = native().windows
         work = native().work
         cls.scenes = {}
         for name, text in (('admitted', ADMITTED), ('outside', ADMITTED + OUTSIDE)):
@@ -120,25 +163,28 @@ class ModelBaseOwnedReplay(unittest.TestCase):
         for name in FIXTURES:
             cls.scenes[name] = ROOT / name
 
-    def run_adapter(self, exe, scene, neutral=False):
+    def run_adapter(self, exe, scene, neutral=False, env=None):
+        """(status, stdout, stderr without witness lines, cost, World-fields digest, raw World digest)."""
         command = [str(exe), *(['--neutral-sources'] if neutral else []), str(scene)]
-        run = subprocess.run(command, capture_output=True, timeout=120)
+        run = subprocess.run(command, capture_output=True, timeout=120, env=env)
         self.assertIn(run.returncode, (0, 1), 'crash is not a verdict: ' + run.stderr.decode('utf-8', 'replace'))
-        # The witness line is last; text-mode stderr ends it with CRLF on Windows.
-        match = re.search(rb'(?:^|\n)(COST (\d+) (\d+) (\d+)\r?\n)\Z', run.stderr)
+        # The witness lines are last; text-mode stderr ends them with CRLF on Windows.
+        match = re.search(rb'(?:^|\n)((?:WORLD-FIELDS (\w+)\r?\nWORLD-RAW (\w+)\r?\n)?COST (\d+) (\d+) (\d+)\r?\n)\Z',
+                          run.stderr)
         self.assertIsNotNone(match, run.stderr)
-        cost = tuple(int(value) for value in match.groups()[1:])
-        return run.returncode, run.stdout, run.stderr[:len(run.stderr) - len(match.group(1))], cost
+        cost = tuple(int(value) for value in match.groups()[3:])
+        stderr = run.stderr[:len(run.stderr) - len(match.group(1))]
+        return run.returncode, run.stdout, stderr, cost, match.group(2), match.group(3)
 
     def test_admitted_definition_lines_share_one_owner_candidate(self):
         for neutral in (False, True):
             with self.subTest(neutral=neutral):
-                status, stdout, stderr, (candidates, _, _) = self.run_adapter(self.current, self.scenes['admitted'], neutral)
+                status, stdout, stderr, (candidates, _, _), _, _ = self.run_adapter(self.current, self.scenes['admitted'], neutral)
                 self.assertEqual(0, status, stdout + stderr)
                 self.assertEqual(1, candidates, 'owned replay keeps every admitted line in the owner')
 
     def test_lines_outside_the_frame_keep_inner_candidates_in_one_reused_block(self):
-        status, stdout, stderr, (candidates, blocks, _) = self.run_adapter(self.current, self.scenes['outside'])
+        status, stdout, stderr, (candidates, blocks, _), _, _ = self.run_adapter(self.current, self.scenes['outside'])
         self.assertEqual(0, status, stdout + stderr)
         inner = OUTSIDE.count('\n')
         self.assertEqual(1 + inner, candidates)
@@ -157,22 +203,41 @@ class ModelBaseOwnedReplay(unittest.TestCase):
         self.assertEqual(original[0], original[1], 'without reuse every candidate allocates its own block')
         self.assertEqual(2, original[2], 'without the kept buffer each digest allocates one')
 
-    def test_current_adapter_matches_the_original_byte_for_byte(self):
+    def test_current_adapter_matches_the_original_byte_for_byte_and_field_for_field(self):
         accepted = rejected = 0
         for name, scene in sorted(self.scenes.items()):
             for neutral in (False, True):
                 with self.subTest(scene=name, neutral=neutral):
-                    expected = self.run_adapter(self.original, scene, neutral)[:3]
-                    actual = self.run_adapter(self.current, scene, neutral)[:3]
-                    self.assertEqual(expected, actual)
+                    expected = self.run_adapter(self.original, scene, neutral)
+                    actual = self.run_adapter(self.current, scene, neutral)
+                    self.assertEqual(expected[:3], actual[:3])
+                    self.assertEqual(expected[4], actual[4], 'final World fields differ')
+                    if not self.msvc:
+                        self.assertEqual(expected[5], actual[5], 'final raw World bytes differ')
                     if expected[0] == 0:
                         accepted += 1
                         self.assertIn(b'"ok":true', expected[1])
+                        self.assertIsNotNone(expected[4])
                     else:
                         rejected += 1
                         self.assertIn(b'"ok":false', expected[1])
-        self.assertGreaterEqual(accepted, 8)
-        self.assertGreaterEqual(rejected, 8)
+                        self.assertIsNone(expected[4])
+        # 13 scenes x 2 modes. _demo_ceiling.scene is accepted from an LF checkout and
+        # rejected (line 18) from a CRLF one, by both adapters alike.
+        self.assertEqual(26, accepted + rejected)
+        self.assertGreaterEqual(accepted, 12)
+        self.assertGreaterEqual(rejected, 12)
+
+    def test_a_failed_owner_seal_reports_the_per_line_i8_text(self):
+        env = dict(os.environ, REPLAY_FAIL_OWNER_SEAL='1')
+        status, stdout, stderr, (candidates, _, _), fields, _ = self.run_adapter(
+            self.current, self.scenes['admitted'], False, env)
+        self.assertEqual(1, status, stdout + stderr)
+        self.assertEqual(1, candidates)
+        self.assertIsNone(fields)
+        error = json.loads(stdout.decode('utf-8'))
+        self.assertEqual(('INVALID', 'BASE_INVALID', 'I9'), (error['status'], error['code'], error['clause']))
+        self.assertEqual('line 0: I8: candidate seal failed; World unchanged', error['message'])
 
 
 if __name__ == '__main__':
