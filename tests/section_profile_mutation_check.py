@@ -72,6 +72,11 @@ K = 'geometry-core/kernel/geometry.c'
 BR = 'geometry-web/section_profile_bridge.inc'
 MS = 'geometry-core/modeling/section_profile.py'
 ME = 'geometry-core/modeling/engine.py'
+# The collector records type(exc).__module__ + '.' + __qualname__, i.e. where the class is defined, never the
+# alias it was imported through.  GEO-261 defines ModelError in H (geometry_app.model_common); modeling.common
+# re-exports that same class object as a compatibility facade, so a ModelError raised via either import path is
+# reported under this one name.
+MODEL_ERROR = 'geometry_app.model_common.ModelError'
 
 # Native test methods that carry the teeth.
 CONCAVE = 'test_concave_not_four_corners_and_winding'
@@ -239,7 +244,7 @@ CASES = [
          'geometry = geo.extrusion_geometry(placement, 0, run["length"], source)',
          'geometry = geo.extrusion_geometry(placement, 0, min(run["length"], 1830) if member["kind"] == "panel" else run["length"], source)',
          [MLONG], ['Native dimensions and derived exact member volume disagree'], group='model',
-         error_types=['modeling.common.ModelError']),
+         error_types=[MODEL_ERROR]),
     case('SPM39', 'R36/R37', 'member rectangles are read with u and v swapped', MS,
          'u0, v0, u1, v1 = member["rect"]', 'v0, u0, v1, u1 = member["rect"]',
          [MADV], ['R36/R37: bounds of the'], group='model'),
@@ -247,7 +252,7 @@ CASES = [
          'profile_grid = (grid if run["coordinate_space"] == "world" else',
          'profile_grid = (grid if True else',
          [MLOCAL], ['A section-profile object must produce one complete solid'], group='model',
-         error_types=['modeling.common.ModelError']),
+         error_types=[MODEL_ERROR]),
 ]
 
 
