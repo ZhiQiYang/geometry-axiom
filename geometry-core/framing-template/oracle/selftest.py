@@ -12,14 +12,18 @@
 (2) 標準答案:F1–F5 與三個額外例子、8 種排法的輸出,必須與 oracle-golden.json 逐支相同。
 (3b) 凹角、壁龕、獨立柱房 579 間與奇數縫寬矩形房,可施工的排法都要通過全部檢查。
 (3) 掃描:矩形房。
-    快速(預設):2026-10-19 實測時間見 README(和其他程序並行時明顯變慢)。
+    快速(--quick):實測時間見 README(和其他程序並行時明顯變慢)。
       - 一維逐 mm:寬 300–4000 × 深 2500,以及寬 2000 × 深 300–6000,只跑左上起鋪、板長沿 Y。
       - 二維 × 8 種排法:寬取 917k+{-43…-39,-1…2}(k=1–4,挪縫臨界帶)與每 331 mm;
         深取 1832k+{-43…-39,-1…2}(k=1–3)與每 617 mm。
     完整(--full):2026-10-19 在 b6856356 實跑 11684 秒(約 3 小時 15 分,nice 10)。
       - 一維逐 mm 掃描改跑全部 8 種排法。
       - 二維改為寬 917k±45、深 1832k±45 的整段邊界帶,加上每 97/211 mm 的網格。
-用法: python selftest.py [--full | --mutants-only]
+用法: python selftest.py [--ci | --quick | --full | --mutants-only]
+    不帶參數 = --ci:CI 模式(下角材列車的 run_all 用這個)。全部突變、標準答案逐支比對、全部手寫期望值的對照組、
+        各類掃描的抽樣版本(固定步距或固定子集,決定性;鏡像也抽樣)。Windows 單獨跑目標 <= 300 s,實測秒數見 README。
+    --quick:原本的快速全掃描(每次改動 oracle 程式的 PR 要附這個的收據,連同原始碼突變的收據)。
+    --full:完整(一維也跑 8 種排法,二維取整段邊界帶);--mutants-only:只跑突變、對照組與標準答案(約 15 秒)。
 """
 import json
 import sys
@@ -34,8 +38,18 @@ p = spec["params"]
 R = spec["rooms"]
 LT_Y = dict(A="x", a_start="min", b_start="min")
 RECT = lambda W, H: {"outer": [[0, 0], [W, 0], [W, H], [0, H]]}
-FULL = "--full" in sys.argv
 MUTANTS_ONLY = "--mutants-only" in sys.argv  # 只跑 (1) 突變與 (2) 標準答案,跳過掃描(檢查紅燈用)
+FULL = "--full" in sys.argv and not MUTANTS_ONLY
+QUICK = "--quick" in sys.argv and not (FULL or MUTANTS_ONLY)  # 原本的快速全掃描(收據用)
+CI = not (FULL or QUICK or MUTANTS_ONLY)  # 預設(不帶參數,或明寫 --ci)= CI 模式:給下角材列車的 run_all 用,Windows 單獨跑目標 <= 300 s
+MODE = "mutants-only" if MUTANTS_ONLY else "full" if FULL else "quick" if QUICK else "ci"
+# CI 模式的掃描取樣:全部是固定步距或固定子集(取每第 k 個),不用亂數,同一份程式每次結果相同。
+#   rect1d:矩形房一維逐 mm 掃描取每第 k 個尺寸;band:二維挪縫臨界帶只取這幾個偏移(原本 9 個);grid_w、grid_h:二維網格的步距(原 331、617);
+#   reflex:凹角、壁龕、獨立柱房取每第 k 間;step:牆階與雙牆階取每第 k 間(鏡像用同一批,所以鏡像也是抽樣);
+#   p182:P-182 候選四族的取樣步距(quick 是 3,full 是 1);t14:壁柱加柱那族是固定清單,取每第 k 間;odd:奇數縫寬矩形房的尺寸步距放大幾倍
+CI_SAMPLE = dict(rect1d=6, band=(-41, -1, 0, 1), grid_w=997, grid_h=1231, reflex=5, step=4, p182=9, t14=3, odd=2)
+if "--write-expected" in sys.argv and CI:
+    sys.exit("--write-expected 只能搭 --quick 或 --full(CI 模式只掃抽樣,寫出來的預期清單會缺)")
 # 剛好 27 mm 的邊界(R-nosliver「< min_piece 不放」,剛好 min_piece 要放):左上起鋪板長沿 Y 的第二支主支 [1820,1847]
 # 離柱左面沿柱料 [1766,1793] 剛好 27 mm(這一跨的副支長 27),主支切過柱上下面的柱面料,左邊剩 [1793,1820] 剛好 27 mm。
 T27 = {"outer": [[0, 0], [3600, 0], [3600, 3000], [0, 3000]], "holes": [[[1793, 1200], [2093, 1200], [2093, 1500], [1793, 1500]]]}
@@ -696,9 +710,17 @@ if MUTANTS_ONLY:
 
 # (3) 掃描
 t0 = time.time()
+
+
+def _tick(label):
+    print(f"[計時] {label}:累計 {time.time() - t0:.0f} 秒", flush=True)
+
+
 bad = []
 layouts = fo.LAYOUTS if FULL else [LT_Y]
 cases = [(W, 2500) for W in range(300, 4001)] + [(2000, H) for H in range(300, 6001)]
+if CI:
+    cases = cases[::CI_SAMPLE["rect1d"]]  # 取每第 k 個尺寸(決定性)
 runs = 0
 for W, H in cases:
     for l in layouts:
@@ -707,11 +729,13 @@ for W, H in cases:
         fails = [] if res["conflicts"] else fo.check(res, p)
         if res["conflicts"] or fails:
             bad.append((W, H, fo.layout_name(l), sorted({c["code"] for c in res["conflicts"]}), sorted({f["check"] for f in fails})))
-band = (range(-45, 46) if FULL else (-43, -42, -41, -40, -39, -1, 0, 1, 2))
+_tick("矩形房一維逐 mm 掃描")
+band = range(-45, 46) if FULL else CI_SAMPLE["band"] if CI else (-43, -42, -41, -40, -39, -1, 0, 1, 2)
+_gw, _gh = (97, 211) if FULL else (CI_SAMPLE["grid_w"], CI_SAMPLE["grid_h"]) if CI else (331, 617)
 edge_w = sorted({k * 917 + d for k in range(1, 5) for d in band if 300 <= k * 917 + d <= 4000}
-                | set(range(300, 4001, 97 if FULL else 331)))
+                | set(range(300, 4001, _gw)))
 edge_h = sorted({k * 1832 + d for k in range(1, 4) for d in band if 300 <= k * 1832 + d <= 6000}
-                | set(range(300, 6001, 211 if FULL else 617)))
+                | set(range(300, 6001, _gh)))
 for W in edge_w:
     for H in edge_h:
         for l in fo.LAYOUTS:
@@ -720,6 +744,7 @@ for W in edge_w:
             fails = [] if res["conflicts"] else fo.check(res, p)
             if res["conflicts"] or fails:
                 bad.append((W, H, fo.layout_name(l), sorted({c["code"] for c in res["conflicts"]}), sorted({f["check"] for f in fails})))
+_tick("矩形房二維掃描")
 # 凹角房:L 形(缺一角)與壁龕(牆上內凹),8 種排法;可施工的排法都要通過全部檢查(含 C8 核心可表示)
 LROOM = lambda W, H, cw, ch: {"outer": [[0, 0], [W, 0], [W, H - ch], [W - cw, H - ch], [W - cw, H], [0, H]]}
 ALCOVE = lambda W, H, y0, y1, dep: {"outer": [[dep, 0], [W, 0], [W, H], [dep, H], [dep, y1], [0, y1], [0, y0], [dep, y0]]}
@@ -729,6 +754,8 @@ reflex_rooms += [(f"A:{W},{y0},{L},{dep}", ALCOVE(W, 3000, y0, y0 + L, dep)) for
                  for L in (400, 900) for dep in (300, 600) if y0 + L <= 2600]
 reflex_rooms += [(f"C:{W},{H},{x},{y},{cs}", COLUMN(W, H, x, y, cs)) for W, H in ((3600, 3000), (5000, 4200)) for cs in (300, 450)
                  for x in range(500, W - cs - 499, 433) for y in range(500, H - cs - 499, 521)]
+if CI:
+    reflex_rooms = reflex_rooms[::CI_SAMPLE["reflex"]]  # 取每第 k 間(決定性)
 rb, rbuild = [], 0
 codes = {}
 unb = {"reflex": set(), "step": set(), "step_mirror": set()}
@@ -747,6 +774,7 @@ for rid, room in reflex_rooms:
         fails = fo.check(res, p)
         if fails:
             rb.append((room["outer"], fo.layout_name(l), sorted({f["check"] for f in fails})))
+_tick("凹角、壁龕與獨立柱房")
 # 牆階 1–100 mm:L 形缺角很淺(橫向或縱向)與很淺的壁龕,8 種排法。可施工的排法都要通過全部檢查。
 #   (#251 審查 60785906:牆階 13–24 mm 時沿牆料端面頂延伸段,原本沒宣告 custom 3,C8_I19_PRIORITY 會紅。)
 step_rooms = ([(f"L_ch:{s}", LROOM(4100, 3700, 1500, s)) for s in range(1, 101)] + [(f"L_cw:{s}", LROOM(4100, 3700, s, 1200)) for s in range(1, 101)]
@@ -754,12 +782,15 @@ step_rooms = ([(f"L_ch:{s}", LROOM(4100, 3700, 1500, s)) for s in range(1, 101)]
               # 雙牆階(#251 審查 98cb7da0):牆 y=s1(x 2600–3300)、y=s2(x 3300–4100),s2 < s1
               + [(f"DS:{s1},{s2}", {"outer": [[0, 0], [4100, 0], [4100, s2], [3300, s2], [3300, s1], [2600, s1], [2600, 3700], [0, 3700]]})
                  for s1 in range(3604, 3700, 9) for s2 in range(s1 - 88, s1, 9)])
+if CI:
+    step_rooms = step_rooms[::CI_SAMPLE["step"]]  # 取每第 k 間(決定性);鏡像用同一批,所以鏡像也是抽樣
 unb["step"], sbuild, _sb, scodes, _n = sweep_family(step_rooms)
 runs += _n
 sbad = len(_sb)
 rb += _sb
 print(f"牆階 1–100 mm 的 L 形、壁龕與雙牆階 {len(step_rooms)} 間 × 8 種排法:可施工 {sbuild} 個,其中檢查失敗 {sbad} 個;"
       f"不可施工的排法數(依原因){scodes}")
+_tick("牆階與雙牆階")
 # 鏡像:同一批房間上下、左右各翻一次。⌊w/2⌋ 與 ⌈w/2⌉ 不對稱,反向起鋪那半邊(back = ⌈w/2⌉)原本只有鏡像房才測得到。
 unb["step_mirror"], mbuild, _mb, mcodes, _n = sweep_family(step_rooms, mirror=True)
 runs += _n
@@ -767,6 +798,7 @@ mbad = len(_mb)
 rb += _mb
 print(f"鏡像(上下、左右)的牆階與雙牆階 {2 * len(step_rooms)} 間 × 8 種排法:可施工 {mbuild} 個,其中檢查失敗 {mbad} 個;"
       f"不可施工的排法數(依原因){mcodes}")
+_tick("牆階與雙牆階的鏡像")
 _x2, _m2 = compare_unbuildable(unb["step_mirror"], mirror_map(unb["step"]))
 ok = not _x2 and not _m2
 failed |= not ok
@@ -808,7 +840,7 @@ def _p182_family(name_, rooms_, mirror_pairs=False):
     return n_, nb_, nu_, bad_, k11_
 
 
-_stp = 1 if FULL else 3
+_stp = 1 if FULL else CI_SAMPLE["p182"] if CI else 3
 _fam = {}
 _fam["t16 牆階 338–346 加柱"] = [((ch, kd, yc), {"outer": [[0, 0], [4100, 0], [4100, 4000 - ch], [2600, 4000 - ch], [2600, 4000], [0, 4000]],
                                                "holes": [[[1000, y0], [1400, y0], [1400, y1], [1000, y1]]]}, ["左上起鋪,板長沿X"])
@@ -826,6 +858,8 @@ _fam["t4 牆階加柱"] = [((top, ch, kd, yc, cx), {"outer": [[0, 0], [4100, 0],
                        for cx in ((1000, 1400), (3000, 3400))
                        for y0, y1 in [((yc - 200, yc) if kd == "below" else (yc, yc + 200))]
                        if y1 <= ((top - ch) if cx[0] >= 2600 else top) - 30 and y0 >= 2800]
+if CI:
+    _fam["t14 壁柱加柱"] = _fam["t14 壁柱加柱"][::CI_SAMPLE["t14"]]
 for _nm, _rooms in _fam.items():
     _n, _nb, _nu, _bad, _k11 = _p182_family(_nm, _rooms, mirror_pairs=_nm.startswith("t10"))
     runs += _n
@@ -837,13 +871,16 @@ for _nm, _rooms in _fam.items():
           f"(已知缺陷 C11_MAIN_NOT_BUTTED {_k11} 次,另開工單)")
     for x in _bad[:8]:
         print("    ", x)
+_tick("P-182 候選四族")
 # 不可施工的排法要和明列的預期清單(每筆附原因代碼)完全一樣;清單空的就要 0 個。--write-expected 只在人工覆核後重寫清單。
 if "--write-expected" in sys.argv:
     json.dump({fam: sorted([list(x[:2]) + [list(x[2])] for x in v]) for fam, v in unb.items()}, open(EXP_PATH, "w", encoding="utf-8", newline="\n"),
               ensure_ascii=False, indent=0)
 expected_unb = json.load(open(EXP_PATH, encoding="utf-8"))
+_ids_scan = {"reflex": {r_ for r_, _ in reflex_rooms}, "step": {r_ for r_, _ in step_rooms}, "step_mirror": {r_ for r_, _ in step_rooms}}
 for fam in ("reflex", "step", "step_mirror"):
-    want_ = {(r_, l_, tuple(c_)) for r_, l_, c_ in expected_unb[fam]}
+    # CI 模式只掃抽樣的房間:預期清單也只取這些房間的部分(鏡像的 id 是 房間|上下 或 房間|左右)
+    want_ = {(r_, l_, tuple(c_)) for r_, l_, c_ in expected_unb[fam] if r_.split("|")[0] in _ids_scan[fam]}
     extra_, missing_ = compare_unbuildable(unb[fam], want_)
     ok = not extra_ and not missing_
     failed |= not ok
@@ -856,8 +893,8 @@ for fam in ("reflex", "step", "step_mirror"):
 p_odd = [dict(p, gap=gg) for gg in (1, 3)]
 odd_bad = odd_runs = 0
 for pp in p_odd:
-    for W in range(1200, 4001, 233):
-        for H in range(1900, 5001, 377):
+    for W in range(1200, 4001, 233 * (CI_SAMPLE["odd"] if CI else 1)):
+        for H in range(1900, 5001, 377 * (CI_SAMPLE["odd"] if CI else 1)):
             for l in fo.LAYOUTS:
                 odd_runs += 1
                 res = fo.build(RECT(W, H), l, pp)
@@ -870,7 +907,8 @@ print(f"凹角、壁龕與獨立柱房 {len(reflex_rooms)} 間 × 8 種排法:�
 for x in rb[:10]:
     print("   ", x)
 bad += rb
-print(f"掃描 {runs} 次矩形房建構({'完整' if FULL else '快速'}),{time.time() - t0:.0f} 秒;不可施工或檢查失敗 {len(bad)} 個")
+_tick("奇數縫寬與收尾")
+print(f"掃描 {runs} 次建構({'完整' if FULL else '快速' if QUICK else 'CI 抽樣'}),{time.time() - t0:.0f} 秒;不可施工或檢查失敗 {len(bad)} 個")
 for b in bad[:30]:
     print("   ", b)
 failed |= bool(bad)
