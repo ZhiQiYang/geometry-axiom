@@ -466,7 +466,7 @@ MUTANTS += [
     # source (W wood_grid_coordinate_source) and still rejects, but without the
     # I38 MISSING diagnostic and its grid/card/field identity, which is what the
     # named test asserts (Windows/MSVC: "grid-system 4 u: " instead of I38 MISSING).
-    dict(id="M85", desc="I38/D29/P142-S1：網格系統引用的參數卡片已刪除時，H 座標解析器回報成功並保留快取長度（病因只限卡片不存在；缺欄位、單位、D1 仍拒絕）。來源圖對參數來源的二次檢查仍會拒絕，但診斷失去 I38 MISSING 與 grid／card／field 身分", binary="bridge",
+    dict(id="M85", desc="I38/D29/P142-S1：網格系統引用的參數卡片已刪除時，H 座標解析器回報成功並保留快取長度（病因只限卡片不存在；缺欄位、單位、座標範圍超限仍拒絕）。來源圖對參數來源的二次檢查仍會拒絕，但診斷失去 I38 MISSING 與 grid／card／field 身分", binary="bridge",
          file="geometry-core/grid_systems.inc",
          old="{ return parameter_coord((const World *)state,ref,out); }",
          new="{ if(!parameter_find((const World *)state,ref.parameter_id))return true; return parameter_coord((const World *)state,ref,out); }",
