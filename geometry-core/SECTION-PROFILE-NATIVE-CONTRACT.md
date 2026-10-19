@@ -213,10 +213,13 @@ native 組另須重編 binary 與基準線不同；model 組只變異 Python 製
 
 #### GEO-261 之後的錨點（2026-10-20）
 
-閘門在 GEO-261 整合分支（`1908115e`）上有兩處失效：
+閘門在 GEO-261 整合分支（`1908115e`）上有三類失效：
 
 1. **model 組基準線一 import 就失敗。** `copy_sources` 只複製 `geometry-core/modeling/*.py` 等，沒有 GEO-261 的三個 Python 套件，基準線報 `ModuleNotFoundError: geometry_app`。現在一併複製 `geometry-core/geometry_kernel`、`geometry-app/geometry_app`、`geometry-templates/woodworking/geometry_woodworking`。補上之後，`test_q23_q38_legacy_project_and_profile_packages_reopen_unchanged` 還缺它讀的 `tests/fixtures/q38-legacy-space-model.json`，所以 `tests/fixtures` 也一併複製。
 2. **8 個案例的錨點已不存在。** model 組 SPM36～SPM40 全部失效：MS／ME 只剩 3 行與 17 行的 facade。native 組的 SPM28、SPM29、SPM33 也失效，因為 `25c9af58` 與 `1e437e12` 改寫了 W 求值器。這三個不在原任務單上，是實跑時發現的。
+3. **4 個案例的錨點還在，突變卻打不到錯誤。** 這 4 個是前兩類修好後跑完整閘門才發現的：
+   - SPM02～SPM04 存活。bridge 以來源圖 hook 求值，`wood_sp_rebuild` 呼叫 pair hook，所以它的 `wood_sp_intersection` 分支不在 bridge 路徑上。
+   - SPM20 被判為 unlabelled。W 的 run 定位 hook 會再檢查一次回傳的框架，候選仍被拒，訊息卻是「I48: invalid returned run frame」，不帶 perpendicular。
 
 改錨的條件是每一筆都打同一條規則、同一種錯誤：
 
@@ -224,12 +227,16 @@ native 組另須重編 binary 與基準線不同；model 組只變異 Python 製
 - killed 判準沒有改。新增兩項機制：
   - `more`：GEO-261 用好幾層執行同一條規則時，一個案例同時拿掉每一層，比照 card-reference 的 M11。只拿掉一層的話，突變不是等價，就是只換了錯誤碼。
   - SPM36、SPM39 改的是 C。它們的 model 案例會用複本自己的 `tests/binaries.py` 重編 model-base，所以 sidecar 描述的正是那份複本。這支 adapter 的雜湊必須和基準 adapter 不同。
-- 其餘 34 個 native 案例的錨點沒有改。
+- 其餘 30 個 native 案例的錨點沒有改。
 
 | 案例 | main `4b975a3d` 原本打的位置 | 整合分支改打的位置 | 為什麼是同一條規則、同一種錯誤 |
 |---|---|---|---|
-| SPM28（I49） | `section_profile_validation.inc:45` `if(!p){sp_error("I49: member …` 拿掉 | `woodworking/native/section_profile.c:244` `if(!exists){wood_sp_error(w,"I49: member …` 拿掉；另兩層：`:242` 對已刪斷面不再要求 profile 定義（`exists&&`），`section_profile_sources.c:235` 構件區域來源不再因 `missing_profile` 拒絕 | main 的錯誤是「引用已刪斷面的構件被接受」。GEO-261 由三層拒絕：W 求值器的 I49 錯誤、來源圖對 profile 定義的 definition-required 邊、構件區域來源。只拿掉 I49 錯誤時，候選仍被拒，拒絕內容也仍含 I49，殺手測試照樣通過，所以是等價（對照組 XC28L1 存活）。三層都拿掉，候選才會被接受，與 main 相同。 |
-| SPM29（I49） | `:63` run 版同一行 | `section_profile.c:268` run 版同一行；另兩層：`:266`（`exists&&`），`section_profile_sources.c:289` run 根不再把只因斷面缺失而失敗的區域來源報成來源圖錯誤 | 同上，對象是 run。run 區域來源要求 `r->resolved`，而 `resolved` 本來就要求斷面存在，所以第三層在 run 根。只拿掉 I49 錯誤時存活（XC29L1）。 |
+| SPM02（I45） | `section_profile_validation.inc:59` `if(sp_intersection(…)){` 拿掉 | `woodworking/native/section_profile_sources.c:346` pair 根 `if(!value.as.regions.count)return;` 改成一律 `return;` | 成對重疊在 GEO-261 是 W pair 來源，pair 根把非空的重疊區域報成 `V_PROFILE_OVERLAP`。這裡就是 main 那道「有交集就報錯」的判斷，拿掉之後重疊的構件被接受。舊錨點 `section_profile.c:291` 的那一行仍在，但只在沒有 hook 的直接路徑上；在 `e32994bf` 的完整閘門上，它的突變存活。 |
+| SPM03（R36） | `section_profile_validation.inc:23` `sp_intersection` 的 u 向 `<` 改成 `<=` | `section_profile_sources.c:204` pair 來源的「無正面積交集」判斷 `r.min_u>=r.max_u` 改成 `>`；另一層：`:347` pair 根讀重疊矩形時不做區域合法性檢查 | 同一個開區間判斷，GEO-261 搬到 pair 來源。改成閉區間後，貼齊的兩個構件會得到零寬的重疊區域。pair 根把它當成不合法區域，報來源圖錯誤「I51 CAPACITY: section profile source evaluation unavailable」，不是 `V_PROFILE_OVERLAP`（對照組 XC03L1，unlabelled）。兩層都拿掉之後，報出的是「V_PROFILE_OVERLAP I45: members 1,2 intersection [27,27]x[0,33]」，與 main 相同。 |
+| SPM04（R36） | `:23` v 向 `<` 改成 `<=` | `:204` `r.min_v>=r.max_v` 改成 `>`；另一層同 SPM03 | 同上，方向是 v（XC04L1，unlabelled）。 |
+| SPM20（I48） | `section_profile_placement.inc:58` `bool perpendicular=…` 改成恆真 | `section_profile.c:117` 同一行（錨點未變）；另一層：`section_profile_sources.c:315` run 定位 hook 不再以 `geo_frame_is_valid` 擋回傳的框架 | main 的錯誤是「up 與 run 方向不垂直也被接受」。GEO-261 在來源圖 hook 再驗一次框架；只改第一層時，候選仍被拒，但訊息是「I48: invalid returned run frame」，不帶 perpendicular（`e32994bf` 完整閘門判為 unlabelled）。兩層都拿掉之後，候選被接受，與 main 相同。 |
+| SPM28（I49） | `section_profile_validation.inc:45` `if(!p){sp_error("I49: member …` 拿掉 | `woodworking/native/section_profile.c:244` `if(!exists){wood_sp_error(w,"I49: member …` 拿掉；另兩層：`:242` 對已刪斷面不再要求 profile 定義（`exists&&`），`section_profile_sources.c:235` 構件區域來源不再因 `missing_profile` 拒絕 | main 的錯誤是「引用已刪斷面的構件被接受」。GEO-261 由三層拒絕：W 求值器的 I49 錯誤、來源圖對 profile 定義的 definition-required 邊、構件區域來源。只拿掉 I49 錯誤時，候選仍被拒，拒絕內容也仍含 I49，殺手測試照樣通過，所以是等價（對照組 XC28L1 存活）。只拿掉 I49 錯誤加上另一層，也都存活（XC28L12、XC28L13）。三層都拿掉，候選才會被接受，與 main 相同。 |
+| SPM29（I49） | `:63` run 版同一行 | `section_profile.c:268` run 版同一行；另兩層：`:266`（`exists&&`），`section_profile_sources.c:289` run 根不再把只因斷面缺失而失敗的區域來源報成來源圖錯誤 | 同上，對象是 run。run 區域來源要求 `r->resolved`，而 `resolved` 本來就要求斷面存在，所以第三層在 run 根。只拿掉 I49 錯誤，或再加上另一層，都存活（XC29L1、XC29L12、XC29L13）。 |
 | SPM33（D40/R37） | `:64` `r->length_resolved=sp_resolve_dimension(…)` 後面接 `&&r->length<=1830` | `section_profile.c:271` `wood_sp_evaluate_run_direct` 的 `length_resolved` 三元式，hook 與 direct 兩個分支都接 `&&r->length<=sheet_length` | 同一個 `length_resolved` 指派。GEO-261 只把長度解析拆成來源圖 hook 與直接解析兩條；失敗同樣寫入 `length_error`，報 `RUN_LENGTH_INVALID`。 |
 | SPM36（R37） | `modeling/section_profile.py:31` 包絡 `outline=deepcopy(run["outline"])` 換成外接矩形 | `woodworking/native/section_profile_sources.c:254` run 區域來源 `run_regions[i]` 原本指向斷面 outline，換成外接矩形 | `build_package` 走來源圖，包絡的 `profile.region` 根（memberId 為 null）就是這個 W 原生來源的值，K 依它擠出包絡。W `section_profile.py:56` 同語意的 `RegionDef(run["outline"])` 只在 legacy 分支（`sources is None`），這條路不會經過：對照組 XC36 在那裡換外接矩形，結果存活。 |
 | SPM37（R39） | `:60` `details["material_volume_mm3"] = "0" if reference else obj[…]` | `woodworking/geometry_woodworking/section_profile.py:73` `annotate_profile` 的同一行（`obj` 改名 `mesh`） | 同一個 R39 metadata 欄位。H runtime 對每個 profile 物件都呼叫 `annotate_profile`。 |

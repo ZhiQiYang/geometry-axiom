@@ -135,20 +135,29 @@ def patches_native(case):
 
 
 ACCEPT = 'expected the candidate to be accepted'
+# The pair root reads the overlap rectangle without the region validity check (SPM03/SPM04 second layer).
+PAIR_CORNERS = (WS, 'if(!wood_sp_source_rectangle(&value,&r)){wood_sp_source_graph_error(s,error,capacity);return;}',
+                '{const GeoPoint2 *q=value.as.regions.regions[0].outline.v;r=(GeoRect2){q[0].u,q[0].v,q[2].u,q[2].v};}')
 CASES = [
     case('SPM01', 'I44', 'drop the member-in-profile containment check', V,
          'if(p&&wood_sp_outside_regions(&p->outline,&m->rect,outside)){', 'if(0&&p&&wood_sp_outside_regions(&p->outline,&m->rect,outside)){',
          [CONCAVE, GEOM], ["expected rejection 'V_PROFILE_OUTSIDE'"]),
-    case('SPM02', 'I45', 'drop the member-overlap check', V,
-         'if(wood_sp_intersection(&s->members[i],&s->members[j],&overlap)){',
-         'if(0&&wood_sp_intersection(&s->members[i],&s->members[j],&overlap)){',
+    # SPM02-SPM04: the bridge evaluates with the source-graph hooks, so wood_sp_rebuild calls the pair hook and its
+    # wood_sp_intersection branch is off the bridge path (main's anchors there survive, measured).  The overlap is
+    # the W pair source; the pair root turns a nonempty overlap region into V_PROFILE_OVERLAP.  A touching pair under
+    # a closed-interval predicate is a zero-area overlap, which the pair root refuses as an invalid region (a
+    # graph error, not V_PROFILE_OVERLAP), so SPM03/SPM04 also read that region's corners without the validity check.
+    case('SPM02', 'I45', 'drop the member-overlap check', WS,
+         'if(!value.as.regions.count)return;GeoRect2 r;', 'return;GeoRect2 r;',
          [TOUCH, NAMED], ["expected rejection 'V_PROFILE_OVERLAP'"]),
-    case('SPM03', 'R36', 'u overlap uses <= : edge-sharing members become overlapping', V,
-         'return r->min_u<r->max_u&&r->min_v<r->max_v;', 'return r->min_u<=r->max_u&&r->min_v<r->max_v;',
-         [TOUCH], [ACCEPT, 'V_PROFILE_OVERLAP']),
-    case('SPM04', 'R36', 'v overlap uses <= : members touching along v become overlapping', V,
-         'return r->min_u<r->max_u&&r->min_v<r->max_v;', 'return r->min_u<r->max_u&&r->min_v<=r->max_v;',
-         [TOUCH], [ACCEPT, 'V_PROFILE_OVERLAP']),
+    case('SPM03', 'R36', 'u overlap uses <= : edge-sharing members become overlapping', WS,
+         'if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;',
+         'if(am->profile_id!=bm->profile_id||r.min_u>r.max_u||r.min_v>=r.max_v)return true;',
+         [TOUCH], [ACCEPT, 'V_PROFILE_OVERLAP'], more=[PAIR_CORNERS]),
+    case('SPM04', 'R36', 'v overlap uses <= : members touching along v become overlapping', WS,
+         'if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;',
+         'if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>r.max_v)return true;',
+         [TOUCH], [ACCEPT, 'V_PROFILE_OVERLAP'], more=[PAIR_CORNERS]),
     case('SPM05', 'I46/D40', 'panel width w < 915 becomes w <= 915', P,
          'm.width>=wood_sp_panel_spec.width_max', 'm.width>wood_sp_panel_spec.width_max',
          [PANEL], ["expected rejection 'V_PANEL_WIDTH'"]),
@@ -193,9 +202,13 @@ CASES = [
     case('SPM19', 'I48', 'p,q may lie outside the host range', PL,
          'bool inside=wood_sp_region_point(&region,(GeoPoint2){r->p,r->q});', 'bool inside=true;',
          [HOLES], ["expected rejection 'outside closed host range'"]),
+    # SPM20: the W run-placement hook re-checks the returned frame; with only the first patch the candidate is still
+    # rejected, as "I48: invalid returned run frame" without the perpendicular cause (measured), so both layers go.
     case('SPM20', 'I48', 'up need not be perpendicular to the run direction', PL,
          'bool perpendicular=geo_vector_dot(r->up,r->frame.normal)==0;', 'bool perpendicular=true;',
-         [HOLES], ["expected rejection 'perpendicular'"]),
+         [HOLES], ["expected rejection 'perpendicular'"],
+         more=[(WS, 'if(value.kind!=GEO_SOURCE_FRAME||!geo_frame_is_valid(&value.as.frame)){',
+                'if(value.kind!=GEO_SOURCE_FRAME){')]),
     case('SPM21', 'I48/D1', 'simple-placement origin is not range-checked', PL,
          'bool origin=geo_coord_in_range(r->frame.origin.x)&&geo_coord_in_range(r->frame.origin.y)&&geo_coord_in_range(r->frame.origin.z);',
          'bool origin=true;',
