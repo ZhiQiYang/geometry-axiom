@@ -15,7 +15,12 @@ concurrency:
 jobs:
   native:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 2026-10-20 (P-186, GEO-261): 15 -> 35 minutes. GEO-261 raises the run_all suites
+    # this job runs from 103 (main) to 218 when P-186 was decided (2.1x; 220 at
+    # 1908115e). Single-suite cost such as bridge_integrity stays within 2x of main
+    # (1.31x), so the job grows with the suite count, not with a per-suite slowdown.
+    # The browser job timeouts below are unchanged.
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
