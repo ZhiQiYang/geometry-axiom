@@ -383,9 +383,10 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
   <div class="prose">
     <p><code>Point3</code> 和 <code>Vector3</code> 欄位完全相同，分開命名只是為了讓讀者一眼知道「這是位置」還是「這是方向」。<code>Coord</code> 是 <code>int64_t</code>：整數座標讓後面的「軸長是否為 1」「兩軸是否正交」都能用 <code>==</code> 判斷。</p>
     <p>向量運算只有四個。點積用來檢查長度與正交，叉積用來檢查與建立右手座標，後面會反覆看到。</p>
+    <p>GEO-261 起，這些型別與向量運算的本體屬於領域無關的核心 K（<code>geometry-core/kernel/geometry.h</code>／<code>geometry.c</code>）；<code>current_geometry.c</code> 以 typedef 與一行轉交沿用舊名。本頁只內嵌 current_geometry.c，K 的實作不在這裡展開，面板旁的說明會寫出它在哪裡、做什麼。</p>
   </div>
-  <div data-panel='{"kind":"section","title":"基礎幾何型別","label":"七個基礎型別","callouts":[{"match":"\\} Point3;","note":"位置。"},{"match":"\\} Vector3;","note":"方向。與 Point3 同構，但語義不同。"},{"match":"\\} Quad3;","note":"四個房間座標頂點，角材的每一個面最後都變成這個。"},{"match":"\\} Plane3;","note":"一點加一法線就是一個平面；邊的「側向承載平面」用它表達。"}]}'></div>
-  <div data-panel='{"kind":"fn","name":"vector_cross","label":"叉積","callouts":[{"match":"\\.x = a\\.y \\* b\\.z","note":"標準右手叉積。放置角材時用它從 B 軸與長度軸反推 A 軸。"}]}'></div>
+  <div data-panel='{"kind":"section","title":"基礎幾何型別","label":"七個基礎型別","callouts":[{"match":"^typedef GeoPoint3 Point3;","note":"位置。本體是核心 K 的 GeoPoint3 {x, y, z}（geometry-core/kernel/geometry.h），這裡只沿用舊名。"},{"match":"^typedef GeoVector3 Vector3;","note":"方向。K 的 GeoVector3 與 GeoPoint3 欄位相同，但語義不同。"},{"match":"^typedef GeoQuad3 Quad3;","note":"四個房間座標頂點，角材的每一個面最後都變成這個。"},{"match":"^typedef GeoPlane3 Plane3;","note":"一點加一法線就是一個平面；邊的「側向承載平面」用它表達。"}]}'></div>
+  <div data-panel='{"kind":"fn","name":"vector_cross","label":"叉積","callouts":[{"match":"return geo_vector_cross\\(a,b\\);","note":"標準右手叉積：x = a.y·b.z − a.z·b.y，y、z 依序輪替；實作在 K 的 geo_vector_cross（geometry-core/kernel/geometry.c）。放置角材時用它從 B 軸與長度軸反推 A 軸。"}]}'></div>
 </section>
 
 <section class="block" id="s2">
@@ -394,10 +395,10 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
   <div class="prose">
     <p>空間邊界面就是「房間裡的一片矩形」，例如天花板。它的核心是 <code>SurfaceFrame</code>：原點加三個單位軸。任何表面上的東西要變成房間座標，都經過同一條公式：</p>
     <p><code>room = origin + u·axis_u + v·axis_v + w·normal</code></p>
-    <p>下面第一個面板是這條公式的執行者，第二個面板是把第一版限制鎖死的守門員。</p>
+    <p>下面的 <code>surface_point_to_room</code> 是這條公式的入口，最後一個面板 <code>surface_frame_is_valid</code> 是把第一版限制鎖死的守門員。兩者的本體都在核心 K（<code>geometry-core/kernel/geometry.c</code> 的 <code>geo_frame_point</code>、<code>geo_frame_is_valid</code>）；本頁只內嵌 current_geometry.c，看到的是轉交給 K 的那一行。</p>
   </div>
-  <div data-panel='{"kind":"type","name":"SurfaceFrame","label":"表面局部座標框架","callouts":[{"match":"Point3 origin;","note":"表面 (0,0,0) 在房間裡的位置。天花板是 (0, 0, 2500)。"},{"match":"Vector3 normal;","note":"離開表面的方向。天花板是 (0, 0, 1)。"}]}'></div>
-  <div data-panel='{"kind":"fn","name":"surface_point_to_room","label":"UV → 房間座標","callouts":[{"match":"\\.x = surface->frame\\.origin\\.x","note":"公式的 x 分量。y、z 分量長得一模一樣。"},{"match":"w \\* surface->frame\\.normal\\.x","note":"w 是沿法線的高度；貼在表面上的東西 w = 0。"}]}'></div>
+  <div data-panel='{"kind":"section","title":"承載面的局部座標框架","to":"^typedef GeoFrame SurfaceFrame;","label":"表面局部座標框架","callouts":[{"match":"^ \\* origin：","note":"表面 (0,0,0) 在房間裡的位置。天花板是 (0, 0, 2500)。"},{"match":"^ \\* normal：","note":"離開表面的方向。天花板是 (0, 0, 1)。"},{"match":"^typedef GeoFrame SurfaceFrame;","note":"欄位本體是 K 的 GeoFrame {origin, axis_u, axis_v, normal}（geometry-core/kernel/geometry.h）；承載面沿用舊名 SurfaceFrame。"}]}'></div>
+  <div data-panel='{"kind":"fn","name":"surface_point_to_room","label":"UV → 房間座標","callouts":[{"match":"return geo_frame_point\\(&surface->frame,u,v,w\\);","note":"整條公式交給 K 的 geo_frame_point（geometry-core/kernel/geometry.c）：x = origin.x + u·axis_u.x + v·axis_v.x + w·normal.x，y、z 分量長得一模一樣。w 是沿法線的高度；貼在表面上的東西 w = 0。"}]}'></div>
   <div class="prose">
     <p>試算一下。下面用 main 裡的天花板框架（原點 (0,0,2500)，U=X，V=Y，N=Z）：</p>
   </div>
@@ -407,7 +408,7 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
     <label>w<input id="cw" type="number" value="0"></label>
     <div class="res mono" id="cres"></div>
   </div>
-  <div data-panel='{"kind":"fn","name":"surface_frame_is_valid","label":"第一版限制的守門員","callouts":[{"match":"return vector_dot\\(frame->axis_u, frame->axis_u\\) == 1 &&","note":"U、V 長度 1。整數向量下只有 ±X、±Y、±Z 六種可能。"},{"match":"vector_dot\\(frame->axis_u, frame->axis_v\\) == 0 &&","note":"U ⊥ V。"},{"match":"vector_cross\\(frame->axis_u, frame->axis_v\\),","note":"U × V 必須等於 N：右手座標。N 的長度與垂直性由叉積本身保證，所以不必另外檢查。"}]}'></div>
+  <div data-panel='{"kind":"fn","name":"surface_frame_is_valid","label":"第一版限制的守門員","callouts":[{"match":"公理 I1：","note":"條號 I1：U、V 單位正交且 U × V = N。函式上方的長註解推導了 N 的長度與垂直性為什麼由叉積本身保證、不必另外檢查。"},{"match":"return geo_frame_is_valid\\(frame\\);","note":"K 的 geo_frame_is_valid（geometry-core/kernel/geometry.c）依序檢查：原點在座標範圍內；三軸每個分量都在 −1..1；U·U = V·V = 1（整數向量下只有 ±X、±Y、±Z 六種可能）；U·V = 0（U ⊥ V）；U × V = N（右手座標）。"}]}'></div>
 </section>
 
 <section class="block" id="s3">
@@ -415,9 +416,10 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
   <h2 class="sec">邊不再是物件，是環上的一段</h2>
   <div class="prose">
     <p><code>SpaceBoundarySurface</code> 是純局部 2D：一個正交外輪廓 <code>PolygonLoop2</code>、零個以上的孔、每條邊的 fixity（FIXED／FREE）。它不知道自己在世界哪裡；3D 位置由承載面 <code>PlacementSurface</code> 的 frame 提供。邊不再獨立宣告——第 i 條邊就是 <code>outline.v[i] → outline.v[i+1]</code>，fixity 存在環上。</p>
+    <p>這兩個型別的本體在木工模板 W（<code>geometry-templates/woodworking/native/domain_values.h</code>），current_geometry.c 以 typedef 沿用舊名：fixity 與邊界分類是模板的語意，核心 K 的幾何運算只拿到不帶 fixity 的環視圖。</p>
   </div>
-  <div data-panel='{"kind":"type","name":"PolygonLoop2","label":"環：外輪廓與孔共用"}'></div>
-  <div data-panel='{"kind":"type","name":"SpaceBoundarySurface","label":"邊界面：輪廓＋孔＋fixity"}'></div>
+  <div data-panel='{"kind":"range","title":"PolygonLoop2","from":"^#include \"geometry-templates/woodworking/native/domain_values\\.h\"","to":"^typedef WoodBoundaryLoop PolygonLoop2;","label":"環：外輪廓與孔共用","callouts":[{"match":"domain_values\\.h","note":"環與邊界面的本體在木工模板 W 的 domain_values.h；fixity、邊界分類的名字也從那裡來。"},{"match":"^typedef WoodBoundaryLoop PolygonLoop2;","note":"環 = 頂點陣列 v[]、頂點數 count、每邊 fixity[]；外輪廓與孔共用這個型別。"}]}'></div>
+  <div data-panel='{"kind":"range","title":"SpaceBoundarySurface","from":"^typedef WoodBoundaryRegion SpaceBoundarySurface;","to":"公理 D3：","label":"邊界面：輪廓＋孔＋fixity","callouts":[{"match":"^typedef WoodBoundaryRegion SpaceBoundarySurface;","note":"本體是 W 的 WoodBoundaryRegion（domain_values.h）：id、邊界分類、外輪廓 outline、孔 holes[] 與孔數；每條邊的 fixity 跟著環走。"},{"match":"公理 D3：","note":"D3：純局部 2D，不含世界位置——3D 位置由承載面 PlacementSurface 的 frame 給。"}]}'></div>
   <div data-panel='{"kind":"fn","name":"loop_get_edge_segment","label":"環的第 i 條邊","callouts":[{"match":"out_segment->end = loop->v\\[\\(edge_index \\+ 1\\) % loop->count\\];","note":"環是封閉的：最後一條邊繞回 v[0]。"}]}'></div>
   <div data-panel='{"kind":"fn","name":"loop_edge_outward_normal","label":"邊的局部外向法線","callouts":[{"match":"area2 \\+= a\\.u \\* b\\.v - b\\.u \\* a\\.v;","note":"先算環的有向面積定左右手——外向法線取決於環是 CCW 還是 CW。"},{"match":"out_normal->u = dv > 0 \\? 1 :","note":"CCW 環內側在邊的左邊，外向 = (dv, −du)；邊軸平行所以必有一分量 ±1、另一分量 0。"}]}'></div>
   <div data-panel='{"kind":"fn","name":"surface_get_edge_side_plane","label":"邊帶有的側向平面","callouts":[{"match":"uv_outward_normal\\.u \\* surface->frame\\.axis_u\\.x","note":"UV 外向法線 (nu, nv) 換成房間方向 = nu·axis_u + nv·axis_v。"},{"match":"out_plane->point = surface_point_to_room\\(","note":"平面上的一點：直接拿邊的起點轉成房間座標。"}]}'></div>
@@ -429,21 +431,21 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
   <div class="prose">
     <p>參考線不是實體，只是定位工具。它存承載面、方向與位置引用式；offset 是求值後的快取。沿 U 的線固定 v = offset，沿 V 的線固定 u = offset。可見段不存進世界，要用時由 <code>guide_line_get_local_segments</code> 從外輪廓截出、再扣掉孔。</p>
   </div>
-  <div data-panel='{"kind":"type","name":"GuideLine","label":"參考線的定義","callouts":[{"match":"Coord offset;","note":"沿 U 時它是 v，沿 V 時它是 u。上方註解寫得很清楚。"}]}'></div>
+  <div data-panel='{"kind":"range","title":"GuideLine","from":"^typedef GeoGuide GuideLine;","to":"公理 D6：","label":"參考線的定義","callouts":[{"match":"^typedef GeoGuide GuideLine;","note":"本體是 K 的 GeoGuide（geometry-core/kernel/guides.h）：所屬承載面 placement_id、方向、位置來源（本地引用式或共用基準 datum）與求值後的 offset 快取。沿 U 時 offset 是 v，沿 V 時是 u。"},{"match":"公理 D6：","note":"D6：線段不存，用時截出（D9）。"}]}'></div>
 </section>
 
 <section class="block" id="s5">
   <div class="eyebrow mono">§5 · 完整角材實體</div>
   <h2 class="sec">造出來、貼上去、再推導六個面</h2>
   <div class="prose">
-    <p><code>Timber</code> 存三個尺寸，加上一個自己的框架（原點加三軸）。<code>placed</code> 旗標告訴你框架是否有效：剛 construct 出來時是標準框架，貼到表面後才換成真的。</p>
-    <p>整段最值得細讀的是 <code>timber_place_a0_on_surface</code>，它做四件事：長度軸取表面的 ±U 或 ±V；B 軸取表面法線的正或負；<b>A 軸用叉積算出來</b>，不用你手填；最後檢查 A0 面是否在有效區域內：多邊形凹角與孔洞讓「兩角點在內」不再是充分條件，所以改用整個矩形的包含檢查；另外長度端面若正好貼到外輪廓邊，該邊必須是 FIXED——自由邊外側沒有實體可釘。</p>
-    <p><code>timber_get_face_room</code> 也不再逐面列頂點：六個面由「法向軸 k + 哪一側 s」一條規則推導——面內兩軸恆為 (k+1)%3、(k+2)%3，同一個繞行順序在 s=1 給 +k 法向、s=0 反走給 −k 法向，法向一律朝外。</p>
+    <p><code>Timber</code> 存三個尺寸，加上一個自己的框架（原點加三軸）。<code>placed</code> 旗標告訴你框架是否有效：剛 construct 出來時是標準框架，貼到表面後才換成真的。GEO-261 起角材是木工模板 W 的 <code>WoodMember</code>（<code>geometry-templates/woodworking/native/members.h</code>），放置與推導面的本體也在 W；本頁只內嵌 current_geometry.c，看到的是把承載面資料交給 W 的那一層。</p>
+    <p>整段最值得細讀的是放置：<code>timber_place_a0_on_surface</code> 把承載面整理成有效區域，交給 W 的 <code>wood_member_place_a0</code> 做四件事：長度軸取表面的 ±U 或 ±V；B 軸取表面法線的正或負；<b>A 軸用叉積算出來</b>，不用你手填；最後檢查 A0 面是否在有效區域內：多邊形凹角與孔洞讓「兩角點在內」不再是充分條件，所以改用整個矩形的包含檢查；另外長度端面若正好貼到外輪廓邊，該邊必須是 FIXED——自由邊外側沒有實體可釘。</p>
+    <p><code>timber_get_face_room</code> 也不再逐面列頂點：六個面由「法向軸 k + 哪一側 s」一條規則推導——面內兩軸恆為 (k+1)%3、(k+2)%3，同一個繞行順序在 s=1 給 +k 法向、s=0 反走給 −k 法向，法向一律朝外。這條規則現在由 W 的 <code>wood_member_face_room</code> 查面規格、交給核心 K 的 <code>geo_box_face</code> 走四角。</p>
   </div>
-  <div data-panel='{"kind":"type","name":"Timber","label":"角材的定義","callouts":[{"match":"bool placed;","note":"false 時 origin 與三軸只是佔位的標準框架。"},{"match":"Vector3 axis_length;","note":"放置後三軸都是房間座標裡的單位向量。"}]}'></div>
-  <div data-panel='{"kind":"fn","name":"timber_place_a0_on_surface","label":"把 A0 面貼到表面","callouts":[{"match":"Vector3 axis_length = surface_direction_vector\\(","note":"第一件事：長度軸。"},{"match":"\\? surface->frame\\.normal","note":"第二件事：B 軸沿 +N 或 −N。"},{"match":"Vector3 axis_a = vector_cross\\(axis_b, axis_length\\);","note":"第三件事：A 軸 = B × 長度，保證 長度 × A = B 的右手座標。兩個單位長且垂直的向量，叉積必為單位長。"},{"match":"SurfacePoint2 far_corner = \\{","note":"第四件事：A0 面在錨點對角的那一點。"},{"match":"surface_contains_rect","note":"整個 A0 矩形必須落在有效區域內——多邊形凹角與孔洞下「兩角點在內」不再是充分條件。§8 實驗台可以親手觸發。"},{"match":"timber->placed = true;","note":"到這裡框架才算有效。"}]}'></div>
-  <div data-panel='{"kind":"fn","name":"timber_local_to_room","label":"角材局部 → 房間座標","callouts":[{"match":"length_coordinate \\* timber->axis_length\\.x","note":"跟 surface_point_to_room 是同一個形狀的公式，只是三個軸換了名字。"}]}'></div>
-  <div data-panel='{"kind":"fn","name":"timber_get_face_room","label":"推導六個面","callouts":[{"match":"const int k = TIMBER_FACE_SPEC\\[face\\]\\.axis;","note":"面 = 法向軸 k + 側 s，規格表在型別段落：A0/A1 的 k=2（B 軸），B0/B1 的 k=1（A 軸），START/END 的 k=0（長度軸）。"},{"match":"local\\[u\\] = TIMBER_FACE_WALK\\[s\\]\\[i\\]\\[0\\]","note":"面內兩軸 (k+1)%3、(k+2)%3 上按繞行表走四角；s=0 反向走，法向因此一律朝外。"},{"match":"out_face->vertices\\[i\\] = timber_local_to_room\\(","note":"六個面的局部頂點一律經過同一個轉換。"}]}'></div>
+  <div data-panel='{"kind":"range","title":"Timber","from":"^typedef WoodMember Timber;","to":"公理 D7：","label":"角材的定義","callouts":[{"match":"^typedef WoodMember Timber;","note":"本體是 W 的 WoodMember（members.h）：length 與截面 size_a × size_b、角色與裁切優先級、placed 旗標、原點與 axis_length／axis_a／axis_b 三軸。placed 為 false 時原點與三軸只是佔位的標準框架；放置後三軸都是房間座標裡的單位向量。"},{"match":"公理 D7：","note":"D7：八角不存（D9），要用時由三軸推導。"}]}'></div>
+  <div data-panel='{"kind":"fn","name":"timber_place_a0_on_surface","label":"把 A0 面貼到表面","callouts":[{"match":"const SpaceBoundarySurface \\*part=","note":"先把承載面整理成有效區域：衍生填充的承載面逐一取連通分量，否則取掛著的邊界面。"},{"match":"fixity_storage\\[c\\]\\[i\\]=part->outline\\.fixity\\[i\\];","note":"外輪廓每邊的 fixity 一起交出去：長度端面若正好貼到外輪廓邊，該邊必須是 FIXED——自由邊外側沒有實體可釘。"},{"match":"rectangle\\[0\\]=","note":"沒掛邊界面就把自帶矩形展成四頂點的區域。"},{"match":"return wood_member_place_a0\\(","note":"四件事交給 W 的 wood_member_place_a0（member_reference.c）：長度軸取表面的 ±U 或 ±V；B 軸沿 +N 或 −N；A 軸 = B × 長度，保證 長度 × A = B 的右手座標（兩個單位長且垂直的向量，叉積必為單位長）；整個 A0 矩形必須落在某個分量內——多邊形凹角與孔洞下「兩角點在內」不再是充分條件，§8 實驗台可以親手觸發。全部通過才設 placed = true，到這裡框架才算有效。"}]}'></div>
+  <div data-panel='{"kind":"fn","name":"timber_local_to_room","label":"角材局部 → 房間座標","callouts":[{"match":"GeoFrame frame=\\{timber->origin,timber->axis_length,timber->axis_a,timber->axis_b\\};","note":"角材的原點與三軸組成一個 K 的 GeoFrame：長度軸、A 軸、B 軸分別放在 axis_u、axis_v、normal 的位置。"},{"match":"return geo_frame_point\\(&frame,","note":"跟 surface_point_to_room 是同一條公式、同一個 K 函式 geo_frame_point，只是三個軸換了名字。"}]}'></div>
+  <div data-panel='{"kind":"fn","name":"timber_get_face_room","label":"推導六個面","callouts":[{"match":"return wood_member_face_room\\(timber,face,out_face\\);","note":"交給 W 的 wood_member_face_room（members.c）：面 = 法向軸 k + 側 s，查 WOOD_MEMBER_FACE_SPEC——A0/A1 的 k=2（B 軸），B0/B1 的 k=1（A 軸），START/END 的 k=0（長度軸）；再把角材當成 K 的 GeoBox3 交給 geo_box_face：面內兩軸 (k+1)%3、(k+2)%3 上按繞行表走四角，s=0 反向走，法向因此一律朝外；每個局部頂點都經過 geo_frame_point。"}]}'></div>
 </section>
 
 <section class="block" id="s6">
@@ -565,13 +567,13 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
   <div class="prose">
     <p>前面所有範例的結構都寫死在 main 裡。這一層把它抽出去：<code>--scene</code> 接一份文字檔，一行一個指令，由上而下套用。指令表現在有十八列：宣告用的 <code>spec</code>、<code>boundary</code>、<code>placement</code>、<code>surface</code>（邊界＋承載面合體）、<code>space</code>、<code>datum</code>、<code>column</code>、<code>beam</code>、<code>timber</code>；依附承載面的 <code>guide</code>、<code>grid</code>、<code>place</code>；操作動詞 <code>move</code>、<code>apply-proj</code>、<code>delete</code>、<code>reset</code>、<code>canvas-pos</code>；外加一列墓碑 <code>span-auto</code>（已廢除，寫了會被明確拒絕）。場景檔寫不出這十八列以外的行為，也寫不出非單位軸的向量（軸只有 ±x ±y ±z 六個詞）；「封閉行為集合」在這裡是字面的事實。</p>
     <p>邊界面可以有好幾片：<code>boundary</code>／<code>placement</code>（或合體的 <code>surface</code>）寫幾次就有幾片（上限 <code>WORLD_MAX_BOUNDARIES</code> = 16），牆、地板、天花板各是一片，直立角材就是「貼在直立的面上」。<code>place</code> 因此必須明寫 <code>on 承載面id</code>——貼在哪片不再是隱含的。參考線與錨點都各自記著 <code>placement_id</code>，誰屬於誰是資料裡的事實，不是靠順序猜。</p>
-    <p>id 要先宣告才能被引用，所以「place 寫在 timber 前面」自然變成「id 不存在」，不必另外規定。錯誤不直接印 stderr，而是寫進 domain 層的錯誤緩衝，檔案路徑與視窗輸入列讀的是同一份——拒絕的理由到哪一層都是同一個字串。合法的場景檔與內建預設世界共用同一個 <code>World</code>，輸出層完全不分來源。同目錄的 <code>room_a.scene</code> 是現行語法的完整範例：合體的 <code>surface</code>、具名 <code>spec</code> 引用、at-face 與 at-line 兩族錨法都在裡面。</p>
+    <p>id 要先宣告才能被引用，所以「place 寫在 timber 前面」自然變成「id 不存在」，不必另外規定。錯誤不直接印 stderr，而是寫進 domain 層的錯誤緩衝，檔案路徑與視窗輸入列讀的是同一份——拒絕的理由到哪一層都是同一個字串。合法的場景檔與內建預設世界共用同一個 <code>World</code>，輸出層完全不分來源。GEO-261 起 <code>World</code> 由三份文件組成：核心 K 的 <code>geo</code>、木工模板 W 的 <code>wood</code>、應用層 H 的 <code>app</code>，各自只管自己的欄位。同目錄的 <code>room_a.scene</code> 是現行語法的完整範例：合體的 <code>surface</code>、具名 <code>spec</code> 引用、at-face 與 at-line 兩族錨法都在裡面。</p>
     <p><code>move</code> 有一條已拍板的語義（公理層 R2，2026-09-18 反轉）：移動參考線<b>要</b>重放引用它的角材——錨點存的是引用不是座標，引用的語意就是跟著動。中線與長度重新推導，先走 I8a 影響預覽，零違規且確認才提交，失敗整筆回滾。</p>
   </div>
-  <div data-panel='{"kind":"type","name":"World","label":"一份場景的全部狀態","callouts":[{"match":"SpaceBoundarySurface boundaries\\[WORLD_MAX_BOUNDARIES\\];","note":"邊界面與承載面分兩個陣列：boundary 是純 2D 輪廓，placement 帶 3D frame。"},{"match":"TimberAnchor anchors\\[WORLD_MAX_TIMBERS\\];","note":"錨點帶著 placement_id——UV 座標離開它所屬的承載面就沒有意義。"},{"match":"Timber timbers\\[WORLD_MAX_TIMBERS\\];","note":"上限是常數，不做動態配置——寫不下的場景在解析時就被拒絕。"}]}'></div>
+  <div data-panel='{"kind":"type","name":"World","label":"一份場景的全部狀態","callouts":[{"match":"GeoDocument geo;","note":"核心 K 的文件（geometry-core/kernel/internal/document.h）：邊界面輪廓、承載面、參考線、datum、網格與參數等純幾何儲存。邊界面與承載面仍分開存：boundary 是純 2D 輪廓，placement 帶 3D frame。"},{"match":"WoodDocument wood;","note":"木工模板 W 的文件（geometry-templates/woodworking/native/document.h）：角材 timbers[]、錨點 anchors[]、柱樑與組裝／工程來源。錨點帶著 placement_id——UV 座標離開它所屬的承載面就沒有意義；上限是常數，不做動態配置——寫不下的場景在解析時就被拒絕。"},{"match":"AppDocument app;","note":"應用層 H 的文件（geometry-app/native/document.h）：保存用的原文拼寫、順序與畫布座標，不參與幾何推導。"}]}'></div>
   <div data-panel='{"kind":"range","title":"SCENE_COMMANDS 指令表","from":"\\} SCENE_COMMANDS\\[\\] = \\{","to":"^\\};","label":"指令表：欄位數與前置條件集中在同一列","callouts":[{"match":"\"boundary\", 6, SCENE_MAX_TOKENS, false,","note":"欄位數是 min～max 區間（含指令本身）與「要先有承載面」寫在表裡，apply_ 函式就不必各自檢查一次。"},{"match":"\"place\", 8, 20, true,","note":"錨法有兩族：at-line（guide 參考線、grid 網格的 u|v 索引，或 rule 來源子規則的完整線引用）與 at-face（e 外環邊／h 孔邊／t 既有角材面），可再加 through 選段或 between 兩個擋面。"},{"match":"\"move\", 3, SCENE_MAX_TOKENS, true,","note":"move 的新位置是引用式，不是寫死的數字；拖曳參考線與鍵入 move 走到同一個 apply_——GUI 只是另一種輸入法。"}]}'></div>
   <div data-panel='{"kind":"range","title":"place / move：交給引用層","from":"^static bool apply_place_line\\(","to":"^\\{ return apply_reference_move\\(","label":"place / move：交給引用層","callouts":[{"match":"return apply_reference_place\\(","note":"place 整段交給引用層（geometry-core/references.inc）：錨點存的是引用定義，不是當場算好的座標；本頁只內嵌 current_geometry.c，實作不在這裡展開。"},{"match":"R4: span-auto 已廢除","note":"舊保存標記明確拒絕，不讓它被誤讀成新的引用定義。"},{"match":"return apply_reference_move\\(","note":"move 同樣交給引用層：改的是參考線的位置引用式，接著由 reference_checked 重驗整個世界；共用基準的參考線不能在本地移動（R5）。"}]}'></div>
-  <div data-panel='{"kind":"fn","name":"parse_scene_file","label":"逐行套用，讀完再總檢查","callouts":[{"match":"FILE \\*in = fopen\\(path, \"rb\"\\);","note":"二進位模式：換行與 BOM 都自己處理，Windows 的文字模式不介入。"},{"match":"!out_world->timbers\\[i\\]\\.placed","note":"讀完檔再掃一次：沒 place 的角材印不出也畫不出，一定是場景檔漏寫。"}]}'></div>
+  <div data-panel='{"kind":"fn","name":"parse_scene_file","label":"逐行套用，讀完再總檢查","callouts":[{"match":"FILE \\*in = fopen\\(path, \"rb\"\\);","note":"二進位模式：換行與 BOM 都自己處理，Windows 的文字模式不介入。"},{"match":"!out_world->wood\\.timbers\\[i\\]\\.placed","note":"讀完檔再掃一次：沒 place 的角材印不出也畫不出，一定是場景檔漏寫。角材住在 World 的木工文件 wood 裡。"}]}'></div>
   <div class="key"><b>設計上最重要的一行註解：</b>「軸只有六種寫法，所以場景檔根本寫不出非單位、非軸向的向量。」錯誤的輸入不是被檢查出來，是<b>構造不出來</b>——這就是公理作為根源的意思。</div>
 </section>
 
