@@ -45,7 +45,7 @@ SUITES = {
     'assembly': (['node', '--test', '--test-reporter=tap', 'tests/test_assembly_workspace.js'], 52),
     'annotation': (['node', '--test', '--test-reporter=tap', 'tests/test_draw_annotation.js'], 7),
     'grid': (['node', '--test', '--test-reporter=tap', 'tests/test_grid_definition_diagram.js'], 13),
-    'runtime': ([sys.executable, 'tests/test_runtime_version.py'], 30),
+    'runtime': ([sys.executable, 'tests/test_runtime_version.py'], 31),
 }
 MUTATIONS = (
     ('annotation-parses-label', 'annotation', 'geometry-web/app.js',
@@ -76,7 +76,7 @@ MUTATIONS = (
      "badge.dataset.role = badge.textContent === '主支線' ? 'main' : 'sub';",
      'grid role identity stays semantic even when presentation labels are exchanged'),
     ('runtime-omits-moved-source', 'runtime', 'geometry-web/runtime_version.py',
-     "for directory in ('geometry-web', 'geometry-core', 'geometry-app', 'geometry-templates'):",
+     "for directory in ('geometry-web', 'geometry-core', 'geometry-kernel', 'geometry-app', 'geometry-templates'):",
      "for directory in ('geometry-web', 'geometry-core'):",
      'test_template_native_and_host_source_changes_require_restart'),
     ('runtime-normalizes-public-template', 'runtime', 'geometry-web/runtime_version.py',

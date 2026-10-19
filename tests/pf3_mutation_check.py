@@ -3,6 +3,10 @@
 python tests/pf3_mutation_check.py --out /tmp/pf3-mutations
 Each negative must fail an assertion with the named cause, never an import,
 compile error, skip, crash or timeout. No repository source is edited in place.
+A case lists one patch per enforcement layer. GEO-261 checks some rules in more than one place, so
+removing a single layer leaves the other standing and the fault survives; where that is so (host-identity)
+the case removes every layer and reproduces the fault main had. Per-case table, with main's line, the line
+used now and the single-layer controls: geometry-core/panel-fill/PF3-NATIVE.md.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
@@ -17,10 +21,11 @@ import time
 
 ROOT=Path(__file__).resolve().parents[1]
 HOST="geometry-core/panel_fill_support.inc"
+REFERENCE="geometry-app/native/reference_sources.inc"
 SOURCE="geometry-templates/woodworking/native/panel_support.c"
 CASES=[
     ("effective-merge",[(SOURCE,"if(*count&&out[*count-1].line==line&&out[*count-1].range[1]==lo)","if(false&&*count&&out[*count-1].line==line&&out[*count-1].range[1]==lo)")],"test_D43_stagger_band_identity_signed_and_T_point","D43_T_POINT"),
-    ("unplaced",[(HOST,"!w->wood.timbers[i].placed||w->wood.anchors[i].placement_id!=host->id","w->wood.anchors[i].placement_id!=host->id")],"test_R43_unplaced_timbers_on_zero_id_host_do_not_count","PF3_UNPLACED"),
+    ("unplaced",[(HOST,"if(!w->wood.timbers[i].placed)continue;uint32_t placement=w->wood.anchors[i].placement_id;","uint32_t placement=w->wood.anchors[i].placement_id;")],"test_R43_unplaced_timbers_on_zero_id_host_do_not_count","PF3_UNPLACED"),
     ("two-sides",[(SOURCE,"if(!present[0]||!present[1])","if(!present[0]&&!present[1])")],"test_D43_holes_notches_and_obstacles_remove_only_one_sided_seams","D43_TWO_SIDES"),
     ("board-vertices",[(SOURCE,"cuts[nc++]=pf_component(frag->loops[l].points[v],other);","if(l==0)cuts[nc++]=pf_component(frag->loops[l].points[v],other);")],"test_PF23_original_algorithm_three_segments_and_same_input_equivalence","PF23_ORIGINAL"),
     ("footprint-vertices",[(SOURCE,"cuts[nc++]=rects[r].lo[other];cuts[nc++]=rects[r].hi[other];","/* removed footprint cuts */")],"test_PF23_E1_legal_five_actual_widths_and_threshold_only","PF23_LEGAL"),
@@ -29,7 +34,7 @@ CASES=[
     ("open-sample",[(SOURCE,"y2=lo+hi;","y2=2*lo;")],"test_PF23_E1_legal_five_actual_widths_and_threshold_only","PF23_LEGAL"),
     ("footprint-union",[(SOURCE,"out[i].lo<=out[used-1].hi","out[i].lo<out[used-1].hi")],"test_R43_union_continuity_and_ignore_isolated_cut_values","R43_UNION"),
     ("continuous-width",[(SOURCE,"left&&un[i].lo<edge&&edge<=un[i].hi","left&&un[i].lo<edge")],"test_R43_union_continuity_and_ignore_isolated_cut_values","R43_GAP"),
-    ("host-identity",[(HOST,"!w->wood.timbers[i].placed||w->wood.anchors[i].placement_id!=host->id","!w->wood.timbers[i].placed")],"test_R43_no_host_and_other_coplanar_host_do_not_support","PF3_HOST_FILTER"),
+    ("host-identity",[(HOST,"if(placement!=host->id)continue;",""),(REFERENCE,"!wood_definition_sources_placement(ctx->definition_sources,id,&anchor)||anchor.placement_id!=placement_id||","!wood_definition_sources_placement(ctx->definition_sources,id,&anchor)||")],"test_R43_no_host_and_other_coplanar_host_do_not_support","PF3_HOST_FILTER"),
     ("finish-reflection",[(HOST,"r->lo[1]=coord_min(finish->side*f.min_v,finish->side*f.max_v);","r->lo[1]=f.min_v;"),(HOST,"r->hi[1]=coord_max(finish->side*f.min_v,finish->side*f.max_v);","r->hi[1]=f.max_v;")],"test_R43_negative_structure_side_and_vertical_frame_real_footprints","R43_FRAME"),
     ("hidden-threshold",[(SOURCE,"return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);","return d>=8;")],"test_PF06_positive_rational_comparison_and_rename_reorder","PF06_RATIONAL"),
     ("rounded-threshold",[(SOURCE,"return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);","return d>=x.num/x.den;")],"test_PF06_positive_rational_comparison_and_rename_reorder","PF06_RATIONAL"),

@@ -9,10 +9,14 @@ form every tool runs on in WSL). mutate.py is judged by its own definition_kind(
 so a retired mutant whose old text reappears is also a problem. The last test
 removes one live anchor per tool and requires each check to report it.
 
-KNOWN_DRIFT lists the anchors that had already drifted when this suite was added
-(2026-10-20, GEO-261 K/W/H moves). It is a ratchet, not an allowance: the found
-set must equal it exactly, so a new drift and a repaired one both fail until the
-list is edited. Re-anchoring needs the tool's own WSL receipt, as Q38 had.
+KNOWN_DRIFT is empty: the five anchors that had already drifted when this suite was
+added (2026-10-20, GEO-261 K/W/H moves) were re-anchored, each with its tool's own
+WSL receipt (the per-tool tables are in ASSEMBLY-RULES-VALIDATION.md, PF3-NATIVE.md
+and FRONTEND-F1.md). It stays as a ratchet, not an allowance: the found set must
+equal it exactly, so a new drift and a repaired one both fail until the list is
+edited. Re-anchoring needs the tool's own WSL receipt, as Q38 had. A present anchor
+does not prove the mutation still bites (cancelled-preview survived the move with
+its anchor intact), so the receipt, not this suite, is what proves a case is killed.
 """
 import copy
 import importlib.util
@@ -27,16 +31,7 @@ for directory in (ROOT, HERE):
         sys.path.insert(0, str(directory))
 
 MISSING = '\x00anchor removed by test_mutation_anchors\x00'
-KNOWN_DRIFT = {
-    # the I40 scope-conflict loop now lives in geometry-templates/woodworking/native/assembly.c
-    ('tests/assembly_mutation_check.py', 'conflict'),
-    ('tests/assembly_mutation_check.py', 'missing-source'),
-    # the unplaced/host filter is no longer in geometry-core/panel_fill_support.inc
-    ('tests/pf3_mutation_check.py', 'unplaced'),
-    ('tests/pf3_mutation_check.py', 'host-identity'),
-    # geometry-web/runtime_version.py no longer lists the source roots in that form
-    ('tests/geo261_frontend_mutations.py', 'runtime-omits-moved-source'),
-}
+KNOWN_DRIFT = set()
 
 
 def load(relative, name):
@@ -84,7 +79,7 @@ def q38_entries(module):
 
 
 def assembly_entries(module):
-    return [(name, [(file, before, after)]) for name, file, before, after, _ in module.CASES]
+    return [(name, [tuple(patch) for patch in patches]) for name, patches, _ in module.CASES]
 
 
 def pf3_entries(module):
