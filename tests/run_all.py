@@ -170,6 +170,7 @@ PY_NEEDS = {
     'test_geo261_source_context': [],
     'test_geo261_enclosure_definition_authority': [],
     'test_geo261_model_vertex_ledger': [],
+    'test_geo261_model_base_replay': [],
     'test_geo261_host_placement_definition': [],
     'test_geo261_application_closure': [],
     'test_geo261_placement_definition': [],

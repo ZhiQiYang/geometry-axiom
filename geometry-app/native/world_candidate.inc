@@ -17,11 +17,34 @@ static const char *app_world_provider_stamp(void)
     return "native-composition/5;core:typed-definitions,linear-graph,parameter-ast,parameters,named-values,datums,guides,regions,placements,grid;"
         "wood:engineering-source-graph,members,supports,contacts,panel;host:history,candidate";
 }
+/* Optional block reuse for a process that opens many sequential candidates
+ * (model-base, GEO-261 cost). Off unless that process enables it. A reused
+ * block is zeroed after its two Worlds, as calloc left it; the constructor
+ * overwrites both Worlds from live before anything reads them. */
+#define APP_WORLD_CANDIDATE_POOL_MAX 4
+static bool g_app_world_candidate_pool_enabled;
+static AppWorldCandidate *g_app_world_candidate_pool[APP_WORLD_CANDIDATE_POOL_MAX];
+static size_t g_app_world_candidate_pool_count;
 static void app_world_candidate_destroy(AppWorldCandidate *candidate)
-{if(candidate){app_candidate_destroy(candidate->control);free(candidate);}}
+{
+    if(!candidate)return;
+    app_candidate_destroy(candidate->control);
+    if(g_app_world_candidate_pool_enabled&&g_app_world_candidate_pool_count<APP_WORLD_CANDIDATE_POOL_MAX)
+        g_app_world_candidate_pool[g_app_world_candidate_pool_count++]=candidate;
+    else free(candidate);
+}
+static AppWorldCandidate *app_world_candidate_alloc(void)
+{
+    if(!g_app_world_candidate_pool_enabled||!g_app_world_candidate_pool_count)
+        return calloc(1,sizeof(AppWorldCandidate));
+    AppWorldCandidate *candidate=g_app_world_candidate_pool[--g_app_world_candidate_pool_count];
+    size_t worlds=offsetof(AppWorldCandidate,after)+sizeof(World);
+    memset((unsigned char*)candidate+worlds,0,sizeof *candidate-worlds);
+    return candidate;
+}
 static AppWorldCandidate *app_world_candidate_create(const World *live)
 {
-    AppWorldCandidate *candidate=calloc(1,sizeof *candidate);
+    AppWorldCandidate *candidate=app_world_candidate_alloc();
     if(!candidate)return NULL;
     candidate->control=app_candidate_create_deferred_sha(&candidate->before,&candidate->after,live,sizeof(World),
         ++g_app_candidate_serial,g_definition_revision,app_world_provider_stamp());

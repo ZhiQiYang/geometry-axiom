@@ -418,12 +418,45 @@ static void model_legacy_snapshot(World *world,const char *canonical)
 
 static bool model_source_fingerprint(const char *path,char hash[65])
 {
+    /* Both fingerprints share one buffer kept for the process (GEO-261 cost):
+     * freeing this 1 MiB block retuned glibc's large-block thresholds, and every
+     * later candidate snapshot then faulted in fresh pages. */
+    static unsigned char *bytes;
     FILE *in=fopen(path,"rb");if(!in)return false;
-    size_t limit=1024u*1024u;unsigned char *bytes=malloc(limit+1);
+    size_t limit=1024u*1024u;if(!bytes)bytes=malloc(limit+1);
     if(!bytes){fclose(in);return false;}
     size_t size=fread(bytes,1,limit+1,in);bool ok=!ferror(in)&&size<=limit;
     if(ok)geo_sha256(bytes,size,hash);
-    free(bytes);fclose(in);return ok;
+    fclose(in);return ok;
+}
+
+/* GEO-261 cost: read the scene through one owned H candidate, the same file
+ * replay frame the bridge's scene import uses (app_scene_replay_file, B).
+ * Lines the frame admits replay in the owner's after with one World backup;
+ * every other line keeps its own inner candidate, preview and diagnostics.
+ * The closing validation, seal and publication of the owner are unchanged.
+ * Owner allocation failure keeps the original per-line parse. */
+static bool model_load_evaluate(void *after,GeoEvalContext *sources,void *opaque)
+{
+    (void)sources;const char *path=opaque;
+    ReferencePreview *saved=malloc(sizeof *saved);
+    if(!saved){scene_error(path,0,"Cannot allocate scene import candidate");return false;}
+    memset(after,0,sizeof(World));
+    *saved=g_preview;memset(&g_preview,0,sizeof g_preview);
+    uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
+    const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    bool ok=app_scene_replay_file(path,after);
+    app_world_candidate_destroy(g_preview.transaction);g_preview=*saved;
+    g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
+    return ok;
+}
+static bool model_parse_scene(const char *path,World *world)
+{
+    AppWorldCandidate *owner=app_world_candidate_create(world);
+    if(!owner)return parse_scene_file(path,world);
+    bool ok=app_world_candidate_evaluate(owner,model_load_evaluate,(void*)path)==GEO_CANDIDATE_OK&&
+        app_world_candidate_seal(owner)&&app_world_candidate_publish(owner,world,false);
+    app_world_candidate_destroy(owner);return ok;
 }
 
 int main(int argc, char **argv)
@@ -438,7 +471,8 @@ int main(int argc, char **argv)
     /* One process-owned World; nested transactions retain the 16 MiB stack budget. */
     static World world;
     memset(&world,0,sizeof world);
-    if (!parse_scene_file(path, &world)) {
+    g_app_world_candidate_pool_enabled=true;
+    if (!model_parse_scene(path, &world)) {
         const char *why = scene_last_error();
         capacity = strstr(why, "超過上限") || strstr(why, "capacity exceeded") || strstr(why, "CAPACITY");
         if (!why[0]) why = "Scene failed legacy validation, including required placement of every timber.";
