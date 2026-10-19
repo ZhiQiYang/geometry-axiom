@@ -31,6 +31,7 @@ from __future__ import annotations
 import argparse
 import ast
 import datetime
+import fnmatch
 import hashlib
 import json
 import os
@@ -255,20 +256,31 @@ def _write_json_atomic(path: Path, data):
             temporary.unlink(missing_ok=True)
 
 
+SHARED_SCAN_PATTERNS = ('*.c', '*.h', '*.inc')
+
+
 def _scan_shared():
-    """Files every native binary depends on (by #include of the core)."""
+    """Files every native binary depends on (by #include of the core).
+
+    Same entries as one ``rglob`` per pattern with the skip-directory filter,
+    which every bridge run repeated twelve times: each tree is walked once,
+    skip directories are pruned instead of listed, names (files and
+    directories alike, as rglob yields both) match with the platform case
+    rule of pathlib, and links to directories are listed but not descended.
+    """
     files = [ROOT / 'current_geometry.c']
     for pattern in ('*.h', '*.inc'):
         files += sorted(ROOT.glob(pattern))
     for top in ('geometry-core', 'geometry-web', 'geometry-app', 'geometry-templates'):
-        patterns = ('*.c', '*.h', '*.inc')
-        base = ROOT / top
-        for pattern in patterns:
-            for f in base.rglob(pattern):
-                rel_parts = f.relative_to(base).parts[:-1]
-                if any(part in EXTRA_SCAN_SKIP_DIRS for part in rel_parts):
-                    continue
-                files.append(f)
+        found = {pattern: [] for pattern in SHARED_SCAN_PATTERNS}
+        for directory, dirnames, filenames in os.walk(ROOT / top):
+            dirnames[:] = [name for name in dirnames if name not in EXTRA_SCAN_SKIP_DIRS]
+            for name in (*dirnames, *filenames):
+                for pattern in SHARED_SCAN_PATTERNS:
+                    if fnmatch.fnmatch(name, pattern):
+                        found[pattern].append(Path(directory, name))
+        for pattern in SHARED_SCAN_PATTERNS:
+            files += found[pattern]
     return files
 
 

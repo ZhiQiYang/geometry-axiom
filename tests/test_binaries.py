@@ -645,6 +645,78 @@ class BinaryFreshnessTests(unittest.TestCase):
         run.assert_not_called()
 
 
+def rglob_shared_reference():
+    """The pre-GEO-261-cost scan, kept verbatim as the oracle for _scan_shared."""
+    files = [binaries.ROOT / 'current_geometry.c']
+    for pattern in ('*.h', '*.inc'):
+        files += sorted(binaries.ROOT.glob(pattern))
+    for top in ('geometry-core', 'geometry-web', 'geometry-app', 'geometry-templates'):
+        base = binaries.ROOT / top
+        for pattern in ('*.c', '*.h', '*.inc'):
+            for f in base.rglob(pattern):
+                rel_parts = f.relative_to(base).parts[:-1]
+                if any(part in binaries.EXTRA_SCAN_SKIP_DIRS for part in rel_parts):
+                    continue
+                files.append(f)
+    return files
+
+
+class SharedScanTests(unittest.TestCase):
+    """_scan_shared runs before every bridge call; its file set is the fingerprint input."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix='binary-shared-scan-')
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        p = patch.object(binaries, 'ROOT', self.root)
+        p.start()
+        self.addCleanup(p.stop)
+        for name in ('current_geometry.c', 'root.h', 'root.inc', 'root.c', 'notes.txt',
+                     'geometry-core/a.c', 'geometry-core/sub/b.h', 'geometry-core/sub/deep/c.inc',
+                     'geometry-core/vendor/skipped.c', 'geometry-core/sub/node_modules/skipped.h',
+                     'geometry-web/__pycache__/skipped.inc', 'geometry-web/.git/skipped.c',
+                     'geometry-web/web_bridge.c', 'geometry-web/readme.md', 'geometry-web/vendorish/kept.c',
+                     'geometry-app/native/UPPER.C', 'geometry-app/native/mixed.Inc',
+                     'geometry-templates/woodworking/native/dir.c/inner.h',
+                     'geometry-templates/woodworking/native/.hidden.inc',
+                     'geometry-templates/woodworking/native/members.c.txt'):
+            target = self.root / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(b'x\n')
+        if os.name != 'nt':
+            os.symlink(self.root / 'geometry-core/a.c', self.root / 'geometry-core/link.c')
+            os.symlink(self.root / 'geometry-core/sub', self.root / 'geometry-core/linkdir')
+            os.symlink(self.root / 'geometry-core/sub', self.root / 'geometry-core/linkdir.inc')
+
+    def test_shared_scan_matches_the_per_pattern_rglob_inventory(self):
+        expected = sorted(map(str, rglob_shared_reference()))
+        actual = sorted(map(str, binaries._scan_shared()))
+        self.assertEqual(expected, actual)
+        self.assertIn(str(self.root / 'geometry-templates/woodworking/native/dir.c'), actual)
+        self.assertNotIn(str(self.root / 'geometry-core/vendor/skipped.c'), actual)
+        self.assertIn(str(self.root / 'geometry-web/vendorish/kept.c'), actual)
+
+    def test_repository_scan_and_fingerprint_match_the_rglob_inventory(self):
+        real = Path(__file__).resolve().parents[1]
+        with patch.object(binaries, 'ROOT', real):
+            self.assertEqual(sorted(map(str, rglob_shared_reference())), sorted(map(str, binaries._scan_shared())))
+
+    def test_shared_scan_walks_each_tree_once_without_rglob(self):
+        walks = []
+        walk = os.walk
+
+        def counted(top, *args, **kwargs):
+            walks.append(Path(top))
+            return walk(top, *args, **kwargs)
+
+        def refuse(*args, **kwargs):
+            raise AssertionError('shared scan must not repeat one rglob per pattern')
+        with patch.object(binaries.os, 'walk', side_effect=counted), patch.object(Path, 'rglob', refuse):
+            binaries._scan_shared()
+        self.assertEqual([self.root / top for top in ('geometry-core', 'geometry-web', 'geometry-app', 'geometry-templates')],
+                         walks)
+
+
 if __name__ == '__main__':
     unittest.main()
 
