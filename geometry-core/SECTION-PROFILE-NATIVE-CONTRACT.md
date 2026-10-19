@@ -209,7 +209,7 @@ native 組另須重編 binary 與基準線不同；model 組只變異 Python 製
 
 2026-10-11 審查後，SPM41 改為在 `sp_outside_regions` 的計數回傳丟掉恰一片正面積差集（`return n>1?n:0;`），保留 I44 具名反例及精確 outsideRegions 斷言。此單點故障不依賴 `poly_contains_rect` 是否已修正；新收據與來源閉包見 [雲端複核導讀](../tests/release-evidence/20261011-pr182-cloud-review/README.md)。舊 42 例收據不當成修改後全表已重跑。
 
-後續裁判複核發現整份 log 搜尋會借用 traceback 原碼或其他方法的 cause。現行 child runner 透過 unittest `addFailure`／`addError`／`addSubTest` 保存具名方法、子例身分、完整例外型別及 `str(exception)`；只匹配同一筆指定方法的終端例外。SPM38／SPM40 明列 `modeling.common.ModelError`，其他 ERROR 不算 killed。缺漏、重複、格式錯誤、與實際 exit／unittest 計數不符都受阻；原 traceback 另存，不能替代結構化例外。此更正不把舊 ERROR 改稱 FAIL，也不證明歷史整份 log 裁判的所有判定都有效。
+後續裁判複核發現整份 log 搜尋會借用 traceback 原碼或其他方法的 cause。現行 child runner 透過 unittest `addFailure`／`addError`／`addSubTest` 保存具名方法、子例身分、完整例外型別及 `str(exception)`；只匹配同一筆指定方法的終端例外。SPM38／SPM40 明列 ModelError 的實際定義身分（GEO-261 起為 H 的 `geometry_app.model_common.ModelError`；`modeling.common` 只是 re-export 同一個類別的 facade，收集器記錄的是定義模組而不是 import 別名），其他 ERROR 不算 killed。缺漏、重複、格式錯誤、與實際 exit／unittest 計數不符都受阻；原 traceback 另存，不能替代結構化例外。此更正不把舊 ERROR 改稱 FAIL，也不證明歷史整份 log 裁判的所有判定都有效。
 
 #### 歷史 --explore 實測：逐案例紅燈與提案 AC16 的差異
 
