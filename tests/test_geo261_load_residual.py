@@ -23,7 +23,7 @@ class LoadResidual(unittest.TestCase):
         cls.exe = cls.compile("baseline")
 
     @classmethod
-    def compile(cls, name, invalidate=True, dependencies=True):
+    def compile(cls, name, invalidate=True, dependencies=True, collection_state=True):
         build = cls.build
         world_path = ROOT / "geometry-app/native/world_validation.inc"
         world = includes(world_path.read_text(encoding="utf-8"), world_path)
@@ -46,10 +46,26 @@ class LoadResidual(unittest.TestCase):
         references = references.replace(sources_path.as_posix(), sources_copy.as_posix())
         references_copy = build.work / (name + "-references.inc")
         references_copy.write_text(references, encoding="utf-8")
+        contact_path = ROOT / "geometry-templates/woodworking/native/contact_sources.c"
+        contact = includes(contact_path.read_text(encoding="utf-8"), contact_path)
+        if not collection_state:
+            start = contact.index("if(q->collection&&geo_eval_node_at(")
+            end = contact.index("{", start) + 1
+            contact = contact[:start] + "if(q->collection){" + contact[end:]
+            contact = contact.replace("collection=*node.value;", "collection=(GeoSourceValue){.kind=GEO_SOURCE_DEFINITION,.as.definition={wood_contact_collection_schema,q->collection,q->collection_size}};")
+        contact_copy = build.work / (name + "-contact.c")
+        contact_copy.write_text(contact, encoding="utf-8")
+        unity_path = ROOT / "geometry-app/native/woodworking_unity.inc"
+        unity = includes(unity_path.read_text(encoding="utf-8"), unity_path)
+        assert unity.count(contact_path.as_posix()) == 1
+        unity = unity.replace(contact_path.as_posix(), contact_copy.as_posix())
+        unity_copy = build.work / (name + "-woodworking.inc")
+        unity_copy.write_text(unity, encoding="utf-8")
         geometry_path = ROOT / "current_geometry.c"
         geometry = includes(geometry_path.read_bytes().decode("utf-8"), geometry_path)
         geometry = geometry.replace(world_path.as_posix(), world_copy.as_posix())
         geometry = geometry.replace(references_path.as_posix(), references_copy.as_posix())
+        geometry = geometry.replace(unity_path.as_posix(), unity_copy.as_posix())
         geometry_copy = build.work / (name + "-geometry.c")
         geometry_copy.write_text(geometry, encoding="utf-8")
         harness = (ROOT / "tests/geo261_load_residual_harness.c").read_text(encoding="utf-8")
@@ -77,6 +93,18 @@ class LoadResidual(unittest.TestCase):
 
     def test_second_consumer_retains_placement_and_pose_edges_and_sealed_lookup(self):
         self.passes("consumers")
+
+    def test_contact_query_reset_and_re_registration_evaluates_collection_in_order(self):
+        self.passes("collection-reset")
+
+    def test_collection_cache_without_node_validation_reports_reset_state(self):
+        self.passes("collection-reset")
+        exe = self.compile("unvalidated-collection", collection_state=False)
+        result = self.case("collection-reset", exe)
+        self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+        self.assertIn("ASSERT:reset-collection-must-be-evaluated ", result.stderr)
+        print("集合節點未驗證突變：exit=1；" + next(s for s in result.stderr.splitlines() if "ASSERT:reset-" in s), flush=True)
+        self.passes("collection-reset")
 
     def test_never_invalidate_mutant_reports_stale_footprint(self):
         self.passes("move-delete")

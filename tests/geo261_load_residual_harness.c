@@ -113,6 +113,41 @@ static bool consumer_scenario(World *world)
     GeoEvalContext *owned=ctx.sources;
     reference_sources_dispose(&ctx);geo_eval_destroy(owned);g_reference_active=previous;g_active_app_candidate=owner;return true;
 }
+static bool collection_facts(void *user,GeoEvalContext *graph,const WoodContactSourceRequest *request,WoodContactSourceFacts *out)
+{
+    (void)user;(void)graph;(void)request;memset(out,0,sizeof *out);out->region_count=1;
+    WoodBoundaryRegion *region=&out->regions[0];region->outline.count=4;
+    region->outline.v[0]=(GeoPoint2){0,0};region->outline.v[1]=(GeoPoint2){1000,0};
+    region->outline.v[2]=(GeoPoint2){1000,1000};region->outline.v[3]=(GeoPoint2){0,1000};
+    for(unsigned i=0;i<4;++i)region->outline.fixity[i]=WOOD_EDGE_FIXED;
+    return true;
+}
+static bool collection_reset_scenario(void)
+{
+    GeoEvalContext *graph=geo_eval_create(1000,0);REQUIRE("collection-graph",graph);
+    WoodContactSources *sources=wood_contact_sources_create(graph,80,collection_facts,NULL);
+    REQUIRE("collection-provider",sources);WoodContactSourceRequest request={1,false,NULL};WoodStopFace faces[32];size_t count;
+    REQUIRE("initial-collection",wood_contact_sources_collect(sources,&request,faces,32,&count)&&count>1);
+    GeoSourceProvider provider=*geo_eval_provider_at(graph,0);char name[80],fingerprint[80];
+    snprintf(name,sizeof name,"%s",provider.name_space);snprintf(fingerprint,sizeof fingerprint,"%s",provider.implementation_fingerprint);
+    provider.name_space=name;provider.implementation_fingerprint=fingerprint;
+    REQUIRE("collection-reset",geo_eval_reset(graph)&&geo_eval_register(graph,&provider));
+    WoodContactSourceKey key;GeoSourceValue value;
+    REQUIRE("feature-after-reset",geo_eval_source(graph,wood_contact_source_ref(80,WOOD_CONTACT_SOURCE_FEATURE,1,0,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+    REQUIRE("hint-must-match-key",geo_eval_source(graph,wood_contact_source_ref(80,WOOD_CONTACT_SOURCE_FEATURE,1,1,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+    GeoSourceRef collection=wood_contact_source_ref(80,WOOD_CONTACT_SOURCE_COLLECTION,1,0,&key);GeoSourceNodeView node;
+    REQUIRE("reset-collection-must-be-evaluated",geo_eval_node_at(graph,find_node(graph,collection),&node)&&node.state==GEO_NODE_VALID&&node.value);
+    REQUIRE("reset-insertion-order",geo_eval_node_count(graph)==3&&node.source.key_size==17&&find_node(graph,collection)==1);
+    REQUIRE("reset-feature-edge",geo_eval_edge_count(graph)==2);
+    REQUIRE("second-reset",geo_eval_reset(graph)&&geo_eval_register(graph,&provider));
+    GeoSourceDescriptor descriptor;
+    REQUIRE("describe-before-feature",geo_eval_describe(graph,collection,&descriptor)==GEO_SOURCE_OK);
+    REQUIRE("described-node-still-needs-evaluation",geo_eval_node_at(graph,0,&node)&&node.state==GEO_NODE_NEW&&!node.value);
+    REQUIRE("feature-after-description",geo_eval_source(graph,wood_contact_source_ref(80,WOOD_CONTACT_SOURCE_FEATURE,1,0,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+    REQUIRE("described-collection-evaluated",geo_eval_node_at(graph,0,&node)&&node.state==GEO_NODE_VALID&&node.value);
+    REQUIRE("described-insertion-order",geo_eval_node_count(graph)==2&&geo_eval_edge_count(graph)==1);
+    REQUIRE("reset-seal",geo_eval_seal(graph));wood_contact_sources_destroy(sources);geo_eval_destroy(graph);return true;
+}
 static bool scenario(void *after,GeoEvalContext *graph,void *opaque)
 {
     (void)graph;(void)opaque;World *world=after;
@@ -123,6 +158,9 @@ static bool scenario(void *after,GeoEvalContext *graph,void *opaque)
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;test_case=argv[1];
+    if(!strcmp(test_case,"collection-reset")){
+        bool ok=collection_reset_scenario();if(ok)printf("PASS %s\n",test_case);return ok?0:1;
+    }
     AppWorldCandidate *candidate=app_world_candidate_create(&live);if(!candidate)return 2;
     bool ok=app_world_candidate_evaluate(candidate,scenario,NULL)==GEO_CANDIDATE_OK;
     if(ok&&strcmp(test_case,"consumers"))ok=app_world_candidate_seal(candidate)&&app_world_candidate_publish(candidate,&live,false);
