@@ -1,0 +1,73 @@
+二進位輸出目錄：/tmp/geometry-tests
+[build] 只建置 stale/missing：bridge, core, integrity
+  bridge：重建（來源指紋不符（exe 建於 2026-10-20T08:06:19+00:00，指紋 80ab5af986… ≠ 現在 d7bf367c07…）；變動：current_geometry.c, geometry-app/native/reference_sources.inc, geometry-app/native/world_validation.inc, geometry-core/model_base.c 等 6 個檔）…
+  core：重建（來源指紋不符（exe 建於 2026-10-20T08:06:37+00:00，指紋 ad487a108c… ≠ 現在 3f382b268d…）；變動：current_geometry.c, geometry-app/native/reference_sources.inc, geometry-app/native/world_validation.inc, geometry-core/model_base.c 等 6 個檔）…
+  integrity：重建（來源指紋不符（exe 建於 2026-10-20T08:07:06+00:00，指紋 a533c44f64… ≠ 現在 e1d646a783…）；變動：current_geometry.c, geometry-app/native/reference_sources.inc, geometry-app/native/world_validation.inc, geometry-core/model_base.c 等 6 個檔）…
+  bridge     built          建好 /tmp/geometry-tests/bridge
+  core       built          建好 /tmp/geometry-tests/core
+  integrity  built          建好 /tmp/geometry-tests/integrity
+[binaries]
+  bridge     fresh    來源與 binary SHA-256 相符（建於 2026-10-20T12:48:37+00:00）
+  core       fresh    來源與 binary SHA-256 相符（建於 2026-10-20T12:48:56+00:00）
+  integrity  fresh    來源與 binary SHA-256 相符（建於 2026-10-20T12:49:32+00:00）
+[環境] CC=未設定（繼承自外殼；僅影響 binaries.py 在非 Windows 的編譯）
+[環境] 已清除外殼繼承的 GEOMETRY_*：（無）
+[環境] run_all 設給子行程的 GEOMETRY_*：GEOMETRY_ENGINEERING_BRIDGE、GEOMETRY_TEST_BRIDGE、GEOMETRY_TEST_CORE
+[1/8] c:integrity …
+[2/8] core:run_tests …
+[3/8] py:test_bridge_integrity …
+[4/8] py:test_geo261_assembly_graph_product …
+[5/8] py:test_geo261_candidate_cache …
+[6/8] py:test_geo261_graph_product …
+[7/8] py:test_geo261_load_residual …
+[8/8] py:test_geo261_source_index …
+
+suite                                  測試數  pass  fail  skip     秒  備註
+------------------------------------------------------------------------
+c:integrity                               432   432     0     0   12.2  C 檢查點數（非 test 級）
+core:run_tests                            165   165     0     0   21.2
+py:test_bridge_integrity                   24    24     0     0   50.0
+py:test_geo261_assembly_graph_product       4     4     0     0   11.8
+py:test_geo261_candidate_cache             18    18     0     0    4.1
+py:test_geo261_graph_product                5     5     0     0    9.9
+py:test_geo261_load_residual                5     5     0     0   12.8
+py:test_geo261_source_index                14    14     0     0    4.6
+------------------------------------------------------------------------
+合計(已執行、有計數者)                    667   667     0     0  126.8
+未納入                                      -     -     -     -      -  需 Chrome，另行執行：geometry-web/cdp_test.js、geometry-web/space_model_test.js
+必要 owner／browser 整合與模組驗證另驗（不計入上述 pass/skip）：
+  tests/test_issue123_create_feedback_browser.py：Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite；獨立執行，本 aggregate 未驗。
+  tests/integration/issue77_attachment_owner.js：5項 required；source-rooms owner 接口未實作時 exit3/pending_implementation，不是環境 skip或pass。
+  tests/scenario_browser_check.cjs：Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)；獨立執行，本 aggregate 未驗。
+  tests/test_issue77_browser.js：Required real app/native/Chromium room acceptance; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+  tests/test_issue77_exit_browser.js：Required real app/native/Chromium room draft-exit gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+  tests/test_issue77_recovery_browser.js：Required real app/native/Chromium room recovery gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+  tests/test_issue77_remove_browser.js：Required real app/native/Chromium room unlink/removal gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。
+  tests/test_scenario_grid_interface.js：Required real GridDraft owner-validator compatibility; PR104 is not on main; execute with actual owner validator, never count missing-injection skip as pass (INTEGRATION-GATES.md)；獨立執行，本 aggregate 未驗。
+  tests/k2a_drafts_browser.cjs：27 real 1280/390 collection continuation, source repin/cancel and lost save checks required；本 aggregate 未驗。
+  tests/k2a_native_browser.cjs：42 actual native confirmation/deletion receipts, history and permanent lost browser owner checks required；本 aggregate 未驗。
+  tests/k2a_source_repin_browser.cjs：14 explicit binding source selection, stale cancel and permanent same-ID lost rejection checks required；本 aggregate 未驗。
+  tests/k2a_zip_browser.cjs：89 true ZIP and cold isolated native reopen including permanent lost; distinct service sessions required checks required；本 aggregate 未驗。
+  tests/k2a_rule_repin_browser.cjs：35 actual D19a rule changed/deleted repin with valid/invalid raw, cancellation and close preservation checks required；本 aggregate 未驗。
+  tests/room_multi_candidate_browser.js：34 real same-page multiroom import/calibration/select/review/accept/park/save/new/Open; explicit late Worker and lost-response injections checks required；本 aggregate 未驗。
+  tests/test_section_profile_browser.js：68 real desktop/390 Q38 authoring, typed sources, exact models, source impact/cancel, placement conversion, shared history and /16 Save/Open checks required；本 aggregate 未驗。
+  tests/integration/q38_save_roundtrip.py：18 native-authored complete section fixture; real download/fresh-browser chooser, full World and exact mesh oracle; explicit download fallback, not OS picker checks required；本 aggregate 未驗。
+  tests/integration/model_library_history_browser.py：35 real model-library/native Undo, Web Locks, drafts and explicit late-owner injections checks required；本 aggregate 未驗。
+  tests/integration/save_roundtrip_acceptance.cjs：33 real form/native/model/download/file-chooser roundtrip and explicit save-failure injection checks required；本 aggregate 未驗。
+  tests/rule-case-workbench-browser.cjs：91 standalone component/native checks required；本 aggregate 未驗。
+  tests/test_rule_case_app_browser.js：76 formal app/native/ZIP/history checks required；本 aggregate 未驗。
+  tests/test_rule_case_app_races.js：30 formal app/native/context races checks required；本 aggregate 未驗。
+  tests/room_outline_keyboard_browser.js：396 real keyboard/click parity; synthetic composition and stale DOM guards checks required；本 aggregate 未驗。
+  tests/room_outline_acceptance_browser.js：253 formal room app/PDF-image/UI/ZIP/model checks required；本 aggregate 未驗。
+  tests/room_outline_pan_browser.js：32 real input/native preservation; API fixture and injected pointercancel checks required；本 aggregate 未驗。
+  tests/room_outline_worker_browser.js：78 native Worker/UI invalidation with injected late-consumer delivery checks required；本 aggregate 未驗。
+  geometry-web/feedback_resize_observer_test.js：38 real ResizeObserver/error/manual-report events; owned fresh/root/source/runtime identity required checks required；本 aggregate 未驗。
+  tests/test_grid_rule_reader_browser.js：34 formal app/native/grid/ZIP checks required；本 aggregate 未驗。
+  geometry-web/evidence_links_browser_check.js：67 independent injected-backend adapter checks required；本 aggregate 未驗。
+  geometry-web/evidence_links_integration_test.js：110 formal app/PDF/ZIP/history checks required；本 aggregate 未驗。
+  geometry-web/grid_raw_provenance_browser_test.py：207 formal raw enum/pin provenance, ZIP cold reopen, explicit correction and native Undo/Redo checks required；本 aggregate 未驗。
+
+==== 部分／示範執行，不可當完整驗收 ====
+使用了：--only py:test_geo261_source_index --only py:test_geo261_candidate_cache --only py:test_geo261_graph_product --only py:test_geo261_assembly_graph_product --only py:test_bridge_integrity --only c:integrity --only core:run_tests --only py:test_geo261_load_residual
+
+exit 0：所選 suite 沒有 fail、沒有環境問題、沒有可避免的 skip（只代表所選範圍，沒選到的沒跑）

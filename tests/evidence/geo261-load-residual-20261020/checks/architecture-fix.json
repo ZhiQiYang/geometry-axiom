@@ -1,0 +1,15 @@
+{
+  "name": "architecture-fix",
+  "command": [
+    "python3",
+    "-B",
+    "tests/architecture_contract.py",
+    "--root",
+    ".",
+    "--manifest",
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "stack_bytes": 16777216,
+  "exit": 0
+}

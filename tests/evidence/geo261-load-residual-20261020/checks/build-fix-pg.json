@@ -1,0 +1,17 @@
+{
+  "command": [
+    "gcc",
+    "-std=c11",
+    "-O1",
+    "-fno-inline",
+    "-pg",
+    "/workspace/geometry-axiom/geometry-web/web_bridge.c",
+    "-o",
+    "/tmp/geo261-residual/fix-pg/bridge",
+    "-lm"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "exit": 0,
+  "stdout": "",
+  "stderr": ""
+}

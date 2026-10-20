@@ -1,0 +1,18 @@
+{
+  "name": "sanitizer-build",
+  "command": [
+    "gcc",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "tests/geo261_load_residual_harness.c",
+    "-o",
+    "/tmp/geo261-residual-sanitizer",
+    "-lm"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "stack_bytes": 16777216,
+  "exit": 0
+}

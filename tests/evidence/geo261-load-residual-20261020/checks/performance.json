@@ -1,0 +1,17 @@
+{
+  "name": "performance",
+  "command": [
+    "python3",
+    "/tmp/geo261-residual-tools.py",
+    "perf",
+    "/workspace/geometry-axiom",
+    "/tmp/geo261-residual",
+    "--evidence",
+    "/workspace/geometry-axiom/tests/evidence/geo261-load-residual-20261020"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "stack_bytes": 16777216,
+  "started": "2026-10-20T12:52:30Z",
+  "exit": 0,
+  "finished": "2026-10-20T12:52:53Z"
+}
