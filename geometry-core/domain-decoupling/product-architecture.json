@@ -2641,7 +2641,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+      "sha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
       "hashMode": "lf"
     },
     {
@@ -3055,7 +3055,7 @@
     {
       "path": "geometry-web/grid_inspector_rename_test.js",
       "reason": "Dedicated acceptance/test driver grid_inspector_rename_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e",
+      "sha256": "8cc65bb4b187ae7e49d4be83561ed1a4143618e9e229f29aa3d310da9770cab6",
       "hashMode": "lf"
     },
     {
@@ -3644,6 +3644,60 @@
       "path": "geometry-core/framing-template/oracle/selftest.py",
       "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
       "sha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "reason": "GEO-261 收尾的專用 P-189 三方載入效能驗證工具；按指定 Git 版本與場景產生器建置隔離 bridge，保存 dump 位元組等價、交錯時間、完整來源 SHA 與裁判自證收據。這是外部驗收與報告工具，不是幾何核心、木工模板或宿主執行期來源。",
+      "sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
+      "reason": "P-189 初始建置階段實際執行工具的完整原始來源封存，raw SHA-256 為 0ed8674c90dc670b37a63a91187f633d7cf11190bb9584a7081dd6a5358dbc7c；只供對照原建置收據與重現當時行為。這是歷史驗收工具版本，不是本次最新正式量測器，不由產品執行期依賴，也不將新版本驗收結果追認為此舊版實跑。",
+      "sha256": "0ed8674c90dc670b37a63a91187f633d7cf11190bb9584a7081dd6a5358dbc7c",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
+      "reason": "P-189 dump 等價階段實際執行工具的完整原始來源封存，raw SHA-256 為 c10eea2b116f2595a0a5dcab2dbdbd76d09c5e41e5339102ab109bc1e32049d2；只供對照原等價收據與重現當時行為。這是歷史驗收工具版本，不是本次最新正式量測器，不由產品執行期依賴，也不把不同階段工具雜湊混稱同一版本。",
+      "sha256": "c10eea2b116f2595a0a5dcab2dbdbd76d09c5e41e5339102ab109bc1e32049d2",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
+      "reason": "GEO-261 收尾的專用 P52 診斷與突變驗證工具；從明示工作樹擷取原 CDP helpers 及 P52，記錄點擊、API、references 與版本雜湊，並可於記憶體注入／撤回等待修正及延遲控制。只由獨立驗收命令啟動，不由產品入口或服務載入，不改寫產品來源。",
+      "sha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
+      "reason": "GEO-261 收尾的專用 P72B 導航診斷與突變驗證工具；擷取既有 CDP 啟動器並執行完整 50 項 P72B 驗收，只於記憶體安裝／撤回導航等待，透過暫停真正 reload 文件與 app.js 請求重現舊頁 ready 誤判及候選新文件等待。raw SHA-256 為 11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae；只由隔離驗收命令啟動，不是產品或服務入口，不被產品來源依賴。",
+      "sha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
+      "reason": "交接 commit 59796b1af9259eb23d30134c2ce5a56317a06091 的 Q38 十二項對照突變定義，保留原始 bytes 供證據重現；由隔離驗收根目錄載入 tests/section_profile_mutation_check.py 並沿用其 baseline 與裁判。其歷史註解並非產品承諾；本次明列登記為測試工具，不允許產品來源依賴。",
+      "sha256": "1379e24d336dcd7e9b68ab205c9acbe703920c733e404ce0f6d67b68f28e3010",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
+      "reason": "GEO-261 收尾的有限架構收據重產工具；獨立枚舉完整來源、核對指定 Git commit、保留舊四檔，僅更新明列既有 exclusion digest 或本工具目錄內明列的新 exclusion，實跑三條架構驗收與撤回／依賴負控制後產出新四檔。它是外部稽核工具，不是 K／W／H 產品來源，也不提供執行期能力。",
+      "sha256": "80ecea0cd2d1189f244552d3e92ffc1a81335424410cf4557bac68cd25d15e86",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
+      "reason": "GEO-261 收尾的 Q38 十二項交接控制調度與核對工具；呼叫明示 controls 腳本及既有真正裁判，分別保留原始裁判結束碼與預期結果核對結束碼，核對 baseline、完整控制集合及工作樹還原。只服務驗收，不構成產品功能或執行入口。",
+      "sha256": "b7e7430e53d157f6a82050417be7a9f8d77bd50c1fb5f2f3a34a1ba44de8363f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
+      "reason": "GEO-261 收尾的 Q38／§7 專用測試調度器；在明示隔離工作樹呼叫既有 section-profile 與 card-reference 裁判，設定暫存目錄及 stack，保存命令、結束碼、來源 SHA 與工作樹還原狀態。只由驗收命令啟動，不被產品執行期依賴。",
+      "sha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3",
       "hashMode": "lf"
     }
   ],

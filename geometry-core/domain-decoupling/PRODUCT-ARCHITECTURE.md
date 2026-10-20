@@ -16,8 +16,7 @@ runtime import blocking, mutation receipts, browser acceptance, or SSOT checks.
 
 ## Complete inventory and responsibilities
 
-The current inventory contains 601 executable files: 333 owned sources and 268
-individually named exclusions. The five complete roots are `geometry-core`,
+目前清單含 610 個可執行檔案：333 個登記來源與 277 個逐檔排除項目。 The five complete roots are `geometry-core`,
 `geometry-app`, `geometry-templates`, `geometry-web`, and `geometry-guide`.
 `current_geometry.c` is an additional standalone source. The real
 `rule_cases.runtime` imports `tests.binaries`, so `tests/__init__.py` and
@@ -45,9 +44,7 @@ dependency scanning alone cannot prove that every remaining H function is free
 of misplaced domain policy. It must not be cited as that stronger result.
 
 All exclusions have an exact path, individual reason, and SHA-256 using explicitly
-declared CRLF-to-LF normalization. There are 120 historical evidence programs,
-57 other documentation/reproduction/snapshot/GEO-262/framing-template tooling programs, 66 dedicated test drivers,
-and 25 engineering-spec prototype files. The prototype's `AGENTS.md` explicitly
+declared CRLF-to-LF normalization. 前次封存清單的分類為 120 個歷史證據程式、57 個其他文件／重現／快照／GEO-262／framing 工具、66 個專用測試驅動器及 25 個工程規格原型檔；後續明列新增的收尾工具見本報告末尾各次刷新紀錄。 The prototype's `AGENTS.md` explicitly
 states it is not the production application. The manifest has no directory
 exemption. An owned dependency on any excluded file fails. Historical evidence
 and prototype programs have not been certified as active product dependencies.
@@ -355,16 +352,32 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-At the latest sealed source HEAD `96ade86bdb5fbcdad581b36afdd180a96fca7999`, the
-actual CLI scan exits 0 with 333 owned sources, 796 dependency edges and no
-diagnostics. All 18 actual product tests pass with no skips. Independent
-enumeration matches all 601 input hashes, both raw and LF-normalized. The
-generic scanner suite was executed at this HEAD: 205 tests, 204 passed, 0 failed
-and 1 skipped (a skip is not a pass). HEAD and all product, scanner and test raw
-and LF hashes remain fixed throughout this finite refresh.
+本次最新封存來源為 `4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c`。實際 CLI 掃描結束碼為 0，含 333 個登記來源、796 條依賴邊及 0 項診斷。
+通用掃描器測試 205 項：通過 205、略過 0；產品架構測試 18 項：通過 18、略過 0。
+獨立枚舉核對全部 610 個來源的 LF 雜湊與指定 Git commit；來源集合、來源／裁判 bytes 及 HEAD 在每條命令後和封存前均保持一致。
 
 When new provider files are integrated, the root inventory must first fail
 closed, then receive individually reviewed source entries. Re-run the product
 scan and product tests and regenerate the receipt; rerun the generic scanner
 suite if its scanner or test sources changed. Old fingerprints do not certify
 new files or changed sources.
+
+## 2026-10-21 Linux 有限刷新
+
+來源 SHA：`4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c`。本次變更只有以下已審閱的既有排除項目雜湊，以及逐檔明列的收尾驗證工具；既有來源責任分類、來源根目錄、獨立來源名單及守門政策維持既有內容。
+
+- 既有 digest 更新 `geometry-web/cdp_test.js`：已逐字核對 4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c 的差異：既有完整瀏覽器驗收驅動器只將 P52-5 的機會式固定等待改為共用 15000ms 截止時間的 references／交易就緒等待，要求查詢前後 busy 皆為 false，保留原幾何斷言及章節計數；逾時與 API 失敗列出最後狀態。此檔由驗收流程執行，非產品入口。
+- 既有 digest 更新 `geometry-web/grid_inspector_rename_test.js`：已逐字核對 4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c 的差異：既有 P72B 網格檢查器重命名驗收模組新增短 helper，兩處導航復用 cdp_navigation 的新文件 marker、document complete 及應用 ready 等待，避免 reload 後誤把舊頁 ready 當成新頁完成；清理導航 marker 並保留既有 50 項斷言。此檔由 CDP 驅動器載入，非產品入口。
+- 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/p189_verify.py`：GEO-261 收尾的專用 P-189 三方載入效能驗證工具；按指定 Git 版本與場景產生器建置隔離 bridge，保存 dump 位元組等價、交錯時間、完整來源 SHA 與裁判自證收據。這是外部驗收與報告工具，不是幾何核心、木工模板或宿主執行期來源。
+- 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py`：P-189 初始建置階段實際執行工具的完整原始來源封存，raw SHA-256 為 0ed8674c90dc670b37a63a91187f633d7cf11190bb9584a7081dd6a5358dbc7c；只供對照原建置收據與重現當時行為。這是歷史驗收工具版本，不是本次最新正式量測器，不由產品執行期依賴，也不將新版本驗收結果追認為此舊版實跑。
+- 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py`：P-189 dump 等價階段實際執行工具的完整原始來源封存，raw SHA-256 為 c10eea2b116f2595a0a5dcab2dbdbd76d09c5e41e5339102ab109bc1e32049d2；只供對照原等價收據與重現當時行為。這是歷史驗收工具版本，不是本次最新正式量測器，不由產品執行期依賴，也不把不同階段工具雜湊混稱同一版本。
+- 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/p52_probe.js`：GEO-261 收尾的專用 P52 診斷與突變驗證工具；從明示工作樹擷取原 CDP helpers 及 P52，記錄點擊、API、references 與版本雜湊，並可於記憶體注入／撤回等待修正及延遲控制。只由獨立驗收命令啟動，不由產品入口或服務載入，不改寫產品來源。
+- 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/p72_probe.js`：GEO-261 收尾的專用 P72B 導航診斷與突變驗證工具；擷取既有 CDP 啟動器並執行完整 50 項 P72B 驗收，只於記憶體安裝／撤回導航等待，透過暫停真正 reload 文件與 app.js 請求重現舊頁 ready 誤判及候選新文件等待。raw SHA-256 為 11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae；只由隔離驗收命令啟動，不是產品或服務入口，不被產品來源依賴。
+- 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/q38_controls.py`：交接 commit 59796b1af9259eb23d30134c2ce5a56317a06091 的 Q38 十二項對照突變定義，保留原始 bytes 供證據重現；由隔離驗收根目錄載入 tests/section_profile_mutation_check.py 並沿用其 baseline 與裁判。其歷史註解並非產品承諾；本次明列登記為測試工具，不允許產品來源依賴。
+- 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py`：GEO-261 收尾的有限架構收據重產工具；獨立枚舉完整來源、核對指定 Git commit、保留舊四檔，僅更新明列既有 exclusion digest 或本工具目錄內明列的新 exclusion，實跑三條架構驗收與撤回／依賴負控制後產出新四檔。它是外部稽核工具，不是 K／W／H 產品來源，也不提供執行期能力。
+- 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/run_controls.py`：GEO-261 收尾的 Q38 十二項交接控制調度與核對工具；呼叫明示 controls 腳本及既有真正裁判，分別保留原始裁判結束碼與預期結果核對結束碼，核對 baseline、完整控制集合及工作樹還原。只服務驗收，不構成產品功能或執行入口。
+- 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/run_gates.py`：GEO-261 收尾的 Q38／§7 專用測試調度器；在明示隔離工作樹呼叫既有 section-profile 與 card-reference 裁判，設定暫存目錄及 stack，保存命令、結束碼、來源 SHA 與工作樹還原狀態。只由驗收命令啟動，不被產品執行期依賴。
+
+舊 manifest 以 `EXCLUSION_DIGEST` 轉紅；新版掃描及兩套測試均實際重跑。既有 digest 更新逐項撤回時須以目標檔案的 `EXCLUSION_DIGEST`、結束碼 1 拒絕。新增工具逐項移除登記時須以 `SOURCE_UNREGISTERED`、結束碼 1 拒絕；逐項破壞新工具 digest 時須以 `EXCLUSION_DIGEST`、結束碼 1 拒絕；再以實際 H 來源文字於記憶體加入對每個新工具的靜態依賴，須以 `DEPENDENCY_EXCLUDED`、結束碼 1 拒絕。上述是架構清單的突變自證，不冒充產品修正的行為突變自證。
+
+四份舊產物逐位元組保存在外部證據目錄的 `previous/`；新收據記錄舊產物雜湊、原來源 SHA、本次完整輸入閉包、命令、結束碼、略過項及原始日誌雜湊。此處只驗靜態依賴；未執行原生、瀏覽器、Q38、卡片參照或 P-189 驗收，不能由本收據推定那些關卡通過。
