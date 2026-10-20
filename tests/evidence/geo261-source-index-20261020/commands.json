@@ -205,17 +205,17 @@
       "--build"
     ],
     "cwd": "/workspace/geometry-axiom",
-    "exit": null,
-    "status": "執行中"
+    "exit": 1,
+    "seconds": 2252.597982389
   },
   {
     "name": "architecture-compare",
     "command": [
       "cmp",
-      "architecture-base.log",
-      "architecture-fix.log"
+      "/tmp/geo261-source-checks/architecture-base.log",
+      "/tmp/geo261-source-checks/architecture-fix.log"
     ],
-    "cwd": "/tmp/geo261-source-checks",
+    "cwd": "/workspace/geometry-axiom",
     "exit": 0,
     "stdout": ""
   },
@@ -228,5 +228,112 @@
     ],
     "cwd": "/tmp/geo261-source-base",
     "exit": 1
+  },
+  {
+    "name": "product-architecture-base",
+    "command": [
+      "python3",
+      "tests/_unittest_runner.py",
+      "tests/test_product_architecture.py",
+      "--json-out",
+      "/tmp/geo261-source-checks/product-architecture-base.json",
+      "--log",
+      "/tmp/geo261-source-checks/product-architecture-base.log"
+    ],
+    "cwd": "/tmp/geo261-source-base",
+    "exit": 1
+  },
+  {
+    "name": "source-index-final",
+    "command": [
+      "python3",
+      "tests/test_geo261_source_index.py"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "exit": 0,
+    "note": "測試哨兵改為 memcpy 後重跑，7 tests 通過；產品碼相同"
+  },
+  {
+    "name": "sanitizer-build-final",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O1",
+      "-g",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-I",
+      "geometry-core/kernel",
+      "tests/geo261_source_index_harness.c",
+      "-o",
+      "/tmp/geo261-source-checks/source-index-sanitized"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "exit": 0
+  },
+  {
+    "name": "sanitizer-final-nodes",
+    "command": [
+      "/tmp/geo261-source-checks/source-index-sanitized",
+      "nodes"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "exit": 0,
+    "environment": {
+      "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    }
+  },
+  {
+    "name": "sanitizer-final-edges",
+    "command": [
+      "/tmp/geo261-source-checks/source-index-sanitized",
+      "edges"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "exit": 0,
+    "environment": {
+      "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    }
+  },
+  {
+    "name": "sanitizer-final-allocation",
+    "command": [
+      "/tmp/geo261-source-checks/source-index-sanitized",
+      "allocation"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "exit": 0,
+    "environment": {
+      "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    }
+  },
+  {
+    "name": "sanitizer-final-growth",
+    "command": [
+      "/tmp/geo261-source-checks/source-index-sanitized",
+      "growth"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "exit": 0,
+    "environment": {
+      "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    }
+  },
+  {
+    "name": "sanitizer-final-statuses",
+    "command": [
+      "/tmp/geo261-source-checks/source-index-sanitized",
+      "statuses"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "exit": 0,
+    "environment": {
+      "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    }
   }
 ]

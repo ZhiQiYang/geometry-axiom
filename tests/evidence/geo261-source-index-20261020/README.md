@@ -22,7 +22,8 @@
 | `sanitizer-*.log` | ASan／UBSan 編譯與五組案例，全部結束碼 0，沒有 sanitizer 診斷 |
 | [architecture-base.log](architecture-base.log)、[architecture-fix.log](architecture-fix.log) | 皆結束碼 1；`cmp` 結束碼 0、輸出空，只有同一個既有未登記來源診斷 |
 | [gprof-summary.log](gprof-summary.log)、[profile-load.log](profile-load.log) | 新版 N=48 profile；編譯、載入、gprof 結束碼皆 0 |
-| [full.log](full.log) | 完整非瀏覽器 suite 輸出；結果與限制見 PR 正文 |
+| [full.log](full.log) | 完整 224 suite 結束碼 1；5,130 pass、18 個既有架構 setup 阻擋、1 個 Windows GDI 具名平台 skip；另有未計數的突變帳本 stale 紅燈 |
+| `product-architecture-{base,fix}.{json,log}` | base／fix 均有相同的 18 個架構 setup 阻擋，runner 結束碼皆 1 |
 | [mutation-base.log](mutation-base.log)、[mutation-fix.log](mutation-fix.log) | 只讀帳本檢查皆結束碼 1；base 18 筆 stale、fix 75 筆 stale，未重產帳本 |
 
 重跑 A／B（請在沒有其他測試或建置執行時量測）：
