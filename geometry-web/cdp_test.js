@@ -6227,7 +6227,13 @@ async function main() {
     /* 真實放置後核心 footprint 的 cross 範圍 = 帶的範圍 */
     pt48 = await openFace48();
     await click(pt48(2000, 1500).x, pt48(2000, 1500).y);
-    await sleep(400);
+    /* 放置包含多筆非同步指令；畫面靜穩不能代替核心完成，足跡仍按原值驗。 */
+    await cdp.makeSettle({waitForUI,eval_},{tag:'P52-5',timeoutMs:5000})(
+      '角材 3 放置交易已收尾且核心 references 已回傳幾何',
+      `(async()=>{const refs=await apiRequest('references');
+        if(refs.ok!==true)throw Error('P52-5 references 失敗: '+JSON.stringify(refs));
+        return !oc.busy&&!ReferenceWorkspace.history.group&&
+          (refs.timbers||[]).some(t=>t.id===3&&!!t.geometry);})()`);
     const g = await eval_(`(async()=>{ const refs = await apiRequest('references');
       const t = (refs.timbers || []).find(x => x.id === 3); return t && t.geometry; })()`);
     const fxLo = g && Math.min(g.origin[0], g.origin[0] + g.axes[1][0] * g.A);

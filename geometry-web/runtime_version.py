@@ -38,15 +38,23 @@ def static_catalog(root):
     }
 
 
+def _tracked_suffix(name):
+    # 保留 Path(name).suffix 的已追蹤型別判定，包含 ..py 這類名稱。
+    # 每次新鮮度檢查會完整列舉兩次；不必為了排除副檔名另建 Path。
+    dot = name.rfind('.')
+    return name[dot:] if 0 < dot < len(name) - 1 else ''
+
+
 def static_files(root):
     """One route allowlist for capture, identity and HTTP serving."""
     web = root / 'geometry-web'
     routes = {'/': web / 'index.html', '/index.html': web / 'index.html'}
-    for path in web.iterdir():
-        if path.suffix in {'.js', '.css'} and path.is_file():
-            routes['/' + path.name] = path
+    with os.scandir(web) as entries:
+        for entry in entries:
+            if _tracked_suffix(entry.name) in {'.js', '.css'} and entry.is_file():
+                routes['/' + entry.name] = Path(entry.path)
 
-    def vendor(directory):
+    def vendor(directory, prefix=''):
         try:
             entries = os.scandir(directory)
         except FileNotFoundError:
@@ -54,10 +62,9 @@ def static_files(root):
         with entries:
             for entry in entries:
                 if entry.is_dir(follow_symlinks=False):
-                    vendor(entry.path)
+                    vendor(entry.path, prefix + entry.name + '/')
                 elif entry.is_file():
-                    path = Path(entry.path)
-                    routes['/vendor/' + path.relative_to(web / 'vendor').as_posix()] = path
+                    routes['/vendor/' + prefix + entry.name] = Path(entry.path)
 
     # Match the existing vendor routes, including file symlinks, every suffix
     # and LICENSE files. Directory symlinks were not traversed by rglob either.
@@ -82,7 +89,7 @@ def source_files(root, routes=None):
                 if entry.is_dir(follow_symlinks=False):
                     if entry.name not in SOURCE_EXCLUDES:
                         collect(entry.path)
-                elif Path(entry.name).suffix in SOURCE_SUFFIXES and entry.is_file():
+                elif _tracked_suffix(entry.name) in SOURCE_SUFFIXES and entry.is_file():
                     files.append(Path(entry.path))
 
     for directory in ('geometry-web', 'geometry-core', 'geometry-kernel', 'geometry-app', 'geometry-templates'):
