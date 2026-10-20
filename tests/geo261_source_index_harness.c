@@ -152,7 +152,7 @@ static int nodes_and_seal(void)
     for(size_t i=0;i<MANY+6;++i){GeoSourceDescriptor d;
         REQUIRE("sealed-node",geo_eval_source(ctx,refs[i],GEO_DEPENDENCY_EVALUATE_BEFORE,&value)==GEO_SOURCE_OK);
         REQUIRE("sealed-describe",geo_eval_describe(ctx,refs[i],&d)==GEO_SOURCE_OK);}
-    GeoSourceDescriptor d;memset(&d,0x5a,sizeof d);GeoSourceDescriptor old=d;
+    GeoSourceDescriptor d,old;memset(&d,0x5a,sizeof d);memcpy(&old,&d,sizeof old);
     REQUIRE("sealed-unknown-description",geo_eval_describe(ctx,refs[MANY+6],&d)==GEO_SOURCE_INVALID&&!memcmp(&old,&d,sizeof d));
     REQUIRE("sealed-unevaluated",geo_eval_source(ctx,refs[MANY+6],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_INVALID);
     GeoSourceRef unknown={999,NULL,0};

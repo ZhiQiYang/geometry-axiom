@@ -1,7 +1,7 @@
 # GEO-261 來源圖索引驗收（2026-10-20）
 
 量測與測試的產品 commit：`0636a0867556cf5ade397e995b5a93f53fba7a4b`。
-後續 commit 只收錄本目錄的驗收證據；產品碼與已測版本相同。
+後續 commit 僅調整測試哨兵的位元組複製及驗收證據；產品碼與已測版本相同。
 
 - base：`3e600772076465fc65a26ac09055028301c0fb0b`
 - main：`adbaebf9c73ea6801d7b4d5214e4b846b132923b`
@@ -9,7 +9,7 @@
 - 時間採 `perf_counter`，包含 bridge 行程啟停及 `loadfile`；效能樣本不含 `dump`，每次新建 bridge 行程。
 - 量測時沒有並行執行測試或其他建置；三版本每輪輪換順序，各取三次中位數，所有樣本均保留。
 
-詳細語意說明、A–D 的指令／結束碼／輸出摘要、效能表、突變結果與最不確定處，見 [PR 正文](PR.md)。
+詳細語意說明、A–D 的指令／結束碼／輸出摘要、效能表、突變結果與最不確定處，見獨立分支的 [PR_BODY.md](https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-source-index-20261020-prbody/PR_BODY.md)。該分支僅包含這一個檔案，正文不放入修正分支。
 
 | 證據 | 內容 |
 |---|---|
@@ -47,12 +47,14 @@ for case in nodes edges allocation growth statuses; do
 done
 ```
 
-建立指定 base 的 draft PR（需可用的 GitHub API 連線與認證）：
+維護者在本機建立指定 base 的 draft PR：
 
 ```sh
+git fetch origin codex/geo261-source-index-20261020-prbody
+git show origin/codex/geo261-source-index-20261020-prbody:PR_BODY.md > /tmp/geo261-PR_BODY.md
 gh pr create --draft --repo ZhiQiYang/geometry-axiom \
   --base architecture/geo261-integration-20261016 \
   --head codex/geo261-source-index-20261020 \
   --title '修正 GEO-261 來源圖線性搜尋造成的場景載入退化' \
-  --body-file tests/evidence/geo261-source-index-20261020/PR.md
+  --body-file /tmp/geo261-PR_BODY.md
 ```
