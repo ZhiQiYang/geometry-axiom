@@ -99,6 +99,9 @@ requires every root to be COMPLETE and to use `app.model-snapshot` with provider
 fingerprint `geo261-model-snapshot/1`. This H adapter encodes named specs as UTF-8
 `spec:<name>` and other root keys as
 `<kind>:<id>:<slot>:envelope:0` or `<kind>:<id>:<slot>:member:<memberId>`.
-The private native decoder verifies the association-to-key binding before the
-candidate reaches the product runtime. K and W continue to treat keys as opaque;
-there is no configurable bypass or snapshot fallback.
+Each box face key is UTF-8 `<kind>:<id>:face:<legacyFeature>`. Column and beam
+faces are named `-X`, `+X`, `-Y`, `+Y`, `-Z`, `+Z` by local axis and side; timber
+face names must equal that timber's own snapshot `faces[].feature` names.
+The private native decoder verifies the association-to-key and face bindings
+before the candidate reaches the product runtime. K and W continue to treat keys
+as opaque; there is no configurable bypass or snapshot fallback.

@@ -3,7 +3,7 @@
 Requires explicit, registry-verified GEOMETRY_MODEL_BASE and (for finish) a
 GEOMETRY_TEST_BRIDGE built from this checkout. This module never builds a native
 binary. Missing configuration skips; stale configuration fails. A release gate
-must require all ten tests with zero skips. The independent legacy runtime is
+must require all eleven tests with zero skips. The independent legacy runtime is
 only a comparison oracle, never a fallback when the default runtime rejects.
 """
 import base64
@@ -377,7 +377,7 @@ class DefaultNativeIntegration(unittest.TestCase):
                          (caught.exception.status, caught.exception.code, caught.exception.clause))
         self.assertEqual(definitions(scene), original)
 
-    def reject_native_wire(self, value, scene):
+    def reject_native_wire(self, value, scene, code="BASE_SOURCE_BINDING"):
         """Tamper a captured real response only on the negative input path."""
         def process(command, **options):
             self.assertEqual(scene.encode(), Path(command[-1]).read_bytes())
@@ -387,8 +387,49 @@ class DefaultNativeIntegration(unittest.TestCase):
             with self.assertRaises(ModelError) as caught:
                 model_native.load_candidate(scene, executable=self.base)
         self.assertEqual(1, run.call_count)
-        self.assertEqual(("UNSUPPORTED", "BASE_SOURCE_BINDING", "I32"),
+        self.assertEqual(("UNSUPPORTED", code, "I32"),
                          (caught.exception.status, caught.exception.code, caught.exception.clause))
+
+    @staticmethod
+    def box(envelope, kind, identity):
+        return next(root for root in envelope["neutralSources"]["roots"]
+                    if root["slot"] == "solid.box" and (root["kind"], root["id"]) == (kind, identity))
+
+    def test_actual_box_faces_cannot_move_between_or_within_native_boxes(self):
+        rows = (ROOT / "_ax_r12_prefix_beam.scene").read_text(encoding="utf-8").splitlines()
+        boxes = "\n".join([*(row for row in rows if row.startswith(("surface ", "space ", "column ", "beam "))),
+                           "column 3 in 1 at 2500 1000 size 400 400", ""])
+        rectangular, rectangular_candidate, _ = self.capture(boxes)
+        self.assertEqual({("column", 2), ("column", 3), ("beam", 2)},
+                         {(root.kind, root.identity) for root in rectangular_candidate.roots if root.slot == "solid.box"})
+        timber, timber_candidate, _ = self.capture(fixtures.SCENE)
+
+        def swap(first, second, fields):
+            for field in fields:
+                first[field], second[field] = second[field], first[field]
+
+        controls = []
+        changed = deepcopy(rectangular)
+        first, second = self.box(changed, "column", 2), self.box(changed, "column", 3)
+        swap(first, second, ("faces",))
+        controls.append(("faces-between-columns", boxes, rectangular_candidate, changed))
+        changed = deepcopy(rectangular)
+        swap(*self.box(changed, "column", 2)["faces"][:2], ("legacyFeature",))
+        controls.append(("names-within-column", boxes, rectangular_candidate, changed))
+        changed = deepcopy(rectangular)
+        swap(*self.box(changed, "beam", 2)["faces"][:2], ("legacyFeature", "featureKeyBase64"))
+        controls.append(("names-and-keys-within-beam", boxes, rectangular_candidate, changed))
+        changed = deepcopy(timber)
+        swap(*self.box(changed, "timber", 1)["faces"][:2], ("legacyFeature",))
+        controls.append(("names-within-timber", fixtures.SCENE, timber_candidate, changed))
+        for name, scene, candidate, changed in controls:
+            with self.subTest(control=name):
+                # Generic opaque decoding still admits every tampered response.
+                decoded = decode_candidate(json.dumps(changed), source_bytes=scene.encode(),
+                                           execution_identity=self.identity)
+                self.assertEqual({root.association for root in candidate.roots},
+                                 {root.association for root in decoded.roots})
+                self.reject_native_wire(changed, scene)
 
     def test_actual_catalog_covers_every_authored_root_and_rejects_missing_extra(self):
         # Expected identities come from these small authored scenes, not from

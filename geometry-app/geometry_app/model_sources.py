@@ -471,4 +471,36 @@ def _decode_native_candidate(payload, *, source_bytes, execution_identity, snaps
         if (root.kind not in ("placement", "column", "beam", "timber", "spec", "parameter", "profile-run")
                 or root.source.key != expected or sources[root.source.key].status != SourceStatus.COMPLETE):
             _fail("Native root identity disagrees with its complete adapter source.", code="BASE_SOURCE_BINDING")
+    _require_native_box_faces(candidate.roots, snapshot)
     return candidate
+
+
+# This H adapter names rectangular-solid faces by local axis and side.
+_RECTANGULAR_FACES = ("-X", "+X", "-Y", "+Y", "-Z", "+Z")
+
+
+def _require_native_box_faces(roots, snapshot):
+    """Bind every native box face to its own root, local side and legacy name.
+
+    The root binding checks only the box's source key, so faces moved between
+    boxes, or names moved between sides of one box, would otherwise survive.
+    Each face key is UTF-8 ``<kind>:<id>:face:<legacyFeature>``. Column and
+    beam names follow the local axis and side. Timber names are owned by the
+    wood template, so they must equal that solid's own snapshot face names.
+    """
+    timbers = {item["id"]: item.get("faces") for item in snapshot["solids"] if item["kind"] == "timber"}
+    for root in roots:
+        if root.slot != "solid.box":
+            continue
+        if root.kind in ("column", "beam"):
+            named = all(face.legacy_feature == _RECTANGULAR_FACES[2 * face.axis + face.side] for face in root.faces)
+        elif root.kind == "timber":
+            legacy = timbers.get(root.identity)
+            named = (type(legacy) is list
+                     and all(type(face) is dict and type(face.get("feature")) is str for face in legacy)
+                     and sorted(face["feature"] for face in legacy) == sorted(face.legacy_feature for face in root.faces))
+        else:
+            named = False
+        if not named or any(face.feature_key != f"{root.kind}:{root.identity}:face:{face.legacy_feature}".encode("utf-8")
+                            for face in root.faces):
+            _fail("Native box face identity disagrees with its adapter root.", code="BASE_SOURCE_BINDING")

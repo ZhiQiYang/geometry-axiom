@@ -55,10 +55,15 @@ def node(key, kind, value, *, unit="length", status="ok", owner=None, placement=
             "context": context(owner, placement, axis)}, "status": status, "value": value}
 
 
+# The H adapter names column and beam faces by local axis and side.
+RECTANGULAR_FACES = ("-X", "+X", "-Y", "+Y", "-Z", "+Z")
+
+
 def root(key, slot, identity=1, *, kind="fixture", member=None, name=None):
     result = {"kind": kind, "id": identity, "slot": slot, "memberId": member, "name": name, "ref": ref(key)}
     if slot == "solid.box":
-        result["faces"] = [{"axis": a, "side": s, "legacyFeature": f"face-{a}-{s}",
+        result["faces"] = [{"axis": a, "side": s,
+            "legacyFeature": RECTANGULAR_FACES[2 * a + s] if kind in ("column", "beam") else f"face-{a}-{s}",
             "featureKeyBase64": encoded(key + bytes((a, s)))} for a in range(3) for s in range(2)]
     return result
 
@@ -96,7 +101,8 @@ def native_wire(value):
     """Adapt synthetic provider refs to the native H wire, never an oracle.
 
     Snapshot catalogs are authored independently by each fixture. This helper
-    only changes opaque transport refs for mocked process-boundary tests.
+    only changes opaque transport identities, root refs and box face keys, for
+    mocked process-boundary tests; face names stay as each fixture wrote them.
     """
     value = deepcopy(value)
     if value.get("schema") != "geometry-neutral-source-envelope/1":
@@ -120,6 +126,9 @@ def native_wire(value):
     value["neutralSources"] = replace_refs(graph)
     value["neutralSources"]["providers"].append({"namespace": "app.model-snapshot",
         "implementationFingerprint": "geo261-model-snapshot/1"})
+    for item in value["neutralSources"]["roots"]:
+        for face in item.get("faces", ()):
+            face["featureKeyBase64"] = encoded(f'{item["kind"]}:{item["id"]}:face:{face["legacyFeature"]}'.encode())
     return value
 
 
@@ -555,6 +564,77 @@ class NativeRootCatalogTests(unittest.TestCase):
                     invoke(changed)
                 self.assertEqual("BASE_SOURCE_BINDING", error.exception.code)
 
+    def native_load(self, wire):
+        def process(command, **options):
+            self.assertEqual(RAW_SOURCE, Path(command[-1]).read_bytes())
+            return subprocess.CompletedProcess(command, 0, json.dumps(wire).encode(), b"")
+        with mock.patch.object(model_native, "_execution_identity", return_value=EXECUTION), \
+             mock.patch.object(model_native.subprocess, "run", side_effect=process) as run, \
+             mock.patch.object(model_native, "load_base", side_effect=AssertionError("root-catalog-fallback")):
+            try:
+                return model_native.load_candidate(RAW_SOURCE.decode(), executable="fixture-not-executed")
+            finally:
+                self.assertEqual(1, run.call_count)
+
+    def native_rejected(self, wire, code="BASE_SOURCE_BINDING"):
+        with self.assertRaises(ModelError) as error:
+            self.native_load(wire)
+        self.assertEqual(("UNSUPPORTED", code, "I32"),
+            (error.exception.status, error.exception.code, error.exception.clause))
+        return error.exception
+
+    @staticmethod
+    def boxes():
+        """Two columns and a timber, each box authored with its own face catalog."""
+        value = fixture()
+        timber = ("A0", "A1", "B0", "B1", "START", "END")
+        value["legacySnapshot"]["solids"] += [{"kind": "column", "id": 2},
+            {"kind": "timber", "id": 3, "faces": [{"feature": name} for name in timber]}]
+        graph = value["neutralSources"]
+        for key, size in ((b"box2", 10), (b"timber3", 30)):
+            graph["nodes"].append(node(key, "box", {"frame": frame(), "lo": [0, 0, 0], "hi": [size, size, size]}))
+        graph["roots"].append(root(b"box2", "solid.box", 2, kind="column"))
+        member = root(b"timber3", "solid.box", 3, kind="timber")
+        # Wood faces are not in X/Y/Z order: names follow the template's sides.
+        for face, name in zip(member["faces"], ("START", "END", "B0", "B1", "A0", "A1")):
+            face["legacyFeature"] = name
+        graph["roots"].append(member)
+        return native_wire(value)
+
+    def by_box(self, wire):
+        return {(item["kind"], item["id"]): item for item in wire["neutralSources"]["roots"] if item["slot"] == "solid.box"}
+
+    def test_native_loader_rejects_box_faces_swapped_between_two_columns(self):
+        wire = self.boxes()
+        self.assertEqual(6, len(self.native_load(wire).roots))
+        changed = deepcopy(wire)
+        boxes = self.by_box(changed)
+        boxes["column", 1]["faces"], boxes["column", 2]["faces"] = boxes["column", 2]["faces"], boxes["column", 1]["faces"]
+        # Every box still has six distinct sides, keys and the same names, so
+        # generic opaque decoding admits it; only the face binding can refuse.
+        self.assertEqual(6, len(decode(changed).roots))
+        error = self.native_rejected(changed)
+        self.assertEqual("Native box face identity disagrees with its adapter root.", error.message)
+
+    def test_native_loader_rejects_legacy_features_swapped_within_one_box(self):
+        wire = self.boxes()
+        self.assertEqual(6, len(self.native_load(wire).roots))
+        for box, mode in ((("column", 1), "names"), (("column", 1), "names-and-keys"),
+                          (("timber", 3), "names"), (("timber", 3), "renamed")):
+            with self.subTest(box=box, mode=mode):
+                changed = deepcopy(wire)
+                faces = self.by_box(changed)[box]["faces"]
+                if mode == "renamed":
+                    # A consistent name and key outside the snapshot's own catalog.
+                    faces[0]["legacyFeature"] = "SIDE"
+                    faces[0]["featureKeyBase64"] = encoded(f"{box[0]}:{box[1]}:face:SIDE".encode())
+                else:
+                    moved = ("legacyFeature", "featureKeyBase64") if mode == "names-and-keys" else ("legacyFeature",)
+                    for field in moved:
+                        faces[0][field], faces[1][field] = faces[1][field], faces[0][field]
+                self.assertEqual(6, len(decode(changed).roots))
+                error = self.native_rejected(changed)
+                self.assertEqual("Native box face identity disagrees with its adapter root.", error.message)
 
 class NativeSourceGuardControls(unittest.TestCase):
     def test_removed_transport_guards_fail_the_same_real_consumers(self):
@@ -767,6 +847,16 @@ class NativeCandidateTransportTests(unittest.TestCase):
         from tests.test_geometry_kernel_runtime import cases, FROZEN_DIGESTS
         from tests.test_geometry_source_runtime import envelope
         base, definitions, req, options = cases()["keep"]
+        # The frozen kernel fixture names column faces face-0..face-5 in local
+        # side order, which the H adapter never emits. Rename them on the wire
+        # to the adapter's names and invert that one-to-one renaming on the
+        # output, so the frozen legacy digest still decides this test.
+        legacy = {}
+        for solid in base["solids"]:
+            for index, face in enumerate(solid["faces"]):
+                self.assertEqual(face["feature"], legacy.setdefault(RECTANGULAR_FACES[index], face["feature"]))
+                face["feature"] = RECTANGULAR_FACES[index]
+        self.assertEqual(6, len(set(legacy.values())))
         def process(command, **ignored):
             self.assertEqual(["fixture-not-executed", "--neutral-sources"], command[:-1])
             self.assertEqual(definitions["base_scene"].encode(), Path(command[-1]).read_bytes())
@@ -774,7 +864,13 @@ class NativeCandidateTransportTests(unittest.TestCase):
         with mock.patch.object(model_native, "_execution_identity", return_value=EXECUTION) as pin, \
              mock.patch.object(model_native.subprocess, "run", side_effect=process) as run:
             output = default_evaluate(definitions, req, base_executable="fixture-not-executed", **options)
-        self.assertEqual(FROZEN_DIGESTS["keep"], digest({"result": output}))
+        def restore(item):
+            if type(item) is dict:
+                return {key: legacy[part] if key == "feature" and part in legacy else restore(part)
+                        for key, part in item.items()}
+            return [restore(part) for part in item] if type(item) is list else item
+        self.assertIn('"feature": "-X"', json.dumps(output))
+        self.assertEqual(FROZEN_DIGESTS["keep"], digest({"result": restore(output)}))
         self.assertEqual(1, run.call_count)
         self.assertEqual(2, pin.call_count)
 
