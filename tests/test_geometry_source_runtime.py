@@ -184,8 +184,16 @@ class SourceRuntimeTests(unittest.TestCase):
         duplicate = deepcopy(value)
         duplicate["neutralSources"]["roots"].append({**graph["roots"][-1], "name": "different_name"})
         with self.assertRaises(ModelError) as error:
-            runtime(decode(duplicate)).compile(definitions, req, max_cells=200000)
+            decode(duplicate)
         self.assertEqual("BASE_SOURCE_BINDING", error.exception.code)
+        # The decoder's root catalog refuses that wire by itself, so inject the
+        # second name after decoding to reach the runtime's own binding guard.
+        self.assertEqual(("parameter", 8, "parameter.value", 3, "ratio_field"), candidate.roots[-1].association)
+        duplicate = replace(candidate, roots=(*candidate.roots, replace(candidate.roots[-1], name="different_name")))
+        with self.assertRaises(ModelError) as error:
+            runtime(duplicate).compile(definitions, req, max_cells=200000)
+        self.assertEqual(("BASE_SOURCE_BINDING", "Native parameter fields cannot have multiple root names."),
+                         (error.exception.code, error.exception.message))
         graph["edges"].append({"consumer": dependency, "source": box, "kind": "definition-required"})
         with self.assertRaises(ModelError) as error:
             decode(value)
@@ -284,6 +292,10 @@ class SourceRuntimeTests(unittest.TestCase):
                  "for association in set(associations) - consumed:",
                  "for association in ():",
                  "test_source_mode_refuses_snapshot_only_and_missing_extra_or_wrong_root_associations"),
+                ("geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+                 "if (identity, member) in parameters:",
+                 "if False:",
+                 "test_complete_source_graph_and_unselected_profile_inputs_are_retained"),
             )
             for name, before, after, test in controls:
                 with self.subTest(control=name, test=test):
