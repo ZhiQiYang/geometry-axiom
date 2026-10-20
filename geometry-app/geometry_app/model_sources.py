@@ -384,8 +384,26 @@ def _snapshot_root_associations(snapshot):
     return frozenset(expected)
 
 
+def _require_catalog_roots(roots, snapshot):
+    if frozenset(root.association for root in roots) != _snapshot_root_associations(snapshot):
+        _fail("Native roots do not exactly match the snapshot identity catalogs.", code="BASE_SOURCE_BINDING")
+
+
 def decode_candidate(payload, *, source_bytes, execution_identity):
     """Decode a complete same-candidate envelope without executing a process."""
+    candidate, snapshot = _decode_envelope(payload, source_bytes=source_bytes,
+                                           execution_identity=execution_identity)
+    _require_catalog_roots(candidate.roots, snapshot)
+    return candidate
+
+
+def _decode_envelope(payload, *, source_bytes, execution_identity):
+    """Run every check that predates the root catalog, in its original order.
+
+    The catalog comparison reads snapshot fields that the native caller
+    validates afterwards, so it runs only once those checks have passed. An
+    input rejected before the catalog existed keeps its exact diagnostic.
+    """
     try:
         if type(source_bytes) is not bytes or type(execution_identity) is not tuple:
             _fail("Native candidate decoding requires original bytes and an immutable execution identity.")
@@ -420,26 +438,28 @@ def decode_candidate(payload, *, source_bytes, execution_identity):
         decoder = _Decoder(graph["providers"])
         descriptors = decoder.descriptors(graph["nodes"], graph["edges"])
         roots = decoder.roots(graph["roots"], descriptors)
-        if frozenset(root.association for root in roots) != _snapshot_root_associations(snapshot):
-            _fail("Native roots do not exactly match the snapshot identity catalogs.", code="BASE_SOURCE_BINDING")
         descriptors = decoder.face_values(descriptors, roots)
         result = NativeCandidate(canonical_bytes(snapshot), identity, revision, original,
             tuple(sorted(decoder.providers.items())), descriptors, roots, execution_identity)
         validate_program(result.program())
-        return result
+        return result, snapshot
     except EvaluationError as error:
         raise ModelError("UNSUPPORTED", "BASE_SOURCE_PROTOCOL", "I32", "Invalid typed native source graph: " + error.code) from error
 
 
-def _decode_native_candidate(payload, *, source_bytes, execution_identity):
+def _decode_native_candidate(payload, *, source_bytes, execution_identity, snapshot_check):
     """Enforce this H adapter's provider binding at the actual process boundary.
 
     Generic decoding retains opaque keys and typed INCOMPLETE values. A native
     success envelope additionally promises the known adapter root identities
     and complete exported roots; this private entry has no bypass option.
+    ``snapshot_check`` is the caller's legacy snapshot contract. It runs before
+    the catalog and binding checks, which only add rejections.
     """
-    candidate = decode_candidate(payload, source_bytes=source_bytes,
-                                 execution_identity=execution_identity)
+    candidate, snapshot = _decode_envelope(payload, source_bytes=source_bytes,
+                                           execution_identity=execution_identity)
+    snapshot_check(candidate.legacy_snapshot)
+    _require_catalog_roots(candidate.roots, snapshot)
     sources = {source.key: source for source in candidate.sources}
     for root in candidate.roots:
         if root.kind == "spec":

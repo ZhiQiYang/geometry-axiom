@@ -616,22 +616,52 @@ class NativeSourceGuardControls(unittest.TestCase):
 
 
 class NativeCandidateTransportTests(unittest.TestCase):
-    def invoke(self, value, *, command_builder=None, returncode=0, identities=None):
+    def invoke(self, value, *, command_builder=None, returncode=0, identities=None, source=RAW_SOURCE):
         calls = []
         value = native_wire(value)
 
         def process(command, **options):
             calls.append(command)
-            self.assertEqual(RAW_SOURCE, Path(command[-1]).read_bytes())
+            self.assertEqual(source, Path(command[-1]).read_bytes())
             return subprocess.CompletedProcess(command, returncode, json.dumps(value).encode(), b"")
 
         with mock.patch.object(model_native, "_execution_identity", side_effect=identities or [EXECUTION, EXECUTION]) as pin:
             with mock.patch.object(model_native.subprocess, "run", side_effect=process):
-                result = model_native.load_candidate(RAW_SOURCE.decode(), executable="fixture-not-executed",
+                result = model_native.load_candidate(source.decode(), executable="fixture-not-executed",
                                                      command_builder=command_builder)
         self.assertEqual(2, pin.call_count)
         self.assertEqual(1, len(calls))
         return result, calls[0]
+
+    def snapshot_rejected(self, value, source=RAW_SOURCE):
+        with self.assertRaises(ModelError) as error:
+            self.invoke(value, source=source)
+        failure = error.exception
+        return failure.status, failure.code, failure.clause, failure.message
+
+    def test_missing_profile_runs_keep_the_section_profile_diagnostic(self):
+        # The root catalog also reads profile_runs; the snapshot contract that
+        # predates it must still decide this input, with its own clause.
+        scene = "requires section-profile/1\n" + CANONICAL_SCENE
+        digest = sha256(scene.encode()).hexdigest()
+        value = fixture()
+        value["candidate"]["id"] = value["neutralSources"]["candidate"]["id"] = digest
+        value["source"] = {"sha256Before": digest, "sha256After": digest}
+        value["legacySnapshot"].update(base_scene=scene, required_capabilities=["section-profile/1"], profile_runs=[])
+        candidate, _ = self.invoke(value, source=scene.encode())
+        self.assertEqual([], candidate.legacy_snapshot["profile_runs"])
+        del value["legacySnapshot"]["profile_runs"]
+        self.assertEqual(("UNSUPPORTED", "BASE_PROTOCOL", "I51", "C scene adapter omitted section-profile definitions."),
+                         self.snapshot_rejected(value, scene.encode()))
+
+    def test_non_array_capabilities_keep_the_snapshot_capability_diagnostic(self):
+        value = fixture()
+        value["legacySnapshot"]["required_capabilities"] = []
+        candidate, _ = self.invoke(value)
+        self.assertEqual([], candidate.legacy_snapshot["required_capabilities"])
+        value["legacySnapshot"]["required_capabilities"] = "parameters/1"
+        self.assertEqual(("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned unsupported source capabilities."),
+                         self.snapshot_rejected(value))
 
     def test_one_pinned_invocation_returns_a_real_source_bound_geometry(self):
         candidate, command = self.invoke(fixture())

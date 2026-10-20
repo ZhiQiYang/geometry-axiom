@@ -88,7 +88,10 @@ includes `parameter_fields: [{parameterId, fieldId, name}]`, read directly from
 the canonical parameter store in both invocation modes. This additive identity
 catalog contains no evaluated quantity or duplicate parameter parser. Duplicate
 catalog identities, missing roots, extra roots and wrong associations are errors;
-coverage booleans cannot substitute for this comparison.
+coverage booleans cannot substitute for this comparison. The comparison runs only
+after every older decoding check and, at the native process boundary, after the
+loader's legacy snapshot contract. An input those checks reject keeps its exact
+status, code, clause and message.
 
 Generic typed decoding preserves opaque provider keys and INCOMPLETE values for
 independent program consumers. The actual native process boundary additionally

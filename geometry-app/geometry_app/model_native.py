@@ -232,28 +232,33 @@ def _load_base_or_candidate(scene_text: str, executable=None, *, builder=None,
         if status not in {"INVALID", "UNSUPPORTED"}:
             raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned an unknown error status.")
         raise ModelError(status, snapshot.get("code", "BASE_INVALID"), snapshot.get("clause", "I9"), snapshot.get("message", "Scene rejected."))
+    def require_snapshot(snapshot):
+        if result.returncode or snapshot.get("schema") != "geometry-base-snapshot/1":
+            raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter failed or returned an unsupported schema.")
+        required = {"base_scene", "specs", "placements", "solids", "unplaced_timbers", "dependencies"}
+        if not required.issubset(snapshot) or not isinstance(snapshot["base_scene"], str) or any(
+            not isinstance(snapshot[name], list) for name in required - {"base_scene"}
+        ):
+            raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned an incomplete snapshot.")
+        capabilities = snapshot.get("required_capabilities", [])
+        if (not isinstance(capabilities, list) or any(type(item) is not str for item in capabilities)
+                or len(capabilities) != len(set(capabilities)) or set(capabilities) - supported):
+            raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned unsupported source capabilities.")
+        canonical_capabilities = scene_required_capabilities(snapshot["base_scene"])
+        if source_capabilities != set(capabilities) or canonical_capabilities != set(capabilities):
+            raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I36", "C scene adapter did not preserve engineering source definitions and capability.")
+        if SECTION_PROFILE_CAPABILITY in source_capabilities and not isinstance(snapshot.get("profile_runs"), list):
+            raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I51", "C scene adapter omitted section-profile definitions.")
+
     candidate = None
     if neutral_sources and not result.returncode:
         from .model_sources import _decode_native_candidate
+        # The decoder runs this snapshot contract before its root catalog and
+        # adapter binding, so the snapshot diagnostics keep their precedence.
         candidate = _decode_native_candidate(result.stdout, source_bytes=encoded,
-                                     execution_identity=current)
-        snapshot = candidate.legacy_snapshot
-    if result.returncode or snapshot.get("schema") != "geometry-base-snapshot/1":
-        raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter failed or returned an unsupported schema.")
-    required = {"base_scene", "specs", "placements", "solids", "unplaced_timbers", "dependencies"}
-    if not required.issubset(snapshot) or not isinstance(snapshot["base_scene"], str) or any(
-        not isinstance(snapshot[name], list) for name in required - {"base_scene"}
-    ):
-        raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned an incomplete snapshot.")
-    capabilities = snapshot.get("required_capabilities", [])
-    if (not isinstance(capabilities, list) or any(type(item) is not str for item in capabilities)
-            or len(capabilities) != len(set(capabilities)) or set(capabilities) - supported):
-        raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned unsupported source capabilities.")
-    canonical_capabilities = scene_required_capabilities(snapshot["base_scene"])
-    if source_capabilities != set(capabilities) or canonical_capabilities != set(capabilities):
-        raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I36", "C scene adapter did not preserve engineering source definitions and capability.")
-    if SECTION_PROFILE_CAPABILITY in source_capabilities and not isinstance(snapshot.get("profile_runs"), list):
-        raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I51", "C scene adapter omitted section-profile definitions.")
+            execution_identity=current, snapshot_check=require_snapshot)
+    else:
+        require_snapshot(snapshot)
     return candidate if neutral_sources else snapshot
 
 
