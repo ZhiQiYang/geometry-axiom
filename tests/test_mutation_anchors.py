@@ -79,7 +79,8 @@ def q38_entries(module):
 
 
 def assembly_entries(module):
-    return [(name, [tuple(patch) for patch in patches]) for name, patches, _ in module.CASES]
+    # Cases and negative controls alike: a control whose anchor drifted would stop being a control.
+    return [(entry[0], [tuple(patch) for patch in entry[1]]) for entry in module.CASES + module.CONTROLS]
 
 
 def pf3_entries(module):
