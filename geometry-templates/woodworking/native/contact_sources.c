@@ -123,8 +123,14 @@ static bool wood_contact_source_evaluate(void *user,GeoEvalContext *graph,const 
     WoodContactQuery *q=wood_contact_source_query(s,id);if(!q)return false;
     if(kind==WOOD_CONTACT_SOURCE_COLLECTION)return wood_contact_source_collection(s,q,out);
     WoodContactSourceKey key;GeoSourceValue collection;
-    if(geo_eval_source(graph,wood_contact_source_ref(s->token,WOOD_CONTACT_SOURCE_COLLECTION,id,0,&key),
-        GEO_DEPENDENCY_VALUE_REQUIRED,&collection)!=GEO_SOURCE_OK)return false;
+    GeoSourceRef collection_ref=wood_contact_source_ref(s->token,WOOD_CONTACT_SOURCE_COLLECTION,id,0,&key);
+    if(q->collection){
+        /* 成功的集合由本查詢持有且不再變動。每個 feature 使用其位元組前，
+         * 仍依原順序記錄自己的依賴；失敗或尚未求值的集合走原路徑。 */
+        if(geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK)return false;
+        collection=(GeoSourceValue){.kind=GEO_SOURCE_DEFINITION,
+            .as.definition={wood_contact_collection_schema,q->collection,q->collection_size}};
+    }else if(geo_eval_source(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED,&collection)!=GEO_SOURCE_OK)return false;
     const unsigned char *bytes;size_t count;
     if(!wood_contact_source_collection_view(&collection,q->cap,&bytes,&count)||index>=count)return false;
     const unsigned char *record=bytes+8+(size_t)index*WOOD_CONTACT_SOURCE_RECORD_SIZE;

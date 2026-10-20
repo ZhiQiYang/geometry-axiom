@@ -183,6 +183,7 @@ PY_NEEDS = {
     'test_geo261_section_profile_authority': [],
     'test_geo261_source_describe': [],
     'test_geo261_source_index': [],
+    'test_geo261_load_residual': [],
     'test_geo261_version_activation': [],
     'test_geo261_wood_contact_world': [],
     'test_geo261_wood_derived_placement': [],
