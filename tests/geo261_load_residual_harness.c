@@ -1,4 +1,8 @@
 /* 真實 H 候選與私有驗證入口；快取儲存刻意重用，以驗證失效規則。 */
+/* 與 NativeBuild 的產品 CLI 一樣，unity 測試使用主控台入口。 */
+#ifdef _WIN32
+#undef _WIN32
+#endif
 #define main geometry_program_main
 #include "../current_geometry.c"
 #undef main
