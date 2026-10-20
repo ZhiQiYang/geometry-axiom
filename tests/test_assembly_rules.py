@@ -43,7 +43,9 @@ def killer(tag, detail=""):
     The tool counts a fault as killed only when exactly this test fails at the assertion carrying exactly this tag,
     so a different assertion failing (or an error, a skip, a bridge crash) is never read as the detection. Evaluating
     the message records the tag in REACHED even when the assertion passes: the baseline run uses that to prove the
-    tagged assertion is really executed, not merely present in the file. Keep each tag a literal that occurs once."""
+    tagged assertion is really executed, not merely present in the file. Keep each tag a family:name literal that
+    occurs once, and list it in TAGS in that tool: its --check refuses a tag that is missing, repeated, moved or
+    unlisted, and its baseline requires every listed tag to be reached, whether or not a case is bound to it."""
     REACHED.add(tag)
     return "KILLER[%s]%s" % (tag, " " + str(detail) if detail != "" else "")
 

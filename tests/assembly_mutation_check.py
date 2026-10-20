@@ -1,7 +1,7 @@
 """Targeted GCC fault injection in a disposable source copy (never edits the checkout).
 
     python3 tests/assembly_mutation_check.py --out /var/tmp/assembly-mutations   # Linux/WSL, --out must not exist
-    python3 tests/assembly_mutation_check.py --check      # static: every case is bound to a live, unique assertion
+    python3 tests/assembly_mutation_check.py --check      # static: every killer tag is listed once, every case is bound to one
     python3 tests/assembly_mutation_check.py --selftest   # the verdict rules on synthetic observations
 
 A case is (name, [(file, before, after), ...], killer test, killer tag). GEO-261 enforces some rules in more than
@@ -14,7 +14,8 @@ What "killed" means. The killer test is the test method that must fail, the kill
 that must fail: that assertion carries `tests.test_assembly_rules.killer(tag)` as its message, and the failure
 record the child writes lists the tags found in the failure message. A case is killed only when
 
-  1. the unmodified build ran the killer tests green, without skips, and executed every tagged assertion;
+  1. the unmodified build ran the killer tests green, without skips, and executed every tagged assertion of the test
+     file, not only the tags the cases are bound to (TAGS lists all of them);
   2. the fault build ran the killer test and exactly one failure was recorded: in that test, an assertion failure
      (not an error) whose message carries that one tag, with no skip, error, bridge crash, timeout or second failure;
   3. the reverted tree is byte-identical to the unmodified tree, and the rebuilt unmodified bridge is green again
@@ -27,8 +28,16 @@ rule only so the negative controls can show what it would have said. A bridge th
 failure too (tests/_bridge.py::BridgeClosed subclasses AssertionError) but carries no tag; it is told apart as
 bridge-closed so the receipt says the bridge died, not that an assertion failed.
 
+TAGS is the complete list of killer tags in the test file, each with the test method that holds it. Most of them are
+not bound to a case (they are the later inputs of a loop whose first input is a case's killer); they exist so that
+the baseline can prove every round of those loops still runs, and so that --check can see a tag that was deleted,
+repeated, moved or added without being listed. See binding_problems().
+
 Negative controls (CONTROLS) are real faults that must NOT be judged killed, each for its named reason. They run the
-same build, test and judge as a case.
+same build, test and judge as a case. `control-comment-only` changes no code (a comment on the same line), so the
+build comes out byte-identical to the baseline and must be judged identical-binary. When a run is killed on timeout the
+tool looks at what is left of the process group (and session) afterwards and records it as `processGroup`; a leftover
+process is a problem of the run, so "the hang left nothing behind" is a recorded fact and not a remark.
 
 Receipts go to --out: summary.json, sources.json and, per phase (baseline, cases/*, controls/*, restored), the
 patches, build output, test output, the structured test result, the binary digest and the source digests before and
@@ -37,6 +46,7 @@ phase), like tests/section_profile_mutation_check.py; tests/test_assembly_mutati
 no compiler.
 """
 import argparse
+import ast
 import hashlib
 import json
 import os
@@ -54,21 +64,39 @@ BRIDGE = 'geometry-web/engineering_bridge.inc'
 TEST_FILE = 'tests/test_assembly_rules.py'
 TEST_PREFIX = 'tests.test_assembly_rules.AssemblyRules.'
 JUDGE_FILES = (TEST_FILE, 'tests/_bridge.py', 'tests/binaries.py', 'tests/assembly_mutation_check.py')
-SCHEMA = 'assembly-mutations/2'
+SCHEMA = 'assembly-mutations/3'
 TAG = re.compile(r'KILLER\[([^\]\s]+)\]')
+TAG_SHAPE = re.compile(r'^[a-z][a-z0-9-]*:[a-z][a-z0-9-]*$')   # family:name, the only shape a killer tag may have
+CONDITION_TEST = 'test_duplicate_scope_and_endpoint_rejected'
+SOURCE_TEST = 'test_bad_dimension_sources_rejected_not_incomplete'
+CANCEL_TEST = 'test_cancel_and_protocol_tokens_do_not_commit'
+
+# Every killer tag in tests/test_assembly_rules.py and the test method that holds it. The baseline must execute all of
+# them (REACHED); binding_problems() requires the test file to hold exactly these literals, each once, each inside
+# its method. A tag that is not bound to a case is not decoration: it is the proof that its loop round still runs.
+TAGS = {
+    'conflict:scope': CONDITION_TEST,
+    'conflict:end': CONDITION_TEST,
+    'missing-source:literal-zero': SOURCE_TEST,
+    'missing-source:literal-negative': SOURCE_TEST,
+    'missing-source:material': SOURCE_TEST,
+    'missing-source:parameter': SOURCE_TEST,
+    'missing-source:application': SOURCE_TEST,
+    'cancelled-preview:confirm-after-cancel': CANCEL_TEST,
+}
 
 CASES = [
     ('conflict', [(SCOPE, 'if(!strcmp(scopes[k],scopes[i]))', 'if(false)')],
-     'test_duplicate_scope_and_endpoint_rejected', 'conflict:scope'),
+     CONDITION_TEST, 'conflict:scope'),
     ('missing-source', [(SCOPE,
      '(resolve&&!(w->evaluation&&w->evaluation->slot_dimension?w->evaluation->slot_dimension(w->evaluation->user,b->id,id,axis,&source,&effective,path,sizeof path):wood_eng_resolve(&w->engineering,&source,&target,UINT32_MAX,0,&effective,path,sizeof path)))',
      'false')],
-     'test_bad_dimension_sources_rejected_not_incomplete', 'missing-source:literal-zero'),
+     SOURCE_TEST, 'missing-source:literal-zero'),
     # Two layers: the confirm guard on g_preview.ready, and the candidate discard that cancel performs.
     ('cancelled-preview', [(BRIDGE, '||!g_preview.ready||!mine||g_preview.token!=token', '||!mine||g_preview.token!=token'),
                            (BRIDGE, 'if(cancelled){g_preview.ready=false;app_candidate_discard(g_preview.transaction->control);}',
                             'if(cancelled){g_preview.ready=false;}')],
-     'test_cancel_and_protocol_tokens_do_not_commit', 'cancelled-preview:confirm-after-cancel'),
+     CANCEL_TEST, 'cancelled-preview:confirm-after-cancel'),
 ]
 
 # (name, [(file, before, after), ...], case whose killer test and tag it is judged against, reason it must be rejected
@@ -91,6 +119,13 @@ CONTROLS = [
     # ASSEMBLY-RULES-VALIDATION.md).
     ('control-single-layer', [(BRIDGE, '||!g_preview.ready||!mine||g_preview.token!=token', '||!mine||g_preview.token!=token')],
      'cancelled-preview', 'survived'),
+    # No code changes: a comment on the same line as the conflict case's anchor. The line count does not move (so even
+    # __LINE__ could not change) and cc is run without -g, so the binary must come out byte-identical to the baseline;
+    # the judge must then say identical-binary before looking at the test at all. binding_problems() requires a
+    # control with this reason to be a comment insertion and nothing else.
+    ('control-comment-only', [(SCOPE, 'if(!strcmp(scopes[k],scopes[i]))',
+                               'if(!strcmp(scopes[k],scopes[i]))/* comment only */')],
+     'conflict', 'identical-binary'),
 ]
 
 REASONS = ('survived', 'wrong-assertion', 'wrong-test', 'extra-failures', 'error', 'skipped', 'unexpected-outcome',
@@ -105,8 +140,10 @@ def legacy_killed(returncode, log):
 
 
 def judge_pass(obs, selected, tags):
-    """Baseline / restored: every selected test ran and passed, nothing skipped, every tagged assertion was executed.
+    """Baseline / restored: every selected test ran and passed, nothing skipped, every listed tag was executed.
 
+    `tags` is the whole of TAGS in a real run, not only the tags the cases are bound to, and no tag outside it may be
+    reached either (a tag built at run time, or one nobody listed, would otherwise go unproven).
     obs = {'exit': int or None, 'timeout': bool, 'result': child result dict or None}. Returns (verdict, reason)."""
     result = obs['result']
     if obs['timeout']:
@@ -121,12 +158,26 @@ def judge_pass(obs, selected, tags):
         return 'fail', 'child-inconsistent'
     if not set(tags) <= set(result['reached']):
         return 'fail', 'killer-not-reached'
+    if not set(result['reached']) <= set(tags):
+        return 'fail', 'unlisted-tag-reached'
     return 'pass', 'green'
 
 
+def baseline_selection(tags=None):
+    """(test ids the baseline and restored runs execute, tags they must reach): every listed tag, not only the cases'."""
+    tags = TAGS if tags is None else tags
+    return [TEST_PREFIX + name for name in dict.fromkeys(tags.values())], list(tags)
+
+
 def judge_mutant(obs, selected, test, tag):
-    """The fault build ran `selected` (the killer test alone). Returns ('killed' | 'not-killed', reason)."""
+    """The fault build ran `selected` (the killer test alone). Returns ('killed' | 'not-killed', reason).
+
+    obs may also carry `binary` and `baselineBinary` (sha256 of the fault build and of the unmodified build). Equal
+    digests mean the patch changed nothing that reaches the output, so whatever the test did cannot be the fault's
+    doing: identical-binary, before anything else is looked at."""
     result = obs['result']
+    if obs.get('binary') is not None and obs.get('binary') == obs.get('baselineBinary'):
+        return 'not-killed', 'identical-binary'
     if obs['timeout']:
         return 'not-killed', 'timeout'
     if result is None or obs['exit'] not in (0, 1):
@@ -171,27 +222,78 @@ def method_body(text, name):
     return '\n'.join(lines[starts[0]:end])
 
 
-def binding_problems(test_text, cases=None, controls=None):
-    """Problems with the way cases and controls are bound to assertions in the test source (list of strings)."""
+def tag_literals(tree):
+    """Every string constant of the family:name shape in the parsed test source, one entry per occurrence."""
+    return [node.value for node in ast.walk(tree)
+            if isinstance(node, ast.Constant) and isinstance(node.value, str) and TAG_SHAPE.match(node.value)]
+
+
+def killer_call_problems(tree):
+    """killer() takes a tag literal, or the `tag` that reject() passes on; any other argument could not be listed."""
+    problems = []
+    for node in sorted((n for n in ast.walk(tree) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)
+                        and n.func.id == 'killer'), key=lambda n: n.lineno):
+        arg = node.args[0] if node.args else None
+        literal = isinstance(arg, ast.Constant) and isinstance(arg.value, str) and TAG_SHAPE.match(arg.value)
+        if not (literal or (isinstance(arg, ast.Name) and arg.id == 'tag')):
+            problems.append('%s:%d: killer() needs a family:name tag literal or the tag argument of reject()'
+                            % (TEST_FILE, node.lineno))
+    return problems
+
+
+COMMENT = re.compile(r'/\*.*?\*/', re.S)
+
+
+def comment_only(patch):
+    """True when the patch adds a /* */ comment and nothing else, and moves no line."""
+    return (COMMENT.sub('', patch[2]) == COMMENT.sub('', patch[1]) and patch[1] != patch[2]
+            and patch[2].count('\n') == patch[1].count('\n'))
+
+
+def binding_problems(test_text, cases=None, controls=None, tags=None):
+    """Problems with the way tags, cases and controls are bound to the test source (list of strings).
+
+    Tags: the test file holds each listed tag literal exactly once, inside the method TAGS names for it, and holds no
+    other tag-shaped literal and no killer() call that could hide one (a deleted, repeated, moved or unlisted tag).
+    Cases: each is bound to a listed tag and to the method that holds it. Controls: a known case, a known reason, and
+    an identical-binary control may only add a comment."""
     cases = CASES if cases is None else cases
     controls = CONTROLS if controls is None else controls
+    tags = TAGS if tags is None else tags
     problems = []
     names = [case[0] for case in cases] + [control[0] for control in controls]
     problems += ['duplicate case name %s' % name for name in sorted(set(names)) if names.count(name) > 1]
-    tags = [case[3] for case in cases]
-    problems += ['tag %s is claimed by more than one case' % tag for tag in sorted(set(tags)) if tags.count(tag) > 1]
+    claimed = [case[3] for case in cases]
+    problems += ['tag %s is claimed by more than one case' % tag for tag in sorted(set(claimed)) if claimed.count(tag) > 1]
     for name, patches, test, tag in cases:
         if not patches or any(len(patch) != 3 or patch[1] == patch[2] for patch in patches):
             problems.append('%s: every patch needs a file and a before text that differs from the after text' % name)
-        body = method_body(test_text, test)
-        if body is None:
+        if tag not in tags:
+            problems.append('%s: tag %s is not listed in TAGS' % (name, tag))
+        elif tags[tag] != test:
+            problems.append('%s: TAGS puts tag %s in %s, the case names %s' % (name, tag, tags[tag], test))
+        if method_body(test_text, test) is None:
             problems.append('%s: test method %s is not defined exactly once' % (name, test))
-            continue
+    for tag, test in tags.items():
+        body = method_body(test_text, test)
         literal = re.compile(r'''(["'])%s\1''' % re.escape(tag))
-        if len(literal.findall(test_text)) != 1:
-            problems.append('%s: the tag literal %r must occur exactly once in %s' % (name, tag, TEST_FILE))
-        elif not literal.search(body):
-            problems.append('%s: the tag literal %r is not inside %s' % (name, tag, test))
+        found = len(literal.findall(test_text))
+        if not TAG_SHAPE.match(tag):
+            problems.append('%s: a tag must look like family:name' % tag)
+        if body is None:
+            problems.append('%s: test method %s is not defined exactly once' % (tag, test))
+        if found != 1:
+            problems.append('%s: the tag literal must occur exactly once in %s (found %d)' % (tag, TEST_FILE, found))
+        elif body is not None and not literal.search(body):
+            problems.append('%s: the tag literal is not inside %s' % (tag, test))
+    try:
+        tree = ast.parse(test_text)
+    except SyntaxError as exc:
+        problems.append('%s does not parse: %s' % (TEST_FILE, exc))
+    else:
+        problems += ['%s: this tag-shaped literal in %s is not listed in TAGS' % (tag, TEST_FILE)
+                     for tag in sorted(set(tag_literals(tree)) - set(tags))]
+        problems += killer_call_problems(tree)
     known = {case[0] for case in cases}
     for name, patches, target, reason, *_ in controls:
         if target not in known:
@@ -200,6 +302,8 @@ def binding_problems(test_text, cases=None, controls=None):
             problems.append('%s: unknown reason %s' % (name, reason))
         if not patches or any(len(patch) != 3 or patch[1] == patch[2] for patch in patches):
             problems.append('%s: every patch needs a file and a before text that differs from the after text' % name)
+        elif reason == 'identical-binary' and not all(comment_only(patch) for patch in patches):
+            problems.append('%s: an identical-binary control may only add a /* */ comment and move no line' % name)
     return problems
 
 
@@ -330,31 +434,98 @@ def digest(hashes):
     return sha256(''.join('%s\0%s\n' % item for item in sorted(hashes.items())).encode())
 
 
+def parse_proc_stat(text):
+    """(pid, comm, state, pgrp, session) of one /proc/<pid>/stat line as a dict, or None. comm may hold spaces and ')'."""
+    head, closing, tail = text.rpartition(')')
+    pid, opening, comm = head.partition(' (')
+    fields = tail.split()
+    if not closing or not opening or not pid.strip().isdigit() or len(fields) < 4:
+        return None
+    try:
+        return dict(pid=int(pid), comm=comm, state=fields[0], pgrp=int(fields[2]), session=int(fields[3]))
+    except ValueError:
+        return None
+
+
+def group_members(pgid, proc='/proc'):
+    """Processes whose process group or session is `pgid` (a zombie counts), by pid; None when /proc is unreadable."""
+    proc = Path(proc)
+    try:
+        names = [entry.name for entry in proc.iterdir() if entry.name.isdigit()]
+    except OSError:
+        return None
+    found = []
+    for name in names:
+        try:
+            item = parse_proc_stat((proc / name / 'stat').read_text(encoding='utf-8', errors='replace'))
+            if item and pgid in (item['pgrp'], item['session']):
+                item['cmdline'] = (proc / name / 'cmdline').read_bytes().replace(b'\0', b' ').decode('utf-8', 'replace').strip()[:160]
+                found.append(item)
+        except OSError:
+            continue   # it exited while we looked
+    return sorted(found, key=lambda item: item['pid'])
+
+
+def wait_group_gone(pgid, timeout=5.0, interval=0.05, members=group_members, sleep=time.sleep, clock=time.monotonic):
+    """Poll until nothing of the group is left. Returns (what remains, seconds waited); remains is None if unreadable."""
+    started = clock()
+    while True:
+        remaining = members(pgid)
+        waited = clock() - started
+        if not remaining or waited >= timeout:
+            return remaining, waited
+        sleep(interval)
+
+
+def group_problems(record):
+    """Problems with the clean-up of a phase whose run was killed on timeout (nothing for a phase that was not)."""
+    problems = []
+    for key in ('buildProcessGroup', 'processGroup'):
+        group = record.get(key)
+        if not group:
+            continue
+        if not group['checked']:
+            problems.append('%s: could not read /proc to see what is left of the killed process group' % record['id'])
+        elif group['afterKill']:
+            problems.append('%s: still running after the timeout kill: %s' % (record['id'], ', '.join(
+                '%s[%s %s]' % (item['pid'], item['comm'], item['state']) for item in group['afterKill'])))
+    return problems
+
+
 def run_logged(argv, directory, cwd, env, timeout):
-    """Run with stdout and stderr kept in `directory`; on timeout kill the whole process group (the bridge too)."""
+    """Run with stdout and stderr kept in `directory`; on timeout kill the whole process group (the bridge too).
+
+    Returns (exit status, timed out, group). On timeout `group` records what the group held before the kill and what
+    was still there afterwards (given up to five seconds to disappear); it is None when there was no timeout. The same
+    record goes into execution.json."""
     import signal
     directory.mkdir(parents=True, exist_ok=True)
     started = time.monotonic()
     timed_out = False
+    group = None
     with (directory / 'stdout').open('wb') as out, (directory / 'stderr').open('wb') as err:
         try:
             process = subprocess.Popen(argv, cwd=cwd, env=env, stdout=out, stderr=err, start_new_session=True)
         except OSError as exc:
             write(directory / 'execution.json', dict(argv=argv, cwd=str(cwd), exit=None, error=str(exc)))
-            return None, False
+            return None, False, None
         try:
             code = process.wait(timeout=timeout)
         except subprocess.TimeoutExpired:
             timed_out = True
+            before = group_members(process.pid)
             try:
                 os.killpg(process.pid, signal.SIGKILL)
             except OSError:
                 process.kill()
             process.wait()
             code = None
+            after, waited = wait_group_gone(process.pid)
+            group = dict(pgid=process.pid, checked=before is not None and after is not None, beforeKill=before or [],
+                         afterKill=after or [], secondsUntilGone=round(waited, 2))
     write(directory / 'execution.json', dict(argv=argv, cwd=str(cwd), exit=code, timedOut=timed_out,
-                                              seconds=round(time.monotonic() - started, 2)))
-    return code, timed_out
+                                              seconds=round(time.monotonic() - started, 2), processGroup=group))
+    return code, timed_out, group
 
 
 def read_log(directory):
@@ -381,8 +552,10 @@ def run_phase(ctx, directory, name, kind, patches, selected, judge, timeout=None
         record['patchedFiles'] = {r: dict(before=sha256(originals[r]), after=sha256((source / r).read_bytes())) for r in originals}
         record['sourcesDigest'] = digest(tree_hashes(source))
         exe = work / (kind + '-' + name + '-bridge')
-        code, _ = run_logged(['cc', '-std=c11', '-O2', str(source / 'geometry-web/web_bridge.c'), '-lm', '-o', str(exe)],
-                             directory / 'build', source, ctx['env'], 900)
+        code, _, group = run_logged(['cc', '-std=c11', '-O2', str(source / 'geometry-web/web_bridge.c'), '-lm', '-o', str(exe)],
+                                    directory / 'build', source, ctx['env'], 900)
+        if group:
+            record['buildProcessGroup'] = group
         if code != 0 or not exe.is_file():
             record.update(verdict='invalid', reason='compile-failed', buildExit=code)
             return record
@@ -390,7 +563,9 @@ def run_phase(ctx, directory, name, kind, patches, selected, judge, timeout=None
         record.update(binarySha256=sha256(data), binaryBytes=len(data))
         tests = directory / 'tests'
         argv = [sys.executable, '-B', str(Path(__file__).resolve()), '--child', str(exe), str(tests / 'result.json'), *selected]
-        code, timed_out = run_logged(argv, tests, ROOT, ctx['env'], timeout or ctx['timeout'])
+        code, timed_out, group = run_logged(argv, tests, ROOT, ctx['env'], timeout or ctx['timeout'])
+        if group:
+            record['processGroup'] = group
         try:
             result = json.loads((tests / 'result.json').read_text(encoding='utf-8'))
         except (OSError, ValueError):
@@ -435,7 +610,8 @@ def main(argv=None):
     problems = static_problems()
     if args.check:
         print('\n'.join(problems) if problems else
-              'check: %d cases and %d controls are bound to live assertions and anchors' % (len(CASES), len(CONTROLS)))
+              'check: %d killer tags are listed once each; %d cases and %d controls are bound to live assertions and anchors'
+              % (len(TAGS), len(CASES), len(CONTROLS)))
         return 1 if problems else 0
     if os.name != 'posix':
         raise SystemExit('Use GCC on Linux/WSL; no security settings are changed.')
@@ -450,8 +626,7 @@ def main(argv=None):
     out.mkdir(parents=True, exist_ok=False)
     started = time.time()
     originals = {str(p.relative_to(ROOT)): p.read_bytes() for p in collect_sources()}
-    killers = [TEST_PREFIX + name for name in dict.fromkeys(case[2] for case in CASES)]
-    tags = [case[3] for case in CASES]
+    killers, tags = baseline_selection()
     env = {k: v for k, v in os.environ.items() if k not in ('GEOMETRY_TEST_BRIDGE', 'GEOMETRY_ENGINEERING_BRIDGE')}
     env['PYTHONDONTWRITEBYTECODE'] = '1'
     cc = subprocess.run(['cc', '--version'], capture_output=True, text=True)
@@ -463,11 +638,14 @@ def main(argv=None):
         environment=dict(cc=(cc.stdout.splitlines() or [''])[0], python=sys.version.split()[0], platform=platform.platform()),
         tool=sha256((ROOT / 'tests/assembly_mutation_check.py').read_bytes()),
         judge={f: sha256((ROOT / f).read_bytes()) for f in JUDGE_FILES},
-        sourcesDigest=digest({k: sha256(v) for k, v in originals.items()}), problems=[])
+        killerTags=tags, sourcesDigest=digest({k: sha256(v) for k, v in originals.items()}), problems=[])
     write(out / 'sources.json', {k: sha256(v) for k, v in originals.items()})
 
     def progress(record):
         failure = ((record.get('observed') or {}).get('failures') or [{}])[0].get('tags', '')
+        group = record.get('processGroup')
+        if group:
+            failure = 'killed group %d: %d process(es) before, %d after' % (group['pgid'], len(group['beforeKill']), len(group['afterKill']))
         print('%-26s %-10s %-20s %s' % (record['id'], record.get('verdict'), record.get('reason', ''), failure or ''), flush=True)
 
     with tempfile.TemporaryDirectory(prefix='assembly-mutations-') as directory:
@@ -495,9 +673,8 @@ def main(argv=None):
             test, tag = TEST_PREFIX + case[2], case[3]
 
             def judge(obs, record):
-                if record.get('binarySha256') == baseline['binarySha256']:
-                    return 'not-killed', 'identical-binary'
-                return judge_mutant(obs, [test], test, tag)
+                return judge_mutant(dict(obs, binary=record.get('binarySha256'), baselineBinary=baseline['binarySha256']),
+                                    [test], test, tag)
             record = run_phase(ctx, out / kind / name, name, kind, patches, [test], judge, timeout)
             record['expectedTest'], record['expectedTag'] = test, tag
             if kind == 'controls':
@@ -521,6 +698,8 @@ def main(argv=None):
                                 if r.get('verdict') != 'killed']
         summary['problems'] += ['control %s was judged %s/%s, expected not-killed/%s' % (
             r['id'], r.get('verdict'), r.get('reason'), r.get('expectedReason')) for r in summary['controls'] if not r.get('controlOk')]
+        for record in phases:
+            summary['problems'] += group_problems(record)
         if restored.get('verdict') != 'pass':
             summary['problems'].append('restored build is not green: %s' % restored.get('reason'))
         if not summary['restoredBinaryMatchesBaseline']:
@@ -581,18 +760,35 @@ SELFTEST_ROWS = [
     ('baseline with an error', 'pass', _obs(_result(errors=[dict(test=TEST)])), ('fail', 'errors')),
     ('baseline timeout', 'pass', _obs(None, exit=None, timeout=True), ('fail', 'timeout')),
     ('baseline ran fewer tests', 'pass', _obs(_result(run=0), exit=0), ('fail', 'child-inconsistent')),
+    # The baseline must reach every listed tag, the ones no case is bound to included (the optional last item is the
+    # tag list the row is judged against; the rows above use ['t:a']).
+    ('every listed tag reached', 'pass', _obs(_result(reached=['t:a', 't:b']), exit=0), ('pass', 'green'), ['t:a', 't:b']),
+    ('green but one of two listed tags never ran', 'pass', _obs(_result(reached=['t:a']), exit=0),
+     ('fail', 'killer-not-reached'), ['t:a', 't:b']),
+    ('green but a tag nobody listed was reached', 'pass', _obs(_result(reached=['t:a', 't:z']), exit=0),
+     ('fail', 'unlisted-tag-reached')),
+    # A patch that leaves the binary as it was cannot be what the test saw, whatever the test did.
+    ('comment only: same binary, test green', 'mutant', dict(_obs(_result(), exit=0), binary='b1', baselineBinary='b1'),
+     ('not-killed', 'identical-binary')),
+    ('same binary although the exact assertion failed', 'mutant', dict(_obs(_result([TAGGED])), binary='b1', baselineBinary='b1'),
+     ('not-killed', 'identical-binary')),
+    ('same binary although the run timed out', 'mutant', dict(_obs(None, exit=None, timeout=True), binary='b1', baselineBinary='b1'),
+     ('not-killed', 'identical-binary')),
+    ('another binary is judged on the test', 'mutant', dict(_obs(_result([TAGGED])), binary='b2', baselineBinary='b1'),
+     ('killed', 'exact-assertion')),
 ]
 
 
 def selftest():
     """The rows above through the judges; returns the rows that came out differently, and reasons with no row."""
     failed = []
-    for label, role, obs, expected in SELFTEST_ROWS:
-        actual = judge_mutant(obs, [TEST], TEST, 't:a') if role == 'mutant' else judge_pass(obs, [TEST], ['t:a'])
+    for label, role, obs, expected, *rest in SELFTEST_ROWS:
+        actual = (judge_mutant(obs, [TEST], TEST, 't:a') if role == 'mutant'
+                  else judge_pass(obs, [TEST], rest[0] if rest else ['t:a']))
         if actual != expected:
             failed.append('%s: %s, expected %s' % (label, actual, expected))
-    covered = {expected[1] for _, role, _, expected in SELFTEST_ROWS if role == 'mutant'}
-    failed += ['no selftest row for reason %s' % reason for reason in REASONS if reason not in covered and reason != 'identical-binary']
+    covered = {expected[1] for _, role, _, expected, *_ in SELFTEST_ROWS if role == 'mutant'}
+    failed += ['no selftest row for reason %s' % reason for reason in REASONS if reason not in covered]
     return failed
 
 
