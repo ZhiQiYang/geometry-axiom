@@ -16,7 +16,7 @@ runtime import blocking, mutation receipts, browser acceptance, or SSOT checks.
 
 ## Complete inventory and responsibilities
 
-The current inventory contains 591 executable files: 333 owned sources and 258
+The current inventory contains 601 executable files: 333 owned sources and 268
 individually named exclusions. The five complete roots are `geometry-core`,
 `geometry-app`, `geometry-templates`, `geometry-web`, and `geometry-guide`.
 `current_geometry.c` is an additional standalone source. The real
@@ -46,7 +46,7 @@ of misplaced domain policy. It must not be cited as that stronger result.
 
 All exclusions have an exact path, individual reason, and SHA-256 using explicitly
 declared CRLF-to-LF normalization. There are 120 historical evidence programs,
-47 other documentation/reproduction/snapshot/GEO-262 tooling programs, 66 dedicated test drivers,
+57 other documentation/reproduction/snapshot/GEO-262/framing-template tooling programs, 66 dedicated test drivers,
 and 25 engineering-spec prototype files. The prototype's `AGENTS.md` explicitly
 states it is not the production application. The manifest has no directory
 exemption. An owned dependency on any excluded file fails. Historical evidence
@@ -200,7 +200,7 @@ digests, raw digests and current Git blobs. All other exclusion, vendor and
 embed-route digests remain current. The Python default
 change in #289 was not part of that 47d3bb4 frozen source and was not certified by that historical audit.
 
-The final GEO-261 integration refresh freezes source HEAD
+The preceding GEO-261 integration refresh froze source HEAD
 `8394ef601c3d2407f51191339fad261929c1769a`. The merge of main `4b975a3d` (train
 #312, GEO-262) and the GEO-262 re-anchor had already registered every new
 executable file in the manifest, so independent enumeration finds 591 files,
@@ -254,6 +254,82 @@ directory and the previous sealed outputs were re-read from Git commit
 `277bfdd3`. The new receipt links their raw/LF digests, the previous receipt
 creation time and source head.
 
+The post-merge GEO-261 integration (`96ade86b`) refresh freezes source HEAD
+`96ade86bdb5fbcdad581b36afdd180a96fca7999`. The previous sealed audit (receipt
+commit `854660a7`) froze source head `8394ef60`; since then the integration
+branch gained 111 commits (first-parent merges: `96ade86b` (geo261: merge #321
+source graph index (9f21280d) into the integration line), `6300d887` (geo261:
+merge integration 390a5f33 into rootcat), `ce708ef5` (geo261: merge integration
+d3746972 into rootcat), `e1eafff0` (geo261: merge integration 3e600772 into
+rootcat), `c3613a6e` (geo261: merge Codex root-catalog exact-set fix
+(4e0def58)), `71b11b43` (geo261: merge main adbaebf9 (framing train #307, #315,
+#317))). Independent enumeration finds 601 executable files, 10 of them
+unregistered in the manifest, all of them new since the previous sealed audit.
+Running the committed manifest through the actual CLI nevertheless exits 1 with
+`SOURCE_UNREGISTERED` for
+`geometry-core/framing-template/core-probe/gen_scenes.py`; the scanner stops at
+the first omission in sorted order, so the complete list comes from the
+independent enumeration:
+
+- `geometry-core/framing-template/core-probe/gen_scenes.py` (exclusion: core-probe scene generator)
+- `geometry-core/framing-template/core-probe/mutation_check.py` (exclusion: core-probe mutation harness)
+- `geometry-core/framing-template/core-probe/parse_results.py` (exclusion: core-probe result parser)
+- `geometry-core/framing-template/core-probe/scene_reader.py` (exclusion: core-probe independent scene reader)
+- `geometry-core/framing-template/core-probe/test_gen_scenes.py` (exclusion: core-probe unit tests)
+- `geometry-core/framing-template/oracle/framing_oracle.py` (exclusion: framing oracle (executable reference specification))
+- `geometry-core/framing-template/oracle/make_golden.py` (exclusion: oracle golden generator)
+- `geometry-core/framing-template/oracle/quote_check.py` (exclusion: oracle verbatim-quote checker)
+- `geometry-core/framing-template/oracle/render.py` (exclusion: oracle HTML renderer)
+- `geometry-core/framing-template/oracle/selftest.py` (exclusion: oracle self-test suite)
+
+All 10 are registered as exclusions with an exact path, an individual reason
+and, for exclusions, an LF-normalized SHA-256 (the receipt also records raw
+digests and the matching Git blob at the frozen head). The classification is a
+reviewed responsibility claim: each file is probe, test, reference-oracle or
+verification tooling for the framing template, which is not yet implemented in
+the product: none is a product entry point, and the only executable wiring found
+is that `tests/run_all.py` (outside the inventoried roots) runs
+`geometry-core/framing-template/oracle/selftest.py` as the
+`oracle:framing-selftest` suite and `run_probe.sh` feeds the generated scenes to
+the native core in WSL.
+`geometry-core/framing-template/oracle/framing_oracle.py` is an executable
+reference specification that implementations must match, not the W
+implementation of the framing template; if that template is implemented later,
+its sources are registered as W then. No owned source depends on them: the scan
+rejects an owned dependency on any excluded file, and a text search of the 327
+owned non-vendor sources finds no mention of the new paths or their directories.
+The exclusions do not certify that these tools are free of product dependencies.
+
+In-memory controls on the final manifest remove each new entry in turn and the
+unchanged scanner fails with `SOURCE_UNREGISTERED` at exactly that path;
+corrupting the digest of each new exclusion fails with `EXCLUSION_DIGEST` at
+that path. They neither modify source or test files nor change the product-suite
+test count.
+
+The committed manifest had already been edited since the previous sealed audit
+(`715b8e2f`). This audit verifies those edits against the bytes on disk instead
+of assuming them:
+
+- `geometry-web/cdp_floor.js` (exclusion LF digest)
+- `geometry-web/cdp_test.js` (exclusion LF digest)
+- `geometry-web/grid_inspector_rename_test.js` (exclusion LF digest)
+
+The reviewed reason for each is recorded in the receipt.
+
+A fresh lexical inventory of all 60 W-owned native C files finds no new W
+identifier or string guard. All 918 previous forbidden identifiers and 55
+strings are retained, for totals of 918 and 55.
+
+8 previously sealed executable inputs changed (3 H, 1 K, 1 W and 3 excluded test
+drivers), and 10 executable files are new. The scanner and both architecture
+test files are byte-identical to the previously sealed ones; no product source
+is changed by this audit.
+
+The previous four audit outputs are preserved byte-for-byte in the external run
+directory and the previous sealed outputs were re-read from Git commit
+`854660a7`. The new receipt links their raw/LF digests, the previous receipt
+creation time and source head.
+
 The manifest, scan, report and receipt are excluded from the product
 input closure because they are derived audit artifacts. Manifest and scan are
 hashed separately; the receipt never hashes itself. Audit-only commits therefore
@@ -279,10 +355,10 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-At the latest sealed source HEAD `8394ef601c3d2407f51191339fad261929c1769a`, the
+At the latest sealed source HEAD `96ade86bdb5fbcdad581b36afdd180a96fca7999`, the
 actual CLI scan exits 0 with 333 owned sources, 796 dependency edges and no
 diagnostics. All 18 actual product tests pass with no skips. Independent
-enumeration matches all 591 input hashes, both raw and LF-normalized. The
+enumeration matches all 601 input hashes, both raw and LF-normalized. The
 generic scanner suite was executed at this HEAD: 205 tests, 204 passed, 0 failed
 and 1 skipped (a skip is not a pass). HEAD and all product, scanner and test raw
 and LF hashes remain fixed throughout this finite refresh.
