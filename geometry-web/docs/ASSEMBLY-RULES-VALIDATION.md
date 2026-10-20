@@ -251,7 +251,7 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 | `control-single-layer` | 只拿掉 `cancelled-preview` 兩層裡的守門那一層 | `survived`（即上表 XA1） |
 | `control-comment-only` | 在 conflict 案例的錨點（`assembly.c:66` 的 `if(!strcmp(scopes[k],scopes[i]))`）同一行後面加 `/* comment only */`，不改任何程式碼 | `identical-binary`：沒有加 `-g`、行數不動（`__LINE__` 也不會變），所以編出的二進位必須與基準線逐位元組相同；判決先比二進位 sha256，再看測試結果，所以這一階段的測試不論過不過都是 identical-binary。`--check` 要求這種對照的補丁只能是加 `/* */` 註解、不得增減換行；拿掉工具裡的二進位比對，這個對照會被判 `survived` 而讓整次執行失敗 |
 
-不用補丁就能驗的部分在 run_all 的 `test_assembly_mutation_check`（12 個 test）：每個殺手標記（8 個）恰好出現一次、在指定的方法裡、沒有未登記的標記與無法登記的 `killer()` 引數、基準線要求全部標記且不接受未登記的標記、每個案例與對照的錨點仍存在且唯一、34 條判斷規則（含上表所有原因，`identical-binary` 也有）、註解對照只加註解、舊判準會把別的斷言當成 killed 而新判準不會、結果記錄器分得開標記、error、skip、橋接器死亡與子測試、被殺程序群組的查驗（`/proc` 解析、輪詢、殘留判定）。最後一項另有一個真的 `sh` 子程序樹被殺、殺後 `/proc` 乾淨的測試，只在 Linux／WSL 執行，Windows 上該測試直接回傳、什麼都沒驗；Windows 上驗不到的那一段由工具實跑的收據負責。`python3 tests/assembly_mutation_check.py --check` 與 `--selftest` 不需要編譯器。
+不用補丁就能驗的部分在 run_all 的 `test_assembly_mutation_check`（12 個 test）：每個殺手標記（8 個）恰好出現一次、在指定的方法裡、沒有未登記的標記與無法登記的 `killer()` 引數、基準線要求全部標記且不接受未登記的標記、每個案例與對照的錨點仍存在且唯一、34 條判斷規則（含上表所有原因，`identical-binary` 也有）、註解對照只加註解、舊判準會把別的斷言當成 killed 而新判準不會、結果記錄器分得開標記、error、skip、橋接器死亡與子測試、被殺程序群組的查驗（`/proc` 解析、輪詢、殘留判定）。最後一項另有一個真的 `sh` 子程序樹被殺、殺後 `/proc` 乾淨的測試，只在 Linux／WSL 執行，Windows 上該測試明示 skip（理由 `requires POSIX process groups and /proc (Linux/WSL/CI run it)`，登記在 `run_all.py` 的 `ALLOWED_SKIPS`，只對 `nt` 有效；先前是直接 `return` 而顯示通過，什麼都沒驗）；Windows 上驗不到的那一段由工具實跑的收據負責。`python3 tests/assembly_mutation_check.py --check` 與 `--selftest` 不需要編譯器。
 
 #### 第二次實跑收據（2026-10-20，標記判準；表中行號是 `661d72bf` 的 `test_assembly_rules.py`）
 

@@ -273,7 +273,10 @@ class AssemblyMutationCheck(unittest.TestCase):
 
     def test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left(self):
         if os.name != 'posix' or not Path('/proc/self/stat').is_file():
-            return    # needs POSIX process groups and /proc; the tool itself refuses to run elsewhere
+            # Needs POSIX process groups and /proc; the tool itself refuses to run elsewhere.  A bare `return` here
+            # would report a pass for a test that checked nothing, so the skip is explicit and named in
+            # tests/run_all.py ALLOWED_SKIPS (Windows only: any other platform that lands here stays a visible skip).
+            self.skipTest('requires POSIX process groups and /proc (Linux/WSL/CI run it)')
         tool = self.tool
         with tempfile.TemporaryDirectory() as directory:
             where = Path(directory)
