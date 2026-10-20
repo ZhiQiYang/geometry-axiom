@@ -119,7 +119,7 @@ M5：未驗
 ```sh
 ulimit -s 16384
 python3 tests/run_all.py --build
-python3 tests/assembly_mutation_check.py
+python3 tests/assembly_mutation_check.py --out /tmp/assembly-mutations
 GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge python3 tests/build_assembly_example.py --check
 python3 geometry-guide/sync_axiom_reader.py
 python3 geometry-guide/sync_axiom_reader.py --check
@@ -154,8 +154,8 @@ python geometry-web/serve.py 8848
 ## 故障注入
 
 `tests/assembly_mutation_check.py` 在暫存來源副本編譯三種故障，先跑正常基準。
-略過衝突檢查、略過尺寸來源解析、允許已取消預覽確認，均須由指定案例的 AssertionError 偵測。
-編譯失敗、崩潰、skip 不算抓到缺陷；不修改工作區，也不覆寫既有全庫 mutation 結果。
+略過衝突檢查、略過尺寸來源解析、允許已取消預覽確認，均須由指定案例的指定斷言偵測（判準見下方「killed 判準」）。
+編譯失敗、崩潰、error、skip、逾時、別的斷言失敗都不算抓到缺陷；不修改工作區，也不覆寫既有全庫 mutation 結果。
 另以 `GEOMETRY_ASSEMBLY_ONLY=1 GEOMETRY_ASSEMBLY_INJECT_SWAP=1` 跑 CDP，攔截交換按鈕、只改文字：
 P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數；完整模式禁止此注入。
 
@@ -166,7 +166,7 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 1. **來源副本缺檔，基準線編不過。** 工具只複製 `geometry-core`、`geometry-web` 的 C 檔，而 `current_geometry.c` 現在 include `geometry-app/native/…` 與 `geometry-templates/woodworking/native/…`，gcc 報 `fatal error: geometry-app/native/legacy_json.inc: No such file`（8 秒就停）。現在一併複製這兩個目錄。
 2. **`cancelled-preview` 的錨點還在，突變卻存活。** 只拿掉確認時的 `g_preview.ready` 守門，取消後的確認仍被擋下：取消現在還會丟棄候選（`app_candidate_discard`），候選失效後 `app_world_candidate_current` 為假。錨點存在不代表突變還咬得到，這一類只有實跑看得出來。
 
-案例格式因此改成 `(名稱, [(檔, 前, 後), …], 殺手測試)`，一個案例可以對每一層各打一個補丁。killed 判準沒有改（結束碼 1、有 AssertionError、沒有 errors 與 skipped）。
+案例格式因此改成 `(名稱, [(檔, 前, 後), …], 殺手測試)`，一個案例可以對每一層各打一個補丁。這一輪 killed 判準沒有改（結束碼 1、有 AssertionError、沒有 errors 與 skipped）；那條判準的缺口與修法見後面的「killed 判準」。
 
 | 案例 | main `adbaebf9` 原本打的位置 | 整合分支改打的位置 | 層數與對照組 | 為什麼是同一條規則、同一種錯誤 |
 |---|---|---|---|---|
@@ -195,6 +195,61 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 | `controls/` | XA1～XA4 與 PF3 的對照組，`cmd.log` sha256 `9675a07f85a493642d0f2f0f265f042cf2774f3e719853e9a3271fd2813451db` |
 | `main-compare/` | main 的原突變，`cmd.log` sha256 `63a9f884d75b138e48148315c43d6b46b62ecb7222d51a6c1393e017ed88a3e3` |
 | `before-tools/` | 改錨前的失敗 |
+
+### killed 判準：每個突變綁定單一斷言（2026-10-20，PR #288 審查須改第 5 項）
+
+上面那一輪的判準（結束碼 1、輸出含 `AssertionError`）只證明「這個測試的某個斷言失敗了」，不證明是目標斷言。實測證據：`control-wrong-assertion` 把 `assembly-cancel` 的回報改成 `cancelled:false`，同一個測試在更早的斷言失敗，舊判準照樣算 killed（收據裡 `legacyCriterionKilled: true`）。
+
+現在每個案例是 `(名稱, 補丁, 殺手測試, 殺手標記)`。殺手斷言以 `tests/test_assembly_rules.py` 的 `killer(標記)` 當失敗訊息；工具讀子行程寫出的結構化結果（失敗、error、skip 各自的測試名、例外型別與訊息裡的標記），不再 grep 文字。killed 要同時成立：
+
+1. 基準線（未改動來源）的三個殺手測試全綠、沒有 skip，且每個標記對應的斷言都被執行過（`killer()` 求值時記入 `REACHED`，所以斷言通過也記得到；標記只是躺在檔案裡、斷言卻跑不到，基準線就判紅）。
+2. 突變版只跑殺手測試，恰好一筆失敗：是殺手測試、是斷言失敗（不是 error）、訊息只帶這一個標記；沒有 skip、error、橋接器死亡、逾時、第二筆失敗，二進位也與基準線不同。
+3. 還原後來源樹與基準線逐位元組相同（逐階段比來源摘要），重編的基準線與第一次二進位 sha256 相同，三個殺手測試再度全綠。
+
+其他結果一律 not-killed，並寫出原因：`survived`、`wrong-assertion`、`wrong-test`、`extra-failures`、`error`、`skipped`、`unexpected-outcome`、`bridge-closed`、`timeout`、`child-crash`、`child-inconsistent`、`identical-binary`。
+
+| 案例 | 殺手測試 | 殺手標記 | 標記所在 |
+|---|---|---|---|
+| conflict | `test_duplicate_scope_and_endpoint_rejected` | `conflict:scope` | `:233` 傳給 `reject`，由 `reject` 的 `:97`（preview 必須無效）帶出；`end` 變體另有 `conflict:end`，不屬於這個突變 |
+| missing-source | `test_bad_dimension_sources_rejected_not_incomplete` | `missing-source:literal-zero` | `:469` 傳給 `reject`，同樣由 `:97` 帶出；迴圈的第一個來源，測試在第一筆失敗就停 |
+| cancelled-preview | `test_cancel_and_protocol_tokens_do_not_commit` | `cancelled-preview:confirm-after-cancel` | `:489`，取消後的 `assembly-confirm` 必須回 `ok:false` |
+
+前一位 agent 用 main 人工比對的 `:218`、`:452`、`:472` 是加標記前的行號，就是現在的 `:233`、`:469`、`:489`（同一個陳述式；`:97` 是 `reject` 內同一條斷言）。標記讓比對不再靠行號。
+
+負對照（`CONTROLS`）是真的故障，走和案例完全相同的編譯、測試與判斷，必須因指定原因被判 not-killed，否則整次執行判失敗：
+
+| 對照 | 補丁 | 必須的原因 |
+|---|---|---|
+| `control-wrong-assertion` | `engineering_bridge.inc` 的 `bool cancelled=…;` 改成 `bool cancelled=false;` | `wrong-assertion`：同一測試更早的 `assembly-cancel` 斷言失敗，沒有標記 |
+| `control-bridge-crash` | 取消成功時 `abort()` | `bridge-closed`：`BridgeClosed` 是 `AssertionError` 子類，unittest 記成 failure 而非 error，工具另外指認 |
+| `control-error` | 取消回覆的 `{"ok"` 改成 `{ok`，不再是 JSON | `error`：`json.JSONDecodeError` |
+| `control-hang` | 取消成功時 `for(;;){}`，測試時限 15 秒 | `timeout`：整組程序（含橋接器）被 `killpg` 殺掉 |
+| `control-single-layer` | 只拿掉 `cancelled-preview` 兩層裡的守門那一層 | `survived`（即上表 XA1） |
+
+不用補丁就能驗的部分在 run_all 的 `test_assembly_mutation_check`：每個案例與對照的標記與錨點仍存在且唯一、27 條判斷規則（含上表所有原因）、舊判準會把別的斷言當成 killed 而新判準不會、結果記錄器分得開標記、error、skip、橋接器死亡與子測試。`python3 tests/assembly_mutation_check.py --check` 與 `--selftest` 不需要編譯器。
+
+#### 第二次實跑收據（2026-10-20，標記判準）
+
+受驗提交 `661d72bfa890fdf25818577dfbe66e2230656b1e`，`git status` 乾淨；工具 sha256 `206f12be…`、`test_assembly_rules.py` sha256 `690e4e22…`（都是 LF 形式，與收據 `judge` 欄相同）。WSL Ubuntu-24.04、GCC 13.3.0、Python 3.12.3，ext4 clone `/var/tmp/assembly-oracle-geo261/repo`，經 WSL 鎖。`python3 tests/assembly_mutation_check.py --out …` 結束碼 0，`ok: true`，`problems: []`，473 秒。跑前 `--check`、`--selftest`、`unittest tests.test_assembly_mutation_check tests.test_mutation_anchors`（10 tests）都通過。
+
+| 階段 | 結果 | 失敗的位置與標記 | 舊判準 | 二進位 sha256 前 12 碼 |
+|---|---|---|---|---|
+| baseline | pass | 3 個測試、8 個標記都被執行 | | `a56a309f3fdb` |
+| conflict | killed | `test_duplicate_scope_and_endpoint_rejected` `:233`→`:97`，`conflict:scope` | killed | `f925c8b6bba7` |
+| missing-source | killed | `test_bad_dimension_sources_rejected_not_incomplete` `:469`→`:97`，`missing-source:literal-zero` | killed | `a7f6fcbd0f56` |
+| cancelled-preview | killed | `test_cancel_and_protocol_tokens_do_not_commit` `:489`，`cancelled-preview:confirm-after-cancel` | killed | `cf361d2d4924` |
+| control-wrong-assertion | not-killed／wrong-assertion | 同一測試 `:488`，無標記 | **killed** | `c02d327dbcc5` |
+| control-bridge-crash | not-killed／bridge-closed | `:488` 的 `BridgeClosed`，橋接器已結束 | 不算 | `8370dd36f100` |
+| control-error | not-killed／error | `json.JSONDecodeError`，errors=1、failures=0 | 不算 | `b5af3976b61e` |
+| control-hang | not-killed／timeout | 15.01 秒後被殺，沒有結果檔；之後 `ps` 查無殘留程序 | 不算 | `44df9c5a9591` |
+| control-single-layer | not-killed／survived | 測試通過 | 不算 | `d47fb584cc22` |
+| restored | pass | 3 個測試再度全綠 | | `a56a309f3fdb`（與 baseline 相同） |
+
+每個階段都記了突變後與還原後的來源摘要：十個階段還原後都回到基準線的 `91364b349f4f…`，`originalSourcesUnchanged: true`。二進位 sha256 只能在同一次執行內比較：兩次執行的暫存目錄不同，同一份來源編出的基準線 sha256 也不同（先行的 run1 是 `9f810c80…`，run2 是 `a56a309f…`，來源摘要都是 `91364b34…`）。
+
+收據在 `D:/geometry-axiom-work/assembly-oracle-20261020/`，沒有提交進 repo：`run2/out/` 每階段有 `patches` 與 `patchedFiles` 摘要、`build/` 編譯輸出、`tests/` 的 stdout、stderr、`result.json`（結構化結果）、`execution.json`、`record.json`；`summary.json` sha256 `ff38239c2139bba15f072f90653efcb7235bca3026d09d5aa5935edd25718f02`，`sources.json` sha256 `6adcf046fdd6202364e3b1424eb3868dc3c95c93c87aa5b1038f72b6b517be25`，`run2/assembly.out` sha256 `fa186917517f7dfbc2b28030ea0077c5ff02f54a7e415ae04724c9dca0dd44a8`。`run1/` 是同一天先跑的版本（`666f4654`，三個對照、說明文字較舊，全數通過），保留不當作最終收據。
+
+限制：標記證明的是「失敗的是這一條斷言」，不證明它失敗的原因就是被注入的缺陷，那一層仍靠補丁與測試的對應。skip 沒有真實對照：橋接器的故障造不出 skip，只由 `--selftest` 與記錄器單元測試覆蓋。`missing-source` 的殺手是迴圈第一個來源，其餘四個來源的拒絕沒有被這個突變個別證明。
 
 ## 環境限制與計數紀律
 
