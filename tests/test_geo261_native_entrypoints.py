@@ -25,7 +25,7 @@ class NativeEntrypoints(unittest.TestCase):
         fixture=(ROOT/'_ax_r12_prefix_beam.scene').read_text(encoding='utf-8')
         scene='\n'.join(line for line in fixture.splitlines() if line.startswith(('surface ','space ','column ')))+'\n'
         data=self.snapshot(self.scene(scene,'entrypoints-rc.scene'))
-        self.assertEqual({'ok','schema','base_scene','required_capabilities','specs','placements','solids','profile_runs','unplaced_timbers','dependencies'},set(data))
+        self.assertEqual({'ok','schema','base_scene','required_capabilities','specs','parameter_fields','placements','solids','profile_runs','unplaced_timbers','dependencies'},set(data))
         self.assertEqual('geometry-base-snapshot/1',data['schema']);solid=data['solids'][0]
         self.assertEqual(('column',2),(solid['kind'],solid['id']))
         expected=[
