@@ -137,7 +137,10 @@ static int nodes_and_seal(void)
     GeoEvalContext *ctx=context();REQUIRE("context",ctx);
     GeoSourceValue value;
     for(size_t i=0;i<MANY+6;++i){linear_node(refs[i]);
-        REQUIRE("node-evaluates",geo_eval_source(ctx,refs[i],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);}
+        REQUIRE("node-evaluates",geo_eval_source(ctx,refs[i],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+        /* 逐筆對線性 oracle：多出節點是重複，少了節點是不同鍵被誤併。 */
+        REQUIRE("merged-node",geo_eval_node_count(ctx)>=oracle_node_count);
+        REQUIRE("duplicate-node",geo_eval_node_count(ctx)<=oracle_node_count);}
     for(size_t i=MANY+6;i-->0;){
         REQUIRE("node-duplicate-lookup",geo_eval_source(ctx,refs[i],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
         REQUIRE("duplicate-node",geo_eval_node_count(ctx)==oracle_node_count);
@@ -181,6 +184,94 @@ static int edges_and_reset(void)
         REQUIRE("rebuild",geo_eval_source(ctx,refs[i],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);}
     REQUIRE("rebuilt-order",!graph_equal(ctx));geo_eval_destroy(ctx);
     REQUIRE("reset-destroy-frees-all",live_allocations==0);return 0;
+}
+/* 邊索引的確定性碰撞。邊的雜湊把 consumer、source、kind 依序混入，kind 最後混入，
+ * 所以隨機的邊幾乎不會讓「只差 kind」的兩條邊落在同一個探測序列，只靠 edges 案例的
+ * 規模抓不到「去重漏比 kind」。下面兩張表寫死在這裡，鍵本身與被測雜湊無關，
+ * 但每個鍵在執行時都用被測的 geo_source_edge_hash 複驗（edge-collision-precondition）：
+ * 雜湊一改，這個案例會當場失敗，而不是悄悄失去牙齒。
+ * 找法（`client edge-search` 會用被測雜湊印出同一份表，另有獨立的 Python 版本交叉比對）：
+ *   - 只用前 EDGE_NODES 個 refs 當節點，consumer 與 source 都是真實節點序號且不相等；
+ *   - 依 consumer 由小到大、source 由小到大、kind 由 0 到 2 掃描；
+ *   - edge_group：前 EDGE_GROUP 個 (hash & 4095)==4095 的三元組。低 12 位全是 1，
+ *     所以邊索引從 16 槽起的每一次倍增，這些邊的起始槽都相同（空間內共有 194 個）；
+ *   - edge_pairs：前 EDGE_PAIRS 組 consumer、source 相同、kind 不同、(hash & 4095) 相同
+ *     且不等於 4095 的邊對（空間內共有 13 組）。 */
+enum { EDGE_NODES=512, EDGE_GROUP=32, EDGE_PAIRS=8, EDGE_SLOT_MASK=4095 };
+typedef struct { unsigned consumer, source; int kind; } EdgeKey;
+typedef struct { unsigned consumer, source; int kind_a, kind_b; } EdgePair;
+static const EdgeKey edge_group[EDGE_GROUP]={
+    {1,316,2},{2,46,2},{5,497,1},{6,154,0},{6,233,0},{7,400,0},{8,256,1},{13,342,2},
+    {13,431,2},{16,507,2},{20,99,2},{24,73,2},{26,397,0},{30,137,1},{30,196,0},{33,345,0},
+    {34,165,2},{36,77,1},{38,236,1},{38,323,2},{40,192,1},{40,457,2},{41,399,1},{43,473,2},
+    {49,216,2},{50,72,1},{50,252,0},{53,19,0},{53,467,0},{55,441,2},{56,339,1},{59,114,0}};
+static const EdgePair edge_pairs[EDGE_PAIRS]={
+    {66,374,1,2},{100,482,1,2},{180,159,1,2},{185,79,1,2},
+    {211,466,0,1},{256,422,0,1},{282,40,1,2},{292,226,0,1}};
+static GeoSourceEdge edge_of(unsigned consumer,unsigned source,int kind)
+{return (GeoSourceEdge){consumer,source,(GeoDependencyKind)kind};}
+static size_t edge_slot(unsigned consumer,unsigned source,int kind)
+{return (size_t)geo_source_edge_hash(edge_of(consumer,source,kind))&EDGE_SLOT_MASK;}
+/* consumer 取自真實節點序號；與 edges 案例的差別只在於不經 provider 回呼，直接指定 active。 */
+static int add_edge(GeoEvalContext *ctx,unsigned consumer,unsigned source,int kind)
+{
+    linear_edge(consumer,source,(GeoDependencyKind)kind);
+    ctx->active=consumer;
+    GeoSourceStatus status=geo_eval_depend(ctx,refs[source],(GeoDependencyKind)kind);
+    ctx->active=SIZE_MAX;
+    REQUIRE("edge-depend",status==GEO_SOURCE_OK);
+    /* 多一條是重複，少一條是不同的邊被誤判為已存在。 */
+    REQUIRE("missing-edge",geo_eval_edge_count(ctx)>=oracle_edge_count);
+    REQUIRE("duplicate-edge",geo_eval_edge_count(ctx)<=oracle_edge_count);
+    return 0;
+}
+static int edge_collisions(void)
+{
+    for(size_t i=0;i<EDGE_GROUP;++i){const EdgeKey *k=&edge_group[i];
+        REQUIRE("edge-collision-precondition",k->consumer<EDGE_NODES&&k->source<EDGE_NODES&&k->consumer!=k->source&&
+            edge_slot(k->consumer,k->source,k->kind)==EDGE_SLOT_MASK);}
+    for(size_t i=0;i<EDGE_PAIRS;++i){const EdgePair *p=&edge_pairs[i];
+        REQUIRE("edge-collision-precondition",p->consumer<EDGE_NODES&&p->source<EDGE_NODES&&p->consumer!=p->source&&
+            p->kind_a!=p->kind_b&&edge_slot(p->consumer,p->source,p->kind_a)==edge_slot(p->consumer,p->source,p->kind_b)&&
+            edge_slot(p->consumer,p->source,p->kind_a)!=EDGE_SLOT_MASK);}
+    GeoEvalContext *ctx=context();REQUIRE("context",ctx);GeoSourceDescriptor d;
+    for(size_t i=0;i<EDGE_NODES;++i){linear_node(refs[i]);
+        REQUIRE("edge-nodes",geo_eval_describe(ctx,refs[i],&d)==GEO_SOURCE_OK);}
+    REQUIRE("edge-nodes-created",geo_eval_node_count(ctx)==EDGE_NODES&&!geo_eval_edge_count(ctx));
+    for(size_t i=0;i<EDGE_GROUP;++i)
+        if(add_edge(ctx,edge_group[i].consumer,edge_group[i].source,edge_group[i].kind))return 1;
+    for(size_t i=0;i<EDGE_PAIRS;++i){const EdgePair *p=&edge_pairs[i];
+        if(add_edge(ctx,p->consumer,p->source,p->kind_a)||add_edge(ctx,p->consumer,p->source,p->kind_b))return 1;}
+    REQUIRE("edge-collision-all-added",oracle_edge_count==EDGE_GROUP+2*EDGE_PAIRS&&geo_eval_edge_count(ctx)==oracle_edge_count);
+    REQUIRE("edge-index-in-use",ctx->edge_index&&ctx->edge_index_capacity);
+    /* 全部再加一遍：先倒序、再正序。已存在的邊不得重複，排序仍是首次插入序。 */
+    for(size_t i=EDGE_PAIRS;i-->0;){const EdgePair *p=&edge_pairs[i];
+        if(add_edge(ctx,p->consumer,p->source,p->kind_b)||add_edge(ctx,p->consumer,p->source,p->kind_a))return 1;}
+    for(size_t i=EDGE_GROUP;i-->0;)
+        if(add_edge(ctx,edge_group[i].consumer,edge_group[i].source,edge_group[i].kind))return 1;
+    for(size_t i=0;i<EDGE_GROUP;++i)
+        if(add_edge(ctx,edge_group[i].consumer,edge_group[i].source,edge_group[i].kind))return 1;
+    for(size_t i=0;i<EDGE_PAIRS;++i){const EdgePair *p=&edge_pairs[i];
+        if(add_edge(ctx,p->consumer,p->source,p->kind_a)||add_edge(ctx,p->consumer,p->source,p->kind_b))return 1;}
+    REQUIRE("edge-collision-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);
+    REQUIRE("edge-collision-frees-all",live_allocations==0);return 0;
+}
+/* 重現上面兩張表：印出可直接貼回的 C 初始化列。 */
+static int edge_search(void)
+{
+    size_t found=0;
+    printf("edge_group:\n");
+    for(unsigned c=0;c<EDGE_NODES&&found<EDGE_GROUP;++c)for(unsigned s=0;s<EDGE_NODES&&found<EDGE_GROUP;++s){
+        if(c==s)continue;
+        for(int k=0;k<3&&found<EDGE_GROUP;++k)if(edge_slot(c,s,k)==EDGE_SLOT_MASK){printf("{%u,%u,%d},\n",c,s,k);++found;}}
+    printf("edge_pairs:\n");found=0;
+    for(unsigned c=0;c<EDGE_NODES&&found<EDGE_PAIRS;++c)for(unsigned s=0;s<EDGE_NODES&&found<EDGE_PAIRS;++s){
+        if(c==s)continue;
+        for(int a=0;a<3&&found<EDGE_PAIRS;++a)for(int b=a+1;b<3&&found<EDGE_PAIRS;++b)
+            if(edge_slot(c,s,a)==edge_slot(c,s,b)&&edge_slot(c,s,a)!=EDGE_SLOT_MASK){
+                printf("{%u,%u,%d,%d}, /* slot %zu */\n",c,s,a,b,edge_slot(c,s,a));++found;}}
+    return found==EDGE_PAIRS?0:1;
 }
 static int failures(void)
 {
@@ -273,6 +364,8 @@ int main(int argc,char **argv)
     if(argc!=2)return 2;prepare_refs();int result;
     if(!strcmp(argv[1],"nodes"))result=nodes_and_seal();
     else if(!strcmp(argv[1],"edges"))result=edges_and_reset();
+    else if(!strcmp(argv[1],"edge-collisions"))result=edge_collisions();
+    else if(!strcmp(argv[1],"edge-search"))return edge_search();
     else if(!strcmp(argv[1],"allocation"))result=failures();
     else if(!strcmp(argv[1],"growth"))result=growth_failures();
     else if(!strcmp(argv[1],"statuses"))result=statuses();
