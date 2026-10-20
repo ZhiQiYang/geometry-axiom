@@ -2,7 +2,9 @@ GEO-261 在每行候選驗證中反覆解析同一支角材的 footprint、放�
 
 **效能目標部分達成**：`geo_eval_source` N64／N32 為 **4.470× ≤ 4.5×**；N16／32／48 均快於基底。此雲端 N64 fix／main 為 **1.78×，未達 ≤1.3×**。未更改守門流量來降低成本。
 
-基底分支必須設為 **`architecture/geo261-integration-20261016`**，基底 `546e2eb2142ebf19859489c5391b57cbb8413d10`；修正分支 `codex/geo261-load-residual-20261020`。產品碼與測試提交 `f01ade2308cba75cb0cdeb81d95e95eda3782bd5`，之後只附證據。此正文獨立放在 `codex/geo261-load-residual-20261020-prbody`，該分支整棵 tree 只有 `PR_BODY.md`，未放入修正分支。請維護者在本機建立 **draft PR**；本環境不呼叫 GitHub API、不合併。
+基底分支必須設為 **`architecture/geo261-integration-20261016`**，基底 `546e2eb2142ebf19859489c5391b57cbb8413d10`；修正分支 `codex/geo261-load-residual-20261020`。產品碼與測試提交 `221156c280404f75bf3fb5a42fd4c9cf119f7064`，之後只附證據。此正文獨立放在 `codex/geo261-load-residual-20261020-prbody`，該分支整棵 tree 只有 `PR_BODY.md`，未放入修正分支。請維護者在本機建立 **draft PR**；本環境不呼叫 GitHub API、不合併。
+
+修正分支最終 head：`f3ea9c5232c043b3dca57b953577f5d22e9030e7`；其產品碼與測試內容和受驗提交相同，後續提交只含證據。
 
 ## 改動與不變量
 
@@ -164,9 +166,31 @@ python3 -B tests/architecture_contract.py --root . --manifest geometry-core/doma
 
 基底／修正結束碼均 **0**，JSON `diagnostics: []`。這份新基底已沒有上一輪未登記 `gen_scenes.py` 的診斷；本次未改 manifest。兩份完整 JSON 在 `checks/architecture-*.stdout`。
 
-完整 `python3 -u tests/run_all.py --build` 執行中；完成後會補上結果。
+完整 `python3 -u tests/run_all.py --build` 結束碼 **1**。原始 stdout／stderr 與起訖時間均在 `checks/full.*`。摘要：
+
+```text
+[3/225] mutation:check …
+[164/225] py:test_product_architecture …
+mutation:check                                       -     -  FAIL     -     0.7  mutation inventory freshness (not test assertions); exit 1；日誌 /tmp/geometry-tests/run_all-logs/mutation_check.log
+py:test_product_architecture                        18    18     0     0    12.2
+合計(已執行、有計數者)                            5183  5181     1     1  2187.7
+  mutation:check
+exit 1：有 fail／逾時／預期數不符／未登記檔
+```
+
+225 個 suite 全部執行完畢，只有兩個 suite 未過：`mutation:check` 是既有突變帳本因 include 閉包變更而過期，依要求留給維護者重產；`py:test_assembly_mutation_check` 是下述可在基底重現的 zombie 清理問題。其餘 suite 沒有失敗，包含已補正的四組測試與 18 個 product architecture tests。Windows GDI 的 1 項 skip 在既有具名允許清單內；獨立 browser／owner 整合仍未執行。
+
 
 另外，`py:test_assembly_mutation_check` 的程序群清理案例在此容器失敗：被 SIGKILL 的 `sleep` 留在 `/proc`，狀態為 Z（zombie）。在基底與修正版各直接執行 `python3 tests/test_assembly_mutation_check.py`，均 exit 1、12 tests 中同一項失敗；兩支相關測試／工具檔與基底無差異。原始輸出與結束碼保存於 `checks/assembly-process-base.*`、`checks/assembly-process-fix.*`。這項環境清理失敗保持紅燈，未修改測試或程序管理規則來排除它。
+
+完整跑曾找出四組測試適配：兩支 harness 需接收新的私有 `AppValidationInputs`，contact feature 與 PF3 host-identity 的負控制需重設到實際執行的錨點。保留原斷言與錯誤類別後，四個 suite 複跑 **46 tests 全過**；指令／exit 0 見 `checks/test-adapters.*`。重設後的 PF3 host-identity 另以原工具執行完整基準 20 tests、單一突變指定 `PF3_HOST_FILTER` 失敗（exit 1、1 failure、無 error／skip）、完整恢復 20 tests 通過；整體工具 exit 0，來源未變。這份收據是在此 Linux 執行，未冒充 WSL 收據，保存於 `pf3-host-identity/`。
+
+```sh
+python3 tests/run_all.py --only py:test_geo261_host_facts_authority --only py:test_geo261_wood_world_validation --only py:test_geo261_contact_sources --only py:test_mutation_anchors
+python3 tests/evidence/geo261-load-residual-20261020/pf3_control.py.txt
+```
+
+適配前那次完整結果（5183、5160 pass／22 fail／1 skip，exit 1）完整保留在 `checks/full-before-test-adapters.*`；最終完整重跑另列於上方，不混用通過數。
 
 第一次完整測試因複查補上 reset 邊界回歸而主動中止（exit -15），保留於 `checks/full-interrupted.*`，不列作最終驗收；後續完整測試重新由頭執行。
 
