@@ -254,7 +254,7 @@ directory and the previous sealed outputs were re-read from Git commit
 `277bfdd3`. The new receipt links their raw/LF digests, the previous receipt
 creation time and source head.
 
-The post-merge GEO-261 integration (`96ade86b`) refresh freezes source HEAD
+The preceding post-merge GEO-261 integration (`96ade86b`) refresh froze source HEAD
 `96ade86bdb5fbcdad581b36afdd180a96fca7999`. The previous sealed audit (receipt
 commit `854660a7`) froze source head `8394ef60`; since then the integration
 branch gained 111 commits (first-parent merges: `96ade86b` (geo261: merge #321
@@ -330,6 +330,35 @@ directory and the previous sealed outputs were re-read from Git commit
 `854660a7`. The new receipt links their raw/LF digests, the previous receipt
 creation time and source head.
 
+The post-merge GEO-261 integration (`76df2d81`) refresh freezes source HEAD
+`76df2d816abfee02d3bb9eb545d7fb5c12150801`. The previous sealed audit (receipt
+commit `ec1238cd`) froze source head `96ade86b`; since then the integration
+branch gained 6 commits (first-parent merges: `546e2eb2` (Merge remote-tracking
+branch 'origin/architecture/geo261-integration-20261016' into
+architecture/geo261-integration-20261016)). Independent enumeration finds 601
+executable files, 0 of them unregistered in the manifest, all of them new since
+the previous sealed audit. Running the committed manifest through the actual CLI
+nevertheless exits 1 with `EXCLUSION_DIGEST` for `geometry-web/cdp_test.js`; the
+scanner stops at the first omission in sorted order, so the complete list comes
+from the independent enumeration:
+
+This audit re-pinned the stale exclusion digest(s) `geometry-web/cdp_test.js`,
+`geometry-web/grid_rule_lines_test.js` after review.
+
+A fresh lexical inventory of all 60 W-owned native C files finds no new W
+identifier or string guard. All 918 previous forbidden identifiers and 55
+strings are retained, for totals of 918 and 55.
+
+4 previously sealed executable inputs changed (2 H and 2 excluded test drivers),
+and 0 executable files are new. The scanner and both architecture test files are
+byte-identical to the previously sealed ones; no product source is changed by
+this audit.
+
+The previous four audit outputs are preserved byte-for-byte in the external run
+directory and the previous sealed outputs were re-read from Git commit
+`ec1238cd`. The new receipt links their raw/LF digests, the previous receipt
+creation time and source head.
+
 The manifest, scan, report and receipt are excluded from the product
 input closure because they are derived audit artifacts. Manifest and scan are
 hashed separately; the receipt never hashes itself. Audit-only commits therefore
@@ -355,7 +384,7 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-At the latest sealed source HEAD `96ade86bdb5fbcdad581b36afdd180a96fca7999`, the
+At the latest sealed source HEAD `76df2d816abfee02d3bb9eb545d7fb5c12150801`, the
 actual CLI scan exits 0 with 333 owned sources, 796 dependency edges and no
 diagnostics. All 18 actual product tests pass with no skips. Independent
 enumeration matches all 601 input hashes, both raw and LF-normalized. The

@@ -18,16 +18,16 @@
     "All H functions independently proven free of misplaced policy",
     "Future changed source trees"
   ],
-  "createdUtc": "2026-10-20T11:26:02.875198+00:00",
+  "createdUtc": "2026-10-20T22:05:35.503213+00:00",
   "basis": "Committed integration product sources at sourceBaseHead, plus this finite manifest/scan/report/receipt refresh.",
-  "sourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-  "headObservedBefore": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-  "headObservedAfter": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-  "manifestSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
+  "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+  "headObservedBefore": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+  "headObservedAfter": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+  "manifestSha256": "afe4175a40fd8af6d5bcbeba386daa83703d42c4571517573e33a753efaa8bbf",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-  "reportSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3",
-  "inputClosureSha256": "012d147b4561cf5c0d6c930f13b975d10c94f6482696653108480647ca2893f7",
+  "reportSha256": "30366c097118d448c054b2c92a2a8f83b47c0f2ad112927dac5c0b52e87c4f89",
+  "inputClosureSha256": "459da17fa57d821376291c5aaf21b416c08dc34bcbdd6967879cad96bfba2ab1",
   "counts": {
     "executableFiles": 601,
     "ownedSources": 333,
@@ -50,71 +50,50 @@
     "forbiddenStrings": 55
   },
   "manifestRefresh": {
-    "previousManifestSha256": "1f062bacd02e5c42e08578e7594dccc095465a246fc45abfe23305eb46dca2f6",
-    "previousReceiptSha256": "648813e514b6672640387d5373e05c33192c29f5a77b8b08f05d26f89b1ad994",
-    "previousScanSha256": "77a3a4c3803e55b6d3b661b1164abb89940494175b5a3d3d7c1a69c705da9ab0",
-    "previousReportSha256": "8a4f730065663464366c8fd0fb74b061abaa6468d0fce444bf413a1eeb55d097",
-    "previousReceiptCreatedUtc": "2026-10-19T20:01:22.488823+00:00",
-    "previousSourceBaseHead": "8394ef601c3d2407f51191339fad261929c1769a",
-    "previousReceiptCommit": "854660a77d36cf989c51a2594b3dc3004ada8f69",
-    "firstObservedHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+    "previousManifestSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
+    "previousReceiptSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
+    "previousScanSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+    "previousReportSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3",
+    "previousReceiptCreatedUtc": "2026-10-20T11:26:02.875198+00:00",
+    "previousSourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+    "previousReceiptCommit": "ec1238cd62c7155a44ecf3fb071e605aeee8ac48",
+    "firstObservedHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
     "previousOutputsPreserved": {
-      "directory": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad\\previous",
+      "directory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\previous",
       "hashes": {
         "product-architecture.json": {
-          "rawSha256": "5704633cc87ae6358d9c0a626953db2b5402de267984374bc64c8654df394488",
-          "lfSha256": "f1259c2cec1b7ad9f3cec3bb51128de1791dc780ff151bf53f3985dd44602df3",
-          "bytes": 219075
+          "rawSha256": "eeef1176893dfd4c2edcd185e1ed241d9e500721ced0a2f271de003588ebeff7",
+          "lfSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
+          "bytes": 224756
         },
         "product-architecture-scan.json": {
-          "rawSha256": "14193f08cc3819f9b41ec5494a8b7f995a03faa07514fad80ec387f842d2692e",
-          "lfSha256": "77a3a4c3803e55b6d3b661b1164abb89940494175b5a3d3d7c1a69c705da9ab0",
+          "rawSha256": "cbc0d39154a1a880f6854b2826b71b1e5cef662ed887dbaf0cf4510f6c403ac1",
+          "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
           "bytes": 136537
         },
         "product-architecture-receipt.json": {
-          "rawSha256": "75f0174dc602925d9f0c9873a927cc9debbe5a800858866a8556fc1510658105",
-          "lfSha256": "648813e514b6672640387d5373e05c33192c29f5a77b8b08f05d26f89b1ad994",
-          "bytes": 172735
+          "rawSha256": "811a81f72c3031308871750bc342cf87d1fe19bef394419c528f4a850b305e4a",
+          "lfSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
+          "bytes": 164467
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "rawSha256": "fba34c730813600a2bd8f3d59bf6179a6f69270639a116416378dd70d04f06d4",
-          "lfSha256": "8a4f730065663464366c8fd0fb74b061abaa6468d0fce444bf413a1eeb55d097",
-          "bytes": 19202
+          "rawSha256": "73c6d5f5e46381ea7cf09e1e62e12b1250802ca3ed5bdc56f87b14bdbc88da2e",
+          "lfSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3",
+          "bytes": 24131
         }
       }
     },
     "lastSealedOutputsReadFromGit": {
-      "directory": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad\\last-sealed",
-      "commit": "854660a77d36cf989c51a2594b3dc3004ada8f69"
+      "directory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\last-sealed",
+      "commit": "ec1238cd62c7155a44ecf3fb071e605aeee8ac48"
     },
-    "headManifestSha256Before": "f1259c2cec1b7ad9f3cec3bb51128de1791dc780ff151bf53f3985dd44602df3",
+    "headManifestSha256Before": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
     "manifestEditsAlreadyCommitted": {
       "note": "Between the previous receipt commit and HEAD, commits edited the manifest without refreshing scan, report or receipt. They are verified here against the current bytes, not assumed.",
-      "commits": [
-        "715b8e2f4bab99dd058ea4bf5c334f387b564464 test(P72B): expect the new-project confirm and give P72B its own floor section"
-      ],
+      "commits": [],
       "addedSources": [],
       "addedExclusions": [],
-      "updatedExclusions": [
-        {
-          "path": "geometry-web/cdp_floor.js",
-          "previousSha256": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e",
-          "currentSha256": "37f297942735fba950d81668c18485a434afb0dc38b0e34835cdf633a7edc32e",
-          "reviewReason": "Still the dedicated per-section assertion-count floor helper for the CDP acceptance run (pure functions, no file or browser access). Commit 715b8e2f makes sectionOf() give a header listed in the new STANDALONE_SECTIONS set (only P72B) its own floor section while every other uppercase suffix keeps its main number (P73B stays in P73). This is test accounting, not product behavior; this static audit only hashes the committed helper and does not execute it."
-        },
-        {
-          "path": "geometry-web/cdp_test.js",
-          "previousSha256": "e43e31731073878ad0ca02315f333d0a070116f2ebf1e97d8c292db70d43cc0f",
-          "currentSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
-          "reviewReason": "Still the dedicated CDP acceptance driver. Commit 715b8e2f changes one line: it passes the harness expectNativeDialog helper to the grid_inspector_rename_test.js (P72B) module, which needs it to expect the native new-project confirm that replaceWithEmpty() always shows. No assertion is added or removed in this file. This static audit only hashes the committed driver and does not execute its browser flow."
-        },
-        {
-          "path": "geometry-web/grid_inspector_rename_test.js",
-          "previousSha256": "f89b28087f6576010488c4cff44b76264e1e680692efe5adbc34ae16e3dbb27a",
-          "currentSha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e",
-          "reviewReason": "Still the dedicated P72B grid-inspector-rename acceptance driver. Commit 715b8e2f makes newProject() read the dirty flag and expect the exact native confirm text through the injected expectNativeDialog helper instead of leaving an unexpected dialog unhandled, and adds a guard that the harness supplies that helper. Test-only responsibility; this static audit only hashes the committed driver and does not execute its browser flow."
-        }
-      ],
+      "updatedExclusions": [],
       "routeDigestUpdates": []
     },
     "priorManifestCheck": {
@@ -128,22 +107,22 @@
         "--manifest",
         "geometry-core/domain-decoupling/product-architecture.json"
       ],
-      "cwd": "D:\\geometry-axiom-work\\geo261-research\\t96ad",
-      "sourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "cwd": "D:\\ga261-a-76df2d81-r3",
+      "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
       "tempDirectory": "D:\\t2",
-      "startedUtc": "2026-10-20T11:22:55.974489+00:00",
+      "startedUtc": "2026-10-20T22:01:19.826683+00:00",
       "complete": true,
       "exitCode": 1,
-      "finishedUtc": "2026-10-20T11:22:59.389442+00:00",
-      "seconds": 3.414,
+      "finishedUtc": "2026-10-20T22:01:20.678579+00:00",
+      "seconds": 0.851,
       "stdout": {
-        "path": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad\\prior-manifest\\stdout",
-        "rawSha256": "fc3af517fa40d821241f75748a506d96f0d97f1147174a6bd2a2bc56ec7a5870",
-        "lfSha256": "8a08109dfee1ef461bbbd30f3aec51dca58e26c5e2df09f5d6fa8a1de3dab4f8",
-        "bytes": 376
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\prior-manifest\\stdout",
+        "rawSha256": "d0721110cc631e69f314977b382ea6f4223dcf47269a2c9dba3f2d0f8b8975c3",
+        "lfSha256": "3457fbdb97a1158d949a38d390414df1d433e9200129939fb1260c1bdfb77165",
+        "bytes": 333
       },
       "stderr": {
-        "path": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad\\prior-manifest\\stderr",
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\prior-manifest\\stderr",
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "bytes": 0
@@ -151,10 +130,10 @@
       "manifest": "tree copy of product-architecture.json",
       "diagnostics": [
         {
-          "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
+          "path": "geometry-web/cdp_test.js",
           "line": 1,
-          "code": "SOURCE_UNREGISTERED",
-          "message": "executable source omitted from the complete manifest",
+          "code": "EXCLUSION_DIGEST",
+          "message": "immutable lf digest is absent or mismatched",
           "direction": "",
           "chain": []
         }
@@ -162,310 +141,48 @@
       "note": "The scanner stops at the first SOURCE_UNREGISTERED in sorted order; the independent enumeration in newInputs/addedExclusions lists every file."
     },
     "addedSources": [],
-    "addedExclusions": [
+    "addedExclusions": [],
+    "updatedExclusions": [
       {
-        "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-        "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point.",
-        "sha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
-        "hashMode": "lf"
+        "path": "geometry-web/cdp_test.js",
+        "previousSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+        "currentSha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+        "reviewReason": "P52-5 將固定 sleep 改為共用 5000ms 截止時間內輪詢原生 references 並等放置交易結束；API 錯誤立即失敗，原 1987..2014 足跡斷言與案例數保持。仍是驗收驅動器，不由產品啟動或對外提供。"
       },
       {
-        "path": "geometry-core/framing-template/core-probe/mutation_check.py",
-        "reason": "Dedicated framing-template core-probe mutation harness mutation_check.py: copies core-probe and the golden to a temporary directory, applies one mutation at a time and requires test_gen_scenes.py to turn red; pure Python, no native core and no WSL; test tooling, not a product-loaded module or current product entry point.",
-        "sha256": "2c4d05e713b63677b2b8333ee388c0c61f9130d4dc8836c1a571b656f052f421",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/parse_results.py",
-        "reason": "Dedicated framing-template core-probe result parser parse_results.py: turns the native core accept/reject output files into results.json and RESULTS.md and compares the core-reported L, origin and vertices with the oracle rectangles; reads output files only and imports only the standard library; probe tooling, not a product-loaded module or current product entry point.",
-        "sha256": "a6b8801a2c98fd32973ebc1acf327f49aae7d76cd28d34c905f2e41ce401de66",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/scene_reader.py",
-        "reason": "Dedicated framing-template core-probe verifier scene_reader.py: independently recomputes every member footprint from the scene text (deliberately not importing gen_scenes) for the probe tests; standard library only; test tooling, not a product-loaded module or current product entry point.",
-        "sha256": "f43c8d7e9bb5c1b6afdb6e35a05e1536764f9e09a774c718454e6929e024b022",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-        "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
-        "sha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-        "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point.",
-        "sha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/make_golden.py",
-        "reason": "Framing-template oracle golden generator make_golden.py: regenerates oracle-golden.json from framing_oracle (frozen reference output, regenerated by hand only after review); imports framing_oracle and the standard library; reference tooling, not a product-loaded module or current product entry point.",
-        "sha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/quote_check.py",
-        "reason": "Framing-template oracle verbatim-quote checker quote_check.py: verifies that quotations of the user in documents and oracle sources appear byte-for-byte in the tree decision queue; reads text files only and imports only the standard library; documentation-integrity tooling, not a product-loaded module or current product entry point.",
-        "sha256": "b122d9fcebc8b31b9af1c701baf6e086b3f590dfe496a2744a049e98b09e8cb5",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/render.py",
-        "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point.",
-        "sha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/selftest.py",
-        "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
-        "sha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
-        "hashMode": "lf"
+        "path": "geometry-web/grid_rule_lines_test.js",
+        "previousSha256": "4c380e38b0bb8300e556df4b7b1d511724d5670a930d6d5d7093b9c861240735",
+        "currentSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+        "reviewReason": "P88 保留原操作與焦點斷言，新增桌機及390px各三項超高表單重繪驗證，包含不覆蓋後續捲動；只撤回產品的延後捲動恢復須在同一點擊位置斷言失敗。仍是由 cdp_test.js 載入的驗收外掛，不是產品來源。"
       }
     ],
-    "updatedExclusions": [],
-    "newFileClassification": [
-      {
-        "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-        "decision": "exclusion",
-        "label": "core-probe scene generator",
-        "uncertain": false,
-        "layer": null,
-        "language": null,
-        "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point."
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/mutation_check.py",
-        "decision": "exclusion",
-        "label": "core-probe mutation harness",
-        "uncertain": false,
-        "layer": null,
-        "language": null,
-        "reason": "Dedicated framing-template core-probe mutation harness mutation_check.py: copies core-probe and the golden to a temporary directory, applies one mutation at a time and requires test_gen_scenes.py to turn red; pure Python, no native core and no WSL; test tooling, not a product-loaded module or current product entry point."
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/parse_results.py",
-        "decision": "exclusion",
-        "label": "core-probe result parser",
-        "uncertain": false,
-        "layer": null,
-        "language": null,
-        "reason": "Dedicated framing-template core-probe result parser parse_results.py: turns the native core accept/reject output files into results.json and RESULTS.md and compares the core-reported L, origin and vertices with the oracle rectangles; reads output files only and imports only the standard library; probe tooling, not a product-loaded module or current product entry point."
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/scene_reader.py",
-        "decision": "exclusion",
-        "label": "core-probe independent scene reader",
-        "uncertain": false,
-        "layer": null,
-        "language": null,
-        "reason": "Dedicated framing-template core-probe verifier scene_reader.py: independently recomputes every member footprint from the scene text (deliberately not importing gen_scenes) for the probe tests; standard library only; test tooling, not a product-loaded module or current product entry point."
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-        "decision": "exclusion",
-        "label": "core-probe unit tests",
-        "uncertain": false,
-        "layer": null,
-        "language": null,
-        "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point."
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-        "decision": "exclusion",
-        "label": "framing oracle (executable reference specification)",
-        "uncertain": true,
-        "layer": null,
-        "language": null,
-        "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point."
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/make_golden.py",
-        "decision": "exclusion",
-        "label": "oracle golden generator",
-        "uncertain": false,
-        "layer": null,
-        "language": null,
-        "reason": "Framing-template oracle golden generator make_golden.py: regenerates oracle-golden.json from framing_oracle (frozen reference output, regenerated by hand only after review); imports framing_oracle and the standard library; reference tooling, not a product-loaded module or current product entry point."
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/quote_check.py",
-        "decision": "exclusion",
-        "label": "oracle verbatim-quote checker",
-        "uncertain": false,
-        "layer": null,
-        "language": null,
-        "reason": "Framing-template oracle verbatim-quote checker quote_check.py: verifies that quotations of the user in documents and oracle sources appear byte-for-byte in the tree decision queue; reads text files only and imports only the standard library; documentation-integrity tooling, not a product-loaded module or current product entry point."
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/render.py",
-        "decision": "exclusion",
-        "label": "oracle HTML renderer",
-        "uncertain": false,
-        "layer": null,
-        "language": null,
-        "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point."
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/selftest.py",
-        "decision": "exclusion",
-        "label": "oracle self-test suite",
-        "uncertain": false,
-        "layer": null,
-        "language": null,
-        "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point."
-      }
-    ],
+    "newFileClassification": [],
     "classificationNote": "Proposed by the refresh driver from the actual file contents (imports, docstrings, callers); a maintainer reviews the table before the receipt is committed. Entries with uncertain=true carry a real alternative (see the exclusion reason).",
     "ownedSourceMentionsOfNewExclusions": {
-      "tokens": [
-        "geometry-core/framing-template/core-probe",
-        "geometry-core/framing-template/core-probe/gen_scenes.py",
-        "geometry-core/framing-template/core-probe/mutation_check.py",
-        "geometry-core/framing-template/core-probe/parse_results.py",
-        "geometry-core/framing-template/core-probe/scene_reader.py",
-        "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-        "geometry-core/framing-template/oracle",
-        "geometry-core/framing-template/oracle/framing_oracle.py",
-        "geometry-core/framing-template/oracle/make_golden.py",
-        "geometry-core/framing-template/oracle/quote_check.py",
-        "geometry-core/framing-template/oracle/render.py",
-        "geometry-core/framing-template/oracle/selftest.py"
-      ],
+      "tokens": [],
       "ownedSourcesSearched": 327,
       "mentions": []
     },
     "exclusionProvenance": [
       {
-        "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "eff0e33037fe8c8618b138e779ca9c1fb3725c58",
-        "rawSha256": "088923129a20381bc735052968ae29674ba57360f0ef69abeb40caf2bbaa7252",
-        "lfSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
-        "bytes": 37931,
-        "gitBlobRawSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
-        "gitBlobLfSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600"
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/mutation_check.py",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "c872c480e57ca10f3bf0399b7afc143b025449b0",
-        "rawSha256": "e13df8ddbaafedb70ba19da1f32b384997afdc227cc0ad6606b253c3078c61fa",
-        "lfSha256": "2c4d05e713b63677b2b8333ee388c0c61f9130d4dc8836c1a571b656f052f421",
-        "bytes": 10233,
-        "gitBlobRawSha256": "2c4d05e713b63677b2b8333ee388c0c61f9130d4dc8836c1a571b656f052f421",
-        "gitBlobLfSha256": "2c4d05e713b63677b2b8333ee388c0c61f9130d4dc8836c1a571b656f052f421"
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/parse_results.py",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "2ee91f5e6483668544489a8f84fa412379740fde",
-        "rawSha256": "3ea67d0cfc4da384c3a4f6f81bf0eac5f4808918094562252b7dfbdd678927bd",
-        "lfSha256": "a6b8801a2c98fd32973ebc1acf327f49aae7d76cd28d34c905f2e41ce401de66",
-        "bytes": 22183,
-        "gitBlobRawSha256": "a6b8801a2c98fd32973ebc1acf327f49aae7d76cd28d34c905f2e41ce401de66",
-        "gitBlobLfSha256": "a6b8801a2c98fd32973ebc1acf327f49aae7d76cd28d34c905f2e41ce401de66"
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/scene_reader.py",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "bd6d89d7a02c543827c6e60706654cb52c96d917",
-        "rawSha256": "f248dec8bc3ce75835f46b8b303912d1a405d96b2d8ba2a484121f94577bd446",
-        "lfSha256": "f43c8d7e9bb5c1b6afdb6e35a05e1536764f9e09a774c718454e6929e024b022",
-        "bytes": 14216,
-        "gitBlobRawSha256": "f43c8d7e9bb5c1b6afdb6e35a05e1536764f9e09a774c718454e6929e024b022",
-        "gitBlobLfSha256": "f43c8d7e9bb5c1b6afdb6e35a05e1536764f9e09a774c718454e6929e024b022"
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "c062f151fa79db3084ee9591148d7bc88cacf055",
-        "rawSha256": "d3826a725cdc7b711b09a915d2e629309cc9b74593c55004f23f25dc72a023f8",
-        "lfSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
-        "bytes": 65594,
-        "gitBlobRawSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
-        "gitBlobLfSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "19fe465b63b8321f01e611359f89f6d49cbe4b69",
-        "rawSha256": "6be986a4823feecbebedc260319b705a8a7d51baaebdb5fada5a25ee7c34a73b",
-        "lfSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
-        "bytes": 110870,
-        "gitBlobRawSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
-        "gitBlobLfSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/make_golden.py",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "c9d99d5e956d0cfc59dece11cee5a116914567a4",
-        "rawSha256": "7bdc72b23ba9ff1eb8777fd105485eb44bec8a753a3bf6c41e60357a4ebc687d",
-        "lfSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
-        "bytes": 2727,
-        "gitBlobRawSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
-        "gitBlobLfSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/quote_check.py",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "a0fa93ea58ec9e397444c45e8b819573b2ff22c0",
-        "rawSha256": "dffa5ca8ad271d986340da06787165395124420cfff0b203fc1a6ac8c639365a",
-        "lfSha256": "b122d9fcebc8b31b9af1c701baf6e086b3f590dfe496a2744a049e98b09e8cb5",
-        "bytes": 26197,
-        "gitBlobRawSha256": "b122d9fcebc8b31b9af1c701baf6e086b3f590dfe496a2744a049e98b09e8cb5",
-        "gitBlobLfSha256": "b122d9fcebc8b31b9af1c701baf6e086b3f590dfe496a2744a049e98b09e8cb5"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/render.py",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "41582c39fdc6ce6cb0d6478ac005ce10490243ab",
-        "rawSha256": "68b4ddb1cb054877022be27d4dd3f6257012fbf1844aaf8cc52b07f23332b31c",
-        "lfSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
-        "bytes": 8546,
-        "gitBlobRawSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
-        "gitBlobLfSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/selftest.py",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "579b593c5f54e4d64e8ca47ed37290060540eea4",
-        "rawSha256": "6e4807d46d6594d1245603506acad346077747d876c2d4af6d8b8e0884f7c2e3",
-        "lfSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
-        "bytes": 86137,
-        "gitBlobRawSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
-        "gitBlobLfSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766"
-      },
-      {
-        "path": "geometry-web/cdp_floor.js",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "4338f9db4843f56a62f8f02d8d6c88bf0c1d0126",
-        "rawSha256": "f02106878fcf66dd5e10a33275065b6800519913b9cf7054d7808a90df42d756",
-        "lfSha256": "37f297942735fba950d81668c18485a434afb0dc38b0e34835cdf633a7edc32e",
-        "bytes": 4594,
-        "gitBlobRawSha256": "37f297942735fba950d81668c18485a434afb0dc38b0e34835cdf633a7edc32e",
-        "gitBlobLfSha256": "37f297942735fba950d81668c18485a434afb0dc38b0e34835cdf633a7edc32e"
-      },
-      {
         "path": "geometry-web/cdp_test.js",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "059d0b93285710ea4f30bf5dd0a7da3725c405d2",
-        "rawSha256": "03e91343108155256f405e3687b5d89d65ebf3cf12e3fb4e37a77d30624efe13",
-        "lfSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
-        "bytes": 520247,
-        "gitBlobRawSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
-        "gitBlobLfSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955"
+        "sourceHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+        "gitBlob": "ef229af148f664cc4a45d488abc8773f65aa2775",
+        "rawSha256": "3199f10d18f1b5330482119e5baac221cf49520a12417bc934612a43bebeaac6",
+        "lfSha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+        "bytes": 520771,
+        "gitBlobRawSha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+        "gitBlobLfSha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
       },
       {
-        "path": "geometry-web/grid_inspector_rename_test.js",
-        "sourceHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-        "gitBlob": "c2c31a2f2ea9c3ea4c2cffc6eb4c956b4ac2f24e",
-        "rawSha256": "af58b0a8a9debc27d4644afb3987e3586fbabfe5a639c0016fa629288e745dec",
-        "lfSha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e",
-        "bytes": 13971,
-        "gitBlobRawSha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e",
-        "gitBlobLfSha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e"
+        "path": "geometry-web/grid_rule_lines_test.js",
+        "sourceHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+        "gitBlob": "4dc49c79a946d1daa8f28255b31ed08dfa69c65d",
+        "rawSha256": "b10586b014473c1be8845d7e2ea87a7680387ae0cdaac9a6d1b1daa0a1f98642",
+        "lfSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+        "bytes": 48244,
+        "gitBlobRawSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+        "gitBlobLfSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c"
       }
     ],
     "routerAndSourceProvenance": [],
@@ -564,101 +281,64 @@
     "toolChanges": {},
     "changedPreviouslySealedInputs": [
       {
-        "path": "geometry-app/geometry_app/model_native.py",
+        "path": "geometry-web/app.js",
         "kind": "H",
-        "previousSha256": "eceab9c920ee292398ca66d88724b85abcb394e7dbff9b823c51a374e5a162e2",
-        "currentSha256": "0c1c94006fa33719c64820a477f219a5ac05f3fd4c372fe473e2b5deda63a0c6"
-      },
-      {
-        "path": "geometry-app/geometry_app/model_sources.py",
-        "kind": "H",
-        "previousSha256": "1719e4e220909d016a947a3e29c7c8fbd1a6284d15c85019464dfde4f3a6e5f2",
-        "currentSha256": "e5577ac9b11fb410b18da8a40a722e30e3195b745754b3927360f8fa972237ea"
-      },
-      {
-        "path": "geometry-core/kernel/source.c",
-        "kind": "K",
-        "previousSha256": "b2e65a85776fed150c192c1e374b1d35baa82c4e68f14d529f6d4b30a9ae6ae0",
-        "currentSha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb"
-      },
-      {
-        "path": "geometry-core/model_base.c",
-        "kind": "H",
-        "previousSha256": "6f49fd774e395c7d3955209c5788d962954860f114c3e5f550a1409d5b5aeec6",
-        "currentSha256": "ffa570dae26fbfe8bab2d24a9e0663d4b6943983567097fb96553ebab5e42be6"
-      },
-      {
-        "path": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
-        "kind": "W",
-        "previousSha256": "7c247eb80a2918113dcd33ee89e45302cdfa8bc937edeaaa49cfdfb64ec692e5",
-        "currentSha256": "e04d5a3029aabf0e4eb1e00928137461989b0bba67e40ec10043de2a3cabc8ed"
-      },
-      {
-        "path": "geometry-web/cdp_floor.js",
-        "kind": "exclusion",
-        "previousSha256": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e",
-        "currentSha256": "37f297942735fba950d81668c18485a434afb0dc38b0e34835cdf633a7edc32e"
+        "previousSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+        "currentSha256": "d8c14843be3dd50c5ff7198c373cbdf3ef0bb45232aafec36fb2eb074f99550d"
       },
       {
         "path": "geometry-web/cdp_test.js",
         "kind": "exclusion",
-        "previousSha256": "e43e31731073878ad0ca02315f333d0a070116f2ebf1e97d8c292db70d43cc0f",
-        "currentSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955"
+        "previousSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+        "currentSha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
       },
       {
-        "path": "geometry-web/grid_inspector_rename_test.js",
+        "path": "geometry-web/grid_rule_lines_test.js",
         "kind": "exclusion",
-        "previousSha256": "f89b28087f6576010488c4cff44b76264e1e680692efe5adbc34ae16e3dbb27a",
-        "currentSha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e"
+        "previousSha256": "4c380e38b0bb8300e556df4b7b1d511724d5670a930d6d5d7093b9c861240735",
+        "currentSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c"
+      },
+      {
+        "path": "geometry-web/runtime_version.py",
+        "kind": "H",
+        "previousSha256": "f9c88daa1517b160df6b736dfc5977cada4c0e38ed3e170a81372e4472944357",
+        "currentSha256": "5b7261519e70e51f952264c56d0a7cf18e7d4fdeeb8bb033fc391f08339468ea"
       }
     ],
-    "newInputs": [
-      "geometry-core/framing-template/core-probe/gen_scenes.py",
-      "geometry-core/framing-template/core-probe/mutation_check.py",
-      "geometry-core/framing-template/core-probe/parse_results.py",
-      "geometry-core/framing-template/core-probe/scene_reader.py",
-      "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-      "geometry-core/framing-template/oracle/framing_oracle.py",
-      "geometry-core/framing-template/oracle/make_golden.py",
-      "geometry-core/framing-template/oracle/quote_check.py",
-      "geometry-core/framing-template/oracle/render.py",
-      "geometry-core/framing-template/oracle/selftest.py"
+    "newInputs": [],
+    "staleExcludedVendorOrEmbedDigestsBefore": [
+      "geometry-web/cdp_test.js",
+      "geometry-web/grid_rule_lines_test.js"
     ],
-    "staleExcludedVendorOrEmbedDigestsBefore": [],
     "staleExcludedVendorOrEmbedDigestsAfter": [],
-    "sourceFix": "No product source, scanner or test changes are made by this audit. Existing H/W classifications, routes, exclusions and all previous guards are retained. The manifest receives 10 new individually named exclusion(s) and 0 new owned source(s) (directories: geometry-core/framing-template/core-probe, geometry-core/framing-template/oracle). Manifest edits already committed since the previous sealed audit (0 sources, 0 exclusions, 3 exclusion digests, 0 embed-route digests) are verified against the current bytes and sealed.",
-    "commitsSincePreviousSourceHead": 111,
+    "sourceFix": "No product source, scanner or test changes are made by this audit. Existing H/W classifications, routes, exclusions and all previous guards are retained. The manifest receives 0 new individually named exclusion(s) and 0 new owned source(s), re-pins 2 stale exclusion digest(s). Manifest edits already committed since the previous sealed audit (0 sources, 0 exclusions, 0 exclusion digests, 0 embed-route digests) are verified against the current bytes and sealed.",
+    "commitsSincePreviousSourceHead": 6,
     "firstParentMergesSincePreviousSourceHead": [
-      "96ade86b geo261: merge #321 source graph index (9f21280d) into the integration line",
-      "6300d887 geo261: merge integration 390a5f33 into rootcat",
-      "ce708ef5 geo261: merge integration d3746972 into rootcat",
-      "e1eafff0 geo261: merge integration 3e600772 into rootcat",
-      "c3613a6e geo261: merge Codex root-catalog exact-set fix (4e0def58)",
-      "71b11b43 geo261: merge main adbaebf9 (framing train #307, #315, #317)"
+      "546e2eb2 Merge remote-tracking branch 'origin/architecture/geo261-integration-20261016' into architecture/geo261-integration-20261016"
     ],
     "previousSourceAncestry": {
-      "ancestor": "8394ef601c3d2407f51191339fad261929c1769a",
-      "descendant": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "ancestor": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "descendant": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
       "isAncestor": true,
-      "command": "git merge-base --is-ancestor 8394ef601c3d2407f51191339fad261929c1769a 96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "command": "git merge-base --is-ancestor 96ade86bdb5fbcdad581b36afdd180a96fca7999 76df2d816abfee02d3bb9eb545d7fb5c12150801",
       "exitCode": 0,
-      "checkedUtc": "2026-10-20T11:22:55.349316+00:00"
+      "checkedUtc": "2026-10-20T22:01:18.923084+00:00"
     },
     "previousReceiptAncestry": {
-      "ancestor": "854660a77d36cf989c51a2594b3dc3004ada8f69",
-      "descendant": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "ancestor": "ec1238cd62c7155a44ecf3fb071e605aeee8ac48",
+      "descendant": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
       "isAncestor": true,
-      "command": "git merge-base --is-ancestor 854660a77d36cf989c51a2594b3dc3004ada8f69 96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "command": "git merge-base --is-ancestor ec1238cd62c7155a44ecf3fb071e605aeee8ac48 76df2d816abfee02d3bb9eb545d7fb5c12150801",
       "exitCode": 0,
-      "checkedUtc": "2026-10-20T11:22:55.414160+00:00"
+      "checkedUtc": "2026-10-20T22:01:19.332240+00:00"
     },
     "pythonSourceAncestry": {
       "ancestor": "8f36f1a0dd7e1244c92aca926c0a80079451e7f0",
-      "descendant": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "descendant": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
       "isAncestor": true,
-      "command": "git merge-base --is-ancestor 8f36f1a0dd7e1244c92aca926c0a80079451e7f0 96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "command": "git merge-base --is-ancestor 8f36f1a0dd7e1244c92aca926c0a80079451e7f0 76df2d816abfee02d3bb9eb545d7fb5c12150801",
       "exitCode": 0,
-      "checkedUtc": "2026-10-20T11:22:55.965695+00:00"
+      "checkedUtc": "2026-10-20T22:01:19.825849+00:00"
     }
   },
   "scanPassed": true,
@@ -673,22 +353,22 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "D:\\geometry-axiom-work\\geo261-research\\t96ad",
-    "sourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+    "cwd": "D:\\ga261-a-76df2d81-r3",
+    "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
     "tempDirectory": "D:\\t2",
-    "startedUtc": "2026-10-20T11:23:03.079653+00:00",
+    "startedUtc": "2026-10-20T22:01:22.242366+00:00",
     "complete": true,
     "exitCode": 0,
-    "finishedUtc": "2026-10-20T11:23:26.883237+00:00",
-    "seconds": 23.795,
+    "finishedUtc": "2026-10-20T22:01:44.148293+00:00",
+    "seconds": 21.905,
     "stdout": {
-      "path": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad\\final-scan\\stdout",
+      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\final-scan\\stdout",
       "rawSha256": "cbc0d39154a1a880f6854b2826b71b1e5cef662ed887dbaf0cf4510f6c403ac1",
       "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
       "bytes": 136537
     },
     "stderr": {
-      "path": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad\\final-scan\\stderr",
+      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\final-scan\\stderr",
       "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "bytes": 0
@@ -702,31 +382,31 @@
         "-B",
         "tests/test_architecture_contract.py"
       ],
-      "cwd": "D:\\geometry-axiom-work\\geo261-research\\t96ad",
-      "sourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "cwd": "D:\\ga261-a-76df2d81-r3",
+      "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
       "tempDirectory": "D:\\t2",
-      "startedUtc": "2026-10-20T11:25:54.458373+00:00",
+      "startedUtc": "2026-10-20T22:04:24.302182+00:00",
       "complete": true,
       "exitCode": 0,
-      "finishedUtc": "2026-10-20T11:25:59.880101+00:00",
-      "seconds": 5.421,
+      "finishedUtc": "2026-10-20T22:05:02.280916+00:00",
+      "seconds": 37.974,
       "stdout": {
-        "path": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad\\generic-tests\\stdout",
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\generic-tests\\stdout",
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "bytes": 0
       },
       "stderr": {
-        "path": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad\\generic-tests\\stderr",
-        "rawSha256": "167b0d208eb6a33efad80b3917b4f53e75e8f5b9dbd0395ac3d853d4dced8a14",
-        "lfSha256": "d672d122b4dd29abfcf0e3ab0196f0e7d710d04cd96f2f059dd19d405f1ad7b5",
-        "bytes": 30032
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\generic-tests\\stderr",
+        "rawSha256": "a6cf6cb999c2539c23a599d84b10423cd2369fbb66bd5e764261a6645740fa7c",
+        "lfSha256": "b9bf0ecfada38030e62a1370b288daf3fe57dfc349787b022e520ca396c288f0",
+        "bytes": 30033
       },
       "tests": 205,
       "passed": 204,
       "failed": 0,
       "skipped": 1,
-      "unittestSeconds": 4.979,
+      "unittestSeconds": 37.49,
       "sha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
       "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
       "executedAtCurrentHead": true,
@@ -738,9 +418,9 @@
       "skipReason": "The suite skips its real-symlink fixture when creation is unavailable (tests/test_architecture_contract.py skipTest); this machine reports: \"OSError(22, '用戶端沒有這項特殊權限。')\". A skip is not counted as a pass.",
       "scope": "Generic dependency scanner suite against synthetic fixtures; unchanged scanner and suite bytes. Not a product-graph result.",
       "previousRecord": {
-        "receiptSha256": "648813e514b6672640387d5373e05c33192c29f5a77b8b08f05d26f89b1ad994",
-        "createdUtc": "2026-10-19T20:01:22.488823+00:00",
-        "sourceBaseHead": "8394ef601c3d2407f51191339fad261929c1769a",
+        "receiptSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
+        "createdUtc": "2026-10-20T11:26:02.875198+00:00",
+        "sourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
         "tests": 205,
         "passed": 204,
         "failed": 0,
@@ -757,31 +437,31 @@
         "-B",
         "tests/test_product_architecture.py"
       ],
-      "cwd": "D:\\geometry-axiom-work\\geo261-research\\t96ad",
-      "sourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "cwd": "D:\\ga261-a-76df2d81-r3",
+      "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
       "tempDirectory": "D:\\t2",
-      "startedUtc": "2026-10-20T11:24:32.053190+00:00",
+      "startedUtc": "2026-10-20T22:01:50.923516+00:00",
       "complete": true,
       "exitCode": 0,
-      "finishedUtc": "2026-10-20T11:25:53.820235+00:00",
-      "seconds": 81.765,
+      "finishedUtc": "2026-10-20T22:04:17.571535+00:00",
+      "seconds": 146.638,
       "stdout": {
-        "path": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad\\product-tests\\stdout",
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\product-tests\\stdout",
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "bytes": 0
       },
       "stderr": {
-        "path": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad\\product-tests\\stderr",
-        "rawSha256": "4f431b6cab3262acd2489f6465f0e5cb2e5d74a814a2369ec6a50e1144d68906",
-        "lfSha256": "f819997595cdaf6e180a57c5ae7d8408d5bd450028f510445dd7e8a97c565502",
-        "bytes": 123
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\product-tests\\stderr",
+        "rawSha256": "9439b316651ddf85479917fa3d9e809a8090744be51c57949fb043bc95cd68f3",
+        "lfSha256": "148d475af5c6bd8dcc44d0f3ce8c57c8201f4310ae5d7ccca8b6d9f709b6654b",
+        "bytes": 124
       },
       "tests": 18,
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 81.346,
+      "unittestSeconds": 146.045,
       "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
       "scope": "Actual-root inventory, static full product graph, actual-file controls, audited iframe controls and every K source without H/W; no native/product execution."
     }
@@ -789,153 +469,12 @@
   "supplementalStaticGuardProbes": {
     "kind": "supplemental-static-in-memory-actual-source-guard-probes",
     "executedAtCurrentHead": true,
-    "startedUtc": "2026-10-20T11:23:27.758704+00:00",
-    "finishedUtc": "2026-10-20T11:24:32.026895+00:00",
-    "seconds": 64.268,
+    "startedUtc": "2026-10-20T22:01:45.426008+00:00",
+    "finishedUtc": "2026-10-20T22:01:50.897151+00:00",
+    "seconds": 5.471,
     "source": "geometry-core/kernel/geometry.c",
     "sourceSha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00",
-    "newEntryProbes": [
-      {
-        "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-        "listedIn": "exclusions",
-        "removeEntry": {
-          "expectedCode": "SOURCE_UNREGISTERED",
-          "observedCode": "SOURCE_UNREGISTERED",
-          "observedPath": "geometry-core/framing-template/core-probe/gen_scenes.py"
-        },
-        "corruptDigest": {
-          "expectedCode": "EXCLUSION_DIGEST",
-          "observedCode": "EXCLUSION_DIGEST",
-          "observedPath": "geometry-core/framing-template/core-probe/gen_scenes.py"
-        }
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/mutation_check.py",
-        "listedIn": "exclusions",
-        "removeEntry": {
-          "expectedCode": "SOURCE_UNREGISTERED",
-          "observedCode": "SOURCE_UNREGISTERED",
-          "observedPath": "geometry-core/framing-template/core-probe/mutation_check.py"
-        },
-        "corruptDigest": {
-          "expectedCode": "EXCLUSION_DIGEST",
-          "observedCode": "EXCLUSION_DIGEST",
-          "observedPath": "geometry-core/framing-template/core-probe/mutation_check.py"
-        }
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/parse_results.py",
-        "listedIn": "exclusions",
-        "removeEntry": {
-          "expectedCode": "SOURCE_UNREGISTERED",
-          "observedCode": "SOURCE_UNREGISTERED",
-          "observedPath": "geometry-core/framing-template/core-probe/parse_results.py"
-        },
-        "corruptDigest": {
-          "expectedCode": "EXCLUSION_DIGEST",
-          "observedCode": "EXCLUSION_DIGEST",
-          "observedPath": "geometry-core/framing-template/core-probe/parse_results.py"
-        }
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/scene_reader.py",
-        "listedIn": "exclusions",
-        "removeEntry": {
-          "expectedCode": "SOURCE_UNREGISTERED",
-          "observedCode": "SOURCE_UNREGISTERED",
-          "observedPath": "geometry-core/framing-template/core-probe/scene_reader.py"
-        },
-        "corruptDigest": {
-          "expectedCode": "EXCLUSION_DIGEST",
-          "observedCode": "EXCLUSION_DIGEST",
-          "observedPath": "geometry-core/framing-template/core-probe/scene_reader.py"
-        }
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-        "listedIn": "exclusions",
-        "removeEntry": {
-          "expectedCode": "SOURCE_UNREGISTERED",
-          "observedCode": "SOURCE_UNREGISTERED",
-          "observedPath": "geometry-core/framing-template/core-probe/test_gen_scenes.py"
-        },
-        "corruptDigest": {
-          "expectedCode": "EXCLUSION_DIGEST",
-          "observedCode": "EXCLUSION_DIGEST",
-          "observedPath": "geometry-core/framing-template/core-probe/test_gen_scenes.py"
-        }
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-        "listedIn": "exclusions",
-        "removeEntry": {
-          "expectedCode": "SOURCE_UNREGISTERED",
-          "observedCode": "SOURCE_UNREGISTERED",
-          "observedPath": "geometry-core/framing-template/oracle/framing_oracle.py"
-        },
-        "corruptDigest": {
-          "expectedCode": "EXCLUSION_DIGEST",
-          "observedCode": "EXCLUSION_DIGEST",
-          "observedPath": "geometry-core/framing-template/oracle/framing_oracle.py"
-        }
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/make_golden.py",
-        "listedIn": "exclusions",
-        "removeEntry": {
-          "expectedCode": "SOURCE_UNREGISTERED",
-          "observedCode": "SOURCE_UNREGISTERED",
-          "observedPath": "geometry-core/framing-template/oracle/make_golden.py"
-        },
-        "corruptDigest": {
-          "expectedCode": "EXCLUSION_DIGEST",
-          "observedCode": "EXCLUSION_DIGEST",
-          "observedPath": "geometry-core/framing-template/oracle/make_golden.py"
-        }
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/quote_check.py",
-        "listedIn": "exclusions",
-        "removeEntry": {
-          "expectedCode": "SOURCE_UNREGISTERED",
-          "observedCode": "SOURCE_UNREGISTERED",
-          "observedPath": "geometry-core/framing-template/oracle/quote_check.py"
-        },
-        "corruptDigest": {
-          "expectedCode": "EXCLUSION_DIGEST",
-          "observedCode": "EXCLUSION_DIGEST",
-          "observedPath": "geometry-core/framing-template/oracle/quote_check.py"
-        }
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/render.py",
-        "listedIn": "exclusions",
-        "removeEntry": {
-          "expectedCode": "SOURCE_UNREGISTERED",
-          "observedCode": "SOURCE_UNREGISTERED",
-          "observedPath": "geometry-core/framing-template/oracle/render.py"
-        },
-        "corruptDigest": {
-          "expectedCode": "EXCLUSION_DIGEST",
-          "observedCode": "EXCLUSION_DIGEST",
-          "observedPath": "geometry-core/framing-template/oracle/render.py"
-        }
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/selftest.py",
-        "listedIn": "exclusions",
-        "removeEntry": {
-          "expectedCode": "SOURCE_UNREGISTERED",
-          "observedCode": "SOURCE_UNREGISTERED",
-          "observedPath": "geometry-core/framing-template/oracle/selftest.py"
-        },
-        "corruptDigest": {
-          "expectedCode": "EXCLUSION_DIGEST",
-          "observedCode": "EXCLUSION_DIGEST",
-          "observedPath": "geometry-core/framing-template/oracle/selftest.py"
-        }
-      }
-    ],
+    "newEntryProbes": [],
     "identifierProbes": 0,
     "stringProbes": 0,
     "rejectedAsExpected": 0,
@@ -966,7 +505,7 @@
       }
     ],
     "method": "Unchanged Scanner.validate_manifest receives the final manifest with one newly registered entry removed (must fail SOURCE_UNREGISTERED at exactly that path) and, for exclusions, with one digest corrupted (must fail EXCLUSION_DIGEST at that path). Unchanged Scanner.scan_c receives the actual K geometry.c text plus one newly added W identifier at a time (none were added when identifierProbes is 0) and a neutral identifier (accepted). Unchanged Scanner.scan_python receives an actual K and an actual W Python source with one appended import ctypes and rejects both, then accepts the actual H source_closure.py. No product/test source is written and no C or product Python executes. These probes are separate from the product suite.",
-    "manifestSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
+    "manifestSha256": "afe4175a40fd8af6d5bcbeba386daa83703d42c4571517573e33a753efaa8bbf",
     "guardValues": "manifestRefresh.addedExclusions/addedSources, manifestRefresh.policyGuards.addedIdentifiers and policy.externalModules ctypes."
   },
   "nativeAcceptance": "Not evaluated by this static audit. C/native/WSL/Node aggregate and product behavior were not executed, and no WSL process was started. Historical receipts retain their original source SHA, timestamps and PASS/FAIL/UNRUN. Python default and native coverage runtime acceptance, mutation ledgers and browser acceptance require separate execution receipts; static closure and ancestry do not certify them.",
@@ -2341,7 +1880,7 @@
     },
     {
       "path": "geometry-web/app.js",
-      "sha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b"
+      "sha256": "d8c14843be3dd50c5ff7198c373cbdf3ef0bb45232aafec36fb2eb074f99550d"
     },
     {
       "path": "geometry-web/archive_wait_trace.py",
@@ -2413,7 +1952,7 @@
     },
     {
       "path": "geometry-web/cdp_test.js",
-      "sha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955"
+      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
     },
     {
       "path": "geometry-web/composition_canvas_test.js",
@@ -2821,7 +2360,7 @@
     },
     {
       "path": "geometry-web/grid_rule_lines_test.js",
-      "sha256": "4c380e38b0bb8300e556df4b7b1d511724d5670a930d6d5d7093b9c861240735"
+      "sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c"
     },
     {
       "path": "geometry-web/grid_subdivision_bridge.inc",
@@ -3125,7 +2664,7 @@
     },
     {
       "path": "geometry-web/runtime_version.py",
-      "sha256": "f9c88daa1517b160df6b736dfc5977cada4c0e38ed3e170a81372e4472944357"
+      "sha256": "5b7261519e70e51f952264c56d0a7cf18e7d4fdeeb8bb033fc391f08339468ea"
     },
     {
       "path": "geometry-web/save_reopen_synthetic_test.js",
@@ -3411,37 +2950,15 @@
     ],
     "filesBefore": 601,
     "filesAfter": 601,
-    "unregisteredAgainstLastSealedManifest": [
-      "geometry-core/framing-template/core-probe/gen_scenes.py",
-      "geometry-core/framing-template/core-probe/mutation_check.py",
-      "geometry-core/framing-template/core-probe/parse_results.py",
-      "geometry-core/framing-template/core-probe/scene_reader.py",
-      "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-      "geometry-core/framing-template/oracle/framing_oracle.py",
-      "geometry-core/framing-template/oracle/make_golden.py",
-      "geometry-core/framing-template/oracle/quote_check.py",
-      "geometry-core/framing-template/oracle/render.py",
-      "geometry-core/framing-template/oracle/selftest.py"
-    ],
-    "unregisteredBeforeRefresh": [
-      "geometry-core/framing-template/core-probe/gen_scenes.py",
-      "geometry-core/framing-template/core-probe/mutation_check.py",
-      "geometry-core/framing-template/core-probe/parse_results.py",
-      "geometry-core/framing-template/core-probe/scene_reader.py",
-      "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-      "geometry-core/framing-template/oracle/framing_oracle.py",
-      "geometry-core/framing-template/oracle/make_golden.py",
-      "geometry-core/framing-template/oracle/quote_check.py",
-      "geometry-core/framing-template/oracle/render.py",
-      "geometry-core/framing-template/oracle/selftest.py"
-    ],
+    "unregisteredAgainstLastSealedManifest": [],
+    "unregisteredBeforeRefresh": [],
     "unregisteredAfter": [],
     "missingAfter": [],
     "changedInputs": [],
-    "inputClosureSha256Before": "012d147b4561cf5c0d6c930f13b975d10c94f6482696653108480647ca2893f7",
-    "inputClosureSha256After": "012d147b4561cf5c0d6c930f13b975d10c94f6482696653108480647ca2893f7",
-    "rawInputClosureSha256Before": "6d23356a036832f08b9053f2dd494cbdfa5ada57bd60629929beaf4d92843f31",
-    "rawInputClosureSha256After": "6d23356a036832f08b9053f2dd494cbdfa5ada57bd60629929beaf4d92843f31",
+    "inputClosureSha256Before": "459da17fa57d821376291c5aaf21b416c08dc34bcbdd6967879cad96bfba2ab1",
+    "inputClosureSha256After": "459da17fa57d821376291c5aaf21b416c08dc34bcbdd6967879cad96bfba2ab1",
+    "rawInputClosureSha256Before": "f5d5c4300be635490466deaefee70bb3890493486bd47637fd36b529b6a05e53",
+    "rawInputClosureSha256After": "f5d5c4300be635490466deaefee70bb3890493486bd47637fd36b529b6a05e53",
     "rawHashBasis": "Bytes of the extracted tree. git archive applies the archiving repository text conversion (core.autocrlf=true yields CRLF text), so the raw closure is checkout-dependent; the LF closure and the Git blobs are the portable pins.",
     "treeFingerprintScope": "size + mtime of every file under the five source roots (recursive) plus the files directly in the repository root and directly in tests/ (scanner, its tests, tests/__init__.py, tests/binaries.py), except the four audit outputs. tests/evidence, evidence/ and tests/release-evidence (about 19000 files that no audited command reads) are not walked: a metadata walk of the whole 23000-file tree took four minutes on the loaded machine.",
     "treeFileCountBeforeAndAfter": 2987,
@@ -3466,28 +2983,37 @@
       "tests/test_architecture_contract.py": "80ea0bce708658f0639ee7177d91e378d27b13db06e9c09b50fd162d2061ca7e",
       "tests/test_product_architecture.py": "4dd8f959332d2619685fc2d2d353c6ed27f889954410a140ea7efe4cca16a530"
     },
-    "headObservedAfterIndependentAudit": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-    "checkedUtc": "2026-10-20T11:26:02.890286+00:00"
+    "headObservedAfterIndependentAudit": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+    "checkedUtc": "2026-10-20T22:05:35.513957+00:00"
   },
   "refreshDriver": {
     "path": "D:\\geometry-axiom-work\\geo261-research\\refresh_product_architecture_next.py",
     "rawSha256": "c786be4a0cd7288163c4004aeb06485997594d63a835f4e33a0dee6840b169c5",
     "lfSha256": "c786be4a0cd7288163c4004aeb06485997594d63a835f4e33a0dee6840b169c5",
     "bytes": 93635,
-    "runDirectory": "D:\\geometry-axiom-work\\geo261-research\\mr-96ad",
+    "runDirectory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit",
     "argv": [
       "C:\\Python314\\python.exe",
-      "D:/geometry-axiom-work/geo261-research/refresh_product_architecture_next.py",
+      "D:\\geometry-axiom-work\\geo261-research\\refresh_product_architecture_next.py",
       "--root",
-      "D:/geometry-axiom-work/geo261-research/t96ad",
+      "D:\\ga261-a-76df2d81-r3",
       "--head",
-      "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+      "76df2d816abfee02d3bb9eb545d7fb5c12150801",
       "--out",
-      "D:/geometry-axiom-work/geo261-research/mr-96ad",
+      "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit",
       "--temp",
-      "D:/t2"
+      "D:/t2",
+      "--repo",
+      "D:\\geometry-axiom-work\\geo261-integration",
+      "--review",
+      "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-review.json"
     ],
-    "reviewFile": null,
+    "reviewFile": {
+      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-review.json",
+      "rawSha256": "a305ae726a2b2f32795d91cf4569e966fb09dcdab7b7b6359e4d946da9360059",
+      "lfSha256": "a305ae726a2b2f32795d91cf4569e966fb09dcdab7b7b6359e4d946da9360059",
+      "bytes": 618
+    },
     "note": "External to the repository, like the previous refresh drivers."
   }
 }
