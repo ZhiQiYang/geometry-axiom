@@ -852,6 +852,45 @@ class NativeCandidateTransportTests(unittest.TestCase):
             self.assertEqual(2, pin.call_count)
             self.assertEqual(["fixture-not-executed", "--neutral-sources"], calls[0][:-1])
 
+    def test_public_default_refuses_timber_faces_moved_between_sides(self):
+        from modeling.engine import evaluate as default_evaluate
+        from geometry_woodworking.model_sources import TIMBER_FACE_SIDES
+        from tests.test_geometry_kernel_runtime import snapshot, solid, request, ref
+        from tests.test_geometry_source_runtime import envelope
+        base = snapshot(solids=(solid(1, upper=(40, 30, 20), kind="timber"),))
+        # The kernel fixture lists box faces in local (axis, side) order.
+        for index, face in enumerate(base["solids"][0]["faces"]):
+            face["feature"] = TIMBER_FACE_SIDES[divmod(index, 2)]
+        definitions, req = {"base_scene": base["base_scene"], "extensions": []}, request(ref("timber", 1))
+        wire = native_wire(envelope(base))
+        def run(value):
+            def process(command, **ignored):
+                self.assertEqual(definitions["base_scene"].encode(), Path(command[-1]).read_bytes())
+                return subprocess.CompletedProcess(command, 0, json.dumps(value).encode(), b"")
+            with mock.patch.object(model_native, "_execution_identity", return_value=EXECUTION), \
+                 mock.patch.object(model_native.subprocess, "run", side_effect=process) as process_run:
+                try:
+                    return default_evaluate(definitions, req, base_executable="fixture-not-executed")
+                finally:
+                    self.assertEqual(1, process_run.call_count)
+        output = run(wire)["derived"]["objects"][0]
+        self.assertEqual("24000", output["volume_mm3"])
+        self.assertEqual(set(TIMBER_FACE_SIDES.values()),
+                         {source["feature"] for row in output["face_sources"] for source in row})
+        for mode, fields, message in (("names-and-keys", ("legacyFeature", "featureKeyBase64"), "Native timber face names disagree with their local sides."),
+                ("names", ("legacyFeature",), "Native box face identity disagrees with its adapter root."),
+                ("keys", ("featureKeyBase64",), "Native box face identity disagrees with its adapter root.")):
+            with self.subTest(mode=mode):
+                changed = deepcopy(wire)
+                faces = next(item for item in changed["neutralSources"]["roots"] if item["slot"] == "solid.box")["faces"]
+                self.assertEqual(["START", "B0"], [faces[0]["legacyFeature"], faces[2]["legacyFeature"]])
+                for field in fields:
+                    faces[0][field], faces[2][field] = faces[2][field], faces[0][field]
+                with self.assertRaises(ModelError, msg=f"timber START/B0 {mode} swap was accepted") as error:
+                    run(changed)
+                self.assertEqual(("UNSUPPORTED", "BASE_SOURCE_BINDING", "I32", message),
+                    (error.exception.status, error.exception.code, error.exception.clause, error.exception.message))
+
     def test_public_default_transport_preserves_unchanged_wire_in_one_invocation(self):
         from modeling.engine import evaluate as default_evaluate
         from modeling.common import digest

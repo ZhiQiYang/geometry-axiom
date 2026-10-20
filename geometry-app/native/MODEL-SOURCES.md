@@ -105,3 +105,10 @@ face names must equal that timber's own snapshot `faces[].feature` names.
 The private native decoder verifies the association-to-key and face bindings
 before the candidate reaches the product runtime. K and W continue to treat keys
 as opaque; there is no configurable bypass or snapshot fallback.
+
+Timber face names belong to the woodworking template, so the decoder checks
+only their set. The template's source binding then requires each timber name
+on its own local side: `START`/`END` on axis 0, `B0`/`B1` on axis 1 and
+`A0`/`A1` on axis 2, as in `WOOD_MEMBER_FACE_SPEC`. A name moved to another side
+together with its key is therefore accepted by the decoder but refused, with
+`BASE_SOURCE_BINDING`/I32, before the runtime builds any geometry.

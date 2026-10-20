@@ -480,13 +480,16 @@ _RECTANGULAR_FACES = ("-X", "+X", "-Y", "+Y", "-Z", "+Z")
 
 
 def _require_native_box_faces(roots, snapshot):
-    """Bind every native box face to its own root, local side and legacy name.
+    """Bind every native box face to its own root and its legacy name.
 
     The root binding checks only the box's source key, so faces moved between
-    boxes, or names moved between sides of one box, would otherwise survive.
-    Each face key is UTF-8 ``<kind>:<id>:face:<legacyFeature>``. Column and
-    beam names follow the local axis and side. Timber names are owned by the
-    wood template, so they must equal that solid's own snapshot face names.
+    boxes, or names or keys moved between faces of one box, would otherwise
+    survive. Each face key is UTF-8 ``<kind>:<id>:face:<legacyFeature>``.
+    Column and beam names must also name the face's local axis and side.
+    Timber names belong to the wood template: here their set must equal that
+    timber's own snapshot face names, which alone still admits a timber name
+    moved to another side together with its key. The template's source
+    binding refuses that case before any geometry is built.
     """
     timbers = {item["id"]: item.get("faces") for item in snapshot["solids"] if item["kind"] == "timber"}
     for root in roots:

@@ -13,6 +13,12 @@ def _fail(message):
     raise PolicyIssue("BASE_SOURCE_BINDING", "I32", message, status="UNSUPPORTED")
 
 
+# Timber face names by local (axis, side): this template's WOOD_MEMBER_FACE_SPEC
+# in native/members.c. Axis 0 runs along the member length.
+TIMBER_FACE_SIDES = {(0, 0): "START", (0, 1): "END", (1, 0): "B0", (1, 1): "B1",
+                     (2, 0): "A0", (2, 1): "A1"}
+
+
 @dataclass(frozen=True)
 class TemplateSources:
     sources: tuple
@@ -73,6 +79,10 @@ def bind_sources(base, sources, roots):
         by_side = {(axis, side): (feature, opaque) for axis, side, feature, opaque in faces}
         if set(by_side) != {(a, s) for a in range(3) for s in range(2)}:
             _fail("Native box source faces do not cover every local side.")
+        # Names alone match as a set; a timber name must also sit on its own
+        # side, or by_side would attach it to the wrong face geometry.
+        if solid["kind"] == "timber" and {side: name for side, (name, _) in by_side.items()} != TIMBER_FACE_SIDES:
+            _fail("Native timber face names disagree with their local sides.")
         descriptor = catalog[reference.key]
         if descriptor.value is not None:
             origins = []

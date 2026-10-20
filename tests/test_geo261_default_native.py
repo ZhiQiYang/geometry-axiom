@@ -3,7 +3,7 @@
 Requires explicit, registry-verified GEOMETRY_MODEL_BASE and (for finish) a
 GEOMETRY_TEST_BRIDGE built from this checkout. This module never builds a native
 binary. Missing configuration skips; stale configuration fails. A release gate
-must require all twelve tests with zero skips. The independent legacy runtime is
+must require all thirteen tests with zero skips. The independent legacy runtime is
 only a comparison oracle, never a fallback when the default runtime rejects.
 """
 import base64
@@ -430,6 +430,31 @@ class DefaultNativeIntegration(unittest.TestCase):
                 self.assertEqual({root.association for root in candidate.roots},
                                  {root.association for root in decoded.roots})
                 self.reject_native_wire(changed, scene)
+
+    def test_actual_timber_faces_must_keep_their_template_sides(self):
+        from geometry_woodworking.model_sources import TIMBER_FACE_SIDES
+        envelope, _, _ = self.capture(fixtures.SCENE)
+        self.assertEqual(TIMBER_FACE_SIDES, {(face["axis"], face["side"]): face["legacyFeature"]
+                                             for face in self.box(envelope, "timber", 1)["faces"]})
+        for mode, fields, message in (("names-and-keys", ("legacyFeature", "featureKeyBase64"), "Native timber face names disagree with their local sides."),
+                ("names", ("legacyFeature",), "Native box face identity disagrees with its adapter root."),
+                ("keys", ("featureKeyBase64",), "Native box face identity disagrees with its adapter root.")):
+            with self.subTest(mode=mode):
+                changed = deepcopy(envelope)
+                faces = self.box(changed, "timber", 1)["faces"]
+                self.assertEqual(["A0", "B0"], [faces[0]["legacyFeature"], faces[2]["legacyFeature"]])
+                for field in fields:
+                    faces[0][field], faces[2][field] = faces[2][field], faces[0][field]
+                def process(command, **options):
+                    self.assertEqual(fixtures.SCENE.encode(), Path(command[-1]).read_bytes())
+                    return subprocess.CompletedProcess(command, 0, json.dumps(changed).encode(), b"")
+                with mock.patch.object(model_native.subprocess, "run", side_effect=process) as run, \
+                     mock.patch.object(public_base, "load_base", side_effect=AssertionError("timber-face-fallback")):
+                    with self.assertRaises(ModelError, msg=f"real timber A0/B0 {mode} swap was accepted") as caught:
+                        default_evaluate(definitions(fixtures.SCENE), request(), base_executable=self.base)
+                self.assertEqual(1, run.call_count)
+                self.assertEqual(("UNSUPPORTED", "BASE_SOURCE_BINDING", "I32", message),
+                    (caught.exception.status, caught.exception.code, caught.exception.clause, caught.exception.message))
 
     def test_actual_wire_rejects_an_appended_identical_root(self):
         envelope, _, _ = self.capture(fixtures.SCENE)
