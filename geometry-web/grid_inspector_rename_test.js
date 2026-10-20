@@ -30,6 +30,24 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
   const world=async()=>({scene:await dump(),objects:await objects(),references:await query('references')});
   const shot=cdp.makeShot(send,['GEOMETRY_GRID_RENAME_SCREENSHOT_DIR']);
   const runtime=()=>read(`fetch('/runtime').then(r=>{if(!r.ok)throw Error('runtime '+r.status);return r.json();})`);
+  const navigate=async(method,params,label)=>{
+    const marker=crypto.randomUUID();
+    const installed=await send('Page.addScriptToEvaluateOnNewDocument',{source:`window.__cdpExpectedNavigationMarker=${JSON.stringify(marker)}`});
+    let navigationError;
+    try{
+      await send(method,params);
+      await require('./cdp_navigation.js').waitForExpectedNavigation({evaluate:read,marker,
+        condition:`typeof oc!=='undefined'&&typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy`,
+        label,timeout:20000});
+    }catch(error){navigationError=error;throw error;}
+    finally{
+      try{await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:installed.result.identifier});}
+      catch(cleanupError){
+        if(navigationError)throw new AggregateError([navigationError,cleanupError],navigationError.message+'；P72B 導航標記清理也失敗：'+cleanupError.message);
+        throw cleanupError;
+      }
+    }
+  };
   const originalRuntime=await runtime();
   check('頁面是本次隔離應用、非空白且無框架錯誤遮罩',await read(`location.href===${JSON.stringify(process.env.GEOMETRY_TEST_URL)}&&document.title.length>0&&!!$('btnNewGridSystem')&&!document.querySelector('vite-error-overlay,nextjs-portal')`));
   await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
@@ -106,9 +124,9 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
   check('正式保存完整專案並逐字保留原生來源',!!saved&&Buffer.from(saved['world.scene']).toString('utf8')===beforeSave.scene);
   await newProject();
   const originalURL=await read('location.href'),freshURL=process.env.GEOMETRY_GRID_RENAME_FRESH_URL;
-  if(freshURL){const target=new URL(freshURL);if(target.href===new URL(originalURL).href)throw Error('Fresh service must have a distinct URL');await send('Page.navigate',{url:target.href});}
-  else await send('Page.reload');
-  await wait(`typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy`);await settle();
+  if(freshURL){const target=new URL(freshURL);if(target.href===new URL(originalURL).href)throw Error('Fresh service must have a distinct URL');await navigate('Page.navigate',{url:target.href},'P72B 第二服務開檔前');}
+  else await navigate('Page.reload',{},'P72B 重載後開檔前');
+  await settle();
   const openedRuntime=await runtime();
   check('重開 context 使用相同 fresh 來源；指定第二服務時 PID 與 session 均不同',openedRuntime.fresh===true&&openedRuntime.version===originalRuntime.version&&openedRuntime.root===originalRuntime.root&&(!freshURL||(openedRuntime.pid!==originalRuntime.pid&&openedRuntime.session!==originalRuntime.session)),{originalRuntime,openedRuntime});
   check('新應用 context 在開檔前為空白',(await objects()).gridSystems.length===0);
@@ -119,5 +137,5 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
   await select('grid-system',705);await shot('compact-rename-reopened');
   check('更名與重開沒有未處理瀏覽器例外',exceptionCount()===errors);
   console.log('P72B saved artifact',file,'fresh native service',freshURL||'not requested; new JS context only');
-  if(freshURL){await send('Page.navigate',{url:originalURL});await wait(`typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy`);}
+  if(freshURL)await navigate('Page.navigate',{url:originalURL},'P72B 返回原服務');
 };
