@@ -3409,7 +3409,7 @@
     {
       "path": "geometry-web/uiux_review_test.js",
       "reason": "Dedicated acceptance/test driver uiux_review_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "sha256": "0925c130aa7488d54b5e2ed539ef21f5b653fbbdebd0910f71a1992871149604",
       "hashMode": "lf"
     },
     {
@@ -3685,7 +3685,7 @@
     {
       "path": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
       "reason": "GEO-261 收尾的有限架構收據重產工具；獨立枚舉完整來源、核對指定 Git commit、保留舊四檔，僅更新明列既有 exclusion digest 或本工具目錄內明列的新 exclusion，實跑三條架構驗收與撤回／依賴負控制後產出新四檔。它是外部稽核工具，不是 K／W／H 產品來源，也不提供執行期能力。",
-      "sha256": "80ecea0cd2d1189f244552d3e92ffc1a81335424410cf4557bac68cd25d15e86",
+      "sha256": "b0b80afbdbbbb451ab29e774ffbdd1699f0438619b5f84280ef954c8b72fc5a3",
       "hashMode": "lf"
     },
     {
@@ -3698,6 +3698,12 @@
       "path": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
       "reason": "GEO-261 收尾的 Q38／§7 專用測試調度器；在明示隔離工作樹呼叫既有 section-profile 與 card-reference 裁判，設定暫存目錄及 stack，保存命令、結束碼、來源 SHA 與工作樹還原狀態。只由驗收命令啟動，不被產品執行期依賴。",
       "sha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/p73_probe.js",
+      "reason": "GEO-261 收尾的 P73 專用瀏覽器診斷與突變驗證工具；沿用正式 CDP 啟動器及完整 UI/UX 驗收模組，擷取空態 DOM 與實際來源指紋，檢查非空／空／返回非空的顯示轉換及世界內容保持，並以明示記憶體來源替換、精確撤回及同步 callback 控制驗證產品空態守門。只由隔離驗收命令啟動，不由產品或服務入口載入，不允許產品 owned 來源依賴；各版本 hash、實際控制及結果由對應原始收據記錄。",
+      "sha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
       "hashMode": "lf"
     }
   ],

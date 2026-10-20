@@ -16,7 +16,7 @@ runtime import blocking, mutation receipts, browser acceptance, or SSOT checks.
 
 ## Complete inventory and responsibilities
 
-目前清單含 610 個可執行檔案：333 個登記來源與 277 個逐檔排除項目。 The five complete roots are `geometry-core`,
+目前清單含 611 個可執行檔案：333 個登記來源與 278 個逐檔排除項目。 The five complete roots are `geometry-core`,
 `geometry-app`, `geometry-templates`, `geometry-web`, and `geometry-guide`.
 `current_geometry.c` is an additional standalone source. The real
 `rule_cases.runtime` imports `tests.binaries`, so `tests/__init__.py` and
@@ -352,9 +352,9 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-本次最新封存來源為 `55623598f23e4b630987bb27bbb3f55c10815ea9`。實際 CLI 掃描結束碼為 0，含 333 個登記來源、796 條依賴邊及 0 項診斷。
+本次最新封存來源為 `ab6869b86a4ad82345359b72397fc055280d8308`。實際 CLI 掃描結束碼為 0，含 333 個登記來源、796 條依賴邊及 0 項診斷。
 通用掃描器測試 205 項：通過 205、略過 0；產品架構測試 18 項：通過 18、略過 0。
-獨立枚舉核對全部 610 個來源的 LF 雜湊與指定 Git commit；來源集合、來源／裁判 bytes 及 HEAD 在每條命令後和封存前均保持一致。
+獨立枚舉核對全部 611 個來源的 LF 雜湊與指定 Git commit；來源集合、來源／裁判 bytes 及 HEAD 在每條命令後和封存前均保持一致。
 
 When new provider files are integrated, the root inventory must first fail
 closed, then receive individually reviewed source entries. Re-run the product
@@ -387,6 +387,18 @@ new files or changed sources.
 來源 SHA：`55623598f23e4b630987bb27bbb3f55c10815ea9`。本次變更只有以下已審閱的既有排除項目雜湊，以及逐檔明列的收尾驗證工具；既有來源責任分類、來源根目錄、獨立來源名單及守門政策維持既有內容。
 
 - 既有 digest 更新 `geometry-core/domain-decoupling/closeout-tools/p72_probe.js`：已逐字核對 7afacf656912edccc7eb84cb9590990bccae1166 與前次封存 c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3 的唯一來源差異；raw SHA-256 為 6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc。此版停用無效的 Document 暫停控制，改為明示測試驅動器延後發送真正 Page.reload，先讀取瀏覽器的舊頁真實條件值，再於 stale-first 控制送出 reload 並暫停真正 app.js 請求；hold-navigation 控制則保持未發送 reload，以驗候選就緒等待期限。app.js 放行計時在求值前設置，避免控制本身堵住清理。這是既有 P72B 導航診斷與突變驗證工具的控制排程修正，非產品入口；不改產品導航模組、原 50 項斷言、來源責任分類或守門政策。此理由只記錄工具靜態審閱，瀏覽器控制結果另由各自原始證據證明。
+
+舊 manifest 以 `EXCLUSION_DIGEST` 轉紅；新版掃描及兩套測試均實際重跑。既有 digest 更新逐項撤回時須以目標檔案的 `EXCLUSION_DIGEST`、結束碼 1 拒絕。新增工具逐項移除登記時須以 `SOURCE_UNREGISTERED`、結束碼 1 拒絕；逐項破壞新工具 digest 時須以 `EXCLUSION_DIGEST`、結束碼 1 拒絕；再以實際 H 來源文字於記憶體加入對每個新工具的靜態依賴，須以 `DEPENDENCY_EXCLUDED`、結束碼 1 拒絕。上述是架構清單的突變自證，不冒充產品修正的行為突變自證。
+
+四份舊產物逐位元組保存在外部證據目錄的 `previous/`；新收據記錄舊產物雜湊、原來源 SHA、本次完整輸入閉包、命令、結束碼、略過項及原始日誌雜湊。此處只驗靜態依賴；未執行原生、瀏覽器、Q38、卡片參照或 P-189 驗收，不能由本收據推定那些關卡通過。
+
+## 2026-10-21 Linux 有限刷新
+
+來源 SHA：`ab6869b86a4ad82345359b72397fc055280d8308`。本次 manifest 刷新只更新以下已審閱的既有排除項目雜湊，以及逐檔明列的收尾驗證工具；實際來源變化由收據 `inputsChangedSincePreviousSeal` 逐項列出。既有來源責任分類、來源根目錄、獨立來源名單及守門政策維持既有內容。
+
+- 既有 digest 更新 `geometry-web/uiux_review_test.js`：已逐字核對來源 ab6869b86a4ad82345359b72397fc055280d8308：既有 P73 專用驗收模組保留原空態斷言的成員數、無假形狀、空態節點及加入入口條件，改為逐項取得狀態供失敗診斷，並新增外部尺寸文字必須隱藏且清空的子條件；不移除斷言、不變更 69 題契約或 golden。對應產品 geometry-web/app.js 確實另有 SVG 空態與尺寸文字修正，仍屬原 H owned 來源；其新內容必須由本輪來源閉包與真正掃描記錄，不沿用前輪產品 bytes 不變的結論。此檔只由驗收 harness 載入，不是產品入口。
+- 既有 digest 更新 `geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py`：已逐字核對來源 ab6869b86a4ad82345359b72397fc055280d8308 與外部候選：只把報告中的變更範圍明確限定於 manifest 刷新，並指向收據 inputsChangedSincePreviousSeal 的完整來源差異，避免產品來源改動時誤稱僅有 exclusion digest 與工具更動。精確撤回這一行改兩行的字串補丁後，其餘 bytes 與前版相同；輸入枚舉、三條驗收、負控制、收據欄位、責任分類及守門政策皆維持原邏輯。此檔是外部稽核工具，不提供產品執行期能力。
+- 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/p73_probe.js`：GEO-261 收尾的 P73 專用瀏覽器診斷與突變驗證工具；沿用正式 CDP 啟動器及完整 UI/UX 驗收模組，擷取空態 DOM 與實際來源指紋，檢查非空／空／返回非空的顯示轉換及世界內容保持，並以明示記憶體來源替換、精確撤回及同步 callback 控制驗證產品空態守門。只由隔離驗收命令啟動，不由產品或服務入口載入，不允許產品 owned 來源依賴；各版本 hash、實際控制及結果由對應原始收據記錄。
 
 舊 manifest 以 `EXCLUSION_DIGEST` 轉紅；新版掃描及兩套測試均實際重跑。既有 digest 更新逐項撤回時須以目標檔案的 `EXCLUSION_DIGEST`、結束碼 1 拒絕。新增工具逐項移除登記時須以 `SOURCE_UNREGISTERED`、結束碼 1 拒絕；逐項破壞新工具 digest 時須以 `EXCLUSION_DIGEST`、結束碼 1 拒絕；再以實際 H 來源文字於記憶體加入對每個新工具的靜態依賴，須以 `DEPENDENCY_EXCLUDED`、結束碼 1 拒絕。上述是架構清單的突變自證，不冒充產品修正的行為突變自證。
 
