@@ -19,16 +19,16 @@
     "未來變更後的來源樹",
     "Q38、§7、P-189 或瀏覽器驗收"
   ],
-  "createdUtc": "2026-10-20T20:11:06.821413+00:00",
+  "createdUtc": "2026-10-20T20:25:15.880971+00:00",
   "basis": "已提交指定來源 HEAD，加上本次有限 manifest／scan／report／receipt 刷新。",
-  "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-  "headObservedBefore": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-  "headObservedAfter": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-  "manifestSha256": "72e4e83f70bd8b91f0c4500539c02de9c5df0fe4e731e08c6a4afe1826e2337e",
+  "sourceBaseHead": "55623598f23e4b630987bb27bbb3f55c10815ea9",
+  "headObservedBefore": "55623598f23e4b630987bb27bbb3f55c10815ea9",
+  "headObservedAfter": "55623598f23e4b630987bb27bbb3f55c10815ea9",
+  "manifestSha256": "6ed8055761f7576dc58c5546a11387e3ef9a44dfa55afd28796e0da3e6f41ae5",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-  "reportSha256": "bda01789002582422a831eb377e91d611a2e0de77ea0a65d234b8cf7ae44e940",
-  "inputClosureSha256": "60789fecfee767e1954f15ce7450e5d3a23b4966971d57b810675a2405dc01e3",
+  "reportSha256": "1b809ee48e344ca6871ea86cbe9b75712fc4db99e9eb8a587da48a244f95c254",
+  "inputClosureSha256": "9723ffce54ba1223948a591cf2fd133abb22ad03e43cefcea8a71e61cd14ab9b",
   "counts": {
     "executableFiles": 610,
     "ownedSources": 333,
@@ -54,9 +54,9 @@
     "previousOutputs": {
       "geometry-core/domain-decoupling/product-architecture.json": {
         "preservedPath": "previous/product-architecture.json",
-        "rawSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
-        "lfSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
-        "bytes": 219913
+        "rawSha256": "b90d8b913e29e603d84e6f460366ec21d30e2d77183fdabbc473ae0126feb543",
+        "lfSha256": "b90d8b913e29e603d84e6f460366ec21d30e2d77183fdabbc473ae0126feb543",
+        "bytes": 225016
       },
       "geometry-core/domain-decoupling/product-architecture-scan.json": {
         "preservedPath": "previous/product-architecture-scan.json",
@@ -66,90 +66,29 @@
       },
       "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md": {
         "preservedPath": "previous/PRODUCT-ARCHITECTURE.md",
-        "rawSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3",
-        "lfSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3",
-        "bytes": 23761
+        "rawSha256": "bda01789002582422a831eb377e91d611a2e0de77ea0a65d234b8cf7ae44e940",
+        "lfSha256": "bda01789002582422a831eb377e91d611a2e0de77ea0a65d234b8cf7ae44e940",
+        "bytes": 29774
       },
       "geometry-core/domain-decoupling/product-architecture-receipt.json": {
         "preservedPath": "previous/product-architecture-receipt.json",
-        "rawSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
-        "lfSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
-        "bytes": 160974
+        "rawSha256": "587834dc995e9a405cd6459543f782bba92655a72223976c9f4d612a01faf90b",
+        "lfSha256": "587834dc995e9a405cd6459543f782bba92655a72223976c9f4d612a01faf90b",
+        "bytes": 348828
       }
     },
-    "previousSourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-    "previousReceiptCreatedUtc": "2026-10-20T11:26:02.875198+00:00",
+    "previousSourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
+    "previousReceiptCreatedUtc": "2026-10-20T20:11:06.821413+00:00",
     "updatedExclusions": [
       {
-        "path": "geometry-web/cdp_test.js",
-        "previousSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
-        "currentSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
-        "reviewReason": "已逐字核對 4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c 的差異：既有完整瀏覽器驗收驅動器只將 P52-5 的機會式固定等待改為共用 15000ms 截止時間的 references／交易就緒等待，要求查詢前後 busy 皆為 false，保留原幾何斷言及章節計數；逾時與 API 失敗列出最後狀態。此檔由驗收流程執行，非產品入口。"
-      },
-      {
-        "path": "geometry-web/grid_inspector_rename_test.js",
-        "previousSha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e",
-        "currentSha256": "8cc65bb4b187ae7e49d4be83561ed1a4143618e9e229f29aa3d310da9770cab6",
-        "reviewReason": "已逐字核對 4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c 的差異：既有 P72B 網格檢查器重命名驗收模組新增短 helper，兩處導航復用 cdp_navigation 的新文件 marker、document complete 及應用 ready 等待，避免 reload 後誤把舊頁 ready 當成新頁完成；清理導航 marker 並保留既有 50 項斷言。此檔由 CDP 驅動器載入，非產品入口。"
+        "path": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
+        "previousSha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae",
+        "currentSha256": "6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc",
+        "reviewReason": "已逐字核對 7afacf656912edccc7eb84cb9590990bccae1166 與前次封存 c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3 的唯一來源差異；raw SHA-256 為 6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc。此版停用無效的 Document 暫停控制，改為明示測試驅動器延後發送真正 Page.reload，先讀取瀏覽器的舊頁真實條件值，再於 stale-first 控制送出 reload 並暫停真正 app.js 請求；hold-navigation 控制則保持未發送 reload，以驗候選就緒等待期限。app.js 放行計時在求值前設置，避免控制本身堵住清理。這是既有 P72B 導航診斷與突變驗證工具的控制排程修正，非產品入口；不改產品導航模組、原 50 項斷言、來源責任分類或守門政策。此理由只記錄工具靜態審閱，瀏覽器控制結果另由各自原始證據證明。"
       }
     ],
     "addedSources": [],
-    "addedExclusions": [
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
-        "reason": "GEO-261 收尾的專用 P-189 三方載入效能驗證工具；按指定 Git 版本與場景產生器建置隔離 bridge，保存 dump 位元組等價、交錯時間、完整來源 SHA 與裁判自證收據。這是外部驗收與報告工具，不是幾何核心、木工模板或宿主執行期來源。",
-        "sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
-        "reason": "P-189 初始建置階段實際執行工具的完整原始來源封存，raw SHA-256 為 0ed8674c90dc670b37a63a91187f633d7cf11190bb9584a7081dd6a5358dbc7c；只供對照原建置收據與重現當時行為。這是歷史驗收工具版本，不是本次最新正式量測器，不由產品執行期依賴，也不將新版本驗收結果追認為此舊版實跑。",
-        "sha256": "0ed8674c90dc670b37a63a91187f633d7cf11190bb9584a7081dd6a5358dbc7c",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
-        "reason": "P-189 dump 等價階段實際執行工具的完整原始來源封存，raw SHA-256 為 c10eea2b116f2595a0a5dcab2dbdbd76d09c5e41e5339102ab109bc1e32049d2；只供對照原等價收據與重現當時行為。這是歷史驗收工具版本，不是本次最新正式量測器，不由產品執行期依賴，也不把不同階段工具雜湊混稱同一版本。",
-        "sha256": "c10eea2b116f2595a0a5dcab2dbdbd76d09c5e41e5339102ab109bc1e32049d2",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
-        "reason": "GEO-261 收尾的專用 P52 診斷與突變驗證工具；從明示工作樹擷取原 CDP helpers 及 P52，記錄點擊、API、references 與版本雜湊，並可於記憶體注入／撤回等待修正及延遲控制。只由獨立驗收命令啟動，不由產品入口或服務載入，不改寫產品來源。",
-        "sha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
-        "reason": "GEO-261 收尾的專用 P72B 導航診斷與突變驗證工具；擷取既有 CDP 啟動器並執行完整 50 項 P72B 驗收，只於記憶體安裝／撤回導航等待，透過暫停真正 reload 文件與 app.js 請求重現舊頁 ready 誤判及候選新文件等待。raw SHA-256 為 11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae；只由隔離驗收命令啟動，不是產品或服務入口，不被產品來源依賴。",
-        "sha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
-        "reason": "交接 commit 59796b1af9259eb23d30134c2ce5a56317a06091 的 Q38 十二項對照突變定義，保留原始 bytes 供證據重現；由隔離驗收根目錄載入 tests/section_profile_mutation_check.py 並沿用其 baseline 與裁判。其歷史註解並非產品承諾；本次明列登記為測試工具，不允許產品來源依賴。",
-        "sha256": "1379e24d336dcd7e9b68ab205c9acbe703920c733e404ce0f6d67b68f28e3010",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "reason": "GEO-261 收尾的有限架構收據重產工具；獨立枚舉完整來源、核對指定 Git commit、保留舊四檔，僅更新明列既有 exclusion digest 或本工具目錄內明列的新 exclusion，實跑三條架構驗收與撤回／依賴負控制後產出新四檔。它是外部稽核工具，不是 K／W／H 產品來源，也不提供執行期能力。",
-        "sha256": "80ecea0cd2d1189f244552d3e92ffc1a81335424410cf4557bac68cd25d15e86",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
-        "reason": "GEO-261 收尾的 Q38 十二項交接控制調度與核對工具；呼叫明示 controls 腳本及既有真正裁判，分別保留原始裁判結束碼與預期結果核對結束碼，核對 baseline、完整控制集合及工作樹還原。只服務驗收，不構成產品功能或執行入口。",
-        "sha256": "b7e7430e53d157f6a82050417be7a9f8d77bd50c1fb5f2f3a34a1ba44de8363f",
-        "hashMode": "lf"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
-        "reason": "GEO-261 收尾的 Q38／§7 專用測試調度器；在明示隔離工作樹呼叫既有 section-profile 與 card-reference 裁判，設定暫存目錄及 stack，保存命令、結束碼、來源 SHA 與工作樹還原狀態。只由驗收命令啟動，不被產品執行期依賴。",
-        "sha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3",
-        "hashMode": "lf"
-      }
-    ],
+    "addedExclusions": [],
     "priorManifestCheck": {
       "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
       "argv": [
@@ -162,17 +101,17 @@
         "geometry-core/domain-decoupling/product-architecture.json"
       ],
       "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:25.607495+00:00",
-      "finishedUtc": "2026-10-20T20:10:25.822632+00:00",
+      "sourceBaseHead": "55623598f23e4b630987bb27bbb3f55c10815ea9",
+      "startedUtc": "2026-10-20T20:24:57.329941+00:00",
+      "finishedUtc": "2026-10-20T20:24:57.544887+00:00",
       "seconds": 0.215,
       "complete": true,
       "exitCode": 1,
       "stdout": {
         "path": "prior-manifest/stdout.log",
-        "rawSha256": "3457fbdb97a1158d949a38d390414df1d433e9200129939fb1260c1bdfb77165",
-        "lfSha256": "3457fbdb97a1158d949a38d390414df1d433e9200129939fb1260c1bdfb77165",
-        "bytes": 317
+        "rawSha256": "634075fc16928c58f1d50e6853ecc557bacff6a2bf0477191e66d92a782a8346",
+        "lfSha256": "634075fc16928c58f1d50e6853ecc557bacff6a2bf0477191e66d92a782a8346",
+        "bytes": 352
       },
       "stderr": {
         "path": "prior-manifest/stderr.log",
@@ -183,59 +122,9 @@
     },
     "inputsChangedSincePreviousSeal": [
       {
-        "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
-        "previousSha256": null,
-        "currentSha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
-        "previousSha256": null,
-        "currentSha256": "0ed8674c90dc670b37a63a91187f633d7cf11190bb9584a7081dd6a5358dbc7c"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
-        "previousSha256": null,
-        "currentSha256": "c10eea2b116f2595a0a5dcab2dbdbd76d09c5e41e5339102ab109bc1e32049d2"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
-        "previousSha256": null,
-        "currentSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083"
-      },
-      {
         "path": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
-        "previousSha256": null,
-        "currentSha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
-        "previousSha256": null,
-        "currentSha256": "1379e24d336dcd7e9b68ab205c9acbe703920c733e404ce0f6d67b68f28e3010"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "previousSha256": null,
-        "currentSha256": "80ecea0cd2d1189f244552d3e92ffc1a81335424410cf4557bac68cd25d15e86"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
-        "previousSha256": null,
-        "currentSha256": "b7e7430e53d157f6a82050417be7a9f8d77bd50c1fb5f2f3a34a1ba44de8363f"
-      },
-      {
-        "path": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
-        "previousSha256": null,
-        "currentSha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3"
-      },
-      {
-        "path": "geometry-web/cdp_test.js",
-        "previousSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
-        "currentSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761"
-      },
-      {
-        "path": "geometry-web/grid_inspector_rename_test.js",
-        "previousSha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e",
-        "currentSha256": "8cc65bb4b187ae7e49d4be83561ed1a4143618e9e229f29aa3d310da9770cab6"
+        "previousSha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae",
+        "currentSha256": "6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc"
       }
     ]
   },
@@ -252,10 +141,10 @@
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
     "cwd": "/workspace/geometry-axiom",
-    "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-    "startedUtc": "2026-10-20T20:10:26.095524+00:00",
-    "finishedUtc": "2026-10-20T20:10:31.682319+00:00",
-    "seconds": 5.587,
+    "sourceBaseHead": "55623598f23e4b630987bb27bbb3f55c10815ea9",
+    "startedUtc": "2026-10-20T20:24:57.783379+00:00",
+    "finishedUtc": "2026-10-20T20:25:02.915078+00:00",
+    "seconds": 5.132,
     "complete": true,
     "exitCode": 0,
     "stdout": {
@@ -280,10 +169,10 @@
         "tests/test_architecture_contract.py"
       ],
       "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:31.942671+00:00",
-      "finishedUtc": "2026-10-20T20:10:32.408078+00:00",
-      "seconds": 0.465,
+      "sourceBaseHead": "55623598f23e4b630987bb27bbb3f55c10815ea9",
+      "startedUtc": "2026-10-20T20:25:03.207273+00:00",
+      "finishedUtc": "2026-10-20T20:25:03.673102+00:00",
+      "seconds": 0.466,
       "complete": true,
       "exitCode": 0,
       "stdout": {
@@ -294,15 +183,15 @@
       },
       "stderr": {
         "path": "generic-tests/stderr.log",
-        "rawSha256": "ad25259c893d2ce9e733e8ee9d0318fb000ccff5eea427a5ab07f44bf1a5d6a9",
-        "lfSha256": "ad25259c893d2ce9e733e8ee9d0318fb000ccff5eea427a5ab07f44bf1a5d6a9",
+        "rawSha256": "2a3d32257fd7f36be36b0553246f6f512b4a016b6463afb499e548115ca5ffba",
+        "lfSha256": "2a3d32257fd7f36be36b0553246f6f512b4a016b6463afb499e548115ca5ffba",
         "bytes": 29577
       },
       "tests": 205,
       "passed": 205,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 0.328,
+      "unittestSeconds": 0.321,
       "skipLines": [],
       "sha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
       "executedAtCurrentHead": true
@@ -315,10 +204,10 @@
         "tests/test_product_architecture.py"
       ],
       "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:32.672575+00:00",
-      "finishedUtc": "2026-10-20T20:10:42.973559+00:00",
-      "seconds": 10.301,
+      "sourceBaseHead": "55623598f23e4b630987bb27bbb3f55c10815ea9",
+      "startedUtc": "2026-10-20T20:25:03.908648+00:00",
+      "finishedUtc": "2026-10-20T20:25:15.058620+00:00",
+      "seconds": 11.15,
       "complete": true,
       "exitCode": 0,
       "stdout": {
@@ -329,15 +218,15 @@
       },
       "stderr": {
         "path": "product-tests/stderr.log",
-        "rawSha256": "2e9a6360155f0eb1d26103d83f9ec92ac565317908410de7dd31c6e44354fc6d",
-        "lfSha256": "2e9a6360155f0eb1d26103d83f9ec92ac565317908410de7dd31c6e44354fc6d",
+        "rawSha256": "be2812c5f468570a84ff7116c9d88a6bd1519ee1ac929e1b0e568d62e089a170",
+        "lfSha256": "be2812c5f468570a84ff7116c9d88a6bd1519ee1ac929e1b0e568d62e089a170",
         "bytes": 118
       },
       "tests": 18,
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 10.184,
+      "unittestSeconds": 11.006,
       "skipLines": [],
       "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
       "executedAtCurrentHead": true
@@ -345,7 +234,7 @@
   ],
   "supplementalStaticGuardProbes": [
     {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-digest-0.json",
+      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-55623598/withdraw-digest-0.json",
       "argv": [
         "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
         "-B",
@@ -353,20 +242,20 @@
         "--root",
         ".",
         "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-digest-0.json"
+        "/workspace/geo261-evidence/architecture/run-55623598/withdraw-digest-0.json"
       ],
       "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:43.235807+00:00",
-      "finishedUtc": "2026-10-20T20:10:43.400629+00:00",
-      "seconds": 0.165,
+      "sourceBaseHead": "55623598f23e4b630987bb27bbb3f55c10815ea9",
+      "startedUtc": "2026-10-20T20:25:15.344536+00:00",
+      "finishedUtc": "2026-10-20T20:25:15.609715+00:00",
+      "seconds": 0.265,
       "complete": true,
       "exitCode": 1,
       "stdout": {
         "path": "withdraw-digest-0/stdout.log",
-        "rawSha256": "3457fbdb97a1158d949a38d390414df1d433e9200129939fb1260c1bdfb77165",
-        "lfSha256": "3457fbdb97a1158d949a38d390414df1d433e9200129939fb1260c1bdfb77165",
-        "bytes": 317
+        "rawSha256": "634075fc16928c58f1d50e6853ecc557bacff6a2bf0477191e66d92a782a8346",
+        "lfSha256": "634075fc16928c58f1d50e6853ecc557bacff6a2bf0477191e66d92a782a8346",
+        "bytes": 352
       },
       "stderr": {
         "path": "withdraw-digest-0/stderr.log",
@@ -374,682 +263,6 @@
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "bytes": 0
       },
-      "target": "geometry-web/cdp_test.js",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-web/cdp_test.js",
-          "line": 1,
-          "code": "EXCLUSION_DIGEST",
-          "message": "immutable lf digest is absent or mismatched",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-digest-1.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-digest-1.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:43.633760+00:00",
-      "finishedUtc": "2026-10-20T20:10:43.798703+00:00",
-      "seconds": 0.165,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "withdraw-digest-1/stdout.log",
-        "rawSha256": "2a5ee74f72d9db513843041016f481f7fc66581d4b1a99f312b8346ae3369458",
-        "lfSha256": "2a5ee74f72d9db513843041016f481f7fc66581d4b1a99f312b8346ae3369458",
-        "bytes": 335
-      },
-      "stderr": {
-        "path": "withdraw-digest-1/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-web/grid_inspector_rename_test.js",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-web/grid_inspector_rename_test.js",
-          "line": 1,
-          "code": "EXCLUSION_DIGEST",
-          "message": "immutable lf digest is absent or mismatched",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-0.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-0.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:44.039515+00:00",
-      "finishedUtc": "2026-10-20T20:10:44.655738+00:00",
-      "seconds": 0.616,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "withdraw-registration-0/stdout.log",
-        "rawSha256": "a2ac957c3a5ff2d53943d4b2bb51fec2da8045730333ff3bbe3b90c020733cdb",
-        "lfSha256": "a2ac957c3a5ff2d53943d4b2bb51fec2da8045730333ff3bbe3b90c020733cdb",
-        "bytes": 366
-      },
-      "stderr": {
-        "path": "withdraw-registration-0/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
-          "line": 1,
-          "code": "SOURCE_UNREGISTERED",
-          "message": "executable source omitted from the complete manifest",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-0.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-0.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:44.897648+00:00",
-      "finishedUtc": "2026-10-20T20:10:45.112925+00:00",
-      "seconds": 0.215,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "corrupt-new-digest-0/stdout.log",
-        "rawSha256": "373c248f63231df5241a81cf763e43559fd13ec464856147dc2815c7394230ee",
-        "lfSha256": "373c248f63231df5241a81cf763e43559fd13ec464856147dc2815c7394230ee",
-        "bytes": 354
-      },
-      "stderr": {
-        "path": "corrupt-new-digest-0/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
-          "line": 1,
-          "code": "EXCLUSION_DIGEST",
-          "message": "immutable lf digest is absent or mismatched",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B /workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py --probe-owned-dependency /workspace/geometry-axiom /workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "--probe-owned-dependency",
-        "/workspace/geometry-axiom",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
-        "geometry-core/domain-decoupling/closeout-tools/p189_verify.py"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:45.355978+00:00",
-      "finishedUtc": "2026-10-20T20:10:45.972909+00:00",
-      "seconds": 0.617,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "owned-dependency-0/stdout.log",
-        "rawSha256": "a1680e82bd940adfaba377d170cc4249f8137dea7cf2851c40f531f47d47f81b",
-        "lfSha256": "a1680e82bd940adfaba377d170cc4249f8137dea7cf2851c40f531f47d47f81b",
-        "bytes": 16504
-      },
-      "stderr": {
-        "path": "owned-dependency-0/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-app/application.js",
-          "line": 17,
-          "code": "DEPENDENCY_EXCLUDED",
-          "message": "dependency geometry-core/domain-decoupling/closeout-tools/p189_verify.py is excluded from product source",
-          "direction": "",
-          "chain": [
-            "geometry-app/application.js",
-            "geometry-core/domain-decoupling/closeout-tools/p189_verify.py"
-          ]
-        }
-      ],
-      "killed": true,
-      "scope": "實際 H 來源文字加上記憶體內靜態 require；不寫回產品，不聲稱該跨語言依賴可於執行期載入。"
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-1.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-1.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:46.223150+00:00",
-      "finishedUtc": "2026-10-20T20:10:47.007620+00:00",
-      "seconds": 0.784,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "withdraw-registration-1/stdout.log",
-        "rawSha256": "9f074cc66ea14f5f6d1dfce286f5374632c643ec61513184fc1f01a5bd371105",
-        "lfSha256": "9f074cc66ea14f5f6d1dfce286f5374632c643ec61513184fc1f01a5bd371105",
-        "bytes": 372
-      },
-      "stderr": {
-        "path": "withdraw-registration-1/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
-          "line": 1,
-          "code": "SOURCE_UNREGISTERED",
-          "message": "executable source omitted from the complete manifest",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-1.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-1.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:47.415614+00:00",
-      "finishedUtc": "2026-10-20T20:10:47.733641+00:00",
-      "seconds": 0.318,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "corrupt-new-digest-1/stdout.log",
-        "rawSha256": "3ec71752c5fd5dac949f5144448b7eed8c6ccbd168668fc5269474c04e389441",
-        "lfSha256": "3ec71752c5fd5dac949f5144448b7eed8c6ccbd168668fc5269474c04e389441",
-        "bytes": 360
-      },
-      "stderr": {
-        "path": "corrupt-new-digest-1/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
-          "line": 1,
-          "code": "EXCLUSION_DIGEST",
-          "message": "immutable lf digest is absent or mismatched",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B /workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py --probe-owned-dependency /workspace/geometry-axiom /workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "--probe-owned-dependency",
-        "/workspace/geometry-axiom",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
-        "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:47.975702+00:00",
-      "finishedUtc": "2026-10-20T20:10:48.745702+00:00",
-      "seconds": 0.77,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "owned-dependency-1/stdout.log",
-        "rawSha256": "82729b7f9555fd99ec6291783b3e20c3a3f754fb21e99bbc8b4300d1ca3bddad",
-        "lfSha256": "82729b7f9555fd99ec6291783b3e20c3a3f754fb21e99bbc8b4300d1ca3bddad",
-        "bytes": 16516
-      },
-      "stderr": {
-        "path": "owned-dependency-1/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-app/application.js",
-          "line": 17,
-          "code": "DEPENDENCY_EXCLUDED",
-          "message": "dependency geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py is excluded from product source",
-          "direction": "",
-          "chain": [
-            "geometry-app/application.js",
-            "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py"
-          ]
-        }
-      ],
-      "killed": true,
-      "scope": "實際 H 來源文字加上記憶體內靜態 require；不寫回產品，不聲稱該跨語言依賴可於執行期載入。"
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-2.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-2.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:49.010283+00:00",
-      "finishedUtc": "2026-10-20T20:10:49.685135+00:00",
-      "seconds": 0.675,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "withdraw-registration-2/stdout.log",
-        "rawSha256": "55007868654b430ce34022845fff73058a3d6ddf8bdc2ce6f46a4bc47c580333",
-        "lfSha256": "55007868654b430ce34022845fff73058a3d6ddf8bdc2ce6f46a4bc47c580333",
-        "bytes": 378
-      },
-      "stderr": {
-        "path": "withdraw-registration-2/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
-          "line": 1,
-          "code": "SOURCE_UNREGISTERED",
-          "message": "executable source omitted from the complete manifest",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-2.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-2.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:49.934197+00:00",
-      "finishedUtc": "2026-10-20T20:10:50.203747+00:00",
-      "seconds": 0.27,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "corrupt-new-digest-2/stdout.log",
-        "rawSha256": "0f2830675d23eecaebe51c1d4d2f1e49a887e9efcfcc0124b7f3de6abdfe16d6",
-        "lfSha256": "0f2830675d23eecaebe51c1d4d2f1e49a887e9efcfcc0124b7f3de6abdfe16d6",
-        "bytes": 366
-      },
-      "stderr": {
-        "path": "corrupt-new-digest-2/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
-          "line": 1,
-          "code": "EXCLUSION_DIGEST",
-          "message": "immutable lf digest is absent or mismatched",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B /workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py --probe-owned-dependency /workspace/geometry-axiom /workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "--probe-owned-dependency",
-        "/workspace/geometry-axiom",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
-        "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:50.481506+00:00",
-      "finishedUtc": "2026-10-20T20:10:51.348669+00:00",
-      "seconds": 0.867,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "owned-dependency-2/stdout.log",
-        "rawSha256": "6bcf64a98f60d78d232f539c852d21bac4e53e351b96edc0bdc6de939490eade",
-        "lfSha256": "6bcf64a98f60d78d232f539c852d21bac4e53e351b96edc0bdc6de939490eade",
-        "bytes": 16528
-      },
-      "stderr": {
-        "path": "owned-dependency-2/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-app/application.js",
-          "line": 17,
-          "code": "DEPENDENCY_EXCLUDED",
-          "message": "dependency geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py is excluded from product source",
-          "direction": "",
-          "chain": [
-            "geometry-app/application.js",
-            "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py"
-          ]
-        }
-      ],
-      "killed": true,
-      "scope": "實際 H 來源文字加上記憶體內靜態 require；不寫回產品，不聲稱該跨語言依賴可於執行期載入。"
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-3.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-3.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:51.638331+00:00",
-      "finishedUtc": "2026-10-20T20:10:52.354647+00:00",
-      "seconds": 0.716,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "withdraw-registration-3/stdout.log",
-        "rawSha256": "365ce8d8653bf23822417125f8fcf6e93c1e083daa2cadd4a7ec1dd8f0faa88b",
-        "lfSha256": "365ce8d8653bf23822417125f8fcf6e93c1e083daa2cadd4a7ec1dd8f0faa88b",
-        "bytes": 364
-      },
-      "stderr": {
-        "path": "withdraw-registration-3/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
-          "line": 1,
-          "code": "SOURCE_UNREGISTERED",
-          "message": "executable source omitted from the complete manifest",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-3.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-3.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:52.641710+00:00",
-      "finishedUtc": "2026-10-20T20:10:52.856503+00:00",
-      "seconds": 0.215,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "corrupt-new-digest-3/stdout.log",
-        "rawSha256": "fa857144a45d7b415458cc8836c3eb1e0c25b132fc8f3cdb7e602eab1ac05d44",
-        "lfSha256": "fa857144a45d7b415458cc8836c3eb1e0c25b132fc8f3cdb7e602eab1ac05d44",
-        "bytes": 352
-      },
-      "stderr": {
-        "path": "corrupt-new-digest-3/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
-          "line": 1,
-          "code": "EXCLUSION_DIGEST",
-          "message": "immutable lf digest is absent or mismatched",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B /workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py --probe-owned-dependency /workspace/geometry-axiom /workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "--probe-owned-dependency",
-        "/workspace/geometry-axiom",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
-        "geometry-core/domain-decoupling/closeout-tools/p52_probe.js"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:53.096123+00:00",
-      "finishedUtc": "2026-10-20T20:10:53.819729+00:00",
-      "seconds": 0.724,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "owned-dependency-3/stdout.log",
-        "rawSha256": "d279b525cc04556b028ec516cc0a091122d923eb4a1c51631d9c2222a4cc9f86",
-        "lfSha256": "d279b525cc04556b028ec516cc0a091122d923eb4a1c51631d9c2222a4cc9f86",
-        "bytes": 16500
-      },
-      "stderr": {
-        "path": "owned-dependency-3/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-app/application.js",
-          "line": 17,
-          "code": "DEPENDENCY_EXCLUDED",
-          "message": "dependency geometry-core/domain-decoupling/closeout-tools/p52_probe.js is excluded from product source",
-          "direction": "",
-          "chain": [
-            "geometry-app/application.js",
-            "geometry-core/domain-decoupling/closeout-tools/p52_probe.js"
-          ]
-        }
-      ],
-      "killed": true,
-      "scope": "實際 H 來源文字加上記憶體內靜態 require；不寫回產品，不聲稱該跨語言依賴可於執行期載入。"
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-4.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-4.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:54.085797+00:00",
-      "finishedUtc": "2026-10-20T20:10:54.801846+00:00",
-      "seconds": 0.716,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "withdraw-registration-4/stdout.log",
-        "rawSha256": "6b2b285694d6d4ace8244c48f14a147cded8c57861a21bf3f717f66602e65090",
-        "lfSha256": "6b2b285694d6d4ace8244c48f14a147cded8c57861a21bf3f717f66602e65090",
-        "bytes": 364
-      },
-      "stderr": {
-        "path": "withdraw-registration-4/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
-          "line": 1,
-          "code": "SOURCE_UNREGISTERED",
-          "message": "executable source omitted from the complete manifest",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-4.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-4.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:55.029776+00:00",
-      "finishedUtc": "2026-10-20T20:10:55.297912+00:00",
-      "seconds": 0.268,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "corrupt-new-digest-4/stdout.log",
-        "rawSha256": "634075fc16928c58f1d50e6853ecc557bacff6a2bf0477191e66d92a782a8346",
-        "lfSha256": "634075fc16928c58f1d50e6853ecc557bacff6a2bf0477191e66d92a782a8346",
-        "bytes": 352
-      },
-      "stderr": {
-        "path": "corrupt-new-digest-4/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
       "target": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
       "expectedExitCode": 1,
       "diagnostics": [
@@ -1063,598 +276,6 @@
         }
       ],
       "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B /workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py --probe-owned-dependency /workspace/geometry-axiom /workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "--probe-owned-dependency",
-        "/workspace/geometry-axiom",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
-        "geometry-core/domain-decoupling/closeout-tools/p72_probe.js"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:55.573231+00:00",
-      "finishedUtc": "2026-10-20T20:10:56.349056+00:00",
-      "seconds": 0.776,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "owned-dependency-4/stdout.log",
-        "rawSha256": "e88aa0c89081e61623faad42d193dda1e1187295a4bab7df49ad2b820b3b8eee",
-        "lfSha256": "e88aa0c89081e61623faad42d193dda1e1187295a4bab7df49ad2b820b3b8eee",
-        "bytes": 16500
-      },
-      "stderr": {
-        "path": "owned-dependency-4/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-app/application.js",
-          "line": 17,
-          "code": "DEPENDENCY_EXCLUDED",
-          "message": "dependency geometry-core/domain-decoupling/closeout-tools/p72_probe.js is excluded from product source",
-          "direction": "",
-          "chain": [
-            "geometry-app/application.js",
-            "geometry-core/domain-decoupling/closeout-tools/p72_probe.js"
-          ]
-        }
-      ],
-      "killed": true,
-      "scope": "實際 H 來源文字加上記憶體內靜態 require；不寫回產品，不聲稱該跨語言依賴可於執行期載入。"
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-5.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-5.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:56.634438+00:00",
-      "finishedUtc": "2026-10-20T20:10:57.300715+00:00",
-      "seconds": 0.666,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "withdraw-registration-5/stdout.log",
-        "rawSha256": "2ba4d211e259a73ab6a51d4ee8241d40a33cf0416c69f8188f2a66065b181f32",
-        "lfSha256": "2ba4d211e259a73ab6a51d4ee8241d40a33cf0416c69f8188f2a66065b181f32",
-        "bytes": 367
-      },
-      "stderr": {
-        "path": "withdraw-registration-5/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
-          "line": 1,
-          "code": "SOURCE_UNREGISTERED",
-          "message": "executable source omitted from the complete manifest",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-5.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-5.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:57.576786+00:00",
-      "finishedUtc": "2026-10-20T20:10:57.895502+00:00",
-      "seconds": 0.319,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "corrupt-new-digest-5/stdout.log",
-        "rawSha256": "a6b7e06837972ef5df29131351b745f5bd48e9d5df432fc8ddfd7684c6d5e9c5",
-        "lfSha256": "a6b7e06837972ef5df29131351b745f5bd48e9d5df432fc8ddfd7684c6d5e9c5",
-        "bytes": 355
-      },
-      "stderr": {
-        "path": "corrupt-new-digest-5/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
-          "line": 1,
-          "code": "EXCLUSION_DIGEST",
-          "message": "immutable lf digest is absent or mismatched",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B /workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py --probe-owned-dependency /workspace/geometry-axiom /workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "--probe-owned-dependency",
-        "/workspace/geometry-axiom",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
-        "geometry-core/domain-decoupling/closeout-tools/q38_controls.py"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:58.140729+00:00",
-      "finishedUtc": "2026-10-20T20:10:58.863785+00:00",
-      "seconds": 0.723,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "owned-dependency-5/stdout.log",
-        "rawSha256": "02166e163f9e2f052ec6a8066036b9b5d2c5fa23cc24ba5943787b5bc6cf3a15",
-        "lfSha256": "02166e163f9e2f052ec6a8066036b9b5d2c5fa23cc24ba5943787b5bc6cf3a15",
-        "bytes": 16506
-      },
-      "stderr": {
-        "path": "owned-dependency-5/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-app/application.js",
-          "line": 17,
-          "code": "DEPENDENCY_EXCLUDED",
-          "message": "dependency geometry-core/domain-decoupling/closeout-tools/q38_controls.py is excluded from product source",
-          "direction": "",
-          "chain": [
-            "geometry-app/application.js",
-            "geometry-core/domain-decoupling/closeout-tools/q38_controls.py"
-          ]
-        }
-      ],
-      "killed": true,
-      "scope": "實際 H 來源文字加上記憶體內靜態 require；不寫回產品，不聲稱該跨語言依賴可於執行期載入。"
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-6.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-6.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:10:59.151545+00:00",
-      "finishedUtc": "2026-10-20T20:10:59.869185+00:00",
-      "seconds": 0.718,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "withdraw-registration-6/stdout.log",
-        "rawSha256": "4e2138ac1db6ac8635db397f7824e26d01e435ceeec911386018cdccdeac8295",
-        "lfSha256": "4e2138ac1db6ac8635db397f7824e26d01e435ceeec911386018cdccdeac8295",
-        "bytes": 370
-      },
-      "stderr": {
-        "path": "withdraw-registration-6/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-          "line": 1,
-          "code": "SOURCE_UNREGISTERED",
-          "message": "executable source omitted from the complete manifest",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-6.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-6.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:11:00.169322+00:00",
-      "finishedUtc": "2026-10-20T20:11:00.436649+00:00",
-      "seconds": 0.267,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "corrupt-new-digest-6/stdout.log",
-        "rawSha256": "ecf7937190fbcb2c6d564fc0dc4ca0d234216adbbdb6f77d4eddb183a970f2df",
-        "lfSha256": "ecf7937190fbcb2c6d564fc0dc4ca0d234216adbbdb6f77d4eddb183a970f2df",
-        "bytes": 358
-      },
-      "stderr": {
-        "path": "corrupt-new-digest-6/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-          "line": 1,
-          "code": "EXCLUSION_DIGEST",
-          "message": "immutable lf digest is absent or mismatched",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B /workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py --probe-owned-dependency /workspace/geometry-axiom /workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "--probe-owned-dependency",
-        "/workspace/geometry-axiom",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
-        "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:11:00.719626+00:00",
-      "finishedUtc": "2026-10-20T20:11:01.488538+00:00",
-      "seconds": 0.769,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "owned-dependency-6/stdout.log",
-        "rawSha256": "c6e31d58de476e05ecede19f10a8126a87c38f050fa94d2bce75fb15cc4d5b27",
-        "lfSha256": "c6e31d58de476e05ecede19f10a8126a87c38f050fa94d2bce75fb15cc4d5b27",
-        "bytes": 16512
-      },
-      "stderr": {
-        "path": "owned-dependency-6/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-app/application.js",
-          "line": 17,
-          "code": "DEPENDENCY_EXCLUDED",
-          "message": "dependency geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py is excluded from product source",
-          "direction": "",
-          "chain": [
-            "geometry-app/application.js",
-            "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py"
-          ]
-        }
-      ],
-      "killed": true,
-      "scope": "實際 H 來源文字加上記憶體內靜態 require；不寫回產品，不聲稱該跨語言依賴可於執行期載入。"
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-7.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-7.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:11:01.766543+00:00",
-      "finishedUtc": "2026-10-20T20:11:02.483432+00:00",
-      "seconds": 0.717,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "withdraw-registration-7/stdout.log",
-        "rawSha256": "90c0d465b717f072b0775ac9cf7bfe6d0afd0ddc8766594008ef9e3ed577823e",
-        "lfSha256": "90c0d465b717f072b0775ac9cf7bfe6d0afd0ddc8766594008ef9e3ed577823e",
-        "bytes": 367
-      },
-      "stderr": {
-        "path": "withdraw-registration-7/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
-          "line": 1,
-          "code": "SOURCE_UNREGISTERED",
-          "message": "executable source omitted from the complete manifest",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-7.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-7.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:11:02.767927+00:00",
-      "finishedUtc": "2026-10-20T20:11:03.035635+00:00",
-      "seconds": 0.268,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "corrupt-new-digest-7/stdout.log",
-        "rawSha256": "e5db76951fa0014e84ce8a91aa5979e5e57bb04b24d3bb1aa93f25432d4de1c4",
-        "lfSha256": "e5db76951fa0014e84ce8a91aa5979e5e57bb04b24d3bb1aa93f25432d4de1c4",
-        "bytes": 355
-      },
-      "stderr": {
-        "path": "corrupt-new-digest-7/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
-          "line": 1,
-          "code": "EXCLUSION_DIGEST",
-          "message": "immutable lf digest is absent or mismatched",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B /workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py --probe-owned-dependency /workspace/geometry-axiom /workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json geometry-core/domain-decoupling/closeout-tools/run_controls.py",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "--probe-owned-dependency",
-        "/workspace/geometry-axiom",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
-        "geometry-core/domain-decoupling/closeout-tools/run_controls.py"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:11:03.264218+00:00",
-      "finishedUtc": "2026-10-20T20:11:03.984420+00:00",
-      "seconds": 0.72,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "owned-dependency-7/stdout.log",
-        "rawSha256": "b4bcbc22f020af9103c16c2ee0c176c088b6d72c449d18e49c9c6b14e95d4935",
-        "lfSha256": "b4bcbc22f020af9103c16c2ee0c176c088b6d72c449d18e49c9c6b14e95d4935",
-        "bytes": 16506
-      },
-      "stderr": {
-        "path": "owned-dependency-7/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-app/application.js",
-          "line": 17,
-          "code": "DEPENDENCY_EXCLUDED",
-          "message": "dependency geometry-core/domain-decoupling/closeout-tools/run_controls.py is excluded from product source",
-          "direction": "",
-          "chain": [
-            "geometry-app/application.js",
-            "geometry-core/domain-decoupling/closeout-tools/run_controls.py"
-          ]
-        }
-      ],
-      "killed": true,
-      "scope": "實際 H 來源文字加上記憶體內靜態 require；不寫回產品，不聲稱該跨語言依賴可於執行期載入。"
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-8.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/withdraw-registration-8.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:11:04.273542+00:00",
-      "finishedUtc": "2026-10-20T20:11:05.053632+00:00",
-      "seconds": 0.78,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "withdraw-registration-8/stdout.log",
-        "rawSha256": "de90e3ce3783ffb8e42f64c9b9241c0254c39f59652e750089304dbf751c7b76",
-        "lfSha256": "de90e3ce3783ffb8e42f64c9b9241c0254c39f59652e750089304dbf751c7b76",
-        "bytes": 364
-      },
-      "stderr": {
-        "path": "withdraw-registration-8/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
-          "line": 1,
-          "code": "SOURCE_UNREGISTERED",
-          "message": "executable source omitted from the complete manifest",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-8.json",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "/workspace/geo261-evidence/architecture/run-4fe18b8b/corrupt-new-digest-8.json"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:11:05.299459+00:00",
-      "finishedUtc": "2026-10-20T20:11:05.617188+00:00",
-      "seconds": 0.318,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "corrupt-new-digest-8/stdout.log",
-        "rawSha256": "b6d956c504d1eeb63984a1544354bf692fcf0c73bb2a818b35d9304722052813",
-        "lfSha256": "b6d956c504d1eeb63984a1544354bf692fcf0c73bb2a818b35d9304722052813",
-        "bytes": 352
-      },
-      "stderr": {
-        "path": "corrupt-new-digest-8/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
-          "line": 1,
-          "code": "EXCLUSION_DIGEST",
-          "message": "immutable lf digest is absent or mismatched",
-          "direction": "",
-          "chain": []
-        }
-      ],
-      "killed": true
-    },
-    {
-      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B /workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py --probe-owned-dependency /workspace/geometry-axiom /workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json geometry-core/domain-decoupling/closeout-tools/run_gates.py",
-      "argv": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        "-B",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
-        "--probe-owned-dependency",
-        "/workspace/geometry-axiom",
-        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
-        "geometry-core/domain-decoupling/closeout-tools/run_gates.py"
-      ],
-      "cwd": "/workspace/geometry-axiom",
-      "sourceBaseHead": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-      "startedUtc": "2026-10-20T20:11:05.858082+00:00",
-      "finishedUtc": "2026-10-20T20:11:06.527130+00:00",
-      "seconds": 0.669,
-      "complete": true,
-      "exitCode": 1,
-      "stdout": {
-        "path": "owned-dependency-8/stdout.log",
-        "rawSha256": "18772df56f47abc4261c5663325dd6f193c83ef9df34c69432f1e098dc1625d0",
-        "lfSha256": "18772df56f47abc4261c5663325dd6f193c83ef9df34c69432f1e098dc1625d0",
-        "bytes": 16500
-      },
-      "stderr": {
-        "path": "owned-dependency-8/stderr.log",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "target": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
-      "expectedExitCode": 1,
-      "diagnostics": [
-        {
-          "path": "geometry-app/application.js",
-          "line": 17,
-          "code": "DEPENDENCY_EXCLUDED",
-          "message": "dependency geometry-core/domain-decoupling/closeout-tools/run_gates.py is excluded from product source",
-          "direction": "",
-          "chain": [
-            "geometry-app/application.js",
-            "geometry-core/domain-decoupling/closeout-tools/run_gates.py"
-          ]
-        }
-      ],
-      "killed": true,
-      "scope": "實際 H 來源文字加上記憶體內靜態 require；不寫回產品，不聲稱該跨語言依賴可於執行期載入。"
     }
   ],
   "nativeAcceptance": "本次只執行靜態架構掃描及其測試；沒有執行原生、瀏覽器或效能驗收。",
@@ -1873,7 +494,7 @@
     },
     {
       "path": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
-      "sha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae"
+      "sha256": "6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc"
     },
     {
       "path": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
@@ -4138,10 +2759,10 @@
     "unregisteredAfter": [],
     "missingAfter": [],
     "changedInputs": [],
-    "inputClosureSha256Before": "60789fecfee767e1954f15ce7450e5d3a23b4966971d57b810675a2405dc01e3",
-    "inputClosureSha256After": "60789fecfee767e1954f15ce7450e5d3a23b4966971d57b810675a2405dc01e3",
-    "rawInputClosureSha256Before": "65b05fc3ae950fd6c22f031e7c07b85dc3c154a888f15eb7484ce6adfc819c2d",
-    "rawInputClosureSha256After": "65b05fc3ae950fd6c22f031e7c07b85dc3c154a888f15eb7484ce6adfc819c2d",
+    "inputClosureSha256Before": "9723ffce54ba1223948a591cf2fd133abb22ad03e43cefcea8a71e61cd14ab9b",
+    "inputClosureSha256After": "9723ffce54ba1223948a591cf2fd133abb22ad03e43cefcea8a71e61cd14ab9b",
+    "rawInputClosureSha256Before": "7bd02eb4494aa4e54e623924b522ed7991486cda33467f0bcb7fd254c8a6027d",
+    "rawInputClosureSha256After": "7bd02eb4494aa4e54e623924b522ed7991486cda33467f0bcb7fd254c8a6027d",
     "toolHashesBeforeAndAfter": {
       "tests/architecture_contract.py": {
         "rawSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
@@ -4426,9 +3047,9 @@
         "bytes": 15545
       },
       "geometry-core/domain-decoupling/closeout-tools/p72_probe.js": {
-        "rawSha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae",
-        "lfSha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae",
-        "bytes": 12909
+        "rawSha256": "6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc",
+        "lfSha256": "6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc",
+        "bytes": 13136
       },
       "geometry-core/domain-decoupling/closeout-tools/q38_controls.py": {
         "rawSha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2",
@@ -7211,8 +5832,8 @@
         "bytes": 33058
       }
     },
-    "headObservedAfterIndependentAudit": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
-    "checkedUtc": "2026-10-20T20:11:06.824070+00:00"
+    "headObservedAfterIndependentAudit": "55623598f23e4b630987bb27bbb3f55c10815ea9",
+    "checkedUtc": "2026-10-20T20:25:15.883727+00:00"
   },
   "refreshDriver": {
     "path": "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
@@ -7224,13 +5845,13 @@
       "--root",
       "/workspace/geometry-axiom",
       "--out",
-      "/workspace/geo261-evidence/architecture/run-4fe18b8b",
+      "/workspace/geo261-evidence/architecture/run-55623598",
       "--source-head",
-      "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
+      "55623598f23e4b630987bb27bbb3f55c10815ea9",
       "--review-file",
-      "/workspace/geo261-evidence/architecture/review.json"
+      "/workspace/geo261-evidence/architecture/review-v2.json"
     ],
-    "evidenceDirectory": "/workspace/geo261-evidence/architecture/run-4fe18b8b",
-    "reviewFile": "/workspace/geo261-evidence/architecture/review.json"
+    "evidenceDirectory": "/workspace/geo261-evidence/architecture/run-55623598",
+    "reviewFile": "/workspace/geo261-evidence/architecture/review-v2.json"
   }
 }

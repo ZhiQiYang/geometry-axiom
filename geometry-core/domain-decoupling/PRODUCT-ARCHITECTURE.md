@@ -352,7 +352,7 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-本次最新封存來源為 `4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c`。實際 CLI 掃描結束碼為 0，含 333 個登記來源、796 條依賴邊及 0 項診斷。
+本次最新封存來源為 `55623598f23e4b630987bb27bbb3f55c10815ea9`。實際 CLI 掃描結束碼為 0，含 333 個登記來源、796 條依賴邊及 0 項診斷。
 通用掃描器測試 205 項：通過 205、略過 0；產品架構測試 18 項：通過 18、略過 0。
 獨立枚舉核對全部 610 個來源的 LF 雜湊與指定 Git commit；來源集合、來源／裁判 bytes 及 HEAD 在每條命令後和封存前均保持一致。
 
@@ -377,6 +377,16 @@ new files or changed sources.
 - 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py`：GEO-261 收尾的有限架構收據重產工具；獨立枚舉完整來源、核對指定 Git commit、保留舊四檔，僅更新明列既有 exclusion digest 或本工具目錄內明列的新 exclusion，實跑三條架構驗收與撤回／依賴負控制後產出新四檔。它是外部稽核工具，不是 K／W／H 產品來源，也不提供執行期能力。
 - 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/run_controls.py`：GEO-261 收尾的 Q38 十二項交接控制調度與核對工具；呼叫明示 controls 腳本及既有真正裁判，分別保留原始裁判結束碼與預期結果核對結束碼，核對 baseline、完整控制集合及工作樹還原。只服務驗收，不構成產品功能或執行入口。
 - 新增逐檔工具排除 `geometry-core/domain-decoupling/closeout-tools/run_gates.py`：GEO-261 收尾的 Q38／§7 專用測試調度器；在明示隔離工作樹呼叫既有 section-profile 與 card-reference 裁判，設定暫存目錄及 stack，保存命令、結束碼、來源 SHA 與工作樹還原狀態。只由驗收命令啟動，不被產品執行期依賴。
+
+舊 manifest 以 `EXCLUSION_DIGEST` 轉紅；新版掃描及兩套測試均實際重跑。既有 digest 更新逐項撤回時須以目標檔案的 `EXCLUSION_DIGEST`、結束碼 1 拒絕。新增工具逐項移除登記時須以 `SOURCE_UNREGISTERED`、結束碼 1 拒絕；逐項破壞新工具 digest 時須以 `EXCLUSION_DIGEST`、結束碼 1 拒絕；再以實際 H 來源文字於記憶體加入對每個新工具的靜態依賴，須以 `DEPENDENCY_EXCLUDED`、結束碼 1 拒絕。上述是架構清單的突變自證，不冒充產品修正的行為突變自證。
+
+四份舊產物逐位元組保存在外部證據目錄的 `previous/`；新收據記錄舊產物雜湊、原來源 SHA、本次完整輸入閉包、命令、結束碼、略過項及原始日誌雜湊。此處只驗靜態依賴；未執行原生、瀏覽器、Q38、卡片參照或 P-189 驗收，不能由本收據推定那些關卡通過。
+
+## 2026-10-21 Linux 有限刷新
+
+來源 SHA：`55623598f23e4b630987bb27bbb3f55c10815ea9`。本次變更只有以下已審閱的既有排除項目雜湊，以及逐檔明列的收尾驗證工具；既有來源責任分類、來源根目錄、獨立來源名單及守門政策維持既有內容。
+
+- 既有 digest 更新 `geometry-core/domain-decoupling/closeout-tools/p72_probe.js`：已逐字核對 7afacf656912edccc7eb84cb9590990bccae1166 與前次封存 c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3 的唯一來源差異；raw SHA-256 為 6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc。此版停用無效的 Document 暫停控制，改為明示測試驅動器延後發送真正 Page.reload，先讀取瀏覽器的舊頁真實條件值，再於 stale-first 控制送出 reload 並暫停真正 app.js 請求；hold-navigation 控制則保持未發送 reload，以驗候選就緒等待期限。app.js 放行計時在求值前設置，避免控制本身堵住清理。這是既有 P72B 導航診斷與突變驗證工具的控制排程修正，非產品入口；不改產品導航模組、原 50 項斷言、來源責任分類或守門政策。此理由只記錄工具靜態審閱，瀏覽器控制結果另由各自原始證據證明。
 
 舊 manifest 以 `EXCLUSION_DIGEST` 轉紅；新版掃描及兩套測試均實際重跑。既有 digest 更新逐項撤回時須以目標檔案的 `EXCLUSION_DIGEST`、結束碼 1 拒絕。新增工具逐項移除登記時須以 `SOURCE_UNREGISTERED`、結束碼 1 拒絕；逐項破壞新工具 digest 時須以 `EXCLUSION_DIGEST`、結束碼 1 拒絕；再以實際 H 來源文字於記憶體加入對每個新工具的靜態依賴，須以 `DEPENDENCY_EXCLUDED`、結束碼 1 拒絕。上述是架構清單的突變自證，不冒充產品修正的行為突變自證。
 
