@@ -201,7 +201,8 @@ static int hf_host_case(unsigned mode)
         (mode==HF_REF_RECT||contacts->regions[0].id==8));
     if(mode==HF_RECT_REF)CHECK("facts-contact-preserves-hole",contacts->regions[0].hole_count==1);
     free(contacts);g_reference_active=&f->ctx;
-    CHECK("facts-final-validator-host-consumes-same-host",app_validation_host(&f->world,7,NULL,&grid)&&grid.boundary_id==p.boundary_id);
+    AppValidationInputs inputs={0};(void)app_world_validation_context(&f->world,&inputs);
+    CHECK("facts-final-validator-host-consumes-same-host",app_validation_host(&inputs,7,NULL,&grid)&&grid.boundary_id==p.boundary_id);
     CHECK("facts-host-world-unchanged",!memcmp(&f->world,&f->before,sizeof f->world));
     /* Last, so a control that reaches it has passed every earlier oracle. */
     if(mode==HF_RECT_REF&&hf_hole_vertex_grammar(f))return 1;
@@ -263,10 +264,11 @@ static int hf_moved(bool final)
     WoodContactSourceFacts *facts=calloc(1,sizeof *facts);CHECK("facts-moved-contact-memory",facts);WoodContactSourceRequest request={.placement_id=7};
     CHECK("facts-moved-contact-admits-actual-footprint",reference_contact_facts(&f->ctx,f->ctx.sources,&request,facts)&&facts->member_count==1&&
         facts->members[0].placement_id==7&&facts->members[0].footprint_valid&&facts->members[0].footprint.min_v==0);
-    free(facts);g_reference_active=&f->ctx;WoodWorldMemberFact member;
-    CHECK("facts-final-validator-actual-anchor",app_validation_member(&f->world,0,&member)&&member.placement_id==7&&member.uv.v==0&&member.length_direction==GEO_DIRECTION_POS_U);
-    CHECK("facts-final-validator-actual-footprint",app_validation_footprint(&f->world,0,7,&rect)&&rect.min_v==0);
-    if(final){WoodWorldValidationContext validation=app_world_validation_context(&f->world);char error[256]="";
+    free(facts);g_reference_active=&f->ctx;WoodWorldMemberFact member;AppValidationInputs inputs={0};
+    WoodWorldValidationContext validation=app_world_validation_context(&f->world,&inputs);
+    CHECK("facts-final-validator-actual-anchor",app_validation_member(&inputs,0,&member)&&member.placement_id==7&&member.uv.v==0&&member.length_direction==GEO_DIRECTION_POS_U);
+    CHECK("facts-final-validator-actual-footprint",app_validation_footprint(&inputs,0,7,&rect)&&rect.min_v==0);
+    if(final){char error[256]="";
         CHECK("facts-final-world-validation-uses-actual-facts",wood_world_validate_members(&validation,error,sizeof error));
         CHECK("facts-reference-check-uses-actual-facts",reference_check_all(&f->world));
     }
@@ -277,7 +279,8 @@ static int hf_end_faces(void)
     HostFacts *f=hf_fixture(HF_END);CHECK("facts-end-fixture",f);CHECK("facts-end-real-returned-pose",hf_prime_pose(f));
     g_reference_active=&f->ctx;WoodMember probe=f->world.wood.timbers[0];bool from_source=false;
     CHECK("facts-probe-consumes-actual-box",app_reference_member_geometry(&f->world,&probe,&from_source)&&from_source&&probe.id==41&&probe.origin.y==40&&f->world.wood.timbers[0].origin.y==45);
-    CHECK("facts-probe-projects-actual-origin",app_validation_place(&f->world,7,&probe,(GeoPoint2){200,300},GEO_DIRECTION_POS_U,WOOD_DEPTH_POSITIVE_NORMAL)&&probe.origin.x==0&&probe.origin.y==40);
+    AppValidationInputs inputs={0};(void)app_world_validation_context(&f->world,&inputs);
+    CHECK("facts-probe-projects-actual-origin",app_validation_place(&inputs,7,&probe,(GeoPoint2){200,300},GEO_DIRECTION_POS_U,WOOD_DEPTH_POSITIVE_NORMAL)&&probe.origin.x==0&&probe.origin.y==40);
     PlacementSurface p;SpaceBoundarySurface b;const SpaceBoundarySurface *view;
     CHECK("facts-end-host",reference_host_read(&f->ctx,7,&p,&b,&view));
     WoodMember self={.id=17,.role=WOOD_MEMBER_ROLE_PRIMARY,.cut_priority=2,.placed=true};char error[512]="";
