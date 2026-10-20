@@ -1,0 +1,424 @@
+diff --git a/geometry-core/framing-template/oracle/framing_oracle.py b/geometry-core/framing-template/oracle/framing_oracle.py
+index 19fe465..a9ae16b 100644
+--- a/geometry-core/framing-template/oracle/framing_oracle.py
++++ b/geometry-core/framing-template/oracle/framing_oracle.py
+@@ -59,8 +59,9 @@
+        和 trace 宣稱的可行與失敗碼逐一比對:宣稱失敗卻重建可行、失敗碼不一致、宣稱可行卻重建失敗,都報錯;
+        比選中者更優先的候選(都不可行時是全部候選)必須全在 trace 裡、而且重建後都真的失敗;選中的屬於候選集合且重建後可行。
+        先調支撐、不動板(#251 審查 1b6b34f9、718cc9a3、4e1f1161)。
+-       已知限制:〈可行〉= 沒有衝突碼且通過完整 check(),建構端既有的缺陷(例:C11 的 2 mm 縫、柱跨牆階的 C3/C6/C8)
++       已知限制:〈可行〉= 沒有衝突碼且通過完整 check(),建構端既有的缺陷(例:C11 的 2 mm 縫)
+        也會讓候選被淘汰,變成排法決策;這個缺陷不在本輪修,理由與例子見 README 已知限制。
++       (柱面與牆階的垂直牆在同一條牆線上時的 C3/C6/C8,#318 缺陷 1,建構端現在直接報 CORE_LIMIT_BOUNDARY_END_FREE,見 boundary_end_conflicts。)
+ 不處理:樑高度、交丁、角材怎麼固定(與幾何無關)。
+ 
+ 座標:世界座標,整數 mm。A 軸 = 板寬方向(主支之間的方向),B 軸 = 板長方向(主支的長度方向)。
+@@ -177,11 +178,14 @@ class Region:
+ 
+     @staticmethod
+     def _ring_section(ring, k, m):
++        """軸 k 座標 m 的切線穿過這個環的區間。只數〈嚴格跨過 m〉的邊(min < m < max):m 剛好是某個頂點的座標(牆線)時,
++        端點落在切線上的邊不算,而那些邊的奇偶不保證是偶數(例:牆階的垂直牆,一端的水平邊往左、另一端往右,少數到一次),
++        所以切線只准取在不是頂點座標的地方(整數座標的房間取 ±0.5 或相鄰座標的中點)。牆線上的點要問室內與否,用 Region.inside。"""
+         o = 1 - k
+         vals = sorted(p[o] for i, p in enumerate(ring)
+                       for q in [ring[(i + 1) % len(ring)]]
+                       if p[o] == q[o] and min(p[k], q[k]) < m < max(p[k], q[k]))
+-        assert len(vals) % 2 == 0
++        assert len(vals) % 2 == 0, f"切線 軸{k}={m} 剛好落在頂點座標(牆線)上,穿過邊數 {len(vals)} 是奇數:這種點請改用 Region.inside"
+         return [(vals[i], vals[i + 1]) for i in range(0, len(vals), 2)]
+ 
+     def section(self, k, m):
+@@ -205,7 +209,13 @@ class Region:
+         return res
+ 
+     def inside(self, x, y):
+-        return iv_find(self.section(0, x), y) is not None
++        """點 (x, y) 在不在室內。呼叫端都是〈牆邊中點往室內側偏 0.5 mm〉這種探測點,所以兩個座標至少有一個是 ±0.5(不是頂點座標)。
++        x 剛好等於某個頂點的 x(牆線)時,垂直切線 section(0, x) 會穿過牆端,奇偶不定(#318 缺陷 2:水平邊的中點對上別處頂點的 x,
++        例:L 形缺角寬 = 房寬一半),改沿水平切線 section(1, y) 量;其餘情形照舊,所以原本能算的結果一個字都不變。"""
++        if x not in self.coords[0]:
++            return iv_find(self.section(0, x), y) is not None
++        assert y not in self.coords[1], f"({x}, {y}) 同時落在兩條牆線上,室內與否不定義"
++        return iv_find(self.section(1, y), x) is not None
+ 
+     def rects(self):
+         xs = self.coords[0]
+@@ -365,6 +375,58 @@ def promote_custom4(timbers, a, b):
+                 break
+ 
+ 
++# ---------------------------------------------------------------- 邊界材端面(核心 I19)的建構端判定
++def boundary_end_conflicts(reg, timbers, a, b):
++    """核心 I19 的邊界材那一款:貼外牆的邊界材,牆端的端面若有一段落在室內(端面外 1 mm 不是 RC),這一段只能頂另一支邊界材。
++    建構端原本只在〈凹角延伸不出去〉那一處(build 的 stop == e)判它;柱面和牆階的垂直牆落在同一條牆線上時
++    (例:柱 x 2600–3000、牆階的垂直牆 x=3000),沿柱料被牆階的邊界材擋在牆線前 w、沿牆料被柱面的邊界材擋在牆線後 w,
++    牆階邊界材的端面落在兩者之間的缺口裡,建構端沒有判,完整 check() 卻紅 C8_I19_BOUNDARY_END(同時帶 C3、C6、C8,#318 缺陷 1)。
++    這裡在全部角材放完之後,照 check() 的 C8b 另寫一次(定位邊的選法、端面室內部分、頂到非 boundary 的料或沒被別的 boundary 蓋住就算);
++    超出定位邊的延伸段端面由凹角延伸的停止判定與 C8_EXTENSION_END_FREE 管,這裡不碰。
++    物理上這種房間能不能施工沒有確認:核心 I19 不准邊界材的端面頂非 boundary 的料,所以只能判不可施工,標成核心限制(沿用 CORE_LIMIT_BOUNDARY_END_FREE)。"""
++    R = reg.rects()
++    oe = reg.outer_edges()
++    out = []
++    for t in timbers:
++        if t["kind"] != "boundary":
++            continue
++        r = t["rect"]
++        span, side = rng(r, a), rng(r, b)
++        pe = None  # 定位邊:與角材某側面共線、長度區間正重疊的外牆邊;整條覆蓋者優先,其次重疊最長(與 check() 同一個規則)
++        for p0, p1 in oe:
++            if p0[b] != p1[b] or p0[b] not in side:
++                continue
++            elo, ehi = sorted((p0[a], p1[a]))
++            ov = min(span[1], ehi) - max(span[0], elo)
++            if ov <= 0:
++                continue
++            cov = span[0] <= elo and span[1] >= ehi
++            if pe is None or (cov and not pe[2]) or (cov == pe[2] and ov > pe[3]):
++                pe = (elo, ehi, cov, ov)
++        if not pe:
++            continue
++        lo, hi = span
++        others = [s for s in timbers if s is not t]
++        bounds = [s["rect"] for s in others if s["kind"] == "boundary"]
++        for at, e0, e1 in ((lo, lo - 1, lo), (hi, hi, hi + 1)):
++            if (at == lo and lo < pe[0]) or (at == hi and hi > pe[1]):
++                continue  # 超出定位邊的延伸段端面
++            slab = mk(a, (e0, e1), side)
++            indoor = leftover(slab, leftover(slab, R))
++            if not indoor:
++                continue  # 端面整片頂在牆上
++            bad = [s["id"] for s in others if s["kind"] != "boundary" and any(overlap(q, s["rect"]) for q in indoor)]
++            free = [f_ for q in indoor for f_ in leftover(q, bounds)]
++            if bad or free:
++                fb = rng((free or indoor)[0], b)
++                out.append(dict(code="CORE_LIMIT_BOUNDARY_END_FREE", id=t["id"], at=[at, t["rc_line"]], free=list(fb),
++                                why=f"邊界材 {list(r)} 在牆端 {at} 的端面有 {fb[1] - fb[0]} mm 落在室內,"
++                                    f"{'頂到非 boundary 的料 ' + str(bad) if bad else '沒有別的 boundary 可頂'}:"
++                                    f"核心 I19 只准 boundary 端面的室內部分頂另一支 boundary。常見成因:柱面與牆階的垂直牆在同一條牆線上,"
++                                    f"沿柱料與沿牆料都被對方的邊界材擋在端前,缺口裡沒有料(#318 缺陷 1);物理上能不能施工沒有確認"))
++    return out
++
++
+ # ---------------------------------------------------------------- 建構
+ def build(room, layout, p, mut=frozenset(), _p182=None):
+     P, Lp, g, w, M, X = p["P"], p["L"], p["gap"], p["w"], p["M"], p["X"]
+@@ -1024,6 +1086,10 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
+                             "TIMBERS_COLLIDE")
+                     conflicts.append(dict(code=code, ids=[i, j], kinds=sorted(ks),
+                                           rects=[list(timbers[i]["rect"]), list(timbers[j]["rect"])]))
++    # 邊界材端面頂不到別的 boundary(核心 I19,#318 缺陷 1):只在沒有別的衝突時才加,所以已經不可施工的排法,衝突碼一個字都不變;
++    #   原本〈可施工〉卻在 check() 紅 C8_I19_BOUNDARY_END 的排法,改成建構端直接報 CORE_LIMIT_BOUNDARY_END_FREE
++    if not conflicts and "no_boundary_end_scan" not in mut:
++        conflicts.extend(boundary_end_conflicts(reg, timbers, a, b))
+     res = dict(region=reg, a=a, b=b, layout=dict(layout), seams_a=seams_a, seams_b=seams_b, moved_a=moved_a, moved_b=moved_b,
+                timbers=timbers, conflicts=conflicts, spans=marks_out)
+     # P-182 第三版(協調 agent 定的設計,協調者推論,在授權 L 下先做,可推翻;不是使用者原話):建構端提案、檢查端裁決(見檔頭)。
+@@ -1376,6 +1442,29 @@ def bridged(q, T, minp, k):
+     return L is not None and R_ is not None and R_ - L < minp
+ 
+ 
++def x_band(qs, seg, d, X):
++    """C3 用:板邊(左邊 d = +1、右邊 d = -1)內側 X mm 的承接帶,沿 x 方向量,可以跨過房間的分塊(#319)。
++    qs 是同一片板在各個分塊(Region.rects(),只在頂點的 x 座標切)裡的碎塊;seg 是板邊上要驗的一段(寬 1 mm 的帶子),
++    承接帶從板邊往板內走 X mm,每走過一個碎塊邊界,就只留還在同一片板裡、y 範圍從板邊一路連續過來的部分。
++    以前每個碎塊各驗各的、承接帶夾在碎塊裡(min(x0 + X, x1)):縫離分塊邊界不到 X 時,另一塊裡的承接沒有人看。
++    回傳矩形清單;沒跨過碎塊邊界時就是一個矩形,和以前夾在碎塊裡的承接帶一樣。"""
++    edge = seg[2] if d > 0 else seg[0]
++    lo, hi = (edge, edge + X) if d > 0 else (edge - X, edge)
++    stops = sorted({lo, hi} | {v for r_ in qs for v in (r_[0], r_[2]) if lo < v < hi}, reverse=d < 0)
++    ys, parts = [(seg[1], seg[3])], []
++    for u, v in zip(stops, stops[1:]):
++        xm = (u + v) / 2
++        ys = iv_intersect(ys, iv_norm([(r_[1], r_[3]) for r_ in qs if r_[0] < xm < r_[2]]))
++        parts += [(min(u, v), y0, max(u, v), y1) for y0, y1 in ys]
++    merged = []
++    for r_ in sorted(parts, key=lambda r_: (r_[1], r_[3], r_[0])):  # 相鄰碎塊裡 y 範圍相同的合成一個矩形(bridged 看的是整段空檔)
++        if merged and merged[-1][1] == r_[1] and merged[-1][3] == r_[3] and merged[-1][2] == r_[0]:
++            merged[-1] = (merged[-1][0], r_[1], r_[2], r_[3])
++        else:
++            merged.append(r_)
++    return merged
++
++
+ # ---------------------------------------------------------------- 檢查(與建構分開,用來抓錯)
+ def check(res, p, _cand=False):
+     reg, a, b = res["region"], res["a"], res["b"]
+@@ -1453,18 +1542,22 @@ def check(res, p, _cand=False):
+     # C3 每條面材邊都有支撐,承接寬度 >= X。
+     #    唯一的例外是 R-nosliver:板邊沿著邊的方向跨過一條 < min_piece 的窄縫(縫裡不放料),
+     #    那一小段由縫兩邊的料承接(bridged 只沿板邊方向判斷,承接寬度不足 X 不在例外內)。
++    #    左右兩邊的承接帶沿 x 量,要能跨過房間的分塊(#319):Region.rects() 只在頂點的 x 座標切塊,同一片板被切成幾個碎塊 qs;
++    #    縫離分塊邊界不到 X 時,承接帶有一部分在隔壁碎塊裡,以前承接帶夾在自己的碎塊裡,隔壁那一部分沒有人看(x_band 說明)。
++    #    上下兩邊的承接帶沿 y 量,y 方向不被 x 分塊切開,維持夾在碎塊裡。
+     for cell, qs in by_cell.items():
+         for q in qs:
+             x0, y0, x1, y1 = q
+-            sides = [((x0 - 1, y0, x0, y1), lambda s: (x0, s[1], min(x0 + X, x1), s[3]), 1),
+-                     ((x1, y0, x1 + 1, y1), lambda s: (max(x1 - X, x0), s[1], x1, s[3]), 1),
+-                     ((x0, y0 - 1, x1, y0), lambda s: (s[0], y0, s[2], min(y0 + X, y1)), 0),
+-                     ((x0, y1, x1, y1 + 1), lambda s: (s[0], max(y1 - X, y0), s[2], y1), 0)]
++            sides = [((x0 - 1, y0, x0, y1), lambda s: x_band(qs, s, 1, X), 1),
++                     ((x1, y0, x1 + 1, y1), lambda s: x_band(qs, s, -1, X), 1),
++                     ((x0, y0 - 1, x1, y0), lambda s: [(s[0], y0, s[2], min(y0 + X, y1))], 0),
++                     ((x0, y1, x1, y1 + 1), lambda s: [(s[0], max(y1 - X, y0), s[2], y1)], 0)]
+             for strip, band, along in sides:
+                 for seg in leftover(strip, qs):
+-                    rest = [r for r in leftover(band(seg), T) if not bridged(r, T, minp, along)]
+-                    if rest:
+-                        fails.append(dict(check="C3_EDGE_UNSUPPORTED", band=list(band(seg)), gap=list(rest[0])))
++                    for bnd in band(seg):
++                        rest = [r for r in leftover(bnd, T) if not bridged(r, T, minp, along)]
++                        if rest:
++                            fails.append(dict(check="C3_EDGE_UNSUPPORTED", band=list(bnd), gap=list(rest[0])))
+     # C4 副支間距:沿 B 軸,角材之間的空檔 <= M - w。
+     #    沿室內「整段連續」的區間量(reg.section),不先依輪廓/孔頂點切塊:否則跨過柱或凹角座標的超限空檔
+     #    會被切成幾段短的而漏抓(#251 審查 6daa997a 的反例:5000×4000 房、柱 [2415,2715]×[3000,3300]、板長沿 X)。
+diff --git a/geometry-core/framing-template/oracle/selftest.py b/geometry-core/framing-template/oracle/selftest.py
+index 579b593..0604ac9 100644
+--- a/geometry-core/framing-template/oracle/selftest.py
++++ b/geometry-core/framing-template/oracle/selftest.py
+@@ -11,6 +11,9 @@
+     trace 造假與檢查端盲點的 tamper 測試(C7 自己重建每個候選,不信 trace;check() 與 p182_trace_problems 都要報)。
+     第 21 輪(#251 審查 92e64028):H6(退縫後的候選要補併料)與 TR182(15 間 P-182 對照房加 H6 轉置成板長沿 Y,各 4 種排法,縫位、trace 候選、衝突碼寫成常數),
+     抓 build_candidate 只在板長沿 Y 出錯(BC_ax0)、候選不放併料(BC_no_doubling_cand);expected_for_scan 的過濾(只有 CI 取掃到的房間)直接測。
++    第 22 輪(#318、#319):Region.inside 牆線上的探測點、三間缺角寬 = 房寬一半的 L 形房 × 8 種排法(縫位手算常數)、
++    柱右面與牆階垂直牆同一條牆線(建構端報 CORE_LIMIT_BOUNDARY_END_FREE,突變 no_boundary_end_scan 釘著舊行為)、
++    C3 承接帶跨房間分塊(H6 候選不放併料:板長沿 X 與轉置版都要被 C3 抓到)。
+ (2) 標準答案:F1–F5 與三個額外例子、8 種排法的輸出,必須與 oracle-golden.json 逐支相同。
+ (3b) 凹角、壁龕、獨立柱房 579 間與奇數縫寬矩形房,可施工的排法都要通過全部檢查。
+ (3) 掃描:矩形房。
+@@ -136,6 +139,10 @@ STEP30 = {"outer": [[0, 0], [4100, 0], [4100, 3670], [2600, 3670], [2600, 3700],
+ STEP41 = {"outer": [[0, 0], [4100, 0], [4100, 3659], [2600, 3659], [2600, 3700], [0, 3700]]}
+ # 雙牆階(#251 審查 98cb7da0 的反例):45 mm 牆階退縫到 3614 後,縫線伸進 x>3300 那段,那裡的對牆在 3628,只剩 13 mm;G7 要再挪到 3587
+ DSTEP = {"outer": [[0, 0], [4100, 0], [4100, 3628], [3300, 3628], [3300, 3655], [2600, 3655], [2600, 3700], [0, 3700]]}
++# #318 缺陷 1:柱 x 2600–3000、y 3444–3644 的右面(x=3000)剛好和牆階的垂直牆在同一條牆線上(sx=3000);sx=2900 是柱跨過它,sx=3100 是柱完全在它左邊
++#   牆階 39 mm:x>sx 的牆在 y=3661,x<sx 的牆在 y=3700。柱下緣離 y=3661 的牆只有 17 mm,放不下 27 mm 的料
++COLSTEP = lambda sx: {"outer": [[0, 0], [4100, 0], [4100, 3661], [sx, 3661], [sx, 3700], [0, 3700]],
++                      "holes": [[[2600, 3444], [3000, 3444], [3000, 3644], [2600, 3644]]]}
+ 
+ failed = False
+ # (1) 突變
+@@ -199,6 +206,11 @@ MUTANTS = [
+     ("p182_no_backface", DISTR, "C7_P182_TRACE_MISSING", "建構端不認背向起鋪側的牆:分辨房 x 0–300 的 y=3655 那面牆沒當成擋料,沒有候選", "左上起鋪,板長沿X"),
+     ("p182_far_first", TRIPLE, "C7_P182_TRACE_INCOMPLETE", "候選由遠到近試:三段牆階先試 3609 就成功,比它優先的 3614 沒試", "左上起鋪,板長沿X"),
+     ("p182_conflicts_only", PILCOL(1000), "C8_I19_PRIORITY", "候選只看衝突碼、不跑 check():壁柱加柱那間原縫位沒有衝突碼卻檢查紅,沒有退縫", "左上起鋪,板長沿X"),
++    # #318 缺陷 1:拿掉建構端的邊界材端面判定(boundary_end_conflicts)就回到舊行為,建構端說可施工,完整 check() 卻紅(下面的對照組斷言有它時要報衝突)
++    ("no_boundary_end_scan", COLSTEP(3000), "C8_I19_BOUNDARY_END", "柱右面 x=3000 與牆階垂直牆同一條牆線:牆階邊界材的端面落在沿柱料與沿牆料之間的缺口,沒有 boundary 可頂", "左上起鋪,板長沿X"),
++    ("no_boundary_end_scan", COLSTEP(3000), "C3_EDGE_UNSUPPORTED", "同上:缺口裡的板邊沒有料承接", "左上起鋪,板長沿X"),
++    ("no_boundary_end_scan", COLSTEP(3000), "C6_END_NOT_ON_TIMBER", "同上:沿柱料、沿牆料的端面一部分懸空", "左上起鋪,板長沿X"),
++    ("no_boundary_end_scan", COLSTEP(2900), "C8_I19_BOUNDARY_END", "同上,牆階垂直牆改在 x=2900(柱跨過它)", "左上起鋪,板長沿X"),
+ ]
+ for mut, room, want, why, *lay in MUTANTS:
+     lt = next(l for l in fo.LAYOUTS if fo.layout_name(l) == lay[0]) if lay else LT_Y
+@@ -430,6 +442,190 @@ for nm_, room_, tr_min_, seam_min_, cs_min_, seam_max_, cs_max_ in TR182:
+     print(f"[{'綠' if ok else '錯!'}] P-182 板長沿 Y(轉置){nm_:12s} 4 種排法:左上/左下 trace {tr_min_} 縫 {seam_min_}{cs_min_ or ''},右上/右下縫 {seam_max_}{cs_max_ or ''}")
+     for x_ in bad_:
+         print("     ", x_)
++# ---------------------------------------------------------------- #318 缺陷 2、缺陷 1 與 #319 的對照組(期望值都是手寫常數,不從程式讀回)
++# (a) 牆線上的探測點(#318 缺陷 2):建構端問〈這條牆邊的哪一側是室內〉,探測點是牆邊中點往室內側偏 0.5 mm。L 形缺角寬 = 房寬一半時,
++#     下緣水平邊的中點 x 就是凹角的 x(牆線):垂直切線穿過牆端,_ring_section 只數嚴格跨過的邊,奇偶不保證是偶數,以前當掉(AssertionError)。
++#     室內與否由圖形手寫:LROOM(3600,3000,1800,1000) = [[0,0],[3600,0],[3600,2000],[1800,2000],[1800,3000],[0,3000]],
++#     室內 = x 0–3600 × y 0–2000 加 x 0–1800 × y 2000–3000;孔例 = STEP45 外框(牆階垂直牆 x=2600)加孔 x 2500–2700 × y 500–800(孔的水平邊中點 x 也是 2600)。
++_inside_reg = {"L": fo.Region(LROOM(3600, 3000, 1800, 1000)["outer"], []),
++               "H": fo.Region(STEP45["outer"], [[[2500, 500], [2700, 500], [2700, 800], [2500, 800]]])}
++_inside_cases = (
++    ("L", 1800, 0.5, True), ("L", 1800, -0.5, False),       # 下緣水平邊的中點(x = 1800 = 凹角的 x):往室內側、往室外側
++    ("L", 1800, 1999.5, True), ("L", 1800, 3000.5, False),  # 凹角正下方在室內;上緣延長線的上方在室外
++    ("L", 900, 2999.5, True), ("L", 900, 3000.5, False),    # 上緣水平邊的中點(x = 900 不在牆線上:維持舊路徑)
++    ("L", 2700, 1999.5, True), ("L", 2700, 2000.5, False),  # 缺角下緣水平邊的中點(x = 2700,不在牆線上)
++    ("H", 2600, 499.5, True), ("H", 2600, 500.5, False),    # 孔下緣水平邊的中點 x = 2600 = 牆階垂直牆的 x
++    ("H", 2600, 799.5, False), ("H", 2600, 800.5, True))    # 孔上緣
++_bad_in = []
++for k_, x_, y_, want_ in _inside_cases:
++    try:
++        got_ = _inside_reg[k_].inside(x_, y_)
++    except AssertionError as e_:
++        got_ = "CRASHED: " + (str(e_) or "AssertionError")
++    if got_ != want_:
++        _bad_in.append((k_, x_, y_, want_, got_))
++ok = not _bad_in
++failed |= not ok
++print(f"[{'綠' if ok else '錯!'}] #318 缺陷 2 Region.inside 牆線上的探測點 {len(_inside_cases)} 個:不一致 {_bad_in}")
++# (b) 三間 L 形房(缺角寬 = 房寬一半)× 8 種排法:縫位是手算的常數,全部要可施工、檢查全過(不當掉)。
++#     縫距:主支縫(板寬 915、縫 2)首縫離起鋪牆 916,之後每 917;板端縫(板長 1830)首縫 1831,之後每 1832;
++#     下一片板的起點仍在對牆之內(深度 > 縫距的 k+1 倍)才有第 k+1 條縫。G7:最後一條縫離縫線上最近的對牆不到 1.5w = 40.5 才挪;
++#     這三間的最後一條縫離對牆都 ≥ 169 mm(最近的是缺角下緣 y=2000 與板端縫 1831 的 169),所以沒有挪動。
++#     從座標大的那側起鋪(max)時縫位 = 房邊界 − 距離(缺角在 +x、+y 的角,x = 0、y = 0 的對牆是平的)。
++#     yP = 主支縫沿 y(板長沿 X)、xL = 板端縫沿 x(板長沿 X)、xP = 主支縫沿 x(板長沿 Y)、yL = 板端縫沿 y(板長沿 Y);每個清單是 (min 側起鋪, max 側起鋪)。
++#     P-182:最後一條主支縫離與它平行的牆都 ≥ 250 mm(主支寬度只有縫兩側各 14 mm),寬度裡沒有擋料,所以沒有候選、沒有 trace。
++_L318 = (
++    ("L 3600×3000 缺 1800×1000", LROOM(3600, 3000, 1800, 1000),
++     dict(yP=([916, 1833, 2750], [250, 1167, 2084]), xL=([1831], [1769]),
++          xP=([916, 1833, 2750], [850, 1767, 2684]), yL=([1831], [1169]))),
++    ("L 4000×3000 缺 2000×1000", LROOM(4000, 3000, 2000, 1000),
++     dict(yP=([916, 1833, 2750], [250, 1167, 2084]), xL=([1831, 3663], [337, 2169]),
++          xP=([916, 1833, 2750, 3667], [333, 1250, 2167, 3084]), yL=([1831], [1169]))),
++    ("L 5000×4000 缺 2500×1600", LROOM(5000, 4000, 2500, 1600),
++     dict(yP=([916, 1833, 2750, 3667], [333, 1250, 2167, 3084]), xL=([1831, 3663], [1337, 3169]),
++          xP=([916, 1833, 2750, 3667, 4584], [416, 1333, 2250, 3167, 4084]), yL=([1831, 3663], [337, 2169]))))
++_L318_LAY = {"左上起鋪,板長沿X": (("yP", 0), ("xL", 0)), "右上起鋪,板長沿X": (("yP", 0), ("xL", 1)),
++             "左下起鋪,板長沿X": (("yP", 1), ("xL", 0)), "右下起鋪,板長沿X": (("yP", 1), ("xL", 1)),
++             "左上起鋪,板長沿Y": (("xP", 0), ("yL", 0)), "左下起鋪,板長沿Y": (("xP", 0), ("yL", 1)),
++             "右上起鋪,板長沿Y": (("xP", 1), ("yL", 0)), "右下起鋪,板長沿Y": (("xP", 1), ("yL", 1))}
++for nm_, room_, lists_ in _L318:
++    bad_ = []
++    for ln_, ((ka_, sa_), (kb_, sb_)) in _L318_LAY.items():
++        want_ = (lists_[ka_][sa_], lists_[kb_][sb_], [], [])  # (主支縫, 板端縫, 衝突碼, 檢查失敗)
++        try:
++            res = fo.build(room_, LAY[ln_], p)
++            fl_ = [] if res["conflicts"] else fo.check(res, p)
++            got_ = (sorted(res["seams_a"]), sorted(res["seams_b"]), sorted({c["code"] for c in res["conflicts"]}), sorted({f["check"] for f in fl_}))
++        except AssertionError as e_:
++            got_ = ("CRASHED", str(e_) or "AssertionError")
++        if got_ != want_:
++            bad_.append((ln_, got_, want_))
++    ok = not bad_
++    failed |= not ok
++    print(f"[{'綠' if ok else '錯!'}] #318 缺陷 2 {nm_}:8 種排法的縫位(手算)、可施工、檢查全過;不一致 {len(bad_)}")
++    for x_ in bad_:
++        print("     ", x_)
++    # 同一間的上下鏡像、左右鏡像、轉置(x、y 對調)也要全部可施工、檢查全過、不當掉(縫位不逐一釘,鏡像的縫位差 ⌊w/2⌋ 與 ⌈w/2⌉ 那 1 mm 的對稱性不在這裡驗)
++    bad_ = []
++    for vn_, vroom_ in (("上下鏡像", MIRROR(room_, 1)), ("左右鏡像", MIRROR(room_, 0)), ("轉置", TRANSPOSE(room_))):
++        for l_ in fo.LAYOUTS:
++            try:
++                res = fo.build(vroom_, l_, p)
++                fl_ = [] if res["conflicts"] else fo.check(res, p)
++                got_ = (sorted({c["code"] for c in res["conflicts"]}), sorted({f["check"] for f in fl_}))
++            except AssertionError as e_:
++                got_ = ("CRASHED", str(e_) or "AssertionError")
++            if got_ != ([], []):
++                bad_.append((vn_, fo.layout_name(l_), got_))
++    ok = not bad_
++    failed |= not ok
++    print(f"[{'綠' if ok else '錯!'}] #318 缺陷 2 {nm_} 的上下/左右鏡像與轉置 24 種排法:全部可施工、檢查全過;不一致 {len(bad_)}")
++    for x_ in bad_[:6]:
++        print("     ", x_)
++# (c) 缺陷 2 的第二個最小重現:孔的水平邊中點 x 對上外框別處頂點的 x(STEP45 的牆階垂直牆 x=2600)。8 種排法不當掉;
++#     可施工的檢查全過;不可施工的 P-182 trace 每個候選都要真的失敗(和其他掃描同一條件)。沒有孔的 STEP45 左上 X 縫 3614、左上 Y 縫 3667(上面已釘),孔離牆階很遠。
++for nm_, room_ in (("STEP45 加孔 x 2500–2700 y 500–800", dict(STEP45, holes=[[[2500, 500], [2700, 500], [2700, 800], [2500, 800]]])),
++                   ("STEP45 加孔 x 2400–2800 y 1000–1300", dict(STEP45, holes=[[[2400, 1000], [2800, 1000], [2800, 1300], [2400, 1300]]]))):
++    bad_, nbuild_ = [], 0
++    for l_ in fo.LAYOUTS:
++        try:
++            res = fo.build(room_, l_, p)
++            if res["conflicts"]:
++                pb_ = fo.p182_trace_problems(res, p)
++                got_ = ["P182_TRACE"] + [x[0] for x in pb_] if pb_ else []
++            else:
++                nbuild_ += 1
++                got_ = sorted({f["check"] for f in fo.check(res, p)})
++        except AssertionError as e_:
++            got_ = ["CRASHED: " + (str(e_) or "AssertionError")]
++        if got_:
++            bad_.append((fo.layout_name(l_), got_))
++    ok = not bad_
++    failed |= not ok
++    print(f"[{'綠' if ok else '錯!'}] #318 缺陷 2 {nm_}:8 種排法不當掉,可施工 {nbuild_} 個的檢查全過、不可施工的 trace 沒問題;不一致 {len(bad_)}")
++    for x_ in bad_:
++        print("     ", x_)
++# (d) 缺陷 2 的小型掃描:L 形缺角寬 = 房寬一半(原本的 L 形掃描每 457 mm 取一次缺角寬,永遠跳過 W/2),W、H 取原掃描的值、缺角高取 3 個,共 27 間 × 8 種排法。
++#     性質檢查(不釘縫位):不當掉;可施工的檢查全過;不可施工的 trace 沒問題。不可施工的數量只印出來(原 L 形掃描是 0 個)。
++_w2_bad, _w2_n, _w2_unb = [], 0, 0
++for W_ in (3000, 4100, 5000):
++    for H_ in (2600, 3700, 4800):
++        for ch_ in (300, 913, 1526):
++            room_ = LROOM(W_, H_, W_ // 2, ch_)
++            for l_ in fo.LAYOUTS:
++                _w2_n += 1
++                try:
++                    res = fo.build(room_, l_, p)
++                    if res["conflicts"]:
++                        _w2_unb += 1
++                        got_ = ["P182_TRACE"] if fo.p182_trace_problems(res, p) else []
++                    else:
++                        got_ = sorted({f["check"] for f in fo.check(res, p)})
++                except AssertionError as e_:
++                    got_ = ["CRASHED: " + (str(e_) or "AssertionError")]
++                if got_:
++                    _w2_bad.append((W_, H_, ch_, fo.layout_name(l_), got_))
++ok = not _w2_bad
++failed |= not ok
++print(f"[{'綠' if ok else '錯!'}] #318 缺陷 2 缺角寬 = 房寬一半的 L 形 {_w2_n} 個排法:不當掉、可施工的檢查全過;不一致 {len(_w2_bad)}(不可施工 {_w2_unb} 個,預期 0)")
++for x_ in _w2_bad[:6]:
++    print("     ", x_)
++# (e) 缺陷 1:柱右面(x=3000)與牆階垂直牆在同一條牆線上。以前建構端說可施工(沒有衝突碼),完整 check() 紅 C3、C6、C8(上面的突變 no_boundary_end_scan 釘著舊行為);
++#     現在建構端直接報核心限制 CORE_LIMIT_BOUNDARY_END_FREE(牆階邊界材的端面落在沿柱料與沿牆料之間的缺口,核心 I19 不准它頂非 boundary 的料)。
++#     物理上這種房間能不能施工沒有確認,這裡只釘〈建構端與檢查端一致〉:報衝突;柱完全在牆階左邊(x=3100)時照舊可施工、全過(#318 正文:全過)。
++#     牆階 39 mm、柱下緣離 y=3661 的牆 17 mm(放不下 27 mm 的料),左右鏡像的房間也要同樣報。
++for nm_, room_, lay_, want_codes_, want_fail_ in (
++        ("柱右面 = 牆階垂直牆(x=3000)", COLSTEP(3000), "左上起鋪,板長沿X", ["CORE_LIMIT_BOUNDARY_END_FREE"], None),
++        ("柱跨過牆階垂直牆(x=2900)", COLSTEP(2900), "左上起鋪,板長沿X", ["CORE_LIMIT_BOUNDARY_END_FREE"], None),
++        ("牆階垂直牆在柱右邊(x=3100)", COLSTEP(3100), "左上起鋪,板長沿X", [], []),
++        ("左右鏡像:柱左面 = 牆階垂直牆(x=1100)", MIRROR(COLSTEP(3000), 0), "右上起鋪,板長沿X", ["CORE_LIMIT_BOUNDARY_END_FREE"], None)):
++    try:
++        res = fo.build(room_, LAY[lay_], p)
++        got_codes_ = sorted({c["code"] for c in res["conflicts"]})
++        got_fail_ = None if res["conflicts"] else sorted({f["check"] for f in fo.check(res, p)})
++    except AssertionError as e_:
++        got_codes_, got_fail_ = ["CRASHED: " + (str(e_) or "AssertionError")], None
++    ok = got_codes_ == want_codes_ and got_fail_ == want_fail_
++    failed |= not ok
++    print(f"[{'綠' if ok else '錯!'}] #318 缺陷 1 {nm_} {lay_}:衝突碼 {got_codes_}(要 {want_codes_}),檢查失敗 {got_fail_}(要 {want_fail_})")
++# (f) #319:C3 的承接帶要能跨房間的分塊。H6(退縫後的候選要補併料)的候選 3605:主支往高側貼到 [3600,3627],低側板邊的承接帶 [3596,3604] 靠併料 [3573,3600] 與主支 [3600,3627] 接住。
++#     候選建構不放併料(突變 BC_no_doubling_cand 的效果,用 mut no_doubling)時,承接帶 [3596,3600] 沒有料:
++#     板長沿 X 時承接帶沿 y,轉紅;板長沿 Y 時承接帶沿 x,x=3600 是房間的分塊邊界(頂點的 x 座標),承接帶一半在隔壁碎塊裡,以前 C3 只量縫所在的那一塊([3600,3604]),全過。
++#     沒有突變時(有併料)候選要通過全部檢查(確認新的量法沒有誤報)。失敗的缺口要是 [3596,3600] 這 4 mm。
++#     左右鏡像的轉置版(右上起鋪,縫 3720 − 3605 = 115;分塊邊界 x=120,主支被端面規則往低側推 9 mm 到 [93,120],高側板邊的承接帶 [116,124] 一半在分塊 [120,…] 裡):
++#     這一個走的是 C3 的左邊(承接帶往 +x 走),上面兩個走右邊;缺口要是 [120,124]。鏡像時置中主支 [c−13, c+14] 差 1 mm,所以這一個只釘〈C3 沒有誤報、不放併料時缺口對〉。
++for nm_, room_, lay_, seam_, gap_ix_, want_gap_ in (
++        ("H6 板長沿 X", HAND_POCKET(3646, 3600), "左上起鋪,板長沿X", 3605, (1, 3), (3596, 3600)),
++        ("H6 轉置(板長沿 Y)", TRANSPOSE(HAND_POCKET(3646, 3600)), "左上起鋪,板長沿Y", 3605, (0, 2), (3596, 3600)),
++        ("H6 轉置再左右鏡像(右上起鋪)", MIRROR(TRANSPOSE(HAND_POCKET(3646, 3600)), 0), "右上起鋪,板長沿Y", 115, (0, 2), (120, 124))):
++    r_ok_ = fo.build_candidate(room_, LAY[lay_], p, seam_)
++    r_bad_ = fo.build_candidate(room_, LAY[lay_], p, seam_, frozenset({"no_doubling"}))
++    f_ok_ = [f["check"] for f in fo.check(r_ok_, p, _cand=True)]
++    f_bad_ = [f for f in fo.check(r_bad_, p, _cand=True) if f["check"] == "C3_EDGE_UNSUPPORTED"]
++    gaps_ = {(f["gap"][gap_ix_[0]], f["gap"][gap_ix_[1]]) for f in f_bad_}
++    ok = not r_ok_["conflicts"] and "C3_EDGE_UNSUPPORTED" not in f_ok_ and bool(f_bad_) and gaps_ == {want_gap_}
++    if not nm_.endswith("(右上起鋪)"):
++        ok = ok and not f_ok_  # 前兩個:有併料時整個候選要通過全部檢查
++    failed |= not ok
++    print(f"[{'綠' if ok else '錯!'}] #319 候選 {seam_} {nm_}:有併料時衝突 {sorted({c['code'] for c in r_ok_['conflicts']})}、檢查失敗 {sorted(set(f_ok_))}(C3 要沒有);"
++          f"不放併料時 C3 缺口 {sorted(gaps_)}(要 [{want_gap_}],共 {len(f_bad_)} 處)")
++# x_band 本身(手寫常數;rect = (x0, y0, x1, y1);cell 的碎塊 qs 在分塊邊界 x=120 切開,左邊 seg 在 x0=116 往 +x 走 8 mm,右邊 seg 在 x1=124 往 -x 走 8 mm):
++#   (1) 隔壁碎塊 y 範圍相同:合成一個矩形跨過邊界;(2) 隔壁碎塊 y 範圍較窄:只留還連得上的 y 範圍,分成兩個矩形;
++#   (3) 右邊走法與 (1) 對稱;(4) 隔壁中間有孔(y 40–60 沒有碎塊):孔那段不算,孔另一側的碎塊也只留自己的 y 範圍(從板邊一路連續過來才算);(5) 隔壁沒有碎塊(牆):和以前夾在碎塊裡的承接帶一樣;
++#   (6) 隔壁碎塊比自己寬(y 0–100 對自己的 30–60):只留板邊那一段 30–60,不往兩邊擴(承接帶是從這一段板邊往板內量的)。
++_xb_cases = (
++    ("相同 y 範圍", [(116, 10, 120, 90), (120, 10, 300, 90)], (115, 10, 116, 90), 1, [(116, 10, 124, 90)]),
++    ("隔壁較窄", [(116, 10, 120, 90), (120, 30, 300, 90)], (115, 10, 116, 90), 1, [(116, 10, 120, 90), (120, 30, 124, 90)]),
++    ("右邊對稱", [(100, 10, 120, 90), (120, 10, 124, 90)], (124, 10, 125, 90), -1, [(116, 10, 124, 90)]),
++    ("隔壁有孔", [(116, 0, 120, 100), (120, 0, 300, 40), (120, 60, 300, 100)], (115, 0, 116, 100), 1,
++     [(116, 0, 120, 100), (120, 0, 124, 40), (120, 60, 124, 100)]),
++    ("隔壁是牆", [(116, 10, 120, 90)], (115, 10, 116, 90), 1, [(116, 10, 120, 90)]),
++    ("隔壁較寬", [(116, 30, 120, 60), (120, 0, 300, 100)], (115, 30, 116, 60), 1, [(116, 30, 124, 60)]))
++_bad_xb = [(nm_, sorted(fo.x_band(qs_, seg_, d_, 8)), sorted(want_)) for nm_, qs_, seg_, d_, want_ in _xb_cases
++           if sorted(fo.x_band(qs_, seg_, d_, 8)) != sorted(want_)]
++ok = not _bad_xb
++failed |= not ok
++print(f"[{'綠' if ok else '錯!'}] #319 x_band(承接帶跨分塊)手寫案例 {len(_xb_cases)} 個:不一致 {_bad_xb}")
+ # 牆線上取區間(檢查端 section_both_sides,#251 審查 1b6b34f9 建議 6):剛好在牆線上時取兩側都在室內的部分,正反兩個方向都要對
+ for room_, m_, want_ in ((LROOM(4100, 3700, 1500, 54), 3646, [(0, 2600)]), (MIR54, 54, [(0, 2600)])):
+     got_ = [tuple(iv) for iv in fo.section_both_sides(fo.Region(room_["outer"], []), 1, m_)]
+diff --git a/geometry-core/framing-template/oracle/README.md b/geometry-core/framing-template/oracle/README.md
+index 906b66a..31a1d08 100644
+--- a/geometry-core/framing-template/oracle/README.md
++++ b/geometry-core/framing-template/oracle/README.md
+@@ -107,11 +107,13 @@
+    - 牆階 49 mm 加柱(外框 [[0,0],[4100,0],[4100,3651],[2600,3651],[2600,3700],[0,3700]],柱 x 1000–1400、y 3426–3626):原縫位 3659 撞料(`MAIN_HITS_RC_TIMBER`、`C1_OVERLAP`);候選 3610 沒有衝突碼,只有 `C11_MAIN_NOT_BUTTED`(主支在柱上緣的柱面料前留 2 mm,往那邊貼住 2 mm 會壓到淺段的沿牆料,所以建構端不動,C11 卻只看那一側,判成能貼卻沒貼,同上面〈已知缺口〉那條既有缺陷);最後選 3585。3610 是不是真的放不下,沒有確認。
+    - 牆階 338 mm 加柱(外框 [[0,0],[4100,0],[4100,3662],[2600,3662],[2600,4000],[0,4000]],柱 x 1000–1400、y 3606–3806)的候選 3621:同樣只有 `C11_MAIN_NOT_BUTTED`,缺口 2 mm。
+    - 同一間的原縫位 3667:沒有衝突碼,只有 `C8_I19_PRIORITY`(主支被牆階牆推開、補的併料(custom、優先級 3)的端面頂到柱面料(優先級 3),I19 要嚴格小於)。兩個候選都被淘汰,結果報 `P182_NO_FEASIBLE_CANDIDATE`;3621 與 3667 是不是真的物理上不能施工,這一輪沒有確認。
+-   柱跨牆階的其他檢查失敗(C3、C6、C8)與一個建構崩潰在同一張工單。
++   柱跨牆階的其他檢查失敗(C3、C6、C8)與一個建構崩潰原本在同一張工單(#318);第 22 輪草稿已處理:建構崩潰(水平邊中點的 x 等於別處頂點的 x)修掉,
++   柱面與牆階垂直牆在同一條牆線上的 C3、C6、C8 改成建構端直接報 `CORE_LIMIT_BOUNDARY_END_FREE`(判不可施工,物理上能不能施工沒有確認)。
++   上面第三個例子的 `C8_I19_PRIORITY`(併料的端面頂柱面料)是另一類,不在這次處理的範圍。
+ 2. **候選位置只有規則定義的那幾個**(見推論表 P-182 那一列):離原縫位更近、同樣能排出的位置(例:上面 3600–3612)不是候選。這是規則的選擇,可推翻。
+ 3. **併料的代價與偏好順序待使用者拍板**(見推論表 P-182 那一列的數字)。
+ 4. **連續退縫的代價待使用者拍板**(第 21 輪補,#251 審查 92e64028):退一次之後,新位置的主支寬度裡又有擋料就再退,累積不設上限。例:房 4100×3200,左牆壁柱(x 0–200)面 y 2745、右牆壁柱(x 3900–4100)面 y 2700,柱 x 1000–1300、y 2650–2850,左上起鋪、板長沿 X,縫位依序 2750→2704→2659→2609,共退 141 mm,check() 全過。要不要限制退縫總量,屬使用者的偏好。
+-5. **C3 的承接帶被房間分塊截斷(第 21 輪發現,另開工單,本版不修)**:`Region.rects()` 只在頂點的 x 座標切塊,C3 對每一塊各算承接帶,並夾在那一塊裡。板長沿 Y 時主支縫沿 x、承接帶也沿 x,縫離某個 x 分塊邊界不到 X(8 mm)時,承接帶只量到縫所在的那一塊,另一塊裡的部分沒有人看(例:H6 轉置版,分塊邊界 x=3600,縫 3605 低側的承接帶 [3596,3604] 只量 [3600,3604],[3596,3600] 不在 C3 的眼裡)。板長沿 X 時承接帶沿 y,不受 x 分塊影響。證據:審查員的 BC_no_doubling_cand(候選建構不放併料)套在 H6 板長沿 X 時,C3 轉紅;套在轉置版(板長沿 Y)時 C3 全過、候選照樣被選中。所以轉置版的併料不靠 check(),由 selftest 的 TR182_DBL 直接釘手寫的範圍。
++5. **C3 的承接帶被房間分塊截斷(第 21 輪發現,#319;第 22 輪草稿已修:`x_band` 讓左右兩邊的承接帶跨碎塊量,見 selftest 的 H6 候選對照,下面是修之前的描述)**:`Region.rects()` 只在頂點的 x 座標切塊,C3 對每一塊各算承接帶,並夾在那一塊裡。板長沿 Y 時主支縫沿 x、承接帶也沿 x,縫離某個 x 分塊邊界不到 X(8 mm)時,承接帶只量到縫所在的那一塊,另一塊裡的部分沒有人看(例:H6 轉置版,分塊邊界 x=3600,縫 3605 低側的承接帶 [3596,3604] 只量 [3600,3604],[3596,3600] 不在 C3 的眼裡)。板長沿 X 時承接帶沿 y,不受 x 分塊影響。證據:審查員的 BC_no_doubling_cand(候選建構不放併料)套在 H6 板長沿 X 時,C3 轉紅;套在轉置版(板長沿 Y)時 C3 全過、候選照樣被選中。所以轉置版的併料不靠 check(),由 selftest 的 TR182_DBL 直接釘手寫的範圍。補記(第 22 輪):板長沿 X 時,垂直的板端縫(縫沿 x 排)的承接帶也沿 x,同樣被 x 分塊截斷;上下兩邊(承接帶沿 y)不受影響。
+ 
+ ## 引文檢查(quote_check.py)的已知限制
+ 

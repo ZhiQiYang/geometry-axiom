@@ -1,0 +1,443 @@
+In file included from geometry-web/../current_geometry.c:7520,
+                 from geometry-web/web_bridge.c:27:
+geometry-web/../geometry-core/parameters.inc: In function ‘parameter_wrap_error’:
+geometry-web/../geometry-core/parameters.inc:181:45: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 0 and 505 [-Wformat-truncation=]
+  181 |     snprintf(out,sizeof out,"%s... -> %.*s%s%s",head,inner_len,inner,inner_len?" -> ":"",root);
+      |                                             ^~
+In file included from /usr/include/stdio.h:980,
+                 from geometry-web/../current_geometry.c:7:
+In function ‘snprintf’,
+    inlined from ‘parameter_wrap_error’ at geometry-web/../geometry-core/parameters.inc:181:5:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 8 and 1289 bytes into a destination of size 512
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_parameters_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_parameters_line’ at geometry-web/../geometry-core/parameters.inc:807:251:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 530 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_parameters_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_parameters_line’ at geometry-web/../geometry-core/parameters.inc:819:6:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 530 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_section_profile_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_section_profile_line’ at geometry-web/../geometry-core/section_profiles.inc:133:30:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_assembly_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_assembly_line’ at geometry-web/../geometry-core/assembly.inc:83:156:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_assembly_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_assembly_line’ at geometry-web/../geometry-core/assembly.inc:107:6:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_panel_fill_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_panel_fill_line’ at geometry-web/../geometry-core/panel_fill_layout.inc:42:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_derived_placement_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_derived_placement_line’ at geometry-web/../geometry-core/derived_placements.inc:49:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_delete_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+ 9209 |                 scene_error(path, line_no, message);
+      |                                            ~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_delete_line’ at geometry-web/../current_geometry.c:9209:17:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_delete_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+ 9157 |         scene_error(path, line_no, message);
+      |                                    ~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_delete_line’ at geometry-web/../current_geometry.c:9157:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_applyproj_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘proj_apply_one’ at geometry-web/../current_geometry.c:8903:13,
+    inlined from ‘apply_applyproj_line’ at geometry-web/../current_geometry.c:9083:18:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘reference_checked’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:715:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:712:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_assembly_owned_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_assembly_owned_line’ at geometry-web/../geometry-core/assembly_generation.inc:77:170:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_grid_system_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_grid_system_line’ at geometry-web/../geometry-core/grid_systems.inc:233:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_grid_source_rule’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_grid_source_rule’ at geometry-web/../geometry-core/grid_subdivision.inc:107:52:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_grid_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_grid_system_application’ at geometry-web/../geometry-core/grid_systems.inc:259:9,
+    inlined from ‘apply_grid_line’ at geometry-web/../current_geometry.c:7208:16:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_grid_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_grid_binding_application’ at geometry-web/../geometry-core/grid_bindings.inc:83:13,
+    inlined from ‘apply_grid_line’ at geometry-web/../current_geometry.c:7206:16:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_space_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+ 9421 |         scene_error(path, line_no, message);
+      |                                    ~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_space_line’ at geometry-web/../current_geometry.c:9421:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_boundary_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+ 6629 |                 scene_error(path, line_no, detail);
+      |                                            ~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_boundary_line’ at geometry-web/../current_geometry.c:6629:17:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 530 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_subgrid_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_subgrid_line’ at geometry-web/../geometry-core/subgrid_commands.inc:62:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_subgrid_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_subgrid_line’ at geometry-web/../geometry-core/subgrid_commands.inc:54:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_spec_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:715:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:712:13,
+    inlined from ‘apply_spec_line’ at geometry-web/../geometry-core/references.inc:726:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_reference_move’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:715:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:712:13,
+    inlined from ‘apply_reference_move’ at geometry-web/../geometry-core/references.inc:765:16:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_datum_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:715:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:712:13,
+    inlined from ‘apply_datum_line’ at geometry-web/../geometry-core/references.inc:742:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_reference_guide’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:715:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:712:13,
+    inlined from ‘apply_reference_guide’ at geometry-web/../geometry-core/references.inc:756:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_engineering_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:715:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:712:13,
+    inlined from ‘eng_restore_grid’ at geometry-web/../geometry-core/engineering_commands.inc:73:57,
+    inlined from ‘apply_engineering_line’ at geometry-web/../geometry-core/engineering_commands.inc:88:42:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 264 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_scene_line_candidate.constprop’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 767 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_scene_line_candidate.constprop’ at geometry-web/../geometry-core/transactions.inc:628:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 786 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘parse_scene_file’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 239 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘parse_scene_file’ at geometry-web/../current_geometry.c:10106:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 273 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘parse_scene_file’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 239 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+10101 |     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
+      |                                                                                     ~~~~~~~~~~~~~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘parse_scene_file’ at geometry-web/../current_geometry.c:10101:60:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 273 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+
+real	0m41.726s
+user	0m40.822s
+sys	0m1.207s

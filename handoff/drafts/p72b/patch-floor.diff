@@ -1,0 +1,57 @@
+diff --git a/geometry-web/cdp_floor.js b/geometry-web/cdp_floor.js
+index e597031..4338f9d 100644
+--- a/geometry-web/cdp_floor.js
++++ b/geometry-web/cdp_floor.js
+@@ -6,13 +6,21 @@
+ const GOLDEN_SCHEMA = 'geometry-cdp-sections/1';
+ const NO_SECTION = '(before first section)';
+ 
+-/* 由 `=== ` 標頭取段名:只取主編號,子標頭歸到同一段。
++/* 帶一個大寫字母後綴、且明列於此的 P 標頭自成一段;其餘大寫後綴照舊歸主編號。
++   P72B(grid_inspector_rename_test.js,GEO-261 精簡網格更名)是獨立外掛,斷言數與 P72 無關;
++   P73B 刻意未列入,仍歸 P73(golden 的 P73 已含它)。 */
++const STANDALONE_SECTIONS = new Set(['P72B']);
++
++/* 由 `=== ` 標頭取段名:只取主編號,子標頭歸到同一段(STANDALONE_SECTIONS 除外)。
+    '=== Setup. …' → Setup;'=== 9b. …' → 9;'=== P48-6 …' → P48;'=== P8v2. …' → P8;
+-   '=== P57–P61. …' → P57;'=== P73B. …' → P73;'=== BF2. …' → BF2。認不得的標頭回傳 null(呼叫端沿用目前段)。 */
++   '=== P57–P61. …' → P57;'=== P73B. …' → P73;'=== P72B. …' → P72B;'=== BF2. …' → BF2。
++   認不得的標頭回傳 null(呼叫端沿用目前段)。 */
+ function sectionOf(header) {
+   if (typeof header !== 'string') return null;
+-  const m = /^===\s*(Setup|BF\d+|P\d+|\d+)/.exec(header);
+-  return m ? m[1] : null;
++  const m = /^===\s*(?:(Setup|BF\d+|\d+)|(P\d+)([A-Z])?)/.exec(header);
++  if (!m) return null;
++  if (m[1]) return m[1];
++  return m[3] && STANDALONE_SECTIONS.has(m[2] + m[3]) ? m[2] + m[3] : m[2];
+ }
+ 
+ function isMin(v) {
+diff --git a/tests/test_cdp_floor.js b/tests/test_cdp_floor.js
+index 6a433fe..011fd5b 100644
+--- a/tests/test_cdp_floor.js
++++ b/tests/test_cdp_floor.js
+@@ -87,6 +87,9 @@ test('sectionOf 只取主編號,子標頭歸到同一段', () => {
+     '=== P48-6 孔邊 ===': 'P48',
+     '=== P57–P61. PDF 與專案保存(GEO-198) ===': 'P57',
+     '=== P73B. 網格延遲載入及切換邊界不吞草稿 ===': 'P73',
++    '=== P72B. 更名保留相位差及來源 ===': 'P72B',
++    '=== P72. 來源、配置與底部編輯面板 ===': 'P72',
++    '=== P99Z. 未列入 STANDALONE_SECTIONS 的大寫後綴 ===': 'P99',
+     '=== P76 畫布參數卡 ===': 'P76',
+     '=== BF2. 一按就壞/會丟資料 ===': 'BF2'
+   };
+diff --git a/geometry-web/README.md b/geometry-web/README.md
+index 52ceb85..a72eed0 100644
+--- a/geometry-web/README.md
++++ b/geometry-web/README.md
+@@ -209,7 +209,7 @@ python -B -m unittest discover -s ../tests -p test_serve.py -v
+ 
+ `cdp_test.js` 只計受控斷言，頁面日誌及狀態文字中的勾號不計數。執行例外與協定錯誤必須失敗；`CDP_SCOPE`／`CDP_RESULT` 明列全套或部分執行，不能把專項結果說成全套。完整回歸不得設定 `*_ONLY`／`GEOMETRY_CDP_FROM_P31`。工程子範圍必須搭配工程專項旗標，且互斥。
+ 
+-`cdp_test.js` 另有「每段斷言數地板」：`CDP_RESULT.sections` 記每個主編號段（Setup、1…10、P3…P76；子標頭如 P48-6、P8v2 歸入主編號）的通過斷言數，完整模式結束時與 [`cdp_sections.golden.json`](cdp_sections.golden.json) **嚴格相等**比對——整段被跳過、提早結束、斷言變少，或新增斷言而 golden 沒跟上，都會讓整次失敗並逐條印出「段 X：預期 N，實得 M」。有意增刪斷言時，在完整模式且零失敗下加 `GEOMETRY_CDP_UPDATE_GOLDEN=1` 重寫 golden，並在提交前檢視 `git diff`。部分模式（任何 `*_ONLY`／`GEOMETRY_CDP_FROM_P31`）只印 sections、註明「部分模式，未比對 golden」。比對邏輯在 `cdp_floor.js`，單元測試：`node --test ../tests/test_cdp_floor.js`。
++`cdp_test.js` 另有「每段斷言數地板」：`CDP_RESULT.sections` 記每個主編號段（Setup、1…10、P3…P76；子標頭如 P48-6、P8v2、P73B 歸入主編號；只有 `cdp_floor.js` 的 `STANDALONE_SECTIONS` 明列者（目前 P72B）自成一段）的通過斷言數，完整模式結束時與 [`cdp_sections.golden.json`](cdp_sections.golden.json) **嚴格相等**比對——整段被跳過、提早結束、斷言變少，或新增斷言而 golden 沒跟上，都會讓整次失敗並逐條印出「段 X：預期 N，實得 M」。有意增刪斷言時，在完整模式且零失敗下加 `GEOMETRY_CDP_UPDATE_GOLDEN=1` 重寫 golden，並在提交前檢視 `git diff`。部分模式（任何 `*_ONLY`／`GEOMETRY_CDP_FROM_P31`）只印 sections、註明「部分模式，未比對 golden」。比對邏輯在 `cdp_floor.js`，單元測試：`node --test ../tests/test_cdp_floor.js`。
+ 
+ `space_model_test.js` 的結果也列出 included／omitted 群組；一般空間、角材、流程等專項分開，不合併冒充單次完整執行。保存下載流程不代表原生另存視窗，390px 版面不代表真手機觸控。原型目錄內的測試只證明原型，不作正式畫布整合證據。
+ 測試依賴的 DOM id / class / 全域列在 `docs/DOM-CONTRACT.md`——改 DOM 必同步更新它與 `cdp_test.js`。

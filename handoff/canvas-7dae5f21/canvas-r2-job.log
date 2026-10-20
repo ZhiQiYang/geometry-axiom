@@ -1,0 +1,81 @@
+##[wsl-ci] job=canvas key=browser sha=7dae5f21c7ca401e660450d437e60ba566218da8 repo=/root/ga-ci/runs/7dae5f21-20261020-221023/canvas/repo
+##[wsl-ci] ci timeout 35 min (hard watchdog 105 min); jobtmp=/tmp/ga-ci/7dae5f21-20261020-221023/canvas port=18839->18844
+##[wsl-ci] step 0 actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 -> replaced (clean local clone at the SHA under test)
+##[group]Run Build current native executables
+npm run build
+##[endgroup]
+
+> geometry-axiom-dev@0.0.0 build
+> python3 geometry-web/start_local.py --build-only
+
+  core：建置（找不到 /tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-runtime/d3deabb6d1c2c8ff0ba8/core）…
+  bridge：建置（找不到 /tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-runtime/d3deabb6d1c2c8ff0ba8/bridge）…
+  model-base：建置（找不到 /tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-runtime/d3deabb6d1c2c8ff0ba8/model-base）…
+core: built — 建好 /tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-runtime/d3deabb6d1c2c8ff0ba8/core
+bridge: built — 建好 /tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-runtime/d3deabb6d1c2c8ff0ba8/bridge
+model-base: built — 建好 /tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-runtime/d3deabb6d1c2c8ff0ba8/model-base
+LOCAL_RUNTIME {"root": "/root/ga-ci/runs/7dae5f21-20261020-221023/canvas/repo", "binaryDirectory": "/tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-runtime/d3deabb6d1c2c8ff0ba8", "executables": {"core": "/tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-runtime/d3deabb6d1c2c8ff0ba8/core", "bridge": "/tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-runtime/d3deabb6d1c2c8ff0ba8/bridge", "model-base": "/tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-runtime/d3deabb6d1c2c8ff0ba8/model-base"}, "port": null, "managedPreview": false}
+##[wsl-ci] step 1 Build current native executables -> exit 0 in 18370.8s
+##[wsl-ci] step 2 Install Chinese fonts for visual verification -> skipped, packages already installed: {"fonts-noto-cjk": "install ok installed 1:20230817+repack1-3"}
+##[group]Run Run actual browser regression group
+ulimit -s 16384
+test -x "$GEOMETRY_CHROME"
+# WSL canvas wait trace
+# Clear inherited flags for all other jobs.
+unset GEOMETRY_WAIT_TRACE
+unset GEOMETRY_WAIT_TRACE_RUN_ID
+case "$GEOMETRY_BROWSER_SUITE:$(uname -r)" in
+  canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;
+esac
+if [ "${GEOMETRY_WAIT_TRACE-}" = 1 ]; then
+  export GEOMETRY_WAIT_TRACE_RUN_ID="$(python3 geometry-web/prepare_wait_trace.py)"
+fi
+if [ -n "${GITHUB_ENV-}" ]; then
+  printf 'GEOMETRY_WAIT_TRACE=%s\n' "${GEOMETRY_WAIT_TRACE-}" >> "$GITHUB_ENV"
+fi
+python3 -u geometry-web/start_local.py --port 18844 > /tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-integration-server.log 2>&1 &
+server=$!
+cleanup() {
+  original_status=$?
+  set +e
+  kill "$server" 2>/dev/null || true
+  wait "$server" 2>/dev/null || true
+  if [ "$GEOMETRY_BROWSER_SUITE" = canvas ]; then
+    python3 geometry-web/archive_wait_trace.py /tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-wait-trace-artifact
+    archive_status=$?
+    if [ "$original_status" -eq 0 ] && [ "$archive_status" -ne 0 ]; then original_status=$archive_status; fi
+  fi
+  exit "$original_status"
+}
+trap cleanup EXIT
+for attempt in $(seq 1 30); do
+  if ! kill -0 "$server" 2>/dev/null; then
+    cat /tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-integration-server.log
+    exit 1
+  fi
+  if python3 geometry-web/runtime_version.py --probe 18844 > /dev/null 2>&1; then break; fi
+  sleep 1
+done
+python3 geometry-web/runtime_version.py --probe 18844
+# Independent matrix jobs expose each result promptly. They use
+# separate runners/servers and do not cancel siblings on failure.
+# The full canvas run retains its strict golden comparison.
+set +e
+case "$GEOMETRY_BROWSER_SUITE" in
+  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;
+  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;
+  canvas) node geometry-web/cdp_test.js ;;
+  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;
+  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;
+  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;
+  *) echo "Unknown browser suite"; exit 2 ;;
+esac
+status=$?
+cat /tmp/ga-ci/7dae5f21-20261020-221023/canvas/geometry-integration-server.log
+exit "$status"
+##[endgroup]
+##[wsl-ci] step 3 Run actual browser regression group -> exit 124 in 1.0s
+##[wsl-ci] step 4 Preserve canvas wait trace -> skipped (artifact upload not applicable outside GitHub)
+##[wsl-ci] step 5 Preserve assembly authoring screenshots -> skipped (artifact upload not applicable outside GitHub)
+##[wsl-ci] step 6 Preserve grid trial screenshots -> skipped (artifact upload not applicable outside GitHub)
+##[wsl-ci] step 7 Preserve document reader screenshots -> skipped (artifact upload not applicable outside GitHub)

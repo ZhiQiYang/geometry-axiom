@@ -1,0 +1,41 @@
+diff --git a/geometry-web/cdp_test.js b/geometry-web/cdp_test.js
+index ab3d391..059d0b9 100644
+--- a/geometry-web/cdp_test.js
++++ b/geometry-web/cdp_test.js
+@@ -7131,7 +7131,7 @@ async function main() {
+   if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
+     await require('./composition_canvas_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+   if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
+-    await require('./grid_inspector_rename_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
++    await require('./grid_inspector_rename_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+   if (scope.mode==='full' || process.env.GEOMETRY_UIUX_FIX_ONLY)
+     await require('./uiux_review_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
+   if (scope.mode==='full' || process.env.GEOMETRY_UX_REFINEMENT_ONLY)
+diff --git a/geometry-web/grid_inspector_rename_test.js b/geometry-web/grid_inspector_rename_test.js
+index e12a222..c2c31a2 100644
+--- a/geometry-web/grid_inspector_rename_test.js
++++ b/geometry-web/grid_inspector_rename_test.js
+@@ -3,8 +3,9 @@
+  * to reopen the downloaded complete project in a second native process too.
+  * Loaded by cdp_test.js, never run this plugin as a standalone node script. */
+ const cdp=require('./cdp_helpers.js');
+-module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
++module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount})=>{
+   console.log('=== P72B. 更名保留相位差及來源 ===');
++  if(typeof expectNativeDialog!=='function')throw Error('P72B requires expectNativeDialog: #btnNewProject always asks a native confirm');
+   const fs=require('fs'),path=require('path'),os=require('os'),same=require('util').isDeepStrictEqual,crypto=require('crypto');
+   // Names belong to the current source definition; canvas positions do not.
+   // Derive both expected fingerprints from the expected dump, never the reply.
+@@ -20,7 +21,11 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
+   const cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await settle();};
+   const select=async(kind,id)=>{if(await read(`$('filterDisclosure').open`))await ctl('#filterDisclosure > summary');await ctl(`.object-row[data-kind="${kind}"][data-id="${id}"]`);await wait(`oc.sel?.kind===${JSON.stringify(kind)}&&oc.sel.id===${id}`);};
+   const fixture=lines=>read(`(async()=>{for(const line of ${JSON.stringify(lines)}){let r=await apiRequest('line '+line);if(r.preview){if(!r.preview.valid)throw Error(JSON.stringify(r));r=await apiRequest('line confirm '+r.preview.token);}if(!r.ok)throw Error(JSON.stringify(r));}await renderObjects();})()`);
+-  const newProject=async()=>{const old=await read(`ReferenceWorkspace.getProjectState().id`);await ctl('#fileMenuBtn');await ctl('#btnNewProject');await wait(`ReferenceWorkspace.getProjectState().id!==${JSON.stringify(old)}&&!ReferenceWorkspace.busy`);await settle();return old;};
++  // replaceWithEmpty() always asks window.confirm; only the unsaved sentence
++  // depends on the current context. Expect that exact dialog, never a global spy.
++  const newProject=async()=>{const old=await read(`ReferenceWorkspace.getProjectState().id`),dirty=await read('ReferenceWorkspace.context().dirty');await ctl('#fileMenuBtn');
++    await expectNativeDialog(()=>ctl('#btnNewProject'),{message:'建立一份空白新專案，切換為新的專案識別及「未命名專案」。'+(dirty?'目前尚未保存的變更不會自動寫入檔案。':'')+'本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？',accept:true});
++    await wait(`ReferenceWorkspace.getProjectState().id!==${JSON.stringify(old)}&&!ReferenceWorkspace.busy`);await settle();return old;};
+   const geometry=id=>query(`grid-query binding ${id} rect -900 -900 1500 1500 mode exact limit 64`);
+   const world=async()=>({scene:await dump(),objects:await objects(),references:await query('references')});
+   const shot=cdp.makeShot(send,['GEOMETRY_GRID_RENAME_SCREENSHOT_DIR']);

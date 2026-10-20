@@ -1,0 +1,16 @@
+N	cap	kind	seconds	rc	family	rep	cpu_s	rss_kb	stack_kib	note
+0	64	worldbytes	0.000000	0						world=4759448
+0	512	worldbytes	0.000000	0						world=5605272
+48	64	sanity-calib	18.337452	0	calib	0		58736		expect=ok got=ok 
+48	512	sanity-calib	19.870240	0	calib	0		66768		expect=ok got=ok 
+16	64	sanity-gen	0.500285	0	single	0		58608		expect=ok got=ok 
+16	512	sanity-gen	0.630015	0	single	0		67380		expect=ok got=ok 
+32	64	sanity-gen	3.518612	0	single	0		58604		expect=ok got=ok 
+32	512	sanity-gen	3.419490	0	single	0		66768		expect=ok got=ok 
+48	64	sanity-gen	17.160392	0	single	0		58732		expect=ok got=ok 
+48	512	sanity-gen	16.895334	0	single	0		66792		expect=ok got=ok 
+64	64	sanity-gen	59.616386	0	single	0		60432		expect=ok got=ok 
+64	512	sanity-gen	58.634075	0	single	0		66796		expect=ok got=ok 
+128	512	sanity-gen	300.002229	3	house	0		82628		expect=ok got=timeout 
+65	64	sanity-cap65	60.266660	0	single	0		58608		expect=reject(超過上限) got=ok error=line 135: 角材的數量超過上限
+65	512	sanity-cap65	71.848979	0	single	0		66920		expect=ok got=ok 

@@ -1,0 +1,663 @@
+diff --git a/ARCHITECTURE.md b/ARCHITECTURE.md
+--- a/ARCHITECTURE.md
++++ b/ARCHITECTURE.md
+@@ -76,7 +76,7 @@
+ | `TimberAnchor` | `surface_id + uv + from_guides` | 與 `World.timbers[]` 同索引的平行陣列 |
+ | `Room` | `id + faces[≤6] + face_count` | 一組被宣告為彼此一致的面；2–6 片 |
+ | `Scene` | 6 個 `const` 指標 + count | **借用** World 的陣列，World 變動後須重建 |
+-| `World` | 5 組定長陣列 + counts | 上限：8 面 / 32 邊 / 16 線 / 64 角材 / 4 房 |
++| `World` | 5 組定長陣列 + counts | 上限：8 面 / 32 邊 / 16 線 / 512 角材 / 4 房 |
+ | `DrawTarget` | `ctx` + 6 個函式指標 | begin/end_view、rect、polygon、line、text |
+ | `ScenePick` | `view + guide + timber + face` | -1 表示無命中 |
+ | `GdiApp` | world 指標 + scene/layout + 互動態 + 離屏緩衝 + 物件快取 | 視窗全部狀態 |
+diff --git a/current_geometry.c b/current_geometry.c
+--- a/current_geometry.c
++++ b/current_geometry.c
+@@ -2738,7 +2738,7 @@
+ #define WORLD_MAX_PLACEMENTS  16
+ #define WORLD_MAX_GUIDES      16
+ #define WORLD_MAX_GRIDS       16
+-#define WORLD_MAX_TIMBERS     64
++#define WORLD_MAX_TIMBERS     WOOD_MEMBER_CAPACITY /* GEO #300: one source (members.h); bound checks follow SPAN_CUT_MAX */
+ #define WORLD_MAX_SPACES      GEO_ENCLOSURE_CAPACITY
+ #define WORLD_MAX_RC          32
+ #define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES + WORLD_MAX_RC * 2 + WORLD_MAX_GRID_SYSTEMS + WORLD_MAX_GRID_BINDINGS + PARAM_CARD_MAX)
+@@ -6045,6 +6045,16 @@
+  * C11 _Static_assert: the Windows MSVC builds compile in its default C mode. */
+ typedef char app_span_status_abi_check[(int)SPAN_BETWEEN_AMBIGUOUS==(int)WOOD_SPAN_BETWEEN_AMBIGUOUS?1:-1];
+ typedef char app_span_scratch_bound_check[SPAN_CUT_MAX==WOOD_MEMBER_SPAN_CUT_CAPACITY?1:-1];
++/* GEO #300: WOOD_MEMBER_CAPACITY (members.h) is the only timber capacity. These bind
++ * every array and scratch bound derived from it; a literal that drifts back in fails
++ * the build instead of overrunning storage. Same typedef form as the checks above. */
++typedef char app_timber_capacity_world_check[WORLD_MAX_TIMBERS==WOOD_MEMBER_CAPACITY?1:-1];
++typedef char app_timber_capacity_timbers_check[(sizeof(((World *)0)->wood.timbers)/sizeof(((World *)0)->wood.timbers[0]))==WORLD_MAX_TIMBERS?1:-1];
++typedef char app_timber_capacity_anchors_check[(sizeof(((World *)0)->wood.anchors)/sizeof(((World *)0)->wood.anchors[0]))==WORLD_MAX_TIMBERS?1:-1];
++typedef char app_timber_capacity_contact_check[WOOD_CONTACT_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
++typedef char app_timber_capacity_cut_list_check[WOOD_CUT_LIST_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
++typedef char app_timber_capacity_span_check[WOOD_MEMBER_SPAN_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
++typedef char app_timber_capacity_stop_face_check[STOP_FACE_MAX==WOOD_CONTACT_FACE_CAPACITY?1:-1];
+ 
+ /*
+  * 解析 auto 跨距。
+@@ -10150,7 +10160,7 @@
+         );
+ 
+         for (size_t k = 0; k < groups[g].count; ++k) {
+-            printf("%s%" PRIu32, k == 0 ? "" : "、", groups[g].ids[k]);
++            printf("%s%" PRIu32, k == 0 ? "" : "、", report.ids[groups[g].first + k]);
+         }
+ 
+         printf("）\n");
+diff --git a/geometry-templates/woodworking/native/contact_world.h b/geometry-templates/woodworking/native/contact_world.h
+--- a/geometry-templates/woodworking/native/contact_world.h
++++ b/geometry-templates/woodworking/native/contact_world.h
+@@ -4,7 +4,7 @@
+ #include "contacts.h"
+ #include "domain_values.h"
+ #define WOOD_CONTACT_COMPONENT_CAPACITY 8
+-#define WOOD_CONTACT_MEMBER_CAPACITY 64
++#define WOOD_CONTACT_MEMBER_CAPACITY WOOD_MEMBER_CAPACITY /* GEO #300: derived, never a literal */
+ #define WOOD_CONTACT_FACE_CAPACITY (WOOD_CONTACT_COMPONENT_CAPACITY*GEO_LOOP_MAX_VERTICES*(GEO_REGION_MAX_HOLES+1)+WOOD_CONTACT_MEMBER_CAPACITY*2)
+ typedef struct {
+     const WoodMember *member; /* Identity is the original candidate pointer. */
+diff --git a/geometry-templates/woodworking/native/cut_list.c b/geometry-templates/woodworking/native/cut_list.c
+--- a/geometry-templates/woodworking/native/cut_list.c
++++ b/geometry-templates/woodworking/native/cut_list.c
+@@ -3,6 +3,8 @@
+ 
+ bool wood_cut_list_collect(const WoodMember *members,size_t count,WoodCutList *out)
+ {
++    /* Scratch only: the group each member joined, and where each group landed after sorting. */
++    size_t discovered[WOOD_CUT_LIST_MEMBER_CAPACITY],landed[WOOD_CUT_LIST_MEMBER_CAPACITY];
+     if(!out||(!members&&count)||count>WOOD_CUT_LIST_MEMBER_CAPACITY)return false;
+     memset(out,0,sizeof *out);
+     for(size_t i=0;i<count;++i){const WoodMember *member=&members[i];
+@@ -16,9 +18,10 @@
+         if(g==out->group_count){WoodCutGroup *group=&out->groups[g];
+             group->length=member->length;group->size_a=member->size_a;
+             group->size_b=member->size_b;group->role=member->role;
++            group->first=g; /* discovery rank until the ids are laid out below */
+             ++out->group_count;
+         }
+-        out->groups[g].ids[out->groups[g].count++]=member->id;
++        ++out->groups[g].count;discovered[i]=g;
+     }
+     for(size_t a=0;a+1<out->group_count;++a)for(size_t b=a+1;b<out->group_count;++b){
+         const WoodCutGroup *left=&out->groups[a],*right=&out->groups[b];
+@@ -28,5 +31,15 @@
+                     (right->size_b==left->size_b&&right->role<left->role)))));
+         if(swap){WoodCutGroup temporary=out->groups[a];out->groups[a]=out->groups[b];out->groups[b]=temporary;}
+     }
++    size_t offset=0;
++    for(size_t g=0;g<out->group_count;++g){
++        landed[out->groups[g].first]=g;
++        out->groups[g].first=offset;offset+=out->groups[g].count;out->groups[g].count=0;
++    }
++    for(size_t i=0;i<count;++i){
++        if(!members[i].placed)continue;
++        WoodCutGroup *group=&out->groups[landed[discovered[i]]];
++        out->ids[group->first+group->count++]=members[i].id;
++    }
+     return true;
+ }
+diff --git a/geometry-templates/woodworking/native/cut_list.h b/geometry-templates/woodworking/native/cut_list.h
+--- a/geometry-templates/woodworking/native/cut_list.h
++++ b/geometry-templates/woodworking/native/cut_list.h
+@@ -3,15 +3,18 @@
+ #ifndef GEOMETRY_WOODWORKING_CUT_LIST_H
+ #define GEOMETRY_WOODWORKING_CUT_LIST_H
+ #include "members.h"
+-#define WOOD_CUT_LIST_MEMBER_CAPACITY 64
++#define WOOD_CUT_LIST_MEMBER_CAPACITY WOOD_MEMBER_CAPACITY /* GEO #300: derived, never a literal */
++/* The ids of all groups share one array (linear in N, not N squared): the ids of
++ * group g are ids[groups[g].first .. groups[g].first+groups[g].count-1], in
++ * declaration order. */
+ typedef struct {
+     GeoCoord length,size_a,size_b;
+     WoodMemberRole role;
+-    size_t count;
+-    uint32_t ids[WOOD_CUT_LIST_MEMBER_CAPACITY];
++    size_t count,first;
+ } WoodCutGroup;
+ typedef struct {
+     WoodCutGroup groups[WOOD_CUT_LIST_MEMBER_CAPACITY];
++    uint32_t ids[WOOD_CUT_LIST_MEMBER_CAPACITY];
+     size_t group_count,placed;
+     GeoCoord total_length;
+ } WoodCutList;
+diff --git a/geometry-templates/woodworking/native/document.h b/geometry-templates/woodworking/native/document.h
+--- a/geometry-templates/woodworking/native/document.h
++++ b/geometry-templates/woodworking/native/document.h
+@@ -14,10 +14,10 @@
+ #include "engineering.h"
+ #include "finish.h"
+ 
++/* WOOD_MEMBER_CAPACITY (timber slots) is the one macro in members.h. */
+ enum {
+     WOOD_DOCUMENT_BOUNDARY_CAPACITY = 16,
+     WOOD_DOCUMENT_PLACEMENT_CAPACITY = 16,
+-    WOOD_MEMBER_CAPACITY = 64,
+     WOOD_OBSTACLE_CAPACITY = 32
+ };
+ 
+diff --git a/geometry-templates/woodworking/native/member_reference.h b/geometry-templates/woodworking/native/member_reference.h
+--- a/geometry-templates/woodworking/native/member_reference.h
++++ b/geometry-templates/woodworking/native/member_reference.h
+@@ -97,7 +97,7 @@
+     WOOD_SPAN_BETWEEN_BLOCKED,WOOD_SPAN_BETWEEN_AMBIGUOUS
+ } WoodMemberSpanStatus;
+ /* Existing product bounds; these are W scratch capacities, not K concepts. */
+-#define WOOD_MEMBER_SPAN_MEMBER_CAPACITY 64
++#define WOOD_MEMBER_SPAN_MEMBER_CAPACITY WOOD_MEMBER_CAPACITY /* GEO #300: derived, never a literal */
+ #define WOOD_MEMBER_SPAN_CUT_CAPACITY (8*GEO_LOOP_MAX_VERTICES*(GEO_REGION_MAX_HOLES+1)+WOOD_MEMBER_SPAN_MEMBER_CAPACITY*2)
+ typedef struct {
+     GeoRegionSetView domain;
+diff --git a/geometry-templates/woodworking/native/members.h b/geometry-templates/woodworking/native/members.h
+--- a/geometry-templates/woodworking/native/members.h
++++ b/geometry-templates/woodworking/native/members.h
+@@ -7,6 +7,13 @@
+ #include "geometry.h"
+ #endif
+ 
++/* GEO #300: the one timber capacity. Member storage, the report list and the
++ * contact and span scratch arrays all derive from this number; H derives its
++ * own bound from it and checks every derivation at compile time. I33 fixes
++ * the refusal class (CAPACITY), not the value. Changing it changes the size
++ * of every World snapshot: re-read the memory and stack budget first. */
++#define WOOD_MEMBER_CAPACITY 512
++
+ typedef enum {
+     WOOD_MEMBER_FACE_A0,
+     WOOD_MEMBER_FACE_A1,
+diff --git a/geometry-templates/woodworking/native/world_validation.c b/geometry-templates/woodworking/native/world_validation.c
+--- a/geometry-templates/woodworking/native/world_validation.c
++++ b/geometry-templates/woodworking/native/world_validation.c
+@@ -6,6 +6,9 @@
+ {return inner->min_u>=outer->min_u&&inner->max_u<=outer->max_u&&inner->min_v>=outer->min_v&&inner->max_v<=outer->max_v;}
+ bool wood_world_validate_members(const WoodWorldValidationContext *context,char *error,size_t capacity)
+ {
++    /* The axis facts below are a fixed array; refuse before any callback or write. */
++    if(context->member_count>WOOD_CONTACT_MEMBER_CAPACITY)
++        return validation_refuse(error,capacity,"I33 CAPACITY: member count exceeds the contact capacity");
+     const WoodGridState *grids=context->grids.state;
+     for(size_t i=0;i<grids->count;++i){const WoodGridApplication *grid=&grids->items[i];WoodGridHost host;
+         if(!context->host(context->user,grid->placement_id,NULL,&host)||
+diff --git a/tests/geo261_contact_world_harness.c b/tests/geo261_contact_world_harness.c
+--- a/tests/geo261_contact_world_harness.c
++++ b/tests/geo261_contact_world_harness.c
+@@ -70,12 +70,14 @@
+     memset(out,0x5a,sizeof out);untouched=out[2];n=wood_contact_collect_stops(&w,false,NULL,out,3);
+     CHECK("member-capacity-pair-atomic",n==2&&!memcmp(&out[2],&untouched,sizeof untouched));
+     CHECK("capacity-before-placement-order",out[0].timber_id==11&&out[1].timber_id==11);
+-    CHECK("face-capacity-contract",WOOD_CONTACT_FACE_CAPACITY==2432&&WOOD_CONTACT_COMPONENT_CAPACITY==8&&WOOD_CONTACT_MEMBER_CAPACITY==64);
+-    WoodBoundaryRegion many[8];WoodMember members[64];WoodContactMemberFact facts[64];WoodStopFace full[WOOD_CONTACT_FACE_CAPACITY+1];
++    /* GEO #300: sized by the production macros. BOUNDARY_FACES = 8 components x 9 loops x 2 axis-parallel edges. */
++    enum { MEMBERS = WOOD_CONTACT_MEMBER_CAPACITY, BOUNDARY_FACES = 144 };
++    CHECK("face-capacity-contract",WOOD_CONTACT_COMPONENT_CAPACITY==8&&WOOD_CONTACT_MEMBER_CAPACITY==WOOD_MEMBER_CAPACITY&&WOOD_CONTACT_FACE_CAPACITY==WOOD_CONTACT_COMPONENT_CAPACITY*GEO_LOOP_MAX_VERTICES*(GEO_REGION_MAX_HOLES+1)+WOOD_CONTACT_MEMBER_CAPACITY*2);
++    WoodBoundaryRegion many[8];WoodMember members[MEMBERS];WoodContactMemberFact facts[MEMBERS];WoodStopFace full[WOOD_CONTACT_FACE_CAPACITY+1];
+     for(size_t c=0;c<8;++c){many[c]=square((uint32_t)(80+c),(GeoCoord)c*1000,0,100);many[c].hole_count=8;for(size_t h=0;h<8;++h){WoodBoundaryRegion cut=square(0,(GeoCoord)c*1000+10+(GeoCoord)h*10,20,4);many[c].holes[h]=cut.outline;}w.regions[c]=&many[c];}
+-    for(size_t i=0;i<64;++i){members[i]=member((uint32_t)(100+i),WOOD_MEMBER_ROLE_PRIMARY,2);facts[i]=fact(&members[i],64-i,false,(GeoRect2){10000+(GeoCoord)i*10,200,10002+(GeoCoord)i*10,210});}
+-    w.region_count=8;w.members=facts;w.member_count=64;memset(full,0x5a,sizeof full);untouched=full[272];n=wood_contact_collect_stops(&w,false,NULL,full,WOOD_CONTACT_FACE_CAPACITY);
+-    CHECK("all-eight-components-holes-and-sixty-four-members",n==272&&full[126].edge_index==225&&full[142].hole_index==63&&full[142].edge_index==1&&full[142].fixed==7084&&full[144].timber_id==163&&full[270].timber_id==100&&!memcmp(&full[272],&untouched,sizeof untouched));return 0;
++    for(size_t i=0;i<MEMBERS;++i){members[i]=member((uint32_t)(100+i),WOOD_MEMBER_ROLE_PRIMARY,2);facts[i]=fact(&members[i],MEMBERS-i,false,(GeoRect2){10000+(GeoCoord)i*10,200,10002+(GeoCoord)i*10,210});}
++    w.region_count=8;w.members=facts;w.member_count=MEMBERS;memset(full,0x5a,sizeof full);untouched=full[BOUNDARY_FACES+2*MEMBERS];n=wood_contact_collect_stops(&w,false,NULL,full,WOOD_CONTACT_FACE_CAPACITY);
++    CHECK("all-eight-components-holes-and-full-member-capacity",n==BOUNDARY_FACES+2*MEMBERS&&full[126].edge_index==225&&full[142].hole_index==63&&full[142].edge_index==1&&full[142].fixed==7084&&full[BOUNDARY_FACES].timber_id==100+MEMBERS-1&&full[BOUNDARY_FACES+2*MEMBERS-2].timber_id==100&&!memcmp(&full[BOUNDARY_FACES+2*MEMBERS],&untouched,sizeof untouched));return 0;
+ }
+ static int intervals(void)
+ {
+diff --git a/tests/geo261_report_policy_harness.c b/tests/geo261_report_policy_harness.c
+--- a/tests/geo261_report_policy_harness.c
++++ b/tests/geo261_report_policy_harness.c
+@@ -16,7 +16,7 @@
+     CHECK(wood_cut_list_collect(values,7,&result),"report-collect");
+     CHECK(result.placed==6&&result.total_length==550,"report-placed-only");
+     CHECK(result.group_count==5,"report-exact-spec-identity");
+-    CHECK(result.groups[0].count==2&&result.groups[0].ids[0]==9&&result.groups[0].ids[1]==2,"report-id-order");
++    CHECK(result.groups[0].count==2&&result.ids[result.groups[0].first]==9&&result.ids[result.groups[0].first+1]==2,"report-id-order");
+     CHECK(result.groups[1].role==WOOD_MEMBER_ROLE_SECONDARY,"report-role-order");
+     CHECK(result.groups[2].size_b==40&&result.groups[3].size_a==30,"report-section-order");
+     CHECK(result.groups[4].length==50,"report-length-order");
+@@ -29,16 +29,22 @@
+         member(5,90,30,20,WOOD_MEMBER_ROLE_BOUNDARY,true)};
+     WoodCutList result;CHECK(wood_cut_list_collect(values,5,&result),"report-order-collect");
+     CHECK(result.groups[4].length==70,"report-length-order");
+-    const uint32_t ids[]={5,4,3,2,1};for(size_t i=0;i<5;++i)CHECK(result.groups[i].ids[0]==ids[i],"report-tie-break-order");return 0;
++    const uint32_t ids[]={5,4,3,2,1};for(size_t i=0;i<5;++i)CHECK(result.ids[result.groups[i].first]==ids[i],"report-tie-break-order");return 0;
+ }
+ static int limits(void)
+ {
++    /* GEO #300: the report is linear in N. Every group shares one id array, so the whole list is
++     * at most one group record and one id per member (plus its four counters). */
++    const size_t cap=WOOD_CUT_LIST_MEMBER_CAPACITY;
++    CHECK(sizeof(WoodCutList)<=cap*(sizeof(WoodCutGroup)+sizeof(uint32_t))+4*sizeof(size_t),"report-linear-size");
+     WoodCutList result;memset(&result,0xa5,sizeof result);
+     CHECK(wood_cut_list_collect(NULL,0,&result)&&!result.group_count&&!result.placed&&!result.total_length,"report-empty");
+-    WoodMember values[WOOD_CUT_LIST_MEMBER_CAPACITY];for(size_t i=0;i<WOOD_CUT_LIST_MEMBER_CAPACITY;++i)values[i]=member((uint32_t)i,100,20,30,WOOD_MEMBER_ROLE_PRIMARY,true);
+-    CHECK(wood_cut_list_collect(values,WOOD_CUT_LIST_MEMBER_CAPACITY,&result)&&result.group_count==1&&result.placed==64&&result.groups[0].count==64&&result.groups[0].ids[63]==63,"report-capacity");
++    WoodMember values[WOOD_CUT_LIST_MEMBER_CAPACITY];for(size_t i=0;i<cap;++i)values[i]=member((uint32_t)i,100,20,30,WOOD_MEMBER_ROLE_PRIMARY,true);
++    CHECK(wood_cut_list_collect(values,cap,&result)&&result.group_count==1&&result.placed==cap&&result.groups[0].count==cap&&result.groups[0].first==0&&result.ids[cap-1]==(uint32_t)(cap-1),"report-capacity");
++    for(size_t i=0;i<cap;++i)values[i]=member((uint32_t)i,i%2?100:200,20,30,WOOD_MEMBER_ROLE_PRIMARY,true);
++    CHECK(wood_cut_list_collect(values,cap,&result)&&result.group_count==2&&result.groups[0].length==200&&result.groups[0].count==cap/2&&result.groups[1].first==cap/2&&result.ids[result.groups[0].first]==0&&result.ids[result.groups[0].first+cap/2-1]==(uint32_t)(cap-2)&&result.ids[result.groups[1].first]==1&&result.ids[result.groups[1].first+cap/2-1]==(uint32_t)(cap-1),"report-capacity-two-groups-offsets");
+     WoodCutList before;memcpy(&before,&result,sizeof result);
+-    CHECK(!wood_cut_list_collect(values,WOOD_CUT_LIST_MEMBER_CAPACITY+1,&result)&&!memcmp(&before,&result,sizeof result),"report-over-capacity-atomic");
++    CHECK(!wood_cut_list_collect(values,cap+1,&result)&&!memcmp(&before,&result,sizeof result),"report-over-capacity-atomic");
+     CHECK(!wood_cut_list_collect(NULL,1,&result)&&!memcmp(&before,&result,sizeof result),"report-missing-input-atomic");return 0;
+ }
+ static int fixity(void)
+diff --git a/tests/geo261_timber_capacity_harness.c b/tests/geo261_timber_capacity_harness.c
+new file mode 100644
+--- /dev/null
++++ b/tests/geo261_timber_capacity_harness.c
+@@ -0,0 +1,84 @@
++/* GEO #300 timber capacity witnesses at the real production capacity.
++ * Every N / N+1 pair here is written with the production macros, never a
++ * literal 512: the pinned value lives in exactly one assertion ("values"). */
++#include "contact_world.h"
++#include "cut_list.h"
++#include "member_declaration.h"
++#include "member_reference.h"
++#include "world_validation.h"
++#include <stdio.h>
++#include <string.h>
++#define CHECK(tag,x) do{if(!(x)){fprintf(stderr,"ASSERT:%s\n",tag);return 1;}}while(0)
++
++/* The value is a decision (see the issue), so it is pinned once, here. Every
++ * other name must equal it or derive from it. */
++static int values(void)
++{
++    CHECK("capacity-pinned-512",WOOD_MEMBER_CAPACITY==512);
++    CHECK("capacity-contact-members-derived",WOOD_CONTACT_MEMBER_CAPACITY==WOOD_MEMBER_CAPACITY);
++    CHECK("capacity-cut-list-members-derived",WOOD_CUT_LIST_MEMBER_CAPACITY==WOOD_MEMBER_CAPACITY);
++    CHECK("capacity-span-members-derived",WOOD_MEMBER_SPAN_MEMBER_CAPACITY==WOOD_MEMBER_CAPACITY);
++    CHECK("capacity-contact-faces-derived",WOOD_CONTACT_FACE_CAPACITY==
++        WOOD_CONTACT_COMPONENT_CAPACITY*GEO_LOOP_MAX_VERTICES*(GEO_REGION_MAX_HOLES+1)+2*WOOD_MEMBER_CAPACITY);
++    CHECK("capacity-span-cuts-derived",WOOD_MEMBER_SPAN_CUT_CAPACITY==
++        8*GEO_LOOP_MAX_VERTICES*(GEO_REGION_MAX_HOLES+1)+2*WOOD_MEMBER_CAPACITY);
++    CHECK("capacity-face-bounds-agree",WOOD_CONTACT_FACE_CAPACITY==WOOD_MEMBER_SPAN_CUT_CAPACITY);
++    return 0;
++}
++
++/* The host asks wood_member_declaration_capacity before it declares anything. Walk the
++ * real capacity: slot N is accepted, the next new id is refused, redeclaring an existing
++ * id at capacity is still allowed, and a refusal writes nothing. */
++static int declaration(void)
++{
++    WoodMember members[WOOD_MEMBER_CAPACITY+1];size_t count=0;
++    WoodMemberDeclarationContext context={members,&count,WOOD_MEMBER_CAPACITY,NULL,NULL,NULL};
++    memset(members,0,sizeof members);
++    for(size_t i=0;i<WOOD_MEMBER_CAPACITY;++i){const char *error=NULL;
++        CHECK("declare-slot-accepted",wood_member_declaration_capacity(&context,true,(uint32_t)(1000+i),&error)&&!error);
++        CHECK("declare-slot-appended",wood_member_declare(&context,(uint32_t)(1000+i),27,33,WOOD_MEMBER_ROLE_PRIMARY,0,&error)&&count==i+1);
++    }
++    CHECK("declare-exact-capacity-reached",count==WOOD_MEMBER_CAPACITY);
++    WoodMember snapshot[WOOD_MEMBER_CAPACITY+1];memcpy(snapshot,members,sizeof snapshot);
++    const char *error=NULL;
++    CHECK("declare-over-capacity-refused",!wood_member_declaration_capacity(&context,true,99999,&error)&&error&&!strcmp(error,"角材的數量超過上限"));
++    error=NULL;
++    CHECK("declare-over-capacity-without-id-refused",!wood_member_declaration_capacity(&context,false,0,&error)&&error&&!strcmp(error,"角材的數量超過上限"));
++    error=NULL;
++    CHECK("declare-existing-at-capacity-allowed",wood_member_declaration_capacity(&context,true,1000,&error)&&
++        wood_member_declaration_capacity(&context,true,(uint32_t)(1000+WOOD_MEMBER_CAPACITY-1),&error)&&!error);
++    CHECK("declare-refusal-writes-nothing",count==WOOD_MEMBER_CAPACITY&&!memcmp(snapshot,members,sizeof snapshot));
++    return 0;
++}
++
++/* wood_world_validate_members keeps one axis fact per member in a fixed array. */
++typedef struct {WoodGridState grids;WoodMember members[WOOD_CONTACT_MEMBER_CAPACITY];size_t calls;} ValidationFixture;
++static ValidationFixture fixture;
++static bool member_at(void *user,size_t i,WoodWorldMemberFact *out)
++{
++    ValidationFixture *f=user;++f->calls;
++    if(i>=WOOD_CONTACT_MEMBER_CAPACITY)return false;
++    memset(out,0,sizeof *out);out->member=&f->members[i];out->placement_id=10;out->length_direction=GEO_DIRECTION_POS_U;return true;
++}
++static int validation(void)
++{
++    WoodWorldValidationContext c;char error[256]="sentinel";
++    memset(&c,0,sizeof c);memset(&fixture,0,sizeof fixture);
++    c.grids.state=&fixture.grids;c.grids.user=&fixture;c.user=&fixture;c.member_at=member_at;
++    c.member_count=WOOD_CONTACT_MEMBER_CAPACITY;
++    CHECK("validation-exact-capacity-accepted",wood_world_validate_members(&c,error,sizeof error)&&!strcmp(error,"sentinel")&&
++        fixture.calls>=WOOD_CONTACT_MEMBER_CAPACITY);
++    fixture.calls=0;c.member_count=WOOD_CONTACT_MEMBER_CAPACITY+1;
++    CHECK("validation-over-capacity-fails-closed-before-reading",!wood_world_validate_members(&c,error,sizeof error)&&
++        !strncmp(error,"I33 CAPACITY",12)&&fixture.calls==0);
++    return 0;
++}
++
++int main(int argc,char **argv)
++{
++    if(argc!=2)return 2;
++    if(!strcmp(argv[1],"values"))return values();
++    if(!strcmp(argv[1],"declaration"))return declaration();
++    if(!strcmp(argv[1],"validation"))return validation();
++    return 2;
++}
+diff --git a/tests/run_all.expected.json b/tests/run_all.expected.json
+--- a/tests/run_all.expected.json
++++ b/tests/run_all.expected.json
+@@ -654,6 +654,11 @@
+       "count": 7,
+       "unit": "test"
+     },
++    "py:test_geo261_timber_capacity": {
++      "mode": "count",
++      "count": 12,
++      "unit": "test"
++    },
+     "py:test_geo261_version_activation": {
+       "mode": "count",
+       "count": 10,
+diff --git a/tests/run_all.py b/tests/run_all.py
+--- a/tests/run_all.py
++++ b/tests/run_all.py
+@@ -191,6 +191,7 @@
+     'test_geo261_wood_grid_engineering': [],
+     'test_geo261_wood_member_declaration': [],
+     'test_geo261_wood_report_policy': [],
++    'test_geo261_timber_capacity': [],
+     'test_geo261_wood_world_validation': [],
+     'test_grid_system_contract': ['bridge'],
+     'test_grid_card_reference': ['bridge', 'model-base'],
+diff --git a/tests/test_geo261_timber_capacity.py b/tests/test_geo261_timber_capacity.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_geo261_timber_capacity.py
+@@ -0,0 +1,297 @@
++"""GEO #300: one timber capacity, exact N / N+1 behaviour, and controls with teeth.
++
++The capacity (WOOD_MEMBER_CAPACITY in members.h) is the only definition. The other
++four names (WORLD_MAX_TIMBERS and the contact, report and span scratch bounds) must
++derive from it, and the host checks the derivations at compile time. Every walk of
++the boundary uses the production macros or the value read from members.h; the one
++pinned number lives in the C harness (case "values").
++
++A control counts only when the baseline passes, the changed build fails the NAMED
++assertion (or, for a compile-time binding, the build fails naming the check), and the
++restored baseline passes again. Native crashes and unrelated build errors are not
++detections.
++"""
++from pathlib import Path
++import re
++import shutil
++import subprocess
++import sys
++import unittest
++
++ROOT = Path(__file__).resolve().parents[1]
++if str(ROOT) not in sys.path:
++    sys.path.insert(0, str(ROOT))
++from tests import _bridge
++from tests.test_geo261_native_kernel import native
++from tests.test_geo261_wood_world_validation import PRODUCT_DEFINES, copy_product_closure
++
++W = ROOT / "geometry-templates/woodworking/native"
++HOST = ROOT / "current_geometry.c"
++HARNESS = ROOT / "tests/geo261_timber_capacity_harness.c"
++REPORT_HARNESS = ROOT / "tests/geo261_report_policy_harness.c"
++OVER_CAPACITY = "角材的數量超過上限"
++CAPACITY = int(re.search(r"^#define WOOD_MEMBER_CAPACITY (\d+)\s*$", (W / "members.h").read_text(encoding="utf-8"), re.M).group(1))
++
++DERIVED = {
++    "WORLD_MAX_TIMBERS": "current_geometry.c",
++    "WOOD_CONTACT_MEMBER_CAPACITY": "geometry-templates/woodworking/native/contact_world.h",
++    "WOOD_CUT_LIST_MEMBER_CAPACITY": "geometry-templates/woodworking/native/cut_list.h",
++    "WOOD_MEMBER_SPAN_MEMBER_CAPACITY": "geometry-templates/woodworking/native/member_reference.h",
++}
++PRODUCT_GLOBS = ("current_geometry.c", "geometry-core/*.c", "geometry-core/*.h", "geometry-core/*.inc",
++                 "geometry-core/kernel/*.c", "geometry-core/kernel/*.h", "geometry-core/kernel/internal/*.h",
++                 "geometry-app/native/*", "geometry-templates/woodworking/native/*",
++                 "geometry-web/*.c", "geometry-web/*.h", "geometry-web/*.inc")
++
++
++def read(path):
++    return Path(path).read_bytes().decode("utf-8").replace("\r\n", "\n")
++
++
++def strip_comments(text):
++    return re.sub(r"/\*.*?\*/|//[^\n]*", "", text, flags=re.S)
++
++
++def product_sources():
++    seen = set()
++    for pattern in PRODUCT_GLOBS:
++        for path in sorted(ROOT.glob(pattern)):
++            if path.suffix in (".c", ".h", ".inc") and path not in seen:
++                seen.add(path)
++                yield path
++
++
++class TimberCapacitySource(unittest.TestCase):
++    def test_one_definition_and_every_other_name_is_derived_from_it(self):
++        definitions = {}
++        names = "|".join(["WOOD_MEMBER_CAPACITY", *DERIVED])
++        for path in product_sources():
++            text = read(path)
++            relative = path.relative_to(ROOT).as_posix()
++            for match in re.finditer(r"^[ \t]*#[ \t]*define[ \t]+(" + names + r")\b[ \t]*([^\n]*)$", text, re.M):
++                value = re.sub(r"/\*.*?\*/|//.*$", "", match.group(2)).strip()
++                definitions.setdefault(match.group(1), []).append((relative, value))
++            self.assertIsNone(re.search(r"\bWOOD_MEMBER_CAPACITY\s*=[^=]", strip_comments(text)),
++                              relative + " must not turn the capacity back into an enum constant")
++        self.assertEqual([("geometry-templates/woodworking/native/members.h", str(CAPACITY))],
++                         definitions.get("WOOD_MEMBER_CAPACITY"))
++        for name, relative in DERIVED.items():
++            self.assertEqual([(relative, "WOOD_MEMBER_CAPACITY")], definitions.get(name),
++                             name + " must be exactly one alias of WOOD_MEMBER_CAPACITY")
++
++    def test_host_hands_the_single_constant_to_every_capacity_consumer(self):
++        host = read(HOST)
++        self.assertEqual(1, host.count("&world->wood.timber_count,WORLD_MAX_TIMBERS,"))
++        self.assertIn("c.member_capacity=WORLD_MAX_TIMBERS;", read(ROOT / "geometry-core/assembly.inc"))
++        self.assertIn("o.member_capacity=WORLD_MAX_TIMBERS;", read(ROOT / "geometry-core/engineering_commands.inc"))
++        support = read(ROOT / "geometry-core/panel_fill_support.inc")
++        self.assertIn("wood_panel_support_evaluate(&d->layout,rects,count,WORLD_MAX_TIMBERS,threshold,s)", support)
++        self.assertIn("malloc(WORLD_MAX_TIMBERS*sizeof *rects)", support)
++        for check in ("world", "timbers", "anchors", "contact", "cut_list", "span", "stop_face"):
++            self.assertIn("app_timber_capacity_" + check + "_check[", host)
++
++    def test_cut_list_ids_are_one_flat_array_not_one_array_per_group(self):
++        header = strip_comments(read(W / "cut_list.h"))
++        group, _, rest = header.partition("} WoodCutGroup;")
++        self.assertNotRegex(group, r"\bids\s*\[")
++        self.assertEqual(1, len(re.findall(r"\bids\s*\[", rest)))
++
++
++class NativeTimberCapacity(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        build = native()
++        source = build.woodworking / "timber-capacity-client.c"
++        shutil.copy2(HARNESS, source)
++        cls.client = build.compile(source, "timber-capacity-client")
++        cls.exe = build.link("timber-capacity-client", [cls.client, *build.product_objects()])
++        report = build.woodworking / "timber-capacity-report-client.c"
++        shutil.copy2(REPORT_HARNESS, report)
++        cls.report_client = build.compile(report, "timber-capacity-report-client")
++        cls.report_exe = build.link("timber-capacity-report", [cls.report_client, build.wood_cut_list_object, build.wood_boundary_policy_object])
++
++    def case(self, name, exe=None, marker=None):
++        result = subprocess.run([str(exe or self.exe), name], capture_output=True, text=True, encoding="utf-8", timeout=30)
++        self.assertEqual(1 if marker else 0, result.returncode, result.stderr)
++        self.assertEqual("ASSERT:" + marker + "\n" if marker else "", result.stderr)
++
++    def test_value_is_pinned_once_and_every_derived_bound_follows_it(self):
++        self.case("values")
++
++    def test_declaration_walks_the_real_capacity_slot_n_accepted_and_slot_n_plus_one_refused(self):
++        self.case("declaration")
++
++    def test_world_validation_refuses_more_members_than_the_contact_capacity_before_reading_any(self):
++        self.case("validation")
++
++    CONTROLS = (
++        ("declaration-refuses-last-slot", "member_declaration", "wood_member_declaration_object",
++         "if(*context->count==context->capacity){", "if(*context->count+1==context->capacity){",
++         "declaration", "declare-slot-accepted"),
++        ("declaration-never-refuses-at-capacity", "member_declaration", "wood_member_declaration_object",
++         "if(*context->count==context->capacity){", "if(*context->count>context->capacity){",
++         "declaration", "declare-over-capacity-refused"),
++        ("validation-guard-removed", "world_validation", "wood_world_validation_object",
++         '    if(context->member_count>WOOD_CONTACT_MEMBER_CAPACITY)\n'
++         '        return validation_refuse(error,capacity,"I33 CAPACITY: member count exceeds the contact capacity");\n',
++         "", "validation", "validation-over-capacity-fails-closed-before-reading"),
++        ("validation-guard-refuses-exact-capacity", "world_validation", "wood_world_validation_object",
++         "if(context->member_count>WOOD_CONTACT_MEMBER_CAPACITY)", "if(context->member_count>=WOOD_CONTACT_MEMBER_CAPACITY)",
++         "validation", "validation-exact-capacity-accepted"),
++    )
++
++    def changed_object(self, name, module, before, after):
++        build = native()
++        source = (build.woodworking / (module + ".c")).read_text(encoding="utf-8")
++        self.assertEqual(1, source.count(before), "Control must replace exactly one production expression: " + name)
++        path = build.woodworking / ("timber-capacity-" + name + ".c")
++        path.write_text(source.replace(before, after), encoding="utf-8")
++        return build.compile(path, "timber-capacity-" + name)
++
++    def test_boundary_guards_fail_their_named_assertions_and_restore(self):
++        build = native()
++        for name, module, attribute, before, after, case, marker in self.CONTROLS:
++            with self.subTest(control=name):
++                self.case(case)
++                changed = self.changed_object(name, module, before, after)
++                original = getattr(build, attribute)
++                objects = build.product_objects()
++                self.assertEqual(1, objects.count(original))
++                exe = build.link("timber-capacity-" + name, [self.client, *[changed if item == original else item for item in objects]])
++                self.case(case, exe, marker)
++                self.case(case)
++
++    def test_cut_list_guard_accepts_exactly_capacity_and_the_report_stays_linear(self):
++        build = native()
++        self.case("limits", self.report_exe)
++        changed = self.changed_object("cut-list-refuses-exact-capacity", "cut_list",
++                                      "count>WOOD_CUT_LIST_MEMBER_CAPACITY)return false;",
++                                      "count>=WOOD_CUT_LIST_MEMBER_CAPACITY)return false;")
++        exe = build.link("timber-capacity-cut-list-guard", [self.report_client, changed, build.wood_boundary_policy_object])
++        self.case("limits", exe, "report-capacity")
++        # A header control: padding each group by N ids brings the N-squared report back. It still
++        # compiles, so only the size assertion can notice.
++        directory = build.work / "timber-capacity-report-padding"
++        shutil.rmtree(directory, ignore_errors=True)
++        shutil.copytree(build.woodworking, directory)
++        header = directory / "cut_list.h"
++        text = header.read_text(encoding="utf-8")
++        before = "    size_t count,first;\n} WoodCutGroup;"
++        self.assertEqual(1, text.count(before))
++        header.write_text(text.replace(before, "    size_t count,first;\n    unsigned char reserved[WOOD_CUT_LIST_MEMBER_CAPACITY*4];\n} WoodCutGroup;"), encoding="utf-8")
++        client = directory / "report-client.c"
++        shutil.copy2(REPORT_HARNESS, client)
++        padded = build.link("timber-capacity-report-padded", [build.compile(client, "timber-capacity-padded-client"),
++            build.compile(directory / "cut_list.c", "timber-capacity-padded-cut-list"),
++            build.compile(directory / "boundary_policy.c", "timber-capacity-padded-boundary")])
++        self.case("limits", padded, "report-linear-size")
++        self.case("limits", self.report_exe)
++
++    def test_changing_the_value_fails_only_the_pin_because_every_other_bound_derives_from_it(self):
++        build = native()
++        directory = build.work / "timber-capacity-value-change"
++        shutil.rmtree(directory, ignore_errors=True)
++        shutil.copytree(build.woodworking, directory)
++        header = directory / "members.h"
++        text = header.read_text(encoding="utf-8")
++        before = "#define WOOD_MEMBER_CAPACITY %d" % CAPACITY
++        self.assertEqual(1, text.count(before))
++        header.write_text(text.replace(before, "#define WOOD_MEMBER_CAPACITY %d" % (CAPACITY * 2)), encoding="utf-8")
++        client = directory / "timber-capacity-value-client.c"
++        shutil.copy2(HARNESS, client)
++        # Only the "values" case runs: it calls nothing, so the original product objects are never entered.
++        exe = build.link("timber-capacity-value", [build.compile(client, "timber-capacity-value-client"), *build.product_objects()])
++        self.case("values", exe, "capacity-pinned-512")
++        self.case("values")
++
++
++class ProductTimberCapacity(unittest.TestCase):
++    HOST_CONTROLS = (
++        ("world-define-literal", "current_geometry.c", "#define WORLD_MAX_TIMBERS     WOOD_MEMBER_CAPACITY",
++         "#define WORLD_MAX_TIMBERS     64", "app_timber_capacity_world_check"),
++        ("storage-literal", "geometry-templates/woodworking/native/document.h", "WoodMember timbers[WOOD_MEMBER_CAPACITY];",
++         "WoodMember timbers[64];", "app_timber_capacity_timbers_check"),
++        ("contact-literal", "geometry-templates/woodworking/native/contact_world.h",
++         "#define WOOD_CONTACT_MEMBER_CAPACITY WOOD_MEMBER_CAPACITY", "#define WOOD_CONTACT_MEMBER_CAPACITY 64",
++         "app_timber_capacity_contact_check"),
++        ("cut-list-literal", "geometry-templates/woodworking/native/cut_list.h",
++         "#define WOOD_CUT_LIST_MEMBER_CAPACITY WOOD_MEMBER_CAPACITY", "#define WOOD_CUT_LIST_MEMBER_CAPACITY 64",
++         "app_timber_capacity_cut_list_check"),
++        ("span-literal", "geometry-templates/woodworking/native/member_reference.h",
++         "#define WOOD_MEMBER_SPAN_MEMBER_CAPACITY WOOD_MEMBER_CAPACITY", "#define WOOD_MEMBER_SPAN_MEMBER_CAPACITY 64",
++         "app_timber_capacity_span_check"),
++    )
++
++    def declare(self, bridge, identifier, size_a=27, size_b=33, role="primary"):
++        response = bridge.command("line timber %d %d %d role %s" % (identifier, size_a, size_b, role))
++        if "preview" in response and response["preview"].get("valid"):
++            response = bridge.command("line confirm %d" % response["preview"]["token"])
++        return response
++
++    def walk(self, exe, attempts):
++        """Declare unplaced timbers one by one until one is refused; report what the World kept."""
++        outcome = {"refused": None, "error": "", "world_kept": None}
++        with _bridge.BridgeSession(exe) as bridge:
++            self.assertTrue(bridge.command("reset")["ok"])
++            before = None
++            for index in range(attempts):
++                if index == CAPACITY:
++                    before = bridge.command("dump")["text"]
++                response = self.declare(bridge, 1000 + index)
++                if not response.get("ok"):
++                    outcome["refused"], outcome["error"] = index, str(response.get("error", ""))
++                    break
++            final = bridge.command("dump")["text"]
++            outcome["world_kept"] = None if before is None else before == final
++            # `objects` lists only placed timbers; the DSL dump has one line per declared timber.
++            outcome["declared"] = len(re.findall(r"^timber \d+ ", final, re.M))
++            outcome["redeclare_ok"] = bool(self.declare(bridge, 1000, 40, 50, "secondary").get("ok"))
++        return outcome
++
++    def test_bridge_accepts_exactly_capacity_timbers_refuses_the_next_and_keeps_the_world(self):
++        outcome = self.walk(native().bridge(), CAPACITY + 1)
++        self.assertEqual(CAPACITY, outcome["refused"], "the %dth declaration (index %d) is the first refusal" % (CAPACITY + 1, CAPACITY))
++        self.assertIn(OVER_CAPACITY, outcome["error"])
++        self.assertTrue(outcome["world_kept"], "a refused declaration must leave the whole World unchanged")
++        self.assertEqual(CAPACITY, outcome["declared"])
++        self.assertTrue(outcome["redeclare_ok"], "redeclaring an existing id at full capacity is an update, not an append")
++
++    def test_host_wiring_control_moves_the_actual_bridge_boundary_by_one(self):
++        build = native()
++        self.assertEqual(CAPACITY, self.walk(build.bridge(), CAPACITY + 1)["refused"])
++        destination = build.work / "timber-capacity-host-wiring"
++        shutil.rmtree(destination, ignore_errors=True)
++        entry = copy_product_closure(ROOT / "geometry-web/web_bridge.c", destination)
++        host = destination / "current_geometry.c"
++        before = b"&world->wood.timber_count,WORLD_MAX_TIMBERS,"
++        data = host.read_bytes()
++        self.assertEqual(1, data.count(before), "Control must change the one capacity argument of apply_timber_line")
++        host.write_bytes(data.replace(before, b"&world->wood.timber_count,WORLD_MAX_TIMBERS-1,"))
++        exe = build.link("timber-capacity-wiring", [build.compile(entry, "timber-capacity-wiring", PRODUCT_DEFINES), *build.product_objects()])
++        changed = self.walk(exe, CAPACITY + 1)
++        self.assertEqual(CAPACITY - 1, changed["refused"], "the last slot must now be refused")
++        self.assertEqual(CAPACITY - 1, changed["declared"])
++        self.assertEqual(CAPACITY, self.walk(build.bridge(), CAPACITY + 1)["refused"])
++
++    def test_static_bindings_fail_the_build_naming_the_drifted_constant(self):
++        build = native()
++        build.cli()  # positive control: the unchanged closure builds
++        for name, relative, before, after, check in self.HOST_CONTROLS:
++            with self.subTest(control=name):
++                destination = build.work / ("timber-capacity-" + name)
++                shutil.rmtree(destination, ignore_errors=True)
++                entry = copy_product_closure(HOST, destination)
++                target = destination / relative
++                data = target.read_bytes()
++                self.assertEqual(1, data.count(before.encode("utf-8")), "Control must change exactly one site: " + name)
++                target.write_bytes(data.replace(before.encode("utf-8"), after.encode("utf-8")))
++                with self.assertRaises(AssertionError) as caught:
++                    build.compile(entry, "timber-capacity-" + name, PRODUCT_DEFINES)
++                text = str(caught.exception)
++                self.assertIn("Native compile/link failed", text)
++                # gcc names the array typedef; MSVC reports C2118 (negative subscript) without it.
++                self.assertTrue(check in text or "C2118" in text, text[-1500:])
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)

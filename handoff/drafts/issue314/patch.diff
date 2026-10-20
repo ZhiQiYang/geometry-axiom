@@ -1,0 +1,90 @@
+diff --git a/current_geometry.c b/current_geometry.c
+index d1a3e5e..9feb4c7 100644
+--- a/current_geometry.c
++++ b/current_geometry.c
+@@ -6270,6 +6270,9 @@ static bool world_revalidate_candidate(World *world,World *candidate)
+     if (!grid_systems_rebuild(candidate,grid_error,sizeof grid_error)) {
+         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+     }
++    if (!grid_stagger_commit_valid(candidate,grid_error,sizeof grid_error)) {
++        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
++    }
+     if (!grid_bindings_rebuild(candidate,grid_error,sizeof grid_error)) {
+         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+     }
+diff --git a/geometry-core/subgrid_world.inc b/geometry-core/subgrid_world.inc
+index 62996db..5072da7 100644
+--- a/geometry-core/subgrid_world.inc
++++ b/geometry-core/subgrid_world.inc
+@@ -8,6 +8,18 @@ static bool subgrid_parent_count_valid(const World *before,const ReferenceGrid *
+ static bool subgrid_world_valid(const World *world,char *err,size_t cap)
+ {WoodGridContext c=app_grid_context(world),before;if(g_subgrid_before){before=app_grid_context(g_subgrid_before);c.before=&before;}return wood_grid_world_valid(&c,err,cap);}
+ 
++/* D10b/I24 (GEO-314). H decides what a commit is (R56); W owns the one-axis rule; K stays
++ * neutral. The baseline is the I23 one: g_subgrid_before is the live World at the start of
++ * the command, or a retained candidate's before at confirm. A scene-file replay keeps a
++ * per-line baseline that is only a partial World, so D61 replacements (open, load, import,
++ * recover) and R46/I31 replays never compare. Undo/redo restore a snapshot and never get
++ * here. No baseline means there is no commit to compare with. */
++static bool grid_stagger_commit_valid(const World *candidate,char *err,size_t cap)
++{
++    if(!g_subgrid_before||g_parsing_scene_file)return true;
++    return wood_grid_stagger_commit_valid(&candidate->geo.grid_store,&g_subgrid_before->geo.grid_store,err,cap);
++}
++
+ 
+ /* R13: test a whole parent/child family against one candidate face. */
+ static bool subgrid_family_fits(const World *w,const ReferenceGrid *parent,
+diff --git a/geometry-templates/woodworking/native/grid_application.c b/geometry-templates/woodworking/native/grid_application.c
+index 61f4931..f2137cb 100644
+--- a/geometry-templates/woodworking/native/grid_application.c
++++ b/geometry-templates/woodworking/native/grid_application.c
+@@ -239,6 +239,31 @@ bool wood_grid_systems_rebuild(WoodGridContext *c,char *error,size_t cap)
+     }
+     return true;
+ }
++/* D10b/I24 commit comparison (GEO-314). An axis is staggered when stagger_set. The authored
++ * value is the field's source: a direct integer, or a ParameterRef whose card edit is not an
++ * edit of this field (I24, last sentence). Only when the source itself changed (direct <-> ref,
++ * or another ref) do the evaluated values decide. */
++static bool wood_grid_stagger_value_changed(const GeoGridAxisDef *old,const GeoGridAxisDef *now)
++{
++    const GeoParameterRef *prior=&old->parameters[5],*current=&now->parameters[5];
++    if(prior->set&&current->set&&prior->parameter_id==current->parameter_id&&prior->field_id==current->field_id)return false;
++    return old->stagger!=now->stagger;
++}
++bool wood_grid_stagger_commit_valid(const GeoGridStore *after,const GeoGridStore *before,char *error,size_t cap)
++{
++    if(!after||!before)return wood_grid_error(error,cap,"I24: 相位差提交缺少前後世界，不能比較，一律拒絕");
++    for(size_t i=0;i<geo_grid_systems_count(after);++i){
++        const GeoGridSystem *now=geo_grid_systems_at(after,i),*old=geo_grid_systems_find(before,now->id);
++        /* Zero or one staggered axis, a move to the other axis, and removing one axis always pass. */
++        if(!(now->axis[0].stagger_set&&now->axis[1].stagger_set))continue;
++        if(!old||!(old->axis[0].stagger_set&&old->axis[1].stagger_set))
++            return wood_grid_error(error,cap,"I24: 網格系統 %u 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger",now->id);
++        for(int axis=0;axis<2;++axis)if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis]))
++            return wood_grid_error(error,cap,"I24: 網格系統 %u 提交前後都是兩軸錯開，但 %c 軸相位差由 %lld 改成 %lld。要改請先在同一筆編輯裡移除一軸，再改剩下那軸（D10b）",
++                now->id,axis?'v':'u',(long long)old->axis[axis].stagger,(long long)now->axis[axis].stagger);
++    }
++    return true;
++}
+ bool wood_grid_system_evaluate_direct(WoodGridContext *c,uint32_t id,char *error,size_t cap)
+ {
+     size_t index=0;while(index<geo_grid_systems_count(c->sources)&&geo_grid_systems_at(c->sources,index)->id!=id)++index;
+diff --git a/geometry-templates/woodworking/native/grid_application.h b/geometry-templates/woodworking/native/grid_application.h
+index 77a0cf2..b318177 100644
+--- a/geometry-templates/woodworking/native/grid_application.h
++++ b/geometry-templates/woodworking/native/grid_application.h
+@@ -98,6 +98,12 @@ bool wood_grid_apply_binding(WoodGridContext *,const WoodGridApplication *,char
+ bool wood_grid_prepare_child(const WoodGridContext *,WoodGridApplication *,bool,unsigned,unsigned,char *,size_t);
+ bool wood_grid_child_check(const WoodGridContext *,const WoodGridApplication *,char *,size_t);
+ bool wood_grid_systems_rebuild(WoodGridContext *,char *,size_t);
++/* D10b/I24 (GEO-314): one staggered axis per grid system, compared over one commit (R56).
++ * `before` is the commit baseline, `after` the evaluated candidate. W owns the rule over
++ * K's neutral system views; H decides which evaluations are commits (whole replacements
++ * D61, isolated replays R46/I31 and undo/redo must not call this). Both stores are
++ * required: a missing baseline fails closed. Reads no ambient state. */
++bool wood_grid_stagger_commit_valid(const GeoGridStore *after,const GeoGridStore *before,char *error,size_t cap);
+ /* D64/I74 card-reference diagnostics for a K grid store status. Returns false
+  * without writing when the status is not a card-reference status. The system
+  * supplies the card's parameter and field ids; parameter_error the source cause. */
