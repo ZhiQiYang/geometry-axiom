@@ -80,7 +80,8 @@ def bind_sources(base, sources, roots):
         if set(by_side) != {(a, s) for a in range(3) for s in range(2)}:
             _fail("Native box source faces do not cover every local side.")
         # Names alone match as a set; a timber name must also sit on its own
-        # side, or by_side would attach it to the wrong face geometry.
+        # local (axis, side). That side's world geometry is not compared with
+        # the legacy face vertices (Residual risks, geometry-app/native/MODEL-SOURCES.md).
         if solid["kind"] == "timber" and {side: name for side, (name, _) in by_side.items()} != TIMBER_FACE_SIDES:
             _fail("Native timber face names disagree with their local sides.")
         descriptor = catalog[reference.key]

@@ -126,3 +126,16 @@ together with its key is therefore accepted by the decoder but refused, with
   accepted; the source-graph runtime binds each spec to the node reference,
   not to the snapshot value. The loader accepted such a response before the
   root catalog as well.
+- The face checks lock each face name to a local (axis, side) of its box. The
+  local axes come from the same response's box `frame` and `hi`, and in
+  source-graph mode the legacy snapshot `faces[].vertices` are not compared
+  with them. A rotated frame describing the same world solid (for example
+  `u` = Y, `v` = Z, `n` = X with `hi` = (30, 20, 40)) passes every check and
+  evaluates, but each name then lands on another world face: a timber's
+  `START` moves from its x = 0 face to its y = 0 face and `A0` from z = 0 to
+  x = 0. Column and beam names such as `-X` have the same gap. Like the
+  unchecked `specs[].value`, these are two declarations in one adapter response
+  that are not compared, so trust rests on the registry-verified adapter. The
+  direction that would close it is for the woodworking binding to compare each
+  legacy face's vertices with the world geometry of the box face at that
+  (axis, side), as `model_geometry.solid_definition` does on the legacy path.
