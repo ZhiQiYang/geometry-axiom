@@ -53,10 +53,10 @@ if(process.env.P72B_WITHDRAW_NAVIGATION){
   effective=effective.replace(helper+'\n','').replace(newOpen,oldOpen).replace(newReturn,oldReturn);memoryPatch='withdraw-navigation';
 }
 const control=process.env.P72B_NAV_CONTROL||'none';
-if(!['none','stale-first','hold-document'].includes(control))throw Error('P72B_NAV_CONTROL 只接受 none、stale-first、hold-document');
+if(!['none','stale-first','hold-navigation'].includes(control))throw Error('P72B_NAV_CONTROL 只接受 none、stale-first、hold-navigation；舊hold-document控制已停用');
 const effectiveFixed=effective.includes(helper);
 if(control!=='none'&&process.env.GEOMETRY_GRID_RENAME_FRESH_URL)throw Error('導航注入控制只用同服務 reload；第二服務請單獨跑正常50題');
-if(control==='hold-document'&&!effectiveFixed)throw Error('hold-document 只驗候選的導航就緒等待期限；需有導航修正');
+if(control==='hold-navigation'&&!effectiveFixed)throw Error('hold-navigation 只驗候選的導航就緒等待期限；需有導航修正');
 const digest=s=>crypto.createHash('sha256').update(s).digest('hex');
 const metadata={root,sha:cp.execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),status:cp.execFileSync('git',['status','--short'],{cwd:root,encoding:'utf8'}).trim(),memoryPatch,actualSourceHasCandidate:fixedSource,effectiveFixed,control,sourceSha256:digest(original),effectiveSourceSha256:digest(effective),harnessSha256:digest(harness),probeSha256:digest(fs.readFileSync(__filename))};
 const mainMarker='async function main() {',bootstrapEnd='  if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY) {';
@@ -80,20 +80,27 @@ async function waitControl(condition,label,timeout=5000){
 async function onProbePaused(message){
   const p=message.params,s=navigationControl;
   if(!s)return send('Fetch.continueRequest',{requestId:p.requestId});
-  if(p.resourceType==='Document'&&!s.documentRequest){s.documentRequest=p.requestId;probeLog('真實文件請求暫停',{url:p.request.url});return;}
-  if(new URL(p.request.url).pathname.endsWith('/app.js')&&!s.scriptRequest){s.scriptRequest=p.requestId;probeLog('真實app.js請求暫停',{url:p.request.url});return;}
+  if(new URL(p.request.url).pathname.endsWith('/app.js')&&!s.scriptRequest){
+    s.scriptRequest=p.requestId;probeLog('真實app.js請求暫停',{url:p.request.url});
+    // 在任何求值前先安排放行，控制設置失敗也不能永久堵住CDP清理。
+    s.releaseTimer=setTimeout(()=>send('Fetch.continueRequest',{requestId:s.scriptRequest}).then(()=>probeLog('釋放app.js')).catch(fatal),3000);
+    return;
+  }
   await send('Fetch.continueRequest',{requestId:p.requestId});
 }
 async function probeSend(method,params={}){
   if(method==='Page.reload'&&probeMetadata.control!=='none'&&!navigationControl){
-    navigationControl={marker:require('crypto').randomUUID(),released:false};
+    navigationControl={marker:require('crypto').randomUUID(),released:false,deferredMethod:method,deferredParams:params};
     const s=navigationControl;
     s.markerScript=(await send('Page.addScriptToEvaluateOnNewDocument',{source:'window.__p72ProbeDocumentMarker='+JSON.stringify(s.marker)})).result.identifier;
-    await send('Network.setCacheDisabled',{cacheDisabled:true});
-    await send('Fetch.enable',{patterns:[{urlPattern:'*',resourceType:'Document',requestStage:'Request'},{urlPattern:'*/app.js*',resourceType:'Script',requestStage:'Request'}]});
-    const response=await send(method,params);
-    await waitControl(()=>!!s.documentRequest,'reload 真實文件請求');
-    return response;
+    if(probeMetadata.control==='stale-first'){
+      await send('Network.setCacheDisabled',{cacheDisabled:true});
+      await send('Fetch.enable',{patterns:[{urlPattern:'*/app.js*',resourceType:'Script',requestStage:'Request'}]});
+    }
+    // 這是明示的測試驅動器排程注入，尚未送出真正Page.reload。
+    // 呼叫端只等待排程登記；不偽造CDP回覆物件或舊頁條件值。
+    probeLog('控制導航排程：暫緩真正Page.reload發送');
+    return;
   }
   return send(method,params);
 }
@@ -105,14 +112,14 @@ async function probeEvaluate(expression){
   probeLog('舊頁真實條件值',{value:actual,expression,oldPage});
   if(oldPage.ready!=='complete'||oldPage.oc!=='object'||oldPage.connection!=='ready'||actual!==!probeMetadata.effectiveFixed)
     throw Error('P72B 控制未建立舊頁就緒且候選標記不符的條件：'+JSON.stringify({oldPage,actual,effectiveFixed:probeMetadata.effectiveFixed}));
-  if(probeMetadata.control==='hold-document'){s.released=true;probeLog('保持文件暫停直到候選期限');return actual;}
+  if(probeMetadata.control==='hold-navigation'){s.released=true;probeLog('保持真正Page.reload尚未發送直到候選就緒等待期限');return actual;}
   s.released=true;
-  await send('Fetch.continueRequest',{requestId:s.documentRequest});
+  probeLog('舊頁已真實取樣，現在發送真正Page.reload');
+  await send(s.deferredMethod,s.deferredParams);
   await waitControl(()=>!!s.scriptRequest,'新頁 app.js 請求');
   const incomplete=await eval_("({marker:window.__p72ProbeDocumentMarker,ready:document.readyState,oc:typeof oc})");
   if(incomplete.marker!==s.marker||incomplete.ready==='complete'||incomplete.oc!=='undefined')throw Error('P72B 控制未建立新頁尚未宣告oc的條件：'+JSON.stringify(incomplete));
   probeLog('確認新頁app.js未執行',{...incomplete,oldConditionValue:actual});
-  s.releaseTimer=setTimeout(()=>send('Fetch.continueRequest',{requestId:s.scriptRequest}).then(()=>probeLog('釋放app.js')).catch(fatal),1200);
   // 回傳瀏覽器實際算出的原值；不偽造舊頁 true 或候選 false。
   return actual;
 }
