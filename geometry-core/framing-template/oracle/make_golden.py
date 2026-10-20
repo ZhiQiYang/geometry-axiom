@@ -1,4 +1,6 @@
-"""產生 oracle-golden.json:F1–F5 與兩個挪縫例子、8 種排法的完整輸出(凍結的標準答案)。
+"""產生 oracle-golden.json:F1–F5 與三個額外例子、8 種排法的完整輸出(凍結的標準答案)。
+每個排法:buildable = 物理上可施工(沒有物理衝突);core_limits = 物理上可施工、核心條文表示不了的地方(碼、料的編號、端面座標;
+#251 審查 3d858c3 阻擋 1:核心限制和物理衝突分開,不再算不可施工)。物理上可施工的排法(含有核心限制的)都列出逐支角材。
 只在人工覆核過圖與數字之後才可重產;重產時要在 PR 說明改了什麼、為什麼。
 用法: python make_golden.py rooms.json oracle-golden.json
 """
@@ -34,12 +36,14 @@ def snapshot(spec):
     for name, room in dict(spec["rooms"], **EXTRA).items():
         rows = []
         for l, res, fails in fo.solve(room, dict(p, **room.get("params", {}))):
-            assert not fails, (name, fo.layout_name(l), fails)
+            v, probs = fo.verdict(res, None, fails)
+            assert v in ("buildable", "core_limited", "unbuildable"), (name, fo.layout_name(l), probs)
             rows.append({
                 "layout": l,
                 "name": fo.layout_name(l),
-                "buildable": not res["conflicts"],
+                "buildable": not res["conflicts"],  # 物理上可施工(沒有物理衝突);核心表示不了的另列 core_limits
                 "conflict_codes": sorted({c["code"] for c in res["conflicts"]}),
+                "core_limits": sorted([c["code"], c["id"], c["end"]] for c in res["core_limits"]) if not res["conflicts"] else [],
                 "seams_a": sorted(res["seams_a"]),
                 "seams_b": sorted(res["seams_b"]),
                 "timbers": sorted([kind_label(t), list(t["rect"])]

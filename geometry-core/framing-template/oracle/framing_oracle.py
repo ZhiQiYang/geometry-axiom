@@ -59,9 +59,12 @@
        和 trace 宣稱的可行與失敗碼逐一比對:宣稱失敗卻重建可行、失敗碼不一致、宣稱可行卻重建失敗,都報錯;
        比選中者更優先的候選(都不可行時是全部候選)必須全在 trace 裡、而且重建後都真的失敗;選中的屬於候選集合且重建後可行。
        先調支撐、不動板(#251 審查 1b6b34f9、718cc9a3、4e1f1161)。
-       已知限制:〈可行〉= 沒有衝突碼且通過完整 check(),建構端既有的缺陷(例:C11 的 2 mm 縫)
+       已知限制:〈可行〉= 沒有衝突碼、沒有核心限制、而且通過完整 check(),建構端既有的缺陷(例:C11 的 2 mm 縫)
        也會讓候選被淘汰,變成排法決策;這個缺陷不在本輪修,理由與例子見 README 已知限制。
-       (柱面與牆階的垂直牆在同一條牆線上時的 C3/C6/C8,#318 缺陷 1,建構端現在直接報 CORE_LIMIT_BOUNDARY_END_FREE,見 boundary_end_conflicts。)
+物理衝突與核心限制分開(#251 審查 3d858c3 阻擋 1,第 22 輪):build() 的 conflicts 只放物理上排不出的原因(有它就判不可施工、不跑檢查);
+  物理上排得出、只是核心條文(I19、I22)表示不了的地方記在 core_limits(每筆指名一支料的一個端面),照樣跑完整 check()。
+  verdict() 把一個排法判成 buildable / core_limited / unbuildable / inconsistent:core_limited 要 C8(核心可表示)以外全過,
+  而且 C8 的每一筆失敗都對得上一筆宣告、每一筆宣告也都有 C8 佐證(core_limit_problems);建構端說可施工、檢查卻紅,就是 inconsistent(程式的錯)。
 不處理:樑高度、交丁、角材怎麼固定(與幾何無關)。
 
 座標:世界座標,整數 mm。A 軸 = 板寬方向(主支之間的方向),B 軸 = 板長方向(主支的長度方向)。
@@ -375,58 +378,6 @@ def promote_custom4(timbers, a, b):
                 break
 
 
-# ---------------------------------------------------------------- 邊界材端面(核心 I19)的建構端判定
-def boundary_end_conflicts(reg, timbers, a, b):
-    """核心 I19 的邊界材那一款:貼外牆的邊界材,牆端的端面若有一段落在室內(端面外 1 mm 不是 RC),這一段只能頂另一支邊界材。
-    建構端原本只在〈凹角延伸不出去〉那一處(build 的 stop == e)判它;柱面和牆階的垂直牆落在同一條牆線上時
-    (例:柱 x 2600–3000、牆階的垂直牆 x=3000),沿柱料被牆階的邊界材擋在牆線前 w、沿牆料被柱面的邊界材擋在牆線後 w,
-    牆階邊界材的端面落在兩者之間的缺口裡,建構端沒有判,完整 check() 卻紅 C8_I19_BOUNDARY_END(同時帶 C3、C6、C8,#318 缺陷 1)。
-    這裡在全部角材放完之後,照 check() 的 C8b 另寫一次(定位邊的選法、端面室內部分、頂到非 boundary 的料或沒被別的 boundary 蓋住就算);
-    超出定位邊的延伸段端面由凹角延伸的停止判定與 C8_EXTENSION_END_FREE 管,這裡不碰。
-    物理上這種房間能不能施工沒有確認:核心 I19 不准邊界材的端面頂非 boundary 的料,所以只能判不可施工,標成核心限制(沿用 CORE_LIMIT_BOUNDARY_END_FREE)。"""
-    R = reg.rects()
-    oe = reg.outer_edges()
-    out = []
-    for t in timbers:
-        if t["kind"] != "boundary":
-            continue
-        r = t["rect"]
-        span, side = rng(r, a), rng(r, b)
-        pe = None  # 定位邊:與角材某側面共線、長度區間正重疊的外牆邊;整條覆蓋者優先,其次重疊最長(與 check() 同一個規則)
-        for p0, p1 in oe:
-            if p0[b] != p1[b] or p0[b] not in side:
-                continue
-            elo, ehi = sorted((p0[a], p1[a]))
-            ov = min(span[1], ehi) - max(span[0], elo)
-            if ov <= 0:
-                continue
-            cov = span[0] <= elo and span[1] >= ehi
-            if pe is None or (cov and not pe[2]) or (cov == pe[2] and ov > pe[3]):
-                pe = (elo, ehi, cov, ov)
-        if not pe:
-            continue
-        lo, hi = span
-        others = [s for s in timbers if s is not t]
-        bounds = [s["rect"] for s in others if s["kind"] == "boundary"]
-        for at, e0, e1 in ((lo, lo - 1, lo), (hi, hi, hi + 1)):
-            if (at == lo and lo < pe[0]) or (at == hi and hi > pe[1]):
-                continue  # 超出定位邊的延伸段端面
-            slab = mk(a, (e0, e1), side)
-            indoor = leftover(slab, leftover(slab, R))
-            if not indoor:
-                continue  # 端面整片頂在牆上
-            bad = [s["id"] for s in others if s["kind"] != "boundary" and any(overlap(q, s["rect"]) for q in indoor)]
-            free = [f_ for q in indoor for f_ in leftover(q, bounds)]
-            if bad or free:
-                fb = rng((free or indoor)[0], b)
-                out.append(dict(code="CORE_LIMIT_BOUNDARY_END_FREE", id=t["id"], at=[at, t["rc_line"]], free=list(fb),
-                                why=f"邊界材 {list(r)} 在牆端 {at} 的端面有 {fb[1] - fb[0]} mm 落在室內,"
-                                    f"{'頂到非 boundary 的料 ' + str(bad) if bad else '沒有別的 boundary 可頂'}:"
-                                    f"核心 I19 只准 boundary 端面的室內部分頂另一支 boundary。常見成因:柱面與牆階的垂直牆在同一條牆線上,"
-                                    f"沿柱料與沿牆料都被對方的邊界材擋在端前,缺口裡沒有料(#318 缺陷 1);物理上能不能施工沒有確認"))
-    return out
-
-
 # ---------------------------------------------------------------- 建構
 def build(room, layout, p, mut=frozenset(), _p182=None):
     P, Lp, g, w, M, X = p["P"], p["L"], p["gap"], p["w"], p["M"], p["X"]
@@ -445,7 +396,7 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
     lo_h, hi_h = w // 2, w - w // 2
     Amin, Amax = reg.bbox[a], reg.bbox[a + 2]
     Bmin, Bmax = reg.bbox[b], reg.bbox[b + 2]
-    conflicts, timbers = [], []
+    conflicts, timbers, core_limits = [], [], []  # core_limits:物理上可施工、核心條文表示不了的地方(不是衝突;見 verdict)
 
     def add(kind, rect, **meta):
         timbers.append(dict(id=len(timbers), kind=kind, rect=rect, **meta))
@@ -495,6 +446,26 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
     seen = set()
     reflex = []
     remnants = []  # 牆面上沒被蓋住、短於 min_piece 而不放料的那一小段:(面, 段, 凹角端)
+    hole_faces = []  # 柱面(孔邊):(e, 面, 料帶 ar, 室內區間 iv);全部角材放完後檢查柱面有沒有一段放不下料(RC_FACE_PART_NO_ROOM)
+
+    col_cutters = []  # 沿外牆的料,經過柱面料端部的(柱面料在它經過的地方分段,和主支一樣;見下)
+
+    def trimmable(s, ar):
+        """柱面料(孔邊、不貼外牆)的端點落在這條沿牆料的料帶裡(柱的上緣離牆不到 w):沿牆料照樣沿牆通過,柱面料在那裡分段。"""
+        sa = rng(s["rect"], a)
+        return (not s["outer"] and "no_col_trim_by_wall" not in mut
+                and (sa[0] < ar[0] < sa[1] < ar[1] or ar[0] < sa[0] < ar[1] < sa[1]))
+
+    def comp_of(ar, iv, s0, s1, outer_face=False):
+        blocks = [rng(s["rect"], b) for s in astrips if max(ar[0], rng(s["rect"], a)[0]) < min(ar[1], rng(s["rect"], a)[1])
+                  and not (outer_face and trimmable(s, ar))]
+        free = iv_subtract([iv], blocks)
+        comp = iv_find(free, (s0 + s1) / 2)
+        if comp is None:
+            on_face = [c_ for c_ in free if min(c_[1], s1) > max(c_[0], s0)]
+            comp = max(on_face, key=lambda c_: min(c_[1], s1) - max(c_[0], s0)) if on_face else None
+        return comp
+
     for e, (s0, s1), plus, is_outer in bedges:
         ar = (e, e + w) if plus else (e - w, e)
         line = reg.strip_set(a, *ar)
@@ -502,12 +473,9 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
         if iv is None:
             conflicts.append(dict(code="RC_FACE_STRIP_OUTSIDE", at=[e, s0, s1]))
             continue
-        blocks = [rng(s["rect"], b) for s in astrips if max(ar[0], rng(s["rect"], a)[0]) < min(ar[1], rng(s["rect"], a)[1])]
-        free = iv_subtract([iv], blocks)
-        comp = iv_find(free, (s0 + s1) / 2)
-        if comp is None:
-            on_face = [c_ for c_ in free if min(c_[1], s1) > max(c_[0], s0)]
-            comp = max(on_face, key=lambda c_: min(c_[1], s1) - max(c_[0], s0)) if on_face else None
+        comp = comp_of(ar, iv, s0, s1, is_outer)
+        if not is_outer:
+            hole_faces.append((e, (s0, s1), ar, iv))
         if comp is None and "short_face_conflict" in mut:
             conflicts.append(dict(code="RC_FACE_STRIP_BLOCKED", at=[e, s0, s1]))  # 突變:回到舊行為,短牆面整段被蓋住就報衝突
             continue
@@ -521,6 +489,21 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
                 if comp[1] > s1:
                     ends.append(s1)
                 comp = (max(comp[0], s0), min(comp[1], s1))
+            # 凹角也可能在料帶越不過牆端的地方:牆線越過牆端仍是室內,但料帶那 w 寬裡碰到 RC(例:y=3661 的牆在 x=3000 結束,
+            #   x < 3000 那邊 y 3644 以下是柱,y 3634–3661 的料帶越不過去;柱右面與牆階的垂直牆在同一條牆線上,#318 缺陷 1)。
+            #   以前只看料帶,這種凹角沒有認出來,另一面(牆階垂直牆)的邊界材不越過凹角,端面懸空,柱上緣 x 2973–3000 那段板邊也沒有料。
+            #   改成看牆線本身(牆線往室內側 0.5 mm、越過牆端 0.5 mm 的點在不在室內):是凹角就讓另一面的邊界材越過凹角延伸,
+            #   停在路上第一支角材的側面或 RC(同 P-145 的表示法,核心 I22 接受;這支沿牆料的端面頂在延伸段上,custom 3)。
+            #   另一面那支邊界材的料帶越過凹角那一邊也要是室內才算(越不過去就不延伸,照舊:例 COLSTEP 外框再加 x < 650 的牆階、
+            #   左上起鋪板長沿 Y,y=3661 的邊界材料帶 y 3634–3661 在 x < 3000 那邊碰到柱,牆階面那邊由柱上緣的料與 y=3700 的料承接)。
+            if "no_reflex_by_wall_line" not in mut:
+                into = 0.5 if plus else -0.5
+                for v, dv in ((s0, -0.5), (s1, 0.5)):
+                    if v in ends or not reg.inside(*pt(e + into, v + dv)):
+                        continue
+                    if any(s["outer"] and s["rc_line"] == v and e in s["edge"] and iv_find(
+                            reg.strip_set(b, *rng(s["rect"], b)), e + (-0.5 if s["edge"][0] == e else 0.5)) is not None for s in astrips):
+                        ends.append(v)
         # 短於 min_piece 一律不放。柱面:使用者 2026-10-18 的決定,選項原文「不放(短於 27 一律不放)」(決策佇列 #302 補充);
         #   牆面比照柱面是由〈一律〉推得的推論,不是使用者原話(協調 agent 2026-10-18):
         #   牆階、短柱面這種 RC 面,沿牆料整段被兩端垂直的料蓋住,或剩下的一段短於 min_piece,就不放料、不報衝突。
@@ -539,6 +522,8 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
             t["core_role"], t["priority"] = "custom", 3
             reflex.extend((e, s) for s in ends)
         bprims.append(t)
+        if is_outer and any(trimmable(s, ar) for s in astrips):
+            col_cutters.append(t)
 
     # 板端縫落在牆階短段(G7 的延伸;依推論原則:支撐能調整就調整,找不到調整位置才報衝突,見檔頭):最後一條板端縫的承接帶若落進牆面上那段沒料的短段
     #   (短於 min_piece 不放沿牆料),縫上副支在那裡沒有東西可頂,那條板邊就沒有料承接。
@@ -703,7 +688,10 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
     #  (核心 I19:孔邊/柱面優先級 0,任何角色都可頂;柱面料是 secondary,頂 primary 側面合法)。
     for t in [s for s in astrips if not s["outer"]]:
         ta, tb = rng(t["rect"], a), rng(t["rect"], b)
-        cuts = [rng(q["rect"], a) for q in mains
+        # 沿外牆的料經過柱面料的端部(柱上緣離牆不到 w;例:柱 x 2600–3000、y 3444–3644,y=3661 的牆,左下起鋪板長沿 X 時
+        #   沒有主支切過柱右面料 [3000,3027]×[3444,3644],y=3661 的沿牆料 [3634,3661] 被它擋在 x=3027,柱右面 y 3644 以上那段
+        #   與牆之間的板邊沒有料;#318 缺陷 1):沿牆料照樣沿牆通到柱面,柱面料在它經過的地方分段,剩下短於 min_piece 的不放(和主支切段同一條)。
+        cuts = [rng(q["rect"], a) for q in mains + col_cutters
                 if max(tb[0], rng(q["rect"], b)[0]) < min(tb[1], rng(q["rect"], b)[1])
                 and max(ta[0], rng(q["rect"], a)[0]) < min(ta[1], rng(q["rect"], a)[1])]
         if not cuts:
@@ -743,17 +731,18 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
             if stop == e:
                 # 延伸不出去(凹角另一側緊貼著另一支外牆邊界材,例:牆階 < 27 mm,兩支牆邊料前後錯開、寬向重疊 27−階 mm):
                 # 這支邊界材在牆端的端面若有一段落在室內又沒有別的 boundary 可頂,核心 I19 不接受(端面室內部分只能頂另一支
-                # boundary),這是核心表示法的限制。這支邊界材本身側面釘牆,端面懸空不影響它承接板邊;旁邊的跨能不能收頭另由
-                # SPAN_END_NOT_ON_BOUNDARY 等判斷。
+                # boundary),這是核心表示法的限制,記成核心限制(core_limits),不是物理衝突(#251 審查 3d858c3 阻擋 1)。
+                # 這支邊界材本身側面釘牆,端面懸空不影響它承接板邊;旁邊那一跨的跨端錯開 s mm,由錯階跨端處理(見副支那一段)。
                 slab = mk(a, (e - 1, e) if d < 0 else (e, e + 1), br)
                 indoor = leftover(slab, leftover(slab, reg.rects()))
                 others = [q["rect"] for q in astrips if q is not t]
                 free_ = [r_ for q in indoor for r_ in leftover(q, others)]
                 if free_ and "no_end_free_flag" not in mut:
                     fb = rng(free_[0], b)
-                    conflicts.append(dict(code="CORE_LIMIT_BOUNDARY_END_FREE", id=t["id"], at=[e, s], free=list(fb),
-                                          why=f"邊界材 {list(t['rect'])} 在牆端 {e} 的端面有 {fb[1] - fb[0]} mm 落在室內、沒有別的 boundary 可頂;"
-                                              f"越過凹角延伸會撞到另一支外牆邊界材(兩支寬向重疊)。核心 I19 只准 boundary 端面的室內部分頂另一支 boundary"))
+                    core_limits.append(dict(code="CORE_LIMIT_BOUNDARY_END_FREE", _t=t, end=e, check="C8_I19_BOUNDARY_END", at=[e, s], free=list(fb),
+                                            why=f"邊界材 {list(t['rect'])} 在牆端 {e} 的端面有 {fb[1] - fb[0]} mm 落在室內、沒有別的 boundary 可頂;"
+                                                f"越過凹角延伸會撞到另一支外牆邊界材(兩支寬向重疊)。物理上這支料側面釘牆、端面懸空不影響承接;"
+                                                f"核心 I19 只准 boundary 端面的室內部分頂另一支 boundary"))
                 continue
             t["rect"] = mk(a, (stop, hi) if d < 0 else (lo, stop), br)
             t["ext"] = t.get("ext", []) + [[min(e, stop), max(e, stop)]]
@@ -812,8 +801,13 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
             if moved:
                 break
         if not moved:
-            conflicts.append(dict(code="CORE_LIMIT_MAIN_ON_EXTENSION", id=t["id"], seam=t["seam"],
-                                  why="主支端面落在凹角延伸段上;物理上可行,但核心 I22 把延伸段側面當優先級 2,主支不能頂它,平移又超過承接容許量"))
+            # 核心限制(core_limits),不是物理衝突(#251 審查 3d858c3 阻擋 1):每個落在延伸段上的端面記一筆
+            tb_ = rng(t["rect"], b)
+            for endv, e0_, e1_ in ((tb_[0], tb_[0] - 1, tb_[0]), (tb_[1], tb_[1], tb_[1] + 1)):
+                if any(overlap(mk(a, o, (e0_, e1_)), x) for x in ext_rects):
+                    core_limits.append(dict(code="CORE_LIMIT_MAIN_ON_EXTENSION", _t=t, end=endv, check="C8_MAIN_ON_EXTENSION", seam=t["seam"],
+                                            why="主支端面落在凹角延伸段上;物理上可行(端面頂在延伸段那支邊界材的側面),"
+                                                "但核心 I22 把延伸段側面當優先級 2,主支不能頂它,平移又超過承接容許量"))
     # 副支(G2)。
     # 記號以整排面材為準:沿 B 軸從牆到牆、以板端縫分格,每格用同一治具 M 從板端縫量起、餘數留在最後一段(jig_marks),
     # 全室共用同一組記號,所以主支兩側的副支在同一位置(使用者 台北 10-15 05:51 第 1 題,大意:相鄰角材位置要一樣,兩支之間的連接角材才會正交、平行)。
@@ -822,6 +816,7 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
     prims = mains + bprims
     crit = sorted({v for t in prims + astrips for v in rng(t["rect"], b)} | set(reg.coords[b]))
     bands = {}
+    partial = {}  # 一部分是 RC 的跨:(t, u) → [(b0, b1, 室內部分)];整段合起來再判(見下)
     for b0, b1 in zip(crit, crit[1:]):
         bm = (b0 + b1) / 2
         act = sorted((t for t in prims if rng(t["rect"], b)[0] < bm < rng(t["rect"], b)[1]),
@@ -838,7 +833,10 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
             if not inside:
                 continue
             if inside != [(g0, g1)]:
-                conflicts.append(dict(code="SPAN_PARTLY_RC", between=[t["id"], u["id"]], at=bm))
+                if "span_partly_rc_strict" in mut:  # 突變:回到舊行為,一部分是 RC 的跨一律報衝突
+                    conflicts.append(dict(code="SPAN_PARTLY_RC", between=[t["id"], u["id"]], at=bm))
+                else:
+                    partial.setdefault((t["id"], u["id"]), []).append((b0, b1, tuple(inside)))
                 continue
             cover = [s for s in ast if max(g0, rng(s["rect"], a)[0]) < min(g1, rng(s["rect"], a)[1])]
             if cover:
@@ -847,6 +845,34 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
                 conflicts.append(dict(code="SPAN_PARTLY_BLOCKED", between=[t["id"], u["id"]], at=bm))
                 continue
             bands.setdefault((t["id"], u["id"]), []).append((b0, b1))
+    # 一部分是 RC 的跨(#251 審查 3d858c3 阻擋 2、#318 正文的盲點;協調者推論,第 22 輪):以前只要某一段跨有一部分落在 RC 裡就報
+    #   SPAN_PARTLY_RC,可是檢查端沒有對應的失敗(C7 標 C7_P182_FAIL_UNCONFIRMED:審查員 fz20.py 三個種子共 36 條)。
+    #   例:外框 [[0,0],[4100,0],[4100,3708],[1750,3708],[1750,3655],[450,3655],[450,3734],[0,3734]] 右上起鋪板長沿 Y:
+    #   x=1750 那面牆階只剩 26 mm 沒被邊界材蓋住(短於 27 不放料),y=3655 的邊界材越過凹角延伸到主支 [2254,2281],
+    #   x 1750–2254、y 3655–3681 是一個 26 mm 深的窄條:下面是延伸段、上面是 y=3708 牆的邊界材、左邊是那面牆階(RC)、右邊是主支。
+    #   跨〈沿牆料 [423,450] 到主支 [2254,2281]〉在這一段的室內只有 x 1750–2254。副支放不進去(窄條 26 mm 比料寬 27 窄),
+    #   也不需要:窄條上下都頂在料上,中間的空檔 26 mm 遠小於 M − w,板跨過去(和 R-nosliver 的窄縫一樣)。
+    #   所以只有在這段〈一部分是 RC〉的跨真的需要副支、副支卻只能頂 RC 時才是衝突:室內那部分沿 B 向、在料(主支、沿牆料、邊界材)
+    #   或 RC 之間的那一整段空檔 >= min_piece(放得下、也需要副支,副支卻只能頂 RC)。空檔短於 min_piece 就是窄條,
+    #   不放副支、不報衝突;副支間距與板邊承接仍由 C4、C3 獨立檢查。
+    def free_run(um, bm):
+        """A 座標 um、B 座標 bm 那一點所在的空檔:沿 B 向在料與 RC 之間的區間(料只算目前放好的,副支還沒放)。"""
+        cov = [rng(q["rect"], b) for q in timbers if rng(q["rect"], a)[0] < um < rng(q["rect"], a)[1]]
+        return iv_find(iv_subtract(section_both_sides(reg, a, um), cov), bm)
+
+    bad_partial = set()
+    for (tid_, uid_), bl in partial.items():
+        for x0, x1, ins in bl:
+            bm_ = (x0 + x1) / 2
+            for h0, h1 in ins:
+                cuts_ = sorted({h0, h1} | {v for q in timbers for v in rng(q["rect"], a) if h0 < v < h1} | {v for v in reg.coords[a] if h0 < v < h1})
+                for u0, u1 in zip(cuts_, cuts_[1:]):
+                    fr = free_run((u0 + u1) / 2, bm_)
+                    if fr is not None and fr[1] - fr[0] >= minp and (tid_, uid_) not in bad_partial:
+                        bad_partial.add((tid_, uid_))
+                        conflicts.append(dict(code="SPAN_PARTLY_RC", between=[tid_, uid_], at=bm_,
+                                              why=f"跨 {tid_}–{uid_} 在 B {x0}–{x1} 那段一部分是 RC;室內的部分 A {u0}–{u1} 沿 B 向的空檔 {list(fr)} "
+                                                  f"長 {fr[1] - fr[0]} mm,要放副支,副支的端面卻只能頂 RC"))
     spans = []
     for key, bl in bands.items():
         for sb0, sb1 in iv_norm(bl):
@@ -869,14 +895,49 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
             ms = ms[1:]
         row_marks += ms
     span_rows = []
+
+    def stepped_end(miss, edge, want, sides):
+        """錯階的跨端(#251 審查 3d858c3 阻擋 1;協調者推論,第 22 輪):跨端 edge 只有一部分頂在邊界材上,其餘部分 miss(A 區間)
+        越過跨端還是室內,要再走一小段才碰到料(例:牆階 20 mm,y=3680 的邊界材 [3653,3680] 只蓋 x > 2600 那段,
+        x < 2600 那段越過 3653 還有 20 mm 室內,到 y=3700 牆的邊界材 [3673,3700] 才停;那支 y=3680 的邊界材越不過凹角,
+        端面懸空,是核心限制)。物理上這一跨照整排排副支(兩端頂兩支主支),錯開的那條窄條由跨端的副支與另一面的料承接,
+        和 R-nosliver 的窄縫一樣(板跨過);所以只要錯開那段短於 min_piece、碰不到 RC,這一跨就能排,
+        副支間距量到錯開那段的另一面(回傳那個 B 座標)。錯開那段 >= min_piece 或碰到 RC 就回 None(維持 SPAN_END_NOT_ON_BOUNDARY)。
+        跨兩側的料(sides)若有一支的端面就停在這個跨端、端面外是空的(例:牆階面那支沿牆料停在牆端,下面是窄條),
+        那支料的端面會懸空(C6),這裡不排,也回 None(審查員 fz20 種子 1 第 97 間:牆階面 75 mm、柱左面與牆階同一條牆線)。"""
+        d = 1 if want == 0 else -1  # 越過跨端的方向
+        others = [q["rect"] for q in timbers if q["kind"] != "secondary"]
+        R_ = reg.rects()
+        for q in sides:
+            qb_ = rng(q["rect"], b)
+            if (qb_[1] if d > 0 else qb_[0]) != edge:
+                continue
+            slab_ = mk(a, rng(q["rect"], a), (edge, edge + 1) if d > 0 else (edge - 1, edge))
+            if [x for f in leftover(slab_, others) for x in leftover(f, leftover(f, R_))]:
+                return None  # 跨側那支料的端面停在跨端,端面外是空的
+        far = edge
+        for m0, m1 in miss:
+            probe = mk(a, (m0, m1), (edge, edge + minp) if d > 0 else (edge - minp, edge))
+            for f in leftover(probe, others):
+                fb = rng(f, b)
+                if (fb[1] == edge + minp) if d > 0 else (fb[0] == edge - minp):
+                    return None  # 錯開的那段 >= min_piece:不是窄條
+                if leftover(f, R_):
+                    return None  # 錯開的那段碰到 RC
+                far = max(far, fb[1]) if d > 0 else min(far, fb[0])
+        return far
+
     for (tid, uid), sb0, sb1 in sorted(spans, key=lambda s: (s[1], s[0])):
         g0, g1 = rng(timbers[tid]["rect"], a)[1], rng(timbers[uid]["rect"], a)[0]
         ok = True
+        eb = {}  # 副支間距要量到的跨端(錯階跨端時是錯開那段的另一面;平常就是跨端)
         for edge, want in ((sb0, 1), (sb1, 0)):
-            hit = not iv_subtract([(g0, g1)], [rng(s["rect"], a) for s in astrips if rng(s["rect"], b)[want] == edge])
-            if not hit:
+            miss = iv_subtract([(g0, g1)], [rng(s["rect"], a) for s in astrips if rng(s["rect"], b)[want] == edge])
+            far = edge if not miss else None if "no_stepped_end" in mut else stepped_end(miss, edge, want, (timbers[tid], timbers[uid]))
+            if far is None:
                 conflicts.append(dict(code="SPAN_END_NOT_ON_BOUNDARY", between=[tid, uid], at=edge))
                 ok = False
+            eb[want] = far
         if not ok:
             continue
         feas = {}
@@ -899,7 +960,7 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
                         if not fit_:
                             continue
                         c = min(fit_) if sg > 0 else max(fit_)
-                        gap_ = (c - lo_h - end) if sg > 0 else (end - (c + hi_h))
+                        gap_ = (c - lo_h - eb[1]) if sg > 0 else (eb[0] - (c + hi_h))  # 錯階跨端時量到錯開那段的另一面
                         if gap_ > M - w:
                             lo = end if sg > 0 else end - w
                             feas[e] = (lo, lo)
@@ -912,7 +973,7 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
                                       why=f"板端縫 {e} 兩側板邊要的承接 {need} 一支 {w} mm 的副支蓋不住"))
                 continue
             feas[e] = (lo_min, lo_max)
-        span_rows.append(dict(key=(tid, uid), sb0=sb0, sb1=sb1, g0=g0, g1=g1, feas=feas, sups=[], ends_forced=ends_forced))
+        span_rows.append(dict(key=(tid, uid), sb0=sb0, sb1=sb1, eb0=eb[1], eb1=eb[0], g0=g0, g1=g1, feas=feas, sups=[], ends_forced=ends_forced))
     # 縫上副支的可放範圍再加一個條件:與這一跨裡相鄰的治具記號,空檔不超過 M − w。
     #   依使用者台北 10-16 01:29 原話「…這種衝突 可以調整 副支位置 副支的位置我之前說過了 在副支間距上限之下就好…」
     #   推得(推論,不是使用者原話):縫上副支可以挪,但挪了之後與鄰近記號的間距仍要在上限以內;記號照治具不動。
@@ -974,7 +1035,7 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
             elif sr["sb0"] - w < c < sr["sb1"] + w:
                 dropped.append(c)  # 放不下的治具記號(含剛好落在這一跨端點那支擋料上、離端點不到 w 的)
         for _ in range(4):
-            big = [(x0, x1) for x0, x1 in gaps(sups, sr["sb0"], sr["sb1"]) if x1 - x0 > M - w]
+            big = [(x0, x1) for x0, x1 in gaps(sups, sr["eb0"], sr["eb1"]) if x1 - x0 > M - w]
             if not big or "no_fill" in mut:
                 break
             x0, x1 = big[0]
@@ -994,7 +1055,7 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
                 break
             lo = min(cand)[1]
             sups.append((lo, lo + w, "fill", lo + lo_h))
-        for x0, x1 in gaps(sups, sr["sb0"], sr["sb1"]):
+        for x0, x1 in gaps(sups, sr["eb0"], sr["eb1"]):  # 錯階跨端時兩端量到錯開那段的另一面
             if x1 - x0 > M - w:
                 conflicts.append(dict(code="MARK_NO_ROOM", between=[tid, uid], gap=[x0, x1],
                                       why=f"這一跨 [{x0},{x1}] 的空檔 {x1 - x0} mm 超過 {M - w}:記號照治具不動,"
@@ -1071,6 +1132,39 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
     #   (secondary,以及與主支垂直的柱面料)。
     if "no_custom4" not in mut:
         promote_custom4(timbers, a, b)
+    # 柱面有一段前面放不下 w 寬的料(室內深度不到 w;例:柱跨過牆階的垂直牆,柱上緣 y=3644 的 x 2900–3000 那段,
+    #   到 y=3661 的牆只有 17 mm):那段板邊沒有料可承接,是物理衝突(和整面放不下的 RC_FACE_STRIP_OUTSIDE 同一個理由;#318 缺陷 1)。
+    #   以前這一段既不放料也不報衝突(建構說可施工、C3 紅)。短於 min_piece 的一小段交給 C3(沿板邊方向由兩旁的料承接)。
+    if "no_face_part_conflict" not in mut:
+        for e, face, ar_, iv_ in hole_faces:
+            for u0, u1 in iv_subtract([face], [iv_]):
+                if u1 - u0 >= minp:
+                    conflicts.append(dict(code="RC_FACE_PART_NO_ROOM", at=[e, u0, u1],
+                                          why=f"柱面 {e} 的 {u0}–{u1} 那段,前面的室內放不下 {w} mm 寬的料(料帶 {list(ar_)} 在那裡碰到 RC),"
+                                              f"那段板邊沒有料承接"))
+    # 凹角延伸段停在另一支料上、那支料只蓋住延伸段端面的一部分(例:兩面牆階的邊界材對頂,寬向錯開 3 mm;
+    #   審查員 fz20 種子 2 第 120 間):延伸段的端面有一小段懸空。物理上和邊界材端面懸空同一回事(側面固定,端面懸空不影響承接),
+    #   核心 I22 要延伸段的端面頂到料或牆(C8_EXTENSION_END_FREE),記成核心限制(第 22 輪,協調者推論)。
+    if "no_ext_end_flag" not in mut:
+        R_ = reg.rects()
+        for t in astrips:
+            lo, hi = rng(t["rect"], a)
+            for x0, x1 in t.get("ext", []):
+                for endv in (x0, x1):
+                    if endv not in (lo, hi) or endv in t["edge"]:
+                        continue  # 只看延伸段的遠端(牆端那一頭由 I19 管)
+                    slab = mk(a, (endv - 1, endv) if endv == lo else (endv, endv + 1), rng(t["rect"], b))
+                    others = [q["rect"] for q in timbers if q is not t]
+                    free_ = [r_ for q in leftover(slab, leftover(slab, R_)) for r_ in leftover(q, others)]
+                    if free_:
+                        core_limits.append(dict(code="CORE_LIMIT_EXTENSION_END_FREE", _t=t, end=endv, check="C8_EXTENSION_END_FREE",
+                                                why=f"邊界材 {list(t['rect'])} 越過凹角的延伸段停在 {endv},端面有 {rng(free_[0], b)} 懸空;"
+                                                    f"物理上側面固定、端面懸空不影響承接,核心 I22 要延伸段的端面頂到料或牆"))
+    uniq_ = {}  # 角材編號到這裡已經定了;同一支料同一個端面同一個碼只留一筆
+    for c in core_limits:
+        c["id"] = c.pop("_t")["id"]
+        uniq_.setdefault((c["code"], c["id"], c["end"]), c)
+    core_limits[:] = list(uniq_.values())
     # 碰撞與入 RC 都是排板衝突(G5):這個起鋪角/方向不能用
     if "skip_conflict_scan" not in mut:
         R = reg.rects()
@@ -1086,12 +1180,8 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
                             "TIMBERS_COLLIDE")
                     conflicts.append(dict(code=code, ids=[i, j], kinds=sorted(ks),
                                           rects=[list(timbers[i]["rect"]), list(timbers[j]["rect"])]))
-    # 邊界材端面頂不到別的 boundary(核心 I19,#318 缺陷 1):只在沒有別的衝突時才加,所以已經不可施工的排法,衝突碼一個字都不變;
-    #   原本〈可施工〉卻在 check() 紅 C8_I19_BOUNDARY_END 的排法,改成建構端直接報 CORE_LIMIT_BOUNDARY_END_FREE
-    if not conflicts and "no_boundary_end_scan" not in mut:
-        conflicts.extend(boundary_end_conflicts(reg, timbers, a, b))
     res = dict(region=reg, a=a, b=b, layout=dict(layout), seams_a=seams_a, seams_b=seams_b, moved_a=moved_a, moved_b=moved_b,
-               timbers=timbers, conflicts=conflicts, spans=marks_out)
+               timbers=timbers, conflicts=conflicts, core_limits=core_limits, spans=marks_out)
     # P-182 第三版(協調 agent 定的設計,協調者推論,在授權 L 下先做,可推翻;不是使用者原話):建構端提案、檢查端裁決(見檔頭)。
     #   最後一條主支縫:原縫位優先,再來是主支寬度裡每一面擋料的 ⌊D′ − 1.5w⌋,由近到遠;每個候選完整建構、跑完整 check(),
     #   沒有衝突碼、也沒有檢查失敗才算可行,選第一個可行的。原縫位寬度裡沒有擋料(只有原縫位一個候選)時照舊,不另外判可行與否。
@@ -1116,12 +1206,16 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
                 """評估一個候選:回傳 trace 的一筆(不存佈局;C7 不信 trace,自己重建)。"""
                 f_ = check(r_, p, _cand=True)
                 ok_ = not r_["conflicts"] and (not f_ or "p182_conflicts_only" in mut)  # 突變:只看衝突碼,不跑 check()
+                ok_ = ok_ and not r_["core_limits"]  # 核心限制不算物理衝突,但也不算〈可行〉(可行 = 核心也表示得了)
                 codes_, checks_ = sorted({c_["code"] for c_ in r_["conflicts"]}), sorted({f["check"] for f in f_})
-                return dict(d=d_, seam=world(d_), ok=ok_, codes=codes_, checks=checks_, why=p182_reason(codes_, checks_))
+                codes_ = sorted(set(codes_) | {c_["code"] for c_ in r_["core_limits"]})  # trace 的〈衝突碼〉連同核心限制碼一起寫
+                phys_ = not ok_ and candidate_phys_ok(r_, f_)  # 不可行,但物理上可施工、只有核心限制
+                return dict(d=d_, seam=world(d_), ok=ok_, phys=phys_, codes=codes_, checks=checks_, why=p182_reason(codes_, checks_))
             ent0 = trial(d0, res)
             if "p182_always" in mut:  # 突變:跳過原縫位(主支寬度裡一有擋料就退)
                 ent0["ok"] = False
             trace = [ent0]
+            built_ = {d0: res}
             chosen, chosen_res = (ent0, res) if ent0["ok"] else (None, None)
             tried = {d0}
             while chosen is None and pending:
@@ -1129,12 +1223,21 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
                 pending.discard(d_)
                 tried.add(d_)
                 r_ = build_candidate(room, layout, p, world(d_), mut)
+                built_[d_] = r_
                 e_ = trial(d_, r_)
                 trace.append(e_)
                 if e_["ok"]:
                     chosen, chosen_res = e_, r_
                 else:
                     pending |= {x for x in cands_from(d_) if x not in tried}
+            # 都不能核心表示時(#251 審查 3d858c3 阻擋 1 的同一條:核心限制不算不可施工;第 22 輪,協調者推論):
+            #   選偏好順序裡第一個〈物理上可施工、只有核心限制〉的候選(trace 是照偏好順序試的,都不可行時全部候選都在 trace 裡),
+            #   結果判 core_limited;連這種候選都沒有才報 P182_NO_FEASIBLE_CANDIDATE。
+            #   例:審查員 fz20 種子 1 第 107 間(x=3650 的 11 mm 牆階),左上起鋪板長沿 Y 的 3667 與 3609 都只有 CORE_LIMIT_BOUNDARY_END_FREE。
+            if chosen is None and "p182_no_core_fallback" not in mut:
+                ph_ = [e_ for e_ in trace if e_["phys"]]
+                if ph_:
+                    chosen, chosen_res = ph_[0], built_[ph_[0]["d"]]
             info = dict(c0=world(d0), d0=d0, cands=trace, chosen=None if chosen is None else chosen["d"])
             if chosen is None:
                 # 都不可行:回傳原縫位的佈局,衝突只報這一條。原縫位本身的衝突碼在鏡像的房間會因為主支兩側差 1 mm 而不同,
@@ -1154,6 +1257,12 @@ def build_candidate(room, layout, p, seam, mut=frozenset()):
     """P-182:最後一條主支縫放在世界座標 seam 時的完整建構。純函式、決定性,不展開候選、不跑 check()。
     建構端試每個候選、檢查端 C7 重建每個候選,呼叫的都是這一個;seam 等於 G7 算出的原縫位時,結果和不給縫位的 build 完全一樣(除了沒有 trace)。"""
     return build(room, layout, p, mut, _p182=seam)
+
+
+def candidate_phys_ok(r, f):
+    """P-182 候選:物理上可施工、只有核心限制(沒有衝突,check() 除了 C8 全過,C8 的失敗與宣告的核心限制逐筆對得上,而且有宣告)。"""
+    return (not r["conflicts"] and bool(r["core_limits"]) and not [x for x in f if x["check"] not in CORE_CHECKS]
+            and not core_limit_problems(r, f))
 
 
 def p182_reason(codes, checks):
@@ -1263,12 +1372,14 @@ def expected_p182_candidates(reg, a, start, lo, hi, d0, dprev, w):
 def _p182_rebuild(res, p, d, world):
     """C7 用:自己重建 P-182 候選 d(最後一條主支縫放在 world(d))並跑完整 check()。不讀 trace 裡的任何東西:
     房間取自 res 的區域、排法取自 res 的 layout,縫位是 C7 自己算的;建構呼叫建構端〈給定縫位就建構〉的純函式。
-    回傳 (可行, 衝突碼, 檢查失敗碼)。"""
+    回傳 (可行, 衝突碼, 檢查失敗碼, 不可行但物理上可施工、只有核心限制)。"""
     reg = res["region"]
     room = {"outer": [list(q) for q in reg.rings[0]], "holes": [[list(q) for q in h] for h in reg.rings[1:]]}
     r = build_candidate(room, res["layout"], p, world(d))
     f = check(r, p, _cand=True)
-    return (not r["conflicts"] and not f), sorted({c["code"] for c in r["conflicts"]}), sorted({x["check"] for x in f})
+    cl = {c["code"] for c in r["core_limits"]}  # 核心限制碼和衝突碼一起比對(建構端的 trace 也這樣寫);有核心限制也不算可行
+    ok = (not r["conflicts"] and not f) and not cl
+    return ok, sorted({c["code"] for c in r["conflicts"]} | cl), sorted({x["check"] for x in f}), not ok and candidate_phys_ok(r, f)
 
 
 def _p182_audit(res, p):
@@ -1309,7 +1420,14 @@ def _p182_audit(res, p):
         if d_ not in cset:  # trace 試過的每一個都要在 C7 自己算的候選集合裡
             out.append(("C7_P182_NOT_CANDIDATE", ents[d_]["seam"], cset))
     chosen = (tr or {}).get("chosen")
-    if chosen is None:
+    # 選中的是〈只有核心限制〉的候選(都不能核心表示時的退路):和都不可行一樣,trace 要涵蓋全部候選、每個重建後都不可行,
+    #   比選中者更優先的候選重建後都不是〈物理可施工、只有核心限制〉,選中的重建後是
+    core_only = chosen is not None and chosen in ents and not ents[chosen]["ok"]
+    if core_only:
+        if chosen != dc:
+            out.append(("C7_P182_CHOSE_FAILED", last, [chosen, dc]))
+        preferred = list(cset)
+    elif chosen is None:
         # 都不可行:結果要是原縫位、報 P182_NO_FEASIBLE_CANDIDATE;trace 要涵蓋 C7 算出的全部候選,而且每一個重建後都真的失敗
         if dc != d0 or not any(c["code"] == "P182_NO_FEASIBLE_CANDIDATE" for c in res["conflicts"]):
             out.append(("C7_P182_CHOSE_FAILED", last, ["trace 說沒有可行的候選,結果卻不是原縫位或沒報 P182_NO_FEASIBLE_CANDIDATE"]))
@@ -1324,15 +1442,19 @@ def _p182_audit(res, p):
     # 逐一重建:更優先的候選(含 trace 漏掉的)、trace 裡其餘屬於候選集合的(選中的在內)
     todo = sorted(set(preferred) | {d_ for d_ in ents if d_ in cset and (chosen is None or d_ >= dc)}, reverse=True)
     for d_ in todo:
-        ok_r, codes_r, checks_r = _p182_rebuild(res, p, d_, world)
+        ok_r, codes_r, checks_r, phys_r = _p182_rebuild(res, p, d_, world)
         claim = ents.get(d_)
         seam_ = world(d_)
         if not ok_r and codes_r and not checks_r:  # 建構端的衝突在檢查端沒有對應的檢查
             out.append(("C7_P182_FAIL_UNCONFIRMED", seam_, codes_r))
         if d_ in preferred and ok_r:
             out.append(("C7_P182_SKIPPED_FEASIBLE", seam_, d_))  # 比選中者更優先的候選重建後可行,卻沒選它
-        elif chosen is not None and d_ == dc and not ok_r:
+        elif chosen is not None and not core_only and d_ == dc and not ok_r:
             out.append(("C7_P182_CHOSE_FAILED", seam_, codes_r + checks_r))  # 選中的候選重建後不可行
+        elif (chosen is None or core_only) and phys_r and (chosen is None or d_ > dc):
+            out.append(("C7_P182_SKIPPED_FEASIBLE", seam_, ["物理可施工、只有核心限制", d_]))  # 都不能核心表示時,更優先的物理解沒選
+        elif core_only and d_ == dc and not phys_r:
+            out.append(("C7_P182_CHOSE_FAILED", seam_, codes_r + checks_r))  # 選中的〈只有核心限制〉候選重建後不是物理解
         if claim is None:
             continue
         if not claim["ok"] and ok_r:
@@ -1341,6 +1463,8 @@ def _p182_audit(res, p):
             out.append(("C7_P182_CODES_MISMATCH", seam_, dict(claimed=[claim["codes"], claim["checks"]], rebuilt=[codes_r, checks_r])))
         elif claim["ok"] and not ok_r:
             out.append(("C7_P182_FALSE_OK", seam_, codes_r + checks_r))  # 宣稱可行,重建失敗
+        if bool(claim.get("phys")) != phys_r:
+            out.append(("C7_P182_PHYS_MISMATCH", seam_, dict(claimed=claim.get("phys"), rebuilt=phys_r)))  # 〈只有核心限制〉的宣稱和重建不一致
         if d_ in preferred and claim["ok"]:
             out.append(("C7_P182_SKIPPED_FEASIBLE", seam_, d_))  # trace 自己說可行,卻沒選
     return out, True
@@ -1588,6 +1712,9 @@ def check(res, p, _cand=False):
         cov = [rng(t["rect"], b) for t in ps] + [rng(t["rect"], b) for t in ob + [q for q in res["timbers"] if q["kind"] == "rc_parallel"]
                                                 if rng(t["rect"], a)[0] <= c < rng(t["rect"], a)[1]]
         gap = iv_subtract(line, cov)
+        # R-nosliver(第 22 輪補):縫線上夾在兩處料之間、相距 < min_piece 的空檔,主支放不進去(短於 min_piece 的料不放),
+        #   板由兩旁的料承接(和 C3、C4 的 bridged 同一條;例:牆階面剩 12 mm 的窄條剛好在縫線上,審查員 fz20 種子 4 第 148 間的左右鏡像)
+        gap = [g_ for g_ in gap if not bridged(mk(a, (c, c + 1), g_), T, minp, b)]
         if gap:
             fails.append(dict(check="C5_MAIN_GAP", seam=c, gaps=gap))
         for t in ps:
@@ -1892,7 +2019,44 @@ def layout_name(l):
     return f"{side['x']}{side['y']}起鋪,板長沿{long_axis}"
 
 
+# ---------------------------------------------------------------- 排法的判定:物理衝突與核心限制分開(#251 審查 3d858c3 阻擋 1)
+CORE_CHECKS = ("C8_I22_NON_BOUNDARY_EXTENDS", "C8_EXTENSION_END_FREE", "C8_I19_BOUNDARY_END", "C8_I19_PRIORITY",
+               "C8_MAIN_ON_EXTENSION", "C8_END_NOT_ON_ONE_TIMBER")  # C8 這一族:核心可表示,不是物理
+
+
+def core_limit_problems(res, fails):
+    """建構端宣告的核心限制(res["core_limits"],每筆指名一支料的一個端面)與檢查端 C8 的失敗,兩邊逐筆對:
+    C8 失敗卻沒宣告(建構端不知道這裡核心表示不了)→ CORE_LIMIT_UNDECLARED;宣告了卻沒有對應的 C8 失敗 → CORE_LIMIT_UNCONFIRMED。
+    對法:同一支料(id)、同一個端面座標(end)。回傳問題清單(和 check() 的失敗同一個格式)。"""
+    core = [f for f in fails if f["check"] in CORE_CHECKS]
+    decl = {(c["id"], c["end"]) for c in res.get("core_limits", [])}
+    out = [dict(check="CORE_LIMIT_UNDECLARED", of=f["check"], id=f.get("id"), end=f.get("end"))
+           for f in core if (f.get("id"), f.get("end")) not in decl]
+    hit = {(f.get("id"), f.get("end")) for f in core}
+    out += [dict(check="CORE_LIMIT_UNCONFIRMED", code=c["code"], id=c["id"], end=c["end"])
+            for c in res.get("core_limits", []) if (c["id"], c["end"]) not in hit]
+    return out
+
+
+def verdict(res, p, fails=None):
+    """一個排法的判定,回傳 (判定, 問題)。判定:
+    - "unbuildable":建構端報了物理衝突(res["conflicts"]);不跑檢查。
+    - "buildable":沒有衝突、沒有核心限制、完整 check() 全過。
+    - "core_limited":物理上可施工,只是核心條文表示不了——沒有衝突、check() 除了 C8(核心可表示)那一族全過,
+      而且 C8 的每一筆失敗都對得上建構端宣告的核心限制,每一筆宣告也都有 C8 失敗佐證(core_limit_problems)。
+    - "inconsistent":建構端說可施工(沒有衝突),檢查卻有非 C8 的失敗,或核心限制兩邊對不上:這是程式的錯,不是排法的性質。
+    問題 = 非 C8 的檢查失敗加上 core_limit_problems。fails 沒給就現跑 check()。"""
+    if res["conflicts"]:
+        return "unbuildable", []
+    fails = check(res, p) if fails is None else fails
+    probs = [f for f in fails if f["check"] not in CORE_CHECKS] + core_limit_problems(res, fails)
+    if probs:
+        return "inconsistent", probs
+    return ("core_limited" if res.get("core_limits") else "buildable"), []
+
+
 def solve(room, p, mut=frozenset()):
+    """每種排法回傳 (排法, 結果, 檢查失敗);物理上可施工(沒有衝突,含只有核心限制的)就跑完整 check()。"""
     out = []
     for l in LAYOUTS:
         res = build(room, l, p, mut)
@@ -1904,10 +2068,11 @@ def solve(room, p, mut=frozenset()):
 def export(room_name, l, res, fails):
     return dict(room=room_name, layout=l, name=layout_name(l),
                 seams_a=res["seams_a"], seams_b=res["seams_b"], moved_a=res["moved_a"], moved_b=res["moved_b"],
-                conflicts=res["conflicts"], check_failures=fails,
+                conflicts=res["conflicts"], core_limits=res["core_limits"], verdict=verdict(res, None, fails)[0], check_failures=fails,
                 p182=None if not res.get("p182") else dict(
                     original_seam=res["p182"]["c0"], chosen_seam=None if res["p182"]["chosen"] is None else res["seams_a"][-1],
-                    candidates=[dict(seam=e["seam"], feasible=e["ok"], conflict_codes=e["codes"], check_failures=e["checks"]) for e in res["p182"]["cands"]]),
+                    candidates=[dict(seam=e["seam"], feasible=e["ok"], core_limited_only=e.get("phys", False), conflict_codes=e["codes"],
+                                     check_failures=e["checks"]) for e in res["p182"]["cands"]]),
                 timbers=[dict(id=t["id"], kind=t["kind"], rect=list(t["rect"]),
                               **{k: v for k, v in t.items() if k in ("seam", "at", "role", "rc_line", "core_role", "priority")})
                          for t in res["timbers"]],
