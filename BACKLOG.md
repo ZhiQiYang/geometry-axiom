@@ -391,6 +391,8 @@
 
 ### GEO-261 — 幾何核心與木工模板解耦（2026-10-15）
 
+- **2026-10-21 本機整合收尾補丁**：P52 真實放置在固定 main／7dae5f21 交錯量測為 637／828ms；保留完整來源清單與逐檔內容核對，減少 runtime freshness 列舉路徑的成本。P52-5 改為共用 5000ms 截止時間內等原生幾何及交易收尾，原 `1987..2014` 足跡斷言保持。另重現 P88 超高表單重繪時捲動被中間高度截短，改於下一影格恢復，且不覆蓋後續重繪／捲動。新增桌機及390px共6個斷言，golden 僅 P88 137→143、total 2261→2267，P72B仍50；未新增可見入口、按鈕或常駐說明。此處記錄補丁範圍，不代表 #288 已合併或最後七項已完成；最終 SHA、完整帳本、架構收據、Q38／§7／P-189及突變自證以最終驗收報告為準。
+
 > **2026-10-19 狀態更新**：採納 PR [#266](https://github.com/ZhiQiYang/geometry-axiom/pull/266) 已合併（2026-10-17，`c76737ec`）。整合分支仍在 [#288](https://github.com/ZhiQiYang/geometry-axiom/pull/288)。2026-10-19 `gh pr view 288` 回 state=OPEN、isDraft=true、mergedAt=null，還沒進 main。[#289](https://github.com/ZhiQiYang/geometry-axiom/pull/289)（2026-10-18，`00428c5b`）已合併進 GEO-261 整合分支(#288 的 head 分支，也就是 #289 的 base),尚未進 main；它的正文寫明仍依賴 [#279](https://github.com/ZhiQiYang/geometry-axiom/pull/279) 的完整原生覆蓋與 #288 的最終整合，實際 C→Python 與舊包重放通過前不要發布。
 
 - **狀態**：2026-10-16 使用者於原對話回答「批准此版本的逐條提案」與「批准此更名缺陷修正」（原話見決策佇列），綁定 `17a25e92`；同日 23:23:52 再回答「批准此追加分層提案」，綁定 `c8ce964` 的 204→207 與 K＝D64／I74、H＝R60。正式公理已依批准採納，同步白話／唯一閱讀器及版本相容；保留第 17 班列車 main `a898ad6e` 的完整上游契約。實際指紋、A/B 版本及驗收界線見 [採納收據](geometry-core/domain-decoupling/ADOPTION-RECEIPT.md)。獨立更名修正及 C／Python 接線各按其切片驗收；**核心解耦尚未完成，原生舊包重建與最終整合裁判仍待執行**。追蹤 [issue #248](https://github.com/ZhiQiYang/geometry-axiom/issues/248)；[提案入口](geometry-core/domain-decoupling/PROPOSAL.md)。

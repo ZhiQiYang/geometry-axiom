@@ -8747,6 +8747,17 @@ function renderFaceInspector() {
   const pri = pane.querySelector("#tbPriLabel"); if (pri) pri.hidden = pane.querySelector("#tbRole").value !== "custom";
   reapplyInspectorFocus(pane, saved);
   restoreDirtyInputs(pane, dirtyInputs);
+  /* details 的 toggle 處理到下一影格前才完成；同步恢復會被中途較短的
+     表單截短。僅恢復同次重繪，而且不蓋過使用者後續的捲動。 */
+  if (saved) {
+    const parent = pane.parentElement, seq = fe.gridPreviewSeq;
+    const scroll = parent.scrollTop, ownScroll = pane.scrollTop;
+    requestAnimationFrame(() => {
+      if (fe.gridPreviewSeq !== seq || pane.dataset.bid !== String(bid) ||
+          parent.scrollTop !== scroll || pane.scrollTop !== ownScroll) return;
+      parent.scrollTop = saved.scroll; pane.scrollTop = saved.ownScroll;
+    });
+  }
 }
 
 /* 放置表單（主畫布右欄與面內檢視器共用，§5.5.3a） */
