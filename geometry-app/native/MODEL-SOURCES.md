@@ -112,3 +112,17 @@ on its own local side: `START`/`END` on axis 0, `B0`/`B1` on axis 1 and
 `A0`/`A1` on axis 2, as in `WOOD_MEMBER_FACE_SPEC`. A name moved to another side
 together with its key is therefore accepted by the decoder but refused, with
 `BASE_SOURCE_BINDING`/I32, before the runtime builds any geometry.
+
+## Residual risks
+
+- The root catalogs are self-declared. `parameter_fields`, `solids` and the
+  other catalogs come from the same adapter response as the roots, so the
+  consumer can only require that the two agree. An identity removed from both
+  is accepted; for example, dropping one parameter field from both
+  `parameter_fields` and the roots, or omitting `parameter_fields` without
+  `parameters/1`, still yields an admitted candidate.
+- Snapshot `specs[].value` is not compared with the typed value of the
+  `spec.value` root's source node. A response whose two values disagree is
+  accepted; the source-graph runtime binds each spec to the node reference,
+  not to the snapshot value. The loader accepted such a response before the
+  root catalog as well.
