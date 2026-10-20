@@ -99,7 +99,32 @@ ulimit -s 16384; python3 tests/run_all.py --build
 
 指定 7 個 suite 全部通過，結束碼 0：`c:integrity` 432、`core:run_tests` 165、bridge integrity 24、assembly graph product 4、candidate cache 18、graph product 5、新 source index 7，合計 655／655，無失敗／skip。獨立新測試結束碼 0，7／7 通過；sanitizer 編譯及 `nodes`／`edges`／`allocation`／`growth`／`statuses` 五組案例全部結束碼 0，輸出各為 `PASS <case>`，沒有 ASan／UBSan 診斷。
 
-完整 `python3 tests/run_all.py --build`（224 suite）仍在執行中，尚未宣稱通過。已知 `mutation:check` 因來源閉包變動回傳 1：base 已有 18 筆 stale，fix 有 75 筆 stale；依任務限制不重產 `tests/mutants_results.json`。本段及完整輸出將於執行結束後更新。
+最後將測試哨兵的 struct 複製改為 `memcpy`，避免 padding 未保留造成跨編譯器的假失敗；新測試 7 項、ASan／UBSan 五組均已再次通過。產品碼與量測的 `0636a0867556cf5ade397e995b5a93f53fba7a4b` 完全相同，後續只調整測試與驗收證據。
+
+完整 `ulimit -s 16384; python3 tests/run_all.py --build` 已完成全部 224 個 suite，結束碼 **1**；命令耗時 2,252.6 秒，沒有預期計數不符、未登記測試或額外環境問題。原始合計輸出：
+
+```text
+合計(已執行、有計數者)  5149  pass 5130  fail 18  skip 1  2213.8 秒
+```
+
+紅燈與 skip 逐項說明：
+
+- `mutation:check`：結束碼 1，75 筆 stale、3 筆 retired；來源閉包已變，不能把舊收據當成目前版本通過。base 的只讀檢查也回傳 1（18 筆 stale）；本次核心變動使額外紀錄過期。依任務限制沒有重產或修改 `tests/mutants_results.json`。
+- `py:test_product_architecture`：18 個案例因 `setUpClass` 的 `SOURCE_UNREGISTERED` 錯誤未執行，runner 將它們計入 fail；原因正是任務已知的 `geometry-core/framing-template/core-probe/gen_scenes.py` 未登記。base 另跑相同 unittest runner，也有完全相同的 18 個 setup 阻擋。
+- `py:test_gdi_contract`：1 個 `requires compiled Windows GDI contract harness` skip，屬 runner 既有具名平台允許清單。
+- 其餘 suite 沒有失敗；正式 owner／瀏覽器整合不在這次完整非瀏覽器命令範圍內，未另行執行。
+
+base 補查命令（兩者結束碼皆 1，輸出摘要如上；完整紀錄在修正分支的驗收目錄）：
+
+```sh
+cd /tmp/geo261-source-base
+python3 tests/mutate.py --check
+python3 tests/_unittest_runner.py tests/test_product_architecture.py \
+  --json-out /tmp/geo261-source-checks/product-architecture-base.json \
+  --log /tmp/geo261-source-checks/product-architecture-base.log
+```
+
+完整 stdout／stderr、各命令結束碼及 base／fix 診斷 JSON 均隨修正分支的驗收證據保存；PR 正文只存於獨立的 `codex/geo261-source-index-20261020-prbody` 分支 `PR_BODY.md`。draft PR 交由維護者在本機建立。
 
 ## D：架構掃描
 
@@ -126,4 +151,4 @@ SOURCE_UNREGISTERED: executable source omitted from the complete manifest
 - N=48／64 仍未達 2× main；共享雲端機器與維護者的 WSL／GCC 13.3 有差異，須在維護者環境重跑全部交錯樣本。
 - 未實際執行 MSVC 編譯；本次僅有 GCC 14.2.0 及 ASan／UBSan 的實測。
 - 配置失敗以測試端代理注入驗證，沒有進行整機記憶體耗盡實驗。
-- 架構掃描仍受既有 manifest 完整性錯誤阻擋；完整非瀏覽器 suite 尚在執行，正式瀏覽器整合未執行。
+- 架構掃描仍受既有 manifest 完整性錯誤阻擋；完整非瀏覽器 suite 並非綠燈，正式瀏覽器整合未執行。
