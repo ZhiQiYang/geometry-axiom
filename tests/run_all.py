@@ -432,6 +432,11 @@ ALLOWED_SKIPS = [
      'reason': 'requires POSIX full device',
      'platforms': ('nt',),
      'why': '/dev/full 是 POSIX 裝置，Windows 上不存在'},
+    {'suite': 'py:test_assembly_mutation_check',
+     'test': 'test_assembly_mutation_check.AssemblyMutationCheck.test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left',
+     'reason': 'requires POSIX process groups and /proc',
+     'platforms': ('nt',),
+     'why': '程序群組與 /proc 是 POSIX／Linux 才有的東西，Windows 上不存在；Linux／WSL／CI 照常真的執行'},
 ]
 SAC_FACES = ['橋接器連線中斷', 'WinError 4551', 'BASE_COMPILER', 'UNSUPPORTED', '應用程式控制原則', 'Smart App Control']
 UNIT = {'integrity': 'C 檢查點', 'run_tests': '場景', 'unittest': 'test', 'node-test': 'node test', 'node-canvas': '斷言'}

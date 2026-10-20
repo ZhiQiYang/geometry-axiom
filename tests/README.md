@@ -49,8 +49,8 @@ bridge/core/GDI/engjson spawn 及 runner 的子測試環境使用同一路徑，
 
 **「exit 0」的意思**（只對完整跑成立，即沒用 `--only`／`--extra-py`／`--simulate-missing`）：每個 suite 都跑了；每個 suite 發現到的測試數與 `tests/run_all.expected.json`
 **嚴格相等**（新增、刪除或少載入測試都會紅，並印「預期 N、實得 M」；沒登記的 suite 也紅；任何 py suite／node suite 發現 0 個測試一律紅）；沒有 fail；沒有 skip。
-唯一的 skip 豁免是 `run_all.py` 裡的具名允許清單 `ALLOWED_SKIPS`：suite、完整 test id、理由子字串、平台四者都相符才算（目前只有 Windows 上
-`py:test_cli_args` 的 `/dev/full` POSIX 測試）；其餘 skip 一律算 skip。`node:model_viewer` 是腳本式、只有結束碼，expected 裡標 `exit-code-only`，表格備註欄註明、測試數欄顯示 `-`。
+唯一的 skip 豁免是 `run_all.py` 裡的具名允許清單 `ALLOWED_SKIPS`：suite、完整 test id、理由子字串、平台四者都相符才算（目前三筆：POSIX 上
+`py:test_gdi_contract` 的真 GDI 測試；Windows 上 `py:test_cli_args` 的 `/dev/full` POSIX 測試與 `py:test_assembly_mutation_check` 的程序群組／`/proc` 測試——後者在 Linux／WSL／CI 照常真的執行，不是 skip）；其餘 skip 一律算 skip。`node:model_viewer` 是腳本式、只有結束碼，expected 裡標 `exit-code-only`，表格備註欄註明、測試數欄顯示 `-`。
 用了 `--only`／`--extra-py`／`--simulate-missing` 的跑，結尾一律印「部分／示範執行，不可當完整驗收」並列出用了哪些旗標，措辭不會出現「全過」。
 `--update-expected` 只能單獨用在完整跑；有環境問題、崩潰／逾時、0 個測試、不在允許清單的 skip 或未登記檔時拒絕重寫（有 test 級 fail 仍可記下發現數，例如目前的 `test_gdi_contract`，fail 與數量無關）。
 

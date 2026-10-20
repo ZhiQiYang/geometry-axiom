@@ -210,11 +210,11 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 
 | 案例 | 殺手測試 | 殺手標記 | 標記所在 |
 |---|---|---|---|
-| conflict | `test_duplicate_scope_and_endpoint_rejected` | `conflict:scope` | `:233` 傳給 `reject`，由 `reject` 的 `:97`（preview 必須無效）帶出；`end` 變體另有 `conflict:end`，不屬於這個突變 |
-| missing-source | `test_bad_dimension_sources_rejected_not_incomplete` | `missing-source:literal-zero` | `:469` 傳給 `reject`，同樣由 `:97` 帶出；迴圈的第一個來源，測試在第一筆失敗就停 |
-| cancelled-preview | `test_cancel_and_protocol_tokens_do_not_commit` | `cancelled-preview:confirm-after-cancel` | `:489`，取消後的 `assembly-confirm` 必須回 `ok:false` |
+| conflict | `test_duplicate_scope_and_endpoint_rejected` | `conflict:scope` | `:235` 傳給 `reject`，由 `reject` 的 `:99`（preview 必須無效）帶出；`end` 變體另有 `conflict:end`，不屬於這個突變 |
+| missing-source | `test_bad_dimension_sources_rejected_not_incomplete` | `missing-source:literal-zero` | `:471` 傳給 `reject`，同樣由 `:99` 帶出；迴圈的第一個來源，測試在第一筆失敗就停 |
+| cancelled-preview | `test_cancel_and_protocol_tokens_do_not_commit` | `cancelled-preview:confirm-after-cancel` | `:491`，取消後的 `assembly-confirm` 必須回 `ok:false` |
 
-前一位 agent 用 main 人工比對的 `:218`、`:452`、`:472` 是加標記前的行號，就是現在的 `:233`、`:469`、`:489`（同一個陳述式；`:97` 是 `reject` 內同一條斷言）。標記讓比對不再靠行號。
+前一位 agent 用 main 人工比對的 `:218`、`:452`、`:472` 是加標記前的行號，在 `661d72bf` 是 `:233`、`:469`、`:489`（同一個陳述式；`:97` 是 `reject` 內同一條斷言）。`d3746972` 把 `killer()` 的說明加了 2 行，之後的行號都加 2，現在是 `:235`、`:471`、`:491`、`:99`；上表與下面的 `TAGS` 表用現在的行號，第二次實跑收據保留 `661d72bf` 的行號。標記讓比對不再靠行號。
 
 #### 全部殺手標記（`TAGS`）與 `--check` 擋的事
 
@@ -222,14 +222,14 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 
 | 標記 | 持有它的測試 | 綁定的案例 | 釘住什麼 |
 |---|---|---|---|
-| `conflict:scope` | `test_duplicate_scope_and_endpoint_rejected` | conflict | 兩個接合點共用 scope 必須拒絕（標記字串在 `:231`，迴圈第一輪） |
+| `conflict:scope` | `test_duplicate_scope_and_endpoint_rejected` | conflict | 兩個接合點共用 scope 必須拒絕（標記字串在 `:233`，迴圈第一輪） |
 | `conflict:end` | 同上 | 無 | 共用端點必須拒絕（迴圈第二輪）。conflict 突變只拿掉 scope 檢查，這一輪不是它的目標 |
-| `missing-source:literal-zero` | `test_bad_dimension_sources_rejected_not_incomplete` | missing-source | 尺寸來源 0 必須拒絕（`:464`，迴圈第一個來源） |
-| `missing-source:literal-negative` | 同上 | 無 | 尺寸來源 -1（`:464`） |
-| `missing-source:material` | 同上 | 無 | 不存在的 material（`:465`） |
-| `missing-source:parameter` | 同上 | 無 | 不存在的 parameter（`:466`） |
-| `missing-source:application` | 同上 | 無 | application 來源（`:467`） |
-| `cancelled-preview:confirm-after-cancel` | `test_cancel_and_protocol_tokens_do_not_commit` | cancelled-preview | 取消後的確認必須回 `ok:false`（`:489`） |
+| `missing-source:literal-zero` | `test_bad_dimension_sources_rejected_not_incomplete` | missing-source | 尺寸來源 0 必須拒絕（`:466`，迴圈第一個來源） |
+| `missing-source:literal-negative` | 同上 | 無 | 尺寸來源 -1（`:466`） |
+| `missing-source:material` | 同上 | 無 | 不存在的 material（`:467`） |
+| `missing-source:parameter` | 同上 | 無 | 不存在的 parameter（`:468`） |
+| `missing-source:application` | 同上 | 無 | application 來源（`:469`） |
+| `cancelled-preview:confirm-after-cancel` | `test_cancel_and_protocol_tokens_do_not_commit` | cancelled-preview | 取消後的確認必須回 `ok:false`（`:491`） |
 
 `--check`（每次執行前也是同一道靜態閘門）要求：
 
@@ -251,9 +251,9 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 | `control-single-layer` | 只拿掉 `cancelled-preview` 兩層裡的守門那一層 | `survived`（即上表 XA1） |
 | `control-comment-only` | 在 conflict 案例的錨點（`assembly.c:66` 的 `if(!strcmp(scopes[k],scopes[i]))`）同一行後面加 `/* comment only */`，不改任何程式碼 | `identical-binary`：沒有加 `-g`、行數不動（`__LINE__` 也不會變），所以編出的二進位必須與基準線逐位元組相同；判決先比二進位 sha256，再看測試結果，所以這一階段的測試不論過不過都是 identical-binary。`--check` 要求這種對照的補丁只能是加 `/* */` 註解、不得增減換行；拿掉工具裡的二進位比對，這個對照會被判 `survived` 而讓整次執行失敗 |
 
-不用補丁就能驗的部分在 run_all 的 `test_assembly_mutation_check`（12 個 test）：每個殺手標記（8 個）恰好出現一次、在指定的方法裡、沒有未登記的標記與無法登記的 `killer()` 引數、基準線要求全部標記且不接受未登記的標記、每個案例與對照的錨點仍存在且唯一、34 條判斷規則（含上表所有原因，`identical-binary` 也有）、註解對照只加註解、舊判準會把別的斷言當成 killed 而新判準不會、結果記錄器分得開標記、error、skip、橋接器死亡與子測試、被殺程序群組的查驗（`/proc` 解析、輪詢、殘留判定）。最後一項另有一個真的 `sh` 子程序樹被殺、殺後 `/proc` 乾淨的測試，只在 Linux／WSL 執行，Windows 上該測試直接回傳、什麼都沒驗；Windows 上驗不到的那一段由工具實跑的收據負責。`python3 tests/assembly_mutation_check.py --check` 與 `--selftest` 不需要編譯器。
+不用補丁就能驗的部分在 run_all 的 `test_assembly_mutation_check`（12 個 test）：每個殺手標記（8 個）恰好出現一次、在指定的方法裡、沒有未登記的標記與無法登記的 `killer()` 引數、基準線要求全部標記且不接受未登記的標記、每個案例與對照的錨點仍存在且唯一、34 條判斷規則（含上表所有原因，`identical-binary` 也有）、註解對照只加註解、舊判準會把別的斷言當成 killed 而新判準不會、結果記錄器分得開標記、error、skip、橋接器死亡與子測試、被殺程序群組的查驗（`/proc` 解析、輪詢、殘留判定）。最後一項另有一個真的 `sh` 子程序樹被殺、殺後 `/proc` 乾淨的測試，只在 Linux／WSL 執行，Windows 上該測試明示 skip（理由 `requires POSIX process groups and /proc (Linux/WSL/CI run it)`，登記在 `run_all.py` 的 `ALLOWED_SKIPS`，只對 `nt` 有效；先前是直接 `return` 而顯示通過，什麼都沒驗）；Windows 上驗不到的那一段由工具實跑的收據負責。`python3 tests/assembly_mutation_check.py --check` 與 `--selftest` 不需要編譯器。
 
-#### 第二次實跑收據（2026-10-20，標記判準）
+#### 第二次實跑收據（2026-10-20，標記判準；表中行號是 `661d72bf` 的 `test_assembly_rules.py`）
 
 受驗提交 `661d72bfa890fdf25818577dfbe66e2230656b1e`，`git status` 乾淨；工具 sha256 `206f12be…`、`test_assembly_rules.py` sha256 `690e4e22…`（都是 LF 形式，與收據 `judge` 欄相同）。WSL Ubuntu-24.04、GCC 13.3.0、Python 3.12.3，ext4 clone `/var/tmp/assembly-oracle-geo261/repo`，經 WSL 鎖。`python3 tests/assembly_mutation_check.py --out …` 結束碼 0，`ok: true`，`problems: []`，473 秒。跑前 `--check`、`--selftest`、`unittest tests.test_assembly_mutation_check tests.test_mutation_anchors`（10 tests）都通過。
 
@@ -275,6 +275,47 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 收據在 `D:/geometry-axiom-work/assembly-oracle-20261020/`，沒有提交進 repo：`run2/out/` 每階段有 `patches` 與 `patchedFiles` 摘要、`build/` 編譯輸出、`tests/` 的 stdout、stderr、`result.json`（結構化結果）、`execution.json`、`record.json`；`summary.json` sha256 `ff38239c2139bba15f072f90653efcb7235bca3026d09d5aa5935edd25718f02`，`sources.json` sha256 `6adcf046fdd6202364e3b1424eb3868dc3c95c93c87aa5b1038f72b6b517be25`，`run2/assembly.out` sha256 `fa186917517f7dfbc2b28030ea0077c5ff02f54a7e415ae04724c9dca0dd44a8`。`run1/` 是同一天先跑的版本（`666f4654`，三個對照、說明文字較舊，全數通過），保留不當作最終收據。
 
 限制：標記證明的是「失敗的是這一條斷言」，不證明它失敗的原因就是被注入的缺陷，那一層仍靠補丁與測試的對應。skip 沒有真實對照：橋接器的故障造不出 skip，只由 `--selftest` 與記錄器單元測試覆蓋。`missing-source` 的殺手是迴圈第一個來源，其餘四個來源（以及 `conflict:end`）的拒絕沒有被任何突變個別證明；第三次實跑起，基準線至少證明這幾輪每次都跑到且通過，有人刪掉或重複它們，`--check` 會指名。
+
+#### 第三次實跑收據（2026-10-20，全部標記、unchanged-binary 對照、殘留程序查驗）
+
+受驗提交 `d3746972b62d896ce09aae3b79f34a9b3e08b649`（這一輪的工具、測試與文件說明；之後的提交只改本文件），`git status` 乾淨；工具 sha256 `230010fa…`、`test_assembly_rules.py` sha256 `f29e1379…`（都是 LF 形式，與收據 `judge` 欄相同）。WSL Ubuntu-24.04、GCC 13.3.0、Python 3.12.3，ext4 clone `/var/tmp/assembly-oracle-geo261/repo`，經 WSL 鎖。`python3 tests/assembly_mutation_check.py --out …` 結束碼 0，`ok: true`，`problems: []`，392 秒，`schema: assembly-mutations/3`。跑前 `--check`（8 個標記、3 個案例、6 個對照）、`--selftest`（34 條）、`unittest -v tests.test_assembly_mutation_check tests.test_mutation_anchors`（15 tests，含只在 Linux 才實際執行的真實程序群組測試）都通過。其餘結果與第二次相同，多出 `control-comment-only`，並且 `control-hang` 多了殘留程序紀錄：
+
+| 階段 | 結果 | 失敗的位置與標記 | 舊判準 | 二進位 sha256 前 12 碼 |
+|---|---|---|---|---|
+| baseline | pass | 3 個測試全綠；`reached` 與 `killerTags` 同為 8 個標記，工具要求的就是這 8 個 | | `a06cfd0d18a9` |
+| conflict | killed | `test_duplicate_scope_and_endpoint_rejected` `:235`→`:99`，`conflict:scope` | killed | `557a5117f482` |
+| missing-source | killed | `test_bad_dimension_sources_rejected_not_incomplete` `:471`→`:99`，`missing-source:literal-zero` | killed | `61b568b1ebce` |
+| cancelled-preview | killed | `test_cancel_and_protocol_tokens_do_not_commit` `:491`，`cancelled-preview:confirm-after-cancel` | killed | `1e7d4b938572` |
+| control-wrong-assertion | not-killed／wrong-assertion | 同一測試 `:490`，無標記 | **killed** | `9fb0d76de926` |
+| control-bridge-crash | not-killed／bridge-closed | `:490` 的 `BridgeClosed`，橋接器已結束 | 不算 | `fc91a5b2ae02` |
+| control-error | not-killed／error | `json.JSONDecodeError`，errors=1、failures=0 | 不算 | `4d0deff8cafc` |
+| control-hang | not-killed／timeout | 15.01 秒後被殺，沒有結果檔。`processGroup`：殺前 2 個程序（`python3` 測試子行程 46715 與 `controls-control-hang-bridge` 46716，同一 process group、同一 session），殺後 0 個，第一次查就已消失（`secondsUntilGone` 0.0） | 不算 | `e7c0b4a865eb` |
+| control-single-layer | not-killed／survived | 測試通過 | 不算 | `b078c68df6b1` |
+| control-comment-only | not-killed／identical-binary | 測試通過（結束碼 0）；二進位與 baseline 逐位元組相同 | 不算 | `a06cfd0d18a9`（與 baseline 相同） |
+| restored | pass | 3 個測試再度全綠 | | `a06cfd0d18a9`（與 baseline 相同） |
+
+十一個階段還原後來源摘要都回到 `91364b349f4f…`（與前兩次相同），`originalSourcesUnchanged: true`、`restoredBinaryMatchesBaseline: true`。`control-comment-only` 的二進位與 baseline 相同，是在同一次執行內比較的結果；沒有加 `-g`、註解與錨點在同一行、行數不動，所以沒有改到 `__LINE__` 之類會影響輸出的東西，不必換成別的改法。
+
+收據在 `D:/geometry-axiom-work/assembly-oracle-20261020/run3/`，沒有提交進 repo：`out/` 的結構與第二次相同，另有 `pre.out`（跑前三道檢查）與 `run.log`；`out/summary.json` sha256 `dce885d4ad0f30ea09011df17f39caa8675e812b45c87ebfd5b73eb034e23cbb`，`out/sources.json` sha256 `6adcf046fdd6202364e3b1424eb3868dc3c95c93c87aa5b1038f72b6b517be25`（與第二次相同），`assembly.out` sha256 `8a1dcd8df4442c2d47caf8bed0326a28651ec1661333d10b20275ef04c10f0b0`。殘留程序的收據是 `out/controls/control-hang/tests/execution.json` 與同階段 `record.json` 的 `processGroup`。
+
+**拿掉新檢查會怎樣（突變自證）。** 逐一拿掉本輪新增的檢查，對應的測試、`--selftest` 或整次執行會變紅。Windows 端用 `python -m unittest tests.test_assembly_mutation_check` 與 `--selftest`、`--check` 逐項驗；M7 與 M11 另在 WSL 對 `d3746972` 的 `git archive` 拷貝上跑（收據在 `run3-mut/`，同樣沒有提交）：
+
+| 拿掉的東西 | 變紅的是什麼 |
+|---|---|
+| M1 基準線改回只要求案例綁定的 3 個標記（舊行為） | `test_the_baseline_has_to_reach_every_listed_tag_and_nothing_else` |
+| M2 `judge_pass` 不再擋未登記的標記 | 同上、`test_verdict_rules_reject_everything_but_the_exact_assertion`；`--selftest` 結束碼 1 |
+| M3 `--check` 不再數標記出現幾次 | `test_a_tag_that_no_case_is_bound_to_cannot_be_deleted_repeated_moved_or_added_unnoticed` |
+| M4 `--check` 不再找未登記的標記字串 | 同上 |
+| M5 `--check` 不再檢查 `killer()` 的引數 | 同上 |
+| M6 `--check` 不再要求標記在指定的方法裡 | 同上、`test_binding_problems_name_a_missing_moved_or_duplicated_tag_or_test` |
+| M7 工具不再判 `identical-binary` | `test_a_comment_only_control_is_judged_identical_binary_and_changes_nothing_else`、`test_verdict_rules_…`；`--selftest` 結束碼 1（3 條 identical-binary 規則轉紅）；WSL 完整執行 `ok: false`、結束碼 1，`problems` 只有一條：`control control-comment-only was judged not-killed/survived, expected not-killed/identical-binary`（`m7-out/summary.json` sha256 `528ac759…`，372 秒） |
+| M8 註解對照不再被限制只能加註解 | `test_a_comment_only_control_is_judged_identical_binary_and_changes_nothing_else` |
+| M9 `control-comment-only` 從 `CONTROLS` 刪掉 | 同上、`test_cases_and_controls_are_bound_to_live_assertions_and_anchors` |
+| M10 殺後仍有程序不算問題 | `test_what_is_left_of_a_killed_process_group_is_looked_up_and_a_leftover_is_a_problem` |
+| M11 殺完不再查程序群組 | Windows 上沒有任何測試變紅（真實程序測試在 Windows 直接回傳）；WSL 上 `test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left` 變紅：殺完立刻查，兩個 `sleep` 殭屍還在（`m11-unittest.out`） |
+| M12 不算已離開 process group 但仍在 session 的程序 | `test_what_is_left_…` |
+
+M11 那一行同時說明了為什麼殺完要輪詢：`SIGKILL` 剛送出時，子程序會短暫以殭屍的狀態留在 `/proc`，立刻查看到的是殭屍而不是乾淨。第三次實跑的 `control-hang` 第一次查就乾淨，不代表這個等待可以省。
 
 ## 環境限制與計數紀律
 
