@@ -1,0 +1,5 @@
+# 場景檔與 index.json 由 gen_scenes.py 以 LF 寫出，測試逐位元比對重新產生的結果。
+# 任何平台 checkout 都不得改行尾（Windows core.autocrlf=true 會把工作樹轉成 CRLF）。
+scenes/*.scene text eol=lf
+fixtures/*.scene text eol=lf
+index.json text eol=lf
