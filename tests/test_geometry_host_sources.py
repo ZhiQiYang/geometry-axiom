@@ -636,6 +636,17 @@ class NativeRootCatalogTests(unittest.TestCase):
                 error = self.native_rejected(changed)
                 self.assertEqual("Native box face identity disagrees with its adapter root.", error.message)
 
+    def test_native_loader_rejects_an_appended_identical_root(self):
+        wire = native_wire(fixture())
+        self.assertEqual(4, len(self.native_load(wire).roots))
+        for index in range(4):
+            with self.subTest(root=index):
+                changed = deepcopy(wire)
+                changed["neutralSources"]["roots"].append(deepcopy(changed["neutralSources"]["roots"][index]))
+                error = self.native_rejected(changed, "BASE_SOURCE_PROTOCOL")
+                self.assertEqual("Native root associations must be unique.", error.message)
+
+
 class NativeSourceGuardControls(unittest.TestCase):
     def test_removed_transport_guards_fail_the_same_real_consumers(self):
         with tempfile.TemporaryDirectory(prefix="geo261-source-guards-") as directory:

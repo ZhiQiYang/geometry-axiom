@@ -3,7 +3,7 @@
 Requires explicit, registry-verified GEOMETRY_MODEL_BASE and (for finish) a
 GEOMETRY_TEST_BRIDGE built from this checkout. This module never builds a native
 binary. Missing configuration skips; stale configuration fails. A release gate
-must require all eleven tests with zero skips. The independent legacy runtime is
+must require all twelve tests with zero skips. The independent legacy runtime is
 only a comparison oracle, never a fallback when the default runtime rejects.
 """
 import base64
@@ -430,6 +430,16 @@ class DefaultNativeIntegration(unittest.TestCase):
                 self.assertEqual({root.association for root in candidate.roots},
                                  {root.association for root in decoded.roots})
                 self.reject_native_wire(changed, scene)
+
+    def test_actual_wire_rejects_an_appended_identical_root(self):
+        envelope, _, _ = self.capture(fixtures.SCENE)
+        roots = envelope["neutralSources"]["roots"]
+        for index, root in enumerate(roots):
+            with self.subTest(duplicate=(root["kind"], root["id"], root["slot"], root["memberId"])):
+                changed = deepcopy(envelope)
+                changed["neutralSources"]["roots"].append(deepcopy(roots[index]))
+                self.assertEqual(envelope["neutralSources"]["coverage"], changed["neutralSources"]["coverage"])
+                self.reject_native_wire(changed, fixtures.SCENE, "BASE_SOURCE_PROTOCOL")
 
     def test_actual_catalog_covers_every_authored_root_and_rejects_missing_extra(self):
         # Expected identities come from these small authored scenes, not from
