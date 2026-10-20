@@ -234,8 +234,8 @@ def _load_base_or_candidate(scene_text: str, executable=None, *, builder=None,
         raise ModelError(status, snapshot.get("code", "BASE_INVALID"), snapshot.get("clause", "I9"), snapshot.get("message", "Scene rejected."))
     candidate = None
     if neutral_sources and not result.returncode:
-        from .model_sources import decode_candidate
-        candidate = decode_candidate(result.stdout, source_bytes=encoded,
+        from .model_sources import _decode_native_candidate
+        candidate = _decode_native_candidate(result.stdout, source_bytes=encoded,
                                      execution_identity=current)
         snapshot = candidate.legacy_snapshot
     if result.returncode or snapshot.get("schema") != "geometry-base-snapshot/1":

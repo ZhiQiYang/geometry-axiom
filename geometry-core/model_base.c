@@ -367,6 +367,14 @@ static void model_legacy_snapshot(World *world,const char *canonical)
         fputs("{\"name\":", stdout); model_string(stdout, geo_named_values_at(&world->geo.named_values,i)->name);
         printf(",\"value\":%" PRId64 "}", geo_named_values_at(&world->geo.named_values,i)->value);
     }
+    fputs("],\"parameter_fields\":[", stdout);
+    for (size_t i = 0; i < geo_parameters_field_count(&world->geo.parameters); ++i) {
+        const GeoParameterField *field = &geo_parameters_fields(&world->geo.parameters)[i];
+        if (i) putchar(',');
+        printf("{\"parameterId\":%" PRIu32 ",\"fieldId\":%" PRIu32 ",\"name\":", field->parameter_id, field->id);
+        model_string(stdout, field->name);
+        putchar('}');
+    }
     fputs("],\"placements\":[", stdout);
     for (size_t i = 0; i < world_placement_count(world); ++i) {
         const PlacementSurface *p = world_placement_at(world,i);

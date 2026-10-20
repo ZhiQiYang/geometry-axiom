@@ -167,6 +167,7 @@ class SourceRuntimeTests(unittest.TestCase):
         graph["nodes"].append({"ref": parameter, "descriptor": {"valueType": "quantity", "unit": "scalar",
             "context": {"placementId": None, "axis": None, "owner": None}}, "status": "ok",
             "value": {"num": "3", "den": "7", "unit": "scalar", "quantityType": "ratio"}})
+        value["legacySnapshot"]["parameter_fields"] = [{"parameterId": 8, "fieldId": 3, "name": "ratio_field"}]
         graph["roots"].append({"kind": "parameter", "id": 8, "slot": "parameter.value", "memberId": 3,
                               "name": "ratio_field", "ref": parameter})
         box = graph["nodes"][0]["ref"]

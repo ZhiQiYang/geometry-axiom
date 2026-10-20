@@ -1,0 +1,1791 @@
+{
+  "schema": "geo261-topic-evidence-inventory/1",
+  "repository_prefix": "evidence/geo261-codex-fix-root-catalog-20261018",
+  "status": "精確候選公開集合；尚未複製／commit／push，人工判讀見 results",
+  "public_count": 251,
+  "public_bytes": 2307252,
+  "inventory_itself": "本檔另行加入，不自指 hash",
+  "public_files": [
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/publication-v1/README.md",
+      "destination_relative": "README.md",
+      "bytes": 7599,
+      "sha256": "67fb38af9fadefa5f76c0f7fc1fd540da2f53136a735f67a0535bf188925ff53"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/after.binaries.json",
+      "destination_relative": "after-build/after.binaries.json",
+      "bytes": 3574,
+      "sha256": "8a3d67a6b16659109cee6169f69cff29edd464a771a350b30cbb6431dddfe452"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/after.binary-00.sidecar.json",
+      "destination_relative": "after-build/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/after.binary-01.sidecar.json",
+      "destination_relative": "after-build/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/after.binary-02.sidecar.json",
+      "destination_relative": "after-build/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/before.binaries.json",
+      "destination_relative": "after-build/before.binaries.json",
+      "bytes": 3985,
+      "sha256": "bd0b7992d06b9944ef28be5bd6c1fb1efed6f0d045d195fe056ed2ce6a958409"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/before.binary-00.sidecar.json",
+      "destination_relative": "after-build/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/before.binary-01.sidecar.json",
+      "destination_relative": "after-build/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/before.binary-02.sidecar.json",
+      "destination_relative": "after-build/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/command.process.json",
+      "destination_relative": "after-build/command.process.json",
+      "bytes": 1070,
+      "sha256": "5aebead12ac733cb1c827d9f9ccc61282690f50d430e23dbe579aed65f002f15"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/command.stderr",
+      "destination_relative": "after-build/command.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/command.stdout",
+      "destination_relative": "after-build/command.stdout",
+      "bytes": 763,
+      "sha256": "645a02a6c2943881ddf6745b713bc7bc3ef299d44235209efe81fa07f41c2f5b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/receipt.json",
+      "destination_relative": "after-build/receipt.json",
+      "bytes": 13424,
+      "sha256": "45298952f3ac5ecd9e00b9dda64872fb9d2d1f724ab3f2a36b389de3426f198b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/suite-logs.manifest.json",
+      "destination_relative": "after-build/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/tool-chrome.stdout",
+      "destination_relative": "after-build/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/tool-chromium.stdout",
+      "destination_relative": "after-build/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/tool-gcc.stdout",
+      "destination_relative": "after-build/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/tool-node.stdout",
+      "destination_relative": "after-build/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-build/tool-python.stdout",
+      "destination_relative": "after-build/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/after.binaries.json",
+      "destination_relative": "after-default-native/after.binaries.json",
+      "bytes": 3574,
+      "sha256": "d2de049ea4b156e93c823e408f5f42f65a87b33927da61281006ad45a5d47f9a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/after.binary-00.sidecar.json",
+      "destination_relative": "after-default-native/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/after.binary-01.sidecar.json",
+      "destination_relative": "after-default-native/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/after.binary-02.sidecar.json",
+      "destination_relative": "after-default-native/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/before.binaries.json",
+      "destination_relative": "after-default-native/before.binaries.json",
+      "bytes": 3577,
+      "sha256": "cf6194d56c3b849d2ef4bae38f6f148034cdd804ed2cb978023659cde37a34df"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/before.binary-00.sidecar.json",
+      "destination_relative": "after-default-native/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/before.binary-01.sidecar.json",
+      "destination_relative": "after-default-native/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/before.binary-02.sidecar.json",
+      "destination_relative": "after-default-native/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/command.process.json",
+      "destination_relative": "after-default-native/command.process.json",
+      "bytes": 1078,
+      "sha256": "b749a2259fa0665e64cdb395731eb0c3efdff5707bf2450f33180e4f81cb0031"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/command.stderr",
+      "destination_relative": "after-default-native/command.stderr",
+      "bytes": 2076,
+      "sha256": "7fecfd38bc3a9a60d957bea559f781cd1ab61cf3abb1b9a74bb7b96aa16cdc88"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/command.stdout",
+      "destination_relative": "after-default-native/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/receipt.json",
+      "destination_relative": "after-default-native/receipt.json",
+      "bytes": 13586,
+      "sha256": "3af3166fc1345d9397ca4597cd50451a10698441221e7620447829c2ce3f714d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/suite-logs.manifest.json",
+      "destination_relative": "after-default-native/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/tool-chrome.stdout",
+      "destination_relative": "after-default-native/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/tool-chromium.stdout",
+      "destination_relative": "after-default-native/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/tool-gcc.stdout",
+      "destination_relative": "after-default-native/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/tool-node.stdout",
+      "destination_relative": "after-default-native/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-default-native/tool-python.stdout",
+      "destination_relative": "after-default-native/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/after.binaries.json",
+      "destination_relative": "after-native-sources/after.binaries.json",
+      "bytes": 3982,
+      "sha256": "e3492a51b9062adc96819c42c93b8e50e0cf6c74980c5f3a3d731fa06fe45317"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/after.binary-00.sidecar.json",
+      "destination_relative": "after-native-sources/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/after.binary-01.sidecar.json",
+      "destination_relative": "after-native-sources/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/after.binary-02.sidecar.json",
+      "destination_relative": "after-native-sources/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/before.binaries.json",
+      "destination_relative": "after-native-sources/before.binaries.json",
+      "bytes": 3985,
+      "sha256": "25141f60b69b5816840f96e0b93b6f3fb57d88fef4d9019a74c68e1ddb4d5953"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/before.binary-00.sidecar.json",
+      "destination_relative": "after-native-sources/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/before.binary-01.sidecar.json",
+      "destination_relative": "after-native-sources/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/before.binary-02.sidecar.json",
+      "destination_relative": "after-native-sources/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/command.process.json",
+      "destination_relative": "after-native-sources/command.process.json",
+      "bytes": 1075,
+      "sha256": "b9a2ffbdeef35bd477d6ba4ae288a93a588472cd8c9f98c6457ce273acb443f2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/command.stderr",
+      "destination_relative": "after-native-sources/command.stderr",
+      "bytes": 2334,
+      "sha256": "6db0520bc726e16b781d3b5b46dccc5a13bec766950602f64529ff58a76e23ef"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/command.stdout",
+      "destination_relative": "after-native-sources/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/receipt.json",
+      "destination_relative": "after-native-sources/receipt.json",
+      "bytes": 13462,
+      "sha256": "ed3f63dd73ef4d24557aacae0fab72cd92317208bdbb40fcceed33c0f6cf1171"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/suite-logs.manifest.json",
+      "destination_relative": "after-native-sources/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/tool-chrome.stdout",
+      "destination_relative": "after-native-sources/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/tool-chromium.stdout",
+      "destination_relative": "after-native-sources/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/tool-gcc.stdout",
+      "destination_relative": "after-native-sources/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/tool-node.stdout",
+      "destination_relative": "after-native-sources/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-native-sources/tool-python.stdout",
+      "destination_relative": "after-native-sources/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/after.binaries.json",
+      "destination_relative": "after-pure/after.binaries.json",
+      "bytes": 3982,
+      "sha256": "933e35957f5dd91ce114c9da3c1a6dcc1c97924077f14efda10c0f3d429ba373"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/after.binary-00.sidecar.json",
+      "destination_relative": "after-pure/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/after.binary-01.sidecar.json",
+      "destination_relative": "after-pure/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/after.binary-02.sidecar.json",
+      "destination_relative": "after-pure/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/before.binaries.json",
+      "destination_relative": "after-pure/before.binaries.json",
+      "bytes": 3985,
+      "sha256": "7b4c4daf83fd8a97d186d385311ec35eaa96016d46e6b3a65471956eaa24e629"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/before.binary-00.sidecar.json",
+      "destination_relative": "after-pure/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/before.binary-01.sidecar.json",
+      "destination_relative": "after-pure/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/before.binary-02.sidecar.json",
+      "destination_relative": "after-pure/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/command.process.json",
+      "destination_relative": "after-pure/command.process.json",
+      "bytes": 1119,
+      "sha256": "f40a06743f5b8cdf321afa421f0c06ca91a63f33923daf6736478fe2016a28a3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/command.stderr",
+      "destination_relative": "after-pure/command.stderr",
+      "bytes": 8168,
+      "sha256": "e6d4b2cd4542783b6a3c73cbc17e834cec2e31c2f386fb13718d54ffa3e829c6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/command.stdout",
+      "destination_relative": "after-pure/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/receipt.json",
+      "destination_relative": "after-pure/receipt.json",
+      "bytes": 13521,
+      "sha256": "7a5ed83e486de23aa2e67651def57482c48d06a35b25a7c260b92e990d02b275"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/suite-logs.manifest.json",
+      "destination_relative": "after-pure/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/tool-chrome.stdout",
+      "destination_relative": "after-pure/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/tool-chromium.stdout",
+      "destination_relative": "after-pure/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/tool-gcc.stdout",
+      "destination_relative": "after-pure/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/tool-node.stdout",
+      "destination_relative": "after-pure/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/after-pure/tool-python.stdout",
+      "destination_relative": "after-pure/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/after.binaries.json",
+      "destination_relative": "before-exact-set/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "1410d75864e804592bfd6b73eaccba15969b06f728607d6c167856e1b5b4011e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/after.binary-00.sidecar.json",
+      "destination_relative": "before-exact-set/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/after.binary-01.sidecar.json",
+      "destination_relative": "before-exact-set/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/after.binary-02.sidecar.json",
+      "destination_relative": "before-exact-set/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/before.binaries.json",
+      "destination_relative": "before-exact-set/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "e3aeac96b69f2cfa35e479aa61b253691f2bb5cf68e0f1f09aeb0308151bf260"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/before.binary-00.sidecar.json",
+      "destination_relative": "before-exact-set/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/before.binary-01.sidecar.json",
+      "destination_relative": "before-exact-set/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/before.binary-02.sidecar.json",
+      "destination_relative": "before-exact-set/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/command.process.json",
+      "destination_relative": "before-exact-set/command.process.json",
+      "bytes": 1168,
+      "sha256": "0989e938fb9d4a4613a1f95505441774f33a8a2cd4b6a54c44318e2dedcbcd99"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/command.stderr",
+      "destination_relative": "before-exact-set/command.stderr",
+      "bytes": 7396,
+      "sha256": "68734daff86ae488fec31955a4ea8346f1fca7d4b3d048e2dd3931fcc22f1898"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/command.stdout",
+      "destination_relative": "before-exact-set/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/receipt.json",
+      "destination_relative": "before-exact-set/receipt.json",
+      "bytes": 13635,
+      "sha256": "364c6b33831425dcdcedf4fe230cf99f6a7839cc25558a0a164fe6ce584ddede"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/suite-logs.manifest.json",
+      "destination_relative": "before-exact-set/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/tool-chrome.stdout",
+      "destination_relative": "before-exact-set/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/tool-chromium.stdout",
+      "destination_relative": "before-exact-set/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/tool-gcc.stdout",
+      "destination_relative": "before-exact-set/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/tool-node.stdout",
+      "destination_relative": "before-exact-set/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-exact-set/tool-python.stdout",
+      "destination_relative": "before-exact-set/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/after.binaries.json",
+      "destination_relative": "before-native-binding/after.binaries.json",
+      "bytes": 3968,
+      "sha256": "4d8fccd9f70c1b5ff1a798e702e83a4a7331563df76bb1daee47bbc8bce7d014"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/after.binary-00.sidecar.json",
+      "destination_relative": "before-native-binding/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/after.binary-01.sidecar.json",
+      "destination_relative": "before-native-binding/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/after.binary-02.sidecar.json",
+      "destination_relative": "before-native-binding/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/before.binaries.json",
+      "destination_relative": "before-native-binding/before.binaries.json",
+      "bytes": 3971,
+      "sha256": "1cd68bc900aabb48e63ca620e0ef4db4cadb5e687790a7a08e8b961bf4187d8f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/before.binary-00.sidecar.json",
+      "destination_relative": "before-native-binding/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/before.binary-01.sidecar.json",
+      "destination_relative": "before-native-binding/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "81bd9281579c902ed0d82c9d27f18cbfbccbe90882c02c96c21d11f856263041"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/before.binary-02.sidecar.json",
+      "destination_relative": "before-native-binding/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/command.process.json",
+      "destination_relative": "before-native-binding/command.process.json",
+      "bytes": 1165,
+      "sha256": "8c76f9a45d359a55d0e5a8cbb8cd478fdb266697488abef3a76b0a42de41e961"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/command.stderr",
+      "destination_relative": "before-native-binding/command.stderr",
+      "bytes": 959,
+      "sha256": "7caf01feffb69d0fa16f23c5a6b124b5b06abc428145ba7cbcbc5c4a946d7b41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/command.stdout",
+      "destination_relative": "before-native-binding/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/receipt.json",
+      "destination_relative": "before-native-binding/receipt.json",
+      "bytes": 13643,
+      "sha256": "d06dd7170996dac52e1d18cf410c91bf46d7ad9bb88f28f737d0f2b8384aba7a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/suite-logs.manifest.json",
+      "destination_relative": "before-native-binding/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/tool-chrome.stdout",
+      "destination_relative": "before-native-binding/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/tool-chromium.stdout",
+      "destination_relative": "before-native-binding/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/tool-gcc.stdout",
+      "destination_relative": "before-native-binding/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/tool-node.stdout",
+      "destination_relative": "before-native-binding/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/before-native-binding/tool-python.stdout",
+      "destination_relative": "before-native-binding/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/after.binaries.json",
+      "destination_relative": "control-exact-set/after.binaries.json",
+      "bytes": 3574,
+      "sha256": "451fa4558b92af11c4c948916218cbb9501736174df7f5d42818052878ae9042"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/after.binary-00.sidecar.json",
+      "destination_relative": "control-exact-set/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/after.binary-01.sidecar.json",
+      "destination_relative": "control-exact-set/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/after.binary-02.sidecar.json",
+      "destination_relative": "control-exact-set/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/before.binaries.json",
+      "destination_relative": "control-exact-set/before.binaries.json",
+      "bytes": 3577,
+      "sha256": "37aaf8dc91543c16623b44169fa617207198801b8ff43f120309674a6264df6b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/before.binary-00.sidecar.json",
+      "destination_relative": "control-exact-set/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/before.binary-01.sidecar.json",
+      "destination_relative": "control-exact-set/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/before.binary-02.sidecar.json",
+      "destination_relative": "control-exact-set/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/command.process.json",
+      "destination_relative": "control-exact-set/command.process.json",
+      "bytes": 1169,
+      "sha256": "8326eda789ee3778c7ef739de901e1341687273839b9309e59bcb314ee2b7b2e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/command.stderr",
+      "destination_relative": "control-exact-set/command.stderr",
+      "bytes": 7396,
+      "sha256": "4ac0f15395eafc0e82718e3177e36a63bd76669b3272b731917621cfccac94ef"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/command.stdout",
+      "destination_relative": "control-exact-set/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/receipt.json",
+      "destination_relative": "control-exact-set/receipt.json",
+      "bytes": 13639,
+      "sha256": "54aed2626eb1f11f12ccb2d68f6f7f33ddb1463666c87ba63daa952ef3f1a175"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/suite-logs.manifest.json",
+      "destination_relative": "control-exact-set/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/tool-chrome.stdout",
+      "destination_relative": "control-exact-set/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/tool-chromium.stdout",
+      "destination_relative": "control-exact-set/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/tool-gcc.stdout",
+      "destination_relative": "control-exact-set/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/tool-node.stdout",
+      "destination_relative": "control-exact-set/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-exact-set/tool-python.stdout",
+      "destination_relative": "control-exact-set/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/after.binaries.json",
+      "destination_relative": "control-native-binding/after.binaries.json",
+      "bytes": 3574,
+      "sha256": "fe76e49d5d6d45a7f208b610d2f53a350144e2f91ae713ae9fb3fd637a05248f"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/after.binary-00.sidecar.json",
+      "destination_relative": "control-native-binding/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/after.binary-01.sidecar.json",
+      "destination_relative": "control-native-binding/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/after.binary-02.sidecar.json",
+      "destination_relative": "control-native-binding/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/before.binaries.json",
+      "destination_relative": "control-native-binding/before.binaries.json",
+      "bytes": 3577,
+      "sha256": "5886f8ba69cf10d8b3abd6c767a0ef48236cad10e9c6df5ff25a852f6763fbf7"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/before.binary-00.sidecar.json",
+      "destination_relative": "control-native-binding/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/before.binary-01.sidecar.json",
+      "destination_relative": "control-native-binding/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/before.binary-02.sidecar.json",
+      "destination_relative": "control-native-binding/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/command.process.json",
+      "destination_relative": "control-native-binding/command.process.json",
+      "bytes": 1296,
+      "sha256": "db869f0a40d35ef1b3bb84341b4135f02ba415048d2e5c185793dc91c0fc40cb"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/command.stderr",
+      "destination_relative": "control-native-binding/command.stderr",
+      "bytes": 7609,
+      "sha256": "d9e0691dd4e5579dfee3b7ddf85e3d534c2623d730db4d0ad2e3a2ae0a1c3e4e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/command.stdout",
+      "destination_relative": "control-native-binding/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/receipt.json",
+      "destination_relative": "control-native-binding/receipt.json",
+      "bytes": 14030,
+      "sha256": "498fc6c601992bf39ca4ed0158c891dfe2f2cbb3fc2afb485b9cfc3174c59d7e"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/suite-logs.manifest.json",
+      "destination_relative": "control-native-binding/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/tool-chrome.stdout",
+      "destination_relative": "control-native-binding/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/tool-chromium.stdout",
+      "destination_relative": "control-native-binding/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/tool-gcc.stdout",
+      "destination_relative": "control-native-binding/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/tool-node.stdout",
+      "destination_relative": "control-native-binding/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-binding/tool-python.stdout",
+      "destination_relative": "control-native-binding/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/after.binaries.json",
+      "destination_relative": "control-native-caller/after.binaries.json",
+      "bytes": 3574,
+      "sha256": "d49f1daaf82acff074dc9191330ed679424d846e359920cf583b28e0ab0ea689"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/after.binary-00.sidecar.json",
+      "destination_relative": "control-native-caller/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/after.binary-01.sidecar.json",
+      "destination_relative": "control-native-caller/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/after.binary-02.sidecar.json",
+      "destination_relative": "control-native-caller/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/before.binaries.json",
+      "destination_relative": "control-native-caller/before.binaries.json",
+      "bytes": 3577,
+      "sha256": "eafdce9262858e8052c40e0db3eb1b560c18968df125c99b28f5c70ae9f207c2"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/before.binary-00.sidecar.json",
+      "destination_relative": "control-native-caller/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/before.binary-01.sidecar.json",
+      "destination_relative": "control-native-caller/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/before.binary-02.sidecar.json",
+      "destination_relative": "control-native-caller/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/command.process.json",
+      "destination_relative": "control-native-caller/command.process.json",
+      "bytes": 1296,
+      "sha256": "03d82607afd9f9fa959cd9b2bca37cb10567e79a566cc240ad211dbca2b311c9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/command.stderr",
+      "destination_relative": "control-native-caller/command.stderr",
+      "bytes": 7609,
+      "sha256": "47d554a8c6fe9cb50601804eb6d0812050cbeb241d1fde33b538913817192ac3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/command.stdout",
+      "destination_relative": "control-native-caller/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/receipt.json",
+      "destination_relative": "control-native-caller/receipt.json",
+      "bytes": 14027,
+      "sha256": "4173af34604a8b148852376527ca52e430ee8be83ecb3d41740e64594b919df4"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/suite-logs.manifest.json",
+      "destination_relative": "control-native-caller/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/tool-chrome.stdout",
+      "destination_relative": "control-native-caller/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/tool-chromium.stdout",
+      "destination_relative": "control-native-caller/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/tool-gcc.stdout",
+      "destination_relative": "control-native-caller/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/tool-node.stdout",
+      "destination_relative": "control-native-caller/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-caller/tool-python.stdout",
+      "destination_relative": "control-native-caller/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/after.binaries.json",
+      "destination_relative": "control-native-catalog/after.binaries.json",
+      "bytes": 3728,
+      "sha256": "49c130ce685d6aa9d44b2a36c6bdfc5369ea9fb6bf36d9ea979133ea01bdcc9c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/after.binary-00.sidecar.json",
+      "destination_relative": "control-native-catalog/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/after.binary-01.sidecar.json",
+      "destination_relative": "control-native-catalog/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/after.binary-02.sidecar.json",
+      "destination_relative": "control-native-catalog/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/before.binaries.json",
+      "destination_relative": "control-native-catalog/before.binaries.json",
+      "bytes": 3731,
+      "sha256": "d8db0a135471032e36433a25eea45f045a1c7b8bd7c4bc79c159251ed7f1f097"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/before.binary-00.sidecar.json",
+      "destination_relative": "control-native-catalog/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/before.binary-01.sidecar.json",
+      "destination_relative": "control-native-catalog/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/before.binary-02.sidecar.json",
+      "destination_relative": "control-native-catalog/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/command.process.json",
+      "destination_relative": "control-native-catalog/command.process.json",
+      "bytes": 1153,
+      "sha256": "1ff8606a7a4b34027f8966bef7e1f0f0e47fd7483224ac892a7014914f5a533c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/command.stderr",
+      "destination_relative": "control-native-catalog/command.stderr",
+      "bytes": 1788,
+      "sha256": "be71a7fd0c063d1d61ab2bc12d84dc84be32c2edbb02872caa3677d41b082684"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/command.stdout",
+      "destination_relative": "control-native-catalog/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/receipt.json",
+      "destination_relative": "control-native-catalog/receipt.json",
+      "bytes": 13624,
+      "sha256": "5ca62fabd998aef0022b2ceac514cb76c124a48f1d9e754dfb15711738d642fc"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/suite-logs.manifest.json",
+      "destination_relative": "control-native-catalog/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/tool-chrome.stdout",
+      "destination_relative": "control-native-catalog/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/tool-chromium.stdout",
+      "destination_relative": "control-native-catalog/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/tool-gcc.stdout",
+      "destination_relative": "control-native-catalog/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/tool-node.stdout",
+      "destination_relative": "control-native-catalog/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/control-native-catalog/tool-python.stdout",
+      "destination_relative": "control-native-catalog/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/control-01-exact-set-commit.txt",
+      "destination_relative": "readonly-review/control-01-exact-set-commit.txt",
+      "bytes": 293,
+      "sha256": "36c7a28e75a76bad82f855e026899fedd560bffb9f7c47e787b32e3f0b838346"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/control-01-exact-set.patch",
+      "destination_relative": "readonly-review/control-01-exact-set.patch",
+      "bytes": 891,
+      "sha256": "54c3929a6aa6143bc5e1b3c451824a7a6a35185fae5728f04c94d86b2484c068"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/control-02-native-binding-commit.txt",
+      "destination_relative": "readonly-review/control-02-native-binding-commit.txt",
+      "bytes": 293,
+      "sha256": "f681a78895c29a783dfd75c2e5ec8a4ba4472f7889d684bca13672c14466a1ab"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/control-02-native-binding.patch",
+      "destination_relative": "readonly-review/control-02-native-binding.patch",
+      "bytes": 972,
+      "sha256": "6c360c61df619cf5dbde8e51692d20663ba08988423efcb79001546f1c9192ed"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/control-03-native-caller-commit.txt",
+      "destination_relative": "readonly-review/control-03-native-caller-commit.txt",
+      "bytes": 290,
+      "sha256": "fbc3e54d976d972d7d399b51a8fbcdc7ddd4627329a25f18fbcdd0fc93f3eb59"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/control-03-native-caller.patch",
+      "destination_relative": "readonly-review/control-03-native-caller.patch",
+      "bytes": 1012,
+      "sha256": "c17e56b9654eac004e14cadbd50ee23260e063beb68a80bac283051cb1d0b1a9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/control-04-native-catalog-commit.txt",
+      "destination_relative": "readonly-review/control-04-native-catalog-commit.txt",
+      "bytes": 296,
+      "sha256": "fe51500989f1a9d59bd2456793225ddcb794256d94eff8ca575cfc592ceeba3b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/control-04-native-catalog.patch",
+      "destination_relative": "readonly-review/control-04-native-catalog.patch",
+      "bytes": 662,
+      "sha256": "e7100721d642c28e813cdd34daa3562dc3fc9c9a9d2a30021d9de132862df9e9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/git-artifacts.json",
+      "destination_relative": "readonly-review/git-artifacts.json",
+      "bytes": 3930,
+      "sha256": "ca8472bf9adb27372050682fb827d269a32bbca67c5d46462ca89e094a50d6de"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/manual-ledger.json",
+      "destination_relative": "readonly-review/manual-ledger.json",
+      "bytes": 33419,
+      "sha256": "d4cda0b60596431b4cac93cd778f5cdc48cf3a7b65bc29a8a7c1a842a7833a33"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/product-fix-commit.txt",
+      "destination_relative": "readonly-review/product-fix-commit.txt",
+      "bytes": 299,
+      "sha256": "776ed20f8ffd74ebcef232394ee22a991746ea7430fedade63218c8fdc344048"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/product-fix.patch",
+      "destination_relative": "readonly-review/product-fix.patch",
+      "bytes": 9026,
+      "sha256": "10a619a6ff8108603112802d2253fc2a96a2cd061563005c89a0eb58e2029708"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/source-assertion-review.json",
+      "destination_relative": "readonly-review/source-assertion-review.json",
+      "bytes": 11442,
+      "sha256": "1d390911d48f2e24b9fbed4177899a932c184701c40077684a201d84bfb994ff"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/tests-support-commit.txt",
+      "destination_relative": "readonly-review/tests-support-commit.txt",
+      "bytes": 296,
+      "sha256": "b4ed0020bbdbe24ec7a4ebb56f9ce92073617c2e78d9e6987859e74d0bd59551"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/readonly-review/tests-support.patch",
+      "destination_relative": "readonly-review/tests-support.patch",
+      "bytes": 20562,
+      "sha256": "6a6de2d81e93a7ac4d6ecaae2a70bfcb84476372253016457140f79ef1409712"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/after.binaries.json",
+      "destination_relative": "restored-default-native/after.binaries.json",
+      "bytes": 3574,
+      "sha256": "84dd34ebf5beec29c1e28362aa06de85a50bc449c61d64a4011d76828bfb9167"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/after.binary-00.sidecar.json",
+      "destination_relative": "restored-default-native/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/after.binary-01.sidecar.json",
+      "destination_relative": "restored-default-native/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/after.binary-02.sidecar.json",
+      "destination_relative": "restored-default-native/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/before.binaries.json",
+      "destination_relative": "restored-default-native/before.binaries.json",
+      "bytes": 3577,
+      "sha256": "7bc7efd20f57962483c191d3d6452e6b6c286b1a375d2f7de18a154c09a5fcd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/before.binary-00.sidecar.json",
+      "destination_relative": "restored-default-native/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/before.binary-01.sidecar.json",
+      "destination_relative": "restored-default-native/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/before.binary-02.sidecar.json",
+      "destination_relative": "restored-default-native/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/command.process.json",
+      "destination_relative": "restored-default-native/command.process.json",
+      "bytes": 1078,
+      "sha256": "86ca3875d3ca8e8969a429194be68feea2ba2db9f64c3483f18605a3a1d6ea5d"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/command.stderr",
+      "destination_relative": "restored-default-native/command.stderr",
+      "bytes": 2076,
+      "sha256": "b1d082e41b15fc0be7e6e5aa1869b2274e3ca0bed5986bba9d5ebdfeddd5a4ef"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/command.stdout",
+      "destination_relative": "restored-default-native/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/receipt.json",
+      "destination_relative": "restored-default-native/receipt.json",
+      "bytes": 13595,
+      "sha256": "9ab11a159a5c366ee619ed597c027d61ae496bfd1709e66156fd700ebde27766"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/suite-logs.manifest.json",
+      "destination_relative": "restored-default-native/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/tool-chrome.stdout",
+      "destination_relative": "restored-default-native/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/tool-chromium.stdout",
+      "destination_relative": "restored-default-native/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/tool-gcc.stdout",
+      "destination_relative": "restored-default-native/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/tool-node.stdout",
+      "destination_relative": "restored-default-native/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-default-native/tool-python.stdout",
+      "destination_relative": "restored-default-native/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/after.binaries.json",
+      "destination_relative": "restored-native-sources/after.binaries.json",
+      "bytes": 3574,
+      "sha256": "10b8bc08ab6e705ea621fc4d54cf2a8edb0bdbc9b206e35b40e8ea08967fa798"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/after.binary-00.sidecar.json",
+      "destination_relative": "restored-native-sources/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/after.binary-01.sidecar.json",
+      "destination_relative": "restored-native-sources/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/after.binary-02.sidecar.json",
+      "destination_relative": "restored-native-sources/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/before.binaries.json",
+      "destination_relative": "restored-native-sources/before.binaries.json",
+      "bytes": 3577,
+      "sha256": "5aa0ea80225fda57c26483ce0a32f8a00750afed7d5d8ffde77a8064b12e176b"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/before.binary-00.sidecar.json",
+      "destination_relative": "restored-native-sources/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/before.binary-01.sidecar.json",
+      "destination_relative": "restored-native-sources/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/before.binary-02.sidecar.json",
+      "destination_relative": "restored-native-sources/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/command.process.json",
+      "destination_relative": "restored-native-sources/command.process.json",
+      "bytes": 1076,
+      "sha256": "c9c9c119c91403deaeac7f97d7a2becc32ba3497e4e69a0d8e22be272d870af3"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/command.stderr",
+      "destination_relative": "restored-native-sources/command.stderr",
+      "bytes": 2333,
+      "sha256": "e74347ee3b81305508d9457a51bf0deafd994349ecbcfa0a419090d05ff9c0ef"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/command.stdout",
+      "destination_relative": "restored-native-sources/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/receipt.json",
+      "destination_relative": "restored-native-sources/receipt.json",
+      "bytes": 13472,
+      "sha256": "52845c09ea6ec11514c968f39ddbf89bae0ca8ab2f680ecee80fc652fd84983c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/suite-logs.manifest.json",
+      "destination_relative": "restored-native-sources/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/tool-chrome.stdout",
+      "destination_relative": "restored-native-sources/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/tool-chromium.stdout",
+      "destination_relative": "restored-native-sources/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/tool-gcc.stdout",
+      "destination_relative": "restored-native-sources/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/tool-node.stdout",
+      "destination_relative": "restored-native-sources/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-native-sources/tool-python.stdout",
+      "destination_relative": "restored-native-sources/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/after.binaries.json",
+      "destination_relative": "restored-pure/after.binaries.json",
+      "bytes": 3574,
+      "sha256": "8ea0eb0fe9da01b076d311cfcc2883d3f13e1efe54b38d1c7ca020484a4cfb08"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/after.binary-00.sidecar.json",
+      "destination_relative": "restored-pure/after.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/after.binary-01.sidecar.json",
+      "destination_relative": "restored-pure/after.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/after.binary-02.sidecar.json",
+      "destination_relative": "restored-pure/after.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/before.binaries.json",
+      "destination_relative": "restored-pure/before.binaries.json",
+      "bytes": 3577,
+      "sha256": "95f51c75a31211930ed40b6e444aba213720858c2ac23abefcecd0ce97768487"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/before.binary-00.sidecar.json",
+      "destination_relative": "restored-pure/before.binary-00.sidecar.json",
+      "bytes": 22632,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/before.binary-01.sidecar.json",
+      "destination_relative": "restored-pure/before.binary-01.sidecar.json",
+      "bytes": 22646,
+      "sha256": "ab7e02cc1583b65616c8e7b1c110e43ddd9e55fb917c1a75886f36e8f2ccf122"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/before.binary-02.sidecar.json",
+      "destination_relative": "restored-pure/before.binary-02.sidecar.json",
+      "bytes": 22658,
+      "sha256": "8715e0d28e5a7e0e71b2af29279ffb2303e006d30c20107b468db8bbe1b7028c"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/command.process.json",
+      "destination_relative": "restored-pure/command.process.json",
+      "bytes": 1118,
+      "sha256": "cc4fec9ac1f52914ab5217bac931d84d1d0e15451a03aa8dcc507f48739ac58a"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/command.stderr",
+      "destination_relative": "restored-pure/command.stderr",
+      "bytes": 8167,
+      "sha256": "aa378dd39dbd5d90a22f91a8cdb7d890aad1b26794d5e9176e4e788d45f76dc6"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/command.stdout",
+      "destination_relative": "restored-pure/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/receipt.json",
+      "destination_relative": "restored-pure/receipt.json",
+      "bytes": 13529,
+      "sha256": "38867d1643169fcbdeb0d06ef1d219e3b4c6cba3a6e385964e2de32b71322492"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/suite-logs.manifest.json",
+      "destination_relative": "restored-pure/suite-logs.manifest.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/tool-chrome.stdout",
+      "destination_relative": "restored-pure/tool-chrome.stdout",
+      "bytes": 29,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/tool-chromium.stdout",
+      "destination_relative": "restored-pure/tool-chromium.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/tool-gcc.stdout",
+      "destination_relative": "restored-pure/tool-gcc.stdout",
+      "bytes": 232,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/tool-node.stdout",
+      "destination_relative": "restored-pure/tool-node.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/restored-pure/tool-python.stdout",
+      "destination_relative": "restored-pure/tool-python.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "source": "/workspace/geo261-validation-20261018/fixes/root-catalog/publication-v1/results.json",
+      "destination_relative": "results.json",
+      "bytes": 97488,
+      "sha256": "69dcd9acf4a765c0c98ffbe5ef26682d3526427f5f4ad32bb9be10774a55bb72"
+    }
+  ],
+  "omitted_recorded_identities": [
+    {
+      "relative_path": "before-exact-set/before.source.json",
+      "bytes": 1535221,
+      "sha256": "9a8cfc8426e0315ed26d27a90a4eb9d29d860a892597985329fa99ce6a3dcbe8",
+      "identity_source": "before-exact-set/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before-exact-set/after.source.json",
+      "bytes": 1535221,
+      "sha256": "1fbecb4b93ec5628bc244e9d0172b1391c4979cb0e9b0d6063fcda073b2b9d84",
+      "identity_source": "before-exact-set/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before-exact-set/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "before-exact-set/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before-native-binding/before.source.json",
+      "bytes": 1535221,
+      "sha256": "e9dbf00e97ac786631f8ff18d1116340b67366ba8c6006edb5c6fe9b3c224c1f",
+      "identity_source": "before-native-binding/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before-native-binding/after.source.json",
+      "bytes": 1535221,
+      "sha256": "b82ba8b56faaf2dc5a610cbb7cbddeaa07f59135c3c82f78514174f0112c2e33",
+      "identity_source": "before-native-binding/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "before-native-binding/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "before-native-binding/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-pure/before.source.json",
+      "bytes": 1535221,
+      "sha256": "70e5e55451e5211f904545e3d8c183f75277818c79b1bf32cb4eb0676e3ed5f9",
+      "identity_source": "after-pure/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-pure/after.source.json",
+      "bytes": 1535221,
+      "sha256": "b1dc86f16fa41a7a4bb653da5361b841177534b5b8e36beec8a72a506a3f27e9",
+      "identity_source": "after-pure/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-pure/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "after-pure/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-native-sources/before.source.json",
+      "bytes": 1535221,
+      "sha256": "2cfa4aa1b2f6ea6b3bb98fdc84102eda77089fe3ae8f3f1c0bf52156df800dac",
+      "identity_source": "after-native-sources/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-native-sources/after.source.json",
+      "bytes": 1535221,
+      "sha256": "eaa8d52967cf83203dfbd83a77c7c54e097e10f6191e1f8cd95eef8fb46f9a33",
+      "identity_source": "after-native-sources/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-native-sources/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "after-native-sources/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-build/before.source.json",
+      "bytes": 1535221,
+      "sha256": "30a4f86fbeb3261b61e839e5244c66aca89e543ec22af760b7909a349c47f754",
+      "identity_source": "after-build/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-build/after.source.json",
+      "bytes": 1535221,
+      "sha256": "4ba67e4e273cbfb859628a8f10ba878d522cec12e09721a60b020afc30a79c7f",
+      "identity_source": "after-build/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-build/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "after-build/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-default-native/before.source.json",
+      "bytes": 1535221,
+      "sha256": "55fbbf8b051d1558c3de6d6aa10983e48ba406eb724a55f21a9d3a8891ac88b4",
+      "identity_source": "after-default-native/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-default-native/after.source.json",
+      "bytes": 1535221,
+      "sha256": "700ad562ffe5e4a760ace2b171ac4f4e7489b6c385bc73afdd758a6c8e64ed13",
+      "identity_source": "after-default-native/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "after-default-native/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "after-default-native/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-exact-set/before.source.json",
+      "bytes": 1535183,
+      "sha256": "5da0bba8097661f3565568871f2d54c060e9f69c3112cdc85b0e331e9ab02be5",
+      "identity_source": "control-exact-set/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-exact-set/after.source.json",
+      "bytes": 1535183,
+      "sha256": "b66e9bcdd03efffb333011bd253ebd8c235556769176cdc468b93bc59b58ce2c",
+      "identity_source": "control-exact-set/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-exact-set/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "control-exact-set/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-native-binding/before.source.json",
+      "bytes": 1535183,
+      "sha256": "1c6ae2e8d44b0447b69ecb0eb604bf56940f7ca32aeb20569091b4211bd8ad52",
+      "identity_source": "control-native-binding/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-native-binding/after.source.json",
+      "bytes": 1535183,
+      "sha256": "9761242a25d33a5d5b5ea2f894e1dd5d75b4488216d64c56d2d1aa7a1571711a",
+      "identity_source": "control-native-binding/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-native-binding/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "control-native-binding/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-native-caller/before.source.json",
+      "bytes": 1535183,
+      "sha256": "c2f66432e9a386f2d9c525b81f3e7640e895c464cb995ff4b68f452ff3971122",
+      "identity_source": "control-native-caller/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-native-caller/after.source.json",
+      "bytes": 1535183,
+      "sha256": "91ea6c15aa4159472b7cefa95cea490e91ef9f7d1fcf94dbd7f4f327b27479aa",
+      "identity_source": "control-native-caller/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-native-caller/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "control-native-caller/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-native-catalog/before.source.json",
+      "bytes": 1535183,
+      "sha256": "9cc6c92ea53adfea564f92453f0179bceb9b6ab554d674cf8b622350e4fb7b8e",
+      "identity_source": "control-native-catalog/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-native-catalog/after.source.json",
+      "bytes": 1535183,
+      "sha256": "5b32baf1ff970cc48a5b9d30bb3e5aac0dc5a4fee24faf838cef46929d4f002a",
+      "identity_source": "control-native-catalog/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "control-native-catalog/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "control-native-catalog/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-pure/before.source.json",
+      "bytes": 1535221,
+      "sha256": "8e9ea63a9a66b50f4a9897b4517228246a6b98d8708b6d6a5d75bd309cecb3ad",
+      "identity_source": "restored-pure/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-pure/after.source.json",
+      "bytes": 1535221,
+      "sha256": "9623d33288cba5d79fdcbf6a790ca7a6e1d326eebd5eb056fe1457a4228faf29",
+      "identity_source": "restored-pure/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-pure/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "restored-pure/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-native-sources/before.source.json",
+      "bytes": 1535221,
+      "sha256": "96eb186c94d122b3e03c787f29115f2c42c832831dd8ae37e8089ace5a40b461",
+      "identity_source": "restored-native-sources/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-native-sources/after.source.json",
+      "bytes": 1535221,
+      "sha256": "917ff6a7182be634dd5e211f6b6f9ccb5f96d09ca1fbd76fe4c83d7bbdae750b",
+      "identity_source": "restored-native-sources/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-native-sources/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "restored-native-sources/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-default-native/before.source.json",
+      "bytes": 1535221,
+      "sha256": "62539c88bcdd9e4673f6d46822be040b4ddfa561b2d81d4b70feec1e761612f9",
+      "identity_source": "restored-default-native/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-default-native/after.source.json",
+      "bytes": 1535221,
+      "sha256": "9428c59618ebf78cde8e9faa9cca9888c3f412472675bdbfe14548cb3f0d94af",
+      "identity_source": "restored-default-native/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    },
+    {
+      "relative_path": "restored-default-native/recorder.py",
+      "bytes": 19730,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "identity_source": "restored-default-native/receipt.json:evidence_files",
+      "rehash_for_this_publication": false
+    }
+  ]
+}
