@@ -4,7 +4,7 @@ from pathlib import Path
 root=Path('/workspace/geometry-axiom')
 out=root/'tests/evidence/geo261-load-residual-20261020'
 checks=out/'checks';checks.mkdir(exist_ok=True)
-product='2af6323bf62ec38281e0ebad672f218d81f2317f'
+product='f01ade2308cba75cb0cdeb81d95e95eda3782bd5'
 base='546e2eb2142ebf19859489c5391b57cbb8413d10'
 main='adbaebf9c73ea6801d7b4d5214e4b846b132923b'
 def get(cmd,cwd=root):return subprocess.check_output(cmd,cwd=cwd).decode().strip()
@@ -18,9 +18,8 @@ required=['python3','tests/run_all.py','--build']
 for s in ['py:test_geo261_source_index','py:test_geo261_candidate_cache','py:test_geo261_graph_product','py:test_geo261_assembly_graph_product','py:test_bridge_integrity','c:integrity','core:run_tests','py:test_geo261_load_residual']:required+=['--only',s]
 copy_log('required','/tmp/geo261-residual-required.log',required,0)
 copy_log('equivalence','/tmp/geo261-residual-compare.log',['python3','/tmp/geo261-residual-tools.py','compare',str(root),'/tmp/geo261-residual','--evidence',str(out)],0)
-copy_log('sanitizer-build','/tmp/geo261-residual-sanitizer-build.log',['gcc','-std=c11','-O1','-g','-fsanitize=address,undefined','-fno-omit-frame-pointer','tests/geo261_load_residual_harness.c','-o','/tmp/geo261-residual-sanitizer','-lm'],0)
 for v,wd in [('base',Path('/tmp/geo261-residual-base')),('fix',root)]:
-    copy_log('architecture-'+v,'/tmp/geo261-residual-architecture-'+v+'.log',['python3','-B','tests/architecture_contract.py','--root','.','--manifest','geometry-core/domain-decoupling/product-architecture.json'],0,wd)
+    if v=='base':copy_log('architecture-'+v,'/tmp/geo261-residual-architecture-'+v+'.log',['python3','-B','tests/architecture_contract.py','--root','.','--manifest','geometry-core/domain-decoupling/product-architecture.json'],0,wd)
 for name in ['base','fix','main','base-trace','fix-trace','base-pg','fix-pg']:
     d=Path('/tmp/geo261-residual')/name/'build.json'
     shutil.copy2(d,checks/('build-'+name+'.json'))
@@ -38,11 +37,12 @@ for version in ['base','fix']:
         profiles[f'{version}-{n}']=counts
 (out/'profile-counts.json').write_text(json.dumps(profiles,indent=2))
 
-changed=get(['git','diff','--name-only',base,product]).splitlines()
+changed=[p for p in get(['git','diff','--name-only',base,product]).splitlines() if not p.startswith('tests/evidence/')]
 environment={'base':base,'fix_product_commit':product,'main':main,'fix_branch':get(['git','branch','--show-current']),
  'platform':platform.platform(),'python':platform.python_version(),'gcc':get(['gcc','--version']),
  'cpu':get(['lscpu']),'allowed_cpu_count':len(os.sched_getaffinity(0)),'stack_bytes':16777216,
  'changed_source_hashes':{p:sha((root/p).read_bytes()) for p in changed},
+ 'binary_sha256':{v:sha((Path('/tmp/geo261-residual')/v/'bridge').read_bytes()) for v in ['base','fix','main','base-trace','fix-trace','base-pg','fix-pg']},
  'source_note':'產品碼及新增測試受驗於 fix_product_commit；其後提交僅補驗收證據。完整測試的獨立 browser／owner 整合不在 run_all.py 範圍。'}
 (out/'environment.json').write_text(json.dumps(environment,ensure_ascii=False,indent=2))
 
@@ -235,5 +235,19 @@ python3 -B tests/architecture_contract.py --root . --manifest geometry-core/doma
 '''
 branch='https://github.com/ZhiQiYang/geometry-axiom/tree/codex/geo261-load-residual-20261020/tests/evidence/geo261-load-residual-20261020'
 body=body.replace('全部證據位於 `tests/evidence/geo261-load-residual-20261020/`',f'全部證據位於 [tests/evidence/geo261-load-residual-20261020/]({branch})')
+body=body.replace('667 個','669 個').replace('新增 5','新增 7').replace('expected 計數為 5','expected 計數為 7').replace('5 tests 通過','7 tests 通過')
+body=body.replace('不可變的 collection bytes；仍記錄','不可變的 collection bytes；使用節點索引提示前先核對完整來源鍵、VALID 狀態與值，reset／重新註冊或提示失配時仍走原求值。仍記錄')
+body=body.replace('兩種突變分開編譯','兩種要求的突變與集合節點有效性的第三種突變分開編譯')
+body=body.replace('ASSERT:cross-consumer-placement-edge-missing ...','ASSERT:cross-consumer-placement-edge-missing ...\nASSERT:reset-collection-must-be-evaluated ...')
+body=body.replace('完整斷言與行號見','另以真實 W API 測 query 物件跨 reset／重新註冊：節點位置改變與已 describe 但尚未求值均保持原順序；第三種突變省略節點有效性驗證，該測試轉紅。完整斷言與行號見')
+body=body.replace('/tmp/geo261-residual-sanitizer consumers\n','/tmp/geo261-residual-sanitizer consumers\nASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/geo261-residual-sanitizer collection-reset\n')
+body=body.replace('編譯及三個案例','編譯及四個案例')
+flat=(out/'gprof-fix-64.stdout').read_text().split('Call graph')[0]
+start=body.index('修正 N64 flat profile 前幾名：');end=body.index('\n\n## 測試',start)
+body=body[:start]+'修正 N64 flat profile 原始前段如下；0.01 秒取樣比例只作線索，四份完整 gprof stdout 與逐項結束碼另存於證據目錄。base 的 `geo_eval_depend` 無呼叫紀錄，以 0 呈現。\n\n```text\n'+'\n'.join(flat.splitlines()[:16])+'\n```'+body[end:]
+body=body.replace('## 證據與未驗項目','第一次完整測試因複查補上 reset 邊界回歸而主動中止（exit -15），保留於 `checks/full-interrupted.*`，不列作最終驗收；後續完整測試重新由頭執行。\n\n## 證據與未驗項目')
+body=body.replace('第一次完整測試因複查補上 reset 邊界回歸而主動中止', '''另外，`py:test_assembly_mutation_check` 的程序群清理案例在此容器失敗：被 SIGKILL 的 `sleep` 留在 `/proc`，狀態為 Z（zombie）。在基底與修正版各直接執行 `python3 tests/test_assembly_mutation_check.py`，均 exit 1、12 tests 中同一項失敗；兩支相關測試／工具檔與基底無差異。原始輸出與結束碼保存於 `checks/assembly-process-base.*`、`checks/assembly-process-fix.*`。這項環境清理失敗保持紅燈，未修改測試或程序管理規則來排除它。
+
+第一次完整測試因複查補上 reset 邊界回歸而主動中止''')
 Path('/tmp/geo261-residual-PR_BODY.md').write_text(body)
 print(perf_table);print(call_table)

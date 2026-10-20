@@ -1,15 +1,15 @@
 二進位輸出目錄：/tmp/geometry-tests
 [build] 只建置 stale/missing：bridge, core, integrity
-  bridge：重建（來源指紋不符（exe 建於 2026-10-20T08:06:19+00:00，指紋 80ab5af986… ≠ 現在 d7bf367c07…）；變動：current_geometry.c, geometry-app/native/reference_sources.inc, geometry-app/native/world_validation.inc, geometry-core/model_base.c 等 6 個檔）…
-  core：重建（來源指紋不符（exe 建於 2026-10-20T08:06:37+00:00，指紋 ad487a108c… ≠ 現在 3f382b268d…）；變動：current_geometry.c, geometry-app/native/reference_sources.inc, geometry-app/native/world_validation.inc, geometry-core/model_base.c 等 6 個檔）…
-  integrity：重建（來源指紋不符（exe 建於 2026-10-20T08:07:06+00:00，指紋 a533c44f64… ≠ 現在 e1d646a783…）；變動：current_geometry.c, geometry-app/native/reference_sources.inc, geometry-app/native/world_validation.inc, geometry-core/model_base.c 等 6 個檔）…
+  bridge：重建（來源指紋不符（exe 建於 2026-10-20T12:48:37+00:00，指紋 d7bf367c07… ≠ 現在 79d8938427…）；變動：geometry-templates/woodworking/native/contact_sources.c）…
+  core：重建（來源指紋不符（exe 建於 2026-10-20T12:48:56+00:00，指紋 3f382b268d… ≠ 現在 18c4ccc13a…）；變動：geometry-templates/woodworking/native/contact_sources.c）…
+  integrity：重建（來源指紋不符（exe 建於 2026-10-20T12:49:32+00:00，指紋 e1d646a783… ≠ 現在 f516b0c8ac…）；變動：geometry-templates/woodworking/native/contact_sources.c）…
   bridge     built          建好 /tmp/geometry-tests/bridge
   core       built          建好 /tmp/geometry-tests/core
   integrity  built          建好 /tmp/geometry-tests/integrity
 [binaries]
-  bridge     fresh    來源與 binary SHA-256 相符（建於 2026-10-20T12:48:37+00:00）
-  core       fresh    來源與 binary SHA-256 相符（建於 2026-10-20T12:48:56+00:00）
-  integrity  fresh    來源與 binary SHA-256 相符（建於 2026-10-20T12:49:32+00:00）
+  bridge     fresh    來源與 binary SHA-256 相符（建於 2026-10-20T13:11:01+00:00）
+  core       fresh    來源與 binary SHA-256 相符（建於 2026-10-20T13:11:20+00:00）
+  integrity  fresh    來源與 binary SHA-256 相符（建於 2026-10-20T13:11:55+00:00）
 [環境] CC=未設定（繼承自外殼；僅影響 binaries.py 在非 Windows 的編譯）
 [環境] 已清除外殼繼承的 GEOMETRY_*：（無）
 [環境] run_all 設給子行程的 GEOMETRY_*：GEOMETRY_ENGINEERING_BRIDGE、GEOMETRY_TEST_BRIDGE、GEOMETRY_TEST_CORE
@@ -24,16 +24,16 @@
 
 suite                                  測試數  pass  fail  skip     秒  備註
 ------------------------------------------------------------------------
-c:integrity                               432   432     0     0   12.2  C 檢查點數（非 test 級）
-core:run_tests                            165   165     0     0   21.2
-py:test_bridge_integrity                   24    24     0     0   50.0
-py:test_geo261_assembly_graph_product       4     4     0     0   11.8
-py:test_geo261_candidate_cache             18    18     0     0    4.1
-py:test_geo261_graph_product                5     5     0     0    9.9
-py:test_geo261_load_residual                5     5     0     0   12.8
-py:test_geo261_source_index                14    14     0     0    4.6
+c:integrity                               432   432     0     0   12.4  C 檢查點數（非 test 級）
+core:run_tests                            165   165     0     0   30.3
+py:test_bridge_integrity                   24    24     0     0   61.3
+py:test_geo261_assembly_graph_product       4     4     0     0   15.0
+py:test_geo261_candidate_cache             18    18     0     0    6.8
+py:test_geo261_graph_product                5     5     0     0   11.1
+py:test_geo261_load_residual                7     7     0     0   23.3
+py:test_geo261_source_index                14    14     0     0    3.4
 ------------------------------------------------------------------------
-合計(已執行、有計數者)                    667   667     0     0  126.8
+合計(已執行、有計數者)                    669   669     0     0  163.6
 未納入                                      -     -     -     -      -  需 Chrome，另行執行：geometry-web/cdp_test.js、geometry-web/space_model_test.js
 必要 owner／browser 整合與模組驗證另驗（不計入上述 pass/skip）：
   tests/test_issue123_create_feedback_browser.py：Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite；獨立執行，本 aggregate 未驗。

@@ -1,6 +1,6 @@
 {
   "base": "546e2eb2142ebf19859489c5391b57cbb8413d10",
-  "fix_product_commit": "2af6323bf62ec38281e0ebad672f218d81f2317f",
+  "fix_product_commit": "f01ade2308cba75cb0cdeb81d95e95eda3782bd5",
   "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
   "fix_branch": "codex/geo261-load-residual-20261020",
   "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
@@ -14,11 +14,20 @@
     "geometry-app/native/reference_sources.inc": "c739be7365ecdb576476e0edf571e935a4158b8a3cdb3e83581239f47621d5a4",
     "geometry-app/native/world_validation.inc": "cf82cbe72e5a7dfb96d76cb2f63e1dba9dc6b694d69592391406f26117f8cda6",
     "geometry-core/references.inc": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4",
-    "geometry-templates/woodworking/native/contact_sources.c": "7d92b51403d69ca8f6360839dfea44c650d9d2243dd5cfca1275d614e228f5c2",
-    "tests/geo261_load_residual_harness.c": "f3b0847d880eb4b1ea36726066f9d09f3e20d21577d514bdb68e87df83ec7d60",
-    "tests/run_all.expected.json": "2540d06a04e58bd858814a16575756aed82bf7bf287362534309e85c88b14061",
+    "geometry-templates/woodworking/native/contact_sources.c": "5792a3e8d9a467547f4ebfdcc88f7bab04f5c994382cdb51d5ad0b80a249b933",
+    "tests/geo261_load_residual_harness.c": "82da5b066d95a5376122117f0da6a6d956fb52752682c243182013cea617398a",
+    "tests/run_all.expected.json": "979fead1b1017250a3ed835c87cb12a7d33c8df93ed744e0e1186e362f51bdf0",
     "tests/run_all.py": "4a7593bb1e62f2ef9fd432f2ca49548c797ec993edee4b4cf31869581568aa5d",
-    "tests/test_geo261_load_residual.py": "4506d7a5a741d592524b536bcc49010ace543921daca54d52ac754aba8b47ba4"
+    "tests/test_geo261_load_residual.py": "e67b30386fab494be935866f9fa0324320f3626e38ec14dabb2889aa6c2307e1"
+  },
+  "binary_sha256": {
+    "base": "5dcf5043d791b860c12dc401ca66bd68e5dc1932f84fecaaf30d903c840b6269",
+    "fix": "be6aef2f20598fcee6cf9fe70ad6fb096e5872b70cb714dd9e2af85497649489",
+    "main": "ce7b5ac8f76ed8f4822da8f0c3576e3bbbe1d80bb7d90ae66e3ccab44536b57b",
+    "base-trace": "659c323482118a239c2de0039f7378716cb99a29d8719c61c27a28cb8c1ff38c",
+    "fix-trace": "e06d8a513fa0989d6a1c49e60ffb82c19a452ee0539c296cefe092f2b264a36c",
+    "base-pg": "4f39f55b22107d0a1d988a661a40d54d56f4b892cfdf3dcee9e066dba2f9997b",
+    "fix-pg": "170c0f109b7da14f20b9980b4820bc7e21486ed33b7ec400efbc2ebe211f7fb4"
   },
   "source_note": "產品碼及新增測試受驗於 fix_product_commit；其後提交僅補驗收證據。完整測試的獨立 browser／owner 整合不在 run_all.py 範圍。"
 }
