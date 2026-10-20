@@ -335,5 +335,158 @@
       "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
       "UBSAN_OPTIONS": "halt_on_error=1"
     }
+  },
+  {
+    "name": "controls-clone",
+    "command": [
+      "git",
+      "clone",
+      "-q",
+      "/mnt/d/geometry-axiom-work/srcidx-controls-20261020",
+      "/var/tmp/srcidx-ctl-20261020-final"
+    ],
+    "cwd": "/var/tmp",
+    "exit": 0,
+    "note": "WSL ext4 上的乾淨 clone，來源是 push 到 codex/geo261-source-index-20261020 的同一 commit；經 wsl.exe -d Ubuntu-24.04 -- bash wsl_locked3.sh run 取得鎖後執行，執行前 ulimit -s 16384。"
+  },
+  {
+    "name": "controls-checkout",
+    "command": [
+      "git",
+      "checkout",
+      "-q",
+      "-f",
+      "9f21280d0481c751f246b0c2105d50eea75b7ba9"
+    ],
+    "cwd": "/var/tmp/srcidx-ctl-20261020-final",
+    "exit": 0,
+    "stdout": "HEAD=9f21280d0481c751f246b0c2105d50eea75b7ba9；git status --porcelain 前後皆為空",
+    "note": "受驗 commit。與整合分支 96ade86bdb5fbcdad581b36afdd180a96fca7999 的受驗檔同一性見 controls-identity.log。日誌 controls-session.log"
+  },
+  {
+    "name": "controls-source-index",
+    "command": [
+      "python3",
+      "tests/test_geo261_source_index.py"
+    ],
+    "cwd": "/var/tmp/srcidx-ctl-20261020-final",
+    "exit": 0,
+    "note": "Ran 14 tests in 61.576s，OK：原 5 個行為案例 + edge-collisions + 兩個 never-find 突變 + 6 個新突變，每個突變都以具名斷言結束碼 1 被殺。日誌 controls-unittest.log、controls-session.log"
+  },
+  {
+    "name": "controls-run-all",
+    "command": [
+      "python3",
+      "tests/run_all.py",
+      "--build",
+      "--only",
+      "py:test_geo261_source_index"
+    ],
+    "cwd": "/var/tmp/srcidx-ctl-20261020-final",
+    "exit": 0,
+    "note": "py:test_geo261_source_index 測試數 14／pass 14／fail 0／skip 0（suite 7.6 秒）；局部執行（--only），不是完整驗收。日誌 controls-run_all.log"
+  },
+  {
+    "name": "controls-identity",
+    "command": [
+      "git",
+      "diff",
+      "--stat",
+      "9f21280d",
+      "96ade86b",
+      "--",
+      "geometry-core/kernel/source.c",
+      "tests/geo261_source_index_harness.c",
+      "tests/test_geo261_source_index.py"
+    ],
+    "cwd": "D:/geometry-axiom-work/srcidx-controls-20261020",
+    "exit": 0,
+    "stdout": "",
+    "note": "輸出為空＝三個檔案在 9f21280d 與 96ade86b 零差異；blob 雜湊並列見 controls-identity.log"
+  },
+  {
+    "name": "controls-dev-harness-build",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-Wall",
+      "-I",
+      "geometry-core/kernel",
+      "tests/geo261_source_index_harness.c",
+      "-lm",
+      "-o",
+      "/var/tmp/srcidx-ctl-client-dev"
+    ],
+    "cwd": "/var/tmp/srcidx-ctl-20261020-dev",
+    "exit": 0,
+    "note": "獨立編 harness（開發 clone；三個受驗檔 blob 雜湊與 9f21280d 相同，見 controls-identity.log）。-Wall 只有 main 內既有的 -Wmisleading-indentation 警告。日誌 controls-edge-fixture-crosscheck.log"
+  },
+  {
+    "name": "controls-dev-baselines",
+    "command": [
+      "/var/tmp/srcidx-ctl-client-dev",
+      "<case>"
+    ],
+    "cwd": "/var/tmp/srcidx-ctl-20261020-dev",
+    "exit": 0,
+    "note": "case = nodes、edges、edge-collisions、allocation、growth、statuses，六個各自印 PASS <case>、結束碼 0（未突變基準，含新的 edge-collisions 綠燈）。日誌 controls-edge-fixture-crosscheck.log"
+  },
+  {
+    "name": "controls-dev-edge-search",
+    "command": [
+      "/var/tmp/srcidx-ctl-client-dev",
+      "edge-search"
+    ],
+    "cwd": "/var/tmp/srcidx-ctl-20261020-dev",
+    "exit": 0,
+    "note": "用被測雜湊重印 edge_group／edge_pairs 兩張表（輸出存 /var/tmp/srcidx-ctl-edge-search.out）。日誌 controls-edge-fixture-crosscheck.log"
+  },
+  {
+    "name": "controls-dev-crosscheck",
+    "command": [
+      "python3",
+      "-I",
+      "<session scratchpad>/wsl-ci/srcidx_cmp.py",
+      "tests/geo261_source_index_harness.c",
+      "/var/tmp/srcidx-ctl-edge-search.out"
+    ],
+    "cwd": "/var/tmp/srcidx-ctl-20261020-dev",
+    "exit": 0,
+    "note": "C edge-search 輸出、獨立 Python 重寫雜湊的搜尋結果、harness 寫死的表三者一致；48 條邊互異。腳本副本 controls-crosscheck-script.py.txt（.txt 是為了不被當成可執行來源）"
+  },
+  {
+    "name": "controls-dev-matrix-run1",
+    "command": [
+      "python3",
+      "-I",
+      "<session scratchpad>/wsl-ci/srcidx_matrix.py"
+    ],
+    "cwd": "/var/tmp/srcidx-ctl-20261020-dev",
+    "exit": 1,
+    "note": "第一次偵測矩陣失敗：實驗腳本把突變 exe 與突變目錄取成同名，連結報 Is a directory，與被測碼無關；已修腳本並於下一筆重跑。同一份日誌 controls-edge-fixture-crosscheck.log"
+  },
+  {
+    "name": "controls-dev-matrix",
+    "command": [
+      "python3",
+      "-I",
+      "<session scratchpad>/wsl-ci/srcidx_matrix.py"
+    ],
+    "cwd": "/var/tmp/srcidx-ctl-20261020-dev",
+    "exit": 0,
+    "note": "8 個突變 × 6 個案例的偵測矩陣；腳本副本 controls-matrix-script.py.txt。日誌 controls-detection-matrix.log"
+  },
+  {
+    "name": "controls-fixture-variants",
+    "command": [
+      "python3",
+      "-I",
+      "<session scratchpad>/wsl-ci/srcidx_variants.py"
+    ],
+    "cwd": "/var/tmp/srcidx-ctl-20261020-final",
+    "exit": 0,
+    "note": "對 edge 夾具本身做突變：只留 group 時 edge-kind-ignored 存活（結束碼 0），其餘情形都被抓到。腳本副本 controls-variants-script.py.txt。日誌 controls-fixture-variants.log"
   }
 ]
