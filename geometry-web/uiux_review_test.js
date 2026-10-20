@@ -216,7 +216,8 @@ module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,cap
   const emptySpaceScene=await dump();
   await ctl('[data-ss-tab="plan"]');
   check('切到平面示意顯示空態且保留世界',await visible('#spacePlanEmpty')&&(await dump())===emptySpaceScene);
-  check('空空間不畫假邊界，提供加入成員入口',await read(`$('spaceMemberCount').textContent==='0' && !$('spacePlanSvg').querySelector('polygon,rect,path') && !!$('spacePlanEmpty') && /加入|成員/.test($('spacePlanEmpty').textContent)`));
+  const emptySpaceState=await read(`({memberCount:$('spaceMemberCount').textContent,noShapes:!$('spacePlanSvg').querySelector('polygon,rect,path'),hasEmpty:!!$('spacePlanEmpty'),entryText:/加入|成員/.test($('spacePlanEmpty')?.textContent||''),metricsHidden:$('spacePlanMetrics')?.hidden===true,metricsText:$('spacePlanMetrics')?.textContent})`);
+  check('空空間不畫假邊界，提供加入成員入口',emptySpaceState.memberCount==='0'&&emptySpaceState.noShapes&&emptySpaceState.hasEmpty&&emptySpaceState.entryText&&emptySpaceState.metricsHidden&&emptySpaceState.metricsText==='',emptySpaceState);
   await shot('05-empty-space');await ctl('#spacePlanAddMembers');
   check('空狀態加入入口開啟真正成員對話框',await visible('#memberDialog')&&await read(`!$('memberDialog').hidden && $('memberDialog').getAttribute('role')==='dialog' && $('memberDialogTitle').textContent.includes('990') && !!$('memberCheckList').querySelector('input[type="checkbox"]')`));
   const beforeMemberCancel=await dump();await ctl('#memberCancel');check('取消加入成員保留原世界',(await dump())===beforeMemberCancel);await ctl('#workspaceBackButton');

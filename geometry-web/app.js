@@ -3521,6 +3521,8 @@ function renderSpacePlan(sp) {
   }
   const noGeometry = x0 > x1;
   empty.hidden = !noGeometry; svg.toggleAttribute("hidden", noGeometry);
+  const metrics = $("spacePlanMetrics");
+  if (metrics) { metrics.hidden = noGeometry; if (noGeometry) metrics.textContent = ""; }
   if (noGeometry) {
     svg.removeAttribute("viewBox");
     return;
@@ -3635,7 +3637,8 @@ function renderSpacePlan(sp) {
   svg.onpointercancel = () => { drag = null; preview.setAttribute("visibility", "hidden"); };
 }
 function syncSpacePlanAnnotations(){
-  const svg=$('spacePlanSvg'),matrix=svg?.getScreenCTM();if(!svg||svg.hidden||!matrix)return;
+  const svg=$('spacePlanSvg');if(!svg||svg.hasAttribute('hidden')||!svg.hasAttribute('viewBox'))return;
+  const matrix=svg.getScreenCTM();if(!matrix)return;
   const scale=Math.hypot(matrix.a,matrix.b);if(!Number.isFinite(scale)||scale<=0)return;
   for(const label of svg.querySelectorAll('.space-plan-label'))label.style.fontSize=(12/scale)+'px';
   const step=10**Math.floor(Math.log10(80/scale)),box=svg.viewBox.baseVal;
