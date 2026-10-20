@@ -48,7 +48,7 @@
 | 柱面料在沿牆料經過的地方分段(第 22 輪,#318 缺陷 1) | 協調者推論,和〈柱面料在主支經過的地方分段〉同一條:柱面料的端點落在沿牆料的料帶裡(柱離牆不到 w)時,沿牆料照樣沿牆通過 | 外牆面的沿牆料不被這種柱面料擋住;柱面料在它經過的地方分段,剩下短於 min_piece 的不放;柱面料端面頂沿牆料(custom 3)時照選項 C 升格 custom 4 | C3;COLSTEP(3000) 左下 X 手算 | no_col_trim_by_wall、G3、G4 |
 | 柱面有一段前面放不下料是物理衝突(第 22 輪,#318 缺陷 1) | G1 加料寬 w:柱跨過牆階的垂直牆時(COLSTEP(2900)),柱上緣 x 2900–3000 那段到 y=3661 的牆只有 17 mm,27 mm 的料放不進去,板邊沒有料可承接;舊版既不放料也不報 | 柱面某一段(>= min_piece)前面的室內放不下 w 寬的料:RC_FACE_PART_NO_ROOM(和整面放不下的 RC_FACE_STRIP_OUTSIDE 同一個理由) | 拿掉判定時 C3 紅;COLSTEP(2900) 全部排法 | no_face_part_conflict、G5 |
 | 一部分是 RC 的窄條不放副支(第 22 輪,阻擋 2) | #251 審查 3d858c3 阻擋 2:舊版一跨只要有一部分落在 RC 就報 SPAN_PARTLY_RC,檢查端沒有對應的失敗,誠實執行也出現 36 條 C7_P182_FAIL_UNCONFIRMED(審查員 fz20 三個種子)。協調者推論:牆階面剩下短於 27 mm 不放料、另一面的邊界材越過凹角延伸到主支,留下的窄條比料寬窄,副支放不進去也不需要 | 一部分是 RC 的跨,室內那部分沿 B 向在料或 RC 之間的空檔 >= min_piece 才報 SPAN_PARTLY_RC(要副支、副支卻只能頂 RC);窄條不放副支、不報 | C4、C3;FZ145、FZ139、FZ146 原房與鏡像 72 個排法(以前 FAIL_UNCONFIRMED 的 18 個排法釘 trace 與縫位) | J1、J2 |
-| P-182 的候選都不能核心表示時選物理解(第 22 輪) | 阻擋 1 的同一條(核心限制不算不可施工)。審查員 fz20 的隨機房間裡有 30 個排法的候選全都只有核心限制(CORE_LIMIT_BOUNDARY_END_FREE),以前報 P182_NO_FEASIBLE_CANDIDATE(判不可施工)。協調者推論(在授權 L 下先做,可推翻) | 偏好順序裡沒有〈可行〉(核心也表示得了)的候選時,選第一個〈物理可施工、只有核心限制〉的候選,判 core_limited;都沒有才報 P182_NO_FEASIBLE_CANDIDATE。trace 每一筆多一個 `phys`(只有核心限制) | C7 重建每個候選,裁決同一條:比選中者更優先的物理解沒選(C7_P182_SKIPPED_FEASIBLE)、宣稱和重建不一致(C7_P182_PHYS_MISMATCH)、選中的不是物理解(C7_P182_CHOSE_FAILED);FZ107、FZ114 手算 | p182_no_core_fallback、H12、T22–T26;tamper_core_skip、tamper_core_phys、tamper_core_nonphys |
+| P-182 的候選都不能核心表示時選物理解(第 22 輪) | 阻擋 1 的同一條(核心限制不算不可施工)。審查員 fz20 的隨機房間裡有 18 個排法(三間房 × 原房與鏡像)以前報 P182_NO_FEASIBLE_CANDIDATE(判不可施工),其實有候選物理上可施工、只有核心限制(CORE_LIMIT_BOUNDARY_END_FREE)。協調者推論(在授權 L 下先做,可推翻) | 偏好順序裡沒有〈可行〉(核心也表示得了)的候選時,選第一個〈物理可施工、只有核心限制〉的候選,判 core_limited;都沒有才報 P182_NO_FEASIBLE_CANDIDATE。trace 每一筆多一個 `phys`(只有核心限制) | C7 重建每個候選,裁決同一條:比選中者更優先的物理解沒選(C7_P182_SKIPPED_FEASIBLE)、宣稱和重建不一致(C7_P182_PHYS_MISMATCH)、選中的不是物理解(C7_P182_CHOSE_FAILED);FZ107、FZ114 手算 | p182_no_core_fallback、H12、T22–T26;tamper_core_skip、tamper_core_phys、tamper_core_nonphys |
 | 縫線上的窄縫由兩旁的料承接(第 22 輪) | R-nosliver 的同一條(C3、C4、C9 已有):主支放不進短於 min_piece 的窄縫 | C5 的縫線缺口若夾在兩處料之間、相距 < min_piece,不算缺口 | FZ148M | K1 |
 | 延伸段端面懸空是核心限制(第 22 輪) | 協調者推論:兩面牆階的邊界材越過凹角對頂、寬向錯開幾 mm 時,延伸段的端面有一小段懸空;物理上和邊界材端面懸空同一回事,核心 I22 要延伸段端面頂到料或牆 | 延伸段的遠端端面沒被料蓋滿:CORE_LIMIT_EXTENSION_END_FREE | C8_EXTENSION_END_FREE 佐證;FZ120 | no_ext_end_flag、H11 |
 | #318 缺陷 2、#319(第 22 輪,草稿照套) | 草稿 `drafts/oracle-318-319/`:牆線上的探測點改沿水平切線量;C3 的左右承接帶跨房間分塊量(`x_band`) | `Region.inside`、`x_band` | 牆線探測點 12 個、缺角寬 = 房寬一半的 L 形三間與小型掃描、H6 候選的 C3 缺口、x_band 手寫 6 例 | F2a、F2b、F3a–F3g |
@@ -292,7 +292,7 @@ python framing_oracle.py rooms.json > framing-oracle.json
 - **阻擋 2**:36 條 `C7_P182_FAIL_UNCONFIRMED` 的三間房(FZ145、FZ139、FZ146)× 原房與鏡像 × 8 種排法全部可施工、trace 沒問題(以前的 18 個不可施工排法釘 trace 與縫位)。
   審查員 fz20 同一個產生器(種子 1–4 各 150 間 × 原房與上下、左右鏡像 × 8 種排法 = 14400 次):第 21 輪 FAIL_UNCONFIRMED 36 條、建構崩潰 456 次、
   〈可施工卻檢查失敗〉110 次;第 22 輪 FAIL_UNCONFIRMED 0、建構崩潰 0,inconsistent(建構端說可施工、檢查卻紅)剩下的都是 #318 正文列的另一類既有缺陷
-  (C11 的 2 mm 縫、併料端面頂柱面料的 C8_I19_PRIORITY、C10),數字在 PR 正文。
+  (C11 的 2 mm 縫;沿牆料或併料的端面頂柱面料,I19 數值比較不過、建構端沒宣告;短於 27 mm 的併料,C10),數字在 PR 正文。
 - **新發現並修掉的副作用**(都用 fz20 的房間釘成對照組):牆線看凹角時另一面的料帶越不過去(FZ9,曾讓可施工全過的排法退成 REFLEX_EXTENSION_OUTSIDE);
   錯階跨端旁的沿牆料端面懸空(FZ97,照舊不可施工);延伸段端面懸空(FZ120,記成核心限制);縫線上的窄縫(FZ148M,C5 照 R-nosliver);P-182 候選都只有核心限制(FZ107、FZ114)。
 - **原始碼突變**:`round22/run10.py`(第 21 輪的 122 處原樣保留,其中 T12、T13、T15 三處因 P-182 退路改了寫法,字串改寫、意思不變;新增 37 處:草稿的 F2、F3 九處,
