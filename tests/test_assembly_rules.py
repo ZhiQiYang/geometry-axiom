@@ -34,6 +34,20 @@ def binding(complete=True, identifier=1, version=1):
                       for i in (1, 2)]}
 
 
+REACHED = set()
+
+
+def killer(tag, detail=""):
+    """Failure message of an assertion that a fault-injection case in tests/assembly_mutation_check.py is bound to.
+
+    The tool counts a fault as killed only when exactly this test fails at the assertion carrying exactly this tag,
+    so a different assertion failing (or an error, a skip, a bridge crash) is never read as the detection. Evaluating
+    the message records the tag in REACHED even when the assertion passes: the baseline run uses that to prove the
+    tagged assertion is really executed, not merely present in the file. Keep each tag a literal that occurs once."""
+    REACHED.add(tag)
+    return "KILLER[%s]%s" % (tag, " " + str(detail) if detail != "" else "")
+
+
 class AssemblyRules(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -75,11 +89,12 @@ class AssemblyRules(unittest.TestCase):
     def publish(self, value=None):
         return self.apply([{"op": "publish-rule", "value": value or rule()}])
 
-    def reject(self, operations, reason):
+    def reject(self, operations, reason, tag=None):
+        # tag names the mutation oracle: only the "preview must be invalid" assertion carries it.
         before = self.command("dump")["text"], self.read()["revision"]
         result = self.request(operations)
         self.assertTrue(result["ok"], result)
-        self.assertFalse(result["preview"]["valid"], result)
+        self.assertFalse(result["preview"]["valid"], result if tag is None else killer(tag, result))
         self.assertIn(reason, json.dumps(result, ensure_ascii=False))
         self.assertFalse(self.command(f'assembly-confirm {result["preview"]["token"]}')["ok"])
         self.assertEqual(before, (self.command("dump")["text"], self.read()["revision"]))
@@ -213,9 +228,9 @@ class AssemblyRules(unittest.TestCase):
         self.assertFalse(self.command(f'assembly-confirm {preview["token"]}')["ok"]);self.assertEqual(before,self.command("dump")["text"])
 
     def test_duplicate_scope_and_endpoint_rejected(self):
-        for change in ("scope", "end"):
+        for change, tag in (("scope", "conflict:scope"), ("end", "conflict:end")):
             value = rule(); value["joints"][1][change] = value["joints"][0][change]
-            self.reject([{"op": "publish-rule", "value": value}], "joints 1 and 2")
+            self.reject([{"op": "publish-rule", "value": value}], "joints 1 and 2", tag)
 
     def test_missing_duplicate_and_unknown_fields_rejected(self):
         variants = []
@@ -446,10 +461,12 @@ class AssemblyRules(unittest.TestCase):
 
     def test_bad_dimension_sources_rejected_not_incomplete(self):
         self.publish()
-        for source in [literal(0),literal(-1),{"kind":"material","id":"missing","version":1,"field":"A"},
-                       {"kind":"parameter","parameterId":99,"fieldId":1},{"kind":"application","id":"x","field":"primary.A"}]:
+        for tag,source in [("missing-source:literal-zero",literal(0)),("missing-source:literal-negative",literal(-1)),
+                           ("missing-source:material",{"kind":"material","id":"missing","version":1,"field":"A"}),
+                           ("missing-source:parameter",{"kind":"parameter","parameterId":99,"fieldId":1}),
+                           ("missing-source:application",{"kind":"application","id":"x","field":"primary.A"})]:
             b=binding();b["slots"][0]["A"]=source
-            self.reject([{"op":"put-binding","value":b}],"binding 1 slot 1.A")
+            self.reject([{"op":"put-binding","value":b}],"binding 1 slot 1.A",tag)
 
     def test_referenced_rule_delete_and_atomic_rebind(self):
         self.publish();self.publish(rule(version=2));self.apply([{"op":"put-binding","value":binding()}])
@@ -469,7 +486,7 @@ class AssemblyRules(unittest.TestCase):
         self.assertFalse(self.command(f"engineering-confirm {token}")["ok"])
         self.assertFalse(self.command(f"engineering-cancel {token}")["cancelled"])
         self.assertTrue(self.command(f"assembly-cancel {token}")["cancelled"])
-        self.assertFalse(self.command(f"assembly-confirm {token}")["ok"])
+        self.assertFalse(self.command(f"assembly-confirm {token}")["ok"],killer("cancelled-preview:confirm-after-cancel"))
         self.assertEqual([],self.read()["state"]["rules"])
 
     def test_stale_preview_and_wrong_revision(self):

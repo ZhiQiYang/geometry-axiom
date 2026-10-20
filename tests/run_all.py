@@ -54,6 +54,7 @@ PY_NEEDS = {
     'test_assembly_candidate_impact': ['bridge'],
     'test_assembly_parameter_refs': ['bridge'],
     'test_assembly_native_diagnostics': ['bridge'],
+    'test_assembly_mutation_check': [],
     'test_assembly_rules': ['bridge'],
     'test_section_profile_native': ['bridge', 'model-base'],
     'test_panel_fill_finish_surface': ['bridge'],
