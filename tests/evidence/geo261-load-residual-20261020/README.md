@@ -1,6 +1,6 @@
 # GEO-261 載入成本驗收證據
 
-基底 `546e2eb2142ebf19859489c5391b57cbb8413d10`；修正產品碼／測試 `f01ade2308cba75cb0cdeb81d95e95eda3782bd5`；main `adbaebf9c73ea6801d7b4d5214e4b846b132923b`。環境及逐檔 SHA-256 見 `environment.json`。
+基底 `546e2eb2142ebf19859489c5391b57cbb8413d10`；修正產品碼／測試 `221156c280404f75bf3fb5a42fd4c9cf119f7064`；main `adbaebf9c73ea6801d7b4d5214e4b846b132923b`。環境及逐檔 SHA-256 見 `environment.json`。
 
 - `verify.py.txt`：暫時檢測建置、A／B／C 比對及交錯效能取樣；複製到 `/tmp` 執行。K seal hook 與五個函式入口計數器只存在暫時來源複本。
 - `mini_gen.py.txt`、`scenes/`：使用者產生器與四份逐位元組核對的輸入。

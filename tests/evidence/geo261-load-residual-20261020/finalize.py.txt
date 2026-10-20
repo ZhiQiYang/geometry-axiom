@@ -4,7 +4,7 @@ from pathlib import Path
 root=Path('/workspace/geometry-axiom')
 out=root/'tests/evidence/geo261-load-residual-20261020'
 checks=out/'checks';checks.mkdir(exist_ok=True)
-product='f01ade2308cba75cb0cdeb81d95e95eda3782bd5'
+product='221156c280404f75bf3fb5a42fd4c9cf119f7064'
 base='546e2eb2142ebf19859489c5391b57cbb8413d10'
 main='adbaebf9c73ea6801d7b4d5214e4b846b132923b'
 def get(cmd,cwd=root):return subprocess.check_output(cmd,cwd=cwd).decode().strip()
@@ -76,6 +76,9 @@ if 'exit' in full:
 
 <!-- FULL_DETAILS -->
 '''
+    failures=re.findall(r'^  (\S+:\S+)\s*$',full_text.split('失敗明細',1)[-1],re.M)
+    assert set(failures)=={'mutation:check','py:test_assembly_mutation_check'},failures
+    full_section=full_section.replace('<!-- FULL_DETAILS -->','''225 個 suite 全部執行完畢，只有兩個 suite 未過：`mutation:check` 是既有突變帳本因 include 閉包變更而過期，依要求留給維護者重產；`py:test_assembly_mutation_check` 是下述可在基底重現的 zombie 清理問題。其餘 suite 沒有失敗，包含已補正的四組測試與 18 個 product architecture tests。Windows GDI 的 1 項 skip 在既有具名允許清單內；獨立 browser／owner 整合仍未執行。''')
 else:full_section='完整 `python3 -u tests/run_all.py --build` 執行中；完成後會補上結果。'
 
 readme=f'''# GEO-261 載入成本驗收證據
@@ -236,6 +239,16 @@ python3 -B tests/architecture_contract.py --root . --manifest geometry-core/doma
 branch='https://github.com/ZhiQiYang/geometry-axiom/tree/codex/geo261-load-residual-20261020/tests/evidence/geo261-load-residual-20261020'
 body=body.replace('全部證據位於 `tests/evidence/geo261-load-residual-20261020/`',f'全部證據位於 [tests/evidence/geo261-load-residual-20261020/]({branch})')
 body=body.replace('667 個','669 個').replace('新增 5','新增 7').replace('expected 計數為 5','expected 計數為 7').replace('5 tests 通過','7 tests 通過')
+adapters_section='''完整跑曾找出四組測試適配：兩支 harness 需接收新的私有 `AppValidationInputs`，contact feature 與 PF3 host-identity 的負控制需重設到實際執行的錨點。保留原斷言與錯誤類別後，四個 suite 複跑 **46 tests 全過**；指令／exit 0 見 `checks/test-adapters.*`。重設後的 PF3 host-identity 另以原工具執行完整基準 20 tests、單一突變指定 `PF3_HOST_FILTER` 失敗（exit 1、1 failure、無 error／skip）、完整恢復 20 tests 通過；整體工具 exit 0，來源未變。這份收據是在此 Linux 執行，未冒充 WSL 收據，保存於 `pf3-host-identity/`。
+
+```sh
+python3 tests/run_all.py --only py:test_geo261_host_facts_authority --only py:test_geo261_wood_world_validation --only py:test_geo261_contact_sources --only py:test_mutation_anchors
+python3 tests/evidence/geo261-load-residual-20261020/pf3_control.py.txt
+```
+
+適配前那次完整結果（5183、5160 pass／22 fail／1 skip，exit 1）完整保留在 `checks/full-before-test-adapters.*`；最終完整重跑另列於上方，不混用通過數。
+
+'''
 body=body.replace('不可變的 collection bytes；仍記錄','不可變的 collection bytes；使用節點索引提示前先核對完整來源鍵、VALID 狀態與值，reset／重新註冊或提示失配時仍走原求值。仍記錄')
 body=body.replace('兩種突變分開編譯','兩種要求的突變與集合節點有效性的第三種突變分開編譯')
 body=body.replace('ASSERT:cross-consumer-placement-edge-missing ...','ASSERT:cross-consumer-placement-edge-missing ...\nASSERT:reset-collection-must-be-evaluated ...')
@@ -249,5 +262,6 @@ body=body.replace('## 證據與未驗項目','第一次完整測試因複查補�
 body=body.replace('第一次完整測試因複查補上 reset 邊界回歸而主動中止', '''另外，`py:test_assembly_mutation_check` 的程序群清理案例在此容器失敗：被 SIGKILL 的 `sleep` 留在 `/proc`，狀態為 Z（zombie）。在基底與修正版各直接執行 `python3 tests/test_assembly_mutation_check.py`，均 exit 1、12 tests 中同一項失敗；兩支相關測試／工具檔與基底無差異。原始輸出與結束碼保存於 `checks/assembly-process-base.*`、`checks/assembly-process-fix.*`。這項環境清理失敗保持紅燈，未修改測試或程序管理規則來排除它。
 
 第一次完整測試因複查補上 reset 邊界回歸而主動中止''')
+body=body.replace('第一次完整測試因複查補上 reset 邊界回歸而主動中止',adapters_section+'第一次完整測試因複查補上 reset 邊界回歸而主動中止')
 Path('/tmp/geo261-residual-PR_BODY.md').write_text(body)
 print(perf_table);print(call_table)

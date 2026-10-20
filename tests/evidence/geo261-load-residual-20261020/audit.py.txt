@@ -2,6 +2,7 @@
 import gzip
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 out=Path(__file__).resolve().parent
@@ -28,4 +29,10 @@ for row in perf['samples']:
     assert row['exit']==0 and sha(stdout)==row['stdout_sha256'] and json.loads(stdout)['ok']
 env=json.loads((out/'environment.json').read_text())
 for name,digest in env['changed_source_hashes'].items():assert sha((root/name).read_bytes())==digest,name
+changed=subprocess.check_output(['git','diff','--name-only',env['base'],'HEAD'],cwd=root,text=True).splitlines()
+for name in changed:
+    assert name not in ('tests/mutants_results.json','公理層.md','BACKLOG.md','決策佇列.md','PR_BODY.md'),name
+    assert not name.startswith(('geometry-core/domain-decoupling/','geometry-guide/')),name
+    assert not name.endswith('.h'),name
 print('PASS：175 份 stdout／stderr／完整圖／守門計數成對相同；36 筆效能輸出與來源雜湊均吻合。')
+print('PASS：未修改禁改檔案與公開 header；修正分支未包含 PR_BODY.md。')
