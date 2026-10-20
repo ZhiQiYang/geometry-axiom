@@ -202,7 +202,7 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 
 現在每個案例是 `(名稱, 補丁, 殺手測試, 殺手標記)`。殺手斷言以 `tests/test_assembly_rules.py` 的 `killer(標記)` 當失敗訊息；工具讀子行程寫出的結構化結果（失敗、error、skip 各自的測試名、例外型別與訊息裡的標記），不再 grep 文字。killed 要同時成立：
 
-1. 基準線（未改動來源）的三個殺手測試全綠、沒有 skip，且每個標記對應的斷言都被執行過（`killer()` 求值時記入 `REACHED`，所以斷言通過也記得到；標記只是躺在檔案裡、斷言卻跑不到，基準線就判紅）。
+1. 基準線（未改動來源）把所有持有殺手標記的測試跑一遍（現在是三個），全綠、沒有 skip，且測試檔裡**每一個**殺手標記都被執行過：要求的是 `TAGS` 的全部 8 個，不只案例綁定的 3 個；被執行到卻沒列在 `TAGS` 的標記也判紅（`unlisted-tag-reached`）。`killer()` 求值時記入 `REACHED`，所以斷言通過也記得到；標記只是躺在檔案裡、斷言卻跑不到，基準線就判紅。（2026-10-20 前的版本只要求案例綁定的 3 個，另外 5 個沒有人看守，見下面「第二次實跑收據」的更正。）
 2. 突變版只跑殺手測試，恰好一筆失敗：是殺手測試、是斷言失敗（不是 error）、訊息只帶這一個標記；沒有 skip、error、橋接器死亡、逾時、第二筆失敗，二進位也與基準線不同。
 3. 還原後來源樹與基準線逐位元組相同（逐階段比來源摘要），重編的基準線與第一次二進位 sha256 相同，三個殺手測試再度全綠。
 
@@ -216,6 +216,30 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 
 前一位 agent 用 main 人工比對的 `:218`、`:452`、`:472` 是加標記前的行號，就是現在的 `:233`、`:469`、`:489`（同一個陳述式；`:97` 是 `reject` 內同一條斷言）。標記讓比對不再靠行號。
 
+#### 全部殺手標記（`TAGS`）與 `--check` 擋的事
+
+測試檔裡一共 8 個標記，工具的 `TAGS` 逐一列出標記與持有它的測試方法。三個案例只綁其中 3 個，另外 5 個是同一個迴圈的後幾輪；它們不是裝飾，是「這一輪還在跑」的證明（基準線要求 8 個全部被執行）。
+
+| 標記 | 持有它的測試 | 綁定的案例 | 釘住什麼 |
+|---|---|---|---|
+| `conflict:scope` | `test_duplicate_scope_and_endpoint_rejected` | conflict | 兩個接合點共用 scope 必須拒絕（標記字串在 `:231`，迴圈第一輪） |
+| `conflict:end` | 同上 | 無 | 共用端點必須拒絕（迴圈第二輪）。conflict 突變只拿掉 scope 檢查，這一輪不是它的目標 |
+| `missing-source:literal-zero` | `test_bad_dimension_sources_rejected_not_incomplete` | missing-source | 尺寸來源 0 必須拒絕（`:464`，迴圈第一個來源） |
+| `missing-source:literal-negative` | 同上 | 無 | 尺寸來源 -1（`:464`） |
+| `missing-source:material` | 同上 | 無 | 不存在的 material（`:465`） |
+| `missing-source:parameter` | 同上 | 無 | 不存在的 parameter（`:466`） |
+| `missing-source:application` | 同上 | 無 | application 來源（`:467`） |
+| `cancelled-preview:confirm-after-cancel` | `test_cancel_and_protocol_tokens_do_not_commit` | cancelled-preview | 取消後的確認必須回 `ok:false`（`:489`） |
+
+`--check`（每次執行前也是同一道靜態閘門）要求：
+
+- `TAGS` 的每個標記在 `test_assembly_rules.py` 裡恰好出現一次，而且在 `TAGS` 指定的方法裡。刪掉某一輪（出現 0 次）、讓標記重複（2 次以上）、把標記搬到別的測試，都會被指名。
+- 測試檔裡不得有 `TAGS` 沒列的 `family:name` 字串常數（新增而沒登記）。
+- `killer()` 的第一個引數只能是 `family:name` 字串常數，或 `reject()` 傳下來的 `tag`；用組字串造標記，靜態看不到，直接擋。
+- 每個案例綁的標記必須在 `TAGS`，案例的殺手測試必須與 `TAGS` 為該標記指定的方法相同。
+
+靜態檢查只看得到「標記在檔案裡」。迴圈被改成不執行、`killer()` 所在的斷言走不到、或執行時才造出標記，靠基準線的 `REACHED` 與 `unlisted-tag-reached`。兩道合起來，刪一輪、重複、搬家、漏登記、整輪跑不到，各有一道會變紅。
+
 負對照（`CONTROLS`）是真的故障，走和案例完全相同的編譯、測試與判斷，必須因指定原因被判 not-killed，否則整次執行判失敗：
 
 | 對照 | 補丁 | 必須的原因 |
@@ -223,10 +247,11 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 | `control-wrong-assertion` | `engineering_bridge.inc` 的 `bool cancelled=…;` 改成 `bool cancelled=false;` | `wrong-assertion`：同一測試更早的 `assembly-cancel` 斷言失敗，沒有標記 |
 | `control-bridge-crash` | 取消成功時 `abort()` | `bridge-closed`：`BridgeClosed` 是 `AssertionError` 子類，unittest 記成 failure 而非 error，工具另外指認 |
 | `control-error` | 取消回覆的 `{"ok"` 改成 `{ok`，不再是 JSON | `error`：`json.JSONDecodeError` |
-| `control-hang` | 取消成功時 `for(;;){}`，測試時限 15 秒 | `timeout`：整組程序（含橋接器）被 `killpg` 殺掉 |
+| `control-hang` | 取消成功時 `for(;;){}`，測試時限 15 秒 | `timeout`：整組程序（含橋接器）被 `killpg` 殺掉。殺完之後工具再讀 `/proc`，看該 process group 與 session 還剩哪些程序（殭屍也算，最多等 5 秒），把殺前成員、殺後成員、等了幾秒記成這個階段 `record.json` 與 `tests/execution.json` 的 `processGroup`；殺後仍有程序、或讀不到 `/proc`，整次執行判失敗 |
 | `control-single-layer` | 只拿掉 `cancelled-preview` 兩層裡的守門那一層 | `survived`（即上表 XA1） |
+| `control-comment-only` | 在 conflict 案例的錨點（`assembly.c:66` 的 `if(!strcmp(scopes[k],scopes[i]))`）同一行後面加 `/* comment only */`，不改任何程式碼 | `identical-binary`：沒有加 `-g`、行數不動（`__LINE__` 也不會變），所以編出的二進位必須與基準線逐位元組相同；判決先比二進位 sha256，再看測試結果，所以這一階段的測試不論過不過都是 identical-binary。`--check` 要求這種對照的補丁只能是加 `/* */` 註解、不得增減換行；拿掉工具裡的二進位比對，這個對照會被判 `survived` 而讓整次執行失敗 |
 
-不用補丁就能驗的部分在 run_all 的 `test_assembly_mutation_check`：每個案例與對照的標記與錨點仍存在且唯一、27 條判斷規則（含上表所有原因）、舊判準會把別的斷言當成 killed 而新判準不會、結果記錄器分得開標記、error、skip、橋接器死亡與子測試。`python3 tests/assembly_mutation_check.py --check` 與 `--selftest` 不需要編譯器。
+不用補丁就能驗的部分在 run_all 的 `test_assembly_mutation_check`（12 個 test）：每個殺手標記（8 個）恰好出現一次、在指定的方法裡、沒有未登記的標記與無法登記的 `killer()` 引數、基準線要求全部標記且不接受未登記的標記、每個案例與對照的錨點仍存在且唯一、34 條判斷規則（含上表所有原因，`identical-binary` 也有）、註解對照只加註解、舊判準會把別的斷言當成 killed 而新判準不會、結果記錄器分得開標記、error、skip、橋接器死亡與子測試、被殺程序群組的查驗（`/proc` 解析、輪詢、殘留判定）。最後一項另有一個真的 `sh` 子程序樹被殺、殺後 `/proc` 乾淨的測試，只在 Linux／WSL 執行，Windows 上該測試直接回傳、什麼都沒驗；Windows 上驗不到的那一段由工具實跑的收據負責。`python3 tests/assembly_mutation_check.py --check` 與 `--selftest` 不需要編譯器。
 
 #### 第二次實跑收據（2026-10-20，標記判準）
 
@@ -234,14 +259,14 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 
 | 階段 | 結果 | 失敗的位置與標記 | 舊判準 | 二進位 sha256 前 12 碼 |
 |---|---|---|---|---|
-| baseline | pass | 3 個測試、8 個標記都被執行 | | `a56a309f3fdb` |
+| baseline | pass | 3 個測試全綠；`result.json` 的 `reached` 列出 8 個標記（更正：當時工具只要求案例綁定的 3 個，其餘 5 個是事後觀察，不是閘門） | | `a56a309f3fdb` |
 | conflict | killed | `test_duplicate_scope_and_endpoint_rejected` `:233`→`:97`，`conflict:scope` | killed | `f925c8b6bba7` |
 | missing-source | killed | `test_bad_dimension_sources_rejected_not_incomplete` `:469`→`:97`，`missing-source:literal-zero` | killed | `a7f6fcbd0f56` |
 | cancelled-preview | killed | `test_cancel_and_protocol_tokens_do_not_commit` `:489`，`cancelled-preview:confirm-after-cancel` | killed | `cf361d2d4924` |
 | control-wrong-assertion | not-killed／wrong-assertion | 同一測試 `:488`，無標記 | **killed** | `c02d327dbcc5` |
 | control-bridge-crash | not-killed／bridge-closed | `:488` 的 `BridgeClosed`，橋接器已結束 | 不算 | `8370dd36f100` |
 | control-error | not-killed／error | `json.JSONDecodeError`，errors=1、failures=0 | 不算 | `b5af3976b61e` |
-| control-hang | not-killed／timeout | 15.01 秒後被殺，沒有結果檔；之後 `ps` 查無殘留程序 | 不算 | `44df9c5a9591` |
+| control-hang | not-killed／timeout | 15.01 秒後被殺，沒有結果檔（更正：原本這格寫「之後 `ps` 查無殘留程序」，但 `run2/` 裡沒有 `ps` 輸出，說法已刪；殘留程序的查驗由工具自己記錄，從第三次實跑起） | 不算 | `44df9c5a9591` |
 | control-single-layer | not-killed／survived | 測試通過 | 不算 | `d47fb584cc22` |
 | restored | pass | 3 個測試再度全綠 | | `a56a309f3fdb`（與 baseline 相同） |
 
@@ -249,7 +274,7 @@ P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數�
 
 收據在 `D:/geometry-axiom-work/assembly-oracle-20261020/`，沒有提交進 repo：`run2/out/` 每階段有 `patches` 與 `patchedFiles` 摘要、`build/` 編譯輸出、`tests/` 的 stdout、stderr、`result.json`（結構化結果）、`execution.json`、`record.json`；`summary.json` sha256 `ff38239c2139bba15f072f90653efcb7235bca3026d09d5aa5935edd25718f02`，`sources.json` sha256 `6adcf046fdd6202364e3b1424eb3868dc3c95c93c87aa5b1038f72b6b517be25`，`run2/assembly.out` sha256 `fa186917517f7dfbc2b28030ea0077c5ff02f54a7e415ae04724c9dca0dd44a8`。`run1/` 是同一天先跑的版本（`666f4654`，三個對照、說明文字較舊，全數通過），保留不當作最終收據。
 
-限制：標記證明的是「失敗的是這一條斷言」，不證明它失敗的原因就是被注入的缺陷，那一層仍靠補丁與測試的對應。skip 沒有真實對照：橋接器的故障造不出 skip，只由 `--selftest` 與記錄器單元測試覆蓋。`missing-source` 的殺手是迴圈第一個來源，其餘四個來源的拒絕沒有被這個突變個別證明。
+限制：標記證明的是「失敗的是這一條斷言」，不證明它失敗的原因就是被注入的缺陷，那一層仍靠補丁與測試的對應。skip 沒有真實對照：橋接器的故障造不出 skip，只由 `--selftest` 與記錄器單元測試覆蓋。`missing-source` 的殺手是迴圈第一個來源，其餘四個來源（以及 `conflict:end`）的拒絕沒有被任何突變個別證明；第三次實跑起，基準線至少證明這幾輪每次都跑到且通過，有人刪掉或重複它們，`--check` 會指名。
 
 ## 環境限制與計數紀律
 
