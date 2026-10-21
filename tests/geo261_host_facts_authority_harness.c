@@ -321,6 +321,42 @@ static bool hf_prime_pose(HostFacts *f)
     bool ok=geo_eval_source(f->ctx.sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK;
     f->ctx.use_current_values=false;return ok&&value.kind==GEO_SOURCE_BOX&&value.as.box.frame.origin.y==(f->mode==HF_END?40:0)&&f->pose_hits==1;
 }
+static bool hf_footprint_no_evaluation(const HostFacts *f)
+{
+    return geo_eval_node_count(f->ctx.sources)==0&&geo_eval_edge_count(f->ctx.sources)==0&&
+        f->placement_hits==0&&f->anchor_hits==0&&f->column_hits==0&&f->beam_hits==0&&f->room_hits==0&&f->pose_hits==0;
+}
+/* 缺少原始 placement 或越界 index 必須在來源求值之前拒絕；
+ * 單看 false 不夠，圖與真 provider 的 callback 次數也必須保持不變。 */
+static int hf_footprint_guard(bool missing)
+{
+    HostFacts *f=hf_fixture(HF_MOVED);CHECK("facts-footprint-guard-fixture",f);
+    CHECK("facts-footprint-guard-initial-state",f->world.wood.timber_count==1&&hf_footprint_no_evaluation(f)&&
+        geo_placements_find(&f->world.geo.placement_data,7)&&!geo_placements_find(&f->world.geo.placement_data,999));
+    GeoRect2 out={101,102,103,104},saved=out;
+    bool ok=reference_member_footprint(&f->ctx,missing?0:1,missing?999:7,&out);
+    CHECK("facts-footprint-guard-rejects-without-output-or-world-change",!ok&&!memcmp(&out,&saved,sizeof out)&&
+        !memcmp(&f->world,&f->before,sizeof f->world));
+    if(missing)CHECK("facts-footprint-missing-does-not-evaluate",hf_footprint_no_evaluation(f));
+    else CHECK("facts-footprint-index-does-not-evaluate",hf_footprint_no_evaluation(f));
+    hf_free(f);return 0;
+}
+static int hf_footprint_current(void)
+{
+    for(unsigned mode=0;mode<5;++mode){
+        HostFacts *f=hf_fixture(HF_MOVED);CHECK("facts-footprint-current-fixture",f);f->ctx.use_current_values=true;
+        f->world.wood.anchors[0].uv=(GeoPoint2){13,17};
+        if(mode!=1)f->world.wood.anchors[0].length_direction=GEO_DIRECTION_POS_U;
+        if(mode==2)f->world.wood.timbers[0].placed=false;
+        memcpy(&f->before,&f->world,sizeof f->world);
+        GeoRect2 out={101,102,103,104},saved=out;
+        bool ok=reference_member_footprint(&f->ctx,mode==4?1:0,mode==3?999:7,&out);
+        if(mode==0)CHECK("facts-footprint-current-uses-cached-anchor",ok&&out.min_u==13&&out.max_u==113&&out.min_v==17&&out.max_v==27);
+        else CHECK("facts-footprint-current-invalid-preserves-output",!ok&&!memcmp(&out,&saved,sizeof out));
+        CHECK("facts-footprint-current-never-evaluates-or-writes-world",hf_footprint_no_evaluation(f)&&!memcmp(&f->world,&f->before,sizeof f->world));
+        hf_free(f);
+    }return 0;
+}
 static int hf_moved(bool final)
 {
     HostFacts *f=hf_fixture(HF_MOVED);CHECK("facts-moved-fixture",f);CHECK("facts-moved-real-returned-pose",hf_prime_pose(f));
@@ -407,6 +443,9 @@ int main(int argc,char **argv)
     if(!strcmp(argv[1],"copy-clear"))return hf_copy_outputs(false);
     if(!strcmp(argv[1],"copy-snapshot"))return hf_copy_outputs(true);
     if(!strcmp(argv[1],"scratch-owned"))return hf_scratch_owned();
+    if(!strcmp(argv[1],"footprint-missing"))return hf_footprint_guard(true);
+    if(!strcmp(argv[1],"footprint-index"))return hf_footprint_guard(false);
+    if(!strcmp(argv[1],"footprint-current"))return hf_footprint_current();
     if(!strcmp(argv[1],"moved"))return hf_moved(false);
     if(!strcmp(argv[1],"final"))return hf_moved(true);
     if(!strcmp(argv[1],"end-facts"))return hf_end_faces();

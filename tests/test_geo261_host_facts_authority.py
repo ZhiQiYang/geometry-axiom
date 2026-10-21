@@ -35,9 +35,10 @@ CONTROLS = (
     ('sp-domain', 'if(definition.domain==GEO_PLACEMENT_REGION_SET){*derived=true;return true;}',
      'if(world_find_placement(ctx->world,id)->derived_fill_id){*derived=true;return true;}',
      'sp-derived', 'facts-sp-actual-domain-controls-admission'),
-    ('raw-footprint', 'if(ctx->use_current_values)return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);',
-     'if(!timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out))return false;\n'
-     '    if(ctx->use_current_values)return true;',
+    ('raw-footprint', 'if(!geo_placements_find(&world->geo.placement_data,placement_id))return false;',
+     'PlacementSurface raw_placement;\n'
+     '    if(!app_placement_read(world,placement_id,&raw_placement)||\n'
+     '       !timber_a0_footprint_uv(&raw_placement,&world->wood.timbers[index],&world->wood.anchors[index],out))return false;',
      'moved', 'facts-moved-actual-anchor-footprint'),
     ('raw-contact', 'if(ctx->use_current_values&&!fact->footprint_valid)continue;',
      'if(!fact->footprint_valid)continue;',
@@ -85,6 +86,14 @@ COPY_CONTROLS = (
     ('scratch-view', '*view=has_boundary?(actual->derived_fill_id?&actual->components[0]:region):NULL;',
      '*view=has_boundary?region:NULL;', 'scratch-owned', 'facts-scratch-view-owned-by-caller'),
 )
+FOOTPRINT_CONTROLS = (
+    ('footprint-missing', 'if(!geo_placements_find(&world->geo.placement_data,placement_id))return false;',
+     '/* 負控制：省略原始 placement 存在守門。 */',
+     'footprint-missing', 'facts-footprint-missing-does-not-evaluate'),
+    ('footprint-index', 'if(index>=world->wood.timber_count)return false;',
+     'if(index>world->wood.timber_count)return false;',
+     'footprint-index', 'facts-footprint-index-does-not-evaluate'),
+)
 
 
 class HostFactsAuthorityBoundary(unittest.TestCase):
@@ -130,6 +139,17 @@ class HostFactsAuthorityBoundary(unittest.TestCase):
                 self.assertIn('"' + case + '"', harness)
                 self.assertIn('"' + marker + '"', harness)
 
+    def test_footprint_guards_have_unique_anchors_and_graph_oracles(self):
+        source = SOURCE.read_text(encoding='utf-8')
+        harness = HARNESS.read_text(encoding='utf-8')
+        self.assertEqual(2, len(FOOTPRINT_CONTROLS))
+        for name, before, after, case, marker in FOOTPRINT_CONTROLS:
+            with self.subTest(control=name):
+                self.assertEqual(1, source.count(before))
+                self.assertNotEqual(before, after)
+                self.assertIn('"' + case + '"', harness)
+                self.assertIn('"' + marker + '"', harness)
+
 
 class HostFactsAuthority(unittest.TestCase):
     @classmethod
@@ -156,6 +176,9 @@ class HostFactsAuthority(unittest.TestCase):
     def test_actual_rectangle_clears_full_raw_component_storage(self): self.case('copy-clear')
     def test_snapshot_preserves_components_and_caller_owned_view(self): self.case('copy-snapshot')
     def test_private_scratch_view_points_into_its_caller_storage(self): self.case('scratch-owned')
+    def test_missing_raw_placement_does_not_evaluate_or_change_outputs(self): self.case('footprint-missing')
+    def test_out_of_range_member_index_does_not_evaluate_or_change_outputs(self): self.case('footprint-index')
+    def test_current_footprint_preserves_cached_anchor_and_rejection_semantics(self): self.case('footprint-current')
     def test_moved_actual_anchor_overcomes_invalid_raw_footprint(self): self.case('moved')
     def test_final_world_validation_and_reference_check_share_actual_facts(self): self.case('final')
     def test_delayed_owner_refresh_and_span_first_error_consume_actual_facts(self): self.case('end-facts')
@@ -202,6 +225,11 @@ class HostFactsAuthority(unittest.TestCase):
 
     def test_four_copy_and_output_lifetime_controls_fail_exact_oracles(self):
         for control in COPY_CONTROLS:
+            with self.subTest(control=control[0]):
+                self.control(control)
+
+    def test_removed_footprint_guards_fail_named_graph_assertions(self):
+        for control in FOOTPRINT_CONTROLS:
             with self.subTest(control=control[0]):
                 self.control(control)
 

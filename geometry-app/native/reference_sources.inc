@@ -489,9 +489,14 @@ static bool reference_placement_frame(ReferenceEval *ctx,uint32_t id,GeoFrame *o
 }
 static bool reference_member_footprint(ReferenceEval *ctx,size_t index,uint32_t placement_id,GeoRect2 *out)
 {
-    World *world=ctx->world;PlacementSurface placement;
-    if(index>=world->wood.timber_count||!app_placement_read(world,placement_id,&placement))return false;
-    if(ctx->use_current_values)return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);
+    World *world=ctx->world;
+    if(index>=world->wood.timber_count)return false;
+    if(ctx->use_current_values){
+        PlacementSurface placement;
+        if(!app_placement_read(world,placement_id,&placement))return false;
+        return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);
+    }
+    if(!geo_placements_find(&world->geo.placement_data,placement_id))return false;
     uint32_t id=world->wood.timbers[index].id;GeoSourceValue value;GeoFrame frame;GeoQuad3 face;unsigned axis,side;
     WoodMemberPlacement anchor;
     if(!reference_sources_ensure(ctx)||!wood_definition_sources_placement(ctx->definition_sources,id,&anchor)||anchor.placement_id!=placement_id||
