@@ -18,16 +18,16 @@
     "All H functions independently proven free of misplaced policy",
     "Future changed source trees"
   ],
-  "createdUtc": "2026-10-20T22:05:35.503213+00:00",
+  "createdUtc": "2026-10-21T20:18:22.980152+00:00",
   "basis": "Committed integration product sources at sourceBaseHead, plus this finite manifest/scan/report/receipt refresh.",
-  "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
-  "headObservedBefore": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
-  "headObservedAfter": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
-  "manifestSha256": "afe4175a40fd8af6d5bcbeba386daa83703d42c4571517573e33a753efaa8bbf",
+  "sourceBaseHead": "0369579ef93b9046130d756e072f59c394654b09",
+  "headObservedBefore": "0369579ef93b9046130d756e072f59c394654b09",
+  "headObservedAfter": "0369579ef93b9046130d756e072f59c394654b09",
+  "manifestSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-  "reportSha256": "30366c097118d448c054b2c92a2a8f83b47c0f2ad112927dac5c0b52e87c4f89",
-  "inputClosureSha256": "459da17fa57d821376291c5aaf21b416c08dc34bcbdd6967879cad96bfba2ab1",
+  "reportSha256": "ab3330d08ce5a55a94cb0699ff07ae83249f26bdece184a648b8adb7356e48ec",
+  "inputClosureSha256": "8ef1f5d0ca6f2e7cb44747a74da84a9e61af0a8c794d654812ee551b17aafa90",
   "counts": {
     "executableFiles": 601,
     "ownedSources": 333,
@@ -50,20 +50,20 @@
     "forbiddenStrings": 55
   },
   "manifestRefresh": {
-    "previousManifestSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
-    "previousReceiptSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
+    "previousManifestSha256": "afe4175a40fd8af6d5bcbeba386daa83703d42c4571517573e33a753efaa8bbf",
+    "previousReceiptSha256": "60d9f5f0b090f2e51935aedbb58eca2582d5c5a7a26f6530a814b517f3daa4a1",
     "previousScanSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-    "previousReportSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3",
-    "previousReceiptCreatedUtc": "2026-10-20T11:26:02.875198+00:00",
-    "previousSourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-    "previousReceiptCommit": "ec1238cd62c7155a44ecf3fb071e605aeee8ac48",
-    "firstObservedHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+    "previousReportSha256": "30366c097118d448c054b2c92a2a8f83b47c0f2ad112927dac5c0b52e87c4f89",
+    "previousReceiptCreatedUtc": "2026-10-20T22:05:35.503213+00:00",
+    "previousSourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+    "previousReceiptCommit": "3f00d03dd8617f2c7339bba1a53ca9f6d9bbb8a9",
+    "firstObservedHead": "0369579ef93b9046130d756e072f59c394654b09",
     "previousOutputsPreserved": {
-      "directory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\previous",
+      "directory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit\\previous",
       "hashes": {
         "product-architecture.json": {
-          "rawSha256": "eeef1176893dfd4c2edcd185e1ed241d9e500721ced0a2f271de003588ebeff7",
-          "lfSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
+          "rawSha256": "61a39ab8260f56f7cccedc3eedf24dd6354fde67326d9b140dc3d302b8a449eb",
+          "lfSha256": "afe4175a40fd8af6d5bcbeba386daa83703d42c4571517573e33a753efaa8bbf",
           "bytes": 224756
         },
         "product-architecture-scan.json": {
@@ -72,22 +72,22 @@
           "bytes": 136537
         },
         "product-architecture-receipt.json": {
-          "rawSha256": "811a81f72c3031308871750bc342cf87d1fe19bef394419c528f4a850b305e4a",
-          "lfSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
-          "bytes": 164467
+          "rawSha256": "c082c752bba4bccb28b8dd291aaf75f62f774214a69ce008f186ee1c1c715088",
+          "lfSha256": "60d9f5f0b090f2e51935aedbb58eca2582d5c5a7a26f6530a814b517f3daa4a1",
+          "bytes": 135056
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "rawSha256": "73c6d5f5e46381ea7cf09e1e62e12b1250802ca3ed5bdc56f87b14bdbc88da2e",
-          "lfSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3",
-          "bytes": 24131
+          "rawSha256": "cc9419725ae85ba7f7e03a935ae36658f381ea2faeca236d9a9c7c8bfd3b315d",
+          "lfSha256": "30366c097118d448c054b2c92a2a8f83b47c0f2ad112927dac5c0b52e87c4f89",
+          "bytes": 25819
         }
       }
     },
     "lastSealedOutputsReadFromGit": {
-      "directory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\last-sealed",
-      "commit": "ec1238cd62c7155a44ecf3fb071e605aeee8ac48"
+      "directory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit\\last-sealed",
+      "commit": "3f00d03dd8617f2c7339bba1a53ca9f6d9bbb8a9"
     },
-    "headManifestSha256Before": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
+    "headManifestSha256Before": "afe4175a40fd8af6d5bcbeba386daa83703d42c4571517573e33a753efaa8bbf",
     "manifestEditsAlreadyCommitted": {
       "note": "Between the previous receipt commit and HEAD, commits edited the manifest without refreshing scan, report or receipt. They are verified here against the current bytes, not assumed.",
       "commits": [],
@@ -107,22 +107,22 @@
         "--manifest",
         "geometry-core/domain-decoupling/product-architecture.json"
       ],
-      "cwd": "D:\\ga261-a-76df2d81-r3",
-      "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "cwd": "D:\\ga261-p72b-0369579e",
+      "sourceBaseHead": "0369579ef93b9046130d756e072f59c394654b09",
       "tempDirectory": "D:\\t2",
-      "startedUtc": "2026-10-20T22:01:19.826683+00:00",
+      "startedUtc": "2026-10-21T20:17:06.544881+00:00",
       "complete": true,
       "exitCode": 1,
-      "finishedUtc": "2026-10-20T22:01:20.678579+00:00",
-      "seconds": 0.851,
+      "finishedUtc": "2026-10-21T20:17:07.927019+00:00",
+      "seconds": 1.357,
       "stdout": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\prior-manifest\\stdout",
-        "rawSha256": "d0721110cc631e69f314977b382ea6f4223dcf47269a2c9dba3f2d0f8b8975c3",
-        "lfSha256": "3457fbdb97a1158d949a38d390414df1d433e9200129939fb1260c1bdfb77165",
-        "bytes": 333
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit\\prior-manifest\\stdout",
+        "rawSha256": "6c887523c8624ee2b50375a9b391921c4b23123f42569025d2eb59fffb1d1ea5",
+        "lfSha256": "2a5ee74f72d9db513843041016f481f7fc66581d4b1a99f312b8346ae3369458",
+        "bytes": 351
       },
       "stderr": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\prior-manifest\\stderr",
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit\\prior-manifest\\stderr",
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "bytes": 0
@@ -130,7 +130,7 @@
       "manifest": "tree copy of product-architecture.json",
       "diagnostics": [
         {
-          "path": "geometry-web/cdp_test.js",
+          "path": "geometry-web/grid_inspector_rename_test.js",
           "line": 1,
           "code": "EXCLUSION_DIGEST",
           "message": "immutable lf digest is absent or mismatched",
@@ -144,16 +144,10 @@
     "addedExclusions": [],
     "updatedExclusions": [
       {
-        "path": "geometry-web/cdp_test.js",
-        "previousSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
-        "currentSha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
-        "reviewReason": "P52-5 將固定 sleep 改為共用 5000ms 截止時間內輪詢原生 references 並等放置交易結束；API 錯誤立即失敗，原 1987..2014 足跡斷言與案例數保持。仍是驗收驅動器，不由產品啟動或對外提供。"
-      },
-      {
-        "path": "geometry-web/grid_rule_lines_test.js",
-        "previousSha256": "4c380e38b0bb8300e556df4b7b1d511724d5670a930d6d5d7093b9c861240735",
-        "currentSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
-        "reviewReason": "P88 保留原操作與焦點斷言，新增桌機及390px各三項超高表單重繪驗證，包含不覆蓋後續捲動；只撤回產品的延後捲動恢復須在同一點擊位置斷言失敗。仍是由 cdp_test.js 載入的驗收外掛，不是產品來源。"
+        "path": "geometry-web/grid_inspector_rename_test.js",
+        "previousSha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e",
+        "currentSha256": "1f4fd5f4b85cfbc64da880bc1f4ca80155ef51ea3007c932093801068d48d4fd",
+        "reviewReason": "P72B 沿用既有 waitForExpectedNavigation，為本服務重載與第二隔離服務往返安裝唯一新文件標記，等待該文件 complete 且原應用狀態 ready，避免舊文件 ready 提前放行。維持原20秒上限及50個斷言，僅對既有導航工具明列的CDP context teardown重試，腳本錯誤仍立即失敗；真瀏覽器正常、早回覆競態、僅撤回修正與省略導航控制分別留原退出碼。仍是 cdp_test.js 載入的驗收外掛，不是產品啟動來源。"
       }
     ],
     "newFileClassification": [],
@@ -165,24 +159,14 @@
     },
     "exclusionProvenance": [
       {
-        "path": "geometry-web/cdp_test.js",
-        "sourceHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
-        "gitBlob": "ef229af148f664cc4a45d488abc8773f65aa2775",
-        "rawSha256": "3199f10d18f1b5330482119e5baac221cf49520a12417bc934612a43bebeaac6",
-        "lfSha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
-        "bytes": 520771,
-        "gitBlobRawSha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
-        "gitBlobLfSha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
-      },
-      {
-        "path": "geometry-web/grid_rule_lines_test.js",
-        "sourceHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
-        "gitBlob": "4dc49c79a946d1daa8f28255b31ed08dfa69c65d",
-        "rawSha256": "b10586b014473c1be8845d7e2ea87a7680387ae0cdaac9a6d1b1daa0a1f98642",
-        "lfSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
-        "bytes": 48244,
-        "gitBlobRawSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
-        "gitBlobLfSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c"
+        "path": "geometry-web/grid_inspector_rename_test.js",
+        "sourceHead": "0369579ef93b9046130d756e072f59c394654b09",
+        "gitBlob": "cf664d603a2d7048bf6aed5f72c6a561914536de",
+        "rawSha256": "ff0c2bf810022c6c121b273742b6f26ade19e11e7ef5b8400c16ebc6e017e8ea",
+        "lfSha256": "1f4fd5f4b85cfbc64da880bc1f4ca80155ef51ea3007c932093801068d48d4fd",
+        "bytes": 14653,
+        "gitBlobRawSha256": "1f4fd5f4b85cfbc64da880bc1f4ca80155ef51ea3007c932093801068d48d4fd",
+        "gitBlobLfSha256": "1f4fd5f4b85cfbc64da880bc1f4ca80155ef51ea3007c932093801068d48d4fd"
       }
     ],
     "routerAndSourceProvenance": [],
@@ -281,64 +265,43 @@
     "toolChanges": {},
     "changedPreviouslySealedInputs": [
       {
-        "path": "geometry-web/app.js",
-        "kind": "H",
-        "previousSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
-        "currentSha256": "d8c14843be3dd50c5ff7198c373cbdf3ef0bb45232aafec36fb2eb074f99550d"
-      },
-      {
-        "path": "geometry-web/cdp_test.js",
+        "path": "geometry-web/grid_inspector_rename_test.js",
         "kind": "exclusion",
-        "previousSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
-        "currentSha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
-      },
-      {
-        "path": "geometry-web/grid_rule_lines_test.js",
-        "kind": "exclusion",
-        "previousSha256": "4c380e38b0bb8300e556df4b7b1d511724d5670a930d6d5d7093b9c861240735",
-        "currentSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c"
-      },
-      {
-        "path": "geometry-web/runtime_version.py",
-        "kind": "H",
-        "previousSha256": "f9c88daa1517b160df6b736dfc5977cada4c0e38ed3e170a81372e4472944357",
-        "currentSha256": "5b7261519e70e51f952264c56d0a7cf18e7d4fdeeb8bb033fc391f08339468ea"
+        "previousSha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e",
+        "currentSha256": "1f4fd5f4b85cfbc64da880bc1f4ca80155ef51ea3007c932093801068d48d4fd"
       }
     ],
     "newInputs": [],
     "staleExcludedVendorOrEmbedDigestsBefore": [
-      "geometry-web/cdp_test.js",
-      "geometry-web/grid_rule_lines_test.js"
+      "geometry-web/grid_inspector_rename_test.js"
     ],
     "staleExcludedVendorOrEmbedDigestsAfter": [],
-    "sourceFix": "No product source, scanner or test changes are made by this audit. Existing H/W classifications, routes, exclusions and all previous guards are retained. The manifest receives 0 new individually named exclusion(s) and 0 new owned source(s), re-pins 2 stale exclusion digest(s). Manifest edits already committed since the previous sealed audit (0 sources, 0 exclusions, 0 exclusion digests, 0 embed-route digests) are verified against the current bytes and sealed.",
-    "commitsSincePreviousSourceHead": 6,
-    "firstParentMergesSincePreviousSourceHead": [
-      "546e2eb2 Merge remote-tracking branch 'origin/architecture/geo261-integration-20261016' into architecture/geo261-integration-20261016"
-    ],
+    "sourceFix": "No product source, scanner or test changes are made by this audit. Existing H/W classifications, routes, exclusions and all previous guards are retained. The manifest receives 0 new individually named exclusion(s) and 0 new owned source(s), re-pins 1 stale exclusion digest(s). Manifest edits already committed since the previous sealed audit (0 sources, 0 exclusions, 0 exclusion digests, 0 embed-route digests) are verified against the current bytes and sealed.",
+    "commitsSincePreviousSourceHead": 3,
+    "firstParentMergesSincePreviousSourceHead": [],
     "previousSourceAncestry": {
-      "ancestor": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-      "descendant": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "ancestor": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "descendant": "0369579ef93b9046130d756e072f59c394654b09",
       "isAncestor": true,
-      "command": "git merge-base --is-ancestor 96ade86bdb5fbcdad581b36afdd180a96fca7999 76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "command": "git merge-base --is-ancestor 76df2d816abfee02d3bb9eb545d7fb5c12150801 0369579ef93b9046130d756e072f59c394654b09",
       "exitCode": 0,
-      "checkedUtc": "2026-10-20T22:01:18.923084+00:00"
+      "checkedUtc": "2026-10-21T20:17:05.189407+00:00"
     },
     "previousReceiptAncestry": {
-      "ancestor": "ec1238cd62c7155a44ecf3fb071e605aeee8ac48",
-      "descendant": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "ancestor": "3f00d03dd8617f2c7339bba1a53ca9f6d9bbb8a9",
+      "descendant": "0369579ef93b9046130d756e072f59c394654b09",
       "isAncestor": true,
-      "command": "git merge-base --is-ancestor ec1238cd62c7155a44ecf3fb071e605aeee8ac48 76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "command": "git merge-base --is-ancestor 3f00d03dd8617f2c7339bba1a53ca9f6d9bbb8a9 0369579ef93b9046130d756e072f59c394654b09",
       "exitCode": 0,
-      "checkedUtc": "2026-10-20T22:01:19.332240+00:00"
+      "checkedUtc": "2026-10-21T20:17:05.427537+00:00"
     },
     "pythonSourceAncestry": {
       "ancestor": "8f36f1a0dd7e1244c92aca926c0a80079451e7f0",
-      "descendant": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "descendant": "0369579ef93b9046130d756e072f59c394654b09",
       "isAncestor": true,
-      "command": "git merge-base --is-ancestor 8f36f1a0dd7e1244c92aca926c0a80079451e7f0 76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "command": "git merge-base --is-ancestor 8f36f1a0dd7e1244c92aca926c0a80079451e7f0 0369579ef93b9046130d756e072f59c394654b09",
       "exitCode": 0,
-      "checkedUtc": "2026-10-20T22:01:19.825849+00:00"
+      "checkedUtc": "2026-10-21T20:17:06.533206+00:00"
     }
   },
   "scanPassed": true,
@@ -353,22 +316,22 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "D:\\ga261-a-76df2d81-r3",
-    "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+    "cwd": "D:\\ga261-p72b-0369579e",
+    "sourceBaseHead": "0369579ef93b9046130d756e072f59c394654b09",
     "tempDirectory": "D:\\t2",
-    "startedUtc": "2026-10-20T22:01:22.242366+00:00",
+    "startedUtc": "2026-10-21T20:17:10.590361+00:00",
     "complete": true,
     "exitCode": 0,
-    "finishedUtc": "2026-10-20T22:01:44.148293+00:00",
-    "seconds": 21.905,
+    "finishedUtc": "2026-10-21T20:17:26.287778+00:00",
+    "seconds": 15.693,
     "stdout": {
-      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\final-scan\\stdout",
+      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit\\final-scan\\stdout",
       "rawSha256": "cbc0d39154a1a880f6854b2826b71b1e5cef662ed887dbaf0cf4510f6c403ac1",
       "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
       "bytes": 136537
     },
     "stderr": {
-      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\final-scan\\stderr",
+      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit\\final-scan\\stderr",
       "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "bytes": 0
@@ -382,31 +345,31 @@
         "-B",
         "tests/test_architecture_contract.py"
       ],
-      "cwd": "D:\\ga261-a-76df2d81-r3",
-      "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "cwd": "D:\\ga261-p72b-0369579e",
+      "sourceBaseHead": "0369579ef93b9046130d756e072f59c394654b09",
       "tempDirectory": "D:\\t2",
-      "startedUtc": "2026-10-20T22:04:24.302182+00:00",
+      "startedUtc": "2026-10-21T20:18:15.391965+00:00",
       "complete": true,
       "exitCode": 0,
-      "finishedUtc": "2026-10-20T22:05:02.280916+00:00",
-      "seconds": 37.974,
+      "finishedUtc": "2026-10-21T20:18:20.592364+00:00",
+      "seconds": 5.2,
       "stdout": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\generic-tests\\stdout",
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit\\generic-tests\\stdout",
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "bytes": 0
       },
       "stderr": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\generic-tests\\stderr",
-        "rawSha256": "a6cf6cb999c2539c23a599d84b10423cd2369fbb66bd5e764261a6645740fa7c",
-        "lfSha256": "b9bf0ecfada38030e62a1370b288daf3fe57dfc349787b022e520ca396c288f0",
-        "bytes": 30033
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit\\generic-tests\\stderr",
+        "rawSha256": "0a7d03fde1ad69057abb0753f4d637fb202a51953d2eac623426138f906bddd3",
+        "lfSha256": "e161cd78a97e442448ce7f6757747d2c9a8944b6f1e1fe126f059a6cfe0a5cc5",
+        "bytes": 30032
       },
       "tests": 205,
       "passed": 204,
       "failed": 0,
       "skipped": 1,
-      "unittestSeconds": 37.49,
+      "unittestSeconds": 3.849,
       "sha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
       "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
       "executedAtCurrentHead": true,
@@ -418,9 +381,9 @@
       "skipReason": "The suite skips its real-symlink fixture when creation is unavailable (tests/test_architecture_contract.py skipTest); this machine reports: \"OSError(22, '用戶端沒有這項特殊權限。')\". A skip is not counted as a pass.",
       "scope": "Generic dependency scanner suite against synthetic fixtures; unchanged scanner and suite bytes. Not a product-graph result.",
       "previousRecord": {
-        "receiptSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
-        "createdUtc": "2026-10-20T11:26:02.875198+00:00",
-        "sourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
+        "receiptSha256": "60d9f5f0b090f2e51935aedbb58eca2582d5c5a7a26f6530a814b517f3daa4a1",
+        "createdUtc": "2026-10-20T22:05:35.503213+00:00",
+        "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
         "tests": 205,
         "passed": 204,
         "failed": 0,
@@ -437,31 +400,31 @@
         "-B",
         "tests/test_product_architecture.py"
       ],
-      "cwd": "D:\\ga261-a-76df2d81-r3",
-      "sourceBaseHead": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "cwd": "D:\\ga261-p72b-0369579e",
+      "sourceBaseHead": "0369579ef93b9046130d756e072f59c394654b09",
       "tempDirectory": "D:\\t2",
-      "startedUtc": "2026-10-20T22:01:50.923516+00:00",
+      "startedUtc": "2026-10-21T20:17:29.679219+00:00",
       "complete": true,
       "exitCode": 0,
-      "finishedUtc": "2026-10-20T22:04:17.571535+00:00",
-      "seconds": 146.638,
+      "finishedUtc": "2026-10-21T20:18:14.978619+00:00",
+      "seconds": 45.298,
       "stdout": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\product-tests\\stdout",
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit\\product-tests\\stdout",
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "bytes": 0
       },
       "stderr": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit\\product-tests\\stderr",
-        "rawSha256": "9439b316651ddf85479917fa3d9e809a8090744be51c57949fb043bc95cd68f3",
-        "lfSha256": "148d475af5c6bd8dcc44d0f3ce8c57c8201f4310ae5d7ccca8b6d9f709b6654b",
-        "bytes": 124
+        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit\\product-tests\\stderr",
+        "rawSha256": "7ebb3f7986d5fd6267ca838193693ad7612fd63c472f8b8c889d11c5823bf760",
+        "lfSha256": "7aba5faf072833e495b202eace9c29d6767afd2e23e339ab0a0715964be8f15f",
+        "bytes": 123
       },
       "tests": 18,
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 146.045,
+      "unittestSeconds": 44.592,
       "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
       "scope": "Actual-root inventory, static full product graph, actual-file controls, audited iframe controls and every K source without H/W; no native/product execution."
     }
@@ -469,9 +432,9 @@
   "supplementalStaticGuardProbes": {
     "kind": "supplemental-static-in-memory-actual-source-guard-probes",
     "executedAtCurrentHead": true,
-    "startedUtc": "2026-10-20T22:01:45.426008+00:00",
-    "finishedUtc": "2026-10-20T22:01:50.897151+00:00",
-    "seconds": 5.471,
+    "startedUtc": "2026-10-21T20:17:26.808097+00:00",
+    "finishedUtc": "2026-10-21T20:17:29.660761+00:00",
+    "seconds": 2.853,
     "source": "geometry-core/kernel/geometry.c",
     "sourceSha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00",
     "newEntryProbes": [],
@@ -505,7 +468,7 @@
       }
     ],
     "method": "Unchanged Scanner.validate_manifest receives the final manifest with one newly registered entry removed (must fail SOURCE_UNREGISTERED at exactly that path) and, for exclusions, with one digest corrupted (must fail EXCLUSION_DIGEST at that path). Unchanged Scanner.scan_c receives the actual K geometry.c text plus one newly added W identifier at a time (none were added when identifierProbes is 0) and a neutral identifier (accepted). Unchanged Scanner.scan_python receives an actual K and an actual W Python source with one appended import ctypes and rejects both, then accepts the actual H source_closure.py. No product/test source is written and no C or product Python executes. These probes are separate from the product suite.",
-    "manifestSha256": "afe4175a40fd8af6d5bcbeba386daa83703d42c4571517573e33a753efaa8bbf",
+    "manifestSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
     "guardValues": "manifestRefresh.addedExclusions/addedSources, manifestRefresh.policyGuards.addedIdentifiers and policy.externalModules ctypes."
   },
   "nativeAcceptance": "Not evaluated by this static audit. C/native/WSL/Node aggregate and product behavior were not executed, and no WSL process was started. Historical receipts retain their original source SHA, timestamps and PASS/FAIL/UNRUN. Python default and native coverage runtime acceptance, mutation ledgers and browser acceptance require separate execution receipts; static closure and ancestry do not certify them.",
@@ -2340,7 +2303,7 @@
     },
     {
       "path": "geometry-web/grid_inspector_rename_test.js",
-      "sha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e"
+      "sha256": "1f4fd5f4b85cfbc64da880bc1f4ca80155ef51ea3007c932093801068d48d4fd"
     },
     {
       "path": "geometry-web/grid_material_entry_test.js",
@@ -2955,10 +2918,10 @@
     "unregisteredAfter": [],
     "missingAfter": [],
     "changedInputs": [],
-    "inputClosureSha256Before": "459da17fa57d821376291c5aaf21b416c08dc34bcbdd6967879cad96bfba2ab1",
-    "inputClosureSha256After": "459da17fa57d821376291c5aaf21b416c08dc34bcbdd6967879cad96bfba2ab1",
-    "rawInputClosureSha256Before": "f5d5c4300be635490466deaefee70bb3890493486bd47637fd36b529b6a05e53",
-    "rawInputClosureSha256After": "f5d5c4300be635490466deaefee70bb3890493486bd47637fd36b529b6a05e53",
+    "inputClosureSha256Before": "8ef1f5d0ca6f2e7cb44747a74da84a9e61af0a8c794d654812ee551b17aafa90",
+    "inputClosureSha256After": "8ef1f5d0ca6f2e7cb44747a74da84a9e61af0a8c794d654812ee551b17aafa90",
+    "rawInputClosureSha256Before": "87a1dfea9c50f270bfe407faeceb487de636df47eaa9ef1f3dde531083473cf0",
+    "rawInputClosureSha256After": "87a1dfea9c50f270bfe407faeceb487de636df47eaa9ef1f3dde531083473cf0",
     "rawHashBasis": "Bytes of the extracted tree. git archive applies the archiving repository text conversion (core.autocrlf=true yields CRLF text), so the raw closure is checkout-dependent; the LF closure and the Git blobs are the portable pins.",
     "treeFingerprintScope": "size + mtime of every file under the five source roots (recursive) plus the files directly in the repository root and directly in tests/ (scanner, its tests, tests/__init__.py, tests/binaries.py), except the four audit outputs. tests/evidence, evidence/ and tests/release-evidence (about 19000 files that no audited command reads) are not walked: a metadata walk of the whole 23000-file tree took four minutes on the loaded machine.",
     "treeFileCountBeforeAndAfter": 2987,
@@ -2983,36 +2946,36 @@
       "tests/test_architecture_contract.py": "80ea0bce708658f0639ee7177d91e378d27b13db06e9c09b50fd162d2061ca7e",
       "tests/test_product_architecture.py": "4dd8f959332d2619685fc2d2d353c6ed27f889954410a140ea7efe4cca16a530"
     },
-    "headObservedAfterIndependentAudit": "76df2d816abfee02d3bb9eb545d7fb5c12150801",
-    "checkedUtc": "2026-10-20T22:05:35.513957+00:00"
+    "headObservedAfterIndependentAudit": "0369579ef93b9046130d756e072f59c394654b09",
+    "checkedUtc": "2026-10-21T20:18:22.987914+00:00"
   },
   "refreshDriver": {
     "path": "D:\\geometry-axiom-work\\geo261-research\\refresh_product_architecture_next.py",
     "rawSha256": "c786be4a0cd7288163c4004aeb06485997594d63a835f4e33a0dee6840b169c5",
     "lfSha256": "c786be4a0cd7288163c4004aeb06485997594d63a835f4e33a0dee6840b169c5",
     "bytes": 93635,
-    "runDirectory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit",
+    "runDirectory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit",
     "argv": [
       "C:\\Python314\\python.exe",
       "D:\\geometry-axiom-work\\geo261-research\\refresh_product_architecture_next.py",
       "--root",
-      "D:\\ga261-a-76df2d81-r3",
+      "D:\\ga261-p72b-0369579e",
       "--head",
-      "76df2d816abfee02d3bb9eb545d7fb5c12150801",
+      "0369579ef93b9046130d756e072f59c394654b09",
       "--out",
-      "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-76df2d81-r3\\audit",
+      "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0369579e-p72b\\audit",
       "--temp",
       "D:/t2",
       "--repo",
       "D:\\geometry-axiom-work\\geo261-integration",
       "--review",
-      "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-review.json"
+      "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-review-p72b.json"
     ],
     "reviewFile": {
-      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-review.json",
-      "rawSha256": "a305ae726a2b2f32795d91cf4569e966fb09dcdab7b7b6359e4d946da9360059",
-      "lfSha256": "a305ae726a2b2f32795d91cf4569e966fb09dcdab7b7b6359e4d946da9360059",
-      "bytes": 618
+      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-review-p72b.json",
+      "rawSha256": "ffc57898ac036636e4ac215d275cfc6259dd8160f8291a1ad51e195d49a72e28",
+      "lfSha256": "ffc57898ac036636e4ac215d275cfc6259dd8160f8291a1ad51e195d49a72e28",
+      "bytes": 590
     },
     "note": "External to the repository, like the previous refresh drivers."
   }
