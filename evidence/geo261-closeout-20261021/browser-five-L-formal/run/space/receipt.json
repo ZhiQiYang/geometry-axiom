@@ -1,0 +1,1273 @@
+{
+  "suite": "space",
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "startedUtc": "2026-10-20T23:47:32Z",
+  "status": "通過",
+  "releaseNote": "root 已明確放行：L canvas 完成且已清理；五項依序執行，與 native 並行最多兩項重負載，主來源固定 L。",
+  "jobTimeoutSeconds": 900,
+  "cleanupReserveSeconds": 15.0,
+  "output": "/workspace/geo261-evidence/browser-five-L-formal-43f85313/space",
+  "temp": "/tmp/geo261-browser-five-l43f85313-formal/space",
+  "ports": {
+    "http": 18854,
+    "cdp": 9347
+  },
+  "stages": [
+    {
+      "name": "build",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:47:32Z",
+      "startedMonotonic": 15516.051849948,
+      "remainingBudgetSeconds": 884.8625365800017,
+      "log": "build.log",
+      "pid": 246074,
+      "returncode": 0,
+      "finishedUtc": "2026-10-20T23:47:33Z",
+      "elapsedSeconds": 0.5482611379993614
+    },
+    {
+      "name": "fonts-package",
+      "argv": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status}\n${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:47:33Z",
+      "startedMonotonic": 15516.600393943,
+      "remainingBudgetSeconds": 10,
+      "log": "fonts-package.log",
+      "pid": 246118,
+      "returncode": 0,
+      "finishedUtc": "2026-10-20T23:47:33Z",
+      "elapsedSeconds": 0.02055397200092557
+    },
+    {
+      "name": "fonts-default",
+      "argv": [
+        "fc-match",
+        "-f",
+        "%{family}\n%{file}\n",
+        "sans-serif:lang=zh-tw"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:47:33Z",
+      "startedMonotonic": 15516.621253967,
+      "remainingBudgetSeconds": 10,
+      "log": "fonts-default.log",
+      "pid": 246122,
+      "returncode": 0,
+      "finishedUtc": "2026-10-20T23:47:34Z",
+      "elapsedSeconds": 0.5407592120009213
+    },
+    {
+      "name": "fonts-match",
+      "argv": [
+        "fc-match",
+        "-f",
+        "%{family}\n%{file}\n",
+        "Noto Sans CJK TC:lang=zh-tw"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:47:34Z",
+      "startedMonotonic": 15517.162303768,
+      "remainingBudgetSeconds": 10,
+      "log": "fonts-match.log",
+      "pid": 246191,
+      "returncode": 0,
+      "finishedUtc": "2026-10-20T23:47:34Z",
+      "elapsedSeconds": 0.01768680100030906
+    },
+    {
+      "name": "browser-version",
+      "argv": [
+        "/usr/bin/chromium",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:47:34Z",
+      "startedMonotonic": 15517.194831569,
+      "remainingBudgetSeconds": 10,
+      "log": "browser-version.log",
+      "pid": 246192,
+      "returncode": 0,
+      "finishedUtc": "2026-10-20T23:47:34Z",
+      "elapsedSeconds": 0.28495793499860156
+    },
+    {
+      "name": "node-version",
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:47:34Z",
+      "startedMonotonic": 15517.480584668,
+      "remainingBudgetSeconds": 10,
+      "log": "node-version.log",
+      "pid": 246215,
+      "returncode": 0,
+      "finishedUtc": "2026-10-20T23:47:34Z",
+      "elapsedSeconds": 0.022243457000513445
+    },
+    {
+      "name": "runtime-attempt-1",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18854"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:47:34Z",
+      "startedMonotonic": 15517.521811812,
+      "remainingBudgetSeconds": 8,
+      "log": "runtime-attempt-1.log",
+      "pid": 246219,
+      "returncode": 1,
+      "finishedUtc": "2026-10-20T23:47:34Z",
+      "elapsedSeconds": 0.28387710000060906
+    },
+    {
+      "name": "runtime-attempt-2",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18854"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:47:35Z",
+      "startedMonotonic": 15518.806406186,
+      "remainingBudgetSeconds": 8,
+      "log": "runtime-attempt-2.log",
+      "pid": 246343,
+      "returncode": 0,
+      "finishedUtc": "2026-10-20T23:47:35Z",
+      "elapsedSeconds": 0.28473578299963265
+    },
+    {
+      "name": "runtime-before",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18854"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:47:35Z",
+      "startedMonotonic": 15519.091506937,
+      "remainingBudgetSeconds": 8,
+      "log": "runtime-before.log",
+      "pid": 246385,
+      "returncode": 0,
+      "finishedUtc": "2026-10-20T23:47:36Z",
+      "elapsedSeconds": 0.2800953240002855
+    },
+    {
+      "name": "run",
+      "argv": [
+        "node",
+        "geometry-web/space_model_test.js"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:47:36Z",
+      "startedMonotonic": 15519.37571418,
+      "remainingBudgetSeconds": 881.5386690230025,
+      "log": "run.log",
+      "pid": 246424,
+      "returncode": 0,
+      "finishedUtc": "2026-10-20T23:50:45Z",
+      "elapsedSeconds": 189.3375981600002
+    },
+    {
+      "name": "runtime-after",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18854"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-20T23:50:45Z",
+      "startedMonotonic": 15708.714238307,
+      "remainingBudgetSeconds": 8,
+      "log": "runtime-after.log",
+      "pid": 255553,
+      "returncode": 0,
+      "finishedUtc": "2026-10-20T23:50:45Z",
+      "elapsedSeconds": 0.2755927479993261
+    }
+  ],
+  "startedMonotonic": 15515.914375922,
+  "deadlineMonotonic": 16415.914375922002,
+  "kernel": "6.18.55",
+  "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "loadBefore": [
+    2.177734375,
+    1.9013671875,
+    1.42333984375
+  ],
+  "stackLimitBytes": [
+    16777216,
+    -1
+  ],
+  "serverPid": 246218,
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 246218,
+    "session": "0628ed0c27f249f68bf8dc6a0e17379c"
+  },
+  "nativeIdentity": {
+    "build": {
+      "root": "/workspace/geometry-axiom",
+      "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3",
+      "executables": {
+        "core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+        "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+        "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"
+      },
+      "port": null,
+      "managedPreview": false
+    },
+    "server": {
+      "root": "/workspace/geometry-axiom",
+      "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3",
+      "executables": {
+        "core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+        "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+        "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"
+      },
+      "port": 18854,
+      "managedPreview": false
+    },
+    "executables": {
+      "core": {
+        "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+        "bytes": 886432,
+        "sha256": "114342cba65b9caa0dfda81fb24eb19bd06933a22914310319e406a101a9a6a9",
+        "sidecarSha256": "1bb9ecf642d754a843e7d7209fa91e00b677ffc237d8770ba96999b8381e8aba",
+        "fingerprint": "b4dae44014d70fb11aed3fa7889882aa894f33faf19779a7bd7c51f5897438cb"
+      },
+      "bridge": {
+        "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+        "bytes": 1100392,
+        "sha256": "79cd6c129ef890d6c57db1223ba5dec9477a20d08c9ed869218116d5831e5372",
+        "sidecarSha256": "06b7e1cf2a2aa3d4c67e7f289022a99211291b94f20e7fb7827f83e156a488ef",
+        "fingerprint": "2f8f05f49589d17f77478730472eb55ec514a89178f53cdabc1a4879b82eaef6"
+      },
+      "model-base": {
+        "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base",
+        "bytes": 947232,
+        "sha256": "be6e35d431607e1c1f2d2e67afa6799e18b657e9a336af260b957faf644d8708",
+        "sidecarSha256": "03d4a513f2c8c405970c985d86a3640d811e5df9b8293dad871412f06820ad92",
+        "fingerprint": "4c6e09a8206a0121f88dddb489c9a564b356108732f24e9c5f5c375071295074"
+      }
+    },
+    "freshnessAuthority": "start_local.prepare_binaries 在 build 及 server 啟動逐項呼叫 require_fresh"
+  },
+  "browserReturncode": 0,
+  "validationExitCode": 0,
+  "cleanup": {
+    "actions": [
+      {
+        "at": "2026-10-20T23:50:45Z",
+        "signal": "SIGINT",
+        "pid": 246218,
+        "pgid": 246218,
+        "starttime": 1551750
+      }
+    ],
+    "errors": [],
+    "liveRemaining": [],
+    "zombiesRemaining": [],
+    "processes": [
+      {
+        "pid": 246074,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246074,
+        "starttime": 1551605,
+        "argv": "",
+        "role": "build",
+        "firstSeen": "2026-10-20T23:47:32Z",
+        "lastSeen": "2026-10-20T23:47:33Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:33Z",
+        "pid": 246094,
+        "state": "S",
+        "ppid": 246074,
+        "pgid": 246074,
+        "starttime": 1551629,
+        "argv": "sh -c python3 geometry-web/start_local.py --build-only",
+        "lastSeen": "2026-10-20T23:47:33Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:33Z",
+        "pid": 246095,
+        "state": "R",
+        "ppid": 246094,
+        "pgid": 246074,
+        "starttime": 1551629,
+        "argv": "python3 geometry-web/start_local.py --build-only",
+        "lastSeen": "2026-10-20T23:47:33Z"
+      },
+      {
+        "pid": 246118,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246118,
+        "starttime": 1551660,
+        "argv": "",
+        "role": "fonts-package",
+        "firstSeen": "2026-10-20T23:47:33Z",
+        "lastSeen": "2026-10-20T23:47:33Z"
+      },
+      {
+        "pid": 246122,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246122,
+        "starttime": 1551662,
+        "argv": "",
+        "role": "fonts-default",
+        "firstSeen": "2026-10-20T23:47:33Z",
+        "lastSeen": "2026-10-20T23:47:34Z"
+      },
+      {
+        "pid": 246191,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246191,
+        "starttime": 1551716,
+        "argv": "",
+        "role": "fonts-match",
+        "firstSeen": "2026-10-20T23:47:34Z",
+        "lastSeen": "2026-10-20T23:47:34Z"
+      },
+      {
+        "pid": 246192,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246192,
+        "starttime": 1551719,
+        "argv": "",
+        "role": "browser-version",
+        "firstSeen": "2026-10-20T23:47:34Z",
+        "lastSeen": "2026-10-20T23:47:34Z"
+      },
+      {
+        "pid": 246215,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246215,
+        "starttime": 1551748,
+        "argv": "",
+        "role": "node-version",
+        "firstSeen": "2026-10-20T23:47:34Z",
+        "lastSeen": "2026-10-20T23:47:34Z"
+      },
+      {
+        "pid": 246218,
+        "state": "S",
+        "ppid": 234265,
+        "pgid": 246218,
+        "starttime": 1551750,
+        "argv": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -u /workspace/geometry-axiom/geometry-web/serve.py 18854",
+        "role": "server",
+        "firstSeen": "2026-10-20T23:47:34Z",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "pid": 246219,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246219,
+        "starttime": 1551752,
+        "argv": "",
+        "role": "runtime-attempt-1",
+        "firstSeen": "2026-10-20T23:47:34Z",
+        "lastSeen": "2026-10-20T23:47:34Z"
+      },
+      {
+        "pid": 246343,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246343,
+        "starttime": 1551880,
+        "argv": "",
+        "role": "runtime-attempt-2",
+        "firstSeen": "2026-10-20T23:47:35Z",
+        "lastSeen": "2026-10-20T23:47:35Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:35Z",
+        "pid": 246256,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1551802,
+        "argv": "",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "pid": 246385,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246385,
+        "starttime": 1551909,
+        "argv": "",
+        "role": "runtime-before",
+        "firstSeen": "2026-10-20T23:47:35Z",
+        "lastSeen": "2026-10-20T23:47:36Z"
+      },
+      {
+        "pid": 246424,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246424,
+        "starttime": 1551937,
+        "argv": "",
+        "role": "run",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "pid": 246464,
+        "state": "S",
+        "ppid": 246424,
+        "pgid": 246424,
+        "starttime": 1551961,
+        "argv": "/usr/lib/chromium/chromium --show-component-extension-options --enable-gpu-rasterization --no-default-browser-check --disable-pings --media-router=0 --enable-remote-extensions --load-extension= about:blank --headless=new --disable-gpu --no-first-run --no-default-browser-check --remote-debugging-port=9347 --window-size=1400,900 --user-data-dir=/tmp/geo261-browser-five-l43f85313-formal/space/chrome-profile --no-sandbox",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "pid": 246562,
+        "state": "S",
+        "ppid": 246491,
+        "pgid": 246424,
+        "starttime": 1551984,
+        "argv": "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-browser-five-l43f85313-formal/space/chrome-profile --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9347 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1792524536884937 --launch-time-ticks=15519846597 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,14607744483730927045,1810763193256371291,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,16389696461803939462,11164121497244304109,4 --trace-process-track-uuid=3190708990997080739",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "pid": 246531,
+        "state": "S",
+        "ppid": 246491,
+        "pgid": 246424,
+        "starttime": 1551978,
+        "argv": "/usr/lib/chromium/chromium --type=utility --utility-sub-type=storage.mojom.StorageService --lang=en-US --service-sandbox-type=utility --no-sandbox --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-browser-five-l43f85313-formal/space/chrome-profile --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,14607744483730927045,1810763193256371291,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,16389696461803939462,11164121497244304109,4 --trace-process-track-uuid=3190708990060038890",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "pid": 246571,
+        "state": "S",
+        "ppid": 246491,
+        "pgid": 246424,
+        "starttime": 1551987,
+        "argv": "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-browser-five-l43f85313-formal/space/chrome-profile --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9347 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=7 --time-ticks-at-unix-epoch=-1792524536884937 --launch-time-ticks=15519875242 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,14607744483730927045,1810763193256371291,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,16389696461803939462,11164121497244304109,4 --trace-process-track-uuid=3190708992871164437",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "pid": 246578,
+        "state": "S",
+        "ppid": 246491,
+        "pgid": 246424,
+        "starttime": 1551989,
+        "argv": "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-browser-five-l43f85313-formal/space/chrome-profile --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9347 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=6 --time-ticks-at-unix-epoch=-1792524536884937 --launch-time-ticks=15519893690 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,14607744483730927045,1810763193256371291,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,16389696461803939462,11164121497244304109,4 --trace-process-track-uuid=3190708991934122588",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "pid": 246515,
+        "state": "S",
+        "ppid": 246490,
+        "pgid": 246424,
+        "starttime": 1551974,
+        "argv": "/usr/lib/chromium/chromium --type=gpu-process --no-sandbox --enable-gpu-rasterization --headless=new --ozone-platform=headless --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-browser-five-l43f85313-formal/space/chrome-profile --change-stack-guard-on-fork=enable --gpu-preferences=YAAAAAAAAAAgAAAEAAAAAAAAAAAAAGAASAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAMAAAAAQAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=3,i,14607744483730927045,1810763193256371291,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,16389696461803939462,11164121497244304109,4 --trace-process-track-uuid=3190708988185955192",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "pid": 246518,
+        "state": "S",
+        "ppid": 246464,
+        "pgid": 246424,
+        "starttime": 1551974,
+        "argv": "/usr/lib/chromium/chromium --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --no-sandbox --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-browser-five-l43f85313-formal/space/chrome-profile --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,14607744483730927045,1810763193256371291,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,16389696461803939462,11164121497244304109,4 --trace-process-track-uuid=3190708989122997041",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "pid": 246488,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246487,
+        "starttime": 1551967,
+        "argv": "",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "pid": 246490,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246424,
+        "starttime": 1551967,
+        "argv": "",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:36Z",
+        "pid": 246491,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 246424,
+        "starttime": 1551967,
+        "argv": "",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:47:57Z",
+        "pid": 247378,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1554108,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-8hl4dd8q/input.scene",
+        "lastSeen": "2026-10-20T23:47:57Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:10Z",
+        "pid": 248402,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1555334,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base /tmp/geometry-model-scene-fay65pxd/input.scene",
+        "lastSeen": "2026-10-20T23:48:10Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:10Z",
+        "pid": 248419,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1555364,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-fa36p10e/input.scene",
+        "lastSeen": "2026-10-20T23:48:10Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:24Z",
+        "pid": 248843,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1556805,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-yi_404hr/input.scene",
+        "lastSeen": "2026-10-20T23:48:24Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:25Z",
+        "pid": 248881,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1556885,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-3u6f0fr9/input.scene",
+        "lastSeen": "2026-10-20T23:48:25Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:26Z",
+        "pid": 248884,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1556909,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-49gg2lp4/input.scene",
+        "lastSeen": "2026-10-20T23:48:26Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:28Z",
+        "pid": 248969,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1557176,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-x276xbcn/input.scene",
+        "lastSeen": "2026-10-20T23:48:28Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:33Z",
+        "pid": 249171,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1557623,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-h6qpmx2l/input.scene",
+        "lastSeen": "2026-10-20T23:48:33Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:33Z",
+        "pid": 249203,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1557649,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-f7yn4gjf/input.scene",
+        "lastSeen": "2026-10-20T23:48:33Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:34Z",
+        "pid": 249294,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1557780,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-6lp4p8dq/input.scene",
+        "lastSeen": "2026-10-20T23:48:34Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:38Z",
+        "pid": 249445,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1558115,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-_utc719k/input.scene",
+        "lastSeen": "2026-10-20T23:48:38Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:40Z",
+        "pid": 249468,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1558326,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-1t7wgup7/input.scene",
+        "lastSeen": "2026-10-20T23:48:40Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:47Z",
+        "pid": 249653,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559085,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base /tmp/geometry-model-scene-ar88mpry/input.scene",
+        "lastSeen": "2026-10-20T23:48:47Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:48Z",
+        "pid": 249685,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559136,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-t0x78e5c/input.scene",
+        "lastSeen": "2026-10-20T23:48:48Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:49Z",
+        "pid": 249714,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559215,
+        "argv": "",
+        "lastSeen": "2026-10-20T23:48:49Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:49Z",
+        "pid": 249728,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559243,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-g88vljv5/input.scene",
+        "lastSeen": "2026-10-20T23:48:49Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:49Z",
+        "pid": 249746,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559268,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-by_7j74l/input.scene",
+        "lastSeen": "2026-10-20T23:48:49Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:51Z",
+        "pid": 249865,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559427,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-r0qs2xwz/input.scene",
+        "lastSeen": "2026-10-20T23:48:51Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:51Z",
+        "pid": 249902,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559477,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-s2kqz0vw/input.scene",
+        "lastSeen": "2026-10-20T23:48:51Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:52Z",
+        "pid": 249964,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559555,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-5h6zpe0z/input.scene",
+        "lastSeen": "2026-10-20T23:48:52Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:52Z",
+        "pid": 249991,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559607,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-f9c5o658/input.scene",
+        "lastSeen": "2026-10-20T23:48:52Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:53Z",
+        "pid": 250016,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559661,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-gufk2786/input.scene",
+        "lastSeen": "2026-10-20T23:48:53Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:54Z",
+        "pid": 250045,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559738,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-zlh2k8zu/input.scene",
+        "lastSeen": "2026-10-20T23:48:54Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:55Z",
+        "pid": 250075,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559894,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-l6i0v8xo/input.scene",
+        "lastSeen": "2026-10-20T23:48:55Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:56Z",
+        "pid": 250089,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559974,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-imibafl7/input.scene",
+        "lastSeen": "2026-10-20T23:48:56Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:56Z",
+        "pid": 250098,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1559999,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-1k6oqskb/input.scene",
+        "lastSeen": "2026-10-20T23:48:56Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:48:59Z",
+        "pid": 250256,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1560288,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-7ykubyxq/input.scene",
+        "lastSeen": "2026-10-20T23:48:59Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:00Z",
+        "pid": 250298,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1560364,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-8pn84dlw/input.scene",
+        "lastSeen": "2026-10-20T23:49:00Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:01Z",
+        "pid": 250363,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1560472,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-147wa09a/input.scene",
+        "lastSeen": "2026-10-20T23:49:01Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:01Z",
+        "pid": 250365,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1560494,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-8h3kqccy/input.scene",
+        "lastSeen": "2026-10-20T23:49:01Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:02Z",
+        "pid": 250381,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1560523,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-9q57yv07/input.scene",
+        "lastSeen": "2026-10-20T23:49:02Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:03Z",
+        "pid": 250403,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1560656,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ga65hhhc/input.scene",
+        "lastSeen": "2026-10-20T23:49:03Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:03Z",
+        "pid": 250407,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1560679,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-uy9_apl1/input.scene",
+        "lastSeen": "2026-10-20T23:49:03Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:03Z",
+        "pid": 250410,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1560707,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-k4in7qod/input.scene",
+        "lastSeen": "2026-10-20T23:49:03Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:04Z",
+        "pid": 250426,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1560784,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-2hsmwosr/input.scene",
+        "lastSeen": "2026-10-20T23:49:04Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:07Z",
+        "pid": 250567,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1561021,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-isyg8lws/input.scene",
+        "lastSeen": "2026-10-20T23:49:07Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:09Z",
+        "pid": 250713,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1561255,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-io79blbl/input.scene",
+        "lastSeen": "2026-10-20T23:49:09Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:10Z",
+        "pid": 250813,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1561384,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-bwg1v2tw/input.scene",
+        "lastSeen": "2026-10-20T23:49:10Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:12Z",
+        "pid": 250896,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1561570,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base /tmp/geometry-model-scene-1m7jjwlm/input.scene",
+        "lastSeen": "2026-10-20T23:49:12Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:13Z",
+        "pid": 250904,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1561620,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-wh4ectdo/input.scene",
+        "lastSeen": "2026-10-20T23:49:13Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:13Z",
+        "pid": 250919,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1561674,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-n1ace_0_/input.scene",
+        "lastSeen": "2026-10-20T23:49:13Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:13Z",
+        "pid": 250922,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1561699,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-kn0n2y30/input.scene",
+        "lastSeen": "2026-10-20T23:49:13Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:14Z",
+        "pid": 250926,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1561728,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-2nuq96fm/input.scene",
+        "lastSeen": "2026-10-20T23:49:14Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:23Z",
+        "pid": 251514,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1562668,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-gccp44ga/input.scene",
+        "lastSeen": "2026-10-20T23:49:23Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:32Z",
+        "pid": 251923,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1563595,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-2cfsex5c/input.scene",
+        "lastSeen": "2026-10-20T23:49:32Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:34Z",
+        "pid": 252017,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1563779,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-xacay2iu/input.scene",
+        "lastSeen": "2026-10-20T23:49:34Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:34Z",
+        "pid": 252035,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1563805,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-afsqh0uq/input.scene",
+        "lastSeen": "2026-10-20T23:49:34Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:47Z",
+        "pid": 252942,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1565026,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-cvt3sukt/input.scene",
+        "lastSeen": "2026-10-20T23:49:47Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:48Z",
+        "pid": 252997,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1565185,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-11nw_1s9/input.scene",
+        "lastSeen": "2026-10-20T23:49:48Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:49Z",
+        "pid": 253004,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1565238,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ipqxnlmg/input.scene",
+        "lastSeen": "2026-10-20T23:49:49Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:49Z",
+        "pid": 253009,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1565265,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-pvfomcsv/input.scene",
+        "lastSeen": "2026-10-20T23:49:49Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:49:50Z",
+        "pid": 253027,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1565315,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-xicwe4qo/input.scene",
+        "lastSeen": "2026-10-20T23:49:50Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:50:08Z",
+        "pid": 254015,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1567135,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-5getxyb_/input.scene",
+        "lastSeen": "2026-10-20T23:50:08Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:50:08Z",
+        "pid": 254028,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1567162,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-b6x711fe/input.scene",
+        "lastSeen": "2026-10-20T23:50:08Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:50:14Z",
+        "pid": 254462,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1567785,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-5wgv6md_/input.scene",
+        "lastSeen": "2026-10-20T23:50:14Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:50:17Z",
+        "pid": 254546,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1568069,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-e4dp1yod/input.scene",
+        "lastSeen": "2026-10-20T23:50:17Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-20T23:50:18Z",
+        "pid": 254624,
+        "state": "R",
+        "ppid": 246218,
+        "pgid": 246218,
+        "starttime": 1568203,
+        "argv": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-_lz6ti4g/input.scene",
+        "lastSeen": "2026-10-20T23:50:18Z"
+      },
+      {
+        "pid": 255553,
+        "state": "Z",
+        "ppid": 234265,
+        "pgid": 255553,
+        "starttime": 1570871,
+        "argv": "",
+        "role": "runtime-after",
+        "firstSeen": "2026-10-20T23:50:45Z",
+        "lastSeen": "2026-10-20T23:50:45Z"
+      }
+    ],
+    "directReturncodes": {
+      "246074": 0,
+      "246118": 0,
+      "246122": 0,
+      "246191": 0,
+      "246192": 0,
+      "246215": 0,
+      "246218": -2,
+      "246219": 1,
+      "246343": 0,
+      "246385": 0,
+      "246424": 0,
+      "255553": 0
+    },
+    "httpPortFree": true,
+    "cdpPortFree": true,
+    "portCheck": "connect_ex 必須 ECONNREFUSED，避免 TIME_WAIT 被誤認為存活 listener"
+  },
+  "screenshots": {
+    "count": 33,
+    "requiredNames": [
+      "final-state.png",
+      "rectangle-desktop-1280x720.png",
+      "lshape-mobile-preview.png"
+    ],
+    "paths": [
+      "artifacts/space-artifacts/after-own-plan-1400.png",
+      "artifacts/space-artifacts/after-own-plan-390x844.png",
+      "artifacts/space-artifacts/after-own-plan-690x668.png",
+      "artifacts/space-artifacts/after-preview-confirmation-1400.png",
+      "artifacts/space-artifacts/after-preview-confirmation-390x844.png",
+      "artifacts/space-artifacts/after-preview-confirmation-690x668.png",
+      "artifacts/space-artifacts/drawing-aligned-top-left-bottom.png",
+      "artifacts/space-artifacts/drawing-original-left-bottom.png",
+      "artifacts/space-artifacts/drawing-saved-reopened-top.png",
+      "artifacts/space-artifacts/final-state.png",
+      "artifacts/space-artifacts/fonts-11px-desktop-1280x720.png",
+      "artifacts/space-artifacts/fonts-11px-mobile-preview.png",
+      "artifacts/space-artifacts/fonts-11px-mobile-settings.png",
+      "artifacts/space-artifacts/issue159-library-history-1400.png",
+      "artifacts/space-artifacts/issue159-library-history-390.png",
+      "artifacts/space-artifacts/issue159-stale-builder-history.png",
+      "artifacts/space-artifacts/lshape-desktop-preview.png",
+      "artifacts/space-artifacts/lshape-mobile-preview.png",
+      "artifacts/space-artifacts/lshape-mobile-settings.png",
+      "artifacts/space-artifacts/own-face-z2500-created.png",
+      "artifacts/space-artifacts/projection-bottom-preview.png",
+      "artifacts/space-artifacts/projection-definition-689x668.png",
+      "artifacts/space-artifacts/projection-definition-desktop.png",
+      "artifacts/space-artifacts/projection-definition-mobile.png",
+      "artifacts/space-artifacts/projection-selected-placement-z-edited.png",
+      "artifacts/space-artifacts/projection-uncommitted-desktop.png",
+      "artifacts/space-artifacts/projection-vertical-rejected.png",
+      "artifacts/space-artifacts/rectangle-desktop-1280x720.png",
+      "artifacts/space-artifacts/rectangle-desktop-preview.png",
+      "artifacts/space-artifacts/single-existing-face-open-created.png",
+      "artifacts/space-artifacts/six-existing-faces-created.png",
+      "artifacts/space-artifacts/wall-height-3200-updated.png",
+      "artifacts/space-artifacts/wall-height-mobile-review.png"
+    ],
+    "pngSignatureChecked": true
+  },
+  "headAfter": "43f85313c32410ac01406ab585846bbacafea278",
+  "statusAfter": "",
+  "sourceHashesUnchanged": true,
+  "headGuard": true,
+  "elapsedSeconds": 193.4195297139995,
+  "withinJobDeadline": true,
+  "loadAfter": [
+    2.0830078125,
+    1.9697265625,
+    1.54443359375
+  ],
+  "accepted": true,
+  "errors": [],
+  "finishedUtc": "2026-10-20T23:50:46Z"
+}

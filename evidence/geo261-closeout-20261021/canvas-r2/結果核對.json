@@ -1,0 +1,16 @@
+{
+  "說明": "R2 完整canvas的實際失敗；不是完整綠燈。已越過原P52/P68/P72B位置，在P73新阻擋停止，尚未比較golden。",
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "exitCode": 1,
+  "elapsedSeconds": 1406.325265337,
+  "passedAssertions": 1689,
+  "failedAssertions": 1,
+  "P52": 43,
+  "P68": 36,
+  "P72B": 50,
+  "未驗": "P73失敗後的其餘段落及完整golden",
+  "runtimeProbeAfterExit": 0,
+  "traceArchiveExit": 0,
+  "traceStatus": "trace-disabled-for-this-runner",
+  "原生世界保全": "../p73/original-world-capture.json"
+}

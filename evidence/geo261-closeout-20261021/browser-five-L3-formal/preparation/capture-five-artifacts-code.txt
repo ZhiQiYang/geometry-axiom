@@ -1,0 +1,44 @@
+import collections,datetime,hashlib,json,pathlib,re,shutil
+R=pathlib.Path('/workspace/geo261-evidence/browser-five-L3-formal-6589248c')
+S='6589248c9a94bdf0460d8f84dd1610e51048188b'
+OUT=R/'declared-artifacts'
+assert not OUT.exists()
+receipts={n:json.loads((R/n/'receipt.json').read_text()) for n in ('assembly','documents','grid','space','timber')}
+assert all(x['sourceSha']==S and x['accepted'] for x in receipts.values())
+rows=[]; missing=[]
+def digest(b):return hashlib.sha256(b).hexdigest()
+def capture(suite,src,dst,kind,basis,existing=False):
+ if not src.is_file():missing.append({'sourcePath':str(src),'kind':kind});return
+ st=src.stat();data=src.read_bytes();st2=src.stat()
+ assert (st.st_ino,st.st_size,st.st_mtime_ns)==(st2.st_ino,st2.st_size,st2.st_mtime_ns)
+ assert st.st_size==len(data)
+ rec=receipts[suite]
+ lo=datetime.datetime.fromisoformat(rec['startedUtc'].replace('Z','+00:00')).timestamp()
+ hi=datetime.datetime.fromisoformat(rec['finishedUtc'].replace('Z','+00:00')).timestamp()+1
+ assert lo<=st.st_mtime<hi,(src,st.st_mtime,lo,hi)
+ if not existing:dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,dst)
+ assert dst.read_bytes()==data
+ assert src.read_bytes()==data and src.stat().st_mtime_ns==st.st_mtime_ns
+ rows.append({'suite':suite,'kind':kind,'basis':basis,'sourcePath':str(src),'artifactPath':str(dst.relative_to(R)),'existingWrapperCapture':existing,'bytes':len(data),'sha256':digest(data),'sourceMtimeNs':st.st_mtime_ns,'mtimeWithinOriginalSecondResolutionJobWindow':True})
+raw=(R/'grid/run.log').read_text();declared=re.findall(r'^.* saved artifact (.+\.gcanvas)\s*$',raw,re.M)
+assert len(declared)==7 and len(set(declared))==7
+for name in declared:
+ src=pathlib.Path(name);assert src.is_relative_to(pathlib.Path(receipts['grid']['temp']))
+ capture('grid',src,OUT/'grid'/src.parent.name/src.name,'raw-declared-gcanvas','grid/run.log: saved artifact')
+ for extra in sorted(src.parent.glob('*.json')):
+  capture('grid',extra,OUT/'grid'/src.parent.name/extra.name,'adjacent-test-json-receipt','同一原下載目錄的既有測試 JSON 收據；非 raw 直接宣告下載')
+dirs=list(pathlib.Path(receipts['documents']['temp']).glob('geometry-document-fixtures-*'))
+assert len(dirs)==1
+for name,kind,line in [('fixture.md','synthetic-markdown-input',49),('synthetic.pdf','synthetic-pdf-input',59),('notes.json','exported-notes-roundtrip-input',88)]:
+ src=dirs[0]/name
+ if name=='synthetic.pdf' and src.exists():assert src.read_bytes().startswith(b'%PDF-')
+ capture('documents',src,OUT/'documents'/src.parent.name/name,kind,f'L3 geometry-web/documents_browser_test.js:{line}；測試輸入，不宣稱使用者下載')
+for suite,rec in receipts.items():
+ for dst in sorted((R/suite/'artifacts').rglob('*')):
+  if dst.is_file() and dst.suffix.lower()!='.png':
+   rel=dst.relative_to(R/suite/'artifacts');src=pathlib.Path(rec['temp'])/rel
+   capture(suite,src,dst,'existing-wrapper-artifact','原 wrapper 已保存；只核 bytes 與 mtime，不重複複製',True)
+assert not missing,missing
+result={'sourceSha':S,'capturedUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'productRerun':False,'methodSha256':digest(pathlib.Path(__file__).read_bytes()),'rawDeclaredGridPaths':declared,'files':rows,'missing':missing,'addedFiles':sum(not x['existingWrapperCapture'] for x in rows),'addedBytes':sum(x['bytes'] for x in rows if not x['existingWrapperCapture']),'existingFilesChecked':sum(x['existingWrapperCapture'] for x in rows),'kindCounts':dict(collections.Counter(x['kind'] for x in rows)),'notes':['此為測試結束後保存，不計入原 job deadline。','原 suite manifest 完全未變；新增檔只在 declared-artifacts。','未重建、未復原或重新生成產品產物；未保存 Chrome profile/cache。','mtime 依原收據秒級窗口：startedUtc <= mtime < finishedUtc + 1 秒。']}
+(R/'declared-artifact-capture.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({k:result[k] for k in ['addedFiles','addedBytes','existingFilesChecked','kindCounts','missing']},ensure_ascii=False))

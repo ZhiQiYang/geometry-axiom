@@ -1,0 +1,245 @@
+{
+  "sourceSha": "1126991c9dbd3de92d8cce6eab2419f8f7970e34",
+  "baseSha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "sourceBranch": "fix/framing-oracle-review-20261020",
+  "reportCopy": {
+    "from": "/workspace/geo261-evidence/framing-readonly-review.md",
+    "to": "framing-readonly-review.md",
+    "bytes": 14459,
+    "sha256": "8aa908c986a6f7819a231d312ad17e5da0612646005503130ece3f0b78d7756c",
+    "identicalBytes": true
+  },
+  "indexScope": "本索引包含除 manifest.json 自身以外的所有本包檔案。",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2201,
+      "sha256": "f830d4992f78a41fa683011dbfa15fed528a541b0cf6ad6f362d7e63ee330f88"
+    },
+    {
+      "path": "framing-readonly-review.md",
+      "bytes": 14459,
+      "sha256": "8aa908c986a6f7819a231d312ad17e5da0612646005503130ece3f0b78d7756c"
+    },
+    {
+      "path": "pure-counterexample/code.txt",
+      "bytes": 867,
+      "sha256": "ce8356eb46148cc9c892c4f3e7ee15afa09704e8ddf6c1dbfaf59dd4212a9ec6"
+    },
+    {
+      "path": "runs/git-diff-paths/command.json",
+      "bytes": 293,
+      "sha256": "a18eb0503035148fa15e4d619c2c88827d4674f5908b60b14c22a6ad9862c324"
+    },
+    {
+      "path": "runs/git-diff-paths/receipt.json",
+      "bytes": 920,
+      "sha256": "6de868f39fbf188f66b5e1eabad868ceb025243de1b4d4e7a53e2655a9bd8650"
+    },
+    {
+      "path": "runs/git-diff-paths/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/git-diff-paths/stdout.log",
+      "bytes": 499,
+      "sha256": "68989798d02f915baf2dc1f616edc5704b83d36bb30cae563fc42acb4bc5a506"
+    },
+    {
+      "path": "runs/git-diff-stat/command.json",
+      "bytes": 288,
+      "sha256": "b6cfc2c7f92af9a774653605c197a80466faa0d68e035ab9910d008e3923b7b0"
+    },
+    {
+      "path": "runs/git-diff-stat/receipt.json",
+      "bytes": 914,
+      "sha256": "3d208b1ea9c9ab0aea53fc260c0acd1fd6eb96e9eb21fb83d9ee288f4564859b"
+    },
+    {
+      "path": "runs/git-diff-stat/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/git-diff-stat/stdout.log",
+      "bytes": 632,
+      "sha256": "8e538645c82bdf4c66094700906a851ad10b5ea58dc7587da84c7054de05d277"
+    },
+    {
+      "path": "runs/git-head/command.json",
+      "bytes": 231,
+      "sha256": "93498d1919fd552c408459616dea56d15ac909bf4e6ccb70dcf3a08b95a56df1"
+    },
+    {
+      "path": "runs/git-head/receipt.json",
+      "bytes": 856,
+      "sha256": "c3ef94cf2401840f682da4d55ed693a3fb84e8c05664c614dfd83d19648ef568"
+    },
+    {
+      "path": "runs/git-head/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/git-head/stdout.log",
+      "bytes": 41,
+      "sha256": "e3acf9be05157b7067d275ded2e2b90f714decf784fd071f008f5735f219c440"
+    },
+    {
+      "path": "runs/git-history/command.json",
+      "bytes": 245,
+      "sha256": "77ddd602f3698ef2027d92e050c7c19ab7923856f35229163334baee46c494b0"
+    },
+    {
+      "path": "runs/git-history/receipt.json",
+      "bytes": 871,
+      "sha256": "7be0a13e354475c7973e2cccb9c63e91df07347cbf71efc270348725ad58f331"
+    },
+    {
+      "path": "runs/git-history/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/git-history/stdout.log",
+      "bytes": 540,
+      "sha256": "b1d0d35a2c050ff8f5c4aaeeb05171775800f2b8d55007fc24346397ed515fea"
+    },
+    {
+      "path": "runs/git-ssot-and-runner-unchanged/command.json",
+      "bytes": 462,
+      "sha256": "477401d61921f916022e70417cdaa41b2a4105eb6f019da0bb766f3b4ff45b8d"
+    },
+    {
+      "path": "runs/git-ssot-and-runner-unchanged/receipt.json",
+      "bytes": 1087,
+      "sha256": "66241652910f624687b16791c3874d9b87c629a5c43cd371da7031752df753aa"
+    },
+    {
+      "path": "runs/git-ssot-and-runner-unchanged/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/git-ssot-and-runner-unchanged/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/git-status-after/command.json",
+      "bytes": 235,
+      "sha256": "0c2c8bd89841b53e9b1bc553ae51093b99e2da152fb9fff98f40446f499ac9af"
+    },
+    {
+      "path": "runs/git-status-after/receipt.json",
+      "bytes": 858,
+      "sha256": "80adba597055ba70e6e82c0f81010612fff77ab442b86bd784768a81b827e073"
+    },
+    {
+      "path": "runs/git-status-after/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/git-status-after/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/git-status-before/command.json",
+      "bytes": 235,
+      "sha256": "0c2c8bd89841b53e9b1bc553ae51093b99e2da152fb9fff98f40446f499ac9af"
+    },
+    {
+      "path": "runs/git-status-before/receipt.json",
+      "bytes": 858,
+      "sha256": "6e131381f8cc289d9a412c116ebded06dda464e3ee11ef5fdb3e4f8f42a063fa"
+    },
+    {
+      "path": "runs/git-status-before/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/git-status-before/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/pure-counterexample/command.json",
+      "bytes": 1178,
+      "sha256": "a497aad1afdd38cfbb5c283e42b072a1b597a38341cdba83828fb8c7d5447f6f"
+    },
+    {
+      "path": "runs/pure-counterexample/receipt.json",
+      "bytes": 1967,
+      "sha256": "470f7b8f2e463b2d05f19c0ef3a807641609d14f02b3faaf728e9eb2520e83a2"
+    },
+    {
+      "path": "runs/pure-counterexample/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/pure-counterexample/stdout.log",
+      "bytes": 478,
+      "sha256": "7e92d62b9c890b0729c17f344c50bfa8527dc82db613a07307cac2681271ccf5"
+    },
+    {
+      "path": "runs/remote-head/command.json",
+      "bytes": 286,
+      "sha256": "7f077d88100dccec9489d6d4ee67b426590bf12a0e832d75d081ed6aa27df615"
+    },
+    {
+      "path": "runs/remote-head/receipt.json",
+      "bytes": 910,
+      "sha256": "0059b0ae8a965f40db185444f6818b069a01d197119f68d23ed3fbe2662b2636"
+    },
+    {
+      "path": "runs/remote-head/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/remote-head/stdout.log",
+      "bytes": 87,
+      "sha256": "c5f3eba7e76d4bbbc351c9e097e64eb1bee5880c175339b48f75d7ec9b5b1b11"
+    },
+    {
+      "path": "runs/static-checks/command.json",
+      "bytes": 1853,
+      "sha256": "a7212df19f588c90c378a7744f43115c1744f572e819aa164fc0d20c0ab543f3"
+    },
+    {
+      "path": "runs/static-checks/receipt.json",
+      "bytes": 2637,
+      "sha256": "e0cf872036fd1efbdb790b842f01bb43af9457a9a97d63fde49fc0b8533e4096"
+    },
+    {
+      "path": "runs/static-checks/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/static-checks/stdout.log",
+      "bytes": 228,
+      "sha256": "a8ae964753de7207143e9c02da56f5011a8c640c7a8c92b9fadaef1cc27c15ce"
+    },
+    {
+      "path": "source-files.json",
+      "bytes": 4161,
+      "sha256": "ce142a0474efd7a7b4f590a397c739551370ab43e6e9d862587019aa47e367d5"
+    },
+    {
+      "path": "static-checks/code.txt",
+      "bytes": 1530,
+      "sha256": "415f0369ff198199266039ca5df83b508733a410e89504af48cc92ddcd420d6d"
+    },
+    {
+      "path": "封裝收據.json",
+      "bytes": 2077,
+      "sha256": "09db93665cfb618c3fb838bffdc68ab0449215717505b9fd3fbd2a4a8ebb5018"
+    }
+  ]
+}

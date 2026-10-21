@@ -1,0 +1,61 @@
+"""將既有定向來源 bytes 綁到 S3；不建置或執行產品。"""
+from pathlib import Path
+import hashlib
+import json
+import subprocess
+
+D = Path(__file__).resolve().parent
+O = D / 'committed-binding'
+O.mkdir()
+R = Path('/workspace/geo261-host-authority-anchor-fix')
+S3 = '19401ca5448e162ee6140fed37b64b83b31ddec8'
+L2 = '249571fe2477845d5330f6190dad965bf327f43b'
+TEST = 'tests/test_geo261_host_authority.py'
+commands = []
+
+
+def git(name, *args):
+    argv = ['git', *args]
+    r = subprocess.run(argv, cwd=R, capture_output=True)
+    (O / (name + '.stdout')).write_bytes(r.stdout)
+    (O / (name + '.stderr')).write_bytes(r.stderr)
+    (O / (name + '.exit-code')).write_text(str(r.returncode) + '\n')
+    commands.append({'argv': argv, 'cwd': str(R), 'actual_exit_code': r.returncode})
+    assert r.returncode == 0
+    return r.stdout
+
+
+assert git('parents', 'rev-list', '--parents', '-n', '1', S3).decode().split() == [S3, L2]
+assert git('changed', 'diff-tree', '--no-commit-id', '--name-only', '-r', S3).decode().splitlines() == [TEST]
+tested = (D / 'tested-test-source.py.txt').read_bytes()
+committed = git('committed-test', 'show', S3 + ':' + TEST)
+assert tested == committed
+publication = Path('/workspace/geo261-evidence/source-S3-publication')
+assert tested == (publication / 'committed-test.stdout').read_bytes()
+public_receipt = json.loads((publication / 'receipt.json').read_bytes())
+assert public_receipt['sourceSha'] == S3 and public_receipt['remoteExact']
+hashes = json.loads((D / 'targeted-run01/source-after.json').read_bytes())
+index = git('source-blobs', 'ls-tree', '-r', '-z', S3, '--', *sorted(hashes))
+blobs = {}
+for line in index.split(b'\0'):
+    if line:
+        header, name = line.split(b'\t', 1)
+        mode, kind, blob = header.decode().split()
+        assert kind == 'blob'
+        blobs[name.decode()] = blob
+assert set(blobs) == set(hashes)
+for path, expected_hash in hashes.items():
+    raw = (R / path).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == expected_hash
+    assert hashlib.sha1(b'blob ' + str(len(raw)).encode() + b'\0' + raw).hexdigest() == blobs[path]
+receipt = {'classification': '已執行的 L2 加唯一未提交補丁之來源 bytes，事後綁到公開 S3；不是 S3 新實跑',
+           'execution_head': L2, 'committed_source': S3, 'source_parent': L2,
+           'published_branch': public_receipt['branch'], 'changed_paths': [TEST],
+           'tested_test_sha256': hashlib.sha256(tested).hexdigest(),
+           'tested_source_files_bound_to_S3_Git_blobs': len(hashes),
+           'new_product_executions': 0, 'future_L3_tested': False,
+           'publication_basis': str(publication / 'receipt.json'),
+           'remote_observation_repeated': False, 'commands': commands,
+           'validation_exit_code': 0}
+(O / 'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps(receipt, ensure_ascii=False, indent=2))

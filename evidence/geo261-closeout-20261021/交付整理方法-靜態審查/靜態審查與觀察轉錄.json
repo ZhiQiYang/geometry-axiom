@@ -1,0 +1,45 @@
+{
+  "schema": "geo261-stage-evidence-static-peer/1",
+  "classification": "有限靜態審查；兩版整理工具均未執行，發現與修正不是產品失敗。",
+  "version1": {
+    "path": "/workspace/geo261-evidence/stage-final-evidence-v1-code.txt",
+    "bytes": 6871,
+    "sha256": "6935ed5c2ff5b4a739d592843b14cc3bbb529d6ea7d4b3ea5fe982917786de1d",
+    "finding": "index 寫入後未 chmod；本環境只讀觀察 Umask=0077，依程式可推得新 index 為0600而末段要求0644，會於資料/config寫入後拒絕。沒有實際執行該失敗。"
+  },
+  "version2": {
+    "path": "/workspace/geo261-evidence/stage-final-evidence.py",
+    "bytes": 7129,
+    "sha256": "ddfa176f2cc7c38b077d90bdf0fffda55427b1a568ae8ada564654252ad01351",
+    "staticDisposition": "最小差異複核無阻擋；不是執行驗收通過。",
+    "changes": [
+      "index 寫入後立即 chmod0644，與資料副本及末段檢查一致。",
+      "BUNDLE與OUT在建立OUT之前明確拒絕repo本身及其內部路徑。",
+      "以非assert的sys.flags.optimize拒絕-O／PYTHONOPTIMIZE，早於參數與檔案操作。"
+    ]
+  },
+  "patch": {
+    "path": "/workspace/geo261-evidence/stage-final-evidence-v2.patch",
+    "bytes": 1282,
+    "sha256": "8e70ffff41f8a46a0cd26c423f07c17b66760a48dc0b393f02452c6ff9ee3524"
+  },
+  "verifierCompared": {
+    "path": "/workspace/geo261-evidence/source-binding-E2-preparation/verify_E2.py",
+    "sha256": "99e6cdbafec586a97c37382216ad14737a173f6e394af3bde2685464d59db9e1",
+    "scope": "已對照schema/root/index selfExcluded與exact set、含index自身的review、兩config精確suffix與hash欄位，以及禁suffix/magic集合。未執行verifier；正式L3需另取得真snapshot與帳本hash後換既定三常數。"
+  },
+  "observations": [
+    {"source": "本代理實際工具回覆轉錄", "chunk": "8bb913", "exitCode": 0, "action": "只讀v1/verifier bytes及/proc/self/status；Umask=0077"},
+    {"source": "本代理實際工具回覆轉錄", "chunk": "c215f2", "exitCode": 0, "action": "讀v2最小patch"},
+    {"source": "本代理實際工具回覆轉錄", "chunk": "1d06c6", "exitCode": 0, "action": "讀v2前置守門"},
+    {"source": "本代理實際工具回覆轉錄", "chunk": "256719", "exitCode": 0, "action": "只讀核v1/v2/patch三件bytes與SHA256"},
+    {"source": "root協作訊息轉錄；非本代理重新執行", "chunk": "464d8e", "exitCode": 0, "action": "root回報v1 AST檢查"},
+    {"source": "root協作訊息轉錄；非本代理重新執行", "chunk": "3d4680", "exitCode": 0, "action": "root回報v2 AST檢查"}
+  ],
+  "limitations": [
+    "上述為工具觀察轉錄，不是raw transport，也沒有重新wait。",
+    "沒有執行stage helper、verifier、控制、產品測試、編譯、commit或push。",
+    "只有root在L3全驗收與完整資料包凍結後才能實際stage；中途失敗可能留下已複製資料或config差異，不能把部分輸出當成功。",
+    "此審查不取代正式E的exact diff、Git blob/工作bytes、總索引、屬性、來源及帳本綁定驗證。"
+  ]
+}

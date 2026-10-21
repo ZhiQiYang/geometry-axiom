@@ -1,0 +1,24 @@
+{
+  "capturedUTC": "2026-10-20T23:35:49.690665+00:00",
+  "note": "完成後唯讀封存原測試硬路徑兩圖；兩檔mtime皆在本輪窗內且晚於A舊圖baseline；未修改原件",
+  "files": [
+    {
+      "originalPath": "/tmp/geometry-tests/assembly-desktop.png",
+      "bytes": 92421,
+      "mtimeNs": 1792538910311506875,
+      "sha256": "5adab1037173336534961da80b364abcbbc4df13bda2fa309af4d0914cb1e780",
+      "withinRunWindow": true,
+      "baselineMtimeNs": 1792533458878499171,
+      "output": "screens/assembly-hardpath/assembly-desktop.png"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/assembly-mobile.png",
+      "bytes": 39267,
+      "mtimeNs": 1792538916523458331,
+      "sha256": "3e726fb9aeb6ccfdbe66964b0bac59661df44218746d93d8e5e1e9339a855099",
+      "withinRunWindow": true,
+      "baselineMtimeNs": 1792533465042448290,
+      "output": "screens/assembly-hardpath/assembly-mobile.png"
+    }
+  ]
+}

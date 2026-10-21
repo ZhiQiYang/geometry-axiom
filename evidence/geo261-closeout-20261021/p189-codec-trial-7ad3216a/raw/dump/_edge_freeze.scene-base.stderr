@@ -1,0 +1,10 @@
+I8a preview 1: valid; confirm token to apply
+ timber 90 center 10 -> 10 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 91 center 2990 -> 2990 length 4000 -> 4000
+  surface 1 origin [0,2980,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2980,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 1 center 500 -> 2000 length 2960 -> 2960
+  surface 1 origin [514,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ guide 1: surface 1 u=500 world [500,0,2500] direction [0,1,0] -> surface 1 u=2000 world [2000,0,2500] direction [0,1,0]
+ visible: {[500,0]-[500,3000]} -> {[2000,0]-[2000,3000]}
+/workspace/geo261-p189-codec-src-hkfhzrv3/scenes/repo-_edge_freeze.scene:11: I8a: impact preview required; inspect preview, then confirm token (World unchanged)

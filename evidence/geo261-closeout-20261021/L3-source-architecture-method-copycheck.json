@@ -1,0 +1,52 @@
+{
+  "createdUtc": "2026-10-21T06:06:18.662568+00:00",
+  "sourceS3": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "sourceL3": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "bundles": [
+    {
+      "path": "/workspace/geo261-evidence/final-bundle/source-binding-L3",
+      "files": 119,
+      "bytes": 17034240,
+      "indexSha256": "ba35340942e8e87b0756cff23eaff05a98abb5b33a2d15e9e8eda6f6931108ac",
+      "sumsSha256": "645be174227561ab0bb8835cda5d260ce857f0a2def46c45a79d92c481f51267",
+      "copiedOriginals": 117,
+      "allCopiedBytesAndExactSetMatch": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/final-bundle/architecture-L3",
+      "files": 16,
+      "bytes": 274462,
+      "indexSha256": "2f83cb9c6d2683496f725a6411bfc745904567ef303086317771032944de6933",
+      "sumsSha256": "97ddac835a0e068e55fef4f6112a2fd85e1aaf146af74ae781547269aa3464d9",
+      "copiedOriginals": 14,
+      "allCopiedBytesAndExactSetMatch": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/final-bundle/交付驗證方法-L3",
+      "files": 10,
+      "bytes": 70747,
+      "indexSha256": "8fd10a85b24802bf996ed7dff45a87e1657072298b1248e60186e57758436229",
+      "sumsSha256": "fb6488fca485658a73e83c5632223f0c5df41b4bebec259e58861912d79e64fc",
+      "copiedOriginals": 8,
+      "allCopiedBytesAndExactSetMatch": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/final-bundle/ledger-S3-封包獨審附錄",
+      "files": 22,
+      "bytes": 34456,
+      "indexSha256": "f81c83106fdf9a4bf222e8ed006861235498c540d50611b28c3ef2bf20ce166a",
+      "sumsSha256": "400db9936c925b7f9353a82301843387ec221d1ac48168980c74a9220ef54350",
+      "copiedOriginals": 20,
+      "allCopiedBytesAndExactSetMatch": true
+    }
+  ],
+  "snapshotSha256": "3420121fdc8a24cdff5335762ffdd07db82a531c5efea7ca32aedd3f7f50bd43",
+  "ledgerSha256": "52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178",
+  "E3OnlyThreeConstantsAndExactInverse": true,
+  "E3Executed": false,
+  "productTestsRerun": false,
+  "architectureCLIRerun": false,
+  "existingFrozenBundlesModified": false,
+  "notFinalEAcceptance": true,
+  "native205And18ReferencePendingAtPackaging": true
+}

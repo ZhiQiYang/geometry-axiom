@@ -1,0 +1,52 @@
+{
+  "status": "靜態核對通過；未執行刷新或任何產品驗收",
+  "sourceHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "baseHead": "43f85313c32410ac01406ab585846bbacafea278",
+  "diff": [
+    "M\tgeometry-app/native/reference_sources.inc",
+    "M\tgeometry-app/native/world_validation.inc",
+    "M\tgeometry-core/kernel/placement_sources.c",
+    "M\tgeometry-templates/woodworking/native/contact_world.c",
+    "M\tgeometry-templates/woodworking/native/definition_sources.c",
+    "M\ttests/geo261_contact_world_harness.c",
+    "M\ttests/geo261_host_facts_authority_harness.c",
+    "M\ttests/geo261_placement_definition_harness.c",
+    "M\ttests/run_all.expected.json",
+    "M\ttests/test_geo261_host_facts_authority.py",
+    "M\ttests/test_geo261_placement_definition.py",
+    "M\ttests/test_geo261_wood_contact_world.py"
+  ],
+  "changedOwnedCount": 5,
+  "changedOutsideInventoryCount": 7,
+  "expectedOnlyTwoCounts": true,
+  "expectedCountTotal": 5188,
+  "driver": {
+    "path": "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+    "bytes": 24274,
+    "rawSha256": "1740bbef3340ca38c0a26dbf8d81099a53b2236fb6117504208a416d872b8f8d",
+    "lfSha256": "1740bbef3340ca38c0a26dbf8d81099a53b2236fb6117504208a416d872b8f8d"
+  },
+  "previousDriver": {
+    "path": "/workspace/geo261-evidence/architecture-owned-preparation/history-before-expected-json/refresh_owned.py",
+    "rawSha256": "0e2fae70cb5b431f1858e13a25b7c0a038bce822b705af5dbd28c2abb3d1237a",
+    "lfSha256": "0e2fae70cb5b431f1858e13a25b7c0a038bce822b705af5dbd28c2abb3d1237a"
+  },
+  "review": {
+    "path": "/workspace/geo261-evidence/architecture-owned-preparation/review-S2.json",
+    "rawSha256": "794d3dc93b014c37e49f7f9f8056508a17b160afe98d8dea420542b2a0b28f76",
+    "lfSha256": "794d3dc93b014c37e49f7f9f8056508a17b160afe98d8dea420542b2a0b28f76"
+  },
+  "commands": [
+    "git rev-parse HEAD",
+    "git status --porcelain=v1 --untracked-files=no",
+    "git diff --name-status --no-renames 43f85313c32410ac01406ab585846bbacafea278 cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+    "git show <來源>:<逐檔路徑>"
+  ],
+  "notClaimed": [
+    "正式 architecture CLI",
+    "三 gate",
+    "W 詞法盤點",
+    "負控制",
+    "任何產品測試／建置"
+  ]
+}

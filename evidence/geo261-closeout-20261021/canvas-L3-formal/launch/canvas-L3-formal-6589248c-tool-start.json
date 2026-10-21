@@ -1,0 +1,127 @@
+{
+  "observedUTC": "2026-10-21T05:58:23.756799+00:00",
+  "type": "實際工具回傳逐欄轉錄；程序樹另由當時ps讀取",
+  "startTool": {
+    "chunk_id": "f0a47b",
+    "session_id": 91498,
+    "wall_time_seconds": 1.001728412,
+    "output": "",
+    "exit_code": null
+  },
+  "command": "bash /workspace/geo261-evidence/canvas-L3-formal-6589248c-parent-command-code.txt > /workspace/geo261-evidence/canvas-L3-formal-6589248c-parent.log 2>&1",
+  "cwd": "/workspace/geometry-axiom",
+  "processesAtSampling": [
+    {
+      "pid": 433361,
+      "ppid": 433358,
+      "pgid": 433357,
+      "state": "S",
+      "command": "bash /workspace/geo261-evidence/canvas-L3-formal-6589248c-parent-command-code.txt"
+    },
+    {
+      "pid": 433362,
+      "ppid": 433361,
+      "pgid": 433357,
+      "state": "S",
+      "command": "python3 -B /workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py --sha 6589248c9a94bdf0460d8f84dd1610e51048188b --root /workspace/geometry-axiom --output /workspace/geo261-evidence/canvas-L3-formal-6589248c --port 18856 --cdp-port 9322 --release-note root 已明確放行 L3 6589248c9a94bdf0460d8f84dd1610e51048188b 原完整 canvas；P189 已完成，native 初建六 binary built/fresh 與12原件綁定已核。原35分鐘、完整scope及85golden不變，主repo私有runtime自行正常build/freshness，不預置或複製native binary。僅第二heavy槽；canvas真結果0與owned cleanup核對完成後回報，再等root放行five。 --execute"
+    },
+    {
+      "pid": 433364,
+      "ppid": 433362,
+      "pgid": 433364,
+      "state": "Ss",
+      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 /workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py --sha 6589248c9a94bdf0460d8f84dd1610e51048188b --root /workspace/geometry-axiom --output /workspace/geo261-evidence/canvas-L3-formal-6589248c --label L-formal --port 18856 --cdp-port 9322 --release-note root 已明確放行 L3 6589248c9a94bdf0460d8f84dd1610e51048188b 原完整 canvas；P189 已完成，native 初建六 binary built/fresh 與12原件綁定已核。原35分鐘、完整scope及85golden不變，主repo私有runtime自行正常build/freshness，不預置或複製native binary。僅第二heavy槽；canvas真結果0與owned cleanup核對完成後回報，再等root放行five。 --execute"
+    },
+    {
+      "pid": 433452,
+      "ppid": 433364,
+      "pgid": 433452,
+      "state": "Ssl",
+      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -u /workspace/geometry-axiom/geometry-web/serve.py 18856"
+    },
+    {
+      "pid": 433460,
+      "ppid": 433452,
+      "pgid": 433452,
+      "state": "S",
+      "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge"
+    },
+    {
+      "pid": 433487,
+      "ppid": 433364,
+      "pgid": 433487,
+      "state": "Ssl",
+      "command": "node geometry-web/cdp_test.js"
+    },
+    {
+      "pid": 433495,
+      "ppid": 433487,
+      "pgid": 433487,
+      "state": "Sl",
+      "command": "/usr/lib/chromium/chromium --show-component-extension-options --enable-gpu-rasterization --no-default-browser-check --disable-pings --media-router=0 --enable-remote-extensions --load-extension= about:blank --headless=new --disable-gpu --no-first-run --remote-debugging-port=9322 --window-size=1400,900 --user-data-dir=/tmp/geo261-profile-L-formal-433364 --no-sandbox"
+    },
+    {
+      "pid": 433511,
+      "ppid": 433364,
+      "pgid": 433510,
+      "state": "Z",
+      "command": "[chrome_crashpad] <defunct>"
+    },
+    {
+      "pid": 433513,
+      "ppid": 433495,
+      "pgid": 433487,
+      "state": "S",
+      "command": "/usr/lib/chromium/chromium --type=zygote --no-zygote-sandbox --no-sandbox --headless=new --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-433364 --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+    },
+    {
+      "pid": 433514,
+      "ppid": 433495,
+      "pgid": 433487,
+      "state": "S",
+      "command": "/usr/lib/chromium/chromium --type=zygote --no-sandbox --headless=new --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-433364 --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+    },
+    {
+      "pid": 433537,
+      "ppid": 433513,
+      "pgid": 433487,
+      "state": "Sl",
+      "command": "/usr/lib/chromium/chromium --type=gpu-process --no-sandbox --enable-gpu-rasterization --headless=new --ozone-platform=headless --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-433364 --change-stack-guard-on-fork=enable --gpu-preferences=YAAAAAAAAAAgAAAEAAAAAAAAAAAAAGAASAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAMAAAAAQAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=3,i,5745922977729535240,15437725211509747321,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,12544805358282101674,17538500382532773335,4 --trace-process-track-uuid=3190708988185955192"
+    },
+    {
+      "pid": 433540,
+      "ppid": 433495,
+      "pgid": 433487,
+      "state": "Sl",
+      "command": "/usr/lib/chromium/chromium --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --no-sandbox --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-433364 --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,5745922977729535240,15437725211509747321,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,12544805358282101674,17538500382532773335,4 --trace-process-track-uuid=3190708989122997041"
+    },
+    {
+      "pid": 433554,
+      "ppid": 433514,
+      "pgid": 433487,
+      "state": "Sl",
+      "command": "/usr/lib/chromium/chromium --type=utility --utility-sub-type=storage.mojom.StorageService --lang=en-US --service-sandbox-type=utility --no-sandbox --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-433364 --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,5745922977729535240,15437725211509747321,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,12544805358282101674,17538500382532773335,4 --trace-process-track-uuid=3190708990060038890"
+    },
+    {
+      "pid": 433583,
+      "ppid": 433514,
+      "pgid": 433487,
+      "state": "Sl",
+      "command": "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-433364 --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9322 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1792524536884936 --launch-time-ticks=37756462354 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,5745922977729535240,15437725211509747321,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,12544805358282101674,17538500382532773335,4 --trace-process-track-uuid=3190708990997080739"
+    },
+    {
+      "pid": 433592,
+      "ppid": 433514,
+      "pgid": 433487,
+      "state": "Sl",
+      "command": "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-433364 --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9322 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=7 --time-ticks-at-unix-epoch=-1792524536884936 --launch-time-ticks=37756484500 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,5745922977729535240,15437725211509747321,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,12544805358282101674,17538500382532773335,4 --trace-process-track-uuid=3190708992871164437"
+    },
+    {
+      "pid": 433602,
+      "ppid": 433514,
+      "pgid": 433487,
+      "state": "Sl",
+      "command": "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-433364 --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9322 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=6 --time-ticks-at-unix-epoch=-1792524536884936 --launch-time-ticks=37756486457 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,5745922977729535240,15437725211509747321,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,12544805358282101674,17538500382532773335,4 --trace-process-track-uuid=3190708991934122588"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "geo261-ledger-S3-frozen-bundle-peer/1",
+  "startedUtc": "2026-10-21T05:59:59.033419+00:00",
+  "finishedUtc": "2026-10-21T05:59:59.600207+00:00",
+  "seconds": 0.5667934470038745,
+  "sourceS3": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "ledgerL3": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "checkPassed": true,
+  "files": 2409,
+  "bytes": 45078348,
+  "copiedOriginalsComparedByteForByte": 2405,
+  "indexSha256": "a83861a1ec28f1cd553536788e4e428c60694f665e09b18bfaf9efaab563c9c3",
+  "sumsSha256": "b6bc4f66c39c92ad186dca2c29ca318ef005dfeda83153ddfbc32e989ee29e2a",
+  "checksumManifests": [
+    {
+      "path": "SHA256SUMS",
+      "entries": 2408,
+      "exactSetAndHashes": true
+    },
+    {
+      "path": "執行原件/SHA256SUMS",
+      "entries": 2125,
+      "exactSetAndHashes": true
+    }
+  ],
+  "allMode0644AndUtf8": true,
+  "noForbiddenSuffixMagicOrSymlink": true,
+  "ledgerSha256": "52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178",
+  "ledgerGitBlob": "8988f62963b01474c2cefa213774551b2a8bb637",
+  "records": 78,
+  "recordChecksumsMatched": 78,
+  "executionHeadsAllS3": 75,
+  "sourceClosureOracleMutantToolMatchFreshL3Snapshot": true,
+  "sourceBackupCount": 363,
+  "phaseExitCodes": [
+    0,
+    0,
+    0
+  ],
+  "parentWaitAndFinalToolRecordedExit": 0,
+  "publicationAliasesKeptOriginalBytesWithCorrectS3L3Values": true,
+  "methodHistoryPreservedAndResultExcluded": true,
+  "limitations": [
+    "只讀此子包與其原件、已固定L3快照及三個Git查詢，未掃全部final-bundle。",
+    "未重跑ledger/check/產品/編譯/架構CLI/發布，未重hash75個cache binary。",
+    "核心個別子raw缺口、M36歷史論證及工具觀察轉錄仍照原文界線，不補造原始輸出。",
+    "沒有把S3 execution改稱L3重跑，也不由本包推定其他L3驗收通過。"
+  ],
+  "peerCodeSha256": "adcecc52425329ed9778c2f84580ec22097a9ef54466f9c8e0ad54462f7c24a5"
+}

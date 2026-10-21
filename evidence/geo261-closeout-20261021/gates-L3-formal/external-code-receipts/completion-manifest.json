@@ -1,0 +1,73 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "readyForCuration": true,
+  "phases": [
+    "q38",
+    "controls",
+    "card",
+    "axiom"
+  ],
+  "gateJobs": 1,
+  "pins": {
+    "preparation/instance.json": "ad0e74a3798fedf240d7a02af82ee7849496981276418335c38b9f36715ac1f3",
+    "native/verification.json": "ee80438dce224cf9d473184c4ffe97a4c690d401d98eecdbcbd5e458449df93b",
+    "native/completion-verification.json": "ce7d1b77fa9d5658e47a8cad7c83efdf391d7267dd57afef5eb729c7bc38c0dd",
+    "native/final-build-binary-index.json": "de281a896b4fb395badea5a42342502620d4abf72f4e2d5b31fb85370e5e98e0",
+    "gates/tool-observations.json": "17fd942e383b4e20473b5dbabcffa2fe97f61fde6f4cc1edaac5a866eac9038d",
+    "gates/q38-progress-interpretation-correction.json": "bce46fcdfa23c1fa4dd852246d69444293d539694a9cc05d22f5cc3bf9714c9d",
+    "gates/q38-readonly-process-samples.jsonl": "0f2fc37e738e3a44a4b1fb63844afa36c71de1f6d74fd206ad358670bc8eb2c2",
+    "gates/verification/q38.json": "f04124408e1ed3cdac4ab3f3d9dbbd013ca8ac50774a1bc8d32e57885053cb50",
+    "gates/acceptance-review/q38.json": "63943bcd9cdd3fa2fb9897476d9f07c5cc342b99a87dcd2a29e7a6e161ee6cc4",
+    "gates/acceptance-execution/q38-primary-receipt.json": "cbd2c7faacfe9c013a6d9caf8db70d99f576fa094f121a4376bbd15c0ff1b470",
+    "gates/acceptance-execution/q38-detailed-receipt.json": "d8b7626a0ba2e3810082d255e2023e6d3f8383fbabdd3a40044479a057d8b566",
+    "gates/launcher/q38/receipt.json": "9d76a12a35d1930abf0433089ce958760c4df0cb69dfba8cf5af3a26b5019cbf",
+    "gates/q38-run/q38/run-receipt.json": "411d93b34230aeda0b020bcf6c2846b82033b238f312bdb36197316ad5b17d31",
+    "gates/verification/controls.json": "5fff45027e412aca7ba7265eac3ea2173e95626ae188a4ddda83832dba59993f",
+    "gates/acceptance-review/controls.json": "8a82f0a7aa72f56bd634c5062bddcbbb9afbdd152ae0e0f8c55e376c7f7869c1",
+    "gates/acceptance-execution/controls-primary-receipt.json": "293b1d59b7547543e236c00d08dad8731c58244637e3c47311c17136c24f31af",
+    "gates/acceptance-execution/controls-detailed-receipt.json": "5dd1ff1472947cc85c8c4816ebef0fcfc72be24707fe03afe2a1f7a839350926",
+    "gates/launcher/controls/receipt.json": "3c4459f0c89484704e41b377417a671bf808f054110b022f1dd23795e11b12a6",
+    "gates/controls/run-receipt.json": "de38cf947606cdf393cda2b51f74e689f543868345d5273258bbdf7e7b7d8232",
+    "gates/verification/card.json": "930e9fdb1255a8f56b19822c49db556238a1d0a3deec79e7a529e9ff1ac13074",
+    "gates/acceptance-review/card.json": "f9b6cba0391ad927badfd7b5c01b57207f0fbd4a3bb4b019caf76e4b8420f022",
+    "gates/acceptance-execution/card-primary-receipt.json": "18e9a79c2e8e1a3236a4e35f4e7798bf4066411fe5fd10f36b0bafaa7cc9fc5b",
+    "gates/acceptance-execution/card-detailed-receipt.json": "5a713c64afe821482f629ad6a332de69c12e5a3d02651d2fbc15e60157642658",
+    "gates/launcher/card/receipt.json": "84d464ec27da0d634331f97ef68f3e09cade3079774be8d25f3cdffbc2538916",
+    "gates/card-run/card/run-receipt.json": "54265c0db52ce8f883aa366264b71f56b60204cfa0340d69277147f7eca930bc",
+    "gates/verification/axiom.json": "28b7fb1628544e1168f1ab8645b9e9e3f6fc491dbbaae79c6527e5fb447c1e3f",
+    "gates/acceptance-review/axiom.json": "4b09ae1ffb0fff678dcbacb7ac447c0ec2b8f01bf4be1ab09cd9b4f853bbc768",
+    "gates/acceptance-execution/axiom-primary-receipt.json": "a374de644ad4e528519b949514e2fcfa1851b2af913fc28029f5b49a7938de84",
+    "gates/acceptance-execution/axiom-detailed-receipt.json": "5d4c3f0dc544f4045d37b178eb660d55ad8213842048ad9db598bae81830a6fb",
+    "gates/launcher/axiom/receipt.json": "f6bb31b03bbb6872bbe9787e3d9de6a9903290404dfc7368e1ca49a1aa2d0d3e",
+    "gates/axiom-run/axiom/run-receipt.json": "8127f4e9941d8d4dff31aebaf6fd652bfc11f962d5bd16ae75da88bfcc94af02"
+  },
+  "toolObservationPointers": {
+    "q38": {
+      "phaseObject": "/phases/q38",
+      "exitCode": "/finalToolResult/exit_code",
+      "launcherReceiptSha256": "/launcherReceipt/sha256"
+    },
+    "controls": {
+      "phaseObject": "/phases/controls",
+      "exitCode": "/finalToolResult/exit_code",
+      "launcherReceiptSha256": "/launcherReceipt/sha256"
+    },
+    "card": {
+      "phaseObject": "/phases/card",
+      "exitCode": "/finalToolResult/exit_code",
+      "launcherReceiptSha256": "/launcherReceipt/sha256"
+    },
+    "axiom": {
+      "phaseObject": "/phases/axiom",
+      "exitCode": "/finalToolResult/exit_code",
+      "launcherReceiptSha256": "/launcherReceipt/sha256"
+    }
+  },
+  "note": "四 phase 正式程序與兩層接受器已完成且各真退出 0；原件已凍結，父代理明確放行本次唯一封包。此 manifest 的 31 pins 逐件讀實際原 bytes 計算；未修改模板或原判準。",
+  "preparedUtc": "2026-10-21T06:58:13.787459+00:00",
+  "completionSummary": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/completion-summary.json",
+    "bytes": 11140,
+    "sha256": "3f2dd810773c864d9d794b0932ccf2db4c7b93122c0e791f720307680621763f"
+  }
+}

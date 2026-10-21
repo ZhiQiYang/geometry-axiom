@@ -1,0 +1,214 @@
+FFFFFFFFFFFFFFFFFFF
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('3ad8012b6f01f9f46795a28a410ee444c5cce1a0', '29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('494660068ceb884c1a96884a2b704e3bcf5d24ca', 'bc01cf0db266f97255156e28e40fb235833031fb95f1f234ad6d90a9f08240f8'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('5698f8501d539ed3a6f0644dab854e62e3bafb1a', '1843e3e9f6a3a6db07ceaa8f62fad693039296d519791af98c2a433554308bcf'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('651c661b2c4c224c58bb4a2ed0a42ed929a16aa6', 'ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('6992607d0463bba8fae4c409af57a61066dafca2', 'c878c355c0c233119686ee1ca2b0ddd2c2fbdb7eb2c8b88896a3a8a6d37cb6ad'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('73b9ba1d417c1b6c9885951b24139b67f8550312', 'd4bd69cd3dcbcef10802dd401a66b293afdaa09abccc6853d7a39f478cefe29a'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('802f9bda1b1b8ab046f059e115dbf05a44da10df', 'b19009682ba5b3e7150341ae1b5190629cb03985d500d382aa918438fb548c0b'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('82074011fabdccb5918a580eef737aa227536d01', '8b3afe498b0050a50b020a3a6fc3018abfecf9f9502fccf742a32e0bc499cc03'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('8a8b56424407bb758de0d16e66c94e21eb79aa41', 'd8a0b4a1c108197f4abb5c67d73fa22aa7fa4288769f605a5a9372fd93aa7b52'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('9371378439563f8e2512e12299fa072c95615e9e', '604413cb9fefeedb3d8fb76ac4baa71ba751a874e36060c6fc7714a7cc122d5e'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('a393a0f01284433ca20fe8b10d9f21111026e7f1', 'b06ffecf4f3b7a907a50d329f2073799d9514daa26b9056380f62ad37e5725ee'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('b4fe75f7f03ed81b4bc9f85a044282f91bd27cb6', '2d31868524cb2776c2c405367fa69087b8f43371f320f12f3405fb14ce9fdf28'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('ca3790ce7e87e1a9190cb17fb63bbe42f501f7a5', '267a308698954ca610814d3956b5b837463ccaec8d4d074236de9f9df7f8a050'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('cc6adff4c9c783ce78bcbd849754b69254690cab', 'd5eb43d077e7408fb032ee09f552795215fbf5fb7b097b57f7ac7ef6f2ed08f7'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('ccbec5fe9e4b056bcd5673fb9f69a54e888ea4e6', '264d8c5d2fa4e513418fbd611f2ef6f8d597def51d89805a75e9e21d0d24e8fe'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('d1db88ae99ca9b6858b0ada34d082e902f00c9f9', '9d4f90aacbc863941c1065a6b962f760e7e842c4d7dda55a56c4dc321f9a0f93'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('d787146d501b98931cc66caccdbed0006c5ca25f', '2348373fa4182f984489c068b1762725f3d9eaa4087418b0ffb5182c763213e4'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('e04a63cb3e1280715cd6c24504a37f3522fa43c7', '2c20fd3d401e4246e59191f72f978c0a81a6ad34d3a297fe54abf4783e666c20'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+======================================================================
+FAIL: test_pre_card_axioms_reject_manifest_card_capability (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability) (version=('f34c0aeb56a4d2c639be924b289e3572756807d8', 'b2b3ebde32f693e3853ace3d39a8618e5717d42e437019510505b3453ae87c75'), path='CARD_AXIOM_MANIFEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'PACKAGE_SCHEMA' != 'AXIOM_VERSION'
+- PACKAGE_SCHEMA
++ AXIOM_VERSION
+ : CARD_AXIOM_MANIFEST
+
+----------------------------------------------------------------------
+Ran 1 test in 1.921s
+
+FAILED (failures=19)

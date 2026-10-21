@@ -1,0 +1,25 @@
+{
+  "name": "profile-build",
+  "argv": [
+    "gcc",
+    "-std=c11",
+    "-O2",
+    "-g",
+    "-pg",
+    "-fno-omit-frame-pointer",
+    "geometry-web/web_bridge.c",
+    "-o",
+    "/workspace/geo261-evidence/p189-diagnostic-L-43f85313c324.iffezuqv/bridge-profile",
+    "-lm"
+  ],
+  "cwd": "/workspace/geo261-profile-L-src.zt1mr_4m",
+  "started_utc": "2026-10-21T00:55:08.622308+00:00",
+  "source_sha": "43f85313c32410ac01406ab585846bbacafea278",
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "stdin": null,
+  "pid": 294515,
+  "pgid": 294515
+}

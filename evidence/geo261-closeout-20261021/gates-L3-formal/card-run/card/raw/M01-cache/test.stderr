@@ -1,0 +1,17 @@
+test_CR04_EQUAL_VALUE_IDENTITY (tests.test_grid_card_reference.GridCardReference.test_CR04_EQUAL_VALUE_IDENTITY) ... FAIL
+
+======================================================================
+FAIL: test_CR04_EQUAL_VALUE_IDENTITY (tests.test_grid_card_reference.GridCardReference.test_CR04_EQUAL_VALUE_IDENTITY)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 150, in test_CR04_EQUAL_VALUE_IDENTITY
+    self.assertEqual(swapped['definitionFingerprint'], changed['definitionFingerprint'], 'EQUAL_VALUE_IDENTITY values are not definitions')
+AssertionError: '3e475cb984bd30b3365dbe294a66dc071645c98577c7cd524003b391fcb53963' != '31975e4e82ee8d9e395d0ef3cd7bfc042ffe84a8413e558e5c372e54a128ee79'
+- 3e475cb984bd30b3365dbe294a66dc071645c98577c7cd524003b391fcb53963
++ 31975e4e82ee8d9e395d0ef3cd7bfc042ffe84a8413e558e5c372e54a128ee79
+ : EQUAL_VALUE_IDENTITY values are not definitions
+
+----------------------------------------------------------------------
+Ran 1 test in 0.140s
+
+FAILED (failures=1)

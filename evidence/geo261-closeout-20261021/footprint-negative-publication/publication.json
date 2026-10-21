@@ -1,0 +1,32 @@
+{
+  "utc": "2026-10-21T03:13:41.966457+00:00",
+  "branch": "codex/geo261-p189-footprint-revert-control-20261021",
+  "sha": "4bd19f91c434417f1c4431128c55285f4b11d3c3",
+  "remoteExact": true,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "push",
+        "origin",
+        "4bd19f91c434417f1c4431128c55285f4b11d3c3:refs/heads/codex/geo261-p189-footprint-revert-control-20261021"
+      ],
+      "exit_code": 0,
+      "stdout": "0.stdout",
+      "stderr": "0.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "refs/heads/codex/geo261-p189-footprint-revert-control-20261021"
+      ],
+      "exit_code": 0,
+      "stdout": "1.stdout",
+      "stderr": "1.stderr"
+    }
+  ],
+  "classification": "只供稽核的性能撤回負控制分支；不得採入產品或合併PR"
+}

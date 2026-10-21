@@ -1,0 +1,26 @@
+{
+  "recordedUTC": "2026-10-20T22:10:31.776547+00:00",
+  "localOnlyL1": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+  "remoteCandidateHead": "7159530c0e494d3211e6ab1764eb691137211707",
+  "remoteProbeExitCode": 0,
+  "state": "未採用的本機帳本提交；前置預設檢查失敗，推送未執行。保留歷史，後續正確帳本另提交。",
+  "defaultCheckExitCode": 1,
+  "staleCoreRecords": 57,
+  "cause": "首輪完整重產指定CC=gcc，而workflow/default使用cc；裁判同平台比較編譯指令字面與指紋。",
+  "currentCC": null,
+  "compilerCommands": {
+    "cc": {
+      "commandPath": "/usr/bin/cc",
+      "resolvedPath": "/usr/bin/x86_64-linux-gnu-gcc-14",
+      "binarySha256": "a23ecab8ff08f09ad8c80602c2c5df7f49e09c25905cb8975902e101bf72635f"
+    },
+    "gcc": {
+      "commandPath": "/usr/bin/gcc",
+      "resolvedPath": "/usr/bin/x86_64-linux-gnu-gcc-14",
+      "binarySha256": "a23ecab8ff08f09ad8c80602c2c5df7f49e09c25905cb8975902e101bf72635f"
+    }
+  },
+  "nextStep": "在同公開A以未設定CC、全新cache/results完整重產78案；不改裁判或舊execution，不以同binary為由重新簽發舊收據。",
+  "rawPreserved": true,
+  "workflowSha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d"
+}

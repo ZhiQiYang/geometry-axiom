@@ -1,0 +1,52 @@
+#include <stdint.h>
+#include <stddef.h>
+#include <stdatomic.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+/* 外部診斷：只記可執行檔對三個 libc 入口的呼叫，不改產品來源。 */
+#if ATOMIC_LONG_LOCK_FREE != 2 || ATOMIC_INT_LOCK_FREE != 2
+#error "診斷需要無鎖整數原子操作"
+#endif
+typedef struct { _Atomic unsigned long key,calls,bytes; } Slot;
+static Slot slots[4096];
+static _Atomic unsigned enabled=1,overflow=0;
+static _Atomic unsigned long lost=0;
+static void note(void *address,unsigned kind,size_t n)
+{
+    if(!atomic_load(&enabled))return;
+    unsigned long key=((unsigned long)(uintptr_t)address<<2)|kind;
+    size_t at=((key>>5)^(key>>17))&4095;
+    for(size_t i=0;i<4096;++i,at=(at+1)&4095){
+        unsigned long old=atomic_load(&slots[at].key);
+        if(!old){unsigned long zero=0;if(atomic_compare_exchange_strong(&slots[at].key,&zero,key))old=key;else old=zero;}
+        if(old==key){
+            atomic_fetch_add(&slots[at].calls,1);
+            unsigned long before=atomic_fetch_add(&slots[at].bytes,n);
+            if(n>ULONG_MAX-before)atomic_store(&overflow,1);
+            return;
+        }
+    }
+    atomic_fetch_add(&lost,1);
+}
+extern void *__real_memcpy(void *,const void *,size_t);
+extern void *__real_memmove(void *,const void *,size_t);
+extern void *__real_memset(void *,int,size_t);
+__attribute__((noinline)) void *__wrap_memcpy(void *d,const void *s,size_t n)
+{note(__builtin_return_address(0),1,n);return __real_memcpy(d,s,n);}
+__attribute__((noinline)) void *__wrap_memmove(void *d,const void *s,size_t n)
+{note(__builtin_return_address(0),2,n);return __real_memmove(d,s,n);}
+__attribute__((noinline)) void *__wrap_memset(void *d,int c,size_t n)
+{note(__builtin_return_address(0),3,n);return __real_memset(d,c,n);}
+__attribute__((destructor)) static void finish(void)
+{
+    atomic_store(&enabled,0);
+    const char *path=getenv("GEO261_COPY_LOG");if(!path)_Exit(125);
+    FILE *f=fopen(path,"wx");if(!f)_Exit(125);
+    fprintf(f,"kind\treturn_pc\tcalls\tbytes\n");
+    for(size_t i=0;i<4096;++i){unsigned long key=atomic_load(&slots[i].key);if(key)
+        fprintf(f,"%lu\t0x%lx\t%lu\t%lu\n",key&3,key>>2,atomic_load(&slots[i].calls),atomic_load(&slots[i].bytes));}
+    fprintf(f,"lost\t0\t%lu\t%u\n",atomic_load(&lost),atomic_load(&overflow));
+    if(fclose(f))_Exit(125);
+}

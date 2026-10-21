@@ -1,0 +1,36 @@
+✔ opt-in moves the original history nodes into the existing bar with unique IDs and touch minimum (4.245221ms)
+✔ detach restores the same nodes, attributes and position; repeated attach does not duplicate them (4.505967ms)
+✔ keyboard uses the same callback while text editing, repeat, composition and other modifiers remain excluded (2.42317ms)
+✔ blocked and empty-history controls reject even programmatic click without dispatch (0.85325ms)
+✔ a nested modal blocks history and a non-opt-in workspace never borrows the controls (0.934381ms)
+✔ in-flight history rejects reentry and Save, then releases gates without changing the Save handler (1.131402ms)
+✔ late completion cannot move nodes or publish errors into another workspace owner (1.094837ms)
+✔ owner-state errors fail closed and active-owner command errors release controls (0.948751ms)
+✔ admission refresh failures release the new command ticket and Save without dispatch (1.671719ms)
+✔ history restores keyboard focus after native disabled blur without scrolling or replacing controls (1.460117ms)
+✔ the final undo keeps keyboard control on its available redo counterpart (1.266891ms)
+✔ focus restoration never overrides an interaction made while history is pending (2.442759ms)
+✔ closing, replacing the owner, hiding the library or rejecting the current owner cannot restore focus (6.761869ms)
+✔ a history shortcut started from another element does not move its focus (1.057873ms)
+✔ library admission includes native-pending evidence gate and source owner token changes (9.296444ms)
+✔ library admission rejects actual pending drafts and keeps removed saved-model history available (1.836893ms)
+✔ recoverable scene and independent example drafts still block history and removal (1.595588ms)
+✔ expired scene history, frame, face or context caches do not lock the library or discard raw state (2.621893ms)
+✔ library mutation admission rejects shell reentry, readonly and non-library pages without discarding drafts (0.692623ms)
+✔ read-only saved-model viewing remains reachable without enabling mutation or history (0.64287ms)
+✔ formal same-context Undo and Redo renew only their new history frames (0.908623ms)
+✔ a pinned project-switch Undo and Redo follow the actual target contexts (0.851908ms)
+✔ a no-op or frame-only restore cannot renew an admitted library lease (1.257187ms)
+✔ two otherwise-successful same-context history steps cannot renew one command lease (0.705943ms)
+✔ pending history cannot renew after session, UI owner, target context or timeline drift (6.69411ms)
+✔ the formal 32-entry destination cap still permits exactly one legitimate step (0.838799ms)
+✔ a same-length capped destination rejects changed entry identity and pins prefix guard removal red (1.900658ms)
+✔ still-restorable remembered model drafts block history without stale-cache permanent locks (0.706774ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 128.114838

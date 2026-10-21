@@ -1,0 +1,65 @@
+import datetime,hashlib,json,pathlib,re,subprocess
+R=pathlib.Path('/workspace/geo261-evidence/browser-five-L3-formal-6589248c');L=R.with_name(R.name+'-launch');S='6589248c9a94bdf0460d8f84dd1610e51048188b';REPO='/workspace/geometry-axiom'
+def j(p):return json.loads(p.read_text())
+def h(b):return hashlib.sha256(b).hexdigest()
+def git(p):return subprocess.check_output(['git','-C',REPO,'show',S+':'+p])
+sources=j(R/'assembly/source-hashes.json');assert len(sources)==154
+for p,v in sources.items():assert h(git(p))==v,p
+golden=json.loads(git('geometry-web/cdp_sections.golden.json'))['sections']
+expected_names=re.findall(r"\bcheck\('([^'\\\n]*)'\s*,",git('geometry-web/documents_browser_test.js').decode())
+assert len(expected_names)==len(re.findall(r'\bcheck\(',git('geometry-web/documents_browser_test.js').decode()))
+floor={a or b:int(n) for a,b,n in re.findall(r"^  (?:(\w+)|'([^']+)'): (\d+),$",git('geometry-web/space_test_floor.js').decode(),re.M)}
+rows=[];manifest_count=0;png_count=0
+for name,limit in [('assembly',900),('documents',600),('grid',900),('space',900),('timber',1200)]:
+ D=R/name;rec=j(D/'receipt.json');acc=j(D/'acceptance.json');res=j(D/'harness-result.json');raw=(D/'run.log').read_text();cmd=j(D/'command.json')
+ assert rec['sourceSha']==S and rec['headAfter']==S and rec['statusAfter']==''
+ assert rec['accepted'] and rec['headGuard'] and rec['sourceHashesUnchanged'] and rec['withinJobDeadline']
+ assert rec['jobTimeoutSeconds']==limit and rec['deadlineMonotonic']==rec['startedMonotonic']+limit and rec['elapsedSeconds']<limit
+ assert rec['browserReturncode']==rec['validationExitCode']==acc['validationExitCode']==0
+ stage=[x for x in rec['stages'] if x['name']=='run'];assert len(stage)==1 and stage[0]['returncode']==0
+ assert j(D/'source-hashes.json')==sources
+ marker='CDP_RESULT' if name in ('assembly','grid') else 'DOCUMENTS_RESULT' if name=='documents' else 'SPACE_RESULT'
+ lines=[x[len(marker)+1:] for x in raw.splitlines() if x.startswith(marker+' ')];assert len(lines)==1
+ assert json.loads(lines[0])==res==acc['result']
+ assert '[UNEXPECTED EXCEPTION]' not in raw
+ if name in ('assembly','grid'):
+  groups=('P77','P82') if name=='assembly' else ('P70','P71','P78','P87','P88')
+  expected={x:golden[x] for x in groups};assert res['sections']==expected and acc['selectedSectionCheck']=={'expected':expected,'matched':True}
+  assert res['scope']['filters']==['GEOMETRY_ASSEMBLY_ONLY' if name=='assembly' else 'GEOMETRY_GRID_SYSTEM_ONLY']
+  assert res['completed'] and res['failedAssertions']==res['uncaughtBrowserExceptions']==0 and res['skipped']==[]
+  assert res['passedAssertions']==sum(expected.values()) and res['goldenCompare']=='not compared (partial mode)'
+  passed=res['passedAssertions'];scope=res['scope'];completeness=expected
+ elif name=='documents':
+  names=[x[5:] for x in raw.splitlines() if x.startswith('PASS ')];assert names==expected_names==acc['sourceDeclaredChecks']
+  assert res['passedAssertions']==len(names)==47 and res['failedAssertions']==0 and not any(x.startswith('FAIL ') for x in raw.splitlines())
+  assert names[-2:]==['no uncaught browser exceptions','no failed asset requests']
+  passed=res['passedAssertions'];scope={'mode':'documents-full-script','flags':[]};completeness={'namedChecksInOrder':len(names)}
+ else:
+  stored=j(D/'artifacts/space-artifacts/result.json');assert stored['scope']==res['scope'] and stored['groups']==res['groups']
+  assert res['completed'] and res['failed']==0 and res['completenessProblems']==res['exceptions']==res['consoleErrors']==[]
+  included=['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','projection-close'] if name=='space' else ['timber-material','timber-source-guards','font-layout']
+  assert res['scope']['included']==included and res['scope']['filters']==([] if name=='space' else ['GEOMETRY_TIMBER_ONLY'])
+  census={x:floor[x] for x in ['setup',*included,'browser-health']};assert acc['fixedCensus']==census and set(res['groups'])==set(census)
+  for group,count in census.items():assert res['groups'][group]=={'expected':count,'passed':count,'failed':0,'completed':True}
+  assert res['passed']==sum(census.values())==len(stored['results']) and all(x['ok'] for x in stored['results'])
+  passed=res['passed'];scope=res['scope'];completeness=census
+ before=j(D/'runtime-before.json');after=j(D/'runtime-after.json');assert before==after and before['fresh'] and before['root']==REPO
+ cleanup=j(D/'cleanup.json');assert cleanup['errors']==cleanup['liveRemaining']==cleanup['zombiesRemaining']==[] and cleanup['httpPortFree'] and cleanup['cdpPortFree']
+ manifest=j(D/'manifest.json');paths={str(p.relative_to(D)) for p in D.rglob('*') if p.is_file()};assert paths=={e['path'] for e in manifest}|{'manifest.json','receipt.json'}
+ for e in manifest:
+  data=(D/e['path']).read_bytes();assert len(data)==e['bytes'] and h(data)==e['sha256']
+ pngs=list(D.rglob('*.png'))
+ for p in pngs:assert p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+ png_count+=len(pngs);manifest_count+=len(manifest)
+ rows.append({'suite':name,'passed':passed,'failed':0,'nodeObservedReturncode':stage[0]['returncode'],'validationExitCode':acc['validationExitCode'],'jobLimitSeconds':limit,'elapsedSeconds':rec['elapsedSeconds'],'scope':scope,'completeness':completeness,'testArgv':cmd['testArgv'],'sourceEntriesChecked':len(sources),'originalManifestEntriesChecked':len(manifest),'pngCount':len(pngs),'cleanupAccepted':True,'runtimeFreshUnchanged':True,'receiptSha256':h((D/'receipt.json').read_bytes()),'rawSha256':h((D/'run.log').read_bytes())})
+launch=j(L/'launcher-receipt.json');assert launch['observedWrapperReturncode']==0 and (L/'.exit-code').read_text().strip()=='0'
+assert R.with_name(R.name+'-launcher-process.exit-code').read_text().strip()=='0'
+obs=j(R.with_name(R.name+'-exec-observation.json'));assert obs['final']['exit_code']==0 and 'env -u CC -u PYTHONOPTIMIZE' in obs['command']
+assert h(R.with_name(R.name+'-parent-command-code.txt').read_bytes())==obs['parentCommandSha256']
+summary=j(R/'summary.json');assert summary['allFiveCompleted'] and summary['allAccepted'] and summary['sourceSha']==S
+capture=j(R/'declared-artifact-capture.json');assert capture['sourceSha']==S and capture['missing']==[]
+for e in capture['files']:
+ b=(R/e['artifactPath']).read_bytes();assert h(b)==e['sha256'] and len(b)==e['bytes']
+result={'checkedUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sourceSha':S,'accepted':True,'methodSha256':h(pathlib.Path(__file__).read_bytes()),'verificationExitCode':0,'rows':rows,'totalPassedAssertions':sum(x['passed'] for x in rows),'totalOriginalManifestEntries':manifest_count,'totalPngFiles':png_count,'uniqueGitSourceEntriesChecked':len(sources),'observedWrapperReturncode':launch['observedWrapperReturncode'],'observedLauncherProcessReturncode':0,'actualToolExitCode':obs['final']['exit_code'],'actualToolChunk':obs['final']['chunk_id'],'captureAddedFiles':capture['addedFiles'],'captureAddedBytes':capture['addedBytes'],'captureExistingNonPngFilesChecked':capture['existingFilesChecked'],'limitations':['assembly/grid 原 partial harness 不比 full golden，本外層只核原指定段。','documents 無 golden/completed 欄位，改核凍結來源全部47具名PASS依序。','本核對 PNG 簽章/hash與原manifest，未逐張目視。','原 wrapper 收據/sidecar 是當輪 fresh/reused 證據；不以目前 live runtime 回推歷史。','工具退出觀察是對話回傳轉錄，非transport自動raw。','沒有重跑產品或新執行突變；原controlled failure保留。']}
+(R/'final-verification.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'accepted':True,'passed':[x['passed'] for x in rows],'pngs':png_count,'manifestEntries':manifest_count,'sourceEntries':len(sources),'outerCodes':[0,0,0],'addedArtifacts':capture['addedFiles']},ensure_ascii=False))

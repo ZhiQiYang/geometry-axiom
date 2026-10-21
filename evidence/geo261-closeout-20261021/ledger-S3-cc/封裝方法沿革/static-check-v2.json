@@ -1,0 +1,14 @@
+{
+  "checkedUTC": "2026-10-21T05:18:21.086005+00:00",
+  "astPassed": true,
+  "scriptSha256": "b1b03c9370d4427bb92823dc14122ba7a61a035d4107d15fa3d3a4a7775ce6b0",
+  "priorScriptSha256": "8af69c4f90ac1ec7317c2fbcf951ba5bb4ecc6e17ff871feac750d873ec84c05",
+  "negativeExitCode": 2,
+  "packageExecuted": false,
+  "productExecuted": false,
+  "changes": [
+    "整個方法沿革目錄原bytes收錄且先拒絕既有bundle-result，真pack的stdout/stderr必存外部。",
+    "核main採用收據source/previous/remote/branch及原remote.stdout。",
+    "binding明列只作附加說明；前置cat失敗的工具轉錄界線寫清。"
+  ]
+}

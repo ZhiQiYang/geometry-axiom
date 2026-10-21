@@ -1,0 +1,31 @@
+{
+  "schema": "geometry-cdp-result/1",
+  "scope": {
+    "mode": "partial",
+    "filters": [
+      "GEOMETRY_GRID_SYSTEM_ONLY"
+    ],
+    "modifiers": [],
+    "url": "http://127.0.0.1:18853/",
+    "feedbackDirectory": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/feedback",
+    "browserProfile": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/chrome-profile",
+    "cdpPort": 9334,
+    "browserPid": 495168
+  },
+  "firstTransportFailure": null,
+  "firstNetworkFailure": null,
+  "completed": true,
+  "passedAssertions": 350,
+  "failedAssertions": 0,
+  "skipped": [],
+  "sections": {
+    "P70": 121,
+    "P71": 9,
+    "P78": 23,
+    "P87": 60,
+    "P88": 137
+  },
+  "goldenCompare": "not compared (partial mode)",
+  "uncaughtBrowserExceptions": 0,
+  "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+}

@@ -1,0 +1,22 @@
+✔ 390px raw v=1200 case produces no negative-height band (2.661198ms)
+✔ 390px raw v=1600 case produces no negative-height band (1.859915ms)
+✔ the transposed u-axis cases reject the same empty intersection (1.559983ms)
+✔ both axes reject intervals wholly below or above their bounds (2.014083ms)
+✔ exact contact at either bound has zero material area and no band (1.910861ms)
+✔ zero extent in the orthogonal clipping direction is also empty (0.997783ms)
+✔ normal u and v intersections retain exact geometry and polygon clipping (1.745097ms)
+✔ lower-bound partial intersections preserve their positive cropped extent (2.189231ms)
+✔ upper-bound partial intersections preserve their positive cropped extent (1.116008ms)
+✔ rule-local bounds take precedence over global overrun for both axes (1.177027ms)
+✔ a rule-local empty intersection is not rescued by a larger global box or anchor label (2.614669ms)
+✔ missing or unsupported cross-ranges retain the prior no-band behavior (3.192863ms)
+✔ ordinary at-face material-side bands remain unchanged (1.366798ms)
+✔ strictly positive fractional overlap is preserved without arbitrary pixel tolerance (1.07046ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 99.386687

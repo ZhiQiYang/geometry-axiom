@@ -1,0 +1,608 @@
+[
+  {
+    "name": "isolated-01-main-r1",
+    "order": 1,
+    "version": "main",
+    "round": 1,
+    "command": [
+      "node",
+      "/workspace/geo261-evidence/p52/probe-v2.cjs",
+      "/workspace/geo261-main"
+    ],
+    "environment": {
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:18840/",
+      "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-main",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+      "GEOMETRY_CDP_PORT": "9350",
+      "P52_REPEATS": "1"
+    },
+    "exitCode": 0,
+    "elapsedSeconds": 61.80030869199982,
+    "harnessTimedOut": false,
+    "sourceBefore": {
+      "root": "/workspace/geo261-main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": "",
+      "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80"
+    },
+    "sourceAfter": {
+      "root": "/workspace/geo261-main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": "",
+      "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80"
+    },
+    "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+    "logSha256": "37e99c0c6e432929da6eccebb670fe0e0e12c2634ffa7e96de43014d34a795bb",
+    "loadBefore": {
+      "utc": "2026-10-20T19:59:15Z",
+      "loadavg": "0.06 1.27 1.95 1/233 42991",
+      "cpuTicks": [
+        311844,
+        0,
+        37193,
+        538035,
+        72,
+        0,
+        5555,
+        19257,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadAfter": {
+      "utc": "2026-10-20T20:00:17Z",
+      "loadavg": "1.06 1.34 1.94 1/239 45316",
+      "cpuTicks": [
+        318061,
+        0,
+        38278,
+        560726,
+        73,
+        0,
+        5917,
+        19990,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadScope": "父代理確認原 canvas／Q38 已結束；六輪獨占瀏覽器，其他代理只輕量讀檔",
+    "summary": [
+      {
+        "version": {
+          "root": "/workspace/geo261-main",
+          "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "status": "",
+          "repeats": 1,
+          "actualSourceHasCandidate": false,
+          "memoryPatch": "none",
+          "effectiveCandidateWait": false,
+          "targetedControl": false,
+          "referenceControl": "",
+          "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+          "effectiveSourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+          "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+          "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+        },
+        "passedAssertions": 43,
+        "failedAssertions": 0,
+        "exceptions": 0
+      }
+    ],
+    "cleanup": [
+      {
+        "pid": 43021,
+        "profile": "/tmp/geometry-cdp-twznRK",
+        "exitCode": 0,
+        "signalCode": null
+      }
+    ]
+  },
+  {
+    "name": "isolated-02-final-r1",
+    "order": 2,
+    "version": "final",
+    "round": 1,
+    "command": [
+      "node",
+      "/workspace/geo261-evidence/p52/probe-v2.cjs",
+      "/workspace/geometry-axiom"
+    ],
+    "environment": {
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:18841/",
+      "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-probe",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+      "GEOMETRY_CDP_PORT": "9350",
+      "P52_REPEATS": "1"
+    },
+    "exitCode": 0,
+    "elapsedSeconds": 78.71664166100004,
+    "harnessTimedOut": false,
+    "sourceBefore": {
+      "root": "/workspace/geometry-axiom",
+      "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+      "status": "",
+      "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955"
+    },
+    "sourceAfter": {
+      "root": "/workspace/geometry-axiom",
+      "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+      "status": "",
+      "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955"
+    },
+    "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+    "logSha256": "8651f7061a2aa2df5e6e80c58e9a25c6dd698ce7fcf74936dd2fd9018a533cb4",
+    "loadBefore": {
+      "utc": "2026-10-20T20:00:17Z",
+      "loadavg": "1.06 1.34 1.94 1/239 45361",
+      "cpuTicks": [
+        318067,
+        0,
+        38292,
+        560782,
+        73,
+        0,
+        5917,
+        19992,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadAfter": {
+      "utc": "2026-10-20T20:01:35Z",
+      "loadavg": "1.50 1.43 1.92 1/237 47287",
+      "cpuTicks": [
+        325560,
+        0,
+        39811,
+        590124,
+        73,
+        0,
+        6278,
+        20795,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadScope": "父代理確認原 canvas／Q38 已結束；六輪獨占瀏覽器，其他代理只輕量讀檔",
+    "summary": [
+      {
+        "version": {
+          "root": "/workspace/geometry-axiom",
+          "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+          "status": "",
+          "repeats": 1,
+          "actualSourceHasCandidate": false,
+          "memoryPatch": "none",
+          "effectiveCandidateWait": false,
+          "targetedControl": false,
+          "referenceControl": "",
+          "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+          "effectiveSourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+          "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+          "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+        },
+        "passedAssertions": 43,
+        "failedAssertions": 0,
+        "exceptions": 0
+      }
+    ],
+    "cleanup": [
+      {
+        "pid": 45391,
+        "profile": "/tmp/geometry-cdp-MPKrAU",
+        "exitCode": 0,
+        "signalCode": null
+      }
+    ]
+  },
+  {
+    "name": "isolated-03-final-r2",
+    "order": 3,
+    "version": "final",
+    "round": 2,
+    "command": [
+      "node",
+      "/workspace/geo261-evidence/p52/probe-v2.cjs",
+      "/workspace/geometry-axiom"
+    ],
+    "environment": {
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:18841/",
+      "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-probe",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+      "GEOMETRY_CDP_PORT": "9350",
+      "P52_REPEATS": "1"
+    },
+    "exitCode": 0,
+    "elapsedSeconds": 77.38360112800001,
+    "harnessTimedOut": false,
+    "sourceBefore": {
+      "root": "/workspace/geometry-axiom",
+      "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+      "status": "",
+      "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955"
+    },
+    "sourceAfter": {
+      "root": "/workspace/geometry-axiom",
+      "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+      "status": "",
+      "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955"
+    },
+    "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+    "logSha256": "38a97b6252620a5a9276251d81424d3e0478f5ac48c0f2ee7dcc4b943fe412f3",
+    "loadBefore": {
+      "utc": "2026-10-20T20:01:36Z",
+      "loadavg": "1.50 1.43 1.92 1/237 47332",
+      "cpuTicks": [
+        325567,
+        0,
+        39829,
+        590183,
+        73,
+        0,
+        6279,
+        20796,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadAfter": {
+      "utc": "2026-10-20T20:02:53Z",
+      "loadavg": "1.54 1.44 1.88 1/240 49304",
+      "cpuTicks": [
+        333030,
+        0,
+        41368,
+        619013,
+        73,
+        0,
+        6635,
+        21457,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadScope": "父代理確認原 canvas／Q38 已結束；六輪獨占瀏覽器，其他代理只輕量讀檔",
+    "summary": [
+      {
+        "version": {
+          "root": "/workspace/geometry-axiom",
+          "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+          "status": "",
+          "repeats": 1,
+          "actualSourceHasCandidate": false,
+          "memoryPatch": "none",
+          "effectiveCandidateWait": false,
+          "targetedControl": false,
+          "referenceControl": "",
+          "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+          "effectiveSourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+          "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+          "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+        },
+        "passedAssertions": 43,
+        "failedAssertions": 0,
+        "exceptions": 0
+      }
+    ],
+    "cleanup": [
+      {
+        "pid": 47362,
+        "profile": "/tmp/geometry-cdp-gUhb3I",
+        "exitCode": 0,
+        "signalCode": null
+      }
+    ]
+  },
+  {
+    "name": "isolated-04-main-r2",
+    "order": 4,
+    "version": "main",
+    "round": 2,
+    "command": [
+      "node",
+      "/workspace/geo261-evidence/p52/probe-v2.cjs",
+      "/workspace/geo261-main"
+    ],
+    "environment": {
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:18840/",
+      "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-main",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+      "GEOMETRY_CDP_PORT": "9350",
+      "P52_REPEATS": "1"
+    },
+    "exitCode": 0,
+    "elapsedSeconds": 62.98264882999979,
+    "harnessTimedOut": false,
+    "sourceBefore": {
+      "root": "/workspace/geo261-main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": "",
+      "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80"
+    },
+    "sourceAfter": {
+      "root": "/workspace/geo261-main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": "",
+      "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80"
+    },
+    "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+    "logSha256": "241804ad53d8e916674ebb1bdfd288faf435937032af1813450abaaff3e8c6ac",
+    "loadBefore": {
+      "utc": "2026-10-20T20:02:53Z",
+      "loadavg": "1.54 1.44 1.88 1/240 49349",
+      "cpuTicks": [
+        333036,
+        0,
+        41383,
+        619068,
+        73,
+        0,
+        6635,
+        21458,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadAfter": {
+      "utc": "2026-10-20T20:03:56Z",
+      "loadavg": "1.91 1.56 1.89 1/244 51342",
+      "cpuTicks": [
+        339444,
+        0,
+        42470,
+        642111,
+        73,
+        0,
+        6996,
+        22282,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadScope": "父代理確認原 canvas／Q38 已結束；六輪獨占瀏覽器，其他代理只輕量讀檔",
+    "summary": [
+      {
+        "version": {
+          "root": "/workspace/geo261-main",
+          "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "status": "",
+          "repeats": 1,
+          "actualSourceHasCandidate": false,
+          "memoryPatch": "none",
+          "effectiveCandidateWait": false,
+          "targetedControl": false,
+          "referenceControl": "",
+          "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+          "effectiveSourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+          "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+          "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+        },
+        "passedAssertions": 43,
+        "failedAssertions": 0,
+        "exceptions": 0
+      }
+    ],
+    "cleanup": [
+      {
+        "pid": 49379,
+        "profile": "/tmp/geometry-cdp-VcRGHO",
+        "exitCode": 0,
+        "signalCode": null
+      }
+    ]
+  },
+  {
+    "name": "isolated-05-main-r3",
+    "order": 5,
+    "version": "main",
+    "round": 3,
+    "command": [
+      "node",
+      "/workspace/geo261-evidence/p52/probe-v2.cjs",
+      "/workspace/geo261-main"
+    ],
+    "environment": {
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:18840/",
+      "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-main",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+      "GEOMETRY_CDP_PORT": "9350",
+      "P52_REPEATS": "1"
+    },
+    "exitCode": 0,
+    "elapsedSeconds": 62.7924780999997,
+    "harnessTimedOut": false,
+    "sourceBefore": {
+      "root": "/workspace/geo261-main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": "",
+      "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80"
+    },
+    "sourceAfter": {
+      "root": "/workspace/geo261-main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": "",
+      "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80"
+    },
+    "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+    "logSha256": "e014c4a19560cb0c5bb3cd792f0f223f0d5f1c6a21f2b4043595591f28664f7c",
+    "loadBefore": {
+      "utc": "2026-10-20T20:03:56Z",
+      "loadavg": "1.91 1.56 1.89 1/244 51387",
+      "cpuTicks": [
+        339448,
+        0,
+        42484,
+        642158,
+        73,
+        0,
+        6996,
+        22283,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadAfter": {
+      "utc": "2026-10-20T20:04:59Z",
+      "loadavg": "1.52 1.49 1.85 1/245 53267",
+      "cpuTicks": [
+        345720,
+        0,
+        43502,
+        665306,
+        74,
+        0,
+        7391,
+        23089,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadScope": "父代理確認原 canvas／Q38 已結束；六輪獨占瀏覽器，其他代理只輕量讀檔",
+    "summary": [
+      {
+        "version": {
+          "root": "/workspace/geo261-main",
+          "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "status": "",
+          "repeats": 1,
+          "actualSourceHasCandidate": false,
+          "memoryPatch": "none",
+          "effectiveCandidateWait": false,
+          "targetedControl": false,
+          "referenceControl": "",
+          "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+          "effectiveSourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+          "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+          "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+        },
+        "passedAssertions": 43,
+        "failedAssertions": 0,
+        "exceptions": 0
+      }
+    ],
+    "cleanup": [
+      {
+        "pid": 51417,
+        "profile": "/tmp/geometry-cdp-w4hp0R",
+        "exitCode": 0,
+        "signalCode": null
+      }
+    ]
+  },
+  {
+    "name": "isolated-06-final-r3",
+    "order": 6,
+    "version": "final",
+    "round": 3,
+    "command": [
+      "node",
+      "/workspace/geo261-evidence/p52/probe-v2.cjs",
+      "/workspace/geometry-axiom"
+    ],
+    "environment": {
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:18841/",
+      "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-probe",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+      "GEOMETRY_CDP_PORT": "9350",
+      "P52_REPEATS": "1"
+    },
+    "exitCode": 0,
+    "elapsedSeconds": 82.33953509499997,
+    "harnessTimedOut": false,
+    "sourceBefore": {
+      "root": "/workspace/geometry-axiom",
+      "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+      "status": "",
+      "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955"
+    },
+    "sourceAfter": {
+      "root": "/workspace/geometry-axiom",
+      "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+      "status": "",
+      "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955"
+    },
+    "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+    "logSha256": "50f9245fdc2ff1553b7a24c381b59b2b0661ff429ee72a5353d769bfb1e35b9f",
+    "loadBefore": {
+      "utc": "2026-10-20T20:04:59Z",
+      "loadavg": "1.52 1.49 1.85 1/245 53312",
+      "cpuTicks": [
+        345724,
+        0,
+        43519,
+        665363,
+        74,
+        0,
+        7391,
+        23091,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadAfter": {
+      "utc": "2026-10-20T20:06:21Z",
+      "loadavg": "1.68 1.52 1.82 1/251 55542",
+      "cpuTicks": [
+        353563,
+        0,
+        45200,
+        695818,
+        76,
+        0,
+        7754,
+        24134,
+        0,
+        0
+      ],
+      "activeChromium": []
+    },
+    "loadScope": "父代理確認原 canvas／Q38 已結束；六輪獨占瀏覽器，其他代理只輕量讀檔",
+    "summary": [
+      {
+        "version": {
+          "root": "/workspace/geometry-axiom",
+          "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+          "status": "",
+          "repeats": 1,
+          "actualSourceHasCandidate": false,
+          "memoryPatch": "none",
+          "effectiveCandidateWait": false,
+          "targetedControl": false,
+          "referenceControl": "",
+          "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+          "effectiveSourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+          "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+          "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+        },
+        "passedAssertions": 43,
+        "failedAssertions": 0,
+        "exceptions": 0
+      }
+    ],
+    "cleanup": [
+      {
+        "pid": 53342,
+        "profile": "/tmp/geometry-cdp-ftmTkz",
+        "exitCode": 0,
+        "signalCode": null
+      }
+    ]
+  }
+]

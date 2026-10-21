@@ -1,0 +1,12 @@
+{
+  "provenance": "實際工具回覆的事後逐欄轉錄，不冒稱先前自動保存的transport原件；原stdout文字另存且與已觀察輸出一致。",
+  "tool": "tools.exec_command",
+  "chunk_id": "0aa413",
+  "wall_time_seconds": 0.190449723,
+  "exit_code": 0,
+  "original_token_count": 66,
+  "output": "AST 通過\n{\"path\": \"/workspace/geo261-evidence/native-final-independent-review.json\", \"bytes\": 8006, \"sha256\": \"321b849126009f8c48af2da3c1586684eed861139c7d41ec0273dab2a472f8f1\", \"validationExitCode\": 0, \"sourceGitBlobs\": 203, \"suiteCount\": 224, \"rawCount\": 600}\n",
+  "commandMeaning": "先AST語法檢查，再以 python3 -B /workspace/geo261-evidence/native-final-independent-review-code.txt 執行僅讀取原件的接受器。",
+  "reportSha256": "321b849126009f8c48af2da3c1586684eed861139c7d41ec0273dab2a472f8f1",
+  "codeSha256": "02f1a1424e95a15df4bce44fa965dbae86a568531aebe2b8eeef22664d7f3176"
+}

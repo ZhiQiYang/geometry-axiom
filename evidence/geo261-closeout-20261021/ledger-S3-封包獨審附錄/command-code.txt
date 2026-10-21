@@ -1,0 +1,176 @@
+"""有限只讀複核凍結 S3 帳本包；不執行產品、正式check或發布。"""
+import ast
+from collections import Counter
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import stat
+import subprocess
+import time
+
+if not __debug__: raise RuntimeError('不可停用核對')
+BASE = Path('/workspace/geo261-evidence')
+ROOT = BASE / 'final-bundle/ledger-S3-cc'
+OUT = BASE / 'ledger-S3-bundle-peer-run01'
+S3 = '19401ca5448e162ee6140fed37b64b83b31ddec8'
+L3 = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+LEDGER_HASH = '52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178'
+assert OUT.is_dir() and not (OUT / 'peer.json').exists()
+(OUT / 'command-code.txt').write_bytes(Path(__file__).read_bytes())
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def dump(name, obj): (OUT / name).write_text(json.dumps(obj, ensure_ascii=False, indent=2) + '\n')
+def read(path): return json.loads(path.read_bytes())
+started, tick = datetime.now(timezone.utc).isoformat(), time.monotonic()
+verifier_raw = (BASE / 'source-binding-E3-preparation/verify_E3.py').read_bytes()
+assert sha(verifier_raw) == '6e1ac9bffab679486606fd3513762d167990c8b725b015778cf329a85590e279'
+constants = {}
+for node in ast.parse(verifier_raw).body:
+    if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+        if node.targets[0].id in {'FORBIDDEN_SUFFIXES', 'EXECUTABLE_MAGICS'}:
+            constants[node.targets[0].id] = ast.literal_eval(node.value)
+raws, metadata = {}, {}
+for directory, dirs, names in os.walk(ROOT, followlinks=False):
+    assert all(not (Path(directory) / d).is_symlink() for d in dirs)
+    for name in names:
+        path = Path(directory) / name
+        rel = path.relative_to(ROOT).as_posix()
+        st = path.lstat()
+        assert stat.S_ISREG(st.st_mode) and stat.S_IMODE(st.st_mode) == 0o644
+        assert path.suffix.lower() not in constants['FORBIDDEN_SUFFIXES']
+        assert name not in {'.gitignore', '.gitattributes'}
+        raw = path.read_bytes()
+        assert not any(raw.startswith(m) for m in constants['EXECUTABLE_MAGICS'])
+        raw.decode('utf-8')
+        raws[rel] = raw
+        metadata[rel] = {'bytes': len(raw), 'sha256': sha(raw), 'mtimeNs': st.st_mtime_ns}
+assert len(raws) == 2409 and sum(len(r) for r in raws.values()) == 45078348
+assert sha(raws['原件清單.json']) == 'a83861a1ec28f1cd553536788e4e428c60694f665e09b18bfaf9efaab563c9c3'
+assert sha(raws['SHA256SUMS']) == 'b6bc4f66c39c92ad186dca2c29ca318ef005dfeda83153ddfbc32e989ee29e2a'
+index = json.loads(raws['原件清單.json'])
+assert len(index) == 2405
+seen = set()
+for row in index:
+    rel = row['path']
+    parsed = PurePosixPath(rel)
+    assert not parsed.is_absolute() and '..' not in parsed.parts and rel not in seen
+    seen.add(rel)
+    assert metadata[rel]['bytes'] == row['bytes'] and metadata[rel]['sha256'] == row['sha256']
+    original = Path(row['source'])
+    assert original.is_file() and not original.is_symlink() and original.read_bytes() == raws[rel]
+assert set(raws) - seen == {'README.md', '原件清單.json', '未收錄清單.json', 'SHA256SUMS'}
+sum_records = []
+for name in sorted(n for n in raws if PurePosixPath(n).name == 'SHA256SUMS'):
+    parent = PurePosixPath(name).parent
+    prefix = '' if str(parent) == '.' else str(parent) + '/'
+    wanted = {}
+    for line in raws[name].decode().splitlines():
+        m = re.fullmatch(r'([0-9a-f]{64})  (.+)', line)
+        assert m and m[2] not in wanted and '..' not in PurePosixPath(m[2]).parts and not PurePosixPath(m[2]).is_absolute()
+        wanted[m[2]] = m[1]
+    actual = {n[len(prefix):] for n in raws if n.startswith(prefix)} - {'SHA256SUMS'}
+    assert set(wanted) == actual, name
+    assert all(metadata[prefix + n]['sha256'] == digest for n, digest in wanted.items())
+    sum_records.append({'path': name, 'entries': len(wanted), 'exactSetAndHashes': True})
+assert next(r for r in sum_records if r['path'] == 'SHA256SUMS')['entries'] == 2408
+def obj(name): return json.loads(raws[name])
+ledger_raw = raws['執行原件/mutants_results.json']
+assert len(ledger_raw) == 5170289 and sha(ledger_raw) == LEDGER_HASH
+assert ledger_raw == raws['L3帳本發布/ledger-blob.stdout']
+ledger = json.loads(ledger_raw)
+snapshot_raw = (BASE / 'source-binding-L3-preparation/snapshot-L3.json').read_bytes()
+assert sha(snapshot_raw) == '3420121fdc8a24cdff5335762ffdd07db82a531c5efea7ca32aedd3f7f50bd43'
+snapshot = json.loads(snapshot_raw)
+assert snapshot['headBefore'] == snapshot['headAfter'] == L3
+assert set(ledger) == set(snapshot['mutation']['definitions']) and len(ledger) == 78
+assert Counter(r['verdict'] for r in ledger.values()) == {'killed': 70, 'crashed': 1, 'equivalent': 4, 'retired': 3}
+executions = 0
+for key, row in ledger.items():
+    body = {k: v for k, v in row.items() if k not in ('record_sha256', 'stale_from', 'stale_why')}
+    assert sha(json.dumps(body, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode()) == row['record_sha256']
+    spec = snapshot['mutation']['definitions'][key]
+    assert row['mutant_sha256'] == spec['mutantSha256']
+    if 'execution' not in row:
+        assert spec['retired'] and row['verdict'] == 'retired'
+        continue
+    executions += 1
+    assert row['execution']['head'] == S3
+    assert row['source_sha256'] == snapshot['files'][row['source_file']]['lfSha256']
+    assert row['closure_sha256'] == snapshot['mutation']['coreAndBridgeIncludeClosureSha256']
+    assert row['oracle_sha256'] == spec['oracleSha256'] and row['execution']['tool_sha256'] == snapshot['mutation']['toolSha256']
+    if row['execution']['schema'] == 'geometry-mutation-execution/1': assert row['execution']['compile_command'][0] == 'cc'
+assert executions == 75 and [k for k, r in ledger.items() if r['verdict'] == 'crashed'] == ['M20']
+prepare = obj('執行原件/prepare-receipt.json')
+validation = obj('執行原件/ledger-validation.json')
+assert prepare['source_sha'] == validation['source_sha'] == S3
+assert len(prepare['raw_backups']) == validation['source_raw_backups_verified'] == 363
+assert 'tests/test_geo261_host_authority.py' in {r['path'] for r in prepare['raw_backups']}
+assert validation['ledger_sha256'] == LEDGER_HASH and validation['ledger_bytes'] == len(ledger_raw)
+phases = obj('執行原件/phase-receipts.json')
+assert [r['phase'] for r in phases] == ['mutate', 'check', 'check-killers']
+for row in phases:
+    assert row['source_sha'] == S3 and row['exit_code'] == 0 and not row['CC_present'] and not row['PYTHONOPTIMIZE_present']
+    for stream in ('stdout', 'stderr'): assert sha(raws['執行原件/' + Path(row[stream]).name]) == row[stream + '_sha256']
+for name in ('mutate', 'check', 'check-killers', 'supervisor', 'supervisor-observed'):
+    assert raws['執行原件/' + name + '.exit-code'].strip() == b'0'
+assert obj('執行原件/launch-completion.json')['observed_wait_returncode'] == 0
+assert obj('執行原件/session-observation-final.json')['actual_tool_response']['exit_code'] == 0
+assert obj('後補收據/validator-tool-observation.json')['actual_tool_response']['exit_code'] == 0
+pub, pubfinal = obj('L3帳本發布/receipt.json'), obj('L3帳本發布/publication.json')
+binding = obj('S3-L3實際來源綁定.json')
+assert pub['sourceA2'] == pub['parent'] == pubfinal['sourceA2'] == binding['sourceS3'] == binding['parentSha'] == S3
+assert pub['ledgerL2'] == pubfinal['ledgerL2'] == binding['ledgerL3'] == L3
+assert pub['ledgerSha256'] == binding['ledgerSha256'] == LEDGER_HASH and pub['bytes'] == binding['ledgerBytes'] == len(ledger_raw)
+assert binding['executionHeads'] == [S3] and binding['changedPaths'] == [pub['onlyChangedPath']] == ['tests/mutants_results.json']
+assert binding['aliasExplanation'] and pubfinal['remoteExactMatch'] and pubfinal['defaultCheckExitCode'] == pubfinal['pushExitCode'] == 0
+assert raws['L3帳本發布/parent.stdout'].decode().strip() == S3
+assert raws['L3帳本發布/A-to-L-files.stdout'].decode().splitlines() == ['tests/mutants_results.json']
+assert raws['L3帳本發布/remote-after-push.stdout'].decode().split() == [L3, 'refs/heads/' + pub['branch']]
+for name in ('L-default-check', 'push', 'remote-after-push'): assert raws['L3帳本發布/' + name + '.exit-code'].strip() == b'0'
+assert obj('L3發布外層工具觀察.json')['actual_tool_response']['exit_code'] == 0
+adopt = obj('主分支採用S3/receipt.json')
+assert adopt['sourceSha'] == S3 and adopt['branch'] == pub['branch'] and adopt['remoteExact']
+assert adopt['previousHead'] == prepare['product_parent_sha']
+assert sha(raws['封裝方法原碼.txt']) == 'f550a9fc2f7983d90a62e18c0a70bd6f7a7f5ee09fcbcd397fd1e7d55dc4595b'
+assert '封裝方法沿革/bundle-result.json' not in raws
+for name in ('historical-A2-packer-code.txt', 'bundle-S3-v1-code.txt', 'bundle-S3-v2-code.txt', 'bundle-S3-v3-code.txt', 'bundle-v1-to-v2.patch', 'bundle-v2-to-v3.patch'):
+    assert '封裝方法沿革/' + name in raws
+git_records = []
+def git(label, *args):
+    argv = ['git', '-C', '/workspace/geometry-axiom', *args]
+    r = subprocess.run(argv, capture_output=True)
+    (OUT / (label + '.stdout')).write_bytes(r.stdout)
+    (OUT / (label + '.stderr')).write_bytes(r.stderr)
+    (OUT / (label + '.exit-code')).write_text(str(r.returncode) + '\n')
+    git_records.append({'argv': argv, 'exitCode': r.returncode})
+    dump('git-commands.json', git_records)
+    assert r.returncode == 0
+    return r.stdout
+assert git('L3-parent', 'rev-parse', L3 + '^').decode().strip() == S3
+assert git('S3-L3-diff', 'diff', '--name-status', '--no-renames', '-z', S3, L3) == b'M\0tests/mutants_results.json\0'
+oid = git('L3-ledger-blob', 'rev-parse', L3 + ':tests/mutants_results.json').decode().strip()
+assert hashlib.sha1(b'blob ' + str(len(ledger_raw)).encode() + b'\0' + ledger_raw).hexdigest() == oid
+for name, row in metadata.items():
+    st = (ROOT / name).stat()
+    assert (st.st_size, st.st_mtime_ns, stat.S_IMODE(st.st_mode)) == (row['bytes'], row['mtimeNs'], 0o644)
+result = {'schema': 'geo261-ledger-S3-frozen-bundle-peer/1', 'startedUtc': started,
+          'finishedUtc': datetime.now(timezone.utc).isoformat(), 'seconds': time.monotonic() - tick,
+          'sourceS3': S3, 'ledgerL3': L3, 'checkPassed': True, 'files': len(raws),
+          'bytes': sum(len(r) for r in raws.values()), 'copiedOriginalsComparedByteForByte': len(index),
+          'indexSha256': sha(raws['原件清單.json']), 'sumsSha256': sha(raws['SHA256SUMS']),
+          'checksumManifests': sum_records, 'allMode0644AndUtf8': True, 'noForbiddenSuffixMagicOrSymlink': True,
+          'ledgerSha256': LEDGER_HASH, 'ledgerGitBlob': oid, 'records': 78, 'recordChecksumsMatched': 78,
+          'executionHeadsAllS3': executions, 'sourceClosureOracleMutantToolMatchFreshL3Snapshot': True,
+          'sourceBackupCount': 363, 'phaseExitCodes': [0, 0, 0], 'parentWaitAndFinalToolRecordedExit': 0,
+          'publicationAliasesKeptOriginalBytesWithCorrectS3L3Values': True,
+          'methodHistoryPreservedAndResultExcluded': True,
+          'limitations': ['只讀此子包與其原件、已固定L3快照及三個Git查詢，未掃全部final-bundle。',
+                         '未重跑ledger/check/產品/編譯/架構CLI/發布，未重hash75個cache binary。',
+                         '核心個別子raw缺口、M36歷史論證及工具觀察轉錄仍照原文界線，不補造原始輸出。',
+                         '沒有把S3 execution改稱L3重跑，也不由本包推定其他L3驗收通過。'],
+          'peerCodeSha256': sha(Path(__file__).read_bytes())}
+dump('peer.json', result)
+print(json.dumps({'receipt': str(OUT / 'peer.json'), 'receiptSha256': sha((OUT / 'peer.json').read_bytes()),
+                  'files': result['files'], 'bytes': result['bytes'], 'checkPassed': True}, ensure_ascii=False, indent=2))

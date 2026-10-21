@@ -1,0 +1,53 @@
+--- a/prepare_run.py
++++ b/prepare_run.py
+@@ -1,4 +1,4 @@
+-"""綁定已公開 A2 並準備全新 ledger 工作區；不啟動 mutate。"""
++"""綁定已公開 S3 並準備全新 ledger 工作區；不啟動 mutate。"""
+ import argparse
+ import datetime
+ import hashlib
+@@ -14,9 +14,10 @@
+ HISTORICAL_SELFTEST='/workspace/geo261-evidence/ledger-cc-launcher-selftest.r3o_cexg'
+ ARCHITECTURE={f'geometry-core/domain-decoupling/{name}' for name in (
+     'PRODUCT-ARCHITECTURE.md','product-architecture.json','product-architecture-scan.json','product-architecture-receipt.json')}
++SOURCE_DELTA={'tests/test_geo261_host_authority.py'}
+ BACKUPS=['tests/mutate.py','tests/mutation_bridge.py','tests/binaries.py','tests/run_tests.py',
+          'tests/bridge_mutation_oracle.py','tests/_cl.bat','tests/run_all.expected.json','geometry-web/app.js',
+-         'current_geometry.c','.github/workflows/integration-tests.yml',*sorted(ARCHITECTURE)]
++         'current_geometry.c','.github/workflows/integration-tests.yml',*sorted(ARCHITECTURE),*sorted(SOURCE_DELTA)]
+ 
+ def sha(raw):return hashlib.sha256(raw).hexdigest()
+ def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+@@ -62,7 +63,7 @@
+     assert remote==[a.source,'refs/heads/'+a.branch]
+     run('product-ancestor',['git','merge-base','--is-ancestor',a.product,a.source])
+     changes=run('product-to-source',['git','diff','--name-only',a.product,a.source]).decode().splitlines()
+-    assert set(changes)<=ARCHITECTURE and changes
++    assert set(changes)==SOURCE_DELTA
+     tree=run('source-tree',['git','rev-parse',a.source+'^{tree}']).decode().strip()
+     out.mkdir(parents=True);runroot.mkdir(parents=True)
+     (out/'prepare-code.txt').write_bytes(Path(__file__).read_bytes())
+@@ -112,12 +113,12 @@
+             assert sha(raw.replace(b'\r\n',b'\n'))==preflight['source_hashes'][path]
+     writej(out/'source-snapshot.json',{'source_sha':a.source,'source_tree':tree,
+       'compiler_preflight':preflight,'raw_sources':raw_backups,
+-      '備註':'當輪 A2 Git 原 bytes；closure 採正式工具 CRLF→LF 雜湊，原件本身不正規化。'})
++      '備註':'當輪 S3 Git 原 bytes；closure 採正式工具 CRLF→LF 雜湊，原件本身不正規化。'})
+     assert not list(cache.iterdir()) and not (out/'mutants_results.json').exists()
+     assert not run('prepared-status',['git','status','--porcelain=v1'],work)
+     (out/'sourcecode.txt').write_bytes(SUPERVISOR.read_bytes())
+     writej(out/'supervisor-source.json',{'actual_script':str(SUPERVISOR),'source_snapshot':'sourcecode.txt','sha256':SUPERVISOR_SHA,
+-      'launcher_selftest_directory':HISTORICAL_SELFTEST,'selftest_is_historical':True,'備註':'引用相同工具原 bytes 的歷史自測，不冒稱 A2 當輪重做。'})
++      'launcher_selftest_directory':HISTORICAL_SELFTEST,'selftest_is_historical':True,'備註':'引用相同工具原 bytes 的歷史自測，不冒稱 S3 當輪重做。'})
+     config={'prepared_utc':now(),'source_sha':a.source,'product_parent_sha':a.product,'source_tree':tree,
+       'branch':a.branch,'main_root':str(root),'run_directory':str(runroot),'worktree':str(work),
+       'output_directory':str(out),'cache':str(cache),'tmpdir':str(tmp),'results':str(out/'mutants_results.json'),
+@@ -126,7 +127,7 @@
+       'results_exists':False,'original_ledger_sha256':sha(original),'raw_backups':raw_backups,'mutants':mutants,
+       'mutant_count':len(mutants),'compiler_preflight_command':preflight_command,'compiler_preflight':preflight,
+       'environment_overrides':overrides,'environment_removed':['CC','PYTHONOPTIMIZE','MUTATE_*','GEOMETRY_*'],
+-      'source_archive':{'created':False,'method':'公開 A2 Git commit/tree 與逐 bytes 原始碼備份；未沿用舊 A archive'},
++      'source_archive':{'created':False,'method':'公開 S3 Git commit/tree 與逐 bytes 原始碼備份；未沿用舊 A archive'},
+       'heavy_execution_started':False}
+     writej(out/'prepare-receipt.json',config)
+     print(json.dumps({'prepared':str(out/'prepare-receipt.json'),'source_sha':a.source,'started_mutate':False},ensure_ascii=False))

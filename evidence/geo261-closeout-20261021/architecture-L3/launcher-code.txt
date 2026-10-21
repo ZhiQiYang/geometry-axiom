@@ -1,0 +1,168 @@
+#!/usr/bin/env python3
+"""固定 L3 的新來源快照與正式架構 CLI；不重跑兩套架構測試或修改產品。"""
+from collections import Counter
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import resource
+import subprocess
+import sys
+import tempfile
+import time
+
+ROOT = Path('/workspace/geometry-axiom')
+BASE = Path('/workspace/geo261-evidence')
+BIND = BASE / 'source-binding-L3-preparation'
+ARCH = BASE / 'architecture-L3-formal-6589248c'
+L3 = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+S3 = '19401ca5448e162ee6140fed37b64b83b31ddec8'
+SNAPSHOT_TOOL = BASE / 'source-binding-preparation/snapshot_bindings.py'
+SNAPSHOT_TOOL_SHA = '0640270f504fc0f12398cf15dda289f45dda188b9fa42cf3e32b862ee76a9a48'
+LEDGER = 'tests/mutants_results.json'
+PREFIX = 'geometry-core/domain-decoupling/'
+ARTIFACTS = [PREFIX + name for name in ('product-architecture.json', 'product-architecture-scan.json',
+                                      'PRODUCT-ARCHITECTURE.md', 'product-architecture-receipt.json')]
+TOOLS = ['tests/architecture_contract.py', 'tests/test_architecture_contract.py', 'tests/test_product_architecture.py']
+EXPECTED = 'tests/run_all.expected.json'
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def now(): return datetime.now(timezone.utc).isoformat()
+def dump(path, obj): path.write_text(json.dumps(obj, ensure_ascii=False, indent=2) + '\n')
+def hashes(raw): return {'bytes': len(raw), 'rawSha256': sha(raw), 'lfSha256': sha(raw.replace(b'\r\n', b'\n'))}
+assert sha(SNAPSHOT_TOOL.read_bytes()) == SNAPSHOT_TOOL_SHA
+BIND.mkdir(exist_ok=False)
+ARCH.mkdir(exist_ok=False)
+env = {key: os.environ[key] for key in ('PATH', 'HOME', 'LANG', 'LC_ALL', 'LC_CTYPE') if key in os.environ}
+temporary = tempfile.mkdtemp(prefix='geo261-L3-binding-', dir='/tmp')
+env.update(PYTHONDONTWRITEBYTECODE='1', PYTHONPYCACHEPREFIX=temporary + '/unused-pycache', TMPDIR=temporary)
+environment = {'childEnvironment': env, 'CC': None, 'PYTHONOPTIMIZE': None, 'stackKiB': 16384,
+               'python': sys.version, 'sourceL3': L3, 'runner': hashes(Path(__file__).read_bytes()),
+               'snapshotTool': {'path': str(SNAPSHOT_TOOL), **hashes(SNAPSHOT_TOOL.read_bytes())}}
+dump(BIND / 'environment.json', environment)
+dump(ARCH / 'environment.json', environment)
+git_records = []
+def git(label, *args):
+    argv = ['git', '-C', str(ROOT), *args]
+    result = subprocess.run(argv, capture_output=True, env=env)
+    (BIND / (label + '.stdout')).write_bytes(result.stdout)
+    (BIND / (label + '.stderr')).write_bytes(result.stderr)
+    git_records.append({'label': label, 'argv': argv, 'exitCode': result.returncode})
+    dump(BIND / 'git-commands.json', git_records)
+    assert result.returncode == 0
+    return result.stdout
+def run(folder, argv, stdout_name, stderr_name):
+    started, tick = now(), time.monotonic()
+    dump(folder / 'command.json', {'argv': argv, 'cwd': str(ROOT), 'sourceHead': L3, 'startedUtc': started})
+    with (folder / stdout_name).open('xb') as stdout, (folder / stderr_name).open('xb') as stderr:
+        pid = os.fork()
+        if pid == 0:
+            try:
+                os.chdir(ROOT)
+                _, hard = resource.getrlimit(resource.RLIMIT_STACK)
+                resource.setrlimit(resource.RLIMIT_STACK, (16 * 1024 * 1024, hard))
+                os.dup2(stdout.fileno(), 1)
+                os.dup2(stderr.fileno(), 2)
+                os.execvpe(argv[0], argv, env)
+            except BaseException as error:
+                os.write(2, (repr(error) + '\n').encode())
+                os._exit(127)
+        waited, raw_status = os.waitpid(pid, 0)
+    assert waited == pid
+    record = {'argv': argv, 'cwd': str(ROOT), 'sourceHead': L3, 'startedUtc': started, 'finishedUtc': now(),
+              'seconds': time.monotonic() - tick, 'rawWaitStatus': raw_status,
+              'exitCode': os.waitstatus_to_exitcode(raw_status),
+              'stdout': {'path': stdout_name, **hashes((folder / stdout_name).read_bytes())},
+              'stderr': {'path': stderr_name, **hashes((folder / stderr_name).read_bytes())}}
+    dump(folder / 'execution.json', record)
+    (folder / '.exit-code').write_text(str(record['exitCode']) + '\n')
+    assert record['exitCode'] == 0
+    return record
+assert git('head-before', 'rev-parse', 'HEAD').decode().strip() == L3
+assert git('parent', 'rev-parse', L3 + '^').decode().strip() == S3
+assert not git('status-before', 'status', '--porcelain=v1', '--untracked-files=no')
+assert git('diff-S3-L3', 'diff', '--name-status', '--no-renames', '-z', S3, L3) == b'M\x00tests/mutants_results.json\x00'
+before = {path: hashes((ROOT / path).read_bytes()) for path in ARTIFACTS + TOOLS + [EXPECTED, LEDGER]}
+dump(BIND / 'critical-before.json', before)
+snapshot_run = run(BIND, ['timeout', '120', sys.executable, '-B', str(SNAPSHOT_TOOL), '--root', str(ROOT),
+                          '--expected-head', L3], 'snapshot-L3.json', 'snapshot-L3.stderr')
+snapshot_raw = (BIND / 'snapshot-L3.json').read_bytes()
+snapshot = json.loads(snapshot_raw)
+assert snapshot['headBefore'] == snapshot['headAfter'] == L3 and snapshot['trackedClean']
+assert snapshot['snapshotToolRawSha256'] == SNAPSHOT_TOOL_SHA
+ledger_raw = (ROOT / LEDGER).read_bytes()
+assert ledger_raw == git('ledger-L3-blob', 'show', L3 + ':' + LEDGER)
+assert ledger_raw == (BASE / 'ledger-S3-cc-19401ca5/mutants_results.json').read_bytes()
+assert sha(ledger_raw) == '52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178'
+ledger = json.loads(ledger_raw)
+assert set(ledger) == set(snapshot['mutation']['definitions'])
+executions = 0
+for key, row in ledger.items():
+    spec = snapshot['mutation']['definitions'][key]
+    body = {k: v for k, v in row.items() if k not in ('record_sha256', 'stale_from', 'stale_why')}
+    if body.get('verdict') == 'stale' and row.get('stale_from'):
+        body['verdict'] = row['stale_from']
+    assert sha(json.dumps(body, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode()) == row['record_sha256']
+    assert row['mutant_sha256'] == spec['mutantSha256']
+    if 'execution' not in row:
+        assert spec['retired'] and row['verdict'] == 'retired'
+        continue
+    executions += 1
+    assert not spec['retired'] and row['execution']['head'] == S3
+    assert row['source_sha256'] == snapshot['files'][row['source_file']]['lfSha256']
+    assert row['closure_sha256'] == snapshot['mutation']['coreAndBridgeIncludeClosureSha256']
+    assert row['oracle_sha256'] == spec['oracleSha256']
+    assert row['execution']['tool_sha256'] == snapshot['mutation']['toolSha256']
+assert executions == snapshot['mutation']['expectedExecutionCount'] == 75
+expected_raw = (ROOT / EXPECTED).read_bytes()
+assert expected_raw == git('expected-S3', 'show', S3 + ':' + EXPECTED) == git('expected-L3', 'show', L3 + ':' + EXPECTED)
+assert sum(row.get('count', 0) for row in json.loads(expected_raw)['suites'].values()) == 5188
+for path in ARTIFACTS:
+    assert (ROOT / path).read_bytes() == git('artifact-S3-' + Path(path).name, 'show', S3 + ':' + path)
+assert sha(SNAPSHOT_TOOL.read_bytes()) == SNAPSHOT_TOOL_SHA
+assert before == {path: hashes((ROOT / path).read_bytes()) for path in before}
+assert git('head-after-snapshot', 'rev-parse', 'HEAD').decode().strip() == L3
+assert not git('status-after-snapshot', 'status', '--porcelain=v1', '--untracked-files=no')
+binding = {'sourceS3': S3, 'ledgerL3': L3, 'directParentS3': True, 'onlyChangedPath': LEDGER,
+           'snapshot': {'path': 'snapshot-L3.json', **hashes(snapshot_raw), 'unionFiles': len(snapshot['files'])},
+           'sameBytesAsS3ByExactTotalDiff': len(snapshot['files']) - 1,
+           'ledger': {**hashes(ledger_raw), 'records': len(ledger), 'executions': executions, 'executionHead': S3,
+                      'counts': dict(Counter(row['verdict'] for row in ledger.values())), 'recordChecksumsAllMatch': True,
+                      'executionSourceClosureOracleToolAllMatch': True},
+           'expectedOutsideSnapshot': {'path': EXPECTED, **hashes(expected_raw), 'sameS3L3GitRawBytes': True, 'totalCount': 5188},
+           'architecture': snapshot['architecture'], 'mutation': snapshot['mutation'], 'snapshotRun': snapshot_run,
+           'notClaimed': ['本程序重跑 mutate --check', 'ledger 在 L3 重產', '完整產品驗收完成', '重新查遠端或推送']}
+dump(BIND / 'binding-S3-L3.json', binding)
+dump(ARCH / 'before.json', {'head': L3, 'trackedClean': True, 'criticalFiles': before,
+                           'snapshotSha256': sha(snapshot_raw), 'inputs': snapshot['architecture']['inputs']})
+cli = run(ARCH, ['timeout', '900', sys.executable, '-B', 'tests/architecture_contract.py', '--root', '.',
+                 '--manifest', ARTIFACTS[0]], 'stdout.json', 'stderr.log')
+scan_raw = (ARCH / 'stdout.json').read_bytes()
+scanned = json.loads(scan_raw)
+assert scanned['ok'] and not scanned['diagnostics']
+assert scan_raw == (ROOT / ARTIFACTS[1]).read_bytes()
+after = {path: hashes((ROOT / path).read_bytes()) for path in before}
+assert after == before
+for row in snapshot['architecture']['inputs']:
+    raw = (ROOT / row['path']).read_bytes()
+    assert hashes(raw) == {k: snapshot['files'][row['path']][k] for k in ('bytes', 'rawSha256', 'lfSha256')}
+assert git('head-after-cli', 'rev-parse', 'HEAD').decode().strip() == L3
+assert not git('status-after-cli', 'status', '--porcelain=v1', '--untracked-files=no')
+dump(ARCH / 'after.json', {'head': L3, 'trackedClean': True, 'criticalFiles': after, 'inputCount': len(snapshot['architecture']['inputs']),
+                          'rawAndLFInputsSameAsSnapshot': True, 'inputClosureSha256': snapshot['architecture']['inputClosureSha256']})
+cli_receipt = {'sourceHeadActuallyExecuted': L3, 'execution': cli, 'scanMatchesStoredScanRawBytes': True,
+               'sourceBeforeAfterSame': True, 'architectureInputs': len(snapshot['architecture']['inputs']),
+               'architectureInputClosureSha256': snapshot['architecture']['inputClosureSha256'],
+               'metadataSourceBaseHeadUnchanged': snapshot['architecture']['sourceBaseHead'],
+               'criticalFiles': after, 'scannerOutputCounts': {'sources': len(scanned['sources']), 'edges': len(scanned['edges']), 'diagnostics': len(scanned['diagnostics'])},
+               'genericProductTests': '本程序未重跑；等待 L3 native 完整 suite 原件，不沿用舊 205／18 冒稱本輪實跑。',
+               'notClaimed': ['四 metadata 已在 L3 重產', '完整 native／browser／Q38／§7 驗收完成']}
+dump(ARCH / 'receipt.json', cli_receipt)
+(BIND / 'snapshot-command-code.txt').write_bytes(SNAPSHOT_TOOL.read_bytes())
+(BIND / 'launcher-code.txt').write_bytes(Path(__file__).read_bytes())
+(ARCH / 'launcher-code.txt').write_bytes(Path(__file__).read_bytes())
+print(json.dumps({'sourceHead': L3, 'snapshotExit': snapshot_run['exitCode'], 'snapshotSha256': sha(snapshot_raw),
+                  'snapshotUnionFiles': len(snapshot['files']), 'ledgerRawSha256': sha(ledger_raw),
+                  'architectureCliExit': cli['exitCode'], 'architectureCliSeconds': cli['seconds'],
+                  'architectureCounts': cli_receipt['scannerOutputCounts']}, ensure_ascii=False, indent=2))
+

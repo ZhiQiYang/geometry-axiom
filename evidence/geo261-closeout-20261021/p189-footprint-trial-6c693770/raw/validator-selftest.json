@@ -1,0 +1,564 @@
+[
+  {
+    "case": "正常對照",
+    "expected_pass": true,
+    "actual": {
+      "pass": true,
+      "errors": [],
+      "summary": [
+        {
+          "n": 16,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 32,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 48,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 64,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        }
+      ]
+    }
+  },
+  {
+    "case": "超過門檻",
+    "expected_pass": false,
+    "actual": {
+      "pass": false,
+      "errors": [
+        "P-189 N=64 final/main=2.010000 > 2.0"
+      ],
+      "summary": [
+        {
+          "n": 16,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 32,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 48,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 64,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 2.01
+          },
+          "final_main_ratio": 2.01,
+          "threshold_pass": false
+        }
+      ]
+    }
+  },
+  {
+    "case": "缺樣本",
+    "expected_pass": false,
+    "actual": {
+      "pass": false,
+      "errors": [
+        "N=64 final 樣本輪次不完整：2/3"
+      ],
+      "summary": [
+        {
+          "n": 16,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 32,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 48,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 64,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case": "載入遭拒",
+    "expected_pass": false,
+    "actual": {
+      "pass": false,
+      "errors": [
+        "N=16 main 載入失敗：1 筆"
+      ],
+      "summary": [
+        {
+          "n": 16,
+          "median_seconds": {
+            "base": 1.0,
+            "final": 1.0
+          }
+        },
+        {
+          "n": 32,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 48,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 64,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        }
+      ]
+    }
+  },
+  {
+    "case": "程序崩潰",
+    "expected_pass": false,
+    "actual": {
+      "pass": false,
+      "errors": [
+        "N=16 main 載入失敗：1 筆"
+      ],
+      "summary": [
+        {
+          "n": 16,
+          "median_seconds": {
+            "base": 1.0,
+            "final": 1.0
+          }
+        },
+        {
+          "n": 32,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 48,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 64,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        }
+      ]
+    }
+  },
+  {
+    "case": "錯誤樣本 SHA",
+    "expected_pass": false,
+    "actual": {
+      "pass": false,
+      "errors": [
+        "N=16 main 樣本 SHA 不符：dddddddddddddddddddddddddddddddddddddddd != aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "summary": [
+        {
+          "n": 16,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 32,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 48,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 64,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        }
+      ]
+    }
+  },
+  {
+    "case": "非法時間 nan",
+    "expected_pass": false,
+    "actual": {
+      "pass": false,
+      "errors": [
+        "N=16 main 時間必須為有限正數：nan"
+      ],
+      "summary": [
+        {
+          "n": 16,
+          "median_seconds": {
+            "base": 1.0,
+            "final": 1.0
+          }
+        },
+        {
+          "n": 32,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 48,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 64,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        }
+      ]
+    }
+  },
+  {
+    "case": "非法時間 inf",
+    "expected_pass": false,
+    "actual": {
+      "pass": false,
+      "errors": [
+        "N=16 main 時間必須為有限正數：inf"
+      ],
+      "summary": [
+        {
+          "n": 16,
+          "median_seconds": {
+            "base": 1.0,
+            "final": 1.0
+          }
+        },
+        {
+          "n": 32,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 48,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 64,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        }
+      ]
+    }
+  },
+  {
+    "case": "非法時間 0.0",
+    "expected_pass": false,
+    "actual": {
+      "pass": false,
+      "errors": [
+        "N=16 main 時間必須為有限正數：0.0"
+      ],
+      "summary": [
+        {
+          "n": 16,
+          "median_seconds": {
+            "base": 1.0,
+            "final": 1.0
+          }
+        },
+        {
+          "n": 32,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 48,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 64,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        }
+      ]
+    }
+  },
+  {
+    "case": "非法時間 -1.0",
+    "expected_pass": false,
+    "actual": {
+      "pass": false,
+      "errors": [
+        "N=16 main 時間必須為有限正數：-1.0"
+      ],
+      "summary": [
+        {
+          "n": 16,
+          "median_seconds": {
+            "base": 1.0,
+            "final": 1.0
+          }
+        },
+        {
+          "n": 32,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 48,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        },
+        {
+          "n": 64,
+          "median_seconds": {
+            "main": 1.0,
+            "base": 1.0,
+            "final": 1.0
+          },
+          "final_main_ratio": 1.0,
+          "threshold_pass": true
+        }
+      ]
+    }
+  },
+  {
+    "case": "改動 main dump；產生器=True",
+    "expected_pass": false,
+    "actual": {
+      "identical": true,
+      "all_three_identical": false,
+      "valid_execution": true,
+      "pass": false,
+      "errors": [
+        "產生器場景 main/base/final 完整 stdout 位元組不同"
+      ]
+    }
+  },
+  {
+    "case": "改動 final dump；產生器=True",
+    "expected_pass": false,
+    "actual": {
+      "identical": false,
+      "all_three_identical": false,
+      "valid_execution": true,
+      "pass": false,
+      "errors": [
+        "base/final 完整 stdout 位元組不同",
+        "產生器場景 main/base/final 完整 stdout 位元組不同"
+      ]
+    }
+  },
+  {
+    "case": "改動 main dump；產生器=False",
+    "expected_pass": true,
+    "actual": {
+      "identical": true,
+      "all_three_identical": false,
+      "valid_execution": true,
+      "pass": true,
+      "errors": []
+    }
+  },
+  {
+    "case": "改動 base dump；產生器=False",
+    "expected_pass": false,
+    "actual": {
+      "identical": false,
+      "all_three_identical": false,
+      "valid_execution": true,
+      "pass": false,
+      "errors": [
+        "base/final 完整 stdout 位元組不同"
+      ]
+    }
+  },
+  {
+    "case": "錯誤 dump 收據 SHA",
+    "expected_pass": false,
+    "errors": [
+      "dump 等價收據 commits 不符本次要求"
+    ]
+  },
+  {
+    "case": "錯誤建置收據 SHA",
+    "expected_pass": false,
+    "errors": [
+      "final 建置收據 SHA 不符、缺少或建置失敗"
+    ]
+  }
+]

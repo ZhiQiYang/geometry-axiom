@@ -1,0 +1,50 @@
+{
+  "working_directory": "/workspace",
+  "commands": [
+    {
+      "command": "python3 /workspace/geo261-handoff/handoff/drafts/issue300/bench/gen_scene.py --selftest",
+      "exit_code": 0,
+      "log": "generator-selftest.log"
+    },
+    {
+      "command": "python3 /workspace/geo261-evidence/p189/p189_verify.py selftest",
+      "exit_code": 0,
+      "log": "selftest-run.log",
+      "note": "含來源 SHA、有限正時間及 dump 負控制的最新版判定器"
+    },
+    {
+      "command": "python3 -m py_compile /workspace/geo261-evidence/p189/p189_verify.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 /workspace/geo261-evidence/p189/p189_verify.py build",
+      "exit_code": 0,
+      "log": "build-run.log"
+    },
+    {
+      "command": "python3 /workspace/geo261-evidence/p189/p189_verify.py equivalence",
+      "exit_code": 0,
+      "log": "equivalence-run.log",
+      "note": "175 個場景三方逐位元組相同；本階段耗時不作效能證據"
+    },
+    {
+      "command": "正式計時前比對 build-receipt.json 的三個 binary_sha256，並檢查 process state 與一秒 CPU tick 增量",
+      "initial_exit_code": 1,
+      "exit_code": 0,
+      "receipts": ["timing-preflight-initial.json", "timing-preflight.json"],
+      "note": "三個非殭屍 bridge 經確認是本次測試服務，全部睡眠中且 CPU tick 增量為零"
+    },
+    {
+      "command": "python3 /workspace/geo261-evidence/p189/p189_verify.py timing",
+      "exit_code": 0,
+      "log": "timing-run.log",
+      "note": "36 筆樣本收集完成；此結束碼不是 P-189 門檻判定"
+    },
+    {
+      "command": "python3 /workspace/geo261-evidence/p189/p189_verify.py check",
+      "exit_code": 1,
+      "log": "check-run.log",
+      "note": "來源 SHA 與 175 場景 dump 等價通過，但 N48=2.487236 倍、N64=2.861482 倍，超過 2 倍門檻"
+    }
+  ]
+}

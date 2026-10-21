@@ -1,0 +1,315 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "runId": "l3-6589248c9a94-20261021",
+  "createdUtc": "2026-10-21T05:42:27.557033+00:00",
+  "preparedOnly": true,
+  "readyToLaunch": false,
+  "productExecuted": false,
+  "worktreesCreated": false,
+  "globalStorageTouched": false,
+  "repo": "/workspace/geometry-axiom",
+  "root": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021",
+  "nativeWorktree": "/workspace/geo261-native-l3-6589248c9a94-20261021",
+  "gatesWorktree": "/workspace/geo261-gates-l3-6589248c9a94-20261021",
+  "nativeTmpdir": "/tmp/geo261-native-l3-6589248c9a94-20261021",
+  "globalArchive": "/tmp/geometry-tests-before-l3-6589248c9a94-20261021",
+  "globalDirectory": "/tmp/geometry-tests",
+  "suiteLogDirectory": "/tmp/geometry-tests/run_all-logs",
+  "nativeOut": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native",
+  "nativeLauncherOut": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-launcher",
+  "gatesOut": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates",
+  "nativeBinaryPreservation": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-binary-preservation",
+  "gatesBinaryPreservation": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates-binary-preservation",
+  "sourceFiles": {
+    "tests/run_all.expected.json": {
+      "bytes": 24624,
+      "sha256": "f08443be7de507ea4550790bfdf3d51ce4c35fc74e2055286691ec511082bec0"
+    },
+    "tests/run_all.py": {
+      "bytes": 65687,
+      "sha256": "fb9e5f1a6952ec87b9c472aee4aadf55131a0b270c850177607319b50c183bcf"
+    },
+    "tests/binaries.py": {
+      "bytes": 33058,
+      "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
+    },
+    "geometry-core/domain-decoupling/closeout-tools/run_gates.py": {
+      "bytes": 4455,
+      "sha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3"
+    },
+    "geometry-core/domain-decoupling/closeout-tools/run_controls.py": {
+      "bytes": 4605,
+      "sha256": "b7e7430e53d157f6a82050417be7a9f8d77bd50c1fb5f2f3a34a1ba44de8363f"
+    },
+    "geometry-core/domain-decoupling/closeout-tools/q38_controls.py": {
+      "bytes": 3446,
+      "sha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2"
+    }
+  },
+  "expectedScope": {
+    "suites": 224,
+    "pythonModules": 188,
+    "countedTotal": 5188
+  },
+  "expectedChangedCounts": {
+    "py:test_geo261_wood_contact_world": 12,
+    "py:test_geo261_host_facts_authority": 27,
+    "py:test_geo261_placement_definition": 15
+  },
+  "allowedSkips": [
+    {
+      "suite": "py:test_gdi_contract",
+      "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+      "reason": "requires compiled Windows GDI contract harness",
+      "platforms": [
+        "posix"
+      ],
+      "why": "Windows GDI resources do not exist on POSIX; all native geometry suites still run"
+    },
+    {
+      "suite": "py:test_cli_args",
+      "test": "test_cli_args.CliArgs.test_svg_write_failure_is_reported_without_unlinking_device",
+      "reason": "requires POSIX full device",
+      "platforms": [
+        "nt"
+      ],
+      "why": "/dev/full 是 POSIX 裝置，Windows 上不存在"
+    },
+    {
+      "suite": "py:test_assembly_mutation_check",
+      "test": "test_assembly_mutation_check.AssemblyMutationCheck.test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left",
+      "reason": "requires POSIX process groups and /proc",
+      "platforms": [
+        "nt"
+      ],
+      "why": "程序群組與 /proc 是 POSIX／Linux 才有的東西，Windows 上不存在；Linux／WSL／CI 照常真的執行"
+    }
+  ],
+  "registry": [
+    {
+      "name": "core",
+      "exe": "core",
+      "envs": [
+        "GEOMETRY_TEST_CORE"
+      ],
+      "windowsOnly": false
+    },
+    {
+      "name": "bridge",
+      "exe": "bridge",
+      "envs": [
+        "GEOMETRY_TEST_BRIDGE",
+        "GEOMETRY_ENGINEERING_BRIDGE"
+      ],
+      "windowsOnly": false
+    },
+    {
+      "name": "pf3-algorithm",
+      "exe": "pf3-algorithm",
+      "envs": [
+        "GEOMETRY_TEST_PF3_ALGORITHM"
+      ],
+      "windowsOnly": false
+    },
+    {
+      "name": "integrity",
+      "exe": "integrity",
+      "envs": [],
+      "windowsOnly": false
+    },
+    {
+      "name": "gdi",
+      "exe": "gdi-contract",
+      "envs": [
+        "GEOMETRY_TEST_GDI_HARNESS"
+      ],
+      "windowsOnly": true
+    },
+    {
+      "name": "model-base",
+      "exe": "model-base",
+      "envs": [
+        "GEOMETRY_MODEL_BASE"
+      ],
+      "windowsOnly": false
+    },
+    {
+      "name": "engjson",
+      "exe": "engineering-json-test",
+      "envs": [
+        "GEOMETRY_TEST_ENGINEERING_JSON"
+      ],
+      "windowsOnly": false
+    }
+  ],
+  "unsetEnvironment": [
+    "CC",
+    "GEOMETRY_ENGINEERING_BRIDGE",
+    "GEOMETRY_MODEL_BASE",
+    "GEOMETRY_TEST_BRIDGE",
+    "GEOMETRY_TEST_CORE",
+    "GEOMETRY_TEST_ENGINEERING_JSON",
+    "GEOMETRY_TEST_GDI_HARNESS",
+    "GEOMETRY_TEST_PF3_ALGORITHM",
+    "PYTHONOPTIMIZE"
+  ],
+  "nativeArgv": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "GEOMETRY_ENGINEERING_BRIDGE",
+    "-u",
+    "GEOMETRY_MODEL_BASE",
+    "-u",
+    "GEOMETRY_TEST_BRIDGE",
+    "-u",
+    "GEOMETRY_TEST_CORE",
+    "-u",
+    "GEOMETRY_TEST_ENGINEERING_JSON",
+    "-u",
+    "GEOMETRY_TEST_GDI_HARNESS",
+    "-u",
+    "GEOMETRY_TEST_PF3_ALGORITHM",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "-c",
+    "import argparse,ast,datetime,hashlib,json,os,subprocess,sys,time,traceback\nfrom pathlib import Path\n\ndef utc():\n    return datetime.datetime.now(datetime.timezone.utc).isoformat()\n\ndef atomic_text(path, text):\n    temporary=path.with_name(path.name+\".pending-\"+str(os.getpid()))\n    with temporary.open(\"w\",encoding=\"utf-8\") as handle:\n        handle.write(text)\n        handle.flush()\n        os.fsync(handle.fileno())\n    os.replace(temporary,path)\n\ndef constant_assignment(tree,name):\n    for node in tree.body:\n        if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id==name for t in node.targets):\n            if isinstance(node.value,ast.Constant):\n                return node.value.value\n            if isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Name) and node.value.func.id==\"Path\" and len(node.value.args)==1:\n                return ast.literal_eval(node.value.args[0])\n    raise ValueError(\"wrapper 缺少可核對的固定值：\"+name)\n\nparser=argparse.ArgumentParser(description=\"只調度已固定來源的 native wrapper；標準輸出直接落盤。\")\nparser.add_argument(\"--wrapper-code\",required=True)\nparser.add_argument(\"--cwd\",required=True)\nparser.add_argument(\"--native-out\",required=True)\nparser.add_argument(\"--launcher-out\",required=True)\nparser.add_argument(\"--source-sha\",required=True)\nparser.add_argument(\"--validate-only\",action=\"store_true\")\nargs=parser.parse_args()\nif len(args.source_sha)!=40 or any(c not in \"0123456789abcdef\" for c in args.source_sha):\n    parser.error(\"source-sha 必須是完整的 40 位小寫十六進位 SHA。\")\nwrapper_path=Path(args.wrapper_code).resolve(strict=True)\nworktree=Path(args.cwd).resolve(strict=True)\nnative_out=Path(args.native_out).absolute()\nlauncher_out=Path(args.launcher_out).absolute()\nif native_out==launcher_out:\n    parser.error(\"launcher-out 與 native-out 必須分開，避免預先建立 wrapper 輸出目錄。\")\nwrapper_bytes=wrapper_path.read_bytes()\nwrapper_source=wrapper_bytes.decode(\"utf-8\")\ntree=ast.parse(wrapper_source,filename=str(wrapper_path))\nassert constant_assignment(tree,\"expected\")==args.source_sha,\"wrapper SHA 與實際參數不符\"\nassert Path(constant_assignment(tree,\"cwd\")).resolve(strict=True)==worktree,\"wrapper cwd 與實際參數不符\"\nassert Path(constant_assignment(tree,\"out\")).absolute()==native_out,\"wrapper out 與實際參數不符\"\nwrapper_argv=[sys.executable,\"-B\",\"-c\",wrapper_source]\nvalidation={\"validatedUtc\":utc(),\"mode\":\"只驗參數，未執行 wrapper\" if args.validate_only else \"正式執行\",\"sourceShaExpected\":args.source_sha,\"cwd\":str(worktree),\"nativeOutputPath\":str(native_out),\"launcherOutputPath\":str(launcher_out),\"wrapperCodePath\":str(wrapper_path),\"wrapperCodeBytes\":len(wrapper_bytes),\"wrapperCodeSha256\":hashlib.sha256(wrapper_bytes).hexdigest(),\"launcherArgv\":sys.orig_argv,\"wrapperArgv\":wrapper_argv}\nif args.validate_only:\n    validation[\"nativeStarted\"]=False\n    validation[\"wrapperStarted\"]=False\n    validation[\"subprocessCalls\"]=0\n    print(json.dumps(validation,ensure_ascii=False),flush=True)\n    sys.exit(0)\n\nlauncher_out.mkdir(parents=True,exist_ok=True)\nassert not (launcher_out/\".exit-code\").exists(),\"已存在結束碼，拒絕覆寫既有輪次\"\nassert not (launcher_out/\"launcher-receipt.json\").exists(),\"已存在父層收據，拒絕覆寫既有輪次\"\nassert not native_out.exists(),\"wrapper 輸出目錄必須尚未存在\"\nlog_path=launcher_out/\"orchestrator.log\"\nlogfd=os.open(log_path,os.O_WRONLY|os.O_CREAT|os.O_APPEND,0o644)\nos.dup2(logfd,1)\nos.dup2(logfd,2)\nif logfd not in (1,2):\n    os.close(logfd)\nstarted=utc()\nmono=time.monotonic()\ncommand={**validation,\"startedUtc\":started,\"launcherPid\":os.getpid(),\"orchestratorLog\":str(log_path),\"stdio\":\"父 launcher 與 wrapper 的 stdout/stderr 都直接寫入同一獨立檔案，無 tool transport pipe。\"}\natomic_text(launcher_out/\"launcher-command.json\",json.dumps(command,ensure_ascii=False,indent=2)+\"\\n\")\natomic_text(launcher_out/\"launcher-code.txt\",sys.orig_argv[sys.orig_argv.index(\"-c\")+1])\natomic_text(launcher_out/\"wrapper-code.txt\",wrapper_source)\nwrapper_pid=None\nwrapper_exit=None\nspawn_error=None\ntry:\n    with log_path.open(\"ab\",buffering=0) as log:\n        process=subprocess.Popen(wrapper_argv,cwd=worktree,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT)\n        wrapper_pid=process.pid\n        atomic_text(launcher_out/\"wrapper-pid.json\",json.dumps({\"wrapperPid\":wrapper_pid,\"startedUtc\":utc()},ensure_ascii=False,indent=2)+\"\\n\")\n        wrapper_exit=process.wait()\nexcept BaseException as exc:\n    spawn_error={\"type\":type(exc).__name__,\"message\":str(exc),\"traceback\":traceback.format_exc()}\n    traceback.print_exc()\nnative_receipt_path=native_out/\"receipt.json\"\nnative_receipt=None\nnative_receipt_error=None\nif native_receipt_path.exists():\n    try:\n        native_receipt=json.loads(native_receipt_path.read_text())\n    except BaseException as exc:\n        native_receipt_error={\"type\":type(exc).__name__,\"message\":str(exc)}\nlauncher_exit=125 if wrapper_exit is None else (wrapper_exit if wrapper_exit>=0 else 128-wrapper_exit)\nreceipt={**command,\"finishedUtc\":utc(),\"elapsedSeconds\":time.monotonic()-mono,\"wrapperPid\":wrapper_pid,\"wrapperStarted\":wrapper_pid is not None,\"wrapperReturnCode\":wrapper_exit,\"launcherExitCode\":launcher_exit,\"launcherError\":spawn_error,\"nativeReceiptPath\":str(native_receipt_path),\"nativeReceiptExists\":native_receipt_path.exists(),\"nativeReceiptReadError\":native_receipt_error,\"nativeMainTimeoutReturnCode\":native_receipt.get(\"exitCode\") if isinstance(native_receipt,dict) else None,\"nativeMainChildRawWaitStatus\":native_receipt.get(\"mainChildRawWaitStatus\") if isinstance(native_receipt,dict) else None,\"nativeSourceSha\":native_receipt.get(\"sourceSha\") if isinstance(native_receipt,dict) else None,\"nativeReceiptSha256\":hashlib.sha256(native_receipt_path.read_bytes()).hexdigest() if native_receipt_path.exists() else None}\nif wrapper_exit is not None:\n    atomic_text(launcher_out/\".exit-code\",str(wrapper_exit)+\"\\n\")\natomic_text(launcher_out/\".launcher-exit-code\",str(launcher_exit)+\"\\n\")\natomic_text(launcher_out/\"launcher-receipt.json\",json.dumps(receipt,ensure_ascii=False,indent=2)+\"\\n\")\nprint(json.dumps({\"finishedUtc\":receipt[\"finishedUtc\"],\"wrapperReturnCode\":wrapper_exit,\"launcherExitCode\":launcher_exit,\"nativeMainTimeoutReturnCode\":receipt[\"nativeMainTimeoutReturnCode\"]},ensure_ascii=False),flush=True)\nsys.exit(launcher_exit)\n",
+    "--wrapper-code",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/native-wrapper-code.txt",
+    "--cwd",
+    "/workspace/geo261-native-l3-6589248c9a94-20261021",
+    "--native-out",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native",
+    "--launcher-out",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-launcher",
+    "--source-sha",
+    "6589248c9a94bdf0460d8f84dd1610e51048188b"
+  ],
+  "nativeValidateOnlyArgv": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "GEOMETRY_ENGINEERING_BRIDGE",
+    "-u",
+    "GEOMETRY_MODEL_BASE",
+    "-u",
+    "GEOMETRY_TEST_BRIDGE",
+    "-u",
+    "GEOMETRY_TEST_CORE",
+    "-u",
+    "GEOMETRY_TEST_ENGINEERING_JSON",
+    "-u",
+    "GEOMETRY_TEST_GDI_HARNESS",
+    "-u",
+    "GEOMETRY_TEST_PF3_ALGORITHM",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "-c",
+    "import argparse,ast,datetime,hashlib,json,os,subprocess,sys,time,traceback\nfrom pathlib import Path\n\ndef utc():\n    return datetime.datetime.now(datetime.timezone.utc).isoformat()\n\ndef atomic_text(path, text):\n    temporary=path.with_name(path.name+\".pending-\"+str(os.getpid()))\n    with temporary.open(\"w\",encoding=\"utf-8\") as handle:\n        handle.write(text)\n        handle.flush()\n        os.fsync(handle.fileno())\n    os.replace(temporary,path)\n\ndef constant_assignment(tree,name):\n    for node in tree.body:\n        if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id==name for t in node.targets):\n            if isinstance(node.value,ast.Constant):\n                return node.value.value\n            if isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Name) and node.value.func.id==\"Path\" and len(node.value.args)==1:\n                return ast.literal_eval(node.value.args[0])\n    raise ValueError(\"wrapper 缺少可核對的固定值：\"+name)\n\nparser=argparse.ArgumentParser(description=\"只調度已固定來源的 native wrapper；標準輸出直接落盤。\")\nparser.add_argument(\"--wrapper-code\",required=True)\nparser.add_argument(\"--cwd\",required=True)\nparser.add_argument(\"--native-out\",required=True)\nparser.add_argument(\"--launcher-out\",required=True)\nparser.add_argument(\"--source-sha\",required=True)\nparser.add_argument(\"--validate-only\",action=\"store_true\")\nargs=parser.parse_args()\nif len(args.source_sha)!=40 or any(c not in \"0123456789abcdef\" for c in args.source_sha):\n    parser.error(\"source-sha 必須是完整的 40 位小寫十六進位 SHA。\")\nwrapper_path=Path(args.wrapper_code).resolve(strict=True)\nworktree=Path(args.cwd).resolve(strict=True)\nnative_out=Path(args.native_out).absolute()\nlauncher_out=Path(args.launcher_out).absolute()\nif native_out==launcher_out:\n    parser.error(\"launcher-out 與 native-out 必須分開，避免預先建立 wrapper 輸出目錄。\")\nwrapper_bytes=wrapper_path.read_bytes()\nwrapper_source=wrapper_bytes.decode(\"utf-8\")\ntree=ast.parse(wrapper_source,filename=str(wrapper_path))\nassert constant_assignment(tree,\"expected\")==args.source_sha,\"wrapper SHA 與實際參數不符\"\nassert Path(constant_assignment(tree,\"cwd\")).resolve(strict=True)==worktree,\"wrapper cwd 與實際參數不符\"\nassert Path(constant_assignment(tree,\"out\")).absolute()==native_out,\"wrapper out 與實際參數不符\"\nwrapper_argv=[sys.executable,\"-B\",\"-c\",wrapper_source]\nvalidation={\"validatedUtc\":utc(),\"mode\":\"只驗參數，未執行 wrapper\" if args.validate_only else \"正式執行\",\"sourceShaExpected\":args.source_sha,\"cwd\":str(worktree),\"nativeOutputPath\":str(native_out),\"launcherOutputPath\":str(launcher_out),\"wrapperCodePath\":str(wrapper_path),\"wrapperCodeBytes\":len(wrapper_bytes),\"wrapperCodeSha256\":hashlib.sha256(wrapper_bytes).hexdigest(),\"launcherArgv\":sys.orig_argv,\"wrapperArgv\":wrapper_argv}\nif args.validate_only:\n    validation[\"nativeStarted\"]=False\n    validation[\"wrapperStarted\"]=False\n    validation[\"subprocessCalls\"]=0\n    print(json.dumps(validation,ensure_ascii=False),flush=True)\n    sys.exit(0)\n\nlauncher_out.mkdir(parents=True,exist_ok=True)\nassert not (launcher_out/\".exit-code\").exists(),\"已存在結束碼，拒絕覆寫既有輪次\"\nassert not (launcher_out/\"launcher-receipt.json\").exists(),\"已存在父層收據，拒絕覆寫既有輪次\"\nassert not native_out.exists(),\"wrapper 輸出目錄必須尚未存在\"\nlog_path=launcher_out/\"orchestrator.log\"\nlogfd=os.open(log_path,os.O_WRONLY|os.O_CREAT|os.O_APPEND,0o644)\nos.dup2(logfd,1)\nos.dup2(logfd,2)\nif logfd not in (1,2):\n    os.close(logfd)\nstarted=utc()\nmono=time.monotonic()\ncommand={**validation,\"startedUtc\":started,\"launcherPid\":os.getpid(),\"orchestratorLog\":str(log_path),\"stdio\":\"父 launcher 與 wrapper 的 stdout/stderr 都直接寫入同一獨立檔案，無 tool transport pipe。\"}\natomic_text(launcher_out/\"launcher-command.json\",json.dumps(command,ensure_ascii=False,indent=2)+\"\\n\")\natomic_text(launcher_out/\"launcher-code.txt\",sys.orig_argv[sys.orig_argv.index(\"-c\")+1])\natomic_text(launcher_out/\"wrapper-code.txt\",wrapper_source)\nwrapper_pid=None\nwrapper_exit=None\nspawn_error=None\ntry:\n    with log_path.open(\"ab\",buffering=0) as log:\n        process=subprocess.Popen(wrapper_argv,cwd=worktree,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT)\n        wrapper_pid=process.pid\n        atomic_text(launcher_out/\"wrapper-pid.json\",json.dumps({\"wrapperPid\":wrapper_pid,\"startedUtc\":utc()},ensure_ascii=False,indent=2)+\"\\n\")\n        wrapper_exit=process.wait()\nexcept BaseException as exc:\n    spawn_error={\"type\":type(exc).__name__,\"message\":str(exc),\"traceback\":traceback.format_exc()}\n    traceback.print_exc()\nnative_receipt_path=native_out/\"receipt.json\"\nnative_receipt=None\nnative_receipt_error=None\nif native_receipt_path.exists():\n    try:\n        native_receipt=json.loads(native_receipt_path.read_text())\n    except BaseException as exc:\n        native_receipt_error={\"type\":type(exc).__name__,\"message\":str(exc)}\nlauncher_exit=125 if wrapper_exit is None else (wrapper_exit if wrapper_exit>=0 else 128-wrapper_exit)\nreceipt={**command,\"finishedUtc\":utc(),\"elapsedSeconds\":time.monotonic()-mono,\"wrapperPid\":wrapper_pid,\"wrapperStarted\":wrapper_pid is not None,\"wrapperReturnCode\":wrapper_exit,\"launcherExitCode\":launcher_exit,\"launcherError\":spawn_error,\"nativeReceiptPath\":str(native_receipt_path),\"nativeReceiptExists\":native_receipt_path.exists(),\"nativeReceiptReadError\":native_receipt_error,\"nativeMainTimeoutReturnCode\":native_receipt.get(\"exitCode\") if isinstance(native_receipt,dict) else None,\"nativeMainChildRawWaitStatus\":native_receipt.get(\"mainChildRawWaitStatus\") if isinstance(native_receipt,dict) else None,\"nativeSourceSha\":native_receipt.get(\"sourceSha\") if isinstance(native_receipt,dict) else None,\"nativeReceiptSha256\":hashlib.sha256(native_receipt_path.read_bytes()).hexdigest() if native_receipt_path.exists() else None}\nif wrapper_exit is not None:\n    atomic_text(launcher_out/\".exit-code\",str(wrapper_exit)+\"\\n\")\natomic_text(launcher_out/\".launcher-exit-code\",str(launcher_exit)+\"\\n\")\natomic_text(launcher_out/\"launcher-receipt.json\",json.dumps(receipt,ensure_ascii=False,indent=2)+\"\\n\")\nprint(json.dumps({\"finishedUtc\":receipt[\"finishedUtc\"],\"wrapperReturnCode\":wrapper_exit,\"launcherExitCode\":launcher_exit,\"nativeMainTimeoutReturnCode\":receipt[\"nativeMainTimeoutReturnCode\"]},ensure_ascii=False),flush=True)\nsys.exit(launcher_exit)\n",
+    "--wrapper-code",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/native-wrapper-code.txt",
+    "--cwd",
+    "/workspace/geo261-native-l3-6589248c9a94-20261021",
+    "--native-out",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native",
+    "--launcher-out",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-launcher",
+    "--source-sha",
+    "6589248c9a94bdf0460d8f84dd1610e51048188b",
+    "--validate-only"
+  ],
+  "gateCommands": {
+    "q38": [
+      "env",
+      "-u",
+      "CC",
+      "-u",
+      "PYTHONOPTIMIZE",
+      "python3",
+      "-B",
+      "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/phase-launcher.py",
+      "q38"
+    ],
+    "controls": [
+      "env",
+      "-u",
+      "CC",
+      "-u",
+      "PYTHONOPTIMIZE",
+      "python3",
+      "-B",
+      "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/phase-launcher.py",
+      "controls"
+    ],
+    "card": [
+      "env",
+      "-u",
+      "CC",
+      "-u",
+      "PYTHONOPTIMIZE",
+      "python3",
+      "-B",
+      "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/phase-launcher.py",
+      "card"
+    ],
+    "axiom": [
+      "env",
+      "-u",
+      "CC",
+      "-u",
+      "PYTHONOPTIMIZE",
+      "python3",
+      "-B",
+      "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/phase-launcher.py",
+      "axiom"
+    ]
+  },
+  "gateJobs": 1,
+  "formalNativeCommand": [
+    "timeout",
+    "2100",
+    "python3",
+    "tests/run_all.py",
+    "--build"
+  ],
+  "stackBytes": 16777216,
+  "sourceSafety": "取得 root 明確排程後才建立 detached trees、保全舊 global、建 fresh TMPDIR、preflight 與啟動。",
+  "schedule": "正式 P189 先獨占；native 初 build 六 binary/sidecar 保存後放自有 runtime canvas；gates 等 native 完成與 root 放行。",
+  "baselineProof": {
+    "parent": {
+      "path": "/workspace/geo261-evidence/native-l-preparation/launcher-source.txt",
+      "sha256": "6c32561bf1e6fbe72f78167918be60e64418655fc201ac924d58d34ef0d10e7c"
+    },
+    "wrapper": {
+      "path": "/workspace/geo261-evidence/native-final-launcher/wrapper-code.txt",
+      "sha256": "64ff6ee9c5a506c5ae89ec19df3bd1a03fe93ab1943bda5a6ef7a60bbdf328c4"
+    },
+    "phase": {
+      "path": "/workspace/geo261-evidence/gates-l-preparation/phase-launcher.py",
+      "sha256": "2b79e3b110fdc3eb3e51b54c13102c3f4c0c260b282ea00f7d198f191eff3440"
+    }
+  },
+  "wrapperOnlyFourConstantsChanged": true,
+  "phaseOnlyNecessaryPathsAndJobsChanged": true,
+  "parentBytesUnchanged": true,
+  "files": {
+    "native-parent-code.txt": {
+      "bytes": 6477,
+      "sha256": "6c32561bf1e6fbe72f78167918be60e64418655fc201ac924d58d34ef0d10e7c"
+    },
+    "native-wrapper-code.txt": {
+      "bytes": 4951,
+      "sha256": "3b9372aac1ce431385fb5de063587a045fd2741682add31d32883daa1fa0db0a"
+    },
+    "phase-launcher.py": {
+      "bytes": 6005,
+      "sha256": "02fe0c9606bab8ae4132c743eaa9c38d47d91cc2a44fd15865eb169c651ddc40"
+    }
+  }
+}

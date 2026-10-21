@@ -1,0 +1,53 @@
+[
+  {
+    "label": "main",
+    "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "geometry-web/web_bridge.c",
+      "-o",
+      "bridge",
+      "-lm"
+    ],
+    "cwd": "/workspace/geo261-perf-src/adbaebf9",
+    "returncode": 0,
+    "seconds": 11.684485651999978,
+    "binary_sha256": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045"
+  },
+  {
+    "label": "base",
+    "sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "geometry-web/web_bridge.c",
+      "-o",
+      "bridge",
+      "-lm"
+    ],
+    "cwd": "/workspace/geo261-perf-src/3e600772",
+    "returncode": 0,
+    "seconds": 19.81031557,
+    "binary_sha256": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f"
+  },
+  {
+    "label": "final",
+    "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "geometry-web/web_bridge.c",
+      "-o",
+      "bridge",
+      "-lm"
+    ],
+    "cwd": "/workspace/geo261-perf-src/7dae5f21",
+    "returncode": 0,
+    "seconds": 21.740244500000017,
+    "binary_sha256": "6948e6ad93685c4f72104ecf2a416ec0153617b4bdac9ed81e11aaf6d25e33e7"
+  }
+]

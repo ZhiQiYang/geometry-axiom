@@ -1,0 +1,10 @@
+{
+  "operationCommand": "python3 /workspace/geo261-evidence/p73-service-cleanup/command-code.txt > /workspace/geo261-evidence/p73-service-cleanup-operation.log 2>&1",
+  "observedOperationExitCode": 0,
+  "observationSource": "本輪 tools.exec_command 的實際回覆，chunk_id=c9a837，exit_code=0，wall_time_seconds=0.168660076；此檔為事後逐項轉錄，不是原生 .exit-code 檔，也不是由 receipt.passed 推算",
+  "serviceWaitReturncode": null,
+  "serviceWaitExplanation": "原服務不是此次清理程序的直接子程序，未取得 wait() 回傳碼；不把清理命令的 0 當成服務退出碼",
+  "cleanupResult": "只向核對過 PID/startTime 的自有服務送一次 pidfd SIGINT，服務及其 bridge 的 /proc 均消失，18843 connect_ex 回 ECONNREFUSED，ss 無 listener",
+  "initialReadLimitation": "初次讀 /proc/138215/cwd 的唯讀命令曾以 PermissionError 結束（exit 1）；改以可讀 stat/cmdline、原 runtime 隨機 session、起始時間及測試世界交叉核實後才清理，未升權",
+  "productTestConclusion": "這是服務清理紀錄，不是產品驗收或突變自證；正式 L canvas 尚未執行"
+}

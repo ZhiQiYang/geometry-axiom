@@ -1,0 +1,39 @@
+{
+  "recordedUtc": "2026-10-21T06:31:49.478282+00:00",
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "previousCommentaryInterpretation": "頂層只有 native baseline exit0，因此稱目前在 model baseline。",
+  "correction": "原正式工具先 prepare_native 所有 native cases、再 judge_native，之後才進 model baseline；頂層尚無 model baseline 行不足以判定當前正在跑 model baseline。最新編譯收據證明 native mutant 準備正在推進。",
+  "sourcePath": "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/section_profile_mutation_check.py",
+  "sourceFileSha256": "3004734c4e1052e95d3234091bc8fb03c20cf7546282432704fca0a07071ee6c",
+  "sourceLines": {
+    "nativeBaselinePrint": 719,
+    "prepareAllNative": 724,
+    "judgeAllNative": 725,
+    "modelBaseline": 733
+  },
+  "compileReceiptCount": 25,
+  "latestCompileReceipts": [
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM22.compile.json",
+      "bytes": 603,
+      "sha256": "53dcc11e938b1cccec91154ddb60bf91d05db82c3b5e7e28038e7ced55579f42",
+      "mtimeNs": 1792564265355993814
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM23.compile.json",
+      "bytes": 603,
+      "sha256": "618084a55280a1d6fd3e0347fcd076d5fd9661031ff87795a77a9b1d2c9b59fa",
+      "mtimeNs": 1792564287130983313
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM24.compile.json",
+      "bytes": 603,
+      "sha256": "40fd72b53e5e9c9e32d3d04359f251b09b02f26ec90ff61131f4dd5ad836d280",
+      "mtimeNs": 1792564307578599019
+    }
+  ],
+  "existingRawChanged": false,
+  "productRestarted": false,
+  "criteriaChanged": false,
+  "procObservationLimitation": "父PID的stat/cmdline可讀，但task/<pid>/children當次FileNotFoundError；只記讀取範圍，未據此推定程序已退出或環境原因。"
+}

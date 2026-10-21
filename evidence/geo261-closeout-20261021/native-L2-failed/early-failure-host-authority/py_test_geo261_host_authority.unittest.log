@@ -1,0 +1,23 @@
+........F........F
+======================================================================
+FAIL: test_footprint_raw_anchor_bypass_fails_precise_actual_value_oracle (test_geo261_host_authority.HostAuthority.test_footprint_raw_anchor_bypass_fails_precise_actual_value_oracle)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-native-l2-249571fe2477-20261021/tests/test_geo261_host_authority.py", line 136, in test_footprint_raw_anchor_bypass_fails_precise_actual_value_oracle
+    self.h_control('geometry-app/native/reference_sources.inc', FOOTPRINT_ANCHOR,
+  File "/workspace/geo261-native-l2-249571fe2477-20261021/tests/test_geo261_host_authority.py", line 122, in h_control
+    self.assertEqual(1, text[target].count(before), 'Control must hit once: ' + marker)
+AssertionError: 1 != 0 : Control must hit once: host-footprint-actual-box-and-frame
+
+======================================================================
+FAIL: test_harness_and_consumers_have_actual_value_paths_and_unique_controls (test_geo261_host_authority.HostAuthorityBoundary.test_harness_and_consumers_have_actual_value_paths_and_unique_controls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-native-l2-249571fe2477-20261021/tests/test_geo261_host_authority.py", line 28, in test_harness_and_consumers_have_actual_value_paths_and_unique_controls
+    self.assertEqual(1, source.count(FOOTPRINT_ANCHOR))
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 18 tests in 12.278s
+
+FAILED (failures=2)

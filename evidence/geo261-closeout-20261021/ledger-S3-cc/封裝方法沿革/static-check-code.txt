@@ -1,0 +1,20 @@
+"""只做外部封包器 AST/hash 與缺參數早拒絕；不跑封包或產品。"""
+from pathlib import Path
+import ast,difflib,hashlib,json,subprocess,datetime
+p=Path('/workspace/geo261-evidence/ledger-S3-bundle-preparation')
+script=p/'bundle_ledger.py';raw=script.read_bytes();tree=ast.parse(raw)
+old=Path('/workspace/geo261-evidence/ledger-A2-bundle-preparation/bundle_ledger.py').read_bytes()
+with (p/'historical-A2-packer-code.txt').open('xb') as f:f.write(old)
+with (p/'bundle-S3-code.txt').open('xb') as f:f.write(raw)
+with (p/'bundle-S3.patch').open('x') as f:f.write(''.join(difflib.unified_diff(old.decode().splitlines(True),raw.decode().splitlines(True),fromfile='historical-A2-packer.py',tofile='bundle_ledger.py')))
+command=['python3','-B',str(script)];result=subprocess.run(command,capture_output=True)
+for name,data in (('stdout',result.stdout),('stderr',result.stderr)):
+    with (p/('negative.'+name)).open('xb') as f:f.write(data)
+assert result.returncode==2 and b'--ledger-commit' in result.stderr and b'--source' in result.stderr
+assert not (p/'bundle-result.json').exists()
+out={'checkedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'astPassed':True,'scriptSha256':hashlib.sha256(raw).hexdigest(),
+ 'historicalScriptSha256':hashlib.sha256(old).hexdigest(),'negativeCommand':command,'negativeExitCode':result.returncode,
+ 'packageExecuted':False,'productExecuted':False,'fakeSourceOrLedgerShaProvided':False,
+ '備註':'尚無L3，僅檢語法與必要參數早拒絕；真正封包前須提供實際SHA/publication與真碼收據。'}
+with (p/'static-check.json').open('x') as f:json.dump(out,f,ensure_ascii=False,indent=2);f.write('\n')
+print(json.dumps(out,ensure_ascii=False))

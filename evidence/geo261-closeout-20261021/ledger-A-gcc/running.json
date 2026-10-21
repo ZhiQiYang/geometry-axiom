@@ -1,0 +1,18 @@
+{
+  "phase": "mutate",
+  "command": [
+    "python3",
+    "-B",
+    "-u",
+    "tests/mutate.py"
+  ],
+  "cwd": "/workspace/geo261-ledger-run.ra2_k2z2/repo",
+  "source_sha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "pid": 145188,
+  "pgid": 145188,
+  "started_utc": "2026-10-20T21:15:43.821081+00:00",
+  "stdout": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/mutate.stdout",
+  "stderr": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/mutate.stderr",
+  "results": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/mutants_results.json",
+  "supervisor_pid": 145161
+}

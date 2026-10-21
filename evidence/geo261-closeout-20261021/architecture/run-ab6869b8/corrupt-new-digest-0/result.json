@@ -1,0 +1,31 @@
+{
+  "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-ab6869b8/corrupt-new-digest-0.json",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "tests/architecture_contract.py",
+    "--root",
+    ".",
+    "--manifest",
+    "/workspace/geo261-evidence/architecture/run-ab6869b8/corrupt-new-digest-0.json"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceBaseHead": "ab6869b86a4ad82345359b72397fc055280d8308",
+  "startedUtc": "2026-10-20T21:10:32.010441+00:00",
+  "finishedUtc": "2026-10-20T21:10:32.275752+00:00",
+  "seconds": 0.265,
+  "complete": true,
+  "exitCode": 1,
+  "stdout": {
+    "path": "corrupt-new-digest-0/stdout.log",
+    "rawSha256": "7459a1a0f010be4cf049d6d0aac157dd2ec966ac750d8e278b9ca3c7cc0feb61",
+    "lfSha256": "7459a1a0f010be4cf049d6d0aac157dd2ec966ac750d8e278b9ca3c7cc0feb61",
+    "bytes": 352
+  },
+  "stderr": {
+    "path": "corrupt-new-digest-0/stderr.log",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  }
+}

@@ -1,0 +1,1997 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "createdUtc": "2026-10-21T07:02:51.007080+00:00",
+  "sourceFileCount": 284,
+  "sourceTotalBytes": 9496607,
+  "files": [
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/acceptance.json",
+      "artifactPath": "run/assembly/acceptance.json",
+      "bytes": 1553,
+      "sha256": "7c32e70aad5fad113747da820b90a5093a78e3db9f928dce1363cfbbe063c7ae",
+      "sourceMtimeNs": 1792564651893289246
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-blank-390.png",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-blank-390.png",
+      "bytes": 51013,
+      "sha256": "c1830c0e0a0104a002e9936dfbda68df402ea6116508dd57dd61cd83c58017de",
+      "sourceMtimeNs": 1792564602145663828
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-desktop.png",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-desktop.png",
+      "bytes": 92258,
+      "sha256": "dd5829fc013802e59730eb00eab64eb4e1ee31b616a12ff25001e3ac64076054",
+      "sourceMtimeNs": 1792564504290498858
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-generation-g07-before.gcanvas",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-generation-g07-before.gcanvas",
+      "bytes": 5200,
+      "sha256": "29051689c37243ff2a8acb173a052c9758b765ddc80bb93c4c19c611ac1da166",
+      "sourceMtimeNs": 1792564618945531070
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-generation-g07-before.json",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-generation-g07-before.json",
+      "bytes": 1874,
+      "sha256": "68be74474b75645760e17064fd09b1431b2389daf0b9fab400a525209baa4e06",
+      "sourceMtimeNs": 1792564618945531070
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-generation-mobile.png",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-generation-mobile.png",
+      "bytes": 46521,
+      "sha256": "54c0e3caa65ecbe9e186731d71c4878e403e62d62db5d4e61ffa880acf3820c8",
+      "sourceMtimeNs": 1792564623441493509
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-mobile.png",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-mobile.png",
+      "bytes": 39145,
+      "sha256": "26f6a5ab6faaf64ed532afa824c4980a8ff06c8252bafabb63edefabfd8723ec",
+      "sourceMtimeNs": 1792564510462445935
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-review-glyphs-390.png",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-review-glyphs-390.png",
+      "bytes": 32513,
+      "sha256": "9282b5f4f36117fe02addc2593575e58571dc2421001790be50d358147198237",
+      "sourceMtimeNs": 1792564534174243263
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-review-glyphs-desktop.png",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-review-glyphs-desktop.png",
+      "bytes": 88222,
+      "sha256": "ba26c19826d14da0630c13ad2aeed4d534c7417145aedd5ba441fb3a46ec266d",
+      "sourceMtimeNs": 1792564533874245793
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-review-glyphs-max-zoom-390.png",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-review-glyphs-max-zoom-390.png",
+      "bytes": 47932,
+      "sha256": "71c882b5f5e201cc35c213c3d006adb579250cf0e5551ee5d308f5cfc5dcbb7c",
+      "sourceMtimeNs": 1792564535698230410
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-review-sources-390.png",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-review-sources-390.png",
+      "bytes": 51598,
+      "sha256": "978bf3716e61afcb03940996f14f08af4885660c7222dc8b61ab460b21f4f1dd",
+      "sourceMtimeNs": 1792564539662196552
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-review-sources-desktop.png",
+      "artifactPath": "run/assembly/artifacts/geometry-tests/assembly-review-sources-desktop.png",
+      "bytes": 90029,
+      "sha256": "ec931bd69c46caba5de917c3ba8057bcf00e30025464851373abd0b131c5771a",
+      "sourceMtimeNs": 1792564552570086396
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/browser-version.log",
+      "artifactPath": "run/assembly/browser-version.log",
+      "bytes": 62,
+      "sha256": "351a5b39f40600fdc78e0d5d098f0049857fa4ff7e917adab5fc6a61edefb1dc",
+      "sourceMtimeNs": 1792564477054733449
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/build.log",
+      "artifactPath": "run/assembly/build.log",
+      "bytes": 965,
+      "sha256": "ff7d2ccacd5e6f4e2869a50bc8ed6867da5253a7c1113bd0a9b872f23fa1178b",
+      "sourceMtimeNs": 1792564476322739792
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/cleanup.json",
+      "artifactPath": "run/assembly/cleanup.json",
+      "bytes": 9157,
+      "sha256": "feb63a0c8de53623480e1d8304c59d3447fb49447283a44a1833c64170fb0775",
+      "sourceMtimeNs": 1792564652201143567
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/command.json",
+      "artifactPath": "run/assembly/command.json",
+      "bytes": 3188,
+      "sha256": "b42f907c1c8dd85ac93289321416e8ed69b26ecd772480cc0637d6706e3c9ab7",
+      "sourceMtimeNs": 1792564475775064067
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/font.json",
+      "artifactPath": "run/assembly/font.json",
+      "bytes": 358,
+      "sha256": "da76a191ba25aa4c93ec0654e35d66dc297b51d2db0ca3173909887f2aad0241",
+      "sourceMtimeNs": 1792564477001583802
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/fonts-default.log",
+      "artifactPath": "run/assembly/fonts-default.log",
+      "bytes": 66,
+      "sha256": "140c016062a98792cbd9f074ebd94751ca482288df7ec71b3d084f4cc63e6eb0",
+      "sourceMtimeNs": 1792564476774245620
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/fonts-match.log",
+      "artifactPath": "run/assembly/fonts-match.log",
+      "bytes": 72,
+      "sha256": "83a7c780f8cd4ea66eea7d655c3b2387502ce0394d449412b47db18f6c30f89a",
+      "sourceMtimeNs": 1792564476950734351
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/fonts-package.log",
+      "artifactPath": "run/assembly/fonts-package.log",
+      "bytes": 42,
+      "sha256": "89f9f30d8facedc0c397648ec83a37ad4c64be83294ed6fe6cbfafa46243bed1",
+      "sourceMtimeNs": 1792564476366739414
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/harness-result.json",
+      "artifactPath": "run/assembly/harness-result.json",
+      "bytes": 1243,
+      "sha256": "cb658ca7217f614c70918f75ae5ed927ac1099194dcfa6b447885b2d9ca25ebe",
+      "sourceMtimeNs": 1792564651604561514
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/manifest.json",
+      "artifactPath": "run/assembly/manifest.json",
+      "bytes": 5764,
+      "sha256": "c253c2caf46981b29ee5cf67f3ed3efc7ba1c549303be22471636aeff67bcc68",
+      "sourceMtimeNs": 1792564652204145798
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/native-identity.json",
+      "artifactPath": "run/assembly/native-identity.json",
+      "bytes": 2095,
+      "sha256": "d54cc18391bd4a3c7b08bab223e1bd62d6718710a7d0022e90f90fdb23b4fd15",
+      "sourceMtimeNs": 1792564479227484197
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/native-receipts/bridge.fingerprint.json",
+      "artifactPath": "run/assembly/native-receipts/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "cdc6b42ab690654bd29e745d926c82da5b225d6d051e4ad344f1316c52c2f7d4",
+      "sourceMtimeNs": 1792564479226259740
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/native-receipts/core.fingerprint.json",
+      "artifactPath": "run/assembly/native-receipts/core.fingerprint.json",
+      "bytes": 22861,
+      "sha256": "f0cb7d07af87950b6a61d9a229a1aaad9505eb82a7a881880fb686171885d306",
+      "sourceMtimeNs": 1792564479224992920
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/native-receipts/model-base.fingerprint.json",
+      "artifactPath": "run/assembly/native-receipts/model-base.fingerprint.json",
+      "bytes": 22887,
+      "sha256": "b6b6299696cb7a6d22f1da84d195fcd63009ffe77a025d35c2689f2d1bbb88b2",
+      "sourceMtimeNs": 1792564479227309900
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/node-version.log",
+      "artifactPath": "run/assembly/node-version.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "sourceMtimeNs": 1792564477298731332
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/receipt.json",
+      "artifactPath": "run/assembly/receipt.json",
+      "bytes": 20049,
+      "sha256": "7f48bba8cd2b6a75488a2377130fa49e415eb579792955043537814bda293905",
+      "sourceMtimeNs": 1792564652204635401
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/run.log",
+      "artifactPath": "run/assembly/run.log",
+      "bytes": 19144,
+      "sha256": "4fe149e287e922ef7605b1bcd0c64971f872b8ae8d4f358007c0a2087cb9ab8b",
+      "sourceMtimeNs": 1792564651541249376
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/runtime-after.json",
+      "artifactPath": "run/assembly/runtime-after.json",
+      "bytes": 240,
+      "sha256": "11b3c382f842b6078491482f39e13a9f8736e2884ec449e5024e7104502bab88",
+      "sourceMtimeNs": 1792564651892973189
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/runtime-after.log",
+      "artifactPath": "run/assembly/runtime-after.log",
+      "bytes": 226,
+      "sha256": "44b5852d47ba4c2c1543d726fd24a0816723d7e669a396d7034e3485e663520d",
+      "sourceMtimeNs": 1792564651829246903
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/runtime-attempt-1.log",
+      "artifactPath": "run/assembly/runtime-attempt-1.log",
+      "bytes": 74,
+      "sha256": "1f93b0527ec24071e1528794e6f1494a6cb2acb069d9d490283becd95f7f9640",
+      "sourceMtimeNs": 1792564477398730464
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/runtime-attempt-2.log",
+      "artifactPath": "run/assembly/runtime-attempt-2.log",
+      "bytes": 226,
+      "sha256": "44b5852d47ba4c2c1543d726fd24a0816723d7e669a396d7034e3485e663520d",
+      "sourceMtimeNs": 1792564478862717761
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/runtime-before.json",
+      "artifactPath": "run/assembly/runtime-before.json",
+      "bytes": 240,
+      "sha256": "11b3c382f842b6078491482f39e13a9f8736e2884ec449e5024e7104502bab88",
+      "sourceMtimeNs": 1792564479223401041
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/runtime-before.log",
+      "artifactPath": "run/assembly/runtime-before.log",
+      "bytes": 226,
+      "sha256": "44b5852d47ba4c2c1543d726fd24a0816723d7e669a396d7034e3485e663520d",
+      "sourceMtimeNs": 1792564479150715263
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/screenshots/context/context-390-form.png",
+      "artifactPath": "run/assembly/screenshots/context/context-390-form.png",
+      "bytes": 34547,
+      "sha256": "7c8c9a07b60cbf447695cbf6d42ac716dd8c86bbb4a89ac8f38d7af88402db5e",
+      "sourceMtimeNs": 1792564639525356285
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/screenshots/context/context-desktop-form.png",
+      "artifactPath": "run/assembly/screenshots/context/context-desktop-form.png",
+      "bytes": 82381,
+      "sha256": "53f04c629e86377d6e5aeb2f99474a0e9d03710bfe7e9f6a9b927a8c40e910fc",
+      "sourceMtimeNs": 1792564632481416627
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/server.log",
+      "artifactPath": "run/assembly/server.log",
+      "bytes": 3785,
+      "sha256": "f41765f63172bcb4093ac8f3d6fb285e5f0b8bf47fb10a66ffed95a04cf6b4d5",
+      "sourceMtimeNs": 1792564651933246010
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/source-hashes.json",
+      "artifactPath": "run/assembly/source-hashes.json",
+      "bytes": 16669,
+      "sha256": "b8c10b4081a3a507712da40c23dfb838f8bfa886ddca07974637bb39908549a5",
+      "sourceMtimeNs": 1792564475772268200
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/code.txt",
+      "artifactPath": "run/code.txt",
+      "bytes": 37261,
+      "sha256": "4ffefe74d503506f2c99d3064fac4359c4aa5324f77ccf5e3ae44bdf6ec994f2",
+      "sourceMtimeNs": 1792564475658155626
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifact-capture.json",
+      "artifactPath": "run/declared-artifact-capture.json",
+      "bytes": 16672,
+      "sha256": "9928150a3d41bccea63a71935613717bec84774bb134d7f8807a500e8262cec3",
+      "sourceMtimeNs": 1792565700335338742
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/documents/geometry-document-fixtures-0iwvkf/fixture.md",
+      "artifactPath": "run/declared-artifacts/documents/geometry-document-fixtures-0iwvkf/fixture.md",
+      "bytes": 155,
+      "sha256": "fc6abc17cba8a50b83abef77a9293043a313766a3a3b7f306c2e88fde29a8d52",
+      "sourceMtimeNs": 1792564658821192398
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/documents/geometry-document-fixtures-0iwvkf/notes.json",
+      "artifactPath": "run/declared-artifacts/documents/geometry-document-fixtures-0iwvkf/notes.json",
+      "bytes": 347,
+      "sha256": "bf7ddbf5a61b542df2f54743ba6908625644e0681048856b5018c59fb764ea0f",
+      "sourceMtimeNs": 1792564666281129667
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/documents/geometry-document-fixtures-0iwvkf/synthetic.pdf",
+      "artifactPath": "run/declared-artifacts/documents/geometry-document-fixtures-0iwvkf/synthetic.pdf",
+      "bytes": 973,
+      "sha256": "641fe52c7199ecafece48cd14e8ef3121c086ffbc8f69a4966ebd050e512fc4e",
+      "sourceMtimeNs": 1792564659733184742
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-infinite-grid-download-KBHAQ3/infinite-grid-roundtrip.json",
+      "artifactPath": "run/declared-artifacts/grid/geometry-infinite-grid-download-KBHAQ3/infinite-grid-roundtrip.json",
+      "bytes": 72053,
+      "sha256": "e38d134efe14fea64408d6c8fbc384eab4725591e6c1d2e7c7bf6dc747187dbc",
+      "sourceMtimeNs": 1792564750344418672
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-infinite-grid-download-KBHAQ3/未命名專案.gcanvas",
+      "artifactPath": "run/declared-artifacts/grid/geometry-infinite-grid-download-KBHAQ3/未命名專案.gcanvas",
+      "bytes": 2739,
+      "sha256": "1b3ee9a8a8eed5f2937afce5be92701e5b06f349870627d0dd8da68200b8e188",
+      "sourceMtimeNs": 1792564749033155929
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-GF9GCw/未命名專案.gcanvas",
+      "artifactPath": "run/declared-artifacts/grid/geometry-rule-editor-GF9GCw/未命名專案.gcanvas",
+      "bytes": 1716,
+      "sha256": "2140e4329113097eea1b88998f16dd1abc5786f15cf0f348bc3a6f3e53c5ec1e",
+      "sourceMtimeNs": 1792564844873124016
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-WUY3mS/未命名專案.gcanvas",
+      "artifactPath": "run/declared-artifacts/grid/geometry-rule-editor-WUY3mS/未命名專案.gcanvas",
+      "bytes": 1714,
+      "sha256": "c9f566e60fb04ed56de202a4b2f95832fe45f30f2102f8d83b018979959791e7",
+      "sourceMtimeNs": 1792564851637088617
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-pQtO1D/rule-editor-roundtrip.json",
+      "artifactPath": "run/declared-artifacts/grid/geometry-rule-editor-pQtO1D/rule-editor-roundtrip.json",
+      "bytes": 4109,
+      "sha256": "6b94a1adba0bd65e8955bdd7b9f8cf35eedab653405284c6c9a31fc72dea1c5a",
+      "sourceMtimeNs": 1792564854427532539
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-pQtO1D/未命名專案.gcanvas",
+      "artifactPath": "run/declared-artifacts/grid/geometry-rule-editor-pQtO1D/未命名專案.gcanvas",
+      "bytes": 1923,
+      "sha256": "cae7d9e3116c47fed9726f124b941183684132c1e4be26cd53fcf063f93e7c19",
+      "sourceMtimeNs": 1792564835940857312
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-qFJE4z/rule-editor-roundtrip.json",
+      "artifactPath": "run/declared-artifacts/grid/geometry-rule-editor-qFJE4z/rule-editor-roundtrip.json",
+      "bytes": 4283,
+      "sha256": "65880caba28b6934e3ab54f531ce630bbedd852fb824f19f2af04dbea6bd7eab",
+      "sourceMtimeNs": 1792564854427532539
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-qFJE4z/未命名專案.gcanvas",
+      "artifactPath": "run/declared-artifacts/grid/geometry-rule-editor-qFJE4z/未命名專案.gcanvas",
+      "bytes": 2082,
+      "sha256": "60b5fc8a372e67535e13ca8013a8e8905d142245edd16a4a2ae3a0f7c88aa4ad",
+      "sourceMtimeNs": 1792564823053766308
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-lines-JjIxBW/rule-lines-receipt.json",
+      "artifactPath": "run/declared-artifacts/grid/geometry-rule-lines-JjIxBW/rule-lines-receipt.json",
+      "bytes": 4183,
+      "sha256": "654c0c74c1fc505c5f9f7ec5599af6d06441365e42d882dbef62efeee79da99d",
+      "sourceMtimeNs": 1792565040537951068
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-lines-JjIxBW/未命名專案.gcanvas",
+      "artifactPath": "run/declared-artifacts/grid/geometry-rule-lines-JjIxBW/未命名專案.gcanvas",
+      "bytes": 3343,
+      "sha256": "43f3b0d35d9f2a02aadaa378e91ea824ca8200a2164934f58409b8a59611f461",
+      "sourceMtimeNs": 1792565036094599418
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-lines-cwK0Za/rule-lines-receipt.json",
+      "artifactPath": "run/declared-artifacts/grid/geometry-rule-lines-cwK0Za/rule-lines-receipt.json",
+      "bytes": 4208,
+      "sha256": "5f3abd240f00795d95fc03b85f94e24ee88f5650f200e008fee3df9ebe106e11",
+      "sourceMtimeNs": 1792564907359082612
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-lines-cwK0Za/未命名專案.gcanvas",
+      "artifactPath": "run/declared-artifacts/grid/geometry-rule-lines-cwK0Za/未命名專案.gcanvas",
+      "bytes": 3367,
+      "sha256": "983b70be3305edf289706526baa2261e8faa4b0216fb02f72bf709606e247833",
+      "sourceMtimeNs": 1792564903796087995
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/acceptance.json",
+      "artifactPath": "run/documents/acceptance.json",
+      "bytes": 2781,
+      "sha256": "24e1c064f2ea397194b8d79f01b38c9be7b3c26e62382f1877f5c5becb1a97ad",
+      "sourceMtimeNs": 1792564667640373263
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/browser-version.log",
+      "artifactPath": "run/documents/browser-version.log",
+      "bytes": 62,
+      "sha256": "351a5b39f40600fdc78e0d5d098f0049857fa4ff7e917adab5fc6a61edefb1dc",
+      "sourceMtimeNs": 1792564653489235702
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/build.log",
+      "artifactPath": "run/documents/build.log",
+      "bytes": 965,
+      "sha256": "ff7d2ccacd5e6f4e2869a50bc8ed6867da5253a7c1113bd0a9b872f23fa1178b",
+      "sourceMtimeNs": 1792564652729239176
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/cleanup.json",
+      "artifactPath": "run/documents/cleanup.json",
+      "bytes": 9608,
+      "sha256": "8e020599bdde9b4d00495db397d3fea6bcaa17cfaf709c6e7f419d94fb60ed4e",
+      "sourceMtimeNs": 1792564667948054165
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/command.json",
+      "artifactPath": "run/documents/command.json",
+      "bytes": 3077,
+      "sha256": "09791f8e7932249d3b156e5515e292a858d63bc9ccd27126d1b97568dc19c319",
+      "sourceMtimeNs": 1792564652298668602
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/font.json",
+      "artifactPath": "run/documents/font.json",
+      "bytes": 358,
+      "sha256": "da76a191ba25aa4c93ec0654e35d66dc297b51d2db0ca3173909887f2aad0241",
+      "sourceMtimeNs": 1792564653442067536
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/fonts-default.log",
+      "artifactPath": "run/documents/fonts-default.log",
+      "bytes": 66,
+      "sha256": "140c016062a98792cbd9f074ebd94751ca482288df7ec71b3d084f4cc63e6eb0",
+      "sourceMtimeNs": 1792564653170079848
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/fonts-match.log",
+      "artifactPath": "run/documents/fonts-match.log",
+      "bytes": 72,
+      "sha256": "83a7c780f8cd4ea66eea7d655c3b2387502ce0394d449412b47db18f6c30f89a",
+      "sourceMtimeNs": 1792564653401236056
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/fonts-package.log",
+      "artifactPath": "run/documents/fonts-package.log",
+      "bytes": 42,
+      "sha256": "89f9f30d8facedc0c397648ec83a37ad4c64be83294ed6fe6cbfafa46243bed1",
+      "sourceMtimeNs": 1792564652849238266
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/harness-result.json",
+      "artifactPath": "run/documents/harness-result.json",
+      "bytes": 350,
+      "sha256": "14440e40b786c0a20beea942ef0ecea7070481918a8651bd56a2a6ffdbc443c0",
+      "sourceMtimeNs": 1792564667102283301
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/manifest.json",
+      "artifactPath": "run/documents/manifest.json",
+      "bytes": 4840,
+      "sha256": "18df4babab236457028c891c1cef38f2497b2d615d638f69e2e7604877a9e9fa",
+      "sourceMtimeNs": 1792564667950187945
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/native-identity.json",
+      "artifactPath": "run/documents/native-identity.json",
+      "bytes": 2095,
+      "sha256": "a69dd99d5e75e7b49dcba2e59e6ee5115da693902595353c786dd11ea4a60333",
+      "sourceMtimeNs": 1792564655626290276
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/native-receipts/bridge.fingerprint.json",
+      "artifactPath": "run/documents/native-receipts/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "cdc6b42ab690654bd29e745d926c82da5b225d6d051e4ad344f1316c52c2f7d4",
+      "sourceMtimeNs": 1792564655625262629
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/native-receipts/core.fingerprint.json",
+      "artifactPath": "run/documents/native-receipts/core.fingerprint.json",
+      "bytes": 22861,
+      "sha256": "f0cb7d07af87950b6a61d9a229a1aaad9505eb82a7a881880fb686171885d306",
+      "sourceMtimeNs": 1792564655624231146
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/native-receipts/model-base.fingerprint.json",
+      "artifactPath": "run/documents/native-receipts/model-base.fingerprint.json",
+      "bytes": 22887,
+      "sha256": "b6b6299696cb7a6d22f1da84d195fcd63009ffe77a025d35c2689f2d1bbb88b2",
+      "sourceMtimeNs": 1792564655626180244
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/node-version.log",
+      "artifactPath": "run/documents/node-version.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "sourceMtimeNs": 1792564653729234739
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/receipt.json",
+      "artifactPath": "run/documents/receipt.json",
+      "bytes": 20485,
+      "sha256": "bff1ad3f4c568edb8a85b7798646604b25c982e68ebdf9c0a93aae656c00c814",
+      "sourceMtimeNs": 1792564667950673842
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/run.log",
+      "artifactPath": "run/documents/run.log",
+      "bytes": 2434,
+      "sha256": "a453dc2a4d07cf21bedfc1f4ae9bb99a5c72bb45b64da7f2caa38b83e9f13bc4",
+      "sourceMtimeNs": 1792564667037123307
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/runtime-after.json",
+      "artifactPath": "run/documents/runtime-after.json",
+      "bytes": 240,
+      "sha256": "ff1ad0ffc049c6214abe4f84c3e3b5704cd396810dbf977e713d8b0476a4a7bc",
+      "sourceMtimeNs": 1792564667639187393
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/runtime-after.log",
+      "artifactPath": "run/documents/runtime-after.log",
+      "bytes": 226,
+      "sha256": "6b759682b9dd4d2bf0903badff0a5637793995bed956ab1e03c2209aa43ad709",
+      "sourceMtimeNs": 1792564667369120513
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/runtime-attempt-1.log",
+      "artifactPath": "run/documents/runtime-attempt-1.log",
+      "bytes": 74,
+      "sha256": "1f93b0527ec24071e1528794e6f1494a6cb2acb069d9d490283becd95f7f9640",
+      "sourceMtimeNs": 1792564653821234380
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/runtime-attempt-2.log",
+      "artifactPath": "run/documents/runtime-attempt-2.log",
+      "bytes": 226,
+      "sha256": "6b759682b9dd4d2bf0903badff0a5637793995bed956ab1e03c2209aa43ad709",
+      "sourceMtimeNs": 1792564655253222342
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/runtime-before.json",
+      "artifactPath": "run/documents/runtime-before.json",
+      "bytes": 240,
+      "sha256": "ff1ad0ffc049c6214abe4f84c3e3b5704cd396810dbf977e713d8b0476a4a7bc",
+      "sourceMtimeNs": 1792564655623090652
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/runtime-before.log",
+      "artifactPath": "run/documents/runtime-before.log",
+      "bytes": 226,
+      "sha256": "6b759682b9dd4d2bf0903badff0a5637793995bed956ab1e03c2209aa43ad709",
+      "sourceMtimeNs": 1792564655553219829
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/documents/documents-desktop-cases.png",
+      "artifactPath": "run/documents/screenshots/documents/documents-desktop-cases.png",
+      "bytes": 118673,
+      "sha256": "a0aa69fe4f02503434fcb6926d9b50eb5aeda85ad7a9191845a56cd0d3f3539a",
+      "sourceMtimeNs": 1792564665657134919
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/documents/documents-desktop-library.png",
+      "artifactPath": "run/documents/screenshots/documents/documents-desktop-library.png",
+      "bytes": 136112,
+      "sha256": "ca36da4979512e750ebb734a9d65af68170e90734ac594765b79fea7ce40dd89",
+      "sourceMtimeNs": 1792564657353204721
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/documents/documents-desktop-pdf.png",
+      "artifactPath": "run/documents/screenshots/documents/documents-desktop-pdf.png",
+      "bytes": 78716,
+      "sha256": "a37fe3c3640d7454e5771e938a1e53fec41ebfc943d4b8b9233a61fa7d7b1cd8",
+      "sourceMtimeNs": 1792564660173181050
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/documents/documents-desktop-reader-dark.png",
+      "artifactPath": "run/documents/screenshots/documents/documents-desktop-reader-dark.png",
+      "bytes": 197048,
+      "sha256": "f4e274fb1675cfeaecd3528155f42cc33c46b67e82aa77e45de4e7c1c09d8d8b",
+      "sourceMtimeNs": 1792564658729193171
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/documents/documents-mobile-cases.png",
+      "artifactPath": "run/documents/screenshots/documents/documents-mobile-cases.png",
+      "bytes": 46121,
+      "sha256": "dcc31c451d4640aa44634de075954cd62d455526e8c11f2c5eeadfaed1630942",
+      "sourceMtimeNs": 1792564666581127144
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/documents/documents-mobile-library.png",
+      "artifactPath": "run/documents/screenshots/documents/documents-mobile-library.png",
+      "bytes": 61040,
+      "sha256": "1e415c77e675a83bc71e3c8c21126df97a3e52b54e71641b1210853804046397",
+      "sourceMtimeNs": 1792564661953166085
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/documents/documents-mobile-pdf.png",
+      "artifactPath": "run/documents/screenshots/documents/documents-mobile-pdf.png",
+      "bytes": 31606,
+      "sha256": "5a3ca26cf4200259d4a93524cd70759456e785101df395e15f94fc6fe73f6694",
+      "sourceMtimeNs": 1792564660445178767
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/documents/documents-mobile-reader.png",
+      "artifactPath": "run/documents/screenshots/documents/documents-mobile-reader.png",
+      "bytes": 82538,
+      "sha256": "2fe77122c702c88db1cd43784075690d8e6ea87935bd9038972611c1229a80d7",
+      "sourceMtimeNs": 1792564661817167230
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/server.log",
+      "artifactPath": "run/documents/server.log",
+      "bytes": 1391,
+      "sha256": "577b17cdeca5e039b5e071206d6a40daa6acc02d0f39809252bd43a6faf7dc83",
+      "sourceMtimeNs": 1792564667673117948
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/source-hashes.json",
+      "artifactPath": "run/documents/source-hashes.json",
+      "bytes": 16669,
+      "sha256": "b8c10b4081a3a507712da40c23dfb838f8bfa886ddca07974637bb39908549a5",
+      "sourceMtimeNs": 1792564652296078519
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/final-verification.json",
+      "artifactPath": "run/final-verification.json",
+      "bytes": 7159,
+      "sha256": "e0ae189a2f7644c046179c7ad0ce9276e39cb2bc29d763bcbe4c723e2231af13",
+      "sourceMtimeNs": 1792565792189055867
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/acceptance.json",
+      "artifactPath": "run/grid/acceptance.json",
+      "bytes": 1241,
+      "sha256": "765c303743589c4b8602ca0e5f1061809133f87de3c970ae46ba845d21ea4195",
+      "sourceMtimeNs": 1792565118192644644
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/browser-version.log",
+      "artifactPath": "run/grid/browser-version.log",
+      "bytes": 62,
+      "sha256": "351a5b39f40600fdc78e0d5d098f0049857fa4ff7e917adab5fc6a61edefb1dc",
+      "sourceMtimeNs": 1792564669221104923
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/build.log",
+      "artifactPath": "run/grid/build.log",
+      "bytes": 965,
+      "sha256": "ff7d2ccacd5e6f4e2869a50bc8ed6867da5253a7c1113bd0a9b872f23fa1178b",
+      "sourceMtimeNs": 1792564668513110888
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/cleanup.json",
+      "artifactPath": "run/grid/cleanup.json",
+      "bytes": 9151,
+      "sha256": "c61982048aad9921b05233cf3dd5c9a54ff55923961478deaf693abb6fcaea1b",
+      "sourceMtimeNs": 1792565118509182422
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/command.json",
+      "artifactPath": "run/grid/command.json",
+      "bytes": 3139,
+      "sha256": "ec03019f9afad6079f5d3653fbb8c93044e80d025d0d8a5b79c9e30bb4f80578",
+      "sourceMtimeNs": 1792564668048105602
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/font.json",
+      "artifactPath": "run/grid/font.json",
+      "bytes": 358,
+      "sha256": "da76a191ba25aa4c93ec0654e35d66dc297b51d2db0ca3173909887f2aad0241",
+      "sourceMtimeNs": 1792564669177687042
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/fonts-default.log",
+      "artifactPath": "run/grid/fonts-default.log",
+      "bytes": 66,
+      "sha256": "140c016062a98792cbd9f074ebd94751ca482288df7ec71b3d084f4cc63e6eb0",
+      "sourceMtimeNs": 1792564668931149561
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/fonts-match.log",
+      "artifactPath": "run/grid/fonts-match.log",
+      "bytes": 72,
+      "sha256": "83a7c780f8cd4ea66eea7d655c3b2387502ce0394d449412b47db18f6c30f89a",
+      "sourceMtimeNs": 1792564669145105562
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/fonts-package.log",
+      "artifactPath": "run/grid/fonts-package.log",
+      "bytes": 42,
+      "sha256": "89f9f30d8facedc0c397648ec83a37ad4c64be83294ed6fe6cbfafa46243bed1",
+      "sourceMtimeNs": 1792564668593110215
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/harness-result.json",
+      "artifactPath": "run/grid/harness-result.json",
+      "bytes": 896,
+      "sha256": "7e52c6b99c8e0b3080fb881e12c49519596121e8ede299838065a8e0c9a997d8",
+      "sourceMtimeNs": 1792565117909474085
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/manifest.json",
+      "artifactPath": "run/grid/manifest.json",
+      "bytes": 6795,
+      "sha256": "9c1dd29d1182c86a7bcea3274b31d54939d30a37271fc2cbcf7088a899171020",
+      "sourceMtimeNs": 1792565118513077422
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/native-identity.json",
+      "artifactPath": "run/grid/native-identity.json",
+      "bytes": 2095,
+      "sha256": "5bd9ccc75c8e4aced3967ab55749c13f9b8a8c36f10e2d6520159af6132478b4",
+      "sourceMtimeNs": 1792564671373351747
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/native-receipts/bridge.fingerprint.json",
+      "artifactPath": "run/grid/native-receipts/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "cdc6b42ab690654bd29e745d926c82da5b225d6d051e4ad344f1316c52c2f7d4",
+      "sourceMtimeNs": 1792564671372320434
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/native-receipts/core.fingerprint.json",
+      "artifactPath": "run/grid/native-receipts/core.fingerprint.json",
+      "bytes": 22861,
+      "sha256": "f0cb7d07af87950b6a61d9a229a1aaad9505eb82a7a881880fb686171885d306",
+      "sourceMtimeNs": 1792564671371310523
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/native-receipts/model-base.fingerprint.json",
+      "artifactPath": "run/grid/native-receipts/model-base.fingerprint.json",
+      "bytes": 22887,
+      "sha256": "b6b6299696cb7a6d22f1da84d195fcd63009ffe77a025d35c2689f2d1bbb88b2",
+      "sourceMtimeNs": 1792564671373238740
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/node-version.log",
+      "artifactPath": "run/grid/node-version.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "sourceMtimeNs": 1792564669465102861
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/receipt.json",
+      "artifactPath": "run/grid/receipt.json",
+      "bytes": 20636,
+      "sha256": "544b19c99c335d6408f40b7009938ae80427df46bd8686e8baf88fd080ba0c5a",
+      "sourceMtimeNs": 1792565118513532474
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/run.log",
+      "artifactPath": "run/grid/run.log",
+      "bytes": 41713,
+      "sha256": "4b8a563e88eb195031ac646fd84f0fb44c46516e6f23884e784c3d960f0e1421",
+      "sourceMtimeNs": 1792565117769294934
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/runtime-after.json",
+      "artifactPath": "run/grid/runtime-after.json",
+      "bytes": 240,
+      "sha256": "c162639b44592404e7506db73d553c43ec58d41087b17e9b0d2a2f6c1c04d2fa",
+      "sourceMtimeNs": 1792565118192179237
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/runtime-after.log",
+      "artifactPath": "run/grid/runtime-after.log",
+      "bytes": 226,
+      "sha256": "0803bd2b0100c29718c83cc30acb9238de076569d60531c0ada032578b65c4b4",
+      "sourceMtimeNs": 1792565118149291698
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/runtime-attempt-1.log",
+      "artifactPath": "run/grid/runtime-attempt-1.log",
+      "bytes": 74,
+      "sha256": "1f93b0527ec24071e1528794e6f1494a6cb2acb069d9d490283becd95f7f9640",
+      "sourceMtimeNs": 1792564669577101918
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/runtime-attempt-2.log",
+      "artifactPath": "run/grid/runtime-attempt-2.log",
+      "bytes": 226,
+      "sha256": "0803bd2b0100c29718c83cc30acb9238de076569d60531c0ada032578b65c4b4",
+      "sourceMtimeNs": 1792564671053089464
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/runtime-before.json",
+      "artifactPath": "run/grid/runtime-before.json",
+      "bytes": 240,
+      "sha256": "c162639b44592404e7506db73d553c43ec58d41087b17e9b0d2a2f6c1c04d2fa",
+      "sourceMtimeNs": 1792564671370182949
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/runtime-before.log",
+      "artifactPath": "run/grid/runtime-before.log",
+      "bytes": 226,
+      "sha256": "0803bd2b0100c29718c83cc30acb9238de076569d60531c0ada032578b65c4b4",
+      "sourceMtimeNs": 1792564671341087036
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-editor-390-raw.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-editor-390-raw.png",
+      "bytes": 52981,
+      "sha256": "469121bf64fe91b1d62685c67c8d9533d9a6dcd21f29527e443af07ac3c3c905",
+      "sourceMtimeNs": 1792564835819688998
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-editor-390-reopened.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-editor-390-reopened.png",
+      "bytes": 68755,
+      "sha256": "e5d764bcf5071f92fda7fde1e1af5e67cbe579d839d396a7191e180804036290",
+      "sourceMtimeNs": 1792564837803672858
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-editor-desktop-preview.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-editor-desktop-preview.png",
+      "bytes": 151919,
+      "sha256": "f96acaeb64f174d0fe0fa037356c22bdc1a9ea9e5d3a76a600a38a7c95306fe8",
+      "sourceMtimeNs": 1792564803571965353
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-editor-desktop-restored.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-editor-desktop-restored.png",
+      "bytes": 108594,
+      "sha256": "d2e7168f57226116c88ec4c9b63458f751d1018e4da188b551dd1010d3b3822d",
+      "sourceMtimeNs": 1792564825131779295
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-editor-orphan-delete.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-editor-orphan-delete.png",
+      "bytes": 87364,
+      "sha256": "156b0c7681b218e89c7ce850f4f9eeba007608378f10fc33332b95467c62fbc3",
+      "sourceMtimeNs": 1792564851475557569
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-editor-orphan-edit.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-editor-orphan-edit.png",
+      "bytes": 87184,
+      "sha256": "a9f911f224682c6ff2574773bab14dc0563dfbe0f90c0fe690422b2f1e03d5a8",
+      "sourceMtimeNs": 1792564844723614793
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-lines-1280-face-1.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-lines-1280-face-1.png",
+      "bytes": 170133,
+      "sha256": "98fe804ccd4d0babe7789a6d9ba4526275fda6270916c7edbf0e13aa0cab8340",
+      "sourceMtimeNs": 1792564871167390371
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-lines-1280-face-2.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-lines-1280-face-2.png",
+      "bytes": 185696,
+      "sha256": "407ff2a06145d7e00029f86780a41cd0aa6314383b27659966609aaf8e8cb96d",
+      "sourceMtimeNs": 1792564877371337747
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-lines-1280-reopened.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-lines-1280-reopened.png",
+      "bytes": 173141,
+      "sha256": "ae808e6c5b89cefd6ea42d17e40e6608fca45f6f4079444f58de4393fb55dba6",
+      "sourceMtimeNs": 1792564907359082612
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-lines-390-face-1.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-lines-390-face-1.png",
+      "bytes": 70001,
+      "sha256": "0b67946a3665cc080da5309e1d20a4cbe58e7c3ef3cd5bc8230a7d3700f878d5",
+      "sourceMtimeNs": 1792564997786309487
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-lines-390-face-2.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-lines-390-face-2.png",
+      "bytes": 75860,
+      "sha256": "3fe0d092ac7a633f0f12c12ea9b183d389fbe91ed95e6d4043bc740bbb030f2b",
+      "sourceMtimeNs": 1792565005818240956
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-rules/rule-lines-390-reopened.png",
+      "artifactPath": "run/grid/screenshots/grid-rules/rule-lines-390-reopened.png",
+      "bytes": 68874,
+      "sha256": "fdab3d3c63757328e849d51ed2d0a152c72450a012eed35d355553b6e9ce4167",
+      "sourceMtimeNs": 1792565040537951068
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-system/grid-trial-desktop.png",
+      "artifactPath": "run/grid/screenshots/grid-system/grid-trial-desktop.png",
+      "bytes": 100476,
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b",
+      "sourceMtimeNs": 1792564800067995391
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-system/grid-trial-mobile-alignment.png",
+      "artifactPath": "run/grid/screenshots/grid-system/grid-trial-mobile-alignment.png",
+      "bytes": 57199,
+      "sha256": "195b072b5caafc0bfcc8ed92fbe9a073db156f561b6ec496ecf66fe2f2a799f0",
+      "sourceMtimeNs": 1792564798888005506
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-system/grid-trial-mobile-canvas.png",
+      "artifactPath": "run/grid/screenshots/grid-system/grid-trial-mobile-canvas.png",
+      "bytes": 52473,
+      "sha256": "c4332484b2a44c473f598046a04202041a271eae318a461e2c7e6c706eb95f78",
+      "sourceMtimeNs": 1792564799132003414
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-system/grid-trial-mobile-controls.png",
+      "artifactPath": "run/grid/screenshots/grid-system/grid-trial-mobile-controls.png",
+      "bytes": 47157,
+      "sha256": "4fd8a84417ec133c2bf0758a51da982fa65b6e2aa8b7b6d27ac63008700ee923",
+      "sourceMtimeNs": 1792564798616007838
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-system/infinite-binding-hole.png",
+      "artifactPath": "run/grid/screenshots/grid-system/infinite-binding-hole.png",
+      "bytes": 98584,
+      "sha256": "ec21c5a8ac67e163d1259e5dce35120d5d9a202cdfd64e5e46082514af4aeb57",
+      "sourceMtimeNs": 1792564699492849580
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-system/infinite-grid-mobile.png",
+      "artifactPath": "run/grid/screenshots/grid-system/infinite-grid-mobile.png",
+      "bytes": 41230,
+      "sha256": "98dbbe2e407444c6c62435c66910eede1adb9fed6e95c0149f60b6ac0cef58fb",
+      "sourceMtimeNs": 1792564762816312388
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/screenshots/grid-system/infinite-source-desktop.png",
+      "artifactPath": "run/grid/screenshots/grid-system/infinite-source-desktop.png",
+      "bytes": 88422,
+      "sha256": "d33160d3d3174230e905370fd0232c78cc124432e2dc8064a6132a7d27b00245",
+      "sourceMtimeNs": 1792564687196953065
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/server.log",
+      "artifactPath": "run/grid/server.log",
+      "bytes": 147774,
+      "sha256": "db8f97014154d6d2b8e85fe86a6a1c06312fac277057ec7c767fedcbea676833",
+      "sourceMtimeNs": 1792565118229291018
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/source-hashes.json",
+      "artifactPath": "run/grid/source-hashes.json",
+      "bytes": 16669,
+      "sha256": "b8c10b4081a3a507712da40c23dfb838f8bfa886ddca07974637bb39908549a5",
+      "sourceMtimeNs": 1792564668045701253
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/invocation.json",
+      "artifactPath": "run/invocation.json",
+      "bytes": 1450,
+      "sha256": "61c5186d9746324588cb298c99db612fbf82685ff6dd001d46904047bbf78c6c",
+      "sourceMtimeNs": 1792564475658404734
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/post-run-tool-observations.json",
+      "artifactPath": "run/post-run-tool-observations.json",
+      "bytes": 1164,
+      "sha256": "9a695704e785fe14aa66c2b2415f2dcce4dfc1220513b42912ae56dadf01f80b",
+      "sourceMtimeNs": 1792565842049543179
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/acceptance.json",
+      "artifactPath": "run/space/acceptance.json",
+      "bytes": 2043,
+      "sha256": "bc4f843e9c8b38bb87d84323b5ccfb8e246b5cd2b02b00fe5d3c8dc9ba221c37",
+      "sourceMtimeNs": 1792565306870898447
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/after-own-plan-1400.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/after-own-plan-1400.png",
+      "bytes": 87019,
+      "sha256": "11e8dd8bf175d4c3b95fefd50035d5a2bc6bbb77644f2ca7de0a861533836671",
+      "sourceMtimeNs": 1792565274851853074
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/after-own-plan-390x844.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/after-own-plan-390x844.png",
+      "bytes": 63716,
+      "sha256": "5ba59bc79b17d4bab6f3164fed5130482af8f70acd5a56e1aee282987e4ebc6a",
+      "sourceMtimeNs": 1792565275415844300
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/after-own-plan-690x668.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/after-own-plan-690x668.png",
+      "bytes": 53812,
+      "sha256": "5a9a475368c97cbd791edcff9d7d68ecd56e46e553d72da871766e573a006478",
+      "sourceMtimeNs": 1792565275095849278
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/after-preview-confirmation-1400.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/after-preview-confirmation-1400.png",
+      "bytes": 160861,
+      "sha256": "6555e4d18244a763f1c92cb597ef4540b13cb475506abf71a267a96cbbdb79a7",
+      "sourceMtimeNs": 1792565277971821094
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/after-preview-confirmation-390x844.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/after-preview-confirmation-390x844.png",
+      "bytes": 54802,
+      "sha256": "9b4446a527aab11bd2635111585287c87505bc9a8b3b9595ded2d5303af7aa9e",
+      "sourceMtimeNs": 1792565278447816438
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/after-preview-confirmation-690x668.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/after-preview-confirmation-690x668.png",
+      "bytes": 45024,
+      "sha256": "ca384518a7781904c65bd14379861520cdc4c4a861594ddfa07c8c6072fb0c11",
+      "sourceMtimeNs": 1792565278235818770
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/chrome.stderr.log",
+      "artifactPath": "run/space/artifacts/space-artifacts/chrome.stderr.log",
+      "bytes": 6089,
+      "sha256": "dad22023a45282475f09cb89e9145bb81994c6aac83493185b3d8a41eb64f0fc",
+      "sourceMtimeNs": 1792565302355572412
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/downloads/未命名專案.gcanvas",
+      "artifactPath": "run/space/artifacts/space-artifacts/downloads/未命名專案.gcanvas",
+      "bytes": 37094,
+      "sha256": "7559a24cf86b1ad40d62d22157f3ceeb356c8a0d47b46a89f38e92e0431c20fb",
+      "sourceMtimeNs": 1792565282552073657
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/drawing-aligned-top-left-bottom.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/drawing-aligned-top-left-bottom.png",
+      "bytes": 136552,
+      "sha256": "947f017b365316faec877e86b83ee323b88361cd1b7b4421aa03ffbe9202853c",
+      "sourceMtimeNs": 1792565245984201983
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/drawing-original-left-bottom.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/drawing-original-left-bottom.png",
+      "bytes": 167280,
+      "sha256": "c4eb7420230f71d0b6e3ea9c0f96436158a661c8694ea2e501c417a7f79a8380",
+      "sourceMtimeNs": 1792565242084235755
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/drawing-saved-reopened-top.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/drawing-saved-reopened-top.png",
+      "bytes": 128044,
+      "sha256": "23e2cc70724544d80454bc4f8387ab159a84a97440fe6f4ab16c06283d86c9a4",
+      "sourceMtimeNs": 1792565252868140663
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/final-state.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/final-state.png",
+      "bytes": 144977,
+      "sha256": "7f27f3a78ce35dde7ac95c054c892d44a188b1993eb173a75298387d462ca6a6",
+      "sourceMtimeNs": 1792565306083536435
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/fonts-11px-desktop-1280x720.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/fonts-11px-desktop-1280x720.png",
+      "bytes": 133761,
+      "sha256": "16616f76fcea6c6f88059ee4da824ad8ec76cd8c1d5cee7e992d09eedc6ef5e2",
+      "sourceMtimeNs": 1792565272023897062
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/fonts-11px-mobile-preview.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/fonts-11px-mobile-preview.png",
+      "bytes": 69423,
+      "sha256": "9a8295054ed00f68bbc78d36a27b1344a794a8082e2c0e8cbfcdd3ccb2d0c144",
+      "sourceMtimeNs": 1792565272803884930
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/fonts-11px-mobile-settings.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/fonts-11px-mobile-settings.png",
+      "bytes": 64133,
+      "sha256": "f28d13d21e3306d347a2de5a71245a852a14aaef0e396b79aff203f47dfcabaf",
+      "sourceMtimeNs": 1792565273163879330
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/issue159-library-history-1400.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/issue159-library-history-1400.png",
+      "bytes": 46560,
+      "sha256": "3d9ea2ee58ac85d7da67936e2fe55544b74892b090d3563d86a8dc98ef0498a0",
+      "sourceMtimeNs": 1792565162216918519
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/issue159-library-history-390.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/issue159-library-history-390.png",
+      "bytes": 40915,
+      "sha256": "2ad43cf2e4e5e56013aacb61195688bde31e1ec4bbf736822216bccfd4957c47",
+      "sourceMtimeNs": 1792565163860904625
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/issue159-stale-builder-history.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/issue159-stale-builder-history.png",
+      "bytes": 45749,
+      "sha256": "4812816f92b0ee3ad3c10bbf9f2c999fdb6320cbfb4c62eff91423fd2806175b",
+      "sourceMtimeNs": 1792565166748880247
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/lshape-desktop-preview.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/lshape-desktop-preview.png",
+      "bytes": 183566,
+      "sha256": "bc236b5e50d3c89d465801698f29e43bab4a487a0bc35f7ed868a35859436019",
+      "sourceMtimeNs": 1792565171012844692
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/lshape-mobile-preview.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/lshape-mobile-preview.png",
+      "bytes": 71286,
+      "sha256": "3facb92db74a6c3006397e289990c46e63fe781620a1097fe7d05b842ee4ac5e",
+      "sourceMtimeNs": 1792565193768652620
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/lshape-mobile-settings.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/lshape-mobile-settings.png",
+      "bytes": 66393,
+      "sha256": "d976c575a2113f9e41677e2942b1bad7be0186215091cfc62b92530df96a9123",
+      "sourceMtimeNs": 1792565193948651078
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/own-face-z2500-created.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/own-face-z2500-created.png",
+      "bytes": 173979,
+      "sha256": "5a4bb7f2ac10b816e28640214d9208e341579169ad0370f12c1e527fa0c9a3ba",
+      "sourceMtimeNs": 1792565180020769064
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/projection-bottom-preview.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/projection-bottom-preview.png",
+      "bytes": 137092,
+      "sha256": "e6b2ace7b90fbe04adfdd407c3c36fd39ce0ab48f73cbcae738cce463f2cf286",
+      "sourceMtimeNs": 1792565141877090282
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/projection-close-proof.json",
+      "artifactPath": "run/space/artifacts/space-artifacts/projection-close-proof.json",
+      "bytes": 5775,
+      "sha256": "2203541182a32c0ff8b2c174a90ba0df094d47f1ea56ce600ae1cf1c7bbc6348",
+      "sourceMtimeNs": 1792565136037139815
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/projection-definition-689x668.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/projection-definition-689x668.png",
+      "bytes": 45751,
+      "sha256": "d5fc657e13d1a9755356a7fd9afd25269fb8ba31ec602074196992076aed3dac",
+      "sourceMtimeNs": 1792565232384321172
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/projection-definition-desktop.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/projection-definition-desktop.png",
+      "bytes": 162397,
+      "sha256": "2bf893a1ccfb256e74a0205cac3bf2e312e62ae6d89cfaebb2a3b2827fec0538",
+      "sourceMtimeNs": 1792565232896316601
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/projection-definition-mobile.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/projection-definition-mobile.png",
+      "bytes": 54510,
+      "sha256": "665381af6e3325c224b53f711b1b452d45bfd4f2c9456ceeda7230fafa001379",
+      "sourceMtimeNs": 1792565232596319279
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/projection-selected-placement-z-edited.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/projection-selected-placement-z-edited.png",
+      "bytes": 130859,
+      "sha256": "cf1a8b6b30e59dce61ef537e9ff00f99f1196ae5eff6c3caf704033220807351",
+      "sourceMtimeNs": 1792565229488346729
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/projection-uncommitted-desktop.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/projection-uncommitted-desktop.png",
+      "bytes": 158073,
+      "sha256": "cc07def6a93f84162b29a6eb01b527d1e7929d7d138966e3c557c49d898b13c4",
+      "sourceMtimeNs": 1792565139277112373
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/projection-vertical-rejected.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/projection-vertical-rejected.png",
+      "bytes": 161495,
+      "sha256": "1f5938ee976de5c50216cb074ce7508ee33cad78f839a1e74d67b20b72c30324",
+      "sourceMtimeNs": 1792565152325001834
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/rectangle-desktop-1280x720.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/rectangle-desktop-1280x720.png",
+      "bytes": 133759,
+      "sha256": "dd4a239dd35acfb76cd277c04086d7f05c5c7ad7ddfe697726460f37a8e0aa03",
+      "sourceMtimeNs": 1792565157700956405
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/rectangle-desktop-preview.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/rectangle-desktop-preview.png",
+      "bytes": 161917,
+      "sha256": "597eea631c53bd551a87ca5722fb873797b7f83f0582fda3bab22c30f4cb6917",
+      "sourceMtimeNs": 1792565159940937595
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/result.json",
+      "artifactPath": "run/space/artifacts/space-artifacts/result.json",
+      "bytes": 38726,
+      "sha256": "5317865c45c53f663bf2dcc0334c7713287123ea3152083caf98b00bf84a8547",
+      "sourceMtimeNs": 1792565306383533542
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/single-existing-face-open-created.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/single-existing-face-open-created.png",
+      "bytes": 138348,
+      "sha256": "92c4f5d7595c3eb07c033ea410c5c972de0868afcec10c93779073fca7802866",
+      "sourceMtimeNs": 1792565226196374843
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/six-existing-faces-created.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/six-existing-faces-created.png",
+      "bytes": 142091,
+      "sha256": "60577905328008e15f9579c24a8b4ed56a2350a6e9b422599a51ffaa2a73bc8d",
+      "sourceMtimeNs": 1792565224004393915
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/wall-height-3200-updated.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/wall-height-3200-updated.png",
+      "bytes": 163948,
+      "sha256": "79c78018cda9885f4789d6ab7a52d6180aa848a7117b16e9b7a808ae79ffcb2c",
+      "sourceMtimeNs": 1792565185920719297
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/wall-height-mobile-review.png",
+      "artifactPath": "run/space/artifacts/space-artifacts/wall-height-mobile-review.png",
+      "bytes": 62148,
+      "sha256": "98b16439886aec972aa211a0c134346bd76cd63d02db1b9adcc2623216f0b14f",
+      "sourceMtimeNs": 1792565185248724964
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/browser-version.log",
+      "artifactPath": "run/space/browser-version.log",
+      "bytes": 62,
+      "sha256": "351a5b39f40600fdc78e0d5d098f0049857fa4ff7e917adab5fc6a61edefb1dc",
+      "sourceMtimeNs": 1792565119833277377
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/build.log",
+      "artifactPath": "run/space/build.log",
+      "bytes": 965,
+      "sha256": "ff7d2ccacd5e6f4e2869a50bc8ed6867da5253a7c1113bd0a9b872f23fa1178b",
+      "sourceMtimeNs": 1792565119009284383
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/cleanup.json",
+      "artifactPath": "run/space/cleanup.json",
+      "bytes": 32178,
+      "sha256": "61941b56729391092aca652cc1f6614d5b9a187f19894b349d2203b35e107d29",
+      "sourceMtimeNs": 1792565307195960965
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/command.json",
+      "artifactPath": "run/space/command.json",
+      "bytes": 3122,
+      "sha256": "daec84de92b39c1aa88d136ec7c11ddb534ef05f35f4f922e5e2af3d39b4dc3d",
+      "sourceMtimeNs": 1792565118611039385
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/font.json",
+      "artifactPath": "run/space/font.json",
+      "bytes": 358,
+      "sha256": "da76a191ba25aa4c93ec0654e35d66dc297b51d2db0ca3173909887f2aad0241",
+      "sourceMtimeNs": 1792565119765272520
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/fonts-default.log",
+      "artifactPath": "run/space/fonts-default.log",
+      "bytes": 66,
+      "sha256": "140c016062a98792cbd9f074ebd94751ca482288df7ec71b3d084f4cc63e6eb0",
+      "sourceMtimeNs": 1792565119465119592
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/fonts-match.log",
+      "artifactPath": "run/space/fonts-match.log",
+      "bytes": 72,
+      "sha256": "83a7c780f8cd4ea66eea7d655c3b2387502ce0394d449412b47db18f6c30f89a",
+      "sourceMtimeNs": 1792565119717278367
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/fonts-package.log",
+      "artifactPath": "run/space/fonts-package.log",
+      "bytes": 42,
+      "sha256": "89f9f30d8facedc0c397648ec83a37ad4c64be83294ed6fe6cbfafa46243bed1",
+      "sourceMtimeNs": 1792565119157283123
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/harness-result.json",
+      "artifactPath": "run/space/harness-result.json",
+      "bytes": 1568,
+      "sha256": "55f30fa2cc0cc34c3ee83ad7a98380611a3e82784461cd6f6517a6fba78e811e",
+      "sourceMtimeNs": 1792565306591075096
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/manifest.json",
+      "artifactPath": "run/space/manifest.json",
+      "bytes": 10173,
+      "sha256": "1b9904c12f75837511b26ab79e4772f74cb8d587c81698991e92d39fdf4a02cc",
+      "sourceMtimeNs": 1792565307201602106
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/native-identity.json",
+      "artifactPath": "run/space/native-identity.json",
+      "bytes": 2095,
+      "sha256": "329740538ceba13d8776e2db1d553dfa9801e3b9b646284e30ca457791049871",
+      "sourceMtimeNs": 1792565121966100528
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/native-receipts/bridge.fingerprint.json",
+      "artifactPath": "run/space/native-receipts/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "cdc6b42ab690654bd29e745d926c82da5b225d6d051e4ad344f1316c52c2f7d4",
+      "sourceMtimeNs": 1792565121964852646
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/native-receipts/core.fingerprint.json",
+      "artifactPath": "run/space/native-receipts/core.fingerprint.json",
+      "bytes": 22861,
+      "sha256": "f0cb7d07af87950b6a61d9a229a1aaad9505eb82a7a881880fb686171885d306",
+      "sourceMtimeNs": 1792565121963514050
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/native-receipts/model-base.fingerprint.json",
+      "artifactPath": "run/space/native-receipts/model-base.fingerprint.json",
+      "bytes": 22887,
+      "sha256": "b6b6299696cb7a6d22f1da84d195fcd63009ffe77a025d35c2689f2d1bbb88b2",
+      "sourceMtimeNs": 1792565121965978208
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/node-version.log",
+      "artifactPath": "run/space/node-version.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "sourceMtimeNs": 1792565120053275501
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/receipt.json",
+      "artifactPath": "run/space/receipt.json",
+      "bytes": 45706,
+      "sha256": "585479698b66c4ea51829ba8958fbe5c88704b3a169fd2ee813be4d59ba84e0b",
+      "sourceMtimeNs": 1792565307202382988
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/run.log",
+      "artifactPath": "run/space/run.log",
+      "bytes": 24606,
+      "sha256": "e016ecca39a7ff3ebbfe7cf9c307dc99093357df23e0a1c41e8139b4bbaec500",
+      "sourceMtimeNs": 1792565306383533542
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/runtime-after.json",
+      "artifactPath": "run/space/runtime-after.json",
+      "bytes": 240,
+      "sha256": "c16ab2b1ba0fcb928e011b928c4aacebcbe8b0e926092c3f929fb1e17eadd9c8",
+      "sourceMtimeNs": 1792565306869886755
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/runtime-after.log",
+      "artifactPath": "run/space/runtime-after.log",
+      "bytes": 226,
+      "sha256": "9d941187b9191e111dfa91c8ea567d8c775dd48701ffdf073f39a6e22487597a",
+      "sourceMtimeNs": 1792565306803529490
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/runtime-attempt-1.log",
+      "artifactPath": "run/space/runtime-attempt-1.log",
+      "bytes": 74,
+      "sha256": "1f93b0527ec24071e1528794e6f1494a6cb2acb069d9d490283becd95f7f9640",
+      "sourceMtimeNs": 1792565120169274514
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/runtime-attempt-2.log",
+      "artifactPath": "run/space/runtime-attempt-2.log",
+      "bytes": 226,
+      "sha256": "9d941187b9191e111dfa91c8ea567d8c775dd48701ffdf073f39a6e22487597a",
+      "sourceMtimeNs": 1792565121597262366
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/runtime-before.json",
+      "artifactPath": "run/space/runtime-before.json",
+      "bytes": 240,
+      "sha256": "c16ab2b1ba0fcb928e011b928c4aacebcbe8b0e926092c3f929fb1e17eadd9c8",
+      "sourceMtimeNs": 1792565121962139071
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/runtime-before.log",
+      "artifactPath": "run/space/runtime-before.log",
+      "bytes": 226,
+      "sha256": "9d941187b9191e111dfa91c8ea567d8c775dd48701ffdf073f39a6e22487597a",
+      "sourceMtimeNs": 1792565121909259713
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/server.log",
+      "artifactPath": "run/space/server.log",
+      "bytes": 1994,
+      "sha256": "2ce0c63976434f075f1fda0a639d9c06d37644e7f5339ea43b83fa5de25b0e74",
+      "sourceMtimeNs": 1792565306927528294
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/source-hashes.json",
+      "artifactPath": "run/space/source-hashes.json",
+      "bytes": 16669,
+      "sha256": "b8c10b4081a3a507712da40c23dfb838f8bfa886ddca07974637bb39908549a5",
+      "sourceMtimeNs": 1792565118608874129
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/summary.json",
+      "artifactPath": "run/summary.json",
+      "bytes": 619,
+      "sha256": "53883c357bb3bbfc4c064279784cecabb6b4970531e499f5f1c26391dfc3e448",
+      "sourceMtimeNs": 1792565399030347990
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/acceptance.json",
+      "artifactPath": "run/timber/acceptance.json",
+      "bytes": 1586,
+      "sha256": "200f19b9537ce1e5024b720e7e79a3efbc5603e0d107924543102a2edb332500",
+      "sourceMtimeNs": 1792565398684410275
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/chrome.stderr.log",
+      "artifactPath": "run/timber/artifacts/space-artifacts/chrome.stderr.log",
+      "bytes": 5700,
+      "sha256": "4c9f217bf279c492dc6e7dca268215f60cd245e0061676283151197921cba1de",
+      "sourceMtimeNs": 1792565311243486748
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/downloads/z=2500 角材骨架・4 × 3 m空間-timbers.model.json",
+      "artifactPath": "run/timber/artifacts/space-artifacts/downloads/z=2500 角材骨架・4 × 3 m空間-timbers.model.json",
+      "bytes": 113440,
+      "sha256": "d96b328e61af3478d2110b955c4040cd648367cdfabb33205da4caf4f8d9f1eb",
+      "sourceMtimeNs": 1792565339591441604
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/final-state.png",
+      "artifactPath": "run/timber/artifacts/space-artifacts/final-state.png",
+      "bytes": 68634,
+      "sha256": "1c54b78e7e59313459a45d1d36b3d3bba8e9717b25d0471e40a898ac81d7e5ce",
+      "sourceMtimeNs": 1792565397702692720
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/fonts-11px-desktop-1280x720.png",
+      "artifactPath": "run/timber/artifacts/space-artifacts/fonts-11px-desktop-1280x720.png",
+      "bytes": 137312,
+      "sha256": "b64086bacedbc7dd8007e3e682b02dfe03167a6c3b6c761336c6bfb450a8833c",
+      "sourceMtimeNs": 1792565396370705236
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/fonts-11px-mobile-preview.png",
+      "artifactPath": "run/timber/artifacts/space-artifacts/fonts-11px-mobile-preview.png",
+      "bytes": 69423,
+      "sha256": "9a8295054ed00f68bbc78d36a27b1344a794a8082e2c0e8cbfcdd3ccb2d0c144",
+      "sourceMtimeNs": 1792565397174697681
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/fonts-11px-mobile-settings.png",
+      "artifactPath": "run/timber/artifacts/space-artifacts/fonts-11px-mobile-settings.png",
+      "bytes": 65512,
+      "sha256": "3eb266d42170251513aae400799b6ad68d139de55a00e4b0e39edddfd34168ed",
+      "sourceMtimeNs": 1792565397522694411
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/result.json",
+      "artifactPath": "run/timber/artifacts/space-artifacts/result.json",
+      "bytes": 13664,
+      "sha256": "e956fc1587def8b3536bb2ea003b0f01af050e5698cbeb1c122aed8dc6d8e534",
+      "sourceMtimeNs": 1792565398006689864
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/timber-frame-desktop-all.png",
+      "artifactPath": "run/timber/artifacts/space-artifacts/timber-frame-desktop-all.png",
+      "bytes": 142081,
+      "sha256": "e518edcfca16b1e58c151155301701161b846b7dab75d9d5a79d360e309f0716",
+      "sourceMtimeNs": 1792565336123249832
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/timber-frame-desktop-timbers-bottom.png",
+      "artifactPath": "run/timber/artifacts/space-artifacts/timber-frame-desktop-timbers-bottom.png",
+      "bytes": 117020,
+      "sha256": "31ef26cbbfe28bfddb33ee0f003e5fabea42fee571ac20f2fdac1242bf0a9711",
+      "sourceMtimeNs": 1792565337579239157
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/timber-frame-desktop-timbers-iso.png",
+      "artifactPath": "run/timber/artifacts/space-artifacts/timber-frame-desktop-timbers-iso.png",
+      "bytes": 139200,
+      "sha256": "73cd7d2b73d86abc7cbb02f129913011fc235472cb2fe1aed859598fe417208d",
+      "sourceMtimeNs": 1792565337963235735
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/timber-frame-desktop-timbers-top.png",
+      "artifactPath": "run/timber/artifacts/space-artifacts/timber-frame-desktop-timbers-top.png",
+      "bytes": 117042,
+      "sha256": "606d986e530c12de75fd9c0f4e9b1c1e130023716cfcf8987c122cb8f1861249",
+      "sourceMtimeNs": 1792565337207241884
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/timber-frame-mobile-settings.png",
+      "artifactPath": "run/timber/artifacts/space-artifacts/timber-frame-mobile-settings.png",
+      "bytes": 68224,
+      "sha256": "8528982592dd57b9caec845a7493dc84c03bf9887127a34b5b0bcb5198c41ce2",
+      "sourceMtimeNs": 1792565338819227403
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/timber-frame-mobile-timbers-bottom.png",
+      "artifactPath": "run/timber/artifacts/space-artifacts/timber-frame-mobile-timbers-bottom.png",
+      "bytes": 66083,
+      "sha256": "f7792c314b7721359aab1126058354102365bad39dd33747c324e48d7ca0cec7",
+      "sourceMtimeNs": 1792565338583229700
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/browser-version.log",
+      "artifactPath": "run/timber/browser-version.log",
+      "bytes": 62,
+      "sha256": "351a5b39f40600fdc78e0d5d098f0049857fa4ff7e917adab5fc6a61edefb1dc",
+      "sourceMtimeNs": 1792565308507513016
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/build.log",
+      "artifactPath": "run/timber/build.log",
+      "bytes": 965,
+      "sha256": "ff7d2ccacd5e6f4e2869a50bc8ed6867da5253a7c1113bd0a9b872f23fa1178b",
+      "sourceMtimeNs": 1792565307707520770
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/cleanup.json",
+      "artifactPath": "run/timber/cleanup.json",
+      "bytes": 38906,
+      "sha256": "704f95814fb569c0c505441bf7543fac20c12ad7ff2af1435582917131245812",
+      "sourceMtimeNs": 1792565399025701915
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/command.json",
+      "artifactPath": "run/timber/command.json",
+      "bytes": 3168,
+      "sha256": "1056cb58ea544f9add3a23a52096fa30fbb696cc87b0bd0bfc2450c700c45d77",
+      "sourceMtimeNs": 1792565307311591639
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/font.json",
+      "artifactPath": "run/timber/font.json",
+      "bytes": 358,
+      "sha256": "da76a191ba25aa4c93ec0654e35d66dc297b51d2db0ca3173909887f2aad0241",
+      "sourceMtimeNs": 1792565308457383064
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/fonts-default.log",
+      "artifactPath": "run/timber/fonts-default.log",
+      "bytes": 66,
+      "sha256": "140c016062a98792cbd9f074ebd94751ca482288df7ec71b3d084f4cc63e6eb0",
+      "sourceMtimeNs": 1792565308178369692
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/fonts-match.log",
+      "artifactPath": "run/timber/fonts-match.log",
+      "bytes": 72,
+      "sha256": "83a7c780f8cd4ea66eea7d655c3b2387502ce0394d449412b47db18f6c30f89a",
+      "sourceMtimeNs": 1792565308423513847
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/fonts-package.log",
+      "artifactPath": "run/timber/fonts-package.log",
+      "bytes": 42,
+      "sha256": "89f9f30d8facedc0c397648ec83a37ad4c64be83294ed6fe6cbfafa46243bed1",
+      "sourceMtimeNs": 1792565307867519227
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/harness-result.json",
+      "artifactPath": "run/timber/harness-result.json",
+      "bytes": 1232,
+      "sha256": "63e6ee4ee21f81502ecf8e737713b00c84c8f9e3ccb6c823f54459f550fe4109",
+      "sourceMtimeNs": 1792565398141930210
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/manifest.json",
+      "artifactPath": "run/timber/manifest.json",
+      "bytes": 5824,
+      "sha256": "f9e7350bd4137cc8354393d8b56f7db2bdf5f2b05197748d6622decaeafe97d6",
+      "sourceMtimeNs": 1792565399028708882
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/native-identity.json",
+      "artifactPath": "run/timber/native-identity.json",
+      "bytes": 2095,
+      "sha256": "41c17b8738f35fae4478f2b89c804ae6aa22c364ae3976e1eaf969c920dac291",
+      "sourceMtimeNs": 1792565310662787680
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/native-receipts/bridge.fingerprint.json",
+      "artifactPath": "run/timber/native-receipts/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "cdc6b42ab690654bd29e745d926c82da5b225d6d051e4ad344f1316c52c2f7d4",
+      "sourceMtimeNs": 1792565310661706364
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/native-receipts/core.fingerprint.json",
+      "artifactPath": "run/timber/native-receipts/core.fingerprint.json",
+      "bytes": 22861,
+      "sha256": "f0cb7d07af87950b6a61d9a229a1aaad9505eb82a7a881880fb686171885d306",
+      "sourceMtimeNs": 1792565310660597247
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/native-receipts/model-base.fingerprint.json",
+      "artifactPath": "run/timber/native-receipts/model-base.fingerprint.json",
+      "bytes": 22887,
+      "sha256": "b6b6299696cb7a6d22f1da84d195fcd63009ffe77a025d35c2689f2d1bbb88b2",
+      "sourceMtimeNs": 1792565310662662014
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/node-version.log",
+      "artifactPath": "run/timber/node-version.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "sourceMtimeNs": 1792565308747510640
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/receipt.json",
+      "artifactPath": "run/timber/receipt.json",
+      "bytes": 51293,
+      "sha256": "c96b08bb1314c468e0b58f6c565a187ace44e52bf7934e49e941f387a5c253c2",
+      "sourceMtimeNs": 1792565399029996131
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/run.log",
+      "artifactPath": "run/timber/run.log",
+      "bytes": 8334,
+      "sha256": "5879f6e0a552e9734d9d74ff15793df88c3038ee6159972925c81dd988b053aa",
+      "sourceMtimeNs": 1792565398006689864
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/runtime-after.json",
+      "artifactPath": "run/timber/runtime-after.json",
+      "bytes": 240,
+      "sha256": "531e2202e91fe182ae2c6b2490ee7ffaba5b29cb18251cb55d37375e55678289",
+      "sourceMtimeNs": 1792565398684005718
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/runtime-after.log",
+      "artifactPath": "run/timber/runtime-after.log",
+      "bytes": 226,
+      "sha256": "159683f6bccbd6d7d7757cc039aaf842f51a9067d7b668de9240712e3a7fb17d",
+      "sourceMtimeNs": 1792565398442685767
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/runtime-attempt-1.log",
+      "artifactPath": "run/timber/runtime-attempt-1.log",
+      "bytes": 74,
+      "sha256": "1f93b0527ec24071e1528794e6f1494a6cb2acb069d9d490283becd95f7f9640",
+      "sourceMtimeNs": 1792565308855509571
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/runtime-attempt-2.log",
+      "artifactPath": "run/timber/runtime-attempt-2.log",
+      "bytes": 226,
+      "sha256": "159683f6bccbd6d7d7757cc039aaf842f51a9067d7b668de9240712e3a7fb17d",
+      "sourceMtimeNs": 1792565310355494720
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/runtime-before.json",
+      "artifactPath": "run/timber/runtime-before.json",
+      "bytes": 240,
+      "sha256": "531e2202e91fe182ae2c6b2490ee7ffaba5b29cb18251cb55d37375e55678289",
+      "sourceMtimeNs": 1792565310659482001
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/runtime-before.log",
+      "artifactPath": "run/timber/runtime-before.log",
+      "bytes": 226,
+      "sha256": "159683f6bccbd6d7d7757cc039aaf842f51a9067d7b668de9240712e3a7fb17d",
+      "sourceMtimeNs": 1792565310619492302
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/server.log",
+      "artifactPath": "run/timber/server.log",
+      "bytes": 2109,
+      "sha256": "384f61fe5d4f3523d097439e0f07ceb700220bbfdab757bdcfd36dfbcad0e128",
+      "sourceMtimeNs": 1792565398722683148
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/source-hashes.json",
+      "artifactPath": "run/timber/source-hashes.json",
+      "bytes": 16669,
+      "sha256": "b8c10b4081a3a507712da40c23dfb838f8bfa886ddca07974637bb39908549a5",
+      "sourceMtimeNs": 1792565307309222314
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/報告.md",
+      "artifactPath": "run/報告.md",
+      "bytes": 5076,
+      "sha256": "eb9d58b2091aed8f63cab849073c105cd46fc42fb4b08c138022320518bd787c",
+      "sourceMtimeNs": 1792565842049406657
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-launch/.exit-code",
+      "artifactPath": "launch/.exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "sourceMtimeNs": 1792565399042680212
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-launch/launcher-code.txt",
+      "artifactPath": "launch/launcher-code.txt",
+      "bytes": 5858,
+      "sha256": "479cdcd9f1c1c03ab203aff6fc5f0f9fddb3c70d779507777c7c1d903762f124",
+      "sourceMtimeNs": 1792564475458160955
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-launch/launcher-receipt.json",
+      "artifactPath": "launch/launcher-receipt.json",
+      "bytes": 3372,
+      "sha256": "d6e3259ed23a7a22f81892776e2a4d589d791930f65d53a3fbf3a71e6fd27d41",
+      "sourceMtimeNs": 1792565399046722206
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-launch/orchestrator.log",
+      "artifactPath": "launch/orchestrator.log",
+      "bytes": 4762,
+      "sha256": "5c6eba9b3dd94b097bedc1d155520550dd099cfc9891f819f7a31ea1c3c1d90d",
+      "sourceMtimeNs": 1792565399029996131
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-launch/wrapper-code.txt",
+      "artifactPath": "launch/wrapper-code.txt",
+      "bytes": 37261,
+      "sha256": "4ffefe74d503506f2c99d3064fac4359c4aa5324f77ccf5e3ae44bdf6ec994f2",
+      "sourceMtimeNs": 1792564475459612537
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/README.md",
+      "artifactPath": "peer/README.md",
+      "bytes": 3003,
+      "sha256": "46d41c74cf18717633e07cfc428a6e50b3425b88c9060c577300e7aa048b24e5",
+      "sourceMtimeNs": 1792566137401056572
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/artifact-execution.json",
+      "artifactPath": "peer/artifact-execution.json",
+      "bytes": 878,
+      "sha256": "8d35c42b31f325a1d8dae32b2997e8d70361d9187a9b17e32a0f9827b3c0d444",
+      "sourceMtimeNs": 1792565827288045302
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/artifact-peer-code.txt",
+      "artifactPath": "peer/artifact-peer-code.txt",
+      "bytes": 5770,
+      "sha256": "878170aca5e28342529a6809e3f76d24b539ee9df3cf1aa05df4fc806b6872f0",
+      "sourceMtimeNs": 1792565826914937428
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/artifact-peer.exit-code",
+      "artifactPath": "peer/artifact-peer.exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "sourceMtimeNs": 1792565827287692942
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/artifact-peer.json",
+      "artifactPath": "peer/artifact-peer.json",
+      "bytes": 25547,
+      "sha256": "8da008acd58c42bc70ea684ce83895242249e443e6cb4216586e62c902863975",
+      "sourceMtimeNs": 1792565827281844384
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/artifact-peer.stderr",
+      "artifactPath": "peer/artifact-peer.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceMtimeNs": 1792565827222928519
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/artifact-peer.stdout",
+      "artifactPath": "peer/artifact-peer.stdout",
+      "bytes": 115,
+      "sha256": "db4cdc5c70317223d651850cd433595530e54a59295a0da4f83adcdac8aa3a32",
+      "sourceMtimeNs": 1792565827281844384
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/execution-v2.json",
+      "artifactPath": "peer/execution-v2.json",
+      "bytes": 860,
+      "sha256": "3f52ae27a70c5ffd4a3a2677f4fedc9aa786e8a369aa890d235c86dbe58211e7",
+      "sourceMtimeNs": 1792565741211009610
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/execution.json",
+      "artifactPath": "peer/execution.json",
+      "bytes": 851,
+      "sha256": "1358498975f63716a89b967e003cf25fe6e5ac70aaa68895b6b06336b97e414a",
+      "sourceMtimeNs": 1792565688026856382
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/finalize-code.txt",
+      "artifactPath": "peer/finalize-code.txt",
+      "bytes": 8280,
+      "sha256": "038a5d36d8bf9029dab879893d62205ba65f78a03b151527470c867f4fe00e87",
+      "sourceMtimeNs": 1792566134000320943
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/method-v1-to-v2.patch",
+      "artifactPath": "peer/method-v1-to-v2.patch",
+      "bytes": 6296,
+      "sha256": "f996caa74eb192b049729fc79649fc3236a6a400cabf65d3cd672e237682e96e",
+      "sourceMtimeNs": 1792565740593613699
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/peer-code-v2.txt",
+      "artifactPath": "peer/peer-code-v2.txt",
+      "bytes": 18549,
+      "sha256": "b985f7faee1e2d792f51e83528876b2b21f9f4747aa48e1e49004a89b8377a55",
+      "sourceMtimeNs": 1792565740593234649
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/peer-code.txt",
+      "artifactPath": "peer/peer-code.txt",
+      "bytes": 18268,
+      "sha256": "c840f8b15a2984730a14594f9f8172409786074ef41231842fc49b933aa8dd6e",
+      "sourceMtimeNs": 1792565687593980522
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/peer-v2.exit-code",
+      "artifactPath": "peer/peer-v2.exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "sourceMtimeNs": 1792565741210698441
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/peer-v2.stderr",
+      "artifactPath": "peer/peer-v2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceMtimeNs": 1792565740871662200
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/peer-v2.stdout",
+      "artifactPath": "peer/peer-v2.stdout",
+      "bytes": 226,
+      "sha256": "0aaf806c94714bb686bd5881737a70c63b0271c92bf3a6ac58f19b42c4af2328",
+      "sourceMtimeNs": 1792565741203118652
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/peer.exit-code",
+      "artifactPath": "peer/peer.exit-code",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "sourceMtimeNs": 1792565688026464243
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/peer.json",
+      "artifactPath": "peer/peer.json",
+      "bytes": 62254,
+      "sha256": "4cec827b8dfe7c14d1a288102bd21fe713e08e2010b414f06b3a87ad8e22b4be",
+      "sourceMtimeNs": 1792565741203118652
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/peer.stderr",
+      "artifactPath": "peer/peer.stderr",
+      "bytes": 370,
+      "sha256": "62c528575f1c6816d8c530d002214d585f76157eaa208910721ea8b06a1e7fbf",
+      "sourceMtimeNs": 1792565688016104704
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/peer.stdout",
+      "artifactPath": "peer/peer.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceMtimeNs": 1792565687868105814
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/producer-final-comparison.json",
+      "artifactPath": "peer/producer-final-comparison.json",
+      "bytes": 1458,
+      "sha256": "4900f14aeb572c8be570637a69ef932c4226ccb3f36733bec51c55adbbd739ce",
+      "sourceMtimeNs": 1792566137400773384
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/run-artifact-peer-code.txt",
+      "artifactPath": "peer/run-artifact-peer-code.txt",
+      "bytes": 1283,
+      "sha256": "69fb4c3acb1fa0250baacc5a8295ace894f917eeb64ca3238c348d9c5dbe6195",
+      "sourceMtimeNs": 1792565826943633366
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/run-peer-code.txt",
+      "artifactPath": "peer/run-peer-code.txt",
+      "bytes": 1220,
+      "sha256": "37d5876b9ce18c11c75a5f8bfaa5d69ad7b8bddaa79a91f506c8049ea0ffd18c",
+      "sourceMtimeNs": 1792565687594667517
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/run-peer-v2-code.txt",
+      "artifactPath": "peer/run-peer-v2-code.txt",
+      "bytes": 1241,
+      "sha256": "ac8677465434561e364838d90f58fec5ecec166886d634998e5bd91b02153b40",
+      "sourceMtimeNs": 1792565740594010775
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-independent-review/tool-observations.json",
+      "artifactPath": "peer/tool-observations.json",
+      "bytes": 2249,
+      "sha256": "a0b3df140a950ff1e4b5f64d05753527779812ea2b123897cd192101ac37e925",
+      "sourceMtimeNs": 1792566137400998526
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-exec-observation.json",
+      "artifactPath": "launch/browser-five-L3-formal-6589248c-exec-observation.json",
+      "bytes": 1419,
+      "sha256": "059d81d5ea75d8b3a1eb9e5814e7614f659a00dd27575c29109109aade69ded8",
+      "sourceMtimeNs": 1792565416193368406
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-launcher-process.exit-code",
+      "artifactPath": "launch/browser-five-L3-formal-6589248c-launcher-process.exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "sourceMtimeNs": 1792565399050680139
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-parent-command-code.txt",
+      "artifactPath": "launch/browser-five-L3-formal-6589248c-parent-command-code.txt",
+      "bytes": 979,
+      "sha256": "4343aa9f3cc770756797a63c5ee27f6c422814f33bcb9e867d9d59b3b38566f2",
+      "sourceMtimeNs": 1792564475194956743
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-parent.log",
+      "artifactPath": "launch/browser-five-L3-formal-6589248c-parent.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceMtimeNs": 1792564475418747569
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-parent.pid",
+      "artifactPath": "launch/browser-five-L3-formal-6589248c-parent.pid",
+      "bytes": 7,
+      "sha256": "6db44ee79b6f6c607ad2a157fe77eb5a8441a9ac744a397ee10095846aca5657",
+      "sourceMtimeNs": 1792564475423697883
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-preflight.json",
+      "artifactPath": "launch/browser-five-L3-formal-6589248c-preflight.json",
+      "bytes": 2715,
+      "sha256": "a7212073ede672c7ecbd4b7d8b87857487918ddfa66d36875994491319e4ace9",
+      "sourceMtimeNs": 1792564475195403663
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-tool-start.json",
+      "artifactPath": "launch/browser-five-L3-formal-6589248c-tool-start.json",
+      "bytes": 10167,
+      "sha256": "379530100071f2fec9d8c72a2a68071635eba33189d4c7e62f53275436e8c47a",
+      "sourceMtimeNs": 1792564490947030774
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-L3-preparation/L3-static-ready.json",
+      "artifactPath": "preparation/L3-static-ready.json",
+      "bytes": 41224,
+      "sha256": "ab961324bb3f9d35eac60d5928a61d84160177dafe03a11b90f80395c3a297af",
+      "sourceMtimeNs": 1792561395901706858
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-L3-preparation/static-prepare-code.txt",
+      "artifactPath": "preparation/static-prepare-code.txt",
+      "bytes": 4944,
+      "sha256": "a9c85d7c8c1f7fd23312c7ca43989ff912129b6ba42a76fe6df0d894f293e176",
+      "sourceMtimeNs": 1792561394785750643
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-L3-preparation/capture-five-artifacts-code.txt",
+      "artifactPath": "preparation/capture-five-artifacts-code.txt",
+      "bytes": 4089,
+      "sha256": "3bc018da853810112eff471881e4fba7fbb4d4523cb7d49a51b2132a472b5117",
+      "sourceMtimeNs": 1792565700303662241
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-L3-preparation/verify-five-code.txt",
+      "artifactPath": "preparation/verify-five-code.txt",
+      "bytes": 7903,
+      "sha256": "7bdea46d39508380e40c7ae28dc7616c2043d04554bd8c61434a6ccd1729af55",
+      "sourceMtimeNs": 1792565791764626551
+    },
+    {
+      "sourcePath": "/workspace/geo261-evidence/browser-L3-preparation/package-five-L3-code.txt",
+      "artifactPath": "preparation/package-five-L3-code.txt",
+      "bytes": 9193,
+      "sha256": "493389bf18da5a47df3fb0cd00f75809fadf5dd271444f22d7e3ec7f64c642b2",
+      "sourceMtimeNs": 1792565953782605896
+    }
+  ],
+  "bytePreservation": "每件原始 bytes 保留；0644；不回寫已凍結來源。"
+}

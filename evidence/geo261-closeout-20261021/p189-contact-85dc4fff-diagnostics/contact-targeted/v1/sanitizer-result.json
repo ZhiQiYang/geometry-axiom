@@ -1,0 +1,120 @@
+{
+  "sourceHashes": {
+    "geometry-templates/woodworking/native/contact_world.c": "7854d3f981460b9b02451508e5a377e0fe7c8d0f6ad2d88b863545e0f57b90c0",
+    "tests/geo261_contact_world_harness.c": "e4543397e226ba33f8c79161af485011412ed608e78203feb480679c4881a976",
+    "tests/test_geo261_wood_contact_world.py": "6ba921e3ba71b410c3896f49bc58caa12dc397ce65d2c2aedcd37d6629f7808a"
+  },
+  "ASAN_OPTIONS": "detect_leaks=1:abort_on_error=1",
+  "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+  "commands": [
+    {
+      "label": "build",
+      "command": [
+        "cc",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-fno-omit-frame-pointer",
+        "-fsanitize=address,undefined",
+        "-I",
+        "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native",
+        "-I",
+        "/workspace/geo261-contact-candidate/geometry-core/kernel",
+        "/workspace/geo261-contact-candidate/tests/geo261_contact_world_harness.c",
+        "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native/contact_world.c",
+        "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native/contacts.c",
+        "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native/supports.c",
+        "/workspace/geo261-contact-candidate/geometry-core/kernel/geometry.c",
+        "/workspace/geo261-contact-candidate/geometry-core/kernel/exact.c",
+        "-o",
+        "/tmp/geo261-contact-trial-7ad/contact-sanitized",
+        "-lm"
+      ],
+      "returncode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    {
+      "label": "collisions",
+      "command": [
+        "/tmp/geo261-contact-trial-7ad/contact-sanitized",
+        "collisions"
+      ],
+      "returncode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    {
+      "label": "ordering",
+      "command": [
+        "/tmp/geo261-contact-trial-7ad/contact-sanitized",
+        "ordering"
+      ],
+      "returncode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    {
+      "label": "regions",
+      "command": [
+        "/tmp/geo261-contact-trial-7ad/contact-sanitized",
+        "regions"
+      ],
+      "returncode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    {
+      "label": "order-keys",
+      "command": [
+        "/tmp/geo261-contact-trial-7ad/contact-sanitized",
+        "order-keys"
+      ],
+      "returncode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    {
+      "label": "order-fallback",
+      "command": [
+        "/tmp/geo261-contact-trial-7ad/contact-sanitized",
+        "order-fallback"
+      ],
+      "returncode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    {
+      "label": "intervals",
+      "command": [
+        "/tmp/geo261-contact-trial-7ad/contact-sanitized",
+        "intervals"
+      ],
+      "returncode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    {
+      "label": "extensions",
+      "command": [
+        "/tmp/geo261-contact-trial-7ad/contact-sanitized",
+        "extensions"
+      ],
+      "returncode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    {
+      "label": "ends",
+      "command": [
+        "/tmp/geo261-contact-trial-7ad/contact-sanitized",
+        "ends"
+      ],
+      "returncode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    }
+  ],
+  "passed": true,
+  "performanceSample": false
+}

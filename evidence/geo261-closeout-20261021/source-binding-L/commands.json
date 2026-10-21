@@ -1,0 +1,44 @@
+[
+  {
+    "label": "snapshot-L",
+    "argv": [
+      "python",
+      "-B",
+      "/workspace/geo261-evidence/source-binding-preparation/snapshot_bindings.py",
+      "--root",
+      "/workspace/geometry-axiom",
+      "--expected-head",
+      "43f85313c32410ac01406ab585846bbacafea278"
+    ],
+    "cwd": "/workspace",
+    "startedUTC": "2026-10-20T23:04:01.547073+00:00",
+    "finishedUTC": "2026-10-20T23:04:02.444269+00:00",
+    "exitCode": 0,
+    "stdoutBytes": 487107,
+    "stdoutSha256": "72283a36e47831867884f9682684267eddaf5d208acaf3891a0abeb9b3774455",
+    "stderrBytes": 0
+  },
+  {
+    "label": "binding-A-L",
+    "argv": [
+      "python",
+      "-B",
+      "/workspace/geo261-evidence/source-binding-L-preparation/compare-final-L-code.txt",
+      "--root",
+      "/workspace/geometry-axiom",
+      "--snapshot-a",
+      "/workspace/geo261-evidence/source-binding-preparation/snapshot-A.json",
+      "--snapshot-l",
+      "/workspace/geo261-evidence/source-binding-L-preparation/snapshot-L.json",
+      "--import-dir",
+      "/workspace/geo261-evidence/ledger-L-cc-import"
+    ],
+    "cwd": "/workspace",
+    "startedUTC": "2026-10-20T23:04:02.445294+00:00",
+    "finishedUTC": "2026-10-20T23:04:02.928470+00:00",
+    "exitCode": 0,
+    "stdoutBytes": 9525,
+    "stdoutSha256": "e6c1312b8e9853a38b62ff382ae4a901ec0309d791ec628bb954798869cddab5",
+    "stderrBytes": 0
+  }
+]

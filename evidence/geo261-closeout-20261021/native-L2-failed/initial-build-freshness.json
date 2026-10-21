@@ -1,0 +1,33 @@
+{
+  "sourceSha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "command": [
+    "python3",
+    "-B",
+    "tests/binaries.py",
+    "status"
+  ],
+  "cwd": "/workspace/geo261-native-l2-249571fe2477-20261021",
+  "startedUtc": "2026-10-21T04:18:05.201002+00:00",
+  "finishedUtc": "2026-10-21T04:18:05.371982+00:00",
+  "exitCode": 0,
+  "freshNames": [
+    "core",
+    "bridge",
+    "pf3-algorithm",
+    "integrity",
+    "model-base",
+    "engjson"
+  ],
+  "expectedFreshNames": [
+    "bridge",
+    "core",
+    "engjson",
+    "integrity",
+    "model-base",
+    "pf3-algorithm"
+  ],
+  "allSixFresh": true,
+  "CCAbsent": true,
+  "PYTHONOPTIMIZEAbsent": true,
+  "compilerOrTestsStarted": false
+}

@@ -1,0 +1,234 @@
+{
+  "sourceBaseHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "observedHead": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+  "mode": "只讀原件、Git 差異與雜湊核對",
+  "counts": {
+    "executableFiles": 611,
+    "ownedSources": 333,
+    "exclusions": 278,
+    "edges": 796,
+    "diagnostics": 0,
+    "layers": {
+      "H": 191,
+      "K": 69,
+      "W": 67,
+      "vendor": 6
+    },
+    "languages": {
+      "c": 190,
+      "javascript": 64,
+      "python": 75,
+      "html": 4
+    },
+    "forbiddenIdentifiers": 919,
+    "forbiddenStrings": 55
+  },
+  "inputClosureSha256": "2c665544b106ed8b2542425ae3d752843e9cd281b340ab349fe8a3734bc36076",
+  "checkedInputCount": 611,
+  "changedOwnedPaths": [
+    "geometry-app/native/reference_sources.inc",
+    "geometry-app/native/world_validation.inc",
+    "geometry-core/kernel/placement_sources.c",
+    "geometry-templates/woodworking/native/contact_world.c",
+    "geometry-templates/woodworking/native/definition_sources.c"
+  ],
+  "checkedOutsidePaths": [
+    "tests/geo261_contact_world_harness.c",
+    "tests/geo261_host_facts_authority_harness.c",
+    "tests/geo261_placement_definition_harness.c",
+    "tests/test_geo261_host_facts_authority.py",
+    "tests/test_geo261_placement_definition.py",
+    "tests/test_geo261_wood_contact_world.py",
+    "tests/run_all.expected.json"
+  ],
+  "onlyMetadataDiffFromSource": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "metadata": {
+    "geometry-core/domain-decoupling/product-architecture.json": {
+      "rawSha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829",
+      "bytes": 225770,
+      "previousRawSha256": "b5dff5b3e2573aac6aa38fa433cb3afa71c2ab1828d34d61aabc26df01bbcbc9"
+    },
+    "geometry-core/domain-decoupling/product-architecture-scan.json": {
+      "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "bytes": 132208,
+      "previousRawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+    },
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md": {
+      "rawSha256": "f953eba02ce6729e1903534e22648b3f777242f85fbb27e91c68b0418554d153",
+      "bytes": 36251,
+      "previousRawSha256": "a4fffdc84186b899bf4287ddab4b961fb6d96f02233d52fdc413517a2138a344"
+    },
+    "geometry-core/domain-decoupling/product-architecture-receipt.json": {
+      "rawSha256": "21712ad7f20b4f9fceca91b4f63da66a6f7348288dc8162ef0154b97ef4aa907",
+      "bytes": 292674,
+      "previousRawSha256": "804142f06ef1c251cd6c2d30fa7d66e1f04609d5e4e39d439169267869dcdf6e"
+    }
+  },
+  "commands": [
+    {
+      "name": "prior-manifest",
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exitCode": 0,
+      "rawWaitStatus": 0,
+      "seconds": 5.867316299001686
+    },
+    {
+      "name": "actual-cli-scan",
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exitCode": 0,
+      "rawWaitStatus": 0,
+      "seconds": 5.449025984999025
+    },
+    {
+      "name": "generic-tests",
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "exitCode": 0,
+      "rawWaitStatus": 0,
+      "seconds": 0.7267953390000912
+    },
+    {
+      "name": "product-tests",
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "exitCode": 0,
+      "rawWaitStatus": 0,
+      "seconds": 11.875468156998977
+    },
+    {
+      "name": "old-guard-accepts-0",
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+        "--root",
+        "/workspace/geometry-axiom",
+        "--probe",
+        "identifier",
+        "--manifest",
+        "/workspace/geo261-evidence/architecture-owned-S2-cabe8241/previous/product-architecture.json",
+        "--value",
+        "WoodContactOrder"
+      ],
+      "exitCode": 0,
+      "rawWaitStatus": 0,
+      "seconds": 0.8277694240023266
+    },
+    {
+      "name": "new-guard-rejects-0",
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+        "--root",
+        "/workspace/geometry-axiom",
+        "--probe",
+        "identifier",
+        "--manifest",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
+        "--value",
+        "WoodContactOrder"
+      ],
+      "exitCode": 1,
+      "rawWaitStatus": 256,
+      "seconds": 0.8478135100012878
+    },
+    {
+      "name": "withdraw-guard-accepts-0",
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+        "--root",
+        "/workspace/geometry-axiom",
+        "--probe",
+        "identifier",
+        "--manifest",
+        "/workspace/geo261-evidence/architecture-owned-S2-cabe8241/withdraw-guard-0.json",
+        "--value",
+        "WoodContactOrder"
+      ],
+      "exitCode": 0,
+      "rawWaitStatus": 0,
+      "seconds": 0.753724702000909
+    },
+    {
+      "name": "neutral-accepts",
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+        "--root",
+        "/workspace/geometry-axiom",
+        "--probe",
+        "identifier",
+        "--manifest",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
+        "--value",
+        "GeoOwnedRefreshNeutral"
+      ],
+      "exitCode": 0,
+      "rawWaitStatus": 0,
+      "seconds": 0.8178744760007248
+    }
+  ],
+  "launcherWaitCode": 0,
+  "launcherElapsedSeconds": 30.92401887199958,
+  "newGuardDiagnostic": {
+    "path": "geometry-core/kernel/geometry.c",
+    "line": 782,
+    "code": "FORBIDDEN_IDENTIFIER",
+    "message": "concrete template identifier 'WoodContactOrder' in core",
+    "direction": "K -> W",
+    "chain": [
+      "geometry-core/kernel/geometry.c"
+    ]
+  },
+  "notClaimed": [
+    "重新執行正式掃描或測試",
+    "產品行為或性能驗收",
+    "後續 A2／L2 來源已實跑"
+  ]
+}

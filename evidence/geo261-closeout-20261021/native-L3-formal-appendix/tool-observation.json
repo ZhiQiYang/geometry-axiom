@@ -1,0 +1,27 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "kind": "實際工具回傳欄位的事後轉錄，不是transport自動原始日誌",
+  "actualToolFields": {
+    "chunk_id": "703788",
+    "wall_time_seconds": 0.551141758,
+    "exit_code": 0,
+    "original_token_count": 336
+  },
+  "ASTObservation": {
+    "chunk_id": "dfeaa7",
+    "exit_code": 0,
+    "toolSha256": "c65acd885a4e482dd495d07545833c3b3e247b697a4e2b037dcbfc51b9bbbca8"
+  },
+  "actualChildStdout": {
+    "path": "curation.stdout.log",
+    "sha256": "e696168436ce7b33d54329f657eb86d9a3bf0568a5704f5a29955b42dd6cb531"
+  },
+  "actualChildStderr": {
+    "path": "curation.stderr.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "executionReceipt": {
+    "path": "curation-execution-receipt.json",
+    "sha256": "469aa0874ac88a643740a4fa7aeba99a4e0721fd48b5b44c6c05117b54c400d8"
+  }
+}

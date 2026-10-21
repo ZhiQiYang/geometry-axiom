@@ -1,0 +1,162 @@
+{
+  "source_head": "43f85313c32410ac01406ab585846bbacafea278",
+  "root": "/workspace/geo261-gates-l",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-u",
+    "/workspace/geo261-gates-l/geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
+    "--jobs",
+    "2",
+    "--receipt",
+    "/workspace/geo261-evidence/gates-l/controls/receipt.json",
+    "--logs",
+    "/workspace/geo261-evidence/gates-l/controls/logs",
+    "--only",
+    "XC36",
+    "--only",
+    "XC39",
+    "--only",
+    "XC40A",
+    "--only",
+    "XC40B",
+    "--only",
+    "XC28L1",
+    "--only",
+    "XC28L12",
+    "--only",
+    "XC28L13",
+    "--only",
+    "XC29L1",
+    "--only",
+    "XC29L12",
+    "--only",
+    "XC29L13",
+    "--only",
+    "XC03L1",
+    "--only",
+    "XC04L1"
+  ],
+  "environment": {
+    "TMPDIR": "/workspace/geo261-evidence/gates-l/controls/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GEOMETRY_MODEL_BASE": "/workspace/geo261-evidence/gates-l/q38-run/bin/model-base"
+  },
+  "stack_bytes": 16777216,
+  "started_at": "2026-10-21T00:25:32.148540+00:00",
+  "runner_sha256": "b7e7430e53d157f6a82050417be7a9f8d77bd50c1fb5f2f3a34a1ba44de8363f",
+  "controls_sha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2",
+  "model_base_sha256": "3834873efb9042e69be145ae1670fe01fbf87da7ee15646bfe4f19a01a70b5f8",
+  "status_before": "",
+  "expected": {
+    "XC36": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC39": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC40A": {
+      "verdict": "unlabelled",
+      "exit": 1
+    },
+    "XC40B": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC28L1": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC28L12": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC28L13": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC29L1": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC29L12": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC29L13": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC03L1": {
+      "verdict": "unlabelled",
+      "exit": 1
+    },
+    "XC04L1": {
+      "verdict": "unlabelled",
+      "exit": 1
+    }
+  },
+  "gate_exit_code": 1,
+  "seconds": 121.7271876220002,
+  "ended_at": "2026-10-21T00:27:33.877475+00:00",
+  "status_after": "",
+  "restored": true,
+  "actual": {
+    "XC28L1": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC28L12": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC28L13": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC29L1": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC29L12": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC29L13": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC03L1": {
+      "verdict": "unlabelled",
+      "exit": 1
+    },
+    "XC04L1": {
+      "verdict": "unlabelled",
+      "exit": 1
+    },
+    "XC36": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC39": {
+      "verdict": "survived",
+      "exit": 0
+    },
+    "XC40A": {
+      "verdict": "unlabelled",
+      "exit": 1
+    },
+    "XC40B": {
+      "verdict": "survived",
+      "exit": 0
+    }
+  },
+  "baselines_green": true,
+  "expected_matched": true,
+  "control_check_exit_code": 0
+}

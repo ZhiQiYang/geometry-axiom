@@ -1,0 +1,20 @@
+{
+  "branch": "codex/geo261-closeout-20261021",
+  "sourceA2": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "parent": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "ledgerL2": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "ledgerSourcePath": "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/mutants_results.json",
+  "ledgerSha256": "52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178",
+  "bytes": 5170289,
+  "records": 78,
+  "executions": 75,
+  "counts": {
+    "killed": 70,
+    "equivalent": 4,
+    "crashed": 1,
+    "retired": 3
+  },
+  "onlyChangedPath": "tests/mutants_results.json",
+  "executionHeadsUnmodified": true,
+  "備註": "A2 當輪原始 JSON 逐位元組匯入；L2 唯一父提交為 A2 且只保存帳本，75 筆 execution 實際來源仍 A2，沒有重寫。L2 正式整合驗收尚未執行。"
+}

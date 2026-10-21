@@ -1,0 +1,12 @@
+# 公理:R15:apply-proj 列出的每個項目都必須在這個面的快照障礙清單裡找得到,
+# 否則整筆拒絕回滾——不靜默忽略、也不只套用找得到的那些。
+# c1 真的存在,c99 不存在 → 連 c1 都不會被套用。
+surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000
+surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
+surface 4 origin 0    3000 0    u +z v +x outline 0,0 2500,0 2500,4000 0,4000
+surface 5 origin 0    0    0    u +z v +y outline 0,0 2500,0 2500,3000 0,3000
+surface 6 origin 4000 0    0    u +y v +z outline 0,0 3000,0 3000,2500 0,2500
+space 1 boundary 1 2 3 4 5 6
+column 1 in 1 at 1000 1000 size 400 400
+apply-proj 1 c1 c99

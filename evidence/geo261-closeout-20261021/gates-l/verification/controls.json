@@ -1,0 +1,148 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "phase": "controls",
+  "verifiedUtc": "2026-10-21T00:27:53.291419+00:00",
+  "accepted": true,
+  "problems": [],
+  "caseCount": 12,
+  "summary": {
+    "survived": 9,
+    "unlabelled": 3
+  },
+  "baselines": {
+    "native": {
+      "exit": 0,
+      "tests_run": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "model": {
+      "exit": 0,
+      "tests_run": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "rawGateExitCode": 1,
+  "expectationCheckExitCode": 0,
+  "childReturnCode": 0,
+  "launcherExitCode": 0,
+  "elapsedSeconds": 121.98312310800247,
+  "sourceCleanRestored": true,
+  "bridgeAfterMatchesBeforeBytesAndMtimes": true,
+  "cases": [
+    {
+      "id": "XC28L1",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC28L12",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC28L13",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC29L1",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC29L12",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC29L13",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC03L1",
+      "expectedVerdict": "unlabelled",
+      "expectedExit": 1,
+      "actualVerdict": "unlabelled",
+      "actualExit": 1
+    },
+    {
+      "id": "XC04L1",
+      "expectedVerdict": "unlabelled",
+      "expectedExit": 1,
+      "actualVerdict": "unlabelled",
+      "actualExit": 1
+    },
+    {
+      "id": "XC36",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC39",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC40A",
+      "expectedVerdict": "unlabelled",
+      "expectedExit": 1,
+      "actualVerdict": "unlabelled",
+      "actualExit": 1
+    },
+    {
+      "id": "XC40B",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    }
+  ],
+  "artifacts": {
+    "officialReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/controls/receipt.json",
+      "bytes": 42934,
+      "sha256": "47d8eb068bb9758f4404e3ad36a722d477c41ae0543e33848d74f8c1ec465617"
+    },
+    "runReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/controls/run-receipt.json",
+      "bytes": 3401,
+      "sha256": "b5c6d0bfa82e89c3d47a41add129ce52b2ce4268f6ff2f35b2a599279eae178a"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/controls/receipt.json",
+      "bytes": 4033,
+      "sha256": "ba5ab6daa9f8858019b4e9a5eb6be3d4cbd54fcb35d75fd81d9146f27a093b58"
+    },
+    "bridgeBefore": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/controls/bridge-before.json",
+      "bytes": 1069,
+      "sha256": "5e099e2110df8399ebaab1369e31aa9d0ec4f1f41ae23f42800fd69c4ee2666b"
+    },
+    "bridgeAfter": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/controls/bridge-after.json",
+      "bytes": 1066,
+      "sha256": "8fc2b1b30a72a28701cf47119d311c39982b8f7f60a5988791d314be544d8b96"
+    }
+  }
+}

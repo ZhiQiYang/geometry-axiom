@@ -1,0 +1,66 @@
+"""本輪唯一封包之外層；真 wait 與文字原件，不執行產品。"""
+import ast
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+BASE = Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')
+PREP = BASE / 'preparation'
+OUT = BASE / 'gates-curation-execution'
+TOOL = PREP / 'curate-gates-l3.py'
+TOOL_HASH = 'aabdc95ec54f6f472f7339ad14915058bc8b85e2858a454b739881ef477969e1'
+MANIFEST = PREP / 'completion.json'
+SOURCE = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+
+def now():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+def digest(path):
+    data = path.read_bytes()
+    return {'path': str(path), 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()}
+
+def save(name, value):
+    path = OUT / name
+    with path.open('x') as stream:
+        stream.write(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+
+def main():
+    if sys.flags.optimize or 'PYTHONOPTIMIZE' in os.environ or 'CC' in os.environ:
+        raise RuntimeError('本輪外層要求未設定 CC／PYTHONOPTIMIZE 且未最佳化。')
+    assert digest(TOOL)['sha256'] == TOOL_HASH
+    ast.parse(TOOL.read_bytes(), filename=str(TOOL))
+    assert not OUT.exists()
+    OUT.mkdir()
+    (OUT / 'launcher-code.txt').write_bytes(Path(__file__).read_bytes())
+    command = [sys.executable, '-B', str(TOOL), '--completion-manifest', str(MANIFEST)]
+    started = now()
+    command_receipt = dict(sourceSha=SOURCE, startedUtc=started, cwd=str(BASE),
+        actualArgv=command, launcherArgv=[sys.executable, *sys.orig_argv[1:]],
+        launcherCode=digest(Path(__file__)), tool=digest(TOOL), manifest=digest(MANIFEST),
+        CCAbsent='CC' not in os.environ, PYTHONOPTIMIZEAbsent='PYTHONOPTIMIZE' not in os.environ,
+        optimizationFlag=sys.flags.optimize, pid=os.getpid(),
+        note='stdout／stderr 直接落盤；child.wait() 的真碼另存，工具回應待返回後逐欄轉錄。')
+    save('command.json', command_receipt)
+    start = time.monotonic()
+    with (OUT / 'stdout.log').open('xb') as stdout, (OUT / 'stderr.log').open('xb') as stderr:
+        child = subprocess.Popen(command, cwd=BASE, stdout=stdout, stderr=stderr)
+        save('child-start.json', dict(sourceSha=SOURCE, childPid=child.pid, launcherPid=os.getpid(), startedUtc=now()))
+        code = child.wait()
+    (OUT / '.exit-code').write_text(str(code) + '\n')
+    receipt = dict(sourceSha=SOURCE, startedUtc=started, finishedUtc=now(), elapsedSeconds=time.monotonic()-start,
+        childReturnCode=code, launcherReturnCode=code, childPid=child.pid, launcherPid=os.getpid(),
+        actualArgv=command, cwd=str(BASE), command=digest(OUT / 'command.json'),
+        launcherCode=digest(OUT / 'launcher-code.txt'), tool=digest(TOOL), manifest=digest(MANIFEST),
+        stdout=digest(OUT / 'stdout.log'), stderr=digest(OUT / 'stderr.log'),
+        waitedForChild=True, formalProductOrTestExecuted=False)
+    save('receipt.json', receipt)
+    print(json.dumps({'exitCode':code, 'receipt':digest(OUT / 'receipt.json')}, ensure_ascii=False))
+    return code
+
+if __name__ == '__main__':
+    raise SystemExit(main())

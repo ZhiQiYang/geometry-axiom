@@ -1,0 +1,46 @@
+{
+  "started_utc": "2026-10-21T03:15:21.978461+00:00",
+  "source_sha": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+  "source_tree": "570471f1aea935bb26880954ddd51664d3e7857c",
+  "supervisor_pid": 324483,
+  "supervisor_pgid": 324483,
+  "SIGHUP_ignored": true,
+  "CC_present": false,
+  "PYTHONOPTIMIZE_present": false,
+  "environment_removed": [
+    "CC",
+    "PYTHONOPTIMIZE"
+  ],
+  "environment_overrides": {
+    "TMPDIR": "/workspace/geo261-ledger-A2-cc-cbefb39b/tmp",
+    "MUTATE_CACHE": "/workspace/geo261-ledger-A2-cc-cbefb39b/cache",
+    "MUTATE_RESULTS": "/workspace/geo261-evidence/ledger-A2-cc-cbefb39b/mutants_results.json",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "core_limit": [
+    0,
+    0
+  ],
+  "supervisor_source_sha256": "308e37f71422f96543d68be4b51a42397c9d734750e0388278bb65941b60606e",
+  "stdout_transport": "外部 orchestrator.log 直接寫檔，不依賴工具 session",
+  "selftest": false,
+  "platform": "linux",
+  "python": "Python 3.12.14",
+  "cc": "cc (Debian 14.2.0-19) 14.2.0",
+  "cpu_quota": "400000 100000",
+  "compile_command": [
+    "cc",
+    "-std=c11",
+    "-O2",
+    "<source>",
+    "-o",
+    "<output>",
+    "-lm"
+  ],
+  "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+}

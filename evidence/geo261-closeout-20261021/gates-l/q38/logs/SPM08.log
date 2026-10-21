@@ -1,0 +1,25 @@
+test_panel_strict_width_fixed_spec_and_long_run (tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run) ... FAIL
+
+======================================================================
+FAIL: test_panel_strict_width_fixed_spec_and_long_run (tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_section_profile_native.py", line 308, in test_panel_strict_width_fixed_spec_and_long_run
+    self.assertEqual([0, 0, 914, 6], p["rect"], "D40/R36: calcium-silicate-6 is 6 mm thick, thickness along v, w=914")
+AssertionError: Lists differ: [0, 0, 914, 6] != [0, 0, 914, 7]
+
+First differing element 3:
+6
+7
+
+- [0, 0, 914, 6]
+?             ^
+
++ [0, 0, 914, 7]
+?             ^
+ : D40/R36: calcium-silicate-6 is 6 mm thick, thickness along v, w=914
+
+----------------------------------------------------------------------
+Ran 1 test in 0.117s
+
+FAILED (failures=1)

@@ -1,0 +1,51 @@
+"""收集完整紅燈結果；保留原正式失敗，依 run_all 的 exit-only 語義核對。"""
+from pathlib import Path
+import datetime,hashlib,json,shutil
+BASE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021')
+PLAN=json.loads((BASE/'preparation/instance.json').read_text())
+OUT=Path(PLAN['nativeOut']);LAUNCHER=Path(PLAN['nativeLauncherOut'])
+v=json.loads((OUT/'verification.json').read_text());r=json.loads((OUT/'receipt.json').read_text());l=json.loads((LAUNCHER/'launcher-receipt.json').read_text())
+expected=json.loads((OUT/'source-reference/run_all.expected.json').read_text())['suites']
+rows=v['suiteRows'];failed=[];exit_only=[]
+for name,row in rows.items():
+    if expected[name]['mode']=='count':
+        assert row['total']==expected[name]['count']
+        assert row['total']==row['passed']+row['failed']+row['skipped'],name
+        if row['failed']:failed.append(dict(suite=name,row=row))
+    elif name=='mutation:check':
+        # 正式 run_all.py:731–738 對 inventory 使用「- - -」並另記真 exit；不偽算成 test assertions。
+        assert row['total'] is None and row['passed']==row['failed']=='-' and row['skipped'] is None
+        assert row['note']=='mutation inventory freshness (not test assertions); exit 0'
+        exit_only.append(dict(suite=name,accepted=True,meaning='原 inventory freshness exit0；不是突變重跑或斷言數。',row=row))
+    else:
+        assert row['total'] is None and row['passed']=='ok' and row['failed']=='-' and row['skipped'] is None,name
+        exit_only.append(dict(suite=name,accepted=True,meaning='原腳本 exit-code-only；沒有test級計數。',row=row))
+assert len(failed)==1 and failed[0]['suite']=='py:test_geo261_host_authority'
+assert len(exit_only)==7 and len(rows)==224 and v['pythonJsonCount']==188
+assert v['observedTotals']['total']==5188 and v['observedTotals']['passed']==5185 and v['observedTotals']['failed']==2 and v['observedTotals']['skipped']==1
+assert not v['expectedMismatches'] and not v['missingSuiteLogs'] and not v['unallowedSkipCount']
+assert r['exitCode']==l['wrapperReturnCode']==l['launcherExitCode']==1 and r['elapsedSeconds']<2100
+assert r['sourceSha']==r['headBefore']==r['headAfter']==PLAN['sourceSha'] and r['statusBefore']==r['statusAfter']==''
+named=json.loads((OUT/'named-required-suites.json').read_text())
+for name,want in [('py:test_architecture_contract',205),('py:test_product_architecture',18),('py:test_geo261_model_base_replay',6)]:
+    row=rows[name];assert row['total']==row['passed']==want and row['failed']==row['skipped']==0
+for stage in ['initial-build','final-build']:
+    d=json.loads((OUT/(stage+'-binary-index.json')).read_text());target=OUT/(stage+'-fingerprints');target.mkdir()
+    for item in d['files']:
+        source=Path(item['preservedPath'])
+        if source.name.endswith('.fingerprint.json'):
+            shutil.copy2(source,target/source.name)
+            assert hashlib.sha256((target/source.name).read_bytes()).hexdigest()==item['sha256']
+assert json.loads((OUT/'final-build-binary-index.json').read_text())['matchesInitialBytesAndMtimes']
+cleanup=dict(sourceSha=PLAN['sourceSha'],checkedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),mainTimeoutReturnCode=r['exitCode'],
+    mainRawWaitStatus=r['mainChildRawWaitStatus'],wrapperReturnCode=l['wrapperReturnCode'],launcherExitCode=l['launcherExitCode'],reapedEvents=r['reaped'],cleanupEvents=r['cleanup'],
+    originalSubreaperLoopReachedNoChildren=True,basis='原碼在 waitpid ChildProcessError（本 subreaper 無可等待子程序）後才寫原 receipt；父 launcher 真 wait wrapper 後退出。',sourceClean=True,
+    pidProbeLimitation='執行中曾有已記錄 wrapper PID 在一次 /proc 探針不可見；原因未定，不據此宣稱任何程序當時已退出。',
+    unreadableInfrastructureLimit='前置檢查精確識別四個環境基礎程序，但其 fd/exe 未能讀取；這個限制保留。')
+(OUT/'cleanup-verification.json').write_text(json.dumps(cleanup,ensure_ascii=False,indent=2)+'\n')
+record=dict(sourceSha=PLAN['sourceSha'],checkedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),completeScope=True,acceptedNative=False,formalFailurePreserved=True,
+    failedSuiteRows=failed,allCountedRowsMatchExpected=True,allNamedSuiteLogsPresent=True,allPythonJsonPresent=True,allOtherSuiteRowsAccepted=True,
+    exitOnlyRows=exit_only,onlyAllowedSkip=v['skips'],namedRequiredSuites={name:rows[name] for name in named['suites']},noProductRetest=True,
+    priorCollectorFailure='首次附加收集器把 mutation:check 的 passed 欄錯當 ok 而 AssertionError；原正式列為 -，真碼在 note exit0，已依 run_all.py 原語義更正；未改正式測試或verification。')
+(OUT/'complete-failure-verification.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(sourceSha=PLAN['sourceSha'],completeScope=True,acceptedNative=False,failedSuiteCount=len(failed),failedTestCount=2,exitOnlyCount=len(exit_only)),ensure_ascii=False))

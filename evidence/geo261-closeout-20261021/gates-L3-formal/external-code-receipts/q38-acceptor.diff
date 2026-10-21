@@ -1,0 +1,13 @@
+--- /workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/gate-review/q38-acceptor.py
++++ /workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/q38-acceptor.py
+@@ -1,8 +1,8 @@
+ """逐 phase 唯讀核對；不 import 正式裁判，不執行產品或編譯器。"""
+ import ast,collections,datetime,hashlib,io,json,re,subprocess,sys
+ from pathlib import Path,PurePosixPath
+-BASE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021');ROOT=Path('/workspace/geo261-gates-l2-249571fe2477-20261021');G=BASE/'gates'
+-SHA='249571fe2477845d5330f6190dad965bf327f43b'
++BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021');ROOT=Path('/workspace/geo261-gates-l3-6589248c9a94-20261021');G=BASE/'gates'
++SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'
+ PHASE=sys.argv[1]
+ assert PHASE in ('q38',)
+ OUT=BASE/'gates/acceptance-review'

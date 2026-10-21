@@ -1,0 +1,42 @@
+--- 已驗原碼
++++ 新來源實例
+@@ -2,9 +2,9 @@
+ import datetime,hashlib,json,os,resource,shutil,subprocess,sys,time
+ from pathlib import Path
+ 
+-ROOT=Path('/workspace/geo261-gates-l')
+-OUT=Path('/workspace/geo261-evidence/gates-l')
+-SHA='43f85313c32410ac01406ab585846bbacafea278'
++ROOT=Path('/workspace/geo261-gates-l3-6589248c9a94-20261021')
++OUT=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates')
++SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'
+ phase=sys.argv[1]
+ assert phase in ('q38','controls','card','axiom')
+ assert 'CC' not in os.environ and 'PYTHONOPTIMIZE' not in os.environ
+@@ -26,22 +26,22 @@
+ if phase=='controls':
+     official_out=OUT/'controls'
+     command=[sys.executable,'-B',str(tools/'run_controls.py'),'--root',str(ROOT),'--out',str(official_out),
+-        '--model-base',str(OUT/'q38-run/bin/model-base'),'--controls',str(tools/'q38_controls.py'),'--jobs','2']
++        '--model-base',str(OUT/'q38-run/bin/model-base'),'--controls',str(tools/'q38_controls.py'),'--jobs','1']
+ else:
+     official_out=OUT/(phase+'-run')/phase
+-    command=[sys.executable,'-B',str(tools/'run_gates.py'),phase,'--root',str(ROOT),'--out',str(official_out),'--jobs','2']
++    command=[sys.executable,'-B',str(tools/'run_gates.py'),phase,'--root',str(ROOT),'--out',str(official_out),'--jobs','1']
+ assert not official_out.exists()
+ if phase in ('q38','axiom'): assert not (official_out.parent/'bin').exists()
+ tracked=['AGENTS.md','current_geometry.c','tests/section_profile_mutation_check.py','tests/test_grid_card_reference.py',
+     'tests/test_axiom_reader.py','geometry-core/card-reference/run_mutations.py','geometry-core/card-reference/run_axiom_mutations.py']
+ tracked += ['geometry-core/domain-decoupling/closeout-tools/'+n for n in ['run_gates.py','run_controls.py','q38_controls.py']]
+ hashes={name:sha(ROOT/name) for name in tracked}
+-previous={'q38':Path('/workspace/geo261-evidence/native-final/final-build-binary-index.json'),
++previous={'q38':Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/final-build-binary-index.json'),
+     'controls':OUT/'launcher/q38/bridge-after.json','card':OUT/'launcher/controls/bridge-after.json',
+     'axiom':OUT/'launcher/card/bridge-after.json'}[phase]
+ assert previous.is_file()
+ def snapshot(stage):
+-    archive=Path('/workspace/geo261-evidence/gates-l-binary-preservation')/(phase+'-'+stage)
++    archive=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates-binary-preservation')/(phase+'-'+stage)
+     archive.mkdir(parents=True,exist_ok=False)
+     items=[]
+     for name in ['bridge','bridge.fingerprint.json']:

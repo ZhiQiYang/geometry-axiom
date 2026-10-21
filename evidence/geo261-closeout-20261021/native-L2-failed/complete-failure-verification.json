@@ -1,0 +1,177 @@
+{
+  "sourceSha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "checkedUtc": "2026-10-21T04:48:03.195509+00:00",
+  "completeScope": true,
+  "acceptedNative": false,
+  "formalFailurePreserved": true,
+  "failedSuiteRows": [
+    {
+      "suite": "py:test_geo261_host_authority",
+      "row": {
+        "total": 18,
+        "passed": 16,
+        "failed": 2,
+        "skipped": 0,
+        "seconds": 12.5,
+        "note": "日誌 /tmp/geometry-tests/run_all-logs/py_test_geo261_host_authority.log"
+      }
+    }
+  ],
+  "allCountedRowsMatchExpected": true,
+  "allNamedSuiteLogsPresent": true,
+  "allPythonJsonPresent": true,
+  "allOtherSuiteRowsAccepted": true,
+  "exitOnlyRows": [
+    {
+      "suite": "mutation:check",
+      "accepted": true,
+      "meaning": "原 inventory freshness exit0；不是突變重跑或斷言數。",
+      "row": {
+        "total": null,
+        "passed": "-",
+        "failed": "-",
+        "skipped": null,
+        "seconds": 1.7,
+        "note": "mutation inventory freshness (not test assertions); exit 0"
+      }
+    },
+    {
+      "suite": "oracle:framing-selftest",
+      "accepted": true,
+      "meaning": "原腳本 exit-code-only；沒有test級計數。",
+      "row": {
+        "total": null,
+        "passed": "ok",
+        "failed": "-",
+        "skipped": null,
+        "seconds": 85.0,
+        "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+      }
+    },
+    {
+      "suite": "node:model_viewer",
+      "accepted": true,
+      "meaning": "原腳本 exit-code-only；沒有test級計數。",
+      "row": {
+        "total": null,
+        "passed": "ok",
+        "failed": "-",
+        "skipped": null,
+        "seconds": 0.1,
+        "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+      }
+    },
+    {
+      "suite": "node:document_format",
+      "accepted": true,
+      "meaning": "原腳本 exit-code-only；沒有test級計數。",
+      "row": {
+        "total": null,
+        "passed": "ok",
+        "failed": "-",
+        "skipped": null,
+        "seconds": 0.1,
+        "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+      }
+    },
+    {
+      "suite": "node:document_cases",
+      "accepted": true,
+      "meaning": "原腳本 exit-code-only；沒有test級計數。",
+      "row": {
+        "total": null,
+        "passed": "ok",
+        "failed": "-",
+        "skipped": null,
+        "seconds": 1.2,
+        "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+      }
+    },
+    {
+      "suite": "node:cdp_navigation",
+      "accepted": true,
+      "meaning": "原腳本 exit-code-only；沒有test級計數。",
+      "row": {
+        "total": null,
+        "passed": "ok",
+        "failed": "-",
+        "skipped": null,
+        "seconds": 0.1,
+        "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+      }
+    },
+    {
+      "suite": "node:cdp_confirmation_gate",
+      "accepted": true,
+      "meaning": "原腳本 exit-code-only；沒有test級計數。",
+      "row": {
+        "total": null,
+        "passed": "ok",
+        "failed": "-",
+        "skipped": null,
+        "seconds": 0.0,
+        "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+      }
+    }
+  ],
+  "onlyAllowedSkip": [
+    {
+      "suite": "py:test_gdi_contract",
+      "item": {
+        "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+        "reason": "requires compiled Windows GDI contract harness",
+        "scope": "test",
+        "count": 1,
+        "parent_test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources"
+      },
+      "allowed": true,
+      "matchedRules": [
+        {
+          "suite": "py:test_gdi_contract",
+          "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+          "reason": "requires compiled Windows GDI contract harness",
+          "platforms": [
+            "posix"
+          ],
+          "why": "Windows GDI resources do not exist on POSIX; all native geometry suites still run"
+        }
+      ]
+    }
+  ],
+  "namedRequiredSuites": {
+    "py:test_architecture_contract": {
+      "total": 205,
+      "passed": 205,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.5,
+      "note": ""
+    },
+    "py:test_product_architecture": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 11.5,
+      "note": ""
+    },
+    "py:test_geo261_model_base_replay": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 16.1,
+      "note": ""
+    },
+    "mutation:check": {
+      "total": null,
+      "passed": "-",
+      "failed": "-",
+      "skipped": null,
+      "seconds": 1.7,
+      "note": "mutation inventory freshness (not test assertions); exit 0"
+    }
+  },
+  "noProductRetest": true,
+  "priorCollectorFailure": "首次附加收集器把 mutation:check 的 passed 欄錯當 ok 而 AssertionError；原正式列為 -，真碼在 note exit0，已依 run_all.py 原語義更正；未改正式測試或verification。"
+}

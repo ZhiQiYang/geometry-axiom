@@ -1,0 +1,298 @@
+{
+  "schema": "geo261-host-copy-package-source-review/1",
+  "reviewer": "/root/p189_prepare/contact_static",
+  "source_root": "/workspace/geo261-evidence/host-copy-candidate",
+  "fixed_75f_boundary": {
+    "authorized_by_root": true,
+    "include_directories": ["H/v1", "H/original-correction", "K"],
+    "include_top_files": ["local-commit.json", "independent-original-baseline-finding.json", "independent-original-correction-review.json", "independent-review-H.json", "independent-review-K.json", "independent-review-H-code.txt", "independent-review-H-code-v2.txt", "independent-review-K-code.txt"],
+    "exclude_later_candidate_directory": "footprint",
+    "meaning": "root後續明確固定75f邊界。此報告只涵蓋上述來源；footprint是75f之後候選，必排除，未讀其結果或新性能。1070檔盤點為新增footprint前的上述固定材料，不是對後續整個根目錄的動態承諾。"
+  },
+  "scope": "只讀分類既有原件、JSON、指定原輸出及Git blob；未import工具、未build/load/test/profile。只新增此包外報告，不改原目錄。",
+  "candidate": {
+    "branch": "codex/geo261-p189-host-copy-trial-20261021",
+    "sha": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+    "parent": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+    "commit_binding": "/workspace/geo261-evidence/host-copy-candidate/local-commit.json",
+    "git_parent_independently_verified": true,
+    "changed_file_count": 7,
+    "all_seven_blob_bytes_and_sha_match_local_commit_receipt": true,
+    "source_time_boundary": "H/K定向執行時HEAD仍85dc，加未提交七檔補丁；75f587是其後提交。以七檔原bytes hash建立綁定，不將歷史execution HEAD改成未來SHA。",
+    "files": [
+      "geometry-app/native/reference_sources.inc",
+      "geometry-app/native/world_validation.inc",
+      "geometry-core/kernel/placement_sources.c",
+      "tests/geo261_host_facts_authority_harness.c",
+      "tests/geo261_placement_definition_harness.c",
+      "tests/test_geo261_host_facts_authority.py",
+      "tests/test_geo261_placement_definition.py"
+    ]
+  },
+  "accepted_H": {
+    "directory": "/workspace/geo261-evidence/host-copy-candidate/H/v1",
+    "summary": "/workspace/geo261-evidence/host-copy-candidate/H/v1/verification-summary.json",
+    "targeted_receipt": "/workspace/geo261-evidence/host-copy-candidate/H/v1/targeted-result.json",
+    "raw_command_index": "/workspace/geo261-evidence/host-copy-candidate/H/v1/targeted-commands.json",
+    "peer": "/workspace/geo261-evidence/host-copy-candidate/independent-review-H.json",
+    "tests_run": 65,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_before_after_equal": true,
+    "watched_source_count": 325,
+    "commands": 338,
+    "raw_streams_independently_matched_bytes_and_hashes": 676,
+    "h_control_triples": 18,
+    "h_control_triples_crosschecked_bad": [],
+    "control_chain": [
+      0,
+      1,
+      0
+    ],
+    "all_nonzero_commands": 43,
+    "all_nonzero_are_named_ASSERT_exit_1": true,
+    "control_count_limit": "18為H明列控制（三段鏈已核），不是將此65項跨模組套件中的43個非零命令全稱H控制。",
+    "sanitizer": {
+      "receipt": "/workspace/geo261-evidence/host-copy-candidate/H/v1/output-checks/result.json",
+      "command_index": "/workspace/geo261-evidence/host-copy-candidate/H/v1/output-checks/commands.json",
+      "accepted_variant": "candidate-H-asan-ubsan",
+      "cases": [
+        "copy-clear",
+        "copy-snapshot",
+        "scratch-owned",
+        "malformed"
+      ],
+      "count": 4,
+      "all_recorded_exit_zero": true,
+      "stdout_stderr_empty": true,
+      "raw_command_count": 75,
+      "raw_streams_independently_matched_bytes_and_hashes": 150,
+      "instrumentation_limit": "只有包含H修改的產品translation unit經ASan/UBSan，K/W連結物件未儀器化；不可宣稱完整K或整個產品ASan通過。",
+      "mixed_receipt_warning": "此result.json同時保留4個無效original-H-K-with-name-adapter案例；只有後4個candidate-H-asan-ubsan維持有效。"
+    }
+  },
+  "accepted_K": {
+    "directory": "/workspace/geo261-evidence/host-copy-candidate/K/targeted-v1",
+    "delivery": "/workspace/geo261-evidence/host-copy-candidate/K/delivery.json",
+    "receipt": "/workspace/geo261-evidence/host-copy-candidate/K/targeted-v1/receipt.json",
+    "unit_result": "/workspace/geo261-evidence/host-copy-candidate/K/targeted-v1/unit-result.json",
+    "raw_children": "/workspace/geo261-evidence/host-copy-candidate/K/targeted-v1/child-processes.json",
+    "peer": "/workspace/geo261-evidence/host-copy-candidate/independent-review-K.json",
+    "tests_run": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "recorded_child_exit_code": 0,
+    "recorded_raw_wait_status": 0,
+    "child_processes": 245,
+    "build_commands": 142,
+    "control_triples": 26,
+    "control_triples_crosschecked_bad": [],
+    "control_chain": [
+      0,
+      1,
+      0
+    ],
+    "definition_controls": 21,
+    "placement_source_controls": 5,
+    "source_before_after_equal": true,
+    "watched_file_count": 66,
+    "output_rule": "definition正常stdout為空；placement sources正常stdout為精確PASS <case>換行。兩者stderr空，不能一律要求stdout空。",
+    "sanitizer_claim": "此K定向證據沒有獨立K ASan/UBSan收據，不從H局部儀器化推論K記憶體安全驗收。"
+  },
+  "invalid_original_baseline_keep": {
+    "directory": "/workspace/geo261-evidence/host-copy-candidate/H/v1/output-checks",
+    "receipt": "/workspace/geo261-evidence/host-copy-candidate/H/v1/output-checks/result.json",
+    "invalid_variant": "original-H-K-with-name-adapter",
+    "invalid_cases": [
+      "copy-clear",
+      "copy-snapshot",
+      "scratch-owned",
+      "malformed"
+    ],
+    "finding": "/workspace/geo261-evidence/host-copy-candidate/independent-original-baseline-finding.json",
+    "classification": "外部對照編排錯誤，不是產品測試失敗，也不能以其exit0證明原版H。",
+    "cause": "原current_geometry.c轉接仍走工作樹geometry-core/references.inc；該中介再include候選reference_sources.inc，導致已保存的原reference_sources副本不可達。實際混用候選H helper及原world_validation/K。",
+    "correction_note": "/workspace/geo261-evidence/host-copy-candidate/H/original-correction/更正.md",
+    "preserve_legacy_claims_with_correction": "保留H/v1/完成紀錄.md與原output-checks原件。該紀錄『原基底H/K四例各0』的原版身分聲明已被更正，不能摘錄成仍有效；候選65項與候選H四項sanitizer未失效。"
+  },
+  "accepted_corrected_original_baseline": {
+    "directory": "/workspace/geo261-evidence/host-copy-candidate/H/original-correction",
+    "result": "/workspace/geo261-evidence/host-copy-candidate/H/original-correction/result.json",
+    "commands": "/workspace/geo261-evidence/host-copy-candidate/H/original-correction/commands.json",
+    "include_closure": "/workspace/geo261-evidence/host-copy-candidate/H/original-correction/include-closure.json",
+    "peer": "/workspace/geo261-evidence/host-copy-candidate/independent-original-correction-review.json",
+    "base": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+    "head_before_after": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+    "source_unchanged": true,
+    "cases": [
+      "copy-clear",
+      "copy-snapshot",
+      "scratch-owned",
+      "malformed"
+    ],
+    "cases_passed": 4,
+    "all_recorded_exit_zero": true,
+    "stdout_stderr_empty": true,
+    "command_count": 93,
+    "nonzero_command_count": 0,
+    "raw_streams_independently_matched_bytes_and_hashes": 186,
+    "compiler_dependencies_in_saved_receipt": 115,
+    "required_original_copies_included": true,
+    "candidate_host_sources_absent": true,
+    "transformed_source_count": 5,
+    "remaining_host_dependencies_equal_base_in_peer": 18,
+    "old_kernel_object_compiled_and_linked_in_peer": true,
+    "peer_artifact_hashes_crosschecked": {
+      "result.json": true,
+      "include-closure.json": true,
+      "commands.json": true,
+      "run_original.py": true
+    },
+    "completeness": "四例、93命令、186原輸出與閉包收據齊全，peer已明確acceptedCorrectedOriginalBaseline=true；本次核對其收據、命令與原件一致。未重跑compiler -MM或產品。",
+    "limitation": "只有原85dc搭候選新見證與私有名稱/include轉接的對照；不重跑候選65項或ASan，也不是性能量測。"
+  },
+  "historical_material_to_keep": [
+    {
+      "paths": [
+        "/workspace/geo261-evidence/host-copy-candidate/independent-original-baseline-finding.json"
+      ],
+      "meaning": "包含首讀原tmp已清理而FileNotFoundError／exit1，後續按Git原bytes及include規則重建核對；不冒稱直接讀到已刪tmp。"
+    },
+    {
+      "paths": [
+        "/workspace/geo261-evidence/host-copy-candidate/independent-review-H.json",
+        "/workspace/geo261-evidence/host-copy-candidate/independent-review-H-code.txt",
+        "/workspace/geo261-evidence/host-copy-candidate/independent-review-H-code-v2.txt"
+      ],
+      "meaning": "H peer初次因patch路徑錯誤exit1、後續修正。保留兩版接受器原碼快照及失敗原因，這不是產品紅。H peer的『原對照待更正』是較早時點，後由獨立correction-review補完。"
+    },
+    {
+      "paths": [
+        "/workspace/geo261-evidence/host-copy-candidate/independent-review-K.json",
+        "/workspace/geo261-evidence/host-copy-candidate/independent-review-K-code.txt"
+      ],
+      "meaning": "K peer初次把正常PASS輸出誤要求為空而exit1；JSON已記錯誤predicate、修正與completeInitialCodeSeparatelySaved=false。不能宣稱初版接受器完整原碼另有保存。"
+    },
+    {
+      "paths": [
+        "/workspace/geo261-evidence/host-copy-candidate/K/delivery.json",
+        "/workspace/geo261-evidence/host-copy-candidate/K/結果.md",
+        "/workspace/geo261-evidence/host-copy-candidate/H/v1/完成紀錄.md",
+        "/workspace/geo261-evidence/host-copy-candidate/local-commit.json"
+      ],
+      "meaning": "保留提交前與提交後時間差。『未commit／未push／未性能驗收』及local-commit的『H核對尚收尾』都是各收據寫入時狀態，不改原文，也不能替代後續更正收據。"
+    }
+  ],
+  "unexecuted_or_source_only": {
+    "no_separate_unexecuted_plan_identified": true,
+    "meaning": "指定根沒有找到另一個可確定未執行的產品版本草稿；.py/.txt原碼快照本身不構成執行證據。無效原baseline是確有執行但身分錯誤，不可列為未執行。",
+    "python_tools": 7,
+    "policy": "保留既有.py及接受器/來源.txt快照原bytes，不為避工具登記而改副檔名；正式發布時按各自工具／歷史來源身分登記。"
+  },
+  "inventory": {
+    "files": 1070,
+    "bytes": 3144099,
+    "by_directory": {
+      ".": 8,
+      "K": 6,
+      "K/targeted-v1": 14,
+      "H/v1": 693,
+      "H/v1/output-checks": 152,
+      "H/original-correction": 197
+    },
+    "elf_files": [],
+    "pycache_files": [],
+    "symlinks": [],
+    "full_source_tree_present": false,
+    "python_files": 7,
+    "text_snapshots": 13,
+    "method": "遍歷指定根，對每個一般檔讀前4 bytes辨識ELF，檢查__pycache__/.pyc/.pyo與目錄結構；原current_geometry快照只經二進位雜湊或metadata核對，不以grep掃原檔。"
+  },
+  "exclusions": {
+    "existing_files_requiring_binary_cache_or_tree_exclusion": [],
+    "later_candidate_must_exclude": "/workspace/geo261-evidence/host-copy-candidate/footprint",
+    "do_not_follow_external_source_or_tmp_paths": [
+      "/workspace/geo261-host-copy-candidate",
+      "/tmp/geo261-host-copy-K-gs7u7gfi",
+      "/tmp/geo261-host-H-v1-npboymjy",
+      "/tmp/geo261-host-H-output-bvikwvpo",
+      "/tmp/geo261-host-original-corrected-u70op38p"
+    ],
+    "note": "JSON中的外部build/source路徑是歷史執行位置，不應因此複製整個checkout或tmp。指定根已有必要原輸出與個別來源快照；本次未盤點上述外部整樹。"
+  },
+  "packaging_status": {
+    "content_ready_for_packaging": true,
+    "remaining_evidence_blockers": [],
+    "corrected_original_complete": true,
+    "independently_frozen": false,
+    "freeze_limit": "本次只讀核對收據完成與來源綁定；未取得整個證據根的正式凍結封條/manifest或無writer證明，也未施行鎖定。因此可按此分類封裝，但不宣稱已由本審核完成技術凍結。",
+    "required_classification": "將有效H/K候選、無效舊原baseline、有效corrected original及peer歷史分別標示；不要刪掉失敗、更正或只摘錄舊passed欄位。"
+  },
+  "readonly_execution": {
+    "actual_invocations": [
+      {
+        "launcher_argv": [
+          "python3",
+          "-"
+        ],
+        "stdin_scope": "列目錄及JSON/Markdown/Python/patch/receipt metadata，彙整每層檔數。",
+        "actual_tool_exit_code": 0
+      },
+      {
+        "launcher_argv": [
+          "cat"
+        ],
+        "arguments": [
+          "/workspace/geo261-evidence/host-copy-candidate/local-commit.json",
+          "/workspace/geo261-evidence/host-copy-candidate/K/delivery.json",
+          "/workspace/geo261-evidence/host-copy-candidate/independent-original-baseline-finding.json",
+          "/workspace/geo261-evidence/host-copy-candidate/independent-original-correction-review.json",
+          "/workspace/geo261-evidence/host-copy-candidate/H/original-correction/result.json",
+          "/workspace/geo261-evidence/host-copy-candidate/H/original-correction/更正.md"
+        ],
+        "actual_tool_exit_code": 0
+      },
+      {
+        "launcher_argv": [
+          "python3",
+          "-"
+        ],
+        "stdin_scope": "唯讀摘要H/K及peer JSON欄位與控制/命令數；不import其執行碼。",
+        "actual_tool_exit_code": 0
+      },
+      {
+        "launcher_argv": [
+          "cat"
+        ],
+        "arguments": [
+          "/workspace/geo261-evidence/host-copy-candidate/H/v1/完成紀錄.md",
+          "/workspace/geo261-evidence/host-copy-candidate/K/結果.md",
+          "/workspace/geo261-evidence/host-copy-candidate/H/v1/launch-environment.json"
+        ],
+        "actual_tool_exit_code": 0
+      },
+      {
+        "launcher_argv": [
+          "python3",
+          "-"
+        ],
+        "stdin_scope": "唯讀git rev-parse 75f587^及git show七檔，逐bytes長度/hash對local-commit；列H/K具名控制、全目錄ELF/cache/source-tree inventory。",
+        "actual_tool_exit_code": 0,
+        "output_limit": "有一份來源map鍵清單輸出被工具截斷；完成碼0，後續核對另用精簡彙整，不依截斷清單下結論。"
+      },
+      {
+        "launcher_argv": [
+          "python3",
+          "-"
+        ],
+        "stdin_scope": "H18/K26控制與原命令/斷言交叉核；H/K前後來源map；338/75/93組原stdout/stderr長度/hash；更正閉包欄位與peer四件artifact hash。",
+        "actual_tool_exit_code": 0
+      }
+    ],
+    "command_text_limit": "inline Python以實際launcher argv及完整工作範圍記錄，未另保存逐段stdin原碼；不冒稱存在獨立執行log。",
+    "product_test_exits": "本文產品測試碼皆讀自既有收據，與本次唯讀工具exit0分開；未重跑任何產品命令。",
+    "main_uncertainty": "收據歷史與局部驗收不能證明性能收益、完整整合驗收或所有ABI安全；更正前的四例原baseline身分永久無效。"
+  }
+}

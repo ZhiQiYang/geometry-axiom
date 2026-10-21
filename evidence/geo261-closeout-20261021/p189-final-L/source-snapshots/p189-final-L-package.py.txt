@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+"""正式 L 原件的外部封裝器；不執行產品或驗收工具。"""
+import base64
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+
+E = Path('/workspace/geo261-evidence')
+B = E/'final-bundle/p189-final-L'
+F = E/'p189-final-L-43f85313c324-frozen.paq6ic8k'
+O = E/'p189-final-L-43f85313c324-ready.g0dzrc03'
+P = E/'p189-final-L-43f85313c324.wfwk1_ca'
+D = E/'p189-diagnostic-L-43f85313c324.iffezuqv'
+assert not B.exists(), '不覆寫既有封包'
+B.mkdir()
+def digest(b): return hashlib.sha256(b).hexdigest()
+def save(p, x):
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open('x', encoding='utf-8') as f: f.write(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+mapping = []
+def cp(src, dst, role):
+    raw=src.read_bytes(); dst.parent.mkdir(parents=True,exist_ok=True)
+    with dst.open('xb') as f: f.write(raw)
+    os.chmod(dst,0o644)
+    assert dst.read_bytes()==raw
+    mapping.append({'role':role,'source':str(src),'published':str(dst.relative_to(B)),
+                    'bytes':len(raw),'sha256':digest(raw),'original_bytes':True})
+for src in sorted(F.rglob('*')):
+    if src.is_file():
+        rel=src.relative_to(F)
+        assert src.read_bytes()==(O/rel).read_bytes(), ('formal_changed',rel)
+        cp(src,B/'formal'/rel,'正式凍結原件')
+cp(E/'p189-final-L-43f85313c324-frozen.paq6ic8k-index.json',B/'formal-freeze-index.json','凍結索引原件')
+for src in sorted(P.rglob('*')):
+    if src.is_file(): cp(src,B/'first-preparation-failure'/src.relative_to(P),'首次準備失敗原件；未建置／未取樣')
+excluded=[]
+for src in sorted(D.rglob('*')):
+    if not src.is_file(): continue
+    rel=src.relative_to(D)
+    if str(rel) in ('bridge-profile','source-archive.stdout','run01/gmon.out') or src.suffix=='.py':
+        excluded.append({'source':str(src),'relative_path':str(rel),'bytes':src.stat().st_size,
+                         'sha256':digest(src.read_bytes()),'reason':'ELF／來源 tar 留外部；gmon 改明示無損 base64；外部輔助原碼另存純文字來源快照'})
+        continue
+    cp(src,B/'diagnostic'/rel,'診斷原件／衍生解析；不是正式效能樣本')
+gmon=(D/'run01/gmon.out').read_bytes()
+encoded=base64.b64encode(gmon)+b'\n'
+gout=B/'diagnostic/run01/gmon.out.base64'
+gout.parent.mkdir(parents=True,exist_ok=True)
+gout.write_bytes(encoded)
+assert base64.b64decode(gout.read_bytes())==gmon
+save(B/'diagnostic/run01/gmon-base64-mapping.json',{
+    '性質':'明示的無損 base64 資料，非 gmon 原 bytes；外部原件保留。',
+    'source':str(D/'run01/gmon.out'),'raw_bytes':len(gmon),'raw_sha256':digest(gmon),
+    'encoded_file':'gmon.out.base64','encoded_bytes':len(encoded),'encoded_sha256':digest(encoded),
+    'decode_matches_original':True,
+    'decode_command':'base64 --decode gmon.out.base64 > /tmp/geo261-L-gmon.out'})
+tools=[E/'p189-final-L-phase-supervisor.py',D/'profile-driver.py',D/'gmon-address-review.py',Path(__file__)]
+for src in tools:
+    cp(src,B/'source-snapshots'/(src.name+'.txt'),'外部實跑輔助來源快照；0644純文字資料、非產品入口／部署工具')
+cp(E/'p189-candidate-comparison-plan.md',B/'follow-up/candidate-comparison-plan.md','候選方法規劃，未實跑')
+save(B/'source-and-artifact-mapping.json',{'copied_files':mapping,'excluded_binary_artifacts':excluded,
+     'source_snapshot_policy':'外部 .py 原件保留；此包 .py.txt 為相同原 bytes 的純文字來源快照、0644，非可執行產品入口，不新增／修改正式已登記工具。',
+     'runner':{'repo_path':'geometry-core/domain-decoupling/closeout-tools/p189_verify.py','source_sha':'43f85313c32410ac01406ab585846bbacafea278','git_blob':'666a8897b44e39c7209e598bce442830082c440c','sha256':'fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44'}})
+readme='''# 最終 L P-189：門檻未通過
+
+正式來源 `43f85313c32410ac01406ab585846bbacafea278`，分支 `codex/geo261-closeout-20261021`。本包保留正式真碼：generator selftest 0、判定器 selftest 0（16 控制，2 正／14 負）、build 0、equivalence 0、timing 0、**check 1、supervisor 1**。timing 回 0 僅表示收樣完成。
+
+| N | main median 秒 | final median 秒 | final/main | 原門檻 ≤2 |
+|---|---:|---:|---:|---|
+| 16 | 0.13586991800184478 | 0.15163042600033805 | 1.115997037683347 | 通過 |
+| 32 | 0.23936709299960057 | 0.4051768620010989 | 1.69270076735976 | 通過 |
+| 48 | 0.357273334000638 | 0.7729609699999855 | 2.1635003131764803 | 失敗 |
+| 64 | 0.554064053001639 | 1.5804454290009744 | 2.852459784097019 | 失敗 |
+
+main `adbaebf9c73ea6801d7b4d5214e4b846b132923b`、base `3e600772076465fc65a26ac09055028301c0fb0b`；三方由固定 SHA git archive 新建置，`gcc -std=c11 -O2`，16 MiB stack，移除 PYTHONOPTIMIZE／無 Python -O。每 N 三輪正反交錯，共 36 筆有效樣本；t0 在 Popen 返回後，未宣稱完整程序啟動成本。原門檻與判準未改。
+
+`formal/` 的 1178 檔皆逐 bytes 等同凍結來源與正式 out。175 場景（4 生成＋171 根場景）的三方完整 stdout 全同；100 根場景為預期拒絕。1122 個 stdout／stderr 檔全部保留（525 dump 與36 timing各兩流），共811191 bytes。check 的 dump／完整性／來源判定均通過，失敗原因為 N48 與 N64 速度。完整 argv、phase 真碼、build hash、來源索引、環境與 preflight 都在 formal/。
+
+`first-preparation-failure/` 保留首次 generator-selftest 缺 `calib/f3-00.scene` 的真 exit1：當時未建 binary、未取樣。補同 handoff 固定 blob 的校準原 bytes 後另建正式 out，不覆寫首次原件，不是性能挑樣重跑。來源及校準 blob／hash 在正式 prepare-receipt；產生器原檔可由 handoff `59796b1af9259eb23d30134c2ce5a56317a06091` 還原。
+
+`diagnostic/` 是正式紅後的一次獨立 `-O2 -g -pg -fno-omit-frame-pointer` 診斷，compile／load／gprof 真碼均0；不當正式門檻。完整 nm／objdump／gprof stdout 原 bytes 保存，原 gmon 在外部；包內只保存明示 base64，解碼已逐 bytes 核同。ELF 與來源 tar 不入包，完整來源／flags／hash／命令在 mapping 及原收據。實際成本與 gprof compiler-clone 錯名校正在「診斷說明.md」；單次75樣本不能推論正式牆鐘原因，2跨界樣本未強派。
+
+`source-snapshots/` 是外部監督器、剖析調度及唯讀解析／封裝器實際原 bytes 的純文字來源快照（0644），不是新增產品入口或正式工具部署；外部 .py 原件仍在。正式 runner 使用 L 已登記工具，其來源映射單列，不能把快照當 E 的執行來源。
+
+未驗：此包不是 wd_read 候選驗收，也沒有 main 同 flags profile。最不確定的是哪項成本造成正式倍率，以及固定寬度解碼能否足以解除2倍門檻。來源節點與接觸收集也有明顯成本；#323／#300 工作未混入，P177次數時機未改。PR #288 仍受本結果阻擋，不以本包代決門檻或合併。
+
+`SHA256SUMS` 涵蓋除自身外的全部包內檔案；外部 `p189-final-L-copy-check.json` 保存本次 copy／base64 還原／全包 hash 的真核對結果。
+'''
+(B/'README.md').write_text(readme,encoding='utf-8')
+files=sorted(p for p in B.rglob('*') if p.is_file())
+manifest=''.join(digest(p.read_bytes())+'  '+str(p.relative_to(B))+'\n' for p in files)
+(B/'SHA256SUMS').write_text(manifest)
+for line in manifest.splitlines():
+    expected,rel=line.split('  ',1); assert digest((B/rel).read_bytes())==expected
+allfiles=sorted(p for p in B.rglob('*') if p.is_file())
+receipt={'completed_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'bundle':str(B),
+ 'file_count':len(allfiles),'bytes':sum(p.stat().st_size for p in allfiles),'copied_original_count':len(mapping),
+ 'formal_originals':sum(r['role']=='正式凍結原件' for r in mapping),'formal_check_exit_code':1,
+ 'formal_receipt_sha256':digest((B/'formal/receipt.json').read_bytes()),
+ 'manifest_entries':len(files),'manifest_sha256':digest((B/'SHA256SUMS').read_bytes()),
+ 'all_copy_bytes_equal':True,'base64_decode_bytes_equal':True,'all_manifest_hashes_match':True,
+ 'active_python_files_in_bundle':[str(p.relative_to(B)) for p in allfiles if p.suffix=='.py'],
+ 'packager_sha256':digest(Path(__file__).read_bytes()),'actual_validation_exit_code':0}
+save(E/'p189-final-L-copy-check.json',receipt)
+print(json.dumps(receipt,ensure_ascii=False,indent=2))

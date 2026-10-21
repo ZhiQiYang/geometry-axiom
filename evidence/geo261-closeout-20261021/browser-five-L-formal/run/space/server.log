@@ -1,0 +1,23 @@
+core: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-20T19:31:15+00:00））
+bridge: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-20T19:31:34+00:00））
+model-base: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-20T19:31:50+00:00））
+LOCAL_RUNTIME {"root": "/workspace/geometry-axiom", "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3", "executables": {"core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core", "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge", "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"}, "port": 18854, "managedPreview": false}
+http://localhost:18854  （Ctrl-C 結束；版本=bf568f47a04b；bridge=/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge）
+I8a preview 1: valid; confirm token to apply
+ timber 11 center 1178 -> 1178 length 3633 -> 3633
+  surface 2 origin [5002,1165,2700] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 2 origin [5002,4538,2700] axes [1,0,0]/[0,-1,0]/[0,0,-1]
+input:75: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 2: valid; confirm token to apply
+ timber 0 center 13 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 321 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+input:109: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/geometry-web/serve.py", line 761, in <module>
+    server.serve_forever()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 235, in serve_forever
+    ready = selector.select(poll_interval)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/selectors.py", line 415, in select
+    fd_event_list = self._selector.poll(timeout)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

@@ -1,0 +1,16 @@
+test_CR10_FIELD_GRAPH_AND_PRECISION (tests.test_grid_card_reference.GridCardReference.test_CR10_FIELD_GRAPH_AND_PRECISION) ... FAIL
+
+======================================================================
+FAIL: test_CR10_FIELD_GRAPH_AND_PRECISION (tests.test_grid_card_reference.GridCardReference.test_CR10_FIELD_GRAPH_AND_PRECISION)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 200, in test_CR10_FIELD_GRAPH_AND_PRECISION
+    self.reject([parameter(b='=9223372036854775807 mm*2')], 'PRECISION', 'FIELD_GRAPH_AND_PRECISION precision')
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 79, in reject
+    self.assertTrue(matching, (label, reason, errors))
+AssertionError: [] is not true : ('FIELD_GRAPH_AND_PRECISION precision', 'PRECISION', ['I74 POSITIVE: grid-system 4 v parameter 10 field 8 requires positive length', 'candidate rejected'])
+
+----------------------------------------------------------------------
+Ran 1 test in 0.169s
+
+FAILED (failures=1)

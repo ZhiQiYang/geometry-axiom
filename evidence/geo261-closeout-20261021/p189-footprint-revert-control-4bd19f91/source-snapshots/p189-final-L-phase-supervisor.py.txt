@@ -1,0 +1,245 @@
+#!/usr/bin/env python3
+"""最終 L P-189 的外部持久調度器；不修改正式測量工具。"""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import resource
+import signal
+import subprocess
+import sys
+import time
+import traceback
+
+
+def now():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def atomic_bytes(path, data):
+    temporary = path.with_name(path.name + ".writing")
+    with temporary.open("wb") as stream:
+        stream.write(data)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+
+
+def save(path, value):
+    atomic_bytes(path, (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode())
+
+
+def readj(path):
+    return json.loads(path.read_bytes())
+
+
+def command_output(argv, cwd=None):
+    completed = subprocess.run(argv, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if completed.returncode:
+        raise RuntimeError(f"純讀取命令失敗 {completed.returncode}: {argv!r}: {completed.stderr.decode(errors='replace')}")
+    return completed.stdout
+
+
+def source_identity(prepared):
+    repo = prepared["repo"]
+    actual = {}
+    for label, commit in prepared["commits"].items():
+        resolved = command_output(["git", "rev-parse", commit + "^{commit}"], repo).decode().strip()
+        if resolved != commit:
+            raise RuntimeError(f"來源 SHA 不符：{label}")
+        actual[label] = resolved
+    for label, short in (("main", "adbaebf9"), ("base", "3e600772")):
+        if command_output(["git", "rev-parse", short + "^{commit}"], repo).decode().strip() != actual[label]:
+            raise RuntimeError(f"工具固定短 SHA 解析不符：{label}")
+    hashes = {}
+    for role, key in (("runner", "runner"), ("generator", "generator")):
+        digest = sha(Path(prepared[key]).read_bytes())
+        if digest != prepared[role + "_sha256"]:
+            raise RuntimeError(f"{role} 原 bytes 雜湊改變")
+        hashes[role + "_sha256"] = digest
+    return {"commits": actual, **hashes,
+            "repository_head": command_output(["git", "rev-parse", "HEAD"], repo).decode().strip()}
+
+
+def process_snapshot():
+    rows = []
+    for directory in Path("/proc").iterdir():
+        if not directory.name.isdigit():
+            continue
+        try:
+            raw = (directory / "stat").read_text()
+            close = raw.rfind(")")
+            name = raw[raw.find("(") + 1:close]
+            tail = raw[close + 2:].split()
+            rows.append({"pid": int(directory.name), "name": name, "stat": tail[0],
+                         "ppid": int(tail[1]), "cpu_ticks": int(tail[11]) + int(tail[12])})
+        except (FileNotFoundError, PermissionError, ValueError, IndexError, ProcessLookupError):
+            continue
+    return {"utc": now(), "processes": sorted(rows, key=lambda row: row["pid"]),
+            "ps": command_output(["ps", "-eo", "pid,ppid,stat,comm,pcpu"]).decode(),
+            "loadavg": list(os.getloadavg()),
+            "cpu_max": Path("/sys/fs/cgroup/cpu.max").read_text() if Path("/sys/fs/cgroup/cpu.max").exists() else None}
+
+
+def timing_preflight(prepared, out):
+    started = now()
+    identity = source_identity(prepared)
+    builds = readj(out / "build-receipt.json")
+    binaries = []
+    errors = []
+    for label, commit in prepared["commits"].items():
+        matches = [row for row in builds if row.get("label") == label]
+        binary = Path(prepared["work"]) / commit[:8] / "bridge"
+        digest = sha(binary.read_bytes())
+        valid = (len(matches) == 1 and matches[0].get("sha") == commit
+                 and matches[0].get("returncode") == 0 and matches[0].get("binary_sha256") == digest)
+        binaries.append({"label": label, "sha": commit, "binary": str(binary),
+                         "binary_sha256": digest, "matches_build_receipt": valid})
+        if not valid:
+            errors.append(f"{label} 實際 binary 與建置收據不符")
+    if len(builds) != 3:
+        errors.append("建置收據不是三方唯一集合")
+    before = process_snapshot()
+    time.sleep(1)
+    after = process_snapshot()
+    previous = {row["pid"]: row for row in before["processes"]}
+    candidates = []
+    for row in after["processes"]:
+        name = row["name"]
+        is_compiler = name in {"cc1", "cc1plus", "gcc", "cc", "clang", "clang++", "ld", "lto-wrapper", "lto1"}
+        is_browser = name.startswith(("chrome", "chromium"))
+        is_bridge = name == "bridge"
+        if not (is_compiler or is_browser or is_bridge):
+            continue
+        old = previous.get(row["pid"])
+        delta = None if old is None else row["cpu_ticks"] - old["cpu_ticks"]
+        item = {**row, "delta_cpu_ticks": delta, "zombie": row["stat"].startswith("Z")}
+        candidates.append(item)
+        if item["zombie"]:
+            continue
+        if is_compiler or is_browser:
+            errors.append(f"獨占前仍有活編譯器或瀏覽器：PID {row['pid']} {name}")
+        elif delta != 0:
+            errors.append(f"bridge 尚未證明閒置：PID {row['pid']} delta={delta}")
+    receipt = {"started_utc": started, "finished_utc": now(), **identity,
+               "binary_checks": binaries, "environment_before": before, "environment_after": after,
+               "relevant_processes": candidates, "errors": errors, "pass": not errors,
+               "meaning": "外部來源／binary／排程前檢查；不替代正式 P-189 門檻。殭屍排除；不停止任何服務。"}
+    save(out / "timing-preflight.json", receipt)
+    atomic_bytes(out / "timing-preflight.exit-code", ("0\n" if not errors else "2\n").encode())
+    if errors:
+        raise RuntimeError("獨占前檢查未通過：" + "; ".join(errors))
+
+
+def run_phase(prepared, out, command, environment, receipts):
+    phase = command["phase"]
+    for suffix in ("stdout", "stderr", "exit-code", "receipt.json"):
+        if (out / f"{phase}.{suffix}").exists():
+            raise RuntimeError(f"拒絕覆寫既有階段原件：{phase}.{suffix}")
+    identity = source_identity(prepared)
+    stdout = out / f"{phase}.stdout"
+    stderr = out / f"{phase}.stderr"
+    record = {"phase": phase, "argv": command["argv"], "cwd": prepared["repo"],
+              "started_utc": now(), **identity, "stdout": str(stdout), "stderr": str(stderr),
+              "supervisor_pid": os.getpid(), "PYTHONOPTIMIZE_present": "PYTHONOPTIMIZE" in environment,
+              "stack_limit_bytes": list(resource.getrlimit(resource.RLIMIT_STACK)),
+              "core_limit_bytes": list(resource.getrlimit(resource.RLIMIT_CORE))}
+    started = time.monotonic()
+    with stdout.open("xb") as output, stderr.open("xb") as error:
+        child = subprocess.Popen(command["argv"], cwd=prepared["repo"], env=environment,
+                                 stdout=output, stderr=error, start_new_session=True)
+        record.update(pid=child.pid, pgid=os.getpgid(child.pid))
+        save(out / "running.json", record)
+        actual_exit = child.wait()
+        # 先落實際 wait 碼，再做雜湊、JSON 收據與任何狀態輸出。
+        atomic_bytes(out / f"{phase}.exit-code", (str(actual_exit) + "\n").encode())
+        output.flush()
+        error.flush()
+        os.fsync(output.fileno())
+        os.fsync(error.fileno())
+    record.update(finished_utc=now(), seconds=time.monotonic() - started, exit_code=actual_exit,
+                  stdout_sha256=sha(stdout.read_bytes()), stderr_sha256=sha(stderr.read_bytes()))
+    save(out / f"{phase}.receipt.json", record)
+    receipts.append(record)
+    save(out / "phase-receipts.json", receipts)
+    return actual_exit
+
+
+def execute(config):
+    prepared = readj(Path(config["prepare_receipt"]))
+    out = Path(prepared["out"])
+    if config["authorization"] != "主代理明確放行後才可啟動":
+        raise RuntimeError("未知調度設定")
+    if config.get("released") is not True:
+        raise RuntimeError("本設定尚未獲主代理明確放行")
+    if (out / "supervisor-started.json").exists():
+        raise RuntimeError("拒絕重新啟動或覆寫本輪調度原件")
+    if not __debug__:
+        raise RuntimeError("調度器不可在 Python 最佳化模式下執行")
+    signal.signal(signal.SIGHUP, signal.SIG_IGN)
+    resource.setrlimit(resource.RLIMIT_STACK, (16777216, 16777216))
+    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
+    environment = os.environ.copy()
+    environment.pop("PYTHONOPTIMIZE", None)
+    environment.update(PYTHONDONTWRITEBYTECODE="1", PYTHONIOENCODING="utf-8")
+    own_sha = sha(Path(__file__).read_bytes())
+    if own_sha != config["supervisor_sha256"]:
+        raise RuntimeError("調度器原碼雜湊與設定不符")
+    identity = source_identity(prepared)
+    save(out / "supervisor-started.json", {"utc": now(), "pid": os.getpid(), "pgid": os.getpgrp(),
+         "SIGHUP_ignored": True, "transport": "每 phase 原 stdout/stderr 直檔；調度器輸出直寫 orchestrator.log",
+         "supervisor_sha256": own_sha, "PYTHONOPTIMIZE_removed": True,
+         "stack_limit_bytes": list(resource.getrlimit(resource.RLIMIT_STACK)),
+         "core_limit_bytes": list(resource.getrlimit(resource.RLIMIT_CORE)), **identity})
+    receipts = []
+    for command in prepared["planned_commands"]:
+        phase = command["phase"]
+        if phase == "timing":
+            timing_preflight(prepared, out)
+        code = run_phase(prepared, out, command, environment, receipts)
+        if phase == "check":
+            save(out / "completion-receipt.json", {"completed_utc": now(), **identity,
+                 "phases": receipts, "actual_check_exit_code": code,
+                 "formal_receipt": readj(out / "receipt.json") if (out / "receipt.json").exists() else None,
+                 "official_red_preserved": code != 0})
+            return code
+        if code:
+            save(out / "stopped-receipt.json", {"utc": now(), "phase": phase, "actual_phase_exit_code": code,
+                 "reason": "正式階段非零；保留原件並停止，不重試或改判準。", "phases": receipts})
+            return code if code > 0 else 128 + (-code)
+        if phase == "selftest":
+            controls = readj(out / "validator-selftest.json")
+            if len(controls) != 16 or sum(row["expected_pass"] is True for row in controls) != 2:
+                raise RuntimeError("本輪控制收據不是16筆／2正14負")
+            save(out / "selftest-count-review.json", {"utc": now(), "controls": len(controls),
+                 "positive": 2, "negative": 14, "runner_sha256": prepared["runner_sha256"],
+                 "actual_selftest_exit_code": code})
+        if phase == "equivalence":
+            equivalence = readj(out / "dump-equivalence.json")
+            save(out / "equivalence-phase-review.json", {"utc": now(), "actual_phase_exit_code": code,
+                 "receipt_pass": equivalence.get("pass"), "complete": equivalence.get("complete"),
+                 "scene_count": len(equivalence.get("scenes", [])),
+                 "meaning": "程序回0只表示收集完成；保留收據真假，續完整取樣交最後check裁判。"})
+    raise RuntimeError("未執行最終 check")
+
+
+def main():
+    config = readj(Path(sys.argv[1]))
+    prepared = readj(Path(config["prepare_receipt"]))
+    out = Path(prepared["out"])
+    try:
+        code = execute(config)
+    except BaseException:
+        atomic_bytes(out / "supervisor.exception", traceback.format_exc().encode())
+        code = 2
+    atomic_bytes(out / "supervisor.exit-code", (str(code) + "\n").encode())
+    return code
+
+
+if __name__ == "__main__":
+    sys.exit(main())

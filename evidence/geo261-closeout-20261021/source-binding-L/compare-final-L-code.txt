@@ -1,0 +1,178 @@
+"""只讀核對 A→最終 L；不執行產品、編譯、正式 --check 或架構掃描。"""
+import argparse
+from collections import Counter
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+sys.dont_write_bytecode = True
+A = "7159530c0e494d3211e6ab1764eb691137211707"
+L1 = "cd4ac98f44174729fb3a2f1c291c6c258c9a239a"
+L = "43f85313c32410ac01406ab585846bbacafea278"
+LEDGER = "tests/mutants_results.json"
+EXPECTED = "868a80700c9d058e208684631e799a91659e7820b06c31c246b8af96c670a731"
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def require(ok, message):
+    if not ok:
+        raise RuntimeError(message)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", required=True)
+    parser.add_argument("--snapshot-a", required=True)
+    parser.add_argument("--snapshot-l", required=True)
+    parser.add_argument("--import-dir", required=True)
+    args = parser.parse_args()
+    root, import_dir = Path(args.root).resolve(), Path(args.import_dir).resolve()
+    a_path, l_path = Path(args.snapshot_a), Path(args.snapshot_l)
+    a, l = json.loads(a_path.read_bytes()), json.loads(l_path.read_bytes())
+    import_receipt = json.loads((import_dir / "receipt.json").read_bytes())
+    source_path = Path(import_receipt["ledgerSourcePath"])
+    commands = []
+
+    def git(*argv):
+        command = ["git", "-C", str(root), *argv]
+        proc = subprocess.run(command, capture_output=True, check=False)
+        commands.append({"argv": command, "exitCode": proc.returncode,
+                         "stdout": proc.stdout.decode(), "stderr": proc.stderr.decode()})
+        require(proc.returncode == 0, "唯讀 Git 命令失敗")
+        return proc.stdout
+
+    require(git("rev-parse", "HEAD").decode().strip() == L, "實際 checkout 非指定 L")
+    require(not git("status", "--porcelain", "--untracked-files=all"), "工作樹有非忽略變更")
+    git("merge-base", "--is-ancestor", A, L)
+    git("merge-base", "--is-ancestor", L1, L)
+    commits = git("rev-list", "--reverse", A + ".." + L).decode().splitlines()
+    require(commits == [L1, L], "A 後的提交不是預期 L1→L 鏈")
+    chain = []
+    previous = A
+    for head in commits:
+        parents = git("show", "-s", "--format=%P", head).decode().strip().split()
+        require(parents == [previous], "帳本提交父鏈不符或包含 merge")
+        diff = git("diff", "--name-status", previous, head).decode().splitlines()
+        require(diff == ["M\t" + LEDGER], "中間提交改動帳本以外的路徑")
+        chain.append({"head": head, "parent": previous, "changed": diff})
+        previous = head
+    total_diff = git("diff", "--name-status", A, L).decode().splitlines()
+    require(total_diff == ["M\t" + LEDGER], "整段差異不是只有帳本")
+    git("diff", "--exit-code", A, L, "--", ".", ":!" + LEDGER)
+    require(a["headBefore"] == a["headAfter"] == A, "A 原快照來源不符")
+    require(l["headBefore"] == l["headAfter"] == L, "L 快照來源不符")
+    require(a["snapshotToolRawSha256"] == l["snapshotToolRawSha256"], "快照工具 bytes 已改")
+    require(set(a["files"]) == set(l["files"]), "來源聯集不同")
+    changed = [p for p in a["files"] if a["files"][p] != l["files"][p]]
+    require(changed == [LEDGER], "來源聯集有額外改動")
+    require(a["mutation"] == l["mutation"], "closure／oracle／tool／定義綁定不同")
+    require(a["architecture"] == l["architecture"], "架構 inputs 或 metadata 綁定不同")
+    require(len(l["architecture"]["inputs"]) == 611, "架構 inputs 數量不符")
+
+    blob_command = ["git", "-C", str(root), "show", L + ":" + LEDGER]
+    blob_proc = subprocess.run(blob_command, capture_output=True, check=False)
+    require(blob_proc.returncode == 0, "讀取 Git 帳本 blob 失敗")
+    blob = blob_proc.stdout
+    commands.append({"argv": blob_command, "exitCode": blob_proc.returncode,
+                     "stdoutBytes": len(blob), "stdoutSha256": sha(blob),
+                     "stderr": blob_proc.stderr.decode()})
+    require(blob == (root / LEDGER).read_bytes() == source_path.read_bytes()
+            == (import_dir / "ledger-blob.stdout").read_bytes(), "帳本不是實跑與匯入原 bytes")
+    require(sha(blob) == EXPECTED == import_receipt["ledgerSha256"], "帳本原始 hash 不符")
+    require(import_receipt["sourceA"] == A and import_receipt["ledgerL"] == L,
+            "匯入收據的 A／L 不符")
+    rows = json.loads(blob)
+    definitions = a["mutation"]["definitions"]
+    require(set(rows) == set(definitions) and len(rows) == 78, "帳本定義集合不符")
+    require("CC" not in os.environ, "唯讀編譯命令核對要求 CC 未設定")
+    sys.path.insert(0, str(root / "tests"))
+    import mutate as mt
+    require(Path(mt.__file__).resolve() == root / "tests/mutate.py", "正式裁判 import 路徑不符")
+    require(mt.tool_hash() == a["mutation"]["toolSha256"], "正式裁判工具 hash 不符")
+    compile_command = mt.portable_compile_command()
+    compile_hash = mt.compile_hash()
+    require(compile_command[0] == "cc", "預設編譯器命令不是 cc")
+    executions, retired, core_compile = [], [], []
+    for name, row in rows.items():
+        spec = definitions[name]
+        require(row["record_sha256"] == mt.record_hash(row), "record checksum 不符：" + name)
+        require(row["mutant_sha256"] == spec["mutantSha256"], "突變 hash 不符：" + name)
+        require(row["source_file"] == spec["sourceFile"], "突變來源路徑不符：" + name)
+        if spec["retired"]:
+            require(row["verdict"] == "retired" and "execution" not in row,
+                    "退役項仍有 execution 或分類不符：" + name)
+            retired.append(name)
+            continue
+        require(row["source_sha256"] == a["files"][row["source_file"]]["lfSha256"],
+                "來源 hash 不符：" + name)
+        require(row["closure_sha256"] == a["mutation"]["coreAndBridgeIncludeClosureSha256"],
+                "閉包 hash 不符：" + name)
+        require(row["oracle_sha256"] == spec["oracleSha256"], "oracle hash 不符：" + name)
+        evidence = row["execution"]
+        require(evidence["head"] == A, "execution head 非 A：" + name)
+        require(evidence["tool_sha256"] == a["mutation"]["toolSha256"], "execution tool 不符：" + name)
+        if spec["binary"] == "core":
+            require(evidence["platform"] == os.name, "core execution platform 不符：" + name)
+            require(evidence["compile_command"] == compile_command, "core 編譯命令字面不符：" + name)
+            require(evidence["compile_sha256"] == compile_hash, "core 編譯指紋不符：" + name)
+            core_compile.append(name)
+        executions.append(name)
+    require(len(executions) == 75 and len(core_compile) == 57 and len(retired) == 3,
+            "execution／core／retired 數量不符")
+
+    imported_commands = json.loads((import_dir / "commands.json").read_bytes())
+    selected = {}
+    for label in ["L-default-check", "push", "remote-after-push"]:
+        items = [item for item in imported_commands if item["label"] == label]
+        require(len(items) == 1 and items[0]["exitCode"] == 0, "匯入命令失敗或重複：" + label)
+        require((import_dir / (label + ".exit-code")).read_text().strip() == "0",
+                "原始退出碼不符：" + label)
+        selected[label] = items[0]
+    require((import_dir / "remote-after-push.stdout").read_text().strip()
+            == L + "\trefs/heads/codex/geo261-closeout-20261021", "遠端原始查詢結果不符")
+    publication = json.loads((import_dir / "publication.json").read_bytes())
+    require(publication["ledgerL"] == L and publication["defaultCheckExitCode"] == 0
+            and publication["pushExitCode"] == 0 and publication["remoteExactMatch"] is True,
+            "公開狀態收據不符")
+    environment = json.loads((import_dir / "environment.json").read_bytes())
+    require(environment["CC_present"] is False and not environment["mutationOverridesPresent"],
+            "正式 check 的環境不符預設契約")
+    require(git("rev-parse", "HEAD").decode().strip() == L, "讀取期間 HEAD 改變")
+    require(not git("status", "--porcelain", "--untracked-files=all"), "讀取期間工作樹改變")
+    result = {
+        "schema": "geo261-final-L-source-binding/1", "sourceA": A, "ledgerL": L,
+        "historicalL1": L1, "historicalL1State": "已隨 L 公開成祖先，仍未採用為最終候選；舊原件不回寫",
+        "scope": "只讀 Git 範圍、來源雜湊、帳本原件與既有公開收據；沒有重跑正式 check、測試或編譯",
+        "comparisonToolRawSha256": sha(Path(__file__).read_bytes()),
+        "snapshotToolRawSha256": l["snapshotToolRawSha256"],
+        "snapshotA": {"path": str(a_path), "rawSha256": sha(a_path.read_bytes())},
+        "snapshotL": {"path": str(l_path), "rawSha256": sha(l_path.read_bytes())},
+        "commitChain": chain, "totalDiff": total_diff, "allOtherTrackedPathsUnchanged": True,
+        "snapshotPaths": len(a["files"]), "snapshotSameBytesPaths": len(a["files"]) - len(changed),
+        "snapshotChangedPaths": changed, "mutationBindingUnchanged": True,
+        "mutationIncludeClosureSha256": l["mutation"]["coreAndBridgeIncludeClosureSha256"],
+        "coreOracleSha256": l["mutation"]["coreOracleSha256"], "toolSha256": l["mutation"]["toolSha256"],
+        "architectureBindingUnchanged": True, "architectureInputCount": 611,
+        "architectureInputClosureSha256": l["architecture"]["inputClosureSha256"],
+        "architectureMetadataUnchanged": l["architecture"]["artifactPaths"],
+        "ledger": {"rawSha256": sha(blob), "bytes": len(blob), "exactExecutedOutputBytes": True,
+                   "executedOutputPath": str(source_path), "records": len(rows),
+                   "counts": dict(Counter(row["verdict"] for row in rows.values())),
+                   "executionCount": len(executions), "executionHeads": {A: len(executions)},
+                   "retiredWithoutExecution": sorted(retired), "allRecordChecksumsValid": True},
+        "defaultCompileBinding": {"CC_present": False, "coreRecords": len(core_compile),
+                                  "portableCommand": compile_command, "compileSha256": compile_hash},
+        "referencedExistingCommands": selected, "existingPublicationReceipt": publication,
+        "gitCommands": commands,
+        "notClaimed": ["帳本在 L 重產", "本輪重跑正式 --check 或網路查詢", "全部整合驗收已完成", "E 已成立"]}
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

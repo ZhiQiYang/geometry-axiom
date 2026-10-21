@@ -1,0 +1,67 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "readyForCuration": false,
+  "phases": [
+    "q38",
+    "controls",
+    "card",
+    "axiom"
+  ],
+  "gateJobs": 1,
+  "pins": {
+    "preparation/instance.json": null,
+    "native/verification.json": null,
+    "native/completion-verification.json": null,
+    "native/final-build-binary-index.json": null,
+    "gates/tool-observations.json": null,
+    "gates/q38-progress-interpretation-correction.json": null,
+    "gates/q38-readonly-process-samples.jsonl": null,
+    "gates/verification/q38.json": null,
+    "gates/acceptance-review/q38.json": null,
+    "gates/acceptance-execution/q38-primary-receipt.json": null,
+    "gates/acceptance-execution/q38-detailed-receipt.json": null,
+    "gates/launcher/q38/receipt.json": null,
+    "gates/q38-run/q38/run-receipt.json": null,
+    "gates/verification/controls.json": null,
+    "gates/acceptance-review/controls.json": null,
+    "gates/acceptance-execution/controls-primary-receipt.json": null,
+    "gates/acceptance-execution/controls-detailed-receipt.json": null,
+    "gates/launcher/controls/receipt.json": null,
+    "gates/controls/run-receipt.json": null,
+    "gates/verification/card.json": null,
+    "gates/acceptance-review/card.json": null,
+    "gates/acceptance-execution/card-primary-receipt.json": null,
+    "gates/acceptance-execution/card-detailed-receipt.json": null,
+    "gates/launcher/card/receipt.json": null,
+    "gates/card-run/card/run-receipt.json": null,
+    "gates/verification/axiom.json": null,
+    "gates/acceptance-review/axiom.json": null,
+    "gates/acceptance-execution/axiom-primary-receipt.json": null,
+    "gates/acceptance-execution/axiom-detailed-receipt.json": null,
+    "gates/launcher/axiom/receipt.json": null,
+    "gates/axiom-run/axiom/run-receipt.json": null
+  },
+  "toolObservationPointers": {
+    "q38": {
+      "phaseObject": "/phases/q38",
+      "exitCode": "/finalToolResult/exit_code",
+      "launcherReceiptSha256": "/launcherReceipt/sha256"
+    },
+    "controls": {
+      "phaseObject": "/phases/controls",
+      "exitCode": "/finalToolResult/exit_code",
+      "launcherReceiptSha256": "/launcherReceipt/sha256"
+    },
+    "card": {
+      "phaseObject": "/phases/card",
+      "exitCode": "/finalToolResult/exit_code",
+      "launcherReceiptSha256": "/launcherReceipt/sha256"
+    },
+    "axiom": {
+      "phaseObject": "/phases/axiom",
+      "exitCode": "/finalToolResult/exit_code",
+      "launcherReceiptSha256": "/launcherReceipt/sha256"
+    }
+  },
+  "note": "待四phase主與詳細真0、原件凍結且父代理明確放行後，另存實際completion.json；此模板不可執行，不代表任何未出結果。"
+}

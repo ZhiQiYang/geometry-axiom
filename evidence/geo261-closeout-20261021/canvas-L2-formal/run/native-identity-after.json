@@ -1,0 +1,1424 @@
+{
+  "sourceSha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "stage": "after",
+  "sampledUTC": "2026-10-21T04:54:02.861272+00:00",
+  "build": {
+    "root": "/workspace/geometry-axiom",
+    "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3",
+    "executables": {
+      "core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+      "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+      "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"
+    },
+    "port": null,
+    "managedPreview": false
+  },
+  "server": {
+    "root": "/workspace/geometry-axiom",
+    "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3",
+    "executables": {
+      "core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+      "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+      "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"
+    },
+    "port": 18856,
+    "managedPreview": false
+  },
+  "executables": {
+    "core": {
+      "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+      "bytes": 882496,
+      "sha256": "0c99df659dbf1b8697d3e6f786324e9e9ee30ed0eeddc2fe362c86a1110b8f49",
+      "mtimeNs": 1792556392399599270,
+      "sidecarSha256": "f0cb7d07af87950b6a61d9a229a1aaad9505eb82a7a881880fb686171885d306",
+      "fingerprint": "23cf3060b7b36d09a1c8f6280e90ccac1f4c3e91c6550edf5019998fc1bc4ec6",
+      "command": "cc -std=c11 -O2 current_geometry.c -lm -> core",
+      "builtAt": "2026-10-21T04:19:52+00:00"
+    },
+    "bridge": {
+      "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+      "bytes": 1100552,
+      "sha256": "dd9c955ba4ecac888132b62eb921352a84e1acea1f3803ee78772afffe466d71",
+      "mtimeNs": 1792556412214451254,
+      "sidecarSha256": "cdc6b42ab690654bd29e745d926c82da5b225d6d051e4ad344f1316c52c2f7d4",
+      "fingerprint": "6089d32a595a7e9bdbb8ac5d3ddaa0011155a1067ce7626d11dd7fe94833b38b",
+      "command": "cc -std=c11 -O2 geometry-web/web_bridge.c -lm -> bridge",
+      "builtAt": "2026-10-21T04:20:12+00:00"
+    },
+    "model-base": {
+      "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base",
+      "bytes": 947400,
+      "sha256": "1ce880adc570c420fd7f46f58c2074f12742c166b1b3fc21444eb33ce94e0902",
+      "mtimeNs": 1792556428311140333,
+      "sidecarSha256": "b6b6299696cb7a6d22f1da84d195fcd63009ffe77a025d35c2689f2d1bbb88b2",
+      "fingerprint": "3df3eae39e0a3f34e288f3da91ef9059961ff9a5a93ec4c90d0803a8fdda2c09",
+      "command": "cc -std=c11 -O2 geometry-core/model_base.c -lm -> model-base",
+      "builtAt": "2026-10-21T04:20:28+00:00"
+    }
+  },
+  "sourceBindings": [
+    {
+      "path": "current_geometry.c",
+      "gitBlob": "d1a3e5edbac5121f35f2a439c0f6728d4d6ad341",
+      "bytes": 400284,
+      "sha256": "dc3fbfb14adde5078c36ab179936df88ba977b22bb341301cd30deafeeb97696",
+      "normalizedSha256": "c58bee9df0fce6b8e881850c0bf28680000bcb690dfca7a5e911aa9b3217df87"
+    },
+    {
+      "path": "geometry-app/native/app_candidate.c",
+      "gitBlob": "a38b1c4cd34ace710b6ce09abf2a26bd416e8f09",
+      "bytes": 8674,
+      "sha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9",
+      "normalizedSha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9"
+    },
+    {
+      "path": "geometry-app/native/app_candidate.h",
+      "gitBlob": "0bb27e32ac6f5400e2e942d9c82457a2afde77d6",
+      "bytes": 3141,
+      "sha256": "5f32ec9dadb4c9836ada7cbb89358edd3b5aee28c04bd98fa8bc54bb3d0ab0ce",
+      "normalizedSha256": "5f32ec9dadb4c9836ada7cbb89358edd3b5aee28c04bd98fa8bc54bb3d0ab0ce"
+    },
+    {
+      "path": "geometry-app/native/candidate_unity.inc",
+      "gitBlob": "b6ae508d736cf1cbdd9c3288f763adc2733b098a",
+      "bytes": 273,
+      "sha256": "62856930c43f9c9dca2a34379e791b7e7556c8c4e12d1a7f05dcb874e3390cab",
+      "normalizedSha256": "62856930c43f9c9dca2a34379e791b7e7556c8c4e12d1a7f05dcb874e3390cab"
+    },
+    {
+      "path": "geometry-app/native/definition_texts.h",
+      "gitBlob": "30514b0bd8826fc677adaa36a5de1b7132a3786d",
+      "bytes": 567,
+      "sha256": "97f6a813f68828eab628ff630be0b25078727eeb987fd7acb4cc6afba3f9a49b",
+      "normalizedSha256": "97f6a813f68828eab628ff630be0b25078727eeb987fd7acb4cc6afba3f9a49b"
+    },
+    {
+      "path": "geometry-app/native/document.h",
+      "gitBlob": "ab8c490a22769ed90dff6b9c68cc08005b68a88f",
+      "bytes": 1526,
+      "sha256": "142d4cd049a78a71f0c8e8757b97d50349ea087d065c15cca33f0434c7239d62",
+      "normalizedSha256": "142d4cd049a78a71f0c8e8757b97d50349ea087d065c15cca33f0434c7239d62"
+    },
+    {
+      "path": "geometry-app/native/domains.inc",
+      "gitBlob": "b8b0edc9529b8e344a082e018756e49da88603f5",
+      "bytes": 8008,
+      "sha256": "34f9ac6e18bbb11f9e1d33df0773eae7b8733888ca062b35fa2f3e4fa7d7019d",
+      "normalizedSha256": "34f9ac6e18bbb11f9e1d33df0773eae7b8733888ca062b35fa2f3e4fa7d7019d"
+    },
+    {
+      "path": "geometry-app/native/enclosure_sources.inc",
+      "gitBlob": "b1121c1c06c03629be9575ece26c881668aa5a37",
+      "bytes": 2790,
+      "sha256": "5166462c06b4d5375a5eba8888e8f98dc6ecdfe351a9b4e2437ed2497ad6fce6",
+      "normalizedSha256": "5166462c06b4d5375a5eba8888e8f98dc6ecdfe351a9b4e2437ed2497ad6fce6"
+    },
+    {
+      "path": "geometry-app/native/grid_adapter.inc",
+      "gitBlob": "347e8b81844ede4bcb69542bae7f8d261ee5b033",
+      "bytes": 1567,
+      "sha256": "dc2f189dd525513f03133a9d608a4196ca150bce220e740f73e4bd6051a2cd46",
+      "normalizedSha256": "dc2f189dd525513f03133a9d608a4196ca150bce220e740f73e4bd6051a2cd46"
+    },
+    {
+      "path": "geometry-app/native/grid_context.inc",
+      "gitBlob": "7e199443e9a0bce6fa2a7387f195ca6c1a0d89d3",
+      "bytes": 1949,
+      "sha256": "f8eb9c5cc077cc3f556940f609f37529e831740be182fb02b33c85f8d09bd30d",
+      "normalizedSha256": "f8eb9c5cc077cc3f556940f609f37529e831740be182fb02b33c85f8d09bd30d"
+    },
+    {
+      "path": "geometry-app/native/history.c",
+      "gitBlob": "e94ef56cbf2dbefa13a3ba94bea0102e8c4c2dbb",
+      "bytes": 3945,
+      "sha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595",
+      "normalizedSha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595"
+    },
+    {
+      "path": "geometry-app/native/history.h",
+      "gitBlob": "11277892a152faca1f94e3227dadb4eeed608312",
+      "bytes": 1840,
+      "sha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0",
+      "normalizedSha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0"
+    },
+    {
+      "path": "geometry-app/native/history_unity.inc",
+      "gitBlob": "08912ef58743d2789d82fb06e213dbeba3a78cd2",
+      "bytes": 156,
+      "sha256": "a6afa2138ffc48d2c62e4debb94b55bc3567c841c132b642451613bc7f459a87",
+      "normalizedSha256": "a6afa2138ffc48d2c62e4debb94b55bc3567c841c132b642451613bc7f459a87"
+    },
+    {
+      "path": "geometry-app/native/kernel_storage.h",
+      "gitBlob": "949ec69a0ef2be11edf95b72451db2f1f7a93d8f",
+      "bytes": 239,
+      "sha256": "c975407e4d7a8a22b11b637f31bde2afa0a57dbe269c7e7a3e7cf3145dc7916b",
+      "normalizedSha256": "c975407e4d7a8a22b11b637f31bde2afa0a57dbe269c7e7a3e7cf3145dc7916b"
+    },
+    {
+      "path": "geometry-app/native/legacy_json.inc",
+      "gitBlob": "94f36f2edbb09697b513d11aed4b3f07eff94f17",
+      "bytes": 664,
+      "sha256": "e11a2ab49c8bbe2fbb227b153b242da9d4e261cc85da1bfe0c7e82069756f397",
+      "normalizedSha256": "e11a2ab49c8bbe2fbb227b153b242da9d4e261cc85da1bfe0c7e82069756f397"
+    },
+    {
+      "path": "geometry-app/native/model_sources.inc",
+      "gitBlob": "2ed744e887aba84c2420fbdd1e0c42406f6527b0",
+      "bytes": 30960,
+      "sha256": "c464ae8f9f23599e35d60f7b2a60fcf24ad21fc1be6899610d6e7d0bf51d39c5",
+      "normalizedSha256": "c464ae8f9f23599e35d60f7b2a60fcf24ad21fc1be6899610d6e7d0bf51d39c5"
+    },
+    {
+      "path": "geometry-app/native/reference_sources.inc",
+      "gitBlob": "b14c686e64f054c281c46352469ddd4430835f76",
+      "bytes": 58324,
+      "sha256": "ee8fa4e258999addd1996704cdffc47ac870acb972f5d63328dc2908e1be8a5c",
+      "normalizedSha256": "ee8fa4e258999addd1996704cdffc47ac870acb972f5d63328dc2908e1be8a5c"
+    },
+    {
+      "path": "geometry-app/native/versions_adapter.inc",
+      "gitBlob": "f9dafe33dad0a68ea75e28c5ed66c819a72c8db3",
+      "bytes": 274,
+      "sha256": "2bd905cc2f0541ea9b1571b1c434e59a46c46895a87febcd64d3c7b010d01194",
+      "normalizedSha256": "2bd905cc2f0541ea9b1571b1c434e59a46c46895a87febcd64d3c7b010d01194"
+    },
+    {
+      "path": "geometry-app/native/woodworking_unity.inc",
+      "gitBlob": "4b281d60d633c2678a2591945a5a898b920d6875",
+      "bytes": 4344,
+      "sha256": "38afa41ad749ae0f617bd2e1b73f0ed641d33ae85b5c74c8f00ab9f17d3992ed",
+      "normalizedSha256": "38afa41ad749ae0f617bd2e1b73f0ed641d33ae85b5c74c8f00ab9f17d3992ed"
+    },
+    {
+      "path": "geometry-app/native/world_candidate.inc",
+      "gitBlob": "5dbade46a04404ffefd97e1e338e144417810c13",
+      "bytes": 5640,
+      "sha256": "4efe4989f13a61eb08ffdcaa5907bbf76f647755ab405f5b2f4f558f6370efa5",
+      "normalizedSha256": "4efe4989f13a61eb08ffdcaa5907bbf76f647755ab405f5b2f4f558f6370efa5"
+    },
+    {
+      "path": "geometry-app/native/world_validation.inc",
+      "gitBlob": "acc82f4d9dfb5d23eed7a094ef00359add7cf9bc",
+      "bytes": 6157,
+      "sha256": "993662cee91fc85ee255b4e3f1261f83fdb874621a61e50ec6811dc4d1c5a48c",
+      "normalizedSha256": "993662cee91fc85ee255b4e3f1261f83fdb874621a61e50ec6811dc4d1c5a48c"
+    },
+    {
+      "path": "geometry-core/assembly.inc",
+      "gitBlob": "22450dcb06a0b96db5391cccbc2a68b5913ec9ae",
+      "bytes": 8966,
+      "sha256": "9f411b3f0018ef5c61fcda002db7b8e0f8ebf6fce3d0fca6c1427c4d639e4bf9",
+      "normalizedSha256": "9f411b3f0018ef5c61fcda002db7b8e0f8ebf6fce3d0fca6c1427c4d639e4bf9"
+    },
+    {
+      "path": "geometry-core/assembly_generation.inc",
+      "gitBlob": "5c9d4fa579271a6ea642aaf990b1515c432c973d",
+      "bytes": 7246,
+      "sha256": "7a1b4585b2742135c2dcea2ecc7d268c4d7d2c4b0d6bb818f5a7bfc1a16257e4",
+      "normalizedSha256": "7a1b4585b2742135c2dcea2ecc7d268c4d7d2c4b0d6bb818f5a7bfc1a16257e4"
+    },
+    {
+      "path": "geometry-core/assembly_types.h",
+      "gitBlob": "faecb721a523091470ce1143c106148fa708322d",
+      "bytes": 205,
+      "sha256": "d419b266150a3415d86de00fe5de7473a40a575a56c5ac5e7d8ae81c55c75b5b",
+      "normalizedSha256": "d419b266150a3415d86de00fe5de7473a40a575a56c5ac5e7d8ae81c55c75b5b"
+    },
+    {
+      "path": "geometry-core/boundary_vertex_keys.inc",
+      "gitBlob": "c3a4965bebf32d3c0fbad5323bccb44d72fa215a",
+      "bytes": 15832,
+      "sha256": "7681319c6b9a010d4d9437156e2f7a9d769bba083ec832185a033ce67393d56a",
+      "normalizedSha256": "7681319c6b9a010d4d9437156e2f7a9d769bba083ec832185a033ce67393d56a"
+    },
+    {
+      "path": "geometry-core/card-reference/confirmation_probe.c",
+      "gitBlob": "393784fa992f60c43401d84828eb6c572d4bae93",
+      "bytes": 2328,
+      "sha256": "79d3732f79936f31f872fb3188902b1c001b26ef269f1c3c19f69dc525a30c47",
+      "normalizedSha256": "79d3732f79936f31f872fb3188902b1c001b26ef269f1c3c19f69dc525a30c47"
+    },
+    {
+      "path": "geometry-core/card_reference.inc",
+      "gitBlob": "81f2bd1b813229aa52b1e4d93f565d8f4b79cfd8",
+      "bytes": 7907,
+      "sha256": "6e6016c6479ccf85276f6c9ada1f253a976a33ad035f43198a0fe3b5844183c0",
+      "normalizedSha256": "6e6016c6479ccf85276f6c9ada1f253a976a33ad035f43198a0fe3b5844183c0"
+    },
+    {
+      "path": "geometry-core/derived_placements.inc",
+      "gitBlob": "fc0b24ba8c6f6ff6d3eacbdd224c70b9d5d6f826",
+      "bytes": 4310,
+      "sha256": "4340b7b30fa4bf4dff027484691d1bee8147e5a2a3e8d71f7a4555a982dd2a53",
+      "normalizedSha256": "4340b7b30fa4bf4dff027484691d1bee8147e5a2a3e8d71f7a4555a982dd2a53"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/codec-client.c",
+      "gitBlob": "70aa52b8099c120f287f8ea1d14a2fe19d586b49",
+      "bytes": 2857,
+      "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13",
+      "normalizedSha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/exact-client.c",
+      "gitBlob": "e9a8b60af2eccf30f80cc75e7a59c435a1b2a22e",
+      "bytes": 919,
+      "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc",
+      "normalizedSha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc"
+    },
+    {
+      "path": "geometry-core/engineering.inc",
+      "gitBlob": "aec5becaeff7b6685f525c16504bd2c3925e35f3",
+      "bytes": 13998,
+      "sha256": "0e1970fee561dc520c37255b9fdbbd2273594c4c8a59ea8e4969c9658c2aa497",
+      "normalizedSha256": "0e1970fee561dc520c37255b9fdbbd2273594c4c8a59ea8e4969c9658c2aa497"
+    },
+    {
+      "path": "geometry-core/engineering_commands.inc",
+      "gitBlob": "96bfa503ae40fc564652e3af84641a1368040ec1",
+      "bytes": 8621,
+      "sha256": "3e996cef86dc3498138aa4ba7cdfa798a67042a7daa4239d936aa2487ff0b039",
+      "normalizedSha256": "3e996cef86dc3498138aa4ba7cdfa798a67042a7daa4239d936aa2487ff0b039"
+    },
+    {
+      "path": "geometry-core/engineering_json.inc",
+      "gitBlob": "aea7347c8f6867715f65b23126654bff23bc4cab",
+      "bytes": 1587,
+      "sha256": "454f401f2ad13437a63183ea0cff917232beeac3405bd0fdd70b32ba979a780f",
+      "normalizedSha256": "454f401f2ad13437a63183ea0cff917232beeac3405bd0fdd70b32ba979a780f"
+    },
+    {
+      "path": "geometry-core/engineering_types.h",
+      "gitBlob": "9ce94d4e875d18e7e90d9cd884e6941bf9f8edff",
+      "bytes": 121,
+      "sha256": "6a1bbea128e8678426ae8098e7d0ebcfae2b8ed941fccfde0e2edba1534c85d7",
+      "normalizedSha256": "6a1bbea128e8678426ae8098e7d0ebcfae2b8ed941fccfde0e2edba1534c85d7"
+    },
+    {
+      "path": "geometry-core/finish_surface_types.h",
+      "gitBlob": "631d79d8530be15a1d24144f4e76fb18f7d99915",
+      "bytes": 134,
+      "sha256": "03c81fe2c4558a3772f7138021834d1b0a7ed76c7628d991a7223164f833232d",
+      "normalizedSha256": "03c81fe2c4558a3772f7138021834d1b0a7ed76c7628d991a7223164f833232d"
+    },
+    {
+      "path": "geometry-core/finish_surfaces.inc",
+      "gitBlob": "c95ea0cf91d037d50c25a978752996d64c5c0b7b",
+      "bytes": 10059,
+      "sha256": "427f7bcaffaf1f11389ea36a59cbb959ff5f7e4b8983bc6681794c70f9e8be1c",
+      "normalizedSha256": "427f7bcaffaf1f11389ea36a59cbb959ff5f7e4b8983bc6681794c70f9e8be1c"
+    },
+    {
+      "path": "geometry-core/grid_bindings.inc",
+      "gitBlob": "d0df8603f56053f37754b1521f82e4466341d3a0",
+      "bytes": 14291,
+      "sha256": "660b998a30e0ea4d0ad709c0cd39207f92b5d9a84649dac55d2da7fb0c8c3887",
+      "normalizedSha256": "660b998a30e0ea4d0ad709c0cd39207f92b5d9a84649dac55d2da7fb0c8c3887"
+    },
+    {
+      "path": "geometry-core/grid_lattice.inc",
+      "gitBlob": "9e33593c60f33d194891c71ae680837f5efbe1c9",
+      "bytes": 2925,
+      "sha256": "5c3a780e6633cd06f00fb73aa278a331707c1b470c6632581d7d5263305897a4",
+      "normalizedSha256": "5c3a780e6633cd06f00fb73aa278a331707c1b470c6632581d7d5263305897a4"
+    },
+    {
+      "path": "geometry-core/grid_subdivision.inc",
+      "gitBlob": "4fb24f1d516d95fe4deb50574f1cab2008ac155c",
+      "bytes": 9728,
+      "sha256": "82810a7c8b0d0382e77bb043096ca7bce06928f804bac7f1e300e12ba358c0bb",
+      "normalizedSha256": "82810a7c8b0d0382e77bb043096ca7bce06928f804bac7f1e300e12ba358c0bb"
+    },
+    {
+      "path": "geometry-core/grid_subdivision_query.inc",
+      "gitBlob": "59fcc0e1e0752668fa1ed725c97f023d60d0fa5a",
+      "bytes": 13965,
+      "sha256": "8674989d81beda4f0e13fa927339917db5fbe51f4f4c9316b030fae2bf87e57a",
+      "normalizedSha256": "8674989d81beda4f0e13fa927339917db5fbe51f4f4c9316b030fae2bf87e57a"
+    },
+    {
+      "path": "geometry-core/grid_systems.inc",
+      "gitBlob": "cc8a321fd8680bd449055274fecca85dd6d73ca5",
+      "bytes": 18267,
+      "sha256": "8e58c73c52351dd35ee79603885b1215ff86f0f6af00d2d05824fee25770d61a",
+      "normalizedSha256": "8e58c73c52351dd35ee79603885b1215ff86f0f6af00d2d05824fee25770d61a"
+    },
+    {
+      "path": "geometry-core/kernel/candidate.c",
+      "gitBlob": "6e676a67066780a3b9e022f2de0d5928ca64c2c9",
+      "bytes": 12611,
+      "sha256": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77",
+      "normalizedSha256": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77"
+    },
+    {
+      "path": "geometry-core/kernel/candidate.h",
+      "gitBlob": "ecc0d88a3772fe79f75d44ecbbf217482b82e6d6",
+      "bytes": 4366,
+      "sha256": "5d3c6a1db015e7371ae4b163024c3eae505374bd52da6729df85e897289daf7f",
+      "normalizedSha256": "5d3c6a1db015e7371ae4b163024c3eae505374bd52da6729df85e897289daf7f"
+    },
+    {
+      "path": "geometry-core/kernel/clip.c",
+      "gitBlob": "47a99f85aa8a4781d22627cddd0a258549a50b56",
+      "bytes": 7551,
+      "sha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea",
+      "normalizedSha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea"
+    },
+    {
+      "path": "geometry-core/kernel/clip.h",
+      "gitBlob": "d768fef9e4eb43296629c8f73ff252e24ed74655",
+      "bytes": 1597,
+      "sha256": "31e2e53370e437073c098296a6f669ef5dd7959f1811c57c77604a34dc71c99c",
+      "normalizedSha256": "31e2e53370e437073c098296a6f669ef5dd7959f1811c57c77604a34dc71c99c"
+    },
+    {
+      "path": "geometry-core/kernel/codec.c",
+      "gitBlob": "2fff36ec258268a59b42ca6f3e3d0ab7c605b98d",
+      "bytes": 23308,
+      "sha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a",
+      "normalizedSha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a"
+    },
+    {
+      "path": "geometry-core/kernel/codec.h",
+      "gitBlob": "c45d028024ff6e58897558d1dd03c20e193d2218",
+      "bytes": 2393,
+      "sha256": "81de17c90f814c798a271cad6a0b2f6fbcdc5e6c4e46af14a002be818f9feb14",
+      "normalizedSha256": "81de17c90f814c798a271cad6a0b2f6fbcdc5e6c4e46af14a002be818f9feb14"
+    },
+    {
+      "path": "geometry-core/kernel/datums.c",
+      "gitBlob": "1f044a02f799c44406814948345f9c3a7f0c963e",
+      "bytes": 4222,
+      "sha256": "f5d385df8d01b9d4399371ecd0dc02dfbe2ae0c62c988262ef5cd990676e065d",
+      "normalizedSha256": "f5d385df8d01b9d4399371ecd0dc02dfbe2ae0c62c988262ef5cd990676e065d"
+    },
+    {
+      "path": "geometry-core/kernel/datums.h",
+      "gitBlob": "50be94aca3e3fa99d8918b0b1f47a44e2292dc49",
+      "bytes": 1829,
+      "sha256": "9b23a1c746c2a0f46d55e2bb19309167d76c7be34bed7ecc35a11df633d49607",
+      "normalizedSha256": "9b23a1c746c2a0f46d55e2bb19309167d76c7be34bed7ecc35a11df633d49607"
+    },
+    {
+      "path": "geometry-core/kernel/document.c",
+      "gitBlob": "ce93ad1234c1666c2508787ed35dcd5b6b01372a",
+      "bytes": 2636,
+      "sha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1",
+      "normalizedSha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1"
+    },
+    {
+      "path": "geometry-core/kernel/document.h",
+      "gitBlob": "527b3f63f36c7410855f7d400049e9410da43c61",
+      "bytes": 2016,
+      "sha256": "603e684ca9c5ab2b8d23205cc3382a9e305c1e57441c0854367a57c441461e56",
+      "normalizedSha256": "603e684ca9c5ab2b8d23205cc3382a9e305c1e57441c0854367a57c441461e56"
+    },
+    {
+      "path": "geometry-core/kernel/enclosure.c",
+      "gitBlob": "611f2bf8d6d908df9853d311a1563145d5348018",
+      "bytes": 7871,
+      "sha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77",
+      "normalizedSha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77"
+    },
+    {
+      "path": "geometry-core/kernel/enclosure.h",
+      "gitBlob": "56365a2bfedcc2d8fae9413a3bc7fc516c3de740",
+      "bytes": 3604,
+      "sha256": "8e6162fee153af7ff6a1d8e13d8b3e01db90c51d9d41b846025876dfb3c5c7f5",
+      "normalizedSha256": "8e6162fee153af7ff6a1d8e13d8b3e01db90c51d9d41b846025876dfb3c5c7f5"
+    },
+    {
+      "path": "geometry-core/kernel/enclosure_sources.c",
+      "gitBlob": "0dbb0d9b0f32e23fc795cf9bb0f8a8ab90247836",
+      "bytes": 17213,
+      "sha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68",
+      "normalizedSha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68"
+    },
+    {
+      "path": "geometry-core/kernel/enclosure_sources.h",
+      "gitBlob": "be76a232dbcc4950d36e6a1b14fb76a70cc2fcd4",
+      "bytes": 3799,
+      "sha256": "c512b34721bcf1e428ffb19f665970c788292b542c1b8c8bf9b1257ab3c5f4b4",
+      "normalizedSha256": "c512b34721bcf1e428ffb19f665970c788292b542c1b8c8bf9b1257ab3c5f4b4"
+    },
+    {
+      "path": "geometry-core/kernel/exact.c",
+      "gitBlob": "49d76ea6005ebcc3afbde5122368284d2a6f3996",
+      "bytes": 3243,
+      "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf",
+      "normalizedSha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf"
+    },
+    {
+      "path": "geometry-core/kernel/exact.h",
+      "gitBlob": "8046e2e1923810710df412e9cf290c3aed7b511c",
+      "bytes": 1104,
+      "sha256": "bca06ef8df48636d6a79b50dae0f9337b37d886ca4ff097fc03ce865e5cffb2d",
+      "normalizedSha256": "bca06ef8df48636d6a79b50dae0f9337b37d886ca4ff097fc03ce865e5cffb2d"
+    },
+    {
+      "path": "geometry-core/kernel/geometry.c",
+      "gitBlob": "61221a6cbb0c39d1971836fc39769a36195d2c6d",
+      "bytes": 29994,
+      "sha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00",
+      "normalizedSha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00"
+    },
+    {
+      "path": "geometry-core/kernel/geometry.h",
+      "gitBlob": "3b91ec7f17ecae540527ced17d1e6a2daec21899",
+      "bytes": 5583,
+      "sha256": "72a6268999b3ee636a668e4d5fa6f74203dbb35de52b6b86f24dda48799ad3b1",
+      "normalizedSha256": "72a6268999b3ee636a668e4d5fa6f74203dbb35de52b6b86f24dda48799ad3b1"
+    },
+    {
+      "path": "geometry-core/kernel/grid.c",
+      "gitBlob": "694149d1b4ed5266ee6d7ee7fc8063b36dc53311",
+      "bytes": 8062,
+      "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f",
+      "normalizedSha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f"
+    },
+    {
+      "path": "geometry-core/kernel/grid.h",
+      "gitBlob": "24d02d170e1a2b7f15af9d4ab7508f1c6ae058c2",
+      "bytes": 2696,
+      "sha256": "2180b532a060a54572f3e352178326c425ad216e67bb6ee567ae6f62666b4454",
+      "normalizedSha256": "2180b532a060a54572f3e352178326c425ad216e67bb6ee567ae6f62666b4454"
+    },
+    {
+      "path": "geometry-core/kernel/grid_store.c",
+      "gitBlob": "ba2cbfaaf6f7201ac5a41fd750c5230cf89e1ae2",
+      "bytes": 24010,
+      "sha256": "89da92935c8e4765b54a83b06fb3157bdfcde74410a7edd8cf74ed87652dea5d",
+      "normalizedSha256": "89da92935c8e4765b54a83b06fb3157bdfcde74410a7edd8cf74ed87652dea5d"
+    },
+    {
+      "path": "geometry-core/kernel/grid_store.h",
+      "gitBlob": "b17f44fd5d0f5c87fc318da6f305ae65cfa96d02",
+      "bytes": 8400,
+      "sha256": "26fdab200c00eaad4bb3357d86f8c1a7334305976c147ec4190a10f39b11acf4",
+      "normalizedSha256": "26fdab200c00eaad4bb3357d86f8c1a7334305976c147ec4190a10f39b11acf4"
+    },
+    {
+      "path": "geometry-core/kernel/guides.c",
+      "gitBlob": "18adf993bc94ce5ede38b782c5de87ed747936e7",
+      "bytes": 6022,
+      "sha256": "1548a5f72bf3e9904a64c871d2658409aab300786af598e7ca69a4fb82e4897e",
+      "normalizedSha256": "1548a5f72bf3e9904a64c871d2658409aab300786af598e7ca69a4fb82e4897e"
+    },
+    {
+      "path": "geometry-core/kernel/guides.h",
+      "gitBlob": "5d3215367f532412447dfa7f6d9e7a14d661a295",
+      "bytes": 3115,
+      "sha256": "14e7f9444057120309666923378240a28ea7f1607a0c780ac5279c60a1099be1",
+      "normalizedSha256": "14e7f9444057120309666923378240a28ea7f1607a0c780ac5279c60a1099be1"
+    },
+    {
+      "path": "geometry-core/kernel/internal/datums.h",
+      "gitBlob": "59864a9a6b37d77f7e7644037807dbd40ca319bd",
+      "bytes": 178,
+      "sha256": "244419b5c43ccadf48f8b9b2ac985496cc28453443acd3984dc2ee1e0683a55b",
+      "normalizedSha256": "244419b5c43ccadf48f8b9b2ac985496cc28453443acd3984dc2ee1e0683a55b"
+    },
+    {
+      "path": "geometry-core/kernel/internal/document.h",
+      "gitBlob": "7e749fdd27088148d83e8935c794f1bca7b4a1ed",
+      "bytes": 897,
+      "sha256": "db38e7ee5a0dde09e69f8290c5ba3ac042eeb979c8d742916da449211a88b489",
+      "normalizedSha256": "db38e7ee5a0dde09e69f8290c5ba3ac042eeb979c8d742916da449211a88b489"
+    },
+    {
+      "path": "geometry-core/kernel/internal/enclosures.h",
+      "gitBlob": "27d052fb8f96383b01ef76ce24878305c7dac368",
+      "bytes": 273,
+      "sha256": "d568b1b7ab0df12e65618a2b5a2ce909cddfbae7f0b88eccbfd1bbd693a0c0aa",
+      "normalizedSha256": "d568b1b7ab0df12e65618a2b5a2ce909cddfbae7f0b88eccbfd1bbd693a0c0aa"
+    },
+    {
+      "path": "geometry-core/kernel/internal/grid_store.h",
+      "gitBlob": "042a38c1342ed0e0b098fc37015ea160415103e5",
+      "bytes": 301,
+      "sha256": "499f879f4f9cf6c58cab360dc9273c90095b058880336cf147888072b1602ccd",
+      "normalizedSha256": "499f879f4f9cf6c58cab360dc9273c90095b058880336cf147888072b1602ccd"
+    },
+    {
+      "path": "geometry-core/kernel/internal/guides.h",
+      "gitBlob": "5d89c4c359df3a9b7d33ce2664d61676a4f3414e",
+      "bytes": 181,
+      "sha256": "aab50ff4e4ce23a258dbc1207bd44e80e8ce2008e9d9c547454041b4cf0fb114",
+      "normalizedSha256": "aab50ff4e4ce23a258dbc1207bd44e80e8ce2008e9d9c547454041b4cf0fb114"
+    },
+    {
+      "path": "geometry-core/kernel/internal/named_values.h",
+      "gitBlob": "da9abca50e5e9771c27607e6e81f8661aa8a7c5e",
+      "bytes": 219,
+      "sha256": "e1c0d76fed48cb8c6015735aa143b0c4edc90ccfcd3dd85548c6f130b90bd783",
+      "normalizedSha256": "e1c0d76fed48cb8c6015735aa143b0c4edc90ccfcd3dd85548c6f130b90bd783"
+    },
+    {
+      "path": "geometry-core/kernel/internal/parameter_store.h",
+      "gitBlob": "d3275f1c0d71aee598321a1f8f4346f47f8a1535",
+      "bytes": 453,
+      "sha256": "5d3e31ce6cdee43056ae2ede68e902cb7368fb40108928c9ce9aff63dd4cb88d",
+      "normalizedSha256": "5d3e31ce6cdee43056ae2ede68e902cb7368fb40108928c9ce9aff63dd4cb88d"
+    },
+    {
+      "path": "geometry-core/kernel/internal/placements.h",
+      "gitBlob": "0220141ef6aaf95ac66125fbd090c8dae28b291a",
+      "bytes": 301,
+      "sha256": "ff2b4ea612c80b4ab76da4024d768493842b879133ef6598dc4b4f63503201da",
+      "normalizedSha256": "ff2b4ea612c80b4ab76da4024d768493842b879133ef6598dc4b4f63503201da"
+    },
+    {
+      "path": "geometry-core/kernel/internal/regions.h",
+      "gitBlob": "88e6b62966577863ab1fb45d6aef2ba80b76f488",
+      "bytes": 410,
+      "sha256": "6dc80e855f3248208fa4cc945141339631673e9d9d2414b11f649f9d48c5df36",
+      "normalizedSha256": "6dc80e855f3248208fa4cc945141339631673e9d9d2414b11f649f9d48c5df36"
+    },
+    {
+      "path": "geometry-core/kernel/internal/versions.h",
+      "gitBlob": "16fa3832206c3823f9dbd17ec7b075a72a8dff2b",
+      "bytes": 704,
+      "sha256": "19d2a7d32dd3c8b4adb0e4dab228f7b0f9aaaeec46bcc15453ca51664bded0ac",
+      "normalizedSha256": "19d2a7d32dd3c8b4adb0e4dab228f7b0f9aaaeec46bcc15453ca51664bded0ac"
+    },
+    {
+      "path": "geometry-core/kernel/kernel_unity.inc",
+      "gitBlob": "ab266f20113d83239283faa55f9bc755e0319341",
+      "bytes": 1440,
+      "sha256": "7c86958b0166f4a69301cc78ab4999ba2ffc1e8694daaf2d70a05baa7cf8cdfc",
+      "normalizedSha256": "7c86958b0166f4a69301cc78ab4999ba2ffc1e8694daaf2d70a05baa7cf8cdfc"
+    },
+    {
+      "path": "geometry-core/kernel/linear.c",
+      "gitBlob": "181cc864ad3b620ce8ae2f54a05409cb353a73ef",
+      "bytes": 4333,
+      "sha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c",
+      "normalizedSha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c"
+    },
+    {
+      "path": "geometry-core/kernel/linear.h",
+      "gitBlob": "5b4335616ccbef1678d79e901271e59337cfa5ca",
+      "bytes": 1619,
+      "sha256": "7701f7e77f9ae34ee74004606a5c88bbc9158c0bb463ec55fa116d7d2ad245be",
+      "normalizedSha256": "7701f7e77f9ae34ee74004606a5c88bbc9158c0bb463ec55fa116d7d2ad245be"
+    },
+    {
+      "path": "geometry-core/kernel/linear_definition_sources.c",
+      "gitBlob": "a52d6b97df0e222f02c2fcd1e3879a4075501ed4",
+      "bytes": 11033,
+      "sha256": "acc6312b9d438f0ef1e705e1b977e2ce8ad6ca2853248636eb241f40aab62266",
+      "normalizedSha256": "acc6312b9d438f0ef1e705e1b977e2ce8ad6ca2853248636eb241f40aab62266"
+    },
+    {
+      "path": "geometry-core/kernel/linear_definition_sources.h",
+      "gitBlob": "afe43a5a07a3d1659cef9b20c35238ec00109821",
+      "bytes": 2013,
+      "sha256": "c533ad62f5ddda634591ca42b5680c7e381fb0352c2f9c932eb900f3eb2f579f",
+      "normalizedSha256": "c533ad62f5ddda634591ca42b5680c7e381fb0352c2f9c932eb900f3eb2f579f"
+    },
+    {
+      "path": "geometry-core/kernel/named_values.c",
+      "gitBlob": "8da04772039b24e67005a99cf4cc7d9eea128fe2",
+      "bytes": 2105,
+      "sha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1",
+      "normalizedSha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1"
+    },
+    {
+      "path": "geometry-core/kernel/named_values.h",
+      "gitBlob": "2252ba3cbf25619457905f39c3ac32ac9e3e9dd1",
+      "bytes": 891,
+      "sha256": "9965267c054be1b5ca758189c91ffb79e52c6ef98e678acef824ec27fd0ca690",
+      "normalizedSha256": "9965267c054be1b5ca758189c91ffb79e52c6ef98e678acef824ec27fd0ca690"
+    },
+    {
+      "path": "geometry-core/kernel/parameter_sources.c",
+      "gitBlob": "2c15992bb8ebcdf1d411ee4ee3089c0e1ca2d61a",
+      "bytes": 21934,
+      "sha256": "60908674f3b6a6a820ef60279964a9862ea99e64db4c75478cbb0b63def8edd9",
+      "normalizedSha256": "60908674f3b6a6a820ef60279964a9862ea99e64db4c75478cbb0b63def8edd9"
+    },
+    {
+      "path": "geometry-core/kernel/parameter_sources.h",
+      "gitBlob": "3853bf9d591b733dfdfb04c533bbd4236a11c504",
+      "bytes": 3907,
+      "sha256": "7da1bd225d939fe1e628a971b68102eb5e45ecebae4b5f00bf184e5975d88fac",
+      "normalizedSha256": "7da1bd225d939fe1e628a971b68102eb5e45ecebae4b5f00bf184e5975d88fac"
+    },
+    {
+      "path": "geometry-core/kernel/parameters.c",
+      "gitBlob": "bfa16cc046d7633791cd4043f9e4b2bd3987fa8c",
+      "bytes": 18594,
+      "sha256": "d4e0f6402ef38e82e4192250cbe7617668ec7c0d210fc531d0410e2cb93eda94",
+      "normalizedSha256": "d4e0f6402ef38e82e4192250cbe7617668ec7c0d210fc531d0410e2cb93eda94"
+    },
+    {
+      "path": "geometry-core/kernel/parameters.h",
+      "gitBlob": "e991adb2069be7da02b164a5462d6a066d98d2d9",
+      "bytes": 6267,
+      "sha256": "1385716e7231c1f1adc461cc29fd8b9e7d2663317f196f5236e6c857cebf0d4e",
+      "normalizedSha256": "1385716e7231c1f1adc461cc29fd8b9e7d2663317f196f5236e6c857cebf0d4e"
+    },
+    {
+      "path": "geometry-core/kernel/placement_sources.c",
+      "gitBlob": "e7595a52cc4ed402f5be63a596e2c574145cd02a",
+      "bytes": 13975,
+      "sha256": "ebf68c7c67a1a1281b971bfdfba29c9963dee934204db4c3ccfe960b1950c502",
+      "normalizedSha256": "ebf68c7c67a1a1281b971bfdfba29c9963dee934204db4c3ccfe960b1950c502"
+    },
+    {
+      "path": "geometry-core/kernel/placement_sources.h",
+      "gitBlob": "90188136e68f95f18e0b9d7d7e1922cd608c5e04",
+      "bytes": 3297,
+      "sha256": "ff52eb8121cff380de275aa97d8562e56d58d8e21968369fde2db67c04135a7a",
+      "normalizedSha256": "ff52eb8121cff380de275aa97d8562e56d58d8e21968369fde2db67c04135a7a"
+    },
+    {
+      "path": "geometry-core/kernel/placements.c",
+      "gitBlob": "9008413e516b299caa3c91427b8938c3876b1396",
+      "bytes": 10229,
+      "sha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2",
+      "normalizedSha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2"
+    },
+    {
+      "path": "geometry-core/kernel/placements.h",
+      "gitBlob": "19f96cc42adbbef565d1d82e470b49618cb128e3",
+      "bytes": 3593,
+      "sha256": "07977950e771da87b908414c8c591b65af5a6166672b7001724b21ef397921f6",
+      "normalizedSha256": "07977950e771da87b908414c8c591b65af5a6166672b7001724b21ef397921f6"
+    },
+    {
+      "path": "geometry-core/kernel/region_key_sources.c",
+      "gitBlob": "373f70f28a8a2afc5b2f0d2e0a39d751995a0c66",
+      "bytes": 9853,
+      "sha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b",
+      "normalizedSha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b"
+    },
+    {
+      "path": "geometry-core/kernel/region_key_sources.h",
+      "gitBlob": "8c6a62dd3e6fe39483befd294e5be2d3b49b9a87",
+      "bytes": 2876,
+      "sha256": "e147a513df0aae2e7ddcedac9d4df17695c6147fcd73305f18a503322c2d9146",
+      "normalizedSha256": "e147a513df0aae2e7ddcedac9d4df17695c6147fcd73305f18a503322c2d9146"
+    },
+    {
+      "path": "geometry-core/kernel/regions.c",
+      "gitBlob": "49f967ea2d8f04fab0cd9fbce13d112248fb26f4",
+      "bytes": 11576,
+      "sha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59",
+      "normalizedSha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59"
+    },
+    {
+      "path": "geometry-core/kernel/regions.h",
+      "gitBlob": "b3c21ab7418a8476d0a3c07cc399f2d8b9693eae",
+      "bytes": 3901,
+      "sha256": "795119199673378f7451411165000800b7a869283dbe87bbccfa0bf372819610",
+      "normalizedSha256": "795119199673378f7451411165000800b7a869283dbe87bbccfa0bf372819610"
+    },
+    {
+      "path": "geometry-core/kernel/source.c",
+      "gitBlob": "634b9cf92b9164316c6ea878a01dfaa8b628e15c",
+      "bytes": 15939,
+      "sha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb",
+      "normalizedSha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb"
+    },
+    {
+      "path": "geometry-core/kernel/source.h",
+      "gitBlob": "83f211d28453ef71eeac88574b6bc6c4563536aa",
+      "bytes": 5373,
+      "sha256": "aa00bd5078495bc3c4165c81a58129a4216c6b40c87da91700f7b0c3bf9820a1",
+      "normalizedSha256": "aa00bd5078495bc3c4165c81a58129a4216c6b40c87da91700f7b0c3bf9820a1"
+    },
+    {
+      "path": "geometry-core/kernel/types.h",
+      "gitBlob": "1942edd61798d9edafc89682b33ccfe7b38dc442",
+      "bytes": 394,
+      "sha256": "8e2db361ebbd20b9cb58a57a10ac80897a622b244f421e86a95039428544458f",
+      "normalizedSha256": "8e2db361ebbd20b9cb58a57a10ac80897a622b244f421e86a95039428544458f"
+    },
+    {
+      "path": "geometry-core/kernel/version_sources.c",
+      "gitBlob": "1ad53bec2f8b31c760f131b32a0da362e88c6a06",
+      "bytes": 11550,
+      "sha256": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236",
+      "normalizedSha256": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236"
+    },
+    {
+      "path": "geometry-core/kernel/version_sources.h",
+      "gitBlob": "2d5e5c25e736a941d43052dd5f13e1399107e12f",
+      "bytes": 2496,
+      "sha256": "7c2b12a089b4525ec9e1bfd1742fa31fd40baf686f1461ada82deb3ad2dca671",
+      "normalizedSha256": "7c2b12a089b4525ec9e1bfd1742fa31fd40baf686f1461ada82deb3ad2dca671"
+    },
+    {
+      "path": "geometry-core/kernel/versions.c",
+      "gitBlob": "870b72e80c34e07aaae5bcfc3d9d7ea07a027c1e",
+      "bytes": 14772,
+      "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632",
+      "normalizedSha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632"
+    },
+    {
+      "path": "geometry-core/kernel/versions.h",
+      "gitBlob": "a5089a717d88f8e8b391d45793ba0380dc3bca63",
+      "bytes": 5439,
+      "sha256": "09f692bd6d3edd5e9edfff20129dd1adffad8c7e6589ebd8c0af354efba8d3e2",
+      "normalizedSha256": "09f692bd6d3edd5e9edfff20129dd1adffad8c7e6589ebd8c0af354efba8d3e2"
+    },
+    {
+      "path": "geometry-core/model_base.c",
+      "gitBlob": "571938ccb7686c8819fec04ba88345f871219902",
+      "bytes": 28393,
+      "sha256": "ffa570dae26fbfe8bab2d24a9e0663d4b6943983567097fb96553ebab5e42be6",
+      "normalizedSha256": "ffa570dae26fbfe8bab2d24a9e0663d4b6943983567097fb96553ebab5e42be6"
+    },
+    {
+      "path": "geometry-core/panel_fill_layout.inc",
+      "gitBlob": "104b7832d24981d55e36a0676b887f3756c90528",
+      "bytes": 3027,
+      "sha256": "b085b167e2281432c116d238029d07e9640728d9a99063ead7821a8c3bdd8a1b",
+      "normalizedSha256": "b085b167e2281432c116d238029d07e9640728d9a99063ead7821a8c3bdd8a1b"
+    },
+    {
+      "path": "geometry-core/panel_fill_support.inc",
+      "gitBlob": "20e99e26b64fcd95534635e0c05c6578d6297fae",
+      "bytes": 5085,
+      "sha256": "18a3a5474b764f704310be284dc661fa8e4a3f1a5172282b9e442c2f60ec3ec7",
+      "normalizedSha256": "18a3a5474b764f704310be284dc661fa8e4a3f1a5172282b9e442c2f60ec3ec7"
+    },
+    {
+      "path": "geometry-core/panel_layout_math.h",
+      "gitBlob": "a95e78ab7869e5a7e4f563cacacf2e8a68fc4f1a",
+      "bytes": 652,
+      "sha256": "d50dc0bc4ae6b6cac4981c2e1d311a5af46269b4a69869fab593689e855b07cb",
+      "normalizedSha256": "d50dc0bc4ae6b6cac4981c2e1d311a5af46269b4a69869fab593689e855b07cb"
+    },
+    {
+      "path": "geometry-core/parameter_types.h",
+      "gitBlob": "f3303a385f4b8d72935b464451b3f3b132b84194",
+      "bytes": 629,
+      "sha256": "825e6df03858be5e7fd48b7e4b624b4841823f3790d1c2ec6c2bf2793b12f00d",
+      "normalizedSha256": "825e6df03858be5e7fd48b7e4b624b4841823f3790d1c2ec6c2bf2793b12f00d"
+    },
+    {
+      "path": "geometry-core/parameters.inc",
+      "gitBlob": "9bb07770ac255f2bcc162604d1303ad1ac55139a",
+      "bytes": 64486,
+      "sha256": "0cbb505d787983898b55b63c92eaae3a4d25644587f3960b5b081564a726ad5d",
+      "normalizedSha256": "0cbb505d787983898b55b63c92eaae3a4d25644587f3960b5b081564a726ad5d"
+    },
+    {
+      "path": "geometry-core/reference_types.h",
+      "gitBlob": "c0e17b3ee47db9ecf2f4b50a501dd021604e2ef9",
+      "bytes": 674,
+      "sha256": "9b19103df50d2493d2d6500982e4ca06ec8203ee746f55594ddc790a5db651c3",
+      "normalizedSha256": "9b19103df50d2493d2d6500982e4ca06ec8203ee746f55594ddc790a5db651c3"
+    },
+    {
+      "path": "geometry-core/references.inc",
+      "gitBlob": "a2906274b3f9692b4a46d75dd5b637c2378346ed",
+      "bytes": 62953,
+      "sha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac",
+      "normalizedSha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac"
+    },
+    {
+      "path": "geometry-core/section_profile_conversion.inc",
+      "gitBlob": "7cfecc5be15f58f1f6b79605dbeb56208d13c113",
+      "bytes": 2077,
+      "sha256": "451a83451f28e477c7dba44adb914ad6e046b23f8ac1c7fb019506e52de323c2",
+      "normalizedSha256": "451a83451f28e477c7dba44adb914ad6e046b23f8ac1c7fb019506e52de323c2"
+    },
+    {
+      "path": "geometry-core/section_profile_types.h",
+      "gitBlob": "fcbe21d079678fd32aa6f306f845d1227b677490",
+      "bytes": 137,
+      "sha256": "f6f9d67967412e8115edc5955b8775fa51a8fb70dd94f391ab416cfc14eef531",
+      "normalizedSha256": "f6f9d67967412e8115edc5955b8775fa51a8fb70dd94f391ab416cfc14eef531"
+    },
+    {
+      "path": "geometry-core/section_profiles.inc",
+      "gitBlob": "4319c6436e0998b8799682e9818bda123284a884",
+      "bytes": 9287,
+      "sha256": "cede158705a130e1889c92ae5a520ad844c038e24520422d3399df163a5efd23",
+      "normalizedSha256": "cede158705a130e1889c92ae5a520ad844c038e24520422d3399df163a5efd23"
+    },
+    {
+      "path": "geometry-core/subgrid_commands.inc",
+      "gitBlob": "5f6f5832f59a53e99d77607352b1840e516877ae",
+      "bytes": 4590,
+      "sha256": "d7e668b79012fd988076616a7462f422505e96951831683819ee5b537e945677",
+      "normalizedSha256": "d7e668b79012fd988076616a7462f422505e96951831683819ee5b537e945677"
+    },
+    {
+      "path": "geometry-core/subgrid_rebind.inc",
+      "gitBlob": "abe8ff414e2508e6f056d4cd6f75faf79d9d1aa9",
+      "bytes": 2352,
+      "sha256": "c7135f559abb149b0996108703f4a2e7b6b6362824048a618f46c8d14f63a98a",
+      "normalizedSha256": "c7135f559abb149b0996108703f4a2e7b6b6362824048a618f46c8d14f63a98a"
+    },
+    {
+      "path": "geometry-core/subgrid_world.inc",
+      "gitBlob": "62996db7844638f62af56e08d7794916dae4db11",
+      "bytes": 1210,
+      "sha256": "7c8866481c40ce9d20e7edf2bf9b18bd243ce5abe2b729316dd0ebc8b33e2540",
+      "normalizedSha256": "7c8866481c40ce9d20e7edf2bf9b18bd243ce5abe2b729316dd0ebc8b33e2540"
+    },
+    {
+      "path": "geometry-core/subgrids.inc",
+      "gitBlob": "55b47a366e8279eb1a4a6e638849eed5b25987d7",
+      "bytes": 4857,
+      "sha256": "974c2ebfe8f16bc3b73de34eb9508f650933074d29fd775854be667f11c91fa8",
+      "normalizedSha256": "974c2ebfe8f16bc3b73de34eb9508f650933074d29fd775854be667f11c91fa8"
+    },
+    {
+      "path": "geometry-core/transactions.inc",
+      "gitBlob": "bccf80cfd288f6ba1ee86b84cb79c8a3363a9c01",
+      "bytes": 53461,
+      "sha256": "bd57f8427b5004cb25ceae38f8ad2e37664efabc92a5ea13aec56719f087a2d9",
+      "normalizedSha256": "bd57f8427b5004cb25ceae38f8ad2e37664efabc92a5ea13aec56719f087a2d9"
+    },
+    {
+      "path": "geometry-templates/rectangular-grid/rectangular_grid.c",
+      "gitBlob": "92ad8c37e7bcd250e2341bd2eb366413c1a2a412",
+      "bytes": 5164,
+      "sha256": "dad3642468eea30bf5370320bb7e4b05dc765469a4df537ffa3f5a8221684864",
+      "normalizedSha256": "dad3642468eea30bf5370320bb7e4b05dc765469a4df537ffa3f5a8221684864"
+    },
+    {
+      "path": "geometry-templates/rectangular-grid/rectangular_grid.h",
+      "gitBlob": "72ac18cb052ef10da06f3c19f381c14886338062",
+      "bytes": 2444,
+      "sha256": "50cd5762d0b69d415af8747aca5844948f24316861a069f4cee040c328aaf870",
+      "normalizedSha256": "50cd5762d0b69d415af8747aca5844948f24316861a069f4cee040c328aaf870"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly.c",
+      "gitBlob": "f093b03d58cf20a32ef74c0d9126a3722846c667",
+      "bytes": 42150,
+      "sha256": "7bfe7537c5c865762d4f7597d92579db381cd4f6d3a91080aa6da9a90197e57f",
+      "normalizedSha256": "7bfe7537c5c865762d4f7597d92579db381cd4f6d3a91080aa6da9a90197e57f"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly.h",
+      "gitBlob": "af0e9e6450cf831416c80eed08bc0575fcdf0f10",
+      "bytes": 7625,
+      "sha256": "acf8d1115699db097b11a74dea882acf90af5f303bfc7c14c9774e9b3477c0ab",
+      "normalizedSha256": "acf8d1115699db097b11a74dea882acf90af5f303bfc7c14c9774e9b3477c0ab"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly_sources.c",
+      "gitBlob": "236a327004119919c374fb18454bc3c5d8bf38df",
+      "bytes": 35784,
+      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a",
+      "normalizedSha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/assembly_sources.h",
+      "gitBlob": "37247914454a1f0d007e7d32da3eb82d583d3a58",
+      "bytes": 3302,
+      "sha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+      "normalizedSha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/boundary_policy.c",
+      "gitBlob": "a376338a00927f7e02c232a715d86554afd462c9",
+      "bytes": 162,
+      "sha256": "444b78261b8e52b0476bb065d04aaade5664379a55140c88054b4570701e73b6",
+      "normalizedSha256": "444b78261b8e52b0476bb065d04aaade5664379a55140c88054b4570701e73b6"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/boundary_policy.h",
+      "gitBlob": "3a5af9b793c09418dcc2e64957e789cb0979fdeb",
+      "bytes": 926,
+      "sha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+      "normalizedSha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_sources.c",
+      "gitBlob": "ae8607e0670c4a1e8874fe1db837b28ea25c03fb",
+      "bytes": 11561,
+      "sha256": "ea0fa63d05f9abac1a11ac4f780a2f3a1e10f8aea502df1fa7e7eb1aa681f659",
+      "normalizedSha256": "ea0fa63d05f9abac1a11ac4f780a2f3a1e10f8aea502df1fa7e7eb1aa681f659"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_sources.h",
+      "gitBlob": "837968fa4dd66ccccb42450ac4f3d1498b441932",
+      "bytes": 2853,
+      "sha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+      "normalizedSha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "gitBlob": "d9d545ee15d7e363ccacbae78eace48358941396",
+      "bytes": 10421,
+      "sha256": "08f9c5e60a9396ab0791a01a1408605b39f70d0881f69bdf5e94d2dac1c7465e",
+      "normalizedSha256": "08f9c5e60a9396ab0791a01a1408605b39f70d0881f69bdf5e94d2dac1c7465e"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.h",
+      "gitBlob": "c4f575a590e8b2b0abe306829609a36e650aa494",
+      "bytes": 2096,
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+      "normalizedSha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contacts.c",
+      "gitBlob": "8a3e78c77e41499867b897ed4652596b102accf6",
+      "bytes": 2256,
+      "sha256": "4dc8dfdc591604c579c4c374306059aca315e5a8a37539f45043c8dafa0dd766",
+      "normalizedSha256": "4dc8dfdc591604c579c4c374306059aca315e5a8a37539f45043c8dafa0dd766"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contacts.h",
+      "gitBlob": "3c445289f6cb4ef6dde849759f9740609108821e",
+      "bytes": 1303,
+      "sha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+      "normalizedSha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/cut_list.c",
+      "gitBlob": "0de824904470eb516baed45a6e55abee2fba0e7e",
+      "bytes": 1562,
+      "sha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f",
+      "normalizedSha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/cut_list.h",
+      "gitBlob": "11d94f8639f91523c411d6fcc51e5d24263d201e",
+      "bytes": 682,
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "normalizedSha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/definition_sources.c",
+      "gitBlob": "0cbd2d1c7b770d4c91c5a4f6c0eac8866aff31f1",
+      "bytes": 17026,
+      "sha256": "5d52a836bb1178ff050f725d5b089f4765cbd58033931647f02e50369ea9e347",
+      "normalizedSha256": "5d52a836bb1178ff050f725d5b089f4765cbd58033931647f02e50369ea9e347"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/definition_sources.h",
+      "gitBlob": "5e1a9f7d1a81890ae9af7eaaed224c1b5e863c75",
+      "bytes": 2456,
+      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+      "normalizedSha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/derived_placement.c",
+      "gitBlob": "1f4b9e631efcf2d1fb0c951dae7fa6dd333fe995",
+      "bytes": 18770,
+      "sha256": "f593f27b6fd4910175990f8742c37ebc331c27c5dc8ea21dd280ed538eb0055c",
+      "normalizedSha256": "f593f27b6fd4910175990f8742c37ebc331c27c5dc8ea21dd280ed538eb0055c"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/derived_placement.h",
+      "gitBlob": "9fc7a6e22a664853b0c9907aa7752ba6aad10d4e",
+      "bytes": 3282,
+      "sha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+      "normalizedSha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/document.h",
+      "gitBlob": "4f2210a169045478182b4ff13615d665a7183cc4",
+      "bytes": 1413,
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "normalizedSha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/domain_values.h",
+      "gitBlob": "b731a7516152f4d2d26e45362c60a678c05ff188",
+      "bytes": 691,
+      "sha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+      "normalizedSha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering.c",
+      "gitBlob": "9075e679f8b51b246e67e2c7008927fe60fadeb6",
+      "bytes": 44177,
+      "sha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31",
+      "normalizedSha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering.h",
+      "gitBlob": "a7e5fe290c1966a9ac6d5c6704e9ed9e85da91aa",
+      "bytes": 9689,
+      "sha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+      "normalizedSha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_operations.c",
+      "gitBlob": "de566cc6f97db741efc6bd11dd09661fa2677e72",
+      "bytes": 7119,
+      "sha256": "4154e53ba181f2f60a3fb626851e937810ddd9b5ab4766e48ebffc2734fad7b9",
+      "normalizedSha256": "4154e53ba181f2f60a3fb626851e937810ddd9b5ab4766e48ebffc2734fad7b9"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_operations.h",
+      "gitBlob": "1c4bbe0914732bf238bd0d629ce69a48d17c8632",
+      "bytes": 1359,
+      "sha256": "566d1aa3ab48702febf14a352826a2d276db84b20299b26b0ad063d37aeefe4b",
+      "normalizedSha256": "566d1aa3ab48702febf14a352826a2d276db84b20299b26b0ad063d37aeefe4b"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_sources.c",
+      "gitBlob": "84cf20f79f88519a0ef69abbbd4b7989b9cc9368",
+      "bytes": 34395,
+      "sha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300",
+      "normalizedSha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/engineering_sources.h",
+      "gitBlob": "f6265d7ba4e85740e77ee25f92e4f822adcc04ce",
+      "bytes": 3668,
+      "sha256": "8516604f968f0a242ebf99a1efa147c14e5c8c0a7bb69b3a609e78b49f712a8a",
+      "normalizedSha256": "8516604f968f0a242ebf99a1efa147c14e5c8c0a7bb69b3a609e78b49f712a8a"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish.c",
+      "gitBlob": "4545ac42639e3c6c11634574fed7c5a90e9c9dd5",
+      "bytes": 28866,
+      "sha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c",
+      "normalizedSha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish.h",
+      "gitBlob": "36f3b38bb4733a033163cb4d8554fa0bcab39f79",
+      "bytes": 6537,
+      "sha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+      "normalizedSha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish_sources.c",
+      "gitBlob": "ab640f2d1c4ec233c20ef989a1ebe783c4e17201",
+      "bytes": 41066,
+      "sha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d",
+      "normalizedSha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/finish_sources.h",
+      "gitBlob": "3473bae51b631e1cfc3e3a8b5a1f2cd0cfd6db66",
+      "bytes": 3568,
+      "sha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+      "normalizedSha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_application.c",
+      "gitBlob": "61f4931923adb37b634fc3c5aa7339aadb3cc70d",
+      "bytes": 29542,
+      "sha256": "87e2e82ce1906bbf4998dd530fdcdfd6b49a8f53caf2a6ae42318f6e99e48798",
+      "normalizedSha256": "87e2e82ce1906bbf4998dd530fdcdfd6b49a8f53caf2a6ae42318f6e99e48798"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_application.h",
+      "gitBlob": "77a0cf23f365ead2260327c833dc9690da209c15",
+      "bytes": 9596,
+      "sha256": "9affcdb3642a15b51f790bff80aaa97af04be3a9663b48637d5be021e864852e",
+      "normalizedSha256": "9affcdb3642a15b51f790bff80aaa97af04be3a9663b48637d5be021e864852e"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_cells.c",
+      "gitBlob": "796a4e0547b2991beea7f2212ac321779f68dda6",
+      "bytes": 19552,
+      "sha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434",
+      "normalizedSha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_definition_codec.c",
+      "gitBlob": "1cc911020102dc3f710c674d47b7ba031fb15e37",
+      "bytes": 17281,
+      "sha256": "f6a27601450f1452977a9b42628f409c694bcf0397db6bcf80e3fad0d7c38387",
+      "normalizedSha256": "f6a27601450f1452977a9b42628f409c694bcf0397db6bcf80e3fad0d7c38387"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_definition_codec.h",
+      "gitBlob": "af1eb7bfc63015b03db6b2e8c8c551f5572212d3",
+      "bytes": 3055,
+      "sha256": "43e9014de28b1efb7418755cbbc42a0523110b8a8d22f9689849b54737e14349",
+      "normalizedSha256": "43e9014de28b1efb7418755cbbc42a0523110b8a8d22f9689849b54737e14349"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_rules.c",
+      "gitBlob": "1ea223b5c774c175081d454c498f181154de6458",
+      "bytes": 13805,
+      "sha256": "c42441ad543775cc34886f629834e428120df7564654cf98fcbfa9da3a50b298",
+      "normalizedSha256": "c42441ad543775cc34886f629834e428120df7564654cf98fcbfa9da3a50b298"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_sources.c",
+      "gitBlob": "1445593828290b55b94c3d50c5a6cab417dd4292",
+      "bytes": 44570,
+      "sha256": "414f39a8629a4fc5ea005bc7c606d460caf8fb89dc82afd5199f79b6bc7083b9",
+      "normalizedSha256": "414f39a8629a4fc5ea005bc7c606d460caf8fb89dc82afd5199f79b6bc7083b9"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_sources.h",
+      "gitBlob": "756dbeb58078f8627bd4b3392a4a793cd5f133a8",
+      "bytes": 3227,
+      "sha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+      "normalizedSha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_declaration.c",
+      "gitBlob": "3a9ab68eed7680ea4c7a7526cfa3b1980ff879bb",
+      "bytes": 2335,
+      "sha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b",
+      "normalizedSha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_declaration.h",
+      "gitBlob": "8a7893bfaf87ed3263413590acd295228749f188",
+      "bytes": 894,
+      "sha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+      "normalizedSha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_placement.h",
+      "gitBlob": "8da23bf549b5c32df38c32a27af27027d87eecc0",
+      "bytes": 1549,
+      "sha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+      "normalizedSha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_reference.c",
+      "gitBlob": "ae5d60134c1e0153da159d6586c79de332c7d23e",
+      "bytes": 30123,
+      "sha256": "90f3316777c181f3491ff01b4a06b6f3139f120452e74bbf02d78a323c6c024f",
+      "normalizedSha256": "90f3316777c181f3491ff01b4a06b6f3139f120452e74bbf02d78a323c6c024f"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_reference.h",
+      "gitBlob": "6797b7719e40d4a2a35eca330949d6bfb6588daa",
+      "bytes": 6430,
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+      "normalizedSha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/members.c",
+      "gitBlob": "3a7622d4ef12e231b7016acfb23f605a80517ebc",
+      "bytes": 3533,
+      "sha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d",
+      "normalizedSha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/members.h",
+      "gitBlob": "0c727bd5b67f059a8669ccc474ec394c0915447e",
+      "bytes": 2131,
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "normalizedSha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/obstacles.h",
+      "gitBlob": "aee726f7ae030f6bf802bf080a19c9b3a708943e",
+      "bytes": 682,
+      "sha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+      "normalizedSha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_layout.c",
+      "gitBlob": "4c80b6d549c8c7740d08a8c7ac108982fb4fc3b2",
+      "bytes": 5350,
+      "sha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638",
+      "normalizedSha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_layout.h",
+      "gitBlob": "1422c924329662b30b05a39e2c775a3a6fac24b3",
+      "bytes": 1566,
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+      "normalizedSha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_support.c",
+      "gitBlob": "4eae0988c03c27327222a83e61d9813ed45677cf",
+      "bytes": 7069,
+      "sha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+      "normalizedSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_support.h",
+      "gitBlob": "8da3ff0861ed7516f650fb44b728118b91fdccf0",
+      "bytes": 1440,
+      "sha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+      "normalizedSha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile.c",
+      "gitBlob": "7d80bea2288bf9c311700a332218a1de1c79edcb",
+      "bytes": 24441,
+      "sha256": "a0fa9004ea689b0f4964dbe90f1ff80d0c968dde7e166993d675659ecfeec55d",
+      "normalizedSha256": "a0fa9004ea689b0f4964dbe90f1ff80d0c968dde7e166993d675659ecfeec55d"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile.h",
+      "gitBlob": "722f4a73f975b0ebb21dd22dceb756350b602e1c",
+      "bytes": 6289,
+      "sha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+      "normalizedSha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile_sources.c",
+      "gitBlob": "18aeda56501ca765e5254c47d0d3b00033fece23",
+      "bytes": 29307,
+      "sha256": "9c2b35639e1686c812285b248343717a431023cd02e4eeb3f2e0763d7425a12a",
+      "normalizedSha256": "9c2b35639e1686c812285b248343717a431023cd02e4eeb3f2e0763d7425a12a"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/section_profile_sources.h",
+      "gitBlob": "a3b8c690b1bce3c3ad148e4492a82c259b634c4b",
+      "bytes": 2772,
+      "sha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+      "normalizedSha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/supports.c",
+      "gitBlob": "f1f1a6ab682f5144ac8a39e1f099b0cc6611285e",
+      "bytes": 4658,
+      "sha256": "1f3c8bfb51c86024b67b0af90f8c381fa38c8babb1cd1956b1cc4a7f022d0775",
+      "normalizedSha256": "1f3c8bfb51c86024b67b0af90f8c381fa38c8babb1cd1956b1cc4a7f022d0775"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/supports.h",
+      "gitBlob": "13dca465a25dd576e0fb501b47cd5ee958f753fa",
+      "bytes": 2727,
+      "sha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+      "normalizedSha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/world_validation.c",
+      "gitBlob": "b0084a3f8005ca9d03ce2a416af78e79488036d1",
+      "bytes": 7503,
+      "sha256": "3a5d05ffdf45a142326f17b2173bda7c7cd157d9c32d8ea6e71a93b275a3c2fc",
+      "normalizedSha256": "3a5d05ffdf45a142326f17b2173bda7c7cd157d9c32d8ea6e71a93b275a3c2fc"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/world_validation.h",
+      "gitBlob": "43e8a3d0bad8fb232ed8f2aea4952008274024e0",
+      "bytes": 1935,
+      "sha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+      "normalizedSha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca"
+    },
+    {
+      "path": "geometry-web/assembly_bridge.inc",
+      "gitBlob": "7fcab13702e23501c006d0d1d9751b6bcfaf8554",
+      "bytes": 5532,
+      "sha256": "e9927fb3da3878c71df2386bb3e86152df9e0853d2a770e46642011fd623081b",
+      "normalizedSha256": "e9927fb3da3878c71df2386bb3e86152df9e0853d2a770e46642011fd623081b"
+    },
+    {
+      "path": "geometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+      "gitBlob": "2fa73899c0bd681e2f906ec14ea4116f3a1b97a5",
+      "bytes": 816,
+      "sha256": "e796808d125a6d683d9d5ebb6c0d3c74c929fed9e7ed2a7cf4eb3f683688ee51",
+      "normalizedSha256": "e796808d125a6d683d9d5ebb6c0d3c74c929fed9e7ed2a7cf4eb3f683688ee51"
+    },
+    {
+      "path": "geometry-web/engineering_bridge.inc",
+      "gitBlob": "48183c6256e249032d6e61be1cac48754dca6a0c",
+      "bytes": 21704,
+      "sha256": "930134f89de7c89b17e000623d1c675b51c5b2465fc6b8109936711f0e9519f3",
+      "normalizedSha256": "930134f89de7c89b17e000623d1c675b51c5b2465fc6b8109936711f0e9519f3"
+    },
+    {
+      "path": "geometry-web/grid_binding_bridge.inc",
+      "gitBlob": "2baa00850ddbc872419457f646eb966194400777",
+      "bytes": 13466,
+      "sha256": "1104fdc87405b6deb5f0c212cad156dfd06524409746b3c469de1001b336a4fb",
+      "normalizedSha256": "1104fdc87405b6deb5f0c212cad156dfd06524409746b3c469de1001b336a4fb"
+    },
+    {
+      "path": "geometry-web/grid_subdivision_bridge.inc",
+      "gitBlob": "c8528d237b16d596181eb10e9255cb91eb2c35fb",
+      "bytes": 5220,
+      "sha256": "1cfe0f48668a51f20f4d71f547923caae6f10dbc5d3c9f146b6a01dcaa6c1d2b",
+      "normalizedSha256": "1cfe0f48668a51f20f4d71f547923caae6f10dbc5d3c9f146b6a01dcaa6c1d2b"
+    },
+    {
+      "path": "geometry-web/grid_system_bridge.inc",
+      "gitBlob": "3c4257dfcc0ef845494cdbe890f70c1cb3381107",
+      "bytes": 5925,
+      "sha256": "cd4cd823faf85050a80a2146dab2e4cea6064bf809a8dca29810c5ae72af7533",
+      "normalizedSha256": "cd4cd823faf85050a80a2146dab2e4cea6064bf809a8dca29810c5ae72af7533"
+    },
+    {
+      "path": "geometry-web/panel_fill_bridge.inc",
+      "gitBlob": "4f034a0ffc9b7221b03e5974beafe34604437bd2",
+      "bytes": 10612,
+      "sha256": "93485d330445a2913b04a506cd03e2e8c34078e533ca685525b393e1cdbcc460",
+      "normalizedSha256": "93485d330445a2913b04a506cd03e2e8c34078e533ca685525b393e1cdbcc460"
+    },
+    {
+      "path": "geometry-web/panel_layout_bridge.inc",
+      "gitBlob": "405b669dc04db1ea86b68bddc87f86eb0d18e6cc",
+      "bytes": 4737,
+      "sha256": "cd9dbf330690a056c9d5111409c03d8405597bf6699964107edd0c3a835bb52c",
+      "normalizedSha256": "cd9dbf330690a056c9d5111409c03d8405597bf6699964107edd0c3a835bb52c"
+    },
+    {
+      "path": "geometry-web/parameter_bridge.inc",
+      "gitBlob": "8a86eb3047dba6ccd8e1fcab075ffaece7525b44",
+      "bytes": 4949,
+      "sha256": "bd4c88178a39e169ff386af329213519a48f0708e0efa7732f96688b34ba8822",
+      "normalizedSha256": "bd4c88178a39e169ff386af329213519a48f0708e0efa7732f96688b34ba8822"
+    },
+    {
+      "path": "geometry-web/reference_bridge.inc",
+      "gitBlob": "7c94564351df9520b78416d509d63bff5c717a4d",
+      "bytes": 26300,
+      "sha256": "8d46bda5a8340d44363fb8df5f74cc007eb47664cd043be1a2a5acb02ee58cb8",
+      "normalizedSha256": "8d46bda5a8340d44363fb8df5f74cc007eb47664cd043be1a2a5acb02ee58cb8"
+    },
+    {
+      "path": "geometry-web/scene-import-bridge.inc",
+      "gitBlob": "c6ef1102822bf0910330b92a6622a49112adf224",
+      "bytes": 5136,
+      "sha256": "6899d78e621cefca980830421264f63655a79f330ed889d3e911201c6b890e0d",
+      "normalizedSha256": "6899d78e621cefca980830421264f63655a79f330ed889d3e911201c6b890e0d"
+    },
+    {
+      "path": "geometry-web/section_profile_bridge.inc",
+      "gitBlob": "74e226fd43ea961644ce7c3db7a6d7780b0e36bc",
+      "bytes": 8605,
+      "sha256": "575bcb6e8d007edc9eae9b880e97bc6b9431b911fae177586c09c264a9bd500a",
+      "normalizedSha256": "575bcb6e8d007edc9eae9b880e97bc6b9431b911fae177586c09c264a9bd500a"
+    },
+    {
+      "path": "geometry-web/section_profile_diagnostics.inc",
+      "gitBlob": "a6db0304e43506542ca5d91fddb037c7628557ff",
+      "bytes": 4625,
+      "sha256": "c8646434f863bfa0489335624fca5f577eb0ccb4169343e9722c5cb4f2aa4b93",
+      "normalizedSha256": "c8646434f863bfa0489335624fca5f577eb0ccb4169343e9722c5cb4f2aa4b93"
+    },
+    {
+      "path": "geometry-web/section_profile_source_index.inc",
+      "gitBlob": "03df4da59fa3e270c621714e63679ccf19b59806",
+      "bytes": 3211,
+      "sha256": "0d896a03705c8a1956c19ced2b415be327f11d5679bed27acaa1178df820c5a6",
+      "normalizedSha256": "0d896a03705c8a1956c19ced2b415be327f11d5679bed27acaa1178df820c5a6"
+    },
+    {
+      "path": "geometry-web/source-inspector-bridge.inc",
+      "gitBlob": "961bb8d27b6cb48e4d56f9f6b9344a7aeda64d82",
+      "bytes": 32352,
+      "sha256": "e9e386edb4450f38ceec5fee47a71477c5ecbd41f3edd16fe5b4de2599250af3",
+      "normalizedSha256": "e9e386edb4450f38ceec5fee47a71477c5ecbd41f3edd16fe5b4de2599250af3"
+    },
+    {
+      "path": "geometry-web/timber_support_projection.inc",
+      "gitBlob": "7219cdf09388993e8cacae06adafccb45b0cd51c",
+      "bytes": 9188,
+      "sha256": "c47b43bd886ca735e3a4ae52a6a30544a9fa02786faf1868243f52d3cc5c206c",
+      "normalizedSha256": "c47b43bd886ca735e3a4ae52a6a30544a9fa02786faf1868243f52d3cc5c206c"
+    },
+    {
+      "path": "geometry-web/web_bridge.c",
+      "gitBlob": "e4774fde313c8d54c27fa0f4aea27ec819fb6834",
+      "bytes": 52474,
+      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c",
+      "normalizedSha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c"
+    }
+  ],
+  "sourceCount": 194,
+  "captureCodeSha256": "114e717082c7bf126b0bd485619518481100443cd575f69f8ba20627963c32f2",
+  "validationExitCode": 0,
+  "note": "during-start 是服務與原 Node 已開始後的實際取樣，不冒稱在測試前擷取。原 build/server 皆經 start_local require_fresh；本工具只讀原 bytes 與 Git 綁定，不複製 binary、不執行產品。",
+  "matchesDuringStart": true
+}

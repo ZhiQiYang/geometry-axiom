@@ -1,0 +1,23 @@
+{
+  "classification": "最終準備只核 AST 與未啟動狀態；零產品建置／執行",
+  "files": [
+    {
+      "path": "/workspace/geo261-evidence/host-authority-anchor-fix-20261021/run_targeted.py",
+      "bytes": 9741,
+      "sha256": "7ced8531d4b3a71074cd4064463beb61deb81c9432b3745d2a802d19ce142c63",
+      "AST_valid": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/host-authority-anchor-fix-20261021/launch_targeted.py",
+      "bytes": 2123,
+      "sha256": "d52792c286d4f20bb30ae7cb9ff10431457b5fbfc66b23bea02078a38a773407",
+      "AST_valid": true
+    }
+  ],
+  "actual_exit_code": 0,
+  "planned_argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/host-authority-anchor-fix-20261021/launch_targeted.py"
+  ]
+}

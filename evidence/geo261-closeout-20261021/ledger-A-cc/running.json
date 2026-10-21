@@ -1,0 +1,20 @@
+{
+  "phase": "check-killers",
+  "command": [
+    "python3",
+    "-B",
+    "tests/mutate.py",
+    "--check",
+    "--killers"
+  ],
+  "cwd": "/workspace/geo261-ledger-cc-run.nu12fpy7/repo",
+  "source_sha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "pid": 206743,
+  "pgid": 206743,
+  "started_utc": "2026-10-20T23:00:07.113795+00:00",
+  "stdout": "/workspace/geo261-evidence/ledger-cc-7159530c0e49.wzi0t97l/check-killers.stdout",
+  "stderr": "/workspace/geo261-evidence/ledger-cc-7159530c0e49.wzi0t97l/check-killers.stderr",
+  "supervisor_pid": 188410,
+  "CC_present": false,
+  "PYTHONOPTIMIZE_present": false
+}

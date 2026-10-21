@@ -1,0 +1,67 @@
+"""輕量核對 K 補丁、解析本體平移及已完成的原始測試收據。"""
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+
+ROOT = Path('/workspace/geo261-host-copy-candidate')
+OUT = Path('/workspace/geo261-evidence/host-copy-candidate/K')
+HEAD = '85dc4fff44ce49b27f831b21cbdcb662c863302c'
+FILES = ['geometry-core/kernel/placement_sources.c', 'tests/test_geo261_placement_definition.py',
+         'tests/geo261_placement_definition_harness.c']
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def git(*argv):
+    return subprocess.check_output(['git', '-C', str(ROOT), *argv])
+
+def body(source, name):
+    match = re.search(r'^[\w *]+\b' + name + r'\s*\([^;]*?\)\s*\{', source, re.M | re.S)
+    assert match is not None
+    index, depth = match.end(), 1
+    while depth:
+        depth += (source[index] == '{') - (source[index] == '}')
+        index += 1
+    return source[match.end():index - 1]
+
+assert git('rev-parse', 'HEAD').decode().strip() == HEAD
+old = git('show', HEAD + ':' + FILES[0]).decode()
+new = (ROOT / FILES[0]).read_text()
+old_body = body(old, 'geo_placement_definition_decode')
+translated = old_body.replace('!content||!out||', '!content||!next||').replace(
+    'GeoPlacementDefinition next;memset(&next,0,sizeof next);', 'memset(next,0,sizeof *next);').replace(
+    'next.', 'next->').replace('memcpy(out,&next,sizeof next);', '')
+assert translated == body(new, 'geo_pd_decode_into')
+assert body(old, 'geo_placement_sources_definition').replace(
+    'geo_placement_definition_decode(', 'geo_pd_decode_into(') == body(new, 'geo_placement_sources_definition')
+receipt = json.loads((OUT / 'targeted-v1/receipt.json').read_bytes())
+summary = receipt['unitResult']
+assert receipt['exitCode'] == receipt['rawWaitStatus'] == 0 and receipt['sourceUnchanged']
+assert summary['testsRun'] == summary['selectedCount'] == 36
+assert not any(summary[k] for k in ('failures', 'errors', 'skipped', 'expectedFailures', 'unexpectedSuccesses'))
+assert len(summary['namedAssertionFailures']) == 26
+assert all(row['allBuildExitZero'] for row in summary['builds'])
+assert all(row['exitCode'] == 1 and row['stderr'].startswith('ASSERT:') for row in summary['namedAssertionFailures'])
+records = []
+for path in FILES:
+    before, after = git('show', HEAD + ':' + path), (ROOT / path).read_bytes()
+    records.append(dict(path=path, beforeBytes=len(before), beforeSha256=sha(before), afterBytes=len(after), afterSha256=sha(after)))
+patch = git('diff', '--binary', '--', *FILES)
+assert patch == (OUT / 'targeted-v1/candidate.patch').read_bytes()
+(OUT / 'candidate.patch').write_bytes(patch)
+result = dict(sourceBaseHead=HEAD, candidateBranch=git('branch', '--show-current').decode().strip(),
+    workingTreeStatus=git('status', '--porcelain=v1', '--untracked-files=no').decode(),
+    parserBodyIsExactStorageTranslation=True, accessorBodyOnlyChangedDecodeCallee=True,
+    files=records, patch=dict(bytes=len(patch), sha256=sha(patch)),
+    testsRun=summary['testsRun'], namedMutationKills=len(summary['namedAssertionFailures']),
+    buildCommandCount=sum(row['commands'] for row in summary['builds']),
+    childProcessCount=summary['childProcessCount'],
+    receiptSha256=sha((OUT / 'targeted-v1/receipt.json').read_bytes()),
+    elapsedSeconds=receipt['elapsedSeconds'], realExitCode=receipt['exitCode'], rawWaitStatus=receipt['rawWaitStatus'],
+    notClaimed=['候選已提交', '主分支已更改', '完整 ledger 或架構或七項驗收', 'P-189 收益或通過'])
+target = OUT / 'delivery.json'
+assert not target.exists()
+target.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps(result, ensure_ascii=False, indent=2))

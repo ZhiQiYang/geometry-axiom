@@ -1,0 +1,968 @@
+{
+  "sampledUtc": "2026-10-20T20:42:56.322507+00:00",
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "runExitCode": 130,
+  "interrupted": true,
+  "completeRun": false,
+  "sourceDirectory": "/tmp/geometry-tests/run_all-logs",
+  "copiedSuffixes": [
+    ".log",
+    ".json"
+  ],
+  "fileCount": 119,
+  "totalBytes": 90336,
+  "files": [
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/c_integrity.log",
+      "path": "suite-logs/c_integrity.log",
+      "bytes": 5857,
+      "sha256": "de71669e13286944b645688bf0af37f4d1cda3a0d057368daaa57b238be5d286",
+      "mtimeUtc": "2026-10-20T20:31:50.900260+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/core_run_tests.log",
+      "path": "suite-logs/core_run_tests.log",
+      "bytes": 25003,
+      "sha256": "a85b46b8587169ceb4ea144f4496326903c0ab78b8b7473ef57a50de7d0b6f8b",
+      "mtimeUtc": "2026-10-20T20:32:08.012288+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/mutation_check.log",
+      "path": "suite-logs/mutation_check.log",
+      "bytes": 531,
+      "sha256": "cc75cc8f6245f49c18c4f4b9fe51c6b6a5baac8849f3381d19c4376852d708a4",
+      "mtimeUtc": "2026-10-20T20:32:09.850251+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/oracle_framing-selftest.log",
+      "path": "suite-logs/oracle_framing-selftest.log",
+      "bytes": 29291,
+      "sha256": "03dfcde42e4525e003691a3d758c2ad49aebc3aa8b3f852f05546b8b511be175",
+      "mtimeUtc": "2026-10-20T20:33:41.751563+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_architecture_contract.json",
+      "path": "suite-logs/py_test_architecture_contract.json",
+      "bytes": 359,
+      "sha256": "429d61537518da3e975fefa771149739235729004b81816d856d663e311cb806",
+      "mtimeUtc": "2026-10-20T20:33:42.412290+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_architecture_contract.log",
+      "path": "suite-logs/py_test_architecture_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:33:42.423818+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_architecture_contract.unittest.log",
+      "path": "suite-logs/py_test_architecture_contract.unittest.log",
+      "bytes": 305,
+      "sha256": "581a4a9373cb918e41fa2bb131140408e55219d30b6195dfbb565e7d1997292f",
+      "mtimeUtc": "2026-10-20T20:33:42.411877+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_candidate_impact.json",
+      "path": "suite-logs/py_test_assembly_candidate_impact.json",
+      "bytes": 357,
+      "sha256": "230e53f31f3ef3cbb6df596075c3f07320ab29b8e31c3329360bfd87a1f93a1a",
+      "mtimeUtc": "2026-10-20T20:33:43.757556+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_candidate_impact.log",
+      "path": "suite-logs/py_test_assembly_candidate_impact.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:33:43.763809+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_candidate_impact.unittest.log",
+      "path": "suite-logs/py_test_assembly_candidate_impact.unittest.log",
+      "bytes": 102,
+      "sha256": "9a4014e7c41c3b7ccde3a02297c4412459e70068aeb0ccc4463b23ec36c8b2ce",
+      "mtimeUtc": "2026-10-20T20:33:43.755809+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_capacity.json",
+      "path": "suite-logs/py_test_assembly_capacity.json",
+      "bytes": 349,
+      "sha256": "cb17b7ad9fda48a4e2f58d71344023998ef9ce7be4951e3b33f8e846ea1016de",
+      "mtimeUtc": "2026-10-20T20:33:48.316289+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_capacity.log",
+      "path": "suite-logs/py_test_assembly_capacity.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:33:48.323778+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_capacity.unittest.log",
+      "path": "suite-logs/py_test_assembly_capacity.unittest.log",
+      "bytes": 103,
+      "sha256": "7f1269ab70069d82484c90d1f04e06e064f2bd66abbfbb8ec192ac07ccb86391",
+      "mtimeUtc": "2026-10-20T20:33:48.312442+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_generation.json",
+      "path": "suite-logs/py_test_assembly_generation.json",
+      "bytes": 355,
+      "sha256": "c0557983143bc1b410e651eb1aed55d98590d54a05a43f1d27137fd58fe9e369",
+      "mtimeUtc": "2026-10-20T20:33:58.525931+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_generation.log",
+      "path": "suite-logs/py_test_assembly_generation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:33:58.535708+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_generation.unittest.log",
+      "path": "suite-logs/py_test_assembly_generation.unittest.log",
+      "bytes": 121,
+      "sha256": "1e99624ac60754000be1f0f293712db36f2c8e3a305c6f7d13970bec63d5a667",
+      "mtimeUtc": "2026-10-20T20:33:58.523708+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_mutation_check.json",
+      "path": "suite-logs/py_test_assembly_mutation_check.json",
+      "bytes": 561,
+      "sha256": "91ad904459cc18f8092a01b00096bf926d46ad044e6a0ebff4bd4b44970fa797",
+      "mtimeUtc": "2026-10-20T20:34:06.851395+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_mutation_check.log",
+      "path": "suite-logs/py_test_assembly_mutation_check.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:34:06.859652+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_mutation_check.unittest.log",
+      "path": "suite-logs/py_test_assembly_mutation_check.unittest.log",
+      "bytes": 1208,
+      "sha256": "83345d79460e01fe5a46646b467f24d314d6a75931c10b9d1090069476b452f0",
+      "mtimeUtc": "2026-10-20T20:34:06.851115+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_native_diagnostics.json",
+      "path": "suite-logs/py_test_assembly_native_diagnostics.json",
+      "bytes": 359,
+      "sha256": "8b2d9b31c5351ee0af4c07e4a10b1bd8bc71751a050ee62d649865639d403d74",
+      "mtimeUtc": "2026-10-20T20:34:08.294309+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_native_diagnostics.log",
+      "path": "suite-logs/py_test_assembly_native_diagnostics.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:34:08.299642+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_native_diagnostics.unittest.log",
+      "path": "suite-logs/py_test_assembly_native_diagnostics.unittest.log",
+      "bytes": 106,
+      "sha256": "d508ab99a0c6a06138b3b586fcf0286ed5cb3b405b774fda8d4dfddd04865750",
+      "mtimeUtc": "2026-10-20T20:34:08.291642+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_parameter_refs.json",
+      "path": "suite-logs/py_test_assembly_parameter_refs.json",
+      "bytes": 355,
+      "sha256": "f26b8a45204a30c8a3ac0cc7d3a60c9022405ce252ff9b622676c4cc86f0b423",
+      "mtimeUtc": "2026-10-20T20:34:09.721934+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_parameter_refs.log",
+      "path": "suite-logs/py_test_assembly_parameter_refs.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:34:09.727632+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_parameter_refs.unittest.log",
+      "path": "suite-logs/py_test_assembly_parameter_refs.unittest.log",
+      "bytes": 101,
+      "sha256": "ef05c67a55cf7b53b9910857777668be43135a433b9b04b92599c6862508d21f",
+      "mtimeUtc": "2026-10-20T20:34:09.719632+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_rules.json",
+      "path": "suite-logs/py_test_assembly_rules.json",
+      "bytes": 349,
+      "sha256": "fb32d786183e85702a49baf7252ff2385f68c45f355a01a271d9ab4d26337555",
+      "mtimeUtc": "2026-10-20T20:34:17.242271+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_rules.log",
+      "path": "suite-logs/py_test_assembly_rules.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:34:17.251580+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_assembly_rules.unittest.log",
+      "path": "suite-logs/py_test_assembly_rules.unittest.log",
+      "bytes": 135,
+      "sha256": "fe90b642b813a6d63c18d7b258d276c042d2c2bb5024627580ed24b10248568c",
+      "mtimeUtc": "2026-10-20T20:34:17.239580+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_axiom_reader.json",
+      "path": "suite-logs/py_test_axiom_reader.json",
+      "bytes": 349,
+      "sha256": "0e04bfce9bce378647635d30455e82bf4fe1e1ff48571edb5d80b2358bc45920",
+      "mtimeUtc": "2026-10-20T20:37:09.645745+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_axiom_reader.log",
+      "path": "suite-logs/py_test_axiom_reader.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:37:09.662289+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_axiom_reader.unittest.log",
+      "path": "suite-logs/py_test_axiom_reader.unittest.log",
+      "bytes": 152,
+      "sha256": "7258dcb2ba7abea6f0f175e95bdbe0caf6be53381bf99a083033a11841c00361",
+      "mtimeUtc": "2026-10-20T20:37:09.642289+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_binaries.json",
+      "path": "suite-logs/py_test_binaries.json",
+      "bytes": 343,
+      "sha256": "8e44b238479e4237aed450cc4bb4e54cfe5f05ab561934f3a63dda8c094c82ca",
+      "mtimeUtc": "2026-10-20T20:37:10.085015+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_binaries.log",
+      "path": "suite-logs/py_test_binaries.log",
+      "bytes": 990,
+      "sha256": "4b9ab1a31f4a6c5ced73dd4cb6bc804e4f870a4d1473ff763f99365e93c4ffa1",
+      "mtimeUtc": "2026-10-20T20:37:10.110046+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_binaries.unittest.log",
+      "path": "suite-logs/py_test_binaries.unittest.log",
+      "bytes": 135,
+      "sha256": "1b96528cea505ef934a61bd9e389d3ced5694f35eb84d9de262c63f3cc53a500",
+      "mtimeUtc": "2026-10-20T20:37:10.084471+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_bridge_integrity.json",
+      "path": "suite-logs/py_test_bridge_integrity.json",
+      "bytes": 352,
+      "sha256": "ae32ed4d6ca6730ba2c420e2295b967b55a546f77a085027c95f46085ef8ddfa",
+      "mtimeUtc": "2026-10-20T20:37:47.446434+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_bridge_integrity.log",
+      "path": "suite-logs/py_test_bridge_integrity.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:37:47.461994+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_bridge_integrity.unittest.log",
+      "path": "suite-logs/py_test_bridge_integrity.unittest.log",
+      "bytes": 124,
+      "sha256": "9c8c8a57625a4fac293e58677ed03261c772eff9ff050d751362d7166399ef6a",
+      "mtimeUtc": "2026-10-20T20:37:47.441994+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_cli_args.json",
+      "path": "suite-logs/py_test_cli_args.json",
+      "bytes": 339,
+      "sha256": "de3031a4fa082040b86380d3d738ea809177a4a2d1d1fc3d354a266a0c7a681f",
+      "mtimeUtc": "2026-10-20T20:37:48.530589+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_cli_args.log",
+      "path": "suite-logs/py_test_cli_args.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:37:48.537986+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_cli_args.unittest.log",
+      "path": "suite-logs/py_test_cli_args.unittest.log",
+      "bytes": 104,
+      "sha256": "eaa031a0402de3b0d2fec5a47731dba9b5cf547a6a0f0c64eb8d25a8bc4569fa",
+      "mtimeUtc": "2026-10-20T20:37:48.530314+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_datum_contract.json",
+      "path": "suite-logs/py_test_datum_contract.json",
+      "bytes": 347,
+      "sha256": "d4d7fd6c10cb57510f3012b1c14f7bb58ef23f21cc573c593adcf17bce43704c",
+      "mtimeUtc": "2026-10-20T20:37:59.244616+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_datum_contract.log",
+      "path": "suite-logs/py_test_datum_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:37:59.253902+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_datum_contract.unittest.log",
+      "path": "suite-logs/py_test_datum_contract.unittest.log",
+      "bytes": 108,
+      "sha256": "2550ce81e5145c81d6f7b6cef96064a62805ac28c03709d103f2e7e7659e0cd7",
+      "mtimeUtc": "2026-10-20T20:37:59.237902+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_decoupling_adoption.json",
+      "path": "suite-logs/py_test_domain_decoupling_adoption.json",
+      "bytes": 361,
+      "sha256": "b14c79ab401a1e043dd242626f77930a321ae27434229e35418fe5c3fbd779c6",
+      "mtimeUtc": "2026-10-20T20:37:59.785562+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_decoupling_adoption.log",
+      "path": "suite-logs/py_test_domain_decoupling_adoption.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:37:59.789898+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_decoupling_adoption.unittest.log",
+      "path": "suite-logs/py_test_domain_decoupling_adoption.unittest.log",
+      "bytes": 114,
+      "sha256": "7368135e4b6e9e98f1a5d28a62a537f971f3c1da24a6ec05a12b19f556cabc60",
+      "mtimeUtc": "2026-10-20T20:37:59.781898+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_decoupling_compatibility.json",
+      "path": "suite-logs/py_test_domain_decoupling_compatibility.json",
+      "bytes": 365,
+      "sha256": "4c8207bdfbc2d718c5d2eee13575ea350bfcefc721677ae09c12099e19c4f478",
+      "mtimeUtc": "2026-10-20T20:38:01.547042+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_decoupling_compatibility.log",
+      "path": "suite-logs/py_test_domain_decoupling_compatibility.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:01.553884+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_decoupling_compatibility.unittest.log",
+      "path": "suite-logs/py_test_domain_decoupling_compatibility.unittest.log",
+      "bytes": 113,
+      "sha256": "16808d5da34642875a72edf39d5b02021b7cc750d742aeeee5131971362fa1e2",
+      "mtimeUtc": "2026-10-20T20:38:01.541884+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_decoupling_proposal.json",
+      "path": "suite-logs/py_test_domain_decoupling_proposal.json",
+      "bytes": 361,
+      "sha256": "8612d72b3fe1ae2c3e434a5a66f2c5121e750c8910d324306e1a54a555a9782f",
+      "mtimeUtc": "2026-10-20T20:38:02.088103+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_decoupling_proposal.log",
+      "path": "suite-logs/py_test_domain_decoupling_proposal.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:02.093880+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_decoupling_proposal.unittest.log",
+      "path": "suite-logs/py_test_domain_decoupling_proposal.unittest.log",
+      "bytes": 128,
+      "sha256": "0a9eda09e2afca0d63a9428352e764b19ff7fe633af60e3cc229aa63a50cc9ed",
+      "mtimeUtc": "2026-10-20T20:38:02.081880+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_source_pins.json",
+      "path": "suite-logs/py_test_domain_source_pins.json",
+      "bytes": 353,
+      "sha256": "8651e12607f121b564cc6433613f7983265dc8e679e41e19ea7003e39079e858",
+      "mtimeUtc": "2026-10-20T20:38:02.836213+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_source_pins.log",
+      "path": "suite-logs/py_test_domain_source_pins.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:02.849150+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_domain_source_pins.unittest.log",
+      "path": "suite-logs/py_test_domain_source_pins.unittest.log",
+      "bytes": 115,
+      "sha256": "d5821381ecc1d6ca8602ea44ea6d3781b11dc03a7370b97ee7875031e91122b1",
+      "mtimeUtc": "2026-10-20T20:38:02.835904+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_core.json",
+      "path": "suite-logs/py_test_engineering_core.json",
+      "bytes": 351,
+      "sha256": "69b9056cc893e05b380a5d6a524e07879b6b86dcea1085b1626a920c429a464e",
+      "mtimeUtc": "2026-10-20T20:38:07.547930+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_core.log",
+      "path": "suite-logs/py_test_engineering_core.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:07.553838+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_core.unittest.log",
+      "path": "suite-logs/py_test_engineering_core.unittest.log",
+      "bytes": 117,
+      "sha256": "ac339997c8fd9510148ee80d870bf186246394bfa79169e4efefaa1bf43716e9",
+      "mtimeUtc": "2026-10-20T20:38:07.543977+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_json.json",
+      "path": "suite-logs/py_test_engineering_json.json",
+      "bytes": 348,
+      "sha256": "64041a4cc13540d02e680649aa6b47336cbc121ae8c6ee973ec740879ec39c3f",
+      "mtimeUtc": "2026-10-20T20:38:07.955970+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_json.log",
+      "path": "suite-logs/py_test_engineering_json.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:07.961835+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_json.unittest.log",
+      "path": "suite-logs/py_test_engineering_json.unittest.log",
+      "bytes": 105,
+      "sha256": "a066995a6e0d112db921fa63f67ad747e6b42213d5f21bbfe957b3a420956fe3",
+      "mtimeUtc": "2026-10-20T20:38:07.955729+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_model_compatibility.json",
+      "path": "suite-logs/py_test_engineering_model_compatibility.json",
+      "bytes": 367,
+      "sha256": "16998e76787093573d227b5b0ac0ab00d6a75644ca32f17bae55e418e5a325da",
+      "mtimeUtc": "2026-10-20T20:38:18.084452+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_model_compatibility.log",
+      "path": "suite-logs/py_test_engineering_model_compatibility.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:18.101757+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_model_compatibility.unittest.log",
+      "path": "suite-logs/py_test_engineering_model_compatibility.unittest.log",
+      "bytes": 143,
+      "sha256": "bb0b3eb297e39ac529e0d867b665f5c3c625044dbaf30141162ff44cdab2f8cf",
+      "mtimeUtc": "2026-10-20T20:38:18.077757+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_model_sources.json",
+      "path": "suite-logs/py_test_engineering_model_sources.json",
+      "bytes": 357,
+      "sha256": "92bea863ba3c844ebc51b1b97e46ca2ad5b61471d81ebd4a105dd4290b6a6cc8",
+      "mtimeUtc": "2026-10-20T20:38:21.205061+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_model_sources.log",
+      "path": "suite-logs/py_test_engineering_model_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:21.225732+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_model_sources.unittest.log",
+      "path": "suite-logs/py_test_engineering_model_sources.unittest.log",
+      "bytes": 102,
+      "sha256": "cab1356cbbe58e38558631b1fcfff469ce70ee2e031ec03662132f4764245bbb",
+      "mtimeUtc": "2026-10-20T20:38:21.201067+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_transport.json",
+      "path": "suite-logs/py_test_engineering_transport.json",
+      "bytes": 353,
+      "sha256": "67a2b10757c53c52ac6158a35f1d8e49e1d9bbc080e463f394ce8f6b0b5904a0",
+      "mtimeUtc": "2026-10-20T20:38:21.473148+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_transport.log",
+      "path": "suite-logs/py_test_engineering_transport.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:21.477730+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_engineering_transport.unittest.log",
+      "path": "suite-logs/py_test_engineering_transport.unittest.log",
+      "bytes": 105,
+      "sha256": "83166b089fbcb82fac63f22522fa6ae99bb5e46368cd35d756277fd463dd6346",
+      "mtimeUtc": "2026-10-20T20:38:21.472986+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_evidence_link_native.json",
+      "path": "suite-logs/py_test_evidence_link_native.json",
+      "bytes": 352,
+      "sha256": "2414520fd9b3b4bd0c1f1bd8c2432010585eaf7500b5bf3917d742b9b7f67523",
+      "mtimeUtc": "2026-10-20T20:38:22.789048+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_evidence_link_native.log",
+      "path": "suite-logs/py_test_evidence_link_native.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:22.793720+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_evidence_link_native.unittest.log",
+      "path": "suite-logs/py_test_evidence_link_native.unittest.log",
+      "bytes": 104,
+      "sha256": "919a84137c97967c740c89dba80c580d396e11d26c16fe9f0e55ddf0900ec5f6",
+      "mtimeUtc": "2026-10-20T20:38:22.785902+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_feedback_store.json",
+      "path": "suite-logs/py_test_feedback_store.json",
+      "bytes": 349,
+      "sha256": "8fd2e164869c88d9940a0b0acd1fc705b9bcb228a4860547ce8a1f3715a55242",
+      "mtimeUtc": "2026-10-20T20:38:23.223264+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_feedback_store.log",
+      "path": "suite-logs/py_test_feedback_store.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:23.229717+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_feedback_store.unittest.log",
+      "path": "suite-logs/py_test_feedback_store.unittest.log",
+      "bytes": 110,
+      "sha256": "7a10cf4c4326985375cc6ecd124c516babaca4661adc3a1b09fa57eb919eaeeb",
+      "mtimeUtc": "2026-10-20T20:38:23.223062+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_gdi_contract.json",
+      "path": "suite-logs/py_test_gdi_contract.json",
+      "bytes": 696,
+      "sha256": "8d8da84eee15fe223e966438254d31d7c800fc62560a8f5883bfb7af9e0085a2",
+      "mtimeUtc": "2026-10-20T20:38:23.463490+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_gdi_contract.log",
+      "path": "suite-logs/py_test_gdi_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:23.469715+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_gdi_contract.unittest.log",
+      "path": "suite-logs/py_test_gdi_contract.unittest.log",
+      "bytes": 110,
+      "sha256": "16ba752c32957f3b2943ad473825fe6f0c70e1f1be428ad10b951d3af1a90efe",
+      "mtimeUtc": "2026-10-20T20:38:23.463287+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_application_closure.json",
+      "path": "suite-logs/py_test_geo261_application_closure.json",
+      "bytes": 361,
+      "sha256": "e040bff3d8598c0eb645d7da3aa9f7c050dd6b11511f847241935ccb72a0958b",
+      "mtimeUtc": "2026-10-20T20:38:31.181403+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_application_closure.log",
+      "path": "suite-logs/py_test_geo261_application_closure.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:31.189654+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_application_closure.unittest.log",
+      "path": "suite-logs/py_test_geo261_application_closure.unittest.log",
+      "bytes": 113,
+      "sha256": "e479106d4d24e32da32427f46f32b02d12a8c4ee9d6512010cf0a7c4cee893c2",
+      "mtimeUtc": "2026-10-20T20:38:31.177654+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_assembly_definition_authority.json",
+      "path": "suite-logs/py_test_geo261_assembly_definition_authority.json",
+      "bytes": 370,
+      "sha256": "70db7e89c7adc79589c3c9db1a123f4c5456be95f6ceaf26f88348b62ed0d1a8",
+      "mtimeUtc": "2026-10-20T20:38:38.559883+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_assembly_definition_authority.log",
+      "path": "suite-logs/py_test_geo261_assembly_definition_authority.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:38.569596+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_assembly_definition_authority.unittest.log",
+      "path": "suite-logs/py_test_geo261_assembly_definition_authority.unittest.log",
+      "bytes": 114,
+      "sha256": "50913394844bdb74e30fea047e3609a9a2904a2723a4119271ae2ce2e04baa2b",
+      "mtimeUtc": "2026-10-20T20:38:38.553596+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_assembly_graph_product.json",
+      "path": "suite-logs/py_test_geo261_assembly_graph_product.json",
+      "bytes": 360,
+      "sha256": "dac38df789685e3f452fd328802733e71ee92c80129844ee924650be4a9f64dc",
+      "mtimeUtc": "2026-10-20T20:38:47.341773+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_assembly_graph_product.log",
+      "path": "suite-logs/py_test_geo261_assembly_graph_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:47.353527+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_assembly_graph_product.unittest.log",
+      "path": "suite-logs/py_test_geo261_assembly_graph_product.unittest.log",
+      "bytes": 102,
+      "sha256": "bb755c9e949e01050e1bb551488f5dffd04464494fac4d7a070ddabb1d23b071",
+      "mtimeUtc": "2026-10-20T20:38:47.337527+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_assembly_sources.json",
+      "path": "suite-logs/py_test_geo261_assembly_sources.json",
+      "bytes": 355,
+      "sha256": "31ee982ae3092bdbef720d285e3e2180cd15ea67060153a2572bb820c769bc3c",
+      "mtimeUtc": "2026-10-20T20:38:51.654031+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_assembly_sources.log",
+      "path": "suite-logs/py_test_geo261_assembly_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:51.661493+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_assembly_sources.unittest.log",
+      "path": "suite-logs/py_test_geo261_assembly_sources.unittest.log",
+      "bytes": 106,
+      "sha256": "2ad72eb3a46439c1f989c2fb7d7e4bc4ad38eee0901bdcfed75891165b7f4b7f",
+      "mtimeUtc": "2026-10-20T20:38:51.649493+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_candidate_cache.json",
+      "path": "suite-logs/py_test_geo261_candidate_cache.json",
+      "bytes": 357,
+      "sha256": "1fda4c3c0053e5199b5f4463f24246b04dfcc552af9cdc0ae0daae06dd7953ca",
+      "mtimeUtc": "2026-10-20T20:38:55.454684+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_candidate_cache.log",
+      "path": "suite-logs/py_test_geo261_candidate_cache.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:55.461464+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_candidate_cache.unittest.log",
+      "path": "suite-logs/py_test_geo261_candidate_cache.unittest.log",
+      "bytes": 117,
+      "sha256": "661efba4c3198d5d6f8c4073aedd4ef5843fbb1774badc5d712ae96647624638",
+      "mtimeUtc": "2026-10-20T20:38:55.450030+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_candidate_deferred_sha.json",
+      "path": "suite-logs/py_test_geo261_candidate_deferred_sha.json",
+      "bytes": 364,
+      "sha256": "027ede126f7ad34a70ec6f917e1405dfd79d1ab7bfdd925610971331b70d0d1e",
+      "mtimeUtc": "2026-10-20T20:38:58.264341+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_candidate_deferred_sha.log",
+      "path": "suite-logs/py_test_geo261_candidate_deferred_sha.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:38:58.273443+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_candidate_deferred_sha.unittest.log",
+      "path": "suite-logs/py_test_geo261_candidate_deferred_sha.unittest.log",
+      "bytes": 110,
+      "sha256": "6292f5893acc6fe7a80ae81fd964bb7fdac18511cbe6bc53221f5b45af1cc389",
+      "mtimeUtc": "2026-10-20T20:38:58.262217+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_candidate_product.json",
+      "path": "suite-logs/py_test_geo261_candidate_product.json",
+      "bytes": 359,
+      "sha256": "276af07c95b81f8173d390d1425d59bca32b618f236777d5740d519e2a6e270a",
+      "mtimeUtc": "2026-10-20T20:39:09.842859+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_candidate_product.log",
+      "path": "suite-logs/py_test_geo261_candidate_product.log",
+      "bytes": 6864,
+      "sha256": "6c06f1475b5fe485ea90761619d1f23034d59dd32491be59cc894293b9853be1",
+      "mtimeUtc": "2026-10-20T20:39:09.855414+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_candidate_product.unittest.log",
+      "path": "suite-logs/py_test_geo261_candidate_product.unittest.log",
+      "bytes": 126,
+      "sha256": "fc1fb926023808d0164b87175562c3ab22278a9c22bc30f139e1b9515dd0efb1",
+      "mtimeUtc": "2026-10-20T20:39:09.838313+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_contact_sources.json",
+      "path": "suite-logs/py_test_geo261_contact_sources.json",
+      "bytes": 357,
+      "sha256": "2faf52e99467fa5221f56489886a2a5fdeb5f319c9fc01ec6ca898e54a94fa07",
+      "mtimeUtc": "2026-10-20T20:39:14.791871+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_contact_sources.log",
+      "path": "suite-logs/py_test_geo261_contact_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:39:14.797310+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_contact_sources.unittest.log",
+      "path": "suite-logs/py_test_geo261_contact_sources.unittest.log",
+      "bytes": 111,
+      "sha256": "6bdf5480341ff3b1b1c02d72071a5b6f2051e6b655f9c5cede8d7ba370f3c9a3",
+      "mtimeUtc": "2026-10-20T20:39:14.787543+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_default_native.json",
+      "path": "suite-logs/py_test_geo261_default_native.json",
+      "bytes": 356,
+      "sha256": "92ccb64ddbb5f547e6486aa3b4b6f2595886aae4ab44ea7c67e006d1eef94b50",
+      "mtimeUtc": "2026-10-20T20:39:21.814914+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_default_native.log",
+      "path": "suite-logs/py_test_geo261_default_native.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:39:21.833253+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_default_native.unittest.log",
+      "path": "suite-logs/py_test_geo261_default_native.unittest.log",
+      "bytes": 112,
+      "sha256": "063fdc28876aba8a91b3b8f5b288a9b64c07463f6373ed1ee797669c38c3bd7c",
+      "mtimeUtc": "2026-10-20T20:39:21.809253+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_deferred_candidate.json",
+      "path": "suite-logs/py_test_geo261_deferred_candidate.json",
+      "bytes": 360,
+      "sha256": "9e6c6d421c43419bcb8d57985f0dc97c9d508d5c091cb1b78537f46b7484112b",
+      "mtimeUtc": "2026-10-20T20:39:27.184161+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_deferred_candidate.log",
+      "path": "suite-logs/py_test_geo261_deferred_candidate.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:39:27.197211+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_deferred_candidate.unittest.log",
+      "path": "suite-logs/py_test_geo261_deferred_candidate.unittest.log",
+      "bytes": 152,
+      "sha256": "a20da5a4c9d223c4bef895cac6127301b833c82aa356b6a0c561403e1ca310bd",
+      "mtimeUtc": "2026-10-20T20:39:27.178997+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_deferred_product.json",
+      "path": "suite-logs/py_test_geo261_deferred_product.json",
+      "bytes": 359,
+      "sha256": "b123f1c0341767386120eac1a6e784f50e03de6b602349f6dd86abd42f6d55e1",
+      "mtimeUtc": "2026-10-20T20:39:43.802948+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_deferred_product.log",
+      "path": "suite-logs/py_test_geo261_deferred_product.log",
+      "bytes": 2083,
+      "sha256": "1929010cc91a1e7286782ef9dadf986128b9d0ba4dd02e3d635406b257de00d1",
+      "mtimeUtc": "2026-10-20T20:39:43.819902+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_deferred_product.unittest.log",
+      "path": "suite-logs/py_test_geo261_deferred_product.unittest.log",
+      "bytes": 110,
+      "sha256": "2b6bafa52fbef6b7835f7fc99e832ddf3dc9acbb65a082a2e491a9b2e359e476",
+      "mtimeUtc": "2026-10-20T20:39:43.797080+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_definition_graph_product.json",
+      "path": "suite-logs/py_test_geo261_definition_graph_product.json",
+      "bytes": 363,
+      "sha256": "0b22f81ad87e4f882ef21bff67dbc9fd69e4dba138c27833117db166e003cb62",
+      "mtimeUtc": "2026-10-20T20:39:51.074756+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_definition_graph_product.log",
+      "path": "suite-logs/py_test_geo261_definition_graph_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:39:51.085023+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_definition_graph_product.unittest.log",
+      "path": "suite-logs/py_test_geo261_definition_graph_product.unittest.log",
+      "bytes": 103,
+      "sha256": "18c5c4ea75b73d98313efda636fd23397905ad620051a47c54eb932c0d5196c6",
+      "mtimeUtc": "2026-10-20T20:39:51.071384+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_definition_sources.json",
+      "path": "suite-logs/py_test_geo261_definition_sources.json",
+      "bytes": 357,
+      "sha256": "7a6b1e7e6c12bb22f29401129920bf8d71433f4092ecd0216cfcffc7dd75e877",
+      "mtimeUtc": "2026-10-20T20:39:54.899121+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_definition_sources.log",
+      "path": "suite-logs/py_test_geo261_definition_sources.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtimeUtc": "2026-10-20T20:39:54.904993+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_definition_sources.unittest.log",
+      "path": "suite-logs/py_test_geo261_definition_sources.unittest.log",
+      "bytes": 105,
+      "sha256": "2d7aa18b66eb5d8ed4e039d3318a42259699967fbd17c73fc7d888d11da7e80f",
+      "mtimeUtc": "2026-10-20T20:39:54.892993+00:00",
+      "modifiedSinceRunStart": true
+    },
+    {
+      "source": "/tmp/geometry-tests/run_all-logs/py_test_geo261_derived_policy_graph_product.unittest.log",
+      "path": "suite-logs/py_test_geo261_derived_policy_graph_product.unittest.log",
+      "bytes": 1,
+      "sha256": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+      "mtimeUtc": "2026-10-20T20:40:00.988945+00:00",
+      "modifiedSinceRunStart": true
+    }
+  ]
+}

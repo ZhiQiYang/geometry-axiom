@@ -1,0 +1,62 @@
+{
+  "schema": "geo261-browser-five-L3-peer-tool-observations/1",
+  "scope": "下列是實際工具回覆欄位的轉錄，不是原始transport資料；接受器的完整stdout/stderr與Popen真wait另存本目錄。",
+  "observations": [
+    {
+      "purpose": "首版主接受器",
+      "chunk_id": "a692a6",
+      "exit_code": 1,
+      "execution": "execution.json",
+      "code": "peer-code.txt",
+      "stdout": "peer.stdout",
+      "stderr": "peer.stderr",
+      "cause": "P77控制的來源定位誤指assembly_workflow_test.js；實際是assembly_review_test.js。未修改產品，原失敗完整保留。"
+    },
+    {
+      "purpose": "修正來源定位後主接受器",
+      "chunk_id": "732ee4",
+      "exit_code": 0,
+      "execution": "execution-v2.json",
+      "code": "peer-code-v2.txt",
+      "stdout": "peer-v2.stdout",
+      "stderr": "peer-v2.stderr"
+    },
+    {
+      "purpose": "補件接受器",
+      "chunk_id": "2e140b",
+      "exit_code": 0,
+      "execution": "artifact-execution.json",
+      "code": "artifact-peer-code.txt",
+      "stdout": "artifact-peer.stdout",
+      "stderr": "artifact-peer.stderr"
+    },
+    {
+      "purpose": "資料探索",
+      "chunk_id": "f0baa6",
+      "exit_code": 1,
+      "cause": "誤讀不存在的assembly/source-before.json；實存來源索引是source-hashes.json。",
+      "rawLimit": "當時未另外redirect完整stdout/stderr，只有工具碼與錯誤摘要；不稱完整raw。"
+    },
+    {
+      "purpose": "資料探索",
+      "chunk_id": "81b1bf",
+      "exit_code": 1,
+      "cause": "Python手寫__name__for缺少空白的SyntaxError。",
+      "rawLimit": "當時未另外redirect完整stdout/stderr，只有工具碼與錯誤摘要；不稱完整raw。"
+    },
+    {
+      "purpose": "修正語法後資料探索",
+      "chunk_id": "664ed1",
+      "exit_code": 0,
+      "result": "確認summary每項的suite/accepted/browserReturncode三欄schema。"
+    },
+    {
+      "purpose": "最後人讀製作者報告",
+      "chunk_id": "7f2411",
+      "exit_code": 0,
+      "result": "報告正確區分scope、reused、P77預期transport事件、事後補件、圖片未逐張目視。"
+    }
+  ],
+  "productExecution": false,
+  "newMutationExecution": false
+}

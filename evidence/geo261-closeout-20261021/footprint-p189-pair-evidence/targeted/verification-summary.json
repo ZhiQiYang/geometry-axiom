@@ -1,0 +1,344 @@
+{
+  "base": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+  "changedFiles": [
+    "geometry-app/native/reference_sources.inc",
+    "tests/geo261_host_facts_authority_harness.c",
+    "tests/test_geo261_host_facts_authority.py"
+  ],
+  "sourceCount": 326,
+  "sourceHashesUnchanged": true,
+  "changedSourceHashes": {
+    "geometry-app/native/reference_sources.inc": "ee8fa4e258999addd1996704cdffc47ac870acb972f5d63328dc2908e1be8a5c",
+    "tests/geo261_host_facts_authority_harness.c": "a1865b2ab64fe31921cd5305d0b194d95177c3934123d76c0db73aedd79bcb6e",
+    "tests/test_geo261_host_facts_authority.py": "2b0610adea7e944adc5e05487eb78e161f02a39adf46b09521a10f72788a1baa"
+  },
+  "returnedDefinitionThroughFaceSuffixUnchanged": true,
+  "outsideFootprintFunctionUnchanged": true,
+  "patchSha256": "bed372575815368c213232e3ff901c2d117f4c988bf776af59905124f051d705",
+  "commandCount": 299,
+  "nonzeroCommands": [
+    {
+      "index": 70,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-raw-contact",
+        "moved"
+      ],
+      "stderr": "ASSERT:facts-moved-contact-admits-actual-footprint\n"
+    },
+    {
+      "index": 75,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-final-anchor",
+        "final"
+      ],
+      "stderr": "ASSERT:facts-final-validator-actual-anchor\n"
+    },
+    {
+      "index": 80,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-rc-column",
+        "rc"
+      ],
+      "stderr": "ASSERT:facts-rc-column-actual-definition\n"
+    },
+    {
+      "index": 85,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-rc-room",
+        "rc"
+      ],
+      "stderr": "ASSERT:facts-rc-room-actual-result\n"
+    },
+    {
+      "index": 90,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-probe-box",
+        "end-facts"
+      ],
+      "stderr": "ASSERT:facts-probe-consumes-actual-box\n"
+    },
+    {
+      "index": 95,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-end-refresh",
+        "end-facts"
+      ],
+      "stderr": "ASSERT:facts-delayed-refresh-controls-owner-extension\n"
+    },
+    {
+      "index": 100,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-end-eager",
+        "end-facts"
+      ],
+      "stderr": "ASSERT:facts-span-error-precedes-source-failure\n"
+    },
+    {
+      "index": 105,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-probe-projection",
+        "end-facts"
+      ],
+      "stderr": "ASSERT:facts-probe-projects-actual-origin\n"
+    },
+    {
+      "index": 111,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-region-policy",
+        "ref-policy"
+      ],
+      "stderr": "ASSERT:facts-ref-policy-follows-actual-region\n"
+    },
+    {
+      "index": 116,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-rect-ref",
+        "rect-ref"
+      ],
+      "stderr": "ASSERT:facts-rect-to-ref-preserves-hole\n"
+    },
+    {
+      "index": 121,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-clear-boundary",
+        "ref-rect"
+      ],
+      "stderr": "ASSERT:facts-ref-to-rect-clears-boundary\n"
+    },
+    {
+      "index": 126,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-sp-domain",
+        "sp-derived"
+      ],
+      "stderr": "ASSERT:facts-sp-actual-domain-controls-admission\n"
+    },
+    {
+      "index": 131,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-raw-footprint",
+        "moved"
+      ],
+      "stderr": "ASSERT:facts-moved-actual-anchor-footprint\n"
+    },
+    {
+      "index": 136,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-copy-clear",
+        "copy-clear"
+      ],
+      "stderr": "ASSERT:facts-copy-clears-all-original-components\n"
+    },
+    {
+      "index": 141,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-copy-atomic",
+        "malformed"
+      ],
+      "stderr": "ASSERT:facts-malformed-actual-definition-is-atomic\n"
+    },
+    {
+      "index": 146,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-copy-view",
+        "copy-snapshot"
+      ],
+      "stderr": "ASSERT:facts-copy-snapshot-view-owned-by-caller\n"
+    },
+    {
+      "index": 151,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-scratch-view",
+        "scratch-owned"
+      ],
+      "stderr": "ASSERT:facts-scratch-view-owned-by-caller\n"
+    },
+    {
+      "index": 157,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-hole-index-digits",
+        "rect-ref"
+      ],
+      "stderr": "ASSERT:facts-hole-vertex-grammar-rejects-malformed\n"
+    },
+    {
+      "index": 170,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-footprint-missing",
+        "footprint-missing"
+      ],
+      "stderr": "ASSERT:facts-footprint-missing-does-not-evaluate\n"
+    },
+    {
+      "index": 175,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/host-facts-control-footprint-index",
+        "footprint-index"
+      ],
+      "stderr": "ASSERT:facts-footprint-index-does-not-evaluate\n"
+    },
+    {
+      "index": 194,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/contact-source-control-policy-bypass",
+        "graph"
+      ],
+      "stderr": "ASSERT:contact-collection-runs-real-facts-and-policy\n"
+    },
+    {
+      "index": 199,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/contact-source-control-feature-edge",
+        "graph"
+      ],
+      "stderr": "ASSERT:contact-feature-requires-collection-value\n"
+    },
+    {
+      "index": 204,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/contact-source-control-query-reuse",
+        "evolving"
+      ],
+      "stderr": "ASSERT:contact-evolving-placed-subset-is-fresh\n"
+    },
+    {
+      "index": 209,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/contact-source-control-hidden-coordinates",
+        "feature-values"
+      ],
+      "stderr": "ASSERT:contact-returned-feature-segment-consumed\n"
+    },
+    {
+      "index": 214,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/contact-source-control-placement-order",
+        "ordering"
+      ],
+      "stderr": "ASSERT:contact-placement-order-and-stable-ties\n"
+    },
+    {
+      "index": 219,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/contact-source-control-failure-count",
+        "failures"
+      ],
+      "stderr": "ASSERT:contact-failure-keeps-output-and-count\n"
+    },
+    {
+      "index": 231,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-column",
+        "obstacles"
+      ],
+      "stderr": "ASSERT:validation-column-plan-overlap\n"
+    },
+    {
+      "index": 240,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-unplaced",
+        "phases"
+      ],
+      "stderr": "ASSERT:validation-unplaced-skipped\n"
+    },
+    {
+      "index": 245,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-unique",
+        "support"
+      ],
+      "stderr": "ASSERT:validation-unique-stops\n"
+    },
+    {
+      "index": 250,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-presence",
+        "support"
+      ],
+      "stderr": "ASSERT:validation-between-needs-stop\n"
+    },
+    {
+      "index": 255,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-collision",
+        "collision"
+      ],
+      "stderr": "ASSERT:validation-positive-collision\n"
+    },
+    {
+      "index": 260,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-axis",
+        "axis"
+      ],
+      "stderr": "ASSERT:validation-primary-axis\n"
+    },
+    {
+      "index": 265,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-volume",
+        "obstacles"
+      ],
+      "stderr": "ASSERT:validation-positive-volume\n"
+    },
+    {
+      "index": 270,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-rule-scope",
+        "rule"
+      ],
+      "stderr": "ASSERT:validation-rule-full-cell\n"
+    },
+    {
+      "index": 275,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-subgrid-scope",
+        "subgrid"
+      ],
+      "stderr": "ASSERT:validation-subgrid-full-cell\n"
+    },
+    {
+      "index": 280,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-stagger-lower",
+        "stagger"
+      ],
+      "stderr": "ASSERT:validation-stagger-lower-bound\n"
+    },
+    {
+      "index": 285,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/validation-stagger-upper",
+        "stagger"
+      ],
+      "stderr": "ASSERT:validation-stagger-upper-bound\n"
+    },
+    {
+      "index": 297,
+      "command": [
+        "/tmp/geo261-host-footprint-cswdne02/geometry-tests/geo261-n1a-93ay8njp/world-validation-product-no-selector",
+        "selected-component"
+      ],
+      "stderr": "ASSERT:validation-product-selected-component-verdict\n"
+    }
+  ],
+  "targeted": {
+    "modules": [
+      "tests.test_geo261_host_facts_authority",
+      "tests.test_geo261_contact_sources",
+      "tests.test_geo261_wood_world_validation",
+      "tests.test_mutation_anchors"
+    ],
+    "testsRun": 56,
+    "failures": 0,
+    "errors": 0,
+    "skipped": [],
+    "sourceUnchanged": true,
+    "passed": true
+  },
+  "limitations": [
+    "等價範圍為合法 placement store（count 不超過 capacity）；未擴改損毀內部 store 的防禦行為。",
+    "本次未量測性能，沒有重跑完整七項；未新增 memo、API、容量或 P177 流程。",
+    "暫存控制檔由 NativeBuild 清除；命中依唯一錨點、原 compile/link 0 與具名 stderr/退出碼鏈。"
+  ]
+}

@@ -1,0 +1,253 @@
+"""只核對並封裝已完成的 L3 native 文字原件；不讀全域快取或 binary、不執行產品。"""
+from pathlib import Path
+import ast
+import datetime
+import hashlib
+import json
+import shutil
+import stat
+import sys
+
+BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')
+SOURCE='6589248c9a94bdf0460d8f84dd1610e51048188b'
+PIN='ee80438dce224cf9d473184c4ffe97a4c690d401d98eecdbcbd5e458449df93b'
+INSTANCE_PIN='ad0e74a3798fedf240d7a02af82ee7849496981276418335c38b9f36715ac1f3'
+NATIVE=BASE/'native';LAUNCHER=BASE/'native-launcher';PREP=BASE/'preparation'
+OUT=BASE/'native-publish-clean'
+BUNDLE=Path('/workspace/geo261-evidence/final-bundle/native-L3-formal')
+APPENDIX=Path('/workspace/geo261-evidence/final-bundle/native-L3-formal-appendix')
+METHOD=Path('/workspace/geo261-evidence/l3-native-gates-preparation')
+TEMPLATE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/curate-native.py')
+
+def utc():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def h(data):return hashlib.sha256(data).hexdigest()
+def read(path):return json.loads(path.read_bytes())
+def ref(path):
+    data=path.read_bytes()
+    return dict(path=str(path),bytes=len(data),sha256=h(data),mtimeNs=path.stat().st_mtime_ns)
+def save(path,value):
+    if path.exists():raise FileExistsError(str(path))
+    path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n')
+def safe_text(path,data=None):
+    assert path.is_file() and not path.is_symlink(),str(path)
+    assert path.suffix not in ('.py','.js','.mjs','.cjs','.exe','.so','.dll','.o','.a'),str(path)
+    assert not path.stat().st_mode&0o111,str(path)
+    data=path.read_bytes() if data is None else data
+    assert not data.startswith(b'\x7fELF') and b'\0' not in data,str(path)
+    data.decode('utf-8')
+    return data
+
+assert not sys.flags.optimize
+for p in [OUT,BUNDLE,APPENDIX,NATIVE/'initial-build-fingerprints',NATIVE/'final-build-fingerprints',NATIVE/'cleanup-verification.json',NATIVE/'README.zh-TW.md']:
+    assert not p.exists(),str(p)
+assert h((NATIVE/'verification.json').read_bytes())==PIN
+assert h((PREP/'instance.json').read_bytes())==INSTANCE_PIN
+plan=read(PREP/'instance.json');v=read(NATIVE/'verification.json');complete=read(NATIVE/'completion-verification.json')
+assert plan['sourceSha']==v['sourceSha']==complete['sourceSha']==SOURCE
+assert complete['acceptedNativeExact'] and v['acceptedNative'] and v['all224ExpectedMatched'] and v['all224Passed']
+assert v['observedCompletedTableRows']==v['observedProgressCount']==224 and v['pythonJsonCount']==188
+assert v['observedTotals']==dict(total=5188,passed=5187,failed=0,skipped=1,suiteSeconds=1743.1)
+assert not v['expectedMismatches'] and not v['missingSuiteLogs'] and not v['pythonFailures'] and not v['rawFilesOlderThanRun']
+assert not v['timedOut'] and v['unallowedSkipCount']==0 and len(v['skips'])==1 and v['skips'][0]['allowed']
+assert v['skips'][0]['suite']=='py:test_gdi_contract'
+assert v['skips'][0]['item']['test']=='test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources'
+assert v['skips'][0]['item']['reason']=='requires compiled Windows GDI contract harness'
+assert v['runExitCode']==v['wrapperReturnCode']==v['launcherExitCode']==v['mainChildRawWaitStatus']==v['persistedWrapperExitCode']==v['persistedLauncherExitCode']==0
+assert v['headBefore']==v['headAfter']==v['packagingHead']==SOURCE and v['statusBefore']==v['statusAfter']==v['packagingStatus']=='' and v['sourceHashesUnchanged']
+expected=read(NATIVE/'source-reference/run_all.expected.json')['suites']
+assert set(expected)==set(v['suiteRows']) and len(expected)==224 and sum(n.startswith('py:') for n in expected)==188
+for name,row in v['suiteRows'].items():
+    if expected[name]['mode']=='count':
+        assert row['total']==expected[name]['count'] and row['failed']==0 and row['passed']+row['skipped']==row['total'],name
+    elif name=='mutation:check':
+        assert row['total'] is None and row['passed']==row['failed']=='-' and row['skipped'] is None
+        assert row['note']=='mutation inventory freshness (not test assertions); exit 0'
+    else:assert row['passed']=='ok' and row['failed']=='-',name
+named=read(NATIVE/'named-required-suites.json')
+for name,count in [('py:test_architecture_contract',205),('py:test_product_architecture',18),('py:test_geo261_model_base_replay',6)]:
+    row=named['suites'][name]['row'];assert row==v['suiteRows'][name]
+    assert row['total']==row['passed']==count and row['failed']==row['skipped']==0
+for document in [v,named]:
+    for item in document['artifactReferences'].values():
+        path=Path(item['path']);data=path.read_bytes()
+        assert str(path).startswith(str(BASE)+'/') and len(data)==item['bytes'] and h(data)==item['sha256'],str(path)
+index=read(NATIVE/'suite-log-source-index.json')
+assert index['sourceSha']==SOURCE and index['fileCount']==len(index['files'])==v['rawLogCount']==600
+assert index['totalBytes']==v['rawLogBytes']==296690
+actual_raw={str(p.relative_to(NATIVE)) for p in (NATIVE/'suite-logs').iterdir() if p.is_file()}
+assert actual_raw=={item['artifactPath'] for item in index['files']}
+for item in index['files']:
+    path=NATIVE/item['artifactPath'];data=path.read_bytes()
+    assert path.suffix in ('.log','.json') and len(data)==item['bytes'] and h(data)==item['sha256'] and path.stat().st_mtime_ns==item['sourceMtimeNs'],str(path)
+python_files=sorted((NATIVE/'suite-logs').glob('*.json'));assert len(python_files)==188
+for path in python_files:
+    item=read(path);name='py:'+path.stem.removeprefix('py_');row=v['suiteRows'][name]
+    assert item['total']==row['total'] and item['passed']==row['passed'] and item['failed']==row['failed'] and item['skipped']==row['skipped'],name
+    assert not item['failures'] and item['import_error'] is None and item['extra_errors']==0 and item['blocked_by_error']==0
+
+receipt=read(NATIVE/'receipt.json');launch=read(LAUNCHER/'launcher-receipt.json');observation=read(NATIVE/'tool-observation.json')
+assert receipt['command']==['timeout','2100','python3','tests/run_all.py','--build']
+assert receipt['stackKiB']==16384 and receipt['jobLimitSeconds']==2100 and receipt['subreaperEnabled']
+assert receipt['exitCode']==receipt['mainChildRawWaitStatus']==launch['wrapperReturnCode']==launch['launcherExitCode']==0
+assert launch['nativeReceiptSha256']==h((NATIVE/'receipt.json').read_bytes())
+assert int((LAUNCHER/'.exit-code').read_text())==int((LAUNCHER/'.launcher-exit-code').read_text())==0
+assert observation['sessionId']==75129 and observation['actualToolResponse']['chunk_id']=='b139d1' and observation['actualToolResponse']['exit_code']==0
+assert read(NATIVE/'finish-native-tool-observation.json')['actualToolResponse']['exit_code']==0
+wrapper=(LAUNCHER/'wrapper-code.txt').read_bytes()
+assert wrapper==(PREP/'native-wrapper-code.txt').read_bytes()==receipt['wrapperSource'].encode()
+assert h(wrapper)==launch['wrapperCodeSha256']
+assert 'except ChildProcessError:\n            done=True\n            break' in wrapper.decode()
+assert 'if done: break' in wrapper.decode() and 'assert main_exit is not None' in wrapper.decode()
+assert 'wrapper_exit=process.wait()' in (LAUNCHER/'launcher-code.txt').read_text()
+assert not receipt['cleanup'] and len(receipt['reaped'])==11
+main=[e for e in receipt['reaped'] if e['isMainProcess']]
+assert len(main)==1 and main[0]['pid']==receipt['mainChildPid'] and main[0]['rawWaitStatus']==main[0]['exitCode']==0
+assert read(NATIVE/'reaped.json')['events']==receipt['reaped']
+assert [json.loads(line) for line in (NATIVE/'reaped.jsonl').read_text().splitlines()]==receipt['reaped']
+preflight=read(LAUNCHER/'preflight.json');dispatch=read(LAUNCHER/'dispatch-command.json')
+assert preflight['CCAbsent'] and preflight['PYTHONOPTIMIZEAbsent'] and all(preflight['effectiveUnset'].values())
+assert dispatch['CCAbsent'] and dispatch['PYTHONOPTIMIZEAbsent'] and dispatch['optimizationFlag']==0
+assert read(LAUNCHER/'preflight-execution-receipt.json')['exitCode']==0
+process_check=read(LAUNCHER/'no-live-writer-preflight-revised.json')
+assert not process_check['matches'] and not process_check['unexplainedPermissionErrors']
+assert {x['pid'] for x in process_check['unreadableInfrastructureVerified']}=={1,2,205,258}
+
+saved_sidecars=[];stage_indices={}
+for stage in ['initial-build','final-build']:
+    stage_index=read(NATIVE/(stage+'-binary-index.json'));stage_indices[stage]=stage_index
+    assert stage_index['sourceSha']==SOURCE and len(stage_index['files'])==12 and stage_index['instanceSha256']==INSTANCE_PIN
+    fresh=read(NATIVE/(stage+'-freshness.json'));assert fresh['exitCode']==0 and fresh['allSixFresh']
+    for item in stage_index['files']:
+        path=Path(item['preservedPath'])
+        assert path.parent==BASE/'native-binary-preservation'/stage
+        if not path.name.endswith('.fingerprint.json'):continue
+        data=path.read_bytes()
+        assert len(data)==item['bytes'] and h(data)==item['sha256'] and path.stat().st_mtime_ns==item['sourceMtimeNs'],str(path)
+        saved_sidecars.append((stage,item,path,data))
+assert len(saved_sidecars)==12 and stage_indices['final-build']['matchesInitialBytesAndMtimes']
+first={Path(x['sourcePath']).name:x for x in stage_indices['initial-build']['files']}
+for item in stage_indices['final-build']['files']:
+    before=first[Path(item['sourcePath']).name]
+    assert all(item[k]==before[k] for k in ['bytes','sha256','sourceMtimeNs'])
+assert read(NATIVE/'initial-build-acceptance.json')['accepted']
+
+frozen=[]
+for directory in [NATIVE,LAUNCHER]:
+    for path in sorted(directory.rglob('*')):
+        if path.is_file():safe_text(path);frozen.append(ref(path))
+external=[
+    (PREP/'instance.json','instance.json'),(PREP/'instance-completion.json','instance-completion.json'),
+    (PREP/'instance-preparation-tool-observations.json','instance-preparation-tool-observations.json'),
+    (PREP/'native-parent-code.txt','native-parent-code.txt'),(PREP/'native-wrapper-code.txt','native-wrapper-code.txt'),
+    (PREP/'native-wrapper.diff','native-wrapper.diff'),(PREP/'prepare-native.py','preflight-code.txt'),
+    (PREP/'prepare-native.diff','preflight.diff'),(PREP/'preflight-materialization.json','preflight-materialization.json'),
+    (PREP/'package-native.py','native-packager-code.txt'),(PREP/'package-native.diff','native-packager.diff'),
+    (PREP/'native-packager-instantiation.json','native-packager-instantiation.json'),
+    (PREP/'finish-native.py','native-finish-collector-code.txt'),(PREP/'finish-native-preparation.json','native-finish-preparation.json'),
+    (METHOD/'instantiate.py','instance-factory-code.txt'),(METHOD/'materialize-preflight.py','preflight-materializer-code.txt'),
+    (METHOD/'snapshot-native-binaries.py','native-binary-snapshot-code.txt'),
+    (TEMPLATE,'historical-L2-curation-code.txt'),(Path(__file__),'curation-code.txt')]
+for path,name in external:
+    data=path.read_bytes();assert not path.is_symlink() and not path.stat().st_mode&0o111
+    data.decode('utf-8');assert b'\0' not in data
+    if path.suffix=='.py':ast.parse(data)
+
+# 到此只讀本輪已保存文字。開始新增已授權補件，不改任何原收據或 raw。
+sidecar_copies=[]
+for stage,item,path,data in saved_sidecars:
+    target=NATIVE/(stage+'-fingerprints')/path.name
+    target.parent.mkdir(exist_ok=True);shutil.copy2(path,target)
+    assert target.read_bytes()==data and target.stat().st_mtime_ns==item['sourceMtimeNs']
+    sidecar_copies.append(dict(originalPath=str(path),artifactPath=str(target.relative_to(NATIVE)),bytes=len(data),sha256=h(data),sourceMtimeNs=item['sourceMtimeNs']))
+save(NATIVE/'fingerprint-copy-verification.json',dict(sourceSha=SOURCE,copiedUtc=utc(),files=sidecar_copies,
+    allCopiesByteAndMtimeIdentical=True,binaryReadOrCopied=False,globalCacheReadOrChanged=False,
+    limitation='只從當輪已保存的12個sidecar原件複製；binary初終身分依原索引及完成收據，這次不重新讀binary或global。'))
+cleanup=dict(sourceSha=SOURCE,checkedUtc=utc(),proof='固定原碼控制流程＋正式完成收據＋父wait＋工具退出觀察',
+    subreaperEnabled=True,waitLoopEndsOnlyAfterChildProcessError=True,
+    waitInterpretation='原 wrapper 的 done 只在 waitpid(-1,WNOHANG) 拋 ChildProcessError/ECHILD 設為真；正式receipt在該迴圈完成後落盤，且主timeout真碼另存。',
+    mainChildPid=receipt['mainChildPid'],mainChildRawWaitStatus=0,mainChildExitCode=0,
+    reapedCount=len(receipt['reaped']),mainWaitEvents=main,adoptedCleanupSignalCount=len(receipt['cleanup']),
+    wrapperReturnCode=0,launcherExitCode=0,toolSession=75129,toolChunk='b139d1',toolExitCode=0,
+    toolObservationKind=observation['kind'],currentProcSamplePerformed=False,pidInvisibilityUsedAsProof=False,
+    sourceReferences={name:ref(path) for name,path in {'receipt':NATIVE/'receipt.json','reaped':NATIVE/'reaped.json',
+        'wrapperCode':LAUNCHER/'wrapper-code.txt','launcherCode':LAUNCHER/'launcher-code.txt',
+        'launcherReceipt':LAUNCHER/'launcher-receipt.json','toolObservation':NATIVE/'tool-observation.json',
+        'preflightProcessSample':LAUNCHER/'no-live-writer-preflight-revised.json'}.items()},
+    limits=['此為本subreaper子樹的回收證明，不宣稱主機不存在其他程序；canvas與Q38另有自己的生命週期。',
+        '未用現在/proc PID不可見推斷程序已死，也未新增/proc掃描。',
+        '本輪前置重新核對精確四PID身分；其fd/exe仍未能讀取，採樣是當時狀態，不是未來零writer保證。',
+        'L2的前置拒讀與PID探針失敗不屬本輪；此包不改標歷史診斷。'])
+save(NATIVE/'cleanup-verification.json',cleanup)
+readme='''L3 native 完整正式驗收通過，來源固定為 6589248c9a94bdf0460d8f84dd1610e51048188b。本輪在 detached 工作樹 /workspace/geo261-native-l3-6589248c9a94-20261021 執行；來源前後皆該 SHA 且 clean，未修改或提交產品／tests。
+
+正式命令為 timeout 2100 python3 tests/run_all.py --build，含 build 的2100秒上限與16 MiB stack不變。父環境以 env -u 移除 CC、PYTHONOPTIMIZE、GEOMETRY_ENGINEERING_BRIDGE、GEOMETRY_MODEL_BASE、GEOMETRY_TEST_BRIDGE、GEOMETRY_TEST_CORE、GEOMETRY_TEST_ENGINEERING_JSON、GEOMETRY_TEST_GDI_HARNESS、GEOMETRY_TEST_PF3_ALGORITHM。wrapper設定 PYTHONDONTWRITEBYTECODE=1、LANG=C.UTF-8、LC_ALL=C.UTF-8、TMPDIR=/tmp/geo261-native-l3-6589248c9a94-20261021。完整真實外層 argv及-c原碼在 launcher/dispatch-command.json、launcher/launcher-command.json、command.json與external-code-receipts/instance.json；沒有用CC=gcc掩蓋預設cc字面契約。run_all原suite輸出仍固定於/tmp/geometry-tests/run_all-logs，TMPDIR不當成隔離該位置的證明。
+
+開始 2026-10-21T05:49:55.452245Z，結束 2026-10-21T06:20:25.133869Z，經過1829.681555593秒。224個suite及188份Python結果完整，計數5188＝5187pass／0fail／1個具名合法GDI skip；expected mismatches0、missing logs0、額外skip0。timeout主子程序、wrapper、launcher及工具session真退出碼均0；session75129、工具chunk b139d1。tool-observation.json及finish-native-tool-observation.json保留實際工具回應的事後逐欄轉錄，明示不是transport自動日誌；完成收集器工具chunk513441亦0。
+
+600份完整suite raw共296690 bytes，已逐bytes/hash/mtime核對suite-log-source-index.json；沒有刪空log或將exit-only入口虛構成test數。唯一skip為 test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources，理由 requires compiled Windows GDI contract harness；POSIX無Windows GDI資源，這一題不是pass。
+
+同L3具名結果：py:test_architecture_contract為205/205、py:test_product_architecture為18/18、py:test_geo261_model_base_replay為6/6，均無fail/skip。mutation:check只代表inventory freshness的exit0；原total/skipped為null、passed/failed為'-'，note明載exit0，不宣稱本輪重跑全部ledger突變。其餘六個exit-only入口保留原ok/exit語義。native內既有測試與控制按原suite完整執行；Q38、controls、整卡及公理版本的獨立突變裁判另有正式入口，不能由native綠外推。
+
+初建六個POSIX binary及六個sidecar共12件的原索引、fresh結果及首個[1/224]前後紀錄均保留；結束再次保存12件，原索引核bytes/hash/mtime與初建一致，兩次tests/binaries.py status皆exit0。這次封裝只從native-binary-preservation的initial-build/final-build已保存原件複製各六個sidecar到對應fingerprints目錄，逐bytes/hash/mtime相同；沒有讀正在供Q38用的global，也沒有拷binary進包或給browser。初終相符只代表採樣點，不宣稱期間從未暫寫。
+
+外層subreaper只回收自己的子樹，主timeout退出碼獨立保留。固定wrapper的wait迴圈只有遇ChildProcessError/ECHILD才完成；本輪正式完成收據已落盤，共11筆回收事件、主事件raw/code0，沒有需要發額外cleanup signal的收養子程序。父launcher真wait wrapper0、工具真0，詳cleanup-verification.json與原reaped紀錄；不以/proc PID不可見冒充清理證明，也不宣稱主機沒有其他程序。
+
+L3前置正式exit0，沒有L2的前置拒讀或PID探針失敗。原四個環境PID1/2/205/258的UID四值、start ticks、PPid、comm及完整cmdline由本輪重新比對；其fd/exe仍未能讀取，其他未解釋PermissionError仍拒絕。歷史身分原件及L2封包工具只作來源參照，不改標成本輪採樣或失敗。
+
+本包只證native與其內含具名suite。封包時Q38與canvas由其他生命週期管理，本包沒有它們的最終結果，也不外推其餘browser、獨立gates或P189。最大未確定處是這些獨立正式入口的同L3結果；Windows GDI唯一skip也仍未在本機驗到。請使用者在 PR #288 更新同L3 native已通過與上述未驗界線，其他項目依各自正式收據另列；本包不提出合併請求。
+
+external-code-receipts中的.txt是實際外部調度／前置／收集／封裝程式原bytes收據，並非新增正式產品工具；instance及原路徑/hash映射一併保存。包內無binary、.py/.js或execute bits。raw-source-index.json列每件copy的原路徑與hash/mtime，artifact-index.json列本包除自身外全部hash。原verification、named-required-suites、source-index、600raw及既有收據逐byte保留；最終bundle是此包逐byte副本，copy核對另放sibling native-L3-formal-appendix。
+'''
+(NATIVE/'README.zh-TW.md').write_text(readme)
+for item in frozen:
+    path=Path(item['path']);assert ref(path)==item,str(path)
+save(NATIVE/'curation-frozen-input-verification.json',dict(sourceSha=SOURCE,checkedUtc=utc(),existingFileCount=len(frozen),
+    existingFiles=frozen,allExistingBytesAndMtimesUnchanged=True,rawLogCount=600,rawLogBytes=296690,
+    globalCacheReadOrChanged=False,binaryReadOrCopied=False))
+
+OUT.mkdir();mapping=[]
+def copy(source,target):
+    data=source.read_bytes();target.parent.mkdir(parents=True,exist_ok=True)
+    assert not target.exists(),str(target)
+    shutil.copy2(source,target)
+    assert target.read_bytes()==data and target.stat().st_mtime_ns==source.stat().st_mtime_ns
+    safe_text(target,data)
+    mapping.append(dict(originalPath=str(source),artifactPath=str(target.relative_to(OUT)),bytes=len(data),sha256=h(data),
+        sourceMtimeNs=source.stat().st_mtime_ns,sourceMode=stat.S_IMODE(source.stat().st_mode)))
+for root,prefix in [(NATIVE,Path('.')),(LAUNCHER,Path('launcher'))]:
+    for path in sorted(root.rglob('*')):
+        if path.is_file():copy(path,OUT/prefix/path.relative_to(root))
+for source,name in external:copy(source,OUT/'external-code-receipts'/name)
+save(OUT/'raw-source-index.json',dict(sourceSha=SOURCE,files=mapping,fileCount=len(mapping),totalBytes=sum(x['bytes'] for x in mapping),
+    allCopiesByteIdentical=True,allCopyMtimesIdentical=True,methodTemplate=dict(path=str(TEMPLATE),sha256=h(TEMPLATE.read_bytes()),historicalOnly=True),
+    method='沿L2逐bytes copy2、原件mapping與artifact-index流程；僅換真L3路徑及來源，以本輪green收據核對並新增必要sidecar/cleanup補件。'))
+files=[]
+for path in sorted(OUT.rglob('*')):
+    if path.is_file():
+        data=safe_text(path);files.append(dict(path=str(path.relative_to(OUT)),bytes=len(data),sha256=h(data)))
+save(OUT/'artifact-index.json',dict(sourceSha=SOURCE,createdUtc=utc(),fileCountExcludingThisIndex=len(files),
+    totalBytesExcludingThisIndex=sum(x['bytes'] for x in files),files=files,noExecutableArtifacts=True,excludedFromOwnHash='artifact-index.json'))
+index_sha=h((OUT/'artifact-index.json').read_bytes())
+shutil.copytree(OUT,BUNDLE,copy_function=shutil.copy2)
+copied=[]
+for path in sorted(OUT.rglob('*')):
+    if path.is_file():
+        relative=path.relative_to(OUT);target=BUNDLE/relative;data=path.read_bytes()
+        assert safe_text(target)==data and target.stat().st_mtime_ns==path.stat().st_mtime_ns
+        copied.append(dict(path=str(relative),bytes=len(data),sha256=h(data),sourceMtimeNs=path.stat().st_mtime_ns))
+assert {x['path'] for x in copied}=={str(p.relative_to(BUNDLE)) for p in BUNDLE.rglob('*') if p.is_file()}
+assert h((BUNDLE/'artifact-index.json').read_bytes())==index_sha
+for item in frozen:assert ref(Path(item['path']))==item
+APPENDIX.mkdir()
+copy_proof=dict(sourceSha=SOURCE,checkedUtc=utc(),curated=str(OUT),destination=str(BUNDLE),fileCount=len(copied),
+    totalBytes=sum(x['bytes'] for x in copied),artifactIndexSha256=index_sha,allCopiesByteAndMtimeIdentical=True,
+    originalIndexUnchanged=True,noExecutableArtifacts=True,files=copied,
+    sourceVerificationSha256=PIN,formalAcceptedNative=True,formalToolOrProductExecuted=False)
+save(APPENDIX/'copy-verification.json',copy_proof)
+result=dict(sourceSha=SOURCE,source=str(NATIVE),launcher=str(LAUNCHER),curated=str(OUT),bundle=str(BUNDLE),appendix=str(APPENDIX),
+    files=len(copied),totalBytes=sum(x['bytes'] for x in copied),artifactIndexSha256=index_sha,
+    copyVerificationSha256=h((APPENDIX/'copy-verification.json').read_bytes()),
+    formalAcceptedNative=True,completeScope=True,allCopiesByteAndMtimeIdentical=True,existingNativeInputsUnchanged=True,
+    curatedUtc=utc(),curationTool=ref(Path(__file__)),globalCacheReadOrChanged=False,binaryReadOrCopied=False)
+save(BASE/'native-curation-receipt.json',result)
+print(json.dumps(result,ensure_ascii=False))

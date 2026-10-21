@@ -1,0 +1,24 @@
+{
+  "name": "p72-v2-hold-navigation",
+  "sourceSha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+  "command": [
+    "node",
+    "/workspace/geo261-evidence/p52/p72_probe-v2.cjs",
+    "/workspace/geometry-axiom"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18841/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-probe",
+    "XDG_CACHE_HOME": "/tmp/geo261-xdg-probe",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CDP_PORT": "9351",
+    "P72B_NAV_CONTROL": "hold-navigation"
+  },
+  "startedUtc": "2026-10-20T20:19:51Z",
+  "elapsedSeconds": 57.89127355200026,
+  "exitCode": 1,
+  "expectedExitCode": 1,
+  "load": "主代理放行之獨占瀏覽器驗收；刻意不發真正Page.reload，驗證導航就緒等待期限"
+}

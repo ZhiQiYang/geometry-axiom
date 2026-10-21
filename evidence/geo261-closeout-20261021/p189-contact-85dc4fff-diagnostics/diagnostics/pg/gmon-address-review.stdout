@@ -1,0 +1,125 @@
+{
+  "samples": 44,
+  "unassigned_samples": 3,
+  "flat": [
+    {
+      "symbol": "geo_source_find_node.isra.0",
+      "samples": 7,
+      "sample_seconds": 0.07,
+      "sample_percent": 15.909090909090908,
+      "raw_arc_calls": 2980967
+    },
+    {
+      "symbol": "wood_definition_sources_placement",
+      "samples": 7,
+      "sample_seconds": 0.07,
+      "sample_percent": 15.909090909090908,
+      "raw_arc_calls": 1045172
+    },
+    {
+      "symbol": "geo_source_index_append",
+      "samples": 4,
+      "sample_seconds": 0.04,
+      "sample_percent": 9.090909090909092,
+      "raw_arc_calls": 1769857
+    },
+    {
+      "symbol": "geo_eval_source",
+      "samples": 4,
+      "sample_seconds": 0.04,
+      "sample_percent": 9.090909090909092,
+      "raw_arc_calls": 2980967
+    },
+    {
+      "symbol": "wood_contact_collect_stops",
+      "samples": 4,
+      "sample_seconds": 0.04,
+      "sample_percent": 9.090909090909092,
+      "raw_arc_calls": 12942
+    },
+    {
+      "symbol": "geo_source_edge",
+      "samples": 3,
+      "sample_seconds": 0.03,
+      "sample_percent": 6.818181818181818,
+      "raw_arc_calls": 2980967
+    },
+    {
+      "symbol": "wd_read_text.constprop.0",
+      "samples": 2,
+      "sample_seconds": 0.02,
+      "sample_percent": 4.545454545454546,
+      "raw_arc_calls": 3135516
+    },
+    {
+      "symbol": "app_member_reference_at",
+      "samples": 2,
+      "sample_seconds": 0.02,
+      "sample_percent": 4.545454545454546,
+      "raw_arc_calls": 118130
+    },
+    {
+      "symbol": "geo_box_face.part.0",
+      "samples": 1,
+      "sample_seconds": 0.01,
+      "sample_percent": 2.272727272727273,
+      "raw_arc_calls": 827004
+    },
+    {
+      "symbol": "timber_a0_footprint_uv",
+      "samples": 1,
+      "sample_seconds": 0.01,
+      "sample_percent": 2.272727272727273,
+      "raw_arc_calls": 1449274
+    },
+    {
+      "symbol": "wd_get.part.0",
+      "samples": 1,
+      "sample_seconds": 0.01,
+      "sample_percent": 2.272727272727273,
+      "raw_arc_calls": 1257198
+    },
+    {
+      "symbol": "app_member_reference_end",
+      "samples": 1,
+      "sample_seconds": 0.01,
+      "sample_percent": 2.272727272727273,
+      "raw_arc_calls": 2157
+    },
+    {
+      "symbol": "wood_contact_source_evaluate",
+      "samples": 1,
+      "sample_seconds": 0.01,
+      "sample_percent": 2.272727272727273,
+      "raw_arc_calls": 226526
+    },
+    {
+      "symbol": "reference_host_read",
+      "samples": 1,
+      "sample_seconds": 0.01,
+      "sample_percent": 2.272727272727273,
+      "raw_arc_calls": 85268
+    },
+    {
+      "symbol": "reference_contact_facts",
+      "samples": 1,
+      "sample_seconds": 0.01,
+      "sample_percent": 2.272727272727273,
+      "raw_arc_calls": 19413
+    },
+    {
+      "symbol": "wood_grid_decode_application",
+      "samples": 1,
+      "sample_seconds": 0.01,
+      "sample_percent": 2.272727272727273,
+      "raw_arc_calls": 2096
+    }
+  ],
+  "decode_calls": {
+    "geo_eval_depend": 0,
+    "geo_source_find_node.isra.0": 2980967,
+    "support_coord_compare": 0,
+    "wd_get.part.0": 1257198,
+    "wood_grid_coordinate_source": 0
+  }
+}

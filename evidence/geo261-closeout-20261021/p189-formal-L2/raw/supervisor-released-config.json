@@ -1,0 +1,19 @@
+{
+  "prepared_utc": "2026-10-21T04:07:09.370162+00:00",
+  "authorization": "主代理明確放行後才可啟動",
+  "released": true,
+  "prepare_receipt": "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq/prepare-receipt.json",
+  "supervisor": "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+  "supervisor_sha256": "e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413",
+  "out": "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+  "scheduled_launch_argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+    "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq/supervisor-released-config.json"
+  ],
+  "launch_transport": "exec_command保有頂層session並真wait；stdout/stderr直檔，不launch-and-exit。",
+  "classification": "正式 L2 P-189 驗收；本來源需新實跑，不沿用候選成績",
+  "released_utc": "2026-10-21T04:07:32.174227+00:00",
+  "release_reason": "主代理核對 L2 已公開、來源乾淨且 only-ledger；所有其他代理已停止 IO，本輪全程獨占，不重抽樣、不改原門檻。"
+}

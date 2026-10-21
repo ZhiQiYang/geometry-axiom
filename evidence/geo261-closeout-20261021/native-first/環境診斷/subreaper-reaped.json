@@ -1,0 +1,39 @@
+{
+  "startedUtc": "2026-10-20T20:38:47.209439+00:00",
+  "wrapperPid": 83858,
+  "subreaper": 1,
+  "testCommand": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-m",
+    "unittest",
+    "tests.test_assembly_mutation_check.AssemblyMutationCheck.test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left"
+  ],
+  "reaped": [
+    {
+      "pid": 83864,
+      "rawWaitStatus": 9,
+      "exitCode": -9,
+      "isTestProcess": false,
+      "reapedUtc": "2026-10-20T20:38:49.291013+00:00"
+    },
+    {
+      "pid": 83865,
+      "rawWaitStatus": 9,
+      "exitCode": -9,
+      "isTestProcess": false,
+      "reapedUtc": "2026-10-20T20:38:49.291044+00:00"
+    },
+    {
+      "pid": 83861,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isTestProcess": true,
+      "reapedUtc": "2026-10-20T20:38:49.306394+00:00"
+    }
+  ],
+  "testPid": 83861,
+  "testExit": 0,
+  "endedUtc": "2026-10-20T20:38:49.306433+00:00",
+  "allOwnChildrenReaped": true
+}

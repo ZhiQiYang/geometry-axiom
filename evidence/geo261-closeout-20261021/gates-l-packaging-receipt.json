@@ -1,0 +1,68 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "command": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/gates-l-preparation/package-gates-l.py"
+  ],
+  "commandCwd": "/workspace",
+  "observedToolResult": {
+    "chunk_id": "0f6489",
+    "wall_time_seconds": 0.473146066,
+    "exit_code": 0
+  },
+  "observationKind": "依實際工具回傳事後轉錄，非 transport 自動原件",
+  "packagingTool": {
+    "path": "/workspace/geo261-evidence/gates-l-preparation/package-gates-l.py",
+    "bytes": 5321,
+    "sha256": "091c26cdd312fa73980f2864186e8ddce35a77ba7a9afe75933efcbb22a8b753"
+  },
+  "copyProof": {
+    "path": "/workspace/geo261-evidence/gates-l/bundle-copy.json",
+    "bytes": 321,
+    "sha256": "b833bce55a73266b48d7aba0fdf02c621d0fb51281ac81632a291e14edde5592"
+  },
+  "artifacts": {
+    "artifact-index.json": {
+      "path": "/workspace/geo261-evidence/gates-l/publish-clean/artifact-index.json",
+      "bytes": 180682,
+      "sha256": "29f5b310cd2fe3f2bd5ab7dce45f2f9b1c83b1a1f0fbe1653946765562d734d3"
+    },
+    "raw-source-index.json": {
+      "path": "/workspace/geo261-evidence/gates-l/publish-clean/raw-source-index.json",
+      "bytes": 301822,
+      "sha256": "baf7e639165b0b66447b8b798884065e4bc6683394cf4e241d24e95b7f2450ed"
+    },
+    "provenance.json": {
+      "path": "/workspace/geo261-evidence/gates-l/publish-clean/provenance.json",
+      "bytes": 6352,
+      "sha256": "7a6c69a045ffb89f86303e637fcaf8cd2ca9511e0ebfc8da19efeeb8d7e2cc0e"
+    },
+    "README.zh-TW.md": {
+      "path": "/workspace/geo261-evidence/gates-l/publish-clean/README.zh-TW.md",
+      "bytes": 9643,
+      "sha256": "348c304066d00af1e816323488a14119561de558e941590685d1d7f3845d7d19"
+    },
+    "tool-observations.json": {
+      "path": "/workspace/geo261-evidence/gates-l/publish-clean/tool-observations.json",
+      "bytes": 5255,
+      "sha256": "da8ec1170f4f41234f3c42ad7b8b76676c3ef3440fed5bed19810a25cbfab878"
+    },
+    "final-source-process-check.json": {
+      "path": "/workspace/geo261-evidence/gates-l/publish-clean/final-source-process-check.json",
+      "bytes": 1401,
+      "sha256": "de06902aff75288c1686385be9ad91a804c137affed30e661f037cd43bd4ef1f"
+    }
+  },
+  "result": {
+    "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+    "source": "/workspace/geo261-evidence/gates-l/publish-clean",
+    "destination": "/workspace/geo261-evidence/final-bundle/gates-l",
+    "fileCount": 1045,
+    "totalBytes": 2393600,
+    "everyFileIdentical": true,
+    "copiedUtc": "2026-10-21T00:43:35.774105+00:00"
+  },
+  "completedUtc": "2026-10-21T00:43:58.517156+00:00",
+  "ioStatement": "本收據與其副本落盤後，本代理停止封包與 hash IO；P-189 期間不再讀寫測試／證據。"
+}

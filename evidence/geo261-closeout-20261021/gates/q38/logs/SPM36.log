@@ -1,0 +1,19 @@
+test_three_timber_members_and_actual_concave_reference_envelope (tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope) ... FAIL
+
+======================================================================
+FAIL: test_three_timber_members_and_actual_concave_reference_envelope (tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-evidence/gates/q38/tmp/section-profile-mutations-kw5vx1ab/SPM36/tests/test_section_profile_modeling.py", line 123, in test_three_timber_members_and_actual_concave_reference_envelope
+    self.mesh(obj, 84960000, [[0, 0, 0], [400, 250, 2400]])
+  File "/workspace/geo261-evidence/gates/q38/tmp/section-profile-mutations-kw5vx1ab/SPM36/tests/test_section_profile_modeling.py", line 91, in mesh
+    self.assertEqual(obj["volume_mm3"], str(volume), "R37: exact mesh volume of the %s object" % obj.get("section_profile", {}).get("kind"))
+AssertionError: '240000000' != '84960000'
+- 240000000
++ 84960000
+ : R37: exact mesh volume of the envelope object
+
+----------------------------------------------------------------------
+Ran 1 test in 0.105s
+
+FAILED (failures=1)

@@ -1,0 +1,52 @@
+test_CR01_CARD_UNIT (tests.test_grid_card_reference.GridCardReference.test_CR01_CARD_UNIT) ... ok
+test_CR02_MIXED_MODE (tests.test_grid_card_reference.GridCardReference.test_CR02_MIXED_MODE) ... ok
+test_CR03_SWAP_MAPPING_ONLY (tests.test_grid_card_reference.GridCardReference.test_CR03_SWAP_MAPPING_ONLY) ... ok
+test_CR04_EQUAL_VALUE_IDENTITY (tests.test_grid_card_reference.GridCardReference.test_CR04_EQUAL_VALUE_IDENTITY) ... ok
+test_CR05_STABLE_FIELD_IDS (tests.test_grid_card_reference.GridCardReference.test_CR05_STABLE_FIELD_IDS) ... ok
+test_CR06_EXTRA_FIELD_DEPENDENCY (tests.test_grid_card_reference.GridCardReference.test_CR06_EXTRA_FIELD_DEPENDENCY) ... ok
+test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD (tests.test_grid_card_reference.GridCardReference.test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD) ... ok
+test_CR08_MAPPED_SOURCE_PROTECTION (tests.test_grid_card_reference.GridCardReference.test_CR08_MAPPED_SOURCE_PROTECTION) ... ok
+test_CR09_EXACT_TARGET_LENGTH (tests.test_grid_card_reference.GridCardReference.test_CR09_EXACT_TARGET_LENGTH) ... ok
+test_CR10_FIELD_GRAPH_AND_PRECISION (tests.test_grid_card_reference.GridCardReference.test_CR10_FIELD_GRAPH_AND_PRECISION) ... ok
+test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE (tests.test_grid_card_reference.GridCardReference.test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE) ... ok
+test_CR12_ATOMIC_REBIND (tests.test_grid_card_reference.GridCardReference.test_CR12_ATOMIC_REBIND) ... ok
+test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE (tests.test_grid_card_reference.GridCardReference.test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE) ... ok
+test_CR14_MODE_TRANSITION (tests.test_grid_card_reference.GridCardReference.test_CR14_MODE_TRANSITION) ... ok
+test_CR15_ALL_BINDINGS_RECOMPUTE (tests.test_grid_card_reference.GridCardReference.test_CR15_ALL_BINDINGS_RECOMPUTE) ... ok
+test_CR16_INDEX_AND_DOWNSTREAM (tests.test_grid_card_reference.GridCardReference.test_CR16_INDEX_AND_DOWNSTREAM) ... ok
+test_CR17_CANDIDATE_LIFECYCLE (tests.test_grid_card_reference.GridCardReference.test_CR17_CANDIDATE_LIFECYCLE) ... ok
+test_CR18_INCARNATION_NOT_CONTENT_NO_LEDGER_CONTEXT (tests.test_grid_card_reference.GridCardReference.test_CR18_INCARNATION_NOT_CONTENT_NO_LEDGER_CONTEXT) ... ok
+test_CR19_CARD_SAVE_ROUNDTRIP (tests.test_grid_card_reference.GridCardReference.test_CR19_CARD_SAVE_ROUNDTRIP) ... ok
+test_CR20_NO_SILENT_DOWNGRADE (tests.test_grid_card_reference.GridCardReference.test_CR20_NO_SILENT_DOWNGRADE) ... ok
+test_CR21_LEGACY_UNCHANGED (tests.test_grid_card_reference.GridCardReference.test_CR21_LEGACY_UNCHANGED) ... ok
+test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION (tests.test_grid_card_reference.GridCardReference.test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION) ... ok
+test_CR25_EXPLICIT_REVERSED_MAPPING (tests.test_grid_card_reference.GridCardReference.test_CR25_EXPLICIT_REVERSED_MAPPING) ... ok
+test_CR26_SAME_KEY_REFERENCE_GUARD (tests.test_grid_card_reference.GridCardReference.test_CR26_SAME_KEY_REFERENCE_GUARD) ... ok
+test_CR27_EXPLICIT_POST_DELETE_REBIND (tests.test_grid_card_reference.GridCardReference.test_CR27_EXPLICIT_POST_DELETE_REBIND) ... ok
+test_CR28_ORDERED_REFERENCE_PROTECTION (tests.test_grid_card_reference.GridCardReference.test_CR28_ORDERED_REFERENCE_PROTECTION) ... ok
+test_CR29_D25_CARD_CLOSURE (tests.test_grid_card_reference.GridCardReference.test_CR29_D25_CARD_CLOSURE) ... ok
+test_CR30_SWAP_REVALIDATES_STAGGER (tests.test_grid_card_reference.GridCardReference.test_CR30_SWAP_REVALIDATES_STAGGER) ... ok
+test_CR31_CONTROLLED_TOKEN_REJECT (tests.test_grid_card_reference.GridCardReference.test_CR31_CONTROLLED_TOKEN_REJECT) ... ok
+test_CR32_FIELD_KEY_RECREATION_GUARD (tests.test_grid_card_reference.GridCardReference.test_CR32_FIELD_KEY_RECREATION_GUARD) ... ok
+test_CR33_PARAMETER_PACKAGE_BOUNDARY (tests.test_grid_card_reference.GridCardReference.test_CR33_PARAMETER_PACKAGE_BOUNDARY) ... ok
+test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION (tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION) ... ok
+test_P142_B2_CARD_AND_PANEL_FILL_STAGGER_SHARE_I38_REJECTION (tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_STAGGER_SHARE_I38_REJECTION) ... ok
+test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION (tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION) ... ok
+test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES (tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES)
+B2 review: the message reaches callers through the 256-byte engineering error; ... ok
+test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE (tests.test_grid_card_reference.GridCardReference.test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE)
+P-142 S1: put-grid-system rebinds DSL grid-system field references inside the candidate. ... ok
+test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS (tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS)
+P-142 S1 counterexample: [delete-parameter 10, put-grid-system still on card 10]. ... ok
+test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99 (tests.test_grid_card_reference.GridCardReference.test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99)
+P-142 S2 on the merged #193 source: one ordered candidate rebuilds card 10 and ... ok
+test_P146_CARD_DIRECT_MISSING_SOURCE (tests.test_grid_card_reference.GridCardReference.test_P146_CARD_DIRECT_MISSING_SOURCE) ... ok
+test_P146_CARD_DIRECT_REBUILT_CURRENT_VALUE (tests.test_grid_card_reference.GridCardReference.test_P146_CARD_DIRECT_REBUILT_CURRENT_VALUE) ... ok
+test_P146_ERROR_FIELDS_ONLY (tests.test_grid_card_reference.GridCardReference.test_P146_ERROR_FIELDS_ONLY) ... ok
+test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) ... ok
+test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES (tests.test_grid_card_reference.GridCardReference.test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES) ... ok
+
+----------------------------------------------------------------------
+Ran 43 tests in 11.767s
+
+OK

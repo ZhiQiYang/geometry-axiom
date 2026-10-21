@@ -1,0 +1,99 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "phase": "axiom",
+  "verifiedUtc": "2026-10-21T00:37:57.859422+00:00",
+  "accepted": true,
+  "problems": [],
+  "caseCount": 5,
+  "summary": {
+    "killed": 5
+  },
+  "baselineTests": 44,
+  "restoreTestsEach": [
+    44,
+    44,
+    44,
+    44,
+    44
+  ],
+  "officialExitCode": 0,
+  "childReturnCode": 0,
+  "launcherExitCode": 0,
+  "elapsedSeconds": 90.29038079499878,
+  "sourceCleanRestored": true,
+  "bridgeAfterMatchesBeforeBytesAndMtimes": true,
+  "cases": [
+    {
+      "id": "V01-remove-gate",
+      "namedTest": "test_pre_card_axioms_reject_manifest_card_capability",
+      "verdict": "killed",
+      "redExit": 1,
+      "redFailures": 19,
+      "restoreExit": 0,
+      "restoreTests": 44
+    },
+    {
+      "id": "V02-ignore-manifest",
+      "namedTest": "test_pre_card_axioms_reject_manifest_card_capability",
+      "verdict": "killed",
+      "redExit": 1,
+      "redFailures": 19,
+      "restoreExit": 0,
+      "restoreTests": 44
+    },
+    {
+      "id": "V03-ignore-source",
+      "namedTest": "test_pre_card_axioms_reject_scene_card_capability_before_rebuild",
+      "verdict": "killed",
+      "redExit": 1,
+      "redFailures": 19,
+      "restoreExit": 0,
+      "restoreTests": 44
+    },
+    {
+      "id": "V04-exempt-latest-pre-adoption",
+      "namedTest": "test_pre_card_axioms_reject_card_syntax_with_stripped_declarations",
+      "verdict": "killed",
+      "redExit": 1,
+      "redFailures": 1,
+      "restoreExit": 0,
+      "restoreTests": 44
+    },
+    {
+      "id": "V05-card-adoption-treated-as-pre",
+      "namedTest": "test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild",
+      "verdict": "killed",
+      "redExit": 1,
+      "redFailures": 1,
+      "restoreExit": 0,
+      "restoreTests": 44
+    }
+  ],
+  "artifacts": {
+    "officialReport": {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/report.json",
+      "bytes": 9814,
+      "sha256": "ba54177aacacb84827f9b92db5537309ec9837338a0400fa783ac35796a1d4b7"
+    },
+    "runReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/run-receipt.json",
+      "bytes": 1825,
+      "sha256": "9128a678f74ac2f73501d3d5d2206eaa373d0a918445b1cfa9243d40c86d630d"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/axiom/receipt.json",
+      "bytes": 3852,
+      "sha256": "265586aa262ec2ef86b83daba34ee767d73308347e866ae984858cc33524d611"
+    },
+    "bridgeBefore": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/axiom/bridge-before.json",
+      "bytes": 1061,
+      "sha256": "289f9cd97a098c2b71b8a638561407b8955da4f83d4ca977eaf8569f0b16fb20"
+    },
+    "bridgeAfter": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/axiom/bridge-after.json",
+      "bytes": 1058,
+      "sha256": "e48bae35d0d54ff401b591533ea1f91df7cc33757975464650740ccbe5e187e7"
+    }
+  }
+}

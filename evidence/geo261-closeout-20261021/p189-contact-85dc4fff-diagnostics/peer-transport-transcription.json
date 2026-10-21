@@ -1,0 +1,38 @@
+{
+  "nature": "由 peer/root 訊息逐欄轉錄；不是原工具 transport log，也不是本封裝器獨立重跑。",
+  "peer": "/root/p52_review",
+  "reported_static_tool_chunks": [
+    {
+      "chunk": "b23ed1",
+      "reported_exit_code": 0,
+      "scope": "header 完整讀取"
+    },
+    {
+      "chunk": "623633",
+      "reported_exit_code": 0,
+      "scope": "初 driver/config/header hash、AST 守門"
+    },
+    {
+      "chunk": "ffc915",
+      "reported_exit_code": 0,
+      "scope": "identity join 修後 diff/hash/AST"
+    },
+    {
+      "chunk": "315684",
+      "reported_exit_code": 0,
+      "scope": "undef 兄弟 out 最小 append、hash、driver bytes 與 config 差異"
+    }
+  ],
+  "root_reported_successful_wait": {
+    "session": 30802,
+    "chunk": "fc74e3",
+    "reported_exit_code": 0
+  },
+  "root_reported_copy_callsite_wait": {
+    "session": 30828,
+    "chunk": "6b267d",
+    "reported_exit_code": 0
+  },
+  "failed_first_wait_original": "diagnostics/pc-build-failed/top-level-wait-receipt.json",
+  "note": "兩輪 PC 的 phase/wait4 原件各自保留；第一輪沒有 load。"
+}

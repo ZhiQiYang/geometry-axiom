@@ -1,0 +1,8 @@
+{
+  "tool_exit": 1,
+  "chunk": "accb1f",
+  "reason": "外部預檢用git diff --binary --full-index對普通git diff文字hash，格式不同造成誤判；未到git add/commit，未變更產品",
+  "followup_read_exit": 128,
+  "followup_chunk": "f0e91a",
+  "followup_reason": "證據目錄非Git樹，讀出摘要腳本後附帶git status失敗；未修改檔案"
+}

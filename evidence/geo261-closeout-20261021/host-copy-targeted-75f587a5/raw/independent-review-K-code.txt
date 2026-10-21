@@ -1,0 +1,53 @@
+from pathlib import Path
+import ast,hashlib,json,os,subprocess,re,datetime
+R=Path('/workspace/geo261-host-copy-candidate');B=Path('/workspace/geo261-evidence/host-copy-candidate/K');D=B/'targeted-v1'
+def sh(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def j(p):return json.loads(Path(p).read_bytes())
+def controls(name):
+ a=ast.parse((R/name).read_text())
+ return next(ast.literal_eval(n.value) for n in a.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='CONTROLS' for t in n.targets))
+r=j(D/'receipt.json');cmd=j(D/'command.json');u=j(D/'unit-result.json');b=j(D/'before.json');a=j(D/'after.json');delivery=j(B/'delivery.json');p=j(D/'child-processes.json');sel=j(D/'selected-tests.json')
+assert b==a and b['head']==r['sourceHead']=='85dc4fff44ce49b27f831b21cbdcb662c863302c'
+for n,x in b['files'].items():assert (R/n).stat().st_size==x['bytes'] and sh(R/n)==x['sha256']
+for x in delivery['files']:
+ assert sh(R/x['path'])==x['afterSha256']
+ old=subprocess.check_output(['git','show',r['sourceHead']+':'+x['path']],cwd=R)
+ assert len(old)==x['beforeBytes'] and hashlib.sha256(old).hexdigest()==x['beforeSha256']
+assert len(p)==245 and u==r['unitResult'] and u['selectedCount']==u['testsRun']==36 and u['exitCode']==0
+for k in ['failures','errors','skipped','expectedFailures','unexpectedSuccesses']:assert u[k]==[]
+assert sel['names']==['tests.test_geo261_placement_definition','tests.test_geo261_placement_sources'] and len(sel['resolvedTests'])==36 and not sel['loaderErrors']
+assert os.waitstatus_to_exitcode(r['rawWaitStatus'])==r['exitCode']==0 and (D/'exit-code').read_bytes()==b'0\n'
+for k,v in cmd.items():assert r[k]==v
+assert 'CC' not in cmd['environment'] and 'PYTHONOPTIMIZE' not in cmd['environment'] and '-O' not in cmd['argv'] and cmd['stackKiB']==16384 and cmd['argv'][:4]==['timeout','900','python3','-B']
+assert sh(B/'run_targeted.py')==cmd['runnerSha256'] and sh(B/'targeted_tests.py')==cmd['testDriverSha256']
+assert sh(D/'candidate.patch')==cmd['patchSha256']==delivery['patch']['sha256']==sh(B/'candidate.patch')
+assert sh(D/'receipt.json')==delivery['receiptSha256']
+for n in ['stdout','stderr']:assert sh(D/(n+'.log'))==r[n+'Sha256']
+assert re.search(r'\nRan 36 tests in .*\n\nOK\n',(D/'stderr.log').read_text())
+expected=[]
+for x in controls('tests/test_geo261_placement_definition.py'):expected.append((x[0],x[-2],x[-1],''))
+for x in controls('tests/test_geo261_placement_sources.py'):expected.append((x[0],x[2],x[3],'PASS '+x[2]+'\n'))
+assert len(expected)==26
+runs=[x for x in p if len(x['argv'])==2 and x['argv'][0].startswith('/tmp/')]
+reds=[x for x in p if x['exitCode']!=0];assert len(reds)==26 and reds==u['namedAssertionFailures']
+triples=[]
+for name,case,label,stdout in expected:
+ m=[(i,x) for i,x in enumerate(runs) if Path(x['argv'][0]).name.endswith('-'+name) and x['argv'][1]==case];assert len(m)==1,name
+ i,x=m[0];assert x['exitCode']==1 and x['stdout']=='' and x['stderr']=='ASSERT:'+label+'\n'
+ prev,nex=runs[i-1],runs[i+1]
+ assert prev['argv']==nex['argv'] and prev['argv'][1]==case and prev['exitCode']==nex['exitCode']==0
+ assert prev['stdout']==nex['stdout']==stdout and prev['stderr']==nex['stderr']==''
+ triples.append({'control':name,'case':case,'assertion':label,'before':prev,'red':x,'restore':nex})
+builds=[]
+for n in ['kernel-only','normal']:
+ rows=j(D/(n+'-build-log.json'));assert all(x['exit']==0 for x in rows)
+ for x in rows:
+  m=[z for z in p if z['argv']==x['arguments'] and z['exitCode']==x['exit'] and z['stdout']==x['stdout'] and z['stderr']==x['stderr']];assert len(m)==1
+ builds+=rows
+assert len(builds)==142
+for x in u['builds']:assert x['candidateSha256']==sh(R/'geometry-core/kernel/placement_sources.c') and x['allBuildExitZero']
+arts=[{'path':str(x),'bytes':x.stat().st_size,'sha256':sh(x)} for x in sorted(D.iterdir()) if x.is_file()]
+report={'checkedUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'acceptedScopedK':True,'baseHead':r['sourceHead'],'candidateState':'未提交K三檔補丁；H另改同樹分工檔，不宣稱整樹clean','sourceFiles':delivery['files'],'watchedFileCount':len(b['files']),'sourceBeforeAfterAndCurrentHashesAgree':True,'testsRun':36,'failures':0,'errors':0,'skips':0,'childProcesses':245,'buildsExitZero':142,'namedControlsVerified':26,'controlTriples':triples,'rawWaitStatus':r['rawWaitStatus'],'childExitCode':r['exitCode'],'elapsedSeconds':r['elapsedSeconds'],'initialPeerHelperAttempt':{'chunk':'8504a6','exitCode':1,'stderr':'Traceback (most recent call last):\n  File "<stdin>", line 39, in <module>\nAssertionError\n','classification':'只讀接受器錯把placement-sources正常stdout要求空；實際原harness精確輸出PASS <case>換行。正式產品測試未失敗、未重跑。','incorrectPredicate':"prev['stdout']==nex['stdout']==prev['stderr']==nex['stderr']==''",'correction':'definition維持空stdout；sources要求精確PASS <case>\\n；兩者stderr皆空。','completeInitialCodeSeparatelySaved':False},'limitations':['此核對未執行產品或重跑測試，不證明P189、完整native、瀏覽器、ledger或架構通過。','各子行程stdout/stderr/碼由原runner保存；接受器不是重新執行。','暫存mutant來源由原runner刪除，本次只核原錨點、命令、指定紅斷言與前後baseline，不宣稱讀取已刪mutantbytes。','首輪接受器完整碼存在工具對話但未另存檔；其錯誤回傳與實際更正明列，未偽造transport原文。'],'artifacts':arts}
+out=B.parent/'independent-review-K.json';out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'path':str(out),'bytes':out.stat().st_size,'sha256':sh(out),'verificationExit':0,'controls':len(triples),'watchedFiles':len(b['files'])}))
+

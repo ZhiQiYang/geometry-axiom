@@ -1,0 +1,2030 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "runExitCode": 0,
+  "wrapperReturnCode": 0,
+  "launcherExitCode": 0,
+  "mainChildRawWaitStatus": 0,
+  "persistedWrapperExitCode": 0,
+  "persistedLauncherExitCode": 0,
+  "startedUtc": "2026-10-21T05:49:55.452245+00:00",
+  "finishedUtc": "2026-10-21T06:20:25.133869+00:00",
+  "elapsedSeconds": 1829.6815555930007,
+  "expectedSuiteCount": 224,
+  "observedCompletedTableRows": 224,
+  "observedProgressCount": 224,
+  "lastProgress": {
+    "number": 224,
+    "of": 224,
+    "suite": "node:grid_definition_diagram"
+  },
+  "expectedCountedTotal": 5188,
+  "observedTotals": {
+    "total": 5188,
+    "passed": 5187,
+    "failed": 0,
+    "skipped": 1,
+    "suiteSeconds": 1743.1
+  },
+  "expectedMismatches": [],
+  "missingSuiteLogs": [],
+  "exitCodeOnlySuites": [
+    "mutation:check",
+    "node:cdp_confirmation_gate",
+    "node:cdp_navigation",
+    "node:document_cases",
+    "node:document_format",
+    "node:model_viewer",
+    "oracle:framing-selftest"
+  ],
+  "pythonJsonCount": 188,
+  "pythonFailures": [],
+  "skips": [
+    {
+      "suite": "py:test_gdi_contract",
+      "item": {
+        "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+        "reason": "requires compiled Windows GDI contract harness",
+        "scope": "test",
+        "count": 1,
+        "parent_test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources"
+      },
+      "allowed": true,
+      "matchedRules": [
+        {
+          "suite": "py:test_gdi_contract",
+          "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+          "reason": "requires compiled Windows GDI contract harness",
+          "platforms": [
+            "posix"
+          ],
+          "why": "Windows GDI resources do not exist on POSIX; all native geometry suites still run"
+        }
+      ]
+    }
+  ],
+  "unallowedSkipCount": 0,
+  "sourceHashesUnchanged": true,
+  "headBefore": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "headAfter": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "statusBefore": "",
+  "statusAfter": "",
+  "packagingHead": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "packagingStatus": "",
+  "rawLogCount": 600,
+  "rawLogBytes": 296690,
+  "timedOut": false,
+  "rawFilesOlderThanRun": [],
+  "reaped": [
+    {
+      "pid": 428750,
+      "rawWaitStatus": 9,
+      "exitCode": -9,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-21T05:53:27.207466+00:00"
+    },
+    {
+      "pid": 428751,
+      "rawWaitStatus": 9,
+      "exitCode": -9,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-21T05:53:27.207972+00:00"
+    },
+    {
+      "pid": 469498,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-21T06:11:15.124909+00:00"
+    },
+    {
+      "pid": 470407,
+      "rawWaitStatus": 9,
+      "exitCode": -9,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-21T06:12:50.003522+00:00"
+    },
+    {
+      "pid": 472995,
+      "rawWaitStatus": 9,
+      "exitCode": -9,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-21T06:14:03.802011+00:00"
+    },
+    {
+      "pid": 477105,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-21T06:17:55.169294+00:00"
+    },
+    {
+      "pid": 477844,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-21T06:18:05.138120+00:00"
+    },
+    {
+      "pid": 479294,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-21T06:19:08.497710+00:00"
+    },
+    {
+      "pid": 481865,
+      "rawWaitStatus": 15,
+      "exitCode": -15,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-21T06:20:19.437126+00:00"
+    },
+    {
+      "pid": 481866,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-21T06:20:19.487447+00:00"
+    },
+    {
+      "pid": 427725,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": true,
+      "reapedUtc": "2026-10-21T06:20:25.133569+00:00"
+    }
+  ],
+  "cleanup": [],
+  "suiteRows": {
+    "c:integrity": {
+      "total": 432,
+      "passed": 432,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.0,
+      "note": "C 檢查點數（非 test 級）"
+    },
+    "core:run_tests": {
+      "total": 165,
+      "passed": 165,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 14.7,
+      "note": ""
+    },
+    "mutation:check": {
+      "total": null,
+      "passed": "-",
+      "failed": "-",
+      "skipped": null,
+      "seconds": 1.9,
+      "note": "mutation inventory freshness (not test assertions); exit 0"
+    },
+    "oracle:framing-selftest": {
+      "total": null,
+      "passed": "ok",
+      "failed": "-",
+      "skipped": null,
+      "seconds": 84.2,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+    },
+    "py:test_architecture_contract": {
+      "total": 205,
+      "passed": 205,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.6,
+      "note": ""
+    },
+    "py:test_assembly_candidate_impact": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.3,
+      "note": ""
+    },
+    "py:test_assembly_capacity": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.9,
+      "note": ""
+    },
+    "py:test_assembly_generation": {
+      "total": 22,
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.5,
+      "note": ""
+    },
+    "py:test_assembly_mutation_check": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.3,
+      "note": ""
+    },
+    "py:test_assembly_native_diagnostics": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.3,
+      "note": ""
+    },
+    "py:test_assembly_parameter_refs": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.4,
+      "note": ""
+    },
+    "py:test_assembly_rules": {
+      "total": 36,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.2,
+      "note": ""
+    },
+    "py:test_axiom_reader": {
+      "total": 51,
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 161.1,
+      "note": ""
+    },
+    "py:test_binaries": {
+      "total": 36,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": ""
+    },
+    "py:test_bridge_integrity": {
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 32.4,
+      "note": ""
+    },
+    "py:test_cli_args": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.1,
+      "note": ""
+    },
+    "py:test_datum_contract": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 9.4,
+      "note": ""
+    },
+    "py:test_domain_decoupling_adoption": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.6,
+      "note": ""
+    },
+    "py:test_domain_decoupling_compatibility": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.7,
+      "note": ""
+    },
+    "py:test_domain_decoupling_proposal": {
+      "total": 29,
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.5,
+      "note": ""
+    },
+    "py:test_domain_source_pins": {
+      "total": 16,
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.7,
+      "note": ""
+    },
+    "py:test_engineering_core": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.6,
+      "note": ""
+    },
+    "py:test_engineering_json": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": ""
+    },
+    "py:test_engineering_model_compatibility": {
+      "total": 44,
+      "passed": 44,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 9.1,
+      "note": ""
+    },
+    "py:test_engineering_model_sources": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.8,
+      "note": ""
+    },
+    "py:test_engineering_transport": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "py:test_evidence_link_native": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.3,
+      "note": ""
+    },
+    "py:test_feedback_store": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": ""
+    },
+    "py:test_gdi_contract": {
+      "total": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 1,
+      "seconds": 0.2,
+      "note": "skip：requires compiled Windows GDI contract harness ×1（其中 1 個在具名允許清單，平台固有，不計入 exit 3）；日誌 /tmp/geometry-tests/run_all-logs/py_test_gdi_contract.log"
+    },
+    "py:test_geo261_application_closure": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.1,
+      "note": ""
+    },
+    "py:test_geo261_assembly_definition_authority": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.0,
+      "note": ""
+    },
+    "py:test_geo261_assembly_graph_product": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.7,
+      "note": ""
+    },
+    "py:test_geo261_assembly_sources": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.8,
+      "note": ""
+    },
+    "py:test_geo261_candidate_cache": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.2,
+      "note": ""
+    },
+    "py:test_geo261_candidate_deferred_sha": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.3,
+      "note": ""
+    },
+    "py:test_geo261_candidate_product": {
+      "total": 26,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 9.8,
+      "note": ""
+    },
+    "py:test_geo261_contact_sources": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.6,
+      "note": ""
+    },
+    "py:test_geo261_default_native": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.7,
+      "note": ""
+    },
+    "py:test_geo261_deferred_candidate": {
+      "total": 53,
+      "passed": 53,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.2,
+      "note": ""
+    },
+    "py:test_geo261_deferred_product": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 15.1,
+      "note": ""
+    },
+    "py:test_geo261_definition_graph_product": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.3,
+      "note": ""
+    },
+    "py:test_geo261_definition_sources": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.6,
+      "note": ""
+    },
+    "py:test_geo261_derived_policy_graph_product": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 11.5,
+      "note": ""
+    },
+    "py:test_geo261_derived_policy_sources": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.9,
+      "note": ""
+    },
+    "py:test_geo261_domain_product": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.6,
+      "note": ""
+    },
+    "py:test_geo261_draw_annotation": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.2,
+      "note": ""
+    },
+    "py:test_geo261_enclosure_definition_authority": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.5,
+      "note": ""
+    },
+    "py:test_geo261_enclosure_product": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.9,
+      "note": ""
+    },
+    "py:test_geo261_enclosure_sources": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.2,
+      "note": ""
+    },
+    "py:test_geo261_engineering_parameter_authority": {
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.7,
+      "note": ""
+    },
+    "py:test_geo261_engineering_sources": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.5,
+      "note": ""
+    },
+    "py:test_geo261_finish_definition_authority": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.5,
+      "note": ""
+    },
+    "py:test_geo261_finish_sources": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.9,
+      "note": ""
+    },
+    "py:test_geo261_graph_product": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.8,
+      "note": ""
+    },
+    "py:test_geo261_grid_definition_authority": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.2,
+      "note": ""
+    },
+    "py:test_geo261_grid_definition_codec": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.7,
+      "note": ""
+    },
+    "py:test_geo261_grid_definitions_product": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.1,
+      "note": ""
+    },
+    "py:test_geo261_grid_sources": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.7,
+      "note": ""
+    },
+    "py:test_geo261_guides_product": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.0,
+      "note": ""
+    },
+    "py:test_geo261_host_authority": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 14.2,
+      "note": ""
+    },
+    "py:test_geo261_host_candidate": {
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.3,
+      "note": ""
+    },
+    "py:test_geo261_host_facts_authority": {
+      "total": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 28.6,
+      "note": ""
+    },
+    "py:test_geo261_host_history": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.0,
+      "note": ""
+    },
+    "py:test_geo261_host_placement_definition": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.8,
+      "note": ""
+    },
+    "py:test_geo261_linear_definition_graph_product": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.6,
+      "note": ""
+    },
+    "py:test_geo261_linear_definition_sources": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.6,
+      "note": ""
+    },
+    "py:test_geo261_member_reference": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.7,
+      "note": ""
+    },
+    "py:test_geo261_model_base_replay": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 15.8,
+      "note": ""
+    },
+    "py:test_geo261_model_semantics_authority": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 18.5,
+      "note": ""
+    },
+    "py:test_geo261_model_sources": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.1,
+      "note": ""
+    },
+    "py:test_geo261_model_vertex_ledger": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 15.1,
+      "note": ""
+    },
+    "py:test_geo261_mutation_migration": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.2,
+      "note": ""
+    },
+    "py:test_geo261_native_candidate": {
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.4,
+      "note": ""
+    },
+    "py:test_geo261_native_datums": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.0,
+      "note": ""
+    },
+    "py:test_geo261_native_document": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.6,
+      "note": ""
+    },
+    "py:test_geo261_native_enclosures": {
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.7,
+      "note": ""
+    },
+    "py:test_geo261_native_entrypoints": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.4,
+      "note": ""
+    },
+    "py:test_geo261_native_geometry": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.2,
+      "note": ""
+    },
+    "py:test_geo261_native_grid": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.6,
+      "note": ""
+    },
+    "py:test_geo261_native_grid_product": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.5,
+      "note": ""
+    },
+    "py:test_geo261_native_grid_rules": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.6,
+      "note": ""
+    },
+    "py:test_geo261_native_grid_store": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.6,
+      "note": ""
+    },
+    "py:test_geo261_native_guides": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.7,
+      "note": ""
+    },
+    "py:test_geo261_native_kernel": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.8,
+      "note": ""
+    },
+    "py:test_geo261_native_linear": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.3,
+      "note": ""
+    },
+    "py:test_geo261_native_parameters": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.3,
+      "note": ""
+    },
+    "py:test_geo261_native_placements": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.7,
+      "note": ""
+    },
+    "py:test_geo261_native_regions": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.1,
+      "note": ""
+    },
+    "py:test_geo261_native_sources": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.1,
+      "note": ""
+    },
+    "py:test_geo261_native_versions": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.7,
+      "note": ""
+    },
+    "py:test_geo261_panel_native": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.1,
+      "note": ""
+    },
+    "py:test_geo261_parameter_definition_sources": {
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.1,
+      "note": ""
+    },
+    "py:test_geo261_parameter_sources": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.5,
+      "note": ""
+    },
+    "py:test_geo261_placement_definition": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.0,
+      "note": ""
+    },
+    "py:test_geo261_placement_sources": {
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.4,
+      "note": ""
+    },
+    "py:test_geo261_region_edges": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.9,
+      "note": ""
+    },
+    "py:test_geo261_region_key_sources": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.2,
+      "note": ""
+    },
+    "py:test_geo261_regions_product": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.3,
+      "note": ""
+    },
+    "py:test_geo261_section_profile_authority": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.9,
+      "note": ""
+    },
+    "py:test_geo261_section_profile_sources": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.8,
+      "note": ""
+    },
+    "py:test_geo261_source_context": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.6,
+      "note": ""
+    },
+    "py:test_geo261_source_describe": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.1,
+      "note": ""
+    },
+    "py:test_geo261_source_index": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.8,
+      "note": ""
+    },
+    "py:test_geo261_staged_candidate_graph": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.5,
+      "note": ""
+    },
+    "py:test_geo261_version_activation": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.3,
+      "note": ""
+    },
+    "py:test_geo261_version_field_sources": {
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.6,
+      "note": ""
+    },
+    "py:test_geo261_wood_assembly": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.5,
+      "note": ""
+    },
+    "py:test_geo261_wood_contact_world": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.4,
+      "note": ""
+    },
+    "py:test_geo261_wood_contacts": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.1,
+      "note": ""
+    },
+    "py:test_geo261_wood_contacts_product": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.0,
+      "note": ""
+    },
+    "py:test_geo261_wood_derived_placement": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.6,
+      "note": ""
+    },
+    "py:test_geo261_wood_engineering": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.4,
+      "note": ""
+    },
+    "py:test_geo261_wood_engineering_operations": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.5,
+      "note": ""
+    },
+    "py:test_geo261_wood_finish": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.7,
+      "note": ""
+    },
+    "py:test_geo261_wood_grid_application": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.6,
+      "note": ""
+    },
+    "py:test_geo261_wood_grid_cells": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.7,
+      "note": ""
+    },
+    "py:test_geo261_wood_grid_engineering": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.8,
+      "note": ""
+    },
+    "py:test_geo261_wood_member_declaration": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.0,
+      "note": ""
+    },
+    "py:test_geo261_wood_members": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.3,
+      "note": ""
+    },
+    "py:test_geo261_wood_product": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.2,
+      "note": ""
+    },
+    "py:test_geo261_wood_report_policy": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.5,
+      "note": ""
+    },
+    "py:test_geo261_wood_section_profile": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.4,
+      "note": ""
+    },
+    "py:test_geo261_wood_supports": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.4,
+      "note": ""
+    },
+    "py:test_geo261_wood_supports_product": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.7,
+      "note": ""
+    },
+    "py:test_geo261_wood_world_validation": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.9,
+      "note": ""
+    },
+    "py:test_geometry_host_native": {
+      "total": 30,
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 18.4,
+      "note": ""
+    },
+    "py:test_geometry_host_sources": {
+      "total": 39,
+      "passed": 39,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.7,
+      "note": ""
+    },
+    "py:test_geometry_host_world": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": ""
+    },
+    "py:test_geometry_kernel_compatibility": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": ""
+    },
+    "py:test_geometry_kernel_geometry": {
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": ""
+    },
+    "py:test_geometry_kernel_graph": {
+      "total": 30,
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": ""
+    },
+    "py:test_geometry_kernel_isolation": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.1,
+      "note": ""
+    },
+    "py:test_geometry_kernel_runtime": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.2,
+      "note": ""
+    },
+    "py:test_geometry_kernel_session": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": ""
+    },
+    "py:test_geometry_kernel_transactions": {
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": ""
+    },
+    "py:test_geometry_source_runtime": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.0,
+      "note": ""
+    },
+    "py:test_grid_card_reference": {
+      "total": 43,
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 13.2,
+      "note": ""
+    },
+    "py:test_grid_inspector_contract": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.5,
+      "note": ""
+    },
+    "py:test_grid_subdivision_oracle": {
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 10.9,
+      "note": ""
+    },
+    "py:test_grid_system_contract": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.2,
+      "note": ""
+    },
+    "py:test_grid_trial_contract": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.9,
+      "note": ""
+    },
+    "py:test_guide_panels": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": ""
+    },
+    "py:test_infinite_grid_contract": {
+      "total": 25,
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.7,
+      "note": ""
+    },
+    "py:test_local_launcher": {
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.2,
+      "note": ""
+    },
+    "py:test_model_update": {
+      "total": 26,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 154.6,
+      "note": ""
+    },
+    "py:test_modeling_degenerate": {
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.8,
+      "note": ""
+    },
+    "py:test_modeling_runtime": {
+      "total": 46,
+      "passed": 46,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.1,
+      "note": ""
+    },
+    "py:test_modeling_transport": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.6,
+      "note": ""
+    },
+    "py:test_mutation_anchors": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": ""
+    },
+    "py:test_mutation_freshness": {
+      "total": 73,
+      "passed": 73,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.4,
+      "note": ""
+    },
+    "py:test_panel_fill_finish_surface": {
+      "total": 22,
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.1,
+      "note": ""
+    },
+    "py:test_panel_fill_host": {
+      "total": 32,
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.7,
+      "note": ""
+    },
+    "py:test_panel_fill_layout": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.6,
+      "note": ""
+    },
+    "py:test_panel_fill_support": {
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 9.6,
+      "note": ""
+    },
+    "py:test_parameter_netzero": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.1,
+      "note": ""
+    },
+    "py:test_parameter_retirement_scope": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.2,
+      "note": ""
+    },
+    "py:test_parameters_candidate_value_history": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.5,
+      "note": ""
+    },
+    "py:test_parameters_core": {
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.9,
+      "note": ""
+    },
+    "py:test_parameters_deleted_unbind": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.1,
+      "note": ""
+    },
+    "py:test_parameters_final_candidate": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.1,
+      "note": ""
+    },
+    "py:test_parameters_unbind_scope": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.7,
+      "note": ""
+    },
+    "py:test_parameters_upstream_unbind": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.4,
+      "note": ""
+    },
+    "py:test_product_architecture": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 11.8,
+      "note": ""
+    },
+    "py:test_recorded_api_receipts": {
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.5,
+      "note": ""
+    },
+    "py:test_rectangular_bridge": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.4,
+      "note": ""
+    },
+    "py:test_rectangular_python": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.6,
+      "note": ""
+    },
+    "py:test_rectangular_template": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.5,
+      "note": ""
+    },
+    "py:test_reference_contract": {
+      "total": 51,
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 21.4,
+      "note": ""
+    },
+    "py:test_release_gate": {
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.6,
+      "note": ""
+    },
+    "py:test_rule_case_catalog": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.3,
+      "note": ""
+    },
+    "py:test_rule_case_definition": {
+      "total": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": ""
+    },
+    "py:test_rule_case_executor": {
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.1,
+      "note": ""
+    },
+    "py:test_rule_case_host": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.2,
+      "note": ""
+    },
+    "py:test_rule_case_request": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.5,
+      "note": ""
+    },
+    "py:test_rule_case_workbench_http": {
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 36.9,
+      "note": ""
+    },
+    "py:test_runtime_version": {
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.8,
+      "note": ""
+    },
+    "py:test_scenario_verify": {
+      "total": 37,
+      "passed": 37,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 41.6,
+      "note": ""
+    },
+    "py:test_scene_import": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.2,
+      "note": ""
+    },
+    "py:test_section_profile_modeling": {
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.6,
+      "note": ""
+    },
+    "py:test_section_profile_mutation_check": {
+      "total": 30,
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.4,
+      "note": ""
+    },
+    "py:test_section_profile_native": {
+      "total": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 14.3,
+      "note": ""
+    },
+    "py:test_serve": {
+      "total": 51,
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 68.1,
+      "note": ""
+    },
+    "py:test_source_closure_memo": {
+      "total": 16,
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.6,
+      "note": ""
+    },
+    "py:test_source_inspector": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.4,
+      "note": ""
+    },
+    "py:test_source_inspector_transport": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": ""
+    },
+    "py:test_space_modeling": {
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 62.7,
+      "note": ""
+    },
+    "py:test_subgrid_contract": {
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.8,
+      "note": ""
+    },
+    "py:test_timber_support_projection": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 22.8,
+      "note": ""
+    },
+    "py:test_unittest_runner": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.3,
+      "note": ""
+    },
+    "py:test_wait_trace": {
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.4,
+      "note": ""
+    },
+    "py:test_witness_diagnostics": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": ""
+    },
+    "py:test_witness_marks": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.4,
+      "note": ""
+    },
+    "node:tests-js": {
+      "total": 737,
+      "passed": 737,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 128.3,
+      "note": ""
+    },
+    "node:model_viewer": {
+      "total": null,
+      "passed": "ok",
+      "failed": "-",
+      "skipped": null,
+      "seconds": 0.1,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+    },
+    "node:polydraft": {
+      "total": 75,
+      "passed": 75,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 25.3,
+      "note": ""
+    },
+    "node:canvas_direct": {
+      "total": 408,
+      "passed": 408,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.4,
+      "note": "斷言數；preload 已把 web_bridge.exe 的 spawn 轉向 /tmp/geometry-tests/bridge（標記檔 1 筆為證）"
+    },
+    "node:document_format": {
+      "total": null,
+      "passed": "ok",
+      "failed": "-",
+      "skipped": null,
+      "seconds": 0.1,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+    },
+    "node:document_cases": {
+      "total": null,
+      "passed": "ok",
+      "failed": "-",
+      "skipped": null,
+      "seconds": 1.1,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+    },
+    "node:cdp_navigation": {
+      "total": null,
+      "passed": "ok",
+      "failed": "-",
+      "skipped": null,
+      "seconds": 0.1,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+    },
+    "node:cdp_confirmation_gate": {
+      "total": null,
+      "passed": "ok",
+      "failed": "-",
+      "skipped": null,
+      "seconds": 0.0,
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定"
+    },
+    "node:draw_annotation": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": ""
+    },
+    "node:woodworking_frontend": {
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": ""
+    },
+    "node:grid_inspector_command": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": ""
+    },
+    "node:grid_lesson_control_ownership": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:parameter_confirmation_settlement": {
+      "total": 16,
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:face_reference_settlement": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:face_projection_lifecycle": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:workspace_shell_history": {
+      "total": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:feedback_events": {
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:space_test_floor": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:history_operation": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": ""
+    },
+    "node:context_operations": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": ""
+    },
+    "node:cdp_evaluation": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:cdp_settle": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:cdp_card_position": {
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": ""
+    },
+    "node:background_grid_viewport": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": ""
+    },
+    "node:anchor_band_clip": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": ""
+    },
+    "node:hover_pick_scheduler": {
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:face_paint_scheduler": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.1,
+      "note": ""
+    },
+    "node:room_outline_worker": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:room_outline_closeout": {
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": ""
+    },
+    "node:evidence_links": {
+      "total": 29,
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    },
+    "node:evidence_project_store": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "note": ""
+    },
+    "node:grid_definition_diagram": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.2,
+      "note": ""
+    }
+  },
+  "separateGatesNotice": [
+    "",
+    "  tests/test_issue123_create_feedback_browser.py：Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite；獨立執行，本 aggregate 未驗。",
+    "  tests/integration/issue77_attachment_owner.js：5項 required；source-rooms owner 接口未實作時 exit3/pending_implementation，不是環境 skip或pass。",
+    "  tests/scenario_browser_check.cjs：Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)；獨立執行，本 aggregate 未驗。",
+    "  tests/test_issue77_browser.js：Required real app/native/Chromium room acceptance; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。",
+    "  tests/test_issue77_exit_browser.js：Required real app/native/Chromium room draft-exit gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。",
+    "  tests/test_issue77_recovery_browser.js：Required real app/native/Chromium room recovery gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。",
+    "  tests/test_issue77_remove_browser.js：Required real app/native/Chromium room unlink/removal gate; formal owner exists, execute separately; see INTEGRATION-GATES.md；獨立執行，本 aggregate 未驗。",
+    "  tests/test_scenario_grid_interface.js：Required real GridDraft owner-validator compatibility; PR104 is not on main; execute with actual owner validator, never count missing-injection skip as pass (INTEGRATION-GATES.md)；獨立執行，本 aggregate 未驗。",
+    "  tests/k2a_drafts_browser.cjs：27 real 1280/390 collection continuation, source repin/cancel and lost save checks required；本 aggregate 未驗。",
+    "  tests/k2a_native_browser.cjs：42 actual native confirmation/deletion receipts, history and permanent lost browser owner checks required；本 aggregate 未驗。",
+    "  tests/k2a_source_repin_browser.cjs：14 explicit binding source selection, stale cancel and permanent same-ID lost rejection checks required；本 aggregate 未驗。",
+    "  tests/k2a_zip_browser.cjs：89 true ZIP and cold isolated native reopen including permanent lost; distinct service sessions required checks required；本 aggregate 未驗。",
+    "  tests/k2a_rule_repin_browser.cjs：35 actual D19a rule changed/deleted repin with valid/invalid raw, cancellation and close preservation checks required；本 aggregate 未驗。",
+    "  tests/room_multi_candidate_browser.js：34 real same-page multiroom import/calibration/select/review/accept/park/save/new/Open; explicit late Worker and lost-response injections checks required；本 aggregate 未驗。",
+    "  tests/test_section_profile_browser.js：68 real desktop/390 Q38 authoring, typed sources, exact models, source impact/cancel, placement conversion, shared history and /16 Save/Open checks required；本 aggregate 未驗。",
+    "  tests/integration/q38_save_roundtrip.py：18 native-authored complete section fixture; real download/fresh-browser chooser, full World and exact mesh oracle; explicit download fallback, not OS picker checks required；本 aggregate 未驗。",
+    "  tests/integration/model_library_history_browser.py：35 real model-library/native Undo, Web Locks, drafts and explicit late-owner injections checks required；本 aggregate 未驗。",
+    "  tests/integration/save_roundtrip_acceptance.cjs：33 real form/native/model/download/file-chooser roundtrip and explicit save-failure injection checks required；本 aggregate 未驗。",
+    "  tests/rule-case-workbench-browser.cjs：91 standalone component/native checks required；本 aggregate 未驗。",
+    "  tests/test_rule_case_app_browser.js：76 formal app/native/ZIP/history checks required；本 aggregate 未驗。",
+    "  tests/test_rule_case_app_races.js：30 formal app/native/context races checks required；本 aggregate 未驗。",
+    "  tests/room_outline_keyboard_browser.js：396 real keyboard/click parity; synthetic composition and stale DOM guards checks required；本 aggregate 未驗。",
+    "  tests/room_outline_acceptance_browser.js：253 formal room app/PDF-image/UI/ZIP/model checks required；本 aggregate 未驗。",
+    "  tests/room_outline_pan_browser.js：32 real input/native preservation; API fixture and injected pointercancel checks required；本 aggregate 未驗。",
+    "  tests/room_outline_worker_browser.js：78 native Worker/UI invalidation with injected late-consumer delivery checks required；本 aggregate 未驗。",
+    "  geometry-web/feedback_resize_observer_test.js：38 real ResizeObserver/error/manual-report events; owned fresh/root/source/runtime identity required checks required；本 aggregate 未驗。",
+    "  tests/test_grid_rule_reader_browser.js：34 formal app/native/grid/ZIP checks required；本 aggregate 未驗。",
+    "  geometry-web/evidence_links_browser_check.js：67 independent injected-backend adapter checks required；本 aggregate 未驗。",
+    "  geometry-web/evidence_links_integration_test.js：110 formal app/PDF/ZIP/history checks required；本 aggregate 未驗。",
+    "  geometry-web/grid_raw_provenance_browser_test.py：207 formal raw enum/pin provenance, ZIP cold reopen, explicit correction and native Undo/Redo checks required；本 aggregate 未驗。"
+  ],
+  "acceptedNative": true,
+  "all224ExpectedMatched": true,
+  "all224Passed": true,
+  "all224PassedMeaning": "全部 224 個 suite 均完成且符合 run_all 的完整驗收判準；保留具名允許 skip 與 exit-code-only 分類，不宣稱 5188 項全部為斷言通過。",
+  "artifactReferences": {
+    "command": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/command.json",
+      "bytes": 11882,
+      "sha256": "b0230ed849b04e0f6f2c8ee1470ead4cbbc4bdaf0f00b33d5681307f8ee0a5a7"
+    },
+    "receipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/receipt.json",
+      "bytes": 14437,
+      "sha256": "1e0aab363155d21cccadd3b86f2a710b0eef42112fb74c7e8c932378a64758a0"
+    },
+    "runLog": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/run.log",
+      "bytes": 36794,
+      "sha256": "f6d9a524c78697d8ddd4373ead1b3e50a508fe202871cb0bd09d10984b30342a"
+    },
+    "packagingTool": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/package-native.py",
+      "bytes": 9551,
+      "sha256": "609f59b2d0f9b067ac100d7ee99e3f7e685a594e75f2e9fb72df39179135b4bb"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-launcher/launcher-receipt.json",
+      "bytes": 14311,
+      "sha256": "e516ec91c321960898187a3eadb34bc76c214caf75b3d7cc398fd48f86d72f8e"
+    },
+    "sourceIndex": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/suite-log-source-index.json",
+      "bytes": 196633,
+      "sha256": "aa205b574f820e14b025db5411e81a3f5fe2fb3785707205a0219a8464f9f86d"
+    },
+    "expected": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/source-reference/run_all.expected.json",
+      "bytes": 24624,
+      "sha256": "f08443be7de507ea4550790bfdf3d51ce4c35fc74e2055286691ec511082bec0"
+    },
+    "namedRequiredSuites": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/named-required-suites.json",
+      "bytes": 6734,
+      "sha256": "e1fc3cae321ee64bd5f14d62dfecd522379c40fa7f059f62420ace7ab04914fa"
+    }
+  }
+}

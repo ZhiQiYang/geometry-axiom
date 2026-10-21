@@ -1,0 +1,17 @@
+test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES (tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES)
+B2 review: the message reaches callers through the 256-byte engineering error; ... FAIL
+
+======================================================================
+FAIL: test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES (tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES)
+B2 review: the message reaches callers through the 256-byte engineering error;
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-ledger-run.ra2_k2z2/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py", line 616, in test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES
+    self.assertTrue(match and match.group(2), ('complete names plus "and N more"', message))
+AssertionError: None is not true : ('complete names plus "and N more"', 'I38 MISSING: parameter 10 is still referenced by panel-fill 1 stagger; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: 3: grid-system 4000000001 card-reference u field 4000000012; grid-system 4000000)')
+
+----------------------------------------------------------------------
+Ran 1 test in 5.330s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES"], "started": ["tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES"], "total": 1, "failures": [{"test": "tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES", "detail": "Traceback (most recent call last):\n  File \"/workspace/geo261-ledger-run.ra2_k2z2/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py\", line 616, in test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES\n    self.assertTrue(match and match.group(2), ('complete names plus \"and N more\"', message))\nAssertionError: None is not true : ('complete names plus \"and N more\"', 'I38 MISSING: parameter 10 is still referenced by panel-fill 1 stagger; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: 3: grid-system 4000000001 card-reference u field 4000000012; grid-system 4000000)')\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

@@ -1,0 +1,9 @@
+# PR #288：回覆 2026-10-20T14:42:46Z【ChatGPT 審查】
+
+對應受審 head `7dae5f21c7ca401e660450d437e60ba566218da8`。使用者確認這是該次推送後唯一新留言；[原文及 5f02 補充](https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/review/最新審查原文.md)保留。以下請依新來源與證據複審，不把舊 head 的結果改寫成通過。
+
+1. **阻擋 1：帳本受驗來源不可稽核。** 採公開來源全量重跑。來源 S3 `19401ca5448e162ee6140fed37b64b83b31ddec8`，原帳本 75 execution 全綁 S3；全量 mutate、check、check --killers 皆真 exit 0。L3 `6589248c9a94bdf0460d8f84dd1610e51048188b` 為其直接子提交，唯一差異是原帳本 JSON，提交後預設 check 也為 0。帳本 SHA-256 為 `52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178`；repo 內[來源、closure／oracle／tool／compile 雜湊、完整命令與已保存輸出](https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/帳本來源與命令.md)可核。無須公開使用者本機 5f02。core 子程序完整 raw 未由原工具保存的限制已明列，沒有以頂層 stdout 補造。
+2. **阻擋 2：最終整合驗收未完成。** 同一公開 L3 已完成完整 native、六 browser、Q38、12 controls、53 整卡及 5 公理突變、replay、P-189；[逐項命令／退出碼／環境／原件](https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/驗收總表.md)皆已列出。native 5187 pass／0 fail／1 原 GDI skip；browser 為 2261／150／47／350／242／79；Q38 41 killed＋1 equivalent；12 控制原 gate 1、預期檢查及外層 0；整卡／公理 53／5 killed；replay 6／6。P-189 六階段與真 wait 0，四點 1.075985／1.087069／1.610790／1.482303×，175 等價場景、36 有效樣本、16 controls。此前 L2 native exit 1 及性能失敗均保留；S3 錨點修復後整份帳本與全驗收確實重跑，沒有用 audit-only 變更外推。
+3. **須改 3：PR 正文舊狀態。** 已準備[整份新正文](https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/PR288_BODY.md)，分列產品／見證 S3、架構 A2（實際來源 S2）、帳本／受驗 L3、證據／稽核 E，只保留本輪驗收矩陣。E 是含本檔的公開證據提交，完整 SHA 與只讀驗證退出碼在交付回報；正文替換仍由使用者操作，不聲稱本環境已修改 PR。
+
+候選分支為 `codex/geo261-closeout-20261021`，不是 PR 來源分支。本回覆先於整合來源快轉；若又有新留言，須先取得並逐項處理。來源更新後請以新 SHA 複審；本輪通過不免除剩餘審查。Windows／WSL／遠端 CI 未驗、原 P52 唯一故障原因未定，以及 P-190 等限制見[總說明](https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/README.md)。

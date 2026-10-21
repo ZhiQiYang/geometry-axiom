@@ -1,0 +1,104 @@
+"""只讀對照已完成的 L 架構 CLI、四產物與既有 611 項清單；不重新掃描或測試。"""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+ROOT = Path('/workspace/geometry-axiom')
+OUT = Path('/workspace/geo261-evidence/architecture-L-formal-43f85313')
+SNAPSHOT = Path('/workspace/geo261-evidence/source-binding-L-preparation/snapshot-L.json')
+HEAD = '43f85313c32410ac01406ab585846bbacafea278'
+SNAPSHOT_SHA = '72283a36e47831867884f9682684267eddaf5d208acaf3891a0abeb9b3774455'
+ARTIFACT_ROOT = 'geometry-core/domain-decoupling/'
+commands = []
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def require(ok, text):
+    if not ok:
+        raise RuntimeError(text)
+
+def git(*args):
+    argv = ['git', '-c', 'core.fsmonitor=false', '-C', str(ROOT), *args]
+    result = subprocess.run(argv, capture_output=True, env=dict(os.environ, GIT_OPTIONAL_LOCKS='0'))
+    commands.append(dict(argv=argv, exitCode=result.returncode,
+                         stdoutSha256=sha(result.stdout), stderr=result.stderr.decode()))
+    require(result.returncode == 0, '只讀 Git 命令失敗')
+    return result.stdout
+
+def state():
+    head = git('rev-parse', 'HEAD').decode().strip()
+    status = git('status', '--porcelain', '--untracked-files=all').decode()
+    require(head == HEAD and status == '', '目前來源不是 L clean')
+    return dict(head=head, status=status)
+
+before = state()
+snapshot_raw = SNAPSHOT.read_bytes()
+require(sha(snapshot_raw) == SNAPSHOT_SHA, '原 L 快照 hash 不符')
+snapshot = json.loads(snapshot_raw)
+require(snapshot['headBefore'] == snapshot['headAfter'] == HEAD and snapshot['trackedClean'],
+        '原 L 快照來源不符')
+tree = {}
+for line in git('ls-tree', '-r', '-z', HEAD).split(b'\0'):
+    if line:
+        meta, path = line.split(b'\t', 1)
+        mode, kind, oid = meta.decode().split()
+        tree[path.decode()] = dict(mode=mode, kind=kind, oid=oid)
+
+def checked_file(path):
+    raw = (ROOT / path).read_bytes()
+    oid = hashlib.sha1(b'blob ' + str(len(raw)).encode() + b'\0' + raw).hexdigest()
+    record = dict(path=path, bytes=len(raw), rawSha256=sha(raw),
+                  lfSha256=sha(raw.replace(b'\r\n', b'\n')), gitBlob=oid)
+    require(tree[path]['kind'] == 'blob' and tree[path]['oid'] == oid, '工作 bytes 與 Git L 不符：' + path)
+    reference = snapshot['files'][path]
+    require(all(record[key] == reference[key] for key in ('bytes', 'rawSha256', 'lfSha256', 'gitBlob')),
+            '工作 bytes 與原 L 快照不符：' + path)
+    return record
+
+receipt = json.loads((ROOT / ARTIFACT_ROOT / 'product-architecture-receipt.json').read_bytes())
+require(receipt['inputs'] == snapshot['architecture']['inputs'], '既有架構 input 清單與 L 快照不符')
+inputs = []
+for item in receipt['inputs']:
+    record = checked_file(item['path'])
+    require(record['lfSha256'] == item['sha256'], 'input LF digest 不符：' + item['path'])
+    inputs.append(record)
+require(len(inputs) == len({item['path'] for item in inputs}) == 611, 'input 數量或唯一性不符')
+serialized = json.dumps(receipt['inputs'], ensure_ascii=False, separators=(',', ':')).encode()
+closure = sha(serialized)
+require(closure == receipt['inputClosureSha256'] == snapshot['architecture']['inputClosureSha256'],
+        'input closure digest 不符')
+artifacts = [checked_file(path) for path in snapshot['architecture']['artifactPaths']]
+cli_receipt = json.loads((OUT / 'receipt.json').read_bytes())
+cli_before = json.loads((OUT / 'before.json').read_bytes())
+cli_after = json.loads((OUT / 'after.json').read_bytes())
+stdout, stderr = (OUT / 'stdout.json').read_bytes(), (OUT / 'stderr.log').read_bytes()
+require(cli_after['error'] is None and cli_before == cli_after['state'], 'CLI 前後記錄不一致')
+require(cli_receipt['headBefore'] == cli_receipt['headAfter'] == HEAD
+        and cli_receipt['sourceAndMetadataUnchanged'] is True
+        and cli_receipt['cliExitCode'] == cli_receipt['wrapperExitCode'] == cli_receipt['rawWaitStatus'] == 0
+        and sha(stdout) == cli_receipt['stdoutSha256']
+        and stdout == (ROOT / ARTIFACT_ROOT / 'product-architecture-scan.json').read_bytes()
+        and stderr == b'', 'CLI 原件或真碼不符')
+after = state()
+result = dict(schema=1, checkedUTC=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              argv=sys.orig_argv, toolRawSha256=sha(Path(__file__).read_bytes()), exitCode=0,
+              sourceSha=HEAD, before=before, after=after,
+              snapshot=dict(path=str(SNAPSHOT), bytes=len(snapshot_raw), sha256=SNAPSHOT_SHA),
+              cliReceipt=dict(path=str(OUT / 'receipt.json'), sha256=sha((OUT / 'receipt.json').read_bytes())),
+              inputCount=611, allInputBytesEqualGitLAndPriorSnapshot=True,
+              inputClosureSha256=closure, metadataSourceBaseHead=receipt['sourceBaseHead'],
+              metadataCounts=receipt['counts'], artifacts=artifacts, inputs=inputs,
+              cliStdoutExactlyEqualsCommittedScan=True, cliElapsedSeconds=cli_receipt['elapsedSeconds'],
+              notClaimed=['未重產 metadata', '未重跑 205／18', '未再次執行架構 CLI',
+                          '本次只核既有 611 清單，未另外建立新 inventory',
+                          '不將 metadata 歷史 execution 改稱於 L 重產'], gitCommands=commands)
+target = OUT / 'inventory-binding.json'
+require(not target.exists(), '禁止覆寫既有核對原件')
+target.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps(dict(exitCode=0, sourceSha=HEAD, inputCount=611, artifactCount=len(artifacts),
+                     inputClosureSha256=closure, output=str(target)), ensure_ascii=False))

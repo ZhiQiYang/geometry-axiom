@@ -1,0 +1,104 @@
+{
+  "sourceSha": "1126991c9dbd3de92d8cce6eab2419f8f7970e34",
+  "branch": "fix/framing-oracle-review-20261020",
+  "baseSha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "note": "只記錄已讀檔案的 Git blob 與原始 bytes 指紋；沒有在證據包複製整份 oracle 或產品來源。",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "gitBlob": "d765219ea9a99483d1bf40a1c99c25f48c785a1d",
+      "bytes": 19140,
+      "rawSha256": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca"
+    },
+    {
+      "path": "geometry-core/framing-template/PROPOSAL.md",
+      "gitBlob": "bfd773e7f21bba380035e953cbf5799a11827cc5",
+      "bytes": 38213,
+      "rawSha256": "8f6efd7a9f414d3410c4c46be854630cdd8330c776900c639d380ee4679a88f9"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
+      "gitBlob": "551e138e9810c7e6c63adfcf10724c1d914fccf6",
+      "bytes": 37603,
+      "rawSha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+      "gitBlob": "bf62e7245c3987553d934a21e9f59857c0aadcfe",
+      "bytes": 64845,
+      "rawSha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/README.md",
+      "gitBlob": "ebe23fd46e6e8cb68fb16689369d4f3efad3cbd1",
+      "bytes": 93270,
+      "rawSha256": "d5a7e093d73673fe1baa23cc2b5e0459cc6d62e9b74167bcf10efcca2ed43717"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+      "gitBlob": "47b33182e9ed5a80ddd559dde94a7d8f976aebe9",
+      "bytes": 132179,
+      "rawSha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/make_golden.py",
+      "gitBlob": "8edc3eb16cb06ad33039d9ed251b4d74e57ea32c",
+      "bytes": 3307,
+      "rawSha256": "1be11d6d8603b5b966375cb47f1314e0296199e3a512c94682efe5d575146892"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/oracle-golden.json",
+      "gitBlob": "3321ed75e0ca79f316d5a6010febe707683ddc12",
+      "bytes": 355766,
+      "rawSha256": "444dc0e30ada426efd41a5a9be91500f0771ab5256b684286dda292025c1028b"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/render.py",
+      "gitBlob": "bb4a11573a21b7ae09f5e5de88fbd2696cc222fb",
+      "bytes": 8874,
+      "rawSha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/selftest.py",
+      "gitBlob": "aca8cfc9f6ea5d6d028772e24e52e76cc5b0ccfe",
+      "bytes": 131054,
+      "rawSha256": "ecfeeeb899577552b1c127de49ffd48829816e0424cf621164e1e96fd0a835f8"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/sweep-expected-unbuildable.json",
+      "gitBlob": "913772d5875526be7c84f9911fd2fe6d175bbd1b",
+      "bytes": 134591,
+      "rawSha256": "25f42a949ad178c5465e9254ca28c3d1eeb410da32b8bbf9b950c6a40b68280f"
+    },
+    {
+      "path": "geometry-guide/PRODUCT-VISION.md",
+      "gitBlob": "83e1fad7f425f23e9b47641cb5546823bbd7adad",
+      "bytes": 7579,
+      "rawSha256": "e6b6b0e71b3fa4cc4912e0e24147082ae06111392a4063555a0b6b3651c51211"
+    },
+    {
+      "path": "tests/run_all.expected.json",
+      "gitBlob": "a471d444eb63975e42e0fa06b5f0079e133fc880",
+      "bytes": 11180,
+      "rawSha256": "445129b31c76acfaae8923be10a2b382183cb432d23f2a4a54c3f6d3d10fd1da"
+    },
+    {
+      "path": "tests/run_all.py",
+      "gitBlob": "8277149ef28c41bd4046c6641b79771ecff7fb22",
+      "bytes": 59998,
+      "rawSha256": "8ca5c655bf21d3c03c86443ff6038e448be0e3da4c05a00efafae7f6c145dc05"
+    },
+    {
+      "path": "公理層.md",
+      "gitBlob": "c34e8d6acf862455db2d47978feb04cd43324284",
+      "bytes": 321170,
+      "rawSha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d"
+    },
+    {
+      "path": "決策佇列.md",
+      "gitBlob": "5357cf73f057da92fd065902bd2c60704dc741da",
+      "bytes": 220461,
+      "rawSha256": "c3387507597afafbdf1962b5374d5cfd8187165e6638b7b33c92bb3f794d9f72"
+    }
+  ]
+}

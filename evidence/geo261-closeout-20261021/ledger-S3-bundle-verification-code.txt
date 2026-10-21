@@ -1,0 +1,27 @@
+"""只讀核對 S3 證據包 exact set、原件逐 bytes 與所有 sums。"""
+from pathlib import Path
+import hashlib,json,stat,datetime
+root=Path('/workspace/geo261-evidence/final-bundle/ledger-S3-cc')
+sha=lambda b:hashlib.sha256(b).hexdigest()
+index=json.loads((root/'原件清單.json').read_bytes())
+assert len({r['path'] for r in index})==len(index)
+for row in index:
+    a=Path(row['source']).read_bytes();b=(root/row['path']).read_bytes()
+    assert a==b and len(b)==row['bytes'] and sha(b)==row['sha256']
+files={str(p.relative_to(root)):p for p in root.rglob('*') if p.is_file()}
+assert not any(p.is_symlink() for p in root.rglob('*'))
+assert set(files)=={r['path'] for r in index}|{'原件清單.json','未收錄清單.json','README.md','SHA256SUMS'}
+assert all(stat.S_IMODE(p.stat().st_mode)==0o644 for p in files.values())
+assert all(p.suffix not in ('.py','.js','.cjs','.exe','.so') for p in files.values())
+sums={}
+for line in (root/'SHA256SUMS').read_text().splitlines():
+    value,path=line.split('  ',1);assert path not in sums;sums[path]=value
+assert set(sums)==set(files)-{'SHA256SUMS'}
+for path,value in sums.items():assert sha(files[path].read_bytes())==value
+result={'checkedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'exitCode':0,'sourceS3':'19401ca5448e162ee6140fed37b64b83b31ddec8',
+ 'ledgerL3':'6589248c9a94bdf0460d8f84dd1610e51048188b','copiedOriginals':len(index),'files':len(files),'bytes':sum(p.stat().st_size for p in files.values()),
+ 'checksumEntries':len(sums),'indexSha256':sha((root/'原件清單.json').read_bytes()),'sumsSha256':sha((root/'SHA256SUMS').read_bytes()),
+ 'exactOriginalBytes':True,'exactFileSet':True,'all0644':True,'noExecutableCopies':True,'productRerun':False,
+ 'note':'這是封裝後基本copy/hash核對；不是另一次ledger或產品驗收，未修改子包。'}
+with Path('/workspace/geo261-evidence/ledger-S3-bundle-verification.json').open('x',encoding='utf-8') as f:json.dump(result,f,ensure_ascii=False,indent=2);f.write('\n')
+print(json.dumps(result,ensure_ascii=False))

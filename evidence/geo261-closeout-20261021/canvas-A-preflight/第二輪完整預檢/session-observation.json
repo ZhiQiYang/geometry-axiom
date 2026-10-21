@@ -1,0 +1,31 @@
+{
+  "capturedUTC": "2026-10-20T21:37:42.894280+00:00",
+  "execSession": 18751,
+  "observedToolError": "write_stdin failed: Unknown process id 18751",
+  "stdoutFile": "/workspace/geo261-evidence/canvas-a-preflight-r2-orchestrator.log",
+  "originalLaunchHasExitCodeFile": false,
+  "processes": [
+    {
+      "pid": 153303,
+      "state": "S",
+      "parentPid": 153300,
+      "startTime": "730123",
+      "command": "python3 /workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py --sha 7159530c0e494d3211e6ab1764eb691137211707 --output /workspace/geo261-evidence/canvas-a-preflight-r2 --label A-preflight --port 18856 --cdp-port 9322 --release-note root 明確授權固定 A 完整預檢；ledger 佔一名額，此輪佔第二名額；預檢完成前主樹不變；原字型外層誤判保留，修正後新目錄完整重跑；L 正式驗收仍須另跑 --execute "
+    },
+    {
+      "pid": 153364,
+      "state": "S",
+      "parentPid": 153303,
+      "startTime": "730387",
+      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -u /workspace/geometry-axiom/geometry-web/serve.py 18856 "
+    },
+    {
+      "pid": 153372,
+      "state": "S",
+      "parentPid": 153303,
+      "startTime": "730583",
+      "command": "node geometry-web/cdp_test.js "
+    }
+  ],
+  "interpretation": "工具 session 遺失；外層 shell exit 不能從工具再取回。步驟 node 真 exit 將由原 wrapper 的 Popen.poll 保存，另與外層未觀察退出碼區分。沒有重跑或改在跑的 wrapper。"
+}

@@ -1,0 +1,213 @@
+{
+  "kind": "controlled delivery of real native close callbacks; not natural recurrence of an earlier failure",
+  "cases": [
+    {
+      "phase": "during-source-read",
+      "held": {
+        "armed": true,
+        "heldEvent": {
+          "at": 4035.2000000029802,
+          "eventTime": 3989.5,
+          "trusted": true
+        },
+        "callbackCount": 0,
+        "nativeEvents": [
+          {
+            "at": 3119.8000000044703,
+            "eventTime": 3100.60000000149,
+            "trusted": true
+          },
+          {
+            "at": 4035.2000000029802,
+            "eventTime": 3989.5,
+            "trusted": true
+          }
+        ],
+        "deliveries": []
+      },
+      "overlap": {
+        "open": false,
+        "observation": {
+          "calls": 3,
+          "finished": 2
+        },
+        "source": {
+          "phase": "held",
+          "claimed": 1,
+          "nativeOK": true,
+          "caller": "Error\n    at intercepted (eval at <anonymous> (:1:143), <anonymous>:8:20)\n    at apiRequest (http://127.0.0.1:18854/app.js:650:21)\n    at api (http://127.0.0.1:18854/app.js:702:24)\n    at readSource (http://127.0.0.1:18854/app.js:84:23)\n    at Object.open (http://127.0.0.1:18854/app.js:91:28)\n    at FaceProjection.open (eval at <anonymous> (:1:143), <anonymous>:7:32)\n    at HTMLButtonElement.editProjection (http://127.0.0.1:18854/space-workspace.js:544:31)"
+        }
+      },
+      "delivery": {
+        "releasedAt": 4353.60000000149,
+        "armed": true,
+        "heldEvent": {
+          "at": 4035.2000000029802,
+          "eventTime": 3989.5,
+          "trusted": true
+        },
+        "callbackCount": 0,
+        "nativeEvents": [
+          {
+            "at": 3119.8000000044703,
+            "eventTime": 3100.60000000149,
+            "trusted": true
+          },
+          {
+            "at": 4035.2000000029802,
+            "eventTime": 3989.5,
+            "trusted": true
+          }
+        ],
+        "deliveries": []
+      },
+      "reopened": true,
+      "saved": true
+    },
+    {
+      "phase": "after-reopen",
+      "held": {
+        "armed": true,
+        "heldEvent": {
+          "at": 8382.60000000149,
+          "eventTime": 8334.5,
+          "trusted": true
+        },
+        "callbackCount": 0,
+        "nativeEvents": [
+          {
+            "at": 3119.8000000044703,
+            "eventTime": 3100.60000000149,
+            "trusted": true
+          },
+          {
+            "at": 4035.2000000029802,
+            "eventTime": 3989.5,
+            "trusted": true
+          },
+          {
+            "at": 5235,
+            "eventTime": 5191.89999999851,
+            "trusted": true
+          },
+          {
+            "at": 7534.30000000447,
+            "eventTime": 7495.39999999851,
+            "trusted": true
+          },
+          {
+            "at": 8382.60000000149,
+            "eventTime": 8334.5,
+            "trusted": true
+          }
+        ],
+        "deliveries": []
+      },
+      "overlap": {
+        "open": true,
+        "observation": {
+          "calls": 6,
+          "finished": 6
+        },
+        "source": {
+          "phase": "released",
+          "claimed": 1,
+          "nativeOK": true,
+          "caller": "Error\n    at intercepted (eval at <anonymous> (:1:143), <anonymous>:8:20)\n    at apiRequest (http://127.0.0.1:18854/app.js:650:21)\n    at api (http://127.0.0.1:18854/app.js:702:24)\n    at readSource (http://127.0.0.1:18854/app.js:84:23)\n    at Object.open (http://127.0.0.1:18854/app.js:91:28)\n    at FaceProjection.open (eval at <anonymous> (:1:143), <anonymous>:7:32)\n    at HTMLButtonElement.editProjection (http://127.0.0.1:18854/space-workspace.js:544:31)"
+        }
+      },
+      "delivery": {
+        "releasedAt": 8782.60000000149,
+        "armed": true,
+        "heldEvent": {
+          "at": 8382.60000000149,
+          "eventTime": 8334.5,
+          "trusted": true
+        },
+        "callbackCount": 0,
+        "nativeEvents": [
+          {
+            "at": 3119.8000000044703,
+            "eventTime": 3100.60000000149,
+            "trusted": true
+          },
+          {
+            "at": 4035.2000000029802,
+            "eventTime": 3989.5,
+            "trusted": true
+          },
+          {
+            "at": 5235,
+            "eventTime": 5191.89999999851,
+            "trusted": true
+          },
+          {
+            "at": 7534.30000000447,
+            "eventTime": 7495.39999999851,
+            "trusted": true
+          },
+          {
+            "at": 8382.60000000149,
+            "eventTime": 8334.5,
+            "trusted": true
+          }
+        ],
+        "deliveries": []
+      },
+      "reopened": true,
+      "saved": true
+    }
+  ],
+  "tail": {
+    "armed": false,
+    "heldEvent": {
+      "at": 8382.60000000149,
+      "eventTime": 8334.5,
+      "trusted": true
+    },
+    "callbackCount": 0,
+    "nativeEvents": [
+      {
+        "at": 3119.8000000044703,
+        "eventTime": 3100.60000000149,
+        "trusted": true
+      },
+      {
+        "at": 4035.2000000029802,
+        "eventTime": 3989.5,
+        "trusted": true
+      },
+      {
+        "at": 5235,
+        "eventTime": 5191.89999999851,
+        "trusted": true
+      },
+      {
+        "at": 7534.30000000447,
+        "eventTime": 7495.39999999851,
+        "trusted": true
+      },
+      {
+        "at": 8382.60000000149,
+        "eventTime": 8334.5,
+        "trusted": true
+      },
+      {
+        "at": 9716.60000000149,
+        "eventTime": 9701.39999999851,
+        "trusted": true
+      },
+      {
+        "at": 12054.89999999851,
+        "eventTime": 12049.89999999851,
+        "trusted": true
+      },
+      {
+        "at": 13198.70000000298,
+        "eventTime": 13194.5,
+        "trusted": true
+      }
+    ],
+    "deliveries": []
+  }
+}

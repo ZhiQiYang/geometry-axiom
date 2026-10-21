@@ -1,0 +1,10 @@
+/workspace/geo261-p189-formal-L2-src-eens_1lr/scenes/repo-_edge_gridref_midline.scene:10: I12: 只允許 at-line / at-face；at、at-guides、at-grid、at-edge 已廢除
+I8a preview 1: invalid; cannot apply
+ timber 90 center 10 -> 10 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 91 center 2990 -> 2990 length 4000 -> 4000
+  surface 1 origin [0,2980,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2980,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 1 center 500 -> 500 length 2960 -> 2960
+  surface 1 origin [514,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [514,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 0 I8 expected: all world invariants pass; actual: line 10: I12: 只允許 at-line / at-face；at、at-guides、at-grid、at-edge 已廢除
+/workspace/geo261-p189-formal-L2-src-eens_1lr/scenes/repo-_edge_gridref_midline.scene:10: I8a: impact preview required (World unchanged); line 10: I12: 只允許 at-line / at-face；at、at-guides、at-grid、at-edge 已廢除

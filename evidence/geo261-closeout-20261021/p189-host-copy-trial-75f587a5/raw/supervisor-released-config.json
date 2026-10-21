@@ -1,0 +1,19 @@
+{
+  "prepared_utc": "2026-10-21T02:32:18.143892+00:00",
+  "authorization": "主代理明確放行後才可啟動",
+  "released": true,
+  "prepare_receipt": "/workspace/geo261-evidence/p189-host-copy-75f587a5e96d-9oo11k1i/prepare-receipt.json",
+  "supervisor": "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+  "supervisor_sha256": "e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413",
+  "out": "/workspace/geo261-evidence/p189-host-copy-75f587a5e96d-9oo11k1i",
+  "scheduled_launch_argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+    "/workspace/geo261-evidence/p189-host-copy-75f587a5e96d-9oo11k1i/supervisor-released-config.json"
+  ],
+  "launch_transport": "exec_command保有頂層session並真wait；stdout/stderr直檔，不launch-and-exit。",
+  "classification": "候選性能預檢；非完整可合驗收；不改既有收據",
+  "released_utc": "2026-10-21T02:36:07.679724+00:00",
+  "release_reason": "root：K/H定向與44個指定控制通過；peer原版更正核0 chunk e2257a；全員已停止額外IO，一輪固定36樣本，不重抽、不改門檻。"
+}

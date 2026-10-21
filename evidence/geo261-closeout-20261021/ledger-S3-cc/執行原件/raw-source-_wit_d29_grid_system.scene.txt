@@ -1,0 +1,9 @@
+# D29 / I37 / R32: one independent definition, two live applications.
+# First application: u/v = 400,800,1200,1600; second: 600,1000,1400,1800.
+# The hole and L-shaped boundary change visible segments, not source indices.
+grid-system 7 name-hex 343030206d6d main-along u u series 400 400 4 v series 400 400 4
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 2400,0 2400,2400 0,2400 hole 900,900 1300,900 1300,1300 900,1300
+surface 2 origin 2800 0 2500 u +x v +y outline 0,0 2400,0 2400,1200 1200,1200 1200,2400 0,2400
+grid 1 on 1 from-system 7 origin 0 0
+grid 2 on 2 from-system 7 origin 200 200
+canvas-pos grid-system 7 120 80

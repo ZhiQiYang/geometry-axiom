@@ -1,0 +1,11 @@
+/workspace/geo261-p189-footprint-src-so2esnv5/scenes/repo-_edge_grid_locked_shrink.scene:11: I23 timber 3: I23: 網格 1 u 軸索引 1 超出範圍（本軸共 1 條）
+I8a preview 1: invalid; cannot apply
+grid 1 on 1 sample (not complete geometry) u stride 1 total 2: k=0@1000{[1000,0]-[1000,3000]} k=1@3000{[3000,0]-[3000,3000]} v stride 1 total 0: undefined -> grid 1 on 1 sample (not complete geometry) u stride 1 total 1: k=0@1000{[1000,0]-[1000,3000]} v stride 1 total 0: undefined
+ timber 1 center 10 -> 10 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 2 center 2990 -> 2990 length 4000 -> 4000
+  surface 1 origin [4000,3000,2500] axes [-1,0,0]/[0,-1,0]/[0,0,1] -> surface 1 origin [4000,3000,2500] axes [-1,0,0]/[0,-1,0]/[0,0,1]
+ timber 3 center 3000 -> 0 length 2960 -> 0 (unavailable/deleted)
+  surface 1 origin [3014,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> unavailable
+ timber 3 I23 expected: referenced grid index exists; actual: I23: 網格 1 u 軸索引 1 超出範圍（本軸共 1 條）
+/workspace/geo261-p189-footprint-src-so2esnv5/scenes/repo-_edge_grid_locked_shrink.scene:11: I8a: impact preview required (World unchanged); line 11: I23 timber 3: I23: 網格 1 u 軸索引 1 超出範圍（本軸共 1 條）

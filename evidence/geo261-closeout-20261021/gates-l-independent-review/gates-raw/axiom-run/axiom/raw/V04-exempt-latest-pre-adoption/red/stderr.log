@@ -1,0 +1,16 @@
+F
+======================================================================
+FAIL: test_pre_card_axioms_reject_card_syntax_with_stripped_declarations (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_card_syntax_with_stripped_declarations) (version=('651c661b2c4c224c58bb4a2ed0a42ed929a16aa6', 'ab31dc36d5416762ac44932940a94f6142b72e831ceb62c0bc67375512109004'), path='CARD_AXIOM_SYNTAX')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_engineering_model_compatibility.py", line 244, in assert_card_requires_adopted_axioms
+    self.assertEqual(caught.exception.code, 'AXIOM_VERSION', label)
+AssertionError: 'BASE_INVALID' != 'AXIOM_VERSION'
+- BASE_INVALID
++ AXIOM_VERSION
+ : CARD_AXIOM_SYNTAX
+
+----------------------------------------------------------------------
+Ran 1 test in 0.359s
+
+FAILED (failures=1)

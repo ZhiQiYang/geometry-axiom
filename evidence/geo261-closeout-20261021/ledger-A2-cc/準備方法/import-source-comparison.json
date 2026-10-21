@@ -1,0 +1,8 @@
+{
+  "original": "/workspace/geo261-evidence/import_default_cc_ledger.py",
+  "original_sha256": "18d61cbb145374cc41f537cab52032079555b86f3cc78aa9d409902fcbb8f53c",
+  "candidate": "/workspace/geo261-evidence/ledger-L2-preparation/import_ledger.py",
+  "candidate_sha256": "671f990f0d14ce9f63123d4d757c3df6d7ec55793f29eb175aefa0d172f86c71",
+  "executed": false,
+  "備註": "只準備新 A2 參數化匯入候選；原 importer 固定 A/L1 不執行。須 root 核完當輪全 ledger 才允許執行此會提交與一般推送的候選。"
+}

@@ -1,0 +1,45 @@
+--- 已審未執行稿53a8a6ec
++++ 僅原子發布交易修正
+@@ -20,6 +20,7 @@
+ PHASES=('q38','controls','card','axiom')
+ OUT=BASE/'gates-publish-clean'
+ BUNDLE=Path('/workspace/geo261-evidence/final-bundle/gates-L3-formal')
++STAGING=BUNDLE.with_name('gates-L3-formal.staging')
+ APPENDIX=Path('/workspace/geo261-evidence/final-bundle/gates-L3-formal-appendix')
+ OLD_METHOD=Path('/workspace/geo261-evidence/gates-l-preparation/package-gates-l.py')
+ OLD_METHOD_HASH='091c26cdd312fa73980f2864186e8ddce35a77ba7a9afe75933efcbb22a8b753'
+@@ -75,7 +76,7 @@
+     assert h(OLD_METHOD.read_bytes())==OLD_METHOD_HASH
+     plan=read(PREP/'instance.json');root=Path(plan['gatesWorktree'])
+     assert plan['sourceSha']==SOURCE and Path(plan['gatesOut'])==G and plan['gateJobs']==1
+-    for directory in [OUT,BUNDLE,APPENDIX]:assert not directory.exists(),str(directory)
++    for directory in [OUT,BUNDLE,STAGING,APPENDIX]:assert not directory.exists(),str(directory)
+     def git(*argv):return subprocess.check_output(['git',*argv],cwd=root,text=True).strip()
+     assert git('rev-parse','HEAD')==SOURCE and git('status','--porcelain')==''
+     native=read(BASE/'native/verification.json');completion=read(BASE/'native/completion-verification.json')
+@@ -276,17 +277,21 @@
+         if path.is_file():files.append(dict(path=str(path.relative_to(OUT)),bytes=path.stat().st_size,sha256=h(path.read_bytes())))
+     save(OUT/'artifact-index.json',dict(sourceSha=SOURCE,createdUtc=utc(),files=files,
+         fileCountExcludingThisIndex=len(files),totalBytesExcludingThisIndex=sum(x['bytes'] for x in files),excludedFromOwnHash='artifact-index.json',noExecutableArtifacts=True))
+-    shutil.copytree(OUT,BUNDLE,copy_function=shutil.copy2);copied=[]
++    shutil.copytree(OUT,STAGING,copy_function=shutil.copy2);copied=[]
+     for path in sorted(OUT.rglob('*')):
+         if path.is_file():
+-            relative=path.relative_to(OUT);target=BUNDLE/relative
++            relative=path.relative_to(OUT);target=STAGING/relative
+             assert target.read_bytes()==path.read_bytes() and target.stat().st_mtime_ns==path.stat().st_mtime_ns
+             copied.append(dict(path=str(relative),bytes=path.stat().st_size,sha256=h(path.read_bytes()),sourceMtimeNs=path.stat().st_mtime_ns))
+-    assert {x['path'] for x in copied}=={str(p.relative_to(BUNDLE)) for p in BUNDLE.rglob('*') if p.is_file()}
++    assert {x['path'] for x in copied}=={str(p.relative_to(STAGING)) for p in STAGING.rglob('*') if p.is_file()}
++    assert not BUNDLE.exists(),str(BUNDLE)
++    os.replace(STAGING,BUNDLE)
++    assert not STAGING.exists() and BUNDLE.is_dir()
+     APPENDIX.mkdir()
+     proof=dict(sourceSha=SOURCE,curated=str(OUT),destination=str(BUNDLE),files=copied,fileCount=len(copied),
+         totalBytes=sum(x['bytes'] for x in copied),allCopiesByteAndMtimeIdentical=True,originalIndexUnchanged=True,
+-        artifactIndexSha256=h((OUT/'artifact-index.json').read_bytes()),copiedUtc=utc())
++        artifactIndexSha256=h((OUT/'artifact-index.json').read_bytes()),copiedUtc=utc(),
++        stagingPath=str(STAGING),publishedAtomically=True,publicationMethod='同一父目錄完整核對後os.replace一次發布；發布後不寫主子包。')
+     save(APPENDIX/'copy-verification.json',proof)
+     result={k:proof[k] for k in ['sourceSha','curated','destination','fileCount','totalBytes','artifactIndexSha256']}
+     result.update(copyVerificationSha256=h((APPENDIX/'copy-verification.json').read_bytes()),curationTool=ref(Path(__file__)),

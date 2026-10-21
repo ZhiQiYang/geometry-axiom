@@ -1,0 +1,473 @@
+{
+  "schema": "geo261-browser-five-L3-artifact-peer/1",
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "reviewedUTC": "2026-10-21T06:57:07.281546+00:00",
+  "validationExitCode": 0,
+  "readOnly": true,
+  "methodSha256": "878170aca5e28342529a6809e3f76d24b539ee9df3cf1aa05df4fc806b6872f0",
+  "captureMethodSha256": "3bc018da853810112eff471881e4fba7fbb4d4523cb7d49a51b2132a472b5117",
+  "documentsSourceSha256": "0ab5cec0dd5f497e9501c68dce6970658f1d39c1f8a2c62183744b47b5826886",
+  "addedFiles": 15,
+  "addedBytes": 107195,
+  "existingWrapperFilesChecked": 9,
+  "rawDeclaredGridCount": 7,
+  "kindCounts": {
+    "raw-declared-gcanvas": 7,
+    "adjacent-test-json-receipt": 5,
+    "synthetic-markdown-input": 1,
+    "synthetic-pdf-input": 1,
+    "exported-notes-roundtrip-input": 1,
+    "existing-wrapper-artifact": 9
+  },
+  "files": [
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-infinite-grid-download-KBHAQ3/未命名專案.gcanvas",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-infinite-grid-download-KBHAQ3/未命名專案.gcanvas",
+      "bytes": 2739,
+      "sha256": "1b3ee9a8a8eed5f2937afce5be92701e5b06f349870627d0dd8da68200b8e188",
+      "kind": "raw-declared-gcanvas",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-infinite-grid-download-KBHAQ3/infinite-grid-roundtrip.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-infinite-grid-download-KBHAQ3/infinite-grid-roundtrip.json",
+      "bytes": 72053,
+      "sha256": "e38d134efe14fea64408d6c8fbc384eab4725591e6c1d2e7c7bf6dc747187dbc",
+      "kind": "adjacent-test-json-receipt",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-rule-editor-GF9GCw/未命名專案.gcanvas",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-GF9GCw/未命名專案.gcanvas",
+      "bytes": 1716,
+      "sha256": "2140e4329113097eea1b88998f16dd1abc5786f15cf0f348bc3a6f3e53c5ec1e",
+      "kind": "raw-declared-gcanvas",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-rule-editor-WUY3mS/未命名專案.gcanvas",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-WUY3mS/未命名專案.gcanvas",
+      "bytes": 1714,
+      "sha256": "c9f566e60fb04ed56de202a4b2f95832fe45f30f2102f8d83b018979959791e7",
+      "kind": "raw-declared-gcanvas",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-rule-editor-qFJE4z/未命名專案.gcanvas",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-qFJE4z/未命名專案.gcanvas",
+      "bytes": 2082,
+      "sha256": "60b5fc8a372e67535e13ca8013a8e8905d142245edd16a4a2ae3a0f7c88aa4ad",
+      "kind": "raw-declared-gcanvas",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-rule-editor-qFJE4z/rule-editor-roundtrip.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-qFJE4z/rule-editor-roundtrip.json",
+      "bytes": 4283,
+      "sha256": "65880caba28b6934e3ab54f531ce630bbedd852fb824f19f2af04dbea6bd7eab",
+      "kind": "adjacent-test-json-receipt",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-rule-editor-pQtO1D/未命名專案.gcanvas",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-pQtO1D/未命名專案.gcanvas",
+      "bytes": 1923,
+      "sha256": "cae7d9e3116c47fed9726f124b941183684132c1e4be26cd53fcf063f93e7c19",
+      "kind": "raw-declared-gcanvas",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-rule-editor-pQtO1D/rule-editor-roundtrip.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-pQtO1D/rule-editor-roundtrip.json",
+      "bytes": 4109,
+      "sha256": "6b94a1adba0bd65e8955bdd7b9f8cf35eedab653405284c6c9a31fc72dea1c5a",
+      "kind": "adjacent-test-json-receipt",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-rule-lines-cwK0Za/未命名專案.gcanvas",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-lines-cwK0Za/未命名專案.gcanvas",
+      "bytes": 3367,
+      "sha256": "983b70be3305edf289706526baa2261e8faa4b0216fb02f72bf709606e247833",
+      "kind": "raw-declared-gcanvas",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-rule-lines-cwK0Za/rule-lines-receipt.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-lines-cwK0Za/rule-lines-receipt.json",
+      "bytes": 4208,
+      "sha256": "5f3abd240f00795d95fc03b85f94e24ee88f5650f200e008fee3df9ebe106e11",
+      "kind": "adjacent-test-json-receipt",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-rule-lines-JjIxBW/未命名專案.gcanvas",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-lines-JjIxBW/未命名專案.gcanvas",
+      "bytes": 3343,
+      "sha256": "43f3b0d35d9f2a02aadaa378e91ea824ca8200a2164934f58409b8a59611f461",
+      "kind": "raw-declared-gcanvas",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/grid/geometry-rule-lines-JjIxBW/rule-lines-receipt.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-lines-JjIxBW/rule-lines-receipt.json",
+      "bytes": 4183,
+      "sha256": "654c0c74c1fc505c5f9f7ec5599af6d06441365e42d882dbef62efeee79da99d",
+      "kind": "adjacent-test-json-receipt",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/documents/geometry-document-fixtures-0iwvkf/fixture.md",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/documents/geometry-document-fixtures-0iwvkf/fixture.md",
+      "bytes": 155,
+      "sha256": "fc6abc17cba8a50b83abef77a9293043a313766a3a3b7f306c2e88fde29a8d52",
+      "kind": "synthetic-markdown-input",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/documents/geometry-document-fixtures-0iwvkf/synthetic.pdf",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/documents/geometry-document-fixtures-0iwvkf/synthetic.pdf",
+      "bytes": 973,
+      "sha256": "641fe52c7199ecafece48cd14e8ef3121c086ffbc8f69a4966ebd050e512fc4e",
+      "kind": "synthetic-pdf-input",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "declared-artifacts/documents/geometry-document-fixtures-0iwvkf/notes.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/documents/geometry-document-fixtures-0iwvkf/notes.json",
+      "bytes": 347,
+      "sha256": "bf7ddbf5a61b542df2f54743ba6908625644e0681048856b5018c59fb764ea0f",
+      "kind": "exported-notes-roundtrip-input",
+      "existingWrapperCapture": false
+    },
+    {
+      "artifactPath": "assembly/artifacts/geometry-tests/assembly-generation-g07-before.gcanvas",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/assembly/geometry-tests/assembly-generation-g07-before.gcanvas",
+      "bytes": 5200,
+      "sha256": "29051689c37243ff2a8acb173a052c9758b765ddc80bb93c4c19c611ac1da166",
+      "kind": "existing-wrapper-artifact",
+      "existingWrapperCapture": true
+    },
+    {
+      "artifactPath": "assembly/artifacts/geometry-tests/assembly-generation-g07-before.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/assembly/geometry-tests/assembly-generation-g07-before.json",
+      "bytes": 1874,
+      "sha256": "68be74474b75645760e17064fd09b1431b2389daf0b9fab400a525209baa4e06",
+      "kind": "existing-wrapper-artifact",
+      "existingWrapperCapture": true
+    },
+    {
+      "artifactPath": "space/artifacts/space-artifacts/chrome.stderr.log",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/space/space-artifacts/chrome.stderr.log",
+      "bytes": 6089,
+      "sha256": "dad22023a45282475f09cb89e9145bb81994c6aac83493185b3d8a41eb64f0fc",
+      "kind": "existing-wrapper-artifact",
+      "existingWrapperCapture": true
+    },
+    {
+      "artifactPath": "space/artifacts/space-artifacts/downloads/未命名專案.gcanvas",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/space/space-artifacts/downloads/未命名專案.gcanvas",
+      "bytes": 37094,
+      "sha256": "7559a24cf86b1ad40d62d22157f3ceeb356c8a0d47b46a89f38e92e0431c20fb",
+      "kind": "existing-wrapper-artifact",
+      "existingWrapperCapture": true
+    },
+    {
+      "artifactPath": "space/artifacts/space-artifacts/projection-close-proof.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/space/space-artifacts/projection-close-proof.json",
+      "bytes": 5775,
+      "sha256": "2203541182a32c0ff8b2c174a90ba0df094d47f1ea56ce600ae1cf1c7bbc6348",
+      "kind": "existing-wrapper-artifact",
+      "existingWrapperCapture": true
+    },
+    {
+      "artifactPath": "space/artifacts/space-artifacts/result.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/space/space-artifacts/result.json",
+      "bytes": 38726,
+      "sha256": "5317865c45c53f663bf2dcc0334c7713287123ea3152083caf98b00bf84a8547",
+      "kind": "existing-wrapper-artifact",
+      "existingWrapperCapture": true
+    },
+    {
+      "artifactPath": "timber/artifacts/space-artifacts/chrome.stderr.log",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/timber/space-artifacts/chrome.stderr.log",
+      "bytes": 5700,
+      "sha256": "4c9f217bf279c492dc6e7dca268215f60cd245e0061676283151197921cba1de",
+      "kind": "existing-wrapper-artifact",
+      "existingWrapperCapture": true
+    },
+    {
+      "artifactPath": "timber/artifacts/space-artifacts/downloads/z=2500 角材骨架・4 × 3 m空間-timbers.model.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/timber/space-artifacts/downloads/z=2500 角材骨架・4 × 3 m空間-timbers.model.json",
+      "bytes": 113440,
+      "sha256": "d96b328e61af3478d2110b955c4040cd648367cdfabb33205da4caf4f8d9f1eb",
+      "kind": "existing-wrapper-artifact",
+      "existingWrapperCapture": true
+    },
+    {
+      "artifactPath": "timber/artifacts/space-artifacts/result.json",
+      "sourcePath": "/tmp/geo261-browser-five-l3-6589248c-formal/timber/space-artifacts/result.json",
+      "bytes": 13664,
+      "sha256": "e956fc1587def8b3536bb2ea003b0f01af050e5698cbeb1c122aed8dc6d8e534",
+      "kind": "existing-wrapper-artifact",
+      "existingWrapperCapture": true
+    }
+  ],
+  "references": {
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifact-capture.json": {
+      "bytes": 16672,
+      "sha256": "9928150a3d41bccea63a71935613717bec84774bb134d7f8807a500e8262cec3"
+    },
+    "/workspace/geo261-evidence/browser-L3-preparation/capture-five-artifacts-code.txt": {
+      "bytes": 4089,
+      "sha256": "3bc018da853810112eff471881e4fba7fbb4d4523cb7d49a51b2132a472b5117"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/receipt.json": {
+      "bytes": 20049,
+      "sha256": "7f48bba8cd2b6a75488a2377130fa49e415eb579792955043537814bda293905"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/receipt.json": {
+      "bytes": 20485,
+      "sha256": "bff1ad3f4c568edb8a85b7798646604b25c982e68ebdf9c0a93aae656c00c814"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/receipt.json": {
+      "bytes": 20636,
+      "sha256": "544b19c99c335d6408f40b7009938ae80427df46bd8686e8baf88fd080ba0c5a"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/receipt.json": {
+      "bytes": 45706,
+      "sha256": "585479698b66c4ea51829ba8958fbe5c88704b3a169fd2ee813be4d59ba84e0b"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/receipt.json": {
+      "bytes": 51293,
+      "sha256": "c96b08bb1314c468e0b58f6c565a187ace44e52bf7934e49e941f387a5c253c2"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/run.log": {
+      "bytes": 41713,
+      "sha256": "4b8a563e88eb195031ac646fd84f0fb44c46516e6f23884e784c3d960f0e1421"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/manifest.json": {
+      "bytes": 5764,
+      "sha256": "c253c2caf46981b29ee5cf67f3ed3efc7ba1c549303be22471636aeff67bcc68"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/manifest.json": {
+      "bytes": 4840,
+      "sha256": "18df4babab236457028c891c1cef38f2497b2d615d638f69e2e7604877a9e9fa"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/grid/manifest.json": {
+      "bytes": 6795,
+      "sha256": "9c1dd29d1182c86a7bcea3274b31d54939d30a37271fc2cbcf7088a899171020"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/manifest.json": {
+      "bytes": 10173,
+      "sha256": "1b9904c12f75837511b26ab79e4772f74cb8d587c81698991e92d39fdf4a02cc"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/manifest.json": {
+      "bytes": 5824,
+      "sha256": "f9e7350bd4137cc8354393d8b56f7db2bdf5f2b05197748d6622decaeafe97d6"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-infinite-grid-download-KBHAQ3/未命名專案.gcanvas": {
+      "bytes": 2739,
+      "sha256": "1b3ee9a8a8eed5f2937afce5be92701e5b06f349870627d0dd8da68200b8e188"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-infinite-grid-download-KBHAQ3/未命名專案.gcanvas": {
+      "bytes": 2739,
+      "sha256": "1b3ee9a8a8eed5f2937afce5be92701e5b06f349870627d0dd8da68200b8e188"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-infinite-grid-download-KBHAQ3/infinite-grid-roundtrip.json": {
+      "bytes": 72053,
+      "sha256": "e38d134efe14fea64408d6c8fbc384eab4725591e6c1d2e7c7bf6dc747187dbc"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-infinite-grid-download-KBHAQ3/infinite-grid-roundtrip.json": {
+      "bytes": 72053,
+      "sha256": "e38d134efe14fea64408d6c8fbc384eab4725591e6c1d2e7c7bf6dc747187dbc"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-GF9GCw/未命名專案.gcanvas": {
+      "bytes": 1716,
+      "sha256": "2140e4329113097eea1b88998f16dd1abc5786f15cf0f348bc3a6f3e53c5ec1e"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-GF9GCw/未命名專案.gcanvas": {
+      "bytes": 1716,
+      "sha256": "2140e4329113097eea1b88998f16dd1abc5786f15cf0f348bc3a6f3e53c5ec1e"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-WUY3mS/未命名專案.gcanvas": {
+      "bytes": 1714,
+      "sha256": "c9f566e60fb04ed56de202a4b2f95832fe45f30f2102f8d83b018979959791e7"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-WUY3mS/未命名專案.gcanvas": {
+      "bytes": 1714,
+      "sha256": "c9f566e60fb04ed56de202a4b2f95832fe45f30f2102f8d83b018979959791e7"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-qFJE4z/未命名專案.gcanvas": {
+      "bytes": 2082,
+      "sha256": "60b5fc8a372e67535e13ca8013a8e8905d142245edd16a4a2ae3a0f7c88aa4ad"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-qFJE4z/未命名專案.gcanvas": {
+      "bytes": 2082,
+      "sha256": "60b5fc8a372e67535e13ca8013a8e8905d142245edd16a4a2ae3a0f7c88aa4ad"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-qFJE4z/rule-editor-roundtrip.json": {
+      "bytes": 4283,
+      "sha256": "65880caba28b6934e3ab54f531ce630bbedd852fb824f19f2af04dbea6bd7eab"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-qFJE4z/rule-editor-roundtrip.json": {
+      "bytes": 4283,
+      "sha256": "65880caba28b6934e3ab54f531ce630bbedd852fb824f19f2af04dbea6bd7eab"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-pQtO1D/未命名專案.gcanvas": {
+      "bytes": 1923,
+      "sha256": "cae7d9e3116c47fed9726f124b941183684132c1e4be26cd53fcf063f93e7c19"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-pQtO1D/未命名專案.gcanvas": {
+      "bytes": 1923,
+      "sha256": "cae7d9e3116c47fed9726f124b941183684132c1e4be26cd53fcf063f93e7c19"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-editor-pQtO1D/rule-editor-roundtrip.json": {
+      "bytes": 4109,
+      "sha256": "6b94a1adba0bd65e8955bdd7b9f8cf35eedab653405284c6c9a31fc72dea1c5a"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-editor-pQtO1D/rule-editor-roundtrip.json": {
+      "bytes": 4109,
+      "sha256": "6b94a1adba0bd65e8955bdd7b9f8cf35eedab653405284c6c9a31fc72dea1c5a"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-lines-cwK0Za/未命名專案.gcanvas": {
+      "bytes": 3367,
+      "sha256": "983b70be3305edf289706526baa2261e8faa4b0216fb02f72bf709606e247833"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-lines-cwK0Za/未命名專案.gcanvas": {
+      "bytes": 3367,
+      "sha256": "983b70be3305edf289706526baa2261e8faa4b0216fb02f72bf709606e247833"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-lines-cwK0Za/rule-lines-receipt.json": {
+      "bytes": 4208,
+      "sha256": "5f3abd240f00795d95fc03b85f94e24ee88f5650f200e008fee3df9ebe106e11"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-lines-cwK0Za/rule-lines-receipt.json": {
+      "bytes": 4208,
+      "sha256": "5f3abd240f00795d95fc03b85f94e24ee88f5650f200e008fee3df9ebe106e11"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-lines-JjIxBW/未命名專案.gcanvas": {
+      "bytes": 3343,
+      "sha256": "43f3b0d35d9f2a02aadaa378e91ea824ca8200a2164934f58409b8a59611f461"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-lines-JjIxBW/未命名專案.gcanvas": {
+      "bytes": 3343,
+      "sha256": "43f3b0d35d9f2a02aadaa378e91ea824ca8200a2164934f58409b8a59611f461"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/grid/geometry-rule-lines-JjIxBW/rule-lines-receipt.json": {
+      "bytes": 4183,
+      "sha256": "654c0c74c1fc505c5f9f7ec5599af6d06441365e42d882dbef62efeee79da99d"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/grid/geometry-rule-lines-JjIxBW/rule-lines-receipt.json": {
+      "bytes": 4183,
+      "sha256": "654c0c74c1fc505c5f9f7ec5599af6d06441365e42d882dbef62efeee79da99d"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/documents/geometry-document-fixtures-0iwvkf/fixture.md": {
+      "bytes": 155,
+      "sha256": "fc6abc17cba8a50b83abef77a9293043a313766a3a3b7f306c2e88fde29a8d52"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/documents/geometry-document-fixtures-0iwvkf/fixture.md": {
+      "bytes": 155,
+      "sha256": "fc6abc17cba8a50b83abef77a9293043a313766a3a3b7f306c2e88fde29a8d52"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/documents/geometry-document-fixtures-0iwvkf/synthetic.pdf": {
+      "bytes": 973,
+      "sha256": "641fe52c7199ecafece48cd14e8ef3121c086ffbc8f69a4966ebd050e512fc4e"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/documents/geometry-document-fixtures-0iwvkf/synthetic.pdf": {
+      "bytes": 973,
+      "sha256": "641fe52c7199ecafece48cd14e8ef3121c086ffbc8f69a4966ebd050e512fc4e"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/documents/geometry-document-fixtures-0iwvkf/notes.json": {
+      "bytes": 347,
+      "sha256": "bf7ddbf5a61b542df2f54743ba6908625644e0681048856b5018c59fb764ea0f"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/declared-artifacts/documents/geometry-document-fixtures-0iwvkf/notes.json": {
+      "bytes": 347,
+      "sha256": "bf7ddbf5a61b542df2f54743ba6908625644e0681048856b5018c59fb764ea0f"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/assembly/geometry-tests/assembly-generation-g07-before.gcanvas": {
+      "bytes": 5200,
+      "sha256": "29051689c37243ff2a8acb173a052c9758b765ddc80bb93c4c19c611ac1da166"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-generation-g07-before.gcanvas": {
+      "bytes": 5200,
+      "sha256": "29051689c37243ff2a8acb173a052c9758b765ddc80bb93c4c19c611ac1da166"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/assembly/geometry-tests/assembly-generation-g07-before.json": {
+      "bytes": 1874,
+      "sha256": "68be74474b75645760e17064fd09b1431b2389daf0b9fab400a525209baa4e06"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/assembly/artifacts/geometry-tests/assembly-generation-g07-before.json": {
+      "bytes": 1874,
+      "sha256": "68be74474b75645760e17064fd09b1431b2389daf0b9fab400a525209baa4e06"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/space/space-artifacts/chrome.stderr.log": {
+      "bytes": 6089,
+      "sha256": "dad22023a45282475f09cb89e9145bb81994c6aac83493185b3d8a41eb64f0fc"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/chrome.stderr.log": {
+      "bytes": 6089,
+      "sha256": "dad22023a45282475f09cb89e9145bb81994c6aac83493185b3d8a41eb64f0fc"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/space/space-artifacts/downloads/未命名專案.gcanvas": {
+      "bytes": 37094,
+      "sha256": "7559a24cf86b1ad40d62d22157f3ceeb356c8a0d47b46a89f38e92e0431c20fb"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/downloads/未命名專案.gcanvas": {
+      "bytes": 37094,
+      "sha256": "7559a24cf86b1ad40d62d22157f3ceeb356c8a0d47b46a89f38e92e0431c20fb"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/space/space-artifacts/projection-close-proof.json": {
+      "bytes": 5775,
+      "sha256": "2203541182a32c0ff8b2c174a90ba0df094d47f1ea56ce600ae1cf1c7bbc6348"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/projection-close-proof.json": {
+      "bytes": 5775,
+      "sha256": "2203541182a32c0ff8b2c174a90ba0df094d47f1ea56ce600ae1cf1c7bbc6348"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/space/space-artifacts/result.json": {
+      "bytes": 38726,
+      "sha256": "5317865c45c53f663bf2dcc0334c7713287123ea3152083caf98b00bf84a8547"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/space/artifacts/space-artifacts/result.json": {
+      "bytes": 38726,
+      "sha256": "5317865c45c53f663bf2dcc0334c7713287123ea3152083caf98b00bf84a8547"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/timber/space-artifacts/chrome.stderr.log": {
+      "bytes": 5700,
+      "sha256": "4c9f217bf279c492dc6e7dca268215f60cd245e0061676283151197921cba1de"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/chrome.stderr.log": {
+      "bytes": 5700,
+      "sha256": "4c9f217bf279c492dc6e7dca268215f60cd245e0061676283151197921cba1de"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/timber/space-artifacts/downloads/z=2500 角材骨架・4 × 3 m空間-timbers.model.json": {
+      "bytes": 113440,
+      "sha256": "d96b328e61af3478d2110b955c4040cd648367cdfabb33205da4caf4f8d9f1eb"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/downloads/z=2500 角材骨架・4 × 3 m空間-timbers.model.json": {
+      "bytes": 113440,
+      "sha256": "d96b328e61af3478d2110b955c4040cd648367cdfabb33205da4caf4f8d9f1eb"
+    },
+    "/tmp/geo261-browser-five-l3-6589248c-formal/timber/space-artifacts/result.json": {
+      "bytes": 13664,
+      "sha256": "e956fc1587def8b3536bb2ea003b0f01af050e5698cbeb1c122aed8dc6d8e534"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/timber/artifacts/space-artifacts/result.json": {
+      "bytes": 13664,
+      "sha256": "e956fc1587def8b3536bb2ea003b0f01af050e5698cbeb1c122aed8dc6d8e534"
+    },
+    "/workspace/geo261-evidence/browser-five-L3-independent-review/artifact-peer-code.txt": {
+      "bytes": 5770,
+      "sha256": "878170aca5e28342529a6809e3f76d24b539ee9df3cf1aa05df4fc806b6872f0"
+    }
+  },
+  "limitations": [
+    "只核現存原件與封存副本逐 bytes/hash/mtime；沒有生成或重跑產品。",
+    "補封時間在五項 job 結束之後，不算入各自原 deadline。",
+    "5 個相鄰 JSON 是原測試收據，3 個 documents 檔是合成輸入／notes roundtrip，不冒稱使用者下載。",
+    "mtime 界線沿原秒級收據 startedUtc <= mtime < finishedUtc+1秒；不是更細的單調時鐘採樣。",
+    "9 個已存產物只核對原 suite manifest，沒有修改它們或重複複製。"
+  ]
+}

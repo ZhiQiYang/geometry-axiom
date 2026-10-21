@@ -1,0 +1,21 @@
+test_live_host_follow_detach_conversion_and_atomic_delete (tests.test_section_profile_native.SectionProfileNative.test_live_host_follow_detach_conversion_and_atomic_delete) ... FAIL
+
+======================================================================
+FAIL: test_live_host_follow_detach_conversion_and_atomic_delete (tests.test_section_profile_native.SectionProfileNative.test_live_host_follow_detach_conversion_and_atomic_delete)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_section_profile_native.py", line 618, in test_live_host_follow_detach_conversion_and_atomic_delete
+    self.assertEqual([1000,2000,2800],self.read()["state"]["runs"][0]["frame"]["origin"],
+AssertionError: Lists differ: [1000, 2000, 2800] != [2000, 2000, 2800]
+
+First differing element 0:
+1000
+2000
+
+- [1000, 2000, 2800]
++ [2000, 2000, 2800] : R38/R40: O = o_H + p*U_H + q*V_H must follow the live host to z=2800
+
+----------------------------------------------------------------------
+Ran 1 test in 0.178s
+
+FAILED (failures=1)

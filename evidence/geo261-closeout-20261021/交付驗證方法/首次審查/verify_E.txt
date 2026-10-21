@@ -1,0 +1,280 @@
+#!/usr/bin/env python3
+"""一次性只讀核對 L→E 的精確證據交付，不執行測試、編譯或架構掃描。"""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import stat
+import subprocess
+import sys
+
+sys.dont_write_bytecode = True
+L = "43f85313c32410ac01406ab585846bbacafea278"
+SNAPSHOT_HASH = "72283a36e47831867884f9682684267eddaf5d208acaf3891a0abeb9b3774455"
+LEDGER_HASH = "868a80700c9d058e208684631e799a91659e7820b06c31c246b8af96c670a731"
+ROOT = "evidence/geo261-closeout-20261021"
+INDEX = "artifact-index.json"
+APPENDS = {
+    ".gitignore": "!/" + ROOT + "/\n!/" + ROOT + "/**/build.log\n!/" + ROOT + "/**/server.log\n",
+    ".gitattributes": ROOT + "/** -text -whitespace\n",
+}
+FORBIDDEN_SUFFIXES = {".py", ".pyc", ".js", ".mjs", ".cjs", ".sh", ".bash", ".ps1",
+                      ".bat", ".cmd", ".exe", ".dll", ".so", ".o", ".obj", ".c", ".h",
+                      ".inc", ".html", ".htm", ".svg"}
+
+
+def require(ok, message):
+    if not ok:
+        raise RuntimeError(message)
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def strict_json(raw):
+    def pairs(items):
+        out = {}
+        for key, value in items:
+            require(key not in out, "JSON 含重複欄位：" + key)
+            out[key] = value
+        return out
+    return json.loads(raw, object_pairs_hook=pairs)
+
+
+def valid_relative(path):
+    require(isinstance(path, str) and path and "\\" not in path and ":" not in path,
+            "證據路徑不是相對 POSIX 路徑")
+    parsed = PurePosixPath(path)
+    require(not parsed.is_absolute() and parsed.as_posix() == path
+            and all(part not in {"", ".", "..", ".git"} for part in parsed.parts)
+            and not any(ord(char) < 32 or ord(char) == 127 for char in path),
+            "證據路徑含越界或控制字元")
+
+
+def reviewed_files(rows):
+    require(isinstance(rows, list) and rows, "review 證據清單為空")
+    expected = {}
+    for row in rows:
+        require(set(row) == {"path", "bytes", "sha256"}, "review 檔案欄位不符")
+        path = row["path"]
+        valid_relative(path)
+        require(path not in expected and isinstance(row["bytes"], int) and not isinstance(row["bytes"], bool)
+                and row["bytes"] >= 0 and re.fullmatch(r"[0-9a-f]{64}", row["sha256"]), "review 檔案重複或數值不符")
+        require(PurePosixPath(path).suffix.lower() not in FORBIDDEN_SUFFIXES
+                and PurePosixPath(path).name not in {".gitignore", ".gitattributes"},
+                "證據根含可執行來源、主動文件或巢狀 Git 規則，應先回報")
+        expected[path] = row
+    require(list(expected) == sorted(expected) and INDEX in expected, "清單未排序或缺索引自身")
+    return expected
+
+
+def check_total_diff(changed, full_paths):
+    expected = {**{path: "A" for path in full_paths}, **{path: "M" for path in APPENDS}}
+    require(len(changed) == len(expected) and len({path for status, path in changed}) == len(changed)
+            and dict((path, status) for status, path in changed) == expected,
+            "L→E 總差異不是精確證據新增加兩份 Git 規則修改")
+
+
+def check_index(index_raw, expected):
+    wanted = {"schema": 1, "root": ROOT, "selfExcluded": INDEX,
+              "entries": [row for path, row in expected.items() if path != INDEX]}
+    actual = strict_json(index_raw)
+    require(json.dumps(actual, sort_keys=True, ensure_ascii=False) == json.dumps(wanted, sort_keys=True, ensure_ascii=False),
+            "artifact-index.json 非精確全集合或自我排除不符")
+
+
+def check_config(path, before, after, config):
+    suffix = APPENDS[path]
+    require(config == {"beforeBytes": len(before), "beforeSha256": sha(before),
+                       "afterBytes": len(after), "afterSha256": sha(after), "appendUtf8": suffix},
+            "Git 規則前後bytes/hash或精確suffix不符：" + path)
+    require(before.endswith(b"\n") and after == before + suffix.encode(), "Git 規則不只是精確附加：" + path)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", required=True)
+    parser.add_argument("--expected-e", required=True)
+    parser.add_argument("--snapshot-l", required=True)
+    parser.add_argument("--review-file", required=True)
+    parser.add_argument("--review-sha256", required=True)
+    args = parser.parse_args()
+    root = Path(args.root).resolve()
+    E = args.expected_e
+    require(re.fullmatch(r"[0-9a-f]{40}", E) and E != L, "E 必須是不同於 L 的完整 commit SHA")
+    require(re.fullmatch(r"[0-9a-f]{64}", args.review_sha256), "review hash 格式不符")
+    review_raw = Path(args.review_file).read_bytes()
+    require(sha(review_raw) == args.review_sha256, "外部凍結 review hash 不符")
+    review = strict_json(review_raw)
+    require(review["schema"] == "geo261-E-review/1" and review["sourceL"] == L
+            and review["root"] == ROOT and review["indexPath"] == INDEX,
+            "review 的基底／證據根／索引不符")
+    snapshot_raw = Path(args.snapshot_l).read_bytes()
+    require(sha(snapshot_raw) == SNAPSHOT_HASH, "L 快照不是已固定的原 bytes")
+    snapshot = json.loads(snapshot_raw)
+    require(snapshot["headBefore"] == snapshot["headAfter"] == L, "快照來源不是 L")
+    env = dict(os.environ, GIT_OPTIONAL_LOCKS="0")
+    commands = []
+
+    def git(*argv, stdin=None, acceptable=(0,)):
+        command = ["git", "-c", "core.fsmonitor=false", "-C", str(root), *argv]
+        proc = subprocess.run(command, input=stdin, capture_output=True, check=False, env=env)
+        record = {"argv": command, "exitCode": proc.returncode,
+                  "stdoutBytes": len(proc.stdout), "stdoutSha256": sha(proc.stdout),
+                  "stderr": proc.stderr.decode()}
+        if len(proc.stdout) < 10000 and b"\0" not in proc.stdout:
+            record["stdout"] = proc.stdout.decode()
+        if stdin is not None:
+            record["stdinBytes"] = len(stdin)
+            record["stdinSha256"] = sha(stdin)
+        commands.append(record)
+        require(proc.returncode in acceptable, "唯讀 Git 命令失敗：" + " ".join(argv))
+        return proc.stdout, proc.returncode
+
+    def git_text(*argv):
+        return git(*argv)[0].decode().strip()
+
+    require(git_text("rev-parse", "HEAD") == E, "實際 checkout 不是指定 E")
+    require(not git("status", "--porcelain", "--untracked-files=all")[0], "工作樹有非忽略變更")
+    git("merge-base", "--is-ancestor", L, E)
+
+    def tree(head):
+        result = {}
+        for row in git("ls-tree", "-r", "-z", head)[0].split(b"\0"):
+            if row:
+                meta, path = row.split(b"\t", 1)
+                mode, kind, oid = meta.decode().split()
+                result[path.decode()] = {"mode": mode, "kind": kind, "oid": oid}
+        return result
+
+    before_tree, after_tree = tree(L), tree(E)
+    require(not any(p.startswith(ROOT + "/") for p in before_tree), "L 已含本次證據根，不能冒稱全新交付")
+    expected = reviewed_files(review["files"])
+    full_paths = {ROOT + "/" + path for path in expected}
+    actual_paths = {path for path in after_tree if path.startswith(ROOT + "/")}
+    require(actual_paths == full_paths, "E 證據實際集合與外部 review 不相等")
+    allowed = full_paths | set(APPENDS)
+
+    def diff(a, b):
+        parts = git("diff", "--name-status", "--no-renames", "-z", a, b)[0].split(b"\0")
+        require(parts[-1] == b"" and len(parts[:-1]) % 2 == 0, "Git diff 格式不符")
+        return [(parts[i].decode(), parts[i + 1].decode()) for i in range(0, len(parts) - 1, 2)]
+
+    total_diff = diff(L, E)
+    check_total_diff(total_diff, full_paths)
+    chain = []
+    previous = L
+    for head in git_text("rev-list", "--reverse", L + ".." + E).splitlines():
+        require(git_text("show", "-s", "--format=%P", head).split() == [previous], "E 交付鏈含分岔或 merge")
+        changed = diff(previous, head)
+        require(changed and all(path in allowed and status in {"A", "M"} for status, path in changed),
+                "中間提交含來源修改、刪除或非白名單路徑")
+        chain.append({"head": head, "parent": previous, "changed": changed})
+        previous = head
+    require(previous == E, "E 提交鏈未抵達目標")
+    object_format = git_text("rev-parse", "--show-object-format")
+    require(object_format in {"sha1", "sha256"}, "未知 Git object 格式")
+
+    def checked_bytes(path, source=False):
+        metadata = after_tree.get(path)
+        permitted_modes = {"100644", "100755"} if source else {"100644"}
+        require(metadata and metadata["kind"] == "blob" and metadata["mode"] in permitted_modes,
+                "受驗檔不是一般 blob 或模式不符：" + path)
+        file = root / path
+        for parent in file.relative_to(root).parents:
+            require(not (root / parent).is_symlink(), "路徑父層是 symlink：" + path)
+        mode = file.lstat().st_mode
+        require(stat.S_ISREG(mode) and (source or not mode & 0o111), "工作檔不是一般檔或證據帶執行權限：" + path)
+        raw = file.read_bytes()
+        oid = hashlib.new(object_format, b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+        require(oid == metadata["oid"], "工作檔原 bytes 不符 E Git blob：" + path)
+        return raw
+
+    evidence_bytes = 0
+    for path, row in expected.items():
+        raw = checked_bytes(ROOT + "/" + path)
+        require(len(raw) == row["bytes"] and sha(raw) == row["sha256"], "證據 bytes/hash 不符 review：" + path)
+        evidence_bytes += len(raw)
+    index_raw = checked_bytes(ROOT + "/" + INDEX)
+    check_index(index_raw, expected)
+    require(set(review["config"]) == set(APPENDS), "review 設定檔集合不符")
+    for path, suffix in APPENDS.items():
+        before = git("show", L + ":" + path)[0]
+        after = checked_bytes(path)
+        config = review["config"][path]
+        check_config(path, before, after, config)
+
+    path_input = b"".join((path + "\0").encode() for path in sorted(full_paths))
+    ignored, ignore_exit = git("check-ignore", "--no-index", "-z", "--stdin", stdin=path_input, acceptable=(0, 1))
+    require(ignore_exit == 1 and not ignored, "證據仍被 ignore 規則排除；不得泛開白名單")
+    attr_raw = git("check-attr", "--cached", "-z", "--stdin", "text", "whitespace", stdin=path_input)[0]
+    attributes = attr_raw.split(b"\0")
+    require(attributes[-1] == b"" and len(attributes[:-1]) == 6 * len(full_paths), "屬性結果數量不符")
+    parsed_attrs = {}
+    for i in range(0, len(attributes) - 1, 3):
+        path, key, value = (x.decode() for x in attributes[i:i + 3])
+        require((path, key) not in parsed_attrs, "屬性結果重複")
+        parsed_attrs[path, key] = value
+    require(parsed_attrs == {(path, key): "unset" for path in full_paths for key in ("text", "whitespace")},
+            "證據根未全部套用 -text -whitespace")
+
+    source_raw = {}
+    for path, record in snapshot["files"].items():
+        require(after_tree[path] == before_tree[path], "來源 Git blob 或 mode 改變：" + path)
+        raw = checked_bytes(path, source=True)
+        require(len(raw) == record["bytes"] and sha(raw) == record["rawSha256"]
+                and sha(raw.replace(b"\r\n", b"\n")) == record["lfSha256"], "來源 bytes 不等於 L：" + path)
+        source_raw[path] = raw
+    require(sha(source_raw["tests/mutants_results.json"]) == LEDGER_HASH, "L 帳本 bytes 改變")
+    receipt = json.loads(source_raw["geometry-core/domain-decoupling/product-architecture-receipt.json"])
+    inputs = [{"path": row["path"], "sha256": sha(source_raw[row["path"]].replace(b"\r\n", b"\n"))}
+              for row in receipt["inputs"]]
+    closure = sha(json.dumps(inputs, ensure_ascii=False, separators=(",", ":")).encode())
+    require(inputs == snapshot["architecture"]["inputs"] == receipt["inputs"]
+            and closure == receipt["inputClosureSha256"] == snapshot["architecture"]["inputClosureSha256"],
+            "架構 input closure 不符 L")
+    sys.path.insert(0, str(root / "tests"))
+    import mutate as mt
+    import mutation_bridge as mb
+    require(Path(mt.__file__).resolve() == root / "tests/mutate.py"
+            and Path(mb.__file__).resolve() == root / "tests/mutation_bridge.py", "正式 hash 函式 import 路徑不符")
+    sources = mt.Sources(root)
+    mutation = snapshot["mutation"]
+    core_oracle = mt.oracle_hash()
+    require(sources.closure == mutation["coreAndBridgeIncludeClosureSha256"]
+            and sorted(sources.hashes) == mutation["includePaths"]
+            and core_oracle == mutation["coreOracleSha256"]
+            and mt.tool_hash() == mutation["toolSha256"], "正式 closure／oracle／tool hash 改變")
+    require(sorted(p.relative_to(root).as_posix() for p in (root / "tests").glob("*.py"))
+            == mutation["bridgeFlatPythonPaths"], "bridge Python 檔案集合改變")
+    require(sorted(p.relative_to(root).as_posix() for p in root.glob("*.scene"))
+            == mutation["bridgeRootScenePaths"], "bridge 根場景集合改變")
+    require({m["id"] for m in mt.MUTANTS} == set(mutation["definitions"]), "正式突變集合改變")
+    for m in mt.MUTANTS:
+        spec = mutation["definitions"][m["id"]]
+        oracle = mb.oracle_hash(m, root) if m.get("binary") == "bridge" else core_oracle
+        require(mt.mutant_key(m) == spec["mutantSha256"] and oracle == spec["oracleSha256"],
+                "突變或 oracle hash 改變：" + m["id"])
+    require(git_text("rev-parse", "HEAD") == E, "核對期間 HEAD 改變")
+    require(not git("status", "--porcelain", "--untracked-files=all")[0], "核對期間工作樹改變")
+    print(json.dumps({
+        "schema": "geo261-L-E-binding/1", "sourceL": L, "deliveryE": E,
+        "verifierSha256": sha(Path(__file__).read_bytes()), "reviewSha256": sha(review_raw),
+        "snapshotLSha256": sha(snapshot_raw), "commitChain": chain, "totalDiff": total_diff,
+        "evidenceRoot": ROOT, "evidenceFilesIncludingIndex": len(expected), "evidenceBytes": evidence_bytes,
+        "indexSha256": sha(index_raw), "exactIndexSet": True, "configExactAppend": APPENDS,
+        "allEvidenceNotIgnored": True, "allEvidenceTextAndWhitespaceUnset": True,
+        "sourceUnionPaths": len(source_raw), "sourceUnionSameBytes": True,
+        "architectureInputCount": len(inputs), "architectureInputClosureSha256": closure,
+        "architectureMetadataSameBytes": snapshot["architecture"]["artifactPaths"],
+        "mutationIncludeClosureSha256": sources.closure, "coreOracleSha256": core_oracle,
+        "mutationToolSha256": mt.tool_hash(), "ledgerRawSha256": LEDGER_HASH,
+        "notClaimed": ["E 上重跑產品測試、正式 check、突變、編譯或架構掃描", "E 已推送或遠端可解析", "PR 審查已解除阻擋"],
+        "gitCommands": commands}, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

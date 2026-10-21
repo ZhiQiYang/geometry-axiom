@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+"""外部持久監督程序；不改產品、測試、判準或 timeout。"""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import resource
+import signal
+import subprocess
+import sys
+import time
+import traceback
+
+
+def now():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def save(path, data):
+    encoded = (json.dumps(data, ensure_ascii=False, indent=2) + '\n').encode()
+    temporary = path.with_name(path.name + '.part')
+    with temporary.open('wb') as fh:
+        fh.write(encoded)
+        fh.flush()
+        os.fsync(fh.fileno())
+    os.replace(temporary, path)
+
+
+def plain(path, data):
+    with path.open('x', encoding='utf-8') as fh:
+        fh.write(data)
+        fh.flush()
+        os.fsync(fh.fileno())
+
+
+def run_phase(out, cwd, source, phase, command, env, receipts):
+    stdout_path = out / (phase + '.stdout')
+    stderr_path = out / (phase + '.stderr')
+    started = now()
+    t0 = time.monotonic()
+    with stdout_path.open('xb') as stdout, stderr_path.open('xb') as stderr:
+        proc = subprocess.Popen(command, cwd=cwd, env=env, stdin=subprocess.DEVNULL,
+                                stdout=stdout, stderr=stderr, start_new_session=True)
+        row = {'phase': phase, 'command': command, 'cwd': str(cwd), 'source_sha': source,
+               'pid': proc.pid, 'pgid': os.getpgid(proc.pid), 'started_utc': started,
+               'stdout': str(stdout_path), 'stderr': str(stderr_path),
+               'supervisor_pid': os.getpid(), 'CC_present': 'CC' in env,
+               'PYTHONOPTIMIZE_present': 'PYTHONOPTIMIZE' in env}
+        save(out / 'running.json', row)
+        code = proc.wait()
+        stdout.flush()
+        stderr.flush()
+        os.fsync(stdout.fileno())
+        os.fsync(stderr.fileno())
+    row.update(finished_utc=now(), seconds=time.monotonic() - t0, exit_code=code,
+               stdout_sha256=sha(stdout_path.read_bytes()), stderr_sha256=sha(stderr_path.read_bytes()))
+    # 實際 wait 結束碼與原階段收據先落盤，再輸出監看訊息。
+    plain(out / (phase + '.exit-code'), str(code) + '\n')
+    receipts.append(row)
+    save(out / 'phase-receipts.json', receipts)
+    print(json.dumps({'phase': phase, 'exit_code': code, 'seconds': row['seconds']}, ensure_ascii=False), flush=True)
+    return row
+
+
+def run(config_path, selftest=False):
+    config = json.loads(config_path.read_bytes())
+    out = Path(config['output_directory'])
+    cwd = Path(config['worktree'])
+    env = os.environ.copy()
+    for key in ('CC', 'PYTHONOPTIMIZE'):
+        env.pop(key, None)
+    env.update(config['environment_overrides'])
+    assert 'CC' not in env and 'PYTHONOPTIMIZE' not in env
+    resource.setrlimit(resource.RLIMIT_STACK, (16777216, 16777216))
+    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
+    environment = {'started_utc': now(), 'source_sha': config['source_sha'],
+                   'source_tree': config.get('source_tree'), 'supervisor_pid': os.getpid(),
+                   'supervisor_pgid': os.getpgrp(), 'SIGHUP_ignored': signal.getsignal(signal.SIGHUP) == signal.SIG_IGN,
+                   'CC_present': 'CC' in env, 'PYTHONOPTIMIZE_present': 'PYTHONOPTIMIZE' in env,
+                   'environment_removed': ['CC', 'PYTHONOPTIMIZE'],
+                   'environment_overrides': config['environment_overrides'],
+                   'stack_limit_bytes': list(resource.getrlimit(resource.RLIMIT_STACK)),
+                   'core_limit': list(resource.getrlimit(resource.RLIMIT_CORE)),
+                   'supervisor_source_sha256': sha(Path(__file__).read_bytes()),
+                   'stdout_transport': '外部 orchestrator.log 直接寫檔，不依賴工具 session',
+                   'selftest': selftest}
+    if not selftest:
+        assert subprocess.check_output(['git', '-C', str(cwd), 'rev-parse', 'HEAD']).decode().strip() == config['source_sha']
+        assert not subprocess.check_output(['git', '-C', str(cwd), 'status', '--porcelain', '--untracked-files=no'])
+        assert not list(Path(config['cache']).iterdir())
+        assert not Path(config['results']).exists()
+        for row in config['raw_backups']:
+            assert sha((cwd / row['path']).read_bytes()) == row['sha256']
+        assert config['compiler_preflight']['CC_present'] is False
+        assert config['compiler_preflight']['compile_command'][0] == 'cc'
+        environment.update(platform=sys.platform, python=subprocess.check_output(['python3', '--version'], env=env).decode().strip(),
+                           cc=subprocess.check_output(['cc', '--version'], env=env).decode().splitlines()[0],
+                           cpu_quota=Path('/sys/fs/cgroup/cpu.max').read_text().strip(),
+                           compile_command=config['compiler_preflight']['compile_command'],
+                           compile_sha256=config['compiler_preflight']['compile_sha256'])
+    save(out / 'environment.json', environment)
+    save(out / 'supervisor-started.json', {'pid': os.getpid(), 'pgid': os.getpgrp(), 'utc': now(), 'selftest': selftest})
+    receipts = []
+    if selftest:
+        deadline = time.monotonic() + 10
+        while not (out / 'launcher-release').exists():
+            if time.monotonic() > deadline:
+                raise RuntimeError('launcher 自測未釋放')
+            time.sleep(0.02)
+        command = [sys.executable, '-B', '-c', 'import os,sys;print("launcher stdout");print("launcher stderr",file=sys.stderr);assert "CC" not in os.environ and "PYTHONOPTIMIZE" not in os.environ;raise SystemExit(7)']
+        row = run_phase(out, cwd, config['source_sha'], 'launcher-probe', command, env, receipts)
+        assert row['exit_code'] == 7
+        assert (out / 'launcher-probe.stdout').read_text() == 'launcher stdout\n'
+        assert (out / 'launcher-probe.stderr').read_text() == 'launcher stderr\n'
+        save(out / 'launcher-selftest-result.json', {'pass': True, 'expected_child_exit': 7,
+                                                  'actual_child_exit': row['exit_code'], 'SIGHUP_survived': True,
+                                                  'direct_stdout_stderr_preserved': True})
+        return 0
+    commands = [('mutate', ['python3', '-B', '-u', 'tests/mutate.py']),
+                ('check', ['python3', '-B', 'tests/mutate.py', '--check']),
+                ('check-killers', ['python3', '-B', 'tests/mutate.py', '--check', '--killers'])]
+    ledger_hash_after_full = None
+    for phase, command in commands:
+        assert subprocess.check_output(['git', '-C', str(cwd), 'rev-parse', 'HEAD']).decode().strip() == config['source_sha']
+        if phase != 'mutate':
+            assert sha(Path(config['results']).read_bytes()) == ledger_hash_after_full
+        run_phase(out, cwd, config['source_sha'], phase, command, env, receipts)
+        actual = sha(Path(config['results']).read_bytes())
+        if phase == 'mutate':
+            ledger_hash_after_full = actual
+        else:
+            assert actual == ledger_hash_after_full
+    raw = Path(config['results']).read_bytes()
+    results = json.loads(raw)
+    counts = {}
+    for record in results.values():
+        counts[record['verdict']] = counts.get(record['verdict'], 0) + 1
+    tracked = subprocess.check_output(['git', '-C', str(cwd), 'status', '--porcelain', '--untracked-files=no']).decode()
+    final = {'completed_utc': now(), 'source_sha': config['source_sha'], 'phases': receipts,
+             'head_after': subprocess.check_output(['git', '-C', str(cwd), 'rev-parse', 'HEAD']).decode().strip(),
+             'tracked_status_after': tracked, 'temporary_mutant_sources': [str(p) for p in cwd.glob('_mutant_*.c')],
+             'results': config['results'], 'ledger_sha256': sha(raw), 'ledger_bytes': len(raw),
+             'record_count': len(results), 'verdict_counts': counts, 'checks_preserved_ledger_bytes': True,
+             'single_full_writer': True, 'CC_present': False, 'compiler_argv0': 'cc'}
+    save(out / 'run-receipt.json', final)
+    return 0 if all(row['exit_code'] == 0 for row in receipts) else 1
+
+
+def main():
+    signal.signal(signal.SIGHUP, signal.SIG_IGN)
+    config_path = Path(sys.argv[1])
+    config = json.loads(config_path.read_bytes())
+    out = Path(config['output_directory'])
+    code = 1
+    try:
+        code = run(config_path, '--selftest' in sys.argv[2:])
+    except BaseException as exc:
+        traceback.print_exc()
+        save(out / 'supervisor-error.json', {'utc': now(), 'error_type': type(exc).__name__, 'error': str(exc)})
+    finally:
+        plain(out / 'supervisor.exit-code', str(code) + '\n')
+    return code
+
+
+if __name__ == '__main__':
+    sys.exit(main())

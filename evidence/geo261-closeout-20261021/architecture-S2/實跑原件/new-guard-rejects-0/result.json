@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "timeout",
+    "900",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+    "--root",
+    "/workspace/geometry-axiom",
+    "--probe",
+    "identifier",
+    "--manifest",
+    "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
+    "--value",
+    "WoodContactOrder"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceBaseHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "startedUtc": "2026-10-21T03:09:34.631126+00:00",
+  "finishedUtc": "2026-10-21T03:09:35.478936+00:00",
+  "seconds": 0.8478135100012878,
+  "rawWaitStatus": 256,
+  "exitCode": 1,
+  "stdout": {
+    "path": "new-guard-rejects-0/stdout.log",
+    "rawSha256": "7532353d0cfe58be3f67c1081d267b3056ebe9aea49da9331dfaa3d778cf875d",
+    "lfSha256": "7532353d0cfe58be3f67c1081d267b3056ebe9aea49da9331dfaa3d778cf875d",
+    "bytes": 16258
+  },
+  "stderr": {
+    "path": "new-guard-rejects-0/stderr.log",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  }
+}

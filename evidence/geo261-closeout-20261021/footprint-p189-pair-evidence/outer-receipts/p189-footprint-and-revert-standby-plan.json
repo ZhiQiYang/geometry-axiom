@@ -1,0 +1,185 @@
+{
+  "created_utc": "2026-10-21T02:53:45.552100+00:00",
+  "status": "純計畫，未授權實施；沒有建立worktree/archive或執行產品",
+  "positive": {
+    "label": "footprint",
+    "parent": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+    "final_sha": null,
+    "candidate_worktree": "/workspace/geo261-host-copy-candidate",
+    "expected_paths": [
+      "geometry-app/native/reference_sources.inc",
+      "tests/geo261_host_facts_authority_harness.c",
+      "tests/test_geo261_host_facts_authority.py"
+    ],
+    "exactset_rule": "真commit由主代理提供後，以git diff-tree精確核對以上3檔；不使用未提交working tree冒充來源",
+    "prepare_argv_template": [
+      "env",
+      "-u",
+      "PYTHONOPTIMIZE",
+      "python3",
+      "-B",
+      "/workspace/geo261-evidence/p189-trial-prepare-v2.py",
+      "--label",
+      "footprint",
+      "--final",
+      "<主代理提供的footprint完整SHA>",
+      "--expected-parent",
+      "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+      "--candidate-worktree",
+      "/workspace/geo261-host-copy-candidate",
+      "--expected-path",
+      "geometry-app/native/reference_sources.inc",
+      "--expected-path",
+      "tests/geo261_host_facts_authority_harness.c",
+      "--expected-path",
+      "tests/test_geo261_host_facts_authority.py"
+    ],
+    "out_prefix": "/workspace/geo261-evidence/p189-footprint-<SHA12>-",
+    "work_prefix": "/workspace/geo261-p189-footprint-src-",
+    "actual_out": null,
+    "actual_work": null
+  },
+  "negative_control": {
+    "purpose": "精確撤回H/K與footprint的產品修正，自證原P189性能門檻；不拿歷史85dc紅冒充本輪負控",
+    "starting_commit": null,
+    "restore_commit": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+    "preserved": "footprint commit全部新tests及其他未列產品原bytes保留",
+    "only_restored_product_paths": [
+      "geometry-app/native/reference_sources.inc",
+      "geometry-app/native/world_validation.inc",
+      "geometry-core/kernel/placement_sources.c"
+    ],
+    "local_branch": "codex/geo261-p189-footprint-revert-control-20261021",
+    "worktree": "/workspace/geo261-footprint-revert-control",
+    "local_commit_sha": null,
+    "planned_git_argv": [
+      [
+        "git",
+        "worktree",
+        "add",
+        "-b",
+        "codex/geo261-p189-footprint-revert-control-20261021",
+        "/workspace/geo261-footprint-revert-control",
+        "<footprint完整SHA>"
+      ],
+      [
+        "git",
+        "restore",
+        "--source=85dc4fff44ce49b27f831b21cbdcb662c863302c",
+        "--staged",
+        "--worktree",
+        "--",
+        "geometry-app/native/reference_sources.inc",
+        "geometry-app/native/world_validation.inc",
+        "geometry-core/kernel/placement_sources.c"
+      ],
+      [
+        "git",
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      [
+        "git",
+        "commit",
+        "-m",
+        "test: restore host copy paths for P189 performance control"
+      ],
+      [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      [
+        "git",
+        "status",
+        "--porcelain"
+      ]
+    ],
+    "git_cwd_rule": "worktree add在主repo；其餘命令在新隔離worktree。僅計畫，現在不執行。",
+    "before_commit_checks": [
+      "還原三檔逐bytes與git show 85dc:path完全相同，保存完整blob SHA/sha256與patch",
+      "git diff-tree/索引exactset只能這三產品檔",
+      "全部tests blobs與footprint commit完全相同；不改測試以遷就private錨點",
+      "負控commit parent精確為footprint SHA，保存真commit SHA與clean狀態，不push"
+    ],
+    "prepare_argv_template": [
+      "env",
+      "-u",
+      "PYTHONOPTIMIZE",
+      "python3",
+      "-B",
+      "/workspace/geo261-evidence/p189-trial-prepare-v2.py",
+      "--label",
+      "footprint-revert-control",
+      "--final",
+      "<負控制真local commit完整SHA>",
+      "--expected-parent",
+      "<footprint完整SHA>",
+      "--candidate-worktree",
+      "/workspace/geo261-footprint-revert-control",
+      "--expected-path",
+      "geometry-app/native/reference_sources.inc",
+      "--expected-path",
+      "geometry-app/native/world_validation.inc",
+      "--expected-path",
+      "geometry-core/kernel/placement_sources.c"
+    ],
+    "out_prefix": "/workspace/geo261-evidence/p189-footprint-revert-control-<SHA12>-",
+    "work_prefix": "/workspace/geo261-p189-footprint-revert-control-src-",
+    "actual_out": null,
+    "actual_work": null,
+    "not_executed": [
+      "新tests／targeted tests（預期private錨點不相容）",
+      "完整ledger／架構／full7",
+      "第二次樣本或選樣補跑"
+    ],
+    "single_run_interpretation": {
+      "killed": "gen/16controls/build/175eq有效、36樣本完整有效，且check真1的原因是原ratio>2門檻；保存全部原件",
+      "survived": "相同有效性前提下check真0，四點仍<=2，照實記survived，不重抽或降低門檻",
+      "invalid": "build/load/equivalence/來源/樣本失敗不算性能killed，保留真碼與原因，不用歷史紅補足"
+    }
+  },
+  "shared_method": {
+    "runner": "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "generator_source": "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/gen_scene.py",
+    "calibration_source": "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/calib/f3-00.scene",
+    "phases": [
+      "generator selftest",
+      "本輪16controls selftest（不是產品新tests）",
+      "main/base/final全新archive gcc -std=c11 -O2 build",
+      "175equivalence（4生成三方；171固定base/final）",
+      "binary hash/env/process preflight",
+      "N16/32/48/64各3輪main/base/final正反交錯共36",
+      "check原final/main<=2.0門檻"
+    ],
+    "stack_kib": 16384,
+    "timeout_seconds": 900,
+    "PYTHONOPTIMIZE": "unset；無-O",
+    "supervisor": "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+    "supervisor_sha256": "e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413",
+    "launch_argv_template": [
+      "env",
+      "-u",
+      "PYTHONOPTIMIZE",
+      "python3",
+      "-B",
+      "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+      "<各自新out>/supervisor-released-config.json"
+    ],
+    "transport": "每phase stdout/stderr直檔；child.wait真碼先落；頂層持續真wait/session，不launch-and-exit",
+    "scheduling": "正向與負控分別等明確獨占放行；每來源只一套固定樣本；不與其他heavy/封包IO並行",
+    "P177": "不改次數／時機"
+  },
+  "preservation": "75f與所有前輪紅/綠、封包與SUMS一字不動；新結果只寫新out。候選性能綠不外推完整可合。",
+  "execution_counts": {
+    "worktrees_created": 0,
+    "archives_created": 0,
+    "builds": 0,
+    "loads": 0,
+    "tests": 0
+  }
+}

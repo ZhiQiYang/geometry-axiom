@@ -1,0 +1,63 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "worktree": "/workspace/geo261-gates-l3-6589248c9a94-20261021",
+  "sourceFiles": {
+    "AGENTS.md": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca",
+    "current_geometry.c": "dc3fbfb14adde5078c36ab179936df88ba977b22bb341301cd30deafeeb97696",
+    "tests/section_profile_mutation_check.py": "3004734c4e1052e95d3234091bc8fb03c20cf7546282432704fca0a07071ee6c",
+    "tests/test_grid_card_reference.py": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f",
+    "tests/test_axiom_reader.py": "fc19bd1edcfcab5babb433594f15763171b6bcba8fa9559222f0617587978d25",
+    "geometry-core/card-reference/run_mutations.py": "d3282011a7648ef0eb8704517cd49c51a76ae75155f1870e0273f023e189165e",
+    "geometry-core/card-reference/run_axiom_mutations.py": "dae27a144c241a30d55ffdc65264fb86b224759508e600d3c149ad9a7ebb87c3",
+    "geometry-core/domain-decoupling/closeout-tools/run_gates.py": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3",
+    "geometry-core/domain-decoupling/closeout-tools/run_controls.py": "b7e7430e53d157f6a82050417be7a9f8d77bd50c1fb5f2f3a34a1ba44de8363f",
+    "geometry-core/domain-decoupling/closeout-tools/q38_controls.py": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2",
+    "geometry-core/kernel/exact.c": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf",
+    "geometry-core/model_base.c": "ffa570dae26fbfe8bab2d24a9e0663d4b6943983567097fb96553ebab5e42be6",
+    "geometry-app/native/app_candidate.c": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9",
+    "geometry-web/source-inspector-bridge.inc": "e9e386edb4450f38ceec5fee47a71477c5ecbd41f3edd16fe5b4de2599250af3",
+    "geometry-core/kernel/candidate.c": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77",
+    "geometry-core/engineering_commands.inc": "3e996cef86dc3498138aa4ba7cdfa798a67042a7daa4239d936aa2487ff0b039",
+    "geometry-web/engineering_bridge.inc": "930134f89de7c89b17e000623d1c675b51c5b2465fc6b8109936711f0e9519f3",
+    "geometry-core/grid_systems.inc": "8e58c73c52351dd35ee79603885b1215ff86f0f6af00d2d05824fee25770d61a",
+    "geometry-core/card_reference.inc": "6e6016c6479ccf85276f6c9ada1f253a976a33ad035f43198a0fe3b5844183c0",
+    "geometry-core/parameters.inc": "0cbb505d787983898b55b63c92eaae3a4d25644587f3960b5b081564a726ad5d",
+    "geometry-core/kernel/parameters.c": "d4e0f6402ef38e82e4192250cbe7617668ec7c0d210fc531d0410e2cb93eda94",
+    "geometry-templates/woodworking/native/grid_application.c": "87e2e82ce1906bbf4998dd530fdcdfd6b49a8f53caf2a6ae42318f6e99e48798",
+    "geometry-core/kernel/grid_store.c": "89da92935c8e4765b54a83b06fb3157bdfcde74410a7edd8cf74ed87652dea5d"
+  },
+  "sourceBytesMatchGitAndPhaseReceipts": true,
+  "completionManifest": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/completion.json",
+    "bytes": 4958,
+    "sha256": "1b7605f80624727f9faaca71fda7be788edd6b78029db0543736d4c98520bf7a",
+    "sourceMtimeNs": 1792565893787816172
+  },
+  "templateMethod": {
+    "path": "/workspace/geo261-evidence/gates-l-preparation/package-gates-l.py",
+    "bytes": 5321,
+    "sha256": "091c26cdd312fa73980f2864186e8ddce35a77ba7a9afe75933efcbb22a8b753",
+    "sourceMtimeNs": 1792543406104214769
+  },
+  "primaryAndDetailedAllAccepted": true,
+  "allAcceptanceExecutionReceiptsExitZero": true,
+  "acceptedRawIndexRechecked": true,
+  "acceptedRawFileCount": 993,
+  "allAcceptedRawAndPrimaryArtifactsMapped": true,
+  "toolObservations": "原始檔案為實際工具回應的事後逐欄轉錄；父wait收據另存，不混作自動transport日誌。",
+  "q38Correction": "必收q38-progress-interpretation-correction.json，不把尚無model marker推定為正在model baseline。",
+  "procLimits": "必收q38-readonly-process-samples.jsonl；stat/cmdline可讀與task/children FileNotFoundError不作退出、整棵子樹清理或環境原因推定。",
+  "q38CompiledMutants": 39,
+  "q38PythonOnlyCases": [
+    "SPM37",
+    "SPM38",
+    "SPM40"
+  ],
+  "cardExistingTestTargets": [
+    "P146-error-fields",
+    "P154-identity-boundary",
+    "P154-identity-one-message"
+  ],
+  "nativeBridgeReference": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/final-build-binary-index.json",
+  "globalOrBinaryRead": false
+}

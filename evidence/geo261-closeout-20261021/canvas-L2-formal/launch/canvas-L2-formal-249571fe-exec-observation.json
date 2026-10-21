@@ -1,0 +1,16 @@
+{
+  "recordedUTC": "2026-10-21T04:54:02.288033+00:00",
+  "type": "實際工具回傳逐欄轉錄，非 transport 自動日誌",
+  "start": {
+    "session_id": 17336,
+    "chunk_id": "2f2160"
+  },
+  "final": {
+    "chunk_id": "d211b7",
+    "exit_code": 0,
+    "wall_time_seconds": 37.396556519,
+    "output": ""
+  },
+  "command": "#!/usr/bin/env bash\nset +e\nprintf '%s\\n' \"$$\" > /workspace/geo261-evidence/canvas-L2-formal-249571fe-parent.pid\nenv -u CC -u PYTHONOPTIMIZE python3 -B /workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py --sha 249571fe2477845d5330f6190dad965bf327f43b --root /workspace/geometry-axiom --output /workspace/geo261-evidence/canvas-L2-formal-249571fe --port 18856 --cdp-port 9322 --release-note 'root 已於 native 初建六 binary fresh、12 原件保存並核對後明確放行 L2 完整 canvas；來源 249571fe2477845d5330f6190dad965bf327f43b 固定，主 repo 私有 runtime 原 npm build/require_fresh，原 35 分鐘及完整 scope/85 golden 不變，最多兩 heavy，無預置 binary。canvas cleanup 後接原五項依序。' --execute\nobserved_launcher_code=$?\nprintf '%s\\n' \"$observed_launcher_code\" > /workspace/geo261-evidence/canvas-L2-formal-249571fe-launcher-process.exit-code\nexit \"$observed_launcher_code\"\n",
+  "parentCommandSha256": "38a8175a7769ff51abb510aad87db06cf9dc6607e392596b9ea2dbb8fb119d1c"
+}

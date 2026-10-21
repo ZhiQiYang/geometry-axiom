@@ -1,0 +1,5 @@
+# R14: uncut strips still require a unique contact after an earlier split.
+surface 1 origin 0 0 100 u +x v +y outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100
+column 1 at 45 0 size 10 40 z 0 100
+beam 1 along x from 30 to 70 at 65 width 30 depth 10 top 100
+apply-proj 1 c1 b1

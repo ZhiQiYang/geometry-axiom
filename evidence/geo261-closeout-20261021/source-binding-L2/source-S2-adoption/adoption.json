@@ -1,0 +1,133 @@
+{
+  "utc": "2026-10-21T03:07:02.613620+00:00",
+  "branch": "codex/geo261-closeout-20261021",
+  "source_S2": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "candidate_parent": "6c6937708fa31790586d6c31c2984070e6bf885a",
+  "before": {
+    "py:test_geo261_host_facts_authority": 17,
+    "py:test_geo261_wood_contact_world": 10
+  },
+  "after": {
+    "py:test_geo261_host_facts_authority": 27,
+    "py:test_geo261_wood_contact_world": 12
+  },
+  "expected_total": 5188,
+  "expected_pass_if_only_original_skip": 5187,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit_code": 0,
+      "stdout": "codex/geo261-closeout-20261021\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "43f85313c32410ac01406ab585846bbacafea278\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "merge",
+        "--ff-only",
+        "6c6937708fa31790586d6c31c2984070e6bf885a"
+      ],
+      "exit_code": 0,
+      "stdout": "Updating 43f85313..6c693770\nFast-forward\n geometry-app/native/reference_sources.inc          |  82 ++++++++++-----\n geometry-app/native/world_validation.inc           |   3 +-\n geometry-core/kernel/placement_sources.c           |  35 ++++---\n .../woodworking/native/contact_world.c             |  45 +++++++--\n .../woodworking/native/definition_sources.c        |  20 +++-\n tests/geo261_contact_world_harness.c               |  84 +++++++++++++++-\n tests/geo261_host_facts_authority_harness.c        | 112 ++++++++++++++++++++-\n tests/geo261_placement_definition_harness.c        |  16 +++\n tests/test_geo261_host_facts_authority.py          |  75 ++++++++++++--\n tests/test_geo261_placement_definition.py          |  21 ++--\n tests/test_geo261_wood_contact_world.py            |  16 ++-\n 11 files changed, 432 insertions(+), 77 deletions(-)\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff"
+      ],
+      "exit_code": 0,
+      "stdout": "diff --git a/tests/run_all.expected.json b/tests/run_all.expected.json\nindex 28e3bd85..622bd8b9 100644\n--- a/tests/run_all.expected.json\n+++ b/tests/run_all.expected.json\n@@ -454,7 +454,7 @@\n     },\n     \"py:test_geo261_host_facts_authority\": {\n       \"mode\": \"count\",\n-      \"count\": 17,\n+      \"count\": 27,\n       \"unit\": \"test\"\n     },\n     \"py:test_geo261_host_history\": {\n@@ -684,7 +684,7 @@\n     },\n     \"py:test_geo261_wood_contact_world\": {\n       \"mode\": \"count\",\n-      \"count\": 10,\n+      \"count\": 12,\n       \"unit\": \"test\"\n     },\n     \"py:test_geo261_wood_contacts\": {\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only"
+      ],
+      "exit_code": 0,
+      "stdout": "tests/run_all.expected.json\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "--",
+        "tests/run_all.expected.json"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "commit",
+        "-m",
+        "test: pin suite counts for performance regression witnesses",
+        "-m",
+        "Set host facts to 27 and contact world to 12 based on the completed targeted suites and static test discovery. The full final-source run remains required."
+      ],
+      "exit_code": 0,
+      "stdout": "[codex/geo261-closeout-20261021 cabe8241] test: pin suite counts for performance regression witnesses\n 1 file changed, 2 insertions(+), 2 deletions(-)\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "cabe824128be31d0039dc6c94fa3f04cfb722a6b\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "classification": "本機採用與預期數更新；未推送，未宣稱S2完整驗收通過"
+}

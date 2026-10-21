@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set +e
+printf '%s\n' "$$" > /workspace/geo261-evidence/canvas-L2-formal-249571fe-parent.pid
+env -u CC -u PYTHONOPTIMIZE python3 -B /workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py --sha 249571fe2477845d5330f6190dad965bf327f43b --root /workspace/geometry-axiom --output /workspace/geo261-evidence/canvas-L2-formal-249571fe --port 18856 --cdp-port 9322 --release-note 'root 已於 native 初建六 binary fresh、12 原件保存並核對後明確放行 L2 完整 canvas；來源 249571fe2477845d5330f6190dad965bf327f43b 固定，主 repo 私有 runtime 原 npm build/require_fresh，原 35 分鐘及完整 scope/85 golden 不變，最多兩 heavy，無預置 binary。canvas cleanup 後接原五項依序。' --execute
+observed_launcher_code=$?
+printf '%s\n' "$observed_launcher_code" > /workspace/geo261-evidence/canvas-L2-formal-249571fe-launcher-process.exit-code
+exit "$observed_launcher_code"

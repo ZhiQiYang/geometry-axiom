@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/ledger-L2-preparation/import_ledger.py",
+    "--source",
+    "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+    "--run",
+    "/workspace/geo261-evidence/ledger-A2-cc-cbefb39b",
+    "--sha256",
+    "0000000000000000000000000000000000000000000000000000000000000000",
+    "--output",
+    "/tmp/ledger-l2-never-created"
+  ],
+  "exit_code": 1,
+  "output_not_created": true,
+  "產品或Git變更": false
+}

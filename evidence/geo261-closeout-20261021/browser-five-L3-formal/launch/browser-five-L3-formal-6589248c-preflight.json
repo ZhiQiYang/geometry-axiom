@@ -1,0 +1,76 @@
+{
+  "utc": "2026-10-21T06:34:35.195006+00:00",
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "argv": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/browser-five-preparation/launch_browser_five.py",
+    "--sha",
+    "6589248c9a94bdf0460d8f84dd1610e51048188b",
+    "--run-id",
+    "l3-6589248c-formal",
+    "--output",
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c",
+    "--release-note",
+    "root已核同L3完整canvas真0、2261/85golden、owned cleanup全退後明示放行原five；固定6589248c9a94bdf0460d8f84dd1610e51048188b，assembly/documents/grid/space/timber原scope及900/600/900/900/1200秒整job上限，五項依序單browser。Q38使用第一heavy槽，本批為第二槽；原private runtime自行freshness，不copy native binary，保存原argv與真退出碼。",
+    "--execute"
+  ],
+  "root": "/workspace/geometry-axiom",
+  "output": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c",
+  "runId": "l3-6589248c-formal",
+  "limits": [
+    900,
+    600,
+    900,
+    900,
+    1200
+  ],
+  "suiteOrder": [
+    "assembly",
+    "documents",
+    "grid",
+    "space",
+    "timber"
+  ],
+  "wrapperHashes": [
+    {
+      "path": "/workspace/geo261-evidence/browser-five-preparation/run_browser_five.py",
+      "sha256": "4ffefe74d503506f2c99d3064fac4359c4aa5324f77ccf5e3ae44bdf6ec994f2",
+      "bytes": 37261,
+      "astValid": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/browser-five-preparation/launch_browser_five.py",
+      "sha256": "479cdcd9f1c1c03ab203aff6fc5f0f9fddb3c70d779507777c7c1d903762f124",
+      "bytes": 5858,
+      "astValid": true
+    }
+  ],
+  "canvasReceiptSha256": "a9d27f4568020a6aa0313f22d0455de9882515b3579eda33c7845e7cbed44563",
+  "canvasCleanupSha256": "e251d399aa71809982fef1372e1296154a83de38c3f897fccd6904e35a931939",
+  "parentCommand": [
+    "bash",
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-parent-command-code.txt"
+  ],
+  "parentCommandSha256": "4343aa9f3cc770756797a63c5ee27f6c422814f33bcb9e867d9d59b3b38566f2",
+  "portsChecked": [
+    18851,
+    18852,
+    18853,
+    18854,
+    18855,
+    9367,
+    9366,
+    9334,
+    9347,
+    9348
+  ],
+  "validationExitCode": 0,
+  "releaseNote": "root已核同L3完整canvas真0、2261/85golden、owned cleanup全退後明示放行原five；固定6589248c9a94bdf0460d8f84dd1610e51048188b，assembly/documents/grid/space/timber原scope及900/600/900/900/1200秒整job上限，五項依序單browser。Q38使用第一heavy槽，本批為第二槽；原private runtime自行freshness，不copy native binary，保存原argv與真退出碼。",
+  "binaryCopyPerformed": false
+}

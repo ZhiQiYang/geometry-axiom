@@ -1,0 +1,26 @@
+{
+  "schema": "geo261-readonly-peer-execution/1",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-evidence/canvas-L3-independent-review/peer-code.txt"
+  ],
+  "cwd": "/workspace",
+  "pid": 494800,
+  "startedUTC": "2026-10-21T06:37:33.543756+00:00",
+  "finishedUTC": "2026-10-21T06:37:33.591118+00:00",
+  "seconds": 0.04736681599752046,
+  "observedReturncode": 1,
+  "methodSha256": "7f0795d888f28db6c503740be1cc142e409883c41a6a27e030776d9aa39602b0",
+  "streams": {
+    "peer.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "peer.stderr": {
+      "bytes": 337,
+      "sha256": "2936cdefa3806bf2e508479a5da6b1364e49a5229969a7233ecb7d4e7ab1d0d2"
+    }
+  },
+  "scope": "只讀已完成的 L3 canvas 原件與 Git；無產品、編譯或瀏覽器執行"
+}

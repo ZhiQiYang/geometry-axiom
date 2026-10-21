@@ -1,0 +1,41 @@
+"""唯讀比對已凍結 L2 canvas 證據包，不改包或執行產品。"""
+from pathlib import Path
+import collections,datetime,hashlib,json,stat
+P=Path('/workspace/geo261-evidence/final-bundle/canvas-L2-formal')
+sha=lambda b:hashlib.sha256(b).hexdigest()
+index=json.loads((P/'source-index.json').read_bytes())
+assert index['sourceSha']=='249571fe2477845d5330f6190dad965bf327f43b'
+assert len(index['files'])==index['originalCount']==229
+assert len({r['artifactPath'] for r in index['files']})==229
+rows=[]
+for r in index['files']:
+    a=Path(r['sourcePath']).read_bytes();b=(P/r['artifactPath']).read_bytes()
+    assert a==b and len(a)==r['bytes'] and sha(a)==r['sha256']
+    rows.append({'path':r['artifactPath'],'bytes':len(b),'sha256':sha(b)})
+assert sum(r['bytes'] for r in rows)==index['originalBytes']
+allfiles={str(f.relative_to(P)):f for f in P.rglob('*') if f.is_file()}
+assert not any(f.is_symlink() for f in P.rglob('*'))
+assert len(allfiles)==232 and sum(f.stat().st_size for f in allfiles.values())==19849066
+assert set(allfiles)=={r['artifactPath'] for r in index['files']}|{'README.md','source-index.json','SHA256SUMS'}
+assert all(stat.S_IMODE(f.stat().st_mode)==0o644 for f in allfiles.values())
+assert not any(f.suffix.lower() in ('.py','.js','.cjs','.exe','.so') for f in allfiles.values())
+sums={}
+for line in (P/'SHA256SUMS').read_text().splitlines():
+    value,path=line.split('  ',1);assert path not in sums;sums[path]=value
+assert set(sums)==set(allfiles)-{'SHA256SUMS'} and len(sums)==231
+for path,value in sums.items():assert sha(allfiles[path].read_bytes())==value
+suffixes=collections.Counter(f.suffix for f in allfiles.values())
+assert suffixes['.png']==135 and suffixes['.gcanvas']==8 and suffixes['.csv']==6
+text=(P/'README.md').read_text()
+for boundary in ('不能代替 S3','expected exception','wait trace 未開啟','Node 已開始後','五項續跑計畫後來由 root 撤回'):
+    assert boundary in text
+out={'schema':'geo261-canvas-L2-bundle-peer/1','checkedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+ 'validationExitCode':0,'readOnly':True,'sourceSha':index['sourceSha'],'originalCount':229,'fileCount':232,'bytes':19849066,
+ 'checksums':231,'pngCount':135,'gcanvasCount':8,'csvCount':6,'exactOriginalBytes':True,'exactFileSet':True,
+ 'allRegular0644':True,'noExecutableCopies':True,'sourceIndexSha256':sha((P/'source-index.json').read_bytes()),
+ 'sha256sumsSha256':sha((P/'SHA256SUMS').read_bytes()),'files':rows,
+ 'limitations':['只讀原件/索引/README，不重跑產品，不改子包；L2 歷史結果不能替代 S3/L3。',
+ '本次核對雜湊與原 bytes，沒有逐張目視圖片。','原工具退出碼轉錄限制及首版接受器 parser 誤判仍由原包保存。']}
+target=Path('/workspace/geo261-evidence/canvas-L2-bundle-peer.json')
+with target.open('x',encoding='utf-8') as f:json.dump(out,f,ensure_ascii=False,indent=2);f.write('\n')
+print(json.dumps({k:out[k] for k in ('validationExitCode','originalCount','fileCount','bytes','checksums')},ensure_ascii=False))

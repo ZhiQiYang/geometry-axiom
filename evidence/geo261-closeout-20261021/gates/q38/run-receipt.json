@@ -1,0 +1,56 @@
+{
+  "source_head": "7dae5f21c7ca401e660450d437e60ba566218da8",
+  "entry": "q38",
+  "root": "/workspace/geo261-gates",
+  "started_at": "2026-10-20T19:32:13.045228+00:00",
+  "environment": {
+    "TMPDIR": "/workspace/geo261-evidence/gates/q38/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GEOMETRY_MODEL_BASE": "/workspace/geo261-evidence/gates/bin/model-base"
+  },
+  "stack_bytes": 16777216,
+  "runner_sha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3",
+  "status_before": "",
+  "commands": [
+    {
+      "label": "build-model-base",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-c",
+        "import sys; from pathlib import Path; from tests import binaries; binaries.OUT_DIR = Path(sys.argv[1]); raise SystemExit(binaries.main(['build', 'model-base']))",
+        "/workspace/geo261-evidence/gates/bin"
+      ],
+      "started_at": "2026-10-20T19:32:13.045334+00:00",
+      "exit_code": 0,
+      "seconds": 17.291719047000015,
+      "ended_at": "2026-10-20T19:32:30.337215+00:00"
+    },
+    {
+      "label": "q38",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-u",
+        "tests/section_profile_mutation_check.py",
+        "--jobs",
+        "2",
+        "--receipt",
+        "/workspace/geo261-evidence/gates/q38/receipt.json",
+        "--logs",
+        "/workspace/geo261-evidence/gates/q38/logs"
+      ],
+      "started_at": "2026-10-20T19:32:30.337695+00:00",
+      "exit_code": 0,
+      "seconds": 472.70051180199994,
+      "ended_at": "2026-10-20T19:40:23.038709+00:00"
+    }
+  ],
+  "ended_at": "2026-10-20T19:40:23.039180+00:00",
+  "exit_code": 0,
+  "status_after": "",
+  "restored": true
+}

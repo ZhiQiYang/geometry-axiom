@@ -1,0 +1,357 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "phase": "axiom",
+  "reviewer": "/root/p52_review",
+  "reviewedUtc": "2026-10-21T00:41:21.594426+00:00",
+  "accepted": true,
+  "validationExitCode": 0,
+  "blockers": [],
+  "result": {
+    "cases": 5,
+    "killed": 5,
+    "baselineTests": 44,
+    "allFiveNamedTestsRed": true,
+    "redTestsPerCase": 1,
+    "allLabelsInNamedAssertion": true,
+    "allRestoredComplete44": true,
+    "allErrorsSkipsZero": true,
+    "officialExit": 0,
+    "runGatesExit": 0,
+    "launcherWaitExit": 0,
+    "elapsedSeconds": 90.29038079499878
+  },
+  "commands": {
+    "actual": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-u",
+      "geometry-core/card-reference/run_axiom_mutations.py",
+      "--output",
+      "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw"
+    ],
+    "fullOriginalTable": true,
+    "modelBaseBuiltFirst": true,
+    "stackBytes": 16777216,
+    "CCAbsent": true,
+    "PYTHONOPTIMIZEAbsent": true
+  },
+  "sources": {
+    "headBefore": "43f85313c32410ac01406ab585846bbacafea278",
+    "headAfter": "43f85313c32410ac01406ab585846bbacafea278",
+    "statusBefore": "",
+    "statusAfter": "",
+    "phaseBeforeAfterHashCount": 10,
+    "allFiveMutatedTargetHashesReconstructedFromGit": true,
+    "gitBlobsRead": 206,
+    "modelBaseFingerprintMatchesGitNormalizedSources": true
+  },
+  "bridge": {
+    "previousPhase": "card",
+    "beforeAfterBytesHashMtimeExact": true,
+    "preservedCopiesVerified": true
+  },
+  "cases": [
+    {
+      "id": "V01-remove-gate",
+      "namedTest": "test_pre_card_axioms_reject_manifest_card_capability",
+      "causeLabel": "CARD_AXIOM_MANIFEST",
+      "labelInNamedAssertion": true,
+      "redExit": 1,
+      "redTests": 1,
+      "redFailures": 19,
+      "restoreExit": 0,
+      "restoreTests": 44,
+      "mutatedSourceHashReconstructed": true
+    },
+    {
+      "id": "V02-ignore-manifest",
+      "namedTest": "test_pre_card_axioms_reject_manifest_card_capability",
+      "causeLabel": "CARD_AXIOM_MANIFEST",
+      "labelInNamedAssertion": true,
+      "redExit": 1,
+      "redTests": 1,
+      "redFailures": 19,
+      "restoreExit": 0,
+      "restoreTests": 44,
+      "mutatedSourceHashReconstructed": true
+    },
+    {
+      "id": "V03-ignore-source",
+      "namedTest": "test_pre_card_axioms_reject_scene_card_capability_before_rebuild",
+      "causeLabel": "CARD_AXIOM_SOURCE",
+      "labelInNamedAssertion": true,
+      "redExit": 1,
+      "redTests": 1,
+      "redFailures": 19,
+      "restoreExit": 0,
+      "restoreTests": 44,
+      "mutatedSourceHashReconstructed": true
+    },
+    {
+      "id": "V04-exempt-latest-pre-adoption",
+      "namedTest": "test_pre_card_axioms_reject_card_syntax_with_stripped_declarations",
+      "causeLabel": "CARD_AXIOM_SYNTAX",
+      "labelInNamedAssertion": true,
+      "redExit": 1,
+      "redTests": 1,
+      "redFailures": 1,
+      "restoreExit": 0,
+      "restoreTests": 44,
+      "mutatedSourceHashReconstructed": true
+    },
+    {
+      "id": "V05-card-adoption-treated-as-pre",
+      "namedTest": "test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild",
+      "causeLabel": "CARD_AXIOM_ERA",
+      "labelInNamedAssertion": true,
+      "redExit": 1,
+      "redTests": 1,
+      "redFailures": 1,
+      "restoreExit": 0,
+      "restoreTests": 44,
+      "mutatedSourceHashReconstructed": true
+    }
+  ],
+  "rawFileIndex": [
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/axiom.command.json",
+      "bytes": 432,
+      "sha256": "de82c04f5a78b9dabce1825fb478ebfbb79c63585d47c8e9cc6e4acc409941cc"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/axiom.log",
+      "bytes": 153,
+      "sha256": "66d2e012c334d8f6fafd48f4dba2936a58177a0821df8f51f5001c826bce0687"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/build-model-base.command.json",
+      "bytes": 531,
+      "sha256": "f58f24fcfefb0f3c36e69e92fd574fc734c2aaffd4430d5569392b9ab3a99a74"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/build-model-base.log",
+      "bytes": 224,
+      "sha256": "1ba99a8f49f536d755d6f8522b4758141669042d84827c8d03e95623867ab6dc"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V01-remove-gate/red/receipt.json",
+      "bytes": 548,
+      "sha256": "d8b9820a4a96327c6225b7999e5001b81387293f034b6a7d409e753fabf3d39c"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V01-remove-gate/red/stderr.log",
+      "bytes": 15771,
+      "sha256": "12d5161c5f58c8613d2e321b5acbde82e465e35e0febcc1bc980fb5cce11abb2"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V01-remove-gate/red/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V01-remove-gate/restored/receipt.json",
+      "bytes": 465,
+      "sha256": "0b9ca73fbd07cc1b2658bf511b22ddefa0862696e97e0802fbc42a37f2d20f82"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V01-remove-gate/restored/stderr.log",
+      "bytes": 144,
+      "sha256": "7b95db7f43f038de03cbb0c12ddfd4856988562c4e677ba8e4484abf17f0e8b4"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V01-remove-gate/restored/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V02-ignore-manifest/red/receipt.json",
+      "bytes": 547,
+      "sha256": "55cb3c0b3c5a1368b400ec6a2dd3a8c237ce96eff1c8d44efabcb3254a265923"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V02-ignore-manifest/red/stderr.log",
+      "bytes": 15771,
+      "sha256": "b1eea3d1bcf139319559e7be1a6b71a2f87f45def320318cbb34b4ea047eee35"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V02-ignore-manifest/red/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V02-ignore-manifest/restored/receipt.json",
+      "bytes": 465,
+      "sha256": "023c0411d8d43303ea0b2cb8e43755c73740fd94763fac88a705ce2c051da70c"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V02-ignore-manifest/restored/stderr.log",
+      "bytes": 144,
+      "sha256": "7d213a27fb663f1d7986955df65c0757e0892887fddddd0657e794807586224e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V02-ignore-manifest/restored/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V03-ignore-source/red/receipt.json",
+      "bytes": 560,
+      "sha256": "c2b79bc3c0d665958ca4077c5880b697e260ad2ff28c3f82e359fc235d7b2443"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V03-ignore-source/red/stderr.log",
+      "bytes": 16151,
+      "sha256": "57708b5f54284dce14d6164f134a6c8ece651383fb985d9513b4a23c74d96fae"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V03-ignore-source/red/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V03-ignore-source/restored/receipt.json",
+      "bytes": 465,
+      "sha256": "734a8ce75623c86c3a6606e6ebaa52ee446382da81a8dad6039d1eedac9d675a"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V03-ignore-source/restored/stderr.log",
+      "bytes": 144,
+      "sha256": "6e102ab9b72a5f3fb81f41be8a14082129fb2bc817719b4c7d9969f17eeab3f0"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V03-ignore-source/restored/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V04-exempt-latest-pre-adoption/red/receipt.json",
+      "bytes": 561,
+      "sha256": "bdc790e050dea7d4dcd870e12d0b5598fa199bfeff46d32a3fe27ca176cdb34e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V04-exempt-latest-pre-adoption/red/stderr.log",
+      "bytes": 958,
+      "sha256": "d27ec145c05354207c51761881eac005f117d4ede255f2e1d5c1db418154ee79"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V04-exempt-latest-pre-adoption/red/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V04-exempt-latest-pre-adoption/restored/receipt.json",
+      "bytes": 465,
+      "sha256": "f67f6d37cb4e54d0556d80e4f815bad730e19ef52d75df0914615cebffa6e642"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V04-exempt-latest-pre-adoption/restored/stderr.log",
+      "bytes": 144,
+      "sha256": "dd1a511c6c3c40b7a817ce0785c8081bb302cc87b234face98342da79bb68a9e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V04-exempt-latest-pre-adoption/restored/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V05-card-adoption-treated-as-pre/red/receipt.json",
+      "bytes": 559,
+      "sha256": "28f8bffade76a2bd8eb67e31bfe9577fbf57169a86a5de09e5a92f8a865d20f8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V05-card-adoption-treated-as-pre/red/stderr.log",
+      "bytes": 1670,
+      "sha256": "3171f16f9ce817739b6066a4d3e70fcc424108935fac28d66fad102b802f7f7d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V05-card-adoption-treated-as-pre/red/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V05-card-adoption-treated-as-pre/restored/receipt.json",
+      "bytes": 465,
+      "sha256": "127654f070f39e510d09beca4e7b30fb3dd2d3885819318731df416720674852"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V05-card-adoption-treated-as-pre/restored/stderr.log",
+      "bytes": 144,
+      "sha256": "b7b67dc00891619362b713875bc5e3dd0843667c02a389bcb184137a3f31a07c"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/V05-card-adoption-treated-as-pre/restored/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/baseline/receipt.json",
+      "bytes": 463,
+      "sha256": "24f6236088bf2f882c91d844cdfdcfdee45ff4395d14aeb761b78db022c4058c"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/baseline/stderr.log",
+      "bytes": 143,
+      "sha256": "fe620191e1a47672a5cbba60a26f0d8a722d5da3ab81af577e88c009df00911e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/baseline/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/report.json",
+      "bytes": 9814,
+      "sha256": "ba54177aacacb84827f9b92db5537309ec9837338a0400fa783ac35796a1d4b7"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/run-receipt.json",
+      "bytes": 1825,
+      "sha256": "9128a678f74ac2f73501d3d5d2206eaa373d0a918445b1cfa9243d40c86d630d"
+    }
+  ],
+  "references": {
+    "verification": {
+      "path": "/workspace/geo261-evidence/gates-l/verification/axiom.json",
+      "bytes": 2912,
+      "sha256": "1074f8300a9a3fe53f27f4190b94174d0453504786414b7e39af7a38d3182848"
+    },
+    "report": {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/raw/report.json",
+      "bytes": 9814,
+      "sha256": "ba54177aacacb84827f9b92db5537309ec9837338a0400fa783ac35796a1d4b7"
+    },
+    "runReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/axiom/run-receipt.json",
+      "bytes": 1825,
+      "sha256": "9128a678f74ac2f73501d3d5d2206eaa373d0a918445b1cfa9243d40c86d630d"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/axiom/receipt.json",
+      "bytes": 3852,
+      "sha256": "265586aa262ec2ef86b83daba34ee767d73308347e866ae984858cc33524d611"
+    },
+    "modelBaseFingerprint": {
+      "path": "/workspace/geo261-evidence/gates-l/axiom-run/bin/model-base.fingerprint.json",
+      "bytes": 22887,
+      "sha256": "0499d3f875803e366545e1fd0aafccf694bfdad58f0f5d1cb83d89562146f04c"
+    },
+    "reviewCode": {
+      "path": "/workspace/geo261-evidence/gates-l-independent-axiom-code.txt",
+      "bytes": 8892,
+      "sha256": "69ae5d5d911636ea2aded35ccd488f849ab16cc6bee18c3212e552d904782832"
+    }
+  },
+  "reviewerFirstAttempt": {
+    "exitCode": 1,
+    "artifactDirectory": "/workspace/geo261-evidence/gates-l-independent-review/axiom-attempt1",
+    "cause": "接受器誤要求英文built；原CLI輸出為繁中建置／已建／建好，原build及fingerprint未失敗。",
+    "fix": "精確核對原繁中成功訊息與該binary路徑，保留原exit0/身份hash條件。"
+  },
+  "limits": [
+    "五案原指定具名1題轉紅，每案restore皆完整44題；不把generic exit1當killed。",
+    "每個CARD_AXIOM標籤已定位在該具名失敗的AssertionError文字，不只在stdout其他位置。",
+    "使用Git L與phase凍結前後證據，不以其他phase的暫時修改倒推歷史。",
+    "工具session實際exit由執行代理另保存；本報告核gate/run_gates/launcher parent.wait原退出鏈。",
+    "本次沒有執行測試、build或修改來源；只讀既有原件。"
+  ]
+}

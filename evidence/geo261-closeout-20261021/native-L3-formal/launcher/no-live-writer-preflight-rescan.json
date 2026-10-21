@@ -1,0 +1,21 @@
+{
+  "sampledUtc": "2026-10-21T05:49:23.643038+00:00",
+  "matches": [],
+  "permissionDenied": [
+    1,
+    2,
+    205,
+    258
+  ],
+  "locks": [
+    {
+      "path": "/tmp/geometry-tests/build.lock",
+      "available": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all.lock",
+      "available": true
+    }
+  ],
+  "scope": "當下 /proc exe、run_all argv、global writable fd 與兩鎖；不是未來並行寫入保證。"
+}

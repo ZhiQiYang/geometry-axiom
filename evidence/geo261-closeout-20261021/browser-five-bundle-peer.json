@@ -1,0 +1,33 @@
+{
+  "schema": "geo261-browser-five-bundle-peer/1",
+  "checkedUTC": "2026-10-21T00:01:08.865366+00:00",
+  "validationExitCode": 0,
+  "checksumCommand": [
+    "sha256sum",
+    "-c",
+    "SHA256SUMS"
+  ],
+  "checksumExitCode": 0,
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "bundle": "/workspace/geo261-evidence/final-bundle/browser-five-L-formal",
+  "originalCount": 261,
+  "originalBytes": 9275366,
+  "allOriginalBytesHashesLengthsEqual": true,
+  "fileCount": 265,
+  "bytes": 9397129,
+  "checksumEntries": 264,
+  "artifactCounts": {
+    ".png": 81,
+    ".gcanvas": 9,
+    ".pdf": 1
+  },
+  "noExecutableCopies": true,
+  "indexSha256": "abe81c26fc535a7f8125067370ad2ab63ee8d27ad4a7c0a33162447392f3872e",
+  "checksumsSha256": "9f768733e680ecbd4d77de8a35bc71c6bfd40131bdc58beaf82fabf95aaa44ca",
+  "readmeFinding": "未見錯稱：partial/固定census/47具名序列、三層真退出、reused、事後產物、輸入PDF、浮點接受器初exit1及未驗範圍都保留",
+  "limitations": [
+    "只讀封裝核對，沒有重跑產品/fixture/build/browser",
+    "未逐張目視81張圖；圖像內容品質限制沿既有peer",
+    "沒有修改凍結包或兩份既有peer；此收據放外層避免自我雜湊"
+  ]
+}

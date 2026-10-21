@@ -1,0 +1,174 @@
+[
+  {
+    "label": "original-build",
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "-I",
+      "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native",
+      "-I",
+      "/workspace/geo261-contact-candidate/geometry-core/kernel",
+      "/workspace/geo261-contact-candidate/tests/geo261_contact_world_harness.c",
+      "/tmp/geo261-contact-trial-7ad/contact_world_original.c",
+      "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native/contacts.c",
+      "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native/supports.c",
+      "/workspace/geo261-contact-candidate/geometry-core/kernel/geometry.c",
+      "/workspace/geo261-contact-candidate/geometry-core/kernel/exact.c",
+      "-o",
+      "/tmp/geo261-contact-trial-7ad/original",
+      "-lm"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "original-collisions",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/original",
+      "collisions"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "original-ordering",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/original",
+      "ordering"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "original-regions",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/original",
+      "regions"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "original-order-keys",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/original",
+      "order-keys"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "original-order-fallback",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/original",
+      "order-fallback"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "original-intervals",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/original",
+      "intervals"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "original-extensions",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/original",
+      "extensions"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "original-ends",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/original",
+      "ends"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "candidate-build",
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "-I",
+      "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native",
+      "-I",
+      "/workspace/geo261-contact-candidate/geometry-core/kernel",
+      "/workspace/geo261-contact-candidate/tests/geo261_contact_world_harness.c",
+      "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native/contact_world.c",
+      "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native/contacts.c",
+      "/workspace/geo261-contact-candidate/geometry-templates/woodworking/native/supports.c",
+      "/workspace/geo261-contact-candidate/geometry-core/kernel/geometry.c",
+      "/workspace/geo261-contact-candidate/geometry-core/kernel/exact.c",
+      "-o",
+      "/tmp/geo261-contact-trial-7ad/candidate",
+      "-lm"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "candidate-collisions",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/candidate",
+      "collisions"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "candidate-ordering",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/candidate",
+      "ordering"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "candidate-regions",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/candidate",
+      "regions"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "candidate-order-keys",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/candidate",
+      "order-keys"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "candidate-order-fallback",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/candidate",
+      "order-fallback"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "candidate-intervals",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/candidate",
+      "intervals"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "candidate-extensions",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/candidate",
+      "extensions"
+    ],
+    "returncode": 0
+  },
+  {
+    "label": "candidate-ends",
+    "command": [
+      "/tmp/geo261-contact-trial-7ad/candidate",
+      "ends"
+    ],
+    "returncode": 0
+  }
+]

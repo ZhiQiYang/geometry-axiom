@@ -1,0 +1,174 @@
+[
+  {
+    "label": "head-before",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "parent",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "rev-parse",
+      "249571fe2477845d5330f6190dad965bf327f43b^"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "status-before",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=no"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "diff-A2-L2",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "diff",
+      "--name-status",
+      "--no-renames",
+      "-z",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+      "249571fe2477845d5330f6190dad965bf327f43b"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "ledger-L2-blob",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "249571fe2477845d5330f6190dad965bf327f43b:tests/mutants_results.json"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "expected-A2",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8:tests/run_all.expected.json"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "expected-L2",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "249571fe2477845d5330f6190dad965bf327f43b:tests/run_all.expected.json"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "artifact-A2-product-architecture.json",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/product-architecture.json"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "artifact-A2-product-architecture-scan.json",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/product-architecture-scan.json"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "artifact-A2-PRODUCT-ARCHITECTURE.md",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "artifact-A2-product-architecture-receipt.json",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/product-architecture-receipt.json"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "head-after-snapshot",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "status-after-snapshot",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=no"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "head-after-cli",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "status-after-cli",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=no"
+    ],
+    "exitCode": 0
+  }
+]

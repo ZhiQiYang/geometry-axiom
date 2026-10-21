@@ -1,0 +1,10 @@
+{
+  "toolChunkId": "4af750",
+  "observedExitCode": 1,
+  "observedWallTimeSeconds": 0.367151506,
+  "reason": "正在執行card會暫時突變同worktree的parameters.inc；helper額外拿現時工作bytes比已完成Q38歷史Git L的檢查不適用。不是Q38產品紅，也不代表Q38當時來源漂移。",
+  "stderr": "Traceback (most recent call last):\n  File \"/workspace/geo261-evidence/gates-l-independent-review-code.txt\", line 88, in <module>\n    assert (ROOT/p).read_bytes()==blobs[p],p\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: geometry-core/parameters.inc\n",
+  "codeSha256": "67a10ce00efb05415f43cc461de40b1716c244f7452bc3a1c65a013d7bcb1a65",
+  "fix": "只以Git L blobs重建baseline與39編譯mutant來源樹，對Q38當時原收據雜湊；原before/after來源紀錄仍保留，card不受干預。",
+  "evidenceType": "已觀察工具結果事後轉錄"
+}

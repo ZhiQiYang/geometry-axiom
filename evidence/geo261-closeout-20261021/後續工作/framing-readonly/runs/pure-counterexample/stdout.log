@@ -1,0 +1,2 @@
+{"case": "matching", "declared": {"code": "CORE_LIMIT_BOUNDARY_END_FREE", "check": "C8_I19_BOUNDARY_END", "id": 7, "end": 2600}, "failure": {"check": "C8_I19_BOUNDARY_END", "id": 7, "end": 2600}, "verdict": ["core_limited", []]}
+{"case": "wrong_failure_kind_same_endpoint", "declared": {"code": "CORE_LIMIT_BOUNDARY_END_FREE", "check": "C8_I19_BOUNDARY_END", "id": 7, "end": 2600}, "failure": {"check": "C8_I19_PRIORITY", "id": 7, "end": 2600}, "verdict": ["core_limited", []]}

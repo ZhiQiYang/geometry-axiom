@@ -1,0 +1,104 @@
+{
+  "completed_utc": "2026-10-21T01:50:04.080726+00:00",
+  "out": "/workspace/geo261-evidence/p189-wait4-diagnostic-85dc4fff-y364a8kh",
+  "runs": [
+    {
+      "side": "main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "argv": [
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a/adbaebf9/bridge"
+      ],
+      "cwd": "/workspace/geo261-evidence/p189-wait4-diagnostic-85dc4fff-y364a8kh",
+      "binary_sha256": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045",
+      "started_utc": "2026-10-21T01:50:02.207484+00:00",
+      "stdin": "/workspace/geo261-evidence/p189-wait4-diagnostic-85dc4fff-y364a8kh/load.in",
+      "pid": 305778,
+      "pgid": 305778,
+      "finished_utc": "2026-10-21T01:50:02.794320+00:00",
+      "wall_seconds": 0.5868361530010588,
+      "start_epoch_ns": 1792547402207508614,
+      "end_epoch_ns": 1792547402794344796,
+      "waited_pid": 305778,
+      "raw_wait_status": 0,
+      "actual_exit_code": 0,
+      "timed_out": false,
+      "rusage": {
+        "ru_utime": 0.390615,
+        "ru_stime": 0.19392299999999998,
+        "ru_maxrss": 38140,
+        "ru_ixrss": 0,
+        "ru_idrss": 0,
+        "ru_isrss": 0,
+        "ru_minflt": 156295,
+        "ru_majflt": 0,
+        "ru_nswap": 0,
+        "ru_inblock": 0,
+        "ru_oublock": 8,
+        "ru_msgsnd": 0,
+        "ru_msgrcv": 0,
+        "ru_nsignals": 0,
+        "ru_nvcsw": 1,
+        "ru_nivcsw": 2
+      },
+      "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1",
+      "stdout_matches_formal": true,
+      "binary_unchanged": true
+    },
+    {
+      "side": "final",
+      "sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "argv": [
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a/85dc4fff/bridge"
+      ],
+      "cwd": "/workspace/geo261-evidence/p189-wait4-diagnostic-85dc4fff-y364a8kh",
+      "binary_sha256": "3feed9014e63ce51579a149e838a0b1e2c3be23957763ec9cd95659a28311f36",
+      "started_utc": "2026-10-21T01:50:02.797922+00:00",
+      "stdin": "/workspace/geo261-evidence/p189-wait4-diagnostic-85dc4fff-y364a8kh/load.in",
+      "pid": 305779,
+      "pgid": 305779,
+      "finished_utc": "2026-10-21T01:50:04.078600+00:00",
+      "wall_seconds": 1.2806697039995925,
+      "start_epoch_ns": 1792547402797949617,
+      "end_epoch_ns": 1792547404078619993,
+      "waited_pid": 305779,
+      "raw_wait_status": 0,
+      "actual_exit_code": 0,
+      "timed_out": false,
+      "rusage": {
+        "ru_utime": 1.238211,
+        "ru_stime": 0.040889999999999996,
+        "ru_maxrss": 60276,
+        "ru_ixrss": 0,
+        "ru_idrss": 0,
+        "ru_isrss": 0,
+        "ru_minflt": 33373,
+        "ru_majflt": 0,
+        "ru_nswap": 0,
+        "ru_inblock": 0,
+        "ru_oublock": 8,
+        "ru_msgsnd": 0,
+        "ru_msgrcv": 0,
+        "ru_nsignals": 0,
+        "ru_nvcsw": 1,
+        "ru_nivcsw": 5
+      },
+      "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1",
+      "stdout_matches_formal": true,
+      "binary_unchanged": true
+    }
+  ],
+  "formal_samples_and_receipt_unchanged": true,
+  "formal_gate_samples_added": 0,
+  "perf_readonly": {
+    "executable": null,
+    "perf_event_paranoid": "2",
+    "euid": 1000,
+    "permission_fields": [
+      "CapEff:\t0000000000000000",
+      "NoNewPrivs:\t1",
+      "Seccomp:\t2"
+    ],
+    "executed_perf": false,
+    "permission_test_performed": false
+  }
+}

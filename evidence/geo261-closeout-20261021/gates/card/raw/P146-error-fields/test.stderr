@@ -1,0 +1,15 @@
+test_P146_ERROR_FIELDS_ONLY (tests.test_grid_card_reference.GridCardReference.test_P146_ERROR_FIELDS_ONLY) ... FAIL
+
+======================================================================
+FAIL: test_P146_ERROR_FIELDS_ONLY (tests.test_grid_card_reference.GridCardReference.test_P146_ERROR_FIELDS_ONLY)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates/tests/test_grid_card_reference.py", line 479, in test_P146_ERROR_FIELDS_ONLY
+    with self.assertRaisesRegex(AssertionError, 'ONLY_IN_PREVIEW_DATA'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: AssertionError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.119s
+
+FAILED (failures=1)

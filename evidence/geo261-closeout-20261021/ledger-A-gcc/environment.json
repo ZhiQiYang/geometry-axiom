@@ -1,0 +1,28 @@
+{
+  "started_utc": "2026-10-20T21:15:43.811965+00:00",
+  "source_sha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "source_tree": "502024d69976c98f309a3964df1bfb5e5cbcfcc0",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python": "Python 3.12.14",
+  "gcc": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+  "cpu_quota": "400000 100000",
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "core_limit": [
+    0,
+    0
+  ],
+  "environment_overrides": {
+    "TMPDIR": "/workspace/geo261-ledger-run.ra2_k2z2/tmp",
+    "MUTATE_CACHE": "/workspace/geo261-ledger-run.ra2_k2z2/cache",
+    "MUTATE_RESULTS": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/mutants_results.json",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "CC": "gcc"
+  },
+  "PYTHONOPTIMIZE_removed": true,
+  "supervisor_pid": 145161,
+  "supervisor_pgid": 145157
+}

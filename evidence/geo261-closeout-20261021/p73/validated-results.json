@@ -1,0 +1,164 @@
+{
+  "validationExitCode": 0,
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "cases": [
+    {
+      "case": "minimal-original",
+      "classification": "自然DOM診斷，不是驗收",
+      "exitCode": 0,
+      "passedAssertions": 0,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "elapsedSeconds": 2.447706812999968,
+      "effectiveAppSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+      "browserCleanup": {
+        "pid": 115078,
+        "profile": "/tmp/geometry-cdp-4iI5Ab",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      }
+    },
+    {
+      "case": "full-original",
+      "classification": "原版自然綠",
+      "exitCode": 0,
+      "passedAssertions": 69,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "elapsedSeconds": 31.937552585999583,
+      "effectiveAppSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+      "browserCleanup": {
+        "pid": 116559,
+        "profile": "/tmp/geometry-cdp-bZJmpv",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      }
+    },
+    {
+      "case": "v2-transition-candidate-none",
+      "classification": "候選轉換正控制",
+      "exitCode": 0,
+      "passedAssertions": 6,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "elapsedSeconds": 3.096333370999673,
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "browserCleanup": {
+        "pid": 127335,
+        "profile": "/tmp/geometry-cdp-Jhgjon",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      }
+    },
+    {
+      "case": "v2-transition-withdraw-guard-none",
+      "classification": "自然guard撤回存活，不能算killed",
+      "exitCode": 0,
+      "passedAssertions": 6,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "elapsedSeconds": 3.079654381999717,
+      "effectiveAppSha256": "dfbe254d96f1723cef70a2cac646509623440a53f70fe58f655c69859a28c550",
+      "browserCleanup": {
+        "pid": 127703,
+        "profile": "/tmp/geometry-cdp-Kygr06",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      }
+    },
+    {
+      "case": "v2-transition-withdraw-metrics-none",
+      "classification": "metrics撤回被精確檢出",
+      "exitCode": 1,
+      "passedAssertions": 2,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "elapsedSeconds": 2.7873547839999446,
+      "effectiveAppSha256": "806d215477b947525b7b494a135479df9f90a69c45121a22e374a3e4e1a05b43",
+      "browserCleanup": {
+        "pid": 128028,
+        "profile": "/tmp/geometry-cdp-EddzRL",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      }
+    },
+    {
+      "case": "v2-transition-withdraw-all-none",
+      "classification": "完整撤回自然被檢出",
+      "exitCode": 1,
+      "passedAssertions": 2,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "elapsedSeconds": 2.8805405690000043,
+      "effectiveAppSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+      "browserCleanup": {
+        "pid": 128351,
+        "profile": "/tmp/geometry-cdp-Cj1G7Z",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      }
+    },
+    {
+      "case": "v2-full-candidate-callback",
+      "classification": "完整模組加明示callback正控制",
+      "exitCode": 0,
+      "passedAssertions": 69,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "elapsedSeconds": 33.04739227200025,
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "browserCleanup": {
+        "pid": 128674,
+        "profile": "/tmp/geometry-cdp-rg18jw",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      }
+    },
+    {
+      "case": "v2-full-withdraw-guard-callback",
+      "classification": "guard撤回受控被原題檢出",
+      "exitCode": 1,
+      "passedAssertions": 47,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "elapsedSeconds": 23.704158403000292,
+      "effectiveAppSha256": "dfbe254d96f1723cef70a2cac646509623440a53f70fe58f655c69859a28c550",
+      "browserCleanup": {
+        "pid": 130009,
+        "profile": "/tmp/geometry-cdp-lxxOiY",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      }
+    },
+    {
+      "case": "v2-full-withdraw-all-callback",
+      "classification": "完整撤回受控被原題檢出",
+      "exitCode": 1,
+      "passedAssertions": 47,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "elapsedSeconds": 22.285289514000397,
+      "effectiveAppSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+      "browserCleanup": {
+        "pid": 131122,
+        "profile": "/tmp/geometry-cdp-JO1Mui",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      }
+    }
+  ],
+  "limitations": [
+    "候選app以回應階段記憶體替換；服務runtime仍為R2",
+    "目前full69仍執行原版P73測試模組；新增同題metrics斷言待正式來源驗收",
+    "原fullcanvas失敗頁DOM未保存；明示callback控制不宣稱精確重演所有排程"
+  ]
+}

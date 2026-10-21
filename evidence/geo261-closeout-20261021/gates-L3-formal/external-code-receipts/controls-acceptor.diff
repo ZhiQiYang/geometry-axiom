@@ -1,0 +1,13 @@
+--- /workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/gate-review/controls-acceptor.py
++++ /workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/controls-acceptor.py
+@@ -51,8 +51,8 @@
+         assert x['exception_type'].split('.')[-1]+':' in raw
+     return raw
+ 
+-BASE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021');G=BASE/'gates';ROOT=Path('/workspace/geo261-gates-l2-249571fe2477-20261021')
+-SHA='249571fe2477845d5330f6190dad965bf327f43b';PHASE='controls'
++BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021');G=BASE/'gates';ROOT=Path('/workspace/geo261-gates-l3-6589248c9a94-20261021')
++SHA='6589248c9a94bdf0460d8f84dd1610e51048188b';PHASE='controls'
+ OUT=BASE/'gates/acceptance-review';REPORT=OUT/'controls.json';assert not REPORT.exists()
+ official=G/'controls';launch=G/'launcher/controls';r=j(official/'receipt.json');rr=j(official/'run-receipt.json');lr=j(launch/'receipt.json');v=j(G/'verification/controls.json')
+ def git_blob(name):return subprocess.check_output(['git','show',SHA+':'+name],cwd=ROOT)

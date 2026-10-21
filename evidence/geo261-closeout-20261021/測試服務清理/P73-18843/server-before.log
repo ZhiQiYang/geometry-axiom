@@ -1,0 +1,137 @@
+core: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-20T19:31:15+00:00））
+bridge: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-20T19:31:34+00:00））
+model-base: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-20T19:31:50+00:00））
+LOCAL_RUNTIME {"root": "/workspace/geometry-axiom", "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3", "executables": {"core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core", "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge", "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"}, "port": 18843, "managedPreview": false}
+http://localhost:18843  （Ctrl-C 結束；版本=bf568f47a04b；bridge=/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge）
+I8a preview 2: valid; confirm token to apply
+ timber 10 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 11 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 12 center 3986 -> 3986 length 2946 -> 2946
+  surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 13 center 13 -> 13 length 2946 -> 2946
+  surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 20 center 2000 -> 2000 length 2946 -> 2946
+  surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 30 center 1500 -> 1500 length 1960 -> 1960
+  surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 31 center 1500 -> 1500 length 1959 -> 1959
+  surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+input:7: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 3: valid; confirm token to apply
+grid-system 1 unavailable -> grid-system 1 name UI 審查保留中的草稿 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 1
+ timber 10 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 11 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 12 center 3986 -> 3986 length 2946 -> 2946
+  surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 13 center 13 -> 13 length 2946 -> 2946
+  surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 20 center 2000 -> 2000 length 2946 -> 2946
+  surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 30 center 1500 -> 1500 length 1960 -> 1960
+  surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 31 center 1500 -> 1500 length 1959 -> 1959
+  surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+I8a preview 4: valid; confirm token to apply
+boundary 801 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 kind 0 outer unkeyed:100,200/fixity=1 unkeyed:1300,200/fixity=1 unkeyed:1300,1000/fixity=1 unkeyed:100,1000/fixity=1 -> boundary 801 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 kind 0 next-key 5 outer 1:100,200/fixity=1 2:1300,200/fixity=1 3:1300,1000/fixity=1 4:100,1000/fixity=1
+grid-binding 801 unavailable -> grid-binding 801 boundary 801 system 801 vertex-key 1 cell [0,0] anchor [0/1,0/1] vertex [100,200] translation [100,200] geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 sample (not complete geometry) u stride 1 total 3: k=0@100{[100,200]-[100,1000]} k=1@700{[700,200]-[700,1000]} k=2@1300{} v stride 1 total 3: k=0@200{[100,200]-[1300,200]} k=1@600{[100,600]-[1300,600]} k=2@1000{}
+ timber 10 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 11 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 12 center 3986 -> 3986 length 2946 -> 2946
+  surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 13 center 13 -> 13 length 2946 -> 2946
+  surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 20 center 2000 -> 2000 length 2946 -> 2946
+  surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 30 center 1500 -> 1500 length 1960 -> 1960
+  surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 31 center 1500 -> 1500 length 1959 -> 1959
+  surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+input:18: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 6: valid; confirm token to apply
+ timber 10 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 11 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 12 center 3986 -> 3986 length 2946 -> 2946
+  surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 13 center 13 -> 13 length 2946 -> 2946
+  surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 20 center 2000 -> 2000 length 2946 -> 2946
+  surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 30 center 1500 -> 1500 length 1960 -> 1960
+  surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 31 center 1500 -> 1500 length 1959 -> 1959
+  surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+input:30: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 7: valid; confirm token to apply
+grid-system 1 unavailable -> grid-system 1 name UI 審查保留中的草稿 mode infinite main-along none u repeat 0 600 v repeat 0 400 rule-next 1
+ timber 10 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 11 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 12 center 3986 -> 3986 length 2946 -> 2946
+  surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 13 center 13 -> 13 length 2946 -> 2946
+  surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 20 center 2000 -> 2000 length 2946 -> 2946
+  surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 30 center 1500 -> 1500 length 1960 -> 1960
+  surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 31 center 1500 -> 1500 length 1959 -> 1959
+  surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+I8a preview 8: valid; confirm token to apply
+boundary 801 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 kind 0 outer unkeyed:100,200/fixity=1 unkeyed:1300,200/fixity=1 unkeyed:1300,1000/fixity=1 unkeyed:100,1000/fixity=1 -> boundary 801 geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 kind 0 next-key 5 outer 1:100,200/fixity=1 2:1300,200/fixity=1 3:1300,1000/fixity=1 4:100,1000/fixity=1
+grid-binding 801 unavailable -> grid-binding 801 boundary 801 system 801 vertex-key 1 cell [0,0] anchor [0/1,0/1] vertex [100,200] translation [100,200] geometry-hash 993e2e9e69c9527db98e3be6b29be64c7ce71283afcbd4d04efcea9c146c22d6 sample (not complete geometry) u stride 1 total 3: k=0@100{[100,200]-[100,1000]} k=1@700{[700,200]-[700,1000]} k=2@1300{} v stride 1 total 3: k=0@200{[100,200]-[1300,200]} k=1@600{[100,600]-[1300,600]} k=2@1000{}
+ timber 10 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 11 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 12 center 3986 -> 3986 length 2946 -> 2946
+  surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 13 center 13 -> 13 length 2946 -> 2946
+  surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 20 center 2000 -> 2000 length 2946 -> 2946
+  surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 30 center 1500 -> 1500 length 1960 -> 1960
+  surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 31 center 1500 -> 1500 length 1959 -> 1959
+  surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+input:41: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 10: valid; confirm token to apply
+ timber 10 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 11 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 12 center 3986 -> 3986 length 2946 -> 2946
+  surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 13 center 13 -> 13 length 2946 -> 2946
+  surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 20 center 2000 -> 2000 length 2946 -> 2946
+  surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 30 center 1500 -> 1500 length 1960 -> 1960
+  surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 31 center 1500 -> 1500 length 1959 -> 1959
+  surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+input:60: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 12: valid; confirm token to apply
+ timber 10 center 13 -> 13 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 11 center 2986 -> 2986 length 4000 -> 4000
+  surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2973,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 12 center 3986 -> 3986 length 2946 -> 2946
+  surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [4000,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 13 center 13 -> 13 length 2946 -> 2946
+  surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [27,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 20 center 2000 -> 2000 length 2946 -> 2946
+  surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2014,27,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 30 center 1500 -> 1500 length 1960 -> 1960
+  surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [27,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 31 center 1500 -> 1500 length 1959 -> 1959
+  surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [2014,1487,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+input:78: I8a: impact preview required; inspect preview, then confirm token (World unchanged)

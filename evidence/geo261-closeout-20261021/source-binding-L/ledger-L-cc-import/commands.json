@@ -1,0 +1,278 @@
+[
+  {
+    "label": "head-before",
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.440145+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.442727+00:00",
+    "seconds": 0.0025793689983402146,
+    "exitCode": 0
+  },
+  {
+    "label": "branch-before",
+    "argv": [
+      "git",
+      "branch",
+      "--show-current"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.442806+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.444503+00:00",
+    "seconds": 0.0017000400002871174,
+    "exitCode": 0
+  },
+  {
+    "label": "status-before",
+    "argv": [
+      "git",
+      "status",
+      "--porcelain=v1"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.444635+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.537426+00:00",
+    "seconds": 0.09280573199976061,
+    "exitCode": 0
+  },
+  {
+    "label": "A-ledger",
+    "argv": [
+      "git",
+      "show",
+      "7159530c0e494d3211e6ab1764eb691137211707:tests/mutants_results.json"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.577077+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.602187+00:00",
+    "seconds": 0.02510640400032571,
+    "exitCode": 0
+  },
+  {
+    "label": "diff-files",
+    "argv": [
+      "git",
+      "diff",
+      "--name-only"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.671358+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.692741+00:00",
+    "seconds": 0.021372839999457938,
+    "exitCode": 0
+  },
+  {
+    "label": "diff-check",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.693045+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.758406+00:00",
+    "seconds": 0.0653728620000038,
+    "exitCode": 0
+  },
+  {
+    "label": "stage",
+    "argv": [
+      "git",
+      "add",
+      "--",
+      "tests/mutants_results.json"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.758628+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.837623+00:00",
+    "seconds": 0.07900526199955493,
+    "exitCode": 0
+  },
+  {
+    "label": "staged-files",
+    "argv": [
+      "git",
+      "diff",
+      "--cached",
+      "--name-only"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.837865+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.845438+00:00",
+    "seconds": 0.0075737329989351565,
+    "exitCode": 0
+  },
+  {
+    "label": "commit",
+    "argv": [
+      "git",
+      "commit",
+      "-m",
+      "test(mutations): regenerate ledger with CI default compiler"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.845598+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.936911+00:00",
+    "seconds": 0.09132625600068423,
+    "exitCode": 0
+  },
+  {
+    "label": "head-after",
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.937210+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.939356+00:00",
+    "seconds": 0.002147470000636531,
+    "exitCode": 0
+  },
+  {
+    "label": "parent",
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD^"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.939517+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.942354+00:00",
+    "seconds": 0.0028383810004015686,
+    "exitCode": 0
+  },
+  {
+    "label": "A-is-ancestor",
+    "argv": [
+      "git",
+      "merge-base",
+      "--is-ancestor",
+      "7159530c0e494d3211e6ab1764eb691137211707",
+      "43f85313c32410ac01406ab585846bbacafea278"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.942524+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.945530+00:00",
+    "seconds": 0.0030088929997873493,
+    "exitCode": 0
+  },
+  {
+    "label": "A-to-L-files",
+    "argv": [
+      "git",
+      "diff",
+      "--name-only",
+      "7159530c0e494d3211e6ab1764eb691137211707",
+      "43f85313c32410ac01406ab585846bbacafea278"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.945697+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.949461+00:00",
+    "seconds": 0.0037679029992432334,
+    "exitCode": 0
+  },
+  {
+    "label": "A-to-L-source",
+    "argv": [
+      "git",
+      "diff",
+      "--exit-code",
+      "7159530c0e494d3211e6ab1764eb691137211707",
+      "43f85313c32410ac01406ab585846bbacafea278",
+      "--",
+      ".",
+      ":!tests/mutants_results.json"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.949644+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.952738+00:00",
+    "seconds": 0.0030962419987190515,
+    "exitCode": 0
+  },
+  {
+    "label": "ledger-blob",
+    "argv": [
+      "git",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/mutants_results.json"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.953002+00:00",
+    "finishedUTC": "2026-10-20T23:01:12.970943+00:00",
+    "seconds": 0.017952268999579246,
+    "exitCode": 0
+  },
+  {
+    "label": "status-after",
+    "argv": [
+      "git",
+      "status",
+      "--porcelain=v1"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:12.971737+00:00",
+    "finishedUTC": "2026-10-20T23:01:13.082908+00:00",
+    "seconds": 0.11117790400021477,
+    "exitCode": 0
+  },
+  {
+    "label": "L-default-check",
+    "argv": [
+      "python3",
+      "-B",
+      "tests/mutate.py",
+      "--check"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:13.086451+00:00",
+    "finishedUTC": "2026-10-20T23:01:14.721574+00:00",
+    "seconds": 1.6351330059987959,
+    "exitCode": 0
+  },
+  {
+    "label": "push",
+    "argv": [
+      "git",
+      "push",
+      "origin",
+      "codex/geo261-closeout-20261021"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:14.723055+00:00",
+    "finishedUTC": "2026-10-20T23:01:17.120412+00:00",
+    "seconds": 2.397361061999618,
+    "exitCode": 0
+  },
+  {
+    "label": "remote-after-push",
+    "argv": [
+      "git",
+      "ls-remote",
+      "--heads",
+      "origin",
+      "refs/heads/codex/geo261-closeout-20261021"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:17.120707+00:00",
+    "finishedUTC": "2026-10-20T23:01:17.475431+00:00",
+    "seconds": 0.35473498799910885,
+    "exitCode": 0
+  },
+  {
+    "label": "status-final",
+    "argv": [
+      "git",
+      "status",
+      "--porcelain=v1"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "startedUTC": "2026-10-20T23:01:17.475757+00:00",
+    "finishedUTC": "2026-10-20T23:01:17.560917+00:00",
+    "seconds": 0.08517200499954924,
+    "exitCode": 0
+  }
+]

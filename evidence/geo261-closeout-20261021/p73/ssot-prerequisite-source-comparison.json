@@ -1,0 +1,36 @@
+{
+  "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "R2": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "readOnly": true,
+  "browserStarted": false,
+  "checks": [
+    {
+      "file": "geometry-web/uiux_review_test.js",
+      "sameBytes": true,
+      "mainSha256": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "R2Sha256": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47"
+    },
+    {
+      "file": "geometry-web/app.css",
+      "sameBytes": true,
+      "mainSha256": "028c423c50a766f740144d1c883a16b997be5f00ef9a3d35548a5f59f1ec82fc",
+      "R2Sha256": "028c423c50a766f740144d1c883a16b997be5f00ef9a3d35548a5f59f1ec82fc"
+    },
+    {
+      "file": "geometry-web/app.js",
+      "start": "async function openSpaceWorkspace(sid)",
+      "endExclusive": "function spaceMemberThumbnail",
+      "sameBytes": true,
+      "mainSha256": "49e69253e7805daf16034ebfa48bfe1dcbdc5a74a8d437111550b77b93eda5da",
+      "R2Sha256": "49e69253e7805daf16034ebfa48bfe1dcbdc5a74a8d437111550b77b93eda5da"
+    },
+    {
+      "file": "geometry-web/app.js",
+      "start": "function renderSpacePlan(sp)",
+      "endExclusive": "function renderSpaceInspector",
+      "sameBytes": true,
+      "mainSha256": "507c7212be04210e78df2586d9f4cbd15a08c159afdf22bb3f84c828ac70aed8",
+      "R2Sha256": "507c7212be04210e78df2586d9f4cbd15a08c159afdf22bb3f84c828ac70aed8"
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "sourceSha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "branch": "codex/geo261-closeout-20261021",
+  "driverCommand": [
+    "python3",
+    "/workspace/geo261-evidence/p73/run_formal.py",
+    "7159530c0e494d3211e6ab1764eb691137211707"
+  ],
+  "driverSha256": "5ca7e4006e2556bc09d81834930f2106335553953f7f3e78d912301bd5dd5c4e",
+  "driverExitCode": 0,
+  "cases": [
+    {
+      "name": "full-normal",
+      "sourceSha": "7159530c0e494d3211e6ab1764eb691137211707",
+      "exitCode": 0,
+      "validationExitCode": 0,
+      "passedAssertions": 69,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "actualFixed": true,
+      "mutation": "none",
+      "actualAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "elapsedSeconds": 41.7398806329993,
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+        "fresh": true,
+        "root": "/workspace/geometry-axiom",
+        "pid": 138215,
+        "session": "7d1ecfaadb2440858d9a51c788c27b12"
+      },
+      "browserCleanup": {
+        "pid": 138402,
+        "profile": "/tmp/geometry-cdp-6tEKo0",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      },
+      "logSha256": "90ca8387d30257f0a04b5f0843dd3bf558c1c8ac425e470a7dac74f3fd2f4314",
+      "receiptSha256": "aacdb20547bf6d40e815a3ee7cac340dd4cd3ef59593ef8bbfbda03ae4fdd241"
+    },
+    {
+      "name": "full-callback",
+      "sourceSha": "7159530c0e494d3211e6ab1764eb691137211707",
+      "exitCode": 0,
+      "validationExitCode": 0,
+      "passedAssertions": 69,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "actualFixed": true,
+      "mutation": "none",
+      "actualAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "elapsedSeconds": 38.17591739999989,
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+        "fresh": true,
+        "root": "/workspace/geometry-axiom",
+        "pid": 138215,
+        "session": "7d1ecfaadb2440858d9a51c788c27b12"
+      },
+      "browserCleanup": {
+        "pid": 140420,
+        "profile": "/tmp/geometry-cdp-r5BhI1",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      },
+      "logSha256": "b65065410971aaff486bc7d283365b8f7e6f83135d1df07547566eedcbca93dc",
+      "receiptSha256": "33b455eada5d57983aedce455cc6819f5d5decfea0220b2544c92f2d341a768d"
+    },
+    {
+      "name": "transition",
+      "sourceSha": "7159530c0e494d3211e6ab1764eb691137211707",
+      "exitCode": 0,
+      "validationExitCode": 0,
+      "passedAssertions": 6,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "actualFixed": true,
+      "mutation": "none",
+      "actualAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "elapsedSeconds": 2.9594491030002246,
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+        "fresh": true,
+        "root": "/workspace/geometry-axiom",
+        "pid": 138215,
+        "session": "7d1ecfaadb2440858d9a51c788c27b12"
+      },
+      "browserCleanup": {
+        "pid": 141879,
+        "profile": "/tmp/geometry-cdp-Opbeha",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      },
+      "logSha256": "5f137a96ad327ee1256902001e61d7184ad8f931f69ace5d3187d9407519a425",
+      "receiptSha256": "dc24dbbd476613a15be7055a03ad0d692371e38809750c67c70208e717144614"
+    },
+    {
+      "name": "withdraw-guard",
+      "sourceSha": "7159530c0e494d3211e6ab1764eb691137211707",
+      "exitCode": 1,
+      "validationExitCode": 0,
+      "passedAssertions": 47,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "actualFixed": true,
+      "mutation": "withdraw-guard",
+      "actualAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "effectiveAppSha256": "dfbe254d96f1723cef70a2cac646509623440a53f70fe58f655c69859a28c550",
+      "elapsedSeconds": 23.030489888000375,
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+        "fresh": true,
+        "root": "/workspace/geometry-axiom",
+        "pid": 138215,
+        "session": "7d1ecfaadb2440858d9a51c788c27b12"
+      },
+      "browserCleanup": {
+        "pid": 142249,
+        "profile": "/tmp/geometry-cdp-C2KOw6",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      },
+      "logSha256": "b17139a74d5ed7bae020205fec3c962bdba0b22e1f6a76ecf61f705b43e24347",
+      "receiptSha256": "f48907f73d422927d39ef69cf4e1f0a738a4acb8d069cd43d0092a8d871e924f"
+    },
+    {
+      "name": "withdraw-metrics",
+      "sourceSha": "7159530c0e494d3211e6ab1764eb691137211707",
+      "exitCode": 1,
+      "validationExitCode": 0,
+      "passedAssertions": 2,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "actualFixed": true,
+      "mutation": "withdraw-metrics",
+      "actualAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "effectiveAppSha256": "806d215477b947525b7b494a135479df9f90a69c45121a22e374a3e4e1a05b43",
+      "elapsedSeconds": 2.8105928590002804,
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+        "fresh": true,
+        "root": "/workspace/geometry-axiom",
+        "pid": 138215,
+        "session": "7d1ecfaadb2440858d9a51c788c27b12"
+      },
+      "browserCleanup": {
+        "pid": 142781,
+        "profile": "/tmp/geometry-cdp-KM0Ghc",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      },
+      "logSha256": "c87510eb8fe6f26a54a31a3d5e8d819748498b0746ec41a2c8c253005ca20b56",
+      "receiptSha256": "79ee83fd0a6ea631efb161c839849a19ca5e3a4c7784f9460694ec9f4b8ff2fd"
+    },
+    {
+      "name": "withdraw-all",
+      "sourceSha": "7159530c0e494d3211e6ab1764eb691137211707",
+      "exitCode": 1,
+      "validationExitCode": 0,
+      "passedAssertions": 47,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "actualFixed": true,
+      "mutation": "withdraw-all",
+      "actualAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "effectiveAppSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+      "elapsedSeconds": 23.4370869280001,
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+        "fresh": true,
+        "root": "/workspace/geometry-axiom",
+        "pid": 138215,
+        "session": "7d1ecfaadb2440858d9a51c788c27b12"
+      },
+      "browserCleanup": {
+        "pid": 143205,
+        "profile": "/tmp/geometry-cdp-33Xtnl",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      },
+      "logSha256": "2181328c9bc1ed079df1428e21e0f3943ab53ec57bda58f79382e2d245a5c7b1",
+      "receiptSha256": "71573f6a5bffcd3124f385ba379184c519636028b21e846be5bede7baa525e02"
+    }
+  ],
+  "limitations": [
+    "這是P73正式69題及6項轉換驗證，不取代整份canvas2261題或七項整體驗收",
+    "手動callback明示控制排程，不宣稱精確重演原fullcanvas",
+    "原fullcanvas失敗DOM未保存",
+    "RC-only足跡目前只有靜態路徑審查，沒有新增真browser案例"
+  ]
+}

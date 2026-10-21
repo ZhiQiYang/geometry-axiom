@@ -1,0 +1,26 @@
+{
+  "validationExitCode": 0,
+  "sourceHead": "7159530c0e494d3211e6ab1764eb691137211707",
+  "nodeExitCodeObservedInPopen": 0,
+  "outerExecExitCode": null,
+  "passed": 2261,
+  "failed": 0,
+  "skipped": 0,
+  "exactGoldenSections": 85,
+  "goldenSha256": "0ba98dde2ee69d342eb7efc76b86b858e17835437d6e63290fecb546ff72f041",
+  "sourceHashesMatchedGitA": 7,
+  "runtimeBeforeAfterEqual": true,
+  "cleanupNoSurvivorAndPortsRefused": true,
+  "seconds": 2058.016265406999,
+  "headroomSeconds": 41.98373459300092,
+  "pngCount": 135,
+  "expectedExceptions": 1,
+  "unexpectedExceptions": 0,
+  "traceStatus": "trace-disabled-for-this-runner",
+  "limits": [
+    "本次只讀原始證據，沒有重跑browser；不是L正式驗收",
+    "exec session18751失聯，外層退出碼未知，不依passed推0",
+    "PNG只核存在與assembly原hash，本審查沒有逐圖目視",
+    "原測試內建負控制不算本次新產品突變"
+  ]
+}

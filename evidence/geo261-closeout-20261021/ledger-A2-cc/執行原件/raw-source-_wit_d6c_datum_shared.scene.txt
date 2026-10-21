@@ -1,0 +1,16 @@
+# 公理:D6c:共用基準面是 World 層的無限平面 n·p = d,只引用具名規格(D6b);
+# 不同承載面的參考線引用同一個 datum,交線位置由各面 frame 推導(D9 不存交線)。
+# datum 1 是 x = 1500 的平面。天花(面 1,U=+x)、前牆(面 3,U=+x)、地板(面 2,V=+x)
+# 各掛一條 DATUM 參考線 → 三個視圖裡都是同一條 X=1500,不靠畫布對齊。見證圖取整張三視圖。
+surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000
+surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
+surface 4 origin 0    3000 0    u +z v +x outline 0,0 2500,0 2500,4000 0,4000
+surface 5 origin 0    0    0    u +z v +y outline 0,0 2500,0 2500,3000 0,3000
+surface 6 origin 4000 0    0    u +y v +z outline 0,0 3000,0 3000,2500 0,2500
+space 1 boundary 1 2 3 4 5 6
+spec 共用基準X 1500
+datum 1 x spec:共用基準X
+guide 1 1 datum 1
+guide 2 3 datum 1
+guide 3 2 datum 1

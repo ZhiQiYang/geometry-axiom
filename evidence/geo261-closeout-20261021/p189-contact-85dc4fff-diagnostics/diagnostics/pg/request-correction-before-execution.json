@@ -1,0 +1,11 @@
+{
+  "corrected_utc": "2026-10-21T01:43:15.472026+00:00",
+  "reason": "root澄清要求與正式timing同請求；尚未啟動任何profile/archive/build，故改為單次loadfile-only。175equivalence已證dump。",
+  "unexecuted_draft": "draft-profile-driver-load-dump-unexecuted.py",
+  "unexecuted_draft_sha256": "d07c7360d103824fcfffae8c9de38142e50b45f6e32f5f1af8b570e8fac45daa",
+  "actual_driver": "profile-driver.py",
+  "actual_driver_sha256": "ee8a7f7e364bd3b959f19a6bcc0a5e8cd3fdfca4ab7f65a377d5b0b66ac2148f",
+  "diagnostic_runs_before_correction": 0,
+  "actual_request": "loadfile-only，EOF退出；同正式timing",
+  "expected_stdout": "timing/n64-r0-final.stdout"
+}

@@ -1,0 +1,85 @@
+from pathlib import Path
+import hashlib
+import json
+
+ROOT = Path('/workspace/geo261-evidence/browser-five-L3-independent-review')
+RUN = Path('/workspace/geo261-evidence/browser-five-L3-formal-6589248c')
+SOURCE = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+
+def read(path):
+    return json.loads(path.read_text())
+
+def write(name, value):
+    with (ROOT / name).open('x', encoding='utf-8') as stream:
+        stream.write(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+
+def identity(path):
+    content = path.read_bytes()
+    return {'path': str(path), 'bytes': len(content), 'sha256': hashlib.sha256(content).hexdigest()}
+
+peer = read(ROOT / 'peer.json')
+artifacts = read(ROOT / 'artifact-peer.json')
+producer = read(RUN / 'final-verification.json')
+assert peer['sourceSha'] == artifacts['sourceSha'] == producer['sourceSha'] == SOURCE
+assert peer['validationExitCode'] == artifacts['validationExitCode'] == producer['verificationExitCode'] == 0
+assert producer['accepted'] is True
+assert [x['suite'] for x in peer['suites']] == [x['suite'] for x in producer['rows']]
+for ours, theirs in zip(peer['suites'], producer['rows']):
+    for left, right in [('passed','passed'), ('failed','failed'), ('nodeExit','nodeObservedReturncode'), ('acceptanceExit','validationExitCode'), ('seconds','elapsedSeconds'), ('jobLimitSeconds','jobLimitSeconds'), ('manifestFiles','originalManifestEntriesChecked'), ('pngs','pngCount'), ('rawSha256','rawSha256')]:
+        assert ours[left] == theirs[right], (ours['suite'], left)
+assert sum(x['passed'] for x in peer['suites']) == producer['totalPassedAssertions'] == 868
+assert peer['totalPngs'] == producer['totalPngFiles'] == 81
+assert peer['manifestFilesChecked'] == producer['totalOriginalManifestEntries'] == 210
+assert peer['gitFilesIndependentlyRead'] == 348
+assert producer['uniqueGitSourceEntriesChecked'] == 154
+assert artifacts['addedFiles'] == producer['captureAddedFiles'] == 15
+assert artifacts['addedBytes'] == producer['captureAddedBytes'] == 107195
+assert artifacts['existingWrapperFilesChecked'] == producer['captureExistingNonPngFilesChecked'] == 9
+assert producer['observedWrapperReturncode'] == producer['observedLauncherProcessReturncode'] == producer['actualToolExitCode'] == 0
+assert producer['actualToolChunk'] == peer['recordedExecResponseChunk'] == 'b9d980'
+write('producer-final-comparison.json', {
+    'sourceSha': SOURCE,
+    'comparisonExitCode': 0,
+    'scope': '只比較已完成的主接受器報告、補件接受器報告與製作者最後報告，不重跑任何產品或既有接受器。',
+    'sourceCountExplanation': '製作者核154個browser來源；本獨審另核194個native依賴，聯集348個不同Git路徑。',
+    'references': [identity(ROOT/'peer.json'), identity(ROOT/'artifact-peer.json'), identity(RUN/'final-verification.json'), identity(RUN/'報告.md'), identity(RUN/'post-run-tool-observations.json')]
+})
+write('tool-observations.json', {
+    'schema': 'geo261-browser-five-L3-peer-tool-observations/1',
+    'scope': '下列是實際工具回覆欄位的轉錄，不是原始transport資料；接受器的完整stdout/stderr與Popen真wait另存本目錄。',
+    'observations': [
+        {'purpose': '首版主接受器', 'chunk_id': 'a692a6', 'exit_code': 1, 'execution': 'execution.json', 'code': 'peer-code.txt', 'stdout': 'peer.stdout', 'stderr': 'peer.stderr', 'cause': 'P77控制的來源定位誤指assembly_workflow_test.js；實際是assembly_review_test.js。未修改產品，原失敗完整保留。'},
+        {'purpose': '修正來源定位後主接受器', 'chunk_id': '732ee4', 'exit_code': 0, 'execution': 'execution-v2.json', 'code': 'peer-code-v2.txt', 'stdout': 'peer-v2.stdout', 'stderr': 'peer-v2.stderr'},
+        {'purpose': '補件接受器', 'chunk_id': '2e140b', 'exit_code': 0, 'execution': 'artifact-execution.json', 'code': 'artifact-peer-code.txt', 'stdout': 'artifact-peer.stdout', 'stderr': 'artifact-peer.stderr'},
+        {'purpose': '資料探索', 'chunk_id': 'f0baa6', 'exit_code': 1, 'cause': '誤讀不存在的assembly/source-before.json；實存來源索引是source-hashes.json。', 'rawLimit': '當時未另外redirect完整stdout/stderr，只有工具碼與錯誤摘要；不稱完整raw。'},
+        {'purpose': '資料探索', 'chunk_id': '81b1bf', 'exit_code': 1, 'cause': 'Python手寫__name__for缺少空白的SyntaxError。', 'rawLimit': '當時未另外redirect完整stdout/stderr，只有工具碼與錯誤摘要；不稱完整raw。'},
+        {'purpose': '修正語法後資料探索', 'chunk_id': '664ed1', 'exit_code': 0, 'result': '確認summary每項的suite/accepted/browserReturncode三欄schema。'},
+        {'purpose': '最後人讀製作者報告', 'chunk_id': '7f2411', 'exit_code': 0, 'result': '報告正確區分scope、reused、P77預期transport事件、事後補件、圖片未逐張目視。'}
+    ],
+    'productExecution': False,
+    'newMutationExecution': False
+})
+readme = '''# L3五項瀏覽器獨立唯讀審查
+
+來源為 `6589248c9a94bdf0460d8f84dd1610e51048188b`，分支 `codex/geo261-closeout-20261021`。本審查沒有啟動browser、build、產品測試或新突變，也沒有修改原run目錄。
+
+主接受器 [peer-code-v2.txt](peer-code-v2.txt) 真wait為0，工具732ee4為0；補件接受器 [artifact-peer-code.txt](artifact-peer-code.txt) 真wait為0，工具2e140b為0。完整原stdout/stderr、argv與父wait見 [execution-v2.json](execution-v2.json) 及 [artifact-execution.json](artifact-execution.json)。結論分別在 [peer.json](peer.json) 和 [artifact-peer.json](artifact-peer.json)。
+
+五項原Node均為0：assembly150、documents47、grid350、space242、timber79，合計868個斷言。assembly/grid是原partial scope，另核指定段golden；documents核凍結來源全部47個具名PASS的次序；space與timber各依原scope和固定census核對，不稱五項都是full canvas。原wrapper、launcher process及已保存工具回覆均為0；工具session85316的final chunk為b9d980。五個原job各在從npm build前計起的原期限內完成，依序執行，沒有延長期限。
+
+獨立核154個browser來源與194個native依賴，聯集348個不同Git路徑，均與L3原blob相符。三支binary在這輪是reused；依當輪保存的sidecar、source與runtime前後收據核身分，沒有用後續live runtime回推執行時點，也不稱當輪重新編譯。來源前後clean且未變，runtime前後相同fresh，ownedcleanup無live/zombie殘留且兩port拒絕連線。
+
+原manifest210件／81張PNG已核bytes/hash與PNG完整chunk CRC及尺寸，未逐張目視UI。assembly具名lost-success-response控制保留，不能因驗收成功宣稱沒有transport失敗。沒有新增突變自證，這次只核正式原結果及原控制。
+
+補件24個原件全部逐bytes/hash/mtime核對：15個新增檔共107195bytes（7個raw宣告grid下載、5個相鄰JSON、documents的Markdown/PDF/notes JSON三個輸入），另9件已在原wrapper產物內，不重複copy。補件使用原job秒級mtime窗[start,finish+1s)，是job完成後封存，不算入原job期限。原suite manifest未改。
+
+首版主接受器為1，原因是把P77控制誤定位到assembly_workflow_test.js；v2僅修成實際assembly_review_test.js並保留同樣具名條件，最小差分及首版完整輸出仍在本目錄。這是審查接受器錯誤，不是產品失敗。兩次資料探索錯誤只保有真工具碼與摘要，當時未另存完整stdout/stderr；[tool-observations.json](tool-observations.json)明列範圍，沒有補造raw。原L43接受器只曾inline執行，未另存碼；本輪依原報告條件新寫並保存方法，沒有宣稱逐byte移植舊碼。
+
+最不確定的是未逐圖目視及本機Chromium與CI Chrome環境差異；本結果不替代native、Q38、§7或P189。製作者最後報告的核心數值亦與本獨審相符，見 [producer-final-comparison.json](producer-final-comparison.json)。
+'''
+with (ROOT/'README.md').open('x', encoding='utf-8') as stream:
+    stream.write(readme)
+for path in ROOT.iterdir():
+    if path.is_file():
+        path.chmod(0o644)
+print(json.dumps({'comparisonExitCode': 0, 'newFiles': ['producer-final-comparison.json','tool-observations.json','README.md']}, ensure_ascii=False))

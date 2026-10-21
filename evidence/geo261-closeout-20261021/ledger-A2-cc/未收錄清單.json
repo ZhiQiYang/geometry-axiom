@@ -1,0 +1,14 @@
+[
+  {
+    "source": "當輪 cache／worktree 的可執行 binary、object、暫存檔",
+    "reason": "只收原工具引用的 raw／identity／sidecar；binary hash 已由正式 validator 核對，交付不複製可執行檔。"
+  },
+  {
+    "source": "核心57筆的每個子程序原 stdout/stderr",
+    "reason": "正式工具沒有另存此 raw，只有結構化 result 與 SHA256；不能補造或由頂層輸出取代。"
+  },
+  {
+    "source": "其他 final-bundle 舊包與 L2 原生／browser／P189 結果",
+    "reason": "本包只涵蓋 A2 帳本與 A2→L2 發布；不改舊包、不宣稱全驗收完成。"
+  }
+]

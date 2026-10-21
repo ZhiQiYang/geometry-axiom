@@ -1,0 +1,39 @@
+{
+  "name": "elf",
+  "argv": [
+    "readelf",
+    "-h",
+    "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/bridge-copy"
+  ],
+  "cwd": "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021",
+  "started_utc": "2026-10-21T02:20:29.242026+00:00",
+  "stdin": null,
+  "timeout_seconds": 900,
+  "pid": 308659,
+  "pgid": 308659,
+  "finished_utc": "2026-10-21T02:20:29.244236+00:00",
+  "wall_seconds": 0.002210241997090634,
+  "raw_wait_status": 0,
+  "actual_exit_code": 0,
+  "timed_out": false,
+  "rusage": {
+    "ru_utime": 0.0013269999999999998,
+    "ru_stime": 0.0,
+    "ru_maxrss": 31148,
+    "ru_ixrss": 0,
+    "ru_idrss": 0,
+    "ru_isrss": 0,
+    "ru_minflt": 326,
+    "ru_majflt": 0,
+    "ru_nswap": 0,
+    "ru_inblock": 0,
+    "ru_oublock": 8,
+    "ru_msgsnd": 0,
+    "ru_msgrcv": 0,
+    "ru_nsignals": 0,
+    "ru_nvcsw": 1,
+    "ru_nivcsw": 0
+  },
+  "stdout_sha256": "f94ce31283b11ae9bd95c060090260d33a26f9d1d167d50583bd438f20a0773b",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

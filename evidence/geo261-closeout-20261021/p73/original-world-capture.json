@@ -1,0 +1,25 @@
+{
+  "utc": "2026-10-20T20:55:42.462267+00:00",
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "baseUrl": "http://127.0.0.1:18839/",
+  "records": [
+    {
+      "command": "dump",
+      "bytes": 6952,
+      "ok": true,
+      "file": "original-world-dump.json"
+    },
+    {
+      "command": "objects",
+      "bytes": 1540,
+      "ok": true,
+      "file": "original-world-objects.json"
+    },
+    {
+      "command": "references",
+      "bytes": 13128,
+      "ok": true,
+      "file": "original-world-references.json"
+    }
+  ]
+}

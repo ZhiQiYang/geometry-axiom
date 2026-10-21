@@ -1,0 +1,65 @@
+from pathlib import Path
+import ast,hashlib,json,re,subprocess,datetime
+R=Path('/workspace/geo261-host-copy-candidate');D=Path('/workspace/geo261-evidence/host-copy-candidate/footprint');BASE='75f587a5e96dbd1460cf1d9be781ca6fa06fd993'
+def sh(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def j(n):return json.loads((D/n).read_bytes())
+def constants(raw):
+ result={}
+ for n in ast.parse(raw).body:
+  if isinstance(n,ast.Assign):
+   for t in n.targets:
+    if isinstance(t,ast.Name) and t.id in ['CONTROLS','COPY_CONTROLS','FOOTPRINT_CONTROLS','HOLE_VERTEX_CONTROL']:result[t.id]=ast.literal_eval(n.value)
+ return result
+before=j('source-before.json');after=j('source-after.json');v=j('verification-summary.json');u=j('targeted-result.json');rows=j('targeted-commands.json');env=j('launch-environment.json')
+assert before==after and len(before)==326 and v['sourceCount']==326 and v['base']==BASE
+for n,h in before.items():assert sh(R/n)==h,n
+assert env['stackBytes']==[16777216,16777216] and env['CC'] is None and env['PYTHONOPTIMIZE'] is None
+assert u['testsRun']==56 and u['failures']==u['errors']==0 and not u['skipped'] and u['passed'] and u['sourceUnchanged']
+assert u['modules']==['tests.test_geo261_host_facts_authority','tests.test_geo261_contact_sources','tests.test_geo261_wood_world_validation','tests.test_mutation_anchors']
+assert re.search(r'\nRan 56 tests in .*\n\nOK\n',(D/'targeted-unittest.log').read_text())
+assert len(rows)==299 and [r['index'] for r in rows]==list(range(299))
+raw_count=0
+for r in rows:
+ assert 'exception' not in r and 'returncode' in r
+ for stream in ['stdout','stderr']:
+  if stream in r:
+   m=r[stream];p=D/m['path'];assert p.stat().st_size==m['bytes'] and sh(p)==m['sha256'];raw_count+=1
+ if '-c' in r['command'] or (len(r['command'])>2 and '-o' in r['command']):assert r['returncode']==0
+red=[r for r in rows if r['returncode']];assert len(red)==len(v['nonzeroCommands'])
+for r in red:assert r['returncode']==1 and (D/r['stderr']['path']).read_text().startswith('ASSERT:') and (D/r['stdout']['path']).read_bytes()==b''
+testpath='tests/test_geo261_host_facts_authority.py';cs=constants((R/testpath).read_bytes());controls=list(cs['CONTROLS'])+list(cs['COPY_CONTROLS'])+list(cs['FOOTPRINT_CONTROLS'])+[cs['HOLE_VERTEX_CONTROL']];assert len(controls)==20
+oldcs=constants(subprocess.check_output(['git','show',BASE+':'+testpath],cwd=R));oldcontrols=list(oldcs['CONTROLS'])+list(oldcs['COPY_CONTROLS'])+[oldcs['HOLE_VERTEX_CONTROL']]
+assert len(oldcontrols)==18
+for old in oldcontrols:
+ new=next(x for x in controls if x[0]==old[0])
+ if old[0]=='raw-footprint':assert new[3:]==old[3:]
+ else:assert new==old
+runs=[r for r in rows if len(r['command'])==2 and r['command'][0].startswith('/tmp/')]
+triples=[]
+for name,bef,aft,case,label in controls:
+ hits=[(i,r) for i,r in enumerate(runs) if Path(r['command'][0]).name=='host-facts-control-'+name and r['command'][1]==case];assert len(hits)==1,name
+ i,r=hits[0];prev,nex=runs[i-1],runs[i+1]
+ assert r['returncode']==1 and (D/r['stderr']['path']).read_bytes()==('ASSERT:'+label+'\n').encode()
+ assert prev['command']==nex['command'] and prev['command'][1]==case and prev['returncode']==nex['returncode']==0
+ for z in [prev,nex]:
+  for stream in ['stdout','stderr']:assert (D/z[stream]['path']).read_bytes()==b''
+ triples.append({'name':name,'case':case,'assertion':label,'beforeIndex':prev['index'],'redIndex':r['index'],'restoreIndex':nex['index'],'returnCodes':[prev['returncode'],r['returncode'],nex['returncode']]})
+for case in ['footprint-missing','footprint-index','footprint-current']:
+ assert any(r['command'][1]==case and r['returncode']==0 for r in runs)
+path='geometry-app/native/reference_sources.inc';old=subprocess.check_output(['git','show',BASE+':'+path],cwd=R);new=(R/path).read_bytes()
+start=b'static bool reference_member_footprint(ReferenceEval *ctx,size_t index,uint32_t placement_id,GeoRect2 *out)\n{';tail=b'\nstatic void reference_region_geometry('
+oa=old.index(start);na=new.index(start);ob=old.index(tail,oa);nb=new.index(tail,na)
+assert old[:oa]==new[:na] and old[ob:]==new[nb:]
+anchor=b'    uint32_t id=world->wood.timbers[index].id;'
+assert old[old.index(anchor,oa):ob]==new[new.index(anchor,na):nb]
+assert sh(D/'candidate.patch')==v['patchSha256']=='bed372575815368c213232e3ff901c2d117f4c988bf776af59905124f051d705'
+for n,h in v['changedSourceHashes'].items():assert sh(R/n)==h
+expected=json.loads((R/'tests/run_all.expected.json').read_bytes());assert expected['suites']['py:test_geo261_host_facts_authority']['count']==17
+assert sum(x.get('count',0) for x in expected['suites'].values())==5176
+def count(raw):return sum(1 for c in ast.parse(raw).body if isinstance(c,ast.ClassDef) for f in c.body if isinstance(f,ast.FunctionDef) and f.name.startswith('test_'))
+assert count((R/testpath).read_bytes())==27
+report={'checkedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'acceptedScopedFootprint':True,'baseHead':BASE,'testedState':'基底75f加固定三檔未提交補丁','sourceHashes':v['changedSourceHashes'],'sourceFileCount':326,'sourceBeforeAfterAndCurrentHashesAgree':True,'testsRun':56,'failures':0,'errors':0,'skips':0,'commandCount':299,'rawStreamsVerified':raw_count,'allCompileAndLinkCommandsExitZero':True,'nonzeroCommandCount':len(red),'HNamedControlTriples':triples,'currentPathWitnesses':['合法cached anchor','非法direction','未放置member','missing placement','index等於timber_count'],'returnedEvaluationSuffixByteIdentical':True,'outsideFootprintFunctionByteIdentical':True,'semanticReview':['current路徑保留原app_placement_read與timber_a0呼叫順序；noncurrent只改未使用legacy placement的存在查核。','合法placement store count<=16時新find與原逐項掃描皆取第一個同ID，沒有新增實際幾何驗證。','missing/index仍先拒絕；兩新控制實際compile/link成功，再在圖node/edge/provider計數具名斷言exit1，非crash或setup錯誤。','index負控允許邏輯index1，但fixture實體timber固定陣列容量大於1且calloc清零，因此不是靠越界UB殺死。','源definition/pose/frame/face求值與成功寫out順序的整段原bytes保留，無新cache或跨consumer memo。'],'invalidCountBoundary':'損毀內部placement store count>16時新find先拒絕；原app_placement_read可能先匹配或在越過capacity後解NULL。只承諾合法store等價，並未把此損毀情境當正控或擴大防禦契約。','nativeExpectedPlanning':{'suites':224,'storedCountTotal':5176,'hostFactsStored':17,'hostFacts75f':22,'hostFactsCandidate':27,'woodContactL':10,'woodContactCandidate':12,'staticMethodDeltaFromL':12,'projectedCountTotal':5188,'projectedPassIfSameOneAllowedSkip':5187,'limits':'靜態預估；tests/run_all.expected.json尚未更新，本次定向綠不代表完整native會過。依原流程需完整run後具名更新expected。'},'outerToolObservation':{'chunk':'d69997','exitCode':0,'source':'作者真工具返回轉述，不新增偽transport原文'},'authorSummaryInitialFailure':{'chunk':'ae4781','exitCode':1,'reason':'外部摘要marker誤取前置宣告；原summarize-first-attempt.txt保留，更正後096af5 exit0，產品未重跑'},'limitations':['未跑產品或重測，不證明P189效能、最終native/七項/ledger。','20H控制逐名核前0/精確1/後0，其餘紅列核具名ASSERT與原碼，完整定向由既有module裁判負責。','暫存mutant由NativeBuild刪除；沒有宣稱直接讀取已刪mutant來源。'],'artifacts':[]}
+for n in ['targeted-result.json','targeted-unittest.log','targeted-commands.json','source-before.json','source-after.json','verification-summary.json','candidate.patch','run_targeted.py','summarize.py','summarize-first-attempt.txt']:
+ p=D/n;report['artifacts'].append({'path':n,'bytes':p.stat().st_size,'sha256':sh(p)})
+p=D/'independent-review.json';p.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'exitCode':0,'path':str(p),'bytes':p.stat().st_size,'sha256':sh(p),'Hcontrols':20,'rawStreams':raw_count,'predictedNativeTotal':5188}))
+

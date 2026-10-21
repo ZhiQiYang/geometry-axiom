@@ -1,0 +1,6 @@
+# 公理:I14:canvas-pos 唯一的要求是 (類別, id) 指得到一個存在的物件。
+# 這裡指向 placement 99,場景裡只有 placement 1 → 拒絕。
+# 要求就只有這一條:它不檢查幾何、不觸發重驗,但也不接受指向空氣的卡片。
+# 對照 _ax_d12_i14_canvas.scene:指得到物件時,同鍵重寫就只是把卡片移到新位置。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+canvas-pos placement 99 0 0

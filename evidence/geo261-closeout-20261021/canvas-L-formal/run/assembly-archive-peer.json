@@ -1,0 +1,40 @@
+{
+  "schema": "geo261-canvas-assembly-archive-peer/1",
+  "reviewedUTC": "2026-10-20T23:41:04.147437+00:00",
+  "validationExitCode": 0,
+  "precedingReviewSha256": "a63716becc116cfd82857d041c564445cd055fd9527219181ebeb090fd01d9b2",
+  "nativePreflight": {
+    "path": "/workspace/geo261-evidence/native-final-launcher/preflight.json",
+    "sha256": "dd6ad4cfb742a62ef774ae991eac1b36e01a12e835d06ac36a3d85283f90d440",
+    "oldGlobalArchive": "/tmp/geometry-tests-before-native-l-43f85313-20261020T233737Z",
+    "oldEntries": 825,
+    "oldFileBytes": 12119670,
+    "nativeGlobalAbsentBeforeStart": true
+  },
+  "files": [
+    {
+      "originalPathAtCapture": "/tmp/geometry-tests/assembly-desktop.png",
+      "archivePathAtPeer": "/tmp/geometry-tests-before-native-l-43f85313-20261020T233737Z/assembly-desktop.png",
+      "bundlePath": "screens/assembly-hardpath/assembly-desktop.png",
+      "bytes": 92421,
+      "sha256": "5adab1037173336534961da80b364abcbbc4df13bda2fa309af4d0914cb1e780",
+      "mtimeNs": 1792538910311506875,
+      "exactCopyAndCaptureMatch": true
+    },
+    {
+      "originalPathAtCapture": "/tmp/geometry-tests/assembly-mobile.png",
+      "archivePathAtPeer": "/tmp/geometry-tests-before-native-l-43f85313-20261020T233737Z/assembly-mobile.png",
+      "bundlePath": "screens/assembly-hardpath/assembly-mobile.png",
+      "bytes": 39267,
+      "sha256": "3e726fb9aeb6ccfdbe66964b0bac59661df44218746d93d8e5e1e9339a855099",
+      "mtimeNs": 1792538916523458331,
+      "exactCopyAndCaptureMatch": true
+    }
+  ],
+  "conclusion": "兩張原件未遺失；已依 native 的事前整目錄移存鏈，在 archive 讀回原 bytes/hash/mtime 並對封存圖逐 bytes 相符。加上前份14個下載原件，16項均完成原件比對。",
+  "limits": [
+    "首份peer的原tmp路徑不存在與首次驗證exit1均維持原記錄，本補充只補上後來定位到的移存位置",
+    "本次只讀archive兩圖與preflight，沒有觸碰native新/tmp/geometry-tests、還原檔案、修改原收據或重跑產品",
+    "native preflight只證明移存鏈，本補充不宣稱native已完成"
+  ]
+}

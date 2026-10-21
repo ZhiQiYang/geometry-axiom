@@ -1,0 +1,35 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geo261-host-authority-anchor-fix",
+      "actual_exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain",
+        "-z"
+      ],
+      "cwd": "/workspace/geo261-host-authority-anchor-fix",
+      "actual_exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--binary",
+        "--",
+        "tests/test_geo261_host_authority.py"
+      ],
+      "cwd": "/workspace/geo261-host-authority-anchor-fix",
+      "actual_exit_code": 0
+    }
+  ],
+  "classification": "HEAD=L2 加唯一已知 dirty 測試常數；不是未來 S3／L3"
+}

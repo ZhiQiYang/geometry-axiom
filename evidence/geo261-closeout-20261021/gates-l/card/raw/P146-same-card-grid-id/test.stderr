@@ -1,0 +1,17 @@
+test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD (tests.test_grid_card_reference.GridCardReference.test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD) ... FAIL
+
+======================================================================
+FAIL: test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD (tests.test_grid_card_reference.GridCardReference.test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 174, in test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD
+    rejected = self.reject([grid(ref=bad)], 'SAME_CARD', 'SAME_CARD', identity=(4, 10, 8))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 83, in reject
+    self.assertTrue(any(all(re.search(r'\b' + re.escape(part) + r'\b', message)
+AssertionError: False is not true : ('SAME_CARD', ['I74 SAME_CARD: expected one card', 'candidate rejected'])
+
+----------------------------------------------------------------------
+Ran 1 test in 0.152s
+
+FAILED (failures=1)

@@ -1,0 +1,10 @@
+# through 選上段:中線 u=2000 穿柱位,through 2400 選 v∈[1800,2973] 段
+# 先放邊界材圈住,上段終點頂 e2 邊界材側面
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1800,1200 2200,1200 2200,1800 1800,1800
+grid 1 on 1 u 2000
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 -u +n
+place 3 on 1 at-line grid 1 u 0 through 2400 -v +n

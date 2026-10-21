@@ -1,0 +1,4 @@
+# 公理:I18:priority 只能配 custom;配在 primary 上就拒絕。
+# boundary / primary / secondary 的優先級是定死的(D15),不接受另外指定。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 1 20 20 role primary priority 5

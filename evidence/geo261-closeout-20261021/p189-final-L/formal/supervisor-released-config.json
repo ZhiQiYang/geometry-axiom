@@ -1,0 +1,26 @@
+{
+  "prepared_utc": "2026-10-21T00:47:01.825078+00:00",
+  "authorization": "主代理明確放行後才可啟動",
+  "released": true,
+  "prepare_receipt": "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03/prepare-receipt.json",
+  "supervisor": "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+  "supervisor_sha256": "e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413",
+  "out": "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03",
+  "scheduled_launch_argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+    "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03/supervisor-released-config.json"
+  ],
+  "launch_cwd": "/workspace/geometry-axiom",
+  "launch_transport": "Popen start_new_session=True、stdin=DEVNULL、stdout與stderr同寫orchestrator.log；不保留互動工具session",
+  "launch_environment_remove": [
+    "PYTHONOPTIMIZE"
+  ],
+  "source_snapshot_in_workspace": "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+  "execute_now": true,
+  "released_utc": "2026-10-21T00:47:01.825086+00:00",
+  "root_io_stop_utc": "2026-10-21T00:43:58.517156Z",
+  "release_message": "主代理明確授權保留首次缺校準檔失敗out，從同handoff補原bytes並重核後以新out直接續完整流程；不需再次等待。",
+  "previous_failed_out": "/workspace/geo261-evidence/p189-final-L-43f85313c324.wfwk1_ca"
+}

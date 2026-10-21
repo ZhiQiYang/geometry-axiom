@@ -1,0 +1,25 @@
+✔ the host fixes the same immutable woodworking provider in browser and Node (7.208779ms)
+✔ missing fixed template refuses composition before any editor is started (0.918958ms)
+✔ new material recipes preserve panel suggestions and deliberately blank timber dimensions (0.209439ms)
+✔ editing a new draft never changes the fixed recipe or the next new draft (0.194678ms)
+✔ section recipes retain orientation and source kinds instead of flattening them (0.15565ms)
+✔ the actual material creation entry gets its suggestions from the injected provider (1.490892ms)
+✔ declining draft replacement keeps saved input and never calls a creation recipe (1.177459ms)
+✔ the actual section new-member entry uses typed template sources (1.979344ms)
+✔ woodworking primary direction derives only from actual primary and boundary members (0.405239ms)
+✔ click-role policy distinguishes outer edges, reference lines and conflicting evidence (0.389655ms)
+✔ role controls preserve the custom-role exception and retain uncertain evidence (0.327243ms)
+✔ subgrid warnings preserve missing, conflicting and parallel actual-support evidence (0.234396ms)
+✔ actual host placement controls consume injected policies without interpreting labels (10.709552ms)
+✔ actual material shortcut markup retains original values and accepts provider data (2.312427ms)
+✔ actual section kind switch requests its recipe while preserving identity and position (0.964094ms)
+✔ assembly creation preserves typed roles, directions and endpoint sources without sharing mutable defaults (0.363136ms)
+✔ assembly retargeting retains identities and the original secondary role constraints (0.463615ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 97.961212

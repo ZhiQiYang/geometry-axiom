@@ -1,0 +1,46 @@
+{
+  "phase": "check",
+  "argv": [
+    "python3",
+    "-B",
+    "-u",
+    "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+    "check",
+    "--repo",
+    "/workspace/geometry-axiom",
+    "--work",
+    "/workspace/geo261-p189-host-copy-src-m4oatz82",
+    "--out",
+    "/workspace/geo261-evidence/p189-host-copy-75f587a5e96d-9oo11k1i",
+    "--gen",
+    "/workspace/geo261-p189-host-copy-src-m4oatz82/gen_scene.py",
+    "--final",
+    "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+    "--timeout",
+    "900"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-21T02:39:28.981956+00:00",
+  "commits": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "final": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993"
+  },
+  "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+  "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+  "stdout": "/workspace/geo261-evidence/p189-host-copy-75f587a5e96d-9oo11k1i/check.stdout",
+  "stderr": "/workspace/geo261-evidence/p189-host-copy-75f587a5e96d-9oo11k1i/check.stderr",
+  "supervisor_pid": 313282,
+  "PYTHONOPTIMIZE_present": false,
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "core_limit_bytes": [
+    0,
+    0
+  ],
+  "pid": 314460,
+  "pgid": 314460
+}

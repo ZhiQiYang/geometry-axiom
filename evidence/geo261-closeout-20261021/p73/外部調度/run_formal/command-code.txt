@@ -1,0 +1,135 @@
+"""正式來源 P73 六組驗收；明列實際測試退出碼與收據驗證結果。"""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+ROOT = Path('/workspace/geometry-axiom')
+OUTPUT = Path(__file__).resolve().parent / 'formal'
+TOOL = ROOT / 'geometry-core/domain-decoupling/closeout-tools/p73_probe.js'
+EXPECTED_TOOL = 'f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf'
+FIXED_APP = '0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f'
+OLD_APP = '362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b'
+FIXED_TEST = '0925c130aa7488d54b5e2ed539ef21f5b653fbbdebd0910f71a1992871149604'
+CASES = [
+    ('full-normal', 'full', 'none', False, 0, 69, 0),
+    ('full-callback', 'full', 'none', True, 0, 69, 0),
+    ('transition', 'transition', 'none', False, 0, 6, 0),
+    ('withdraw-guard', 'full', 'withdraw-guard', True, 1, 47, 1),
+    ('withdraw-metrics', 'transition', 'withdraw-metrics', False, 1, 2, 1),
+    ('withdraw-all', 'full', 'withdraw-all', True, 1, 47, 1),
+]
+
+
+def git(*args):
+    return subprocess.check_output(['git', *args], cwd=ROOT, text=True).strip()
+
+
+def rows(lines, prefix):
+    return [json.loads(line[len(prefix):]) for line in lines if line.startswith(prefix)]
+
+
+def run(expected_head, case):
+    name, mode, variant, callback, expected_exit, passed, failed = case
+    assert git('rev-parse', 'HEAD') == expected_head
+    assert git('status', '--short') == ''
+    assert hashlib.sha256(TOOL.read_bytes()).hexdigest() == EXPECTED_TOOL
+    assert hashlib.sha256((ROOT/'geometry-web/app.js').read_bytes()).hexdigest() == FIXED_APP
+    assert hashlib.sha256((ROOT/'geometry-web/uiux_review_test.js').read_bytes()).hexdigest() == FIXED_TEST
+    OUTPUT.mkdir(exist_ok=True)
+    runtime_command = ['python3', 'geometry-web/runtime_version.py', '--probe', '18843']
+    runtime = subprocess.run(runtime_command, cwd=ROOT, capture_output=True, text=True)
+    (OUTPUT/(name+'-runtime.json')).write_text(runtime.stdout)
+    assert runtime.returncode == 0, runtime.stderr
+    runtime_data = json.loads(runtime.stdout)
+    assert runtime_data['fresh'] is True and runtime_data['root'] == str(ROOT)
+    environment = {
+        'GEOMETRY_TEST_URL': 'http://127.0.0.1:18843/',
+        'GEOMETRY_FEEDBACK_DIR': '/tmp/geo261-feedback-p73',
+        'XDG_CACHE_HOME': '/tmp/geo261-xdg-p73',
+        'GEOMETRY_CHROME': '/usr/bin/chromium',
+        'GEOMETRY_CHROME_FLAGS': '--no-sandbox',
+        'GEOMETRY_CDP_PORT': '9343',
+        'P73_MODE': mode,
+        'P73_APP_VARIANT': variant,
+        'P73_SCREENSHOT_DIR': str(OUTPUT/(name+'-screens')),
+        'GEOMETRY_UIUX_SCREENSHOT_DIR': str(OUTPUT/(name+'-screens')),
+    }
+    process_environment = dict(os.environ)
+    process_environment.pop('P73_AFTER_EMPTY_SYNC', None)
+    if callback:
+        environment['P73_AFTER_EMPTY_SYNC'] = '1'
+    process_environment.update(environment)
+    command = ['node', str(TOOL), str(ROOT)]
+    receipt = {
+        'case': name, 'command': command, 'cwd': str(ROOT), 'environment': environment,
+        'sourceSha': expected_head, 'probeSha256': EXPECTED_TOOL,
+        'runtimeCommand': runtime_command, 'runtimeExitCode': runtime.returncode,
+        'runtime': runtime_data, 'expectedExitCode': expected_exit,
+        'startedUtc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    }
+    start = time.monotonic()
+    log = OUTPUT/(name+'.log')
+    with log.open('x') as output:
+        child = subprocess.run(command, cwd=ROOT, env=process_environment, stdout=output, stderr=subprocess.STDOUT)
+    receipt.update(exitCode=child.returncode, elapsedSeconds=time.monotonic()-start,
+                   finishedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                   headAfter=git('rev-parse', 'HEAD'), statusAfter=git('status', '--short'))
+    receipt_path = OUTPUT/(name+'.receipt.json')
+    receipt_path.write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n')
+    try:
+        assert receipt['headAfter'] == expected_head and receipt['statusAfter'] == ''
+        assert child.returncode == expected_exit
+        lines = log.read_text().splitlines()
+        result, = rows(lines, 'P73_PROBE_RESULT ')
+        cleanup, = rows(lines, 'P73_BROWSER_CLEANUP ')
+        metadata = result['metadata']
+        assert metadata['actualFixed'] is True and metadata['actualAppSha256'] == FIXED_APP
+        assert metadata['sha'] == expected_head and metadata['status'] == ''
+        assert metadata['probeSha256'] == EXPECTED_TOOL
+        assert metadata['sources']['geometry-web/uiux_review_test.js'] == FIXED_TEST
+        assert metadata['mutation'] == variant and metadata['callbackControl'] == callback
+        assert result['passedAssertions'] == passed and result['failedAssertions'] == failed and result['exceptions'] == 0
+        assert cleanup['exited'] is True and cleanup['exitCode'] == 0 and cleanup['signalCode'] is None
+        if variant == 'none':
+            assert metadata['effectiveAppSha256'] == FIXED_APP and rows(lines, 'P73_APP_SOURCE ') == []
+        else:
+            app, = rows(lines, 'P73_APP_SOURCE ')
+            assert app['actualSha256'] == FIXED_APP and app['effectiveSha256'] == metadata['effectiveAppSha256']
+        if variant == 'withdraw-all':
+            assert metadata['effectiveAppSha256'] == OLD_APP
+        if callback:
+            assert len(rows(lines, 'P73_CALLBACK_CONTROL ')) == 1
+            states = rows(lines, 'P73_DOM ')
+            after = next(s['value'] for s in states if s['label'].startswith('控制後'))
+            assert after['originalPredicate'] == (variant == 'none')
+        if variant in ('withdraw-guard', 'withdraw-all'):
+            assert result['fatal'].startswith('P73 assertion failed: 空空間不畫假邊界，提供加入成員入口 ')
+            assert '\"noShapes\":false' in result['fatal']
+        if variant == 'withdraw-metrics':
+            empty = next(s['value'] for s in rows(lines, 'P73_DOM ') if s['label'] == '空自然影格後')
+            assert empty['originalPredicate'] is True and empty['metrics']['visible'] is True
+            assert '-300…1500' in empty['metrics']['text']
+        receipt.update(validationExitCode=0, result=result, browserCleanup=cleanup)
+    except BaseException as error:
+        receipt.update(validationExitCode=1, validationError=repr(error))
+        receipt_path.write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n')
+        raise
+    receipt_path.write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n')
+    print(json.dumps({'case': name, 'exitCode': child.returncode, 'validationExitCode': 0,
+                      'elapsedSeconds': receipt['elapsedSeconds'], 'sourceSha': expected_head}, ensure_ascii=False), flush=True)
+
+
+if __name__ == '__main__':
+    expected_head = sys.argv[1]
+    assert len(expected_head) == 40 and all(c in '0123456789abcdef' for c in expected_head)
+    selected = CASES
+    if len(sys.argv) == 3:
+        selected = [case for case in CASES if case[0] == sys.argv[2]]
+        assert len(selected) == 1
+    for case in selected:
+        run(expected_head, case)

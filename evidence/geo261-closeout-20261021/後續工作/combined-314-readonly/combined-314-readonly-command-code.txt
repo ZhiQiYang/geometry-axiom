@@ -1,0 +1,10 @@
+import pathlib,hashlib,json,subprocess,re
+r=pathlib.Path("/workspace/geometry-axiom"); h=pathlib.Path("/workspace/geo261-handoff/handoff"); rev="59796b1af9259eb23d30134c2ce5a56317a06091"
+names=["HANDOFF.md","drafts/combined/README.md","drafts/combined/patch.diff","drafts/combined/rebased-546e2eb2/patch.diff","drafts/issue314/DESIGN.md","drafts/issue314/TESTS.md","drafts/issue314/patch.diff","drafts/issue314/rebased-546e2eb2/patch.diff"]+["drafts/_gen/"+n for n in ["build.py","checks.py","edits299.py","edits316.py","fetch_base.sh","lib.py","reader_impact.py","verify_all.sh"]]
+artifacts=[]; targets=set()
+for n in names:
+ b=(h/n).read_bytes(); original=subprocess.check_output(["git","show",rev+":handoff/"+n],cwd=r); assert b==original,n; artifacts.append({"path":n,"bytes":len(b),"rawSha256":hashlib.sha256(b).hexdigest(),"handoffBlobEqual":True})
+ if "/rebased-546e2eb2/" in n: targets.update(re.findall(r"^diff --git a/(.+) b/",b.decode(),re.M))
+gold="geometry-web/cdp_sections.golden.json"; gb=(r/gold).read_bytes()
+out={"reviewHead":subprocess.check_output(["git","rev-parse","HEAD"],cwd=r,text=True).strip(),"trackedStatus":subprocess.check_output(["git","status","--short","--untracked-files=no"],cwd=r,text=True),"handoffHead":rev,"artifacts":artifacts,"patchTargetPaths":sorted(targets),"patchTargetsChangedFrom546":subprocess.check_output(["git","diff","--name-only","546e2eb2142ebf19859489c5391b57cbb8413d10","HEAD","--"]+sorted(targets),cwd=r,text=True).splitlines(),"golden":{"path":gold,"rawSha256":hashlib.sha256(gb).hexdigest(),"P72B":json.loads(gb)["sections"]["P72B"]},"ssotLfSha256":hashlib.sha256((r/"公理層.md").read_bytes().replace(b"\r\n",b"\n")).hexdigest(),"notRun":["git apply --check","generator","tests","build","mutation","architecture gates","browser"]}
+print(json.dumps(out,ensure_ascii=False,indent=2))

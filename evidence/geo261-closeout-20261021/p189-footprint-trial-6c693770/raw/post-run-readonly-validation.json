@@ -1,0 +1,110 @@
+{
+  "checked_utc": "2026-10-21T03:09:05.639264+00:00",
+  "classification": "候選性能預檢，非可合驗收",
+  "candidate_sha": "6c6937708fa31790586d6c31c2984070e6bf885a",
+  "branch": "codex/geo261-p189-host-copy-trial-20261021",
+  "samples": 36,
+  "equivalence_scenes": 175,
+  "generated_scenes": 4,
+  "fixed_base_scenes": 171,
+  "observed_all_three_identical": 175,
+  "formal_dump_criterion": "4生成三方有效載入及stdout相同；171固定場景base/final，main差異只記錄。",
+  "controls": 16,
+  "positive_controls": 2,
+  "negative_controls": 14,
+  "raw_output_count": 1122,
+  "raw_output_bytes": 811833,
+  "all_stdout_bytes_and_hashes_match": true,
+  "all_phase_stream_hashes_match": true,
+  "all_binary_hashes_match_build_receipts": true,
+  "check_exit_code": 0,
+  "top_level_wait_exit_code": 0,
+  "receipt_sha256": "39bb917acd0bd57a8f1dfce2b7787c7a6135e758a03673c5feb3ab47183f7e11",
+  "phase_times_and_exits": [
+    {
+      "phase": "generator-selftest",
+      "seconds": 0.06986341000083485,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T02:58:39.015875+00:00",
+      "finished_utc": "2026-10-21T02:58:39.085767+00:00"
+    },
+    {
+      "phase": "selftest",
+      "seconds": 0.06250990999978967,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T02:58:39.102359+00:00",
+      "finished_utc": "2026-10-21T02:58:39.165015+00:00"
+    },
+    {
+      "phase": "build",
+      "seconds": 48.3423688949988,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T02:58:39.183242+00:00",
+      "finished_utc": "2026-10-21T02:59:27.525636+00:00"
+    },
+    {
+      "phase": "equivalence",
+      "seconds": 69.1675918990004,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T02:59:27.540108+00:00",
+      "finished_utc": "2026-10-21T03:00:36.707719+00:00"
+    },
+    {
+      "phase": "timing",
+      "seconds": 84.06478715599951,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T03:00:37.774677+00:00",
+      "finished_utc": "2026-10-21T03:02:01.839490+00:00"
+    },
+    {
+      "phase": "check",
+      "seconds": 0.07990529900052934,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T03:02:01.856481+00:00",
+      "finished_utc": "2026-10-21T03:02:01.936406+00:00"
+    }
+  ],
+  "median_summary": [
+    {
+      "n": 16,
+      "median_seconds": {
+        "main": 0.10743222699966282,
+        "base": 0.16152468899963424,
+        "final": 0.10243673100194428
+      },
+      "final_main_ratio": 0.9535009546275699,
+      "threshold_pass": true
+    },
+    {
+      "n": 32,
+      "median_seconds": {
+        "main": 0.19189760699737235,
+        "base": 1.144107920001261,
+        "final": 0.22813416099961614
+      },
+      "final_main_ratio": 1.1888327560162852,
+      "threshold_pass": true
+    },
+    {
+      "n": 48,
+      "median_seconds": {
+        "main": 0.36898202399970614,
+        "base": 5.181392201997369,
+        "final": 0.5884893710026518
+      },
+      "final_main_ratio": 1.59489983989876,
+      "threshold_pass": true
+    },
+    {
+      "n": 64,
+      "median_seconds": {
+        "main": 0.6323522759994376,
+        "base": 18.407960298001854,
+        "final": 0.9851084139991144
+      },
+      "final_main_ratio": 1.557847502710642,
+      "threshold_pass": true
+    }
+  ],
+  "validation_exit_code": 0
+}

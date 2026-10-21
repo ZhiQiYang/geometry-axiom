@@ -1,0 +1,85 @@
+"""外部調度與證據保存；原正式工具及裁判 bytes 不改。"""
+import datetime,hashlib,json,os,resource,shutil,subprocess,sys,time
+from pathlib import Path
+
+ROOT=Path('/workspace/geo261-gates-l')
+OUT=Path('/workspace/geo261-evidence/gates-l')
+SHA='43f85313c32410ac01406ab585846bbacafea278'
+phase=sys.argv[1]
+assert phase in ('q38','controls','card','axiom')
+assert 'CC' not in os.environ and 'PYTHONOPTIMIZE' not in os.environ
+resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
+def utc(): return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
+def save(path,value):
+    temporary=path.with_name(path.name+'.pending')
+    temporary.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n')
+    temporary.replace(path)
+def git(*args): return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
+assert git('rev-parse','HEAD')==SHA and not git('status','--porcelain')
+where=OUT/'launcher'/phase
+where.mkdir(parents=True,exist_ok=False)
+log=where/'orchestrator.log'
+fd=os.open(log,os.O_WRONLY|os.O_CREAT|os.O_APPEND,0o644)
+os.dup2(fd,1);os.dup2(fd,2);os.close(fd)
+tools=ROOT/'geometry-core/domain-decoupling/closeout-tools'
+if phase=='controls':
+    official_out=OUT/'controls'
+    command=[sys.executable,'-B',str(tools/'run_controls.py'),'--root',str(ROOT),'--out',str(official_out),
+        '--model-base',str(OUT/'q38-run/bin/model-base'),'--controls',str(tools/'q38_controls.py'),'--jobs','2']
+else:
+    official_out=OUT/(phase+'-run')/phase
+    command=[sys.executable,'-B',str(tools/'run_gates.py'),phase,'--root',str(ROOT),'--out',str(official_out),'--jobs','2']
+assert not official_out.exists()
+if phase in ('q38','axiom'): assert not (official_out.parent/'bin').exists()
+tracked=['AGENTS.md','current_geometry.c','tests/section_profile_mutation_check.py','tests/test_grid_card_reference.py',
+    'tests/test_axiom_reader.py','geometry-core/card-reference/run_mutations.py','geometry-core/card-reference/run_axiom_mutations.py']
+tracked += ['geometry-core/domain-decoupling/closeout-tools/'+n for n in ['run_gates.py','run_controls.py','q38_controls.py']]
+hashes={name:sha(ROOT/name) for name in tracked}
+previous={'q38':Path('/workspace/geo261-evidence/native-final/final-build-binary-index.json'),
+    'controls':OUT/'launcher/q38/bridge-after.json','card':OUT/'launcher/controls/bridge-after.json',
+    'axiom':OUT/'launcher/card/bridge-after.json'}[phase]
+assert previous.is_file()
+def snapshot(stage):
+    archive=Path('/workspace/geo261-evidence/gates-l-binary-preservation')/(phase+'-'+stage)
+    archive.mkdir(parents=True,exist_ok=False)
+    items=[]
+    for name in ['bridge','bridge.fingerprint.json']:
+        source=Path('/tmp/geometry-tests')/name
+        data=source.read_bytes(); target=archive/name
+        shutil.copy2(source,target)
+        assert target.read_bytes()==data and source.read_bytes()==data
+        items.append(dict(sourcePath=str(source),preservedPath=str(target),bytes=len(data),sha256=hashlib.sha256(data).hexdigest(),sourceMtimeNs=source.stat().st_mtime_ns))
+        if source.suffix=='.json': (where/('bridge-'+stage+'.fingerprint.json')).write_bytes(data)
+    result=dict(sourceSha=SHA,phase=phase,stage=stage,sampledUtc=utc(),files=items,previousIndexPath=str(previous),previousIndexSha256=sha(previous))
+    prior={Path(x['sourcePath']).name:x for x in json.loads(previous.read_text())['files']}
+    result['matchesPreviousBytesAndMtimes']=all(all(x[k]==prior[Path(x['sourcePath']).name][k] for k in ['sha256','bytes','sourceMtimeNs']) for x in items)
+    save(where/('bridge-'+stage+'.json'),result)
+    return result
+before=snapshot('before')
+assert before['matchesPreviousBytesAndMtimes'],'入口之間的全域 bridge 被外部更動，停止以免混來源'
+record=dict(sourceSha=SHA,phase=phase,startedUtc=utc(),launcherPid=os.getpid(),cwd=str(ROOT),command=command,
+    launcherArgv=sys.orig_argv,launcherSourceSha256=sha(Path(__file__)),headBefore=git('rev-parse','HEAD'),statusBefore=git('status','--porcelain'),
+    sourceHashesBefore=hashes,CCAbsent='CC' not in os.environ,PYTHONOPTIMIZEAbsent='PYTHONOPTIMIZE' not in os.environ,
+    stackBytes=resource.getrlimit(resource.RLIMIT_STACK)[0],officialOut=str(official_out),previousBridgeIndex=str(previous))
+(where/'launcher-code.txt').write_bytes(Path(__file__).read_bytes())
+save(where/'command.json',record)
+started=time.monotonic()
+with log.open('ab',buffering=0) as handle:
+    child=subprocess.Popen(command,cwd=ROOT,stdin=subprocess.DEVNULL,stdout=handle,stderr=subprocess.STDOUT)
+    record['childPid']=child.pid
+    save(where/'command.json',record)
+    code=child.wait()
+(where/'.exit-code').write_text(str(code)+'\n')
+record.update(childReturnCode=code,finishedUtc=utc(),elapsedSeconds=time.monotonic()-started,
+    headAfter=git('rev-parse','HEAD'),statusAfter=git('status','--porcelain'),sourceHashesAfter={name:sha(ROOT/name) for name in tracked})
+after=snapshot('after')
+record['bridgeAfterMatchesBeforeBytesAndMtimes']=all(all(x[k]==y[k] for k in ['sha256','bytes','sourceMtimeNs']) for x,y in zip(before['files'],after['files']))
+record['sourceHashesUnchanged']=record['sourceHashesBefore']==record['sourceHashesAfter']
+record['sourceCleanRestored']=record['headAfter']==SHA and not record['statusAfter'] and record['sourceHashesUnchanged']
+launcher_code=(code if code>=0 else 128-code) if record['sourceCleanRestored'] else 125
+record['launcherExitCode']=launcher_code
+save(where/'receipt.json',record)
+(where/'.launcher-exit-code').write_text(str(launcher_code)+'\n')
+print(json.dumps({k:record[k] for k in ['phase','childReturnCode','launcherExitCode','elapsedSeconds','sourceCleanRestored','bridgeAfterMatchesBeforeBytesAndMtimes']},ensure_ascii=False),flush=True)
+raise SystemExit(launcher_code)

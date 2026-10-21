@@ -1,0 +1,37 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "phase": "q38",
+  "kind": "primary",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.py",
+    "q38"
+  ],
+  "toolSha256": "65a51dc606c2eafdba96db31d400ef09bd3f2bab2479886165909cea13302a46",
+  "startedUtc": "2026-10-21T06:41:08.465664+00:00",
+  "cwd": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021",
+  "CCAbsent": true,
+  "PYTHONOPTIMIZEAbsent": true,
+  "optimizationFlag": 0,
+  "executorArgv": [
+    "python3",
+    "-B",
+    "-c",
+    "import pathlib,json,hashlib,subprocess,sys,os,datetime,time\nB=pathlib.Path(\"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021\")\nG=B/\"gates\";P=B/\"preparation/gate-review\";out=G/\"acceptance-execution\"\nphase=sys.argv[1];assert phase in (\"q38\",\"controls\",\"card\",\"axiom\")\nassert not sys.flags.optimize and \"PYTHONOPTIMIZE\" not in os.environ and \"CC\" not in os.environ\npins={\"verify-gate.py\":\"65a51dc606c2eafdba96db31d400ef09bd3f2bab2479886165909cea13302a46\",\"q38-acceptor.py\":\"3404731486f310f2fe088047c0a6631afbb16b2db573093f26c4935e5a67c161\",\"controls-acceptor.py\":\"1de2721019f4a4bdc891d34139ba6fb8d364d51de03993c5a2e0e428febfda5c\",\"card-acceptor.py\":\"c1ece7e8ab0a0bab247709a2f6fb4e12c34e3c44ecbb84b947bf0a4b255b325f\",\"axiom-acceptor.py\":\"d22f6e7f5bb987a39c138cd1bb6ae2fdedc1872a077cafd80d19d2071e4e7ebe\"}\ndef digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()\ndef utc():return datetime.datetime.now(datetime.timezone.utc).isoformat()\nout.mkdir(exist_ok=True)\ncode=out/(phase+\"-executor-code.txt\");assert not code.exists();code.write_text(sys.orig_argv[3])\nfor kind,name,args,product in [(\"primary\",\"verify-gate.py\",[phase],G/\"verification\"/(phase+\".json\")),(\"detailed\",phase+\"-acceptor.py\",[\"q38\"] if phase==\"q38\" else [],G/\"acceptance-review\"/(phase+\".json\"))]:\n    tool=P/name;assert digest(tool)==pins[name];assert not product.exists()\n    prefix=out/(phase+\"-\"+kind)\n    command=pathlib.Path(str(prefix)+\"-command.json\");receipt=pathlib.Path(str(prefix)+\"-receipt.json\")\n    assert not command.exists() and not receipt.exists()\n    argv=[sys.executable,\"-B\",str(tool),*args]\n    meta=dict(sourceSha=\"6589248c9a94bdf0460d8f84dd1610e51048188b\",phase=phase,kind=kind,argv=argv,toolSha256=digest(tool),startedUtc=utc(),cwd=str(B),CCAbsent=True,PYTHONOPTIMIZEAbsent=True,optimizationFlag=sys.flags.optimize,executorArgv=sys.orig_argv,executorCodePath=str(code),executorCodeSha256=digest(code))\n    command.write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\");start=time.monotonic()\n    with pathlib.Path(str(prefix)+\".stdout.log\").open(\"wb\") as stdout,pathlib.Path(str(prefix)+\".stderr.log\").open(\"wb\") as stderr:\n        child=subprocess.Popen(argv,cwd=B,stdout=stdout,stderr=stderr)\n        rc=child.wait()\n    meta.update(exitCode=rc,childPid=child.pid,finishedUtc=utc(),elapsedSeconds=time.monotonic()-start,commandPath=str(command),commandSha256=digest(command),producedReport=dict(path=str(product),bytes=product.stat().st_size,sha256=digest(product)) if product.exists() else None)\n    receipt.write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\")\n    print(json.dumps(dict(phase=phase,kind=kind,exitCode=rc,receipt=str(receipt),receiptSha256=digest(receipt),producedReport=meta[\"producedReport\"]),ensure_ascii=False),flush=True)\n    if rc:raise SystemExit(rc)\n    parsed=json.loads(product.read_bytes());assert parsed[\"accepted\"] and parsed[\"sourceSha\"]==meta[\"sourceSha\"]\n",
+    "q38"
+  ],
+  "executorCodePath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/q38-executor-code.txt",
+  "executorCodeSha256": "9030b73a63032cd1e9698aabe6302f496401abd4fed793289a2c9e3ed43ee87f",
+  "exitCode": 0,
+  "childPid": 497935,
+  "finishedUtc": "2026-10-21T06:41:08.607067+00:00",
+  "elapsedSeconds": 0.14128257199627114,
+  "commandPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/q38-primary-command.json",
+  "commandSha256": "9f3b7961067c8719e7faeae8555ffbe22d5bc4778904dfffbd98cf30c136cbda",
+  "producedReport": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/q38.json",
+    "bytes": 7045,
+    "sha256": "f04124408e1ed3cdac4ab3f3d9dbbd013ca8ac50774a1bc8d32e57885053cb50"
+  }
+}

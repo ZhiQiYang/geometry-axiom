@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "sourceS3": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "sourceL3": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "selfExcluded": "來源索引.json",
+  "generatedAlsoExcluded": [
+    "SHA256SUMS"
+  ],
+  "entries": [
+    {
+      "path": "E2-to-E3.patch",
+      "sourcePath": "/workspace/geo261-evidence/source-binding-E3-preparation/E2-to-E3.patch",
+      "bytes": 620,
+      "sha256": "125a6000c50b05c3059042ade1a39d5461d998f62e16f8271932c4f22c59aef7",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "README.md",
+      "sourcePath": "/workspace/geo261-evidence/L3-source-method-packaging/E3方法說明.md",
+      "bytes": 1895,
+      "sha256": "3eb22dc1224a02f5bb1fdd592bb3cb77caaa906dc5e25f98fa2e503228d499eb",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "method-binding.json",
+      "sourcePath": "/workspace/geo261-evidence/source-binding-E3-preparation/method-binding.json",
+      "bytes": 615,
+      "sha256": "100f697e5368617d819bdbf2b9be192089846617d9c82393e050ee2ebb32ff18",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "original-E2-code.txt",
+      "sourcePath": "/workspace/geo261-evidence/source-binding-E3-preparation/original-E2-code.txt",
+      "bytes": 18120,
+      "sha256": "99e6cdbafec586a97c37382216ad14737a173f6e394af3bde2685464d59db9e1",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "verify-E3-code.txt",
+      "sourcePath": "/workspace/geo261-evidence/source-binding-E3-preparation/verify-E3-code.txt",
+      "bytes": 18120,
+      "sha256": "6e1ac9bffab679486606fd3513762d167990c8b725b015778cf329a85590e279",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "verify_E3.py.txt",
+      "sourcePath": "/workspace/geo261-evidence/source-binding-E3-preparation/verify_E3.py",
+      "bytes": 18120,
+      "sha256": "6e1ac9bffab679486606fd3513762d167990c8b725b015778cf329a85590e279",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "封裝方法-code.txt",
+      "sourcePath": "/workspace/geo261-evidence/package-L3-source-architecture.py",
+      "bytes": 9073,
+      "sha256": "973c0052a994bd0fd8c30ad431eb08d2429dbb25a681e4d056fd4d2313f1ba38",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "工具觀察補記.json",
+      "sourcePath": "/workspace/geo261-evidence/L3-source-method-packaging/工具觀察補記.json",
+      "bytes": 898,
+      "sha256": "1e626cca889912ab67810a5873f99bf61b6c2dee701ab44c6396e466d755d098",
+      "rawBytesPreserved": true
+    }
+  ],
+  "notFinalEAcceptance": true
+}

@@ -1,0 +1,31 @@
+{
+  "recordedUtc": "2026-10-21T04:50:50.576046+00:00",
+  "sourceSha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "actualToolResultTranscription": {
+    "chunk_id": "20c3f8",
+    "wall_time_seconds": 2.5028e-05,
+    "exit_code": 1,
+    "original_token_count": 23,
+    "output": "Traceback (most recent call last):\n  File \"<string>\", line 19, in <module>\nAssertionError\n"
+  },
+  "failedCollectorAssertion": "assert rows['mutation:check']['passed']=='ok'",
+  "actualOriginalRow": {
+    "total": null,
+    "passed": "-",
+    "failed": "-",
+    "skipped": null,
+    "seconds": 1.7,
+    "note": "mutation inventory freshness (not test assertions); exit 0"
+  },
+  "originalRunAllRule": "tests/run_all.py:737 明記 inventory note 的真 exit；passed欄為 -，不是一般腳本exit-only的ok。",
+  "correction": "complete-native-failure.py 精確核 note==mutation inventory freshness (not test assertions); exit 0，另6個exit-only維持passed==ok。",
+  "correctedCollectorToolResult": {
+    "chunk_id": "ed9429",
+    "exit_code": 0
+  },
+  "officialNativeOrVerificationChanged": false,
+  "productRetested": false,
+  "rawLogChanged": false,
+  "nativeVerificationSha256": "2cf3751038399be71b260a27d41b6978051d4921995582c7178c625025a4f3c0",
+  "note": "實際工具結果事後轉錄，非自動transport匯出。首次附加收集器在複製fingerprint或寫額外完成收據前已停止；正式600raw與verification原件未改。"
+}

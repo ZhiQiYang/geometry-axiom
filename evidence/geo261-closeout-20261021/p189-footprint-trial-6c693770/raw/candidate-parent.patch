@@ -1,0 +1,152 @@
+diff --git a/geometry-app/native/reference_sources.inc b/geometry-app/native/reference_sources.inc
+index a4f462b4a15c1efe085fee03c64ad5286609fa72..b14c686e64f054c281c46352469ddd4430835f76 100644
+--- a/geometry-app/native/reference_sources.inc
++++ b/geometry-app/native/reference_sources.inc
+@@ -489,9 +489,14 @@ static bool reference_placement_frame(ReferenceEval *ctx,uint32_t id,GeoFrame *o
+ }
+ static bool reference_member_footprint(ReferenceEval *ctx,size_t index,uint32_t placement_id,GeoRect2 *out)
+ {
+-    World *world=ctx->world;PlacementSurface placement;
+-    if(index>=world->wood.timber_count||!app_placement_read(world,placement_id,&placement))return false;
+-    if(ctx->use_current_values)return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);
++    World *world=ctx->world;
++    if(index>=world->wood.timber_count)return false;
++    if(ctx->use_current_values){
++        PlacementSurface placement;
++        if(!app_placement_read(world,placement_id,&placement))return false;
++        return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);
++    }
++    if(!geo_placements_find(&world->geo.placement_data,placement_id))return false;
+     uint32_t id=world->wood.timbers[index].id;GeoSourceValue value;GeoFrame frame;GeoQuad3 face;unsigned axis,side;
+     WoodMemberPlacement anchor;
+     if(!reference_sources_ensure(ctx)||!wood_definition_sources_placement(ctx->definition_sources,id,&anchor)||anchor.placement_id!=placement_id||
+diff --git a/tests/geo261_host_facts_authority_harness.c b/tests/geo261_host_facts_authority_harness.c
+index 5fc58c0efd955536bf51fcce6122aa3c30c78c09..b37e83e00a1309972978b6b803a83b92161c2b3d 100644
+--- a/tests/geo261_host_facts_authority_harness.c
++++ b/tests/geo261_host_facts_authority_harness.c
+@@ -321,6 +321,42 @@ static bool hf_prime_pose(HostFacts *f)
+     bool ok=geo_eval_source(f->ctx.sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK;
+     f->ctx.use_current_values=false;return ok&&value.kind==GEO_SOURCE_BOX&&value.as.box.frame.origin.y==(f->mode==HF_END?40:0)&&f->pose_hits==1;
+ }
++static bool hf_footprint_no_evaluation(const HostFacts *f)
++{
++    return geo_eval_node_count(f->ctx.sources)==0&&geo_eval_edge_count(f->ctx.sources)==0&&
++        f->placement_hits==0&&f->anchor_hits==0&&f->column_hits==0&&f->beam_hits==0&&f->room_hits==0&&f->pose_hits==0;
++}
++/* 缺少原始 placement 或越界 index 必須在來源求值之前拒絕；
++ * 單看 false 不夠，圖與真 provider 的 callback 次數也必須保持不變。 */
++static int hf_footprint_guard(bool missing)
++{
++    HostFacts *f=hf_fixture(HF_MOVED);CHECK("facts-footprint-guard-fixture",f);
++    CHECK("facts-footprint-guard-initial-state",f->world.wood.timber_count==1&&hf_footprint_no_evaluation(f)&&
++        geo_placements_find(&f->world.geo.placement_data,7)&&!geo_placements_find(&f->world.geo.placement_data,999));
++    GeoRect2 out={101,102,103,104},saved=out;
++    bool ok=reference_member_footprint(&f->ctx,missing?0:1,missing?999:7,&out);
++    CHECK("facts-footprint-guard-rejects-without-output-or-world-change",!ok&&!memcmp(&out,&saved,sizeof out)&&
++        !memcmp(&f->world,&f->before,sizeof f->world));
++    if(missing)CHECK("facts-footprint-missing-does-not-evaluate",hf_footprint_no_evaluation(f));
++    else CHECK("facts-footprint-index-does-not-evaluate",hf_footprint_no_evaluation(f));
++    hf_free(f);return 0;
++}
++static int hf_footprint_current(void)
++{
++    for(unsigned mode=0;mode<5;++mode){
++        HostFacts *f=hf_fixture(HF_MOVED);CHECK("facts-footprint-current-fixture",f);f->ctx.use_current_values=true;
++        f->world.wood.anchors[0].uv=(GeoPoint2){13,17};
++        if(mode!=1)f->world.wood.anchors[0].length_direction=GEO_DIRECTION_POS_U;
++        if(mode==2)f->world.wood.timbers[0].placed=false;
++        memcpy(&f->before,&f->world,sizeof f->world);
++        GeoRect2 out={101,102,103,104},saved=out;
++        bool ok=reference_member_footprint(&f->ctx,mode==4?1:0,mode==3?999:7,&out);
++        if(mode==0)CHECK("facts-footprint-current-uses-cached-anchor",ok&&out.min_u==13&&out.max_u==113&&out.min_v==17&&out.max_v==27);
++        else CHECK("facts-footprint-current-invalid-preserves-output",!ok&&!memcmp(&out,&saved,sizeof out));
++        CHECK("facts-footprint-current-never-evaluates-or-writes-world",hf_footprint_no_evaluation(f)&&!memcmp(&f->world,&f->before,sizeof f->world));
++        hf_free(f);
++    }return 0;
++}
+ static int hf_moved(bool final)
+ {
+     HostFacts *f=hf_fixture(HF_MOVED);CHECK("facts-moved-fixture",f);CHECK("facts-moved-real-returned-pose",hf_prime_pose(f));
+@@ -407,6 +443,9 @@ int main(int argc,char **argv)
+     if(!strcmp(argv[1],"copy-clear"))return hf_copy_outputs(false);
+     if(!strcmp(argv[1],"copy-snapshot"))return hf_copy_outputs(true);
+     if(!strcmp(argv[1],"scratch-owned"))return hf_scratch_owned();
++    if(!strcmp(argv[1],"footprint-missing"))return hf_footprint_guard(true);
++    if(!strcmp(argv[1],"footprint-index"))return hf_footprint_guard(false);
++    if(!strcmp(argv[1],"footprint-current"))return hf_footprint_current();
+     if(!strcmp(argv[1],"moved"))return hf_moved(false);
+     if(!strcmp(argv[1],"final"))return hf_moved(true);
+     if(!strcmp(argv[1],"end-facts"))return hf_end_faces();
+diff --git a/tests/test_geo261_host_facts_authority.py b/tests/test_geo261_host_facts_authority.py
+index f028f851286dedf1c1bef8f3fb0a8a17ca91429b..58c35f2edf4bcdb4b9f9fe3bd9df523a4ff2bd75 100644
+--- a/tests/test_geo261_host_facts_authority.py
++++ b/tests/test_geo261_host_facts_authority.py
+@@ -35,9 +35,10 @@ CONTROLS = (
+     ('sp-domain', 'if(definition.domain==GEO_PLACEMENT_REGION_SET){*derived=true;return true;}',
+      'if(world_find_placement(ctx->world,id)->derived_fill_id){*derived=true;return true;}',
+      'sp-derived', 'facts-sp-actual-domain-controls-admission'),
+-    ('raw-footprint', 'if(ctx->use_current_values)return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);',
+-     'if(!timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out))return false;\n'
+-     '    if(ctx->use_current_values)return true;',
++    ('raw-footprint', 'if(!geo_placements_find(&world->geo.placement_data,placement_id))return false;',
++     'PlacementSurface raw_placement;\n'
++     '    if(!app_placement_read(world,placement_id,&raw_placement)||\n'
++     '       !timber_a0_footprint_uv(&raw_placement,&world->wood.timbers[index],&world->wood.anchors[index],out))return false;',
+      'moved', 'facts-moved-actual-anchor-footprint'),
+     ('raw-contact', 'if(ctx->use_current_values&&!fact->footprint_valid)continue;',
+      'if(!fact->footprint_valid)continue;',
+@@ -85,6 +86,14 @@ COPY_CONTROLS = (
+     ('scratch-view', '*view=has_boundary?(actual->derived_fill_id?&actual->components[0]:region):NULL;',
+      '*view=has_boundary?region:NULL;', 'scratch-owned', 'facts-scratch-view-owned-by-caller'),
+ )
++FOOTPRINT_CONTROLS = (
++    ('footprint-missing', 'if(!geo_placements_find(&world->geo.placement_data,placement_id))return false;',
++     '/* 負控制：省略原始 placement 存在守門。 */',
++     'footprint-missing', 'facts-footprint-missing-does-not-evaluate'),
++    ('footprint-index', 'if(index>=world->wood.timber_count)return false;',
++     'if(index>world->wood.timber_count)return false;',
++     'footprint-index', 'facts-footprint-index-does-not-evaluate'),
++)
+ 
+ 
+ class HostFactsAuthorityBoundary(unittest.TestCase):
+@@ -130,6 +139,17 @@ class HostFactsAuthorityBoundary(unittest.TestCase):
+                 self.assertIn('"' + case + '"', harness)
+                 self.assertIn('"' + marker + '"', harness)
+ 
++    def test_footprint_guards_have_unique_anchors_and_graph_oracles(self):
++        source = SOURCE.read_text(encoding='utf-8')
++        harness = HARNESS.read_text(encoding='utf-8')
++        self.assertEqual(2, len(FOOTPRINT_CONTROLS))
++        for name, before, after, case, marker in FOOTPRINT_CONTROLS:
++            with self.subTest(control=name):
++                self.assertEqual(1, source.count(before))
++                self.assertNotEqual(before, after)
++                self.assertIn('"' + case + '"', harness)
++                self.assertIn('"' + marker + '"', harness)
++
+ 
+ class HostFactsAuthority(unittest.TestCase):
+     @classmethod
+@@ -156,6 +176,9 @@ class HostFactsAuthority(unittest.TestCase):
+     def test_actual_rectangle_clears_full_raw_component_storage(self): self.case('copy-clear')
+     def test_snapshot_preserves_components_and_caller_owned_view(self): self.case('copy-snapshot')
+     def test_private_scratch_view_points_into_its_caller_storage(self): self.case('scratch-owned')
++    def test_missing_raw_placement_does_not_evaluate_or_change_outputs(self): self.case('footprint-missing')
++    def test_out_of_range_member_index_does_not_evaluate_or_change_outputs(self): self.case('footprint-index')
++    def test_current_footprint_preserves_cached_anchor_and_rejection_semantics(self): self.case('footprint-current')
+     def test_moved_actual_anchor_overcomes_invalid_raw_footprint(self): self.case('moved')
+     def test_final_world_validation_and_reference_check_share_actual_facts(self): self.case('final')
+     def test_delayed_owner_refresh_and_span_first_error_consume_actual_facts(self): self.case('end-facts')
+@@ -205,6 +228,11 @@ class HostFactsAuthority(unittest.TestCase):
+             with self.subTest(control=control[0]):
+                 self.control(control)
+ 
++    def test_removed_footprint_guards_fail_named_graph_assertions(self):
++        for control in FOOTPRINT_CONTROLS:
++            with self.subTest(control=control[0]):
++                self.control(control)
++
+ 
+ if __name__ == '__main__':
+     unittest.main(verbosity=2)

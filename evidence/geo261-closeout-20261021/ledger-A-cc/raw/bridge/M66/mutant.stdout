@@ -1,0 +1,22 @@
+test_preview_discloses_only_last_deletion_redeclarations (tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations) ... FAIL
+
+======================================================================
+FAIL: test_preview_discloses_only_last_deletion_redeclarations (tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_parameters_core.py", line 418, in test_preview_discloses_only_last_deletion_redeclarations
+    self.assertEqual([{"kind": "parameter", "id": 1, "slot": 0}], [r["owner"] for r in rows])
+AssertionError: Lists differ: [{'kind': 'parameter', 'id': 1, 'slot': 0}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'kind': 'parameter', 'id': 1, 'slot': 0}
+
+- [{'id': 1, 'kind': 'parameter', 'slot': 0}]
++ []
+
+----------------------------------------------------------------------
+Ran 1 test in 5.197s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"], "started": ["tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"], "total": 1, "failures": [{"test": "tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations", "detail": "Traceback (most recent call last):\n  File \"/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_parameters_core.py\", line 418, in test_preview_discloses_only_last_deletion_redeclarations\n    self.assertEqual([{\"kind\": \"parameter\", \"id\": 1, \"slot\": 0}], [r[\"owner\"] for r in rows])\nAssertionError: Lists differ: [{'kind': 'parameter', 'id': 1, 'slot': 0}] != []\n\nFirst list contains 1 additional elements.\nFirst extra element 0:\n{'kind': 'parameter', 'id': 1, 'slot': 0}\n\n- [{'id': 1, 'kind': 'parameter', 'slot': 0}]\n+ []\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

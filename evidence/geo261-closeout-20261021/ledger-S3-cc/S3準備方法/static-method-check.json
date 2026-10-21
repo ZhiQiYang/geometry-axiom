@@ -1,0 +1,54 @@
+{
+  "new_prepare_sha256": "6f0fdb58af30faafbe5e8b972dabee828d24ba6915a8050bcdc16f9721c6087d",
+  "original_prepare_sha256": "12757399ce81872cb6fbaea15d85e2f186954ab818974ecc49acc44348dc7cc9",
+  "diff_sha256": "42301e9d1e92e8752843fea09ce54b692bd3711beffa9c4996b34e77c72daa86",
+  "ast_parse_exit_code": 0,
+  "reverse_exact_original": true,
+  "source_argument_still_required": true,
+  "source_sha_not_assigned": true,
+  "unchanged_methods": [
+    {
+      "name": "supervisor",
+      "actual_path": "/workspace/geo261-evidence/ledger-cc-supervisor.py",
+      "snapshot": "/workspace/geo261-evidence/ledger-S3-preparation/supervisor-original-code.txt",
+      "sha256": "308e37f71422f96543d68be4b51a42397c9d734750e0388278bb65941b60606e",
+      "bytes": 8719,
+      "modified": false
+    },
+    {
+      "name": "launcher",
+      "actual_path": "/workspace/geo261-evidence/ledger-L2-preparation/launch_run.py",
+      "snapshot": "/workspace/geo261-evidence/ledger-S3-preparation/launcher-original-code.txt",
+      "sha256": "9b14f02f6037714aabb1e9eb6dffeb7d80bf7aa481f38897d000c38899c1f49b",
+      "bytes": 2784,
+      "modified": false
+    },
+    {
+      "name": "validator-wrapper",
+      "actual_path": "/workspace/geo261-evidence/ledger-L2-preparation/validate_package.py",
+      "snapshot": "/workspace/geo261-evidence/ledger-S3-preparation/validator-wrapper-original-code.txt",
+      "sha256": "641595247f44cfe55b384f0b1bbc12e06e2f226e984e13fe08e99d86d940536d",
+      "bytes": 3330,
+      "modified": false
+    },
+    {
+      "name": "validator-original",
+      "actual_path": "/workspace/geo261-evidence/ledger-cc-validate-and-package.py",
+      "snapshot": "/workspace/geo261-evidence/ledger-S3-preparation/validator-original-original-code.txt",
+      "sha256": "0eecd56f07f430bf2d74737193b9de66c5f290331a544abd9f3543159cb33efa",
+      "bytes": 11365,
+      "modified": false
+    },
+    {
+      "name": "importer",
+      "actual_path": "/workspace/geo261-evidence/ledger-L2-preparation/import_ledger.py",
+      "snapshot": "/workspace/geo261-evidence/ledger-S3-preparation/importer-original-code.txt",
+      "sha256": "b51ad61f1cf63985fd15021e3ed57a92347a4f1516126593f258240bda547923",
+      "bytes": 8103,
+      "modified": false
+    }
+  ],
+  "product_execution_started": false,
+  "worktree_created": false,
+  "備註": "僅產生外部方法副本、來源白名單與文字標籤差異；尚未設定真正 S3，也沒有執行 prepare。"
+}

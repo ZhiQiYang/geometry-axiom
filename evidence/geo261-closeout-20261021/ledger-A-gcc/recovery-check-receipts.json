@@ -1,0 +1,82 @@
+{
+  "reason": "原監看 session 失聯；原 writer 與 supervisor 已停止，full mutate exit0及完整78案已落盤，但無自動check檔案；另以新監看父程序補原兩條只讀檢查。無法取得原supervisor退出碼，不能斷言其確切退出原因。",
+  "phases": [
+    {
+      "phase": "check",
+      "command": [
+        "python3",
+        "-B",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "cwd": "/workspace/geo261-ledger-run.ra2_k2z2/repo",
+      "source_sha": "7159530c0e494d3211e6ab1764eb691137211707",
+      "pid": 185913,
+      "started_utc": "2026-10-20T22:03:43.489246+00:00",
+      "finished_utc": "2026-10-20T22:03:48.326142+00:00",
+      "seconds": 4.836893550000241,
+      "exit_code": 0,
+      "stdout": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/recovery-check.stdout",
+      "stderr": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/recovery-check.stderr",
+      "ledger_sha256_before": "1b8fc87eb83ac5fd5af0589aa48795aa868380d9d5ae35b4c1a8bf7af2175c7d",
+      "ledger_sha256_after": "1b8fc87eb83ac5fd5af0589aa48795aa868380d9d5ae35b4c1a8bf7af2175c7d",
+      "ledger_unchanged": true,
+      "environment_overrides": {
+        "TMPDIR": "/workspace/geo261-ledger-run.ra2_k2z2/tmp",
+        "MUTATE_CACHE": "/workspace/geo261-ledger-run.ra2_k2z2/cache",
+        "MUTATE_RESULTS": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/mutants_results.json",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "CC": "gcc"
+      },
+      "PYTHONOPTIMIZE_removed": true,
+      "stack_limit_bytes": [
+        16777216,
+        16777216
+      ],
+      "core_limit": [
+        0,
+        0
+      ]
+    },
+    {
+      "phase": "check-killers",
+      "command": [
+        "python3",
+        "-B",
+        "tests/mutate.py",
+        "--check",
+        "--killers"
+      ],
+      "cwd": "/workspace/geo261-ledger-run.ra2_k2z2/repo",
+      "source_sha": "7159530c0e494d3211e6ab1764eb691137211707",
+      "pid": 185978,
+      "started_utc": "2026-10-20T22:03:48.326233+00:00",
+      "finished_utc": "2026-10-20T22:03:53.399581+00:00",
+      "seconds": 5.073363519999475,
+      "exit_code": 0,
+      "stdout": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/recovery-check-killers.stdout",
+      "stderr": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/recovery-check-killers.stderr",
+      "ledger_sha256_before": "1b8fc87eb83ac5fd5af0589aa48795aa868380d9d5ae35b4c1a8bf7af2175c7d",
+      "ledger_sha256_after": "1b8fc87eb83ac5fd5af0589aa48795aa868380d9d5ae35b4c1a8bf7af2175c7d",
+      "ledger_unchanged": true,
+      "environment_overrides": {
+        "TMPDIR": "/workspace/geo261-ledger-run.ra2_k2z2/tmp",
+        "MUTATE_CACHE": "/workspace/geo261-ledger-run.ra2_k2z2/cache",
+        "MUTATE_RESULTS": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/mutants_results.json",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "CC": "gcc"
+      },
+      "PYTHONOPTIMIZE_removed": true,
+      "stack_limit_bytes": [
+        16777216,
+        16777216
+      ],
+      "core_limit": [
+        0,
+        0
+      ]
+    }
+  ]
+}

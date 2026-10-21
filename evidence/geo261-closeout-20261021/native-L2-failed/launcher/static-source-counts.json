@@ -1,0 +1,86 @@
+{
+  "sourceSha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "expectedScope": {
+    "suites": 224,
+    "pythonModules": 188,
+    "countedTotal": 5188
+  },
+  "changedModules": {
+    "test_geo261_wood_contact_world": {
+      "expected": 12,
+      "observed": 12,
+      "methods": [
+        "ContactWorldBoundary.test_public_contact_policy_uses_only_explicit_geometry_and_member_facts",
+        "ContactWorldBoundary.test_five_real_main_consumers_delegate_and_keep_original_member_identity",
+        "WoodContactWorld.test_collision_positive_area_pointer_identity_candidate_placement_and_eligibility",
+        "WoodContactWorld.test_d11_placement_order_stable_ties_dedup_and_partial_contact_shadow",
+        "WoodContactWorld.test_multiple_regions_outline_hole_ids_fixities_and_atomic_capacity_pairs",
+        "WoodContactWorld.test_duplicate_id_all_facts_last_order_minimum_sequential_removal_and_extremes",
+        "WoodContactWorld.test_direct_collector_order_cache_fallback_keeps_existing_admitted_pairs",
+        "WoodContactWorld.test_positioning_interval_real_geometry_notch_hole_and_i5_precedence",
+        "WoodContactWorld.test_owner_extension_fixed_segment_axis_role_and_original_candidate_pointer",
+        "WoodContactWorld.test_end_face_first_error_free_width_shadow_priority_and_extension_exemption",
+        "WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+        "WoodContactWorld.test_same_owner_extension_guard_controls_the_actual_atomic_bridge_placement"
+      ],
+      "sourceSha256": "31779ea23b357455fd5722d747278afd65ea2c0539189ed7a7db9c39d0370f23"
+    },
+    "test_geo261_host_facts_authority": {
+      "expected": 27,
+      "observed": 27,
+      "methods": [
+        "HostFactsAuthorityBoundary.test_real_provider_interception_and_shared_h_adapters_are_present",
+        "HostFactsAuthorityBoundary.test_thirteen_controls_have_unique_source_anchors_and_exact_assertions",
+        "HostFactsAuthorityBoundary.test_copy_controls_have_unique_source_anchors_and_exact_assertions",
+        "HostFactsAuthorityBoundary.test_footprint_guards_have_unique_anchors_and_graph_oracles",
+        "HostFactsAuthority.test_actual_ref_identity_selects_policy_and_typed_dependencies",
+        "HostFactsAuthority.test_actual_rect_to_ref_preserves_holes_across_consumers",
+        "HostFactsAuthority.test_actual_ref_to_rect_clears_raw_boundary",
+        "HostFactsAuthority.test_raw_derived_host_becomes_actual_ordinary_sp_host",
+        "HostFactsAuthority.test_actual_derived_sp_host_stays_lazy",
+        "HostFactsAuthority.test_snapshot_and_no_context_keep_legacy_values",
+        "HostFactsAuthority.test_malformed_actual_definition_preserves_all_outputs_and_world",
+        "HostFactsAuthority.test_actual_rectangle_clears_full_raw_component_storage",
+        "HostFactsAuthority.test_snapshot_preserves_components_and_caller_owned_view",
+        "HostFactsAuthority.test_private_scratch_view_points_into_its_caller_storage",
+        "HostFactsAuthority.test_missing_raw_placement_does_not_evaluate_or_change_outputs",
+        "HostFactsAuthority.test_out_of_range_member_index_does_not_evaluate_or_change_outputs",
+        "HostFactsAuthority.test_current_footprint_preserves_cached_anchor_and_rejection_semantics",
+        "HostFactsAuthority.test_moved_actual_anchor_overcomes_invalid_raw_footprint",
+        "HostFactsAuthority.test_final_world_validation_and_reference_check_share_actual_facts",
+        "HostFactsAuthority.test_delayed_owner_refresh_and_span_first_error_consume_actual_facts",
+        "HostFactsAuthority.test_rc_actual_definitions_and_rebound_room_reach_final_validator",
+        "HostFactsAuthority.test_malformed_rc_or_room_rejects_atomically_and_fails_closed",
+        "HostFactsAuthority.test_five_host_domain_and_footprint_controls_fail_exact_oracles",
+        "HostFactsAuthority.test_hole_vertex_snap_and_non_digit_hole_index_control",
+        "HostFactsAuthority.test_eight_contact_and_final_validator_controls_fail_exact_oracles",
+        "HostFactsAuthority.test_four_copy_and_output_lifetime_controls_fail_exact_oracles",
+        "HostFactsAuthority.test_removed_footprint_guards_fail_named_graph_assertions"
+      ],
+      "sourceSha256": "2b0610adea7e944adc5e05487eb78e161f02a39adf46b09521a10f72788a1baa"
+    },
+    "test_geo261_placement_definition": {
+      "expected": 15,
+      "observed": 15,
+      "methods": [
+        "PlacementDefinitionBoundary.test_provider_and_client_depend_only_on_public_kernel",
+        "PlacementDefinitionBoundary.test_definition_access_does_not_force_geometry_or_apply_geometry_validation",
+        "PlacementDefinitionBoundary.test_controls_have_exactly_one_live_anchor_and_named_assertion",
+        "NativePlacementDefinition.test_fixed_kind_three_and_legacy_source_keys",
+        "NativePlacementDefinition.test_independent_vectors_cover_all_active_fields_and_invalid_geometry",
+        "NativePlacementDefinition.test_capacity_edges_and_encode_failures_preserve_output",
+        "NativePlacementDefinition.test_all_truncations_trailing_tags_and_counts_preserve_output",
+        "NativePlacementDefinition.test_definition_description_reads_and_owned_bytes_do_not_evaluate_geometry",
+        "NativePlacementDefinition.test_actual_returned_definition_overrides_raw_and_uses_definition_edge",
+        "NativePlacementDefinition.test_accessor_rejects_wrong_identity_schema_wire_and_value_kind_atomically",
+        "NativePlacementDefinition.test_candidate_isolation_reset_teardown_and_existing_frame_regions",
+        "NativePlacementDefinition.test_local_frame_rect_reference_components_consume_actual_definition",
+        "NativePlacementDefinition.test_bound_geometry_retains_priority_and_failure_without_definition_forcing",
+        "NativePlacementDefinition.test_linked_client_has_only_the_six_public_kernel_objects",
+        "NativePlacementDefinition.test_twenty_one_controls_fail_exact_assertions_between_restored_baselines"
+      ],
+      "sourceSha256": "a5a2a1813fbd8c41946f47187ac7369b99113ac97489c6e39a53f1992dbc73ff"
+    }
+  },
+  "executedTests": false
+}

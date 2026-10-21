@@ -1,0 +1,92 @@
+{
+  "validationExitCode": 0,
+  "cases": [
+    {
+      "name": "p72-fixed-fresh-normal",
+      "classification": "正常跨第二服務",
+      "exitCode": 0,
+      "sourceSha": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
+      "probeSha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae",
+      "memoryPatch": "none",
+      "passedAssertions": 50,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "fatal": null,
+      "browserCleanup": {
+        "pid": 56945,
+        "profile": "/tmp/geometry-cdp-4e2pPN",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      },
+      "verified": true
+    },
+    {
+      "name": "p72-v2-fixed-stale-first",
+      "classification": "候選受控重載",
+      "exitCode": 0,
+      "sourceSha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+      "probeSha256": "6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc",
+      "memoryPatch": "none",
+      "passedAssertions": 50,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "fatal": null,
+      "browserCleanup": {
+        "pid": 66524,
+        "profile": "/tmp/geometry-cdp-gMKNba",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      },
+      "verified": true
+    },
+    {
+      "name": "p72-v2-withdraw-stale-first",
+      "classification": "精確撤回負控制",
+      "exitCode": 1,
+      "sourceSha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+      "probeSha256": "6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc",
+      "memoryPatch": "withdraw-navigation",
+      "passedAssertions": 46,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "fatal": "Browser evaluation failed: ReferenceError: oc is not defined\n    at eval (eval at <anonymous> (:1:142), <anonymous>:1:1)\n    at eval (<anonymous>)\n    at <anonymous>:1:142\n    at <anonymous>:1:271; expression=!oc.busy&&!ReferenceWorkspace.busy&&!document.querySelector('.reference-impact[open]')",
+      "browserCleanup": {
+        "pid": 67775,
+        "profile": "/tmp/geometry-cdp-k8lqiL",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      },
+      "verified": true
+    },
+    {
+      "name": "p72-v2-hold-navigation",
+      "classification": "導航就緒等待期限",
+      "exitCode": 1,
+      "sourceSha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+      "probeSha256": "6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc",
+      "memoryPatch": "none",
+      "passedAssertions": 46,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "fatal": "Expected navigation timed out after 20000 ms at P72B 重載後開檔前: new-document marker and complete document with condition typeof oc!=='undefined'&&typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy",
+      "browserCleanup": {
+        "pid": 68977,
+        "profile": "/tmp/geometry-cdp-Qa8C2W",
+        "exitCode": 0,
+        "signalCode": null,
+        "exited": true
+      },
+      "verified": true
+    }
+  ],
+  "excludedInvalidControl": {
+    "name": "p72-fixed-stale-first",
+    "classification": "初版控制未取得舊頁求值，不能算產品紅或突變成功",
+    "exitCode": 1,
+    "sourceSha": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
+    "probeSha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae"
+  }
+}

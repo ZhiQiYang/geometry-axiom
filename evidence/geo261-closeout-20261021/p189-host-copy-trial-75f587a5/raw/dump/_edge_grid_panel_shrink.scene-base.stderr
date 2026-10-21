@@ -1,0 +1,12 @@
+/workspace/geo261-p189-host-copy-src-m4oatz82/scenes/repo-_edge_grid_panel_shrink.scene:15: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）: boundary 1: I23 timber 3: I23: 網格 1 u 軸索引 7 超出範圍（本軸共 7 條）
+I8a preview 1: invalid; cannot apply
+boundary 1 geometry-hash c45257d834975607f7bc28df871726c9444a1f780e6f4b18cf93fe2748c9554b kind 0 outer unkeyed:0,0/fixity=1 unkeyed:3600,0/fixity=1 unkeyed:3600,3000/fixity=1 unkeyed:0,3000/fixity=1 -> boundary 1 geometry-hash 20880cb9cd55242df5d19c6c7a93ef3ffa1daf6a6e352fdd57e42a60544985ae kind 0 outer unkeyed:0,0/fixity=1 unkeyed:3355,0/fixity=1 unkeyed:3355,3000/fixity=1 unkeyed:0,3000/fixity=1
+grid 1 on 1 sample (not complete geometry) u stride 1 total 8: k=0@410{[410,0]-[410,3000]} k=1@830{[830,0]-[830,3000]} k=2@1250{[1250,0]-[1250,3000]} k=3@1670{[1670,0]-[1670,3000]} k=4@2090{[2090,0]-[2090,3000]} k=5@2510{[2510,0]-[2510,3000]} k=6@2930{[2930,0]-[2930,3000]} k=7@3350{[3350,0]-[3350,3000]} v stride 1 total 0: undefined -> grid 1 on 1 sample (not complete geometry) u stride 1 total 7: k=0@410{[410,0]-[410,3000]} k=1@830{[830,0]-[830,3000]} k=2@1250{[1250,0]-[1250,3000]} k=3@1670{[1670,0]-[1670,3000]} k=4@2090{[2090,0]-[2090,3000]} k=5@2510{[2510,0]-[2510,3000]} k=6@2930{[2930,0]-[2930,3000]} v stride 1 total 0: undefined
+ timber 1 center 10 -> 10 length 3600 -> 3355
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 2 center 2990 -> 2990 length 3600 -> 3355
+  surface 1 origin [3600,3000,2500] axes [-1,0,0]/[0,-1,0]/[0,0,1] -> surface 1 origin [3355,3000,2500] axes [-1,0,0]/[0,-1,0]/[0,0,1]
+ timber 3 center 3350 -> 0 length 2960 -> 0 (unavailable/deleted)
+  surface 1 origin [3352,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> unavailable
+ timber 3 I23 expected: referenced grid index exists; actual: I23: 網格 1 u 軸索引 7 超出範圍（本軸共 7 條）
+/workspace/geo261-p189-host-copy-src-m4oatz82/scenes/repo-_edge_grid_panel_shrink.scene:15: I8a: impact preview required (World unchanged); line 15: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）: boundary 1: I23 timber 3: I23: 網格 1 u 軸索引 7 超出範圍（本軸共 7 條）

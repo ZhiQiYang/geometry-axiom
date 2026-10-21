@@ -1,0 +1,3047 @@
+{
+  "source_sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "stats": {
+    "interval_usec": 1000,
+    "capacity": 262144,
+    "signals_seen": 284,
+    "samples_kept": 284,
+    "dropped_capacity": 0,
+    "wall_ns": 1141612001,
+    "process_cpu_ns": 1138594941,
+    "timer": "ITIMER_PROF:user+system CPU",
+    "handler": "lock-free atomic PC/count only"
+  },
+  "executable_maps_stable": true,
+  "module_counts": [
+    {
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "samples": 163,
+      "percent": 57.394366197183096
+    },
+    {
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "samples": 121,
+      "percent": 42.605633802816904
+    }
+  ],
+  "module_identities": [
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "load_bias": 93985296003072,
+      "segments": [
+        {
+          "vaddr": 0,
+          "offset": 0,
+          "memsz": 13072,
+          "filesz": 13072,
+          "flags": 4
+        },
+        {
+          "vaddr": 16384,
+          "offset": 16384,
+          "memsz": 789513,
+          "filesz": 789513,
+          "flags": 5
+        },
+        {
+          "vaddr": 806912,
+          "offset": 806912,
+          "memsz": 206520,
+          "filesz": 206520,
+          "flags": 4
+        },
+        {
+          "vaddr": 1019624,
+          "offset": 1015528,
+          "memsz": 331022072,
+          "filesz": 5000,
+          "flags": 6
+        }
+      ],
+      "real_path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "sha256": "f39f904e2dd9caead75952d38ed9e09bacc332cf43ee10526fe0d64833f93675",
+      "bytes": 4263016,
+      "inode": 2010420,
+      "device": "00:1b",
+      "device_numbers": [
+        0,
+        27
+      ],
+      "matches_after_map_identity": true
+    },
+    {
+      "path": "linux-vdso.so.1",
+      "load_bias": 140029080109056,
+      "segments": [
+        {
+          "vaddr": 0,
+          "offset": 0,
+          "memsz": 4574,
+          "filesz": 4574,
+          "flags": 5
+        }
+      ],
+      "file_identity_available": false,
+      "note": "vDSO或無可讀檔案；不猜檔案身份"
+    },
+    {
+      "path": "/lib/x86_64-linux-gnu/libm.so.6",
+      "load_bias": 140029078949888,
+      "segments": [
+        {
+          "vaddr": 0,
+          "offset": 0,
+          "memsz": 67488,
+          "filesz": 67488,
+          "flags": 4
+        },
+        {
+          "vaddr": 69632,
+          "offset": 69632,
+          "memsz": 511441,
+          "filesz": 511441,
+          "flags": 5
+        },
+        {
+          "vaddr": 581632,
+          "offset": 581632,
+          "memsz": 390748,
+          "filesz": 390748,
+          "flags": 4
+        },
+        {
+          "vaddr": 977872,
+          "offset": 973776,
+          "memsz": 1096,
+          "filesz": 1084,
+          "flags": 6
+        }
+      ],
+      "real_path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+      "sha256": "6d567d53e895273ca14a1f9dc164fc6c8d39aed2f60aa46a733c2784228915f3",
+      "bytes": 977112,
+      "inode": 9223372036855343040,
+      "device": "00:1b",
+      "device_numbers": [
+        0,
+        27
+      ],
+      "matches_after_map_identity": true
+    },
+    {
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "load_bias": 140029076901888,
+      "segments": [
+        {
+          "vaddr": 0,
+          "offset": 0,
+          "memsz": 161096,
+          "filesz": 161096,
+          "flags": 4
+        },
+        {
+          "vaddr": 163840,
+          "offset": 163840,
+          "memsz": 1452285,
+          "filesz": 1452285,
+          "flags": 5
+        },
+        {
+          "vaddr": 1617920,
+          "offset": 1617920,
+          "memsz": 348604,
+          "filesz": 348604,
+          "flags": 4
+        },
+        {
+          "vaddr": 1973152,
+          "offset": 1969056,
+          "memsz": 74416,
+          "filesz": 19240,
+          "flags": 6
+        }
+      ],
+      "real_path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "fa430b8f298f817a266046af84a77533185ad6fc4406c7d3787b5a0a0c207826",
+      "bytes": 1995216,
+      "inode": 9223372036855347452,
+      "device": "00:1b",
+      "device_numbers": [
+        0,
+        27
+      ],
+      "matches_after_map_identity": true
+    },
+    {
+      "path": "/lib64/ld-linux-x86-64.so.2",
+      "load_bias": 140029080117248,
+      "segments": [
+        {
+          "vaddr": 0,
+          "offset": 0,
+          "memsz": 3280,
+          "filesz": 3280,
+          "flags": 4
+        },
+        {
+          "vaddr": 4096,
+          "offset": 4096,
+          "memsz": 160721,
+          "filesz": 160721,
+          "flags": 5
+        },
+        {
+          "vaddr": 167936,
+          "offset": 167936,
+          "memsz": 44336,
+          "filesz": 44336,
+          "flags": 4
+        },
+        {
+          "vaddr": 213568,
+          "offset": 213568,
+          "memsz": 13224,
+          "filesz": 10508,
+          "flags": 6
+        }
+      ],
+      "real_path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "sha256": "438c546d8e8cc48496bf3a95f753051afd9db66a629a74e31a9ded71586b56e0",
+      "bytes": 225672,
+      "inode": 9223372036855345797,
+      "device": "00:1b",
+      "device_numbers": [
+        0,
+        27
+      ],
+      "matches_after_map_identity": true
+    }
+  ],
+  "locations": [
+    {
+      "pc": "0x7f5b0f7acccb",
+      "samples": 18,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bccb",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7accb6",
+      "samples": 16,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bcb6",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7ad3ce",
+      "samples": 15,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17c3ce",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7ad3d5",
+      "samples": 14,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17c3d5",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7accbd",
+      "samples": 14,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bcbd",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7accc4",
+      "samples": 13,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bcc4",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7ad3c7",
+      "samples": 13,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17c3c7",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7accdf",
+      "samples": 11,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bcdf",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7ad3dc",
+      "samples": 10,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17c3dc",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa82fd21c",
+      "samples": 9,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x1221c",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_find_node.isra.0"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7accd8",
+      "samples": 5,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bcd8",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa82fd187",
+      "samples": 5,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12187",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_find_node.isra.0"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7acced",
+      "samples": 5,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bced",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa82fd155",
+      "samples": 5,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12155",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_find_node.isra.0"
+      ]
+    },
+    {
+      "pc": "0x557aa833bc7f",
+      "samples": 5,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x50c7f",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_definition_sources_placement"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd667",
+      "samples": 4,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12667",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_index_append"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7acce6",
+      "samples": 4,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bce6",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa831ab66",
+      "samples": 4,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x2fb66",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "timber_a0_footprint_uv"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd19e",
+      "samples": 4,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x1219e",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_find_node.isra.0"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7a34e1",
+      "samples": 3,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x1724e1",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa837538d",
+      "samples": 3,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x8a38d",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "reference_host_read"
+      ]
+    },
+    {
+      "pc": "0x557aa82ffbf7",
+      "samples": 3,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x14bf7",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "app_grid_host_value.part.0"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd18e",
+      "samples": 3,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x1218e",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_find_node.isra.0"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7acd84",
+      "samples": 2,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bd84",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7accd2",
+      "samples": 2,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bcd2",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7accf4",
+      "samples": 2,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bcf4",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa82fd6f4",
+      "samples": 2,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x126f4",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_index_append"
+      ]
+    },
+    {
+      "pc": "0x557aa83381ee",
+      "samples": 2,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x4d1ee",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_contact_collect_stops"
+      ]
+    },
+    {
+      "pc": "0x557aa8375691",
+      "samples": 2,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x8a691",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "reference_contact_facts"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f6d4e27",
+      "samples": 2,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0xa3e27",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa83381e8",
+      "samples": 2,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x4d1e8",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_contact_collect_stops"
+      ]
+    },
+    {
+      "pc": "0x557aa8374c3a",
+      "samples": 2,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x89c3a",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "reference_placement_frame"
+      ]
+    },
+    {
+      "pc": "0x557aa833b6bf",
+      "samples": 2,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x506bf",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_definition_sources_placement"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7acd69",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bd69",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7a366d",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17266d",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f7a3693",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x172693",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa8308a71",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x1da71",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_grid_codec_write_axis"
+      ]
+    },
+    {
+      "pc": "0x557aa831ab37",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x2fb37",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "timber_a0_footprint_uv"
+      ]
+    },
+    {
+      "pc": "0x557aa832a47a",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x3f47a",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_placement_sources_definition"
+      ]
+    },
+    {
+      "pc": "0x557aa8329e24",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x3ee24",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_placement_definition_decode"
+      ]
+    },
+    {
+      "pc": "0x557aa8338f67",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x4df67",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_contact_source_decode"
+      ]
+    },
+    {
+      "pc": "0x557aa8339b7e",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x4eb7e",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_contact_sources_collect"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd9ad",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x129ad",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_node"
+      ]
+    },
+    {
+      "pc": "0x557aa8373140",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x88140",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_grid_source_decode"
+      ]
+    },
+    {
+      "pc": "0x557aa833918f",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x4e18f",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_contact_source_evaluate"
+      ]
+    },
+    {
+      "pc": "0x557aa8302d28",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x17d28",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wd_read_text.constprop.0"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7a633d",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17533d",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa82fd862",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12862",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_edge"
+      ]
+    },
+    {
+      "pc": "0x557aa833bfcd",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x50fcd",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "app_member_reference_at"
+      ]
+    },
+    {
+      "pc": "0x557aa82fad4c",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0xfd4c",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "app_placement_at.part.0"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd835",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12835",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_edge"
+      ]
+    },
+    {
+      "pc": "0x557aa838128a",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x9628a",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_grid_valid"
+      ]
+    },
+    {
+      "pc": "0x557aa833bc40",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x50c40",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_definition_sources_placement"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd218",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12218",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_find_node.isra.0"
+      ]
+    },
+    {
+      "pc": "0x557aa8377edb",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x8cedb",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "app_reference_member_anchor"
+      ]
+    },
+    {
+      "pc": "0x557aa8338054",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x4d054",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_contact_collect_stops"
+      ]
+    },
+    {
+      "pc": "0x557aa831ab95",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x2fb95",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "timber_a0_footprint_uv"
+      ]
+    },
+    {
+      "pc": "0x557aa833bede",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x50ede",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "app_member_reference_at"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f6905b0",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x5f5b0",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa82fdade",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12ade",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_node"
+      ]
+    },
+    {
+      "pc": "0x557aa8374f29",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x89f29",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "reference_host_read"
+      ]
+    },
+    {
+      "pc": "0x557aa8377999",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x8c999",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "reference_member_footprint"
+      ]
+    },
+    {
+      "pc": "0x557aa8302d1c",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x17d1c",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wd_read_text.constprop.0"
+      ]
+    },
+    {
+      "pc": "0x557aa8302d07",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x17d07",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wd_read_text.constprop.0"
+      ]
+    },
+    {
+      "pc": "0x557aa83384f3",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x4d4f3",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_contact_collect_stops"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7acb13",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17bb13",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa82fd1a1",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x121a1",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_find_node.isra.0"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7a34da",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x1724da",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x7f5b0f6cfef8",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x9eef8",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa82fd916",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12916",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_edge"
+      ]
+    },
+    {
+      "pc": "0x557aa8325fa1",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x3afa1",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_eval_source"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f6d433d",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0xa333d",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa830300a",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x1800a",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_box_face.part.0"
+      ]
+    },
+    {
+      "pc": "0x557aa833ba62",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x50a62",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_definition_sources_placement"
+      ]
+    },
+    {
+      "pc": "0x557aa831edb3",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x33db3",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_finite_sequence"
+      ]
+    },
+    {
+      "pc": "0x557aa82fad43",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0xfd43",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "app_placement_at.part.0"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd6c2",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x126c2",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_index_append"
+      ]
+    },
+    {
+      "pc": "0x557aa8380a94",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x95a94",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "resolve_auto_span"
+      ]
+    },
+    {
+      "pc": "0x557aa8303026",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x18026",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_box_face.part.0"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7ad346",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x17c346",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa82ffb96",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x14b96",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "app_grid_host_value.part.0"
+      ]
+    },
+    {
+      "pc": "0x557aa82f6f67",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0xbf67",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_grow"
+      ]
+    },
+    {
+      "pc": "0x557aa8395b13",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0xaab13",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_world_validate_members"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd87d",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x1287d",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_edge"
+      ]
+    },
+    {
+      "pc": "0x557aa8375984",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x8a984",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "reference_contact_facts"
+      ]
+    },
+    {
+      "pc": "0x557aa83756bb",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x8a6bb",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "reference_contact_facts"
+      ]
+    },
+    {
+      "pc": "0x557aa83381f2",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x4d1f2",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_contact_collect_stops"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd64f",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x1264f",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_index_append"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd854",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12854",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_edge"
+      ]
+    },
+    {
+      "pc": "0x557aa8302cf9",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x17cf9",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wd_read_text.constprop.0"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd240",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12240",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_find_node.isra.0"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f6d2dc3",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0xa1dc3",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa8339d25",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x4ed25",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_contact_sources_collect"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd648",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x12648",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_index_append"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f6d3146",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0xa2146",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa8377f14",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x8cf14",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "app_reference_member_anchor"
+      ]
+    },
+    {
+      "pc": "0x557aa8375769",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x8a769",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "reference_contact_facts"
+      ]
+    },
+    {
+      "pc": "0x557aa8339571",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x4e571",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_contact_source_evaluate"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f6d16ba",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0xa06ba",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    },
+    {
+      "pc": "0x557aa83800fb",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x950fb",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_member_resolve_span"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd0b1",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x120b1",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_find_node.isra.0"
+      ]
+    },
+    {
+      "pc": "0x557aa8319fd1",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x2efd1",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_region_contains_rect"
+      ]
+    },
+    {
+      "pc": "0x557aa833b6c2",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x506c2",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_definition_sources_placement"
+      ]
+    },
+    {
+      "pc": "0x557aa8317187",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x2c187",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_loop_point_on_edge"
+      ]
+    },
+    {
+      "pc": "0x557aa833bc82",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x50c82",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_definition_sources_placement"
+      ]
+    },
+    {
+      "pc": "0x557aa833c833",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x51833",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_definition_sources_boundary"
+      ]
+    },
+    {
+      "pc": "0x557aa830303f",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x1803f",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_box_face.part.0"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd6d4",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x126d4",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_index_append"
+      ]
+    },
+    {
+      "pc": "0x557aa82fd1c0",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x121c0",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "geo_source_find_node.isra.0"
+      ]
+    },
+    {
+      "pc": "0x557aa833b91b",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 93985296019456,
+          "end": 93985296809984,
+          "permissions": "r-xp",
+          "offset": 16384,
+          "device": "00:1b",
+          "inode": 2010420,
+          "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+        }
+      ],
+      "module_candidates": [
+        "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "elf_vaddr": "0x5091b",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "exact_executable_symbol_ranges": [
+        "wood_definition_sources_placement"
+      ]
+    },
+    {
+      "pc": "0x7f5b0f7a36ae",
+      "samples": 1,
+      "executable_maps": [
+        {
+          "start": 140029077065728,
+          "end": 140029078519808,
+          "permissions": "r-xp",
+          "offset": 163840,
+          "device": "00:1b",
+          "inode": 9223372036855347452,
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+        }
+      ],
+      "module_candidates": [
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "module_file_identity_matches_pc_map": true,
+      "runtime_vdso_without_disk_identity": false,
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "elf_vaddr": "0x1726ae",
+      "attribution": "唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol",
+      "function": "未歸屬；保留module+ELF offset，不猜libc最近符號"
+    }
+  ],
+  "limitations": "ITIMER_PROF按user+system CPU遞減，1ms是請求間隔；不保證每ms交付。PC只在user地址，不能分攤kernel成本；沒有call stack。constructor以後至atexit取樣，退出輸出及其他區段不在timer內。共享庫未猜函式，exe只報非零大小符號真範圍；不是正式性能成績。"
+}

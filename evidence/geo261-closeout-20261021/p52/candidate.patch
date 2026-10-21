@@ -1,0 +1,44 @@
+--- a/geometry-web/cdp_test.js
++++ b/geometry-web/cdp_test.js
+@@ -6227,9 +6227,38 @@
+     /* 真實放置後核心 footprint 的 cross 範圍 = 帶的範圍 */
+     pt48 = await openFace48();
+     await click(pt48(2000, 1500).x, pt48(2000, 1500).y);
+-    await sleep(400);
+-    const g = await eval_(`(async()=>{ const refs = await apiRequest('references');
+-      const t = (refs.timbers || []).find(x => x.id === 3); return t && t.geometry; })()`);
++    const g = await (async () => {
++      const deadline = Date.now() + 15000;
++      let last = { references: null, geometry: null, busyBefore: null, busy: null, toasts: null, phase: '尚未取樣' };
++      const timeout = () => Error('P52-5 等待 timber id=3 geometry 與放置完成逾時（15000ms）；最後狀態：' + JSON.stringify(last));
++      // 每次 CDP/API 共用同一截止時間；單次 references 卡住也不能拖長總上限。
++      const read = async expression => {
++        const remaining = deadline - Date.now();
++        if (remaining <= 0) throw timeout();
++        let timer;
++        try {
++          return await Promise.race([eval_(expression), new Promise((_, reject) => {
++            timer = setTimeout(() => reject(timeout()), remaining);
++          })]);
++        } finally { clearTimeout(timer); }
++      };
++      last = await read(`({ references: null, geometry: null, busyBefore: !!oc.busy, busy: !!oc.busy,
++        toasts: document.getElementById('toastRegion')?.textContent || '', phase: '首次讀取前' })`);
++      while (Date.now() < deadline) {
++        last.phase = 'references 回應等待中';
++        last = await read(`(async()=>{ const busyBefore = !!oc.busy;
++          const references = await apiRequest('references');
++          const timber = (references.timbers || []).find(x => x.id === 3);
++          return { references, geometry: timber?.geometry || null, busyBefore, busy: !!oc.busy,
++            toasts: document.getElementById('toastRegion')?.textContent || '', phase: 'references 已回應' }; })()`);
++        if (last.references?.ok !== true)
++          throw Error('P52-5 timber id=3 的 references 查詢失敗：' + JSON.stringify(last));
++        // 只等資料及交易就緒；幾何期望值仍交給下方原斷言判斷。
++        if (last.geometry && !last.busyBefore && !last.busy) return last.geometry;
++        await delay(Math.min(50, Math.max(0, deadline - Date.now())));
++      }
++      throw timeout();
++    })();
+     const fxLo = g && Math.min(g.origin[0], g.origin[0] + g.axes[1][0] * g.A);
+     const fxHi = g && Math.max(g.origin[0], g.origin[0] + g.axes[1][0] * g.A);
+     check('P52-5 真實放置的 cross 足跡(核心) = 預示帶範圍 1987..2014',

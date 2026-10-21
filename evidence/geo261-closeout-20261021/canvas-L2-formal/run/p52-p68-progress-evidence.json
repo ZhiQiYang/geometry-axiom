@@ -1,0 +1,347 @@
+{
+  "sourceSha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "sampledUTC": "2026-10-21T04:36:29.142140+00:00",
+  "method": "本輪仍執行；只核原 log 已閉合區段的具名斷言輸出，不冒稱最終 CDP_RESULT。",
+  "sampledLogBytes": 154072,
+  "sampledLogSha256": "4186b16de0015c8083123fc7a8e1088a0cd5f99760e5dd2081825a1781c1e3d3",
+  "sections": {
+    "P52": {
+      "headerLine": 728,
+      "nextSectionLine": 772,
+      "nextSection": "=== P53. 連線錯誤、重新載入與重試 ===",
+      "passed": 43,
+      "failed": 0,
+      "rawSkipTokens": [],
+      "assertionLines": [
+        {
+          "line": 729,
+          "text": "P52 setup 全過 ✓ [{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"timber 1 27 33 role boundary\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"place 1 on 1 at-face e0 +u +n\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"timber 2 27 33 role boundary\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"place 2 on 1 at-face e2 +u +n\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"spec 測試中線 2000\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"guide 2 1 v spec:測試中線\",\"ok\":true,\"error\":null,\"preview\":false}]"
+        },
+        {
+          "line": 730,
+          "text": "P52-1 at-line 置中:A27 → u 1987..2014,A28 → 1986..2014 ✓ {\"c27\":{\"constAxis\":\"u\",\"lo\":1987,\"hi\":2014},\"c28\":{\"constAxis\":\"u\",\"lo\":1986,\"hi\":2014}}"
+        },
+        {
+          "line": 731,
+          "text": "P52-2 at-face 貼材料側:e1 3973..4000、e3 0..27、e0 v0..27、e2 v2973..3000 ✓ {\"cE1\":{\"constAxis\":\"u\",\"lo\":3973,\"hi\":4000},\"cE3\":{\"constAxis\":\"u\",\"lo\":0,\"hi\":27},\"cE0\":{\"constAxis\":\"v\",\"lo\":0,\"hi\":27},\"cE2\":{\"constAxis\":\"v\",\"lo\":2973,\"hi\":3000}}"
+        },
+        {
+          "line": 732,
+          "text": "P52-3 V(長度軸v) at-line guide 2 A27 +v+n ✓ {\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +v +n\"],\"rng\":[[1987,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 733,
+          "text": "P52-3 V(長度軸v) at-line guide 2 A27 +v-n ✓ {\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +v -n\"],\"rng\":[[1987,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 734,
+          "text": "P52-3 V(長度軸v) at-line guide 2 A27 -v+n ✓ {\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -v +n\"],\"rng\":[[1987,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 735,
+          "text": "P52-3 V(長度軸v) at-line guide 2 A27 -v-n ✓ {\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -v -n\"],\"rng\":[[1987,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 736,
+          "text": "P52-3 V(長度軸v) at-line guide 2 A28 +v+n ✓ {\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +v +n\"],\"rng\":[[1986,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 737,
+          "text": "P52-3 V(長度軸v) at-line guide 2 A28 +v-n ✓ {\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +v -n\"],\"rng\":[[1986,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 738,
+          "text": "P52-3 V(長度軸v) at-line guide 2 A28 -v+n ✓ {\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -v +n\"],\"rng\":[[1986,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 739,
+          "text": "P52-3 V(長度軸v) at-line guide 2 A28 -v-n ✓ {\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -v -n\"],\"rng\":[[1986,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 740,
+          "text": "P52-3 V(長度軸v) at-face e1 A27 +v+n ✓ {\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  +v +n\"],\"rng\":[[3973,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 741,
+          "text": "P52-3 V(長度軸v) at-face e1 A27 +v-n ✓ {\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  +v -n\"],\"rng\":[[3973,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 742,
+          "text": "P52-3 V(長度軸v) at-face e1 A27 -v+n ✓ {\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  -v +n\"],\"rng\":[[3973,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 743,
+          "text": "P52-3 V(長度軸v) at-face e1 A27 -v-n ✓ {\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  -v -n\"],\"rng\":[[3973,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 744,
+          "text": "P52-3 V(長度軸v) at-face e1 A28 +v+n ✓ {\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  +v +n\"],\"rng\":[[3972,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 745,
+          "text": "P52-3 V(長度軸v) at-face e1 A28 +v-n ✓ {\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  +v -n\"],\"rng\":[[3972,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 746,
+          "text": "P52-3 V(長度軸v) at-face e1 A28 -v+n ✓ {\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  -v +n\"],\"rng\":[[3972,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 747,
+          "text": "P52-3 V(長度軸v) at-face e1 A28 -v-n ✓ {\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  -v -n\"],\"rng\":[[3972,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 748,
+          "text": "P52-3 H(長度軸u) at-line guide 2 A27 +u+n ✓ {\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +u +n\"],\"rng\":[[27,3973],[1987,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 749,
+          "text": "P52-3 H(長度軸u) at-line guide 2 A27 +u-n ✓ {\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +u -n\"],\"rng\":[[27,3973],[1987,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 750,
+          "text": "P52-3 H(長度軸u) at-line guide 2 A27 -u+n ✓ {\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -u +n\"],\"rng\":[[27,3973],[1987,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 751,
+          "text": "P52-3 H(長度軸u) at-line guide 2 A27 -u-n ✓ {\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -u -n\"],\"rng\":[[27,3973],[1987,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 752,
+          "text": "P52-3 H(長度軸u) at-line guide 2 A28 +u+n ✓ {\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +u +n\"],\"rng\":[[27,3973],[1986,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 753,
+          "text": "P52-3 H(長度軸u) at-line guide 2 A28 +u-n ✓ {\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +u -n\"],\"rng\":[[27,3973],[1986,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 754,
+          "text": "P52-3 H(長度軸u) at-line guide 2 A28 -u+n ✓ {\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -u +n\"],\"rng\":[[27,3973],[1986,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 755,
+          "text": "P52-3 H(長度軸u) at-line guide 2 A28 -u-n ✓ {\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -u -n\"],\"rng\":[[27,3973],[1986,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 756,
+          "text": "P52-3 H(長度軸u) at-face e2 A27 +u+n ✓ {\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  +u +n\"],\"rng\":[[27,3973],[2973,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 757,
+          "text": "P52-3 H(長度軸u) at-face e2 A27 +u-n ✓ {\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  +u -n\"],\"rng\":[[27,3973],[2973,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 758,
+          "text": "P52-3 H(長度軸u) at-face e2 A27 -u+n ✓ {\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  -u +n\"],\"rng\":[[27,3973],[2973,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 759,
+          "text": "P52-3 H(長度軸u) at-face e2 A27 -u-n ✓ {\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  -u -n\"],\"rng\":[[27,3973],[2973,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 760,
+          "text": "P52-3 H(長度軸u) at-face e2 A28 +u+n ✓ {\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  +u +n\"],\"rng\":[[27,3973],[2972,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 761,
+          "text": "P52-3 H(長度軸u) at-face e2 A28 +u-n ✓ {\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  +u -n\"],\"rng\":[[27,3973],[2972,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 762,
+          "text": "P52-3 H(長度軸u) at-face e2 A28 -u+n ✓ {\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  -u +n\"],\"rng\":[[27,3973],[2972,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+        },
+        {
+          "line": 763,
+          "text": "P52-3 H(長度軸u) at-face e2 A28 -u-n ✓ {\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  -u -n\"],\"rng\":[[27,3973],[2972,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+        },
+        {
+          "line": 764,
+          "text": "P52-4 DOM 帶畫 u 1987..2014 且套材料區裁切 ✓ {\"x\":1987,\"w\":27,\"clip\":\"url(#face-material-clip)\"}"
+        },
+        {
+          "line": 765,
+          "text": "P52-5 真實放置的 cross 足跡(核心) = 預示帶範圍 1987..2014 ✓ {\"g\":{\"surface\":1,\"centerline\":2000,\"length\":2946,\"u\":2014,\"v\":27,\"dir\":\"+v\",\"side\":\"+n\",\"A\":27,\"B\":33,\"origin\":[2014,27,2500],\"axes\":[[0,1,0],[-1,0,0],[0,0,1]]}}"
+        },
+        {
+          "line": 766,
+          "text": "P52 L形 setup 全過 ✓ [{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,1500 2500,1500 2500,3000 0,3000\",\"ok\":true,\"error\":null,\"preview\":false}]"
+        },
+        {
+          "line": 767,
+          "text": "P52-6 L 形凹邊(u=2500,v 1500..3000)→ 材料側較小 u,帶 2473..2500 ✓ {\"constAxis\":\"u\",\"lo\":2473,\"hi\":2500}"
+        },
+        {
+          "line": 768,
+          "text": "P52 L形反環 setup 全過 ✓ [{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 0,3000 2500,3000 2500,1500 4000,1500 4000,0\",\"ok\":true,\"error\":null,\"preview\":false}]"
+        },
+        {
+          "line": 769,
+          "text": "P52-7 L 形反環走向 → 同一凹邊材料側仍為較小 u,帶 2473..2500 ✓ {\"constAxis\":\"u\",\"lo\":2473,\"hi\":2500}"
+        },
+        {
+          "line": 770,
+          "text": "P52 孔場景 setup 全過 ✓ [{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1000,1000 2000,1000 2000,2000 1000,2000\",\"ok\":true,\"error\":null,\"preview\":false}]"
+        },
+        {
+          "line": 771,
+          "text": "P52-8 孔頂邊 v=1000 → 材料側在孔外(v<1000),帶 v 973..1000 ✓ {\"constAxis\":\"v\",\"lo\":973,\"hi\":1000}"
+        }
+      ],
+      "allNamedRowsHavePass": true
+    },
+    "P68": {
+      "headerLine": 960,
+      "nextSectionLine": 997,
+      "nextSection": "=== P69. 正式工程規格：材料、做法、套用、引用與保存 ===",
+      "passed": 36,
+      "failed": 0,
+      "rawSkipTokens": [],
+      "assertionLines": [
+        {
+          "line": 961,
+          "text": "P68 頁面身份與非空介面 ✓ "
+        },
+        {
+          "line": 962,
+          "text": "P68 具名尺寸表單提交與核心值一致 ✓ "
+        },
+        {
+          "line": 963,
+          "text": "P68 共用基準 ID 0 可建立且保留來源 ✓ "
+        },
+        {
+          "line": 964,
+          "text": "P68 兩面明確引用同一基準 ✓ "
+        },
+        {
+          "line": 965,
+          "text": "P68 被引用基準刪除入口停用並說明原因 ✓ "
+        },
+        {
+          "line": 966,
+          "text": "P68 共用基準夾具確有兩支待傳遞角材 ✓ "
+        },
+        {
+          "line": 967,
+          "text": "P68 尺寸更改先預覽，世界仍未提交 ✓ "
+        },
+        {
+          "line": 968,
+          "text": "P68 同為一段仍列原與新端點，不只列段數 ✓ "
+        },
+        {
+          "line": 969,
+          "text": "P68 取消連動保持具名尺寸、兩面線及角材完整原狀 ✓ "
+        },
+        {
+          "line": 970,
+          "text": "P68 確認後兩面角材與線同步到 z1500 ✓ "
+        },
+        {
+          "line": 971,
+          "text": "P68 確認確實變更共用來源與場景 ✓ "
+        },
+        {
+          "line": 972,
+          "text": "P68 共用來源修改單步復原 ✓ "
+        },
+        {
+          "line": 973,
+          "text": "P68 共用來源修改重做還原完整確認後場景 ✓ "
+        },
+        {
+          "line": 974,
+          "text": "P68 gcanvas封裝／還原API保留共用基準、兩面引用及材定位 ✓ "
+        },
+        {
+          "line": 975,
+          "text": "P68 未引用基準可從介面刪除 ✓ "
+        },
+        {
+          "line": 976,
+          "text": "P68 基準刪除可復原 ✓ "
+        },
+        {
+          "line": 977,
+          "text": "P68 DATUM線来源只讀且提供共用管理入口 ✓ "
+        },
+        {
+          "line": 978,
+          "text": "P68 DATUM線可直接前往共用基準 ✓ "
+        },
+        {
+          "line": 979,
+          "text": "P68 LOCAL來源與ID0正確顯示 ✓ "
+        },
+        {
+          "line": 980,
+          "text": "P68 非法來源的連動預覽不能確認 ✓ "
+        },
+        {
+          "line": 981,
+          "text": "P68 非法無名尺寸不改場景且顯示失敗 ✓ "
+        },
+        {
+          "line": 982,
+          "text": "P68 合法來源更新由核心重算引用角材 ✓ "
+        },
+        {
+          "line": 983,
+          "text": "P68 關閉來源編輯不套用草稿 ✓ "
+        },
+        {
+          "line": 984,
+          "text": "P68 邊界定位：原定位／選段／優先序全部回填 ✓ "
+        },
+        {
+          "line": 985,
+          "text": "P68 邊界定位：忙碌期間連動確認仍接受滑鼠 ✓ "
+        },
+        {
+          "line": 986,
+          "text": "P68 角材尺寸修改取消保留完整原場景 ✓ "
+        },
+        {
+          "line": 987,
+          "text": "P68 邊界定位：只改A/B保留同ID及完整定位定義 ✓ "
+        },
+        {
+          "line": 988,
+          "text": "P68 through與custom優先序：原定位／選段／優先序全部回填 ✓ "
+        },
+        {
+          "line": 989,
+          "text": "P68 小數custom priority拒絕，沒有偷偷取整 ✓ "
+        },
+        {
+          "line": 990,
+          "text": "P68 through與custom優先序：忙碌期間連動確認仍接受滑鼠 ✓ "
+        },
+        {
+          "line": 991,
+          "text": "P68 through與custom優先序：只改A/B保留同ID及完整定位定義 ✓ "
+        },
+        {
+          "line": 992,
+          "text": "P68 between支撐：原定位／選段／優先序全部回填 ✓ "
+        },
+        {
+          "line": 993,
+          "text": "P68 between支撐：忙碌期間連動確認仍接受滑鼠 ✓ "
+        },
+        {
+          "line": 994,
+          "text": "P68 between支撐：只改A/B保留同ID及完整定位定義 ✓ "
+        },
+        {
+          "line": 995,
+          "text": "P68 已開啟來源編輯於390px無水平溢出且操作可見 ✓ "
+        },
+        {
+          "line": 996,
+          "text": "P68 所有新增流程沒有未處理瀏覽器例外 ✓ "
+        }
+      ],
+      "allNamedRowsHavePass": true
+    }
+  }
+}

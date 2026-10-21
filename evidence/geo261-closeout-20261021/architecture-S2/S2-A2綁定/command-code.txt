@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+"""只讀綁定架構受驗 S2 與 root 已公開的 metadata commit A2。"""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+ROOT = Path('/workspace/geometry-axiom')
+RUN = Path('/workspace/geo261-evidence/architecture-owned-S2-cabe8241')
+OUT = Path('/workspace/geo261-evidence/architecture-owned-S2-A2-binding')
+PUBLIC = Path('/workspace/geo261-evidence/source-A2-publication')
+S2 = 'cabe824128be31d0039dc6c94fa3f04cfb722a6b'
+A2 = 'cbefb39b47fb0edcfaf003d2c1101929fea244c8'
+OUT.mkdir(exist_ok=False)
+commands = []
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def read(path): return json.loads(path.read_bytes())
+def git(*args):
+    index = len(commands)
+    argv = ['git', '-C', str(ROOT), *args]
+    proc = subprocess.run(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (OUT / f'{index}.stdout').write_bytes(proc.stdout)
+    (OUT / f'{index}.stderr').write_bytes(proc.stderr)
+    commands.append({'argv': argv, 'exitCode': proc.returncode, 'stdout': f'{index}.stdout', 'stderr': f'{index}.stderr'})
+    assert proc.returncode == 0
+    return proc.stdout
+assert git('rev-parse', 'HEAD').decode().strip() == A2
+assert git('rev-parse', A2 + '^').decode().strip() == S2
+assert not git('status', '--porcelain=v1', '--untracked-files=no')
+summary = read(RUN / 'summary.json')
+outputs = summary['outputs']
+scan = 'geometry-core/domain-decoupling/product-architecture-scan.json'
+changed = git('diff', '--name-status', '--no-renames', S2, A2).decode().splitlines()
+assert set(changed) == {'M\t' + path for path in outputs if path != scan}
+metadata = {}
+for path in outputs:
+    actual = git('show', A2 + ':' + path)
+    previous = git('show', S2 + ':' + path)
+    assert actual == (RUN / 'final' / Path(path).name).read_bytes() == (ROOT / path).read_bytes()
+    assert previous == (RUN / 'previous' / Path(path).name).read_bytes()
+    assert sha(actual) == outputs[path]['rawSha256']
+    metadata[path] = {'S2RawSha256': sha(previous), 'A2RawSha256': sha(actual), 'sameBytes': previous == actual}
+assert metadata[scan]['sameBytes']
+receipt = read(RUN / 'final/product-architecture-receipt.json')
+inputs = {row['path'] for row in receipt['inputs']}
+extras = set(receipt['outsideInventoryReviewedTests'])
+tools = set(receipt['completeInventoryVerification']['toolHashesBeforeAndAfter'])
+assert not (inputs | extras | tools) & set(outputs)
+publication = read(PUBLIC / 'publication.json')
+assert publication['A2'] == publication['remote_head'] == A2 and publication['S2'] == S2
+assert all(row['exit_code'] == 0 for row in publication['commands'])
+assert (PUBLIC / '8.stdout').read_text().strip() == A2 + '\trefs/heads/codex/geo261-closeout-20261021'
+assert not git('status', '--porcelain=v1', '--untracked-files=no')
+result = {'sourceBaseHeadActuallyTested': S2, 'metadataCommit': A2, 'directParentIsS2': True,
+          'diff': changed, 'scanRecomputedButSameBytes': True, 'metadata': metadata,
+          'unchangedByExactTotalGitDiff': {'architectureInputs': len(inputs), 'outsideInventoryTestsAndExpected': len(extras),
+                                         'architectureTools': len(tools), 'unionCount': len(inputs | extras | tools),
+                                         'allOtherTrackedGitBlobs': True},
+          'inputClosureSha256': receipt['inputClosureSha256'], 'commands': commands,
+          'publication': {'source': str(PUBLIC), 'sha256': sha((PUBLIC / 'publication.json').read_bytes()), 'exactRemoteHeadFromPreservedRaw': A2},
+          'notClaimed': ['A2 重跑三條架構驗收', '新 ledger 或完整整合驗收', '本程序重新查詢遠端或推送']}
+(OUT / 'binding.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+(OUT / 'command-code.txt').write_bytes(Path(__file__).read_bytes())
+print(json.dumps(result, ensure_ascii=False, indent=2))

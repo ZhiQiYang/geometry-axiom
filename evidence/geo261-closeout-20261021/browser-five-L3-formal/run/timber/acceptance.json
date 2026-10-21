@@ -1,0 +1,72 @@
+{
+  "validationExitCode": 0,
+  "result": {
+    "schema": "geometry-space-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_TIMBER_ONLY"
+      ],
+      "included": [
+        "timber-material",
+        "timber-source-guards",
+        "font-layout"
+      ],
+      "omitted": [
+        "space-height-library",
+        "projection-lifecycle",
+        "projection-placement",
+        "space-flow",
+        "projection-close"
+      ],
+      "url": "http://127.0.0.1:18855/",
+      "feedbackDirectory": "/tmp/geo261-browser-five-l3-6589248c-formal/timber/feedback"
+    },
+    "completed": true,
+    "groups": {
+      "setup": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      },
+      "timber-material": {
+        "expected": 48,
+        "passed": 48,
+        "failed": 0,
+        "completed": true
+      },
+      "timber-source-guards": {
+        "expected": 8,
+        "passed": 8,
+        "failed": 0,
+        "completed": true
+      },
+      "font-layout": {
+        "expected": 19,
+        "passed": 19,
+        "failed": 0,
+        "completed": true
+      },
+      "browser-health": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      }
+    },
+    "completenessProblems": [],
+    "passed": 79,
+    "failed": 0,
+    "exceptions": [],
+    "consoleErrors": []
+  },
+  "fixedCensus": {
+    "setup": 2,
+    "timber-material": 48,
+    "timber-source-guards": 8,
+    "font-layout": 19,
+    "browser-health": 2
+  },
+  "goldenScope": "既有固定逐群 census"
+}

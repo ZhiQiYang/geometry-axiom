@@ -1,0 +1,21 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "core.fsmonitor=false",
+    "--git-dir",
+    "/workspace/geometry-axiom/.git",
+    "--work-tree",
+    "/tmp/geo261-ignore-readonly-l5ka9yop",
+    "check-ignore",
+    "--no-index",
+    "-z",
+    "--stdin"
+  ],
+  "exitCode": 1,
+  "stdoutBytes": 0,
+  "stderrBytes": 0,
+  "pathCount": 5647,
+  "samePathCountAsByteScan": false,
+  "meaning": "與正式verifier同樣不帶-v之check-ignore：exit1且空stdout表示皆未忽略；不是核對失敗"
+}

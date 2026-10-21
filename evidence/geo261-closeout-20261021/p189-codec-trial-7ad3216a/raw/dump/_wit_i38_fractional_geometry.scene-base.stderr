@@ -1,0 +1,6 @@
+/workspace/geo261-p189-codec-src-hkfhzrv3/scenes/repo-_wit_i38_fractional_geometry.scene:21: D6c/I7a timber 0: datum 2: I38 GEOMETRY: param:1:3 must resolve to integer mm (got 915/2)
+I8a preview 1: invalid; cannot apply
+ guide 1: surface 1 u=915 world [915,0,2500] direction [0,1,0] -> unavailable
+ visible: {[915,0]-[915,3000]} -> unavailable
+ timber 0 D6c/I7a expected: axis X/Y/Z and exact spec-only expression within D1; actual: datum 2: I38 GEOMETRY: param:1:3 must resolve to integer mm (got 915/2)
+/workspace/geo261-p189-codec-src-hkfhzrv3/scenes/repo-_wit_i38_fractional_geometry.scene:21: I8a: impact preview required (World unchanged); line 21: D6c/I7a timber 0: datum 2: I38 GEOMETRY: param:1:3 must resolve to integer mm (got 915/2)

@@ -1,0 +1,43 @@
+{
+  "createdUtc": "2026-10-21T04:18:09.239730+00:00",
+  "sourceL2": "249571fe2477845d5330f6190dad965bf327f43b",
+  "bundles": [
+    {
+      "path": "/workspace/geo261-evidence/final-bundle/source-binding-L2",
+      "files": 161,
+      "bytes": 18402654,
+      "indexSha256": "11daf64fe55ba807abd5230fd22937af82ce1835b3ee1a9e945aec318ce39b75",
+      "allCopiedBytesAndIndexMatch": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/final-bundle/architecture-L2",
+      "files": 14,
+      "bytes": 268824,
+      "indexSha256": "04588fe47e99689017954e573947582308275d8da92721e6b1c5f96d680571a2",
+      "allCopiedBytesAndIndexMatch": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/final-bundle/交付驗證方法-L2",
+      "files": 8,
+      "bytes": 51637,
+      "indexSha256": "87ac123900381ee3aabf93f7286860ca03cc32398693d3d09029ded0735cc621",
+      "allCopiedBytesAndIndexMatch": true
+    }
+  ],
+  "expectedJsonRawIncludedFromA2AndL2": {
+    "path": "tests/run_all.expected.json",
+    "bytes": 24624,
+    "rawSha256": "f08443be7de507ea4550790bfdf3d51ce4c35fc74e2055286691ec511082bec0",
+    "lfSha256": "f08443be7de507ea4550790bfdf3d51ce4c35fc74e2055286691ec511082bec0",
+    "sameA2L2GitRawBytes": true,
+    "totalCount": 5188
+  },
+  "existingFrozenBundlesModified": false,
+  "noExecutableSourceCopies": true,
+  "notFinalEAcceptance": true,
+  "command": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/package-L2-source-architecture.py"
+  ]
+}

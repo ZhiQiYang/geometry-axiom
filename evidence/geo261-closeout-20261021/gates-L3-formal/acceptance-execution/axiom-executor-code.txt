@@ -1,0 +1,26 @@
+import pathlib,json,hashlib,subprocess,sys,os,datetime,time
+B=pathlib.Path("/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021")
+G=B/"gates";P=B/"preparation/gate-review";out=G/"acceptance-execution"
+phase=sys.argv[1];assert phase in ("q38","controls","card","axiom")
+assert not sys.flags.optimize and "PYTHONOPTIMIZE" not in os.environ and "CC" not in os.environ
+pins={"verify-gate.py":"65a51dc606c2eafdba96db31d400ef09bd3f2bab2479886165909cea13302a46","q38-acceptor.py":"3404731486f310f2fe088047c0a6631afbb16b2db573093f26c4935e5a67c161","controls-acceptor.py":"1de2721019f4a4bdc891d34139ba6fb8d364d51de03993c5a2e0e428febfda5c","card-acceptor.py":"c1ece7e8ab0a0bab247709a2f6fb4e12c34e3c44ecbb84b947bf0a4b255b325f","axiom-acceptor.py":"d22f6e7f5bb987a39c138cd1bb6ae2fdedc1872a077cafd80d19d2071e4e7ebe"}
+def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def utc():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+out.mkdir(exist_ok=True)
+code=out/(phase+"-executor-code.txt");assert not code.exists();code.write_text(sys.orig_argv[3])
+for kind,name,args,product in [("primary","verify-gate.py",[phase],G/"verification"/(phase+".json")),("detailed",phase+"-acceptor.py",["q38"] if phase=="q38" else [],G/"acceptance-review"/(phase+".json"))]:
+    tool=P/name;assert digest(tool)==pins[name];assert not product.exists()
+    prefix=out/(phase+"-"+kind)
+    command=pathlib.Path(str(prefix)+"-command.json");receipt=pathlib.Path(str(prefix)+"-receipt.json")
+    assert not command.exists() and not receipt.exists()
+    argv=[sys.executable,"-B",str(tool),*args]
+    meta=dict(sourceSha="6589248c9a94bdf0460d8f84dd1610e51048188b",phase=phase,kind=kind,argv=argv,toolSha256=digest(tool),startedUtc=utc(),cwd=str(B),CCAbsent=True,PYTHONOPTIMIZEAbsent=True,optimizationFlag=sys.flags.optimize,executorArgv=sys.orig_argv,executorCodePath=str(code),executorCodeSha256=digest(code))
+    command.write_text(json.dumps(meta,ensure_ascii=False,indent=2)+"\n");start=time.monotonic()
+    with pathlib.Path(str(prefix)+".stdout.log").open("wb") as stdout,pathlib.Path(str(prefix)+".stderr.log").open("wb") as stderr:
+        child=subprocess.Popen(argv,cwd=B,stdout=stdout,stderr=stderr)
+        rc=child.wait()
+    meta.update(exitCode=rc,childPid=child.pid,finishedUtc=utc(),elapsedSeconds=time.monotonic()-start,commandPath=str(command),commandSha256=digest(command),producedReport=dict(path=str(product),bytes=product.stat().st_size,sha256=digest(product)) if product.exists() else None)
+    receipt.write_text(json.dumps(meta,ensure_ascii=False,indent=2)+"\n")
+    print(json.dumps(dict(phase=phase,kind=kind,exitCode=rc,receipt=str(receipt),receiptSha256=digest(receipt),producedReport=meta["producedReport"]),ensure_ascii=False),flush=True)
+    if rc:raise SystemExit(rc)
+    parsed=json.loads(product.read_bytes());assert parsed["accepted"] and parsed["sourceSha"]==meta["sourceSha"]

@@ -1,0 +1,34 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "provenance": "本檔為本代理在 2026-10-21 收尾時，對本輪實際對話工具呼叫／返回的逐欄轉錄；不是先前由作業程序自動產生的 tool transport 原始日誌。原工具訊息可依 chunk/session 在對話查核。既有 native-final／launcher 凍結原件沒有改動。",
+  "launchTool": "tools.exec_command",
+  "launchArguments": {
+    "cmd": "env -u CC -u PYTHONOPTIMIZE python3 -B -c 'import os,pathlib,sys\np=pathlib.Path(\"/workspace/geo261-evidence/native-l-preparation/launcher-source.txt\")\nsource=p.read_text()\nargs=[\"python3\",\"-B\",\"-c\",source,\"--wrapper-code\",\"/workspace/geo261-evidence/native-final-launcher/wrapper-code.txt\",\"--cwd\",\"/workspace/geo261-native-l\",\"--native-out\",\"/workspace/geo261-evidence/native-final\",\"--launcher-out\",\"/workspace/geo261-evidence/native-final-launcher\",\"--source-sha\",\"43f85313c32410ac01406ab585846bbacafea278\"]\nenv=os.environ.copy()\nenv.pop(\"CC\",None)\nenv.pop(\"PYTHONOPTIMIZE\",None)\nos.execvpe(\"python3\",args,env)\n' > /workspace/geo261-evidence/native-final-launcher/orchestrator.log 2>&1",
+    "workdir": "/workspace/geo261-native-l",
+    "yield_time_ms": 1000,
+    "max_output_tokens": 1000
+  },
+  "launchResult": {
+    "chunk_id": "70933d",
+    "wall_time_seconds": 1.000900182,
+    "session_id": 71609,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "completionTool": "tools.write_stdin",
+  "completionArguments": {
+    "session_id": 71609,
+    "chars": "",
+    "yield_time_ms": 50000,
+    "max_output_tokens": 1500
+  },
+  "completionResult": {
+    "chunk_id": "4e267f",
+    "wall_time_seconds": 23.209832515,
+    "exit_code": 0,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "bootstrapSource": "import os,pathlib,sys\np=pathlib.Path(\"/workspace/geo261-evidence/native-l-preparation/launcher-source.txt\")\nsource=p.read_text()\nargs=[\"python3\",\"-B\",\"-c\",source,\"--wrapper-code\",\"/workspace/geo261-evidence/native-final-launcher/wrapper-code.txt\",\"--cwd\",\"/workspace/geo261-native-l\",\"--native-out\",\"/workspace/geo261-evidence/native-final\",\"--launcher-out\",\"/workspace/geo261-evidence/native-final-launcher\",\"--source-sha\",\"43f85313c32410ac01406ab585846bbacafea278\"]\nenv=os.environ.copy()\nenv.pop(\"CC\",None)\nenv.pop(\"PYTHONOPTIMIZE\",None)\nos.execvpe(\"python3\",args,env)\n",
+  "environmentEvidence": "實際 shell 先 env -u CC -u PYTHONOPTIMIZE；bootstrap 又在 execvpe 前移除兩鍵，exec 後 launcherArgv 留完整 Python 原 argv。沒有把此啟動證據或同環境 preflight 當成 /proc/environ 子程序取樣。"
+}

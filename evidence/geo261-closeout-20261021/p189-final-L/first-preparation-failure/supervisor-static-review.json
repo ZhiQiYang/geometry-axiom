@@ -1,0 +1,19 @@
+{
+  "reviewed_utc": "2026-10-21T00:44:12.402069+00:00",
+  "review_type": "只做AST及原碼核對，未載入或執行調度器／產品／測量工具",
+  "supervisor_sha256": "e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413",
+  "ast_parse_success": true,
+  "required_function_names_present": true,
+  "runtime_launcher_selftest_executed": false,
+  "phases_executed": [],
+  "statements_verified": [
+    "stdout/stderr直檔，child.wait真碼先以fsync+replace落.exit-code後才hash與receipt",
+    "忽略SIGHUP；正式子程序各自start_new_session，不經工具stdout管線",
+    "每phase核正式runner及generator hash與固定三方SHA",
+    "移除PYTHONOPTIMIZE、無-O、stack soft/hard16MiB、core0",
+    "16控制顯式selftest；timing0仍續check取得正式門檻碼",
+    "timing前實際binaryhash比buildreceipt，STAT排除Z，idlebridge一秒CPUtick差必0",
+    "任何非零phase先保原件，拒絕覆寫與重啟同輪",
+    "目前設定released=false，須另存正式放行設定才可啟動"
+  ]
+}

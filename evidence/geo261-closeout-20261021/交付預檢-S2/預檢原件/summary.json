@@ -1,0 +1,42 @@
+{
+  "scope": "S2 後、L2 前的一次只讀交付預檢；不是最終 index／E 驗收",
+  "startedUtc": "2026-10-21T03:24:54.430607+00:00",
+  "finishedUtc": "2026-10-21T03:24:57.749782+00:00",
+  "seconds": 3.3191849469985755,
+  "fileCount": 19540,
+  "totalBytes": 208687311,
+  "verifierSourceSha256": "ffe3d3fe08ba3c51534b51724ae984e9c3a3774b02230e6d0f344f1bc4d897e3",
+  "typeFindings": [],
+  "submanifestChecks": 40,
+  "submanifestReferencedRows": 21333,
+  "submanifestFindings": [
+    {
+      "index": "後續工作/issue300-readonly/原件索引.json",
+      "rows": 5,
+      "missing": [],
+      "mismatched": [],
+      "invalid": [],
+      "exactSetClaimChecked": true,
+      "unlistedFiles": [
+        "後續工作/issue300-readonly/README.md"
+      ]
+    }
+  ],
+  "ignoredBeforeAppend": 19540,
+  "ignoredAfterExactAppend": 0,
+  "drift": {
+    "added": [],
+    "removed": [],
+    "metadataChanged": []
+  },
+  "gitModelOnly": "/workspace/geo261-evidence/bundle-preflight-after-S2/ignore-model",
+  "externalIgnoreConfigNotClaimed": true,
+  "notClaimed": [
+    "L2 證據齊全",
+    "最終 artifact-index.json",
+    "E verifier 已通過",
+    "任何產品測試／建置",
+    "外部二進位封存／歷史原始索引全部可在 curated 包原路徑解析"
+  ],
+  "remainingIndexScope": "逐項核 SHA256SUMS 與 16 份現行子索引；歷史／外部二進位索引只作原件保存，未冒充現行包全集合。"
+}

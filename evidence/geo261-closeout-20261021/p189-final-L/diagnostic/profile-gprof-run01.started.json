@@ -1,0 +1,21 @@
+{
+  "name": "profile-gprof-run01",
+  "argv": [
+    "gprof",
+    "-b",
+    "-p",
+    "-q",
+    "/workspace/geo261-evidence/p189-diagnostic-L-43f85313c324.iffezuqv/bridge-profile",
+    "/workspace/geo261-evidence/p189-diagnostic-L-43f85313c324.iffezuqv/run01/gmon.out"
+  ],
+  "cwd": "/workspace/geo261-evidence/p189-diagnostic-L-43f85313c324.iffezuqv",
+  "started_utc": "2026-10-21T00:55:35.221676+00:00",
+  "source_sha": "43f85313c32410ac01406ab585846bbacafea278",
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "stdin": null,
+  "pid": 294782,
+  "pgid": 294782
+}

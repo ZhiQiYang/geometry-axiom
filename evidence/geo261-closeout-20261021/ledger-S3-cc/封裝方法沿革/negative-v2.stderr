@@ -1,0 +1,7 @@
+usage: bundle_ledger.py [-h] --source SOURCE --ledger-commit LEDGER_COMMIT
+                        --ledger-sha256 LEDGER_SHA256 --config CONFIG
+                        --publication PUBLICATION --source-ledger-binding
+                        SOURCE_LEDGER_BINDING --publication-tool-observation
+                        PUBLICATION_TOOL_OBSERVATION --output OUTPUT
+                        [--execute]
+bundle_ledger.py: error: the following arguments are required: --source, --ledger-commit, --ledger-sha256, --config, --publication, --source-ledger-binding, --publication-tool-observation, --output

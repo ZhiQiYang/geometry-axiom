@@ -1,0 +1,380 @@
+{
+  "checkedUTC": "2026-10-21T02:54:59.204605+00:00",
+  "acceptedScopedFootprint": true,
+  "baseHead": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+  "testedState": "基底75f加固定三檔未提交補丁",
+  "sourceHashes": {
+    "geometry-app/native/reference_sources.inc": "ee8fa4e258999addd1996704cdffc47ac870acb972f5d63328dc2908e1be8a5c",
+    "tests/geo261_host_facts_authority_harness.c": "a1865b2ab64fe31921cd5305d0b194d95177c3934123d76c0db73aedd79bcb6e",
+    "tests/test_geo261_host_facts_authority.py": "2b0610adea7e944adc5e05487eb78e161f02a39adf46b09521a10f72788a1baa"
+  },
+  "sourceFileCount": 326,
+  "sourceBeforeAfterAndCurrentHashesAgree": true,
+  "testsRun": 56,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "commandCount": 299,
+  "rawStreamsVerified": 598,
+  "allCompileAndLinkCommandsExitZero": true,
+  "nonzeroCommandCount": 38,
+  "HNamedControlTriples": [
+    {
+      "name": "region-policy",
+      "case": "ref-policy",
+      "assertion": "facts-ref-policy-follows-actual-region",
+      "beforeIndex": 110,
+      "redIndex": 111,
+      "restoreIndex": 112,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "rect-ref",
+      "case": "rect-ref",
+      "assertion": "facts-rect-to-ref-preserves-hole",
+      "beforeIndex": 115,
+      "redIndex": 116,
+      "restoreIndex": 117,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "clear-boundary",
+      "case": "ref-rect",
+      "assertion": "facts-ref-to-rect-clears-boundary",
+      "beforeIndex": 120,
+      "redIndex": 121,
+      "restoreIndex": 122,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "sp-domain",
+      "case": "sp-derived",
+      "assertion": "facts-sp-actual-domain-controls-admission",
+      "beforeIndex": 125,
+      "redIndex": 126,
+      "restoreIndex": 127,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "raw-footprint",
+      "case": "moved",
+      "assertion": "facts-moved-actual-anchor-footprint",
+      "beforeIndex": 130,
+      "redIndex": 131,
+      "restoreIndex": 132,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "raw-contact",
+      "case": "moved",
+      "assertion": "facts-moved-contact-admits-actual-footprint",
+      "beforeIndex": 69,
+      "redIndex": 70,
+      "restoreIndex": 71,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "final-anchor",
+      "case": "final",
+      "assertion": "facts-final-validator-actual-anchor",
+      "beforeIndex": 74,
+      "redIndex": 75,
+      "restoreIndex": 76,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "rc-column",
+      "case": "rc",
+      "assertion": "facts-rc-column-actual-definition",
+      "beforeIndex": 79,
+      "redIndex": 80,
+      "restoreIndex": 81,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "rc-room",
+      "case": "rc",
+      "assertion": "facts-rc-room-actual-result",
+      "beforeIndex": 84,
+      "redIndex": 85,
+      "restoreIndex": 86,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "probe-box",
+      "case": "end-facts",
+      "assertion": "facts-probe-consumes-actual-box",
+      "beforeIndex": 89,
+      "redIndex": 90,
+      "restoreIndex": 91,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "end-refresh",
+      "case": "end-facts",
+      "assertion": "facts-delayed-refresh-controls-owner-extension",
+      "beforeIndex": 94,
+      "redIndex": 95,
+      "restoreIndex": 96,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "end-eager",
+      "case": "end-facts",
+      "assertion": "facts-span-error-precedes-source-failure",
+      "beforeIndex": 99,
+      "redIndex": 100,
+      "restoreIndex": 101,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "probe-projection",
+      "case": "end-facts",
+      "assertion": "facts-probe-projects-actual-origin",
+      "beforeIndex": 104,
+      "redIndex": 105,
+      "restoreIndex": 106,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "copy-clear",
+      "case": "copy-clear",
+      "assertion": "facts-copy-clears-all-original-components",
+      "beforeIndex": 135,
+      "redIndex": 136,
+      "restoreIndex": 137,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "copy-atomic",
+      "case": "malformed",
+      "assertion": "facts-malformed-actual-definition-is-atomic",
+      "beforeIndex": 140,
+      "redIndex": 141,
+      "restoreIndex": 142,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "copy-view",
+      "case": "copy-snapshot",
+      "assertion": "facts-copy-snapshot-view-owned-by-caller",
+      "beforeIndex": 145,
+      "redIndex": 146,
+      "restoreIndex": 147,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "scratch-view",
+      "case": "scratch-owned",
+      "assertion": "facts-scratch-view-owned-by-caller",
+      "beforeIndex": 150,
+      "redIndex": 151,
+      "restoreIndex": 152,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "footprint-missing",
+      "case": "footprint-missing",
+      "assertion": "facts-footprint-missing-does-not-evaluate",
+      "beforeIndex": 169,
+      "redIndex": 170,
+      "restoreIndex": 171,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "footprint-index",
+      "case": "footprint-index",
+      "assertion": "facts-footprint-index-does-not-evaluate",
+      "beforeIndex": 174,
+      "redIndex": 175,
+      "restoreIndex": 176,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "hole-index-digits",
+      "case": "rect-ref",
+      "assertion": "facts-hole-vertex-grammar-rejects-malformed",
+      "beforeIndex": 156,
+      "redIndex": 157,
+      "restoreIndex": 158,
+      "returnCodes": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "currentPathWitnesses": [
+    "合法cached anchor",
+    "非法direction",
+    "未放置member",
+    "missing placement",
+    "index等於timber_count"
+  ],
+  "returnedEvaluationSuffixByteIdentical": true,
+  "outsideFootprintFunctionByteIdentical": true,
+  "semanticReview": [
+    "current路徑保留原app_placement_read與timber_a0呼叫順序；noncurrent只改未使用legacy placement的存在查核。",
+    "合法placement store count<=16時新find與原逐項掃描皆取第一個同ID，沒有新增實際幾何驗證。",
+    "missing/index仍先拒絕；兩新控制實際compile/link成功，再在圖node/edge/provider計數具名斷言exit1，非crash或setup錯誤。",
+    "index負控允許邏輯index1，但fixture實體timber固定陣列容量大於1且calloc清零，因此不是靠越界UB殺死。",
+    "源definition/pose/frame/face求值與成功寫out順序的整段原bytes保留，無新cache或跨consumer memo。"
+  ],
+  "invalidCountBoundary": "損毀內部placement store count>16時新find先拒絕；原app_placement_read可能先匹配或在越過capacity後解NULL。只承諾合法store等價，並未把此損毀情境當正控或擴大防禦契約。",
+  "nativeExpectedPlanning": {
+    "suites": 224,
+    "storedCountTotal": 5176,
+    "hostFactsStored": 17,
+    "hostFacts75f": 22,
+    "hostFactsCandidate": 27,
+    "woodContactL": 10,
+    "woodContactCandidate": 12,
+    "staticMethodDeltaFromL": 12,
+    "projectedCountTotal": 5188,
+    "projectedPassIfSameOneAllowedSkip": 5187,
+    "limits": "靜態預估；tests/run_all.expected.json尚未更新，本次定向綠不代表完整native會過。依原流程需完整run後具名更新expected。"
+  },
+  "outerToolObservation": {
+    "chunk": "d69997",
+    "exitCode": 0,
+    "source": "作者真工具返回轉述，不新增偽transport原文"
+  },
+  "authorSummaryInitialFailure": {
+    "chunk": "ae4781",
+    "exitCode": 1,
+    "reason": "外部摘要marker誤取前置宣告；原summarize-first-attempt.txt保留，更正後096af5 exit0，產品未重跑"
+  },
+  "limitations": [
+    "未跑產品或重測，不證明P189效能、最終native/七項/ledger。",
+    "20H控制逐名核前0/精確1/後0，其餘紅列核具名ASSERT與原碼，完整定向由既有module裁判負責。",
+    "暫存mutant由NativeBuild刪除；沒有宣稱直接讀取已刪mutant來源。"
+  ],
+  "artifacts": [
+    {
+      "path": "targeted-result.json",
+      "bytes": 303,
+      "sha256": "db02d41d3abef9f007270bbec1351de253e75532f34cf8420a26fd5bbd3d1f5b"
+    },
+    {
+      "path": "targeted-unittest.log",
+      "bytes": 10862,
+      "sha256": "ebe6a55f80a80e64e827fbcd256e5153f7d96f1402a2ed9990b3f05a881b8845"
+    },
+    {
+      "path": "targeted-commands.json",
+      "bytes": 458509,
+      "sha256": "cf24c032007884acc52cecd813e54f4413e8051f82139900f5a4169113b2c00e"
+    },
+    {
+      "path": "source-before.json",
+      "bytes": 37320,
+      "sha256": "06474402469ff1b704d6db5e6ac020efae66cf627609d7399ecd132b9f5cdee3"
+    },
+    {
+      "path": "source-after.json",
+      "bytes": 37320,
+      "sha256": "06474402469ff1b704d6db5e6ac020efae66cf627609d7399ecd132b9f5cdee3"
+    },
+    {
+      "path": "verification-summary.json",
+      "bytes": 11313,
+      "sha256": "623ccb2fec0f1c6e5efe22efd59c3964181f210a0387dfee371d847fc008a1d2"
+    },
+    {
+      "path": "candidate.patch",
+      "bytes": 9698,
+      "sha256": "bed372575815368c213232e3ff901c2d117f4c988bf776af59905124f051d705"
+    },
+    {
+      "path": "run_targeted.py",
+      "bytes": 3555,
+      "sha256": "8e199c406c94af7768f72e710b440091e945fd5895215aefe9eef39e92b51041"
+    },
+    {
+      "path": "summarize.py",
+      "bytes": 3352,
+      "sha256": "d8d72feeacbfae4af9cd34161df8539967e000767e90acc47cca32f9e0dcb635"
+    },
+    {
+      "path": "summarize-first-attempt.txt",
+      "bytes": 3316,
+      "sha256": "04a779a9c9cac07a050128ce731f94c0732c3593c1c6fa46a31f310b9213153a"
+    }
+  ]
+}

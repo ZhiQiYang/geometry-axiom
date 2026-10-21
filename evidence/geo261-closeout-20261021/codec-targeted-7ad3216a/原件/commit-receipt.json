@@ -1,0 +1,247 @@
+{
+  "startedUTC": "2026-10-21T01:03:31.229257+00:00",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "43f85313c32410ac01406ab585846bbacafea278\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "43f85313c32410ac01406ab585846bbacafea278\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "branch",
+        "--show-current"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "branch",
+        "--list",
+        "codex/geo261-p189-codec-trial-20261021"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "stdout": " M geometry-templates/woodworking/native/definition_sources.c\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "show",
+        "HEAD:geometry-templates/woodworking/native/definition_sources.c"
+      ],
+      "exitCode": 0,
+      "stdout": "#include \"definition_sources.h\"\n#include <stdlib.h>\n#include <string.h>\n\ntypedef struct WoodDefinitionResult {\n    WoodDefinitionKey key; struct WoodDefinitionResult *next;\n    unsigned char *bytes; size_t size;\n} WoodDefinitionResult;\nstruct WoodDefinitionSources {\n    GeoEvalContext *graph; GeoProviderToken token; WoodDefinitionContext context;\n    WoodDefinitionResult *results;\n};\ntypedef struct {unsigned char *bytes;size_t at,capacity;bool ok;} WoodDefinitionWriter;\ntypedef struct {const unsigned char *bytes;size_t at,size;bool ok;} WoodDefinitionReader;\nstatic void wd_write(WoodDefinitionWriter *w,uint64_t n,size_t bytes)\n{if(!w->ok||bytes>w->capacity-w->at){w->ok=false;return;}for(size_t i=0;i<bytes;++i)w->bytes[w->at++]=(unsigned char)(n>>(8*(bytes-i-1)));}\nstatic uint64_t wd_read(WoodDefinitionReader *r,size_t bytes)\n{uint64_t n=0;if(!r->ok||bytes>r->size-r->at){r->ok=false;return 0;}for(size_t i=0;i<bytes;++i)n=(n<<8)|r->bytes[r->at++];return n;}\nstatic int64_t wd_signed(uint64_t n)\n{return n<=INT64_MAX?(int64_t)n:-1-(int64_t)(UINT64_MAX-n);}\nstatic void wd_text(WoodDefinitionWriter *w,const char *s,size_t capacity)\n{size_t n=0;while(n<capacity&&s[n])++n;if(n==capacity){w->ok=false;return;}wd_write(w,n,4);for(size_t i=0;i<n;++i)wd_write(w,(unsigned char)s[i],1);}\nstatic void wd_read_text(WoodDefinitionReader *r,char *s,size_t capacity)\n{uint64_t n=wd_read(r,4);if(!r->ok||n>=capacity||n>r->size-r->at){r->ok=false;return;}memcpy(s,r->bytes+r->at,(size_t)n);s[n]=0;r->at+=(size_t)n;}\nGeoSourceRef wood_definition_source_ref(GeoProviderToken token,WoodDefinitionKind kind,uint32_t id,WoodDefinitionKey *key)\n{if(!key)return (GeoSourceRef){token,NULL,0};WoodDefinitionWriter w={key->bytes,0,sizeof key->bytes,true};wd_write(&w,kind,1);wd_write(&w,id,4);return (GeoSourceRef){token,key->bytes,sizeof key->bytes};}\nbool wood_definition_source_decode(const GeoSourceRef *ref,WoodDefinitionKind *kind,uint32_t *id)\n{if(!ref||!ref->key||ref->key_size!=5||!kind||!id)return false;WoodDefinitionReader r={ref->key,0,5,true};unsigned k=(unsigned)wd_read(&r,1);uint32_t n=(uint32_t)wd_read(&r,4);if(k<WOOD_DEFINITION_MEMBER||k>WOOD_DEFINITION_BOUNDARY)return false;*kind=(WoodDefinitionKind)k;*id=n;return true;}\nstatic int wd_member_index(const WoodDocument *d,uint32_t id)\n{for(size_t i=0;i<d->timber_count;++i)if(d->timbers[i].id==id)return (int)i;return -1;}\nstatic bool wd_member_literal(const WoodDocument *d,uint32_t id,int field)\n{for(size_t i=0;i<d->assembly.owner_count;++i)if(d->assembly.owners[i].timber==id)return false;\n for(size_t i=0;i<d->engineering.binding_count;++i){const EngTarget *t=&d->engineering.bindings[i].target;if(t->kind==1&&t->id==id&&t->axis==0&&t->field==field)return false;}return true;}\nstatic void wd_member_write(WoodDefinitionWriter *w,const WoodDocument *d,size_t i)\n{const WoodMember *m=&d->timbers[i];wd_write(w,m->id,4);wd_write(w,m->auto_length,1);wd_write(w,(uint32_t)m->role,4);wd_write(w,(uint64_t)m->cut_priority,8);\n for(int a=0;a<2;++a){bool literal=wd_member_literal(d,m->id,a);wd_write(w,literal,1);if(literal)wd_write(w,(uint64_t)(a?m->size_b:m->size_a),8);}}\nstatic void wd_member_read(WoodDefinitionReader *r,WoodMemberDefinition *m)\n{m->id=(uint32_t)wd_read(r,4);m->auto_length=wd_read(r,1)!=0;m->role=(WoodMemberRole)(int32_t)wd_read(r,4);m->priority=wd_signed(wd_read(r,8));\n for(int a=0;a<2;++a){m->literal[a]=wd_read(r,1)!=0;if(m->literal[a])m->dimension[a]=wd_signed(wd_read(r,8));}}\nstatic void wd_rule_write(WoodDefinitionWriter *w,const GeoGridRuleLineRef *a)\n{wd_write(w,a->grid_id,4);wd_write(w,a->system_id,4);wd_write(w,a->rule_key,4);for(int i=0;i<2;++i)wd_write(w,(uint64_t)a->cell[i],8);wd_write(w,(uint32_t)a->axis,4);wd_write(w,a->inner_index,4);}\nstatic void wd_rule_read(WoodDefinitionReader *r,GeoGridRuleLineRef *a)\n{a->grid_id=(uint32_t)wd_read(r,4);a->system_id=(uint32_t)wd_read(r,4);a->rule_key=(uint32_t)wd_read(r,4);for(int i=0;i<2;++i)a->cell[i]=wd_signed(wd_read(r,8));a->axis=(int32_t)wd_read(r,4);a->inner_index=(uint32_t)wd_read(r,4);}\nstatic void wd_placement_write(WoodDefinitionWriter *w,uint32_t id,const WoodMemberPlacement *a)\n{\n    wd_write(w,id,4);wd_write(w,a->placement_id,4);wd_write(w,(uint32_t)a->anchor_kind,4);wd_write(w,(uint32_t)a->span_mode,4);\n    wd_write(w,(uint32_t)a->length_direction,4);wd_write(w,(uint32_t)a->depth_side,4);\n    /* uv is only an authored input in the two legacy explicit-anchor forms. */\n    bool input_uv=a->anchor_kind==WOOD_ANCHOR_AT||a->anchor_kind==WOOD_ANCHOR_AT_GUIDES;\n    wd_write(w,(uint64_t)(input_uv?a->uv.u:0),8);wd_write(w,(uint64_t)(input_uv?a->uv.v:0),8);\n    wd_write(w,a->ref_grid,4);wd_write(w,(uint32_t)a->ref_grid_axis,4);wd_write(w,(uint64_t)a->ref_grid_index,8);\n    wd_write(w,a->ref_grid_has_band,1);wd_write(w,(uint64_t)a->ref_grid_band,8);wd_rule_write(w,&a->ref_rule);\n    wd_write(w,(uint32_t)a->ref_hole,4);wd_write(w,(uint32_t)a->ref_edge,4);wd_write(w,a->has_through,1);wd_write(w,(uint64_t)a->through,8);\n    wd_write(w,a->ref_guide,4);wd_write(w,a->ref_timber,4);wd_write(w,a->ref_is_timber,1);wd_text(w,a->ref_derived_key,sizeof a->ref_derived_key);\n    wd_write(w,a->order,8);wd_write(w,a->has_between,1);\n    for(int i=0;i<2;++i){const WoodMemberReferenceFace *f=&a->between[i];wd_write(w,(uint32_t)f->kind,4);wd_write(w,(uint32_t)f->hole,4);wd_write(w,(uint32_t)f->edge,4);wd_write(w,f->timber,4);wd_text(w,f->key,sizeof f->key);}\n}\nstatic uint32_t wd_placement_read(WoodDefinitionReader *r,WoodMemberPlacement *a)\n{\n    uint32_t id=(uint32_t)wd_read(r,4);a->placement_id=(uint32_t)wd_read(r,4);a->anchor_kind=(int32_t)wd_read(r,4);a->span_mode=(int32_t)wd_read(r,4);\n    a->length_direction=(int32_t)wd_read(r,4);a->depth_side=(int32_t)wd_read(r,4);a->uv.u=wd_signed(wd_read(r,8));a->uv.v=wd_signed(wd_read(r,8));\n    a->ref_grid=(uint32_t)wd_read(r,4);a->ref_grid_axis=(int32_t)wd_read(r,4);a->ref_grid_index=wd_signed(wd_read(r,8));\n    a->ref_grid_has_band=wd_read(r,1)!=0;a->ref_grid_band=wd_signed(wd_read(r,8));wd_rule_read(r,&a->ref_rule);\n    a->ref_hole=(int32_t)wd_read(r,4);a->ref_edge=(int32_t)wd_read(r,4);a->has_through=wd_read(r,1)!=0;a->through=wd_signed(wd_read(r,8));\n    a->ref_guide=(uint32_t)wd_read(r,4);a->ref_timber=(uint32_t)wd_read(r,4);a->ref_is_timber=wd_read(r,1)!=0;wd_read_text(r,a->ref_derived_key,sizeof a->ref_derived_key);\n    a->order=wd_read(r,8);a->has_between=wd_read(r,1)!=0;\n    for(int i=0;i<2;++i){WoodMemberReferenceFace *f=&a->between[i];f->kind=(int32_t)wd_read(r,4);f->hole=(int32_t)wd_read(r,4);f->edge=(int32_t)wd_read(r,4);f->timber=(uint32_t)wd_read(r,4);wd_read_text(r,f->key,sizeof f->key);}return id;\n}\nstatic const char *wd_schema(WoodDefinitionKind kind)\n{switch(kind){case WOOD_DEFINITION_MEMBER:return \"wood.member.declaration/1\";case WOOD_DEFINITION_PLACEMENT:return \"wood.member.placement/1\";case WOOD_DEFINITION_COLUMN:return \"wood.rc-column/1\";case WOOD_DEFINITION_BEAM:return \"wood.rc-beam/1\";case WOOD_DEFINITION_BOUNDARY:return \"wood.boundary-policy/1\";default:return NULL;}}\nstatic bool wd_get(WoodDefinitionSources *s,WoodDefinitionKind kind,uint32_t id,GeoDependencyKind relation,GeoSourceValue *out)\n{if(!s)return false;WoodDefinitionKey key;return geo_eval_source(s->graph,wood_definition_source_ref(s->token,kind,id,&key),relation,out)==GEO_SOURCE_OK;}\nstatic bool wd_reader(WoodDefinitionSources *s,WoodDefinitionKind kind,uint32_t id,WoodDefinitionReader *out)\n{GeoSourceValue value;if(!wd_get(s,kind,id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value)||value.kind!=GEO_SOURCE_DEFINITION||!value.as.definition.schema||strcmp(value.as.definition.schema,wd_schema(kind))||(!value.as.definition.content&&value.as.definition.content_size))return false;*out=(WoodDefinitionReader){value.as.definition.content,0,value.as.definition.content_size,true};return true;}\nbool wood_definition_sources_member(WoodDefinitionSources *s,uint32_t id,WoodMemberDefinition *out)\n{if(!out)return false;WoodDefinitionReader r;WoodMemberDefinition m={0};if(!wd_reader(s,WOOD_DEFINITION_MEMBER,id,&r))return false;wd_member_read(&r,&m);if(!r.ok||r.at!=r.size||m.id!=id)return false;*out=m;return true;}\nbool wood_definition_sources_placement(WoodDefinitionSources *s,uint32_t id,WoodMemberPlacement *out)\n{if(!out)return false;WoodDefinitionReader r;WoodMemberPlacement a={0};if(!wd_reader(s,WOOD_DEFINITION_PLACEMENT,id,&r))return false;uint32_t actual=wd_placement_read(&r,&a);if(!r.ok||r.at!=r.size||actual!=id)return false;*out=a;return true;}\nbool wood_definition_sources_dimension(WoodDefinitionSources *s,uint32_t id,bool b,GeoCoord *out)\n{if(!out)return false;GeoSourceValue v;if(!wd_get(s,b?WOOD_DEFINITION_MEMBER_B:WOOD_DEFINITION_MEMBER_A,id,GEO_DEPENDENCY_VALUE_REQUIRED,&v)||v.kind!=GEO_SOURCE_QUANTITY||v.as.quantity.unit!=GEO_UNIT_LENGTH||v.as.quantity.den!=1)return false;*out=v.as.quantity.num;return true;}\nstatic void wd_box_write(WoodDefinitionWriter *w,uint32_t id,uint32_t space,int axis,GeoCoord xl,GeoCoord xh,GeoCoord yl,GeoCoord yh,GeoCoord zl,GeoCoord zh,bool beam)\n{wd_write(w,id,4);wd_write(w,space,4);if(beam)wd_write(w,(uint32_t)axis,4);GeoCoord fields[]={xl,xh,yl,yh,zl,zh};for(int i=0;i<6;++i)wd_write(w,(uint64_t)fields[i],8);}\nbool wood_definition_sources_column(WoodDefinitionSources *s,uint32_t id,WoodColumn *out)\n{if(!out)return false;WoodDefinitionReader r;WoodColumn b={0};if(!wd_reader(s,WOOD_DEFINITION_COLUMN,id,&r))return false;b.id=(uint32_t)wd_read(&r,4);b.space_id=(uint32_t)wd_read(&r,4);b.x_lo=wd_signed(wd_read(&r,8));b.x_hi=wd_signed(wd_read(&r,8));b.y_lo=wd_signed(wd_read(&r,8));b.y_hi=wd_signed(wd_read(&r,8));b.z_lo=wd_signed(wd_read(&r,8));b.z_hi=wd_signed(wd_read(&r,8));if(!r.ok||r.at!=r.size||b.id!=id)return false;*out=b;return true;}\nbool wood_definition_sources_beam(WoodDefinitionSources *s,uint32_t id,WoodBeam *out)\n{if(!out)return false;WoodDefinitionReader r;WoodBeam b={0};if(!wd_reader(s,WOOD_DEFINITION_BEAM,id,&r))return false;b.id=(uint32_t)wd_read(&r,4);b.space_id=(uint32_t)wd_read(&r,4);b.axis=(int32_t)wd_read(&r,4);b.x_lo=wd_signed(wd_read(&r,8));b.x_hi=wd_signed(wd_read(&r,8));b.y_lo=wd_signed(wd_read(&r,8));b.y_hi=wd_signed(wd_read(&r,8));b.z_lo=wd_signed(wd_read(&r,8));b.z_hi=wd_signed(wd_read(&r,8));if(!r.ok||r.at!=r.size||b.id!=id)return false;*out=b;return true;}\nbool wood_definition_sources_boundary(WoodDefinitionSources *s,uint32_t id,WoodBoundaryPolicy *out)\n{if(!out)return false;WoodDefinitionReader r;WoodBoundaryPolicy b={0};if(!wd_reader(s,WOOD_DEFINITION_BOUNDARY,id,&r))return false;b.id=(uint32_t)wd_read(&r,4);b.kind=(WoodBoundaryKind)(int32_t)wd_read(&r,4);uint64_t loops=wd_read(&r,4);if(loops>GEO_REGION_MAX_HOLES+1)return false;for(size_t l=0;l<loops;++l){uint64_t n=wd_read(&r,4);if(n>GEO_LOOP_MAX_VERTICES)return false;for(size_t i=0;i<n;++i)b.fixity[l][i]=(WoodEdgeFixity)(int32_t)wd_read(&r,4);}if(!r.ok||r.at!=r.size||b.id!=id)return false;*out=b;return true;}\nstatic bool wd_describe(void *user,const GeoSourceRef *ref,GeoSourceDescriptor *out)\n{WoodDefinitionSources *s=user;WoodDefinitionKind kind;uint32_t id;if(ref->provider!=s->token||!wood_definition_source_decode(ref,&kind,&id))return false;bool quantity=kind==WOOD_DEFINITION_MEMBER_A||kind==WOOD_DEFINITION_MEMBER_B;*out=(GeoSourceDescriptor){.kind=quantity?GEO_SOURCE_QUANTITY:GEO_SOURCE_DEFINITION,.unit=quantity?GEO_UNIT_LENGTH:GEO_UNIT_SCALAR,.context={false,0,-1}};return true;}\nstatic bool wd_evaluate(void *user,GeoEvalContext *graph,const GeoSourceRef *ref,GeoSourceValue *out)\n{\n    WoodDefinitionSources *s=user;WoodDefinitionKind kind;uint32_t id;if(graph!=s->graph||ref->provider!=s->token||!wood_definition_source_decode(ref,&kind,&id))return false;\n    if(kind==WOOD_DEFINITION_MEMBER_A||kind==WOOD_DEFINITION_MEMBER_B){WoodMemberDefinition m;if(!wood_definition_sources_member(s,id,&m))return false;int axis=kind==WOOD_DEFINITION_MEMBER_B;if(!m.literal[axis])return false;*out=(GeoSourceValue){.kind=GEO_SOURCE_QUANTITY,.as.quantity={m.dimension[axis],1,GEO_UNIT_LENGTH}};return true;}\n    /* Enough for all bounded strings and all active boundary edge policies. */\n    unsigned char bytes[4096];WoodDefinitionWriter w={bytes,0,sizeof bytes,true};const WoodDocument *d=s->context.document;\n    uint32_t space=0;\n    if(kind==WOOD_DEFINITION_MEMBER||kind==WOOD_DEFINITION_PLACEMENT){int i=wd_member_index(d,id);if(i<0)return false;if(kind==WOOD_DEFINITION_MEMBER)wd_member_write(&w,d,(size_t)i);else wd_placement_write(&w,id,&d->anchors[i]);}\n    else if(kind==WOOD_DEFINITION_COLUMN){const WoodColumn *b=NULL;for(size_t i=0;i<d->column_count;++i)if(d->columns[i].id==id){b=&d->columns[i];break;}if(!b)return false;space=b->space_id;wd_box_write(&w,b->id,space,0,b->x_lo,b->x_hi,b->y_lo,b->y_hi,b->z_lo,b->z_hi,false);}\n    else if(kind==WOOD_DEFINITION_BEAM){const WoodBeam *b=NULL;for(size_t i=0;i<d->beam_count;++i)if(d->beams[i].id==id){b=&d->beams[i];break;}if(!b)return false;space=b->space_id;wd_box_write(&w,b->id,space,b->axis,b->x_lo,b->x_hi,b->y_lo,b->y_hi,b->z_lo,b->z_hi,true);}\n    else if(kind==WOOD_DEFINITION_BOUNDARY){const GeoRegionDefinition *r=NULL;size_t at=0;for(;at<geo_regions_count(s->context.regions);++at){r=geo_regions_at(s->context.regions,at);if(r&&r->id==id)break;}if(at>=geo_regions_count(s->context.regions)||at>=WOOD_DOCUMENT_BOUNDARY_CAPACITY||!r||r->hole_count>GEO_REGION_MAX_HOLES)return false;\n        const WoodBoundaryPolicy *b=&d->boundary_policy[at];if(b->id!=id)return false;\n        GeoRegionSourceKey key;GeoSourceValue geometry;\n        if(geo_eval_source(graph,geo_region_source_ref(s->context.region_token,id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&geometry)!=GEO_SOURCE_OK||\n           geometry.kind!=GEO_SOURCE_REGION_SET||geometry.as.regions.count!=1)return false;\n        const GeoRegionView *view=&geometry.as.regions.regions[0];if(view->hole_count>GEO_REGION_MAX_HOLES)return false;\n        wd_write(&w,id,4);wd_write(&w,(uint32_t)b->kind,4);wd_write(&w,view->hole_count+1,4);\n        for(size_t l=0;l<=view->hole_count;++l){size_t n=l?view->holes[l-1].count:view->outline.count;if(n>GEO_LOOP_MAX_VERTICES)return false;wd_write(&w,n,4);for(size_t i=0;i<n;++i)wd_write(&w,(uint32_t)b->fixity[l][i],4);}\n    }else return false;\n    if(space){GeoEnclosureSourceKey key;if(geo_eval_depend(graph,geo_enclosure_source_ref(s->context.enclosure_token,GEO_ENCLOSURE_SOURCE_DEFINITION,space,-1,-1,&key),GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;}\n    if(!w.ok)return false;WoodDefinitionResult *result=calloc(1,sizeof *result);if(!result)return false;result->bytes=malloc(w.at?w.at:1);if(!result->bytes){free(result);return false;}memcpy(result->key.bytes,ref->key,5);memcpy(result->bytes,bytes,w.at);result->size=w.at;result->next=s->results;s->results=result;\n    *out=(GeoSourceValue){.kind=GEO_SOURCE_DEFINITION,.as.definition={wd_schema(kind),result->bytes,result->size}};return true;\n}\nWoodDefinitionSources *wood_definition_sources_create(GeoEvalContext *graph,GeoProviderToken token,const WoodDefinitionContext *context)\n{if(!graph||!context||!context->document||!context->regions)return NULL;WoodDefinitionSources *s=calloc(1,sizeof *s);if(!s)return NULL;s->graph=graph;s->token=token;s->context=*context;GeoSourceProvider p={token,\"wood.definition\",\"wood-authored-definition/1\",s,wd_describe,wd_evaluate};if(!geo_eval_register(graph,&p)){free(s);return NULL;}return s;}\nvoid wood_definition_sources_destroy(WoodDefinitionSources *s)\n{if(!s)return;WoodDefinitionResult *r=s->results;while(r){WoodDefinitionResult *next=r->next;free(r->bytes);free(r);r=next;}free(s);}\nbool wood_definition_sources_complete(WoodDefinitionSources *s)\n{if(!s)return false;const WoodDocument *d=s->context.document;GeoSourceValue value;\n for(size_t i=0;i<d->timber_count;++i)if(!wd_get(s,WOOD_DEFINITION_MEMBER,d->timbers[i].id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value)||!wd_get(s,WOOD_DEFINITION_PLACEMENT,d->timbers[i].id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;\n for(size_t i=0;i<d->column_count;++i)if(!wd_get(s,WOOD_DEFINITION_COLUMN,d->columns[i].id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;\n for(size_t i=0;i<d->beam_count;++i)if(!wd_get(s,WOOD_DEFINITION_BEAM,d->beams[i].id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;\n for(size_t i=0;i<geo_regions_count(s->context.regions);++i){const GeoRegionDefinition *r=geo_regions_at(s->context.regions,i);if(!r||!wd_get(s,WOOD_DEFINITION_BOUNDARY,r->id,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;}return true;}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "switch",
+        "-c",
+        "codex/geo261-p189-codec-trial-20261021"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "Switched to a new branch 'codex/geo261-p189-codec-trial-20261021'\n"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "add",
+        "--",
+        "geometry-templates/woodworking/native/definition_sources.c"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "exitCode": 0,
+      "stdout": "geometry-templates/woodworking/native/definition_sources.c\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "commit",
+        "-m",
+        "perf(woodworking): specialize fixed-width definition decoding"
+      ],
+      "exitCode": 0,
+      "stdout": "[codex/geo261-p189-codec-trial-20261021 7ad3216a] perf(woodworking): specialize fixed-width definition decoding\n 1 file changed, 19 insertions(+), 1 deletion(-)\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "rev-parse",
+        "HEAD^"
+      ],
+      "exitCode": 0,
+      "stdout": "43f85313c32410ac01406ab585846bbacafea278\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "diff",
+        "--name-only",
+        "43f85313c32410ac01406ab585846bbacafea278",
+        "7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09"
+      ],
+      "exitCode": 0,
+      "stdout": "geometry-templates/woodworking/native/definition_sources.c\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo261-wd-read-candidate",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "43f85313c32410ac01406ab585846bbacafea278\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "exitCode": 0,
+  "branch": "codex/geo261-p189-codec-trial-20261021",
+  "sourceSha": "7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09",
+  "parentSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "sourceRawSha256": "5d52a836bb1178ff050f725d5b089f4765cbd58033931647f02e50369ea9e347",
+  "onlyFunctionChanged": "wd_read",
+  "pushed": false,
+  "notClaimed": [
+    "效能改善",
+    "撤回性能自證",
+    "新帳本",
+    "新架構收據",
+    "完整整合驗收"
+  ],
+  "finishedUTC": "2026-10-21T01:03:31.735791+00:00"
+}

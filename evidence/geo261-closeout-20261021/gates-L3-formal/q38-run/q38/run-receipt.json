@@ -1,0 +1,56 @@
+{
+  "source_head": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "entry": "q38",
+  "root": "/workspace/geo261-gates-l3-6589248c9a94-20261021",
+  "started_at": "2026-10-21T06:22:31.214474+00:00",
+  "environment": {
+    "TMPDIR": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GEOMETRY_MODEL_BASE": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/bin/model-base"
+  },
+  "stack_bytes": 16777216,
+  "runner_sha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3",
+  "status_before": "",
+  "commands": [
+    {
+      "label": "build-model-base",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-c",
+        "import sys; from pathlib import Path; from tests import binaries; binaries.OUT_DIR = Path(sys.argv[1]); raise SystemExit(binaries.main(['build', 'model-base']))",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/bin"
+      ],
+      "started_at": "2026-10-21T06:22:31.214597+00:00",
+      "exit_code": 0,
+      "seconds": 19.477937796000333,
+      "ended_at": "2026-10-21T06:22:50.692912+00:00"
+    },
+    {
+      "label": "q38",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-u",
+        "tests/section_profile_mutation_check.py",
+        "--jobs",
+        "1",
+        "--receipt",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/receipt.json",
+        "--logs",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs"
+      ],
+      "started_at": "2026-10-21T06:22:50.693504+00:00",
+      "exit_code": 0,
+      "seconds": 851.057830959995,
+      "ended_at": "2026-10-21T06:37:01.751678+00:00"
+    }
+  ],
+  "ended_at": "2026-10-21T06:37:01.755288+00:00",
+  "exit_code": 0,
+  "status_after": "",
+  "restored": true
+}

@@ -1,0 +1,43 @@
+{
+  "說明": "本代理實際執行的輕量命令；沒有正式測試、編譯、--check 或架構 gate。主代理 L1 --check=1 另在 ledger-L1-import 原件內。",
+  "commands": [
+    {
+      "cwd": "/workspace",
+      "argv": ["python3", "-B", "/workspace/geo261-evidence/source-binding-preparation/snapshot_bindings.py", "--root", "/workspace/geometry-axiom", "--expected-head", "7159530c0e494d3211e6ab1764eb691137211707"],
+      "actualCheckout": "7159530c0e494d3211e6ab1764eb691137211707",
+      "exitCode": 0,
+      "stdout": "snapshot-A.json"
+    },
+    {
+      "cwd": "/workspace",
+      "argv": ["python3", "-B", "/workspace/geo261-evidence/source-binding-preparation/snapshot_bindings.py", "--root", "/workspace/geometry-axiom", "--expected-head", "7dae5f21c7ca401e660450d437e60ba566218da8"],
+      "actualCheckout": "7159530c0e494d3211e6ab1764eb691137211707",
+      "exitCode": 1,
+      "stdout": "wrong-head.stdout",
+      "stderr": "wrong-head.stderr",
+      "說明": "來源守門負控制；實際 A 不等指定 7dae，先於裁判載入拒絕。"
+    },
+    {
+      "cwd": "/workspace",
+      "argv": ["python3", "-B", "/workspace/geo261-evidence/source-binding-preparation/snapshot_bindings.py", "--root", "/workspace/geometry-axiom", "--expected-head", "cd4ac98f44174729fb3a2f1c291c6c258c9a239a"],
+      "actualCheckout": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+      "exitCode": 0,
+      "stdout": "snapshot-L.json",
+      "說明": "只讀歷史 L1 的來源快照，沒有判定預設編譯指令可接受。"
+    },
+    {
+      "cwd": "/workspace",
+      "argv": ["python3", "-B", "/workspace/geo261-evidence/source-binding-preparation/compare_A_L.py", "--root", "/workspace/geometry-axiom", "--snapshot-a", "/workspace/geo261-evidence/source-binding-preparation/snapshot-A.json", "--snapshot-l", "/workspace/geo261-evidence/source-binding-preparation/snapshot-L.json", "--executed-ledger", "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/mutants_results.json"],
+      "actualCheckout": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+      "exitCode": 0,
+      "stdout": "binding-L1.json"
+    },
+    {
+      "cwd": "/workspace",
+      "argv": ["python3", "-B", "/workspace/geo261-evidence/source-binding-preparation/compile-context-code.txt", "/workspace/geometry-axiom"],
+      "actualCheckout": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+      "exitCode": 0,
+      "stdout": "compile-context.json"
+    }
+  ]
+}

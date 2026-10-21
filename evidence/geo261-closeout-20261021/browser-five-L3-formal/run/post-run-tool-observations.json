@@ -1,0 +1,22 @@
+{
+  "recordedUtc": "2026-10-21T06:57:22.049434+00:00",
+  "type": "實際對話工具回傳逐欄轉錄，非 transport 自動 raw",
+  "operations": [
+    {
+      "name": "capture-five-artifacts",
+      "command": "python3 -B /workspace/geo261-evidence/browser-L3-preparation/capture-five-artifacts-code.txt",
+      "chunk_id": "d4197e",
+      "exit_code": 0,
+      "wall_time_seconds": 2.8433e-05,
+      "output": "{\"addedFiles\": 15, \"addedBytes\": 107195, \"existingFilesChecked\": 9, \"kindCounts\": {\"raw-declared-gcanvas\": 7, \"adjacent-test-json-receipt\": 5, \"synthetic-markdown-input\": 1, \"synthetic-pdf-input\": 1, \"exported-notes-roundtrip-input\": 1, \"existing-wrapper-artifact\": 9}, \"missing\": []}\n"
+    },
+    {
+      "name": "verify-five",
+      "command": "python3 -B /workspace/geo261-evidence/browser-L3-preparation/verify-five-code.txt",
+      "chunk_id": "2b9c0b",
+      "exit_code": 0,
+      "wall_time_seconds": 0.318371685,
+      "output": "{\"accepted\": true, \"passed\": [150, 47, 350, 242, 79], \"pngs\": 81, \"manifestEntries\": 210, \"sourceEntries\": 154, \"outerCodes\": [0, 0, 0], \"addedArtifacts\": 15}\n"
+    }
+  ]
+}

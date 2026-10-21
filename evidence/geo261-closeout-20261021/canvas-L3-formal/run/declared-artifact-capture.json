@@ -1,0 +1,247 @@
+{
+  "capturedUTC": "2026-10-21T06:32:53.665934+00:00",
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "productStatus": "passed",
+  "rawDeclaredFiles": [
+    "/tmp/geometry-grid-rename-3UZCbn/未命名專案.gcanvas",
+    "/tmp/geometry-infinite-grid-download-MZF9Bg/未命名專案.gcanvas",
+    "/tmp/geometry-rule-editor-JS7cSj/未命名專案.gcanvas",
+    "/tmp/geometry-rule-editor-UM1KlV/未命名專案.gcanvas",
+    "/tmp/geometry-rule-editor-UWxCi3/未命名專案.gcanvas",
+    "/tmp/geometry-rule-editor-por03p/未命名專案.gcanvas",
+    "/tmp/geometry-rule-lines-Wqhd7k/未命名專案.gcanvas",
+    "/tmp/geometry-rule-lines-pmsYJo/未命名專案.gcanvas"
+  ],
+  "p83Evidence": [
+    {
+      "downloads": "/tmp/geometry-p83-download-HhRYc0",
+      "models": [
+        "ddc5433f-f040-417a-be0d-9fa827f75c86",
+        "2b2e8604-0923-4da5-b19d-82b497abc7d8"
+      ],
+      "assertions": 16,
+      "scope": "actual existing single-model ordinary snapshot; owned producer remains unsupported"
+    }
+  ],
+  "files": [
+    {
+      "originalPath": "/tmp/geometry-tests/assembly-desktop.png",
+      "output": "screens/assembly-hardpath/assembly-desktop.png",
+      "kind": "assembly-hardpath",
+      "bytes": 92421,
+      "sha256": "5adab1037173336534961da80b364abcbbc4df13bda2fa309af4d0914cb1e780",
+      "mtimeNs": 1792563910763610127,
+      "withinRunWindow": true,
+      "baseline": {
+        "exists": false
+      }
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/assembly-mobile.png",
+      "output": "screens/assembly-hardpath/assembly-mobile.png",
+      "kind": "assembly-hardpath",
+      "bytes": 39267,
+      "sha256": "3e726fb9aeb6ccfdbe66964b0bac59661df44218746d93d8e5e1e9339a855099",
+      "mtimeNs": 1792563917075556476,
+      "withinRunWindow": true,
+      "baseline": {
+        "exists": false
+      }
+    },
+    {
+      "originalPath": "/tmp/geometry-grid-rename-3UZCbn/未命名專案.gcanvas",
+      "output": "declared-artifacts/geometry-grid-rename-3UZCbn/未命名專案.gcanvas",
+      "kind": "raw-declared-download",
+      "bytes": 4856,
+      "sha256": "4da723f68048646acd1c5dcf29b742292bd0af74a408de1546a19e01bb1f2fe1",
+      "mtimeNs": 1792563679660638955,
+      "withinRunWindow": true,
+      "rawDeclaredFile": true
+    },
+    {
+      "originalPath": "/tmp/geometry-infinite-grid-download-MZF9Bg/infinite-grid-roundtrip.json",
+      "output": "declared-artifacts/geometry-infinite-grid-download-MZF9Bg/infinite-grid-roundtrip.json",
+      "kind": "同一當輪下載目錄的原測試JSON收據",
+      "bytes": 72053,
+      "sha256": "e38d134efe14fea64408d6c8fbc384eab4725591e6c1d2e7c7bf6dc747187dbc",
+      "mtimeNs": 1792563231589509425,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-infinite-grid-download-MZF9Bg/未命名專案.gcanvas",
+      "output": "declared-artifacts/geometry-infinite-grid-download-MZF9Bg/未命名專案.gcanvas",
+      "kind": "raw-declared-download",
+      "bytes": 2739,
+      "sha256": "872a6ae014f33f3f0c07c71d6c2a07eb821ecc6f01364d105c1a371fe99958c5",
+      "mtimeNs": 1792563230279046622,
+      "withinRunWindow": true,
+      "rawDeclaredFile": true
+    },
+    {
+      "originalPath": "/tmp/geometry-p83-download-HhRYc0/export-3I0FZb/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "output": "declared-artifacts/geometry-p83-download-HhRYc0/export-3I0FZb/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "kind": "raw-declared-download",
+      "bytes": 3366,
+      "sha256": "7a1a8baa019177e39dda80905ff515a486252fcb369f78bf9f27a2cd097515df",
+      "mtimeNs": 1792564250665771929,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-p83-download-HhRYc0/export-IY4Hdb/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "output": "declared-artifacts/geometry-p83-download-HhRYc0/export-IY4Hdb/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "kind": "raw-declared-download",
+      "bytes": 3372,
+      "sha256": "8293b9ca46dd83924f9decb59f7de2e272c690b8ebb593273125d691269e1390",
+      "mtimeNs": 1792564248716736277,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-p83-download-HhRYc0/export-Yccwga/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "output": "declared-artifacts/geometry-p83-download-HhRYc0/export-Yccwga/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "kind": "raw-declared-download",
+      "bytes": 3366,
+      "sha256": "035c08fa82804b948a4683ea4317e67b387a66e1166119beb1a8b8700f0ae36b",
+      "mtimeNs": 1792564249729452442,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-p83-download-HhRYc0/export-ZQzUjg/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "output": "declared-artifacts/geometry-p83-download-HhRYc0/export-ZQzUjg/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "kind": "raw-declared-download",
+      "bytes": 3372,
+      "sha256": "dddd52c9292abed8cc70b382add045a5c788d1b4876e8f45b9d22e235a7f85dc",
+      "mtimeNs": 1792564241545711999,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-p83-download-HhRYc0/export-tSxLIm/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "output": "declared-artifacts/geometry-p83-download-HhRYc0/export-tSxLIm/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "kind": "raw-declared-download",
+      "bytes": 3372,
+      "sha256": "8293b9ca46dd83924f9decb59f7de2e272c690b8ebb593273125d691269e1390",
+      "mtimeNs": 1792564240749588094,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-p83-download-HhRYc0/export-wCXxUt/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "output": "declared-artifacts/geometry-p83-download-HhRYc0/export-wCXxUt/model-snapshot-ddc5433f-f040-417a-be0d-9fa827f75c86.csv",
+      "kind": "raw-declared-download",
+      "bytes": 3372,
+      "sha256": "8293b9ca46dd83924f9decb59f7de2e272c690b8ebb593273125d691269e1390",
+      "mtimeNs": 1792564296504558355,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-rule-editor-JS7cSj/rule-editor-roundtrip.json",
+      "output": "declared-artifacts/geometry-rule-editor-JS7cSj/rule-editor-roundtrip.json",
+      "kind": "同一當輪下載目錄的原測試JSON收據",
+      "bytes": 4109,
+      "sha256": "bc6d18207d66b13568e5e60bfc4f31fd7f8a56b7f129acbe35ab54784ba27b77",
+      "mtimeNs": 1792563338713467172,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-rule-editor-JS7cSj/未命名專案.gcanvas",
+      "output": "declared-artifacts/geometry-rule-editor-JS7cSj/未命名專案.gcanvas",
+      "kind": "raw-declared-download",
+      "bytes": 1923,
+      "sha256": "32ebb8a941a3c6210eb37c7f5d9c7081e3076385fe6d733cbd50a8bf29480a4c",
+      "mtimeNs": 1792563318833529749,
+      "withinRunWindow": true,
+      "rawDeclaredFile": true
+    },
+    {
+      "originalPath": "/tmp/geometry-rule-editor-UM1KlV/未命名專案.gcanvas",
+      "output": "declared-artifacts/geometry-rule-editor-UM1KlV/未命名專案.gcanvas",
+      "kind": "raw-declared-download",
+      "bytes": 1714,
+      "sha256": "06337b68b6d15a354023ee5797b2c84bcb07ba00ce6a46557704f07595fa0365",
+      "mtimeNs": 1792563336014391035,
+      "withinRunWindow": true,
+      "rawDeclaredFile": true
+    },
+    {
+      "originalPath": "/tmp/geometry-rule-editor-UWxCi3/未命名專案.gcanvas",
+      "output": "declared-artifacts/geometry-rule-editor-UWxCi3/未命名專案.gcanvas",
+      "kind": "raw-declared-download",
+      "bytes": 1716,
+      "sha256": "6a4b920e66eff89100689335d8e9508beb71f5da4dec976a18e5c82192a800a0",
+      "mtimeNs": 1792563328725634856,
+      "withinRunWindow": true,
+      "rawDeclaredFile": true
+    },
+    {
+      "originalPath": "/tmp/geometry-rule-editor-por03p/rule-editor-roundtrip.json",
+      "output": "declared-artifacts/geometry-rule-editor-por03p/rule-editor-roundtrip.json",
+      "kind": "同一當輪下載目錄的原測試JSON收據",
+      "bytes": 4283,
+      "sha256": "fa583bf4cb98e9d461237f598727ee7540738e6bf3fea1a942d6aa33479d5fcf",
+      "mtimeNs": 1792563338713467172,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-rule-editor-por03p/未命名專案.gcanvas",
+      "output": "declared-artifacts/geometry-rule-editor-por03p/未命名專案.gcanvas",
+      "kind": "raw-declared-download",
+      "bytes": 2082,
+      "sha256": "470e1b21d66c53603acdeba49e79da5616495abe1163fe003f66528e2bf98f25",
+      "mtimeNs": 1792563305728165112,
+      "withinRunWindow": true,
+      "rawDeclaredFile": true
+    },
+    {
+      "originalPath": "/tmp/geometry-rule-lines-Wqhd7k/rule-lines-receipt.json",
+      "output": "declared-artifacts/geometry-rule-lines-Wqhd7k/rule-lines-receipt.json",
+      "kind": "同一當輪下載目錄的原測試JSON收據",
+      "bytes": 4208,
+      "sha256": "2662317c53c3b914aaba8880654e0bd30f8b1e60719be3aeea4e3d079d379c96",
+      "mtimeNs": 1792563394104041576,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-rule-lines-Wqhd7k/未命名專案.gcanvas",
+      "output": "declared-artifacts/geometry-rule-lines-Wqhd7k/未命名專案.gcanvas",
+      "kind": "raw-declared-download",
+      "bytes": 3367,
+      "sha256": "4348863e7ab86dee8fb5c47ca52dce37fd6d8674aa4c51244ed3d7b64467bd3e",
+      "mtimeNs": 1792563390549721382,
+      "withinRunWindow": true,
+      "rawDeclaredFile": true
+    },
+    {
+      "originalPath": "/tmp/geometry-rule-lines-pmsYJo/rule-lines-receipt.json",
+      "output": "declared-artifacts/geometry-rule-lines-pmsYJo/rule-lines-receipt.json",
+      "kind": "同一當輪下載目錄的原測試JSON收據",
+      "bytes": 4183,
+      "sha256": "dc2d9ac65921490074a0b375dcf69d52aa2518664c9729e947663c9fb473abd0",
+      "mtimeNs": 1792563535524432077,
+      "withinRunWindow": true,
+      "rawDeclaredFile": false
+    },
+    {
+      "originalPath": "/tmp/geometry-rule-lines-pmsYJo/未命名專案.gcanvas",
+      "output": "declared-artifacts/geometry-rule-lines-pmsYJo/未命名專案.gcanvas",
+      "kind": "raw-declared-download",
+      "bytes": 3343,
+      "sha256": "87d6181cee0423183fcdf160aa51d38135e729ff1a40c4c6abaeb39e7b0c08d8",
+      "mtimeNs": 1792563530058222188,
+      "withinRunWindow": true,
+      "rawDeclaredFile": true
+    }
+  ],
+  "missing": [],
+  "count": 21,
+  "bytes": 262484,
+  "captureCodeSha256": "7742949dd3daf17b4649a4642fe8411725c07274cc947758e204364e4bea8c09",
+  "note": "job結束後才保存；只取本輪raw明列gcanvas/P83下載目錄及其原測試JSON收據，另含兩張hardpath原圖。全部mtime在本輪窗內，不整包Chrome profile/cache，沒有重開browser或重生成檔案。若原件不存在明列missing；本收據不是產品通過判斷。"
+}

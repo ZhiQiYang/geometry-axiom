@@ -1,0 +1,2595 @@
+{
+  "schema": "geo261-canvas-job/1",
+  "label": "L-formal",
+  "expectedHead": "43f85313c32410ac01406ab585846bbacafea278",
+  "root": "/workspace/geometry-axiom",
+  "output": "/workspace/geo261-evidence/canvas-L-formal-43f85313",
+  "releaseNote": "root 已明確放行 L 43f85313c32410ac01406ab585846bbacafea278 完整 canvas 獨占；維持原 35 分鐘、原完整斷言與 main root",
+  "argv": [
+    "/workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py",
+    "--sha",
+    "43f85313c32410ac01406ab585846bbacafea278",
+    "--root",
+    "/workspace/geometry-axiom",
+    "--output",
+    "/workspace/geo261-evidence/canvas-L-formal-43f85313",
+    "--label",
+    "L-formal",
+    "--port",
+    "18856",
+    "--cdp-port",
+    "9322",
+    "--release-note",
+    "root 已明確放行 L 43f85313c32410ac01406ab585846bbacafea278 完整 canvas 獨占；維持原 35 分鐘、原完整斷言與 main root",
+    "--execute"
+  ],
+  "wrapperSha256": "327e926ae0e88fff4b04e68afdee9fb12e9dd2dff0a839fb340603a9fc20121a",
+  "startedUTC": "2026-10-20T23:02:31.429752+00:00",
+  "deadlineUTC": "2026-10-20T23:37:31.429767+00:00",
+  "totalDeadlineSeconds": 2100,
+  "cleanupReserveSeconds": 15,
+  "status": "passed",
+  "effectiveEnvironment": {
+    "TMPDIR": "/tmp",
+    "TEMP": "/tmp",
+    "TMP": "/tmp",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18856/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-L-formal-207610",
+    "XDG_CACHE_HOME": "/tmp/geo261-xdg-L-formal-207610",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CHROME_PROFILE": "/tmp/geo261-profile-L-formal-207610",
+    "GEOMETRY_CDP_PORT": "9322",
+    "GEOMETRY_BROWSER_SUITE": "canvas",
+    "GEOMETRY_REPAIR_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/repair",
+    "GEOMETRY_GRID_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/grid",
+    "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/grid_system",
+    "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/document",
+    "GEOMETRY_UIUX_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/uiux",
+    "GEOMETRY_UX_REFINEMENT_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/ux_refinement",
+    "GEOMETRY_ENGINEERING_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/engineering",
+    "GEOMETRY_PROJECT_AUDIT_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/project_audit",
+    "GEOMETRY_MARQUEE_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/marquee",
+    "GEOMETRY_COMPOSITION_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/composition",
+    "GEOMETRY_GRID_RULE_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/grid_rule",
+    "GEOMETRY_GRID_RENAME_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/grid_rename",
+    "GEOMETRY_SELECTION_CURSOR_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/selection_cursor",
+    "GEOMETRY_SCHEDULE_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/schedule",
+    "GEOMETRY_SUPPORT_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/support",
+    "GEOMETRY_SOURCE_NAVIGATION_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/source_navigation",
+    "GEOMETRY_ROOM_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/room",
+    "GEOMETRY_ASSEMBLY_CONTEXT_SCREENSHOTS": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/assembly_context",
+    "GEOMETRY_MODEL_SNAPSHOT_SCREENSHOTS": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/model_snapshot",
+    "GEOMETRY_TEST_SCREENSHOT": "/workspace/geo261-evidence/canvas-L-formal-43f85313/screens/canvas.png"
+  },
+  "kernel": "6.18.55",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "steps": [
+    {
+      "name": "source-before-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "pid": 207612,
+      "startedUTC": "2026-10-20T23:02:31.432525+00:00",
+      "startElapsed": 0.0037830860001122346,
+      "log": "source-before-head.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:02:31.745448+00:00",
+      "durationSeconds": 0.312938712999312
+    },
+    {
+      "name": "source-before-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "pid": 207613,
+      "startedUTC": "2026-10-20T23:02:31.746920+00:00",
+      "startElapsed": 0.31817781899917463,
+      "log": "source-before-status.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:02:32.061951+00:00",
+      "durationSeconds": 0.3150464339996688
+    },
+    {
+      "name": "build",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "pid": 207634,
+      "startedUTC": "2026-10-20T23:02:32.066182+00:00",
+      "startElapsed": 0.637440702999811,
+      "log": "build.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:02:32.690084+00:00",
+      "durationSeconds": 0.6239154079994478
+    },
+    {
+      "name": "font-package",
+      "argv": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status} ${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "pid": 207648,
+      "startedUTC": "2026-10-20T23:02:32.691728+00:00",
+      "startElapsed": 1.2629868589992839,
+      "log": "font-package.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:02:33.008044+00:00",
+      "durationSeconds": 0.31633101999977953
+    },
+    {
+      "name": "font-default",
+      "argv": [
+        "fc-match",
+        "-f",
+        "%{family}\n%{file}\n",
+        "sans-serif:lang=zh-tw"
+      ],
+      "pid": 207649,
+      "startedUTC": "2026-10-20T23:02:33.009963+00:00",
+      "startElapsed": 1.5812204489993746,
+      "log": "font-default.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:02:33.323607+00:00",
+      "durationSeconds": 0.3136570170008781
+    },
+    {
+      "name": "font-match",
+      "argv": [
+        "fc-match",
+        "-f",
+        "%{family}\n%{file}\n",
+        "Noto Sans CJK TC:lang=zh-tw"
+      ],
+      "pid": 207650,
+      "startedUTC": "2026-10-20T23:02:33.325349+00:00",
+      "startElapsed": 1.8966067290002684,
+      "log": "font-match.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:02:33.639631+00:00",
+      "durationSeconds": 0.31429770099930465
+    },
+    {
+      "name": "chrome-version",
+      "argv": [
+        "/usr/bin/chromium",
+        "--version"
+      ],
+      "pid": 207651,
+      "startedUTC": "2026-10-20T23:02:33.664694+00:00",
+      "startElapsed": 2.235952132999955,
+      "log": "chrome-version.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:02:33.977124+00:00",
+      "durationSeconds": 0.3124442890002683
+    },
+    {
+      "name": "server",
+      "argv": [
+        "python3",
+        "-u",
+        "geometry-web/start_local.py",
+        "--port",
+        "18856"
+      ],
+      "pid": 207665,
+      "startedUTC": "2026-10-20T23:02:33.978461+00:00",
+      "startElapsed": 2.549718383999789,
+      "log": "server.log"
+    },
+    {
+      "name": "runtime-attempt-1",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18856"
+      ],
+      "pid": 207666,
+      "startedUTC": "2026-10-20T23:02:33.979523+00:00",
+      "startElapsed": 2.550780722000127,
+      "log": "runtime-attempt-1.log",
+      "exitCode": 1,
+      "finishedUTC": "2026-10-20T23:02:34.292384+00:00",
+      "durationSeconds": 0.3128764550001506
+    },
+    {
+      "name": "runtime-attempt-2",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18856"
+      ],
+      "pid": 207687,
+      "startedUTC": "2026-10-20T23:02:35.294682+00:00",
+      "startElapsed": 3.865940972000317,
+      "log": "runtime-attempt-2.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:02:35.611447+00:00",
+      "durationSeconds": 0.316779131999283
+    },
+    {
+      "name": "runtime-before",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18856"
+      ],
+      "pid": 207689,
+      "startedUTC": "2026-10-20T23:02:35.613350+00:00",
+      "startElapsed": 4.184607470999254,
+      "log": "runtime-before.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:02:35.927727+00:00",
+      "durationSeconds": 0.3143913080002676
+    },
+    {
+      "name": "canvas",
+      "argv": [
+        "node",
+        "geometry-web/cdp_test.js"
+      ],
+      "pid": 207691,
+      "startedUTC": "2026-10-20T23:02:35.929646+00:00",
+      "startElapsed": 4.5009042429992405,
+      "log": "canvas.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:35:21.377590+00:00",
+      "durationSeconds": 1965.4479578890005
+    },
+    {
+      "name": "runtime-after",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18856"
+      ],
+      "pid": 234040,
+      "startedUTC": "2026-10-20T23:35:21.381498+00:00",
+      "startElapsed": 1969.9527563029988,
+      "log": "runtime-after.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:35:21.699145+00:00",
+      "durationSeconds": 0.31765998900118575
+    },
+    {
+      "name": "source-after-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "pid": 234042,
+      "startedUTC": "2026-10-20T23:35:21.700848+00:00",
+      "startElapsed": 1970.2721062269993,
+      "log": "source-after-head.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:35:22.014637+00:00",
+      "durationSeconds": 0.31380471699958434
+    },
+    {
+      "name": "source-after-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "pid": 234051,
+      "startedUTC": "2026-10-20T23:35:22.016217+00:00",
+      "startElapsed": 1970.5874749129998,
+      "log": "source-after-status.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:35:22.332324+00:00",
+      "durationSeconds": 0.31612117199983913
+    },
+    {
+      "name": "archive-wait-trace",
+      "argv": [
+        "python3",
+        "geometry-web/archive_wait_trace.py",
+        "/workspace/geo261-evidence/canvas-L-formal-43f85313/wait-trace"
+      ],
+      "pid": 234072,
+      "startedUTC": "2026-10-20T23:35:22.491706+00:00",
+      "startElapsed": 1971.0629634710003,
+      "log": "archive-wait-trace.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T23:35:22.808552+00:00",
+      "durationSeconds": 0.31686110499867937
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "本機 Chromium，CI 設定 Google Chrome；字型另錄實際檔案",
+    "未走既有 fatal 分支或擷取超時時，可能沒有最後畫面",
+    "預檢與 L 正式驗收以 label 及 SHA 分開，不互相代替"
+  ],
+  "elapsedSeconds": 1971.433386487999,
+  "subreaper": true,
+  "stackLimitBytes": [
+    16777216,
+    -1
+  ],
+  "cleanupSignals": [
+    {
+      "pid": 207665,
+      "startTime": "1281709",
+      "signal": 2,
+      "utc": "2026-10-20T23:35:22.343249+00:00"
+    }
+  ],
+  "cleanup": {
+    "owned": [
+      {
+        "pid": 207612,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207612,
+        "startTime": "1281454",
+        "command": "git rev-parse HEAD ",
+        "firstSeenUTC": "2026-10-20T23:02:31.432515+00:00"
+      },
+      {
+        "pid": 207613,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207613,
+        "startTime": "1281486",
+        "command": "git status --porcelain=v1 --untracked-files=all ",
+        "firstSeenUTC": "2026-10-20T23:02:31.746914+00:00"
+      },
+      {
+        "pid": 207634,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207634,
+        "startTime": "1281518",
+        "command": "/usr/bin/env node /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm run build ",
+        "firstSeenUTC": "2026-10-20T23:02:32.066166+00:00"
+      },
+      {
+        "pid": 207646,
+        "state": "S",
+        "ppid": 207634,
+        "pgid": 207634,
+        "startTime": "1281539",
+        "command": "sh -c python3 geometry-web/start_local.py --build-only ",
+        "firstSeenUTC": "2026-10-20T23:02:32.382638+00:00"
+      },
+      {
+        "pid": 207647,
+        "state": "R",
+        "ppid": 207646,
+        "pgid": 207634,
+        "startTime": "1281540",
+        "command": "python3 geometry-web/start_local.py --build-only ",
+        "firstSeenUTC": "2026-10-20T23:02:32.382655+00:00"
+      },
+      {
+        "pid": 207648,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207648,
+        "startTime": "1281580",
+        "command": "dpkg-query -W -f=${Status} ${Version}\n fonts-noto-cjk ",
+        "firstSeenUTC": "2026-10-20T23:02:32.691717+00:00"
+      },
+      {
+        "pid": 207649,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207649,
+        "startTime": "1281612",
+        "command": "fc-match -f %{family}\n%{file}\n sans-serif:lang=zh-tw ",
+        "firstSeenUTC": "2026-10-20T23:02:33.009953+00:00"
+      },
+      {
+        "pid": 207650,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207650,
+        "startTime": "1281644",
+        "command": "fc-match -f %{family}\n%{file}\n Noto Sans CJK TC:lang=zh-tw ",
+        "firstSeenUTC": "2026-10-20T23:02:33.325341+00:00"
+      },
+      {
+        "pid": 207651,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207651,
+        "startTime": "1281677",
+        "command": "/bin/sh /usr/bin/chromium --version ",
+        "firstSeenUTC": "2026-10-20T23:02:33.664681+00:00"
+      },
+      {
+        "pid": 207665,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207665,
+        "startTime": "1281709",
+        "command": "python3 -u geometry-web/start_local.py --port 18856 ",
+        "firstSeenUTC": "2026-10-20T23:02:33.978453+00:00"
+      },
+      {
+        "pid": 207666,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207666,
+        "startTime": "1281709",
+        "command": "python3 geometry-web/runtime_version.py --probe 18856 ",
+        "firstSeenUTC": "2026-10-20T23:02:33.979517+00:00"
+      },
+      {
+        "pid": 207687,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207687,
+        "startTime": "1281840",
+        "command": "python3 geometry-web/runtime_version.py --probe 18856 ",
+        "firstSeenUTC": "2026-10-20T23:02:35.294667+00:00"
+      },
+      {
+        "pid": 207685,
+        "state": "S",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1281759",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge ",
+        "firstSeenUTC": "2026-10-20T23:02:35.304428+00:00"
+      },
+      {
+        "pid": 207689,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207689,
+        "startTime": "1281872",
+        "command": "python3 geometry-web/runtime_version.py --probe 18856 ",
+        "firstSeenUTC": "2026-10-20T23:02:35.613341+00:00"
+      },
+      {
+        "pid": 207691,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 207691,
+        "startTime": "1281904",
+        "command": "node geometry-web/cdp_test.js ",
+        "firstSeenUTC": "2026-10-20T23:02:35.929637+00:00"
+      },
+      {
+        "pid": 207698,
+        "state": "R",
+        "ppid": 207691,
+        "pgid": 207691,
+        "startTime": "1281908",
+        "command": "/usr/lib/chromium/chromium --show-component-extension-options --enable-gpu-rasterization --no-default-browser-check --disable-pings --media-router=0 --enable-remote-extensions --load-extension= about:blank --headless=new --disable-gpu --no-first-run --remote-debugging-port=9322 --window-size=1400,900 --user-data-dir=/tmp/geo261-profile-L-formal-207610 --no-sandbox ",
+        "firstSeenUTC": "2026-10-20T23:02:36.255374+00:00"
+      },
+      {
+        "pid": 207713,
+        "state": "Z",
+        "ppid": 207610,
+        "pgid": 207712,
+        "startTime": "1281913",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:02:36.255392+00:00"
+      },
+      {
+        "pid": 207715,
+        "state": "S",
+        "ppid": 207698,
+        "pgid": 207691,
+        "startTime": "1281914",
+        "command": "/usr/lib/chromium/chromium --type=zygote --no-zygote-sandbox --no-sandbox --headless=new --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-207610 --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl ",
+        "firstSeenUTC": "2026-10-20T23:02:36.255396+00:00"
+      },
+      {
+        "pid": 207716,
+        "state": "S",
+        "ppid": 207698,
+        "pgid": 207691,
+        "startTime": "1281914",
+        "command": "/usr/lib/chromium/chromium --type=zygote --no-sandbox --headless=new --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-207610 --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl ",
+        "firstSeenUTC": "2026-10-20T23:02:36.255399+00:00"
+      },
+      {
+        "pid": 207736,
+        "state": "S",
+        "ppid": 207715,
+        "pgid": 207691,
+        "startTime": "1281919",
+        "command": "/usr/lib/chromium/chromium --type=gpu-process --no-sandbox --enable-gpu-rasterization --headless=new --ozone-platform=headless --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-207610 --change-stack-guard-on-fork=enable --gpu-preferences=YAAAAAAAAAAgAAAEAAAAAAAAAAAAAGAASAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAMAAAAAQAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=3,i,186686893050572502,418049421308583521,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15742583873489290453,1905111246087059925,4 --trace-process-track-uuid=3190708988185955192 ",
+        "firstSeenUTC": "2026-10-20T23:02:36.255402+00:00"
+      },
+      {
+        "pid": 207739,
+        "state": "S",
+        "ppid": 207698,
+        "pgid": 207691,
+        "startTime": "1281920",
+        "command": "/usr/lib/chromium/chromium --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --no-sandbox --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-207610 --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,186686893050572502,418049421308583521,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15742583873489290453,1905111246087059925,4 --trace-process-track-uuid=3190708989122997041 ",
+        "firstSeenUTC": "2026-10-20T23:02:36.255404+00:00"
+      },
+      {
+        "pid": 207752,
+        "state": "S",
+        "ppid": 207716,
+        "pgid": 207691,
+        "startTime": "1281924",
+        "command": "/usr/lib/chromium/chromium --type=utility --utility-sub-type=storage.mojom.StorageService --lang=en-US --service-sandbox-type=utility --no-sandbox --use-angle=swiftshader-webgl --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-207610 --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,186686893050572502,418049421308583521,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15742583873489290453,1905111246087059925,4 --trace-process-track-uuid=3190708990060038890 ",
+        "firstSeenUTC": "2026-10-20T23:02:36.255407+00:00"
+      },
+      {
+        "pid": 207783,
+        "state": "R",
+        "ppid": 207716,
+        "pgid": 207691,
+        "startTime": "1281929",
+        "command": "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-207610 --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9322 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1792524536884936 --launch-time-ticks=12819298170 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,186686893050572502,418049421308583521,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15742583873489290453,1905111246087059925,4 --trace-process-track-uuid=3190708990997080739 ",
+        "firstSeenUTC": "2026-10-20T23:02:36.255410+00:00"
+      },
+      {
+        "pid": 207792,
+        "state": "S",
+        "ppid": 207716,
+        "pgid": 207691,
+        "startTime": "1281931",
+        "command": "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-207610 --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9322 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=7 --time-ticks-at-unix-epoch=-1792524536884936 --launch-time-ticks=12819318402 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,186686893050572502,418049421308583521,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15742583873489290453,1905111246087059925,4 --trace-process-track-uuid=3190708992871164437 ",
+        "firstSeenUTC": "2026-10-20T23:02:36.255413+00:00"
+      },
+      {
+        "pid": 207799,
+        "state": "R",
+        "ppid": 207716,
+        "pgid": 207691,
+        "startTime": "1281932",
+        "command": "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-207610 --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9322 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=6 --time-ticks-at-unix-epoch=-1792524536884936 --launch-time-ticks=12819322279 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,186686893050572502,418049421308583521,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15742583873489290453,1905111246087059925,4 --trace-process-track-uuid=3190708991934122588 ",
+        "firstSeenUTC": "2026-10-20T23:02:36.255416+00:00"
+      },
+      {
+        "pid": 216447,
+        "state": "S",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1337715",
+        "command": "git status --porcelain --untracked-files=no ",
+        "firstSeenUTC": "2026-10-20T23:11:54.069413+00:00"
+      },
+      {
+        "pid": 217140,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1341220",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-wik0ih9s/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:12:29.114119+00:00"
+      },
+      {
+        "pid": 217146,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1341251",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-sozyrkt8/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:12:29.423753+00:00"
+      },
+      {
+        "pid": 225876,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1416192",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-asawjs9o/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:24:58.821576+00:00"
+      },
+      {
+        "pid": 225895,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1416314",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-tua3r9pt/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:00.050525+00:00"
+      },
+      {
+        "pid": 225898,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1416372",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ye45h43n/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:00.666474+00:00"
+      },
+      {
+        "pid": 225901,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1416426",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-s46fvwg6/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:01.284559+00:00"
+      },
+      {
+        "pid": 225902,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1416468",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-dcydob_f/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:01.593527+00:00"
+      },
+      {
+        "pid": 225904,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1416500",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-si69u24q/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:01.900505+00:00"
+      },
+      {
+        "pid": 225906,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1416528",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-gxvzqtm2/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:02.209080+00:00"
+      },
+      {
+        "pid": 226195,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1419125",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base /tmp/geometry-model-scene-f1c0gwoc/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:28.182545+00:00"
+      },
+      {
+        "pid": 226198,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1419158",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-_fdklb1b/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:28.490709+00:00"
+      },
+      {
+        "pid": 226201,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1419218",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-0585kimw/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:29.106297+00:00"
+      },
+      {
+        "pid": 226203,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1419251",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-cjvmdpq9/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:29.418455+00:00"
+      },
+      {
+        "pid": 226204,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1419265",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-spo2spkd/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:29.729016+00:00"
+      },
+      {
+        "pid": 226212,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 226212,
+        "startTime": "1419430",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge ",
+        "firstSeenUTC": "2026-10-20T23:25:31.280642+00:00"
+      },
+      {
+        "pid": 226216,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 226216,
+        "startTime": "1419487",
+        "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 /workspace/geometry-axiom/geometry-web/scenario_verify.py --model-worker --base /tmp/geometry-runtime/b9bc23103ebb114398f3/model-base ",
+        "firstSeenUTC": "2026-10-20T23:25:31.901082+00:00"
+      },
+      {
+        "pid": 226228,
+        "state": "R",
+        "ppid": 226216,
+        "pgid": 226216,
+        "startTime": "1419526",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-jlxxq1zb/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:32.213357+00:00"
+      },
+      {
+        "pid": 226244,
+        "state": "R",
+        "ppid": 226216,
+        "pgid": 226216,
+        "startTime": "1419617",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-8ql82ad2/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:33.150665+00:00"
+      },
+      {
+        "pid": 226248,
+        "state": "Z",
+        "ppid": 226216,
+        "pgid": 226216,
+        "startTime": "1419646",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:25:33.459246+00:00"
+      },
+      {
+        "pid": 226260,
+        "state": "R",
+        "ppid": 226216,
+        "pgid": 226216,
+        "startTime": "1419712",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-2nyd_ort/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:34.081994+00:00"
+      },
+      {
+        "pid": 226268,
+        "state": "R",
+        "ppid": 226216,
+        "pgid": 226216,
+        "startTime": "1419774",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-5cf4z07l/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:34.704723+00:00"
+      },
+      {
+        "pid": 226276,
+        "state": "R",
+        "ppid": 226216,
+        "pgid": 226216,
+        "startTime": "1419811",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-sl1rseqq/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:35.020359+00:00"
+      },
+      {
+        "pid": 226306,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1420058",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-afl5_yzf/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:37.497064+00:00"
+      },
+      {
+        "pid": 226309,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1420086",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ec4u4oi5/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:37.805675+00:00"
+      },
+      {
+        "pid": 226311,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1420115",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-qesz_h2f/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:38.114785+00:00"
+      },
+      {
+        "pid": 226313,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1420151",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-laq6aj81/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:38.422205+00:00"
+      },
+      {
+        "pid": 226316,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1420208",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-g8e_3dlw/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:39.037656+00:00"
+      },
+      {
+        "pid": 226317,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1420221",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-i9yciie2/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:39.349447+00:00"
+      },
+      {
+        "pid": 226328,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1420304",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-dz2a16it/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:39.972571+00:00"
+      },
+      {
+        "pid": 226330,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1420337",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-x100pkir/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:40.280158+00:00"
+      },
+      {
+        "pid": 226377,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1421603",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-sr3vojw2/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:52.939561+00:00"
+      },
+      {
+        "pid": 226382,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1421634",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-d5r9d06m/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:53.250594+00:00"
+      },
+      {
+        "pid": 226507,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1422188",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-6slnqtg8/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:58.817755+00:00"
+      },
+      {
+        "pid": 226515,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1422284",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-acbfrahk/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:25:59.744253+00:00"
+      },
+      {
+        "pid": 226518,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1422335",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-p29617ph/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:00.368762+00:00"
+      },
+      {
+        "pid": 226520,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1422369",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-5uw4d7bo/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:00.676564+00:00"
+      },
+      {
+        "pid": 226522,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1422406",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-c8nuergd/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:00.984002+00:00"
+      },
+      {
+        "pid": 226524,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1422465",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-w5qgvuj1/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:01.606205+00:00"
+      },
+      {
+        "pid": 226528,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1422531",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-wzo7x3zz/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:02.222892+00:00"
+      },
+      {
+        "pid": 226530,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 226530,
+        "startTime": "1422575",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge ",
+        "firstSeenUTC": "2026-10-20T23:26:02.847159+00:00"
+      },
+      {
+        "pid": 226534,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 226534,
+        "startTime": "1422623",
+        "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 /workspace/geometry-axiom/geometry-web/scenario_verify.py --model-worker --base /tmp/geometry-runtime/b9bc23103ebb114398f3/model-base ",
+        "firstSeenUTC": "2026-10-20T23:26:03.157905+00:00"
+      },
+      {
+        "pid": 226542,
+        "state": "Z",
+        "ppid": 226534,
+        "pgid": 226534,
+        "startTime": "1422650",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:26:03.464512+00:00"
+      },
+      {
+        "pid": 226558,
+        "state": "R",
+        "ppid": 226534,
+        "pgid": 226534,
+        "startTime": "1422714",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-80zk2b_1/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:04.081699+00:00"
+      },
+      {
+        "pid": 226570,
+        "state": "R",
+        "ppid": 226534,
+        "pgid": 226534,
+        "startTime": "1422769",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-5qyp66lo/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:04.697135+00:00"
+      },
+      {
+        "pid": 226594,
+        "state": "R",
+        "ppid": 226534,
+        "pgid": 226534,
+        "startTime": "1422871",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-fw_of3hj/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:05.618916+00:00"
+      },
+      {
+        "pid": 226740,
+        "state": "S",
+        "ppid": 207716,
+        "pgid": 207691,
+        "startTime": "1423256",
+        "command": "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-207610 --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9322 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=9 --time-ticks-at-unix-epoch=-1792524536884936 --launch-time-ticks=14232561695 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,186686893050572502,418049421308583521,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15742583873489290453,1905111246087059925,4 --trace-process-track-uuid=3190708994745248135 ",
+        "firstSeenUTC": "2026-10-20T23:26:09.651244+00:00"
+      },
+      {
+        "pid": 226838,
+        "state": "S",
+        "ppid": 207716,
+        "pgid": 207691,
+        "startTime": "1423297",
+        "command": "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-profile-L-formal-207610 --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9322 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=10 --time-ticks-at-unix-epoch=-1792524536884936 --launch-time-ticks=14232970722 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,186686893050572502,418049421308583521,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,15742583873489290453,1905111246087059925,4 --trace-process-track-uuid=3190708995682289984 ",
+        "firstSeenUTC": "2026-10-20T23:26:09.962392+00:00"
+      },
+      {
+        "pid": 227105,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1424136",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-chhywgxz/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:18.292113+00:00"
+      },
+      {
+        "pid": 227107,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1424160",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-3xfq12nb/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:18.604298+00:00"
+      },
+      {
+        "pid": 227109,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1424195",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-nr9wlhcn/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:18.917419+00:00"
+      },
+      {
+        "pid": 227125,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1424230",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-i38s8l72/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:19.224090+00:00"
+      },
+      {
+        "pid": 227131,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1424352",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-nslzqm1m/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:20.454004+00:00"
+      },
+      {
+        "pid": 227133,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1424386",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-9bnm_6y1/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:26:20.762433+00:00"
+      },
+      {
+        "pid": 230262,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1455210",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-oebph6lq/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:31:29.072526+00:00"
+      },
+      {
+        "pid": 230310,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1455398",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-iruwk2vx/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:31:30.930596+00:00"
+      },
+      {
+        "pid": 230313,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1455423",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ofc5kz3h/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:31:31.240969+00:00"
+      },
+      {
+        "pid": 230360,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1455642",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-rcx9kfl0/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:31:33.403306+00:00"
+      },
+      {
+        "pid": 230398,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1455829",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-lt38o9qt/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:31:35.265007+00:00"
+      },
+      {
+        "pid": 230402,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1455867",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-9t81cdg5/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:31:35.574151+00:00"
+      },
+      {
+        "pid": 230442,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1456021",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-id7fflmq/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:31:37.126432+00:00"
+      },
+      {
+        "pid": 230444,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1456042",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-mf8f5s05/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:31:37.437339+00:00"
+      },
+      {
+        "pid": 230561,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1456270",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-9qmof4kt/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:31:39.603265+00:00"
+      },
+      {
+        "pid": 232113,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1463522",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-c3jro5xk/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:32:52.151533+00:00"
+      },
+      {
+        "pid": 232740,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1467857",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:33:35.599281+00:00"
+      },
+      {
+        "pid": 232743,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1467899",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-nau8e3_i/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:35.906752+00:00"
+      },
+      {
+        "pid": 232748,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1467930",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-m_k2o17o/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:36.237135+00:00"
+      },
+      {
+        "pid": 232767,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468079",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-v27b29j2/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:37.786526+00:00"
+      },
+      {
+        "pid": 232770,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468118",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-p0nxkb01/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:38.094379+00:00"
+      },
+      {
+        "pid": 232773,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468146",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-nakwzmq1/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:38.402179+00:00"
+      },
+      {
+        "pid": 232801,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468425",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:33:41.179092+00:00"
+      },
+      {
+        "pid": 232815,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468519",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-3i_6dley/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:42.101052+00:00"
+      },
+      {
+        "pid": 232818,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468548",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-6c1luys6/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:42.412713+00:00"
+      },
+      {
+        "pid": 232820,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468571",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ivqel3pq/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:42.721021+00:00"
+      },
+      {
+        "pid": 232822,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468612",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ulvu7091/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:43.028666+00:00"
+      },
+      {
+        "pid": 232834,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468642",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-x6zuz5fy/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:43.335272+00:00"
+      },
+      {
+        "pid": 232849,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468730",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-0si5jo4f/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:44.258940+00:00"
+      },
+      {
+        "pid": 232855,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468798",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-njjxbw7j/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:44.877014+00:00"
+      },
+      {
+        "pid": 232856,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1468826",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-g3_ku6j5/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:45.185392+00:00"
+      },
+      {
+        "pid": 232915,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1469218",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-elsmxja7/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:49.201074+00:00"
+      },
+      {
+        "pid": 232921,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1469285",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-inyny1i6/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:49.815875+00:00"
+      },
+      {
+        "pid": 232935,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1469410",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-4us_j4nl/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:51.047246+00:00"
+      },
+      {
+        "pid": 232944,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1469476",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-k51mjfhm/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:51.666546+00:00"
+      },
+      {
+        "pid": 232946,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1469499",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-h8d28kbk/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:51.974951+00:00"
+      },
+      {
+        "pid": 232948,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1469522",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-wc5k62dm/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:52.289035+00:00"
+      },
+      {
+        "pid": 232980,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1469752",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-r_gy3szr/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:54.451511+00:00"
+      },
+      {
+        "pid": 232989,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1469815",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-m6uqeaao/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:55.069111+00:00"
+      },
+      {
+        "pid": 232991,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1469837",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-zmoki2m1/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:55.377944+00:00"
+      },
+      {
+        "pid": 232993,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1469862",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-fpdmnsfi/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:55.691885+00:00"
+      },
+      {
+        "pid": 233009,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470001",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-8_b64cy7/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:56.923714+00:00"
+      },
+      {
+        "pid": 233014,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470026",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-fri8wgjh/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:57.232650+00:00"
+      },
+      {
+        "pid": 233016,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470051",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-mhstcl3k/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:57.541811+00:00"
+      },
+      {
+        "pid": 233020,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470095",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-mqaesryh/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:57.851550+00:00"
+      },
+      {
+        "pid": 233021,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470122",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ach6rwup/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:58.159608+00:00"
+      },
+      {
+        "pid": 233025,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470153",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-h_qxk5r8/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:58.468871+00:00"
+      },
+      {
+        "pid": 233044,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470279",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-afcn2h69/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:33:59.702671+00:00"
+      },
+      {
+        "pid": 233057,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470371",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-oby3jzza/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:00.633526+00:00"
+      },
+      {
+        "pid": 233059,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470394",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ntdngi3g/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:00.945688+00:00"
+      },
+      {
+        "pid": 233061,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470419",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-1v_3u32b/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:01.254557+00:00"
+      },
+      {
+        "pid": 233064,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470466",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-5trktzhd/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:01.562153+00:00"
+      },
+      {
+        "pid": 233084,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470618",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-yv5xjaol/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:03.103455+00:00"
+      },
+      {
+        "pid": 233086,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470640",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-orywqyrp/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:03.411238+00:00"
+      },
+      {
+        "pid": 233104,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470773",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-73nfaagm/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:04.641764+00:00"
+      },
+      {
+        "pid": 233108,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470802",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:34:04.955293+00:00"
+      },
+      {
+        "pid": 233112,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470835",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:34:05.263452+00:00"
+      },
+      {
+        "pid": 233117,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470858",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-pkt7zmbb/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:05.573729+00:00"
+      },
+      {
+        "pid": 233120,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470898",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ygu9c9wa/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:05.886482+00:00"
+      },
+      {
+        "pid": 233123,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470929",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-0j5cqlye/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:06.195158+00:00"
+      },
+      {
+        "pid": 233124,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470957",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-s9kjfs9x/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:06.505317+00:00"
+      },
+      {
+        "pid": 233128,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1470991",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-j1_eq2mu/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:06.813977+00:00"
+      },
+      {
+        "pid": 233138,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471051",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-pg0hgd11/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:07.434634+00:00"
+      },
+      {
+        "pid": 233157,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471170",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-0j7gi_7i/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:08.676717+00:00"
+      },
+      {
+        "pid": 233159,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471208",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ivwy6cd3/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:08.986023+00:00"
+      },
+      {
+        "pid": 233194,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471450",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-kjsqp3sv/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:11.469619+00:00"
+      },
+      {
+        "pid": 233197,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471488",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-_que_ddi/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:11.777201+00:00"
+      },
+      {
+        "pid": 233200,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471517",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-tgvn0u4c/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:12.088649+00:00"
+      },
+      {
+        "pid": 233205,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471578",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-pgmia19g/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:12.709157+00:00"
+      },
+      {
+        "pid": 233223,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471704",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-72so16g0/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:13.942655+00:00"
+      },
+      {
+        "pid": 233225,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471728",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-p6zxzag9/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:14.251163+00:00"
+      },
+      {
+        "pid": 233227,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471750",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-_h8prm7q/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:14.563432+00:00"
+      },
+      {
+        "pid": 233259,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1471981",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-8sy89aeq/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:16.723159+00:00"
+      },
+      {
+        "pid": 233264,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472005",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-jvbe6pbb/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:17.030765+00:00"
+      },
+      {
+        "pid": 233267,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472042",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-kxyxid5k/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:17.337923+00:00"
+      },
+      {
+        "pid": 233270,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472071",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-r0dtfoxt/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:17.645607+00:00"
+      },
+      {
+        "pid": 233271,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472104",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-6vc4lx8b/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:17.953504+00:00"
+      },
+      {
+        "pid": 233274,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472133",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-m2uxhofq/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:18.261816+00:00"
+      },
+      {
+        "pid": 233291,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472256",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-cgs6nsem/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:19.505038+00:00"
+      },
+      {
+        "pid": 233298,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472353",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-3rc3lppi/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:20.432816+00:00"
+      },
+      {
+        "pid": 233301,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472381",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-cg0egc2x/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:20.742744+00:00"
+      },
+      {
+        "pid": 233330,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472600",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ojolyup4/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:22.912767+00:00"
+      },
+      {
+        "pid": 233334,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472630",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-dq4hw5_g/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:23.221222+00:00"
+      },
+      {
+        "pid": 233338,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472663",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-16_mc0d6/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:23.534148+00:00"
+      },
+      {
+        "pid": 233343,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472689",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-vr12f82w/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:23.843408+00:00"
+      },
+      {
+        "pid": 233345,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472715",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-gonq_xts/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:24.156061+00:00"
+      },
+      {
+        "pid": 233353,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472818",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-os606csj/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:25.079362+00:00"
+      },
+      {
+        "pid": 233361,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472878",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ojtfgojg/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:25.695617+00:00"
+      },
+      {
+        "pid": 233365,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472910",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-_aknhcri/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:26.003628+00:00"
+      },
+      {
+        "pid": 233370,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472933",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-jw62bggt/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:26.315519+00:00"
+      },
+      {
+        "pid": 233373,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1472972",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-wjux0dxr/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:26.627606+00:00"
+      },
+      {
+        "pid": 233376,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473002",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-9ci_n1aa/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:26.934954+00:00"
+      },
+      {
+        "pid": 233377,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473031",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-4gayco30/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:27.243222+00:00"
+      },
+      {
+        "pid": 233442,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473281",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-vpcf52he/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:29.713970+00:00"
+      },
+      {
+        "pid": 233445,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473310",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-o74ble4m/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:30.025235+00:00"
+      },
+      {
+        "pid": 233447,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473333",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-yvkty2v_/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:30.334727+00:00"
+      },
+      {
+        "pid": 233449,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473358",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-95i4xehz/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:30.642299+00:00"
+      },
+      {
+        "pid": 233455,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473435",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-yuooa6kl/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:31.260520+00:00"
+      },
+      {
+        "pid": 233470,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473528",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-vsqo4mc2/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:32.184502+00:00"
+      },
+      {
+        "pid": 233472,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473553",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-u1gfbrc4/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:32.493237+00:00"
+      },
+      {
+        "pid": 233474,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473581",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-idew3hxi/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:32.812186+00:00"
+      },
+      {
+        "pid": 233476,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473614",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-96yw_uad/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:33.121539+00:00"
+      },
+      {
+        "pid": 233508,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473867",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-6zuuxe7i/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:35.596891+00:00"
+      },
+      {
+        "pid": 233513,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473900",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-rmwj_9b0/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:35.905452+00:00"
+      },
+      {
+        "pid": 233527,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473957",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-7kkv2tbh/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:36.521778+00:00"
+      },
+      {
+        "pid": 233529,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1473980",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-31pkiwm_/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:36.829460+00:00"
+      },
+      {
+        "pid": 233531,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1474021",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-u7tmyqxc/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:37.141906+00:00"
+      },
+      {
+        "pid": 233548,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1474144",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-3b6eox4i/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:38.375770+00:00"
+      },
+      {
+        "pid": 233554,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1474209",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-_gbzmcjh/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:39.000274+00:00"
+      },
+      {
+        "pid": 233556,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1474232",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-4vq7thmz/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:39.308298+00:00"
+      },
+      {
+        "pid": 233609,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1474918",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:34:46.122542+00:00"
+      },
+      {
+        "pid": 233619,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1474984",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-s2ujgw6a/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:46.737680+00:00"
+      },
+      {
+        "pid": 233622,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475011",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-6thfaybh/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:47.049375+00:00"
+      },
+      {
+        "pid": 233624,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475038",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-105l12nh/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:47.357118+00:00"
+      },
+      {
+        "pid": 233626,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475061",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-trygcce4/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:47.665585+00:00"
+      },
+      {
+        "pid": 233629,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475108",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-t9ryo_ix/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:47.973907+00:00"
+      },
+      {
+        "pid": 233642,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475200",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-4of3mt35/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:48.912277+00:00"
+      },
+      {
+        "pid": 233647,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475227",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-jzn_zlco/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:49.220227+00:00"
+      },
+      {
+        "pid": 233649,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475250",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-min3owyx/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:49.528457+00:00"
+      },
+      {
+        "pid": 233652,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475291",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-90sqa6uf/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:49.836477+00:00"
+      },
+      {
+        "pid": 233673,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475477",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-xzftohed/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:51.691799+00:00"
+      },
+      {
+        "pid": 233686,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475562",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-h_f5odjf/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:52.618394+00:00"
+      },
+      {
+        "pid": 233689,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475601",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-anab7igc/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:52.925540+00:00"
+      },
+      {
+        "pid": 233692,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475631",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-8n8ku5hy/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:53.233809+00:00"
+      },
+      {
+        "pid": 233693,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475660",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ftjqkaeb/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:53.543224+00:00"
+      },
+      {
+        "pid": 233710,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475787",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base /tmp/geometry-model-scene-37x9qdso/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:54.774683+00:00"
+      },
+      {
+        "pid": 233714,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475818",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-fvgpxhdi/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:55.082246+00:00"
+      },
+      {
+        "pid": 233719,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475877",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-_np8jtx5/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:55.704123+00:00"
+      },
+      {
+        "pid": 233724,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1475938",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-9q_bcwtz/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:56.324335+00:00"
+      },
+      {
+        "pid": 233757,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1476157",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-r6im9kaz/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:58.494667+00:00"
+      },
+      {
+        "pid": 233759,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1476180",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-32czxmu4/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:58.804261+00:00"
+      },
+      {
+        "pid": 233762,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1476221",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-i640k8ra/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:59.114519+00:00"
+      },
+      {
+        "pid": 233766,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1476281",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-hmv06739/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:34:59.729537+00:00"
+      },
+      {
+        "pid": 233794,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1476437",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-oivgbqek/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:01.277210+00:00"
+      },
+      {
+        "pid": 233796,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1476464",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-gltnqx_z/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:01.586310+00:00"
+      },
+      {
+        "pid": 233798,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1476489",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-acvtug_f/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:01.894192+00:00"
+      },
+      {
+        "pid": 233849,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1476862",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-181q2zkh/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:05.613119+00:00"
+      },
+      {
+        "pid": 233865,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1476993",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-owkl9nnc/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:06.845968+00:00"
+      },
+      {
+        "pid": 233870,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477026",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-s_7c9cm9/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:07.153804+00:00"
+      },
+      {
+        "pid": 233876,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477079",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-_rsfessg/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:07.779105+00:00"
+      },
+      {
+        "pid": 233878,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477102",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ceryi89m/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:08.086599+00:00"
+      },
+      {
+        "pid": 233884,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477178",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-y6eidyqd/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:08.700149+00:00"
+      },
+      {
+        "pid": 233906,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477333",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-3_vw_ozn/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:10.239648+00:00"
+      },
+      {
+        "pid": 233921,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477455",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-xy1gzxzh/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:11.483294+00:00"
+      },
+      {
+        "pid": 233923,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477482",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-pcv2z_jq/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:11.793339+00:00"
+      },
+      {
+        "pid": 233941,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477643",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base /tmp/geometry-model-scene-t59y4ank/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:13.330469+00:00"
+      },
+      {
+        "pid": 233945,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477674",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-k9qav1x4/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:13.640590+00:00"
+      },
+      {
+        "pid": 233948,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477704",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-qznd51hv/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:13.950715+00:00"
+      },
+      {
+        "pid": 233950,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477729",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-l4zs3jo2/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:14.258692+00:00"
+      },
+      {
+        "pid": 233978,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477951",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-syklx096/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:16.422181+00:00"
+      },
+      {
+        "pid": 233983,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1477982",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-yx_sq077/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:16.729932+00:00"
+      },
+      {
+        "pid": 233989,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1478038",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-bu5hq3tg/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:17.354885+00:00"
+      },
+      {
+        "pid": 233991,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1478061",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-wyxpy463/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:17.667602+00:00"
+      },
+      {
+        "pid": 234012,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1478220",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-ed2k2r09/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:19.217033+00:00"
+      },
+      {
+        "pid": 234018,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1478287",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-bvxflc74/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:19.833257+00:00"
+      },
+      {
+        "pid": 234020,
+        "state": "R",
+        "ppid": 207665,
+        "pgid": 207665,
+        "startTime": "1478323",
+        "command": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base --neutral-sources /tmp/geometry-model-scene-fpy1w0nw/input.scene ",
+        "firstSeenUTC": "2026-10-20T23:35:20.140222+00:00"
+      },
+      {
+        "pid": 234040,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 234040,
+        "startTime": "1478449",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:35:21.381490+00:00"
+      },
+      {
+        "pid": 234042,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 234042,
+        "startTime": "1478481",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:35:21.700813+00:00"
+      },
+      {
+        "pid": 234051,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 234051,
+        "startTime": "1478513",
+        "command": "git status --porcelain=v1 --untracked-files=all ",
+        "firstSeenUTC": "2026-10-20T23:35:22.016208+00:00"
+      },
+      {
+        "pid": 234072,
+        "state": "R",
+        "ppid": 207610,
+        "pgid": 234072,
+        "startTime": "1478560",
+        "command": "",
+        "firstSeenUTC": "2026-10-20T23:35:22.491692+00:00"
+      }
+    ],
+    "survivors": [],
+    "directExitCodes": {
+      "207612": 0,
+      "207613": 0,
+      "207634": 0,
+      "207648": 0,
+      "207649": 0,
+      "207650": 0,
+      "207651": 0,
+      "207665": -2,
+      "207666": 1,
+      "207687": 0,
+      "207689": 0,
+      "207691": 0,
+      "234040": 0,
+      "234042": 0,
+      "234051": 0,
+      "234072": 0
+    },
+    "servicePortFree": true,
+    "cdpPortFree": true,
+    "portCheck": "connect_ex 必須 ECONNREFUSED，配合自有 PID/startTime 全退出"
+  },
+  "finishedUTC": "2026-10-20T23:35:22.856206+00:00",
+  "withinTotalDeadline": true,
+  "screenshots": [
+    "screens/assembly_context/context-390-form.png",
+    "screens/assembly_context/context-desktop-form.png",
+    "screens/canvas.png",
+    "screens/composition/composition-desktop.png",
+    "screens/composition/composition-mobile.png",
+    "screens/composition/desktop-selected-binding.png",
+    "screens/composition/mobile-selected-binding.png",
+    "screens/engineering/engineering-apply-preview.png",
+    "screens/engineering/engineering-batch-blocked.png",
+    "screens/engineering/engineering-bound-grid-subgrid.png",
+    "screens/engineering/engineering-bound-timber-inspector.png",
+    "screens/engineering/engineering-inline-material.png",
+    "screens/engineering/engineering-mobile.png",
+    "screens/engineering/engineering-package-conflict.png",
+    "screens/engineering/grid-material-converted-manual-grid.png",
+    "screens/engineering/grid-material-existing-no-role.png",
+    "screens/engineering/grid-material-existing-panel.png",
+    "screens/engineering/grid-material-mobile-complete.png",
+    "screens/engineering/grid-material-new-preview.png",
+    "screens/grid/grid-v2-desktop-final.png",
+    "screens/grid/grid-v2-mobile-canvas-final.png",
+    "screens/grid/grid-v2-mobile-settings-final.png",
+    "screens/grid/reference-visibility-desktop.png",
+    "screens/grid/reference-visibility-mobile.png",
+    "screens/grid/subgrid-desktop-preview.png",
+    "screens/grid/subgrid-desktop-saved.png",
+    "screens/grid/subgrid-mobile-pick.png",
+    "screens/grid/subgrid-mobile-settings.png",
+    "screens/grid_rename/compact-rename-preserved.png",
+    "screens/grid_rename/compact-rename-reopened.png",
+    "screens/grid_rule/rule-editor-390-raw.png",
+    "screens/grid_rule/rule-editor-390-reopened.png",
+    "screens/grid_rule/rule-editor-desktop-preview.png",
+    "screens/grid_rule/rule-editor-desktop-restored.png",
+    "screens/grid_rule/rule-editor-orphan-delete.png",
+    "screens/grid_rule/rule-editor-orphan-edit.png",
+    "screens/grid_rule/rule-lines-1280-face-1.png",
+    "screens/grid_rule/rule-lines-1280-face-2.png",
+    "screens/grid_rule/rule-lines-1280-reopened.png",
+    "screens/grid_rule/rule-lines-390-face-1.png",
+    "screens/grid_rule/rule-lines-390-face-2.png",
+    "screens/grid_rule/rule-lines-390-reopened.png",
+    "screens/grid_system/grid-trial-desktop.png",
+    "screens/grid_system/grid-trial-mobile-alignment.png",
+    "screens/grid_system/grid-trial-mobile-canvas.png",
+    "screens/grid_system/grid-trial-mobile-controls.png",
+    "screens/grid_system/infinite-binding-hole.png",
+    "screens/grid_system/infinite-grid-mobile.png",
+    "screens/grid_system/infinite-source-desktop.png",
+    "screens/marquee/objects-active-crossing.png",
+    "screens/marquee/objects-active-window.png",
+    "screens/marquee/objects-two-selected.png",
+    "screens/marquee/timbers-active-crossing.png",
+    "screens/marquee/timbers-active-window.png",
+    "screens/marquee/timbers-three-selected-desktop.png",
+    "screens/marquee/timbers-three-selected-mobile.png",
+    "screens/model_snapshot/navigation-390-dpr2.png",
+    "screens/model_snapshot/navigation-390-touch-row.png",
+    "screens/model_snapshot/navigation-desktop-dpr2.png",
+    "screens/model_snapshot/snapshot-390-rows.png",
+    "screens/model_snapshot/snapshot-390.png",
+    "screens/model_snapshot/snapshot-desktop.png",
+    "screens/project_audit/datum-impact-endpoints.png",
+    "screens/project_audit/guide-source-mobile.png",
+    "screens/project_audit/timber-1-definition.png",
+    "screens/project_audit/timber-2-definition.png",
+    "screens/project_audit/timber-7-definition.png",
+    "screens/repair/file-menu-1160.png",
+    "screens/repair/file-menu-1400.png",
+    "screens/repair/hole-area.png",
+    "screens/repair/reference-controls.png",
+    "screens/repair/ui-v2-mobile-face.png",
+    "screens/repair/ui-v2-three-view.png",
+    "screens/repair/uiux-20260927-face-desktop.png",
+    "screens/repair/uiux-20260927-face-medium.png",
+    "screens/repair/uiux-20260927-face-mobile.png",
+    "screens/room/before-default-rectangle.png",
+    "screens/room/calibrated-legend-before-fit.png",
+    "screens/room/calibrated-room-candidate.png",
+    "screens/room/calibrated-room-reopened.png",
+    "screens/room/core-rejection.png",
+    "screens/room/image-l-candidate.png",
+    "screens/room/image-notch-candidate.png",
+    "screens/room/image-rectangle-candidate.png",
+    "screens/room/narrow-l-candidate.png",
+    "screens/room/notch-material-capacity-refusal.png",
+    "screens/room/notch-space-preview.png",
+    "screens/room/open-doorway-failure.png",
+    "screens/room/pdf-7-excluded-phantom.png",
+    "screens/room/pdf-8-excluded-phantom.png",
+    "screens/room/pdf-closed-path-intersection.png",
+    "screens/room/pdf-endpoint-snap-9percent.png",
+    "screens/room/reopened-notch.png",
+    "screens/room/vector-l-candidate.png",
+    "screens/room/vector-notch-candidate.png",
+    "screens/room/vector-rectangle-candidate.png",
+    "screens/schedule/schedule-desktop.png",
+    "screens/schedule/schedule-mobile.png",
+    "screens/selection_cursor/p75-dimension-tip-1382.png",
+    "screens/selection_cursor/p75-dimension-tip-390.png",
+    "screens/selection_cursor/p75-guide-cursor-1382.png",
+    "screens/selection_cursor/p75-guide-cursor-390.png",
+    "screens/selection_cursor/p75-timber-cursor-1382.png",
+    "screens/selection_cursor/p75-timber-cursor-390.png",
+    "screens/selection_cursor/p75-tool-cursor-1382.png",
+    "screens/selection_cursor/p75-tool-cursor-390.png",
+    "screens/source_navigation/canvas.png",
+    "screens/source_navigation/mobile.png",
+    "screens/source_navigation/open10.png",
+    "screens/source_navigation/zero.png",
+    "screens/support/support-desktop.png",
+    "screens/support/support-mobile.png",
+    "screens/uiux/01-engineering-loaded-desktop.png",
+    "screens/uiux/02-engineering-mobile.png",
+    "screens/uiux/02b-engineering-close-clean.png",
+    "screens/uiux/03-face-1382.png",
+    "screens/uiux/03-face-390.png",
+    "screens/uiux/03-face-900.png",
+    "screens/uiux/03b-parameter-settlement-face.png",
+    "screens/uiux/04-label-list-1382.png",
+    "screens/uiux/04-label-list-390.png",
+    "screens/uiux/04-three-views.png",
+    "screens/uiux/05-empty-space.png",
+    "screens/uiux/06-grid-draft-mobile.png",
+    "screens/ux_refinement/p74-ewWorkspace-390.png",
+    "screens/ux_refinement/p74-face-390.png",
+    "screens/ux_refinement/p74-face-labels-details.png",
+    "screens/ux_refinement/p74-infiniteGridWorkspace-390.png",
+    "screens/ux_refinement/p74-main-390.png",
+    "screens/ux_refinement/p74-project-info.png",
+    "screens/ux_refinement/p74-recovery-mismatch.png",
+    "screens/ux_refinement/p74-smWorkspace-390.png",
+    "screens/ux_refinement/p74-three-view-labels.png"
+  ]
+}

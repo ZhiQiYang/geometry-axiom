@@ -1,0 +1,225 @@
+#!/usr/bin/env python3
+"""只封裝既有原件及核對位元組；不建置、不載入、不重新取樣。"""
+import base64
+import collections
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+
+E = Path('/workspace/geo261-evidence')
+B = E / 'final-bundle/p189-contact-85dc4fff-diagnostics'
+O = E / 'p189-contact-v2-85dc4fff44ce-g3bqypyh'
+F = E / 'final-bundle/p189-contact-trial-85dc4fff'
+OLD = E / 'p189-pcdiag-85dc4fff-4ljb7jqu'
+PC = E / 'p189-pcdiag-85dc4fff-undef-gqq2eu1g'
+PG = E / 'p189-diagnostic-contact-85dc4fff44ce-hck_u46w'
+RU = E / 'p189-wait4-diagnostic-85dc4fff-y364a8kh'
+CW = E / 'p189-copy-callsite-85dc4fff-20261021'
+SHA = '85dc4fff44ce49b27f831b21cbdcb662c863302c'
+
+def digest(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def readj(path):
+    return json.loads(path.read_bytes())
+
+def save(path, obj):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('x') as stream:
+        json.dump(obj, stream, ensure_ascii=False, indent=2)
+        stream.write('\n')
+
+assert not B.exists(), '拒絕覆寫既有封包'
+formal = readj(O / 'receipt.json')
+assert formal['commits']['final'] == SHA and formal['exit_code'] == 1
+assert int((O / 'check.exit-code').read_text()) == 1
+controls = readj(O / 'validator-selftest.json')
+assert len(controls) == 16 and sum(r['expected_pass'] for r in controls) == 2
+assert int((O / 'selftest.exit-code').read_text()) == 0
+assert len(readj(O / 'samples.json')) == 36
+for line in (F / 'SHA256SUMS').read_text().splitlines():
+    h, rel = line.split('  ', 1)
+    assert digest((F / rel).read_bytes()) == h, rel
+assert digest((F / 'SHA256SUMS').read_bytes()) == '14e5dd7a60b777a9aaabf909e2920eb01c8013273f0701093315c425f844974b'
+for phase, code in [('archive', 0), ('build', 1), ('driver', 2)]:
+    assert int((OLD / (phase + '.exit-code')).read_text()) == code
+assert not (OLD / 'load.started.json').exists()
+for phase in ['archive', 'build', 'load', 'nm', 'driver']:
+    assert int((PC / (phase + '.exit-code')).read_text()) == 0
+pc = readj(PC / 'completion.json')
+assert pc['source_sha'] == SHA and pc['diagnostic_load_count'] == 1
+assert pc['formal_binary_receipt_samples_unchanged'] and pc['stdout_matches_formal']
+assert (PC / 'load.stdout').read_bytes() == (O / 'timing/n64-r0-final.stdout').read_bytes()
+assert (PG / 'profile-load-run01.stdout').read_bytes() == (O / 'timing/n64-r0-final.stdout').read_bytes()
+pg = readj(PG / 'profile-completion.json')
+assert pg['diagnostic_run_count'] == 1 and pg['diagnostic_request'] == 'loadfile-only'
+for phase in ['main', 'final', 'driver']:
+    assert int((RU / (phase + '.exit-code')).read_text()) == 0
+for side in ['main', 'final']:
+    assert (RU / (side + '.stdout')).read_bytes() == (O / ('timing/n64-r0-' + side + '.stdout')).read_bytes()
+assert (PC / 'run01/load.in').read_bytes() == (RU / 'load.in').read_bytes() == (OLD / 'planned-load.in').read_bytes()
+assert (PC / 'pc_sampler.h').read_bytes() == (OLD / 'pc_sampler.h').read_bytes() + b'\n#undef si_value\n'
+assert (PC / 'pcdiag-driver.py').read_bytes() == (OLD / 'pcdiag-driver.py').read_bytes()
+for phase in ['archive', 'build', 'load', 'nm', 'elf']:
+    assert int((CW / (phase + '.exit-code')).read_text()) == 0
+assert int((CW / 'exit-code').read_text()) == 0
+cw = readj(CW / 'summary.json')
+assert cw['source_sha'] == SHA and cw['stdout_matches_formal'] and cw['formal_unchanged']
+assert (CW / 'load.stdout').read_bytes() == (O / 'timing/n64-r0-final.stdout').read_bytes()
+assert (CW / 'load.in').read_bytes() == (PC / 'run01/load.in').read_bytes()
+
+B.mkdir()
+mapping, excluded = [], []
+
+def copy(src, rel, role):
+    raw = src.read_bytes()
+    dst = B / rel
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    with dst.open('xb') as stream:
+        stream.write(raw)
+    os.chmod(dst, 0o644)
+    assert dst.read_bytes() == raw
+    mapping.append({'source': str(src), 'published': str(rel), 'bytes': len(raw),
+                    'sha256': digest(raw), 'original_bytes': True, 'role': role})
+
+def tree(src, prefix):
+    for current, dirs, files in os.walk(src):
+        dirs.sort()
+        for name in list(dirs):
+            if name in ('source', '__pycache__', '.git'):
+                dirs.remove(name)
+                excluded.append({'source': str(Path(current) / name), 'kind': 'directory',
+                                 'reason': '來源整樹／暫存不複製；來源由固定 commit 與 archive 收據重建'})
+        for name in sorted(files):
+            file = Path(current) / name
+            rel = file.relative_to(src)
+            assert not file.is_symlink(), file
+            raw = file.read_bytes()
+            if name in ('archive.stdout', 'source-archive.stdout') or raw.startswith(b'\x7fELF'):
+                excluded.append({'source': str(file), 'bytes': len(raw), 'sha256': digest(raw),
+                                 'reason': 'ELF 或來源 tar 原件只留外部；未作文字證據冒充'})
+                continue
+            if name == 'gmon.out':
+                encoded = base64.b64encode(raw) + b'\n'
+                dst = B / prefix / (str(rel) + '.base64')
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                with dst.open('xb') as stream:
+                    stream.write(encoded)
+                assert base64.b64decode(dst.read_bytes()) == raw
+                mapping.append({'source': str(file), 'published': str(dst.relative_to(B)),
+                                'original_bytes': False, 'encoding': 'base64', 'raw_bytes': len(raw),
+                                'raw_sha256': digest(raw), 'encoded_sha256': digest(encoded),
+                                'decode_matches_original': True,
+                                'role': '明示無損編碼的二進位資料；原 gmon 留外部'})
+                continue
+            raw.decode('utf-8')
+            published = Path(prefix) / rel
+            role = '既有文字原件；狀態依原收據，含失敗及草稿'
+            if file.suffix in ('.py', '.h', '.c', '.sh'):
+                published = Path(str(published) + '.txt')
+                role = '外部輔助／來源的原 bytes 純文字快照，0644；非部署入口；未執行草稿依原檔名及收據'
+            copy(file, published, role)
+
+for directory, label in [
+    (E / 'contact-trial-7ad', 'contact-targeted'),
+    (E / 'contact-independent-review', 'contact-peer'),
+    (PG, 'diagnostics/pg'),
+    (E / 'p189-resource-diagnostic-85dc4fff-u59rpxtf', 'diagnostics/time-preflight-failed'),
+    (RU, 'diagnostics/wait4'),
+    (OLD, 'diagnostics/pc-build-failed'),
+    (PC, 'diagnostics/pc-success'),
+    (CW, 'diagnostics/copy-callsite'),
+]:
+    tree(directory, label)
+
+for source in [Path(__file__), E / 'p189-wait4-resource-diagnostic.py']:
+    copy(source, Path('source-snapshots') / (source.name + '.txt'), '外部輔助原 bytes 純文字快照；不新增 active 工具')
+for source in [E / 'p189-contact-trial-85dc4fff-copy-check.json',
+               E / 'contact-trial-package-source-review.json']:
+    if source.exists():
+        copy(source, Path('reviews') / source.name, '既有核對報告原 bytes')
+
+summary = readj(PC / 'pc-summary.json')
+counts = collections.Counter()
+for row in summary['locations']:
+    if 'exact_executable_symbol_ranges' in row:
+        counts[tuple(row['exact_executable_symbol_ranges'])] += row['samples']
+save(B / 'pc-range-summary.json', {
+    'source': str(PC / 'pc-summary.json'), 'source_sha256': digest((PC / 'pc-summary.json').read_bytes()),
+    'module_counts': summary['module_counts'],
+    'exact_exe_symbol_ranges': [{'symbols': list(k), 'samples': v} for k, v in counts.most_common()],
+    'limitations': summary['limitations'],
+    'libc_function_attribution': '僅 module + ELF offset；沒有從最近符號猜函式'})
+
+save(B / 'peer-transport-transcription.json', {
+    'nature': '由 peer/root 訊息逐欄轉錄；不是原工具 transport log，也不是本封裝器獨立重跑。',
+    'peer': '/root/p52_review',
+    'reported_static_tool_chunks': [
+        {'chunk': 'b23ed1', 'reported_exit_code': 0, 'scope': 'header 完整讀取'},
+        {'chunk': '623633', 'reported_exit_code': 0, 'scope': '初 driver/config/header hash、AST 守門'},
+        {'chunk': 'ffc915', 'reported_exit_code': 0, 'scope': 'identity join 修後 diff/hash/AST'},
+        {'chunk': '315684', 'reported_exit_code': 0, 'scope': 'undef 兄弟 out 最小 append、hash、driver bytes 與 config 差異'}],
+    'root_reported_successful_wait': {'session': 30802, 'chunk': 'fc74e3', 'reported_exit_code': 0},
+    'root_reported_copy_callsite_wait': {'session': 30828, 'chunk': '6b267d', 'reported_exit_code': 0},
+    'failed_first_wait_original': 'diagnostics/pc-build-failed/top-level-wait-receipt.json',
+    'note': '兩輪 PC 的 phase/wait4 原件各自保留；第一輪沒有 load。'})
+save(B / 'linked-p189-bundle.json', {
+    'source_sha': SHA, 'branch': 'codex/geo261-p189-contact-trial-20261021',
+    'bundle_relative': '../p189-contact-trial-85dc4fff', 'external_bundle': str(F),
+    'manifest_sha256': digest((F / 'SHA256SUMS').read_bytes()),
+    'formal_out': str(O), 'receipt_sha256': digest((O / 'receipt.json').read_bytes()),
+    'samples_sha256': digest((O / 'samples.json').read_bytes()),
+    'check_exit_code': 1, 'controls': 16, 'positive_controls': 2, 'negative_controls': 14,
+    'timing_samples': 36, 'equivalence_rows': 175,
+    'equivalence_requirement': '4 生成場景強制三方有效 load/stdout 等價；171 固定場景強制 base/final，main 僅記錄',
+    'observed_equivalence': '本輪 175 列三方完整 stdout 全相同；這是觀測，不擴張官方判準',
+    'timing_summary': formal['timing']['summary'],
+    'all_linked_manifest_entries_verified': True})
+save(B / 'artifact-mapping.json', {
+    'source_sha': SHA, 'files': mapping, 'excluded_external_artifacts': excluded,
+    'snapshot_policy': '來源快照保存原 bytes/hash、0644 純文字；外部原件保留，非產品部署或新增正式工具。',
+    'scope': '只整理已完成原件；沒有執行 build/load/test 或增加正式樣本。'})
+(B / 'README.md').write_text('''# 85dc contact 候選與診斷證據
+
+候選分支 `codex/geo261-p189-contact-trial-20261021`，完整 SHA `85dc4fff44ce49b27f831b21cbdcb662c863302c`。P-189 原門檻仍為紅：N64 `2.5566509200233782`，正式 `check` 結束碼 1；36 筆樣本沒有重抽。既有完整 P-189 包由 [雜湊連結](linked-p189-bundle.json) 綁定，本包不改其原件。候選尚未完成整份帳本／架構與全套正式驗收，不能宣稱可合併。
+
+`contact-targeted/v1` 保留早期未採用結果，包括兩個 BridgeClosed 錯誤及後續發現的指標結合律問題；不把它們算成 killed。`v2` 的原收據記 38 定向測試、原／新各 8 數值案、8 sanitizer 案及 24 個具名 baseline 0／mutant 1／restored 0 控制；原 7ad collector 也通過數值契約。獨立審查在 `contact-peer`。定向工具收據屬 commit 前的精確 source hash，`local-commit.json` 將相同 bytes 綁到候選 SHA。
+
+`diagnostics/pg` 保留一次 loadfile + EOF 的 -pg 診斷、完整 nm/objdump/gprof 與 gmon 明示 base64（可解碼回原 bytes）。未執行的 load+dump 草稿及更正收據也保留。44 個 gmon histogram 點只有 41 可由完整地址區間歸屬，3 個跨界／gap 保留未知；不能用 gprof 的 clone 錯名或 0.44 秒 histogram 取代牆鐘。
+
+`diagnostics/time-preflight-failed` 記 GNU time 不存在，前置結束碼 1、零次 load。`wait4` 是既有 O2 main/final 各一次診斷，真 wait4 均 0；不是新增 P-189 樣本。main 的 user/system 為 0.390615/0.193923 秒；final 為 1.238211/0.040890 秒。
+
+`pc-build-failed` 是首輪外部 header 引入 signal.h 的 si_value 巨集碰撞：archive 0、build 1、driver 2，零次 load。`pc-success` 是 root 建立的新兄弟 out，header 僅尾端加 `#undef si_value`；driver 原 bytes 相同。archive/build/load/nm/driver 全 0，唯一一次 load，stdout 與正式 N64 原件相同。取樣 284 點：libc 163、exe 121，無容量丟棄。libc 保留 module + ELF offset；exe 僅報非零 size 的真符號範圍，沒有 call stack。1ms 是要求間隔，不能把 284 點當成完整 CPU 毫秒或精確總成本。
+
+`copy-callsite` 是 root 執行的同 SHA 外部連結包裝診斷；archive/build/load/nm/ELF 與 driver 真碼 0，stdout 與正式原件相同。`-no-pie` 與 memcpy/memmove/memset 包裝僅用於外部呼叫點與 bytes 計數，不能當正式 P-189 成績；未計 inline 操作或 libc 內部呼叫，tail call 的 return_pc 可能屬上一層。方法、原 calls.tsv、nm 與收據原件完整保留。
+
+最不確定的是 libc 內樣本的確切呼叫來源及單次取樣代表性。這些診斷不能代替性能門檻、不能單獨證明某修正足以解除 2x。沒有執行 contact 精確撤回性能負控制，因候選仍紅。
+
+`artifact-mapping.json` 逐項記原件位置、bytes、SHA256、純文字來源快照或明示編碼。ELF、來源 archive／整樹及 pycache 不進包；它們留外部。每份 `.py.txt`／`.h.txt` 等是 0644 原 bytes 資料，不是新的 active 入口。`peer-transport-transcription.json` 明示對話轉錄與真原收據的區別。`SHA256SUMS` 涵蓋除自身外全部檔案。
+''')
+
+files = sorted(p for p in B.rglob('*') if p.is_file())
+manifest = ''.join(digest(p.read_bytes()) + '  ' + str(p.relative_to(B)) + '\n' for p in files)
+(B / 'SHA256SUMS').write_text(manifest)
+for line in manifest.splitlines():
+    h, rel = line.split('  ', 1)
+    assert digest((B / rel).read_bytes()) == h
+for row in mapping:
+    if row['original_bytes']:
+        assert (B / row['published']).read_bytes() == Path(row['source']).read_bytes()
+    else:
+        assert base64.b64decode((B / row['published']).read_bytes()) == Path(row['source']).read_bytes()
+allfiles = sorted(p for p in B.rglob('*') if p.is_file())
+assert not any(p.suffix in ('.py', '.c', '.h', '.sh') for p in allfiles)
+result = {'checked_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+          'bundle': str(B), 'source_sha': SHA, 'file_count': len(allfiles),
+          'bytes': sum(p.stat().st_size for p in allfiles), 'mapping_count': len(mapping),
+          'manifest_entries': len(files), 'manifest_sha256': digest((B / 'SHA256SUMS').read_bytes()),
+          'all_original_bytes_match': True, 'base64_decodes_to_original': True,
+          'all_manifest_hashes_match': True, 'linked_p189_manifest_verified': True,
+          'formal_gate_exit_code': 1, 'new_product_executions': 0,
+          'packager_sha256': digest(Path(__file__).read_bytes()), 'validation_exit_code': 0}
+save(E / 'p189-contact-85dc4fff-diagnostics-copy-check.json', result)
+print(json.dumps(result, ensure_ascii=False, indent=2))

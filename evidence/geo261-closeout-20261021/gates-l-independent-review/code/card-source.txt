@@ -1,0 +1,125 @@
+"""只讀核對已完成53案整卡正式原件；不執行測試或改工作樹。"""
+import ast,datetime,hashlib,json,re,subprocess
+from pathlib import Path
+BASE=Path('/workspace/geo261-evidence');G=BASE/'gates-l';ROOT=Path('/workspace/geo261-gates-l');SHA='43f85313c32410ac01406ab585846bbacafea278'
+OUT=BASE/'gates-l-independent-review';REPORT=OUT/'card.json';assert not REPORT.exists()
+R=G/'card-run/card';RAW=R/'raw';L=G/'launcher/card'
+def h(b):return hashlib.sha256(b).hexdigest()
+def j(p):return json.loads(p.read_text())
+def ref(p):return dict(path=str(p),bytes=p.stat().st_size,sha256=h(p.read_bytes()))
+blobs={}
+def blob(p):
+    if p not in blobs:blobs[p]=subprocess.check_output(['git','show',SHA+':'+p],cwd=ROOT)
+    return blobs[p]
+symbols={}
+def value(n):
+    if isinstance(n,ast.Constant):return n.value
+    if isinstance(n,ast.Name):return symbols[n.id]
+    if isinstance(n,(ast.List,ast.Tuple)):return [value(x) for x in n.elts]
+    if isinstance(n,ast.Call) and isinstance(n.func,ast.Name):
+        a=[value(x) for x in n.args];kw={x.arg:value(x.value) for x in n.keywords}
+        if n.func.id=='change':return dict(zip(['path','old','new'],a))
+        if n.func.id=='mutant':return dict(id=a[0],case=a[1],patches=a[2:],model=kw.get('model',False))
+    raise ValueError(type(n).__name__)
+for n in ast.parse(blob('geometry-core/card-reference/mutations.py').decode()).body:
+    if isinstance(n,ast.Assign):
+        a=value(n.value)
+        for t in n.targets:
+            if isinstance(t,ast.Name):symbols[t.id]=a
+table={m['id']:m for m in symbols['MUTATIONS']}
+assert len(table)==53
+r=j(RAW/'report.json');rr=j(R/'run-receipt.json');lr=j(L/'receipt.json');v=j(G/'verification/card.json')
+assert v['accepted'] and not v['problems']
+for x in v['artifacts'].values():
+    p=Path(x['path']);assert p.stat().st_size==x['bytes'] and h(p.read_bytes())==x['sha256']
+assert r['source_head']==rr['source_head']==lr['sourceSha']==lr['headBefore']==lr['headAfter']==SHA
+assert lr['statusBefore']==lr['statusAfter']==rr['status_before']==rr['status_after']==''
+assert lr['sourceHashesBefore']==lr['sourceHashesAfter'] and lr['sourceCleanRestored'] and lr['sourceHashesUnchanged']
+for p,s in lr['sourceHashesBefore'].items():assert h(blob(p))==s
+assert lr['childReturnCode']==lr['launcherExitCode']==rr['exit_code']==v['officialExitCode']==0
+assert int((L/'.exit-code').read_text())==int((L/'.launcher-exit-code').read_text())==0
+assert lr['CCAbsent'] and lr['PYTHONOPTIMIZEAbsent'] and lr['stackBytes']==rr['stack_bytes']==16777216
+assert h((L/'launcher-code.txt').read_bytes())==lr['launcherSourceSha256']
+assert rr['runner_sha256']==h(blob('geometry-core/domain-decoupling/closeout-tools/run_gates.py'))
+assert len(rr['commands'])==1 and rr['commands'][0]==j(R/'card.command.json') and rr['commands'][0]['exit_code']==0
+argv=rr['commands'][0]['command'];assert 'geometry-core/card-reference/run_mutations.py' in argv and '--only' not in argv and '--child' not in argv
+assert all(x not in argv for x in ('-O','-OO'))
+for key,p in [('test_sha256','tests/test_grid_card_reference.py'),('runner_sha256','geometry-core/card-reference/run_mutations.py'),('confirmation_probe_sha256','geometry-core/card-reference/confirmation_probe.c'),('table_sha256','geometry-core/card-reference/mutations.py')]:assert r[key]==h(blob(p))
+targets={p['path'] for m in table.values() for p in m['patches']}
+assert set(r['source_sha256'])==targets
+for p,s in r['source_sha256'].items():assert h(blob(p))==s
+expected=json.loads(blob('tests/run_all.expected.json'))['suites']['py:test_grid_card_reference']['count'];assert expected==43
+test_tree=ast.parse(blob('tests/test_grid_card_reference.py').decode());cls=next(n for n in test_tree.body if isinstance(n,ast.ClassDef) and n.name=='GridCardReference')
+methods=[n.name for n in cls.body if isinstance(n,ast.FunctionDef) and n.name.startswith('test_')];assert len(methods)==expected
+binary_count=0;binary_bytes=0
+def binary(path,hashvalue):
+    global binary_count,binary_bytes
+    data=path.read_bytes();assert h(data)==hashvalue,str(path);binary_count+=1;binary_bytes+=len(data)
+def compile_check(directory,name):
+    c=j(directory/('compile-'+name+'.command.json'));assert c['exit_code']==0
+    a=c['command'];source='geometry-web/web_bridge.c' if name=='bridge' else 'geometry-core/model_base.c'
+    assert a==['cc','-std=c11','-O0',str(ROOT/source),'-lm','-o',str(directory/name)]
+    assert (directory/('compile-'+name+'.stdout')).is_file() and (directory/('compile-'+name+'.stderr')).is_file()
+def counts(directory,entry,case,green):
+    c=entry['counts'];run=entry['run'];assert c==j(directory/'tests.json') and run==j(directory/'test.command.json')
+    selected=methods if case=='all' else [m for m in methods if m.startswith('test_'+case+'_')]
+    assert selected and c['testsRun']==len(selected)
+    assert c['errors']==c['skips']==c['compile_failures']==c['infrastructure_failures']==0
+    assert run['exit_code']==(0 if green else 1)
+    a=run['command'];assert a[a.index('--case')+1]==case and a[a.index('--result')+1]==str(directory/'tests.json')
+    raw=(directory/'test.stderr').read_text();assert (directory/'test.stdout').is_file()
+    m=re.search(r'Ran (\d+) tests? in',raw);assert m and int(m[1])==c['testsRun']
+    if green:
+        assert c['failures']==0 and c['failure_names']==[] and raw.rstrip().endswith('OK')
+    else:
+        assert c['failures']>0 and len(c['failure_names'])==c['failures'] and 'AssertionError:' in raw
+        assert all(any(name.startswith(method+' ') for method in selected) for name in c['failure_names'])
+        assert all('FAIL: '+name in raw for name in c['failure_names'])
+        match=re.search(r'FAILED \(failures=(\d+)\)',raw);assert match and int(match[1])==c['failures']
+    return selected
+counts(RAW/'baseline',r['baseline'],'all',True)
+for name in ('bridge','model'):
+    compile_check(RAW/'baseline',name);binary(RAW/'baseline'/name,r['baseline'][name+'_sha256'])
+assert len(r['mutants'])==53 and len({m['id'] for m in r['mutants']})==53
+verified=[]
+for m in r['mutants']:
+    case=table[m['id']];directory=RAW/m['id'];assert m['case']==case['case'] and m['patches']==case['patches'] and m['verdict']=='killed'
+    current={p:blob(p).decode().replace('\r\n','\n') for p in targets}
+    for p in case['patches']:
+        assert current[p['path']].count(p['old'])==1
+        current[p['path']]=current[p['path']].replace(p['old'],p['new'],1)
+    changed={p:(current[p].replace('\n','\r\n').encode() if b'\r\n' in blob(p) else current[p].encode()) if p in {x['path'] for x in case['patches']} else blob(p) for p in targets}
+    assert m['mutated_source_sha256']=={p:h(b) for p,b in changed.items()}
+    selected=counts(directory,m['red'],case['case'],False)
+    counts(directory/'restored',m['restored'],case['case'],True)
+    for d,key in [(directory,'binary_sha256'),(directory/'restored','bridge_sha256')]:
+        compile_check(d,'bridge');binary(d/'bridge',m[key] if d==directory else m['restored'][key])
+    assert m['restored']['bridge_sha256']==r['baseline']['bridge_sha256'] and m['restored']['model_sha256']==r['baseline']['model_sha256']
+    if case['model']:
+        for d,s in [(directory,m['model_sha256']),(directory/'restored',m['restored']['model_sha256'])]:compile_check(d,'model');binary(d/'model',s)
+    else:assert m['model_sha256']==r['baseline']['model_sha256']
+    c_changed=any(p['path'].endswith(('.c','.h','.inc')) for p in case['patches'])
+    if c_changed:assert m['binary_sha256']!=r['baseline']['bridge_sha256'] or m['model_sha256']!=r['baseline']['model_sha256']
+    else:assert m['binary_sha256']==r['baseline']['bridge_sha256'] and m['model_sha256']==r['baseline']['model_sha256']
+    verified.append(dict(id=m['id'],case=case['case'],namedTests=selected,redExit=1,redFailures=m['red']['counts']['failures'],restoreExit=0,restoreTests=m['restored']['counts']['testsRun'],mutatedSourceHashReconstructed=True,testHelperMutation=not c_changed,modelRecompiled=case['model']))
+test_mutations=[x['id'] for x in verified if x['testHelperMutation']]
+assert test_mutations==['P146-error-fields','P154-identity-boundary','P154-identity-one-message']
+for stage in ('before','after'):
+    x=j(L/('bridge-'+stage+'.json'));previous=Path(x['previousIndexPath']);assert previous==G/'launcher/controls/bridge-after.json'
+    assert h(previous.read_bytes())==x['previousIndexSha256'] and x['matchesPreviousBytesAndMtimes']
+    prior={Path(z['sourcePath']).name:z for z in j(previous)['files']}
+    for z in x['files']:
+        p=Path(z['preservedPath']);assert p.stat().st_size==z['bytes'] and p.stat().st_mtime_ns==z['sourceMtimeNs'] and h(p.read_bytes())==z['sha256']
+        assert all(z[k]==prior[Path(z['sourcePath']).name][k] for k in ('bytes','sha256','sourceMtimeNs'))
+assert lr['bridgeAfterMatchesBeforeBytesAndMtimes']
+files=[p for p in R.rglob('*') if p.is_file() and 'tmp' not in p.relative_to(R).parts and p.name not in ('bridge','model')]
+report=dict(sourceSha=SHA,phase='card',reviewer='/root/p52_review',reviewedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),accepted=True,validationExitCode=0,blockers=[],
+ result=dict(cases=53,killed=53,baselineTests=43,baselineFailures=0,baselineErrors=0,baselineSkips=0,allRedExit1NamedAssertionFailures=True,allRedNoErrorsSkipsCompileInfrastructureFailures=True,allRestoreExit0=True,restoreScope='每案原指定case，不冒稱每案完整43題。',officialExit=0,runGatesExit=0,launcherWaitExit=0,elapsedSeconds=lr['elapsedSeconds']),
+ commands=dict(actual=argv,fullOriginalTable=True,onlyAbsent=True,compileFlags=['cc','-std=c11','-O0']),
+ sources=dict(headBefore=lr['headBefore'],headAfter=lr['headAfter'],statusBefore=lr['statusBefore'],statusAfter=lr['statusAfter'],phaseBeforeAfterHashesMatchGit=True,targetCount=len(targets),all53MutatedTargetHashesReconstructedFromGit=True,testHelperMutations=test_mutations,gitBlobsRead=len(blobs)),
+ binaries=dict(actualFilesRehashed=binary_count,actualBytesRead=binary_bytes,allMatchRecordedHashes=True,allRestoredHashesMatchBaseline=True,sourceMutationsRequireChangedBridgeOrModel=True,testHelperOnlyMutationsKeepBaselineBinaries=True),
+ bridge=dict(previousPhase='controls',beforeAfterBytesHashMtimeExact=True,preservedCopiesVerified=True),cases=verified,rawFileIndex=[ref(p) for p in sorted(files)],
+ references={k:ref(p) for k,p in [('verification',G/'verification/card.json'),('report',RAW/'report.json'),('runReceipt',R/'run-receipt.json'),('launcherReceipt',L/'receipt.json'),('reviewCode',Path(__file__))]},
+ limits=['依原53表作突變及逐byte還原；三個既有裁判自證會暫改test_grid_card_reference.py，不概稱tests從未變動。','raw errors、skips、compile/infrastructure failure未計killed；53案都由原具名case的AssertionError轉紅。','未取正在執行axiom的工作檔當card歷史來源；使用Git L＋本phase凍結的前後來源紀錄。','工具session實際exit由執行代理另保存；本報告核gate/run_gates/launcher parent.wait原退出鏈。','沒有執行產品或重編binary；僅讀已完成原件與實際binary並核hash。'])
+REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(report=str(REPORT),bytes=REPORT.stat().st_size,sha256=h(REPORT.read_bytes()),validationExitCode=0,cases=53,rawFiles=len(files),binaryFiles=binary_count),ensure_ascii=False))

@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "timeout",
+    "900",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "tests/architecture_contract.py",
+    "--root",
+    ".",
+    "--manifest",
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceBaseHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "startedUtc": "2026-10-21T03:09:08.624704+00:00",
+  "finishedUtc": "2026-10-21T03:09:14.491731+00:00",
+  "seconds": 5.867316299001686,
+  "rawWaitStatus": 0,
+  "exitCode": 0,
+  "stdout": {
+    "path": "prior-manifest/stdout.log",
+    "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+    "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+    "bytes": 132208
+  },
+  "stderr": {
+    "path": "prior-manifest/stderr.log",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  }
+}

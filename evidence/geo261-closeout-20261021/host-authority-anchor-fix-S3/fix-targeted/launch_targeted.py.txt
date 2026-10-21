@@ -1,0 +1,41 @@
+"""以真 wait 管理單輪定向測試；輸出直檔，真碼先落盤。"""
+from pathlib import Path
+import datetime
+import hashlib
+import json
+import os
+import resource
+import signal
+import subprocess
+import sys
+
+D = Path(__file__).resolve().parent
+OUT = D / 'targeted-run01'
+assert __debug__ and sys.flags.optimize == 0
+assert not OUT.exists()
+signal.signal(signal.SIGHUP, signal.SIG_IGN)
+env = os.environ.copy()
+env.pop('CC', None)
+env.pop('PYTHONOPTIMIZE', None)
+env['PYTHONDONTWRITEBYTECODE'] = '1'
+resource.setrlimit(resource.RLIMIT_STACK, (16777216, resource.getrlimit(resource.RLIMIT_STACK)[1]))
+resource.setrlimit(resource.RLIMIT_CORE, (0, resource.getrlimit(resource.RLIMIT_CORE)[1]))
+argv = [sys.executable, '-B', str(D / 'run_targeted.py'), str(OUT)]
+receipt = {'argv': argv, 'cwd': '/workspace/geo261-host-authority-anchor-fix',
+           'started_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+           'HEAD': '249571fe2477845d5330f6190dad965bf327f43b',
+           'dirty_test_sha256': 'a8e56b75390d4ca545077d03af81067517271c5cab0eb601c29a8afea65d4ec2',
+           'runner_sha256': hashlib.sha256((D / 'run_targeted.py').read_bytes()).hexdigest(),
+           'supervisor_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+           'classification': '未提交單檔修復定向驗證；不是未來 S3／L3 正式測試'}
+with (D / 'targeted-supervisor.stdout').open('xb') as out, (D / 'targeted-supervisor.stderr').open('xb') as err:
+    child = subprocess.Popen(argv, cwd=receipt['cwd'], env=env, stdout=out, stderr=err, start_new_session=True)
+    receipt['pid'] = receipt['PGID'] = child.pid
+    (D / 'targeted-start.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
+    code = child.wait()
+    (D / 'targeted.exit-code').write_text(str(code) + '\n')
+receipt['actual_exit_code'] = code
+receipt['finished_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+(D / 'targeted-receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps(receipt, ensure_ascii=False))
+raise SystemExit(code)

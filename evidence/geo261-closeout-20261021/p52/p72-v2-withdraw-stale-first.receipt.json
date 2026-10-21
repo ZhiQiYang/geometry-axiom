@@ -1,0 +1,25 @@
+{
+  "name": "p72-v2-withdraw-stale-first",
+  "sourceSha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+  "command": [
+    "node",
+    "/workspace/geo261-evidence/p52/p72_probe-v2.cjs",
+    "/workspace/geometry-axiom"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18841/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-probe",
+    "XDG_CACHE_HOME": "/tmp/geo261-xdg-probe",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CDP_PORT": "9351",
+    "P72B_NAV_CONTROL": "stale-first",
+    "P72B_WITHDRAW_NAVIGATION": "1"
+  },
+  "startedUtc": "2026-10-20T20:18:51Z",
+  "elapsedSeconds": 38.605220176999865,
+  "exitCode": 1,
+  "expectedExitCode": 1,
+  "load": "主代理放行之獨占瀏覽器驗收；僅在記憶體撤回導航等待，所有原斷言保留"
+}

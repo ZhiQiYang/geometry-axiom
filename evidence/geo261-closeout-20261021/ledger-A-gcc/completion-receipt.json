@@ -1,0 +1,41 @@
+{
+  "completed_utc": "2026-10-20T22:05:47.593733+00:00",
+  "source_sha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "product_parent_sha": "ab6869b86a4ad82345359b72397fc055280d8308",
+  "source_tree": "502024d69976c98f309a3964df1bfb5e5cbcfcc0",
+  "full_phase_receipt": "phase-receipts.json",
+  "full_exit_code": 0,
+  "full_seconds": 2842.216033580001,
+  "read_only_checks_receipt": "recovery-check-receipts.json",
+  "read_only_check_exit_codes": [
+    0,
+    0
+  ],
+  "validation_command": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/ledger-validate-and-package.py"
+  ],
+  "validation_tool_sha256": "754afd5f2054ab1ba4c356bdd0887b5a3e3bb3d55e3747b0ea100738574215de",
+  "validation_exit_code": 0,
+  "ledger_path": "mutants_results.json",
+  "ledger_sha256": "1b8fc87eb83ac5fd5af0589aa48795aa868380d9d5ae35b4c1a8bf7af2175c7d",
+  "ledger_bytes": 5170404,
+  "verdict_counts": {
+    "killed": 70,
+    "equivalent": 4,
+    "crashed": 1,
+    "retired": 3
+  },
+  "monitor_transport_event": "monitor-transport-note.json",
+  "full_writer_restarted": false,
+  "full_writer_count": 1,
+  "supervisor_exit_code": null,
+  "supervisor_end_reason": "原監看通道失聯，full收據已落盤但checks未自動產生；無法取得supervisor退出碼或確切退出原因。",
+  "raw_bridge_output_files": 148,
+  "identity_sidecar_files": 95,
+  "binary_files_in_publication": 0,
+  "source_archive_in_publication": false,
+  "main_repository_modified_by_this_task": false,
+  "full_ledger_regeneration_source_is_A_not_future_L": true
+}

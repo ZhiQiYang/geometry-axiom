@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+"""只讀小型外層收據，對照已完成預檢的原 bytes 指紋；不重掃整包。"""
+import hashlib
+import json
+from pathlib import Path
+
+BASE = Path('/workspace/geo261-evidence')
+OUT = BASE / 'bundle-preflight-after-S2'
+observed = json.loads((OUT / 'file-observations.json').read_bytes())
+sources = [
+    'ledger-cc-7159530c0e49.wzi0t97l-publication-check.json',
+    'ledger-7159530c0e49.y0lrsfpu-publication-check.json',
+    'p189-final-L-package.receipt.json',
+    'p189-codec-candidate-package.receipt.json',
+    'p189-contact-v2-package.receipt.json',
+    'architecture-owned-S2-package-receipt.json',
+]
+rows = []
+for name in sources:
+    source = BASE / name
+    raw = source.read_bytes()
+    digest = hashlib.sha256(raw).hexdigest()
+    matches = [row['path'] for row in observed if row['bytes'] == len(raw) and row['sha256'] == digest]
+    if name.endswith('.receipt.json'):
+        exit_name = name.removesuffix('.receipt.json') + '.exit-code'
+    else:
+        exit_name = name.removesuffix('.json') + '.exit-code'
+    exit_file = BASE / exit_name
+    row = {'sourcePath': str(source), 'bytes': len(raw), 'sha256': digest,
+           'identicalPayloadInCurrentBundle': matches,
+           'state': '原件已存在但尚未以此原 bytes 收錄' if not matches else '原件已以另一位置收錄',
+           'sameStemExitFile': str(exit_file) if exit_file.exists() else None}
+    if exit_file.exists():
+        exit_raw = exit_file.read_bytes()
+        row['exitBytes'] = exit_raw.decode()
+        row['exitSha256'] = hashlib.sha256(exit_raw).hexdigest()
+        row['exitPairNote'] = '即使包內其他任意 0 換行檔有同 hash，也不能取代此收據對應的具名父程序退出原件。'
+    rows.append(row)
+(OUT / 'outer-receipt-observations.json').write_text(json.dumps(rows, ensure_ascii=False, indent=2) + '\n')
+assert all(not row['identicalPayloadInCurrentBundle'] for row in rows)
+summary = json.loads((OUT / 'summary.json').read_bytes())
+assert len(summary['submanifestFindings']) == 1
+finding = summary['submanifestFindings'][0]
+assert finding['index'] == '後續工作/issue300-readonly/原件索引.json'
+assert not any(finding[k] for k in ('missing', 'mismatched', 'invalid'))
+assert finding['unlistedFiles'] == ['後續工作/issue300-readonly/README.md']
+index = json.loads((BASE / 'final-bundle/後續工作/issue300-readonly/原件索引.json').read_bytes())
+assert index['kind'] == '後續只讀盤點封裝，不是 #288 驗收'
+interpretation = {
+    'originalPreflightExitCode': 1,
+    'reason': '預檢接受器把 #300 的五份外部原件索引套成包全集合，因本地新增 README 未列入而回 1。原索引沒有聲稱包含 README 或全包 exact set；這是本次接受器範圍推定過度。',
+    'fiveOriginalHashesMatch': True,
+    'preserved': 'summary.json、result.json、command-code.txt 與 1 真碼保持原件，不重跑全包掃描或改凍結索引。',
+    'acceptedScope': '40 份子清單中 21333 筆引用的內容 hash／bytes 無缺漏或失配，類型／mode／symlink／magic 無問題；#300 README 交由未來總索引覆蓋。',
+    'newReadOnlyInterpretationExitCode': 0,
+    'outerReceiptPayloadsAbsent': len(rows),
+    'stillNotFinal': '尚缺真 L2 證據、最後草稿與總 artifact-index；不宣稱 E2 通過。'}
+(OUT / 'interpretation.json').write_text(json.dumps(interpretation, ensure_ascii=False, indent=2) + '\n')
+(OUT / 'outer-receipts-code.txt').write_bytes(Path(__file__).read_bytes())
+print(json.dumps({'receipts': rows, 'interpretation': interpretation}, ensure_ascii=False, indent=2))

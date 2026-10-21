@@ -1,0 +1,154 @@
+diff --git a/geometry-core/kernel/placement_sources.c b/geometry-core/kernel/placement_sources.c
+index 635da849..e7595a52 100644
+--- a/geometry-core/kernel/placement_sources.c
++++ b/geometry-core/kernel/placement_sources.c
+@@ -89,26 +89,33 @@ static bool geo_pd_loop_read(GeoPDReader *r,GeoRegionLoop *out)
+     for(size_t v=0;v<out->count;++v)if(!geo_pd_coord_read(r,&out->v[v].u)||!geo_pd_coord_read(r,&out->v[v].v))return false;
+     return true;
+ }
+-bool geo_placement_definition_decode(const void *content,size_t size,GeoPlacementDefinition *out)
++/* 只寫入呼叫者私有暫存；失敗可留下部分內容，不得直接傳入公開輸出。 */
++static bool geo_pd_decode_into(const void *content,size_t size,GeoPlacementDefinition *next)
+ {
+-    if(!content||!out||size>GEO_PLACEMENT_DEFINITION_MAX_BYTES)return false;
+-    GeoPDReader r={content,(const unsigned char *)content+size};GeoPlacementDefinition next;memset(&next,0,sizeof next);
++    if(!content||!next||size>GEO_PLACEMENT_DEFINITION_MAX_BYTES)return false;
++    GeoPDReader r={content,(const unsigned char *)content+size};memset(next,0,sizeof *next);
+     uint64_t id,domain,count;GeoVector3 origin;
+-    if(!geo_pd_read(&r,4,&id)||!geo_pd_vector_read(&r,&origin)||!geo_pd_vector_read(&r,&next.frame.axis_u)||
+-       !geo_pd_vector_read(&r,&next.frame.axis_v)||!geo_pd_vector_read(&r,&next.frame.normal)||!geo_pd_read(&r,1,&domain)||domain>GEO_PLACEMENT_REGION_SET)return false;
+-    next.id=(uint32_t)id;next.frame.origin=(GeoPoint3){origin.x,origin.y,origin.z};next.domain=(GeoPlacementDomain)domain;
+-    if(next.domain==GEO_PLACEMENT_RECT){
+-        if(!geo_pd_coord_read(&r,&next.rect.min_u)||!geo_pd_coord_read(&r,&next.rect.min_v)||
+-           !geo_pd_coord_read(&r,&next.rect.max_u)||!geo_pd_coord_read(&r,&next.rect.max_v))return false;
+-    }else if(next.domain==GEO_PLACEMENT_REGION_REF){if(!geo_pd_read(&r,4,&id))return false;next.region_id=(uint32_t)id;}
+-    else{if(!geo_pd_read(&r,4,&count)||count>GEO_PLACEMENT_COMPONENT_CAPACITY)return false;next.component_count=(size_t)count;
+-        for(size_t c=0;c<next.component_count;++c){GeoRegionDefinition *component=&next.components[c];
++    if(!geo_pd_read(&r,4,&id)||!geo_pd_vector_read(&r,&origin)||!geo_pd_vector_read(&r,&next->frame.axis_u)||
++       !geo_pd_vector_read(&r,&next->frame.axis_v)||!geo_pd_vector_read(&r,&next->frame.normal)||!geo_pd_read(&r,1,&domain)||domain>GEO_PLACEMENT_REGION_SET)return false;
++    next->id=(uint32_t)id;next->frame.origin=(GeoPoint3){origin.x,origin.y,origin.z};next->domain=(GeoPlacementDomain)domain;
++    if(next->domain==GEO_PLACEMENT_RECT){
++        if(!geo_pd_coord_read(&r,&next->rect.min_u)||!geo_pd_coord_read(&r,&next->rect.min_v)||
++           !geo_pd_coord_read(&r,&next->rect.max_u)||!geo_pd_coord_read(&r,&next->rect.max_v))return false;
++    }else if(next->domain==GEO_PLACEMENT_REGION_REF){if(!geo_pd_read(&r,4,&id))return false;next->region_id=(uint32_t)id;}
++    else{if(!geo_pd_read(&r,4,&count)||count>GEO_PLACEMENT_COMPONENT_CAPACITY)return false;next->component_count=(size_t)count;
++        for(size_t c=0;c<next->component_count;++c){GeoRegionDefinition *component=&next->components[c];
+             if(!geo_pd_read(&r,4,&id)||!geo_pd_loop_read(&r,&component->outline)||!geo_pd_read(&r,4,&count)||count>GEO_REGION_MAX_HOLES)return false;
+             component->id=(uint32_t)id;component->hole_count=(size_t)count;
+             for(size_t h=0;h<component->hole_count;++h)if(!geo_pd_loop_read(&r,&component->holes[h]))return false;
+         }
+     }
+-    if(r.p!=r.end)return false;memcpy(out,&next,sizeof next);return true;
++    if(r.p!=r.end)return false;return true;
++}
++bool geo_placement_definition_decode(const void *content,size_t size,GeoPlacementDefinition *out)
++{
++    if(!out)return false;GeoPlacementDefinition next;
++    if(!geo_pd_decode_into(content,size,&next))return false;
++    memcpy(out,&next,sizeof next);return true;
+ }
+ GeoSourceRef geo_placement_source_ref(GeoProviderToken token,GeoPlacementSourceKind kind,uint32_t id,GeoPlacementSourceKey *key)
+ {key->bytes[0]=(unsigned char)kind;geo_source_u32(key->bytes+1,id);return (GeoSourceRef){token,key->bytes,sizeof key->bytes};}
+@@ -194,7 +201,7 @@ bool geo_placement_sources_definition(GeoPlacementSources *s,uint32_t id,GeoPlac
+     if(geo_eval_source(s->graph,geo_placement_source_ref(s->placement_token,GEO_PLACEMENT_SOURCE_DEFINITION,id,&key),
+         GEO_DEPENDENCY_DEFINITION_REQUIRED,&value)!=GEO_SOURCE_OK||value.kind!=GEO_SOURCE_DEFINITION||
+         !value.as.definition.schema||strcmp(value.as.definition.schema,GEO_PLACEMENT_DEFINITION_SCHEMA)||
+-        !geo_placement_definition_decode(value.as.definition.content,value.as.definition.content_size,&result)||result.id!=id)return false;
++        !geo_pd_decode_into(value.as.definition.content,value.as.definition.content_size,&result)||result.id!=id)return false;
+     memcpy(out,&result,sizeof result);return true;
+ }
+ void geo_placement_sources_destroy(GeoPlacementSources *sources)
+diff --git a/tests/geo261_placement_definition_harness.c b/tests/geo261_placement_definition_harness.c
+index ded36d47..3c26a775 100644
+--- a/tests/geo261_placement_definition_harness.c
++++ b/tests/geo261_placement_definition_harness.c
+@@ -101,6 +101,21 @@ static int bounds_case(void)
+     p.components[0].outline.count=GEO_LOOP_MAX_VERTICES;p.components[0].holes[0].count=GEO_LOOP_MAX_VERTICES+1;CHECK(encode_rejects(&p,sizeof bytes),"oversized-hole-loop-encode-is-atomic");
+     return 0;
+ }
++static int overlap_case(void)
++{
++    Vector v;GeoPlacementDefinition out,want;
++    for(int domain=0;domain<=2;++domain){fixed_vector(&v,domain);expected(&want,domain);
++        for(size_t offset=0;offset<=1;++offset){
++            unsigned char *wire=(unsigned char *)&out+offset;
++            memset(&out,0xa5,sizeof out);memcpy(wire,v.bytes,v.size);
++            CHECK(geo_placement_definition_decode(wire,v.size,&out)&&!memcmp(&out,&want,sizeof out),"overlapping-wire-decodes-before-output-write");
++            memset(&out,0xa5,sizeof out);memcpy(wire,v.bytes,v.size);
++            GeoPlacementDefinition before;memcpy(&before,&out,sizeof before);
++            CHECK(!geo_placement_definition_decode(wire,v.size-1,&out)&&!memcmp(&out,&before,sizeof out),"overlapping-truncated-wire-preserves-output");
++        }
++    }
++    return 0;
++}
+ static int malformed_case(void)
+ {
+     Vector v;GeoPlacementDefinition p;
+@@ -302,6 +317,7 @@ int main(int argc,char **argv)
+ {
+     if(argc!=2)return 2;
+     if(!strcmp(argv[1],"keys"))return keys_case();if(!strcmp(argv[1],"codec"))return codec_case();
++    if(!strcmp(argv[1],"overlap"))return overlap_case();
+     if(!strcmp(argv[1],"bounds"))return bounds_case();if(!strcmp(argv[1],"malformed"))return malformed_case();
+     if(!strcmp(argv[1],"definition"))return definition_case();if(!strcmp(argv[1],"typed"))return typed_case();
+     if(!strcmp(argv[1],"typed-invalid"))return typed_invalid_case();if(!strcmp(argv[1],"lifecycle"))return lifecycle_case();
+diff --git a/tests/test_geo261_placement_definition.py b/tests/test_geo261_placement_definition.py
+index fb72a6a5..060e015a 100644
+--- a/tests/test_geo261_placement_definition.py
++++ b/tests/test_geo261_placement_definition.py
+@@ -46,10 +46,11 @@ CONTROLS = (
+     ("component-order", "geo_placement_definition_encode", "&definition->components[c]", "&definition->components[definition->component_count-1-c]", "codec", "ordered-components-exact-canonical-wire"),
+     ("loop-order", "geo_pd_loop_write", "loop->v[v].u", "loop->v[loop->count-1-v].u", "codec", "ordered-components-exact-canonical-wire"),
+     ("encode-capacity", "geo_placement_definition_encode", "if(size>capacity)", "if(false)", "bounds", "short-encode-capacity-is-atomic"),
+-    ("decode-full-capacity", "geo_placement_definition_decode", "size>GEO_PLACEMENT_DEFINITION_MAX_BYTES", "size>=GEO_PLACEMENT_DEFINITION_MAX_BYTES", "bounds", "maximal-definition-decodes-exactly"),
+-    ("domain-tag", "geo_placement_definition_decode", "||domain>GEO_PLACEMENT_REGION_SET", "||false", "malformed", "unknown-domain-output-is-atomic"),
+-    ("trailing", "geo_placement_definition_decode", "if(r.p!=r.end)", "if(false)", "malformed", "trailing-definition-output-is-atomic"),
+-    ("atomic-decode", "geo_placement_definition_decode", "GeoPDReader r={content,", "memset(out,0,sizeof *out);GeoPDReader r={content,", "malformed", "truncated-definition-output-is-atomic"),
++    ("decode-full-capacity", "geo_pd_decode_into", "size>GEO_PLACEMENT_DEFINITION_MAX_BYTES", "size>=GEO_PLACEMENT_DEFINITION_MAX_BYTES", "bounds", "maximal-definition-decodes-exactly"),
++    ("domain-tag", "geo_pd_decode_into", "||domain>GEO_PLACEMENT_REGION_SET", "||false", "malformed", "unknown-domain-output-is-atomic"),
++    ("trailing", "geo_pd_decode_into", "if(r.p!=r.end)", "if(false)", "malformed", "trailing-definition-output-is-atomic"),
++    ("atomic-decode", "geo_placement_definition_decode", "GeoPlacementDefinition next;", "memset(out,0,sizeof *out);GeoPlacementDefinition next;", "malformed", "truncated-definition-output-is-atomic"),
++    ("overlap-decode", "geo_placement_definition_decode", "GeoPlacementDefinition next;", "return geo_pd_decode_into(content,size,out);GeoPlacementDefinition next;", "overlap", "overlapping-wire-decodes-before-output-write"),
+     ("raw-accessor", "geo_placement_sources_definition", "memcpy(out,&result,sizeof result)", "*out=*geo_placements_find(s->placements,id)", "typed", "returned-definition-overrides-raw-placement"),
+     ("identity", "geo_placement_sources_definition", "||result.id!=id", "", "typed-invalid", "replacement-id-mismatch-is-atomic"),
+     ("schema", "geo_placement_sources_definition", "strcmp(value.as.definition.schema,GEO_PLACEMENT_DEFINITION_SCHEMA)", "false", "typed-invalid", "replacement-schema-mismatch-is-atomic"),
+@@ -76,7 +77,7 @@ class PlacementDefinitionBoundary(unittest.TestCase):
+ 
+     def test_definition_access_does_not_force_geometry_or_apply_geometry_validation(self):
+         source = (KERNEL / "placement_sources.c").read_text(encoding="utf-8")
+-        for name in ("geo_placement_definition_encode", "geo_placement_definition_decode", "geo_placement_sources_register", "geo_placement_sources_describe"):
++        for name in ("geo_placement_definition_encode", "geo_pd_decode_into", "geo_placement_definition_decode", "geo_placement_sources_register", "geo_placement_sources_describe"):
+             self.assertNotRegex(definition(source, name), r"geo_(?:eval_(?:source|depend|describe)|frame_is_valid|placement_is_valid|region_is_valid)\(")
+         accessor = definition(source, "geo_placement_sources_definition")
+         self.assertIn("GEO_DEPENDENCY_DEFINITION_REQUIRED", accessor)
+@@ -94,8 +95,8 @@ class PlacementDefinitionBoundary(unittest.TestCase):
+                 self.assertNotEqual(before, after)
+                 self.assertEqual(1, harness.count('"' + marker + '"'))
+                 self.assertIn('"' + case + '"', harness)
+-        self.assertEqual(20, len(CONTROLS))
+-        self.assertEqual(20, len({row[0] for row in CONTROLS}))
++        self.assertEqual(21, len(CONTROLS))
++        self.assertEqual(21, len({row[0] for row in CONTROLS}))
+ 
+ 
+ class NativePlacementDefinition(unittest.TestCase):
+@@ -116,7 +117,9 @@ class NativePlacementDefinition(unittest.TestCase):
+         self.assertEqual("", run.stdout)
+ 
+     def test_fixed_kind_three_and_legacy_source_keys(self): self.case("keys")
+-    def test_independent_vectors_cover_all_active_fields_and_invalid_geometry(self): self.case("codec")
++    def test_independent_vectors_cover_all_active_fields_and_invalid_geometry(self):
++        self.case("codec")
++        self.case("overlap")
+     def test_capacity_edges_and_encode_failures_preserve_output(self): self.case("bounds")
+     def test_all_truncations_trailing_tags_and_counts_preserve_output(self): self.case("malformed")
+     def test_definition_description_reads_and_owned_bytes_do_not_evaluate_geometry(self): self.case("definition")
+@@ -137,7 +140,7 @@ class NativePlacementDefinition(unittest.TestCase):
+         linked = [Path(arg) for arg in links[0]["arguments"] if Path(arg).suffix in (".o", ".obj")]
+         self.assertEqual(self.objects, linked)
+ 
+-    def test_twenty_controls_fail_exact_assertions_between_restored_baselines(self):
++    def test_twenty_one_controls_fail_exact_assertions_between_restored_baselines(self):
+         build = kernel_only_native()
+         original_path = build.kernel / "placement_sources.c"
+         original_bytes = original_path.read_bytes()

@@ -1,0 +1,17 @@
+--- 已驗原碼
++++ 新來源實例
+@@ -1,10 +1,10 @@
+ import os,sys,json,time,signal,ctypes,resource,hashlib,subprocess,datetime
+ from pathlib import Path
+-cwd=Path("/workspace/geo261-native-l")
+-out=Path("/workspace/geo261-evidence/native-final")
+-expected="43f85313c32410ac01406ab585846bbacafea278"
++cwd=Path('/workspace/geo261-native-l3-6589248c9a94-20261021')
++out=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native')
++expected='6589248c9a94bdf0460d8f84dd1610e51048188b'
+ command=["timeout","2100","python3","tests/run_all.py","--build"]
+-env={"PYTHONDONTWRITEBYTECODE":"1","LANG":"C.UTF-8","LC_ALL":"C.UTF-8","TMPDIR":"/tmp/geo261-native-l-43f85313"}
++env={"PYTHONDONTWRITEBYTECODE":"1","LANG":"C.UTF-8","LC_ALL":"C.UTF-8","TMPDIR":'/tmp/geo261-native-l3-6589248c9a94-20261021'}
+ os.chdir(cwd)
+ os.environ.update(env)
+ def utc(): return datetime.datetime.now(datetime.timezone.utc).isoformat()

@@ -1,0 +1,31 @@
+{
+  "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B /workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py --probe-owned-dependency /workspace/geometry-axiom /workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json geometry-core/domain-decoupling/closeout-tools/p73_probe.js",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
+    "--probe-owned-dependency",
+    "/workspace/geometry-axiom",
+    "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
+    "geometry-core/domain-decoupling/closeout-tools/p73_probe.js"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceBaseHead": "ab6869b86a4ad82345359b72397fc055280d8308",
+  "startedUtc": "2026-10-20T21:10:32.574859+00:00",
+  "finishedUtc": "2026-10-20T21:10:33.291339+00:00",
+  "seconds": 0.717,
+  "complete": true,
+  "exitCode": 1,
+  "stdout": {
+    "path": "owned-dependency-0/stdout.log",
+    "rawSha256": "3c07204fc65a6afc6d8953f1a273c59007496a91e355c480a1208c90ccc38ed9",
+    "lfSha256": "3c07204fc65a6afc6d8953f1a273c59007496a91e355c480a1208c90ccc38ed9",
+    "bytes": 16500
+  },
+  "stderr": {
+    "path": "owned-dependency-0/stderr.log",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  }
+}

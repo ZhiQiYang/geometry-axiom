@@ -1,0 +1,78 @@
+{
+  "sourceSha": "1126991c9dbd3de92d8cce6eab2419f8f7970e34",
+  "sourceBranch": "fix/framing-oracle-review-20261020",
+  "notPr288Source": true,
+  "startedUtc": "2026-10-20T21:34:09.740812+00:00",
+  "finishedUtc": "2026-10-20T21:34:10.807158+00:00",
+  "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "checks": [
+    {
+      "name": "git-head",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "receipt": "runs/git-head/receipt.json"
+    },
+    {
+      "name": "git-status-before",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "receipt": "runs/git-status-before/receipt.json"
+    },
+    {
+      "name": "remote-head",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "receipt": "runs/remote-head/receipt.json"
+    },
+    {
+      "name": "git-history",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "receipt": "runs/git-history/receipt.json"
+    },
+    {
+      "name": "git-diff-stat",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "receipt": "runs/git-diff-stat/receipt.json"
+    },
+    {
+      "name": "git-diff-paths",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "receipt": "runs/git-diff-paths/receipt.json"
+    },
+    {
+      "name": "git-ssot-and-runner-unchanged",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "receipt": "runs/git-ssot-and-runner-unchanged/receipt.json"
+    },
+    {
+      "name": "pure-counterexample",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "receipt": "runs/pure-counterexample/receipt.json"
+    },
+    {
+      "name": "static-checks",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "receipt": "runs/static-checks/receipt.json"
+    },
+    {
+      "name": "git-status-after",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "receipt": "runs/git-status-after/receipt.json"
+    }
+  ],
+  "exitCode": 0,
+  "fullSuiteRun": false,
+  "nativeCompiled": false,
+  "browserRun": false,
+  "productModified": false,
+  "reportBytesUnchanged": true,
+  "initialToolOutputHadNoStandaloneRawFile": true,
+  "historicalRawNotSynthesized": true
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "只讀來源核對，非產品測試",
+  "note": "第一輪後只把報告一個簡體字改為繁體，第二輪重新核對來源與最終文件 hash；兩輪均為本次輕量讀取，不是產品測試。",
+  "runs": [
+    {
+      "kind": "只讀來源核對，非產品測試",
+      "command": "python3 /workspace/geo261-evidence/issue300-readonly-source-check.code.txt",
+      "exit": 0,
+      "stdout": "{\"result\": \"來源核對完成\", \"handoffDraftFiles\": 14, \"handoffFilesChecked\": 20, \"gitBlobsChecked\": 33, \"manifest\": \"/workspace/geo261-evidence/issue300-readonly-sources.json\", \"manifestSha256\": \"3e86e66aceafa1071de521bfdb7b37ae86686300889bc91306644facc36ce75c\", \"reportSha256\": \"dcb9629e4bcf7c740ef14ef2b56db72669b19a01ccafe104d625290e8f1d68cc\", \"benchNotesSha256\": \"d565c902f54bdc8ca19e68ca30636ad0d41fbc67fd619669289e43b35e7a2b33\"}\n",
+      "wallTimeSeconds": 0.144521011,
+      "sourceCommand": "/workspace/geo261-evidence/issue300-readonly-source-check.code.txt"
+    },
+    {
+      "command": "python3 /workspace/geo261-evidence/issue300-readonly-source-check.code.txt",
+      "exit": 0,
+      "stdout": "{\"result\": \"來源核對完成\", \"handoffDraftFiles\": 14, \"handoffFilesChecked\": 20, \"gitBlobsChecked\": 33, \"manifest\": \"/workspace/geo261-evidence/issue300-readonly-sources.json\", \"manifestSha256\": \"46660f0a99d21af654ffdac245581e23fb4cbb33ce9821fdca57db4693e933cb\", \"reportSha256\": \"8081e0837884e9f3824efc21de6c4348bce1317956ccc63e8fb297cfcfe8d774\", \"benchNotesSha256\": \"d565c902f54bdc8ca19e68ca30636ad0d41fbc67fd619669289e43b35e7a2b33\"}\n",
+      "wallTimeSeconds": 0.098024719,
+      "sourceCommand": "/workspace/geo261-evidence/issue300-readonly-source-check.code.txt"
+    }
+  ]
+}
+

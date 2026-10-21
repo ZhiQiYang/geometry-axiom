@@ -1,0 +1,16 @@
+{
+  "provenance": "實際工具回覆已知欄位的事後轉錄；不是自動保存的 transport 日誌。",
+  "package": {
+    "command": "python3 -B /workspace/geo261-evidence/gates-l-independent-package-code.txt",
+    "chunk_id": "31c7fb",
+    "wall_time_seconds": 0.277614836,
+    "exit_code": 0
+  },
+  "checksums": {
+    "command": "sha256sum -c SHA256SUMS > /workspace/geo261-evidence/gates-l-independent-bundle-checksums.log",
+    "cwd": "/workspace/geo261-evidence/final-bundle/gates-l-independent-review",
+    "chunk_id": "e10f50",
+    "wall_time_seconds": 6.7361e-05,
+    "exit_code": 0
+  }
+}

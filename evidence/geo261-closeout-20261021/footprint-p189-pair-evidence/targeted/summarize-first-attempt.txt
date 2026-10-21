@@ -1,0 +1,50 @@
+"""唯讀核對 footprint 定向原件及精確三檔差異。"""
+from pathlib import Path
+import hashlib
+import json
+import subprocess
+
+ROOT=Path('/workspace/geo261-host-copy-candidate')
+OUT=Path(__file__).resolve().parent
+BASE='75f587a5e96dbd1460cf1d9be781ca6fa06fd993'
+files=['geometry-app/native/reference_sources.inc','tests/geo261_host_facts_authority_harness.c','tests/test_geo261_host_facts_authority.py']
+before=json.loads((OUT/'source-before.json').read_text())
+after=json.loads((OUT/'source-after.json').read_text())
+assert before==after
+for name,digest in before.items():assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest,name
+changed=subprocess.run(['git','diff','--name-only'],cwd=ROOT,capture_output=True,text=True,check=True).stdout.splitlines()
+assert set(changed)==set(files),changed
+old=subprocess.run(['git','show',BASE+':'+files[0]],cwd=ROOT,capture_output=True,check=True).stdout
+new=(ROOT/files[0]).read_bytes()
+start=b'static bool reference_member_footprint('
+end=b'static void reference_region_geometry('
+old_function=old.split(start,1)[1].split(end,1)[0]
+new_function=new.split(start,1)[1].split(end,1)[0]
+suffix=b'    uint32_t id=world->wood.timbers[index].id;'
+assert old_function.split(suffix,1)[1]==new_function.split(suffix,1)[1]
+assert old.split(start,1)[0]==new.split(start,1)[0]
+assert old.split(end,1)[1]==new.split(end,1)[1]
+commands=json.loads((OUT/'targeted-commands.json').read_text())
+negatives=[]
+for row in commands:
+    assert 'exception' not in row,row
+    for stream in ('stdout','stderr'):
+        if stream in row:
+            meta=row[stream];data=(OUT/meta['path']).read_bytes()
+            assert len(data)==meta['bytes'] and hashlib.sha256(data).hexdigest()==meta['sha256']
+    if row['returncode']:
+        assert row['returncode']==1,row
+        negatives.append({'index':row['index'],'command':row['command'],'stderr':(OUT/row['stderr']['path']).read_text()})
+patch=subprocess.run(['git','diff','--',*files],cwd=ROOT,capture_output=True,check=True).stdout
+(OUT/'candidate.patch').write_bytes(patch)
+for name in files:(OUT/('source-'+Path(name).name+'.txt')).write_bytes((ROOT/name).read_bytes())
+summary={'base':BASE,'changedFiles':files,'sourceCount':len(before),'sourceHashesUnchanged':True,
+         'changedSourceHashes':{name:before[name] for name in files},'returnedDefinitionThroughFaceSuffixUnchanged':True,
+         'outsideFootprintFunctionUnchanged':True,'patchSha256':hashlib.sha256(patch).hexdigest(),
+         'commandCount':len(commands),'nonzeroCommands':negatives,
+         'targeted':json.loads((OUT/'targeted-result.json').read_text()),
+         'limitations':['等價範圍為合法 placement store（count 不超過 capacity）；未擴改損毀內部 store 的防禦行為。',
+                        '本次未量測性能，沒有重跑完整七項；未新增 memo、API、容量或 P177 流程。',
+                        '暫存控制檔由 NativeBuild 清除；命中依唯一錨點、原 compile/link 0 與具名 stderr/退出碼鏈。']}
+(OUT/'verification-summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({k:summary[k] for k in ('sourceCount','changedSourceHashes','patchSha256','commandCount','returnedDefinitionThroughFaceSuffixUnchanged')},ensure_ascii=False))

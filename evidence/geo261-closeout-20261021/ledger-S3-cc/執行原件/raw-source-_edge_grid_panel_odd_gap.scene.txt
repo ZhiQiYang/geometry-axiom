@@ -1,0 +1,3 @@
+# GEO-100:縫寬 21 是奇數 → 中心線不是整數 → 拒絕不猜(D1、R3、D10a)。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 3600,0 3600,3000 0,3000
+grid 1 on 1 u panel 400 gap 21

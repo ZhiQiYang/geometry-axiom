@@ -1,0 +1,6 @@
+開始 committed-normal
+Traceback (most recent call last):
+  File "/workspace/geo261-evidence/p52/run_committed_controls.py", line 93, in <module>
+    assert after['sha'] == COMMIT and after['sourceSha256'] == SOURCE_HASH and after['probeSha256'] == PROBE_HASH, '測試中正式來源版本變更'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 測試中正式來源版本變更

@@ -1,0 +1,9 @@
+# GEO-092 I19:主支端面頂 RC(外輪廓邊)→ V_CUT_PRIORITY
+# 邊界材是 RC 錨定層,主支端面只能頂邊界材側面,不得直接頂 RC。
+# e2 沒有邊界材 → 主支終點頂到 RC 外輪廓邊 → 拒絕
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+grid 1 on 1 u 2000
+timber 1 20 20 role boundary
+timber 2 27 33 role primary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-line grid 1 u 0 +v +n

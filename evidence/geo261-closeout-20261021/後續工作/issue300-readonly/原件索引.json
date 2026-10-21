@@ -1,0 +1,46 @@
+{
+  "kind": "後續只讀盤點封裝，不是 #288 驗收",
+  "packagedUtc": "2026-10-20T22:51:16.816532+00:00",
+  "files": [
+    {
+      "source": "/workspace/geo261-evidence/issue300-readonly-plan.md",
+      "file": "issue300-readonly-plan.md",
+      "bytes": 18469,
+      "sha256": "8081e0837884e9f3824efc21de6c4348bce1317956ccc63e8fb297cfcfe8d774",
+      "byteIdentical": true
+    },
+    {
+      "source": "/workspace/geo261-evidence/issue300-bench-static-notes.md",
+      "file": "issue300-bench-static-notes.md",
+      "bytes": 12946,
+      "sha256": "d565c902f54bdc8ca19e68ca30636ad0d41fbc67fd619669289e43b35e7a2b33",
+      "byteIdentical": true
+    },
+    {
+      "source": "/workspace/geo261-evidence/issue300-readonly-sources.json",
+      "file": "issue300-readonly-sources.json",
+      "bytes": 16365,
+      "sha256": "46660f0a99d21af654ffdac245581e23fb4cbb33ce9821fdca57db4693e933cb",
+      "byteIdentical": true
+    },
+    {
+      "source": "/workspace/geo261-evidence/issue300-readonly-source-check.code.txt",
+      "file": "issue300-readonly-source-check.code.txt",
+      "bytes": 4524,
+      "sha256": "bed7a8af0259124e64a361a979930e9aa598e7e36380054ac9c451d366cc8dde",
+      "byteIdentical": true
+    },
+    {
+      "source": "/workspace/geo261-evidence/issue300-readonly-source-check.receipt.json",
+      "file": "issue300-readonly-source-check.receipt.json",
+      "bytes": 1778,
+      "sha256": "491b16c102cfb7a50e04282fa01f4baa4b2ae80ad48f9709d1886a37ef0bb41a",
+      "byteIdentical": true
+    }
+  ],
+  "limits": [
+    "沒有複製 handoff patch、產品或可執行檔；code.txt 是本次只讀指紋核對的文字原件",
+    "來源及結束碼只表示只讀核對，不冒作 benchmark、測試、突變或編譯",
+    "原件來源路徑不改寫；缺少舊 raw 不補造"
+  ]
+}

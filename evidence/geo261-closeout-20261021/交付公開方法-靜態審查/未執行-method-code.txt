@@ -1,0 +1,111 @@
+"""提交已凍結的資料集合，通過原 E 驗證器後才正常推送自己的候選分支。"""
+import argparse
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+if sys.flags.optimize:
+    raise RuntimeError('不可停用交付檢查。')
+p = argparse.ArgumentParser(description=__doc__)
+p.add_argument('--source-head', required=True)
+p.add_argument('--review', required=True)
+p.add_argument('--review-sha256', required=True)
+p.add_argument('--snapshot', required=True)
+p.add_argument('--verifier', required=True)
+p.add_argument('--verifier-sha256', required=True)
+p.add_argument('--out', required=True)
+p.add_argument('--execute', action='store_true')
+a = p.parse_args()
+if not a.execute:
+    raise SystemExit('未指定 --execute；沒有改檔或提交。')
+assert re.fullmatch('[0-9a-f]{40}', a.source_head)
+assert re.fullmatch('[0-9a-f]{64}', a.review_sha256)
+assert re.fullmatch('[0-9a-f]{64}', a.verifier_sha256)
+ROOT = Path('/workspace/geometry-axiom')
+BRANCH = 'codex/geo261-closeout-20261021'
+REL = 'evidence/geo261-closeout-20261021'
+OUT = Path(a.out).resolve()
+assert not OUT.exists() and OUT != ROOT and ROOT not in OUT.parents
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+review_raw = Path(a.review).read_bytes()
+assert sha(review_raw) == a.review_sha256
+review = json.loads(review_raw)
+assert review['schema'] == 'geo261-E-review/1' and review['sourceL'] == a.source_head
+assert review['root'] == REL and review['indexPath'] == 'artifact-index.json'
+assert set(review['config']) == {'.gitignore', '.gitattributes'}
+assert sha(Path(a.verifier).read_bytes()) == a.verifier_sha256
+assert Path(a.snapshot).is_file()
+OUT.mkdir(parents=True)
+commands = []
+env = os.environ.copy()
+for name in list(env):
+    if name in ('CC', 'PYTHONOPTIMIZE') or name.startswith(('MUTATE_', 'GEOMETRY_')):
+        del env[name]
+def dump(path, value):
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+def run(label, *argv):
+    started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    r = subprocess.run(argv, cwd=ROOT, env=env, stdin=subprocess.DEVNULL,
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (OUT / (label + '.stdout')).write_bytes(r.stdout)
+    (OUT / (label + '.stderr')).write_bytes(r.stderr)
+    (OUT / (label + '.exit-code')).write_text(str(r.returncode) + '\n')
+    commands.append({'label':label, 'argv':list(argv), 'exitCode':r.returncode, 'startedUtc':started,
+                     'finishedUtc':datetime.datetime.now(datetime.timezone.utc).isoformat()})
+    dump(OUT / 'commands.json', commands)
+    assert r.returncode == 0, (label, r.returncode)
+    return r.stdout
+def git(label, *args):
+    return run(label, 'git', *args)
+assert git('head-before', 'rev-parse', 'HEAD').decode().strip() == a.source_head
+assert git('branch', 'branch', '--show-current').decode().strip() == BRANCH
+assert git('remote-before', 'ls-remote', '--heads', 'origin', 'refs/heads/' + BRANCH).decode().strip() == a.source_head + '\trefs/heads/' + BRANCH
+assert git('staged-before', 'diff', '--cached', '--name-only', '-z') == b''
+paths = {REL + '/' + row['path'] for row in review['files']} | set(review['config'])
+assert len(paths) == len(review['files']) + 2
+assert all(not Path(row['path']).is_absolute() and '..' not in Path(row['path']).parts for row in review['files'])
+for row in review['files']:
+    path = ROOT / REL / row['path']
+    assert path.is_file() and not path.is_symlink()
+    raw = path.read_bytes()
+    assert len(raw) == row['bytes'] and sha(raw) == row['sha256']
+for name, cfg in review['config'].items():
+    raw = (ROOT / name).read_bytes()
+    assert len(raw) == cfg['afterBytes'] and sha(raw) == cfg['afterSha256']
+changed = git('working-files', 'diff', '--name-only', '-z').split(b'\0')
+assert set(x.decode() for x in changed if x) == set(review['config'])
+unknown = git('untracked-files', 'ls-files', '--others', '--exclude-standard', '-z').split(b'\0')
+assert set(x.decode() for x in unknown if x) == paths - set(review['config'])
+git('diff-check', 'diff', '--check')
+git('add', 'add', '--', '.gitignore', '.gitattributes', REL)
+staged = git('staged-files', 'diff', '--cached', '--name-only', '-z').split(b'\0')
+assert set(x.decode() for x in staged if x) == paths
+git('staged-check', 'diff', '--cached', '--check')
+git('commit', 'commit', '-m', 'docs: publish GEO-261 closeout evidence and review replies')
+E = git('head-after', 'rev-parse', 'HEAD').decode().strip()
+assert E != a.source_head
+assert git('parent', 'rev-parse', 'HEAD^').decode().strip() == a.source_head
+assert git('status-after', 'status', '--porcelain=v1', '--untracked-files=all') == b''
+dump(OUT / 'commit.json', {'sourceL':a.source_head, 'evidenceE':E, 'branch':BRANCH,
+                          'reviewSha256':a.review_sha256, 'verifierSha256':a.verifier_sha256,
+                          'scope':'E 已提交，原只讀驗證與推送尚待執行；不宣稱產品在 E 重跑。'})
+run('verify-E', 'python3', '-B', str(Path(a.verifier).resolve()), '--root', str(ROOT),
+    '--expected-e', E, '--snapshot-l', str(Path(a.snapshot).resolve()),
+    '--review-file', str(Path(a.review).resolve()), '--review-sha256', a.review_sha256)
+assert git('head-after-verify', 'rev-parse', 'HEAD').decode().strip() == E
+assert git('status-after-verify', 'status', '--porcelain=v1', '--untracked-files=all') == b''
+git('push', 'push', 'origin', 'HEAD:refs/heads/' + BRANCH)
+assert git('remote-after', 'ls-remote', '--heads', 'origin', 'refs/heads/' + BRANCH).decode().strip() == E + '\trefs/heads/' + BRANCH
+receipt = {'schema':'geo261-E-publication/1', 'sourceL':a.source_head, 'evidenceE':E, 'branch':BRANCH,
+           'reviewSha256':a.review_sha256, 'verifierSha256':a.verifier_sha256,
+           'verifyExitCode':0, 'pushExitCode':0, 'remoteExact':True,
+           'finishedUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+           'commands':commands, 'scope':'只有自己的候選分支一般推送；PR 來源／正文／留言／合併仍由使用者執行。'}
+dump(OUT / 'receipt.json', receipt)
+print(json.dumps({'sourceL':a.source_head, 'evidenceE':E, 'branch':BRANCH, 'verifyExitCode':0, 'remoteExact':True}, ensure_ascii=False))

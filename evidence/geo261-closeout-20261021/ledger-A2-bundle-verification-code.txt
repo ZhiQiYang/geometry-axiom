@@ -1,0 +1,25 @@
+from pathlib import Path
+import hashlib,json,stat,datetime
+root=Path('/workspace/geo261-evidence/final-bundle/ledger-A2-cc')
+sha=lambda data:hashlib.sha256(data).hexdigest()
+rows=json.loads((root/'原件清單.json').read_bytes())
+for row in rows:
+ original=Path(row['source']).read_bytes();copied=(root/row['path']).read_bytes()
+ assert original==copied and len(copied)==row['bytes'] and sha(copied)==row['sha256'],row['path']
+files=[p for p in root.rglob('*') if p.is_file()]
+actual={p.relative_to(root).as_posix() for p in files}
+assert actual=={r['path'] for r in rows}|{'原件清單.json','未收錄清單.json','README.md','來源對照.md','SHA256SUMS'}
+sums={}
+for line in (root/'SHA256SUMS').read_text().splitlines():
+ digest,path=line.split('  ',1);assert path not in sums;sums[path]=digest
+assert set(sums)==actual-{'SHA256SUMS'}
+for p in files:
+ assert not p.is_symlink() and stat.S_IMODE(p.stat().st_mode)==0o644
+ assert p.suffix not in {'.py','.js','.cjs'}
+ raw=p.read_bytes();raw.decode('utf-8')
+ assert not raw.startswith((b'\x7fELF',b'MZ',b'\x00asm'))
+ rel=p.relative_to(root).as_posix()
+ if rel!='SHA256SUMS':assert sha(raw)==sums[rel]
+r={'completed_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'destination':str(root),'verification_exit_code':0,'originals_checked':len(rows),'files':len(files),'bytes':sum(p.stat().st_size for p in files),'checksums_checked':len(sums),'source_bytes_and_hashes_equal':True,'root_index_exact_set':True,'all_mode_0644':True,'no_executable_extensions_or_magic':True,'all_utf8':True,'index_sha256':sha((root/'原件清單.json').read_bytes()),'sums_sha256':sha((root/'SHA256SUMS').read_bytes()),'產品測試重跑':False,'備註':'此為封裝原件/索引核對，與正式 ledger 命令結果分開；沒有更動凍結包。'}
+Path('/workspace/geo261-evidence/ledger-A2-bundle-verification.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(r,ensure_ascii=False))

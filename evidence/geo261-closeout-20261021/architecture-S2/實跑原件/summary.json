@@ -1,0 +1,318 @@
+{
+  "sourceHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "exitCode": 0,
+  "counts": {
+    "executableFiles": 611,
+    "ownedSources": 333,
+    "exclusions": 278,
+    "edges": 796,
+    "diagnostics": 0,
+    "layers": {
+      "H": 191,
+      "K": 69,
+      "W": 67,
+      "vendor": 6
+    },
+    "languages": {
+      "c": 190,
+      "javascript": 64,
+      "python": 75,
+      "html": 4
+    },
+    "forbiddenIdentifiers": 919,
+    "forbiddenStrings": 55
+  },
+  "outputs": {
+    "geometry-core/domain-decoupling/product-architecture.json": {
+      "rawSha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829",
+      "lfSha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829",
+      "bytes": 225770
+    },
+    "geometry-core/domain-decoupling/product-architecture-scan.json": {
+      "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "bytes": 132208
+    },
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md": {
+      "rawSha256": "f953eba02ce6729e1903534e22648b3f777242f85fbb27e91c68b0418554d153",
+      "lfSha256": "f953eba02ce6729e1903534e22648b3f777242f85fbb27e91c68b0418554d153",
+      "bytes": 36251
+    },
+    "geometry-core/domain-decoupling/product-architecture-receipt.json": {
+      "rawSha256": "21712ad7f20b4f9fceca91b4f63da66a6f7348288dc8162ef0154b97ef4aa907",
+      "lfSha256": "21712ad7f20b4f9fceca91b4f63da66a6f7348288dc8162ef0154b97ef4aa907",
+      "bytes": 292674
+    }
+  },
+  "controls": [
+    {
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+        "--root",
+        "/workspace/geometry-axiom",
+        "--probe",
+        "identifier",
+        "--manifest",
+        "/workspace/geo261-evidence/architecture-owned-S2-cabe8241/previous/product-architecture.json",
+        "--value",
+        "WoodContactOrder"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "sourceBaseHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+      "startedUtc": "2026-10-21T03:09:33.559300+00:00",
+      "finishedUtc": "2026-10-21T03:09:34.387066+00:00",
+      "seconds": 0.8277694240023266,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "stdout": {
+        "path": "old-guard-accepts-0/stdout.log",
+        "rawSha256": "a4f0e5e3dcd2eaf551fb4333497915b614ba20f828f2c72c471a8fc95420cd71",
+        "lfSha256": "a4f0e5e3dcd2eaf551fb4333497915b614ba20f828f2c72c471a8fc95420cd71",
+        "bytes": 16097
+      },
+      "stderr": {
+        "path": "old-guard-accepts-0/stderr.log",
+        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "expectedExitCode": 0,
+      "diagnostics": [],
+      "value": "WoodContactOrder",
+      "probeManifest": {
+        "path": "/workspace/geo261-evidence/architecture-owned-S2-cabe8241/previous/product-architecture.json",
+        "rawSha256": "b5dff5b3e2573aac6aa38fa433cb3afa71c2ab1828d34d61aabc26df01bbcbc9",
+        "lfSha256": "b5dff5b3e2573aac6aa38fa433cb3afa71c2ab1828d34d61aabc26df01bbcbc9",
+        "bytes": 225744
+      },
+      "scope": "真 K 文本的記憶體注入；不寫回產品、不改測試數量。"
+    },
+    {
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+        "--root",
+        "/workspace/geometry-axiom",
+        "--probe",
+        "identifier",
+        "--manifest",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
+        "--value",
+        "WoodContactOrder"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "sourceBaseHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+      "startedUtc": "2026-10-21T03:09:34.631126+00:00",
+      "finishedUtc": "2026-10-21T03:09:35.478936+00:00",
+      "seconds": 0.8478135100012878,
+      "rawWaitStatus": 256,
+      "exitCode": 1,
+      "stdout": {
+        "path": "new-guard-rejects-0/stdout.log",
+        "rawSha256": "7532353d0cfe58be3f67c1081d267b3056ebe9aea49da9331dfaa3d778cf875d",
+        "lfSha256": "7532353d0cfe58be3f67c1081d267b3056ebe9aea49da9331dfaa3d778cf875d",
+        "bytes": 16258
+      },
+      "stderr": {
+        "path": "new-guard-rejects-0/stderr.log",
+        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "expectedExitCode": 1,
+      "diagnostics": [
+        {
+          "path": "geometry-core/kernel/geometry.c",
+          "line": 782,
+          "code": "FORBIDDEN_IDENTIFIER",
+          "message": "concrete template identifier 'WoodContactOrder' in core",
+          "direction": "K -> W",
+          "chain": [
+            "geometry-core/kernel/geometry.c"
+          ]
+        }
+      ],
+      "value": "WoodContactOrder",
+      "probeManifest": {
+        "path": "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
+        "rawSha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829",
+        "lfSha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829",
+        "bytes": 225770
+      },
+      "scope": "真 K 文本的記憶體注入；不寫回產品、不改測試數量。"
+    },
+    {
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+        "--root",
+        "/workspace/geometry-axiom",
+        "--probe",
+        "identifier",
+        "--manifest",
+        "/workspace/geo261-evidence/architecture-owned-S2-cabe8241/withdraw-guard-0.json",
+        "--value",
+        "WoodContactOrder"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "sourceBaseHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+      "startedUtc": "2026-10-21T03:09:35.729093+00:00",
+      "finishedUtc": "2026-10-21T03:09:36.482796+00:00",
+      "seconds": 0.753724702000909,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "stdout": {
+        "path": "withdraw-guard-accepts-0/stdout.log",
+        "rawSha256": "a4f0e5e3dcd2eaf551fb4333497915b614ba20f828f2c72c471a8fc95420cd71",
+        "lfSha256": "a4f0e5e3dcd2eaf551fb4333497915b614ba20f828f2c72c471a8fc95420cd71",
+        "bytes": 16097
+      },
+      "stderr": {
+        "path": "withdraw-guard-accepts-0/stderr.log",
+        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "expectedExitCode": 0,
+      "diagnostics": [],
+      "value": "WoodContactOrder",
+      "probeManifest": {
+        "path": "/workspace/geo261-evidence/architecture-owned-S2-cabe8241/withdraw-guard-0.json",
+        "rawSha256": "b5dff5b3e2573aac6aa38fa433cb3afa71c2ab1828d34d61aabc26df01bbcbc9",
+        "lfSha256": "b5dff5b3e2573aac6aa38fa433cb3afa71c2ab1828d34d61aabc26df01bbcbc9",
+        "bytes": 225744
+      },
+      "scope": "真 K 文本的記憶體注入；不寫回產品、不改測試數量。"
+    },
+    {
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+        "--root",
+        "/workspace/geometry-axiom",
+        "--probe",
+        "identifier",
+        "--manifest",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
+        "--value",
+        "GeoOwnedRefreshNeutral"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "sourceBaseHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+      "startedUtc": "2026-10-21T03:09:36.724902+00:00",
+      "finishedUtc": "2026-10-21T03:09:37.542778+00:00",
+      "seconds": 0.8178744760007248,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "stdout": {
+        "path": "neutral-accepts/stdout.log",
+        "rawSha256": "a4f0e5e3dcd2eaf551fb4333497915b614ba20f828f2c72c471a8fc95420cd71",
+        "lfSha256": "a4f0e5e3dcd2eaf551fb4333497915b614ba20f828f2c72c471a8fc95420cd71",
+        "bytes": 16097
+      },
+      "stderr": {
+        "path": "neutral-accepts/stderr.log",
+        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "expectedExitCode": 0,
+      "diagnostics": [],
+      "value": "GeoOwnedRefreshNeutral",
+      "probeManifest": {
+        "path": "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
+        "rawSha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829",
+        "lfSha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829",
+        "bytes": 225770
+      },
+      "scope": "真 K 文本的記憶體注入；不寫回產品、不改測試數量。"
+    }
+  ],
+  "validation": [
+    {
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "sourceBaseHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+      "startedUtc": "2026-10-21T03:09:20.468785+00:00",
+      "finishedUtc": "2026-10-21T03:09:21.195929+00:00",
+      "seconds": 0.7267953390000912,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "stdout": {
+        "path": "generic-tests/stdout.log",
+        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "generic-tests/stderr.log",
+        "rawSha256": "d66342732ffaf1cede4c8d65ee8b51d6d74a0ea475b5937abf64ace1ab931b7e",
+        "lfSha256": "d66342732ffaf1cede4c8d65ee8b51d6d74a0ea475b5937abf64ace1ab931b7e",
+        "bytes": 29577
+      },
+      "tests": 205,
+      "passed": 205,
+      "failed": 0,
+      "skipped": 0,
+      "unittestSeconds": 0.37,
+      "skipLines": [],
+      "sha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+      "executedAtCurrentHead": true
+    },
+    {
+      "argv": [
+        "timeout",
+        "900",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "sourceBaseHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+      "startedUtc": "2026-10-21T03:09:21.436856+00:00",
+      "finishedUtc": "2026-10-21T03:09:33.312320+00:00",
+      "seconds": 11.875468156998977,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "stdout": {
+        "path": "product-tests/stdout.log",
+        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "product-tests/stderr.log",
+        "rawSha256": "e693e8c0858d1858ceb8c3ffc8c915a7aa792581d20d71557c060531bd573eb0",
+        "lfSha256": "e693e8c0858d1858ceb8c3ffc8c915a7aa792581d20d71557c060531bd573eb0",
+        "bytes": 118
+      },
+      "tests": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "unittestSeconds": 11.571,
+      "skipLines": [],
+      "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
+      "executedAtCurrentHead": true
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+[
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "actual_exit_code": 0,
+    "matches": true
+  },
+  {
+    "argv": [
+      "git",
+      "status",
+      "--porcelain",
+      "-z"
+    ],
+    "actual_exit_code": 0,
+    "matches": true
+  }
+]

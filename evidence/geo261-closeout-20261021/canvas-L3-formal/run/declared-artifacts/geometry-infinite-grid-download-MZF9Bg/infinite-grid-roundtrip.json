@@ -1,0 +1,2758 @@
+{
+  "before": {
+    "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6OTAxLCJuYW1lIjoi55u45L2N5beu6amX5pS2IiwibmV4dEZpZWxkSWQiOjR9\nparameters field eyJwYXJhbWV0ZXJJZCI6OTAxLCJpZCI6MSwibmFtZSI6IumbtiIsInR5cGUiOjAsImV4cHJlc3Npb24iOnsiZGVuIjoiMSIsIm51bSI6IjAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6OTAxLCJpZCI6MiwibmFtZSI6IuacieaViOebuOS9jeW3riIsInR5cGUiOjAsImV4cHJlc3Npb24iOnsiZGVuIjoiMSIsIm51bSI6IjQwMCIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6OTAxLCJpZCI6MywibmFtZSI6IuaVtOagvOmWk+i3nSIsInR5cGUiOjAsImV4cHJlc3Npb24iOnsiZGVuIjoiMSIsIm51bSI6IjQwNSIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==\nparameters end\nboundary 301 outline 100,200 1300,200 1300,1000 100,1000\nboundary 302 outline -3000,-2400 3600,-2400 3600,2800 -3000,2800 hole 100,200 100,400 300,400 300,200\nplacement 401 on boundary 301 origin 0 0 0 u +x v +y\nplacement 402 on boundary 302 origin 10000 0 0 u +x v +y\nboundary-vertex-keys 301 outer 1 2 3 4 next-key 5\nboundary-vertex-keys 302 outer 1 2 3 4 hole 5 6 7 8 next-key 9\ngrid-system 1 name-hex e99b99e5909120e784a1e99990203c41202620423e main-along none u repeat 0 800 v repeat 0 500\ngrid-system 2 name-hex e99da2e69d9020e59091e6ada3e8b2a0e9878de8a487 main-along none u repeat-panel 400 gap 5 from -100 v none\ngrid-system 900 name-hex 4c65676163792066696e697465 main-along none u series 0 600 4 v explicit 0 400 800\ngrid-system 901 name-hex e4baa4e4b8812031383330 main-along none u repeat 0 2000 v repeat 0 1830 stagger 400\ngrid-system 902 name-hex e99da2e69d90e58f83e695b8e79bb8e4bd8de5b7ae main-along none u repeat-panel 400 gap 5 from -100 stagger param:901:2 v repeat 0 1830\ngrid-binding 1 on-boundary 301 from-system 1 vertex-key 1 cell -2 1 anchor 0 1 0 1\ngrid-binding 2 on-boundary 302 from-system 1 vertex-key 5 cell -2 1 anchor 1 2 1 2\ngrid 1 on 401 from-binding 1\ngrid 2 on 402 from-binding 2\ncanvas-pos grid-system 1 60 60\ncanvas-pos grid-system 2 -311 -98\ncanvas-pos boundary 301 -682 -256\ncanvas-pos boundary 302 -682 44\ncanvas-pos grid-binding 1 500 -98\ncanvas-pos grid-binding 2 640 440\ncanvas-pos grid-system 900 -1044 -418\ncanvas-pos grid-system 901 -1470 -630\ncanvas-pos parameter 901 -1841 -788\ncanvas-pos grid-system 902 -1841 -488\n",
+    "objects": {
+      "ok": true,
+      "faces": [
+        {
+          "kind": "boundary",
+          "boundaryKind": "unspecified",
+          "id": 301,
+          "placed": true,
+          "bbox": [
+            100,
+            200,
+            1300,
+            1000
+          ],
+          "cx": -682,
+          "cy": -256,
+          "hasPos": true
+        },
+        {
+          "kind": "boundary",
+          "boundaryKind": "unspecified",
+          "id": 302,
+          "placed": true,
+          "bbox": [
+            -3000,
+            -2400,
+            3600,
+            2800
+          ],
+          "cx": -682,
+          "cy": 44,
+          "hasPos": true
+        }
+      ],
+      "spaces": [],
+      "columns": [],
+      "beams": [],
+      "gridSystems": [
+        {
+          "kind": "grid-system",
+          "id": 1,
+          "name": "雙向 無限 <A & B>",
+          "mode": "infinite",
+          "mainAlong": null,
+          "uDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 800
+          },
+          "vDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 500
+          },
+          "nextRuleKey": 1,
+          "rules": [],
+          "applications": [
+            {
+              "grid": 1,
+              "surface": 401
+            },
+            {
+              "grid": 2,
+              "surface": 402
+            }
+          ],
+          "bindings": [
+            1,
+            2
+          ],
+          "cx": 60,
+          "cy": 60,
+          "hasPos": true
+        },
+        {
+          "kind": "grid-system",
+          "id": 2,
+          "name": "面材 向正負重複",
+          "mode": "infinite",
+          "mainAlong": null,
+          "uDefinition": {
+            "source": "repeat-panel",
+            "panel": 400,
+            "gap": 5,
+            "anchor": -100,
+            "anchorExplicit": true
+          },
+          "vDefinition": {
+            "source": "none"
+          },
+          "nextRuleKey": 1,
+          "rules": [],
+          "applications": [],
+          "bindings": [],
+          "cx": -311,
+          "cy": -98,
+          "hasPos": true
+        },
+        {
+          "kind": "grid-system",
+          "id": 900,
+          "name": "Legacy finite",
+          "mode": "legacy-finite",
+          "mainAlong": null,
+          "uDefinition": {
+            "source": "series",
+            "start": 0,
+            "step": 600,
+            "count": 4
+          },
+          "vDefinition": {
+            "source": "explicit",
+            "coordinates": [
+              0,
+              400,
+              800
+            ]
+          },
+          "nextRuleKey": 1,
+          "rules": [],
+          "applications": [],
+          "bindings": [],
+          "cx": -1044,
+          "cy": -418,
+          "hasPos": true
+        },
+        {
+          "kind": "grid-system",
+          "id": 901,
+          "name": "交丁 1830",
+          "mode": "infinite",
+          "mainAlong": null,
+          "uDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 2000
+          },
+          "vDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 1830,
+            "stagger": 400
+          },
+          "nextRuleKey": 1,
+          "rules": [],
+          "applications": [],
+          "bindings": [],
+          "cx": -1470,
+          "cy": -630,
+          "hasPos": true
+        },
+        {
+          "kind": "grid-system",
+          "id": 902,
+          "name": "面材參數相位差",
+          "mode": "infinite",
+          "mainAlong": null,
+          "uDefinition": {
+            "source": "repeat-panel",
+            "panel": 400,
+            "gap": 5,
+            "anchor": -100,
+            "anchorExplicit": true,
+            "stagger": 400,
+            "parameterRefs": {
+              "stagger": {
+                "kind": "parameter",
+                "parameterId": 901,
+                "fieldId": 2
+              }
+            }
+          },
+          "vDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 1830
+          },
+          "nextRuleKey": 1,
+          "rules": [],
+          "applications": [],
+          "bindings": [],
+          "cx": -1841,
+          "cy": -488,
+          "hasPos": true
+        }
+      ],
+      "parameters": [
+        {
+          "kind": "parameter",
+          "card": {
+            "id": 901,
+            "name": "相位差驗收",
+            "nextFieldId": 4,
+            "fields": [
+              {
+                "id": 1,
+                "name": "零",
+                "type": "dimension",
+                "expression": {
+                  "den": "1",
+                  "num": "0",
+                  "op": "literal",
+                  "unit": "mm"
+                },
+                "value": {
+                  "num": "0",
+                  "den": "1",
+                  "unit": "mm"
+                }
+              },
+              {
+                "id": 2,
+                "name": "有效相位差",
+                "type": "dimension",
+                "expression": {
+                  "den": "1",
+                  "num": "400",
+                  "op": "literal",
+                  "unit": "mm"
+                },
+                "value": {
+                  "num": "400",
+                  "den": "1",
+                  "unit": "mm"
+                }
+              },
+              {
+                "id": 3,
+                "name": "整格間距",
+                "type": "dimension",
+                "expression": {
+                  "den": "1",
+                  "num": "405",
+                  "op": "literal",
+                  "unit": "mm"
+                },
+                "value": {
+                  "num": "405",
+                  "den": "1",
+                  "unit": "mm"
+                }
+              }
+            ]
+          },
+          "id": 901,
+          "name": "相位差驗收",
+          "cx": -1841,
+          "cy": -788,
+          "hasPos": true
+        }
+      ],
+      "assemblyRules": [],
+      "assemblyBindings": [],
+      "parameterUses": [],
+      "gridBindings": [
+        {
+          "kind": "grid-binding",
+          "id": 1,
+          "boundary": 301,
+          "system": 1,
+          "vertexKey": 1,
+          "cell": [
+            "-2",
+            "1"
+          ],
+          "anchor": [
+            {
+              "num": 0,
+              "den": 1
+            },
+            {
+              "num": 0,
+              "den": 1
+            }
+          ],
+          "translation": [
+            1700,
+            -300
+          ],
+          "translationExact": [
+            "1700",
+            "-300"
+          ],
+          "translationRepresentable": true,
+          "applications": [
+            {
+              "grid": 1,
+              "surface": 401
+            }
+          ],
+          "cx": 500,
+          "cy": -98,
+          "hasPos": true
+        },
+        {
+          "kind": "grid-binding",
+          "id": 2,
+          "boundary": 302,
+          "system": 1,
+          "vertexKey": 5,
+          "cell": [
+            "-2",
+            "1"
+          ],
+          "anchor": [
+            {
+              "num": 1,
+              "den": 2
+            },
+            {
+              "num": 1,
+              "den": 2
+            }
+          ],
+          "translation": [
+            1300,
+            -550
+          ],
+          "translationExact": [
+            "1300",
+            "-550"
+          ],
+          "translationRepresentable": true,
+          "applications": [
+            {
+              "grid": 2,
+              "surface": 402
+            }
+          ],
+          "cx": 640,
+          "cy": 440,
+          "hasPos": true
+        }
+      ],
+      "timbers": []
+    },
+    "references": {
+      "ok": true,
+      "sourceFingerprint": "758fc8f80fcd8e6bd72f91c11d8e1835a6211ddd82f13001e09581061e56928f",
+      "guides": [],
+      "grids": [
+        {
+          "id": 1,
+          "surface": 401,
+          "bindingId": 1,
+          "indexSpace": "lattice",
+          "sourceSystem": 1,
+          "origin": [
+            0,
+            0
+          ],
+          "kind": "main",
+          "parentId": null,
+          "cell": null,
+          "divisions": null,
+          "bounds": {
+            "u": [
+              100,
+              1300
+            ],
+            "v": [
+              200,
+              1000
+            ]
+          },
+          "mainAlong": null,
+          "geometryMode": "sample",
+          "geometryExact": false,
+          "query": {
+            "ok": true,
+            "mode": "sample",
+            "exact": false,
+            "rect": [
+              100,
+              200,
+              1300,
+              1000
+            ],
+            "axes": {
+              "u": {
+                "defined": true,
+                "firstIndex": "-2",
+                "lastIndex": "-1",
+                "total": "2",
+                "stride": "1",
+                "lines": [
+                  {
+                    "index": "-2",
+                    "coordinate": 100,
+                    "segments": [
+                      {
+                        "a": [
+                          100,
+                          200
+                        ],
+                        "b": [
+                          100,
+                          1000
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-1",
+                    "coordinate": 900,
+                    "segments": [
+                      {
+                        "a": [
+                          900,
+                          200
+                        ],
+                        "b": [
+                          900,
+                          1000
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "v": {
+                "defined": true,
+                "firstIndex": "1",
+                "lastIndex": "2",
+                "total": "2",
+                "stride": "1",
+                "lines": [
+                  {
+                    "index": "1",
+                    "coordinate": 200,
+                    "segments": [
+                      {
+                        "a": [
+                          100,
+                          200
+                        ],
+                        "b": [
+                          1300,
+                          200
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "2",
+                    "coordinate": 700,
+                    "segments": [
+                      {
+                        "a": [
+                          100,
+                          700
+                        ],
+                        "b": [
+                          1300,
+                          700
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "u": [
+            100,
+            900
+          ],
+          "uDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 800
+          },
+          "v": [
+            200,
+            700
+          ],
+          "vDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 500
+          },
+          "indices": {
+            "u": [
+              "-2",
+              "-1"
+            ],
+            "v": [
+              "1",
+              "2"
+            ]
+          },
+          "lattice": {
+            "u": {
+              "defined": true,
+              "pitch": 800,
+              "baseIndex": "-2",
+              "baseCoordinate": 100
+            },
+            "v": {
+              "defined": true,
+              "pitch": 500,
+              "baseIndex": "1",
+              "baseCoordinate": 200
+            }
+          },
+          "lines": [
+            {
+              "axis": "u",
+              "index": "-2",
+              "coordinate": 100,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    100,
+                    200
+                  ],
+                  [
+                    100,
+                    1000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "-1",
+              "coordinate": 900,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    900,
+                    200
+                  ],
+                  [
+                    900,
+                    1000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "1",
+              "coordinate": 200,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    100,
+                    200
+                  ],
+                  [
+                    1300,
+                    200
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "2",
+              "coordinate": 700,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    100,
+                    700
+                  ],
+                  [
+                    1300,
+                    700
+                  ]
+                ]
+              ]
+            }
+          ],
+          "dependencies": {
+            "children": [],
+            "guides": [],
+            "timbers": []
+          }
+        },
+        {
+          "id": 2,
+          "surface": 402,
+          "bindingId": 2,
+          "indexSpace": "lattice",
+          "sourceSystem": 1,
+          "origin": [
+            0,
+            0
+          ],
+          "kind": "main",
+          "parentId": null,
+          "cell": null,
+          "divisions": null,
+          "bounds": {
+            "u": [
+              -3000,
+              3600
+            ],
+            "v": [
+              -2400,
+              2800
+            ]
+          },
+          "mainAlong": null,
+          "geometryMode": "sample",
+          "geometryExact": false,
+          "query": {
+            "ok": true,
+            "mode": "sample",
+            "exact": false,
+            "rect": [
+              -3000,
+              -2400,
+              3600,
+              2800
+            ],
+            "axes": {
+              "u": {
+                "defined": true,
+                "firstIndex": "-5",
+                "lastIndex": "2",
+                "total": "8",
+                "stride": "1",
+                "lines": [
+                  {
+                    "index": "-5",
+                    "coordinate": -2700,
+                    "segments": [
+                      {
+                        "a": [
+                          -2700,
+                          -2400
+                        ],
+                        "b": [
+                          -2700,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-4",
+                    "coordinate": -1900,
+                    "segments": [
+                      {
+                        "a": [
+                          -1900,
+                          -2400
+                        ],
+                        "b": [
+                          -1900,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-3",
+                    "coordinate": -1100,
+                    "segments": [
+                      {
+                        "a": [
+                          -1100,
+                          -2400
+                        ],
+                        "b": [
+                          -1100,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-2",
+                    "coordinate": -300,
+                    "segments": [
+                      {
+                        "a": [
+                          -300,
+                          -2400
+                        ],
+                        "b": [
+                          -300,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-1",
+                    "coordinate": 500,
+                    "segments": [
+                      {
+                        "a": [
+                          500,
+                          -2400
+                        ],
+                        "b": [
+                          500,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "0",
+                    "coordinate": 1300,
+                    "segments": [
+                      {
+                        "a": [
+                          1300,
+                          -2400
+                        ],
+                        "b": [
+                          1300,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "1",
+                    "coordinate": 2100,
+                    "segments": [
+                      {
+                        "a": [
+                          2100,
+                          -2400
+                        ],
+                        "b": [
+                          2100,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "2",
+                    "coordinate": 2900,
+                    "segments": [
+                      {
+                        "a": [
+                          2900,
+                          -2400
+                        ],
+                        "b": [
+                          2900,
+                          2800
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "v": {
+                "defined": true,
+                "firstIndex": "-3",
+                "lastIndex": "6",
+                "total": "10",
+                "stride": "1",
+                "lines": [
+                  {
+                    "index": "-3",
+                    "coordinate": -2050,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          -2050
+                        ],
+                        "b": [
+                          3600,
+                          -2050
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-2",
+                    "coordinate": -1550,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          -1550
+                        ],
+                        "b": [
+                          3600,
+                          -1550
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-1",
+                    "coordinate": -1050,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          -1050
+                        ],
+                        "b": [
+                          3600,
+                          -1050
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "0",
+                    "coordinate": -550,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          -550
+                        ],
+                        "b": [
+                          3600,
+                          -550
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "1",
+                    "coordinate": -50,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          -50
+                        ],
+                        "b": [
+                          3600,
+                          -50
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "2",
+                    "coordinate": 450,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          450
+                        ],
+                        "b": [
+                          3600,
+                          450
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "3",
+                    "coordinate": 950,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          950
+                        ],
+                        "b": [
+                          3600,
+                          950
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "4",
+                    "coordinate": 1450,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          1450
+                        ],
+                        "b": [
+                          3600,
+                          1450
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "5",
+                    "coordinate": 1950,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          1950
+                        ],
+                        "b": [
+                          3600,
+                          1950
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "6",
+                    "coordinate": 2450,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          2450
+                        ],
+                        "b": [
+                          3600,
+                          2450
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "u": [
+            -2700,
+            -1900,
+            -1100,
+            -300,
+            500,
+            1300,
+            2100,
+            2900
+          ],
+          "uDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 800
+          },
+          "v": [
+            -2050,
+            -1550,
+            -1050,
+            -550,
+            -50,
+            450,
+            950,
+            1450,
+            1950,
+            2450
+          ],
+          "vDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 500
+          },
+          "indices": {
+            "u": [
+              "-5",
+              "-4",
+              "-3",
+              "-2",
+              "-1",
+              "0",
+              "1",
+              "2"
+            ],
+            "v": [
+              "-3",
+              "-2",
+              "-1",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6"
+            ]
+          },
+          "lattice": {
+            "u": {
+              "defined": true,
+              "pitch": 800,
+              "baseIndex": "-2",
+              "baseCoordinate": -300
+            },
+            "v": {
+              "defined": true,
+              "pitch": 500,
+              "baseIndex": "1",
+              "baseCoordinate": -50
+            }
+          },
+          "lines": [
+            {
+              "axis": "u",
+              "index": "-5",
+              "coordinate": -2700,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -2700,
+                    -2400
+                  ],
+                  [
+                    -2700,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "-4",
+              "coordinate": -1900,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -1900,
+                    -2400
+                  ],
+                  [
+                    -1900,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "-3",
+              "coordinate": -1100,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -1100,
+                    -2400
+                  ],
+                  [
+                    -1100,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "-2",
+              "coordinate": -300,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -300,
+                    -2400
+                  ],
+                  [
+                    -300,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "-1",
+              "coordinate": 500,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    500,
+                    -2400
+                  ],
+                  [
+                    500,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "0",
+              "coordinate": 1300,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    1300,
+                    -2400
+                  ],
+                  [
+                    1300,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "1",
+              "coordinate": 2100,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    2100,
+                    -2400
+                  ],
+                  [
+                    2100,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "2",
+              "coordinate": 2900,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    2900,
+                    -2400
+                  ],
+                  [
+                    2900,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "-3",
+              "coordinate": -2050,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    -2050
+                  ],
+                  [
+                    3600,
+                    -2050
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "-2",
+              "coordinate": -1550,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    -1550
+                  ],
+                  [
+                    3600,
+                    -1550
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "-1",
+              "coordinate": -1050,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    -1050
+                  ],
+                  [
+                    3600,
+                    -1050
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "0",
+              "coordinate": -550,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    -550
+                  ],
+                  [
+                    3600,
+                    -550
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "1",
+              "coordinate": -50,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    -50
+                  ],
+                  [
+                    3600,
+                    -50
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "2",
+              "coordinate": 450,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    450
+                  ],
+                  [
+                    3600,
+                    450
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "3",
+              "coordinate": 950,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    950
+                  ],
+                  [
+                    3600,
+                    950
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "4",
+              "coordinate": 1450,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    1450
+                  ],
+                  [
+                    3600,
+                    1450
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "5",
+              "coordinate": 1950,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    1950
+                  ],
+                  [
+                    3600,
+                    1950
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "6",
+              "coordinate": 2450,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    2450
+                  ],
+                  [
+                    3600,
+                    2450
+                  ]
+                ]
+              ]
+            }
+          ],
+          "dependencies": {
+            "children": [],
+            "guides": [],
+            "timbers": []
+          }
+        }
+      ],
+      "timbers": [],
+      "timberSupports": {
+        "schema": "native-timber-supports/1",
+        "sourceFingerprint": "758fc8f80fcd8e6bd72f91c11d8e1835a6211ddd82f13001e09581061e56928f",
+        "entries": []
+      },
+      "specs": [],
+      "datums": [],
+      "engineeringSources": [],
+      "assembly": {
+        "capabilities": [
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1"
+        ],
+        "rules": [],
+        "bindings": [],
+        "instances": []
+      }
+    }
+  },
+  "after": {
+    "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6OTAxLCJuYW1lIjoi55u45L2N5beu6amX5pS2IiwibmV4dEZpZWxkSWQiOjR9\nparameters field eyJwYXJhbWV0ZXJJZCI6OTAxLCJpZCI6MSwibmFtZSI6IumbtiIsInR5cGUiOjAsImV4cHJlc3Npb24iOnsiZGVuIjoiMSIsIm51bSI6IjAiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6OTAxLCJpZCI6MiwibmFtZSI6IuacieaViOebuOS9jeW3riIsInR5cGUiOjAsImV4cHJlc3Npb24iOnsiZGVuIjoiMSIsIm51bSI6IjQwMCIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6OTAxLCJpZCI6MywibmFtZSI6IuaVtOagvOmWk+i3nSIsInR5cGUiOjAsImV4cHJlc3Npb24iOnsiZGVuIjoiMSIsIm51bSI6IjQwNSIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==\nparameters end\nboundary 301 outline 100,200 1300,200 1300,1000 100,1000\nboundary 302 outline -3000,-2400 3600,-2400 3600,2800 -3000,2800 hole 100,200 100,400 300,400 300,200\nplacement 401 on boundary 301 origin 0 0 0 u +x v +y\nplacement 402 on boundary 302 origin 10000 0 0 u +x v +y\nboundary-vertex-keys 301 outer 1 2 3 4 next-key 5\nboundary-vertex-keys 302 outer 1 2 3 4 hole 5 6 7 8 next-key 9\ngrid-system 1 name-hex e99b99e5909120e784a1e99990203c41202620423e main-along none u repeat 0 800 v repeat 0 500\ngrid-system 2 name-hex e99da2e69d9020e59091e6ada3e8b2a0e9878de8a487 main-along none u repeat-panel 400 gap 5 from -100 v none\ngrid-system 900 name-hex 4c65676163792066696e697465 main-along none u series 0 600 4 v explicit 0 400 800\ngrid-system 901 name-hex e4baa4e4b8812031383330 main-along none u repeat 0 2000 v repeat 0 1830 stagger 400\ngrid-system 902 name-hex e99da2e69d90e58f83e695b8e79bb8e4bd8de5b7ae main-along none u repeat-panel 400 gap 5 from -100 stagger param:901:2 v repeat 0 1830\ngrid-binding 1 on-boundary 301 from-system 1 vertex-key 1 cell -2 1 anchor 0 1 0 1\ngrid-binding 2 on-boundary 302 from-system 1 vertex-key 5 cell -2 1 anchor 1 2 1 2\ngrid 1 on 401 from-binding 1\ngrid 2 on 402 from-binding 2\ncanvas-pos grid-system 1 60 60\ncanvas-pos grid-system 2 -311 -98\ncanvas-pos boundary 301 -682 -256\ncanvas-pos boundary 302 -682 44\ncanvas-pos grid-binding 1 500 -98\ncanvas-pos grid-binding 2 640 440\ncanvas-pos grid-system 900 -1044 -418\ncanvas-pos grid-system 901 -1470 -630\ncanvas-pos parameter 901 -1841 -788\ncanvas-pos grid-system 902 -1841 -488\n",
+    "objects": {
+      "ok": true,
+      "faces": [
+        {
+          "kind": "boundary",
+          "boundaryKind": "unspecified",
+          "id": 301,
+          "placed": true,
+          "bbox": [
+            100,
+            200,
+            1300,
+            1000
+          ],
+          "cx": -682,
+          "cy": -256,
+          "hasPos": true
+        },
+        {
+          "kind": "boundary",
+          "boundaryKind": "unspecified",
+          "id": 302,
+          "placed": true,
+          "bbox": [
+            -3000,
+            -2400,
+            3600,
+            2800
+          ],
+          "cx": -682,
+          "cy": 44,
+          "hasPos": true
+        }
+      ],
+      "spaces": [],
+      "columns": [],
+      "beams": [],
+      "gridSystems": [
+        {
+          "kind": "grid-system",
+          "id": 1,
+          "name": "雙向 無限 <A & B>",
+          "mode": "infinite",
+          "mainAlong": null,
+          "uDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 800
+          },
+          "vDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 500
+          },
+          "nextRuleKey": 1,
+          "rules": [],
+          "applications": [
+            {
+              "grid": 1,
+              "surface": 401
+            },
+            {
+              "grid": 2,
+              "surface": 402
+            }
+          ],
+          "bindings": [
+            1,
+            2
+          ],
+          "cx": 60,
+          "cy": 60,
+          "hasPos": true
+        },
+        {
+          "kind": "grid-system",
+          "id": 2,
+          "name": "面材 向正負重複",
+          "mode": "infinite",
+          "mainAlong": null,
+          "uDefinition": {
+            "source": "repeat-panel",
+            "panel": 400,
+            "gap": 5,
+            "anchor": -100,
+            "anchorExplicit": true
+          },
+          "vDefinition": {
+            "source": "none"
+          },
+          "nextRuleKey": 1,
+          "rules": [],
+          "applications": [],
+          "bindings": [],
+          "cx": -311,
+          "cy": -98,
+          "hasPos": true
+        },
+        {
+          "kind": "grid-system",
+          "id": 900,
+          "name": "Legacy finite",
+          "mode": "legacy-finite",
+          "mainAlong": null,
+          "uDefinition": {
+            "source": "series",
+            "start": 0,
+            "step": 600,
+            "count": 4
+          },
+          "vDefinition": {
+            "source": "explicit",
+            "coordinates": [
+              0,
+              400,
+              800
+            ]
+          },
+          "nextRuleKey": 1,
+          "rules": [],
+          "applications": [],
+          "bindings": [],
+          "cx": -1044,
+          "cy": -418,
+          "hasPos": true
+        },
+        {
+          "kind": "grid-system",
+          "id": 901,
+          "name": "交丁 1830",
+          "mode": "infinite",
+          "mainAlong": null,
+          "uDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 2000
+          },
+          "vDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 1830,
+            "stagger": 400
+          },
+          "nextRuleKey": 1,
+          "rules": [],
+          "applications": [],
+          "bindings": [],
+          "cx": -1470,
+          "cy": -630,
+          "hasPos": true
+        },
+        {
+          "kind": "grid-system",
+          "id": 902,
+          "name": "面材參數相位差",
+          "mode": "infinite",
+          "mainAlong": null,
+          "uDefinition": {
+            "source": "repeat-panel",
+            "panel": 400,
+            "gap": 5,
+            "anchor": -100,
+            "anchorExplicit": true,
+            "stagger": 400,
+            "parameterRefs": {
+              "stagger": {
+                "kind": "parameter",
+                "parameterId": 901,
+                "fieldId": 2
+              }
+            }
+          },
+          "vDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 1830
+          },
+          "nextRuleKey": 1,
+          "rules": [],
+          "applications": [],
+          "bindings": [],
+          "cx": -1841,
+          "cy": -488,
+          "hasPos": true
+        }
+      ],
+      "parameters": [
+        {
+          "kind": "parameter",
+          "card": {
+            "id": 901,
+            "name": "相位差驗收",
+            "nextFieldId": 4,
+            "fields": [
+              {
+                "id": 1,
+                "name": "零",
+                "type": "dimension",
+                "expression": {
+                  "den": "1",
+                  "num": "0",
+                  "op": "literal",
+                  "unit": "mm"
+                },
+                "value": {
+                  "num": "0",
+                  "den": "1",
+                  "unit": "mm"
+                }
+              },
+              {
+                "id": 2,
+                "name": "有效相位差",
+                "type": "dimension",
+                "expression": {
+                  "den": "1",
+                  "num": "400",
+                  "op": "literal",
+                  "unit": "mm"
+                },
+                "value": {
+                  "num": "400",
+                  "den": "1",
+                  "unit": "mm"
+                }
+              },
+              {
+                "id": 3,
+                "name": "整格間距",
+                "type": "dimension",
+                "expression": {
+                  "den": "1",
+                  "num": "405",
+                  "op": "literal",
+                  "unit": "mm"
+                },
+                "value": {
+                  "num": "405",
+                  "den": "1",
+                  "unit": "mm"
+                }
+              }
+            ]
+          },
+          "id": 901,
+          "name": "相位差驗收",
+          "cx": -1841,
+          "cy": -788,
+          "hasPos": true
+        }
+      ],
+      "assemblyRules": [],
+      "assemblyBindings": [],
+      "parameterUses": [],
+      "gridBindings": [
+        {
+          "kind": "grid-binding",
+          "id": 1,
+          "boundary": 301,
+          "system": 1,
+          "vertexKey": 1,
+          "cell": [
+            "-2",
+            "1"
+          ],
+          "anchor": [
+            {
+              "num": 0,
+              "den": 1
+            },
+            {
+              "num": 0,
+              "den": 1
+            }
+          ],
+          "translation": [
+            1700,
+            -300
+          ],
+          "translationExact": [
+            "1700",
+            "-300"
+          ],
+          "translationRepresentable": true,
+          "applications": [
+            {
+              "grid": 1,
+              "surface": 401
+            }
+          ],
+          "cx": 500,
+          "cy": -98,
+          "hasPos": true
+        },
+        {
+          "kind": "grid-binding",
+          "id": 2,
+          "boundary": 302,
+          "system": 1,
+          "vertexKey": 5,
+          "cell": [
+            "-2",
+            "1"
+          ],
+          "anchor": [
+            {
+              "num": 1,
+              "den": 2
+            },
+            {
+              "num": 1,
+              "den": 2
+            }
+          ],
+          "translation": [
+            1300,
+            -550
+          ],
+          "translationExact": [
+            "1300",
+            "-550"
+          ],
+          "translationRepresentable": true,
+          "applications": [
+            {
+              "grid": 2,
+              "surface": 402
+            }
+          ],
+          "cx": 640,
+          "cy": 440,
+          "hasPos": true
+        }
+      ],
+      "timbers": []
+    },
+    "references": {
+      "ok": true,
+      "sourceFingerprint": "758fc8f80fcd8e6bd72f91c11d8e1835a6211ddd82f13001e09581061e56928f",
+      "guides": [],
+      "grids": [
+        {
+          "id": 1,
+          "surface": 401,
+          "bindingId": 1,
+          "indexSpace": "lattice",
+          "sourceSystem": 1,
+          "origin": [
+            0,
+            0
+          ],
+          "kind": "main",
+          "parentId": null,
+          "cell": null,
+          "divisions": null,
+          "bounds": {
+            "u": [
+              100,
+              1300
+            ],
+            "v": [
+              200,
+              1000
+            ]
+          },
+          "mainAlong": null,
+          "geometryMode": "sample",
+          "geometryExact": false,
+          "query": {
+            "ok": true,
+            "mode": "sample",
+            "exact": false,
+            "rect": [
+              100,
+              200,
+              1300,
+              1000
+            ],
+            "axes": {
+              "u": {
+                "defined": true,
+                "firstIndex": "-2",
+                "lastIndex": "-1",
+                "total": "2",
+                "stride": "1",
+                "lines": [
+                  {
+                    "index": "-2",
+                    "coordinate": 100,
+                    "segments": [
+                      {
+                        "a": [
+                          100,
+                          200
+                        ],
+                        "b": [
+                          100,
+                          1000
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-1",
+                    "coordinate": 900,
+                    "segments": [
+                      {
+                        "a": [
+                          900,
+                          200
+                        ],
+                        "b": [
+                          900,
+                          1000
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "v": {
+                "defined": true,
+                "firstIndex": "1",
+                "lastIndex": "2",
+                "total": "2",
+                "stride": "1",
+                "lines": [
+                  {
+                    "index": "1",
+                    "coordinate": 200,
+                    "segments": [
+                      {
+                        "a": [
+                          100,
+                          200
+                        ],
+                        "b": [
+                          1300,
+                          200
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "2",
+                    "coordinate": 700,
+                    "segments": [
+                      {
+                        "a": [
+                          100,
+                          700
+                        ],
+                        "b": [
+                          1300,
+                          700
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "u": [
+            100,
+            900
+          ],
+          "uDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 800
+          },
+          "v": [
+            200,
+            700
+          ],
+          "vDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 500
+          },
+          "indices": {
+            "u": [
+              "-2",
+              "-1"
+            ],
+            "v": [
+              "1",
+              "2"
+            ]
+          },
+          "lattice": {
+            "u": {
+              "defined": true,
+              "pitch": 800,
+              "baseIndex": "-2",
+              "baseCoordinate": 100
+            },
+            "v": {
+              "defined": true,
+              "pitch": 500,
+              "baseIndex": "1",
+              "baseCoordinate": 200
+            }
+          },
+          "lines": [
+            {
+              "axis": "u",
+              "index": "-2",
+              "coordinate": 100,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    100,
+                    200
+                  ],
+                  [
+                    100,
+                    1000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "-1",
+              "coordinate": 900,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    900,
+                    200
+                  ],
+                  [
+                    900,
+                    1000
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "1",
+              "coordinate": 200,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    100,
+                    200
+                  ],
+                  [
+                    1300,
+                    200
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "2",
+              "coordinate": 700,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    100,
+                    700
+                  ],
+                  [
+                    1300,
+                    700
+                  ]
+                ]
+              ]
+            }
+          ],
+          "dependencies": {
+            "children": [],
+            "guides": [],
+            "timbers": []
+          }
+        },
+        {
+          "id": 2,
+          "surface": 402,
+          "bindingId": 2,
+          "indexSpace": "lattice",
+          "sourceSystem": 1,
+          "origin": [
+            0,
+            0
+          ],
+          "kind": "main",
+          "parentId": null,
+          "cell": null,
+          "divisions": null,
+          "bounds": {
+            "u": [
+              -3000,
+              3600
+            ],
+            "v": [
+              -2400,
+              2800
+            ]
+          },
+          "mainAlong": null,
+          "geometryMode": "sample",
+          "geometryExact": false,
+          "query": {
+            "ok": true,
+            "mode": "sample",
+            "exact": false,
+            "rect": [
+              -3000,
+              -2400,
+              3600,
+              2800
+            ],
+            "axes": {
+              "u": {
+                "defined": true,
+                "firstIndex": "-5",
+                "lastIndex": "2",
+                "total": "8",
+                "stride": "1",
+                "lines": [
+                  {
+                    "index": "-5",
+                    "coordinate": -2700,
+                    "segments": [
+                      {
+                        "a": [
+                          -2700,
+                          -2400
+                        ],
+                        "b": [
+                          -2700,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-4",
+                    "coordinate": -1900,
+                    "segments": [
+                      {
+                        "a": [
+                          -1900,
+                          -2400
+                        ],
+                        "b": [
+                          -1900,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-3",
+                    "coordinate": -1100,
+                    "segments": [
+                      {
+                        "a": [
+                          -1100,
+                          -2400
+                        ],
+                        "b": [
+                          -1100,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-2",
+                    "coordinate": -300,
+                    "segments": [
+                      {
+                        "a": [
+                          -300,
+                          -2400
+                        ],
+                        "b": [
+                          -300,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-1",
+                    "coordinate": 500,
+                    "segments": [
+                      {
+                        "a": [
+                          500,
+                          -2400
+                        ],
+                        "b": [
+                          500,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "0",
+                    "coordinate": 1300,
+                    "segments": [
+                      {
+                        "a": [
+                          1300,
+                          -2400
+                        ],
+                        "b": [
+                          1300,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "1",
+                    "coordinate": 2100,
+                    "segments": [
+                      {
+                        "a": [
+                          2100,
+                          -2400
+                        ],
+                        "b": [
+                          2100,
+                          2800
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "2",
+                    "coordinate": 2900,
+                    "segments": [
+                      {
+                        "a": [
+                          2900,
+                          -2400
+                        ],
+                        "b": [
+                          2900,
+                          2800
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "v": {
+                "defined": true,
+                "firstIndex": "-3",
+                "lastIndex": "6",
+                "total": "10",
+                "stride": "1",
+                "lines": [
+                  {
+                    "index": "-3",
+                    "coordinate": -2050,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          -2050
+                        ],
+                        "b": [
+                          3600,
+                          -2050
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-2",
+                    "coordinate": -1550,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          -1550
+                        ],
+                        "b": [
+                          3600,
+                          -1550
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "-1",
+                    "coordinate": -1050,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          -1050
+                        ],
+                        "b": [
+                          3600,
+                          -1050
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "0",
+                    "coordinate": -550,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          -550
+                        ],
+                        "b": [
+                          3600,
+                          -550
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "1",
+                    "coordinate": -50,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          -50
+                        ],
+                        "b": [
+                          3600,
+                          -50
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "2",
+                    "coordinate": 450,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          450
+                        ],
+                        "b": [
+                          3600,
+                          450
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "3",
+                    "coordinate": 950,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          950
+                        ],
+                        "b": [
+                          3600,
+                          950
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "4",
+                    "coordinate": 1450,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          1450
+                        ],
+                        "b": [
+                          3600,
+                          1450
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "5",
+                    "coordinate": 1950,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          1950
+                        ],
+                        "b": [
+                          3600,
+                          1950
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "index": "6",
+                    "coordinate": 2450,
+                    "segments": [
+                      {
+                        "a": [
+                          -3000,
+                          2450
+                        ],
+                        "b": [
+                          3600,
+                          2450
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "u": [
+            -2700,
+            -1900,
+            -1100,
+            -300,
+            500,
+            1300,
+            2100,
+            2900
+          ],
+          "uDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 800
+          },
+          "v": [
+            -2050,
+            -1550,
+            -1050,
+            -550,
+            -50,
+            450,
+            950,
+            1450,
+            1950,
+            2450
+          ],
+          "vDefinition": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 500
+          },
+          "indices": {
+            "u": [
+              "-5",
+              "-4",
+              "-3",
+              "-2",
+              "-1",
+              "0",
+              "1",
+              "2"
+            ],
+            "v": [
+              "-3",
+              "-2",
+              "-1",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6"
+            ]
+          },
+          "lattice": {
+            "u": {
+              "defined": true,
+              "pitch": 800,
+              "baseIndex": "-2",
+              "baseCoordinate": -300
+            },
+            "v": {
+              "defined": true,
+              "pitch": 500,
+              "baseIndex": "1",
+              "baseCoordinate": -50
+            }
+          },
+          "lines": [
+            {
+              "axis": "u",
+              "index": "-5",
+              "coordinate": -2700,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -2700,
+                    -2400
+                  ],
+                  [
+                    -2700,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "-4",
+              "coordinate": -1900,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -1900,
+                    -2400
+                  ],
+                  [
+                    -1900,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "-3",
+              "coordinate": -1100,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -1100,
+                    -2400
+                  ],
+                  [
+                    -1100,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "-2",
+              "coordinate": -300,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -300,
+                    -2400
+                  ],
+                  [
+                    -300,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "-1",
+              "coordinate": 500,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    500,
+                    -2400
+                  ],
+                  [
+                    500,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "0",
+              "coordinate": 1300,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    1300,
+                    -2400
+                  ],
+                  [
+                    1300,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "1",
+              "coordinate": 2100,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    2100,
+                    -2400
+                  ],
+                  [
+                    2100,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "u",
+              "index": "2",
+              "coordinate": 2900,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    2900,
+                    -2400
+                  ],
+                  [
+                    2900,
+                    2800
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "-3",
+              "coordinate": -2050,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    -2050
+                  ],
+                  [
+                    3600,
+                    -2050
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "-2",
+              "coordinate": -1550,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    -1550
+                  ],
+                  [
+                    3600,
+                    -1550
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "-1",
+              "coordinate": -1050,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    -1050
+                  ],
+                  [
+                    3600,
+                    -1050
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "0",
+              "coordinate": -550,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    -550
+                  ],
+                  [
+                    3600,
+                    -550
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "1",
+              "coordinate": -50,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    -50
+                  ],
+                  [
+                    3600,
+                    -50
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "2",
+              "coordinate": 450,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    450
+                  ],
+                  [
+                    3600,
+                    450
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "3",
+              "coordinate": 950,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    950
+                  ],
+                  [
+                    3600,
+                    950
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "4",
+              "coordinate": 1450,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    1450
+                  ],
+                  [
+                    3600,
+                    1450
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "5",
+              "coordinate": 1950,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    1950
+                  ],
+                  [
+                    3600,
+                    1950
+                  ]
+                ]
+              ]
+            },
+            {
+              "axis": "v",
+              "index": "6",
+              "coordinate": 2450,
+              "role": null,
+              "priority": null,
+              "segments": [
+                [
+                  [
+                    -3000,
+                    2450
+                  ],
+                  [
+                    3600,
+                    2450
+                  ]
+                ]
+              ]
+            }
+          ],
+          "dependencies": {
+            "children": [],
+            "guides": [],
+            "timbers": []
+          }
+        }
+      ],
+      "timbers": [],
+      "timberSupports": {
+        "schema": "native-timber-supports/1",
+        "sourceFingerprint": "758fc8f80fcd8e6bd72f91c11d8e1835a6211ddd82f13001e09581061e56928f",
+        "entries": []
+      },
+      "specs": [],
+      "datums": [],
+      "engineeringSources": [],
+      "assembly": {
+        "capabilities": [
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1"
+        ],
+        "rules": [],
+        "bindings": [],
+        "instances": []
+      }
+    }
+  }
+}

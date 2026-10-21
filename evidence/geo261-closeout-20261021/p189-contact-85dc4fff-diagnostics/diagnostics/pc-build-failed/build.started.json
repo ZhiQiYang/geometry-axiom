@@ -1,0 +1,23 @@
+{
+  "name": "build",
+  "argv": [
+    "gcc",
+    "-std=c11",
+    "-O2",
+    "-g",
+    "-D_GNU_SOURCE",
+    "-include",
+    "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-4ljb7jqu/pc_sampler.h",
+    "geometry-web/web_bridge.c",
+    "-o",
+    "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-4ljb7jqu/bridge-pc-profile",
+    "-lm",
+    "-ldl"
+  ],
+  "cwd": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-4ljb7jqu/source",
+  "started_utc": "2026-10-21T02:07:44.939933+00:00",
+  "stdin": null,
+  "timeout_seconds": 900,
+  "pid": 307095,
+  "pgid": 307095
+}

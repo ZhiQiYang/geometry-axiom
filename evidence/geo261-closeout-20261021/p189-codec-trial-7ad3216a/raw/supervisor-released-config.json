@@ -1,0 +1,19 @@
+{
+  "prepared_utc": "2026-10-21T01:08:14.020145+00:00",
+  "authorization": "主代理明確放行後才可啟動",
+  "released": true,
+  "prepare_receipt": "/workspace/geo261-evidence/p189-codec-7ad3216ac3ea-9aztt6sz/prepare-receipt.json",
+  "supervisor": "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+  "supervisor_sha256": "e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413",
+  "out": "/workspace/geo261-evidence/p189-codec-7ad3216ac3ea-9aztt6sz",
+  "scheduled_launch_argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+    "/workspace/geo261-evidence/p189-codec-7ad3216ac3ea-9aztt6sz/supervisor-released-config.json"
+  ],
+  "launch_transport": "由exec_command保有頂層session並真wait；stdout/stderr直接orchestrator.log，不Popen後讓launcher先退出。",
+  "classification": "候選性能預檢；非完整可合驗收；不改正式 L 收據",
+  "released_utc": "2026-10-21T01:08:41.431070+00:00",
+  "release_message": "主代理明確放行候選全流程；其他agents與root停止IO；新out原方法，不宣稱完整可合。"
+}

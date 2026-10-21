@@ -1,0 +1,70 @@
+{
+  "sampledUtc": "2026-10-21T05:49:23.643559+00:00",
+  "matches": [],
+  "unreadableInfrastructureVerified": [
+    {
+      "pid": 1,
+      "uid": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "startTimeTicks": 29,
+      "parentPid": 0,
+      "comm": "tail",
+      "cmdlineHex": "7461696c002d66002f6465762f6e756c6c00"
+    },
+    {
+      "pid": 2,
+      "uid": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "startTimeTicks": 48,
+      "parentPid": 1,
+      "comm": "caas-prefix-tra",
+      "cmdlineHex": "2f7573722f6c6f63616c2f62696e2f636161732d7072656669782d7472616e736665722d736572766572002d2d686f737400302e302e302e30002d2d706f7274003130343000"
+    },
+    {
+      "pid": 205,
+      "uid": [
+        65534,
+        65534,
+        65534,
+        65534
+      ],
+      "startTimeTicks": 1333,
+      "parentPid": 1,
+      "comm": "dockerd",
+      "cmdlineHex": "2f7573722f6c6f63616c2f62696e2f646f636b657264002d2d686f73743d756e69783a2f2f2f7661722f72756e2f646f636b65722e736f636b002d2d70696466696c653d2f72756e2f636f6465782d646f636b65722f646f636b6572642e706964002d2d657865632d726f6f743d2f72756e2f636f6465782d646f636b65722f657865632d6b757635346d3768002d2d73746f726167652d6472697665723d766673002d2d67726f75703d6167656e7400"
+    },
+    {
+      "pid": 258,
+      "uid": [
+        65534,
+        65534,
+        65534,
+        65534
+      ],
+      "startTimeTicks": 1348,
+      "parentPid": 205,
+      "comm": "containerd",
+      "cmdlineHex": "636f6e7461696e657264002d2d636f6e666967002f72756e2f636f6465782d646f636b65722f657865632d6b757635346d37682f636f6e7461696e6572642f636f6e7461696e6572642e746f6d6c00"
+    }
+  ],
+  "unexplainedPermissionErrors": [],
+  "locks": [
+    {
+      "path": "/tmp/geometry-tests/build.lock",
+      "available": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all.lock",
+      "available": true
+    }
+  ],
+  "limitation": "上述精確身份的環境程序 fd/exe 未能讀取；其餘可讀程序無 global writable fd／run_all／global exe。此為當下檢查，不宣稱未讀 fd 已核。"
+}

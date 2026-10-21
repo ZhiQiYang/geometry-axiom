@@ -1,0 +1,51 @@
+--- p189-formal-L2-readonly-review.py
++++ p189-formal-L3-readonly-review.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""核既有正式 L2 原件；只讀 Git/檔案，沒有產品執行或重抽樣。"""
++"""核既有正式 L3 原件；只讀 Git/檔案，沒有產品執行或重抽樣。"""
+ import datetime
+ import hashlib
+ import json
+@@ -10,10 +10,10 @@
+ from pathlib import Path
+ 
+ E = Path('/workspace/geo261-evidence')
+-O = E / 'p189-formal-L2-249571fe2477-m1ot9ubq'
++O = E / 'p189-formal-L3-6589248c9a94-n3zzuu64'
+ R = Path('/workspace/geometry-axiom')
+-C = '249571fe2477845d5330f6190dad965bf327f43b'
+-A = 'cbefb39b47fb0edcfaf003d2c1101929fea244c8'
++C = '6589248c9a94bdf0460d8f84dd1610e51048188b'
++A = '19401ca5448e162ee6140fed37b64b83b31ddec8'
+ commands = []
+ 
+ def h(raw):
+@@ -55,7 +55,7 @@
+ cal = P['generator_calibration']
+ assert Path(cal['path']).read_bytes() == git('show', cal['source'])
+ assert h(Path(cal['path']).read_bytes()) == cal['sha256']
+-assert h((E / 'p189-formal-L2-prepare.py').read_bytes()) == P['preparation_tool_sha256']
++assert h((E / 'p189-formal-L3-prepare.py').read_bytes()) == P['preparation_tool_sha256']
+ assert h((E / 'p189-final-L-phase-supervisor.py').read_bytes()) == 'e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413'
+ 
+ archive_reviews = []
+@@ -141,12 +141,15 @@
+     assert h((W / row['sha'][:8] / 'bridge').read_bytes()) == row['binary_sha256']
+ assert receipt['pass'] and receipt['exit_code'] == 0 and receipt['provenance_pass'] and receipt['dump_pass']
+ assert int((O / 'supervisor.exit-code').read_text()) == 0
+-assert j('top-level-wait-receipt.json')['actual_exit_code'] == 0
++top_observation = json.loads((E / 'p189-formal-L3-root-tool-observation.json').read_bytes())
++assert top_observation['sourceSha'] == C
++assert top_observation['actual_final_tool_response']['exit_code'] == 0
++assert top_observation['acceptance']['exitCode'] == 0
+ assert git('rev-parse', 'HEAD').decode().strip() == C
+ assert git('status', '--porcelain') == b''
+ report = {'checked_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'source_sha': C,
+-          'parent_A2': A, 'archive_reviews': archive_reviews, 'git_read_commands': commands,
+-          'phase_HEAD_all_L2': True, 'phase_exit_codes': {p['phase']: p['exit_code'] for p in phases},
++          'parent_S3': A, 'archive_reviews': archive_reviews, 'git_read_commands': commands,
++          'phase_HEAD_all_L3': True, 'phase_exit_codes': {p['phase']: p['exit_code'] for p in phases},
+           'phase_seconds': {p['phase']: p['seconds'] for p in phases},
+           'runner_generator_calibration_original_bytes_match': True,
+           'phase_argv_and_raw_hashes_match': True, 'sample_order_exact': True, 'valid_samples': 36,

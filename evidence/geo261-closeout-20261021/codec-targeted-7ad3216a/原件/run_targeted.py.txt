@@ -1,0 +1,102 @@
+"""隔離候選的功能驗證收據；不更新 ledger、架構或主樹。"""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import resource
+import subprocess
+import sys
+import time
+
+BASE = Path('/workspace/geo261-evidence/wd-read-candidate')
+OUT = BASE / 'targeted'
+ROOT = Path('/workspace/geo261-wd-read-candidate')
+MAIN = Path('/workspace/geometry-axiom')
+HEAD = '43f85313c32410ac01406ab585846bbacafea278'
+SOURCE = 'geometry-templates/woodworking/native/definition_sources.c'
+CANDIDATE_SHA = '5d52a836bb1178ff050f725d5b089f4765cbd58033931647f02e50369ea9e347'
+PATCH_SHA = '4d2a3ef87a3d663b1c1b08ebc659bf94c6c962c57f15a69f27f137a4e1b6c5ee'
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def utc():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+def git(root, *args):
+    result = subprocess.run(['git', '-C', str(root), *args], capture_output=True)
+    if result.returncode:
+        raise RuntimeError('Git 讀取失敗：' + result.stderr.decode())
+    return result.stdout
+
+def state():
+    result = {}
+    for name, root in [('candidate', ROOT), ('main', MAIN)]:
+        result[name] = dict(head=git(root, 'rev-parse', 'HEAD').decode().strip(),
+            branch=git(root, 'branch', '--show-current').decode().strip(),
+            status=git(root, 'status', '--porcelain', '--untracked-files=all').decode(),
+            sourceSha256=sha((root / SOURCE).read_bytes()))
+        if result[name]['head'] != HEAD:
+            raise RuntimeError('來源 HEAD 不是固定 L')
+    if result['main']['status'] or result['candidate']['branch']:
+        raise RuntimeError('主樹不乾淨或候選不是 detached')
+    if result['candidate']['status'] != ' M ' + SOURCE + '\n':
+        raise RuntimeError('候選超出單檔修改範圍')
+    patch = git(ROOT, 'diff', '--binary', '--', SOURCE)
+    if sha(patch) != PATCH_SHA or sha((ROOT / SOURCE).read_bytes()) != CANDIDATE_SHA:
+        raise RuntimeError('候選 patch／原 bytes 與審查版本不符')
+    result['patchSha256'] = sha(patch)
+    return result
+
+if OUT.exists():
+    raise RuntimeError('禁止覆寫既有驗收目錄')
+OUT.mkdir()
+before = state()
+(OUT / 'before.json').write_text(json.dumps(before, ensure_ascii=False, indent=2) + '\n')
+tmp = Path('/tmp/geo261-wd-read-targeted-43f85313')
+tmp.mkdir(exist_ok=False)
+child_env = {key: os.environ[key] for key in ('PATH', 'HOME', 'LANG', 'LC_ALL', 'LC_CTYPE') if key in os.environ}
+child_env.update(PYTHONDONTWRITEBYTECODE='1', TMPDIR=str(tmp), LANG='C.UTF-8', LC_ALL='C.UTF-8')
+soft, hard = resource.getrlimit(resource.RLIMIT_STACK)
+resource.setrlimit(resource.RLIMIT_STACK, (16 * 1024 * 1024, hard))
+argv = ['timeout', '900', 'python3', '-B', str(BASE / 'targeted_tests.py')]
+meta = dict(sourceSha=HEAD, candidateRawSha256=CANDIDATE_SHA, patchSha256=PATCH_SHA,
+    cwd=str(ROOT), argv=argv, environment=child_env, stackKiB=16384,
+    startedUTC=utc(), runnerSha256=sha(Path(__file__).read_bytes()),
+    testDriverSha256=sha((BASE / 'targeted_tests.py').read_bytes()))
+(OUT / 'command.json').write_text(json.dumps(meta, ensure_ascii=False, indent=2) + '\n')
+start = time.monotonic()
+with (OUT / 'stdout.log').open('xb') as stdout, (OUT / 'stderr.log').open('xb') as stderr:
+    pid = os.fork()
+    if pid == 0:
+        try:
+            os.chdir(ROOT)
+            os.dup2(stdout.fileno(), 1)
+            os.dup2(stderr.fileno(), 2)
+            os.execvpe(argv[0], argv, child_env)
+        except BaseException as error:
+            os.write(2, (repr(error) + '\n').encode())
+            os._exit(127)
+    waited, raw_wait = os.waitpid(pid, 0)
+    if waited != pid:
+        raise RuntimeError('wait 回收 PID 不符')
+rc = os.waitstatus_to_exitcode(raw_wait)
+finished, elapsed = utc(), time.monotonic() - start
+after, post_error = None, None
+try:
+    after = state()
+    if after != before:
+        raise RuntimeError('前後來源不同')
+except Exception as error:
+    post_error = repr(error)
+summary = json.loads((OUT / 'unit-result.json').read_bytes()) if (OUT / 'unit-result.json').exists() else None
+receipt = dict(**meta, finishedUTC=finished, elapsedSeconds=elapsed, rawWaitStatus=raw_wait,
+    exitCode=rc, after=after, postflightError=post_error, sourceUnchanged=(after == before),
+    unitResult=summary, stdoutSha256=sha((OUT / 'stdout.log').read_bytes()),
+    stderrSha256=sha((OUT / 'stderr.log').read_bytes()))
+(OUT / 'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
+(OUT / 'exit-code').write_text(str(rc) + '\n')
+print(json.dumps(dict(out=str(OUT), exitCode=rc, rawWaitStatus=raw_wait,
+    elapsedSeconds=elapsed, sourceUnchanged=after == before, unitResult=summary), ensure_ascii=False))
+raise SystemExit(1 if post_error and rc == 0 else (rc if rc >= 0 else 128 - rc))

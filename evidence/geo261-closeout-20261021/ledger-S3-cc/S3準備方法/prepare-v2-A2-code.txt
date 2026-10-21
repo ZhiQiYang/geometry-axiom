@@ -1,0 +1,134 @@
+"""綁定已公開 A2 並準備全新 ledger 工作區；不啟動 mutate。"""
+import argparse
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+SUPERVISOR=Path('/workspace/geo261-evidence/ledger-cc-supervisor.py')
+SUPERVISOR_SHA='308e37f71422f96543d68be4b51a42397c9d734750e0388278bb65941b60606e'
+HISTORICAL_SELFTEST='/workspace/geo261-evidence/ledger-cc-launcher-selftest.r3o_cexg'
+ARCHITECTURE={f'geometry-core/domain-decoupling/{name}' for name in (
+    'PRODUCT-ARCHITECTURE.md','product-architecture.json','product-architecture-scan.json','product-architecture-receipt.json')}
+BACKUPS=['tests/mutate.py','tests/mutation_bridge.py','tests/binaries.py','tests/run_tests.py',
+         'tests/bridge_mutation_oracle.py','tests/_cl.bat','tests/run_all.expected.json','geometry-web/app.js',
+         'current_geometry.c','.github/workflows/integration-tests.yml',*sorted(ARCHITECTURE)]
+
+def sha(raw):return hashlib.sha256(raw).hexdigest()
+def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def full_sha(value):
+    if not re.fullmatch('[0-9a-f]{40}',value):raise argparse.ArgumentTypeError('必須是完整小寫 40 位 SHA')
+    return value
+def writej(path,data):
+    with path.open('x',encoding='utf-8') as f:json.dump(data,f,ensure_ascii=False,indent=2);f.write('\n')
+
+def main():
+    if not __debug__:raise RuntimeError('禁止停用 assert')
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--source',type=full_sha,required=True)
+    p.add_argument('--product',type=full_sha,required=True)
+    p.add_argument('--root',type=Path,default=Path('/workspace/geometry-axiom'))
+    p.add_argument('--branch',default='codex/geo261-closeout-20261021')
+    p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--run-directory',type=Path,required=True)
+    p.add_argument('--execute',action='store_true')
+    a=p.parse_args()
+    if not a.execute:p.error('準備須明確指定 --execute；未建工作區')
+    root=a.root.resolve();out=a.output.resolve();runroot=a.run_directory.resolve()
+    assert root.is_dir() and not out.exists() and not runroot.exists()
+    assert sha(SUPERVISOR.read_bytes())==SUPERVISOR_SHA
+    env={k:v for k,v in os.environ.items() if k not in ('CC','PYTHONOPTIMIZE') and not k.startswith(('MUTATE_','GEOMETRY_'))}
+    env.update(PYTHONDONTWRITEBYTECODE='1',PYTHONIOENCODING='utf-8')
+    commands=[]
+    def run(label,argv,cwd=root):
+        result=subprocess.run(argv,cwd=cwd,env=env,stdin=subprocess.DEVNULL,capture_output=True)
+        row={'label':label,'argv':list(map(str,argv)),'cwd':str(cwd),'exit_code':result.returncode}
+        for stream in ('stdout','stderr'):
+            data=getattr(result,stream);row[stream+'_sha256']=sha(data)
+            if out.exists():(out/(label+'.'+stream)).write_bytes(data)
+            else:row[stream+'_raw']=data.decode('utf-8')
+        commands.append(row)
+        if out.exists():(out/'prepare-commands.json').write_text(json.dumps(commands,ensure_ascii=False,indent=2)+'\n')
+        if result.returncode:raise RuntimeError(f'{label} 退出 {result.returncode}')
+        return result.stdout
+    assert run('main-head',['git','rev-parse','HEAD']).decode().strip()==a.source
+    assert run('main-branch',['git','branch','--show-current']).decode().strip()==a.branch
+    assert not run('main-status',['git','status','--porcelain=v1'])
+    remote=run('remote-source',['git','ls-remote','--heads','origin','refs/heads/'+a.branch]).decode().split()
+    assert remote==[a.source,'refs/heads/'+a.branch]
+    run('product-ancestor',['git','merge-base','--is-ancestor',a.product,a.source])
+    changes=run('product-to-source',['git','diff','--name-only',a.product,a.source]).decode().splitlines()
+    assert set(changes)<=ARCHITECTURE and changes
+    tree=run('source-tree',['git','rev-parse',a.source+'^{tree}']).decode().strip()
+    out.mkdir(parents=True);runroot.mkdir(parents=True)
+    (out/'prepare-code.txt').write_bytes(Path(__file__).read_bytes())
+    for row in commands:
+        for stream in ('stdout','stderr'):
+            if stream+'_raw' in row:(out/(row['label']+'.'+stream)).write_text(row.pop(stream+'_raw'),encoding='utf-8')
+    (out/'prepare-commands.json').write_text(json.dumps(commands,ensure_ascii=False,indent=2)+'\n')
+    work=runroot/'repo';cache=runroot/'cache';tmp=runroot/'tmp'
+    cache.mkdir();tmp.mkdir()
+    command=['git','-c','core.autocrlf=false','worktree','add','--detach',str(work),a.source]
+    run('worktree-create',command)
+    assert run('worktree-head',['git','rev-parse','HEAD'],work).decode().strip()==a.source
+    assert not run('worktree-status',['git','status','--porcelain=v1'],work)
+    raw_backups=[]
+    def capture_source(path):
+        i=len(raw_backups)
+        raw=(work/path).read_bytes()
+        assert run(f'blob-{i:02d}',['git','show',a.source+':'+path],work)==raw
+        blob=run(f'blob-id-{i:02d}',['git','rev-parse',a.source+':'+path],work).decode().strip()
+        backup=out/('raw-source-'+path.replace('/','__')+'.txt');backup.write_bytes(raw)
+        raw_backups.append({'path':path,'bytes':len(raw),'sha256':sha(raw),'git_blob':blob,'backup':str(backup)})
+        return raw
+    for path in BACKUPS:capture_source(path)
+    original=(work/'tests/mutants_results.json').read_bytes();(out/'original-ledger.json').write_bytes(original)
+    overrides={'TMPDIR':str(tmp),'MUTATE_CACHE':str(cache),'MUTATE_RESULTS':str(out/'mutants_results.json'),
+               'PYTHONIOENCODING':'utf-8','PYTHONDONTWRITEBYTECODE':'1'}
+    env.update(overrides)
+    preflight_code=('import json,os,sys;sys.path.insert(0,"tests");import mutate,mutation_bridge;s=mutate.Sources(mutate.ROOT);'
+      'print(json.dumps({"CC_present":"CC" in os.environ,"PYTHONOPTIMIZE_present":"PYTHONOPTIMIZE" in os.environ,'
+      '"compile_command":mutate.portable_compile_command(),"compile_sha256":mutate.compile_hash(),'
+      '"tool_sha256":mutate.tool_hash(),"oracle_sha256":mutate.oracle_hash(),'
+      '"source_closure_sha256":s.closure,"source_hashes":s.hashes,'
+      '"oracle_fixtures":sorted({spec["scene"] for spec in mutate.TESTS}),'
+      '"core_baseline_total":len(mutate.TESTS),"bridge_restored_methods":mutation_bridge.RESTORED,'
+      '"mutants":[{k:m[k] for k in ("id","retired","equivalent","binary") if k in m} for m in mutate.MUTANTS]},ensure_ascii=False))')
+    preflight_command=['python3','-B','-c',preflight_code]
+    preflight=json.loads(run('compiler-preflight',preflight_command,work))
+    assert not preflight['CC_present'] and not preflight['PYTHONOPTIMIZE_present']
+    assert preflight['compile_command']==['cc','-std=c11','-O2','<source>','-o','<output>','-lm']
+    assert preflight['core_baseline_total']==165 and len(preflight['bridge_restored_methods'])==27
+    mutants=preflight.pop('mutants');assert len(mutants)==78 and len({m['id'] for m in mutants})==78
+    assert sum(bool(m.get('retired')) for m in mutants)==3 and sum(m.get('binary')=='bridge' for m in mutants)==18
+    captured=set(BACKUPS)
+    for path in sorted(set(preflight['source_hashes'])|set(preflight['oracle_fixtures'])):
+        raw=(work/path).read_bytes() if path in captured else capture_source(path)
+        if path in preflight['source_hashes']:
+            assert sha(raw.replace(b'\r\n',b'\n'))==preflight['source_hashes'][path]
+    writej(out/'source-snapshot.json',{'source_sha':a.source,'source_tree':tree,
+      'compiler_preflight':preflight,'raw_sources':raw_backups,
+      '備註':'當輪 A2 Git 原 bytes；closure 採正式工具 CRLF→LF 雜湊，原件本身不正規化。'})
+    assert not list(cache.iterdir()) and not (out/'mutants_results.json').exists()
+    assert not run('prepared-status',['git','status','--porcelain=v1'],work)
+    (out/'sourcecode.txt').write_bytes(SUPERVISOR.read_bytes())
+    writej(out/'supervisor-source.json',{'actual_script':str(SUPERVISOR),'source_snapshot':'sourcecode.txt','sha256':SUPERVISOR_SHA,
+      'launcher_selftest_directory':HISTORICAL_SELFTEST,'selftest_is_historical':True,'備註':'引用相同工具原 bytes 的歷史自測，不冒稱 A2 當輪重做。'})
+    config={'prepared_utc':now(),'source_sha':a.source,'product_parent_sha':a.product,'source_tree':tree,
+      'branch':a.branch,'main_root':str(root),'run_directory':str(runroot),'worktree':str(work),
+      'output_directory':str(out),'cache':str(cache),'tmpdir':str(tmp),'results':str(out/'mutants_results.json'),
+      'prepare_command':command,'prepare_full_command':[sys.executable,*sys.argv],
+      'prepare_exit_code':0,'tracked_worktree_clean':True,'fresh_cache_empty':True,
+      'results_exists':False,'original_ledger_sha256':sha(original),'raw_backups':raw_backups,'mutants':mutants,
+      'mutant_count':len(mutants),'compiler_preflight_command':preflight_command,'compiler_preflight':preflight,
+      'environment_overrides':overrides,'environment_removed':['CC','PYTHONOPTIMIZE','MUTATE_*','GEOMETRY_*'],
+      'source_archive':{'created':False,'method':'公開 A2 Git commit/tree 與逐 bytes 原始碼備份；未沿用舊 A archive'},
+      'heavy_execution_started':False}
+    writej(out/'prepare-receipt.json',config)
+    print(json.dumps({'prepared':str(out/'prepare-receipt.json'),'source_sha':a.source,'started_mutate':False},ensure_ascii=False))
+
+if __name__=='__main__':main()

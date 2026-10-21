@@ -1,0 +1,110 @@
+{
+  "classification": "靜態核對，未建置或執行產品",
+  "base_sha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "branch": "codex/geo261-host-authority-anchor-fix-20261021",
+  "worktree": "/workspace/geo261-host-authority-anchor-fix",
+  "changed_files": [
+    "tests/test_geo261_host_authority.py"
+  ],
+  "only_FOOTPRINT_ANCHOR_AST_changed": true,
+  "old_anchor_count": 0,
+  "new_anchor_count": 1,
+  "raw_bypass_keeps_local_declaration_and_read": true,
+  "named_oracle": "ASSERT:host-footprint-actual-box-and-frame",
+  "predicted_origin_values": {
+    "actual_typed_min_u": 30,
+    "raw_anchor_min_u": 0
+  },
+  "runtime_or_compile_verification": "尚未執行，等待 heavy 槽放行；靜態推理不能冒充自證",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geo261-host-authority-anchor-fix",
+      "actual_exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only"
+      ],
+      "cwd": "/workspace/geo261-host-authority-anchor-fix",
+      "actual_exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/workspace/geo261-host-authority-anchor-fix",
+      "actual_exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--binary",
+        "--",
+        "tests/test_geo261_host_authority.py"
+      ],
+      "cwd": "/workspace/geo261-host-authority-anchor-fix",
+      "actual_exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "249571fe2477845d5330f6190dad965bf327f43b:tests/test_geo261_host_authority.py"
+      ],
+      "cwd": "/workspace/geo261-host-authority-anchor-fix",
+      "actual_exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "249571fe2477845d5330f6190dad965bf327f43b:geometry-app/native/reference_sources.inc"
+      ],
+      "cwd": "/workspace/geo261-host-authority-anchor-fix",
+      "actual_exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "249571fe2477845d5330f6190dad965bf327f43b:tests/geo261_host_authority_harness.c"
+      ],
+      "cwd": "/workspace/geo261-host-authority-anchor-fix",
+      "actual_exit_code": 0
+    }
+  ],
+  "patch_sha256": "4815c4e590aba7360c67a66da8a64525eebdbdd3b58f34c569cfca24a5b13ad8",
+  "test_before_sha256": "da412ba1601c23955247508a5fc303873f19bb7692e8cb6d4ff8ce5f99c63b16",
+  "test_after_sha256": "a8e56b75390d4ca545077d03af81067517271c5cab0eb601c29a8afea65d4ec2",
+  "product_source_sha256": "ee8fa4e258999addd1996704cdffc47ac870acb972f5d63328dc2908e1be8a5c",
+  "harness_sha256": "bf39d9dc15cd71f32f2aa6794275b9008ac427addd1a781b5d15de393b098345",
+  "validation_exit_code": 0
+}

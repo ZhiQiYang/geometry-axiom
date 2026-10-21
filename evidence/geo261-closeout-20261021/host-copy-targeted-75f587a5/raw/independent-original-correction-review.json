@@ -1,0 +1,58 @@
+{
+  "checkedUTC": "2026-10-21T02:35:36.487991+00:00",
+  "acceptedCorrectedOriginalBaseline": true,
+  "base": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "candidateHead": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+  "checks": [
+    {
+      "case": "copy-clear",
+      "returncode": 0,
+      "stdoutEmpty": true,
+      "stderrEmpty": true
+    },
+    {
+      "case": "copy-snapshot",
+      "returncode": 0,
+      "stdoutEmpty": true,
+      "stderrEmpty": true
+    },
+    {
+      "case": "scratch-owned",
+      "returncode": 0,
+      "stdoutEmpty": true,
+      "stderrEmpty": true
+    },
+    {
+      "case": "malformed",
+      "returncode": 0,
+      "stdoutEmpty": true,
+      "stderrEmpty": true
+    }
+  ],
+  "allCommandExitZero": 93,
+  "rawStreamsVerified": 186,
+  "compilerDepsVerified": 115,
+  "originalTransformedSourcesExact": 5,
+  "remainingHostDependenciesEqualBase": 18,
+  "oldKernelObjectCompiledAndLinked": true,
+  "v1OriginalBaselineRemainsInvalid": true,
+  "limits": "僅原85 H/K四新見證＋名稱/include轉接；不是性能，未重跑候選或產品。-MM依賴與實際compile共享相同flags/source，原raw與effective bytes核同。",
+  "artifacts": [
+    {
+      "name": "result.json",
+      "sha256": "49f1ae8b7633f436c6865df647c7440b2a3d3c08226e63d52f30cf18992e3abc"
+    },
+    {
+      "name": "include-closure.json",
+      "sha256": "a0c1df7bb15e11acd2b80f6e3b52a41e175046d6f074213442a48ce2ad1c3648"
+    },
+    {
+      "name": "commands.json",
+      "sha256": "d44ad1fe0226b876f689fb9770bf0758cc1c1b21eaf773ebce896f97ccd31804"
+    },
+    {
+      "name": "run_original.py",
+      "sha256": "6c2ba4fe98d40805478715a1e599ed1947423760e787a2cc83d0f89c2abfe422"
+    }
+  ]
+}

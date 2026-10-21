@@ -1,0 +1,59 @@
+"""只讀驗證事後補封的原產物；不生成檔案、不執行產品。"""
+from pathlib import Path
+import collections,datetime,hashlib,json,re,subprocess
+R=Path('/workspace/geo261-evidence/browser-five-L3-formal-6589248c')
+P=Path('/workspace/geo261-evidence/browser-five-L3-independent-review')
+S='6589248c9a94bdf0460d8f84dd1610e51048188b';refs={}
+def h(b):return hashlib.sha256(b).hexdigest()
+def read(p):
+ p=Path(p);b=p.read_bytes();refs[str(p)]={'bytes':len(b),'sha256':h(b)};return b
+def load(p):return json.loads(read(p))
+def utc(t):return datetime.datetime.fromisoformat(t.replace('Z','+00:00'))
+c=load(R/'declared-artifact-capture.json');assert c['sourceSha']==S and c['productRerun'] is False and c['missing']==[]
+assert c['methodSha256']==h(read(R.parent/'browser-L3-preparation/capture-five-artifacts-code.txt'))
+assert len(c['files'])==24 and c['addedFiles']==15 and c['existingFilesChecked']==9 and c['addedBytes']==107195
+assert c['kindCounts']==dict(collections.Counter(x['kind']for x in c['files']))=={'raw-declared-gcanvas':7,'adjacent-test-json-receipt':5,'synthetic-markdown-input':1,'synthetic-pdf-input':1,'exported-notes-roundtrip-input':1,'existing-wrapper-artifact':9}
+receipts={n:load(R/n/'receipt.json')for n in ['assembly','documents','grid','space','timber']}
+assert all(x['sourceSha']==S and x['accepted']is True for x in receipts.values())
+assert utc(c['capturedUtc'])>max(utc(x['finishedUtc'])for x in receipts.values())
+raw=read(R/'grid/run.log').decode();declared=[]
+for line in raw.splitlines():
+ if ' saved artifact ' in line:
+  path=line.split(' saved artifact ',1)[1].strip();assert path.endswith('.gcanvas');declared.append(path)
+assert len(declared)==len(set(declared))==7 and declared==c['rawDeclaredGridPaths']
+assert set(declared)=={x['sourcePath']for x in c['files']if x['kind']=='raw-declared-gcanvas'}
+adjacent={str(x)for path in declared for x in Path(path).parent.glob('*.json')}
+assert adjacent=={x['sourcePath']for x in c['files']if x['kind']=='adjacent-test-json-receipt'} and len(adjacent)==5
+input_names={'synthetic-markdown-input':'fixture.md','synthetic-pdf-input':'synthetic.pdf','exported-notes-roundtrip-input':'notes.json'}
+source=subprocess.check_output(['git','-C','/workspace/geometry-axiom','show',S+':geometry-web/documents_browser_test.js'])
+for kind,name in input_names.items():
+ rows=[x for x in c['files']if x['kind']==kind];assert len(rows)==1 and Path(rows[0]['sourcePath']).name==name and name.encode()in source
+ assert Path(rows[0]['sourcePath']).parent.parent==Path(receipts['documents']['temp'])
+all_sources=set();all_artifacts=set();existing=set();added=set();rows=[]
+manifest={n:{x['path']:x for x in load(R/n/'manifest.json')}for n in receipts}
+for row in c['files']:
+ src=Path(row['sourcePath']);dst=R/row['artifactPath'];rec=receipts[row['suite']]
+ assert src.is_relative_to(Path(rec['temp'])) and not src.is_symlink() and not dst.is_symlink()
+ assert str(src)not in all_sources and row['artifactPath']not in all_artifacts
+ all_sources.add(str(src));all_artifacts.add(row['artifactPath'])
+ before=src.stat();a=read(src);after=src.stat();b=read(dst)
+ assert (before.st_ino,before.st_size,before.st_mtime_ns)==(after.st_ino,after.st_size,after.st_mtime_ns)
+ assert a==b and len(a)==row['bytes'] and h(a)==row['sha256'] and after.st_mtime_ns==row['sourceMtimeNs']
+ assert row['mtimeWithinOriginalSecondResolutionJobWindow']is True
+ assert utc(rec['startedUtc']).timestamp()<=after.st_mtime<utc(rec['finishedUtc']).timestamp()+1
+ if row['existingWrapperCapture']:
+  assert row['kind']=='existing-wrapper-artifact'
+  rel=str(dst.relative_to(R/row['suite']));m=manifest[row['suite']][rel];assert m['bytes']==len(b) and m['sha256']==h(b)
+  assert not row['artifactPath'].startswith('declared-artifacts/');existing.add(row['artifactPath'])
+ else:
+  assert row['artifactPath'].startswith('declared-artifacts/');added.add(row['artifactPath'])
+ if row['kind']=='synthetic-pdf-input':assert b.startswith(b'%PDF-')
+ rows.append({'artifactPath':row['artifactPath'],'sourcePath':str(src),'bytes':len(b),'sha256':h(b),'kind':row['kind'],'existingWrapperCapture':row['existingWrapperCapture']})
+assert len(added)==15 and len(existing)==9
+assert sum(x['bytes']for x in rows if not x['existingWrapperCapture'])==107195
+assert {str(p.relative_to(R))for p in (R/'declared-artifacts').rglob('*')if p.is_file()}==added
+expected_existing={str(p.relative_to(R))for n in receipts for p in (R/n/'artifacts').rglob('*')if p.is_file()and p.suffix.lower()!='.png'}
+assert existing==expected_existing
+report={'schema':'geo261-browser-five-L3-artifact-peer/1','sourceSha':S,'reviewedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'validationExitCode':0,'readOnly':True,'methodSha256':h(read(Path(__file__))),'captureMethodSha256':c['methodSha256'],'documentsSourceSha256':h(source),'addedFiles':15,'addedBytes':107195,'existingWrapperFilesChecked':9,'rawDeclaredGridCount':7,'kindCounts':c['kindCounts'],'files':rows,'references':refs,'limitations':['只核現存原件與封存副本逐 bytes/hash/mtime；沒有生成或重跑產品。','補封時間在五項 job 結束之後，不算入各自原 deadline。','5 個相鄰 JSON 是原測試收據，3 個 documents 檔是合成輸入／notes roundtrip，不冒稱使用者下載。','mtime 界線沿原秒級收據 startedUtc <= mtime < finishedUtc+1秒；不是更細的單調時鐘採樣。','9 個已存產物只核對原 suite manifest，沒有修改它們或重複複製。']}
+with (P/'artifact-peer.json').open('x',encoding='utf-8')as f:json.dump(report,f,ensure_ascii=False,indent=2);f.write('\n')
+print(json.dumps({'validationExitCode':0,'addedFiles':15,'addedBytes':107195,'existingFilesChecked':9,'rawDeclaredGrid':7},ensure_ascii=False))

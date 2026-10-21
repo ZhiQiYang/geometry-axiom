@@ -1,0 +1,450 @@
+[
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "249571fe2477845d5330f6190dad965bf327f43b^{commit}"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "f836d99d773570994e1598538a88809d052ec3b41675f9c2c5433fe60a6036f5",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8^{commit}"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "4c2c96d64d9c4e80cfd07f3c372671b1aef4c2ba0fdf87d883d951df48159cc9",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "rev-list",
+      "--parents",
+      "-n",
+      "1",
+      "249571fe2477845d5330f6190dad965bf327f43b"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "55189d39a6c5c67eea4bc0c60b9b6487467ebe74688b869b02e16a81de5b8b4c",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "f836d99d773570994e1598538a88809d052ec3b41675f9c2c5433fe60a6036f5",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "status",
+      "--porcelain"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--name-only",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+      "249571fe2477845d5330f6190dad965bf327f43b"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "ae08bdf21ee4b3bde1233c3a1a2321e27e54cb3efce3818feb045e46f641d959",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--binary",
+      "--full-index",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+      "249571fe2477845d5330f6190dad965bf327f43b"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "0365b97a10c163d4e7fb2495575ea1bc3722cc6c1ba46560e96c10406eab13d3",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--binary",
+      "--full-index",
+      "43f85313c32410ac01406ab585846bbacafea278",
+      "249571fe2477845d5330f6190dad965bf327f43b"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "30277ca75aa923ac186360349d40a94a7bfd262061ea7c12fd95ba27802dec03",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "249571fe2477845d5330f6190dad965bf327f43b:tests/mutants_results.json"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "6bda315331050bd3478ed65211a8263508cb1a1f6f67cee3f35df377506e7f0b",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "249571fe2477845d5330f6190dad965bf327f43b:tests/mutants_results.json"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "405fcbd5cedfc68659844baf2db08fba80537cb0f4a385a244ba58789831f5f6",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/closeout-tools/p189_verify.py"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "249571fe2477845d5330f6190dad965bf327f43b:geometry-core/domain-decoupling/closeout-tools/p189_verify.py"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/gen_scene.py"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/calib/f3-00.scene"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "35e24fb0a483ffd6fee8dd99f751edeb127418481aa717816af804cd218024b2",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "adbaebf9c73ea6801d7b4d5214e4b846b132923b^{commit}"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "8ab99c6ce1577c529823decc048198bb79478acca7e1086db9aeb01ceb4bb9c0",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "adbaebf9c73ea6801d7b4d5214e4b846b132923b:current_geometry.c"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "adbaebf9c73ea6801d7b4d5214e4b846b132923b:geometry-core"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "adbaebf9c73ea6801d7b4d5214e4b846b132923b:geometry-app"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 128
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "adbaebf9c73ea6801d7b4d5214e4b846b132923b:geometry-templates"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 128
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "adbaebf9c73ea6801d7b4d5214e4b846b132923b:geometry-web"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "archive",
+      "--format=tar",
+      "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "--",
+      "current_geometry.c",
+      "geometry-core",
+      "geometry-web",
+      ":(exclude)geometry-core/domain-decoupling",
+      ":(exclude)geometry-web/docs",
+      ":(exclude)geometry-web/prototypes",
+      ":(exclude)geometry-web/vendor",
+      ":(exclude)geometry-web/node_modules"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "e23b5eb07856ec5729b62e881dba7e009d84ab923c76556bd7b5c83e2584f020",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "3e600772076465fc65a26ac09055028301c0fb0b^{commit}"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "588ceca84da066a867437dd960645c959bea459f757579060a6850ffa95de7ef",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "3e600772076465fc65a26ac09055028301c0fb0b:current_geometry.c"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "3e600772076465fc65a26ac09055028301c0fb0b:geometry-core"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "3e600772076465fc65a26ac09055028301c0fb0b:geometry-app"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "3e600772076465fc65a26ac09055028301c0fb0b:geometry-templates"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "3e600772076465fc65a26ac09055028301c0fb0b:geometry-web"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "archive",
+      "--format=tar",
+      "3e600772076465fc65a26ac09055028301c0fb0b",
+      "--",
+      "current_geometry.c",
+      "geometry-core",
+      "geometry-app",
+      "geometry-templates",
+      "geometry-web",
+      ":(exclude)geometry-core/domain-decoupling",
+      ":(exclude)geometry-web/docs",
+      ":(exclude)geometry-web/prototypes",
+      ":(exclude)geometry-web/vendor",
+      ":(exclude)geometry-web/node_modules"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "eb1a3a14c3cba61c651cbf824e705475f1e7f4ce7d32ad2606bb965d3b540d04",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "249571fe2477845d5330f6190dad965bf327f43b^{commit}"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "f836d99d773570994e1598538a88809d052ec3b41675f9c2c5433fe60a6036f5",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "249571fe2477845d5330f6190dad965bf327f43b:current_geometry.c"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "249571fe2477845d5330f6190dad965bf327f43b:geometry-core"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "249571fe2477845d5330f6190dad965bf327f43b:geometry-app"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "249571fe2477845d5330f6190dad965bf327f43b:geometry-templates"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "249571fe2477845d5330f6190dad965bf327f43b:geometry-web"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "archive",
+      "--format=tar",
+      "249571fe2477845d5330f6190dad965bf327f43b",
+      "--",
+      "current_geometry.c",
+      "geometry-core",
+      "geometry-app",
+      "geometry-templates",
+      "geometry-web",
+      ":(exclude)geometry-core/domain-decoupling",
+      ":(exclude)geometry-web/docs",
+      ":(exclude)geometry-web/prototypes",
+      ":(exclude)geometry-web/vendor",
+      ":(exclude)geometry-web/node_modules"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "6b55de20bf3887b818c172dc5a7218386c45c24e11e317e8289d5607b92caf1b",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "f836d99d773570994e1598538a88809d052ec3b41675f9c2c5433fe60a6036f5",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "status",
+      "--porcelain"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/closeout-tools/p189_verify.py"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "actual_exit_code": 0,
+    "stdout_sha256": "64b11afbb448e8703b42251b026ef81052c60e0c4f29e6a0f679e45bc365718c",
+    "stderr": ""
+  }
+]

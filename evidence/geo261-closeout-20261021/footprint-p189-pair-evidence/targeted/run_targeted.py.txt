@@ -1,0 +1,74 @@
+"""只跑 footprint 候選的定向驗證，保存每個子命令與完整原輸出。"""
+from pathlib import Path
+import datetime
+import hashlib
+import json
+import os
+import resource
+import subprocess
+import sys
+import tempfile
+import unittest
+
+ROOT=Path('/workspace/geo261-host-copy-candidate')
+OUT=Path(__file__).resolve().parent
+os.chdir(ROOT)
+sys.path.insert(0,str(ROOT))
+original_run=subprocess.run
+records=[]
+assert resource.getrlimit(resource.RLIMIT_STACK)[0]==16384*1024
+assert 'CC' not in os.environ and 'PYTHONOPTIMIZE' not in os.environ
+temporary=tempfile.mkdtemp(prefix='geo261-host-footprint-')
+os.environ['TMPDIR']=temporary
+tempfile.tempdir=temporary
+(OUT/'launch-environment.json').write_text(json.dumps(dict(stackBytes=resource.getrlimit(resource.RLIMIT_STACK),CC=None,PYTHONOPTIMIZE=None,TMPDIR=temporary),indent=2)+'\n')
+
+def source_hashes():
+    paths=[ROOT/'current_geometry.c']
+    for directory in ('geometry-app/native','geometry-core/kernel','geometry-templates/woodworking/native'):
+        paths.extend(p for p in (ROOT/directory).rglob('*') if p.is_file() and p.suffix in ('.c','.h','.inc'))
+    paths.extend((ROOT/'tests').glob('geo261_*harness.c'))
+    paths.extend((ROOT/'tests').glob('test_geo261*.py'))
+    paths.append(ROOT/'tests/test_mutation_anchors.py')
+    return {str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(set(paths))}
+
+before=source_hashes()
+(OUT/'source-before.json').write_text(json.dumps(before,indent=2)+'\n')
+
+def observed_run(*args,**kwargs):
+    command=args[0] if args else kwargs['args']
+    index=len(records)
+    entry=dict(index=index,command=list(map(str,command)) if not isinstance(command,str) else command,
+               cwd=str(kwargs.get('cwd',ROOT)),startedUTC=datetime.datetime.now(datetime.timezone.utc).isoformat())
+    records.append(entry)
+    try:
+        result=original_run(*args,**kwargs)
+        entry['returncode']=result.returncode
+        for name in ('stdout','stderr'):
+            value=getattr(result,name)
+            if value is not None:
+                data=value.encode('utf-8') if isinstance(value,str) else value
+                filename=f'command-{index:04d}.{name}'
+                (OUT/filename).write_bytes(data)
+                entry[name]=dict(path=filename,bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
+        return result
+    except BaseException as exc:
+        entry['exception']=repr(exc)
+        raise
+    finally:
+        entry['finishedUTC']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+        (OUT/'targeted-commands.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
+
+subprocess.run=observed_run
+names=['tests.test_geo261_host_facts_authority','tests.test_geo261_contact_sources',
+       'tests.test_geo261_wood_world_validation','tests.test_mutation_anchors']
+with (OUT/'targeted-unittest.log').open('w') as log:
+    result=unittest.TextTestRunner(stream=log,verbosity=2).run(unittest.defaultTestLoader.loadTestsFromNames(names))
+after=source_hashes()
+(OUT/'source-after.json').write_text(json.dumps(after,indent=2)+'\n')
+summary=dict(modules=names,testsRun=result.testsRun,failures=len(result.failures),errors=len(result.errors),
+             skipped=result.skipped,sourceUnchanged=before==after,
+             passed=result.wasSuccessful() and not result.skipped and before==after)
+(OUT/'targeted-result.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(summary,ensure_ascii=False))
+sys.exit(0 if summary['passed'] else 1)

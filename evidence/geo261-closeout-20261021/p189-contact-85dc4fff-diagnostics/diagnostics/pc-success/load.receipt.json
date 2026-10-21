@@ -1,0 +1,37 @@
+{
+  "name": "load",
+  "argv": [
+    "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+  ],
+  "cwd": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/run01",
+  "started_utc": "2026-10-21T02:13:26.112476+00:00",
+  "stdin": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/run01/load.in",
+  "timeout_seconds": 900,
+  "pid": 307734,
+  "pgid": 307734,
+  "finished_utc": "2026-10-21T02:13:27.258228+00:00",
+  "wall_seconds": 1.1457362530018145,
+  "raw_wait_status": 0,
+  "actual_exit_code": 0,
+  "timed_out": false,
+  "rusage": {
+    "ru_utime": 1.107815,
+    "ru_stime": 0.035675,
+    "ru_maxrss": 60264,
+    "ru_ixrss": 0,
+    "ru_idrss": 0,
+    "ru_isrss": 0,
+    "ru_minflt": 33484,
+    "ru_majflt": 0,
+    "ru_nswap": 0,
+    "ru_inblock": 0,
+    "ru_oublock": 56,
+    "ru_msgsnd": 0,
+    "ru_msgrcv": 0,
+    "ru_nsignals": 0,
+    "ru_nvcsw": 1,
+    "ru_nivcsw": 25
+  },
+  "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

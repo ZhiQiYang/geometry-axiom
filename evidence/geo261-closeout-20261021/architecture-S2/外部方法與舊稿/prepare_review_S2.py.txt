@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+"""只讀已提交 S2，產生本輪明列審閱與外部方法靜態核對原件。"""
+import ast
+from copy import deepcopy
+import difflib
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+ROOT = Path('/workspace/geometry-axiom')
+OUT = Path('/workspace/geo261-evidence/architecture-owned-preparation')
+HEAD = 'cabe824128be31d0039dc6c94fa3f04cfb722a6b'
+BASE = '43f85313c32410ac01406ab585846bbacafea278'
+OWNED = {
+    'geometry-app/native/reference_sources.inc': 'H 以呼叫者獨佔暫存組合完整 host facts，公開入口仍成功後提交輸出；非 current footprint 僅先核 raw placement 存在，保 returned definition／pose／frame／face 的權威與求值順序。',
+    'geometry-app/native/world_validation.inc': 'H 驗證器的局部輸出採私有暫存入口；失敗後不讀取或發佈部分內容，守門與裁決位置不變。',
+    'geometry-core/kernel/placement_sources.c': 'K 抽完整解碼至私有暫存核心，公開入口保別名安全與失敗原子性；sources accessor 直接填局部暫存並驗 id 後提交，保解析與依賴流程。',
+    'geometry-templates/woodworking/native/contact_world.c': 'W 在單次收集內保存各側面的最後排序值及全 facts 最小排序值；維持重複 ID、穩定排序、去重、容量截斷與超容量 fallback，不跨 query 記憶化。',
+    'geometry-templates/woodworking/native/definition_sources.c': 'W 固定 1／4／8 bytes 大端讀取以可攜位移展開，原 bounds／ok／at、其他寬度迴圈及 signed 轉換不變。',
+}
+TESTS = {
+    'tests/geo261_contact_world_harness.c': '補獨立數值案例涵蓋同 ID 全 facts 的 last／minimum、連續刪除、極值與超容量 fallback；保留既有真幾何契約。',
+    'tests/geo261_host_facts_authority_harness.c': '補完整 components 清理、輸出原子性、view 生命週期與 footprint 缺 raw／越界／current 的數值及圖觀察契約。',
+    'tests/geo261_placement_definition_harness.c': '新增公開 decoder 輸入輸出 overlap 正向案例，以原 wire bytes 檢驗別名安全及失敗原子性。',
+    'tests/test_geo261_host_facts_authority.py': '對活躍私有暫存流程重錨既有控制，新增 copy／view／footprint 具名斷言控制及正向案例；套件由 17 增為 27 項。',
+    'tests/test_geo261_placement_definition.py': '既有解碼負控制重錨完整私有 parser，加入公開 overlap 具名突變並保原測試數量。',
+    'tests/test_geo261_wood_contact_world.py': '既有排序控制重錨等價判斷，加入重複 ID／minimum／key 移動控制及兩個數值案例；套件由 10 增為 12 項。',
+    'tests/run_all.expected.json': '僅同步兩個具名套件 count：host_facts_authority 17→27、wood_contact_world 10→12；保留其他 expected 契約，count 總和為 5188。',
+}
+
+def git(*args):
+    return subprocess.check_output(['git', '-C', str(ROOT), *args])
+
+def hashes(raw):
+    return {'rawSha256': hashlib.sha256(raw).hexdigest(),
+            'lfSha256': hashlib.sha256(raw.replace(b'\r\n', b'\n')).hexdigest()}
+
+def dump(path, value):
+    with path.open('x', encoding='utf-8') as stream:
+        json.dump(value, stream, ensure_ascii=False, indent=2)
+        stream.write('\n')
+
+assert git('rev-parse', 'HEAD').decode().strip() == HEAD
+assert not git('status', '--porcelain=v1', '--untracked-files=no')
+actual_diff = git('diff', '--name-status', '--no-renames', BASE, HEAD).decode().splitlines()
+assert sorted(actual_diff) == sorted('M\t' + p for p in (*OWNED, *TESTS))
+before = json.loads(git('show', BASE + ':tests/run_all.expected.json'))
+after = json.loads(git('show', HEAD + ':tests/run_all.expected.json'))
+wanted = deepcopy(before)
+for name, old, new in [('py:test_geo261_host_facts_authority', 17, 27),
+                       ('py:test_geo261_wood_contact_world', 10, 12)]:
+    assert wanted['suites'][name]['count'] == old
+    wanted['suites'][name]['count'] = new
+assert after == wanted
+assert sum(row.get('count', 0) for row in after['suites'].values()) == 5188
+review = json.loads((OUT / 'review-template.json').read_bytes())
+review['sourceHead'] = HEAD
+for section, entries in [('changedOwnedSources', OWNED), ('changedOutsideInventory', TESTS)]:
+    review[section] = {}
+    for path, reason in entries.items():
+        raw = (ROOT / path).read_bytes()
+        assert raw == git('show', HEAD + ':' + path)
+        review[section][path] = {**hashes(raw), 'reason': reason}
+review['addedForbiddenIdentifiers']['WoodContactOrder']['reason'] = 'W contact_world 新增的單次排序暫存型別；保持 W 所有權，以正式 forbidden identifier 禁止 K 具體依賴。本輪仍須完整 W 詞法盤點與舊接受／新拒絕／撤回接受探針。'
+dump(OUT / 'review-S2.json', review)
+method = OUT / 'refresh_owned.py'
+raw = method.read_bytes()
+ast.parse(raw, filename=str(method))
+old = OUT / 'history-before-expected-json' / method.name
+patch = ''.join(difflib.unified_diff(old.read_text().splitlines(True), raw.decode().splitlines(True),
+                                   fromfile='已審舊稿/refresh_owned.py', tofile='精確expected例外/refresh_owned.py'))
+(OUT / 'expected-json-only.patch').write_text(patch)
+receipt = {'status': '靜態核對通過；未執行刷新或任何產品驗收', 'sourceHead': HEAD,
+           'baseHead': BASE, 'diff': actual_diff, 'changedOwnedCount': len(OWNED),
+           'changedOutsideInventoryCount': len(TESTS), 'expectedOnlyTwoCounts': True,
+           'expectedCountTotal': 5188, 'driver': {'path': str(method), 'bytes': len(raw), **hashes(raw)},
+           'previousDriver': {'path': str(old), **hashes(old.read_bytes())},
+           'review': {'path': str(OUT / 'review-S2.json'), **hashes((OUT / 'review-S2.json').read_bytes())},
+           'commands': ['git rev-parse HEAD', 'git status --porcelain=v1 --untracked-files=no',
+                        'git diff --name-status --no-renames ' + BASE + ' ' + HEAD,
+                        'git show <來源>:<逐檔路徑>'],
+           'notClaimed': ['正式 architecture CLI', '三 gate', 'W 詞法盤點', '負控制', '任何產品測試／建置']}
+dump(OUT / 'preparation-S2-static.json', receipt)
+print(json.dumps(receipt, ensure_ascii=False, indent=2))

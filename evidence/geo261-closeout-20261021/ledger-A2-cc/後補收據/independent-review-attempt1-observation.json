@@ -1,0 +1,10 @@
+{
+  "toolChunk": "fddc57",
+  "exit_code": 1,
+  "output": "Traceback (most recent call last):\n  File \"/workspace/geo261-evidence/ledger-A2-cc-cbefb39b/independent-review-code.txt\", line 71, in <module>\n    assert r['failures'] and all(f['kind']=='assertion' and 'AssertionError' in f['detail'] for f in r['failures'])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "evidenceType": "從本代理實際工具回覆逐欄轉錄，非另外自動transport檔",
+  "acceptorSha256": "8760d0331b604259aacf311c965e23824cb73f67f08e13379a530da6880c0f31",
+  "cause": "接受器錯要求截尾3000字detail一定包含AssertionError前綴；原oracle只保尾部，完整stdout另可核。",
+  "productTestExecuted": false,
+  "原件未變": true
+}

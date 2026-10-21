@@ -1,0 +1,15 @@
+# 公理:R8:apply-proj 是快照式衍生——套用當下把柱子的投影變成真幾何(孔),
+# 之後這個孔就跟柱子沒有連結了。
+# 柱 1 落在天花板內部 → R7 分類成 hole;apply-proj 把它變成天花板上的真孔環。
+# 接著 delete 掉柱 1,孔仍然在——衍生出來的幾何不會跟著來源一起消失。
+# 要改就是手動復原後對新鬼影再套一次,不是自動重算。
+surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000
+surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
+surface 4 origin 0    3000 0    u +z v +x outline 0,0 2500,0 2500,4000 0,4000
+surface 5 origin 0    0    0    u +z v +y outline 0,0 2500,0 2500,3000 0,3000
+surface 6 origin 4000 0    0    u +y v +z outline 0,0 3000,0 3000,2500 0,2500
+space 1 boundary 1 2 3 4 5 6
+column 1 in 1 at 1000 1000 size 400 400
+apply-proj 1 c1
+delete column 1

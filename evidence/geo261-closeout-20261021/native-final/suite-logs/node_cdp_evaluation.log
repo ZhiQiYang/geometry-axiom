@@ -1,0 +1,17 @@
+✔ preserves global lexical lookup, statements and synchronous values (2.223332ms)
+✔ holds the exact pending promise until the CDP response then releases it (5.774025ms)
+✔ concurrent evaluations retain independent roots and release only their own entry (1.721783ms)
+✔ rejected browser work propagates its original error and releases the root (1.200482ms)
+✔ syntax errors release even the empty registry created before evaluation (1.176197ms)
+✔ protocol failure never repeats an expression that already mutated state (0.768975ms)
+✔ cleanup failure cannot replace the original evaluation failure (0.203881ms)
+✔ cleanup failure after a successful evaluation is not hidden (0.177352ms)
+✔ a replaced document is not populated or stripped of unrelated retained work (1.242194ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 74.836061

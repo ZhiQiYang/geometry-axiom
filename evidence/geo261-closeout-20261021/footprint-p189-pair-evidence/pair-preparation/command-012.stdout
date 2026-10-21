@@ -1,0 +1,242 @@
+diff --git a/geometry-app/native/reference_sources.inc b/geometry-app/native/reference_sources.inc
+index b14c686e64f054c281c46352469ddd4430835f76..e05bf6aa715e00eaf0033e38f0cd989065538548 100644
+--- a/geometry-app/native/reference_sources.inc
++++ b/geometry-app/native/reference_sources.inc
+@@ -121,7 +121,6 @@ static bool reference_source_evaluate(void *opaque,GeoEvalContext *evaluation,co
+ static bool reference_sp_dimension(void *opaque,const EngDimensionSource *source,const EngTarget *target,GeoCoord *out)
+ {ReferenceEval *ctx=opaque;return app_sp_resolve_dimension_sources(ctx->world,ctx->parameter_sources,ctx->engineering_sources,source,target,out);}
+ static bool reference_boundary_policy(ReferenceEval *,WoodBoundaryRegion *);
+-static bool reference_host_scratch(ReferenceEval *,uint32_t,PlacementSurface *,SpaceBoundarySurface *,const SpaceBoundarySurface **);
+ static bool reference_sp_host(void *opaque,uint32_t id,GeoFrame *frame,WoodBoundaryRegion *region,bool *derived)
+ {
+     ReferenceEval *ctx=opaque;if(ctx->use_current_values)return app_sp_live_host(ctx->world,id,frame,region,derived);
+@@ -130,7 +129,7 @@ static bool reference_sp_host(void *opaque,uint32_t id,GeoFrame *frame,WoodBound
+     if(!geo_placement_sources_definition(ctx->placement_sources,id,&definition))return false;
+     if(definition.domain==GEO_PLACEMENT_REGION_SET){*derived=true;return true;}
+     PlacementSurface placement;SpaceBoundarySurface boundary;const SpaceBoundarySurface *view;
+-    if(!reference_host_scratch(ctx,id,&placement,&boundary,&view)||!surface_frame_is_valid(&placement.frame))return false;
++    if(!reference_host_read(ctx,id,&placement,&boundary,&view)||!surface_frame_is_valid(&placement.frame))return false;
+     WoodBoundaryRegion actual=*placement_effective_boundary(&placement,view,&boundary);
+     *frame=placement.frame;*region=actual;*derived=false;return true;
+ }
+@@ -224,7 +223,7 @@ static bool reference_grid_host(void *opaque,uint32_t id,WoodGridHost *out)
+ {
+     ReferenceEval *ctx=opaque;PlacementSurface placement;SpaceBoundarySurface boundary;
+     const SpaceBoundarySurface *b;
+-    if(!reference_host_scratch(ctx,id,&placement,&boundary,&b))return false;
++    if(!reference_host_read(ctx,id,&placement,&boundary,&b))return false;
+     return app_grid_host_value(&placement,b,out);
+ }
+ static bool reference_grid_coordinate(void *opaque,GeoParameterRef ref,GeoCoord *out)
+@@ -489,14 +488,9 @@ static bool reference_placement_frame(ReferenceEval *ctx,uint32_t id,GeoFrame *o
+ }
+ static bool reference_member_footprint(ReferenceEval *ctx,size_t index,uint32_t placement_id,GeoRect2 *out)
+ {
+-    World *world=ctx->world;
+-    if(index>=world->wood.timber_count)return false;
+-    if(ctx->use_current_values){
+-        PlacementSurface placement;
+-        if(!app_placement_read(world,placement_id,&placement))return false;
+-        return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);
+-    }
+-    if(!geo_placements_find(&world->geo.placement_data,placement_id))return false;
++    World *world=ctx->world;PlacementSurface placement;
++    if(index>=world->wood.timber_count||!app_placement_read(world,placement_id,&placement))return false;
++    if(ctx->use_current_values)return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);
+     uint32_t id=world->wood.timbers[index].id;GeoSourceValue value;GeoFrame frame;GeoQuad3 face;unsigned axis,side;
+     WoodMemberPlacement anchor;
+     if(!reference_sources_ensure(ctx)||!wood_definition_sources_placement(ctx->definition_sources,id,&anchor)||anchor.placement_id!=placement_id||
+@@ -522,67 +516,53 @@ static bool reference_region_view_fits(const GeoRegionView *view)
+         if(view->holes[h].count>POLY_MAX_VERTICES||(view->holes[h].count&&!view->holes[h].v))return false;
+     return true;
+ }
+-/* 僅填入呼叫者獨佔的暫存；失敗時暫存不可發佈。來源求值與驗證順序不變，
+- * 成功後的 view 指向同一份暫存，不能逸出其生命週期。 */
+-static bool reference_host_scratch(ReferenceEval *ctx,uint32_t id,PlacementSurface *actual,
+-    SpaceBoundarySurface *region,const SpaceBoundarySurface **view)
++/* Compose host identity, geometry and W policy from one actual candidate.
++ * The boundary view is selected after the returned placement definition. */
++static bool reference_host_read(ReferenceEval *ctx,uint32_t id,PlacementSurface *placement,
++    SpaceBoundarySurface *boundary,const SpaceBoundarySurface **view)
+ {
+-    bool has_boundary=false;
+-    if(!ctx||!actual||!region||!view)return false;
+-    memset(region,0,sizeof *region);
+-    if(!app_placement_read(ctx->world,id,actual))return false;
++    PlacementSurface actual;SpaceBoundarySurface region={0};bool has_boundary=false;
++    if(!ctx||!placement||!boundary||!view||!app_placement_read(ctx->world,id,&actual))return false;
+     if(ctx->use_current_values){
+-        const SpaceBoundarySurface *raw=app_placement_boundary(ctx->world,actual,region);
+-        if(raw&&raw!=region)*region=*raw;has_boundary=raw!=NULL;
++        const SpaceBoundarySurface *raw=app_placement_boundary(ctx->world,&actual,&region);
++        if(raw&&raw!=&region)region=*raw;has_boundary=raw!=NULL;
+     }else{
+         GeoPlacementSourceKey key;GeoSourceValue geometry;GeoPlacementDefinition definition;
+-        if(!reference_sources_ensure(ctx)||!reference_placement_frame(ctx,id,&actual->frame)||
++        if(!reference_sources_ensure(ctx)||!reference_placement_frame(ctx,id,&actual.frame)||
+            geo_eval_source(ctx->sources,geo_placement_source_ref(APP_SOURCE_PLACEMENT,GEO_PLACEMENT_SOURCE_REGIONS,id,&key),
+                GEO_DEPENDENCY_VALUE_REQUIRED,&geometry)!=GEO_SOURCE_OK||
+            geometry.kind!=GEO_SOURCE_REGION_SET||geometry.as.regions.count>DP_COMPONENT_MAX||
+            (geometry.as.regions.count&&!geometry.as.regions.regions)||
+            !geo_placement_sources_definition(ctx->placement_sources,id,&definition))return false;
+         for(size_t i=0;i<geometry.as.regions.count;++i)if(!reference_region_view_fits(&geometry.as.regions.regions[i]))return false;
+-        /* app_placement_read 在零 components 時已清空整份結構；原有 components
+-         * 才需再次清空，且仍清除整個陣列，包含未使用的欄位。 */
+-        bool clear_components=actual->component_count!=0;
+-        actual->boundary_id=0;actual->derived_fill_id=0;actual->derived_h=0;actual->component_count=0;
+-        if(clear_components)memset(actual->components,0,sizeof actual->components);
++        actual.boundary_id=0;actual.derived_fill_id=0;actual.derived_h=0;actual.component_count=0;
++        memset(actual.components,0,sizeof actual.components);
+         if(definition.domain==GEO_PLACEMENT_REGION_SET){
+             WoodDerivedValue derived;
+             if(!wood_finish_sources_read_derived(ctx->finish_sources,id,&derived)||
+                !derived.derived_fill_id||derived.component_count!=geometry.as.regions.count)return false;
+-            actual->derived_fill_id=derived.derived_fill_id;actual->derived_h=derived.derived_h;actual->component_count=derived.component_count;
+-            memcpy(actual->components,derived.components,sizeof actual->components);
+-            for(size_t i=0;i<actual->component_count;++i)reference_region_geometry(&actual->components[i],&geometry.as.regions.regions[i]);
+-            has_boundary=actual->component_count!=0;if(has_boundary)*region=actual->components[0];
++            actual.derived_fill_id=derived.derived_fill_id;actual.derived_h=derived.derived_h;actual.component_count=derived.component_count;
++            memcpy(actual.components,derived.components,sizeof actual.components);
++            for(size_t i=0;i<actual.component_count;++i)reference_region_geometry(&actual.components[i],&geometry.as.regions.regions[i]);
++            has_boundary=actual.component_count!=0;if(has_boundary)region=actual.components[0];
+         }else if(definition.domain==GEO_PLACEMENT_REGION_REF){
+             if(geometry.as.regions.count!=1)return false;
+-            actual->boundary_id=definition.region_id;region->id=definition.region_id;
+-            reference_region_geometry(region,&geometry.as.regions.regions[0]);
+-            if(!reference_boundary_policy(ctx,region))return false;has_boundary=true;
++            actual.boundary_id=definition.region_id;region.id=definition.region_id;
++            reference_region_geometry(&region,&geometry.as.regions.regions[0]);
++            if(!reference_boundary_policy(ctx,&region))return false;has_boundary=true;
+         }else{
+             if(geometry.as.regions.count!=1)return false;
+             GeoLoop2View loop=geometry.as.regions.regions[0].outline;
+-            geo_loop_bbox(&loop,&actual->rect.min_u,&actual->rect.min_v,&actual->rect.max_u,&actual->rect.max_v);
++            geo_loop_bbox(&loop,&actual.rect.min_u,&actual.rect.min_v,&actual.rect.max_u,&actual.rect.max_v);
+         }
+     }
+-    *view=has_boundary?(actual->derived_fill_id?&actual->components[0]:region):NULL;return true;
+-}
+-/* 對外保留失敗原子性：三個輸出只在完整構造成功後提交。 */
+-static bool reference_host_read(ReferenceEval *ctx,uint32_t id,PlacementSurface *placement,
+-    SpaceBoundarySurface *boundary,const SpaceBoundarySurface **view)
+-{
+-    PlacementSurface actual;SpaceBoundarySurface region;const SpaceBoundarySurface *selected;
+-    if(!ctx||!placement||!boundary||!view)return false;
+-    if(!reference_host_scratch(ctx,id,&actual,&region,&selected))return false;
+     *placement=actual;*boundary=region;
+-    *view=selected?(actual.derived_fill_id?&placement->components[0]:boundary):NULL;return true;
++    *view=has_boundary?(actual.derived_fill_id?&placement->components[0]:boundary):NULL;return true;
+ }
+ static bool reference_member_placement(ReferenceEval *ctx,PlacementSurface *placement,SpaceBoundarySurface *boundary)
+ {
+     PlacementSurface actual;SpaceBoundarySurface region;const SpaceBoundarySurface *view;
+-    if(!reference_host_scratch(ctx,placement->id,&actual,&region,&view))return false;
++    if(!reference_host_read(ctx,placement->id,&actual,&region,&view))return false;
+     *placement=actual;if(boundary&&view)*boundary=*view;return true;
+ }
+ static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
+@@ -591,7 +571,7 @@ static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
+     ReferenceEval *ctx=opaque;if(evaluation!=ctx->sources)return false;
+     PlacementSurface placement;SpaceBoundarySurface boundary;
+     const SpaceBoundarySurface *b;
+-    if(!reference_host_scratch(ctx,request->placement_id,&placement,&boundary,&b))return false;
++    if(!reference_host_read(ctx,request->placement_id,&placement,&boundary,&b))return false;
+     AppContactFacts facts;app_contact_facts(ctx->world,&placement,b,&facts);
+     out->region_count=facts.world.region_count;
+     for(size_t i=0;i<out->region_count;++i)out->regions[i]=*facts.world.regions[i];
+@@ -637,14 +617,6 @@ static bool app_reference_host_read(const World *world,uint32_t id,PlacementSurf
+     if(ctx)return reference_host_read(ctx,id,placement,boundary,view);
+     if(!app_placement_read(world,id,placement))return false;*view=app_placement_boundary(world,placement,boundary);return true;
+ }
+-/* 僅供驗證器的區域暫存使用；失敗後不讀取或發佈部分構造的內容。 */
+-static bool app_reference_host_read_local(const World *world,uint32_t id,PlacementSurface *placement,
+-    SpaceBoundarySurface *boundary,const SpaceBoundarySurface **view)
+-{
+-    ReferenceEval *ctx=app_reference_sources_for_world(world);
+-    if(ctx)return reference_host_scratch(ctx,id,placement,boundary,view);
+-    return app_reference_host_read(world,id,placement,boundary,view);
+-}
+ static bool app_reference_member_anchor(const World *world,size_t i,WoodMemberPlacement *out)
+ {
+     if(i>=world->wood.timber_count)return false;ReferenceEval *ctx=app_reference_sources_for_world(world);
+diff --git a/geometry-app/native/world_validation.inc b/geometry-app/native/world_validation.inc
+index acc82f4d9dfb5d23eed7a094ef00359add7cf9bc..ff3a8f5f9b577a6c8e17b1ed7b56371aed9a5e8b 100644
+--- a/geometry-app/native/world_validation.inc
++++ b/geometry-app/native/world_validation.inc
+@@ -3,7 +3,6 @@
+  * in world_validation.c. No callback chooses acceptance or publication. */
+ #include "../../geometry-templates/woodworking/native/world_validation.h"
+ static bool app_reference_host_read(const World *,uint32_t,PlacementSurface *,SpaceBoundarySurface *,const SpaceBoundarySurface **);
+-static bool app_reference_host_read_local(const World *,uint32_t,PlacementSurface *,SpaceBoundarySurface *,const SpaceBoundarySurface **);
+ static bool app_reference_member_anchor(const World *,size_t,WoodMemberPlacement *);
+ static bool app_reference_member_footprint(const World *,size_t,uint32_t,GeoRect2 *);
+ static bool app_reference_validation_room(const World *,uint32_t,WoodRoomBounds *);
+@@ -20,7 +19,7 @@ typedef struct {
+ static bool app_validation_domain(void *user,uint32_t id,const GeoRect2 *footprint,AppValidationDomain *out)
+ {
+     const World *world=user;
+-    if(!app_reference_host_read_local(world,id,&out->placement,&out->boundary,&out->b))return false;
++    if(!app_reference_host_read(world,id,&out->placement,&out->boundary,&out->b))return false;
+     out->p=&out->placement;
+     if(footprint)out->b=placement_boundary_for_rect(out->p,out->b,footprint);
+     return true;
+diff --git a/geometry-core/kernel/placement_sources.c b/geometry-core/kernel/placement_sources.c
+index e7595a52cc4ed402f5be63a596e2c574145cd02a..635da849e7104c107c498747fdded083f20b0126 100644
+--- a/geometry-core/kernel/placement_sources.c
++++ b/geometry-core/kernel/placement_sources.c
+@@ -89,33 +89,26 @@ static bool geo_pd_loop_read(GeoPDReader *r,GeoRegionLoop *out)
+     for(size_t v=0;v<out->count;++v)if(!geo_pd_coord_read(r,&out->v[v].u)||!geo_pd_coord_read(r,&out->v[v].v))return false;
+     return true;
+ }
+-/* 只寫入呼叫者私有暫存；失敗可留下部分內容，不得直接傳入公開輸出。 */
+-static bool geo_pd_decode_into(const void *content,size_t size,GeoPlacementDefinition *next)
++bool geo_placement_definition_decode(const void *content,size_t size,GeoPlacementDefinition *out)
+ {
+-    if(!content||!next||size>GEO_PLACEMENT_DEFINITION_MAX_BYTES)return false;
+-    GeoPDReader r={content,(const unsigned char *)content+size};memset(next,0,sizeof *next);
++    if(!content||!out||size>GEO_PLACEMENT_DEFINITION_MAX_BYTES)return false;
++    GeoPDReader r={content,(const unsigned char *)content+size};GeoPlacementDefinition next;memset(&next,0,sizeof next);
+     uint64_t id,domain,count;GeoVector3 origin;
+-    if(!geo_pd_read(&r,4,&id)||!geo_pd_vector_read(&r,&origin)||!geo_pd_vector_read(&r,&next->frame.axis_u)||
+-       !geo_pd_vector_read(&r,&next->frame.axis_v)||!geo_pd_vector_read(&r,&next->frame.normal)||!geo_pd_read(&r,1,&domain)||domain>GEO_PLACEMENT_REGION_SET)return false;
+-    next->id=(uint32_t)id;next->frame.origin=(GeoPoint3){origin.x,origin.y,origin.z};next->domain=(GeoPlacementDomain)domain;
+-    if(next->domain==GEO_PLACEMENT_RECT){
+-        if(!geo_pd_coord_read(&r,&next->rect.min_u)||!geo_pd_coord_read(&r,&next->rect.min_v)||
+-           !geo_pd_coord_read(&r,&next->rect.max_u)||!geo_pd_coord_read(&r,&next->rect.max_v))return false;
+-    }else if(next->domain==GEO_PLACEMENT_REGION_REF){if(!geo_pd_read(&r,4,&id))return false;next->region_id=(uint32_t)id;}
+-    else{if(!geo_pd_read(&r,4,&count)||count>GEO_PLACEMENT_COMPONENT_CAPACITY)return false;next->component_count=(size_t)count;
+-        for(size_t c=0;c<next->component_count;++c){GeoRegionDefinition *component=&next->components[c];
++    if(!geo_pd_read(&r,4,&id)||!geo_pd_vector_read(&r,&origin)||!geo_pd_vector_read(&r,&next.frame.axis_u)||
++       !geo_pd_vector_read(&r,&next.frame.axis_v)||!geo_pd_vector_read(&r,&next.frame.normal)||!geo_pd_read(&r,1,&domain)||domain>GEO_PLACEMENT_REGION_SET)return false;
++    next.id=(uint32_t)id;next.frame.origin=(GeoPoint3){origin.x,origin.y,origin.z};next.domain=(GeoPlacementDomain)domain;
++    if(next.domain==GEO_PLACEMENT_RECT){
++        if(!geo_pd_coord_read(&r,&next.rect.min_u)||!geo_pd_coord_read(&r,&next.rect.min_v)||
++           !geo_pd_coord_read(&r,&next.rect.max_u)||!geo_pd_coord_read(&r,&next.rect.max_v))return false;
++    }else if(next.domain==GEO_PLACEMENT_REGION_REF){if(!geo_pd_read(&r,4,&id))return false;next.region_id=(uint32_t)id;}
++    else{if(!geo_pd_read(&r,4,&count)||count>GEO_PLACEMENT_COMPONENT_CAPACITY)return false;next.component_count=(size_t)count;
++        for(size_t c=0;c<next.component_count;++c){GeoRegionDefinition *component=&next.components[c];
+             if(!geo_pd_read(&r,4,&id)||!geo_pd_loop_read(&r,&component->outline)||!geo_pd_read(&r,4,&count)||count>GEO_REGION_MAX_HOLES)return false;
+             component->id=(uint32_t)id;component->hole_count=(size_t)count;
+             for(size_t h=0;h<component->hole_count;++h)if(!geo_pd_loop_read(&r,&component->holes[h]))return false;
+         }
+     }
+-    if(r.p!=r.end)return false;return true;
+-}
+-bool geo_placement_definition_decode(const void *content,size_t size,GeoPlacementDefinition *out)
+-{
+-    if(!out)return false;GeoPlacementDefinition next;
+-    if(!geo_pd_decode_into(content,size,&next))return false;
+-    memcpy(out,&next,sizeof next);return true;
++    if(r.p!=r.end)return false;memcpy(out,&next,sizeof next);return true;
+ }
+ GeoSourceRef geo_placement_source_ref(GeoProviderToken token,GeoPlacementSourceKind kind,uint32_t id,GeoPlacementSourceKey *key)
+ {key->bytes[0]=(unsigned char)kind;geo_source_u32(key->bytes+1,id);return (GeoSourceRef){token,key->bytes,sizeof key->bytes};}
+@@ -201,7 +194,7 @@ bool geo_placement_sources_definition(GeoPlacementSources *s,uint32_t id,GeoPlac
+     if(geo_eval_source(s->graph,geo_placement_source_ref(s->placement_token,GEO_PLACEMENT_SOURCE_DEFINITION,id,&key),
+         GEO_DEPENDENCY_DEFINITION_REQUIRED,&value)!=GEO_SOURCE_OK||value.kind!=GEO_SOURCE_DEFINITION||
+         !value.as.definition.schema||strcmp(value.as.definition.schema,GEO_PLACEMENT_DEFINITION_SCHEMA)||
+-        !geo_pd_decode_into(value.as.definition.content,value.as.definition.content_size,&result)||result.id!=id)return false;
++        !geo_placement_definition_decode(value.as.definition.content,value.as.definition.content_size,&result)||result.id!=id)return false;
+     memcpy(out,&result,sizeof result);return true;
+ }
+ void geo_placement_sources_destroy(GeoPlacementSources *sources)

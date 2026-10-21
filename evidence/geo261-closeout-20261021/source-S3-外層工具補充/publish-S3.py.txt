@@ -1,0 +1,50 @@
+from pathlib import Path
+import datetime, hashlib, json, subprocess
+
+ROOT = Path('/workspace/geo261-host-authority-anchor-fix')
+OUT = Path('/workspace/geo261-evidence/source-S3-publication')
+PARENT = '249571fe2477845d5330f6190dad965bf327f43b'
+BRANCH = 'codex/geo261-host-authority-anchor-fix-20261021'
+REL = 'tests/test_geo261_host_authority.py'
+EXPECTED = 'a8e56b75390d4ca545077d03af81067517271c5cab0eb601c29a8afea65d4ec2'
+OUT.mkdir(exist_ok=False)
+commands = []
+
+def run(label, *args):
+    p = subprocess.run(args, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (OUT / (label + '.stdout')).write_bytes(p.stdout)
+    (OUT / (label + '.stderr')).write_bytes(p.stderr)
+    (OUT / (label + '.exit-code')).write_text(str(p.returncode) + '\n')
+    commands.append({'label': label, 'argv': list(args), 'exitCode': p.returncode})
+    (OUT / 'commands.json').write_text(json.dumps(commands, ensure_ascii=False, indent=2) + '\n')
+    assert p.returncode == 0, (label, p.returncode)
+    return p.stdout
+
+assert run('head-before', 'git', 'rev-parse', 'HEAD').decode().strip() == PARENT
+assert run('branch', 'git', 'branch', '--show-current').decode().strip() == BRANCH
+assert run('status-before', 'git', 'status', '--porcelain=v1') == (' M ' + REL + '\n').encode()
+assert hashlib.sha256((ROOT / REL).read_bytes()).hexdigest() == EXPECTED
+result = json.loads(Path('/workspace/geo261-evidence/host-authority-anchor-fix-20261021/targeted-run01/targeted-result.json').read_text())
+assert result['passed'] and result['testsRun'] == 18 and len(result['controls']) == 8
+assert result['sourceUnchanged'] and all(c['valid_baseline_mutant_restored'] for c in result['controls'])
+assert Path('/workspace/geo261-evidence/host-authority-anchor-fix-20261021/targeted.exit-code').read_text().strip() == '0'
+run('diff-check', 'git', 'diff', '--check')
+run('patch', 'git', 'diff', '--binary', '--', REL)
+run('add', 'git', 'add', '--', REL)
+assert run('staged-paths', 'git', 'diff', '--cached', '--name-only').decode() == REL + '\n'
+run('commit', 'git', 'commit', '-m', 'test: align host authority footprint mutation anchor')
+sha = run('head-after', 'git', 'rev-parse', 'HEAD').decode().strip()
+assert run('parent-after', 'git', 'rev-parse', 'HEAD^').decode().strip() == PARENT
+assert run('changed-paths', 'git', 'diff-tree', '--no-commit-id', '--name-only', '-r', sha).decode() == REL + '\n'
+assert run('committed-test', 'git', 'show', sha + ':' + REL) == (ROOT / REL).read_bytes()
+assert run('status-after', 'git', 'status', '--porcelain=v1') == b''
+run('push', 'git', 'push', 'origin', 'HEAD:refs/heads/' + BRANCH)
+remote = run('remote', 'git', 'ls-remote', '--heads', 'origin', 'refs/heads/' + BRANCH).decode().strip()
+assert remote == sha + '\trefs/heads/' + BRANCH
+receipt = {'schema': 'geo261-source-publication/1', 'sourceSha': sha, 'parentSha': PARENT,
+           'branch': BRANCH, 'changedPaths': [REL], 'testSha256': EXPECTED,
+           'remoteExact': True, 'finishedUtc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+           'targetedScope': '定向驗證在提交前的相同單檔 bytes；正式 S3 帳本與 L3 全驗收尚未執行。',
+           'commands': commands}
+(OUT / 'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps({'sourceSha': sha, 'branch': BRANCH, 'remoteExact': True}, ensure_ascii=False))

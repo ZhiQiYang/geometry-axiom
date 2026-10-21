@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-evidence/browser-five-L3-independent-review/peer-code.txt"
+  ],
+  "cwd": "/workspace",
+  "startedUTC": "2026-10-21T06:54:47.869486+00:00",
+  "finishedUTC": "2026-10-21T06:54:48.026485+00:00",
+  "seconds": 0.15701994800474495,
+  "pid": 506491,
+  "observedReturncode": 1,
+  "codeSha256": "c840f8b15a2984730a14594f9f8172409786074ef41231842fc49b933aa8dd6e",
+  "streams": {
+    "peer.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "peer.stderr": {
+      "bytes": 370,
+      "sha256": "62c528575f1c6816d8c530d002214d585f76157eaa208910721ea8b06a1e7fbf"
+    }
+  },
+  "scope": "只讀凍結五項 browser 原件，沒有產品／建置／browser 執行"
+}

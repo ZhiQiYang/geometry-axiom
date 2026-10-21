@@ -1,0 +1,43 @@
+"""當輪原件唯讀身分擷取；不建置、不執行產品，保存實際取樣時間。"""
+from pathlib import Path
+import datetime,hashlib,json,subprocess,sys
+root=Path('/workspace/geometry-axiom');out=Path('/workspace/geo261-evidence/canvas-L2-formal-249571fe');source='249571fe2477845d5330f6190dad965bf327f43b'
+stage=sys.argv[1];assert stage in ('during-start','after')
+def h(raw):return hashlib.sha256(raw).hexdigest()
+def marker(name):
+ rows=[json.loads(line[len('LOCAL_RUNTIME '):])for line in(out/name).read_text().splitlines()if line.startswith('LOCAL_RUNTIME ')]
+ assert len(rows)==1;return rows[0]
+build,server=marker('build.log'),marker('server.log')
+assert build['root']==server['root']==str(root) and build['executables']==server['executables']
+assert build['binaryDirectory']==server['binaryDirectory']=='/tmp/geometry-runtime/b9bc23103ebb114398f3'
+assert set(build['executables'])=={'core','bridge','model-base'}
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==source
+assert not subprocess.check_output(['git','status','--porcelain'],cwd=root)
+folder=out/('native-receipts-'+stage);assert not folder.exists();folder.mkdir()
+records={};dependencies={}
+for name,value in build['executables'].items():
+ p=Path(value);assert p.resolve().parent==Path(build['binaryDirectory']).resolve()
+ b=p.stat();raw=p.read_bytes();a=p.stat();assert(b.st_ino,b.st_size,b.st_mtime_ns)==(a.st_ino,a.st_size,a.st_mtime_ns)
+ sidecar=Path(value+'.fingerprint.json');side=sidecar.read_bytes();j=json.loads(side)
+ assert j['exe_sha256']==h(raw) and j['exe_size']==len(raw) and j['exe_mtime_ns']==a.st_mtime_ns
+ assert j['command'].startswith('cc -std=c11 -O2 ') and j['name']==name
+ (folder/(name+'.fingerprint.json')).write_bytes(side)
+ for rel,want in j['files'].items():
+  if rel in dependencies:assert dependencies[rel]==want
+  dependencies[rel]=want
+ records[name]={'path':value,'bytes':len(raw),'sha256':h(raw),'mtimeNs':a.st_mtime_ns,'sidecarSha256':h(side),'fingerprint':j['fingerprint'],'command':j['command'],'builtAt':j['built_at']}
+names=sorted(dependencies);batch=subprocess.run(['git','cat-file','--batch'],cwd=root,input=''.join(source+':'+name+'\n'for name in names).encode(),stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+assert batch.returncode==0 and not batch.stderr
+pos=0;bindings=[]
+for name in names:
+ end=batch.stdout.index(b'\n',pos);head=batch.stdout[pos:end].split();assert head[1]==b'blob';size=int(head[2]);raw=batch.stdout[end+1:end+1+size];assert batch.stdout[end+1+size:end+2+size]==b'\n';pos=end+2+size
+ assert raw==(root/name).read_bytes() and h(raw.replace(b'\r\n',b'\n'))==dependencies[name]
+ bindings.append({'path':name,'gitBlob':head[0].decode(),'bytes':size,'sha256':h(raw),'normalizedSha256':dependencies[name]})
+assert pos==len(batch.stdout)
+result={'sourceSha':source,'stage':stage,'sampledUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'build':build,'server':server,'executables':records,'sourceBindings':bindings,'sourceCount':len(bindings),'captureCodeSha256':h(Path(__file__).read_bytes()),'validationExitCode':0,'note':'during-start 是服務與原 Node 已開始後的實際取樣，不冒稱在測試前擷取。原 build/server 皆經 start_local require_fresh；本工具只讀原 bytes 與 Git 綁定，不複製 binary、不執行產品。'}
+if stage=='after':
+ prior=json.loads((out/'native-identity-during-start.json').read_bytes())
+ result['matchesDuringStart']=records==prior['executables'] and bindings==prior['sourceBindings']
+ assert result['matchesDuringStart']
+target=out/('native-identity-'+stage+'.json');assert not target.exists();target.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'record':str(target),'sourceCount':len(bindings),'executables':records,'validationExitCode':0},ensure_ascii=False))

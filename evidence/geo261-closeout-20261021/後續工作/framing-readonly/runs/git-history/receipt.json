@@ -1,0 +1,28 @@
+{
+  "sourceSha": "1126991c9dbd3de92d8cce6eab2419f8f7970e34",
+  "sourceBranch": "fix/framing-oracle-review-20261020",
+  "baseSha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "cwd": "/workspace/geo261-framing-review",
+  "argv": [
+    "git",
+    "log",
+    "-4",
+    "--format=%H %s"
+  ],
+  "startedUtc": "2026-10-20T21:34:10.315512+00:00",
+  "finishedUtc": "2026-10-20T21:34:10.318640+00:00",
+  "elapsedSeconds": 0.003013664999343746,
+  "exitCode": 0,
+  "expectedExitCode": 0,
+  "stdout": {
+    "path": "stdout.log",
+    "bytes": 540,
+    "sha256": "b1d0d35a2c050ff8f5c4aaeeb05171775800f2b8d55007fc24346397ed515fea"
+  },
+  "stderr": {
+    "path": "stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "scope": "固定來源的輕量證據重取，不是 #288 驗收，也未執行完整 oracle suite。"
+}

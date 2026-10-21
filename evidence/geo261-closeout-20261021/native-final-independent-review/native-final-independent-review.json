@@ -1,0 +1,193 @@
+{
+  "reviewedUtc": "2026-10-21T00:19:41.137755+00:00",
+  "reviewer": "/root/p52_review",
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "sourceWorktree": "/workspace/geo261-native-l",
+  "mode": "獨立唯讀審核；未執行測試、build、fresh/check 或產品",
+  "validationExitCode": 0,
+  "accepted": true,
+  "blockers": [],
+  "command": [
+    "timeout",
+    "2100",
+    "python3",
+    "tests/run_all.py",
+    "--build"
+  ],
+  "startedUtc": "2026-10-20T23:39:12.072242+00:00",
+  "finishedUtc": "2026-10-21T00:10:47.374057+00:00",
+  "jobLimitSeconds": 2100,
+  "elapsedSeconds": 1895.3018005510003,
+  "stackKiB": 16384,
+  "exitEvidence": {
+    "nativeMainRawWait": 0,
+    "nativeTimeout": 0,
+    "wrapperParentWait": 0,
+    "launcherPersistedRequestedExit": 0,
+    "observedLauncherProcessExit": 0,
+    "launcherObservation": "代理對實際 tools.write_stdin session71609/chunk4e267f 的 exit_code0 原觀察另有事後轉錄；已核該轉錄與真 wait 鏈相符，不冒稱這是自動保存的原 transport JSON。"
+  },
+  "scope": {
+    "suites": 224,
+    "countedTotal": 5176,
+    "passed": 5175,
+    "failed": 0,
+    "allowedGdiSkip": 1,
+    "exitCodeOnly": 7,
+    "pythonJson": 188,
+    "genericArchitecture": 205,
+    "productArchitecture": 18,
+    "replay": 6
+  },
+  "mutation": {
+    "inventoryRecords": 78,
+    "killed": 70,
+    "crashed": 1,
+    "equivalent": 4,
+    "retired": 3,
+    "survived": 0,
+    "stale": 0,
+    "blocked": 0,
+    "meaning": "本輪為 mutation:check freshness；沒有冒稱重跑 78 個突變，M20 crashed 不計為斷言 killed。"
+  },
+  "sources": {
+    "headBefore": "43f85313c32410ac01406ab585846bbacafea278",
+    "headAfter": "43f85313c32410ac01406ab585846bbacafea278",
+    "statusBefore": "",
+    "statusAfter": "",
+    "directBeforeAfterHashes": 4,
+    "fingerprintUnionGitBlobs": 203,
+    "fingerprintContract": "原工作 bytes 與 Git L blob 精確相同；sidecar 依 binaries.py 的 CRLF→LF 契約及 HARNESS AST literal 核對，沒有 import 產品。",
+    "fingerprints": [
+      {
+        "name": "bridge",
+        "command": "cc -std=c11 -O2 geometry-web/web_bridge.c -lm -> bridge",
+        "files": 194,
+        "exeSha256": "1dde99f08755c785223bceb3a733ad999311749d8eb5e0be16e1fc7daeb5ed0b"
+      },
+      {
+        "name": "core",
+        "command": "cc -std=c11 -O2 current_geometry.c -lm -> core",
+        "files": 194,
+        "exeSha256": "7923669c93474da2ee515149224e0e28cb645fbc24670918527d995ec8e923c0"
+      },
+      {
+        "name": "engjson",
+        "command": "cc -std=c11 -O2 -Wall -Wextra -Wno-unused-function -I geometry-core <generated:tests/test_engineering_json.py#HARNESS> -> engineering-json-test",
+        "files": 195,
+        "exeSha256": "12653b6aee84ad0a59c857b2fe7ae2119e43638819e27f145530c9a2d89516a0"
+      },
+      {
+        "name": "integrity",
+        "command": "cc -std=c11 -O2 tests/test_core_integrity.c -lm -> integrity",
+        "files": 195,
+        "exeSha256": "39a6e2b0c6e3d86fb8285f9bd5659c0a883790498bf6d0a589f10ddd567c8f42"
+      },
+      {
+        "name": "model-base",
+        "command": "cc -std=c11 -O2 geometry-core/model_base.c -lm -> model-base",
+        "files": 194,
+        "exeSha256": "16462de045d05e38e929dcdd7afa283f78e59a7154a3aaf3570eea2a3987fe1d"
+      },
+      {
+        "name": "pf3-algorithm",
+        "command": "cc -std=c11 -O2 tests/pf3_algorithm.c -lm -> pf3-algorithm",
+        "files": 195,
+        "exeSha256": "0a2be70554ccc3ea8a13f611109c3a820144098cad987c3d45137ebbba268b7a"
+      }
+    ]
+  },
+  "artifacts": {
+    "rawFiles": 600,
+    "rawBytes": 296101,
+    "rawOriginalCopyHashAndMtimeEqual": true,
+    "allRawMtimesWithinRun": true,
+    "manifestEntries": 656,
+    "launcherCopies": 18,
+    "initialFinalPreservedBinaryAndSidecarEntries": 12,
+    "initialFinalBytesAndMtimesEqual": true,
+    "priorGlobalArchiveEntries": 825,
+    "priorGlobalArchiveFileBytes": 12119670,
+    "priorGlobalArchiveBytesHashMtimeVerified": true
+  },
+  "cleanup": {
+    "recordedTrackedProcesses": 13,
+    "recordedAllGone": true,
+    "wrapperExtraCleanupKills": 0,
+    "waitEvents": 10,
+    "nonMainSignalExitsRetained": true,
+    "meaning": "核結束後原始取樣與 wait 紀錄；不把後續 PID 重用狀態冒稱當時程序狀態，未發任何 signal。"
+  },
+  "environment": {
+    "CC": "run_all 原 stdout 明記未設定，cc 指紋相符；父 preflight 記 absence",
+    "PYTHONOPTIMIZE": "父啟動 env -u 與 preflight 記 absence；/proc 子程序 environ 讀取被拒，未冒稱讀到",
+    "procEnvironFirstProbeExitCode": 1,
+    "build": "空 global 目錄實際重建六 binary；fingerprint command 皆 cc",
+    "parallelism": "本輪前段與五 browser 並行，後段獨占；不是效能基準。"
+  },
+  "packaging": {
+    "attempt1ExitCode": 1,
+    "attempt1Rows": 116,
+    "cause": "多行正則的 \\s 吞換行；正式 native 已 exit 0。",
+    "finalExitCode": 0,
+    "finalRows": 224,
+    "sourceIndexUnchanged": true,
+    "originalRawUnchanged": true,
+    "firstStdout": "第一次 tool 顯示曾截斷；原件沒有冒稱保存完整 stdout。"
+  },
+  "reviewerFirstAttempt": {
+    "exitCode": 1,
+    "artifactDirectory": "/workspace/geo261-evidence/native-final-independent-attempt1",
+    "cause": "審核器誤將 raw bytes hash 直接比 sidecar 正規化 hash；current_geometry.c 的 10496 處 CRLF 是實際差異。曾過早提出 symlink 推測，隨後 git mode100644/原bytes相同證據已推翻並即時更正。",
+    "repair": "依正式 binaries.py 的 CRLF→LF 與 generated HARNESS 契約核 fingerprint，仍要求原工作bytes與Gitblob完全相同。"
+  },
+  "references": {
+    "verification": {
+      "path": "/workspace/geo261-evidence/native-final/verification.json",
+      "bytes": 48846,
+      "sha256": "854331066a034b08c85ffebb4257f16a576933b37b89ac7ed49b2af6ec2e4af5"
+    },
+    "runLog": {
+      "path": "/workspace/geo261-evidence/native-final/run.log",
+      "bytes": 36794,
+      "sha256": "d039e207a8ddae35be7e5958afd1ae9584399babb7661d1015a8dd9753ba2fc8"
+    },
+    "receipt": {
+      "path": "/workspace/geo261-evidence/native-final/receipt.json",
+      "bytes": 14112,
+      "sha256": "f13bc0d736eea9f218a8fa53972ec15f24d1744407b020a2344ad8c114b51ad7"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/native-final-launcher/launcher-receipt.json",
+      "bytes": 13942,
+      "sha256": "f432ad5e5a3b53037e00f6a013a48d3126d68dcdf4254829cbe49186875b8baf"
+    },
+    "sourceIndex": {
+      "path": "/workspace/geo261-evidence/native-final/suite-log-source-index.json",
+      "bytes": 196633,
+      "sha256": "117bfd3fb80e8e12a3b77ea56d5c4622645e50ab7ac1c81c9a848be8c337f026"
+    },
+    "artifactIndex": {
+      "path": "/workspace/geo261-evidence/native-final/artifact-index.json",
+      "bytes": 118534,
+      "sha256": "81336bc6fcce90a56183558e1e2c20fcbcc1bec09b24c1b1c697ef449f704caa"
+    },
+    "reviewCode": {
+      "path": "/workspace/geo261-evidence/native-final-independent-review-code.txt",
+      "bytes": 18139,
+      "sha256": "02f1a1424e95a15df4bce44fa965dbae86a568531aebe2b8eeef22664d7f3176"
+    },
+    "toolObservation": {
+      "path": "/workspace/geo261-evidence/native-final-tool-observation.json",
+      "bytes": 2675,
+      "sha256": "d042dc24a6216589f34a5b36016a98b54cddff185c317ff794002b3e749fddf4"
+    }
+  },
+  "limitations": [
+    "本報告只審正式 L native 完整 aggregate；run.log 的獨立 owner/browser gates 清單仍另驗，不由 native 代替。",
+    "Windows GDI 未執行；也未在 GitHub CI、Windows 或 WSL 重跑。",
+    "未新增產品修改或突變；只核既有同 L 原始證據與 Git blobs。",
+    "最不確定處是其他 runner 的 init/subreaper 與本環境是否一致；本輪結果不外推至未實跑環境。",
+    "唯讀搜尋曾誤查不存在的 .github/workflows/ci.yml 而 exit 2；已以 rg --files 找到真實 integration-tests.yml 並核對，與產品測試結果無關。"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "commits": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "final": "43f85313c32410ac01406ab585846bbacafea278"
+  },
+  "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+  "finished_utc": "2026-10-21T00:50:33.244996+00:00",
+  "pass": false,
+  "errors": [
+    "P-189 N=48 final/main=2.163500 > 2.0",
+    "P-189 N=64 final/main=2.852460 > 2.0"
+  ],
+  "summary": [
+    {
+      "n": 16,
+      "median_seconds": {
+        "main": 0.13586991800184478,
+        "base": 0.18752916300218203,
+        "final": 0.15163042600033805
+      },
+      "final_main_ratio": 1.115997037683347,
+      "threshold_pass": true
+    },
+    {
+      "n": 32,
+      "median_seconds": {
+        "main": 0.23936709299960057,
+        "base": 1.2594446749972121,
+        "final": 0.4051768620010989
+      },
+      "final_main_ratio": 1.69270076735976,
+      "threshold_pass": true
+    },
+    {
+      "n": 48,
+      "median_seconds": {
+        "main": 0.357273334000638,
+        "base": 4.986175066002033,
+        "final": 0.7729609699999855
+      },
+      "final_main_ratio": 2.1635003131764803,
+      "threshold_pass": false
+    },
+    {
+      "n": 64,
+      "median_seconds": {
+        "main": 0.554064053001639,
+        "base": 17.72362654400058,
+        "final": 1.5804454290009744
+      },
+      "final_main_ratio": 2.852459784097019,
+      "threshold_pass": false
+    }
+  ]
+}

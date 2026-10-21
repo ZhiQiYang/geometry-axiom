@@ -1,0 +1,120 @@
+{
+  "schema": "geo261-p73-idle-cleanup/1",
+  "startedUTC": "2026-10-20T22:53:23.662154+00:00",
+  "servicePort": 18843,
+  "expectedStartTimes": {
+    "138215": "617363",
+    "138222": "617430"
+  },
+  "runtimeOriginal": {
+    "schema": "geometry-runtime/1",
+    "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 138215,
+    "session": "7d1ecfaadb2440858d9a51c788c27b12"
+  },
+  "signals": [
+    {
+      "pid": 138215,
+      "startTime": "617363",
+      "signal": 2,
+      "utc": "2026-10-20T22:53:23.752333+00:00"
+    }
+  ],
+  "limitations": [
+    "原服務不是本清理程序的直接子程序；不推造 wait 退出碼",
+    "沙箱拒絕讀取 /proc/PID/cwd、environ 與 FD；以原 runtime 隨機 session、PID、命令、起始時間及已知測試世界交叉核實",
+    "只備份本測試服務的世界，不刪 feedback、profile、cache、使用者檔案或既有證據包"
+  ],
+  "headAtCleanup": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+  "processesBefore": [
+    {
+      "pid": 138215,
+      "ppid": 138212,
+      "pgid": 138211,
+      "state": "S",
+      "startTime": "617363",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-u",
+        "/workspace/geometry-axiom/geometry-web/serve.py",
+        "18843"
+      ]
+    },
+    {
+      "pid": 138222,
+      "ppid": 138215,
+      "pgid": 138211,
+      "state": "S",
+      "startTime": "617430",
+      "argv": [
+        "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge"
+      ]
+    }
+  ],
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 138215,
+    "session": "7d1ecfaadb2440858d9a51c788c27b12"
+  },
+  "connectionsBefore": "State Recv-Q Send-Q Local Address:Port Peer Address:Port\n",
+  "worldIdentity": {
+    "revision": 66,
+    "definition_sha256": "99597fdcdc8049bab41248d89314705875a24d47e8424cd6bd767e2336798c9c",
+    "required_capabilities": [
+      "engineering-spec/1",
+      "parameters/1"
+    ]
+  },
+  "ownershipConfirmed": true,
+  "processesAfter": [
+    null,
+    null
+  ],
+  "survivors": [],
+  "portConnectResult": 111,
+  "portRefused": true,
+  "listenerAfter": "State Recv-Q Send-Q Local Address:Port Peer Address:Port\n",
+  "serviceWaitReturncode": null,
+  "passed": true,
+  "finishedUTC": "2026-10-20T22:53:23.863683+00:00",
+  "commandSha256": "92a1035970128142ce4a3e1d7355d85159568dc9a6ecff05946ec5d37d58e20d",
+  "artifacts": {
+    "command-code.txt": {
+      "bytes": 5797,
+      "sha256": "92a1035970128142ce4a3e1d7355d85159568dc9a6ecff05946ec5d37d58e20d"
+    },
+    "runtime-before.json": {
+      "bytes": 225,
+      "sha256": "0a02107ccf500b9d84dfceac9f65e9047f66b3751590162dbae6846a0b0a7253"
+    },
+    "server-after.log": {
+      "bytes": 14190,
+      "sha256": "af42a4fdbf0e2f30849381e873ab1485ebd8c307044be76586e4816f61f8f9bb"
+    },
+    "server-before.log": {
+      "bytes": 13596,
+      "sha256": "acd451cb9f53964420d4cbe7e054a60a18ef8b22d59525face0b5d920ecdaa8f"
+    },
+    "world-before.scene": {
+      "bytes": 6465,
+      "sha256": "bd124528c832df51782399cbbd77e006e48af569faea7fe7598d108b7887a129"
+    },
+    "world-dump-before.json": {
+      "bytes": 6950,
+      "sha256": "8508b45f71c98fb4b1152565e9ff93a9dc670819a9b07d6abe145658cbe74b26"
+    },
+    "world-objects-before.json": {
+      "bytes": 1540,
+      "sha256": "b84885abe00d032b388d4d96e3bbdbcf722d73954b25565d36e421e54ef995fc"
+    },
+    "world-references-before.json": {
+      "bytes": 13128,
+      "sha256": "8652a0f356bbd10d24115d8b5ffa7d2e072ed3be3e532eb84f4cc147341e0283"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "recordedUTC": "2026-10-21T06:42:09.031984+00:00",
+  "type": "實際工具回傳逐欄轉錄",
+  "command": "python3 -B /workspace/geo261-evidence/browser-L3-preparation/package-canvas-L3-code.txt",
+  "chunk_id": "732607",
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/workspace/geo261-evidence/browser-L3-preparation/package-canvas-L3-code.txt\", line 23, in <module>\n    assert all(path.is_file() and not path.is_symlink() for path, _ in files)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "cause": "封包器沿L2的native初建index檔名；L3實際檔名多binary字，原件存在且正確。封包尚未建立，未執行產品。",
+  "sourceCodeSha256": "c5bb8c1893fd36f9e452191d6f6a85350c48b8d5e9b60d8f0c8af4f57f1ecacd"
+}

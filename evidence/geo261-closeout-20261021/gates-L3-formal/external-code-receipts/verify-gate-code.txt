@@ -1,0 +1,125 @@
+"""本輪外部逐 phase 收據核對；不重跑產品，另由沿用的詳細接受器審原始證據。"""
+import argparse,datetime,hashlib,json,subprocess,sys
+from collections import Counter
+from pathlib import Path
+
+BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')
+PLAN=json.loads((BASE/'preparation/instance.json').read_text())
+SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'
+ROOT=Path(PLAN['gatesWorktree']);G=Path(PLAN['gatesOut'])
+assert PLAN['sourceSha']==SHA and not sys.flags.optimize
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('phase',choices=['q38','controls','card','axiom'])
+phase=parser.parse_args().phase
+destination=G/'verification'/(phase+'.json')
+assert not destination.exists(),'不覆寫既有接受或拒絕收據'
+problems=[]
+def require(condition,message):
+    if not condition:problems.append(message)
+def read(path):return json.loads(path.read_text())
+def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+def ref(path):return dict(path=str(path),bytes=path.stat().st_size,sha256=sha(path))
+R=G/('controls' if phase=='controls' else phase+'-run/'+phase)
+L=G/'launcher'/phase
+run=read(R/'run-receipt.json');launch=read(L/'receipt.json')
+before=read(L/'bridge-before.json');after=read(L/'bridge-after.json')
+native=read(BASE/'native/verification.json')
+require(native['sourceSha']==SHA and native['acceptedNative'],'同來源 native 未通過')
+require(native['observedTotals']==dict(total=5188,passed=5187,failed=0,skipped=1,suiteSeconds=native['observedTotals']['suiteSeconds']),'native 總計不符事前5188/5187/0/1')
+require(native['pythonJsonCount']==188 and native['observedCompletedTableRows']==224,'native suite/Python 範圍不完整')
+require(read(BASE/'native/final-build-binary-index.json')['matchesInitialBytesAndMtimes'],'native 初建與終值 binary/sidecar 不同')
+require(run['source_head']==SHA and launch['sourceSha']==SHA,'正式或外部入口來源不符')
+require(run['status_before']==run['status_after']=='' and run['restored'],'正式工具沒有乾淨還原')
+require(launch['headBefore']==launch['headAfter']==SHA and launch['statusBefore']==launch['statusAfter']=='','外部入口前後來源不符')
+require(launch['sourceHashesUnchanged'] and launch['sourceCleanRestored'],'來源原 bytes 未還原')
+require(launch['childReturnCode']==launch['launcherExitCode']==0,'外部 child/launcher 真碼非0')
+require(int((L/'.exit-code').read_text())==int((L/'.launcher-exit-code').read_text())==0,'持久化真碼非0')
+require(run['stack_bytes']==launch['stackBytes']==16777216,'stack 不符16MiB')
+require(launch['CCAbsent'] and launch['PYTHONOPTIMIZEAbsent'],'父環境 CC/PYTHONOPTIMIZE 並非缺省')
+require(launch['bridgeAfterMatchesBeforeBytesAndMtimes'],'入口 bridge 結束值有變')
+previous=BASE/'native/final-build-binary-index.json' if phase=='q38' else G/'launcher'/({'controls':'q38','card':'controls','axiom':'card'}[phase])/'bridge-after.json'
+prior=read(previous);prior_by_name={Path(x['sourcePath']).name:x for x in prior['files']}
+require(prior['sourceSha']==SHA,'前一 bridge index 來源不符')
+for stage,data in [('before',before),('after',after)]:
+    require(data['sourceSha']==SHA and data['phase']==phase and data['stage']==stage,'bridge index 身份不符：'+stage)
+    require(data['previousIndexPath']==str(previous) and data['previousIndexSha256']==sha(previous),'前一 index 路徑/hash不符：'+stage)
+    require(data['matchesPreviousBytesAndMtimes'],'bridge index 布林不接受：'+stage)
+    require({Path(x['sourcePath']).name for x in data['files']}=={'bridge','bridge.fingerprint.json'},'bridge index 範圍不同：'+stage)
+    for item in data['files']:
+        name=Path(item['sourcePath']).name
+        require(all(item[k]==prior_by_name[name][k] for k in ['bytes','sha256','sourceMtimeNs']),'bridge bytes/hash/mtime 串接不同：'+stage+'/'+name)
+        preserved=Path(item['preservedPath'])
+        require(preserved.stat().st_size==item['bytes'] and sha(preserved)==item['sha256'],'保存原件不符：'+stage+'/'+name)
+if phase!='q38':
+    previous_phase={'controls':'q38','card':'controls','axiom':'card'}[phase]
+    prior_verification=read(G/'verification'/(previous_phase+'.json'))
+    require(prior_verification['sourceSha']==SHA and prior_verification['accepted'],'前一 phase 未通過')
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+status=subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()
+require(head==SHA and not status,'目前工作樹非原來源乾淨狀態')
+for name,expected in launch['sourceHashesBefore'].items():
+    require(sha(ROOT/name)==expected,'目前正式工具/裁判原件改變：'+name)
+report_path=R/('receipt.json' if phase in ['q38','controls'] else 'raw/report.json')
+data=read(report_path)
+record=dict(sourceSha=SHA,phase=phase,verifiedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    childReturnCode=launch['childReturnCode'],launcherExitCode=launch['launcherExitCode'],elapsedSeconds=launch['elapsedSeconds'],
+    sourceCleanRestored=launch['sourceCleanRestored'],bridgeAfterMatchesBeforeBytesAndMtimes=launch['bridgeAfterMatchesBeforeBytesAndMtimes'])
+if phase in ['q38','controls']:
+    baselines={}
+    for group,count in [('native',27),('model',20)]:
+        item=data['baselines'][group];e=item['exception_evidence']
+        baselines[group]=dict(exit=item['exit'],**{k:e[k] for k in ['tests_run','failures','errors','skipped']})
+        require(item['exit']==0 and e['tests_run']==count and all(e[k]==0 for k in ['failures','errors','skipped','expected_failures','unexpected_successes']),'baseline非完整綠：'+group)
+    cases=data['results'];ids=[x['id'] for x in cases]
+    record.update(baselines=baselines,summary=data['summary'],caseCount=len(cases))
+    require(len(ids)==len(set(ids)),'mutant id 重複')
+    if phase=='q38':
+        require(set(ids)=={'SPM%02d'%i for i in range(1,43)},'Q38不是完整42案')
+        require(run['exit_code']==0 and all(c['exit_code']==0 for c in run['commands']),'Q38原工具命令碼非0')
+        require(data['summary']=={'killed':41,'equivalent':1},'Q38分類不符41 killed＋1 equivalent')
+        require(all(x['verdict']==('equivalent' if x['id']=='SPM24' else 'killed') and x['exit']==(0 if x['id']=='SPM24' else 1) for x in cases),'Q38逐案分類或exit不符')
+        record.update(officialExitCode=run['exit_code'],cases=[{k:x[k] for k in ['id','verdict','exit','group']} for x in cases])
+    else:
+        expected={name:{'verdict':'survived','exit':0} for name in ['XC36','XC39','XC40B','XC28L1','XC28L12','XC28L13','XC29L1','XC29L12','XC29L13']}
+        expected.update({name:{'verdict':'unlabelled','exit':1} for name in ['XC40A','XC03L1','XC04L1']})
+        actual={x['id']:{k:x[k] for k in ['verdict','exit']} for x in cases}
+        require(len(cases)==12 and run['expected']==run['actual']==actual==expected,'controls不是原12案expected精確匹配')
+        require(run['gate_exit_code']==1 and run['control_check_exit_code']==0 and run['expected_matched'] and run['baselines_green'],'controls原紅1／外層綠0界線不符')
+        require(data['summary']=={'survived':9,'unlabelled':3},'controls分類不符')
+        record.update(rawGateExitCode=run['gate_exit_code'],expectationCheckExitCode=run['control_check_exit_code'],cases=[dict(id=x['id'],expectedVerdict=expected[x['id']]['verdict'],expectedExit=expected[x['id']]['exit'],actualVerdict=x['verdict'],actualExit=x['exit']) for x in cases])
+else:
+    require(data['source_head']==SHA and run['exit_code']==0 and all(c['exit_code']==0 for c in run['commands']),'card/axiom原來源或命令碼不符')
+    cases=data['mutants'];record.update(officialExitCode=run['exit_code'],caseCount=len(cases),summary=dict(Counter(x['verdict'] for x in cases)))
+    require(len({x['id'] for x in cases})==len(cases),'mutant id 重複')
+    if phase=='card':
+        baseline=data['baseline'];counts=baseline['counts']
+        zero=['failures','errors','skips','compile_failures','infrastructure_failures']
+        require(len(cases)==53 and all(x['verdict']=='killed' for x in cases),'card範圍/分類不是53 killed')
+        require(baseline['run']['exit_code']==0 and counts['testsRun']==43 and all(counts[k]==0 for k in zero),'card baseline不符43綠')
+        compact=[]
+        for x in cases:
+            red=x['red'];restored=x['restored']
+            require(red['run']['exit_code']==1 and red['counts']['failures']>0 and red['counts']['testsRun']>0 and all(red['counts'][k]==0 for k in zero if k!='failures'),'card紅控制不符：'+x['id'])
+            require(restored['run']['exit_code']==0 and restored['counts']['testsRun']>0 and all(restored['counts'][k]==0 for k in zero),'card restore不符：'+x['id'])
+            compact.append(dict(id=x['id'],case=x['case'],verdict=x['verdict'],redExit=red['run']['exit_code'],redCounts=red['counts'],restoreExit=restored['run']['exit_code'],restoreCounts=restored['counts']))
+        record.update(baseline=counts,restoreScope='每案原指定case的restore；不宣稱每案restore跑完整43題。',cases=compact)
+    else:
+        baseline=data['baseline']
+        require(len(cases)==5 and all(x['verdict']=='killed' for x in cases),'axiom範圍/分類不是5 killed')
+        require(baseline['exit_code']==0 and baseline['tests']==44 and all(baseline[k]==0 for k in ['failures','errors','skips']),'axiom baseline非44綠')
+        compact=[]
+        for x in cases:
+            red=x['red'];restored=x['restored']
+            require(red['exit_code']==1 and red['tests']==1 and red['failures']>0 and red['errors']==red['skips']==0,'axiom紅控制不符：'+x['id'])
+            require(restored['exit_code']==0 and restored['tests']==44 and all(restored[k]==0 for k in ['failures','errors','skips']),'axiom restore非44綠：'+x['id'])
+            compact.append(dict(id=x['id'],namedTest=x['named_test'],verdict=x['verdict'],redExit=red['exit_code'],redFailures=red['failures'],restoreExit=restored['exit_code'],restoreTests=restored['tests']))
+        record.update(baselineTests=44,restoreTestsEach=[x['restored']['tests'] for x in cases],cases=compact)
+record['artifacts']={key:ref(path) for key,path in {
+    ('officialReceipt' if phase in ['q38','controls'] else 'officialReport'):report_path,
+    'runReceipt':R/'run-receipt.json','launcherReceipt':L/'receipt.json','bridgeBefore':L/'bridge-before.json','bridgeAfter':L/'bridge-after.json',
+    'nativeVerification':BASE/'native/verification.json','previousBridgeIndex':previous,'verificationTool':Path(__file__)}.items()}
+record.update(accepted=not problems,problems=problems)
+destination.parent.mkdir(parents=True,exist_ok=True)
+destination.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({k:record[k] for k in ['sourceSha','phase','accepted','problems','summary','caseCount','childReturnCode','launcherExitCode']},ensure_ascii=False))
+raise SystemExit(0 if record['accepted'] else 1)

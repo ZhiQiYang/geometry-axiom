@@ -1,0 +1,270 @@
+{
+  "compilerDependencyCommand": [
+    "/usr/bin/cc",
+    "-std=c11",
+    "-MM",
+    "-I",
+    "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+    "-DGEOMETRY_KERNEL_EXTERNAL=1",
+    "-DGEOMETRY_WOODWORKING_EXTERNAL=1",
+    "-DGEOMETRY_HOST_HISTORY_EXTERNAL=1",
+    "-DGEOMETRY_HOST_CANDIDATE_EXTERNAL=1",
+    "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-geo261_host_facts_authority_harness.c"
+  ],
+  "dependencies": [
+    "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-current_geometry.c",
+    "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-geo261_host_facts_authority_harness.c",
+    "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-reference_sources.inc",
+    "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-references.inc",
+    "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-world_validation.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/app_candidate.h",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/candidate_unity.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/definition_texts.h",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/document.h",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/domains.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/enclosure_sources.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/grid_adapter.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/grid_context.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/history.h",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/history_unity.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/legacy_json.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/versions_adapter.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/woodworking_unity.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-app/native/world_candidate.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/assembly.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/assembly_generation.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/assembly_types.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/boundary_vertex_keys.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/card_reference.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/derived_placements.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/engineering.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/engineering_commands.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/engineering_types.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/finish_surface_types.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/finish_surfaces.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/grid_bindings.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/grid_lattice.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/grid_subdivision.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/grid_subdivision_query.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/grid_systems.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/candidate.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/clip.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/codec.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/datums.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/document.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/enclosure.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/enclosure_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/exact.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/geometry.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/grid.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/grid_store.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/guides.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/internal/datums.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/internal/document.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/internal/enclosures.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/internal/grid_store.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/internal/guides.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/internal/named_values.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/internal/parameter_store.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/internal/placements.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/internal/regions.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/internal/versions.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/kernel_unity.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/linear.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/linear_definition_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/named_values.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/parameter_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/parameters.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/placement_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/placements.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/region_key_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/regions.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/source.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/types.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/version_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/kernel/versions.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/panel_fill_layout.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/panel_fill_support.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/panel_layout_math.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/parameter_types.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/parameters.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/reference_types.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/section_profile_conversion.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/section_profile_types.h",
+    "/workspace/geo261-host-copy-candidate/geometry-core/section_profiles.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/subgrid_commands.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/subgrid_rebind.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/subgrid_world.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/subgrids.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-core/transactions.inc",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/assembly.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/assembly_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/boundary_policy.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/contact_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/contact_world.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/contacts.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/cut_list.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/definition_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/derived_placement.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/document.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/domain_values.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/engineering.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/engineering_operations.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/engineering_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/finish.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/finish_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/grid_application.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/grid_definition_codec.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/grid_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/member_declaration.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/member_placement.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/member_reference.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/members.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/obstacles.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/panel_layout.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/panel_support.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/section_profile.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/section_profile_sources.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/supports.h",
+    "/workspace/geo261-host-copy-candidate/geometry-templates/woodworking/native/world_validation.h"
+  ],
+  "requiredOriginalCopiesIncluded": true,
+  "candidateHostSourcesAbsent": true,
+  "remainingHostDependenciesEqualBase": [
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/app_candidate.h",
+      "origin": "geometry-app/native/app_candidate.h",
+      "sha256": "5f32ec9dadb4c9836ada7cbb89358edd3b5aee28c04bd98fa8bc54bb3d0ab0ce",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/candidate_unity.inc",
+      "origin": "geometry-app/native/candidate_unity.inc",
+      "sha256": "62856930c43f9c9dca2a34379e791b7e7556c8c4e12d1a7f05dcb874e3390cab",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/definition_texts.h",
+      "origin": "geometry-app/native/definition_texts.h",
+      "sha256": "97f6a813f68828eab628ff630be0b25078727eeb987fd7acb4cc6afba3f9a49b",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/document.h",
+      "origin": "geometry-app/native/document.h",
+      "sha256": "142d4cd049a78a71f0c8e8757b97d50349ea087d065c15cca33f0434c7239d62",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/domains.inc",
+      "origin": "geometry-app/native/domains.inc",
+      "sha256": "34f9ac6e18bbb11f9e1d33df0773eae7b8733888ca062b35fa2f3e4fa7d7019d",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/enclosure_sources.inc",
+      "origin": "geometry-app/native/enclosure_sources.inc",
+      "sha256": "5166462c06b4d5375a5eba8888e8f98dc6ecdfe351a9b4e2437ed2497ad6fce6",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/grid_adapter.inc",
+      "origin": "geometry-app/native/grid_adapter.inc",
+      "sha256": "dc2f189dd525513f03133a9d608a4196ca150bce220e740f73e4bd6051a2cd46",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/grid_context.inc",
+      "origin": "geometry-app/native/grid_context.inc",
+      "sha256": "f8eb9c5cc077cc3f556940f609f37529e831740be182fb02b33c85f8d09bd30d",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/history.h",
+      "origin": "geometry-app/native/history.h",
+      "sha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/history_unity.inc",
+      "origin": "geometry-app/native/history_unity.inc",
+      "sha256": "a6afa2138ffc48d2c62e4debb94b55bc3567c841c132b642451613bc7f459a87",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/legacy_json.inc",
+      "origin": "geometry-app/native/legacy_json.inc",
+      "sha256": "e11a2ab49c8bbe2fbb227b153b242da9d4e261cc85da1bfe0c7e82069756f397",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/versions_adapter.inc",
+      "origin": "geometry-app/native/versions_adapter.inc",
+      "sha256": "2bd905cc2f0541ea9b1571b1c434e59a46c46895a87febcd64d3c7b010d01194",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/woodworking_unity.inc",
+      "origin": "geometry-app/native/woodworking_unity.inc",
+      "sha256": "38afa41ad749ae0f617bd2e1b73f0ed641d33ae85b5c74c8f00ab9f17d3992ed",
+      "equalsBase": true
+    },
+    {
+      "path": "/workspace/geo261-host-copy-candidate/geometry-app/native/world_candidate.inc",
+      "origin": "geometry-app/native/world_candidate.inc",
+      "sha256": "4efe4989f13a61eb08ffdcaa5907bbf76f647755ab405f5b2f4f558f6370efa5",
+      "equalsBase": true
+    },
+    {
+      "path": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-host/app_candidate.c",
+      "origin": "geometry-app/native/app_candidate.c",
+      "sha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9",
+      "equalsBase": true
+    },
+    {
+      "path": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-host/app_candidate.h",
+      "origin": "geometry-app/native/app_candidate.h",
+      "sha256": "5f32ec9dadb4c9836ada7cbb89358edd3b5aee28c04bd98fa8bc54bb3d0ab0ce",
+      "equalsBase": true
+    },
+    {
+      "path": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-host/history.c",
+      "origin": "geometry-app/native/history.c",
+      "sha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595",
+      "equalsBase": true
+    },
+    {
+      "path": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-host/history.h",
+      "origin": "geometry-app/native/history.h",
+      "sha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0",
+      "equalsBase": true
+    }
+  ],
+  "transformedSources": {
+    "current_geometry.c": {
+      "origin": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "sha256": "dc3fbfb14adde5078c36ab179936df88ba977b22bb341301cd30deafeeb97696",
+      "effectiveSha256": "34996f14dbdfb03f1794a7d581c0ceb929cbe8642ed8c36bc9d4dcfb76b7dc0d"
+    },
+    "geometry-core/references.inc": {
+      "origin": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "sha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac",
+      "effectiveSha256": "c4df9c77da4ef6ef06cb2bb10643eec4f88de66893f430209a5348c5b5da7ae3"
+    },
+    "geometry-app/native/reference_sources.inc": {
+      "origin": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "sha256": "3695ab9844a80cf0041d2a6a67e2be96bf6ecbcd59709759d1add4822b70077c",
+      "effectiveSha256": "7c4a0b70edab904a8225a26bd8116f12bfb152edfc7b060f46dadba4a757e035"
+    },
+    "geometry-app/native/world_validation.inc": {
+      "origin": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "sha256": "673bbab71f1dc6c59960dd3764c7c367223fc57ad2ef2dae0e842637d993eddc",
+      "effectiveSha256": "b738c9564bf93d8edc1aa933a2003a957706471ea39aa1ee5b5a7c860e2bc8c5"
+    },
+    "tests/geo261_host_facts_authority_harness.c": {
+      "origin": "candidate-test",
+      "sha256": "5134ccf0e5bff88f17e2df84ee2e8345bc0a2e3847e13601d3ca8a16a602a252",
+      "effectiveSha256": "d2a9ae35a2b2682cc4304e7eac6cf86daa882aa32f2e28e4c82a7f7ea52fe896"
+    }
+  }
+}

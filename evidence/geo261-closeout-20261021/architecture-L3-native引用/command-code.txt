@@ -1,0 +1,168 @@
+"""只讀核 L3 native 具名架構結果並保存引用原件，不執行產品或修改凍結包。"""
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import sys
+
+if sys.flags.optimize:
+    raise RuntimeError('不可停用引用核對')
+BASE = Path('/workspace/geo261-evidence')
+RUN = BASE / 'revalidation-l3-6589248c9a94-20261021'
+NATIVE = RUN / 'native'
+LAUNCHER = RUN / 'native-launcher'
+L3 = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+VERIFY_HASH = 'ee80438dce224cf9d473184c4ffe97a4c690d401d98eecdbcbd5e458449df93b'
+SNAPSHOT_HASH = '3420121fdc8a24cdff5335762ffdd07db82a531c5efea7ca32aedd3f7f50bd43'
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--out', required=True)
+out = Path(parser.parse_args().out)
+assert out.is_dir() and not (out / 'binding.json').exists()
+rows = []
+raws = {}
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def read(path): return json.loads(path.read_bytes())
+def copy(path, name, expected=None):
+    assert path.is_file() and not path.is_symlink()
+    raw = path.read_bytes()
+    if expected:
+        assert len(raw) == expected['bytes'] and sha(raw) == expected['sha256'], str(path)
+    destination = out / name
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open('xb') as stream: stream.write(raw)
+    destination.chmod(0o644)
+    rows.append({'path': name, 'sourcePath': str(path), 'bytes': len(raw), 'sha256': sha(raw)})
+    raws[str(path)] = raw
+    return raw
+def dump(name, obj):
+    with (out / name).open('x') as stream:
+        json.dump(obj, stream, ensure_ascii=False, indent=2)
+        stream.write('\n')
+    (out / name).chmod(0o644)
+
+verification_raw = copy(NATIVE / 'verification.json', 'native/verification.json')
+assert sha(verification_raw) == VERIFY_HASH
+v = json.loads(verification_raw)
+assert v['sourceSha'] == v['headBefore'] == v['headAfter'] == v['packagingHead'] == L3
+assert v['statusBefore'] == v['statusAfter'] == v['packagingStatus'] == ''
+assert all(v[k] == 0 for k in ('runExitCode', 'wrapperReturnCode', 'launcherExitCode',
+                              'mainChildRawWaitStatus', 'persistedWrapperExitCode', 'persistedLauncherExitCode'))
+assert v['acceptedNative'] and v['all224Passed'] and v['all224ExpectedMatched']
+assert v['expectedSuiteCount'] == v['observedCompletedTableRows'] == v['observedProgressCount'] == 224
+assert v['pythonJsonCount'] == 188 and v['expectedCountedTotal'] == 5188
+assert {k: v['observedTotals'][k] for k in ('total', 'passed', 'failed', 'skipped')} == {'total':5188,'passed':5187,'failed':0,'skipped':1}
+assert not v['timedOut'] and v['sourceHashesUnchanged'] and v['unallowedSkipCount'] == 0
+assert not any(v[k] for k in ('expectedMismatches', 'missingSuiteLogs', 'pythonFailures', 'rawFilesOlderThanRun'))
+refs = v['artifactReferences']
+assert set(refs) == {'command','receipt','runLog','packagingTool','launcherReceipt','sourceIndex','expected','namedRequiredSuites'}
+locations = {'command':NATIVE/'command.json', 'receipt':NATIVE/'receipt.json',
+             'runLog':NATIVE/'run.log', 'packagingTool':RUN/'preparation/package-native.py',
+             'launcherReceipt':LAUNCHER/'launcher-receipt.json', 'sourceIndex':NATIVE/'suite-log-source-index.json',
+             'expected':NATIVE/'source-reference/run_all.expected.json', 'namedRequiredSuites':NATIVE/'named-required-suites.json'}
+objects = {}
+for key, path in locations.items():
+    assert refs[key]['path'] == str(path)
+    relative = path.relative_to(RUN).as_posix()
+    if relative.endswith('.py'): relative += '.txt'
+    raw = copy(path, relative, refs[key])
+    if path.suffix == '.json': objects[key] = json.loads(raw)
+assert refs['packagingTool']['sha256'] == '609f59b2d0f9b067ac100d7ee99e3f7e685a594e75f2e9fb72df39179135b4bb'
+c, r, launch = objects['command'], objects['receipt'], objects['launcherReceipt']
+assert c['sourceSha'] == r['sourceSha'] == launch['sourceShaExpected'] == launch['nativeSourceSha'] == L3
+assert c['command'] == r['command'] == ['timeout','2100','python3','tests/run_all.py','--build']
+assert c['cwd'] == r['cwd'] == launch['cwd'] == '/workspace/geo261-native-l3-6589248c9a94-20261021'
+assert c['startedUtc'] == r['startedUtc'] == v['startedUtc'] == '2026-10-21T05:49:55.452245+00:00'
+assert r['finishedUtc'] == v['finishedUtc'] and r['elapsedSeconds'] == v['elapsedSeconds']
+assert c['headBefore'] == r['headBefore'] == r['headAfter'] == L3
+assert c['statusBefore'] == r['statusBefore'] == r['statusAfter'] == ''
+assert c['sourceHashesBefore'] == r['sourceHashesBefore'] == r['sourceHashesAfter']
+assert r['sourceHashesUnchanged'] and r['exitCode'] == 0
+assert os.waitstatus_to_exitcode(r['mainChildRawWaitStatus']) == 0
+assert launch['nativeReceiptPath'] == str(NATIVE / 'receipt.json')
+assert launch['nativeReceiptSha256'] == refs['receipt']['sha256']
+assert launch['nativeOutputPath'] == str(NATIVE) and launch['launcherOutputPath'] == str(LAUNCHER)
+assert launch['wrapperReturnCode'] == launch['launcherExitCode'] == launch['nativeMainTimeoutReturnCode'] == 0
+assert launch['nativeMainChildRawWaitStatus'] == r['mainChildRawWaitStatus']
+assert launch['wrapperPid'] == c['wrapperPid'] and launch['wrapperArgv'] == c['wrapperArgv']
+for name in ('wrapper-code.txt','launcher-code.txt','launcher-command.json','orchestrator.log','.exit-code','.launcher-exit-code'):
+    raw = copy(LAUNCHER/name, 'native-launcher/'+name)
+    if name.endswith('exit-code'): assert raw == b'0\n'
+wrapper = raws[str(LAUNCHER/'wrapper-code.txt')]
+assert wrapper.decode() == c['wrapperSource'] == c['wrapperArgv'][-1]
+assert len(wrapper) == launch['wrapperCodeBytes'] and sha(wrapper) == launch['wrapperCodeSha256']
+obs = json.loads(copy(NATIVE/'tool-observation.json','native/tool-observation.json'))
+assert obs['sourceSha'] == L3 and obs['actualToolResponse']['exit_code'] == 0
+for key in ('command','receipt','launcherReceipt'):
+    assert obs[key]['path'] == refs[key]['path'] and obs[key]['sha256'] == refs[key]['sha256']
+
+named, index = objects['namedRequiredSuites'], objects['sourceIndex']
+assert named['sourceSha'] == index['sourceSha'] == L3
+assert named['artifactReferences'] == {k:v for k,v in refs.items() if k != 'namedRequiredSuites'}
+assert index['sourceDirectory'] == '/tmp/geometry-tests/run_all-logs'
+assert index['fileCount'] == len(index['files']) == 600 and index['totalBytes'] == v['rawLogBytes'] == 296690
+index_rows = {row['artifactPath']:row for row in index['files']}
+assert len(index_rows) == 600
+start_ns = int(datetime.fromisoformat(v['startedUtc']).timestamp()*1e9)
+end_ns = int(datetime.fromisoformat(v['finishedUtc']).timestamp()*1e9)
+run_log = raws[str(NATIVE/'run.log')].decode()
+suites = {}
+for short, total in (('architecture_contract',205),('product_architecture',18)):
+    name = 'py:test_' + short
+    suite = named['suites'][name]
+    assert suite['row'] == v['suiteRows'][name]
+    assert {k:suite['row'][k] for k in ('total','passed','failed','skipped')} == {'total':total,'passed':total,'failed':0,'skipped':0}
+    assert suite['expected'] == {'mode':'count','count':total,'unit':'test'}
+    assert objects['expected']['suites'][name] == suite['expected']
+    prefix = 'suite-logs/py_test_' + short
+    expected_paths = {prefix + ext for ext in ('.json','.log','.unittest.log')}
+    assert {row['artifactPath'] for row in suite['rawFiles']} == expected_paths
+    suite_raw = {}
+    for row in suite['rawFiles']:
+        assert index_rows[row['artifactPath']] == row
+        assert row['sourcePath'] == str(Path(index['sourceDirectory'])/Path(row['artifactPath']).name)
+        assert start_ns <= row['sourceMtimeNs'] <= end_ns
+        suite_raw[row['artifactPath']] = copy(NATIVE/row['artifactPath'], 'native/'+row['artifactPath'], row)
+    result = json.loads(suite_raw[prefix+'.json'])
+    assert result['file'] == 'tests/test_' + short + '.py'
+    assert result['total'] == result['run'] == result['passed'] == total
+    assert all(result[k] == 0 for k in ('failed','skipped','explicit_skipped','unrun_skipped','blocked_by_error','expected_failed','extra_errors'))
+    assert not any(result[k] for k in ('expected_failures','failures','skip_reasons','skip_items','import_error'))
+    assert suite_raw[prefix+'.log'] == b''
+    unittest = suite_raw[prefix+'.unittest.log'].decode()
+    assert re.search(r'^Ran '+str(total)+r' tests in [0-9.]+s$',unittest,re.MULTILINE)
+    assert unittest.endswith('\nOK\n') and '\nFAILED' not in unittest
+    lines = re.findall(r'^'+re.escape(name)+r'[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9.]+)[ \t]*$',run_log,re.MULTILINE)
+    assert len(lines) == 1 and tuple(map(int,lines[0][:4])) == (total,total,0,0)
+    suites[name] = {'result':result,'tableRow':suite['row'],'rawFiles':suite['rawFiles']}
+
+snapshot_path = BASE/'source-binding-L3-preparation/snapshot-L3.json'
+snapshot_raw = snapshot_path.read_bytes()
+assert sha(snapshot_raw) == SNAPSHOT_HASH
+snapshot = json.loads(snapshot_raw)
+assert snapshot['headBefore'] == snapshot['headAfter'] == L3
+cli = json.loads(copy(BASE/'architecture-L3-formal-6589248c/receipt.json','architecture-CLI-receipt.json'))
+assert cli['sourceHeadActuallyExecuted'] == L3 and cli['execution']['exitCode'] == 0
+assert cli['scannerOutputCounts'] == {'sources':333,'edges':796,'diagnostics':0}
+assert refs['expected']['sha256'] == cli['criticalFiles']['tests/run_all.expected.json']['rawSha256']
+assert c['sourceHashesBefore']['tests/run_all.expected.json'] == refs['expected']['sha256']
+assert c['sourceHashesBefore']['tests/run_all.py'] == snapshot['files']['tests/run_all.py']['rawSha256']
+for path, raw in raws.items(): assert Path(path).read_bytes() == raw
+result = {'schema':'geo261-L3-native-architecture-reference/1','sourceL3':L3,
+          'createdUtc':datetime.now(timezone.utc).isoformat(),'referenceCheckPassed':True,
+          'nativeVerificationSha256':VERIFY_HASH,'snapshotSha256':SNAPSHOT_HASH,
+          'nativeStartedUtc':v['startedUtc'],'nativeFinishedUtc':v['finishedUtc'],
+          'nativeSeconds':v['elapsedSeconds'],'nativeThreeExitCodes':[0,0,0],
+          'nativeTotalSummaryReferenced':v['observedTotals'],'nativeAllowedSkipReferenced':v['skips'],
+          'architectureCLI':{'actualHead':L3,'exitCode':0,'counts':cli['scannerOutputCounts'],
+                             'originalMetadataSourceBaseHead':cli['metadataSourceBaseHeadUnchanged']},
+          'suites':suites,'originalArtifactReferences':refs,
+          'copiedOriginals':sorted(rows,key=lambda row:row['path']),
+          'scope':'本程序只獨立核兩具名suite之JSON/log/unittest、表列、來源與真wait引用鏈；完整224/188/600則引用鎖定hash的正式verification，不重新解析全表或掃600raw。',
+          'notClaimed':['本程序重跑任何產品或CLI','原四metadata在L3重生','完整其他關卡已完成','既有architecture-L3原收據已回填']}
+dump('binding.json',result)
+print(json.dumps({'referenceCheckPassed':True,'sourceL3':L3,'suites':{k:r['tableRow'] for k,r in suites.items()},
+                  'copiedOriginals':len(rows),'bindingSha256':sha((out/'binding.json').read_bytes())},ensure_ascii=False,indent=2))

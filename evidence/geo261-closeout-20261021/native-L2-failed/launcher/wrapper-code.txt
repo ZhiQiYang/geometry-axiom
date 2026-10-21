@@ -1,0 +1,82 @@
+import os,sys,json,time,signal,ctypes,resource,hashlib,subprocess,datetime
+from pathlib import Path
+cwd=Path('/workspace/geo261-native-l2-249571fe2477-20261021')
+out=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/native')
+expected='249571fe2477845d5330f6190dad965bf327f43b'
+command=["timeout","2100","python3","tests/run_all.py","--build"]
+env={"PYTHONDONTWRITEBYTECODE":"1","LANG":"C.UTF-8","LC_ALL":"C.UTF-8","TMPDIR":'/tmp/geo261-native-l2-249571fe2477-20261021'}
+os.chdir(cwd)
+os.environ.update(env)
+def utc(): return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def git(*args): return subprocess.check_output(["git",*args],text=True).strip()
+head=git("rev-parse","HEAD")
+status=git("status","--porcelain")
+assert head==expected and not status,(head,status)
+assert not out.exists(),str(out)
+out.mkdir()
+soft,hard=resource.getrlimit(resource.RLIMIT_STACK)
+resource.setrlimit(resource.RLIMIT_STACK,(16*1024*1024,hard))
+libc=ctypes.CDLL(None,use_errno=True)
+if libc.prctl(36,1,0,0,0)!=0: raise OSError(ctypes.get_errno(),"PR_SET_CHILD_SUBREAPER")
+flag=ctypes.c_int()
+if libc.prctl(37,ctypes.byref(flag),0,0,0)!=0 or flag.value!=1: raise RuntimeError("subreaper not enabled")
+tracked=["tests/test_assembly_mutation_check.py","tests/assembly_mutation_check.py","tests/run_all.py","tests/run_all.expected.json"]
+hash_before={p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in tracked}
+start=utc()
+mono=time.monotonic()
+meta={"sourceSha":head,"cwd":str(cwd),"command":command,"environment":env,"stackKiB":16384,"startedUtc":start,"jobLimitSeconds":2100,"headBefore":head,"statusBefore":status,"sourceHashesBefore":hash_before,"subreaperEnabled":True,"wrapperPid":os.getpid(),"wrapperArgv":sys.orig_argv,"wrapperSource":sys.orig_argv[-1],"note":"外層只回收自己的子樹；主 timeout 子程序的結束碼獨立保存並作為外層結束碼。"}
+(out/"command.json").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+"\n")
+logfd=os.open(out/"run.log",os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o644)
+child=os.fork()
+if child==0:
+    os.dup2(logfd,1)
+    os.dup2(logfd,2)
+    os.close(logfd)
+    os.execvp(command[0],command)
+os.close(logfd)
+meta["mainChildPid"]=child
+(out/"command.json").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+"\n")
+print(json.dumps({"startedUtc":start,"wrapperPid":os.getpid(),"mainChildPid":child,"out":str(out),"sourceSha":head},ensure_ascii=False),flush=True)
+events=[]
+cleanup=[]
+main_exit=None
+main_raw=None
+done=False
+while not done:
+    saw=False
+    while True:
+        try: pid,raw=os.waitpid(-1,os.WNOHANG)
+        except ChildProcessError:
+            done=True
+            break
+        if pid==0: break
+        saw=True
+        rc=os.waitstatus_to_exitcode(raw)
+        event={"pid":pid,"rawWaitStatus":raw,"exitCode":rc,"isMainProcess":pid==child,"reapedUtc":utc()}
+        events.append(event)
+        with (out/"reaped.jsonl").open("a") as f: f.write(json.dumps(event,ensure_ascii=False)+"\n")
+        if pid==child:
+            main_exit=rc
+            main_raw=raw
+    if done: break
+    if main_exit is not None:
+        children=Path("/proc/self/task/"+str(os.getpid())+"/children").read_text().split()
+        for item in children:
+            pid=int(item)
+            if pid==child: continue
+            try:
+                rawstatus=Path("/proc/"+str(pid)+"/status").read_text()
+                os.kill(pid,signal.SIGKILL)
+                event={"pid":pid,"signal":"SIGKILL","atUtc":utc(),"reason":"主 timeout 已結束，只清理仍被此 subreaper 收養的直接子程序。","statusBeforeKill":rawstatus}
+                cleanup.append(event)
+                with (out/"cleanup.jsonl").open("a") as f: f.write(json.dumps(event,ensure_ascii=False)+"\n")
+            except ProcessLookupError: pass
+            except FileNotFoundError: pass
+    if not saw: time.sleep(0.05)
+assert main_exit is not None,"main child exit missing"
+receipt={**meta,"exitCode":main_exit,"mainChildRawWaitStatus":main_raw,"elapsedSeconds":time.monotonic()-mono,"finishedUtc":utc(),"headAfter":git("rev-parse","HEAD"),"statusAfter":git("status","--porcelain"),"sourceHashesAfter":{p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in tracked},"reaped":events,"cleanup":cleanup}
+receipt["sourceHashesUnchanged"]=receipt["sourceHashesBefore"]==receipt["sourceHashesAfter"]
+(out/"reaped.json").write_text(json.dumps({"mainChildPid":child,"mainChildExitCode":main_exit,"events":events,"cleanup":cleanup},ensure_ascii=False,indent=2)+"\n")
+(out/"receipt.json").write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+"\n")
+print(json.dumps({"finishedUtc":receipt["finishedUtc"],"exitCode":main_exit,"elapsedSeconds":receipt["elapsedSeconds"],"headAfter":receipt["headAfter"],"statusAfter":receipt["statusAfter"],"sourceHashesUnchanged":receipt["sourceHashesUnchanged"]},ensure_ascii=False),flush=True)
+sys.exit(main_exit if main_exit>=0 else 128-main_exit)

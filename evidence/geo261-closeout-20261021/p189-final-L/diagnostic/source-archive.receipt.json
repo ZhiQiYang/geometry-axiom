@@ -1,0 +1,36 @@
+{
+  "name": "source-archive",
+  "argv": [
+    "git",
+    "archive",
+    "--format=tar",
+    "43f85313c32410ac01406ab585846bbacafea278",
+    "--",
+    "current_geometry.c",
+    "geometry-core",
+    "geometry-app",
+    "geometry-templates",
+    "geometry-web",
+    ":(exclude)geometry-core/domain-decoupling",
+    ":(exclude)geometry-web/docs",
+    ":(exclude)geometry-web/prototypes",
+    ":(exclude)geometry-web/vendor",
+    ":(exclude)geometry-web/node_modules"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-21T00:55:08.239622+00:00",
+  "source_sha": "43f85313c32410ac01406ab585846bbacafea278",
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "stdin": null,
+  "pid": 294513,
+  "pgid": 294513,
+  "finished_utc": "2026-10-21T00:55:08.420501+00:00",
+  "seconds": 0.18088978599917027,
+  "actual_exit_code": 0,
+  "timed_out": false,
+  "stdout_sha256": "913ca2b62a3e0d4e8b28e328fbccc89be57110056afb856ae1a283f5b43ffcc0",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

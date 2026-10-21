@@ -1,0 +1,83 @@
+from pathlib import Path
+import json,hashlib,subprocess,statistics,math,datetime
+D=Path('/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4')
+EXPECTED_EXIT=1
+def j(n):return json.loads((D/n).read_bytes())
+def sha(b):return hashlib.sha256(b).hexdigest()
+p=j('prepare-receipt.json');r=j('receipt.json');comp=j('completion-receipt.json');s=j('samples.json');e=j('dump-equivalence.json');builds=j('build-receipt.json');ph=j('phase-receipts.json');plan=j('planned-commands.json');pre=j('timing-preflight.json');release=j('supervisor-released-config.json')
+commits={'main':'adbaebf9c73ea6801d7b4d5214e4b846b132923b','base':'3e600772076465fc65a26ac09055028301c0fb0b','final':'4bd19f91c434417f1c4431128c55285f4b11d3c3'}
+assert p['commits']==r['commits']==e['commits']==comp['commits']==commits
+assert r['pass'] is (EXPECTED_EXIT==0) and r['exit_code']==comp['actual_check_exit_code']==EXPECTED_EXIT and comp['formal_receipt']==r and not r['provenance_errors'] and r['provenance_pass']
+assert sha(Path(p['runner']).read_bytes())==p['runner_sha256']==r['runner_sha256']=='fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44'
+assert sha(Path(p['generator']).read_bytes())==p['generator_sha256']
+assert sha(Path(release['supervisor']).read_bytes())==release['supervisor_sha256']
+for path,key in [(p['generator'],'generator_source'),(p['generator_calibration']['path'],None)]:
+ spec=p[key] if key else p['generator_calibration']['source'];raw=subprocess.check_output(['git','show',spec],cwd=p['repo']);assert Path(path).read_bytes()==raw
+assert p['expected_parent']=='6c6937708fa31790586d6c31c2984070e6bf885a'
+assert subprocess.check_output(['git','rev-parse',commits['final']+'^'],cwd=p['repo']).decode().strip()==p['expected_parent']
+for n,key in [('candidate-parent.patch','candidate_parent_patch_sha256'),('candidate-vs-L.patch','candidate_vs_L_patch_sha256')]:assert sha((D/n).read_bytes())==p[key]
+git_checks=[];source_counts={}
+for a in p['archives']:
+ assert a['actual_exit_code']==0 and a['sha']==commits[a['label']]
+ archive=Path(a['archive_path']).read_bytes();assert len(archive)==a['archive_bytes'] and sha(archive)==a['archive_sha256']
+ idx=j(a['source_index']);assert len(idx)==a['source_file_count'];source_counts[a['label']]=len(idx)
+ for x in idx:
+  raw=(Path(a['source_directory'])/x['path']).read_bytes();assert len(raw)==x['bytes'] and sha(raw)==x['sha256']
+  git_checks.append((a['sha']+':'+x['path'],hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest(),len(raw)))
+assert source_counts=={'main':495,'base':673,'final':673}
+assert len(builds)==3
+for b in builds:
+ assert b['sha']==commits[b['label']] and b['returncode']==0 and b['command']==['gcc','-std=c11','-O2','geometry-web/web_bridge.c','-o','bridge','-lm']
+ assert sha((Path(b['cwd'])/'bridge').read_bytes())==b['binary_sha256']
+ assert (D/('build-'+b['label']+'.log')).read_bytes()==b''
+assert [x['phase'] for x in ph]==[x['phase'] for x in plan]==['generator-selftest','selftest','build','equivalence','timing','check']
+for row,planned in zip(ph,plan):
+ n=row['phase'];code=EXPECTED_EXIT if n=='check' else 0;assert row['argv']==planned['argv'] and row['exit_code']==code and (D/(n+'.exit-code')).read_bytes()==(str(code)+'\n').encode() and row==j(n+'.receipt.json')
+ assert row['commits']==commits and row['runner_sha256']==p['runner_sha256'] and row['generator_sha256']==p['generator_sha256']
+ assert row['repository_head']=='43f85313c32410ac01406ab585846bbacafea278' and row['PYTHONOPTIMIZE_present'] is False and row['stack_limit_bytes']==[16777216,16777216]
+ for stream in ['stdout','stderr']:assert sha((D/(n+'.'+stream)).read_bytes())==row[stream+'_sha256']
+assert comp['phases']==ph and (D/'supervisor.exit-code').read_bytes()==(str(EXPECTED_EXIT)+'\n').encode()
+assert release['released'] and release['released_utc']<=ph[0]['started_utc']
+assert pre['pass'] and not pre['errors'] and all(z['zombie'] for z in pre['relevant_processes'])
+assert ph[3]['finished_utc']<=pre['started_utc']<pre['finished_utc']<=ph[4]['started_utc']
+for z in pre['binary_checks']:assert z['matches_build_receipt'] and z['binary_sha256']==next(b['binary_sha256'] for b in builds if b['label']==z['label'])
+assert (D/'timing-preflight.exit-code').read_bytes()==b'0\n'
+st=j('validator-selftest.json');assert len(st)==16
+for x in st:
+ if 'actual' in x:assert x['actual']['pass']==x['expected_pass'] and (x['expected_pass'] or x['actual']['errors'])
+ else:assert not x['expected_pass'] and x['errors']
+assert len(e['scenes'])==175 and e['complete'] and e['pass']
+assert len({x['scene'] for x in e['scenes']})==175
+base_names=subprocess.check_output(['git','ls-tree','--name-only',commits['base']],cwd=p['repo']).decode().splitlines();assert {x['scene'] for x in e['scenes'] if not x['generated']}=={n for n in base_names if n.endswith('.scene')}
+refusals=0;raw_streams=0
+def verify_result(row,dump):
+ global raw_streams
+ out=(D/row['stdout_file']).read_bytes();err=(D/row['stderr_file']).read_bytes();raw_streams+=2
+ assert sha(out)==row['stdout_sha256'] and len(out)==row['stdout_bytes']
+ responses=[json.loads(x) for x in out.splitlines()]
+ assert responses==row['responses'] and len(responses)==(2 if dump else 1)
+ assert row['status']=='ok' and row['returncode']==0 and row['ok']==responses[0].get('ok')
+ return out
+for x in e['scenes']:
+ assert x['pass'] and x['identical'] and x['all_three_identical'] and x['valid_execution'] and not x['errors'] and set(x['sides'])==set(commits)
+ outputs=[verify_result(x['sides'][label],True) for label in commits];assert outputs[0]==outputs[1]==outputs[2]
+ if x['generated']:assert all(z['ok'] for row in x['sides'].values() for z in row['responses'])
+ else:refusals+=int(x['sides']['final']['ok'] is not True)
+ path=Path(p['work'])/'scenes'/((('' if x['generated'] else 'repo-')+x['scene']));raw=path.read_bytes();assert sha(raw)==x['scene_sha256']
+ if not x['generated']:git_checks.append((commits['base']+':'+x['scene'],hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest(),len(raw)))
+batch=subprocess.run(['git','cat-file','--batch-check=%(objectname) %(objecttype) %(objectsize)'],cwd=p['repo'],input=''.join(x[0]+'\n' for x in git_checks).encode(),capture_output=True);assert batch.returncode==0
+lines=batch.stdout.decode().splitlines();assert len(lines)==len(git_checks)
+for line,(_,h,size) in zip(lines,git_checks):assert line==h+' blob '+str(size)
+expected=[(n,rep,label) for n in [16,32,48,64] for rep in range(3) for label in (['main','base','final'] if rep%2==0 else ['final','base','main'])]
+assert len(s)==36 and [(x['n'],x['round'],x['side']) for x in s]==expected
+for x in s:
+ verify_result(x,False);assert x['ok'] is True and x['sha']==commits[x['side']] and math.isfinite(x['seconds']) and x['seconds']>0
+summary=[]
+for n in [16,32,48,64]:
+ med={label:statistics.median(x['seconds'] for x in s if x['n']==n and x['side']==label) for label in commits};ratio=med['final']/med['main']
+ summary.append({'n':n,'median_seconds':med,'final_main_ratio':ratio,'threshold_pass':ratio<=2})
+assert summary==r['timing']['summary']==j('timing-receipt.json')['summary'] and r['timing']['errors']==([] if EXPECTED_EXIT==0 else [f"P-189 N=64 final/main={summary[-1]['final_main_ratio']:.6f} > 2.0"])
+assert [x['n'] for x in summary if not x['threshold_pass']]==([] if EXPECTED_EXIT==0 else [64])
+report={'checkedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'acceptedP189Candidate':EXPECTED_EXIT==0,'acceptedEvidence':True,'negativeControlKilled':EXPECTED_EXIT==1,'candidate':commits['final'],'sourceCounts':source_counts,'gitBlobByteBindingsVerified':len(git_checks),'builds':3,'buildArgv':['gcc','-std=c11','-O2','geometry-web/web_bridge.c','-o','bridge','-lm'],'allBuildsExitZero':True,'stageWaitExits':[x['exit_code'] for x in ph],'supervisorExit':EXPECTED_EXIT,'topToolObservation':{'session':84487,'chunk':'939b0d','exitCode':EXPECTED_EXIT,'evidenceType':'root實際工具觀察轉述，非新增transport原文'},'sceneCount':175,'threeWayCompleteStdoutByteIdentical':175,'historicalScenesWithControlledRefusal':refusals,'samples':36,'alternatingOrderExact':True,'validatorControls':16,'rawStreamsRead':raw_streams,'summary':summary,'N64ThresholdRelativeHeadroom':(2-summary[-1]['final_main_ratio'])/2,'preflight':{'passed':True,'knownRelevantProcesses':len(pre['relevant_processes']),'allZombies':True,'binaryHashesMatch':True,'beforeTiming':True},'limitations':['只是這組固定正向與撤回各一輪P189，不替代最終來源完整七項、Q38、§7或ledger。','排程證據是root放行/停止其他工作及計時前1秒前檢、環境前後快照；不冒稱連續全系統追蹤。','175場景比較完整stdout，歷史受控拒絕亦保留，不把所有場景聲稱為成功載入。','單輪性能結果與各自main中位數相比；不把兩輪差當成可分攤到單一優化的因果收益。','16裁判自證含14項actual與2項provenance errors原schema；未重跑裁判或產品。'],'bindings':{n:sha((D/n).read_bytes()) for n in ['receipt.json','samples.json','dump-equivalence.json','phase-receipts.json','completion-receipt.json','timing-preflight.json','validator-selftest.json','independent-pair-source-review.json']}}
+out=D/'independent-review.json';out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'exitCode':0,'report':str(out),'bytes':out.stat().st_size,'sha256':sha(out.read_bytes()),'ratios':[x['final_main_ratio'] for x in summary],'sceneCount':175,'refusedHistoricalScenes':refusals,'sourceGitChecks':len(git_checks)}))
+

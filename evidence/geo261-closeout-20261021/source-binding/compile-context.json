@@ -1,0 +1,32 @@
+{
+  "scope": "函式 hash 計算；沒有編譯、測試或 --check",
+  "sourceCodeRawSha256": "31a0a51eeaa5c3838a6e670cf403199a25594544daa3399f3f24b0082220020d",
+  "originalCC": null,
+  "defaultCCUnset": {
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O2",
+      "<source>",
+      "-o",
+      "<output>",
+      "-lm"
+    ],
+    "compileSha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c"
+  },
+  "explicitCCGcc": {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "<source>",
+      "-o",
+      "<output>",
+      "-lm"
+    ],
+    "compileSha256": "e87acf5cb27ff17c66fef1d6219c4f31ed95a852b4fc6e3d13840c33db8eeaee"
+  },
+  "ccResolved": "/usr/bin/x86_64-linux-gnu-gcc-14",
+  "gccResolved": "/usr/bin/x86_64-linux-gnu-gcc-14",
+  "sameExecutableDoesNotImplySameCommandFingerprint": true
+}

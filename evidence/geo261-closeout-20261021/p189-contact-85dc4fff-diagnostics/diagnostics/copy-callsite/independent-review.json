@@ -1,0 +1,292 @@
+{
+  "checked_utc": "2026-10-21T02:23:53.032765+00:00",
+  "classification": "單次外部呼叫點診斷的事後獨立唯讀核對；不是正式 P189 驗收或性能成績",
+  "source_sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "accepted": true,
+  "replayed_product": false,
+  "tool_hashes": {
+    "wrapper": "68f13acea1fa542be2c2127cd0f7f1a21b5a0d4c960b962fae07c8ca5ffd3a50",
+    "driver": "711adb920e70ba881c05db6850c87339e3024e8ecc13bbac3ff663d1b6585907",
+    "wait4_helper": "b38d023f0cc9da48d084e7a99762eddc22f53869bb480128b5bc4f516f4391ad",
+    "diagnostic_binary": "987b8f3735d0baeb4fc42cfc21339df5d45ffacdae8e711cf812f73c76bf2a72"
+  },
+  "steps": {
+    "archive": {
+      "raw_wait_status": 0,
+      "actual_exit_code": 0,
+      "timed_out": false,
+      "receipt_sha256": "e0d3a0c4f1eee93c7bf2e3a98e5562e6d2be30644c1252e9d110190858375108"
+    },
+    "build": {
+      "raw_wait_status": 0,
+      "actual_exit_code": 0,
+      "timed_out": false,
+      "receipt_sha256": "da5753267f4a149c2811f2fda98e59ee19b5004265f12ecaa40a89ea54ba5fc6"
+    },
+    "load": {
+      "raw_wait_status": 0,
+      "actual_exit_code": 0,
+      "timed_out": false,
+      "receipt_sha256": "b4a189500a3ee1fb715d3911f82ef8615edeec7d5169f959103aecfc04fb72a0"
+    },
+    "nm": {
+      "raw_wait_status": 0,
+      "actual_exit_code": 0,
+      "timed_out": false,
+      "receipt_sha256": "6204f07573a7c3d252ced92810a3d9cf64d874abc07d4b6715777f1b16a976e1"
+    },
+    "elf": {
+      "raw_wait_status": 0,
+      "actual_exit_code": 0,
+      "timed_out": false,
+      "receipt_sha256": "629c9f92541328aff9fd69fa6cfd18d2384592d415747f5c4aaa0f31a9393a8e"
+    }
+  },
+  "driver_exit_code": 0,
+  "outer_tool_exit_observation": {
+    "source": "root 訊息轉述實際工具返回，非本報告自動保存的 transport 原文",
+    "session": 30828,
+    "chunk": "6b267d",
+    "exit_code": 0
+  },
+  "source_index": {
+    "file_count": 673,
+    "index_sha256": "8e51635870feb7bedb87bf5b89276c49966fa22c713f7c46f1210ba1db0d3e0d",
+    "every_archived_file_matches_formal_index": true
+  },
+  "formal_binary_samples_receipt_current_match_recorded_hashes": true,
+  "single_load_command_and_EOF": true,
+  "stdout_matches_formal": true,
+  "load_stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1",
+  "calls_tsv_sha256": "f7f48d606afd01a4610e44f881acd2d2e3f338db79cf9f34d2819374c22bda49",
+  "summary_sha256": "99e143b9abbcb6de1ea50982726014a0afd19b93001f591ebe04f366d4995867",
+  "unique_rows": 84,
+  "lost": 0,
+  "bytes_overflow": 0,
+  "actual_instruction_check": {
+    "all_rows_match_exact_nm_nonzero_ranges": true,
+    "direct_calls_to_matching_wrapper": 84,
+    "return_pc_equals_instruction_end": 84,
+    "tailcall_ambiguity_in_these_84_rows": false,
+    "method": "objdump 完整指令邊界定位 return_pc−1；核指令長度與 call 目標，並與 nm 非零 size 範圍逐筆比對。不是最近較小符號推定。"
+  },
+  "top_callsite_rows": [
+    {
+      "kind": 3,
+      "return_pc": "0x40d776",
+      "calls": 226847,
+      "bytes": 10650920344,
+      "exact_symbol_ranges": [
+        "app_placement_at.part.0"
+      ],
+      "instruction_address": "0x40d771",
+      "instruction_bytes": 5,
+      "instruction": "call   4c23b0 <__wrap_memset>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "app_placement_at",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-app/native/domains.inc:74"
+      ]
+    },
+    {
+      "kind": 1,
+      "return_pc": "0x487bc2",
+      "calls": 85268,
+      "bytes": 4003503136,
+      "exact_symbol_ranges": [
+        "reference_host_read"
+      ],
+      "instruction_address": "0x487bbd",
+      "instruction_bytes": 5,
+      "instruction": "call   4c2330 <__wrap_memcpy>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "reference_host_read",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/../geometry-app/native/reference_sources.inc:559"
+      ]
+    },
+    {
+      "kind": 3,
+      "return_pc": "0x487b34",
+      "calls": 85268,
+      "bytes": 3989178112,
+      "exact_symbol_ranges": [
+        "reference_host_read"
+      ],
+      "instruction_address": "0x487b2f",
+      "instruction_bytes": 5,
+      "instruction": "call   4c23b0 <__wrap_memset>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "reference_host_read",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/../geometry-app/native/reference_sources.inc:539"
+      ]
+    },
+    {
+      "kind": 3,
+      "return_pc": "0x43c498",
+      "calls": 85556,
+      "bytes": 3227172320,
+      "exact_symbol_ranges": [
+        "geo_placement_definition_decode"
+      ],
+      "instruction_address": "0x43c493",
+      "instruction_bytes": 5,
+      "instruction": "call   4c23b0 <__wrap_memset>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "geo_placement_definition_decode",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/kernel/placement_sources.c:95"
+      ]
+    },
+    {
+      "kind": 1,
+      "return_pc": "0x43cd02",
+      "calls": 85556,
+      "bytes": 3227172320,
+      "exact_symbol_ranges": [
+        "geo_placement_sources_definition"
+      ],
+      "instruction_address": "0x43ccfd",
+      "instruction_bytes": 5,
+      "instruction": "call   4c2330 <__wrap_memcpy>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "geo_placement_sources_definition",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/kernel/placement_sources.c:198"
+      ]
+    },
+    {
+      "kind": 1,
+      "return_pc": "0x43c942",
+      "calls": 85556,
+      "bytes": 3227172320,
+      "exact_symbol_ranges": [
+        "geo_placement_definition_decode"
+      ],
+      "instruction_address": "0x43c93d",
+      "instruction_bytes": 5,
+      "instruction": "call   4c2330 <__wrap_memcpy>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "geo_placement_definition_decode",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/kernel/placement_sources.c:111 (discriminator 2)"
+      ]
+    },
+    {
+      "kind": 3,
+      "return_pc": "0x48882b",
+      "calls": 51983,
+      "bytes": 2434883720,
+      "exact_symbol_ranges": [
+        "app_validation_host"
+      ],
+      "instruction_address": "0x488826",
+      "instruction_bytes": 5,
+      "instruction": "call   4c23b0 <__wrap_memset>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "app_grid_host_value",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../current_geometry.c:911",
+        "app_validation_host",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-app/native/world_validation.inc:40"
+      ]
+    },
+    {
+      "kind": 2,
+      "return_pc": "0x44aa2e",
+      "calls": 726400,
+      "bytes": 1460572800,
+      "exact_symbol_ranges": [
+        "wood_contact_collect_stops"
+      ],
+      "instruction_address": "0x44aa29",
+      "instruction_bytes": 5,
+      "instruction": "call   4c2370 <__wrap_memmove>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "wood_contact_collect_stops",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-app/native/../../geometry-templates/woodworking/native/contact_world.c:102 (discriminator 1)"
+      ]
+    },
+    {
+      "kind": 1,
+      "return_pc": "0x41c49f",
+      "calls": 139,
+      "bytes": 661563272,
+      "exact_symbol_ranges": [
+        "app_scene_candidate_apply"
+      ],
+      "instruction_address": "0x41c49a",
+      "instruction_bytes": 5,
+      "instruction": "call   4c2330 <__wrap_memcpy>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "app_scene_candidate_apply",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/transactions.inc:562"
+      ]
+    },
+    {
+      "kind": 1,
+      "return_pc": "0x4bedf4",
+      "calls": 130,
+      "bytes": 618728240,
+      "exact_symbol_ranges": [
+        "apply_scene_line"
+      ],
+      "instruction_address": "0x4bedef",
+      "instruction_bytes": 5,
+      "instruction": "call   4c2330 <__wrap_memcpy>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "app_scene_file_line",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/transactions.inc:679",
+        "apply_scene_line",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/transactions.inc:703"
+      ]
+    },
+    {
+      "kind": 2,
+      "return_pc": "0x44ad80",
+      "calls": 726400,
+      "bytes": 486857600,
+      "exact_symbol_ranges": [
+        "wood_contact_collect_stops"
+      ],
+      "instruction_address": "0x44ad7b",
+      "instruction_bytes": 5,
+      "instruction": "call   4c2370 <__wrap_memmove>",
+      "ends_at_return_pc": true,
+      "addr2line": [
+        "wood_contact_collect_stops",
+        "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-app/native/../../geometry-templates/woodworking/native/contact_world.c:103 (discriminator 1)"
+      ]
+    }
+  ],
+  "limits": [
+    "GNU -no-pie 連結包裝改變診斷執行檔，沒有把本輪 wall/user/sys 當原性能分數。",
+    "只計可執行檔外部 memcpy/memmove/memset 呼叫；inline、rep movs 及 libc 內部呼叫未計，bytes 不是 DRAM 實際流量或 CPU 時間。",
+    "工具通用限制仍是尾呼叫可沿用上一層 return address；本次 84 個具體列已由直接 call 證實，沒有此歧義。",
+    "總 bytes/calls 可得均值；對固定立即數大小的前六點另有指令佐證。不能把任意可變大小列的均值當每次固定大小。",
+    "b35135 準備核對原工具返回只有 chunk/wall/exit，未保存 UTC，不能排除與本輪 build/load 重疊；此項不影響 count/bytes 解讀，未重跑。",
+    "未新增產品突變、未執行產品測試；這只是診斷可信度核對。",
+    "prepared/released config 的 review_revision 沿用前次 undef si_value 說明；本輪實際 argv 與固定 wrapper/driver bytes 已另核，未使用 PC header。"
+  ],
+  "artifacts": [
+    {
+      "path": "actual-calls.objdump.txt",
+      "bytes": 11051,
+      "sha256": "25443db299b0df68ce738a96a88b3af260d40603cca574757c96c6714986fe27"
+    },
+    {
+      "path": "call-instructions.json",
+      "bytes": 28653,
+      "sha256": "692132a64d56894491e9ceb28277ae9138958df0f20731fca0c3211068851a17"
+    },
+    {
+      "path": "wrappers.objdump.txt",
+      "bytes": 3384,
+      "sha256": "4f6689e9af66134b96840e8127e5daed78526e3b67cf65c1a1c30dec78a38ae2"
+    }
+  ]
+}

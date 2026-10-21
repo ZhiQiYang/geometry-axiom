@@ -1,0 +1,33 @@
+{
+  "recorded_utc": "2026-10-21T05:00:43.936890+00:00",
+  "actual_outer_argv": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/ledger-L2-preparation/launch_run.py",
+    "--source",
+    "19401ca5448e162ee6140fed37b64b83b31ddec8",
+    "--config",
+    "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/prepare-receipt.json",
+    "--execute"
+  ],
+  "launch_tool_session": 36602,
+  "launch_tool_chunk": "d7d3b9",
+  "observed_exit_code": null,
+  "branch": "codex/geo261-host-authority-anchor-fix-20261021",
+  "candidate_source_root": "/workspace/geo261-host-authority-anchor-fix",
+  "shared_main_root": "/workspace/geometry-axiom",
+  "main_adoption_notice": {
+    "source": "root協作訊息，非本程序重做Git操作",
+    "source_sha": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+    "root_tool_session": 54176,
+    "root_tool_chunk": "e1660d",
+    "root_tool_exit_code": 0,
+    "receipt_directory": "/workspace/geo261-evidence/source-S3-adoption"
+  },
+  "備註": "prepare-receipt.main_root 指當輪來源候選checkout；product_parent_sha 為L2。binding當時main=L2，之後root正常FF同S3；歷史收據不回填。"
+}

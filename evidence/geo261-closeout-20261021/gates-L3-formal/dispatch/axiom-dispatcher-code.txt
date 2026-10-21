@@ -1,0 +1,26 @@
+import pathlib,json,hashlib,os,sys,datetime
+base=pathlib.Path("/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021")
+prep=base/"preparation";raw=(prep/"instance.json").read_bytes()
+assert hashlib.sha256(raw).hexdigest()=="ad0e74a3798fedf240d7a02af82ee7849496981276418335c38b9f36715ac1f3"
+plan=json.loads(raw);phase="axiom"
+assert plan["sourceSha"]=="6589248c9a94bdf0460d8f84dd1610e51048188b" and plan["gateJobs"]==1
+assert "CC" not in os.environ and "PYTHONOPTIMIZE" not in os.environ and sys.flags.optimize==0
+completion=json.loads((base/"native/completion-verification.json").read_bytes())
+assert completion["acceptedNativeExact"] and completion["sourceSha"]==plan["sourceSha"]
+verification=base/"native/verification.json"
+assert hashlib.sha256(verification.read_bytes()).hexdigest()=="ee80438dce224cf9d473184c4ffe97a4c690d401d98eecdbcbd5e458449df93b"
+script=prep/"phase-launcher.py"
+assert hashlib.sha256(script.read_bytes()).hexdigest()==plan["files"]["phase-launcher.py"]["sha256"]
+previous="card"
+for kind,folder in [("primary","verification"),("detailed","acceptance-review")]:
+    receipt=json.loads((base/"gates/acceptance-execution"/(previous+"-"+kind+"-receipt.json")).read_bytes())
+    report=base/"gates"/folder/(previous+".json");result=json.loads(report.read_bytes())
+    assert receipt["exitCode"]==0 and result["accepted"] and result["sourceSha"]==plan["sourceSha"]
+    assert receipt["producedReport"]["sha256"]==hashlib.sha256(report.read_bytes()).hexdigest()
+argv=plan["gateCommands"][phase]
+dest=base/"gates/dispatch";dest.mkdir(parents=True,exist_ok=True)
+command=dest/(phase+"-command.json");assert not command.exists()
+meta=dict(sourceSha=plan["sourceSha"],phase=phase,startedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),dispatcherPid=os.getpid(),dispatcherArgv=sys.orig_argv,actualExecArgv=argv,instanceSha256=hashlib.sha256(raw).hexdigest(),phaseLauncherSha256=hashlib.sha256(script.read_bytes()).hexdigest(),nativeVerificationSha256=hashlib.sha256(verification.read_bytes()).hexdigest(),nativeCompletionSha256=hashlib.sha256((base/"native/completion-verification.json").read_bytes()).hexdigest(),CCAbsent=True,PYTHONOPTIMIZEAbsent=True,optimizationFlag=sys.flags.optimize,note="此 dispatcher exec 原 phase launcher；原程式的實際 child.wait/receipt 與工具退出分別保留。")
+command.write_text(json.dumps(meta,ensure_ascii=False,indent=2)+"\n")
+(dest/(phase+"-dispatcher-code.txt")).write_text(sys.orig_argv[-1])
+os.execvp(argv[0],argv)

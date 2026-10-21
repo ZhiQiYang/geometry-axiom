@@ -1,0 +1,15 @@
+✔ 120 camera/draft/room updates share one paint without discarding work (2.785376ms)
+✔ pointer boundary flush paints the latest state immediately and exactly once (0.759572ms)
+✔ leaving/reopening the same face cannot apply an old editing-session paint (1.072996ms)
+✔ a new session does not inherit pending camera/draft flags (2.22023ms)
+✔ an authoritative synchronous redraw cancels the pending presentation (0.965105ms)
+✔ cursor motion paints the latest point once, and leaving cancels it (1.370805ms)
+✔ cursor pointerdown paints immediately and cancels an older queued motion (1.297567ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 82.337224

@@ -1,0 +1,32 @@
+[
+  {
+    "來源": "build_candidate.py",
+    "sha256": "f8c51e90b47a5c3e71a819cafd17907fcebce038a7d7236778555c252189ca3e",
+    "處理": "保留完整bytes為外部調度/build_candidate/command-code.txt；不保留另一個可執行副本"
+  },
+  {
+    "來源": "p73_probe-v2.cjs",
+    "sha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+    "處理": "不另複製；與正式已登記p73_probe.js逐bytes相同，引用正式工具來源.json"
+  },
+  {
+    "來源": "p73_probe.cjs",
+    "sha256": "0984db53cb9523fcff527ab819f4a3e46323766bd1ebef393f5465929ff8cf5e",
+    "處理": "保留完整bytes為歷史診斷/p73_probe/command-code.txt；不保留另一個可執行副本"
+  },
+  {
+    "來源": "run_formal.py",
+    "sha256": "5ca7e4006e2556bc09d81834930f2106335553953f7f3e78d912301bd5dd5c4e",
+    "處理": "保留完整bytes為外部調度/run_formal/command-code.txt；不保留另一個可執行副本"
+  },
+  {
+    "來源": "run_probe.py",
+    "sha256": "15be179cbc46eb341fabffb4877398aea3b5bb2ec72c419e00d5accf24f6f62f",
+    "處理": "保留完整bytes為外部調度/run_probe/command-code.txt；不保留另一個可執行副本"
+  },
+  {
+    "來源": "run_probe_v2.py",
+    "sha256": "464b81977e13bedc46e39f52638393f5de50d76838c7d0f90446de7c1be32031",
+    "處理": "保留完整bytes為外部調度/run_probe_v2/command-code.txt；不保留另一個可執行副本"
+  }
+]

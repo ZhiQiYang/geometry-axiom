@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/p189-trial-package-v4.py",
+    "--out",
+    "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4",
+    "--bundle-name",
+    "p189-footprint-revert-control-4bd19f91",
+    "--prepare-tool",
+    "/workspace/geo261-evidence/p189-trial-prepare-v2.py",
+    "--branch",
+    "codex/geo261-p189-footprint-revert-control-20261021",
+    "--negative-control"
+  ],
+  "cwd": "/workspace",
+  "started_utc": "2026-10-21T03:09:05.877025+00:00",
+  "finished_utc": "2026-10-21T03:09:06.190982+00:00",
+  "actual_exit_code": 0,
+  "script_sha256": "6171ecd7fe7ea2a2b611365dd9a61e829f2218de921fac9c849fde0291c8e1c6"
+}

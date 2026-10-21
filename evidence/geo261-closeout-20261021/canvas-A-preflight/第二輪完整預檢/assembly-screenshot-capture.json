@@ -1,0 +1,22 @@
+{
+  "capturedUTC": "2026-10-20T22:05:32.239045+00:00",
+  "note": "job完成後唯讀封存既有harness硬路徑兩圖，原mtime在本輪內；原baseline兩檔都不存在",
+  "files": [
+    {
+      "originalPath": "/tmp/geometry-tests/assembly-desktop.png",
+      "bytes": 92421,
+      "mtimeNs": 1792533458878499171,
+      "sha256": "5adab1037173336534961da80b364abcbbc4df13bda2fa309af4d0914cb1e780",
+      "withinRunWindow": true,
+      "output": "screens/assembly-hardpath/assembly-desktop.png"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/assembly-mobile.png",
+      "bytes": 39267,
+      "mtimeNs": 1792533465042448290,
+      "sha256": "3e726fb9aeb6ccfdbe66964b0bac59661df44218746d93d8e5e1e9339a855099",
+      "withinRunWindow": true,
+      "output": "screens/assembly-hardpath/assembly-mobile.png"
+    }
+  ]
+}

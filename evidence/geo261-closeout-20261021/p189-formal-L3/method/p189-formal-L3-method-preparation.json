@@ -1,0 +1,37 @@
+{
+  "classification": "未知 L3 的方法準備，未執行 prepare／archive／build／產品／取樣",
+  "source_sha": null,
+  "expected_parent": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "prepare_path": "/workspace/geo261-evidence/p189-formal-L3-prepare.py",
+  "prepare_sha256": "1186c97684dfa589bfc4e32bdb4f5a9714e29ae6405b0fd76375c4389b789cd2",
+  "previous_prepare_sha256": "01a9a6fb04bf3053658ffc27dbd5c0ae1f8b4532dee156ce3bb29f0fc6b00023",
+  "patch_sha256": "87a926376c48d1646a44d07ebd072888d1993779e7df9b6fbd030969ee79733e",
+  "supervisor_sha256": "e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413",
+  "AST_valid": true,
+  "actual_exit_code": 0,
+  "delta": [
+    "正式 label L2→L3",
+    "previous正式來源指向L2",
+    "expected_parent明確固定公開S3",
+    "分類明示不得沿用L2／候選成績"
+  ],
+  "planned_argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/p189-formal-L3-prepare.py",
+    "--source-head",
+    "<root提供的完整L3 SHA>",
+    "--expected-parent",
+    "19401ca5448e162ee6140fed37b64b83b31ddec8"
+  ],
+  "unchanged": [
+    "原 runner/gen/calibration hash",
+    "main/base",
+    "archive排除與來源索引",
+    "16controls/175equivalence/36samples",
+    "原≤2x與900秒",
+    "16MiB stack",
+    "主來源HEAD=final且clean／parent只ledger",
+    "原supervisor bytes／released=false與真wait"
+  ]
+}

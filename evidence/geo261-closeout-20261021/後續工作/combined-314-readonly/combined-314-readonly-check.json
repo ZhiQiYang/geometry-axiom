@@ -1,0 +1,143 @@
+{
+  "reviewHead": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+  "trackedStatus": "",
+  "handoffHead": "59796b1af9259eb23d30134c2ce5a56317a06091",
+  "artifacts": [
+    {
+      "path": "HANDOFF.md",
+      "bytes": 11260,
+      "rawSha256": "6404126064a169e685b8774c447f96b3ebbdf02e3e1278042d7881ebfa5965c0",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/combined/README.md",
+      "bytes": 1607,
+      "rawSha256": "59445468623593e1f8b612f3297d13c29c81017dab9bb0c1ad1d7b0947e4bcd3",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/combined/patch.diff",
+      "bytes": 53544,
+      "rawSha256": "7ca70ab90fb245a8d2de01a2410ff68af00a743e76767e773d1dbf3bf03ea702",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/combined/rebased-546e2eb2/patch.diff",
+      "bytes": 53544,
+      "rawSha256": "422946025137ba719ef4e42da1a527ba5bc07bbf8e52b28e687392061074fef6",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/issue314/DESIGN.md",
+      "bytes": 33016,
+      "rawSha256": "c7ecdea31d56215dd170d529ed790b3aa4fa6f418194aaea42c4a148fa5f2e7d",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/issue314/TESTS.md",
+      "bytes": 26474,
+      "rawSha256": "04ada3ea10bcfe1a9c1f483877d8b649164df913412bbdca913d19a35300f729",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/issue314/patch.diff",
+      "bytes": 6348,
+      "rawSha256": "925434e75085d82501326784079b9413c2b6ef342387d7a863711b1b10295e61",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/issue314/rebased-546e2eb2/patch.diff",
+      "bytes": 6348,
+      "rawSha256": "925434e75085d82501326784079b9413c2b6ef342387d7a863711b1b10295e61",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/_gen/build.py",
+      "bytes": 659,
+      "rawSha256": "4ed66e952bd43d3319dafc198f43563cf2de2a515e93ddf578846d3075c13b75",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/_gen/checks.py",
+      "bytes": 7048,
+      "rawSha256": "93bc60bf0f8a9455fa1bd75b4874cfc943133337182190f1fc7fac1a4a8f5d50",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/_gen/edits299.py",
+      "bytes": 24179,
+      "rawSha256": "c64cc6c77e89763ee849f144e43b1373cb9e185947cdbc4324213be42a3a4b96",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/_gen/edits316.py",
+      "bytes": 17954,
+      "rawSha256": "7e79b701122fbf45155d7af8607a2a7b61f3454a4bad0e53d3cdf700e9ad4c64",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/_gen/fetch_base.sh",
+      "bytes": 1192,
+      "rawSha256": "51ada3c98f3434c3f1a19797208ff2da12c3f74850d124aa687c6a31222409e1",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/_gen/lib.py",
+      "bytes": 4932,
+      "rawSha256": "5da605c803ee2fad1c863defe90dbb4a18810c8ba8399f8b6f11c8029310ca00",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/_gen/reader_impact.py",
+      "bytes": 3702,
+      "rawSha256": "44e4d088f813664ae5142e923612a81263c01c1db8e26567c6159c75fd21f4cb",
+      "handoffBlobEqual": true
+    },
+    {
+      "path": "drafts/_gen/verify_all.sh",
+      "bytes": 1845,
+      "rawSha256": "f814dc8fa6a2c49e40f7034d678604c59540ed799a3f387f6aaaeacf6bef73ab",
+      "handoffBlobEqual": true
+    }
+  ],
+  "patchTargetPaths": [
+    "_i11_two_surfaces_same_uv_accept.scene",
+    "current_geometry.c",
+    "geometry-core/domain-decoupling/product-architecture.json",
+    "geometry-core/subgrid_world.inc",
+    "geometry-templates/woodworking/native/contact_world.c",
+    "geometry-templates/woodworking/native/contact_world.h",
+    "geometry-templates/woodworking/native/contacts.c",
+    "geometry-templates/woodworking/native/contacts.h",
+    "geometry-templates/woodworking/native/grid_application.c",
+    "geometry-templates/woodworking/native/grid_application.h",
+    "tests/geo261_contact_world_harness.c",
+    "tests/geo261_contacts_harness.c",
+    "tests/geo261_host_facts_authority_harness.c",
+    "tests/mutate.py",
+    "tests/run_all.expected.json",
+    "tests/run_tests.py",
+    "tests/test_geo261_mutation_migration.py",
+    "tests/test_geo261_wood_contact_world.py",
+    "tests/test_geo261_wood_contacts.py",
+    "tests/test_geo261_wood_world_validation.py"
+  ],
+  "patchTargetsChangedFrom546": [
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "golden": {
+    "path": "geometry-web/cdp_sections.golden.json",
+    "rawSha256": "0ba98dde2ee69d342eb7efc76b86b858e17835437d6e63290fecb546ff72f041",
+    "P72B": 50
+  },
+  "ssotLfSha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d",
+  "notRun": [
+    "git apply --check",
+    "generator",
+    "tests",
+    "build",
+    "mutation",
+    "architecture gates",
+    "browser"
+  ]
+}

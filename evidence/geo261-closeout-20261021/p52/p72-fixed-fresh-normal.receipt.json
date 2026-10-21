@@ -1,0 +1,24 @@
+{
+  "name": "p72-fixed-fresh-normal",
+  "sourceSha": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
+  "command": [
+    "node",
+    "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
+    "/workspace/geometry-axiom"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18841/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-probe",
+    "XDG_CACHE_HOME": "/tmp/geo261-xdg-probe",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CDP_PORT": "9351",
+    "GEOMETRY_GRID_RENAME_FRESH_URL": "http://127.0.0.1:18842/"
+  },
+  "startedUtc": "2026-10-20T20:10:45Z",
+  "elapsedSeconds": 40.41611339100018,
+  "exitCode": 0,
+  "expectedExitCode": 0,
+  "load": "主代理放行之獨占瀏覽器驗收；架構中介資料更新不改來源閉包"
+}

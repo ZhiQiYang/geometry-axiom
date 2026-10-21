@@ -1,0 +1,43 @@
+"""候選數值預檢；保存原版與候選的真命令／輸出，不作性能量測。"""
+from pathlib import Path
+import hashlib
+import json
+import os
+import subprocess
+import sys
+
+ROOT = Path('/workspace/geo261-contact-candidate')
+OUT = Path(__file__).resolve().parent
+WORK = Path('/tmp/geo261-contact-trial-7ad')
+BASE = '7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09'
+NATIVE = ROOT / 'geometry-templates/woodworking/native'
+KERNEL = ROOT / 'geometry-core/kernel'
+records = []
+
+
+def run(label, command):
+    result = subprocess.run(command, cwd=ROOT, capture_output=True, timeout=180)
+    (OUT / (label + '.stdout')).write_bytes(result.stdout)
+    (OUT / (label + '.stderr')).write_bytes(result.stderr)
+    records.append(dict(label=label, command=[str(x) for x in command], returncode=result.returncode))
+    (OUT / 'numeric-commands.json').write_text(json.dumps(records, ensure_ascii=False, indent=2) + '\n')
+    return result
+
+
+old = subprocess.check_output(['git', 'show', BASE + ':geometry-templates/woodworking/native/contact_world.c'], cwd=ROOT)
+(WORK / 'contact_world_original.c').write_bytes(old)
+sources = ['geometry-templates/woodworking/native/contact_world.c', 'tests/geo261_contact_world_harness.c', 'tests/test_geo261_wood_contact_world.py']
+(OUT / 'candidate.patch').write_bytes(subprocess.check_output(['git', 'diff', '--', *sources], cwd=ROOT))
+(OUT / 'source-hashes.json').write_text(json.dumps(dict(base=BASE, sources={s:hashlib.sha256((ROOT/s).read_bytes()).hexdigest() for s in sources}, originalCollectorSha256=hashlib.sha256(old).hexdigest()), indent=2) + '\n')
+cases = ['collisions', 'ordering', 'regions', 'order-keys', 'order-fallback', 'intervals', 'extensions', 'ends']
+for label, source in [('original', WORK/'contact_world_original.c'), ('candidate', NATIVE/'contact_world.c')]:
+    exe = WORK / label
+    command = ['cc', '-std=c11', '-O2', '-I', str(NATIVE), '-I', str(KERNEL), str(ROOT/'tests/geo261_contact_world_harness.c'), str(source), str(NATIVE/'contacts.c'), str(NATIVE/'supports.c'), str(KERNEL/'geometry.c'), str(KERNEL/'exact.c'), '-o', str(exe), '-lm']
+    result = run(label + '-build', command)
+    if result.returncode:
+        print(result.stderr.decode(errors='replace'));sys.exit(1)
+    for case in cases:
+        result = run(label + '-' + case, [str(exe), case])
+        if result.returncode:
+            print(label, case, result.returncode, result.stderr.decode(errors='replace'));sys.exit(1)
+print('原版與候選各八組數值案例通過；未量測性能。')

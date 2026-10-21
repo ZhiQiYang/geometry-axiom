@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "/workspace/geo261-evidence/browser-five-L-formal-43f85313-launch/wrapper-code.txt",
+    "--sha",
+    "43f85313c32410ac01406ab585846bbacafea278",
+    "--execute",
+    "--release-note",
+    "root 已明確放行：L canvas 完成且已清理；五項依序執行，與 native 並行最多兩項重負載，主來源固定 L。",
+    "--run-id",
+    "l43f85313-formal",
+    "--output",
+    "/workspace/geo261-evidence/browser-five-L-formal-43f85313"
+  ],
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "releaseNote": "root 已明確放行：L canvas 完成且已清理；五項依序執行，與 native 並行最多兩項重負載，主來源固定 L。",
+  "driverSha256": "4ffefe74d503506f2c99d3064fac4359c4aa5324f77ccf5e3ae44bdf6ec994f2",
+  "selectedSuites": [
+    "assembly",
+    "documents",
+    "grid",
+    "space",
+    "timber"
+  ],
+  "omittedSuites": [],
+  "startedUtc": "2026-10-20T23:36:49Z"
+}

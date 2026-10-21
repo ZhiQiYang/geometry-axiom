@@ -1,0 +1,36 @@
+[
+  {
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "rev-parse",
+      "6589248c9a94bdf0460d8f84dd1610e51048188b^"
+    ],
+    "exitCode": 0
+  },
+  {
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "diff",
+      "--name-status",
+      "--no-renames",
+      "-z",
+      "19401ca5448e162ee6140fed37b64b83b31ddec8",
+      "6589248c9a94bdf0460d8f84dd1610e51048188b"
+    ],
+    "exitCode": 0
+  },
+  {
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "rev-parse",
+      "6589248c9a94bdf0460d8f84dd1610e51048188b:tests/mutants_results.json"
+    ],
+    "exitCode": 0
+  }
+]

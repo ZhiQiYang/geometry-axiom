@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+"""僅準備候選來源與命令；不建置、不執行測試或性能取樣。"""
+import datetime
+import hashlib
+import io
+import json
+from pathlib import Path
+import subprocess
+import tarfile
+import tempfile
+
+E=Path('/workspace/geo261-evidence'); R=Path('/workspace/geometry-axiom')
+L='43f85313c32410ac01406ab585846bbacafea278'
+C='7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09'
+H='59796b1af9259eb23d30134c2ce5a56317a06091'
+commits={'main':'adbaebf9c73ea6801d7b4d5214e4b846b132923b','base':'3e600772076465fc65a26ac09055028301c0fb0b','final':C}
+W=Path(tempfile.mkdtemp(prefix='geo261-p189-codec-src-',dir='/workspace'))
+O=Path(tempfile.mkdtemp(prefix='p189-codec-7ad3216ac3ea-',dir=E))
+commands=[]
+def sha(b):return hashlib.sha256(b).hexdigest()
+def save(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+def git(*args):
+    r=subprocess.run(['git',*args],cwd=R,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    commands.append({'argv':['git',*args],'cwd':str(R),'actual_exit_code':r.returncode,'stdout_sha256':sha(r.stdout),'stderr':r.stderr.decode()})
+    assert r.returncode==0,commands[-1]
+    return r.stdout
+assert git('rev-parse',C+'^').decode().strip()==L
+assert git('rev-parse','HEAD').decode().strip()==L
+assert git('status','--porcelain')==b''
+diff=git('diff','--binary','--full-index',L,C)
+changed=git('diff','--name-only',L,C).decode().splitlines()
+assert changed==['geometry-templates/woodworking/native/definition_sources.c'],changed
+(O/'candidate.patch').write_bytes(diff)
+runner=R/'geometry-core/domain-decoupling/closeout-tools/p189_verify.py'
+runner_raw=runner.read_bytes()
+assert sha(runner_raw)=='fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44'
+assert runner_raw==git('show',L+':'+str(runner.relative_to(R)))==git('show',C+':'+str(runner.relative_to(R)))
+genblob='handoff/drafts/issue300/bench/gen_scene.py'
+calblob='handoff/drafts/issue300/bench/calib/f3-00.scene'
+gen=git('show',H+':'+genblob);cal=git('show',H+':'+calblob)
+(W/'gen_scene.py').write_bytes(gen);(W/'calib').mkdir();(W/'calib/f3-00.scene').write_bytes(cal)
+assert sha(gen)=='347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91'
+assert sha(cal)=='35e24fb0a483ffd6fee8dd99f751edeb127418481aa717816af804cd218024b2'
+archives=[];(W/'archives').mkdir()
+for label,commit in commits.items():
+    assert git('rev-parse',commit+'^{commit}').decode().strip()==commit
+    paths=[]
+    for p in ['current_geometry.c','geometry-core','geometry-app','geometry-templates','geometry-web']:
+        r=subprocess.run(['git','cat-file','-e',commit+':'+p],cwd=R,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        commands.append({'argv':['git','cat-file','-e',commit+':'+p],'cwd':str(R),'actual_exit_code':r.returncode})
+        if r.returncode==0:paths.append(p)
+    excludes=[':(exclude)'+p for p in ('geometry-core/domain-decoupling','geometry-web/docs','geometry-web/prototypes','geometry-web/vendor','geometry-web/node_modules')]
+    argv=['archive','--format=tar',commit,'--',*paths,*excludes]
+    raw=git(*argv);archive=W/'archives'/(label+'.tar');archive.write_bytes(raw)
+    src=W/commit[:8];src.mkdir();rows=[]
+    with tarfile.open(fileobj=io.BytesIO(raw)) as tar:
+        for member in tar.getmembers():
+            if member.isdir():continue
+            assert member.isfile() and not Path(member.name).is_absolute() and '..' not in Path(member.name).parts
+            target=src/member.name;target.parent.mkdir(parents=True,exist_ok=True)
+            data=tar.extractfile(member).read();target.write_bytes(data)
+            assert target.read_bytes()==data
+            rows.append({'path':member.name,'bytes':len(data),'sha256':sha(data)})
+    assert not (src/'bridge').exists() and not (src/'.git').exists()
+    save(O/('source-files-'+label+'.json'),rows)
+    archives.append({'label':label,'sha':commit,'argv':['git',*argv],'cwd':str(R),'actual_exit_code':0,'archive_path':str(archive),'archive_bytes':len(raw),'archive_sha256':sha(raw),'source_directory':str(src),'source_file_count':len(rows),'source_index':'source-files-'+label+'.json','bridge_exists':False})
+baseprep=json.loads((E/'p189-final-L-43f85313c324-ready.g0dzrc03/prepare-receipt.json').read_bytes())
+planned=[{'phase':'generator-selftest','argv':['python3','-B',str(W/'gen_scene.py'),'--selftest']}]
+for phase in ('selftest','build','equivalence','timing','check'):
+    planned.append({'phase':phase,'argv':['python3','-B','-u',str(runner),phase,'--repo',str(R),'--work',str(W),'--out',str(O),'--gen',str(W/'gen_scene.py'),'--final',C,'--timeout','900']})
+supervisor=E/'p189-final-L-phase-supervisor.py'
+prep={'prepared_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'classification':'候選性能預檢；非完整可合驗收；不改正式 L 收據',
+ 'branch':'codex/geo261-p189-codec-trial-20261021','repo':str(R),'work':str(W),'out':str(O),'commits':commits,
+ 'base_product_sha':L,'candidate_sha':C,'candidate_parent_matches_L':True,'changed_paths':changed,'candidate_patch_sha256':sha(diff),
+ 'runner':str(runner),'runner_sha256':sha(runner_raw),'runner_git_blob':git('rev-parse',L+':'+str(runner.relative_to(R))).decode().strip(),
+ 'generator':str(W/'gen_scene.py'),'generator_sha256':sha(gen),'generator_source':H+':'+genblob,
+ 'generator_calibration':{'path':str(W/'calib/f3-00.scene'),'source':H+':'+calblob,'sha256':sha(cal),'bytes':len(cal)},
+ 'generator_dependency_review':baseprep['generator_dependency_review'],'archives':archives,'planned_commands':planned,
+ 'selftest_static_inventory':baseprep['selftest_static_inventory'],'selftest_inventory_is_execution':False,
+ 'selftest_phase_rule':baseprep['selftest_phase_rule'],'timing_return_rule':baseprep['timing_return_rule'],
+ 'source_materialization':'候選真 SHA 與固定 main/base 的全新 git archive，未建置；build 會按原工具再解 archive。',
+ 'expected_equivalence_scene_count':175,'expected_timing_sample_count':36,'threshold_final_main_ratio':2.0,
+ 'environment_remove_before_execution':['PYTHONOPTIMIZE'],'stack_kib':16384,'timeout_seconds':900,
+ 'phase_commands_executed':[],'build_started':False,'timing_started':False,'preparation_tool_sha256':sha(Path(__file__).read_bytes())}
+prep['generator_dependency_review']['selftest_input_files']=[str(W/'calib/f3-00.scene')]
+save(O/'prepare-receipt.json',prep)
+save(O/'planned-commands.json',planned)
+save(O/'preparation-commands.json',commands)
+config={'prepared_utc':prep['prepared_utc'],'authorization':'主代理明確放行後才可啟動','released':False,
+ 'prepare_receipt':str(O/'prepare-receipt.json'),'supervisor':str(supervisor),'supervisor_sha256':sha(supervisor.read_bytes()),
+ 'out':str(O),'scheduled_launch_argv':['python3','-B',str(supervisor),str(O/'supervisor-released-config.json')],
+ 'launch_transport':'由exec_command保有頂層session並真wait；stdout/stderr直接orchestrator.log，不Popen後讓launcher先退出。',
+ 'classification':prep['classification']}
+save(O/'supervisor-prepared-config.json',config)
+save(E/'p189-codec-candidate-current.json',{'out':str(O),'work':str(W),'candidate_sha':C,'prepare_receipt':str(O/'prepare-receipt.json'),'supervisor_prepared_config':str(O/'supervisor-prepared-config.json'),'ready_not_released':True})
+print(json.dumps({'out':str(O),'work':str(W),'candidate_sha':C,'archive_counts':{a['label']:a['source_file_count'] for a in archives},'all_bridge_absent':True,'only_preparation_performed':True},ensure_ascii=False,indent=2))

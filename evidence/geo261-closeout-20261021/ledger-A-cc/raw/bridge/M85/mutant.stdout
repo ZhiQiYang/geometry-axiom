@@ -1,0 +1,19 @@
+test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS (tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS)
+P-142 S1 counterexample: [delete-parameter 10, put-grid-system still on card 10]. ... FAIL
+
+======================================================================
+FAIL: test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS (tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS)
+P-142 S1 counterexample: [delete-parameter 10, put-grid-system still on card 10].
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py", line 659, in test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS
+    self.reject([{'op': 'delete-parameter', 'id': 10}, still_on_10], 'I38 MISSING',
+  File "/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py", line 79, in reject
+    self.assertTrue(matching, (label, reason, errors))
+AssertionError: [] is not true : ('S1 redeclared reference to a deleted, unrebuilt card', 'I38 MISSING', ['grid-system 4 u: ', 'candidate rejected'])
+
+----------------------------------------------------------------------
+Ran 1 test in 5.226s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS"], "started": ["tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS"], "total": 1, "failures": [{"test": "tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS", "detail": "Traceback (most recent call last):\n  File \"/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py\", line 659, in test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS\n    self.reject([{'op': 'delete-parameter', 'id': 10}, still_on_10], 'I38 MISSING',\n  File \"/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py\", line 79, in reject\n    self.assertTrue(matching, (label, reason, errors))\nAssertionError: [] is not true : ('S1 redeclared reference to a deleted, unrebuilt card', 'I38 MISSING', ['grid-system 4 u: ', 'candidate rejected'])\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

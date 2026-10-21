@@ -1,0 +1,22 @@
+test_CR12_ATOMIC_REBIND (tests.test_grid_card_reference.GridCardReference.test_CR12_ATOMIC_REBIND) ... FAIL
+
+======================================================================
+FAIL: test_CR12_ATOMIC_REBIND (tests.test_grid_card_reference.GridCardReference.test_CR12_ATOMIC_REBIND)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 226, in test_CR12_ATOMIC_REBIND
+    self.reject([{'op': 'set-grid-card-reference', 'id': 4, 'value': source(12)}], 'not a dimension', 'ATOMIC_REBIND')
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 86, in reject
+    self.assertEqual(before, self.state(), label + ': World/metadata/revision unchanged')
+AssertionError: Tuples differ: ('req[1420 chars]nce 11 3 8 u repeat -5 card v repeat 7 card\n'[4354 chars] []}) != ('req[1420 chars]nce 12 3 8 u repeat -5 card v repeat 7 card\n'[4354 chars] []})
+
+First differing element 0:
+'requ[1402 chars] none card-reference 11 3 8 u repeat -5 card v repeat 7 card\n'
+'requ[1402 chars] none card-reference 12 3 8 u repeat -5 card v repeat 7 card\n'
+
+Diff is 14611 characters long. Set self.maxDiff to None to see it. : ATOMIC_REBIND: World/metadata/revision unchanged
+
+----------------------------------------------------------------------
+Ran 1 test in 0.151s
+
+FAILED (failures=1)

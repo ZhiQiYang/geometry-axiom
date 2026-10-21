@@ -1,0 +1,22 @@
+{
+  "controlOnly": true,
+  "noBuildOrBrowser": true,
+  "schema": "geo261-browser-five-launcher/1",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-c",
+    "import sys; print(\"{\\\"passed\\\":true}\", flush=True);sys.exit(7)"
+  ],
+  "cwd": "/workspace/geo261-evidence/browser-five-preparation",
+  "startedUTC": "2026-10-20T21:40:38.970612+00:00",
+  "status": "已觀察子程序退出",
+  "observedWrapperReturncode": 7,
+  "stdoutFile": "/workspace/geo261-evidence/browser-five-preparation/launcher-controls/seven/orchestrator.log",
+  "signalsForwarded": [],
+  "wrapperPid": 166292,
+  "intendedLauncherExitCode": 7,
+  "elapsedSeconds": 0.012910173000818759,
+  "finishedUTC": "2026-10-20T21:40:38.984453+00:00",
+  "exitCodeFile": "/workspace/geo261-evidence/browser-five-preparation/launcher-controls/seven/.exit-code",
+  "note": "退出碼來自直接子程序 wait；沒有讀取或推測 summary/receipt 的 passed 結果。父程序遭 SIGKILL 或環境停機而缺 .exit-code 時仍屬未知。"
+}

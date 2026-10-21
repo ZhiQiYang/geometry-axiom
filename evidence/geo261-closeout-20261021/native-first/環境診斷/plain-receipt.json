@@ -1,0 +1,24 @@
+{
+  "name": "plain",
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "cwd": "/workspace/geo261-native",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-m",
+    "unittest",
+    "tests.test_assembly_mutation_check.AssemblyMutationCheck.test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left"
+  ],
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8"
+  },
+  "stackKiB": 16384,
+  "expectedExit": 1,
+  "startedUtc": "2026-10-20T20:38:40.010734+00:00",
+  "exitCode": 1,
+  "seconds": 7.169169765000333,
+  "endedUtc": "2026-10-20T20:38:47.180097+00:00",
+  "expectedMatched": true
+}

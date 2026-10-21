@@ -1,0 +1,35 @@
+"""同候選來源的陣列與未定義行為預檢；不是性能樣本。"""
+from pathlib import Path
+import hashlib
+import json
+import os
+import subprocess
+import sys
+
+ROOT = Path('/workspace/geo261-contact-candidate')
+OUT = Path(__file__).resolve().parent
+WORK = Path('/tmp/geo261-contact-trial-7ad')
+NATIVE = ROOT/'geometry-templates/woodworking/native'
+KERNEL = ROOT/'geometry-core/kernel'
+expected = json.loads((OUT/'source-hashes.json').read_text())['sources']
+assert all(hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h for p,h in expected.items())
+exe = WORK/'contact-sanitized'
+command = ['cc','-std=c11','-O1','-g','-fno-omit-frame-pointer','-fsanitize=address,undefined',
+           '-I',str(NATIVE),'-I',str(KERNEL),str(ROOT/'tests/geo261_contact_world_harness.c'),
+           str(NATIVE/'contact_world.c'),str(NATIVE/'contacts.c'),str(NATIVE/'supports.c'),
+           str(KERNEL/'geometry.c'),str(KERNEL/'exact.c'),'-o',str(exe),'-lm']
+env = dict(os.environ, ASAN_OPTIONS='detect_leaks=1:abort_on_error=1', UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1')
+records = []
+cases = ['collisions','ordering','regions','order-keys','order-fallback','intervals','extensions','ends']
+for label,argv in [('build',command)]+[(c,[str(exe),c]) for c in cases]:
+    result = subprocess.run(argv,cwd=ROOT,env=env,capture_output=True,timeout=180)
+    (OUT/('sanitizer-'+label+'.stdout')).write_bytes(result.stdout)
+    (OUT/('sanitizer-'+label+'.stderr')).write_bytes(result.stderr)
+    records.append(dict(label=label,command=argv,returncode=result.returncode,
+                        stdoutBytes=len(result.stdout),stderrBytes=len(result.stderr)))
+    receipt = dict(sourceHashes=expected,ASAN_OPTIONS=env['ASAN_OPTIONS'],UBSAN_OPTIONS=env['UBSAN_OPTIONS'],commands=records,
+                   passed=len(records)==9 and all(r['returncode']==0 for r in records),performanceSample=False)
+    (OUT/'sanitizer-result.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
+    if result.returncode:
+        print(label,result.returncode,result.stderr.decode(errors='replace'));sys.exit(1)
+print('ASan／UBSan 同候選八組案例全通過，沒有 sanitizer 診斷。')

@@ -1,0 +1,67 @@
+"""執行原兩套契約與具名控制，逐次保存原始子行程結果。"""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+import unittest
+
+ROOT = Path('/workspace/geo261-host-copy-candidate')
+OUT = Path(sys.argv[1])
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(ROOT))
+NAMES = ['tests.test_geo261_placement_definition', 'tests.test_geo261_placement_sources']
+executions = []
+original_run = subprocess.run
+
+def recorded_run(*args, **kwargs):
+    command = args[0] if args else kwargs['args']
+    record = dict(argv=[str(part) for part in command] if not isinstance(command, str) else command,
+                  cwd=str(kwargs.get('cwd', ROOT)))
+    try:
+        result = original_run(*args, **kwargs)
+        record.update(exitCode=result.returncode, stdout=result.stdout, stderr=result.stderr)
+        for key in ('stdout', 'stderr'):
+            if isinstance(record[key], bytes):
+                record[key] = record[key].decode('utf-8', 'backslashreplace')
+        return result
+    except BaseException as error:
+        record['exception'] = repr(error)
+        raise
+    finally:
+        executions.append(record)
+        (OUT / 'child-processes.json').write_text(json.dumps(executions, ensure_ascii=False, indent=2) + '\n')
+
+subprocess.run = recorded_run
+loader = unittest.TestLoader()
+suite = loader.loadTestsFromNames(NAMES)
+
+def ids(item):
+    return [value for child in item for value in ids(child)] if isinstance(item, unittest.TestSuite) else [item.id()]
+
+selected = ids(suite)
+(OUT / 'selected-tests.json').write_text(json.dumps(dict(names=NAMES, resolvedTests=selected, loaderErrors=loader.errors), ensure_ascii=False, indent=2) + '\n')
+result = unittest.TextTestRunner(verbosity=2).run(suite)
+from tests import test_geo261_native_kernel as native_module
+builds = []
+for label, build in [('kernel-only', native_module._KERNEL_ONLY_BUILD), ('normal', native_module._BUILD)]:
+    if build is None:
+        continue
+    raw = (build.kernel / 'placement_sources.c').read_bytes()
+    if raw != (ROOT / 'geometry-core/kernel/placement_sources.c').read_bytes():
+        raise RuntimeError('實際編入的 K 來源與候選不符')
+    (OUT / (label + '-build-log.json')).write_bytes((build.work / 'build-log.json').read_bytes())
+    builds.append(dict(label=label, work=str(build.work), compiler=build.cc,
+                       commands=len(build.logs), allBuildExitZero=all(row['exit'] == 0 for row in build.logs),
+                       candidateSha256=hashlib.sha256(raw).hexdigest()))
+summary = dict(selectedCount=len(selected), testsRun=result.testsRun,
+               failures=[dict(test=test.id(), traceback=trace) for test, trace in result.failures],
+               errors=[dict(test=test.id(), traceback=trace) for test, trace in result.errors],
+               skipped=[dict(test=test.id(), reason=reason) for test, reason in result.skipped],
+               expectedFailures=[dict(test=test.id(), traceback=trace) for test, trace in result.expectedFailures],
+               unexpectedSuccesses=[test.id() for test in result.unexpectedSuccesses], builds=builds,
+               childProcessCount=len(executions), namedAssertionFailures=[row for row in executions if row.get('exitCode') == 1 and (row.get('stderr') or '').startswith('ASSERT:')])
+ok = result.wasSuccessful() and not result.skipped and not loader.errors and result.testsRun == len(selected)
+summary['exitCode'] = 0 if ok else 1
+(OUT / 'unit-result.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2) + '\n')
+raise SystemExit(summary['exitCode'])

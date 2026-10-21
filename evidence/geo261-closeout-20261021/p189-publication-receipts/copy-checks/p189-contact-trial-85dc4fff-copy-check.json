@@ -1,0 +1,120 @@
+{
+  "checked_utc": "2026-10-21T01:45:13.501524+00:00",
+  "classification": "候選性能預檢，非可合驗收",
+  "candidate_sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "branch": "codex/geo261-p189-contact-trial-20261021",
+  "samples": 36,
+  "equivalence_scenes": 175,
+  "generated_scenes": 4,
+  "fixed_base_scenes": 171,
+  "observed_all_three_identical": 175,
+  "formal_dump_criterion": "4生成三方有效載入及stdout相同；171固定場景base/final，main差異只記錄。",
+  "controls": 16,
+  "positive_controls": 2,
+  "negative_controls": 14,
+  "raw_output_count": 1122,
+  "raw_output_bytes": 812154,
+  "all_stdout_bytes_and_hashes_match": true,
+  "all_phase_stream_hashes_match": true,
+  "all_binary_hashes_match_build_receipts": true,
+  "check_exit_code": 1,
+  "top_level_wait_exit_code": 1,
+  "receipt_sha256": "5a093ed872fb7c6ed9f3ecf2ac077b120cd4d0540d8c606083e6baa2a18fb2ed",
+  "phase_times_and_exits": [
+    {
+      "phase": "generator-selftest",
+      "seconds": 0.07822454000051948,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T01:36:36.073763+00:00",
+      "finished_utc": "2026-10-21T01:36:36.152186+00:00"
+    },
+    {
+      "phase": "selftest",
+      "seconds": 0.06975296599921421,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T01:36:36.169271+00:00",
+      "finished_utc": "2026-10-21T01:36:36.239109+00:00"
+    },
+    {
+      "phase": "build",
+      "seconds": 49.697370351001155,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T01:36:36.255655+00:00",
+      "finished_utc": "2026-10-21T01:37:25.953045+00:00"
+    },
+    {
+      "phase": "equivalence",
+      "seconds": 72.19391010500112,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T01:37:25.966609+00:00",
+      "finished_utc": "2026-10-21T01:38:38.160536+00:00"
+    },
+    {
+      "phase": "timing",
+      "seconds": 81.65539238899873,
+      "exit_code": 0,
+      "started_utc": "2026-10-21T01:38:39.225122+00:00",
+      "finished_utc": "2026-10-21T01:40:00.880609+00:00"
+    },
+    {
+      "phase": "check",
+      "seconds": 0.07523909100200399,
+      "exit_code": 1,
+      "started_utc": "2026-10-21T01:40:00.895267+00:00",
+      "finished_utc": "2026-10-21T01:40:00.970530+00:00"
+    }
+  ],
+  "median_summary": [
+    {
+      "n": 16,
+      "median_seconds": {
+        "main": 0.1271464269993885,
+        "base": 0.16587187999903108,
+        "final": 0.13172178199965856
+      },
+      "final_main_ratio": 1.0359849278367221,
+      "threshold_pass": true
+    },
+    {
+      "n": 32,
+      "median_seconds": {
+        "main": 0.2134044489976077,
+        "base": 1.1347204349985986,
+        "final": 0.2966269589996955
+      },
+      "final_main_ratio": 1.3899755154730666,
+      "threshold_pass": true
+    },
+    {
+      "n": 48,
+      "median_seconds": {
+        "main": 0.33207006600059685,
+        "base": 4.807517559998814,
+        "final": 0.6541067570033192
+      },
+      "final_main_ratio": 1.9697853675318737,
+      "threshold_pass": true
+    },
+    {
+      "n": 64,
+      "median_seconds": {
+        "main": 0.5269713269990461,
+        "base": 17.66035017199829,
+        "final": 1.3472817279980518
+      },
+      "final_main_ratio": 2.5566509200233782,
+      "threshold_pass": false
+    }
+  ],
+  "validation_exit_code": 0,
+  "bundle": "/workspace/geo261-evidence/final-bundle/p189-contact-trial-85dc4fff",
+  "file_count": 1363,
+  "bytes": 3544164,
+  "copied_original_count": 1360,
+  "manifest_entries": 1362,
+  "manifest_sha256": "14e5dd7a60b777a9aaabf909e2920eb01c8013273f0701093315c425f844974b",
+  "all_copy_bytes_equal": true,
+  "all_manifest_hashes_match": true,
+  "active_python_files": [],
+  "packager_sha256": "9fec191c8b8d4b35be946e2c0e5462b41ec379c32c64b9cd0362545c60f8b4bd"
+}

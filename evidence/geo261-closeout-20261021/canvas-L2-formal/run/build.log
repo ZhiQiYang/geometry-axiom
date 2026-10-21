@@ -1,0 +1,16 @@
+
+> geometry-axiom-dev@0.0.0 build
+> python3 geometry-web/start_local.py --build-only
+
+  core：重建（來源指紋不符（exe 建於 2026-10-20T19:31:15+00:00，指紋 b4dae44014… ≠ 現在 23cf3060b7…）；變動：geometry-app/native/reference_sources.inc, geometry-app/native/world_validation.inc, geometry-core/kernel/placement_sources.c, geometry-templates/woodworking/native/contact_world.c 等 5 個檔）…
+  bridge：重建（來源指紋不符（exe 建於 2026-10-20T19:31:34+00:00，指紋 2f8f05f495… ≠ 現在 6089d32a59…）；變動：geometry-app/native/reference_sources.inc, geometry-app/native/world_validation.inc, geometry-core/kernel/placement_sources.c, geometry-templates/woodworking/native/contact_world.c 等 5 個檔）…
+  model-base：重建（來源指紋不符（exe 建於 2026-10-20T19:31:50+00:00，指紋 4c6e09a820… ≠ 現在 3df3eae39e…）；變動：geometry-app/native/reference_sources.inc, geometry-app/native/world_validation.inc, geometry-core/kernel/placement_sources.c, geometry-templates/woodworking/native/contact_world.c 等 5 個檔）…
+core: built — 建好 /tmp/geometry-runtime/b9bc23103ebb114398f3/core
+bridge: built — 建好 /tmp/geometry-runtime/b9bc23103ebb114398f3/bridge
+model-base: built — 建好 /tmp/geometry-runtime/b9bc23103ebb114398f3/model-base
+LOCAL_RUNTIME {"root": "/workspace/geometry-axiom", "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3", "executables": {"core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core", "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge", "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"}, "port": null, "managedPreview": false}
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

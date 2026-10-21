@@ -1,0 +1,91 @@
+import datetime, errno, hashlib, json, os, pathlib, signal, socket, subprocess, time, urllib.request
+
+OUT=pathlib.Path('/workspace/geo261-evidence/p73-service-cleanup')
+ROOT=pathlib.Path('/workspace/geometry-axiom')
+SERVICE=138215
+EXPECTED={138215:'617363',138222:'617430'}
+BASE=json.loads(pathlib.Path('/workspace/geo261-evidence/p73/runtime-formal-before.json').read_text())
+record={'schema':'geo261-p73-idle-cleanup/1','startedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'servicePort':18843,'expectedStartTimes':EXPECTED,'runtimeOriginal':BASE,'signals':[],'limitations':['原服務不是本清理程序的直接子程序；不推造 wait 退出碼','沙箱拒絕讀取 /proc/PID/cwd、environ 與 FD；以原 runtime 隨機 session、PID、命令、起始時間及已知測試世界交叉核實','只備份本測試服務的世界，不刪 feedback、profile、cache、使用者檔案或既有證據包']}
+
+def save():
+    (OUT/'receipt.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+
+def info(pid):
+    try:
+        p=pathlib.Path('/proc')/str(pid)
+        raw=(p/'stat').read_text(); fields=raw[raw.rfind(')')+2:].split()
+        return {'pid':pid,'ppid':int(fields[1]),'pgid':int(fields[2]),'state':fields[0],'startTime':fields[19],'argv':(p/'cmdline').read_bytes().rstrip(b'\0').split(b'\0') and [x.decode() for x in (p/'cmdline').read_bytes().rstrip(b'\0').split(b'\0')]}
+    except FileNotFoundError:
+        return None
+
+def own_alive(pid):
+    current=info(pid)
+    return bool(current and current['startTime']==EXPECTED[pid] and current['state']!='Z')
+
+def get_json(name,cmd=None):
+    request=urllib.request.Request('http://127.0.0.1:18843/'+('api' if cmd else 'runtime'),data=json.dumps({'cmd':cmd}).encode() if cmd else None,headers={'Content-Type':'application/json'} if cmd else {})
+    with urllib.request.urlopen(request,timeout=10) as response:
+        raw=response.read()
+    (OUT/(name+'.json')).write_bytes(raw)
+    return json.loads(raw)
+
+def signal_exact(pid,number):
+    if not own_alive(pid):return
+    descriptor=os.pidfd_open(pid)
+    try:
+        if not own_alive(pid):return
+        signal.pidfd_send_signal(descriptor,number)
+        record['signals'].append({'pid':pid,'startTime':EXPECTED[pid],'signal':number,'utc':datetime.datetime.now(datetime.timezone.utc).isoformat()})
+        save()
+    finally:os.close(descriptor)
+
+def wait_own(seconds):
+    until=time.monotonic()+seconds
+    while time.monotonic()<until and any(own_alive(pid) for pid in EXPECTED):time.sleep(.1)
+
+try:
+    record['headAtCleanup']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    record['processesBefore']=[info(pid) for pid in EXPECTED]
+    service,bridge=record['processesBefore']
+    assert service and service['startTime']==EXPECTED[SERVICE] and service['argv'][1:]==['-u',str(ROOT/'geometry-web/serve.py'),'18843']
+    assert bridge and bridge['startTime']==EXPECTED[138222] and bridge['ppid']==SERVICE and bridge['argv']==['/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge']
+    record['runtimeBefore']=get_json('runtime-before')
+    assert record['runtimeBefore']==BASE
+    record['connectionsBefore']=subprocess.check_output(['ss','-tn','sport = :18843'],text=True)
+    assert len(record['connectionsBefore'].strip().splitlines())==1, '服務還有已建立連線，先保留'
+    dump=get_json('world-dump-before','dump')
+    assert dump.get('ok') is True and '\nspace 990\n' in dump.get('text','') and dump.get('revision')==66 and dump.get('definition_sha256')=='99597fdcdc8049bab41248d89314705875a24d47e8424cd6bd767e2336798c9c', '當前世界不是已核對的 P73 最後測試世界'
+    for name,cmd in (('world-objects-before','objects'),('world-references-before','references')):
+        value=get_json(name,cmd);assert value.get('ok') is True
+    (OUT/'world-before.scene').write_text(dump['text'])
+    record['worldIdentity']={key:dump.get(key) for key in ('revision','definition_sha256','required_capabilities')}
+    source_log=pathlib.Path('/workspace/geo261-evidence/p73/server-formal.log')
+    (OUT/'server-before.log').write_bytes(source_log.read_bytes())
+    record['ownershipConfirmed']=True
+    save()
+    # 只喚醒已驗身分的服務，讓其原 finally 收自己的 bridge。
+    signal_exact(SERVICE,signal.SIGINT)
+    wait_own(5)
+    for number,seconds in ((signal.SIGTERM,3),(signal.SIGKILL,2)):
+        for pid in EXPECTED:
+            if own_alive(pid):signal_exact(pid,number)
+        wait_own(seconds)
+    record['processesAfter']=[info(pid) for pid in EXPECTED]
+    record['survivors']=[pid for pid in EXPECTED if own_alive(pid)]
+    with socket.socket() as sock:
+        sock.settimeout(1);record['portConnectResult']=sock.connect_ex(('127.0.0.1',18843))
+    record['portRefused']=record['portConnectResult']==errno.ECONNREFUSED
+    record['listenerAfter']=subprocess.check_output(['ss','-ltn','sport = :18843'],text=True)
+    record['serviceWaitReturncode']=None
+    (OUT/'server-after.log').write_bytes(source_log.read_bytes())
+    record['passed']=not record['survivors'] and record['portRefused'] and len(record['listenerAfter'].strip().splitlines())==1
+except BaseException as error:
+    record['passed']=False
+    record['error']={'type':type(error).__name__,'message':str(error)}
+finally:
+    record['finishedUTC']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+    record['commandSha256']=hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest()
+    record['artifacts']={p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(OUT.iterdir()) if p.is_file() and p.name!='receipt.json'}
+    save()
+print(json.dumps(record,ensure_ascii=False,indent=2))
+raise SystemExit(0 if record['passed'] else 1)

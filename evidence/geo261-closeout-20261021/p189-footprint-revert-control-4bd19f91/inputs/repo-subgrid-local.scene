@@ -1,0 +1,17 @@
+# 公理:D19 / I25 / R23: one local cell, exact internal lines, parent-first persistence.
+# R6 / I13: the child cell supplies no stops; existing primary timber faces support
+# the secondary at v=1500, wholly inside C=[1000,3000]x[1000,2000].
+# Expected timber lengths, in declaration order: 4000, 4000, 2960, 2960, 1980.
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 80 20 20 role boundary
+place 80 on 1 at-face e0 +u +n
+timber 81 20 20 role boundary
+place 81 on 1 at-face e2 +u +n
+grid 1 on 1 main-along v u 1000 3000 v 1000 2000
+subgrid 2 parent 1 cell u line:0 line:1 v line:0 line:1 divisions u 2 v 2
+timber 1 20 20 role primary
+place 1 on 1 at-line grid 1 u 0 +v +n
+timber 2 20 20 role primary
+place 2 on 1 at-line grid 1 u 1 +v +n
+timber 3 20 20 role secondary
+place 3 on 1 at-line grid 2 v 0 between t1 t2 +u +n

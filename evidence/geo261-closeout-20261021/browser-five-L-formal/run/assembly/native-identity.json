@@ -1,0 +1,48 @@
+{
+  "build": {
+    "root": "/workspace/geometry-axiom",
+    "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3",
+    "executables": {
+      "core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+      "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+      "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"
+    },
+    "port": null,
+    "managedPreview": false
+  },
+  "server": {
+    "root": "/workspace/geometry-axiom",
+    "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3",
+    "executables": {
+      "core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+      "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+      "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"
+    },
+    "port": 18851,
+    "managedPreview": false
+  },
+  "executables": {
+    "core": {
+      "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+      "bytes": 886432,
+      "sha256": "114342cba65b9caa0dfda81fb24eb19bd06933a22914310319e406a101a9a6a9",
+      "sidecarSha256": "1bb9ecf642d754a843e7d7209fa91e00b677ffc237d8770ba96999b8381e8aba",
+      "fingerprint": "b4dae44014d70fb11aed3fa7889882aa894f33faf19779a7bd7c51f5897438cb"
+    },
+    "bridge": {
+      "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+      "bytes": 1100392,
+      "sha256": "79cd6c129ef890d6c57db1223ba5dec9477a20d08c9ed869218116d5831e5372",
+      "sidecarSha256": "06b7e1cf2a2aa3d4c67e7f289022a99211291b94f20e7fb7827f83e156a488ef",
+      "fingerprint": "2f8f05f49589d17f77478730472eb55ec514a89178f53cdabc1a4879b82eaef6"
+    },
+    "model-base": {
+      "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base",
+      "bytes": 947232,
+      "sha256": "be6e35d431607e1c1f2d2e67afa6799e18b657e9a336af260b957faf644d8708",
+      "sidecarSha256": "03d4a513f2c8c405970c985d86a3640d811e5df9b8293dad871412f06820ad92",
+      "fingerprint": "4c6e09a8206a0121f88dddb489c9a564b356108732f24e9c5f5c375071295074"
+    }
+  },
+  "freshnessAuthority": "start_local.prepare_binaries 在 build 及 server 啟動逐項呼叫 require_fresh"
+}

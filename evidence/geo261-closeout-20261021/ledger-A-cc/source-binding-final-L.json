@@ -1,0 +1,16 @@
+{
+  "checked_utc": "2026-10-20T23:07:05.035717+00:00",
+  "branch": "codex/geo261-closeout-20261021",
+  "execution_source_sha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "ledger_commit_sha": "43f85313c32410ac01406ab585846bbacafea278",
+  "ledger_commit_parent": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+  "source_to_ledger_changed_paths": [
+    "tests/mutants_results.json"
+  ],
+  "source_to_ledger_product_and_tests_unchanged": true,
+  "ledger_blob_bytes_identical": true,
+  "ledger_sha256": "868a80700c9d058e208684631e799a91659e7820b06c31c246b8af96c670a731",
+  "ledger_bytes": 5170287,
+  "method": "唯讀 git show L:tests/mutants_results.json 與正式外部結果逐位元組比對；git diff --name-only A L。未改 execution.head，未新增測試執行。",
+  "root_reported_import_checks_reference": "/workspace/geo261-evidence/ledger-L-cc-import（由主代理保存實際 default check、push 與 remote exact 收據，本包不冒稱自行重跑）"
+}

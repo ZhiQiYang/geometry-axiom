@@ -1,0 +1,18 @@
+{
+  "issue": "監看工具曾回 exec-server transport disconnected／recovery timed out after25s；此為工具通道錯誤，非mutate判決",
+  "last_local_progress_before_issue_utc": "2026-10-20T21:32:41.043991+00:00",
+  "root_confirmed_writer_alive_utc": "2026-10-20T21:34:51+00:00",
+  "local_progress_restored_utc": "2026-10-20T21:35:28.944676+00:00",
+  "writer_pid": 145188,
+  "supervisor_pid": 145161,
+  "local_progress_after_recovery": 39,
+  "environment_restart": false,
+  "writer_restart": false,
+  "test_retries_caused_by_monitor_issue": false,
+  "original_exec_session": 45372,
+  "original_exec_session_after_recovery": "Unknown process id",
+  "original_codex_wrapper_pid": 145157,
+  "original_codex_wrapper_state": "Zs",
+  "supervisor_remained_alive": true,
+  "followup_check_policy": "先確認全量writer完成；若supervisor因原stdout通道中斷未接續check，沿同一worktree/cache/results執行原check，不重跑或新增全量writer"
+}

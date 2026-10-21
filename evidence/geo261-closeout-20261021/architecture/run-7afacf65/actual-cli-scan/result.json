@@ -1,0 +1,31 @@
+{
+  "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "tests/architecture_contract.py",
+    "--root",
+    ".",
+    "--manifest",
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceBaseHead": "7afacf656912edccc7eb84cb9590990bccae1166",
+  "startedUtc": "2026-10-20T20:21:52.398256+00:00",
+  "finishedUtc": "2026-10-20T20:21:57.479055+00:00",
+  "seconds": 5.081,
+  "complete": true,
+  "exitCode": 0,
+  "stdout": {
+    "path": "actual-cli-scan/stdout.log",
+    "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+    "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+    "bytes": 132208
+  },
+  "stderr": {
+    "path": "actual-cli-scan/stderr.log",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  }
+}

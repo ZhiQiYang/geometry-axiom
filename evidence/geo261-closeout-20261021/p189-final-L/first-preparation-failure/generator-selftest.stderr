@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/workspace/geo261-p189-final-L-src.dqc1bplz/gen_scene.py", line 375, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/geo261-p189-final-L-src.dqc1bplz/gen_scene.py", line 353, in main
+    return selftest(args.calib)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-p189-final-L-src.dqc1bplz/gen_scene.py", line 278, in selftest
+    with open(calib, "r", encoding="utf-8") as fh:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/geo261-p189-final-L-src.dqc1bplz/calib/f3-00.scene'

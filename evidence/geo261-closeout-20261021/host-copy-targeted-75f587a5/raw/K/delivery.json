@@ -1,0 +1,48 @@
+{
+  "sourceBaseHead": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "candidateBranch": "codex/geo261-p189-host-copy-trial-20261021",
+  "workingTreeStatus": " M geometry-app/native/reference_sources.inc\n M geometry-app/native/world_validation.inc\n M geometry-core/kernel/placement_sources.c\n M tests/geo261_host_facts_authority_harness.c\n M tests/geo261_placement_definition_harness.c\n M tests/test_geo261_host_facts_authority.py\n M tests/test_geo261_placement_definition.py\n",
+  "parserBodyIsExactStorageTranslation": true,
+  "accessorBodyOnlyChangedDecodeCallee": true,
+  "files": [
+    {
+      "path": "geometry-core/kernel/placement_sources.c",
+      "beforeBytes": 13667,
+      "beforeSha256": "7b953719f5e75ed2e70f99c9e0a96588d398bd9220025a7b7a191c4dbaeb8e12",
+      "afterBytes": 13975,
+      "afterSha256": "ebf68c7c67a1a1281b971bfdfba29c9963dee934204db4c3ccfe960b1950c502"
+    },
+    {
+      "path": "tests/test_geo261_placement_definition.py",
+      "beforeBytes": 11530,
+      "beforeSha256": "13c8d8f12fc7e9c430e87dd72a8e49258bfe029e0e507e5b65385f462cd4c663",
+      "afterBytes": 11790,
+      "afterSha256": "a5a2a1813fbd8c41946f47187ac7369b99113ac97489c6e39a53f1992dbc73ff"
+    },
+    {
+      "path": "tests/geo261_placement_definition_harness.c",
+      "beforeBytes": 26214,
+      "beforeSha256": "6eeb6b31ad85e245fe299dd49a05e717f88c2a6b1c72b417d63886fefd167e91",
+      "afterBytes": 27101,
+      "afterSha256": "d11d845679470c755dbb49a76366a14bd26b48458df0b830ff7d0091b4eb7131"
+    }
+  ],
+  "patch": {
+    "bytes": 12587,
+    "sha256": "ed026b5ec31654a06d59ebd04729570fb844b100cd49255263a3c09971c26f6b"
+  },
+  "testsRun": 36,
+  "namedMutationKills": 26,
+  "buildCommandCount": 142,
+  "childProcessCount": 245,
+  "receiptSha256": "a3803b028fdb0ae805f8a8b4e6a75bd1e65741fbf6081b1784dc953f86f1405d",
+  "elapsedSeconds": 6.172770725999726,
+  "realExitCode": 0,
+  "rawWaitStatus": 0,
+  "notClaimed": [
+    "候選已提交",
+    "主分支已更改",
+    "完整 ledger 或架構或七項驗收",
+    "P-189 收益或通過"
+  ]
+}

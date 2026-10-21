@@ -1,0 +1,404 @@
+[
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 41,
+    "stdoutSha256": "f604013a9ee9bee6d772a03406959a1b4502a8740f2cf42e7ece4c2744915158",
+    "stdout": "43f85313c32410ac01406ab585846bbacafea278\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "status",
+      "--porcelain",
+      "--untracked-files=all"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 0,
+    "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "branch",
+      "--show-current"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 31,
+    "stdoutSha256": "5057aec297cbe029bd10b1f94cdba34416053869c4b9ab2081bd799c531ef3e1",
+    "stdout": "codex/geo261-closeout-20261021\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 35161,
+    "stdoutSha256": "a4fffdc84186b899bf4287ddab4b961fb6d96f02233d52fdc413517a2138a344",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/product-architecture-receipt.json"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 294520,
+    "stdoutSha256": "804142f06ef1c251cd6c2d30fa7d66e1f04609d5e4e39d439169267869dcdf6e",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/product-architecture-scan.json"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 132208,
+    "stdoutSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/product-architecture.json"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 225744,
+    "stdoutSha256": "b5dff5b3e2573aac6aa38fa433cb3afa71c2ab1828d34d61aabc26df01bbcbc9",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/architecture_contract.py"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 86895,
+    "stdoutSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/test_architecture_contract.py"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 66632,
+    "stdoutSha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/test_product_architecture.py"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 11793,
+    "stdoutSha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/test_assembly_mutation_check.py"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 18995,
+    "stdoutSha256": "e53d1fa41f202657202a7019dbe5ae32ce5fcec085ee09706b2f9c1f63091649",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/assembly_mutation_check.py"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 44793,
+    "stdoutSha256": "230010fa6346d08e12207bd47fcfec9ca53535c70d486e1ff05c98d20abc53b9",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/run_all.py"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 65687,
+    "stdoutSha256": "fb9e5f1a6952ec87b9c472aee4aadf55131a0b270c850177607319b50c183bcf",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/run_all.expected.json"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 24624,
+    "stdoutSha256": "847d2494c1c701b80f83ebc1a48cac84ce06b66eabff11f14f86584d10093cc6",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/run_all.expected.json"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 24624,
+    "stdoutSha256": "847d2494c1c701b80f83ebc1a48cac84ce06b66eabff11f14f86584d10093cc6",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 41,
+    "stdoutSha256": "f604013a9ee9bee6d772a03406959a1b4502a8740f2cf42e7ece4c2744915158",
+    "stdout": "43f85313c32410ac01406ab585846bbacafea278\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "status",
+      "--porcelain",
+      "--untracked-files=all"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 0,
+    "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "branch",
+      "--show-current"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 31,
+    "stdoutSha256": "5057aec297cbe029bd10b1f94cdba34416053869c4b9ab2081bd799c531ef3e1",
+    "stdout": "codex/geo261-closeout-20261021\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 35161,
+    "stdoutSha256": "a4fffdc84186b899bf4287ddab4b961fb6d96f02233d52fdc413517a2138a344",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/product-architecture-receipt.json"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 294520,
+    "stdoutSha256": "804142f06ef1c251cd6c2d30fa7d66e1f04609d5e4e39d439169267869dcdf6e",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/product-architecture-scan.json"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 132208,
+    "stdoutSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/product-architecture.json"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 225744,
+    "stdoutSha256": "b5dff5b3e2573aac6aa38fa433cb3afa71c2ab1828d34d61aabc26df01bbcbc9",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/architecture_contract.py"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 86895,
+    "stdoutSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/test_architecture_contract.py"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 66632,
+    "stdoutSha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+    "stdout": null,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "43f85313c32410ac01406ab585846bbacafea278:tests/test_product_architecture.py"
+    ],
+    "exitCode": 0,
+    "stdoutBytes": 11793,
+    "stdoutSha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
+    "stdout": null,
+    "stderr": ""
+  }
+]

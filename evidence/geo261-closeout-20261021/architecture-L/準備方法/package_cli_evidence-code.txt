@@ -1,0 +1,44 @@
+"""複製本輪架構 CLI 原件到新證據根；不碰 repo、不執行測試。"""
+from pathlib import Path
+import hashlib
+import json
+
+BASE = Path('/workspace/geo261-evidence')
+FORMAL = BASE / 'architecture-L-formal-43f85313'
+PREP = BASE / 'architecture-L-preparation'
+DEST = BASE / 'final-bundle/architecture-L'
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+if DEST.exists():
+    raise RuntimeError('拒絕覆寫既有架構 CLI 證據根')
+if not (FORMAL / '獨立複核.md').is_file():
+    raise RuntimeError('尚缺本輪只讀獨立複核原件')
+DEST.mkdir()
+entries = []
+for base, prefix in [(FORMAL, ''), (PREP, '準備方法/')]:
+    for source in sorted(base.rglob('*')):
+        if not source.is_file():
+            continue
+        if source.is_symlink():
+            raise RuntimeError('不接受連結來源：' + str(source))
+        relative = prefix + source.relative_to(base).as_posix()
+        if relative.endswith('.py'):
+            relative = relative[:-3] + '-code.txt'
+        target = DEST / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        raw = source.read_bytes()
+        target.write_bytes(raw)
+        target.chmod(0o644)
+        if target.read_bytes() != raw:
+            raise RuntimeError('封裝 bytes 不符：' + relative)
+        entries.append(dict(path=relative, source=str(source), bytes=len(raw), sha256=sha(raw)))
+index = dict(schema=1, root=str(DEST), selfExcluded='來源索引.json', entries=sorted(entries, key=lambda item: item['path']))
+(DEST / '來源索引.json').write_text(json.dumps(index, ensure_ascii=False, indent=2) + '\n')
+files = [path for path in DEST.rglob('*') if path.is_file()]
+result = dict(exitCode=0, destination=str(DEST), fileCount=len(files),
+              totalBytes=sum(path.stat().st_size for path in files),
+              indexSha256=sha((DEST / '來源索引.json').read_bytes()),
+              sourceFilesStoredOnlyAsText=True)
+print(json.dumps(result, ensure_ascii=False))

@@ -1,0 +1,15 @@
+{
+  "封裝時間UTC": "2026-10-20T22:35:08.737634+00:00",
+  "原件路徑": "/workspace/geo261-evidence/canvas-L-preparation/建置快取與fresh定義.md",
+  "封裝路徑": "/workspace/geo261-evidence/final-bundle/驗收方法/建置快取與fresh定義.md",
+  "位元組數": 6422,
+  "sha256": "6b038e7331915b6556d7b98618edb46b4e36d8a913bb616db13eefa69f2102d9",
+  "逐位元組相同": true,
+  "文件性質": "正式L執行方法與建置快取定義；僅靜態查核及既有A收據整理，L尚未跑，不能當產品驗收結果。",
+  "限制": [
+    "A預檢三支native均reused，fresh不表示本輪重新編譯。",
+    "L1未採用為正式L；本次沒有新L完整SHA或驗收結果。",
+    "未改已凍結canvas-A-preflight封包、產品、CI、原件或調度器。",
+    "未啟動服務、瀏覽器、編譯、單測或突變；不補造缺少的raw。"
+  ]
+}

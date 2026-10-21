@@ -1,0 +1,187 @@
+"""只讀整理 S3 全量帳本與真實 L3 發布原件；不執行產品或發布。"""
+import argparse
+import datetime
+import hashlib
+import json
+from pathlib import Path
+import re
+import stat
+
+BASE=Path('/workspace/geo261-evidence')
+PREP=BASE/'ledger-S3-preparation'
+ORIGINAL_PREP=BASE/'ledger-L2-preparation'
+SOURCE_PUBLICATION=BASE/'source-S3-publication'
+ADOPTION=BASE/'source-S3-adoption'
+ARCHITECTURE=BASE/'source-S3-architecture-binding'
+EXPECTED_VERDICTS={'killed':70,'crashed':1,'equivalent':4,'retired':3}
+METHOD_PINS={
+ 'prepare_run.py':'6f0fdb58af30faafbe5e8b972dabee828d24ba6915a8050bcdc16f9721c6087d',
+ 'launch_run.py':'9b14f02f6037714aabb1e9eb6dffeb7d80bf7aa481f38897d000c38899c1f49b',
+ 'validate_package.py':'641595247f44cfe55b384f0b1bbc12e06e2f226e984e13fe08e99d86d940536d',
+ 'import_ledger.py':'b51ad61f1cf63985fd15021e3ed57a92347a4f1516126593f258240bda547923',
+ 'ledger-cc-supervisor.py':'308e37f71422f96543d68be4b51a42397c9d734750e0388278bb65941b60606e',
+ 'ledger-cc-validate-and-package.py':'0eecd56f07f430bf2d74737193b9de66c5f290331a544abd9f3543159cb33efa',
+}
+def sha(raw):return hashlib.sha256(raw).hexdigest()
+def load(path):return json.loads(path.read_bytes())
+def full_sha(value):
+    if not re.fullmatch('[0-9a-f]{40}',value):raise argparse.ArgumentTypeError('必須是完整小寫40位SHA')
+    return value
+def full_hash(value):
+    if not re.fullmatch('[0-9a-f]{64}',value):raise argparse.ArgumentTypeError('必須是完整SHA256')
+    return value
+def files(root):
+    assert root.is_dir(),str(root)
+    result=[]
+    for path in sorted(root.rglob('*')):
+        assert not path.is_symlink(),str(path)
+        if path.is_file():result.append(path)
+    return result
+def save(path,value):
+    with path.open('x',encoding='utf-8') as f:json.dump(value,f,ensure_ascii=False,indent=2);f.write('\n')
+    path.chmod(0o644)
+def text(path,value):
+    with path.open('x',encoding='utf-8') as f:f.write(value)
+    path.chmod(0o644)
+
+def main():
+    if not __debug__:raise RuntimeError('禁止停用assert')
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--source',required=True,type=full_sha)
+    p.add_argument('--ledger-commit',required=True,type=full_sha)
+    p.add_argument('--ledger-sha256',required=True,type=full_hash)
+    p.add_argument('--config',required=True,type=Path)
+    p.add_argument('--publication',required=True,type=Path)
+    p.add_argument('--source-ledger-binding',required=True,type=Path)
+    p.add_argument('--publication-tool-observation',required=True,type=Path)
+    p.add_argument('--output',required=True,type=Path)
+    p.add_argument('--execute',action='store_true')
+    a=p.parse_args()
+    if not a.execute:p.error('須明確指定--execute；尚未建立證據包')
+    assert not a.output.exists() and a.source!=a.ledger_commit
+    prepared=load(a.config);run=Path(prepared['output_directory']);publish=run/'publish'
+    assert prepared['source_sha']==a.source and a.config.resolve()==(run/'prepare-receipt.json').resolve()
+    source_publication=load(SOURCE_PUBLICATION/'receipt.json')
+    assert source_publication['sourceSha']==a.source and source_publication['remoteExact'] is True
+    assert prepared['branch']==source_publication['branch']
+    assert source_publication['parentSha']==prepared['product_parent_sha']
+    assert source_publication['changedPaths']==['tests/test_geo261_host_authority.py']
+    architecture=load(ARCHITECTURE/'binding.json')
+    assert architecture['sourceS3']==a.source and architecture['checkPassed'] is True
+    assert architecture['architecture']['inputCount']==611 and architecture['architecture']['allA2L2S3GitBlobsSame'] is True
+    raw=(run/'mutants_results.json').read_bytes();assert sha(raw)==a.ledger_sha256
+    ledger=json.loads(raw);validation=load(run/'ledger-validation.json');receipt=load(run/'run-receipt.json')
+    assert validation['source_sha']==receipt['source_sha']==receipt['head_after']==a.source
+    assert validation['ledger_sha256']==receipt['ledger_sha256']==a.ledger_sha256
+    assert validation['ledger_bytes']==receipt['ledger_bytes']==len(raw)
+    assert validation['record_count']==78 and validation['execution_count']==75
+    assert validation['verdict_counts']==EXPECTED_VERDICTS and len(ledger)==78
+    assert sorted(key for key,row in ledger.items() if row['verdict']=='crashed')==['M20']
+    assert all(row['execution']['head']==a.source for row in ledger.values() if row.get('execution'))
+    assert sum(bool(row.get('execution')) for row in ledger.values())==75
+    assert not load(run/'verdict-difference-review.json')['differences']
+    assert validation['source_raw_backups_verified']==len(prepared['raw_backups'])
+    assert {row['path'] for row in prepared['raw_backups']} >= {'tests/test_geo261_host_authority.py'}
+    assert receipt['tracked_status_after']=='' and receipt['temporary_mutant_sources']==[]
+    assert [x['phase'] for x in receipt['phases']]==['mutate','check','check-killers']
+    assert all(x['exit_code']==0 and x['source_sha']==a.source for x in receipt['phases'])
+    for phase in ('mutate','check','check-killers','supervisor','supervisor-observed'):
+        assert (run/(phase+'.exit-code')).read_text().strip()=='0'
+    assert load(run/'launch-completion.json')['observed_wait_returncode']==0
+    final_tool=load(run/'session-observation-final.json')
+    assert final_tool['actual_tool_response']['exit_code']==0
+    assert load(run/'validator-tool-observation.json')['actual_tool_response']['exit_code']==0
+    pub=load(a.publication/'receipt.json');pubfinal=load(a.publication/'publication.json')
+    assert pub['sourceA2']==pub['parent']==pubfinal['sourceA2']==a.source
+    assert pub['ledgerL2']==pubfinal['ledgerL2']==a.ledger_commit
+    assert pub['ledgerSha256']==a.ledger_sha256 and pub['bytes']==len(raw)
+    assert pub['onlyChangedPath']=='tests/mutants_results.json'
+    assert pubfinal['defaultCheckExitCode']==pubfinal['pushExitCode']==0 and pubfinal['remoteExactMatch'] is True
+    assert (a.publication/'ledger-blob.stdout').read_bytes()==raw
+    assert (a.publication/'parent.stdout').read_text().strip()==a.source
+    assert (a.publication/'A-to-L-files.stdout').read_text().splitlines()==['tests/mutants_results.json']
+    for name in ('L-default-check','push','remote-after-push'):
+        assert (a.publication/(name+'.exit-code')).read_text().strip()=='0'
+    assert (a.publication/'remote-after-push.stdout').read_text().split()==[a.ledger_commit,'refs/heads/'+pub['branch']]
+    pubtool=load(a.publication_tool_observation)
+    assert pubtool['actual_tool_response']['exit_code']==0
+    binding=load(a.source_ledger_binding)
+    assert a.source in json.dumps(binding) and a.ledger_commit in json.dumps(binding)
+    methods={name:(PREP/name if name=='prepare_run.py' else ORIGINAL_PREP/name if name in ('launch_run.py','validate_package.py','import_ledger.py') else BASE/name) for name in METHOD_PINS}
+    for name,path in methods.items():assert sha(path.read_bytes())==METHOD_PINS[name]
+    assert (a.publication/'command-source.txt').read_bytes()==methods['import_ledger.py'].read_bytes()
+    sums={}
+    for line in (publish/'SHA256SUMS').read_text().splitlines():
+        value,name=line.split('  ',1);assert name not in sums;sums[name]=value
+    assert set(sums)=={x.relative_to(publish).as_posix() for x in files(publish)}-{'SHA256SUMS'}
+    sources=[]
+    def add(source,relative,group):
+        assert source.is_file() and not source.is_symlink()
+        relative=Path(relative)
+        if relative.suffix in ('.py','.js','.cjs'):relative=relative.with_name(relative.name+'.txt')
+        sources.append((source,relative,group))
+    def directory(source,target,group):
+        for path in files(source):add(path,Path(target)/path.relative_to(source),group)
+    for path in files(publish):
+        rel=path.relative_to(publish)
+        if rel.as_posix()!='SHA256SUMS':assert sha(path.read_bytes())==sums[rel.as_posix()]
+        if len(rel.parts)==1 and (run/path.name).is_file():assert path.read_bytes()==(run/path.name).read_bytes()
+        add(path,Path('執行原件')/rel,'凍結publish原件')
+    for path in sorted(run.iterdir()):
+        if path.is_file() and not (publish/path.name).exists():add(path,Path('後補收據')/path.name,'publish完成後新增，未改歷史索引')
+    directory(PREP,'S3準備方法','S3最小prepare差分、原bytes與全部前置觀察')
+    directory(SOURCE_PUBLICATION,'S3候選發布','候選分支真提交與普通push原件')
+    directory(ADOPTION,'主分支採用S3','canvas結束後主分支正常FF同S3原件')
+    directory(ARCHITECTURE,'S3架構綁定','611輸入與四metadata綁定；未重產架構')
+    for path in sorted(BASE.glob('source-S3-architecture-binding-run01.*')):add(path,Path('S3架構綁定外層')/path.name,'外層原執行碼與輸出')
+    directory(a.publication,'L3帳本發布','原importer歷史欄名保原bytes，實際SHA為S3與L3')
+    add(a.source_ledger_binding,'S3-L3實際來源綁定.json','root對歷史欄名與實際來源的說明')
+    add(a.publication_tool_observation,'L3發布外層工具觀察.json','真工具回覆轉錄，不冒稱raw transport')
+    for name,path in methods.items():add(path,Path('原方法')/(name+'.txt'),'方法原bytes，非另一產品工具')
+    directory(BASE/'ledger-cc-launcher-selftest.r3o_cexg','工具歷史自測','相同supervisor的歷史自測，非S3重跑')
+    add(Path(__file__),'封裝方法原碼.txt','外部封包器原bytes')
+    for name in ('static-check-code.txt','static-check.json','negative.stdout','negative.stderr'):
+        add(Path(__file__).parent/name,Path('封裝靜態核對')/name,'AST/hash/缺參數早拒絕，沒有產品執行')
+    assert len({str(rel) for _,rel,_ in sources})==len(sources)
+    a.output.mkdir(parents=True)
+    index=[]
+    for source,relative,group in sources:
+        data=source.read_bytes();target=a.output/relative;target.parent.mkdir(parents=True,exist_ok=True)
+        with target.open('xb') as f:f.write(data)
+        target.chmod(0o644);assert target.read_bytes()==data
+        index.append({'source':str(source),'path':relative.as_posix(),'bytes':len(data),'sha256':sha(data),'group':group})
+    save(a.output/'原件清單.json',index)
+    save(a.output/'未收錄清單.json',[
+      {'source':'cache/worktree binary、object、暫存檔','reason':'正式validator已核binary identity；交付只收原raw、hash與sidecar，不放可執行副本。'},
+      {'source':'57筆core每個子程序原stdout/stderr','reason':validation['core_raw_limitation']},
+      {'source':'既有A2/L2舊包與其他job結果','reason':'本包只涵蓋S3帳本與S3→L3發布；不改舊包、不宣稱七項已完成。'}])
+    pre=prepared['compiler_preflight'];started=load(run/'environment.json')['started_utc'];finished=receipt['completed_utc']
+    text(a.output/'README.md',f'''S3 全量帳本與 L3 發布證據。
+
+帳本真實來源 S3 `{a.source}`，由候選分支 `{prepared['branch']}` 的公開提交建立全新 detached worktree。準備時候選 checkout 為 `{prepared['main_root']}`；共享主分支之後正常 FF 到同一 S3。L3 `{a.ledger_commit}` 的唯一父提交為 S3，只變更 `tests/mutants_results.json`。75 筆 execution.head 保留真正 S3，沒有重標為 L3 重跑。
+
+`python3 -B -u tests/mutate.py`、`python3 -B tests/mutate.py --check`、`python3 -B tests/mutate.py --check --killers` 三階段均真碼 0；supervisor finally、父 wait、互動工具最終回覆、必要 validator 也為 0。當輪開始 `{started}`，完成 `{finished}`。78 筆為 70 killed、僅 M20 crashed、4 equivalent、3 retired；逐 ID 與 S3 原帳本一致。M20 偵測到崩潰，不能稱斷言殺死。
+
+當輪原 JSON {len(raw):,} bytes，SHA256 `{a.ledger_sha256}`。全部 57 core 與 18 bridge 均實跑；core baseline {pre['core_baseline_total']}，bridge baseline/restored 各 {len(pre['bridge_restored_methods'])} 方法。{len(prepared['raw_backups'])} 份來源/oracle原件、{len(pre['source_hashes'])} 個 closure 檔與 {len(pre['oracle_fixtures'])} 場景在開始前綁定 Git S3；包含本次唯一變更的 host-authority 測試。CC/PYTHONOPTIMIZE absent、預設 cc、16 MiB stack、core 0，使用空新 cache。沒有因 test-only 或 oracle 相同跳過 core。
+
+原 supervisor/launcher/validator/importer bytes 不變，prepare 只改精確單 test 差分守門、備份與 S3 標籤。四份架構metadata及611輸入與A2/L2/S3相同，sourceBaseHead仍為原S2，不冒稱S3重產架構。匯入器的 `sourceA2`／`ledgerL2` 與舊備註是歷史命名；其數值實際為上述 S3／L3，另以 `S3-L3實際來源綁定.json` 和原 Git blob/parent/only-file/push/remote 收據核對，不能把舊 note 當成執行來源。
+
+本輪所有執行中與最後觀察保留原貌：初始 exit null 不是最終碼，最後真碼看 session-observation-final 與 durable wait。S3準備時曾只讀誤找 publication.json，改讀原 receipt.json；完整已存前置觀察仍收錄，不算產品紅。若另有接受器或傳輸事件，以當輪原件逐項為準，不把A2的歷史03:25斷線套到S3。
+
+L3發布保存原JSON逐bytes、default check 0、普通push 0及remote exact。工具回覆轉錄不冒稱raw transport或重新wait。本包不重跑ledger/check/發布，也不宣稱L3其他驗收完成。工具歷史自測保留原日期，非S3當輪重做；M36歷史7143與136探針不冒稱本輪重做，當輪核心基線依165場景原收據。
+
+核心raw限制：既有工具沒有另存每個core子程序原stdout/stderr，只有結構化oracle result與其hash，頂層mutate.stdout不能補足。bridge原raw與sidecar按正式validator清單收錄。後補獨審的實際範圍與任何首次誤判依原件，不能由封包推造未做檢查。
+
+`執行原件/` 為原frozen publish全快照，保其巢狀索引與sums；`後補收據/` 收後來新增原件，不修改歷史索引。根原件清單只列原樣copy項；根SHA256SUMS精確涵蓋除自己外全部檔案，包含生成說明與nested inventories，沒有自含循環。全部0644；方法原碼以.txt保存，不新增產品工具或可執行副本。封包/獨審結束碼另置包外。
+''')
+    paths=files(a.output)
+    assert all(p.suffix not in ('.py','.js','.cjs') and stat.S_IMODE(p.stat().st_mode)==0o644 for p in paths)
+    text(a.output/'SHA256SUMS',''.join(sha(p.read_bytes())+'  '+p.relative_to(a.output).as_posix()+'\n' for p in paths))
+    allfiles=files(a.output)
+    result={'completed_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sourceS3':a.source,'ledgerL3':a.ledger_commit,
+      'output':str(a.output),'copied_originals':len(index),'files':len(allfiles),'bytes':sum(p.stat().st_size for p in allfiles),
+      'checksum_entries':len(paths),'index_sha256':sha((a.output/'原件清單.json').read_bytes()),'sums_sha256':sha((a.output/'SHA256SUMS').read_bytes()),'product_tests_rerun':False}
+    save(Path(__file__).parent/'bundle-result.json',result)
+    print(json.dumps(result,ensure_ascii=False))
+
+if __name__=='__main__':main()

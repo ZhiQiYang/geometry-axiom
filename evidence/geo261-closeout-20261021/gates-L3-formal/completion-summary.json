@@ -1,0 +1,299 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "sampledUtc": "2026-10-21T06:56:30.792331+00:00",
+  "head": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "status": "",
+  "allFourChildLauncherAndToolExitedZero": true,
+  "phases": {
+    "q38": {
+      "actualCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-gates-l3-6589248c9a94-20261021/geometry-core/domain-decoupling/closeout-tools/run_gates.py",
+        "q38",
+        "--root",
+        "/workspace/geo261-gates-l3-6589248c9a94-20261021",
+        "--out",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38",
+        "--jobs",
+        "1"
+      ],
+      "startedUtc": "2026-10-21T06:22:30.953995+00:00",
+      "finishedUtc": "2026-10-21T06:37:01.915124+00:00",
+      "elapsedSeconds": 870.8577103520001,
+      "childReturnCode": 0,
+      "launcherReturnCode": 0,
+      "toolReturnCode": 0,
+      "result": {
+        "killed": 41,
+        "equivalent": 1
+      },
+      "caseCount": 42,
+      "primary": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/q38.json",
+        "bytes": 7045,
+        "sha256": "f04124408e1ed3cdac4ab3f3d9dbbd013ca8ac50774a1bc8d32e57885053cb50"
+      },
+      "detailed": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/q38.json",
+        "bytes": 66581,
+        "sha256": "63943bcd9cdd3fa2fb9897476d9f07c5cc342b99a87dcd2a29e7a6e161ee6cc4"
+      },
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/q38/receipt.json",
+        "bytes": 4044,
+        "sha256": "9d76a12a35d1930abf0433089ce958760c4df0cb69dfba8cf5af3a26b5019cbf"
+      }
+    },
+    "controls": {
+      "actualCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-gates-l3-6589248c9a94-20261021/geometry-core/domain-decoupling/closeout-tools/run_controls.py",
+        "--root",
+        "/workspace/geo261-gates-l3-6589248c9a94-20261021",
+        "--out",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/controls",
+        "--model-base",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/bin/model-base",
+        "--controls",
+        "/workspace/geo261-gates-l3-6589248c9a94-20261021/geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
+        "--jobs",
+        "1"
+      ],
+      "startedUtc": "2026-10-21T06:41:37.335202+00:00",
+      "finishedUtc": "2026-10-21T06:45:14.447187+00:00",
+      "elapsedSeconds": 217.00801556200167,
+      "childReturnCode": 0,
+      "launcherReturnCode": 0,
+      "toolReturnCode": 0,
+      "result": {
+        "survived": 9,
+        "unlabelled": 3
+      },
+      "caseCount": 12,
+      "primary": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/controls.json",
+        "bytes": 4667,
+        "sha256": "5fff45027e412aca7ba7265eac3ea2173e95626ae188a4ddda83832dba59993f"
+      },
+      "detailed": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/controls.json",
+        "bytes": 31161,
+        "sha256": "8a82f0a7aa72f56bd634c5062bddcbbb9afbdd152ae0e0f8c55e376c7f7869c1"
+      },
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/controls/receipt.json",
+        "bytes": 4299,
+        "sha256": "3c4459f0c89484704e41b377417a671bf808f054110b022f1dd23795e11b12a6"
+      },
+      "rawGateExitCode": 1,
+      "expectationCheckExitCode": 0
+    },
+    "card": {
+      "actualCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-gates-l3-6589248c9a94-20261021/geometry-core/domain-decoupling/closeout-tools/run_gates.py",
+        "card",
+        "--root",
+        "/workspace/geo261-gates-l3-6589248c9a94-20261021",
+        "--out",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/card-run/card",
+        "--jobs",
+        "1"
+      ],
+      "startedUtc": "2026-10-21T06:45:42.312698+00:00",
+      "finishedUtc": "2026-10-21T06:53:00.816389+00:00",
+      "elapsedSeconds": 438.3904237300012,
+      "childReturnCode": 0,
+      "launcherReturnCode": 0,
+      "toolReturnCode": 0,
+      "result": {
+        "killed": 53
+      },
+      "caseCount": 53,
+      "primary": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/card.json",
+        "bytes": 41828,
+        "sha256": "930e9fdb1255a8f56b19822c49db556238a1d0a3deec79e7a529e9ff1ac13074"
+      },
+      "detailed": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/card.json",
+        "bytes": 221629,
+        "sha256": "f9b6cba0391ad927badfd7b5c01b57207f0fbd4a3bb4b019caf76e4b8420f022"
+      },
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/card/receipt.json",
+        "bytes": 4056,
+        "sha256": "84d464ec27da0d634331f97ef68f3e09cade3079774be8d25f3cdffbc2538916"
+      }
+    },
+    "axiom": {
+      "actualCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-gates-l3-6589248c9a94-20261021/geometry-core/domain-decoupling/closeout-tools/run_gates.py",
+        "axiom",
+        "--root",
+        "/workspace/geo261-gates-l3-6589248c9a94-20261021",
+        "--out",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/axiom-run/axiom",
+        "--jobs",
+        "1"
+      ],
+      "startedUtc": "2026-10-21T06:53:30.834980+00:00",
+      "finishedUtc": "2026-10-21T06:55:00.191780+00:00",
+      "elapsedSeconds": 89.26209334300074,
+      "childReturnCode": 0,
+      "launcherReturnCode": 0,
+      "toolReturnCode": 0,
+      "result": {
+        "killed": 5
+      },
+      "caseCount": 5,
+      "primary": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/axiom.json",
+        "bytes": 3858,
+        "sha256": "28b7fb1628544e1168f1ab8645b9e9e3f6fc491dbbaae79c6527e5fb447c1e3f"
+      },
+      "detailed": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/axiom.json",
+        "bytes": 16393,
+        "sha256": "4b09ae1ffb0fff678dcbacb7ac447c0ec2b8f01bf4be1ab09cd9b4f853bbc768"
+      },
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/axiom/receipt.json",
+        "bytes": 4059,
+        "sha256": "f6bb31b03bbb6872bbe9787e3d9de6a9903290404dfc7368e1ca49a1aa2d0d3e"
+      }
+    }
+  },
+  "knownPidProcSamples": [
+    {
+      "phase": "q38",
+      "role": "launcher",
+      "pid": 484216,
+      "statReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/484216/stat'"
+      },
+      "cmdlineReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/484216/cmdline'"
+      }
+    },
+    {
+      "phase": "q38",
+      "role": "official",
+      "pid": 484264,
+      "statReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/484264/stat'"
+      },
+      "cmdlineReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/484264/cmdline'"
+      }
+    },
+    {
+      "phase": "controls",
+      "role": "launcher",
+      "pid": 498313,
+      "statReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/498313/stat'"
+      },
+      "cmdlineReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/498313/cmdline'"
+      }
+    },
+    {
+      "phase": "controls",
+      "role": "official",
+      "pid": 498360,
+      "statReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/498360/stat'"
+      },
+      "cmdlineReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/498360/cmdline'"
+      }
+    },
+    {
+      "phase": "card",
+      "role": "launcher",
+      "pid": 500887,
+      "statReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/500887/stat'"
+      },
+      "cmdlineReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/500887/cmdline'"
+      }
+    },
+    {
+      "phase": "card",
+      "role": "official",
+      "pid": 500936,
+      "statReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/500936/stat'"
+      },
+      "cmdlineReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/500936/cmdline'"
+      }
+    },
+    {
+      "phase": "axiom",
+      "role": "launcher",
+      "pid": 505583,
+      "statReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/505583/stat'"
+      },
+      "cmdlineReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/505583/cmdline'"
+      }
+    },
+    {
+      "phase": "axiom",
+      "role": "official",
+      "pid": 505637,
+      "statReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/505637/stat'"
+      },
+      "cmdlineReadError": {
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "message": "[Errno 2] No such file or directory: '/proc/505637/cmdline'"
+      }
+    }
+  ],
+  "matchingLiveCommandlines": [],
+  "procReadErrors": [],
+  "procMatchScope": "只比對 argv token 等於 worktree 或以 worktree/ 起首，以及原 phase-launcher.py；不以任意字串比對 collector 的內嵌原碼。",
+  "cleanupLimits": "真退出證據是每phase父child.wait原收據與所持工具session真退出0。/proc的FileNotFoundError僅代表當次原件不可讀，不推定原因；命令列掃描只涵蓋所列token範圍，不宣稱環境全局無其他程序。",
+  "mutationLimits": "41 killed＋SPM24 declared equivalent；controls 9 survived/3 unlabelled預期紅1不得叫killed；53 card及5 axiom為原具名失敗與restore綠，未以crash/blocked當pass。"
+}

@@ -1,0 +1,14 @@
+{
+  "label": "build-model-base",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-c",
+    "import sys; from pathlib import Path; from tests import binaries; binaries.OUT_DIR = Path(sys.argv[1]); raise SystemExit(binaries.main(['build', 'model-base']))",
+    "/workspace/geo261-evidence/gates-l/axiom-run/bin"
+  ],
+  "started_at": "2026-10-21T00:35:32.689959+00:00",
+  "exit_code": 0,
+  "seconds": 17.730820206001226,
+  "ended_at": "2026-10-21T00:35:50.421048+00:00"
+}

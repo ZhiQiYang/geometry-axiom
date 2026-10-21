@@ -1,0 +1,11 @@
+--- /workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/gate-review/card-acceptor.py
++++ /workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/card-acceptor.py
+@@ -1,7 +1,7 @@
+ """只讀核對已完成53案整卡正式原件；不執行測試或改工作樹。"""
+ import ast,datetime,hashlib,json,re,subprocess
+ from pathlib import Path
+-BASE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021');G=BASE/'gates';ROOT=Path('/workspace/geo261-gates-l2-249571fe2477-20261021');SHA='249571fe2477845d5330f6190dad965bf327f43b'
++BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021');G=BASE/'gates';ROOT=Path('/workspace/geo261-gates-l3-6589248c9a94-20261021');SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'
+ OUT=BASE/'gates/acceptance-review';REPORT=OUT/'card.json';assert not REPORT.exists()
+ R=G/'card-run/card';RAW=R/'raw';L=G/'launcher/card'
+ def h(b):return hashlib.sha256(b).hexdigest()

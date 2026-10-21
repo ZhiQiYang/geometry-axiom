@@ -1,0 +1,53 @@
+[
+  {
+    "label": "main",
+    "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "geometry-web/web_bridge.c",
+      "-o",
+      "bridge",
+      "-lm"
+    ],
+    "cwd": "/workspace/geo261-p189-footprint-revert-src-hhjrvln2/adbaebf9",
+    "returncode": 0,
+    "seconds": 11.221538506997604,
+    "binary_sha256": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045"
+  },
+  {
+    "label": "base",
+    "sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "geometry-web/web_bridge.c",
+      "-o",
+      "bridge",
+      "-lm"
+    ],
+    "cwd": "/workspace/geo261-p189-footprint-revert-src-hhjrvln2/3e600772",
+    "returncode": 0,
+    "seconds": 18.270129345000896,
+    "binary_sha256": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f"
+  },
+  {
+    "label": "final",
+    "sha": "4bd19f91c434417f1c4431128c55285f4b11d3c3",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "geometry-web/web_bridge.c",
+      "-o",
+      "bridge",
+      "-lm"
+    ],
+    "cwd": "/workspace/geo261-p189-footprint-revert-src-hhjrvln2/4bd19f91",
+    "returncode": 0,
+    "seconds": 17.43832034099978,
+    "binary_sha256": "3feed9014e63ce51579a149e838a0b1e2c3be23957763ec9cd95659a28311f36"
+  }
+]

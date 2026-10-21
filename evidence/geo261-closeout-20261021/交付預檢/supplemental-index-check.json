@@ -1,0 +1,75 @@
+{
+  "checkedUTC": "2026-10-21T00:18:57.742219+00:00",
+  "checks": [
+    {
+      "index": "bundle-preflight.json",
+      "rows": 2158,
+      "missing": [],
+      "mismatched": [],
+      "historical": false
+    },
+    {
+      "index": "交付驗證方法/封裝索引.json",
+      "rows": 25,
+      "missing": [],
+      "mismatched": [],
+      "historical": false
+    },
+    {
+      "index": "後續工作/combined-314-readonly/封裝索引.json",
+      "rows": 3,
+      "missing": [],
+      "mismatched": [],
+      "historical": false
+    },
+    {
+      "index": "source-binding-L/封裝索引.json",
+      "rows": 77,
+      "missing": [],
+      "mismatched": [],
+      "historical": false
+    },
+    {
+      "index": "p73/來源清單.json",
+      "rows": 178,
+      "missing": [],
+      "mismatched": [],
+      "historical": false
+    },
+    {
+      "index": "gates/artifact-index.original-publish.json",
+      "rows": 1000,
+      "missing": [
+        "q38_controls.py",
+        "run_controls.py",
+        "run_gates.py"
+      ],
+      "mismatched": [
+        "README.zh-TW.md"
+      ],
+      "historical": true
+    },
+    {
+      "index": "gates/artifact-index.json",
+      "rows": 1001,
+      "missing": [],
+      "mismatched": [],
+      "historical": false
+    },
+    {
+      "index": "source-binding/封裝索引.json",
+      "rows": 50,
+      "missing": [],
+      "mismatched": [],
+      "historical": false
+    }
+  ],
+  "newDuringScan": {
+    "path": "native-final-tool-observation.json",
+    "bytes": 2675,
+    "sha256": "d042dc24a6216589f34a5b36016a98b54cddff185c317ff794002b3e749fddf4",
+    "utf8": true,
+    "executableMode": false
+  },
+  "note": "只補核首輪未辨識的nested索引schema及掃描中root新增的一份外層JSON，不重掃全包；original-publish是歷史原索引，不當當前封裝全集合"
+}

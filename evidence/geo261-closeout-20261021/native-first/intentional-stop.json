@@ -1,0 +1,7 @@
+{
+  "reason": "原環境PID1不回收孤兒；原單測plain紅、subreaper綠。中止首輪並以正確回收環境重跑完整native，不修改測試或35分鐘門檻。",
+  "pid": 72883,
+  "signal": "SIGINT",
+  "cmdline": "timeout 2100 python3 tests/run_all.py --build ",
+  "utc": "2026-10-20T20:40:01.652044+00:00"
+}

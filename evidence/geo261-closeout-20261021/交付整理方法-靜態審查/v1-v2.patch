@@ -1,0 +1,31 @@
+--- v1未執行
++++ v2未執行
+@@ -9,6 +9,10 @@
+ import shutil
+ import stat
+ import subprocess
++import sys
++
++if sys.flags.optimize:
++    raise RuntimeError('不可使用 -O／PYTHONOPTIMIZE，資料交付守門不可停用。')
+ 
+ p = argparse.ArgumentParser(description=__doc__)
+ p.add_argument('--source-head', required=True)
+@@ -34,7 +38,9 @@
+           b'\xfe\xed\xfa\xcf', b'\xcf\xfa\xed\xfe', b'\xca\xfe\xba\xbe', b'\xbe\xba\xfe\xca',
+           b'\xca\xfe\xba\xbf', b'\xbf\xba\xfe\xca', b'!<arch>\n')
+ assert BUNDLE.is_dir() and not BUNDLE.is_symlink()
++assert BUNDLE != ROOT and ROOT not in BUNDLE.parents
+ assert not OUT.exists() and not DEST.exists()
++assert OUT != ROOT and ROOT not in OUT.parents
+ assert OUT != BUNDLE and BUNDLE not in OUT.parents and DEST not in OUT.parents
+ OUT.mkdir(parents=True)
+ commands = []
+@@ -105,6 +111,7 @@
+     assert len(raw) == row['bytes'] and sha(raw) == row['sha256']
+ index = {'schema':1, 'root':REL, 'selfExcluded':INDEX, 'entries':rows}
+ dump(DEST / INDEX, index)
++(DEST / INDEX).chmod(0o644)
+ indexraw = (DEST / INDEX).read_bytes()
+ review_rows = sorted([*rows, {'path':INDEX, 'bytes':len(indexraw), 'sha256':sha(indexraw)}], key=lambda x:x['path'])
+ review = {'schema':'geo261-E-review/1', 'sourceL':a.source_head, 'root':REL,

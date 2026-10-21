@@ -1,0 +1,14 @@
+[
+  {
+    "source": "cache/worktree binary、object、暫存檔",
+    "reason": "正式validator已核binary identity；交付只收原raw、hash與sidecar，不放可執行副本。"
+  },
+  {
+    "source": "57筆core每個子程序原stdout/stderr",
+    "reason": "既有核心工具只在帳本保存結構化 oracle result 及子程序 stdout/stderr SHA256，未另存每個子程序的原始 stdout/stderr；頂層 mutate.stdout 不能替代未保存的原始子輸出。"
+  },
+  {
+    "source": "既有A2/L2舊包與其他job結果",
+    "reason": "本包只涵蓋S3帳本與S3→L3發布；不改舊包、不宣稱七項已完成。"
+  }
+]

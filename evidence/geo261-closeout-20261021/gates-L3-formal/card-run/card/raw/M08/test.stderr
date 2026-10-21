@@ -1,0 +1,21 @@
+test_CR03_SWAP_MAPPING_ONLY (tests.test_grid_card_reference.GridCardReference.test_CR03_SWAP_MAPPING_ONLY) ... FAIL
+
+======================================================================
+FAIL: test_CR03_SWAP_MAPPING_ONLY (tests.test_grid_card_reference.GridCardReference.test_CR03_SWAP_MAPPING_ONLY)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 129, in test_CR03_SWAP_MAPPING_ONLY
+    self.assertEqual([-7, 26, 59], self.lines('u'), 'SWAP_MAPPING_ONLY')
+AssertionError: Lists differ: [-7, 26, 59] != [-23, 7, 37]
+
+First differing element 0:
+-7
+-23
+
+- [-7, 26, 59]
++ [-23, 7, 37] : SWAP_MAPPING_ONLY
+
+----------------------------------------------------------------------
+Ran 1 test in 0.138s
+
+FAILED (failures=1)

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/geo261-evidence/ledger-cc-validate-and-package.py", line 157, in <module>
+    if __name__=='__main__':validate()
+                            ^^^^^^^^^^
+  File "/workspace/geo261-evidence/ledger-cc-validate-and-package.py", line 28, in validate
+    current_ids.append(next(v.value for k,v in zip(item.keys,item.values) if isinstance(k,ast.Constant) and k.value=='id'))
+                                                   ^^^^^^^^^
+AttributeError: 'Call' object has no attribute 'keys'

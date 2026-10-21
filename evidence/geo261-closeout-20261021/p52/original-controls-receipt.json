@@ -1,0 +1,45 @@
+{
+  "工作樹": "/workspace/geo261-main",
+  "SHA": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "指令": ["node", "/workspace/geo261-evidence/p52/probe.cjs", "/workspace/geo261-main"],
+  "共同環境": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18840/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-main",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CDP_PORT": "9350"
+  },
+  "範圍限制": "與其他 canvas／Q38 並行，僅診斷器與故障注入的功能測試，不作版本效能判定。未修改產品工作樹。",
+  "執行": [
+    {
+      "log": "main-probe-smoke-parallel.log",
+      "環境覆寫": {},
+      "exitCode": 0,
+      "passedAssertions": 43,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "originalSleepMs": 643.2171369999996,
+      "備註": "早期探針功能測試，以 mousedown 計時，較 pointerdown 晚數毫秒；不納入正式量測。"
+    },
+    {
+      "log": "main-delay700-parallel.log",
+      "環境覆寫": {"P52_DELAY_NEWID_MS": "700"},
+      "exitCode": 1,
+      "passedAssertions": 42,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "originalSleepMs": 402.38989199999196,
+      "備註": "唯一 P52-5 失敗，原取樣讀不到 timber3，後續看到正確幾何。刻意 API 前置延遲，不代表原 WSL 故障重現。早期 mousedown 計時版本。"
+    },
+    {
+      "log": "main-network6000-original-parallel.log",
+      "環境覆寫": {"P52_DELAY_NETWORK_MS": "6000"},
+      "exitCode": 1,
+      "passedAssertions": 42,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "originalSleepMs": 5443.695311999996,
+      "備註": "CDP Fetch 攔截一次真正 newid 請求，既有 settle 看見 pending 但於五秒上限返回。唯一 P52-5 失敗，後續6317.70ms看到正確幾何。pointerdown 計時；Browser.close 正常 exit0。"
+    }
+  ]
+}

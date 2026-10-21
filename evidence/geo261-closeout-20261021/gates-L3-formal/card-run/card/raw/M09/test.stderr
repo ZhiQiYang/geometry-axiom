@@ -1,0 +1,25 @@
+test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE (tests.test_grid_card_reference.GridCardReference.test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE) ... FAIL
+
+======================================================================
+FAIL: test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE (tests.test_grid_card_reference.GridCardReference.test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 238, in test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE
+    self.assertEqual([18, 30], p['preview']['cardCaptures'][0]['values'], 'EXPLICIT_UNBIND capture preview')
+AssertionError: Lists differ: [18, 30] != [12, 30]
+
+First differing element 0:
+18
+12
+
+- [18, 30]
+?   ^
+
++ [12, 30]
+?   ^
+ : EXPLICIT_UNBIND capture preview
+
+----------------------------------------------------------------------
+Ran 1 test in 0.188s
+
+FAILED (failures=1)

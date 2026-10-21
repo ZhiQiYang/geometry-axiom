@@ -1,0 +1,180 @@
+"""逐 phase 唯讀核對；不 import 正式裁判，不執行產品或編譯器。"""
+import ast,collections,datetime,hashlib,io,json,re,subprocess,sys
+from pathlib import Path,PurePosixPath
+BASE=Path('/workspace/geo261-evidence');ROOT=Path('/workspace/geo261-gates-l');G=BASE/'gates-l'
+SHA='43f85313c32410ac01406ab585846bbacafea278'
+PHASE=sys.argv[1]
+assert PHASE in ('q38',)
+OUT=BASE/'gates-l-independent-review'
+OUT.mkdir(exist_ok=True)
+REPORT=OUT/(PHASE+'.json')
+assert not REPORT.exists()
+def h(b):return hashlib.sha256(b).hexdigest()
+def j(p):return json.loads(p.read_text())
+def ref(p):return dict(path=str(p),bytes=p.stat().st_size,sha256=h(p.read_bytes()))
+def verify_ref(x):
+    p=Path(x['path']);b=p.read_bytes();assert len(b)==x['bytes'] and h(b)==x['sha256'],str(p)
+official=G/'q38-run/q38';launch=G/'launcher/q38';v=j(G/'verification/q38.json')
+r=j(official/'receipt.json');rr=j(official/'run-receipt.json');lr=j(launch/'receipt.json')
+assert v['accepted'] and not v['problems']
+for x in v['artifacts'].values():verify_ref(x)
+assert lr['sourceSha']==lr['headBefore']==lr['headAfter']==rr['source_head']==SHA
+assert lr['statusBefore']==lr['statusAfter']==rr['status_before']==rr['status_after']==''
+assert lr['sourceHashesBefore']==lr['sourceHashesAfter'] and lr['sourceHashesUnchanged'] and lr['sourceCleanRestored']
+assert lr['childReturnCode']==lr['launcherExitCode']==rr['exit_code']==v['officialExitCode']==0
+assert int((launch/'.exit-code').read_text())==int((launch/'.launcher-exit-code').read_text())==0
+assert lr['CCAbsent'] and lr['PYTHONOPTIMIZEAbsent'] and lr['stackBytes']==rr['stack_bytes']==16777216
+assert lr['launcherSourceSha256']==h((launch/'launcher-code.txt').read_bytes())
+assert 'code=child.wait()' in (launch/'launcher-code.txt').read_text()
+assert all(x['exit_code']==0 for x in rr['commands']) and len(rr['commands'])==2
+assert rr['commands'][1]==j(official/'q38.command.json')
+argv=rr['commands'][1]['command']
+assert 'tests/section_profile_mutation_check.py' in argv and all(x not in argv for x in ('--only','--group','--explore','--list','-O','-OO'))
+assert argv[argv.index('--jobs')+1]=='2'
+assert lr['command'][lr['command'].index('--jobs')+1]=='2'
+assert v['elapsedSeconds']==lr['elapsedSeconds']
+bridge=[]
+for stage in ('before','after'):
+    x=j(launch/('bridge-'+stage+'.json'))
+    assert x['sourceSha']==SHA and x['matchesPreviousBytesAndMtimes']
+    previous=Path(x['previousIndexPath']);assert h(previous.read_bytes())==x['previousIndexSha256']
+    prev={Path(z['sourcePath']).name:z for z in j(previous)['files']}
+    for z in x['files']:
+        before=prev[Path(z['sourcePath']).name]
+        for k in ('bytes','sha256','sourceMtimeNs'):assert z[k]==before[k]
+        p=Path(z['preservedPath']);assert h(p.read_bytes())==z['sha256'] and p.stat().st_size==z['bytes'] and p.stat().st_mtime_ns==z['sourceMtimeNs']
+    bridge.append(x)
+assert all(all(a[k]==b[k] for k in ('bytes','sha256','sourceMtimeNs')) for a,b in zip(bridge[0]['files'],bridge[1]['files']))
+
+# 純 AST 值讀取；case() 只解析宣告資料，不呼叫正式模組。
+symbols={}
+def value(n):
+    if isinstance(n,ast.Constant):return n.value
+    if isinstance(n,ast.Name):return symbols[n.id]
+    if isinstance(n,(ast.List,ast.Tuple,ast.Set)):
+        a=[value(x) for x in n.elts]
+        return tuple(a) if isinstance(n,ast.Tuple) else set(a) if isinstance(n,ast.Set) else a
+    if isinstance(n,ast.Dict):return {value(a):value(b) for a,b in zip(n.keys,n.values)}
+    if isinstance(n,ast.BinOp) and isinstance(n.op,ast.Add):return value(n.left)+value(n.right)
+    if isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id=='case':
+        keys=['id','clause','desc','file','before','after','tests','cause','equivalent','group','error_types','more']
+        args=[value(x) for x in n.args];kw={x.arg:value(x.value) for x in n.keywords}
+        d=dict(equivalent=None,group='native',error_types=(),more=())
+        d.update(zip(keys,args));d.update(kw)
+        d['patches']=[(d['file'],d['before'],d['after']),*d['more']]
+        return d
+    raise ValueError(type(n).__name__)
+source=(ROOT/'tests/section_profile_mutation_check.py').read_text()
+for n in ast.parse(source).body:
+    if isinstance(n,ast.Assign):
+        try:a=value(n.value)
+        except (ValueError,KeyError,TypeError):continue
+        for t in n.targets:
+            if isinstance(t,ast.Name):symbols[t.id]=a
+cases={x['id']:x for x in symbols['CASES']}
+assert set(cases)=={f'SPM{i:02}' for i in range(1,43)}
+
+# 按 copy_sources 的錨定根目錄規則取 Git L；不要用 suffix match 混入歷史證據副本。
+paths=subprocess.check_output(['git','ls-tree','-rz','--name-only',SHA],cwd=ROOT).decode().rstrip('\0').split('\0')
+native={p for p in paths if PurePosixPath(p).suffix in ('.c','.h','.inc') and 'vendor' not in PurePosixPath(p).parts and (len(PurePosixPath(p).parts)==1 or p.split('/')[0] in ('geometry-core','geometry-web','geometry-app','geometry-templates'))}
+dirs=symbols['MODEL_DIRECTORIES']
+model=native|{p for p in paths if (PurePosixPath(p).parent.as_posix() in ('tests','geometry-core','geometry-core/modeling','geometry-web') and PurePosixPath(p).suffix=='.py') or any(p.startswith(d+'/') for d in dirs)}|{'公理層.md'}
+names=sorted(model|set(lr['sourceHashesBefore']))
+buf=io.BytesIO(subprocess.check_output(['git','cat-file','--batch'],input=''.join(SHA+':'+p+'\n' for p in names).encode(),cwd=ROOT))
+blobs={}
+for p in names:
+    fields=buf.readline().split();assert len(fields)==3 and fields[1]==b'blob',p
+    blobs[p]=buf.read(int(fields[2]));assert buf.read(1)==b'\n'
+    assert (ROOT/p).read_bytes()==blobs[p],p
+assert not buf.read()
+for p,s in lr['sourceHashesBefore'].items():assert h(blobs[p])==s
+assert rr['runner_sha256']==h(blobs['geometry-core/domain-decoupling/closeout-tools/run_gates.py'])
+def digest(mapping):
+    d=hashlib.sha256()
+    for p,b in sorted(mapping.items()):d.update(p.encode()+b'\0');d.update(hashlib.sha256(b).digest())
+    return d.hexdigest()
+base_maps={'native':{p:blobs[p] for p in native},'model':{p:blobs[p] for p in model}}
+assert len(native)==194 and len(model)==524
+for group,m in base_maps.items():assert digest(m)==r['baselines'][group]['source_tree_sha256']
+
+def check_evidence(e,code,logpath):
+    assert e['schema']=='section-profile-exceptions/1'
+    assert len(e['requested'])==len(set(e['requested']))>0 and e['requested']==e['executed']
+    assert e['tests_run']==len(e['executed'])
+    assert e['skipped']==e['expected_failures']==e['unexpected_successes']==0
+    ev=e['events'];assert len({(x['test_id'],x['subtest_id']) for x in ev})==len(ev)
+    assert all(x['test_id'] in e['executed'] for x in ev)
+    assert e['failures']==sum(x['kind']=='failure' for x in ev) and e['errors']==sum(x['kind']=='error' for x in ev)
+    assert set(e['passed'])==set(e['executed'])-{x['test_id'] for x in ev}
+    assert code==(1 if ev else 0)
+    raw=logpath.read_text()
+    assert f"Ran {e['tests_run']} test" in raw
+    if code==0:assert raw.rstrip().endswith('OK')
+    else:assert 'FAILED (' in raw
+    for x in ev:
+        assert x['test_id'].split('.')[-1] in raw
+        assert x['exception_type'].split('.')[-1]+':' in raw
+    return raw
+
+for group,num in [('native',27),('model',20)]:
+    b=r['baselines'][group];e=b['exception_evidence'];assert b['exit']==0 and e['tests_run']==num and not e['events']
+    assert e==j(official/'logs'/(group+'-baseline.exceptions.json'))
+    check_evidence(e,0,official/'logs'/(group+'-baseline.log'))
+    mod=symbols[group.upper()+'_MODULE'];cls=symbols[group.upper()+'_CLASS']
+    tree=ast.parse(blobs[mod.replace('.','/')+'.py'].decode())
+    node=next(x for x in tree.body if isinstance(x,ast.ClassDef) and x.name==cls)
+    methods=sorted(x.name for x in node.body if isinstance(x,ast.FunctionDef) and x.name.startswith('test_') and (group!='native' or x.name not in symbols['EXCLUDED']))
+    assert [mod+'.'+cls+'.'+name for name in methods]==e['requested']
+basecompile=j(official/'logs/bridge-baseline.compile.json')
+assert basecompile['exit']==0 and basecompile['binary_sha256']==r['baselines']['native']['binary_sha256'] and basecompile['source_tree_sha256']==r['baselines']['native']['source_tree_sha256']
+model_exe=G/'q38-run/bin/model-base'
+assert h(model_exe.read_bytes())==r['baselines']['model']['adapter_sha256']
+verified=[]
+assert len(r['results'])==42 and len({x['id'] for x in r['results']})==42
+for result in r['results']:
+    identifier=result['id'];case=cases[identifier];group=case['group'];e=result['exception_evidence']
+    assert result['group']==group and result['clause']==case['clause'] and result['desc']==case['desc']
+    assert e==j(official/'logs'/(identifier+'.exceptions.json'))
+    raw=check_evidence(e,result['exit'],official/'logs'/(identifier+'.log'))
+    prefix=symbols[group.upper()+'_MODULE']+'.'+symbols[group.upper()+'_CLASS']+'.'
+    assert e['requested']==[prefix+t for t in case['tests']]
+    eligible=[x for x in e['events'] if (x['kind']=='failure' and x['exception_type']=='builtins.AssertionError') or (x['kind']=='error' and x['exception_type'] in case['error_types'])]
+    named=[x for x in eligible if x['test_id'] in [prefix+t for t in case['tests']]]
+    matched=[x for x in named if all(c in x['message'] for c in case['cause'])]
+    assert result['failed']==[('FAIL ' if x['kind']=='failure' else 'ERROR ')+x['test_id'] for x in e['events']]
+    if identifier=='SPM24':
+        assert case['equivalent'] and result['verdict']=='equivalent' and result['exit']==0 and not e['events']
+    else:
+        assert not case['equivalent'] and result['verdict']=='killed' and result['exit']==1 and matched,identifier
+        assert all(x['exception_type']=='builtins.AssertionError' for x in eligible) or identifier in ('SPM38','SPM40')
+        assert all(c in raw for c in case['cause'])
+    mapping=base_maps[group].copy()
+    for file,before,after in case['patches']:
+        assert mapping[file].count(before.encode())==1,(identifier,file)
+        mapping[file]=mapping[file].replace(before.encode(),after.encode())
+    compiled=group=='native' or any(PurePosixPath(p).suffix in ('.c','.h','.inc') for p,_,_ in case['patches'])
+    if compiled:
+        name='bridge-'+identifier+'.compile.json' if group=='native' else identifier+'.model-base.compile.json'
+        cr=j(official/'logs'/name)
+        key='binary_sha256' if group=='native' else 'adapter_sha256'
+        basekey='binary_sha256' if group=='native' else 'adapter_sha256'
+        assert cr['exit']==0 and cr['binary_sha256']==result[key] and result[key]!=r['baselines'][group][basekey]
+        assert cr['source_tree_sha256']==digest(mapping),identifier
+        if group=='native':assert cr['argv'][:3]==['cc','-std=c11','-O2']
+    verified.append(dict(id=identifier,verdict=result['verdict'],exit=result['exit'],group=group,tests=e['requested'],causes=case['cause'],terminalMatches=[dict(test=x['test_id'],type=x['exception_type'],kind=x['kind']) for x in matched],compiledBinaryCompared=compiled,equivalentReason=case['equivalent']))
+assert collections.Counter(x['verdict'] for x in verified)=={'killed':41,'equivalent':1}
+assert r['summary']==v['summary']=={'killed':41,'equivalent':1}
+assert sum(x['compiledBinaryCompared'] for x in verified)==39
+files=[p for p in official.rglob('*') if p.is_file() and 'tmp' not in p.relative_to(official).parts]
+index=[ref(p) for p in sorted(files)]
+report=dict(sourceSha=SHA,phase=PHASE,reviewer='/root/p52_review',reviewedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),accepted=True,validationExitCode=0,blockers=[],
+    result=dict(cases=42,killed=41,equivalent=['SPM24'],assertionErrorKilled=39,declaredModelErrorKilled=['SPM38','SPM40'],nativeBaseline=27,modelBaseline=20,officialGateExit=0,runGatesExit=0,launcherWaitExit=0,elapsedSeconds=lr['elapsedSeconds']),
+    commands=dict(actual=argv,allCases=True,onlyGroupExploreAbsent=True,jobs=2,buildModelBaseFirst=True,stackBytes=16777216,CCAbsent=True,PYTHONOPTIMIZEAbsent=True),
+    sources=dict(headBefore=lr['headBefore'],headAfter=lr['headAfter'],statusBefore=lr['statusBefore'],statusAfter=lr['statusAfter'],trackedBeforeAfterHashes=10,gitBlobsRead=len(blobs),nativeSourceTreeFiles=194,modelSourceTreeFiles=524,baselineAndCompiledMutantSourceTreeHashesReconstructedFromGit=True,compiledMutantBinaryHashesDifferentFromBaseline=39,pythonOnlyModelCases=['SPM37','SPM38','SPM40']),
+    bridge=dict(previousIndex=str(BASE/'native-final/final-build-binary-index.json'),beforeAfterBytesHashMtimeExact=True,bridgeHash=bridge[0]['files'][0]['sha256'],sidecarHash=bridge[0]['files'][1]['sha256'],preservedCopiesVerified=True),
+    cases=verified,rawFileIndex=index,
+    references={k:ref(p) for k,p in [('verification',G/'verification/q38.json'),('officialReceipt',official/'receipt.json'),('runReceipt',official/'run-receipt.json'),('launcherReceipt',launch/'receipt.json'),('reviewCode',Path(__file__))]},
+    limits=['這是完整42個Q38突變與兩baseline；不是一對一宣稱提案AC16每個AC都已轉紅。','SPM24依原來源等價說明保留equivalent；SPM38/SPM40是允許的具名ModelError，不改稱AssertionError。','已刪除的臨時突變binary未再雜湊；其39組編譯收據hash/來源樹/實際gate身份守門已核，未假稱仍持有臨時binary。','Python-only模型突變使用未修改fresh adapter，不宣稱有不同binaryhash。','本次只讀核已完成Q38，不對正在執行的其他phase下結論；本機實跑不等於GitHub CI。','正式工具session實際退出觀察由執行代理的tool回覆另存；本報告已核可保存的gate/run_gates/parent.wait退出鏈，不以launcher自填碼代替transport觀察。'],
+    diagnostics=['唯讀首次rg多列一個不存在的gates-l/q38路徑而exit2；實際原件為q38-run/q38，沒有改動或重跑。','探索性來源集合曾用PurePath.match把歷史副本後綴納入model集合；未產生接受結論，已依copy_sources的錨定根目錄規則重建524檔，Git與原baselinehash精確相同。'])
+REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(report=str(REPORT),bytes=REPORT.stat().st_size,sha256=h(REPORT.read_bytes()),validationExitCode=0,cases=42,sourceBlobs=len(blobs),rawFiles=len(index)),ensure_ascii=False))

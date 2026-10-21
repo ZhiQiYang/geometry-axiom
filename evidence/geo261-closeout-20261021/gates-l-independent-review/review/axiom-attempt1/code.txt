@@ -1,0 +1,98 @@
+"""僅於 axiom 完成後只讀核對五個版本控制原件；不執行產品。"""
+import ast,datetime,hashlib,json,re,subprocess
+from pathlib import Path
+BASE=Path('/workspace/geo261-evidence');G=BASE/'gates-l';ROOT=Path('/workspace/geo261-gates-l');SHA='43f85313c32410ac01406ab585846bbacafea278'
+R=G/'axiom-run/axiom';RAW=R/'raw';L=G/'launcher/axiom';OUT=BASE/'gates-l-independent-review';REPORT=OUT/'axiom.json'
+assert not REPORT.exists() and (G/'verification/axiom.json').is_file() and (L/'.launcher-exit-code').is_file()
+def h(b):return hashlib.sha256(b).hexdigest()
+def j(p):return json.loads(p.read_text())
+def ref(p):return dict(path=str(p),bytes=p.stat().st_size,sha256=h(p.read_bytes()))
+blobs={}
+def blob(p):
+    if p not in blobs:blobs[p]=subprocess.check_output(['git','show',SHA+':'+p],cwd=ROOT)
+    return blobs[p]
+symbols={}
+def value(n):
+    if isinstance(n,ast.Constant):return n.value
+    if isinstance(n,ast.Name):return symbols[n.id]
+    if isinstance(n,(ast.Tuple,ast.List)):return [value(x) for x in n.elts]
+    if isinstance(n,ast.BinOp) and isinstance(n.op,ast.Add):return value(n.left)+value(n.right)
+    raise ValueError(type(n).__name__)
+source=blob('geometry-core/card-reference/run_axiom_mutations.py').decode()
+for n in ast.parse(source).body:
+    if isinstance(n,ast.Assign):
+        try:a=value(n.value)
+        except (ValueError,KeyError,TypeError):continue
+        for t in n.targets:
+            if isinstance(t,ast.Name):symbols[t.id]=a
+table={x[0]:x for x in symbols['MUTATIONS']};assert len(table)==5 and symbols['SUITE_TESTS']==44
+r=j(RAW/'report.json');rr=j(R/'run-receipt.json');lr=j(L/'receipt.json');v=j(G/'verification/axiom.json')
+assert v['accepted'] and not v['problems']
+for x in v['artifacts'].values():
+    p=Path(x['path']);assert p.stat().st_size==x['bytes'] and h(p.read_bytes())==x['sha256']
+assert r['source_head']==rr['source_head']==lr['sourceSha']==lr['headBefore']==lr['headAfter']==SHA
+assert lr['statusBefore']==lr['statusAfter']==rr['status_before']==rr['status_after']==''
+assert lr['sourceHashesBefore']==lr['sourceHashesAfter'] and lr['sourceCleanRestored'] and lr['sourceHashesUnchanged']
+for p,s in lr['sourceHashesBefore'].items():assert h(blob(p))==s
+assert lr['childReturnCode']==lr['launcherExitCode']==rr['exit_code']==v['officialExitCode']==0
+assert int((L/'.exit-code').read_text())==int((L/'.launcher-exit-code').read_text())==0
+assert lr['CCAbsent'] and lr['PYTHONOPTIMIZEAbsent'] and lr['stackBytes']==rr['stack_bytes']==16777216
+assert h((L/'launcher-code.txt').read_bytes())==lr['launcherSourceSha256']
+assert rr['runner_sha256']==h(blob('geometry-core/domain-decoupling/closeout-tools/run_gates.py'))
+assert len(rr['commands'])==2 and all(c['exit_code']==0 for c in rr['commands'])
+assert rr['commands'][1]==j(R/'axiom.command.json')
+argv=rr['commands'][1]['command'];assert 'geometry-core/card-reference/run_axiom_mutations.py' in argv and '--only' not in argv and all(x not in argv for x in ('-O','-OO'))
+original=blob('geometry-core/modeling/__init__.py');assert h(original)==r['source_sha256']
+assert h(blob('tests/test_engineering_model_compatibility.py'))==r['test_sha256']
+assert json.loads(blob('tests/run_all.expected.json'))['suites']['py:test_engineering_model_compatibility']['count']==44
+def check(directory,record,test,green,count):
+    assert record==j(directory/'receipt.json')
+    stdout=(directory/'stdout.log').read_bytes();stderr=(directory/'stderr.log').read_bytes()
+    assert h(stdout)==record['stdout_sha256'] and h(stderr)==record['stderr_sha256']
+    assert record['command'][1:]==['-m','unittest',test]
+    assert record['exit_code']==(0 if green else 1) and record['tests']==count
+    assert record['errors']==record['skips']==0
+    raw=stderr.decode();m=re.search(r'Ran (\d+) tests? in',raw);assert m and int(m[1])==count
+    if green:assert record['failures']==0 and raw.rstrip().endswith('OK')
+    else:
+        assert record['failures']>0 and 'AssertionError:' in raw
+        failures=re.search(r'FAILED \(failures=(\d+)\)',raw);assert failures and int(failures[1])==record['failures']
+    return raw
+check(RAW/'baseline',r['baseline'],symbols['BASE'],True,44)
+assert len(r['mutants'])==len({m['id'] for m in r['mutants']})==5
+verified=[]
+for m in r['mutants']:
+    identifier,old,new,test,label=table[m['id']]
+    assert m['old']==old and m['new']==new and m['named_test']==test and m['verdict']=='killed'
+    text=original.decode();assert text.count(old)==1
+    changed=text.replace(old,new,1).encode();assert h(changed)==m['mutant_sha256'] and h(changed)!=r['source_sha256']
+    raw=check(RAW/identifier/'red',m['red'],symbols['CLASS']+test,False,1)
+    marker='FAIL: '+test+' ';assert marker in raw
+    section=raw[raw.index(marker):]
+    assertion=section[section.index('AssertionError:'):]
+    assert label in assertion
+    check(RAW/identifier/'restored',m['restored'],symbols['BASE'],True,44)
+    verified.append(dict(id=identifier,namedTest=test,causeLabel=label,labelInNamedAssertion=True,redExit=1,redTests=1,redFailures=m['red']['failures'],restoreExit=0,restoreTests=44,mutatedSourceHashReconstructed=True))
+adapter=G/'axiom-run/bin/model-base';fingerprint=j(G/'axiom-run/bin/model-base.fingerprint.json')
+assert h(adapter.read_bytes())==fingerprint['exe_sha256'] and adapter.stat().st_size==fingerprint['exe_size'] and adapter.stat().st_mtime_ns==fingerprint['exe_mtime_ns']
+assert rr['environment']['GEOMETRY_MODEL_BASE']==str(adapter)
+assert fingerprint['command'].startswith('cc ') and 'built' in (R/'build-model-base.log').read_text()
+for p,s in fingerprint['files'].items():assert h(blob(p).replace(b'\r\n',b'\n'))==s
+for stage in ('before','after'):
+    x=j(L/('bridge-'+stage+'.json'));previous=Path(x['previousIndexPath']);assert previous==G/'launcher/card/bridge-after.json'
+    assert h(previous.read_bytes())==x['previousIndexSha256'] and x['matchesPreviousBytesAndMtimes']
+    prior={Path(z['sourcePath']).name:z for z in j(previous)['files']}
+    for z in x['files']:
+        p=Path(z['preservedPath']);assert p.stat().st_size==z['bytes'] and p.stat().st_mtime_ns==z['sourceMtimeNs'] and h(p.read_bytes())==z['sha256']
+        assert all(z[k]==prior[Path(z['sourcePath']).name][k] for k in ('bytes','sha256','sourceMtimeNs'))
+assert lr['bridgeAfterMatchesBeforeBytesAndMtimes']
+files=[p for p in R.rglob('*') if p.is_file() and 'tmp' not in p.relative_to(R).parts]
+report=dict(sourceSha=SHA,phase='axiom',reviewer='/root/p52_review',reviewedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),accepted=True,validationExitCode=0,blockers=[],
+ result=dict(cases=5,killed=5,baselineTests=44,allFiveNamedTestsRed=True,redTestsPerCase=1,allLabelsInNamedAssertion=True,allRestoredComplete44=True,allErrorsSkipsZero=True,officialExit=0,runGatesExit=0,launcherWaitExit=0,elapsedSeconds=lr['elapsedSeconds']),
+ commands=dict(actual=argv,fullOriginalTable=True,modelBaseBuiltFirst=True,stackBytes=16777216,CCAbsent=True,PYTHONOPTIMIZEAbsent=True),
+ sources=dict(headBefore=lr['headBefore'],headAfter=lr['headAfter'],statusBefore=lr['statusBefore'],statusAfter=lr['statusAfter'],phaseBeforeAfterHashCount=10,allFiveMutatedTargetHashesReconstructedFromGit=True,gitBlobsRead=len(blobs),modelBaseFingerprintMatchesGitNormalizedSources=True),
+ bridge=dict(previousPhase='card',beforeAfterBytesHashMtimeExact=True,preservedCopiesVerified=True),cases=verified,rawFileIndex=[ref(p) for p in sorted(files)],
+ references={k:ref(p) for k,p in [('verification',G/'verification/axiom.json'),('report',RAW/'report.json'),('runReceipt',R/'run-receipt.json'),('launcherReceipt',L/'receipt.json'),('modelBaseFingerprint',G/'axiom-run/bin/model-base.fingerprint.json'),('reviewCode',Path(__file__))]},
+ limits=['五案原指定具名1題轉紅，每案restore皆完整44題；不把generic exit1當killed。','每個CARD_AXIOM標籤已定位在該具名失敗的AssertionError文字，不只在stdout其他位置。','使用Git L與phase凍結前後證據，不以其他phase的暫時修改倒推歷史。','工具session實際exit由執行代理另保存；本報告核gate/run_gates/launcher parent.wait原退出鏈。','本次沒有執行測試、build或修改來源；只讀既有原件。'])
+REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(report=str(REPORT),bytes=REPORT.stat().st_size,sha256=h(REPORT.read_bytes()),validationExitCode=0,cases=5,rawFiles=len(files),sourceBlobs=len(blobs)),ensure_ascii=False))

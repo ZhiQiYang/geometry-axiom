@@ -1,0 +1,20 @@
+{
+  "schema": "geo261-source-ledger-binding/1",
+  "sourceS3": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "ledgerL3": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "parentSha": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "changedPaths": [
+    "tests/mutants_results.json"
+  ],
+  "ledgerSha256": "52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178",
+  "ledgerBytes": 5170289,
+  "executionHeads": [
+    "19401ca5448e162ee6140fed37b64b83b31ddec8"
+  ],
+  "aliasExplanation": "原匯入器保留歷史欄名 sourceA2／ledgerL2 與舊 A2／L2 備註。此輪欄位實值分別為公開 S3 與 L3；75 筆 execution 真正來源是 S3。舊備註不是本輪來源證據，未改寫原收據。此附加說明對照原 publication、parent、only-file 與 Git blob，不宣稱另跑產品或完整來源快照。",
+  "publicationDirectory": "/workspace/geo261-evidence/ledger-L3-publication",
+  "branch": "codex/geo261-closeout-20261021",
+  "defaultCheckExitCode": 0,
+  "remoteExact": true,
+  "createdUtc": "2026-10-21T05:41:40.366447+00:00"
+}

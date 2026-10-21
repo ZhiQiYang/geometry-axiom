@@ -1,0 +1,37 @@
+--- prepare-native-attempt1.py
++++ prepare-native-revised.py
+@@ -6,7 +6,7 @@
+ PLAN=json.loads((BASE/'preparation/instance.json').read_text())
+ SHA='249571fe2477845d5330f6190dad965bf327f43b'
+ assert PLAN['sourceSha']==SHA and not sys.flags.optimize
+-LAUNCHER=Path(PLAN['nativeLauncherOut']);LAUNCHER.mkdir()
++LAUNCHER=Path(PLAN['nativeLauncherOut']);assert LAUNCHER.is_dir()
+ def utc():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+ def save(name,value):(LAUNCHER/name).write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n')
+ def git(cwd,*args):return subprocess.check_output(['git',*args],cwd=cwd,text=True).strip()
+@@ -49,8 +49,23 @@
+             fcntl.flock(f.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
+             locks.append(dict(path=str(path),available=True))
+             fcntl.flock(f.fileno(),fcntl.LOCK_UN)
+-save('no-live-writer-preflight.json',dict(sampledUtc=utc(),matches=matches,permissionDenied=denied,locks=locks,scope='當下 /proc exe、run_all argv、global writable fd 與兩鎖；不是未來並行寫入保證。'))
+-assert not matches and not denied,(matches,denied)
++save('no-live-writer-preflight-rescan.json',dict(sampledUtc=utc(),matches=matches,permissionDenied=denied,locks=locks,scope='當下 /proc exe、run_all argv、global writable fd 與兩鎖；不是未來並行寫入保證。'))
++known=json.loads((LAUNCHER/'proc-infrastructure-identity.json').read_text())['items']
++verified=[];unexplained=[]
++for pid in denied:
++    try:
++        status=Path('/proc',str(pid),'status').read_text()
++        stat=Path('/proc',str(pid),'stat').read_text().rsplit(')',1)[1].split()
++        actual=dict(pid=pid,uid=[int(x) for x in next(x for x in status.splitlines() if x.startswith('Uid:')).split()[1:]],
++            startTimeTicks=int(stat[19]),parentPid=int(stat[1]),comm=Path('/proc',str(pid),'comm').read_text().strip(),
++            cmdlineHex=Path('/proc',str(pid),'cmdline').read_bytes().hex())
++        expected=known.get(str(pid),{})
++        if expected and all(actual[k]==expected[k] for k in actual):verified.append(actual)
++        else:unexplained.append(dict(actual=actual,expected=expected))
++    except OSError as exc:unexplained.append(dict(pid=pid,error=str(exc)))
++save('no-live-writer-preflight-revised.json',dict(sampledUtc=utc(),matches=matches,unreadableInfrastructureVerified=verified,unexplainedPermissionErrors=unexplained,locks=locks,
++    limitation='上述精確身份的環境程序 fd/exe 未能讀取；其餘可讀程序無 global writable fd／run_all／global exe。此為當下檢查，不宣稱未讀 fd 已核。'))
++assert not matches and not unexplained,(matches,unexplained)
+ source_counts={}
+ for module,want in [('test_geo261_wood_contact_world',12),('test_geo261_host_facts_authority',27),('test_geo261_placement_definition',15)]:
+     data=subprocess.check_output(['git','show',SHA+':tests/'+module+'.py'],cwd=PLAN['repo'])

@@ -1,0 +1,211 @@
+
+/lib/x86_64-linux-gnu/libc.so.6:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000a6a80 <memcpy@@GLIBC_2.14>:
+   a6a80:	48 8b 0d 39 e4 13 00 	mov    rcx,QWORD PTR [rip+0x13e439]        # 1e4ec0 <_rtld_global_ro@GLIBC_PRIVATE>
+   a6a87:	48 8d 05 22 74 00 00 	lea    rax,[rip+0x7422]        # adeb0 <__xpg_strerror_r@@GLIBC_2.3.4+0x8d0>
+   a6a8e:	8b 91 c4 01 00 00    	mov    edx,DWORD PTR [rcx+0x1c4]
+   a6a94:	f6 c6 90             	test   dh,0x90
+   a6a97:	75 78                	jne    a6b11 <memcpy@@GLIBC_2.14+0x91>
+   a6a99:	8b b1 b8 00 00 00    	mov    esi,DWORD PTR [rcx+0xb8]
+   a6a9f:	f7 c6 00 00 01 00    	test   esi,0x10000
+   a6aa5:	75 71                	jne    a6b18 <memcpy@@GLIBC_2.14+0x98>
+   a6aa7:	f6 c6 02             	test   dh,0x2
+   a6aaa:	74 44                	je     a6af0 <memcpy@@GLIBC_2.14+0x70>
+   a6aac:	85 f6                	test   esi,esi
+   a6aae:	0f 88 a4 00 00 00    	js     a6b58 <memcpy@@GLIBC_2.14+0xd8>
+   a6ab4:	f7 c6 00 08 00 00    	test   esi,0x800
+   a6aba:	74 1c                	je     a6ad8 <memcpy@@GLIBC_2.14+0x58>
+   a6abc:	81 e6 00 02 00 00    	and    esi,0x200
+   a6ac2:	48 8d 15 b7 4a 0c 00 	lea    rdx,[rip+0xc4ab7]        # 16b580 <_dl_mcount_wrapper@GLIBC_2.2.5+0x9470>
+   a6ac9:	48 8d 05 20 4a 0c 00 	lea    rax,[rip+0xc4a20]        # 16b4f0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x93e0>
+   a6ad0:	48 0f 45 c2          	cmovne rax,rdx
+   a6ad4:	c3                   	ret
+   a6ad5:	0f 1f 00             	nop    DWORD PTR [rax]
+   a6ad8:	f6 c6 08             	test   dh,0x8
+   a6adb:	0f 84 97 00 00 00    	je     a6b78 <memcpy@@GLIBC_2.14+0xf8>
+   a6ae1:	66 66 2e 0f 1f 84 00 	data16 cs nop WORD PTR [rax+rax*1+0x0]
+   a6ae8:	00 00 00 00 
+   a6aec:	0f 1f 40 00          	nop    DWORD PTR [rax+0x0]
+   a6af0:	f6 81 9d 00 00 00 02 	test   BYTE PTR [rcx+0x9d],0x2
+   a6af7:	75 4f                	jne    a6b48 <memcpy@@GLIBC_2.14+0xc8>
+   a6af9:	81 e6 00 02 00 00    	and    esi,0x200
+   a6aff:	48 8d 05 ba 74 00 00 	lea    rax,[rip+0x74ba]        # adfc0 <memcpy@GLIBC_2.2.5+0x90>
+   a6b06:	48 8d 15 23 74 00 00 	lea    rdx,[rip+0x7423]        # adf30 <memcpy@GLIBC_2.2.5>
+   a6b0d:	48 0f 44 c2          	cmove  rax,rdx
+   a6b11:	c3                   	ret
+   a6b12:	66 0f 1f 44 00 00    	nop    WORD PTR [rax+rax*1+0x0]
+   a6b18:	f6 c6 20             	test   dh,0x20
+   a6b1b:	75 8a                	jne    a6aa7 <memcpy@@GLIBC_2.14+0x27>
+   a6b1d:	48 8d 05 9c 71 0d 00 	lea    rax,[rip+0xd719c]        # 17dcc0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1bbb0>
+   a6b24:	85 f6                	test   esi,esi
+   a6b26:	79 e9                	jns    a6b11 <memcpy@@GLIBC_2.14+0x91>
+   a6b28:	81 e6 00 02 00 00    	and    esi,0x200
+   a6b2e:	48 8d 15 8b 4f 0d 00 	lea    rdx,[rip+0xd4f8b]        # 17bac0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x199b0>
+   a6b35:	48 8d 05 f4 4e 0d 00 	lea    rax,[rip+0xd4ef4]        # 17ba30 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19920>
+   a6b3c:	48 0f 45 c2          	cmovne rax,rdx
+   a6b40:	c3                   	ret
+   a6b41:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+   a6b48:	83 e2 20             	and    edx,0x20
+   a6b4b:	48 8d 05 6e 7b 0d 00 	lea    rax,[rip+0xd7b6e]        # 17e6c0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1c5b0>
+   a6b52:	75 a5                	jne    a6af9 <memcpy@@GLIBC_2.14+0x79>
+   a6b54:	c3                   	ret
+   a6b55:	0f 1f 00             	nop    DWORD PTR [rax]
+   a6b58:	81 e6 00 02 00 00    	and    esi,0x200
+   a6b5e:	48 8d 15 1b bf 0c 00 	lea    rdx,[rip+0xcbf1b]        # 172a80 <_dl_mcount_wrapper@GLIBC_2.2.5+0x10970>
+   a6b65:	48 8d 05 84 be 0c 00 	lea    rax,[rip+0xcbe84]        # 1729f0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x108e0>
+   a6b6c:	48 0f 45 c2          	cmovne rax,rdx
+   a6b70:	c3                   	ret
+   a6b71:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+   a6b78:	81 e6 00 02 00 00    	and    esi,0x200
+   a6b7e:	48 8d 15 bb bf 0b 00 	lea    rdx,[rip+0xbbfbb]        # 162b40 <_dl_mcount_wrapper@GLIBC_2.2.5+0xa30>
+   a6b85:	48 8d 05 24 bf 0b 00 	lea    rax,[rip+0xbbf24]        # 162ab0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x9a0>
+   a6b8c:	48 0f 45 c2          	cmovne rax,rdx
+   a6b90:	c3                   	ret
+
+/lib/x86_64-linux-gnu/libc.so.6:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000a72a0 <memmove@@GLIBC_2.2.5>:
+   a72a0:	48 8b 0d 19 dc 13 00 	mov    rcx,QWORD PTR [rip+0x13dc19]        # 1e4ec0 <_rtld_global_ro@GLIBC_PRIVATE>
+   a72a7:	48 8d 05 02 6c 00 00 	lea    rax,[rip+0x6c02]        # adeb0 <__xpg_strerror_r@@GLIBC_2.3.4+0x8d0>
+   a72ae:	8b 91 c4 01 00 00    	mov    edx,DWORD PTR [rcx+0x1c4]
+   a72b4:	f6 c6 90             	test   dh,0x90
+   a72b7:	75 78                	jne    a7331 <memmove@@GLIBC_2.2.5+0x91>
+   a72b9:	8b b1 b8 00 00 00    	mov    esi,DWORD PTR [rcx+0xb8]
+   a72bf:	f7 c6 00 00 01 00    	test   esi,0x10000
+   a72c5:	75 71                	jne    a7338 <memmove@@GLIBC_2.2.5+0x98>
+   a72c7:	f6 c6 02             	test   dh,0x2
+   a72ca:	74 44                	je     a7310 <memmove@@GLIBC_2.2.5+0x70>
+   a72cc:	85 f6                	test   esi,esi
+   a72ce:	0f 88 a4 00 00 00    	js     a7378 <memmove@@GLIBC_2.2.5+0xd8>
+   a72d4:	f7 c6 00 08 00 00    	test   esi,0x800
+   a72da:	74 1c                	je     a72f8 <memmove@@GLIBC_2.2.5+0x58>
+   a72dc:	81 e6 00 02 00 00    	and    esi,0x200
+   a72e2:	48 8d 15 97 42 0c 00 	lea    rdx,[rip+0xc4297]        # 16b580 <_dl_mcount_wrapper@GLIBC_2.2.5+0x9470>
+   a72e9:	48 8d 05 00 42 0c 00 	lea    rax,[rip+0xc4200]        # 16b4f0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x93e0>
+   a72f0:	48 0f 45 c2          	cmovne rax,rdx
+   a72f4:	c3                   	ret
+   a72f5:	0f 1f 00             	nop    DWORD PTR [rax]
+   a72f8:	f6 c6 08             	test   dh,0x8
+   a72fb:	0f 84 97 00 00 00    	je     a7398 <memmove@@GLIBC_2.2.5+0xf8>
+   a7301:	66 66 2e 0f 1f 84 00 	data16 cs nop WORD PTR [rax+rax*1+0x0]
+   a7308:	00 00 00 00 
+   a730c:	0f 1f 40 00          	nop    DWORD PTR [rax+0x0]
+   a7310:	f6 81 9d 00 00 00 02 	test   BYTE PTR [rcx+0x9d],0x2
+   a7317:	75 4f                	jne    a7368 <memmove@@GLIBC_2.2.5+0xc8>
+   a7319:	81 e6 00 02 00 00    	and    esi,0x200
+   a731f:	48 8d 05 9a 6c 00 00 	lea    rax,[rip+0x6c9a]        # adfc0 <memcpy@GLIBC_2.2.5+0x90>
+   a7326:	48 8d 15 03 6c 00 00 	lea    rdx,[rip+0x6c03]        # adf30 <memcpy@GLIBC_2.2.5>
+   a732d:	48 0f 44 c2          	cmove  rax,rdx
+   a7331:	c3                   	ret
+   a7332:	66 0f 1f 44 00 00    	nop    WORD PTR [rax+rax*1+0x0]
+   a7338:	f6 c6 20             	test   dh,0x20
+   a733b:	75 8a                	jne    a72c7 <memmove@@GLIBC_2.2.5+0x27>
+   a733d:	48 8d 05 7c 69 0d 00 	lea    rax,[rip+0xd697c]        # 17dcc0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1bbb0>
+   a7344:	85 f6                	test   esi,esi
+   a7346:	79 e9                	jns    a7331 <memmove@@GLIBC_2.2.5+0x91>
+   a7348:	81 e6 00 02 00 00    	and    esi,0x200
+   a734e:	48 8d 15 6b 47 0d 00 	lea    rdx,[rip+0xd476b]        # 17bac0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x199b0>
+   a7355:	48 8d 05 d4 46 0d 00 	lea    rax,[rip+0xd46d4]        # 17ba30 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19920>
+   a735c:	48 0f 45 c2          	cmovne rax,rdx
+   a7360:	c3                   	ret
+   a7361:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+   a7368:	83 e2 20             	and    edx,0x20
+   a736b:	48 8d 05 4e 73 0d 00 	lea    rax,[rip+0xd734e]        # 17e6c0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1c5b0>
+   a7372:	75 a5                	jne    a7319 <memmove@@GLIBC_2.2.5+0x79>
+   a7374:	c3                   	ret
+   a7375:	0f 1f 00             	nop    DWORD PTR [rax]
+   a7378:	81 e6 00 02 00 00    	and    esi,0x200
+   a737e:	48 8d 15 fb b6 0c 00 	lea    rdx,[rip+0xcb6fb]        # 172a80 <_dl_mcount_wrapper@GLIBC_2.2.5+0x10970>
+   a7385:	48 8d 05 64 b6 0c 00 	lea    rax,[rip+0xcb664]        # 1729f0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x108e0>
+   a738c:	48 0f 45 c2          	cmovne rax,rdx
+   a7390:	c3                   	ret
+   a7391:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+   a7398:	81 e6 00 02 00 00    	and    esi,0x200
+   a739e:	48 8d 15 9b b7 0b 00 	lea    rdx,[rip+0xbb79b]        # 162b40 <_dl_mcount_wrapper@GLIBC_2.2.5+0xa30>
+   a73a5:	48 8d 05 04 b7 0b 00 	lea    rax,[rip+0xbb704]        # 162ab0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x9a0>
+   a73ac:	48 0f 45 c2          	cmovne rax,rdx
+   a73b0:	c3                   	ret
+
+/lib/x86_64-linux-gnu/libc.so.6:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000a7560 <memset@@GLIBC_2.2.5>:
+   a7560:	48 8b 15 59 d9 13 00 	mov    rdx,QWORD PTR [rip+0x13d959]        # 1e4ec0 <_rtld_global_ro@GLIBC_PRIVATE>
+   a7567:	48 8d 05 22 72 00 00 	lea    rax,[rip+0x7222]        # ae790 <memcpy@GLIBC_2.2.5+0x860>
+   a756e:	8b 8a c4 01 00 00    	mov    ecx,DWORD PTR [rdx+0x1c4]
+   a7574:	f6 c5 10             	test   ch,0x10
+   a7577:	75 63                	jne    a75dc <memset@@GLIBC_2.2.5+0x7c>
+   a7579:	8b 92 b8 00 00 00    	mov    edx,DWORD PTR [rdx+0xb8]
+   a757f:	f7 c2 00 00 01 00    	test   edx,0x10000
+   a7585:	75 59                	jne    a75e0 <memset@@GLIBC_2.2.5+0x80>
+   a7587:	89 d6                	mov    esi,edx
+   a7589:	81 e6 00 02 00 00    	and    esi,0x200
+   a758f:	f6 c2 20             	test   dl,0x20
+   a7592:	74 2c                	je     a75c0 <memset@@GLIBC_2.2.5+0x60>
+   a7594:	85 d2                	test   edx,edx
+   a7596:	0f 88 ac 00 00 00    	js     a7648 <memset@@GLIBC_2.2.5+0xe8>
+   a759c:	80 e6 08             	and    dh,0x8
+   a759f:	74 7f                	je     a7620 <memset@@GLIBC_2.2.5+0xc0>
+   a75a1:	48 8d 05 58 4a 0c 00 	lea    rax,[rip+0xc4a58]        # 16c000 <_dl_mcount_wrapper@GLIBC_2.2.5+0x9ef0>
+   a75a8:	85 f6                	test   esi,esi
+   a75aa:	75 30                	jne    a75dc <memset@@GLIBC_2.2.5+0x7c>
+   a75ac:	81 e1 00 00 02 00    	and    ecx,0x20000
+   a75b2:	48 8d 15 d7 49 0c 00 	lea    rdx,[rip+0xc49d7]        # 16bf90 <_dl_mcount_wrapper@GLIBC_2.2.5+0x9e80>
+   a75b9:	48 0f 45 c2          	cmovne rax,rdx
+   a75bd:	c3                   	ret
+   a75be:	66 90                	xchg   ax,ax
+   a75c0:	48 8d 05 79 72 00 00 	lea    rax,[rip+0x7279]        # ae840 <memcpy@GLIBC_2.2.5+0x910>
+   a75c7:	85 f6                	test   esi,esi
+   a75c9:	75 11                	jne    a75dc <memset@@GLIBC_2.2.5+0x7c>
+   a75cb:	81 e1 00 00 02 00    	and    ecx,0x20000
+   a75d1:	48 8d 15 28 72 00 00 	lea    rdx,[rip+0x7228]        # ae800 <memcpy@GLIBC_2.2.5+0x8d0>
+   a75d8:	48 0f 45 c2          	cmovne rax,rdx
+   a75dc:	c3                   	ret
+   a75dd:	0f 1f 00             	nop    DWORD PTR [rax]
+   a75e0:	f6 c5 20             	test   ch,0x20
+   a75e3:	75 a2                	jne    a7587 <memset@@GLIBC_2.2.5+0x27>
+   a75e5:	48 8d 05 24 6e 0d 00 	lea    rax,[rip+0xd6e24]        # 17e410 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1c300>
+   a75ec:	85 d2                	test   edx,edx
+   a75ee:	79 ec                	jns    a75dc <memset@@GLIBC_2.2.5+0x7c>
+   a75f0:	89 d6                	mov    esi,edx
+   a75f2:	f7 d6                	not    esi
+   a75f4:	81 e6 00 01 00 40    	and    esi,0x40000100
+   a75fa:	75 e0                	jne    a75dc <memset@@GLIBC_2.2.5+0x7c>
+   a75fc:	48 8d 05 3d 4d 0d 00 	lea    rax,[rip+0xd4d3d]        # 17c340 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a230>
+   a7603:	80 e6 02             	and    dh,0x2
+   a7606:	75 d4                	jne    a75dc <memset@@GLIBC_2.2.5+0x7c>
+   a7608:	81 e1 00 00 02 00    	and    ecx,0x20000
+   a760e:	48 8d 15 ab 4c 0d 00 	lea    rdx,[rip+0xd4cab]        # 17c2c0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a1b0>
+   a7615:	48 0f 45 c2          	cmovne rax,rdx
+   a7619:	c3                   	ret
+   a761a:	66 0f 1f 44 00 00    	nop    WORD PTR [rax+rax*1+0x0]
+   a7620:	f6 c5 08             	test   ch,0x8
+   a7623:	75 9b                	jne    a75c0 <memset@@GLIBC_2.2.5+0x60>
+   a7625:	48 8d 05 14 bf 0b 00 	lea    rax,[rip+0xbbf14]        # 163540 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1430>
+   a762c:	85 f6                	test   esi,esi
+   a762e:	75 ac                	jne    a75dc <memset@@GLIBC_2.2.5+0x7c>
+   a7630:	81 e1 00 00 02 00    	and    ecx,0x20000
+   a7636:	48 8d 15 93 be 0b 00 	lea    rdx,[rip+0xbbe93]        # 1634d0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x13c0>
+   a763d:	48 0f 45 c2          	cmovne rax,rdx
+   a7641:	c3                   	ret
+   a7642:	66 0f 1f 44 00 00    	nop    WORD PTR [rax+rax*1+0x0]
+   a7648:	89 d0                	mov    eax,edx
+   a764a:	f7 d0                	not    eax
+   a764c:	a9 00 01 00 40       	test   eax,0x40000100
+   a7651:	0f 85 45 ff ff ff    	jne    a759c <memset@@GLIBC_2.2.5+0x3c>
+   a7657:	48 8d 05 e2 be 0c 00 	lea    rax,[rip+0xcbee2]        # 173540 <_dl_mcount_wrapper@GLIBC_2.2.5+0x11430>
+   a765e:	85 f6                	test   esi,esi
+   a7660:	0f 85 76 ff ff ff    	jne    a75dc <memset@@GLIBC_2.2.5+0x7c>
+   a7666:	81 e1 00 00 02 00    	and    ecx,0x20000
+   a766c:	48 8d 15 4d be 0c 00 	lea    rdx,[rip+0xcbe4d]        # 1734c0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x113b0>
+   a7673:	48 0f 45 c2          	cmovne rax,rdx
+   a7677:	c3                   	ret

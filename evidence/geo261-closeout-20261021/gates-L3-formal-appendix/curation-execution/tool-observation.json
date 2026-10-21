@@ -1,0 +1,32 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "observationNature": "代理依實際工具回應事後逐欄轉錄；不是工具 transport 自動日誌。",
+  "shellCommand": "env -u CC -u PYTHONOPTIMIZE python3 -B /workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-launcher.py",
+  "cwd": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021",
+  "sessionId": 87139,
+  "launchToolResult": {
+    "chunk_id": "1abca0",
+    "wall_time_seconds": 1.001761692,
+    "session_id": 87139,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "finalToolResult": {
+    "chunk_id": "760511",
+    "wall_time_seconds": 0.000031948,
+    "exit_code": 0,
+    "original_token_count": 59,
+    "output": "{\"exitCode\": 0, \"receipt\": {\"path\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates-curation-execution/receipt.json\", \"bytes\": 2204, \"sha256\": \"64d73f26ff338b0a3e86cdefb6bba32dc75bbcbe48269684b3634f8903c4f8db\"}}\n"
+  },
+  "preparationToolResults": {
+    "completion": {
+      "chunk_id": "8317f7",
+      "exit_code": 0
+    },
+    "launcherAst": {
+      "chunk_id": "40798c",
+      "exit_code": 0
+    }
+  },
+  "limits": "此次僅封包已凍結的文字證據；未執行任何產品、建置、測試或正式 gate。"
+}

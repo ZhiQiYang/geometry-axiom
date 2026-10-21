@@ -1,0 +1,108 @@
+{
+  "schema": "geo261-source-adoption/1",
+  "sourceSha": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "previousHead": "249571fe2477845d5330f6190dad965bf327f43b",
+  "branch": "codex/geo261-closeout-20261021",
+  "finishedUtc": "2026-10-21T04:54:34.394953+00:00",
+  "remoteExact": true,
+  "scope": "只快轉自己的候選分支，未更新 PR #288 integration 來源分支。",
+  "freezeRelease": "L2 native session78097/chunk4b2423 真1；L2 canvas session17336/chunkd211b7 真0、owned cleanup 完成；此為協作觀察轉錄。",
+  "commands": [
+    {
+      "label": "head-before",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "branch",
+      "argv": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "status-before",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "source-parent",
+      "argv": [
+        "git",
+        "rev-parse",
+        "19401ca5448e162ee6140fed37b64b83b31ddec8^"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "changed-paths",
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "249571fe2477845d5330f6190dad965bf327f43b",
+        "19401ca5448e162ee6140fed37b64b83b31ddec8"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "fast-forward",
+      "argv": [
+        "git",
+        "merge",
+        "--ff-only",
+        "19401ca5448e162ee6140fed37b64b83b31ddec8"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "head-after",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "status-after",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "push",
+      "argv": [
+        "git",
+        "push",
+        "origin",
+        "HEAD:refs/heads/codex/geo261-closeout-20261021"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "remote",
+      "argv": [
+        "git",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "refs/heads/codex/geo261-closeout-20261021"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

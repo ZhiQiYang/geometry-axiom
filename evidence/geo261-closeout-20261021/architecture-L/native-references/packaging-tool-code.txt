@@ -1,0 +1,140 @@
+"""只整理已完成的 L native 原始證據；不執行產品、編譯器或測試。"""
+import ast
+import datetime
+import hashlib
+import json
+import re
+import shutil
+import subprocess
+from pathlib import Path
+
+ROOT = Path('/workspace/geo261-native-l')
+OUT = Path('/workspace/geo261-evidence/native-final')
+LAUNCHER = Path('/workspace/geo261-evidence/native-final-launcher')
+RAW = Path('/tmp/geometry-tests/run_all-logs')
+SHA = '43f85313c32410ac01406ab585846bbacafea278'
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+def write_json(path, data):
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
+
+def reference(path):
+    data=path.read_bytes()
+    return dict(path=str(path),bytes=len(data),sha256=digest(data))
+
+receipt = json.loads((OUT / 'receipt.json').read_text())
+launcher = json.loads((LAUNCHER / 'launcher-receipt.json').read_text())
+persisted_wrapper_exit = int((LAUNCHER / '.exit-code').read_text())
+persisted_launcher_exit = int((LAUNCHER / '.launcher-exit-code').read_text())
+assert receipt['sourceSha'] == SHA
+assert launcher['nativeSourceSha'] == SHA
+text = (OUT / 'run.log').read_text()
+expected_path = ROOT / 'tests/run_all.expected.json'
+expected = json.loads(expected_path.read_text())['suites']
+tree = ast.parse((ROOT / 'tests/run_all.py').read_text())
+allowed = next(ast.literal_eval(n.value) for n in tree.body if isinstance(n, ast.Assign)
+               and any(isinstance(t, ast.Name) and t.id == 'ALLOWED_SKIPS' for t in n.targets))
+rows = {}
+for match in re.finditer(r'^(\S+:\S+)[ \t]+(\d+|-)[ \t]+(\d+|ok|FAIL|-)[ \t]+(\d+|-)[ \t]+(\d+|-)[ \t]+([\d.]+)(?:[ \t]+(.*))?$', text, re.M):
+    name, total, passed, failed, skipped, seconds, note = match.groups()
+    rows[name] = dict(total=None if total == '-' else int(total),
+                      passed=int(passed) if passed.isdigit() else passed,
+                      failed=int(failed) if failed.isdigit() else failed,
+                      skipped=None if skipped == '-' else int(skipped),
+                      seconds=float(seconds), note=note or '')
+progress = [dict(number=int(a), of=int(b), suite=c) for a,b,c in re.findall(r'^\[(\d+)/(\d+)\] (\S+) …$', text, re.M)]
+total_match = re.search(r'^合計\(已執行、有計數者\)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+([\d.]+)', text, re.M)
+totals = None if not total_match else dict(zip(['total','passed','failed','skipped','suiteSeconds'],
+    [int(x) for x in total_match.groups()[:4]] + [float(total_match.group(5))]))
+mismatches = []
+for name, exp in expected.items():
+    actual = rows.get(name)
+    if actual is None or (exp['mode'] == 'count' and actual['total'] != exp['count']):
+        mismatches.append(dict(suite=name, expected=exp, actual=actual))
+for name in rows.keys() - expected.keys():
+    mismatches.append(dict(suite=name, expected=None, actual=rows[name]))
+destination = OUT / 'suite-logs'
+destination.mkdir(exist_ok=True)
+raw_index = []
+for path in sorted(RAW.rglob('*')):
+    if path.is_file() and path.suffix in ('.json','.log'):
+        data = path.read_bytes()
+        target = destination / path.relative_to(RAW)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if target.exists():
+            assert target.read_bytes()==data, '既有 raw 與來源不同，拒絕覆寫：'+str(target)
+        else:
+            shutil.copy2(path, target)
+        assert target.read_bytes() == data
+        raw_index.append(dict(sourcePath=str(path), artifactPath=str(target.relative_to(OUT)),
+                              bytes=len(data), sha256=digest(data), sourceMtimeNs=path.stat().st_mtime_ns))
+write_json(OUT/'suite-log-source-index.json', dict(sourceSha=SHA, sourceDirectory=str(RAW),
+    fileCount=len(raw_index), totalBytes=sum(x['bytes'] for x in raw_index), files=raw_index))
+started_ns=int(datetime.datetime.fromisoformat(receipt['startedUtc']).timestamp()*1_000_000_000)
+older_raw=[x for x in raw_index if x['sourceMtimeNs'] < started_ns]
+python_failures=[]
+skips=[]
+py_json = list(destination.glob('py_*.json'))
+for path in sorted(py_json):
+    data=json.loads(path.read_text())
+    name=path.stem.replace('py_', 'py:', 1)
+    if data.get('failed') or data.get('extra_errors') or data.get('import_error') or data.get('blocked_by_error'):
+        python_failures.append(dict(suite=name, data=data))
+    used=set()
+    for item in data.get('skip_items',[]):
+        matches=[i for i, rule in enumerate(allowed) if i not in used and rule['suite']==name
+                 and rule['test']==item.get('test') and rule['reason']==item.get('reason')
+                 and 'posix' in rule['platforms'] and item.get('count',1)==1]
+        used.update(matches[:1])
+        skips.append(dict(suite=name,item=item,allowed=bool(matches),matchedRules=[allowed[i] for i in matches[:1]]))
+missing_logs=[name for name in expected if not (destination/(name.replace(':','_')+'.log')).is_file()]
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+status=subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()
+source_dir=OUT/'source-reference'
+source_dir.mkdir(exist_ok=True)
+shutil.copy2(expected_path,source_dir/'run_all.expected.json')
+write_json(source_dir/'source-hashes.json',dict(sourceSha=SHA,before=receipt['sourceHashesBefore'],
+    after=receipt['sourceHashesAfter'],unchanged=receipt['sourceHashesUnchanged'],allowedSkips=allowed))
+named={}
+for name in ['py:test_architecture_contract','py:test_product_architecture','py:test_geo261_model_base_replay','mutation:check']:
+    prefix=name.replace(':','_')
+    named[name]=dict(row=rows.get(name), rawFiles=[x for x in raw_index if Path(x['artifactPath']).name.startswith(prefix+'.')],
+                    expected=expected[name])
+provenance={key:reference(path) for key,path in {
+    'command':OUT/'command.json','receipt':OUT/'receipt.json',
+    'runLog':OUT/'run.log','packagingTool':Path(__file__),
+    'launcherReceipt':LAUNCHER/'launcher-receipt.json',
+    'sourceIndex':OUT/'suite-log-source-index.json','expected':source_dir/'run_all.expected.json'}.items()}
+write_json(OUT/'named-required-suites.json',dict(sourceSha=SHA,suites=named,artifactReferences=provenance,
+    note='mutation:check 僅為 inventory freshness；此處不宣稱重跑所有突變。'))
+verification=dict(sourceSha=SHA, runExitCode=receipt['exitCode'], wrapperReturnCode=launcher['wrapperReturnCode'],
+    launcherExitCode=launcher['launcherExitCode'], mainChildRawWaitStatus=receipt['mainChildRawWaitStatus'],
+    persistedWrapperExitCode=persisted_wrapper_exit,persistedLauncherExitCode=persisted_launcher_exit,
+    startedUtc=receipt['startedUtc'], finishedUtc=receipt['finishedUtc'],elapsedSeconds=receipt['elapsedSeconds'],
+    expectedSuiteCount=len(expected),observedCompletedTableRows=len(rows),observedProgressCount=len(progress),
+    lastProgress=progress[-1] if progress else None,expectedCountedTotal=sum(x.get('count',0) for x in expected.values()),
+    observedTotals=totals, expectedMismatches=mismatches,missingSuiteLogs=missing_logs,
+    exitCodeOnlySuites=[n for n,e in expected.items() if e['mode']=='exit-code-only'],pythonJsonCount=len(py_json),
+    pythonFailures=python_failures,skips=skips,unallowedSkipCount=sum(not s['allowed'] for s in skips),
+    sourceHashesUnchanged=receipt['sourceHashesUnchanged'],headBefore=receipt['headBefore'],headAfter=receipt['headAfter'],
+    statusBefore=receipt['statusBefore'],statusAfter=receipt['statusAfter'],packagingHead=head,packagingStatus=status,
+    rawLogCount=len(raw_index),rawLogBytes=sum(x['bytes'] for x in raw_index),timedOut=receipt['exitCode']==124,
+    rawFilesOlderThanRun=older_raw,
+    reaped=receipt['reaped'],cleanup=receipt['cleanup'],suiteRows=rows,
+    separateGatesNotice=text.split('必要 owner／browser 整合與模組驗證另驗（不計入上述 pass/skip）：')[-1].split('\nexit ')[0].splitlines())
+verification['acceptedNative']=bool(receipt['exitCode']==0 and launcher['wrapperReturnCode']==0 and launcher['launcherExitCode']==0
+    and persisted_wrapper_exit==0 and persisted_launcher_exit==0
+    and len(rows)==len(expected) and len(progress)==len(expected) and not mismatches and not python_failures and not missing_logs
+    and not older_raw
+    and not verification['unallowedSkipCount'] and totals and totals['failed']==0
+    and head==SHA==receipt['headBefore']==receipt['headAfter'] and not status and not receipt['statusBefore'] and not receipt['statusAfter']
+    and receipt['sourceHashesUnchanged'] and receipt['elapsedSeconds']<2100)
+verification['all224ExpectedMatched']=len(rows)==len(expected)==224 and not mismatches
+verification['all224Passed']=verification['acceptedNative'] and len(expected)==224
+verification['all224PassedMeaning']='全部 224 個 suite 均完成且符合 run_all 的完整驗收判準；保留具名允許 skip 與 exit-code-only 分類，不宣稱 5176 項全部為斷言通過。'
+verification['artifactReferences']={**provenance,'namedRequiredSuites':reference(OUT/'named-required-suites.json')}
+write_json(OUT/'verification.json',verification)
+print(json.dumps({k:v for k,v in verification.items() if k in ['acceptedNative','sourceSha','runExitCode','wrapperReturnCode','launcherExitCode','elapsedSeconds','observedCompletedTableRows','observedTotals','rawLogCount','rawLogBytes','expectedMismatches','missingSuiteLogs','unallowedSkipCount']},ensure_ascii=False))
+raise SystemExit(0 if verification['acceptedNative'] else 1)

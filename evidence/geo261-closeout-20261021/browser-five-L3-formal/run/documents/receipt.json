@@ -1,0 +1,626 @@
+{
+  "suite": "documents",
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "startedUtc": "2026-10-21T06:37:32Z",
+  "status": "通過",
+  "releaseNote": "root已核同L3完整canvas真0、2261/85golden、owned cleanup全退後明示放行原five；固定6589248c9a94bdf0460d8f84dd1610e51048188b，assembly/documents/grid/space/timber原scope及900/600/900/900/1200秒整job上限，五項依序單browser。Q38使用第一heavy槽，本批為第二槽；原private runtime自行freshness，不copy native binary，保存原argv與真退出碼。",
+  "jobTimeoutSeconds": 600,
+  "cleanupReserveSeconds": 15.0,
+  "output": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents",
+  "temp": "/tmp/geo261-browser-five-l3-6589248c-formal/documents",
+  "ports": {
+    "http": 18852,
+    "cdp": 9366
+  },
+  "stages": [
+    {
+      "name": "build",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:32Z",
+      "startedMonotonic": 40115.413929707,
+      "remainingBudgetSeconds": 584.9065622080016,
+      "log": "build.log",
+      "pid": 494754,
+      "returncode": 0,
+      "finishedUtc": "2026-10-21T06:37:32Z",
+      "elapsedSeconds": 0.5388362040030188
+    },
+    {
+      "name": "fonts-package",
+      "argv": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status}\n${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:32Z",
+      "startedMonotonic": 40115.953287694,
+      "remainingBudgetSeconds": 10,
+      "log": "fonts-package.log",
+      "pid": 494768,
+      "returncode": 0,
+      "finishedUtc": "2026-10-21T06:37:32Z",
+      "elapsedSeconds": 0.023915284997201525
+    },
+    {
+      "name": "fonts-default",
+      "argv": [
+        "fc-match",
+        "-f",
+        "%{family}\n%{file}\n",
+        "sans-serif:lang=zh-tw"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:32Z",
+      "startedMonotonic": 40115.977530023,
+      "remainingBudgetSeconds": 10,
+      "log": "fonts-default.log",
+      "pid": 494769,
+      "returncode": 0,
+      "finishedUtc": "2026-10-21T06:37:33Z",
+      "elapsedSeconds": 0.5370641119952779
+    },
+    {
+      "name": "fonts-match",
+      "argv": [
+        "fc-match",
+        "-f",
+        "%{family}\n%{file}\n",
+        "Noto Sans CJK TC:lang=zh-tw"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:33Z",
+      "startedMonotonic": 40116.514945655,
+      "remainingBudgetSeconds": 10,
+      "log": "fonts-match.log",
+      "pid": 494778,
+      "returncode": 0,
+      "finishedUtc": "2026-10-21T06:37:33Z",
+      "elapsedSeconds": 0.021123268001247197
+    },
+    {
+      "name": "browser-version",
+      "argv": [
+        "/usr/bin/chromium",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:33Z",
+      "startedMonotonic": 40116.557184569,
+      "remainingBudgetSeconds": 10,
+      "log": "browser-version.log",
+      "pid": 494779,
+      "returncode": 0,
+      "finishedUtc": "2026-10-21T06:37:33Z",
+      "elapsedSeconds": 0.2861469780036714
+    },
+    {
+      "name": "node-version",
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:33Z",
+      "startedMonotonic": 40116.843776386,
+      "remainingBudgetSeconds": 10,
+      "log": "node-version.log",
+      "pid": 494803,
+      "returncode": 0,
+      "finishedUtc": "2026-10-21T06:37:33Z",
+      "elapsedSeconds": 0.02539314900059253
+    },
+    {
+      "name": "runtime-attempt-1",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18852"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:33Z",
+      "startedMonotonic": 40116.886167584,
+      "remainingBudgetSeconds": 8,
+      "log": "runtime-attempt-1.log",
+      "pid": 494805,
+      "returncode": 1,
+      "finishedUtc": "2026-10-21T06:37:34Z",
+      "elapsedSeconds": 0.2781554870016407
+    },
+    {
+      "name": "runtime-attempt-2",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18852"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:35Z",
+      "startedMonotonic": 40118.164993462,
+      "remainingBudgetSeconds": 8,
+      "log": "runtime-attempt-2.log",
+      "pid": 494808,
+      "returncode": 0,
+      "finishedUtc": "2026-10-21T06:37:35Z",
+      "elapsedSeconds": 0.28567225099686766
+    },
+    {
+      "name": "runtime-before",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18852"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:35Z",
+      "startedMonotonic": 40118.451135016,
+      "remainingBudgetSeconds": 8,
+      "log": "runtime-before.log",
+      "pid": 494810,
+      "returncode": 0,
+      "finishedUtc": "2026-10-21T06:37:35Z",
+      "elapsedSeconds": 0.2863402570001199
+    },
+    {
+      "name": "run",
+      "argv": [
+        "node",
+        "geometry-web/documents_browser_test.js"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:35Z",
+      "startedMonotonic": 40118.741385697,
+      "remainingBudgetSeconds": 581.5791011409965,
+      "log": "run.log",
+      "pid": 494812,
+      "returncode": 0,
+      "finishedUtc": "2026-10-21T06:37:47Z",
+      "elapsedSeconds": 11.475342403995455
+    },
+    {
+      "name": "runtime-after",
+      "argv": [
+        "python3",
+        "geometry-web/runtime_version.py",
+        "--probe",
+        "18852"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-21T06:37:47Z",
+      "startedMonotonic": 40130.217374365,
+      "remainingBudgetSeconds": 8,
+      "log": "runtime-after.log",
+      "pid": 495074,
+      "returncode": 0,
+      "finishedUtc": "2026-10-21T06:37:47Z",
+      "elapsedSeconds": 0.5362907759990776
+    }
+  ],
+  "startedMonotonic": 40115.320481229,
+  "deadlineMonotonic": 40715.320481229,
+  "kernel": "6.18.55",
+  "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "loadBefore": [
+    1.279296875,
+    1.66796875,
+    1.8642578125
+  ],
+  "stackLimitBytes": [
+    16777216,
+    -1
+  ],
+  "serverPid": 494804,
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "861b13edb9cf900d3159b600a1a978e48788f8b82a6ae04d830d7bd65e2aebf5",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 494804,
+    "session": "42726e8347e14e8ba713887e22a5f059"
+  },
+  "nativeIdentity": {
+    "build": {
+      "root": "/workspace/geometry-axiom",
+      "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3",
+      "executables": {
+        "core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+        "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+        "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"
+      },
+      "port": null,
+      "managedPreview": false
+    },
+    "server": {
+      "root": "/workspace/geometry-axiom",
+      "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3",
+      "executables": {
+        "core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+        "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+        "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"
+      },
+      "port": 18852,
+      "managedPreview": false
+    },
+    "executables": {
+      "core": {
+        "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core",
+        "bytes": 882496,
+        "sha256": "0c99df659dbf1b8697d3e6f786324e9e9ee30ed0eeddc2fe362c86a1110b8f49",
+        "sidecarSha256": "f0cb7d07af87950b6a61d9a229a1aaad9505eb82a7a881880fb686171885d306",
+        "fingerprint": "23cf3060b7b36d09a1c8f6280e90ccac1f4c3e91c6550edf5019998fc1bc4ec6"
+      },
+      "bridge": {
+        "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge",
+        "bytes": 1100552,
+        "sha256": "dd9c955ba4ecac888132b62eb921352a84e1acea1f3803ee78772afffe466d71",
+        "sidecarSha256": "cdc6b42ab690654bd29e745d926c82da5b225d6d051e4ad344f1316c52c2f7d4",
+        "fingerprint": "6089d32a595a7e9bdbb8ac5d3ddaa0011155a1067ce7626d11dd7fe94833b38b"
+      },
+      "model-base": {
+        "path": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base",
+        "bytes": 947400,
+        "sha256": "1ce880adc570c420fd7f46f58c2074f12742c166b1b3fc21444eb33ce94e0902",
+        "sidecarSha256": "b6b6299696cb7a6d22f1da84d195fcd63009ffe77a025d35c2689f2d1bbb88b2",
+        "fingerprint": "3df3eae39e0a3f34e288f3da91ef9059961ff9a5a93ec4c90d0803a8fdda2c09"
+      }
+    },
+    "freshnessAuthority": "start_local.prepare_binaries 在 build 及 server 啟動逐項呼叫 require_fresh"
+  },
+  "browserReturncode": 0,
+  "validationExitCode": 0,
+  "cleanup": {
+    "actions": [
+      {
+        "at": "2026-10-21T06:37:47Z",
+        "signal": "SIGINT",
+        "pid": 494804,
+        "pgid": 494804,
+        "starttime": 4011686
+      }
+    ],
+    "errors": [],
+    "liveRemaining": [],
+    "zombiesRemaining": [],
+    "processes": [
+      {
+        "pid": 494754,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494754,
+        "starttime": 4011541,
+        "argv": "",
+        "role": "build",
+        "firstSeen": "2026-10-21T06:37:32Z",
+        "lastSeen": "2026-10-21T06:37:32Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:32Z",
+        "pid": 494766,
+        "state": "S",
+        "ppid": 494754,
+        "pgid": 494754,
+        "starttime": 4011561,
+        "argv": "sh -c python3 geometry-web/start_local.py --build-only",
+        "lastSeen": "2026-10-21T06:37:32Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:32Z",
+        "pid": 494767,
+        "state": "R",
+        "ppid": 494766,
+        "pgid": 494754,
+        "starttime": 4011561,
+        "argv": "python3 geometry-web/start_local.py --build-only",
+        "lastSeen": "2026-10-21T06:37:32Z"
+      },
+      {
+        "pid": 494768,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494768,
+        "starttime": 4011595,
+        "argv": "",
+        "role": "fonts-package",
+        "firstSeen": "2026-10-21T06:37:32Z",
+        "lastSeen": "2026-10-21T06:37:32Z"
+      },
+      {
+        "pid": 494769,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494769,
+        "starttime": 4011597,
+        "argv": "",
+        "role": "fonts-default",
+        "firstSeen": "2026-10-21T06:37:32Z",
+        "lastSeen": "2026-10-21T06:37:33Z"
+      },
+      {
+        "pid": 494778,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494778,
+        "starttime": 4011651,
+        "argv": "",
+        "role": "fonts-match",
+        "firstSeen": "2026-10-21T06:37:33Z",
+        "lastSeen": "2026-10-21T06:37:33Z"
+      },
+      {
+        "pid": 494779,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494779,
+        "starttime": 4011655,
+        "argv": "",
+        "role": "browser-version",
+        "firstSeen": "2026-10-21T06:37:33Z",
+        "lastSeen": "2026-10-21T06:37:33Z"
+      },
+      {
+        "pid": 494803,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494803,
+        "starttime": 4011684,
+        "argv": "",
+        "role": "node-version",
+        "firstSeen": "2026-10-21T06:37:33Z",
+        "lastSeen": "2026-10-21T06:37:33Z"
+      },
+      {
+        "pid": 494804,
+        "state": "R",
+        "ppid": 492590,
+        "pgid": 494804,
+        "starttime": 4011686,
+        "argv": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -u /workspace/geometry-axiom/geometry-web/serve.py 18852",
+        "role": "server",
+        "firstSeen": "2026-10-21T06:37:33Z",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      },
+      {
+        "pid": 494805,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494805,
+        "starttime": 4011688,
+        "argv": "",
+        "role": "runtime-attempt-1",
+        "firstSeen": "2026-10-21T06:37:33Z",
+        "lastSeen": "2026-10-21T06:37:34Z"
+      },
+      {
+        "pid": 494808,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494808,
+        "starttime": 4011816,
+        "argv": "",
+        "role": "runtime-attempt-2",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "lastSeen": "2026-10-21T06:37:35Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494806,
+        "state": "R",
+        "ppid": 494804,
+        "pgid": 494804,
+        "starttime": 4011738,
+        "argv": "",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      },
+      {
+        "pid": 494810,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494810,
+        "starttime": 4011845,
+        "argv": "",
+        "role": "runtime-before",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "lastSeen": "2026-10-21T06:37:35Z"
+      },
+      {
+        "pid": 494812,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494812,
+        "starttime": 4011874,
+        "argv": "",
+        "role": "run",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494914,
+        "state": "S",
+        "ppid": 494837,
+        "pgid": 494812,
+        "starttime": 4011900,
+        "argv": "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-browser-five-l3-6589248c-formal/documents/geometry-documents-chrome-Pvw2bF --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9366 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=7 --time-ticks-at-unix-epoch=-1792524536884937 --launch-time-ticks=40119003473 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,5628297670299326560,15173945413803077730,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,439576228987809318,4182224074901641496,4 --trace-process-track-uuid=3190708992871164437",
+        "lastSeen": "2026-10-21T06:37:46Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494819,
+        "state": "S",
+        "ppid": 494812,
+        "pgid": 494812,
+        "starttime": 4011878,
+        "argv": "/usr/lib/chromium/chromium --show-component-extension-options --enable-gpu-rasterization --no-default-browser-check --disable-pings --media-router=0 --enable-remote-extensions --load-extension= about:blank --headless=new --disable-gpu --no-first-run --remote-debugging-port=9366 --user-data-dir=/tmp/geo261-browser-five-l3-6589248c-formal/documents/geometry-documents-chrome-Pvw2bF --window-size=1400,900 --no-sandbox",
+        "lastSeen": "2026-10-21T06:37:46Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494905,
+        "state": "S",
+        "ppid": 494837,
+        "pgid": 494812,
+        "starttime": 4011897,
+        "argv": "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-browser-five-l3-6589248c-formal/documents/geometry-documents-chrome-Pvw2bF --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9366 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1792524536884937 --launch-time-ticks=40118975509 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,5628297670299326560,15173945413803077730,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,439576228987809318,4182224074901641496,4 --trace-process-track-uuid=3190708990997080739",
+        "lastSeen": "2026-10-21T06:37:46Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494857,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494812,
+        "starttime": 4011888,
+        "argv": "",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494921,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494812,
+        "starttime": 4011901,
+        "argv": "",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494860,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494812,
+        "starttime": 4011888,
+        "argv": "",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494834,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494833,
+        "starttime": 4011883,
+        "argv": "",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494836,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494812,
+        "starttime": 4011883,
+        "argv": "",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494837,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494812,
+        "starttime": 4011883,
+        "argv": "",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      },
+      {
+        "role": "後代或接回孤兒",
+        "firstSeen": "2026-10-21T06:37:35Z",
+        "pid": 494873,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 494812,
+        "starttime": 4011892,
+        "argv": "",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      },
+      {
+        "pid": 495074,
+        "state": "Z",
+        "ppid": 492590,
+        "pgid": 495074,
+        "starttime": 4013021,
+        "argv": "",
+        "role": "runtime-after",
+        "firstSeen": "2026-10-21T06:37:47Z",
+        "lastSeen": "2026-10-21T06:37:47Z"
+      }
+    ],
+    "directReturncodes": {
+      "494754": 0,
+      "494768": 0,
+      "494769": 0,
+      "494778": 0,
+      "494779": 0,
+      "494803": 0,
+      "494804": -2,
+      "494805": 1,
+      "494808": 0,
+      "494810": 0,
+      "494812": 0,
+      "495074": 0
+    },
+    "httpPortFree": true,
+    "cdpPortFree": true,
+    "portCheck": "connect_ex 必須 ECONNREFUSED，避免 TIME_WAIT 被誤認為存活 listener"
+  },
+  "screenshots": {
+    "count": 8,
+    "requiredNames": [
+      "documents-desktop-library.png",
+      "documents-desktop-reader-dark.png",
+      "documents-desktop-pdf.png",
+      "documents-mobile-pdf.png",
+      "documents-mobile-reader.png",
+      "documents-mobile-library.png",
+      "documents-desktop-cases.png",
+      "documents-mobile-cases.png"
+    ],
+    "paths": [
+      "screenshots/documents/documents-desktop-cases.png",
+      "screenshots/documents/documents-desktop-library.png",
+      "screenshots/documents/documents-desktop-pdf.png",
+      "screenshots/documents/documents-desktop-reader-dark.png",
+      "screenshots/documents/documents-mobile-cases.png",
+      "screenshots/documents/documents-mobile-library.png",
+      "screenshots/documents/documents-mobile-pdf.png",
+      "screenshots/documents/documents-mobile-reader.png"
+    ],
+    "pngSignatureChecked": true
+  },
+  "headAfter": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "statusAfter": "",
+  "sourceHashesUnchanged": true,
+  "headGuard": true,
+  "elapsedSeconds": 15.744813502999023,
+  "withinJobDeadline": true,
+  "loadAfter": [
+    1.06298828125,
+    1.6015625,
+    1.8388671875
+  ],
+  "accepted": true,
+  "errors": [],
+  "finishedUtc": "2026-10-21T06:37:47Z"
+}

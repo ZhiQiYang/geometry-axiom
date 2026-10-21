@@ -1,0 +1,33 @@
+"""以新 config 綁定原唯讀驗證封包器；不執行 mutate 或改帳本。"""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import re
+
+ORIGINAL=Path('/workspace/geo261-evidence/ledger-cc-validate-and-package.py')
+EXPECTED='0eecd56f07f430bf2d74737193b9de66c5f290331a544abd9f3543159cb33efa'
+def main():
+    if not __debug__:raise RuntimeError('禁止停用 assert')
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--source',required=True);p.add_argument('--config',type=Path,required=True)
+    p.add_argument('--execute',action='store_true');a=p.parse_args()
+    if not a.execute:p.error('須明確指定 --execute；未封包')
+    assert re.fullmatch('[0-9a-f]{40}',a.source)
+    config=json.loads(a.config.read_bytes());out=Path(config['output_directory'])
+    assert config['source_sha']==a.source
+    assert config['compiler_preflight']['core_baseline_total']==165
+    assert len(config['compiler_preflight']['bridge_restored_methods'])==27
+    assert (out/'supervisor-observed.exit-code').read_text().strip()=='0'
+    original=ORIGINAL.read_bytes();assert hashlib.sha256(original).hexdigest()==EXPECTED
+    assert not (out/'publish').exists() and not (out/'ledger-validation.json').exists()
+    (out/'package-wrapper-code.txt').write_bytes(Path(__file__).read_bytes())
+    (out/'package-original-code.txt').write_bytes(original)
+    scope={'__name__':'ledger_original_validator','__file__':str(ORIGINAL)}
+    exec(compile(original,str(ORIGINAL),'exec'),scope)
+    scope.update(OUT=out,WORK=Path(config['worktree']),CACHE=Path(config['cache']),SOURCE=a.source)
+    (out/'package-binding.json').write_text(json.dumps({'source_sha':a.source,'output':str(out),
+      'worktree':config['worktree'],'cache':config['cache'],'original_validator_sha256':EXPECTED,
+      '備註':'執行前覆寫原模組四個來源／路徑參數；驗證函式原 bytes 不變，未呼叫舊 A。'},ensure_ascii=False,indent=2)+'\n')
+    scope['validate']()
+if __name__=='__main__':main()

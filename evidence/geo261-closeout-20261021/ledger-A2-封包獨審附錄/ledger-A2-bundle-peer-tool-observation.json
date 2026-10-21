@@ -1,0 +1,19 @@
+{
+  "分類": "對本次實際工具回覆的轉錄；不是 raw transport 檔案，也沒有重新 wait。",
+  "command": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/ledger-A2-bundle-peer-check.py"
+  ],
+  "tool": "exec_command",
+  "actualToolResponse": {
+    "chunk_id": "44d811",
+    "wall_time_seconds": 0.567134219,
+    "exit_code": 0,
+    "output": "{\n  \"report\": \"/workspace/geo261-evidence/ledger-A2-bundle-peer.json\",\n  \"reportSha256\": \"6668df341eeebb9d6ae520ed51d75d1446263b78f93cd668fc2ce4a3aee07933\",\n  \"files\": 2258,\n  \"bytes\": 32239179,\n  \"copiedOriginals\": 2253,\n  \"checkPassed\": true\n}\n"
+  },
+  "firstAttemptObservation": "/workspace/geo261-evidence/ledger-A2-bundle-peer-attempt1-observation.json",
+  "firstAttemptCode": "/workspace/geo261-evidence/ledger-A2-bundle-peer-attempt1-code.txt",
+  "finalCode": "/workspace/geo261-evidence/ledger-A2-bundle-peer-code.txt",
+  "scope": "僅讀 ledger-A2-cc、其逐檔來源、指定外層收據及方法補充；不重跑產品或改凍結包。"
+}

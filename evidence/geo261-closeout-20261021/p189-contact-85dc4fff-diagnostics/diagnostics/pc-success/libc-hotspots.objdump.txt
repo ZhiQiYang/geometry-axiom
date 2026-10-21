@@ -1,0 +1,266 @@
+
+/lib/x86_64-linux-gnu/libc.so.6:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000017ba30 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19920>:
+  17ba30:	48 89 f8             	mov    rax,rdi
+  17ba33:	48 83 fa 40          	cmp    rdx,0x40
+  17ba37:	0f 82 c3 00 00 00    	jb     17bb00 <_dl_mcount_wrapper@GLIBC_2.2.5+0x199f0>
+  17ba3d:	62 e1 fe 48 6f 06    	vmovdqu64 zmm16,ZMMWORD PTR [rsi]
+  17ba43:	48 81 fa 80 00 00 00 	cmp    rdx,0x80
+  17ba4a:	0f 87 6d 01 00 00    	ja     17bbbd <_dl_mcount_wrapper@GLIBC_2.2.5+0x19aad>
+  17ba50:	62 e1 fe 48 6f 4c 16 	vmovdqu64 zmm17,ZMMWORD PTR [rsi+rdx*1-0x40]
+  17ba57:	ff 
+  17ba58:	62 e1 fe 48 7f 07    	vmovdqu64 ZMMWORD PTR [rdi],zmm16
+  17ba5e:	62 e1 fe 48 7f 4c 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x40],zmm17
+  17ba65:	ff 
+  17ba66:	c3                   	ret
+  17ba67:	66 0f 1f 84 00 00 00 	nop    WORD PTR [rax+rax*1+0x0]
+  17ba6e:	00 00 
+  17ba70:	48 39 d1             	cmp    rcx,rdx
+  17ba73:	0f 82 57 f9 f9 ff    	jb     11b3d0 <__chk_fail@@GLIBC_2.3.4>
+  17ba79:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+  17ba80:	48 89 f8             	mov    rax,rdi
+  17ba83:	48 01 d0             	add    rax,rdx
+  17ba86:	eb 3b                	jmp    17bac3 <_dl_mcount_wrapper@GLIBC_2.2.5+0x199b3>
+  17ba88:	0f 1f 84 00 00 00 00 	nop    DWORD PTR [rax+rax*1+0x0]
+  17ba8f:	00 
+  17ba90:	48 39 d1             	cmp    rcx,rdx
+  17ba93:	0f 82 37 f9 f9 ff    	jb     11b3d0 <__chk_fail@@GLIBC_2.3.4>
+  17ba99:	66 66 2e 0f 1f 84 00 	data16 cs nop WORD PTR [rax+rax*1+0x0]
+  17baa0:	00 00 00 00 
+  17baa4:	66 66 2e 0f 1f 84 00 	data16 cs nop WORD PTR [rax+rax*1+0x0]
+  17baab:	00 00 00 00 
+  17baaf:	66 66 2e 0f 1f 84 00 	data16 cs nop WORD PTR [rax+rax*1+0x0]
+  17bab6:	00 00 00 00 
+  17baba:	66 0f 1f 44 00 00    	nop    WORD PTR [rax+rax*1+0x0]
+  17bac0:	48 89 f8             	mov    rax,rdi
+  17bac3:	48 83 fa 40          	cmp    rdx,0x40
+  17bac7:	72 37                	jb     17bb00 <_dl_mcount_wrapper@GLIBC_2.2.5+0x199f0>
+  17bac9:	62 e1 fe 48 6f 06    	vmovdqu64 zmm16,ZMMWORD PTR [rsi]
+  17bacf:	48 81 fa 80 00 00 00 	cmp    rdx,0x80
+  17bad6:	0f 87 d4 00 00 00    	ja     17bbb0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19aa0>
+  17badc:	62 e1 fe 48 6f 4c 16 	vmovdqu64 zmm17,ZMMWORD PTR [rsi+rdx*1-0x40]
+  17bae3:	ff 
+  17bae4:	62 e1 fe 48 7f 07    	vmovdqu64 ZMMWORD PTR [rdi],zmm16
+  17baea:	62 e1 fe 48 7f 4c 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x40],zmm17
+  17baf1:	ff 
+  17baf2:	c3                   	ret
+  17baf3:	8b 0e                	mov    ecx,DWORD PTR [rsi]
+  17baf5:	8b 34 16             	mov    esi,DWORD PTR [rsi+rdx*1]
+  17baf8:	89 0f                	mov    DWORD PTR [rdi],ecx
+  17bafa:	89 34 17             	mov    DWORD PTR [rdi+rdx*1],esi
+  17bafd:	c3                   	ret
+  17bafe:	66 90                	xchg   ax,ax
+  17bb00:	83 fa 20             	cmp    edx,0x20
+  17bb03:	73 40                	jae    17bb45 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19a35>
+  17bb05:	83 fa 10             	cmp    edx,0x10
+  17bb08:	73 26                	jae    17bb30 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19a20>
+  17bb0a:	83 fa 08             	cmp    edx,0x8
+  17bb0d:	73 53                	jae    17bb62 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19a52>
+  17bb0f:	48 83 ea 04          	sub    rdx,0x4
+  17bb13:	73 de                	jae    17baf3 <_dl_mcount_wrapper@GLIBC_2.2.5+0x199e3>
+  17bb15:	83 fa fd             	cmp    edx,0xfffffffd
+  17bb18:	7c 10                	jl     17bb2a <_dl_mcount_wrapper@GLIBC_2.2.5+0x19a1a>
+  17bb1a:	8a 0e                	mov    cl,BYTE PTR [rsi]
+  17bb1c:	74 0a                	je     17bb28 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19a18>
+  17bb1e:	0f b7 74 16 02       	movzx  esi,WORD PTR [rsi+rdx*1+0x2]
+  17bb23:	66 89 74 17 02       	mov    WORD PTR [rdi+rdx*1+0x2],si
+  17bb28:	88 0f                	mov    BYTE PTR [rdi],cl
+  17bb2a:	c3                   	ret
+  17bb2b:	0f 1f 44 00 00       	nop    DWORD PTR [rax+rax*1+0x0]
+  17bb30:	c5 fa 6f 06          	vmovdqu xmm0,XMMWORD PTR [rsi]
+  17bb34:	c5 fa 6f 4c 16 f0    	vmovdqu xmm1,XMMWORD PTR [rsi+rdx*1-0x10]
+  17bb3a:	c5 fa 7f 07          	vmovdqu XMMWORD PTR [rdi],xmm0
+  17bb3e:	c5 fa 7f 4c 17 f0    	vmovdqu XMMWORD PTR [rdi+rdx*1-0x10],xmm1
+  17bb44:	c3                   	ret
+  17bb45:	62 e1 fe 28 6f 06    	vmovdqu64 ymm16,YMMWORD PTR [rsi]
+  17bb4b:	62 e1 fe 28 6f 4c 16 	vmovdqu64 ymm17,YMMWORD PTR [rsi+rdx*1-0x20]
+  17bb52:	ff 
+  17bb53:	62 e1 fe 28 7f 07    	vmovdqu64 YMMWORD PTR [rdi],ymm16
+  17bb59:	62 e1 fe 28 7f 4c 17 	vmovdqu64 YMMWORD PTR [rdi+rdx*1-0x20],ymm17
+  17bb60:	ff 
+  17bb61:	c3                   	ret
+  17bb62:	48 8b 4c 16 f8       	mov    rcx,QWORD PTR [rsi+rdx*1-0x8]
+  17bb67:	48 8b 36             	mov    rsi,QWORD PTR [rsi]
+  17bb6a:	48 89 37             	mov    QWORD PTR [rdi],rsi
+  17bb6d:	48 89 4c 17 f8       	mov    QWORD PTR [rdi+rdx*1-0x8],rcx
+  17bb72:	c3                   	ret
+  17bb73:	62 e1 fe 48 6f 54 16 	vmovdqu64 zmm18,ZMMWORD PTR [rsi+rdx*1-0x40]
+  17bb7a:	ff 
+  17bb7b:	62 e1 fe 48 6f 5c 16 	vmovdqu64 zmm19,ZMMWORD PTR [rsi+rdx*1-0x80]
+  17bb82:	fe 
+  17bb83:	62 e1 fe 48 7f 07    	vmovdqu64 ZMMWORD PTR [rdi],zmm16
+  17bb89:	62 e1 fe 48 7f 4f 01 	vmovdqu64 ZMMWORD PTR [rdi+0x40],zmm17
+  17bb90:	62 e1 fe 48 7f 54 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x40],zmm18
+  17bb97:	ff 
+  17bb98:	62 e1 fe 48 7f 5c 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x80],zmm19
+  17bb9f:	fe 
+  17bba0:	c3                   	ret
+  17bba1:	66 66 2e 0f 1f 84 00 	data16 cs nop WORD PTR [rax+rax*1+0x0]
+  17bba8:	00 00 00 00 
+  17bbac:	0f 1f 40 00          	nop    DWORD PTR [rax+0x0]
+  17bbb0:	48 3b 15 61 96 06 00 	cmp    rdx,QWORD PTR [rip+0x69661]        # 1e5218 <obstack_exit_failure@@GLIBC_2.2.5+0x10>
+  17bbb7:	0f 87 33 02 00 00    	ja     17bdf0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19ce0>
+  17bbbd:	48 81 fa 00 02 00 00 	cmp    rdx,0x200
+  17bbc4:	77 7a                	ja     17bc40 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19b30>
+  17bbc6:	62 e1 fe 48 6f 4e 01 	vmovdqu64 zmm17,ZMMWORD PTR [rsi+0x40]
+  17bbcd:	48 81 fa 00 01 00 00 	cmp    rdx,0x100
+  17bbd4:	76 9d                	jbe    17bb73 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19a63>
+  17bbd6:	62 e1 fe 48 6f 56 02 	vmovdqu64 zmm18,ZMMWORD PTR [rsi+0x80]
+  17bbdd:	62 e1 fe 48 6f 5e 03 	vmovdqu64 zmm19,ZMMWORD PTR [rsi+0xc0]
+  17bbe4:	62 e1 fe 48 6f 64 16 	vmovdqu64 zmm20,ZMMWORD PTR [rsi+rdx*1-0x40]
+  17bbeb:	ff 
+  17bbec:	62 e1 fe 48 6f 6c 16 	vmovdqu64 zmm21,ZMMWORD PTR [rsi+rdx*1-0x80]
+  17bbf3:	fe 
+  17bbf4:	62 e1 fe 48 6f 74 16 	vmovdqu64 zmm22,ZMMWORD PTR [rsi+rdx*1-0xc0]
+  17bbfb:	fd 
+  17bbfc:	62 e1 fe 48 6f 7c 16 	vmovdqu64 zmm23,ZMMWORD PTR [rsi+rdx*1-0x100]
+  17bc03:	fc 
+  17bc04:	62 e1 fe 48 7f 07    	vmovdqu64 ZMMWORD PTR [rdi],zmm16
+  17bc0a:	62 e1 fe 48 7f 4f 01 	vmovdqu64 ZMMWORD PTR [rdi+0x40],zmm17
+  17bc11:	62 e1 fe 48 7f 57 02 	vmovdqu64 ZMMWORD PTR [rdi+0x80],zmm18
+  17bc18:	62 e1 fe 48 7f 5f 03 	vmovdqu64 ZMMWORD PTR [rdi+0xc0],zmm19
+  17bc1f:	62 e1 fe 48 7f 64 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x40],zmm20
+  17bc26:	ff 
+  17bc27:	62 e1 fe 48 7f 6c 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x80],zmm21
+  17bc2e:	fe 
+  17bc2f:	62 e1 fe 48 7f 74 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0xc0],zmm22
+  17bc36:	fd 
+  17bc37:	62 e1 fe 48 7f 7c 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x100],zmm23
+  17bc3e:	fc 
+  17bc3f:	c3                   	ret
+  17bc40:	48 89 f9             	mov    rcx,rdi
+  17bc43:	48 29 f1             	sub    rcx,rsi
+  17bc46:	48 39 d1             	cmp    rcx,rdx
+  17bc49:	0f 82 d1 00 00 00    	jb     17bd20 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19c10>
+  17bc4f:	48 3b 15 82 06 07 00 	cmp    rdx,QWORD PTR [rip+0x70682]        # 1ec2d8 <_obstack@GLIBC_2.2.5+0x88>
+  17bc56:	0f 87 e4 01 00 00    	ja     17be40 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19d30>
+  17bc5c:	4c 8d 04 11          	lea    r8,[rcx+rdx*1]
+  17bc60:	49 31 c8             	xor    r8,rcx
+  17bc63:	49 c1 e8 3f          	shr    r8,0x3f
+  17bc67:	81 e1 00 0f 00 00    	and    ecx,0xf00
+  17bc6d:	44 01 c1             	add    ecx,r8d
+  17bc70:	0f 84 af 00 00 00    	je     17bd25 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19c15>
+  17bc76:	62 e1 fe 48 6f 6c 16 	vmovdqu64 zmm21,ZMMWORD PTR [rsi+rdx*1-0x40]
+  17bc7d:	ff 
+  17bc7e:	62 e1 fe 48 6f 74 16 	vmovdqu64 zmm22,ZMMWORD PTR [rsi+rdx*1-0x80]
+  17bc85:	fe 
+  17bc86:	48 89 f9             	mov    rcx,rdi
+  17bc89:	48 83 cf 3f          	or     rdi,0x3f
+  17bc8d:	62 e1 fe 48 6f 7c 16 	vmovdqu64 zmm23,ZMMWORD PTR [rsi+rdx*1-0xc0]
+  17bc94:	fd 
+  17bc95:	62 61 fe 48 6f 44 16 	vmovdqu64 zmm24,ZMMWORD PTR [rsi+rdx*1-0x100]
+  17bc9c:	fc 
+  17bc9d:	48 29 ce             	sub    rsi,rcx
+  17bca0:	48 ff c7             	inc    rdi
+  17bca3:	48 01 fe             	add    rsi,rdi
+  17bca6:	48 8d 94 11 00 ff ff 	lea    rdx,[rcx+rdx*1-0x100]
+  17bcad:	ff 
+  17bcae:	66 90                	xchg   ax,ax
+  17bcb0:	62 e1 fe 48 6f 0e    	vmovdqu64 zmm17,ZMMWORD PTR [rsi]
+  17bcb6:	62 e1 fe 48 6f 56 01 	vmovdqu64 zmm18,ZMMWORD PTR [rsi+0x40]
+  17bcbd:	62 e1 fe 48 6f 5e 02 	vmovdqu64 zmm19,ZMMWORD PTR [rsi+0x80]
+  17bcc4:	62 e1 fe 48 6f 66 03 	vmovdqu64 zmm20,ZMMWORD PTR [rsi+0xc0]
+  17bccb:	48 81 ee 00 ff ff ff 	sub    rsi,0xffffffffffffff00
+  17bcd2:	62 e1 fd 48 7f 0f    	vmovdqa64 ZMMWORD PTR [rdi],zmm17
+  17bcd8:	62 e1 fd 48 7f 57 01 	vmovdqa64 ZMMWORD PTR [rdi+0x40],zmm18
+  17bcdf:	62 e1 fd 48 7f 5f 02 	vmovdqa64 ZMMWORD PTR [rdi+0x80],zmm19
+  17bce6:	62 e1 fd 48 7f 67 03 	vmovdqa64 ZMMWORD PTR [rdi+0xc0],zmm20
+  17bced:	48 81 ef 00 ff ff ff 	sub    rdi,0xffffffffffffff00
+  17bcf4:	48 39 fa             	cmp    rdx,rdi
+  17bcf7:	77 b7                	ja     17bcb0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x19ba0>
+  17bcf9:	62 e1 fe 48 7f 6a 03 	vmovdqu64 ZMMWORD PTR [rdx+0xc0],zmm21
+  17bd00:	62 e1 fe 48 7f 72 02 	vmovdqu64 ZMMWORD PTR [rdx+0x80],zmm22
+  17bd07:	62 e1 fe 48 7f 7a 01 	vmovdqu64 ZMMWORD PTR [rdx+0x40],zmm23
+  17bd0e:	62 61 fe 48 7f 02    	vmovdqu64 ZMMWORD PTR [rdx],zmm24
+  17bd14:	62 e1 fe 48 7f 01    	vmovdqu64 ZMMWORD PTR [rcx],zmm16
+  17bd1a:	c3                   	ret
+  17bd1b:	0f 1f 44 00 00       	nop    DWORD PTR [rax+rax*1+0x0]
+
+/lib/x86_64-linux-gnu/libc.so.6:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000017c2c0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a1b0>:
+  17c2c0:	62 e2 7d 48 7a c6    	vpbroadcastb zmm16,esi
+  17c2c6:	48 89 f8             	mov    rax,rdi
+  17c2c9:	48 83 fa 40          	cmp    rdx,0x40
+  17c2cd:	72 31                	jb     17c300 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a1f0>
+  17c2cf:	48 81 fa 80 00 00 00 	cmp    rdx,0x80
+  17c2d6:	0f 87 ad 00 00 00    	ja     17c389 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a279>
+  17c2dc:	62 e1 fe 48 7f 44 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x40],zmm16
+  17c2e3:	ff 
+  17c2e4:	62 e1 fe 48 7f 07    	vmovdqu64 ZMMWORD PTR [rdi],zmm16
+  17c2ea:	c3                   	ret
+  17c2eb:	66 66 2e 0f 1f 84 00 	data16 cs nop WORD PTR [rax+rax*1+0x0]
+  17c2f2:	00 00 00 00 
+  17c2f6:	66 2e 0f 1f 84 00 00 	cs nop WORD PTR [rax+rax*1+0x0]
+  17c2fd:	00 00 00 
+  17c300:	81 e7 ff 0f 00 00    	and    edi,0xfff
+  17c306:	81 ff c0 0f 00 00    	cmp    edi,0xfc0
+  17c30c:	0f 87 0b 01 00 00    	ja     17c41d <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a30d>
+  17c312:	48 c7 c1 ff ff ff ff 	mov    rcx,0xffffffffffffffff
+  17c319:	c4 e2 e8 f5 c9       	bzhi   rcx,rcx,rdx
+  17c31e:	c4 e1 fb 92 c9       	kmovq  k1,rcx
+  17c323:	62 e1 7f 49 7f 00    	vmovdqu8 ZMMWORD PTR [rax]{k1},zmm16
+  17c329:	c3                   	ret
+  17c32a:	66 0f 1f 44 00 00    	nop    WORD PTR [rax+rax*1+0x0]
+  17c330:	48 39 d1             	cmp    rcx,rdx
+  17c333:	0f 82 97 f0 f9 ff    	jb     11b3d0 <__chk_fail@@GLIBC_2.3.4>
+  17c339:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+  17c340:	62 e2 7d 48 7a c6    	vpbroadcastb zmm16,esi
+  17c346:	48 89 f8             	mov    rax,rdi
+  17c349:	48 83 fa 40          	cmp    rdx,0x40
+  17c34d:	72 b1                	jb     17c300 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a1f0>
+  17c34f:	48 81 fa 80 00 00 00 	cmp    rdx,0x80
+  17c356:	77 28                	ja     17c380 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a270>
+  17c358:	62 e1 fe 48 7f 07    	vmovdqu64 ZMMWORD PTR [rdi],zmm16
+  17c35e:	62 e1 fe 48 7f 44 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x40],zmm16
+  17c365:	ff 
+  17c366:	c3                   	ret
+  17c367:	62 e1 fe 48 7f 44 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x80],zmm16
+  17c36e:	fe 
+  17c36f:	62 e1 fe 48 7f 44 17 	vmovdqu64 ZMMWORD PTR [rdi+rdx*1-0x40],zmm16
+  17c376:	ff 
+  17c377:	c3                   	ret
+  17c378:	0f 1f 84 00 00 00 00 	nop    DWORD PTR [rax+rax*1+0x0]
+  17c37f:	00 
+  17c380:	48 3b 15 89 8e 06 00 	cmp    rdx,QWORD PTR [rip+0x68e89]        # 1e5210 <obstack_exit_failure@@GLIBC_2.2.5+0x8>
+  17c387:	77 7c                	ja     17c405 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a2f5>
+  17c389:	62 e1 fe 48 7f 07    	vmovdqu64 ZMMWORD PTR [rdi],zmm16
+  17c38f:	62 e1 fe 48 7f 47 01 	vmovdqu64 ZMMWORD PTR [rdi+0x40],zmm16
+  17c396:	48 81 fa 00 01 00 00 	cmp    rdx,0x100
+  17c39d:	76 c8                	jbe    17c367 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a257>
+  17c39f:	48 8d 8c 17 00 fe ff 	lea    rcx,[rdi+rdx*1-0x200]
+  17c3a6:	ff 
+  17c3a7:	62 e1 fe 48 7f 40 02 	vmovdqu64 ZMMWORD PTR [rax+0x80],zmm16
+  17c3ae:	62 e1 fe 48 7f 40 03 	vmovdqu64 ZMMWORD PTR [rax+0xc0],zmm16
+  17c3b5:	48 39 f9             	cmp    rcx,rdi
+  17c3b8:	76 2e                	jbe    17c3e8 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a2d8>
+  17c3ba:	48 83 e7 c0          	and    rdi,0xffffffffffffffc0
+  17c3be:	66 90                	xchg   ax,ax
+  17c3c0:	62 e1 fd 48 7f 47 04 	vmovdqa64 ZMMWORD PTR [rdi+0x100],zmm16
+  17c3c7:	62 e1 fd 48 7f 47 05 	vmovdqa64 ZMMWORD PTR [rdi+0x140],zmm16
+  17c3ce:	62 e1 fd 48 7f 47 06 	vmovdqa64 ZMMWORD PTR [rdi+0x180],zmm16
+  17c3d5:	62 e1 fd 48 7f 47 07 	vmovdqa64 ZMMWORD PTR [rdi+0x1c0],zmm16
+  17c3dc:	48 81 ef 00 ff ff ff 	sub    rdi,0xffffffffffffff00
+  17c3e3:	48 39 cf             	cmp    rdi,rcx
+  17c3e6:	72 d8                	jb     17c3c0 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a2b0>
+  17c3e8:	62 e1 fe 48 7f 41 04 	vmovdqu64 ZMMWORD PTR [rcx+0x100],zmm16
+  17c3ef:	62 e1 fe 48 7f 41 05 	vmovdqu64 ZMMWORD PTR [rcx+0x140],zmm16
+  17c3f6:	62 e1 fe 48 7f 41 06 	vmovdqu64 ZMMWORD PTR [rcx+0x180],zmm16
+  17c3fd:	62 e1 fe 48 7f 41 07 	vmovdqu64 ZMMWORD PTR [rcx+0x1c0],zmm16
+  17c404:	c3                   	ret
+  17c405:	48 3b 15 c4 fe 06 00 	cmp    rdx,QWORD PTR [rip+0x6fec4]        # 1ec2d0 <_obstack@GLIBC_2.2.5+0x80>
+  17c40c:	73 72                	jae    17c480 <_dl_mcount_wrapper@GLIBC_2.2.5+0x1a370>
+  17c40e:	40 0f b6 c6          	movzx  eax,sil
+  17c412:	48 89 d1             	mov    rcx,rdx
+  17c415:	48 89 fa             	mov    rdx,rdi
+  17c418:	f3 aa                	rep stos BYTE PTR es:[rdi],al
+  17c41a:	48 92                	xchg   rdx,rax
+  17c41c:	c3                   	ret
+  17c41d:	83 fa 20             	cmp    edx,0x20

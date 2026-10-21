@@ -1,0 +1,24 @@
+✔ confirmation remains pending and rejects leaving or duplicate native submission through every held phase (10.44477ms)
+✔ a new owner during held confirm keeps its raw draft, selection and navigation (3.815467ms)
+✔ a new owner during held layout keeps its raw draft, selection and navigation (2.72084ms)
+✔ a new owner during held render keeps its raw draft, selection and navigation (2.459263ms)
+✔ current-owner success preserves the native ID0 draft position and settles before selecting once (1.757717ms)
+✔ committed native state is never reconfirmed after a sync render failure (0.939197ms)
+✔ committed native state is never reconfirmed after a async render failure (0.830256ms)
+✔ a failed old render releases its controls without clearing a replacement draft (1.006477ms)
+✔ native rejection preserves authored raw input and requires a new preview before retry (1.264198ms)
+✔ real adapter preserves the exact successful native receipt across refresh and context-check failures (5.967777ms)
+✔ native acceptance followed by real adapter refresh failure retires only the committed parameter draft (3.626548ms)
+✔ real adapter native rejection has no confirmation receipt and retains the original authored draft (1.914177ms)
+✔ a held real adapter refresh that later rejects cannot erase or report into a replacement raw draft (1.49583ms)
+✔ real adapter and parameter refresh both complete before current-owner success selects once (2.717885ms)
+✔ false or undefined final render results report the committed presentation failure without selecting (1.118743ms)
+✔ navigation-only retirement suppresses late errors from either committed refresh stage (1.57057ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 110.166308

@@ -1,0 +1,39 @@
+{
+  "schema": "geometry-cdp-result/1",
+  "scope": {
+    "mode": "partial",
+    "filters": [
+      "GEOMETRY_ASSEMBLY_ONLY"
+    ],
+    "modifiers": [],
+    "url": "http://127.0.0.1:18851/",
+    "feedbackDirectory": "/tmp/geo261-browser-five-l3-6589248c-formal/assembly/feedback",
+    "browserProfile": "/tmp/geo261-browser-five-l3-6589248c-formal/assembly/chrome-profile",
+    "cdpPort": 9367,
+    "browserPid": 492683
+  },
+  "firstTransportFailure": {
+    "source": "api-result",
+    "transport": true,
+    "command": "assembly-confirm 13",
+    "requestedAt": "2026-10-21T06:35:27.569Z",
+    "requestedMonotonic": 47883.19999999553,
+    "failedAt": "2026-10-21T06:35:27.675Z",
+    "failedMonotonic": 47989.10000000149,
+    "error": "Injected lost success response",
+    "sessionId": null,
+    "step": "=== P77 review #33 #35 #36 #37 ==="
+  },
+  "firstNetworkFailure": null,
+  "completed": true,
+  "passedAssertions": 150,
+  "failedAssertions": 0,
+  "skipped": [],
+  "sections": {
+    "P77": 134,
+    "P82": 16
+  },
+  "goldenCompare": "not compared (partial mode)",
+  "uncaughtBrowserExceptions": 0,
+  "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+}

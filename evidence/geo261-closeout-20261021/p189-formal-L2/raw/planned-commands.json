@@ -1,0 +1,121 @@
+[
+  {
+    "phase": "generator-selftest",
+    "argv": [
+      "python3",
+      "-B",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+      "--selftest"
+    ]
+  },
+  {
+    "phase": "selftest",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "selftest",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+      "--out",
+      "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+      "--gen",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+      "--final",
+      "249571fe2477845d5330f6190dad965bf327f43b",
+      "--timeout",
+      "900"
+    ]
+  },
+  {
+    "phase": "build",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "build",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+      "--out",
+      "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+      "--gen",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+      "--final",
+      "249571fe2477845d5330f6190dad965bf327f43b",
+      "--timeout",
+      "900"
+    ]
+  },
+  {
+    "phase": "equivalence",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "equivalence",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+      "--out",
+      "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+      "--gen",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+      "--final",
+      "249571fe2477845d5330f6190dad965bf327f43b",
+      "--timeout",
+      "900"
+    ]
+  },
+  {
+    "phase": "timing",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "timing",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+      "--out",
+      "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+      "--gen",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+      "--final",
+      "249571fe2477845d5330f6190dad965bf327f43b",
+      "--timeout",
+      "900"
+    ]
+  },
+  {
+    "phase": "check",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "check",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+      "--out",
+      "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+      "--gen",
+      "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+      "--final",
+      "249571fe2477845d5330f6190dad965bf327f43b",
+      "--timeout",
+      "900"
+    ]
+  }
+]

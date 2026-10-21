@@ -1,0 +1,79 @@
+"""只提交已通過指定契約測試的單函式 trial；不推送、不改主分支。"""
+from pathlib import Path
+import datetime
+import hashlib
+import json
+import subprocess
+
+ROOT = Path('/workspace/geo261-wd-read-candidate')
+MAIN = Path('/workspace/geometry-axiom')
+OUT = Path('/workspace/geo261-evidence/wd-read-candidate')
+BASE = '43f85313c32410ac01406ab585846bbacafea278'
+BRANCH = 'codex/geo261-p189-codec-trial-20261021'
+SOURCE = 'geometry-templates/woodworking/native/definition_sources.c'
+EXPECTED = '5d52a836bb1178ff050f725d5b089f4765cbd58033931647f02e50369ea9e347'
+TARGET = OUT / 'commit-receipt.json'
+if TARGET.exists():
+    raise RuntimeError('禁止覆寫提交收據')
+commands = []
+
+def require(ok, message):
+    if not ok:
+        raise RuntimeError(message)
+
+def git(root, *args):
+    argv = ['git', '-C', str(root), *args]
+    run = subprocess.run(argv, capture_output=True)
+    commands.append(dict(argv=argv, exitCode=run.returncode,
+        stdout=run.stdout.decode(), stderr=run.stderr.decode()))
+    require(run.returncode == 0, 'Git 命令失敗')
+    return run.stdout
+
+record = dict(startedUTC=datetime.datetime.now(datetime.timezone.utc).isoformat(), commands=commands)
+try:
+    require(git(MAIN, 'rev-parse', 'HEAD').decode().strip() == BASE, '主樹 HEAD 改變')
+    require(git(MAIN, 'status', '--porcelain', '--untracked-files=all') == b'', '主樹不乾淨')
+    require(git(ROOT, 'rev-parse', 'HEAD').decode().strip() == BASE, 'trial 基底不是 L')
+    require(git(ROOT, 'branch', '--show-current') == b'', '候選不是 detached')
+    require(git(ROOT, 'branch', '--list', BRANCH) == b'', 'trial 分支已存在')
+    require(git(ROOT, 'status', '--porcelain', '--untracked-files=all') == (' M ' + SOURCE + '\n').encode(),
+            '候選不只指定單檔修改')
+    git(ROOT, 'diff', '--check')
+    before = git(ROOT, 'show', 'HEAD:' + SOURCE)
+    after = (ROOT / SOURCE).read_bytes()
+    require(hashlib.sha256(after).hexdigest() == EXPECTED, '候選 raw hash 不符')
+    start = b'static uint64_t wd_read('
+    end = b'static int64_t wd_signed('
+    prefix_before, body_before = before.split(start, 1)
+    prefix_after, body_after = after.split(start, 1)
+    _, suffix_before = body_before.split(end, 1)
+    _, suffix_after = body_after.split(end, 1)
+    require(prefix_before == prefix_after and suffix_before == suffix_after, '修改超出 wd_read')
+    result = json.loads((OUT / 'targeted/unit-result.json').read_bytes())
+    receipt = json.loads((OUT / 'targeted/receipt.json').read_bytes())
+    require(result['testsRun'] == result['selectedCount'] == 14
+            and not result['failures'] and not result['errors'] and not result['skipped']
+            and result['build']['allBuildExitZero'] is True
+            and result['build']['actualDefinitionSourceSha256'] == EXPECTED
+            and receipt['sourceUnchanged'] is True and receipt['exitCode'] == receipt['rawWaitStatus'] == 0,
+            '指定契約測試尚未完整通過')
+    git(ROOT, 'switch', '-c', BRANCH)
+    git(ROOT, 'add', '--', SOURCE)
+    require(git(ROOT, 'diff', '--cached', '--name-only') == (SOURCE + '\n').encode(), 'stage 超出指定路徑')
+    git(ROOT, 'commit', '-m', 'perf(woodworking): specialize fixed-width definition decoding')
+    head = git(ROOT, 'rev-parse', 'HEAD').decode().strip()
+    require(git(ROOT, 'rev-parse', 'HEAD^').decode().strip() == BASE, 'trial parent 不符')
+    require(git(ROOT, 'diff', '--name-only', BASE, head) == (SOURCE + '\n').encode(), 'trial commit 超出指定路徑')
+    require(git(ROOT, 'status', '--porcelain', '--untracked-files=all') == b'', 'trial 提交後不乾淨')
+    require(git(MAIN, 'rev-parse', 'HEAD').decode().strip() == BASE
+            and git(MAIN, 'status', '--porcelain', '--untracked-files=all') == b'', '主分支被改動')
+    record.update(exitCode=0, branch=BRANCH, sourceSha=head, parentSha=BASE,
+        sourceRawSha256=EXPECTED, onlyFunctionChanged='wd_read', pushed=False,
+        notClaimed=['效能改善', '撤回性能自證', '新帳本', '新架構收據', '完整整合驗收'])
+except Exception as error:
+    record.update(exitCode=1, error=repr(error))
+    raise
+finally:
+    record['finishedUTC'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    TARGET.write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps({key: record[key] for key in ('exitCode', 'branch', 'sourceSha', 'parentSha', 'sourceRawSha256', 'pushed')}, ensure_ascii=False))

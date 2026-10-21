@@ -1,0 +1,16 @@
+{
+  "種類": "測試啟動腳本失誤；不是測試結果",
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "exitCode": 1,
+  "affectedLaunches": [
+    "native",
+    "canvas"
+  ],
+  "testsStarted": false,
+  "reason": "Python 模板以 replaceAll 取代 OUT 時誤改 subprocess.STDOUT，造成 SyntaxError；未建立 command.json、未啟動 timeout 或測試程序。",
+  "correction": "改為單一正規表示式、單字邊界匹配五個模板識別字；隨後成功啟動兩項正式測試。",
+  "formalReceipts": [
+    "native-final/command.json",
+    "canvas-final/command.json"
+  ]
+}

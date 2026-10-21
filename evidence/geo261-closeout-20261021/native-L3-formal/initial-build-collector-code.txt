@@ -1,0 +1,46 @@
+import pathlib,json,hashlib,datetime,subprocess,os,re,sys
+root=pathlib.Path("/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021")
+prep=root/"preparation";out=root/"native";plan=json.loads((prep/"instance.json").read_bytes())
+def utc():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def h(b):return hashlib.sha256(b).hexdigest()
+def save(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+"\n")
+env=os.environ.copy()
+for key in plan["unsetEnvironment"]:env.pop(key,None)
+env["PYTHONDONTWRITEBYTECODE"]="1"
+assert "CC" not in env and "PYTHONOPTIMIZE" not in env
+(out/"initial-build-collector-code.txt").write_text(sys.orig_argv[-1])
+log=(out/"run.log").read_bytes();assert re.search(rb"^\[1/224\] ",log,re.M)
+(out/"initial-build-run-log-snapshot.log").write_bytes(log)
+names=sorted(b["name"] for b in plan["registry"] if not b["windowsOnly"]);assert len(names)==6
+argv=["python3","-B","tests/binaries.py","status"];start=utc()
+r=subprocess.run(argv,cwd=plan["nativeWorktree"],env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+(out/"initial-build-fresh.stdout.log").write_bytes(r.stdout);(out/"initial-build-fresh.stderr.log").write_bytes(r.stderr)
+fresh=[line.split()[0] for line in r.stdout.decode().splitlines() if len(line.split())>=2 and line.split()[1]=="fresh"]
+freshness=dict(sourceSha=plan["sourceSha"],command=argv,cwd=plan["nativeWorktree"],startedUtc=start,finishedUtc=utc(),exitCode=r.returncode,freshNames=fresh,expectedFreshNames=names,allSixFresh=sorted(fresh)==names,CCAbsent=True,PYTHONOPTIMIZEAbsent=True,compilerOrTestsStarted=False)
+save(out/"initial-build-freshness.json",freshness)
+assert r.returncode==0 and sorted(fresh)==names
+tool=pathlib.Path("/workspace/geo261-evidence/l3-native-gates-preparation/snapshot-native-binaries.py")
+assert h(tool.read_bytes())=="8bd7819b8c7823f1dc875dc6836362c328bf95d4a8b174a4e9ddbc15976465f4"
+argv=["python3","-B",str(tool),"--instance",str(prep/"instance.json"),"--stage","initial-build"]
+start=utc();r=subprocess.run(argv,env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+(out/"initial-build-snapshot.stdout.log").write_bytes(r.stdout);(out/"initial-build-snapshot.stderr.log").write_bytes(r.stderr)
+save(out/"initial-build-snapshot-command.json",dict(sourceSha=plan["sourceSha"],command=argv,startedUtc=start,finishedUtc=utc(),exitCode=r.returncode,toolSha256=h(tool.read_bytes())))
+assert r.returncode==0
+idxp=out/"initial-build-binary-index.json";index=json.loads(idxp.read_bytes());assert index["sourceSha"]==plan["sourceSha"] and len(index["files"])==12
+byname={pathlib.Path(f["sourcePath"]).name:f for f in index["files"]}
+bindings=[]
+for b in plan["registry"]:
+ if b["windowsOnly"]:continue
+ e=byname[b["exe"]];f=byname[b["exe"]+".fingerprint.json"]
+ ep=pathlib.Path(e["preservedPath"]);fp=pathlib.Path(f["preservedPath"])
+ data=json.loads(fp.read_bytes())
+ assert h(ep.read_bytes())==e["sha256"] and h(fp.read_bytes())==f["sha256"]
+ assert data["exe_sha256"]==e["sha256"] and data["exe_size"]==e["bytes"] and data["exe_mtime_ns"]==e["sourceMtimeNs"]
+ assert data["command"].startswith("cc ")
+ bindings.append(dict(name=b["name"],command=data["command"],builtAt=data["built_at"],binarySha256=e["sha256"],fingerprintSha256=f["sha256"],sidecarBinaryBindingMatched=True))
+built=all(re.search(rb"^\s*"+re.escape(n.encode())+rb"\s+built\s",log,re.M) for n in names)
+freshlog=all(re.search(rb"^\s*"+re.escape(n.encode())+rb"\s+fresh\s",log,re.M) for n in names)
+assert built and freshlog
+accepted=dict(sourceSha=plan["sourceSha"],accepted=True,checkedUtc=utc(),freshExitCode=0,snapshotExitCode=0,fileCount=12,allSixBuilt=built,allSixFresh=freshlog,bindings=bindings,indexPath=str(idxp),indexSha256=h(idxp.read_bytes()),runLogSnapshotSha256=h(log),limitation="只核此初建時點，不宣稱全段零寫入；browser 仍使用自有 runtime。")
+save(out/"initial-build-acceptance.json",accepted)
+print(json.dumps(dict(sourceSha=plan["sourceSha"],accepted=True,acceptance=str(out/"initial-build-acceptance.json"),acceptanceSha256=h((out/"initial-build-acceptance.json").read_bytes()),indexSha256=accepted["indexSha256"],fileCount=12,checkedUtc=accepted["checkedUtc"]),ensure_ascii=False,indent=2))

@@ -1,0 +1,12 @@
+--- a/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py
++++ b/geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py
+@@ -398,7 +398,8 @@
+     listed += [f"- 新增逐檔工具排除 `{r['path']}`：{r['reason']}" for r in added]
+     prior_diagnostics = "、".join(sorted({d["code"] for d in prior_scan["diagnostics"]}))
+     appendix = ("\n## 2026-10-21 Linux 有限刷新\n\n"
+-                f"來源 SHA：`{head}`。本次變更只有以下已審閱的既有排除項目雜湊，以及逐檔明列的收尾驗證工具；"
++                f"來源 SHA：`{head}`。本次 manifest 刷新只更新以下已審閱的既有排除項目雜湊，以及逐檔明列的收尾驗證工具；"
++                "實際來源變化由收據 `inputsChangedSincePreviousSeal` 逐項列出。"
+                 "既有來源責任分類、來源根目錄、獨立來源名單及守門政策維持既有內容。\n\n" +
+                 "\n".join(listed) +
+                 f"\n\n舊 manifest 以 `{prior_diagnostics}` 轉紅；新版掃描及兩套測試均實際重跑。"

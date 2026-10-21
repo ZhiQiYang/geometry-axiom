@@ -1,0 +1,28 @@
+{
+  "schema": "geo261-p73-cleanup-peer-review/1",
+  "reviewedUTC": "2026-10-20T23:21:02.713572+00:00",
+  "bundle": "/workspace/geo261-evidence/final-bundle/測試服務清理/P73-18843",
+  "originalFilesCompared": 11,
+  "checksumEntriesVerified": 13,
+  "bundleFiles": 14,
+  "bundleBytes": 76969,
+  "receiptSha256": "b3fa292f9a8005c8c2a94a5b72b026a344aae2b65f615477abf5d1d3ef70397a",
+  "manifestSha256": "a586d700995164c6fc21ede6aa4fd89b6b6d95c9ced38095c30a89910a4e6d8a",
+  "checksumsSha256": "4c2794bb1fb1808327ae73e28bfe6a9931bebe1993970204a47c5ee9fe31bd05",
+  "validationExitCode": 0,
+  "result": "只讀核對通過，無封裝阻擋",
+  "checks": [
+    "原件逐 bytes／長度／SHA-256 與全部 checksum 一致",
+    "清理原 stdout 的 JSON 與 receipt 完全一致",
+    "runtime 隨機 session／PID／版本與正式 P73 原 runtime 一致",
+    "服務及 bridge 的 PID／startTime／父子關係、單次 SIGINT 與消失／port refused 結果一致",
+    "清理前世界備份與 scene bytes 相同；server-after 保留完整 server-before 前綴",
+    "歷史操作程式的 pidfd 所有權核對及備份先於 signal；沒有重跑清理或發訊號"
+  ],
+  "limits": [
+    "服務 wait 回傳碼保持 null；操作 exit 0 僅有工具回覆事後轉錄，不將 passed 推成服務退出碼",
+    "peer 本次僅核對歷史封裝與程式控制流，不重新查活程序或探服務",
+    "原 /proc cwd/environ/FD 讀取受限與歷史 L1 未採用均已明記",
+    "沒有修改凍結包、產品、wrapper 或 launcher；沒有產品驗收／突變結論"
+  ]
+}

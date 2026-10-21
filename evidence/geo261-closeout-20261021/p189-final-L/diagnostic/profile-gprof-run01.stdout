@@ -1,0 +1,2265 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 25.33      0.19     0.19    12942     0.01     0.01  wood_contact_collect_stops
+ 14.67      0.30     0.11  2980967     0.00     0.00  support_coord_compare
+ 12.00      0.39     0.09  1045172     0.00     0.00  wood_definition_sources_placement
+  8.00      0.45     0.06  2980967     0.00     0.00  geo_source_edge
+  4.00      0.48     0.03  2980967     0.00     0.00  geo_eval_source
+  4.00      0.51     0.03  1257198     0.00     0.00  wood_grid_coordinate_source
+  4.00      0.54     0.03    85268     0.00     0.00  reference_host_read
+  4.00      0.57     0.03    19413     0.00     0.00  reference_contact_facts
+  2.67      0.59     0.02  3135516     0.00     0.00  wd_read_text.constprop.0
+  2.67      0.61     0.02  1769857     0.00     0.00  geo_source_index_append
+  2.67      0.63     0.02  1449274     0.00     0.00  timber_a0_footprint_uv
+  2.67      0.65     0.02   833056     0.00     0.00  wood_grid_codec_axis
+  2.67      0.67     0.02   453052     0.00     0.00  wood_contact_source_decode
+  2.67      0.69     0.02    85556     0.00     0.00  geo_placement_definition_decode
+  1.33      0.70     0.01   122444     0.00     0.00  wood_definition_sources_member
+  1.33      0.71     0.01    85268     0.00     0.00  wood_definition_sources_boundary
+  1.33      0.72     0.01    12942     0.00     0.00  wood_contact_sources_collect
+  1.33      0.73     0.01     4314     0.00     0.00  timber_place_a0_on_surface
+  1.33      0.74     0.01     2157     0.00     0.00  wood_member_reference_compute
+  0.67      0.75     0.01  1216435     0.00     0.00  geo_frame_direction
+  0.67      0.75     0.01                             cmd_proj
+  0.00      0.75     0.00  2980967     0.00     0.00  geo_source_node
+  0.00      0.75     0.00  1769857     0.00     0.00  geo_source_grow
+  0.00      0.75     0.00  1214278     0.00     0.00  geo_rectangle_footprint
+  0.00      0.75     0.00   624566     0.00     0.00  reference_sources_ensure
+  0.00      0.75     0.00   227887     0.00     0.00  clip_loop_order
+  0.00      0.75     0.00   226700     0.00     0.00  reference_placement_frame
+  0.00      0.75     0.00   226526     0.00     0.00  wood_contact_source_collection_view
+  0.00      0.75     0.00   226526     0.00     0.00  wood_contact_source_describe
+  0.00      0.75     0.00   226526     0.00     0.00  wood_contact_source_evaluate
+  0.00      0.75     0.00   207712     0.00     0.00  wd_reader
+  0.00      0.75     0.00   159726     0.00     0.00  geo_loop_contains_point
+  0.00      0.75     0.00   159726     0.00     0.00  geo_loop_point_on_edge
+  0.00      0.75     0.00   141429     0.00     0.00  reference_member_footprint
+  0.00      0.75     0.00   118130     0.00     0.00  app_member_reference_at
+  0.00      0.75     0.00   102884     0.00     0.00  wood_grid_codec_bool
+  0.00      0.75     0.00   100038     0.00     0.00  app_reference_member_anchor
+  0.00      0.75     0.00    93806     0.00     0.00  wood_grid_codec_u32
+  0.00      0.75     0.00    93567     0.00     0.00  app_validation_footprint
+  0.00      0.75     0.00    86496     0.00     0.00  wd_write
+  0.00      0.75     0.00    85556     0.00     0.00  geo_placement_sources_definition
+  0.00      0.75     0.00    85268     0.00     0.00  reference_region_geometry
+  0.00      0.75     0.00    62768     0.00     0.00  app_reference_host_read
+  0.00      0.75     0.00    52914     0.00     0.00  placement_outline
+  0.00      0.75     0.00    52914     0.00     0.00  polygon_loop_bounds
+  0.00      0.75     0.00    52914     0.00     0.00  wood_grid_codec_rule
+  0.00      0.75     0.00    52176     0.00     0.00  app_validation_member
+  0.00      0.75     0.00    51983     0.00     0.00  app_validation_host
+  0.00      0.75     0.00    51892     0.00     0.00  reference_eval_timber_relation
+  0.00      0.75     0.00    49735     0.00     0.00  app_member_reference_evaluate
+  0.00      0.75     0.00    41050     0.00     0.00  placement_effective_boundary
+  0.00      0.75     0.00    38853     0.00     0.00  app_fs_obstacle_box
+  0.00      0.75     0.00    38853     0.00     0.00  geo_loop_contains_rect
+  0.00      0.75     0.00    38853     0.00     0.00  geo_region_contains_rect
+  0.00      0.75     0.00    32355     0.00     0.00  app_contact_facts
+  0.00      0.75     0.00    21182     0.00     0.00  wood_grid_codec_int
+  0.00      0.75     0.00    12942     0.00     0.00  app_contact_resolve_stops
+  0.00      0.75     0.00    12942     0.00     0.00  wood_member_end_contact_check
+  0.00      0.75     0.00    12102     0.00     0.00  wood_contact_owner_extension
+  0.00      0.75     0.00     9297     0.00     0.00  asm_error.constprop.0
+  0.00      0.75     0.00     8700     0.00     0.00  wd_describe
+  0.00      0.75     0.00     8700     0.00     0.00  wd_evaluate
+  0.00      0.75     0.00     8700     0.00     0.00  wood_definition_source_decode
+  0.00      0.75     0.00     8661     0.00     0.00  wood_contact_boundary_interval
+  0.00      0.75     0.00     8628     0.00     0.00  wood_stop_count_legal
+  0.00      0.75     0.00     6471     0.00     0.00  app_reference_end_faces
+  0.00      0.75     0.00     6471     0.00     0.00  app_reference_end_stops
+  0.00      0.75     0.00     6471     0.00     0.00  timber_boundary_role_check
+  0.00      0.75     0.00     6471     0.00     0.00  wd_text.constprop.0
+  0.00      0.75     0.00     6471     0.00     0.00  wood_contact_end_faces_with_sources
+  0.00      0.75     0.00     6471     0.00     0.00  wood_member_boundary_role_check
+  0.00      0.75     0.00     6224     0.00     0.00  app_eng_context
+  0.00      0.75     0.00     5808     0.00     0.00  wood_grid_def_number
+  0.00      0.75     0.00     5676     0.00     0.00  utf8_seq_len
+  0.00      0.75     0.00     4924     0.00     0.00  wood_grid_source_get
+  0.00      0.75     0.00     4314     0.00     0.00  geo_frame_point
+  0.00      0.75     0.00     4314     0.00     0.00  geo_region_contains_point
+  0.00      0.75     0.00     4314     0.00     0.00  wood_definition_sources_dimension
+  0.00      0.75     0.00     4314     0.00     0.00  wood_member_place_a0
+  0.00      0.75     0.00     4288     0.00     0.00  wood_stop_ref_candidates
+  0.00      0.75     0.00     3626     0.00     0.00  wood_grid_line_source_ref
+  0.00      0.75     0.00     3296     0.00     0.00  geo_source_copy_text
+  0.00      0.75     0.00     3028     0.00     0.00  geo_finite_sequence
+  0.00      0.75     0.00     3028     0.00     0.00  wood_grid_axis_lines
+  0.00      0.75     0.00     3026     0.00     0.00  wood_grid_codec_application_prefix
+  0.00      0.75     0.00     2894     0.00     0.00  wood_grid_result
+  0.00      0.75     0.00     2762     0.00     0.00  wood_grid_anchor_line_coord_resolved
+  0.00      0.75     0.00     2762     0.00     0.00  wood_grid_axis_lines_in_resolved
+  0.00      0.75     0.00     2762     0.00     0.00  wood_grid_line_coord_in_resolved
+  0.00      0.75     0.00     2231     0.00     0.00  wood_member_primary_axis_check
+  0.00      0.75     0.00     2166     0.00     0.00  reference_source_describe
+  0.00      0.75     0.00     2166     0.00     0.00  reference_source_evaluate
+  0.00      0.75     0.00     2157     0.00     0.00  app_assembly_saved_dimensions
+  0.00      0.75     0.00     2157     0.00     0.00  app_member_reference_boundary
+  0.00      0.75     0.00     2157     0.00     0.00  app_member_reference_end
+  0.00      0.75     0.00     2157     0.00     0.00  app_member_reference_issue_count
+  0.00      0.75     0.00     2157     0.00     0.00  app_member_reference_place
+  0.00      0.75     0.00     2157     0.00     0.00  app_member_reference_placement
+  0.00      0.75     0.00     2157     0.00     0.00  app_member_reference_primary
+  0.00      0.75     0.00     2157     0.00     0.00  app_member_reference_span
+  0.00      0.75     0.00     2157     0.00     0.00  app_member_reference_write
+  0.00      0.75     0.00     2157     0.00     0.00  app_validation_boundary_role
+  0.00      0.75     0.00     2157     0.00     0.00  app_validation_end_faces
+  0.00      0.75     0.00     2157     0.00     0.00  app_validation_place
+  0.00      0.75     0.00     2157     0.00     0.00  app_validation_stops
+  0.00      0.75     0.00     2157     0.00     0.00  geo_frame_project_uv
+  0.00      0.75     0.00     2157     0.00     0.00  geo_strip_intervals
+  0.00      0.75     0.00     2157     0.00     0.00  reference_member_owned
+  0.00      0.75     0.00     2157     0.00     0.00  resolve_auto_span
+  0.00      0.75     0.00     2157     0.00     0.00  surface_primary_axis_check
+  0.00      0.75     0.00     2157     0.00     0.00  wood_assembly_sources_owned
+  0.00      0.75     0.00     2157     0.00     0.00  wood_member_anchor_corner
+  0.00      0.75     0.00     2157     0.00     0.00  wood_member_reference_place
+  0.00      0.75     0.00     2157     0.00     0.00  wood_member_resolve_span
+  0.00      0.75     0.00     2096     0.00     0.00  wood_grid_decode_application
+  0.00      0.75     0.00     1992     0.00     0.00  wood_grid_source_decode
+  0.00      0.75     0.00     1898     0.00     0.00  app_member_reference_grid
+  0.00      0.75     0.00     1898     0.00     0.00  app_member_reference_grid_line
+  0.00      0.75     0.00     1898     0.00     0.00  reference_grid_definition
+  0.00      0.75     0.00     1898     0.00     0.00  wood_grid_sources_definition
+  0.00      0.75     0.00     1898     0.00     0.00  wood_grid_sources_line
+  0.00      0.75     0.00     1332     0.00     0.00  geo_eval_register_many
+  0.00      0.75     0.00     1128     0.00     0.00  wood_grid_decode_application_value
+  0.00      0.75     0.00     1012     0.00     0.00  wood_grid_policy_definitions
+  0.00      0.75     0.00      996     0.00     0.00  wood_grid_source_describe
+  0.00      0.75     0.00      996     0.00     0.00  wood_grid_source_evaluate
+  0.00      0.75     0.00      930     0.00     0.00  reference_grid_host
+  0.00      0.75     0.00      930     0.00     0.00  wood_grid_host_source
+  0.00      0.75     0.00      595     0.00     0.00  wood_grid_rule_u32
+  0.00      0.75     0.00      589     0.00     0.00  app_grid_context
+  0.00      0.75     0.00      451     0.00     0.00  app_asm_context
+  0.00      0.75     0.00      450     0.00     0.00  geo_sha_block
+  0.00      0.75     0.00      298     0.00     0.00  app_fs_context
+  0.00      0.75     0.00      288     0.00     0.00  geo_pd_vector_write
+  0.00      0.75     0.00      288     0.00     0.00  geo_placement_sources_describe
+  0.00      0.75     0.00      288     0.00     0.00  geo_placement_sources_evaluate
+  0.00      0.75     0.00      264     0.00     0.00  wood_grid_binding_definition_depend
+  0.00      0.75     0.00      257     0.00     0.00  app_member_reference_edge
+  0.00      0.75     0.00      257     0.00     0.00  loop_edge_outward_normal
+  0.00      0.75     0.00      223     0.00     0.00  app_sp_context
+  0.00      0.75     0.00      217     0.00     0.00  app_boundary_compose
+  0.00      0.75     0.00      216     0.00     0.00  reference_placement_binding
+  0.00      0.75     0.00      215     0.00     0.00  geo_eval_clear
+  0.00      0.75     0.00      173     0.00     0.00  parse_coord
+  0.00      0.75     0.00      148     0.00     0.00  app_dp_context
+  0.00      0.75     0.00      147     0.00     0.00  wood_sp_rebuild
+  0.00      0.75     0.00      146     0.00     0.00  reference_may_affect
+  0.00      0.75     0.00      141     0.00     0.00  app_world_candidate_describe_sources
+  0.00      0.75     0.00      139     0.00     5.21  app_scene_candidate_apply
+  0.00      0.75     0.00      139     0.00     0.00  app_scene_direct_dimensions_allowed
+  0.00      0.75     0.00      137     0.00     0.00  app_scene_file_sources_ready
+  0.00      0.75     0.00      134     0.00     0.00  reference_face_parse
+  0.00      0.75     0.00      132     0.00     5.14  apply_scene_line
+  0.00      0.75     0.00      132     0.00     0.00  reference_face_format
+  0.00      0.75     0.00      132     0.00     0.00  wood_grid_codec_write_axis
+  0.00      0.75     0.00      132     0.00     0.00  wood_grid_def_axis
+  0.00      0.75     0.00      132     0.00     0.00  wood_grid_parameter_definitions
+  0.00      0.75     0.00      132     0.00     0.00  wood_grid_publish_application_cache
+  0.00      0.75     0.00      132     0.00     0.00  wood_grid_valid
+  0.00      0.75     0.00      132     0.00     0.00  wood_grid_valid_in
+  0.00      0.75     0.00      131     0.00     0.00  app_scene_file_graph_empty
+  0.00      0.75     0.00       76     0.00     0.00  geo_frame_is_valid
+  0.00      0.75     0.00       76     0.00     0.00  geo_loop_is_valid
+  0.00      0.75     0.00       76     0.00     0.00  geo_region_is_valid
+  0.00      0.75     0.00       74     0.00     0.00  app_eng_serializable
+  0.00      0.75     0.00       74     0.00     0.00  app_validation_placement_id
+  0.00      0.75     0.00       74     0.00     0.00  boundary_keys_reconcile.constprop.0
+  0.00      0.75     0.00       74     0.00     0.00  engineering_serializable
+  0.00      0.75     0.00       74     0.00     0.00  geo_enclosure_sources_register
+  0.00      0.75     0.00       74     0.00     0.00  geo_linear_definition_sources_register
+  0.00      0.75     0.00       74     0.00     0.00  geo_parameter_source_bound
+  0.00      0.75     0.00       74     0.00     0.00  geo_parameter_sources_rebuild
+  0.00      0.75     0.00       74     0.00     0.00  geo_parameter_sources_register_with_definitions
+  0.00      0.75     0.00       74     0.00     0.00  geo_placement_sources_register
+  0.00      0.75     0.00       74     0.00     0.00  geo_region_key_sources_register
+  0.00      0.75     0.00       74     0.00     0.00  geo_version_sources_definitions
+  0.00      0.75     0.00       74     0.00     0.00  geo_version_sources_register
+  0.00      0.75     0.00       74     0.00     3.30  reference_check_all
+  0.00      0.75     0.00       74     0.00     0.00  reference_sources_begin_candidate
+  0.00      0.75     0.00       74     0.00     0.00  reference_sources_dispose
+  0.00      0.75     0.00       74     0.00     0.00  reference_sources_owned_free
+  0.00      0.75     0.00       74     0.00     0.00  wood_assembly_generation_check
+  0.00      0.75     0.00       74     0.00     0.00  wood_assembly_generation_prepare
+  0.00      0.75     0.00       74     0.00     0.00  wood_assembly_rebuild
+  0.00      0.75     0.00       74     0.00     0.00  wood_assembly_sources_create
+  0.00      0.75     0.00       74     0.00     0.00  wood_contact_sources_create
+  0.00      0.75     0.00       74     0.00     0.00  wood_definition_sources_create
+  0.00      0.75     0.00       74     0.00     0.00  wood_dp_rebuild
+  0.00      0.75     0.00       74     0.00     0.00  wood_engineering_rebuild
+  0.00      0.75     0.00       74     0.00     0.00  wood_engineering_sources_definitions
+  0.00      0.75     0.00       74     0.00     0.00  wood_engineering_sources_metadata
+  0.00      0.75     0.00       74     0.00     0.00  wood_engineering_sources_register
+  0.00      0.75     0.00       74     0.00     0.00  wood_finish_sources_bind
+  0.00      0.75     0.00       74     0.00     0.00  wood_finish_sources_create
+  0.00      0.75     0.00       74     0.00     0.00  wood_fs_rebuild
+  0.00      0.75     0.00       74     0.00     0.00  wood_grid_bindings_rebuild
+  0.00      0.75     0.00       74     0.00     0.00  wood_grid_rules_valid_hook
+  0.00      0.75     0.00       74     0.00     0.00  wood_grid_rules_world_valid_direct
+  0.00      0.75     0.00       74     0.00     0.00  wood_grid_sources_create
+  0.00      0.75     0.00       74     0.00     0.00  wood_grid_systems_rebuild
+  0.00      0.75     0.00       74     0.00     0.00  wood_grid_world_valid_direct
+  0.00      0.75     0.00       74     0.00     0.00  wood_grid_world_valid_hook
+  0.00      0.75     0.00       74     0.00     0.00  wood_sp_source_begin
+  0.00      0.75     0.00       74     0.00     0.00  wood_sp_source_context_matches
+  0.00      0.75     0.00       74     0.00     0.00  wood_sp_sources_create
+  0.00      0.75     0.00       74     0.00     6.72  wood_world_validate_members
+  0.00      0.75     0.00       74     0.00     0.00  wood_world_validate_obstacles
+  0.00      0.75     0.00       74     0.00     0.00  world_revalidate
+  0.00      0.75     0.00       74     0.00    10.07  world_validate_derived
+  0.00      0.75     0.00       72     0.00     0.00  geo_placement_definition_encode
+  0.00      0.75     0.00       67     0.00     0.00  app_member_declaration_owned
+  0.00      0.75     0.00       67     0.00     0.00  app_placement_boundary
+  0.00      0.75     0.00       67     0.00     0.00  apply_place_line
+  0.00      0.75     0.00       67     0.00    10.07  apply_reference_place
+  0.00      0.75     0.00       67     0.00     0.00  apply_timber_line
+  0.00      0.75     0.00       67     0.00     0.00  assembly_owned
+  0.00      0.75     0.00       67     0.00    10.07  reference_checked
+  0.00      0.75     0.00       67     0.00     0.00  wood_member_construct
+  0.00      0.75     0.00       67     0.00     0.00  wood_member_declaration_role
+  0.00      0.75     0.00       67     0.00     0.00  wood_member_declare
+  0.00      0.75     0.00       66     0.00     0.00  wood_grid_application_evaluate_direct
+  0.00      0.75     0.00       66     0.00     0.00  wood_grid_application_hook
+  0.00      0.75     0.00       66     0.00     0.00  wood_grid_application_value
+  0.00      0.75     0.00       66     0.00     0.00  wood_grid_encode_application_value
+  0.00      0.75     0.00       66     0.00     0.00  wood_grid_sources_application
+  0.00      0.75     0.00       48     0.00     0.00  geo_candidate_provider_hash
+  0.00      0.75     0.00       36     0.00     0.00  app_candidate_bind_core
+  0.00      0.75     0.00       26     0.00     0.00  wood_stop_pick
+  0.00      0.75     0.00       21     0.00     0.00  geo_sha256
+  0.00      0.75     0.00       20     0.00     0.00  app_candidate_hash_matches
+  0.00      0.75     0.00       16     0.00     0.00  geo_candidate_digest_matches
+  0.00      0.75     0.00       16     0.00     0.00  parameter_reference_edit
+  0.00      0.75     0.00       10     0.00     0.00  parse_edge_ref
+  0.00      0.75     0.00        9     0.00     0.00  wood_assembly_dimensions_changed
+  0.00      0.75     0.00        9     0.00     0.00  world_definitions_equal
+  0.00      0.75     0.00        8     0.00     0.00  parse_uv
+  0.00      0.75     0.00        8     0.00     0.00  wood_assembly_generation_integrity
+  0.00      0.75     0.00        6     0.00     0.00  geo_linear_definition_source_decode
+  0.00      0.75     0.00        6     0.00     0.00  reference_source_is_dimension
+  0.00      0.75     0.00        6     0.00     0.00  reference_source_name
+  0.00      0.75     0.00        5     0.00     0.00  app_world_candidate_destroy
+  0.00      0.75     0.00        5     0.00     0.00  geo_linear_append
+  0.00      0.75     0.00        5     0.00     0.00  reference_guide_position
+  0.00      0.75     0.00        4     0.00     0.00  app_candidate_call
+  0.00      0.75     0.00        4     0.00     0.00  app_candidate_check
+  0.00      0.75     0.00        4     0.00     0.00  app_candidate_create_with_deferred_sha
+  0.00      0.75     0.00        4     0.00     0.00  app_candidate_evaluate
+  0.00      0.75     0.00        4     0.00     0.00  app_member_reference_guide
+  0.00      0.75     0.00        4     0.00     0.00  app_world_candidate_create
+  0.00      0.75     0.00        4     0.00     0.00  app_world_candidate_equal
+  0.00      0.75     0.00        4     0.00     0.00  app_world_candidate_publish
+  0.00      0.75     0.00        4     0.00     0.00  geo_candidate_destroy
+  0.00      0.75     0.00        4     0.00     5.12  geo_candidate_evaluate
+  0.00      0.75     0.00        4     0.00     0.00  geo_candidate_seal
+  0.00      0.75     0.00        4     0.00     0.00  geo_ld_expression_read
+  0.00      0.75     0.00        3     0.00     0.00  geo_guide_definition_decode
+  0.00      0.75     0.00        3     0.00     0.00  geo_guide_definition_encode
+  0.00      0.75     0.00        3     0.00     0.00  geo_guides_evaluate_definition
+  0.00      0.75     0.00        3     0.00     0.00  geo_ld_describe
+  0.00      0.75     0.00        3     0.00     0.00  geo_ld_evaluate
+  0.00      0.75     0.00        3     0.00     0.00  geo_ld_expression_write
+  0.00      0.75     0.00        3     0.00     0.00  geo_linear_definition_sources_guide
+  0.00      0.75     0.00        3     0.00     0.00  geo_linear_evaluate
+  0.00      0.75     0.00        3     0.00     0.00  grid_subdivision_used
+  0.00      0.75     0.00        3     0.00     0.00  reference_named_quantity
+  0.00      0.75     0.00        3     0.00     0.00  reference_quantity
+  0.00      0.75     0.00        3     0.00     0.00  reference_quantity_raw
+  0.00      0.75     0.00        3     0.00     0.00  reference_resolve_linear
+  0.00      0.75     0.00        2     0.00     0.00  app_boundary_policy
+  0.00      0.75     0.00        2     0.00     0.00  app_boundary_region_definition
+  0.00      0.75     0.00        2     0.00     0.00  app_boundary_stage
+  0.00      0.75     0.00        2     0.00     0.00  app_member_reference_evaluate_guide
+  0.00      0.75     0.00        2     0.00     0.00  app_placement_stage
+  0.00      0.75     0.00        2     0.00     0.00  apply_scene_line_candidate.constprop.0
+  0.00      0.75     0.00        2     0.00    10.07  apply_surface_combined_line
+  0.00      0.75     0.00        2     0.00     0.00  engineering_used
+  0.00      0.75     0.00        2     0.00     0.00  geo_named_value_name_valid
+  0.00      0.75     0.00        2     0.00     0.00  geo_placements_stage
+  0.00      0.75     0.00        2     0.00     0.00  geo_regions_stage
+  0.00      0.75     0.00        2     0.00     0.00  parse_boundary_body
+  0.00      0.75     0.00        2     0.00     0.00  parse_placement_body
+  0.00      0.75     0.00        2     0.00     0.00  placement_structure
+  0.00      0.75     0.00        2     0.00     0.00  reference_geometry_changed
+  0.00      0.75     0.00        1     0.00     0.00  app_grid_host
+  0.00      0.75     0.00        1     0.00     0.00  app_guide_put
+  0.00      0.75     0.00        1     0.00     0.00  app_history_record
+  0.00      0.75     0.00        1     0.00     0.00  app_replace_evaluate
+  0.00      0.75     0.00        1     0.00   372.50  app_replace_world.constprop.0
+  0.00      0.75     0.00        1     0.00     0.00  app_scene_load_evaluate
+  0.00      0.75     0.00        1     0.00    10.07  apply_grid_line
+  0.00      0.75     0.00        1     0.00     0.00  apply_guide_line
+  0.00      0.75     0.00        1     0.00    10.07  apply_reference_guide
+  0.00      0.75     0.00        1     0.00    10.07  apply_spec_line
+  0.00      0.75     0.00        1     0.00     0.00  eng_definition_hash
+  0.00      0.75     0.00        1     0.00     0.00  eng_target_json
+  0.00      0.75     0.00        1     0.00     0.00  engineering_dump_grid
+  0.00      0.75     0.00        1     0.00     0.00  geo_guides_put
+  0.00      0.75     0.00        1     0.00     0.00  geo_named_values_put
+  0.00      0.75     0.00        1     0.00     0.00  json_engineering_capabilities
+  0.00      0.75     0.00        1     0.00    10.07  parse_scene_file
+  0.00      0.75     0.00        1     0.00    36.50  reference_default_world
+  0.00      0.75     0.00        1     0.00     0.00  reference_dump
+  0.00      0.75     0.00        1     0.00     0.00  wood_grid_begin_direct
+  0.00      0.75     0.00        1     0.00     0.00  wood_grid_direct_check
+  0.00      0.75     0.00        1     0.00     0.00  wood_grid_direct_declared
+  0.00      0.75     0.00        1     0.00     0.00  world_dump_dsl
+  0.00      0.75     0.00        1     0.00     0.00  world_dump_grids
+
+			Call graph
+
+
+granularity: each sample hit covers 2 byte(s) for 1.33% of 0.75 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     99.3    0.00    0.75                 main [1]
+                0.00    0.37       1/1           app_replace_world.constprop.0 [11]
+                0.00    0.37       1/2           app_candidate_evaluate <cycle 2> [261]
+                0.00    0.00       1/1           eng_definition_hash [67]
+                0.00    0.00       1/4           app_world_candidate_create [263]
+                0.00    0.00       1/5           app_world_candidate_destroy [255]
+                0.00    0.00       1/141         app_world_candidate_describe_sources [173]
+                0.00    0.00       1/4           geo_candidate_seal [267]
+                0.00    0.00       1/1           app_history_record [298]
+                0.00    0.00       1/21          geo_sha256 [243]
+                0.00    0.00       1/4           app_world_candidate_publish [265]
+                0.00    0.00       1/1           json_engineering_capabilities [306]
+-----------------------------------------------
+[2]     99.3    0.00    0.75       2+144     <cycle 2 as a whole> [2]
+                0.00    0.68     132             apply_scene_line <cycle 2> [6]
+                0.00    0.04       1             reference_default_world <cycle 2> [24]
+                0.00    0.02       4             geo_candidate_evaluate <cycle 2> [29]
+                0.00    0.01       1             parse_scene_file <cycle 2> [41]
+                0.00    0.00       4             app_candidate_evaluate <cycle 2> [261]
+                0.00    0.00       2             apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.00       1             app_replace_evaluate <cycle 2> [299]
+                0.00    0.00       1             app_scene_load_evaluate <cycle 2> [300]
+-----------------------------------------------
+                                  74             world_validate_derived [3]
+                0.00    0.01       1/74          geo_candidate_evaluate <cycle 2> [29]
+                0.00    0.01       1/74          apply_grid_line [38]
+                0.00    0.01       1/74          apply_spec_line [40]
+                0.00    0.01       1/74          apply_reference_guide [39]
+                0.00    0.01       1/74          parse_scene_file <cycle 2> [41]
+                0.00    0.02       2/74          apply_surface_combined_line [30]
+                0.00    0.67      67/74          reference_checked [8]
+[3]     99.3    0.00    0.75      74+74      world_validate_derived [3]
+                0.00    0.50      74/74          wood_world_validate_members [10]
+                0.00    0.24      74/74          reference_check_all [12]
+                0.00    0.00    2157/600318      reference_eval_timber_relation <cycle 1> [89]
+                0.00    0.00      74/74          wood_grid_world_valid_hook [56]
+                0.00    0.00      74/74          wood_grid_rules_valid_hook [60]
+                0.00    0.00       3/600318      reference_guide_position <cycle 1> [257]
+                0.00    0.00     514/589         app_grid_context [155]
+                0.00    0.00     222/451         app_asm_context [156]
+                0.00    0.00     148/217         app_boundary_compose [166]
+                0.00    0.00     148/298         app_fs_context [158]
+                0.00    0.00     146/147         wood_sp_rebuild [171]
+                0.00    0.00      77/227887      clip_loop_order [73]
+                0.00    0.00      74/76          geo_loop_is_valid [186]
+                0.00    0.00      74/76          geo_region_is_valid [187]
+                0.00    0.00      74/76          geo_frame_is_valid [185]
+                0.00    0.00      74/74          wood_world_validate_obstacles [225]
+                0.00    0.00      74/74          boundary_keys_reconcile.constprop.0 [190]
+                0.00    0.00      74/6224        app_eng_context [110]
+                0.00    0.00      74/74          wood_engineering_rebuild [211]
+                0.00    0.00      74/74          wood_assembly_rebuild [206]
+                0.00    0.00      74/223         app_sp_context [165]
+                0.00    0.00      74/74          wood_fs_rebuild [217]
+                0.00    0.00      74/74          reference_sources_begin_candidate [201]
+                0.00    0.00      74/74          geo_parameter_sources_rebuild [195]
+                0.00    0.00      74/74          wood_dp_rebuild [210]
+                0.00    0.00      74/148         app_dp_context [170]
+                0.00    0.00      74/74          wood_grid_systems_rebuild [221]
+                0.00    0.00      74/74          wood_grid_bindings_rebuild [218]
+                0.00    0.00      74/74          wood_assembly_generation_prepare [205]
+                0.00    0.00      74/74          wood_assembly_generation_check [204]
+                0.00    0.00      74/74          wood_engineering_sources_definitions [212]
+                0.00    0.00      74/74          wood_engineering_sources_metadata [213]
+                0.00    0.00      74/74          geo_version_sources_definitions [199]
+                                  74             world_validate_derived [3]
+-----------------------------------------------
+[4]     97.8    0.25    0.48  600318+6001328 <cycle 1 as a whole> [4]
+                0.03    0.20 2980967             geo_eval_source <cycle 1> [13]
+                0.00    0.20  226526             wood_contact_source_evaluate <cycle 1> [14]
+                0.09    0.02 1045172             wood_definition_sources_placement <cycle 1> [18]
+                0.03    0.03   19413             reference_contact_facts <cycle 1> [23]
+                0.03    0.00 1257198             wood_grid_coordinate_source <cycle 1> [25]
+                0.03    0.00   85268             reference_host_read <cycle 1> [26]
+                0.00    0.02   85556             geo_placement_sources_definition <cycle 1> [36]
+                0.01    0.00   85268+85268       wood_definition_sources_boundary <cycle 1> [45]
+                0.01    0.00  122444             wood_definition_sources_member <cycle 1> [44]
+                0.01    0.00   12942             wood_contact_sources_collect <cycle 1> [46]
+                0.01    0.00    2157             wood_member_reference_compute <cycle 1> [47]
+                0.00    0.01    2157             wood_member_reference_place <cycle 1> [50]
+                0.00    0.00    6471             app_reference_end_faces <cycle 1> [53]
+                0.00    0.00    2157             resolve_auto_span <cycle 1> [55]
+                0.00    0.00    1898             wood_grid_sources_definition <cycle 1> [59]
+                0.00    0.00    1012             wood_grid_policy_definitions <cycle 1> [63]
+                0.00    0.00     996             wood_grid_source_evaluate <cycle 1> [66]
+                0.00    0.00  226700             reference_placement_frame <cycle 1> [74]
+                0.00    0.00  207712             wd_reader <cycle 1> [76]
+                0.00    0.00  118130             app_member_reference_at <cycle 1> [79]
+                0.00    0.00   51892             reference_eval_timber_relation <cycle 1> [89]
+                0.00    0.00   12942             app_contact_resolve_stops <cycle 1> [96]
+                0.00    0.00    8700             wd_evaluate <cycle 1> [101]
+                0.00    0.00    6471             wood_contact_end_faces_with_sources <cycle 1> [108]
+                0.00    0.00    6471             app_reference_end_stops <cycle 1> [105]
+                0.00    0.00    4924             wood_grid_source_get <cycle 1> [113]
+                0.00    0.00    4314             wood_definition_sources_dimension <cycle 1> [116]
+                0.00    0.00    2166             reference_source_evaluate <cycle 1> [129]
+                0.00    0.00    2157             app_member_reference_end <cycle 1> [132]
+                0.00    0.00    2157             app_member_reference_span <cycle 1> [137]
+                0.00    0.00    2157             app_member_reference_placement <cycle 1> [135]
+                0.00    0.00    1898             app_member_reference_grid_line <cycle 1> [147]
+                0.00    0.00    1898             wood_grid_sources_line <cycle 1> [149]
+                0.00    0.00    1898             app_member_reference_grid <cycle 1> [146]
+                0.00    0.00     930             reference_grid_host <cycle 1> [152]
+                0.00    0.00     288             geo_placement_sources_evaluate <cycle 1> [161]
+                0.00    0.00     216             reference_placement_binding <cycle 1> [167]
+                0.00    0.00       5             reference_guide_position <cycle 1> [257]
+                0.00    0.00       3             geo_guides_evaluate_definition <cycle 1> [271]
+                0.00    0.00       3             geo_linear_evaluate <cycle 1> [276]
+                0.00    0.00       3             reference_quantity <cycle 1> [279]
+                0.00    0.00       3             geo_linear_definition_sources_guide <cycle 1> [275]
+                0.00    0.00       3             reference_quantity_raw <cycle 1> [280]
+                0.00    0.00       3             reference_named_quantity <cycle 1> [278]
+-----------------------------------------------
+                0.00    0.01       2/139         geo_candidate_evaluate <cycle 2> [29]
+                0.00    0.04       7/139         reference_default_world <cycle 2> [24]
+                0.00    0.68     130/139         apply_scene_line <cycle 2> [6]
+[5]     96.6    0.00    0.72     139         app_scene_candidate_apply [5]
+                0.00    0.67      67/67          apply_reference_place [7]
+                0.00    0.02       2/2           apply_surface_combined_line [30]
+                0.00    0.01       1/1           apply_grid_line [38]
+                0.00    0.01       1/1           apply_reference_guide [39]
+                0.00    0.01       1/1           apply_spec_line [40]
+                0.00    0.00      67/67          apply_place_line [230]
+                0.00    0.00      67/67          apply_timber_line [231]
+                0.00    0.00       1/1           apply_guide_line [301]
+-----------------------------------------------
+                                   2             reference_default_world <cycle 2> [24]
+                                 130             parse_scene_file <cycle 2> [41]
+[6]     90.4    0.00    0.68     132         apply_scene_line <cycle 2> [6]
+                0.00    0.68     130/139         app_scene_candidate_apply [5]
+                0.00    0.00     130/131         app_scene_file_graph_empty [184]
+                0.00    0.00     130/146         reference_may_affect [172]
+                0.00    0.00     130/139         app_scene_direct_dimensions_allowed [174]
+                0.00    0.00     130/215         geo_eval_clear [168]
+                0.00    0.00     130/137         app_scene_file_sources_ready [175]
+                0.00    0.00      66/74          reference_sources_owned_free [203]
+                0.00    0.00       2/4           app_world_candidate_create [263]
+                0.00    0.00       2/5           app_world_candidate_destroy [255]
+                                   2             apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+-----------------------------------------------
+                0.00    0.67      67/67          app_scene_candidate_apply [5]
+[7]     89.9    0.00    0.67      67         apply_reference_place [7]
+                0.00    0.67      67/67          reference_checked [8]
+                0.00    0.00     319/595         wood_grid_rule_u32 [154]
+                0.00    0.00     134/134         reference_face_parse [176]
+                0.00    0.00      67/451         app_asm_context [156]
+                0.00    0.00      10/10          parse_edge_ref [247]
+-----------------------------------------------
+                0.00    0.67      67/67          apply_reference_place [7]
+[8]     89.9    0.00    0.67      67         reference_checked [8]
+                0.00    0.67      67/74          world_validate_derived [3]
+                0.00    0.00      67/74          world_revalidate [226]
+-----------------------------------------------
+                0.00    0.18   47862/141429      reference_check_all [12]
+                0.00    0.35   93567/141429      wood_world_validate_members [10]
+[9]     69.6    0.00    0.52  141429         reference_member_footprint [9]
+                0.06    0.11  141429/600318      wood_definition_sources_placement <cycle 1> [18]
+                0.06    0.11  141429/600318      geo_eval_source <cycle 1> [13]
+                0.06    0.11  141429/600318      reference_placement_frame <cycle 1> [74]
+                0.00    0.00  141429/833056      wood_grid_codec_axis [33]
+                0.00    0.00  141429/227887      clip_loop_order [73]
+                0.00    0.00  141429/624566      reference_sources_ensure [72]
+-----------------------------------------------
+                0.00    0.50      74/74          world_validate_derived [3]
+[10]    66.3    0.00    0.50      74         wood_world_validate_members [10]
+                0.00    0.35   93567/141429      reference_member_footprint [9]
+                0.00    0.06   52176/52176       app_validation_member [21]
+                0.00    0.06   51983/51983       app_validation_host [22]
+                0.00    0.01    2157/2157        app_validation_place [37]
+                0.00    0.01    2157/2157        app_validation_stops [48]
+                0.00    0.01    2157/2157        app_validation_end_faces [49]
+                0.00    0.00    2157/2157        app_validation_boundary_role [54]
+                0.00    0.00   93567/93567       app_validation_footprint [82]
+                0.00    0.00    4314/8628        wood_stop_count_legal [104]
+                0.00    0.00    1898/2762        wood_grid_line_coord_in_resolved [126]
+                0.00    0.00    1898/2762        wood_grid_anchor_line_coord_resolved [124]
+                0.00    0.00      74/74          app_validation_placement_id [189]
+                0.00    0.00      74/2231        wood_member_primary_axis_check [127]
+                0.00    0.00      66/132         wood_grid_valid_in [183]
+-----------------------------------------------
+                0.00    0.37       1/1           main [1]
+[11]    49.7    0.00    0.37       1         app_replace_world.constprop.0 [11]
+                0.00    0.37       1/2           app_candidate_evaluate <cycle 2> [261]
+                0.00    0.00       1/4           app_world_candidate_create [263]
+                0.00    0.00       1/5           app_world_candidate_destroy [255]
+                0.00    0.00       1/141         app_world_candidate_describe_sources [173]
+                0.00    0.00       1/4           geo_candidate_seal [267]
+                0.00    0.00       1/21          geo_sha256 [243]
+                0.00    0.00       1/4           app_world_candidate_publish [265]
+-----------------------------------------------
+                0.00    0.24      74/74          world_validate_derived [3]
+[12]    32.6    0.00    0.24      74         reference_check_all [12]
+                0.00    0.18   47862/141429      reference_member_footprint [9]
+                0.00    0.06   47862/100038      app_reference_member_anchor [16]
+                0.00    0.00    2157/600318      reference_host_read <cycle 1> [26]
+                0.00    0.00    2157/600318      app_contact_resolve_stops <cycle 1> [96]
+                0.00    0.00    2157/600318      app_reference_end_faces <cycle 1> [53]
+                0.00    0.00    2157/32355       app_contact_facts [28]
+                0.00    0.00    4314/8628        wood_stop_count_legal [104]
+                0.00    0.00    2157/62768       app_reference_host_read [85]
+                0.00    0.00    2157/6471        timber_boundary_role_check [106]
+-----------------------------------------------
+                                   3             geo_linear_definition_sources_guide <cycle 1> [275]
+                                   3             reference_quantity <cycle 1> [279]
+                                   3             reference_named_quantity <cycle 1> [278]
+                                   5             reference_guide_position <cycle 1> [257]
+                                  72             geo_placement_sources_evaluate <cycle 1> [161]
+                                  72             wd_evaluate <cycle 1> [101]
+                                4924             wood_grid_source_get <cycle 1> [113]
+                               51892             reference_eval_timber_relation <cycle 1> [89]
+                               85268             reference_host_read <cycle 1> [26]
+                               85556             geo_placement_sources_definition <cycle 1> [36]
+                              213584             wood_contact_source_evaluate <cycle 1> [14]
+                              226526             wood_contact_sources_collect <cycle 1> [46]
+                              226700             reference_placement_frame <cycle 1> [74]
+                              685575             reference_contact_facts <cycle 1> [23]
+                             1257198             wood_grid_coordinate_source <cycle 1> [25]
+                0.00    0.00    2157/600318      app_validation_place [37]
+                0.06    0.11  141429/600318      reference_member_footprint [9]
+[13]    30.7    0.03    0.20 2980967         geo_eval_source <cycle 1> [13]
+                0.00    0.11 2980967/2980967     geo_source_node [17]
+                0.06    0.02 2980967/2980967     geo_source_edge [20]
+                0.00    0.01  226526/226526      wood_contact_source_describe [43]
+                0.00    0.00    8700/8700        wd_describe [100]
+                0.00    0.00    2166/2166        reference_source_describe [128]
+                0.00    0.00     996/996         wood_grid_source_describe [151]
+                0.00    0.00     288/288         geo_placement_sources_describe [160]
+                0.00    0.00      66/66          wood_grid_application_value [238]
+                0.00    0.00       3/3           geo_ld_describe [272]
+                0.00    0.00       3/3           geo_ld_evaluate [273]
+                              226526             wood_contact_source_evaluate <cycle 1> [14]
+                                8700             wd_evaluate <cycle 1> [101]
+                                2166             reference_source_evaluate <cycle 1> [129]
+                                 996             wood_grid_source_evaluate <cycle 1> [66]
+                                 288             geo_placement_sources_evaluate <cycle 1> [161]
+-----------------------------------------------
+                              226526             geo_eval_source <cycle 1> [13]
+[14]    26.7    0.00    0.20  226526         wood_contact_source_evaluate <cycle 1> [14]
+                0.19    0.00   12942/12942       wood_contact_collect_stops [15]
+                0.01    0.00  226526/453052      wood_contact_source_decode [34]
+                0.00    0.00  213584/226526      wood_contact_source_collection_view [75]
+                              213584             geo_eval_source <cycle 1> [13]
+                               12942             reference_contact_facts <cycle 1> [23]
+-----------------------------------------------
+                0.19    0.00   12942/12942       wood_contact_source_evaluate <cycle 1> [14]
+[15]    25.3    0.19    0.00   12942         wood_contact_collect_stops [15]
+-----------------------------------------------
+                0.00    0.06   47862/100038      reference_check_all [12]
+                0.00    0.06   52176/100038      app_validation_member [21]
+[16]    16.3    0.00    0.12  100038         app_reference_member_anchor [16]
+                0.04    0.08  100038/600318      wood_definition_sources_placement <cycle 1> [18]
+                0.00    0.00  100038/624566      reference_sources_ensure [72]
+-----------------------------------------------
+                0.00    0.11 2980967/2980967     geo_eval_source <cycle 1> [13]
+[17]    15.0    0.00    0.11 2980967         geo_source_node [17]
+                0.11    0.00 2980967/2980967     support_coord_compare [19]
+                0.00    0.00  238679/1769857     geo_source_index_append [32]
+                0.00    0.00  238679/1769857     geo_source_grow [70]
+-----------------------------------------------
+                              118130             app_member_reference_at <cycle 1> [79]
+                              685575             reference_contact_facts <cycle 1> [23]
+                0.04    0.08  100038/600318      app_reference_member_anchor [16]
+                0.06    0.11  141429/600318      reference_member_footprint [9]
+[18]    14.7    0.09    0.02 1045172         wood_definition_sources_placement <cycle 1> [18]
+                0.02    0.00 3135516/3135516     wd_read_text.constprop.0 [31]
+                             1045172             wood_grid_coordinate_source <cycle 1> [25]
+-----------------------------------------------
+                0.11    0.00 2980967/2980967     geo_source_node [17]
+[19]    14.7    0.11    0.00 2980967         support_coord_compare [19]
+-----------------------------------------------
+                0.06    0.02 2980967/2980967     geo_eval_source <cycle 1> [13]
+[20]    10.3    0.06    0.02 2980967         geo_source_edge [20]
+                0.02    0.00 1531178/1769857     geo_source_index_append [32]
+                0.00    0.00 1531178/1769857     geo_source_grow [70]
+-----------------------------------------------
+                0.00    0.06   52176/52176       wood_world_validate_members [10]
+[21]     8.5    0.00    0.06   52176         app_validation_member [21]
+                0.00    0.06   52176/100038      app_reference_member_anchor [16]
+-----------------------------------------------
+                0.00    0.06   51983/51983       wood_world_validate_members [10]
+[22]     8.5    0.00    0.06   51983         app_validation_host [22]
+                0.02    0.04   51983/600318      reference_host_read <cycle 1> [26]
+                0.00    0.00   51983/62768       app_reference_host_read [85]
+                0.00    0.00   51983/52914       wood_grid_codec_rule [88]
+-----------------------------------------------
+                                6471             app_reference_end_stops <cycle 1> [105]
+                               12942             wood_contact_source_evaluate <cycle 1> [14]
+[23]     8.1    0.03    0.03   19413         reference_contact_facts <cycle 1> [23]
+                0.02    0.00  685575/833056      wood_grid_codec_axis [33]
+                0.00    0.01   19413/32355       app_contact_facts [28]
+                              685575             geo_eval_source <cycle 1> [13]
+                              685575             wood_definition_sources_placement <cycle 1> [18]
+                               19413             reference_host_read <cycle 1> [26]
+-----------------------------------------------
+                                   1             app_replace_evaluate <cycle 2> [299]
+[24]     4.9    0.00    0.04       1         reference_default_world <cycle 2> [24]
+                0.00    0.04       7/139         app_scene_candidate_apply [5]
+                0.00    0.00      18/9297        asm_error.constprop.0 [99]
+                0.00    0.00      14/146         reference_may_affect [172]
+                0.00    0.00      14/16          parameter_reference_edit [246]
+                0.00    0.00      14/451         app_asm_context [156]
+                0.00    0.00       7/215         geo_eval_clear [168]
+                0.00    0.00       7/139         app_scene_direct_dimensions_allowed [174]
+                0.00    0.00       7/9           wood_assembly_dimensions_changed [248]
+                0.00    0.00       7/137         app_scene_file_sources_ready [175]
+                0.00    0.00       7/9           world_definitions_equal [249]
+                0.00    0.00       4/74          reference_sources_owned_free [203]
+                                   2             apply_scene_line <cycle 2> [6]
+-----------------------------------------------
+                                4314             wood_definition_sources_dimension <cycle 1> [116]
+                              207712             wd_reader <cycle 1> [76]
+                             1045172             wood_definition_sources_placement <cycle 1> [18]
+[25]     4.0    0.03    0.00 1257198         wood_grid_coordinate_source <cycle 1> [25]
+                             1257198             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                                 930             reference_grid_host <cycle 1> [152]
+                                2157             app_member_reference_placement <cycle 1> [135]
+                               19413             reference_contact_facts <cycle 1> [23]
+                0.00    0.00    2157/600318      app_validation_end_faces [49]
+                0.00    0.00    2157/600318      app_validation_stops [48]
+                0.00    0.00    2157/600318      app_validation_boundary_role [54]
+                0.00    0.00    2157/600318      reference_check_all [12]
+                0.00    0.00    2157/600318      app_validation_place [37]
+                0.02    0.04   51983/600318      app_validation_host [22]
+[26]     4.0    0.03    0.00   85268         reference_host_read <cycle 1> [26]
+                0.00    0.00   85268/227887      clip_loop_order [73]
+                0.00    0.00   85268/624566      reference_sources_ensure [72]
+                0.00    0.00   85268/85268       reference_region_geometry [84]
+                               85268             reference_placement_frame <cycle 1> [74]
+                               85268             geo_eval_source <cycle 1> [13]
+                               85268             geo_placement_sources_definition <cycle 1> [36]
+                               85268             wood_definition_sources_boundary <cycle 1> [45]
+-----------------------------------------------
+                0.00    0.00      64/1449274     reference_dump [68]
+                0.00    0.00   45705/1449274     resolve_auto_span <cycle 1> [55]
+                0.02    0.00 1403505/1449274     app_contact_facts [28]
+[27]     3.3    0.02    0.00 1449274         timber_a0_footprint_uv [27]
+                0.00    0.00 1209964/1216435     geo_frame_direction [52]
+                0.00    0.00 1209964/1214278     geo_rectangle_footprint [71]
+-----------------------------------------------
+                0.00    0.00    2157/32355       app_validation_stops [48]
+                0.00    0.00    2157/32355       reference_check_all [12]
+                0.00    0.00    2157/32355       resolve_auto_span <cycle 1> [55]
+                0.00    0.00    6471/32355       app_reference_end_faces <cycle 1> [53]
+                0.00    0.01   19413/32355       reference_contact_facts <cycle 1> [23]
+[28]     3.2    0.00    0.02   32355         app_contact_facts [28]
+                0.02    0.00 1403505/1449274     timber_a0_footprint_uv [27]
+                0.00    0.00   32355/41050       placement_effective_boundary [91]
+-----------------------------------------------
+                                   4             app_candidate_evaluate <cycle 2> [261]
+[29]     2.7    0.00    0.02       4         geo_candidate_evaluate <cycle 2> [29]
+                0.00    0.01       2/139         app_scene_candidate_apply [5]
+                0.00    0.01       1/74          world_validate_derived [3]
+                0.00    0.00       4/16          geo_candidate_digest_matches [245]
+                0.00    0.00       4/4           app_candidate_call [258]
+                0.00    0.00       1/74          world_revalidate [226]
+                                   1             app_scene_load_evaluate <cycle 2> [300]
+                                   1             app_replace_evaluate <cycle 2> [299]
+-----------------------------------------------
+                0.00    0.02       2/2           app_scene_candidate_apply [5]
+[30]     2.7    0.00    0.02       2         apply_surface_combined_line [30]
+                0.00    0.02       2/74          world_validate_derived [3]
+                0.00    0.00       2/595         wood_grid_rule_u32 [154]
+                0.00    0.00       2/2           parse_boundary_body [292]
+                0.00    0.00       2/2           parse_placement_body [293]
+                0.00    0.00       2/2           app_boundary_stage [284]
+                0.00    0.00       2/2           app_placement_stage [286]
+                0.00    0.00       2/74          world_revalidate [226]
+-----------------------------------------------
+                0.02    0.00 3135516/3135516     wood_definition_sources_placement <cycle 1> [18]
+[31]     2.7    0.02    0.00 3135516         wd_read_text.constprop.0 [31]
+-----------------------------------------------
+                0.00    0.00  238679/1769857     geo_source_node [17]
+                0.02    0.00 1531178/1769857     geo_source_edge [20]
+[32]     2.7    0.02    0.00 1769857         geo_source_index_append [32]
+-----------------------------------------------
+                0.00    0.00    1860/833056      wood_grid_decode_application_value [62]
+                0.00    0.00    4192/833056      wood_grid_decode_application [58]
+                0.00    0.00  141429/833056      reference_member_footprint [9]
+                0.02    0.00  685575/833056      reference_contact_facts <cycle 1> [23]
+[33]     2.7    0.02    0.00  833056         wood_grid_codec_axis [33]
+                0.00    0.00   90780/102884      wood_grid_codec_bool [80]
+                0.00    0.00   72624/93806       wood_grid_codec_u32 [81]
+                0.00    0.00    6052/21182       wood_grid_codec_int [95]
+-----------------------------------------------
+                0.01    0.00  226526/453052      wood_contact_source_evaluate <cycle 1> [14]
+                0.01    0.00  226526/453052      wood_contact_source_describe [43]
+[34]     2.7    0.02    0.00  453052         wood_contact_source_decode [34]
+-----------------------------------------------
+                0.02    0.00   85556/85556       geo_placement_sources_definition <cycle 1> [36]
+[35]     2.7    0.02    0.00   85556         geo_placement_definition_decode [35]
+-----------------------------------------------
+                                 144             geo_placement_sources_evaluate <cycle 1> [161]
+                                 144             reference_placement_binding <cycle 1> [167]
+                               85268             reference_host_read <cycle 1> [26]
+[36]     2.7    0.00    0.02   85556         geo_placement_sources_definition <cycle 1> [36]
+                0.02    0.00   85556/85556       geo_placement_definition_decode [35]
+                               85556             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                0.00    0.01    2157/2157        wood_world_validate_members [10]
+[37]     1.4    0.00    0.01    2157         app_validation_place [37]
+                0.01    0.00    2157/4314        timber_place_a0_on_surface [42]
+                0.00    0.00    2157/600318      reference_host_read <cycle 1> [26]
+                0.00    0.00    2157/600318      geo_eval_source <cycle 1> [13]
+                0.00    0.00    2157/62768       app_reference_host_read [85]
+                0.00    0.00    2157/624566      reference_sources_ensure [72]
+                0.00    0.00    2157/2157        geo_frame_project_uv [139]
+-----------------------------------------------
+                0.00    0.01       1/1           app_scene_candidate_apply [5]
+[38]     1.3    0.00    0.01       1         apply_grid_line [38]
+                0.00    0.01       1/74          world_validate_derived [3]
+                0.00    0.00      16/173         parse_coord [169]
+                0.00    0.00       2/595         wood_grid_rule_u32 [154]
+                0.00    0.00       1/227887      clip_loop_order [73]
+                0.00    0.00       1/589         app_grid_context [155]
+                0.00    0.00       1/1           wood_grid_begin_direct [307]
+                0.00    0.00       1/1           wood_grid_direct_declared [309]
+                0.00    0.00       1/147         wood_sp_rebuild [171]
+                0.00    0.00       1/1           wood_grid_direct_check [308]
+                0.00    0.00       1/74          world_revalidate [226]
+-----------------------------------------------
+                0.00    0.01       1/1           app_scene_candidate_apply [5]
+[39]     1.3    0.00    0.01       1         apply_reference_guide [39]
+                0.00    0.01       1/74          world_validate_derived [3]
+                0.00    0.00       2/595         wood_grid_rule_u32 [154]
+                0.00    0.00       1/1           app_guide_put [297]
+                0.00    0.00       1/74          world_revalidate [226]
+-----------------------------------------------
+                0.00    0.01       1/1           app_scene_candidate_apply [5]
+[40]     1.3    0.00    0.01       1         apply_spec_line [40]
+                0.00    0.01       1/74          world_validate_derived [3]
+                0.00    0.00       1/2           geo_named_value_name_valid [289]
+                0.00    0.00       1/173         parse_coord [169]
+                0.00    0.00       1/74          world_revalidate [226]
+                0.00    0.00       1/1           geo_named_values_put [305]
+-----------------------------------------------
+                                   1             app_scene_load_evaluate <cycle 2> [300]
+[41]     1.3    0.00    0.01       1         parse_scene_file <cycle 2> [41]
+                0.00    0.01       1/74          world_validate_derived [3]
+                0.00    0.00    5676/5676        utf8_seq_len [112]
+                0.00    0.00     134/9297        asm_error.constprop.0 [99]
+                0.00    0.00       1/8           wood_assembly_generation_integrity [251]
+                0.00    0.00       1/451         app_asm_context [156]
+                0.00    0.00       1/74          world_revalidate [226]
+                0.00    0.00       1/3           grid_subdivision_used [277]
+                                 130             apply_scene_line <cycle 2> [6]
+-----------------------------------------------
+                0.01    0.00    2157/4314        wood_member_reference_place <cycle 1> [50]
+                0.01    0.00    2157/4314        app_validation_place [37]
+[42]     1.3    0.01    0.00    4314         timber_place_a0_on_surface [42]
+                0.00    0.00    4314/4314        wood_member_place_a0 [64]
+-----------------------------------------------
+                0.00    0.01  226526/226526      geo_eval_source <cycle 1> [13]
+[43]     1.3    0.00    0.01  226526         wood_contact_source_describe [43]
+                0.01    0.00  226526/453052      wood_contact_source_decode [34]
+-----------------------------------------------
+                                4314             wd_evaluate <cycle 1> [101]
+                              118130             app_member_reference_at <cycle 1> [79]
+[44]     1.3    0.01    0.00  122444         wood_definition_sources_member <cycle 1> [44]
+                              122444             wd_reader <cycle 1> [76]
+-----------------------------------------------
+                               85268             wood_definition_sources_boundary <cycle 1> [45]
+                               85268             reference_host_read <cycle 1> [26]
+[45]     1.3    0.01    0.00   85268+85268   wood_definition_sources_boundary <cycle 1> [45]
+                               85268             wd_reader <cycle 1> [76]
+                               85268             wood_definition_sources_boundary <cycle 1> [45]
+-----------------------------------------------
+                               12942             app_contact_resolve_stops <cycle 1> [96]
+[46]     1.3    0.01    0.00   12942         wood_contact_sources_collect <cycle 1> [46]
+                0.00    0.00   12942/226526      wood_contact_source_collection_view [75]
+                              226526             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                                2157             reference_source_evaluate <cycle 1> [129]
+[47]     1.3    0.01    0.00    2157         wood_member_reference_compute <cycle 1> [47]
+                0.00    0.00   49735/49735       app_member_reference_evaluate [90]
+                0.00    0.00       2/4           app_member_reference_guide [262]
+                0.00    0.00       2/2           app_member_reference_evaluate_guide [285]
+                              115973             app_member_reference_at <cycle 1> [79]
+                               49735             reference_eval_timber_relation <cycle 1> [89]
+                                   2             reference_guide_position <cycle 1> [257]
+-----------------------------------------------
+                0.00    0.01    2157/2157        wood_world_validate_members [10]
+[48]     0.9    0.00    0.01    2157         app_validation_stops [48]
+                0.00    0.00    2157/600318      reference_host_read <cycle 1> [26]
+                0.00    0.00    2157/600318      app_contact_resolve_stops <cycle 1> [96]
+                0.00    0.00    2157/32355       app_contact_facts [28]
+                0.00    0.00    2157/62768       app_reference_host_read [85]
+-----------------------------------------------
+                0.00    0.01    2157/2157        wood_world_validate_members [10]
+[49]     0.7    0.00    0.01    2157         app_validation_end_faces [49]
+                0.00    0.00    2157/600318      reference_host_read <cycle 1> [26]
+                0.00    0.00    2157/600318      app_reference_end_faces <cycle 1> [53]
+                0.00    0.00    2157/62768       app_reference_host_read [85]
+-----------------------------------------------
+                                2157             reference_source_evaluate <cycle 1> [129]
+[50]     0.7    0.00    0.01    2157         wood_member_reference_place <cycle 1> [50]
+                0.01    0.00    2157/4314        timber_place_a0_on_surface [42]
+                0.00    0.00    2157/2157        wood_member_anchor_corner [65]
+                0.00    0.00    2157/2157        app_member_reference_issue_count [133]
+                0.00    0.00    2157/2157        surface_primary_axis_check [142]
+                0.00    0.00    2157/2157        app_member_reference_primary [136]
+                0.00    0.00    2157/2157        app_member_reference_boundary [131]
+                0.00    0.00    2157/2157        app_member_reference_place [134]
+                0.00    0.00    2157/2157        app_member_reference_write [138]
+                0.00    0.00     257/257         app_member_reference_edge [163]
+                0.00    0.00       2/4           app_member_reference_guide [262]
+                                2157             app_member_reference_at <cycle 1> [79]
+                                2157             app_member_reference_placement <cycle 1> [135]
+                                2157             app_member_reference_span <cycle 1> [137]
+                                2157             app_member_reference_end <cycle 1> [132]
+                                1898             app_member_reference_grid <cycle 1> [146]
+                                1898             app_member_reference_grid_line <cycle 1> [147]
+-----------------------------------------------
+                                                 <spontaneous>
+[51]     0.7    0.01    0.00                 cmd_proj [51]
+-----------------------------------------------
+                0.00    0.00    2157/1216435     wood_member_anchor_corner [65]
+                0.00    0.00    4314/1216435     wood_member_place_a0 [64]
+                0.00    0.00 1209964/1216435     timber_a0_footprint_uv [27]
+[52]     0.7    0.01    0.00 1216435         geo_frame_direction [52]
+-----------------------------------------------
+                                2157             app_member_reference_end <cycle 1> [132]
+                0.00    0.00    2157/600318      app_validation_end_faces [49]
+                0.00    0.00    2157/600318      reference_check_all [12]
+[53]     0.6    0.00    0.00    6471         app_reference_end_faces <cycle 1> [53]
+                0.00    0.00    6471/32355       app_contact_facts [28]
+                                6471             wood_contact_end_faces_with_sources <cycle 1> [108]
+-----------------------------------------------
+                0.00    0.00    2157/2157        wood_world_validate_members [10]
+[54]     0.4    0.00    0.00    2157         app_validation_boundary_role [54]
+                0.00    0.00    2157/600318      reference_host_read <cycle 1> [26]
+                0.00    0.00    2157/62768       app_reference_host_read [85]
+                0.00    0.00    2157/6471        timber_boundary_role_check [106]
+-----------------------------------------------
+                                2157             app_member_reference_span <cycle 1> [137]
+[55]     0.3    0.00    0.00    2157         resolve_auto_span <cycle 1> [55]
+                0.00    0.00    2157/32355       app_contact_facts [28]
+                0.00    0.00   45705/1449274     timber_a0_footprint_uv [27]
+                0.00    0.00    2157/2157        wood_member_resolve_span [144]
+                                2157             app_contact_resolve_stops <cycle 1> [96]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[56]     0.0    0.00    0.00      74         wood_grid_world_valid_hook [56]
+                0.00    0.00      74/74          wood_grid_world_valid_direct [57]
+                0.00    0.00      74/600318      wood_grid_policy_definitions <cycle 1> [63]
+-----------------------------------------------
+                0.00    0.00      74/74          wood_grid_world_valid_hook [56]
+[57]     0.0    0.00    0.00      74         wood_grid_world_valid_direct [57]
+                0.00    0.00      66/66          wood_grid_sources_application [61]
+                0.00    0.00      66/600318      reference_grid_host <cycle 1> [152]
+                0.00    0.00      66/66          wood_grid_application_hook [237]
+                0.00    0.00      66/930         wood_grid_host_source [153]
+                0.00    0.00      66/132         wood_grid_valid_in [183]
+-----------------------------------------------
+                0.00    0.00     198/2096        wood_grid_decode_application_value [62]
+                0.00    0.00    1898/2096        wood_grid_sources_definition <cycle 1> [59]
+[58]     0.0    0.00    0.00    2096         wood_grid_decode_application [58]
+                0.00    0.00    4192/833056      wood_grid_codec_axis [33]
+                0.00    0.00    2096/3026        wood_grid_codec_application_prefix [122]
+                0.00    0.00    2096/21182       wood_grid_codec_int [95]
+-----------------------------------------------
+                                1898             app_member_reference_grid <cycle 1> [146]
+[59]     0.0    0.00    0.00    1898         wood_grid_sources_definition <cycle 1> [59]
+                0.00    0.00    1898/2096        wood_grid_decode_application [58]
+                                1898             wood_grid_source_get <cycle 1> [113]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[60]     0.0    0.00    0.00      74         wood_grid_rules_valid_hook [60]
+                0.00    0.00      74/600318      wood_grid_policy_definitions <cycle 1> [63]
+                0.00    0.00      74/74          wood_grid_rules_world_valid_direct [219]
+-----------------------------------------------
+                0.00    0.00      66/66          wood_grid_world_valid_direct [57]
+[61]     0.0    0.00    0.00      66         wood_grid_sources_application [61]
+                0.00    0.00      66/600318      wood_grid_source_get <cycle 1> [113]
+                0.00    0.00      66/1128        wood_grid_decode_application_value [62]
+                0.00    0.00      66/132         wood_grid_publish_application_cache [181]
+-----------------------------------------------
+                                 930             wood_grid_decode_application_value [62]
+                0.00    0.00      66/1128        wood_grid_sources_application [61]
+                0.00    0.00      66/1128        wood_grid_source_evaluate <cycle 1> [66]
+                0.00    0.00     996/1128        wood_grid_policy_definitions <cycle 1> [63]
+[62]     0.0    0.00    0.00    1128+930     wood_grid_decode_application_value [62]
+                0.00    0.00    1860/833056      wood_grid_codec_axis [33]
+                0.00    0.00     198/2096        wood_grid_decode_application [58]
+                0.00    0.00     930/3026        wood_grid_codec_application_prefix [122]
+                0.00    0.00     930/21182       wood_grid_codec_int [95]
+                                 930             wood_grid_decode_application_value [62]
+-----------------------------------------------
+                                 864             wood_grid_source_evaluate <cycle 1> [66]
+                0.00    0.00      74/600318      wood_grid_world_valid_hook [56]
+                0.00    0.00      74/600318      wood_grid_rules_valid_hook [60]
+[63]     0.0    0.00    0.00    1012         wood_grid_policy_definitions <cycle 1> [63]
+                0.00    0.00     996/1128        wood_grid_decode_application_value [62]
+                                 996             wood_grid_source_get <cycle 1> [113]
+-----------------------------------------------
+                0.00    0.00    4314/4314        timber_place_a0_on_surface [42]
+[64]     0.0    0.00    0.00    4314         wood_member_place_a0 [64]
+                0.00    0.00    4314/1216435     geo_frame_direction [52]
+                0.00    0.00    4314/4314        geo_region_contains_point [115]
+                0.00    0.00    4314/1214278     geo_rectangle_footprint [71]
+                0.00    0.00    4314/38853       geo_region_contains_rect [94]
+                0.00    0.00    4314/4314        geo_frame_point [114]
+-----------------------------------------------
+                0.00    0.00    2157/2157        wood_member_reference_place <cycle 1> [50]
+[65]     0.0    0.00    0.00    2157         wood_member_anchor_corner [65]
+                0.00    0.00    2157/1216435     geo_frame_direction [52]
+-----------------------------------------------
+                                 996             geo_eval_source <cycle 1> [13]
+[66]     0.0    0.00    0.00     996         wood_grid_source_evaluate <cycle 1> [66]
+                0.00    0.00      66/1128        wood_grid_decode_application_value [62]
+                0.00    0.00     996/1992        wood_grid_source_decode [145]
+                0.00    0.00     996/2894        wood_grid_result [123]
+                0.00    0.00     864/930         wood_grid_host_source [153]
+                0.00    0.00     864/2762        wood_grid_line_coord_in_resolved [126]
+                0.00    0.00     864/2762        wood_grid_anchor_line_coord_resolved [124]
+                0.00    0.00     264/264         wood_grid_binding_definition_depend [162]
+                0.00    0.00     132/5808        wood_grid_def_number [111]
+                0.00    0.00     132/132         wood_grid_def_axis [179]
+                0.00    0.00     132/132         wood_grid_parameter_definitions [180]
+                0.00    0.00      66/66          wood_grid_application_evaluate_direct [236]
+                0.00    0.00      66/132         wood_grid_publish_application_cache [181]
+                                 864             wood_grid_policy_definitions <cycle 1> [63]
+                                 864             reference_grid_host <cycle 1> [152]
+                                  66             wood_grid_source_get <cycle 1> [113]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[67]     0.0    0.00    0.00       1         eng_definition_hash [67]
+                0.00    0.00       1/1           world_dump_dsl [69]
+                0.00    0.00       1/21          geo_sha256 [243]
+-----------------------------------------------
+                0.00    0.00       1/1           world_dump_dsl [69]
+[68]     0.0    0.00    0.00       1         reference_dump [68]
+                0.00    0.00      64/1449274     timber_a0_footprint_uv [27]
+                0.00    0.00     132/132         reference_face_format [177]
+                0.00    0.00      64/6224        app_eng_context [110]
+                0.00    0.00      64/227887      clip_loop_order [73]
+                0.00    0.00      64/67          app_placement_boundary [229]
+                0.00    0.00      64/41050       placement_effective_boundary [91]
+                0.00    0.00      64/9297        asm_error.constprop.0 [99]
+-----------------------------------------------
+                0.00    0.00       1/1           eng_definition_hash [67]
+[69]     0.0    0.00    0.00       1         world_dump_dsl [69]
+                0.00    0.00       1/1           reference_dump [68]
+                0.00    0.00       1/2           engineering_used [288]
+                0.00    0.00       1/217         app_boundary_compose [166]
+                0.00    0.00       1/1           eng_target_json [302]
+                0.00    0.00       1/227887      clip_loop_order [73]
+                0.00    0.00       1/451         app_asm_context [156]
+                0.00    0.00       1/223         app_sp_context [165]
+                0.00    0.00       1/298         app_fs_context [158]
+                0.00    0.00       1/1           world_dump_grids [310]
+                0.00    0.00       1/3           grid_subdivision_used [277]
+-----------------------------------------------
+                0.00    0.00  238679/1769857     geo_source_node [17]
+                0.00    0.00 1531178/1769857     geo_source_edge [20]
+[70]     0.0    0.00    0.00 1769857         geo_source_grow [70]
+-----------------------------------------------
+                0.00    0.00    4314/1214278     wood_member_place_a0 [64]
+                0.00    0.00 1209964/1214278     timber_a0_footprint_uv [27]
+[71]     0.0    0.00    0.00 1214278         geo_rectangle_footprint [71]
+-----------------------------------------------
+                0.00    0.00       3/624566      reference_quantity <cycle 1> [279]
+                0.00    0.00       3/624566      reference_named_quantity <cycle 1> [278]
+                0.00    0.00       5/624566      reference_guide_position <cycle 1> [257]
+                0.00    0.00      74/624566      reference_sources_begin_candidate [201]
+                0.00    0.00    1898/624566      reference_grid_definition [148]
+                0.00    0.00    2157/624566      reference_member_owned [141]
+                0.00    0.00    2157/624566      app_validation_place [37]
+                0.00    0.00   12942/624566      app_contact_resolve_stops <cycle 1> [96]
+                0.00    0.00   51892/624566      reference_eval_timber_relation <cycle 1> [89]
+                0.00    0.00   85268/624566      reference_host_read <cycle 1> [26]
+                0.00    0.00  100038/624566      app_reference_member_anchor [16]
+                0.00    0.00  141429/624566      reference_member_footprint [9]
+                0.00    0.00  226700/624566      reference_placement_frame <cycle 1> [74]
+[72]     0.0    0.00    0.00  624566         reference_sources_ensure [72]
+                0.00    0.00     370/1332        geo_eval_register_many [150]
+                0.00    0.00      74/74          geo_parameter_sources_register_with_definitions [196]
+                0.00    0.00      74/74          geo_linear_definition_sources_register [193]
+                0.00    0.00      74/6224        app_eng_context [110]
+                0.00    0.00      74/74          geo_version_sources_register [200]
+                0.00    0.00      74/74          wood_engineering_sources_register [214]
+                0.00    0.00      74/451         app_asm_context [156]
+                0.00    0.00      74/74          wood_assembly_sources_create [207]
+                0.00    0.00      74/148         app_dp_context [170]
+                0.00    0.00      74/74          wood_finish_sources_create [216]
+                0.00    0.00      74/74          geo_placement_sources_register [197]
+                0.00    0.00      74/74          geo_region_key_sources_register [198]
+                0.00    0.00      74/74          geo_enclosure_sources_register [192]
+                0.00    0.00      74/74          wood_definition_sources_create [209]
+                0.00    0.00      74/223         app_sp_context [165]
+                0.00    0.00      74/74          wood_sp_sources_create [224]
+                0.00    0.00      74/589         app_grid_context [155]
+                0.00    0.00      74/74          wood_grid_sources_create [220]
+                0.00    0.00      74/74          wood_contact_sources_create [208]
+-----------------------------------------------
+                0.00    0.00       1/227887      app_grid_host [296]
+                0.00    0.00       1/227887      world_dump_dsl [69]
+                0.00    0.00       1/227887      apply_grid_line [38]
+                0.00    0.00       3/227887      reference_quantity_raw <cycle 1> [280]
+                0.00    0.00       3/227887      reference_source_evaluate <cycle 1> [129]
+                0.00    0.00      64/227887      reference_dump [68]
+                0.00    0.00      74/227887      wood_finish_sources_bind [215]
+                0.00    0.00      77/227887      world_validate_derived [3]
+                0.00    0.00     148/227887      reference_sources_dispose [202]
+                0.00    0.00     222/227887      app_fs_context [158]
+                0.00    0.00     226/227887      app_asm_context [156]
+                0.00    0.00     370/227887      app_grid_context [155]
+                0.00    0.00   85268/227887      reference_host_read <cycle 1> [26]
+                0.00    0.00  141429/227887      reference_member_footprint [9]
+[73]     0.0    0.00    0.00  227887         clip_loop_order [73]
+-----------------------------------------------
+                                   3             reference_source_evaluate <cycle 1> [129]
+                               85268             reference_host_read <cycle 1> [26]
+                0.06    0.11  141429/600318      reference_member_footprint [9]
+[74]     0.0    0.00    0.00  226700         reference_placement_frame <cycle 1> [74]
+                0.00    0.00  226700/624566      reference_sources_ensure [72]
+                              226700             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                0.00    0.00   12942/226526      wood_contact_sources_collect <cycle 1> [46]
+                0.00    0.00  213584/226526      wood_contact_source_evaluate <cycle 1> [14]
+[75]     0.0    0.00    0.00  226526         wood_contact_source_collection_view [75]
+-----------------------------------------------
+                               85268             wood_definition_sources_boundary <cycle 1> [45]
+                              122444             wood_definition_sources_member <cycle 1> [44]
+[76]     0.0    0.00    0.00  207712         wd_reader <cycle 1> [76]
+                              207712             wood_grid_coordinate_source <cycle 1> [25]
+-----------------------------------------------
+                0.00    0.00    4314/159726      geo_region_contains_point [115]
+                0.00    0.00  155412/159726      geo_loop_contains_rect [93]
+[77]     0.0    0.00    0.00  159726         geo_loop_contains_point [77]
+                0.00    0.00  159726/159726      geo_loop_point_on_edge [78]
+-----------------------------------------------
+                0.00    0.00  159726/159726      geo_loop_contains_point [77]
+[78]     0.0    0.00    0.00  159726         geo_loop_point_on_edge [78]
+-----------------------------------------------
+                                2157             wood_member_reference_place <cycle 1> [50]
+                              115973             wood_member_reference_compute <cycle 1> [47]
+[79]     0.0    0.00    0.00  118130         app_member_reference_at <cycle 1> [79]
+                              118130             wood_definition_sources_member <cycle 1> [44]
+                              118130             wood_definition_sources_placement <cycle 1> [18]
+-----------------------------------------------
+                0.00    0.00   12104/102884      wood_grid_codec_application_prefix [122]
+                0.00    0.00   90780/102884      wood_grid_codec_axis [33]
+[80]     0.0    0.00    0.00  102884         wood_grid_codec_bool [80]
+-----------------------------------------------
+                0.00    0.00   21182/93806       wood_grid_codec_application_prefix [122]
+                0.00    0.00   72624/93806       wood_grid_codec_axis [33]
+[81]     0.0    0.00    0.00   93806         wood_grid_codec_u32 [81]
+-----------------------------------------------
+                0.00    0.00   93567/93567       wood_world_validate_members [10]
+[82]     0.0    0.00    0.00   93567         app_validation_footprint [82]
+-----------------------------------------------
+                0.00    0.00    6471/86496       wd_text.constprop.0 [107]
+                0.00    0.00   80025/86496       wd_evaluate <cycle 1> [101]
+[83]     0.0    0.00    0.00   86496         wd_write [83]
+-----------------------------------------------
+                0.00    0.00   85268/85268       reference_host_read <cycle 1> [26]
+[84]     0.0    0.00    0.00   85268         reference_region_geometry [84]
+-----------------------------------------------
+                0.00    0.00    2157/62768       app_validation_end_faces [49]
+                0.00    0.00    2157/62768       app_validation_stops [48]
+                0.00    0.00    2157/62768       app_validation_boundary_role [54]
+                0.00    0.00    2157/62768       reference_check_all [12]
+                0.00    0.00    2157/62768       app_validation_place [37]
+                0.00    0.00   51983/62768       app_validation_host [22]
+[85]     0.0    0.00    0.00   62768         app_reference_host_read [85]
+-----------------------------------------------
+                0.00    0.00   52914/52914       wood_grid_codec_rule [88]
+[86]     0.0    0.00    0.00   52914         placement_outline [86]
+-----------------------------------------------
+                0.00    0.00   52914/52914       wood_grid_codec_rule [88]
+[87]     0.0    0.00    0.00   52914         polygon_loop_bounds [87]
+-----------------------------------------------
+                               52914             wood_grid_codec_rule [88]
+                0.00    0.00       1/52914       app_grid_host [296]
+                0.00    0.00     930/52914       reference_grid_host <cycle 1> [152]
+                0.00    0.00   51983/52914       app_validation_host [22]
+[88]     0.0    0.00    0.00   52914+52914   wood_grid_codec_rule [88]
+                0.00    0.00   52914/52914       polygon_loop_bounds [87]
+                0.00    0.00   52914/52914       placement_outline [86]
+                               52914             wood_grid_codec_rule [88]
+-----------------------------------------------
+                               49735             wood_member_reference_compute <cycle 1> [47]
+                0.00    0.00    2157/600318      world_validate_derived [3]
+[89]     0.0    0.00    0.00   51892         reference_eval_timber_relation <cycle 1> [89]
+                0.00    0.00   51892/624566      reference_sources_ensure [72]
+                               51892             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                0.00    0.00   49735/49735       wood_member_reference_compute <cycle 1> [47]
+[90]     0.0    0.00    0.00   49735         app_member_reference_evaluate [90]
+-----------------------------------------------
+                0.00    0.00       3/41050       reference_quantity_raw <cycle 1> [280]
+                0.00    0.00      64/41050       reference_dump [68]
+                0.00    0.00    2157/41050       app_member_reference_placement <cycle 1> [135]
+                0.00    0.00    6471/41050       timber_boundary_role_check [106]
+                0.00    0.00   32355/41050       app_contact_facts [28]
+[91]     0.0    0.00    0.00   41050         placement_effective_boundary [91]
+-----------------------------------------------
+                0.00    0.00   38853/38853       geo_loop_contains_rect [93]
+[92]     0.0    0.00    0.00   38853         app_fs_obstacle_box [92]
+-----------------------------------------------
+                0.00    0.00   38853/38853       geo_region_contains_rect [94]
+[93]     0.0    0.00    0.00   38853         geo_loop_contains_rect [93]
+                0.00    0.00  155412/159726      geo_loop_contains_point [77]
+                0.00    0.00   38853/38853       app_fs_obstacle_box [92]
+-----------------------------------------------
+                0.00    0.00    4314/38853       wood_member_place_a0 [64]
+                0.00    0.00    6471/38853       timber_boundary_role_check [106]
+                0.00    0.00    8661/38853       wood_contact_boundary_interval [103]
+                0.00    0.00   19407/38853       geo_strip_intervals [140]
+[94]     0.0    0.00    0.00   38853         geo_region_contains_rect [94]
+                0.00    0.00   38853/38853       geo_loop_contains_rect [93]
+-----------------------------------------------
+                0.00    0.00     930/21182       wood_grid_decode_application_value [62]
+                0.00    0.00    2096/21182       wood_grid_decode_application [58]
+                0.00    0.00    6052/21182       wood_grid_codec_axis [33]
+                0.00    0.00   12104/21182       wood_grid_codec_application_prefix [122]
+[95]     0.0    0.00    0.00   21182         wood_grid_codec_int [95]
+-----------------------------------------------
+                                2157             resolve_auto_span <cycle 1> [55]
+                                6471             app_reference_end_stops <cycle 1> [105]
+                0.00    0.00    2157/600318      app_validation_stops [48]
+                0.00    0.00    2157/600318      reference_check_all [12]
+[96]     0.0    0.00    0.00   12942         app_contact_resolve_stops <cycle 1> [96]
+                0.00    0.00   12942/624566      reference_sources_ensure [72]
+                               12942             wood_contact_sources_collect <cycle 1> [46]
+-----------------------------------------------
+                0.00    0.00   12942/12942       wood_contact_end_faces_with_sources <cycle 1> [108]
+[97]     0.0    0.00    0.00   12942         wood_member_end_contact_check [97]
+-----------------------------------------------
+                0.00    0.00   12102/12102       wood_contact_end_faces_with_sources <cycle 1> [108]
+[98]     0.0    0.00    0.00   12102         wood_contact_owner_extension [98]
+                0.00    0.00    2190/8661        wood_contact_boundary_interval [103]
+-----------------------------------------------
+                0.00    0.00      18/9297        reference_default_world <cycle 2> [24]
+                0.00    0.00      64/9297        reference_dump [68]
+                0.00    0.00     134/9297        parse_scene_file <cycle 2> [41]
+                0.00    0.00     420/9297        wood_member_boundary_role_check [109]
+                0.00    0.00    8661/9297        wood_contact_boundary_interval [103]
+[99]     0.0    0.00    0.00    9297         asm_error.constprop.0 [99]
+-----------------------------------------------
+                0.00    0.00    8700/8700        geo_eval_source <cycle 1> [13]
+[100]    0.0    0.00    0.00    8700         wd_describe [100]
+-----------------------------------------------
+                                8700             geo_eval_source <cycle 1> [13]
+[101]    0.0    0.00    0.00    8700         wd_evaluate <cycle 1> [101]
+                0.00    0.00   80025/86496       wd_write [83]
+                0.00    0.00    8700/8700        wood_definition_source_decode [102]
+                0.00    0.00    6471/6471        wd_text.constprop.0 [107]
+                                4314             wood_definition_sources_member <cycle 1> [44]
+                                  72             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                0.00    0.00    8700/8700        wd_evaluate <cycle 1> [101]
+[102]    0.0    0.00    0.00    8700         wood_definition_source_decode [102]
+-----------------------------------------------
+                0.00    0.00    2190/8661        wood_contact_owner_extension [98]
+                0.00    0.00    6471/8661        wood_contact_end_faces_with_sources <cycle 1> [108]
+[103]    0.0    0.00    0.00    8661         wood_contact_boundary_interval [103]
+                0.00    0.00    8661/38853       geo_region_contains_rect [94]
+                0.00    0.00    8661/9297        asm_error.constprop.0 [99]
+-----------------------------------------------
+                0.00    0.00    4314/8628        reference_check_all [12]
+                0.00    0.00    4314/8628        wood_world_validate_members [10]
+[104]    0.0    0.00    0.00    8628         wood_stop_count_legal [104]
+-----------------------------------------------
+                                6471             wood_contact_end_faces_with_sources <cycle 1> [108]
+[105]    0.0    0.00    0.00    6471         app_reference_end_stops <cycle 1> [105]
+                                6471             reference_contact_facts <cycle 1> [23]
+                                6471             app_contact_resolve_stops <cycle 1> [96]
+-----------------------------------------------
+                0.00    0.00    2157/6471        app_member_reference_boundary [131]
+                0.00    0.00    2157/6471        app_validation_boundary_role [54]
+                0.00    0.00    2157/6471        reference_check_all [12]
+[106]    0.0    0.00    0.00    6471         timber_boundary_role_check [106]
+                0.00    0.00    6471/41050       placement_effective_boundary [91]
+                0.00    0.00    6471/6471        wood_member_boundary_role_check [109]
+                0.00    0.00    6471/38853       geo_region_contains_rect [94]
+-----------------------------------------------
+                0.00    0.00    6471/6471        wd_evaluate <cycle 1> [101]
+[107]    0.0    0.00    0.00    6471         wd_text.constprop.0 [107]
+                0.00    0.00    6471/86496       wd_write [83]
+-----------------------------------------------
+                                6471             app_reference_end_faces <cycle 1> [53]
+[108]    0.0    0.00    0.00    6471         wood_contact_end_faces_with_sources <cycle 1> [108]
+                0.00    0.00   12942/12942       wood_member_end_contact_check [97]
+                0.00    0.00   12102/12102       wood_contact_owner_extension [98]
+                0.00    0.00    6471/8661        wood_contact_boundary_interval [103]
+                                6471             app_reference_end_stops <cycle 1> [105]
+-----------------------------------------------
+                0.00    0.00    6471/6471        timber_boundary_role_check [106]
+[109]    0.0    0.00    0.00    6471         wood_member_boundary_role_check [109]
+                0.00    0.00     420/9297        asm_error.constprop.0 [99]
+-----------------------------------------------
+                0.00    0.00       1/6224        engineering_dump_grid [303]
+                0.00    0.00       2/6224        engineering_used [288]
+                0.00    0.00      64/6224        reference_dump [68]
+                0.00    0.00      68/6224        app_scene_direct_dimensions_allowed [174]
+                0.00    0.00      74/6224        reference_sources_ensure [72]
+                0.00    0.00      74/6224        world_validate_derived [3]
+                0.00    0.00     223/6224        app_sp_context [165]
+                0.00    0.00     298/6224        app_fs_context [158]
+                0.00    0.00     451/6224        app_asm_context [156]
+                0.00    0.00     589/6224        app_grid_context [155]
+                0.00    0.00    2157/6224        reference_source_evaluate <cycle 1> [129]
+                0.00    0.00    2223/6224        engineering_serializable [191]
+[110]    0.0    0.00    0.00    6224         app_eng_context [110]
+-----------------------------------------------
+                0.00    0.00     132/5808        wood_grid_source_evaluate <cycle 1> [66]
+                0.00    0.00    5676/5808        wood_grid_def_axis [179]
+[111]    0.0    0.00    0.00    5808         wood_grid_def_number [111]
+-----------------------------------------------
+                0.00    0.00    5676/5676        parse_scene_file <cycle 2> [41]
+[112]    0.0    0.00    0.00    5676         utf8_seq_len [112]
+-----------------------------------------------
+                                  66             wood_grid_source_evaluate <cycle 1> [66]
+                                 996             wood_grid_policy_definitions <cycle 1> [63]
+                                1898             wood_grid_sources_line <cycle 1> [149]
+                                1898             wood_grid_sources_definition <cycle 1> [59]
+                0.00    0.00      66/600318      wood_grid_sources_application [61]
+[113]    0.0    0.00    0.00    4924         wood_grid_source_get <cycle 1> [113]
+                                4924             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                0.00    0.00    4314/4314        wood_member_place_a0 [64]
+[114]    0.0    0.00    0.00    4314         geo_frame_point [114]
+-----------------------------------------------
+                0.00    0.00    4314/4314        wood_member_place_a0 [64]
+[115]    0.0    0.00    0.00    4314         geo_region_contains_point [115]
+                0.00    0.00    4314/159726      geo_loop_contains_point [77]
+-----------------------------------------------
+                                4314             reference_source_evaluate <cycle 1> [129]
+[116]    0.0    0.00    0.00    4314         wood_definition_sources_dimension <cycle 1> [116]
+                                4314             wood_grid_coordinate_source <cycle 1> [25]
+-----------------------------------------------
+                0.00    0.00    4288/4288        wood_member_resolve_span [144]
+[117]    0.0    0.00    0.00    4288         wood_stop_ref_candidates [117]
+-----------------------------------------------
+                0.00    0.00    1728/3626        wood_grid_source_decode [145]
+                0.00    0.00    1898/3626        wood_grid_sources_line <cycle 1> [149]
+[118]    0.0    0.00    0.00    3626         wood_grid_line_source_ref [118]
+-----------------------------------------------
+                0.00    0.00       4/3296        app_candidate_create_with_deferred_sha [260]
+                0.00    0.00      36/3296        geo_candidate_provider_hash [240]
+                0.00    0.00    3256/3296        geo_eval_register_many [150]
+[119]    0.0    0.00    0.00    3296         geo_source_copy_text [119]
+-----------------------------------------------
+                0.00    0.00    3028/3028        wood_grid_axis_lines [121]
+[120]    0.0    0.00    0.00    3028         geo_finite_sequence [120]
+-----------------------------------------------
+                0.00    0.00       2/3028        wood_grid_direct_check [308]
+                0.00    0.00     264/3028        wood_grid_valid [182]
+                0.00    0.00    2762/3028        wood_grid_line_coord_in_resolved [126]
+[121]    0.0    0.00    0.00    3028         wood_grid_axis_lines [121]
+                0.00    0.00    3028/3028        geo_finite_sequence [120]
+-----------------------------------------------
+                0.00    0.00     930/3026        wood_grid_decode_application_value [62]
+                0.00    0.00    2096/3026        wood_grid_decode_application [58]
+[122]    0.0    0.00    0.00    3026         wood_grid_codec_application_prefix [122]
+                0.00    0.00   21182/93806       wood_grid_codec_u32 [81]
+                0.00    0.00   12104/102884      wood_grid_codec_bool [80]
+                0.00    0.00   12104/21182       wood_grid_codec_int [95]
+-----------------------------------------------
+                0.00    0.00     996/2894        wood_grid_source_evaluate <cycle 1> [66]
+                0.00    0.00    1898/2894        wood_grid_sources_line <cycle 1> [149]
+[123]    0.0    0.00    0.00    2894         wood_grid_result [123]
+-----------------------------------------------
+                0.00    0.00     864/2762        wood_grid_source_evaluate <cycle 1> [66]
+                0.00    0.00    1898/2762        wood_world_validate_members [10]
+[124]    0.0    0.00    0.00    2762         wood_grid_anchor_line_coord_resolved [124]
+-----------------------------------------------
+                0.00    0.00    2762/2762        wood_grid_line_coord_in_resolved [126]
+[125]    0.0    0.00    0.00    2762         wood_grid_axis_lines_in_resolved [125]
+-----------------------------------------------
+                0.00    0.00     864/2762        wood_grid_source_evaluate <cycle 1> [66]
+                0.00    0.00    1898/2762        wood_world_validate_members [10]
+[126]    0.0    0.00    0.00    2762         wood_grid_line_coord_in_resolved [126]
+                0.00    0.00    2762/3028        wood_grid_axis_lines [121]
+                0.00    0.00    2762/2762        wood_grid_axis_lines_in_resolved [125]
+-----------------------------------------------
+                0.00    0.00      74/2231        wood_world_validate_members [10]
+                0.00    0.00    2157/2231        surface_primary_axis_check [142]
+[127]    0.0    0.00    0.00    2231         wood_member_primary_axis_check [127]
+-----------------------------------------------
+                0.00    0.00    2166/2166        geo_eval_source <cycle 1> [13]
+[128]    0.0    0.00    0.00    2166         reference_source_describe [128]
+                0.00    0.00       3/6           reference_source_name [254]
+                0.00    0.00       3/6           reference_source_is_dimension [253]
+-----------------------------------------------
+                                2166             geo_eval_source <cycle 1> [13]
+[129]    0.0    0.00    0.00    2166         reference_source_evaluate <cycle 1> [129]
+                0.00    0.00    2157/2157        app_assembly_saved_dimensions [130]
+                0.00    0.00    2157/2157        wood_assembly_sources_owned [143]
+                0.00    0.00    2157/2157        reference_member_owned [141]
+                0.00    0.00    2157/6224        app_eng_context [110]
+                0.00    0.00       3/6           reference_source_name [254]
+                0.00    0.00       3/6           reference_source_is_dimension [253]
+                0.00    0.00       3/227887      clip_loop_order [73]
+                                4314             wood_definition_sources_dimension <cycle 1> [116]
+                                2157             wood_member_reference_compute <cycle 1> [47]
+                                2157             wood_member_reference_place <cycle 1> [50]
+                                   3             reference_quantity_raw <cycle 1> [280]
+                                   3             geo_linear_definition_sources_guide <cycle 1> [275]
+                                   3             geo_guides_evaluate_definition <cycle 1> [271]
+                                   3             reference_placement_frame <cycle 1> [74]
+-----------------------------------------------
+                0.00    0.00    2157/2157        reference_source_evaluate <cycle 1> [129]
+[130]    0.0    0.00    0.00    2157         app_assembly_saved_dimensions [130]
+-----------------------------------------------
+                0.00    0.00    2157/2157        wood_member_reference_place <cycle 1> [50]
+[131]    0.0    0.00    0.00    2157         app_member_reference_boundary [131]
+                0.00    0.00    2157/6471        timber_boundary_role_check [106]
+-----------------------------------------------
+                                2157             wood_member_reference_place <cycle 1> [50]
+[132]    0.0    0.00    0.00    2157         app_member_reference_end <cycle 1> [132]
+                                2157             app_reference_end_faces <cycle 1> [53]
+-----------------------------------------------
+                0.00    0.00    2157/2157        wood_member_reference_place <cycle 1> [50]
+[133]    0.0    0.00    0.00    2157         app_member_reference_issue_count [133]
+-----------------------------------------------
+                0.00    0.00    2157/2157        wood_member_reference_place <cycle 1> [50]
+[134]    0.0    0.00    0.00    2157         app_member_reference_place [134]
+-----------------------------------------------
+                                2157             wood_member_reference_place <cycle 1> [50]
+[135]    0.0    0.00    0.00    2157         app_member_reference_placement <cycle 1> [135]
+                0.00    0.00    2157/41050       placement_effective_boundary [91]
+                                2157             reference_host_read <cycle 1> [26]
+-----------------------------------------------
+                0.00    0.00    2157/2157        wood_member_reference_place <cycle 1> [50]
+[136]    0.0    0.00    0.00    2157         app_member_reference_primary [136]
+-----------------------------------------------
+                                2157             wood_member_reference_place <cycle 1> [50]
+[137]    0.0    0.00    0.00    2157         app_member_reference_span <cycle 1> [137]
+                                2157             resolve_auto_span <cycle 1> [55]
+-----------------------------------------------
+                0.00    0.00    2157/2157        wood_member_reference_place <cycle 1> [50]
+[138]    0.0    0.00    0.00    2157         app_member_reference_write [138]
+-----------------------------------------------
+                0.00    0.00    2157/2157        app_validation_place [37]
+[139]    0.0    0.00    0.00    2157         geo_frame_project_uv [139]
+-----------------------------------------------
+                0.00    0.00    2157/2157        wood_member_resolve_span [144]
+[140]    0.0    0.00    0.00    2157         geo_strip_intervals [140]
+                0.00    0.00   19407/38853       geo_region_contains_rect [94]
+-----------------------------------------------
+                0.00    0.00    2157/2157        reference_source_evaluate <cycle 1> [129]
+[141]    0.0    0.00    0.00    2157         reference_member_owned [141]
+                0.00    0.00    2157/624566      reference_sources_ensure [72]
+-----------------------------------------------
+                0.00    0.00    2157/2157        wood_member_reference_place <cycle 1> [50]
+[142]    0.0    0.00    0.00    2157         surface_primary_axis_check [142]
+                0.00    0.00    2157/2231        wood_member_primary_axis_check [127]
+-----------------------------------------------
+                0.00    0.00    2157/2157        reference_source_evaluate <cycle 1> [129]
+[143]    0.0    0.00    0.00    2157         wood_assembly_sources_owned [143]
+-----------------------------------------------
+                0.00    0.00    2157/2157        resolve_auto_span <cycle 1> [55]
+[144]    0.0    0.00    0.00    2157         wood_member_resolve_span [144]
+                0.00    0.00    4288/4288        wood_stop_ref_candidates [117]
+                0.00    0.00    2157/2157        geo_strip_intervals [140]
+                0.00    0.00      26/26          wood_stop_pick [242]
+-----------------------------------------------
+                0.00    0.00     996/1992        wood_grid_source_describe [151]
+                0.00    0.00     996/1992        wood_grid_source_evaluate <cycle 1> [66]
+[145]    0.0    0.00    0.00    1992         wood_grid_source_decode [145]
+                0.00    0.00    1728/3626        wood_grid_line_source_ref [118]
+-----------------------------------------------
+                                1898             wood_member_reference_place <cycle 1> [50]
+[146]    0.0    0.00    0.00    1898         app_member_reference_grid <cycle 1> [146]
+                0.00    0.00    1898/1898        reference_grid_definition [148]
+                                1898             wood_grid_sources_definition <cycle 1> [59]
+-----------------------------------------------
+                                1898             wood_member_reference_place <cycle 1> [50]
+[147]    0.0    0.00    0.00    1898         app_member_reference_grid_line <cycle 1> [147]
+                                1898             wood_grid_sources_line <cycle 1> [149]
+-----------------------------------------------
+                0.00    0.00    1898/1898        app_member_reference_grid <cycle 1> [146]
+[148]    0.0    0.00    0.00    1898         reference_grid_definition [148]
+                0.00    0.00    1898/624566      reference_sources_ensure [72]
+-----------------------------------------------
+                                1898             app_member_reference_grid_line <cycle 1> [147]
+[149]    0.0    0.00    0.00    1898         wood_grid_sources_line <cycle 1> [149]
+                0.00    0.00    1898/3626        wood_grid_line_source_ref [118]
+                0.00    0.00    1898/2894        wood_grid_result [123]
+                                1898             wood_grid_source_get <cycle 1> [113]
+-----------------------------------------------
+                0.00    0.00      74/1332        geo_parameter_sources_register_with_definitions [196]
+                0.00    0.00      74/1332        geo_placement_sources_register [197]
+                0.00    0.00      74/1332        geo_region_key_sources_register [198]
+                0.00    0.00      74/1332        geo_linear_definition_sources_register [193]
+                0.00    0.00      74/1332        geo_version_sources_register [200]
+                0.00    0.00      74/1332        geo_enclosure_sources_register [192]
+                0.00    0.00      74/1332        wood_contact_sources_create [208]
+                0.00    0.00      74/1332        wood_definition_sources_create [209]
+                0.00    0.00      74/1332        wood_engineering_sources_register [214]
+                0.00    0.00      74/1332        wood_sp_sources_create [224]
+                0.00    0.00      74/1332        wood_assembly_sources_create [207]
+                0.00    0.00      74/1332        wood_finish_sources_create [216]
+                0.00    0.00      74/1332        wood_grid_sources_create [220]
+                0.00    0.00     370/1332        reference_sources_ensure [72]
+[150]    0.0    0.00    0.00    1332         geo_eval_register_many [150]
+                0.00    0.00    3256/3296        geo_source_copy_text [119]
+-----------------------------------------------
+                0.00    0.00     996/996         geo_eval_source <cycle 1> [13]
+[151]    0.0    0.00    0.00     996         wood_grid_source_describe [151]
+                0.00    0.00     996/1992        wood_grid_source_decode [145]
+-----------------------------------------------
+                                 864             wood_grid_source_evaluate <cycle 1> [66]
+                0.00    0.00      66/600318      wood_grid_world_valid_direct [57]
+[152]    0.0    0.00    0.00     930         reference_grid_host <cycle 1> [152]
+                0.00    0.00     930/52914       wood_grid_codec_rule [88]
+                                 930             reference_host_read <cycle 1> [26]
+-----------------------------------------------
+                0.00    0.00      66/930         wood_grid_world_valid_direct [57]
+                0.00    0.00     864/930         wood_grid_source_evaluate <cycle 1> [66]
+[153]    0.0    0.00    0.00     930         wood_grid_host_source [153]
+-----------------------------------------------
+                0.00    0.00       1/595         parameter_reference_edit [246]
+                0.00    0.00       2/595         apply_grid_line [38]
+                0.00    0.00       2/595         apply_surface_combined_line [30]
+                0.00    0.00       2/595         apply_reference_guide [39]
+                0.00    0.00      67/595         apply_timber_line [231]
+                0.00    0.00      68/595         app_scene_direct_dimensions_allowed [174]
+                0.00    0.00     134/595         reference_may_affect [172]
+                0.00    0.00     319/595         apply_reference_place [7]
+[154]    0.0    0.00    0.00     595         wood_grid_rule_u32 [154]
+-----------------------------------------------
+                0.00    0.00       1/589         apply_grid_line [38]
+                0.00    0.00      74/589         reference_sources_ensure [72]
+                0.00    0.00     514/589         world_validate_derived [3]
+[155]    0.0    0.00    0.00     589         app_grid_context [155]
+                0.00    0.00     589/6224        app_eng_context [110]
+                0.00    0.00     370/227887      clip_loop_order [73]
+-----------------------------------------------
+                0.00    0.00       1/451         json_engineering_capabilities [306]
+                0.00    0.00       1/451         world_dump_dsl [69]
+                0.00    0.00       1/451         parse_scene_file <cycle 2> [41]
+                0.00    0.00       4/451         apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.00      14/451         reference_default_world <cycle 2> [24]
+                0.00    0.00      67/451         assembly_owned [232]
+                0.00    0.00      67/451         apply_reference_place [7]
+                0.00    0.00      74/451         reference_sources_ensure [72]
+                0.00    0.00     222/451         world_validate_derived [3]
+[156]    0.0    0.00    0.00     451         app_asm_context [156]
+                0.00    0.00     451/6224        app_eng_context [110]
+                0.00    0.00     226/227887      clip_loop_order [73]
+-----------------------------------------------
+                0.00    0.00     450/450         geo_sha256 [243]
+[157]    0.0    0.00    0.00     450         geo_sha_block [157]
+-----------------------------------------------
+                0.00    0.00       1/298         json_engineering_capabilities [306]
+                0.00    0.00       1/298         world_dump_dsl [69]
+                0.00    0.00     148/298         app_dp_context [170]
+                0.00    0.00     148/298         world_validate_derived [3]
+[158]    0.0    0.00    0.00     298         app_fs_context [158]
+                0.00    0.00     298/6224        app_eng_context [110]
+                0.00    0.00     222/227887      clip_loop_order [73]
+-----------------------------------------------
+                0.00    0.00     288/288         geo_placement_definition_encode [227]
+[159]    0.0    0.00    0.00     288         geo_pd_vector_write [159]
+-----------------------------------------------
+                0.00    0.00     288/288         geo_eval_source <cycle 1> [13]
+[160]    0.0    0.00    0.00     288         geo_placement_sources_describe [160]
+-----------------------------------------------
+                                 288             geo_eval_source <cycle 1> [13]
+[161]    0.0    0.00    0.00     288         geo_placement_sources_evaluate <cycle 1> [161]
+                0.00    0.00      72/72          geo_placement_definition_encode [227]
+                                 216             reference_placement_binding <cycle 1> [167]
+                                 144             geo_placement_sources_definition <cycle 1> [36]
+                                  72             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                0.00    0.00     264/264         wood_grid_source_evaluate <cycle 1> [66]
+[162]    0.0    0.00    0.00     264         wood_grid_binding_definition_depend [162]
+-----------------------------------------------
+                0.00    0.00     257/257         wood_member_reference_place <cycle 1> [50]
+[163]    0.0    0.00    0.00     257         app_member_reference_edge [163]
+                0.00    0.00     257/257         loop_edge_outward_normal [164]
+-----------------------------------------------
+                0.00    0.00     257/257         app_member_reference_edge [163]
+[164]    0.0    0.00    0.00     257         loop_edge_outward_normal [164]
+-----------------------------------------------
+                0.00    0.00       1/223         json_engineering_capabilities [306]
+                0.00    0.00       1/223         world_dump_dsl [69]
+                0.00    0.00      73/223         wood_sp_rebuild [171]
+                0.00    0.00      74/223         reference_sources_ensure [72]
+                0.00    0.00      74/223         world_validate_derived [3]
+[165]    0.0    0.00    0.00     223         app_sp_context [165]
+                0.00    0.00     223/6224        app_eng_context [110]
+                0.00    0.00      74/74          wood_sp_source_context_matches [223]
+-----------------------------------------------
+                0.00    0.00       1/217         app_grid_host [296]
+                0.00    0.00       1/217         world_dump_dsl [69]
+                0.00    0.00      67/217         app_placement_boundary [229]
+                0.00    0.00     148/217         world_validate_derived [3]
+[166]    0.0    0.00    0.00     217         app_boundary_compose [166]
+-----------------------------------------------
+                                 216             geo_placement_sources_evaluate <cycle 1> [161]
+[167]    0.0    0.00    0.00     216         reference_placement_binding <cycle 1> [167]
+                                 144             geo_placement_sources_definition <cycle 1> [36]
+-----------------------------------------------
+                0.00    0.00       4/215         geo_candidate_destroy [266]
+                0.00    0.00       7/215         reference_default_world <cycle 2> [24]
+                0.00    0.00      74/215         reference_sources_begin_candidate [201]
+                0.00    0.00     130/215         apply_scene_line <cycle 2> [6]
+[168]    0.0    0.00    0.00     215         geo_eval_clear [168]
+-----------------------------------------------
+                0.00    0.00       1/173         apply_spec_line [40]
+                0.00    0.00       6/173         parse_placement_body [293]
+                0.00    0.00      16/173         parse_uv [250]
+                0.00    0.00      16/173         apply_grid_line [38]
+                0.00    0.00     134/173         apply_timber_line [231]
+[169]    0.0    0.00    0.00     173         parse_coord [169]
+-----------------------------------------------
+                0.00    0.00      74/148         reference_sources_ensure [72]
+                0.00    0.00      74/148         world_validate_derived [3]
+[170]    0.0    0.00    0.00     148         app_dp_context [170]
+                0.00    0.00     148/298         app_fs_context [158]
+                0.00    0.00      74/74          wood_finish_sources_bind [215]
+-----------------------------------------------
+                                  72             wood_sp_rebuild [171]
+                0.00    0.00       1/147         apply_grid_line [38]
+                0.00    0.00     146/147         world_validate_derived [3]
+[171]    0.0    0.00    0.00     147+72      wood_sp_rebuild [171]
+                0.00    0.00      74/74          wood_sp_source_begin [222]
+                0.00    0.00      73/223         app_sp_context [165]
+                                  72             wood_sp_rebuild [171]
+-----------------------------------------------
+                0.00    0.00       2/146         apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.00      14/146         reference_default_world <cycle 2> [24]
+                0.00    0.00     130/146         apply_scene_line <cycle 2> [6]
+[172]    0.0    0.00    0.00     146         reference_may_affect [172]
+                0.00    0.00     134/595         wood_grid_rule_u32 [154]
+-----------------------------------------------
+                0.00    0.00       1/141         main [1]
+                0.00    0.00       1/141         app_replace_world.constprop.0 [11]
+                0.00    0.00       2/141         apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.00     137/141         app_scene_file_sources_ready [175]
+[173]    0.0    0.00    0.00     141         app_world_candidate_describe_sources [173]
+-----------------------------------------------
+                0.00    0.00       2/139         apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.00       7/139         reference_default_world <cycle 2> [24]
+                0.00    0.00     130/139         apply_scene_line <cycle 2> [6]
+[174]    0.0    0.00    0.00     139         app_scene_direct_dimensions_allowed [174]
+                0.00    0.00      68/595         wood_grid_rule_u32 [154]
+                0.00    0.00      68/6224        app_eng_context [110]
+-----------------------------------------------
+                0.00    0.00       7/137         reference_default_world <cycle 2> [24]
+                0.00    0.00     130/137         apply_scene_line <cycle 2> [6]
+[175]    0.0    0.00    0.00     137         app_scene_file_sources_ready [175]
+                0.00    0.00     137/141         app_world_candidate_describe_sources [173]
+-----------------------------------------------
+                0.00    0.00     134/134         apply_reference_place [7]
+[176]    0.0    0.00    0.00     134         reference_face_parse [176]
+-----------------------------------------------
+                0.00    0.00     132/132         reference_dump [68]
+[177]    0.0    0.00    0.00     132         reference_face_format [177]
+-----------------------------------------------
+                0.00    0.00     132/132         wood_grid_encode_application_value [239]
+[178]    0.0    0.00    0.00     132         wood_grid_codec_write_axis [178]
+-----------------------------------------------
+                0.00    0.00     132/132         wood_grid_source_evaluate <cycle 1> [66]
+[179]    0.0    0.00    0.00     132         wood_grid_def_axis [179]
+                0.00    0.00    5676/5808        wood_grid_def_number [111]
+-----------------------------------------------
+                0.00    0.00     132/132         wood_grid_source_evaluate <cycle 1> [66]
+[180]    0.0    0.00    0.00     132         wood_grid_parameter_definitions [180]
+-----------------------------------------------
+                0.00    0.00      66/132         wood_grid_sources_application [61]
+                0.00    0.00      66/132         wood_grid_source_evaluate <cycle 1> [66]
+[181]    0.0    0.00    0.00     132         wood_grid_publish_application_cache [181]
+-----------------------------------------------
+                0.00    0.00     132/132         wood_grid_valid_in [183]
+[182]    0.0    0.00    0.00     132         wood_grid_valid [182]
+                0.00    0.00     264/3028        wood_grid_axis_lines [121]
+-----------------------------------------------
+                0.00    0.00      66/132         wood_grid_world_valid_direct [57]
+                0.00    0.00      66/132         wood_world_validate_members [10]
+[183]    0.0    0.00    0.00     132         wood_grid_valid_in [183]
+                0.00    0.00     132/132         wood_grid_valid [182]
+-----------------------------------------------
+                0.00    0.00       1/131         app_scene_load_evaluate <cycle 2> [300]
+                0.00    0.00     130/131         apply_scene_line <cycle 2> [6]
+[184]    0.0    0.00    0.00     131         app_scene_file_graph_empty [184]
+-----------------------------------------------
+                0.00    0.00       2/76          parse_placement_body [293]
+                0.00    0.00      74/76          world_validate_derived [3]
+[185]    0.0    0.00    0.00      76         geo_frame_is_valid [185]
+-----------------------------------------------
+                0.00    0.00       2/76          parse_boundary_body [292]
+                0.00    0.00      74/76          world_validate_derived [3]
+[186]    0.0    0.00    0.00      76         geo_loop_is_valid [186]
+-----------------------------------------------
+                0.00    0.00       2/76          parse_boundary_body [292]
+                0.00    0.00      74/76          world_validate_derived [3]
+[187]    0.0    0.00    0.00      76         geo_region_is_valid [187]
+-----------------------------------------------
+                0.00    0.00      74/74          wood_engineering_rebuild [211]
+[188]    0.0    0.00    0.00      74         app_eng_serializable [188]
+-----------------------------------------------
+                0.00    0.00      74/74          wood_world_validate_members [10]
+[189]    0.0    0.00    0.00      74         app_validation_placement_id [189]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[190]    0.0    0.00    0.00      74         boundary_keys_reconcile.constprop.0 [190]
+-----------------------------------------------
+                0.00    0.00      74/74          wood_engineering_rebuild [211]
+[191]    0.0    0.00    0.00      74         engineering_serializable [191]
+                0.00    0.00    2223/6224        app_eng_context [110]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[192]    0.0    0.00    0.00      74         geo_enclosure_sources_register [192]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[193]    0.0    0.00    0.00      74         geo_linear_definition_sources_register [193]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          geo_parameter_sources_rebuild [195]
+[194]    0.0    0.00    0.00      74         geo_parameter_source_bound [194]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[195]    0.0    0.00    0.00      74         geo_parameter_sources_rebuild [195]
+                0.00    0.00      74/74          geo_parameter_source_bound [194]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[196]    0.0    0.00    0.00      74         geo_parameter_sources_register_with_definitions [196]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[197]    0.0    0.00    0.00      74         geo_placement_sources_register [197]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[198]    0.0    0.00    0.00      74         geo_region_key_sources_register [198]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[199]    0.0    0.00    0.00      74         geo_version_sources_definitions [199]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[200]    0.0    0.00    0.00      74         geo_version_sources_register [200]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[201]    0.0    0.00    0.00      74         reference_sources_begin_candidate [201]
+                0.00    0.00      74/215         geo_eval_clear [168]
+                0.00    0.00      74/624566      reference_sources_ensure [72]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_owned_free [203]
+[202]    0.0    0.00    0.00      74         reference_sources_dispose [202]
+                0.00    0.00     148/227887      clip_loop_order [73]
+-----------------------------------------------
+                0.00    0.00       4/74          app_world_candidate_destroy [255]
+                0.00    0.00       4/74          reference_default_world <cycle 2> [24]
+                0.00    0.00      66/74          apply_scene_line <cycle 2> [6]
+[203]    0.0    0.00    0.00      74         reference_sources_owned_free [203]
+                0.00    0.00      74/74          reference_sources_dispose [202]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[204]    0.0    0.00    0.00      74         wood_assembly_generation_check [204]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[205]    0.0    0.00    0.00      74         wood_assembly_generation_prepare [205]
+                0.00    0.00       7/8           wood_assembly_generation_integrity [251]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[206]    0.0    0.00    0.00      74         wood_assembly_rebuild [206]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[207]    0.0    0.00    0.00      74         wood_assembly_sources_create [207]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[208]    0.0    0.00    0.00      74         wood_contact_sources_create [208]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[209]    0.0    0.00    0.00      74         wood_definition_sources_create [209]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[210]    0.0    0.00    0.00      74         wood_dp_rebuild [210]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[211]    0.0    0.00    0.00      74         wood_engineering_rebuild [211]
+                0.00    0.00      74/74          engineering_serializable [191]
+                0.00    0.00      74/74          app_eng_serializable [188]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[212]    0.0    0.00    0.00      74         wood_engineering_sources_definitions [212]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[213]    0.0    0.00    0.00      74         wood_engineering_sources_metadata [213]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[214]    0.0    0.00    0.00      74         wood_engineering_sources_register [214]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          app_dp_context [170]
+[215]    0.0    0.00    0.00      74         wood_finish_sources_bind [215]
+                0.00    0.00      74/227887      clip_loop_order [73]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[216]    0.0    0.00    0.00      74         wood_finish_sources_create [216]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[217]    0.0    0.00    0.00      74         wood_fs_rebuild [217]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[218]    0.0    0.00    0.00      74         wood_grid_bindings_rebuild [218]
+-----------------------------------------------
+                0.00    0.00      74/74          wood_grid_rules_valid_hook [60]
+[219]    0.0    0.00    0.00      74         wood_grid_rules_world_valid_direct [219]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[220]    0.0    0.00    0.00      74         wood_grid_sources_create [220]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[221]    0.0    0.00    0.00      74         wood_grid_systems_rebuild [221]
+-----------------------------------------------
+                0.00    0.00      74/74          wood_sp_rebuild [171]
+[222]    0.0    0.00    0.00      74         wood_sp_source_begin [222]
+-----------------------------------------------
+                0.00    0.00      74/74          app_sp_context [165]
+[223]    0.0    0.00    0.00      74         wood_sp_source_context_matches [223]
+-----------------------------------------------
+                0.00    0.00      74/74          reference_sources_ensure [72]
+[224]    0.0    0.00    0.00      74         wood_sp_sources_create [224]
+                0.00    0.00      74/1332        geo_eval_register_many [150]
+-----------------------------------------------
+                0.00    0.00      74/74          world_validate_derived [3]
+[225]    0.0    0.00    0.00      74         wood_world_validate_obstacles [225]
+-----------------------------------------------
+                0.00    0.00       1/74          geo_candidate_evaluate <cycle 2> [29]
+                0.00    0.00       1/74          apply_grid_line [38]
+                0.00    0.00       1/74          apply_spec_line [40]
+                0.00    0.00       1/74          apply_reference_guide [39]
+                0.00    0.00       1/74          parse_scene_file <cycle 2> [41]
+                0.00    0.00       2/74          apply_surface_combined_line [30]
+                0.00    0.00      67/74          reference_checked [8]
+[226]    0.0    0.00    0.00      74         world_revalidate [226]
+-----------------------------------------------
+                0.00    0.00      72/72          geo_placement_sources_evaluate <cycle 1> [161]
+[227]    0.0    0.00    0.00      72         geo_placement_definition_encode [227]
+                0.00    0.00     288/288         geo_pd_vector_write [159]
+-----------------------------------------------
+                0.00    0.00      67/67          wood_member_declare [235]
+[228]    0.0    0.00    0.00      67         app_member_declaration_owned [228]
+-----------------------------------------------
+                0.00    0.00       3/67          reference_quantity_raw <cycle 1> [280]
+                0.00    0.00      64/67          reference_dump [68]
+[229]    0.0    0.00    0.00      67         app_placement_boundary [229]
+                0.00    0.00      67/217         app_boundary_compose [166]
+-----------------------------------------------
+                0.00    0.00      67/67          app_scene_candidate_apply [5]
+[230]    0.0    0.00    0.00      67         apply_place_line [230]
+-----------------------------------------------
+                0.00    0.00      67/67          app_scene_candidate_apply [5]
+[231]    0.0    0.00    0.00      67         apply_timber_line [231]
+                0.00    0.00     134/173         parse_coord [169]
+                0.00    0.00      67/67          wood_member_declaration_role [234]
+                0.00    0.00      67/595         wood_grid_rule_u32 [154]
+                0.00    0.00      67/67          wood_member_declare [235]
+-----------------------------------------------
+                0.00    0.00      67/67          wood_member_declare [235]
+[232]    0.0    0.00    0.00      67         assembly_owned [232]
+                0.00    0.00      67/451         app_asm_context [156]
+-----------------------------------------------
+                0.00    0.00      67/67          wood_member_declare [235]
+[233]    0.0    0.00    0.00      67         wood_member_construct [233]
+-----------------------------------------------
+                0.00    0.00      67/67          apply_timber_line [231]
+[234]    0.0    0.00    0.00      67         wood_member_declaration_role [234]
+-----------------------------------------------
+                0.00    0.00      67/67          apply_timber_line [231]
+[235]    0.0    0.00    0.00      67         wood_member_declare [235]
+                0.00    0.00      67/67          assembly_owned [232]
+                0.00    0.00      67/67          app_member_declaration_owned [228]
+                0.00    0.00      67/67          wood_member_construct [233]
+-----------------------------------------------
+                0.00    0.00      66/66          wood_grid_source_evaluate <cycle 1> [66]
+[236]    0.0    0.00    0.00      66         wood_grid_application_evaluate_direct [236]
+-----------------------------------------------
+                0.00    0.00      66/66          wood_grid_world_valid_direct [57]
+[237]    0.0    0.00    0.00      66         wood_grid_application_hook [237]
+-----------------------------------------------
+                0.00    0.00      66/66          geo_eval_source <cycle 1> [13]
+[238]    0.0    0.00    0.00      66         wood_grid_application_value [238]
+                0.00    0.00      66/66          wood_grid_encode_application_value [239]
+-----------------------------------------------
+                0.00    0.00      66/66          wood_grid_application_value [238]
+[239]    0.0    0.00    0.00      66         wood_grid_encode_application_value [239]
+                0.00    0.00     132/132         wood_grid_codec_write_axis [178]
+-----------------------------------------------
+                                   8             geo_candidate_provider_hash [240]
+                0.00    0.00       4/48          geo_candidate_seal [267]
+                0.00    0.00       4/48          app_candidate_check [259]
+                0.00    0.00       4/48          app_world_candidate_publish [265]
+                0.00    0.00      36/48          app_world_candidate_create [263]
+[240]    0.0    0.00    0.00      48+8       geo_candidate_provider_hash [240]
+                0.00    0.00      36/3296        geo_source_copy_text [119]
+                0.00    0.00      12/21          geo_sha256 [243]
+                0.00    0.00       8/16          geo_candidate_digest_matches [245]
+                                   8             geo_candidate_provider_hash [240]
+-----------------------------------------------
+                0.00    0.00      36/36          app_world_candidate_create [263]
+[241]    0.0    0.00    0.00      36         app_candidate_bind_core [241]
+-----------------------------------------------
+                0.00    0.00      26/26          wood_member_resolve_span [144]
+[242]    0.0    0.00    0.00      26         wood_stop_pick [242]
+-----------------------------------------------
+                0.00    0.00       1/21          main [1]
+                0.00    0.00       1/21          eng_definition_hash [67]
+                0.00    0.00       1/21          app_replace_world.constprop.0 [11]
+                0.00    0.00       2/21          apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.00       4/21          app_world_candidate_publish [265]
+                0.00    0.00      12/21          geo_candidate_provider_hash [240]
+[243]    0.0    0.00    0.00      21         geo_sha256 [243]
+                0.00    0.00     450/450         geo_sha_block [157]
+-----------------------------------------------
+                0.00    0.00       4/20          app_candidate_evaluate <cycle 2> [261]
+                0.00    0.00       8/20          geo_candidate_seal [267]
+                0.00    0.00       8/20          app_candidate_check [259]
+[244]    0.0    0.00    0.00      20         app_candidate_hash_matches [244]
+-----------------------------------------------
+                                 252             geo_candidate_digest_matches [245]
+                0.00    0.00       4/16          geo_candidate_evaluate <cycle 2> [29]
+                0.00    0.00       4/16          geo_candidate_seal [267]
+                0.00    0.00       8/16          geo_candidate_provider_hash [240]
+[245]    0.0    0.00    0.00      16+252     geo_candidate_digest_matches [245]
+                                 252             geo_candidate_digest_matches [245]
+-----------------------------------------------
+                0.00    0.00       2/16          apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.00      14/16          reference_default_world <cycle 2> [24]
+[246]    0.0    0.00    0.00      16         parameter_reference_edit [246]
+                0.00    0.00       1/595         wood_grid_rule_u32 [154]
+-----------------------------------------------
+                0.00    0.00      10/10          apply_reference_place [7]
+[247]    0.0    0.00    0.00      10         parse_edge_ref [247]
+-----------------------------------------------
+                0.00    0.00       2/9           apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.00       7/9           reference_default_world <cycle 2> [24]
+[248]    0.0    0.00    0.00       9         wood_assembly_dimensions_changed [248]
+-----------------------------------------------
+                0.00    0.00       2/9           apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.00       7/9           reference_default_world <cycle 2> [24]
+[249]    0.0    0.00    0.00       9         world_definitions_equal [249]
+-----------------------------------------------
+                0.00    0.00       8/8           parse_boundary_body [292]
+[250]    0.0    0.00    0.00       8         parse_uv [250]
+                0.00    0.00      16/173         parse_coord [169]
+-----------------------------------------------
+                0.00    0.00       1/8           parse_scene_file <cycle 2> [41]
+                0.00    0.00       7/8           wood_assembly_generation_prepare [205]
+[251]    0.0    0.00    0.00       8         wood_assembly_generation_integrity [251]
+-----------------------------------------------
+                0.00    0.00       3/6           geo_ld_describe [272]
+                0.00    0.00       3/6           geo_ld_evaluate [273]
+[252]    0.0    0.00    0.00       6         geo_linear_definition_source_decode [252]
+-----------------------------------------------
+                0.00    0.00       3/6           reference_source_describe [128]
+                0.00    0.00       3/6           reference_source_evaluate <cycle 1> [129]
+[253]    0.0    0.00    0.00       6         reference_source_is_dimension [253]
+-----------------------------------------------
+                0.00    0.00       3/6           reference_source_describe [128]
+                0.00    0.00       3/6           reference_source_evaluate <cycle 1> [129]
+[254]    0.0    0.00    0.00       6         reference_source_name [254]
+-----------------------------------------------
+                0.00    0.00       1/5           main [1]
+                0.00    0.00       1/5           app_replace_world.constprop.0 [11]
+                0.00    0.00       1/5           app_scene_load_evaluate <cycle 2> [300]
+                0.00    0.00       2/5           apply_scene_line <cycle 2> [6]
+[255]    0.0    0.00    0.00       5         app_world_candidate_destroy [255]
+                0.00    0.00       4/74          reference_sources_owned_free [203]
+                0.00    0.00       4/4           geo_candidate_destroy [266]
+-----------------------------------------------
+                0.00    0.00       1/5           geo_guides_put [304]
+                0.00    0.00       4/5           geo_ld_expression_read [268]
+[256]    0.0    0.00    0.00       5         geo_linear_append [256]
+-----------------------------------------------
+                                   2             wood_member_reference_compute <cycle 1> [47]
+                0.00    0.00       3/600318      world_validate_derived [3]
+[257]    0.0    0.00    0.00       5         reference_guide_position <cycle 1> [257]
+                0.00    0.00       5/624566      reference_sources_ensure [72]
+                                   5             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                0.00    0.00       4/4           geo_candidate_evaluate <cycle 2> [29]
+[258]    0.0    0.00    0.00       4         app_candidate_call [258]
+-----------------------------------------------
+                0.00    0.00       4/4           app_world_candidate_publish [265]
+[259]    0.0    0.00    0.00       4         app_candidate_check [259]
+                0.00    0.00       8/20          app_candidate_hash_matches [244]
+                0.00    0.00       4/48          geo_candidate_provider_hash [240]
+                0.00    0.00       4/4           app_world_candidate_equal [264]
+-----------------------------------------------
+                0.00    0.00       4/4           app_world_candidate_create [263]
+[260]    0.0    0.00    0.00       4         app_candidate_create_with_deferred_sha [260]
+                0.00    0.00       4/3296        geo_source_copy_text [119]
+-----------------------------------------------
+                                   2             apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.37       1/2           main [1]
+                0.00    0.37       1/2           app_replace_world.constprop.0 [11]
+[261]    0.0    0.00    0.00       4         app_candidate_evaluate <cycle 2> [261]
+                0.00    0.00       4/20          app_candidate_hash_matches [244]
+                                   4             geo_candidate_evaluate <cycle 2> [29]
+-----------------------------------------------
+                0.00    0.00       2/4           wood_member_reference_place <cycle 1> [50]
+                0.00    0.00       2/4           wood_member_reference_compute <cycle 1> [47]
+[262]    0.0    0.00    0.00       4         app_member_reference_guide [262]
+-----------------------------------------------
+                0.00    0.00       1/4           main [1]
+                0.00    0.00       1/4           app_replace_world.constprop.0 [11]
+                0.00    0.00       2/4           apply_scene_line <cycle 2> [6]
+[263]    0.0    0.00    0.00       4         app_world_candidate_create [263]
+                0.00    0.00      36/48          geo_candidate_provider_hash [240]
+                0.00    0.00      36/36          app_candidate_bind_core [241]
+                0.00    0.00       4/4           app_candidate_create_with_deferred_sha [260]
+-----------------------------------------------
+                0.00    0.00       4/4           app_candidate_check [259]
+[264]    0.0    0.00    0.00       4         app_world_candidate_equal [264]
+-----------------------------------------------
+                0.00    0.00       1/4           main [1]
+                0.00    0.00       1/4           app_replace_world.constprop.0 [11]
+                0.00    0.00       2/4           apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+[265]    0.0    0.00    0.00       4         app_world_candidate_publish [265]
+                0.00    0.00       4/21          geo_sha256 [243]
+                0.00    0.00       4/4           app_candidate_check [259]
+                0.00    0.00       4/48          geo_candidate_provider_hash [240]
+-----------------------------------------------
+                0.00    0.00       4/4           app_world_candidate_destroy [255]
+[266]    0.0    0.00    0.00       4         geo_candidate_destroy [266]
+                0.00    0.00       4/215         geo_eval_clear [168]
+-----------------------------------------------
+                                   4             geo_candidate_seal [267]
+                0.00    0.00       1/4           main [1]
+                0.00    0.00       1/4           app_replace_world.constprop.0 [11]
+                0.00    0.00       2/4           apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+[267]    0.0    0.00    0.00       4+4       geo_candidate_seal [267]
+                0.00    0.00       8/20          app_candidate_hash_matches [244]
+                0.00    0.00       4/16          geo_candidate_digest_matches [245]
+                0.00    0.00       4/48          geo_candidate_provider_hash [240]
+                                   4             geo_candidate_seal [267]
+-----------------------------------------------
+                0.00    0.00       1/4           app_guide_put [297]
+                0.00    0.00       3/4           geo_guide_definition_decode [269]
+[268]    0.0    0.00    0.00       4         geo_ld_expression_read [268]
+                0.00    0.00       4/5           geo_linear_append [256]
+-----------------------------------------------
+                0.00    0.00       3/3           geo_linear_definition_sources_guide <cycle 1> [275]
+[269]    0.0    0.00    0.00       3         geo_guide_definition_decode [269]
+                0.00    0.00       3/4           geo_ld_expression_read [268]
+-----------------------------------------------
+                0.00    0.00       3/3           geo_ld_evaluate [273]
+[270]    0.0    0.00    0.00       3         geo_guide_definition_encode [270]
+                0.00    0.00       3/3           geo_ld_expression_write [274]
+-----------------------------------------------
+                                   3             reference_source_evaluate <cycle 1> [129]
+[271]    0.0    0.00    0.00       3         geo_guides_evaluate_definition <cycle 1> [271]
+                                   3             geo_linear_evaluate <cycle 1> [276]
+-----------------------------------------------
+                0.00    0.00       3/3           geo_eval_source <cycle 1> [13]
+[272]    0.0    0.00    0.00       3         geo_ld_describe [272]
+                0.00    0.00       3/6           geo_linear_definition_source_decode [252]
+-----------------------------------------------
+                0.00    0.00       3/3           geo_eval_source <cycle 1> [13]
+[273]    0.0    0.00    0.00       3         geo_ld_evaluate [273]
+                0.00    0.00       3/6           geo_linear_definition_source_decode [252]
+                0.00    0.00       3/3           geo_guide_definition_encode [270]
+-----------------------------------------------
+                0.00    0.00       3/3           geo_guide_definition_encode [270]
+[274]    0.0    0.00    0.00       3         geo_ld_expression_write [274]
+-----------------------------------------------
+                                   3             reference_source_evaluate <cycle 1> [129]
+[275]    0.0    0.00    0.00       3         geo_linear_definition_sources_guide <cycle 1> [275]
+                0.00    0.00       3/3           geo_guide_definition_decode [269]
+                                   3             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                                   3             geo_guides_evaluate_definition <cycle 1> [271]
+[276]    0.0    0.00    0.00       3         geo_linear_evaluate <cycle 1> [276]
+                0.00    0.00       3/3           reference_resolve_linear [281]
+                                   3             reference_quantity <cycle 1> [279]
+-----------------------------------------------
+                0.00    0.00       1/3           json_engineering_capabilities [306]
+                0.00    0.00       1/3           world_dump_dsl [69]
+                0.00    0.00       1/3           parse_scene_file <cycle 2> [41]
+[277]    0.0    0.00    0.00       3         grid_subdivision_used [277]
+-----------------------------------------------
+                                   3             reference_quantity_raw <cycle 1> [280]
+[278]    0.0    0.00    0.00       3         reference_named_quantity <cycle 1> [278]
+                0.00    0.00       3/624566      reference_sources_ensure [72]
+                                   3             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                                   3             geo_linear_evaluate <cycle 1> [276]
+[279]    0.0    0.00    0.00       3         reference_quantity <cycle 1> [279]
+                0.00    0.00       3/624566      reference_sources_ensure [72]
+                                   3             geo_eval_source <cycle 1> [13]
+-----------------------------------------------
+                                   3             reference_source_evaluate <cycle 1> [129]
+[280]    0.0    0.00    0.00       3         reference_quantity_raw <cycle 1> [280]
+                0.00    0.00       3/227887      clip_loop_order [73]
+                0.00    0.00       3/67          app_placement_boundary [229]
+                0.00    0.00       3/41050       placement_effective_boundary [91]
+                                   3             reference_named_quantity <cycle 1> [278]
+-----------------------------------------------
+                0.00    0.00       3/3           geo_linear_evaluate <cycle 1> [276]
+[281]    0.0    0.00    0.00       3         reference_resolve_linear [281]
+-----------------------------------------------
+                0.00    0.00       2/2           app_boundary_stage [284]
+[282]    0.0    0.00    0.00       2         app_boundary_policy [282]
+-----------------------------------------------
+                0.00    0.00       2/2           app_boundary_stage [284]
+[283]    0.0    0.00    0.00       2         app_boundary_region_definition [283]
+-----------------------------------------------
+                0.00    0.00       2/2           apply_surface_combined_line [30]
+[284]    0.0    0.00    0.00       2         app_boundary_stage [284]
+                0.00    0.00       2/2           app_boundary_region_definition [283]
+                0.00    0.00       2/2           app_boundary_policy [282]
+                0.00    0.00       2/2           geo_regions_stage [291]
+-----------------------------------------------
+                0.00    0.00       2/2           wood_member_reference_compute <cycle 1> [47]
+[285]    0.0    0.00    0.00       2         app_member_reference_evaluate_guide [285]
+-----------------------------------------------
+                0.00    0.00       2/2           apply_surface_combined_line [30]
+[286]    0.0    0.00    0.00       2         app_placement_stage [286]
+                0.00    0.00       2/2           geo_placements_stage [290]
+-----------------------------------------------
+                                   2             apply_scene_line <cycle 2> [6]
+[287]    0.0    0.00    0.00       2         apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+                0.00    0.00       4/451         app_asm_context [156]
+                0.00    0.00       2/139         app_scene_direct_dimensions_allowed [174]
+                0.00    0.00       2/146         reference_may_affect [172]
+                0.00    0.00       2/2           reference_geometry_changed [295]
+                0.00    0.00       2/9           wood_assembly_dimensions_changed [248]
+                0.00    0.00       2/16          parameter_reference_edit [246]
+                0.00    0.00       2/9           world_definitions_equal [249]
+                0.00    0.00       2/141         app_world_candidate_describe_sources [173]
+                0.00    0.00       2/4           geo_candidate_seal [267]
+                0.00    0.00       2/21          geo_sha256 [243]
+                0.00    0.00       2/4           app_world_candidate_publish [265]
+                                   2             app_candidate_evaluate <cycle 2> [261]
+-----------------------------------------------
+                0.00    0.00       1/2           json_engineering_capabilities [306]
+                0.00    0.00       1/2           world_dump_dsl [69]
+[288]    0.0    0.00    0.00       2         engineering_used [288]
+                0.00    0.00       2/6224        app_eng_context [110]
+-----------------------------------------------
+                0.00    0.00       1/2           geo_named_values_put [305]
+                0.00    0.00       1/2           apply_spec_line [40]
+[289]    0.0    0.00    0.00       2         geo_named_value_name_valid [289]
+-----------------------------------------------
+                0.00    0.00       2/2           app_placement_stage [286]
+[290]    0.0    0.00    0.00       2         geo_placements_stage [290]
+                0.00    0.00       2/2           placement_structure [294]
+-----------------------------------------------
+                0.00    0.00       2/2           app_boundary_stage [284]
+[291]    0.0    0.00    0.00       2         geo_regions_stage [291]
+-----------------------------------------------
+                0.00    0.00       2/2           apply_surface_combined_line [30]
+[292]    0.0    0.00    0.00       2         parse_boundary_body [292]
+                0.00    0.00       8/8           parse_uv [250]
+                0.00    0.00       2/76          geo_loop_is_valid [186]
+                0.00    0.00       2/76          geo_region_is_valid [187]
+-----------------------------------------------
+                0.00    0.00       2/2           apply_surface_combined_line [30]
+[293]    0.0    0.00    0.00       2         parse_placement_body [293]
+                0.00    0.00       6/173         parse_coord [169]
+                0.00    0.00       2/76          geo_frame_is_valid [185]
+-----------------------------------------------
+                0.00    0.00       2/2           geo_placements_stage [290]
+[294]    0.0    0.00    0.00       2         placement_structure [294]
+-----------------------------------------------
+                0.00    0.00       2/2           apply_scene_line_candidate.constprop.0 <cycle 2> [287]
+[295]    0.0    0.00    0.00       2         reference_geometry_changed [295]
+-----------------------------------------------
+                0.00    0.00       1/1           wood_grid_direct_check [308]
+[296]    0.0    0.00    0.00       1         app_grid_host [296]
+                0.00    0.00       1/227887      clip_loop_order [73]
+                0.00    0.00       1/217         app_boundary_compose [166]
+                0.00    0.00       1/52914       wood_grid_codec_rule [88]
+-----------------------------------------------
+                0.00    0.00       1/1           apply_reference_guide [39]
+[297]    0.0    0.00    0.00       1         app_guide_put [297]
+                0.00    0.00       1/1           geo_guides_put [304]
+                0.00    0.00       1/4           geo_ld_expression_read [268]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[298]    0.0    0.00    0.00       1         app_history_record [298]
+-----------------------------------------------
+                                   1             geo_candidate_evaluate <cycle 2> [29]
+[299]    0.0    0.00    0.00       1         app_replace_evaluate <cycle 2> [299]
+                                   1             reference_default_world <cycle 2> [24]
+-----------------------------------------------
+                                   1             geo_candidate_evaluate <cycle 2> [29]
+[300]    0.0    0.00    0.00       1         app_scene_load_evaluate <cycle 2> [300]
+                0.00    0.00       1/5           app_world_candidate_destroy [255]
+                0.00    0.00       1/131         app_scene_file_graph_empty [184]
+                                   1             parse_scene_file <cycle 2> [41]
+-----------------------------------------------
+                0.00    0.00       1/1           app_scene_candidate_apply [5]
+[301]    0.0    0.00    0.00       1         apply_guide_line [301]
+-----------------------------------------------
+                0.00    0.00       1/1           world_dump_dsl [69]
+[302]    0.0    0.00    0.00       1         eng_target_json [302]
+-----------------------------------------------
+                0.00    0.00       1/1           world_dump_grids [310]
+[303]    0.0    0.00    0.00       1         engineering_dump_grid [303]
+                0.00    0.00       1/6224        app_eng_context [110]
+-----------------------------------------------
+                0.00    0.00       1/1           app_guide_put [297]
+[304]    0.0    0.00    0.00       1         geo_guides_put [304]
+                0.00    0.00       1/5           geo_linear_append [256]
+-----------------------------------------------
+                0.00    0.00       1/1           apply_spec_line [40]
+[305]    0.0    0.00    0.00       1         geo_named_values_put [305]
+                0.00    0.00       1/2           geo_named_value_name_valid [289]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[306]    0.0    0.00    0.00       1         json_engineering_capabilities [306]
+                0.00    0.00       1/298         app_fs_context [158]
+                0.00    0.00       1/2           engineering_used [288]
+                0.00    0.00       1/451         app_asm_context [156]
+                0.00    0.00       1/3           grid_subdivision_used [277]
+                0.00    0.00       1/223         app_sp_context [165]
+-----------------------------------------------
+                0.00    0.00       1/1           apply_grid_line [38]
+[307]    0.0    0.00    0.00       1         wood_grid_begin_direct [307]
+-----------------------------------------------
+                0.00    0.00       1/1           apply_grid_line [38]
+[308]    0.0    0.00    0.00       1         wood_grid_direct_check [308]
+                0.00    0.00       2/3028        wood_grid_axis_lines [121]
+                0.00    0.00       1/1           app_grid_host [296]
+-----------------------------------------------
+                0.00    0.00       1/1           apply_grid_line [38]
+[309]    0.0    0.00    0.00       1         wood_grid_direct_declared [309]
+-----------------------------------------------
+                0.00    0.00       1/1           world_dump_dsl [69]
+[310]    0.0    0.00    0.00       1         world_dump_grids [310]
+                0.00    0.00       1/1           engineering_dump_grid [303]
+-----------------------------------------------
+
+Index by function name
+
+ [156] app_asm_context (assembly.inc) [304] geo_guides_put [251] wood_assembly_generation_integrity
+ [130] app_assembly_saved_dimensions (assembly_generation.inc) [272] geo_ld_describe (linear_definition_sources.c) [205] wood_assembly_generation_prepare
+ [166] app_boundary_compose (domains.inc) [273] geo_ld_evaluate (linear_definition_sources.c) [206] wood_assembly_rebuild
+ [282] app_boundary_policy (domains.inc) [268] geo_ld_expression_read (linear_definition_sources.c) [207] wood_assembly_sources_create
+ [283] app_boundary_region_definition (domains.inc) [274] geo_ld_expression_write (linear_definition_sources.c) [143] wood_assembly_sources_owned
+ [284] app_boundary_stage (domains.inc) [256] geo_linear_append [103] wood_contact_boundary_interval
+ [241] app_candidate_bind_core [252] geo_linear_definition_source_decode [15] wood_contact_collect_stops
+ [258] app_candidate_call (app_candidate.c) [275] geo_linear_definition_sources_guide [108] wood_contact_end_faces_with_sources
+ [259] app_candidate_check   [193] geo_linear_definition_sources_register [98] wood_contact_owner_extension
+ [260] app_candidate_create_with_deferred_sha (app_candidate.c) [276] geo_linear_evaluate [75] wood_contact_source_collection_view (contact_sources.c)
+ [261] app_candidate_evaluate [77] geo_loop_contains_point [34] wood_contact_source_decode
+ [244] app_candidate_hash_matches (app_candidate.c) [93] geo_loop_contains_rect [43] wood_contact_source_describe (contact_sources.c)
+  [28] app_contact_facts (current_geometry.c) [186] geo_loop_is_valid [14] wood_contact_source_evaluate (contact_sources.c)
+  [96] app_contact_resolve_stops (current_geometry.c) [78] geo_loop_point_on_edge [46] wood_contact_sources_collect
+ [170] app_dp_context (derived_placements.inc) [289] geo_named_value_name_valid [208] wood_contact_sources_create
+ [110] app_eng_context (engineering.inc) [305] geo_named_values_put [102] wood_definition_source_decode
+ [188] app_eng_serializable (engineering.inc) [194] geo_parameter_source_bound (parameter_sources.c) [45] wood_definition_sources_boundary
+ [158] app_fs_context (finish_surfaces.inc) [195] geo_parameter_sources_rebuild [209] wood_definition_sources_create
+  [92] app_fs_obstacle_box (finish_surfaces.inc) [196] geo_parameter_sources_register_with_definitions [116] wood_definition_sources_dimension
+ [155] app_grid_context (grid_context.inc) [159] geo_pd_vector_write (placement_sources.c) [44] wood_definition_sources_member
+ [296] app_grid_host (grid_context.inc) [35] geo_placement_definition_decode [18] wood_definition_sources_placement
+ [297] app_guide_put (current_geometry.c) [227] geo_placement_definition_encode [210] wood_dp_rebuild
+ [298] app_history_record     [36] geo_placement_sources_definition [211] wood_engineering_rebuild
+ [228] app_member_declaration_owned (current_geometry.c) [160] geo_placement_sources_describe (placement_sources.c) [212] wood_engineering_sources_definitions
+  [79] app_member_reference_at (references.inc) [161] geo_placement_sources_evaluate (placement_sources.c) [213] wood_engineering_sources_metadata
+ [131] app_member_reference_boundary (references.inc) [197] geo_placement_sources_register [214] wood_engineering_sources_register
+ [163] app_member_reference_edge (references.inc) [290] geo_placements_stage [215] wood_finish_sources_bind
+ [132] app_member_reference_end (references.inc) [71] geo_rectangle_footprint [216] wood_finish_sources_create
+  [90] app_member_reference_evaluate (references.inc) [115] geo_region_contains_point [217] wood_fs_rebuild
+ [285] app_member_reference_evaluate_guide (references.inc) [94] geo_region_contains_rect [124] wood_grid_anchor_line_coord_resolved
+ [146] app_member_reference_grid (references.inc) [187] geo_region_is_valid [236] wood_grid_application_evaluate_direct
+ [147] app_member_reference_grid_line (references.inc) [198] geo_region_key_sources_register [237] wood_grid_application_hook (grid_sources.c)
+ [262] app_member_reference_guide (references.inc) [291] geo_regions_stage [238] wood_grid_application_value (grid_sources.c)
+ [133] app_member_reference_issue_count (references.inc) [243] geo_sha256 [121] wood_grid_axis_lines
+ [134] app_member_reference_place (references.inc) [157] geo_sha_block (codec.c) [125] wood_grid_axis_lines_in_resolved (grid_cells.c)
+ [135] app_member_reference_placement (references.inc) [119] geo_source_copy_text (source.c) [307] wood_grid_begin_direct
+ [136] app_member_reference_primary (references.inc) [20] geo_source_edge (source.c) [162] wood_grid_binding_definition_depend (grid_sources.c)
+ [137] app_member_reference_span (references.inc) [70] geo_source_grow (source.c) [218] wood_grid_bindings_rebuild
+ [138] app_member_reference_write (references.inc) [32] geo_source_index_append (source.c) [122] wood_grid_codec_application_prefix (grid_definition_codec.c)
+ [229] app_placement_boundary (domains.inc) [17] geo_source_node (source.c) [33] wood_grid_codec_axis (grid_definition_codec.c)
+ [286] app_placement_stage (domains.inc) [140] geo_strip_intervals [80] wood_grid_codec_bool (grid_definition_codec.c)
+  [53] app_reference_end_faces (reference_sources.inc) [199] geo_version_sources_definitions [95] wood_grid_codec_int (grid_definition_codec.c)
+ [105] app_reference_end_stops (reference_sources.inc) [200] geo_version_sources_register [88] wood_grid_codec_rule (grid_definition_codec.c)
+  [85] app_reference_host_read (reference_sources.inc) [277] grid_subdivision_used (grid_subdivision.inc) [81] wood_grid_codec_u32 (grid_definition_codec.c)
+  [16] app_reference_member_anchor (reference_sources.inc) [306] json_engineering_capabilities (engineering_bridge.inc) [178] wood_grid_codec_write_axis (grid_definition_codec.c)
+ [299] app_replace_evaluate (web_bridge.c) [164] loop_edge_outward_normal (current_geometry.c) [25] wood_grid_coordinate_source (grid_sources.c)
+  [11] app_replace_world.constprop.0 (web_bridge.c) [246] parameter_reference_edit (transactions.inc) [58] wood_grid_decode_application
+   [5] app_scene_candidate_apply (transactions.inc) [292] parse_boundary_body (current_geometry.c) [62] wood_grid_decode_application_value
+ [174] app_scene_direct_dimensions_allowed (transactions.inc) [169] parse_coord (current_geometry.c) [179] wood_grid_def_axis (grid_sources.c)
+ [184] app_scene_file_graph_empty (transactions.inc) [247] parse_edge_ref (current_geometry.c) [111] wood_grid_def_number (grid_sources.c)
+ [175] app_scene_file_sources_ready (transactions.inc) [293] parse_placement_body (current_geometry.c) [308] wood_grid_direct_check
+ [300] app_scene_load_evaluate (web_bridge.c) [41] parse_scene_file (current_geometry.c) [309] wood_grid_direct_declared
+ [165] app_sp_context (section_profiles.inc) [250] parse_uv (current_geometry.c) [239] wood_grid_encode_application_value
+  [54] app_validation_boundary_role (world_validation.inc) [91] placement_effective_boundary (current_geometry.c) [153] wood_grid_host_source (grid_sources.c)
+  [49] app_validation_end_faces (world_validation.inc) [86] placement_outline (current_geometry.c) [126] wood_grid_line_coord_in_resolved
+  [82] app_validation_footprint (world_validation.inc) [294] placement_structure (placements.c) [118] wood_grid_line_source_ref
+  [22] app_validation_host (world_validation.inc) [87] polygon_loop_bounds (current_geometry.c) [180] wood_grid_parameter_definitions (grid_sources.c)
+  [21] app_validation_member (world_validation.inc) [12] reference_check_all (references.inc) [63] wood_grid_policy_definitions (grid_sources.c)
+  [37] app_validation_place (world_validation.inc) [8] reference_checked (references.inc) [181] wood_grid_publish_application_cache (grid_sources.c)
+ [189] app_validation_placement_id (world_validation.inc) [23] reference_contact_facts (reference_sources.inc) [123] wood_grid_result (grid_sources.c)
+  [48] app_validation_stops (world_validation.inc) [24] reference_default_world (transactions.inc) [154] wood_grid_rule_u32 (grid_rules.c)
+ [263] app_world_candidate_create (world_candidate.inc) [68] reference_dump (references.inc) [60] wood_grid_rules_valid_hook (grid_sources.c)
+ [173] app_world_candidate_describe_sources (world_candidate.inc) [89] reference_eval_timber_relation (reference_sources.inc) [219] wood_grid_rules_world_valid_direct
+ [255] app_world_candidate_destroy (world_candidate.inc) [177] reference_face_format (references.inc) [145] wood_grid_source_decode
+ [264] app_world_candidate_equal (world_candidate.inc) [176] reference_face_parse (references.inc) [151] wood_grid_source_describe (grid_sources.c)
+ [265] app_world_candidate_publish (world_candidate.inc) [295] reference_geometry_changed (transactions.inc) [66] wood_grid_source_evaluate (grid_sources.c)
+  [38] apply_grid_line (current_geometry.c) [148] reference_grid_definition (reference_sources.inc) [113] wood_grid_source_get (grid_sources.c)
+ [301] apply_guide_line (current_geometry.c) [152] reference_grid_host (reference_sources.inc) [61] wood_grid_sources_application
+ [230] apply_place_line (current_geometry.c) [257] reference_guide_position (reference_sources.inc) [220] wood_grid_sources_create
+  [39] apply_reference_guide (references.inc) [26] reference_host_read (reference_sources.inc) [59] wood_grid_sources_definition
+   [7] apply_reference_place (references.inc) [172] reference_may_affect (transactions.inc) [149] wood_grid_sources_line
+   [6] apply_scene_line (transactions.inc) [9] reference_member_footprint (reference_sources.inc) [221] wood_grid_systems_rebuild
+ [287] apply_scene_line_candidate.constprop.0 (transactions.inc) [141] reference_member_owned (reference_sources.inc) [182] wood_grid_valid
+  [40] apply_spec_line (references.inc) [278] reference_named_quantity (reference_sources.inc) [183] wood_grid_valid_in
+  [30] apply_surface_combined_line (current_geometry.c) [167] reference_placement_binding (reference_sources.inc) [57] wood_grid_world_valid_direct
+ [231] apply_timber_line (current_geometry.c) [74] reference_placement_frame (reference_sources.inc) [56] wood_grid_world_valid_hook (grid_sources.c)
+  [99] asm_error.constprop.0 (assembly.inc) [279] reference_quantity (reference_sources.inc) [65] wood_member_anchor_corner
+ [232] assembly_owned (assembly_generation.inc) [280] reference_quantity_raw (references.inc) [109] wood_member_boundary_role_check
+ [190] boundary_keys_reconcile.constprop.0 (boundary_vertex_keys.inc) [84] reference_region_geometry (reference_sources.inc) [233] wood_member_construct
+  [73] clip_loop_order (clip.c) [281] reference_resolve_linear (references.inc) [234] wood_member_declaration_role
+  [51] cmd_proj (web_bridge.c) [128] reference_source_describe (reference_sources.inc) [235] wood_member_declare
+  [67] eng_definition_hash (engineering_bridge.inc) [129] reference_source_evaluate (reference_sources.inc) [97] wood_member_end_contact_check
+ [302] eng_target_json (engineering.inc) [253] reference_source_is_dimension (reference_sources.inc) [64] wood_member_place_a0
+ [303] engineering_dump_grid (engineering.inc) [254] reference_source_name (reference_sources.inc) [127] wood_member_primary_axis_check
+ [191] engineering_serializable (engineering.inc) [201] reference_sources_begin_candidate (references.inc) [47] wood_member_reference_compute
+ [288] engineering_used (engineering.inc) [202] reference_sources_dispose (references.inc) [50] wood_member_reference_place
+ [266] geo_candidate_destroy  [72] reference_sources_ensure (reference_sources.inc) [144] wood_member_resolve_span
+ [245] geo_candidate_digest_matches (candidate.c) [203] reference_sources_owned_free (references.inc) [171] wood_sp_rebuild
+  [29] geo_candidate_evaluate [55] resolve_auto_span (current_geometry.c) [222] wood_sp_source_begin (section_profile_sources.c)
+ [240] geo_candidate_provider_hash (candidate.c) [19] support_coord_compare (panel_support.c) [223] wood_sp_source_context_matches (section_profile_sources.c)
+ [267] geo_candidate_seal    [142] surface_primary_axis_check (current_geometry.c) [224] wood_sp_sources_create
+ [192] geo_enclosure_sources_register [27] timber_a0_footprint_uv (current_geometry.c) [104] wood_stop_count_legal
+ [168] geo_eval_clear (source.c) [106] timber_boundary_role_check (current_geometry.c) [242] wood_stop_pick
+ [150] geo_eval_register_many [42] timber_place_a0_on_surface (current_geometry.c) [117] wood_stop_ref_candidates
+  [13] geo_eval_source       [112] utf8_seq_len (current_geometry.c) [10] wood_world_validate_members
+ [120] geo_finite_sequence   [100] wd_describe (definition_sources.c) [225] wood_world_validate_obstacles
+  [52] geo_frame_direction   [101] wd_evaluate (definition_sources.c) [249] world_definitions_equal (current_geometry.c)
+ [185] geo_frame_is_valid     [31] wd_read_text.constprop.0 (definition_sources.c) [69] world_dump_dsl (current_geometry.c)
+ [114] geo_frame_point        [76] wd_reader (definition_sources.c) [310] world_dump_grids (current_geometry.c)
+ [139] geo_frame_project_uv  [107] wd_text.constprop.0 (definition_sources.c) [226] world_revalidate (current_geometry.c)
+ [269] geo_guide_definition_decode [83] wd_write (definition_sources.c) [3] world_validate_derived (current_geometry.c)
+ [270] geo_guide_definition_encode [248] wood_assembly_dimensions_changed [4] <cycle 1>
+ [271] geo_guides_evaluate_definition [204] wood_assembly_generation_check [2] <cycle 2>

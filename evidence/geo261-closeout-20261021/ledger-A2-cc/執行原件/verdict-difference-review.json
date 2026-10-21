@@ -1,0 +1,17 @@
+{
+  "source_sha": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+  "expected_counts": {
+    "killed": 70,
+    "crashed": 1,
+    "equivalent": 4,
+    "retired": 3
+  },
+  "actual_counts": {
+    "killed": 70,
+    "equivalent": 4,
+    "crashed": 1,
+    "retired": 3
+  },
+  "differences": {},
+  "備註": "外層逐 ID 差異守門，不修改官方 mutate 判準；若不同先報 root，不自動匯入。"
+}

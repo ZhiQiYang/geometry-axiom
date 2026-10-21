@@ -1,0 +1,61 @@
+from pathlib import Path
+import ast,hashlib,json,re,datetime
+R=Path('/workspace/geo261-host-copy-candidate');B=Path('/workspace/geo261-evidence/host-copy-candidate');D=B/'H/v1'
+def sh(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def j(p):return json.loads(Path(p).read_bytes())
+before=j(D/'source-before.json');after=j(D/'source-after.json');v=j(D/'verification-summary.json');u=j(D/'targeted-result.json');rows=j(D/'targeted-commands.json');env=j(D/'launch-environment.json')
+assert before==after and len(before)==325
+for n,h in before.items():assert sh(R/n)==h,n
+assert env['stackBytes']==[16777216,16777216] and env['CC'] is None and env['PYTHONOPTIMIZE'] is None
+assert u['testsRun']==65 and u['failures']==u['errors']==0 and not u['skipped'] and u['passed'] and u['sourceUnchanged']
+assert u['modules']==['tests.test_geo261_host_facts_authority','tests.test_geo261_contact_sources','tests.test_geo261_wood_world_validation','tests.test_geo261_domain_product','tests.test_geo261_finish_sources']
+log=(D/'targeted-unittest.log').read_text();assert re.search(r'\nRan 65 tests in .*\n\nOK\n',log)
+assert len(rows)==338 and [r['index'] for r in rows]==list(range(338))
+def verify_raw(root,records):
+ count=0
+ for r in records:
+  assert 'exception' not in r and 'returncode' in r
+  for stream in ['stdout','stderr']:
+   if stream in r:
+    m=r[stream];p=root/m['path'];assert p.stat().st_size==m['bytes'] and sh(p)==m['sha256'];count+=1
+ return count
+raw_count=verify_raw(D,rows)
+for r in rows:
+ if '-c' in r['command'] or (len(r['command'])>2 and '-o' in r['command']):assert r['returncode']==0
+red=[r for r in rows if r['returncode']]
+assert len(red)==43
+for r in red:assert r['returncode']==1 and (D/r['stderr']['path']).read_text().startswith('ASSERT:') and (D/r['stdout']['path']).read_bytes()==b''
+tree=ast.parse((R/'tests/test_geo261_host_facts_authority.py').read_text());constants={}
+for x in tree.body:
+ if isinstance(x,ast.Assign):
+  for t in x.targets:
+   if isinstance(t,ast.Name) and t.id in ['CONTROLS','COPY_CONTROLS','HOLE_VERTEX_CONTROL']:constants[t.id]=ast.literal_eval(x.value)
+controls=list(constants['CONTROLS'])+list(constants['COPY_CONTROLS'])+[constants['HOLE_VERTEX_CONTROL']]
+assert len(controls)==18
+runs=[r for r in rows if len(r['command'])==2 and r['command'][0].startswith('/tmp/')]
+triples=[]
+for name,bef,aft,case,label in controls:
+ hits=[(i,r) for i,r in enumerate(runs) if Path(r['command'][0]).name=='host-facts-control-'+name and r['command'][1]==case];assert len(hits)==1,name
+ i,r=hits[0];prev,nex=runs[i-1],runs[i+1]
+ assert r['returncode']==1 and (D/r['stderr']['path']).read_bytes()==('ASSERT:'+label+'\n').encode()
+ assert prev['command']==nex['command'] and prev['command'][1]==case and prev['returncode']==nex['returncode']==0
+ for z in [prev,nex]:
+  for stream in ['stdout','stderr']:assert (D/z[stream]['path']).read_bytes()==b''
+ triples.append({'control':name,'case':case,'assertion':label,'before':prev,'red':r,'restore':nex})
+O=D/'output-checks';out=j(O/'result.json');outrows=j(O/'commands.json');out_raw_count=verify_raw(O,outrows)
+assert out['base']=='85dc4fff44ce49b27f831b21cbdcb662c863302c' and out['passed']
+assert all(r['returncode']==0 for r in outrows)
+san=[r for r in outrows if len(r['command'])==2 and Path(r['command'][0]).name=='host-output-sanitized']
+assert [r['command'][1] for r in san]==['copy-clear','copy-snapshot','scratch-owned','malformed']
+for r in san:
+ assert r['returncode']==0
+ for stream in ['stdout','stderr']:assert (O/r[stream]['path']).read_bytes()==b''
+sancompile=[r for r in outrows if '-c' in r['command'] and '-fsanitize=address,undefined' in r['command']]
+assert len(sancompile)==1 and str(R/'tests/geo261_host_facts_authority_harness.c') in sancompile[0]['command']
+assert sh(B/'H/combined-candidate.patch')==v['combinedPatchSha256']
+report={'checkedUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'acceptedScopedH':True,'classification':'H候選定向與ASan原件獨立唯讀核對；原85cold對照v1另列無效，待另輪更正','testedBaseHead':'85dc4fff44ce49b27f831b21cbdcb662c863302c','nowCommittedCandidate':'75f587a5e96dbd1460cf1d9be781ca6fa06fd993','sourceBeforeAfterAndCurrentHashesAgree':True,'sourceFileCount':325,'changedSourceHashes':v['changedSourceHashes'],'testsRun':65,'failures':0,'errors':0,'skips':0,'commandCount':338,'nonzeroCommands':43,'exactHControlTriples':triples,'allOtherNonzeroCommandsAreNamedAssertExit1':True,'rawStreamChecks':raw_count,'sanitizedCases':san,'outputCheckRawStreamChecks':out_raw_count,'originalBaselineStatus':'v1原85對照漏references.inc轉接，實際含candidate reference_sources；其4case不當作原H對照證據。見independent-original-baseline-finding.json。','productReview':['reference_host_scratch只收caller獨佔local；失敗部分寫入沒有發布。legacy wrapper保先local完整成功後提交與derived view重綁到caller輸出。','use_current_values保持原app_placement_boundary順序；components pointer存活於caller local。contact在return前複製regions，沒有local地址逸出。','免第二次清零僅原component_count==0，app_placement_at原本已memset整個PlacementSurface且不填components；非零仍清整陣列。','world_validation的實際5個caller functions均持local AppValidationDomain且失敗短路；no-context fallback重查state為無副作用getter，不增加eval。','公開reference_host_read的placement/boundary提交順序未改，並未把scratch暴露為舊介面；K private decoder另由Kpeer核。'],'limitations':['沒有重跑產品；65 tests不替代完整native/瀏覽器/ledger/架構/P189。','ASan/UBSan僅含H之translation unit，K/W objects未儀器化；不據此宣稱所有記憶體安全。','18個H控制逐名核前0/ASSERT1/後0；其他25紅列核碼/ASSERT/raw完整性，語義由原完整module裁判負責。','main真tool exit0（2cff36）與outputchecks真tool0（1a53ba）來自作者及root的實際工具觀察轉述，本次未偽造transport檔。'],'references':[]}
+for root,names in [(D,['source-before.json','source-after.json','targeted-result.json','targeted-commands.json','targeted-unittest.log','verification-summary.json','run_targeted.py','run_output_checks.py']),(O,['result.json','commands.json'])]:
+ for n in names:
+  p=root/n;report['references'].append({'path':str(p),'bytes':p.stat().st_size,'sha256':sh(p)})
+p=B/'independent-review-H.json';p.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'path':str(p),'bytes':p.stat().st_size,'sha256':sh(p),'exitCode':0,'Hcontrols':len(triples),'rawStreamChecks':raw_count+out_raw_count}))
+

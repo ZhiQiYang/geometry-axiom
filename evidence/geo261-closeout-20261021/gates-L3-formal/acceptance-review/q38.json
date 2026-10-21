@@ -1,0 +1,1694 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "phase": "q38",
+  "reviewer": "/root/q38_card_gates/l2_gate_acceptors",
+  "reviewKind": "沿用已驗只讀接受器；本輪實際執行者另見外層收據，不冒稱原作者完成新的獨立審查",
+  "templateSourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "reviewedUtc": "2026-10-21T06:41:09.099218+00:00",
+  "accepted": true,
+  "validationExitCode": 0,
+  "blockers": [],
+  "result": {
+    "cases": 42,
+    "killed": 41,
+    "equivalent": [
+      "SPM24"
+    ],
+    "assertionErrorKilled": 39,
+    "declaredModelErrorKilled": [
+      "SPM38",
+      "SPM40"
+    ],
+    "nativeBaseline": 27,
+    "modelBaseline": 20,
+    "officialGateExit": 0,
+    "runGatesExit": 0,
+    "launcherWaitExit": 0,
+    "elapsedSeconds": 870.8577103520001
+  },
+  "commands": {
+    "actual": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-u",
+      "tests/section_profile_mutation_check.py",
+      "--jobs",
+      "1",
+      "--receipt",
+      "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/receipt.json",
+      "--logs",
+      "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs"
+    ],
+    "allCases": true,
+    "onlyGroupExploreAbsent": true,
+    "jobs": 1,
+    "buildModelBaseFirst": true,
+    "stackBytes": 16777216,
+    "CCAbsent": true,
+    "PYTHONOPTIMIZEAbsent": true
+  },
+  "sources": {
+    "headBefore": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+    "headAfter": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+    "statusBefore": "",
+    "statusAfter": "",
+    "trackedBeforeAfterHashes": 10,
+    "gitBlobsRead": 530,
+    "nativeSourceTreeFiles": 194,
+    "modelSourceTreeFiles": 524,
+    "baselineAndCompiledMutantSourceTreeHashesReconstructedFromGit": true,
+    "compiledMutantBinaryHashesDifferentFromBaseline": 39,
+    "pythonOnlyModelCases": [
+      "SPM37",
+      "SPM38",
+      "SPM40"
+    ]
+  },
+  "bridge": {
+    "previousIndex": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/final-build-binary-index.json",
+    "beforeAfterBytesHashMtimeExact": true,
+    "bridgeHash": "0d8a50e95c8f67c6e48fc12b8309dff68228575e1f4e79ebbfc8b6f2c6069559",
+    "sidecarHash": "8f10842ec25df46d3224e36ecc7314a43b66b4303976efc270ae48a8f1b18b53",
+    "preservedCopiesVerified": true
+  },
+  "cases": [
+    {
+      "id": "SPM01",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding",
+        "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections"
+      ],
+      "causes": [
+        "expected rejection 'V_PROFILE_OUTSIDE'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        },
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM02",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap",
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "causes": [
+        "expected rejection 'V_PROFILE_OVERLAP'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        },
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM03",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap"
+      ],
+      "causes": [
+        "expected the candidate to be accepted",
+        "V_PROFILE_OVERLAP"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM04",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap"
+      ],
+      "causes": [
+        "expected the candidate to be accepted",
+        "V_PROFILE_OVERLAP"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM05",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "causes": [
+        "expected rejection 'V_PANEL_WIDTH'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM06",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "causes": [
+        "expected rejection 'V_PANEL_WIDTH'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM07",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections"
+      ],
+      "causes": [
+        "expected rejection 'panel requires calcium-silicate-6'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM08",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "causes": [
+        "D40/R36: calcium-silicate-6 is 6 mm thick"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM09",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "causes": [
+        "expected the candidate to be accepted",
+        "V_PANEL_WIDTH"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM10",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections"
+      ],
+      "causes": [
+        "expected rejection 'I43'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM11",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip"
+      ],
+      "causes": [
+        "expected rejection 'unsupported dimension source'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM12",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip"
+      ],
+      "causes": [
+        "rejected, but not for 'D36'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM13",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+      ],
+      "causes": [
+        "I51: a scene with a missing requires section-profile/1 marker must be rejected"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM14",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections"
+      ],
+      "causes": [
+        "expected rejection 'timber orientation must be A-u or A-v'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM15",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections"
+      ],
+      "causes": [
+        "expected rejection 'panel orientation must be thickness-v or thickness-u'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM16",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "causes": [
+        "R38: V must be -up"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM17",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "causes": [
+        "R38: N must equal the run direction d"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM18",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "causes": [
+        "R38: N must equal the run direction d"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM19",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+      ],
+      "causes": [
+        "expected rejection 'outside closed host range'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM20",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+      ],
+      "causes": [
+        "expected rejection 'perpendicular'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM21",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+      ],
+      "causes": [
+        "rejected, but not for 'origin exceeds D1'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_simple_holes_closed_boundary_vertical_direction_and_invalid_up",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM22",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_live_host_follow_detach_conversion_and_atomic_delete"
+      ],
+      "causes": [
+        "R38/R40: O = o_H + p*U_H + q*V_H must follow the live host"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_live_host_follow_detach_conversion_and_atomic_delete",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM23",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_conversion_reports_all_unsatisfied_conditions_and_zero_writes"
+      ],
+      "causes": [
+        "rejected, but not for 'origin not in host plane'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_conversion_reports_all_unsatisfied_conditions_and_zero_writes",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM24",
+      "verdict": "equivalent",
+      "exit": 0,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_conversion_reports_all_unsatisfied_conditions_and_zero_writes",
+        "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "causes": [],
+      "terminalMatches": [],
+      "compiledBinaryCompared": true,
+      "equivalentReason": "an advanced frame is accepted only by surface_frame_is_valid (unit cardinal axes, V perpendicular to N), so up=-V is always a legal up: the \"V has a legal up\" condition of D38 can never fail here"
+    },
+    {
+      "id": "SPM25",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact"
+      ],
+      "causes": [
+        "D38: advanced->simple must recover dir/p/q/up"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM26",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_shrink_reject_and_expand_loses_right_contact"
+      ],
+      "causes": [
+        "PROFILE_CONTACT_LOST"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_shrink_reject_and_expand_loses_right_contact",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM27",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding"
+      ],
+      "causes": [
+        "expected rejection 'V_PROFILE_OUTSIDE'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM28",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "causes": [
+        "expected rejection 'I49'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM29",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "causes": [
+        "expected rejection 'I49'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM30",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range"
+      ],
+      "causes": [
+        "expected rejection 'I47/I48/D1'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM31",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_ac01_03_08_independent_rectangles_volumes_and_scope",
+        "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range"
+      ],
+      "causes": [
+        "expected the candidate to be accepted",
+        "V_PROFILE_"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_ac01_03_08_independent_rectangles_volumes_and_scope",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        },
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM32",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "causes": [
+        "expected the candidate to be accepted",
+        "V_PROFILE_OUTSIDE"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM33",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+      ],
+      "causes": [
+        "expected the candidate to be accepted",
+        "RUN_LENGTH_INVALID"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM34",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+      ],
+      "causes": [
+        "I51: a scene with a duplicate profile id record must be rejected"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM35",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+      ],
+      "causes": [
+        "I49: section-profile records must not be injected line by line"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_exact_dump_load_zero_ids_empty_profile_and_fail_closed",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM41",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding"
+      ],
+      "causes": [
+        "expected rejection 'V_PROFILE_OUTSIDE'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM42",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range"
+      ],
+      "causes": [
+        "expected rejection 'I47/I48/D1'"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_ac09_advanced_axes_and_vertex_range",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM36",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "model",
+      "tests": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope"
+      ],
+      "causes": [
+        "R37: exact mesh volume of the envelope object"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM37",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "model",
+      "tests": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope"
+      ],
+      "causes": [
+        "R37/R39: the envelope is a reference object and carries no material volume"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": false,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM38",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "model",
+      "tests": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_long_panel_is_one_exact_solid_in_both_orientations"
+      ],
+      "causes": [
+        "Native dimensions and derived exact member volume disagree"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_modeling.SectionProfileModeling.test_long_panel_is_one_exact_solid_in_both_orientations",
+          "type": "geometry_app.model_common.ModelError",
+          "kind": "error"
+        }
+      ],
+      "compiledBinaryCompared": false,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM39",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "model",
+      "tests": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_advanced_native_frame_controls_world_axes_and_bounds"
+      ],
+      "causes": [
+        "R36/R37: bounds of the"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_modeling.SectionProfileModeling.test_advanced_native_frame_controls_world_axes_and_bounds",
+          "type": "builtins.AssertionError",
+          "kind": "failure"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "equivalentReason": null
+    },
+    {
+      "id": "SPM40",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "model",
+      "tests": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_local_runs_do_not_cut_other_local_or_world_mesh_grids"
+      ],
+      "causes": [
+        "A section-profile object must produce one complete solid"
+      ],
+      "terminalMatches": [
+        {
+          "test": "tests.test_section_profile_modeling.SectionProfileModeling.test_local_runs_do_not_cut_other_local_or_world_mesh_grids",
+          "type": "geometry_app.model_common.ModelError",
+          "kind": "error"
+        }
+      ],
+      "compiledBinaryCompared": false,
+      "equivalentReason": null
+    }
+  ],
+  "rawFileIndex": [
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/build-model-base.command.json",
+      "bytes": 565,
+      "sha256": "d285b0053b0a3c3dea2154ff39af2bf8642bae811d272523e9207a624a0501d9"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/build-model-base.log",
+      "bytes": 292,
+      "sha256": "b02e48c66d0c856eb53667c4158cca6a76177b7f9aa1eb14ae6d661c32263cda"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM01.exceptions.json",
+      "bytes": 6893,
+      "sha256": "ba49f21824c7de4992225d897d86490dc9de992a2bdfeb2a1cf8e70d32f162c5"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM01.log",
+      "bytes": 7789,
+      "sha256": "126d7b84b91fbf3725ee9bd9e10a344591485eb4d90f359c3f8ed24313978ebd"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM02.exceptions.json",
+      "bytes": 13166,
+      "sha256": "56107075add8b3798ecaff541f7cd203e2deba0a4c33d18fbeb962f4c7bc9c11"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM02.log",
+      "bytes": 14164,
+      "sha256": "030b6b3e06e8c4ff330007c7fb41e4ef742356a1435a2b6c4ce6bce6c39af0ae"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM03.exceptions.json",
+      "bytes": 5269,
+      "sha256": "c365e715fcaf95a938eb249e40269f7070496e2d5a029bcb7eaf630209ef0081"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM03.log",
+      "bytes": 5650,
+      "sha256": "458eafe44d10e39e0dfa0762f2a77030188b8fd51326f6aee4e322415d501000"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM04.exceptions.json",
+      "bytes": 5271,
+      "sha256": "3188465ecf7e3956717b2ab640f15e7202f811aec276499ca7f9ed572690831d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM04.log",
+      "bytes": 5652,
+      "sha256": "97d380ee57b9dbb84d6a494bf9ced88cdb3851e253f08bb5e9646bf529cfef7d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM05.exceptions.json",
+      "bytes": 4715,
+      "sha256": "a29f09405e38dbc5b4fe2ae7d2cd6c18133fc70992025f9b2893da202153b7be"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM05.log",
+      "bytes": 5091,
+      "sha256": "a876d672d2dcd7275d9815660b57600c9222cc63af5e4699d0271eb2e02e5ce9"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM06.exceptions.json",
+      "bytes": 4699,
+      "sha256": "67461a8425a451e32ee7c3fac8ee6a6e50757befe0ffab0729052ae372146dd7"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM06.log",
+      "bytes": 5075,
+      "sha256": "776fc6a9b43017b49ab368418a898bb405a61737af58cbbf570bc139cd77c296"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM07.exceptions.json",
+      "bytes": 3488,
+      "sha256": "7e5f763ae8a9608c0184798f398aca2cfcb09a31393faea2617db6fcd988d330"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM07.log",
+      "bytes": 3910,
+      "sha256": "f401e7f2aff2aa4e32cb7fd3cfa44b1f603588ef78505180384480832c84cbe2"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM08.exceptions.json",
+      "bytes": 948,
+      "sha256": "e7eedf0c01d9d0499273b73a1418a48a35438be58e8eaa055e19a7e0ea7c5554"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM08.log",
+      "bytes": 1123,
+      "sha256": "a5ad7bbc9b1efe278b2ab06bdab20e16b7b11313c90df65f790100734db96cfb"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM09.exceptions.json",
+      "bytes": 3217,
+      "sha256": "d8fbf316c9ae25b069552a8c69747162408db263071a6194f9616c702145abcb"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM09.log",
+      "bytes": 3584,
+      "sha256": "a62f0797ca3eeabf4b8d3752c01d541b061883a44d56d9a9a869733d62c871d2"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM10.exceptions.json",
+      "bytes": 3019,
+      "sha256": "674c2daed332836c78030490ca99e83c51105428a4faf48504f5d589ff52e88e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM10.log",
+      "bytes": 3387,
+      "sha256": "9793bedc1faeace31a1b13703e28ccdff055c3217556912f1bb976c7bba2fcf4"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM11.exceptions.json",
+      "bytes": 6581,
+      "sha256": "172b50fd8d7b591c923636cf9fc55c2d3c939b7ab9db5c48d29175aaf028919f"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM11.log",
+      "bytes": 7022,
+      "sha256": "aefb1c10b531f700c1ae0d3adec7afbf1f641ffd04d8e6f6f54b86aa14a75421"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM12.exceptions.json",
+      "bytes": 7963,
+      "sha256": "9dd8fbceebff57e1b138e3762d27b76693d62e6d34ff8c16b465619039952e0f"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM12.log",
+      "bytes": 7555,
+      "sha256": "c93a2509799efd6bf96f6bcba5874c2c874e28e73a3de74d0fcbb047d0ec678d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM13.exceptions.json",
+      "bytes": 854,
+      "sha256": "a2d708c645d3216459d57537d8d2aef9552e54ca62ad2cd885f8454d2276b055"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM13.log",
+      "bytes": 1062,
+      "sha256": "501df5fb38fd7c1b114af861c711d2e6f69584a6abeb2a879617935358d560c4"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM14.exceptions.json",
+      "bytes": 3544,
+      "sha256": "a143645d5c508b0800cb58db2eb01a6c2532b6cbb3a00b70bafda0aa532fad6e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM14.log",
+      "bytes": 3946,
+      "sha256": "644ea100d05a96918d2d7264774b5fa44ffd06d5c880046e3e68f0d19aa1014d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM15.exceptions.json",
+      "bytes": 3515,
+      "sha256": "1dd258509b016f9964bf6bf39d0dcd2195bb2aae4e677a8dd40ac611951dc916"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM15.log",
+      "bytes": 3955,
+      "sha256": "5e4a57b03ef0705ea12886c3f1138de4883846e10c0cb30afc91675b064e067c"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM16.exceptions.json",
+      "bytes": 924,
+      "sha256": "bf5218940141e17b6aaf904a0a8f4cf2402900f12419b28abe528927cb214202"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM16.log",
+      "bytes": 1097,
+      "sha256": "088bd1c0a294e07180cae2f090c694fe02407deca8e6edf69f93d01ac73e6c19"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM17.exceptions.json",
+      "bytes": 937,
+      "sha256": "22d5ff8aa96410e46a1e2b08ef9c6dba02a6c8d83f1a491dba3fe90020fbaeac"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM17.log",
+      "bytes": 1122,
+      "sha256": "9e4bcf31c33ea615633b201e2056daff098a370571cd4d9d68c838fe9ed1a0b0"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM18.exceptions.json",
+      "bytes": 926,
+      "sha256": "d62e9f5ffed03da224bab9988d2394f6dca4b6b76b0ce1ef5e1e16861285aeb9"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM18.log",
+      "bytes": 1113,
+      "sha256": "1b431c3dc0205f2f0882c7e9a9794ff8da3e42a620cf85e4be1be0c0c3c42d7a"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM19.exceptions.json",
+      "bytes": 4393,
+      "sha256": "48a4b67307ba9f4559cfc76f64c793ea581c1b78ffff7507233fb92ed06c8b48"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM19.log",
+      "bytes": 4825,
+      "sha256": "5cbe9e48f8629d8c044954b50d1a60d8e1e1babad33dc5b92b1a610cd1269e31"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM20.exceptions.json",
+      "bytes": 5511,
+      "sha256": "b39a3b2ac6aab0ad5c2cccad9433b7907e83463ddfb79e88d0da664a02c481c3"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM20.log",
+      "bytes": 5934,
+      "sha256": "ab00720b5a22ef60c38e6a7fbab55f87bbabcbb449d5559f1fc0e0df57f2c1c8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM21.exceptions.json",
+      "bytes": 7206,
+      "sha256": "95c4e92156c55f11efb8f0775166760d1efe28c4b2180ab6e225dc7c8a6e96b1"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM21.log",
+      "bytes": 7004,
+      "sha256": "665e75706e1531687ac991867a276d88b2d9284ee2fe4aae5e05ad9da7e5c30a"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM22.exceptions.json",
+      "bytes": 963,
+      "sha256": "bab4c46be180cb94b4df5a521cd45bc4aee57288e18e4cb243add5da13d6bcad"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM22.log",
+      "bytes": 1133,
+      "sha256": "95ba78d9f8736dcab9e0d965e457468747d08dd94bfcdbac8da614ff4b4cf4dc"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM23.exceptions.json",
+      "bytes": 5335,
+      "sha256": "2f3533e2f49287797d45cec8f8de2b3bf0c43188813dd99129e9ccf888670e36"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM23.log",
+      "bytes": 5419,
+      "sha256": "54222aaf32354dd46c41d8fdc92c5b193c35b79a341c830d17bff2cc5b031d4f"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM24.exceptions.json",
+      "bytes": 995,
+      "sha256": "fa3af4111b5bcedc677f959da43a6ef0ac5fb4fa77519d00fbf2d930645af82f"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM24.log",
+      "bytes": 480,
+      "sha256": "ca96692d06843372e6957df95bab29c7a1aedacb19716b655e60b55e12ab9533"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM25.exceptions.json",
+      "bytes": 1059,
+      "sha256": "2931ad873d0e44f9205cbc944e8474d7cb1c43cf1ac0498d984ee7afb0c40186"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM25.log",
+      "bytes": 1269,
+      "sha256": "e5878ae57d957138d5f5aa10652598270333a46c14892a75b6f5abdeb777893d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM26.exceptions.json",
+      "bytes": 822,
+      "sha256": "753e834f83ef44ce9ec06a68a16137da194de699f5bc18400e8af1e6c064dee5"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM26.log",
+      "bytes": 993,
+      "sha256": "4fd4e75b4471fcbee691dcc69b18132c1801f59888f65323a8a3aa79202616df"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM27.exceptions.json",
+      "bytes": 3601,
+      "sha256": "cea25bdbaecc6a819e433d9e31057968b469428b85a7fa15ab238f2319aed592"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM27.log",
+      "bytes": 4114,
+      "sha256": "25db83feff40e5b602444f1fb80dc816696b61e6698da609e8fdc48c972c93e8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM28.exceptions.json",
+      "bytes": 6236,
+      "sha256": "ea067b1011ad771e410ed12b6e66834c7fc799c8d13cd080f87e4ebf45b6b740"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM28.log",
+      "bytes": 6773,
+      "sha256": "d81b0c69c25c57d5e60367f1ae3fc3a80d19fe65ee21418139b2b64e04d19f7f"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM29.exceptions.json",
+      "bytes": 5232,
+      "sha256": "4272ab10ec5f427643728ea7817739885bb47426b2e98c9b80fe89d66b63b0ed"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM29.log",
+      "bytes": 5684,
+      "sha256": "a6db88cf7a50812e0a000cdbf8f87327a7b305c0bf96b0e9eaef30b2c544f388"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM30.exceptions.json",
+      "bytes": 7865,
+      "sha256": "a33679acd4be1d1b3309fd356b487c5cc8bdf3a8fdd1e89b57975ff2f9f0eb6d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM30.log",
+      "bytes": 8255,
+      "sha256": "77dd182862cef4bb2d03142c0cd487b28ffd940ec17a49f9484741cd258dabf2"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM31.exceptions.json",
+      "bytes": 11942,
+      "sha256": "84ea24c0a5e2ceb8e51d16b91e4445f70e4893483e4badf1d5533a8052ea5e0e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM31.log",
+      "bytes": 13095,
+      "sha256": "987131572ef94ef2051495a2df73cba7e142035f853feac2e023ff7f38a96ca2"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM32.exceptions.json",
+      "bytes": 4235,
+      "sha256": "20a7e36d1def92211941b13021303be1281f2e67bbc2c0c77a9e6ed17e08dc04"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM32.log",
+      "bytes": 4602,
+      "sha256": "e4e0f7201a175c1aab8b018a6eb52f6797b97fe5e35ed743a1a20952ca81fe25"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM33.exceptions.json",
+      "bytes": 3997,
+      "sha256": "7efdf9fc140b29cbd133ea54dba673a1444dd62c15dc58a456f2d5b859f79a45"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM33.log",
+      "bytes": 4364,
+      "sha256": "95de84eb8b55c791733e59870e81a1923e746bf5e0a72a96d5b826f8e235b14d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM34.exceptions.json",
+      "bytes": 840,
+      "sha256": "d9e74ac431bb2ac34bfeec49ee549991b543613c7e004a5625fcca7fd02ffe66"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM34.log",
+      "bytes": 1048,
+      "sha256": "9a04d740c83d60eda1354b3e923d7fc8d1c71d626e1b17aec33ac804628c4baf"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM35.exceptions.json",
+      "bytes": 3237,
+      "sha256": "84f9132ce5c565c35ff30f0a4efe56cc8614a54a0b168e80e0bcc0ec148e6d70"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM35.log",
+      "bytes": 3472,
+      "sha256": "89604939fef3b15a841ba89cca3dda7a9c66997544ac594c79571fdc4d3621c7"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM36.exceptions.json",
+      "bytes": 880,
+      "sha256": "0585417e6e88976cf3236ba259521e32dd103b907e116e4de8f89c080c1d5fb0"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM36.log",
+      "bytes": 1448,
+      "sha256": "8154c74fd00032f36f5e1efa2f2233c4a6dd3871eb0af811192fee131dfcb6b6"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM36.model-base.compile.json",
+      "bytes": 1107,
+      "sha256": "f1bf09e739c4748965d2beac9b555f7e6e098d3a42c192537b958de412b50c86"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM37.exceptions.json",
+      "bytes": 1127,
+      "sha256": "d5f198465b6fdf2a4b103d38416095c84a84772d812a75ee98e628bb12302969"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM37.log",
+      "bytes": 1399,
+      "sha256": "0bc693488a573f31865af01c20505b8b4647ffed6b93e3c1d5d88536add7c72c"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM38.exceptions.json",
+      "bytes": 825,
+      "sha256": "d84be55045c72ea4367dba0154fc916ca334cf4c86d2395fac6ea36562899884"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM38.log",
+      "bytes": 3823,
+      "sha256": "0f58fea14b2c8f057c236ec3c48b1a96b5043c3c2862a2e50172b65ec7605333"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM39.exceptions.json",
+      "bytes": 1123,
+      "sha256": "a534d6bd4a6dfd657142a7f71bda109738e9cb76c9efcada56eab3845dfd6c51"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM39.log",
+      "bytes": 1659,
+      "sha256": "8d26ad18f05571c1607827be4dc333f181a04cddb3e602587cd6bdb98defb220"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM39.model-base.compile.json",
+      "bytes": 1107,
+      "sha256": "8d9c422bc746ab44ac1f87768f867622fc30c9d156fcdfd9f3d571fcdfe4051c"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM40.exceptions.json",
+      "bytes": 832,
+      "sha256": "a7928da0a6513c7adf214dd8730d9b100554e306ecf2a1d4389f597998f5b439"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM40.log",
+      "bytes": 3716,
+      "sha256": "fa6f51bced911ec2ad3b8296975b3c8ab975ca1d5d7da1df59d6caf13163738e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM41.exceptions.json",
+      "bytes": 3601,
+      "sha256": "d32f7da80b576c6f22357706c98f8aedb70d7b735ebc7eec4780404ccc8794d0"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM41.log",
+      "bytes": 3994,
+      "sha256": "65196be9f2ce7d8e9235f66e1c251c59a992247313e6b665ce563b6a13f33b66"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM42.exceptions.json",
+      "bytes": 7984,
+      "sha256": "6a2149cc35904cb9e35d5ba1a9c442a7978afbc21606d45d51f1d0476ae166fd"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/SPM42.log",
+      "bytes": 8357,
+      "sha256": "88a3654921bd813dcfb4618fbc367a7e561f59c44cde1bde605eaf99b249bddb"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM01.compile.json",
+      "bytes": 603,
+      "sha256": "368a67666f713f3b77a5095bea80fa608bbf4dc081c895f237705ae08ede6376"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM02.compile.json",
+      "bytes": 603,
+      "sha256": "43152ad08a150dae177d80fed92284492a7e8db4042278c242332fadc4a247a2"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM03.compile.json",
+      "bytes": 603,
+      "sha256": "6b95de1bc29aeadcbc621c5c97aceceef16cf6922362d2c66c9afcb4a6713ec8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM04.compile.json",
+      "bytes": 603,
+      "sha256": "028e8c80d56017eac95c25ffd79e0d75611298893e335c825bd93fbfa1c477ad"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM05.compile.json",
+      "bytes": 603,
+      "sha256": "a566ffa18d4d8554d7b2ebded0378e94a5b0ca8b7f8a69bef2d3a335cd3d9557"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM06.compile.json",
+      "bytes": 603,
+      "sha256": "2d66e0f2d5d8a5274dde463f286950e54b5fdcacf64012425c34787aa717153e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM07.compile.json",
+      "bytes": 603,
+      "sha256": "5ac6ae0de9b9e2013570f80740a5419b855ab73ea874e708b07bc36385ed60e9"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM08.compile.json",
+      "bytes": 603,
+      "sha256": "4cc9a1b577421b25526e9c4710d7f1c797fb9eac7bdb86a5c8b15412d9558336"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM09.compile.json",
+      "bytes": 603,
+      "sha256": "b123f862ad20962f686cb865ba8b60587d7a2fa639597888772334c705432d68"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM10.compile.json",
+      "bytes": 603,
+      "sha256": "05a46a45bc0169889a29c2dea04c0fb871ca941da69a14593d6eed0606a5bc61"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM11.compile.json",
+      "bytes": 603,
+      "sha256": "7d671e2381472773594aecd3a15677fc3905beef9b6687959c672a85d04b5d1f"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM12.compile.json",
+      "bytes": 603,
+      "sha256": "942eacad0d4ceae9a4f78a4a8e3d56343bea6bd7fb189a5cd1e5420afdf98243"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM13.compile.json",
+      "bytes": 603,
+      "sha256": "f70af4ca1731eb5df5b8b99bfbb5a74e6e0cc477d7d971832196937c47b749dc"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM14.compile.json",
+      "bytes": 603,
+      "sha256": "762e24c61e727852a2587674359a22768e7fd24ec75aeba7d1142e6419546019"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM15.compile.json",
+      "bytes": 603,
+      "sha256": "b320a44f194a087aaee09d545dd21d8cbcef5a9d4a6ea95262b183931fb7bb13"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM16.compile.json",
+      "bytes": 603,
+      "sha256": "eab5aa2d09b7ddcf0b74e88879036b8db3fd9462310ba75fbb23c30f36ce8328"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM17.compile.json",
+      "bytes": 603,
+      "sha256": "554215aef93ce546a089fd61c11ff062e1139766e96189156b9bc84d350a13a2"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM18.compile.json",
+      "bytes": 603,
+      "sha256": "b1468f1b487dd55efd49104e96c2a2ea35b1ebdfef400e5aebccac3206b81e1f"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM19.compile.json",
+      "bytes": 603,
+      "sha256": "37f141c701b40da106a6f92c47885dac9b1ff2b5e558d8cad06ae4d4572a5695"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM20.compile.json",
+      "bytes": 603,
+      "sha256": "c651e6c6fdf725d4751ba6bb48fbf7e224e54d5a69d51c62fa3552898407b9bd"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM21.compile.json",
+      "bytes": 603,
+      "sha256": "652e587d9c2a18fdedfe3bb75a13bfaf9f9e3666875337228d1e7be2d2b580c9"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM22.compile.json",
+      "bytes": 603,
+      "sha256": "53dcc11e938b1cccec91154ddb60bf91d05db82c3b5e7e28038e7ced55579f42"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM23.compile.json",
+      "bytes": 603,
+      "sha256": "618084a55280a1d6fd3e0347fcd076d5fd9661031ff87795a77a9b1d2c9b59fa"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM24.compile.json",
+      "bytes": 603,
+      "sha256": "40fd72b53e5e9c9e32d3d04359f251b09b02f26ec90ff61131f4dd5ad836d280"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM25.compile.json",
+      "bytes": 603,
+      "sha256": "c81c4e8d80f1a6c4717982eac37eb7b9d0e37f09109612b6b47cc6013cab2dc9"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM26.compile.json",
+      "bytes": 603,
+      "sha256": "847d8b9e1293c57521f9ca0d6136aa40b70322210ba645aae90070e1b3507419"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM27.compile.json",
+      "bytes": 603,
+      "sha256": "48bfb7243cb61f663b3e19e9869f1eb2741ee45526954cd3b3d9bd70fdbb78f0"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM28.compile.json",
+      "bytes": 603,
+      "sha256": "23b91c93add77d1e21b4d6dbf32520158a07064f4467c4ec799c3ffdfabc0809"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM29.compile.json",
+      "bytes": 603,
+      "sha256": "1b9308efafde46ab641a3d7970a23dc6df1cf6f3a6567c0051fc5d636088f4f7"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM30.compile.json",
+      "bytes": 603,
+      "sha256": "8b2e13f5d4e1ca6864ff90f91e837b04c7fee66ebb3ab024ab3aa692b61ac95e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM31.compile.json",
+      "bytes": 603,
+      "sha256": "663890653f5839d7d031d0cf9a45df8c212d4d5772e400eb2c496b703d6b7152"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM32.compile.json",
+      "bytes": 603,
+      "sha256": "f1b5004f86f0ea010992a594d3b74b1bcb6c123d35399c88752ac6359c8a404f"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM33.compile.json",
+      "bytes": 603,
+      "sha256": "7e290b728f9337ed6f2a4a6d96190f215c9b6feb6fdbca9ef13ab9a319c90df5"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM34.compile.json",
+      "bytes": 603,
+      "sha256": "f13e8b522cddee42df8191932f777a8988b5960b4773587caa27bdfc40b889b5"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM35.compile.json",
+      "bytes": 603,
+      "sha256": "684ce3a2004960e13b63fed0d6c36f1df028024b7f7d0629335f3b2aa5f39ca2"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM41.compile.json",
+      "bytes": 603,
+      "sha256": "8b77e34538b35c7fab5ff25d0ef397f38de0f9c99dc5e863fe781f48eecd09ff"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-SPM42.compile.json",
+      "bytes": 603,
+      "sha256": "9df9ce1df0ddc01fce3ff693598a1554960ea1dda7b5e034e86ca0af680622cc"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/bridge-baseline.compile.json",
+      "bytes": 612,
+      "sha256": "5d7ffd6f81f5d6316b341bbb9ac879bb6397df25cde4cc157dc1759f3a3972fd"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/model-baseline.exceptions.json",
+      "bytes": 8049,
+      "sha256": "bb879a7a6c2f4b65dd39f97baf442dc24f93261fa412fd266febd01090f5cef3"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/model-baseline.log",
+      "bytes": 4023,
+      "sha256": "18fef1c47753180c9d0dfc6042fee0ff8b40dbabf10ba26d54020a09cf8f1c8a"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/native-baseline.exceptions.json",
+      "bytes": 10020,
+      "sha256": "a27a3fe90ef9e9b2250631894611f13ebeba474a25e5066b8f7bee37ec27d6ee"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/logs/native-baseline.log",
+      "bytes": 4998,
+      "sha256": "372364046c3f26b4b4b446209e87bdeb8cf957b91e1146e194df903dac5fc155"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/q38.command.json",
+      "bytes": 591,
+      "sha256": "2d071898019b4e04ef100fa175225f2594498c0d5fb96868ff8eba314dba3781"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/q38.log",
+      "bytes": 189666,
+      "sha256": "9af3be4a989f9776375efbfe6a5b513b8bf45a742f1f7f94cf884dedcb73185d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/receipt.json",
+      "bytes": 222802,
+      "sha256": "52684a1ab515a70c1619663e73e9b8798bdab273cb94b7365888762d84b82bcc"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/run-receipt.json",
+      "bytes": 2121,
+      "sha256": "411d93b34230aeda0b020bcf6c2846b82033b238f312bdb36197316ad5b17d31"
+    }
+  ],
+  "references": {
+    "verification": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/q38.json",
+      "bytes": 7045,
+      "sha256": "f04124408e1ed3cdac4ab3f3d9dbbd013ca8ac50774a1bc8d32e57885053cb50"
+    },
+    "officialReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/receipt.json",
+      "bytes": 222802,
+      "sha256": "52684a1ab515a70c1619663e73e9b8798bdab273cb94b7365888762d84b82bcc"
+    },
+    "runReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/q38/run-receipt.json",
+      "bytes": 2121,
+      "sha256": "411d93b34230aeda0b020bcf6c2846b82033b238f312bdb36197316ad5b17d31"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/q38/receipt.json",
+      "bytes": 4044,
+      "sha256": "9d76a12a35d1930abf0433089ce958760c4df0cb69dfba8cf5af3a26b5019cbf"
+    },
+    "reviewCode": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/q38-acceptor.py",
+      "bytes": 15064,
+      "sha256": "3404731486f310f2fe088047c0a6631afbb16b2db573093f26c4935e5a67c161"
+    }
+  },
+  "limits": [
+    "這是完整42個Q38突變與兩baseline；不是一對一宣稱提案AC16每個AC都已轉紅。",
+    "SPM24依原來源等價說明保留equivalent；SPM38/SPM40是允許的具名ModelError，不改稱AssertionError。",
+    "已刪除的臨時突變binary未再雜湊；其39組編譯收據hash/來源樹/實際gate身份守門已核，未假稱仍持有臨時binary。",
+    "Python-only模型突變使用未修改fresh adapter，不宣稱有不同binaryhash。",
+    "本次只讀核已完成Q38，不對正在執行的其他phase下結論；本機實跑不等於GitHub CI。",
+    "正式工具session實際退出觀察由執行代理的tool回覆另存；本報告已核可保存的gate/run_gates/parent.wait退出鏈，不以launcher自填碼代替transport觀察。"
+  ],
+  "templateHistoricalFirstAttempt": {
+    "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+    "notThisRun": true,
+    "exitCode": 1,
+    "artifactDirectory": "/workspace/geo261-evidence/final-bundle/gates-l-independent-review/review/q38-attempt1",
+    "cause": "正在執行card會暫改同worktree的parameters.inc；helper不應用現時工作bytes倒推已完成Q38歷史。",
+    "fix": "本次只從Git L重建來源樹並核Q38原baseline/compile收據及其前後原source紀錄；未干預card。"
+  },
+  "templateHistoricalDiagnostics": [
+    "唯讀首次rg多列一個不存在的gates-l/q38路徑而exit2；實際原件為q38-run/q38，沒有改動或重跑。",
+    "探索性來源集合曾用PurePath.match把歷史副本後綴納入model集合；未產生接受結論，已依copy_sources的錨定根目錄規則重建524檔，Git與原baselinehash精確相同。"
+  ]
+}

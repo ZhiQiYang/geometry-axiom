@@ -1,0 +1,28 @@
+--- peer-code.txt
++++ peer-code-v2.txt
+@@ -55,7 +55,7 @@
+ assert preflight['canvasReceiptSha256']==h(read(OUT.parent/'canvas-L3-formal-6589248c/receipt.json'))
+ assert preflight['canvasCleanupSha256']==h(read(OUT.parent/'canvas-L3-formal-6589248c/cleanup.json'))
+ 
+-receipts={};sources={};sidecars={};names={'geometry-web/cdp_sections.golden.json','geometry-web/documents_browser_test.js','geometry-web/space_test_floor.js','geometry-web/assembly_workflow_test.js'}
++receipts={};sources={};sidecars={};names={'geometry-web/cdp_sections.golden.json','geometry-web/documents_browser_test.js','geometry-web/space_test_floor.js','geometry-web/assembly_review_test.js'}
+ for suite in SUITES:
+  p=OUT/suite;receipts[suite]=load(p/'receipt.json');sources[suite]=load(p/'source-hashes.json')
+  names.update(sources[suite]);sidecars[suite]={}
+@@ -144,7 +144,7 @@
+   assert acceptance['selectedSectionCheck']=={'expected':groups,'matched':True}
+   if suite=='assembly':
+    t=result['firstTransportFailure'];assert t['command']=='assembly-confirm 13' and t['error']=='Injected lost success response' and t['step']=='=== P77 review #33 #35 #36 #37 ==='
+-   assert 'Injected lost success response' in gitdata['geometry-web/assembly_workflow_test.js'].decode()
++   assert 'Injected lost success response' in gitdata['geometry-web/assembly_review_test.js'].decode()
+    assert result['firstNetworkFailure'] is None
+   else:assert result['firstTransportFailure'] is result['firstNetworkFailure'] is None
+   detail={'scope':'原 partial；只另核所選段 golden，不稱 full canvas','selectedSections':groups}
+@@ -191,6 +191,6 @@
+ assert len(set(runtime_pids))==len(set(runtime_sessions))==5
+ assert summary['results']==[{field:receipts[suite][field]for field in ['suite','accepted','browserReturncode']}for suite in SUITES]
+ assert png_total==81 and manifest_total==210
+-report={'schema':'geo261-browser-five-L3-independent-review/1','reviewedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sourceSha':SHA,'validationExitCode':0,'conclusion':'五項原結果、來源、原退出碼、scope與產物核對一致；沒有產品重跑','suites':checks,'launcherWrapperWaitReturncode':0,'launcherProcessExitCode':0,'recordedLauncherExecReturncode':0,'recordedExecResponseChunk':'b9d980','parentEnvironmentContract':'原 env -u CC -u PYTHONOPTIMIZE argv；未宣稱讀到子程序 /proc/environ','sequentialSuiteWindowsVerified':True,'totalPngs':png_total,'manifestFilesChecked':manifest_total,'gitFilesIndependentlyRead':len(gitdata),'peerCodeSha256':h(read(Path(__file__))),'references':references,'limitations':['舊 L43 peer 原碼為 inline 且未另存；本輪依舊報告的條件另寫接受器並保存，沒有宣稱精確移植。','只讀原件與 Git，沒有開 browser/build/tests，也沒有清理程序。','PNG 核完整格式/CRC/尺寸/hash；未逐張目視 UI 品質。','原退出碼採原 Popen/wait 與已保存工具回覆轉錄；peer 未重新 wait 他人 session。','manifest 排除自己與最後 receipt，兩者另核；本審查未修改原 manifest。','assembly 的具名 lost-success-response 原控制保留，不稱零 transport 失敗；沒有新突變注入。','selected golden 與固定 census 不混稱 full canvas；本結果不代 native 或 Q38/§7/P189。','資料探索曾誤讀不存在的 source-before.json，工具 f0baa6 exit1；實際來源檔為 source-hashes.json。另一次 schema 探索有空白拼字的 Python SyntaxError（81b1bf exit1），更正後 664ed1 exit0；兩者均非產品或本接受器執行。探索未另 redirect 完整 stdout/stderr，僅保存工具觀察摘要，不冒稱完整 raw。','額外下載與合成輸入補封將另做附錄；本收據先核原 suite manifest 內產物。']}
++report={'schema':'geo261-browser-five-L3-independent-review/1','reviewedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sourceSha':SHA,'validationExitCode':0,'conclusion':'五項原結果、來源、原退出碼、scope與產物核對一致；沒有產品重跑','suites':checks,'launcherWrapperWaitReturncode':0,'launcherProcessExitCode':0,'recordedLauncherExecReturncode':0,'recordedExecResponseChunk':'b9d980','parentEnvironmentContract':'原 env -u CC -u PYTHONOPTIMIZE argv；未宣稱讀到子程序 /proc/environ','sequentialSuiteWindowsVerified':True,'totalPngs':png_total,'manifestFilesChecked':manifest_total,'gitFilesIndependentlyRead':len(gitdata),'peerCodeSha256':h(read(Path(__file__))),'priorPeerAttempt':{'observedReturncode':1,'code':'peer-code.txt','execution':'execution.json','cause':'接受器把 P77 lost-response 控制誤指 assembly_workflow_test.js；v2 只修成實際 assembly_review_test.js，同樣核 Git L3 bytes／原具名控制，不是產品紅。'},'references':references,'limitations':['舊 L43 peer 原碼為 inline 且未另存；本輪依舊報告的條件另寫接受器並保存，沒有宣稱精確移植。','只讀原件與 Git，沒有開 browser/build/tests，也沒有清理程序。','PNG 核完整格式/CRC/尺寸/hash；未逐張目視 UI 品質。','原退出碼採原 Popen/wait 與已保存工具回覆轉錄；peer 未重新 wait 他人 session。','manifest 排除自己與最後 receipt，兩者另核；本審查未修改原 manifest。','assembly 的具名 lost-success-response 原控制保留，不稱零 transport 失敗；沒有新突變注入。','selected golden 與固定 census 不混稱 full canvas；本結果不代 native 或 Q38/§7/P189。','資料探索曾誤讀不存在的 source-before.json，工具 f0baa6 exit1；實際來源檔為 source-hashes.json。另一次 schema 探索有空白拼字的 Python SyntaxError（81b1bf exit1），更正後 664ed1 exit0；兩者均非產品或本接受器執行。探索未另 redirect 完整 stdout/stderr，僅保存工具觀察摘要，不冒稱完整 raw。','額外下載與合成輸入補封將另做附錄；本收據先核原 suite manifest 內產物。']}
+ with (PEER/'peer.json').open('x',encoding='utf-8')as f:json.dump(report,f,ensure_ascii=False,indent=2);f.write('\n')
+ print(json.dumps({'validationExitCode':0,'sourceSha':SHA,'suiteCounts':{x['suite']:x['passed']for x in checks},'pngs':png_total,'manifestFiles':manifest_total,'gitFiles':len(gitdata)},ensure_ascii=False))

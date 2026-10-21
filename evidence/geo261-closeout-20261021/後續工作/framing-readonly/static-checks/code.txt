@@ -1,0 +1,23 @@
+import ast,json,subprocess
+from pathlib import Path
+r=Path('/workspace/geo261-framing-review');b='adbaebf9c73ea6801d7b4d5214e4b846b132923b'
+paths=subprocess.check_output(['git','diff','--name-only',b,'HEAD'],cwd=r,text=True).splitlines()
+for p in paths:
+ if p.endswith('.py'):ast.parse((r/p).read_text(),filename=p)
+fn='geometry-core/framing-template/oracle/oracle-golden.json';old=json.loads(subprocess.check_output(['git','show',b+':'+fn],cwd=r));new=json.loads((r/fn).read_text());removed=[]
+def trim(x,path=''):
+ if isinstance(x,dict):
+  y={}
+  for k,v in x.items():
+   if k=='core_limits': assert v==[],(path,v);removed.append(path)
+   else:y[k]=trim(v,path+'/'+k)
+  return y
+ if isinstance(x,list):return [trim(v,path+'/'+str(i)) for i,v in enumerate(x)]
+ return x
+assert trim(new)==old
+fn='geometry-core/framing-template/oracle/sweep-expected-unbuildable.json';o=json.loads(subprocess.check_output(['git','show',b+':'+fn],cwd=r));n=json.loads((r/fn).read_text())
+for key in ['reflex','step','step_mirror']:
+ assert not n[key]
+ assert {(x[0],x[1]) for x in o[key]}=={(x[0],x[1]) for x in n[key+'_core']}
+print(json.dumps({'source':subprocess.check_output(['git','rev-parse','HEAD'],cwd=r,text=True).strip(),'changedFiles':len(paths),'astParsed':sum(x.endswith('.py') for x in paths),'goldenOnlyAddedEmptyCoreLimits':len(removed),'expectedCoreCounts':{k:len(n[k]) for k in ['reflex_core','step_core','step_mirror_core']},'status':subprocess.check_output(['git','status','--porcelain'],cwd=r,text=True)},ensure_ascii=False))
+

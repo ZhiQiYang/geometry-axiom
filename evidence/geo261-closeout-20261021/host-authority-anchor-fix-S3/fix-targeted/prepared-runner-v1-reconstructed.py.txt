@@ -1,0 +1,173 @@
+"""觀察原有 18 案；不更改測試、編譯參數、斷言或突變判準。"""
+from pathlib import Path
+import datetime
+import hashlib
+import json
+import os
+import resource
+import subprocess
+import sys
+import tempfile
+import unittest
+
+ROOT = Path('/workspace/geo261-host-authority-anchor-fix')
+OUT = Path(sys.argv[1]).resolve()
+EXPECTED_HEAD = '249571fe2477845d5330f6190dad965bf327f43b'
+EXPECTED_TEST = 'a8e56b75390d4ca545077d03af81067517271c5cab0eb601c29a8afea65d4ec2'
+assert __debug__ and sys.flags.optimize == 0
+assert resource.getrlimit(resource.RLIMIT_STACK)[0] == 16777216
+assert 'CC' not in os.environ and 'PYTHONOPTIMIZE' not in os.environ
+assert not OUT.exists()
+OUT.mkdir(parents=True)
+os.chdir(ROOT)
+sys.path.insert(0, str(ROOT))
+original_run, original_popen = subprocess.run, subprocess.Popen
+guard = []
+for name, argv in [('head', ['git', 'rev-parse', 'HEAD']),
+                   ('status', ['git', 'status', '--porcelain', '-z']),
+                   ('patch', ['git', 'diff', '--binary', '--', 'tests/test_geo261_host_authority.py'])]:
+    run = original_run(argv, cwd=ROOT, capture_output=True)
+    (OUT / ('guard-' + name + '.stdout')).write_bytes(run.stdout)
+    (OUT / ('guard-' + name + '.stderr')).write_bytes(run.stderr)
+    guard.append({'argv': argv, 'cwd': str(ROOT), 'actual_exit_code': run.returncode})
+    assert run.returncode == 0
+    if name == 'head':
+        assert run.stdout.decode().strip() == EXPECTED_HEAD
+    elif name == 'status':
+        assert run.stdout == b' M tests/test_geo261_host_authority.py\0'
+    else:
+        assert hashlib.sha256(run.stdout).hexdigest() == '4815c4e590aba7360c67a66da8a64525eebdbdd3b58f34c569cfca24a5b13ad8'
+(OUT / 'source-guard.json').write_text(json.dumps({'commands': guard, 'classification': 'HEAD=L2 加唯一已知 dirty 測試常數；不是未來 S3／L3'}, ensure_ascii=False, indent=2) + '\n')
+assert hashlib.sha256((ROOT / 'tests/test_geo261_host_authority.py').read_bytes()).hexdigest() == EXPECTED_TEST
+temporary = OUT / 'private-tmp'
+temporary.mkdir()
+os.environ['TMPDIR'] = str(temporary)
+tempfile.tempdir = str(temporary)
+records, active, current_run = [], {'test': 'setUpClass'}, None
+
+
+def save(name, value):
+    (OUT / name).write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+
+
+def store_stream(row, name, data, representation):
+    path = 'command-%04d.%s' % (row['index'], name)
+    (OUT / path).write_bytes(data)
+    row[name] = {'path': path, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest(),
+                 'representation': representation}
+
+
+class ObservedPopen(original_popen):
+    """原 communicate 解碼前保留 bytes；不改原 Popen 參數或返回值。"""
+    def __init__(self, *args, **kwargs):
+        self.observed_row = current_run
+        self.translation_index = 0
+        super().__init__(*args, **kwargs)
+
+    def _translate_newlines(self, data, encoding, errors):
+        if self.observed_row is not None:
+            streams = [name for name in ('stdout', 'stderr') if getattr(self, name) is not None]
+            name = streams[self.translation_index]
+            self.translation_index += 1
+            store_stream(self.observed_row, 'raw-' + name, data, '原 Popen communicate 解碼前 bytes')
+        return super()._translate_newlines(data, encoding, errors)
+
+
+def observed_run(*args, **kwargs):
+    global current_run
+    command = args[0] if args else kwargs['args']
+    row = {'index': len(records), 'command': list(map(str, command)),
+           'cwd': str(kwargs.get('cwd', ROOT)), 'test': active['test'],
+           'timeout': kwargs.get('timeout'),
+           'started_utc': datetime.datetime.now(datetime.timezone.utc).isoformat()}
+    records.append(row)
+    current_run = row
+    try:
+        result = original_run(*args, **kwargs)
+        row['returncode'] = result.returncode
+        for name in ('stdout', 'stderr'):
+            value = getattr(result, name)
+            if value is not None:
+                data = value.encode('utf-8') if isinstance(value, str) else value
+                store_stream(row, name, data, '原 subprocess.run 返回字串以 UTF-8 保存' if isinstance(value, str) else '原返回 bytes')
+        return result
+    except BaseException as exc:
+        row['exception'] = repr(exc)
+        raise
+    finally:
+        current_run = None
+        row['finished_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        save('targeted-commands.json', records)
+
+
+def source_hashes():
+    paths = [ROOT / 'current_geometry.c']
+    for directory in ('geometry-app/native', 'geometry-core/kernel', 'geometry-templates/woodworking/native'):
+        paths.extend(p for p in (ROOT / directory).rglob('*') if p.is_file() and p.suffix in ('.c', '.h', '.inc'))
+    paths.extend((ROOT / 'geometry-core').glob('*.inc'))
+    paths.extend((ROOT / 'tests').glob('*.py'))
+    paths.extend((ROOT / 'tests').glob('geo261_*harness.c'))
+    return {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(set(paths))}
+
+
+class ObservedResult(unittest.TextTestResult):
+    def startTest(self, test):
+        active['test'] = test.id()
+        super().startTest(test)
+
+
+save('launch-environment.json', {'source_head': EXPECTED_HEAD, 'dirty_test_sha256': EXPECTED_TEST,
+     'stack_bytes': list(resource.getrlimit(resource.RLIMIT_STACK)), 'core_bytes': list(resource.getrlimit(resource.RLIMIT_CORE)),
+     'CC': None, 'PYTHONOPTIMIZE': None, 'python_optimize': sys.flags.optimize,
+     'TMPDIR': str(temporary), 'pid': os.getpid(), 'PGID': os.getpgrp(),
+     'runner_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+     'classification': '隔離未提交錨點修復之定向驗證，不是 L2 正式 native 重跑'})
+before = source_hashes()
+save('source-before.json', before)
+subprocess.Popen, subprocess.run = ObservedPopen, observed_run
+module_name = 'tests.test_geo261_host_authority'
+suite = unittest.defaultTestLoader.loadTestsFromName(module_name)
+assert suite.countTestCases() == 18
+with (OUT / 'targeted-unittest.log').open('w') as stream:
+    result = unittest.TextTestRunner(stream=stream, verbosity=2, resultclass=ObservedResult).run(suite)
+after = source_hashes()
+save('source-after.json', after)
+from tests.test_geo261_native_kernel import _BUILD
+if _BUILD is not None:
+    save('native-build-log.json', _BUILD.logs)
+    scene = _BUILD.work / 'host-authority.scene'
+    if scene.exists():
+        (OUT / 'setup-scene.scene').write_bytes(scene.read_bytes())
+    save('native-work.json', {'path': str(_BUILD.work), 'private_tmp': str(temporary),
+         'private': _BUILD.work.is_relative_to(temporary)})
+cases = [row for row in records if len(row['command']) in (2, 3)
+         and Path(row['command'][0]).name.startswith('host-')]
+expected = ['host-footprint-actual-box-and-frame', 'host-pf-actual-threshold',
+            'host-assembly-guide-actual-axis', 'host-context-actual-datum-axis',
+            'host-context-actual-guide-context', 'host-context-reference-actual-guide-placement',
+            'host-target-actual-member-definition', 'host-assembly-member-actual-policy']
+controls = []
+for marker in expected:
+    matches = [i for i, row in enumerate(cases) if row.get('returncode') == 1
+               and (OUT / row['stderr']['path']).read_bytes() == ('ASSERT:' + marker + '\n').encode()]
+    triple = None
+    if len(matches) == 1 and 0 < matches[0] < len(cases) - 1:
+        triple = cases[matches[0]-1:matches[0]+2]
+    valid = bool(triple and [row.get('returncode') for row in triple] == [0, 1, 0]
+                 and len({row['command'][1] for row in triple}) == 1
+                 and len({row['test'] for row in triple}) == 1
+                 and all((OUT / row['stdout']['path']).read_bytes() == b'' for row in triple)
+                 and all((OUT / row['stderr']['path']).read_bytes() == b'' for row in (triple[0], triple[2])))
+    controls.append({'marker': marker, 'matches': len(matches), 'valid_baseline_mutant_restored': valid,
+                     'commands': None if triple is None else [row['index'] for row in triple]})
+save('control-sequences.json', controls)
+raw_complete = all('raw-stdout' in row and 'raw-stderr' in row for row in records if 'returncode' in row)
+summary = {'modules': [module_name], 'testsRun': result.testsRun, 'failures': len(result.failures),
+           'errors': len(result.errors), 'skipped': result.skipped, 'sourceUnchanged': before == after,
+           'controls': controls, 'subprocess_run_raw_complete': raw_complete,
+           'fixture_bridge_streams': '原 BridgeSession 直接串流，未冒稱被 subprocess.run 觀察；完整建場 dump 另存 setup-scene.scene',
+           'passed': result.wasSuccessful() and not result.skipped and result.testsRun == 18
+           and before == after and raw_complete and all(row['valid_baseline_mutant_restored'] for row in controls)}
+save('targeted-result.json', summary)
+print(json.dumps(summary, ensure_ascii=False))
+raise SystemExit(0 if summary['passed'] else 1)

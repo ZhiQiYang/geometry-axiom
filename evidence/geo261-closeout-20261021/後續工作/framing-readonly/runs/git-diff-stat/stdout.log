@@ -1,0 +1,10 @@
+ .../framing-template/core-probe/gen_scenes.py      |    6 +-
+ .../framing-template/core-probe/test_gen_scenes.py |   10 +-
+ geometry-core/framing-template/oracle/README.md    |   65 +-
+ .../framing-template/oracle/framing_oracle.py      |  340 +-
+ .../framing-template/oracle/make_golden.py         |   10 +-
+ .../framing-template/oracle/oracle-golden.json     |   64 +
+ geometry-core/framing-template/oracle/render.py    |   19 +-
+ geometry-core/framing-template/oracle/selftest.py  |  588 ++-
+ .../oracle/sweep-expected-unbuildable.json         | 4759 +++++++-------------
+ 9 files changed, 2579 insertions(+), 3282 deletions(-)

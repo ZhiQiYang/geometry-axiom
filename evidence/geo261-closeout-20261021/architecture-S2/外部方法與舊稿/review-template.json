@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "sourceHead": "待最終S2完整SHA；此範本不可執行",
+  "baseHead": "43f85313c32410ac01406ab585846bbacafea278",
+  "previousReceiptSha256": "804142f06ef1c251cd6c2d30fa7d66e1f04609d5e4e39d439169267869dcdf6e",
+  "changedOwnedSources": {},
+  "changedOutsideInventory": {},
+  "addedForbiddenIdentifiers": {
+    "WoodContactOrder": {
+      "reason": "既有 W contact_world 的排序暫存型別；保持 W 所有權，禁止 K 具體依賴。須在最終 S2 重新盤點全部 W 詞法來源後確認。",
+      "sources": ["geometry-templates/woodworking/native/contact_world.c"]
+    }
+  },
+  "addedForbiddenStrings": {}
+}

@@ -1,0 +1,28 @@
+{
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "cwd": "/workspace/geometry-axiom",
+  "command": [
+    "timeout",
+    "2100",
+    "node",
+    "geometry-web/cdp_test.js"
+  ],
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18839/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-final",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "XDG_CACHE_HOME": "/tmp/geo261-xdg-final",
+    "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/geo261-grid-screens",
+    "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/geo261-document-screens",
+    "GEOMETRY_BROWSER_SUITE": "canvas"
+  },
+  "stackKiB": 16384,
+  "startedUtc": "2026-10-20T20:30:26.225861+00:00",
+  "jobLimitSeconds": 2100,
+  "exitCode": 1,
+  "elapsedSeconds": 1406.325265337,
+  "finishedUtc": "2026-10-20T20:53:52.551423+00:00",
+  "headAfter": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "statusAfter": ""
+}

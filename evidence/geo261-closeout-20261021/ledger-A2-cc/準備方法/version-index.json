@@ -1,0 +1,19 @@
+{
+  "versions": [
+    {
+      "current_path": "/workspace/geo261-evidence/ledger-L2-preparation/validate_package.py",
+      "current_snapshot": "validate_package-v2-code.txt",
+      "current_sha256": "641595247f44cfe55b384f0b1bbc12e06e2f226e984e13fe08e99d86d940536d",
+      "historical_v1_snapshot": "validate-v1-code.txt",
+      "historical_v1_sha256": "4bdab56dc0753296ce25bc31ed434e034b86de8c2baa08e21afeed4a1a2c85c8"
+    },
+    {
+      "current_path": "/workspace/geo261-evidence/ledger-L2-preparation/import_ledger.py",
+      "current_snapshot": "import_ledger-v2-code.txt",
+      "current_sha256": "b51ad61f1cf63985fd15021e3ed57a92347a4f1516126593f258240bda547923",
+      "historical_v1_snapshot": "import-v1-code.txt",
+      "historical_v1_sha256": "671f990f0d14ce9f63123d4d757c3df6d7ec55793f29eb175aefa0d172f86c71"
+    }
+  ],
+  "備註": "static-check.json 與 import-source-comparison.json 是初版準備當時紀錄；後續 root 要求加入逐 ID verdict 外層守門，所以兩檔改為 v2。初版原 bytes 已獨立保留，可按此索引還原；沒有執行任何封包或匯入。"
+}

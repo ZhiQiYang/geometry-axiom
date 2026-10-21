@@ -1,0 +1,53 @@
+[
+  {
+    "label": "main",
+    "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "geometry-web/web_bridge.c",
+      "-o",
+      "bridge",
+      "-lm"
+    ],
+    "cwd": "/workspace/geo261-p189-formal-L3-src-kldpkb50/adbaebf9",
+    "returncode": 0,
+    "seconds": 10.732913765001285,
+    "binary_sha256": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045"
+  },
+  {
+    "label": "base",
+    "sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "geometry-web/web_bridge.c",
+      "-o",
+      "bridge",
+      "-lm"
+    ],
+    "cwd": "/workspace/geo261-p189-formal-L3-src-kldpkb50/3e600772",
+    "returncode": 0,
+    "seconds": 19.241492965004,
+    "binary_sha256": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f"
+  },
+  {
+    "label": "final",
+    "sha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "geometry-web/web_bridge.c",
+      "-o",
+      "bridge",
+      "-lm"
+    ],
+    "cwd": "/workspace/geo261-p189-formal-L3-src-kldpkb50/6589248c",
+    "returncode": 0,
+    "seconds": 18.366328914002224,
+    "binary_sha256": "2466ceaee93d20b1a9b42d93a7d8a24b650da25313e09f6078b6b5bc92d59987"
+  }
+]

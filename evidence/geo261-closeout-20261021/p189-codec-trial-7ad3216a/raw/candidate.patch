@@ -1,0 +1,31 @@
+diff --git a/geometry-templates/woodworking/native/definition_sources.c b/geometry-templates/woodworking/native/definition_sources.c
+index 9d1a623976fc11015f7c3312569e68247e9cc5b5..0cbd2d1c7b770d4c91c5a4f6c0eac8866aff31f1 100644
+--- a/geometry-templates/woodworking/native/definition_sources.c
++++ b/geometry-templates/woodworking/native/definition_sources.c
+@@ -15,7 +15,25 @@ typedef struct {const unsigned char *bytes;size_t at,size;bool ok;} WoodDefiniti
+ static void wd_write(WoodDefinitionWriter *w,uint64_t n,size_t bytes)
+ {if(!w->ok||bytes>w->capacity-w->at){w->ok=false;return;}for(size_t i=0;i<bytes;++i)w->bytes[w->at++]=(unsigned char)(n>>(8*(bytes-i-1)));}
+ static uint64_t wd_read(WoodDefinitionReader *r,size_t bytes)
+-{uint64_t n=0;if(!r->ok||bytes>r->size-r->at){r->ok=false;return 0;}for(size_t i=0;i<bytes;++i)n=(n<<8)|r->bytes[r->at++];return n;}
++{
++    uint64_t n=0;if(!r->ok||bytes>r->size-r->at){r->ok=false;return 0;}
++    switch(bytes){
++    case 1:n=r->bytes[r->at];break;
++    case 4:{
++        const unsigned char *p=r->bytes+r->at;
++        n=((uint64_t)p[0]<<24)|((uint64_t)p[1]<<16)|((uint64_t)p[2]<<8)|(uint64_t)p[3];
++        break;
++    }
++    case 8:{
++        const unsigned char *p=r->bytes+r->at;
++        n=((uint64_t)p[0]<<56)|((uint64_t)p[1]<<48)|((uint64_t)p[2]<<40)|((uint64_t)p[3]<<32)|
++          ((uint64_t)p[4]<<24)|((uint64_t)p[5]<<16)|((uint64_t)p[6]<<8)|(uint64_t)p[7];
++        break;
++    }
++    default:for(size_t i=0;i<bytes;++i)n=(n<<8)|r->bytes[r->at++];return n;
++    }
++    r->at+=bytes;return n;
++}
+ static int64_t wd_signed(uint64_t n)
+ {return n<=INT64_MAX?(int64_t)n:-1-(int64_t)(UINT64_MAX-n);}
+ static void wd_text(WoodDefinitionWriter *w,const char *s,size_t capacity)

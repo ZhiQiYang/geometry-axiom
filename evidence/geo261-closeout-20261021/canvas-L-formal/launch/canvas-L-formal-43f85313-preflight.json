@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-20T23:02:17.212361+00:00",
+  "expectedHead": "43f85313c32410ac01406ab585846bbacafea278",
+  "root": "/workspace/geometry-axiom",
+  "output": "/workspace/geo261-evidence/canvas-L-formal-43f85313",
+  "parentEnvironment": {
+    "CC": {
+      "present": false,
+      "value": null
+    },
+    "PYTHONOPTIMIZE": {
+      "present": false,
+      "value": null
+    }
+  },
+  "head": "43f85313c32410ac01406ab585846bbacafea278",
+  "status": "",
+  "tools": {
+    "/workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py": "327e926ae0e88fff4b04e68afdee9fb12e9dd2dff0a839fb340603a9fc20121a",
+    "/workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py": "4f7935f1c516d118c06272a5ed96c4c5909cdbe124a4e746870b0001ce490181"
+  },
+  "ports": {
+    "18856": "可獨占 bind",
+    "9322": "可獨占 bind"
+  },
+  "assemblyScreenshotBaseline": {
+    "/tmp/geometry-tests/assembly-desktop.png": {
+      "exists": true,
+      "bytes": 92421,
+      "mtime_ns": 1792533458878499171,
+      "sha256": "5adab1037173336534961da80b364abcbbc4df13bda2fa309af4d0914cb1e780"
+    },
+    "/tmp/geometry-tests/assembly-mobile.png": {
+      "exists": true,
+      "bytes": 39267,
+      "mtime_ns": 1792533465042448290,
+      "sha256": "3e726fb9aeb6ccfdbe66964b0bac59661df44218746d93d8e5e1e9339a855099"
+    }
+  },
+  "validationExitCode": 0
+}

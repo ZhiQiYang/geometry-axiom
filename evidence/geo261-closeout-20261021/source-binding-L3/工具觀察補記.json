@@ -1,0 +1,10 @@
+{
+  "schema": "geo261-tool-observation-transcription/1",
+  "說明": "由已觀察到的工具結果與原父程序收據補記；不是原始 transport dump，不是重新 wait，也不補造未另外保存的完整工具 stdout／stderr。實際子程序 stdout／stderr／wait 原件另隨包保存。",
+  "事件": [
+    {"chunkId": "b6bccc", "exitCode": 0, "範圍": "L3 新快照及架構 CLI runner 外層工具；父程序真 wait 收據在 run-L3-source-and-architecture-run01.json"},
+    {"chunkId": "a13d78", "exitCode": 0, "範圍": "E3 三常數、AST 與逆向還原 bytes 核；未執行 E3 verifier"},
+    {"chunkId": "d771eb", "exitCode": 0, "範圍": "S3 ledger 凍結包獨立複核；父程序真 wait 收據在 ledger-S3-bundle-peer-run01/execution.json"}
+  ],
+  "未聲稱": ["重跑任何已完成驗收", "E3 已建立或驗證成功", "完整 native／canvas 已完成"]
+}

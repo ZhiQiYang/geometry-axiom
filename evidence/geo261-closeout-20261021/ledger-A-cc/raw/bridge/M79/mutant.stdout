@@ -1,0 +1,20 @@
+test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION (tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION) ... FAIL
+
+======================================================================
+FAIL: test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION (tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py", line 591, in test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION
+    self.card_and_panel_fill_share_rejection('gap')
+  File "/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py", line 576, in card_and_panel_fill_share_rejection
+    both = self.i38_messages(self.reject([delete], 'I38 MISSING', 'B2 both owners', identity=(4, 10, 3)))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py", line 83, in reject
+    self.assertTrue(any(all(re.search(r'\b' + re.escape(part) + r'\b', message)
+AssertionError: False is not true : ('B2 both owners', ['I38 MISSING: parameter 10 is still referenced by panel-fill 1 gap; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: 0)', 'candidate rejected'])
+
+----------------------------------------------------------------------
+Ran 1 test in 5.274s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION"], "started": ["tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION"], "total": 1, "failures": [{"test": "tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION", "detail": "Traceback (most recent call last):\n  File \"/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py\", line 591, in test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION\n    self.card_and_panel_fill_share_rejection('gap')\n  File \"/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py\", line 576, in card_and_panel_fill_share_rejection\n    both = self.i38_messages(self.reject([delete], 'I38 MISSING', 'B2 both owners', identity=(4, 10, 3)))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_grid_card_reference.py\", line 83, in reject\n    self.assertTrue(any(all(re.search(r'\\b' + re.escape(part) + r'\\b', message)\nAssertionError: False is not true : ('B2 both owners', ['I38 MISSING: parameter 10 is still referenced by panel-fill 1 gap; 先在原生 DSL 或該物件自己的交易裡改掉引用，另成一筆後再刪 (other references: 0)', 'candidate rejected'])\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

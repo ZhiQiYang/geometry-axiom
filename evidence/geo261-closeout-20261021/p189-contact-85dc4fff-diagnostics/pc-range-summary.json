@@ -1,0 +1,224 @@
+{
+  "source": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/pc-summary.json",
+  "source_sha256": "ad05467d66298d17358459fb00b775cdef382199c6d953800c3214bdddd8427e",
+  "module_counts": [
+    {
+      "module": "/lib/x86_64-linux-gnu/libc.so.6",
+      "samples": 163,
+      "percent": 57.394366197183096
+    },
+    {
+      "module": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "samples": 121,
+      "percent": 42.605633802816904
+    }
+  ],
+  "exact_exe_symbol_ranges": [
+    {
+      "symbols": [
+        "geo_source_find_node.isra.0"
+      ],
+      "samples": 31
+    },
+    {
+      "symbols": [
+        "wood_definition_sources_placement"
+      ],
+      "samples": 12
+    },
+    {
+      "symbols": [
+        "geo_source_index_append"
+      ],
+      "samples": 10
+    },
+    {
+      "symbols": [
+        "wood_contact_collect_stops"
+      ],
+      "samples": 7
+    },
+    {
+      "symbols": [
+        "timber_a0_footprint_uv"
+      ],
+      "samples": 6
+    },
+    {
+      "symbols": [
+        "reference_contact_facts"
+      ],
+      "samples": 5
+    },
+    {
+      "symbols": [
+        "geo_source_edge"
+      ],
+      "samples": 5
+    },
+    {
+      "symbols": [
+        "reference_host_read"
+      ],
+      "samples": 4
+    },
+    {
+      "symbols": [
+        "app_grid_host_value.part.0"
+      ],
+      "samples": 4
+    },
+    {
+      "symbols": [
+        "wd_read_text.constprop.0"
+      ],
+      "samples": 4
+    },
+    {
+      "symbols": [
+        "geo_box_face.part.0"
+      ],
+      "samples": 3
+    },
+    {
+      "symbols": [
+        "reference_placement_frame"
+      ],
+      "samples": 2
+    },
+    {
+      "symbols": [
+        "wood_contact_sources_collect"
+      ],
+      "samples": 2
+    },
+    {
+      "symbols": [
+        "geo_source_node"
+      ],
+      "samples": 2
+    },
+    {
+      "symbols": [
+        "wood_contact_source_evaluate"
+      ],
+      "samples": 2
+    },
+    {
+      "symbols": [
+        "app_member_reference_at"
+      ],
+      "samples": 2
+    },
+    {
+      "symbols": [
+        "app_placement_at.part.0"
+      ],
+      "samples": 2
+    },
+    {
+      "symbols": [
+        "app_reference_member_anchor"
+      ],
+      "samples": 2
+    },
+    {
+      "symbols": [
+        "wood_grid_codec_write_axis"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "geo_placement_sources_definition"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "geo_placement_definition_decode"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "wood_contact_source_decode"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "wood_grid_source_decode"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "wood_grid_valid"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "reference_member_footprint"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "geo_eval_source"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "geo_finite_sequence"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "resolve_auto_span"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "geo_source_grow"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "wood_world_validate_members"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "wood_member_resolve_span"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "geo_region_contains_rect"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "geo_loop_point_on_edge"
+      ],
+      "samples": 1
+    },
+    {
+      "symbols": [
+        "wood_definition_sources_boundary"
+      ],
+      "samples": 1
+    }
+  ],
+  "limitations": "ITIMER_PROF按user+system CPU遞減，1ms是請求間隔；不保證每ms交付。PC只在user地址，不能分攤kernel成本；沒有call stack。constructor以後至atexit取樣，退出輸出及其他區段不在timer內。共享庫未猜函式，exe只報非零大小符號真範圍；不是正式性能成績。",
+  "libc_function_attribution": "僅 module + ELF offset；沒有從最近符號猜函式"
+}

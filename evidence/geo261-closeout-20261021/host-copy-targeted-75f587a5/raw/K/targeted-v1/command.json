@@ -1,0 +1,26 @@
+{
+  "cwd": "/workspace/geo261-host-copy-candidate",
+  "argv": [
+    "timeout",
+    "900",
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/host-copy-candidate/K/targeted_tests.py",
+    "/workspace/geo261-evidence/host-copy-candidate/K/targeted-v1"
+  ],
+  "sourceHead": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "HOME": "/home/agent",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "LC_CTYPE": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TMPDIR": "/tmp/geo261-host-copy-K-gs7u7gfi"
+  },
+  "stackKiB": 16384,
+  "startedUtc": "2026-10-21T02:25:52.058242+00:00",
+  "patchSha256": "ed026b5ec31654a06d59ebd04729570fb844b100cd49255263a3c09971c26f6b",
+  "runnerSha256": "1a05fddf2107cc74d8551d42b8dac2f4b5137702bf11847d1682864773a488c1",
+  "testDriverSha256": "d2c6148b7e33be0c52c0b0058bfacbb919acc015a7a4d32ace429b19429d04dc"
+}

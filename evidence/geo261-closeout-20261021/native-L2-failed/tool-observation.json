@@ -1,0 +1,33 @@
+{
+  "sourceSha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "recordedUtc": "2026-10-21T04:46:47.886094+00:00",
+  "toolSessionId": 78097,
+  "actualFinalWriteStdinResult": {
+    "chunk_id": "4b2423",
+    "wall_time_seconds": 41.151204272,
+    "exit_code": 1,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "actualLaunchChunk": "1171d1",
+  "artifactReferences": {
+    "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/native/command.json": {
+      "bytes": 11882,
+      "sha256": "5c0707137cd04760aaeb950935d8ec416737fccad391381deb00707c188dd66a"
+    },
+    "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/native/receipt.json": {
+      "bytes": 14440,
+      "sha256": "524772d6f755727761770c8ca8d9a14c5fee2f00702b2ea1b643199dcda10559"
+    },
+    "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/native-launcher/launcher-receipt.json": {
+      "bytes": 14312,
+      "sha256": "d574b6228eac181ff3e45e3f33a0bb0dafa06bf522324b0e0da063c2b5bbdf4a"
+    },
+    "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/native-launcher/launch-dispatch.json": {
+      "bytes": 9106,
+      "sha256": "64e57267faeb3c01c4a730601e2aaabd4804b0e728b336618b2985b70e40b99a"
+    }
+  },
+  "nativeRestarted": false,
+  "note": "本對話實際工具回傳值的事後轉錄；不是 tool transport 自動匯出。launch-dispatch.json保存實際env與-c完整argv；正式child/wrapper/launcher碼另在各原receipt。"
+}

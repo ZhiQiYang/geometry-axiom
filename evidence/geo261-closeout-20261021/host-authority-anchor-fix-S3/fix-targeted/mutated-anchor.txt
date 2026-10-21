@@ -1,0 +1,5 @@
+if(true){
+        PlacementSurface placement;
+        if(!app_placement_read(world,placement_id,&placement))return false;
+        return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);
+    }

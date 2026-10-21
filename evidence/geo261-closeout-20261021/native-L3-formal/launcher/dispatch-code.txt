@@ -1,0 +1,20 @@
+import pathlib,json,hashlib,os,sys,datetime
+root=pathlib.Path("/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021")
+prep=root/"preparation";launch=root/"native-launcher"
+raw=(prep/"instance.json").read_bytes()
+assert hashlib.sha256(raw).hexdigest()=="ad0e74a3798fedf240d7a02af82ee7849496981276418335c38b9f36715ac1f3"
+plan=json.loads(raw)
+assert plan["sourceSha"]=="6589248c9a94bdf0460d8f84dd1610e51048188b"
+assert json.loads((launch/"preflight-execution-receipt.json").read_text())["exitCode"]==0
+assert json.loads((launch/"argument-validation.json").read_text())["exitCode"]==0
+pre=json.loads((launch/"preflight.json").read_text())
+assert pre["head"]==plan["sourceSha"] and not pre["status"] and pre["CCAbsent"] and pre["PYTHONOPTIMIZEAbsent"]
+assert pre["stackKiB"]==16384 and pre["nativeGlobalAbsentBeforeStart"]
+assert "CC" not in os.environ and "PYTHONOPTIMIZE" not in os.environ and not sys.flags.optimize
+argv=plan["nativeArgv"]
+assert argv[:1]==["env"] and argv[-2:]==["--source-sha",plan["sourceSha"]]
+assert not pathlib.Path(plan["nativeOut"]).exists()
+meta=dict(sourceSha=plan["sourceSha"],startedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),dispatcherPid=os.getpid(),dispatcherArgv=sys.orig_argv,actualExecArgv=argv,instanceSha256=hashlib.sha256(raw).hexdigest(),CCAbsent=True,PYTHONOPTIMIZEAbsent=True,optimizationFlag=sys.flags.optimize,preflightReceiptSha256=hashlib.sha256((launch/"preflight-execution-receipt.json").read_bytes()).hexdigest(),validationReceiptSha256=hashlib.sha256((launch/"argument-validation.json").read_bytes()).hexdigest(),note="此 dispatcher 以 os.execvp 交出原程序給原 env/父 launcher；工具 session 最後觀察直接對該父 launcher 真碼。")
+(launch/"dispatch-command.json").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+"\n")
+(launch/"dispatch-code.txt").write_text(sys.orig_argv[-1])
+os.execvp(argv[0],argv)

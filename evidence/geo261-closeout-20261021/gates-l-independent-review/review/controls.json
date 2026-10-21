@@ -1,0 +1,582 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "phase": "controls",
+  "reviewer": "/root/p52_review",
+  "reviewedUtc": "2026-10-21T00:33:38.158377+00:00",
+  "accepted": true,
+  "validationExitCode": 0,
+  "blockers": [],
+  "result": {
+    "cases": 12,
+    "survived": 9,
+    "unlabelled": [
+      "XC40A",
+      "XC03L1",
+      "XC04L1"
+    ],
+    "rawGateExit": 1,
+    "expectationCheckExit": 0,
+    "launcherWaitExit": 0,
+    "nativeBaseline": 27,
+    "modelBaseline": 20,
+    "elapsedSeconds": 121.98312310800247
+  },
+  "commands": {
+    "actual": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-u",
+      "/workspace/geo261-gates-l/geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
+      "--jobs",
+      "2",
+      "--receipt",
+      "/workspace/geo261-evidence/gates-l/controls/receipt.json",
+      "--logs",
+      "/workspace/geo261-evidence/gates-l/controls/logs",
+      "--only",
+      "XC36",
+      "--only",
+      "XC39",
+      "--only",
+      "XC40A",
+      "--only",
+      "XC40B",
+      "--only",
+      "XC28L1",
+      "--only",
+      "XC28L12",
+      "--only",
+      "XC28L13",
+      "--only",
+      "XC29L1",
+      "--only",
+      "XC29L12",
+      "--only",
+      "XC29L13",
+      "--only",
+      "XC03L1",
+      "--only",
+      "XC04L1"
+    ],
+    "selectedIds": [
+      "XC36",
+      "XC39",
+      "XC40A",
+      "XC40B",
+      "XC28L1",
+      "XC28L12",
+      "XC28L13",
+      "XC29L1",
+      "XC29L12",
+      "XC29L13",
+      "XC03L1",
+      "XC04L1"
+    ],
+    "selectionMatchesDeclaredExpected": true,
+    "jobs": 2,
+    "exploreAndGroupAbsent": true
+  },
+  "sources": {
+    "headBefore": "43f85313c32410ac01406ab585846bbacafea278",
+    "headAfter": "43f85313c32410ac01406ab585846bbacafea278",
+    "statusBefore": "",
+    "statusAfter": "",
+    "beforeAfterHashCount": 10,
+    "sourceHashesMatchGitL": true,
+    "baselineSourceTreeHashesMatchQ38": true,
+    "nativeSourceTreeFiles": 194,
+    "compiledMutantSourceTreesReconstructed": 8,
+    "compiledMutantBinaryHashesDifferentFromBaseline": 8,
+    "modelAdapterSameAsQ38": true
+  },
+  "bridge": {
+    "previousPhase": "q38",
+    "previousReceipt": "/workspace/geo261-evidence/gates-l/launcher/q38/bridge-after.json",
+    "beforeAfterBytesHashMtimeExact": true,
+    "preservedCopiesVerified": true
+  },
+  "cases": [
+    {
+      "id": "XC28L1",
+      "verdict": "survived",
+      "exit": 0,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "requiredCauses": [
+        "expected rejection 'I49'"
+      ],
+      "terminalEvidence": [],
+      "compiledBinaryCompared": true,
+      "patchFiles": [
+        "geometry-templates/woodworking/native/section_profile.c"
+      ]
+    },
+    {
+      "id": "XC28L12",
+      "verdict": "survived",
+      "exit": 0,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "requiredCauses": [
+        "expected rejection 'I49'"
+      ],
+      "terminalEvidence": [],
+      "compiledBinaryCompared": true,
+      "patchFiles": [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "geometry-templates/woodworking/native/section_profile.c"
+      ]
+    },
+    {
+      "id": "XC28L13",
+      "verdict": "survived",
+      "exit": 0,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "requiredCauses": [
+        "expected rejection 'I49'"
+      ],
+      "terminalEvidence": [],
+      "compiledBinaryCompared": true,
+      "patchFiles": [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "geometry-templates/woodworking/native/section_profile_sources.c"
+      ]
+    },
+    {
+      "id": "XC29L1",
+      "verdict": "survived",
+      "exit": 0,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "requiredCauses": [
+        "expected rejection 'I49'"
+      ],
+      "terminalEvidence": [],
+      "compiledBinaryCompared": true,
+      "patchFiles": [
+        "geometry-templates/woodworking/native/section_profile.c"
+      ]
+    },
+    {
+      "id": "XC29L12",
+      "verdict": "survived",
+      "exit": 0,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "requiredCauses": [
+        "expected rejection 'I49'"
+      ],
+      "terminalEvidence": [],
+      "compiledBinaryCompared": true,
+      "patchFiles": [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "geometry-templates/woodworking/native/section_profile.c"
+      ]
+    },
+    {
+      "id": "XC29L13",
+      "verdict": "survived",
+      "exit": 0,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_named_sources_rebuild_and_explicit_dependency_transaction"
+      ],
+      "requiredCauses": [
+        "expected rejection 'I49'"
+      ],
+      "terminalEvidence": [],
+      "compiledBinaryCompared": true,
+      "patchFiles": [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "geometry-templates/woodworking/native/section_profile_sources.c"
+      ]
+    },
+    {
+      "id": "XC03L1",
+      "verdict": "unlabelled",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap"
+      ],
+      "requiredCauses": [
+        "expected the candidate to be accepted",
+        "V_PROFILE_OVERLAP"
+      ],
+      "terminalEvidence": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap",
+          "type": "builtins.AssertionError",
+          "kind": "failure",
+          "missingCauses": [
+            "V_PROFILE_OVERLAP"
+          ],
+          "message": "False is not true : expected the candidate to be accepted: {'token': 2, 'valid': False, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1', 'grid-card-reference/1'], 'required_capabilities': ['section-profile/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'specs': [], 'materials': [], 'methods': [], 'applications': [], 'sources': [], 'parameters': [], 'assembly': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'sectionProfiles': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 1, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 0, 'v0': 0}, 'rect': [0, 0, 27, 33], 'dimensions': [27, 33]}], 'runs': []}, 'geometry': {'grids': [], 'gridSystems': [], 'datums': [], 'guides': [], 'timbers': []}}, 'after': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1', 'grid-card-reference/1'], 'required_capabilities': ['section-profile/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'specs': [], 'materials': [], 'methods': [], 'applications': [], 'sources': [], 'parameters': [], 'assembly': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'sectionProfiles': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 1, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 0, 'v0': 0}, 'rect': [0, 0, 27, 33], 'dimensions': [27, 33]}, {'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 2, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 27, 'v0': 0}, 'rect': [27, 0, 54, 33], 'dimensions': [27, 33]}, {'value': {'A': {'kind': 'literal', 'value': 1}, 'B': {'kind': 'literal', 'value': 1}, 'id': 3, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 27, 'v0': 33}, 'rect': [27, 33, 28, 34], 'dimensions': [1, 1]}], 'runs': []}, 'geometry': {'grids': [], 'gridSystems': [], 'datums': [], 'guides': [], 'timbers': []}}, 'redeclaredReferences': [], 'cardCaptures': [], 'sectionProfiles': {'before': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 1, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 0, 'v0': 0}, 'rect': [0, 0, 27, 33], 'dimensions': [27, 33]}], 'runs': []}, 'after': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 1, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 0, 'v0': 0}, 'rect': [0, 0, 27, 33], 'dimensions': [27, 33]}, {'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 2, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 27, 'v0': 0}, 'rect': [27, 0, 54, 33], 'dimensions': [27, 33]}, {'value': {'A': {'kind': 'literal', 'value': 1}, 'B': {'kind': 'literal', 'value': 1}, 'id': 3, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 27, 'v0': 33}, 'rect': [27, 33, 28, 34], 'dimensions': [1, 1]}], 'runs': []}, 'warnings': [], 'diagnosticsComplete': True, 'violations': [{'code': 'SECTION_PROFILE_INVALID', 'clause': 'I43-I49', 'message': 'I51 CAPACITY: section profile source evaluation unavailable', 'expected': 'valid atomic transaction', 'actual': 'rejected input or upstream dependency'}]}, 'violations': [{'code': 'SECTION_PROFILE_INVALID', 'clause': 'I43-I49', 'message': 'I51 CAPACITY: section profile source evaluation unavailable', 'expected': 'valid atomic transaction', 'actual': 'rejected input or upstream dependency'}]}"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "patchFiles": [
+        "geometry-templates/woodworking/native/section_profile_sources.c"
+      ]
+    },
+    {
+      "id": "XC04L1",
+      "verdict": "unlabelled",
+      "exit": 1,
+      "group": "native",
+      "tests": [
+        "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap"
+      ],
+      "requiredCauses": [
+        "expected the candidate to be accepted",
+        "V_PROFILE_OVERLAP"
+      ],
+      "terminalEvidence": [
+        {
+          "test": "tests.test_section_profile_native.SectionProfileNative.test_touch_edges_points_and_cross_kind_overlap",
+          "type": "builtins.AssertionError",
+          "kind": "failure",
+          "missingCauses": [
+            "V_PROFILE_OVERLAP"
+          ],
+          "message": "False is not true : expected the candidate to be accepted: {'token': 2, 'valid': False, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1', 'grid-card-reference/1'], 'required_capabilities': ['section-profile/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'specs': [], 'materials': [], 'methods': [], 'applications': [], 'sources': [], 'parameters': [], 'assembly': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'sectionProfiles': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 1, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 0, 'v0': 0}, 'rect': [0, 0, 27, 33], 'dimensions': [27, 33]}], 'runs': []}, 'geometry': {'grids': [], 'gridSystems': [], 'datums': [], 'guides': [], 'timbers': []}}, 'after': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1', 'grid-card-reference/1'], 'required_capabilities': ['section-profile/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'specs': [], 'materials': [], 'methods': [], 'applications': [], 'sources': [], 'parameters': [], 'assembly': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'sectionProfiles': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 1, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 0, 'v0': 0}, 'rect': [0, 0, 27, 33], 'dimensions': [27, 33]}, {'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 2, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 27, 'v0': 0}, 'rect': [27, 0, 54, 33], 'dimensions': [27, 33]}, {'value': {'A': {'kind': 'literal', 'value': 1}, 'B': {'kind': 'literal', 'value': 1}, 'id': 3, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 27, 'v0': 33}, 'rect': [27, 33, 28, 34], 'dimensions': [1, 1]}], 'runs': []}, 'geometry': {'grids': [], 'gridSystems': [], 'datums': [], 'guides': [], 'timbers': []}}, 'redeclaredReferences': [], 'cardCaptures': [], 'sectionProfiles': {'before': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 1, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 0, 'v0': 0}, 'rect': [0, 0, 27, 33], 'dimensions': [27, 33]}], 'runs': []}, 'after': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 1, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 0, 'v0': 0}, 'rect': [0, 0, 27, 33], 'dimensions': [27, 33]}, {'value': {'A': {'kind': 'literal', 'value': 27}, 'B': {'kind': 'literal', 'value': 33}, 'id': 2, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 27, 'v0': 0}, 'rect': [27, 0, 54, 33], 'dimensions': [27, 33]}, {'value': {'A': {'kind': 'literal', 'value': 1}, 'B': {'kind': 'literal', 'value': 1}, 'id': 3, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 27, 'v0': 33}, 'rect': [27, 33, 28, 34], 'dimensions': [1, 1]}], 'runs': []}, 'warnings': [], 'diagnosticsComplete': True, 'violations': [{'code': 'SECTION_PROFILE_INVALID', 'clause': 'I43-I49', 'message': 'I51 CAPACITY: section profile source evaluation unavailable', 'expected': 'valid atomic transaction', 'actual': 'rejected input or upstream dependency'}]}, 'violations': [{'code': 'SECTION_PROFILE_INVALID', 'clause': 'I43-I49', 'message': 'I51 CAPACITY: section profile source evaluation unavailable', 'expected': 'valid atomic transaction', 'actual': 'rejected input or upstream dependency'}]}"
+        }
+      ],
+      "compiledBinaryCompared": true,
+      "patchFiles": [
+        "geometry-templates/woodworking/native/section_profile_sources.c"
+      ]
+    },
+    {
+      "id": "XC36",
+      "verdict": "survived",
+      "exit": 0,
+      "group": "model",
+      "tests": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope"
+      ],
+      "requiredCauses": [
+        "R37: exact mesh volume of the envelope object"
+      ],
+      "terminalEvidence": [],
+      "compiledBinaryCompared": false,
+      "patchFiles": [
+        "geometry-templates/woodworking/geometry_woodworking/section_profile.py"
+      ]
+    },
+    {
+      "id": "XC39",
+      "verdict": "survived",
+      "exit": 0,
+      "group": "model",
+      "tests": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_advanced_native_frame_controls_world_axes_and_bounds"
+      ],
+      "requiredCauses": [
+        "R36/R37: bounds of the"
+      ],
+      "terminalEvidence": [],
+      "compiledBinaryCompared": false,
+      "patchFiles": [
+        "geometry-templates/woodworking/geometry_woodworking/section_profile.py"
+      ]
+    },
+    {
+      "id": "XC40A",
+      "verdict": "unlabelled",
+      "exit": 1,
+      "group": "model",
+      "tests": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_local_runs_do_not_cut_other_local_or_world_mesh_grids"
+      ],
+      "requiredCauses": [
+        "A section-profile object must produce one complete solid"
+      ],
+      "terminalEvidence": [
+        {
+          "test": "tests.test_section_profile_modeling.SectionProfileModeling.test_local_runs_do_not_cut_other_local_or_world_mesh_grids",
+          "type": "geometry_app.model_common.ModelError",
+          "kind": "error",
+          "missingCauses": [
+            "A section-profile object must produce one complete solid"
+          ],
+          "message": "A mesh requires an arrangement from its coordinate domain"
+        }
+      ],
+      "compiledBinaryCompared": false,
+      "patchFiles": [
+        "geometry-core/geometry_kernel/evaluate.py"
+      ]
+    },
+    {
+      "id": "XC40B",
+      "verdict": "survived",
+      "exit": 0,
+      "group": "model",
+      "tests": [
+        "tests.test_section_profile_modeling.SectionProfileModeling.test_local_runs_do_not_cut_other_local_or_world_mesh_grids"
+      ],
+      "requiredCauses": [
+        "A section-profile object must produce one complete solid"
+      ],
+      "terminalEvidence": [],
+      "compiledBinaryCompared": false,
+      "patchFiles": [
+        "geometry-core/geometry_kernel/geometry.py"
+      ]
+    }
+  ],
+  "rawFileIndex": [
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/controls.log",
+      "bytes": 20348,
+      "sha256": "e1b7f0f2a4e5e429357497c6d27b55bf405ee16bbcaee79b836516be7fd7875d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC03L1.exceptions.json",
+      "bytes": 5263,
+      "sha256": "6f8dd621f6949bc2a8501d74ccd37a7e92287508b5e18a9bf9c18d1413e072ef"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC03L1.log",
+      "bytes": 5598,
+      "sha256": "9489bf2932e6c6b3ec006ca112bdadb248fca6c0d47070cbfdfe3b932040ddbe"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC04L1.exceptions.json",
+      "bytes": 5263,
+      "sha256": "6f8dd621f6949bc2a8501d74ccd37a7e92287508b5e18a9bf9c18d1413e072ef"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC04L1.log",
+      "bytes": 5598,
+      "sha256": "1664d1184c22afe74a0962fe49f228589426fe56653fdaf08382a5b8af3588ae"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC28L1.exceptions.json",
+      "bytes": 617,
+      "sha256": "42a4018b5449258a36b80dafcc8fa755021dd8a9ef6c376f0a93a3ee5a707fd8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC28L1.log",
+      "bytes": 287,
+      "sha256": "051191bcd6426616825e8a36872d4978f656a48f519de336a67dbeaa91f3fc10"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC28L12.exceptions.json",
+      "bytes": 617,
+      "sha256": "42a4018b5449258a36b80dafcc8fa755021dd8a9ef6c376f0a93a3ee5a707fd8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC28L12.log",
+      "bytes": 287,
+      "sha256": "231af107ad6c6f32004b4b8f3d2d76f267ce585e048da5ae6e29bc04cb23a55d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC28L13.exceptions.json",
+      "bytes": 617,
+      "sha256": "42a4018b5449258a36b80dafcc8fa755021dd8a9ef6c376f0a93a3ee5a707fd8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC28L13.log",
+      "bytes": 287,
+      "sha256": "1120fe31db89036845763a3b05d4d86dec0b50c83b437049dbc79e0fd3a474ee"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC29L1.exceptions.json",
+      "bytes": 617,
+      "sha256": "42a4018b5449258a36b80dafcc8fa755021dd8a9ef6c376f0a93a3ee5a707fd8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC29L1.log",
+      "bytes": 287,
+      "sha256": "7d104043e5d4870871b4b4649eb7ac153924a34da31010a7387e01bea47c756d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC29L12.exceptions.json",
+      "bytes": 617,
+      "sha256": "42a4018b5449258a36b80dafcc8fa755021dd8a9ef6c376f0a93a3ee5a707fd8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC29L12.log",
+      "bytes": 287,
+      "sha256": "ea42bd5c8401b654883bb5457debabc9fe1f4a6a946618c704f30dfbfb3f2ebc"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC29L13.exceptions.json",
+      "bytes": 617,
+      "sha256": "42a4018b5449258a36b80dafcc8fa755021dd8a9ef6c376f0a93a3ee5a707fd8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC29L13.log",
+      "bytes": 287,
+      "sha256": "17d03b387a82a7f3b76db87f0ebf263150f394c3af0eabc1052a700caac1cca5"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC36.exceptions.json",
+      "bytes": 632,
+      "sha256": "43339ff6cbff10f33a001cce9d522761a4655a4bf07dbe76600ebe3ba0b04ab3"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC36.log",
+      "bytes": 293,
+      "sha256": "f5b480884af1241e662fa463ce6f4258bc8b2d9c6adaaf4cccee9b00bd956d4a"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC39.exceptions.json",
+      "bytes": 614,
+      "sha256": "63d2c06070266c6199a9cec4a0dda73673b68728bec374ce10d7da0f78a39adb"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC39.log",
+      "bytes": 281,
+      "sha256": "ef5e56e9467d3c144842b51e871310d59986afed7f03a06717d7c6208e340c46"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC40A.exceptions.json",
+      "bytes": 833,
+      "sha256": "373f00bf9ed876cba1a5951bda1c44bfe3ef645b96a28a0c8a6a4c72fd302fa0"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC40A.log",
+      "bytes": 2489,
+      "sha256": "43f51cf7a2bf66084c63ab5ec5e110a776f3f42bf3b9ca253a70f00b811580cc"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC40B.exceptions.json",
+      "bytes": 617,
+      "sha256": "20f36ae4d3088e091526d3ab91bd6d471888c03c519442ff3ca5b0cd19f415b1"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/XC40B.log",
+      "bytes": 283,
+      "sha256": "4335eee032bb2b1c2078f04e5e3d2c5cf09a384dd9ee35ae730afb71a9584850"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/bridge-XC03L1.compile.json",
+      "bytes": 527,
+      "sha256": "ea68e3c57f23448790c21598f1603e82b3fbac4ab9cee8e1503220938661d1ba"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/bridge-XC04L1.compile.json",
+      "bytes": 527,
+      "sha256": "074ffb559f40cdc528ad473a93ce0f565dbb81f007f03979c6152a1e7305bead"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/bridge-XC28L1.compile.json",
+      "bytes": 527,
+      "sha256": "4ef91e33283bce4cd190f619d80db114547c29047ffea89a5a6a1bd7f88fccc2"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/bridge-XC28L12.compile.json",
+      "bytes": 529,
+      "sha256": "9fa2fb063c3d5b0d053230035239b2bf28e370b93f2bd110e63f3bfd71ac7daa"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/bridge-XC28L13.compile.json",
+      "bytes": 529,
+      "sha256": "187d5e1a787c5140c5670a985164a715a31176a6e008bf7436172123ea2814de"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/bridge-XC29L1.compile.json",
+      "bytes": 527,
+      "sha256": "2d23985ffbebe5ef0b57bd7ceb8b038175ac5f6ec0240d5b23e001ddb0967648"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/bridge-XC29L12.compile.json",
+      "bytes": 529,
+      "sha256": "c5ae831c719793f446a00362aa8a4a21e833186f07be65f6730d510c0727548f"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/bridge-XC29L13.compile.json",
+      "bytes": 529,
+      "sha256": "23d1905420dab00e6d8f9a55549d48c43244f2079a35e431f65dec5a043900ff"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/bridge-baseline.compile.json",
+      "bytes": 534,
+      "sha256": "7c4aef481d0947c63804f584072ae8fbae2d55ed4b78ef898cd1d85b0527eb45"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/model-baseline.exceptions.json",
+      "bytes": 8049,
+      "sha256": "bb879a7a6c2f4b65dd39f97baf442dc24f93261fa412fd266febd01090f5cef3"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/model-baseline.log",
+      "bytes": 4023,
+      "sha256": "a61d9c71c2b56fd5432ef87dc921755058a9a9dda6a9c02e018f17a0047acc23"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/native-baseline.exceptions.json",
+      "bytes": 10020,
+      "sha256": "a27a3fe90ef9e9b2250631894611f13ebeba474a25e5066b8f7bee37ec27d6ee"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/logs/native-baseline.log",
+      "bytes": 4998,
+      "sha256": "d72ed836145af5572f4e27b7a04e79e3d86b1e964080f3bf0b4603877ba01534"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/receipt.json",
+      "bytes": 42934,
+      "sha256": "47d8eb068bb9758f4404e3ad36a722d477c41ae0543e33848d74f8c1ec465617"
+    },
+    {
+      "path": "/workspace/geo261-evidence/gates-l/controls/run-receipt.json",
+      "bytes": 3401,
+      "sha256": "b5c6d0bfa82e89c3d47a41add129ce52b2ce4268f6ff2f35b2a599279eae178a"
+    }
+  ],
+  "references": {
+    "verification": {
+      "path": "/workspace/geo261-evidence/gates-l/verification/controls.json",
+      "bytes": 3722,
+      "sha256": "2e583d91b49dda9eaf1623682db0d91999c466696045f72e702c70e7c4447305"
+    },
+    "officialReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/controls/receipt.json",
+      "bytes": 42934,
+      "sha256": "47d8eb068bb9758f4404e3ad36a722d477c41ae0543e33848d74f8c1ec465617"
+    },
+    "runReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/controls/run-receipt.json",
+      "bytes": 3401,
+      "sha256": "b5c6d0bfa82e89c3d47a41add129ce52b2ce4268f6ff2f35b2a599279eae178a"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/controls/receipt.json",
+      "bytes": 4033,
+      "sha256": "ba5ab6daa9f8858019b4e9a5eb6be3d4cbd54fcb35d75fd81d9146f27a093b58"
+    },
+    "q38IndependentReport": {
+      "path": "/workspace/geo261-evidence/gates-l-independent-review/q38.json",
+      "bytes": 61109,
+      "sha256": "658456e1df03218c0c79acc4e0694c5bd053ff94eaffb91f3151e62f86924a89"
+    },
+    "reviewCode": {
+      "path": "/workspace/geo261-evidence/gates-l-independent-controls-code.txt",
+      "bytes": 14019,
+      "sha256": "a83da15068f538597e690832e49859e2b03ff3db78c38f703877253aaf26ddbf"
+    }
+  },
+  "limits": [
+    "raw gate真1與控制預期核對真0分開；survived與unlabelled不改叫killed，也不是任意exit1當有效控制。",
+    "XC03L1/XC04L1有具名AssertionError但同一terminal訊息缺原cause；XC40A有允許ModelError但病因是coordinate domain，不是完整solid；12案逐一符合原EXPECTED。",
+    "未讀正在執行card的工作bytes倒推歷史；使用Git L與controls原前後來源收據。",
+    "八組已刪除臨時binary只核其原編譯hash、異baseline與Git重建來源樹，未假稱仍持有binary。",
+    "四個Python-only controls沿用Q38 fresh model-base；不要求其adapter改變。",
+    "工具session真退出觀察由執行代理另存；本報告已核可保存的raw gate/run_controls/launcher parent.wait原退出鏈。"
+  ]
+}

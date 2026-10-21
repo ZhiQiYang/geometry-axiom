@@ -1,0 +1,27 @@
+"""只讀比較正式 compile fingerprint；不編譯，不執行 --check。"""
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import sys
+
+sys.dont_write_bytecode = True
+root = Path(sys.argv[1]).resolve()
+sys.path.insert(0, str(root / "tests"))
+import mutate
+
+original = os.environ.pop("CC", None)
+default = {"command": mutate.portable_compile_command(), "compileSha256": mutate.compile_hash()}
+os.environ["CC"] = "gcc"
+explicit = {"command": mutate.portable_compile_command(), "compileSha256": mutate.compile_hash()}
+assert default["command"][0] == "cc" and explicit["command"][0] == "gcc"
+assert default["compileSha256"] != explicit["compileSha256"]
+print(json.dumps({
+    "scope": "函式 hash 計算；沒有編譯、測試或 --check",
+    "sourceCodeRawSha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+    "originalCC": original, "defaultCCUnset": default, "explicitCCGcc": explicit,
+    "ccResolved": str(Path(shutil.which("cc")).resolve()),
+    "gccResolved": str(Path(shutil.which("gcc")).resolve()),
+    "sameExecutableDoesNotImplySameCommandFingerprint": True
+}, ensure_ascii=False, indent=2))

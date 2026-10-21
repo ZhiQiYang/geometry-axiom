@@ -1,0 +1,115 @@
+"""只從驗證器 AST 載入純資料守門，反控制不讀 repo、不啟動 Git 或產品。"""
+import ast
+import copy
+import hashlib
+import json
+from pathlib import Path, PurePosixPath
+import re
+import sys
+
+source = Path(sys.argv[1])
+raw = source.read_bytes()
+module = ast.parse(raw)
+functions = {"require", "sha", "strict_json", "valid_relative", "reviewed_files",
+             "check_total_diff", "check_index", "check_config"}
+constants = {"ROOT", "INDEX", "APPENDS", "FORBIDDEN_SUFFIXES"}
+selected = []
+for item in module.body:
+    if isinstance(item, ast.FunctionDef) and item.name in functions:
+        selected.append(item)
+    elif isinstance(item, ast.Assign) and all(isinstance(t, ast.Name) and t.id in constants for t in item.targets):
+        selected.append(item)
+require_names = {x.name for x in selected if isinstance(x, ast.FunctionDef)}
+if require_names != functions:
+    raise RuntimeError("純函式選取清單不完整")
+namespace = {"hashlib": hashlib, "json": json, "PurePosixPath": PurePosixPath, "re": re}
+exec(compile(ast.Module(body=selected, type_ignores=[]), str(source) + ":純資料守門", "exec"), namespace)
+root = namespace["ROOT"]
+files = [{"path": name, "bytes": index + 1, "sha256": str(index) * 64}
+         for index, name in enumerate(["artifact-index.json", "first.json", "second.log"])]
+expected = namespace["reviewed_files"](files)
+full_paths = {root + "/" + name for name in expected}
+diff = [("A", p) for p in sorted(full_paths)] + [("M", p) for p in namespace["APPENDS"]]
+index = {"schema": 1, "root": root, "selfExcluded": "artifact-index.json", "entries": files[1:]}
+
+
+def config(path, before="既有規則\n".encode(), suffix=None):
+    if suffix is None:
+        suffix = namespace["APPENDS"][path]
+    after = before + suffix.encode()
+    row = {"beforeBytes": len(before), "beforeSha256": hashlib.sha256(before).hexdigest(),
+           "afterBytes": len(after), "afterSha256": hashlib.sha256(after).hexdigest(), "appendUtf8": suffix}
+    return before, after, row
+
+
+def baseline():
+    namespace["reviewed_files"](copy.deepcopy(files))
+    namespace["check_total_diff"](copy.deepcopy(diff), full_paths)
+    namespace["check_index"](json.dumps(index).encode(), expected)
+    for path in namespace["APPENDS"]:
+        namespace["check_config"](path, *config(path))
+
+
+def changed_index(**updates):
+    changed = copy.deepcopy(index)
+    changed.update(updates)
+    namespace["check_index"](json.dumps(changed).encode(), expected)
+
+
+def changed_row(key, value):
+    changed = copy.deepcopy(files)
+    changed[1][key] = value
+    namespace["reviewed_files"](changed)
+
+
+def changed_prefix(path):
+    before, after, row = config(path)
+    after = b"changed-prefix\n" + namespace["APPENDS"][path].encode()
+    row["afterBytes"] = len(after)
+    row["afterSha256"] = hashlib.sha256(after).hexdigest()
+    namespace["check_config"](path, before, after, row)
+
+
+cases = []
+for path in ["../escape.json", "/absolute.json", "C:/drive.json", "a\\b.json", "a/./b.json", "a//b.json", "a\nb.json"]:
+    cases.append(("路徑拒絕 " + repr(path), lambda p=path: namespace["valid_relative"](p)))
+cases.extend([
+    ("review 重複路徑", lambda: namespace["reviewed_files"](files + [files[1]])),
+    ("review 缺索引自身", lambda: namespace["reviewed_files"](files[1:])),
+    ("review bytes 布林", lambda: changed_row("bytes", True)),
+    ("review bytes 負數", lambda: changed_row("bytes", -1)),
+    ("review hash 非64hex", lambda: changed_row("sha256", "g" * 64)),
+    ("review 新增可執行來源", lambda: changed_row("path", "first.py")),
+    ("review 新增巢狀屬性", lambda: changed_row("path", ".gitattributes")),
+    ("index 漏檔", lambda: changed_index(entries=files[1:2])),
+    ("index 多檔", lambda: changed_index(entries=files[1:] + [{"path": "other.txt", "bytes": 0, "sha256": "a" * 64}])),
+    ("index 含自身", lambda: changed_index(entries=files)),
+    ("index 未排序", lambda: changed_index(entries=list(reversed(files[1:])))),
+    ("index schema布林", lambda: changed_index(schema=True)),
+    ("index 根路徑不同", lambda: changed_index(root="evidence/other")),
+    ("index 重複JSON欄位", lambda: namespace["check_index"](b'{"schema":1,"schema":1}', expected)),
+    ("diff 產品路徑", lambda: namespace["check_total_diff"](diff + [("M", "geometry-web/app.js")], full_paths)),
+    ("diff 帳本路徑", lambda: namespace["check_total_diff"](diff + [("M", "tests/mutants_results.json")], full_paths)),
+    ("diff 其他證據根", lambda: namespace["check_total_diff"](diff + [("A", "evidence/other/note.md")], full_paths)),
+    ("diff 刪除", lambda: namespace["check_total_diff"]([("D", diff[0][1])] + diff[1:], full_paths)),
+    ("diff 缺新增檔", lambda: namespace["check_total_diff"](diff[1:], full_paths)),
+    ("diff 重複同路徑", lambda: namespace["check_total_diff"](diff + [diff[0]], full_paths)),
+    ("gitignore 泛開", lambda: namespace["check_config"](".gitignore", *config(".gitignore", suffix="!/evidence/\n"))),
+    ("attrs 漏whitespace", lambda: namespace["check_config"](".gitattributes", *config(".gitattributes", suffix=root + "/** -text\n"))),
+    ("gitignore 修改舊前綴", lambda: changed_prefix(".gitignore")),
+    ("attrs 修改舊前綴", lambda: changed_prefix(".gitattributes")),
+])
+baseline()
+results = []
+for label, invoke in cases:
+    try:
+        invoke()
+    except RuntimeError as error:
+        results.append({"控制": label, "拒絕": True, "原因": str(error)})
+    else:
+        raise RuntimeError("應拒絕卻放行：" + label)
+baseline()
+print(json.dumps({"範圍": "只載 AST 明列純函式；沒有呼叫 main、Git、正式hash函式、產品測試或建置",
+                  "驗證器SHA256": hashlib.sha256(raw).hexdigest(),
+                  "控制器SHA256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                  "前後合法資料均通過": True, "負控制數": len(results), "結果": results}, ensure_ascii=False, indent=2))

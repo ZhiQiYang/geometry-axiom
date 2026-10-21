@@ -1,0 +1,262 @@
+SPACE_SCOPE {"mode":"full-space-suite","filters":[],"included":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","projection-close"],"omitted":["timber-material","timber-source-guards"],"url":"http://127.0.0.1:18854/","feedbackDirectory":"/tmp/geo261-browser-five-l3-6589248c-formal/space/feedback"}
+PASS server serves the intended space-model release
+PASS current release explicitly supports timber preview and engineering sources
+PASS close-race during-source-read: explicit clear commits without changing geometry
+PASS close-race during-source-read: delayed notification is browser generated
+PASS close-race during-source-read: requested overlap is reached
+PASS close-race during-source-read: old notification does not cancel the new open
+PASS close-race during-source-read: the new session accepts and saves its own definition
+PASS close-race during-source-read: source World stays byte identical
+PASS close-race after-reopen: explicit clear commits without changing geometry
+PASS close-race after-reopen: delayed notification is browser generated
+PASS close-race after-reopen: requested overlap is reached
+PASS close-race after-reopen: old notification does not cancel the new open
+PASS close-race after-reopen: the new session accepts and saves its own definition
+PASS close-race after-reopen: source World stays byte identical
+PASS close-race ordinary cancel discards the draft
+PASS close-race ordinary escape discards the draft
+PASS a newly drawn face has no inferred projection definition
+PASS own-plan modeling visibly requires a definition before preview or create
+PASS projection definition works without importing a PDF or image
+PASS projection dialog defaults to general purpose without a saved projection or interior role
+PASS projection dialog shows source z and a visible outline container
+PASS cancel leaves the face definition and source geometry unchanged
+PASS explicit bottom-view interior projection records all four semantics
+PASS projection apply preserves previously entered wall bottom and height
+PASS source summary explains bottom view, interior and outward walls
+PASS bottom-view control selects bottom and the camera looks from negative world Z
+PASS changing projection during an in-flight preview rejects its late result and preserves fields
+PASS undo removes the projection definition without changing source geometry
+PASS redo restores the exact explicit projection definition
+PASS general purpose explicitly clears the projection and disables own-plan preview
+PASS deleting and recreating the same face and placement ids does not inherit metadata
+PASS a vertical face cannot be saved as a horizontal boundary plan
+PASS existing-face assembly bypasses only the plan-definition gate
+PASS an undefined vertical face can still be an explicit open-shell member
+PASS supported service opens the guided workspace without a redundant release badge
+PASS rectangle example has actual engine mesh
+PASS rectangle example uses the 3000 mm default height
+PASS rectangle enclosed volume comes from the engine result
+PASS computed volume is displayed in cubic metres
+PASS working wall thickness is 100 mm
+PASS creating requires explicit boundary confirmation
+PASS preview leaves source scene unchanged
+PASS 3D preview visibly renders colored geometry
+PASS roof visibility changes mesh display without changing the definition
+PASS material-wall visibility is independent of the enclosure
+PASS 1280x720 desktop gives the model at least 220px canvas height
+PASS compact desktop renders a useful model footprint
+PASS mobile setup genuinely hides the preview canvas
+PASS fit after a hidden tab restores a visible model instead of a tiny speck
+PASS returning from mobile preserves the compact desktop fit
+PASS pointer drag rotates the actual model
+PASS focused model supports keyboard rotation
+PASS focused model supports keyboard zoom
+PASS Shift dragging pans without rotating the model
+PASS rectangle commits a stored model
+PASS ready-to-use examples carry their explicit plan definition without configuring the user scene
+PASS creating a model preserves original source scene
+PASS model-only project is marked unsaved
+PASS model-only unsaved project requests leave confirmation
+PASS ISSUE159 1400px library retains the original Undo, Redo and native Save nodes
+PASS ISSUE159 1400px library history controls have 44px real hit targets without overflow
+PASS ISSUE159 1400px real library removal is one local history step and preserves native source
+PASS ISSUE159 1400px Undo restores the complete saved model bytes and creation history
+PASS ISSUE159 1400px completed Undo retains its original enabled keyboard focus
+PASS ISSUE159 1400px trusted Ctrl+Y redoes removal once from the retained Undo focus
+PASS ISSUE159 1400px trusted Ctrl+Z restores the exact model while keeping Undo focused
+PASS ISSUE159 1400px real Tab reaches the available original Redo button
+PASS ISSUE159 1400px Enter redoes removal and hands focus to the remaining enabled Undo
+PASS ISSUE159 1400px restored keyboard focus can undo again without changing saved source or mesh
+PASS ISSUE159 1400px all history refreshes preserve the same Save handler node and original controls
+PASS ISSUE159 390px library retains the original Undo, Redo and native Save nodes
+PASS ISSUE159 390px library history controls have 44px real hit targets without overflow
+PASS ISSUE159 390px real library removal is one local history step and preserves native source
+PASS ISSUE159 390px Undo restores the complete saved model bytes and creation history
+PASS ISSUE159 390px completed Undo retains its original enabled keyboard focus
+PASS ISSUE159 390px trusted Ctrl+Y redoes removal once from the retained Undo focus
+PASS ISSUE159 390px trusted Ctrl+Z restores the exact model while keeping Undo focused
+PASS ISSUE159 390px real Tab reaches the available original Redo button
+PASS ISSUE159 390px Enter redoes removal and hands focus to the remaining enabled Undo
+PASS ISSUE159 390px restored keyboard focus can undo again without changing saved source or mesh
+PASS ISSUE159 390px all history refreshes preserve the same Save handler node and original controls
+PASS ISSUE159 a valid current-face builder blocks library history and removal without changing raw draft, source or saved model
+PASS ISSUE159 canvas Undo removes the original model creation while preserving the exact native world and raw height
+PASS ISSUE159 stale source history leaves the real library Redo available without discarding raw height
+PASS ISSUE159 library Redo restores the complete first model and world while retaining raw height 3210
+PASS core edit after model creation succeeds
+PASS first undo removes core edit and keeps model
+PASS second undo removes model and keeps original source
+PASS first redo restores model without core edit
+PASS second redo restores core edit with model
+PASS L-shaped preview retains a nonrectangular boundary mesh
+PASS L-shaped volume is not replaced by its bounding box
+PASS L-shaped model commits independently
+PASS new local edit invalidates abandoned core redo
+PASS library reopens real stored model geometry
+PASS saved plan model exposes the existing model editing entry
+PASS changed inputs immediately invalidate prior preview
+PASS cancelling edits preserves source and stored models
+PASS current own face remains gated until its projection purpose is explicitly confirmed
+PASS source z=2500 stays independent from the blank bottom and default height 3000
+PASS apply-and-build returns to the same face and preserves the independent height fields
+PASS missing vertical range is a visible actionable rejection
+PASS explicit heights control result z bounds
+PASS own face at z=2500 previews the explicitly requested 0..2800 space
+PASS own placed face creates a persistent closed space using its real source
+PASS the created model snapshots projection purpose, view, interior and wall side
+PASS created plan model keeps saved-source height separate from explicit current-source adoption
+PASS cancelled height edit leaves the stored model and source intact
+PASS cancel during an in-flight preview ignores its late result
+PASS non-positive wall height visibly rejects without mutating the model
+PASS height preview recalculates enclosure, walls and z bounds
+PASS preview requires confirmation and preserves the prior saved result
+PASS mobile height editing and apply controls remain reachable without horizontal overflow
+PASS applying the height update preserves model identity, creation time and provenance
+PASS height update changes only the requested input and recalculated result
+PASS undo restores the complete pre-edit model without affecting its source
+PASS redo restores the edited model and regenerated geometry
+PASS model library offers the same direct height editor with the updated value
+PASS open space does not display a definite enclosed volume
+PASS explicitly open space can still be created
+PASS current-face conversion retains the source face at z=2500
+PASS 390px workspace has no horizontal overflow
+PASS mobile preview and confirmation remain reachable
+PASS mobile create control remains reachable after confirmation
+PASS cancelling a ready mobile example does not create a model
+PASS saved v3 package contains all model definitions and face projection metadata
+PASS reset removes models from the active project
+PASS reopen validates and restores all models exactly
+PASS saved and reopened model retains its edited 3200 mm height and recalculated volume
+PASS reopen restores the original source scene
+PASS reopen restores the independently saved per-face projection definition
+PASS reopened model remains viewable from the library
+PASS tampered but structurally valid model rejects before replacing the open project
+PASS legacy v2 models load without inventing per-face or model projection metadata
+PASS legacy model explicitly reports its missing projection definition
+PASS a legacy model remains height-editable using saved geometry without a fabricated view
+PASS legacy v1 scenes open as unconfigured faces without model metadata
+PASS restoring v3 after legacy projects restores exact model snapshots and face definitions
+PASS six existing faces and explicit orientations form a closed 33.6m3 space
+PASS existing-face volume is visible in the interface
+PASS existing-face mode saves all six real references and directions
+PASS a model assembled from faces has no single wall-height editor
+PASS combining existing faces does not recreate or modify source geometry
+PASS one existing face gives a legitimate open space without a volume
+PASS one-face open space can be stored independently
+PASS open-face creation also preserves the original placed faces
+PASS projection dialog targets the selected placement rather than the first placement of its boundary
+PASS editing z exposes the actual placement form without a covering modal
+PASS z editing updates only the selected placement and keeps its sibling unchanged
+PASS selected-placement z edit is one undoable geometry change
+PASS redo restores the same selected-placement z change
+PASS legal placement id zero is preserved by the face projection entry
+PASS interior confirmation remains visible above the outline at 689x668
+PASS mobile projection configuration and apply-build are visible, touch-sized and do not overflow
+PASS placement id zero retains its explicit bottom-view definition when starting a model
+PASS a legal placement-zero source creates an independently stored space
+PASS changing a live face definition does not rewrite an already-created model snapshot or its displayed semantics
+PASS saved height editing uses the saved projection snapshot even when the live face definition differs
+PASS cancelling this height edit leaves the original model record byte-equivalent
+PASS 390px drawer exposes touch-sized inspector projection and model entries
+SOURCE_LOAD_GATE {"closeFirst":false,"gate":{"phase":"held","context":"87ee56bc-3792-428b-a9a7-51c40dc9dd0a","caller":"Error\n    at interceptedFetch (eval at <anonymous> (:1:143), <anonymous>:10:20)\n    at apiRequest (http://127.0.0.1:18854/app.js:650:21)\n    at api (http://127.0.0.1:18854/app.js:702:24)\n    at Object.openCurrentFace (http://127.0.0.1:18854/space-workspace.js:445:24)\n    at HTMLDocument.<anonymous> (http://127.0.0.1:18854/app.js:179:49)","claimed":1,"held":1,"nativeOK":true,"ignored":[]},"context":"87ee56bc-3792-428b-a9a7-51c40dc9dd0a","snapshot":{"phase":"loading","sourceKind":null,"resultSummary":null,"createdId":null,"editingId":null,"supportsTimbers":true,"timberCandidates":[],"stale":true,"previewRevision":-1,"inputRevision":108,"viewer":{"objectCount":0,"triangleCount":0,"bounds":null,"labels":[],"view":"custom","yaw":-1.0853981633974485,"pitch":0.7554797086703874,"zoom":1,"pan":{"x":0,"y":0},"width":980,"height":692.875,"destroyed":false,"selection":null}},"open":true}
+PASS switching project during source load cannot bind the old response to the new project
+SOURCE_LOAD_GATE {"closeFirst":true,"gate":{"phase":"held","context":"0ee31097-01bb-4fe4-8317-98486e58cf43","caller":"Error\n    at interceptedFetch (eval at <anonymous> (:1:143), <anonymous>:10:20)\n    at apiRequest (http://127.0.0.1:18854/app.js:650:21)\n    at api (http://127.0.0.1:18854/app.js:702:24)\n    at Object.openCurrentFace (http://127.0.0.1:18854/space-workspace.js:445:24)\n    at HTMLDocument.<anonymous> (http://127.0.0.1:18854/app.js:179:49)","claimed":1,"held":1,"nativeOK":true,"ignored":[]},"context":"0ee31097-01bb-4fe4-8317-98486e58cf43","snapshot":{"phase":"loading","sourceKind":null,"resultSummary":null,"createdId":null,"editingId":null,"supportsTimbers":true,"timberCandidates":[],"stale":true,"previewRevision":-1,"inputRevision":109,"viewer":{"objectCount":0,"triangleCount":0,"bounds":null,"labels":[],"view":"custom","yaw":-1.0853981633974485,"pitch":0.7554797086703874,"zoom":1,"pan":{"x":0,"y":0},"width":980,"height":692.875,"destroyed":false,"selection":null}},"open":true}
+PASS closing a loading source and switching project cannot bind the old response to the new project
+PASS a late old-project response cannot reopen the closed workspace
+PASS GEO244 reuses projection confirmation to expose a real placement alignment
+PASS GEO244 alignment changes only the selected frame and preserves local outline, sibling placement and world bounds
+PASS GEO244 alignment preserves the entered wall bottom, height and thickness
+PASS GEO244 the actual aligned model preserves source z and exact volume
+PASS GEO244 real top-view pixels retain the asymmetric left-bottom extension and empty left-top corner
+PASS GEO244 creating a preview does not mutate the aligned source
+PASS GEO244 one undo restores the exact old placement and retains its projection
+PASS GEO244 one redo restores the exact aligned placement
+PASS GEO244 complete project saving records the aligned placement and actual producer input
+PASS GEO244 project import restores aligned source and saved model without inferred geometry
+PASS GEO244 saved-model top view preserves the same original-drawing corner after reopening
+PASS GEO244 stale source alignment is rejected without changing the current world
+PASS GEO244 cancelling the native timber impact preview preserves the exact scene and projection
+PASS committing top in the full dialog synchronizes the inline selector and alignment action
+PASS ordinary settings rendering preserves the unconfirmed inline direction without saving it
+PASS cancelling the full dialog preserves the saved top definition and unconfirmed inline draft
+PASS committing bottom synchronizes the selector and preserves height without changing placement
+PASS the synchronized top action aligns native V instead of writing bottom back
+PASS reopening retains the committed top direction and aligned native placement
+FONT main canvas {"min":11,"sel":"KBD"}
+PASS main canvas preserves the P20 11px minimum font contract
+FONT existing face workspace {"min":11,"sel":"#workspaceBackButton.workspace-back-button"}
+PASS existing face workspace preserves the P20 11px minimum font contract
+PASS documented face header rows fit at 1382px
+PASS documented face header rows fit at 1160px
+PASS documented face header rows fit at 900px
+PASS documented face header rows fit at 680px
+PASS documented face header rows fit at 600px
+FONT existing six-face space workspace {"min":11,"sel":"#workspaceBackButton.workspace-back-button"}
+PASS existing six-face space workspace preserves the P20 11px minimum font contract
+FONT new space-model desktop workspace {"min":11,"sel":"KBD"}
+PASS new space-model desktop workspace preserves the P20 11px minimum font contract
+COMPACT {"canvasWidth":895,"canvasHeight":290,"pixelWidth":229,"pixelHeight":240,"pixels":38637,"docWidth":1280,"innerWidth":1280}
+PASS 11px fonts preserve 1280x720 canvas height and actual model visibility
+PASS desktop primary actions retain 44px hit targets
+FONT new space-model mobile preview {"min":11,"sel":".statusbar"}
+PASS new space-model mobile preview preserves the P20 11px minimum font contract
+PASS mobile fit retains a real visible model within the compact preview area
+PASS hiding and restoring the mobile preview retains the same visible model size
+PASS 11px mobile preview has no horizontal overflow and a 44px next action
+FONT new space-model mobile setup {"min":11,"sel":".statusbar"}
+PASS new space-model mobile setup preserves the P20 11px minimum font contract
+PASS mobile setup primary actions retain 44px hit targets
+PASS 11px mobile confirmation leaves the create action reachable
+PASS return-to-canvas button closes the workspace with a real pointer click
+PASS GEO210 own horizontal face opens directly with inline explicit semantics and no nested modal
+PASS GEO210 first-use instructions and advanced source/boundary choices start collapsed
+PASS GEO210 wall bottom stays explicit with independent 3000 height and 100 thickness defaults
+PASS GEO210 undefined projection retains a usable setup area and fully visible primary confirmation at 690x668
+PASS GEO210 undefined projection retains a usable setup area and fully visible primary confirmation at 390x844
+PASS GEO210 selecting a viewing direction alone does not declare projection semantics
+PASS GEO210 keyboard Enter confirms inline projection and stores all four semantics
+PASS GEO210 confirming projection preserves the source geometry
+PASS GEO210 the streamlined flow still rejects unspecified wall bottom
+PASS GEO210 keyboard Enter activates the explicit zero shortcut without taking source z as bottom
+PASS GEO210 default quick path produces exact 0..3000 geometry and 36m3 volume
+PASS GEO210 confirmation is colocated with create in the persistent footer and remains unchecked
+PASS GEO210 confirmation and create fit without hiding setup at 690x668
+PASS GEO210 confirmation and create fit without hiding setup at 390x844
+PASS GEO210 review disclosure opens the actual generated face list
+PASS GEO210 changing a field still invalidates preview and clears confirmation
+PASS GEO210 same-source reopen preserves entered height but demands a fresh preview and review
+PASS GEO210 creation clearly exposes save as a separate next step
+PASS GEO210 cancelling the save picker leaves the model dirty and the save reminder accurate
+PASS GEO210 fallback download asks the user to confirm completion and does not claim a saved file
+PASS GEO210 successful save updates the next-step notice instead of continuing to request saving
+PASS GEO210 the Save button writes a reopenable gcanvas with exact model and projection
+PASS GEO210 created model settings are not silently recycled into a new source draft
+PASS GEO210 saved-model view hides new-source shortcuts and retains its saved height
+PASS GEO210 cancelled saved-height editing cannot overwrite an independent source draft
+PASS GEO210 FREE edges initially remain unselected and holes remain explicitly undefined
+PASS GEO210 an unspecified hole still rejects preview with an actionable visible control
+PASS GEO210 close and reopen restores same-source name, heights, thickness, holes, caps, edges, obstacle and timber choices
+PASS GEO210 draft restoration does not revive preview or confirmation
+PASS GEO210 editing and restoring a draft does not mutate the world, undo history or dirty state
+PASS GEO210 importing a different project context with identical face ids cannot reuse the old draft
+PASS GEO210 history test returns to the exact original source world
+PASS GEO210 same-dump undo cannot revalidate an earlier draft
+PASS GEO210 deleting and reusing source ids does not inherit draft values or projection semantics
+INLINE_PROJECTION_GATE {"action":"close","gate":{"phase":"held","caller":"Error\n    at callerStack (eval at <anonymous> (:1:143), <anonymous>:1:66)\n    at scope.fetch (eval at <anonymous> (:1:143), <anonymous>:9:20)\n    at apiRequest (http://127.0.0.1:18854/app.js:650:21)\n    at api (http://127.0.0.1:18854/app.js:702:24)\n    at HTMLButtonElement.confirmProjection (http://127.0.0.1:18854/space-workspace.js:501:24)","command":"dump","matched":true},"open":true,"pending":true,"projections":[null,null]}
+INLINE_PROJECTION_RELEASE {"action":"close","projectionsAfter":[null,null]}
+PASS GEO210 late inline confirmation cannot save after close
+INLINE_PROJECTION_GATE {"action":"source","gate":{"phase":"held","caller":"Error\n    at callerStack (eval at <anonymous> (:1:143), <anonymous>:1:66)\n    at scope.fetch (eval at <anonymous> (:1:143), <anonymous>:9:20)\n    at apiRequest (http://127.0.0.1:18854/app.js:650:21)\n    at api (http://127.0.0.1:18854/app.js:702:24)\n    at HTMLButtonElement.confirmProjection (http://127.0.0.1:18854/space-workspace.js:501:24)","command":"dump","matched":true},"open":true,"pending":true,"projections":[null,null]}
+INLINE_PROJECTION_RELEASE {"action":"source","projectionsAfter":[null,null]}
+PASS GEO210 late inline confirmation cannot save after source
+INLINE_PROJECTION_GATE {"action":"context","gate":{"phase":"held","caller":"Error\n    at callerStack (eval at <anonymous> (:1:143), <anonymous>:1:66)\n    at scope.fetch (eval at <anonymous> (:1:143), <anonymous>:9:20)\n    at apiRequest (http://127.0.0.1:18854/app.js:650:21)\n    at api (http://127.0.0.1:18854/app.js:702:24)\n    at HTMLButtonElement.confirmProjection (http://127.0.0.1:18854/space-workspace.js:501:24)","command":"dump","matched":true},"open":true,"pending":true,"projections":[null,null]}
+INLINE_PROJECTION_RELEASE {"action":"context","projectionsAfter":[null,null]}
+PASS GEO210 late inline confirmation cannot save after context
+INLINE_PROJECTION_GATE {"action":"direction","gate":{"phase":"held","caller":"Error\n    at callerStack (eval at <anonymous> (:1:143), <anonymous>:1:66)\n    at scope.fetch (eval at <anonymous> (:1:143), <anonymous>:9:20)\n    at apiRequest (http://127.0.0.1:18854/app.js:650:21)\n    at api (http://127.0.0.1:18854/app.js:702:24)\n    at HTMLButtonElement.confirmProjection (http://127.0.0.1:18854/space-workspace.js:501:24)","command":"dump","matched":true},"open":true,"pending":true,"projections":[null,null]}
+PASS GEO210 pending confirmation prevents user changes to viewing direction
+INLINE_PROJECTION_RELEASE {"action":"direction","projectionsAfter":[null,null]}
+PASS GEO210 late inline confirmation cannot save after direction
+PASS no uncaught browser exceptions
+PASS no browser console errors
+SPACE_RESULT {"schema":"geometry-space-result/1","scope":{"mode":"full-space-suite","filters":[],"included":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","projection-close"],"omitted":["timber-material","timber-source-guards"],"url":"http://127.0.0.1:18854/","feedbackDirectory":"/tmp/geo261-browser-five-l3-6589248c-formal/space/feedback"},"completed":true,"groups":{"setup":{"expected":2,"passed":2,"failed":0,"completed":true},"space-height-library":{"expected":112,"passed":112,"failed":0,"completed":true},"projection-lifecycle":{"expected":18,"passed":18,"failed":0,"completed":true},"projection-placement":{"expected":36,"passed":36,"failed":0,"completed":true},"font-layout":{"expected":19,"passed":19,"failed":0,"completed":true},"space-flow":{"expected":39,"passed":39,"failed":0,"completed":true},"projection-close":{"expected":14,"passed":14,"failed":0,"completed":true},"browser-health":{"expected":2,"passed":2,"failed":0,"completed":true}},"completenessProblems":[],"passed":242,"failed":0,"exceptions":[],"consoleErrors":[]}
+RESULT 242 passed / 0 failed; completed: true; scope: full-space-suite; omitted groups: timber-material,timber-source-guards; artifacts: /tmp/geo261-browser-five-l3-6589248c-formal/space/space-artifacts

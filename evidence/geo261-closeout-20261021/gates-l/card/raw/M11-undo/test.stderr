@@ -1,0 +1,16 @@
+test_CR17_CANDIDATE_LIFECYCLE (tests.test_grid_card_reference.GridCardReference.test_CR17_CANDIDATE_LIFECYCLE) ... FAIL
+
+======================================================================
+FAIL: test_CR17_CANDIDATE_LIFECYCLE (tests.test_grid_card_reference.GridCardReference.test_CR17_CANDIDATE_LIFECYCLE)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 319, in test_CR17_CANDIDATE_LIFECYCLE
+    self.apply_line('undo'); self.assertEqual(before, self.dump(), 'CANDIDATE_LIFECYCLE one undo')
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'requ[705 chars]10 3 8 u repeat -5 card v repeat 7 card\ngrid-[72 chars] 1\n' != 'requ[705 chars]10 3 3 u repeat -5 card v repeat 7 card\ngrid-[72 chars] 1\n'
+Diff is 1076 characters long. Set self.maxDiff to None to see it. : CANDIDATE_LIFECYCLE one undo
+
+----------------------------------------------------------------------
+Ran 1 test in 0.274s
+
+FAILED (failures=1)

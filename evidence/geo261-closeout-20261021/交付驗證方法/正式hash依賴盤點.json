@@ -1,0 +1,56 @@
+{
+  "範圍": "僅AST與原bytes hash，沒有載入正式模組或執行函式",
+  "head": "43f85313c32410ac01406ab585846bbacafea278",
+  "modules": {
+    "binaries": {
+      "path": "tests/binaries.py",
+      "rawSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651",
+      "nonStdlibImports": []
+    },
+    "run_tests": {
+      "path": "tests/run_tests.py",
+      "rawSha256": "a41dace1eff6a4936dbc3476b0348c1ef22d48c4ae1d3aac1a72874f287b877e",
+      "nonStdlibImports": []
+    },
+    "mutation_bridge": {
+      "path": "tests/mutation_bridge.py",
+      "rawSha256": "3d0b7529bedcc886c132ba4804aa8ac767a32e544dbb1ebd819c54f37c64a271",
+      "nonStdlibImports": [
+        {
+          "line": 171,
+          "module": "mutate"
+        }
+      ]
+    },
+    "mutate": {
+      "path": "tests/mutate.py",
+      "rawSha256": "8fc573fba9596ca8c6570a99c7de284584643a3560cee6cf5f0ac27416d26451",
+      "nonStdlibImports": [
+        {
+          "line": 78,
+          "module": "binaries"
+        },
+        {
+          "line": 79,
+          "module": "run_tests"
+        },
+        {
+          "line": 867,
+          "module": "mutation_bridge"
+        },
+        {
+          "line": 999,
+          "module": "mutation_bridge"
+        },
+        {
+          "line": 1094,
+          "module": "mutation_bridge"
+        },
+        {
+          "line": 1439,
+          "module": "mutation_bridge"
+        }
+      ]
+    }
+  }
+}

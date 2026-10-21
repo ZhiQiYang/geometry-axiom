@@ -1,0 +1,21 @@
+--- peer-code.txt
++++ peer-code-v2.txt
+@@ -71,7 +71,7 @@
+ assert launch['observedWrapperReturncode']==0 and launch['wrapperBytesUnchanged'] is True
+ assert tool['start']['session_id']==91498
+ assert tool['final']['exit_code']==0 and tool['final']['chunk_id']=='784516'
+-assert preflight['parentEnvironment']=={'CCPresent':False,'PYTHONOPTIMIZEPresent':False}
++assert preflight['parentEnvironment']=={'CCPresent':False,'PYTHONOPTIMIZEPresent':False,'actualLaunchRemovesBoth':True}
+ assert digest(read(outer('-wrapper-command-code.txt')))==receipt['wrapperSha256']==launch['wrapperSha256']
+ assert digest(read(outer('-launcher-command-code.txt')))==launch['launcherSha256']
+ assert receipt['wrapperSha256']=='327e926ae0e88fff4b04e68afdee9fb12e9dd2dff0a839fb340603a9fc20121a'
+@@ -157,7 +157,8 @@
+ 
+ report={'schema':'geo261-canvas-L3-independent-review/1','sourceSha':SHA,'checkedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+  'verificationExitCode':0,'acceptedCanvasOnL3':True,'allSevenJobsAcceptedByThisRecord':False,
+- 'peerMethodSha256':digest(read(Path(__file__))),'rawResultEqualsSavedResult':True,
++ 'peerMethodSha256':digest(read(Path(__file__))),
++ 'priorPeerAttempt':{'method':'peer-code.txt','execution':'execution.json','observedReturncode':1,'cause':'接受器沿 L2 預期只有兩個 parentEnvironment 欄位；L3 多 actualLaunchRemovesBoth:true。兩個環境變數實為 absent，屬接受器 schema 誤判，非產品失敗。'},'rawResultEqualsSavedResult':True,
+  'passed':2261,'failed':0,'skipped':[],'goldenSections':85,'goldenSha256':digest(golden_raw),
+  'expectedBrowserExceptions':expected,'unexpectedBrowserExceptionCount':0,'firstTransportFailure':transport,'firstNetworkFailure':network,
+  'exceptionScope':'P38 原具名一次例外守門命中；P53 部分讀取與 P61-13 回應遺失控制的 metadata 保留，不泛化為忽略任意錯誤。',

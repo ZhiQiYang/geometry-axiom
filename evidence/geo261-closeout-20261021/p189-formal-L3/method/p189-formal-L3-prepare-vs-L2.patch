@@ -1,0 +1,32 @@
+--- p189-formal-L2-prepare.py
++++ p189-formal-L3-prepare.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""外部正式 L2 來源準備器；只讀 Git 與解 archive，不建置／測試／取樣。"""
++"""外部正式 L3 來源準備器；只讀 Git 與解 archive，不建置／測試／取樣。"""
+ import argparse
+ import datetime
+ import hashlib
+@@ -15,10 +15,11 @@
+ p.add_argument('--expected-parent',required=True)
+ a=p.parse_args()
+ E=Path('/workspace/geo261-evidence');R=Path('/workspace/geometry-axiom')
+-L='43f85313c32410ac01406ab585846bbacafea278'
+-C=a.source_head;LABEL='formal-L2';H='59796b1af9259eb23d30134c2ce5a56317a06091'
++L='249571fe2477845d5330f6190dad965bf327f43b'
++C=a.source_head;LABEL='formal-L3';H='59796b1af9259eb23d30134c2ce5a56317a06091'
+ assert len(C)==40 and all(c in '0123456789abcdef' for c in C)
+ assert len(a.expected_parent)==40 and all(c in '0123456789abcdef' for c in a.expected_parent)
++assert a.expected_parent=='19401ca5448e162ee6140fed37b64b83b31ddec8'
+ if not __debug__:
+     raise RuntimeError('不可使用 Python -O／PYTHONOPTIMIZE')
+ W=Path(tempfile.mkdtemp(prefix='geo261-p189-'+LABEL+'-src-',dir='/workspace'))
+@@ -87,7 +88,7 @@
+ assert sha(supervisor.read_bytes())=='e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413'
+ assert git('rev-parse','HEAD').decode().strip()==C
+ assert git('status','--porcelain')==b''
+-prep={'prepared_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'classification':'正式 L2 P-189 驗收；本來源需新實跑，不沿用候選成績',
++prep={'prepared_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'classification':'正式 L3 P-189 驗收；本來源需新實跑，不沿用 L2 或候選成績',
+  'label':LABEL,'source_worktree':str(R),'repo':str(R),'work':str(W),'out':str(O),'commits':commits,
+  'expected_parent':a.expected_parent,'source_sha':C,'source_head_clean_matches':True,'source_parent_matches':True,'parent_delta_only_ledger':True,'changed_paths':changed,
+  'changed_blobs':changed_blobs,'source_parent_ledger_patch_sha256':sha(patch),'source_vs_previous_L_patch_sha256':sha(lpatch),

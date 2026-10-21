@@ -1,0 +1,11 @@
+{
+  "observed_utc": "2026-10-21T01:49:47.423892+00:00",
+  "tool_chunk_id": "b3900c",
+  "actual_tool_exit_code": 1,
+  "reason": "assert Path(/usr/bin/time).is_file()失敗，GNU time不存在",
+  "load_runs_started": 0,
+  "main_binary_started": false,
+  "final_binary_started": false,
+  "files_existed_before_failure_record": [],
+  "transcript_is_tool_output_not_child_stderr": true
+}

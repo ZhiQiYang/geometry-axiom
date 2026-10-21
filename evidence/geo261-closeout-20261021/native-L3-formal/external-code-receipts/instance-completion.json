@@ -1,0 +1,62 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "runId": "l3-6589248c9a94-20261021",
+  "recordedUtc": "2026-10-21T05:42:57.436218+00:00",
+  "gateJobs": 1,
+  "expectedScope": {
+    "suites": 224,
+    "pythonModules": 188,
+    "countedTotal": 5188
+  },
+  "preparedOnly": true,
+  "readyToLaunch": false,
+  "preflightExecuted": false,
+  "productExecuted": false,
+  "globalStorageAccessed": false,
+  "newOperationalPathsAbsent": {
+    "nativeWorktree": true,
+    "gatesWorktree": true,
+    "nativeTmpdir": true,
+    "globalArchive": true,
+    "nativeOut": true,
+    "gatesOut": true
+  },
+  "files": {
+    "instance.json": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/instance.json",
+      "bytes": 23047,
+      "sha256": "ad0e74a3798fedf240d7a02af82ee7849496981276418335c38b9f36715ac1f3"
+    },
+    "native-parent-code.txt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/native-parent-code.txt",
+      "bytes": 6477,
+      "sha256": "6c32561bf1e6fbe72f78167918be60e64418655fc201ac924d58d34ef0d10e7c"
+    },
+    "native-wrapper-code.txt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/native-wrapper-code.txt",
+      "bytes": 4951,
+      "sha256": "3b9372aac1ce431385fb5de063587a045fd2741682add31d32883daa1fa0db0a"
+    },
+    "phase-launcher.py": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/phase-launcher.py",
+      "bytes": 6005,
+      "sha256": "02fe0c9606bab8ae4132c743eaa9c38d47d91cc2a44fd15865eb169c651ddc40"
+    },
+    "prepare-native.py": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/prepare-native.py",
+      "bytes": 9007,
+      "sha256": "4cdf85d6c1fa04363d98018d049c0684c584dc3934cb886e13037c61ff218fbd"
+    },
+    "preflight-materialization.json": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/preflight-materialization.json",
+      "bytes": 3488,
+      "sha256": "8d0c14c47658f614a26d65b1603df2d700abe8c323fa06fa1bcf7b60737ccb23"
+    },
+    "instance-preparation-tool-observations.json": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/instance-preparation-tool-observations.json",
+      "bytes": 4841,
+      "sha256": "c189de14a146085cdee4b218fe69f195e9e9694abdda2840f60506dc2e063447"
+    }
+  },
+  "nextStep": "停止 IO；等待同 L3 正式 P189 全輪完成及 root 明確放行，才執行既有 prepare-native.py。"
+}

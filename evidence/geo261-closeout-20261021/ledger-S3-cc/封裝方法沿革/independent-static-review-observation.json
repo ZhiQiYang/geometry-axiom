@@ -1,0 +1,34 @@
+{
+  "recorded_utc": "2026-10-21T05:19:23.560306+00:00",
+  "type": "協作訊息的觀察轉錄，不是本代理重跑或raw transport",
+  "final_method_sha256": "f550a9fc2f7983d90a62e18c0a70bd6f7a7f5ee09fcbcd397fd1e7d55dc4595b",
+  "peer": "/root/architecture_receipt",
+  "peer_tool_observations": [
+    {
+      "chunk_id": "815330",
+      "exit_code": 0,
+      "scope": "完整讀v1→v2、v2→v3兩個小diff"
+    },
+    {
+      "chunk_id": "d258a3",
+      "exit_code": 0,
+      "scope": "最終16075 bytes/hash核"
+    }
+  ],
+  "peer_conclusion": "未見阻擋；新增完整methoddir/前置result guard/adoption原欄位與remote/binding精確schema，不放寬原來源與真碼判準。不同path方法snapshot沒有自含循環，真pack raw需放目錄外。",
+  "not_performed": [
+    "封包執行",
+    "產品測試",
+    "mutate/check重跑"
+  ],
+  "root_review_observations": [
+    {
+      "chunk_id": "b48118",
+      "scope": "完整v1差分讀取"
+    },
+    {
+      "chunk_id": "e2a756",
+      "scope": "實際config/validator/binding schema讀取"
+    }
+  ]
+}

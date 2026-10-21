@@ -1,0 +1,370 @@
+{
+  "prepared_utc": "2026-10-21T00:47:01.821307+00:00",
+  "branch": "codex/geo261-closeout-20261021",
+  "repo": "/workspace/geometry-axiom",
+  "work": "/workspace/geo261-p189-final-L-src.dqc1bplz",
+  "out": "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03",
+  "commits": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "final": "43f85313c32410ac01406ab585846bbacafea278"
+  },
+  "runner": "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+  "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+  "runner_git_blob": "666a8897b44e39c7209e598bce442830082c440c",
+  "runner_snapshot": "/workspace/geo261-p189-final-L-src.dqc1bplz/runner-snapshot/p189_verify.py",
+  "generator": "/workspace/geo261-p189-final-L-src.dqc1bplz/gen_scene.py",
+  "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "generator_source": "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/gen_scene.py",
+  "source_materialization": "依固定工具相同 git archive 參數新建三方來源；不含 .git。尚未建置；build phase 日後仍會按原工具重新解 archive。",
+  "archives": [
+    {
+      "label": "main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "argv": [
+        "git",
+        "archive",
+        "--format=tar",
+        "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+        "--",
+        "current_geometry.c",
+        "geometry-core",
+        "geometry-web",
+        ":(exclude)geometry-core/domain-decoupling",
+        ":(exclude)geometry-web/docs",
+        ":(exclude)geometry-web/prototypes",
+        ":(exclude)geometry-web/vendor",
+        ":(exclude)geometry-web/node_modules"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "exit_code": 0,
+      "archive_path": "/workspace/geo261-p189-final-L-src.dqc1bplz/archives/main.tar",
+      "archive_bytes": 14745600,
+      "archive_sha256": "e23b5eb07856ec5729b62e881dba7e009d84ab923c76556bd7b5c83e2584f020",
+      "source_directory": "/workspace/geo261-p189-final-L-src.dqc1bplz/adbaebf9",
+      "source_file_count": 495,
+      "source_index": "source-files-main.json",
+      "extracted_files_match_archive_bytes": true,
+      "contains_git_metadata": false,
+      "bridge_exists": false
+    },
+    {
+      "label": "base",
+      "sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "argv": [
+        "git",
+        "archive",
+        "--format=tar",
+        "3e600772076465fc65a26ac09055028301c0fb0b",
+        "--",
+        "current_geometry.c",
+        "geometry-core",
+        "geometry-app",
+        "geometry-templates",
+        "geometry-web",
+        ":(exclude)geometry-core/domain-decoupling",
+        ":(exclude)geometry-web/docs",
+        ":(exclude)geometry-web/prototypes",
+        ":(exclude)geometry-web/vendor",
+        ":(exclude)geometry-web/node_modules"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "exit_code": 0,
+      "archive_path": "/workspace/geo261-p189-final-L-src.dqc1bplz/archives/base.tar",
+      "archive_bytes": 16056320,
+      "archive_sha256": "eb1a3a14c3cba61c651cbf824e705475f1e7f4ce7d32ad2606bb965d3b540d04",
+      "source_directory": "/workspace/geo261-p189-final-L-src.dqc1bplz/3e600772",
+      "source_file_count": 673,
+      "source_index": "source-files-base.json",
+      "extracted_files_match_archive_bytes": true,
+      "contains_git_metadata": false,
+      "bridge_exists": false
+    },
+    {
+      "label": "final",
+      "sha": "43f85313c32410ac01406ab585846bbacafea278",
+      "argv": [
+        "git",
+        "archive",
+        "--format=tar",
+        "43f85313c32410ac01406ab585846bbacafea278",
+        "--",
+        "current_geometry.c",
+        "geometry-core",
+        "geometry-app",
+        "geometry-templates",
+        "geometry-web",
+        ":(exclude)geometry-core/domain-decoupling",
+        ":(exclude)geometry-web/docs",
+        ":(exclude)geometry-web/prototypes",
+        ":(exclude)geometry-web/vendor",
+        ":(exclude)geometry-web/node_modules"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "exit_code": 0,
+      "archive_path": "/workspace/geo261-p189-final-L-src.dqc1bplz/archives/final.tar",
+      "archive_bytes": 16066560,
+      "archive_sha256": "913ca2b62a3e0d4e8b28e328fbccc89be57110056afb856ae1a283f5b43ffcc0",
+      "source_directory": "/workspace/geo261-p189-final-L-src.dqc1bplz/43f85313",
+      "source_file_count": 673,
+      "source_index": "source-files-final.json",
+      "extracted_files_match_archive_bytes": true,
+      "contains_git_metadata": false,
+      "bridge_exists": false
+    }
+  ],
+  "planned_commands": [
+    {
+      "phase": "generator-selftest",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz/gen_scene.py",
+        "--selftest"
+      ]
+    },
+    {
+      "phase": "selftest",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "selftest",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz",
+        "--out",
+        "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03",
+        "--gen",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz/gen_scene.py",
+        "--final",
+        "43f85313c32410ac01406ab585846bbacafea278",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "build",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "build",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz",
+        "--out",
+        "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03",
+        "--gen",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz/gen_scene.py",
+        "--final",
+        "43f85313c32410ac01406ab585846bbacafea278",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "equivalence",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "equivalence",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz",
+        "--out",
+        "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03",
+        "--gen",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz/gen_scene.py",
+        "--final",
+        "43f85313c32410ac01406ab585846bbacafea278",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "timing",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "timing",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz",
+        "--out",
+        "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03",
+        "--gen",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz/gen_scene.py",
+        "--final",
+        "43f85313c32410ac01406ab585846bbacafea278",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "check",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "check",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz",
+        "--out",
+        "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03",
+        "--gen",
+        "/workspace/geo261-p189-final-L-src.dqc1bplz/gen_scene.py",
+        "--final",
+        "43f85313c32410ac01406ab585846bbacafea278",
+        "--timeout",
+        "900"
+      ]
+    }
+  ],
+  "phase_commands_executed": [],
+  "environment_remove_before_execution": [
+    "PYTHONOPTIMIZE"
+  ],
+  "selftest_static_inventory": [
+    {
+      "case": "正常對照",
+      "expected_pass": true
+    },
+    {
+      "case": "超過門檻",
+      "expected_pass": false
+    },
+    {
+      "case": "缺樣本",
+      "expected_pass": false
+    },
+    {
+      "case": "載入遭拒",
+      "expected_pass": false
+    },
+    {
+      "case": "程序崩潰",
+      "expected_pass": false
+    },
+    {
+      "case": "錯誤樣本 SHA",
+      "expected_pass": false
+    },
+    {
+      "case": "非法時間 nan",
+      "expected_pass": false
+    },
+    {
+      "case": "非法時間 inf",
+      "expected_pass": false
+    },
+    {
+      "case": "非法時間 0.0",
+      "expected_pass": false
+    },
+    {
+      "case": "非法時間 -1.0",
+      "expected_pass": false
+    },
+    {
+      "case": "改動 main dump；產生器=True",
+      "expected_pass": false
+    },
+    {
+      "case": "改動 final dump；產生器=True",
+      "expected_pass": false
+    },
+    {
+      "case": "改動 main dump；產生器=False",
+      "expected_pass": true
+    },
+    {
+      "case": "改動 base dump；產生器=False",
+      "expected_pass": false
+    },
+    {
+      "case": "錯誤 dump 收據 SHA",
+      "expected_pass": false
+    },
+    {
+      "case": "錯誤建置收據 SHA",
+      "expected_pass": false
+    }
+  ],
+  "selftest_inventory_is_execution": false,
+  "selftest_phase_rule": "只有 selftest 或 all 執行 validator_selftest；本輪將顯式獨立 selftest。build/equivalence/timing/check 皆不自動執行這16控制。",
+  "timing_return_rule": "timing phase 收樣完成回0，即使 timing-receipt.pass=false；正式門檻由 check 回0或1。",
+  "equivalence_return_rule": "equivalence phase 收集完成回0不代表等價判定為真；核 dump-equivalence.pass及complete，最終check同時裁判。",
+  "root_scene_count": 171,
+  "generated_scene_count": 4,
+  "expected_equivalence_scene_count": 175,
+  "expected_timing_sample_count": 36,
+  "timeout_seconds": 900,
+  "stack_kib": 16384,
+  "compile_flags": [
+    "gcc",
+    "-std=c11",
+    "-O2",
+    "geometry-web/web_bridge.c",
+    "-o",
+    "bridge",
+    "-lm"
+  ],
+  "threshold_final_main_ratio": 2.0,
+  "build_started": false,
+  "equivalence_started": false,
+  "timing_started": false,
+  "check_started": false,
+  "selftest_started": false,
+  "scheduled_state": "主代理2026-10-21已明確放行全流程，並明確授權補校準原件後新out續跑；此準備完成即啟動。",
+  "old_template_preserved": "/workspace/geo261-evidence/p189-L-plan.md",
+  "old_L1_preparation_not_reused": "/workspace/geo261-evidence/p189-L-cd4ac98f4417.f5u9nd3t",
+  "old_7dae_results_unchanged": "/workspace/geo261-evidence/final-bundle/p189",
+  "diagnostic_tool_availability_readonly": {
+    "objdump": "/usr/bin/objdump",
+    "nm": "/usr/bin/nm",
+    "perf": null,
+    "gprof": "/usr/bin/gprof"
+  },
+  "previous_preparation_failure": {
+    "out": "/workspace/geo261-evidence/p189-final-L-43f85313c324.wfwk1_ca",
+    "phase": "generator-selftest",
+    "actual_exit_code": 1,
+    "reason": "準備漏帶產生器的預設校準檔，FileNotFoundError；未跑其他phase／未建置／沒有效能樣本",
+    "raw_preserved": true
+  },
+  "generator_calibration": {
+    "path": "/workspace/geo261-p189-final-L-src.dqc1bplz/calib/f3-00.scene",
+    "source": "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/calib/f3-00.scene",
+    "git_blob": "541434203427d34f64e560b34adac9d7ffaa2ffe",
+    "sha256": "35e24fb0a483ffd6fee8dd99f751edeb127418481aa717816af804cd218024b2",
+    "bytes": 16255,
+    "matches_git_blob_bytes": true
+  },
+  "generator_dependency_review": {
+    "method": "只讀AST列出全部open與路徑構造，核selftest及build/check_room呼叫。selftest唯一外部讀取為calib；其餘open屬未呼叫的輸出helper或--out/--meta路徑。標準庫import沒有本機模組依賴。",
+    "selftest_input_files": [
+      "/workspace/geo261-p189-final-L-src.dqc1bplz/calib/f3-00.scene"
+    ],
+    "review_exit_code": 0
+  },
+  "source_recheck_after_preparation_fix": {
+    "all_archive_files_match_recorded_bytes": true,
+    "all_archive_hashes_match": true,
+    "three_bridge_binaries_absent": true,
+    "runner_generator_hashes_unchanged": true
+  }
+}

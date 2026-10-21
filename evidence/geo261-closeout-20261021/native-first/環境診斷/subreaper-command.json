@@ -1,0 +1,21 @@
+{
+  "name": "subreaper",
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "cwd": "/workspace/geo261-native",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-c",
+    "import ctypes,json,os,sys\nfrom pathlib import Path\nfrom datetime import datetime,timezone\ndef now():\n    return datetime.now(timezone.utc).isoformat()\ntarget=Path(sys.argv[1])\ncommand=json.loads(sys.argv[2])\nlibc=ctypes.CDLL(None,use_errno=True)\nresult=libc.prctl(36,1,0,0,0)\nif result != 0:\n    raise OSError(ctypes.get_errno(),\"PR_SET_CHILD_SUBREAPER\")\nprobe=ctypes.c_int(0)\nif libc.prctl(37,ctypes.byref(probe),0,0,0) != 0 or probe.value != 1:\n    raise RuntimeError(\"PR_GET_CHILD_SUBREAPER verification failed\")\nrecord={\"startedUtc\":now(),\"wrapperPid\":os.getpid(),\"subreaper\":probe.value,\"testCommand\":command,\"reaped\":[]}\nchild=os.fork()\nif child == 0:\n    os.execv(command[0],command)\nrecord[\"testPid\"]=child\ntest_exit=None\nwhile True:\n    try:\n        pid,status=os.waitpid(-1,0)\n    except ChildProcessError:\n        break\n    code=os.waitstatus_to_exitcode(status)\n    record[\"reaped\"].append({\"pid\":pid,\"rawWaitStatus\":status,\"exitCode\":code,\"isTestProcess\":pid==child,\"reapedUtc\":now()})\n    if pid == child:\n        test_exit=code\nrecord[\"testExit\"]=test_exit\nrecord[\"endedUtc\"]=now()\nrecord[\"allOwnChildrenReaped\"]=True\ntarget.write_text(json.dumps(record,ensure_ascii=False,indent=2)+\"\\n\",encoding=\"utf-8\")\nif test_exit is None:\n    raise SystemExit(125)\nraise SystemExit(test_exit if test_exit >= 0 else 128-test_exit)\n",
+    "/workspace/geo261-evidence/native-final/環境診斷/subreaper-reaped.json",
+    "[\"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3\", \"-B\", \"-m\", \"unittest\", \"tests.test_assembly_mutation_check.AssemblyMutationCheck.test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left\"]"
+  ],
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8"
+  },
+  "stackKiB": 16384,
+  "expectedExit": 0,
+  "startedUtc": "2026-10-20T20:38:47.180566+00:00"
+}

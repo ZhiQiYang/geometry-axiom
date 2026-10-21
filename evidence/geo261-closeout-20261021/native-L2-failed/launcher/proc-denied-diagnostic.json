@@ -1,0 +1,61 @@
+{
+  "sampledUtc": "2026-10-21T04:13:13.112029+00:00",
+  "items": [
+    {
+      "pid": 1,
+      "read": {
+        "status": "Name:\ttail\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t1\nNgid:\t0\nPid:\t1\nPPid:\t0\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t256\nGroups:\t \nNStgid:\t1\nNSpid:\t1\nNSpgid:\t1\nNSsid:\t1\nKthread:\t0\nVmPeak:\t    3056 kB\nVmSize:\t    3056 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t     876 kB\nVmRSS:\t     876 kB\nRssAnon:\t     120 kB\nRssFile:\t     756 kB\nRssShmem:\t       0 kB\nVmData:\t     224 kB\nVmStk:\t     132 kB\nVmExe:\t      48 kB\nVmLib:\t    1588 kB\nVmPTE:\t      48 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t1\nSigQ:\t4/136275\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1f\nCpus_allowed_list:\t0-4\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t31460\nnonvoluntary_ctxt_switches:\t37\n",
+        "cmdline": "tail -f /dev/null ",
+        "comm": "tail\n",
+        "cgroup": "0::/\n"
+      },
+      "errors": {
+        "exe": "[Errno 13] Permission denied: '/proc/1/exe'",
+        "cwd": "[Errno 13] Permission denied: '/proc/1/cwd'",
+        "root": "[Errno 13] Permission denied: '/proc/1/root'"
+      }
+    },
+    {
+      "pid": 2,
+      "read": {
+        "status": "Name:\tcaas-prefix-tra\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t2\nNgid:\t0\nPid:\t2\nPPid:\t1\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t256\nGroups:\t \nNStgid:\t2\nNSpid:\t2\nNSpgid:\t1\nNSsid:\t1\nKthread:\t0\nVmPeak:\t     984 kB\nVmSize:\t     984 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t     248 kB\nVmRSS:\t     248 kB\nRssAnon:\t      52 kB\nRssFile:\t     196 kB\nRssShmem:\t       0 kB\nVmData:\t      52 kB\nVmStk:\t     132 kB\nVmExe:\t     580 kB\nVmLib:\t       8 kB\nVmPTE:\t      32 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t1\nSigQ:\t4/136275\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000000000440\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1f\nCpus_allowed_list:\t0-4\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+        "cmdline": "/usr/local/bin/caas-prefix-transfer-server --host 0.0.0.0 --port 1040 ",
+        "comm": "caas-prefix-tra\n",
+        "cgroup": "0::/\n"
+      },
+      "errors": {
+        "exe": "[Errno 13] Permission denied: '/proc/2/exe'",
+        "cwd": "[Errno 13] Permission denied: '/proc/2/cwd'",
+        "root": "[Errno 13] Permission denied: '/proc/2/root'"
+      }
+    },
+    {
+      "pid": 205,
+      "read": {
+        "status": "Name:\tdockerd\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t205\nNgid:\t0\nPid:\t205\nPPid:\t1\nTracerPid:\t0\nUid:\t65534\t65534\t65534\t65534\nGid:\t65534\t65534\t65534\t65534\nFDSize:\t64\nGroups:\t \nNStgid:\t205\nNSpid:\t205\nNSpgid:\t205\nNSsid:\t205\nKthread:\t0\nVmPeak:\t 2107756 kB\nVmSize:\t 2107756 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   36100 kB\nVmRSS:\t   35204 kB\nRssAnon:\t   12896 kB\nRssFile:\t   22308 kB\nRssShmem:\t       0 kB\nVmData:\t  148832 kB\nVmStk:\t     132 kB\nVmExe:\t   32164 kB\nVmLib:\t       8 kB\nVmPTE:\t     348 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t12\nSigQ:\t0/136275\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001000\nSigCgt:\tfffffffd7fc1eeff\nCapInh:\t0000000000000000\nCapPrm:\t000001ffffffffff\nCapEff:\t000001ffffffffff\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1f\nCpus_allowed_list:\t0-4\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t443\nnonvoluntary_ctxt_switches:\t32\n",
+        "cmdline": "/usr/local/bin/dockerd --host=unix:///var/run/docker.sock --pidfile=/run/codex-docker/dockerd.pid --exec-root=/run/codex-docker/exec-kuv54m7h --storage-driver=vfs --group=agent ",
+        "comm": "dockerd\n",
+        "cgroup": "0::/\n"
+      },
+      "errors": {
+        "exe": "[Errno 13] Permission denied: '/proc/205/exe'",
+        "cwd": "[Errno 13] Permission denied: '/proc/205/cwd'",
+        "root": "[Errno 13] Permission denied: '/proc/205/root'"
+      }
+    },
+    {
+      "pid": 258,
+      "read": {
+        "status": "Name:\tcontainerd\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t258\nNgid:\t0\nPid:\t258\nPPid:\t205\nTracerPid:\t0\nUid:\t65534\t65534\t65534\t65534\nGid:\t65534\t65534\t65534\t65534\nFDSize:\t64\nGroups:\t \nNStgid:\t258\nNSpid:\t258\nNSpgid:\t258\nNSsid:\t258\nKthread:\t0\nVmPeak:\t 1268532 kB\nVmSize:\t 1268532 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   21504 kB\nVmRSS:\t   21104 kB\nRssAnon:\t    8464 kB\nRssFile:\t   12640 kB\nRssShmem:\t       0 kB\nVmData:\t   47984 kB\nVmStk:\t     132 kB\nVmExe:\t   18304 kB\nVmLib:\t       8 kB\nVmPTE:\t     184 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t10\nSigQ:\t0/136275\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\tfffffffc3bba2800\nSigIgn:\t0000000000000000\nSigCgt:\tfffffffd7fc1feff\nCapInh:\t0000000000000000\nCapPrm:\t000001ffffffffff\nCapEff:\t000001ffffffffff\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1f\nCpus_allowed_list:\t0-4\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t62\nnonvoluntary_ctxt_switches:\t0\n",
+        "cmdline": "containerd --config /run/codex-docker/exec-kuv54m7h/containerd/containerd.toml ",
+        "comm": "containerd\n",
+        "cgroup": "0::/\n"
+      },
+      "errors": {
+        "exe": "[Errno 13] Permission denied: '/proc/258/exe'",
+        "cwd": "[Errno 13] Permission denied: '/proc/258/cwd'",
+        "root": "[Errno 13] Permission denied: '/proc/258/root'"
+      }
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "source_head": "7dae5f21c7ca401e660450d437e60ba566218da8",
+  "source_sha256": "e31eb760dcd1723d98f1a53d47678b496098c3f75d649c2d230507d42d08d8c5",
+  "test_sha256": "04924b0a5cc19c45c3188a0d81b4f3ffc3af0506d3342b619f881d43821774b6",
+  "baseline": {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "unittest",
+      "tests.test_engineering_model_compatibility"
+    ],
+    "exit_code": 0,
+    "seconds": 8.861946898000042,
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "84dab81d2e7581e094f4847605acb0671dc3362a391099b22a3d2dd568adcc16"
+  },
+  "mutants": [
+    {
+      "id": "V01-remove-gate",
+      "old": "if (GRID_CARD_CAPABILITY in scene_required_capabilities(definitions[\"base_scene\"]) or\n                    isinstance(manifest[\"capabilities\"], list) and GRID_CARD_CAPABILITY in manifest[\"capabilities\"]):",
+      "new": "if False:",
+      "named_test": "test_pre_card_axioms_reject_manifest_card_capability",
+      "mutant_sha256": "9a19d01c35503791f94686f7fe8be4c0efe4de108f1db092a72c348f17287d50",
+      "red": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability"
+        ],
+        "exit_code": 1,
+        "seconds": 2.284127559999888,
+        "tests": 1,
+        "failures": 19,
+        "errors": 0,
+        "skips": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "32636887160f74efef70f258514123e9de1d4557f47da793255d1ffa75e11710"
+      },
+      "restored": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_engineering_model_compatibility"
+        ],
+        "exit_code": 0,
+        "seconds": 11.297115012000177,
+        "tests": 44,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "2cf7ee8907525687982fc8c383d35549eb36596556dc5c0476769128415aabf5"
+      },
+      "verdict": "killed"
+    },
+    {
+      "id": "V02-ignore-manifest",
+      "old": "if (GRID_CARD_CAPABILITY in scene_required_capabilities(definitions[\"base_scene\"]) or\n                    isinstance(manifest[\"capabilities\"], list) and GRID_CARD_CAPABILITY in manifest[\"capabilities\"]):",
+      "new": "if (GRID_CARD_CAPABILITY in scene_required_capabilities(definitions[\"base_scene\"])):",
+      "named_test": "test_pre_card_axioms_reject_manifest_card_capability",
+      "mutant_sha256": "18463ca20fbe7eabd9aa02de2fdc3a203656259bf1a6ae3a3e097d22c6bf7f5d",
+      "red": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability"
+        ],
+        "exit_code": 1,
+        "seconds": 2.0425041560001773,
+        "tests": 1,
+        "failures": 19,
+        "errors": 0,
+        "skips": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "38101fe20c472192d6f8da17474c292275a66ab9d6750a3c8e928f7005517ce3"
+      },
+      "restored": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_engineering_model_compatibility"
+        ],
+        "exit_code": 0,
+        "seconds": 10.364862128999903,
+        "tests": 44,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "c0e6416c58558346d85892dc2027abc6f363e4a6b9ac8c61663019747a05cbfe"
+      },
+      "verdict": "killed"
+    },
+    {
+      "id": "V03-ignore-source",
+      "old": "if (GRID_CARD_CAPABILITY in scene_required_capabilities(definitions[\"base_scene\"]) or\n                    isinstance(manifest[\"capabilities\"], list) and GRID_CARD_CAPABILITY in manifest[\"capabilities\"]):",
+      "new": "if (isinstance(manifest[\"capabilities\"], list) and GRID_CARD_CAPABILITY in manifest[\"capabilities\"]):",
+      "named_test": "test_pre_card_axioms_reject_scene_card_capability_before_rebuild",
+      "mutant_sha256": "4a2b7eebd6ee1c839ba913850bde37947147916d8b5f667004fe5243e8277926",
+      "red": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_scene_card_capability_before_rebuild"
+        ],
+        "exit_code": 1,
+        "seconds": 1.8556987520000803,
+        "tests": 1,
+        "failures": 19,
+        "errors": 0,
+        "skips": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e96246f1e2402bf98436d23ddfa9bf662545dc089cfa363aa9bb34ea983ab271"
+      },
+      "restored": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_engineering_model_compatibility"
+        ],
+        "exit_code": 0,
+        "seconds": 11.233193324000013,
+        "tests": 44,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "284022c61304fd6ba00adfbd02313bcb3fc1f2ab21a0f50b79a368e9b9b378e5"
+      },
+      "verdict": "killed"
+    },
+    {
+      "id": "V04-exempt-latest-pre-adoption",
+      "old": "if (GRID_CARD_CAPABILITY in scene_required_capabilities(definitions[\"base_scene\"]) or\n                    isinstance(manifest[\"capabilities\"], list) and GRID_CARD_CAPABILITY in manifest[\"capabilities\"]):",
+      "new": "if supplied_version not in PRE_CARD_REFERENCE_AXIOM_VERSIONS and (GRID_CARD_CAPABILITY in scene_required_capabilities(definitions[\"base_scene\"]) or\n                    isinstance(manifest[\"capabilities\"], list) and GRID_CARD_CAPABILITY in manifest[\"capabilities\"]):",
+      "named_test": "test_pre_card_axioms_reject_card_syntax_with_stripped_declarations",
+      "mutant_sha256": "c427a540e7b8495b464ad900fa1ef5dfc4ed0c83bd840f2ad818fe7af4fc2409",
+      "red": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_card_syntax_with_stripped_declarations"
+        ],
+        "exit_code": 1,
+        "seconds": 0.6223552789999758,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "25c527d220d9d6a8166b507071a2555935823234a738f1b0f2cc7c5ccd945582"
+      },
+      "restored": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_engineering_model_compatibility"
+        ],
+        "exit_code": 0,
+        "seconds": 11.008995224000046,
+        "tests": 44,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "57384ab906aaf4a0f8f2ef699827a4dfd88d36b7843cf0b43ebcdb82e7a3fb4d"
+      },
+      "verdict": "killed"
+    },
+    {
+      "id": "V05-card-adoption-treated-as-pre",
+      "old": "CARD_REFERENCE_AXIOM_VERSIONS = PRE_DECOUPLING_AXIOM_VERSIONS | PRE_ONE_AXIS_STAGGER_AXIOM_VERSIONS",
+      "new": "CARD_REFERENCE_AXIOM_VERSIONS = frozenset()",
+      "named_test": "test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild",
+      "mutant_sha256": "d2d7184250144ea0e895772c82f389f4d8d58a2e48409f8d4180c8df23769957",
+      "red": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild"
+        ],
+        "exit_code": 1,
+        "seconds": 0.27188492899995254,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "9e6d3b0bb0f9aa067a8c8f5607ab0e0b238208626ca48e825267a4d07763bc64"
+      },
+      "restored": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_engineering_model_compatibility"
+        ],
+        "exit_code": 0,
+        "seconds": 11.51571951599999,
+        "tests": 44,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "aab26186888362b1f633ab91d4543272f146649d3928c36e9780e645bc7bf94f"
+      },
+      "verdict": "killed"
+    }
+  ]
+}

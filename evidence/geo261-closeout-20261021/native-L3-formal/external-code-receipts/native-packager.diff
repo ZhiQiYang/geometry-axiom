@@ -1,0 +1,18 @@
+--- 已驗 L2 原外部封裝器
++++ L3 四常數實例
+@@ -8,11 +8,11 @@
+ import subprocess
+ from pathlib import Path
+ 
+-ROOT = Path('/workspace/geo261-native-l2-249571fe2477-20261021')
+-OUT = Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/native')
+-LAUNCHER = Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/native-launcher')
++ROOT = Path('/workspace/geo261-native-l3-6589248c9a94-20261021')
++OUT = Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native')
++LAUNCHER = Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-launcher')
+ RAW = Path('/tmp/geometry-tests/run_all-logs')
+-SHA = '249571fe2477845d5330f6190dad965bf327f43b'
++SHA = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+ 
+ def digest(data):
+     return hashlib.sha256(data).hexdigest()

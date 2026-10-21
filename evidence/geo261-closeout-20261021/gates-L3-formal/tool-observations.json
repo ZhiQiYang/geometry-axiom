@@ -1,0 +1,130 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "observationNature": "代理依實際工具回傳的事後逐字結構轉錄；不是工具 transport 自動日誌。",
+  "phases": {
+    "q38": {
+      "phase": "q38",
+      "sessionId": 9867,
+      "launchToolResult": {
+        "chunk_id": "48bb0b",
+        "wall_time_seconds": 1.000777318,
+        "session_id": 9867,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "finalToolResult": {
+        "chunk_id": "2dfe40",
+        "wall_time_seconds": 2.9465e-05,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "acceptanceExecutorToolResult": {
+        "chunk_id": "173dab",
+        "wall_time_seconds": 0.577313988,
+        "exit_code": 0,
+        "original_token_count": 244,
+        "output": "{\"phase\": \"q38\", \"kind\": \"primary\", \"exitCode\": 0, \"receipt\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/q38-primary-receipt.json\", \"receiptSha256\": \"cbd2c7faacfe9c013a6d9caf8db70d99f576fa094f121a4376bbd15c0ff1b470\", \"producedReport\": {\"path\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/q38.json\", \"bytes\": 7045, \"sha256\": \"f04124408e1ed3cdac4ab3f3d9dbbd013ca8ac50774a1bc8d32e57885053cb50\"}}\n{\"phase\": \"q38\", \"kind\": \"detailed\", \"exitCode\": 0, \"receipt\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/q38-detailed-receipt.json\", \"receiptSha256\": \"d8b7626a0ba2e3810082d255e2023e6d3f8383fbabdd3a40044479a057d8b566\", \"producedReport\": {\"path\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/q38.json\", \"bytes\": 66581, \"sha256\": \"63943bcd9cdd3fa2fb9897476d9f07c5cc342b99a87dcd2a29e7a6e161ee6cc4\"}}\n"
+      },
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/q38/receipt.json",
+        "bytes": 4044,
+        "sha256": "9d76a12a35d1930abf0433089ce958760c4df0cb69dfba8cf5af3a26b5019cbf"
+      },
+      "transcribedUtc": "2026-10-21T06:41:58.038254+00:00"
+    },
+    "controls": {
+      "phase": "controls",
+      "sessionId": 66257,
+      "launchToolResult": {
+        "chunk_id": "2e5eb4",
+        "wall_time_seconds": 1.011158159,
+        "session_id": 66257,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "finalToolResult": {
+        "chunk_id": "13e35f",
+        "wall_time_seconds": 48.724388657,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "acceptanceExecutorToolResult": {
+        "chunk_id": "5ad88d",
+        "wall_time_seconds": 0.577592655,
+        "exit_code": 0,
+        "original_token_count": 252,
+        "output": "{\"phase\": \"controls\", \"kind\": \"primary\", \"exitCode\": 0, \"receipt\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/controls-primary-receipt.json\", \"receiptSha256\": \"293b1d59b7547543e236c00d08dad8731c58244637e3c47311c17136c24f31af\", \"producedReport\": {\"path\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/controls.json\", \"bytes\": 4667, \"sha256\": \"5fff45027e412aca7ba7265eac3ea2173e95626ae188a4ddda83832dba59993f\"}}\n{\"phase\": \"controls\", \"kind\": \"detailed\", \"exitCode\": 0, \"receipt\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/controls-detailed-receipt.json\", \"receiptSha256\": \"5dd1ff1472947cc85c8c4816ebef0fcfc72be24707fe03afe2a1f7a839350926\", \"producedReport\": {\"path\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/controls.json\", \"bytes\": 31161, \"sha256\": \"8a82f0a7aa72f56bd634c5062bddcbbb9afbdd152ae0e0f8c55e376c7f7869c1\"}}\n"
+      },
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/controls/receipt.json",
+        "bytes": 4299,
+        "sha256": "3c4459f0c89484704e41b377417a671bf808f054110b022f1dd23795e11b12a6"
+      },
+      "transcribedUtc": "2026-10-21T06:45:59.948478+00:00"
+    },
+    "card": {
+      "phase": "card",
+      "sessionId": 4369,
+      "launchToolResult": {
+        "chunk_id": "e1f158",
+        "wall_time_seconds": 1.001032659,
+        "session_id": 4369,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "finalToolResult": {
+        "chunk_id": "4145e5",
+        "wall_time_seconds": 31.473724681,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "acceptanceExecutorToolResult": {
+        "chunk_id": "79ff5e",
+        "wall_time_seconds": 0.596061952,
+        "exit_code": 0,
+        "original_token_count": 246,
+        "output": "{\"phase\": \"card\", \"kind\": \"primary\", \"exitCode\": 0, \"receipt\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/card-primary-receipt.json\", \"receiptSha256\": \"18e9a79c2e8e1a3236a4e35f4e7798bf4066411fe5fd10f36b0bafaa7cc9fc5b\", \"producedReport\": {\"path\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/card.json\", \"bytes\": 41828, \"sha256\": \"930e9fdb1255a8f56b19822c49db556238a1d0a3deec79e7a529e9ff1ac13074\"}}\n{\"phase\": \"card\", \"kind\": \"detailed\", \"exitCode\": 0, \"receipt\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/card-detailed-receipt.json\", \"receiptSha256\": \"5a713c64afe821482f629ad6a332de69c12e5a3d02651d2fbc15e60157642658\", \"producedReport\": {\"path\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/card.json\", \"bytes\": 221629, \"sha256\": \"f9b6cba0391ad927badfd7b5c01b57207f0fbd4a3bb4b019caf76e4b8420f022\"}}\n"
+      },
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/card/receipt.json",
+        "bytes": 4056,
+        "sha256": "84d464ec27da0d634331f97ef68f3e09cade3079774be8d25f3cdffbc2538916"
+      },
+      "transcribedUtc": "2026-10-21T06:53:41.822074+00:00"
+    },
+    "axiom": {
+      "phase": "axiom",
+      "sessionId": 65549,
+      "launchToolResult": {
+        "chunk_id": "0210da",
+        "wall_time_seconds": 1.001025735,
+        "session_id": 65549,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "finalToolResult": {
+        "chunk_id": "fda6fe",
+        "wall_time_seconds": 2.2163e-05,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "acceptanceExecutorToolResult": {
+        "chunk_id": "87df76",
+        "wall_time_seconds": 0.623405756,
+        "exit_code": 0,
+        "original_token_count": 247,
+        "output": "{\"phase\": \"axiom\", \"kind\": \"primary\", \"exitCode\": 0, \"receipt\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/axiom-primary-receipt.json\", \"receiptSha256\": \"a374de644ad4e528519b949514e2fcfa1851b2af913fc28029f5b49a7938de84\", \"producedReport\": {\"path\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/axiom.json\", \"bytes\": 3858, \"sha256\": \"28b7fb1628544e1168f1ab8645b9e9e3f6fc491dbbaae79c6527e5fb447c1e3f\"}}\n{\"phase\": \"axiom\", \"kind\": \"detailed\", \"exitCode\": 0, \"receipt\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/axiom-detailed-receipt.json\", \"receiptSha256\": \"5d4c3f0dc544f4045d37b178eb660d55ad8213842048ad9db598bae81830a6fb\", \"producedReport\": {\"path\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/axiom.json\", \"bytes\": 16393, \"sha256\": \"4b09ae1ffb0fff678dcbacb7ac447c0ec2b8f01bf4be1ab09cd9b4f853bbc768\"}}\n"
+      },
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/axiom/receipt.json",
+        "bytes": 4059,
+        "sha256": "f6bb31b03bbb6872bbe9787e3d9de6a9903290404dfc7368e1ca49a1aa2d0d3e"
+      },
+      "transcribedUtc": "2026-10-21T06:55:40.012263+00:00"
+    }
+  }
+}

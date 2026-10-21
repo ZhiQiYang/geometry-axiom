@@ -1,0 +1,551 @@
+{
+  "用途": "最終 L 的只讀來源綁定與主代理完整匯入／公開原件",
+  "sourceA": "7159530c0e494d3211e6ab1764eb691137211707",
+  "ledgerL": "43f85313c32410ac01406ab585846bbacafea278",
+  "歷史L1": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+  "歷史保留": "既有 source-binding/ 與其 L1 原件完全未修改；L1 現為公開祖先但仍未採用",
+  "範圍": "封裝只讀來源工具為原bytes文字資料，沒有可執行副本，不包含全產品來源快照",
+  "收錄檔數不含本索引": 77,
+  "收錄位元組不含本索引": 11361905,
+  "檔案": [
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-L-preparation/README.zh-TW.md",
+      "封裝路徑": "README.zh-TW.md",
+      "位元組": 7589,
+      "SHA256": "126e47a4299d81f88d1195d376c87d210fc33e93466c71e32f9bb6bc891c3a60",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-L-preparation/binding-A-L.exit-code",
+      "封裝路徑": "binding-A-L.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-L-preparation/binding-A-L.json",
+      "封裝路徑": "binding-A-L.json",
+      "位元組": 9525,
+      "SHA256": "e6c1312b8e9853a38b62ff382ae4a901ec0309d791ec628bb954798869cddab5",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-L-preparation/binding-A-L.stderr",
+      "封裝路徑": "binding-A-L.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-L-preparation/commands.json",
+      "封裝路徑": "commands.json",
+      "位元組": 1380,
+      "SHA256": "ceb3f7334fd47f8758a9a08516585224037fa2da583b0adf8d436e07c4c2ae6d",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-L-preparation/compare-final-L-code.txt",
+      "封裝路徑": "compare-final-L-code.txt",
+      "位元組": 10712,
+      "SHA256": "efdfd6c4ed7e7b3e81f8f76a0fefe5b56859d660c6709cc1486461015b2332b3",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-L-preparation/snapshot-L.exit-code",
+      "封裝路徑": "snapshot-L.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-L-preparation/snapshot-L.json",
+      "封裝路徑": "snapshot-L.json",
+      "位元組": 487107,
+      "SHA256": "72283a36e47831867884f9682684267eddaf5d208acaf3891a0abeb9b3774455",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-L-preparation/snapshot-L.stderr",
+      "封裝路徑": "snapshot-L.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-L-preparation/獨立只讀複核.md",
+      "封裝路徑": "獨立只讀複核.md",
+      "位元組": 1199,
+      "SHA256": "420959795cccc8c5cf51e4b58431de94a8243f3120de5482ebbc4fbf62c9453f",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-preparation/snapshot-A.json",
+      "封裝路徑": "snapshot-A.json",
+      "位元組": 487107,
+      "SHA256": "10c9476ee9ffa456929a4b334691d8762dc28a071a8c51c3ba8490931e7de214",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/source-binding-preparation/snapshot_bindings.py",
+      "封裝路徑": "snapshot-command-code.txt",
+      "位元組": 6622,
+      "SHA256": "0640270f504fc0f12398cf15dda289f45dda188b9fa42cf3e32b862ee76a9a48",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-is-ancestor.exit-code",
+      "封裝路徑": "ledger-L-cc-import/A-is-ancestor.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-is-ancestor.stderr",
+      "封裝路徑": "ledger-L-cc-import/A-is-ancestor.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-is-ancestor.stdout",
+      "封裝路徑": "ledger-L-cc-import/A-is-ancestor.stdout",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-ledger.exit-code",
+      "封裝路徑": "ledger-L-cc-import/A-ledger.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-ledger.stderr",
+      "封裝路徑": "ledger-L-cc-import/A-ledger.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-ledger.stdout",
+      "封裝路徑": "ledger-L-cc-import/A-ledger.stdout",
+      "位元組": 5164117,
+      "SHA256": "4e1f058e0647b3272c791b1e21d3294c9443f473fee8c5d1dd3c77d5c0caa479",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-to-L-files.exit-code",
+      "封裝路徑": "ledger-L-cc-import/A-to-L-files.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-to-L-files.stderr",
+      "封裝路徑": "ledger-L-cc-import/A-to-L-files.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-to-L-files.stdout",
+      "封裝路徑": "ledger-L-cc-import/A-to-L-files.stdout",
+      "位元組": 27,
+      "SHA256": "ae08bdf21ee4b3bde1233c3a1a2321e27e54cb3efce3818feb045e46f641d959",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-to-L-source.exit-code",
+      "封裝路徑": "ledger-L-cc-import/A-to-L-source.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-to-L-source.stderr",
+      "封裝路徑": "ledger-L-cc-import/A-to-L-source.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/A-to-L-source.stdout",
+      "封裝路徑": "ledger-L-cc-import/A-to-L-source.stdout",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/L-default-check.exit-code",
+      "封裝路徑": "ledger-L-cc-import/L-default-check.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/L-default-check.stderr",
+      "封裝路徑": "ledger-L-cc-import/L-default-check.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/L-default-check.stdout",
+      "封裝路徑": "ledger-L-cc-import/L-default-check.stdout",
+      "位元組": 532,
+      "SHA256": "59cc92f93cf948df981a0e0b926d53e13b27fe9ab93b7151e83dfeb59a40611c",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/branch-before.exit-code",
+      "封裝路徑": "ledger-L-cc-import/branch-before.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/branch-before.stderr",
+      "封裝路徑": "ledger-L-cc-import/branch-before.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/branch-before.stdout",
+      "封裝路徑": "ledger-L-cc-import/branch-before.stdout",
+      "位元組": 31,
+      "SHA256": "5057aec297cbe029bd10b1f94cdba34416053869c4b9ab2081bd799c531ef3e1",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/command-source.txt",
+      "封裝路徑": "ledger-L-cc-import/command-source.txt",
+      "位元組": 6927,
+      "SHA256": "18d61cbb145374cc41f537cab52032079555b86f3cc78aa9d409902fcbb8f53c",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/commands.json",
+      "封裝路徑": "ledger-L-cc-import/commands.json",
+      "位元組": 6893,
+      "SHA256": "336cc418a05bdb9505ab1328c61c0ec97af96088e2131503aca42c7b5d1a3427",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/commit.exit-code",
+      "封裝路徑": "ledger-L-cc-import/commit.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/commit.stderr",
+      "封裝路徑": "ledger-L-cc-import/commit.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/commit.stdout",
+      "封裝路徑": "ledger-L-cc-import/commit.stdout",
+      "位元組": 155,
+      "SHA256": "94ad4f091c9b728a9b5d5711facb498ef2091e05c551e6e7520a667b75b03d76",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/diff-check.exit-code",
+      "封裝路徑": "ledger-L-cc-import/diff-check.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/diff-check.stderr",
+      "封裝路徑": "ledger-L-cc-import/diff-check.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/diff-check.stdout",
+      "封裝路徑": "ledger-L-cc-import/diff-check.stdout",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/diff-files.exit-code",
+      "封裝路徑": "ledger-L-cc-import/diff-files.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/diff-files.stderr",
+      "封裝路徑": "ledger-L-cc-import/diff-files.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/diff-files.stdout",
+      "封裝路徑": "ledger-L-cc-import/diff-files.stdout",
+      "位元組": 27,
+      "SHA256": "ae08bdf21ee4b3bde1233c3a1a2321e27e54cb3efce3818feb045e46f641d959",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/environment.json",
+      "封裝路徑": "ledger-L-cc-import/environment.json",
+      "位元組": 117,
+      "SHA256": "93de2a4957b80b0b634ac6268103cfef682834f901f5ddd39aaa11379f1431b2",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/head-after.exit-code",
+      "封裝路徑": "ledger-L-cc-import/head-after.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/head-after.stderr",
+      "封裝路徑": "ledger-L-cc-import/head-after.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/head-after.stdout",
+      "封裝路徑": "ledger-L-cc-import/head-after.stdout",
+      "位元組": 41,
+      "SHA256": "f604013a9ee9bee6d772a03406959a1b4502a8740f2cf42e7ece4c2744915158",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/head-before.exit-code",
+      "封裝路徑": "ledger-L-cc-import/head-before.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/head-before.stderr",
+      "封裝路徑": "ledger-L-cc-import/head-before.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/head-before.stdout",
+      "封裝路徑": "ledger-L-cc-import/head-before.stdout",
+      "位元組": 41,
+      "SHA256": "d65cb661e3880a2fe1eeddee2d1743008a46810f245a3c8408a053985d425c96",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/ledger-blob.exit-code",
+      "封裝路徑": "ledger-L-cc-import/ledger-blob.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/ledger-blob.stderr",
+      "封裝路徑": "ledger-L-cc-import/ledger-blob.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/ledger-blob.stdout",
+      "封裝路徑": "ledger-L-cc-import/ledger-blob.stdout",
+      "位元組": 5170287,
+      "SHA256": "868a80700c9d058e208684631e799a91659e7820b06c31c246b8af96c670a731",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/parent.exit-code",
+      "封裝路徑": "ledger-L-cc-import/parent.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/parent.stderr",
+      "封裝路徑": "ledger-L-cc-import/parent.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/parent.stdout",
+      "封裝路徑": "ledger-L-cc-import/parent.stdout",
+      "位元組": 41,
+      "SHA256": "d65cb661e3880a2fe1eeddee2d1743008a46810f245a3c8408a053985d425c96",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/publication.json",
+      "封裝路徑": "ledger-L-cc-import/publication.json",
+      "位元組": 341,
+      "SHA256": "7783510a375d5ee057c42c67778546227a1ebb5a6181de5fa736ddf4aa56af76",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/push.exit-code",
+      "封裝路徑": "ledger-L-cc-import/push.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/push.stderr",
+      "封裝路徑": "ledger-L-cc-import/push.stderr",
+      "位元組": 139,
+      "SHA256": "c19b1a36a3d456cd7a087327e638839184413c8d6c416b7490f43e30e273033a",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/push.stdout",
+      "封裝路徑": "ledger-L-cc-import/push.stdout",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/receipt.json",
+      "封裝路徑": "ledger-L-cc-import/receipt.json",
+      "位元組": 794,
+      "SHA256": "f3d1b4d2f42425738d5e59d39dc3bac2c7c66dce786d281846538dfa64101802",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/remote-after-push.exit-code",
+      "封裝路徑": "ledger-L-cc-import/remote-after-push.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/remote-after-push.stderr",
+      "封裝路徑": "ledger-L-cc-import/remote-after-push.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/remote-after-push.stdout",
+      "封裝路徑": "ledger-L-cc-import/remote-after-push.stdout",
+      "位元組": 83,
+      "SHA256": "264bb2d3865efd26d2686ee6ac65fe3e42011145965fc1c5bb708b43724b9691",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/stage.exit-code",
+      "封裝路徑": "ledger-L-cc-import/stage.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/stage.stderr",
+      "封裝路徑": "ledger-L-cc-import/stage.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/stage.stdout",
+      "封裝路徑": "ledger-L-cc-import/stage.stdout",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/staged-files.exit-code",
+      "封裝路徑": "ledger-L-cc-import/staged-files.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/staged-files.stderr",
+      "封裝路徑": "ledger-L-cc-import/staged-files.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/staged-files.stdout",
+      "封裝路徑": "ledger-L-cc-import/staged-files.stdout",
+      "位元組": 27,
+      "SHA256": "ae08bdf21ee4b3bde1233c3a1a2321e27e54cb3efce3818feb045e46f641d959",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/status-after.exit-code",
+      "封裝路徑": "ledger-L-cc-import/status-after.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/status-after.stderr",
+      "封裝路徑": "ledger-L-cc-import/status-after.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/status-after.stdout",
+      "封裝路徑": "ledger-L-cc-import/status-after.stdout",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/status-before.exit-code",
+      "封裝路徑": "ledger-L-cc-import/status-before.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/status-before.stderr",
+      "封裝路徑": "ledger-L-cc-import/status-before.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/status-before.stdout",
+      "封裝路徑": "ledger-L-cc-import/status-before.stdout",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/status-final.exit-code",
+      "封裝路徑": "ledger-L-cc-import/status-final.exit-code",
+      "位元組": 2,
+      "SHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/status-final.stderr",
+      "封裝路徑": "ledger-L-cc-import/status-final.stderr",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/ledger-L-cc-import/status-final.stdout",
+      "封裝路徑": "ledger-L-cc-import/status-final.stdout",
+      "位元組": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "逐位元相同": true
+    }
+  ]
+}

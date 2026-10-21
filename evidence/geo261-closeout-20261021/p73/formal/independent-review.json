@@ -1,0 +1,81 @@
+{
+  "sourceSha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "reviewExitCode": 0,
+  "method": "只讀原始紀錄與 Git blob 交叉核對；未重跑產品或啟動瀏覽器",
+  "checks": [
+    "六組 raw/receipt 完全一致",
+    "actualFixed true",
+    "強化測試來源hash正確",
+    "none無記憶體替換",
+    "正式全部撤回有效來源精確舊bytes",
+    "callback前置true及原具名條件紅",
+    "自然guard舊6/6存活未抹去",
+    "瀏覽器自行exit0且exitedtrue"
+  ],
+  "cases": [
+    {
+      "case": "full-normal",
+      "exitCode": 0,
+      "passed": 69,
+      "failed": 0,
+      "completed": true,
+      "rawSha256": "90ca8387d30257f0a04b5f0843dd3bf558c1c8ac425e470a7dac74f3fd2f4314",
+      "receiptSha256": "aacdb20547bf6d40e815a3ee7cac340dd4cd3ef59593ef8bbfbda03ae4fdd241",
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f"
+    },
+    {
+      "case": "full-callback",
+      "exitCode": 0,
+      "passed": 69,
+      "failed": 0,
+      "completed": true,
+      "rawSha256": "b65065410971aaff486bc7d283365b8f7e6f83135d1df07547566eedcbca93dc",
+      "receiptSha256": "33b455eada5d57983aedce455cc6819f5d5decfea0220b2544c92f2d341a768d",
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f"
+    },
+    {
+      "case": "transition",
+      "exitCode": 0,
+      "passed": 6,
+      "failed": 0,
+      "completed": true,
+      "rawSha256": "5f137a96ad327ee1256902001e61d7184ad8f931f69ace5d3187d9407519a425",
+      "receiptSha256": "dc24dbbd476613a15be7055a03ad0d692371e38809750c67c70208e717144614",
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f"
+    },
+    {
+      "case": "withdraw-guard",
+      "exitCode": 1,
+      "passed": 47,
+      "failed": 1,
+      "completed": false,
+      "rawSha256": "b17139a74d5ed7bae020205fec3c962bdba0b22e1f6a76ecf61f705b43e24347",
+      "receiptSha256": "f48907f73d422927d39ef69cf4e1f0a738a4acb8d069cd43d0092a8d871e924f",
+      "effectiveAppSha256": "dfbe254d96f1723cef70a2cac646509623440a53f70fe58f655c69859a28c550"
+    },
+    {
+      "case": "withdraw-metrics",
+      "exitCode": 1,
+      "passed": 2,
+      "failed": 1,
+      "completed": false,
+      "rawSha256": "c87510eb8fe6f26a54a31a3d5e8d819748498b0746ec41a2c8c253005ca20b56",
+      "receiptSha256": "79ee83fd0a6ea631efb161c839849a19ca5e3a4c7784f9460694ec9f4b8ff2fd",
+      "effectiveAppSha256": "806d215477b947525b7b494a135479df9f90a69c45121a22e374a3e4e1a05b43"
+    },
+    {
+      "case": "withdraw-all",
+      "exitCode": 1,
+      "passed": 47,
+      "failed": 1,
+      "completed": false,
+      "rawSha256": "2181328c9bc1ed079df1428e21e0f3943ab53ec57bda58f79382e2d245a5c7b1",
+      "receiptSha256": "71573f6a5bffcd3124f385ba379184c519636028b21e846be5bede7baa525e02",
+      "effectiveAppSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b"
+    }
+  ],
+  "limits": [
+    "不是最終完整canvas驗收",
+    "本輪正式來源完整SHA為A，不改稱之後ledger L實跑"
+  ]
+}

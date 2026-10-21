@@ -1,0 +1,26 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "candidateRawSha256": "5d52a836bb1178ff050f725d5b089f4765cbd58033931647f02e50369ea9e347",
+  "patchSha256": "4d2a3ef87a3d663b1c1b08ebc659bf94c6c962c57f15a69f27f137a4e1b6c5ee",
+  "cwd": "/workspace/geo261-wd-read-candidate",
+  "argv": [
+    "timeout",
+    "900",
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/wd-read-candidate/targeted_tests.py"
+  ],
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "HOME": "/home/agent",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "LC_CTYPE": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TMPDIR": "/tmp/geo261-wd-read-targeted-43f85313"
+  },
+  "stackKiB": 16384,
+  "startedUTC": "2026-10-21T01:02:05.425033+00:00",
+  "runnerSha256": "c882320985b05b3fd788114ff03869c81b3f55fdd3c0a5d6c830b50de939e875",
+  "testDriverSha256": "5fb1236bd8e87b9b154baadf8f64497e1713170ec27a1a93317d794fca7683ff"
+}

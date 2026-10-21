@@ -1,0 +1,57 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "checkedUtc": "2026-10-20T23:37:37.741713+00:00",
+  "head": "43f85313c32410ac01406ab585846bbacafea278",
+  "status": "",
+  "parentEnvironment": {
+    "CC": null,
+    "PYTHONOPTIMIZE": null,
+    "GEOMETRY_TEST_BRIDGE": null,
+    "GEOMETRY_MODEL_BASE": null,
+    "GEOMETRY_TEST_MODEL_UPDATE_BRIDGE": null
+  },
+  "CCAbsent": true,
+  "PYTHONOPTIMIZEAbsent": true,
+  "stackKiB": 16384,
+  "command": [
+    "timeout",
+    "2100",
+    "python3",
+    "tests/run_all.py",
+    "--build"
+  ],
+  "jobLimitSeconds": 2100,
+  "timeoutIncludesBuild": true,
+  "cwd": "/workspace/geo261-native-l",
+  "tmpdir": "/tmp/geo261-native-l-43f85313",
+  "out": "/workspace/geo261-evidence/native-final",
+  "launcherOut": "/workspace/geo261-evidence/native-final-launcher",
+  "suiteLogDirectory": "/tmp/geometry-tests/run_all-logs",
+  "oldGlobalArchive": "/tmp/geometry-tests-before-native-l-43f85313-20261020T233737Z",
+  "oldEntries": 825,
+  "oldFileBytes": 12119670,
+  "nativeGlobalAbsentBeforeStart": true,
+  "wrapperSha256": "64ff6ee9c5a506c5ae89ec19df3bd1a03fe93ab1943bda5a6ef7a60bbdf328c4",
+  "launcherSha256": "6c32561bf1e6fbe72f78167918be60e64418655fc201ac924d58d34ef0d10e7c",
+  "expectedSuiteCount": 224,
+  "requiredNamedSuites": {
+    "py:test_architecture_contract": {
+      "mode": "count",
+      "count": 205,
+      "unit": "test"
+    },
+    "py:test_product_architecture": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_model_base_replay": {
+      "mode": "count",
+      "count": 6,
+      "unit": "test"
+    },
+    "mutation:check": {
+      "mode": "exit-code-only"
+    }
+  }
+}

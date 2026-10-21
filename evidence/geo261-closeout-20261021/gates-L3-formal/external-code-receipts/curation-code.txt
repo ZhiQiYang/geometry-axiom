@@ -1,0 +1,304 @@
+"""只在四 phase 已完成並凍結後封裝文字證據；準備階段不得執行。"""
+import argparse
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import stat
+import subprocess
+import sys
+
+BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')
+PREP=BASE/'preparation'
+G=BASE/'gates'
+SOURCE='6589248c9a94bdf0460d8f84dd1610e51048188b'
+INSTANCE_HASH='ad0e74a3798fedf240d7a02af82ee7849496981276418335c38b9f36715ac1f3'
+ACCEPTOR_PREPARATION_HASH='fa46830092cfcf222f459b6c48e27b9d60b1f0db569ebcfa7b834913b17d8ad4'
+NATIVE_VERIFICATION_HASH='ee80438dce224cf9d473184c4ffe97a4c690d401d98eecdbcbd5e458449df93b'
+PHASES=('q38','controls','card','axiom')
+OUT=BASE/'gates-publish-clean'
+BUNDLE=Path('/workspace/geo261-evidence/final-bundle/gates-L3-formal')
+STAGING=BUNDLE.with_name('gates-L3-formal.staging')
+APPENDIX=Path('/workspace/geo261-evidence/final-bundle/gates-L3-formal-appendix')
+OLD_METHOD=Path('/workspace/geo261-evidence/gates-l-preparation/package-gates-l.py')
+OLD_METHOD_HASH='091c26cdd312fa73980f2864186e8ddce35a77ba7a9afe75933efcbb22a8b753'
+TEXT_SUFFIXES={'.json','.jsonl','.log','.stdout','.stderr','.txt','.md','.diff','.patch','.csv','.tsv','.exit-code'}
+EXCLUDED_SUFFIXES={'.py','.pyc','.js','.mjs','.cjs','.sh','.c','.h','.inc','.exe','.so','.dll','.o','.a','.obj','.wasm'}
+PRUNED_NAMES={'tmp','bin','__pycache__','.pytest_cache'}
+
+def utc():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def h(data):return hashlib.sha256(data).hexdigest()
+def read(path):return json.loads(path.read_bytes())
+def save(path,value):
+    if path.exists():raise FileExistsError(str(path))
+    path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n')
+def ref(path):
+    data=path.read_bytes();return dict(path=str(path),bytes=len(data),sha256=h(data),sourceMtimeNs=path.stat().st_mtime_ns)
+def json_pointer(value,pointer):
+    if not isinstance(pointer,str) or not pointer.startswith('/'):
+        raise ValueError('完成後必須提供非空 JSON Pointer。')
+    for token in pointer.split('/')[1:]:
+        token=token.replace('~1','/').replace('~0','~')
+        value=value[int(token)] if isinstance(value,list) else value[token]
+    return value
+def zero(value):return type(value) is int and value==0
+def official_dir(phase):return G/('controls' if phase=='controls' else phase+'-run/'+phase)
+def required_pins():
+    paths=['preparation/instance.json','native/verification.json','native/completion-verification.json',
+        'native/final-build-binary-index.json','gates/tool-observations.json',
+        'gates/q38-progress-interpretation-correction.json','gates/q38-readonly-process-samples.jsonl']
+    for phase in PHASES:
+        paths += ['gates/verification/'+phase+'.json','gates/acceptance-review/'+phase+'.json',
+            'gates/acceptance-execution/'+phase+'-primary-receipt.json',
+            'gates/acceptance-execution/'+phase+'-detailed-receipt.json',
+            'gates/launcher/'+phase+'/receipt.json',str((official_dir(phase)/'run-receipt.json').relative_to(BASE))]
+    return paths
+
+def main():
+    if sys.flags.optimize:raise RuntimeError('拒絕最佳化模式；不得停用封包檢查。')
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--completion-manifest',required=True)
+    args=parser.parse_args()
+    manifest_path=Path(args.completion_manifest).resolve(strict=True)
+    if not manifest_path.is_relative_to(PREP):raise ValueError('完成manifest只能放本輪preparation內。')
+    manifest=read(manifest_path)
+    assert manifest['sourceSha']==SOURCE and manifest['readyForCuration'] is True
+    assert manifest['phases']==list(PHASES) and manifest['gateJobs']==1
+    assert set(manifest['pins'])==set(required_pins()),'manifest不可省略、替代或增刪必要來源。'
+    for relative,expected in manifest['pins'].items():
+        assert isinstance(expected,str) and len(expected)==64 and all(c in '0123456789abcdef' for c in expected)
+        assert h((BASE/relative).read_bytes())==expected,relative
+    assert h((PREP/'instance.json').read_bytes())==INSTANCE_HASH
+    assert h((PREP/'gate-review/preparation-receipt.json').read_bytes())==ACCEPTOR_PREPARATION_HASH
+    assert h((BASE/'native/verification.json').read_bytes())==NATIVE_VERIFICATION_HASH
+    assert h(OLD_METHOD.read_bytes())==OLD_METHOD_HASH
+    plan=read(PREP/'instance.json');root=Path(plan['gatesWorktree'])
+    assert plan['sourceSha']==SOURCE and Path(plan['gatesOut'])==G and plan['gateJobs']==1
+    for directory in [OUT,BUNDLE,STAGING,APPENDIX]:assert not directory.exists(),str(directory)
+    def git(*argv):return subprocess.check_output(['git',*argv],cwd=root,text=True).strip()
+    assert git('rev-parse','HEAD')==SOURCE and git('status','--porcelain')==''
+    native=read(BASE/'native/verification.json');completion=read(BASE/'native/completion-verification.json')
+    assert native['sourceSha']==completion['sourceSha']==SOURCE
+    assert native['acceptedNative'] and completion['acceptedNativeExact']
+    assert native['observedCompletedTableRows']==224 and native['pythonJsonCount']==188
+    assert {k:native['observedTotals'][k] for k in ['total','passed','failed','skipped']}==dict(total=5188,passed=5187,failed=0,skipped=1)
+    assert zero(native['runExitCode']) and zero(native['wrapperReturnCode']) and zero(native['launcherExitCode'])
+    assert read(BASE/'native/final-build-binary-index.json')['matchesInitialBytesAndMtimes']
+    prepared=read(PREP/'gate-review/preparation-receipt.json')
+    tool_hashes={item['name']:item['outputSha256'] for item in prepared['files']}
+    observations=read(G/'tool-observations.json')
+    assert observations['sourceSha']==SOURCE
+    assert set(observations['phases'])==set(PHASES)
+    assert set(manifest['toolObservationPointers'])==set(PHASES)
+    phases={};source_hashes={};accepted_raw={};accepted_artifact_refs=[]
+    previous_detailed_finished=datetime.datetime.fromisoformat(native['finishedUtc'])
+    previous=BASE/'native/final-build-binary-index.json'
+    for phase in PHASES:
+        primary=read(G/'verification'/(phase+'.json'))
+        detailed=read(G/'acceptance-review'/(phase+'.json'))
+        launch=read(G/'launcher'/phase/'receipt.json');run=read(official_dir(phase)/'run-receipt.json')
+        assert primary['sourceSha']==detailed['sourceSha']==launch['sourceSha']==run['source_head']==SOURCE
+        assert primary['accepted'] is True and not primary['problems']
+        assert detailed['accepted'] is True and zero(detailed['validationExitCode']) and not detailed['blockers']
+        # 封包前重核既有接受器已綁的原件，不能只對當下現存檔另算新hash。
+        for artifact in primary['artifacts'].values():
+            path=Path(artifact['path'])
+            assert path.is_relative_to(BASE) and not path.is_symlink()
+            data=path.read_bytes()
+            assert len(data)==artifact['bytes'] and h(data)==artifact['sha256'],str(path)
+            accepted_artifact_refs.append(artifact)
+        raw_index=detailed['rawFileIndex']
+        assert raw_index and len({item['path'] for item in raw_index})==len(raw_index)
+        for artifact in raw_index:
+            path=Path(artifact['path']);assert path.is_relative_to(official_dir(phase)) and not path.is_symlink()
+            assert not set(path.relative_to(official_dir(phase)).parts)&PRUNED_NAMES
+            assert path.suffix in TEXT_SUFFIXES and not path.stat().st_mode&0o111
+            data=path.read_bytes();data.decode('utf-8')
+            assert len(data)==artifact['bytes'] and h(data)==artifact['sha256'],str(path)
+            assert path not in accepted_raw
+            accepted_raw[path]=artifact
+        assert zero(launch['childReturnCode']) and zero(launch['launcherExitCode'])
+        assert int((G/'launcher'/phase/'.exit-code').read_text())==int((G/'launcher'/phase/'.launcher-exit-code').read_text())==0
+        assert launch['headBefore']==launch['headAfter']==SOURCE and launch['statusBefore']==launch['statusAfter']==''
+        assert launch['sourceHashesUnchanged'] and launch['sourceCleanRestored'] and launch['sourceHashesBefore']==launch['sourceHashesAfter']
+        assert run['status_before']==run['status_after']=='' and run['restored']
+        assert launch['CCAbsent'] and launch['PYTHONOPTIMIZEAbsent'] and launch['stackBytes']==16777216
+        assert datetime.datetime.fromisoformat(launch['startedUtc'])>=previous_detailed_finished
+        assert launch['command'][launch['command'].index('--jobs')+1]=='1'
+        assert launch['bridgeAfterMatchesBeforeBytesAndMtimes']
+        for name,value in launch['sourceHashesBefore'].items():
+            if name in source_hashes:assert source_hashes[name]==value,name
+            source_hashes[name]=value
+        for stage in ['before','after']:
+            bridge=read(G/'launcher'/phase/('bridge-'+stage+'.json'))
+            assert bridge['sourceSha']==SOURCE and bridge['phase']==phase and bridge['stage']==stage
+            assert bridge['previousIndexPath']==str(previous) and bridge['previousIndexSha256']==h(previous.read_bytes())
+            assert bridge['matchesPreviousBytesAndMtimes']
+            prior={Path(item['sourcePath']).name:item for item in read(previous)['files']}
+            assert {Path(x['sourcePath']).name for x in bridge['files']}=={'bridge','bridge.fingerprint.json'}
+            for item in bridge['files']:
+                assert all(item[k]==prior[Path(item['sourcePath']).name][k] for k in ['bytes','sha256','sourceMtimeNs'])
+                if Path(item['sourcePath']).name=='bridge.fingerprint.json':
+                    assert h((G/'launcher'/phase/('bridge-'+stage+'.fingerprint.json')).read_bytes())==item['sha256']
+        previous=G/'launcher'/phase/'bridge-after.json'
+        for level in ['primary','detailed']:
+            prefix=G/'acceptance-execution'/(phase+'-'+level)
+            for suffix in ['-command.json','-receipt.json','.stdout.log','.stderr.log']:
+                assert Path(str(prefix)+suffix).is_file(),str(prefix)+suffix
+            actual=read(Path(str(prefix)+'-receipt.json'))
+            tool=PREP/'gate-review'/('verify-gate.py' if level=='primary' else phase+'-acceptor.py')
+            assert actual['sourceSha']==SOURCE and actual['phase']==phase and actual['cwd']==str(BASE)
+            assert zero(actual['exitCode']) and actual['toolSha256']==tool_hashes[tool.name]==h(tool.read_bytes())
+            assert str(tool) in actual['argv'] and '-O' not in actual['argv'] and '-OO' not in actual['argv']
+            if level=='primary' or phase=='q38':assert actual['argv'][-1]==phase
+            assert actual['CCAbsent'] and actual['PYTHONOPTIMIZEAbsent'] and actual['optimizationFlag']==0
+            assert actual['commandPath']==str(prefix)+'-command.json'
+            assert actual['commandSha256']==h(Path(actual['commandPath']).read_bytes())
+            executor=Path(actual['executorCodePath'])
+            assert executor.is_relative_to(G/'acceptance-execution') and executor.suffix=='.txt'
+            assert actual['executorCodeSha256']==h(executor.read_bytes())
+            product=G/('verification' if level=='primary' else 'acceptance-review')/(phase+'.json')
+            produced=actual['producedReport']
+            assert produced['path']==str(product) and produced['bytes']==product.stat().st_size and produced['sha256']==h(product.read_bytes())
+            if level=='primary':
+                primary_finished=datetime.datetime.fromisoformat(actual['finishedUtc'])
+                assert datetime.datetime.fromisoformat(actual['startedUtc'])>=datetime.datetime.fromisoformat(launch['finishedUtc'])
+            else:
+                assert datetime.datetime.fromisoformat(actual['startedUtc'])>=primary_finished
+                previous_detailed_finished=datetime.datetime.fromisoformat(actual['finishedUtc'])
+        pointers=manifest['toolObservationPointers'][phase]
+        assert pointers==dict(phaseObject='/phases/'+phase,exitCode='/finalToolResult/exit_code',launcherReceiptSha256='/launcherReceipt/sha256')
+        observed=json_pointer(observations,pointers['phaseObject'])
+        if 'phase' in observed:assert observed['phase']==phase
+        assert zero(json_pointer(observed,pointers['exitCode']))
+        assert json_pointer(observed,pointers['launcherReceiptSha256'])==h((G/'launcher'/phase/'receipt.json').read_bytes())
+        assert zero(observed['acceptanceExecutorToolResult']['exit_code'])
+        assert type(observed['sessionId']) is int and observed['sessionId']>0
+        assert observed['finalToolResult']['chunk_id'] and isinstance(observed['launchToolResult'],dict)
+        assert observed['launcherReceipt']['path']==str(G/'launcher'/phase/'receipt.json')
+        assert observed['launcherReceipt']['bytes']==(G/'launcher'/phase/'receipt.json').stat().st_size
+        if phase=='q38':
+            assert primary['caseCount']==42 and primary['summary']=={'killed':41,'equivalent':1} and zero(primary['officialExitCode'])
+        elif phase=='controls':
+            assert primary['caseCount']==12 and primary['summary']=={'survived':9,'unlabelled':3}
+            assert primary['rawGateExitCode']==1 and zero(primary['expectationCheckExitCode'])
+        else:
+            assert primary['caseCount']==(53 if phase=='card' else 5) and primary['summary']=={'killed':primary['caseCount']} and zero(primary['officialExitCode'])
+        phases[phase]=dict(primary=primary,detailed=detailed,launcher=launch,formal=run)
+    card=read(G/'card-run/card/raw/report.json')
+    for name,value in card['source_sha256'].items():
+        if name in source_hashes:assert source_hashes[name]==value,name
+        source_hashes[name]=value
+    for name,value in source_hashes.items():
+        data=(root/name).read_bytes();original=subprocess.check_output(['git','show',SOURCE+':'+name],cwd=root)
+        assert data==original and h(data)==value,name
+
+    # 所有完成條件核對後才列來源；此處不進tmp/bin，不讀任何binary或global。
+    selected=[];excluded=[]
+    for directory,dirs,files in os.walk(G,followlinks=False):
+        current=Path(directory)
+        for name in list(dirs):
+            child=current/name;assert not child.is_symlink(),str(child)
+            if name in PRUNED_NAMES:
+                dirs.remove(name)
+                excluded.append(dict(originalPath=str(child),scope='整個子目錄',reason='暫存來源／私有binary／cache不屬正式文字證據',contentsEnumerated=False,bytesRead=False,
+                    exception='q38與axiom的model-base.fingerprint.json另列映射保存。' if name=='bin' else None))
+        for name in sorted(files):
+            path=current/name;assert not path.is_symlink(),str(path)
+            mode=path.stat().st_mode
+            if path.suffix in EXCLUDED_SUFFIXES or (mode&0o111 and path.suffix not in TEXT_SUFFIXES):
+                excluded.append(dict(originalPath=str(path),scope='檔案',reason='來源碼或binary／可執行檔不混入證據',bytes=path.stat().st_size,mode=stat.S_IMODE(mode),bytesRead=False));continue
+            assert path.suffix in TEXT_SUFFIXES or name in ['.exit-code','.launcher-exit-code'],('未知非文字原件，先回報',str(path))
+            assert not mode&0o111,('正式文字原件有execute bit，不能靜默丟棄',str(path))
+            assert '.pending' not in name,('尚有未完成落盤',str(path))
+            selected.append((path,Path(path.relative_to(G))))
+    for phase in ['q38','axiom']:
+        selected.append((G/(phase+'-run/bin/model-base.fingerprint.json'),Path('private-model-fingerprints')/(phase+'.json')))
+    for name in ['verification.json','completion-verification.json','final-build-binary-index.json']:
+        selected.append((BASE/'native'/name,Path('native-reference')/name))
+    external=[(PREP/'instance.json','instance.json'),(PREP/'phase-launcher.py','phase-launcher-code.txt'),
+        (PREP/'phase-launcher.diff','phase-launcher.diff'),(PREP/'gate-review/preparation-receipt.json','acceptor-preparation-receipt.json'),
+        (manifest_path,'completion-manifest.json'),(OLD_METHOD,'historical-L-packaging-code.txt'),(Path(__file__),'curation-code.txt')]
+    for name in ['verify-gate.py',*[phase+'-acceptor.py' for phase in PHASES]]:
+        external.append((PREP/'gate-review'/name,name.removesuffix('.py')+'-code.txt'))
+        external.append((PREP/'gate-review'/(name.removesuffix('.py')+'.diff'),name.removesuffix('.py')+'.diff'))
+    selected += [(path,Path('external-code-receipts')/name) for path,name in external]
+    assert len({str(target) for _,target in selected})==len(selected)
+    assert not {str(target) for _,target in selected}&{'artifact-index.json','curation-exclusions.json','curation-source-mapping.json','curation-provenance.json','curation-README.zh-TW.md'}
+    selected_paths={path for path,_ in selected}
+    assert set(accepted_raw)<=selected_paths,'已接受raw有檔案未納入copy清單。'
+    for phase in PHASES:
+        assert {path for path in selected_paths if path.is_relative_to(official_dir(phase))}=={path for path in accepted_raw if path.is_relative_to(official_dir(phase))},phase+'正式raw清單與接受時不符。'
+    assert {Path(item['path']) for item in accepted_artifact_refs}<=selected_paths,'主接受器所綁原件沒有完整映射。'
+    inventory=[]
+    for path,target in selected:
+        data=path.read_bytes();data.decode('utf-8')
+        assert not path.is_symlink() and not data.startswith(b'\x7fELF') and b'\0' not in data
+        assert not path.stat().st_mode&0o111 and target.suffix not in EXCLUDED_SUFFIXES
+        inventory.append(dict(originalPath=str(path),artifactPath=str(target),bytes=len(data),sha256=h(data),sourceMtimeNs=path.stat().st_mtime_ns))
+    OUT.mkdir()
+    for item in inventory:
+        path=Path(item['originalPath']);target=OUT/item['artifactPath'];target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(path,target)
+        assert h(target.read_bytes())==item['sha256'] and target.stat().st_size==item['bytes'] and target.stat().st_mtime_ns==item['sourceMtimeNs']
+    save(OUT/'curation-exclusions.json',dict(sourceSha=SOURCE,items=excluded,
+        note='明列有意不納入的私有binary／暫存來源與程式碼；未列子目錄內檔數或binary hash，不冒稱證據缺檔或已讀。'))
+    save(OUT/'curation-source-mapping.json',dict(sourceSha=SOURCE,files=inventory,fileCount=len(inventory),
+        totalBytes=sum(x['bytes'] for x in inventory),allCopiesByteAndMtimeIdentical=True))
+    save(OUT/'curation-provenance.json',dict(sourceSha=SOURCE,worktree=str(root),sourceFiles=source_hashes,
+        sourceBytesMatchGitAndPhaseReceipts=True,completionManifest=ref(manifest_path),templateMethod=ref(OLD_METHOD),
+        primaryAndDetailedAllAccepted=True,allAcceptanceExecutionReceiptsExitZero=True,
+        acceptedRawIndexRechecked=True,acceptedRawFileCount=len(accepted_raw),allAcceptedRawAndPrimaryArtifactsMapped=True,
+        toolObservations='原始檔案為實際工具回應的事後逐欄轉錄；父wait收據另存，不混作自動transport日誌。',
+        q38Correction='必收q38-progress-interpretation-correction.json，不把尚無model marker推定為正在model baseline。',
+        procLimits='必收q38-readonly-process-samples.jsonl；stat/cmdline可讀與task/children FileNotFoundError不作退出、整棵子樹清理或環境原因推定。',
+        q38CompiledMutants=39,q38PythonOnlyCases=['SPM37','SPM38','SPM40'],
+        cardExistingTestTargets=['P146-error-fields','P154-identity-boundary','P154-identity-one-message'],
+        nativeBridgeReference=str(BASE/'native/final-build-binary-index.json'),globalOrBinaryRead=False))
+    lines=['來源 '+SOURCE+' 的四個完整 gate 文字證據。此摘要只在同來源 native、四 phase 主／詳細接受器及真退出碼全部核對後產生。','',
+        '各 phase 的原始目錄結構完整保留；每份原件映射在 curation-source-mapping.json。正式 run-receipt、launcher/dispatch、acceptance-execution、verification、acceptance-review、全部進度與工具觀察一併保存。','',
+        'Q38是42全案：41 killed與原SPM24 equivalent；39 compiled mutant與3個Python-only分開。controls是原12案9 survived/3 unlabelled；raw gate1與expected checker0保持。card53包含3個既有tests target，依原表暫改並逐byte還原；baseline43、restore按原case。axiom5 baseline與每次restore44。','',
+        '本輪jobs1；CC與PYTHONOPTIMIZE未設定，python -B且未帶-O，stack16MiB。正式原argv、各子命令與環境均以run-receipt和launcher原件為準；以下是原launcher真正呼叫：']
+    for phase in PHASES:
+        x=phases[phase]
+        lines += ['',phase+'：'+json.dumps(x['primary']['summary'],ensure_ascii=False)+'；外層秒數 '+str(x['launcher']['elapsedSeconds']),
+            json.dumps(x['launcher']['command'],ensure_ascii=False)]
+    lines += ['','Q38階段判讀更正保留原件：尚無model marker不能推定當時正在model baseline。只讀程序取樣的stat/cmdline與task/children讀取限制也完整保留，不用PID不可見或FileNotFoundError證明退出或環境原因。',
+        '共享bridge依同L3 native final→四phase before/after串接bytes/hash/mtime；本次封包只讀已保存文字與sidecar，不讀global或binary。初終取樣相同不代表期間從未暫寫。',
+        'curation-exclusions.json明列未納入的tmp source copies、private bin與程式碼。q38/axiom兩份private model fingerprint是有意保存的文字例外。external-code-receipts/*.txt是實際外部程序原bytes收據，不是新增正式工具；正式工具仍在來源commit的既有註冊位置。',
+        '未驗界線：本包不替代native、browser、P189或遠端CI各自的實跑收據。最大不確定仍是原fixture與突變表對未列輸入的涵蓋度；既有equivalent不等於證明所有輸入都語意等價。請使用者在 PR #288 按本包同L3實際結果更新Q38與§7，其他矩陣項引用各自收據；此包不提出合併請求。']
+    (OUT/'curation-README.zh-TW.md').write_text('\n'.join(lines)+'\n')
+    assert git('rev-parse','HEAD')==SOURCE and git('status','--porcelain')==''
+    for item in inventory:assert ref(Path(item['originalPath']))==dict(path=item['originalPath'],**{k:item[k] for k in ['bytes','sha256','sourceMtimeNs']})
+    files=[]
+    for path in sorted(OUT.rglob('*')):
+        if path.is_file():files.append(dict(path=str(path.relative_to(OUT)),bytes=path.stat().st_size,sha256=h(path.read_bytes())))
+    save(OUT/'artifact-index.json',dict(sourceSha=SOURCE,createdUtc=utc(),files=files,
+        fileCountExcludingThisIndex=len(files),totalBytesExcludingThisIndex=sum(x['bytes'] for x in files),excludedFromOwnHash='artifact-index.json',noExecutableArtifacts=True))
+    shutil.copytree(OUT,STAGING,copy_function=shutil.copy2);copied=[]
+    for path in sorted(OUT.rglob('*')):
+        if path.is_file():
+            relative=path.relative_to(OUT);target=STAGING/relative
+            assert target.read_bytes()==path.read_bytes() and target.stat().st_mtime_ns==path.stat().st_mtime_ns
+            copied.append(dict(path=str(relative),bytes=path.stat().st_size,sha256=h(path.read_bytes()),sourceMtimeNs=path.stat().st_mtime_ns))
+    assert {x['path'] for x in copied}=={str(p.relative_to(STAGING)) for p in STAGING.rglob('*') if p.is_file()}
+    assert not BUNDLE.exists(),str(BUNDLE)
+    os.replace(STAGING,BUNDLE)
+    assert not STAGING.exists() and BUNDLE.is_dir()
+    APPENDIX.mkdir()
+    proof=dict(sourceSha=SOURCE,curated=str(OUT),destination=str(BUNDLE),files=copied,fileCount=len(copied),
+        totalBytes=sum(x['bytes'] for x in copied),allCopiesByteAndMtimeIdentical=True,originalIndexUnchanged=True,
+        artifactIndexSha256=h((OUT/'artifact-index.json').read_bytes()),copiedUtc=utc(),
+        stagingPath=str(STAGING),publishedAtomically=True,publicationMethod='同一父目錄完整核對後os.replace一次發布；發布後不寫主子包。')
+    save(APPENDIX/'copy-verification.json',proof)
+    result={k:proof[k] for k in ['sourceSha','curated','destination','fileCount','totalBytes','artifactIndexSha256']}
+    result.update(copyVerificationSha256=h((APPENDIX/'copy-verification.json').read_bytes()),curationTool=ref(Path(__file__)),
+        completionManifest=ref(manifest_path),formalToolOrProductExecuted=False,globalOrBinaryRead=False)
+    save(BASE/'gates-curation-receipt.json',result)
+    print(json.dumps(result,ensure_ascii=False))
+    return 0
+
+if __name__=='__main__':
+    raise SystemExit(main())

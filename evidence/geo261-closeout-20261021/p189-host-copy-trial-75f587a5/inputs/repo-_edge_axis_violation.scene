@@ -1,0 +1,6 @@
+# 公理:I13:at-grid 的格線座標軸必須垂直於角材長度軸。
+# 軸向錯誤:u 座標線(沿 V 走)配沿 U 的料 → 不垂直 → 應拒絕
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+grid 1 on 1 u 2000
+timber 1 27 33 role primary
+place 1 on 1 at-line grid 1 u 0 +u +n

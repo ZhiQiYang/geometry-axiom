@@ -1,0 +1,14 @@
+test_shrink_reject_and_expand_loses_right_contact (tests.test_section_profile_native.SectionProfileNative.test_shrink_reject_and_expand_loses_right_contact) ... FAIL
+
+======================================================================
+FAIL: test_shrink_reject_and_expand_loses_right_contact (tests.test_section_profile_native.SectionProfileNative.test_shrink_reject_and_expand_loses_right_contact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_section_profile_native.py", line 369, in test_shrink_reject_and_expand_loses_right_contact
+    self.assertIn({"code": "PROFILE_CONTACT_LOST", "clause": "I49", "memberId": 2, "profileId": 1},
+AssertionError: {'code': 'PROFILE_CONTACT_LOST', 'clause': 'I49', 'memberId': 2, 'profileId': 1} not found in []
+
+----------------------------------------------------------------------
+Ran 1 test in 0.173s
+
+FAILED (failures=1)

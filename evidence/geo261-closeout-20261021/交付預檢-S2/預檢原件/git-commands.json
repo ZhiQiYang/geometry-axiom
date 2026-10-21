@@ -1,0 +1,52 @@
+[
+  {
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-evidence/bundle-preflight-after-S2/ignore-model",
+      "init",
+      "--quiet"
+    ],
+    "exitCode": 0,
+    "stdout": "git-0.stdout",
+    "stderr": "git-0.stderr",
+    "stdinBytes": null,
+    "stdinSha256": null
+  },
+  {
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-evidence/bundle-preflight-after-S2/ignore-model",
+      "-c",
+      "core.excludesFile=/dev/null",
+      "check-ignore",
+      "--no-index",
+      "-z",
+      "--stdin"
+    ],
+    "exitCode": 0,
+    "stdout": "git-1.stdout",
+    "stderr": "git-1.stderr",
+    "stdinBytes": 1953095,
+    "stdinSha256": "60572c2afcae3043cbb0702fe967a0db2167e98f4c4537aaf2b5535530991ffe"
+  },
+  {
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-evidence/bundle-preflight-after-S2/ignore-model",
+      "-c",
+      "core.excludesFile=/dev/null",
+      "check-ignore",
+      "--no-index",
+      "-z",
+      "--stdin"
+    ],
+    "exitCode": 1,
+    "stdout": "git-2.stdout",
+    "stderr": "git-2.stderr",
+    "stdinBytes": 1953095,
+    "stdinSha256": "60572c2afcae3043cbb0702fe967a0db2167e98f4c4537aaf2b5535530991ffe"
+  }
+]

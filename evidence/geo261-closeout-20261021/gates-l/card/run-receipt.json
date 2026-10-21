@@ -1,0 +1,38 @@
+{
+  "source_head": "43f85313c32410ac01406ab585846bbacafea278",
+  "entry": "card",
+  "root": "/workspace/geo261-gates-l",
+  "started_at": "2026-10-21T00:27:53.853214+00:00",
+  "environment": {
+    "TMPDIR": "/workspace/geo261-evidence/gates-l/card-run/card/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GEOMETRY_MODEL_BASE": "/workspace/geo261-evidence/gates-l/card-run/bin/model-base"
+  },
+  "stack_bytes": 16777216,
+  "runner_sha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3",
+  "status_before": "",
+  "commands": [
+    {
+      "label": "card",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-u",
+        "geometry-core/card-reference/run_mutations.py",
+        "--output",
+        "/workspace/geo261-evidence/gates-l/card-run/card/raw"
+      ],
+      "started_at": "2026-10-21T00:27:53.853343+00:00",
+      "exit_code": 0,
+      "seconds": 433.5064804449976,
+      "ended_at": "2026-10-21T00:35:07.360291+00:00"
+    }
+  ],
+  "ended_at": "2026-10-21T00:35:07.361043+00:00",
+  "exit_code": 0,
+  "status_after": "",
+  "restored": true
+}

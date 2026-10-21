@@ -1,0 +1,19 @@
+{
+  "label": "q38",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-u",
+    "tests/section_profile_mutation_check.py",
+    "--jobs",
+    "2",
+    "--receipt",
+    "/workspace/geo261-evidence/gates-l/q38-run/q38/receipt.json",
+    "--logs",
+    "/workspace/geo261-evidence/gates-l/q38-run/q38/logs"
+  ],
+  "started_at": "2026-10-21T00:17:39.492870+00:00",
+  "exit_code": 0,
+  "seconds": 437.89295987600053,
+  "ended_at": "2026-10-21T00:24:57.386241+00:00"
+}

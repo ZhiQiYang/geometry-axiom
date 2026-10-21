@@ -1,0 +1,24 @@
+{
+  "說明": "root另以Git tree與提交原bytes核對A來源綁定；這是獨立只讀核對，不是重跑架構gate或產品驗收。",
+  "sourceSha": "ab6869b86a4ad82345359b72397fc055280d8308",
+  "metadataSha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "inputsGitBlobMatched": 611,
+  "metadataChanges": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "artifactRawSha256": {
+    "geometry-core/domain-decoupling/product-architecture.json": "b5dff5b3e2573aac6aa38fa433cb3afa71c2ab1828d34d61aabc26df01bbcbc9",
+    "geometry-core/domain-decoupling/product-architecture-scan.json": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md": "a4fffdc84186b899bf4287ddab4b961fb6d96f02233d52fdc413517a2138a344",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json": "804142f06ef1c251cd6c2d30fa7d66e1f04609d5e4e39d439169267869dcdf6e"
+  },
+  "bindingRawSha256": "97bfb28c98f4a4b2acf7c87f9a8bba958d9adb7b73eda00ff8ece97d8d1a42e7",
+  "previousReadOnlyAttempt": {
+    "exitCode": 1,
+    "reason": "初次以文字行解析git ls-tree，未處理Git對中文路徑的預設引號轉義，於第一個中文路徑KeyError停止；沒有執行產品或更動來源。",
+    "correction": "改用git ls-tree -rz的NUL分隔原始路徑，完整重做611項核對。"
+  },
+  "exitCode": 0
+}

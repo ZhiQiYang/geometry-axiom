@@ -1,0 +1,19 @@
+{
+  "prepared_utc": "2026-10-21T02:56:58.468706+00:00",
+  "authorization": "主代理明確放行後才可啟動",
+  "released": true,
+  "prepare_receipt": "/workspace/geo261-evidence/p189-footprint-6c6937708fa3-83mr7ggq/prepare-receipt.json",
+  "supervisor": "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+  "supervisor_sha256": "e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413",
+  "out": "/workspace/geo261-evidence/p189-footprint-6c6937708fa3-83mr7ggq",
+  "scheduled_launch_argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+    "/workspace/geo261-evidence/p189-footprint-6c6937708fa3-83mr7ggq/supervisor-released-config.json"
+  ],
+  "launch_transport": "exec_command保有頂層session並真wait；stdout/stderr直檔，不launch-and-exit。",
+  "classification": "候選性能預檢；非完整可合驗收；不改既有收據",
+  "released_utc": "2026-10-21T02:58:38.711713+00:00",
+  "release_reason": "root：footprint定向56/20控制及peer真0，固定SHA與正負來源完成；其餘agents停止或已暫停；整輪獨占，固定36樣本，不重抽。"
+}

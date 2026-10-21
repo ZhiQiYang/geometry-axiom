@@ -1,0 +1,53 @@
+{
+  "note": "只列本次來源集合中排除的可執行副本；runtime binary/profile/cache不屬本次檔案證據來源，binary身份已記於native-identity與原sidecars",
+  "files": [
+    {
+      "source": "/workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py",
+      "bytes": 4590,
+      "sha256": "4f7935f1c516d118c06272a5ed96c4c5909cdbe124a4e746870b0001ce490181",
+      "reason": "不複製可執行副本；本輪與假子程序原bytes已由對應command-code.txt保留，外部調度非新增產品工具"
+    },
+    {
+      "source": "/workspace/geo261-evidence/canvas-L-preparation/launcher-controls/seven/launch_canvas_job.py",
+      "bytes": 4590,
+      "sha256": "4f7935f1c516d118c06272a5ed96c4c5909cdbe124a4e746870b0001ce490181",
+      "reason": "不複製可執行副本；本輪與假子程序原bytes已由對應command-code.txt保留，外部調度非新增產品工具"
+    },
+    {
+      "source": "/workspace/geo261-evidence/canvas-L-preparation/launcher-controls/seven/run_canvas_job.py",
+      "bytes": 66,
+      "sha256": "2139d8eba4ac1dc2f67fa6c444dd7298484bd54f7fec0a95da12a3f029b9bd61",
+      "reason": "不複製可執行副本；本輪與假子程序原bytes已由對應command-code.txt保留，外部調度非新增產品工具"
+    },
+    {
+      "source": "/workspace/geo261-evidence/canvas-L-preparation/launcher-controls/term/launch_canvas_job.py",
+      "bytes": 4590,
+      "sha256": "4f7935f1c516d118c06272a5ed96c4c5909cdbe124a4e746870b0001ce490181",
+      "reason": "不複製可執行副本；本輪與假子程序原bytes已由對應command-code.txt保留，外部調度非新增產品工具"
+    },
+    {
+      "source": "/workspace/geo261-evidence/canvas-L-preparation/launcher-controls/term/run_canvas_job.py",
+      "bytes": 80,
+      "sha256": "9264a990ebeacdb071e5bea52202b2f48688e8d6ed63dee436480abfc489d9ef",
+      "reason": "不複製可執行副本；本輪與假子程序原bytes已由對應command-code.txt保留，外部調度非新增產品工具"
+    },
+    {
+      "source": "/workspace/geo261-evidence/canvas-L-preparation/launcher-controls/zero/launch_canvas_job.py",
+      "bytes": 4590,
+      "sha256": "4f7935f1c516d118c06272a5ed96c4c5909cdbe124a4e746870b0001ce490181",
+      "reason": "不複製可執行副本；本輪與假子程序原bytes已由對應command-code.txt保留，外部調度非新增產品工具"
+    },
+    {
+      "source": "/workspace/geo261-evidence/canvas-L-preparation/launcher-controls/zero/run_canvas_job.py",
+      "bytes": 66,
+      "sha256": "24e3a7e5a4b6760231c4655dcd12c8c97904e2501fc46db88c0fa2b28d850042",
+      "reason": "不複製可執行副本；本輪與假子程序原bytes已由對應command-code.txt保留，外部調度非新增產品工具"
+    },
+    {
+      "source": "/workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py",
+      "bytes": 21346,
+      "sha256": "327e926ae0e88fff4b04e68afdee9fb12e9dd2dff0a839fb340603a9fc20121a",
+      "reason": "不複製可執行副本；本輪與假子程序原bytes已由對應command-code.txt保留，外部調度非新增產品工具"
+    }
+  ]
+}

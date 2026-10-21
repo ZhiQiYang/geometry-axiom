@@ -1,0 +1,238 @@
+{
+  "schema": "geo261-contact-trial-package-source-review/1",
+  "reviewer": "/root/p189_prepare/contact_static",
+  "method": "只讀既有目錄、JSON、指定原輸出及 Git blob；未 import 執行器、未建置、load、測試或量測。只新增此包外分類報告。",
+  "roots": [
+    "/workspace/geo261-evidence/contact-trial-7ad",
+    "/workspace/geo261-evidence/contact-independent-review"
+  ],
+  "accepted_candidate": {
+    "branch": "codex/geo261-p189-contact-trial-20261021",
+    "sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+    "parent": "7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09",
+    "directory": "/workspace/geo261-evidence/contact-trial-7ad/v2",
+    "top_receipt": "/workspace/geo261-evidence/contact-trial-7ad/v2/verification-summary.json",
+    "commit_binding": "/workspace/geo261-evidence/contact-trial-7ad/local-commit.json",
+    "source_receipt": "/workspace/geo261-evidence/contact-trial-7ad/v2/source-hashes.json",
+    "peer_receipt": "/workspace/geo261-evidence/contact-independent-review/v2-independent-review.json",
+    "source_blobs_verified_against_commit": true,
+    "sources": {
+      "geometry-templates/woodworking/native/contact_world.c": "08f9c5e60a9396ab0791a01a1408605b39f70d0881f69bdf5e94d2dac1c7465e",
+      "tests/geo261_contact_world_harness.c": "a16e54c4fd6d316b32e3642db658bcad1a5d55141ea2690fc2d982ba256d9f0e",
+      "tests/test_geo261_wood_contact_world.py": "31779ea23b357455fd5722d747278afd65ea2c0539189ed7a7db9c39d0370f23"
+    },
+    "targeted": {
+      "receipt": "/workspace/geo261-evidence/contact-trial-7ad/v2/targeted-result.json",
+      "command_receipt": "/workspace/geo261-evidence/contact-trial-7ad/v2/targeted-commands.json",
+      "log": "/workspace/geo261-evidence/contact-trial-7ad/v2/targeted-unittest.log",
+      "tests_run": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "command_count": 341,
+      "command_stdout_stderr_files": 682,
+      "environment_receipt": "/workspace/geo261-evidence/contact-trial-7ad/v2/launch-environment.json"
+    },
+    "numeric": {
+      "receipt": "/workspace/geo261-evidence/contact-trial-7ad/v2/numeric-commands.json",
+      "builds": 2,
+      "cases_per_side": 8,
+      "command_count": 18,
+      "all_recorded_returncodes_zero": true,
+      "raw_files": 36,
+      "meaning": "原 collector 與新 collector 都通過同一組數值契約；這不是效能提升證據。"
+    },
+    "sanitizer": {
+      "receipt": "/workspace/geo261-evidence/contact-trial-7ad/v2/sanitizer-result.json",
+      "builds": 1,
+      "cases": 8,
+      "command_count": 9,
+      "all_recorded_returncodes_zero": true,
+      "all_nine_raw_stderr_empty": true,
+      "raw_files": 18,
+      "limits": "ASan/UBSan 只覆蓋八組實例，不能代替所有 C 中間指標的靜態合法性證明。"
+    },
+    "mutation_controls": {
+      "receipt": "/workspace/geo261-evidence/contact-trial-7ad/v2/verification-summary.json",
+      "json_key": "contactWorldControls",
+      "count": 24,
+      "expected_baseline_mutant_restored": [
+        0,
+        1,
+        0
+      ],
+      "independently_crosschecked_command_indices_and_named_stderr_markers": 24,
+      "mismatches": [],
+      "peer_json_key": "mutationControls",
+      "peer_chain": [
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "note": "peer 額外列 compile/link 兩個 0；不得把兩種鏈的長度差當不一致。"
+    },
+    "peer_time_boundary": "peer 的 candidateCommitted=false／候選未commit 是提交前的歷史狀態；local-commit.json 是後續85dc綁定。三份來源hash已與85dc Git blobs及v2收據核對一致，保留原peer文字，不回寫歷史。",
+    "scope_limit": "此目錄只證明當時定向驗證與peer；不冒稱完整native/browser/Q38/§7/P-189驗收或可合併。local-commit.json 的 pushed=false、未跑性能亦為該收據寫入時狀態。"
+  },
+  "keep_historical": {
+    "directory": "/workspace/geo261-evidence/contact-trial-7ad/v1",
+    "top_receipts": [
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/targeted-result.json",
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/targeted-commands.json",
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/targeted-unittest.log",
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/numeric-commands.json",
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/sanitizer-result.json",
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/stack-observation.json",
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/source-hashes.json"
+    ],
+    "targeted": {
+      "tests_run": 38,
+      "failures": 2,
+      "errors": 0,
+      "passed": false,
+      "command_count": 327
+    },
+    "failed_tests": [
+      "tests.test_geo261_wood_contact_world.WoodContactWorld.test_same_owner_extension_guard_controls_the_actual_atomic_bridge_placement",
+      "tests.test_geo261_wood_contacts_product.WoodContactsProduct.test_extension_priority_controls_independent_client_and_actual_placement"
+    ],
+    "reason_for_retention": "兩筆 BridgeClosed 是失敗歷史，不是 killed。v1 ASan綠仍未排除後續靜態發現的 orders+i-member_begin 中間越界指標問題。",
+    "stack_limit": "stack-observation 的8MiB是在執行後同工具環境觀察，並非當刻子程序收據。v2同時修改source與設16MiB，不能宣稱已單因子證明v1失敗原因。",
+    "peer_static_receipt": "/workspace/geo261-evidence/contact-independent-review/v1-static-review.json",
+    "peer_status": "此peer只靜態檢23個控制且逐筆executed=false；含採用阻擋。這代表peer沒有執行控制，不能覆蓋或否定v1另有targeted實跑原件。",
+    "retain_snapshots": [
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/candidate.patch",
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/contact_world.c.txt",
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/geo261_contact_world_harness.c.txt",
+      "/workspace/geo261-evidence/contact-trial-7ad/v1/test_geo261_wood_contact_world.py.txt",
+      "/workspace/geo261-evidence/contact-independent-review/candidate-v1.patch",
+      "/workspace/geo261-evidence/contact-independent-review/candidate-v1-source-hashes.json",
+      "/workspace/geo261-evidence/contact-independent-review/v1-to-v2-exact.diff"
+    ],
+    "classification": "歷史失敗、靜態阻擋及已被v2取代的來源快照；不可當85dc通過證據。"
+  },
+  "source_only_or_static_material": {
+    "no_separate_planned_only_draft_identified": "兩個指定根目錄內，沒有找到可確定另屬尚未執行計畫的獨立草稿。不得僅因stdout為空或peer.executed=false就把實跑材料判未執行。",
+    "classification": [
+      {
+        "paths": [
+          "/workspace/geo261-evidence/contact-independent-review/v1-static-review.json"
+        ],
+        "meaning": "只做靜態審查；保留其23控制未由peer執行及採用阻擋。"
+      },
+      {
+        "paths": [
+          "/workspace/geo261-evidence/contact-independent-review/review-v2-source.txt"
+        ],
+        "meaning": "既有peer工具原碼快照；不是產品原輸出，也不是可直接當作新測試成功的證據。保留原bytes與名稱；不得因.txt後綴免除應有工具登記。"
+      },
+      {
+        "paths": [
+          "/workspace/geo261-evidence/contact-independent-review/v1-contact_world.c.txt",
+          "/workspace/geo261-evidence/contact-independent-review/v1-geo261_contact_world_harness.c.txt",
+          "/workspace/geo261-evidence/contact-independent-review/v1-test_geo261_wood_contact_world.py.txt",
+          "/workspace/geo261-evidence/contact-independent-review/v2-contact_world.c.txt",
+          "/workspace/geo261-evidence/contact-independent-review/v2-geo261_contact_world_harness.c.txt",
+          "/workspace/geo261-evidence/contact-independent-review/v2-test_geo261_wood_contact_world.py.txt"
+        ],
+        "meaning": "既有單檔來源快照；保留歷史與可追溯性，不代表獨立測試執行，也不是來源整樹。"
+      },
+      {
+        "paths": [
+          "/workspace/geo261-evidence/contact-trial-7ad/v1/run_numeric.py",
+          "/workspace/geo261-evidence/contact-trial-7ad/v1/run_targeted.py",
+          "/workspace/geo261-evidence/contact-trial-7ad/v1/run_sanitizers.py",
+          "/workspace/geo261-evidence/contact-trial-7ad/v2/run_numeric.py",
+          "/workspace/geo261-evidence/contact-trial-7ad/v2/run_targeted.py",
+          "/workspace/geo261-evidence/contact-trial-7ad/v2/run_sanitizers.py",
+          "/workspace/geo261-evidence/contact-trial-7ad/v2/summarize_results.py"
+        ],
+        "meaning": "執行／整理工具來源，應保留.py並按正式工具範圍登記；不能改副檔名避掃。v2三個實跑的外層工具碼由verification-summary事後轉錄，不冒稱本次親自重跑。"
+      }
+    ]
+  },
+  "inventory": [
+    {
+      "root": "/workspace/geo261-evidence/contact-trial-7ad",
+      "files": 1472,
+      "bytes": 772587,
+      "by_directory": {
+        ".": 1,
+        "v1": 722,
+        "v2": 749
+      },
+      "elf_files": [],
+      "pycache_files": [],
+      "directories": [
+        "v1",
+        "v2"
+      ],
+      "source_tree_present": false,
+      "python_files": 7
+    },
+    {
+      "root": "/workspace/geo261-evidence/contact-independent-review",
+      "files": 14,
+      "bytes": 311113,
+      "elf_files": [],
+      "pycache_files": [],
+      "directories": [],
+      "source_tree_present": false,
+      "python_files": 0
+    }
+  ],
+  "packaging_exclusions": {
+    "within_reviewed_roots": [],
+    "method": "對指定兩根的全部1486個一般檔案讀前4 bytes辨識ELF，並列目錄/副檔名檢查__pycache__、.pyc、.pyo及來源整樹；沒有發現需因這三類而排除的現存檔。",
+    "do_not_follow_external_paths": [
+      "/workspace/geo261-contact-candidate",
+      "/tmp/geo261-contact-trial-7ad",
+      "/tmp/geometry-tests"
+    ],
+    "warning": "上述外部路徑由既有編譯命令引用，含來源checkout、二進位或臨時建置材料；本次未遞迴盤點它們。封包只複製兩個已審核根的必要證據，不因JSON中的外部路徑而把整樹帶入。"
+  },
+  "review_execution": {
+    "executed_product_commands": false,
+    "readonly_command_results": [
+      {
+        "operation": "列兩根及子目錄檔案",
+        "exit_code": 0,
+        "limitation": "初次檔名列印過多、工具輸出截斷；後以彙整inventory完整確認。"
+      },
+      {
+        "operation": "rg --files 篩 JSON/Markdown/退出碼/腳本/receipt/plan",
+        "exit_code": 0
+      },
+      {
+        "operation": "cat local-commit/v2主收據/v1失敗收據",
+        "exit_code": 0
+      },
+      {
+        "operation": "初版JSON摘要與inventory",
+        "exit_code": 1,
+        "reason": "遇空list仍取v[0]，IndexError；未跑到inventory，沒有拿它當通過。"
+      },
+      {
+        "operation": "修正唯讀JSON摘要並完整inventory／ELF前4 bytes",
+        "exit_code": 0
+      },
+      {
+        "operation": "列非raw檔案、命令schema與peer限制",
+        "exit_code": 0
+      },
+      {
+        "operation": "rg 靜態失敗與未執行字樣",
+        "exit_code": 2,
+        "reason": "v2/*.txt不存在，glob未展開；其他命中僅作線索，不將exit2當成功。"
+      },
+      {
+        "operation": "只讀crosscheck24控制、18numeric、9sanitizer、85dc三個Git blob與peerhash",
+        "exit_code": 0
+      }
+    ],
+    "no_new_test_exit_claim": "本報告的產品returncode均來自已保存原件；本次工具exit code只代表唯讀查核程式本身。",
+    "remaining_uncertainty": "沒有重新執行任何產品驗收；外層測試工具碼的歷史來源與v1崩潰成因限制沿用原收據，不擴大聲明。"
+  }
+}

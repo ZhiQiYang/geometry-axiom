@@ -1,0 +1,14 @@
+{
+  "label": "build-model-base",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-c",
+    "import sys; from pathlib import Path; from tests import binaries; binaries.OUT_DIR = Path(sys.argv[1]); raise SystemExit(binaries.main(['build', 'model-base']))",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/q38-run/bin"
+  ],
+  "started_at": "2026-10-21T06:22:31.214597+00:00",
+  "exit_code": 0,
+  "seconds": 19.477937796000333,
+  "ended_at": "2026-10-21T06:22:50.692912+00:00"
+}

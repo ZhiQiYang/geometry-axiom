@@ -1,0 +1,15 @@
+✔ native typed member metadata preserves the existing short label, full tooltip and pick identity (2.291152ms)
+✔ member identity survives translated labels, every face and the uint32 endpoint (4.562544ms)
+✔ a misleading Chinese label cannot override structural identity or the short display label (0.719562ms)
+✔ plain labels stay plain even when their spelling resembles a member face (2.109173ms)
+✔ malformed annotations cannot manufacture selectable members (7.269349ms)
+✔ replay keeps transforms, style, annotation order and operation input unchanged (1.828129ms)
+✔ annotation strings are text, including angle brackets and quotes (0.671691ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 97.173244

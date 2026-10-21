@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-10-20T23:07:05.042021+00:00",
+  "execution_source_sha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "final_ledger_commit_sha": "43f85313c32410ac01406ab585846bbacafea278",
+  "ledger_sha256": "868a80700c9d058e208684631e799a91659e7820b06c31c246b8af96c670a731",
+  "official_phase_exit_codes": {
+    "mutate": 0,
+    "check": 0,
+    "check-killers": 0
+  },
+  "external_validation_exit_codes": [
+    1,
+    0
+  ],
+  "verdict_counts": {
+    "killed": 70,
+    "equivalent": 4,
+    "crashed": 1,
+    "retired": 3
+  },
+  "bridge_raw_file_count": 148,
+  "identity_sidecar_count": 95,
+  "changes_to_product_or_official_tools": false,
+  "final_L_P189_started": false,
+  "raw_limitations": [
+    "核心子程序 raw stdout/stderr 未由官方工具落盤；保留結構化結果及 hash。",
+    "核心 baseline blocked 可重試，只保留最後成功收據，不能從原件獨立證明啟動次數。",
+    "M36 的歷史 7143 案差分文字不是本輪另跑。"
+  ],
+  "source_binding_receipt": "source-binding-final-L.json"
+}

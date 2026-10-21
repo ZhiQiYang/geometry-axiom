@@ -1,0 +1,25 @@
+{
+  "schema": "section-profile-exceptions/1",
+  "requested": [
+    "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding"
+  ],
+  "executed": [
+    "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding"
+  ],
+  "passed": [],
+  "tests_run": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "events": [
+    {
+      "test_id": "tests.test_section_profile_native.SectionProfileNative.test_concave_not_four_corners_and_winding",
+      "subtest_id": null,
+      "kind": "failure",
+      "exception_type": "builtins.AssertionError",
+      "message": "True is not false : expected rejection 'V_PROFILE_OUTSIDE' but the candidate was accepted: {'token': 2, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1', 'grid-card-reference/1'], 'required_capabilities': ['section-profile/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'specs': [], 'materials': [], 'methods': [], 'applications': [], 'sources': [], 'parameters': [], 'assembly': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'sectionProfiles': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [100, 0], [100, 100], [60, 100], [60, 40], [40, 40], [40, 100], [0, 100]]}}], 'members': [], 'runs': []}, 'geometry': {'grids': [], 'gridSystems': [], 'datums': [], 'guides': [], 'timbers': []}}, 'after': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1', 'grid-card-reference/1'], 'required_capabilities': ['section-profile/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'specs': [], 'materials': [], 'methods': [], 'applications': [], 'sources': [], 'parameters': [], 'assembly': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'sectionProfiles': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [100, 0], [100, 100], [60, 100], [60, 40], [40, 40], [40, 100], [0, 100]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 60}, 'B': {'kind': 'literal', 'value': 60}, 'id': 1, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 20, 'v0': 20}, 'rect': [20, 20, 80, 80], 'dimensions': [60, 60]}], 'runs': []}, 'geometry': {'grids': [], 'gridSystems': [], 'datums': [], 'guides': [], 'timbers': []}}, 'redeclaredReferences': [], 'cardCaptures': [], 'sectionProfiles': {'before': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [100, 0], [100, 100], [60, 100], [60, 40], [40, 40], [40, 100], [0, 100]]}}], 'members': [], 'runs': []}, 'after': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [100, 0], [100, 100], [60, 100], [60, 40], [40, 40], [40, 100], [0, 100]]}}], 'members': [{'value': {'A': {'kind': 'literal', 'value': 60}, 'B': {'kind': 'literal', 'value': 60}, 'id': 1, 'kind': 'timber', 'orientation': 'A-u', 'profileId': 1, 'u0': 20, 'v0': 20}, 'rect': [20, 20, 80, 80], 'dimensions': [60, 60]}], 'runs': []}, 'warnings': [], 'diagnosticsComplete': True, 'violations': []}, 'violations': []}"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+test_CR31_CONTROLLED_TOKEN_REJECT (tests.test_grid_card_reference.GridCardReference.test_CR31_CONTROLLED_TOKEN_REJECT) ... FAIL
+
+======================================================================
+FAIL: test_CR31_CONTROLLED_TOKEN_REJECT (tests.test_grid_card_reference.GridCardReference.test_CR31_CONTROLLED_TOKEN_REJECT)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 465, in test_CR31_CONTROLLED_TOKEN_REJECT
+    self.assertIn('CONTROLLED_TOKEN_REJECT', rejection_reason(r)); self.assertEqual(before, self.state())
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'CONTROLLED_TOKEN_REJECT' not found in 'line 2: I8a: impact preview required; inspect preview, then confirm token (World unchanged)'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.193s
+
+FAILED (failures=1)

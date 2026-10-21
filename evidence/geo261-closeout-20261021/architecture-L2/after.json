@@ -1,0 +1,54 @@
+{
+  "head": "249571fe2477845d5330f6190dad965bf327f43b",
+  "trackedClean": true,
+  "criticalFiles": {
+    "geometry-core/domain-decoupling/product-architecture.json": {
+      "bytes": 225770,
+      "rawSha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829",
+      "lfSha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829"
+    },
+    "geometry-core/domain-decoupling/product-architecture-scan.json": {
+      "bytes": 132208,
+      "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+    },
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md": {
+      "bytes": 36251,
+      "rawSha256": "f953eba02ce6729e1903534e22648b3f777242f85fbb27e91c68b0418554d153",
+      "lfSha256": "f953eba02ce6729e1903534e22648b3f777242f85fbb27e91c68b0418554d153"
+    },
+    "geometry-core/domain-decoupling/product-architecture-receipt.json": {
+      "bytes": 292674,
+      "rawSha256": "21712ad7f20b4f9fceca91b4f63da66a6f7348288dc8162ef0154b97ef4aa907",
+      "lfSha256": "21712ad7f20b4f9fceca91b4f63da66a6f7348288dc8162ef0154b97ef4aa907"
+    },
+    "tests/architecture_contract.py": {
+      "bytes": 86895,
+      "rawSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
+      "lfSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
+    },
+    "tests/test_architecture_contract.py": {
+      "bytes": 66632,
+      "rawSha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+      "lfSha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3"
+    },
+    "tests/test_product_architecture.py": {
+      "bytes": 11793,
+      "rawSha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
+      "lfSha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
+    },
+    "tests/run_all.expected.json": {
+      "bytes": 24624,
+      "rawSha256": "f08443be7de507ea4550790bfdf3d51ce4c35fc74e2055286691ec511082bec0",
+      "lfSha256": "f08443be7de507ea4550790bfdf3d51ce4c35fc74e2055286691ec511082bec0"
+    },
+    "tests/mutants_results.json": {
+      "bytes": 5170289,
+      "rawSha256": "6bda315331050bd3478ed65211a8263508cb1a1f6f67cee3f35df377506e7f0b",
+      "lfSha256": "6bda315331050bd3478ed65211a8263508cb1a1f6f67cee3f35df377506e7f0b"
+    }
+  },
+  "inputCount": 611,
+  "rawAndLFInputsSameAsSnapshot": true,
+  "inputClosureSha256": "2c665544b106ed8b2542425ae3d752843e9cd281b340ab349fe8a3734bc36076"
+}

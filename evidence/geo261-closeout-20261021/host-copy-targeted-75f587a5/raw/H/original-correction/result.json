@@ -1,0 +1,72 @@
+{
+  "base": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "headBefore": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+  "headAfter": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+  "sourceUnchanged": true,
+  "TMPDIR": "/tmp/geo261-host-original-corrected-u70op38p",
+  "stackBytes": [
+    16777216,
+    16777216
+  ],
+  "CC": null,
+  "PYTHONOPTIMIZE": null,
+  "sources": {
+    "current_geometry.c": {
+      "origin": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "sha256": "dc3fbfb14adde5078c36ab179936df88ba977b22bb341301cd30deafeeb97696",
+      "effectiveSha256": "34996f14dbdfb03f1794a7d581c0ceb929cbe8642ed8c36bc9d4dcfb76b7dc0d"
+    },
+    "geometry-core/references.inc": {
+      "origin": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "sha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac",
+      "effectiveSha256": "c4df9c77da4ef6ef06cb2bb10643eec4f88de66893f430209a5348c5b5da7ae3"
+    },
+    "geometry-app/native/reference_sources.inc": {
+      "origin": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "sha256": "3695ab9844a80cf0041d2a6a67e2be96bf6ecbcd59709759d1add4822b70077c",
+      "effectiveSha256": "7c4a0b70edab904a8225a26bd8116f12bfb152edfc7b060f46dadba4a757e035"
+    },
+    "geometry-app/native/world_validation.inc": {
+      "origin": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "sha256": "673bbab71f1dc6c59960dd3764c7c367223fc57ad2ef2dae0e842637d993eddc",
+      "effectiveSha256": "b738c9564bf93d8edc1aa933a2003a957706471ea39aa1ee5b5a7c860e2bc8c5"
+    },
+    "tests/geo261_host_facts_authority_harness.c": {
+      "origin": "candidate-test",
+      "sha256": "5134ccf0e5bff88f17e2df84ee2e8345bc0a2e3847e13601d3ca8a16a602a252",
+      "effectiveSha256": "d2a9ae35a2b2682cc4304e7eac6cf86daa882aa32f2e28e4c82a7f7ea52fe896"
+    }
+  },
+  "checks": [
+    {
+      "case": "copy-clear",
+      "returncode": 0,
+      "stdoutEmpty": true,
+      "stderrEmpty": true
+    },
+    {
+      "case": "copy-snapshot",
+      "returncode": 0,
+      "stdoutEmpty": true,
+      "stderrEmpty": true
+    },
+    {
+      "case": "scratch-owned",
+      "returncode": 0,
+      "stdoutEmpty": true,
+      "stderrEmpty": true
+    },
+    {
+      "case": "malformed",
+      "returncode": 0,
+      "stdoutEmpty": true,
+      "stderrEmpty": true
+    }
+  ],
+  "includeClosureVerified": true,
+  "limitations": [
+    "僅補私有名稱轉接並改寫 include 路徑；原 H helper 本體及 K placement object 皆來自指定 85 基底。",
+    "候選測試仍含新見證；本次不是性能量測，也不重跑候選 ASan/UBSan 或 65 項定向。"
+  ],
+  "passed": true
+}

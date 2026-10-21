@@ -1,0 +1,270 @@
+{
+  "prepared_utc": "2026-10-21T04:07:09.370162+00:00",
+  "classification": "正式 L2 P-189 驗收；本來源需新實跑，不沿用候選成績",
+  "label": "formal-L2",
+  "source_worktree": "/workspace/geometry-axiom",
+  "repo": "/workspace/geometry-axiom",
+  "work": "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+  "out": "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+  "commits": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "final": "249571fe2477845d5330f6190dad965bf327f43b"
+  },
+  "expected_parent": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+  "source_sha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "source_head_clean_matches": true,
+  "source_parent_matches": true,
+  "parent_delta_only_ledger": true,
+  "changed_paths": [
+    "tests/mutants_results.json"
+  ],
+  "changed_blobs": [
+    {
+      "path": "tests/mutants_results.json",
+      "git_blob": "c6c21a2f7df26996742bad30184a01f5bf8aafc2",
+      "bytes": 5170289,
+      "sha256": "6bda315331050bd3478ed65211a8263508cb1a1f6f67cee3f35df377506e7f0b"
+    }
+  ],
+  "source_parent_ledger_patch_sha256": "0365b97a10c163d4e7fb2495575ea1bc3722cc6c1ba46560e96c10406eab13d3",
+  "source_vs_previous_L_patch_sha256": "30277ca75aa923ac186360349d40a94a7bfd262061ea7c12fd95ba27802dec03",
+  "runner": "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+  "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+  "runner_git_blob": "666a8897b44e39c7209e598bce442830082c440c",
+  "generator": "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+  "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "generator_source": "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/gen_scene.py",
+  "generator_calibration": {
+    "path": "/workspace/geo261-p189-formal-L2-src-eens_1lr/calib/f3-00.scene",
+    "source": "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/calib/f3-00.scene",
+    "sha256": "35e24fb0a483ffd6fee8dd99f751edeb127418481aa717816af804cd218024b2",
+    "bytes": 16255
+  },
+  "generator_dependency_review": "沿已讀固定原bytes的靜態依賴核：selftest唯一外部讀取為同目錄calib/f3-00.scene，其餘imports皆標準庫；本輪實際selftest尚待執行。",
+  "archives": [
+    {
+      "label": "main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "argv": [
+        "git",
+        "archive",
+        "--format=tar",
+        "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+        "--",
+        "current_geometry.c",
+        "geometry-core",
+        "geometry-web",
+        ":(exclude)geometry-core/domain-decoupling",
+        ":(exclude)geometry-web/docs",
+        ":(exclude)geometry-web/prototypes",
+        ":(exclude)geometry-web/vendor",
+        ":(exclude)geometry-web/node_modules"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "archive_path": "/workspace/geo261-p189-formal-L2-src-eens_1lr/archives/main.tar",
+      "archive_bytes": 14745600,
+      "archive_sha256": "e23b5eb07856ec5729b62e881dba7e009d84ab923c76556bd7b5c83e2584f020",
+      "source_directory": "/workspace/geo261-p189-formal-L2-src-eens_1lr/adbaebf9",
+      "source_file_count": 495,
+      "source_index": "source-files-main.json",
+      "bridge_exists": false
+    },
+    {
+      "label": "base",
+      "sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "argv": [
+        "git",
+        "archive",
+        "--format=tar",
+        "3e600772076465fc65a26ac09055028301c0fb0b",
+        "--",
+        "current_geometry.c",
+        "geometry-core",
+        "geometry-app",
+        "geometry-templates",
+        "geometry-web",
+        ":(exclude)geometry-core/domain-decoupling",
+        ":(exclude)geometry-web/docs",
+        ":(exclude)geometry-web/prototypes",
+        ":(exclude)geometry-web/vendor",
+        ":(exclude)geometry-web/node_modules"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "archive_path": "/workspace/geo261-p189-formal-L2-src-eens_1lr/archives/base.tar",
+      "archive_bytes": 16056320,
+      "archive_sha256": "eb1a3a14c3cba61c651cbf824e705475f1e7f4ce7d32ad2606bb965d3b540d04",
+      "source_directory": "/workspace/geo261-p189-formal-L2-src-eens_1lr/3e600772",
+      "source_file_count": 673,
+      "source_index": "source-files-base.json",
+      "bridge_exists": false
+    },
+    {
+      "label": "final",
+      "sha": "249571fe2477845d5330f6190dad965bf327f43b",
+      "argv": [
+        "git",
+        "archive",
+        "--format=tar",
+        "249571fe2477845d5330f6190dad965bf327f43b",
+        "--",
+        "current_geometry.c",
+        "geometry-core",
+        "geometry-app",
+        "geometry-templates",
+        "geometry-web",
+        ":(exclude)geometry-core/domain-decoupling",
+        ":(exclude)geometry-web/docs",
+        ":(exclude)geometry-web/prototypes",
+        ":(exclude)geometry-web/vendor",
+        ":(exclude)geometry-web/node_modules"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "archive_path": "/workspace/geo261-p189-formal-L2-src-eens_1lr/archives/final.tar",
+      "archive_bytes": 16076800,
+      "archive_sha256": "6b55de20bf3887b818c172dc5a7218386c45c24e11e317e8289d5607b92caf1b",
+      "source_directory": "/workspace/geo261-p189-formal-L2-src-eens_1lr/249571fe",
+      "source_file_count": 673,
+      "source_index": "source-files-final.json",
+      "bridge_exists": false
+    }
+  ],
+  "planned_commands": [
+    {
+      "phase": "generator-selftest",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+        "--selftest"
+      ]
+    },
+    {
+      "phase": "selftest",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "selftest",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+        "--out",
+        "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+        "--gen",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+        "--final",
+        "249571fe2477845d5330f6190dad965bf327f43b",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "build",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "build",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+        "--out",
+        "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+        "--gen",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+        "--final",
+        "249571fe2477845d5330f6190dad965bf327f43b",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "equivalence",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "equivalence",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+        "--out",
+        "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+        "--gen",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+        "--final",
+        "249571fe2477845d5330f6190dad965bf327f43b",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "timing",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "timing",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+        "--out",
+        "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+        "--gen",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+        "--final",
+        "249571fe2477845d5330f6190dad965bf327f43b",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "check",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "check",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr",
+        "--out",
+        "/workspace/geo261-evidence/p189-formal-L2-249571fe2477-m1ot9ubq",
+        "--gen",
+        "/workspace/geo261-p189-formal-L2-src-eens_1lr/gen_scene.py",
+        "--final",
+        "249571fe2477845d5330f6190dad965bf327f43b",
+        "--timeout",
+        "900"
+      ]
+    }
+  ],
+  "expected_equivalence_scene_count": 175,
+  "expected_timing_sample_count": 36,
+  "selftest_phase_rule": "本輪顯式selftest執行16控制，build/equivalence/timing/check不自動執行。",
+  "timing_return_rule": "timing0僅表示收樣完成，check才判原門檻。",
+  "threshold_final_main_ratio": 2.0,
+  "environment_remove_before_execution": [
+    "PYTHONOPTIMIZE"
+  ],
+  "stack_kib": 16384,
+  "timeout_seconds": 900,
+  "phase_commands_executed": [],
+  "build_started": false,
+  "timing_started": false,
+  "preparation_tool_sha256": "01a9a6fb04bf3053658ffc27dbd5c0ae1f8b4532dee156ce3bb29f0fc6b00023"
+}

@@ -1,0 +1,378 @@
+#!/usr/bin/env python3
+"""外部完整 canvas 調度；只有完整 SHA、明示執行及放行記錄皆備才啟動。"""
+import argparse
+import ctypes
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import re
+import resource
+import signal
+import socket
+import subprocess
+import sys
+import time
+
+
+def utc():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def digest(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def write_json(path, value):
+    path = Path(path)
+    temporary = path.with_suffix(path.suffix + '.tmp')
+    temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+    temporary.replace(path)
+
+
+def process_info(pid):
+    try:
+        raw = Path('/proc', str(pid), 'stat').read_text()
+        fields = raw[raw.rfind(')') + 2:].split()
+        return dict(pid=pid, state=fields[0], ppid=int(fields[1]), pgid=int(fields[2]),
+                    startTime=fields[19], command=Path('/proc', str(pid), 'cmdline').read_bytes().replace(b'\0', b' ').decode(errors='replace'))
+    except (FileNotFoundError, ProcessLookupError, PermissionError):
+        return None
+
+
+def port_free(port):
+    with socket.socket() as sock:
+        try:
+            sock.bind(('127.0.0.1', port))
+            return True
+        except OSError:
+            return False
+
+
+def no_listener(port):
+    with socket.socket() as sock:
+        sock.settimeout(.3)
+        # ECONNREFUSED 證明沒有 listener；TIME_WAIT 不影響此檢查。
+        import errno
+        return sock.connect_ex(('127.0.0.1',port)) == errno.ECONNREFUSED
+
+
+class Job:
+    def __init__(self, args):
+        self.args, self.root, self.out = args, Path(args.root).resolve(), Path(args.output).resolve()
+        if self.out.exists():
+            raise RuntimeError('輸出目錄已存在；拒絕覆寫既有證據')
+        self.out.mkdir(parents=True)
+        self.started = time.monotonic()
+        self.deadline = self.started + 2100
+        self.work_deadline = self.deadline - 15
+        self.children, self.owned = {}, {}
+        self.interrupted = None
+        self.env = {k: v for k, v in os.environ.items() if not k.startswith('GEOMETRY_') and k not in ('NODE_OPTIONS', 'NODE_PATH', 'PYTHONPATH', 'PYTHONHOME')}
+        self.env.update(TMPDIR='/tmp', TEMP='/tmp', TMP='/tmp', PYTHONDONTWRITEBYTECODE='1')
+        token = args.label + '-' + str(os.getpid())
+        self.env.update(GEOMETRY_TEST_URL=f'http://127.0.0.1:{args.port}/',
+                        GEOMETRY_FEEDBACK_DIR='/tmp/geo261-feedback-' + token,
+                        XDG_CACHE_HOME='/tmp/geo261-xdg-' + token,
+                        GEOMETRY_CHROME='/usr/bin/chromium', GEOMETRY_CHROME_FLAGS='--no-sandbox',
+                        GEOMETRY_CHROME_PROFILE='/tmp/geo261-profile-' + token,
+                        GEOMETRY_CDP_PORT=str(args.cdp_port), GEOMETRY_BROWSER_SUITE='canvas')
+        for key in ('GEOMETRY_FEEDBACK_DIR', 'XDG_CACHE_HOME', 'GEOMETRY_CHROME_PROFILE'):
+            Path(self.env[key]).mkdir(parents=True, exist_ok=False)
+        screenshot_keys = ['REPAIR', 'GRID', 'GRID_SYSTEM', 'DOCUMENT', 'UIUX', 'UX_REFINEMENT', 'ENGINEERING', 'PROJECT_AUDIT', 'MARQUEE', 'COMPOSITION', 'GRID_RULE', 'GRID_RENAME', 'SELECTION_CURSOR', 'SCHEDULE', 'SUPPORT', 'SOURCE_NAVIGATION', 'ROOM']
+        for key in screenshot_keys:
+            target = self.out / 'screens' / key.lower()
+            target.mkdir(parents=True)
+            self.env['GEOMETRY_' + key + '_SCREENSHOT_DIR'] = str(target)
+        for key in ('ASSEMBLY_CONTEXT', 'MODEL_SNAPSHOT'):
+            target = self.out / 'screens' / key.lower()
+            target.mkdir(parents=True)
+            self.env['GEOMETRY_' + key + '_SCREENSHOTS'] = str(target)
+        self.env['GEOMETRY_TEST_SCREENSHOT'] = str(self.out / 'screens' / 'canvas.png')
+        self.report = dict(schema='geo261-canvas-job/1', label=args.label, expectedHead=args.sha,
+                           root=str(self.root), output=str(self.out), releaseNote=args.release_note,
+                           argv=sys.argv, wrapperSha256=digest(__file__), startedUTC=utc(), deadlineUTC=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(seconds=2100)).isoformat(),
+                           totalDeadlineSeconds=2100, cleanupReserveSeconds=15, status='running',
+                           effectiveEnvironment={k: v for k, v in self.env.items() if k.startswith('GEOMETRY_') or k in ('XDG_CACHE_HOME','TMPDIR','TEMP','TMP')},
+                           kernel=platform.release(), platform=platform.platform(), steps=[], errors=[],
+                           limitations=['本機 Chromium，CI 設定 Google Chrome；字型另錄實際檔案', '未走既有 fatal 分支或擷取超時時，可能沒有最後畫面', '預檢與 L 正式驗收以 label 及 SHA 分開，不互相代替'])
+        self.save()
+
+    def save(self):
+        self.report['elapsedSeconds'] = time.monotonic() - self.started
+        write_json(self.out / 'receipt.json', self.report)
+
+    def scan(self):
+        table = {}
+        for item in Path('/proc').iterdir():
+            if item.name.isdecimal():
+                info = process_info(int(item.name))
+                if info:
+                    table[info['pid']] = info
+        changed = True
+        while changed:
+            changed = False
+            for pid, info in table.items():
+                parent = table.get(info['ppid'])
+                parent_owned = parent and self.owned.get(parent['pid'], {}).get('startTime') == parent['startTime']
+                if pid not in self.owned and (info['ppid'] == os.getpid() or parent_owned):
+                    self.owned[pid] = dict(info, firstSeenUTC=utc())
+                    changed = True
+        return table
+
+    def remaining(self, cleanup=False):
+        if self.interrupted and not cleanup:
+            raise RuntimeError('收到中止訊號 ' + str(self.interrupted))
+        remaining = (self.deadline if cleanup else self.work_deadline) - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError('完整 job 總期限已到，保留清理預算；未完成')
+        return remaining
+
+    def spawn(self, name, argv, cleanup=False):
+        self.remaining(cleanup)
+        log = self.out / (name + '.log')
+        stream = log.open('wb')
+        try:
+            child = subprocess.Popen(argv, cwd=self.root, env=self.env, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
+        finally:
+            stream.close()
+        info = process_info(child.pid)
+        if info:
+            self.owned[child.pid] = dict(info, firstSeenUTC=utc())
+        item = dict(name=name, argv=argv, pid=child.pid, startedUTC=utc(), startElapsed=time.monotonic()-self.started, log=log.name)
+        self.children[child.pid] = child
+        self.report['steps'].append(item)
+        self.save()
+        print(json.dumps(dict(event='開始', **item), ensure_ascii=False), flush=True)
+        return child, item
+
+    def run(self, name, argv, cap=None, check=True, cleanup=False):
+        # 清理封存只有這項命令允許使用保留預算。
+        try:
+            child, item = self.spawn(name, argv, cleanup=cleanup)
+            limit = time.monotonic() + min(cap or 1e9, self.remaining(cleanup))
+            last_progress = time.monotonic()
+            while child.poll() is None:
+                self.scan()
+                if time.monotonic() >= limit:
+                    item['timedOut'] = True
+                    raise TimeoutError(name + ' 超過剩餘期限或階段期限')
+                self.remaining(cleanup)
+                if time.monotonic() - last_progress >= 30:
+                    self.save()
+                    print(json.dumps(dict(event='執行中', step=name, elapsedSeconds=self.report['elapsedSeconds'], remainingSeconds=self.remaining(cleanup)), ensure_ascii=False), flush=True)
+                    last_progress = time.monotonic()
+                time.sleep(min(.3, max(.01, limit-time.monotonic())))
+            self.scan()
+            item.update(exitCode=child.returncode, finishedUTC=utc(), durationSeconds=time.monotonic()-self.started-item['startElapsed'])
+            self.save()
+            if check and child.returncode:
+                raise RuntimeError(name + ' 結束碼 ' + str(child.returncode))
+            return child.returncode, (self.out / item['log']).read_text(errors='replace')
+        finally:
+            self.save()
+
+    def snapshot(self, name):
+        _, head = self.run(name+'-head', ['git','rev-parse','HEAD'], cap=10)
+        _, status = self.run(name+'-status', ['git','status','--porcelain=v1','--untracked-files=all'], cap=10)
+        paths = ['geometry-web/app.js','geometry-web/cdp_test.js','geometry-web/uiux_review_test.js','geometry-web/cdp_sections.golden.json','.github/workflows/integration-tests.yml','geometry-web/start_local.py','geometry-web/runtime_version.py']
+        result = dict(head=head.strip(), status=status, hashes={p:digest(self.root/p) for p in paths})
+        write_json(self.out/(name+'.json'),result)
+        if result['head'] != self.args.sha or status:
+            raise RuntimeError('來源 SHA 不符或工作樹不乾淨：' + name)
+        return result
+
+    def probe(self, name, check=True):
+        code, raw = self.run(name,['python3','geometry-web/runtime_version.py','--probe',str(self.args.port)],cap=10,check=check)
+        if code:
+            return None
+        result = json.loads(raw)
+        if result.get('fresh') is not True or Path(result.get('root','')).resolve() != self.root or result.get('pid') != self.server.pid:
+            raise RuntimeError('runtime identity 並非本輪新服務')
+        write_json(self.out/(name+'.json'),result)
+        return result
+
+    def signal_owned(self, pid, sig):
+        current = process_info(pid)
+        expected = self.owned.get(pid)
+        if current and expected and current['startTime'] == expected['startTime'] and current['state'] != 'Z':
+            try:
+                # pidfd 避免核對後 PID 恰被重用時誤發訊號。
+                descriptor=os.pidfd_open(pid)
+                try:
+                    verified=process_info(pid)
+                    if not verified or verified['startTime']!=expected['startTime']:
+                        return
+                    signal.pidfd_send_signal(descriptor,sig)
+                finally:
+                    os.close(descriptor)
+                self.report.setdefault('cleanupSignals',[]).append(dict(pid=pid,startTime=current['startTime'],signal=sig,utc=utc()))
+            except ProcessLookupError:
+                pass
+
+    def live(self):
+        table = self.scan()
+        return [pid for pid,item in self.owned.items() if pid in table and table[pid]['startTime']==item['startTime'] and table[pid]['state']!='Z']
+
+    def pause_cleanup(self, seconds):
+        until=min(self.deadline-3,time.monotonic()+seconds)
+        while time.monotonic()<until and self.live():
+            for child in self.children.values():
+                child.poll()
+            time.sleep(.1)
+
+    def cleanup(self):
+        self.scan()
+        # 先給各自有頂層程序正常離場機會；服務 SIGINT 會執行 bridge/trace 的 finally。
+        for pid, child in self.children.items():
+            if child.poll() is None:
+                self.signal_owned(pid,signal.SIGINT)
+        self.pause_cleanup(4)
+        for pid in self.live():
+            self.signal_owned(pid,signal.SIGTERM)
+        self.pause_cleanup(2)
+        for pid in self.live():
+            self.signal_owned(pid,signal.SIGKILL)
+        self.pause_cleanup(1)
+        for child in self.children.values():
+            child.poll()
+        # subreaper 僅回收本調度器收養且已記錄身份的孤兒，不碰其他工作。
+        for pid in self.owned:
+            if pid not in self.children:
+                try:
+                    os.waitpid(pid,os.WNOHANG)
+                except (ChildProcessError,ProcessLookupError):
+                    pass
+        result=dict(owned=list(self.owned.values()),survivors=self.live(),
+                    directExitCodes={str(pid):p.returncode for pid,p in self.children.items()},
+                    servicePortFree=no_listener(self.args.port),cdpPortFree=no_listener(self.args.cdp_port),
+                    portCheck='connect_ex 必須 ECONNREFUSED，配合自有 PID/startTime 全退出')
+        self.report['cleanup']=result
+        write_json(self.out/'cleanup.json',result)
+        if result['survivors'] or not result['servicePortFree'] or not result['cdpPortFree']:
+            raise RuntimeError('自有程序清理或 port 釋放未能確認')
+
+    def execute(self):
+        try:
+            if ctypes.CDLL(None,use_errno=True).prctl(36,1,0,0,0)!=0:
+                raise RuntimeError('不能啟用 Linux child subreaper')
+            self.report['subreaper']=True
+            for sig in (signal.SIGINT,signal.SIGTERM):
+                signal.signal(sig,lambda number,frame:setattr(self,'interrupted',number))
+            stack=resource.getrlimit(resource.RLIMIT_STACK)
+            resource.setrlimit(resource.RLIMIT_STACK,(16384*1024,stack[1]))
+            self.report['stackLimitBytes']=resource.getrlimit(resource.RLIMIT_STACK)
+            before=self.snapshot('source-before')
+            if not port_free(self.args.port) or not port_free(self.args.cdp_port):
+                raise RuntimeError('指定 service/CDP port 非空閒；不附著既有服務')
+            if not os.access(self.env['GEOMETRY_CHROME'],os.X_OK):
+                raise RuntimeError('缺少可執行 Chromium')
+            self.run('build',['npm','run','build'])
+            code, fonts=self.run('font-package',['dpkg-query','-W','-f=${Status} ${Version}\n','fonts-noto-cjk'],cap=15,check=False)
+            if code or not fonts.startswith('install ok installed '):
+                raise RuntimeError('缺必備 fonts-noto-cjk；不得略過字型驗收')
+            _, font=self.run('font-match',['fc-match','-f','%{family}\n%{file}\n','sans-serif:lang=zh-tw'],cap=20)
+            lines=font.splitlines()
+            if len(lines)!=2 or 'Noto Sans CJK' not in lines[0] or not Path(lines[1]).is_file():
+                raise RuntimeError('中文字型無法證明為 Noto CJK')
+            write_json(self.out/'font.json',dict(package=fonts.strip(),family=lines[0],file=lines[1],sha256=digest(lines[1])))
+            self.run('chrome-version',[self.env['GEOMETRY_CHROME'],'--version'],cap=10)
+            if 'microsoft' in platform.release().lower():
+                self.env['GEOMETRY_WAIT_TRACE']='1'
+                _, run_id=self.run('prepare-wait-trace',['python3','geometry-web/prepare_wait_trace.py'],cap=10)
+                self.env['GEOMETRY_WAIT_TRACE_RUN_ID']=run_id.strip()
+            self.report['effectiveEnvironment'].update({k:v for k,v in self.env.items() if k.startswith('GEOMETRY_WAIT_TRACE')})
+            self.server, server_step=self.spawn('server',['python3','-u','geometry-web/start_local.py','--port',str(self.args.port)])
+            fresh=None
+            for attempt in range(30):
+                if self.server.poll() is not None:
+                    raise RuntimeError('自有服務在 ready 前退出')
+                fresh=self.probe('runtime-attempt-'+str(attempt+1),check=False)
+                if fresh:
+                    break
+                time.sleep(min(1,self.remaining()))
+            if fresh is None:
+                raise RuntimeError('30 次就緒探測後仍非 fresh')
+            runtime=self.probe('runtime-before')
+            _, raw=self.run('canvas',['node','geometry-web/cdp_test.js'],check=False)
+            results=[json.loads(line[len('CDP_RESULT '):]) for line in raw.splitlines() if line.startswith('CDP_RESULT ')]
+            if len(results)!=1:
+                raise RuntimeError('須恰有一筆真 JSON CDP_RESULT')
+            result=results[0]
+            write_json(self.out/'result.json',result)
+            golden=json.loads((self.root/'geometry-web/cdp_sections.golden.json').read_text())
+            expected_exceptions=[line for line in raw.splitlines() if line.startswith('[EXPECTED EXCEPTION]')]
+            checks=dict(schema=result.get('schema')=='geometry-cdp-result/1',scope=result.get('scope',{}).get('mode')=='full' and result['scope'].get('filters')==[] and result['scope'].get('modifiers')==[],
+                        identity=result.get('scope',{}).get('url')==self.env['GEOMETRY_TEST_URL'] and result['scope'].get('feedbackDirectory')==self.env['GEOMETRY_FEEDBACK_DIR'],
+                        completed=result.get('completed') is True,zeroFailures=result.get('failedAssertions')==0,
+                        noSkipped=result.get('skipped')==[],golden=result.get('goldenCompare')=='matched',
+                        exactSections=result.get('sections')==golden['sections'],exactTotal=result.get('passedAssertions')==golden['total'],
+                        noUnexpectedException='[UNEXPECTED EXCEPTION]' not in raw,
+                        exceptionAccounting=result.get('uncaughtBrowserExceptions')==len(expected_exceptions),
+                        browserExit=next(s for s in self.report['steps'] if s['name']=='canvas').get('exitCode')==0)
+            write_json(self.out/'result-validation.json',dict(checks=checks,passed=all(checks.values()),expectedExceptionLines=expected_exceptions,uncaughtBrowserExceptions=result.get('uncaughtBrowserExceptions'),goldenSha256=digest(self.root/'geometry-web/cdp_sections.golden.json')))
+            runtime_after=self.probe('runtime-after')
+            if runtime_after!=runtime:
+                raise RuntimeError('runtime 前後身份不相同')
+            after=self.snapshot('source-after')
+            if before!=after:
+                raise RuntimeError('來源在驗收期間變動')
+            if not all(checks.values()):
+                raise RuntimeError('完整 canvas 未通過：'+json.dumps(checks,ensure_ascii=False))
+            self.report['status']='passed-pending-cleanup'
+        except BaseException as error:
+            self.report['status']='failed'
+            self.report['errors'].append(dict(type=type(error).__name__,message=str(error),utc=utc()))
+        finally:
+            try:
+                self.cleanup()
+            except BaseException as error:
+                self.report['status']='failed'
+                self.report['errors'].append(dict(stage='cleanup',type=type(error).__name__,message=str(error)))
+            try:
+                self.run('archive-wait-trace',['python3','geometry-web/archive_wait_trace.py',str(self.out/'wait-trace')],cap=3,cleanup=True)
+            except BaseException as error:
+                self.report['status']='failed'
+                self.report['errors'].append(dict(stage='archive',type=type(error).__name__,message=str(error)))
+            # archive 若超時也可能有自有 git 子程序；最後再確認並精確回收。
+            try:
+                self.cleanup()
+            except BaseException as error:
+                self.report['status']='failed'
+                self.report['errors'].append(dict(stage='final-cleanup',type=type(error).__name__,message=str(error)))
+            self.report['finishedUTC']=utc()
+            self.report['withinTotalDeadline']=time.monotonic()<=self.deadline
+            if not self.report['withinTotalDeadline']:
+                self.report['status']='failed'
+            if self.report['status']=='passed-pending-cleanup':
+                self.report['status']='passed'
+            self.report['screenshots']=[str(p.relative_to(self.out)) for p in sorted((self.out/'screens').rglob('*.png'))]
+            self.save()
+        print(json.dumps(dict(event='完成',status=self.report['status'],elapsedSeconds=self.report['elapsedSeconds'],errors=self.report['errors']),ensure_ascii=False),flush=True)
+        return 0 if self.report['status']=='passed' else 1
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--sha',required=True)
+    parser.add_argument('--root',default='/workspace/geometry-axiom')
+    parser.add_argument('--output',required=True)
+    parser.add_argument('--label',required=True,choices=['A-preflight','L-formal'])
+    parser.add_argument('--port',type=int,required=True)
+    parser.add_argument('--cdp-port',type=int,required=True)
+    parser.add_argument('--release-note',required=True)
+    parser.add_argument('--execute',action='store_true')
+    args=parser.parse_args()
+    if not re.fullmatch('[0-9a-f]{40}',args.sha):
+        parser.error('--sha 必須完整 40 位小寫 SHA')
+    if not args.execute or not args.release_note.strip():
+        parser.error('尚未明示 --execute 及 root 放行記錄；不啟動任何工作')
+    if args.port==args.cdp_port or not all(1024<=p<=65535 for p in (args.port,args.cdp_port)):
+        parser.error('service/CDP ports 必須不同且介於 1024–65535')
+    return Job(args).execute()
+
+
+if __name__=='__main__':
+    sys.exit(main())

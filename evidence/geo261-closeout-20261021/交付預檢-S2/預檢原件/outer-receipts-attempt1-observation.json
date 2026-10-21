@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/bundle-preflight-outer-receipts.py"
+  ],
+  "actualExitCode": 1,
+  "toolChunk": "f8af33",
+  "error": "AssertionError at assert all(not row[identicalPayloadInCurrentBundle] for row in rows)",
+  "reason": "GCC 歷史 publication-check 原件已以 ledger-A-gcc/integration/publication-check.json 收錄；同名查找不足以判缺。",
+  "preservedObservations": "outer-receipt-observations.json"
+}

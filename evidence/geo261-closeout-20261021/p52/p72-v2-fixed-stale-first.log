@@ -1,0 +1,91 @@
+P72B_PROBE_SOURCE {"root":"/workspace/geometry-axiom","sha":"c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3","status":"","memoryPatch":"none","actualSourceHasCandidate":true,"effectiveFixed":true,"control":"stale-first","sourceSha256":"8cc65bb4b187ae7e49d4be83561ed1a4143618e9e229f29aa3d310da9770cab6","effectiveSourceSha256":"8cc65bb4b187ae7e49d4be83561ed1a4143618e9e229f29aa3d310da9770cab6","harnessSha256":"10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761","probeSha256":"6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.224Z","monotonicNs":"2937339611976","pid":66524,"text":"[66524:66524:1020/201754.223619:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.225Z","monotonicNs":"2937340124493","pid":66524,"text":"chrome_crashpad_handler: --database is required\nTry 'chrome_crashpad_handler --help' for more information.\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.266Z","monotonicNs":"2937381169099","pid":66524,"text":"[66524:66549:1020/201754.265807:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.269Z","monotonicNs":"2937384567333","pid":66524,"text":"[66524:66549:1020/201754.269372:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.270Z","monotonicNs":"2937385118698","pid":66524,"text":"[66524:66549:1020/201754.269947:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.270Z","monotonicNs":"2937385957739","pid":66524,"text":"[66524:66549:1020/201754.270818:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n[66524:66549:1020/201754.270852:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.273Z","monotonicNs":"2937388439849","pid":66524,"text":"[66524:66560:1020/201754.273282:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 66562: Read-only file system (30)\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.282Z","monotonicNs":"2937397246409","pid":66524,"text":"[66524:66549:1020/201754.282071:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.316Z","monotonicNs":"2937431635986","pid":66524,"text":"[66524:66549:1020/201754.316298:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.319Z","monotonicNs":"2937434588971","pid":66524,"text":"[66524:66560:1020/201754.319303:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 66578: Read-only file system (30)\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.330Z","monotonicNs":"2937445585149","pid":66524,"text":"[66524:66524:1020/201754.330096:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[66524:66524:1020/201754.330161:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[66524:66549:1020/201754.330177:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[66524:66549:1020/201754.330189:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[66524:66524:1020/201754.330312:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.334Z","monotonicNs":"2937449184532","pid":66524,"text":"\nDevTools listening on ws://127.0.0.1:9351/devtools/browser/477d164a-e984-47ae-ba24-f075120fb6fc\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.337Z","monotonicNs":"2937452573873","pid":66524,"text":"[66524:66524:1020/201754.336875:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.338Z","monotonicNs":"2937453288329","pid":66524,"text":"[66524:66524:1020/201754.338165:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.338Z","monotonicNs":"2937453503257","pid":66524,"text":"[66524:66549:1020/201754.338378:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n[66524:66549:1020/201754.338402:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.338Z","monotonicNs":"2937453666809","pid":66524,"text":"[66524:66524:1020/201754.338573:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.338Z","monotonicNs":"2937453867746","pid":66524,"text":"[66524:66549:1020/201754.338751:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.363Z","monotonicNs":"2937478726610","pid":66524,"text":"[66524:66560:1020/201754.363428:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 66608: Read-only file system (30)\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.402Z","monotonicNs":"2937517259342","pid":66524,"text":"[66524:66560:1020/201754.401981:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 66617: Read-only file system (30)\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.409Z","monotonicNs":"2937524133405","pid":66524,"text":"[66524:66560:1020/201754.405005:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 66626: Read-only file system (30)\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.416Z","monotonicNs":"2937531615197","pid":66524,"text":"[66524:66524:1020/201754.416437:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.Properties.GetAll: object_path= /org/freedesktop/UPower/devices/DisplayDevice: unknown error type: \n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.416Z","monotonicNs":"2937531847110","pid":66524,"text":"[66524:66524:1020/201754.416755:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.417Z","monotonicNs":"2937532118431","pid":66524,"text":"[66524:66549:1020/201754.417001:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T20:17:54.475Z","monotonicNs":"2937590999980","pid":66524,"text":"[66524:66524:1020/201754.431619:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[66524:66549:1020/201754.431704:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[66524:66524:1020/201754.437329:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CDP_NAVIGATION {"phase":"send","utc":"2026-10-20T20:17:54.536Z","monotonicNs":"2937651479340","id":8,"method":"Page.navigate","params":{"url":"http://127.0.0.1:18841/"},"sessionId":null}
+CDP_NAVIGATION {"phase":"reply","utc":"2026-10-20T20:17:54.649Z","monotonicNs":"2937764884098","id":8,"method":"Page.navigate","message":{"id":8,"result":{"frameId":"1475173D6034967EFC5A666F4E4FC867","loaderId":"C16C0F82CAC1F69DB92A66F4FE80FC36","isDownload":false}}}
+=== P72B. 更名保留相位差及來源 ===
+P72B 頁面是本次隔離應用、非空白且無框架錯誤遮罩 ✓ 
+[EXPECTED NATIVE DIALOG] 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？ accept=true
+P72B u 正值 更名預覽未先改 World ✓ 
+P72B u 正值 取消保留完整 World ✓ 
+P72B u 正值 名稱與定義指紋更新，來源及每段幾何完全相同 ✓ 
+P72B u 正值 Undo 完整還原 ✓ 
+P72B u 正值 Redo 完整重現 ✓ 
+P72B v 負值 更名預覽未先改 World ✓ 
+P72B v 負值 取消保留完整 World ✓ 
+P72B v 負值 名稱與定義指紋更新，來源及每段幾何完全相同 ✓ 
+P72B v 負值 Undo 完整還原 ✓ 
+P72B v 負值 Redo 完整重現 ✓ 
+P72B 雙軸直接值 更名預覽未先改 World ✓ 
+P72B 雙軸直接值 取消保留完整 World ✓ 
+P72B 雙軸直接值 名稱與定義指紋更新，來源及每段幾何完全相同 ✓ 
+P72B 雙軸直接值 Undo 完整還原 ✓ 
+P72B 雙軸直接值 Redo 完整重現 ✓ 
+P72B u 面材參數 更名預覽未先改 World ✓ 
+P72B u 面材參數 取消保留完整 World ✓ 
+P72B u 面材參數 名稱與定義指紋更新，來源及每段幾何完全相同 ✓ 
+P72B u 面材參數 Undo 完整還原 ✓ 
+P72B u 面材參數 Redo 完整重現 ✓ 
+P72B v 面材參數 更名預覽未先改 World ✓ 
+P72B v 面材參數 取消保留完整 World ✓ 
+P72B v 面材參數 名稱與定義指紋更新，來源及每段幾何完全相同 ✓ 
+P72B v 面材參數 Undo 完整還原 ✓ 
+P72B v 面材參數 Redo 完整重現 ✓ 
+P72B 雙軸參數 更名預覽未先改 World ✓ 
+P72B 雙軸參數 取消保留完整 World ✓ 
+P72B 雙軸參數 名稱與定義指紋更新，來源及每段幾何完全相同 ✓ 
+P72B 雙軸參數 Undo 完整還原 ✓ 
+P72B 雙軸參數 Redo 完整重現 ✓ 
+P72B 原本省略 更名預覽未先改 World ✓ 
+P72B 原本省略 取消保留完整 World ✓ 
+P72B 原本省略 名稱與定義指紋更新，來源及每段幾何完全相同 ✓ 
+P72B 原本省略 Undo 完整還原 ✓ 
+P72B 原本省略 Redo 完整重現 ✓ 
+P72B 原 band 正負奇偶多段手算：u.k1 仍為 300／700／700 ✓ 
+P72B 改間距造成相位差等於 pitch 仍拒絕，名稱與幾何原子保全 ✓ 
+P72B 更名後正式參數 400→401 仍重新求值而不固化常數 ✓ 
+P72B 更名及改值後仍有相同參數使用處／來源圖邊 ✓ 
+P72B 完整工作區仍拒絕相位差 0 ✓ 
+P72B 完整工作區仍拒絕相位差 -0 ✓ 
+P72B 完整工作區仍拒絕相位差 600 ✓ 
+P72B 完整工作區仍拒絕相位差 -1200 ✓ 
+P72B 完整工作區明確清空仍移除相位差 ✓ 
+P72B 正式保存完整專案並逐字保留原生來源 ✓ 
+[EXPECTED NATIVE DIALOG] 建立一份空白新專案，切換為新的專案識別及「未命名專案」。目前尚未保存的變更不會自動寫入檔案。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？ accept=true
+P72B_NAV_CONTROL {"event":"控制導航排程：暫緩真正Page.reload發送","at":36555.65733}
+P72B_NAV_CONTROL {"event":"舊頁真實條件值","at":36562.855904,"value":false,"expression":"window.__cdpExpectedNavigationMarker === \"7815f118-dfd9-4330-ae3d-f507a74b9b10\" && document.readyState === 'complete' && (typeof oc!=='undefined'&&typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy)","oldPage":{"ready":"complete","oc":"object","connection":"ready"}}
+P72B_NAV_CONTROL {"event":"舊頁已真實取樣，現在發送真正Page.reload","at":36562.95466}
+CDP_NAVIGATION {"phase":"send","utc":"2026-10-20T20:18:30.606Z","monotonicNs":"2973721711438","id":1276,"method":"Page.reload","params":{},"sessionId":null}
+CDP_NAVIGATION {"phase":"reply","utc":"2026-10-20T20:18:30.613Z","monotonicNs":"2973728449066","id":1276,"method":"Page.reload","message":{"id":1276,"result":{}}}
+P72B_NAV_CONTROL {"event":"真實app.js請求暫停","at":36696.65363,"url":"http://127.0.0.1:18841/app.js"}
+P72B_NAV_CONTROL {"event":"確認新頁app.js未執行","at":36717.913431,"marker":"31fc599d-b45f-4827-8fc4-a60be06fa356","ready":"loading","oc":"undefined","oldConditionValue":false}
+P72B_NAV_CONTROL {"event":"釋放app.js","at":39697.77408}
+P72B 重開 context 使用相同 fresh 來源；指定第二服務時 PID 與 session 均不同 ✓ 
+P72B 新應用 context 在開檔前為空白 ✓ 
+P72B 新 context 正式開啟完整專案後 World、引用與全部段幾何相同 ✓ 
+P72B 更名與重開沒有未處理瀏覽器例外 ✓ 
+P72B saved artifact /tmp/geometry-grid-rename-HGej6s/未命名專案.gcanvas fresh native service not requested; new JS context only
+P72B_PROBE_RESULT {"metadata":{"root":"/workspace/geometry-axiom","sha":"c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3","status":"","memoryPatch":"none","actualSourceHasCandidate":true,"effectiveFixed":true,"control":"stale-first","sourceSha256":"8cc65bb4b187ae7e49d4be83561ed1a4143618e9e229f29aa3d310da9770cab6","effectiveSourceSha256":"8cc65bb4b187ae7e49d4be83561ed1a4143618e9e229f29aa3d310da9770cab6","harnessSha256":"10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761","probeSha256":"6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc"},"completed":true,"passedAssertions":50,"failedAssertions":0,"exceptions":0,"sections":{"P72B":50}}
+P72B_BROWSER_CLEANUP {"pid":66524,"profile":"/tmp/geometry-cdp-gMKNba","exitCode":0,"signalCode":null,"exited":true}

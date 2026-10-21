@@ -1,0 +1,70 @@
+{
+  "utc": "2026-10-20T23:02:54.029359+00:00",
+  "chain": [
+    {
+      "pid": 207691,
+      "ppid": 207610,
+      "startTime": "1281904",
+      "argv": [
+        "node",
+        "geometry-web/cdp_test.js"
+      ]
+    },
+    {
+      "pid": 207610,
+      "ppid": 207609,
+      "startTime": "1281449",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py",
+        "--sha",
+        "43f85313c32410ac01406ab585846bbacafea278",
+        "--root",
+        "/workspace/geometry-axiom",
+        "--output",
+        "/workspace/geo261-evidence/canvas-L-formal-43f85313",
+        "--label",
+        "L-formal",
+        "--port",
+        "18856",
+        "--cdp-port",
+        "9322",
+        "--release-note",
+        "root 已明確放行 L 43f85313c32410ac01406ab585846bbacafea278 完整 canvas 獨占；維持原 35 分鐘、原完整斷言與 main root",
+        "--execute"
+      ]
+    },
+    {
+      "pid": 207609,
+      "ppid": 207606,
+      "startTime": "1281446",
+      "argv": [
+        "python3",
+        "/workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py",
+        "--sha",
+        "43f85313c32410ac01406ab585846bbacafea278",
+        "--root",
+        "/workspace/geometry-axiom",
+        "--output",
+        "/workspace/geo261-evidence/canvas-L-formal-43f85313",
+        "--port",
+        "18856",
+        "--cdp-port",
+        "9322",
+        "--release-note",
+        "root 已明確放行 L 43f85313c32410ac01406ab585846bbacafea278 完整 canvas 獨占；維持原 35 分鐘、原完整斷言與 main root",
+        "--execute"
+      ]
+    },
+    {
+      "pid": 207606,
+      "ppid": 207605,
+      "startTime": "1281445",
+      "argv": [
+        "/bin/bash",
+        "-lc",
+        "trap '' HUP\nenv -u CC -u PYTHONOPTIMIZE python3 /workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py --sha 43f85313c32410ac01406ab585846bbacafea278 --root /workspace/geometry-axiom --output /workspace/geo261-evidence/canvas-L-formal-43f85313 --port 18856 --cdp-port 9322 --release-note 'root 已明確放行 L 43f85313c32410ac01406ab585846bbacafea278 完整 canvas 獨占；維持原 35 分鐘、原完整斷言與 main root' --execute\ntask_canvas_launcher_rc=$?\nprintf '%s\\n' \"$task_canvas_launcher_rc\" > /workspace/geo261-evidence/canvas-L-formal-43f85313-launcher-process.exit-code\nexit \"$task_canvas_launcher_rc\""
+      ]
+    }
+  ]
+}

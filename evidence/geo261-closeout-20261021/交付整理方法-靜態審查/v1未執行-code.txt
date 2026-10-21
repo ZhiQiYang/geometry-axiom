@@ -1,0 +1,136 @@
+"""將已完成的純資料包放入新證據根；不提交、不推送、不執行產品。"""
+import argparse
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import stat
+import subprocess
+
+p = argparse.ArgumentParser(description=__doc__)
+p.add_argument('--source-head', required=True)
+p.add_argument('--bundle', required=True)
+p.add_argument('--out', required=True)
+a = p.parse_args()
+assert re.fullmatch(r'[0-9a-f]{40}', a.source_head)
+ROOT = Path('/workspace/geometry-axiom')
+BRANCH = 'codex/geo261-closeout-20261021'
+REL = 'evidence/geo261-closeout-20261021'
+INDEX = 'artifact-index.json'
+BUNDLE = Path(a.bundle).resolve()
+OUT = Path(a.out).resolve()
+DEST = ROOT / REL
+APPENDS = {
+    '.gitignore': '!/' + REL + '/\n!/' + REL + '/**/build.log\n!/' + REL + '/**/server.log\n',
+    '.gitattributes': REL + '/** -text -whitespace\n',
+}
+SUFFIXES = {'.py', '.pyc', '.js', '.mjs', '.cjs', '.sh', '.bash', '.ps1', '.bat', '.cmd',
+            '.exe', '.dll', '.so', '.o', '.obj', '.c', '.h', '.inc', '.html', '.htm', '.svg',
+            '.wasm', '.pyw', '.pyo', '.zsh', '.fish', '.com', '.dylib', '.a', '.lib', '.jar', '.class', '.bin'}
+MAGICS = (b'\x7fELF', b'MZ', b'\x00asm', b'\xfe\xed\xfa\xce', b'\xce\xfa\xed\xfe',
+          b'\xfe\xed\xfa\xcf', b'\xcf\xfa\xed\xfe', b'\xca\xfe\xba\xbe', b'\xbe\xba\xfe\xca',
+          b'\xca\xfe\xba\xbf', b'\xbf\xba\xfe\xca', b'!<arch>\n')
+assert BUNDLE.is_dir() and not BUNDLE.is_symlink()
+assert not OUT.exists() and not DEST.exists()
+assert OUT != BUNDLE and BUNDLE not in OUT.parents and DEST not in OUT.parents
+OUT.mkdir(parents=True)
+commands = []
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+def dump(path, value):
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+def run(label, *argv, stdin=None, acceptable=(0,)):
+    r = subprocess.run(argv, cwd=ROOT, input=stdin, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (OUT / (label + '.stdout')).write_bytes(r.stdout)
+    (OUT / (label + '.stderr')).write_bytes(r.stderr)
+    (OUT / (label + '.exit-code')).write_text(str(r.returncode) + '\n')
+    row = {'label':label, 'argv':list(argv), 'exitCode':r.returncode}
+    if stdin is not None:
+        (OUT / (label + '.stdin')).write_bytes(stdin)
+        row['stdinSha256'] = sha(stdin)
+    commands.append(row)
+    dump(OUT / 'commands.json', commands)
+    assert r.returncode in acceptable, (label, r.returncode)
+    return r.stdout, r.returncode
+def git(label, *args):
+    return run(label, 'git', *args)[0]
+assert git('head-before', 'rev-parse', 'HEAD').decode().strip() == a.source_head
+assert git('branch', 'branch', '--show-current').decode().strip() == BRANCH
+assert git('status-before', 'status', '--porcelain=v1', '--untracked-files=all') == b''
+assert git('remote', 'ls-remote', '--heads', 'origin', 'refs/heads/' + BRANCH).decode().strip() == a.source_head + '\trefs/heads/' + BRANCH
+assert git('root-absent', 'ls-tree', '-r', '--name-only', a.source_head, '--', REL) == b''
+
+rows = []
+def walk_error(error):
+    raise error
+for directory, dirs, files in os.walk(BUNDLE, followlinks=False, onerror=walk_error):
+    here = Path(directory)
+    assert not here.is_symlink() and all(not (here / name).is_symlink() for name in dirs)
+    for name in files:
+        path = here / name
+        rel = path.relative_to(BUNDLE).as_posix()
+        assert stat.S_ISREG(path.lstat().st_mode) and not path.is_symlink()
+        assert rel != INDEX and path.suffix.lower() not in SUFFIXES
+        assert name not in {'.gitignore', '.gitattributes'} and '.git' not in path.relative_to(BUNDLE).parts
+        assert '\\' not in rel and ':' not in rel and all(32 <= ord(c) != 127 for c in rel)
+        raw = path.read_bytes()
+        assert not any(raw.startswith(m) for m in MAGICS), rel
+        rows.append({'path':rel, 'bytes':len(raw), 'sha256':sha(raw)})
+rows.sort(key=lambda x: x['path'])
+assert rows and len({r['path'] for r in rows}) == len(rows)
+dump(OUT / 'source-files.json', rows)
+
+configs = {}
+for name, suffix in APPENDS.items():
+    before = git('config-before-' + name[1:], 'show', a.source_head + ':' + name)
+    assert (ROOT / name).read_bytes() == before and before.endswith(b'\n')
+    after = before + suffix.encode()
+    configs[name] = {'beforeBytes':len(before), 'beforeSha256':sha(before),
+                     'afterBytes':len(after), 'afterSha256':sha(after), 'appendUtf8':suffix}
+    (OUT / (name[1:] + '.before')).write_bytes(before)
+    (OUT / (name[1:] + '.after')).write_bytes(after)
+
+DEST.mkdir(parents=True)
+for row in rows:
+    source = BUNDLE / row['path']
+    target = DEST / row['path']
+    assert sha(source.read_bytes()) == row['sha256']
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, target)
+    target.chmod(0o644)
+    raw = target.read_bytes()
+    assert len(raw) == row['bytes'] and sha(raw) == row['sha256']
+index = {'schema':1, 'root':REL, 'selfExcluded':INDEX, 'entries':rows}
+dump(DEST / INDEX, index)
+indexraw = (DEST / INDEX).read_bytes()
+review_rows = sorted([*rows, {'path':INDEX, 'bytes':len(indexraw), 'sha256':sha(indexraw)}], key=lambda x:x['path'])
+review = {'schema':'geo261-E-review/1', 'sourceL':a.source_head, 'root':REL,
+          'indexPath':INDEX, 'files':review_rows, 'config':configs}
+dump(OUT / 'review.json', review)
+for name in APPENDS:
+    (ROOT / name).write_bytes((OUT / (name[1:] + '.after')).read_bytes())
+
+payload = b''.join((REL + '/' + r['path']).encode() + b'\0' for r in review_rows)
+ignored, code = run('check-ignore', 'git', 'check-ignore', '--no-index', '--stdin', '-z', stdin=payload, acceptable=(1,))
+assert not ignored and code == 1
+git('diff-check', 'diff', '--check')
+git('tracked-diff', 'diff', '--binary', '--', '.gitignore', '.gitattributes')
+assert git('head-after', 'rev-parse', 'HEAD').decode().strip() == a.source_head
+actual = {f.relative_to(DEST).as_posix() for f in DEST.rglob('*') if f.is_file()}
+assert actual == {r['path'] for r in review_rows}
+for row in review_rows:
+    path = DEST / row['path']
+    assert path.stat().st_mode & 0o777 == 0o644
+    raw = path.read_bytes()
+    assert len(raw) == row['bytes'] and sha(raw) == row['sha256']
+receipt = {'schema':'geo261-stage-evidence/1', 'sourceL':a.source_head, 'branch':BRANCH,
+           'sourceBundle':str(BUNDLE), 'destination':str(DEST), 'files':len(review_rows),
+           'bytes':sum(r['bytes'] for r in review_rows), 'reviewPath':str(OUT / 'review.json'),
+           'reviewSha256':sha((OUT / 'review.json').read_bytes()), 'indexSha256':sha(indexraw),
+           'commands':commands, 'finishedUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+           'scope':'已複製純資料與精確兩份 Git 規則；尚未 git add／commit／E 驗證／push。'}
+dump(OUT / 'receipt.json', receipt)
+print(json.dumps(receipt, ensure_ascii=False))

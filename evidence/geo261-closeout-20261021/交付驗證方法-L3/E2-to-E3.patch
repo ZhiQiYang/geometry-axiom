@@ -1,0 +1,15 @@
+--- E2原方法
++++ E3三常數副本
+@@ -13,9 +13,9 @@
+ import types
+ 
+ sys.dont_write_bytecode = True
+-L = "249571fe2477845d5330f6190dad965bf327f43b"
+-SNAPSHOT_HASH = "6f5840a1c9247617a67af1c03a7a63fb1dc7b61adf01e381f6322361f684e48b"
+-LEDGER_HASH = "6bda315331050bd3478ed65211a8263508cb1a1f6f67cee3f35df377506e7f0b"
++L = "6589248c9a94bdf0460d8f84dd1610e51048188b"
++SNAPSHOT_HASH = "3420121fdc8a24cdff5335762ffdd07db82a531c5efea7ca32aedd3f7f50bd43"
++LEDGER_HASH = "52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178"
+ ROOT = "evidence/geo261-closeout-20261021"
+ INDEX = "artifact-index.json"
+ APPENDS = {

@@ -1,0 +1,23 @@
+{
+  "classification": "只做 AST 與未啟動守門；零產品建置／執行",
+  "files": [
+    {
+      "path": "/workspace/geo261-evidence/host-authority-anchor-fix-20261021/run_targeted.py",
+      "bytes": 9030,
+      "sha256": "e36bcb6c866c31d5292923af8432bbd20738c9f3ce5af05e519548233ab037e8",
+      "AST_valid": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/host-authority-anchor-fix-20261021/launch_targeted.py",
+      "bytes": 2123,
+      "sha256": "d52792c286d4f20bb30ae7cb9ff10431457b5fbfc66b23bea02078a38a773407",
+      "AST_valid": true
+    }
+  ],
+  "actual_exit_code": 0,
+  "planned_argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/host-authority-anchor-fix-20261021/launch_targeted.py"
+  ]
+}

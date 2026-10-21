@@ -1,0 +1,22 @@
+{
+  "checkedUTC": "2026-10-21T06:24:41.293220+00:00",
+  "kind": "提交後唯讀 bytes 核對，不是重跑測試",
+  "executionHead": "43f85313c32410ac01406ab585846bbacafea278",
+  "executionDirtyPath": "geometry-templates/woodworking/native/definition_sources.c",
+  "trialBranch": "codex/geo261-p189-codec-trial-20261021",
+  "trialSha": "7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09",
+  "argv": [
+    "git",
+    "-C",
+    "/workspace/geometry-axiom",
+    "show",
+    "7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09:geometry-templates/woodworking/native/definition_sources.c"
+  ],
+  "actualExitCode": 0,
+  "stderr": "",
+  "stdoutBytes": 17026,
+  "stdoutSha256": "5d52a836bb1178ff050f725d5b089f4765cbd58033931647f02e50369ea9e347",
+  "savedStdout": "原件/definition_sources-candidate-code.txt",
+  "candidateEqualsCommittedBlob": true,
+  "exactTestedSourceSha256": "5d52a836bb1178ff050f725d5b089f4765cbd58033931647f02e50369ea9e347"
+}

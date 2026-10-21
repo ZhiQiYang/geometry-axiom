@@ -1,0 +1,1143 @@
+[
+  {
+    "kind": 3,
+    "return_pc": "0x40d776",
+    "calls": 226847,
+    "bytes": 10650920344,
+    "exact_symbol_ranges": [
+      "app_placement_at.part.0"
+    ],
+    "instruction_address": "0x40d771",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "app_placement_at",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-app/native/domains.inc:74"
+    ]
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x487bc2",
+    "calls": 85268,
+    "bytes": 4003503136,
+    "exact_symbol_ranges": [
+      "reference_host_read"
+    ],
+    "instruction_address": "0x487bbd",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "reference_host_read",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/../geometry-app/native/reference_sources.inc:559"
+    ]
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x487b34",
+    "calls": 85268,
+    "bytes": 3989178112,
+    "exact_symbol_ranges": [
+      "reference_host_read"
+    ],
+    "instruction_address": "0x487b2f",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "reference_host_read",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/../geometry-app/native/reference_sources.inc:539"
+    ]
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x43c498",
+    "calls": 85556,
+    "bytes": 3227172320,
+    "exact_symbol_ranges": [
+      "geo_placement_definition_decode"
+    ],
+    "instruction_address": "0x43c493",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "geo_placement_definition_decode",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/kernel/placement_sources.c:95"
+    ]
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x43cd02",
+    "calls": 85556,
+    "bytes": 3227172320,
+    "exact_symbol_ranges": [
+      "geo_placement_sources_definition"
+    ],
+    "instruction_address": "0x43ccfd",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "geo_placement_sources_definition",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/kernel/placement_sources.c:198"
+    ]
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x43c942",
+    "calls": 85556,
+    "bytes": 3227172320,
+    "exact_symbol_ranges": [
+      "geo_placement_definition_decode"
+    ],
+    "instruction_address": "0x43c93d",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "geo_placement_definition_decode",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/kernel/placement_sources.c:111 (discriminator 2)"
+    ]
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x48882b",
+    "calls": 51983,
+    "bytes": 2434883720,
+    "exact_symbol_ranges": [
+      "app_validation_host"
+    ],
+    "instruction_address": "0x488826",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "app_grid_host_value",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../current_geometry.c:911",
+      "app_validation_host",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-app/native/world_validation.inc:40"
+    ]
+  },
+  {
+    "kind": 2,
+    "return_pc": "0x44aa2e",
+    "calls": 726400,
+    "bytes": 1460572800,
+    "exact_symbol_ranges": [
+      "wood_contact_collect_stops"
+    ],
+    "instruction_address": "0x44aa29",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2370 <__wrap_memmove>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "wood_contact_collect_stops",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-app/native/../../geometry-templates/woodworking/native/contact_world.c:102 (discriminator 1)"
+    ]
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x41c49f",
+    "calls": 139,
+    "bytes": 661563272,
+    "exact_symbol_ranges": [
+      "app_scene_candidate_apply"
+    ],
+    "instruction_address": "0x41c49a",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "app_scene_candidate_apply",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/transactions.inc:562"
+    ]
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4bedf4",
+    "calls": 130,
+    "bytes": 618728240,
+    "exact_symbol_ranges": [
+      "apply_scene_line"
+    ],
+    "instruction_address": "0x4bedef",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "app_scene_file_line",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/transactions.inc:679",
+      "apply_scene_line",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-core/transactions.inc:703"
+    ]
+  },
+  {
+    "kind": 2,
+    "return_pc": "0x44ad80",
+    "calls": 726400,
+    "bytes": 486857600,
+    "exact_symbol_ranges": [
+      "wood_contact_collect_stops"
+    ],
+    "instruction_address": "0x44ad7b",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2370 <__wrap_memmove>",
+    "ends_at_return_pc": true,
+    "addr2line": [
+      "wood_contact_collect_stops",
+      "/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/source/geometry-web/../geometry-app/native/../../geometry-templates/woodworking/native/contact_world.c:103 (discriminator 1)"
+    ]
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4a94ca",
+    "calls": 72,
+    "bytes": 342680256,
+    "exact_symbol_ranges": [
+      "world_revalidate_candidate.isra.0"
+    ],
+    "instruction_address": "0x4a94c5",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x467048",
+    "calls": 72,
+    "bytes": 342680256,
+    "exact_symbol_ranges": [
+      "reference_capture_trial.part.0"
+    ],
+    "instruction_address": "0x467043",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x44b554",
+    "calls": 6471,
+    "bytes": 329503320,
+    "exact_symbol_ranges": [
+      "app_reference_end_faces"
+    ],
+    "instruction_address": "0x44b54f",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x42da69",
+    "calls": 32355,
+    "bytes": 325103040,
+    "exact_symbol_ranges": [
+      "app_contact_facts"
+    ],
+    "instruction_address": "0x42da64",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x473ef0",
+    "calls": 74,
+    "bytes": 69172240,
+    "exact_symbol_ranges": [
+      "wood_assembly_sources_create"
+    ],
+    "instruction_address": "0x473eeb",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x469347",
+    "calls": 74,
+    "bytes": 64809200,
+    "exact_symbol_ranges": [
+      "wood_sp_sources_create"
+    ],
+    "instruction_address": "0x469342",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4885c4",
+    "calls": 930,
+    "bytes": 43561200,
+    "exact_symbol_ranges": [
+      "reference_grid_host"
+    ],
+    "instruction_address": "0x4885bf",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4bfad9",
+    "calls": 9,
+    "bytes": 42835032,
+    "exact_symbol_ranges": [
+      "reference_default_world"
+    ],
+    "instruction_address": "0x4bfad4",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4b0e75",
+    "calls": 4,
+    "bytes": 19037792,
+    "exact_symbol_ranges": [
+      "app_world_candidate_publish"
+    ],
+    "instruction_address": "0x4b0e70",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x423b6d",
+    "calls": 4,
+    "bytes": 19037792,
+    "exact_symbol_ranges": [
+      "app_candidate_create_with_deferred_sha"
+    ],
+    "instruction_address": "0x423b68",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x423b5f",
+    "calls": 4,
+    "bytes": 19037792,
+    "exact_symbol_ranges": [
+      "app_candidate_create_with_deferred_sha"
+    ],
+    "instruction_address": "0x423b5a",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x423b93",
+    "calls": 4,
+    "bytes": 19037792,
+    "exact_symbol_ranges": [
+      "app_candidate_create_with_deferred_sha"
+    ],
+    "instruction_address": "0x423b8e",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4afec4",
+    "calls": 4,
+    "bytes": 19037792,
+    "exact_symbol_ranges": [
+      "app_candidate_evaluate"
+    ],
+    "instruction_address": "0x4afebf",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x44c566",
+    "calls": 12942,
+    "bytes": 10252032,
+    "exact_symbol_ranges": [
+      "wood_contact_sources_collect"
+    ],
+    "instruction_address": "0x44c561",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4badef",
+    "calls": 2,
+    "bytes": 9518896,
+    "exact_symbol_ranges": [
+      "apply_surface_combined_line"
+    ],
+    "instruction_address": "0x4badea",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x43a72c",
+    "calls": 36,
+    "bytes": 8939008,
+    "exact_symbol_ranges": [
+      "geo_candidate_evaluate"
+    ],
+    "instruction_address": "0x43a727",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x425c96",
+    "calls": 36,
+    "bytes": 8939008,
+    "exact_symbol_ranges": [
+      "geo_candidate_bind_state.part.0"
+    ],
+    "instruction_address": "0x425c91",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x486797",
+    "calls": 74,
+    "bytes": 6716832,
+    "exact_symbol_ranges": [
+      "wood_grid_sources_create"
+    ],
+    "instruction_address": "0x486792",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x409097",
+    "calls": 85268,
+    "bytes": 5457152,
+    "exact_symbol_ranges": [
+      "reference_region_geometry"
+    ],
+    "instruction_address": "0x409092",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x43ceee",
+    "calls": 144,
+    "bytes": 5431680,
+    "exact_symbol_ranges": [
+      "geo_placement_sources_evaluate"
+    ],
+    "instruction_address": "0x43cee9",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4814ea",
+    "calls": 1,
+    "bytes": 4759448,
+    "exact_symbol_ranges": [
+      "eng_definition_hash"
+    ],
+    "instruction_address": "0x4814e5",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4b9ac9",
+    "calls": 1,
+    "bytes": 4759448,
+    "exact_symbol_ranges": [
+      "apply_grid_line"
+    ],
+    "instruction_address": "0x4b9ac4",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4b9b36",
+    "calls": 1,
+    "bytes": 4759448,
+    "exact_symbol_ranges": [
+      "apply_grid_line"
+    ],
+    "instruction_address": "0x4b9b31",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4ba13e",
+    "calls": 1,
+    "bytes": 4759448,
+    "exact_symbol_ranges": [
+      "apply_grid_line"
+    ],
+    "instruction_address": "0x4ba139",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4af73d",
+    "calls": 1,
+    "bytes": 4759448,
+    "exact_symbol_ranges": [
+      "app_history_record"
+    ],
+    "instruction_address": "0x4af738",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4bf71b",
+    "calls": 1,
+    "bytes": 4759448,
+    "exact_symbol_ranges": [
+      "app_scene_load_evaluate"
+    ],
+    "instruction_address": "0x4bf716",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4bf9b4",
+    "calls": 1,
+    "bytes": 4759448,
+    "exact_symbol_ranges": [
+      "reference_default_world"
+    ],
+    "instruction_address": "0x4bf9af",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4bf9c5",
+    "calls": 1,
+    "bytes": 4759448,
+    "exact_symbol_ranges": [
+      "reference_default_world"
+    ],
+    "instruction_address": "0x4bf9c0",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4106b8",
+    "calls": 238679,
+    "bytes": 3972901,
+    "exact_symbol_ranges": [
+      "geo_source_node"
+    ],
+    "instruction_address": "0x4106b3",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x47dc7a",
+    "calls": 74,
+    "bytes": 3639024,
+    "exact_symbol_ranges": [
+      "wood_finish_sources_create"
+    ],
+    "instruction_address": "0x47dc75",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4a871f",
+    "calls": 74,
+    "bytes": 3474448,
+    "exact_symbol_ranges": [
+      "world_validate_derived"
+    ],
+    "instruction_address": "0x4a871a",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x47ed8e",
+    "calls": 64,
+    "bytes": 3004928,
+    "exact_symbol_ranges": [
+      "reference_dump"
+    ],
+    "instruction_address": "0x47ed89",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x486774",
+    "calls": 74,
+    "bytes": 1781920,
+    "exact_symbol_ranges": [
+      "wood_grid_sources_create"
+    ],
+    "instruction_address": "0x48676f",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x44f30a",
+    "calls": 85268,
+    "bytes": 1364288,
+    "exact_symbol_ranges": [
+      "reference_boundary_policy.isra.0"
+    ],
+    "instruction_address": "0x44f305",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4a4ffb",
+    "calls": 66,
+    "bytes": 1082400,
+    "exact_symbol_ranges": [
+      "wood_grid_source_evaluate"
+    ],
+    "instruction_address": "0x4a4ff6",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x48e921",
+    "calls": 66,
+    "bytes": 1082400,
+    "exact_symbol_ranges": [
+      "wood_grid_encode_application_value"
+    ],
+    "instruction_address": "0x48e91c",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x437aa5",
+    "calls": 1258,
+    "bytes": 678432,
+    "exact_symbol_ranges": [
+      "geo_eval_register_many"
+    ],
+    "instruction_address": "0x437aa0",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x44d711",
+    "calls": 4386,
+    "bytes": 466059,
+    "exact_symbol_ranges": [
+      "wd_evaluate"
+    ],
+    "instruction_address": "0x44d70c",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4bf7d8",
+    "calls": 1,
+    "bytes": 258712,
+    "exact_symbol_ranges": [
+      "app_scene_load_evaluate"
+    ],
+    "instruction_address": "0x4bf7d3",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4bf732",
+    "calls": 1,
+    "bytes": 258712,
+    "exact_symbol_ranges": [
+      "app_scene_load_evaluate"
+    ],
+    "instruction_address": "0x4bf72d",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4bf741",
+    "calls": 1,
+    "bytes": 258712,
+    "exact_symbol_ranges": [
+      "app_scene_load_evaluate"
+    ],
+    "instruction_address": "0x4bf73c",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4a881f",
+    "calls": 3,
+    "bytes": 140856,
+    "exact_symbol_ranges": [
+      "world_validate_derived"
+    ],
+    "instruction_address": "0x4a881a",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4a9a09",
+    "calls": 3,
+    "bytes": 140856,
+    "exact_symbol_ranges": [
+      "reference_quantity_raw"
+    ],
+    "instruction_address": "0x4a9a04",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4ab1b9",
+    "calls": 3,
+    "bytes": 140856,
+    "exact_symbol_ranges": [
+      "reference_source_evaluate"
+    ],
+    "instruction_address": "0x4ab1b4",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x428030",
+    "calls": 2,
+    "bytes": 93904,
+    "exact_symbol_ranges": [
+      "parse_placement_body"
+    ],
+    "instruction_address": "0x42802b",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4ba720",
+    "calls": 2,
+    "bytes": 93904,
+    "exact_symbol_ranges": [
+      "apply_surface_combined_line"
+    ],
+    "instruction_address": "0x4ba71b",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4bad07",
+    "calls": 2,
+    "bytes": 93904,
+    "exact_symbol_ranges": [
+      "apply_surface_combined_line"
+    ],
+    "instruction_address": "0x4bad02",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x40d1ac",
+    "calls": 3296,
+    "bytes": 76758,
+    "exact_symbol_ranges": [
+      "geo_candidate_copy_text",
+      "geo_source_copy_text"
+    ],
+    "instruction_address": "0x40d1a7",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x43ada0",
+    "calls": 2,
+    "bytes": 75440,
+    "exact_symbol_ranges": [
+      "geo_placements_stage"
+    ],
+    "instruction_address": "0x43ad9b",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x43ae39",
+    "calls": 2,
+    "bytes": 75440,
+    "exact_symbol_ranges": [
+      "geo_placements_stage"
+    ],
+    "instruction_address": "0x43ae34",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x43b030",
+    "calls": 2,
+    "bytes": 75440,
+    "exact_symbol_ranges": [
+      "app_placement_stage"
+    ],
+    "instruction_address": "0x43b02b",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x43b2db",
+    "calls": 2,
+    "bytes": 75440,
+    "exact_symbol_ranges": [
+      "app_placement_stage"
+    ],
+    "instruction_address": "0x43b2d6",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x48eff9",
+    "calls": 66,
+    "bytes": 60192,
+    "exact_symbol_ranges": [
+      "wood_grid_application_value"
+    ],
+    "instruction_address": "0x48eff4",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x48ef6e",
+    "calls": 66,
+    "bytes": 60192,
+    "exact_symbol_ranges": [
+      "wood_grid_encode_application_value"
+    ],
+    "instruction_address": "0x48ef69",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x4a636b",
+    "calls": 66,
+    "bytes": 57024,
+    "exact_symbol_ranges": [
+      "wood_grid_source_evaluate"
+    ],
+    "instruction_address": "0x4a6366",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x4b8d0c",
+    "calls": 1,
+    "bytes": 46952,
+    "exact_symbol_ranges": [
+      "apply_grid_line"
+    ],
+    "instruction_address": "0x4b8d07",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x47f724",
+    "calls": 1,
+    "bytes": 46952,
+    "exact_symbol_ranges": [
+      "world_dump_dsl"
+    ],
+    "instruction_address": "0x47f71f",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x41a08c",
+    "calls": 1,
+    "bytes": 46840,
+    "exact_symbol_ranges": [
+      "app_grid_host"
+    ],
+    "instruction_address": "0x41a087",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x43b233",
+    "calls": 2,
+    "bytes": 18592,
+    "exact_symbol_ranges": [
+      "app_placement_stage"
+    ],
+    "instruction_address": "0x43b22e",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 3,
+    "return_pc": "0x43b2ea",
+    "calls": 2,
+    "bytes": 18592,
+    "exact_symbol_ranges": [
+      "app_placement_stage"
+    ],
+    "instruction_address": "0x43b2e5",
+    "instruction_bytes": 5,
+    "instruction": "call   4c23b0 <__wrap_memset>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x43c340",
+    "calls": 72,
+    "bytes": 7560,
+    "exact_symbol_ranges": [
+      "geo_placement_definition_encode"
+    ],
+    "instruction_address": "0x43c33b",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x42596b",
+    "calls": 264,
+    "bytes": 6984,
+    "exact_symbol_ranges": [
+      "geo_candidate_provider_hash"
+    ],
+    "instruction_address": "0x425966",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x42590a",
+    "calls": 264,
+    "bytes": 4692,
+    "exact_symbol_ranges": [
+      "geo_candidate_provider_hash"
+    ],
+    "instruction_address": "0x425905",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x492933",
+    "calls": 257,
+    "bytes": 4112,
+    "exact_symbol_ranges": [
+      "wood_member_resolve_span"
+    ],
+    "instruction_address": "0x49292e",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x441348",
+    "calls": 3,
+    "bytes": 204,
+    "exact_symbol_ranges": [
+      "geo_guide_definition_encode"
+    ],
+    "instruction_address": "0x441343",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x435d05",
+    "calls": 5,
+    "bytes": 90,
+    "exact_symbol_ranges": [
+      "geo_linear_append"
+    ],
+    "instruction_address": "0x435d00",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x409154",
+    "calls": 6,
+    "bytes": 72,
+    "exact_symbol_ranges": [
+      "reference_source_name"
+    ],
+    "instruction_address": "0x40914f",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x48890d",
+    "calls": 3,
+    "bytes": 54,
+    "exact_symbol_ranges": [
+      "reference_quantity"
+    ],
+    "instruction_address": "0x488908",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x408873",
+    "calls": 3,
+    "bytes": 51,
+    "exact_symbol_ranges": [
+      "geo_ld_expression_write"
+    ],
+    "instruction_address": "0x40886e",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x436034",
+    "calls": 3,
+    "bytes": 51,
+    "exact_symbol_ranges": [
+      "geo_ld_expression_read"
+    ],
+    "instruction_address": "0x43602f",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x436217",
+    "calls": 1,
+    "bytes": 17,
+    "exact_symbol_ranges": [
+      "reference_compile_text.isra.0"
+    ],
+    "instruction_address": "0x436212",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x437080",
+    "calls": 1,
+    "bytes": 13,
+    "exact_symbol_ranges": [
+      "geo_named_values_put"
+    ],
+    "instruction_address": "0x43707b",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  },
+  {
+    "kind": 1,
+    "return_pc": "0x415556",
+    "calls": 3135516,
+    "bytes": 0,
+    "exact_symbol_ranges": [
+      "wd_read_text.constprop.0"
+    ],
+    "instruction_address": "0x415551",
+    "instruction_bytes": 5,
+    "instruction": "call   4c2330 <__wrap_memcpy>",
+    "ends_at_return_pc": true
+  }
+]

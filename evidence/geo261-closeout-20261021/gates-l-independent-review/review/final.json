@@ -1,0 +1,225 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "reviewedUtc": "2026-10-21T00:42:35.400899+00:00",
+  "reviewer": "/root/p52_review",
+  "accepted": true,
+  "validationExitCode": 0,
+  "phases": [
+    {
+      "phase": "q38",
+      "sessionId": 51559,
+      "observedToolExit": 0,
+      "observationChunk": "6028d8",
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/gates-l/launcher/q38/receipt.json",
+        "bytes": 3841,
+        "sha256": "e2f0ad8ab72b3edadf6cc1484240f84bcde48316f8466ea823b338a8406df306"
+      },
+      "independentReview": {
+        "path": "/workspace/geo261-evidence/gates-l-independent-review/q38.json",
+        "bytes": 61109,
+        "sha256": "658456e1df03218c0c79acc4e0694c5bd053ff94eaffb91f3151e62f86924a89"
+      }
+    },
+    {
+      "phase": "controls",
+      "sessionId": 88637,
+      "observedToolExit": 0,
+      "observationChunk": "de6576",
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/gates-l/launcher/controls/receipt.json",
+        "bytes": 4033,
+        "sha256": "ba5ab6daa9f8858019b4e9a5eb6be3d4cbd54fcb35d75fd81d9146f27a093b58"
+      },
+      "independentReview": {
+        "path": "/workspace/geo261-evidence/gates-l-independent-review/controls.json",
+        "bytes": 29143,
+        "sha256": "ad25e8aff74e82e17ffad1e94f753bfc1a8f268a1b6b0dbb0b8b7a4ad936f329"
+      }
+    },
+    {
+      "phase": "card",
+      "sessionId": 17804,
+      "observedToolExit": 0,
+      "observationChunk": "2c73ea",
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/gates-l/launcher/card/receipt.json",
+        "bytes": 3849,
+        "sha256": "70ded9f9cca7114a8076d8b5234dc6966c158ccb411345e7182ddbf6c8ec3747"
+      },
+      "independentReview": {
+        "path": "/workspace/geo261-evidence/gates-l-independent-review/card.json",
+        "bytes": 193098,
+        "sha256": "52b569644564436a8f37d6e63a253aa2dfbbb7bfcdae62c11e946a9eebf801b9"
+      }
+    },
+    {
+      "phase": "axiom",
+      "sessionId": 13051,
+      "observedToolExit": 0,
+      "observationChunk": "7317b8",
+      "launcherReceipt": {
+        "path": "/workspace/geo261-evidence/gates-l/launcher/axiom/receipt.json",
+        "bytes": 3852,
+        "sha256": "265586aa262ec2ef86b83daba34ee767d73308347e866ae984858cc33524d611"
+      },
+      "independentReview": {
+        "path": "/workspace/geo261-evidence/gates-l-independent-review/axiom.json",
+        "bytes": 14390,
+        "sha256": "d4838bb73643dc3a763cf4ea550210446f78a20f504a827fc5af745e586fdaca"
+      }
+    }
+  ],
+  "finalHead": "43f85313c32410ac01406ab585846bbacafea278",
+  "finalStatus": "",
+  "finalTargetFiles": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 19140,
+      "sha256": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca"
+    },
+    {
+      "path": "current_geometry.c",
+      "bytes": 400284,
+      "sha256": "dc3fbfb14adde5078c36ab179936df88ba977b22bb341301cd30deafeeb97696"
+    },
+    {
+      "path": "geometry-app/native/app_candidate.c",
+      "bytes": 8674,
+      "sha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9"
+    },
+    {
+      "path": "geometry-core/card-reference/run_axiom_mutations.py",
+      "bytes": 6069,
+      "sha256": "dae27a144c241a30d55ffdc65264fb86b224759508e600d3c149ad9a7ebb87c3"
+    },
+    {
+      "path": "geometry-core/card-reference/run_mutations.py",
+      "bytes": 8819,
+      "sha256": "d3282011a7648ef0eb8704517cd49c51a76ae75155f1870e0273f023e189165e"
+    },
+    {
+      "path": "geometry-core/card_reference.inc",
+      "bytes": 7907,
+      "sha256": "6e6016c6479ccf85276f6c9ada1f253a976a33ad035f43198a0fe3b5844183c0"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
+      "bytes": 3446,
+      "sha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
+      "bytes": 4605,
+      "sha256": "b7e7430e53d157f6a82050417be7a9f8d77bd50c1fb5f2f3a34a1ba44de8363f"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
+      "bytes": 4455,
+      "sha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3"
+    },
+    {
+      "path": "geometry-core/engineering_commands.inc",
+      "bytes": 8621,
+      "sha256": "3e996cef86dc3498138aa4ba7cdfa798a67042a7daa4239d936aa2487ff0b039"
+    },
+    {
+      "path": "geometry-core/grid_systems.inc",
+      "bytes": 18267,
+      "sha256": "8e58c73c52351dd35ee79603885b1215ff86f0f6af00d2d05824fee25770d61a"
+    },
+    {
+      "path": "geometry-core/kernel/candidate.c",
+      "bytes": 12611,
+      "sha256": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77"
+    },
+    {
+      "path": "geometry-core/kernel/exact.c",
+      "bytes": 3243,
+      "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf"
+    },
+    {
+      "path": "geometry-core/kernel/grid_store.c",
+      "bytes": 24010,
+      "sha256": "89da92935c8e4765b54a83b06fb3157bdfcde74410a7edd8cf74ed87652dea5d"
+    },
+    {
+      "path": "geometry-core/kernel/parameters.c",
+      "bytes": 18594,
+      "sha256": "d4e0f6402ef38e82e4192250cbe7617668ec7c0d210fc531d0410e2cb93eda94"
+    },
+    {
+      "path": "geometry-core/model_base.c",
+      "bytes": 28393,
+      "sha256": "ffa570dae26fbfe8bab2d24a9e0663d4b6943983567097fb96553ebab5e42be6"
+    },
+    {
+      "path": "geometry-core/modeling/__init__.py",
+      "bytes": 28258,
+      "sha256": "e31eb760dcd1723d98f1a53d47678b496098c3f75d649c2d230507d42d08d8c5"
+    },
+    {
+      "path": "geometry-core/parameters.inc",
+      "bytes": 64486,
+      "sha256": "0cbb505d787983898b55b63c92eaae3a4d25644587f3960b5b081564a726ad5d"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/grid_application.c",
+      "bytes": 29542,
+      "sha256": "87e2e82ce1906bbf4998dd530fdcdfd6b49a8f53caf2a6ae42318f6e99e48798"
+    },
+    {
+      "path": "geometry-web/engineering_bridge.inc",
+      "bytes": 21704,
+      "sha256": "930134f89de7c89b17e000623d1c675b51c5b2465fc6b8109936711f0e9519f3"
+    },
+    {
+      "path": "geometry-web/source-inspector-bridge.inc",
+      "bytes": 32352,
+      "sha256": "e9e386edb4450f38ceec5fee47a71477c5ecbd41f3edd16fe5b4de2599250af3"
+    },
+    {
+      "path": "tests/section_profile_mutation_check.py",
+      "bytes": 47633,
+      "sha256": "3004734c4e1052e95d3234091bc8fb03c20cf7546282432704fca0a07071ee6c"
+    },
+    {
+      "path": "tests/test_axiom_reader.py",
+      "bytes": 52868,
+      "sha256": "fc19bd1edcfcab5babb433594f15763171b6bcba8fa9559222f0617587978d25"
+    },
+    {
+      "path": "tests/test_grid_card_reference.py",
+      "bytes": 48047,
+      "sha256": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f"
+    }
+  ],
+  "finalTargetBytesExactlyGitL": true,
+  "knownPidsAbsent": 8,
+  "recordedGateProcessMatches": 0,
+  "recordedCmdlineInaccessible": 0,
+  "references": {
+    "toolObservations": {
+      "path": "/workspace/geo261-evidence/gates-l/tool-observations.json",
+      "bytes": 5255,
+      "sha256": "da8ec1170f4f41234f3c42ad7b8b76676c3ef3440fed5bed19810a25cbfab878"
+    },
+    "cleanup": {
+      "path": "/workspace/geo261-evidence/gates-l/final-source-process-check.json",
+      "bytes": 1401,
+      "sha256": "de06902aff75288c1686385be9ad91a804c137affed30e661f037cd43bd4ef1f"
+    },
+    "reviewCode": {
+      "path": "/workspace/geo261-evidence/gates-l-independent-final-code.txt",
+      "bytes": 5061,
+      "sha256": "2ffe608464739b8762e0d90eb03ba5d8c204b33fe05515f8b2f1a9aa5ba4f661"
+    }
+  },
+  "limits": [
+    "工具exit原觀察是執行代理依對話的事後逐欄轉錄，明確不是自動transportlog；各phase真parent.wait與子程序退出另有原收據。",
+    "Axiom最後wait時間參數在轉錄未留存，未自行補填；退出碼與session/chunk已核。",
+    "程序清理僅核已知8pid及原可見具名/cwd掃描；沒有冒稱追蹤過往全部descendant。",
+    "本報告新增最後全phase完成後的Git Lclean與所有已登記targetbytes核對，不改各phase凍結歷史。",
+    "此後停止檔案讀取與檢查，供P189獨占；證據封裝待另行放行。"
+  ]
+}

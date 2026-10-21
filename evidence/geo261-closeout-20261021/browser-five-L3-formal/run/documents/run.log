@@ -1,0 +1,48 @@
+PASS application identity
+PASS single canonical destination and five categorized documents
+PASS catalog search filters
+PASS draft boundaries visible
+PASS chapter navigation generated
+PASS chapter scroll and focus
+PASS find paints real matches
+PASS next match changes position
+PASS previous match wraps correctly
+PASS Escape first closes find only
+PASS built-in bookmark persistence only
+PASS theme applied only to reader
+PASS untrusted Markdown cannot execute or load remote images
+PASS local contents absent from persisted reader state
+PASS late local read cannot overwrite newer document
+PASS closing cancels late document completion
+PASS encoding failure is explained
+PASS unsupported file is explained
+PASS large file rejected before rendering
+PASS render complexity rejected before constructing document nodes
+PASS local PDF page and extracted text
+PASS desktop PDF fit width excludes preview padding
+PASS PDF next page actually renders
+PASS active PDF refits on mobile viewport resize
+PASS PDF refits after reading width preference change
+PASS manual PDF zoom deliberately remains scrollable
+PASS 390px reader has no horizontal overflow
+PASS mobile chapter drawer visible
+PASS mobile chapter navigation dismisses drawer
+PASS local case import renders two matched assets
+PASS secondary roles add only recognized unique filter options
+PASS plan filter includes a mixed drawing once
+PASS section filter matches primary or secondary role without duplication
+PASS mixed sheet keeps its primary drawing label
+PASS secondary-only elevation finds the one original sheet
+PASS case zoom control changes real scale
+PASS original PDF remains accessible behind preview
+PASS return from PDF preserves case notes
+PASS notes JSON roundtrip succeeds
+PASS populated 390px case reader has no horizontal overflow
+PASS case session and notes survive close/reopen
+PASS Escape returns focus to visible app entry
+PASS all reading actions preserve scene
+PASS unsaved drafts and undo history preserved
+PASS local documents and case metadata make no remote requests
+PASS no uncaught browser exceptions
+PASS no failed asset requests
+DOCUMENTS_RESULT {"passedAssertions":47,"failedAssertions":0,"screenshots":"/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/documents","viewport":[1400,900,390,844],"coverage":"Trusted pointer/keyboard navigation plus synthetic file fixtures; PDF page rendering and safe Markdown checks."}

@@ -1,0 +1,14 @@
+{
+  "checkedUTC": "2026-10-20T23:52:50.047627+00:00",
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "import ast,pathlib,hashlib,json,datetime,sys; base=pathlib.Path(\"/workspace/geo261-evidence/architecture-L-preparation\"); p=base/\"run_L_architecture_cli.py\"; raw=p.read_bytes(); ast.parse(raw,filename=str(p)); result={\"checkedUTC\":datetime.datetime.now(datetime.timezone.utc).isoformat(),\"argv\":sys.orig_argv,\"sourcePath\":str(p),\"sourceBytes\":len(raw),\"sourceSha256\":hashlib.sha256(raw).hexdigest(),\"exitCode\":0,\"檢查範圍\":\"只解析AST，未執行runner或架構CLI，未import產品模組、未測試或建置\"}; dest=base/\"AST檢查-v2.json\"; assert not dest.exists(); dest.write_text(json.dumps(result,ensure_ascii=False,indent=2)+\"\\n\"); print(json.dumps({\"result\":str(dest),\"sourceSha256\":result[\"sourceSha256\"],\"exitCode\":0},ensure_ascii=False))"
+  ],
+  "sourcePath": "/workspace/geo261-evidence/architecture-L-preparation/run_L_architecture_cli.py",
+  "sourceBytes": 24061,
+  "sourceSha256": "6f359273e6a38c80ab679c677dd1bd39a235dad2ef2008954a9f9070eb6f6164",
+  "exitCode": 0,
+  "檢查範圍": "只解析AST，未執行runner或架構CLI，未import產品模組、未測試或建置"
+}

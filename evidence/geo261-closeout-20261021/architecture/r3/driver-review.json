@@ -1,0 +1,74 @@
+{
+  "status": "外部候選；尚未套用主樹，尚未執行架構驗收",
+  "actualSourceHeadObserved": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "sourceActual": {
+    "path": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
+    "rawSha256": "80ecea0cd2d1189f244552d3e92ffc1a81335424410cf4557bac68cd25d15e86",
+    "lfSha256": "80ecea0cd2d1189f244552d3e92ffc1a81335424410cf4557bac68cd25d15e86",
+    "bytes": 29059
+  },
+  "sourceEffective": {
+    "externalPath": "/workspace/geo261-evidence/architecture/r3/refresh_receipt.candidate.py",
+    "rawSha256": "b0b80afbdbbbb451ab29e774ffbdd1699f0438619b5f84280ef954c8b72fc5a3",
+    "lfSha256": "b0b80afbdbbbb451ab29e774ffbdd1699f0438619b5f84280ef954c8b72fc5a3",
+    "bytes": 29167
+  },
+  "patch": {
+    "path": "/workspace/geo261-evidence/architecture/r3/refresh-receipt-report.patch",
+    "rawSha256": "93c4a28536bd89afb8c7eb0b4ef73b6360ed7990f245aa9f8b8696e6aa12517e",
+    "bytes": 1095
+  },
+  "reviewReason": "只把報告的變更範圍明確限於 manifest 刷新，並指向收據 inputsChangedSincePreviousSeal 的完整來源差異；避免新增產品 app.js 變動時，誤稱全部來源變更只有 exclusion digest 與工具。其餘程式 bytes 逐字相同，輸入枚舉、驗收、負控制、收據欄位、分類及守門政策不變。",
+  "checks": [
+    {
+      "command": "Python ast.parse 原版與候選版；不執行模組",
+      "exitCode": 0
+    },
+    {
+      "command": "候選文字精確撤回此兩行補丁後與原版 bytes 相同",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "apply",
+        "--check",
+        "/workspace/geo261-evidence/architecture/r3/refresh-receipt-report.patch"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "nextSourceReview": {
+    "updatedExclusions": [
+      "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
+      "geometry-web/uiux_review_test.js"
+    ],
+    "addedExclusions": [
+      "geometry-core/domain-decoupling/closeout-tools/p73_probe.js"
+    ],
+    "expectedNegativeControls": 5,
+    "note": "等待產品、驗收及工具一同提交的新來源 SHA 後才建立正式 review，依實際 diff 逐項核對。"
+  },
+  "independentReview": {
+    "result": "通過；精確差異是一行字串改為兩行字串，撤回後與原版 bytes 相同，原版與候選 ast.parse 皆通過。",
+    "finalExitCode": 0,
+    "initialCheckExitCode": 1,
+    "initialCheckCorrection": "複核命令起初誤設為兩行換兩行；更正為實際的一行換兩行後核對通過。這是檢查預期修正，並非候選程式執行失敗。",
+    "scope": "只讀核對；沒有修改檔案或執行架構 gate。"
+  },
+  "notExecuted": [
+    "主樹套用",
+    "架構三條 gate",
+    "瀏覽器測試",
+    "原生驗收",
+    "完整突變帳本"
+  ],
+  "notClaimed": [
+    "候選已成正式來源",
+    "R3產品或控制已驗收通過"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "startedUtc": "2026-10-21T06:58:21.099779+00:00",
+  "cwd": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021",
+  "actualArgv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/curate-gates-l3.py",
+    "--completion-manifest",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/completion.json"
+  ],
+  "launcherArgv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-launcher.py"
+  ],
+  "launcherCode": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-launcher.py",
+    "bytes": 3188,
+    "sha256": "d1a0eeb854072e6affea0d45489bc3ac740ff7539cfcfcb62846c200fc376df3"
+  },
+  "tool": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/curate-gates-l3.py",
+    "bytes": 24681,
+    "sha256": "aabdc95ec54f6f472f7339ad14915058bc8b85e2858a454b739881ef477969e1"
+  },
+  "manifest": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/completion.json",
+    "bytes": 4958,
+    "sha256": "1b7605f80624727f9faaca71fda7be788edd6b78029db0543736d4c98520bf7a"
+  },
+  "CCAbsent": true,
+  "PYTHONOPTIMIZEAbsent": true,
+  "optimizationFlag": 0,
+  "pid": 507369,
+  "note": "stdout／stderr 直接落盤；child.wait() 的真碼另存，工具回應待返回後逐欄轉錄。"
+}

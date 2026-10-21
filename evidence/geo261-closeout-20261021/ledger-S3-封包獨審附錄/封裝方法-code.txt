@@ -1,0 +1,157 @@
+"""封裝已實跑 L3 來源／CLI、未執行 E3 方法與指定帳本包獨審；不改 repo 或舊包。"""
+import ast
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import stat
+import sys
+
+if sys.flags.optimize:
+    raise RuntimeError('不可停用封裝核對')
+BASE = Path('/workspace/geo261-evidence')
+BUNDLE = BASE / 'final-bundle'
+DOCS = BASE / 'L3-source-method-packaging'
+S3 = '19401ca5448e162ee6140fed37b64b83b31ddec8'
+L3 = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+SNAPSHOT = '3420121fdc8a24cdff5335762ffdd07db82a531c5efea7ca32aedd3f7f50bd43'
+LEDGER = '52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178'
+
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def read(path): return json.loads(path.read_bytes())
+def put(path, raw):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('xb') as stream: stream.write(raw)
+    path.chmod(0o644)
+def encoded(obj): return (json.dumps(obj, ensure_ascii=False, indent=2) + '\n').encode()
+
+source = BASE / 'source-binding-L3-preparation'
+binding = read(source / 'binding-S3-L3.json')
+assert binding['sourceS3'] == S3 and binding['ledgerL3'] == L3
+assert binding['directParentS3'] and binding['onlyChangedPath'] == 'tests/mutants_results.json'
+assert binding['ledger']['rawSha256'] == LEDGER and binding['ledger']['executionHead'] == S3
+assert binding['snapshot']['unionFiles'] == 1010 and binding['sameBytesAsS3ByExactTotalDiff'] == 1009
+assert sha((source / 'snapshot-L3.json').read_bytes()) == SNAPSHOT
+assert binding['architecture']['counts']['executableFiles'] == 611
+for name in ('expected-S3.stdout', 'expected-L3.stdout'):
+    raw = (source / name).read_bytes()
+    assert sha(raw) == binding['expectedOutsideSnapshot']['rawSha256']
+assert read(source / 'execution.json')['exitCode'] == 0
+cli = read(BASE / 'architecture-L3-formal-6589248c/receipt.json')
+assert cli['sourceHeadActuallyExecuted'] == L3 and cli['execution']['exitCode'] == 0
+assert cli['scannerOutputCounts'] == {'sources': 333, 'edges': 796, 'diagnostics': 0}
+assert cli['metadataSourceBaseHeadUnchanged'] == binding['architecture']['sourceBaseHead']
+publication = read(BASE / 'ledger-L3-publication/publication.json')
+assert publication['sourceA2'] == S3 and publication['ledgerL2'] == L3
+assert publication['defaultCheckExitCode'] == publication['pushExitCode'] == 0 and publication['remoteExactMatch']
+assert (BASE / 'ledger-L3-publication/remote-after-push.stdout').read_text().strip() == L3 + '\trefs/heads/codex/geo261-closeout-20261021'
+peer = read(BASE / 'ledger-S3-bundle-peer-run01/peer.json')
+assert peer['checkPassed'] and peer['sourceS3'] == S3 and peer['ledgerL3'] == L3
+assert sha((BASE / 'ledger-S3-bundle-peer-run01/peer.json').read_bytes()) == '8eb5b27e17ee115bdefb5d28af2ecff9f1b73872f47aa3f4a784eb96c6b1873e'
+assert read(BASE / 'ledger-S3-bundle-peer-run01/execution.json')['actualWaitReturnCode'] == 0
+
+method = BASE / 'source-binding-E3-preparation'
+old = (method / 'original-E2-code.txt').read_bytes()
+new = (method / 'verify_E3.py').read_bytes()
+assert new == (method / 'verify-E3-code.txt').read_bytes()
+assert sha(new) == '6e1ac9bffab679486606fd3513762d167990c8b725b015778cf329a85590e279'
+assert sha(old) == '99e6cdbafec586a97c37382216ad14737a173f6e394af3bde2685464d59db9e1'
+def assignments(raw):
+    return {n.targets[0].id: ast.literal_eval(n.value) for n in ast.parse(raw).body
+            if isinstance(n, ast.Assign) and len(n.targets) == 1 and isinstance(n.targets[0], ast.Name)
+            and n.targets[0].id in {'L', 'SNAPSHOT_HASH', 'LEDGER_HASH', 'FORBIDDEN_SUFFIXES', 'EXECUTABLE_MAGICS'}}
+old_constants, constants = assignments(old), assignments(new)
+restored = new
+for key, value in {'L': L3, 'SNAPSHOT_HASH': SNAPSHOT, 'LEDGER_HASH': LEDGER}.items():
+    assert constants[key] == value and old_constants[key] != value
+    before = f'{key} = "{value}"'.encode()
+    after = f'{key} = "{old_constants[key]}"'.encode()
+    assert restored.count(before) == 1
+    restored = restored.replace(before, after)
+assert restored == old
+
+plans = {
+    'source-binding-L3': {
+        'dirs': {'來源綁定': source, 'L3帳本發布': BASE / 'ledger-L3-publication'},
+        'files': {'README.md': DOCS / '來源綁定說明.md',
+                  'source-S3-ledger-L3-binding.json': BASE / 'source-S3-ledger-L3-binding.json',
+                  'ledger-L3-importer-tool-observation.json': BASE / 'ledger-L3-importer-tool-observation.json',
+                  'runner-code.txt': BASE / 'run-L3-source-and-architecture.py',
+                  'runner-vs-L2.patch': BASE / 'run-L3-source-and-architecture.patch',
+                  **{f'外層執行/{suffix}': BASE / ('run-L3-source-and-architecture-run01.' + suffix)
+                     for suffix in ('json', 'stdout', 'stderr', 'exit-code')}},
+    },
+    'architecture-L3': {
+        'dirs': {'': BASE / 'architecture-L3-formal-6589248c'},
+        'files': {'README.md': DOCS / '架構CLI說明.md',
+                  'runner外層執行.json': BASE / 'run-L3-source-and-architecture-run01.json'},
+    },
+    '交付驗證方法-L3': {
+        'dirs': {'': method},
+        'files': {'README.md': DOCS / 'E3方法說明.md'},
+    },
+    'ledger-S3-封包獨審附錄': {
+        'dirs': {'': BASE / 'ledger-S3-bundle-peer-run01'},
+        'files': {'README.md': DOCS / '帳本封包獨審說明.md'},
+    },
+}
+assert not any((BUNDLE / name).exists() for name in plans)
+copycheck = BUNDLE / 'L3-source-architecture-method-copycheck.json'
+assert not copycheck.exists()
+results = []
+for name, plan in plans.items():
+    target = BUNDLE / name
+    target.mkdir()
+    entries = []
+    def copy(origin, relative):
+        p = PurePosixPath(relative)
+        assert not p.is_absolute() and '..' not in p.parts and relative == p.as_posix()
+        assert stat.S_ISREG(origin.lstat().st_mode) and not origin.is_symlink()
+        if Path(relative).suffix == '.py': relative += '.txt'
+        assert Path(relative).suffix.lower() not in constants['FORBIDDEN_SUFFIXES']
+        raw = origin.read_bytes()
+        assert not any(raw.startswith(m) for m in constants['EXECUTABLE_MAGICS'])
+        destination = target / relative
+        put(destination, raw)
+        assert destination.read_bytes() == raw
+        entries.append({'path': relative, 'sourcePath': str(origin), 'bytes': len(raw),
+                        'sha256': sha(raw), 'rawBytesPreserved': True})
+    for prefix, directory in plan['dirs'].items():
+        for current, directories, names in os.walk(directory, followlinks=False):
+            assert all(not (Path(current) / d).is_symlink() for d in directories)
+            for filename in sorted(names):
+                origin = Path(current) / filename
+                relative = origin.relative_to(directory).as_posix()
+                copy(origin, prefix + '/' + relative if prefix else relative)
+    for relative, origin in plan['files'].items(): copy(origin, relative)
+    copy(Path(__file__), '封裝方法-code.txt')
+    copy(DOCS / '工具觀察補記.json', '工具觀察補記.json')
+    entries.sort(key=lambda r: r['path'])
+    assert len({r['path'] for r in entries}) == len(entries)
+    index = {'schema': 1, 'sourceS3': S3, 'sourceL3': L3,
+             'selfExcluded': '來源索引.json', 'generatedAlsoExcluded': ['SHA256SUMS'],
+             'entries': entries, 'notFinalEAcceptance': True}
+    put(target / '來源索引.json', encoded(index))
+    paths = sorted(p for p in target.rglob('*') if p.is_file())
+    assert {p.relative_to(target).as_posix() for p in paths} == {r['path'] for r in entries} | {'來源索引.json'}
+    sums = ''.join(sha(p.read_bytes()) + '  ' + p.relative_to(target).as_posix() + '\n' for p in paths)
+    put(target / 'SHA256SUMS', sums.encode())
+    for row in entries:
+        current = (target / row['path']).read_bytes()
+        assert current == Path(row['sourcePath']).read_bytes()
+        assert len(current) == row['bytes'] and sha(current) == row['sha256']
+    all_paths = paths + [target / 'SHA256SUMS']
+    assert all(stat.S_IMODE(p.lstat().st_mode) == 0o644 for p in all_paths)
+    results.append({'path': str(target), 'files': len(all_paths), 'bytes': sum(p.stat().st_size for p in all_paths),
+                    'indexSha256': sha((target / '來源索引.json').read_bytes()),
+                    'sumsSha256': sha((target / 'SHA256SUMS').read_bytes()),
+                    'copiedOriginals': len(entries), 'allCopiedBytesAndExactSetMatch': True})
+result = {'createdUtc': datetime.now(timezone.utc).isoformat(), 'sourceS3': S3, 'sourceL3': L3,
+          'bundles': results, 'snapshotSha256': SNAPSHOT, 'ledgerSha256': LEDGER,
+          'E3OnlyThreeConstantsAndExactInverse': True, 'E3Executed': False,
+          'productTestsRerun': False, 'architectureCLIRerun': False,
+          'existingFrozenBundlesModified': False, 'notFinalEAcceptance': True,
+          'native205And18ReferencePendingAtPackaging': True}
+put(copycheck, encoded(result))
+print(json.dumps(result, ensure_ascii=False, indent=2))

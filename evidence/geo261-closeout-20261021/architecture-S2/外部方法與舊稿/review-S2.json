@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "sourceHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "baseHead": "43f85313c32410ac01406ab585846bbacafea278",
+  "previousReceiptSha256": "804142f06ef1c251cd6c2d30fa7d66e1f04609d5e4e39d439169267869dcdf6e",
+  "changedOwnedSources": {
+    "geometry-app/native/reference_sources.inc": {
+      "rawSha256": "ee8fa4e258999addd1996704cdffc47ac870acb972f5d63328dc2908e1be8a5c",
+      "lfSha256": "ee8fa4e258999addd1996704cdffc47ac870acb972f5d63328dc2908e1be8a5c",
+      "reason": "H 以呼叫者獨佔暫存組合完整 host facts，公開入口仍成功後提交輸出；非 current footprint 僅先核 raw placement 存在，保 returned definition／pose／frame／face 的權威與求值順序。"
+    },
+    "geometry-app/native/world_validation.inc": {
+      "rawSha256": "993662cee91fc85ee255b4e3f1261f83fdb874621a61e50ec6811dc4d1c5a48c",
+      "lfSha256": "993662cee91fc85ee255b4e3f1261f83fdb874621a61e50ec6811dc4d1c5a48c",
+      "reason": "H 驗證器的局部輸出採私有暫存入口；失敗後不讀取或發佈部分內容，守門與裁決位置不變。"
+    },
+    "geometry-core/kernel/placement_sources.c": {
+      "rawSha256": "ebf68c7c67a1a1281b971bfdfba29c9963dee934204db4c3ccfe960b1950c502",
+      "lfSha256": "ebf68c7c67a1a1281b971bfdfba29c9963dee934204db4c3ccfe960b1950c502",
+      "reason": "K 抽完整解碼至私有暫存核心，公開入口保別名安全與失敗原子性；sources accessor 直接填局部暫存並驗 id 後提交，保解析與依賴流程。"
+    },
+    "geometry-templates/woodworking/native/contact_world.c": {
+      "rawSha256": "08f9c5e60a9396ab0791a01a1408605b39f70d0881f69bdf5e94d2dac1c7465e",
+      "lfSha256": "08f9c5e60a9396ab0791a01a1408605b39f70d0881f69bdf5e94d2dac1c7465e",
+      "reason": "W 在單次收集內保存各側面的最後排序值及全 facts 最小排序值；維持重複 ID、穩定排序、去重、容量截斷與超容量 fallback，不跨 query 記憶化。"
+    },
+    "geometry-templates/woodworking/native/definition_sources.c": {
+      "rawSha256": "5d52a836bb1178ff050f725d5b089f4765cbd58033931647f02e50369ea9e347",
+      "lfSha256": "5d52a836bb1178ff050f725d5b089f4765cbd58033931647f02e50369ea9e347",
+      "reason": "W 固定 1／4／8 bytes 大端讀取以可攜位移展開，原 bounds／ok／at、其他寬度迴圈及 signed 轉換不變。"
+    }
+  },
+  "changedOutsideInventory": {
+    "tests/geo261_contact_world_harness.c": {
+      "rawSha256": "a16e54c4fd6d316b32e3642db658bcad1a5d55141ea2690fc2d982ba256d9f0e",
+      "lfSha256": "a16e54c4fd6d316b32e3642db658bcad1a5d55141ea2690fc2d982ba256d9f0e",
+      "reason": "補獨立數值案例涵蓋同 ID 全 facts 的 last／minimum、連續刪除、極值與超容量 fallback；保留既有真幾何契約。"
+    },
+    "tests/geo261_host_facts_authority_harness.c": {
+      "rawSha256": "a1865b2ab64fe31921cd5305d0b194d95177c3934123d76c0db73aedd79bcb6e",
+      "lfSha256": "a1865b2ab64fe31921cd5305d0b194d95177c3934123d76c0db73aedd79bcb6e",
+      "reason": "補完整 components 清理、輸出原子性、view 生命週期與 footprint 缺 raw／越界／current 的數值及圖觀察契約。"
+    },
+    "tests/geo261_placement_definition_harness.c": {
+      "rawSha256": "d11d845679470c755dbb49a76366a14bd26b48458df0b830ff7d0091b4eb7131",
+      "lfSha256": "d11d845679470c755dbb49a76366a14bd26b48458df0b830ff7d0091b4eb7131",
+      "reason": "新增公開 decoder 輸入輸出 overlap 正向案例，以原 wire bytes 檢驗別名安全及失敗原子性。"
+    },
+    "tests/test_geo261_host_facts_authority.py": {
+      "rawSha256": "2b0610adea7e944adc5e05487eb78e161f02a39adf46b09521a10f72788a1baa",
+      "lfSha256": "2b0610adea7e944adc5e05487eb78e161f02a39adf46b09521a10f72788a1baa",
+      "reason": "對活躍私有暫存流程重錨既有控制，新增 copy／view／footprint 具名斷言控制及正向案例；套件由 17 增為 27 項。"
+    },
+    "tests/test_geo261_placement_definition.py": {
+      "rawSha256": "a5a2a1813fbd8c41946f47187ac7369b99113ac97489c6e39a53f1992dbc73ff",
+      "lfSha256": "a5a2a1813fbd8c41946f47187ac7369b99113ac97489c6e39a53f1992dbc73ff",
+      "reason": "既有解碼負控制重錨完整私有 parser，加入公開 overlap 具名突變並保原測試數量。"
+    },
+    "tests/test_geo261_wood_contact_world.py": {
+      "rawSha256": "31779ea23b357455fd5722d747278afd65ea2c0539189ed7a7db9c39d0370f23",
+      "lfSha256": "31779ea23b357455fd5722d747278afd65ea2c0539189ed7a7db9c39d0370f23",
+      "reason": "既有排序控制重錨等價判斷，加入重複 ID／minimum／key 移動控制及兩個數值案例；套件由 10 增為 12 項。"
+    },
+    "tests/run_all.expected.json": {
+      "rawSha256": "f08443be7de507ea4550790bfdf3d51ce4c35fc74e2055286691ec511082bec0",
+      "lfSha256": "f08443be7de507ea4550790bfdf3d51ce4c35fc74e2055286691ec511082bec0",
+      "reason": "僅同步兩個具名套件 count：host_facts_authority 17→27、wood_contact_world 10→12；保留其他 expected 契約，count 總和為 5188。"
+    }
+  },
+  "addedForbiddenIdentifiers": {
+    "WoodContactOrder": {
+      "reason": "W contact_world 新增的單次排序暫存型別；保持 W 所有權，以正式 forbidden identifier 禁止 K 具體依賴。本輪仍須完整 W 詞法盤點與舊接受／新拒絕／撤回接受探針。",
+      "sources": [
+        "geometry-templates/woodworking/native/contact_world.c"
+      ]
+    }
+  },
+  "addedForbiddenStrings": {}
+}

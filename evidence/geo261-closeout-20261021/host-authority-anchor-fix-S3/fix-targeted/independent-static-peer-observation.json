@@ -1,0 +1,17 @@
+{
+  "classification": "既有工具結果與對話的事後轉錄；不是原 transport、未補造接受器原碼",
+  "reviewer": "/root/architecture_receipt",
+  "tool_chunk": "1c261b",
+  "actual_exit_code_reported": 0,
+  "scope": [
+    "獨立 AST 解析 old/new，FOOTPRINT_ANCHOR 正規化後整棵 AST 相同",
+    "舊 anchor count0、新 count1；mutant 保留本地 placement 宣告與讀取",
+    "唯一 test diff 與測試 bytes/hash 相符",
+    "靜態推導 typed min_u30 對 raw0，具名 oracle/count/三段流程未改"
+  ],
+  "no_compile_or_product_run": true,
+  "original_report_file_exists": false,
+  "original_acceptor_file_exists": false,
+  "confirmation": "peer 明示只有工具回覆與對話，無另存原報告／原碼；不重跑核對",
+  "recorded_utc": "2026-10-21T04:53:12.446527+00:00"
+}

@@ -1,0 +1,52 @@
+--- bundle-S3-v1.py
++++ bundle_ledger.py
+@@ -59,6 +59,7 @@
+     a=p.parse_args()
+     if not a.execute:p.error('須明確指定--execute；尚未建立證據包')
+     assert not a.output.exists() and a.source!=a.ledger_commit
++    assert not (Path(__file__).parent/'bundle-result.json').exists()
+     prepared=load(a.config);run=Path(prepared['output_directory']);publish=run/'publish'
+     assert prepared['source_sha']==a.source and a.config.resolve()==(run/'prepare-receipt.json').resolve()
+     source_publication=load(SOURCE_PUBLICATION/'receipt.json')
+@@ -94,6 +95,10 @@
+     pub=load(a.publication/'receipt.json');pubfinal=load(a.publication/'publication.json')
+     assert pub['sourceA2']==pub['parent']==pubfinal['sourceA2']==a.source
+     assert pub['ledgerL2']==pubfinal['ledgerL2']==a.ledger_commit
++    adoption=load(ADOPTION/'receipt.json')
++    assert adoption['sourceSha']==a.source and adoption['previousHead']==prepared['product_parent_sha']
++    assert adoption['remoteExact'] is True and adoption['branch']==pub['branch']
++    assert (ADOPTION/'remote.stdout').read_text().split()==[a.source,'refs/heads/'+pub['branch']]
+     assert pub['ledgerSha256']==a.ledger_sha256 and pub['bytes']==len(raw)
+     assert pub['onlyChangedPath']=='tests/mutants_results.json'
+     assert pubfinal['defaultCheckExitCode']==pubfinal['pushExitCode']==0 and pubfinal['remoteExactMatch'] is True
+@@ -105,6 +110,7 @@
+     assert (a.publication/'remote-after-push.stdout').read_text().split()==[a.ledger_commit,'refs/heads/'+pub['branch']]
+     pubtool=load(a.publication_tool_observation)
+     assert pubtool['actual_tool_response']['exit_code']==0
++    # 此檔只作附加說明；來源守門由上方原publication/parent/blob/only-file/remote完成。
+     binding=load(a.source_ledger_binding)
+     assert a.source in json.dumps(binding) and a.ledger_commit in json.dumps(binding)
+     methods={name:(PREP/name if name=='prepare_run.py' else ORIGINAL_PREP/name if name in ('launch_run.py','validate_package.py','import_ledger.py') else BASE/name) for name in METHOD_PINS}
+@@ -140,8 +146,8 @@
+     for name,path in methods.items():add(path,Path('原方法')/(name+'.txt'),'方法原bytes，非另一產品工具')
+     directory(BASE/'ledger-cc-launcher-selftest.r3o_cexg','工具歷史自測','相同supervisor的歷史自測，非S3重跑')
+     add(Path(__file__),'封裝方法原碼.txt','外部封包器原bytes')
+-    for name in ('static-check-code.txt','static-check.json','negative.stdout','negative.stderr'):
+-        add(Path(__file__).parent/name,Path('封裝靜態核對')/name,'AST/hash/缺參數早拒絕，沒有產品執行')
++    # 外層實際pack stdout/stderr/退出碼須另存本目錄之外；這裡只讀已凍結方法與靜態核對原件。
++    directory(Path(__file__).parent,'封裝方法沿革','完整新舊方法/差分/靜態核對；bundle-result尚不存在')
+     assert len({str(rel) for _,rel,_ in sources})==len(sources)
+     a.output.mkdir(parents=True)
+     index=[]
+@@ -164,9 +170,9 @@
+ 
+ 當輪原 JSON {len(raw):,} bytes，SHA256 `{a.ledger_sha256}`。全部 57 core 與 18 bridge 均實跑；core baseline {pre['core_baseline_total']}，bridge baseline/restored 各 {len(pre['bridge_restored_methods'])} 方法。{len(prepared['raw_backups'])} 份來源/oracle原件、{len(pre['source_hashes'])} 個 closure 檔與 {len(pre['oracle_fixtures'])} 場景在開始前綁定 Git S3；包含本次唯一變更的 host-authority 測試。CC/PYTHONOPTIMIZE absent、預設 cc、16 MiB stack、core 0，使用空新 cache。沒有因 test-only 或 oracle 相同跳過 core。
+ 
+-原 supervisor/launcher/validator/importer bytes 不變，prepare 只改精確單 test 差分守門、備份與 S3 標籤。四份架構metadata及611輸入與A2/L2/S3相同，sourceBaseHead仍為原S2，不冒稱S3重產架構。匯入器的 `sourceA2`／`ledgerL2` 與舊備註是歷史命名；其數值實際為上述 S3／L3，另以 `S3-L3實際來源綁定.json` 和原 Git blob/parent/only-file/push/remote 收據核對，不能把舊 note 當成執行來源。
++原 supervisor/launcher/validator/importer bytes 不變，prepare 只改精確單 test 差分守門、備份與 S3 標籤。四份架構metadata及611輸入與A2/L2/S3相同，sourceBaseHead仍為原S2，不冒稱S3重產架構。匯入器的 `sourceA2`／`ledgerL2` 與舊備註是歷史命名；其數值實際為上述 S3／L3，`S3-L3實際來源綁定.json` 只附加說明；真正來源以原 Git blob/parent/only-file/push/remote 收據核對，不能把舊 note 當成執行來源。
+ 
+-本輪所有執行中與最後觀察保留原貌：初始 exit null 不是最終碼，最後真碼看 session-observation-final 與 durable wait。S3準備時曾只讀誤找 publication.json，改讀原 receipt.json；完整已存前置觀察仍收錄，不算產品紅。若另有接受器或傳輸事件，以當輪原件逐項為準，不把A2的歷史03:25斷線套到S3。
++本輪所有執行中與最後觀察保留原貌：初始 exit null 不是最終碼，最後真碼看 session-observation-final 與 durable wait。S3準備時曾只讀誤找 publication.json，改讀原 receipt.json；原 cat 單行工具輸出與真碼轉錄仍收錄，未另 redirect stdout/stderr 或保存 raw transport，不算產品紅。若另有接受器或傳輸事件，以當輪原件逐項為準，不把A2的歷史03:25斷線套到S3。
+ 
+ L3發布保存原JSON逐bytes、default check 0、普通push 0及remote exact。工具回覆轉錄不冒稱raw transport或重新wait。本包不重跑ledger/check/發布，也不宣稱L3其他驗收完成。工具歷史自測保留原日期，非S3當輪重做；M36歷史7143與136探針不冒稱本輪重做，當輪核心基線依165場景原收據。
+ 

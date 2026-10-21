@@ -1,0 +1,36 @@
+{
+  "observed_utc": "2026-10-21T04:54:30.337564+00:00",
+  "source": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "session_id": 36602,
+  "launch_initial_tool_chunk": "d7d3b9",
+  "launch_initial_tool_exit_code": null,
+  "prepare_tool_observation": {
+    "session_id": 79398,
+    "initial_chunk": "5dbd85",
+    "completion_chunk": "4f4f6b",
+    "exit_code": 0
+  },
+  "binding": {
+    "path": "/workspace/geo261-evidence/source-S3-architecture-binding/binding.json",
+    "sha256": "0564402050df691b8887b9a97f95dedff3e6da7af80501d2dbc81874f5081160",
+    "peer_tool_chunk": "166674",
+    "peer_tool_exit_code": 0
+  },
+  "processes": [
+    {
+      "role": "launcher_pid",
+      "pid": 409565,
+      "starttime_ticks": 3391743,
+      "cmdline": "python3 -B /workspace/geo261-evidence/ledger-L2-preparation/launch_run.py --source 19401ca5448e162ee6140fed37b64b83b31ddec8 --config /workspace/geo261-evidence/ledger-S3-cc-19401ca5/prepare-receipt.json --execute ",
+      "limits_raw": "Limit                     Soft Limit           Hard Limit           Units     \nMax cpu time              unlimited            unlimited            seconds   \nMax file size             unlimited            unlimited            bytes     \nMax data size             unlimited            unlimited            bytes     \nMax stack size            8388608              unlimited            bytes     \nMax core file size        0                    unlimited            bytes     \nMax resident set          unlimited            unlimited            bytes     \nMax processes             136275               136275               processes \nMax open files            16384                16384                files     \nMax locked memory         8388608              8388608              bytes     \nMax address space         unlimited            unlimited            bytes     \nMax file locks            unlimited            unlimited            locks     \nMax pending signals       136275               136275               signals   \nMax msgqueue size         819200               819200               bytes     \nMax nice priority         0                    0                    \nMax realtime priority     0                    0                    \nMax realtime timeout      unlimited            unlimited            us        \n"
+    },
+    {
+      "role": "supervisor_pid",
+      "pid": 409590,
+      "starttime_ticks": 3391755,
+      "cmdline": "python3 -B /workspace/geo261-evidence/ledger-cc-supervisor.py /workspace/geo261-evidence/ledger-S3-cc-19401ca5/prepare-receipt.json ",
+      "limits_raw": "Limit                     Soft Limit           Hard Limit           Units     \nMax cpu time              unlimited            unlimited            seconds   \nMax file size             unlimited            unlimited            bytes     \nMax data size             unlimited            unlimited            bytes     \nMax stack size            16777216             16777216             bytes     \nMax core file size        0                    0                    bytes     \nMax resident set          unlimited            unlimited            bytes     \nMax processes             136275               136275               processes \nMax open files            16384                16384                files     \nMax locked memory         8388608              8388608              bytes     \nMax address space         unlimited            unlimited            bytes     \nMax file locks            unlimited            unlimited            locks     \nMax pending signals       136275               136275               signals   \nMax msgqueue size         819200               819200               bytes     \nMax nice priority         0                    0                    \nMax realtime priority     0                    0                    \nMax realtime timeout      unlimited            unlimited            us        \n"
+    }
+  ],
+  "備註": "工具資料為真回覆轉錄；開始收據的 null 不代表最終碼。未重啟或改原 supervisor。"
+}

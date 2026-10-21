@@ -1,0 +1,106 @@
+這是事後由既有工具對話紀錄轉錄的命令，不是執行前已落盤並凍結的原始腳本；下列原碼沒有重新執行。本次檔案 hash 只證明轉錄內容。四段原命令皆以 python3 - <<'PY' ... PY 執行。
+
+第一段：首輪掃描（原工具 chunk 284dc2／session 93345；完成 chunk e58a7b，exit 0）
+from pathlib import Path
+import os,stat,hashlib,json,ast,collections,fnmatch,subprocess,tempfile,datetime,re
+base=Path('/workspace/geo261-evidence/final-bundle');repo=Path('/workspace/geometry-axiom');ver=Path('/workspace/geo261-evidence/source-binding-E-preparation/verify_E.py');out=Path('/workspace/geo261-evidence/E-final-bundle-readonly-preflight');out.mkdir(exist_ok=True)
+a=ast.parse(ver.read_text());constants={}
+for n in a.body:
+ if isinstance(n,ast.Assign) and len(n.targets)==1 and isinstance(n.targets[0],ast.Name) and n.targets[0].id in ['FORBIDDEN_SUFFIXES','EXECUTABLE_MAGICS']:constants[n.targets[0].id]=ast.literal_eval(n.value)
+forbidden=constants['FORBIDDEN_SUFFIXES'];magics=constants['EXECUTABLE_MAGICS'];records={};bad=collections.defaultdict(list);inventories={};sums={};counts=collections.Counter();dirs=0;utc=datetime.datetime.now(datetime.timezone.utc).isoformat()
+for folder,subs,names in os.walk(base,followlinks=False):
+ dirs+=1
+ for name in subs:
+  p=Path(folder)/name
+  if p.is_symlink():bad['symlinkDirectories'].append(str(p.relative_to(base)))
+ for name in names:
+  p=Path(folder)/name;rel=p.relative_to(base).as_posix();st=p.lstat()
+  if not stat.S_ISREG(st.st_mode):bad['nonRegularOrSymlinkFiles'].append(rel);continue
+  if st.st_mode&0o111:bad['executableModes'].append(dict(path=rel,mode=oct(stat.S_IMODE(st.st_mode))))
+  if p.suffix.lower() in forbidden or p.name in {'.gitignore','.gitattributes'}:bad['forbiddenPathTypes'].append(rel)
+  try:rel.encode('utf8')
+  except UnicodeEncodeError:bad['invalidPathEncoding'].append(repr(rel))
+  if '\\'in rel or ':'in rel or any(ord(c)<32 or ord(c)==127 for c in rel) or '.git'in p.relative_to(base).parts:bad['invalidRelativePaths'].append(rel)
+  data=p.read_bytes();h=hashlib.sha256(data).hexdigest();records[rel]=(len(data),h,st.st_mode);counts[p.suffix.lower()]+=1
+  if any(data.startswith(m) for m in magics):bad['forbiddenMagic'].append(dict(path=rel,head=data[:16].hex()))
+  if len(data)>=50*1024*1024:bad['filesOver50MiB'].append(dict(path=rel,bytes=len(data)))
+  binaryAllowed=p.suffix.lower() in {'.png','.jpg','.jpeg','.gif','.webp','.pdf','.gcanvas','.zip','.gz','.tar'}
+  if not binaryAllowed:
+   try:text=data.decode('utf8')
+   except UnicodeDecodeError as e:bad['nonUtf8NonMedia'].append(dict(path=rel,offset=e.start,bytes=len(data)));text=None
+   if text is not None and '\x00'in text:bad['nulInNonMedia'].append(rel)
+  if p.name=='SHA256SUMS':sums[rel]=data.decode('utf8')
+  if p.suffix=='.json' and any(term in p.name.lower() for term in ['index','manifest','inventory','preflight','清單','索引']):
+   try:inventories[rel]=json.loads(data)
+   except Exception as e:bad['unparseableIndexLikeJson'].append(dict(path=rel,error=str(e)))
+checksumChecks=0;sumScopes=[]
+for rel,txt in sums.items():
+ parent=Path(rel).parent;listed=set();mismatch=[]
+ for line in txt.splitlines():
+  if not line:continue
+  match=re.match(r'^([0-9a-fA-F]{64}) [ *](.+)$',line)
+  if not match:mismatch.append(dict(line=line[:160],issue='非sha256sum行'));continue
+  h,name=match.groups();target=(parent/name).as_posix();listed.add(target);actual=records.get(target)
+  if not actual:mismatch.append(dict(path=target,issue='清單所指檔不存在'))
+  elif actual[1]!=h.lower():mismatch.append(dict(path=target,issue='hash不符'))
+  checksumChecks+=1
+ if mismatch:bad['nestedChecksumMismatch'].append(dict(index=rel,problems=mismatch))
+ actualscope={r for r in records if (parent==Path('.') or r.startswith(parent.as_posix()+'/')) and r!=rel};missing=sorted(actualscope-listed)
+ sumScopes.append(dict(index=rel,entries=len(listed),extraFilesOutsideChecksum=len(missing),extraExamples=missing[:12]))
+indexChecks=0;indexShapes=[]
+for rel,j in inventories.items():
+ parent=Path(rel).parent;rows=(j.get('files') or j.get('entries')) if isinstance(j,dict) else (j if isinstance(j,list) else None);shape=dict(index=rel,type=type(j).__name__,keys=list(j)[:10] if isinstance(j,dict) else None)
+ if isinstance(rows,list) and rows and all(isinstance(r,dict) and 'path'in r and 'sha256'in r for r in rows):
+  local=0;missing=[];mismatch=[]
+  for row in rows:
+   target=(parent/row['path']).as_posix();actual=records.get(target)
+   if actual:
+    local+=1;indexChecks+=1
+    if actual[1]!=row['sha256'] or ('bytes'in row and actual[0]!=row['bytes']):mismatch.append(target)
+   else:missing.append(target)
+  shape.update(rows=len(rows),localMatches=local,missingCount=len(missing),missingExamples=missing[:8])
+  if mismatch:bad['nestedInventoryMismatch'].append(dict(index=rel,paths=mismatch))
+  if missing:bad['nestedInventoryMissing'].append(shape)
+ indexShapes.append(shape)
+plannedRoot='evidence/geo261-closeout-20261021';ignore=(repo/'.gitignore').read_bytes()+('!/'+plannedRoot+'/\n!/'+plannedRoot+'/**/build.log\n!/'+plannedRoot+'/**/server.log\n').encode();gitdir=subprocess.check_output(['git','rev-parse','--absolute-git-dir'],cwd=repo).decode().strip();scratch=Path(tempfile.mkdtemp(prefix='geo261-ignore-readonly-',dir='/tmp'));(scratch/'.gitignore').write_bytes(ignore);paths=[plannedRoot+'/'+r for r in sorted(records)];stdin=b''.join(p.encode()+b'\0' for p in paths);cmd=['git','-c','core.fsmonitor=false','--git-dir',gitdir,'--work-tree',str(scratch),'check-ignore','--no-index','-z','-v','--stdin'];env=dict(os.environ,GIT_OPTIONAL_LOCKS='0');proc=subprocess.run(cmd,input=stdin,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env);assert proc.returncode in [0,1],proc.stderr;parts=proc.stdout.split(b'\0');ignored=[];exceptions=[]
+for i in range(0,len(parts)-1,4):
+ origin,line,pat,path=(x.decode() for x in parts[i:i+4]);row=dict(source=origin,line=int(line),pattern=pat,path=path)
+ (exceptions if pat.startswith('!') else ignored).append(row)
+report=dict(schema='geo261-evidence-readonly-preflight/1',startedUTC=utc,finishedUTC=datetime.datetime.now(datetime.timezone.utc).isoformat(),scope=str(base),verifierSha256=hashlib.sha256(ver.read_bytes()).hexdigest(),fileCount=len(records),directoryCount=dirs,bytes=sum(x[0] for x in records.values()),largestFiles=[dict(path=k,bytes=v[0]) for k,v in sorted(records.items(),key=lambda x:x[1][0],reverse=True)[:12]],extensionCounts=dict(counts),findings=dict(bad),nestedChecksumFileCount=len(sums),nestedChecksumEntriesChecked=checksumChecks,nestedChecksumScopes=sumScopes,nestedIndexRowsChecked=indexChecks,nestedIndexShapes=indexShapes,plannedIgnore=dict(gitCommand=cmd,commandExitCode=proc.returncode,stderr=proc.stderr.decode(),plannedGitignoreSha256=hashlib.sha256(ignore).hexdigest(),gitignoreOnlyScratch=str(scratch),ignoredCount=len(ignored),ignored=ignored,negatedRuleCount=len(exceptions)),notes=['未產總artifact-index；完整檔案hash只留記憶體供本次比對','沒有執行verify_E main、產品test/build/browser或修改主repo/凍結包','ignore使用主Git的只讀check-ignore與包外只有預期.gitignore的scratch worktree，未新增Git commit/index或搬移repo','nested歷史索引缺件須判斷原索引scope，不自動當成最後總集合錯誤'])
+(out/'scan-summary.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(exitCode=0,fileCount=report['fileCount'],bytes=report['bytes'],findings=report['findings'],ignored=ignored,checksumScopesWithExtra=[x for x in sumScopes if x['extraFilesOutsideChecksum']],indexShapes=[x for x in indexShapes if x.get('missingCount')],largestFiles=report['largestFiles']),ensure_ascii=False))
+
+第二段：不帶 -v 的 ignore 補核（chunk 13de55，外層 exit 0；Git 本身 exit 1 且無輸出）
+from pathlib import Path
+import json,subprocess,os
+p=Path('/workspace/geo261-evidence/E-final-bundle-readonly-preflight/scan-summary.json');j=json.loads(p.read_text());b=Path(j['scope']);paths=sorted('evidence/geo261-closeout-20261021/'+q.relative_to(b).as_posix() for q in b.rglob('*') if q.is_file());cmd=j['plannedIgnore']['gitCommand'];cmd=[x for x in cmd if x!='-v'];r=subprocess.run(cmd,input=b''.join(x.encode()+b'\0' for x in paths),stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=dict(os.environ,GIT_OPTIONAL_LOCKS='0'));assert r.returncode==1 and not r.stdout and not r.stderr;out=dict(command=cmd,exitCode=r.returncode,stdoutBytes=len(r.stdout),stderrBytes=len(r.stderr),pathCount=len(paths),samePathCountAsByteScan=len(paths)==j['fileCount'],meaning='與正式verifier同樣不帶-v之check-ignore：exit1且空stdout表示皆未忽略；不是核對失敗');p.with_name('plain-check-ignore.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n');print(json.dumps(out,ensure_ascii=False));print('scan counts',j['nestedChecksumFileCount'],j['nestedChecksumEntriesChecked'],j['nestedIndexRowsChecked'],j['plannedIgnore']['plannedGitignoreSha256']);print('historical inventory',[(x['index'],x.get('rows'),x.get('localMatches'),x.get('keys')) for x in j['nestedIndexShapes'] if any(z in x['index'] for z in ['bundle-preflight','gates/artifact-index','封裝索引'])])
+
+第三段：不同 schema 與新增檔補核（chunk b26f7b，exit 0）
+from pathlib import Path
+import json,hashlib,datetime,stat
+b=Path('/workspace/geo261-evidence/final-bundle');o=Path('/workspace/geo261-evidence/E-final-bundle-readonly-preflight');s=json.loads((o/'scan-summary.json').read_text());rows=[]
+for shape in s['nestedIndexShapes']:
+ if shape.get('localMatches') is not None:continue
+ p=b/shape['index'];j=json.loads(p.read_text());candidate=[]
+ if isinstance(j,dict):
+  fs=j.get('files')
+  if isinstance(fs,dict):candidate=[dict(path=k,sha256=v.get('sha256'),bytes=v.get('bytes')) for k,v in fs.items() if isinstance(v,dict) and 'sha256'in v]
+  elif isinstance(fs,list):candidate=[dict(path=x['packagedPath'],sha256=x['sha256'],bytes=x.get('bytes')) for x in fs if isinstance(x,dict) and 'packagedPath'in x and 'sha256'in x]
+  for key in ['檔案','來源']:
+   if isinstance(j.get(key),list):
+    candidate.extend(dict(path=x['封裝路徑'],sha256=x.get('sha256',x.get('SHA256',x.get('原始SHA256'))),bytes=x.get('bytes',x.get('位元組'))) for x in j[key] if isinstance(x,dict) and '封裝路徑'in x)
+ if not candidate:continue
+ missing=[];mismatch=[]
+ for x in candidate:
+  q=p.parent/x['path']
+  if not q.is_file():missing.append(x['path']);continue
+  data=q.read_bytes()
+  if hashlib.sha256(data).hexdigest()!=x['sha256'] or (x['bytes'] is not None and len(data)!=x['bytes']):mismatch.append(x['path'])
+ rows.append(dict(index=shape['index'],rows=len(candidate),missing=missing,mismatched=mismatch,historical='original-publish'in shape['index']))
+new=b/'native-final-tool-observation.json';raw=new.read_bytes();assert not new.stat().st_mode&0o111 and not new.is_symlink();raw.decode('utf8');j=dict(checkedUTC=datetime.datetime.now(datetime.timezone.utc).isoformat(),checks=rows,newDuringScan=dict(path=new.relative_to(b).as_posix(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),utf8=True,executableMode=False),note='只補核首輪未辨識的nested索引schema及掃描中root新增的一份外層JSON，不重掃全包；original-publish是歷史原索引，不當當前封裝全集合')
+(o/'supplemental-index-check.json').write_text(json.dumps(j,ensure_ascii=False,indent=2)+'\n');print(json.dumps(j,ensure_ascii=False))
+
+第四段：歷史 README 改名原 bytes 補核（chunk 83f6da，exit 0）
+from pathlib import Path
+import json,hashlib
+b=Path('/workspace/geo261-evidence/final-bundle/gates');j=json.loads((b/'artifact-index.original-publish.json').read_text());row=j['files']['README.zh-TW.md'];raw=(b/'README.original-publish.zh-TW.md').read_bytes();assert len(raw)==row['bytes'] and hashlib.sha256(raw).hexdigest()==row['sha256'];p=Path('/workspace/geo261-evidence/E-final-bundle-readonly-preflight/報告.md');print(json.dumps(dict(exitCode=0,historicalReadmeOriginalBytesConfirmed=True,report=str(p),bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()),ensure_ascii=False))

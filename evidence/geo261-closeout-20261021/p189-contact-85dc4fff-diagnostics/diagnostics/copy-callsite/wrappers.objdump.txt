@@ -1,0 +1,71 @@
+
+/workspace/geo261-evidence/p189-copy-callsite-85dc4fff-20261021/bridge-copy:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000004c2330 <__wrap_memcpy>:
+  4c2330:	55                   	push   rbp
+  4c2331:	49 89 d3             	mov    r11,rdx
+  4c2334:	48 89 f5             	mov    rbp,rsi
+  4c2337:	53                   	push   rbx
+  4c2338:	48 89 fb             	mov    rbx,rdi
+  4c233b:	48 83 ec 08          	sub    rsp,0x8
+  4c233f:	48 8b 7c 24 18       	mov    rdi,QWORD PTR [rsp+0x18]
+  4c2344:	8b 05 c6 5e 03 00    	mov    eax,DWORD PTR [rip+0x35ec6]        # 4f8210 <enabled>
+  4c234a:	85 c0                	test   eax,eax
+  4c234c:	74 0a                	je     4c2358 <__wrap_memcpy+0x28>
+  4c234e:	be 01 00 00 00       	mov    esi,0x1
+  4c2353:	e8 38 ff ff ff       	call   4c2290 <note.part.0>
+  4c2358:	48 83 c4 08          	add    rsp,0x8
+  4c235c:	48 89 ee             	mov    rsi,rbp
+  4c235f:	48 89 df             	mov    rdi,rbx
+  4c2362:	4c 89 da             	mov    rdx,r11
+  4c2365:	5b                   	pop    rbx
+  4c2366:	5d                   	pop    rbp
+  4c2367:	e9 c4 ff f3 ff       	jmp    402330 <memcpy@plt>
+  4c236c:	0f 1f 40 00          	nop    DWORD PTR [rax+0x0]
+
+00000000004c2370 <__wrap_memmove>:
+  4c2370:	55                   	push   rbp
+  4c2371:	49 89 d3             	mov    r11,rdx
+  4c2374:	48 89 f5             	mov    rbp,rsi
+  4c2377:	53                   	push   rbx
+  4c2378:	48 89 fb             	mov    rbx,rdi
+  4c237b:	48 83 ec 08          	sub    rsp,0x8
+  4c237f:	48 8b 7c 24 18       	mov    rdi,QWORD PTR [rsp+0x18]
+  4c2384:	8b 05 86 5e 03 00    	mov    eax,DWORD PTR [rip+0x35e86]        # 4f8210 <enabled>
+  4c238a:	85 c0                	test   eax,eax
+  4c238c:	74 0a                	je     4c2398 <__wrap_memmove+0x28>
+  4c238e:	be 02 00 00 00       	mov    esi,0x2
+  4c2393:	e8 f8 fe ff ff       	call   4c2290 <note.part.0>
+  4c2398:	48 83 c4 08          	add    rsp,0x8
+  4c239c:	48 89 ee             	mov    rsi,rbp
+  4c239f:	48 89 df             	mov    rdi,rbx
+  4c23a2:	4c 89 da             	mov    rdx,r11
+  4c23a5:	5b                   	pop    rbx
+  4c23a6:	5d                   	pop    rbp
+  4c23a7:	e9 34 fe f3 ff       	jmp    4021e0 <memmove@plt>
+  4c23ac:	0f 1f 40 00          	nop    DWORD PTR [rax+0x0]
+
+00000000004c23b0 <__wrap_memset>:
+  4c23b0:	55                   	push   rbp
+  4c23b1:	49 89 d3             	mov    r11,rdx
+  4c23b4:	89 f5                	mov    ebp,esi
+  4c23b6:	53                   	push   rbx
+  4c23b7:	48 89 fb             	mov    rbx,rdi
+  4c23ba:	48 83 ec 08          	sub    rsp,0x8
+  4c23be:	48 8b 7c 24 18       	mov    rdi,QWORD PTR [rsp+0x18]
+  4c23c3:	8b 05 47 5e 03 00    	mov    eax,DWORD PTR [rip+0x35e47]        # 4f8210 <enabled>
+  4c23c9:	85 c0                	test   eax,eax
+  4c23cb:	74 0a                	je     4c23d7 <__wrap_memset+0x27>
+  4c23cd:	be 03 00 00 00       	mov    esi,0x3
+  4c23d2:	e8 b9 fe ff ff       	call   4c2290 <note.part.0>
+  4c23d7:	48 83 c4 08          	add    rsp,0x8
+  4c23db:	89 ee                	mov    esi,ebp
+  4c23dd:	48 89 df             	mov    rdi,rbx
+  4c23e0:	4c 89 da             	mov    rdx,r11
+  4c23e3:	5b                   	pop    rbx
+  4c23e4:	5d                   	pop    rbp
+  4c23e5:	e9 56 fc f3 ff       	jmp    402040 <memset@plt>
+  4c23ea:	66 0f 1f 44 00 00    	nop    WORD PTR [rax+rax*1+0x0]

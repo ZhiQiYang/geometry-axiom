@@ -1,0 +1,10 @@
+# GEO-099:角材只錨在 u 軸,補宣告 v 軸不動到它 → 放行(引用鎖只鎖被錨定的軸)。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+grid 1 on 1 u 1000
+timber 1 20 20 role boundary
+timber 2 20 20 role boundary
+timber 3 27 33 role primary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 -u +n
+place 3 on 1 at-line grid 1 u 0 +v +n
+grid 1 on 1 v 800 2200

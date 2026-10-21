@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""僅解析已存在的 gmon/nm 原件；不執行產品，不修改正式收據。"""
+import collections
+import hashlib
+import json
+import pathlib
+import struct
+
+D = pathlib.Path(__file__).resolve().parent
+data = (D / 'run01/gmon.out').read_bytes()
+assert data[:4] == b'gmon' and struct.unpack_from('<I', data, 4)[0] == 1
+symbols = []
+for line in (D / 'profile-nm.stdout').read_text().splitlines():
+    fields = line.split()
+    if len(fields) == 4 and fields[2] in ('t', 'T'):
+        start, size = int(fields[0], 16), int(fields[1], 16)
+        if size:
+            symbols.append((start, start + size, fields[3]))
+
+def at(pc):
+    return sorted(n for start, end, n in symbols if start <= pc < end)
+
+position, histograms, arcs = 20, [], []
+while position < len(data):
+    tag = data[position]
+    position += 1
+    if tag == 0:
+        low, high, size, rate = struct.unpack_from('<QQII', data, position)
+        dimension = data[position+24:position+39].rstrip(b'\0').decode('ascii')
+        abbreviation = chr(data[position+39])
+        position += 40
+        counts = struct.unpack_from('<' + str(size) + 'H', data, position)
+        position += 2 * size
+        bins = []
+        for i, count in enumerate(counts):
+            if not count:
+                continue
+            # 用有理數完整區間核對，不把跨邊界或 gap bin 強派給前一符號。
+            left, right = low * size + i * (high-low), low * size + (i+1) * (high-low)
+            names = sorted(n for start, end, n in symbols if start * size <= left and right <= end * size)
+            bins.append({'index': i, 'count': count, 'left_pc': left / size,
+                         'right_pc': right / size, 'whole_bin_symbols': names,
+                         'midpoint_symbols': at((left+right)/(2*size))})
+        histograms.append({'low': low, 'high': high, 'size': size, 'rate': rate,
+                           'dimension': dimension, 'abbreviation': abbreviation,
+                           'total_samples': sum(counts), 'nonzero_bins': bins})
+    elif tag == 1:
+        caller, callee, count = struct.unpack_from('<QQI', data, position)
+        position += 20
+        arcs.append({'from_pc': hex(caller), 'self_pc': hex(callee), 'count': count,
+                     'caller_symbols': at(caller), 'callee_symbols': at(callee)})
+    else:
+        raise AssertionError(('unsupported record', tag, position))
+assert position == len(data)
+assert len(histograms) == 1
+hist = histograms[0]
+samples = collections.Counter()
+unassigned = []
+for row in hist['nonzero_bins']:
+    if len(row['whole_bin_symbols']) == 1:
+        samples[row['whole_bin_symbols'][0]] += row['count']
+    else:
+        unassigned.append(row)
+calls = collections.Counter()
+for row in arcs:
+    if len(row['callee_symbols']) == 1:
+        calls[row['callee_symbols'][0]] += row['count']
+flat = [{'symbol': name, 'samples': count, 'sample_seconds': count / hist['rate'],
+         'sample_percent': 100 * count / hist['total_samples'], 'raw_arc_calls': calls[name]}
+        for name, count in samples.most_common()]
+result = {
+    '性質': '原始 gmon 位址衍生解析，不取代原 gprof；不重跑產品。',
+    '方法': 'nm -anS 的 T/t 非零大小完整函式區間；只有整個 histogram bin 位於唯一函式才歸屬。原始 arcs 以 mcount 返回 PC 所在函式區間歸屬。',
+    '限制': '單次帶 -pg 診斷僅 75 個 10ms 樣本；不等於正式牆鐘成本，不比較 main，不證明回歸原因。未歸屬 bin 不強派；inline 函式無獨立成本。',
+    'inputs': {str(p.relative_to(D)): hashlib.sha256(p.read_bytes()).hexdigest()
+               for p in (D/'run01/gmon.out', D/'profile-nm.stdout', D/'profile-gprof-run01.stdout', pathlib.Path(__file__))},
+    'source_sha': '43f85313c32410ac01406ab585846bbacafea278',
+    'parsed_bytes': position, 'arc_record_count': len(arcs), 'histogram': hist,
+    'flat_by_complete_symbol_range': flat,
+    'unassigned_samples': sum(row['count'] for row in unassigned), 'unassigned_bins': unassigned,
+    'calls_by_complete_symbol_range': dict(calls.most_common()),
+    'arcs': arcs,
+}
+with (D/'gmon-address-review.json').open('x') as f:
+    json.dump(result, f, indent=2, ensure_ascii=False)
+    f.write('\n')
+print(json.dumps({'samples': hist['total_samples'], 'unassigned_samples': result['unassigned_samples'],
+                  'flat': flat, 'decode_calls': {n: calls[n] for n in ('geo_eval_depend', 'geo_source_find_node.isra.0', 'support_coord_compare', 'wd_get.part.0', 'wood_grid_coordinate_source')}}, ensure_ascii=False, indent=2))

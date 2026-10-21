@@ -1,0 +1,26 @@
+test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES (tests.test_grid_card_reference.GridCardReference.test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES) ... 
+  test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES (tests.test_grid_card_reference.GridCardReference.test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES) (messages=['P154_REASON grid-system 4', 'parameter 10 field 3']) ... FAIL
+  test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES (tests.test_grid_card_reference.GridCardReference.test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES) (messages=['P154_REASON', 'grid-system 4 parameter 10 field 3']) ... FAIL
+
+======================================================================
+FAIL: test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES (tests.test_grid_card_reference.GridCardReference.test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES) (messages=['P154_REASON grid-system 4', 'parameter 10 field 3'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 511, in test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES
+    with self.assertRaisesRegex(AssertionError, 'P154_IDENTITY'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES (tests.test_grid_card_reference.GridCardReference.test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES) (messages=['P154_REASON', 'grid-system 4 parameter 10 field 3'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 511, in test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES
+    with self.assertRaisesRegex(AssertionError, 'P154_IDENTITY'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: AssertionError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.150s
+
+FAILED (failures=2)

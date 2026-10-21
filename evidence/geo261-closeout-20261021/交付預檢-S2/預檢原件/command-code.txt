@@ -1,0 +1,179 @@
+#!/usr/bin/env python3
+"""一次性只讀交付預檢；不執行 E verifier，不改主樹或凍結包。"""
+import ast
+from collections import Counter
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import stat
+import subprocess
+import time
+
+BASE = Path('/workspace/geo261-evidence')
+BUNDLE = BASE / 'final-bundle'
+REPO = Path('/workspace/geometry-axiom')
+OUT = BASE / 'bundle-preflight-after-S2'
+VERIFIER = BASE / 'source-binding-E-preparation/verify_E.py'
+OUT.mkdir(exist_ok=False)
+started, tick = datetime.now(timezone.utc).isoformat(), time.monotonic()
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def dump(name, obj): (OUT / name).write_text(json.dumps(obj, ensure_ascii=False, indent=2) + '\n')
+verifier_raw = VERIFIER.read_bytes()
+assert sha(verifier_raw) == 'ffe3d3fe08ba3c51534b51724ae984e9c3a3774b02230e6d0f344f1bc4d897e3'
+constants = {}
+for node in ast.parse(verifier_raw).body:
+    if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+        key = node.targets[0].id
+        if key in {'FORBIDDEN_SUFFIXES', 'EXECUTABLE_MAGICS', 'ROOT'}:
+            constants[key] = ast.literal_eval(node.value)
+assert len(constants) == 3
+records, type_findings, inventory = {}, [], []
+for directory, dirs, files in os.walk(BUNDLE, followlinks=False):
+    parent = Path(directory)
+    for name in list(dirs):
+        path = parent / name
+        if path.is_symlink():
+            type_findings.append({'path': path.relative_to(BUNDLE).as_posix(), 'kind': 'symlink-directory'})
+            dirs.remove(name)
+    for name in sorted(files):
+        path = parent / name
+        relative = path.relative_to(BUNDLE).as_posix()
+        info = path.lstat()
+        if not stat.S_ISREG(info.st_mode):
+            type_findings.append({'path': relative, 'kind': 'not-regular-file'})
+            continue
+        raw = path.read_bytes()
+        row = {'path': relative, 'bytes': len(raw), 'sha256': sha(raw), 'mode': oct(stat.S_IMODE(info.st_mode)),
+               'mtimeNs': info.st_mtime_ns}
+        records[relative] = row
+        inventory.append(row)
+        if path.suffix.lower() in constants['FORBIDDEN_SUFFIXES'] or path.name in {'.gitignore', '.gitattributes'}:
+            type_findings.append({'path': relative, 'kind': 'forbidden-suffix-or-git-rule'})
+        if info.st_mode & 0o111:
+            type_findings.append({'path': relative, 'kind': 'executable-mode', 'mode': row['mode']})
+        if any(raw.startswith(magic) for magic in constants['EXECUTABLE_MAGICS']):
+            type_findings.append({'path': relative, 'kind': 'executable-magic'})
+dump('file-observations.json', sorted(inventory, key=lambda row: row['path']))
+checks = []
+def verify_rows(label, parent, rows, exact=False):
+    seen, missing, mismatched, invalid = set(), [], [], []
+    for item in rows:
+        relative, expected_hash, expected_bytes = item
+        if not isinstance(relative, str) or PurePosixPath(relative).is_absolute() or '..' in PurePosixPath(relative).parts:
+            invalid.append(str(relative)); continue
+        key = (parent / relative).relative_to(BUNDLE).as_posix()
+        if key in seen:
+            invalid.append('duplicate:' + key)
+        seen.add(key)
+        row = records.get(key)
+        if row is None:
+            missing.append(key)
+        elif row['sha256'] != expected_hash or (expected_bytes is not None and row['bytes'] != expected_bytes):
+            mismatched.append({'path': key, 'expectedSha256': expected_hash, 'actualSha256': row['sha256'],
+                               'expectedBytes': expected_bytes, 'actualBytes': row['bytes']})
+    extra = []
+    if exact:
+        prefix = parent.relative_to(BUNDLE).as_posix() + '/'
+        extra = sorted(k for k in records if k.startswith(prefix) and k not in seen and k != label)
+    result = {'index': label, 'rows': len(rows), 'missing': missing, 'mismatched': mismatched,
+              'invalid': invalid, 'exactSetClaimChecked': exact, 'unlistedFiles': extra}
+    checks.append(result)
+for path in sorted(BUNDLE.rglob('SHA256SUMS')):
+    rows = []
+    for line in path.read_text().splitlines():
+        match = re.fullmatch(r'([0-9a-f]{64}) [ *](.+)', line)
+        assert match, ('不支援的 checksum 格式', str(path), line)
+        rows.append((match[2], match[1], None))
+    verify_rows(path.relative_to(BUNDLE).as_posix(), path.parent, rows)
+INDEXES = {
+    'bundle-preflight.json': ('files', 'map', False),
+    'gates/artifact-index.json': ('files', 'map', True),
+    'gates-l/artifact-index.json': ('files', 'path', True),
+    'native-final/artifact-index.json': ('files', 'path', True),
+    'native-r2/artifact-index.json': ('files', 'path', True),
+    'native-first/suite-log-source-index.json': ('files', 'path', False),
+    'architecture-L/來源索引.json': ('entries', 'path', True),
+    'architecture-S2/來源索引.json': ('entries', 'path', True),
+    'canvas-r2/封存索引.json': ('originalFiles', 'path', True),
+    'source-binding/封裝索引.json': ('files', 'packagedPath', True),
+    'source-binding-L/封裝索引.json': ('檔案', '封裝路徑', True),
+    '交付驗證方法/封裝索引.json': ('檔案', '封裝路徑', True),
+    '後續工作/framing-readonly/manifest.json': ('files', 'path', False),
+    '後續工作/combined-314-readonly/封裝索引.json': ('來源', '封裝路徑', True),
+    '後續工作/issue300-readonly/原件索引.json': ('files', 'file', True),
+    '後續工作/新增只讀計畫原件索引.json': ('原件', '封裝檔名', False),
+}
+for name, (key, path_key, exact) in INDEXES.items():
+    path = BUNDLE / name
+    obj = json.loads(path.read_bytes())
+    entries = obj[key]
+    if path_key == 'map':
+        rows = [(p, row['sha256'], row.get('bytes')) for p, row in entries.items()]
+    else:
+        rows = [(row[path_key], row.get('sha256', row.get('SHA256', row.get('原始SHA256'))),
+                 row.get('bytes', row.get('位元組', row.get('位元組數')))) for row in entries]
+    verify_rows(name, path.parent, rows, exact)
+dump('submanifest-checks.json', checks)
+commands = []
+def run(argv, stdin=None):
+    proc = subprocess.run(argv, input=stdin, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    n = len(commands)
+    (OUT / f'git-{n}.stdout').write_bytes(proc.stdout)
+    (OUT / f'git-{n}.stderr').write_bytes(proc.stderr)
+    commands.append({'argv': argv, 'exitCode': proc.returncode, 'stdout': f'git-{n}.stdout', 'stderr': f'git-{n}.stderr',
+                     'stdinBytes': len(stdin) if stdin is not None else None, 'stdinSha256': sha(stdin) if stdin is not None else None})
+    return proc
+ignore_before = (REPO / '.gitignore').read_bytes()
+attrs_before = (REPO / '.gitattributes').read_bytes()
+root = constants['ROOT']
+suffix = ('!/' + root + '/\n!/' + root + '/**/build.log\n!/' + root + '/**/server.log\n').encode()
+assert ignore_before.endswith(b'\n')
+(OUT / 'gitignore-before.txt').write_bytes(ignore_before)
+(OUT / 'gitignore-proposed.txt').write_bytes(ignore_before + suffix)
+(OUT / 'gitattributes-before.txt').write_bytes(attrs_before)
+(OUT / 'gitattributes-proposed.txt').write_bytes(attrs_before + (root + '/** -text -whitespace\n').encode())
+model = OUT / 'ignore-model'
+model.mkdir()
+assert run(['git', '-C', str(model), 'init', '--quiet']).returncode == 0
+path_data = ''.join(root + '/' + path + '\0' for path in sorted(records)).encode()
+ignore_results = []
+for phase, raw in [('before', ignore_before), ('proposed-exact-append', ignore_before + suffix)]:
+    (model / '.gitignore').write_bytes(raw)
+    proc = run(['git', '-C', str(model), '-c', 'core.excludesFile=/dev/null', 'check-ignore', '--no-index', '-z', '--stdin'], path_data)
+    assert proc.returncode in {0, 1}
+    ignored = [v.decode() for v in proc.stdout.split(b'\0') if v]
+    ignore_results.append({'phase': phase, 'exitCode': proc.returncode, 'ignoredCount': len(ignored), 'ignoredPaths': ignored})
+dump('ignore-results.json', ignore_results)
+dump('git-commands.json', commands)
+current = {}
+for directory, dirs, files in os.walk(BUNDLE, followlinks=False):
+    for name in files:
+        path = Path(directory) / name
+        info = path.lstat()
+        if stat.S_ISREG(info.st_mode):
+            current[path.relative_to(BUNDLE).as_posix()] = (info.st_size, info.st_mtime_ns, oct(stat.S_IMODE(info.st_mode)))
+old = {p: (r['bytes'], r['mtimeNs'], r['mode']) for p, r in records.items()}
+drift = {'added': sorted(set(current) - set(old)), 'removed': sorted(set(old) - set(current)),
+         'metadataChanged': sorted(p for p in set(old) & set(current) if old[p] != current[p])}
+findings = [c for c in checks if c['missing'] or c['mismatched'] or c['invalid'] or c['unlistedFiles']]
+summary = {'scope': 'S2 後、L2 前的一次只讀交付預檢；不是最終 index／E 驗收',
+           'startedUtc': started, 'finishedUtc': datetime.now(timezone.utc).isoformat(), 'seconds': time.monotonic() - tick,
+           'fileCount': len(records), 'totalBytes': sum(row['bytes'] for row in records.values()),
+           'verifierSourceSha256': sha(verifier_raw), 'typeFindings': type_findings,
+           'submanifestChecks': len(checks), 'submanifestReferencedRows': sum(c['rows'] for c in checks),
+           'submanifestFindings': findings, 'ignoredBeforeAppend': ignore_results[0]['ignoredCount'],
+           'ignoredAfterExactAppend': ignore_results[1]['ignoredCount'], 'drift': drift,
+           'gitModelOnly': str(model), 'externalIgnoreConfigNotClaimed': True,
+           'notClaimed': ['L2 證據齊全', '最終 artifact-index.json', 'E verifier 已通過', '任何產品測試／建置',
+                          '外部二進位封存／歷史原始索引全部可在 curated 包原路徑解析'],
+           'remainingIndexScope': '逐項核 SHA256SUMS 與 16 份現行子索引；歷史／外部二進位索引只作原件保存，未冒充現行包全集合。'}
+dump('summary.json', summary)
+(OUT / 'command-code.txt').write_bytes(Path(__file__).read_bytes())
+code = int(bool(type_findings or findings or ignore_results[1]['ignoredCount'] or any(drift.values())))
+dump('result.json', {'preflightExitCode': code, 'meaning': '0 表示本輪有限預檢無發現；1 表示有待逐項判讀的預檢發現，不是產品測試紅燈。'})
+print(json.dumps({k: v for k, v in summary.items() if k != 'submanifestFindings'}, ensure_ascii=False, indent=2))
+print(json.dumps({'submanifestFindings': findings, 'preflightExitCode': code}, ensure_ascii=False, indent=2))
+raise SystemExit(code)

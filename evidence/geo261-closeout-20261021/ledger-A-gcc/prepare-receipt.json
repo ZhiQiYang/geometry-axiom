@@ -1,0 +1,358 @@
+{
+  "prepared_utc": "2026-10-20T21:12:52.156171+00:00",
+  "source_sha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "product_parent_sha": "ab6869b86a4ad82345359b72397fc055280d8308",
+  "source_tree": "502024d69976c98f309a3964df1bfb5e5cbcfcc0",
+  "run_directory": "/workspace/geo261-ledger-run.ra2_k2z2",
+  "worktree": "/workspace/geo261-ledger-run.ra2_k2z2/repo",
+  "output_directory": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu",
+  "cache": "/workspace/geo261-ledger-run.ra2_k2z2/cache",
+  "tmpdir": "/workspace/geo261-ledger-run.ra2_k2z2/tmp",
+  "results": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/mutants_results.json",
+  "results_exists": false,
+  "main_before": {
+    "head": "7159530c0e494d3211e6ab1764eb691137211707",
+    "status": ""
+  },
+  "main_after": {
+    "head": "7159530c0e494d3211e6ab1764eb691137211707",
+    "status": ""
+  },
+  "prepare_command": [
+    "git",
+    "-c",
+    "core.autocrlf=false",
+    "worktree",
+    "add",
+    "--detach",
+    "/workspace/geo261-ledger-run.ra2_k2z2/repo",
+    "7159530c0e494d3211e6ab1764eb691137211707"
+  ],
+  "prepare_exit_code": 0,
+  "tracked_worktree_clean": true,
+  "original_ledger_sha256": "4e1f058e0647b3272c791b1e21d3294c9443f473fee8c5d1dd3c77d5c0caa479",
+  "source_archive": "/workspace/geo261-ledger-run.ra2_k2z2/source-backup/source.tar",
+  "source_archive_bytes": 1096345600,
+  "source_archive_sha256": "c014450c0f88f1d8d7c56a805bebc6dafe8bd051ad1ac70baaceb6a0f8f2aadc",
+  "raw_backups": [
+    {
+      "path": "tests/mutate.py",
+      "bytes": 118967,
+      "sha256": "8fc573fba9596ca8c6570a99c7de284584643a3560cee6cf5f0ac27416d26451",
+      "git_blob": "eb97b44c81e1bf593a97ff41139398d10ab019b3",
+      "backup": "/workspace/geo261-ledger-run.ra2_k2z2/source-backup/raw-tools/tests/mutate.py"
+    },
+    {
+      "path": "tests/mutation_bridge.py",
+      "bytes": 30825,
+      "sha256": "3d0b7529bedcc886c132ba4804aa8ac767a32e544dbb1ebd819c54f37c64a271",
+      "git_blob": "72baa0be54646e68c06d9dcf7885dcbc4d36975e",
+      "backup": "/workspace/geo261-ledger-run.ra2_k2z2/source-backup/raw-tools/tests/mutation_bridge.py"
+    },
+    {
+      "path": "tests/binaries.py",
+      "bytes": 33058,
+      "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651",
+      "git_blob": "972615734fa48868df62c8f62651e6276c53795e",
+      "backup": "/workspace/geo261-ledger-run.ra2_k2z2/source-backup/raw-tools/tests/binaries.py"
+    },
+    {
+      "path": "tests/run_tests.py",
+      "bytes": 25261,
+      "sha256": "a41dace1eff6a4936dbc3476b0348c1ef22d48c4ae1d3aac1a72874f287b877e",
+      "git_blob": "f415e56db58bb351ae7d0fe46c9f14c8fcdf18d0",
+      "backup": "/workspace/geo261-ledger-run.ra2_k2z2/source-backup/raw-tools/tests/run_tests.py"
+    },
+    {
+      "path": "tests/bridge_mutation_oracle.py",
+      "bytes": 10546,
+      "sha256": "bbc280b67c50ca05bca23ff82fa89237d89d075ea4594f3a149be749d99c27ce",
+      "git_blob": "7a133dcd322f32ef44561447c81aa59734df1009",
+      "backup": "/workspace/geo261-ledger-run.ra2_k2z2/source-backup/raw-tools/tests/bridge_mutation_oracle.py"
+    },
+    {
+      "path": "tests/_cl.bat",
+      "bytes": 189,
+      "sha256": "b0f5e3f7550c10393982dc56ef8d3d8eede64f22ef2ad1dc3224ef76f08d1c47",
+      "git_blob": "4b4b207405dee6217fbae297f4d1dbb4e469cc63",
+      "backup": "/workspace/geo261-ledger-run.ra2_k2z2/source-backup/raw-tools/tests/_cl.bat"
+    },
+    {
+      "path": "geometry-web/app.js",
+      "bytes": 626989,
+      "sha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "git_blob": "a17358793c638761579310bb7c4bfff725a510c0",
+      "backup": "/workspace/geo261-ledger-run.ra2_k2z2/source-backup/raw-tools/geometry-web/app.js"
+    },
+    {
+      "path": "current_geometry.c",
+      "bytes": 400284,
+      "sha256": "dc3fbfb14adde5078c36ab179936df88ba977b22bb341301cd30deafeeb97696",
+      "git_blob": "d1a3e5edbac5121f35f2a439c0f6728d4d6ad341",
+      "backup": "/workspace/geo261-ledger-run.ra2_k2z2/source-backup/raw-tools/current_geometry.c"
+    }
+  ],
+  "mutants": [
+    {
+      "id": "M01"
+    },
+    {
+      "id": "M02"
+    },
+    {
+      "id": "M03"
+    },
+    {
+      "id": "M04"
+    },
+    {
+      "id": "M05"
+    },
+    {
+      "id": "M06"
+    },
+    {
+      "id": "M07"
+    },
+    {
+      "id": "M08"
+    },
+    {
+      "id": "M59"
+    },
+    {
+      "id": "M60"
+    },
+    {
+      "id": "M09",
+      "equivalent": "等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。"
+    },
+    {
+      "id": "M10"
+    },
+    {
+      "id": "M11"
+    },
+    {
+      "id": "M12"
+    },
+    {
+      "id": "M13"
+    },
+    {
+      "id": "M14"
+    },
+    {
+      "id": "M15"
+    },
+    {
+      "id": "M16"
+    },
+    {
+      "id": "M17"
+    },
+    {
+      "id": "M18"
+    },
+    {
+      "id": "M19"
+    },
+    {
+      "id": "M20"
+    },
+    {
+      "id": "M21"
+    },
+    {
+      "id": "M22"
+    },
+    {
+      "id": "M23",
+      "equivalent": "等價變異(GEO-172 實證):hits>1 需要兩個邊類擋面在同一座標且都涵蓋角材全寬。輪廓邊+孔邊 → 孔要貼輪廓,核心拒絕;兩孔共邊/共角 → 核心拒絕(兩孔分開才接受);任一為角材側面 → stop_face_shadowed 只留一個;同一簡單多邊形不可能兩邊同座標又涵蓋同段。該分支在合法輸入下不可達,改掉不改變行為。"
+    },
+    {
+      "id": "M24"
+    },
+    {
+      "id": "M25"
+    },
+    {
+      "id": "M26"
+    },
+    {
+      "id": "M27"
+    },
+    {
+      "id": "M28"
+    },
+    {
+      "id": "M29"
+    },
+    {
+      "id": "M30"
+    },
+    {
+      "id": "M31"
+    },
+    {
+      "id": "M32"
+    },
+    {
+      "id": "M57"
+    },
+    {
+      "id": "M58"
+    },
+    {
+      "id": "M51",
+      "retired": "GEO-125(commit bc87d02,2026-09-18)解除 I23(a) 引用鎖:apply_grid_line 已無 was/now 座標比對區塊(整段刪除);公理層 I23(a) 改為「不再直接拒絕,重新推導引用它的角材並走 I8a 影響預覽」。取代它的是重算 + 預覽機制,不是同一判定的新寫法,故退役。"
+    },
+    {
+      "id": "M52"
+    },
+    {
+      "id": "M56",
+      "equivalent": "等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/axis/index/has_band/band;boundary 若為自帶 rect 的合成輪廓,其 bounds/area 與 NULL boundary 的 rect 路徑相同),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。"
+    },
+    {
+      "id": "M53"
+    },
+    {
+      "id": "M54"
+    },
+    {
+      "id": "M55",
+      "retired": "GEO-122 / GEO-125(commit bc87d02,2026-09-18)刪除奇數縫寬拒絕:apply_grid_line 的 `p_gap % 2 != 0` 檢查已移除(只剩一行過期註解),公理層 D10a「gap 為奇數不拒絕」,縫中心線取下界(錨點在 current_geometry.c:1495 `def->anchor + k*T + def->panel + def->gap / 2`,該公式仍由 M53 變異)。被變異的拒絕已不屬於產品。"
+    },
+    {
+      "id": "M33"
+    },
+    {
+      "id": "M34"
+    },
+    {
+      "id": "M35",
+      "retired": "GEO-125(commit bc87d02,2026-09-18)廢除明寫長度:timber_construct 現在以 `!auto_length ||` 一律拒絕明寫長度(current_geometry.c timber_construct),`(!auto_length && length <= 0)` 這條判定隨整個分支消失;apply_timber_line 的訊息亦改為「明寫長度已廢除」,公理層 D7/I18/R4 同。沒有可對應的現行判定,不另編變異湊數。"
+    },
+    {
+      "id": "M36",
+      "equivalent": "等價變異(冗餘檢查,2026-10-01 實證):被變異的是 world_validate_derived 內的 R6(d)/R21 端面唯一擋面檢查,它唯一的呼叫者是 world_revalidate,而 world_revalidate 在它之前(同一個 candidate、reference_rebuild 之後)先跑 reference_check_all(references.inc:485-491),對每支已放角材算同一個 collect_stop_faces / count_legal_stops / 同一個 hits==0||(!has_between&&hits!=1) 條件,不過就 return false、根本到不了 world_validate_derived;兩處輸入(candidate 的 timbers/anchors/placements/boundaries)逐項相同,中間只改 candidate.spaces,不影響擋面。差分測試:基準 exe 與 M36 變異 exe 對 7143 個輸入(根目錄 143 個 .scene + tests/fuzz_scene.py 語料 3000 案 seed 1 + 4000 個 surface/grid 重宣告擾動,其中基準接受 362、重驗拒絕 612)比 exit code / stdout / stderr,零分歧;基準輸出從未出現 world_validate_derived 的專屬訊息「R6(d): 端面需要恰好一個涵蓋全寬的合法擋面」。另:同時拿掉兩處檢查 136/136 仍全過(前一輪探針)。此塊是 reference_check_all 的重複防線,不是獨立判定。"
+    },
+    {
+      "id": "M37"
+    },
+    {
+      "id": "M38"
+    },
+    {
+      "id": "M39"
+    },
+    {
+      "id": "M40"
+    },
+    {
+      "id": "M71"
+    },
+    {
+      "id": "M72"
+    },
+    {
+      "id": "M73"
+    },
+    {
+      "id": "M74"
+    },
+    {
+      "id": "M75"
+    },
+    {
+      "id": "M76"
+    },
+    {
+      "id": "M77"
+    },
+    {
+      "id": "M86"
+    },
+    {
+      "id": "M87"
+    },
+    {
+      "id": "M88"
+    },
+    {
+      "id": "M61",
+      "binary": "bridge"
+    },
+    {
+      "id": "M62",
+      "binary": "bridge"
+    },
+    {
+      "id": "M63",
+      "binary": "bridge"
+    },
+    {
+      "id": "M64",
+      "binary": "bridge"
+    },
+    {
+      "id": "M65",
+      "binary": "bridge"
+    },
+    {
+      "id": "M66",
+      "binary": "bridge"
+    },
+    {
+      "id": "M67",
+      "binary": "bridge"
+    },
+    {
+      "id": "M68",
+      "binary": "bridge"
+    },
+    {
+      "id": "M69",
+      "binary": "bridge"
+    },
+    {
+      "id": "M70",
+      "binary": "bridge"
+    },
+    {
+      "id": "M78",
+      "binary": "bridge"
+    },
+    {
+      "id": "M84",
+      "binary": "bridge"
+    },
+    {
+      "id": "M79",
+      "binary": "bridge"
+    },
+    {
+      "id": "M80",
+      "binary": "bridge"
+    },
+    {
+      "id": "M81",
+      "binary": "bridge"
+    },
+    {
+      "id": "M85",
+      "binary": "bridge"
+    },
+    {
+      "id": "M82",
+      "binary": "bridge"
+    },
+    {
+      "id": "M83",
+      "binary": "bridge"
+    }
+  ],
+  "mutant_count": 78,
+  "heavy_execution_started": false
+}

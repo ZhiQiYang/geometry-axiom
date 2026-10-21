@@ -1,0 +1,133 @@
+{
+  "verification": "只讀來源及已完成原始紀錄交叉核對；沒有啟動產品測試或瀏覽器",
+  "verificationExitCode": 0,
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "patchSha256": "cb452793304e47d6bd1361993fba0c4dc42f7e57de7cdf4564ae89fbb35db64c",
+  "probeV2Sha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+  "candidateHashesVerifiedInMemory": {
+    "geometry-web/app.js": {
+      "actualSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+      "candidateSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f"
+    },
+    "geometry-web/uiux_review_test.js": {
+      "actualSha256": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "candidateSha256": "0925c130aa7488d54b5e2ed539ef21f5b653fbbdebd0910f71a1992871149604"
+    }
+  },
+  "cases": [
+    {
+      "case": "minimal-original",
+      "exitCode": 0,
+      "passedAssertions": 0,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "rawSha256": "82c024f51449464209c3365578938859fd29434800a063f335441b9672d30681",
+      "receiptSha256": "47022f644a6b9add1ec5750ab785b0428e35b2462e04c66f46a7fa454abd8dd5",
+      "probeSha256": "0984db53cb9523fcff527ab819f4a3e46323766bd1ebef393f5465929ff8cf5e",
+      "effectiveAppSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+      "browserExited": true
+    },
+    {
+      "case": "full-original",
+      "exitCode": 0,
+      "passedAssertions": 69,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "rawSha256": "76bf555941b4a5af64e326774e5f9e70fd2a64aae389deafc04bb6204215d984",
+      "receiptSha256": "f8ee3079b5b666ef48b950d69c3f87cc370e13e741cee007c0a28f9a93081bee",
+      "probeSha256": "0984db53cb9523fcff527ab819f4a3e46323766bd1ebef393f5465929ff8cf5e",
+      "effectiveAppSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+      "browserExited": true
+    },
+    {
+      "case": "v2-transition-candidate-none",
+      "exitCode": 0,
+      "passedAssertions": 6,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "rawSha256": "2d245681f7e7a0df710d7fb87770206975a81b0bae84fa85401ff736f0bca7c5",
+      "receiptSha256": "06cf33a68228bb2f38399f10473266f2582396d1b32c94eebbe16ab66619b3f4",
+      "probeSha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "browserExited": true
+    },
+    {
+      "case": "v2-transition-withdraw-guard-none",
+      "exitCode": 0,
+      "passedAssertions": 6,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "rawSha256": "0019d0f4c3e01a92f50bb2627952951ce05f7b1c38430c54c25b71f6e91a1db1",
+      "receiptSha256": "653ab63a37bb4caacbc8a72805e680a8037395b74d243942697f32ee1b34ee1a",
+      "probeSha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+      "effectiveAppSha256": "dfbe254d96f1723cef70a2cac646509623440a53f70fe58f655c69859a28c550",
+      "browserExited": true
+    },
+    {
+      "case": "v2-transition-withdraw-metrics-none",
+      "exitCode": 1,
+      "passedAssertions": 2,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "rawSha256": "5450112132a2cfc272f70059e01ca4c014a60f4584e890a4d9ea0db7679281b0",
+      "receiptSha256": "5294d57f06b1ff819b01dbb7b36b70aa730387f9766607b4328f66f8ea7f72a0",
+      "probeSha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+      "effectiveAppSha256": "806d215477b947525b7b494a135479df9f90a69c45121a22e374a3e4e1a05b43",
+      "browserExited": true
+    },
+    {
+      "case": "v2-transition-withdraw-all-none",
+      "exitCode": 1,
+      "passedAssertions": 2,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "rawSha256": "a1c40dfb564877976b6b98ef0c9d78219b575b7d1458b02d405a67929126677f",
+      "receiptSha256": "50e81b8e7ac7d64ae4674b972448219d78480f19e161726ec184fa81c9f1723d",
+      "probeSha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+      "effectiveAppSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+      "browserExited": true
+    },
+    {
+      "case": "v2-full-candidate-callback",
+      "exitCode": 0,
+      "passedAssertions": 69,
+      "failedAssertions": 0,
+      "exceptions": 0,
+      "rawSha256": "707c9cfac7ee424560511ea3d148d9f13a01ba14bde020b060322f0118e8baf2",
+      "receiptSha256": "08c3f58356b1d8a1b1d7e0daf4d90f5404d3a9ec7408b9d15905c4a50f96f0e1",
+      "probeSha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "browserExited": true
+    },
+    {
+      "case": "v2-full-withdraw-guard-callback",
+      "exitCode": 1,
+      "passedAssertions": 47,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "rawSha256": "adbff2c6224e587d531b96e1158a0bf401e72cf32d027a5a5dce2c10cb50c7a7",
+      "receiptSha256": "cd5fb6278c3168aa2b9dc244a2aeb2a17166d41bf1ba98fb13bb305ab8fd652e",
+      "probeSha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+      "effectiveAppSha256": "dfbe254d96f1723cef70a2cac646509623440a53f70fe58f655c69859a28c550",
+      "browserExited": true
+    },
+    {
+      "case": "v2-full-withdraw-all-callback",
+      "exitCode": 1,
+      "passedAssertions": 47,
+      "failedAssertions": 1,
+      "exceptions": 0,
+      "rawSha256": "062f9c1ce053af5f1723c4563f72b2568a0aff0d47ab0c8ee446117c37fe03fd",
+      "receiptSha256": "c9b00b14f795d89000e45a989ede32dd6286cba8facf9b7289569d12839d81c1",
+      "probeSha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+      "effectiveAppSha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b",
+      "browserExited": true
+    }
+  ],
+  "limitations": [
+    "full 候選 69 題使用原 uiux_review_test.js，新增 metrics 同題條件尚待正式來源驗收",
+    "所有 v2 預覽 actualFixed=false，不能稱正式來源撤回",
+    "RC-only 相容性目前為程式路徑審查，未新增獨立 browser 情境",
+    "自然單撤 guard 6/6 存活；只有明示 callback 控制精確紅"
+  ]
+}

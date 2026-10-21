@@ -1,0 +1,53 @@
+"""完成後保全本輪原圖與 raw 宣告下載；不重生成產物、不啟動 browser。"""
+from pathlib import Path
+import calendar,datetime,hashlib,json,re,shutil
+out=Path('/workspace/geo261-evidence/canvas-L2-formal-249571fe')
+receipt=json.loads((out/'receipt.json').read_bytes())
+assert 'finishedUTC' in receipt and Path(str(out)+'-launcher-process.exit-code').exists()
+preflight=json.loads(Path(str(out)+'-preflight.json').read_bytes())
+def ns(value):
+ d=datetime.datetime.fromisoformat(value);return calendar.timegm(d.utctimetuple())*10**9+d.microsecond*1000
+start,end=ns(receipt['startedUTC']),ns(receipt['finishedUTC'])
+def sha(raw):return hashlib.sha256(raw).hexdigest()
+files=[];missing=[]
+def capture(path,relative,kind,declared=None):
+ if not path.exists():missing.append({'originalPath':str(path),'kind':kind,'reason':'完成後原件不存在，未重建'});return
+ assert path.is_file() and not path.is_symlink()
+ before=path.stat();raw=path.read_bytes();after=path.stat()
+ assert (before.st_ino,before.st_size,before.st_mtime_ns)==(after.st_ino,after.st_size,after.st_mtime_ns)
+ within=start<=after.st_mtime_ns<=end
+ assert within,(str(path),after.st_mtime_ns,start,end)
+ target=out/relative;assert not target.exists();target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(path,target)
+ assert target.read_bytes()==raw==path.read_bytes() and path.stat().st_mtime_ns==after.st_mtime_ns
+ row={'originalPath':str(path),'output':relative.as_posix(),'kind':kind,'bytes':len(raw),'sha256':sha(raw),'mtimeNs':after.st_mtime_ns,'withinRunWindow':within}
+ if declared is not None:row['rawDeclaredFile']=declared
+ if kind=='assembly-hardpath':
+  base=preflight['assemblyScreenshotBaseline'][str(path)]
+  row['baseline']=base
+  if base['exists']:assert after.st_mtime_ns>base['mtime_ns']
+  assert raw.startswith(b'\x89PNG\r\n\x1a\n')
+ files.append(row)
+for name in ('assembly-desktop.png','assembly-mobile.png'):
+ capture(Path('/tmp/geometry-tests')/name,Path('screens/assembly-hardpath')/name,'assembly-hardpath')
+raw=(out/'canvas.log').read_text()
+direct=set(re.findall(r' saved artifact (.+?\.gcanvas)(?:\s|$)',raw))
+directories={Path(p).parent for p in direct}
+p83=[]
+for line in raw.splitlines():
+ if line.startswith('P83_EVIDENCE '):
+  entry=json.loads(line[len('P83_EVIDENCE '):]);p83.append(entry);directories.add(Path(entry['downloads']))
+captured=set()
+for directory in sorted(directories):
+ assert directory.is_absolute() and directory.is_relative_to('/tmp') and not directory.is_symlink()
+ if not directory.exists():
+  missing.append({'originalPath':str(directory),'kind':'declared-directory','reason':'完成後原目錄不存在，未重建'});continue
+ for path in sorted(directory.rglob('*')):
+  if path.is_file() and path.suffix in ('.gcanvas','.csv','.json'):
+   relative=Path('declared-artifacts')/path.relative_to('/tmp')
+   capture(path,relative,'raw-declared-download' if str(path) in direct or path.suffix=='.csv' else '同一當輪下載目錄的原測試JSON收據',str(path) in direct)
+   captured.add(str(path))
+for path in sorted(direct-captured):
+ missing.append({'originalPath':path,'kind':'raw-declared-file','reason':'完成後未捕捉到原檔，未重建'})
+record={'capturedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sourceSha':receipt['expectedHead'],'productStatus':receipt['status'],'rawDeclaredFiles':sorted(direct),'p83Evidence':p83,'files':files,'missing':missing,'count':len(files),'bytes':sum(x['bytes']for x in files),'captureCodeSha256':sha(Path(__file__).read_bytes()),'note':'job結束後才保存；只取本輪raw明列gcanvas/P83下載目錄及其原測試JSON收據，另含兩張hardpath原圖。全部mtime在本輪窗內，不整包Chrome profile/cache，沒有重開browser或重生成檔案。若原件不存在明列missing；本收據不是產品通過判斷。'}
+target=out/'declared-artifact-capture.json';assert not target.exists();target.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'record':str(target),'count':len(files),'bytes':record['bytes'],'missing':missing,'captureExitCode':0},ensure_ascii=False))

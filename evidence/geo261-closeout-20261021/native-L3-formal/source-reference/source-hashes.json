@@ -1,0 +1,45 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "before": {
+    "tests/test_assembly_mutation_check.py": "e53d1fa41f202657202a7019dbe5ae32ce5fcec085ee09706b2f9c1f63091649",
+    "tests/assembly_mutation_check.py": "230010fa6346d08e12207bd47fcfec9ca53535c70d486e1ff05c98d20abc53b9",
+    "tests/run_all.py": "fb9e5f1a6952ec87b9c472aee4aadf55131a0b270c850177607319b50c183bcf",
+    "tests/run_all.expected.json": "f08443be7de507ea4550790bfdf3d51ce4c35fc74e2055286691ec511082bec0"
+  },
+  "after": {
+    "tests/test_assembly_mutation_check.py": "e53d1fa41f202657202a7019dbe5ae32ce5fcec085ee09706b2f9c1f63091649",
+    "tests/assembly_mutation_check.py": "230010fa6346d08e12207bd47fcfec9ca53535c70d486e1ff05c98d20abc53b9",
+    "tests/run_all.py": "fb9e5f1a6952ec87b9c472aee4aadf55131a0b270c850177607319b50c183bcf",
+    "tests/run_all.expected.json": "f08443be7de507ea4550790bfdf3d51ce4c35fc74e2055286691ec511082bec0"
+  },
+  "unchanged": true,
+  "allowedSkips": [
+    {
+      "suite": "py:test_gdi_contract",
+      "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+      "reason": "requires compiled Windows GDI contract harness",
+      "platforms": [
+        "posix"
+      ],
+      "why": "Windows GDI resources do not exist on POSIX; all native geometry suites still run"
+    },
+    {
+      "suite": "py:test_cli_args",
+      "test": "test_cli_args.CliArgs.test_svg_write_failure_is_reported_without_unlinking_device",
+      "reason": "requires POSIX full device",
+      "platforms": [
+        "nt"
+      ],
+      "why": "/dev/full 是 POSIX 裝置，Windows 上不存在"
+    },
+    {
+      "suite": "py:test_assembly_mutation_check",
+      "test": "test_assembly_mutation_check.AssemblyMutationCheck.test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left",
+      "reason": "requires POSIX process groups and /proc",
+      "platforms": [
+        "nt"
+      ],
+      "why": "程序群組與 /proc 是 POSIX／Linux 才有的東西，Windows 上不存在；Linux／WSL／CI 照常真的執行"
+    }
+  ]
+}

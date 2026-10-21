@@ -1,0 +1,1509 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "phase": "card",
+  "verifiedUtc": "2026-10-21T06:53:12.254178+00:00",
+  "childReturnCode": 0,
+  "launcherExitCode": 0,
+  "elapsedSeconds": 438.3904237300012,
+  "sourceCleanRestored": true,
+  "bridgeAfterMatchesBeforeBytesAndMtimes": true,
+  "officialExitCode": 0,
+  "caseCount": 53,
+  "summary": {
+    "killed": 53
+  },
+  "baseline": {
+    "testsRun": 43,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "failure_names": [],
+    "compile_failures": 0,
+    "infrastructure_failures": 0
+  },
+  "restoreScope": "每案原指定case的restore；不宣稱每案restore跑完整43題。",
+  "cases": [
+    {
+      "id": "M01-index",
+      "case": "CR04",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR04_EQUAL_VALUE_IDENTITY (tests.test_grid_card_reference.GridCardReference.test_CR04_EQUAL_VALUE_IDENTITY)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M01-cache",
+      "case": "CR04",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR04_EQUAL_VALUE_IDENTITY (tests.test_grid_card_reference.GridCardReference.test_CR04_EQUAL_VALUE_IDENTITY)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M01",
+      "case": "CR01",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR01_CARD_UNIT (tests.test_grid_card_reference.GridCardReference.test_CR01_CARD_UNIT)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M02-id",
+      "case": "CR25",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR25_EXPLICIT_REVERSED_MAPPING (tests.test_grid_card_reference.GridCardReference.test_CR25_EXPLICIT_REVERSED_MAPPING)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M02-order",
+      "case": "CR25",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR25_EXPLICIT_REVERSED_MAPPING (tests.test_grid_card_reference.GridCardReference.test_CR25_EXPLICIT_REVERSED_MAPPING)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M02-name",
+      "case": "CR25",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR25_EXPLICIT_REVERSED_MAPPING (tests.test_grid_card_reference.GridCardReference.test_CR25_EXPLICIT_REVERSED_MAPPING)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M02-value",
+      "case": "CR25",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR25_EXPLICIT_REVERSED_MAPPING (tests.test_grid_card_reference.GridCardReference.test_CR25_EXPLICIT_REVERSED_MAPPING)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M03-distinct",
+      "case": "CR07",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD (tests.test_grid_card_reference.GridCardReference.test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M03-complete",
+      "case": "CR11",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE (tests.test_grid_card_reference.GridCardReference.test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M03-same-card",
+      "case": "CR07",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD (tests.test_grid_card_reference.GridCardReference.test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M04-source",
+      "case": "CR11",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE (tests.test_grid_card_reference.GridCardReference.test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M04-token",
+      "case": "CR31",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR31_CONTROLLED_TOKEN_REJECT (tests.test_grid_card_reference.GridCardReference.test_CR31_CONTROLLED_TOKEN_REJECT)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M05-dimension",
+      "case": "CR08",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR08_MAPPED_SOURCE_PROTECTION (tests.test_grid_card_reference.GridCardReference.test_CR08_MAPPED_SOURCE_PROTECTION)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M05-positive",
+      "case": "CR09",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR09_EXACT_TARGET_LENGTH (tests.test_grid_card_reference.GridCardReference.test_CR09_EXACT_TARGET_LENGTH)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M05-integer",
+      "case": "CR09",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR09_EXACT_TARGET_LENGTH (tests.test_grid_card_reference.GridCardReference.test_CR09_EXACT_TARGET_LENGTH)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M05-range",
+      "case": "CR09",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR09_EXACT_TARGET_LENGTH (tests.test_grid_card_reference.GridCardReference.test_CR09_EXACT_TARGET_LENGTH)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M05-precision",
+      "case": "CR10",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR10_FIELD_GRAPH_AND_PRECISION (tests.test_grid_card_reference.GridCardReference.test_CR10_FIELD_GRAPH_AND_PRECISION)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M06-card",
+      "case": "CR26",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR26_SAME_KEY_REFERENCE_GUARD (tests.test_grid_card_reference.GridCardReference.test_CR26_SAME_KEY_REFERENCE_GUARD)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M06-extra-field",
+      "case": "CR06",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR06_EXTRA_FIELD_DEPENDENCY (tests.test_grid_card_reference.GridCardReference.test_CR06_EXTRA_FIELD_DEPENDENCY)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M07",
+      "case": "CR12",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR12_ATOMIC_REBIND (tests.test_grid_card_reference.GridCardReference.test_CR12_ATOMIC_REBIND)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M08",
+      "case": "CR03",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR03_SWAP_MAPPING_ONLY (tests.test_grid_card_reference.GridCardReference.test_CR03_SWAP_MAPPING_ONLY)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M09",
+      "case": "CR13",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE (tests.test_grid_card_reference.GridCardReference.test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M10",
+      "case": "CR15",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR15_ALL_BINDINGS_RECOMPUTE (tests.test_grid_card_reference.GridCardReference.test_CR15_ALL_BINDINGS_RECOMPUTE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M11-expiry",
+      "case": "CR17",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR17_CANDIDATE_LIFECYCLE (tests.test_grid_card_reference.GridCardReference.test_CR17_CANDIDATE_LIFECYCLE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M11-revalidation",
+      "case": "CR17",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR17_CANDIDATE_LIFECYCLE (tests.test_grid_card_reference.GridCardReference.test_CR17_CANDIDATE_LIFECYCLE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M11-undo",
+      "case": "CR17",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR17_CANDIDATE_LIFECYCLE (tests.test_grid_card_reference.GridCardReference.test_CR17_CANDIDATE_LIFECYCLE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M13-unused",
+      "case": "CR19",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR19_CARD_SAVE_ROUNDTRIP (tests.test_grid_card_reference.GridCardReference.test_CR19_CARD_SAVE_ROUNDTRIP)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M13-capability",
+      "case": "CR20",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR20_NO_SILENT_DOWNGRADE (tests.test_grid_card_reference.GridCardReference.test_CR20_NO_SILENT_DOWNGRADE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M14-legacy",
+      "case": "CR21",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR21_LEGACY_UNCHANGED (tests.test_grid_card_reference.GridCardReference.test_CR21_LEGACY_UNCHANGED)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M14-import",
+      "case": "CR22",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION (tests.test_grid_card_reference.GridCardReference.test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M16",
+      "case": "CR26",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR26_SAME_KEY_REFERENCE_GUARD (tests.test_grid_card_reference.GridCardReference.test_CR26_SAME_KEY_REFERENCE_GUARD)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M17",
+      "case": "CR13",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE (tests.test_grid_card_reference.GridCardReference.test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M18-numbers",
+      "case": "CR29",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR29_D25_CARD_CLOSURE (tests.test_grid_card_reference.GridCardReference.test_CR29_D25_CARD_CLOSURE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M18-refs",
+      "case": "CR29",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR29_D25_CARD_CLOSURE (tests.test_grid_card_reference.GridCardReference.test_CR29_D25_CARD_CLOSURE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M18-closure",
+      "case": "CR29",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR29_D25_CARD_CLOSURE (tests.test_grid_card_reference.GridCardReference.test_CR29_D25_CARD_CLOSURE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M18-capability",
+      "case": "CR29",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR29_D25_CARD_CLOSURE (tests.test_grid_card_reference.GridCardReference.test_CR29_D25_CARD_CLOSURE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M19-order",
+      "case": "CR28",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR28_ORDERED_REFERENCE_PROTECTION (tests.test_grid_card_reference.GridCardReference.test_CR28_ORDERED_REFERENCE_PROTECTION)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M19-axis-missing",
+      "case": "CR13",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE (tests.test_grid_card_reference.GridCardReference.test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M19-axis-scope",
+      "case": "CR13",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE (tests.test_grid_card_reference.GridCardReference.test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M19-partial-owner",
+      "case": "CR27",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR27_EXPLICIT_POST_DELETE_REBIND (tests.test_grid_card_reference.GridCardReference.test_CR27_EXPLICIT_POST_DELETE_REBIND)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M20",
+      "case": "CR30",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR30_SWAP_REVALIDATES_STAGGER (tests.test_grid_card_reference.GridCardReference.test_CR30_SWAP_REVALIDATES_STAGGER)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M21",
+      "case": "CR22",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION (tests.test_grid_card_reference.GridCardReference.test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M22",
+      "case": "CR32",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR32_FIELD_KEY_RECREATION_GUARD (tests.test_grid_card_reference.GridCardReference.test_CR32_FIELD_KEY_RECREATION_GUARD)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "M24",
+      "case": "CR33",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR33_PARAMETER_PACKAGE_BOUNDARY (tests.test_grid_card_reference.GridCardReference.test_CR33_PARAMETER_PACKAGE_BOUNDARY)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "P146-error-fields",
+      "case": "P146_ERROR",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_P146_ERROR_FIELDS_ONLY (tests.test_grid_card_reference.GridCardReference.test_P146_ERROR_FIELDS_ONLY)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "P146-use-field-path",
+      "case": "CR26",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR26_SAME_KEY_REFERENCE_GUARD (tests.test_grid_card_reference.GridCardReference.test_CR26_SAME_KEY_REFERENCE_GUARD)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "P146-same-card-grid-id",
+      "case": "CR07",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD (tests.test_grid_card_reference.GridCardReference.test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "P146-complete-grid-id",
+      "case": "CR11",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE (tests.test_grid_card_reference.GridCardReference.test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "P146-mode-grid-id",
+      "case": "CR11",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE (tests.test_grid_card_reference.GridCardReference.test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE)"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "P154-format-code",
+      "case": "P154_GRID",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 4,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='missing name')",
+          "test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='unknown key')",
+          "test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong type')",
+          "test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong value')"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "P154-format-id",
+      "case": "P154_GRID",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 4,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='missing name')",
+          "test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='unknown key')",
+          "test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong type')",
+          "test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong value')"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "P154-identity-boundary",
+      "case": "P154_IDENTITY",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES (tests.test_grid_card_reference.GridCardReference.test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES) (messages=['P154_REASON grid-system 4 parameter 10 field 30'])"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    },
+    {
+      "id": "P154-identity-one-message",
+      "case": "P154_IDENTITY",
+      "verdict": "killed",
+      "redExit": 1,
+      "redCounts": {
+        "testsRun": 1,
+        "failures": 2,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [
+          "test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES (tests.test_grid_card_reference.GridCardReference.test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES) (messages=['P154_REASON grid-system 4', 'parameter 10 field 3'])",
+          "test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES (tests.test_grid_card_reference.GridCardReference.test_P154_IDENTITY_IN_ONE_DIAGNOSTIC_WITH_TOKEN_BOUNDARIES) (messages=['P154_REASON', 'grid-system 4 parameter 10 field 3'])"
+        ],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      },
+      "restoreExit": 0,
+      "restoreCounts": {
+        "testsRun": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_names": [],
+        "compile_failures": 0,
+        "infrastructure_failures": 0
+      }
+    }
+  ],
+  "artifacts": {
+    "officialReport": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/card-run/card/raw/report.json",
+      "bytes": 267064,
+      "sha256": "57098b4347139f903749296c00ae1fe68082f98444287e1053e1846053ce4147"
+    },
+    "runReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/card-run/card/run-receipt.json",
+      "bytes": 1356,
+      "sha256": "54265c0db52ce8f883aa366264b71f56b60204cfa0340d69277147f7eca930bc"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/card/receipt.json",
+      "bytes": 4056,
+      "sha256": "84d464ec27da0d634331f97ef68f3e09cade3079774be8d25f3cdffbc2538916"
+    },
+    "bridgeBefore": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/card/bridge-before.json",
+      "bytes": 1170,
+      "sha256": "1ea392ea22699f8b6497cd1860518fd1f8ea805a45d82f6f17534e7e11e7ed5e"
+    },
+    "bridgeAfter": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/card/bridge-after.json",
+      "bytes": 1167,
+      "sha256": "a99cd1badc66f60f70a96ea1d5bf5cffcbab9fbfc7f7dce5de3f8501ff38b2c5"
+    },
+    "nativeVerification": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/verification.json",
+      "bytes": 49259,
+      "sha256": "ee80438dce224cf9d473184c4ffe97a4c690d401d98eecdbcbd5e458449df93b"
+    },
+    "previousBridgeIndex": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/controls/bridge-after.json",
+      "bytes": 1174,
+      "sha256": "5fcfae17700fa22e60342d7e17380a11a64181fa54a64e7414a73b0be3361338"
+    },
+    "verificationTool": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.py",
+      "bytes": 11086,
+      "sha256": "65a51dc606c2eafdba96db31d400ef09bd3f2bab2479886165909cea13302a46"
+    }
+  },
+  "accepted": true,
+  "problems": []
+}

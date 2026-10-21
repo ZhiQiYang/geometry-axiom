@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_pre_card_axioms_reject_manifest_card_capability"
+  ],
+  "exit_code": 1,
+  "seconds": 2.0425041560001773,
+  "tests": 1,
+  "failures": 19,
+  "errors": 0,
+  "skips": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "38101fe20c472192d6f8da17474c292275a66ab9d6750a3c8e928f7005517ce3"
+}

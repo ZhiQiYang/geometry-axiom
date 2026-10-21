@@ -1,0 +1,350 @@
+{
+  "sourceSha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "reviewer": "/root/p52_review",
+  "validationExitCode": 0,
+  "productExecutionByReviewer": false,
+  "receiptsChecked": [
+    "archive0",
+    "build0",
+    "load0",
+    "nm0",
+    "driver0"
+  ],
+  "transportObservation": "root提供session30802/chunkfc74e3 exit0；本peer未親自觀察該transport回覆。",
+  "originalBinarySamplesReceiptCurrentHashesMatch": true,
+  "stdoutExactlyFormal": true,
+  "rawPCs": 284,
+  "allPCsUniqueExecutableMapAndPTLoadWithMatchingInodeDevice": true,
+  "executableMapsStable": true,
+  "moduleCounts": {
+    "/lib/x86_64-linux-gnu/libc.so.6": 163,
+    "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile": 121
+  },
+  "droppedCapacity": 0,
+  "libc": {
+    "path": "/lib/x86_64-linux-gnu/libc.so.6",
+    "bytes": 1995216,
+    "sha256": "fa430b8f298f817a266046af84a77533185ad6fc4406c7d3787b5a0a0c207826"
+  },
+  "libcBuildId": "c495b62edadd6c356265942ec1282d98058a7b41",
+  "matchingDebugFileAvailable": false,
+  "requestedAddresses": {
+    "0x17bcb6": {
+      "instruction": "vmovdqu64 zmm18,ZMMWORD PTR [rsi+0x40]",
+      "samples": 16
+    },
+    "0x17bcbd": {
+      "instruction": "vmovdqu64 zmm19,ZMMWORD PTR [rsi+0x80]",
+      "samples": 14
+    },
+    "0x17bcc4": {
+      "instruction": "vmovdqu64 zmm20,ZMMWORD PTR [rsi+0xc0]",
+      "samples": 13
+    },
+    "0x17bccb": {
+      "instruction": "sub    rsi,0xffffffffffffff00",
+      "samples": 18
+    },
+    "0x17bcd8": {
+      "instruction": "vmovdqa64 ZMMWORD PTR [rdi+0x40],zmm18",
+      "samples": 5
+    },
+    "0x17bcdf": {
+      "instruction": "vmovdqa64 ZMMWORD PTR [rdi+0x80],zmm19",
+      "samples": 11
+    },
+    "0x17bced": {
+      "instruction": "sub    rdi,0xffffffffffffff00",
+      "samples": 5
+    },
+    "0x17c3c7": {
+      "instruction": "vmovdqa64 ZMMWORD PTR [rdi+0x140],zmm16",
+      "samples": 13
+    },
+    "0x17c3ce": {
+      "instruction": "vmovdqa64 ZMMWORD PTR [rdi+0x180],zmm16",
+      "samples": 15
+    },
+    "0x17c3d5": {
+      "instruction": "vmovdqa64 ZMMWORD PTR [rdi+0x1c0],zmm16",
+      "samples": 14
+    },
+    "0x17c3dc": {
+      "instruction": "sub    rdi,0xffffffffffffff00",
+      "samples": 10
+    }
+  },
+  "copyLoop": {
+    "range": "0x17bcb0..0x17bcf7",
+    "samples": 90,
+    "percentOfAll": 31.690140845070424,
+    "meaning": "四個64-byte ZMM load配四個ZMM store，rsi/rdi每輪前進256 bytes；向前複製，不是compare。",
+    "ifuncProof": "精確dynsym memcpy解析器0xa6b2e/0xa6b35與memmove解析器0xa734e/0xa7355均載入0x17bac0/0x17ba30作可返回entry；這些entry控制流可進熱迴圈。不能憑PC區分實際呼叫memcpy或memmove。"
+  },
+  "fillLoop": {
+    "range": "0x17c3c0..0x17c3e6",
+    "samples": 52,
+    "percentOfAll": 18.309859154929576,
+    "meaning": "四個64-byte store重用zmm16，rdi每輪前進256 bytes；entry0x17c340的vpbroadcastb由esi低byte建立填值。",
+    "ifuncProof": "精確dynsym memset解析器0xa75fc載入0x17c340作可返回entry；另一路0xa760e指向0x17c2c0，同樣可進該填值路徑。",
+    "zeroNotProven": true
+  },
+  "exactDynamicSymbolsCoveringAnyLibcSample": [
+    {
+      "start": "0x5f5b0",
+      "size": 175,
+      "name": "snprintf@@GLIBC_2.2.5"
+    },
+    {
+      "start": "0xa3280",
+      "size": 516,
+      "name": "__libc_free@@GLIBC_2.2.5"
+    },
+    {
+      "start": "0xa3280",
+      "size": 516,
+      "name": "free@@GLIBC_2.2.5"
+    },
+    {
+      "start": "0xa3dc0",
+      "size": 1126,
+      "name": "__libc_calloc@@GLIBC_2.2.5"
+    },
+    {
+      "start": "0xa3dc0",
+      "size": 1126,
+      "name": "calloc@@GLIBC_2.2.5"
+    },
+    {
+      "start": "0xa3280",
+      "size": 516,
+      "name": "cfree@GLIBC_2.2.5"
+    }
+  ],
+  "objdumpNearestLabelsRejected": "輸出顯示_dl_mcount_wrapper+大偏移，只是最近較小已知symbol，不是熱點函式證明。",
+  "commands": [
+    {
+      "argv": [
+        "objdump",
+        "-d",
+        "-M",
+        "intel",
+        "--start-address=0x17ba30",
+        "--stop-address=0x17bd20",
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "objdump",
+        "-d",
+        "-M",
+        "intel",
+        "--start-address=0x17c2c0",
+        "--stop-address=0x17c420",
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "objdump",
+        "-d",
+        "-M",
+        "intel",
+        "--start-address=0xa6a80",
+        "--stop-address=0xa6b91",
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "objdump",
+        "-d",
+        "-M",
+        "intel",
+        "--start-address=0xa72a0",
+        "--stop-address=0xa73b1",
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "objdump",
+        "-d",
+        "-M",
+        "intel",
+        "--start-address=0xa7560",
+        "--stop-address=0xa7678",
+        "/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "references": [
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/archive.stdout",
+      "bytes": 16076800,
+      "sha256": "aaf3053eba2ea4b289bafc85428e1b06d2f8be6e5fe66357aee5419762f82088"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/archive.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/archive.receipt.json",
+      "bytes": 1328,
+      "sha256": "b9a8628e3ed9970026c6106398c3904bab125ee8ccddf07d3fcd7737396d4c30"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/build.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/build.receipt.json",
+      "bytes": 1275,
+      "sha256": "70aa409aefa06e4fe9f30e59363a32757309f4e1e82671965dc355398ada3d4f"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/load.stdout",
+      "bytes": 396,
+      "sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/load.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/load.receipt.json",
+      "bytes": 1107,
+      "sha256": "8ece139e3109e6a8ce229dd7fb3df001c72e88476fba7402e05a39c2f8595a27"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/nm.stdout",
+      "bytes": 103101,
+      "sha256": "082872b41aa693adfbc506647814e78dc2d13e8f50f6e9b00e9de64fa2c4998a"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/nm.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/nm.receipt.json",
+      "bytes": 1040,
+      "sha256": "7a5a0d46994c17d10dcee2efaf9142961d7cfd08da7f2b0c2072666a2258f0c6"
+    },
+    {
+      "path": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/85dc4fff/bridge",
+      "bytes": 1100392,
+      "sha256": "3feed9014e63ce51579a149e838a0b1e2c3be23957763ec9cd95659a28311f36"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/samples.json",
+      "bytes": 39931,
+      "sha256": "03a760ce8056fc2b5a000d468d6b612153f122ac47cf64423f3d85b828ab182a"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/receipt.json",
+      "bytes": 1657,
+      "sha256": "5a093ed872fb7c6ed9f3ecf2ac077b120cd4d0540d8c606083e6baa2a18fb2ed"
+    },
+    {
+      "path": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/scenes/s64.scene",
+      "bytes": 5676,
+      "sha256": "ae61c7eb565efc3997402b124592c1201d9e3c6027f4945a735387ef4327416d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/pc_sampler.h",
+      "bytes": 6834,
+      "sha256": "1f2d25b254ed9a955c1676ac78fe31f8d575b16703e6f9d1f988516205af5b0c"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/pcdiag-driver.py",
+      "bytes": 10168,
+      "sha256": "b38d023f0cc9da48d084e7a99762eddc22f53869bb480128b5bc4f516f4391ad"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile",
+      "bytes": 4263016,
+      "sha256": "f39f904e2dd9caead75952d38ed9e09bacc332cf43ee10526fe0d64833f93675"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/libc-hotspots.objdump.txt",
+      "bytes": 14768,
+      "sha256": "b6e546e0a6db843ee04763056d58e2c86e771877703fde84c5f47104dfa5e37a"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/libc-ifunc-resolvers.objdump.txt",
+      "bytes": 13001,
+      "sha256": "82f01f8efb842d3ed715b7d02d23dca99f26c6d9645e2a586f011742d5fbf9e0"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/released-config.json",
+      "bytes": 3276,
+      "sha256": "1d9d79014315dffaafce444359b64e3bba55b53bf5fdd8f8af8170812dd8059c"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/completion.json",
+      "bytes": 4988,
+      "sha256": "a80f37bd41c772125734860d69226321f38d47aceb6dd31385f4f5fb427212c1"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/pc-summary.json",
+      "bytes": 105562,
+      "sha256": "ad05467d66298d17358459fb00b775cdef382199c6d953800c3214bdddd8427e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/run01/pcs.tsv",
+      "bytes": 5295,
+      "sha256": "4ff413ec0c862fdbdfa79f42f53e6c7d65589dc09488562e0cc66c6396840d90"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/run01/maps.before",
+      "bytes": 3113,
+      "sha256": "8eb64221cf601f84a3a02a235211d5942692727c6b09db435c5342410563c621"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/run01/maps.after",
+      "bytes": 3113,
+      "sha256": "44b6dd98a2bffdd0982535fdd8cf182ba58f2a7739081a4d943bdb5c14eff0f0"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/run01/modules.jsonl",
+      "bytes": 1635,
+      "sha256": "a056b8f6f2ae91ffba0dcbdd7c61fc3740d1d0111af4a72186da12febc39a1f7"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/run01/stats.json",
+      "bytes": 230,
+      "sha256": "bc258b3084dd6b9d1fb9e770d760cc10e33bf7211b28560febe20d731a3862e8"
+    },
+    {
+      "path": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/run01/load.in",
+      "bytes": 73,
+      "sha256": "27ed31afce5f078d3dc33fc5a9090aab01f233f9a2900b10aa09586bacb73777"
+    },
+    {
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "bytes": 1995216,
+      "sha256": "fa430b8f298f817a266046af84a77533185ad6fc4406c7d3787b5a0a0c207826"
+    }
+  ],
+  "limits": [
+    "只有284個已交付PC樣本；1000us是要求間隔，未保證每ms交付，不能把percent當精確CPU時間。",
+    "沒有call stack或暫存器資料，不能知道產品呼叫點、複製物件、長度分布，也不能證實memset填0。",
+    "這是外部header診斷binary，不是正式P189樣本；未安裝debug包、未執行產品或補性能樣本。",
+    "正式before hash由原driver當時驗；peer核目前bytes與固定config相同，不冒稱回到過去重讀。"
+  ]
+}

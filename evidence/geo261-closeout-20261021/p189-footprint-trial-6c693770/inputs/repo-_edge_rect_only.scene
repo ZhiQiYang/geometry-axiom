@@ -1,0 +1,5 @@
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+spec 主支1中線 500
+guide 1 1 v spec:主支1中線
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n

@@ -1,0 +1,14 @@
+test_CR17_CANDIDATE_LIFECYCLE (tests.test_grid_card_reference.GridCardReference.test_CR17_CANDIDATE_LIFECYCLE) ... FAIL
+
+======================================================================
+FAIL: test_CR17_CANDIDATE_LIFECYCLE (tests.test_grid_card_reference.GridCardReference.test_CR17_CANDIDATE_LIFECYCLE)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates/tests/test_grid_card_reference.py", line 317, in test_CR17_CANDIDATE_LIFECYCLE
+    self.assertEqual('STALE', stale.get('code'), 'CANDIDATE_LIFECYCLE unrelated definition expiry')
+AssertionError: 'STALE' != None : CANDIDATE_LIFECYCLE unrelated definition expiry
+
+----------------------------------------------------------------------
+Ran 1 test in 0.227s
+
+FAILED (failures=1)

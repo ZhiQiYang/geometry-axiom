@@ -1,0 +1,36 @@
+import hashlib
+import json
+from pathlib import Path
+
+base = Path('/workspace/geo261-evidence')
+dest = base / 'final-bundle/交付公開方法-靜態審查'
+dest.mkdir(exist_ok=False)
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+mapping = [('publish-final-evidence.py', '未執行-method-code.txt'),
+           ('publish-final-evidence-method-review.json', '靜態審查與觀察轉錄.json'),
+           ('package-publish-method-review.txt', '封裝方法原碼.txt')]
+rows = []
+for original, target in mapping:
+    raw = (base / original).read_bytes()
+    (dest / target).write_bytes(raw)
+    assert (dest / target).read_bytes() == (base / original).read_bytes()
+    rows.append({'path': target, 'source': str(base / original), 'bytes': len(raw), 'sha256': sha(raw)})
+(dest / 'README.md').write_text('''# 最終提交與公開工具的靜態方法審查
+
+此附錄只保存尚未執行的外部helper原bytes及有限靜態peer。工具在明示--execute後只提交精確資料集合，先要求原E驗證器成功，再正常推送自己的closeout分支；沒有PR API操作或產品執行入口。
+
+靜態複核未發現schema、路徑或先後順序阻擋；不等於已commit、E驗證成功或已push。正式執行須等L3全驗收、stage及新的L3 verifier／snapshot／ledger pins到齊。傳入仍綁L2的舊verifier會在提交後拒絕，不能冒作最後驗收。
+
+原Python只轉存非執行.txt，本封裝沒有執行它；root AST與本代理讀取碼均標示為觀察轉錄，不冒稱raw transport。三份來源複本之外為README、原件清單及SHA256SUMS，後者覆蓋除自身外全部檔案；不再遞迴包裝此附錄。
+''')
+(dest / '原件清單.json').write_text(json.dumps(rows, ensure_ascii=False, indent=2) + '\n')
+files = sorted(p for p in dest.iterdir() if p.is_file())
+(dest / 'SHA256SUMS').write_text(''.join(sha(p.read_bytes()) + '  ' + p.name + '\n' for p in files))
+files = sorted(p for p in dest.iterdir() if p.is_file())
+for path in files: path.chmod(0o644)
+assert {p.name for p in files} == {r['path'] for r in rows} | {'README.md', '原件清單.json', 'SHA256SUMS'}
+result = {'bundle': str(dest), 'copyCheckPassed': True, 'files': len(files), 'bytes': sum(p.stat().st_size for p in files),
+          'indexSha256': sha((dest / '原件清單.json').read_bytes()), 'sumsSha256': sha((dest / 'SHA256SUMS').read_bytes())}
+(base / 'final-bundle/交付公開方法-封裝核對.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+(base / 'final-bundle/交付公開方法-封裝核對.json').chmod(0o644)
+print(json.dumps(result, ensure_ascii=False, indent=2))

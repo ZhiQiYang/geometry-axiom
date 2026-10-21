@@ -1,0 +1,163 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "phase": "controls",
+  "verifiedUtc": "2026-10-21T06:45:22.943723+00:00",
+  "childReturnCode": 0,
+  "launcherExitCode": 0,
+  "elapsedSeconds": 217.00801556200167,
+  "sourceCleanRestored": true,
+  "bridgeAfterMatchesBeforeBytesAndMtimes": true,
+  "baselines": {
+    "native": {
+      "exit": 0,
+      "tests_run": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "model": {
+      "exit": 0,
+      "tests_run": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "summary": {
+    "survived": 9,
+    "unlabelled": 3
+  },
+  "caseCount": 12,
+  "rawGateExitCode": 1,
+  "expectationCheckExitCode": 0,
+  "cases": [
+    {
+      "id": "XC28L1",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC28L12",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC28L13",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC29L1",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC29L12",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC29L13",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC03L1",
+      "expectedVerdict": "unlabelled",
+      "expectedExit": 1,
+      "actualVerdict": "unlabelled",
+      "actualExit": 1
+    },
+    {
+      "id": "XC04L1",
+      "expectedVerdict": "unlabelled",
+      "expectedExit": 1,
+      "actualVerdict": "unlabelled",
+      "actualExit": 1
+    },
+    {
+      "id": "XC36",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC39",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    },
+    {
+      "id": "XC40A",
+      "expectedVerdict": "unlabelled",
+      "expectedExit": 1,
+      "actualVerdict": "unlabelled",
+      "actualExit": 1
+    },
+    {
+      "id": "XC40B",
+      "expectedVerdict": "survived",
+      "expectedExit": 0,
+      "actualVerdict": "survived",
+      "actualExit": 0
+    }
+  ],
+  "artifacts": {
+    "officialReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/controls/receipt.json",
+      "bytes": 42934,
+      "sha256": "b555c1c261b389f4e5cdc08548004c8e1dadf0d358a521b4ebcb31e7c9f7ea36"
+    },
+    "runReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/controls/run-receipt.json",
+      "bytes": 3592,
+      "sha256": "de38cf947606cdf393cda2b51f74e689f543868345d5273258bbdf7e7b7d8232"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/controls/receipt.json",
+      "bytes": 4299,
+      "sha256": "3c4459f0c89484704e41b377417a671bf808f054110b022f1dd23795e11b12a6"
+    },
+    "bridgeBefore": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/controls/bridge-before.json",
+      "bytes": 1177,
+      "sha256": "f71c0706e577069a31336153c4a3804f878c6b9014f0b3377c6b872e0de2363c"
+    },
+    "bridgeAfter": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/controls/bridge-after.json",
+      "bytes": 1174,
+      "sha256": "5fcfae17700fa22e60342d7e17380a11a64181fa54a64e7414a73b0be3361338"
+    },
+    "nativeVerification": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/verification.json",
+      "bytes": 49259,
+      "sha256": "ee80438dce224cf9d473184c4ffe97a4c690d401d98eecdbcbd5e458449df93b"
+    },
+    "previousBridgeIndex": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/q38/bridge-after.json",
+      "bytes": 1159,
+      "sha256": "e2a09a8058b79d08f4f91561b87c330a9578297e30f70a1a329d503dbfaf0284"
+    },
+    "verificationTool": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.py",
+      "bytes": 11086,
+      "sha256": "65a51dc606c2eafdba96db31d400ef09bd3f2bab2479886165909cea13302a46"
+    }
+  },
+  "accepted": true,
+  "problems": []
+}

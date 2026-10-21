@@ -1,0 +1,47 @@
+{
+  "recordedUTC": "2026-10-21T06:39:48.559955+00:00",
+  "provenance": "實際工具可見欄位轉錄；非 raw transport，未將重建文字冒充完整工具輸出。接受器 stdout／stderr、父 wait 碼與原 argv 由兩份 execution 原件保存。",
+  "attempts": [
+    {
+      "code": "peer-code.txt",
+      "runner": "run-peer-code.txt",
+      "execution": "execution.json",
+      "toolResponseFields": {
+        "chunk_id": "4b5fd6",
+        "exit_code": 1,
+        "wall_time_seconds": 5.3681e-05
+      },
+      "classification": "接受器 schema 誤判；未修改正式結果。"
+    },
+    {
+      "code": "peer-code-v2.txt",
+      "runner": "run-peer-v2-code.txt",
+      "execution": "execution-v2.json",
+      "toolResponseFields": {
+        "chunk_id": "8942ac",
+        "exit_code": 0,
+        "wall_time_seconds": 0.145205715
+      },
+      "classification": "唯讀核對通過。"
+    }
+  ],
+  "methodPreparation": {
+    "initialAST": {
+      "chunk_id": "e01261",
+      "exit_code": 0
+    },
+    "revisedAST": {
+      "chunk_id": "fbcf24",
+      "exit_code": 0
+    }
+  },
+  "reportTextReview": {
+    "chunk_id": "365821",
+    "exit_code": 0,
+    "path": "/workspace/geo261-evidence/canvas-L3-formal-6589248c/報告.md"
+  },
+  "finalVerificationScalarComparison": {
+    "chunk_id": "36c2ba",
+    "exit_code": 0
+  }
+}

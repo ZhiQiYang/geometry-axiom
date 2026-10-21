@@ -1,0 +1,61 @@
+"""只讀核對 L3 browser 準備；不 build、不啟動 browser／服務。"""
+from pathlib import Path
+import ast, datetime, hashlib, json, subprocess
+
+ROOT = Path('/workspace/geometry-axiom')
+BASE = Path('/workspace/geo261-evidence')
+OUT = BASE / 'browser-L3-preparation'
+SHA = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+PARENT = '19401ca5448e162ee6140fed37b64b83b31ddec8'
+OLD = json.loads((BASE/'browser-L2-preparation/L2-static-ready.json').read_bytes())
+def git(*args): return subprocess.check_output(['git', *args], cwd=ROOT)
+def sha(data): return hashlib.sha256(data).hexdigest()
+def status(): return git('status', '--porcelain=v1', '--untracked-files=all').decode()
+assert git('rev-parse', 'HEAD').decode().strip() == SHA
+assert git('rev-parse', SHA+'^').decode().strip() == PARENT
+assert status() == ''
+paths = [row['path'] for row in OLD['sourceBindings']]
+assert len(paths) == len(set(paths)) == 160
+bindings = []
+for name in paths:
+    blob = git('show', SHA+':'+name)
+    working = (ROOT/name).read_bytes()
+    assert blob == working
+    bindings.append({'path':name,'gitBlob':git('rev-parse',SHA+':'+name).decode().strip(),'bytes':len(blob),'sha256':sha(blob)})
+wrappers=[]
+for row in OLD['wrappers']:
+    path=Path(row['path']); data=path.read_bytes()
+    assert sha(data)==row['sha256'] and len(data)==row['bytes']
+    ast.parse(data)
+    wrappers.append({**row,'astValid':True})
+assert len(wrappers)==4
+golden_bytes=git('show',SHA+':geometry-web/cdp_sections.golden.json')
+golden=json.loads(golden_bytes)
+assert golden['mode']=='full' and len(golden['sections'])==85 and golden['total']==2261
+canvas=BASE/'canvas-L3-formal-6589248c'
+five=BASE/'browser-five-L3-formal-6589248c'
+run_id='l3-6589248c-formal'
+temp=Path('/tmp/geo261-browser-five-'+run_id)
+assert not canvas.exists() and not five.exists() and not Path(str(five)+'-launch').exists() and not temp.exists()
+assert not list(BASE.glob(canvas.name+'*')) and not list(BASE.glob(five.name+'*'))
+base_env=['env','-u','CC','-u','PYTHONOPTIMIZE','python3','-B']
+record={
+ 'schema':'geo261-browser-L3-static-preparation/1',
+ 'sampledUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+ 'sourceSha':SHA,'parentSha':PARENT,'branch':git('branch','--show-current').decode().strip(),
+ 'tree':git('rev-parse',SHA+'^{tree}').decode().strip(),'status':'',
+ 'sourceBindings':bindings,'sourceBindingCount':len(bindings),
+ 'sourcePathsInheritedFrom':str(BASE/'browser-L2-preparation/L2-static-ready.json'),
+ 'sourceBytesSameAsL2ForThis160PathSet':all(new['sha256']==old['sha256'] and new['bytes']==old['bytes'] for new,old in zip(bindings,OLD['sourceBindings'])),
+ 'wrappers':wrappers,
+ 'canvas':{'output':str(canvas),'bundle':str(BASE/'final-bundle/canvas-L3-formal'),'httpPort':18856,'cdpPort':9322,'jobLimitSeconds':2100,'goldenSections':85,'goldenTotal':2261,'goldenSha256':sha(golden_bytes),'argv':['node','geometry-web/cdp_test.js'],'launcherBaseArgv':base_env+[str(BASE/'canvas-L-preparation/launch_canvas_job.py'),'--sha',SHA,'--root',str(ROOT),'--output',str(canvas),'--port','18856','--cdp-port','9322']},
+ 'five':{'output':str(five),'bundle':str(BASE/'final-bundle/browser-five-L3-formal'),'launchDirectory':str(five)+'-launch','runId':run_id,'tempRoot':str(temp),'suiteOrder':['assembly','documents','grid','space','timber'],'limits':[900,600,900,900,1200],'launcherBaseArgv':base_env+[str(BASE/'browser-five-preparation/launch_browser_five.py'),'--sha',SHA,'--run-id',run_id,'--output',str(five)]},
+ 'browserRuntimeDirectory':OLD['browserRuntimeDirectory'],
+ 'buildExecuted':False,'browserExecuted':False,'serviceStarted':False,'releasePending':True,
+ 'missingLaunchArguments':['--release-note ROOT實際放行原文','--execute'],
+ 'validationExitCode':0,
+ '備註':['靜態準備不代表驗收。P189獨占全完成、native初建12件核對並取得root明示放行後才啟canvas。','canvas完成與owned cleanup後，同L3原five完整依序執行；每項整job期限由build前起算。','主repo私有runtime由原npm build/require_fresh正常built或reused，屆時照實記錄；沒有預置binary或使用nativeglobal。','最多兩heavy，不在未放行時探測服務、起browser或執行產品。','保原Noto/Chromium/16MiB與父env移除CC/PYTHONOPTIMIZE；保原flags、golden、真父wait與永久exit碼。','本次160路徑同L2只涵蓋這個集合，不宣稱整repo/source全部相同。']}
+assert git('rev-parse','HEAD').decode().strip()==SHA and status()==''
+target=OUT/'L3-static-ready.json';assert not target.exists()
+target.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'validationExitCode':0,'sourceSha':SHA,'bindings':160,'goldenSections':85,'goldenTotal':2261,'wrappers':4,'same160BytesAsL2':record['sourceBytesSameAsL2ForThis160PathSet'],'output':str(target),'bytes':target.stat().st_size,'sha256':sha(target.read_bytes()),'buildExecuted':False,'browserExecuted':False},ensure_ascii=False))

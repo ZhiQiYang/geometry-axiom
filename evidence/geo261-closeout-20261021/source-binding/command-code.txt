@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+"""只讀擷取指定乾淨 checkout 的實際裁判雜湊；不編譯、不執行測試、不寫 repository。"""
+import argparse
+from collections import Counter
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+sys.dont_write_bytecode = True
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", required=True)
+    parser.add_argument("--expected-head", required=True)
+    args = parser.parse_args()
+    root = Path(args.root).resolve()
+
+    def git(*argv):
+        return subprocess.check_output(["git", "-C", str(root), *argv])
+
+    before = git("rev-parse", "HEAD").decode().strip()
+    if before != args.expected_head or git("status", "--porcelain", "--untracked-files=no"):
+        raise RuntimeError("指定完整 HEAD 不符，或存在 tracked dirty；不產出成功快照")
+    sys.path.insert(0, str(root / "tests"))
+    import mutate as mt
+    import mutation_bridge as mb
+    if Path(mt.__file__).resolve() != root / "tests/mutate.py":
+        raise RuntimeError("載入的正式 mutate.py 路徑不符")
+    sources = mt.Sources(root)
+    core_oracle = mt.oracle_hash()
+    architecture_path = "geometry-core/domain-decoupling/product-architecture-receipt.json"
+    receipt = json.loads((root / architecture_path).read_bytes())
+    manifest_path = "geometry-core/domain-decoupling/product-architecture.json"
+    manifest = json.loads((root / manifest_path).read_bytes())
+    artifacts = ["geometry-core/domain-decoupling/" + name for name in (
+        "product-architecture.json", "product-architecture-scan.json",
+        "PRODUCT-ARCHITECTURE.md", "product-architecture-receipt.json")]
+    flat_tests = sorted(p.relative_to(root).as_posix() for p in (root / "tests").glob("*.py"))
+    root_scenes = sorted(p.relative_to(root).as_posix() for p in root.glob("*.scene"))
+    core_scenes = sorted({spec["scene"] for spec in mt.TESTS})
+    paths = sorted(set(sources.hashes) | set(flat_tests) | set(root_scenes) | set(core_scenes)
+                   | {row["path"] for row in receipt["inputs"]} | set(artifacts)
+                   | {"tests/mutants_results.json"})
+    rows = {}
+    tree = {}
+    for row in git("ls-tree", "-r", "-z", before).split(b"\0"):
+        if row:
+            metadata, path = row.split(b"\t", 1)
+            mode, kind, oid = metadata.decode().split()
+            tree[path.decode()] = (mode, kind, oid)
+    if any(p not in tree or tree[p][1] != "blob" or tree[p][0] not in {"100644", "100755"}
+           for p in paths):
+        raise RuntimeError("來源集合含未提交檔案或非一般 Git blob")
+    raw_blobs = subprocess.check_output(["git", "-C", str(root), "cat-file", "--batch"],
+                                      input="".join(tree[p][2] + "\n" for p in paths).encode())
+    offset = 0
+    for p in paths:
+        end = raw_blobs.index(b"\n", offset)
+        oid, kind, size = raw_blobs[offset:end].split()
+        start, size = end + 1, int(size)
+        committed = raw_blobs[start:start + size]
+        offset = start + size + 1
+        actual = (root / p).read_bytes()
+        if oid.decode() != tree[p][2] or kind != b"blob" or actual != committed:
+            raise RuntimeError("工作檔與指定 Git blob 的原 bytes 不同：" + p)
+        rows[p] = {"gitBlob": tree[p][2], "rawSha256": sha(actual),
+                   "lfSha256": sha(actual.replace(b"\r\n", b"\n")), "bytes": len(actual)}
+    if offset != len(raw_blobs):
+        raise RuntimeError("Git batch 資料未完整消耗")
+    arch = [{"path": row["path"], "sha256": rows[row["path"]]["lfSha256"]}
+            for row in receipt["inputs"]]
+    if arch != receipt["inputs"]:
+        raise RuntimeError("架構收據 inputs 與實際來源不同")
+    arch_hash = sha(json.dumps(arch, ensure_ascii=False, separators=(",", ":")).encode())
+    if arch_hash != receipt["inputClosureSha256"]:
+        raise RuntimeError("架構 input closure 計算結果不符")
+    ledger_path = "tests/mutants_results.json"
+    if ledger_path in sources.hashes or ledger_path in flat_tests + root_scenes + core_scenes:
+        raise RuntimeError("帳本意外成為裁判來源")
+    if ledger_path in {row["path"] for row in arch}:
+        raise RuntimeError("帳本意外成為架構來源")
+    mutations = {}
+    for m in mt.MUTANTS:
+        mutations[m["id"]] = {
+            "binary": m.get("binary", "core"), "retired": bool(m.get("retired")),
+            "equivalent": bool(m.get("equivalent")), "sourceFile": mt.mutant_file(m),
+            "mutantSha256": mt.mutant_key(m),
+            "oracleSha256": mb.oracle_hash(m, root) if m.get("binary") == "bridge" else core_oracle}
+    after = git("rev-parse", "HEAD").decode().strip()
+    if after != before or git("status", "--porcelain", "--untracked-files=no"):
+        raise RuntimeError("讀取期間 HEAD 或 tracked 狀態改變")
+    result = {
+        "schema": "geo261-source-binding-snapshot/1", "headBefore": before, "headAfter": after,
+        "tree": git("rev-parse", before + "^{tree}").decode().strip(), "trackedClean": True,
+        "snapshotToolRawSha256": sha(Path(__file__).read_bytes()),
+        "notClaimed": ["任何測試、編譯或 mutate.py --check 已執行", "遠端 SHA 已可解析",
+                       "帳本已在目前 HEAD 重產", "未提供的後續 L／E 已成立"],
+        "mutation": {"coreAndBridgeIncludeClosureSha256": sources.closure,
+                     "includePaths": sorted(sources.hashes), "coreOracleSha256": core_oracle,
+                     "coreScenePaths": core_scenes, "bridgeFlatPythonPaths": flat_tests,
+                     "bridgeRootScenePaths": root_scenes, "toolSha256": mt.tool_hash(),
+                     "definitions": mutations, "definitionsCount": len(mutations),
+                     "binaryCounts": dict(Counter(x["binary"] for x in mutations.values())),
+                     "expectedExecutionCount": sum(not x["retired"] for x in mutations.values()),
+                     "ledgerIsInput": False},
+        "architecture": {"sourceBaseHead": receipt["sourceBaseHead"], "counts": receipt["counts"],
+                         "inputClosureSha256": arch_hash, "inputs": arch,
+                         "sourceRoots": manifest["sourceRoots"], "sourceFiles": manifest["sourceFiles"],
+                         "ledgerIsInput": False, "artifactPaths": artifacts},
+        "trackedLedger": rows[ledger_path], "files": rows}
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

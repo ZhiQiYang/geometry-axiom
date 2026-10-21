@@ -1,0 +1,711 @@
+[
+  {
+    "name": "isolated-01-main-r1",
+    "version": {
+      "root": "/workspace/geo261-main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": "",
+      "repeats": 1,
+      "actualSourceHasCandidate": false,
+      "memoryPatch": "none",
+      "effectiveCandidateWait": false,
+      "targetedControl": false,
+      "referenceControl": "",
+      "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+      "effectiveSourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+      "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+      "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+    },
+    "assertionPassed": true,
+    "waitAndReadMs": 512.1659730000029,
+    "firstTimberObservedMs": 283.10000000009313,
+    "firstGeometryObservedMs": 283.10000000009313,
+    "firstIdleGeometryObservedMs": 526.1000000000931,
+    "activeSampling": false,
+    "apiTimings": [
+      {
+        "cmd": "newid",
+        "startAfterClickMs": 0.6000000000931323,
+        "durationMs": 45.800000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "dump",
+        "startAfterClickMs": 19.4000000001397,
+        "durationMs": 6.0,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 46.5,
+        "durationMs": 3.199999999953434,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-begin",
+        "startAfterClickMs": 49.800000000046566,
+        "durationMs": 39.800000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line timber 3 27 33 role primary",
+        "startAfterClickMs": 89.69999999995343,
+        "durationMs": 37.300000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 126.19999999995343,
+        "durationMs": 43.800000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line place 3 on 1 at-line guide 2  +v +n",
+        "startAfterClickMs": 127.0,
+        "durationMs": 75.9000000001397,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 201.80000000004657,
+        "durationMs": 49.10000000009313,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-end",
+        "startAfterClickMs": 202.9000000001397,
+        "durationMs": 75.39999999990687,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "obstacles 1",
+        "startAfterClickMs": 278.30000000004657,
+        "durationMs": 2.300000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 280.60000000009313,
+        "durationMs": 2.300000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "dump",
+        "startAfterClickMs": 283.10000000009313,
+        "durationMs": 2.199999999953434,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 285.30000000004657,
+        "durationMs": 2.300000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 521.3000000000466,
+        "durationMs": 4.800000000046566,
+        "ok": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "isolated-02-final-r1",
+    "version": {
+      "root": "/workspace/geometry-axiom",
+      "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+      "status": "",
+      "repeats": 1,
+      "actualSourceHasCandidate": false,
+      "memoryPatch": "none",
+      "effectiveCandidateWait": false,
+      "targetedControl": false,
+      "referenceControl": "",
+      "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+      "effectiveSourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+      "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+      "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+    },
+    "assertionPassed": true,
+    "waitAndReadMs": 597.774602999998,
+    "firstTimberObservedMs": 410.69999999995343,
+    "firstGeometryObservedMs": 410.69999999995343,
+    "firstIdleGeometryObservedMs": 616.3000000000466,
+    "activeSampling": false,
+    "apiTimings": [
+      {
+        "cmd": "newid",
+        "startAfterClickMs": 1.1999999999534339,
+        "durationMs": 61.9000000001397,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 63.199999999953434,
+        "durationMs": 3.800000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-begin",
+        "startAfterClickMs": 67.10000000009313,
+        "durationMs": 53.300000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line timber 3 27 33 role primary",
+        "startAfterClickMs": 120.5,
+        "durationMs": 61.199999999953434,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 180.69999999995343,
+        "durationMs": 51.0,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line place 3 on 1 at-line guide 2  +v +n",
+        "startAfterClickMs": 181.69999999995343,
+        "durationMs": 113.80000000004657,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 294.4000000001397,
+        "durationMs": 54.799999999813735,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-end",
+        "startAfterClickMs": 295.5,
+        "durationMs": 106.10000000009313,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "obstacles 1",
+        "startAfterClickMs": 401.60000000009313,
+        "durationMs": 4.099999999860302,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 405.80000000004657,
+        "durationMs": 4.699999999953434,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "dump",
+        "startAfterClickMs": 410.80000000004657,
+        "durationMs": 3.300000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 414.10000000009313,
+        "durationMs": 4.699999999953434,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 612.1999999999534,
+        "durationMs": 4.0,
+        "ok": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "isolated-03-final-r2",
+    "version": {
+      "root": "/workspace/geometry-axiom",
+      "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+      "status": "",
+      "repeats": 1,
+      "actualSourceHasCandidate": false,
+      "memoryPatch": "none",
+      "effectiveCandidateWait": false,
+      "targetedControl": false,
+      "referenceControl": "",
+      "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+      "effectiveSourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+      "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+      "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+    },
+    "assertionPassed": true,
+    "waitAndReadMs": 646.9435720000038,
+    "firstTimberObservedMs": 459.80000000004657,
+    "firstGeometryObservedMs": 459.89999999990687,
+    "firstIdleGeometryObservedMs": 665.8000000000466,
+    "activeSampling": false,
+    "apiTimings": [
+      {
+        "cmd": "newid",
+        "startAfterClickMs": 0.5999999998603016,
+        "durationMs": 65.9000000001397,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 66.5999999998603,
+        "durationMs": 3.9000000001396984,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-begin",
+        "startAfterClickMs": 70.69999999995343,
+        "durationMs": 63.89999999990687,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line timber 3 27 33 role primary",
+        "startAfterClickMs": 134.5999999998603,
+        "durationMs": 64.0,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 198.0,
+        "durationMs": 51.800000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line place 3 on 1 at-line guide 2  +v +n",
+        "startAfterClickMs": 198.69999999995343,
+        "durationMs": 120.80000000004657,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 318.5,
+        "durationMs": 60.89999999990687,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-end",
+        "startAfterClickMs": 319.5999999998603,
+        "durationMs": 131.70000000018626,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "obstacles 1",
+        "startAfterClickMs": 451.39999999990687,
+        "durationMs": 4.199999999953434,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 455.5999999998603,
+        "durationMs": 4.100000000093132,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "dump",
+        "startAfterClickMs": 459.89999999990687,
+        "durationMs": 2.800000000046566,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 462.80000000004657,
+        "durationMs": 3.699999999953434,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 660.8000000000466,
+        "durationMs": 5.0,
+        "ok": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "isolated-04-main-r2",
+    "version": {
+      "root": "/workspace/geo261-main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": "",
+      "repeats": 1,
+      "actualSourceHasCandidate": false,
+      "memoryPatch": "none",
+      "effectiveCandidateWait": false,
+      "targetedControl": false,
+      "referenceControl": "",
+      "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+      "effectiveSourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+      "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+      "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+    },
+    "assertionPassed": true,
+    "waitAndReadMs": 510.2640820000015,
+    "firstTimberObservedMs": 290.39999999990687,
+    "firstGeometryObservedMs": 290.39999999990687,
+    "firstIdleGeometryObservedMs": 529.5,
+    "activeSampling": false,
+    "apiTimings": [
+      {
+        "cmd": "newid",
+        "startAfterClickMs": 0.8000000002793968,
+        "durationMs": 37.39999999990687,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 38.3000000002794,
+        "durationMs": 6.699999999720603,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-begin",
+        "startAfterClickMs": 45.10000000009313,
+        "durationMs": 41.60000000009313,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line timber 3 27 33 role primary",
+        "startAfterClickMs": 86.70000000018626,
+        "durationMs": 44.0,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 130.20000000018626,
+        "durationMs": 41.10000000009313,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line place 3 on 1 at-line guide 2  +v +n",
+        "startAfterClickMs": 130.8000000002794,
+        "durationMs": 77.1999999997206,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 207.3000000002794,
+        "durationMs": 43.1999999997206,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-end",
+        "startAfterClickMs": 208.10000000009313,
+        "durationMs": 76.5,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "obstacles 1",
+        "startAfterClickMs": 284.60000000009313,
+        "durationMs": 3.0,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 287.60000000009313,
+        "durationMs": 2.6000000000931323,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "dump",
+        "startAfterClickMs": 290.39999999990687,
+        "durationMs": 3.0,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 293.39999999990687,
+        "durationMs": 3.3000000002793968,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 525.3999999999069,
+        "durationMs": 4.0,
+        "ok": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "isolated-05-main-r3",
+    "version": {
+      "root": "/workspace/geo261-main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": "",
+      "repeats": 1,
+      "actualSourceHasCandidate": false,
+      "memoryPatch": "none",
+      "effectiveCandidateWait": false,
+      "targetedControl": false,
+      "referenceControl": "",
+      "sourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+      "effectiveSourceSha256": "bdfed28fc80844b329f20f6ddef54dd0532c521c6cb444f84edf0863a7fa8e80",
+      "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+      "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+    },
+    "assertionPassed": true,
+    "waitAndReadMs": 510.2468129999979,
+    "firstTimberObservedMs": 311.09999999962747,
+    "firstGeometryObservedMs": 311.09999999962747,
+    "firstIdleGeometryObservedMs": 530.0,
+    "activeSampling": false,
+    "apiTimings": [
+      {
+        "cmd": "newid",
+        "startAfterClickMs": 0.6999999997206032,
+        "durationMs": 48.200000000186265,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 49.1999999997206,
+        "durationMs": 6.800000000279397,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-begin",
+        "startAfterClickMs": 56.09999999962747,
+        "durationMs": 44.5,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line timber 3 27 33 role primary",
+        "startAfterClickMs": 100.6999999997206,
+        "durationMs": 44.8000000002794,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 144.89999999990687,
+        "durationMs": 40.10000000009313,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line place 3 on 1 at-line guide 2  +v +n",
+        "startAfterClickMs": 145.59999999962747,
+        "durationMs": 79.10000000009313,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 224.0,
+        "durationMs": 42.1999999997206,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-end",
+        "startAfterClickMs": 224.6999999997206,
+        "durationMs": 76.20000000018626,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "obstacles 1",
+        "startAfterClickMs": 301.0,
+        "durationMs": 3.7999999998137355,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 304.89999999990687,
+        "durationMs": 6.0,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "dump",
+        "startAfterClickMs": 311.09999999962747,
+        "durationMs": 4.0,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 315.09999999962747,
+        "durationMs": 3.6000000000931323,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 525.2999999998137,
+        "durationMs": 4.7000000001862645,
+        "ok": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "isolated-06-final-r3",
+    "version": {
+      "root": "/workspace/geometry-axiom",
+      "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+      "status": "",
+      "repeats": 1,
+      "actualSourceHasCandidate": false,
+      "memoryPatch": "none",
+      "effectiveCandidateWait": false,
+      "targetedControl": false,
+      "referenceControl": "",
+      "sourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+      "effectiveSourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+      "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+      "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+    },
+    "assertionPassed": true,
+    "waitAndReadMs": 629.6883800000069,
+    "firstTimberObservedMs": 428.70000000018626,
+    "firstGeometryObservedMs": 428.70000000018626,
+    "firstIdleGeometryObservedMs": 646.1000000000931,
+    "activeSampling": false,
+    "apiTimings": [
+      {
+        "cmd": "newid",
+        "startAfterClickMs": 0.8000000002793968,
+        "durationMs": 60.60000000009313,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 61.40000000037253,
+        "durationMs": 3.8999999999068677,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-begin",
+        "startAfterClickMs": 65.40000000037253,
+        "durationMs": 56.5,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line timber 3 27 33 role primary",
+        "startAfterClickMs": 121.90000000037253,
+        "durationMs": 80.29999999981374,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 201.40000000037253,
+        "durationMs": 60.09999999962747,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line place 3 on 1 at-line guide 2  +v +n",
+        "startAfterClickMs": 202.20000000018626,
+        "durationMs": 112.89999999990687,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "section-profile-read",
+        "startAfterClickMs": 314.5,
+        "durationMs": 55.3000000002794,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "line history-end",
+        "startAfterClickMs": 315.10000000009313,
+        "durationMs": 107.20000000018626,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "obstacles 1",
+        "startAfterClickMs": 422.3000000002794,
+        "durationMs": 3.0,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 425.3000000002794,
+        "durationMs": 3.2999999998137355,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "dump",
+        "startAfterClickMs": 428.70000000018626,
+        "durationMs": 2.7999999998137355,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "source-inspect",
+        "startAfterClickMs": 431.5,
+        "durationMs": 4.7000000001862645,
+        "ok": true,
+        "error": null
+      },
+      {
+        "cmd": "references",
+        "startAfterClickMs": 640.7000000001863,
+        "durationMs": 5.2999999998137355,
+        "ok": true,
+        "error": null
+      }
+    ]
+  }
+]

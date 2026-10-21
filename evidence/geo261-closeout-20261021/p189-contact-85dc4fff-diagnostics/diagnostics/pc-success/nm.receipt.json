@@ -1,0 +1,39 @@
+{
+  "name": "nm",
+  "argv": [
+    "nm",
+    "-anS",
+    "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g/bridge-pc-profile"
+  ],
+  "cwd": "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-undef-gqq2eu1g",
+  "started_utc": "2026-10-21T02:13:27.259066+00:00",
+  "stdin": null,
+  "timeout_seconds": 900,
+  "pid": 307735,
+  "pgid": 307735,
+  "finished_utc": "2026-10-21T02:13:27.262471+00:00",
+  "wall_seconds": 0.003406372001336422,
+  "raw_wait_status": 0,
+  "actual_exit_code": 0,
+  "timed_out": false,
+  "rusage": {
+    "ru_utime": 0.0025,
+    "ru_stime": 0.0,
+    "ru_maxrss": 30736,
+    "ru_ixrss": 0,
+    "ru_idrss": 0,
+    "ru_isrss": 0,
+    "ru_minflt": 555,
+    "ru_majflt": 0,
+    "ru_nswap": 0,
+    "ru_inblock": 0,
+    "ru_oublock": 208,
+    "ru_msgsnd": 0,
+    "ru_msgrcv": 0,
+    "ru_nsignals": 0,
+    "ru_nvcsw": 1,
+    "ru_nivcsw": 0
+  },
+  "stdout_sha256": "082872b41aa693adfbc506647814e78dc2d13e8f50f6e9b00e9de64fa2c4998a",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "geometry-ledger-source-binding-plan/1",
+  "state": "只規劃，沒有執行或冒填S3收據",
+  "source_sha": {
+    "from_required_cli_argument": "--source",
+    "format": "完整小寫40位Git SHA，無預設值"
+  },
+  "known_anchors": {
+    "ledger_parent_L2": "249571fe2477845d5330f6190dad965bf327f43b",
+    "architecture_commit_A2": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+    "architecture_receipt_source_base_S2": "cabe824128be31d0039dc6c94fa3f04cfb722a6b"
+  },
+  "allowed_source_delta": [
+    "tests/test_geo261_host_authority.py"
+  ],
+  "metadata_paths": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture.json",
+    "geometry-core/domain-decoupling/product-architecture-scan.json",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json"
+  ],
+  "required_readonly_checks": [
+    "candidate checkout HEAD與公開ref精確等CLI來源，branch吻合且clean",
+    "L2是S3來源父提交；L2→S3唯一差異是指定測試檔",
+    "四metadata在A2/L2/S3逐Git blob與原bytes相同，sourceBaseHead保持原S2，不冒稱新架構重產",
+    "依原receipt的611個inputs核A2/L2/S3相同blob，candidate檔案LF hash符合原receipt；指定測試不在611",
+    "來源binding保存公開ref/parent/tree、metadata與611清單、原command/stdout/stderr/真碼；沒有執行architecture scan或產品",
+    "shared主repo仍L2的狀態與candidate來源checkout分別記錄，不混用main_root欄位的舊名字"
+  ],
+  "compatibility_fields": {
+    "prepare_product_argument": "真正L2完整SHA，用作來源父提交；舊config鍵名product_parent_sha維持相容",
+    "prepare_root_argument": "已公開S3的candidate checkout；不是仍凍結L2的共享主repo",
+    "prepare_branch_argument": "candidate checkout實際branch，須與公開ref相同",
+    "future_import": "L2 canvas/native freeze解除後root普通FF主branch至同一S3，才沿原importer產parent=S3且onlyledger的L3"
+  },
+  "preserved_execution_contract": {
+    "all_records": 78,
+    "all_executions": 75,
+    "core_executions": 57,
+    "bridge_executions": 18,
+    "retired": 3,
+    "fresh_cache_required": true,
+    "CC_and_PYTHONOPTIMIZE_absent": true,
+    "stack_bytes": 16777216,
+    "core_dump_limit": 0,
+    "skip_core_if_same_hash": false
+  },
+  "product_execution_started": false
+}

@@ -1,0 +1,58 @@
+"""唯讀核對已凍結證據的既有雜湊清單與八份交付文字連結。"""
+from pathlib import Path
+import datetime,hashlib,json,re,subprocess,sys
+assert not sys.flags.optimize
+B=Path('/workspace/geo261-evidence/final-bundle');O=Path(sys.argv[1]);assert not O.exists();O.mkdir()
+L='6589248c9a94bdf0460d8f84dd1610e51048188b';R=Path('/workspace/geometry-axiom')
+def sha(raw):return hashlib.sha256(raw).hexdigest()
+def dump(name,data):(O/name).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+commands=[]
+def run(label,args):
+ p=subprocess.run(args,cwd=R,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+ (O/(label+'.stdout')).write_bytes(p.stdout);(O/(label+'.stderr')).write_bytes(p.stderr);(O/(label+'.exit-code')).write_text(str(p.returncode)+'\n')
+ commands.append({'label':label,'argv':args,'exitCode':p.returncode});dump('commands.json',commands)
+ assert p.returncode==0,(label,p.returncode)
+ return p.stdout
+assert run('source-head',['git','rev-parse','HEAD']).decode().strip()==L
+assert run('source-clean',['git','status','--porcelain=v1','--untracked-files=all'])==b''
+remote=run('remote-heads',['git','ls-remote','--heads','origin','refs/heads/main','refs/heads/architecture/geo261-integration-20261016','refs/heads/codex/geo261-closeout-20261021']).decode()
+expected={'refs/heads/main':'adbaebf9c73ea6801d7b4d5214e4b846b132923b','refs/heads/architecture/geo261-integration-20261016':'7dae5f21c7ca401e660450d437e60ba566218da8','refs/heads/codex/geo261-closeout-20261021':L}
+actual={line.split()[1]:line.split()[0] for line in remote.splitlines()}
+assert actual==expected,(actual,expected)
+for name in ('gates-L3-formal','browser-five-L3-formal','canvas-L3-formal','native-L3-formal','p189-formal-L3','ledger-S3-cc'):
+ assert (B/name).is_dir(),name
+cache={};sums=[]
+def checkfile(p):
+ assert p.is_file() and not p.is_symlink(),str(p)
+ if p not in cache:
+  raw=p.read_bytes();st=p.stat();cache[p]={'bytes':len(raw),'sha256':sha(raw),'mtimeNs':st.st_mtime_ns}
+ return cache[p]
+for sumsfile in sorted(B.rglob('SHA256SUMS')):
+ seen=set();count=0
+ for line in sumsfile.read_text().splitlines():
+  m=re.fullmatch(r'([0-9a-f]{64})  (.+)',line);assert m,(str(sumsfile),line)
+  digest,rel=m.groups();assert rel not in seen;seen.add(rel)
+  p=(sumsfile.parent/rel).resolve();assert sumsfile.parent.resolve() in p.parents and not Path(rel).is_absolute()
+  assert checkfile(p)['sha256']==digest,(str(sumsfile),rel)
+  count+=1
+ sums.append({'path':str(sumsfile.relative_to(B)),'listedFiles':count,'sha256':sha(sumsfile.read_bytes()),'allListedHashesMatch':True})
+assert len(sums)>=46
+names=['README.md','PR288_BODY.md','PR288_REVIEW_REPLY.md','PR288_USER_ACTIONS.md','驗收總表.md','帳本來源與命令.md','修正與突變自證.md','交付說明.md']
+prefix='https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/'
+links=[];docs=[]
+for name in names:
+ p=B/name;raw=p.read_bytes();assert raw==(Path('/workspace/geo261-evidence/delivery-final')/name).read_bytes()
+ docs.append({'path':name,'bytes':len(raw),'sha256':sha(raw)})
+ for target in re.findall(r'(?<!!)\[[^\]]*\]\(([^)]+)\)',raw.decode()):
+  original=target
+  if target.startswith(prefix):target=target[len(prefix):]
+  elif re.match(r'^[a-z]+:',target):continue
+  if target.startswith('#'):continue
+  target=target.split('#')[0];p=(B/target).resolve();assert B.resolve() in p.parents and p.exists(),(name,target)
+  links.append({'document':name,'target':original,'resolved':str(p.relative_to(B))})
+for p,row in cache.items():
+ assert p.stat().st_size==row['bytes'] and p.stat().st_mtime_ns==row['mtimeNs'],str(p)
+assert run('head-after',['git','rev-parse','HEAD']).decode().strip()==L
+assert run('clean-after',['git','status','--porcelain=v1','--untracked-files=all'])==b''
+r={'schema':'geo261-final-bundle-readonly/1','sourceL':L,'finishedUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sumLists':sums,'listedHashChecks':sum(x['listedFiles'] for x in sums),'distinctHashedFiles':len(cache),'documents':docs,'documentLinks':links,'remoteHeads':actual,'accepted':True,'scope':'只驗既有清單所列hash與八稿連結；不把子清單當總全集，不重跑產品。完整全集由隨後stage建立的根artifact-index及E驗證器核。'}
+dump('receipt.json',r);print(json.dumps({'accepted':True,'sumLists':len(sums),'listedHashChecks':r['listedHashChecks'],'distinctHashedFiles':len(cache),'documents':len(docs),'links':len(links)},ensure_ascii=False))

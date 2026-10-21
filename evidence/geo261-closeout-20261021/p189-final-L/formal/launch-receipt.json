@@ -1,0 +1,28 @@
+{
+  "launched_utc": "2026-10-21T00:47:01.826093+00:00",
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+    "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03/supervisor-released-config.json"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "pid": 293160,
+  "pgid": 293160,
+  "interactive_tool_session": null,
+  "stdin": "DEVNULL",
+  "stdout_stderr": "/workspace/geo261-evidence/p189-final-L-43f85313c324-ready.g0dzrc03/orchestrator.log",
+  "start_new_session": true,
+  "PYTHONOPTIMIZE_present": false,
+  "supervisor_sha256": "e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413",
+  "released_config_sha256": "91998c3bd6b4647c13ecd822f5d92d403c4d8dbc60c09595851adbd3d56b1081",
+  "previous_failed_out": "/workspace/geo261-evidence/p189-final-L-43f85313c324.wfwk1_ca",
+  "calibration": {
+    "path": "/workspace/geo261-p189-final-L-src.dqc1bplz/calib/f3-00.scene",
+    "source": "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/calib/f3-00.scene",
+    "git_blob": "541434203427d34f64e560b34adac9d7ffaa2ffe",
+    "sha256": "35e24fb0a483ffd6fee8dd99f751edeb127418481aa717816af804cd218024b2",
+    "bytes": 16255,
+    "matches_git_blob_bytes": true
+  }
+}

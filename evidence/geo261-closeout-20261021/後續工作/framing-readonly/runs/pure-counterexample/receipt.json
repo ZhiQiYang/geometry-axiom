@@ -1,0 +1,33 @@
+{
+  "sourceSha": "1126991c9dbd3de92d8cce6eab2419f8f7970e34",
+  "sourceBranch": "fix/framing-oracle-review-20261020",
+  "baseSha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "cwd": "/workspace/geo261-framing-review",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-c",
+    "import ast,json\nfrom pathlib import Path\np=Path('/workspace/geo261-framing-review/geometry-core/framing-template/oracle/framing_oracle.py')\nt=ast.parse(p.read_text())\nnodes=[n for n in t.body if isinstance(n,ast.Assign) and any(isinstance(x,ast.Name) and x.id=='CORE_CHECKS' for x in n.targets) or isinstance(n,ast.FunctionDef) and n.name in {'core_limit_problems','verdict'}]\nns={};exec(compile(ast.Module(body=nodes,type_ignores=[]),str(p),'exec'),ns)\nres={'conflicts':[],'core_limits':[{'code':'CORE_LIMIT_BOUNDARY_END_FREE','check':'C8_I19_BOUNDARY_END','id':7,'end':2600}]}\nfor label,code in [('matching','C8_I19_BOUNDARY_END'),('wrong_failure_kind_same_endpoint','C8_I19_PRIORITY')]:\n f=[{'check':code,'id':7,'end':2600}]\n print(json.dumps({'case':label,'declared':res['core_limits'][0],'failure':f[0],'verdict':ns['verdict'](res,None,f)},ensure_ascii=False))\n\n"
+  ],
+  "startedUtc": "2026-10-20T21:34:10.340438+00:00",
+  "finishedUtc": "2026-10-20T21:34:10.402219+00:00",
+  "elapsedSeconds": 0.06156458300029044,
+  "exitCode": 0,
+  "expectedExitCode": 0,
+  "stdout": {
+    "path": "stdout.log",
+    "bytes": 478,
+    "sha256": "7e92d62b9c890b0729c17f344c50bfa8527dc82db613a07307cac2681271ccf5"
+  },
+  "stderr": {
+    "path": "stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "scope": "固定來源的輕量證據重取，不是 #288 驗收，也未執行完整 oracle suite。",
+  "codeFile": {
+    "path": "pure-counterexample/code.txt",
+    "bytes": 867,
+    "sha256": "ce8356eb46148cc9c892c4f3e7ee15afa09704e8ddf6c1dbfaf59dd4212a9ec6"
+  }
+}

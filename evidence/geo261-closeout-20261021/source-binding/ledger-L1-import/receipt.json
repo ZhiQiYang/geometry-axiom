@@ -1,0 +1,20 @@
+{
+  "branch": "codex/geo261-closeout-20261021",
+  "sourceA": "7159530c0e494d3211e6ab1764eb691137211707",
+  "ledgerL": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+  "ledgerSourcePath": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/mutants_results.json",
+  "ledgerSha256": "1b8fc87eb83ac5fd5af0589aa48795aa868380d9d5ae35b4c1a8bf7af2175c7d",
+  "bytes": 5170404,
+  "records": 78,
+  "executions": 75,
+  "counts": {
+    "killed": 70,
+    "equivalent": 4,
+    "crashed": 1,
+    "retired": 3
+  },
+  "onlyChangedPath": "tests/mutants_results.json",
+  "executionHeadsUnmodified": true,
+  "sourceDiffExitCode": 0,
+  "備註": "原始JSON逐byte匯入；L僅保存帳本，execution實際來源仍A。正式整合驗收尚未執行。"
+}

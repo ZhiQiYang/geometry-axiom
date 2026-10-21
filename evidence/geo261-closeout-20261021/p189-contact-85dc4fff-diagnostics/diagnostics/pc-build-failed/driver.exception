@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-4ljb7jqu/pcdiag-driver.py", line 117, in <module>
+    try:main(json.loads(Path(sys.argv[1]).read_bytes()));code=0
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-4ljb7jqu/pcdiag-driver.py", line 106, in main
+    build=run('build',config['compile_argv'],source,env)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-evidence/p189-pcdiag-85dc4fff-4ljb7jqu/pcdiag-driver.py", line 34, in run
+    if code or timed_out:raise RuntimeError(f'{name}真碼{code}，timeout={timed_out}')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: build真碼1，timeout=False

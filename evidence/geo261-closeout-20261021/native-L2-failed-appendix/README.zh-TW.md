@@ -1,0 +1,1 @@
+本附錄保存 L2 native 正式紅燈歷史包的外部封裝與拷貝核對。相鄰 native-L2-failed 為 native-publish-clean 的完整原 bytes 拷貝，含原 artifact-index.json，未重生索引或修改子包。原件內記載的絕對路徑是當輪執行來源；本次 destination 映射由 copy-receipt.json 明列。acceptedNative=false；此封裝成功不表示產品驗收通過。

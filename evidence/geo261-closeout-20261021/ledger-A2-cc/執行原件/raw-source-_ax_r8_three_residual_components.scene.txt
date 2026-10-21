@@ -1,0 +1,4 @@
+# R3/R4/R8: a two-piece path cannot merge the third residue into its first ring.
+surface 1 origin 0 0 0 u +x v +y outline 0,10 10,10 10,0 20,0 20,10 30,10 30,0 40,0 40,20 20,20 20,30 10,30 10,20 0,20
+column 1 at -10 10 size 60 10 z 0 100
+apply-proj 1 c1

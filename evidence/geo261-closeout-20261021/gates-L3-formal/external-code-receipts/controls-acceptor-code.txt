@@ -1,0 +1,169 @@
+"""唯讀核對已完成 controls；沒有執行任何正式裁判或產品。"""
+import ast,collections,datetime,hashlib,io,json,subprocess
+from pathlib import Path,PurePosixPath
+def h(b):return hashlib.sha256(b).hexdigest()
+
+def j(p):return json.loads(p.read_text())
+
+def ref(p):return dict(path=str(p),bytes=p.stat().st_size,sha256=h(p.read_bytes()))
+
+def verify_ref(x):
+    p=Path(x['path']);b=p.read_bytes();assert len(b)==x['bytes'] and h(b)==x['sha256'],str(p)
+
+def value(n):
+    if isinstance(n,ast.Constant):return n.value
+    if isinstance(n,ast.Name):return symbols[n.id]
+    if isinstance(n,(ast.List,ast.Tuple,ast.Set)):
+        a=[value(x) for x in n.elts]
+        return tuple(a) if isinstance(n,ast.Tuple) else set(a) if isinstance(n,ast.Set) else a
+    if isinstance(n,ast.Dict):return {value(a):value(b) for a,b in zip(n.keys,n.values)}
+    if isinstance(n,ast.BinOp) and isinstance(n.op,ast.Add):return value(n.left)+value(n.right)
+    if isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id=='case':
+        keys=['id','clause','desc','file','before','after','tests','cause','equivalent','group','error_types','more']
+        args=[value(x) for x in n.args];kw={x.arg:value(x.value) for x in n.keywords}
+        d=dict(equivalent=None,group='native',error_types=(),more=())
+        d.update(zip(keys,args));d.update(kw)
+        d['patches']=[(d['file'],d['before'],d['after']),*d['more']]
+        return d
+    raise ValueError(type(n).__name__)
+
+def digest(mapping):
+    d=hashlib.sha256()
+    for p,b in sorted(mapping.items()):d.update(p.encode()+b'\0');d.update(hashlib.sha256(b).digest())
+    return d.hexdigest()
+
+def check_evidence(e,code,logpath):
+    assert e['schema']=='section-profile-exceptions/1'
+    assert len(e['requested'])==len(set(e['requested']))>0 and e['requested']==e['executed']
+    assert e['tests_run']==len(e['executed'])
+    assert e['skipped']==e['expected_failures']==e['unexpected_successes']==0
+    ev=e['events'];assert len({(x['test_id'],x['subtest_id']) for x in ev})==len(ev)
+    assert all(x['test_id'] in e['executed'] for x in ev)
+    assert e['failures']==sum(x['kind']=='failure' for x in ev) and e['errors']==sum(x['kind']=='error' for x in ev)
+    assert set(e['passed'])==set(e['executed'])-{x['test_id'] for x in ev}
+    assert code==(1 if ev else 0)
+    raw=logpath.read_text()
+    assert f"Ran {e['tests_run']} test" in raw
+    if code==0:assert raw.rstrip().endswith('OK')
+    else:assert 'FAILED (' in raw
+    for x in ev:
+        assert x['test_id'].split('.')[-1] in raw
+        assert x['exception_type'].split('.')[-1]+':' in raw
+    return raw
+
+BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021');G=BASE/'gates';ROOT=Path('/workspace/geo261-gates-l3-6589248c9a94-20261021')
+SHA='6589248c9a94bdf0460d8f84dd1610e51048188b';PHASE='controls'
+OUT=BASE/'gates/acceptance-review';REPORT=OUT/'controls.json';assert not REPORT.exists()
+official=G/'controls';launch=G/'launcher/controls';r=j(official/'receipt.json');rr=j(official/'run-receipt.json');lr=j(launch/'receipt.json');v=j(G/'verification/controls.json')
+def git_blob(name):return subprocess.check_output(['git','show',SHA+':'+name],cwd=ROOT)
+source=git_blob('tests/section_profile_mutation_check.py').decode();symbols={}
+for n in ast.parse(source).body:
+    if isinstance(n,ast.Assign):
+        try:a=value(n.value)
+        except (ValueError,KeyError,TypeError):continue
+        for t in n.targets:
+            if isinstance(t,ast.Name):symbols[t.id]=a
+qcases={x['id']:x for x in symbols['CASES']}
+runner_source=git_blob('geometry-core/domain-decoupling/closeout-tools/run_controls.py').decode()
+control_source=git_blob('geometry-core/domain-decoupling/closeout-tools/q38_controls.py').decode()
+expected=next(ast.literal_eval(n.value) for n in ast.parse(runner_source).body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='EXPECTED' for t in n.targets))
+(symbols['k_file'],symbols['k_before'],symbols['k_after']),(symbols['m_file'],symbols['m_before'],symbols['m_after'])=qcases['SPM40']['patches']
+base_value=value
+def value(n):
+    if isinstance(n,ast.Attribute) and isinstance(n.value,ast.Name) and n.value.id=='g':return symbols[n.attr]
+    if isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and isinstance(n.func.value,ast.Name) and n.func.value.id=='g' and n.func.attr=='case':
+        return base_value(ast.Call(func=ast.Name(id='case',ctx=ast.Load()),args=n.args,keywords=n.keywords))
+    if isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id=='layers':
+        origin,newid,keep=[value(x) for x in n.args];c=qcases[origin]
+        chosen=[c['patches'][i] for i in keep]
+        return dict(c,id=newid,desc='control: %s layers %s'%(origin,keep),patches=chosen,equivalent=None)
+    return base_value(n)
+control_node=next(n for n in ast.parse(control_source).body if isinstance(n,ast.AugAssign) and isinstance(n.target,ast.Attribute) and n.target.attr=='CASES')
+cases={c['id']:c for c in value(control_node.value)}
+assert len(cases)==len(expected)==12 and set(cases)==set(expected)
+assert v['accepted'] and not v['problems']
+for x in v['artifacts'].values():verify_ref(x)
+assert lr['sourceSha']==lr['headBefore']==lr['headAfter']==rr['source_head']==SHA
+assert lr['statusBefore']==lr['statusAfter']==rr['status_before']==rr['status_after']==''
+assert lr['sourceHashesBefore']==lr['sourceHashesAfter'] and lr['sourceHashesUnchanged'] and lr['sourceCleanRestored']
+for name,hashvalue in lr['sourceHashesBefore'].items():assert h(git_blob(name))==hashvalue
+assert rr['runner_sha256']==h(runner_source.encode()) and rr['controls_sha256']==h(control_source.encode())
+assert rr['gate_exit_code']==v['rawGateExitCode']==1
+assert rr['control_check_exit_code']==lr['childReturnCode']==lr['launcherExitCode']==v['expectationCheckExitCode']==0
+assert int((launch/'.exit-code').read_text())==int((launch/'.launcher-exit-code').read_text())==0
+assert rr['expected_matched'] and rr['baselines_green'] and rr['restored']
+assert lr['CCAbsent'] and lr['PYTHONOPTIMIZEAbsent'] and lr['stackBytes']==rr['stack_bytes']==16777216
+assert h((launch/'launcher-code.txt').read_bytes())==lr['launcherSourceSha256']
+assert lr['elapsedSeconds']==v['elapsedSeconds']
+argv=rr['command'];selected=[argv[i+1] for i,x in enumerate(argv) if x=='--only']
+assert selected==list(expected) and all(x not in argv for x in ('--explore','--group','-O','-OO'))
+assert argv[argv.index('--jobs')+1]=='1' and argv[3].endswith('/q38_controls.py')
+assert rr['expected']=={k:dict(verdict=x[0],exit=x[1]) for k,x in expected.items()}
+q38=j(G/'q38-run/q38/receipt.json')
+assert h((G/'q38-run/bin/model-base').read_bytes())==rr['model_base_sha256']==r['baselines']['model']['adapter_sha256']==q38['baselines']['model']['adapter_sha256']
+bridge=[]
+for stage in ('before','after'):
+    x=j(launch/('bridge-'+stage+'.json'));previous=Path(x['previousIndexPath'])
+    assert previous==G/'launcher/q38/bridge-after.json'
+    assert h(previous.read_bytes())==x['previousIndexSha256'] and x['matchesPreviousBytesAndMtimes']
+    prev={Path(z['sourcePath']).name:z for z in j(previous)['files']}
+    for z in x['files']:
+        p=Path(z['preservedPath']);assert p.stat().st_size==z['bytes'] and h(p.read_bytes())==z['sha256'] and p.stat().st_mtime_ns==z['sourceMtimeNs']
+        assert all(z[k]==prev[Path(z['sourcePath']).name][k] for k in ('bytes','sha256','sourceMtimeNs'))
+    bridge.append(x)
+assert all(all(a[k]==b[k] for k in ('bytes','sha256','sourceMtimeNs')) for a,b in zip(bridge[0]['files'],bridge[1]['files']))
+paths=subprocess.check_output(['git','ls-tree','-rz','--name-only',SHA],cwd=ROOT).decode().rstrip('\0').split('\0')
+native={p for p in paths if PurePosixPath(p).suffix in ('.c','.h','.inc') and 'vendor' not in PurePosixPath(p).parts and (len(PurePosixPath(p).parts)==1 or p.split('/')[0] in ('geometry-core','geometry-web','geometry-app','geometry-templates'))}
+names=sorted(native|{p for c in cases.values() for p,_,_ in c['patches']})
+buf=io.BytesIO(subprocess.check_output(['git','cat-file','--batch'],input=''.join(SHA+':'+p+'\n' for p in names).encode(),cwd=ROOT));blobs={}
+for p in names:
+    fields=buf.readline().split();assert len(fields)==3 and fields[1]==b'blob',p
+    blobs[p]=buf.read(int(fields[2]));assert buf.read(1)==b'\n'
+assert not buf.read()
+base_native={p:blobs[p] for p in native}
+assert digest(base_native)==r['baselines']['native']['source_tree_sha256']==q38['baselines']['native']['source_tree_sha256']
+for group,num in [('native',27),('model',20)]:
+    b=r['baselines'][group];e=b['exception_evidence'];assert b['exit']==0 and e['tests_run']==num and not e['events']
+    assert e==j(official/'logs'/(group+'-baseline.exceptions.json'))
+    assert e['requested']==q38['baselines'][group]['exception_evidence']['requested']
+    assert b['source_tree_sha256']==q38['baselines'][group]['source_tree_sha256']
+    check_evidence(e,0,official/'logs'/(group+'-baseline.log'))
+verified=[]
+assert len(r['results'])==len({x['id'] for x in r['results']})==12
+for result in r['results']:
+    identifier=result['id'];c=cases[identifier];group=c['group'];e=result['exception_evidence']
+    assert (result['verdict'],result['exit'])==expected[identifier]
+    assert result['group']==group and result['clause']==c['clause'] and result['desc']==c['desc']
+    assert e==j(official/'logs'/(identifier+'.exceptions.json'))
+    raw=check_evidence(e,result['exit'],official/'logs'/(identifier+'.log'))
+    prefix=symbols[group.upper()+'_MODULE']+'.'+symbols[group.upper()+'_CLASS']+'.'
+    assert e['requested']==[prefix+t for t in c['tests']]
+    eligible=[x for x in e['events'] if (x['kind']=='failure' and x['exception_type']=='builtins.AssertionError') or (x['kind']=='error' and x['exception_type'] in c['error_types'])]
+    named=[x for x in eligible if x['test_id'] in e['requested']]
+    matched=[x for x in named if all(t in x['message'] for t in c['cause'])]
+    assert result['failed']==[('FAIL ' if x['kind']=='failure' else 'ERROR ')+x['test_id'] for x in e['events']]
+    if result['verdict']=='survived':assert result['exit']==0 and not e['events'] and not c['equivalent']
+    else:assert result['verdict']=='unlabelled' and result['exit']==1 and named and not matched
+    mutation=base_native.copy()
+    for file,before,after in c['patches']:
+        original=mutation[file] if group=='native' else blobs[file];assert original.count(before.encode())==1,(identifier,file)
+        if group=='native':mutation[file]=original.replace(before.encode(),after.encode())
+    if group=='native':
+        cr=j(official/'logs'/('bridge-'+identifier+'.compile.json'))
+        assert cr['exit']==0 and cr['binary_sha256']==result['binary_sha256'] and cr['binary_sha256']!=r['baselines']['native']['binary_sha256']
+        assert cr['source_tree_sha256']==digest(mutation)
+    verified.append(dict(id=identifier,verdict=result['verdict'],exit=result['exit'],group=group,tests=e['requested'],requiredCauses=c['cause'],terminalEvidence=[dict(test=x['test_id'],type=x['exception_type'],kind=x['kind'],missingCauses=[t for t in c['cause'] if t not in x['message']],message=x['message']) for x in named],compiledBinaryCompared=group=='native',patchFiles=[x[0] for x in c['patches']]))
+assert collections.Counter(x['verdict'] for x in verified)==r['summary']==v['summary']=={'survived':9,'unlabelled':3}
+assert {x['id'] for x in verified if x['verdict']=='unlabelled'}=={'XC40A','XC03L1','XC04L1'}
+assert sum(x['compiledBinaryCompared'] for x in verified)==8
+files=[p for p in official.rglob('*') if p.is_file() and 'tmp' not in p.relative_to(official).parts]
+report=dict(sourceSha=SHA,phase='controls',reviewer='/root/q38_card_gates/l2_gate_acceptors',reviewKind='沿用已驗只讀接受器；本輪實際執行者另見外層收據，不冒稱原作者完成新的獨立審查',templateSourceSha='43f85313c32410ac01406ab585846bbacafea278',reviewedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),accepted=True,validationExitCode=0,blockers=[],
+    result=dict(cases=12,survived=9,unlabelled=['XC40A','XC03L1','XC04L1'],rawGateExit=1,expectationCheckExit=0,launcherWaitExit=0,nativeBaseline=27,modelBaseline=20,elapsedSeconds=lr['elapsedSeconds']),
+    commands=dict(actual=argv,selectedIds=selected,selectionMatchesDeclaredExpected=True,jobs=1,exploreAndGroupAbsent=True),
+    sources=dict(headBefore=lr['headBefore'],headAfter=lr['headAfter'],statusBefore=lr['statusBefore'],statusAfter=lr['statusAfter'],beforeAfterHashCount=10,sourceHashesMatchGitL=True,baselineSourceTreeHashesMatchQ38=True,nativeSourceTreeFiles=194,compiledMutantSourceTreesReconstructed=8,compiledMutantBinaryHashesDifferentFromBaseline=8,modelAdapterSameAsQ38=True),
+    bridge=dict(previousPhase='q38',previousReceipt=str(G/'launcher/q38/bridge-after.json'),beforeAfterBytesHashMtimeExact=True,preservedCopiesVerified=True),
+    cases=verified,rawFileIndex=[ref(p) for p in sorted(files)],
+    references={k:ref(p) for k,p in [('verification',G/'verification/controls.json'),('officialReceipt',official/'receipt.json'),('runReceipt',official/'run-receipt.json'),('launcherReceipt',launch/'receipt.json'),('q38IndependentReport',OUT/'q38.json'),('reviewCode',Path(__file__))]},
+    limits=['raw gate真1與控制預期核對真0分開；survived與unlabelled不改叫killed，也不是任意exit1當有效控制。','XC03L1/XC04L1有具名AssertionError但同一terminal訊息缺原cause；XC40A有允許ModelError但病因是coordinate domain，不是完整solid；12案逐一符合原EXPECTED。','未讀正在執行card的工作bytes倒推歷史；使用Git L與controls原前後來源收據。','八組已刪除臨時binary只核其原編譯hash、異baseline與Git重建來源樹，未假稱仍持有binary。','四個Python-only controls沿用Q38 fresh model-base；不要求其adapter改變。','工具session真退出觀察由執行代理另存；本報告已核可保存的raw gate/run_controls/launcher parent.wait原退出鏈。'])
+REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(report=str(REPORT),bytes=REPORT.stat().st_size,sha256=h(REPORT.read_bytes()),validationExitCode=0,cases=12,sourceBlobs=len(blobs),rawFiles=len(files)),ensure_ascii=False))

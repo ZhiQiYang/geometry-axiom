@@ -1,0 +1,9 @@
+{
+  "updatedExclusions": {
+    "geometry-web/uiux_review_test.js": "已逐字核對來源 ab6869b86a4ad82345359b72397fc055280d8308：既有 P73 專用驗收模組保留原空態斷言的成員數、無假形狀、空態節點及加入入口條件，改為逐項取得狀態供失敗診斷，並新增外部尺寸文字必須隱藏且清空的子條件；不移除斷言、不變更 69 題契約或 golden。對應產品 geometry-web/app.js 確實另有 SVG 空態與尺寸文字修正，仍屬原 H owned 來源；其新內容必須由本輪來源閉包與真正掃描記錄，不沿用前輪產品 bytes 不變的結論。此檔只由驗收 harness 載入，不是產品入口。",
+    "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py": "已逐字核對來源 ab6869b86a4ad82345359b72397fc055280d8308 與外部候選：只把報告中的變更範圍明確限定於 manifest 刷新，並指向收據 inputsChangedSincePreviousSeal 的完整來源差異，避免產品來源改動時誤稱僅有 exclusion digest 與工具更動。精確撤回這一行改兩行的字串補丁後，其餘 bytes 與前版相同；輸入枚舉、三條驗收、負控制、收據欄位、責任分類及守門政策皆維持原邏輯。此檔是外部稽核工具，不提供產品執行期能力。"
+  },
+  "addedExclusions": {
+    "geometry-core/domain-decoupling/closeout-tools/p73_probe.js": "GEO-261 收尾的 P73 專用瀏覽器診斷與突變驗證工具；沿用正式 CDP 啟動器及完整 UI/UX 驗收模組，擷取空態 DOM 與實際來源指紋，檢查非空／空／返回非空的顯示轉換及世界內容保持，並以明示記憶體來源替換、精確撤回及同步 callback 控制驗證產品空態守門。只由隔離驗收命令啟動，不由產品或服務入口載入，不允許產品 owned 來源依賴；各版本 hash、實際控制及結果由對應原始收據記錄。"
+  }
+}

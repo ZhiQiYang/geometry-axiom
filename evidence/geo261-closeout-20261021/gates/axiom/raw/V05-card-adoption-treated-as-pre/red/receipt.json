@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild"
+  ],
+  "exit_code": 1,
+  "seconds": 0.27188492899995254,
+  "tests": 1,
+  "failures": 1,
+  "errors": 0,
+  "skips": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "9e6d3b0bb0f9aa067a8c8f5607ab0e0b238208626ca48e825267a4d07763bc64"
+}

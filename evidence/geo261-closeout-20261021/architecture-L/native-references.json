@@ -1,0 +1,240 @@
+{
+  "說明": "只引用本輪 L native 原件；完整 224 核對沿用專責收據，不重跑 205／18 或另造 run_all 裁判",
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "nativeStartedUtc": "2026-10-20T23:39:12.072242+00:00",
+  "nativeVerificationSha256": "854331066a034b08c85ffebb4257f16a576933b37b89ac7ed49b2af6ec2e4af5",
+  "nativeAggregateMeaning": "全部 224 個 suite 均完成且符合 run_all 的完整驗收判準；保留具名允許 skip 與 exit-code-only 分類，不宣稱 5176 項全部為斷言通過。",
+  "nativeAllowedSkips": [
+    {
+      "suite": "py:test_gdi_contract",
+      "item": {
+        "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+        "reason": "requires compiled Windows GDI contract harness",
+        "scope": "test",
+        "count": 1,
+        "parent_test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources"
+      },
+      "allowed": true,
+      "matchedRules": [
+        {
+          "suite": "py:test_gdi_contract",
+          "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+          "reason": "requires compiled Windows GDI contract harness",
+          "platforms": [
+            "posix"
+          ],
+          "why": "Windows GDI resources do not exist on POSIX; all native geometry suites still run"
+        }
+      ]
+    }
+  ],
+  "nativeExitCodeOnlySuites": [
+    "mutation:check",
+    "node:cdp_confirmation_gate",
+    "node:cdp_navigation",
+    "node:document_cases",
+    "node:document_format",
+    "node:model_viewer",
+    "oracle:framing-selftest"
+  ],
+  "具名套件": [
+    {
+      "suite": "py:test_architecture_contract",
+      "file": "tests/test_architecture_contract.py",
+      "passed": 205,
+      "skipped": 0,
+      "rawFiles": [
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_architecture_contract.json",
+          "artifactPath": "suite-logs/py_test_architecture_contract.json",
+          "bytes": 359,
+          "sha256": "d6342d37646018b350c503ccd6123b7635b3cfa66869d707c3ef1ac170b45013",
+          "sourceMtimeNs": 1792539763695544278
+        },
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_architecture_contract.log",
+          "artifactPath": "suite-logs/py_test_architecture_contract.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceMtimeNs": 1792539763704110708
+        },
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_architecture_contract.unittest.log",
+          "artifactPath": "suite-logs/py_test_architecture_contract.unittest.log",
+          "bytes": 305,
+          "sha256": "5981d8b3ee203125f616506e514367141ad28a3908d514b96f4d4eaacd704f17",
+          "sourceMtimeNs": 1792539763695279147
+        }
+      ]
+    },
+    {
+      "suite": "py:test_product_architecture",
+      "file": "tests/test_product_architecture.py",
+      "passed": 18,
+      "skipped": 0,
+      "rawFiles": [
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_product_architecture.json",
+          "artifactPath": "suite-logs/py_test_product_architecture.json",
+          "bytes": 356,
+          "sha256": "b89fad80a116f90aed366b4d3c3e0958b783f53d9870702fdfb17bd12c97f2a2",
+          "sourceMtimeNs": 1792540950776613728
+        },
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_product_architecture.log",
+          "artifactPath": "suite-logs/py_test_product_architecture.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceMtimeNs": 1792540950785801033
+        },
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_product_architecture.unittest.log",
+          "artifactPath": "suite-logs/py_test_product_architecture.unittest.log",
+          "bytes": 118,
+          "sha256": "e89f6e07f427faa81353b0a64af69819f7530a97dc7629933ed317330ac1e16b",
+          "sourceMtimeNs": 1792540950769801168
+        }
+      ]
+    }
+  ],
+  "references": [
+    {
+      "source": "/workspace/geo261-evidence/native-final/command.json",
+      "copiedAs": "native-references/command.json",
+      "bytes": 11723,
+      "rawSha256": "8db09dd28b443c8289d395ec20d2545e7438a3bd9546b249b103e06a8776e2b6"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/receipt.json",
+      "copiedAs": "native-references/receipt.json",
+      "bytes": 14112,
+      "rawSha256": "f13bc0d736eea9f218a8fa53972ec15f24d1744407b020a2344ad8c114b51ad7"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final-launcher/preflight.json",
+      "copiedAs": "native-references/launcher/preflight.json",
+      "bytes": 1670,
+      "rawSha256": "dd6ad4cfb742a62ef774ae991eac1b36e01a12e835d06ac36a3d85283f90d440"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final-launcher/launcher-command.json",
+      "copiedAs": "native-references/launcher/launcher-command.json",
+      "bytes": 13348,
+      "rawSha256": "4a573447714429fea8a69784244f8d214fad666e752f0162711677e6c7d9d346"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final-launcher/launcher-receipt.json",
+      "copiedAs": "native-references/launcher/launcher-receipt.json",
+      "bytes": 13942,
+      "rawSha256": "f432ad5e5a3b53037e00f6a013a48d3126d68dcdf4254829cbe49186875b8baf"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final-launcher/wrapper-pid.json",
+      "copiedAs": "native-references/launcher/wrapper-pid.json",
+      "bytes": 79,
+      "rawSha256": "3bc6ea1ca227e911fb8a3ca9866bb530c72cf64196b6f3d62088920507a9190c"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final-launcher/wrapper-code.txt",
+      "copiedAs": "native-references/launcher/wrapper-code.txt",
+      "bytes": 4882,
+      "rawSha256": "64ff6ee9c5a506c5ae89ec19df3bd1a03fe93ab1943bda5a6ef7a60bbdf328c4"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final-launcher/launcher-code.txt",
+      "copiedAs": "native-references/launcher/launcher-code.txt",
+      "bytes": 6477,
+      "rawSha256": "6c32561bf1e6fbe72f78167918be60e64418655fc201ac924d58d34ef0d10e7c"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final-launcher/.exit-code",
+      "copiedAs": "native-references/launcher/.exit-code",
+      "bytes": 2,
+      "rawSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final-launcher/.launcher-exit-code",
+      "copiedAs": "native-references/launcher/.launcher-exit-code",
+      "bytes": 2,
+      "rawSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/reaped.json",
+      "copiedAs": "native-references/reaped.json",
+      "bytes": 1745,
+      "rawSha256": "5ef7986b93525f7f2bdc03e23ac924808bc7f4ecb0244d4c44e9178cbd15c807"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/verification.json",
+      "copiedAs": "native-references/native-verification.json",
+      "bytes": 48846,
+      "rawSha256": "854331066a034b08c85ffebb4257f16a576933b37b89ac7ed49b2af6ec2e4af5"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/suite-log-source-index.json",
+      "copiedAs": "native-references/suite-log-source-index.json",
+      "bytes": 196633,
+      "rawSha256": "117bfd3fb80e8e12a3b77ea56d5c4622645e50ab7ac1c81c9a848be8c337f026"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/named-required-suites.json",
+      "copiedAs": "native-references/named-required-suites.json",
+      "bytes": 6515,
+      "rawSha256": "d04a48f7c76cb03d61c9b57e54a1af291a50d80c210f52cbfa4c7e4182df8c9b"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/source-reference/run_all.expected.json",
+      "copiedAs": "native-references/source-reference/run_all.expected.json",
+      "bytes": 24624,
+      "rawSha256": "847d2494c1c701b80f83ebc1a48cac84ce06b66eabff11f14f86584d10093cc6"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/run.log",
+      "copiedAs": "native-references/run.log",
+      "bytes": 36794,
+      "rawSha256": "d039e207a8ddae35be7e5958afd1ae9584399babb7661d1015a8dd9753ba2fc8"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-l-preparation/package-native-l.py",
+      "copiedAs": "native-references/packaging-tool-code.txt",
+      "bytes": 9464,
+      "rawSha256": "6be5664f840d7a67d008f3c771ca2d8d644b2c7aa3f15550829333c0973f7831"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/suite-logs/py_test_architecture_contract.json",
+      "copiedAs": "native-references/suite-logs/py_test_architecture_contract.json",
+      "bytes": 359,
+      "rawSha256": "d6342d37646018b350c503ccd6123b7635b3cfa66869d707c3ef1ac170b45013"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/suite-logs/py_test_architecture_contract.log",
+      "copiedAs": "native-references/suite-logs/py_test_architecture_contract.log",
+      "bytes": 0,
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/suite-logs/py_test_architecture_contract.unittest.log",
+      "copiedAs": "native-references/suite-logs/py_test_architecture_contract.unittest.log",
+      "bytes": 305,
+      "rawSha256": "5981d8b3ee203125f616506e514367141ad28a3908d514b96f4d4eaacd704f17"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/suite-logs/py_test_product_architecture.json",
+      "copiedAs": "native-references/suite-logs/py_test_product_architecture.json",
+      "bytes": 356,
+      "rawSha256": "b89fad80a116f90aed366b4d3c3e0958b783f53d9870702fdfb17bd12c97f2a2"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/suite-logs/py_test_product_architecture.log",
+      "copiedAs": "native-references/suite-logs/py_test_product_architecture.log",
+      "bytes": 0,
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo261-evidence/native-final/suite-logs/py_test_product_architecture.unittest.log",
+      "copiedAs": "native-references/suite-logs/py_test_product_architecture.unittest.log",
+      "bytes": 118,
+      "rawSha256": "e89f6e07f427faa81353b0a64af69819f7530a97dc7629933ed317330ac1e16b"
+    }
+  ]
+}

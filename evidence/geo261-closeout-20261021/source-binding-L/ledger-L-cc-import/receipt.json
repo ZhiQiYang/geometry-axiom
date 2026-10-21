@@ -1,0 +1,20 @@
+{
+  "branch": "codex/geo261-closeout-20261021",
+  "sourceA": "7159530c0e494d3211e6ab1764eb691137211707",
+  "historicalL1": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+  "ledgerL": "43f85313c32410ac01406ab585846bbacafea278",
+  "ledgerSourcePath": "/workspace/geo261-evidence/ledger-cc-7159530c0e49.wzi0t97l/mutants_results.json",
+  "ledgerSha256": "868a80700c9d058e208684631e799a91659e7820b06c31c246b8af96c670a731",
+  "bytes": 5170287,
+  "records": 78,
+  "executions": 75,
+  "counts": {
+    "killed": 70,
+    "equivalent": 4,
+    "crashed": 1,
+    "retired": 3
+  },
+  "onlyChangedPath": "tests/mutants_results.json",
+  "executionHeadsUnmodified": true,
+  "備註": "第二輪原始 JSON 逐位元組匯入；L 只保存帳本，execution 實際來源仍 A。正式整合驗收尚未執行。"
+}

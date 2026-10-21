@@ -1,0 +1,25 @@
+{
+  "utc": "2026-10-21T03:26:08.077496+00:00",
+  "processes": [
+    {
+      "pid": 324458,
+      "exists": true,
+      "state": "S",
+      "starttime_ticks": 2798494,
+      "command": "python3 -B /workspace/geo261-evidence/ledger-L2-preparation/launch_run.py --source cbefb39b47fb0edcfaf003d2c1101929fea244c8 --config /workspace/geo261-evidence/ledger-A2-cc-cbefb39b/prepare-receipt.json --execute ",
+      "stat_raw": "324458 (python3) S 324457 324457 324457 0 -1 4194560 4227 4047 0 0 2 0 1 7 20 0 1 0 2798494 38682624 2913 18446744073709551615 1 1 0 0 0 0 0 16781313 2 0 0 0 17 2 0 0 0 0 0 0 0 0 0 0 0 0 0\n"
+    },
+    {
+      "pid": 324483,
+      "exists": true,
+      "state": "S",
+      "starttime_ticks": 2798506,
+      "command": "python3 -B /workspace/geo261-evidence/ledger-cc-supervisor.py /workspace/geo261-evidence/ledger-A2-cc-cbefb39b/prepare-receipt.json ",
+      "stat_raw": "324483 (python3) S 324458 324483 324483 0 -1 4194560 3794 4058 0 0 2 1 0 2 20 0 1 0 2798506 39190528 3079 18446744073709551615 1 1 0 0 0 0 0 16781313 2 0 0 0 17 1 0 0 0 0 0 0 0 0 0 0 0 0 0\n"
+    }
+  ],
+  "root_report": "03:25 前後 exec-server transport disconnected；root 隨後 pwd 真 0 chunk73e1e3。此為工具傳輸故障，未重啟 writer。",
+  "prior_starttime_ticks_saved": false,
+  "same_process_evidence": "此刻 PID、完整 argv 與啟動 UTC 對照；啟動原收據未保存 starttime_ticks，不能宣稱已逐值比對歷史 tick。",
+  "supervisor_observed_exit_file": false
+}

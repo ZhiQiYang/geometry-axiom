@@ -1,0 +1,132 @@
+"""將已完成的預設 cc 帳本逐位元組提交；保留每個命令與真正結束碼。"""
+import argparse
+from collections import Counter
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+import re
+from pathlib import Path
+import subprocess
+import time
+
+BRANCH = 'codex/geo261-closeout-20261021'
+ROOT = Path('/workspace/geometry-axiom')
+PATH = 'tests/mutants_results.json'
+
+
+def utc():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def digest(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def main():
+    if not __debug__:
+        raise RuntimeError('禁止停用 assert；未建立輸出目錄或改檔。')
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source', required=True)
+    parser.add_argument('--run', type=Path, required=True)
+    parser.add_argument('--sha256', required=True)
+    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--execute', action='store_true')
+    args = parser.parse_args()
+    if not re.fullmatch('[0-9a-f]{40}',args.source):parser.error('來源必須是完整小寫 40 位 SHA')
+    if not re.fullmatch('[0-9a-f]{64}',args.sha256):parser.error('帳本必須提供完整 SHA256')
+    A = args.source
+    if not args.execute:
+        raise SystemExit('必須明確指定 --execute；未改檔。')
+    out = args.output
+    assert args.run.resolve()!=out.resolve() and not out.exists()
+    out.mkdir(parents=True, exist_ok=False)
+    (out / 'command-source.txt').write_bytes(Path(__file__).read_bytes())
+    env = os.environ.copy()
+    removed = sorted(k for k in env if k in ('CC', 'PYTHONOPTIMIZE') or k.startswith(('MUTATE_','GEOMETRY_')))
+    for key in removed:
+        env.pop(key)
+    commands = []
+
+    def save(name, value):
+        (out / name).write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+    def run(label, argv):
+        started = utc()
+        t0 = time.monotonic()
+        result = subprocess.run(argv, cwd=ROOT, env=env, stdin=subprocess.DEVNULL, capture_output=True)
+        (out / (label + '.stdout')).write_bytes(result.stdout)
+        (out / (label + '.stderr')).write_bytes(result.stderr)
+        (out / (label + '.exit-code')).write_text(str(result.returncode) + '\n')
+        commands.append({'label': label, 'argv': argv, 'cwd': str(ROOT), 'startedUTC': started,
+                         'finishedUTC': utc(), 'seconds': time.monotonic() - t0,
+                         'exitCode': result.returncode})
+        save('commands.json', commands)
+        if result.returncode:
+            raise RuntimeError(f'{label} 結束碼 {result.returncode}；原始輸出已保存，後續未執行。')
+        return result.stdout
+
+    save('environment.json', {'CC_present': 'CC' in env, 'PYTHONOPTIMIZE_present': 'PYTHONOPTIMIZE' in env,
+                              'removedNames': removed, 'mutationOverridesPresent': [k for k in env if k.startswith(('MUTATE_','GEOMETRY_'))]})
+    assert run('head-before', ['git', 'rev-parse', 'HEAD']).decode().strip() == A
+    assert run('branch-before', ['git', 'branch', '--show-current']).decode().strip() == BRANCH
+    assert not run('status-before', ['git', 'status', '--porcelain=v1'])
+    prepared=json.loads((args.run/'prepare-receipt.json').read_bytes())
+    assert prepared['source_sha']==A
+    validation=json.loads((args.run/'ledger-validation.json').read_bytes())
+    assert validation['source_sha']==A and validation['ledger_sha256']==args.sha256
+    assert validation['record_count']==78 and validation['execution_count']==75
+    assert (args.run/'supervisor-observed.exit-code').read_text().strip()=='0'
+    receipt = json.loads((args.run / 'run-receipt.json').read_bytes())
+    assert receipt['source_sha'] == receipt['head_after'] == A
+    assert receipt['tracked_status_after'] == '' and receipt['temporary_mutant_sources'] == []
+    assert receipt['checks_preserved_ledger_bytes'] and receipt['CC_present'] is False
+    assert receipt['compiler_argv0'] == 'cc'
+    assert [r['phase'] for r in receipt['phases']] == ['mutate', 'check', 'check-killers']
+    for phase in receipt['phases']:
+        assert phase['exit_code'] == 0 and phase['source_sha'] == A and phase['CC_present'] is False
+        assert (args.run / (phase['phase'] + '.exit-code')).read_text().strip() == '0'
+    assert (args.run / 'supervisor.exit-code').read_text().strip() == '0'
+    raw = (args.run / 'mutants_results.json').read_bytes()
+    assert digest(raw) == args.sha256 == receipt['ledger_sha256']
+    ledger = json.loads(raw)
+    prior = json.loads(run('A-ledger', ['git', 'show', A + ':' + PATH]))
+    assert set(ledger) == set(prior) and len(ledger) == 78
+    counts = Counter(row['verdict'] for row in ledger.values())
+    assert not (set(counts) - {'killed', 'crashed', 'equivalent', 'retired'})
+    executions = [row['execution'] for row in ledger.values() if 'execution' in row]
+    assert len(executions) == 75 and {row['head'] for row in executions} == {A}
+    core = [row for row in executions if row['schema'] == 'geometry-mutation-execution/1']
+    assert len(core) == 57 and {row['compile_command'][0] for row in core} == {'cc'}
+    (ROOT / PATH).write_bytes(raw)
+    assert run('diff-files', ['git', 'diff', '--name-only']).decode().splitlines() == [PATH]
+    run('diff-check', ['git', 'diff', '--check'])
+    run('stage', ['git', 'add', '--', PATH])
+    assert run('staged-files', ['git', 'diff', '--cached', '--name-only']).decode().splitlines() == [PATH]
+    run('commit', ['git', 'commit', '-m', 'test(mutations): regenerate ledger after contact and host copy fixes'])
+    head = run('head-after', ['git', 'rev-parse', 'HEAD']).decode().strip()
+    assert run('parent', ['git', 'rev-parse', 'HEAD^']).decode().strip() == A
+    run('A-is-ancestor', ['git', 'merge-base', '--is-ancestor', A, head])
+    assert run('A-to-L-files', ['git', 'diff', '--name-only', A, head]).decode().splitlines() == [PATH]
+    run('A-to-L-source', ['git', 'diff', '--exit-code', A, head, '--', '.', ':!' + PATH])
+    assert run('ledger-blob', ['git', 'show', head + ':' + PATH]) == raw
+    assert not run('status-after', ['git', 'status', '--porcelain=v1'])
+    save('receipt.json', {'branch': BRANCH, 'sourceA2': A, 'parent': A, 'ledgerL2': head,
+                         'ledgerSourcePath': str(args.run / 'mutants_results.json'), 'ledgerSha256': digest(raw),
+                         'bytes': len(raw), 'records': len(ledger), 'executions': len(executions),
+                         'counts': dict(counts), 'onlyChangedPath': PATH, 'executionHeadsUnmodified': True,
+                         '備註': 'A2 當輪原始 JSON 逐位元組匯入；L2 唯一父提交為 A2 且只保存帳本，75 筆 execution 實際來源仍 A2，沒有重寫。L2 正式整合驗收尚未執行。'})
+    run('L-default-check', ['python3', '-B', 'tests/mutate.py', '--check'])
+    assert (ROOT / PATH).read_bytes() == raw
+    run('push', ['git', 'push', 'origin', BRANCH])
+    remote = run('remote-after-push', ['git', 'ls-remote', '--heads', 'origin', 'refs/heads/' + BRANCH]).decode().split()
+    assert remote == [head, 'refs/heads/' + BRANCH]
+    assert not run('status-final', ['git', 'status', '--porcelain=v1'])
+    save('publication.json', {'sourceA2': A, 'ledgerL2': head, 'defaultCheckExitCode': 0,
+                             'pushExitCode': 0, 'remoteExactMatch': True, 'completedUTC': utc(),
+                             '備註': '只有一般推送；沒有修改 PR、留言、合併或改寫 execution。'})
+    print(json.dumps({'ledgerL2': head, 'ledgerSha256': digest(raw), 'counts': dict(counts), 'exitCode': 0}))
+
+
+if __name__ == '__main__':
+    main()

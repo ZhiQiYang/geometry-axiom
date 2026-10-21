@@ -1,0 +1,282 @@
+{
+  "prepared_utc": "2026-10-21T01:36:22.646513+00:00",
+  "classification": "候選性能預檢；非完整可合驗收；不改既有收據",
+  "label": "contact-v2",
+  "candidate_worktree": "/workspace/geo261-contact-candidate",
+  "repo": "/workspace/geometry-axiom",
+  "work": "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+  "out": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+  "commits": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "final": "85dc4fff44ce49b27f831b21cbdcb662c863302c"
+  },
+  "expected_parent": "7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09",
+  "candidate_sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "candidate_parent_matches": true,
+  "changed_paths": [
+    "geometry-templates/woodworking/native/contact_world.c",
+    "tests/geo261_contact_world_harness.c",
+    "tests/test_geo261_wood_contact_world.py"
+  ],
+  "changed_blobs": [
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "git_blob": "d9d545ee15d7e363ccacbae78eace48358941396",
+      "bytes": 10421,
+      "sha256": "08f9c5e60a9396ab0791a01a1408605b39f70d0881f69bdf5e94d2dac1c7465e"
+    },
+    {
+      "path": "tests/geo261_contact_world_harness.c",
+      "git_blob": "a9fb31198f0937f1224fd0a10d36e6d607fd72a7",
+      "bytes": 21772,
+      "sha256": "a16e54c4fd6d316b32e3642db658bcad1a5d55141ea2690fc2d982ba256d9f0e"
+    },
+    {
+      "path": "tests/test_geo261_wood_contact_world.py",
+      "git_blob": "36e8a3d2c486c736868c7c18c289759d0921e9cc",
+      "bytes": 13499,
+      "sha256": "31779ea23b357455fd5722d747278afd65ea2c0539189ed7a7db9c39d0370f23"
+    }
+  ],
+  "candidate_parent_patch_sha256": "d97d8559f96a248dc73a1caca233821da3c8348c10b6a888fcfd03e933453bca",
+  "candidate_vs_L_patch_sha256": "d25328ee33f6e206cb97123cda4ff8b0007d02144d0088189d7ef9f678908da2",
+  "runner": "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+  "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+  "runner_git_blob": "666a8897b44e39c7209e598bce442830082c440c",
+  "generator": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+  "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "generator_source": "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/gen_scene.py",
+  "generator_calibration": {
+    "path": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/calib/f3-00.scene",
+    "source": "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/calib/f3-00.scene",
+    "sha256": "35e24fb0a483ffd6fee8dd99f751edeb127418481aa717816af804cd218024b2",
+    "bytes": 16255
+  },
+  "generator_dependency_review": "沿已讀固定原bytes的靜態依賴核：selftest唯一外部讀取為同目錄calib/f3-00.scene，其餘imports皆標準庫；本輪實際selftest尚待執行。",
+  "archives": [
+    {
+      "label": "main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "argv": [
+        "git",
+        "archive",
+        "--format=tar",
+        "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+        "--",
+        "current_geometry.c",
+        "geometry-core",
+        "geometry-web",
+        ":(exclude)geometry-core/domain-decoupling",
+        ":(exclude)geometry-web/docs",
+        ":(exclude)geometry-web/prototypes",
+        ":(exclude)geometry-web/vendor",
+        ":(exclude)geometry-web/node_modules"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "archive_path": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/archives/main.tar",
+      "archive_bytes": 14745600,
+      "archive_sha256": "e23b5eb07856ec5729b62e881dba7e009d84ab923c76556bd7b5c83e2584f020",
+      "source_directory": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/adbaebf9",
+      "source_file_count": 495,
+      "source_index": "source-files-main.json",
+      "bridge_exists": false
+    },
+    {
+      "label": "base",
+      "sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "argv": [
+        "git",
+        "archive",
+        "--format=tar",
+        "3e600772076465fc65a26ac09055028301c0fb0b",
+        "--",
+        "current_geometry.c",
+        "geometry-core",
+        "geometry-app",
+        "geometry-templates",
+        "geometry-web",
+        ":(exclude)geometry-core/domain-decoupling",
+        ":(exclude)geometry-web/docs",
+        ":(exclude)geometry-web/prototypes",
+        ":(exclude)geometry-web/vendor",
+        ":(exclude)geometry-web/node_modules"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "archive_path": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/archives/base.tar",
+      "archive_bytes": 16056320,
+      "archive_sha256": "eb1a3a14c3cba61c651cbf824e705475f1e7f4ce7d32ad2606bb965d3b540d04",
+      "source_directory": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/3e600772",
+      "source_file_count": 673,
+      "source_index": "source-files-base.json",
+      "bridge_exists": false
+    },
+    {
+      "label": "final",
+      "sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "argv": [
+        "git",
+        "archive",
+        "--format=tar",
+        "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+        "--",
+        "current_geometry.c",
+        "geometry-core",
+        "geometry-app",
+        "geometry-templates",
+        "geometry-web",
+        ":(exclude)geometry-core/domain-decoupling",
+        ":(exclude)geometry-web/docs",
+        ":(exclude)geometry-web/prototypes",
+        ":(exclude)geometry-web/vendor",
+        ":(exclude)geometry-web/node_modules"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "archive_path": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/archives/final.tar",
+      "archive_bytes": 16076800,
+      "archive_sha256": "aaf3053eba2ea4b289bafc85428e1b06d2f8be6e5fe66357aee5419762f82088",
+      "source_directory": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/85dc4fff",
+      "source_file_count": 673,
+      "source_index": "source-files-final.json",
+      "bridge_exists": false
+    }
+  ],
+  "planned_commands": [
+    {
+      "phase": "generator-selftest",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+        "--selftest"
+      ]
+    },
+    {
+      "phase": "selftest",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "selftest",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+        "--out",
+        "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+        "--gen",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+        "--final",
+        "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "build",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "build",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+        "--out",
+        "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+        "--gen",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+        "--final",
+        "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "equivalence",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "equivalence",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+        "--out",
+        "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+        "--gen",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+        "--final",
+        "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "timing",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "timing",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+        "--out",
+        "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+        "--gen",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+        "--final",
+        "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+        "--timeout",
+        "900"
+      ]
+    },
+    {
+      "phase": "check",
+      "argv": [
+        "python3",
+        "-B",
+        "-u",
+        "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+        "check",
+        "--repo",
+        "/workspace/geometry-axiom",
+        "--work",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+        "--out",
+        "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+        "--gen",
+        "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+        "--final",
+        "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+        "--timeout",
+        "900"
+      ]
+    }
+  ],
+  "expected_equivalence_scene_count": 175,
+  "expected_timing_sample_count": 36,
+  "selftest_phase_rule": "本輪顯式selftest執行16控制，build/equivalence/timing/check不自動執行。",
+  "timing_return_rule": "timing0僅表示收樣完成，check才判原門檻。",
+  "threshold_final_main_ratio": 2.0,
+  "environment_remove_before_execution": [
+    "PYTHONOPTIMIZE"
+  ],
+  "stack_kib": 16384,
+  "timeout_seconds": 900,
+  "phase_commands_executed": [],
+  "build_started": false,
+  "timing_started": false,
+  "preparation_tool_sha256": "f35581d16384ddd4362fd89f984b0e7bfd027f74bb1ee73ec29ee30a2863322c"
+}

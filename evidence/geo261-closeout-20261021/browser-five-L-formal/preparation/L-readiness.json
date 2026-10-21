@@ -1,0 +1,72 @@
+{
+  "reviewedUTC": "2026-10-20T23:20:37.865763+00:00",
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "worktreeClean": true,
+  "tools": {
+    "run_browser_five.py": {
+      "sha256": "4ffefe74d503506f2c99d3064fac4359c4aa5324f77ccf5e3ae44bdf6ec994f2",
+      "bytes": 37261,
+      "ast": true
+    },
+    "launch_browser_five.py": {
+      "sha256": "479cdcd9f1c1c03ab203aff6fc5f0f9fddb3c70d779507777c7c1d903762f124",
+      "bytes": 5858,
+      "ast": true
+    }
+  },
+  "suiteSpecs": {
+    "assembly": [
+      900,
+      18851,
+      9367,
+      "cdp_test.js",
+      "GEOMETRY_ASSEMBLY_ONLY"
+    ],
+    "documents": [
+      600,
+      18852,
+      9366,
+      "documents_browser_test.js",
+      null
+    ],
+    "grid": [
+      900,
+      18853,
+      9334,
+      "cdp_test.js",
+      "GEOMETRY_GRID_SYSTEM_ONLY"
+    ],
+    "space": [
+      900,
+      18854,
+      9347,
+      "space_model_test.js",
+      null
+    ],
+    "timber": [
+      1200,
+      18855,
+      9348,
+      "space_model_test.js",
+      "GEOMETRY_TIMBER_ONLY"
+    ]
+  },
+  "parentPrefix": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3"
+  ],
+  "checkedParentEnvironment": {
+    "CCAbsent": true,
+    "PYTHONOPTIMIZEAbsent": true,
+    "pythonOptimizeFlag": 0
+  },
+  "launchAuthorized": false,
+  "heavyCommandsStarted": [],
+  "deadlineNote": "既有單一 job 總 deadline 自 build 前起算，含正常收尾；未延長 workflow 900/600/900/900/1200 秒",
+  "scopeNote": "只有靜態 AST／hash／Git 與 Python 環境自查；未 import 或執行正式 wrapper，放行後仍要重核父環境",
+  "validationExitCode": 0
+}

@@ -1,0 +1,25 @@
+{
+  "originalPreflightExitCode": 1,
+  "reason": "預檢接受器把 #300 的五份外部原件索引套成包全集合，因本地新增 README 未列入而回 1。原索引沒有聲稱包含 README 或全包 exact set；這是本次接受器範圍推定過度。",
+  "fiveOriginalHashesMatch": true,
+  "preserved": "summary.json、result.json、command-code.txt 與 1 真碼保持原件，不重跑全包掃描或改凍結索引。",
+  "acceptedScope": "40 份子清單中 21333 筆引用的內容 hash／bytes 無缺漏或失配，類型／mode／symlink／magic 無問題；#300 README 交由未來總索引覆蓋。",
+  "newReadOnlyInterpretationExitCode": 0,
+  "outerReceiptPayloadsAbsent": 5,
+  "outerReceiptPayloadsAlreadyPresent": [
+    {
+      "sourcePath": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu-publication-check.json",
+      "bytes": 469,
+      "sha256": "18896f6294bafd835c9e540f81ef85e5a85194273a5ead25e4045b6925a99fd4",
+      "identicalPayloadInCurrentBundle": [
+        "ledger-A-gcc/integration/publication-check.json"
+      ],
+      "state": "原件已以另一位置收錄",
+      "sameStemExitFile": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu-publication-check.exit-code",
+      "exitBytes": "0\n",
+      "exitSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exitPairNote": "即使包內其他任意 0 換行檔有同 hash，也不能取代此收據對應的具名父程序退出原件。"
+    }
+  ],
+  "stillNotFinal": "尚缺真 L2 證據、最後草稿與總 artifact-index；不宣稱 E2 通過。"
+}

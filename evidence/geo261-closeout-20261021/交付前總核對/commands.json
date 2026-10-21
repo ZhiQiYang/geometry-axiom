@@ -1,0 +1,53 @@
+[
+  {
+    "label": "source-head",
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "source-clean",
+    "argv": [
+      "git",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "remote-heads",
+    "argv": [
+      "git",
+      "ls-remote",
+      "--heads",
+      "origin",
+      "refs/heads/main",
+      "refs/heads/architecture/geo261-integration-20261016",
+      "refs/heads/codex/geo261-closeout-20261021"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "head-after",
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "clean-after",
+    "argv": [
+      "git",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "exitCode": 0
+  }
+]

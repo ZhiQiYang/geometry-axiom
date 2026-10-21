@@ -1,0 +1,10 @@
+# Preserve the core's existing CRLF bytes, while allowing useful textual reviews.
+current_geometry.c -text diff whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# GEO-131 見證圖是逐位元比對的 golden,任何平台 checkout 都不得改行尾
+geometry-guide/witness/*.svg -text
+geometry-guide/witness/*.joints.json -text
+geometry-guide/witness/manifest.json -text
+# GEO-198: keep bundled upstream bytes and licence formatting intact on checkout.
+geometry-web/vendor/** -text -whitespace
+# GEO-261: archive receipts, runners, logs and diffs without checkout conversion.
+evidence/architecture-gate-99455b9f/** -text

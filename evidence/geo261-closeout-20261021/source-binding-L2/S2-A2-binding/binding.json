@@ -1,0 +1,214 @@
+{
+  "sourceBaseHeadActuallyTested": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "metadataCommit": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+  "directParentIsS2": true,
+  "diff": [
+    "M\tgeometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "M\tgeometry-core/domain-decoupling/product-architecture-receipt.json",
+    "M\tgeometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "scanRecomputedButSameBytes": true,
+  "metadata": {
+    "geometry-core/domain-decoupling/product-architecture.json": {
+      "S2RawSha256": "b5dff5b3e2573aac6aa38fa433cb3afa71c2ab1828d34d61aabc26df01bbcbc9",
+      "A2RawSha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829",
+      "sameBytes": false
+    },
+    "geometry-core/domain-decoupling/product-architecture-scan.json": {
+      "S2RawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "A2RawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "sameBytes": true
+    },
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md": {
+      "S2RawSha256": "a4fffdc84186b899bf4287ddab4b961fb6d96f02233d52fdc413517a2138a344",
+      "A2RawSha256": "f953eba02ce6729e1903534e22648b3f777242f85fbb27e91c68b0418554d153",
+      "sameBytes": false
+    },
+    "geometry-core/domain-decoupling/product-architecture-receipt.json": {
+      "S2RawSha256": "804142f06ef1c251cd6c2d30fa7d66e1f04609d5e4e39d439169267869dcdf6e",
+      "A2RawSha256": "21712ad7f20b4f9fceca91b4f63da66a6f7348288dc8162ef0154b97ef4aa907",
+      "sameBytes": false
+    }
+  },
+  "unchangedByExactTotalGitDiff": {
+    "architectureInputs": 611,
+    "outsideInventoryTestsAndExpected": 7,
+    "architectureTools": 3,
+    "unionCount": 621,
+    "allOtherTrackedGitBlobs": true
+  },
+  "inputClosureSha256": "2c665544b106ed8b2542425ae3d752843e9cd281b340ab349fe8a3734bc36076",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "0.stdout",
+      "stderr": "0.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "cbefb39b47fb0edcfaf003d2c1101929fea244c8^"
+      ],
+      "exitCode": 0,
+      "stdout": "1.stdout",
+      "stderr": "1.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=no"
+      ],
+      "exitCode": 0,
+      "stdout": "2.stdout",
+      "stderr": "2.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "diff",
+        "--name-status",
+        "--no-renames",
+        "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+        "cbefb39b47fb0edcfaf003d2c1101929fea244c8"
+      ],
+      "exitCode": 0,
+      "stdout": "3.stdout",
+      "stderr": "3.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exitCode": 0,
+      "stdout": "4.stdout",
+      "stderr": "4.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "cabe824128be31d0039dc6c94fa3f04cfb722a6b:geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exitCode": 0,
+      "stdout": "5.stdout",
+      "stderr": "5.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/product-architecture-scan.json"
+      ],
+      "exitCode": 0,
+      "stdout": "6.stdout",
+      "stderr": "6.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "cabe824128be31d0039dc6c94fa3f04cfb722a6b:geometry-core/domain-decoupling/product-architecture-scan.json"
+      ],
+      "exitCode": 0,
+      "stdout": "7.stdout",
+      "stderr": "7.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md"
+      ],
+      "exitCode": 0,
+      "stdout": "8.stdout",
+      "stderr": "8.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "cabe824128be31d0039dc6c94fa3f04cfb722a6b:geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md"
+      ],
+      "exitCode": 0,
+      "stdout": "9.stdout",
+      "stderr": "9.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/product-architecture-receipt.json"
+      ],
+      "exitCode": 0,
+      "stdout": "10.stdout",
+      "stderr": "10.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "cabe824128be31d0039dc6c94fa3f04cfb722a6b:geometry-core/domain-decoupling/product-architecture-receipt.json"
+      ],
+      "exitCode": 0,
+      "stdout": "11.stdout",
+      "stderr": "11.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=no"
+      ],
+      "exitCode": 0,
+      "stdout": "12.stdout",
+      "stderr": "12.stderr"
+    }
+  ],
+  "publication": {
+    "source": "/workspace/geo261-evidence/source-A2-publication",
+    "sha256": "b6978b83a2ec1b060510ece57350d812017d312a22f545c10449036453b6ad1a",
+    "exactRemoteHeadFromPreservedRaw": "cbefb39b47fb0edcfaf003d2c1101929fea244c8"
+  },
+  "notClaimed": [
+    "A2 重跑三條架構驗收",
+    "新 ledger 或完整整合驗收",
+    "本程序重新查詢遠端或推送"
+  ]
+}

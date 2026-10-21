@@ -1,0 +1,50 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "startedUtc": "2026-10-21T06:58:21.099779+00:00",
+  "finishedUtc": "2026-10-21T06:58:22.321639+00:00",
+  "elapsedSeconds": 1.2214918269964983,
+  "childReturnCode": 0,
+  "launcherReturnCode": 0,
+  "childPid": 507380,
+  "launcherPid": 507369,
+  "actualArgv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/curate-gates-l3.py",
+    "--completion-manifest",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/completion.json"
+  ],
+  "cwd": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021",
+  "command": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates-curation-execution/command.json",
+    "bytes": 1673,
+    "sha256": "2770b2314cf3106c6fd8c398265a2285bdaed0407cfdc6d10abc7c37cf177f50"
+  },
+  "launcherCode": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates-curation-execution/launcher-code.txt",
+    "bytes": 3188,
+    "sha256": "d1a0eeb854072e6affea0d45489bc3ac740ff7539cfcfcb62846c200fc376df3"
+  },
+  "tool": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/curate-gates-l3.py",
+    "bytes": 24681,
+    "sha256": "aabdc95ec54f6f472f7339ad14915058bc8b85e2858a454b739881ef477969e1"
+  },
+  "manifest": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/completion.json",
+    "bytes": 4958,
+    "sha256": "1b7605f80624727f9faaca71fda7be788edd6b78029db0543736d4c98520bf7a"
+  },
+  "stdout": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates-curation-execution/stdout.log",
+    "bytes": 1041,
+    "sha256": "618b3abf9a9b59d168a5ecd0b2df06331532386872aaf1a706853ff822c46fef"
+  },
+  "stderr": {
+    "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates-curation-execution/stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "waitedForChild": true,
+  "formalProductOrTestExecuted": false
+}

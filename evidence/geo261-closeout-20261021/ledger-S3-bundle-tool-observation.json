@@ -1,0 +1,22 @@
+{
+  "type": "實際工具回覆逐欄轉錄，非raw transport；基本封包核對未重跑產品",
+  "sourceS3": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "ledgerL3": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "packerSha256": "f550a9fc2f7983d90a62e18c0a70bd6f7a7f5ee09fcbcd397fd1e7d55dc4595b",
+  "pack": {
+    "chunk_id": "840b0a",
+    "exit_code": 0,
+    "wall_time_seconds": 0.702254611,
+    "output": "",
+    "stdout_file": "/workspace/geo261-evidence/ledger-S3-bundle.stdout",
+    "stderr_file": "/workspace/geo261-evidence/ledger-S3-bundle.stderr"
+  },
+  "verify": {
+    "chunk_id": "04c954",
+    "exit_code": 0,
+    "wall_time_seconds": 0.178972952,
+    "output": "",
+    "stdout_file": "/workspace/geo261-evidence/ledger-S3-bundle-verification.stdout",
+    "stderr_file": "/workspace/geo261-evidence/ledger-S3-bundle-verification.stderr"
+  }
+}

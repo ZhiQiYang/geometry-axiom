@@ -1,0 +1,50 @@
+"""逐筆核對已保存的原始命令、結果與來源，不重跑產品。"""
+from pathlib import Path
+import hashlib
+import json
+import subprocess
+
+ROOT=Path('/workspace/geo261-host-copy-candidate')
+OUT=Path(__file__).resolve().parent
+files=['geometry-app/native/reference_sources.inc','geometry-app/native/world_validation.inc',
+       'geometry-core/kernel/placement_sources.c','tests/geo261_host_facts_authority_harness.c',
+       'tests/geo261_placement_definition_harness.c','tests/test_geo261_host_facts_authority.py',
+       'tests/test_geo261_placement_definition.py']
+before=json.loads((OUT/'source-before.json').read_text())
+after=json.loads((OUT/'source-after.json').read_text())
+assert before==after
+for name,digest in before.items():
+    assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest,name
+commands=json.loads((OUT/'targeted-commands.json').read_text())
+negatives=[]
+for row in commands:
+    assert 'exception' not in row,row
+    for stream in ('stdout','stderr'):
+        if stream in row:
+            meta=row[stream];data=(OUT/meta['path']).read_bytes()
+            assert len(data)==meta['bytes'] and hashlib.sha256(data).hexdigest()==meta['sha256']
+    if row['returncode']!=0:
+        assert row['returncode']==1,row
+        stderr=(OUT/row['stderr']['path']).read_text()
+        negatives.append({'index':row['index'],'command':row['command'],'stderr':stderr})
+for name in files:
+    assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==before[name]
+changed=subprocess.run(['git','diff','--name-only'],cwd=ROOT,capture_output=True,text=True,check=True).stdout.splitlines()
+assert set(changed)==set(files),changed
+patch=subprocess.run(['git','diff','--',*files],cwd=ROOT,capture_output=True,check=True).stdout
+(OUT/'combined-candidate.patch').write_bytes(patch)
+own=[name for name in files if name not in ('geometry-core/kernel/placement_sources.c',
+     'tests/geo261_placement_definition_harness.c','tests/test_geo261_placement_definition.py')]
+hpatch=subprocess.run(['git','diff','--',*own],cwd=ROOT,capture_output=True,check=True).stdout
+(OUT/'H-candidate.patch').write_bytes(hpatch)
+for name in own:
+    (OUT/('source-'+Path(name).name+'.txt')).write_bytes((ROOT/name).read_bytes())
+summary={'sourceCount':len(before),'sourceHashesUnchanged':True,'changedFiles':files,
+         'changedSourceHashes':{name:before[name] for name in files},'commandCount':len(commands),
+         'nonzeroCommands':negatives,'targeted':json.loads((OUT/'targeted-result.json').read_text()),
+         'combinedPatchSha256':hashlib.sha256(patch).hexdigest(),
+         'HPatchSha256':hashlib.sha256(hpatch).hexdigest(),
+         'limitations':['只核定向測試，不代表七項完整驗收或 P189 已通過。',
+                        '本輪控制的暫存來源隨 NativeBuild 自動清除，命中依唯一錨點、完整 compile/link 與精確原 stderr/退出碼鏈。']}
+(OUT/'verification-summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({k:summary[k] for k in ('sourceCount','sourceHashesUnchanged','commandCount','changedSourceHashes','combinedPatchSha256','HPatchSha256')},ensure_ascii=False))

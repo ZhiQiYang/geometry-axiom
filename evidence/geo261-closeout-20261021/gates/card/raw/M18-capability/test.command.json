@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/geo261-gates/geometry-core/card-reference/run_mutations.py",
+    "--child",
+    "--bridge",
+    "/workspace/geo261-evidence/gates/card/raw/M18-capability/bridge",
+    "--model",
+    "/workspace/geo261-evidence/gates/card/raw/M18-capability/model",
+    "--case",
+    "CR29",
+    "--result",
+    "/workspace/geo261-evidence/gates/card/raw/M18-capability/tests.json"
+  ],
+  "exit_code": 1,
+  "seconds": 0.5748358029999281
+}

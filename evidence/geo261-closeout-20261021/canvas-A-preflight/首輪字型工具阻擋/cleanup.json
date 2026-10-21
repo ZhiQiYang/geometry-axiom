@@ -1,0 +1,88 @@
+{
+  "owned": [
+    {
+      "pid": 152755,
+      "state": "R",
+      "ppid": 152753,
+      "pgid": 152755,
+      "startTime": "723801",
+      "command": "git rev-parse HEAD ",
+      "firstSeenUTC": "2026-10-20T21:29:34.895682+00:00"
+    },
+    {
+      "pid": 152756,
+      "state": "R",
+      "ppid": 152753,
+      "pgid": 152756,
+      "startTime": "723832",
+      "command": "git status --porcelain=v1 --untracked-files=all ",
+      "firstSeenUTC": "2026-10-20T21:29:35.211541+00:00"
+    },
+    {
+      "pid": 152777,
+      "state": "R",
+      "ppid": 152753,
+      "pgid": 152777,
+      "startTime": "723866",
+      "command": "/usr/bin/env node /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm run build ",
+      "firstSeenUTC": "2026-10-20T21:29:35.546908+00:00"
+    },
+    {
+      "pid": 152789,
+      "state": "S",
+      "ppid": 152777,
+      "pgid": 152777,
+      "startTime": "723893",
+      "command": "sh -c python3 geometry-web/start_local.py --build-only ",
+      "firstSeenUTC": "2026-10-20T21:29:35.879346+00:00"
+    },
+    {
+      "pid": 152790,
+      "state": "R",
+      "ppid": 152789,
+      "pgid": 152777,
+      "startTime": "723893",
+      "command": "python3 geometry-web/start_local.py --build-only ",
+      "firstSeenUTC": "2026-10-20T21:29:35.879362+00:00"
+    },
+    {
+      "pid": 152791,
+      "state": "R",
+      "ppid": 152753,
+      "pgid": 152791,
+      "startTime": "723930",
+      "command": "dpkg-query -W -f=${Status} ${Version}\n fonts-noto-cjk ",
+      "firstSeenUTC": "2026-10-20T21:29:36.189198+00:00"
+    },
+    {
+      "pid": 152792,
+      "state": "R",
+      "ppid": 152753,
+      "pgid": 152792,
+      "startTime": "723962",
+      "command": "fc-match -f %{family}\n%{file}\n sans-serif:lang=zh-tw ",
+      "firstSeenUTC": "2026-10-20T21:29:36.511781+00:00"
+    },
+    {
+      "pid": 152793,
+      "state": "R",
+      "ppid": 152753,
+      "pgid": 152793,
+      "startTime": "724030",
+      "command": "python3 geometry-web/archive_wait_trace.py /workspace/geo261-evidence/canvas-a-preflight/wait-trace ",
+      "firstSeenUTC": "2026-10-20T21:29:37.186298+00:00"
+    }
+  ],
+  "survivors": [],
+  "directExitCodes": {
+    "152755": 0,
+    "152756": 0,
+    "152777": 0,
+    "152791": 0,
+    "152792": 0,
+    "152793": 0
+  },
+  "servicePortFree": true,
+  "cdpPortFree": true,
+  "portCheck": "connect_ex 必須 ECONNREFUSED，配合自有 PID/startTime 全退出"
+}

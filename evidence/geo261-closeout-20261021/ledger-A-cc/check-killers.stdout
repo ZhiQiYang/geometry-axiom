@@ -1,0 +1,74 @@
+結果檔 /workspace/geo261-evidence/ledger-cc-7159530c0e49.wzi0t97l/mutants_results.json
+變異表 78 筆,紀錄 78 筆
+殺死 killed 70 / 崩潰 crashed 1 / 存活 survived 0 / 等價 equivalent 4 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 3
+  CRASHED M20 [_test_lshape.scene]  R6(d)：拿掉「起點必須有擋面」檢查(懸空端放行)  <- 基準線已通過；連跑 3 次都在同一夾具以存取違規結束（_test_lshape.scene；INFRA abnormal executable exit -11: ）。算被偵測到，但不是斷言殺死。
+  KILLED M01  <- _ax_i5_collinear_vertex_rect_corner.scene
+  KILLED M02  <- _test_lshape.scene, _ax_i5_collinear_vertex_rect_corner.scene, _role_priority_ext_primary.scene, _role_ext_stop_primary.scene, _s1_p8_l_room_primary_through_reflex_extension.scene
+  KILLED M03  <- _wit_d30_infinite_grid_binding.scene, _wit_d29_grid_system.scene, subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene
+  KILLED M04  <- _wit_d30_infinite_grid_binding.scene, _wit_d29_grid_system.scene, subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene
+  KILLED M05  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M06  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M07  <- _test_lshape.scene, _edge_concave.scene, _ax_i5_collinear_vertex_rect_corner.scene, _ax_i5_notch_floor_flush_inside.scene, _role_priority_mutant.scene
+  KILLED M08  <- _ax_i5_notch_edge_cuts_interior.scene
+  KILLED M59  <- _ax_i5_notch_cell_corners_on_ring.scene
+  KILLED M60  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M10  <- _ax_i5_hole_vertex_touches_rect_edge.scene
+  KILLED M11  <- _test_hole_auto.scene, _test_ambiguous.scene, _demo_ceiling.scene, _edge_upper_seg.scene, _mut_reval_free_hole.scene
+  KILLED M12  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M13  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M14  <- _test_hole_auto.scene, _demo_ceiling.scene, _ax_i5_notch_wall_flush_inside.scene, _edge_hole_bottom.scene, _edge_rect_only.scene
+  KILLED M15  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M16  <- _edge_straddle_hi.scene, _s1_p3_alcove_side_boundary_extension_accept.scene, _s1_p4_alcove_wall_primary_cut_priority.scene
+  KILLED M17  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M18  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M19  <- _mut_through_boundary.scene
+  KILLED M21  <- _edge_straddle.scene, _mut_notch_straddle.scene, _role_cover_short.scene, _edge_straddle_hi.scene
+  KILLED M22  <- _test_free.scene, _edge_free.scene, _mut_free_hole_end.scene
+  KILLED M24  <- _edge_face_touch_only.scene
+  KILLED M25  <- _test_ambiguous.scene, _ax_i5_notch_edge_cuts_interior.scene
+  KILLED M26  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M27  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M28  <- _test_grid_panel.scene, _edge_grid_panel_from.scene, _role_ext_stop_primary.scene, _wit_i13_odd_width.scene, _s1_p3_alcove_side_boundary_extension_accept.scene
+  KILLED M29  <- _demo_ceiling.scene, _ax_i5_notch_wall_flush_inside.scene, _edge_hole_anchor.scene, _edge_hole_bottom.scene, _edge_rect_stops.scene
+  KILLED M30  <- _edge_hole_anchor.scene, _edge_hole_bottom.scene, _ax_i5_hole_vertex_touches_rect_edge.scene
+  KILLED M31  <- _mut_grid_dup.scene
+  KILLED M32  <- _edge_grid_at_border.scene
+  KILLED M57  <- subgrid-local.scene, demo-two-timbers.scene, _ax_i5_notch_cell_corners_on_ring.scene, _edge_rect_stops.scene, _test_between.scene
+  KILLED M58  <- demo-two-timbers.scene, _ax_i5_notch_cell_corners_on_ring.scene, _edge_rect_stops.scene, _test_between.scene, _edge_between_blocked.scene
+  KILLED M52  <- _test_grid_redeclare.scene, _edge_grid_locked.scene
+  KILLED M53  <- _test_grid_panel.scene, _edge_grid_panel_from.scene
+  KILLED M54  <- _mut_grid_panel_edge.scene
+  KILLED M33  <- subgrid-local.scene, _test_grid.scene, _test_lshape.scene, _test_hole_auto.scene, _test_ambiguous.scene
+  KILLED M34  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M37  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M38  <- _mut_neg_hole_ref.scene
+  KILLED M39  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M40  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M71  <- _ax_r7_notch_disconnected.scene
+  KILLED M72  <- _ax_r8_three_residual_components.scene, _ax_r8_three_residual_strip.scene, _ax_r7_ridge_crossing.scene, _ax_r7_ridge_strip.scene
+  KILLED M73  <- _ax_r7_rectangle_plus_line.scene, _ax_r7_strip_plus_line.scene, _ax_r7_rectangle_plus_point.scene
+  KILLED M74  <- _ax_r12_uncut_complex_strip.scene, _ax_r15_uncut_strip_missing_item.scene
+  KILLED M75  <- _ax_r15_uncut_strip_missing_item.scene, _ax_r14_uncut_strip_multiple_pieces.scene
+  KILLED M76  <- _ax_r8_three_residual_components.scene, _ax_r8_three_residual_strip.scene
+  KILLED M77  <- _ax_r7_remote_flush_corner.scene, _ax_r7_remote_flush_strip.scene
+  KILLED M86  <- subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene
+  KILLED M87  <- _role_priority_mutant.scene, _s1_p8_l_room_primary_through_reflex_extension.scene, _s1_p8b_l_room_primary_through_reflex_extension_hi.scene
+  KILLED M88  <- _s1_p8b_l_room_primary_through_reflex_extension_hi.scene
+  KILLED M61  <- tests.test_grid_system_contract.GridSystemContract.test_k2a_parameter_confirmation_receipt_includes_intermediate_deletion
+  KILLED M62  <- tests.test_parameters_core.ParametersCore.test_delete_then_import_or_redeclare_keeps_the_deletion_receipt, tests.test_parameters_core.ParametersCore.test_referenced_card_rebuild_without_referrer_declaration_rejects
+  KILLED M63  <- tests.test_parameters_core.ParametersCore.test_referenced_field_omission_and_rebuild_requires_declaration
+  KILLED M64  <- tests.test_parameters_core.ParametersCore.test_referrer_must_be_declared_after_the_last_card_deletion
+  KILLED M65  <- tests.test_parameters_core.ParametersCore.test_direct_grid_axis_redeclaration_is_local (operations=[{'op': 'delete-parameter', 'id': 0}, {'op': 'put-parameter', 'value': {'id': 0, 'name': '重建來源', 'fields': [{'id': 1, 'name': '1', 'type': 'dimension', 'input': '920'}]}}, {'op': 'set-source', 'target': {'kind': 'grid', 'id': 1, 'axis': 'u', 'field': 'panel'}, 'source': {'kind': 'parameter', 'parameterId': 0, 'fieldId': 1}}]), tests.test_parameters_core.ParametersCore.test_direct_grid_axis_redeclaration_is_local (operations=[{'op': 'delete-parameter', 'id': 0}, {'op': 'put-parameter', 'value': {'id': 0, 'name': '重建來源', 'fields': [{'id': 1, 'name': '1', 'type': 'dimension', 'input': '920'}]}}, {'op': 'set-source', 'target': {'kind': 'grid', 'id': 1, 'axis': 'u', 'field': 'panel'}, 'source': {'kind': 'parameter', 'parameterId': 0, 'fieldId': 1}}, {'op': 'set-source', 'target': {'kind': 'grid', 'id': 1, 'axis': 'v', 'field': 'panel'}, 'source': {'kind': 'parameter', 'parameterId': 0, 'fieldId': 1}}, {'op': 'delete-parameter', 'id': 0}, {'op': 'put-parameter', 'value': {'id': 0, 'name': '重建來源', 'fields': [{'id': 1, 'name': '1', 'type': 'dimension', 'input': '920'}]}}, {'op': 'set-source', 'target': {'kind': 'grid', 'id': 1, 'axis': 'u', 'field': 'panel'}, 'source': {'kind': 'parameter', 'parameterId': 0, 'fieldId': 1}}])
+  KILLED M66  <- tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations
+  KILLED M67  <- tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations
+  KILLED M68  <- tests.test_parameters_core.ParametersCore.test_panel_fill_gap_rebuild_requires_prior_reference_change (target='gap', ended='delete-parameter'), tests.test_parameters_core.ParametersCore.test_panel_fill_gap_rebuild_requires_prior_reference_change (target='gap', ended='put-parameter'), tests.test_parameters_core.ParametersCore.test_panel_fill_stagger_rebuild_requires_prior_reference_change (target='stagger', ended='delete-parameter'), tests.test_parameters_core.ParametersCore.test_panel_fill_stagger_rebuild_requires_prior_reference_change (target='stagger', ended='put-parameter'), tests.test_parameters_core.ParametersCore.test_panel_fill_threshold_rebuild_requires_prior_reference_change (target='threshold', ended='delete-parameter')
+  KILLED M69  <- tests.test_parameters_core.ParametersCore.test_delete_rebuild_then_unbind_reads_current_99_instead_of_deleted_cache
+  KILLED M70  <- tests.test_parameters_deleted_unbind.DeletedSourceUnbind.test_delete_then_unbind_has_identical_dump_to_legal_order
+  KILLED M78  <- tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION, tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_STAGGER_SHARE_I38_REJECTION, tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION
+  KILLED M84  <- tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES
+  KILLED M79  <- tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION
+  KILLED M80  <- tests.test_grid_card_reference.GridCardReference.test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE, tests.test_parameters_core.ParametersCore.test_native_consumers_require_explicit_rebinding_after_parameter_rebuild (owner='grid-system 1')
+  KILLED M81  <- tests.test_grid_card_reference.GridCardReference.test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE
+  KILLED M85  <- tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS
+  KILLED M82  <- tests.test_grid_card_reference.GridCardReference.test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99
+  KILLED M83  <- tests.test_grid_card_reference.GridCardReference.test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99

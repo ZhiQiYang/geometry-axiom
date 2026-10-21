@@ -1,0 +1,93 @@
+{
+  "source_sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+  "handoff_sha": "59796b1af9259eb23d30134c2ce5a56317a06091",
+  "document": "後續剖析方向.md",
+  "document_sha256": "9c419be8e3bb7d3d83cbbaba3e11ce31d3e134fd045a110263a2a0d9a4d44c91",
+  "document_bytes": 11595,
+  "source_read_mode": "binary",
+  "checks": [
+    {
+      "path": "geometry-web/web_bridge.c",
+      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c",
+      "tokens": [
+        "cmd_loadfile",
+        "app_scene_replay_file"
+      ]
+    },
+    {
+      "path": "geometry-core/transactions.inc",
+      "sha256": "bd57f8427b5004cb25ceae38f8ad2e37664efabc92a5ea13aec56719f087a2d9",
+      "tokens": [
+        "app_scene_file_line_eligible",
+        "app_scene_file_line",
+        "app_scene_replay_file"
+      ]
+    },
+    {
+      "path": "current_geometry.c",
+      "sha256": "dc3fbfb14adde5078c36ab179936df88ba977b22bb341301cd30deafeeb97696",
+      "tokens": [
+        "world_revalidate_candidate",
+        "parse_scene_file",
+        "app_contact_facts",
+        "app_contact_resolve_stops",
+        "collect_stop_faces"
+      ]
+    },
+    {
+      "path": "geometry-core/references.inc",
+      "sha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac",
+      "tokens": [
+        "reference_check_all"
+      ]
+    },
+    {
+      "path": "geometry-app/native/reference_sources.inc",
+      "sha256": "3695ab9844a80cf0041d2a6a67e2be96bf6ecbcd59709759d1add4822b70077c",
+      "tokens": [
+        "reference_member_footprint",
+        "reference_contact_facts",
+        "app_reference_end_stops",
+        "app_contact_sources_collect"
+      ]
+    },
+    {
+      "path": "geometry-templates/woodworking/native/definition_sources.c",
+      "sha256": "f22fe0aac839b4269a9c06f2ea0b266207cc8ef5a6c4031b35be3e0796505645",
+      "tokens": [
+        "wood_definition_sources_placement",
+        "wd_read"
+      ]
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_sources.c",
+      "sha256": "ea0fa63d05f9abac1a11ac4f780a2f3a1e10f8aea502df1fa7e7eb1aa681f659",
+      "tokens": [
+        "wood_contact_sources_collect",
+        "wood_contact_source_collection"
+      ]
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "fb961338710375da2c4eeb4b8af56f67bd1cf581067f91a48b356722646c30f8",
+      "tokens": [
+        "contact_order",
+        "wood_contact_collect_stops"
+      ]
+    },
+    {
+      "path": "geometry-core/kernel/source.c",
+      "sha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb",
+      "tokens": [
+        "geo_eval_depend",
+        "geo_eval_source",
+        "geo_source_find_node",
+        "geo_source_find_edge"
+      ]
+    }
+  ],
+  "product_execution": false,
+  "product_edits": false,
+  "profiling_execution": false,
+  "exit_code": 0
+}

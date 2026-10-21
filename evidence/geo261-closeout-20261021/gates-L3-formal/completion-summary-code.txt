@@ -1,0 +1,37 @@
+import pathlib,json,hashlib,os,datetime,subprocess,sys
+B=pathlib.Path("/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021");G=B/"gates";P=B/"preparation";source="6589248c9a94bdf0460d8f84dd1610e51048188b"
+plan=json.loads((P/"instance.json").read_bytes());root=pathlib.Path(plan["gatesWorktree"])
+assert not sys.flags.optimize
+def h(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def ref(p):return dict(path=str(p),bytes=p.stat().st_size,sha256=h(p))
+obs=json.loads((G/"tool-observations.json").read_bytes());phaseRecords={};pids=[]
+for phase in ("q38","controls","card","axiom"):
+    launch=json.loads((G/"launcher"/phase/"receipt.json").read_bytes());primary=json.loads((G/"verification"/(phase+".json")).read_bytes());detailed=json.loads((G/"acceptance-review"/(phase+".json")).read_bytes())
+    assert launch["childReturnCode"]==launch["launcherExitCode"]==obs["phases"][phase]["finalToolResult"]["exit_code"]==0
+    assert primary["accepted"] and detailed["accepted"] and primary["sourceSha"]==detailed["sourceSha"]==source
+    phaseRecords[phase]=dict(actualCommand=launch["command"],startedUtc=launch["startedUtc"],finishedUtc=launch["finishedUtc"],elapsedSeconds=launch["elapsedSeconds"],childReturnCode=launch["childReturnCode"],launcherReturnCode=launch["launcherExitCode"],toolReturnCode=obs["phases"][phase]["finalToolResult"]["exit_code"],result=primary["summary"],caseCount=primary["caseCount"],primary=ref(G/"verification"/(phase+".json")),detailed=ref(G/"acceptance-review"/(phase+".json")),launcherReceipt=ref(G/"launcher"/phase/"receipt.json"))
+    if phase=="controls":phaseRecords[phase].update(rawGateExitCode=primary["rawGateExitCode"],expectationCheckExitCode=primary["expectationCheckExitCode"])
+    for role,key in (("launcher","launcherPid"),("official","childPid")):pids.append((phase,role,launch[key]))
+sample=[]
+for phase,role,pid in pids:
+    path=pathlib.Path("/proc")/str(pid);item=dict(phase=phase,role=role,pid=pid)
+    for name in ("stat","cmdline"):
+        try:
+            raw=(path/name).read_bytes();item[name]=raw.decode("utf-8",errors="replace").replace("\0"," ")
+        except OSError as exc:item[name+"ReadError"]=dict(type=type(exc).__name__,errno=exc.errno,message=str(exc))
+    sample.append(item)
+matches=[];errors=[]
+for entry in pathlib.Path("/proc").iterdir():
+    if not entry.name.isdigit() or int(entry.name)==os.getpid():continue
+    try:tokens=(entry/"cmdline").read_bytes().split(b"\0")
+    except OSError as exc:
+        errors.append(dict(pid=int(entry.name),errorType=type(exc).__name__,errno=exc.errno));continue
+    decoded=[v.decode("utf-8",errors="replace") for v in tokens if v]
+    if any(v==str(root) or v.startswith(str(root)+"/") or v==str(P/"phase-launcher.py") for v in decoded):
+        matches.append(dict(pid=int(entry.name),argv=decoded))
+head=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip();status=subprocess.check_output(["git","status","--porcelain"],cwd=root,text=True).strip()
+assert head==source and status==""
+report=dict(sourceSha=source,sampledUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),head=head,status=status,allFourChildLauncherAndToolExitedZero=True,phases=phaseRecords,knownPidProcSamples=sample,matchingLiveCommandlines=matches,procReadErrors=errors,procMatchScope="只比對 argv token 等於 worktree 或以 worktree/ 起首，以及原 phase-launcher.py；不以任意字串比對 collector 的內嵌原碼。",cleanupLimits="真退出證據是每phase父child.wait原收據與所持工具session真退出0。/proc的FileNotFoundError僅代表當次原件不可讀，不推定原因；命令列掃描只涵蓋所列token範圍，不宣稱環境全局無其他程序。",mutationLimits="41 killed＋SPM24 declared equivalent；controls 9 survived/3 unlabelled預期紅1不得叫killed；53 card及5 axiom為原具名失敗與restore綠，未以crash/blocked當pass。")
+assert not matches,"發現尚存已知gate命令，先停止封包"
+out=G/"completion-summary.json";assert not out.exists();out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
+print(json.dumps(dict(path=str(out),sha256=h(out),sourceClean=True,phases={k:{"count":v["caseCount"],"result":v["result"],"seconds":v["elapsedSeconds"]} for k,v in phaseRecords.items()},matchingCommandlines=matches,procReadErrorCount=len(errors)),ensure_ascii=False))

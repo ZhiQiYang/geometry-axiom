@@ -1,0 +1,390 @@
+{
+  "sourceCount": 325,
+  "sourceHashesUnchanged": true,
+  "changedFiles": [
+    "geometry-app/native/reference_sources.inc",
+    "geometry-app/native/world_validation.inc",
+    "geometry-core/kernel/placement_sources.c",
+    "tests/geo261_host_facts_authority_harness.c",
+    "tests/geo261_placement_definition_harness.c",
+    "tests/test_geo261_host_facts_authority.py",
+    "tests/test_geo261_placement_definition.py"
+  ],
+  "changedSourceHashes": {
+    "geometry-app/native/reference_sources.inc": "91135cb03cc90b27a455909b22ef3792727f3c33dbac62aca1b1e03ca006498a",
+    "geometry-app/native/world_validation.inc": "993662cee91fc85ee255b4e3f1261f83fdb874621a61e50ec6811dc4d1c5a48c",
+    "geometry-core/kernel/placement_sources.c": "ebf68c7c67a1a1281b971bfdfba29c9963dee934204db4c3ccfe960b1950c502",
+    "tests/geo261_host_facts_authority_harness.c": "5134ccf0e5bff88f17e2df84ee2e8345bc0a2e3847e13601d3ca8a16a602a252",
+    "tests/geo261_placement_definition_harness.c": "d11d845679470c755dbb49a76366a14bd26b48458df0b830ff7d0091b4eb7131",
+    "tests/test_geo261_host_facts_authority.py": "10094144fb20235a595461801bd7a8787dc9c6600b8ce12624f63a2a62fd5285",
+    "tests/test_geo261_placement_definition.py": "a5a2a1813fbd8c41946f47187ac7369b99113ac97489c6e39a53f1992dbc73ff"
+  },
+  "commandCount": 338,
+  "nonzeroCommands": [
+    {
+      "index": 69,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-raw-contact",
+        "moved"
+      ],
+      "stderr": "ASSERT:facts-moved-contact-admits-actual-footprint\n"
+    },
+    {
+      "index": 74,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-final-anchor",
+        "final"
+      ],
+      "stderr": "ASSERT:facts-final-validator-actual-anchor\n"
+    },
+    {
+      "index": 79,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-rc-column",
+        "rc"
+      ],
+      "stderr": "ASSERT:facts-rc-column-actual-definition\n"
+    },
+    {
+      "index": 84,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-rc-room",
+        "rc"
+      ],
+      "stderr": "ASSERT:facts-rc-room-actual-result\n"
+    },
+    {
+      "index": 89,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-probe-box",
+        "end-facts"
+      ],
+      "stderr": "ASSERT:facts-probe-consumes-actual-box\n"
+    },
+    {
+      "index": 94,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-end-refresh",
+        "end-facts"
+      ],
+      "stderr": "ASSERT:facts-delayed-refresh-controls-owner-extension\n"
+    },
+    {
+      "index": 99,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-end-eager",
+        "end-facts"
+      ],
+      "stderr": "ASSERT:facts-span-error-precedes-source-failure\n"
+    },
+    {
+      "index": 104,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-probe-projection",
+        "end-facts"
+      ],
+      "stderr": "ASSERT:facts-probe-projects-actual-origin\n"
+    },
+    {
+      "index": 110,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-region-policy",
+        "ref-policy"
+      ],
+      "stderr": "ASSERT:facts-ref-policy-follows-actual-region\n"
+    },
+    {
+      "index": 115,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-rect-ref",
+        "rect-ref"
+      ],
+      "stderr": "ASSERT:facts-rect-to-ref-preserves-hole\n"
+    },
+    {
+      "index": 120,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-clear-boundary",
+        "ref-rect"
+      ],
+      "stderr": "ASSERT:facts-ref-to-rect-clears-boundary\n"
+    },
+    {
+      "index": 125,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-sp-domain",
+        "sp-derived"
+      ],
+      "stderr": "ASSERT:facts-sp-actual-domain-controls-admission\n"
+    },
+    {
+      "index": 130,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-raw-footprint",
+        "moved"
+      ],
+      "stderr": "ASSERT:facts-moved-actual-anchor-footprint\n"
+    },
+    {
+      "index": 135,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-copy-clear",
+        "copy-clear"
+      ],
+      "stderr": "ASSERT:facts-copy-clears-all-original-components\n"
+    },
+    {
+      "index": 140,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-copy-atomic",
+        "malformed"
+      ],
+      "stderr": "ASSERT:facts-malformed-actual-definition-is-atomic\n"
+    },
+    {
+      "index": 145,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-copy-view",
+        "copy-snapshot"
+      ],
+      "stderr": "ASSERT:facts-copy-snapshot-view-owned-by-caller\n"
+    },
+    {
+      "index": 150,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-scratch-view",
+        "scratch-owned"
+      ],
+      "stderr": "ASSERT:facts-scratch-view-owned-by-caller\n"
+    },
+    {
+      "index": 156,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/host-facts-control-hole-index-digits",
+        "rect-ref"
+      ],
+      "stderr": "ASSERT:facts-hole-vertex-grammar-rejects-malformed\n"
+    },
+    {
+      "index": 181,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/contact-source-control-policy-bypass",
+        "graph"
+      ],
+      "stderr": "ASSERT:contact-collection-runs-real-facts-and-policy\n"
+    },
+    {
+      "index": 186,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/contact-source-control-feature-edge",
+        "graph"
+      ],
+      "stderr": "ASSERT:contact-feature-requires-collection-value\n"
+    },
+    {
+      "index": 191,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/contact-source-control-query-reuse",
+        "evolving"
+      ],
+      "stderr": "ASSERT:contact-evolving-placed-subset-is-fresh\n"
+    },
+    {
+      "index": 196,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/contact-source-control-hidden-coordinates",
+        "feature-values"
+      ],
+      "stderr": "ASSERT:contact-returned-feature-segment-consumed\n"
+    },
+    {
+      "index": 201,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/contact-source-control-placement-order",
+        "ordering"
+      ],
+      "stderr": "ASSERT:contact-placement-order-and-stable-ties\n"
+    },
+    {
+      "index": 206,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/contact-source-control-failure-count",
+        "failures"
+      ],
+      "stderr": "ASSERT:contact-failure-keeps-output-and-count\n"
+    },
+    {
+      "index": 218,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-column",
+        "obstacles"
+      ],
+      "stderr": "ASSERT:validation-column-plan-overlap\n"
+    },
+    {
+      "index": 227,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-unplaced",
+        "phases"
+      ],
+      "stderr": "ASSERT:validation-unplaced-skipped\n"
+    },
+    {
+      "index": 232,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-unique",
+        "support"
+      ],
+      "stderr": "ASSERT:validation-unique-stops\n"
+    },
+    {
+      "index": 237,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-presence",
+        "support"
+      ],
+      "stderr": "ASSERT:validation-between-needs-stop\n"
+    },
+    {
+      "index": 242,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-collision",
+        "collision"
+      ],
+      "stderr": "ASSERT:validation-positive-collision\n"
+    },
+    {
+      "index": 247,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-axis",
+        "axis"
+      ],
+      "stderr": "ASSERT:validation-primary-axis\n"
+    },
+    {
+      "index": 252,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-volume",
+        "obstacles"
+      ],
+      "stderr": "ASSERT:validation-positive-volume\n"
+    },
+    {
+      "index": 257,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-rule-scope",
+        "rule"
+      ],
+      "stderr": "ASSERT:validation-rule-full-cell\n"
+    },
+    {
+      "index": 262,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-subgrid-scope",
+        "subgrid"
+      ],
+      "stderr": "ASSERT:validation-subgrid-full-cell\n"
+    },
+    {
+      "index": 267,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-stagger-lower",
+        "stagger"
+      ],
+      "stderr": "ASSERT:validation-stagger-lower-bound\n"
+    },
+    {
+      "index": 272,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/validation-stagger-upper",
+        "stagger"
+      ],
+      "stderr": "ASSERT:validation-stagger-upper-bound\n"
+    },
+    {
+      "index": 284,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/world-validation-product-no-selector",
+        "selected-component"
+      ],
+      "stderr": "ASSERT:validation-product-selected-component-verdict\n"
+    },
+    {
+      "index": 295,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/domain-placement-right-host",
+        "placements"
+      ],
+      "stderr": "ASSERT:placement_ownership:75:stored&&stored->domain==GEO_PLACEMENT_RECT&&stored->frame.origin.x==7&&stored->rect.max_u==100\n"
+    },
+    {
+      "index": 302,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/domain-region-left-host",
+        "boundaries"
+      ],
+      "stderr": "ASSERT:boundary_ownership:34:stored&&stored->outline.v[0].u==0&&stored->outline.v[1].u==100&&stored->holes[0].v[2].u==40\n"
+    },
+    {
+      "index": 314,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/finish-control-panel-field-bypass",
+        "graph"
+      ],
+      "stderr": "ASSERT:panel-field-dependency-edge:119\n"
+    },
+    {
+      "index": 319,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/finish-control-derived-frame-bypass",
+        "graph"
+      ],
+      "stderr": "ASSERT:derived-actual-input-edges:116\n"
+    },
+    {
+      "index": 324,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/finish-control-definition-relation",
+        "graph"
+      ],
+      "stderr": "ASSERT:derived-definition-edge:135\n"
+    },
+    {
+      "index": 329,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/finish-control-parameter-edge-bypass",
+        "shared"
+      ],
+      "stderr": "ASSERT:shared-parameter-field-edges:144\n"
+    },
+    {
+      "index": 334,
+      "command": [
+        "/tmp/geo261-host-H-v1-npboymjy/geometry-tests/geo261-n1a-go5zq7w0/finish-control-diagnostic-retry",
+        "diagnostics"
+      ],
+      "stderr": "ASSERT:failed-policy-retries-original-diagnostic:173\n"
+    }
+  ],
+  "targeted": {
+    "modules": [
+      "tests.test_geo261_host_facts_authority",
+      "tests.test_geo261_contact_sources",
+      "tests.test_geo261_wood_world_validation",
+      "tests.test_geo261_domain_product",
+      "tests.test_geo261_finish_sources"
+    ],
+    "testsRun": 65,
+    "failures": 0,
+    "errors": 0,
+    "skipped": [],
+    "sourceUnchanged": true,
+    "passed": true
+  },
+  "combinedPatchSha256": "18ec74eb3e74f85016491baa457fb2b75d21c11df70c42fe6de8983130995455",
+  "HPatchSha256": "31025de7d0fce72e65246a92088661e6f63ed0daa12c6b8164aebc0e341ea7ea",
+  "limitations": [
+    "只核定向測試，不代表七項完整驗收或 P189 已通過。",
+    "本輪控制的暫存來源隨 NativeBuild 自動清除，命中依唯一錨點、完整 compile/link 與精確原 stderr/退出碼鏈。"
+  ]
+}

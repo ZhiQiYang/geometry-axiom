@@ -1,0 +1,24 @@
+{
+  "name": "p72-v2-fixed-stale-first",
+  "sourceSha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+  "command": [
+    "node",
+    "/workspace/geo261-evidence/p52/p72_probe-v2.cjs",
+    "/workspace/geometry-axiom"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18841/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-probe",
+    "XDG_CACHE_HOME": "/tmp/geo261-xdg-probe",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CDP_PORT": "9351",
+    "P72B_NAV_CONTROL": "stale-first"
+  },
+  "startedUtc": "2026-10-20T20:17:54Z",
+  "elapsedSeconds": 41.82476920199997,
+  "exitCode": 0,
+  "expectedExitCode": 0,
+  "load": "主代理放行之獨占瀏覽器驗收；正式已修產品來源、外部v2工具，未安裝記憶體產品修正"
+}

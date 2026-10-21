@@ -1,0 +1,61 @@
+{
+  "source_sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "branch": "codex/geo261-p189-contact-trial-20261021",
+  "bundle_relative": "../p189-contact-trial-85dc4fff",
+  "external_bundle": "/workspace/geo261-evidence/final-bundle/p189-contact-trial-85dc4fff",
+  "manifest_sha256": "14e5dd7a60b777a9aaabf909e2920eb01c8013273f0701093315c425f844974b",
+  "formal_out": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+  "receipt_sha256": "5a093ed872fb7c6ed9f3ecf2ac077b120cd4d0540d8c606083e6baa2a18fb2ed",
+  "samples_sha256": "03a760ce8056fc2b5a000d468d6b612153f122ac47cf64423f3d85b828ab182a",
+  "check_exit_code": 1,
+  "controls": 16,
+  "positive_controls": 2,
+  "negative_controls": 14,
+  "timing_samples": 36,
+  "equivalence_rows": 175,
+  "equivalence_requirement": "4 生成場景強制三方有效 load/stdout 等價；171 固定場景強制 base/final，main 僅記錄",
+  "observed_equivalence": "本輪 175 列三方完整 stdout 全相同；這是觀測，不擴張官方判準",
+  "timing_summary": [
+    {
+      "n": 16,
+      "median_seconds": {
+        "main": 0.1271464269993885,
+        "base": 0.16587187999903108,
+        "final": 0.13172178199965856
+      },
+      "final_main_ratio": 1.0359849278367221,
+      "threshold_pass": true
+    },
+    {
+      "n": 32,
+      "median_seconds": {
+        "main": 0.2134044489976077,
+        "base": 1.1347204349985986,
+        "final": 0.2966269589996955
+      },
+      "final_main_ratio": 1.3899755154730666,
+      "threshold_pass": true
+    },
+    {
+      "n": 48,
+      "median_seconds": {
+        "main": 0.33207006600059685,
+        "base": 4.807517559998814,
+        "final": 0.6541067570033192
+      },
+      "final_main_ratio": 1.9697853675318737,
+      "threshold_pass": true
+    },
+    {
+      "n": 64,
+      "median_seconds": {
+        "main": 0.5269713269990461,
+        "base": 17.66035017199829,
+        "final": 1.3472817279980518
+      },
+      "final_main_ratio": 2.5566509200233782,
+      "threshold_pass": false
+    }
+  ],
+  "all_linked_manifest_entries_verified": true
+}

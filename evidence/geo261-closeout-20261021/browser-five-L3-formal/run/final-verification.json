@@ -1,0 +1,225 @@
+{
+  "checkedUtc": "2026-10-21T06:56:32.188625+00:00",
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "accepted": true,
+  "methodSha256": "7bdea46d39508380e40c7ae28dc7616c2043d04554bd8c61434a6ccd1729af55",
+  "verificationExitCode": 0,
+  "rows": [
+    {
+      "suite": "assembly",
+      "passed": 150,
+      "failed": 0,
+      "nodeObservedReturncode": 0,
+      "validationExitCode": 0,
+      "jobLimitSeconds": 900,
+      "elapsedSeconds": 176.54496490800375,
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_ASSEMBLY_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:18851/",
+        "feedbackDirectory": "/tmp/geo261-browser-five-l3-6589248c-formal/assembly/feedback",
+        "browserProfile": "/tmp/geo261-browser-five-l3-6589248c-formal/assembly/chrome-profile",
+        "cdpPort": 9367,
+        "browserPid": 492683
+      },
+      "completeness": {
+        "P77": 134,
+        "P82": 16
+      },
+      "testArgv": [
+        "node",
+        "geometry-web/cdp_test.js"
+      ],
+      "sourceEntriesChecked": 154,
+      "originalManifestEntriesChecked": 37,
+      "pngCount": 11,
+      "cleanupAccepted": true,
+      "runtimeFreshUnchanged": true,
+      "receiptSha256": "7f48bba8cd2b6a75488a2377130fa49e415eb579792955043537814bda293905",
+      "rawSha256": "4fe149e287e922ef7605b1bcd0c64971f872b8ae8d4f358007c0a2087cb9ab8b"
+    },
+    {
+      "suite": "documents",
+      "passed": 47,
+      "failed": 0,
+      "nodeObservedReturncode": 0,
+      "validationExitCode": 0,
+      "jobLimitSeconds": 600,
+      "elapsedSeconds": 15.744813502999023,
+      "scope": {
+        "mode": "documents-full-script",
+        "flags": []
+      },
+      "completeness": {
+        "namedChecksInOrder": 47
+      },
+      "testArgv": [
+        "node",
+        "geometry-web/documents_browser_test.js"
+      ],
+      "sourceEntriesChecked": 154,
+      "originalManifestEntriesChecked": 32,
+      "pngCount": 8,
+      "cleanupAccepted": true,
+      "runtimeFreshUnchanged": true,
+      "receiptSha256": "bff1ad3f4c568edb8a85b7798646604b25c982e68ebdf9c0a93aae656c00c814",
+      "rawSha256": "a453dc2a4d07cf21bedfc1f4ae9bb99a5c72bb45b64da7f2caa38b83e9f13bc4"
+    },
+    {
+      "suite": "grid",
+      "passed": 350,
+      "failed": 0,
+      "nodeObservedReturncode": 0,
+      "validationExitCode": 0,
+      "jobLimitSeconds": 900,
+      "elapsedSeconds": 450.5616805229947,
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_GRID_SYSTEM_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:18853/",
+        "feedbackDirectory": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/feedback",
+        "browserProfile": "/tmp/geo261-browser-five-l3-6589248c-formal/grid/chrome-profile",
+        "cdpPort": 9334,
+        "browserPid": 495168
+      },
+      "completeness": {
+        "P70": 121,
+        "P71": 9,
+        "P78": 23,
+        "P87": 60,
+        "P88": 137
+      },
+      "testArgv": [
+        "node",
+        "geometry-web/cdp_test.js"
+      ],
+      "sourceEntriesChecked": 154,
+      "originalManifestEntriesChecked": 43,
+      "pngCount": 19,
+      "cleanupAccepted": true,
+      "runtimeFreshUnchanged": true,
+      "receiptSha256": "544b19c99c335d6408f40b7009938ae80427df46bd8686e8baf88fd080ba0c5a",
+      "rawSha256": "4b8a563e88eb195031ac646fd84f0fb44c46516e6f23884e784c3d960f0e1421"
+    },
+    {
+      "suite": "space",
+      "passed": 242,
+      "failed": 0,
+      "nodeObservedReturncode": 0,
+      "validationExitCode": 0,
+      "jobLimitSeconds": 900,
+      "elapsedSeconds": 188.68695450599625,
+      "scope": {
+        "mode": "full-space-suite",
+        "filters": [],
+        "included": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "font-layout",
+          "space-flow",
+          "projection-close"
+        ],
+        "omitted": [
+          "timber-material",
+          "timber-source-guards"
+        ],
+        "url": "http://127.0.0.1:18854/",
+        "feedbackDirectory": "/tmp/geo261-browser-five-l3-6589248c-formal/space/feedback"
+      },
+      "completeness": {
+        "setup": 2,
+        "space-height-library": 112,
+        "projection-lifecycle": 18,
+        "projection-placement": 36,
+        "font-layout": 19,
+        "space-flow": 39,
+        "projection-close": 14,
+        "browser-health": 2
+      },
+      "testArgv": [
+        "node",
+        "geometry-web/space_model_test.js"
+      ],
+      "sourceEntriesChecked": 154,
+      "originalManifestEntriesChecked": 61,
+      "pngCount": 33,
+      "cleanupAccepted": true,
+      "runtimeFreshUnchanged": true,
+      "receiptSha256": "585479698b66c4ea51829ba8958fbe5c88704b3a169fd2ee813be4d59ba84e0b",
+      "rawSha256": "e016ecca39a7ff3ebbfe7cf9c307dc99093357df23e0a1c41e8139b4bbaec500"
+    },
+    {
+      "suite": "timber",
+      "passed": 79,
+      "failed": 0,
+      "nodeObservedReturncode": 0,
+      "validationExitCode": 0,
+      "jobLimitSeconds": 1200,
+      "elapsedSeconds": 91.82579776499915,
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_TIMBER_ONLY"
+        ],
+        "included": [
+          "timber-material",
+          "timber-source-guards",
+          "font-layout"
+        ],
+        "omitted": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "space-flow",
+          "projection-close"
+        ],
+        "url": "http://127.0.0.1:18855/",
+        "feedbackDirectory": "/tmp/geo261-browser-five-l3-6589248c-formal/timber/feedback"
+      },
+      "completeness": {
+        "setup": 2,
+        "timber-material": 48,
+        "timber-source-guards": 8,
+        "font-layout": 19,
+        "browser-health": 2
+      },
+      "testArgv": [
+        "node",
+        "geometry-web/space_model_test.js"
+      ],
+      "sourceEntriesChecked": 154,
+      "originalManifestEntriesChecked": 37,
+      "pngCount": 10,
+      "cleanupAccepted": true,
+      "runtimeFreshUnchanged": true,
+      "receiptSha256": "c96b08bb1314c468e0b58f6c565a187ace44e52bf7934e49e941f387a5c253c2",
+      "rawSha256": "5879f6e0a552e9734d9d74ff15793df88c3038ee6159972925c81dd988b053aa"
+    }
+  ],
+  "totalPassedAssertions": 868,
+  "totalOriginalManifestEntries": 210,
+  "totalPngFiles": 81,
+  "uniqueGitSourceEntriesChecked": 154,
+  "observedWrapperReturncode": 0,
+  "observedLauncherProcessReturncode": 0,
+  "actualToolExitCode": 0,
+  "actualToolChunk": "b9d980",
+  "captureAddedFiles": 15,
+  "captureAddedBytes": 107195,
+  "captureExistingNonPngFilesChecked": 9,
+  "limitations": [
+    "assembly/grid 原 partial harness 不比 full golden，本外層只核原指定段。",
+    "documents 無 golden/completed 欄位，改核凍結來源全部47具名PASS依序。",
+    "本核對 PNG 簽章/hash與原manifest，未逐張目視。",
+    "原 wrapper 收據/sidecar 是當輪 fresh/reused 證據；不以目前 live runtime 回推歷史。",
+    "工具退出觀察是對話回傳轉錄，非transport自動raw。",
+    "沒有重跑產品或新執行突變；原controlled failure保留。"
+  ]
+}

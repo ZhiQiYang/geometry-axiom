@@ -1,0 +1,121 @@
+[
+  {
+    "phase": "generator-selftest",
+    "argv": [
+      "python3",
+      "-B",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--selftest"
+    ]
+  },
+  {
+    "phase": "selftest",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "selftest",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+      "--out",
+      "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+      "--gen",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--final",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "--timeout",
+      "900"
+    ]
+  },
+  {
+    "phase": "build",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "build",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+      "--out",
+      "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+      "--gen",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--final",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "--timeout",
+      "900"
+    ]
+  },
+  {
+    "phase": "equivalence",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "equivalence",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+      "--out",
+      "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+      "--gen",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--final",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "--timeout",
+      "900"
+    ]
+  },
+  {
+    "phase": "timing",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "timing",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+      "--out",
+      "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+      "--gen",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--final",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "--timeout",
+      "900"
+    ]
+  },
+  {
+    "phase": "check",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "check",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+      "--out",
+      "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+      "--gen",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--final",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "--timeout",
+      "900"
+    ]
+  }
+]

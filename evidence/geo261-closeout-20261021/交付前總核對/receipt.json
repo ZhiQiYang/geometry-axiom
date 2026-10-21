@@ -1,0 +1,937 @@
+{
+  "schema": "geo261-final-bundle-readonly/1",
+  "sourceL": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "finishedUtc": "2026-10-21T07:05:19.385786+00:00",
+  "sumLists": [
+    {
+      "path": "architecture-L3/SHA256SUMS",
+      "listedFiles": 15,
+      "sha256": "97ddac835a0e068e55fef4f6112a2fd85e1aaf146af74ae781547269aa3464d9",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "architecture-L3-native引用/SHA256SUMS",
+      "listedFiles": 33,
+      "sha256": "8513dca669593d96bf2d17e716f4f57ae700c418dd90c2cb34bd1b7f6c7fee48",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "browser-five-L-formal/SHA256SUMS",
+      "listedFiles": 264,
+      "sha256": "9f768733e680ecbd4d77de8a35bc71c6bfd40131bdc58beaf82fabf95aaa44ca",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "browser-five-L3-formal/SHA256SUMS",
+      "listedFiles": 286,
+      "sha256": "d839a2f626ea889902b66a0f70c694d70d1bf9caf12131a645a6f6d6c4928798",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "canvas-A-preflight/SHA256SUMS",
+      "listedFiles": 213,
+      "sha256": "c2f7a233160af6e432cd0bd462ab4dc4823261d44f3a01f6419180213a093fa2",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "canvas-L-formal/SHA256SUMS",
+      "listedFiles": 225,
+      "sha256": "c6c80a6391bd1f312e37387d30a5488580f394575bc26a3a3b6472b8db118373",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "canvas-L2-formal/SHA256SUMS",
+      "listedFiles": 231,
+      "sha256": "566dc171f1063c22d4f86176c861adee152d7d7fed2db9e7782b48c6ce3fea8c",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "canvas-L3-formal/SHA256SUMS",
+      "listedFiles": 240,
+      "sha256": "990c272bd510ad24bcd782fde5312adbd11274d3baabf8fc0a1e93305e0b3213",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "codec-targeted-7ad3216a/SHA256SUMS",
+      "listedFiles": 22,
+      "sha256": "f24dcc0930d6118e1d61957e4d6de32346663e194ceb195fa532a39c72667ec8",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "footprint-negative-publication/SHA256SUMS",
+      "listedFiles": 7,
+      "sha256": "965db55b391f47d19e0d5b35a90f8c7efc32dfa43de2646c0845aff88b7b641a",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "footprint-p189-pair-evidence/SHA256SUMS",
+      "listedFiles": 717,
+      "sha256": "f06452dbc7f68a4aab7f59f871532647914b199af8cd08768b97e29e8fb7331f",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "gates-l-independent-review/SHA256SUMS",
+      "listedFiles": 1065,
+      "sha256": "acc0f3e1433108d94948e550d51e25dbf3fbd32cc4fddb53718b74ffc23886c4",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "host-authority-anchor-fix-S3/SHA256SUMS",
+      "listedFiles": 614,
+      "sha256": "d2cdd4157fba4266bb3ddc935d05146361325a0ee619aafbb16c0d54c78861f5",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "host-copy-targeted-75f587a5/SHA256SUMS",
+      "listedFiles": 1074,
+      "sha256": "d9a9e3c5284b6cdb9141cac3bff2ab23c3566741d455d3a0d7365f46c8b85150",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "ledger-A-cc/SHA256SUMS",
+      "listedFiles": 303,
+      "sha256": "25283125019a13b099a32affb07dc0c0f1fd9f180c964b7b0bf6af2ac2354073",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "ledger-A-gcc/SHA256SUMS",
+      "listedFiles": 276,
+      "sha256": "f42a7fe721085c2f242dbcd1cf28f80e0ece7a4218396937fdc1195bc23853b4",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "ledger-A-gcc/integration/SHA256SUMS",
+      "listedFiles": 9,
+      "sha256": "518acca4076f21012f9751b0b3adb7f70b07947a434995a1d5978c3db539faf9",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "ledger-A2-cc/SHA256SUMS",
+      "listedFiles": 2257,
+      "sha256": "8c3227a2035cc4fc03c399376eac43dc46466153641a3d48709595aab8c2e4a4",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "ledger-A2-cc/執行原件/SHA256SUMS",
+      "listedFiles": 2119,
+      "sha256": "8de0c8dfa878d0e114c8f82243f4f0e2dafd01efc36f2bf7b2d687dc9dea4c51",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "ledger-A2-封包獨審附錄/SHA256SUMS",
+      "listedFiles": 7,
+      "sha256": "faad908fecc98b0748e74a79998e56b4ec373d7bdcd16a8e0380395b25c96a34",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "ledger-S3-cc/SHA256SUMS",
+      "listedFiles": 2408,
+      "sha256": "b6bc4f66c39c92ad186dca2c29ca318ef005dfeda83153ddfbc32e989ee29e2a",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "ledger-S3-cc/執行原件/SHA256SUMS",
+      "listedFiles": 2125,
+      "sha256": "068d76fcff490e7690fb743514318ba4b16fc9a0ca0f52a3168076d1e36d63ef",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "ledger-S3-封包獨審附錄/SHA256SUMS",
+      "listedFiles": 21,
+      "sha256": "400db9936c925b7f9353a82301843387ec221d1ac48168980c74a9220ef54350",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "native-final-independent-review/SHA256SUMS",
+      "listedFiles": 9,
+      "sha256": "59214a8f8f17872f5cfa5c9504711c628b18ee57ac56edc49b7f2358dda72bb0",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189/SHA256SUMS",
+      "listedFiles": 1151,
+      "sha256": "b013bb8649f0562c26197530d334aa9bb7e8beeaf6f44baf0b2aadf6680eb687",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-codec-trial-7ad3216a/SHA256SUMS",
+      "listedFiles": 1361,
+      "sha256": "f8aeef4ce62137c4c43790c348ef91154d51a31f187cd1273bbcafb47e5ec988",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-contact-85dc4fff-diagnostics/SHA256SUMS",
+      "listedFiles": 1675,
+      "sha256": "ba7abbd50636e9f199e216fa4e8a9d6bca8054ae6e11259aeffef613ac1e6fd9",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-contact-trial-85dc4fff/SHA256SUMS",
+      "listedFiles": 1362,
+      "sha256": "14e5dd7a60b777a9aaabf909e2920eb01c8013273f0701093315c425f844974b",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-final-L/SHA256SUMS",
+      "listedFiles": 1257,
+      "sha256": "2cd396815d2e4c056637cf9d219f4f170e9356577422a83186cb5896bed3de65",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-footprint-revert-control-4bd19f91/SHA256SUMS",
+      "listedFiles": 1363,
+      "sha256": "8a6f66c3b3fe9757a23b76e28e2617aec9f26eb63ea8e324b873dc724dc367a6",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-footprint-trial-6c693770/SHA256SUMS",
+      "listedFiles": 1363,
+      "sha256": "159396aa37ee5f77c9b5084566311dfb197c653c2f1483cbc50cb0579adc0a6b",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-formal-L2/SHA256SUMS",
+      "listedFiles": 1376,
+      "sha256": "e6b53752a8eed50e9774a8dc82412739aca1cac150a2133176f9b133372f46c6",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-formal-L2-publication-receipts/SHA256SUMS",
+      "listedFiles": 8,
+      "sha256": "455270248ddc36b4264d3ee640a9d03dfa27c1fe08d19f4da590ab0e5d6572fa",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-formal-L3/SHA256SUMS",
+      "listedFiles": 1378,
+      "sha256": "8e438bc18c47171863169f9079f0345aa969cb9aae41d7c5e75b7659e99d21c8",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-host-copy-trial-75f587a5/SHA256SUMS",
+      "listedFiles": 1362,
+      "sha256": "ecf762e8eb2a56cc762e1b24c29dc287b68c8805fd7d0120ddca9dc33647054a",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p189-publication-receipts/SHA256SUMS",
+      "listedFiles": 27,
+      "sha256": "5824b20cb835966057114b81626530d2d12f304465b80210df76e3a34a338d6a",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p52/SHA256SUMS",
+      "listedFiles": 82,
+      "sha256": "c08508ab942b9c1e3ec81655444f514b2d536726c2837b4b86e829529f1b58b6",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "p73/SHA256SUMS",
+      "listedFiles": 182,
+      "sha256": "3cbe0d0fb6c0b0796aac0e8412e3985e2f3b92e69432ac994a55b4bed61b93f1",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "source-S3-adoption/SHA256SUMS",
+      "listedFiles": 35,
+      "sha256": "56e6dcc1e9cbb8d1ca21626d23238444b363bae3a852a4abf1d6dbbe622a6924",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "source-S3-binding/SHA256SUMS",
+      "listedFiles": 129,
+      "sha256": "e8c5aedf8793e766281986cf66bd02228d1bd90d976d759772776940893e982b",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "source-S3-外層工具補充/SHA256SUMS",
+      "listedFiles": 6,
+      "sha256": "958d0df1032301fd008baeaee0258f420d31968fc250f0b9c402ae6ca5aab8b5",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "source-binding-L3/SHA256SUMS",
+      "listedFiles": 118,
+      "sha256": "645be174227561ab0bb8835cda5d260ce857f0a2def46c45a79d92c481f51267",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "交付公開方法-靜態審查/SHA256SUMS",
+      "listedFiles": 5,
+      "sha256": "7244e50252c234fad35d890a3a8a0265a50c85e45a4610bfbb9b3324bb9c6b74",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "交付整理方法-靜態審查/SHA256SUMS",
+      "listedFiles": 7,
+      "sha256": "382389ca097d9160ccd3cf8b9768979751842b4cff09de6236d0d6eb290476f8",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "交付預檢/SHA256SUMS",
+      "listedFiles": 11,
+      "sha256": "0962827c61e2964785fa533305cb6585300a557384118dfe512b2bdf10543ef5",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "交付驗證方法-L3/SHA256SUMS",
+      "listedFiles": 9,
+      "sha256": "fb6488fca485658a73e83c5632223f0c5df41b4bebec259e58861912d79e64fc",
+      "allListedHashesMatch": true
+    },
+    {
+      "path": "測試服務清理/P73-18843/SHA256SUMS",
+      "listedFiles": 13,
+      "sha256": "4c2794bb1fb1808327ae73e28bfe6a9931bebe1993970204a47c5ee9fe31bd05",
+      "allListedHashesMatch": true
+    }
+  ],
+  "listedHashChecks": 28820,
+  "distinctHashedFiles": 24576,
+  "documents": [
+    {
+      "path": "README.md",
+      "bytes": 6272,
+      "sha256": "7c11c796135fed83a8ba822b8f41da66e629ff0ffaaa20452920b5e13c7c3fbb"
+    },
+    {
+      "path": "PR288_BODY.md",
+      "bytes": 6682,
+      "sha256": "219be7a191b274669ae883e34e04cc76301a58ee0d0067b083d60c05fdbce884"
+    },
+    {
+      "path": "PR288_REVIEW_REPLY.md",
+      "bytes": 3086,
+      "sha256": "e125c2de415f477bac03e2c3e3fdd214b1c00a176d65f9b1c3e23654f1dd64c5"
+    },
+    {
+      "path": "PR288_USER_ACTIONS.md",
+      "bytes": 1953,
+      "sha256": "33351c9b74d57bda7716a7c993867197f929fe8352bcf9d90499d866f958aea8"
+    },
+    {
+      "path": "驗收總表.md",
+      "bytes": 7638,
+      "sha256": "9412bb62dfb05d4d3f9cac344486e3d9e1183ab9e9c4a173c93e7869b6c61530"
+    },
+    {
+      "path": "帳本來源與命令.md",
+      "bytes": 9045,
+      "sha256": "ede57955ac312543b84d3c67a51a21acaa3020181aacf234ad62cb892de718a2"
+    },
+    {
+      "path": "修正與突變自證.md",
+      "bytes": 6141,
+      "sha256": "b1fcc7348283cb1de34e3d666cf77c2e013f9002cf12627c564601ba8bf7ab85"
+    },
+    {
+      "path": "交付說明.md",
+      "bytes": 2745,
+      "sha256": "6b5f2eae07040179db9a30f86022cda71253a537ba8821c9713585ebffa015f8"
+    }
+  ],
+  "documentLinks": [
+    {
+      "document": "README.md",
+      "target": "review/最新審查原文.md",
+      "resolved": "review/最新審查原文.md"
+    },
+    {
+      "document": "README.md",
+      "target": "驗收總表.md",
+      "resolved": "驗收總表.md"
+    },
+    {
+      "document": "README.md",
+      "target": "帳本來源與命令.md",
+      "resolved": "帳本來源與命令.md"
+    },
+    {
+      "document": "README.md",
+      "target": "修正與突變自證.md",
+      "resolved": "修正與突變自證.md"
+    },
+    {
+      "document": "README.md",
+      "target": "PR288_REVIEW_REPLY.md",
+      "resolved": "PR288_REVIEW_REPLY.md"
+    },
+    {
+      "document": "README.md",
+      "target": "PR288_BODY.md",
+      "resolved": "PR288_BODY.md"
+    },
+    {
+      "document": "README.md",
+      "target": "PR288_USER_ACTIONS.md",
+      "resolved": "PR288_USER_ACTIONS.md"
+    },
+    {
+      "document": "README.md",
+      "target": "交付說明.md",
+      "resolved": "交付說明.md"
+    },
+    {
+      "document": "README.md",
+      "target": "environment.json",
+      "resolved": "environment.json"
+    },
+    {
+      "document": "README.md",
+      "target": "architecture-L3/README.md",
+      "resolved": "architecture-L3/README.md"
+    },
+    {
+      "document": "README.md",
+      "target": "architecture-L3-native引用/README.md",
+      "resolved": "architecture-L3-native引用/README.md"
+    },
+    {
+      "document": "README.md",
+      "target": "source-binding-L3/來源綁定/snapshot-L3.json",
+      "resolved": "source-binding-L3/來源綁定/snapshot-L3.json"
+    },
+    {
+      "document": "README.md",
+      "target": "交付說明.md",
+      "resolved": "交付說明.md"
+    },
+    {
+      "document": "README.md",
+      "target": "native-L2-failed/verification.json",
+      "resolved": "native-L2-failed/verification.json"
+    },
+    {
+      "document": "README.md",
+      "target": "host-authority-anchor-fix-S3/README.md",
+      "resolved": "host-authority-anchor-fix-S3/README.md"
+    },
+    {
+      "document": "README.md",
+      "target": "p189-final-L/README.md",
+      "resolved": "p189-final-L/README.md"
+    },
+    {
+      "document": "README.md",
+      "target": "p189-codec-trial-7ad3216a/README.md",
+      "resolved": "p189-codec-trial-7ad3216a/README.md"
+    },
+    {
+      "document": "README.md",
+      "target": "p189-contact-trial-85dc4fff/README.md",
+      "resolved": "p189-contact-trial-85dc4fff/README.md"
+    },
+    {
+      "document": "README.md",
+      "target": "footprint-p189-pair-evidence/README.md",
+      "resolved": "footprint-p189-pair-evidence/README.md"
+    },
+    {
+      "document": "README.md",
+      "target": "ledger-A-gcc-history.md",
+      "resolved": "ledger-A-gcc-history.md"
+    },
+    {
+      "document": "README.md",
+      "target": "後續工作/README.md",
+      "resolved": "後續工作/README.md"
+    },
+    {
+      "document": "PR288_BODY.md",
+      "target": "https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/驗收總表.md",
+      "resolved": "驗收總表.md"
+    },
+    {
+      "document": "PR288_BODY.md",
+      "target": "https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/帳本來源與命令.md",
+      "resolved": "帳本來源與命令.md"
+    },
+    {
+      "document": "PR288_BODY.md",
+      "target": "https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/修正與突變自證.md",
+      "resolved": "修正與突變自證.md"
+    },
+    {
+      "document": "PR288_BODY.md",
+      "target": "https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/review/最新審查原文.md",
+      "resolved": "review/最新審查原文.md"
+    },
+    {
+      "document": "PR288_REVIEW_REPLY.md",
+      "target": "https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/review/最新審查原文.md",
+      "resolved": "review/最新審查原文.md"
+    },
+    {
+      "document": "PR288_REVIEW_REPLY.md",
+      "target": "https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/帳本來源與命令.md",
+      "resolved": "帳本來源與命令.md"
+    },
+    {
+      "document": "PR288_REVIEW_REPLY.md",
+      "target": "https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/驗收總表.md",
+      "resolved": "驗收總表.md"
+    },
+    {
+      "document": "PR288_REVIEW_REPLY.md",
+      "target": "https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/PR288_BODY.md",
+      "resolved": "PR288_BODY.md"
+    },
+    {
+      "document": "PR288_REVIEW_REPLY.md",
+      "target": "https://github.com/ZhiQiYang/geometry-axiom/blob/codex/geo261-closeout-20261021/evidence/geo261-closeout-20261021/README.md",
+      "resolved": "README.md"
+    },
+    {
+      "document": "PR288_USER_ACTIONS.md",
+      "target": "PR288_REVIEW_REPLY.md",
+      "resolved": "PR288_REVIEW_REPLY.md"
+    },
+    {
+      "document": "PR288_USER_ACTIONS.md",
+      "target": "PR288_BODY.md",
+      "resolved": "PR288_BODY.md"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "ledger-S3-cc/執行原件/phase-receipts.json",
+      "resolved": "ledger-S3-cc/執行原件/phase-receipts.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "ledger-S3-cc/執行原件/mutate.stdout",
+      "resolved": "ledger-S3-cc/執行原件/mutate.stdout"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "ledger-S3-cc/執行原件/mutate.stderr",
+      "resolved": "ledger-S3-cc/執行原件/mutate.stderr"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "ledger-S3-cc/README.md",
+      "resolved": "ledger-S3-cc/README.md"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "architecture-L3/receipt.json",
+      "resolved": "architecture-L3/receipt.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "architecture-L3/stdout.json",
+      "resolved": "architecture-L3/stdout.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "architecture-L3/stderr.log",
+      "resolved": "architecture-L3/stderr.log"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "native-L3-formal/verification.json",
+      "resolved": "native-L3-formal/verification.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "native-L3-formal/run.log",
+      "resolved": "native-L3-formal/run.log"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "native-L3-formal/suite-logs/py_test_architecture_contract.json",
+      "resolved": "native-L3-formal/suite-logs/py_test_architecture_contract.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "native-L3-formal/suite-logs/py_test_product_architecture.json",
+      "resolved": "native-L3-formal/suite-logs/py_test_product_architecture.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "native-L3-formal/suite-logs/py_test_geo261_model_base_replay.json",
+      "resolved": "native-L3-formal/suite-logs/py_test_geo261_model_base_replay.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "native-L3-formal/suite-logs/py_test_geo261_model_base_replay.unittest.log",
+      "resolved": "native-L3-formal/suite-logs/py_test_geo261_model_base_replay.unittest.log"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "canvas-L3-formal/README.md",
+      "resolved": "canvas-L3-formal/README.md"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "browser-five-L3-formal/README.md",
+      "resolved": "browser-five-L3-formal/README.md"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "browser-five-L3-formal/README.md",
+      "resolved": "browser-five-L3-formal/README.md"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "browser-five-L3-formal/README.md",
+      "resolved": "browser-five-L3-formal/README.md"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "browser-five-L3-formal/README.md",
+      "resolved": "browser-five-L3-formal/README.md"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "browser-five-L3-formal/README.md",
+      "resolved": "browser-five-L3-formal/README.md"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "gates-L3-formal/q38-run/q38/run-receipt.json",
+      "resolved": "gates-L3-formal/q38-run/q38/run-receipt.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "gates-L3-formal/q38-run/q38/q38.log",
+      "resolved": "gates-L3-formal/q38-run/q38/q38.log"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "gates-L3-formal/controls/run-receipt.json",
+      "resolved": "gates-L3-formal/controls/run-receipt.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "gates-L3-formal/controls/controls.log",
+      "resolved": "gates-L3-formal/controls/controls.log"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "gates-L3-formal/card-run/card/run-receipt.json",
+      "resolved": "gates-L3-formal/card-run/card/run-receipt.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "gates-L3-formal/card-run/card/card.log",
+      "resolved": "gates-L3-formal/card-run/card/card.log"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "gates-L3-formal/axiom-run/axiom/run-receipt.json",
+      "resolved": "gates-L3-formal/axiom-run/axiom/run-receipt.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "gates-L3-formal/axiom-run/axiom/axiom.log",
+      "resolved": "gates-L3-formal/axiom-run/axiom/axiom.log"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "p189-formal-L3/raw/receipt.json",
+      "resolved": "p189-formal-L3/raw/receipt.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "p189-formal-L3/raw/readonly-source-review.json",
+      "resolved": "p189-formal-L3/raw/readonly-source-review.json"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "p189-formal-L3/README.md",
+      "resolved": "p189-formal-L3/README.md"
+    },
+    {
+      "document": "驗收總表.md",
+      "target": "environment.json",
+      "resolved": "environment.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/mutants_results.json",
+      "resolved": "ledger-S3-cc/執行原件/mutants_results.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/S3-L3實際來源綁定.json",
+      "resolved": "ledger-S3-cc/S3-L3實際來源綁定.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/L3帳本發布/publication.json",
+      "resolved": "ledger-S3-cc/L3帳本發布/publication.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "source-binding-L3/來源綁定/snapshot-L3.json",
+      "resolved": "source-binding-L3/來源綁定/snapshot-L3.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/prepare-receipt.json",
+      "resolved": "ledger-S3-cc/執行原件/prepare-receipt.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/mutants_results.json",
+      "resolved": "ledger-S3-cc/執行原件/mutants_results.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/environment.json",
+      "resolved": "ledger-S3-cc/執行原件/environment.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/mutate.stdout",
+      "resolved": "ledger-S3-cc/執行原件/mutate.stdout"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/mutate.stderr",
+      "resolved": "ledger-S3-cc/執行原件/mutate.stderr"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/mutate.exit-code",
+      "resolved": "ledger-S3-cc/執行原件/mutate.exit-code"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/check.stdout",
+      "resolved": "ledger-S3-cc/執行原件/check.stdout"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/check.stderr",
+      "resolved": "ledger-S3-cc/執行原件/check.stderr"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/check.exit-code",
+      "resolved": "ledger-S3-cc/執行原件/check.exit-code"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/check-killers.stdout",
+      "resolved": "ledger-S3-cc/執行原件/check-killers.stdout"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/check-killers.stderr",
+      "resolved": "ledger-S3-cc/執行原件/check-killers.stderr"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/check-killers.exit-code",
+      "resolved": "ledger-S3-cc/執行原件/check-killers.exit-code"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/L3帳本發布/L-default-check.stdout",
+      "resolved": "ledger-S3-cc/L3帳本發布/L-default-check.stdout"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/L3帳本發布/L-default-check.stderr",
+      "resolved": "ledger-S3-cc/L3帳本發布/L-default-check.stderr"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/L3帳本發布/L-default-check.exit-code",
+      "resolved": "ledger-S3-cc/L3帳本發布/L-default-check.exit-code"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/phase-receipts.json",
+      "resolved": "ledger-S3-cc/執行原件/phase-receipts.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/L3帳本發布/commands.json",
+      "resolved": "ledger-S3-cc/L3帳本發布/commands.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/L3帳本發布/environment.json",
+      "resolved": "ledger-S3-cc/L3帳本發布/environment.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/launch-completion.json",
+      "resolved": "ledger-S3-cc/執行原件/launch-completion.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/session-observation-final.json",
+      "resolved": "ledger-S3-cc/執行原件/session-observation-final.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/ledger-validation.json",
+      "resolved": "ledger-S3-cc/執行原件/ledger-validation.json"
+    },
+    {
+      "document": "帳本來源與命令.md",
+      "target": "ledger-S3-cc/執行原件/raw/bridge",
+      "resolved": "ledger-S3-cc/執行原件/raw/bridge"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "驗收總表.md",
+      "resolved": "驗收總表.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p52/README.md",
+      "resolved": "p52/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p52/正式來源撤回自證.md",
+      "resolved": "p52/正式來源撤回自證.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p52/P72B控制v2說明.md",
+      "resolved": "p52/P72B控制v2說明.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p52/來源對照.md",
+      "resolved": "p52/來源對照.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p73/README.md",
+      "resolved": "p73/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p73/formal/summary.json",
+      "resolved": "p73/formal/summary.json"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "codec-targeted-7ad3216a/README.md",
+      "resolved": "codec-targeted-7ad3216a/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p189-codec-trial-7ad3216a/README.md",
+      "resolved": "p189-codec-trial-7ad3216a/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p189-contact-trial-85dc4fff/README.md",
+      "resolved": "p189-contact-trial-85dc4fff/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p189-contact-85dc4fff-diagnostics/README.md",
+      "resolved": "p189-contact-85dc4fff-diagnostics/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "host-copy-targeted-75f587a5/README.md",
+      "resolved": "host-copy-targeted-75f587a5/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "footprint-p189-pair-evidence/README.md",
+      "resolved": "footprint-p189-pair-evidence/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p189-footprint-trial-6c693770/README.md",
+      "resolved": "p189-footprint-trial-6c693770/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p189-footprint-revert-control-4bd19f91/README.md",
+      "resolved": "p189-footprint-revert-control-4bd19f91/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "footprint-negative-publication/README.md",
+      "resolved": "footprint-negative-publication/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "native-L2-failed/verification.json",
+      "resolved": "native-L2-failed/verification.json"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "host-authority-anchor-fix-S3/README.md",
+      "resolved": "host-authority-anchor-fix-S3/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "architecture-S2/結果.md",
+      "resolved": "architecture-S2/結果.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "source-binding-L3/README.md",
+      "resolved": "source-binding-L3/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "architecture-L3/README.md",
+      "resolved": "architecture-L3/README.md"
+    },
+    {
+      "document": "修正與突變自證.md",
+      "target": "p52/獨占量測結論.md",
+      "resolved": "p52/獨占量測結論.md"
+    },
+    {
+      "document": "交付說明.md",
+      "target": "驗收總表.md",
+      "resolved": "驗收總表.md"
+    },
+    {
+      "document": "交付說明.md",
+      "target": "交付整理方法-靜態審查/README.md",
+      "resolved": "交付整理方法-靜態審查/README.md"
+    },
+    {
+      "document": "交付說明.md",
+      "target": "交付公開方法-靜態審查/README.md",
+      "resolved": "交付公開方法-靜態審查/README.md"
+    },
+    {
+      "document": "交付說明.md",
+      "target": "交付驗證方法-L3/README.md",
+      "resolved": "交付驗證方法-L3/README.md"
+    },
+    {
+      "document": "交付說明.md",
+      "target": "ledger-A-gcc-history.md",
+      "resolved": "ledger-A-gcc-history.md"
+    },
+    {
+      "document": "交付說明.md",
+      "target": "PR288_USER_ACTIONS.md",
+      "resolved": "PR288_USER_ACTIONS.md"
+    },
+    {
+      "document": "交付說明.md",
+      "target": "後續工作/README.md",
+      "resolved": "後續工作/README.md"
+    },
+    {
+      "document": "交付說明.md",
+      "target": "browser-five-L3-bundle-peer.json",
+      "resolved": "browser-five-L3-bundle-peer.json"
+    }
+  ],
+  "remoteHeads": {
+    "refs/heads/architecture/geo261-integration-20261016": "7dae5f21c7ca401e660450d437e60ba566218da8",
+    "refs/heads/codex/geo261-closeout-20261021": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+    "refs/heads/main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b"
+  },
+  "accepted": true,
+  "scope": "只驗既有清單所列hash與八稿連結；不把子清單當總全集，不重跑產品。完整全集由隨後stage建立的根artifact-index及E驗證器核。"
+}

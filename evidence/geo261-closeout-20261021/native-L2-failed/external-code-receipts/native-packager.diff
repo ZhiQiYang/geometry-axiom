@@ -1,0 +1,27 @@
+--- /workspace/geo261-evidence/native-l-preparation/package-native-l.py
++++ /workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/package-native.py
+@@ -8,11 +8,11 @@
+ import subprocess
+ from pathlib import Path
+ 
+-ROOT = Path('/workspace/geo261-native-l')
+-OUT = Path('/workspace/geo261-evidence/native-final')
+-LAUNCHER = Path('/workspace/geo261-evidence/native-final-launcher')
++ROOT = Path('/workspace/geo261-native-l2-249571fe2477-20261021')
++OUT = Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/native')
++LAUNCHER = Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/native-launcher')
+ RAW = Path('/tmp/geometry-tests/run_all-logs')
+-SHA = '43f85313c32410ac01406ab585846bbacafea278'
++SHA = '249571fe2477845d5330f6190dad965bf327f43b'
+ 
+ def digest(data):
+     return hashlib.sha256(data).hexdigest()
+@@ -133,7 +133,7 @@
+     and receipt['sourceHashesUnchanged'] and receipt['elapsedSeconds']<2100)
+ verification['all224ExpectedMatched']=len(rows)==len(expected)==224 and not mismatches
+ verification['all224Passed']=verification['acceptedNative'] and len(expected)==224
+-verification['all224PassedMeaning']='全部 224 個 suite 均完成且符合 run_all 的完整驗收判準；保留具名允許 skip 與 exit-code-only 分類，不宣稱 5176 項全部為斷言通過。'
++verification['all224PassedMeaning']='全部 224 個 suite 均完成且符合 run_all 的完整驗收判準；保留具名允許 skip 與 exit-code-only 分類，不宣稱 5188 項全部為斷言通過。'
+ verification['artifactReferences']={**provenance,'namedRequiredSuites':reference(OUT/'named-required-suites.json')}
+ write_json(OUT/'verification.json',verification)
+ print(json.dumps({k:v for k,v in verification.items() if k in ['acceptedNative','sourceSha','runExitCode','wrapperReturnCode','launcherExitCode','elapsedSeconds','observedCompletedTableRows','observedTotals','rawLogCount','rawLogBytes','expectedMismatches','missingSuiteLogs','unallowedSkipCount']},ensure_ascii=False))

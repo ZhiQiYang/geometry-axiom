@@ -1,0 +1,295 @@
+[
+  {
+    "phase": "generator-selftest",
+    "argv": [
+      "python3",
+      "-B",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--selftest"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T01:36:36.073763+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "85dc4fff44ce49b27f831b21cbdcb662c863302c"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/generator-selftest.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/generator-selftest.stderr",
+    "supervisor_pid": 303759,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 303772,
+    "pgid": 303772,
+    "finished_utc": "2026-10-21T01:36:36.152186+00:00",
+    "seconds": 0.07822454000051948,
+    "exit_code": 0,
+    "stdout_sha256": "1cf55b98fb0d213b478c70521a551312d3bb43f15dedc40b98fe6ecdc54a8d53",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "phase": "selftest",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "selftest",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+      "--out",
+      "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+      "--gen",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--final",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "--timeout",
+      "900"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T01:36:36.169271+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "85dc4fff44ce49b27f831b21cbdcb662c863302c"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/selftest.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/selftest.stderr",
+    "supervisor_pid": 303759,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 303779,
+    "pgid": 303779,
+    "finished_utc": "2026-10-21T01:36:36.239109+00:00",
+    "seconds": 0.06975296599921421,
+    "exit_code": 0,
+    "stdout_sha256": "8566912e73dd13a253cadf1fe4f89ec0dc494cbf0f4bd7e22f5155f8676e3a9d",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "phase": "build",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "build",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+      "--out",
+      "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+      "--gen",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--final",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "--timeout",
+      "900"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T01:36:36.255655+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "85dc4fff44ce49b27f831b21cbdcb662c863302c"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/build.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/build.stderr",
+    "supervisor_pid": 303759,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 303789,
+    "pgid": 303789,
+    "finished_utc": "2026-10-21T01:37:25.953045+00:00",
+    "seconds": 49.697370351001155,
+    "exit_code": 0,
+    "stdout_sha256": "6067338181b5a4234642fc5edc49ded643df45744aeada33f0eae95e09146874",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "phase": "equivalence",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "equivalence",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+      "--out",
+      "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+      "--gen",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--final",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "--timeout",
+      "900"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T01:37:25.966609+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "85dc4fff44ce49b27f831b21cbdcb662c863302c"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/equivalence.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/equivalence.stderr",
+    "supervisor_pid": 303759,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 304118,
+    "pgid": 304118,
+    "finished_utc": "2026-10-21T01:38:38.160536+00:00",
+    "seconds": 72.19391010500112,
+    "exit_code": 0,
+    "stdout_sha256": "aec7f86bfc5b29d4ab0a916d00cc24779267c3fbd08d66bb12134dfc56e6dc2c",
+    "stderr_sha256": "11cfa9cdb089e93291cd50e802cb1df9504625e6ecec363084e7013b9620cede"
+  },
+  {
+    "phase": "timing",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "timing",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+      "--out",
+      "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+      "--gen",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--final",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "--timeout",
+      "900"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T01:38:39.225122+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "85dc4fff44ce49b27f831b21cbdcb662c863302c"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/timing.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/timing.stderr",
+    "supervisor_pid": 303759,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 304845,
+    "pgid": 304845,
+    "finished_utc": "2026-10-21T01:40:00.880609+00:00",
+    "seconds": 81.65539238899873,
+    "exit_code": 0,
+    "stdout_sha256": "1228f1f85a2917441ed5bdf83ce1dd863cfedae26ccb11991f428222ffeabd70",
+    "stderr_sha256": "11cfa9cdb089e93291cd50e802cb1df9504625e6ecec363084e7013b9620cede"
+  },
+  {
+    "phase": "check",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "check",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a",
+      "--out",
+      "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+      "--gen",
+      "/workspace/geo261-p189-contact-v2-src-mrcj_18a/gen_scene.py",
+      "--final",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "--timeout",
+      "900"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T01:40:00.895267+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "85dc4fff44ce49b27f831b21cbdcb662c863302c"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/check.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh/check.stderr",
+    "supervisor_pid": 303759,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 304905,
+    "pgid": 304905,
+    "finished_utc": "2026-10-21T01:40:00.970530+00:00",
+    "seconds": 0.07523909100200399,
+    "exit_code": 1,
+    "stdout_sha256": "5a093ed872fb7c6ed9f3ecf2ac077b120cd4d0540d8c606083e6baa2a18fb2ed",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

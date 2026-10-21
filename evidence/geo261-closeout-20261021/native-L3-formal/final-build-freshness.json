@@ -1,0 +1,30 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "command": [
+    "python3",
+    "-B",
+    "tests/binaries.py",
+    "status"
+  ],
+  "exitCode": 0,
+  "freshNames": [
+    "core",
+    "bridge",
+    "pf3-algorithm",
+    "integrity",
+    "model-base",
+    "engjson"
+  ],
+  "expectedFreshNames": [
+    "bridge",
+    "core",
+    "engjson",
+    "integrity",
+    "model-base",
+    "pf3-algorithm"
+  ],
+  "allSixFresh": true,
+  "CCAbsent": true,
+  "PYTHONOPTIMIZEAbsent": true,
+  "compilerOrTestsStarted": false
+}

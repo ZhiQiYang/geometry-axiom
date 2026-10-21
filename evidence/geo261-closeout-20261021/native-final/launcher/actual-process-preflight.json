@@ -1,0 +1,70 @@
+{
+  "sampledUtc": "2026-10-20T23:40:05.535382+00:00",
+  "firstProbe": {
+    "exitCode": 1,
+    "error": "PermissionError: [Errno 13] Permission denied: /proc/236209/environ",
+    "effect": "唯讀採樣受限；正式 native 程序持續執行，沒有重跑或更動。"
+  },
+  "environmentEvidence": "父層啟動命令 env -u CC -u PYTHONOPTIMIZE；同環境 preflight 已記 absence。若 /proc/environ 權限拒絕，不宣稱讀到子程序環境。",
+  "processes": [
+    {
+      "pid": 236209,
+      "limitsSha256": "a9ea51d891c409bebf0288dad58e6521097e93d0aa09cf0b102b88cb3a9b587e",
+      "statusSha256": "159e4fc26286b215cda8332112dc8c290e5ef4cf6d26464184b6339e5c50c805",
+      "argv": [
+        "python3",
+        "-B",
+        "-c",
+        "import argparse,ast,datetime,hashlib,json,os,subprocess,sys,time,traceback\nfrom pathlib import Path\n\ndef utc():\n    return datetime.datetime.now(datetime.timezone.utc).isoformat()\n\ndef atomic_text(path, text):\n    temporary=path.with_name(path.name+\".pending-\"+str(os.getpid()))\n    with temporary.open(\"w\",encoding=\"utf-8\") as handle:\n        handle.write(text)\n        handle.flush()\n        os.fsync(handle.fileno())\n    os.replace(temporary,path)\n\ndef constant_assignment(tree,name):\n    for node in tree.body:\n        if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id==name for t in node.targets):\n            if isinstance(node.value,ast.Constant):\n                return node.value.value\n            if isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Name) and node.value.func.id==\"Path\" and len(node.value.args)==1:\n                return ast.literal_eval(node.value.args[0])\n    raise ValueError(\"wrapper 缺少可核對的固定值：\"+name)\n\nparser=argparse.ArgumentParser(description=\"只調度已固定來源的 native wrapper；標準輸出直接落盤。\")\nparser.add_argument(\"--wrapper-code\",required=True)\nparser.add_argument(\"--cwd\",required=True)\nparser.add_argument(\"--native-out\",required=True)\nparser.add_argument(\"--launcher-out\",required=True)\nparser.add_argument(\"--source-sha\",required=True)\nparser.add_argument(\"--validate-only\",action=\"store_true\")\nargs=parser.parse_args()\nif len(args.source_sha)!=40 or any(c not in \"0123456789abcdef\" for c in args.source_sha):\n    parser.error(\"source-sha 必須是完整的 40 位小寫十六進位 SHA。\")\nwrapper_path=Path(args.wrapper_code).resolve(strict=True)\nworktree=Path(args.cwd).resolve(strict=True)\nnative_out=Path(args.native_out).absolute()\nlauncher_out=Path(args.launcher_out).absolute()\nif native_out==launcher_out:\n    parser.error(\"launcher-out 與 native-out 必須分開，避免預先建立 wrapper 輸出目錄。\")\nwrapper_bytes=wrapper_path.read_bytes()\nwrapper_source=wrapper_bytes.decode(\"utf-8\")\ntree=ast.parse(wrapper_source,filename=str(wrapper_path))\nassert constant_assignment(tree,\"expected\")==args.source_sha,\"wrapper SHA 與實際參數不符\"\nassert Path(constant_assignment(tree,\"cwd\")).resolve(strict=True)==worktree,\"wrapper cwd 與實際參數不符\"\nassert Path(constant_assignment(tree,\"out\")).absolute()==native_out,\"wrapper out 與實際參數不符\"\nwrapper_argv=[sys.executable,\"-B\",\"-c\",wrapper_source]\nvalidation={\"validatedUtc\":utc(),\"mode\":\"只驗參數，未執行 wrapper\" if args.validate_only else \"正式執行\",\"sourceShaExpected\":args.source_sha,\"cwd\":str(worktree),\"nativeOutputPath\":str(native_out),\"launcherOutputPath\":str(launcher_out),\"wrapperCodePath\":str(wrapper_path),\"wrapperCodeBytes\":len(wrapper_bytes),\"wrapperCodeSha256\":hashlib.sha256(wrapper_bytes).hexdigest(),\"launcherArgv\":sys.orig_argv,\"wrapperArgv\":wrapper_argv}\nif args.validate_only:\n    validation[\"nativeStarted\"]=False\n    validation[\"wrapperStarted\"]=False\n    validation[\"subprocessCalls\"]=0\n    print(json.dumps(validation,ensure_ascii=False),flush=True)\n    sys.exit(0)\n\nlauncher_out.mkdir(parents=True,exist_ok=True)\nassert not (launcher_out/\".exit-code\").exists(),\"已存在結束碼，拒絕覆寫既有輪次\"\nassert not (launcher_out/\"launcher-receipt.json\").exists(),\"已存在父層收據，拒絕覆寫既有輪次\"\nassert not native_out.exists(),\"wrapper 輸出目錄必須尚未存在\"\nlog_path=launcher_out/\"orchestrator.log\"\nlogfd=os.open(log_path,os.O_WRONLY|os.O_CREAT|os.O_APPEND,0o644)\nos.dup2(logfd,1)\nos.dup2(logfd,2)\nif logfd not in (1,2):\n    os.close(logfd)\nstarted=utc()\nmono=time.monotonic()\ncommand={**validation,\"startedUtc\":started,\"launcherPid\":os.getpid(),\"orchestratorLog\":str(log_path),\"stdio\":\"父 launcher 與 wrapper 的 stdout/stderr 都直接寫入同一獨立檔案，無 tool transport pipe。\"}\natomic_text(launcher_out/\"launcher-command.json\",json.dumps(command,ensure_ascii=False,indent=2)+\"\\n\")\natomic_text(launcher_out/\"launcher-code.txt\",sys.orig_argv[sys.orig_argv.index(\"-c\")+1])\natomic_text(launcher_out/\"wrapper-code.txt\",wrapper_source)\nwrapper_pid=None\nwrapper_exit=None\nspawn_error=None\ntry:\n    with log_path.open(\"ab\",buffering=0) as log:\n        process=subprocess.Popen(wrapper_argv,cwd=worktree,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT)\n        wrapper_pid=process.pid\n        atomic_text(launcher_out/\"wrapper-pid.json\",json.dumps({\"wrapperPid\":wrapper_pid,\"startedUtc\":utc()},ensure_ascii=False,indent=2)+\"\\n\")\n        wrapper_exit=process.wait()\nexcept BaseException as exc:\n    spawn_error={\"type\":type(exc).__name__,\"message\":str(exc),\"traceback\":traceback.format_exc()}\n    traceback.print_exc()\nnative_receipt_path=native_out/\"receipt.json\"\nnative_receipt=None\nnative_receipt_error=None\nif native_receipt_path.exists():\n    try:\n        native_receipt=json.loads(native_receipt_path.read_text())\n    except BaseException as exc:\n        native_receipt_error={\"type\":type(exc).__name__,\"message\":str(exc)}\nlauncher_exit=125 if wrapper_exit is None else (wrapper_exit if wrapper_exit>=0 else 128-wrapper_exit)\nreceipt={**command,\"finishedUtc\":utc(),\"elapsedSeconds\":time.monotonic()-mono,\"wrapperPid\":wrapper_pid,\"wrapperStarted\":wrapper_pid is not None,\"wrapperReturnCode\":wrapper_exit,\"launcherExitCode\":launcher_exit,\"launcherError\":spawn_error,\"nativeReceiptPath\":str(native_receipt_path),\"nativeReceiptExists\":native_receipt_path.exists(),\"nativeReceiptReadError\":native_receipt_error,\"nativeMainTimeoutReturnCode\":native_receipt.get(\"exitCode\") if isinstance(native_receipt,dict) else None,\"nativeMainChildRawWaitStatus\":native_receipt.get(\"mainChildRawWaitStatus\") if isinstance(native_receipt,dict) else None,\"nativeSourceSha\":native_receipt.get(\"sourceSha\") if isinstance(native_receipt,dict) else None,\"nativeReceiptSha256\":hashlib.sha256(native_receipt_path.read_bytes()).hexdigest() if native_receipt_path.exists() else None}\nif wrapper_exit is not None:\n    atomic_text(launcher_out/\".exit-code\",str(wrapper_exit)+\"\\n\")\natomic_text(launcher_out/\".launcher-exit-code\",str(launcher_exit)+\"\\n\")\natomic_text(launcher_out/\"launcher-receipt.json\",json.dumps(receipt,ensure_ascii=False,indent=2)+\"\\n\")\nprint(json.dumps({\"finishedUtc\":receipt[\"finishedUtc\"],\"wrapperReturnCode\":wrapper_exit,\"launcherExitCode\":launcher_exit,\"nativeMainTimeoutReturnCode\":receipt[\"nativeMainTimeoutReturnCode\"]},ensure_ascii=False),flush=True)\nsys.exit(launcher_exit)\n",
+        "--wrapper-code",
+        "/workspace/geo261-evidence/native-final-launcher/wrapper-code.txt",
+        "--cwd",
+        "/workspace/geo261-native-l",
+        "--native-out",
+        "/workspace/geo261-evidence/native-final",
+        "--launcher-out",
+        "/workspace/geo261-evidence/native-final-launcher",
+        "--source-sha",
+        "43f85313c32410ac01406ab585846bbacafea278"
+      ],
+      "environReadError": {
+        "type": "PermissionError",
+        "errno": 13,
+        "message": "[Errno 13] Permission denied: '/proc/236209/environ'"
+      }
+    },
+    {
+      "pid": 236211,
+      "limitsSha256": "f12acb2f6d808fb4aac2ee5c9da7c5effbea7c02375af5abef5a61b83389f859",
+      "statusSha256": "55d6279fc35ad96d84dba61914d75a0d760a44843642faa5108ffd37e3189c70",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-c",
+        "import os,sys,json,time,signal,ctypes,resource,hashlib,subprocess,datetime\nfrom pathlib import Path\ncwd=Path(\"/workspace/geo261-native-l\")\nout=Path(\"/workspace/geo261-evidence/native-final\")\nexpected=\"43f85313c32410ac01406ab585846bbacafea278\"\ncommand=[\"timeout\",\"2100\",\"python3\",\"tests/run_all.py\",\"--build\"]\nenv={\"PYTHONDONTWRITEBYTECODE\":\"1\",\"LANG\":\"C.UTF-8\",\"LC_ALL\":\"C.UTF-8\",\"TMPDIR\":\"/tmp/geo261-native-l-43f85313\"}\nos.chdir(cwd)\nos.environ.update(env)\ndef utc(): return datetime.datetime.now(datetime.timezone.utc).isoformat()\ndef git(*args): return subprocess.check_output([\"git\",*args],text=True).strip()\nhead=git(\"rev-parse\",\"HEAD\")\nstatus=git(\"status\",\"--porcelain\")\nassert head==expected and not status,(head,status)\nassert not out.exists(),str(out)\nout.mkdir()\nsoft,hard=resource.getrlimit(resource.RLIMIT_STACK)\nresource.setrlimit(resource.RLIMIT_STACK,(16*1024*1024,hard))\nlibc=ctypes.CDLL(None,use_errno=True)\nif libc.prctl(36,1,0,0,0)!=0: raise OSError(ctypes.get_errno(),\"PR_SET_CHILD_SUBREAPER\")\nflag=ctypes.c_int()\nif libc.prctl(37,ctypes.byref(flag),0,0,0)!=0 or flag.value!=1: raise RuntimeError(\"subreaper not enabled\")\ntracked=[\"tests/test_assembly_mutation_check.py\",\"tests/assembly_mutation_check.py\",\"tests/run_all.py\",\"tests/run_all.expected.json\"]\nhash_before={p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in tracked}\nstart=utc()\nmono=time.monotonic()\nmeta={\"sourceSha\":head,\"cwd\":str(cwd),\"command\":command,\"environment\":env,\"stackKiB\":16384,\"startedUtc\":start,\"jobLimitSeconds\":2100,\"headBefore\":head,\"statusBefore\":status,\"sourceHashesBefore\":hash_before,\"subreaperEnabled\":True,\"wrapperPid\":os.getpid(),\"wrapperArgv\":sys.orig_argv,\"wrapperSource\":sys.orig_argv[-1],\"note\":\"外層只回收自己的子樹；主 timeout 子程序的結束碼獨立保存並作為外層結束碼。\"}\n(out/\"command.json\").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\")\nlogfd=os.open(out/\"run.log\",os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o644)\nchild=os.fork()\nif child==0:\n    os.dup2(logfd,1)\n    os.dup2(logfd,2)\n    os.close(logfd)\n    os.execvp(command[0],command)\nos.close(logfd)\nmeta[\"mainChildPid\"]=child\n(out/\"command.json\").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\")\nprint(json.dumps({\"startedUtc\":start,\"wrapperPid\":os.getpid(),\"mainChildPid\":child,\"out\":str(out),\"sourceSha\":head},ensure_ascii=False),flush=True)\nevents=[]\ncleanup=[]\nmain_exit=None\nmain_raw=None\ndone=False\nwhile not done:\n    saw=False\n    while True:\n        try: pid,raw=os.waitpid(-1,os.WNOHANG)\n        except ChildProcessError:\n            done=True\n            break\n        if pid==0: break\n        saw=True\n        rc=os.waitstatus_to_exitcode(raw)\n        event={\"pid\":pid,\"rawWaitStatus\":raw,\"exitCode\":rc,\"isMainProcess\":pid==child,\"reapedUtc\":utc()}\n        events.append(event)\n        with (out/\"reaped.jsonl\").open(\"a\") as f: f.write(json.dumps(event,ensure_ascii=False)+\"\\n\")\n        if pid==child:\n            main_exit=rc\n            main_raw=raw\n    if done: break\n    if main_exit is not None:\n        children=Path(\"/proc/self/task/\"+str(os.getpid())+\"/children\").read_text().split()\n        for item in children:\n            pid=int(item)\n            if pid==child: continue\n            try:\n                rawstatus=Path(\"/proc/\"+str(pid)+\"/status\").read_text()\n                os.kill(pid,signal.SIGKILL)\n                event={\"pid\":pid,\"signal\":\"SIGKILL\",\"atUtc\":utc(),\"reason\":\"主 timeout 已結束，只清理仍被此 subreaper 收養的直接子程序。\",\"statusBeforeKill\":rawstatus}\n                cleanup.append(event)\n                with (out/\"cleanup.jsonl\").open(\"a\") as f: f.write(json.dumps(event,ensure_ascii=False)+\"\\n\")\n            except ProcessLookupError: pass\n            except FileNotFoundError: pass\n    if not saw: time.sleep(0.05)\nassert main_exit is not None,\"main child exit missing\"\nreceipt={**meta,\"exitCode\":main_exit,\"mainChildRawWaitStatus\":main_raw,\"elapsedSeconds\":time.monotonic()-mono,\"finishedUtc\":utc(),\"headAfter\":git(\"rev-parse\",\"HEAD\"),\"statusAfter\":git(\"status\",\"--porcelain\"),\"sourceHashesAfter\":{p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in tracked},\"reaped\":events,\"cleanup\":cleanup}\nreceipt[\"sourceHashesUnchanged\"]=receipt[\"sourceHashesBefore\"]==receipt[\"sourceHashesAfter\"]\n(out/\"reaped.json\").write_text(json.dumps({\"mainChildPid\":child,\"mainChildExitCode\":main_exit,\"events\":events,\"cleanup\":cleanup},ensure_ascii=False,indent=2)+\"\\n\")\n(out/\"receipt.json\").write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+\"\\n\")\nprint(json.dumps({\"finishedUtc\":receipt[\"finishedUtc\"],\"exitCode\":main_exit,\"elapsedSeconds\":receipt[\"elapsedSeconds\"],\"headAfter\":receipt[\"headAfter\"],\"statusAfter\":receipt[\"statusAfter\"],\"sourceHashesUnchanged\":receipt[\"sourceHashesUnchanged\"]},ensure_ascii=False),flush=True)\nsys.exit(main_exit if main_exit>=0 else 128-main_exit)\n"
+      ],
+      "environReadError": {
+        "type": "PermissionError",
+        "errno": 13,
+        "message": "[Errno 13] Permission denied: '/proc/236211/environ'"
+      }
+    },
+    {
+      "pid": 236238,
+      "limitsSha256": "f12acb2f6d808fb4aac2ee5c9da7c5effbea7c02375af5abef5a61b83389f859",
+      "statusSha256": "133234c33e49379381a2e7aac6fefaea9560d4dda434cc152d27ee3805c5ce2d",
+      "argv": [
+        "timeout",
+        "2100",
+        "python3",
+        "tests/run_all.py",
+        "--build"
+      ],
+      "environReadError": {
+        "type": "PermissionError",
+        "errno": 13,
+        "message": "[Errno 13] Permission denied: '/proc/236238/environ'"
+      }
+    }
+  ]
+}

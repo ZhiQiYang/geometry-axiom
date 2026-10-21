@@ -1,0 +1,19 @@
+{
+  "correctedCause": "current_geometry.c Git mode100644；原 bytes與Git L精確相同，非symlink。fingerprint按binaries.py做CRLF→LF正規化，10496處CRLF。",
+  "rawSha256": "dc3fbfb14adde5078c36ab179936df88ba977b22bb341301cd30deafeeb97696",
+  "normalizedSha256": "c58bee9df0fce6b8e881850c0bf28680000bcb690dfca7a5e911aa9b3217df87",
+  "readOnlyDiagnosticErrors": [
+    {
+      "chunk": "426deb",
+      "exitCode": 1,
+      "reason": "readlink對一般檔案回EINVAL，推翻先前symlink推測。"
+    },
+    {
+      "chunk": "9d78d5",
+      "pythonError": "UnicodeDecodeError",
+      "outerExitCode": 0,
+      "reason": "唯讀顯示截斷UTF8到多位元字尾；後續rg正常；不影響任何原始資料。"
+    }
+  ],
+  "note": "沒有改原件、來源或測試；首次審核碼和收據原bytes保留。"
+}

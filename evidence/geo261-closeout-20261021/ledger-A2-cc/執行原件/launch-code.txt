@@ -1,0 +1,43 @@
+"""啟動原 supervisor，將真 wait 退出碼直接保存；不更改其程式。"""
+import argparse
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import signal
+import subprocess
+
+SUPERVISOR=Path('/workspace/geo261-evidence/ledger-cc-supervisor.py')
+EXPECTED='308e37f71422f96543d68be4b51a42397c9d734750e0388278bb65941b60606e'
+def main():
+    if not __debug__:raise RuntimeError('禁止停用 assert')
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--source',required=True);p.add_argument('--config',type=Path,required=True)
+    p.add_argument('--execute',action='store_true');a=p.parse_args()
+    if not a.execute:p.error('須明確指定 --execute；未啟動')
+    assert re.fullmatch('[0-9a-f]{40}',a.source)
+    config=json.loads(a.config.read_bytes());out=Path(config['output_directory'])
+    assert config['source_sha']==a.source and not (out/'supervisor-started.json').exists()
+    assert hashlib.sha256(SUPERVISOR.read_bytes()).hexdigest()==EXPECTED
+    assert (out/'sourcecode.txt').read_bytes()==SUPERVISOR.read_bytes()
+    assert subprocess.check_output(['git','-C',config['worktree'],'rev-parse','HEAD']).decode().strip()==a.source
+    assert not subprocess.check_output(['git','-C',config['worktree'],'status','--porcelain=v1'])
+    env={k:v for k,v in os.environ.items() if k not in ('CC','PYTHONOPTIMIZE') and not k.startswith(('MUTATE_','GEOMETRY_'))}
+    signal.signal(signal.SIGHUP,signal.SIG_IGN)
+    (out/'launch-code.txt').write_bytes(Path(__file__).read_bytes())
+    command=['python3','-B',str(SUPERVISOR),str(a.config.resolve())]
+    started=datetime.datetime.now(datetime.timezone.utc).isoformat()
+    with (out/'orchestrator.log').open('xb') as log:
+        proc=subprocess.Popen(command,cwd=config['worktree'],env=env,stdin=subprocess.DEVNULL,stdout=log,stderr=log,start_new_session=True)
+        receipt={'command':command,'source_sha':a.source,'started_utc':started,'supervisor_pid':proc.pid,
+                 'supervisor_pgid':os.getpgid(proc.pid),'launcher_pid':os.getpid(),'interactive_tool_session':None,
+                 'direct_log':str(out/'orchestrator.log'),'sourcecode_sha256':EXPECTED,'CC_present':False,'PYTHONOPTIMIZE_present':False}
+        (out/'launch-receipt.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
+        code=proc.wait()
+        with (out/'supervisor-observed.exit-code').open('x') as f:f.write(str(code)+'\n');f.flush();os.fsync(f.fileno())
+        receipt.update(finished_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),observed_wait_returncode=code)
+        (out/'launch-completion.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
+    return code
+if __name__=='__main__':raise SystemExit(main())

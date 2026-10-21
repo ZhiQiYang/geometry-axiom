@@ -1,0 +1,224 @@
+diff --git a/geometry-templates/woodworking/native/contact_world.c b/geometry-templates/woodworking/native/contact_world.c
+index 52c290d8..5759b68a 100644
+--- a/geometry-templates/woodworking/native/contact_world.c
++++ b/geometry-templates/woodworking/native/contact_world.c
+@@ -22,11 +22,17 @@ bool wood_contact_footprint_collides(const WoodContactWorld *world,const GeoRect
+     }
+     return false;
+ }
+-static uint64_t contact_order(const WoodContactWorld *world,uint32_t id)
++typedef struct {uint64_t last,minimum;} WoodContactOrder;
++static WoodContactOrder contact_orders(const WoodContactWorld *world,uint32_t id)
+ {
+-    uint64_t order=UINT64_MAX;
+-    for(size_t i=0;i<world->member_count;++i)if(world->members[i].member->id==id)order=world->members[i].order;
+-    return order;
++    WoodContactOrder key={UINT64_MAX,UINT64_MAX};
++    /* 同 ID 最後一筆決定排序；任一較早記錄可參與去重。兩者都看完整 facts。 */
++    for(size_t i=0;i<world->member_count;++i){const WoodContactMemberFact *fact=&world->members[i];
++        if(fact->member->id!=id)continue;
++        key.last=fact->order;
++        if(fact->order<key.minimum)key.minimum=fact->order;
++    }
++    return key;
+ }
+ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,const WoodMember *exclude,WoodStopFace *out,size_t cap)
+ {
+@@ -47,6 +53,7 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
+             }
+         }
+     }
++    size_t member_begin=count;
+     for(size_t i=0;i<world->member_count&&count+2<=cap;++i){const WoodContactMemberFact *fact=&world->members[i];const WoodMember *member=fact->member;
+         if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;
+         const GeoRect2 *f=&fact->footprint;
+@@ -58,28 +65,44 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
+             out[count++]=(WoodStopFace){WOOD_STOP_MEMBER_SIDE,0,member->id,-1,1,WOOD_STOP_FIXED,f->max_u,f->min_v,f->max_v};
+         }
+     }
++    /* 僅此輪已收進的側面共用 key；不改容量截斷，也不跨 query 保存。
++     * 直接呼叫者若超過暫存大小，仍用原全 facts 查找，不新增容量拒絕。 */
++    WoodContactOrder orders[WOOD_CONTACT_MEMBER_CAPACITY*2];
++    bool cached=count-member_begin<=sizeof orders/sizeof *orders;
++    if(cached)for(size_t i=member_begin;i<count;i+=2){
++        WoodContactOrder key=contact_orders(world,out[i].timber_id);
++        orders[i-member_begin]=key;orders[i+1-member_begin]=key;
++    }
+     /* D11 placement order is independent of declaration order. Stable ties
+      * retain the two side identities in their original order. */
+     for(size_t i=1;i<count;++i){
+         if(out[i].kind!=WOOD_STOP_MEMBER_SIDE)continue;
+-        uint64_t order=contact_order(world,out[i].timber_id);size_t j=i;WoodStopFace value=out[i];
++        WoodContactOrder value_order=cached?orders[i-member_begin]:contact_orders(world,out[i].timber_id);
++        uint64_t order=value_order.last;size_t j=i;WoodStopFace value=out[i];
+         while(j&&out[j-1].kind==WOOD_STOP_MEMBER_SIDE){
+-            uint64_t previous=contact_order(world,out[j-1].timber_id);if(previous<=order)break;
+-            out[j]=out[j-1];--j;
++            uint64_t previous=cached?orders[j-1-member_begin].last:contact_orders(world,out[j-1].timber_id).last;if(previous<=order)break;
++            out[j]=out[j-1];
++            if(cached)orders[j-member_begin]=orders[j-1-member_begin];
++            --j;
+         }
+         out[j]=value;
++        if(cached)orders[j-member_begin]=value_order;
+     }
+     for(size_t i=0;i<count;){bool duplicate=false;
+-        if(out[i].kind==WOOD_STOP_MEMBER_SIDE){uint64_t order=contact_order(world,out[i].timber_id);
++        if(out[i].kind==WOOD_STOP_MEMBER_SIDE){uint64_t order=cached?orders[i-member_begin].last:contact_orders(world,out[i].timber_id).last;
+             for(size_t j=0;j<count&&!duplicate;++j){
+                 if(i==j||out[i].fixed!=out[j].fixed||out[i].lo>=out[j].hi||out[j].lo>=out[i].hi)continue;
+                 bool earlier=out[j].kind!=WOOD_STOP_MEMBER_SIDE;
+-                if(!earlier)for(size_t t=0;t<world->member_count;++t)
+-                    if(world->members[t].member->id==out[j].timber_id&&world->members[t].order<order)earlier=true;
++                if(!earlier){uint64_t previous_min=cached?orders[j-member_begin].minimum:contact_orders(world,out[j].timber_id).minimum;
++                    if(previous_min<order)earlier=true;
++                }
+                 if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;
+             }
+         }
+-        if(duplicate){memmove(out+i,out+i+1,(count-i-1)*sizeof *out);--count;}else ++i;
++        if(duplicate){memmove(out+i,out+i+1,(count-i-1)*sizeof *out);
++            if(cached)memmove(orders+i-member_begin,orders+i+1-member_begin,(count-i-1)*sizeof *orders);
++            --count;
++        }else ++i;
+     }
+     return count;
+ }
+diff --git a/tests/geo261_contact_world_harness.c b/tests/geo261_contact_world_harness.c
+index 2202f965..bf162b3a 100644
+--- a/tests/geo261_contact_world_harness.c
++++ b/tests/geo261_contact_world_harness.c
+@@ -70,6 +70,12 @@ static int regions_and_capacity(void)
+     memset(out,0x5a,sizeof out);untouched=out[2];n=wood_contact_collect_stops(&w,false,NULL,out,3);
+     CHECK("member-capacity-pair-atomic",n==2&&!memcmp(&out[2],&untouched,sizeof untouched));
+     CHECK("capacity-before-placement-order",out[0].timber_id==11&&out[1].timber_id==11);
++    WoodBoundaryRegion edge=square(7,0,0,100);w.regions[0]=&edge;w.region_count=1;w.member_count=1;
++    f[0].footprint=(GeoRect2){90,20,100,30};memset(out,0x5a,sizeof out);untouched=out[2];
++    n=wood_contact_collect_stops(&w,false,NULL,out,2);
++    CHECK("boundary-fills-capacity-before-member-pair",n==2&&out[0].kind==WOOD_STOP_OUTLINE_EDGE&&out[1].kind==WOOD_STOP_OUTLINE_EDGE&&!memcmp(out+2,&untouched,sizeof untouched));
++    untouched=out[4];n=wood_contact_collect_stops(&w,false,NULL,out,4);
++    CHECK("last-member-face-removal-preserves-tail",n==3&&face(out+2,WOOD_STOP_MEMBER_SIDE,0,11,-1,0,WOOD_STOP_FIXED,90,20,30)&&!memcmp(out+4,&untouched,sizeof untouched));
+     CHECK("face-capacity-contract",WOOD_CONTACT_FACE_CAPACITY==2432&&WOOD_CONTACT_COMPONENT_CAPACITY==8&&WOOD_CONTACT_MEMBER_CAPACITY==64);
+     WoodBoundaryRegion many[8];WoodMember members[64];WoodContactMemberFact facts[64];WoodStopFace full[WOOD_CONTACT_FACE_CAPACITY+1];
+     for(size_t c=0;c<8;++c){many[c]=square((uint32_t)(80+c),(GeoCoord)c*1000,0,100);many[c].hole_count=8;for(size_t h=0;h<8;++h){WoodBoundaryRegion cut=square(0,(GeoCoord)c*1000+10+(GeoCoord)h*10,20,4);many[c].holes[h]=cut.outline;}w.regions[c]=&many[c];}
+@@ -77,6 +83,67 @@ static int regions_and_capacity(void)
+     w.region_count=8;w.members=facts;w.member_count=64;memset(full,0x5a,sizeof full);untouched=full[272];n=wood_contact_collect_stops(&w,false,NULL,full,WOOD_CONTACT_FACE_CAPACITY);
+     CHECK("all-eight-components-holes-and-sixty-four-members",n==272&&full[126].edge_index==225&&full[142].hole_index==63&&full[142].edge_index==1&&full[142].fixed==7084&&full[144].timber_id==163&&full[270].timber_id==100&&!memcmp(&full[272],&untouched,sizeof untouched));return 0;
+ }
++static int order_keys(void)
++{
++    WoodMember m[4]={member(41,WOOD_MEMBER_ROLE_PRIMARY,2),member(42,WOOD_MEMBER_ROLE_PRIMARY,2),member(41,WOOD_MEMBER_ROLE_PRIMARY,2),member(43,WOOD_MEMBER_ROLE_PRIMARY,2)};
++    WoodContactMemberFact f[4]={fact(&m[0],1,false,(GeoRect2){20,20,30,30}),fact(&m[1],5,false,(GeoRect2){40,40,50,50}),fact(&m[2],9,false,(GeoRect2){60,60,70,70})};
++    WoodContactWorld w={.placement_id=7,.members=f,.member_count=3};WoodStopFace out[12];
++    /* 同 ID 的最後記錄即使不產生側面，仍決定已收側面的排序。 */
++    for(unsigned mode=0;mode<5;++mode){
++        m[2].placed=mode!=0;f[2].placement_id=mode==1?8:7;f[2].footprint_valid=mode!=2;
++        size_t n=wood_contact_collect_stops(&w,false,mode==3?&m[2]:NULL,out,mode==4?4:12);
++        CHECK("duplicate-last-order-includes-all-facts",n==4&&
++            face(out,WOOD_STOP_MEMBER_SIDE,0,42,-1,0,WOOD_STOP_FIXED,40,40,50)&&
++            face(out+1,WOOD_STOP_MEMBER_SIDE,0,42,-1,1,WOOD_STOP_FIXED,50,40,50)&&
++            face(out+2,WOOD_STOP_MEMBER_SIDE,0,41,-1,0,WOOD_STOP_FIXED,20,20,30)&&
++            face(out+3,WOOD_STOP_MEMBER_SIDE,0,41,-1,1,WOOD_STOP_FIXED,30,20,30));
++    }
++    m[2].placed=false;f[0].footprint=(GeoRect2){0,20,10,30};f[1].footprint=(GeoRect2){0,20,20,30};
++    size_t n=wood_contact_collect_stops(&w,false,NULL,out,12);
++    CHECK("duplicate-min-order-can-shadow-earlier-output",n==3&&
++        face(out,WOOD_STOP_MEMBER_SIDE,0,42,-1,1,WOOD_STOP_FIXED,20,20,30)&&
++        face(out+1,WOOD_STOP_MEMBER_SIDE,0,41,-1,0,WOOD_STOP_FIXED,0,20,30)&&
++        face(out+2,WOOD_STOP_MEMBER_SIDE,0,41,-1,1,WOOD_STOP_FIXED,10,20,30));
++    /* 刪除 42 的左面後，43 的左面仍應被 42 的右面覆蓋。 */
++    f[3]=fact(&m[3],7,false,(GeoRect2){20,20,30,30});w.member_count=4;
++    n=wood_contact_collect_stops(&w,false,NULL,out,12);
++    CHECK("dedup-removal-keeps-following-face-order",n==4&&
++        face(out,WOOD_STOP_MEMBER_SIDE,0,42,-1,1,WOOD_STOP_FIXED,20,20,30)&&
++        face(out+1,WOOD_STOP_MEMBER_SIDE,0,43,-1,1,WOOD_STOP_FIXED,30,20,30)&&
++        face(out+2,WOOD_STOP_MEMBER_SIDE,0,41,-1,0,WOOD_STOP_FIXED,0,20,30)&&
++        face(out+3,WOOD_STOP_MEMBER_SIDE,0,41,-1,1,WOOD_STOP_FIXED,10,20,30));
++    w.member_count=2;m[1].id=41;f[1].order=9;f[1].footprint=f[0].footprint;
++    n=wood_contact_collect_stops(&w,false,NULL,out,12);
++    CHECK("duplicate-removal-remains-sequential",n==2&&
++        face(out,WOOD_STOP_MEMBER_SIDE,0,41,-1,0,WOOD_STOP_FIXED,0,20,30)&&
++        face(out+1,WOOD_STOP_MEMBER_SIDE,0,41,-1,1,WOOD_STOP_FIXED,10,20,30));
++    m[1].id=42;m[2].id=43;m[2].placed=true;w.member_count=3;
++    f[0]=fact(&m[0],UINT64_MAX,true,(GeoRect2){10,20,30,40});
++    f[1]=fact(&m[1],0,true,(GeoRect2){50,60,70,80});
++    f[2]=fact(&m[2],UINT64_MAX,true,(GeoRect2){90,100,110,120});
++    n=wood_contact_collect_stops(&w,true,NULL,out,12);
++    CHECK("order-extremes-preserve-ties-and-along-v",n==6&&
++        face(out,WOOD_STOP_MEMBER_SIDE,0,42,-1,0,WOOD_STOP_FIXED,60,50,70)&&
++        face(out+2,WOOD_STOP_MEMBER_SIDE,0,41,-1,0,WOOD_STOP_FIXED,20,10,30)&&
++        face(out+3,WOOD_STOP_MEMBER_SIDE,0,41,-1,1,WOOD_STOP_FIXED,40,10,30)&&
++        face(out+4,WOOD_STOP_MEMBER_SIDE,0,43,-1,0,WOOD_STOP_FIXED,100,90,110));
++    return 0;
++}
++static int order_fallback(void)
++{
++    /* 只驗公開 collector 超過暫存時的原語意，不擴大 provider 的 64 支上限。 */
++    WoodMember m[65];WoodContactMemberFact f[65];WoodStopFace out[131];
++    for(size_t i=0;i<65;++i){m[i]=member((uint32_t)(100+i),WOOD_MEMBER_ROLE_PRIMARY,2);
++        f[i]=fact(&m[i],65-i,false,(GeoRect2){(GeoCoord)i*10,20,(GeoCoord)i*10+2,30});}
++    WoodContactWorld w={.placement_id=7,.members=f,.member_count=65};
++    memset(out,0x5a,sizeof out);WoodStopFace untouched=out[130];size_t n=wood_contact_collect_stops(&w,false,NULL,out,130);
++    CHECK("order-cache-fallback-retains-all-admitted-pairs",n==130&&
++        face(out,WOOD_STOP_MEMBER_SIDE,0,164,-1,0,WOOD_STOP_FIXED,640,20,30)&&
++        face(out+1,WOOD_STOP_MEMBER_SIDE,0,164,-1,1,WOOD_STOP_FIXED,642,20,30)&&
++        face(out+128,WOOD_STOP_MEMBER_SIDE,0,100,-1,0,WOOD_STOP_FIXED,0,20,30)&&
++        face(out+129,WOOD_STOP_MEMBER_SIDE,0,100,-1,1,WOOD_STOP_FIXED,2,20,30)&&!memcmp(out+130,&untouched,sizeof untouched));
++    return 0;
++}
+ static int intervals(void)
+ {
+     WoodBoundaryRegion b=elbow();GeoCoord lo=-999,hi=-888;
+@@ -129,4 +196,4 @@ static int end_faces(void)
+     self.placed=false;w.region_count=0;w.role_boundary=NULL;w.member_count=1;f[0]=fact(&self,1,true,(GeoRect2){-10,0,0,100});CHECK("unplaced-owner-is-not-contact",wood_contact_end_faces(&w,&self,false,0,100,20,30,NULL,0));return 0;
+ }
+ int main(int argc,char **argv)
+-{if(argc!=2)return 2;if(!strcmp(argv[1],"collisions"))return collisions();if(!strcmp(argv[1],"ordering"))return ordering();if(!strcmp(argv[1],"regions"))return regions_and_capacity();if(!strcmp(argv[1],"intervals"))return intervals();if(!strcmp(argv[1],"extensions"))return extensions();if(!strcmp(argv[1],"ends"))return end_faces();return 2;}
++{if(argc!=2)return 2;if(!strcmp(argv[1],"collisions"))return collisions();if(!strcmp(argv[1],"ordering"))return ordering();if(!strcmp(argv[1],"regions"))return regions_and_capacity();if(!strcmp(argv[1],"order-keys"))return order_keys();if(!strcmp(argv[1],"order-fallback"))return order_fallback();if(!strcmp(argv[1],"intervals"))return intervals();if(!strcmp(argv[1],"extensions"))return extensions();if(!strcmp(argv[1],"ends"))return end_faces();return 2;}
+diff --git a/tests/test_geo261_wood_contact_world.py b/tests/test_geo261_wood_contact_world.py
+index 53661cf3..0775ae98 100644
+--- a/tests/test_geo261_wood_contact_world.py
++++ b/tests/test_geo261_wood_contact_world.py
+@@ -73,7 +73,7 @@ CONTROLS = (
+     ("collision-placement", COLLISION_FILTER, COLLISION_FILTER.replace("fact->placement_id!=world->placement_id||", ""), "collisions", "collision-same-placement-only"),
+     ("placement-order", "if(previous<=order)break;", "if(true)break;", "ordering", "placement-order-before-declaration"),
+     ("stable-ties", "if(previous<=order)break;", "if(previous<order)break;", "ordering", "placement-stable-equal-order-sides"),
+-    ("equal-order-dedup", "world->members[t].order<order", "world->members[t].order<=order", "ordering", "equal-order-not-deduplicated"),
++    ("equal-order-dedup", "previous_min<order", "previous_min<=order", "ordering", "equal-order-not-deduplicated"),
+     ("partial-shadow", "if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;", "if(earlier)duplicate=true;", "ordering", "partial-shadow-retains-exposed-face"),
+     ("outline-component-index", "(int)(component*GEO_LOOP_MAX_VERTICES+i)", "(int)i", "regions", "region-outline-index-encoded"),
+     ("hole-component-index", "(int)(component*GEO_REGION_MAX_HOLES)+hole_of[li]", "hole_of[li]", "regions", "region-hole-index-encoded"),
+@@ -88,6 +88,9 @@ CONTROLS = (
+     ("end-order", "for(int end=0;end<2;++end)", "for(int end=1;end>=0;--end)", "ends", "start-end-before-global-placement-order"),
+     ("stop-identity", STOP_FILTER, STOP_FILTER.replace("member==exclude", "(exclude&&member->id==exclude->id)"), "ordering", "stop-exclusion-keeps-candidate-identity"),
+     ("extension-end", "||ext_end[end]", "", "ends", "self-boundary-extension-end-exempt"),
++    ("duplicate-last-order", "key.last=fact->order;", "if(key.last==UINT64_MAX)key.last=fact->order;", "order-keys", "duplicate-last-order-includes-all-facts"),
++    ("duplicate-min-order", "if(fact->order<key.minimum)key.minimum=fact->order;", "key.minimum=fact->order;", "order-keys", "duplicate-min-order-can-shadow-earlier-output"),
++    ("dedup-key-move", "if(cached)memmove(orders+i-member_begin,orders+i+1-member_begin,(count-i-1)*sizeof *orders);", "", "order-keys", "dedup-removal-keeps-following-face-order"),
+ )
+ 
+ 
+@@ -125,6 +128,14 @@ class WoodContactWorld(unittest.TestCase):
+         result = self.case("regions")
+         self.assertEqual(0, result.returncode, result.stderr)
+ 
++    def test_duplicate_id_all_facts_last_order_minimum_sequential_removal_and_extremes(self):
++        result = self.case("order-keys")
++        self.assertEqual(0, result.returncode, result.stderr)
++
++    def test_direct_collector_order_cache_fallback_keeps_existing_admitted_pairs(self):
++        result = self.case("order-fallback")
++        self.assertEqual(0, result.returncode, result.stderr)
++
+     def test_positioning_interval_real_geometry_notch_hole_and_i5_precedence(self):
+         result = self.case("intervals")
+         self.assertEqual(0, result.returncode, result.stderr)
+@@ -146,7 +157,7 @@ class WoodContactWorld(unittest.TestCase):
+         path.write_text(source.replace(before, after), encoding="utf-8")
+         return build.compile(path, "contact-world-" + name)
+ 
+-    def test_twenty_actual_guard_controls_fail_the_named_numeric_assertions(self):
++    def test_actual_guard_controls_fail_the_named_numeric_assertions(self):
+         build = native()
+         for control in CONTROLS:
+             with self.subTest(control=control[0]):

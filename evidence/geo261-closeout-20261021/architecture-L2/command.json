@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "timeout",
+    "900",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "tests/architecture_contract.py",
+    "--root",
+    ".",
+    "--manifest",
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceHead": "249571fe2477845d5330f6190dad965bf327f43b",
+  "startedUtc": "2026-10-21T04:14:11.853501+00:00"
+}

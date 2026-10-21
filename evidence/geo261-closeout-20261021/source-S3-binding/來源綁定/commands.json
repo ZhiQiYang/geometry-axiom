@@ -1,0 +1,399 @@
+[
+  {
+    "label": "candidate-before-head",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 41,
+      "sha256": "c132fffdb264d919e6be6a9e595d154f53d04349df1fea316a701ad23cbb4f09"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "candidate-before-status",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "status",
+      "--porcelain=v1"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "main-before-head",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 41,
+      "sha256": "f836d99d773570994e1598538a88809d052ec3b41675f9c2c5433fe60a6036f5"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "main-before-status",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "status",
+      "--porcelain=v1"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "candidate-branch",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "branch",
+      "--show-current"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 48,
+      "sha256": "f4aea57a76c5dba76336ab3349c2a36aa8a60c037c44a6da9d09297ecb335d9a"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "candidate-parent",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "rev-parse",
+      "19401ca5448e162ee6140fed37b64b83b31ddec8^"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 41,
+      "sha256": "f836d99d773570994e1598538a88809d052ec3b41675f9c2c5433fe60a6036f5"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "L2-parent",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "rev-parse",
+      "249571fe2477845d5330f6190dad965bf327f43b^"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 41,
+      "sha256": "4c2c96d64d9c4e80cfd07f3c372671b1aef4c2ba0fdf87d883d951df48159cc9"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "diff-L2-S3",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "diff",
+      "--name-status",
+      "--no-renames",
+      "-z",
+      "249571fe2477845d5330f6190dad965bf327f43b",
+      "19401ca5448e162ee6140fed37b64b83b31ddec8"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 38,
+      "sha256": "d40053e9ca9a3b7157ffb49f294ef5d24fc5a15bbf6691f84dec6ba50b36dc17"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "diff-A2-L2",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "diff",
+      "--name-status",
+      "--no-renames",
+      "-z",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+      "249571fe2477845d5330f6190dad965bf327f43b"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 29,
+      "sha256": "be912bb67a6c42110e7927dd83ab9257194f33d335299ea4591791fabcadc201"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "tree-A2",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "ls-tree",
+      "-r",
+      "-z",
+      "--full-tree",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 3895467,
+      "sha256": "d302ceeb5eac7db51e0212721c464603d5094cda2fc3242e70cada3dd52739b5"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "tree-L2",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "ls-tree",
+      "-r",
+      "-z",
+      "--full-tree",
+      "249571fe2477845d5330f6190dad965bf327f43b"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 3895467,
+      "sha256": "7652d2b7ebe51bc72428897f83aa44cbe0ea48b8e4197bcbb6614130ba42fea4"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "tree-S3",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "ls-tree",
+      "-r",
+      "-z",
+      "--full-tree",
+      "19401ca5448e162ee6140fed37b64b83b31ddec8"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 3895467,
+      "sha256": "422c3183b44424741b8b3e6247009f36e411540c349cea3e2fb45a9637c7b797"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "metadata-A2-product-architecture.json",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "show",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/product-architecture.json"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 225770,
+      "sha256": "df4ebed886f3bba46f08817436dee5e3ddb143e260b7711212384046126d5829"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "metadata-A2-product-architecture-scan.json",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "show",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/product-architecture-scan.json"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 132208,
+      "sha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "metadata-A2-PRODUCT-ARCHITECTURE.md",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "show",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 36251,
+      "sha256": "f953eba02ce6729e1903534e22648b3f777242f85fbb27e91c68b0418554d153"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "metadata-A2-product-architecture-receipt.json",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "show",
+      "cbefb39b47fb0edcfaf003d2c1101929fea244c8:geometry-core/domain-decoupling/product-architecture-receipt.json"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 292674,
+      "sha256": "21712ad7f20b4f9fceca91b4f63da66a6f7348288dc8162ef0154b97ef4aa907"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "candidate-after-head",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 41,
+      "sha256": "c132fffdb264d919e6be6a9e595d154f53d04349df1fea316a701ad23cbb4f09"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "candidate-after-status",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geo261-host-authority-anchor-fix",
+      "status",
+      "--porcelain=v1"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "main-after-head",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 41,
+      "sha256": "f836d99d773570994e1598538a88809d052ec3b41675f9c2c5433fe60a6036f5"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "main-after-status",
+    "argv": [
+      "git",
+      "-C",
+      "/workspace/geometry-axiom",
+      "status",
+      "--porcelain=v1"
+    ],
+    "exitCode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+]

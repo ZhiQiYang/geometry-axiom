@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set +e
+printf '%s\n' "$$" > /workspace/geo261-evidence/browser-five-L3-formal-6589248c-parent.pid
+env -u CC -u PYTHONOPTIMIZE python3 -B /workspace/geo261-evidence/browser-five-preparation/launch_browser_five.py --sha 6589248c9a94bdf0460d8f84dd1610e51048188b --run-id l3-6589248c-formal --output /workspace/geo261-evidence/browser-five-L3-formal-6589248c --release-note 'root已核同L3完整canvas真0、2261/85golden、owned cleanup全退後明示放行原five；固定6589248c9a94bdf0460d8f84dd1610e51048188b，assembly/documents/grid/space/timber原scope及900/600/900/900/1200秒整job上限，五項依序單browser。Q38使用第一heavy槽，本批為第二槽；原private runtime自行freshness，不copy native binary，保存原argv與真退出碼。' --execute
+observed_launcher_code=$?
+printf '%s\n' "$observed_launcher_code" > /workspace/geo261-evidence/browser-five-L3-formal-6589248c-launcher-process.exit-code
+exit "$observed_launcher_code"

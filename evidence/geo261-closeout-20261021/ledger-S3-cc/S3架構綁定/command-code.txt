@@ -1,0 +1,135 @@
+#!/usr/bin/env python3
+"""只讀核 S3 的既有架構輸入與原產物；不執行掃描器、測試或建置。"""
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import time
+
+p = argparse.ArgumentParser()
+p.add_argument('--source', required=True)
+p.add_argument('--root', required=True, type=Path)
+p.add_argument('--out', required=True, type=Path)
+a = p.parse_args()
+assert re.fullmatch('[0-9a-f]{40}', a.source)
+A2 = 'cbefb39b47fb0edcfaf003d2c1101929fea244c8'
+L2 = '249571fe2477845d5330f6190dad965bf327f43b'
+S2 = 'cabe824128be31d0039dc6c94fa3f04cfb722a6b'
+MAIN = Path('/workspace/geometry-axiom')
+PUB = Path('/workspace/geo261-evidence/source-S3-publication')
+BRANCH = 'codex/geo261-host-authority-anchor-fix-20261021'
+TEST = 'tests/test_geo261_host_authority.py'
+BASE = 'geometry-core/domain-decoupling/'
+META = [BASE + n for n in ('product-architecture.json', 'product-architecture-scan.json',
+                          'PRODUCT-ARCHITECTURE.md', 'product-architecture-receipt.json')]
+EXTRA = ['tests/run_all.expected.json', 'tests/architecture_contract.py',
+         'tests/test_architecture_contract.py', 'tests/test_product_architecture.py']
+out = a.out.resolve()
+out.mkdir(exist_ok=False)
+started, tick = datetime.now(timezone.utc).isoformat(), time.monotonic()
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def info(raw): return {'bytes': len(raw), 'sha256': sha(raw)}
+def write(name, value):
+    (out / name).write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+env = {k: os.environ[k] for k in ('PATH', 'HOME', 'LANG', 'LC_ALL', 'LC_CTYPE') if k in os.environ}
+env.update(PYTHONDONTWRITEBYTECODE='1', GIT_OPTIONAL_LOCKS='0')
+commands = []
+write('environment.json', {'傳給Git的環境': env, 'CC': None, 'PYTHONOPTIMIZE': None,
+                          'scope': '純讀取 Git、JSON 與檔案；不 import 任何產品或測試模組。'})
+def git(label, root, *args):
+    argv = ['git', '-C', str(root), *args]
+    r = subprocess.run(argv, capture_output=True, env=env)
+    (out / (label + '.stdout')).write_bytes(r.stdout)
+    (out / (label + '.stderr')).write_bytes(r.stderr)
+    (out / (label + '.exit-code')).write_text(str(r.returncode) + '\n')
+    commands.append({'label': label, 'argv': argv, 'exitCode': r.returncode,
+                     'stdout': info(r.stdout), 'stderr': info(r.stderr)})
+    write('commands.json', commands)
+    assert r.returncode == 0, label
+    return r.stdout
+def state(prefix, root, head):
+    assert git(prefix + '-head', root, 'rev-parse', 'HEAD').decode().strip() == head
+    status = git(prefix + '-status', root, 'status', '--porcelain=v1')
+    assert not status, (prefix, status)
+state('candidate-before', a.root, a.source)
+state('main-before', MAIN, L2)
+assert git('candidate-branch', a.root, 'branch', '--show-current').decode().strip() == BRANCH
+assert git('candidate-parent', a.root, 'rev-parse', a.source + '^').decode().strip() == L2
+assert git('L2-parent', a.root, 'rev-parse', L2 + '^').decode().strip() == A2
+assert git('diff-L2-S3', a.root, 'diff', '--name-status', '--no-renames', '-z', L2, a.source) == b'M\0' + TEST.encode() + b'\0'
+assert git('diff-A2-L2', a.root, 'diff', '--name-status', '--no-renames', '-z', A2, L2) == b'M\0tests/mutants_results.json\0'
+publication = json.loads((PUB / 'receipt.json').read_bytes())
+assert publication['sourceSha'] == a.source and publication['parentSha'] == L2 and publication['branch'] == BRANCH and publication['remoteExact']
+assert (PUB / 'remote.exit-code').read_bytes().strip() == (PUB / 'push.exit-code').read_bytes().strip() == b'0'
+assert (PUB / 'remote.stdout').read_text() == a.source + '\trefs/heads/' + BRANCH + '\n'
+pub_refs = {}
+for name in ('receipt.json', 'commands.json', 'remote.stdout', 'remote.stderr', 'remote.exit-code', 'push.stdout', 'push.stderr', 'push.exit-code'):
+    raw = (PUB / name).read_bytes()
+    (out / ('publication-' + name)).write_bytes(raw)
+    pub_refs[name] = {'source': str(PUB / name), **info(raw)}
+trees = {}
+for label, commit in (('A2', A2), ('L2', L2), ('S3', a.source)):
+    raw = git('tree-' + label, a.root, 'ls-tree', '-r', '-z', '--full-tree', commit)
+    tree = {}
+    for item in raw.split(b'\0'):
+        if not item: continue
+        header, path = item.split(b'\t', 1)
+        mode, kind, oid = header.decode().split()
+        tree[path.decode()] = {'mode': mode, 'kind': kind, 'oid': oid}
+    trees[label] = tree
+receipt_raw = (a.root / META[-1]).read_bytes()
+receipt = json.loads(receipt_raw)
+assert receipt['sourceBaseHead'] == S2
+inputs = receipt['inputs']
+assert len(inputs) == len({r['path'] for r in inputs}) == 611
+assert TEST not in {r['path'] for r in inputs}
+records = {}
+for path in [r['path'] for r in inputs] + META + EXTRA + [TEST]:
+    item = trees['S3'][path]
+    assert item['kind'] == 'blob' and item['mode'] in ('100644', '100755')
+    raw = (a.root / path).read_bytes()
+    oid = hashlib.sha1(b'blob ' + str(len(raw)).encode() + b'\0' + raw).hexdigest()
+    assert oid == item['oid'], path
+    if path != TEST:
+        assert trees['A2'][path] == trees['L2'][path] == item, path
+        assert (MAIN / path).read_bytes() == raw, path
+    records[path] = {'path': path, 'gitBlob': item['oid'], 'gitMode': item['mode'],
+                     **info(raw), 'lfSha256': sha(raw.replace(b'\r\n', b'\n')),
+                     'sameA2L2S3': path != TEST, 'candidateRawMatchesGitBlob': True}
+for row in inputs:
+    assert records[row['path']]['lfSha256'] == row['sha256'], row['path']
+for path in META:
+    raw = git('metadata-A2-' + Path(path).name, a.root, 'show', A2 + ':' + path)
+    assert info(raw) == {k: records[path][k] for k in ('bytes', 'sha256')}
+assert records[TEST]['sha256'] == publication['testSha256'] == 'a8e56b75390d4ca545077d03af81067517271c5cab0eb601c29a8afea65d4ec2'
+state('candidate-after', a.root, a.source)
+state('main-after', MAIN, L2)
+for path, record in records.items():
+    assert info((a.root / path).read_bytes()) == {k: record[k] for k in ('bytes', 'sha256')}, path
+result = {
+    'schema': 'geo261-S3-architecture-binding/1', 'sourceS3': a.source, 'parentL2': L2,
+    'architectureCommitA2': A2, 'architectureReceiptSourceBaseS2': S2,
+    'candidateRoot': str(a.root), 'mainRoot': str(MAIN), 'mainHeadStillL2': True,
+    'branch': BRANCH, 'onlyChangedPathL2ToS3': TEST, 'checkPassed': True,
+    'startedUtc': started, 'finishedUtc': datetime.now(timezone.utc).isoformat(),
+    'seconds': time.monotonic() - tick, 'publication': pub_refs,
+    'publicationScope': '引用本次 root 已完成的 push/ls-remote 原件，並核 exact ref；本程序不再連網或推送。',
+    'architecture': {'inputCount': 611, 'allA2L2S3GitBlobsSame': True,
+                     'allCandidateRawMatchesGitAndMainL2': True, 'allReceiptLFHashesMatch': True,
+                     'sourceBaseHeadUnchanged': S2, 'inputClosureSha256': receipt['inputClosureSha256'],
+                     'inputs': [records[r['path']] for r in inputs],
+                     'metadata': [records[path] for path in META]},
+    'additionalPins': [records[path] for path in EXTRA], 'changedTest': records[TEST],
+    'basis': '該既有 tests/*.py 不在611輸入，沒有新增檔或產品來源變更；保留原metadata真實重產來源，不造新audit提交。',
+    'notClaimed': ['在S3重產四metadata或執行architecture CLI', 'S3帳本或L3全驗收完成',
+                   'ledger及mutation oracle與L2仍同', '重新執行定向或其他產品測試'],
+    'driver': {'sourcePath': str(Path(__file__)), **info(Path(__file__).read_bytes())}
+}
+write('binding.json', result)
+(out / 'command-code.txt').write_bytes(Path(__file__).read_bytes())
+print(json.dumps({'receipt': str(out / 'binding.json'), 'receiptSha256': sha((out / 'binding.json').read_bytes()),
+                  'sourceS3': a.source, 'inputs': 611, 'metadata': 4, 'passed': True}, ensure_ascii=False, indent=2))

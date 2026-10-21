@@ -1,0 +1,8 @@
+{
+  "planned_utc": "2026-10-21T01:08:41.431070+00:00",
+  "actual_shell_command": "env -u PYTHONOPTIMIZE python3 -B /workspace/geo261-evidence/p189-final-L-phase-supervisor.py /workspace/geo261-evidence/p189-codec-7ad3216ac3ea-9aztt6sz/supervisor-released-config.json > /workspace/geo261-evidence/p189-codec-7ad3216ac3ea-9aztt6sz/orchestrator.log 2>&1",
+  "cwd": "/workspace/geometry-axiom",
+  "transport": "exec_command session保持父程序，後續write_stdin取真終了碼；不launch-and-exit",
+  "config_sha256": "f3da16fd6bfea6b8f4d793ab88c6e922939ddee39d2247f1a6802f25320327ae",
+  "classification": "候選性能預檢"
+}

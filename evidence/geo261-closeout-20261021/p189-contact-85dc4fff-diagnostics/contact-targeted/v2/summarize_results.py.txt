@@ -1,0 +1,45 @@
+"""只讀既有測試收據，彙整具名控制及執行觀察；不重測。"""
+from pathlib import Path
+import hashlib
+import importlib
+import json
+import sys
+
+ROOT=Path('/workspace/geo261-contact-candidate')
+OUT=Path(__file__).resolve().parent
+sys.path.insert(0,str(ROOT))
+module=importlib.import_module('tests.test_geo261_wood_contact_world')
+rows=json.loads((OUT/'targeted-commands.json').read_text())
+controls=[]
+for name,before,after,case,marker in module.CONTROLS:
+    changed=[r for r in rows if Path(r['command'][0]).name=='contact-world-mutant-'+name and r['command'][1:]==[case]]
+    assert len(changed)==1,(name,changed)
+    r=changed[0]
+    stdout=(OUT/r['stdout']['path']).read_text()
+    stderr=(OUT/r['stderr']['path']).read_text()
+    assert r['returncode']==1 and stdout=='' and stderr=='ASSERT:'+marker+'\n',(name,r)
+    baseline=[b for b in rows[:r['index']] if Path(b['command'][0]).name=='contact-world-client' and b['command'][1:]==[case]][-1]
+    restored=[b for b in rows[r['index']+1:] if Path(b['command'][0]).name=='contact-world-client' and b['command'][1:]==[case]][0]
+    assert baseline['returncode']==restored['returncode']==0
+    assert module.MODULE.joinpath('contact_world.c').read_text().count(before)==1,name
+    controls.append(dict(name=name,case=case,marker=marker,baselineIndex=baseline['index'],mutantIndex=r['index'],restoredIndex=restored['index'],returncodes=[0,1,0]))
+hashes=json.loads((OUT/'source-hashes.json').read_text())
+assert all(hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h for p,h in hashes['sources'].items())
+numeric=json.loads((OUT/'numeric-commands.json').read_text())
+sanitizer=json.loads((OUT/'sanitizer-result.json').read_text())
+tests=json.loads((OUT/'targeted-result.json').read_text())
+assert len(numeric)==18 and all(r['returncode']==0 for r in numeric)
+assert sanitizer['passed'] and len(sanitizer['commands'])==9
+assert all((OUT/('sanitizer-'+r['label']+'.stderr')).read_bytes()==b'' for r in sanitizer['commands'])
+assert tests['passed'] and tests['testsRun']==38 and not tests['skipped']
+result=dict(schema='contact-trial-targeted-verification/1',source=hashes,numeric=dict(builds=2,casesPerSide=8,exitCode=0,originalAlsoPasses=True),
+            targeted=tests,contactWorldControls=controls,sanitizer=dict(cases=8,exitCode=0,diagnostics=0),
+            observedExecutions=[dict(command='env -u CC -u PYTHONOPTIMIZE python3 /workspace/geo261-evidence/contact-trial-7ad/v2/run_numeric.py',toolChunk='1439a8',exitCode=0),
+                                dict(command='ulimit -s 16384 && exec env -u CC -u PYTHONOPTIMIZE python3 /workspace/geo261-evidence/contact-trial-7ad/v2/run_targeted.py',toolChunk='7885b8',exitCode=0),
+                                dict(command='env -u CC -u PYTHONOPTIMIZE python3 /workspace/geo261-evidence/contact-trial-7ad/v2/run_sanitizers.py',toolChunk='99a97f',exitCode=0)],
+            limitations=['工具chunk與最外層退出碼為事後從真工具回覆轉錄；各子命令原輸出已由執行器即時落盤',
+                         '原7ad collector也通過新數值契約；不將語義等價正控冒稱性能撤回紅燈',
+                         '未執行性能量測、全七job、帳本重產或架構更新；候選不是可合併成果',
+                         'v1完整保留：初版ASan綠不能消除後續靜態發現之指標結合律問題；初版兩BridgeClosed失敗未作killed。v2按16MiB stack重跑全綠'])
+(OUT/'verification-summary.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(exitCode=0,controls=len(controls),tests=tests['testsRun'],sourceSha256=hashes['sources']['geometry-templates/woodworking/native/contact_world.c']),ensure_ascii=False))

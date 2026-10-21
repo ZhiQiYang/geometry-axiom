@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+    "--root",
+    "/workspace/geometry-axiom",
+    "--out",
+    "/workspace/geo261-evidence/architecture-owned-S2-cabe8241",
+    "--source-head",
+    "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+    "--review-file",
+    "/workspace/geo261-evidence/architecture-owned-preparation/review-S2.json"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "startedUtc": "2026-10-21T03:09:07.229635+00:00",
+  "driverSha256": "1740bbef3340ca38c0a26dbf8d81099a53b2236fb6117504208a416d872b8f8d",
+  "reviewSha256": "794d3dc93b014c37e49f7f9f8056508a17b160afe98d8dea420542b2a0b28f76",
+  "finishedUtc": "2026-10-21T03:09:38.153646+00:00",
+  "elapsedSeconds": 30.92401887199958,
+  "childPid": 321242,
+  "returnCodeFromWait": 0
+}

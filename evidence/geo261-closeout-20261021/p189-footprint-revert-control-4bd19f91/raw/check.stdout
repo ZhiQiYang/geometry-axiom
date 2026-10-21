@@ -1,0 +1,63 @@
+{
+  "checked_utc": "2026-10-21T03:05:37.886262+00:00",
+  "commits": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "final": "4bd19f91c434417f1c4431128c55285f4b11d3c3"
+  },
+  "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+  "timing": {
+    "pass": false,
+    "errors": [
+      "P-189 N=64 final/main=2.514533 > 2.0"
+    ],
+    "summary": [
+      {
+        "n": 16,
+        "median_seconds": {
+          "main": 0.12393685700226342,
+          "base": 0.1799442480005382,
+          "final": 0.12881885200113175
+        },
+        "final_main_ratio": 1.039390985998452,
+        "threshold_pass": true
+      },
+      {
+        "n": 32,
+        "median_seconds": {
+          "main": 0.19907220999812125,
+          "base": 1.172643303998484,
+          "final": 0.3275122660015768
+        },
+        "final_main_ratio": 1.645193299479961,
+        "threshold_pass": true
+      },
+      {
+        "n": 48,
+        "median_seconds": {
+          "main": 0.3626464179978939,
+          "base": 4.826112418999401,
+          "final": 0.6548166559987294
+        },
+        "final_main_ratio": 1.8056614473509907,
+        "threshold_pass": true
+      },
+      {
+        "n": 64,
+        "median_seconds": {
+          "main": 0.5260308460019587,
+          "base": 18.233241136997094,
+          "final": 1.3227221320012177
+        },
+        "final_main_ratio": 2.5145334005684763,
+        "threshold_pass": false
+      }
+    ]
+  },
+  "provenance_pass": true,
+  "provenance_errors": [],
+  "dump_pass": true,
+  "scene_count": 175,
+  "pass": false,
+  "exit_code": 1
+}

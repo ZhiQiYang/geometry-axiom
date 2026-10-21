@@ -1,0 +1,102 @@
+{
+  "checkedUTC": "2026-10-21T02:44:25.740371+00:00",
+  "acceptedP189Candidate": true,
+  "candidate": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+  "sourceCounts": {
+    "main": 495,
+    "base": 673,
+    "final": 673
+  },
+  "gitBlobByteBindingsVerified": 2012,
+  "builds": 3,
+  "buildArgv": [
+    "gcc",
+    "-std=c11",
+    "-O2",
+    "geometry-web/web_bridge.c",
+    "-o",
+    "bridge",
+    "-lm"
+  ],
+  "allBuildsAndSixPhaseWaitExitZero": true,
+  "supervisorExit": 0,
+  "topToolObservation": {
+    "session": 92401,
+    "chunk": "01522e",
+    "exitCode": 0,
+    "evidenceType": "root實際工具觀察轉述，非新增transport原文"
+  },
+  "sceneCount": 175,
+  "threeWayCompleteStdoutByteIdentical": 175,
+  "historicalScenesWithControlledRefusal": 100,
+  "samples": 36,
+  "alternatingOrderExact": true,
+  "validatorControls": 16,
+  "rawStreamsRead": 1122,
+  "summary": [
+    {
+      "n": 16,
+      "median_seconds": {
+        "main": 0.1230939369997941,
+        "base": 0.16038462100186734,
+        "final": 0.10899638699993375
+      },
+      "final_main_ratio": 0.8854732382157544,
+      "threshold_pass": true
+    },
+    {
+      "n": 32,
+      "median_seconds": {
+        "main": 0.1826130560002639,
+        "base": 1.0721715440013213,
+        "final": 0.2390825920010684
+      },
+      "final_main_ratio": 1.309230551405497,
+      "threshold_pass": true
+    },
+    {
+      "n": 48,
+      "median_seconds": {
+        "main": 0.2975435539992759,
+        "base": 4.743451463997189,
+        "final": 0.5362066009984119
+      },
+      "final_main_ratio": 1.8021113003164464,
+      "threshold_pass": true
+    },
+    {
+      "n": 64,
+      "median_seconds": {
+        "main": 0.5451203979973798,
+        "base": 17.097030280998297,
+        "final": 1.0698372709994146
+      },
+      "final_main_ratio": 1.962570608125651,
+      "threshold_pass": true
+    }
+  ],
+  "N64ThresholdRelativeHeadroom": 0.018714695937174453,
+  "preflight": {
+    "passed": true,
+    "knownRelevantProcesses": 165,
+    "allZombies": true,
+    "binaryHashesMatch": true,
+    "beforeTiming": true
+  },
+  "limitations": [
+    "只是固定75f候選單輪P189，不替代最終來源完整七項、Q38、§7或ledger。",
+    "排程證據是root放行/停止其他工作及計時前1秒前檢、環境前後快照；不冒稱連續全系統追蹤。",
+    "175場景比較完整stdout，歷史受控拒絕亦保留，不把所有場景聲稱為成功載入。",
+    "N64距2.0門檻約1.87%，單輪通過不保證未來相同裕度。",
+    "exploratory schema列印chunk658f7e因末兩控制用errors而非actual導致KeyError/exit1；正式raw不受影響，本核對按原schema兩種形式核完16項。"
+  ],
+  "bindings": {
+    "receipt.json": "bb565ed749a3b3b60a7d47ee64c53dfa28459e82ef8f382cc66d117af5c5d738",
+    "samples.json": "4a5361983c4f0c014bafd95555d6bbd9a9ea193f05f697132953e00fee0825d9",
+    "dump-equivalence.json": "def04ec28f3f4a1c64c51441fb5eaa6292741ba4999095cd40dafc818e7e5345",
+    "phase-receipts.json": "21a3fe07df9d21b419a355ad0404088eca732a1c450fdedd4400e7b1f6fc4ad6",
+    "completion-receipt.json": "e244fc0a548d7edf5be0cf220a2946fa12fe192c939f33426072813647d452d7",
+    "timing-preflight.json": "ded14a7db5be349a9803399e76f8ad9e90757b1f37f63497785043b24ff38a55",
+    "validator-selftest.json": "2b13a74ac56cc99654a1882519df8df1b3c2096342ca0b39b5af5c4acee43be1"
+  }
+}

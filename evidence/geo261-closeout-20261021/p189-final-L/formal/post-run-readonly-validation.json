@@ -1,0 +1,39 @@
+{
+  "verified_utc": "2026-10-21T00:51:36.733972+00:00",
+  "final_sha": "43f85313c32410ac01406ab585846bbacafea278",
+  "receipt_sha256": "e08bb12536e12f43df8ac9fb96404490e0bb0c12ce3193299875032b012a05b8",
+  "actual_check_exit_code": 1,
+  "actual_supervisor_exit_code": 1,
+  "formal_pass": false,
+  "dump_scene_count": 175,
+  "generated_scene_count": 4,
+  "all_three_stdout_identical_count": 175,
+  "base_final_stdout_identical_count": 175,
+  "root_scenes_with_expected_rejection": 100,
+  "sample_count": 36,
+  "all_sample_loads_ok": true,
+  "control_count": 16,
+  "positive_control_count": 2,
+  "negative_control_count": 14,
+  "raw_stdout_stderr_files": 1122,
+  "raw_output_bytes": 811191,
+  "all_raw_stdout_hashes_match": true,
+  "all_phase_stdout_stderr_hashes_match": true,
+  "phase_exit_codes": {
+    "generator-selftest": 0,
+    "selftest": 0,
+    "build": 0,
+    "equivalence": 0,
+    "timing": 0,
+    "check": 1
+  },
+  "threshold_unchanged": 2.0,
+  "no_new_profiling_or_product_edits": true,
+  "historical_missing_calibration_attempt": {
+    "out": "/workspace/geo261-evidence/p189-final-L-43f85313c324.wfwk1_ca",
+    "phase": "generator-selftest",
+    "actual_exit_code": 1,
+    "reason": "準備漏帶產生器的預設校準檔，FileNotFoundError；未跑其他phase／未建置／沒有效能樣本",
+    "raw_preserved": true
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "schema": 1,
+  "sourceS3": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "sourceL3": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "selfExcluded": "來源索引.json",
+  "generatedAlsoExcluded": [
+    "SHA256SUMS"
+  ],
+  "entries": [
+    {
+      "path": "L3-ledger-blob.exit-code",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/L3-ledger-blob.exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "L3-ledger-blob.stderr",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/L3-ledger-blob.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "L3-ledger-blob.stdout",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/L3-ledger-blob.stdout",
+      "bytes": 41,
+      "sha256": "4ed047aed7657be297d4db471ffdba0e4e3625485c366a2c762a568f16424138",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "L3-parent.exit-code",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/L3-parent.exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "L3-parent.stderr",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/L3-parent.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "L3-parent.stdout",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/L3-parent.stdout",
+      "bytes": 41,
+      "sha256": "c132fffdb264d919e6be6a9e595d154f53d04349df1fea316a701ad23cbb4f09",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "README.md",
+      "sourcePath": "/workspace/geo261-evidence/L3-source-method-packaging/帳本封包獨審說明.md",
+      "bytes": 1722,
+      "sha256": "b9c503617507be3483c806dddecf880f32ad272e1c7b7845b000bf8fb33e5060",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "S3-L3-diff.exit-code",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/S3-L3-diff.exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "S3-L3-diff.stderr",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/S3-L3-diff.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "S3-L3-diff.stdout",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/S3-L3-diff.stdout",
+      "bytes": 29,
+      "sha256": "be912bb67a6c42110e7927dd83ab9257194f33d335299ea4591791fabcadc201",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "command-code.txt",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/command-code.txt",
+      "bytes": 11877,
+      "sha256": "adcecc52425329ed9778c2f84580ec22097a9ef54466f9c8e0ad54462f7c24a5",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "command.json",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/command.json",
+      "bytes": 169,
+      "sha256": "e2fcf25a1997dcb9530f005214d60795408216c374d24024860ec531c444ef25",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "execution.json",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/execution.json",
+      "bytes": 231,
+      "sha256": "51a2beb225a907f67a63dde9f2b2338faefe3a227a772a9f306fc2841838e8a7",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "exit-code",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "git-commands.json",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/git-commands.json",
+      "bytes": 661,
+      "sha256": "e0a7dd450e8dfbc1c5c2065b3b62e60e533d57d8da42d03e40c3871bbb33bddf",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "peer.json",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/peer.json",
+      "bytes": 1931,
+      "sha256": "8eb5b27e17ee115bdefb5d28af2ecff9f1b73872f47aa3f4a784eb96c6b1873e",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "stderr",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "stdout",
+      "sourcePath": "/workspace/geo261-evidence/ledger-S3-bundle-peer-run01/stdout",
+      "bytes": 232,
+      "sha256": "6376c68ff3a315c06a36db23f0f449279ce9d0ee646108ed309edd88309add20",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "封裝方法-code.txt",
+      "sourcePath": "/workspace/geo261-evidence/package-L3-source-architecture.py",
+      "bytes": 9073,
+      "sha256": "973c0052a994bd0fd8c30ad431eb08d2429dbb25a681e4d056fd4d2313f1ba38",
+      "rawBytesPreserved": true
+    },
+    {
+      "path": "工具觀察補記.json",
+      "sourcePath": "/workspace/geo261-evidence/L3-source-method-packaging/工具觀察補記.json",
+      "bytes": 898,
+      "sha256": "1e626cca889912ab67810a5873f99bf61b6c2dee701ab44c6396e466d755d098",
+      "rawBytesPreserved": true
+    }
+  ],
+  "notFinalEAcceptance": true
+}

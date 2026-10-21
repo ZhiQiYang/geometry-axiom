@@ -1,0 +1,4 @@
+# R7: positive-area rectangle plus an isolated point (60,80) is not one rectangle.
+surface 1 origin 0 0 0 u +x v +y outline 0,0 100,0 100,100 60,100 60,80 80,80 80,40 40,40 40,100 0,100
+column 1 at 30 50 size 30 30 z 0 100
+apply-proj 1 c1

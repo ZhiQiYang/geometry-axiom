@@ -1,0 +1,114 @@
+{
+  "說明": "逐項列出本次未複製的來源檔案；不是刪除原件。未使用大小或通過／失敗結果篩選測試證據。",
+  "檔案": [
+    {
+      "來源相對路徑": "candidate-wait-v1.txt",
+      "bytes": 1870,
+      "未收錄原因": "候選組裝用暫存字串，已保留相應 v1／v2 patch"
+    },
+    {
+      "來源相對路徑": "candidate-wait.txt",
+      "bytes": 1983,
+      "未收錄原因": "候選組裝用暫存字串，已保留相應 v1／v2 patch"
+    },
+    {
+      "來源相對路徑": "p72_probe-v2.cjs",
+      "bytes": 13136,
+      "未收錄原因": "依要求不複製可執行工具或 runner；正式來源見 Git 工具對照",
+      "封裝時現存檔案SHA256": "6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc"
+    },
+    {
+      "來源相對路徑": "p72_probe.cjs",
+      "bytes": 12909,
+      "未收錄原因": "依要求不複製可執行工具或 runner；正式來源見 Git 工具對照",
+      "封裝時現存檔案SHA256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae"
+    },
+    {
+      "來源相對路徑": "probe-v2.cjs",
+      "bytes": 15545,
+      "未收錄原因": "依要求不複製可執行工具或 runner；正式來源見 Git 工具對照",
+      "封裝時現存檔案SHA256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083"
+    },
+    {
+      "來源相對路徑": "probe.cjs",
+      "bytes": 14323,
+      "未收錄原因": "依要求不複製可執行工具或 runner；正式來源見 Git 工具對照",
+      "封裝時現存檔案SHA256": "c532f49e70cbdb5c6d6bfc5bc72935b4beaf07b5de2311becfe72eb7ade83629"
+    },
+    {
+      "來源相對路徑": "run_candidate_controls.py",
+      "bytes": 2122,
+      "未收錄原因": "依要求不複製可執行工具或 runner；正式來源見 Git 工具對照",
+      "封裝時現存檔案SHA256": "891d0606ecf9b4d6b55d8a50e66edd6aff1925f523791d77a6e62b9b981cbef7"
+    },
+    {
+      "來源相對路徑": "run_candidate_controls_v2.py",
+      "bytes": 2146,
+      "未收錄原因": "依要求不複製可執行工具或 runner；正式來源見 Git 工具對照",
+      "封裝時現存檔案SHA256": "69b493f1eca6da8eaff7a4faf1ee241f47aeb480facec3ddb91a415e5c379181"
+    },
+    {
+      "來源相對路徑": "run_committed_controls.py",
+      "bytes": 6912,
+      "未收錄原因": "依要求不複製可執行工具或 runner；正式來源見 Git 工具對照",
+      "封裝時現存檔案SHA256": "3fc0b22b8093a1536cb0509d4febb2e676e06b13b027c5164ce479b6b1160cd4"
+    },
+    {
+      "來源相對路徑": "run_committed_controls_r.py",
+      "bytes": 6883,
+      "未收錄原因": "依要求不複製可執行工具或 runner；正式來源見 Git 工具對照",
+      "封裝時現存檔案SHA256": "cf14085579b20714f350bb037f4a5478f3976da245853c366fd161e327742eed"
+    },
+    {
+      "來源相對路徑": "run_isolated_baseline_v2.py",
+      "bytes": 6601,
+      "未收錄原因": "依要求不複製可執行工具或 runner；正式來源見 Git 工具對照",
+      "封裝時現存檔案SHA256": "564304ae5ab0ceb9bdf32963f10d63db24969d15e447521dffd097e3f65754fd"
+    },
+    {
+      "來源相對路徑": "server-candidate-final.log",
+      "bytes": 1391,
+      "未收錄原因": "服務操作請求紀錄，部分可持續追加；已保留各測試原始 log、receipt、build 及 runtime 快照"
+    },
+    {
+      "來源相對路徑": "server-candidate-fresh-start1.log",
+      "bytes": 178,
+      "未收錄原因": "服務操作請求紀錄，部分可持續追加；已保留各測試原始 log、receipt、build 及 runtime 快照"
+    },
+    {
+      "來源相對路徑": "server-candidate-fresh.log",
+      "bytes": 4851,
+      "未收錄原因": "服務操作請求紀錄，部分可持續追加；已保留各測試原始 log、receipt、build 及 runtime 快照"
+    },
+    {
+      "來源相對路徑": "server-candidate-probe-start1.log",
+      "bytes": 178,
+      "未收錄原因": "服務操作請求紀錄，部分可持續追加；已保留各測試原始 log、receipt、build 及 runtime 快照"
+    },
+    {
+      "來源相對路徑": "server-candidate-probe.log",
+      "bytes": 259756,
+      "未收錄原因": "服務操作請求紀錄，部分可持續追加；已保留各測試原始 log、receipt、build 及 runtime 快照"
+    },
+    {
+      "來源相對路徑": "server-final.log",
+      "bytes": 227837,
+      "未收錄原因": "服務操作請求紀錄，部分可持續追加；已保留各測試原始 log、receipt、build 及 runtime 快照"
+    },
+    {
+      "來源相對路徑": "server-main.log",
+      "bytes": 4821,
+      "未收錄原因": "服務操作請求紀錄，部分可持續追加；已保留各測試原始 log、receipt、build 及 runtime 快照"
+    },
+    {
+      "來源相對路徑": "server-probe.log",
+      "bytes": 1391,
+      "未收錄原因": "服務操作請求紀錄，部分可持續追加；已保留各測試原始 log、receipt、build 及 runtime 快照"
+    },
+    {
+      "來源相對路徑": "server-verified-source.log",
+      "bytes": 2955,
+      "未收錄原因": "服務操作請求紀錄，部分可持續追加；已保留各測試原始 log、receipt、build 及 runtime 快照"
+    }
+  ]
+}

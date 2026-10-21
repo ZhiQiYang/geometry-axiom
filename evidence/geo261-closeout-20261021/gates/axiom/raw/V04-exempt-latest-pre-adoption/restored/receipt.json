@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_engineering_model_compatibility"
+  ],
+  "exit_code": 0,
+  "seconds": 11.008995224000046,
+  "tests": 44,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "57384ab906aaf4a0f8f2ef699827a4dfd88d36b7843cf0b43ebcdb82e7a3fb4d"
+}

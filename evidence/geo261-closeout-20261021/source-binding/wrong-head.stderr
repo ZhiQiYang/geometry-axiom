@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/workspace/geo261-evidence/source-binding-preparation/snapshot_bindings.py", line 122, in <module>
+    main()
+  File "/workspace/geo261-evidence/source-binding-preparation/snapshot_bindings.py", line 30, in main
+    raise RuntimeError("指定完整 HEAD 不符，或存在 tracked dirty；不產出成功快照")
+RuntimeError: 指定完整 HEAD 不符，或存在 tracked dirty；不產出成功快照

@@ -1,0 +1,13 @@
+{
+  "source": "/workspace/geo261-evidence/p189-trial-package-v3.py",
+  "source_sha256": "484a084486c570c992afd80c9aa979e572addeb04e70eebfbeca39d10590c013",
+  "new_source": "/workspace/geo261-evidence/p189-trial-package-v4.py",
+  "new_sha256": "6171ecd7fe7ea2a2b611365dd9a61e829f2218de921fac9c849fde0291c8e1c6",
+  "changes": [
+    "只讀相容root頂層轉錄actual_exit_code與歷史actual_tool_exit_code，原轉錄不改",
+    "外部封裝器新增negative-control報告角色與配對描述，避免把負控紅誤稱產品候選失敗",
+    "正式runner／門檻／樣本／原收據皆未修改",
+    "配對輪次依序執行之限制明確描述；不以跨輪median聲稱精確改善"
+  ],
+  "new_product_executions": 0
+}

@@ -1,0 +1,196 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "preparedUtc": "2026-10-21T06:53:54.664393+00:00",
+  "preparedBy": "/root/q38_card_gates/l2_gate_acceptors",
+  "files": [
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/curate-gates-l3.py",
+      "bytes": 24681,
+      "sha256": "aabdc95ec54f6f472f7339ad14915058bc8b85e2858a454b739881ef477969e1"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-method.zh-TW.md",
+      "bytes": 7828,
+      "sha256": "51aac0b45ec797fb54c3a419aa01758f717f897bf36aaf5a9dc59b7fbea7f39e"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-completion.template.json",
+      "bytes": 2681,
+      "sha256": "e307a5005621d498cc15b662c0171159b090872fa8c42fe28bfda9bcc55cb50d"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-draft-before-review.txt",
+      "bytes": 21930,
+      "sha256": "2f4195805f6d89db12f7c230edd197df98b451010e565217fb9359215545fdc9"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-draft-before-atomic-publish.txt",
+      "bytes": 24329,
+      "sha256": "53a8a6ec2bec74949f3fb4052a4dddcf1183a119533c01ce2f76bd14d57b19ef"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-preparation.before-atomic.json",
+      "bytes": 4775,
+      "sha256": "38f4876c858bdd6615110e746505e5ddb29c4c9e76263f5d467b13f127c99f09"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-preparation-index.before-atomic.json",
+      "bytes": 1002,
+      "sha256": "a5cdc376bab740e4d120d5cf66510cb1f927884e38822725209e0d1d890305a6"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-atomic-publication.diff",
+      "bytes": 3509,
+      "sha256": "fccf95174c21ff4ce760b8842fd85640fe89ad0e3c7dd2c9388380f6c682904f"
+    }
+  ],
+  "preparedOnly": true,
+  "curationExecuted": false,
+  "formalToolOrAcceptorExecuted": false,
+  "productExecuted": false,
+  "globalOrBinaryRead": false,
+  "liveGateRawRead": false,
+  "completedQ38AcceptanceReceiptSchemaReadOnly": [
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/q38-primary-receipt.json",
+      "bytes": 4559,
+      "sha256": "cbd2c7faacfe9c013a6d9caf8db70d99f576fa094f121a4376bbd15c0ff1b470",
+      "keys": [
+        "sourceSha",
+        "phase",
+        "kind",
+        "argv",
+        "toolSha256",
+        "startedUtc",
+        "cwd",
+        "CCAbsent",
+        "PYTHONOPTIMIZEAbsent",
+        "optimizationFlag",
+        "executorArgv",
+        "executorCodePath",
+        "executorCodeSha256",
+        "exitCode",
+        "childPid",
+        "finishedUtc",
+        "elapsedSeconds",
+        "commandPath",
+        "commandSha256",
+        "producedReport"
+      ],
+      "cwd": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021",
+      "source": "已完成Q38收據的唯讀schema參考，不是執行其他phase或curation"
+    },
+    {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-execution/q38-detailed-receipt.json",
+      "bytes": 4567,
+      "sha256": "d8b7626a0ba2e3810082d255e2023e6d3f8383fbabdd3a40044479a057d8b566",
+      "keys": [
+        "sourceSha",
+        "phase",
+        "kind",
+        "argv",
+        "toolSha256",
+        "startedUtc",
+        "cwd",
+        "CCAbsent",
+        "PYTHONOPTIMIZEAbsent",
+        "optimizationFlag",
+        "executorArgv",
+        "executorCodePath",
+        "executorCodeSha256",
+        "exitCode",
+        "childPid",
+        "finishedUtc",
+        "elapsedSeconds",
+        "commandPath",
+        "commandSha256",
+        "producedReport"
+      ],
+      "cwd": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021",
+      "source": "已完成Q38收據的唯讀schema參考，不是執行其他phase或curation"
+    }
+  ],
+  "ASTValid": true,
+  "completionManifestReady": false,
+  "requiredPinCount": 31,
+  "toolObservationSchema": "父代理指定的phases.<phase>.finalToolResult/launcherReceipt/sessionId/launchToolResult/acceptanceExecutorToolResult，pointer固定",
+  "observations": [
+    {
+      "chunk": "6686c4",
+      "exitCode": 0,
+      "scope": "首版純AST與pending模板產生"
+    },
+    {
+      "chunk": "b10f20",
+      "exitCode": 0,
+      "scope": "修正版純AST與固定pointer模板"
+    },
+    {
+      "chunk": "856464",
+      "exitCode": 0,
+      "scope": "只讀已完成Q38收據schema"
+    },
+    {
+      "chunk": "280d85",
+      "exitCode": 0,
+      "scope": "原子交易修正版純AST及保存diff；沒有執行封包"
+    }
+  ],
+  "limits": [
+    "不得在四phase全部完成、兩層真0與還原且父代理明確放行前執行。",
+    "未執行curation --help、主函數或任何接受器；所有hash/count只是準備原件，不代表尚未出結果。",
+    "正式source及原始接受器、gate工具、既有收據完全未改。"
+  ],
+  "preAtomicStaticReview": {
+    "reviewer": "/root/q38_card_gates/l2_gate_acceptors/native_manifest_peer",
+    "firstReviewChunk": "0b17f7",
+    "firstReviewASTExit": 0,
+    "firstReviewFindings": [
+      "草稿cwd假定為gates工作樹，真收據是本輪BASE",
+      "草稿需重核接受器原raw索引，不能只對現存檔新算hash"
+    ],
+    "correctedCodeSha256": "53a8a6ec2bec74949f3fb4052a4dddcf1183a119533c01ce2f76bd14d57b19ef",
+    "finalReviewChunk": "f68069",
+    "finalReviewASTExit": 0,
+    "newBlockersReported": false,
+    "limitation": "轉錄子代理只讀訊息；不是產品驗收或curation實跑結果"
+  },
+  "staticReview": {
+    "reviewer": "/root/q38_card_gates/l2_gate_acceptors/native_manifest_peer",
+    "reviewedCodeSha256": "aabdc95ec54f6f472f7339ad14915058bc8b85e2858a454b739881ef477969e1",
+    "ASTChunk": "1b7190",
+    "ASTExit": 0,
+    "diffComparisonChunk": "a5cc1a",
+    "diffComparisonExit": 0,
+    "newBlockersReported": false,
+    "criteriaUnchanged": true,
+    "curationExecuted": false,
+    "limitation": "轉錄子代理只讀訊息；只有AST／hash／diff核對，沒有執行封包或產品。"
+  },
+  "atomicPublication": {
+    "staging": "/workspace/geo261-evidence/final-bundle/gates-L3-formal.staging",
+    "bundle": "/workspace/geo261-evidence/final-bundle/gates-L3-formal",
+    "bothMustInitiallyBeAbsent": true,
+    "copyTargetIsStaging": true,
+    "checksBeforePublish": [
+      "每檔bytes",
+      "每檔mtime",
+      "完整檔案集合"
+    ],
+    "publication": "同父目錄 os.replace(STAGING,BUNDLE) 一次發布",
+    "bundleWritesAfterPublish": false,
+    "failedStagingPreserved": true,
+    "performed": false
+  },
+  "supersedes": {
+    "preparationReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-preparation.before-atomic.json",
+      "sha256": "38f4876c858bdd6615110e746505e5ddb29c4c9e76263f5d467b13f127c99f09"
+    },
+    "preparationIndex": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gates-curation-preparation-index.before-atomic.json",
+      "sha256": "a5cdc376bab740e4d120d5cf66510cb1f927884e38822725209e0d1d890305a6"
+    },
+    "oldIndexesAreHistoricalSnapshots": true
+  }
+}

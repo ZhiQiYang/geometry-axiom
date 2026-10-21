@@ -1,0 +1,137 @@
+"""獨立資料接受器：只讀原件／Git，僅新增本份審查結果；不執行產品或原裁判。"""
+from pathlib import Path
+from collections import Counter
+import datetime, hashlib, json, subprocess, re
+
+O=Path('/workspace/geo261-evidence/ledger-A2-cc-cbefb39b')
+P=Path('/workspace/geo261-evidence/ledger-L2-publication')
+A='cbefb39b47fb0edcfaf003d2c1101929fea244c8'
+L='249571fe2477845d5330f6190dad965bf327f43b'
+def h(raw):return hashlib.sha256(raw).hexdigest()
+def j(path):return json.loads(path.read_bytes())
+def git(*args):return subprocess.check_output(['git','-C','/workspace/geometry-axiom',*args])
+raw=(O/'mutants_results.json').read_bytes();ledger=json.loads(raw)
+assert h(raw)=='6bda315331050bd3478ed65211a8263508cb1a1f6f67cee3f35df377506e7f0b'
+prior=j(O/'original-ledger.json');prep=j(O/'prepare-receipt.json');validation=j(O/'ledger-validation.json')
+assert h((O/'ledger-validation.json').read_bytes())=='fb75a2094dada96a44cf337d380b16407f74972c23b9d8039eb79087b8c45e7a'
+assert prep['source_sha']==validation['source_sha']==A
+assert prep['fresh_cache_empty'] and prep['results_exists'] is False
+assert h((O/'original-ledger.json').read_bytes())==prep['original_ledger_sha256']
+assert git('show',A+':tests/mutants_results.json')==(O/'original-ledger.json').read_bytes()
+assert set(ledger)==set(prior) and len(ledger)==78
+assert {k:r['verdict'] for k,r in ledger.items()}=={k:r['verdict'] for k,r in prior.items()}
+assert Counter(r['verdict'] for r in ledger.values())=={'killed':70,'crashed':1,'equivalent':4,'retired':3}
+assert [k for k,r in ledger.items() if r['verdict']=='crashed']==['M20']
+assert j(O/'verdict-difference-review.json')['differences']=={}
+cases=[];core=bridge=checksums=0
+for key,row in ledger.items():
+ body={k:v for k,v in row.items() if k not in ('record_sha256','stale_from','stale_why')}
+ assert h(json.dumps(body,sort_keys=True,ensure_ascii=False,separators=(',',':')).encode())==row['record_sha256'],key
+ checksums+=1
+ if row['verdict']=='retired':assert 'execution' not in row;continue
+ ex=row['execution'];assert ex['head']==A
+ if ex['schema']=='geometry-mutation-execution/1':
+  core+=1;assert ex['compile_exit_code']==0
+  assert ex['compile_command']==['cc','-std=c11','-O2','<source>','-o','<output>','-lm']
+  base=ex['baseline'];assert base['exit_code']==0 and base['result']['total']==165
+  assert base['result']['counts']=={'pass':165,'fail':0,'infrastructure':0}
+  assert len(base['result']['cases'])==165 and all(r['status']=='pass' for r in base['result']['cases'])
+  attempts=ex['attempts'];assert attempts
+  failures=set()
+  for attempt in attempts:
+   result=attempt['result'];assert result['total']==165 and len(result['cases'])==165
+   count=Counter(r['status'] for r in result['cases'])
+   assert {k:count[k] for k in ('pass','fail','infrastructure')}==result['counts']
+   failures.update(r['scene'] for r in result['cases'] if r['status']=='fail')
+  if row['verdict']=='killed':
+   assert any(a['exit_code']==1 and a['result']['counts']['fail']>0 and a['result']['counts']['infrastructure']==0 for a in attempts)
+   assert row['killed_by'] and set(row['killed_by'])<=failures
+  elif row['verdict']=='equivalent':
+   assert all(a['exit_code']==0 and a['result']['counts']=={'pass':165,'fail':0,'infrastructure':0} for a in attempts)
+  else:
+   assert key=='M20' and len(attempts)==3 and row['crashed_on']==['_test_lshape.scene']
+   for a in attempts:
+    assert a['exit_code']==2 and a['result']['counts']=={'pass':164,'fail':0,'infrastructure':1}
+    bad=[r for r in a['result']['cases'] if r['status']!='pass']
+    assert len(bad)==1 and bad[0]['scene']=='_test_lshape.scene' and 'exit -11' in bad[0]['detail']
+  cases.append({'id':key,'verdict':row['verdict'],'compileExit':0,'baseline165':True,'attemptExitCodes':[a['exit_code'] for a in attempts],'namedFailureScenes':sorted(failures)})
+ else:
+  bridge+=1;assert ex['schema']=='geometry-bridge-mutation-execution/1' and row['verdict']=='killed'
+  assert ex['byte_restored'] and ex['baseline_identity']['exe_sha256']==ex['restored_identity']['exe_sha256']
+  assert ex['mutant_identity']['exe_sha256']!=ex['baseline_identity']['exe_sha256']
+  for name in ('baseline_build','mutant_build','restored_build'):
+   x=ex[name];assert x['exit_code']==0 and x['process_returncode']==0 and not x['timed_out']
+  for name in ('baseline','restored'):
+   x=ex[name];r=x['result'];assert x['exit_code']==0 and x['process_returncode']==0 and not x['timed_out']
+   assert r['total']==27 and len(r['requested'])==len(r['started'])==27
+   assert set(r['requested'])==set(r['started'])==set(ex['restored_methods'])
+   assert not any(r[k] for k in ('failures','errors','skipped','expected_failures','unexpected_successes'))
+  x=ex['mutant'];r=x['result'];assert x['exit_code']==1 and x['process_returncode']==1 and not x['timed_out']
+  assert not any(r[k] for k in ('errors','skipped','expected_failures','unexpected_successes'))
+  assert r['failures'] and all(f['kind']=='assertion' for f in r['failures'])
+  stdout=(Path(prep['cache'])/key/x['stdout_file']).read_bytes()
+  assert h(stdout)==x['stdout_sha256']
+  text=stdout.decode().split('GEOMETRY_BRIDGE_MUTATION_RESULT ',1)[0]
+  blocks=re.findall(r'^FAIL: ([^\n]+)\n(.*?)(?=\n={70}\n|\n-{70}\nRan |\Z)',text,re.M|re.S)
+  assert len(blocks)==len(r['failures']) and all('AssertionError' in detail for header,detail in blocks)
+  for failure,(header,detail) in zip(r['failures'],blocks):
+   base=failure['test'].split(' (',1)[0]
+   assert base in header and base in ex['methods']
+  names={f['test'] for f in r['failures']};assert set(row['killed_by'])<=names
+  cases.append({'id':key,'verdict':row['verdict'],'baseline27':True,'restored27':True,'mutantExit':1,'namedAssertionFailures':sorted(names)})
+assert (core,bridge,checksums)==(57,18,78)
+
+run=j(O/'run-receipt.json');phases=j(O/'phase-receipts.json');assert phases==run['phases']
+expected=[['python3','-B','-u','tests/mutate.py'],['python3','-B','tests/mutate.py','--check'],['python3','-B','tests/mutate.py','--check','--killers']]
+for x,argv in zip(phases,expected):
+ assert x['source_sha']==A and x['exit_code']==0 and x['command']==argv and x['cwd']==prep['worktree']
+ assert x['CC_present'] is False and x['PYTHONOPTIMIZE_present'] is False
+ assert (O/(x['phase']+'.exit-code')).read_text().strip()=='0'
+ for stream in ('stdout','stderr'):assert h(Path(x[stream]).read_bytes())==x[stream+'_sha256']
+assert len(phases)==3 and [x['phase'] for x in phases]==['mutate','check','check-killers']
+assert run['head_after']==A and run['tracked_status_after']=='' and run['temporary_mutant_sources']==[]
+assert run['checks_preserved_ledger_bytes'] and run['single_full_writer']
+assert j(O/'launch-completion.json')['observed_wait_returncode']==0
+assert j(O/'interactive-session-final.json')['exit_code']==0
+assert j(O/'validation-tool-observation.json')['exit_code']==0
+for n in ('supervisor.exit-code','supervisor-observed.exit-code'):assert (O/n).read_text().strip()=='0'
+assert h((O/'sourcecode.txt').read_bytes())=='308e37f71422f96543d68be4b51a42397c9d734750e0388278bb65941b60606e'
+
+backups=prep['raw_backups'];assert len(backups)==362 and j(O/'source-snapshot.json')['raw_sources']==backups
+specs=''.join(A+':'+r['path']+'\n' for r in backups).encode()
+batch=subprocess.run(['git','-C','/workspace/geometry-axiom','cat-file','--batch'],input=specs,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+assert batch.returncode==0 and not batch.stderr
+pos=0
+for x in backups:
+ end=batch.stdout.index(b'\n',pos);header=batch.stdout[pos:end].split();assert header[1]==b'blob'
+ size=int(header[2]);data=batch.stdout[end+1:end+1+size];assert batch.stdout[end+1+size:end+2+size]==b'\n';pos=end+2+size
+ assert header[0].decode()==x['git_blob'] and size==x['bytes'] and h(data)==x['sha256']
+ assert data==Path(x['backup']).read_bytes()==(Path(prep['worktree'])/x['path']).read_bytes()
+assert pos==len(batch.stdout)
+assert subprocess.check_output(['git','-C',prep['worktree'],'rev-parse','HEAD']).decode().strip()==A
+assert not subprocess.check_output(['git','-C',prep['worktree'],'status','--porcelain','--untracked-files=no'])
+assert not list(Path(prep['worktree']).glob('_mutant_*.c'))
+scratch=Path(prep['cache'])/'_bridge-work'/A/'repo'
+assert subprocess.check_output(['git','-C',str(scratch),'rev-parse','HEAD']).decode().strip()==A
+assert not subprocess.check_output(['git','-C',str(scratch),'status','--porcelain','--untracked-files=no'])
+index=j(O/'raw-source-index.json');assert len(index)==243
+for x in index:
+ data=Path(x['source']).read_bytes();assert len(data)==x['bytes'] and h(data)==x['sha256']
+ assert data==(O/'publish'/x['path']).read_bytes()
+
+pub=j(P/'publication.json');pubreceipt=j(P/'receipt.json');commands=j(P/'commands.json')
+assert pub['sourceA2']==pubreceipt['sourceA2']==A and pub['ledgerL2']==pubreceipt['ledgerL2']==L
+assert pub['defaultCheckExitCode']==pub['pushExitCode']==0 and pub['remoteExactMatch']
+for x in commands:
+ assert x['exitCode']==0 and (P/(x['label']+'.exit-code')).read_text().strip()=='0'
+ assert (P/(x['label']+'.stdout')).is_file() and (P/(x['label']+'.stderr')).is_file()
+assert (P/'parent.stdout').read_text().strip()==A and git('rev-parse',L+'^').decode().strip()==A
+assert git('diff','--name-only',A,L).decode().splitlines()==['tests/mutants_results.json']
+assert git('show',L+':tests/mutants_results.json')==raw==(P/'ledger-blob.stdout').read_bytes()
+assert (P/'remote-after-push.stdout').read_text().split()==[L,'refs/heads/codex/geo261-closeout-20261021']
+assert next(x for x in commands if x['label']=='L-default-check')['argv']==['python3','-B','tests/mutate.py','--check']
+assert next(x for x in commands if x['label']=='push')['argv']==['git','push','origin','codex/geo261-closeout-20261021']
+report={'schema':'geo261-ledger-A2-independent-review/1','reviewedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sourceA2':A,'ledgerL2':L,'ledgerSha256':h(raw),'ledgerBytes':len(raw),'records':78,'checksumsVerified':checksums,'executionCount':75,'coreCount':core,'bridgeCount':bridge,'verdictCounts':dict(Counter(r['verdict'] for r in ledger.values())),'verdictDifferences':{},'sourceBackupsGitAndRestoredBytesVerified':len(backups),'rawAndSidecarOriginalsPlusPublishCopiesVerified':len(index),'rawAndSidecarCategories':dict(Counter(x['path'].split('/')[0] for x in index)),'phaseCommands':[x['command'] for x in phases],'phaseExitCodes':[x['exit_code'] for x in phases],'supervisorExit':0,'launcherDirectWaitExit':0,'launcherToolObservation':j(O/'interactive-session-final.json'),'validatorToolObservation':j(O/'validation-tool-observation.json'),'transportInterruptionArtifacts':['transport-observation-0325.json','transport-session-observation-0326.json'],'publicationCommandCount':len(commands),'publicationOriginalExitCodesAllZero':True,'publicationTopToolObservation':{'session':65345,'chunk':'097d8f','exitCode':0,'evidenceType':'root／作者訊息轉述，沒有在本接受器自行觀察transport回傳'},'onlyLedgerChangedA2ToL2':True,'executionHeadsRemainA2':True,'restoredWorktreeClean':True,'bridgeScratchClean':True,'cases':cases,'validationExitCode':0,'acceptorSha256':h(Path(__file__).read_bytes()),'additionalHelperFailure':{'exitCode':1,'toolChunk':'98edfc','observation':'independent-review-attempt2-observation.json','code':'independent-review-attempt2-code.txt','cause':'原unittest標頭含docstring，接受器解析未納入；更正後仍逐具名FAIL區塊核AssertionError'},'priorHelperFailure':{'exitCode':1,'toolChunk':'fddc57','observation':'independent-review-attempt1-observation.json','code':'independent-review-attempt1-code.txt','cause':'接受器對截尾detail前綴作錯誤要求，改核原完整stdout具名FAIL區塊，沒有更動ledger或重跑產品'},'limitations':['core子程序完整stdout/stderr未由原工具保存；只核結構化result及原hash欄位，頂層mutate.stdout不冒充子raw。','本次核243項原raw／sidecars與已封publish副本，沒有另hash各cache二進位；二進位實體hash由先前原validator保存，未冒稱本peer重新讀取。','工具觀察JSON是執行者保存的實際工具回覆／轉錄；03:25 transport失連與03:26 session仍running均保留，不推造重啟或遺失的歷史starttime。','M20三次同一夾具SIGSEGV歸crashed，不能併入70個assertion killed。','這是資料與來源獨立複核，沒有重跑mutate/check/產品；不代替L2完整七項、四gates及P189的當輪驗收。']}
+target=O/'independent-review.json'
+with target.open('x',encoding='utf-8') as f:json.dump(report,f,ensure_ascii=False,indent=2);f.write('\n')
+print(json.dumps({'report':str(target),'bytes':target.stat().st_size,'sha256':h(target.read_bytes()),'validationExitCode':0,'sourceBackups':len(backups),'rawAndSidecars':len(index)},ensure_ascii=False))

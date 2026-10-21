@@ -1,0 +1,32 @@
+✔ ordered-ring oracle accepts cycle/winding only and rejects same-vertex rewiring (2.602001ms)
+✔ vector rectangle: full interior ring survives every quarter turn (6.442039ms)
+✔ raster rectangle: full interior ring survives every quarter turn (47.344132ms)
+✔ vector l: full interior ring survives every quarter turn (0.707103ms)
+✔ raster l: full interior ring survives every quarter turn (16.446469ms)
+✔ vector notch: full interior ring survives every quarter turn (0.722056ms)
+✔ raster notch: full interior ring survives every quarter turn (12.784092ms)
+✔ PDF CTM, scale and quarter-turned viewport retain the ordered concave ring (0.669819ms)
+✔ vector doorway: no guessed closure; explicit barrier retains both jambs (1.298386ms)
+✔ raster doorway: no guessed closure; explicit barrier retains both jambs (3.717308ms)
+✔ vector connected neighbor preserves door topology and explicit separation (0.904695ms)
+✔ raster connected neighbor preserves door topology and explicit separation (3.84774ms)
+✔ vector isolated obstacles disclose two inner cycles without inventing hole polygons (0.307484ms)
+✔ raster isolated obstacles disclose two inner cycles without inventing hole polygons (3.077883ms)
+✔ region filled obstacles and corner-touch ambiguity do not silently change topology (3.376885ms)
+✔ integer-mm proposal and an explicit edge edit preserve ordered concavity and input (0.653876ms)
+✔ late Worker callback after source replacement cannot revive an old draft or clear a newer job (14.303616ms)
+✔ late Worker callback after page replacement cannot revive an old draft or clear a newer job (2.207559ms)
+✔ late Worker callback after recalibration cannot revive an old draft or clear a newer job (1.626931ms)
+✔ late Worker callback after project context replacement cannot revive an old draft or clear a newer job (1.628153ms)
+✔ late Worker callback after boundary id reuse cannot revive an old draft or clear a newer job (1.351145ms)
+✔ source stamps reject late Worker completion even before the invalidation event arrives (5.580388ms)
+✔ an already displayed candidate invalidates on recalibration and preserves cached boundary geometry (1.241382ms)
+✔ presentation-only source opacity does not discard the displayed candidate (1.201214ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 206.459971

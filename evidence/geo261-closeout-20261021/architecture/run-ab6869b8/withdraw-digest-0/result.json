@@ -1,0 +1,31 @@
+{
+  "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-ab6869b8/withdraw-digest-0.json",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "tests/architecture_contract.py",
+    "--root",
+    ".",
+    "--manifest",
+    "/workspace/geo261-evidence/architecture/run-ab6869b8/withdraw-digest-0.json"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceBaseHead": "ab6869b86a4ad82345359b72397fc055280d8308",
+  "startedUtc": "2026-10-20T21:10:30.158344+00:00",
+  "finishedUtc": "2026-10-20T21:10:30.373487+00:00",
+  "seconds": 0.215,
+  "complete": true,
+  "exitCode": 1,
+  "stdout": {
+    "path": "withdraw-digest-0/stdout.log",
+    "rawSha256": "f12f312e31dfdd9e73be9a277a983ad4765a326585f46b0d453d19120331dc03",
+    "lfSha256": "f12f312e31dfdd9e73be9a277a983ad4765a326585f46b0d453d19120331dc03",
+    "bytes": 325
+  },
+  "stderr": {
+    "path": "withdraw-digest-0/stderr.log",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  }
+}

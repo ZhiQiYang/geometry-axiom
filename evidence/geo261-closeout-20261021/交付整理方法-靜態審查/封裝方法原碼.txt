@@ -1,0 +1,40 @@
+import hashlib
+import json
+from pathlib import Path
+
+base = Path('/workspace/geo261-evidence')
+dest = base / 'final-bundle/交付整理方法-靜態審查'
+dest.mkdir(exist_ok=False)
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+mapping = [('stage-final-evidence-v1-code.txt', 'v1未執行-code.txt'),
+           ('stage-final-evidence.py', 'v2未執行-code.txt'),
+           ('stage-final-evidence-v2.patch', 'v1-v2.patch'),
+           ('stage-final-evidence-method-review.json', '靜態審查與觀察轉錄.json'),
+           ('package-stage-method-review.txt', '封裝方法原碼.txt')]
+rows = []
+for original, target in mapping:
+    raw = (base / original).read_bytes()
+    (dest / target).write_bytes(raw)
+    assert (dest / target).read_bytes() == (base / original).read_bytes()
+    rows.append({'path': target, 'source': str(base / original), 'bytes': len(raw), 'sha256': sha(raw)})
+(dest / 'README.md').write_text('''# 最終證據整理工具的靜態方法審查
+
+此附錄保存 root 的 v1／v2 原碼（原 bytes 轉存非執行 `.txt`）、最小差異及觀察轉錄。兩版 helper 都尚未執行，沒有E成功收據。v1的index權限問題是根據程式與當前umask推導的靜態發現，不是產品或整理程序實際失敗。
+
+v2補index chmod0644、repo外輸入／輸出目錄限制，以及不受assert停用影響的Python最佳化模式拒絕。最小差異靜態複核無阻擋；正式執行仍待L3完整驗收與所有資料凍結，並須由最後E驗證器檢核實際結果。
+
+方法原碼包含複製純資料與精確附加兩個Git設定的操作；本封裝沒有執行它。root的AST碼與本代理讀取碼均明示來源，觀察轉錄不是raw transport。
+
+原件清單列五份來源副本；另外三檔是README、原件清單與SHA256SUMS。SUMS覆蓋除自身外全部檔案，不再為這份附錄建立遞迴包。
+''')
+(dest / '原件清單.json').write_text(json.dumps(rows, ensure_ascii=False, indent=2) + '\n')
+files = sorted(p for p in dest.iterdir() if p.is_file())
+(dest / 'SHA256SUMS').write_text(''.join(sha(p.read_bytes()) + '  ' + p.name + '\n' for p in files))
+files = sorted(p for p in dest.iterdir() if p.is_file())
+for path in files: path.chmod(0o644)
+assert {p.name for p in files} == {r['path'] for r in rows} | {'README.md', '原件清單.json', 'SHA256SUMS'}
+result = {'bundle': str(dest), 'copyCheckPassed': True, 'files': len(files), 'bytes': sum(p.stat().st_size for p in files),
+          'indexSha256': sha((dest / '原件清單.json').read_bytes()), 'sumsSha256': sha((dest / 'SHA256SUMS').read_bytes())}
+(base / 'final-bundle/交付整理方法-封裝核對.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+(base / 'final-bundle/交付整理方法-封裝核對.json').chmod(0o644)
+print(json.dumps(result, ensure_ascii=False, indent=2))

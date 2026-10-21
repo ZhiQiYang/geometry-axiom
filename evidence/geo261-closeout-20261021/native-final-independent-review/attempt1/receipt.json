@@ -1,0 +1,9 @@
+{
+  "toolChunkId": "2345af",
+  "observedExitCode": 1,
+  "observedWallTimeSeconds": 0.151271722,
+  "stdout": "AST 通過\nTraceback (most recent call last):\n  File \"/workspace/geo261-evidence/native-final-independent-review-code.txt\", line 144, in <module>\n    assert sha(data)==h and (ROOT/name).read_bytes()==data,name\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: current_geometry.c\n",
+  "codeSha256": "52d4a083a0c4395ef212235b60337318528a49e7a34a31ef15200f4f034ad391",
+  "reason": "審核器先把 Git symlink blob（相對目標字串）當成解參照後 fingerprint 的 C 本文；不是產品測試失敗。600 raw等先前檢查已過，尚未生成正式審查報告。",
+  "evidenceType": "實際工具回覆已知欄位事後轉錄；沒有重跑產品。"
+}

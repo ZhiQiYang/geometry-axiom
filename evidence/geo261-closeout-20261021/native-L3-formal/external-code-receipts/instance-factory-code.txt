@@ -1,0 +1,189 @@
+"""只實例化外部收據／調度碼；不建工作樹、不移動全域快取、不啟動驗收。"""
+import argparse
+import ast
+import datetime
+import difflib
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+HERE = Path(__file__).resolve().parent
+EVIDENCE = Path('/workspace/geo261-evidence')
+BASELINES = {
+    'parent': (EVIDENCE/'native-l-preparation/launcher-source.txt', '6c32561bf1e6fbe72f78167918be60e64418655fc201ac924d58d34ef0d10e7c'),
+    'wrapper': (EVIDENCE/'native-final-launcher/wrapper-code.txt', '64ff6ee9c5a506c5ae89ec19df3bd1a03fe93ab1943bda5a6ef7a60bbdf328c4'),
+    'phase': (EVIDENCE/'gates-l-preparation/phase-launcher.py', '2b79e3b110fdc3eb3e51b54c13102c3f4c0c260b282ea00f7d198f191eff3440'),
+}
+FORMAL = {
+    'run_gates.py': '8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3',
+    'run_controls.py': 'b7e7430e53d157f6a82050417be7a9f8d77bd50c1fb5f2f3a34a1ba44de8363f',
+    'q38_controls.py': '64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2',
+}
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+def replace_exact(source, old, new, count=1):
+    if source.count(old) != count:
+        raise ValueError('原碼替換次數不符：'+repr(old))
+    return source.replace(old, new)
+
+def canonical(source):
+    return ast.dump(ast.parse(source), include_attributes=False)
+
+def assignment(source, name):
+    nodes = [n for n in ast.parse(source).body if isinstance(n, ast.Assign)
+             and any(isinstance(t, ast.Name) and t.id == name for t in n.targets)]
+    if len(nodes) != 1:
+        raise ValueError('固定值不唯一：'+name)
+    return nodes[0].value
+
+def load_baselines():
+    result = {}
+    for name, (path, expected) in BASELINES.items():
+        data = path.read_bytes()
+        if digest(data) != expected:
+            raise ValueError('原啟動器 hash 改變：'+str(path))
+        source = data.decode('utf-8')
+        ast.parse(source, filename=str(path))
+        result[name] = source
+    return result
+
+def git(repo, *args):
+    return subprocess.check_output(['git', '-C', str(repo), *args])
+
+def save_json(path, data):
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2)+'\n')
+
+def main():
+    if sys.flags.optimize:
+        raise RuntimeError('實例化器拒絕 -O；正式既有父 launcher 內容不因此改寫。')
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--verify-baselines-only', action='store_true')
+    parser.add_argument('--source')
+    parser.add_argument('--run-id')
+    parser.add_argument('--jobs', choices=['1', '2'])
+    parser.add_argument('--repo', default='/workspace/geometry-axiom')
+    args = parser.parse_args()
+    baseline = load_baselines()
+    if args.verify_baselines_only:
+        if args.source or args.run_id or args.jobs:
+            parser.error('只核原碼時不得同時指定實例參數。')
+        print(json.dumps(dict(baselinesValid=True, files={k:dict(path=str(p), sha256=h) for k,(p,h) in BASELINES.items()}, sourceSha=None, instanceCreated=False, productExecuted=False), ensure_ascii=False))
+        return 0
+    if not args.source or not re.fullmatch('[0-9a-f]{40}', args.source):
+        parser.error('--source 必須是 root 指定的完整小寫 SHA；不可使用預留假值。')
+    if not args.run_id or not re.fullmatch('[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}', args.run_id):
+        parser.error('--run-id 必須是新的安全單一路徑名稱。')
+    if args.jobs is None:
+        parser.error('--jobs 必須依 root 的 heavy 排程明示為 1 或 2。')
+    repo = Path(args.repo).resolve(strict=True)
+    if git(repo, 'rev-parse', '--verify', args.source+'^{commit}').decode().strip() != args.source:
+        raise ValueError('來源不是可解析的 exact commit。')
+    source_files = {}
+    def blob(name):
+        data = git(repo, 'show', args.source+':'+name)
+        source_files[name] = dict(bytes=len(data), sha256=digest(data))
+        return data
+    expected_bytes = blob('tests/run_all.expected.json')
+    expected = json.loads(expected_bytes)['suites']
+    scope = dict(suites=len(expected), pythonModules=sum(n.startswith('py:') for n in expected), countedTotal=sum(s.get('count',0) for s in expected.values()))
+    if scope != dict(suites=224, pythonModules=188, countedTotal=5188):
+        raise ValueError('事前 exact 來源 expected scope 不符，停止而不調整門檻：'+repr(scope))
+    counts = {'py:test_geo261_wood_contact_world':12, 'py:test_geo261_host_facts_authority':27, 'py:test_geo261_placement_definition':15}
+    for name, count in counts.items():
+        if expected[name] != {'mode':'count','count':count,'unit':'test'}:
+            raise ValueError('事前 expected count 不符：'+name)
+    suite_source = blob('tests/run_all.py').decode()
+    allowed_skips = ast.literal_eval(assignment(suite_source, 'ALLOWED_SKIPS'))
+    binaries_source = blob('tests/binaries.py').decode()
+    registry = []
+    for call in assignment(binaries_source, 'REGISTRY').elts:
+        if not isinstance(call, ast.Call) or not isinstance(call.func, ast.Name) or call.func.id != 'Binary':
+            raise ValueError('無法靜態讀取正式 registry。')
+        windows_only = any(k.arg == 'win_only' and ast.literal_eval(k.value) for k in call.keywords)
+        registry.append(dict(name=ast.literal_eval(call.args[0]), exe=ast.literal_eval(call.args[1]), envs=ast.literal_eval(call.args[6]), windowsOnly=windows_only))
+    for name, expected_hash in FORMAL.items():
+        path = 'geometry-core/domain-decoupling/closeout-tools/'+name
+        if digest(blob(path)) != expected_hash:
+            raise ValueError('正式工具與已驗版本不同，需先審查而非自動修改：'+path)
+    root = EVIDENCE/('revalidation-'+args.run_id)
+    native = Path('/workspace')/('geo261-native-'+args.run_id)
+    gates = Path('/workspace')/('geo261-gates-'+args.run_id)
+    temporary = Path('/tmp')/('geo261-native-'+args.run_id)
+    archive = Path('/tmp')/('geometry-tests-before-'+args.run_id)
+    for path in [root, native, gates, temporary, archive]:
+        if path.exists():
+            raise ValueError('新輪路徑已存在，拒絕覆寫：'+str(path))
+    preparation = root/'preparation'
+    replacements = [
+        ('cwd=Path("/workspace/geo261-native-l")', 'cwd=Path('+repr(str(native))+')'),
+        ('out=Path("/workspace/geo261-evidence/native-final")', 'out=Path('+repr(str(root/'native'))+')'),
+        ('expected="43f85313c32410ac01406ab585846bbacafea278"', 'expected='+repr(args.source)),
+        ('"TMPDIR":"/tmp/geo261-native-l-43f85313"', '"TMPDIR":'+repr(str(temporary))),
+    ]
+    wrapper = baseline['wrapper']
+    for old,new in replacements:
+        wrapper = replace_exact(wrapper,old,new)
+    reverse = wrapper
+    for old,new in reversed(replacements):
+        reverse = replace_exact(reverse,new,old)
+    if reverse != baseline['wrapper']:
+        raise ValueError('四常數之外的 wrapper bytes 改變。')
+    ast.parse(wrapper)
+    phase_replacements = [
+        ("ROOT=Path('/workspace/geo261-gates-l')", 'ROOT=Path('+repr(str(gates))+')',1),
+        ("OUT=Path('/workspace/geo261-evidence/gates-l')", 'OUT=Path('+repr(str(root/'gates'))+')',1),
+        ("SHA='43f85313c32410ac01406ab585846bbacafea278'", 'SHA='+repr(args.source),1),
+        ("Path('/workspace/geo261-evidence/native-final/final-build-binary-index.json')", 'Path('+repr(str(root/'native/final-build-binary-index.json'))+')',1),
+        ("Path('/workspace/geo261-evidence/gates-l-binary-preservation')", 'Path('+repr(str(root/'gates-binary-preservation'))+')',1),
+    ]
+    if args.jobs != '2':
+        phase_replacements.append(("'--jobs','2'", "'--jobs',"+repr(args.jobs),2))
+    phase = baseline['phase']
+    for old,new,count in phase_replacements:
+        phase = replace_exact(phase,old,new,count)
+    reverse = phase
+    for old,new,count in reversed(phase_replacements):
+        reverse = replace_exact(reverse,new,old,count)
+    if reverse != baseline['phase']:
+        raise ValueError('必要路徑／jobs 之外的 phase bytes 改變。')
+    ast.parse(phase)
+    # 到此只有 Git／小文字讀取；所有來源與空路徑驗證成功後才產生外部準備目錄。
+    preparation.mkdir(parents=True)
+    artifacts = {'native-parent-code.txt':baseline['parent'], 'native-wrapper-code.txt':wrapper, 'phase-launcher.py':phase}
+    for name, text in artifacts.items():
+        (preparation/name).write_text(text)
+    for name,before,after in [('native-wrapper',baseline['wrapper'],wrapper),('phase-launcher',baseline['phase'],phase)]:
+        (preparation/(name+'.diff')).write_text(''.join(difflib.unified_diff(before.splitlines(True),after.splitlines(True),fromfile='已驗原碼',tofile='新來源實例')))
+    (preparation/'run_all.expected.json').write_bytes(expected_bytes)
+    env_unset = sorted({'CC','PYTHONOPTIMIZE'} | {v for b in registry for v in b['envs']})
+    native_argv = ['env',*[x for v in env_unset for x in ['-u',v]],'python3','-B','-c',baseline['parent'],
+        '--wrapper-code',str(preparation/'native-wrapper-code.txt'),'--cwd',str(native),
+        '--native-out',str(root/'native'),'--launcher-out',str(root/'native-launcher'),'--source-sha',args.source]
+    gate_commands = {name:['env','-u','CC','-u','PYTHONOPTIMIZE','python3','-B',str(preparation/'phase-launcher.py'),name]
+                     for name in ['q38','controls','card','axiom']}
+    plan = dict(sourceSha=args.source,runId=args.run_id,createdUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        preparedOnly=True,readyToLaunch=False,productExecuted=False,worktreesCreated=False,globalStorageTouched=False,
+        repo=str(repo),root=str(root),nativeWorktree=str(native),gatesWorktree=str(gates),nativeTmpdir=str(temporary),
+        globalArchive=str(archive),globalDirectory='/tmp/geometry-tests',suiteLogDirectory='/tmp/geometry-tests/run_all-logs',
+        nativeOut=str(root/'native'),nativeLauncherOut=str(root/'native-launcher'),gatesOut=str(root/'gates'),
+        nativeBinaryPreservation=str(root/'native-binary-preservation'),gatesBinaryPreservation=str(root/'gates-binary-preservation'),
+        sourceFiles=source_files,expectedScope=scope,expectedChangedCounts=counts,allowedSkips=allowed_skips,registry=registry,
+        unsetEnvironment=env_unset,nativeArgv=native_argv,nativeValidateOnlyArgv=native_argv+['--validate-only'],
+        gateCommands=gate_commands,gateJobs=int(args.jobs),
+        formalNativeCommand=['timeout','2100','python3','tests/run_all.py','--build'],stackBytes=16777216,
+        sourceSafety='取得 root 明確排程後才建立 detached trees、保全舊 global、建 fresh TMPDIR、preflight 與啟動。',
+        schedule='正式 P189 先獨占；native 初 build 六 binary/sidecar 保存後放自有 runtime canvas；gates 等 native 完成與 root 放行。',
+        baselineProof={name:dict(path=str(path),sha256=sha) for name,(path,sha) in BASELINES.items()},
+        wrapperOnlyFourConstantsChanged=True,phaseOnlyNecessaryPathsAndJobsChanged=True,parentBytesUnchanged=True,
+        files={name:dict(bytes=(preparation/name).stat().st_size,sha256=digest((preparation/name).read_bytes())) for name in artifacts})
+    save_json(preparation/'instance.json',plan)
+    print(json.dumps(dict(instance=str(preparation/'instance.json'),sourceSha=args.source,readyToLaunch=False,productExecuted=False),ensure_ascii=False))
+    return 0
+
+if __name__ == '__main__':
+    raise SystemExit(main())

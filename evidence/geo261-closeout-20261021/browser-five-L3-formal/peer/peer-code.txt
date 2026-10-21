@@ -1,0 +1,196 @@
+"""依舊報告列明的條件另寫本輪唯讀接受器；舊 inline 原碼未保存，不宣稱精確移植。"""
+from pathlib import Path
+import collections,datetime,hashlib,json,re,struct,subprocess,zlib
+ROOT=Path('/workspace/geometry-axiom')
+OUT=Path('/workspace/geo261-evidence/browser-five-L3-formal-6589248c')
+PEER=Path('/workspace/geo261-evidence/browser-five-L3-independent-review')
+LAUNCH=OUT.with_name(OUT.name+'-launch')
+SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'
+WRAPPER='4ffefe74d503506f2c99d3064fac4359c4aa5324f77ccf5e3ae44bdf6ec994f2'
+LAUNCHER='479cdcd9f1c1c03ab203aff6fc5f0f9fddb3c70d779507777c7c1d903762f124'
+SPECS={'assembly':(150,900,18851,9367,'cdp_test.js','GEOMETRY_ASSEMBLY_ONLY',11),
+ 'documents':(47,600,18852,9366,'documents_browser_test.js',None,8),
+ 'grid':(350,900,18853,9334,'cdp_test.js','GEOMETRY_GRID_SYSTEM_ONLY',19),
+ 'space':(242,900,18854,9347,'space_model_test.js',None,33),
+ 'timber':(79,1200,18855,9348,'space_model_test.js','GEOMETRY_TIMBER_ONLY',10)}
+SUITES=list(SPECS);buffers={};references={};gitdata={}
+def h(raw):return hashlib.sha256(raw).hexdigest()
+def read(path):
+ p=Path(path);key=str(p)
+ if key not in buffers:
+  raw=p.read_bytes();buffers[key]=raw;references[key]={'bytes':len(raw),'sha256':h(raw)}
+ return buffers[key]
+def load(path):return json.loads(read(path))
+def outer(suffix):return OUT.with_name(OUT.name+suffix)
+def utc(s):return datetime.datetime.fromisoformat(s.replace('Z','+00:00'))
+def marker(raw,name):
+ rows=[json.loads(line[len(name)+1:])for line in raw.splitlines()if line.startswith(name+' ')]
+ assert len(rows)==1,(name,len(rows));return rows[0]
+def populate_git(paths):
+ names=sorted(set(paths)-set(gitdata))
+ if not names:return
+ result=subprocess.run(['git','-C',str(ROOT),'cat-file','--batch'],input=''.join(SHA+':'+p+'\n'for p in names).encode(),capture_output=True,check=True)
+ assert result.stderr==b'';raw=result.stdout;pos=0
+ for name in names:
+  end=raw.index(b'\n',pos);blob,kind,size=raw[pos:end].decode().split();size=int(size)
+  assert kind=='blob';data=raw[end+1:end+1+size];assert raw[end+1+size:end+2+size]==b'\n'
+  gitdata[name]=data;pos=end+2+size
+ assert pos==len(raw)
+
+inv=load(OUT/'invocation.json');summary=load(OUT/'summary.json')
+assert inv['sourceSha']==summary['sourceSha']==SHA and inv['driverSha256']==WRAPPER
+assert inv['selectedSuites']==SUITES and inv['omittedSuites']==[]
+assert summary['allAccepted'] is summary['allFiveCompleted'] is summary['completedSelection'] is True
+assert h(read(OUT/'code.txt'))==h(read(LAUNCH/'wrapper-code.txt'))==WRAPPER
+assert h(read(LAUNCH/'launcher-code.txt'))==LAUNCHER
+launch=load(LAUNCH/'launcher-receipt.json');tool=load(outer('-exec-observation.json'));preflight=load(outer('-preflight.json'))
+assert launch['sourceSha']==preflight['sourceSha']==SHA
+assert launch['wrapperSha256']==WRAPPER and launch['launcherSha256']==LAUNCHER and launch['snapshotBytesEqualOriginal'] is True
+assert launch['observedWrapperReturncode']==launch['intendedLauncherExitCode']==0
+assert read(LAUNCH/'.exit-code')==read(outer('-launcher-process.exit-code'))==b'0\n'
+assert tool['start']['session_id']==85316 and tool['final']['chunk_id']=='b9d980' and tool['final']['exit_code']==0
+parent=read(outer('-parent-command-code.txt'));assert h(parent)==tool['parentCommandSha256']==preflight['parentCommandSha256']
+assert parent.decode()==tool['command'] and 'env -u CC -u PYTHONOPTIMIZE python3 -B ' in parent.decode()
+assert preflight['binaryCopyPerformed'] is False and preflight['validationExitCode']==0
+assert preflight['canvasReceiptSha256']==h(read(OUT.parent/'canvas-L3-formal-6589248c/receipt.json'))
+assert preflight['canvasCleanupSha256']==h(read(OUT.parent/'canvas-L3-formal-6589248c/cleanup.json'))
+
+receipts={};sources={};sidecars={};names={'geometry-web/cdp_sections.golden.json','geometry-web/documents_browser_test.js','geometry-web/space_test_floor.js','geometry-web/assembly_workflow_test.js'}
+for suite in SUITES:
+ p=OUT/suite;receipts[suite]=load(p/'receipt.json');sources[suite]=load(p/'source-hashes.json')
+ names.update(sources[suite]);sidecars[suite]={}
+ for name in ['core','bridge','model-base']:
+  side=load(p/'native-receipts'/(name+'.fingerprint.json'));sidecars[suite][name]=side;names.update(side['files'])
+populate_git(names)
+golden=json.loads(gitdata['geometry-web/cdp_sections.golden.json']);assert golden['mode']=='full' and golden['total']==2261
+assert len(golden['sections'])==85
+source_docs=gitdata['geometry-web/documents_browser_test.js'].decode()
+doc_names=re.findall(r"\bcheck\('([^'\\\n]*)'\s*,",source_docs)
+assert len(doc_names)==len(re.findall(r'\bcheck\(',source_docs))==47
+floor=gitdata['geometry-web/space_test_floor.js'].decode()
+expected_census={a or b:int(n)for a,b,n in re.findall(r"^  (?:(\w+)|'([^']+)'): (\d+),$",floor,re.M)}
+full_groups=['space-height-library','projection-lifecycle','projection-placement','font-layout','space-flow','projection-close']
+assert re.search(r'const FULL_SPACE_GROUPS = Object.freeze\(\[([^\]]+)\]\)',floor)
+assert re.findall(r"'([^']+)'",re.search(r'const FULL_SPACE_GROUPS = Object.freeze\(\[([^\]]+)\]\)',floor).group(1))==full_groups
+checks=[];png_total=0;manifest_total=0;previous_end=None;runtime_pids=[];runtime_sessions=[]
+for suite in SUITES:
+ p=OUT/suite;r=receipts[suite];expected,limit,http,cdp,script,flag,png_count=SPECS[suite]
+ assert r['suite']==suite and r['sourceSha']==r['headAfter']==SHA and r['statusAfter']==''
+ assert r['accepted'] is r['withinJobDeadline'] is r['headGuard'] is r['sourceHashesUnchanged'] is True
+ assert r['status']=='通過' and r['errors']==[] and r['browserReturncode']==r['validationExitCode']==0
+ assert r['jobTimeoutSeconds']==limit and r['deadlineMonotonic']==r['startedMonotonic']+limit
+ assert 0<r['elapsedSeconds']<limit and r['stackLimitBytes'][0]==16777216
+ if previous_end is not None:assert previous_end<=r['startedMonotonic']
+ previous_end=r['startedMonotonic']+r['elapsedSeconds']
+ stages={x['name']:x for x in r['stages']};assert stages['build']['argv']==['npm','run','build'] and stages['build']['returncode']==0
+ assert stages['run']['argv']==['node','geometry-web/'+script] and stages['run']['returncode']==0
+ assert r['startedMonotonic']<=stages['build']['startedMonotonic']<stages['run']['startedMonotonic']
+ assert all(stages[k]['returncode']==0 for k in ['runtime-before','runtime-after'])
+ command=load(p/'command.json');env=command['environment']
+ assert command['sourceSha']==SHA and command['branch']=='codex/geo261-closeout-20261021'
+ assert command['driverSha256']==WRAPPER and command['testArgv']==stages['run']['argv']
+ assert command['cwd']==str(ROOT) and command['serverTempOverride']=={'TMPDIR':'/tmp','TMP':'/tmp','TEMP':'/tmp'}
+ assert env['GEOMETRY_TEST_URL']==f'http://127.0.0.1:{http}/' and env['GEOMETRY_CDP_PORT']==str(cdp)
+ assert env['TMPDIR']==env['TMP']==env['TEMP']==r['temp']
+ assert env['GEOMETRY_FEEDBACK_DIR']==str(Path(r['temp'])/'feedback')
+ assert env['GEOMETRY_CHROME']=='/usr/bin/chromium' and env['GEOMETRY_CHROME_FLAGS']=='--no-sandbox'
+ assert {k:env[k]for k in env if k.endswith('_ONLY')}==({flag:'1'}if flag else {})
+ assert len(sources[suite])==154
+ for name,value in sources[suite].items():assert h(gitdata[name])==value
+ runtime=load(p/'runtime-before.json');assert runtime==load(p/'runtime-after.json')==r['runtimeBefore']
+ assert runtime['fresh'] is True and runtime['root']==str(ROOT) and runtime['pid']==r['serverPid']
+ runtime_pids.append(runtime['pid']);runtime_sessions.append(runtime['session'])
+ cleanup=load(p/'cleanup.json');assert cleanup==r['cleanup']
+ assert cleanup['errors']==cleanup['liveRemaining']==cleanup['zombiesRemaining']==[]
+ assert cleanup['httpPortFree'] is cleanup['cdpPortFree'] is True
+ assert 'ECONNREFUSED' in cleanup['portCheck']
+ assert cleanup['directReturncodes'][str(stages['run']['pid'])]==0 and cleanup['directReturncodes'][str(r['serverPid'])]==-2
+ assert len(cleanup['actions'])==1 and cleanup['actions'][0]['pid']==r['serverPid'] and cleanup['actions'][0]['signal']=='SIGINT'
+ owner=next(x for x in cleanup['processes']if x['pid']==r['serverPid'])
+ assert cleanup['actions'][0]['starttime']==owner['starttime']
+ buildlog=read(p/'build.log').decode();serverlog=read(p/'server.log').decode();native=load(p/'native-identity.json')
+ assert native==r['nativeIdentity'] and marker(buildlog,'LOCAL_RUNTIME')==native['build'] and marker(serverlog,'LOCAL_RUNTIME')==native['server']
+ assert native['build']['root']==native['server']['root']==str(ROOT)
+ assert native['build']['executables']==native['server']['executables']
+ assert native['build']['binaryDirectory']==native['server']['binaryDirectory']=='/tmp/geometry-runtime/b9bc23103ebb114398f3'
+ assert set(native['executables'])=={'core','bridge','model-base'}
+ native_sources=set()
+ for name,row in native['executables'].items():
+  side=sidecars[suite][name];assert h(read(p/'native-receipts'/(name+'.fingerprint.json')))==row['sidecarSha256']
+  assert side['exe_sha256']==row['sha256'] and side['exe_size']==row['bytes'] and side['fingerprint']==row['fingerprint']
+  assert side['name']==name and side['command'].startswith('cc -std=c11 -O2 ')
+  assert row['path']==native['build']['executables'][name]
+  assert name+': reused' in buildlog and name+': built' not in buildlog
+  assert utc(side['built_at'])<utc(stages['build']['startedUtc'])
+  finger=hashlib.sha256();finger.update(side['command'].encode());finger.update(b'\0')
+  for path,value in sorted(side['files'].items()):
+   assert h(gitdata[path].replace(b'\r\n',b'\n'))==value;native_sources.add(path)
+   finger.update((path+'\0'+value+'\n').encode())
+  assert finger.hexdigest()==side['fingerprint']
+ assert len(native_sources)==194
+ font=load(p/'font.json');assert font['family']=='Noto Sans CJK TC' and 'install ok installed' in read(p/'fonts-package.log').decode()
+ raw=read(p/'run.log').decode();assert '[UNEXPECTED EXCEPTION]' not in raw
+ result=load(p/'harness-result.json');acceptance=load(p/'acceptance.json');assert acceptance['validationExitCode']==0 and acceptance['result']==result
+ marker_name='CDP_RESULT'if suite in ['assembly','grid']else 'DOCUMENTS_RESULT'if suite=='documents'else 'SPACE_RESULT'
+ assert marker(raw,marker_name)==result
+ detail={}
+ if suite in ['assembly','grid']:
+  scope=result['scope'];assert result['schema']=='geometry-cdp-result/1' and result['completed'] is True
+  assert result['passedAssertions']==expected and result['failedAssertions']==0 and result['skipped']==[] and result['uncaughtBrowserExceptions']==0
+  assert scope['mode']=='partial' and scope['filters']==[flag] and scope['modifiers']==[]
+  assert scope['url']==env['GEOMETRY_TEST_URL'] and scope['feedbackDirectory']==env['GEOMETRY_FEEDBACK_DIR'] and scope['browserProfile']==env['GEOMETRY_CHROME_PROFILE'] and scope['cdpPort']==cdp
+  selected=['P77','P82']if suite=='assembly'else['P70','P71','P78','P87','P88'];groups={k:golden['sections'][k]for k in selected}
+  assert result['sections']==groups and sum(groups.values())==expected and result['goldenCompare']=='not compared (partial mode)'
+  assert acceptance['selectedSectionCheck']=={'expected':groups,'matched':True}
+  if suite=='assembly':
+   t=result['firstTransportFailure'];assert t['command']=='assembly-confirm 13' and t['error']=='Injected lost success response' and t['step']=='=== P77 review #33 #35 #36 #37 ==='
+   assert 'Injected lost success response' in gitdata['geometry-web/assembly_workflow_test.js'].decode()
+   assert result['firstNetworkFailure'] is None
+  else:assert result['firstTransportFailure'] is result['firstNetworkFailure'] is None
+  detail={'scope':'原 partial；只另核所選段 golden，不稱 full canvas','selectedSections':groups}
+ elif suite=='documents':
+  actual=[x[5:]for x in raw.splitlines()if x.startswith('PASS ')]
+  assert actual==doc_names==acceptance['sourceDeclaredChecks'] and acceptance['actualPassLines']==47
+  assert not any(x.startswith('FAIL ')for x in raw.splitlines())
+  assert result['passedAssertions']==47 and result['failedAssertions']==0
+  assert result['screenshots']==env['GEOMETRY_DOCUMENT_SCREENSHOT_DIR'] and result['viewport']==[1400,900,390,844]
+  assert actual[-2:]==['no uncaught browser exceptions','no failed asset requests']
+  detail={'scope':'無 golden/completed 欄位，47 具名檢查依序對 Git L3 來源與 raw','namedSequence':actual}
+ else:
+  stored=load(p/'artifacts/space-artifacts/result.json');included=full_groups if suite=='space'else['timber-material','timber-source-guards','font-layout']
+  omitted=['timber-material','timber-source-guards']if suite=='space'else['space-height-library','projection-lifecycle','projection-placement','space-flow','projection-close']
+  assert result['schema']=='geometry-space-result/1' and result['completed'] is True and result['passed']==expected and result['failed']==0
+  assert result['exceptions']==result['consoleErrors']==result['completenessProblems']==[]
+  scope=result['scope'];assert scope['mode']==('full-space-suite'if suite=='space'else'partial') and scope['filters']==([]if suite=='space'else[flag]) and scope['included']==included and scope['omitted']==omitted
+  assert scope['url']==env['GEOMETRY_TEST_URL'] and scope['feedbackDirectory']==env['GEOMETRY_FEEDBACK_DIR']
+  for key in ['scope','completed','passed','failed','groups','completenessProblems','exceptions','consoleErrors']:assert stored[key]==result[key]
+  selected=['setup',*included,'browser-health'];assert set(result['groups'])==set(selected)
+  census={k:expected_census[k]for k in selected};assert acceptance['fixedCensus']==census
+  for group in selected:assert result['groups'][group]=={'expected':census[group],'passed':census[group],'failed':0,'completed':True}
+  assert sum(census.values())==expected==len(stored['results']) and all(x['ok']is True for x in stored['results'])
+  detail={'scope':scope,'fixedCensus':census}
+ manifest=load(p/'manifest.json');listed={x['path']:x for x in manifest};assert len(listed)==len(manifest)
+ allfiles={str(x.relative_to(p)):x for x in p.rglob('*')if x.is_file()}
+ assert not any(x.is_symlink()for x in p.rglob('*'))
+ assert set(listed)=={k for k,x in allfiles.items()if x.name not in ['receipt.json','manifest.json']}
+ for path,row in listed.items():
+  data=read(p/path);assert len(data)==row['bytes'] and h(data)==row['sha256']
+ screenshots=sorted(path for path in allfiles if path.endswith('.png'))
+ assert len(screenshots)==png_count==r['screenshots']['count'] and set(screenshots)==set(r['screenshots']['paths'])
+ assert set(r['screenshots']['requiredNames'])<={Path(x).name for x in screenshots}
+ for path in screenshots:
+  data=read(p/path);assert data[:8]==b'\x89PNG\r\n\x1a\n';pos=8;types=[]
+  while pos<len(data):
+   size=struct.unpack('>I',data[pos:pos+4])[0];kind=data[pos+4:pos+8];chunk=data[pos+8:pos+8+size]
+   assert zlib.crc32(kind+chunk)&0xffffffff==struct.unpack('>I',data[pos+8+size:pos+12+size])[0]
+   if kind==b'IHDR':assert all(x>0 for x in struct.unpack('>II',chunk[:8]))
+   types.append(kind);pos+=size+12
+  assert pos==len(data) and types[0]==b'IHDR' and types[-1]==b'IEND'
+ png_total+=png_count;manifest_total+=len(manifest)
+ checks.append({'suite':suite,'passed':expected,'failed':0,'nodeExit':0,'acceptanceExit':0,'seconds':r['elapsedSeconds'],'jobLimitSeconds':limit,'sourceBlobsMatched':len(sources[suite]),'nativeDependencyBlobsMatched':len(native_sources),'manifestFiles':len(manifest),'pngs':png_count,'runtimePid':runtime['pid'],'runtimeSession':runtime['session'],'runtimeVersion':runtime['version'],'sourceCleanAndUnchanged':True,'runtimeBeforeAfterEqual':True,'cleanupLiveAndZombiesEmpty':True,'bothPortsRefused':True,'nativeBuild':'三支 reused；只核當輪原 sidecar／身分，未重新讀目前 live binary 冒作執行時點','rawSha256':h(read(p/'run.log')),**detail})
+assert len(set(runtime_pids))==len(set(runtime_sessions))==5
+assert summary['results']==[{field:receipts[suite][field]for field in ['suite','accepted','browserReturncode']}for suite in SUITES]
+assert png_total==81 and manifest_total==210
+report={'schema':'geo261-browser-five-L3-independent-review/1','reviewedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sourceSha':SHA,'validationExitCode':0,'conclusion':'五項原結果、來源、原退出碼、scope與產物核對一致；沒有產品重跑','suites':checks,'launcherWrapperWaitReturncode':0,'launcherProcessExitCode':0,'recordedLauncherExecReturncode':0,'recordedExecResponseChunk':'b9d980','parentEnvironmentContract':'原 env -u CC -u PYTHONOPTIMIZE argv；未宣稱讀到子程序 /proc/environ','sequentialSuiteWindowsVerified':True,'totalPngs':png_total,'manifestFilesChecked':manifest_total,'gitFilesIndependentlyRead':len(gitdata),'peerCodeSha256':h(read(Path(__file__))),'references':references,'limitations':['舊 L43 peer 原碼為 inline 且未另存；本輪依舊報告的條件另寫接受器並保存，沒有宣稱精確移植。','只讀原件與 Git，沒有開 browser/build/tests，也沒有清理程序。','PNG 核完整格式/CRC/尺寸/hash；未逐張目視 UI 品質。','原退出碼採原 Popen/wait 與已保存工具回覆轉錄；peer 未重新 wait 他人 session。','manifest 排除自己與最後 receipt，兩者另核；本審查未修改原 manifest。','assembly 的具名 lost-success-response 原控制保留，不稱零 transport 失敗；沒有新突變注入。','selected golden 與固定 census 不混稱 full canvas；本結果不代 native 或 Q38/§7/P189。','資料探索曾誤讀不存在的 source-before.json，工具 f0baa6 exit1；實際來源檔為 source-hashes.json。另一次 schema 探索有空白拼字的 Python SyntaxError（81b1bf exit1），更正後 664ed1 exit0；兩者均非產品或本接受器執行。探索未另 redirect 完整 stdout/stderr，僅保存工具觀察摘要，不冒稱完整 raw。','額外下載與合成輸入補封將另做附錄；本收據先核原 suite manifest 內產物。']}
+with (PEER/'peer.json').open('x',encoding='utf-8')as f:json.dump(report,f,ensure_ascii=False,indent=2);f.write('\n')
+print(json.dumps({'validationExitCode':0,'sourceSha':SHA,'suiteCounts':{x['suite']:x['passed']for x in checks},'pngs':png_total,'manifestFiles':manifest_total,'gitFiles':len(gitdata)},ensure_ascii=False))

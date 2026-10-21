@@ -1,0 +1,114 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "phase": "axiom",
+  "verifiedUtc": "2026-10-21T06:55:21.537402+00:00",
+  "childReturnCode": 0,
+  "launcherExitCode": 0,
+  "elapsedSeconds": 89.26209334300074,
+  "sourceCleanRestored": true,
+  "bridgeAfterMatchesBeforeBytesAndMtimes": true,
+  "officialExitCode": 0,
+  "caseCount": 5,
+  "summary": {
+    "killed": 5
+  },
+  "baselineTests": 44,
+  "restoreTestsEach": [
+    44,
+    44,
+    44,
+    44,
+    44
+  ],
+  "cases": [
+    {
+      "id": "V01-remove-gate",
+      "namedTest": "test_pre_card_axioms_reject_manifest_card_capability",
+      "verdict": "killed",
+      "redExit": 1,
+      "redFailures": 19,
+      "restoreExit": 0,
+      "restoreTests": 44
+    },
+    {
+      "id": "V02-ignore-manifest",
+      "namedTest": "test_pre_card_axioms_reject_manifest_card_capability",
+      "verdict": "killed",
+      "redExit": 1,
+      "redFailures": 19,
+      "restoreExit": 0,
+      "restoreTests": 44
+    },
+    {
+      "id": "V03-ignore-source",
+      "namedTest": "test_pre_card_axioms_reject_scene_card_capability_before_rebuild",
+      "verdict": "killed",
+      "redExit": 1,
+      "redFailures": 19,
+      "restoreExit": 0,
+      "restoreTests": 44
+    },
+    {
+      "id": "V04-exempt-latest-pre-adoption",
+      "namedTest": "test_pre_card_axioms_reject_card_syntax_with_stripped_declarations",
+      "verdict": "killed",
+      "redExit": 1,
+      "redFailures": 1,
+      "restoreExit": 0,
+      "restoreTests": 44
+    },
+    {
+      "id": "V05-card-adoption-treated-as-pre",
+      "namedTest": "test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild",
+      "verdict": "killed",
+      "redExit": 1,
+      "redFailures": 1,
+      "restoreExit": 0,
+      "restoreTests": 44
+    }
+  ],
+  "artifacts": {
+    "officialReport": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/axiom-run/axiom/raw/report.json",
+      "bytes": 9814,
+      "sha256": "97a4140e1e9cbfe6c64ab64a8a0676a6d53338174b91bc98b634252720f0e80e"
+    },
+    "runReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/axiom-run/axiom/run-receipt.json",
+      "bytes": 1992,
+      "sha256": "8127f4e9941d8d4dff31aebaf6fd652bfc11f962d5bd16ae75da88bfcc94af02"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/axiom/receipt.json",
+      "bytes": 4059,
+      "sha256": "f6bb31b03bbb6872bbe9787e3d9de6a9903290404dfc7368e1ca49a1aa2d0d3e"
+    },
+    "bridgeBefore": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/axiom/bridge-before.json",
+      "bytes": 1169,
+      "sha256": "f7454801743ed0ac244de1c9354e7b77d8c71701d896a03ad633dcb0bf457dae"
+    },
+    "bridgeAfter": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/axiom/bridge-after.json",
+      "bytes": 1166,
+      "sha256": "94aa0ed944add2471eca9cbd2f528325bee3d52f7dedecc794dc930316e55432"
+    },
+    "nativeVerification": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/verification.json",
+      "bytes": 49259,
+      "sha256": "ee80438dce224cf9d473184c4ffe97a4c690d401d98eecdbcbd5e458449df93b"
+    },
+    "previousBridgeIndex": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/launcher/card/bridge-after.json",
+      "bytes": 1167,
+      "sha256": "a99cd1badc66f60f70a96ea1d5bf5cffcbab9fbfc7f7dce5de3f8501ff38b2c5"
+    },
+    "verificationTool": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.py",
+      "bytes": 11086,
+      "sha256": "65a51dc606c2eafdba96db31d400ef09bd3f2bab2479886165909cea13302a46"
+    }
+  },
+  "accepted": true,
+  "problems": []
+}

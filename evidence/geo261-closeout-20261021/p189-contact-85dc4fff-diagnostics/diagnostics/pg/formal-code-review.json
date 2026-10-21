@@ -1,0 +1,20 @@
+{
+  "reviewed_utc": "2026-10-21T01:43:48.508579+00:00",
+  "source_sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "nm_actual_exit_code": 0,
+  "objdump_actual_exit_code": 0,
+  "symbol": "wood_contact_collect_stops",
+  "symbol_start": "0x4b2b0",
+  "symbol_size": "0xa1a",
+  "contact_orders_standalone_symbol_present": false,
+  "cache_branch_observed": [
+    "0x4b66f cmp $0x80,%r15",
+    "0x4b676 jbe 0x4bb6c",
+    "0x4b6e1 cmp $0x80,%r15 / 0x4b6e8 ja fallback0x4ba0d",
+    "0x4b6ee/0x4b6f2 cached last/minimum loads",
+    "0x4b77e ja / 0x4b780 copy cached order pair",
+    "0x4b7b4 jbe cached comparison0x4b750"
+  ],
+  "interpretation": "cache／fallback分支確實編入正式O2 binary；contact_orders已inline。這只證明機器碼存在，未獨立證明本N64每次執行走哪分支或其成本。",
+  "asm_excerpt_sha256": "1f0aa365c5e9150a8de06cd6dee194c1a0f43a61b8255e5e9102b43a9f6eb9d4"
+}

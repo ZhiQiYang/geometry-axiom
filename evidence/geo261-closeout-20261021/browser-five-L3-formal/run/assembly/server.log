@@ -1,0 +1,43 @@
+core: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-21T04:19:52+00:00））
+bridge: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-21T04:20:12+00:00））
+model-base: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-21T04:20:28+00:00））
+LOCAL_RUNTIME {"root": "/workspace/geometry-axiom", "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3", "executables": {"core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core", "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge", "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"}, "port": 18851, "managedPreview": false}
+http://localhost:18851  （Ctrl-C 結束；版本=861b13edb9cf；bridge=/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge）
+I8a preview 52: valid; confirm token to apply
+ timber 90 center 10 -> 10 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 91 center 2990 -> 2990 length 4000 -> 4000
+  surface 1 origin [0,2980,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2980,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 1 center 500 -> 500 length 2960 -> 2960
+  surface 1 origin [520,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [520,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 2 center 2500 -> 2800 length 2960 -> 2960
+  surface 1 origin [2520,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2820,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 3 center 1500 -> 1500 length 1960 -> 2260
+  surface 1 origin [520,1480,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [520,1480,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ guide 2: surface 1 u=2500 world [2500,0,2500] direction [0,1,0] -> surface 1 u=2800 world [2800,0,2500] direction [0,1,0]
+ visible: {[2500,0]-[2500,3000]} -> {[2800,0]-[2800,3000]}
+input:28: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 53: valid; confirm token to apply
+ timber 90 center 10 -> 10 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 91 center 2990 -> 2990 length 4000 -> 4000
+  surface 1 origin [0,2980,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2980,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 1 center 500 -> 500 length 2960 -> 2960
+  surface 1 origin [520,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [520,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 2 center 2500 -> 2800 length 2960 -> 2960
+  surface 1 origin [2520,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [2820,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ timber 3 center 1500 -> 1500 length 1960 -> 2260
+  surface 1 origin [520,1480,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [520,1480,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ guide 2: surface 1 u=2500 world [2500,0,2500] direction [0,1,0] -> surface 1 u=2800 world [2800,0,2500] direction [0,1,0]
+ visible: {[2500,0]-[2500,3000]} -> {[2800,0]-[2800,3000]}
+input:30: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/geometry-web/serve.py", line 761, in <module>
+    server.serve_forever()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 235, in serve_forever
+    ready = selector.select(poll_interval)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/selectors.py", line 415, in select
+    fd_event_list = self._selector.poll(timeout)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

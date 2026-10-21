@@ -1,0 +1,14 @@
+--- bundle-S3-v2.py
++++ bundle_ledger.py
+@@ -112,7 +112,10 @@
+     assert pubtool['actual_tool_response']['exit_code']==0
+     # 此檔只作附加說明；來源守門由上方原publication/parent/blob/only-file/remote完成。
+     binding=load(a.source_ledger_binding)
+-    assert a.source in json.dumps(binding) and a.ledger_commit in json.dumps(binding)
++    assert binding['schema']=='geo261-source-ledger-binding/1'
++    assert binding['sourceS3']==binding['parentSha']==a.source and binding['ledgerL3']==a.ledger_commit
++    assert binding['changedPaths']==['tests/mutants_results.json'] and binding['ledgerSha256']==a.ledger_sha256
++    assert binding['executionHeads']==[a.source] and isinstance(binding['aliasExplanation'],str) and binding['aliasExplanation']
+     methods={name:(PREP/name if name=='prepare_run.py' else ORIGINAL_PREP/name if name in ('launch_run.py','validate_package.py','import_ledger.py') else BASE/name) for name in METHOD_PINS}
+     for name,path in methods.items():assert sha(path.read_bytes())==METHOD_PINS[name]
+     assert (a.publication/'command-source.txt').read_bytes()==methods['import_ledger.py'].read_bytes()

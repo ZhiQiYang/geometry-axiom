@@ -1,0 +1,7 @@
+# I2 allows adjacent collinear nonzero edges in a valid orthogonal loop.
+# Split both vertical walls at v=1027. I5 includes the A0 corner at (4000,1027).
+# The existing I22 concave-edge placement still spans u=0..4000 on e2.
+# M01 excludes that collinear vertex and incorrectly rejects this valid placement.
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 2000,0 2000,1000 4000,1000 4000,1027 4000,3000 0,3000 0,1027
+timber 1 27 33 role boundary
+place 1 on 1 at-face e2 +u +n

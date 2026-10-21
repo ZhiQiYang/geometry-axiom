@@ -1,0 +1,14 @@
+--- /workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/verify-gate.py
++++ /workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.py
+@@ -3,9 +3,9 @@
+ from collections import Counter
+ from pathlib import Path
+ 
+-BASE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021')
++BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')
+ PLAN=json.loads((BASE/'preparation/instance.json').read_text())
+-SHA='249571fe2477845d5330f6190dad965bf327f43b'
++SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'
+ ROOT=Path(PLAN['gatesWorktree']);G=Path(PLAN['gatesOut'])
+ assert PLAN['sourceSha']==SHA and not sys.flags.optimize
+ parser=argparse.ArgumentParser(description=__doc__)

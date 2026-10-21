@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "timeout",
+    "900",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-evidence/architecture-owned-preparation/refresh_owned.py",
+    "--root",
+    "/workspace/geometry-axiom",
+    "--probe",
+    "identifier",
+    "--manifest",
+    "/workspace/geometry-axiom/geometry-core/domain-decoupling/product-architecture.json",
+    "--value",
+    "GeoOwnedRefreshNeutral"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceBaseHead": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "startedUtc": "2026-10-21T03:09:36.724902+00:00",
+  "finishedUtc": "2026-10-21T03:09:37.542778+00:00",
+  "seconds": 0.8178744760007248,
+  "rawWaitStatus": 0,
+  "exitCode": 0,
+  "stdout": {
+    "path": "neutral-accepts/stdout.log",
+    "rawSha256": "a4f0e5e3dcd2eaf551fb4333497915b614ba20f828f2c72c471a8fc95420cd71",
+    "lfSha256": "a4f0e5e3dcd2eaf551fb4333497915b614ba20f828f2c72c471a8fc95420cd71",
+    "bytes": 16097
+  },
+  "stderr": {
+    "path": "neutral-accepts/stderr.log",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  }
+}

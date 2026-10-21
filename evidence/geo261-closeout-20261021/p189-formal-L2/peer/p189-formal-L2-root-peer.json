@@ -1,0 +1,23 @@
+{
+  "checkedUTC": "2026-10-21T04:20:36.465988+00:00",
+  "sourceSha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "範圍": "主代理獨立以原raw核對樣本順序、數值重算、輸出bytes、16控制及6phase；沒有執行產品或原判定器。",
+  "phaseHeadsAndExitCodesMatched": true,
+  "controls": {
+    "positive": 2,
+    "negative": 14
+  },
+  "scenes": 175,
+  "samples": 36,
+  "rawStreams": 1122,
+  "medianRatiosRecomputed": [
+    1.0393316849690653,
+    1.363447862379236,
+    1.4629397864342122,
+    1.7445002712303253
+  ],
+  "checkRawSha256": "368343252a55cdcea33448ebef2bff542c92f5fefe20d9e33f9f186aecbd11c1",
+  "peerReportSha256": "468e265efd3b0471dadfcddd431bf8cd76595578632936d9f4b3974893247b7d",
+  "exitCode": 0,
+  "限制": "三方archive→Git blob由既有獨立readonly-source-review覆核，本次未重複讀1841個來源；頂層真wait另由本代理原工具回覆證明。"
+}

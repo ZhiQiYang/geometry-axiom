@@ -1,0 +1,26 @@
+[
+  {
+    "phase": "launcher-probe",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-c",
+      "import os,sys;print(\"launcher stdout\");print(\"launcher stderr\",file=sys.stderr);assert \"CC\" not in os.environ and \"PYTHONOPTIMIZE\" not in os.environ;raise SystemExit(7)"
+    ],
+    "cwd": "/workspace/geo261-evidence/ledger-cc-launcher-selftest.r3o_cexg",
+    "source_sha": "launcher-selftest",
+    "pid": 188409,
+    "pgid": 188409,
+    "started_utc": "2026-10-20T22:12:10.851340+00:00",
+    "stdout": "/workspace/geo261-evidence/ledger-cc-launcher-selftest.r3o_cexg/launcher-probe.stdout",
+    "stderr": "/workspace/geo261-evidence/ledger-cc-launcher-selftest.r3o_cexg/launcher-probe.stderr",
+    "supervisor_pid": 188408,
+    "CC_present": false,
+    "PYTHONOPTIMIZE_present": false,
+    "finished_utc": "2026-10-20T22:12:10.868876+00:00",
+    "seconds": 0.01754235400039761,
+    "exit_code": 7,
+    "stdout_sha256": "da36714396a97a271fac7f5b6d916ee998eb990714af1f57bb7cfb2434a16d25",
+    "stderr_sha256": "49634e6d397d8d8adfa2e912642386d2d1f968244399b792b47562ab6e021d5d"
+  }
+]

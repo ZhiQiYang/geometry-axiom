@@ -1,0 +1,22 @@
+F
+======================================================================
+FAIL: test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild (tests.test_engineering_model_compatibility.EngineeringModelCompatibility.test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 341, in test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild
+    verify_package(package)
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/geometry-core/modeling/__init__.py", line 299, in verify_package
+    raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "grid-card-reference/1 requires the adopted D64/I74/R60 axiom revision")
+geometry_app.model_common.ModelError: grid-card-reference/1 requires the adopted D64/I74/R60 axiom revision
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_engineering_model_compatibility.py", line 345, in test_card_claims_split_exactly_at_the_d64_adoption_before_rebuild
+    self.fail('CARD_AXIOM_ERA: post-adoption card claim was refused: ' + json.dumps(error.as_dict()))
+AssertionError: CARD_AXIOM_ERA: post-adoption card claim was refused: {"status": "UNSUPPORTED", "diagnostics": [{"root": null, "path": [], "code": "AXIOM_VERSION", "clause": "I32", "message": "grid-card-reference/1 requires the adopted D64/I74/R60 axiom revision"}]}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.018s
+
+FAILED (failures=1)

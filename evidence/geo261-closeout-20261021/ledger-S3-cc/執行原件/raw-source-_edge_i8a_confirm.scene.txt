@@ -1,0 +1,14 @@
+# I8a 的正向路徑:預覽 → 確認 → 真的套用。
+# 與 _edge_freeze.scene 成對——那個測「不預覽就直接改會被擋」,這個測「預覽後確認就會過」。
+# 補的是 R2「零違規且使用者確認才提交」這條,先前完全沒有夾具驗證過。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 90 20 20 role boundary
+place 90 on 1 at-face e0 +u +n
+timber 91 20 20 role boundary
+place 91 on 1 at-face e2 +u +n
+spec 主支1中線 500
+guide 1 1 v spec:主支1中線
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n
+preview move 1 1/2*edge:e1:u
+confirm 1

@@ -1,0 +1,98 @@
+import argparse,ast,datetime,hashlib,json,os,subprocess,sys,time,traceback
+from pathlib import Path
+
+def utc():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+def atomic_text(path, text):
+    temporary=path.with_name(path.name+".pending-"+str(os.getpid()))
+    with temporary.open("w",encoding="utf-8") as handle:
+        handle.write(text)
+        handle.flush()
+        os.fsync(handle.fileno())
+    os.replace(temporary,path)
+
+def constant_assignment(tree,name):
+    for node in tree.body:
+        if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id==name for t in node.targets):
+            if isinstance(node.value,ast.Constant):
+                return node.value.value
+            if isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Name) and node.value.func.id=="Path" and len(node.value.args)==1:
+                return ast.literal_eval(node.value.args[0])
+    raise ValueError("wrapper 缺少可核對的固定值："+name)
+
+parser=argparse.ArgumentParser(description="只調度已固定來源的 native wrapper；標準輸出直接落盤。")
+parser.add_argument("--wrapper-code",required=True)
+parser.add_argument("--cwd",required=True)
+parser.add_argument("--native-out",required=True)
+parser.add_argument("--launcher-out",required=True)
+parser.add_argument("--source-sha",required=True)
+parser.add_argument("--validate-only",action="store_true")
+args=parser.parse_args()
+if len(args.source_sha)!=40 or any(c not in "0123456789abcdef" for c in args.source_sha):
+    parser.error("source-sha 必須是完整的 40 位小寫十六進位 SHA。")
+wrapper_path=Path(args.wrapper_code).resolve(strict=True)
+worktree=Path(args.cwd).resolve(strict=True)
+native_out=Path(args.native_out).absolute()
+launcher_out=Path(args.launcher_out).absolute()
+if native_out==launcher_out:
+    parser.error("launcher-out 與 native-out 必須分開，避免預先建立 wrapper 輸出目錄。")
+wrapper_bytes=wrapper_path.read_bytes()
+wrapper_source=wrapper_bytes.decode("utf-8")
+tree=ast.parse(wrapper_source,filename=str(wrapper_path))
+assert constant_assignment(tree,"expected")==args.source_sha,"wrapper SHA 與實際參數不符"
+assert Path(constant_assignment(tree,"cwd")).resolve(strict=True)==worktree,"wrapper cwd 與實際參數不符"
+assert Path(constant_assignment(tree,"out")).absolute()==native_out,"wrapper out 與實際參數不符"
+wrapper_argv=[sys.executable,"-B","-c",wrapper_source]
+validation={"validatedUtc":utc(),"mode":"只驗參數，未執行 wrapper" if args.validate_only else "正式執行","sourceShaExpected":args.source_sha,"cwd":str(worktree),"nativeOutputPath":str(native_out),"launcherOutputPath":str(launcher_out),"wrapperCodePath":str(wrapper_path),"wrapperCodeBytes":len(wrapper_bytes),"wrapperCodeSha256":hashlib.sha256(wrapper_bytes).hexdigest(),"launcherArgv":sys.orig_argv,"wrapperArgv":wrapper_argv}
+if args.validate_only:
+    validation["nativeStarted"]=False
+    validation["wrapperStarted"]=False
+    validation["subprocessCalls"]=0
+    print(json.dumps(validation,ensure_ascii=False),flush=True)
+    sys.exit(0)
+
+launcher_out.mkdir(parents=True,exist_ok=True)
+assert not (launcher_out/".exit-code").exists(),"已存在結束碼，拒絕覆寫既有輪次"
+assert not (launcher_out/"launcher-receipt.json").exists(),"已存在父層收據，拒絕覆寫既有輪次"
+assert not native_out.exists(),"wrapper 輸出目錄必須尚未存在"
+log_path=launcher_out/"orchestrator.log"
+logfd=os.open(log_path,os.O_WRONLY|os.O_CREAT|os.O_APPEND,0o644)
+os.dup2(logfd,1)
+os.dup2(logfd,2)
+if logfd not in (1,2):
+    os.close(logfd)
+started=utc()
+mono=time.monotonic()
+command={**validation,"startedUtc":started,"launcherPid":os.getpid(),"orchestratorLog":str(log_path),"stdio":"父 launcher 與 wrapper 的 stdout/stderr 都直接寫入同一獨立檔案，無 tool transport pipe。"}
+atomic_text(launcher_out/"launcher-command.json",json.dumps(command,ensure_ascii=False,indent=2)+"\n")
+atomic_text(launcher_out/"launcher-code.txt",sys.orig_argv[sys.orig_argv.index("-c")+1])
+atomic_text(launcher_out/"wrapper-code.txt",wrapper_source)
+wrapper_pid=None
+wrapper_exit=None
+spawn_error=None
+try:
+    with log_path.open("ab",buffering=0) as log:
+        process=subprocess.Popen(wrapper_argv,cwd=worktree,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT)
+        wrapper_pid=process.pid
+        atomic_text(launcher_out/"wrapper-pid.json",json.dumps({"wrapperPid":wrapper_pid,"startedUtc":utc()},ensure_ascii=False,indent=2)+"\n")
+        wrapper_exit=process.wait()
+except BaseException as exc:
+    spawn_error={"type":type(exc).__name__,"message":str(exc),"traceback":traceback.format_exc()}
+    traceback.print_exc()
+native_receipt_path=native_out/"receipt.json"
+native_receipt=None
+native_receipt_error=None
+if native_receipt_path.exists():
+    try:
+        native_receipt=json.loads(native_receipt_path.read_text())
+    except BaseException as exc:
+        native_receipt_error={"type":type(exc).__name__,"message":str(exc)}
+launcher_exit=125 if wrapper_exit is None else (wrapper_exit if wrapper_exit>=0 else 128-wrapper_exit)
+receipt={**command,"finishedUtc":utc(),"elapsedSeconds":time.monotonic()-mono,"wrapperPid":wrapper_pid,"wrapperStarted":wrapper_pid is not None,"wrapperReturnCode":wrapper_exit,"launcherExitCode":launcher_exit,"launcherError":spawn_error,"nativeReceiptPath":str(native_receipt_path),"nativeReceiptExists":native_receipt_path.exists(),"nativeReceiptReadError":native_receipt_error,"nativeMainTimeoutReturnCode":native_receipt.get("exitCode") if isinstance(native_receipt,dict) else None,"nativeMainChildRawWaitStatus":native_receipt.get("mainChildRawWaitStatus") if isinstance(native_receipt,dict) else None,"nativeSourceSha":native_receipt.get("sourceSha") if isinstance(native_receipt,dict) else None,"nativeReceiptSha256":hashlib.sha256(native_receipt_path.read_bytes()).hexdigest() if native_receipt_path.exists() else None}
+if wrapper_exit is not None:
+    atomic_text(launcher_out/".exit-code",str(wrapper_exit)+"\n")
+atomic_text(launcher_out/".launcher-exit-code",str(launcher_exit)+"\n")
+atomic_text(launcher_out/"launcher-receipt.json",json.dumps(receipt,ensure_ascii=False,indent=2)+"\n")
+print(json.dumps({"finishedUtc":receipt["finishedUtc"],"wrapperReturnCode":wrapper_exit,"launcherExitCode":launcher_exit,"nativeMainTimeoutReturnCode":receipt["nativeMainTimeoutReturnCode"]},ensure_ascii=False),flush=True)
+sys.exit(launcher_exit)

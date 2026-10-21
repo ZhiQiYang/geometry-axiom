@@ -1,0 +1,19 @@
+In file included from /usr/include/signal.h:57,
+                 from /workspace/geo261-evidence/p189-pcdiag-85dc4fff-4ljb7jqu/pc_sampler.h:11,
+                 from <command-line>:
+geometry-web/source-inspector-bridge.inc:30:13: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘.’ token
+   30 | static void si_value(SiIndex *s,SiNode *n){if(n)geo_sha256(s->text,s->used,n->value);}
+      |             ^~~~~~~~
+geometry-web/source-inspector-bridge.inc: In function ‘si_application_fields’:
+geometry-web/source-inspector-bridge.inc:134:845: error: ‘_sifields’ undeclared (first use in this function)
+  134 |         si_reset(s);Coord effective=0;bool known=set;if(nested.kind==ENG_LITERAL)effective=nested.value;else if(nested.kind==ENG_PARAMETER)known=set&&parameter_coord(w,nested.parameter,&effective);else if(nested.kind==ENG_MATERIAL){const EngMaterialVersion *material=eng_material(w,nested.ref,nested.version);if(material)effective=nested.field==ENG_WIDTH?material->width:nested.field==ENG_LENGTH?material->length:nested.field==ENG_A?material->a:material->b;else known=false;}else if(nested.kind==ENG_SPEC){size_t at=0;while(at<geo_named_values_count(&w->geo.named_values)&&strcmp(geo_named_values_at(&w->geo.named_values,at)->name,nested.ref))++at;if(at<geo_named_values_count(&w->geo.named_values))effective=geo_named_values_at(&w->geo.named_values,at)->value;else known=false;}else known=false;si_text(s,"%d:%lld",known,(long long)effective);si_value(s,n);
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^~~~~~~~
+geometry-web/source-inspector-bridge.inc:134:845: note: each undeclared identifier is reported only once for each function it appears in
+geometry-web/section_profile_source_index.inc: In function ‘si_profile_sources’:
+geometry-web/section_profile_source_index.inc:8:211: error: ‘_sifields’ undeclared (first use in this function)
+    8 |         si_reset(s);si_text(s,"%d:%lld:%lld:%lld:%lld:%lld:%lld",m->resolved,(long long)m->a,(long long)m->b,(long long)m->rect.min_u,(long long)m->rect.min_v,(long long)m->rect.max_u,(long long)m->rect.max_v);si_value(s,n);
+      |                                                                                                                                                                                                                   ^~~~~~~~
+geometry-web/source-inspector-bridge.inc: In function ‘si_build’:
+geometry-web/source-inspector-bridge.inc:160:109: error: ‘_sifields’ undeclared (first use in this function)
+  160 |         si_reset(s);si_text(s,"%lld/%lld:%d",(long long)f->value.num,(long long)f->value.den,f->value.unit);si_value(s,n);GeoJson j;if(app_json_parse(&j,f->expression))si_ast(s,from,&j,0,"expression");else s->complete=false;geo_json_free(&j);}
+      |                                                                                                             ^~~~~~~~

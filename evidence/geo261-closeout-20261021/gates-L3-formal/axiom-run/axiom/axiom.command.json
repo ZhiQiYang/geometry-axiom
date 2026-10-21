@@ -1,0 +1,15 @@
+{
+  "label": "axiom",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-u",
+    "geometry-core/card-reference/run_axiom_mutations.py",
+    "--output",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/axiom-run/axiom/raw"
+  ],
+  "started_at": "2026-10-21T06:53:47.717604+00:00",
+  "exit_code": 0,
+  "seconds": 72.36789076200512,
+  "ended_at": "2026-10-21T06:55:00.085689+00:00"
+}

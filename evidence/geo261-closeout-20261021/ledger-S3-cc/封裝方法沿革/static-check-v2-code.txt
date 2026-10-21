@@ -1,0 +1,17 @@
+"""只核封包器v2語法、差分、缺參數早拒絕；不封包或跑產品。"""
+from pathlib import Path
+import ast,difflib,hashlib,json,subprocess,datetime
+p=Path('/workspace/geo261-evidence/ledger-S3-bundle-preparation');script=p/'bundle_ledger.py';raw=script.read_bytes();ast.parse(raw)
+old=(p/'bundle-S3-v1-code.txt').read_bytes();assert hashlib.sha256(old).hexdigest()=='8af69c4f90ac1ec7317c2fbcf951ba5bb4ecc6e17ff871feac750d873ec84c05'
+with (p/'bundle-v1-to-v2.patch').open('x') as f:f.write(''.join(difflib.unified_diff(old.decode().splitlines(True),raw.decode().splitlines(True),fromfile='bundle-S3-v1.py',tofile='bundle_ledger.py')))
+with (p/'bundle-S3-v2-code.txt').open('xb') as f:f.write(raw)
+result=subprocess.run(['python3','-B',str(script)],capture_output=True)
+for stream in ('stdout','stderr'):
+    with (p/('negative-v2.'+stream)).open('xb') as f:f.write(getattr(result,stream))
+assert result.returncode==2 and b'--ledger-commit' in result.stderr and not (p/'bundle-result.json').exists()
+out={'checkedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'astPassed':True,'scriptSha256':hashlib.sha256(raw).hexdigest(),
+ 'priorScriptSha256':hashlib.sha256(old).hexdigest(),'negativeExitCode':result.returncode,'packageExecuted':False,'productExecuted':False,
+ 'changes':['整個方法沿革目錄原bytes收錄且先拒絕既有bundle-result，真pack的stdout/stderr必存外部。',
+ '核main採用收據source/previous/remote/branch及原remote.stdout。','binding明列只作附加說明；前置cat失敗的工具轉錄界線寫清。']}
+with (p/'static-check-v2.json').open('x') as f:json.dump(out,f,ensure_ascii=False,indent=2);f.write('\n')
+print(json.dumps(out,ensure_ascii=False))

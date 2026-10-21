@@ -1,0 +1,42 @@
+test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) ... 
+  test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='missing name') ... FAIL
+  test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='unknown key') ... FAIL
+  test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong type') ... FAIL
+  test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong value') ... FAIL
+
+======================================================================
+FAIL: test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='missing name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 494, in test_P154_GRID_DEFINITION_DIAGNOSTIC
+    self.assertTrue(any(re.search(r'\bgrid-system 4\b', m) for m in messages), name)
+AssertionError: False is not true : missing name
+
+======================================================================
+FAIL: test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='unknown key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 494, in test_P154_GRID_DEFINITION_DIAGNOSTIC
+    self.assertTrue(any(re.search(r'\bgrid-system 4\b', m) for m in messages), name)
+AssertionError: False is not true : unknown key
+
+======================================================================
+FAIL: test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 494, in test_P154_GRID_DEFINITION_DIAGNOSTIC
+    self.assertTrue(any(re.search(r'\bgrid-system 4\b', m) for m in messages), name)
+AssertionError: False is not true : mainAlong type
+
+======================================================================
+FAIL: test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong value')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 494, in test_P154_GRID_DEFINITION_DIAGNOSTIC
+    self.assertTrue(any(re.search(r'\bgrid-system 4\b', m) for m in messages), name)
+AssertionError: False is not true : mainAlong value
+
+----------------------------------------------------------------------
+Ran 1 test in 0.149s
+
+FAILED (failures=4)

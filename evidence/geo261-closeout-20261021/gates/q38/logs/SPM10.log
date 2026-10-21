@@ -1,0 +1,16 @@
+test_profile_geometry_and_coordinate_rejections (tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections) ... FAIL
+
+======================================================================
+FAIL: test_profile_geometry_and_coordinate_rejections (tests.test_section_profile_native.SectionProfileNative.test_profile_geometry_and_coordinate_rejections)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates/tests/test_section_profile_native.py", line 295, in test_profile_geometry_and_coordinate_rejections
+    self.reject([put("profile", profile(outline=outline))], "I43")
+  File "/workspace/geo261-gates/tests/test_section_profile_native.py", line 90, in reject
+    self.assertFalse(preview["valid"], "expected rejection %r but the candidate was accepted: %s" % (reason, preview))
+AssertionError: True is not false : expected rejection 'I43' but the candidate was accepted: {'token': 3, 'valid': True, 'revision': 12, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1', 'grid-card-reference/1'], 'required_capabilities': ['section-profile/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'specs': [], 'materials': [], 'methods': [], 'applications': [], 'sources': [], 'parameters': [], 'assembly': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'sectionProfiles': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [], 'runs': []}, 'geometry': {'grids': [], 'gridSystems': [], 'datums': [], 'guides': [], 'timbers': []}}, 'after': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1', 'grid-card-reference/1'], 'required_capabilities': ['section-profile/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'specs': [], 'materials': [], 'methods': [], 'applications': [], 'sources': [], 'parameters': [], 'assembly': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'sectionProfiles': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [10, 0], [10, 0], [0, 10]]}}], 'members': [], 'runs': []}, 'geometry': {'grids': [], 'gridSystems': [], 'datums': [], 'guides': [], 'timbers': []}}, 'redeclaredReferences': [], 'cardCaptures': [], 'sectionProfiles': {'before': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [400, 0], [400, 60], [60, 60], [60, 250], [0, 250]]}}], 'members': [], 'runs': []}, 'after': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [10, 0], [10, 0], [0, 10]]}}], 'members': [], 'runs': []}, 'warnings': [], 'diagnosticsComplete': True, 'violations': []}, 'violations': []}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.111s
+
+FAILED (failures=1)

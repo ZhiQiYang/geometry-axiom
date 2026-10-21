@@ -1,0 +1,32 @@
+{
+  "recordedUTC": "2026-10-21T06:36:16.584173+00:00",
+  "type": "實際工具回傳逐欄轉錄，非transport自動日誌",
+  "operations": [
+    {
+      "command": "完成後原raw/golden/source/runtime/exit/cleanup最小唯讀核對",
+      "chunk_id": "434a16",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -B /workspace/geo261-evidence/browser-L3-preparation/capture-canvas-native.txt during-start",
+      "chunk_id": "2f9dae",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -B /workspace/geo261-evidence/browser-L3-preparation/capture-canvas-native.txt after",
+      "chunk_id": "66c054",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -B /workspace/geo261-evidence/browser-L3-preparation/capture-canvas-artifacts.txt",
+      "chunk_id": "d0c38f",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -B /workspace/geo261-evidence/canvas-L3-formal-6589248c/final-verification-code.txt",
+      "chunk_id": "0aa265",
+      "exit_code": 0
+    }
+  ],
+  "reportSha256": "742476edeca4d3751cf929dbf891be4cc17447b1fdd0ec20958c3d6597f8ca82"
+}

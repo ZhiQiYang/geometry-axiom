@@ -1,0 +1,291 @@
+{
+  "selectedCount": 36,
+  "testsRun": 36,
+  "failures": [],
+  "errors": [],
+  "skipped": [],
+  "expectedFailures": [],
+  "unexpectedSuccesses": [],
+  "builds": [
+    {
+      "label": "kernel-only",
+      "work": "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6",
+      "compiler": "/usr/bin/cc",
+      "commands": 72,
+      "allBuildExitZero": true,
+      "candidateSha256": "ebf68c7c67a1a1281b971bfdfba29c9963dee934204db4c3ccfe960b1950c502"
+    },
+    {
+      "label": "normal",
+      "work": "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-lb2nbu91",
+      "compiler": "/usr/bin/cc",
+      "commands": 70,
+      "allBuildExitZero": true,
+      "candidateSha256": "ebf68c7c67a1a1281b971bfdfba29c9963dee934204db4c3ccfe960b1950c502"
+    }
+  ],
+  "childProcessCount": 245,
+  "namedAssertionFailures": [
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-key-endian",
+        "keys"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:definition-key-fixed-big-endian\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-frame-axis",
+        "codec"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:rect-exact-canonical-wire\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-rect-endpoint",
+        "codec"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:rect-exact-canonical-wire\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-region-id",
+        "codec"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:reference-exact-canonical-wire\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-component-order",
+        "codec"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:ordered-components-exact-canonical-wire\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-loop-order",
+        "codec"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:ordered-components-exact-canonical-wire\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-encode-capacity",
+        "bounds"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:short-encode-capacity-is-atomic\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-decode-full-capacity",
+        "bounds"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:maximal-definition-decodes-exactly\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-domain-tag",
+        "malformed"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:unknown-domain-output-is-atomic\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-trailing",
+        "malformed"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:trailing-definition-output-is-atomic\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-atomic-decode",
+        "malformed"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:truncated-definition-output-is-atomic\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-overlap-decode",
+        "overlap"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:overlapping-wire-decodes-before-output-write\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-raw-accessor",
+        "typed"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:returned-definition-overrides-raw-placement\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-identity",
+        "typed-invalid"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:replacement-id-mismatch-is-atomic\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-schema",
+        "typed-invalid"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:replacement-schema-mismatch-is-atomic\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-definition-edge",
+        "typed"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:replacement-edge-requires-definition\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-early-frame",
+        "definition"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:definition-only-reads-staged-invalid-geometry\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-local-frame-raw",
+        "local-geometry"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:local-frame-uses-actual-definition\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-local-rect-raw",
+        "local-geometry"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:local-rect-uses-actual-definition\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-local-region-ref-raw",
+        "local-geometry"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:local-region-reference-uses-actual-definition\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-i1t8bov6/placement-definition-control-local-components",
+        "local-geometry"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:local-components-use-actual-definition\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-lb2nbu91/placement-sources-binding-value",
+        "binding-values"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:placement-binding-consumes-upstream-frame\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-lb2nbu91/placement-sources-batch-duplicate",
+        "batch-duplicate"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:batch-duplicate-second-rejected\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-lb2nbu91/placement-sources-batch-invalid",
+        "batch-invalid"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:batch-invalid-second-rejected\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-lb2nbu91/placement-sources-region-edge",
+        "region-edge"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:placement-region-reference-edge\n"
+    },
+    {
+      "argv": [
+        "/tmp/geo261-host-copy-K-gs7u7gfi/geometry-tests/geo261-n1a-lb2nbu91/placement-sources-batch-closed",
+        "batch-closed"
+      ],
+      "cwd": "/workspace/geo261-host-copy-candidate",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "ASSERT:batch-used-or-sealed-graph-rejected\n"
+    }
+  ],
+  "exitCode": 0
+}

@@ -1,0 +1,16 @@
+{
+  "recordedUTC": "2026-10-21T06:32:52.967378+00:00",
+  "type": "實際工具回傳逐欄轉錄，非transport自動日誌",
+  "start": {
+    "session_id": 91498,
+    "chunk_id": "f0a47b"
+  },
+  "final": {
+    "chunk_id": "784516",
+    "exit_code": 0,
+    "wall_time_seconds": 16.689215556,
+    "output": ""
+  },
+  "command": "#!/usr/bin/env bash\nset +e\nprintf '%s\\n' \"$$\" > /workspace/geo261-evidence/canvas-L3-formal-6589248c-parent.pid\nenv -u CC -u PYTHONOPTIMIZE python3 -B /workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py --sha 6589248c9a94bdf0460d8f84dd1610e51048188b --root /workspace/geometry-axiom --output /workspace/geo261-evidence/canvas-L3-formal-6589248c --port 18856 --cdp-port 9322 --release-note 'root 已明確放行 L3 6589248c9a94bdf0460d8f84dd1610e51048188b 原完整 canvas；P189 已完成，native 初建六 binary built/fresh 與12原件綁定已核。原35分鐘、完整scope及85golden不變，主repo私有runtime自行正常build/freshness，不預置或複製native binary。僅第二heavy槽；canvas真結果0與owned cleanup核對完成後回報，再等root放行five。' --execute\nobserved_launcher_code=$?\nprintf '%s\\n' \"$observed_launcher_code\" > /workspace/geo261-evidence/canvas-L3-formal-6589248c-launcher-process.exit-code\nexit \"$observed_launcher_code\"\n",
+  "parentCommandSha256": "8b2b01993214ea861c8048b6749354675bea8d024254e9900c5f34a3668b2fd2"
+}

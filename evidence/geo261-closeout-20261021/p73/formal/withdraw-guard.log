@@ -1,0 +1,83 @@
+P73_PROBE_SOURCE {"root":"/workspace/geometry-axiom","mode":"full","sha":"7159530c0e494d3211e6ab1764eb691137211707","status":"","probeSha256":"f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf","sources":{"geometry-web/cdp_test.js":"10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761","geometry-web/uiux_review_test.js":"0925c130aa7488d54b5e2ed539ef21f5b653fbbdebd0910f71a1992871149604","geometry-web/grid_workspace_draft_test.js":"7d7f831cbf1a9a3c6353cdf1028b7701c56628681b24eebe5f0ad1e36b733822","geometry-web/app.js":"0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f","geometry-web/app.css":"028c423c50a766f740144d1c883a16b997be5f00ef9a3d35548a5f59f1ec82fc"},"mutation":"withdraw-guard","callbackControl":true,"actualFixed":true,"actualAppSha256":"0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f","effectiveAppSha256":"dfbe254d96f1723cef70a2cac646509623440a53f70fe58f655c69859a28c550"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.083Z","monotonicNs":"6267198437581","pid":142249,"text":"[142249:142249:1020/211324.082386:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.084Z","monotonicNs":"6267199082493","pid":142249,"text":"chrome_crashpad_handler: --database is required\nTry 'chrome_crashpad_handler --help' for more information.\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.129Z","monotonicNs":"6267244534161","pid":142249,"text":"[142249:142273:1020/211324.129253:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.134Z","monotonicNs":"6267249633796","pid":142249,"text":"[142249:142273:1020/211324.134138:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[142249:142273:1020/211324.134226:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n[142249:142273:1020/211324.134248:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n[142249:142273:1020/211324.134256:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.141Z","monotonicNs":"6267256480122","pid":142249,"text":"[142249:142285:1020/211324.141063:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 142287: Read-only file system (30)\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.144Z","monotonicNs":"6267259724676","pid":142249,"text":"[142249:142273:1020/211324.144570:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.186Z","monotonicNs":"6267301706987","pid":142249,"text":"[142249:142273:1020/211324.185889:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.187Z","monotonicNs":"6267302792621","pid":142249,"text":"[142249:142285:1020/211324.187223:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 142303: Read-only file system (30)\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.207Z","monotonicNs":"6267322622111","pid":142249,"text":"[142249:142249:1020/211324.207323:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.207Z","monotonicNs":"6267322986359","pid":142249,"text":"[142249:142249:1020/211324.207423:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[142249:142273:1020/211324.207470:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[142249:142273:1020/211324.207482:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[142249:142249:1020/211324.207811:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.214Z","monotonicNs":"6267329605298","pid":142249,"text":"\nDevTools listening on ws://127.0.0.1:9343/devtools/browser/0455b755-5c50-4411-8479-2939d1164fe6\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.218Z","monotonicNs":"6267333405258","pid":142249,"text":"[142249:142249:1020/211324.218220:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.221Z","monotonicNs":"6267336586884","pid":142249,"text":"[142249:142273:1020/211324.220771:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n[142249:142249:1020/211324.220784:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[142249:142273:1020/211324.220808:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.221Z","monotonicNs":"6267336972233","pid":142249,"text":"[142249:142249:1020/211324.221807:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.221Z","monotonicNs":"6267337051470","pid":142249,"text":"[142249:142273:1020/211324.221909:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.259Z","monotonicNs":"6267374592190","pid":142249,"text":"[142249:142285:1020/211324.259370:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 142334: Read-only file system (30)\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.346Z","monotonicNs":"6267461130194","pid":142249,"text":"[142249:142285:1020/211324.287273:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 142343: Read-only file system (30)\n[142249:142285:1020/211324.302878:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:279] Failed to adjust OOM score of renderer with pid 142351: Read-only file system (30)\n[142249:142249:1020/211324.315467:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.Properties.GetAll: object_path= /org/freedesktop/UPower/devices/DisplayDevice: unknown error type: \n[142249:142249:1020/211324.315805:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[142249:142273:1020/211324.317921:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[142249:142249:1020/211324.329285:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[142249:142273:1020/211324.343449:ERROR:dbus/bus.cc:405] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n"}
+CHROME_STARTUP_STDERR {"utc":"2026-10-20T21:13:24.351Z","monotonicNs":"6267466253043","pid":142249,"text":"[142249:142249:1020/211324.346256:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"}
+CDP_NAVIGATION {"phase":"send","utc":"2026-10-20T21:13:24.422Z","monotonicNs":"6267537608765","id":10,"method":"Page.navigate","params":{"url":"http://127.0.0.1:18843/"},"sessionId":null}
+CDP_NAVIGATION {"phase":"reply","utc":"2026-10-20T21:13:24.505Z","monotonicNs":"6267620864841","id":10,"method":"Page.navigate","message":{"id":10,"result":{"frameId":"3AB35DE6665141B57D8C018238093C5D","loaderId":"75E6AE56908172B3D7B697258408B830","isDownload":false}}}
+P73_APP_SOURCE {"actualSha256":"0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f","effectiveSha256":"dfbe254d96f1723cef70a2cac646509623440a53f70fe58f655c69859a28c550","mutation":"withdraw-guard"}
+=== P73. UI/UX 審查：可見動作、視角、空狀態與專案回饋 ===
+P73 頁面與獨立服務已載入，具名操作及內嵌圖示存在 ✓ 
+P73 #fbButton 的常態文字可見，容器沒有額外淡化 ✓ 
+P73 .minimap-shell > span 的常態文字可見，容器沒有額外淡化 ✓ 
+P73 關閉篩選仍清楚可讀，沒有被當作停用操作淡化 ✓ 
+P73 關閉的篩選可真實點擊重新啟用 ✓ 
+[TEST PROJECT DIALOG] 目前專案有尚未保存的變更。要離開目前專案嗎？
+P73 現成專案載入前段已有可見忙碌提示 ✓ 
+P73 完整現成專案載入後沒有自動排卡誤報變更，明示範例尚未另存 ✓ 
+P73 現成專案含七支角材且有可理解的跨專案復原說明 ✓ 
+P73 390px 工程主要按鈕完整可見且不折字 ✓ 
+P73 390px 工程對話框不水平溢出 ✓ 
+P73 僅查看工程規格後關閉，不新增變更或草稿且範例仍未另存 ✓ 
+P73 一次復原確實恢復前世界，唯一提示指出開啟專案及可重做 ✓ 
+P73 重做恢復完整專案，唯一提示保留具體動作 ✓ 
+P73 桌面全圖保留完整面輪廓 ✓ 
+P73 採納56/96px標頭且工具與畫布仍可用 @1382 ✓ 
+P73 全圖隨視窗重新適配 @1382 ✓ 
+P73 採納56/96px標頭且工具與畫布仍可用 @900 ✓ 
+P73 全圖隨視窗重新適配 @900 ✓ 
+P73 採納56/96px標頭且工具與畫布仍可用 @390 ✓ 
+P73 全圖隨視窗重新適配 @390 ✓ 
+P73 手機可見工作區操作至少44px且有可及名稱 ✓ 
+P73 手機提示使用觸控方式，不要求鍵盤 ✓ 
+P73 faceSnapToggle 關閉後有正確狀態且維持可讀對比 ✓ 
+P73 faceSnapToggle 可點擊恢復開啟 ✓ 
+P73 faceGridToggle 關閉後有正確狀態且維持可讀對比 ✓ 
+P73 faceGridToggle 可點擊恢復開啟 ✓ 
+P73 手機可到達最末工具並切換平移 ✓ 
+P73 手動縮放離開全圖模式 ✓ 
+P73 手動視角改寬後保留倍率及中央模型點 ✓ 
+P73 顯示全部可重新啟用自動適配 ✓ 
+P73 參考線預設提供位置來源選擇，完整語法收在進階 ✓ 
+P73 參數確認末段真原生回覆延遲時仍保留 pending 與表單鎖 ✓ 
+P73 確認末段真卡片點擊與 Enter 不改導航或重送交易 ✓ 
+P73 參數確認末段完成後只結束一次並保留正式值 ✓ 
+P73 參數確認完成後真卡片進面顯示構件且不被晚選取關閉 ✓ 
+P73 共用參數入口建立引用，核心保存來源與軸向 ✓ 
+P73 選已知邊一半產生引用式，位置與走向用語一致 ✓ 
+P73 900px 檔案仍有文字且保存狀態可見 ✓ 
+P73 三視圖移除物件框選提示且工具列可直接點選 ✓ 
+P73 三視圖可見標註不重疊，全部標註仍有清單 ✓ 
+P73 無選取時仍保留全部標註入口 @1382 ✓ 
+P73 真點全部標註可展開且第一項可見 @1382 ✓ 
+P73 全部標註末項也可捲動讀取 @1382 ✓ 
+P73 無選取時仍保留全部標註入口 @390 ✓ 
+P73 真點全部標註可展開且第一項可見 @390 ✓ 
+P73 全部標註末項也可捲動讀取 @390 ✓ 
+P73_DOM {"label":"控制前：原空態設定已完成","value":{"at":22063.599999999627,"ready":"complete","focus":{"t":"space","id":990},"busy":false,"referenceBusy":false,"memberCount":"0","svg":"<svg id=\"spacePlanSvg\" data-plan-grid-step=\"10\" hidden=\"\"></svg>","svgHiddenPropertyType":"undefined","svgHiddenProperty":null,"hasHidden":true,"viewBoxAttribute":null,"viewBoxBase":{"x":0,"y":0,"width":0,"height":0},"svgDisplay":"none","screenCTM":{"a":1,"b":0,"c":0,"d":1,"e":0,"f":0},"svgBounds":{"x":0,"y":0,"width":0,"height":0,"top":0,"right":0,"bottom":0,"left":0},"empty":{"text":"此空間尚無邊界加入已放置的面後，這裡才會顯示實際平面範圍。加入成員面","visible":true},"metrics":{"text":"","visible":false,"hidden":true},"space":{"id":990,"members":[],"closed":false,"cx":440,"cy":60,"hasPos":true},"columns":[],"beams":[],"originalPredicate":true,"mutations":null}}
+P73_CALLBACK_CONTROL {"kind":"明示手動執行產品原同步callback，模擬空態設定後的觀察器排程；不宣稱原fullcanvas逐次時序重演","expression":"syncSpacePlanAnnotations()"}
+P73_DOM {"label":"控制後：原同步callback已執行","value":{"at":22072.400000000373,"ready":"complete","focus":{"t":"space","id":990},"busy":false,"referenceBusy":false,"memberCount":"0","svg":"<svg id=\"spacePlanSvg\" data-plan-grid-step=\"10\" hidden=\"\"><defs><pattern id=\"spacePlanGridPattern\" patternUnits=\"userSpaceOnUse\" width=\"10\" height=\"10\"><path data-plan-grid-path=\"\" fill=\"none\" stroke=\"var(--border)\" stroke-width=\"1\" vector-effect=\"non-scaling-stroke\" d=\"M 10 0 H 0 V 10\"></path></pattern></defs><rect data-plan-grid=\"\" fill=\"url(#spacePlanGridPattern)\" pointer-events=\"none\" x=\"0\" y=\"0\" width=\"0\" height=\"0\"></rect></svg>","svgHiddenPropertyType":"undefined","svgHiddenProperty":null,"hasHidden":true,"viewBoxAttribute":null,"viewBoxBase":{"x":0,"y":0,"width":0,"height":0},"svgDisplay":"none","screenCTM":{"a":1,"b":0,"c":0,"d":1,"e":0,"f":0},"svgBounds":{"x":0,"y":0,"width":0,"height":0,"top":0,"right":0,"bottom":0,"left":0},"empty":{"text":"此空間尚無邊界加入已放置的面後，這裡才會顯示實際平面範圍。加入成員面","visible":true},"metrics":{"text":"x 0…0 · y 0…0 mm · 格距 10 mm","visible":false,"hidden":true},"space":{"id":990,"members":[],"closed":false,"cx":440,"cy":60,"hasPos":true},"columns":[],"beams":[],"originalPredicate":false,"mutations":null}}
+P73 切到平面示意顯示空態且保留世界 ✓ 
+P73 空空間不畫假邊界，提供加入成員入口 ✗ {"memberCount":"0","noShapes":false,"hasEmpty":true,"entryText":true,"metricsHidden":true,"metricsText":"x 0…0 · y 0…0 mm · 格距 10 mm"}
+P73_PROBE_FATAL Error: P73 assertion failed: 空空間不畫假邊界，提供加入成員入口 {"memberCount":"0","noShapes":false,"hasEmpty":true,"entryText":true,"metricsHidden":true,"metricsText":"x 0…0 · y 0…0 mm · 格距 10 mm"}
+    at check (/workspace/geometry-axiom/geometry-web/cdp_helpers.js:41:13)
+    at uiuxReview (/workspace/geometry-axiom/geometry-web/uiux_review_test.js:220:3)
+    at async main (/workspace/geometry-axiom/geometry-web/cdp_test.js:465:5)
+    at async /workspace/geometry-axiom/geometry-web/cdp_test.js:482:91
+P73_DOM {"label":"致命失敗時","value":{"at":22278.700000000186,"ready":"complete","focus":{"t":"space","id":990},"busy":false,"referenceBusy":false,"memberCount":"0","svg":"<svg id=\"spacePlanSvg\" data-plan-grid-step=\"10\" hidden=\"\"><defs><pattern id=\"spacePlanGridPattern\" patternUnits=\"userSpaceOnUse\" width=\"10\" height=\"10\"><path data-plan-grid-path=\"\" fill=\"none\" stroke=\"var(--border)\" stroke-width=\"1\" vector-effect=\"non-scaling-stroke\" d=\"M 10 0 H 0 V 10\"></path></pattern></defs><rect data-plan-grid=\"\" fill=\"url(#spacePlanGridPattern)\" pointer-events=\"none\" x=\"0\" y=\"0\" width=\"0\" height=\"0\"></rect></svg>","svgHiddenPropertyType":"undefined","svgHiddenProperty":null,"hasHidden":true,"viewBoxAttribute":null,"viewBoxBase":{"x":0,"y":0,"width":0,"height":0},"svgDisplay":"none","screenCTM":{"a":1,"b":0,"c":0,"d":1,"e":0,"f":0},"svgBounds":{"x":0,"y":0,"width":0,"height":0,"top":0,"right":0,"bottom":0,"left":0},"empty":{"text":"此空間尚無邊界加入已放置的面後，這裡才會顯示實際平面範圍。加入成員面","visible":true},"metrics":{"text":"x 0…0 · y 0…0 mm · 格距 10 mm","visible":false,"hidden":true},"space":{"id":990,"members":[],"closed":false,"cx":440,"cy":60,"hasPos":true},"columns":[],"beams":[],"originalPredicate":false,"mutations":null}}
+P73_PROBE_RESULT {"metadata":{"root":"/workspace/geometry-axiom","mode":"full","sha":"7159530c0e494d3211e6ab1764eb691137211707","status":"","probeSha256":"f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf","sources":{"geometry-web/cdp_test.js":"10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761","geometry-web/uiux_review_test.js":"0925c130aa7488d54b5e2ed539ef21f5b653fbbdebd0910f71a1992871149604","geometry-web/grid_workspace_draft_test.js":"7d7f831cbf1a9a3c6353cdf1028b7701c56628681b24eebe5f0ad1e36b733822","geometry-web/app.js":"0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f","geometry-web/app.css":"028c423c50a766f740144d1c883a16b997be5f00ef9a3d35548a5f59f1ec82fc"},"mutation":"withdraw-guard","callbackControl":true,"actualFixed":true,"actualAppSha256":"0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f","effectiveAppSha256":"dfbe254d96f1723cef70a2cac646509623440a53f70fe58f655c69859a28c550"},"completed":false,"passedAssertions":47,"failedAssertions":1,"exceptions":0,"fatal":"P73 assertion failed: 空空間不畫假邊界，提供加入成員入口 {\"memberCount\":\"0\",\"noShapes\":false,\"hasEmpty\":true,\"entryText\":true,\"metricsHidden\":true,\"metricsText\":\"x 0…0 · y 0…0 mm · 格距 10 mm\"}","sections":{"P73":47}}
+P73_BROWSER_CLEANUP {"pid":142249,"profile":"/tmp/geometry-cdp-C2KOw6","exitCode":0,"signalCode":null,"exited":true}

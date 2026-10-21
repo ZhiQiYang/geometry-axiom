@@ -1,0 +1,165 @@
+#!/usr/bin/env python3
+"""核既有正式 L2 原件；只讀 Git/檔案，沒有產品執行或重抽樣。"""
+import datetime
+import hashlib
+import json
+import math
+import statistics
+import subprocess
+import tarfile
+from pathlib import Path
+
+E = Path('/workspace/geo261-evidence')
+O = E / 'p189-formal-L2-249571fe2477-m1ot9ubq'
+R = Path('/workspace/geometry-axiom')
+C = '249571fe2477845d5330f6190dad965bf327f43b'
+A = 'cbefb39b47fb0edcfaf003d2c1101929fea244c8'
+commands = []
+
+def h(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def j(name):
+    return json.loads((O / name).read_bytes())
+
+def git(*args):
+    p = subprocess.run(['git', *args], cwd=R, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    commands.append({'argv': ['git', *args], 'cwd': str(R), 'actual_exit_code': p.returncode,
+                     'stdout_sha256': h(p.stdout), 'stderr': p.stderr.decode()})
+    assert p.returncode == 0, commands[-1]
+    return p.stdout
+
+P = j('prepare-receipt.json')
+W = Path(P['work'])
+receipt = j('receipt.json')
+samples = j('samples.json')
+eq = j('dump-equivalence.json')
+phases = j('phase-receipts.json')
+assert P['source_sha'] == C == receipt['commits']['final']
+assert P['expected_parent'] == A
+assert git('rev-parse', 'HEAD').decode().strip() == C
+assert git('status', '--porcelain') == b''
+assert git('rev-list', '--parents', '-n', '1', C).decode().split() == [C, A]
+assert git('diff', '--name-only', A, C).decode().splitlines() == ['tests/mutants_results.json']
+assert P['commits'] == receipt['commits'] == eq['commits']
+assert git('rev-parse', C + ':tests/mutants_results.json').decode().strip() == P['changed_blobs'][0]['git_blob']
+for record, path in [('source_parent_ledger_patch_sha256', 'source-parent-ledger.patch'),
+                     ('source_vs_previous_L_patch_sha256', 'source-vs-previous-L.patch')]:
+    assert h((O / path).read_bytes()) == P[record]
+runner = Path(P['runner']).read_bytes()
+assert h(runner) == P['runner_sha256'] == 'fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44'
+assert runner == git('show', C + ':geometry-core/domain-decoupling/closeout-tools/p189_verify.py')
+generator = Path(P['generator']).read_bytes()
+assert h(generator) == P['generator_sha256'] == '347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91'
+assert generator == git('show', P['generator_source'])
+cal = P['generator_calibration']
+assert Path(cal['path']).read_bytes() == git('show', cal['source'])
+assert h(Path(cal['path']).read_bytes()) == cal['sha256']
+assert h((E / 'p189-formal-L2-prepare.py').read_bytes()) == P['preparation_tool_sha256']
+assert h((E / 'p189-final-L-phase-supervisor.py').read_bytes()) == 'e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413'
+
+archive_reviews = []
+for arc in P['archives']:
+    archive = Path(arc['archive_path'])
+    assert archive.stat().st_size == arc['archive_bytes'] and h(archive.read_bytes()) == arc['archive_sha256']
+    entries = j(arc['source_index'])
+    index = {x['path']: x for x in entries}
+    tree = {}
+    for row in git('ls-tree', '-rz', '--full-tree', arc['sha']).split(b'\0'):
+        if not row:
+            continue
+        header, name = row.split(b'\t', 1)
+        mode, kind, blob = header.decode().split()
+        if kind == 'blob':
+            tree[name.decode()] = blob
+    seen = []
+    with tarfile.open(archive) as tar:
+        for member in tar:
+            if member.isdir():
+                continue
+            assert member.isfile()
+            data = tar.extractfile(member).read()
+            entry = index[member.name]
+            assert len(data) == entry['bytes'] and h(data) == entry['sha256']
+            assert data == (Path(arc['source_directory']) / member.name).read_bytes()
+            blob = hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest()
+            assert blob == tree[member.name]
+            seen.append(member.name)
+    assert set(seen) == set(index) and len(seen) == len(index) == arc['source_file_count']
+    archive_reviews.append({'label': arc['label'], 'sha': arc['sha'], 'files': len(seen),
+                            'archive_sha256': arc['archive_sha256'], 'archive_source_index_git_blobs_equal': True})
+
+expected = [(n, r, side) for n in (16, 32, 48, 64) for r in range(3)
+            for side in (('final', 'base', 'main') if r == 1 else ('main', 'base', 'final'))]
+assert [(x['n'], x['round'], x['side']) for x in samples] == expected
+assert all(x['status'] == 'ok' and x['ok'] is True and x['returncode'] == 0
+           and math.isfinite(x['seconds']) and x['seconds'] > 0
+           and x['sha'] == receipt['commits'][x['side']] for x in samples)
+for row in receipt['timing']['summary']:
+    for side, value in row['median_seconds'].items():
+        assert value == statistics.median(s['seconds'] for s in samples if s['n'] == row['n'] and s['side'] == side)
+    assert row['final_main_ratio'] == row['median_seconds']['final'] / row['median_seconds']['main']
+    assert row['threshold_pass'] and row['final_main_ratio'] <= 2
+assert eq['complete'] and eq['pass'] and len(eq['scenes']) == 175
+assert sum(x['generated'] for x in eq['scenes']) == 4
+for scene in eq['scenes']:
+    payload = {side: (O / row['stdout_file']).read_bytes() for side, row in scene['sides'].items()}
+    assert scene['pass'] and payload['base'] == payload['final']
+    assert scene['all_three_identical'] == (len(set(payload.values())) == 1)
+    if scene['generated']:
+        assert scene['valid_execution'] and scene['all_three_identical']
+rows = samples + [row for scene in eq['scenes'] for row in scene['sides'].values()]
+for row in rows:
+    data = (O / row['stdout_file']).read_bytes()
+    assert len(data) == row['stdout_bytes'] and h(data) == row['stdout_sha256']
+    assert (O / row['stderr_file']).is_file()
+assert len({row[k] for row in rows for k in ('stdout_file', 'stderr_file')}) == 1122
+controls = j('validator-selftest.json')
+assert len(controls) == 16 and sum(x['expected_pass'] for x in controls) == 2
+for control in controls:
+    if 'actual' in control:
+        assert control['actual']['pass'] == control['expected_pass']
+    else:
+        assert control['expected_pass'] is False and control['errors']
+assert [p['phase'] for p in phases] == ['generator-selftest', 'selftest', 'build', 'equivalence', 'timing', 'check']
+for i, phase in enumerate(phases):
+    assert phase['repository_head'] == C and phase['commits'] == receipt['commits']
+    assert phase['exit_code'] == 0 and int((O / (phase['phase'] + '.exit-code')).read_text()) == 0
+    assert phase['argv'] == P['planned_commands'][i]['argv']
+    assert phase['runner_sha256'] == P['runner_sha256'] and phase['generator_sha256'] == P['generator_sha256']
+    assert not phase['PYTHONOPTIMIZE_present'] and phase['stack_limit_bytes'] == [16777216, 16777216]
+    assert phase['core_limit_bytes'] == [0, 0]
+    for stream in ('stdout', 'stderr'):
+        assert h((O / (phase['phase'] + '.' + stream)).read_bytes()) == phase[stream + '_sha256']
+    if i:
+        assert phases[i - 1]['finished_utc'] <= phase['started_utc']
+preflight = j('timing-preflight.json')
+assert preflight['pass'] and not preflight['errors'] and preflight['repository_head'] == C
+assert phases[3]['finished_utc'] <= preflight['started_utc'] <= preflight['finished_utc'] <= phases[4]['started_utc']
+for row in j('build-receipt.json'):
+    assert row['returncode'] == 0 and row['sha'] == receipt['commits'][row['label']]
+    assert h((W / row['sha'][:8] / 'bridge').read_bytes()) == row['binary_sha256']
+assert receipt['pass'] and receipt['exit_code'] == 0 and receipt['provenance_pass'] and receipt['dump_pass']
+assert int((O / 'supervisor.exit-code').read_text()) == 0
+assert j('top-level-wait-receipt.json')['actual_exit_code'] == 0
+assert git('rev-parse', 'HEAD').decode().strip() == C
+assert git('status', '--porcelain') == b''
+report = {'checked_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'source_sha': C,
+          'parent_A2': A, 'archive_reviews': archive_reviews, 'git_read_commands': commands,
+          'phase_HEAD_all_L2': True, 'phase_exit_codes': {p['phase']: p['exit_code'] for p in phases},
+          'phase_seconds': {p['phase']: p['seconds'] for p in phases},
+          'runner_generator_calibration_original_bytes_match': True,
+          'phase_argv_and_raw_hashes_match': True, 'sample_order_exact': True, 'valid_samples': 36,
+          'controls': 16, 'positive_controls': 2, 'negative_controls': 14,
+          'equivalence_rows': 175, 'generated_rows': 4, 'fixed_rows': 171,
+          'observed_all_three_identical': sum(s['all_three_identical'] for s in eq['scenes']),
+          'successful_base_loads': sum(s['sides']['base']['ok'] for s in eq['scenes']),
+          'raw_streams': 1122, 'all_binary_hashes_match': True,
+          'preflight_non_zombie_related': [x for x in preflight['relevant_processes'] if not x['zombie']],
+          'formal_summary': receipt['timing']['summary'], 'check_exit_code': 0,
+          'new_product_executions': 0, 'validation_exit_code': 0,
+          'limits': '只讀目前原件及保存的時點；不冒稱重返執行現場。頂層wait來自root明示轉錄。其他正式關卡由其各自收據驗收，不由P-189推論。'}
+with (O / 'readonly-source-review.json').open('x') as f:
+    json.dump(report, f, ensure_ascii=False, indent=2)
+    f.write('\n')
+print(json.dumps({k: v for k, v in report.items() if k not in ('git_read_commands', 'formal_summary')}, ensure_ascii=False))

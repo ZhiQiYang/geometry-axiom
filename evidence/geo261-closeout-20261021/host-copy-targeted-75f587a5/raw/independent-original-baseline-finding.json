@@ -1,0 +1,33 @@
+{
+  "classification": "原H cold對照編排錯誤；不是產品測試失敗",
+  "finding": "original current_geometry.c轉接到未複製的工作樹references.inc，再包含candidate reference_sources.inc；原SOURCE副本不可達。",
+  "effectiveFourSourceHashesReconstructedExactly": true,
+  "chain": [
+    {
+      "file": "/tmp/geo261-host-H-output-bvikwvpo/geometry-tests/geo261-n1a-qv1fkiqg/original-current_geometry.c",
+      "line": 7521,
+      "include": "#include \"/workspace/geo261-host-copy-candidate/geometry-core/references.inc\""
+    },
+    {
+      "file": "/tmp/geo261-host-H-output-bvikwvpo/geometry-tests/geo261-n1a-qv1fkiqg/original-geo261_host_facts_authority_harness.c",
+      "line": 9,
+      "include": "#include \"/tmp/geo261-host-H-output-bvikwvpo/geometry-tests/geo261-n1a-qv1fkiqg/original-current_geometry.c\""
+    },
+    {
+      "file": "/workspace/geo261-host-copy-candidate/geometry-core/references.inc",
+      "line": 622,
+      "include": "#include \"../geometry-app/native/reference_sources.inc\"",
+      "resolvesTo": "/workspace/geo261-host-copy-candidate/geometry-app/native/reference_sources.inc"
+    }
+  ],
+  "firstReadAttempt": {
+    "chunk": "11678e",
+    "exitCode": 1,
+    "reason": "原runner已清理暫存，直接讀compiled原檔FileNotFoundError；後續用Git原bytes與同include規則重建並核effectiveSha，不冒稱直接讀到原tmp。"
+  },
+  "notInvalidated": [
+    "candidate H 65測試",
+    "candidate H ASan/UBSan4case"
+  ],
+  "requires": "另out含references.inc的完整轉接後重跑原85四case；保本輪為invalid original baseline"
+}

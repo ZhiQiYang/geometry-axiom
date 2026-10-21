@@ -1,0 +1,11 @@
+from pathlib import Path
+import ast,hashlib,json,subprocess
+p=Path('/workspace/geo261-evidence/ledger-A2-bundle-preparation')
+code=p/'bundle_ledger.py';raw=code.read_bytes();ast.parse(raw)
+command=['python3','-B',str(code)]
+r=subprocess.run(command,capture_output=True)
+assert r.returncode==2
+assert not Path('/workspace/geo261-evidence/final-bundle/ledger-A2-cc').exists()
+(p/'negative.stdout').write_bytes(r.stdout);(p/'negative.stderr').write_bytes(r.stderr)
+(p/'static-check.json').write_text(json.dumps({'source_sha256':hashlib.sha256(raw).hexdigest(),'ast_parse_exit_code':0,'negative_argv':command,'negative_exit_code':r.returncode,'destination_not_created':True,'stdout_sha256':hashlib.sha256(r.stdout).hexdigest(),'stderr_sha256':hashlib.sha256(r.stderr).hexdigest(),'產品測試':False},ensure_ascii=False,indent=2)+'\n')
+print((p/'static-check.json').read_text())

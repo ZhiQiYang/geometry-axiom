@@ -1,0 +1,33 @@
+from pathlib import Path
+import difflib
+import hashlib
+import json
+
+root = Path('/workspace/geometry-axiom')
+output = Path(__file__).resolve().parent
+changes = {
+    'geometry-web/app.js': [
+        ('  empty.hidden = !noGeometry; svg.toggleAttribute("hidden", noGeometry);',
+         '  empty.hidden = !noGeometry; svg.toggleAttribute("hidden", noGeometry);\n  const metrics = $("spacePlanMetrics");\n  if (metrics) { metrics.hidden = noGeometry; if (noGeometry) metrics.textContent = ""; }'),
+        ("  const svg=$('spacePlanSvg'),matrix=svg?.getScreenCTM();if(!svg||svg.hidden||!matrix)return;",
+         "  const svg=$('spacePlanSvg');if(!svg||svg.hasAttribute('hidden')||!svg.hasAttribute('viewBox'))return;\n  const matrix=svg.getScreenCTM();if(!matrix)return;"),
+    ],
+    'geometry-web/uiux_review_test.js': [
+        ("  check('空空間不畫假邊界，提供加入成員入口',await read(`$('spaceMemberCount').textContent==='0' && !$('spacePlanSvg').querySelector('polygon,rect,path') && !!$('spacePlanEmpty') && /加入|成員/.test($('spacePlanEmpty').textContent)`));",
+         "  const emptySpaceState=await read(`({memberCount:$('spaceMemberCount').textContent,noShapes:!$('spacePlanSvg').querySelector('polygon,rect,path'),hasEmpty:!!$('spacePlanEmpty'),entryText:/加入|成員/.test($('spacePlanEmpty')?.textContent||''),metricsHidden:$('spacePlanMetrics')?.hidden===true,metricsText:$('spacePlanMetrics')?.textContent})`);\n  check('空空間不畫假邊界，提供加入成員入口',emptySpaceState.memberCount==='0'&&emptySpaceState.noShapes&&emptySpaceState.hasEmpty&&emptySpaceState.entryText&&emptySpaceState.metricsHidden&&emptySpaceState.metricsText==='',emptySpaceState);"),
+    ],
+}
+patch = []
+receipt = {}
+for relative, replacements in changes.items():
+    before = (root / relative).read_text()
+    after = before
+    for old, new in replacements:
+        if after.count(old) != 1:
+            raise SystemExit('候選定位不是唯一：' + relative)
+        after = after.replace(old, new)
+    patch.extend(difflib.unified_diff(before.splitlines(keepends=True), after.splitlines(keepends=True), fromfile='a/'+relative, tofile='b/'+relative))
+    receipt[relative] = {'actualSha256': hashlib.sha256(before.encode()).hexdigest(), 'candidateSha256': hashlib.sha256(after.encode()).hexdigest()}
+(output / 'candidate.patch').write_text(''.join(patch))
+(output / 'candidate-source-hashes.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n')
+print(json.dumps(receipt, ensure_ascii=False))

@@ -1,0 +1,12 @@
+{
+  "kind": "observed_tool_completion_transcription",
+  "description": "封包工具已完成後，逐欄保存實際工具回覆中的退出觀察；不是重新執行封包，也不是以驗證 JSON 的 passed 推算程序碼。",
+  "command": "python3 語法檢查並執行 /workspace/geo261-evidence/browser-five-bundle-code.txt（原完整命令與程式 bytes 見該檔及既有執行紀錄）",
+  "observedTool": "tools.exec_command",
+  "observedChunkId": "052e69",
+  "observedExitCode": 0,
+  "observedWallTimeSeconds": 0.09505532,
+  "verificationPath": "/workspace/geo261-evidence/browser-five-bundle-verification.json",
+  "verificationSha256": "a98756d67a22766e7d151d75ab46ef1c22dc177f55bde900f82992725ff5857c",
+  "limits": "本檔為事後轉錄可觀察欄位，非完整原始工具傳輸 JSON；凍結證據包未修改。"
+}

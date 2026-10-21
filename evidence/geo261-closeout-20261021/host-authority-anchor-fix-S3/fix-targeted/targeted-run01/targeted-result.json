@@ -1,0 +1,95 @@
+{
+  "modules": [
+    "tests.test_geo261_host_authority"
+  ],
+  "testsRun": 18,
+  "failures": 0,
+  "errors": 0,
+  "skipped": [],
+  "sourceUnchanged": true,
+  "controls": [
+    {
+      "marker": "host-footprint-actual-box-and-frame",
+      "matches": 1,
+      "valid_baseline_mutant_restored": true,
+      "commands": [
+        99,
+        100,
+        101
+      ]
+    },
+    {
+      "marker": "host-pf-actual-threshold",
+      "matches": 1,
+      "valid_baseline_mutant_restored": true,
+      "commands": [
+        112,
+        113,
+        114
+      ]
+    },
+    {
+      "marker": "host-assembly-guide-actual-axis",
+      "matches": 1,
+      "valid_baseline_mutant_restored": true,
+      "commands": [
+        78,
+        79,
+        80
+      ]
+    },
+    {
+      "marker": "host-context-actual-datum-axis",
+      "matches": 1,
+      "valid_baseline_mutant_restored": true,
+      "commands": [
+        83,
+        84,
+        85
+      ]
+    },
+    {
+      "marker": "host-context-actual-guide-context",
+      "matches": 1,
+      "valid_baseline_mutant_restored": true,
+      "commands": [
+        88,
+        89,
+        90
+      ]
+    },
+    {
+      "marker": "host-context-reference-actual-guide-placement",
+      "matches": 1,
+      "valid_baseline_mutant_restored": true,
+      "commands": [
+        93,
+        94,
+        95
+      ]
+    },
+    {
+      "marker": "host-target-actual-member-definition",
+      "matches": 1,
+      "valid_baseline_mutant_restored": true,
+      "commands": [
+        68,
+        69,
+        70
+      ]
+    },
+    {
+      "marker": "host-assembly-member-actual-policy",
+      "matches": 1,
+      "valid_baseline_mutant_restored": true,
+      "commands": [
+        71,
+        72,
+        73
+      ]
+    }
+  ],
+  "subprocess_run_raw_complete": true,
+  "fixture_bridge_streams": "原 BridgeSession 直接串流，未冒稱被 subprocess.run 觀察；完整建場 dump 另存 setup-scene.scene",
+  "passed": true
+}

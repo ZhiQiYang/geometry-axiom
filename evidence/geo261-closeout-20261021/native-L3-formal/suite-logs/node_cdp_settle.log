@@ -1,0 +1,18 @@
+✔ successful condition before the deadline preserves the wait and logs elapsed time (3.146334ms)
+✔ late true reply after 15000 ms cannot become a successful wait (3.36726ms)
+✔ an unresolved condition is bounded and its eventual reply cannot change the verdict (1.381039ms)
+✔ a hanging diagnostic uses the same deadline instead of starting a second budget (1.071091ms)
+✔ no fresh diagnostic starts after the deadline (1.180783ms)
+✔ hard timeout names the site and preserves bounded diagnostic information (1.570808ms)
+✔ non-timeout evaluation errors retain their identity (1.016129ms)
+✔ section 7 timeout stays red even if the vertex would arrive during the extra settle (1.534395ms)
+✔ section 7 permanent no-op fails without extra settling or another vertex read (0.825919ms)
+✔ section 7 timely success still uses the original vertex comparison exactly once (1.68738ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 119.245193

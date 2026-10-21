@@ -1,0 +1,75 @@
+{
+  "說明": "本包不附可執行程式。此清單直接讀取指定 Git blob 計算雜湊，不以工作樹檔名推測版本。列出全部九個正式收尾工具；本資料夾只主張其中 P52／P72 證據，Q38／P189 收據另由主代理封裝。",
+  "正式版本工具": [
+    {
+      "Git提交": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+      "Git路徑": "geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "bytes": 18125,
+      "sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+      "檔案已複製至本包": false
+    },
+    {
+      "Git提交": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+      "Git路徑": "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
+      "bytes": 12452,
+      "sha256": "0ed8674c90dc670b37a63a91187f633d7cf11190bb9584a7081dd6a5358dbc7c",
+      "檔案已複製至本包": false
+    },
+    {
+      "Git提交": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+      "Git路徑": "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
+      "bytes": 14914,
+      "sha256": "c10eea2b116f2595a0a5dcab2dbdbd76d09c5e41e5339102ab109bc1e32049d2",
+      "檔案已複製至本包": false
+    },
+    {
+      "Git提交": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+      "Git路徑": "geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
+      "bytes": 15545,
+      "sha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+      "檔案已複製至本包": false
+    },
+    {
+      "Git提交": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+      "Git路徑": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
+      "bytes": 13136,
+      "sha256": "6884e80a843834630b777d2add24e1c07c12ccc33f075a18f02403256d0dfcbc",
+      "檔案已複製至本包": false
+    },
+    {
+      "Git提交": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+      "Git路徑": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
+      "bytes": 3446,
+      "sha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2",
+      "檔案已複製至本包": false
+    },
+    {
+      "Git提交": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+      "Git路徑": "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
+      "bytes": 29059,
+      "sha256": "80ecea0cd2d1189f244552d3e92ffc1a81335424410cf4557bac68cd25d15e86",
+      "檔案已複製至本包": false
+    },
+    {
+      "Git提交": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+      "Git路徑": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
+      "bytes": 4605,
+      "sha256": "b7e7430e53d157f6a82050417be7a9f8d77bd50c1fb5f2f3a34a1ba44de8363f",
+      "檔案已複製至本包": false
+    },
+    {
+      "Git提交": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+      "Git路徑": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
+      "bytes": 4455,
+      "sha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3",
+      "檔案已複製至本包": false
+    }
+  ],
+  "P72初版歷史工具": {
+    "Git提交": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
+    "Git路徑": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
+    "bytes": 12909,
+    "sha256": "11f85b9f10e296ea4864d7a8d9a8e460a1fe9a2070b6ab5271756b1f13f230ae"
+  },
+  "P52早期工具缺口": "smoke／700ms 早期 log 未記探針 hash；原版 network6000 log 記113bbae039aa1d7a7a7de600792432e782d69cec69e4242ed5792e9601a57506，該版程式未在本包或已確認 Git blob 封存。不得配上現存後版 probe.cjs 或正式 v2 冒稱精確重跑。"
+}

@@ -1,0 +1,27 @@
+test_advanced_native_frame_controls_world_axes_and_bounds (tests.test_section_profile_modeling.SectionProfileModeling.test_advanced_native_frame_controls_world_axes_and_bounds) ... FAIL
+
+======================================================================
+FAIL: test_advanced_native_frame_controls_world_axes_and_bounds (tests.test_section_profile_modeling.SectionProfileModeling.test_advanced_native_frame_controls_world_axes_and_bounds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-evidence/gates-l/q38-run/q38/tmp/section-profile-mutations-fhj60d52/SPM39/tests/test_section_profile_modeling.py", line 159, in test_advanced_native_frame_controls_world_axes_and_bounds
+    self.mesh(obj, 2138400, [[1000, 2000, 2667], [1027, 4400, 2700]])
+  File "/workspace/geo261-evidence/gates-l/q38-run/q38/tmp/section-profile-mutations-fhj60d52/SPM39/tests/test_section_profile_modeling.py", line 106, in mesh
+    self.assertEqual(actual, bounds, "R36/R37: bounds of the %s object" % obj.get("section_profile", {}).get("kind"))
+AssertionError: Lists differ: [[1000, 2000, 2673], [1033, 4400, 2700]] != [[1000, 2000, 2667], [1027, 4400, 2700]]
+
+First differing element 0:
+[1000, 2000, 2673]
+[1000, 2000, 2667]
+
+- [[1000, 2000, 2673], [1033, 4400, 2700]]
+?                  -      ^^
+
++ [[1000, 2000, 2667], [1027, 4400, 2700]]
+?                 +       ^^
+ : R36/R37: bounds of the timber object
+
+----------------------------------------------------------------------
+Ran 1 test in 0.083s
+
+FAILED (failures=1)

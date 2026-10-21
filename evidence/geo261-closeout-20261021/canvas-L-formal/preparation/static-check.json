@@ -1,0 +1,52 @@
+{
+  "astExitCode": 0,
+  "sha256": "a9ea3f2f838dc2738ea1c77cf30b8627e0414e5eae9fd6b391057186d8d45924",
+  "negativeCLI": [
+    {
+      "name": "拒絕短SHA",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py",
+        "--output",
+        "/workspace/geo261-evidence/canvas-L-preparation/不應建立",
+        "--label",
+        "A-preflight",
+        "--port",
+        "18856",
+        "--cdp-port",
+        "9322",
+        "--release-note",
+        "僅參數拒絕驗證，不啟動工作",
+        "--sha",
+        "7159530c",
+        "--execute"
+      ],
+      "exitCode": 2,
+      "stdout": "",
+      "stderr": "usage: run_canvas_job.py [-h] --sha SHA [--root ROOT] --output OUTPUT --label\n                         {A-preflight,L-formal} --port PORT --cdp-port\n                         CDP_PORT --release-note RELEASE_NOTE [--execute]\nrun_canvas_job.py: error: --sha 必須完整 40 位小寫 SHA\n"
+    },
+    {
+      "name": "缺明示執行",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py",
+        "--output",
+        "/workspace/geo261-evidence/canvas-L-preparation/不應建立",
+        "--label",
+        "A-preflight",
+        "--port",
+        "18856",
+        "--cdp-port",
+        "9322",
+        "--release-note",
+        "僅參數拒絕驗證，不啟動工作",
+        "--sha",
+        "7159530c0e494d3211e6ab1764eb691137211707"
+      ],
+      "exitCode": 2,
+      "stdout": "",
+      "stderr": "usage: run_canvas_job.py [-h] --sha SHA [--root ROOT] --output OUTPUT --label\n                         {A-preflight,L-formal} --port PORT --cdp-port\n                         CDP_PORT --release-note RELEASE_NOTE [--execute]\nrun_canvas_job.py: error: 尚未明示 --execute 及 root 放行記錄；不啟動任何工作\n"
+    }
+  ],
+  "noBuildOrBrowser": true
+}

@@ -1,0 +1,29 @@
+{
+  "recordedUtc": "2026-10-21T00:11:59.998389+00:00",
+  "command": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/native-l-preparation/package-native-l.py"
+  ],
+  "exitCode": 1,
+  "packagingSourceSha256": "c19a16732971dd7f3db632527f36f626ca94007abce87a76d6cb668f36552e16",
+  "reason": "外部衍生解析使用\\s跨行吃掉下一列，解析116列而非224列；原正式native已exit0，原run.log與600份raw未改。",
+  "stdoutPreservation": "第一次stdout只有tool回傳（可見輸出被截斷）；完整衍生結果保存於本目錄verification.json，不冒稱完整stdout已封存。",
+  "files": [
+    {
+      "path": "verification.json",
+      "sha256": "4c68eb0f3caf5cd023d4f91ab12d060e8f94a39dbe06920950bf9d1020137607",
+      "bytes": 59374
+    },
+    {
+      "path": "named-required-suites.json",
+      "sha256": "cfe0d6ee7c2af1cd9b8ddf6827e13f13cb89303aa6089825c13d661c06ecd9ff",
+      "bytes": 6340
+    },
+    {
+      "path": "suite-log-source-index.json",
+      "sha256": "117bfd3fb80e8e12a3b77ea56d5c4622645e50ab7ac1c81c9a848be8c337f026",
+      "bytes": 196633
+    }
+  ]
+}

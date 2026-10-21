@@ -1,0 +1,60 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "sampledUtc": "2026-10-21T00:40:57.301435+00:00",
+  "head": "43f85313c32410ac01406ab585846bbacafea278",
+  "status": "",
+  "knownPids": [
+    {
+      "phase": "q38",
+      "role": "launcherPid",
+      "pid": 286128,
+      "procExists": false
+    },
+    {
+      "phase": "q38",
+      "role": "childPid",
+      "pid": 286173,
+      "procExists": false
+    },
+    {
+      "phase": "controls",
+      "role": "launcherPid",
+      "pid": 287916,
+      "procExists": false
+    },
+    {
+      "phase": "controls",
+      "role": "childPid",
+      "pid": 287961,
+      "procExists": false
+    },
+    {
+      "phase": "card",
+      "role": "launcherPid",
+      "pid": 288389,
+      "procExists": false
+    },
+    {
+      "phase": "card",
+      "role": "childPid",
+      "pid": 288434,
+      "procExists": false
+    },
+    {
+      "phase": "axiom",
+      "role": "launcherPid",
+      "pid": 290761,
+      "procExists": false
+    },
+    {
+      "phase": "axiom",
+      "role": "childPid",
+      "pid": 290806,
+      "procExists": false
+    }
+  ],
+  "processScanMatches": [],
+  "cmdlineInaccessiblePids": [],
+  "scope": "只讀檢查已知 8 個 launcher／直接子 PID 與 /proc 可見 cmdline 的具名 gate 程序，以及 gate 工作目錄／輸出目錄內存活程序；不是過往全部 descendant PID 的完整追蹤。",
+  "accepted": true
+}

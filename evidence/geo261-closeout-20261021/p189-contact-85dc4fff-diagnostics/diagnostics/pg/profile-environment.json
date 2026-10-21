@@ -1,0 +1,41 @@
+{
+  "started_utc": "2026-10-21T01:43:49.119592+00:00",
+  "source_sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "source": "/workspace/geo261-profile-contact-v2-src.v7qt_w57",
+  "source_archive_sha256": "aaf3053eba2ea4b289bafc85428e1b06d2f8be6e5fe66357aee5419762f82088",
+  "source_file_count": 673,
+  "source_files_match_formal": true,
+  "compiler": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "compile_argv": [
+    "gcc",
+    "-std=c11",
+    "-O2",
+    "-g",
+    "-pg",
+    "-fno-omit-frame-pointer",
+    "geometry-web/web_bridge.c",
+    "-o",
+    "/workspace/geo261-evidence/p189-diagnostic-contact-85dc4fff44ce-hck_u46w/bridge-profile",
+    "-lm"
+  ],
+  "scene": "/workspace/geo261-p189-contact-v2-src-mrcj_18a/scenes/s64.scene",
+  "scene_sha256": "ae61c7eb565efc3997402b124592c1201d9e3c6027f4945a735387ef4327416d",
+  "driver_sha256": "ee8a7f7e364bd3b959f19a6bcc0a5e8cd3fdfca4ab7f65a377d5b0b66ac2148f",
+  "pid": 305360,
+  "pgid": 305356,
+  "environment_removed": [
+    "PYTHONOPTIMIZE",
+    "GMON_OUT_PREFIX"
+  ],
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "core_limit_bytes": [
+    0,
+    0
+  ],
+  "is_formal_P189_sample": false,
+  "diagnostic_run_count_planned": 1,
+  "diagnostic_request": "loadfile-only"
+}

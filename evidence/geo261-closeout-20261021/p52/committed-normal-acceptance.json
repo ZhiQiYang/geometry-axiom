@@ -1,0 +1,53 @@
+{
+  "case": "committed-normal",
+  "strictCaseAcceptancePassed": true,
+  "probeExitCode": 0,
+  "originalDriverExitCode": 1,
+  "originalDriverFailure": "HEAD在正常組期間從4fe18b8b變為c87c6d90，編排／來源標籤變動；不是產品斷言失敗",
+  "startedSha": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
+  "finishedSha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+  "actualProbeSha": "4fe18b8b2afe79c44f8a293dcbeb119c43f0e22c",
+  "changedFiles": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "sourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+  "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+  "passedAssertions": 43,
+  "failedAssertions": 0,
+  "exceptions": 0,
+  "laterGeometry": {
+    "surface": 1,
+    "centerline": 2000,
+    "length": 2946,
+    "u": 2014,
+    "v": 27,
+    "dir": "+v",
+    "side": "+n",
+    "A": 27,
+    "B": 33,
+    "origin": [
+      2014,
+      27,
+      2500
+    ],
+    "axes": [
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        -1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1
+      ]
+    ]
+  }
+}

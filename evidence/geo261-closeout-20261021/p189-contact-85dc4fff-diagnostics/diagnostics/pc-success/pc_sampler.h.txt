@@ -1,0 +1,131 @@
+#ifndef GEO261_P189_PC_SAMPLER_H
+#define GEO261_P189_PC_SAMPLER_H
+/* 外部診斷 -include；不修改任何產品檔案。 */
+#if !defined(__x86_64__) || !defined(_GNU_SOURCE)
+#error "此診斷只支援 Linux x86_64，需 -D_GNU_SOURCE"
+#endif
+#include <errno.h>
+#include <inttypes.h>
+#include <limits.h>
+#include <link.h>
+#include <signal.h>
+#include <stdatomic.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/time.h>
+#include <time.h>
+#include <ucontext.h>
+#include <unistd.h>
+
+#if ATOMIC_LONG_LOCK_FREE != 2 || ATOMIC_INT_LOCK_FREE != 2
+#error "handler 所用原子型別必須永遠 lock-free"
+#endif
+_Static_assert(sizeof(uintptr_t)==sizeof(unsigned long),"需要x86_64 unsigned long PC");
+#define P189_PC_CAPACITY 262144U
+static _Atomic unsigned long p189_pc_slots[P189_PC_CAPACITY];
+static _Atomic unsigned p189_pc_seen;
+static _Atomic unsigned p189_pc_active;
+static _Atomic unsigned p189_pc_enabled;
+static char p189_pc_dir[PATH_MAX];
+static struct timespec p189_pc_start_wall,p189_pc_start_cpu;
+
+/* 不呼叫 malloc、stdio、dladdr 或任何 libc 函式。所有原子型別已檢查 lock-free。 */
+static void p189_pc_handler(int signo,siginfo_t *info,void *context)
+{
+    (void)signo;(void)info;
+    atomic_fetch_add_explicit(&p189_pc_active,1U,memory_order_seq_cst);
+    if(atomic_load_explicit(&p189_pc_enabled,memory_order_seq_cst)){
+        unsigned i=atomic_fetch_add_explicit(&p189_pc_seen,1U,memory_order_relaxed);
+        if(i<P189_PC_CAPACITY){
+            unsigned long pc=context?(unsigned long)((ucontext_t *)context)->uc_mcontext.gregs[REG_RIP]:0UL;
+            atomic_store_explicit(&p189_pc_slots[i],pc,memory_order_relaxed);
+        }
+    }
+    atomic_fetch_sub_explicit(&p189_pc_active,1U,memory_order_seq_cst);
+}
+
+/* 以下函式全部只在constructor或停止timer後執行，絕不從handler呼叫。 */
+static void p189_pc_fail(const char *message)
+{
+    dprintf(STDERR_FILENO,"P189 PC診斷失敗：%s；errno=%d\n",message,errno);
+    _Exit(125);
+}
+static FILE *p189_pc_file(const char *name)
+{
+    char path[PATH_MAX];int n=snprintf(path,sizeof path,"%s/%s",p189_pc_dir,name);
+    if(n<0||(size_t)n>=sizeof path)p189_pc_fail("輸出路徑過長");
+    FILE *f=fopen(path,"wx");if(!f)p189_pc_fail("拒覆寫或無法建立輸出");return f;
+}
+static void p189_pc_close(FILE *f)
+{
+    if(ferror(f)||fclose(f)!=0)p189_pc_fail("輸出失敗");
+}
+static void p189_pc_maps(const char *name)
+{
+    FILE *in=fopen("/proc/self/maps","r");if(!in)p189_pc_fail("無法讀maps");
+    FILE *out=p189_pc_file(name);char buf[4096];size_t n;
+    while((n=fread(buf,1,sizeof buf,in))!=0)if(fwrite(buf,1,n,out)!=n)p189_pc_fail("maps寫入失敗");
+    if(ferror(in)||fclose(in)!=0)p189_pc_fail("maps讀取失敗");p189_pc_close(out);
+}
+static void p189_pc_json_string(FILE *f,const char *s)
+{
+    fputc('"',f);
+    for(const unsigned char *p=(const unsigned char *)s;*p;p++){
+        if(*p=='"'||*p=='\\')fprintf(f,"\\%c",*p);
+        else if(*p<0x20)fprintf(f,"\\u%04x",(unsigned)*p);
+        else fputc(*p,f);
+    }
+    fputc('"',f);
+}
+static int p189_pc_module(struct dl_phdr_info *info,size_t size,void *data)
+{
+    (void)size;FILE *f=(FILE *)data;char executable[PATH_MAX];const char *name=info->dlpi_name;
+    if(!name||!*name){ssize_t n=readlink("/proc/self/exe",executable,sizeof executable-1);if(n<0||(size_t)n>=sizeof executable-1)p189_pc_fail("readlink exe或路徑截斷");executable[n]=0;name=executable;}
+    fputs("{\"path\":",f);p189_pc_json_string(f,name);
+    fprintf(f,",\"load_bias\":%" PRIuPTR ",\"segments\":[",(uintptr_t)info->dlpi_addr);
+    bool first=true;
+    for(ElfW(Half) i=0;i<info->dlpi_phnum;i++){
+        const ElfW(Phdr) *p=&info->dlpi_phdr[i];if(p->p_type!=PT_LOAD)continue;
+        if(!first)fputc(',',f);first=false;
+        fprintf(f,"{\"vaddr\":%" PRIu64 ",\"offset\":%" PRIu64 ",\"memsz\":%" PRIu64 ",\"filesz\":%" PRIu64 ",\"flags\":%u}",(uint64_t)p->p_vaddr,(uint64_t)p->p_offset,(uint64_t)p->p_memsz,(uint64_t)p->p_filesz,(unsigned)p->p_flags);
+    }
+    fputs("]}\n",f);return 0;
+}
+static uint64_t p189_pc_ns(struct timespec t)
+{return (uint64_t)t.tv_sec*UINT64_C(1000000000)+(uint64_t)t.tv_nsec;}
+static void p189_pc_finish(void)
+{
+    atomic_store_explicit(&p189_pc_enabled,0U,memory_order_seq_cst);
+    sigset_t blocked;if(sigemptyset(&blocked)||sigaddset(&blocked,SIGPROF)||sigprocmask(SIG_BLOCK,&blocked,NULL))p189_pc_fail("block SIGPROF");
+    struct itimerval stopped={0};if(setitimer(ITIMER_PROF,&stopped,NULL))p189_pc_fail("停止timer");
+    while(atomic_load_explicit(&p189_pc_active,memory_order_seq_cst)!=0U){}
+    struct timespec wall,cpu;if(clock_gettime(CLOCK_MONOTONIC,&wall)||clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&cpu))p189_pc_fail("clock");
+    unsigned seen=atomic_load_explicit(&p189_pc_seen,memory_order_relaxed),kept=seen<P189_PC_CAPACITY?seen:P189_PC_CAPACITY;
+    FILE *f=p189_pc_file("pcs.tsv");fputs("index\tpc\n",f);
+    for(unsigned i=0;i<kept;i++)fprintf(f,"%u\t0x%lx\n",i,atomic_load_explicit(&p189_pc_slots[i],memory_order_relaxed));
+    p189_pc_close(f);p189_pc_maps("maps.after");
+    f=p189_pc_file("modules.jsonl");if(dl_iterate_phdr(p189_pc_module,f)!=0)p189_pc_fail("module traversal");p189_pc_close(f);
+    f=p189_pc_file("stats.json");
+    fprintf(f,"{\"interval_usec\":1000,\"capacity\":%u,\"signals_seen\":%u,\"samples_kept\":%u,\"dropped_capacity\":%u,\"wall_ns\":%" PRIu64 ",\"process_cpu_ns\":%" PRIu64 ",\"timer\":\"ITIMER_PROF:user+system CPU\",\"handler\":\"lock-free atomic PC/count only\"}\n",P189_PC_CAPACITY,seen,kept,seen-kept,p189_pc_ns(wall)-p189_pc_ns(p189_pc_start_wall),p189_pc_ns(cpu)-p189_pc_ns(p189_pc_start_cpu));
+    p189_pc_close(f);
+}
+__attribute__((constructor)) static void p189_pc_start(void)
+{
+    const char *dir=getenv("GEO261_PCDIAG_DIR");if(!dir||!*dir)p189_pc_fail("缺GEO261_PCDIAG_DIR");
+    int n=snprintf(p189_pc_dir,sizeof p189_pc_dir,"%s",dir);if(n<0||(size_t)n>=sizeof p189_pc_dir)p189_pc_fail("目錄過長");
+    p189_pc_maps("maps.before");
+    if(atexit(p189_pc_finish))p189_pc_fail("atexit");
+    struct sigaction action={0};action.sa_sigaction=p189_pc_handler;action.sa_flags=SA_SIGINFO|SA_RESTART;
+    if(sigemptyset(&action.sa_mask)||sigaction(SIGPROF,&action,NULL))p189_pc_fail("sigaction");
+    sigset_t unblocked;if(sigemptyset(&unblocked)||sigaddset(&unblocked,SIGPROF)||sigprocmask(SIG_UNBLOCK,&unblocked,NULL))p189_pc_fail("unblock SIGPROF");
+    if(clock_gettime(CLOCK_MONOTONIC,&p189_pc_start_wall)||clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&p189_pc_start_cpu))p189_pc_fail("start clock");
+    atomic_store_explicit(&p189_pc_enabled,1U,memory_order_seq_cst);
+    struct itimerval timer={{0,1000},{0,1000}};
+    if(setitimer(ITIMER_PROF,&timer,NULL))p189_pc_fail("setitimer");
+}
+#endif
+
+#undef si_value

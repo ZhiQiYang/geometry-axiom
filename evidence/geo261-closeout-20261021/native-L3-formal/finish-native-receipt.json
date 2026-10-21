@@ -1,0 +1,24 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "startedUtc": "2026-10-21T06:20:56.524175+00:00",
+  "argv": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/finish-native.py"
+  ],
+  "dispatcherArgv": [
+    "python3",
+    "-B",
+    "-c",
+    "import pathlib,json,hashlib,subprocess,datetime,sys,os\nroot=pathlib.Path(\"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021\");out=root/\"native\"\nobs=json.loads(\"{\\\"sourceSha\\\":\\\"6589248c9a94bdf0460d8f84dd1610e51048188b\\\",\\\"sessionId\\\":75129,\\\"launchChunk\\\":\\\"2bd1ea\\\",\\\"kind\\\":\\\"實際工具回應的事後逐欄轉錄，非 transport 自動原始日誌\\\",\\\"actualToolResponse\\\":{\\\"chunk_id\\\":\\\"b139d1\\\",\\\"wall_time_seconds\\\":46.313134153,\\\"exit_code\\\":0,\\\"original_token_count\\\":0,\\\"output\\\":\\\"\\\"}}\")\nassert \"exit_code\" in obs[\"actualToolResponse\"]\nfor key,path in {\"command\":out/\"command.json\",\"receipt\":out/\"receipt.json\",\"launcherReceipt\":root/\"native-launcher/launcher-receipt.json\",\"dispatchCommand\":root/\"native-launcher/dispatch-command.json\"}.items():\n obs[key]=dict(path=str(path),sha256=hashlib.sha256(path.read_bytes()).hexdigest())\n(out/\"tool-observation.json\").write_text(json.dumps(obs,ensure_ascii=False,indent=2)+\"\\n\")\nscript=root/\"preparation/finish-native.py\"\nassert hashlib.sha256(script.read_bytes()).hexdigest()==\"1e57776831925b3648777463038da35bffc0349d783f4bdf5136659e7d4c02da\"\nargv=[\"env\",\"-u\",\"CC\",\"-u\",\"PYTHONOPTIMIZE\",\"python3\",\"-B\",str(script)]\nmeta=dict(sourceSha=obs[\"sourceSha\"],startedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),argv=argv,dispatcherArgv=sys.orig_argv,collectorSha256=hashlib.sha256(script.read_bytes()).hexdigest())\n(out/\"finish-native-command.json\").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\")\nwith (out/\"finish-native.stdout.log\").open(\"xb\") as stdout,(out/\"finish-native.stderr.log\").open(\"xb\") as stderr:\n child=subprocess.Popen(argv,stdout=stdout,stderr=stderr);rc=child.wait()\nmeta.update(finishedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),exitCode=rc,childPid=child.pid)\n(out/\"finish-native-receipt.json\").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\")\nprint(json.dumps(dict(exitCode=rc,receipt=str(out/\"finish-native-receipt.json\")),ensure_ascii=False))\nprint((out/\"finish-native.stdout.log\").read_text())\nif rc:print((out/\"finish-native.stderr.log\").read_text())\nsys.exit(rc if rc>=0 else 128-rc)\n"
+  ],
+  "collectorSha256": "1e57776831925b3648777463038da35bffc0349d783f4bdf5136659e7d4c02da",
+  "finishedUtc": "2026-10-21T06:20:57.256136+00:00",
+  "exitCode": 0,
+  "childPid": 482786
+}

@@ -1,0 +1,144 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "transcribedUtc": "2026-10-21T00:40:57.172231+00:00",
+  "kind": "實際工具觀察的事後人工轉錄",
+  "limitation": "本檔依本回合實際 tools.exec_command／tools.write_stdin 回傳轉錄；不是工具傳輸層自動產生的原始日誌。launcher 真 wait 碼另由每 phase receipt 與 .exit-code 保存。",
+  "phases": [
+    {
+      "phase": "q38",
+      "actualExecCommand": {
+        "cmd": "env -u CC -u PYTHONOPTIMIZE PYTHONDONTWRITEBYTECODE=1 python3 -B /workspace/geo261-evidence/gates-l-preparation/phase-launcher.py q38 > /workspace/geo261-evidence/gates-l-preparation/q38-launch-console.log 2>&1",
+        "workdir": "/workspace/geo261-gates-l",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 1000
+      },
+      "launchObservation": {
+        "chunk_id": "4d91a5",
+        "session_id": 51559,
+        "wall_time_seconds": 1.001227772
+      },
+      "finalWaitCall": {
+        "tool": "tools.write_stdin",
+        "arguments": {
+          "session_id": 51559,
+          "chars": "",
+          "yield_time_ms": 50000,
+          "max_output_tokens": 1000
+        }
+      },
+      "finalWaitObservation": {
+        "chunk_id": "6028d8",
+        "wall_time_seconds": 2.9979e-05,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "frozenLauncherReceipt": {
+        "path": "/workspace/geo261-evidence/gates-l/launcher/q38/receipt.json",
+        "sha256": "e2f0ad8ab72b3edadf6cc1484240f84bcde48316f8466ea823b338a8406df306"
+      }
+    },
+    {
+      "phase": "controls",
+      "actualExecCommand": {
+        "cmd": "env -u CC -u PYTHONOPTIMIZE PYTHONDONTWRITEBYTECODE=1 python3 -B /workspace/geo261-evidence/gates-l-preparation/phase-launcher.py controls > /workspace/geo261-evidence/gates-l-preparation/controls-launch-console.log 2>&1",
+        "workdir": "/workspace/geo261-gates-l",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 1000
+      },
+      "launchObservation": {
+        "chunk_id": "f861e4",
+        "session_id": 88637,
+        "wall_time_seconds": 1.000115582
+      },
+      "finalWaitCall": {
+        "tool": "tools.write_stdin",
+        "arguments": {
+          "session_id": 88637,
+          "chars": "",
+          "yield_time_ms": 50000,
+          "max_output_tokens": 1000
+        }
+      },
+      "finalWaitObservation": {
+        "chunk_id": "de6576",
+        "wall_time_seconds": 26.031312677,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "frozenLauncherReceipt": {
+        "path": "/workspace/geo261-evidence/gates-l/launcher/controls/receipt.json",
+        "sha256": "ba5ab6daa9f8858019b4e9a5eb6be3d4cbd54fcb35d75fd81d9146f27a093b58"
+      }
+    },
+    {
+      "phase": "card",
+      "actualExecCommand": {
+        "cmd": "env -u CC -u PYTHONOPTIMIZE PYTHONDONTWRITEBYTECODE=1 python3 -B /workspace/geo261-evidence/gates-l-preparation/phase-launcher.py card > /workspace/geo261-evidence/gates-l-preparation/card-launch-console.log 2>&1",
+        "workdir": "/workspace/geo261-gates-l",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 1000
+      },
+      "launchObservation": {
+        "chunk_id": "b278c4",
+        "session_id": 17804,
+        "wall_time_seconds": 1.001011508
+      },
+      "finalWaitCall": {
+        "tool": "tools.write_stdin",
+        "arguments": {
+          "session_id": 17804,
+          "chars": "",
+          "yield_time_ms": 1000,
+          "max_output_tokens": 1000
+        }
+      },
+      "finalWaitObservation": {
+        "chunk_id": "2c73ea",
+        "wall_time_seconds": 2.8662e-05,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "frozenLauncherReceipt": {
+        "path": "/workspace/geo261-evidence/gates-l/launcher/card/receipt.json",
+        "sha256": "70ded9f9cca7114a8076d8b5234dc6966c158ccb411345e7182ddbf6c8ec3747"
+      }
+    },
+    {
+      "phase": "axiom",
+      "actualExecCommand": {
+        "cmd": "env -u CC -u PYTHONOPTIMIZE PYTHONDONTWRITEBYTECODE=1 python3 -B /workspace/geo261-evidence/gates-l-preparation/phase-launcher.py axiom > /workspace/geo261-evidence/gates-l-preparation/axiom-launch-console.log 2>&1",
+        "workdir": "/workspace/geo261-gates-l",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 1000
+      },
+      "launchObservation": {
+        "chunk_id": "85f645",
+        "session_id": 13051,
+        "wall_time_seconds": 1.000841444
+      },
+      "finalWaitCall": {
+        "tool": "tools.write_stdin",
+        "arguments": {
+          "session_id": 13051,
+          "chars": "",
+          "max_output_tokens": 1000
+        },
+        "transcriptionNote": "僅轉錄可確證的呼叫欄位；最終等待時間參數未在此摘要留存，故不補填。"
+      },
+      "finalWaitObservation": {
+        "chunk_id": "7317b8",
+        "wall_time_seconds": 2.2231e-05,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      },
+      "frozenLauncherReceipt": {
+        "path": "/workspace/geo261-evidence/gates-l/launcher/axiom/receipt.json",
+        "sha256": "265586aa262ec2ef86b83daba34ee767d73308347e866ae984858cc33524d611"
+      }
+    }
+  ]
+}

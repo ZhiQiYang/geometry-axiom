@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "attempt": 1,
+      "exit_code": 1,
+      "tool_snapshot": "/workspace/geo261-evidence/ledger-cc-validate-and-package-attempt1.py",
+      "tool_sha256": "37cd219bc1717ac8ae74f4e11c62c8d6a498a76ef3d7d2b473c1bac3f462f86f",
+      "reason": "外部封裝器的新增AST ID核對誤以為表元素均為dict literal；官方定義使用dict(...)呼叫。尚未寫出validation receipt或publish，原官方full/兩check/ledger沒有受影響。"
+    },
+    {
+      "attempt": 2,
+      "tool": "/workspace/geo261-evidence/ledger-cc-validate-and-package.py",
+      "tool_sha256": "0eecd56f07f430bf2d74737193b9de66c5f290331a544abd9f3543159cb33efa",
+      "change": "只在外部AST核對接受實際dict(...)語法，仍要求同78個唯一ID；未改產品、tests或官方判準。",
+      "status": "待執行"
+    }
+  ]
+}

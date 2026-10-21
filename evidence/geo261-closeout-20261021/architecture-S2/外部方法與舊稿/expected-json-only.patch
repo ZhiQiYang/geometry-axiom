@@ -1,0 +1,13 @@
+--- 已審舊稿/refresh_owned.py
++++ 精確expected例外/refresh_owned.py
+@@ -140,7 +140,9 @@
+         for path, item in entries.items():
+             require(set(item) == {'rawSha256', 'lfSha256', 'reason'} and re.search(r'[\u3400-\u9fff]', item['reason']), '來源須明列 hash 與繁中理由')
+             require(path in owned if section == 'changedOwnedSources' else
+-                    (Path(path).parent.as_posix() == 'tests' and Path(path).suffix in {'.c', '.py'} and path not in declared), '來源超出明列範圍：' + path)
++                    (Path(path).parent.as_posix() == 'tests' and
++                     (Path(path).suffix in {'.c', '.py'} or path == 'tests/run_all.expected.json') and
++                     path not in declared), '來源超出明列範圍：' + path)
+             actual = base.hashes((root / path).read_bytes())
+             require(all(actual[k] == item[k] for k in ('rawSha256', 'lfSha256')), '來源 review hash 不符：' + path)
+             require(base.git(root, 'show', origin + ':' + path) != (root / path).read_bytes(), 'review 指定來源沒有變：' + path)

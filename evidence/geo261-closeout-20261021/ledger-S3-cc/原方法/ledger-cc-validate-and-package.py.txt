@@ -1,0 +1,162 @@
+from pathlib import Path
+from collections import Counter
+import ast, datetime, hashlib, json, os, shutil, subprocess
+
+OUT = Path('/workspace/geo261-evidence/ledger-cc-7159530c0e49.wzi0t97l')
+WORK = Path('/workspace/geo261-ledger-cc-run.nu12fpy7/repo')
+CACHE = Path('/workspace/geo261-ledger-cc-run.nu12fpy7/cache')
+SOURCE = '7159530c0e494d3211e6ab1764eb691137211707'
+
+def sha(b): return hashlib.sha256(b).hexdigest()
+def readj(p): return json.loads(p.read_bytes())
+def git(*args): return subprocess.check_output(['git', '-C', str(WORK), *args])
+def writej(p, d):
+    with p.open('x', encoding='utf-8') as f: json.dump(d, f, ensure_ascii=False, indent=2); f.write('\n')
+
+def validate():
+    before = (OUT/'mutants_results.json').read_bytes()
+    results = json.loads(before)
+    prepared = readj(OUT/'prepare-receipt.json')
+    definitions = {x['id']: x for x in prepared['mutants']}
+    tree=ast.parse((WORK/'tests/mutate.py').read_bytes())
+    current_ids=[]
+    for node in tree.body:
+        is_definition=(isinstance(node,ast.Assign) and any(isinstance(x,ast.Name) and x.id=='MUTANTS' for x in node.targets)) or (isinstance(node,ast.AugAssign) and isinstance(node.target,ast.Name) and node.target.id=='MUTANTS')
+        if is_definition:
+            assert isinstance(node.value,ast.List)
+            for item in node.value.elts:
+                if isinstance(item,ast.Call):
+                    assert isinstance(item.func,ast.Name) and item.func.id=='dict' and not item.args
+                    current_ids.append(next(k.value.value for k in item.keywords if k.arg=='id' and isinstance(k.value,ast.Constant)))
+                else:
+                    assert isinstance(item,ast.Dict)
+                    current_ids.append(next(v.value for k,v in zip(item.keys,item.values) if isinstance(k,ast.Constant) and k.value=='id'))
+    assert len(results) == 78 and set(results) == set(definitions) == set(current_ids) and len(current_ids)==78
+    environment=readj(OUT/'environment.json')
+    assert environment['CC_present'] is False and environment['PYTHONOPTIMIZE_present'] is False
+    assert environment['compile_command']==['cc','-std=c11','-O2','<source>','-o','<output>','-lm']
+    assert environment['compile_sha256']=='38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c'
+    assert sha((OUT/'sourcecode.txt').read_bytes())==environment['supervisor_source_sha256']
+    assert (OUT/'supervisor.exit-code').read_text().strip()=='0'
+    retired = {k for k,v in definitions.items() if v.get('retired')}
+    bridge = {k for k,v in definitions.items() if v.get('binary') == 'bridge'}
+    core = set(results) - retired - bridge
+    assert len(retired) == 3 and len(bridge) == 18 and len(core) == 57
+    assert git('rev-parse','HEAD').decode().strip() == SOURCE
+    assert not git('status','--porcelain','--untracked-files=no')
+    assert not list(WORK.glob('_mutant_*.c'))
+    for x in prepared['raw_backups']:
+        assert sha((WORK/x['path']).read_bytes()) == x['sha256']
+        assert sha(Path(x['backup']).read_bytes()) == x['sha256']
+        assert git('show',SOURCE+':'+x['path']) == (WORK/x['path']).read_bytes()
+    assert sha((OUT/'original-ledger.json').read_bytes()) == prepared['original_ledger_sha256']
+    phase_receipts = readj(OUT/'phase-receipts.json')
+    assert isinstance(phase_receipts,list) and [x['phase'] for x in phase_receipts]==['mutate','check','check-killers']
+    for phase in phase_receipts:
+        assert phase['source_sha']==SOURCE and phase['exit_code']==0 and phase['CC_present'] is False and phase['PYTHONOPTIMIZE_present'] is False
+        for stream in ('stdout','stderr'):
+            assert sha(Path(phase[stream]).read_bytes())==phase[stream+'_sha256']
+    assert (OUT/'mutate.exit-code').read_text().strip() == '0'
+    mutate = [x for x in phase_receipts if x.get('phase') == 'mutate']
+    assert len(mutate) == 1 and mutate[0]['exit_code'] == 0
+    # 原監看通道如中斷，補跑檢查的收據獨立保存，不覆寫原階段。
+    checks = []
+    for name in ('check','check-killers'):
+        prefix = name if (OUT/(name+'.exit-code')).exists() else 'recovery-'+name
+        assert (OUT/(prefix+'.exit-code')).read_text().strip() == '0'
+        checks.append({'phase':name,'receipt_prefix':prefix,'exit_code':0})
+    copied = {}
+    def capture(src, rel, expected=None):
+        data = src.read_bytes(); digest=sha(data)
+        if expected is not None: assert digest == expected, (str(src),digest,expected)
+        key=str(rel)
+        item={'source':str(src),'path':key,'bytes':len(data),'sha256':digest}
+        if key in copied: assert copied[key] == item
+        else: copied[key]=item
+    def raw_rows(value, directory, relative):
+        if isinstance(value,dict):
+            for stream in ('stdout','stderr'):
+                if stream+'_file' in value:
+                    name=value[stream+'_file']
+                    assert Path(name).name == name
+                    capture(directory/name,relative/name,value[stream+'_sha256'])
+            for v in value.values():raw_rows(v,directory,relative)
+        elif isinstance(value,list):
+            for v in value:raw_rows(v,directory,relative)
+    capture(CACHE/'_baseline'/'baseline.exe.fingerprint.json',Path('identities/core/baseline/baseline.exe.fingerprint.json'))
+    bridge_checks=[]
+    for key,record in results.items():
+        if key in retired:
+            assert record['verdict']=='retired' and record.get('execution') is None
+            continue
+        ex=record['execution']; assert ex['head']==SOURCE
+        if key in core:
+            assert ex['compile_exit_code']==0
+            assert ex['compile_command']==environment['compile_command'] and ex['compile_sha256']==environment['compile_sha256']
+            assert ex['baseline']['exit_code']==0
+            assert ex['baseline']['result']['total']==165
+            assert ex['baseline']['result']['counts']=={'pass':165,'fail':0,'infrastructure':0}
+            assert ex['attempts']
+            assert sha((CACHE/key/'_mut.exe').read_bytes())==ex['exe_sha256']
+            assert sha((CACHE/'_baseline'/'baseline.exe').read_bytes())==ex['baseline_exe_sha256']
+            capture(CACHE/key/'_mut.exe.fingerprint.json',Path('identities/core')/key/'_mut.exe.fingerprint.json')
+        else:
+            assert ex['byte_restored'] is True
+            for phase in ('baseline','restored'):
+                row=ex[phase]; r=row['result']
+                assert row['exit_code']==0 and not row['timed_out']
+                assert r['total']==27 and len(r['requested'])==27 and len(r['started'])==27
+                assert set(r['requested'])==set(r['started'])==set(ex['restored_methods'])
+                assert not any(r[x] for x in ('failures','errors','skipped','expected_failures','unexpected_successes'))
+            assert ex['baseline_identity']['exe_sha256']==ex['restored_identity']['exe_sha256']
+            baseline_dir=CACHE/'_bridge-baseline'/SOURCE
+            for phase in ('baseline_build','baseline'):
+                raw_rows(ex[phase],baseline_dir,Path('raw/bridge/baseline')/SOURCE)
+            for phase,value in ex.items():
+                if phase not in ('baseline_build','baseline'):
+                    raw_rows(value,CACHE/key,Path('raw/bridge')/key)
+            for phase,directory in [('baseline',baseline_dir),('mutant',CACHE/key/'bridge-mutant'),('restored',CACHE/key/'bridge-restored')]:
+                identity=ex[phase+'_identity']
+                assert identity['sidecar']['command'].startswith('cc ')
+                assert sha((directory/'bridge').read_bytes())==identity['exe_sha256']
+                rel=Path('identities/bridge')/('baseline' if phase=='baseline' else key)/phase/'bridge.fingerprint.json'
+                capture(directory/'bridge.fingerprint.json',rel,identity['sidecar_sha256'])
+            bridge_checks.append({'id':key,'verdict':record['verdict'],'source_sha':ex['head'],'baseline_total':27,'restored_total':27,'byte_restored':True,'restored_binary_identical':True})
+    for key,record in results.items():
+        if record['verdict']=='crashed' and key in core:
+            attempts=record['execution']['attempts'];assert len(attempts)==3
+            signatures=[]
+            for attempt in attempts:
+                assert attempt['exit_code']==2
+                bad=[x for x in attempt['result']['cases'] if x['status']!='pass']
+                assert len(bad)==1 and '-11' in bad[0]['detail']
+                signatures.append(bad[0]['scene'])
+            assert len(set(signatures))==1 and record['crashed_on']==[signatures[0]]
+    assert (OUT/'mutants_results.json').read_bytes()==before
+    scratch=CACHE/'_bridge-work'/SOURCE/'repo'
+    assert subprocess.check_output(['git','-C',str(scratch),'rev-parse','HEAD']).decode().strip()==SOURCE
+    assert not subprocess.check_output(['git','-C',str(scratch),'status','--porcelain','--untracked-files=no'])
+    counts=dict(Counter(x['verdict'] for x in results.values()))
+    assert not any(counts.get(k,0) for k in ('survived','invalid','stale','blocked','unrun'))
+    r={'validated_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'source_sha':SOURCE,'product_parent_sha':prepared['product_parent_sha'],'source_tree':git('rev-parse','HEAD^{tree}').decode().strip(),'ledger_sha256':sha(before),'ledger_bytes':len(before),'record_count':len(results),'verdict_counts':counts,'execution_count':len(core)+len(bridge),'all_execution_heads_match':True,'retired_count':len(retired),'core_count':len(core),'bridge_count':len(bridge),'core_baseline_total':165,'checks':checks,'bridge_checks':bridge_checks,'raw_and_sidecar_file_count':len(copied),'core_raw_limitation':'既有核心工具只在帳本保存結構化 oracle result 及子程序 stdout/stderr SHA256，未另存每個子程序的原始 stdout/stderr；頂層 mutate.stdout 不能替代未保存的原始子輸出。','tracked_worktree_clean':True,'temporary_mutant_sources_remaining':0,'source_raw_backups_verified':len(prepared['raw_backups']),'original_ledger_preserved':True,'compiler_argv0':'cc','CC_absent':True,'PYTHONOPTIMIZE_absent':True,'supervisor_exit_code':0,'selftest_directory':readj(OUT/'supervisor-source.json')['launcher_selftest_directory']}
+    writej(OUT/'ledger-validation.json',r)
+    writej(OUT/'raw-source-index.json',list(copied.values()))
+    destination=OUT/'publish'
+    destination.mkdir()
+    for item in copied.values():
+        target=destination/item['path'];target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(item['source'],target)
+        assert sha(target.read_bytes())==item['sha256']
+    top=[]
+    for src in sorted(OUT.iterdir()):
+        if not src.is_file():continue
+        target=destination/src.name;shutil.copyfile(src,target)
+        data=src.read_bytes();assert target.read_bytes()==data
+        top.append({'source':str(src),'path':src.name,'bytes':len(data),'sha256':sha(data)})
+    writej(destination/'publication-index.json',top+list(copied.values()))
+    paths=sorted(x for x in destination.rglob('*') if x.is_file())
+    (destination/'SHA256SUMS').write_text(''.join(sha(x.read_bytes())+'  '+x.relative_to(destination).as_posix()+'\n' for x in paths),encoding='utf-8')
+    print(json.dumps(r,ensure_ascii=False))
+    print('publish',destination,'files',len(paths)+1)
+
+if __name__=='__main__':validate()

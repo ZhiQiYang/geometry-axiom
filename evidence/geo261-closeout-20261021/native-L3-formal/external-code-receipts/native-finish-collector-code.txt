@@ -1,0 +1,129 @@
+"""原 native 真結束後保存終值與完整 raw，核固定事前契約；不重跑產品。"""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+BASE = Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')
+PREP = BASE/'preparation'
+OUT = BASE/'native'
+PLAN = json.loads((PREP/'instance.json').read_bytes())
+SHA = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+assert not sys.flags.optimize and PLAN['sourceSha'] == SHA
+
+def utc():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def save(path, data):
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2)+'\n')
+
+receipt = json.loads((OUT/'receipt.json').read_bytes())
+launcher = json.loads((BASE/'native-launcher/launcher-receipt.json').read_bytes())
+tool = json.loads((OUT/'tool-observation.json').read_bytes())
+assert receipt['sourceSha'] == launcher['nativeSourceSha'] == tool['sourceSha'] == SHA
+assert 'exit_code' in tool['actualToolResponse']
+env = os.environ.copy()
+for key in PLAN['unsetEnvironment']:
+    env.pop(key, None)
+env['PYTHONDONTWRITEBYTECODE'] = '1'
+
+def run(label, argv, cwd=None):
+    started = utc()
+    with (OUT/(label+'.stdout.log')).open('xb') as stdout, (OUT/(label+'.stderr.log')).open('xb') as stderr:
+        child = subprocess.Popen(argv, cwd=cwd, env=env, stdout=stdout, stderr=stderr)
+        code = child.wait()
+    result = dict(sourceSha=SHA, command=argv, cwd=str(cwd) if cwd else None,
+                  startedUtc=started, finishedUtc=utc(), childPid=child.pid, exitCode=code)
+    save(OUT/(label+'-command.json'), result)
+    return code
+
+fresh_argv = ['python3', '-B', 'tests/binaries.py', 'status']
+fresh_code = run('final-build-fresh', fresh_argv, PLAN['nativeWorktree'])
+fresh_text = (OUT/'final-build-fresh.stdout.log').read_text()
+fresh_names = [line.split()[0] for line in fresh_text.splitlines()
+               if len(line.split()) >= 2 and line.split()[1] == 'fresh']
+names = sorted(b['name'] for b in PLAN['registry'] if not b['windowsOnly'])
+save(OUT/'final-build-freshness.json', dict(sourceSha=SHA, command=fresh_argv,
+     exitCode=fresh_code, freshNames=fresh_names, expectedFreshNames=names,
+     allSixFresh=sorted(fresh_names) == names, CCAbsent='CC' not in env,
+     PYTHONOPTIMIZEAbsent='PYTHONOPTIMIZE' not in env, compilerOrTestsStarted=False))
+assert fresh_code == 0 and sorted(fresh_names) == names
+
+snapshot = Path('/workspace/geo261-evidence/l3-native-gates-preparation/snapshot-native-binaries.py')
+assert digest(snapshot) == '8bd7819b8c7823f1dc875dc6836362c328bf95d4a8b174a4e9ddbc15976465f4'
+snapshot_code = run('final-build-snapshot', ['python3', '-B', str(snapshot),
+    '--instance', str(PREP/'instance.json'), '--stage', 'final-build'])
+assert snapshot_code == 0
+final_index = json.loads((OUT/'final-build-binary-index.json').read_bytes())
+assert final_index['sourceSha'] == SHA and len(final_index['files']) == 12
+by_name = {Path(e['sourcePath']).name: e for e in final_index['files']}
+bindings = []
+for binary in PLAN['registry']:
+    if binary['windowsOnly']:
+        continue
+    entry = by_name[binary['exe']]
+    sidecar = by_name[binary['exe']+'.fingerprint.json']
+    data = json.loads(Path(sidecar['preservedPath']).read_bytes())
+    matched = (data['exe_sha256'] == entry['sha256'] and data['exe_size'] == entry['bytes']
+               and data['exe_mtime_ns'] == entry['sourceMtimeNs']
+               and digest(Path(entry['preservedPath'])) == entry['sha256']
+               and digest(Path(sidecar['preservedPath'])) == sidecar['sha256'])
+    bindings.append(dict(name=binary['name'], sidecarBinaryBindingMatched=matched,
+                         binarySha256=entry['sha256'], fingerprintSha256=sidecar['sha256']))
+save(OUT/'final-build-bindings.json', dict(sourceSha=SHA, bindings=bindings,
+     matchesInitialBytesAndMtimes=final_index['matchesInitialBytesAndMtimes']))
+
+packager = PREP/'package-native.py'
+assert digest(packager) == '609f59b2d0f9b067ac100d7ee99e3f7e685a594e75f2e9fb72df39179135b4bb'
+packaging_code = run('packaging-final', ['python3', '-B', str(packager)])
+verification = json.loads((OUT/'verification.json').read_bytes())
+named = json.loads((OUT/'named-required-suites.json').read_bytes())
+v = verification
+totals = v['observedTotals']
+named_counted = {'py:test_architecture_contract':205,
+                 'py:test_product_architecture':18,
+                 'py:test_geo261_model_base_replay':6}
+named_ok = True
+for name, expected_count in named_counted.items():
+    row = named['suites'][name]['row']
+    named_ok = named_ok and all(row[k] == value for k, value in
+        dict(total=expected_count, passed=expected_count, failed=0, skipped=0).items())
+    named_ok = named_ok and len(named['suites'][name]['rawFiles']) == 3
+mutation = named['suites']['mutation:check']['row']
+mutation_ok = mutation['total'] is None and mutation['passed'] == '-' and 'exit 0' in mutation['note']
+other_exit_only = [name for name in v['exitCodeOnlySuites'] if name != 'mutation:check']
+exit_only_ok = len(other_exit_only) == 6 and all(v['suiteRows'][name]['passed'] == 'ok' for name in other_exit_only)
+skip_ok = (len(v['skips']) == 1 and v['skips'][0]['allowed']
+           and v['skips'][0]['suite'] == 'py:test_gdi_contract'
+           and v['skips'][0]['item']['test'] == 'test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources'
+           and v['skips'][0]['item']['reason'] == 'requires compiled Windows GDI contract harness')
+scope_ok = (v['sourceSha'] == SHA and v['expectedSuiteCount'] == v['observedCompletedTableRows'] == v['observedProgressCount'] == 224
+            and v['pythonJsonCount'] == 188 and v['expectedCountedTotal'] == 5188
+            and not v['expectedMismatches'] and not v['missingSuiteLogs']
+            and not v['rawFilesOlderThanRun'] and v['rawLogCount'] == 600)
+green_counts = totals is not None and all(totals[k] == value for k, value in
+    dict(total=5188, passed=5187, failed=0, skipped=1).items())
+true_exit_zero = (receipt['exitCode'] == launcher['wrapperReturnCode'] == launcher['launcherExitCode']
+                  == tool['actualToolResponse']['exit_code'] == packaging_code == 0)
+accepted_exact = bool(v['acceptedNative'] and scope_ok and green_counts and named_ok and mutation_ok
+    and exit_only_ok and skip_ok and true_exit_zero and final_index['matchesInitialBytesAndMtimes']
+    and all(item['sidecarBinaryBindingMatched'] for item in bindings))
+result = dict(sourceSha=SHA, checkedUtc=utc(), acceptedNativeExact=accepted_exact,
+    originalAcceptedNative=v['acceptedNative'], completeScope=scope_ok, exactExpectedGreenCounts=green_counts,
+    namedRequiredCountedPassed=named_ok, mutationInventoryExitOnlyAccepted=mutation_ok,
+    otherSixExitOnlyAccepted=exit_only_ok, uniqueAllowedSkipAccepted=skip_ok,
+    trueAllExitZero=true_exit_zero, matchesInitialBytesAndMtimes=final_index['matchesInitialBytesAndMtimes'],
+    observedTotals=totals, elapsedSeconds=receipt['elapsedSeconds'], rawLogCount=v['rawLogCount'],
+    verificationPath=str(OUT/'verification.json'), verificationSha256=digest(OUT/'verification.json'),
+    finalBinaryIndexSha256=digest(OUT/'final-build-binary-index.json'),
+    collectorPath=str(Path(__file__)), collectorSha256=digest(Path(__file__)),
+    note='只核已完成的同輪結果；任何 false 仍保留原 verification 與 raw，不改正式結果、不重跑。')
+save(OUT/'completion-verification.json', result)
+print(json.dumps(result, ensure_ascii=False), flush=True)
+raise SystemExit(0 if accepted_exact else 1)

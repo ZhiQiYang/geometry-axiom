@@ -1,0 +1,165 @@
+{
+  "sourceHead": "7afacf656912edccc7eb84cb9590990bccae1166",
+  "exitCode": 0,
+  "counts": {
+    "executableFiles": 610,
+    "ownedSources": 333,
+    "exclusions": 277,
+    "edges": 796,
+    "diagnostics": 0,
+    "layers": {
+      "H": 191,
+      "K": 69,
+      "W": 67,
+      "vendor": 6
+    },
+    "languages": {
+      "c": 190,
+      "html": 4,
+      "javascript": 64,
+      "python": 75
+    },
+    "forbiddenIdentifiers": 918,
+    "forbiddenStrings": 55
+  },
+  "outputs": {
+    "geometry-core/domain-decoupling/product-architecture.json": {
+      "rawSha256": "e3ee7005c8842d716a43217ef46da1c751e950226859a5027f4abc5fbaa8a131",
+      "lfSha256": "e3ee7005c8842d716a43217ef46da1c751e950226859a5027f4abc5fbaa8a131",
+      "bytes": 224976
+    },
+    "geometry-core/domain-decoupling/product-architecture-scan.json": {
+      "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "bytes": 132208
+    },
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md": {
+      "rawSha256": "0aa2185df460ea062d9527bf20415183eb6f2ace6a2f8241e3f4525aacb53f22",
+      "lfSha256": "0aa2185df460ea062d9527bf20415183eb6f2ace6a2f8241e3f4525aacb53f22",
+      "bytes": 31945
+    },
+    "geometry-core/domain-decoupling/product-architecture-receipt.json": {
+      "rawSha256": "b3717caa6c4e2ccc1406211a89668a322121ad6c732c057361e4544dedba5c9e",
+      "lfSha256": "b3717caa6c4e2ccc1406211a89668a322121ad6c732c057361e4544dedba5c9e",
+      "bytes": 284109
+    }
+  },
+  "validation": [
+    {
+      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/test_architecture_contract.py",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "sourceBaseHead": "7afacf656912edccc7eb84cb9590990bccae1166",
+      "startedUtc": "2026-10-20T20:21:57.714354+00:00",
+      "finishedUtc": "2026-10-20T20:21:58.180158+00:00",
+      "seconds": 0.466,
+      "complete": true,
+      "exitCode": 0,
+      "stdout": {
+        "path": "generic-tests/stdout.log",
+        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "generic-tests/stderr.log",
+        "rawSha256": "8f232b6f9aa3646a25cbbe9eadc700fae54e5490e6a6778d249bd0d8100fa49a",
+        "lfSha256": "8f232b6f9aa3646a25cbbe9eadc700fae54e5490e6a6778d249bd0d8100fa49a",
+        "bytes": 29577
+      },
+      "tests": 205,
+      "passed": 205,
+      "failed": 0,
+      "skipped": 0,
+      "unittestSeconds": 0.33,
+      "skipLines": [],
+      "sha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+      "executedAtCurrentHead": true
+    },
+    {
+      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/test_product_architecture.py",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "sourceBaseHead": "7afacf656912edccc7eb84cb9590990bccae1166",
+      "startedUtc": "2026-10-20T20:21:58.414951+00:00",
+      "finishedUtc": "2026-10-20T20:22:09.318481+00:00",
+      "seconds": 10.904,
+      "complete": true,
+      "exitCode": 0,
+      "stdout": {
+        "path": "product-tests/stdout.log",
+        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "product-tests/stderr.log",
+        "rawSha256": "e7e6e4041792311ced9df9a9ae34a020ebd5b935026323db63690687a23a4cdb",
+        "lfSha256": "e7e6e4041792311ced9df9a9ae34a020ebd5b935026323db63690687a23a4cdb",
+        "bytes": 118
+      },
+      "tests": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "unittestSeconds": 10.805,
+      "skipLines": [],
+      "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
+      "executedAtCurrentHead": true
+    }
+  ],
+  "controls": [
+    {
+      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/architecture_contract.py --root . --manifest /workspace/geo261-evidence/architecture/run-7afacf65/withdraw-digest-0.json",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "/workspace/geo261-evidence/architecture/run-7afacf65/withdraw-digest-0.json"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "sourceBaseHead": "7afacf656912edccc7eb84cb9590990bccae1166",
+      "startedUtc": "2026-10-20T20:22:09.586180+00:00",
+      "finishedUtc": "2026-10-20T20:22:09.801265+00:00",
+      "seconds": 0.215,
+      "complete": true,
+      "exitCode": 1,
+      "stdout": {
+        "path": "withdraw-digest-0/stdout.log",
+        "rawSha256": "634075fc16928c58f1d50e6853ecc557bacff6a2bf0477191e66d92a782a8346",
+        "lfSha256": "634075fc16928c58f1d50e6853ecc557bacff6a2bf0477191e66d92a782a8346",
+        "bytes": 352
+      },
+      "stderr": {
+        "path": "withdraw-digest-0/stderr.log",
+        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "target": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
+      "expectedExitCode": 1,
+      "diagnostics": [
+        {
+          "path": "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
+          "line": 1,
+          "code": "EXCLUSION_DIGEST",
+          "message": "immutable lf digest is absent or mismatched",
+          "direction": "",
+          "chain": []
+        }
+      ],
+      "killed": true
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+"""僅讀取正式 L native 原件並另寫獨立報告；不執行產品、編譯器或測試。"""
+import ast,datetime,hashlib,io,json,re,subprocess
+from pathlib import Path
+
+BASE=Path('/workspace/geo261-evidence')
+RUN=BASE/'native-final'
+LAUNCH=BASE/'native-final-launcher'
+ROOT=Path('/workspace/geo261-native-l')
+SHA='43f85313c32410ac01406ab585846bbacafea278'
+OUT=BASE/'native-final-independent-review.json'
+def sha(data): return hashlib.sha256(data).hexdigest()
+def readj(p): return json.loads(p.read_text())
+def ref(p):
+    b=p.read_bytes()
+    return dict(path=str(p),bytes=len(b),sha256=sha(b))
+def exact(p,n,h):
+    b=p.read_bytes()
+    assert len(b)==n and sha(b)==h,str(p)
+    return b
+def ns(s): return int(datetime.datetime.fromisoformat(s).timestamp()*1_000_000_000)
+
+v=readj(RUN/'verification.json')
+assert sha((RUN/'verification.json').read_bytes())=='854331066a034b08c85ffebb4257f16a576933b37b89ac7ed49b2af6ec2e4af5'
+c=readj(RUN/'command.json');r=readj(RUN/'receipt.json');l=readj(LAUNCH/'launcher-receipt.json')
+expected=readj(RUN/'source-reference/run_all.expected.json')['suites']
+raw=(RUN/'run.log').read_text()
+assert c['command']==r['command']==['timeout','2100','python3','tests/run_all.py','--build']
+assert c['jobLimitSeconds']==r['jobLimitSeconds']==2100
+assert c['stackKiB']==r['stackKiB']==16384
+assert c['cwd']==r['cwd']==str(ROOT)
+assert r['sourceSha']==r['headBefore']==r['headAfter']==l['sourceShaExpected']==l['nativeSourceSha']==SHA
+assert not r['statusBefore'] and not r['statusAfter']
+assert r['exitCode']==r['mainChildRawWaitStatus']==l['nativeMainTimeoutReturnCode']==l['nativeMainChildRawWaitStatus']==l['wrapperReturnCode']==l['launcherExitCode']==0
+assert int((LAUNCH/'.exit-code').read_text())==int((LAUNCH/'.launcher-exit-code').read_text())==0
+assert sha((RUN/'receipt.json').read_bytes())==l['nativeReceiptSha256']
+assert 0<r['elapsedSeconds']<2100 and 0<l['elapsedSeconds']<2100
+assert c['startedUtc']==r['startedUtc'] and ns(r['finishedUtc'])>ns(r['startedUtc'])
+assert r['sourceHashesBefore']==r['sourceHashesAfter'] and r['sourceHashesUnchanged']
+assert c['wrapperSource'].encode()==(LAUNCH/'wrapper-code.txt').read_bytes()
+assert l['wrapperArgv'][-1].encode()==(LAUNCH/'wrapper-code.txt').read_bytes()
+assert l['wrapperCodeSha256']==sha((LAUNCH/'wrapper-code.txt').read_bytes())
+argv=l['launcherArgv']; assert argv[argv.index('-c')+1].encode()==(LAUNCH/'launcher-code.txt').read_bytes()
+assert 'process.wait()' in (LAUNCH/'launcher-code.txt').read_text()
+assert 'os.waitpid(-1,os.WNOHANG)' in c['wrapperSource']
+assert 'os.execvp(command[0],command)' in c['wrapperSource']
+assert '[環境] CC=未設定' in raw
+pre=readj(LAUNCH/'preflight.json')
+assert pre['CCAbsent'] and pre['PYTHONOPTIMIZEAbsent'] and pre['nativeGlobalAbsentBeforeStart']
+assert pre['jobLimitSeconds']==2100 and pre['timeoutIncludesBuild'] and pre['sourceSha']==SHA
+for pid in [r['wrapperPid'],r['mainChildPid']]:
+    limits=(LAUNCH/f'{pid}-limits.txt').read_text()
+    assert re.search(r'^Max stack size\s+16777216\s+unlimited\s+bytes',limits,re.M)
+probe=readj(LAUNCH/'actual-process-preflight.json')
+assert probe['firstProbe']['exitCode']==1
+assert all(p.get('environReadError',{}).get('errno')==13 for p in probe['processes'])
+
+# 逐行分欄，不共用封裝器的多行正則。
+rows={}
+for line in raw.splitlines():
+    fields=line.split(maxsplit=6)
+    if fields and fields[0] in expected:
+        assert len(fields)>=6 and fields[0] not in rows,line
+        name,total,passed,failed,skipped,secs=fields[:6]
+        number=lambda s: int(s) if s.isdecimal() else s
+        rows[name]=dict(total=None if total=='-' else int(total),passed=number(passed),failed=number(failed),skipped=None if skipped=='-' else int(skipped),seconds=float(secs),note=fields[6] if len(fields)==7 else '')
+assert len(rows)==len(expected)==224 and rows==v['suiteRows']
+progress=[(int(a),int(b),s) for a,b,s in re.findall(r'^\[(\d+)/(\d+)\] (\S+) …$',raw,re.M)]
+assert [x[0] for x in progress]==list(range(1,225))
+assert all(x[1]==224 for x in progress)
+assert len({x[2] for x in progress})==224 and {x[2] for x in progress}==set(expected)
+for name,e in expected.items():
+    t=rows[name]
+    if e['mode']=='count':
+        assert t['total']==e['count'] and t['failed']==0 and t['passed']+t['skipped']==t['total'],name
+    else:
+        assert e['mode']=='exit-code-only' and t['total'] is None and t['failed']=='-' and t['passed'] in ('ok','-'),name
+totals=[line.split() for line in raw.splitlines() if line.startswith('合計(已執行、有計數者)')]
+assert len(totals)==1 and list(map(int,totals[0][1:5]))==[5176,5175,0,1]
+assert sum(t['total'] or 0 for t in rows.values())==5176
+assert sum(t['passed'] for t in rows.values() if isinstance(t['passed'],int))==5175
+assert sum(t['skipped'] or 0 for t in rows.values())==1
+assert raw.rstrip().endswith('必要正式 owner／瀏覽器整合另驗') and '\nexit 0：完整非瀏覽器登錄測試' in raw
+
+idx=readj(RUN/'suite-log-source-index.json')
+assert idx['fileCount']==len(idx['files'])==600 and idx['totalBytes']==sum(x['bytes'] for x in idx['files'])==296101
+start,end=ns(r['startedUtc']),ns(r['finishedUtc'])
+for x in idx['files']:
+    dest=exact(RUN/x['artifactPath'],x['bytes'],x['sha256'])
+    source=Path(x['sourcePath'])
+    assert source.read_bytes()==dest
+    assert source.stat().st_mtime_ns==x['sourceMtimeNs']==(RUN/x['artifactPath']).stat().st_mtime_ns
+    assert start<=x['sourceMtimeNs']<=end,x['sourcePath']
+assert {p.name for p in (RUN/'suite-logs').iterdir() if p.is_file()}=={Path(x['artifactPath']).name for x in idx['files']}
+py=list((RUN/'suite-logs').glob('py_*.json'))
+assert len(py)==188
+skips=[]
+for p in py:
+    j=readj(p);name=p.stem.replace('py_','py:',1);row=rows[name]
+    assert (j['total'],j['passed'],j['failed'],j['skipped'])==(row['total'],row['passed'],row['failed'],row['skipped'])
+    assert not any(j.get(k) for k in ('failed','extra_errors','import_error','blocked_by_error','failures','expected_failures','expected_failed','unrun_skipped'))
+    skips.extend((name,s) for s in j.get('skip_items',[]))
+assert len(skips)==1
+assert skips[0][0]=='py:test_gdi_contract'
+assert skips[0][1]['test']=='test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources'
+assert skips[0][1]['reason']=='requires compiled Windows GDI contract harness' and skips[0][1]['count']==1
+for name,count in [('py:test_architecture_contract',205),('py:test_product_architecture',18),('py:test_geo261_model_base_replay',6)]:
+    assert rows[name]['total']==rows[name]['passed']==count
+    text=(RUN/'suite-logs'/(name.replace(':','_')+'.unittest.log')).read_text()
+    assert f'Ran {count} tests' in text and text.rstrip().endswith('OK')
+mutation=(RUN/'suite-logs/mutation_check.log').read_text()
+assert '變異表 78 筆,紀錄 78 筆' in mutation
+for s in ['killed 70','crashed 1','survived 0','equivalent 4','invalid 0','stale 0','blocked 0','retired 3','CRASHED M20']:
+    assert s in mutation
+
+# 每份建置來源直接對 Git L；不 import 產品模組，不執行 fresh/check。
+bindings=dict(r['sourceHashesBefore'])
+fingerprints=[]
+initial=readj(RUN/'initial-build-binary-index.json')['files']
+final=readj(RUN/'final-build-binary-index.json')['files']
+assert len(initial)==len(final)==12
+for a,b in zip(initial,final):
+    assert a['sourcePath']==b['sourcePath'] and a['sha256']==b['sha256'] and a['bytes']==b['bytes'] and a['sourceMtimeNs']==b['sourceMtimeNs']
+    assert b['sameBytesAsInitialBuild'] and b['sameMtimeAsInitialBuild']
+    for x in (a,b):
+        exact(Path(x['preservedPath']),x['bytes'],x['sha256'])
+        assert Path(x['preservedPath']).stat().st_mtime_ns==x['sourceMtimeNs']
+    assert start<=a['sourceMtimeNs']<=end
+for p in sorted((RUN/'initial-build-fingerprints').glob('*.json')):
+    j=readj(p);f=RUN/'final-build-fingerprints'/p.name
+    assert p.read_bytes()==f.read_bytes()
+    binary=next(x for x in final if Path(x['sourcePath']).name==j['exe'])
+    assert j['exe_sha256']==binary['sha256'] and j['exe_size']==binary['bytes'] and j['exe_mtime_ns']==binary['sourceMtimeNs']
+    for name,h in j['files'].items():
+        assert name not in bindings or bindings[name]==h
+        bindings[name]=h
+    fingerprints.append(dict(name=j['name'],command=j['command'],files=len(j['files']),exeSha256=j['exe_sha256']))
+assert len(fingerprints)==6 and all(x['command'].startswith('cc ') for x in fingerprints)
+objects=''.join(SHA+':'+name+'\n' for name in bindings).encode()
+proc=subprocess.run(['git','cat-file','--batch'],input=objects,cwd=ROOT,capture_output=True,check=True)
+buf=io.BytesIO(proc.stdout)
+for name,h in bindings.items():
+    header=buf.readline().decode().strip().split();assert len(header)==3 and header[1]=='blob',name
+    data=buf.read(int(header[2]));assert buf.read(1)==b'\n'
+    assert sha(data)==h and (ROOT/name).read_bytes()==data,name
+assert not buf.read()
+assert sha((RUN/'source-reference/run_all.expected.json').read_bytes())==bindings['tests/run_all.expected.json']
+tree=ast.parse((ROOT/'tests/run_all.py').read_text())
+allowed=next(ast.literal_eval(n.value) for n in tree.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='ALLOWED_SKIPS' for t in n.targets))
+assert any(a['suite']==skips[0][0] and a['test']==skips[0][1]['test'] and a['reason']==skips[0][1]['reason'] and 'posix' in a['platforms'] for a in allowed)
+wf=(ROOT/'.github/workflows/integration-tests.yml').read_text()
+assert 'timeout-minutes: 35' in wf and 'ulimit -s 16384' in wf and 'python3 tests/run_all.py --build' in wf
+
+cleanup=readj(RUN/'cleanup-verification.json')
+assert cleanup['allTrackedPidsGone'] and len(cleanup['processes'])==13 and all(not p['procExists'] for p in cleanup['processes'])
+assert cleanup['cleanupEvents']==r['cleanup']==[] and cleanup['mainRawWaitStatus']==0
+events=[json.loads(x) for x in (RUN/'reaped.jsonl').read_text().splitlines()]
+assert events==r['reaped']==readj(RUN/'reaped.json')['events']
+main=[e for e in events if e['isMainProcess']]
+assert len(main)==1 and main[0]['pid']==r['mainChildPid'] and main[0]['exitCode']==main[0]['rawWaitStatus']==0
+observation=readj(BASE/'native-final-tool-observation.json')
+assert observation['sourceSha']==SHA and observation['completionResult']['exit_code']==0
+assert observation['launchResult']['session_id']==observation['completionArguments']['session_id']==71609
+assert observation['completionResult']['chunk_id']=='4e267f'
+assert observation['launchArguments']['cmd'].startswith('env -u CC -u PYTHONOPTIMIZE python3 -B -c ')
+assert 'env.pop(\"CC\",None)' in observation['bootstrapSource'] and 'env.pop(\"PYTHONOPTIMIZE\",None)' in observation['bootstrapSource']
+copies=readj(RUN/'launcher-copy-index.json')
+for x in copies['files']:
+    assert exact(Path(x['sourcePath']),x['bytes'],x['sha256'])==exact(RUN/x['artifactPath'],x['bytes'],x['sha256'])
+assert copies['fileCount']==len(copies['files'])==18
+archive=readj(LAUNCH/'prior-global-artifacts.json')
+assert len(archive['entries'])==pre['oldEntries']==825
+assert archive['archivePath']==pre['oldGlobalArchive']
+archive_files=[x for x in archive['entries'] if x['type']=='file']
+assert sum(x['bytes'] for x in archive_files)==pre['oldFileBytes']==12119670
+for x in archive_files:
+    p=Path(archive['archivePath'])/x['path'];exact(p,x['bytes'],x['sha256'])
+    assert p.stat().st_mtime_ns==x['mtimeNs']
+
+attempt=readj(RUN/'packaging-attempt1/receipt.json')
+attempt_v=readj(RUN/'packaging-attempt1/verification.json')
+assert attempt['exitCode']==1 and attempt_v['observedCompletedTableRows']==116 and not attempt_v['acceptedNative']
+assert (RUN/'packaging-attempt1/suite-log-source-index.json').read_bytes()==(RUN/'suite-log-source-index.json').read_bytes()
+assert readj(RUN/'packaging-final-receipt.json')['exitCode']==0
+assert len(v['expectedMismatches'])==len(v['missingSuiteLogs'])==len(v['pythonFailures'])==len(v['rawFilesOlderThanRun'])==v['unallowedSkipCount']==0
+assert v['acceptedNative'] and v['all224ExpectedMatched'] and v['all224Passed']
+for x in v['artifactReferences'].values():exact(Path(x['path']),x['bytes'],x['sha256'])
+manifest=readj(RUN/'artifact-index.json')
+for x in manifest['files']:exact(RUN/x['path'],x['bytes'],x['sha256'])
+assert {str(p.relative_to(RUN)) for p in RUN.rglob('*') if p.is_file()}=={x['path'] for x in manifest['files']}|{'artifact-index.json'}
+assert manifest['fileCountExcludingThisIndex']==len(manifest['files'])==656
+assert manifest['totalBytesExcludingThisIndex']==sum(x['bytes'] for x in manifest['files'])==1479053
+assert not OUT.exists(),str(OUT)
+report=dict(reviewedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),reviewer='/root/p52_review',sourceSha=SHA,sourceWorktree=str(ROOT),mode='獨立唯讀審核；未執行測試、build、fresh/check 或產品',validationExitCode=0,accepted=True,blockers=[],
+    command=c['command'],startedUtc=r['startedUtc'],finishedUtc=r['finishedUtc'],jobLimitSeconds=2100,elapsedSeconds=r['elapsedSeconds'],stackKiB=16384,
+    exitEvidence=dict(nativeMainRawWait=0,nativeTimeout=0,wrapperParentWait=0,launcherPersistedRequestedExit=0,observedLauncherProcessExit=0,launcherObservation='代理對實際 tools.write_stdin session71609/chunk4e267f 的 exit_code0 原觀察另有事後轉錄；已核該轉錄與真 wait 鏈相符，不冒稱這是自動保存的原 transport JSON。'),
+    scope=dict(suites=224,countedTotal=5176,passed=5175,failed=0,allowedGdiSkip=1,exitCodeOnly=7,pythonJson=188,genericArchitecture=205,productArchitecture=18,replay=6),
+    mutation=dict(inventoryRecords=78,killed=70,crashed=1,equivalent=4,retired=3,survived=0,stale=0,blocked=0,meaning='本輪為 mutation:check freshness；沒有冒稱重跑 78 個突變，M20 crashed 不計為斷言 killed。'),
+    sources=dict(headBefore=r['headBefore'],headAfter=r['headAfter'],statusBefore=r['statusBefore'],statusAfter=r['statusAfter'],directBeforeAfterHashes=4,fingerprintUnionGitBlobs=len(bindings),fingerprints=fingerprints),
+    artifacts=dict(rawFiles=600,rawBytes=296101,rawOriginalCopyHashAndMtimeEqual=True,allRawMtimesWithinRun=True,manifestEntries=656,launcherCopies=18,initialFinalPreservedBinaryAndSidecarEntries=12,initialFinalBytesAndMtimesEqual=True,priorGlobalArchiveEntries=825,priorGlobalArchiveFileBytes=12119670,priorGlobalArchiveBytesHashMtimeVerified=True),
+    cleanup=dict(recordedTrackedProcesses=13,recordedAllGone=True,wrapperExtraCleanupKills=0,waitEvents=10,nonMainSignalExitsRetained=True,meaning='核結束後原始取樣與 wait 紀錄；不把後續 PID 重用狀態冒稱當時程序狀態，未發任何 signal。'),
+    environment=dict(CC='run_all 原 stdout 明記未設定，cc 指紋相符；父 preflight 記 absence',PYTHONOPTIMIZE='父啟動 env -u 與 preflight 記 absence；/proc 子程序 environ 讀取被拒，未冒稱讀到',procEnvironFirstProbeExitCode=1,build='空 global 目錄實際重建六 binary；fingerprint command 皆 cc',parallelism='本輪前段與五 browser 並行，後段獨占；不是效能基準。'),
+    packaging=dict(attempt1ExitCode=1,attempt1Rows=116,cause='多行正則的 \\s 吞換行；正式 native 已 exit 0。',finalExitCode=0,finalRows=224,sourceIndexUnchanged=True,originalRawUnchanged=True,firstStdout='第一次 tool 顯示曾截斷；原件沒有冒稱保存完整 stdout。'),
+    references={k:ref(p) for k,p in [('verification',RUN/'verification.json'),('runLog',RUN/'run.log'),('receipt',RUN/'receipt.json'),('launcherReceipt',LAUNCH/'launcher-receipt.json'),('sourceIndex',RUN/'suite-log-source-index.json'),('artifactIndex',RUN/'artifact-index.json'),('reviewCode',Path(__file__)),('toolObservation',BASE/'native-final-tool-observation.json')]},
+    limitations=['本報告只審正式 L native 完整 aggregate；run.log 的獨立 owner/browser gates 清單仍另驗，不由 native 代替。','Windows GDI 未執行；也未在 GitHub CI、Windows 或 WSL 重跑。','未新增產品修改或突變；只核既有同 L 原始證據與 Git blobs。','最不確定處是其他 runner 的 init/subreaper 與本環境是否一致；本輪結果不外推至未實跑環境。','唯讀搜尋曾誤查不存在的 .github/workflows/ci.yml 而 exit 2；已以 rg --files 找到真實 integration-tests.yml 並核對，與產品測試結果無關。'])
+OUT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(path=str(OUT),bytes=OUT.stat().st_size,sha256=sha(OUT.read_bytes()),validationExitCode=0,sourceGitBlobs=len(bindings),suiteCount=224,rawCount=600),ensure_ascii=False))

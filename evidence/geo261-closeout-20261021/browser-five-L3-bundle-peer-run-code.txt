@@ -1,0 +1,27 @@
+from pathlib import Path
+import datetime
+import hashlib
+import json
+import subprocess
+import sys
+import time
+
+root = Path('/workspace/geo261-evidence')
+prefix = root/'browser-five-L3-bundle-peer'
+code = root/'browser-five-L3-bundle-peer-code.txt'
+argv = [sys.executable, '-B', str(code)]
+started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+clock = time.monotonic()
+with Path(str(prefix)+'.stdout').open('xb') as stdout, Path(str(prefix)+'.stderr').open('xb') as stderr:
+    child = subprocess.Popen(argv, cwd='/workspace', stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr)
+    returncode = child.wait()
+Path(str(prefix)+'.exit-code').write_text(str(returncode)+'\n')
+record = {'argv': argv, 'cwd': '/workspace', 'pid': child.pid, 'startedUTC': started, 'finishedUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'seconds': time.monotonic()-clock, 'observedReturncode': returncode, 'codeSha256': hashlib.sha256(code.read_bytes()).hexdigest(), 'streams': {}}
+for suffix in ['.stdout', '.stderr']:
+    path = Path(str(prefix)+suffix)
+    content = path.read_bytes()
+    record['streams'][path.name] = {'bytes': len(content), 'sha256': hashlib.sha256(content).hexdigest()}
+with Path(str(prefix)+'-execution.json').open('x', encoding='utf-8') as stream:
+    stream.write(json.dumps(record, ensure_ascii=False, indent=2)+'\n')
+print(json.dumps(record, ensure_ascii=False))
+raise SystemExit(returncode)

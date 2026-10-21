@@ -1,0 +1,179 @@
+"""只讀已凍結 gate 文字包；報告僅寫入指定 peer-review，不重跑產品、接受器或封包。"""
+import ast,datetime,hashlib,json,stat
+from pathlib import Path
+
+B=Path('/workspace/geo261-evidence/final-bundle/gates-L3-formal')
+A=B.with_name('gates-L3-formal-appendix');OUT=A/'peer-review'
+BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')
+SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'
+INDEX='e6c77e0a0d56e5451c81e90e92688aec2f7b4921adb6cfe5b1583f8add46c501'
+COPY='1b41fd551dd2b9d58648c435317be3e17e2a9f552ff475875e8c2bd7f8ae748d'
+RECEIPT='64d73f26ff338b0a3e86cdefb6bba32dc75bbcbe48269684b3634f8903c4f8db'
+CODE='aabdc95ec54f6f472f7339ad14915058bc8b85e2858a454b739881ef477969e1'
+PHASES=('q38','controls','card','axiom')
+cache={}
+def h(data):return hashlib.sha256(data).hexdigest()
+def data(path):
+    path=Path(path)
+    assert path.is_relative_to('/workspace/geo261-evidence') and not path.is_symlink(),str(path)
+    if path not in cache:
+        raw=path.read_bytes();raw.decode('utf-8');assert not raw.startswith(b'\x7fELF') and b'\0' not in raw,str(path)
+        cache[path]=(raw,path.stat().st_mtime_ns)
+    return cache[path][0]
+def meta(path):
+    raw=data(path);return dict(bytes=len(raw),sha256=h(raw),sourceMtimeNs=cache[Path(path)][1])
+def load(path):return json.loads(data(path))
+def checkref(ref):
+    x=meta(Path(ref['path']));assert x['bytes']==ref['bytes'] and x['sha256']==ref['sha256'],ref['path']
+    return x
+def files(root):
+    result=[]
+    for p in root.rglob('*'):
+        assert not p.is_symlink(),str(p)
+        if p.is_file():result.append(p)
+    return sorted(result)
+
+assert h(data(B/'artifact-index.json'))==INDEX
+assert h(data(A/'copy-verification.json'))==COPY
+assert h(data(A/'curation-execution/receipt.json'))==RECEIPT
+index=load(B/'artifact-index.json');proof=load(A/'copy-verification.json')
+mapping=load(B/'curation-source-mapping.json');curated=Path(proof['curated'])
+assert index['sourceSha']==proof['sourceSha']==mapping['sourceSha']==SHA
+assert curated==BASE/'gates-publish-clean' and proof['destination']==str(B)
+allfiles=files(B);paths={str(p.relative_to(B)) for p in allfiles}
+assert len(allfiles)==1119 and sum(len(data(p)) for p in allfiles)==3325134
+assert index['fileCountExcludingThisIndex']==len(index['files'])==1118
+assert {x['path'] for x in index['files']}==paths-{'artifact-index.json'}
+assert sum(x['bytes'] for x in index['files'])==index['totalBytesExcludingThisIndex']==3122763
+for item in index['files']:
+    x=meta(B/item['path']);assert x['bytes']==item['bytes'] and x['sha256']==item['sha256']
+assert {str(p.relative_to(curated)) for p in files(curated)}==paths
+assert proof['fileCount']==len(proof['files'])==1119 and proof['totalBytes']==3325134
+assert {x['path'] for x in proof['files']}==paths and proof['artifactIndexSha256']==INDEX
+for item in proof['files']:
+    p=B/item['path'];c=curated/item['path']
+    assert data(p)==data(c)
+    assert meta(p)==meta(c)=={k:item[k] for k in ['bytes','sha256','sourceMtimeNs']}
+assert data(B/'artifact-index.json')==data(curated/'artifact-index.json')
+assert len(mapping['files'])==mapping['fileCount']==1114
+assert sum(x['bytes'] for x in mapping['files'])==mapping['totalBytes']==2655673
+by_original={x['originalPath']:x for x in mapping['files']}
+assert len(by_original)==1114 and len({x['artifactPath'] for x in mapping['files']})==1114
+for item in mapping['files']:
+    original=Path(item['originalPath']);c=curated/item['artifactPath'];b=B/item['artifactPath']
+    assert data(original)==data(c)==data(b)
+    assert meta(original)==meta(c)==meta(b)=={k:item[k] for k in ['bytes','sha256','sourceMtimeNs']}
+
+rawcounts={};rawpaths=set();artifactrefs=0;phase_results={}
+for phase,want in [('q38',134),('controls',40),('card',780),('axiom',39)]:
+    primary=load(B/'verification'/(phase+'.json'));detail=load(B/'acceptance-review'/(phase+'.json'))
+    assert primary['sourceSha']==detail['sourceSha']==SHA and primary['phase']==detail['phase']==phase
+    assert primary['accepted'] is True and not primary['problems']
+    assert detail['accepted'] is True and detail['validationExitCode']==0 and not detail['blockers']
+    assert len(detail['rawFileIndex'])==want
+    expected_original_dir=BASE/'gates'/('controls' if phase=='controls' else phase+'-run/'+phase)
+    listed={x['path'] for x in detail['rawFileIndex']}
+    assert len(listed)==want and all(Path(x).is_relative_to(expected_original_dir) for x in listed)
+    assert listed=={x for x in by_original if Path(x).is_relative_to(expected_original_dir)}
+    for item in detail['rawFileIndex']:
+        assert item['path'] not in rawpaths;rawpaths.add(item['path'])
+        m=by_original[item['path']];assert m['bytes']==item['bytes'] and m['sha256']==item['sha256']
+        checkref(item)
+    for item in primary['artifacts'].values():
+        m=by_original[item['path']];assert m['bytes']==item['bytes'] and m['sha256']==item['sha256']
+        checkref(item);artifactrefs+=1
+    rawcounts[phase]=want
+    phase_results[phase]=dict(caseCount=primary['caseCount'],summary=primary['summary'])
+assert len(rawpaths)==993
+
+manifest=load(B/'external-code-receipts/completion-manifest.json')
+assert manifest['sourceSha']==SHA and manifest['readyForCuration'] is True and manifest['phases']==list(PHASES) and manifest['gateJobs']==1
+required=['preparation/instance.json','native/verification.json','native/completion-verification.json','native/final-build-binary-index.json','gates/tool-observations.json','gates/q38-progress-interpretation-correction.json','gates/q38-readonly-process-samples.jsonl']
+for phase in PHASES:
+    official='gates/controls' if phase=='controls' else 'gates/'+phase+'-run/'+phase
+    required += ['gates/verification/'+phase+'.json','gates/acceptance-review/'+phase+'.json','gates/acceptance-execution/'+phase+'-primary-receipt.json','gates/acceptance-execution/'+phase+'-detailed-receipt.json','gates/launcher/'+phase+'/receipt.json',official+'/run-receipt.json']
+assert set(manifest['pins'])==set(required) and len(required)==31
+for relative,pin in manifest['pins'].items():
+    p=BASE/relative;assert h(data(p))==pin and by_original[str(p)]['sha256']==pin
+observations=load(B/'tool-observations.json')
+assert set(observations['phases'])==set(PHASES) and observations['sourceSha']==SHA
+for phase in PHASES:
+    observed=observations['phases'][phase]
+    assert observed['finalToolResult']['exit_code']==observed['acceptanceExecutorToolResult']['exit_code']==0
+    assert manifest['toolObservationPointers'][phase]==dict(phaseObject='/phases/'+phase,exitCode='/finalToolResult/exit_code',launcherReceiptSha256='/launcherReceipt/sha256')
+    r=observed['launcherReceipt'];assert by_original[r['path']]['sha256']==r['sha256'];checkref(r)
+
+supplement=load(A/'supplemental-copy-verification.json');supp_paths=set()
+assert supplement['sourceSha']==SHA and supplement['allCopiesByteAndMtimeIdentical'] is True and len(supplement['files'])==18
+for item in supplement['files']:
+    p=Path(item['originalPath']);t=A/item['artifactPath'];supp_paths.add(item['artifactPath'])
+    assert data(p)==data(t) and meta(p)==meta(t)=={k:item[k] for k in ['bytes','sha256','sourceMtimeNs']}
+assert {str(p.relative_to(A)) for p in files(A) if not p.is_relative_to(OUT)}==supp_paths|{'copy-verification.json','supplemental-copy-verification.json'}
+
+code=data(B/'external-code-receipts/curation-code.txt');assert h(code)==CODE
+assert code==data(BASE/'preparation/curate-gates-l3.py');tree=ast.parse(code)
+calls=[n for n in ast.walk(tree) if isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and isinstance(n.func.value,ast.Name) and n.func.value.id=='os' and n.func.attr=='replace']
+assert len(calls)==1 and ast.unparse(calls[0])=='os.replace(STAGING, BUNDLE)'
+source=code.decode();assert "STAGING=BUNDLE.with_name('gates-L3-formal.staging')" in source
+assert 'shutil.copytree(OUT,STAGING,copy_function=shutil.copy2)' in source
+assert source.index('assert {x[\'path\'] for x in copied}==')<source.index('os.replace(STAGING,BUNDLE)')
+assert 'BUNDLE/' not in source[source.index('os.replace(STAGING,BUNDLE)'):]
+assert not B.with_name('gates-L3-formal.staging').exists()
+assert proof['publishedAtomically'] and proof['stagingPath']==str(B.with_name('gates-L3-formal.staging'))
+assert proof['originalIndexUnchanged'] and proof['allCopiesByteAndMtimeIdentical']
+
+prep=load(B/'external-code-receipts/acceptor-preparation-receipt.json')
+assert h(data(B/'external-code-receipts/acceptor-preparation-receipt.json'))=='fa46830092cfcf222f459b6c48e27b9d60b1f0db569ebcfa7b834913b17d8ad4'
+for item in prep['files']:
+    original=data(Path(item['templatePath']));output=data(Path(item['outputPath']))
+    assert len(original)==item['templateBytes'] and h(original)==item['templateSha256']
+    assert len(output)==item['outputBytes'] and h(output)==item['outputSha256']
+    reverse=output.decode()
+    for change in reversed(item['allowedEdits']):
+        assert reverse.count(change['after'])==change['count'];reverse=reverse.replace(change['after'],change['before'])
+    assert reverse.encode()==original
+assert h(data(B/'external-code-receipts/historical-L-packaging-code.txt'))=='091c26cdd312fa73980f2864186e8ddce35a77ba7a9afe75933efcbb22a8b753'
+
+receipt=load(A/'curation-execution/receipt.json');command=load(A/'curation-execution/command.json');tool=load(A/'curation-execution/tool-observation.json')
+assert receipt['sourceSha']==command['sourceSha']==tool['sourceSha']==SHA
+assert receipt['childReturnCode']==receipt['launcherReturnCode']==0 and receipt['waitedForChild'] is True
+assert int(data(A/'curation-execution/.exit-code'))==0
+for name in ['command','launcherCode','tool','manifest','stdout','stderr']:checkref(receipt[name])
+assert receipt['tool']['sha256']==CODE and receipt['cwd']==str(BASE)
+assert receipt['actualArgv']==command['actualArgv'] and receipt['actualArgv'][-2:]==['--completion-manifest',str(BASE/'preparation/completion.json')]
+assert command['CCAbsent'] and command['PYTHONOPTIMIZEAbsent'] and command['optimizationFlag']==0
+launcher=data(A/'curation-execution/launcher-code.txt').decode();ast.parse(launcher);assert '.wait()' in launcher
+assert tool['sessionId']==87139 and tool['launchToolResult']['session_id']==87139
+assert tool['finalToolResult']['chunk_id']=='760511' and tool['finalToolResult']['exit_code']==0
+observed_output=json.loads(tool['finalToolResult']['output']);assert observed_output['exitCode']==0 and observed_output['receipt']['sha256']==RECEIPT
+assert receipt['formalProductOrTestExecuted'] is False
+
+for p in allfiles:
+    assert not stat.S_IMODE(p.stat().st_mode)&0o111
+    assert p.suffix not in {'.py','.pyc','.js','.mjs','.cjs','.sh','.exe','.so','.dll','.o','.a','.obj','.wasm'}
+    data(p)
+assert h((B/'artifact-index.json').read_bytes())==INDEX and h((A/'copy-verification.json').read_bytes())==COPY
+for p,(raw,mtime) in cache.items():
+    assert p.stat().st_mtime_ns==mtime and p.stat().st_size==len(raw),str(p)
+report=dict(sourceSha=SHA,checkedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    reviewer='/root/q38_card_gates/l2_gate_acceptors/native_manifest_peer',acceptedFrozenPackage=True,
+    artifactIndexSha256=INDEX,copyVerificationSha256=COPY,outerReceiptSha256=RECEIPT,curationCodeSha256=CODE,
+    files=1119,totalBytes=3325134,sourceMappingFiles=1114,sourceMappingBytes=2655673,
+    indexedFilesExcludingIndex=1118,allIndexFilesBytesHashMatch=True,
+    originalCuratedBundleBytesHashMtimeMatch=True,acceptedRawFileCount=993,acceptedRawByPhase=rawcounts,
+    primaryArtifactReferencesChecked=artifactrefs,phaseResults=phase_results,completionPins=31,
+    supplementalOriginalCopies=18,allSupplementalBytesHashMtimeMatch=True,
+    fixedStagingAbsent=True,reviewedAtomicCurationCodeMatches=True,oneRenameAfterValidation=True,
+    noBundleWritesAfterPublicationInReviewedCode=True,noExecutableFilesOrBinaryArtifacts=True,
+    sixAcceptorPreparationTemplatesAndOutputsUnchanged=True,reverseWhitelistBytesExact=True,
+    observedCurationSession=87139,observedCurationChunk='760511',curationToolExitCode=0,
+    curationChildWaitExitCode=0,curationLauncherExitCode=0,
+    ownCheckCodeSha256=h(Path(__file__).read_bytes()),checkExecutedProductOrAcceptor=False,
+    globalOrBinaryRead=False,mainBundleOrOriginalEvidenceModified=False,
+    limits=['本次只核已凍結的文字原件、封包鏈與保存的真碼收據；未重跑產品、gate、接受器或封包。',
+        '原工具回應是代理逐欄事後轉錄，不冒稱 transport 自動原始日誌。',
+        'mtime/集合與原件相符是封包取樣核對，不能證明歷史期間從未暫寫。'])
+target=OUT/'report.json';assert not target.exists();target.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(acceptedFrozenPackage=True,files=1119,totalBytes=3325134,acceptedRawFileCount=993,
+    sourceMappingFiles=1114,supplementalFiles=18,report=str(target),reportSha256=h(target.read_bytes()),
+    noProductOrAcceptorExecuted=True),ensure_ascii=False))

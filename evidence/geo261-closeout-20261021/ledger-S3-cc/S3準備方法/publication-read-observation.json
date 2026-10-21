@@ -1,0 +1,14 @@
+{
+  "recorded_utc": "2026-10-21T04:51:34.774293+00:00",
+  "initial_read": {
+    "path": "/workspace/geo261-evidence/source-S3-publication/publication.json",
+    "chunk_id": "062c8c",
+    "exit_code": 1,
+    "output": "cat: /workspace/geo261-evidence/source-S3-publication/publication.json: No such file or directory\n"
+  },
+  "correction": "該目錄實際發布收據檔名是 receipt.json；初次只讀誤用檔名，不是正式準備或產品失敗。",
+  "method_bytes_check": {
+    "chunk_id": "eba814",
+    "exit_code": 0
+  }
+}

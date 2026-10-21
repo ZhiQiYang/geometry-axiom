@@ -1,0 +1,109 @@
+{
+  "utc": "2026-10-21T03:11:22.854403+00:00",
+  "A2": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+  "S2": "cabe824128be31d0039dc6c94fa3f04cfb722a6b",
+  "branch": "codex/geo261-closeout-20261021",
+  "remote_head": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "0.stdout",
+      "stderr": "0.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only"
+      ],
+      "exit_code": 0,
+      "stdout": "1.stdout",
+      "stderr": "1.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "2.stdout",
+      "stderr": "2.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "--",
+        "geometry-core/domain-decoupling/product-architecture.json",
+        "geometry-core/domain-decoupling/product-architecture-scan.json",
+        "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "geometry-core/domain-decoupling/product-architecture-receipt.json"
+      ],
+      "exit_code": 0,
+      "stdout": "3.stdout",
+      "stderr": "3.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "commit",
+        "-m",
+        "chore: refresh architecture receipt for performance fixes"
+      ],
+      "exit_code": 0,
+      "stdout": "4.stdout",
+      "stderr": "4.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "5.stdout",
+      "stderr": "5.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0,
+      "stdout": "6.stdout",
+      "stderr": "6.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "push",
+        "origin",
+        "HEAD:refs/heads/codex/geo261-closeout-20261021"
+      ],
+      "exit_code": 0,
+      "stdout": "7.stdout",
+      "stderr": "7.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "refs/heads/codex/geo261-closeout-20261021"
+      ],
+      "exit_code": 0,
+      "stdout": "8.stdout",
+      "stderr": "8.stderr"
+    }
+  ],
+  "scope": "只推自己的工作分支，未改PR或integration",
+  "status": "公開來源已固定，ledger及同源完整七項尚未重跑"
+}

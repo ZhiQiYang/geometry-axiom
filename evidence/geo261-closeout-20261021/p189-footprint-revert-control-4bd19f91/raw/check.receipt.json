@@ -1,0 +1,51 @@
+{
+  "phase": "check",
+  "argv": [
+    "python3",
+    "-B",
+    "-u",
+    "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+    "check",
+    "--repo",
+    "/workspace/geometry-axiom",
+    "--work",
+    "/workspace/geo261-p189-footprint-revert-src-hhjrvln2",
+    "--out",
+    "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4",
+    "--gen",
+    "/workspace/geo261-p189-footprint-revert-src-hhjrvln2/gen_scene.py",
+    "--final",
+    "4bd19f91c434417f1c4431128c55285f4b11d3c3",
+    "--timeout",
+    "900"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "started_utc": "2026-10-21T03:05:37.831481+00:00",
+  "commits": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "final": "4bd19f91c434417f1c4431128c55285f4b11d3c3"
+  },
+  "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+  "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+  "stdout": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/check.stdout",
+  "stderr": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/check.stderr",
+  "supervisor_pid": 319432,
+  "PYTHONOPTIMIZE_present": false,
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "core_limit_bytes": [
+    0,
+    0
+  ],
+  "pid": 320612,
+  "pgid": 320612,
+  "finished_utc": "2026-10-21T03:05:37.895438+00:00",
+  "seconds": 0.06392838700048742,
+  "exit_code": 1,
+  "stdout_sha256": "2c8ace2178d9b36e9ea16105eb02ad00472ea08ba3f252abe1277ec6f3953241",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

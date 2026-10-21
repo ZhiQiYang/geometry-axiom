@@ -1,0 +1,21 @@
+{
+  "checked_utc": "2026-10-21T02:07:44.260185+00:00",
+  "runner_path": "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+  "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+  "source_evidence": [
+    {
+      "line": 230,
+      "text": "stdout, stderr = p.communicate((f\"loadfile {scene}\\n\" + (\"dump\\n\" if dump else \"\")).encode(), timeout=args.timeout)"
+    },
+    {
+      "line": 279,
+      "text": "row = run_bridge(label, scenes / f\"s{n}.scene\", False, f\"timing/n{n}-r{round_number}-{label}\")"
+    }
+  ],
+  "interpretation": "timing以dump=False呼叫run_bridge，communicate只送一行loadfile後關閉stdin（EOF）；沒有quit，也沒有dump。",
+  "diagnostic_input": "同一scene絕對路徑的一行loadfile，由stdin檔案讀盡而EOF；沒有quit。",
+  "request_bytes": 73,
+  "request_sha256": "27ed31afce5f078d3dc33fc5a9090aab01f233f9a2900b10aa09586bacb73777",
+  "request_repr": "b'loadfile /workspace/geo261-p189-contact-v2-src-mrcj_18a/scenes/s64.scene\\n'",
+  "actual_static_review_exit_code": 0
+}

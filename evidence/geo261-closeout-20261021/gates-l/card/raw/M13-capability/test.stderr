@@ -1,0 +1,14 @@
+test_CR20_NO_SILENT_DOWNGRADE (tests.test_grid_card_reference.GridCardReference.test_CR20_NO_SILENT_DOWNGRADE) ... FAIL
+
+======================================================================
+FAIL: test_CR20_NO_SILENT_DOWNGRADE (tests.test_grid_card_reference.GridCardReference.test_CR20_NO_SILENT_DOWNGRADE)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 360, in test_CR20_NO_SILENT_DOWNGRADE
+    self.assertFalse(self.command('loadfile ' + str(path))['ok'], 'NO_SILENT_DOWNGRADE')
+AssertionError: True is not false : NO_SILENT_DOWNGRADE
+
+----------------------------------------------------------------------
+Ran 1 test in 0.126s
+
+FAILED (failures=1)

@@ -1,0 +1,14 @@
+{
+  "source_sha": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+  "expected_counts": {
+    "killed": 70,
+    "crashed": 1,
+    "equivalent": 4,
+    "retired": 3
+  },
+  "expected_crashed_ids": [
+    "M20"
+  ],
+  "expected_id_map_source": "original-ledger.json",
+  "備註": "root 於啟動後要求封包／匯入外層逐 ID 對照既定 verdict；不同先報，不自動接受。官方 mutate／check 與正在跑的 supervisor 完全不變。"
+}

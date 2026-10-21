@@ -1,0 +1,13 @@
+{
+  "command": [
+    "cc",
+    "-std=c11",
+    "-O0",
+    "/workspace/geo261-gates/geometry-core/model_base.c",
+    "-lm",
+    "-o",
+    "/workspace/geo261-evidence/gates/card/raw/M18-closure/restored/model"
+  ],
+  "exit_code": 0,
+  "seconds": 3.0225109869999187
+}

@@ -1,0 +1,39 @@
+{
+  "positive": "6c6937708fa31790586d6c31c2984070e6bf885a",
+  "negative": "4bd19f91c434417f1c4431128c55285f4b11d3c3",
+  "negativeParentIsPositive": true,
+  "changedPathsExactlyThree": [
+    "geometry-app/native/reference_sources.inc",
+    "geometry-app/native/world_validation.inc",
+    "geometry-core/kernel/placement_sources.c"
+  ],
+  "restoredFrom": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "restoredProducts": [
+    {
+      "path": "geometry-app/native/reference_sources.inc",
+      "restored_from": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "blob": "e05bf6aa715e00eaf0033e38f0cd989065538548",
+      "bytes": 56687,
+      "sha256": "3695ab9844a80cf0041d2a6a67e2be96bf6ecbcd59709759d1add4822b70077c",
+      "exact_bytes_match": true
+    },
+    {
+      "path": "geometry-app/native/world_validation.inc",
+      "restored_from": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "blob": "ff3a8f5f9b577a6c8e17b1ed7b56371aed9a5e8b",
+      "bytes": 6012,
+      "sha256": "673bbab71f1dc6c59960dd3764c7c367223fc57ad2ef2dae0e842637d993eddc",
+      "exact_bytes_match": true
+    },
+    {
+      "path": "geometry-core/kernel/placement_sources.c",
+      "restored_from": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+      "blob": "635da849e7104c107c498747fdded083f20b0126",
+      "bytes": 13667,
+      "sha256": "7b953719f5e75ed2e70f99c9e0a96588d398bd9220025a7b7a191c4dbaeb8e12",
+      "exact_bytes_match": true
+    }
+  ],
+  "wholeTestsGitTreeExactlyEqual": "6084fb8940048214c3b7b9890f25ea636e24315f",
+  "limits": "僅證明測試來源整樹相同；沒有宣稱撤回負控跑過新功能測試。pointer中的ready_not_released/0loads是準備階段原狀態，實際執行另以各輪released/phase/completion收據為準。"
+}

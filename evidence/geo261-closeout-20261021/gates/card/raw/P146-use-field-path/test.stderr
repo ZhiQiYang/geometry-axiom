@@ -1,0 +1,17 @@
+test_CR26_SAME_KEY_REFERENCE_GUARD (tests.test_grid_card_reference.GridCardReference.test_CR26_SAME_KEY_REFERENCE_GUARD) ... FAIL
+
+======================================================================
+FAIL: test_CR26_SAME_KEY_REFERENCE_GUARD (tests.test_grid_card_reference.GridCardReference.test_CR26_SAME_KEY_REFERENCE_GUARD)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates/tests/test_grid_card_reference.py", line 398, in test_CR26_SAME_KEY_REFERENCE_GUARD
+    self.seed(); self.reject([{'op': 'delete-parameter', 'id': 10}, parameter()], 'grid-system 4', 'SAME_KEY_REFERENCE_GUARD', identity=(4, 10, 3))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates/tests/test_grid_card_reference.py", line 83, in reject
+    self.assertTrue(any(all(re.search(r'\b' + re.escape(part) + r'\b', message)
+AssertionError: False is not true : ('SAME_KEY_REFERENCE_GUARD', ['I38 MISSING: parameter 10 is still referenced by grid-system 4 card-reference u; unbind or repoint it in the same complete candidate', 'candidate rejected'])
+
+----------------------------------------------------------------------
+Ran 1 test in 0.129s
+
+FAILED (failures=1)

@@ -1,0 +1,99 @@
+"""以原 H/K 與同一新見證核對輸出，再檢查候選 H 的記憶體安全。"""
+from pathlib import Path
+import datetime
+import hashlib
+import json
+import os
+import re
+import resource
+import subprocess
+import sys
+import tempfile
+
+ROOT=Path('/workspace/geo261-host-copy-candidate')
+OUT=Path(__file__).resolve().parent/'output-checks'
+OUT.mkdir()
+os.chdir(ROOT)
+sys.path.insert(0,str(ROOT))
+assert 'CC' not in os.environ and 'PYTHONOPTIMIZE' not in os.environ
+assert resource.getrlimit(resource.RLIMIT_STACK)[0]==16384*1024
+temporary=tempfile.mkdtemp(prefix='geo261-host-H-output-')
+os.environ['TMPDIR']=temporary
+tempfile.tempdir=temporary
+original_run=subprocess.run
+records=[]
+
+def run(*args,**kwargs):
+    command=args[0] if args else kwargs['args']
+    entry={'index':len(records),'command':list(map(str,command)),
+           'cwd':str(kwargs.get('cwd',ROOT)), 'startUTC':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+    records.append(entry)
+    try:
+        result=original_run(*args,**kwargs)
+        entry['returncode']=result.returncode
+        for stream in ('stdout','stderr'):
+            data=getattr(result,stream)
+            if data is not None:
+                if isinstance(data,str):data=data.encode()
+                path=OUT/f"command-{entry['index']:04d}.{stream}"
+                path.write_bytes(data)
+                entry[stream]={'path':path.name,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+        return result
+    except BaseException as exc:
+        entry['exception']=repr(exc)
+        raise
+    finally:
+        entry['endUTC']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+        (OUT/'commands.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
+
+subprocess.run=run
+from tests.test_geo261_native_kernel import native
+from tests.test_geo261_host_facts_authority import FLAGS,HARNESS,SOURCE,VALIDATION
+build=native()
+base='85dc4fff44ce49b27f831b21cbdcb662c863302c'
+originals=[ROOT/'current_geometry.c',SOURCE,VALIDATION,HARNESS]
+copies={p.resolve():build.work/('original-'+p.name) for p in originals}
+source_records={}
+for p in originals:
+    data=p.read_bytes() if p==HARNESS else subprocess.run(['git','show',base+':'+str(p.relative_to(ROOT))],capture_output=True,check=True).stdout
+    source_records[str(p.relative_to(ROOT))]={'origin':'candidate' if p==HARNESS else base,'sha256':hashlib.sha256(data).hexdigest()}
+    text=data.replace(b'\r\n',b'\n').decode()
+    if p==SOURCE:
+        # 原版本沒有新私有名稱；此相容轉接只呼叫未修改的原 atomic 介面。
+        text+='\nstatic bool reference_host_scratch(ReferenceEval *c,uint32_t i,PlacementSurface *p,SpaceBoundarySurface *b,const SpaceBoundarySurface **v)\n{return reference_host_read(c,i,p,b,v);}\n'
+    def include(match):
+        path=(p.parent/match.group(1)).resolve()
+        return '#include "'+str(copies.get(path,path))+'"'
+    text=re.sub(r'^#include "([^"]+)"',include,text,flags=re.MULTILINE)
+    copies[p.resolve()].write_text(text)
+    source_records[str(p.relative_to(ROOT))]['effectiveSha256']=hashlib.sha256(text.encode()).hexdigest()
+old_kernel=build.kernel/'original-placement_sources.c'
+old_kernel.write_bytes(subprocess.run(['git','show',base+':geometry-core/kernel/placement_sources.c'],capture_output=True,check=True).stdout)
+old_object=build.compile(old_kernel,'original-placement-sources')
+objects=[old_object if p==build.placement_sources_object else p for p in build.product_objects()]
+client=build.compile(copies[HARNESS.resolve()],'original-host-output',FLAGS)
+old_exe=build.link('original-host-output',[client,*objects])
+cases=('copy-clear','copy-snapshot','scratch-owned','malformed')
+checks=[]
+for case in cases:
+    result=subprocess.run([str(old_exe),case],capture_output=True,timeout=30)
+    checks.append({'variant':'original-H-K-with-name-adapter','case':case,'returncode':result.returncode,'stdoutEmpty':not result.stdout,'stderrEmpty':not result.stderr})
+
+# H 的修改在包含真產品的 translation unit；K/W 仍為同一候選的原物件。
+san_object=build.work/'host-output-sanitized.o'
+san_exe=build.work/'host-output-sanitized'
+build.run_build([build.cc,'-std=c11','-O1','-g','-fno-omit-frame-pointer','-fsanitize=address,undefined',
+                 '-I',str(build.kernel),*['-D'+flag for flag in FLAGS],'-c',str(HARNESS),'-o',str(san_object)])
+build.run_build([build.cc,'-fsanitize=address,undefined',str(san_object),*map(str,build.product_objects()),'-lm','-o',str(san_exe)])
+san_env=dict(os.environ,ASAN_OPTIONS='detect_leaks=1:halt_on_error=1',UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1')
+for case in cases:
+    result=subprocess.run([str(san_exe),case],capture_output=True,timeout=30,env=san_env)
+    checks.append({'variant':'candidate-H-asan-ubsan','case':case,'returncode':result.returncode,'stdoutEmpty':not result.stdout,'stderrEmpty':not result.stderr})
+summary={'base':base,'TMPDIR':temporary,'stackBytes':resource.getrlimit(resource.RLIMIT_STACK),
+         'CC':None,'PYTHONOPTIMIZE':None,'sources':source_records,'checks':checks,
+         'limitations':['原 H 相容轉接只補新私有函式名稱，未修改原 helper 本體；不作性能比較。',
+                        'ASan/UBSan 僅儀器化含 H 修改的產品 translation unit，連結的 K/W 物件未儀器化。'],
+         'passed':all(c['returncode']==0 and c['stdoutEmpty'] and c['stderrEmpty'] for c in checks)}
+(OUT/'result.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(summary,ensure_ascii=False))
+sys.exit(0 if summary['passed'] else 1)

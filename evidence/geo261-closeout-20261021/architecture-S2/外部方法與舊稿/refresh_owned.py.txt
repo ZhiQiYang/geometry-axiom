@@ -1,0 +1,360 @@
+#!/usr/bin/env python3
+"""外部 owned 來源與明列 W guard 刷新；只在指定正式來源 HEAD 寫四份架構產物。"""
+from collections import Counter
+from copy import deepcopy
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import re
+import resource
+import sys
+import tempfile
+import time
+import types
+
+sys.dont_write_bytecode = True
+BASE_PATH = 'geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py'
+BASE_SHA = 'b0b80afbdbbbb451ab29e774ffbdd1699f0438619b5f84280ef954c8b72fc5a3'
+TARGET = 'geometry-core/kernel/geometry.c'
+
+
+def require(condition, message):
+    if not condition:
+        raise RuntimeError(message)
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def source_module(name, path):
+    """只從已讀原碼 compile，避免沿用既存 pyc。"""
+    module = types.ModuleType(name)
+    module.__file__ = str(path)
+    sys.modules[name] = module
+    exec(compile(path.read_bytes(), str(path), 'exec'), module.__dict__)
+    return module
+
+
+def read_base(root):
+    require(sha((root / BASE_PATH).read_bytes()) == BASE_SHA, '既有工具版本改變，需重新審閱外部方法')
+    return source_module('geo261_owned_refresh_base', root / BASE_PATH)
+
+
+def probe(root, manifest_path, kind, value):
+    module = source_module('geo261_owned_probe_scanner', root / 'tests/architecture_contract.py')
+    manifest = module.load_manifest(manifest_path)
+    scanner = module.Scanner(root, manifest)
+    suffix = ('\nint ' + value + ';\n') if kind == 'identifier' else ('\nconst char *geo_owned_probe = ' + json.dumps(value) + ';\n')
+    try:
+        scanner.validate_manifest()
+        require(scanner.entries[TARGET]['layer'] == 'K' and scanner.entries[TARGET]['language'] == 'c', '探針目標已不是 K C')
+        scanner.scan_c(TARGET, (root / TARGET).read_text(encoding='utf-8') + suffix)
+        scanner.directions()
+    except module.ContractError as error:
+        scanner.result.diagnostics.append(error.diagnostic)
+    print(json.dumps(scanner.result.to_dict(), ensure_ascii=False, indent=2))
+    return 0 if scanner.result.ok else 1
+
+
+def w_inventory(root, manifest, scanner):
+    found = {'forbiddenIdentifiers': {}, 'forbiddenStrings': {}}
+    paths = []
+    for row in manifest['sources']:
+        if row['layer'] != 'W' or row['language'] != 'c':
+            continue
+        path = row['path']
+        paths.append(path)
+        _, _, tokens = scanner.lex((root / path).read_text(encoding='utf-8'), path, c=True)
+        offset = 0
+        while offset < len(tokens):
+            token = tokens[offset]
+            value, line = token.value, token.line
+            offset += 1
+            if token.kind == 'identifier' and re.match(r'(?:Wood|WOOD_|wood_)', value):
+                key = 'forbiddenIdentifiers'
+            elif token.kind == 'string':
+                while offset < len(tokens) and tokens[offset].kind == 'string':
+                    value += tokens[offset].value
+                    offset += 1
+                if not re.match(r'(?:woodworking|wood)(?:[./:-]|$)', value):
+                    continue
+                key = 'forbiddenStrings'
+            else:
+                continue
+            found[key].setdefault(value, []).append({'path': path, 'line': line})
+    return {'paths': sorted(paths), 'tokens': found}
+
+
+def git_bytes_match(base, root, head, paths):
+    """額外以 raw bytes 比對所有受驗檔；原工具另有獨立 LF closure 檢查。"""
+    import subprocess
+    data = subprocess.check_output(['git', '-C', str(root), 'cat-file', '--batch'],
+                                   input=''.join(head + ':' + p + '\n' for p in paths).encode())
+    offset = 0
+    for path in paths:
+        end = data.index(b'\n', offset)
+        fields = data[offset:end].split()
+        require(len(fields) == 3 and fields[1] == b'blob', '指定來源不是 Git blob：' + path)
+        size, start = int(fields[2]), end + 1
+        require(data[start:start + size] == (root / path).read_bytes(), '工作 raw bytes 與 HEAD 不同：' + path)
+        offset = start + size + 1
+    require(offset == len(data), 'Git blob 輸出未完整消耗')
+
+
+def refresh(args):
+    root, out = args.root.resolve(), args.out.resolve()
+    method_raw = Path(__file__).read_bytes()
+    require(root != out and root not in out.parents, '證據 out 必須在 repo 外')
+    require(re.fullmatch(r'[0-9a-f]{40}', args.source_head), '需完整來源 SHA')
+    require(not os.environ.get('CC') and not os.environ.get('PYTHONOPTIMIZE') and sys.flags.optimize == 0,
+            '請 unset CC／PYTHONOPTIMIZE，且不可使用 Python 最佳化模式')
+    base = read_base(root)
+    head = base.git(root, 'rev-parse', 'HEAD').decode().strip()
+    require(head == args.source_head, '當前 HEAD 與指定 S2 不同')
+    require(not base.git(root, 'status', '--porcelain=v1', '--untracked-files=no'), '起始 tracked 工作樹不乾淨')
+    review_raw = args.review_file.read_bytes()
+    review = json.loads(review_raw)
+    keys = {'schema', 'sourceHead', 'baseHead', 'previousReceiptSha256', 'changedOwnedSources',
+            'changedOutsideInventory', 'addedForbiddenIdentifiers', 'addedForbiddenStrings'}
+    require(set(review) == keys and review['schema'] == 1 and review['sourceHead'] == head, 'review schema／sourceHead 不符')
+    origin = review['baseHead']
+    require(re.fullmatch(r'[0-9a-f]{40}', origin), 'review 基底需完整 SHA')
+    require(base.git(root, 'merge-base', origin, head).decode().strip() == origin, 'review 基底不是來源祖先')
+    before = base.snapshot(root)
+    manifest = json.loads((root / base.OUTPUTS[0]).read_bytes())
+    previous = json.loads((root / base.OUTPUTS[3]).read_bytes())
+    require(sha((root / base.OUTPUTS[3]).read_bytes()) == review['previousReceiptSha256'], '舊收據 pin 不符')
+    require(set(manifest['sourceRoots']) == set(base.ROOTS) and set(manifest['sourceFiles']) == set(base.STANDALONE), '架構範圍改變')
+    owned = {row['path'] for row in manifest['sources'] if row['layer'] != 'vendor'}
+    declared = [row['path'] for row in manifest['sources'] + manifest['exclusions']]
+    require(len(set(declared)) == len(declared) and sorted(declared) == before['paths'], '清單新增／遺漏／重複')
+    require({row['path'] for row in previous['inputs']} == set(before['paths']), '前次封存來源集合不同')
+    changed = []
+    for section in ('changedOwnedSources', 'changedOutsideInventory'):
+        entries = review[section]
+        require(isinstance(entries, dict), 'review 來源清單須為物件')
+        for path, item in entries.items():
+            require(set(item) == {'rawSha256', 'lfSha256', 'reason'} and re.search(r'[\u3400-\u9fff]', item['reason']), '來源須明列 hash 與繁中理由')
+            require(path in owned if section == 'changedOwnedSources' else
+                    (Path(path).parent.as_posix() == 'tests' and
+                     (Path(path).suffix in {'.c', '.py'} or path == 'tests/run_all.expected.json') and
+                     path not in declared), '來源超出明列範圍：' + path)
+            actual = base.hashes((root / path).read_bytes())
+            require(all(actual[k] == item[k] for k in ('rawSha256', 'lfSha256')), '來源 review hash 不符：' + path)
+            require(base.git(root, 'show', origin + ':' + path) != (root / path).read_bytes(), 'review 指定來源沒有變：' + path)
+            changed.append(path)
+    require(review['changedOwnedSources'] and len(changed) == len(set(changed)), '需有 owned 差異且不得重複')
+    diff = base.git(root, 'diff', '--name-status', '--no-renames', origin, head).decode().splitlines()
+    require(sorted(diff) == sorted('M\t' + p for p in changed), '基底到 S2 差異不等於 review 精確清單')
+    for path in list(base.OUTPUTS) + list(base.TOOLS) + [BASE_PATH]:
+        require(base.git(root, 'show', origin + ':' + path) == (root / path).read_bytes(), '架構原件／裁判不可隨產品候選更動：' + path)
+    base.assert_git_source(root, head, before)
+    watched = sorted(set(before['paths']) | set(base.TOOLS) | set(review['changedOutsideInventory']))
+    git_bytes_match(base, root, head, watched)
+    extras = {p: base.hashes((root / p).read_bytes()) for p in review['changedOutsideInventory']}
+    scanner = source_module('geo261_owned_inventory_scanner', root / base.TOOLS[0])
+    lexical = w_inventory(root, manifest, scanner)
+    new_manifest = deepcopy(manifest)
+    additions = []
+    for field, section in [('forbiddenIdentifiers', 'addedForbiddenIdentifiers'), ('forbiddenStrings', 'addedForbiddenStrings')]:
+        entries = review[section]
+        require(isinstance(entries, dict), '新 guard review 須為物件')
+        missing = set(lexical['tokens'][field]) - set(manifest['policy'][field])
+        require(missing == set(entries), '完整 W 詞法盤點的新增 guard 與 review 不同：' + field)
+        for value, item in sorted(entries.items()):
+            require(set(item) == {'reason', 'sources'} and re.search(r'[\u3400-\u9fff]', item['reason']), 'guard 缺繁中審閱理由')
+            sites = lexical['tokens'][field][value]
+            require(sorted(set(site['path'] for site in sites)) == item['sources'], 'guard 真來源與 review 不同')
+            new_manifest['policy'][field].append(value)
+            additions.append({'field': field, 'value': value, 'reason': item['reason'], 'sites': sites})
+    out.mkdir(parents=True, exist_ok=False)
+    (out / 'review.json').write_bytes(review_raw)
+    base.dump(out / 'w-lexical-inventory.json', lexical)
+    base.dump(out / 'before.json', {'head': head, 'snapshot': before, 'outsideInventory': extras})
+    (out / 'method-source.txt').write_bytes(method_raw)
+    env = {key: os.environ[key] for key in ('PATH', 'HOME', 'LANG', 'LC_ALL', 'LC_CTYPE') if key in os.environ}
+    temporary = tempfile.mkdtemp(prefix='geo261-architecture-owned-', dir='/tmp')
+    env.update(PYTHONDONTWRITEBYTECODE='1', TMPDIR=temporary, PYTHONPYCACHEPREFIX=temporary + '/unused-pycache')
+    soft, hard = resource.getrlimit(resource.RLIMIT_STACK)
+    resource.setrlimit(resource.RLIMIT_STACK, (16 * 1024 * 1024, hard))
+    environment = {'childEnvironment': env, 'CC': None, 'PYTHONOPTIMIZE': None, 'stackKiB': 16384,
+                   'python': sys.version, 'executable': sys.executable, 'platform': platform.platform(),
+                   'methodSha256': sha(method_raw), 'baseToolSha256': BASE_SHA}
+    base.dump(out / 'environment.json', environment)
+    with base.AuditOutputs(root, out) as guard:
+        guard.active = True
+        for path, raw in guard.prior.items():
+            (out / 'previous').mkdir(exist_ok=True)
+            (out / 'previous' / Path(path).name).write_bytes(raw)
+
+        def frozen():
+            guard.verify()
+            require(Path(__file__).read_bytes() == method_raw, '外部方法原碼於驗收中改變')
+            require((out / 'review.json').read_bytes() == review_raw, '本輪審閱原件於驗收中改變')
+            require(all((out / 'previous' / Path(p).name).read_bytes() == raw for p, raw in guard.prior.items()), '舊四產物保存原件於驗收中改變')
+            require(base.git(root, 'rev-parse', 'HEAD').decode().strip() == head and base.snapshot(root) == before, '受驗期間來源／裁判／HEAD 改變')
+            require({p: base.hashes((root / p).read_bytes()) for p in extras} == extras, '受驗期間外部 tests 變更')
+
+        def execute(name, command):
+            frozen()
+            folder = out / name
+            folder.mkdir()
+            argv = ['timeout', '900', *command]
+            started, tick = base.utc(), time.monotonic()
+            with (folder / 'stdout.log').open('xb') as stdout, (folder / 'stderr.log').open('xb') as stderr:
+                pid = os.fork()
+                if pid == 0:
+                    try:
+                        os.chdir(root)
+                        os.dup2(stdout.fileno(), 1)
+                        os.dup2(stderr.fileno(), 2)
+                        os.execvpe(argv[0], argv, env)
+                    except BaseException as error:
+                        os.write(2, (repr(error) + '\n').encode())
+                        os._exit(127)
+                waited, status = os.waitpid(pid, 0)
+                require(waited == pid, 'wait 回收 PID 不符')
+            raw_out, raw_err = (folder / 'stdout.log').read_bytes(), (folder / 'stderr.log').read_bytes()
+            record = {'argv': argv, 'cwd': str(root), 'sourceBaseHead': head, 'startedUtc': started,
+                      'finishedUtc': base.utc(), 'seconds': time.monotonic() - tick,
+                      'rawWaitStatus': status, 'exitCode': os.waitstatus_to_exitcode(status),
+                      'stdout': {'path': name + '/stdout.log', **base.hashes(raw_out)},
+                      'stderr': {'path': name + '/stderr.log', **base.hashes(raw_err)}}
+            base.dump(folder / 'result.json', record)
+            frozen()
+            print(json.dumps({'項目': name, '結束碼': record['exitCode']}, ensure_ascii=False), flush=True)
+            return record, raw_out, raw_err
+
+        cli = [sys.executable, '-B', base.TOOLS[0], '--root', '.', '--manifest', base.OUTPUTS[0]]
+        prior_record, raw, _ = execute('prior-manifest', cli)
+        prior_scan = json.loads(raw)
+        require(prior_record['exitCode'] == 0 and prior_scan['ok'] and not prior_scan['diagnostics'], '既有 owned 來源 prior scan 未通過，需先審原因')
+        if additions:
+            guard.write_json(base.OUTPUTS[0], new_manifest)
+        scan_record, raw_scan, _ = execute('actual-cli-scan', cli)
+        scanned = json.loads(raw_scan)
+        require(scan_record['exitCode'] == 0 and scanned['ok'] and not scanned['diagnostics'], '新 manifest 掃描未通過')
+        guard.write(base.OUTPUTS[1], raw_scan)
+        validation = []
+        for name, tool in [('generic-tests', base.TOOLS[1]), ('product-tests', base.TOOLS[2])]:
+            record, stdout, stderr = execute(name, [sys.executable, '-B', tool])
+            require(record['exitCode'] == 0, name + ' 未通過')
+            record.update(base.test_counts(stdout, stderr), sha256=before['tools'][tool]['lfSha256'], executedAtCurrentHead=True)
+            base.dump(out / name / 'result.json', record)
+            validation.append(record)
+        controls = []
+        prior_path = out / 'previous' / Path(base.OUTPUTS[0]).name
+
+        def guard_control(name, path, kind, value, expected, code=None):
+            manifest_raw = path.read_bytes()
+            record, stdout, _ = execute(name, [sys.executable, '-B', str(Path(__file__).resolve()), '--root', str(root),
+                                        '--probe', kind, '--manifest', str(path), '--value', value])
+            require(path.read_bytes() == manifest_raw, '探針 manifest 於執行中改變')
+            result = json.loads(stdout)
+            diagnostics = result['diagnostics']
+            require(record['exitCode'] == expected, 'guard 控制真碼不符：' + name)
+            require((not diagnostics and result['ok']) if code is None else
+                    (len(diagnostics) == 1 and diagnostics[0]['code'] == code and diagnostics[0]['path'] == TARGET), 'guard 病因不符：' + name)
+            controls.append({**record, 'expectedExitCode': expected, 'diagnostics': diagnostics, 'value': value,
+                             'probeManifest': {'path': str(path), **base.hashes(manifest_raw)},
+                             'scope': '真 K 文本的記憶體注入；不寫回產品、不改測試數量。'})
+
+        for index, item in enumerate(additions):
+            kind = 'identifier' if item['field'] == 'forbiddenIdentifiers' else 'string'
+            code = 'FORBIDDEN_IDENTIFIER' if kind == 'identifier' else 'FORBIDDEN_STRING'
+            guard_control('old-guard-accepts-' + str(index), prior_path, kind, item['value'], 0)
+            guard_control('new-guard-rejects-' + str(index), root / base.OUTPUTS[0], kind, item['value'], 1, code)
+            withdrawn = deepcopy(new_manifest)
+            withdrawn['policy'][item['field']].remove(item['value'])
+            path = out / ('withdraw-guard-' + str(index) + '.json')
+            base.dump(path, withdrawn)
+            guard_control('withdraw-guard-accepts-' + str(index), path, kind, item['value'], 0)
+        guard_control('neutral-accepts', root / base.OUTPUTS[0], 'identifier', 'GeoOwnedRefreshNeutral', 0)
+        inputs, closure = base.closure(before['sources'])
+        _, raw_closure = base.closure(before['sources'], 'rawSha256')
+        previous_inputs = {row['path']: row['sha256'] for row in previous['inputs']}
+        changes = [{'path': p, 'previousSha256': previous_inputs[p], 'currentSha256': row['lfSha256']}
+                   for p, row in before['sources'].items() if previous_inputs[p] != row['lfSha256']]
+        require({row['path'] for row in changes} == set(review['changedOwnedSources']), '前次封存到本輪 input 差異與審閱不符')
+        counts = {'executableFiles': len(inputs), 'ownedSources': len(manifest['sources']), 'exclusions': len(manifest['exclusions']),
+                  'edges': len(scanned['edges']), 'diagnostics': 0,
+                  'layers': dict(Counter(row['layer'] for row in manifest['sources'])),
+                  'languages': dict(Counter(row['language'] for row in manifest['sources'])),
+                  'forbiddenIdentifiers': len(new_manifest['policy']['forbiddenIdentifiers']),
+                  'forbiddenStrings': len(new_manifest['policy']['forbiddenStrings'])}
+        generic, product = validation
+        report = guard.prior[base.OUTPUTS[2]].decode().replace('\r\n', '\n')
+        summary = (f"本次最新封存來源為 `{head}`。實際 CLI 掃描結束碼為 0，含 {counts['ownedSources']} 個登記來源、{counts['edges']} 條依賴邊及 0 項診斷。\n"
+                   f"通用掃描器測試 {generic['tests']} 項：通過 {generic['passed']}、略過 {generic['skipped']}；產品架構測試 {product['tests']} 項：通過 {product['passed']}、略過 {product['skipped']}。\n"
+                   f"獨立枚舉核對全部 {len(inputs)} 個來源的 raw／LF 雜湊與指定 Git commit；來源集合、來源／裁判 bytes 及 HEAD 在每條命令後和封存前均保持一致。\n")
+        report, replacements = re.subn(r'本次最新封存來源為 `[^`]+`。.*?封存前均保持一致。\n', lambda _: summary, report, flags=re.S)
+        require(replacements == 1, '最新報告段落錨點不唯一')
+        report += ('\n## 2026-10-21 既有產品來源與 W guard 刷新\n\n'
+                   f'本輪固定來源 `{head}`。舊 manifest 的真 CLI 結束碼為 0；所有來源原已登記，沒有捏造 exclusion 失配。'
+                   '產品來源變更逐項記於收據 inputsChangedSincePreviousSeal；兩套原測試及實際 CLI 全部重跑。'
+                   '責任分類、來源集合、全部既有 guard／exclusion／vendor／route 政策均保留；只追加以下經完整 W 詞法盤點審閱的新 guard：\n\n' +
+                   '\n'.join('- `' + item['value'] + '`：' + item['reason'] for item in additions) +
+                   '\n\n每項以同一真 K 文本注入核對：舊 guard 接受、新 guard 精確拒絕、只撤回該 guard 後再接受，中性識別字仍通過；真碼與原輸出保存在外部收據。'
+                   '上述只證明靜態守門，不冒充產品行為、P177、效能、原生或瀏覽器驗收。舊四產物原 bytes 保存在 previous/，本輪不覆寫歷史原件。\n')
+        guard.write(base.OUTPUTS[2], report.encode())
+        frozen()
+        receipt = {'schema': 'geometry-product-architecture-receipt/1', 'createdUtc': base.utc(),
+                   'sourceBaseHead': head, 'headObservedBefore': head, 'headObservedAfter': head,
+                   'basis': '指定已提交產品來源，加上外部已審 owned 來源／W guard 刷新。',
+                   'headBinding': '四份衍生稽核產物排除於產品 input closure；後續 metadata-only commit 另做來源 bytes 綁定。',
+                   'hashMode': 'sha256 after CRLF-to-LF normalization', 'inputClosureExcludes': list(base.OUTPUTS),
+                   'inputClosureHashSerialization': '依 path 排序；UTF-8 JSON、ensure_ascii=false、separators=(comma,colon)、無尾換行；欄位 path、sha256。',
+                   'manifestSha256': base.hashes((root / base.OUTPUTS[0]).read_bytes())['lfSha256'],
+                   'scanSha256': base.hashes(raw_scan)['lfSha256'], 'scannerSha256': before['tools'][base.TOOLS[0]]['lfSha256'],
+                   'reportSha256': base.hashes((root / base.OUTPUTS[2]).read_bytes())['lfSha256'],
+                   'inputClosureSha256': closure, 'counts': counts, 'inputs': inputs, 'scanPassed': True,
+                   'actualCliScan': scan_record, 'validation': validation, 'supplementalStaticGuardProbes': controls,
+                   'manifestRefresh': {'previousOutputs': {p: {'preservedPath': 'previous/' + Path(p).name, **base.hashes(raw)} for p, raw in guard.prior.items()},
+                       'previousSourceBaseHead': previous['sourceBaseHead'], 'previousReceiptCreatedUtc': previous['createdUtc'],
+                       'updatedExclusions': [], 'addedSources': [], 'addedExclusions': [], 'priorManifestCheck': prior_record,
+                       'inputsChangedSincePreviousSeal': changes, 'addedPolicyGuards': additions},
+                   'completeInventoryVerification': {'filesBefore': len(inputs), 'filesAfter': len(inputs), 'unregisteredAfter': [], 'missingAfter': [], 'changedInputs': [],
+                       'sourceRoots': list(base.ROOTS), 'sourceFiles': list(base.STANDALONE), 'executableSuffixes': sorted(base.SUFFIXES),
+                       'inputClosureSha256Before': closure, 'inputClosureSha256After': closure,
+                       'rawInputClosureSha256Before': raw_closure, 'rawInputClosureSha256After': raw_closure,
+                       'sourceHashesBeforeAndAfter': before['sources'], 'toolHashesBeforeAndAfter': before['tools'],
+                       'headObservedAfterIndependentAudit': head, 'checkedUtc': base.utc()},
+                   'outsideInventoryReviewedTests': extras,
+                   'refreshDriver': {'path': str(Path(__file__).resolve()), **base.hashes(method_raw),
+                       'reusedBaseTool': {'path': BASE_PATH, 'rawSha256': BASE_SHA}, 'argv': sys.argv, 'reviewFile': str(args.review_file.resolve()),
+                       'reviewSha256': sha(review_raw), 'evidenceDirectory': str(out)},
+                   'notClaimed': ['原生編譯或執行', '產品行為突變／P177', 'Q38、§7、P-189 或瀏覽器驗收', '全部 H 演算法所有權', '未來來源樹']}
+        guard.write_json(base.OUTPUTS[3], receipt)
+        frozen()
+        git_bytes_match(base, root, head, watched)
+        (out / 'final').mkdir()
+        for path in base.OUTPUTS:
+            (out / 'final' / Path(path).name).write_bytes((root / path).read_bytes())
+        base.dump(out / 'summary.json', {'sourceHead': head, 'exitCode': 0, 'counts': counts,
+                  'outputs': {p: base.hashes((root / p).read_bytes()) for p in base.OUTPUTS}, 'controls': controls, 'validation': validation})
+    return 0
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--root', required=True, type=Path)
+    parser.add_argument('--out', type=Path)
+    parser.add_argument('--source-head')
+    parser.add_argument('--review-file', type=Path)
+    parser.add_argument('--probe', choices=['identifier', 'string'])
+    parser.add_argument('--manifest', type=Path)
+    parser.add_argument('--value')
+    args = parser.parse_args()
+    if args.probe:
+        require(args.manifest is not None and args.value is not None, '探針缺參數')
+        return probe(args.root.resolve(), args.manifest.resolve(), args.probe, args.value)
+    require(args.out is not None and args.source_head is not None and args.review_file is not None, '刷新缺參數')
+    return refresh(args)
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

@@ -1,0 +1,4 @@
+usage: prepare_run.py [-h] --source SOURCE --product PRODUCT [--root ROOT]
+                      [--branch BRANCH] --output OUTPUT --run-directory
+                      RUN_DIRECTORY [--execute]
+prepare_run.py: error: argument --source: 必須是完整小寫 40 位 SHA

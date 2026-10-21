@@ -1,0 +1,84 @@
+{"event": "開始", "name": "source-before-head", "argv": ["git", "rev-parse", "HEAD"], "pid": 344050, "startedUTC": "2026-10-21T04:19:34.205364+00:00", "startElapsed": 0.0031068449970916845, "log": "source-before-head.log"}
+{"event": "開始", "name": "source-before-status", "argv": ["git", "status", "--porcelain=v1", "--untracked-files=all"], "pid": 344058, "startedUTC": "2026-10-21T04:19:34.521933+00:00", "startElapsed": 0.31976571199993487, "log": "source-before-status.log"}
+{"event": "開始", "name": "build", "argv": ["npm", "run", "build"], "pid": 344079, "startedUTC": "2026-10-21T04:19:34.844220+00:00", "startElapsed": 0.6419629899974097, "log": "build.log"}
+{"event": "執行中", "step": "build", "elapsedSeconds": 30.656342884998594, "remainingSeconds": 2054.343333558001}
+{"event": "開始", "name": "font-package", "argv": ["dpkg-query", "-W", "-f=${Status} ${Version}\n", "fonts-noto-cjk"], "pid": 344770, "startedUTC": "2026-10-21T04:20:28.607803+00:00", "startElapsed": 54.40554568500011, "log": "font-package.log"}
+{"event": "開始", "name": "font-default", "argv": ["fc-match", "-f", "%{family}\n%{file}\n", "sans-serif:lang=zh-tw"], "pid": 344771, "startedUTC": "2026-10-21T04:20:28.923215+00:00", "startElapsed": 54.720959059999586, "log": "font-default.log"}
+{"event": "開始", "name": "font-match", "argv": ["fc-match", "-f", "%{family}\n%{file}\n", "Noto Sans CJK TC:lang=zh-tw"], "pid": 344772, "startedUTC": "2026-10-21T04:20:29.548060+00:00", "startElapsed": 55.34580343599737, "log": "font-match.log"}
+{"event": "開始", "name": "chrome-version", "argv": ["/usr/bin/chromium", "--version"], "pid": 344786, "startedUTC": "2026-10-21T04:20:29.887946+00:00", "startElapsed": 55.68568924699866, "log": "chrome-version.log"}
+{"event": "開始", "name": "server", "argv": ["python3", "-u", "geometry-web/start_local.py", "--port", "18856"], "pid": 344822, "startedUTC": "2026-10-21T04:20:30.205905+00:00", "startElapsed": 56.003648628997325, "log": "server.log"}
+{"event": "開始", "name": "runtime-attempt-1", "argv": ["python3", "geometry-web/runtime_version.py", "--probe", "18856"], "pid": 344823, "startedUTC": "2026-10-21T04:20:30.206851+00:00", "startElapsed": 56.004595055997925, "log": "runtime-attempt-1.log"}
+{"event": "開始", "name": "runtime-attempt-2", "argv": ["python3", "geometry-web/runtime_version.py", "--probe", "18856"], "pid": 344909, "startedUTC": "2026-10-21T04:20:31.530100+00:00", "startElapsed": 57.327843679999205, "log": "runtime-attempt-2.log"}
+{"event": "開始", "name": "runtime-before", "argv": ["python3", "geometry-web/runtime_version.py", "--probe", "18856"], "pid": 344911, "startedUTC": "2026-10-21T04:20:31.846998+00:00", "startElapsed": 57.644740903997445, "log": "runtime-before.log"}
+{"event": "開始", "name": "canvas", "argv": ["node", "geometry-web/cdp_test.js"], "pid": 344913, "startedUTC": "2026-10-21T04:20:32.163648+00:00", "startElapsed": 57.9613906529994, "log": "canvas.log"}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 88.04993107900009, "remainingSeconds": 1996.9493590030033}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 118.15935294999872, "remainingSeconds": 1966.840154783}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 148.32401148699864, "remainingSeconds": 1936.6754708090011}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 178.520103371, "remainingSeconds": 1906.479402871002}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 208.59280779899927, "remainingSeconds": 1876.4066237920015}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 238.67604307999864, "remainingSeconds": 1846.3234102230017}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 268.7733141689969, "remainingSeconds": 1816.2261768790013}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 298.98555776599824, "remainingSeconds": 1786.0139382600028}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 329.1571291429973, "remainingSeconds": 1755.8422553780001}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 359.1856116889976, "remainingSeconds": 1725.8138772570019}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 389.22890166199795, "remainingSeconds": 1695.770716174}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 419.3030986199992, "remainingSeconds": 1665.696478195001}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 449.50927757299723, "remainingSeconds": 1635.490181399}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 479.6952276259981, "remainingSeconds": 1605.304197155001}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 509.9250817139982, "remainingSeconds": 1575.0743727810004}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 540.0615783239991, "remainingSeconds": 1544.9379103010033}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 570.2357194079996, "remainingSeconds": 1514.7638624550018}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 600.3942029949976, "remainingSeconds": 1484.605203919}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 630.5525202989993, "remainingSeconds": 1454.4469792119999}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 660.6004396559983, "remainingSeconds": 1424.3991521820026}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 690.638522579, "remainingSeconds": 1394.360953487001}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 720.7870935760002, "remainingSeconds": 1364.2123874390018}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 750.9323095699983, "remainingSeconds": 1334.0672584120002}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 781.0371761839997, "remainingSeconds": 1303.962372801001}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 811.1944536209994, "remainingSeconds": 1273.8050384100025}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 841.3499308889986, "remainingSeconds": 1243.6495622230032}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 871.4988826059998, "remainingSeconds": 1213.5006918660001}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 901.594456887, "remainingSeconds": 1183.4049505990006}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 931.7121196689986, "remainingSeconds": 1153.2873109909997}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 961.9029001539966, "remainingSeconds": 1123.0965553920032}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 992.1882089849969, "remainingSeconds": 1092.8112860000037}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1022.3003594749971, "remainingSeconds": 1062.6991557200017}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1052.500398889999, "remainingSeconds": 1032.498972622001}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1082.8021681879982, "remainingSeconds": 1002.1973299009987}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1113.0038961819955, "remainingSeconds": 971.995686662005}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1143.1916523249965, "remainingSeconds": 941.8071147060036}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1173.4025558649955, "remainingSeconds": 911.5969037469986}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1203.5020682050017, "remainingSeconds": 881.4974115060031}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1233.6270221759987, "remainingSeconds": 851.3725384650024}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1263.727969460997, "remainingSeconds": 821.2712003240013}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1293.8063074230013, "remainingSeconds": 791.1931500060018}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1323.912189306, "remainingSeconds": 761.0873324370041}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1354.069192128998, "remainingSeconds": 730.9303142120043}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1384.238398992995, "remainingSeconds": 700.761166065}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1414.4238189539974, "remainingSeconds": 670.5756136380005}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1444.5529835139969, "remainingSeconds": 640.4465620050032}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1474.7034513429971, "remainingSeconds": 610.2961249209984}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1504.886235812999, "remainingSeconds": 580.107767225003}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1535.1051689809974, "remainingSeconds": 549.8938046840049}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1565.178443097997, "remainingSeconds": 519.8201310770019}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1595.4269996430012, "remainingSeconds": 489.57244819200423}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1625.6790975159965, "remainingSeconds": 459.3201563230032}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1655.9322229039972, "remainingSeconds": 429.0672601530023}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1686.205611888996, "remainingSeconds": 398.793769347998}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1716.2827959549977, "remainingSeconds": 368.71659114200156}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1746.3049442229967, "remainingSeconds": 338.69356106399937}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1776.4455433069961, "remainingSeconds": 308.5538116430034}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1806.4607013400018, "remainingSeconds": 278.53871388800326}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1836.498540691995, "remainingSeconds": 248.50085450600454}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1866.560032757996, "remainingSeconds": 218.43946822600265}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1896.858149009, "remainingSeconds": 188.14126092000515}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1926.864926276001, "remainingSeconds": 158.13456434199907}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1956.8867678230017, "remainingSeconds": 128.11271820899856}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 1987.194055504995, "remainingSeconds": 97.80535502500425}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 2017.4808156889994, "remainingSeconds": 67.51852923600381}
+{"event": "執行中", "step": "canvas", "elapsedSeconds": 2047.7476863439952, "remainingSeconds": 37.25186417299847}
+{"event": "開始", "name": "runtime-after", "argv": ["python3", "geometry-web/runtime_version.py", "--probe", "18856"], "pid": 408589, "startedUTC": "2026-10-21T04:53:47.210390+00:00", "startElapsed": 2053.0081332679983, "log": "runtime-after.log"}
+{"event": "開始", "name": "source-after-head", "argv": ["git", "rev-parse", "HEAD"], "pid": 408591, "startedUTC": "2026-10-21T04:53:47.526990+00:00", "startElapsed": 2053.3247332589963, "log": "source-after-head.log"}
+{"event": "開始", "name": "source-after-status", "argv": ["git", "status", "--porcelain=v1", "--untracked-files=all"], "pid": 408592, "startedUTC": "2026-10-21T04:53:47.847649+00:00", "startElapsed": 2053.645391786995, "log": "source-after-status.log"}
+{"event": "開始", "name": "archive-wait-trace", "argv": ["python3", "geometry-web/archive_wait_trace.py", "/workspace/geo261-evidence/canvas-L2-formal-249571fe/wait-trace"], "pid": 408613, "startedUTC": "2026-10-21T04:53:48.336045+00:00", "startElapsed": 2054.1337879159983, "log": "archive-wait-trace.log"}
+{"event": "完成", "status": "passed", "elapsedSeconds": 2054.5049649099965, "errors": []}

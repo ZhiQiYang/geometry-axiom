@@ -1,0 +1,25 @@
+{
+  "schema": "section-profile-exceptions/1",
+  "requested": [
+    "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+  ],
+  "executed": [
+    "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run"
+  ],
+  "passed": [],
+  "tests_run": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "events": [
+    {
+      "test_id": "tests.test_section_profile_native.SectionProfileNative.test_panel_strict_width_fixed_spec_and_long_run",
+      "subtest_id": null,
+      "kind": "failure",
+      "exception_type": "builtins.AssertionError",
+      "message": "False is not true : expected the candidate to be accepted: {'token': 1, 'valid': False, 'revision': 11, 'diagnosticsComplete': True, 'validationStrategy': 'all-section-profile-violations', 'before': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1', 'grid-card-reference/1'], 'required_capabilities': [], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'specs': [], 'materials': [], 'methods': [], 'applications': [], 'sources': [], 'parameters': [], 'assembly': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'sectionProfiles': {'profiles': [], 'members': [], 'runs': []}, 'geometry': {'grids': [], 'gridSystems': [], 'datums': [], 'guides': [], 'timbers': []}}, 'after': {'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1', 'grid-card-reference/1'], 'required_capabilities': ['section-profile/1'], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'specs': [], 'materials': [], 'methods': [], 'applications': [], 'sources': [], 'parameters': [], 'assembly': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'sectionProfiles': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [1000, 0], [1000, 100], [0, 100]]}}], 'members': [{'value': {'id': 4, 'kind': 'panel', 'orientation': 'thickness-v', 'panelSpec': 'calcium-silicate-6', 'profileId': 1, 'u0': 0, 'v0': 0, 'width': 914}, 'rect': [0, 0, 6, 914], 'dimensions': [914, 6]}], 'runs': [{'value': {'id': 1, 'length': {'kind': 'literal', 'value': 2000}, 'placement': None, 'profileId': 1}, 'length': 2000, 'coordinateSpace': 'local', 'frame': None, 'members': [{'memberId': 4, 'bounds': [[0, 0, 0], [6, 914, 2000]]}]}]}, 'geometry': {'grids': [], 'gridSystems': [], 'datums': [], 'guides': [], 'timbers': []}}, 'redeclaredReferences': [], 'cardCaptures': [], 'sectionProfiles': {'before': {'profiles': [], 'members': [], 'runs': []}, 'after': {'profiles': [{'value': {'id': 1, 'name': 'L 斷面', 'outline': [[0, 0], [1000, 0], [1000, 100], [0, 100]]}}], 'members': [{'value': {'id': 4, 'kind': 'panel', 'orientation': 'thickness-v', 'panelSpec': 'calcium-silicate-6', 'profileId': 1, 'u0': 0, 'v0': 0, 'width': 914}, 'rect': [0, 0, 6, 914], 'dimensions': [914, 6]}], 'runs': [{'value': {'id': 1, 'length': {'kind': 'literal', 'value': 2000}, 'placement': None, 'profileId': 1}, 'length': 2000, 'coordinateSpace': 'local', 'frame': None, 'members': [{'memberId': 4, 'bounds': [[0, 0, 0], [6, 914, 2000]]}]}]}, 'warnings': [], 'diagnosticsComplete': True, 'violations': [{'code': 'V_PROFILE_OUTSIDE', 'clause': 'I44', 'memberId': 4, 'profileId': 1, 'rectangle': [0, 0, 6, 914], 'originalRectangle': None, 'message': 'Member rectangle must be contained by profile', 'expected': 'rectangle contained in closed profile', 'actual': 'outside', 'outsideRegions': [[0, 100, 6, 914]]}]}, 'violations': [{'code': 'V_PROFILE_OUTSIDE', 'clause': 'I44', 'memberId': 4, 'profileId': 1, 'rectangle': [0, 0, 6, 914], 'originalRectangle': None, 'message': 'Member rectangle must be contained by profile', 'expected': 'rectangle contained in closed profile', 'actual': 'outside', 'outsideRegions': [[0, 100, 6, 914]]}]}"
+    }
+  ]
+}

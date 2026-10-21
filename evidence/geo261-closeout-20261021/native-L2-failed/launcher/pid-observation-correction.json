@@ -1,0 +1,15 @@
+{
+  "recordedUtc": "2026-10-21T04:19:38.801360+00:00",
+  "diagnosticToolChunk": "baa8e6",
+  "diagnosticExitCode": 1,
+  "observed": "/proc/342474/task/342474/children 當次 FileNotFoundError",
+  "cause": "原因未定，不從單次 PID 不可見推論環境限制或 native 已退出",
+  "laterToolObservation": {
+    "sessionId": 78097,
+    "chunk": "e113b9",
+    "stillRunning": true,
+    "waitSeconds": 5.000801176
+  },
+  "officialNativeRestarted": false,
+  "note": "工具結果事後轉錄，非 tool transport 自動匯出。"
+}

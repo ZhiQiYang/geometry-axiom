@@ -1,0 +1,87 @@
+--- p189-trial-prepare-v2.py
++++ p189-formal-L2-prepare.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""外部候選來源準備器；只讀 Git 與解 archive，不建置／測試／取樣。"""
++"""外部正式 L2 來源準備器；只讀 Git 與解 archive，不建置／測試／取樣。"""
+ import argparse
+ import datetime
+ import hashlib
+@@ -11,19 +11,18 @@
+ import tempfile
+ 
+ p=argparse.ArgumentParser()
+-p.add_argument('--final',required=True)
++p.add_argument('--source-head',required=True)
+ p.add_argument('--expected-parent',required=True)
+-p.add_argument('--candidate-worktree',required=True)
+-p.add_argument('--expected-path',action='append',required=True)
+-p.add_argument('--label',required=True)
+ a=p.parse_args()
+ E=Path('/workspace/geo261-evidence');R=Path('/workspace/geometry-axiom')
+ L='43f85313c32410ac01406ab585846bbacafea278'
+-C=a.final;H='59796b1af9259eb23d30134c2ce5a56317a06091'
++C=a.source_head;LABEL='formal-L2';H='59796b1af9259eb23d30134c2ce5a56317a06091'
+ assert len(C)==40 and all(c in '0123456789abcdef' for c in C)
+-assert a.label.replace('-','').isalnum()
+-W=Path(tempfile.mkdtemp(prefix='geo261-p189-'+a.label+'-src-',dir='/workspace'))
+-O=Path(tempfile.mkdtemp(prefix='p189-'+a.label+'-'+C[:12]+'-',dir=E))
++assert len(a.expected_parent)==40 and all(c in '0123456789abcdef' for c in a.expected_parent)
++if not __debug__:
++    raise RuntimeError('不可使用 Python -O／PYTHONOPTIMIZE')
++W=Path(tempfile.mkdtemp(prefix='geo261-p189-'+LABEL+'-src-',dir='/workspace'))
++O=Path(tempfile.mkdtemp(prefix='p189-'+LABEL+'-'+C[:12]+'-',dir=E))
+ commands=[]
+ def sha(b):return hashlib.sha256(b).hexdigest()
+ def save(path,value):
+@@ -34,17 +33,16 @@
+     assert r.returncode==0,commands[-1]
+     return r.stdout
+ assert git('rev-parse',C+'^{commit}').decode().strip()==C
+-assert git('rev-parse',C+'^').decode().strip()==a.expected_parent
+-assert git('rev-parse','HEAD').decode().strip()==L
++assert git('rev-parse',a.expected_parent+'^{commit}').decode().strip()==a.expected_parent
++assert git('rev-list','--parents','-n','1',C).decode().split()==[C,a.expected_parent]
++assert git('rev-parse','HEAD').decode().strip()==C
+ assert git('status','--porcelain')==b''
+-assert git('rev-parse','HEAD',cwd=a.candidate_worktree).decode().strip()==C
+-assert git('status','--porcelain',cwd=a.candidate_worktree)==b''
+ changed=git('diff','--name-only',a.expected_parent,C).decode().splitlines()
+-assert sorted(changed)==sorted(a.expected_path),(changed,a.expected_path)
++assert changed==['tests/mutants_results.json'],changed
+ patch=git('diff','--binary','--full-index',a.expected_parent,C)
+-(O/'candidate-parent.patch').write_bytes(patch)
++(O/'source-parent-ledger.patch').write_bytes(patch)
+ lpatch=git('diff','--binary','--full-index',L,C)
+-(O/'candidate-vs-L.patch').write_bytes(lpatch)
++(O/'source-vs-previous-L.patch').write_bytes(lpatch)
+ changed_blobs=[]
+ for path in changed:
+     raw=git('show',C+':'+path)
+@@ -86,10 +84,13 @@
+ for phase in ('selftest','build','equivalence','timing','check'):
+     planned.append({'phase':phase,'argv':['python3','-B','-u',str(runner),phase,'--repo',str(R),'--work',str(W),'--out',str(O),'--gen',str(W/'gen_scene.py'),'--final',C,'--timeout','900']})
+ supervisor=E/'p189-final-L-phase-supervisor.py'
+-prep={'prepared_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'classification':'候選性能預檢；非完整可合驗收；不改既有收據',
+- 'label':a.label,'candidate_worktree':a.candidate_worktree,'repo':str(R),'work':str(W),'out':str(O),'commits':commits,
+- 'expected_parent':a.expected_parent,'candidate_sha':C,'candidate_parent_matches':True,'changed_paths':changed,
+- 'changed_blobs':changed_blobs,'candidate_parent_patch_sha256':sha(patch),'candidate_vs_L_patch_sha256':sha(lpatch),
++assert sha(supervisor.read_bytes())=='e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413'
++assert git('rev-parse','HEAD').decode().strip()==C
++assert git('status','--porcelain')==b''
++prep={'prepared_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'classification':'正式 L2 P-189 驗收；本來源需新實跑，不沿用候選成績',
++ 'label':LABEL,'source_worktree':str(R),'repo':str(R),'work':str(W),'out':str(O),'commits':commits,
++ 'expected_parent':a.expected_parent,'source_sha':C,'source_head_clean_matches':True,'source_parent_matches':True,'parent_delta_only_ledger':True,'changed_paths':changed,
++ 'changed_blobs':changed_blobs,'source_parent_ledger_patch_sha256':sha(patch),'source_vs_previous_L_patch_sha256':sha(lpatch),
+  'runner':str(runner),'runner_sha256':sha(runner_raw),'runner_git_blob':git('rev-parse',L+':'+str(runner.relative_to(R))).decode().strip(),
+  'generator':str(W/'gen_scene.py'),'generator_sha256':sha(gen),'generator_source':H+':'+genpath,
+  'generator_calibration':{'path':str(W/'calib/f3-00.scene'),'source':H+':'+calpath,'sha256':sha(cal),'bytes':len(cal)},
+@@ -105,6 +106,6 @@
+  'out':str(O),'scheduled_launch_argv':['python3','-B',str(supervisor),str(O/'supervisor-released-config.json')],
+  'launch_transport':'exec_command保有頂層session並真wait；stdout/stderr直檔，不launch-and-exit。','classification':prep['classification']}
+ save(O/'supervisor-prepared-config.json',config)
+-pointer={'out':str(O),'work':str(W),'candidate_sha':C,'ready_not_released':True}
+-save(E/('p189-'+a.label+'-current.json'),pointer)
++pointer={'out':str(O),'work':str(W),'source_sha':C,'ready_not_released':True}
++save(E/('p189-'+LABEL+'-current.json'),pointer)
+ print(json.dumps({**pointer,'archive_counts':{x['label']:x['source_file_count'] for x in archives},'three_bridge_absent':True},ensure_ascii=False,indent=2))

@@ -1,0 +1,25 @@
+{
+  "started_utc": "2026-10-20T19:33:19.411087+00:00",
+  "commits": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "final": "7dae5f21c7ca401e660450d437e60ba566218da8"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "runner_sha256": "0ed8674c90dc670b37a63a91187f633d7cf11190bb9584a7081dd6a5358dbc7c",
+  "loadavg": [
+    1.37841796875,
+    0.533203125,
+    0.197265625
+  ],
+  "compile_flags": [
+    "-std=c11",
+    "-O2",
+    "-lm"
+  ],
+  "stack_kib": 16384,
+  "method": "每 N 三輪；偶數輪 main/base/final、奇數輪 final/base/main；獨立程序的 loadfile wall time，與交接腳本相同；不扣啟動成本"
+}

@@ -1,0 +1,23 @@
+{
+  "session_id": 14636,
+  "completion_chunk": "8361a7",
+  "exit_code": 0,
+  "observed_utc": "2026-10-21T03:59:58.067912+00:00",
+  "argv": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/ledger-L2-preparation/validate_package.py",
+    "--source",
+    "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+    "--config",
+    "/workspace/geo261-evidence/ledger-A2-cc-cbefb39b/prepare-receipt.json",
+    "--execute"
+  ],
+  "validation_sha256": "fb75a2094dada96a44cf337d380b16407f74972c23b9d8039eb79087b8c45e7a",
+  "備註": "工具真終了碼；此小收據於 publish 原始快照完成後保存，不回改該包索引。後續封裝另收此原件。"
+}

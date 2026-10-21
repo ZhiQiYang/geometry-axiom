@@ -1,0 +1,4015 @@
+[
+  {
+    "name": "committed-network6000",
+    "command": [
+      "node",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
+      "/workspace/geometry-axiom"
+    ],
+    "environment": {
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:18839/",
+      "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-final",
+      "XDG_CACHE_HOME": "/tmp/geo261-xdg-final",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+      "GEOMETRY_CDP_PORT": "9350",
+      "P52_REPEATS": "1",
+      "P52_DELAY_NETWORK_MS": "6000"
+    },
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "sourceBefore": {
+      "sha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+      "status": "",
+      "sourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+      "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083"
+    },
+    "sourceAfter": {
+      "sha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+      "status": "",
+      "sourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+      "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083"
+    },
+    "elapsedSeconds": 92.03593785500016,
+    "logSha256": "149821fefe046ad8f41aa30e161013e70859ca9fdacebfbce82171c0b7f2c027",
+    "loadBefore": "1.12 1.18 1.49 1/388 61873",
+    "loadAfter": "1.58 1.34 1.52 1/269 64208",
+    "loadScope": "與 P72B 功能驗證並行；不作正式效能判定。架構代理僅更新四個 metadata；CDP 與探針來源凍結。",
+    "summaries": [
+      {
+        "version": {
+          "root": "/workspace/geometry-axiom",
+          "sha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+          "status": "",
+          "repeats": 1,
+          "actualSourceHasCandidate": true,
+          "memoryPatch": "none",
+          "effectiveCandidateWait": true,
+          "targetedControl": false,
+          "referenceControl": "",
+          "sourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+          "effectiveSourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+          "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+          "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+        },
+        "passedAssertions": 43,
+        "failedAssertions": 0,
+        "exceptions": 0
+      }
+    ],
+    "results": [
+      {
+        "version": {
+          "root": "/workspace/geometry-axiom",
+          "sha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+          "status": "",
+          "repeats": 1,
+          "actualSourceHasCandidate": true,
+          "memoryPatch": "none",
+          "effectiveCandidateWait": true,
+          "targetedControl": false,
+          "referenceControl": "",
+          "sourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+          "effectiveSourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+          "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+          "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+        },
+        "iteration": 1,
+        "waitAndReadMs": 6547.721535999997,
+        "assertionPassed": true,
+        "activeSampling": false,
+        "probe": {
+          "before": {
+            "busy": false,
+            "tool": "timber",
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "e2e322d1-3d9d-4bbe-82ce-6d3790f17caf"
+            },
+            "connection": {
+              "phase": "ready",
+              "error": ""
+            },
+            "referenceRevision": 690,
+            "inputs": {
+              "tbA": "27",
+              "tbB": "33",
+              "tbAnchor": "at-line guide 2",
+              "tbSelector": "",
+              "tbDir": "+v",
+              "tbSide": "+n",
+              "tbRole": "primary",
+              "tbPri": "3"
+            },
+            "toasts": "",
+            "events": [
+              {
+                "k": "api",
+                "cmd": "source-inspect",
+                "ok": true,
+                "ms": 8,
+                "t": 1792527308296
+              },
+              {
+                "k": "status",
+                "msg": "工具：選取",
+                "t": 1792527308296
+              },
+              {
+                "k": "status",
+                "msg": "面 1 · 選取",
+                "t": 1792527308313
+              },
+              {
+                "k": "api",
+                "cmd": "obstacles 1",
+                "ok": true,
+                "ms": 17,
+                "t": 1792527308340
+              },
+              {
+                "k": "api",
+                "cmd": "references",
+                "ok": true,
+                "ms": 9,
+                "t": 1792527308349
+              },
+              {
+                "k": "api",
+                "cmd": "dump",
+                "ok": true,
+                "ms": 7,
+                "t": 1792527308356
+              },
+              {
+                "k": "api",
+                "cmd": "source-inspect",
+                "ok": true,
+                "ms": 8,
+                "t": 1792527308363
+              },
+              {
+                "k": "change",
+                "el": "select#tbDir",
+                "value": "+v",
+                "t": 1792527308402
+              },
+              {
+                "k": "change",
+                "el": "select#tbSide",
+                "value": "+n",
+                "t": 1792527308414
+              },
+              {
+                "k": "change",
+                "el": "select#tbAnchor",
+                "value": "at-line guide 2",
+                "t": 1792527308455
+              },
+              {
+                "k": "change",
+                "el": "input#tbA",
+                "value": "27",
+                "t": 1792527308465
+              },
+              {
+                "k": "api",
+                "cmd": "dump",
+                "ok": true,
+                "ms": 12,
+                "t": 1792527308787
+              }
+            ]
+          },
+          "point": {
+            "x": 2260,
+            "y": 1556
+          },
+          "preparedAt": 82855.70000000019,
+          "clickAt": 82858.30000000028,
+          "rows": [
+            {
+              "cmd": "newid",
+              "start": 82859,
+              "end": 88922.1000000001,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "references",
+              "start": 82889.3999999999,
+              "end": 82897.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 82957,
+              "end": 82963.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83017.1000000001,
+              "end": 83023.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83077.80000000028,
+              "end": 83083.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83138,
+              "end": 83143.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83197.6000000001,
+              "end": 83204.70000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83259.6000000001,
+              "end": 83266.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83320.70000000019,
+              "end": 83326.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83380.80000000028,
+              "end": 83386.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83440.70000000019,
+              "end": 83446.5,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83500.3999999999,
+              "end": 83506.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83560.6000000001,
+              "end": 83566.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83620.70000000019,
+              "end": 83626.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83680.8999999999,
+              "end": 83686.70000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83740.20000000019,
+              "end": 83747.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83801.6000000001,
+              "end": 83807.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83862.20000000019,
+              "end": 83868.1000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83922.70000000019,
+              "end": 83929.1000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 83983.8999999999,
+              "end": 83991.3999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84045.80000000028,
+              "end": 84053.5,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84109.70000000019,
+              "end": 84115.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84171.20000000019,
+              "end": 84177.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84232.6000000001,
+              "end": 84240.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84294.6000000001,
+              "end": 84300.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84355.1000000001,
+              "end": 84362,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84416.3999999999,
+              "end": 84424.1000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84479.30000000028,
+              "end": 84486.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84541.80000000028,
+              "end": 84549.5,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84603.70000000019,
+              "end": 84609.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84663.70000000019,
+              "end": 84669.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84726.30000000028,
+              "end": 84732.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84787,
+              "end": 84792.5,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84846.6000000001,
+              "end": 84856.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84911,
+              "end": 84916.70000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 84971,
+              "end": 84977.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85031.70000000019,
+              "end": 85038,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85092.5,
+              "end": 85100.5,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85155.1000000001,
+              "end": 85163.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85219.1000000001,
+              "end": 85227.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85281.8999999999,
+              "end": 85288.3999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85343.1000000001,
+              "end": 85350.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85408.80000000028,
+              "end": 85420.70000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85475.1000000001,
+              "end": 85489.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85543.70000000019,
+              "end": 85551.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85605,
+              "end": 85612.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85673.20000000019,
+              "end": 85680,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85734.8999999999,
+              "end": 85743.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85798.3999999999,
+              "end": 85807.1000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85863.3999999999,
+              "end": 85870.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85925,
+              "end": 85931.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 85985.8999999999,
+              "end": 85992.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86046.3999999999,
+              "end": 86052.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86107,
+              "end": 86113.70000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86167.70000000019,
+              "end": 86174.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86229.20000000019,
+              "end": 86235.3999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86289.3999999999,
+              "end": 86296.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86350.6000000001,
+              "end": 86356.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86411.30000000028,
+              "end": 86417.3999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86471.6000000001,
+              "end": 86477.3999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86531.6000000001,
+              "end": 86537.3999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86591.8999999999,
+              "end": 86598.70000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86652.5,
+              "end": 86658.70000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86712.80000000028,
+              "end": 86719.5,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86773.80000000028,
+              "end": 86779.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86847.1000000001,
+              "end": 86853.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86908.1000000001,
+              "end": 86914.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 86972.6000000001,
+              "end": 86978.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87033.30000000028,
+              "end": 87040.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87095.8999999999,
+              "end": 87101.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87155.70000000019,
+              "end": 87162.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87217.3999999999,
+              "end": 87224.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87280.8999999999,
+              "end": 87287.1000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87340.80000000028,
+              "end": 87347.70000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87402.3999999999,
+              "end": 87409.5,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87475.30000000028,
+              "end": 87484.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87539.20000000019,
+              "end": 87545.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87599.8999999999,
+              "end": 87606.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87660.80000000028,
+              "end": 87669.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87723.8999999999,
+              "end": 87730.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87784.3999999999,
+              "end": 87791.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87845.20000000019,
+              "end": 87851.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87905.80000000028,
+              "end": 87912.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 87966.3999999999,
+              "end": 87972.1000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88025.6000000001,
+              "end": 88033.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88088.1000000001,
+              "end": 88094.1000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88148.1000000001,
+              "end": 88154.3999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88211.30000000028,
+              "end": 88218.1000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88271.70000000019,
+              "end": 88277.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88332.20000000019,
+              "end": 88338.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88392.6000000001,
+              "end": 88398.5,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88454.20000000019,
+              "end": 88460.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88514.3999999999,
+              "end": 88521.8999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88577.8999999999,
+              "end": 88585.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88639.70000000019,
+              "end": 88646.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88700.8999999999,
+              "end": 88708.70000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88763.5,
+              "end": 88770.6000000001,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88825,
+              "end": 88832.5,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 88886.70000000019,
+              "end": 88893.80000000028,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "source-inspect",
+              "start": 88922.20000000019,
+              "end": 88929.80000000028,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "line history-begin",
+              "start": 88929.8999999999,
+              "end": 89009,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "references",
+              "start": 88950.70000000019,
+              "end": 88959,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "line timber 3 27 33 role primary",
+              "start": 89009,
+              "end": 89084.30000000028,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "references",
+              "start": 89014.1000000001,
+              "end": 89025.70000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 89081.70000000019,
+              "end": 89091.5,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "section-profile-read",
+              "start": 89083.5,
+              "end": 89144.8999999999,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "line place 3 on 1 at-line guide 2  +v +n",
+              "start": 89084.30000000028,
+              "end": 89216.30000000028,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "references",
+              "start": 89146,
+              "end": 89156.20000000019,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "references",
+              "start": 89210.1000000001,
+              "end": 89220.30000000028,
+              "ok": true,
+              "preview": false,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "cmd": "section-profile-read",
+              "start": 89215.80000000028,
+              "end": 89279.70000000019,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "line history-end",
+              "start": 89216.3999999999,
+              "end": 89338.3999999999,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "references",
+              "start": 89272.70000000019,
+              "end": 89289.5,
+              "ok": true,
+              "preview": false,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "cmd": "obstacles 1",
+              "start": 89338.5,
+              "end": 89344.8999999999,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "references",
+              "start": 89343.80000000028,
+              "end": 89352,
+              "ok": true,
+              "preview": false,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "cmd": "references",
+              "start": 89344.8999999999,
+              "end": 89352.3999999999,
+              "ok": true,
+              "preview": false,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "cmd": "dump",
+              "start": 89352.5,
+              "end": 89361.30000000028,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "source-inspect",
+              "start": 89361.30000000028,
+              "end": 89368.20000000019,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "references",
+              "start": 89409.1000000001,
+              "end": 89418,
+              "ok": true,
+              "preview": false,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            }
+          ],
+          "samples": [
+            {
+              "source": "原流程",
+              "start": 82889.3999999999,
+              "at": 82898,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 82957,
+              "at": 82963.3999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83017.1000000001,
+              "at": 83023.20000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83077.80000000028,
+              "at": 83083.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83138,
+              "at": 83143.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83197.6000000001,
+              "at": 83204.70000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83259.6000000001,
+              "at": 83266.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83320.70000000019,
+              "at": 83326.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83380.80000000028,
+              "at": 83386.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83440.70000000019,
+              "at": 83446.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83500.3999999999,
+              "at": 83506.20000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83560.6000000001,
+              "at": 83566.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83620.70000000019,
+              "at": 83626.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83680.8999999999,
+              "at": 83686.70000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83740.20000000019,
+              "at": 83747.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83801.6000000001,
+              "at": 83807.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83862.20000000019,
+              "at": 83868.1000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83922.70000000019,
+              "at": 83929.1000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 83983.8999999999,
+              "at": 83991.3999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84045.80000000028,
+              "at": 84053.5,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84109.70000000019,
+              "at": 84115.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84171.20000000019,
+              "at": 84177.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84232.6000000001,
+              "at": 84240.20000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84294.6000000001,
+              "at": 84300.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84355.1000000001,
+              "at": 84362,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84416.3999999999,
+              "at": 84424.1000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84479.30000000028,
+              "at": 84486.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84541.80000000028,
+              "at": 84549.5,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84603.70000000019,
+              "at": 84609.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84663.70000000019,
+              "at": 84669.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84726.30000000028,
+              "at": 84732.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84787,
+              "at": 84792.5,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84846.6000000001,
+              "at": 84856.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84911,
+              "at": 84916.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 84971,
+              "at": 84977.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85031.70000000019,
+              "at": 85038,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85092.5,
+              "at": 85100.5,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85155.1000000001,
+              "at": 85163.20000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85219.1000000001,
+              "at": 85227.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85281.8999999999,
+              "at": 85288.3999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85343.1000000001,
+              "at": 85350.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85408.80000000028,
+              "at": 85420.70000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85475.1000000001,
+              "at": 85489.3999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85543.70000000019,
+              "at": 85551.20000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85605,
+              "at": 85612.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85673.20000000019,
+              "at": 85680,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85734.8999999999,
+              "at": 85743.20000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85798.3999999999,
+              "at": 85807.1000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85863.3999999999,
+              "at": 85870.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85925,
+              "at": 85931.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 85985.8999999999,
+              "at": 85992.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86046.3999999999,
+              "at": 86052.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86107,
+              "at": 86113.70000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86167.70000000019,
+              "at": 86174.20000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86229.20000000019,
+              "at": 86235.3999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86289.3999999999,
+              "at": 86296.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86350.6000000001,
+              "at": 86356.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86411.30000000028,
+              "at": 86417.3999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86471.6000000001,
+              "at": 86477.3999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86531.6000000001,
+              "at": 86537.3999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86591.8999999999,
+              "at": 86598.70000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86652.5,
+              "at": 86658.70000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86712.80000000028,
+              "at": 86719.5,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86773.80000000028,
+              "at": 86779.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86847.1000000001,
+              "at": 86853.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86908.1000000001,
+              "at": 86914.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 86972.6000000001,
+              "at": 86978.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87033.30000000028,
+              "at": 87040.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87095.8999999999,
+              "at": 87101.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87155.70000000019,
+              "at": 87162.20000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87217.3999999999,
+              "at": 87224.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87280.8999999999,
+              "at": 87287.1000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87340.80000000028,
+              "at": 87347.70000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87402.3999999999,
+              "at": 87409.5,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87475.30000000028,
+              "at": 87484.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87539.20000000019,
+              "at": 87545.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87599.8999999999,
+              "at": 87606.20000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87660.80000000028,
+              "at": 87669.3999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87723.8999999999,
+              "at": 87730.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87784.3999999999,
+              "at": 87791.20000000019,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87845.20000000019,
+              "at": 87851.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87905.80000000028,
+              "at": 87912.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 87966.3999999999,
+              "at": 87972.1000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88025.6000000001,
+              "at": 88033.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88088.1000000001,
+              "at": 88094.1000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88148.1000000001,
+              "at": 88154.3999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88211.30000000028,
+              "at": 88218.1000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88271.70000000019,
+              "at": 88277.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88332.20000000019,
+              "at": 88338.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88392.6000000001,
+              "at": 88398.5,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88454.20000000019,
+              "at": 88460.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88514.3999999999,
+              "at": 88521.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88577.8999999999,
+              "at": 88585.30000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88639.70000000019,
+              "at": 88646.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88700.8999999999,
+              "at": 88708.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88763.5,
+              "at": 88770.6000000001,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88825,
+              "at": 88832.5,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88886.70000000019,
+              "at": 88893.80000000028,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 88950.70000000019,
+              "at": 88959,
+              "ok": true,
+              "busy": true,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 89014.1000000001,
+              "at": 89025.70000000019,
+              "ok": true,
+              "busy": true,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 89081.70000000019,
+              "at": 89091.5,
+              "ok": true,
+              "busy": true,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 89146,
+              "at": 89156.20000000019,
+              "ok": true,
+              "busy": true,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原流程",
+              "start": 89210.1000000001,
+              "at": 89220.30000000028,
+              "ok": true,
+              "busy": true,
+              "timberCount": 3,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "source": "原流程",
+              "start": 89272.70000000019,
+              "at": 89289.5,
+              "ok": true,
+              "busy": true,
+              "timberCount": 3,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "source": "原流程",
+              "start": 89343.80000000028,
+              "at": 89352,
+              "ok": true,
+              "busy": true,
+              "timberCount": 3,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "source": "原流程",
+              "start": 89344.8999999999,
+              "at": 89352.5,
+              "ok": true,
+              "busy": true,
+              "timberCount": 3,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "source": "原流程",
+              "start": 89409.1000000001,
+              "at": 89418,
+              "ok": true,
+              "busy": false,
+              "timberCount": 3,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            }
+          ],
+          "done": true,
+          "delayMs": 0,
+          "pollMs": 50,
+          "activeSampling": false,
+          "control": "",
+          "hit": {
+            "tag": "line",
+            "id": "",
+            "classes": null,
+            "faceHit": "g:2:v"
+          },
+          "trusted": true,
+          "eventType": "pointerdown",
+          "firstTimberObservedMs": 6362,
+          "firstGeometryObservedMs": 6362,
+          "geometry": {
+            "surface": 1,
+            "centerline": 2000,
+            "length": 2946,
+            "u": 2014,
+            "v": 27,
+            "dir": "+v",
+            "side": "+n",
+            "A": 27,
+            "B": 33,
+            "origin": [
+              2014,
+              27,
+              2500
+            ],
+            "axes": [
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                -1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "originalReadFinishedAt": 89439.80000000028
+        },
+        "state": {
+          "busy": false,
+          "tool": "timber",
+          "focus": {
+            "t": "face",
+            "id": 1
+          },
+          "edit": {
+            "bid": 1,
+            "contextId": "e2e322d1-3d9d-4bbe-82ce-6d3790f17caf"
+          },
+          "connection": {
+            "phase": "ready",
+            "error": ""
+          },
+          "referenceRevision": 692,
+          "inputs": {
+            "tbA": "27",
+            "tbB": "33",
+            "tbAnchor": "at-line guide 2",
+            "tbSelector": "",
+            "tbDir": "+v",
+            "tbSide": "+n",
+            "tbRole": "primary",
+            "tbPri": "3"
+          },
+          "toasts": "",
+          "events": [
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 10,
+              "t": 1792527315139
+            },
+            {
+              "k": "api",
+              "cmd": "line place 3 on 1 at-line guide 2  +v +n",
+              "ok": true,
+              "ms": 132,
+              "t": 1792527315199
+            },
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 10,
+              "t": 1792527315203
+            },
+            {
+              "k": "api",
+              "cmd": "section-profile-read",
+              "ok": true,
+              "ms": 64,
+              "t": 1792527315263
+            },
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 17,
+              "t": 1792527315272
+            },
+            {
+              "k": "api",
+              "cmd": "line history-end",
+              "ok": true,
+              "ms": 122,
+              "t": 1792527315321
+            },
+            {
+              "k": "api",
+              "cmd": "obstacles 1",
+              "ok": true,
+              "ms": 6,
+              "t": 1792527315328
+            },
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 8,
+              "t": 1792527315335
+            },
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 8,
+              "t": 1792527315335
+            },
+            {
+              "k": "api",
+              "cmd": "dump",
+              "ok": true,
+              "ms": 9,
+              "t": 1792527315344
+            },
+            {
+              "k": "api",
+              "cmd": "source-inspect",
+              "ok": true,
+              "ms": 7,
+              "t": 1792527315351
+            },
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 9,
+              "t": 1792527315401
+            }
+          ]
+        }
+      }
+    ],
+    "checks": [
+      {
+        "name": "P52 setup 全過",
+        "passed": true,
+        "detail": "[{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"timber 1 27 33 role boundary\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"place 1 on 1 at-face e0 +u +n\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"timber 2 27 33 role boundary\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"place 2 on 1 at-face e2 +u +n\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"spec 測試中線 2000\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"guide 2 1 v spec:測試中線\",\"ok\":true,\"error\":null,\"preview\":false}]"
+      },
+      {
+        "name": "P52-1 at-line 置中:A27 → u 1987..2014,A28 → 1986..2014",
+        "passed": true,
+        "detail": "{\"c27\":{\"constAxis\":\"u\",\"lo\":1987,\"hi\":2014},\"c28\":{\"constAxis\":\"u\",\"lo\":1986,\"hi\":2014}}"
+      },
+      {
+        "name": "P52-2 at-face 貼材料側:e1 3973..4000、e3 0..27、e0 v0..27、e2 v2973..3000",
+        "passed": true,
+        "detail": "{\"cE1\":{\"constAxis\":\"u\",\"lo\":3973,\"hi\":4000},\"cE3\":{\"constAxis\":\"u\",\"lo\":0,\"hi\":27},\"cE0\":{\"constAxis\":\"v\",\"lo\":0,\"hi\":27},\"cE2\":{\"constAxis\":\"v\",\"lo\":2973,\"hi\":3000}}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A27 +v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +v +n\"],\"rng\":[[1987,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A27 +v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +v -n\"],\"rng\":[[1987,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A27 -v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -v +n\"],\"rng\":[[1987,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A27 -v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -v -n\"],\"rng\":[[1987,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A28 +v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +v +n\"],\"rng\":[[1986,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A28 +v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +v -n\"],\"rng\":[[1986,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A28 -v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -v +n\"],\"rng\":[[1986,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A28 -v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -v -n\"],\"rng\":[[1986,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A27 +v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  +v +n\"],\"rng\":[[3973,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A27 +v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  +v -n\"],\"rng\":[[3973,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A27 -v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  -v +n\"],\"rng\":[[3973,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A27 -v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  -v -n\"],\"rng\":[[3973,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A28 +v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  +v +n\"],\"rng\":[[3972,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A28 +v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  +v -n\"],\"rng\":[[3972,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A28 -v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  -v +n\"],\"rng\":[[3972,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A28 -v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  -v -n\"],\"rng\":[[3972,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A27 +u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +u +n\"],\"rng\":[[27,3973],[1987,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A27 +u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +u -n\"],\"rng\":[[27,3973],[1987,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A27 -u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -u +n\"],\"rng\":[[27,3973],[1987,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A27 -u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -u -n\"],\"rng\":[[27,3973],[1987,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A28 +u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +u +n\"],\"rng\":[[27,3973],[1986,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A28 +u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +u -n\"],\"rng\":[[27,3973],[1986,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A28 -u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -u +n\"],\"rng\":[[27,3973],[1986,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A28 -u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -u -n\"],\"rng\":[[27,3973],[1986,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A27 +u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  +u +n\"],\"rng\":[[27,3973],[2973,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A27 +u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  +u -n\"],\"rng\":[[27,3973],[2973,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A27 -u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  -u +n\"],\"rng\":[[27,3973],[2973,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A27 -u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  -u -n\"],\"rng\":[[27,3973],[2973,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A28 +u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  +u +n\"],\"rng\":[[27,3973],[2972,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A28 +u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  +u -n\"],\"rng\":[[27,3973],[2972,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A28 -u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  -u +n\"],\"rng\":[[27,3973],[2972,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A28 -u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  -u -n\"],\"rng\":[[27,3973],[2972,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-4 DOM 帶畫 u 1987..2014 且套材料區裁切",
+        "passed": true,
+        "detail": "{\"x\":1987,\"w\":27,\"clip\":\"url(#face-material-clip)\"}"
+      },
+      {
+        "name": "P52-5 真實放置的 cross 足跡(核心) = 預示帶範圍 1987..2014",
+        "passed": true,
+        "detail": "{\"g\":{\"surface\":1,\"centerline\":2000,\"length\":2946,\"u\":2014,\"v\":27,\"dir\":\"+v\",\"side\":\"+n\",\"A\":27,\"B\":33,\"origin\":[2014,27,2500],\"axes\":[[0,1,0],[-1,0,0],[0,0,1]]}}"
+      },
+      {
+        "name": "P52 L形 setup 全過",
+        "passed": true,
+        "detail": "[{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,1500 2500,1500 2500,3000 0,3000\",\"ok\":true,\"error\":null,\"preview\":false}]"
+      },
+      {
+        "name": "P52-6 L 形凹邊(u=2500,v 1500..3000)→ 材料側較小 u,帶 2473..2500",
+        "passed": true,
+        "detail": "{\"constAxis\":\"u\",\"lo\":2473,\"hi\":2500}"
+      },
+      {
+        "name": "P52 L形反環 setup 全過",
+        "passed": true,
+        "detail": "[{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 0,3000 2500,3000 2500,1500 4000,1500 4000,0\",\"ok\":true,\"error\":null,\"preview\":false}]"
+      },
+      {
+        "name": "P52-7 L 形反環走向 → 同一凹邊材料側仍為較小 u,帶 2473..2500",
+        "passed": true,
+        "detail": "{\"constAxis\":\"u\",\"lo\":2473,\"hi\":2500}"
+      },
+      {
+        "name": "P52 孔場景 setup 全過",
+        "passed": true,
+        "detail": "[{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1000,1000 2000,1000 2000,2000 1000,2000\",\"ok\":true,\"error\":null,\"preview\":false}]"
+      },
+      {
+        "name": "P52-8 孔頂邊 v=1000 → 材料側在孔外(v<1000),帶 v 973..1000",
+        "passed": true,
+        "detail": "{\"constAxis\":\"v\",\"lo\":973,\"hi\":1000}"
+      }
+    ],
+    "cleanups": [
+      {
+        "pid": 61903,
+        "profile": "/tmp/geometry-cdp-fxF9Gc",
+        "exitCode": 0,
+        "signalCode": null
+      }
+    ],
+    "strictAcceptancePassed": true
+  },
+  {
+    "name": "committed-withdraw-network6000",
+    "command": [
+      "node",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
+      "/workspace/geometry-axiom"
+    ],
+    "environment": {
+      "GEOMETRY_TEST_URL": "http://127.0.0.1:18839/",
+      "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-final",
+      "XDG_CACHE_HOME": "/tmp/geo261-xdg-final",
+      "GEOMETRY_CHROME": "/usr/bin/chromium",
+      "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+      "GEOMETRY_CDP_PORT": "9350",
+      "P52_REPEATS": "1",
+      "P52_DELAY_NETWORK_MS": "6000",
+      "P52_WITHDRAW_WAIT": "1"
+    },
+    "exitCode": 1,
+    "expectedExitCode": 1,
+    "sourceBefore": {
+      "sha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+      "status": "",
+      "sourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+      "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083"
+    },
+    "sourceAfter": {
+      "sha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+      "status": "",
+      "sourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+      "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083"
+    },
+    "elapsedSeconds": 90.85440668400042,
+    "logSha256": "5e12d4793b0c2ac1661de4936913de98ca8eea1d9c3cf0312e9b91b167301a70",
+    "loadBefore": "1.58 1.34 1.52 1/269 64230",
+    "loadAfter": "0.96 1.19 1.45 1/273 66385",
+    "loadScope": "與 P72B 功能驗證並行；不作正式效能判定。架構代理僅更新四個 metadata；CDP 與探針來源凍結。",
+    "summaries": [
+      {
+        "version": {
+          "root": "/workspace/geometry-axiom",
+          "sha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+          "status": "",
+          "repeats": 1,
+          "actualSourceHasCandidate": true,
+          "memoryPatch": "withdraw-wait",
+          "effectiveCandidateWait": false,
+          "targetedControl": false,
+          "referenceControl": "",
+          "sourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+          "effectiveSourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+          "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+          "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+        },
+        "passedAssertions": 42,
+        "failedAssertions": 1,
+        "exceptions": 0
+      }
+    ],
+    "results": [
+      {
+        "version": {
+          "root": "/workspace/geometry-axiom",
+          "sha": "c87c6d90bd06552b7b7b04e0d2aa42fd56f65eb3",
+          "status": "",
+          "repeats": 1,
+          "actualSourceHasCandidate": true,
+          "memoryPatch": "withdraw-wait",
+          "effectiveCandidateWait": false,
+          "targetedControl": false,
+          "referenceControl": "",
+          "sourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+          "effectiveSourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955",
+          "probeSha256": "1b1fb5e55f83be15d0a082fb4c32ea3d6526cc8dc7c73b4aeb0bac9bbbc9f083",
+          "candidateWaitSha256": "e9305e661941553cfba20952bfa5617507a4135d5e3e831f00cc9ffbf0e3ea52"
+        },
+        "iteration": 1,
+        "waitAndReadMs": 5442.798304000011,
+        "assertionPassed": false,
+        "activeSampling": false,
+        "probe": {
+          "before": {
+            "busy": false,
+            "tool": "timber",
+            "focus": {
+              "t": "face",
+              "id": 1
+            },
+            "edit": {
+              "bid": 1,
+              "contextId": "d6da1ab3-2fbd-4490-a3c9-795fde745fa6"
+            },
+            "connection": {
+              "phase": "ready",
+              "error": ""
+            },
+            "referenceRevision": 1034,
+            "inputs": {
+              "tbA": "27",
+              "tbB": "33",
+              "tbAnchor": "at-line guide 2",
+              "tbSelector": "",
+              "tbDir": "+v",
+              "tbSide": "+n",
+              "tbRole": "primary",
+              "tbPri": "3"
+            },
+            "toasts": "",
+            "events": [
+              {
+                "k": "api",
+                "cmd": "source-inspect",
+                "ok": true,
+                "ms": 9,
+                "t": 1792527399392
+              },
+              {
+                "k": "status",
+                "msg": "工具：選取",
+                "t": 1792527399393
+              },
+              {
+                "k": "status",
+                "msg": "面 1 · 選取",
+                "t": 1792527399409
+              },
+              {
+                "k": "api",
+                "cmd": "obstacles 1",
+                "ok": true,
+                "ms": 14,
+                "t": 1792527399438
+              },
+              {
+                "k": "api",
+                "cmd": "references",
+                "ok": true,
+                "ms": 11,
+                "t": 1792527399449
+              },
+              {
+                "k": "api",
+                "cmd": "dump",
+                "ok": true,
+                "ms": 7,
+                "t": 1792527399457
+              },
+              {
+                "k": "api",
+                "cmd": "source-inspect",
+                "ok": true,
+                "ms": 6,
+                "t": 1792527399463
+              },
+              {
+                "k": "change",
+                "el": "select#tbDir",
+                "value": "+v",
+                "t": 1792527399496
+              },
+              {
+                "k": "change",
+                "el": "select#tbSide",
+                "value": "+n",
+                "t": 1792527399504
+              },
+              {
+                "k": "change",
+                "el": "select#tbAnchor",
+                "value": "at-line guide 2",
+                "t": 1792527399547
+              },
+              {
+                "k": "change",
+                "el": "input#tbA",
+                "value": "27",
+                "t": 1792527399557
+              },
+              {
+                "k": "api",
+                "cmd": "dump",
+                "ok": true,
+                "ms": 6,
+                "t": 1792527399871
+              }
+            ]
+          },
+          "point": {
+            "x": 2260,
+            "y": 1556
+          },
+          "preparedAt": 81799.79999999981,
+          "clickAt": 81802.5,
+          "rows": [
+            {
+              "cmd": "newid",
+              "start": 81803.09999999963,
+              "end": 87872.3999999999,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "references",
+              "start": 87254.69999999972,
+              "end": 87262.3999999999,
+              "ok": true,
+              "preview": false,
+              "timber": null
+            },
+            {
+              "cmd": "source-inspect",
+              "start": 87872.5,
+              "end": 87879.5,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "line history-begin",
+              "start": 87879.69999999972,
+              "end": 87946.09999999963,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "line timber 3 27 33 role primary",
+              "start": 87946.09999999963,
+              "end": 88019.79999999981,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "section-profile-read",
+              "start": 88018.8999999999,
+              "end": 88097.79999999981,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "line place 3 on 1 at-line guide 2  +v +n",
+              "start": 88019.79999999981,
+              "end": 88170.29999999981,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "section-profile-read",
+              "start": 88169.59999999963,
+              "end": 88233.5,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "line history-end",
+              "start": 88170.3999999999,
+              "end": 88288.3999999999,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "obstacles 1",
+              "start": 88288.3999999999,
+              "end": 88295.8999999999,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "references",
+              "start": 88295.8999999999,
+              "end": 88303.5,
+              "ok": true,
+              "preview": false,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "cmd": "dump",
+              "start": 88303.5,
+              "end": 88311.8999999999,
+              "ok": true,
+              "preview": false
+            },
+            {
+              "cmd": "source-inspect",
+              "start": 88311.8999999999,
+              "end": 88318.19999999972,
+              "ok": true,
+              "preview": false
+            }
+          ],
+          "samples": [
+            {
+              "source": "原流程",
+              "start": 87254.69999999972,
+              "at": 87262.59999999963,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87271.79999999981,
+              "at": 87279.5,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87329.69999999972,
+              "at": 87335.79999999981,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87386.09999999963,
+              "at": 87394.09999999963,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87444.29999999981,
+              "at": 87450.09999999963,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87500.5,
+              "at": 87507.19999999972,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87557.5,
+              "at": 87564.79999999981,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87614.8999999999,
+              "at": 87621.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87672.09999999963,
+              "at": 87679.09999999963,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87729.3999999999,
+              "at": 87735.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87786.19999999972,
+              "at": 87793,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87843.19999999972,
+              "at": 87855.8999999999,
+              "ok": true,
+              "busy": false,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87906.09999999963,
+              "at": 87914.29999999981,
+              "ok": true,
+              "busy": true,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 87964.3999999999,
+              "at": 87974.5,
+              "ok": true,
+              "busy": true,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 88027.59999999963,
+              "at": 88038.19999999972,
+              "ok": true,
+              "busy": true,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 88088.5,
+              "at": 88108.5,
+              "ok": true,
+              "busy": true,
+              "timberCount": 2,
+              "timber": null
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 88158.79999999981,
+              "at": 88175.09999999963,
+              "ok": true,
+              "busy": true,
+              "timberCount": 3,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 88225.3999999999,
+              "at": 88243.79999999981,
+              "ok": true,
+              "busy": true,
+              "timberCount": 3,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 88294.5,
+              "at": 88301.09999999963,
+              "ok": true,
+              "busy": true,
+              "timberCount": 3,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "source": "原流程",
+              "start": 88295.8999999999,
+              "at": 88303.5,
+              "ok": true,
+              "busy": true,
+              "timberCount": 3,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            },
+            {
+              "source": "原斷言之後診斷",
+              "start": 88360.79999999981,
+              "at": 88371.79999999981,
+              "ok": true,
+              "busy": false,
+              "timberCount": 3,
+              "timber": {
+                "id": 3,
+                "role": "primary",
+                "geometry": {
+                  "surface": 1,
+                  "centerline": 2000,
+                  "length": 2946,
+                  "u": 2014,
+                  "v": 27,
+                  "dir": "+v",
+                  "side": "+n",
+                  "A": 27,
+                  "B": 33,
+                  "origin": [
+                    2014,
+                    27,
+                    2500
+                  ],
+                  "axes": [
+                    [
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      -1,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ]
+                },
+                "definition": {
+                  "anchor": "at-line guide 2",
+                  "selector": "",
+                  "priority": 2
+                }
+              }
+            }
+          ],
+          "done": true,
+          "delayMs": 0,
+          "pollMs": 50,
+          "activeSampling": false,
+          "control": "",
+          "hit": {
+            "tag": "line",
+            "id": "",
+            "classes": null,
+            "faceHit": "g:2:v"
+          },
+          "trusted": true,
+          "eventType": "pointerdown",
+          "originalReadFinishedAt": 87271.59999999963,
+          "firstTimberObservedMs": 6372.5999999996275,
+          "firstGeometryObservedMs": 6372.5999999996275,
+          "geometry": {
+            "surface": 1,
+            "centerline": 2000,
+            "length": 2946,
+            "u": 2014,
+            "v": 27,
+            "dir": "+v",
+            "side": "+n",
+            "A": 27,
+            "B": 33,
+            "origin": [
+              2014,
+              27,
+              2500
+            ],
+            "axes": [
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                -1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "state": {
+          "busy": false,
+          "tool": "timber",
+          "focus": {
+            "t": "face",
+            "id": 1
+          },
+          "edit": {
+            "bid": 1,
+            "contextId": "d6da1ab3-2fbd-4490-a3c9-795fde745fa6"
+          },
+          "connection": {
+            "phase": "ready",
+            "error": ""
+          },
+          "referenceRevision": 1036,
+          "inputs": {
+            "tbA": "27",
+            "tbB": "33",
+            "tbAnchor": "at-line guide 2",
+            "tbSelector": "",
+            "tbDir": "+v",
+            "tbSide": "+n",
+            "tbRole": "primary",
+            "tbPri": "3"
+          },
+          "toasts": "",
+          "events": [
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 20,
+              "t": 1792527406221
+            },
+            {
+              "k": "api",
+              "cmd": "line place 3 on 1 at-line guide 2  +v +n",
+              "ok": true,
+              "ms": 150,
+              "t": 1792527406282
+            },
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 16,
+              "t": 1792527406287
+            },
+            {
+              "k": "api",
+              "cmd": "section-profile-read",
+              "ok": true,
+              "ms": 64,
+              "t": 1792527406346
+            },
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 18,
+              "t": 1792527406356
+            },
+            {
+              "k": "api",
+              "cmd": "line history-end",
+              "ok": true,
+              "ms": 118,
+              "t": 1792527406401
+            },
+            {
+              "k": "api",
+              "cmd": "obstacles 1",
+              "ok": true,
+              "ms": 7,
+              "t": 1792527406408
+            },
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 7,
+              "t": 1792527406413
+            },
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 7,
+              "t": 1792527406416
+            },
+            {
+              "k": "api",
+              "cmd": "dump",
+              "ok": true,
+              "ms": 8,
+              "t": 1792527406424
+            },
+            {
+              "k": "api",
+              "cmd": "source-inspect",
+              "ok": true,
+              "ms": 6,
+              "t": 1792527406430
+            },
+            {
+              "k": "api",
+              "cmd": "references",
+              "ok": true,
+              "ms": 11,
+              "t": 1792527406484
+            }
+          ]
+        }
+      }
+    ],
+    "checks": [
+      {
+        "name": "P52 setup 全過",
+        "passed": true,
+        "detail": "[{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"timber 1 27 33 role boundary\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"place 1 on 1 at-face e0 +u +n\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"timber 2 27 33 role boundary\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"place 2 on 1 at-face e2 +u +n\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"spec 測試中線 2000\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"guide 2 1 v spec:測試中線\",\"ok\":true,\"error\":null,\"preview\":false}]"
+      },
+      {
+        "name": "P52-1 at-line 置中:A27 → u 1987..2014,A28 → 1986..2014",
+        "passed": true,
+        "detail": "{\"c27\":{\"constAxis\":\"u\",\"lo\":1987,\"hi\":2014},\"c28\":{\"constAxis\":\"u\",\"lo\":1986,\"hi\":2014}}"
+      },
+      {
+        "name": "P52-2 at-face 貼材料側:e1 3973..4000、e3 0..27、e0 v0..27、e2 v2973..3000",
+        "passed": true,
+        "detail": "{\"cE1\":{\"constAxis\":\"u\",\"lo\":3973,\"hi\":4000},\"cE3\":{\"constAxis\":\"u\",\"lo\":0,\"hi\":27},\"cE0\":{\"constAxis\":\"v\",\"lo\":0,\"hi\":27},\"cE2\":{\"constAxis\":\"v\",\"lo\":2973,\"hi\":3000}}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A27 +v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +v +n\"],\"rng\":[[1987,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A27 +v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +v -n\"],\"rng\":[[1987,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A27 -v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -v +n\"],\"rng\":[[1987,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A27 -v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1987,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -v -n\"],\"rng\":[[1987,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A28 +v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +v +n\"],\"rng\":[[1986,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A28 +v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +v -n\"],\"rng\":[[1986,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A28 -v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -v +n\"],\"rng\":[[1986,2014],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-line guide 2 A28 -v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":1986,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -v -n\"],\"rng\":[[1986,2014],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A27 +v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  +v +n\"],\"rng\":[[3973,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A27 +v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  +v -n\"],\"rng\":[[3973,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A27 -v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  -v +n\"],\"rng\":[[3973,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A27 -v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3973,\"y\":-80,\"w\":27,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3973,4000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e1  -v -n\"],\"rng\":[[3973,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A28 +v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  +v +n\"],\"rng\":[[3972,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A28 +v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  +v -n\"],\"rng\":[[3972,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A28 -v+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  -v +n\"],\"rng\":[[3972,4000],[27,2973],[2500,2533]],\"expLen\":[27,2973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 V(長度軸v) at-face e1 A28 -v-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":3972,\"y\":-80,\"w\":28,\"h\":3160,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[3972,4000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e1  -v -n\"],\"rng\":[[3972,4000],[27,2973],[2467,2500]],\"expLen\":[27,2973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A27 +u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +u +n\"],\"rng\":[[27,3973],[1987,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A27 +u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  +u -n\"],\"rng\":[[27,3973],[1987,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A27 -u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -u +n\"],\"rng\":[[27,3973],[1987,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A27 -u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1987,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1987,2014],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-line guide 2  -u -n\"],\"rng\":[[27,3973],[1987,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A28 +u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +u +n\"],\"rng\":[[27,3973],[1986,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A28 +u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  +u -n\"],\"rng\":[[27,3973],[1986,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A28 -u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -u +n\"],\"rng\":[[27,3973],[1986,2014],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-line guide 2 A28 -u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":1986,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[1986,2014],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-line guide 2  -u -n\"],\"rng\":[[27,3973],[1986,2014],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A27 +u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  +u +n\"],\"rng\":[[27,3973],[2973,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A27 +u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  +u -n\"],\"rng\":[[27,3973],[2973,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A27 -u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  -u +n\"],\"rng\":[[27,3973],[2973,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A27 -u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2973,\"w\":4160,\"h\":27,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2973,3000],\"sent\":[\"line timber 3 27 33 role primary\",\"line place 3 on 1 at-face e2  -u -n\"],\"rng\":[[27,3973],[2973,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A28 +u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  +u +n\"],\"rng\":[[27,3973],[2972,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A28 +u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  +u -n\"],\"rng\":[[27,3973],[2972,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A28 -u+n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  -u +n\"],\"rng\":[[27,3973],[2972,3000],[2500,2533]],\"expLen\":[27,3973],\"expZ\":[2500,2533]}"
+      },
+      {
+        "name": "P52-3 H(長度軸u) at-face e2 A28 -u-n",
+        "passed": true,
+        "detail": "{\"band\":{\"x\":-80,\"y\":2972,\"w\":4160,\"h\":28,\"clip\":\"url(#face-material-clip)\",\"label\":\"橫向定位示意\",\"hoverNull\":true},\"expCross\":[2972,3000],\"sent\":[\"line timber 3 28 33 role primary\",\"line place 3 on 1 at-face e2  -u -n\"],\"rng\":[[27,3973],[2972,3000],[2467,2500]],\"expLen\":[27,3973],\"expZ\":[2467,2500]}"
+      },
+      {
+        "name": "P52-4 DOM 帶畫 u 1987..2014 且套材料區裁切",
+        "passed": true,
+        "detail": "{\"x\":1987,\"w\":27,\"clip\":\"url(#face-material-clip)\"}"
+      },
+      {
+        "name": "P52-5 真實放置的 cross 足跡(核心) = 預示帶範圍 1987..2014",
+        "passed": false,
+        "detail": "{}"
+      },
+      {
+        "name": "P52 L形 setup 全過",
+        "passed": true,
+        "detail": "[{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,1500 2500,1500 2500,3000 0,3000\",\"ok\":true,\"error\":null,\"preview\":false}]"
+      },
+      {
+        "name": "P52-6 L 形凹邊(u=2500,v 1500..3000)→ 材料側較小 u,帶 2473..2500",
+        "passed": true,
+        "detail": "{\"constAxis\":\"u\",\"lo\":2473,\"hi\":2500}"
+      },
+      {
+        "name": "P52 L形反環 setup 全過",
+        "passed": true,
+        "detail": "[{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 0,3000 2500,3000 2500,1500 4000,1500 4000,0\",\"ok\":true,\"error\":null,\"preview\":false}]"
+      },
+      {
+        "name": "P52-7 L 形反環走向 → 同一凹邊材料側仍為較小 u,帶 2473..2500",
+        "passed": true,
+        "detail": "{\"constAxis\":\"u\",\"lo\":2473,\"hi\":2500}"
+      },
+      {
+        "name": "P52 孔場景 setup 全過",
+        "passed": true,
+        "detail": "[{\"line\":\"reset\",\"ok\":true,\"error\":null,\"preview\":false},{\"line\":\"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1000,1000 2000,1000 2000,2000 1000,2000\",\"ok\":true,\"error\":null,\"preview\":false}]"
+      },
+      {
+        "name": "P52-8 孔頂邊 v=1000 → 材料側在孔外(v<1000),帶 v 973..1000",
+        "passed": true,
+        "detail": "{\"constAxis\":\"v\",\"lo\":973,\"hi\":1000}"
+      }
+    ],
+    "cleanups": [
+      {
+        "pid": 64260,
+        "profile": "/tmp/geometry-cdp-65ULbs",
+        "exitCode": 0,
+        "signalCode": null
+      }
+    ],
+    "strictAcceptancePassed": true
+  }
+]

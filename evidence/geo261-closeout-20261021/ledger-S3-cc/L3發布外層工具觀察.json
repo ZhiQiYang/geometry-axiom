@@ -1,0 +1,14 @@
+{
+  "schema": "geo261-importer-tool-observation/1",
+  "sourceS3": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "ledgerL3": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "session_id": 64480,
+  "actual_tool_response": {
+    "chunk_id": "001715",
+    "wall_time_seconds": 0.297734378,
+    "exit_code": 0,
+    "original_token_count": 57,
+    "output": "{\"ledgerL2\": \"6589248c9a94bdf0460d8f84dd1610e51048188b\", \"ledgerSha256\": \"52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178\", \"counts\": {\"killed\": 70, \"equivalent\": 4, \"crashed\": 1, \"retired\": 3}, \"exitCode\": 0}\n"
+  },
+  "classification": "根代理實際工具回覆的事後轉錄；不是原始傳輸檔，也不是重新 wait。"
+}

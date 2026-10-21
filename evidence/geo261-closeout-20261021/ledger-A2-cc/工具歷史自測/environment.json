@@ -1,0 +1,26 @@
+{
+  "started_utc": "2026-10-20T22:12:10.827755+00:00",
+  "source_sha": "launcher-selftest",
+  "source_tree": null,
+  "supervisor_pid": 188408,
+  "supervisor_pgid": 188408,
+  "SIGHUP_ignored": true,
+  "CC_present": false,
+  "PYTHONOPTIMIZE_present": false,
+  "environment_removed": [
+    "CC",
+    "PYTHONOPTIMIZE"
+  ],
+  "environment_overrides": {},
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "core_limit": [
+    0,
+    0
+  ],
+  "supervisor_source_sha256": "308e37f71422f96543d68be4b51a42397c9d734750e0388278bb65941b60606e",
+  "stdout_transport": "外部 orchestrator.log 直接寫檔，不依賴工具 session",
+  "selftest": true
+}

@@ -1,0 +1,30 @@
+{
+ "file": "tests/test_geo261_host_authority.py",
+ "total": 18,
+ "run": 18,
+ "passed": 16,
+ "failed": 2,
+ "skipped": 0,
+ "explicit_skipped": 0,
+ "unrun_skipped": 0,
+ "blocked_by_error": 0,
+ "expected_failed": 0,
+ "expected_failures": [],
+ "failures": [
+  {
+   "test": "test_geo261_host_authority.HostAuthority.test_footprint_raw_anchor_bypass_fails_precise_actual_value_oracle",
+   "kind": "failure",
+   "message": "AssertionError: 1 != 0 : Control must hit once: host-footprint-actual-box-and-frame"
+  },
+  {
+   "test": "test_geo261_host_authority.HostAuthorityBoundary.test_harness_and_consumers_have_actual_value_paths_and_unique_controls",
+   "kind": "failure",
+   "message": "AssertionError: 1 != 0"
+  }
+ ],
+ "skip_reasons": {},
+ "skip_items": [],
+ "import_error": null,
+ "extra_errors": 0,
+ "seconds": 12.45
+}

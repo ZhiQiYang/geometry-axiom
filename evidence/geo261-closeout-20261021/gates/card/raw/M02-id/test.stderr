@@ -1,0 +1,23 @@
+test_CR25_EXPLICIT_REVERSED_MAPPING (tests.test_grid_card_reference.GridCardReference.test_CR25_EXPLICIT_REVERSED_MAPPING) ... FAIL
+
+======================================================================
+FAIL: test_CR25_EXPLICIT_REVERSED_MAPPING (tests.test_grid_card_reference.GridCardReference.test_CR25_EXPLICIT_REVERSED_MAPPING)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates/tests/test_grid_card_reference.py", line 392, in test_CR25_EXPLICIT_REVERSED_MAPPING
+    self.apply([parameter(), grid(ref=source(u=8, v=3))]); self.assert_source(source(u=8, v=3))
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates/tests/test_grid_card_reference.py", line 102, in assert_source
+    self.assertEqual(expected, s.get('cardReference'), label)
+AssertionError: {'parameterId': 10, 'uFieldId': 8, 'vFieldId': 3} != {'parameterId': 10, 'uFieldId': 3, 'vFieldId': 8}
+- {'parameterId': 10, 'uFieldId': 8, 'vFieldId': 3}
+?                                 ^              ^
+
++ {'parameterId': 10, 'uFieldId': 3, 'vFieldId': 8}
+?                                 ^              ^
+ : CARD_UNIT
+
+----------------------------------------------------------------------
+Ran 1 test in 0.114s
+
+FAILED (failures=1)

@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+"""各一次既有 O2 main/final 的 kernel rusage 診斷；不改正式性能樣本。"""
+import argparse,datetime,hashlib,json,os,resource,shutil,signal,subprocess,time,traceback,sys
+from pathlib import Path
+p=argparse.ArgumentParser();p.add_argument('--formal-out',required=True);p.add_argument('--out',required=True);a=p.parse_args()
+O=Path(a.formal_out);D=Path(a.out)
+def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def sha(b):return hashlib.sha256(b).hexdigest()
+def write(path,data):
+    with path.open('xb') as f:f.write(data);f.flush();os.fsync(f.fileno())
+def save(path,value):write(path,(json.dumps(value,ensure_ascii=False,indent=2)+'\n').encode())
+def timeout_handler(signum,frame):raise TimeoutError('900秒診斷期限')
+def main():
+    resource.setrlimit(resource.RLIMIT_STACK,(16777216,16777216));resource.setrlimit(resource.RLIMIT_CORE,(0,0))
+    env=os.environ.copy();env.pop('PYTHONOPTIMIZE',None);env.pop('GMON_OUT_PREFIX',None)
+    prep=json.loads((O/'prepare-receipt.json').read_bytes());W=Path(prep['work'])
+    assert prep['commits']['final']=='85dc4fff44ce49b27f831b21cbdcb662c863302c'
+    scene=W/'scenes/s64.scene';request=('loadfile '+str(scene)+'\n').encode();write(D/'load.in',request)
+    paranoid=Path('/proc/sys/kernel/perf_event_paranoid')
+    status=Path('/proc/self/status').read_text().splitlines()
+    info={'started_utc':now(),'purpose':'O2 main/final各一次kernel rusage診斷，非P189樣本；不重建產品','formal_out':str(O),
+      'source_commits':prep['commits'],'request_sha256':sha(request),'scene_sha256':sha(scene.read_bytes()),
+      'stack_limit_bytes':list(resource.getrlimit(resource.RLIMIT_STACK)),'core_limit_bytes':list(resource.getrlimit(resource.RLIMIT_CORE)),
+      'PYTHONOPTIMIZE_present':'PYTHONOPTIMIZE' in env,'perf_readonly':{'executable':shutil.which('perf'),'perf_event_paranoid':paranoid.read_text().strip() if paranoid.exists() else None,'euid':os.geteuid(),'permission_fields':[s for s in status if s.startswith(('CapEff:','NoNewPrivs:','Seccomp:'))],'executed_perf':False,'permission_test_performed':False},
+      'formal_samples_sha256_before':sha((O/'samples.json').read_bytes()),'formal_receipt_sha256_before':sha((O/'receipt.json').read_bytes()),
+      'driver_sha256':sha(Path(__file__).read_bytes()),'pid':os.getpid(),'pgid':os.getpgrp(),
+      'wall_clock_scope':'perf_counter在Popen前至wait4返回後；與正式t0範圍不同，只作資源診斷。',
+      'ru_maxrss_unit':'Linux KiB','minor_fault_meaning':'不需磁碟I/O的缺頁；不能等同配置位元組或峰值RSS'}
+    save(D/'environment.json',info);builds=json.loads((O/'build-receipt.json').read_bytes());rows=[]
+    for label in ('main','final'):
+        commit=prep['commits'][label];binary=W/commit[:8]/'bridge';digest=sha(binary.read_bytes())
+        assert digest==next(r['binary_sha256'] for r in builds if r['label']==label)
+        argv=[str(binary)];rec={'side':label,'sha':commit,'argv':argv,'cwd':str(D),'binary_sha256':digest,'started_utc':now(),'stdin':str(D/'load.in')}
+        start=time.perf_counter();start_ns=time.time_ns();timed_out=False
+        with (D/'load.in').open('rb') as inp,(D/(label+'.stdout')).open('xb') as out,(D/(label+'.stderr')).open('xb') as err:
+            child=subprocess.Popen(argv,cwd=D,env=env,stdin=inp,stdout=out,stderr=err,start_new_session=True)
+            rec.update(pid=child.pid,pgid=os.getpgid(child.pid));save(D/(label+'.started.json'),rec)
+            previous=signal.signal(signal.SIGALRM,timeout_handler);signal.alarm(900)
+            try:
+                try:waited,status,usage=os.wait4(child.pid,0)
+                except TimeoutError:
+                    timed_out=True;os.killpg(child.pid,signal.SIGKILL);waited,status,usage=os.wait4(child.pid,0)
+            finally:signal.alarm(0);signal.signal(signal.SIGALRM,previous)
+            code=os.waitstatus_to_exitcode(status)
+            child.returncode=code # wait4已回收真child，避免Popen再wait／未知狀態假設成0。
+            write(D/(label+'.exit-code'),(str(code)+'\n').encode())
+            assert waited==child.pid
+            rec.update(finished_utc=now(),wall_seconds=time.perf_counter()-start,start_epoch_ns=start_ns,end_epoch_ns=time.time_ns(),waited_pid=waited,raw_wait_status=status,actual_exit_code=code,timed_out=timed_out,
+              rusage={name:getattr(usage,name) for name in ('ru_utime','ru_stime','ru_maxrss','ru_ixrss','ru_idrss','ru_isrss','ru_minflt','ru_majflt','ru_nswap','ru_inblock','ru_oublock','ru_msgsnd','ru_msgrcv','ru_nsignals','ru_nvcsw','ru_nivcsw')})
+        raw=(D/(label+'.stdout')).read_bytes();expected=(O/'timing'/('n64-r0-'+label+'.stdout')).read_bytes()
+        rec.update(stdout_sha256=sha(raw),stdout_matches_formal=raw==expected,binary_unchanged=sha(binary.read_bytes())==digest)
+        save(D/(label+'.receipt.json'),rec);rows.append(rec)
+        assert code==0 and not timed_out and raw==expected and rec['binary_unchanged']
+    assert sha((O/'samples.json').read_bytes())==info['formal_samples_sha256_before'] and sha((O/'receipt.json').read_bytes())==info['formal_receipt_sha256_before']
+    result={'completed_utc':now(),'out':str(D),'runs':rows,'formal_samples_and_receipt_unchanged':True,'formal_gate_samples_added':0,'perf_readonly':info['perf_readonly']}
+    save(D/'completion.json',result);print(json.dumps(result,ensure_ascii=False,indent=2),flush=True)
+if __name__=='__main__':
+    try:main();code=0
+    except BaseException:write(D/'driver.exception',traceback.format_exc().encode());code=2
+    write(D/'driver.exit-code',(str(code)+'\n').encode());sys.exit(code)

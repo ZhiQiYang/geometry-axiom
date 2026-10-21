@@ -1,0 +1,269 @@
+{
+  "schema": "geo261-canvas-job/1",
+  "label": "A-preflight",
+  "expectedHead": "7159530c0e494d3211e6ab1764eb691137211707",
+  "root": "/workspace/geometry-axiom",
+  "output": "/workspace/geo261-evidence/canvas-a-preflight",
+  "releaseNote": "root 明確授權固定 A 完整預檢；ledger 佔一名額，此輪佔第二名額；預檢完成前主樹不變；L 正式驗收仍須另跑",
+  "argv": [
+    "/workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py",
+    "--sha",
+    "7159530c0e494d3211e6ab1764eb691137211707",
+    "--output",
+    "/workspace/geo261-evidence/canvas-a-preflight",
+    "--label",
+    "A-preflight",
+    "--port",
+    "18856",
+    "--cdp-port",
+    "9322",
+    "--release-note",
+    "root 明確授權固定 A 完整預檢；ledger 佔一名額，此輪佔第二名額；預檢完成前主樹不變；L 正式驗收仍須另跑",
+    "--execute"
+  ],
+  "wrapperSha256": "a9ea3f2f838dc2738ea1c77cf30b8627e0414e5eae9fd6b391057186d8d45924",
+  "startedUTC": "2026-10-20T21:29:34.893150+00:00",
+  "deadlineUTC": "2026-10-20T22:04:34.893162+00:00",
+  "totalDeadlineSeconds": 2100,
+  "cleanupReserveSeconds": 15,
+  "status": "failed",
+  "effectiveEnvironment": {
+    "TMPDIR": "/tmp",
+    "TEMP": "/tmp",
+    "TMP": "/tmp",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18856/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-A-preflight-152753",
+    "XDG_CACHE_HOME": "/tmp/geo261-xdg-A-preflight-152753",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CHROME_PROFILE": "/tmp/geo261-profile-A-preflight-152753",
+    "GEOMETRY_CDP_PORT": "9322",
+    "GEOMETRY_BROWSER_SUITE": "canvas",
+    "GEOMETRY_REPAIR_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/repair",
+    "GEOMETRY_GRID_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/grid",
+    "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/grid_system",
+    "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/document",
+    "GEOMETRY_UIUX_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/uiux",
+    "GEOMETRY_UX_REFINEMENT_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/ux_refinement",
+    "GEOMETRY_ENGINEERING_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/engineering",
+    "GEOMETRY_PROJECT_AUDIT_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/project_audit",
+    "GEOMETRY_MARQUEE_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/marquee",
+    "GEOMETRY_COMPOSITION_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/composition",
+    "GEOMETRY_GRID_RULE_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/grid_rule",
+    "GEOMETRY_GRID_RENAME_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/grid_rename",
+    "GEOMETRY_SELECTION_CURSOR_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/selection_cursor",
+    "GEOMETRY_SCHEDULE_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/schedule",
+    "GEOMETRY_SUPPORT_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/support",
+    "GEOMETRY_SOURCE_NAVIGATION_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/source_navigation",
+    "GEOMETRY_ROOM_SCREENSHOT_DIR": "/workspace/geo261-evidence/canvas-a-preflight/screens/room",
+    "GEOMETRY_ASSEMBLY_CONTEXT_SCREENSHOTS": "/workspace/geo261-evidence/canvas-a-preflight/screens/assembly_context",
+    "GEOMETRY_MODEL_SNAPSHOT_SCREENSHOTS": "/workspace/geo261-evidence/canvas-a-preflight/screens/model_snapshot",
+    "GEOMETRY_TEST_SCREENSHOT": "/workspace/geo261-evidence/canvas-a-preflight/screens/canvas.png"
+  },
+  "kernel": "6.18.55",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "steps": [
+    {
+      "name": "source-before-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "pid": 152755,
+      "startedUTC": "2026-10-20T21:29:34.895693+00:00",
+      "startElapsed": 0.0032431700001325225,
+      "log": "source-before-head.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T21:29:35.210275+00:00",
+      "durationSeconds": 0.31459167299999535
+    },
+    {
+      "name": "source-before-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "pid": 152756,
+      "startedUTC": "2026-10-20T21:29:35.211548+00:00",
+      "startElapsed": 0.319098068999665,
+      "log": "source-before-status.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T21:29:35.542996+00:00",
+      "durationSeconds": 0.33145949600020685
+    },
+    {
+      "name": "build",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "pid": 152777,
+      "startedUTC": "2026-10-20T21:29:35.546916+00:00",
+      "startElapsed": 0.6544660589997875,
+      "log": "build.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T21:29:36.187591+00:00",
+      "durationSeconds": 0.640688501999648
+    },
+    {
+      "name": "font-package",
+      "argv": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status} ${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "pid": 152791,
+      "startedUTC": "2026-10-20T21:29:36.189207+00:00",
+      "startElapsed": 1.2967570379996687,
+      "log": "font-package.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T21:29:36.509480+00:00",
+      "durationSeconds": 0.32028690700008156
+    },
+    {
+      "name": "font-match",
+      "argv": [
+        "fc-match",
+        "-f",
+        "%{family}\n%{file}\n",
+        "sans-serif:lang=zh-tw"
+      ],
+      "pid": 152792,
+      "startedUTC": "2026-10-20T21:29:36.512094+00:00",
+      "startElapsed": 1.619644295999933,
+      "log": "font-match.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T21:29:37.139375+00:00",
+      "durationSeconds": 0.6272936479999771
+    },
+    {
+      "name": "archive-wait-trace",
+      "argv": [
+        "python3",
+        "geometry-web/archive_wait_trace.py",
+        "/workspace/geo261-evidence/canvas-a-preflight/wait-trace"
+      ],
+      "pid": 152793,
+      "startedUTC": "2026-10-20T21:29:37.186310+00:00",
+      "startElapsed": 2.293859247999535,
+      "log": "archive-wait-trace.log",
+      "exitCode": 0,
+      "finishedUTC": "2026-10-20T21:29:37.506354+00:00",
+      "durationSeconds": 0.3200627850001183
+    }
+  ],
+  "errors": [
+    {
+      "type": "RuntimeError",
+      "message": "中文字型無法證明為 Noto CJK",
+      "utc": "2026-10-20T21:29:37.140135+00:00"
+    }
+  ],
+  "limitations": [
+    "本機 Chromium，CI 設定 Google Chrome；字型另錄實際檔案",
+    "未走既有 fatal 分支或擷取超時時，可能沒有最後畫面",
+    "預檢與 L 正式驗收以 label 及 SHA 分開，不互相代替"
+  ],
+  "elapsedSeconds": 2.6578461389999575,
+  "subreaper": true,
+  "stackLimitBytes": [
+    16777216,
+    -1
+  ],
+  "cleanup": {
+    "owned": [
+      {
+        "pid": 152755,
+        "state": "R",
+        "ppid": 152753,
+        "pgid": 152755,
+        "startTime": "723801",
+        "command": "git rev-parse HEAD ",
+        "firstSeenUTC": "2026-10-20T21:29:34.895682+00:00"
+      },
+      {
+        "pid": 152756,
+        "state": "R",
+        "ppid": 152753,
+        "pgid": 152756,
+        "startTime": "723832",
+        "command": "git status --porcelain=v1 --untracked-files=all ",
+        "firstSeenUTC": "2026-10-20T21:29:35.211541+00:00"
+      },
+      {
+        "pid": 152777,
+        "state": "R",
+        "ppid": 152753,
+        "pgid": 152777,
+        "startTime": "723866",
+        "command": "/usr/bin/env node /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm run build ",
+        "firstSeenUTC": "2026-10-20T21:29:35.546908+00:00"
+      },
+      {
+        "pid": 152789,
+        "state": "S",
+        "ppid": 152777,
+        "pgid": 152777,
+        "startTime": "723893",
+        "command": "sh -c python3 geometry-web/start_local.py --build-only ",
+        "firstSeenUTC": "2026-10-20T21:29:35.879346+00:00"
+      },
+      {
+        "pid": 152790,
+        "state": "R",
+        "ppid": 152789,
+        "pgid": 152777,
+        "startTime": "723893",
+        "command": "python3 geometry-web/start_local.py --build-only ",
+        "firstSeenUTC": "2026-10-20T21:29:35.879362+00:00"
+      },
+      {
+        "pid": 152791,
+        "state": "R",
+        "ppid": 152753,
+        "pgid": 152791,
+        "startTime": "723930",
+        "command": "dpkg-query -W -f=${Status} ${Version}\n fonts-noto-cjk ",
+        "firstSeenUTC": "2026-10-20T21:29:36.189198+00:00"
+      },
+      {
+        "pid": 152792,
+        "state": "R",
+        "ppid": 152753,
+        "pgid": 152792,
+        "startTime": "723962",
+        "command": "fc-match -f %{family}\n%{file}\n sans-serif:lang=zh-tw ",
+        "firstSeenUTC": "2026-10-20T21:29:36.511781+00:00"
+      },
+      {
+        "pid": 152793,
+        "state": "R",
+        "ppid": 152753,
+        "pgid": 152793,
+        "startTime": "724030",
+        "command": "python3 geometry-web/archive_wait_trace.py /workspace/geo261-evidence/canvas-a-preflight/wait-trace ",
+        "firstSeenUTC": "2026-10-20T21:29:37.186298+00:00"
+      }
+    ],
+    "survivors": [],
+    "directExitCodes": {
+      "152755": 0,
+      "152756": 0,
+      "152777": 0,
+      "152791": 0,
+      "152792": 0,
+      "152793": 0
+    },
+    "servicePortFree": true,
+    "cdpPortFree": true,
+    "portCheck": "connect_ex 必須 ECONNREFUSED，配合自有 PID/startTime 全退出"
+  },
+  "finishedUTC": "2026-10-20T21:29:37.549701+00:00",
+  "withinTotalDeadline": true,
+  "screenshots": []
+}

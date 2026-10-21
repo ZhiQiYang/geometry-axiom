@@ -1,0 +1,78 @@
+"""封裝四個已完成 gate 的原始文字證據，不執行產品或裁判。"""
+from pathlib import Path
+import datetime,hashlib,json,shutil,subprocess
+
+ROOT=Path('/workspace/geo261-gates-l')
+BASE=Path('/workspace/geo261-evidence/gates-l')
+OUT=BASE/'publish-clean'
+SHA='43f85313c32410ac01406ab585846bbacafea278'
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()==SHA
+assert not subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()
+assert not OUT.exists()
+for phase in ['q38','controls','card','axiom']:
+    assert json.loads((BASE/'verification'/(phase+'.json')).read_text())['accepted'],phase
+OUT.mkdir()
+mapping=[]
+def copy(source,target):
+    data=source.read_bytes()
+    target.parent.mkdir(parents=True,exist_ok=True)
+    shutil.copy2(source,target)
+    assert target.read_bytes()==data
+    assert not (target.stat().st_mode&0o111) and not data.startswith(b'\x7fELF'),str(target)
+    mapping.append(dict(originalPath=str(source),artifactPath=str(target.relative_to(OUT)),bytes=len(data),sha256=hashlib.sha256(data).hexdigest()))
+for phase in ['q38','controls','card','axiom']:
+    source=BASE/('controls' if phase=='controls' else phase+'-run/'+phase)
+    for p in sorted(source.rglob('*')):
+        rel=p.relative_to(source)
+        if p.is_file() and 'tmp' not in rel.parts and p.suffix in ('.json','.log','.stdout','.stderr'):
+            copy(p,OUT/phase/rel)
+    source=BASE/'launcher'/phase
+    for p in sorted(source.rglob('*')):
+        if p.is_file():copy(p,OUT/'launcher'/phase/p.relative_to(source))
+    copy(BASE/'verification'/(phase+'.json'),OUT/'verification'/(phase+'.json'))
+for phase in ['q38','axiom']:
+    copy(BASE/(phase+'-run/bin/model-base.fingerprint.json'),OUT/'private-model-fingerprints'/(phase+'.json'))
+copy(BASE/'tool-observations.json',OUT/'tool-observations.json')
+copy(BASE/'final-source-process-check.json',OUT/'final-source-process-check.json')
+copy(BASE/'README.zh-TW.md',OUT/'README.zh-TW.md')
+sources=['tests/section_profile_mutation_check.py','tests/section_profile_mutation_runner.py',
+    'tests/test_section_profile_native.py','tests/test_section_profile_modeling.py',
+    'geometry-core/card-reference/run_mutations.py','geometry-core/card-reference/mutations.py',
+    'geometry-core/card-reference/run_axiom_mutations.py','tests/test_grid_card_reference.py',
+    'tests/test_engineering_model_compatibility.py','tests/binaries.py','current_geometry.c']
+sources += ['geometry-core/domain-decoupling/closeout-tools/'+n for n in ['run_gates.py','run_controls.py','q38_controls.py']]
+sources += ['geometry-core/modeling/__init__.py']
+sources=sorted(set(sources)|set(json.loads((BASE/'card-run/card/raw/report.json').read_text())['source_sha256']))
+source_index={}
+for name in sources:
+    data=(ROOT/name).read_bytes()
+    gitdata=subprocess.check_output(['git','show',SHA+':'+name],cwd=ROOT)
+    assert data==gitdata,name
+    source_index[name]=dict(bytes=len(data),sha256=hashlib.sha256(data).hexdigest(),sameBytesAsGitBlob=True)
+provenance=dict(sourceSha=SHA,worktree=str(ROOT),sourceFiles=source_index,handoffCommit='59796b1af9259eb23d30134c2ce5a56317a06091',
+    handoffControlsSha256='64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2',
+    nativeBridgeAfterIndex='/workspace/geo261-evidence/native-final/final-build-binary-index.json',
+    compilerEnvironment='實際 env -u CC -u PYTHONOPTIMIZE、python3 -B，未帶 -O；外層不宣稱具備任意 -O 防護。',
+    toolPolicy='正式三個工具仍在來源 L 的 closeout-tools；本包不拷貝 .py 工具，launcher-code.txt 僅為實際外部程序的收據原文。',
+    q38CompiledMutants=39,q38PythonOnlyCases=['SPM37','SPM38','SPM40'],
+    excludedArtifacts='binary 與 tmp source copies 留實際執行目錄，不混入可提交證據；private model fingerprints 原文保存。')
+(OUT/'provenance.json').write_text(json.dumps(provenance,ensure_ascii=False,indent=2)+'\n')
+(OUT/'raw-source-index.json').write_text(json.dumps(dict(sourceSha=SHA,files=mapping,fileCount=len(mapping),totalBytes=sum(x['bytes'] for x in mapping)),ensure_ascii=False,indent=2)+'\n')
+files=[]
+for p in sorted(OUT.rglob('*')):
+    if p.is_file():
+        assert p.suffix not in ('.py','.js','.cjs','.mjs','.exe','.so','.dll','.o','.a'),str(p)
+        data=p.read_bytes();files.append(dict(path=str(p.relative_to(OUT)),bytes=len(data),sha256=hashlib.sha256(data).hexdigest()))
+(OUT/'artifact-index.json').write_text(json.dumps(dict(sourceSha=SHA,files=files,fileCountExcludingThisIndex=len(files),totalBytesExcludingThisIndex=sum(x['bytes'] for x in files)),ensure_ascii=False,indent=2)+'\n')
+bundle=Path('/workspace/geo261-evidence/final-bundle/gates-l')
+assert not bundle.exists()
+shutil.copytree(OUT,bundle,copy_function=shutil.copy2)
+count=0;size=0
+for p in OUT.rglob('*'):
+    if p.is_file():
+        assert p.read_bytes()==(bundle/p.relative_to(OUT)).read_bytes()
+        count+=1;size+=p.stat().st_size
+result=dict(sourceSha=SHA,source=str(OUT),destination=str(bundle),fileCount=count,totalBytes=size,everyFileIdentical=True,
+    copiedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat())
+(BASE/'bundle-copy.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(result,ensure_ascii=False))

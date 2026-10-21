@@ -1,0 +1,15 @@
+{
+  "recordedUtc": "2026-10-21T00:13:49.486335+00:00",
+  "command": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/native-l-preparation/package-native-l.py"
+  ],
+  "exitCode": 0,
+  "toolWallTimeSeconds": 0.124803233,
+  "sourceSha256": "6be5664f840d7a67d008f3c771ca2d8d644b2c7aa3f15550829333c0973f7831",
+  "stdoutPath": "/workspace/geo261-evidence/native-final/packaging-final.log",
+  "stdoutSha256": "4bcf65f7e4adecee5e80ae0aee4d3501e4750faa573ab23ac308fdf22c1336bd",
+  "originalSuiteSourceIndexUnchangedFromAttempt1": true,
+  "note": "只重新解析同一已完成 native 的原始輸出，未重跑 native；600份既有raw逐byte比對相同，拒絕覆寫不同內容。"
+}

@@ -1,0 +1,64 @@
+{
+  "sourceSha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "accepted": true,
+  "checkedUtc": "2026-10-21T04:18:05.509606+00:00",
+  "freshExitCode": 0,
+  "snapshotExitCode": 0,
+  "fileCount": 12,
+  "allSixBuilt": true,
+  "allSixFresh": true,
+  "bindings": [
+    {
+      "name": "core",
+      "command": "cc -std=c11 -O2 current_geometry.c -lm -> core",
+      "builtAt": "2026-10-21T04:15:44+00:00",
+      "binarySha256": "985fe4266dcdd6b8f058c6851634ca37c61845ff8d2557635041f7638df52aaa",
+      "fingerprintSha256": "b47625473bff3fd900d15eb39d0c0b4f208a8a0ed63c0234df160f66f7dc0588",
+      "sidecarBinaryBindingMatched": true
+    },
+    {
+      "name": "bridge",
+      "command": "cc -std=c11 -O2 geometry-web/web_bridge.c -lm -> bridge",
+      "builtAt": "2026-10-21T04:15:27+00:00",
+      "binarySha256": "73abbec3116354f82550bfe48011b1ddfb39af5df4b1c5537b1b20dcb9dbe7e7",
+      "fingerprintSha256": "8aa318b7cd652d05a8b8d04c82cc0346c96fac6c01ea94ccf5848522340e43ee",
+      "sidecarBinaryBindingMatched": true
+    },
+    {
+      "name": "pf3-algorithm",
+      "command": "cc -std=c11 -O2 tests/pf3_algorithm.c -lm -> pf3-algorithm",
+      "builtAt": "2026-10-21T04:16:38+00:00",
+      "binarySha256": "60aa7d253cbf9bbbc331ac78a6c2872280cea5b20dae56ea94bee2f2697f1aba",
+      "fingerprintSha256": "d7d4f69bc1c5c253c3c9ba9f15f3d2aa9fdb222cc9c7b5fc8cb03286b2d6b4fc",
+      "sidecarBinaryBindingMatched": true
+    },
+    {
+      "name": "integrity",
+      "command": "cc -std=c11 -O2 tests/test_core_integrity.c -lm -> integrity",
+      "builtAt": "2026-10-21T04:16:09+00:00",
+      "binarySha256": "c89d27469131b23e3ae564392e386863e074d9bf4cc250a57ac70d6b1ab6e154",
+      "fingerprintSha256": "af739c1dd8cb1b21a81194beaf23ef9c91287e3480c48a559de1bbc699610a20",
+      "sidecarBinaryBindingMatched": true
+    },
+    {
+      "name": "model-base",
+      "command": "cc -std=c11 -O2 geometry-core/model_base.c -lm -> model-base",
+      "builtAt": "2026-10-21T04:16:24+00:00",
+      "binarySha256": "5e3df34d8e50570a896fba844f1e9d634eeb8e8269d5043323d513c6e0290436",
+      "fingerprintSha256": "47fa81f2de4480e8cc86ce8d42a54e34cedf267c746d4269dce5f3ff79a7c45a",
+      "sidecarBinaryBindingMatched": true
+    },
+    {
+      "name": "engjson",
+      "command": "cc -std=c11 -O2 -Wall -Wextra -Wno-unused-function -I geometry-core <generated:tests/test_engineering_json.py#HARNESS> -> engineering-json-test",
+      "builtAt": "2026-10-21T04:15:44+00:00",
+      "binarySha256": "12653b6aee84ad0a59c857b2fe7ae2119e43638819e27f145530c9a2d89516a0",
+      "fingerprintSha256": "cc118619f4166317a0a372fbbc266399b9b2ab615acb7bdb77820a3a4def7c69",
+      "sidecarBinaryBindingMatched": true
+    }
+  ],
+  "indexPath": "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/native/initial-build-binary-index.json",
+  "indexSha256": "e1d2e3b0048779bc98e29e3cc4fea14ff3d9ae556f99597123c5b1e71f32b144",
+  "runLogSnapshotSha256": "a9e46a9b3d516c4663248b80d6d2e0575de0b9450195cf4abfccbe5c364cad57",
+  "limitation": "只核此初建時點，不宣稱全段零寫入；browser仍使用自有runtime。"
+}

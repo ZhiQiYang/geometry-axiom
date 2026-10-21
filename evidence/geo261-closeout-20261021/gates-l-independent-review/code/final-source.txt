@@ -1,0 +1,46 @@
+"""最後小型只讀核對；只在四phase均完成後執行。"""
+from pathlib import Path
+import datetime,hashlib,json,subprocess
+BASE=Path('/workspace/geo261-evidence');G=BASE/'gates-l';ROOT=Path('/workspace/geo261-gates-l');OUT=BASE/'gates-l-independent-review'
+SHA='43f85313c32410ac01406ab585846bbacafea278'
+def h(b):return hashlib.sha256(b).hexdigest()
+def j(p):return json.loads(p.read_text())
+def ref(p):return dict(path=str(p),bytes=p.stat().st_size,sha256=h(p.read_bytes()))
+obs=j(G/'tool-observations.json');cleanup=j(G/'final-source-process-check.json')
+assert obs['sourceSha']==cleanup['sourceSha']==cleanup['head']==SHA and cleanup['status']=='' and cleanup['accepted']
+assert h((G/'tool-observations.json').read_bytes())=='da8ec1170f4f41234f3c42ad7b8b76676c3ef3440fed5bed19810a25cbfab878'
+phases=['q38','controls','card','axiom'];sessions=[51559,88637,17804,13051];records=[]
+assert [p['phase'] for p in obs['phases']]==phases
+for item,phase,session in zip(obs['phases'],phases,sessions):
+    assert item['launchObservation']['session_id']==item['finalWaitCall']['arguments']['session_id']==session
+    assert item['finalWaitObservation']['exit_code']==0
+    assert item['actualExecCommand']['cmd'].startswith('env -u CC -u PYTHONOPTIMIZE PYTHONDONTWRITEBYTECODE=1 python3 -B ')
+    p=Path(item['frozenLauncherReceipt']['path']);assert h(p.read_bytes())==item['frozenLauncherReceipt']['sha256']
+    lr=j(p);assert lr['sourceSha']==SHA and lr['childReturnCode']==lr['launcherExitCode']==0
+    independent=j(OUT/(phase+'.json'));assert independent['accepted'] and independent['validationExitCode']==0
+    records.append(dict(phase=phase,sessionId=session,observedToolExit=0,observationChunk=item['finalWaitObservation']['chunk_id'],launcherReceipt=ref(p),independentReview=ref(OUT/(phase+'.json'))))
+assert len(cleanup['knownPids'])==8 and all(not x['procExists'] for x in cleanup['knownPids'])
+assert not cleanup['processScanMatches'] and not cleanup['cmdlineInaccessiblePids']
+for x in cleanup['knownPids']:assert not Path('/proc') .joinpath(str(x['pid'])).exists()
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+status=subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True)
+assert head==SHA and status==''
+targets=set(j(G/'card-run/card/raw/report.json')['source_sha256'])|{'geometry-core/modeling/__init__.py'}
+targets|=set(j(G/'launcher/axiom/receipt.json')['sourceHashesAfter'])
+targetrefs=[]
+for name in sorted(targets):
+    blob=subprocess.check_output(['git','show',SHA+':'+name],cwd=ROOT)
+    assert (ROOT/name).read_bytes()==blob
+    targetrefs.append(dict(path=name,bytes=len(blob),sha256=h(blob)))
+# 保存剛完成的 axiom 只讀接受器原stdout及退出觀察，不回改其已凍結報告。
+arp=OUT/'axiom.json';code=BASE/'gates-l-independent-axiom-code.txt'
+result=dict(report=str(arp),bytes=14390,sha256='d4838bb73643dc3a763cf4ea550210446f78a20f504a827fc5af745e586fdaca',validationExitCode=0,cases=5,rawFiles=39,sourceBlobs=206)
+assert h(arp.read_bytes())==result['sha256']
+stdout='已保存首次helper1與原碼；改核CLI實際繁中訊息及精確路徑。\n'+json.dumps(result,ensure_ascii=False)+'\n'
+for name,data in [('axiom-output.txt',stdout),('axiom-exec-observation.json',json.dumps(dict(provenance='實際工具已知回覆欄位的事後轉錄；不是自動保存的原transport日誌。',tool='tools.exec_command',chunk_id='16aa9f',wall_time_seconds=0.531080594,exit_code=0,original_token_count=82,output=stdout,reviewCode=ref(code),report=ref(arp)),ensure_ascii=False,indent=2)+'\n')]:
+    p=OUT/name;assert not p.exists();p.write_text(data)
+report=dict(sourceSha=SHA,reviewedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),reviewer='/root/p52_review',accepted=True,validationExitCode=0,phases=records,finalHead=head,finalStatus=status,finalTargetFiles=targetrefs,finalTargetBytesExactlyGitL=True,knownPidsAbsent=8,recordedGateProcessMatches=0,recordedCmdlineInaccessible=0,
+    references={k:ref(p) for k,p in [('toolObservations',G/'tool-observations.json'),('cleanup',G/'final-source-process-check.json'),('reviewCode',Path(__file__))]},
+    limits=['工具exit原觀察是執行代理依對話的事後逐欄轉錄，明確不是自動transportlog；各phase真parent.wait與子程序退出另有原收據。','Axiom最後wait時間參數在轉錄未留存，未自行補填；退出碼與session/chunk已核。','程序清理僅核已知8pid及原可見具名/cwd掃描；沒有冒稱追蹤過往全部descendant。','本報告新增最後全phase完成後的Git Lclean與所有已登記targetbytes核對，不改各phase凍結歷史。','此後停止檔案讀取與檢查，供P189獨占；證據封裝待另行放行。'])
+p=OUT/'final.json';assert not p.exists();p.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(report=str(p),bytes=p.stat().st_size,sha256=h(p.read_bytes()),validationExitCode=0,finalTargetFiles=len(targetrefs),allFourObservedToolExits=0,stopIO=True),ensure_ascii=False))

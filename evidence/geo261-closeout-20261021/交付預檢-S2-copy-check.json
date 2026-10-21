@@ -1,0 +1,23 @@
+{
+  "createdUtc": "2026-10-21T03:30:43.938943+00:00",
+  "destination": "/workspace/geo261-evidence/final-bundle/交付預檢-S2",
+  "fileCount": 37,
+  "totalBytes": 8952154,
+  "missingJsonReceiptsCopied": 5,
+  "actualExitCodeFilesCopied": 4,
+  "allCopiedOriginalBytesMatch": true,
+  "allIndexRowsMatch": true,
+  "indexSha256": "995a007c85716a332a707a2a0c6d1b165057f433722d530e94dce2855310743c",
+  "excluded": [
+    "ignore-model/",
+    ".git/",
+    "*.py"
+  ],
+  "existingFrozenBundlesModified": false,
+  "notFinalAcceptance": true,
+  "packagingCommand": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/package-preflight-after-S2.py"
+  ]
+}

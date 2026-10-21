@@ -1,0 +1,663 @@
+"""五項正式 browser 的外部編排；未提供完整 SHA、--execute 與放行說明時零啟動。"""
+from __future__ import annotations
+
+import argparse
+import base64
+import ctypes
+import errno
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import resource
+import platform
+import shutil
+import signal
+import socket
+import subprocess
+import sys
+import time
+import traceback
+from urllib.request import urlopen
+from urllib.parse import urlsplit
+
+ROOT = Path('/workspace/geometry-axiom')
+ORDER = ('assembly', 'documents', 'grid', 'space', 'timber')
+SPECS = {
+    'assembly': (900, 18851, 9367, 'cdp_test.js', 'GEOMETRY_ASSEMBLY_ONLY'),
+    'documents': (600, 18852, 9366, 'documents_browser_test.js', None),
+    'grid': (900, 18853, 9334, 'cdp_test.js', 'GEOMETRY_GRID_SYSTEM_ONLY'),
+    'space': (900, 18854, 9347, 'space_model_test.js', None),
+    'timber': (1200, 18855, 9348, 'space_model_test.js', 'GEOMETRY_TIMBER_ONLY'),
+}
+CLEANUP_RESERVE = 15.0
+CANCELLED = None
+
+
+class Rejected(RuntimeError):
+    pass
+
+
+def now():
+    return time.strftime('%Y-%m-%dT%H:%M:%S', time.gmtime()) + 'Z'
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def save(path, value):
+    path = Path(path)
+    part = path.with_name(path.name + '.partial')
+    part.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+    os.replace(part, path)
+
+
+def git(*args, timeout=10):
+    return subprocess.check_output(['git', *args], cwd=ROOT, text=True, timeout=timeout).strip()
+
+
+def require(value, message):
+    if not value:
+        raise Rejected(message)
+
+
+def port_free(port):
+    with socket.socket() as s:
+        s.bind(('127.0.0.1', port))
+
+
+def no_listener(port):
+    with socket.socket() as s:
+        s.settimeout(.3)
+        return s.connect_ex(('127.0.0.1', port)) == errno.ECONNREFUSED
+
+
+def process_table():
+    table = {}
+    for entry in Path('/proc').iterdir():
+        if not entry.name.isdigit():
+            continue
+        try:
+            raw = (entry / 'stat').read_text()
+            tail = raw[raw.rfind(')') + 2:].split()
+            table[int(entry.name)] = {
+                'pid': int(entry.name), 'state': tail[0], 'ppid': int(tail[1]),
+                'pgid': int(tail[2]), 'starttime': int(tail[19]),
+                'argv': (entry / 'cmdline').read_bytes().replace(b'\0', b' ').decode('utf8', 'replace').strip(),
+            }
+        except (OSError, ValueError, IndexError):
+            pass
+    return table
+
+
+class Owned:
+    """只追本編排器建立的 session、後代及 subreaper 接回的孤兒。"""
+    def __init__(self):
+        require(sys.platform.startswith('linux'), '本外部清理器僅支援 Linux')
+        libc = ctypes.CDLL(None, use_errno=True)
+        require(libc.prctl(36, 1, 0, 0, 0) == 0, '不能啟用 PR_SET_CHILD_SUBREAPER')
+        self.pid = os.getpid()
+        self.records = {}
+        self.children = {}
+        self.roots = {}
+        self.actions = []
+
+    def spawn(self, argv, env, output, role):
+        child = subprocess.Popen(argv, cwd=ROOT, env=env, stdout=output,
+                                 stderr=subprocess.STDOUT, start_new_session=True)
+        self.children[child.pid] = child
+        row = process_table().get(child.pid)
+        require(row is not None, '新子程序身分尚未取得，拒絕繼續')
+        self.roots[child.pid] = {'starttime': row['starttime'], 'role': role}
+        self.records[(child.pid, row['starttime'])] = {**row, 'role': role, 'firstSeen': now()}
+        self.scan()
+        return child
+
+    def scan(self):
+        table = process_table()
+        selected = set()
+        for pid, row in table.items():
+            if (pid, row['starttime']) in self.records:
+                selected.add(pid)
+            elif row['ppid'] == self.pid:
+                # subreaper 只會接回本程序後代；其他 agent 的 orphan 不會被接到這裡。
+                selected.add(pid)
+        changed = True
+        while changed:
+            prior = len(selected)
+            selected.update(pid for pid, row in table.items() if row['ppid'] in selected)
+            changed = len(selected) != prior
+        for pid in selected:
+            row = table[pid]
+            key = (pid, row['starttime'])
+            previous = self.records.get(key, {'role': '後代或接回孤兒', 'firstSeen': now()})
+            self.records[key] = {**previous, **row, 'lastSeen': now()}
+        return {pid: table[pid] for pid in selected}
+
+    def reap(self):
+        for child in self.children.values():
+            child.poll()
+        for pid, row in self.scan().items():
+            if row['ppid'] == self.pid and pid not in self.children and row['state'] == 'Z':
+                try:
+                    os.waitpid(pid, os.WNOHANG)
+                except ChildProcessError:
+                    pass
+
+    def live(self):
+        return {pid: row for pid, row in self.scan().items() if row['state'] != 'Z'}
+
+    def signal(self, sig, only_role=None):
+        live = self.live()
+        for pid, row in live.items():
+            if only_role and self.roots.get(pid, {}).get('role') != only_role:
+                continue
+            # 每個根先建立獨立 session/PGID；訊號採 pidfd，避免核對與 killpg 間 PID 重用。
+            try:
+                descriptor = os.pidfd_open(pid)
+                try:
+                    current = process_table().get(pid)
+                    if current and current['starttime'] == row['starttime']:
+                        signal.pidfd_send_signal(descriptor, sig)
+                        self.actions.append({'at': now(), 'signal': sig.name, 'pid': pid,
+                                             'pgid': row['pgid'], 'starttime': row['starttime']})
+                finally:
+                    os.close(descriptor)
+            except ProcessLookupError:
+                pass
+
+    def owns_listener(self, port):
+        inodes = set()
+        for name in ('tcp', 'tcp6'):
+            for line in Path('/proc/net/' + name).read_text().splitlines()[1:]:
+                fields = line.split()
+                if fields[3] == '0A' and int(fields[1].split(':')[1], 16) == port:
+                    inodes.add(fields[9])
+        owners = []
+        for pid, row in self.live().items():
+            try:
+                if any(os.readlink(fd) in {'socket:[' + n + ']' for n in inodes}
+                       for fd in Path('/proc', str(pid), 'fd').iterdir()):
+                    owners.append(row)
+            except OSError:
+                pass
+        return owners
+
+    def close_browser(self, port, temp, deadline):
+        owners = self.owns_listener(port)
+        if not owners:
+            return
+        require(any('--user-data-dir=' + str(temp) + '/' in r['argv'] for r in owners),
+                'CDP listener 的自有 profile 不在本輪暫存根內；拒絕 Browser.close')
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return
+        timeout = min(1.0, remaining)
+        with urlopen('http://127.0.0.1:' + str(port) + '/json/version', timeout=timeout) as r:
+            version = json.load(r)
+        target = urlsplit(version['webSocketDebuggerUrl'])
+        require(target.scheme == 'ws' and target.hostname in ('127.0.0.1', 'localhost') and
+                target.port == port and re.fullmatch(r'/devtools/browser/[A-Za-z0-9-]+', target.path),
+                'Browser.close endpoint 不符本輪 CDP')
+        # 最小 RFC6455 client；只送 Browser.close，不插入測試或改 DOM。
+        key = base64.b64encode(os.urandom(16)).decode()
+        with socket.create_connection(('127.0.0.1', port), timeout=timeout) as s:
+            s.settimeout(max(.01, min(1.0, deadline - time.monotonic())))
+            request = ('GET ' + target.path + ' HTTP/1.1\r\nHost: 127.0.0.1:' + str(port) +
+                       '\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: ' + key +
+                       '\r\nSec-WebSocket-Version: 13\r\n\r\n')
+            s.sendall(request.encode('ascii'))
+            response = b''
+            while b'\r\n\r\n' not in response:
+                chunk = s.recv(4096)
+                require(chunk, 'Browser.close handshake 提早關閉')
+                response += chunk
+                require(len(response) < 16384, 'Browser.close handshake 過長')
+            expected = base64.b64encode(hashlib.sha1((key + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11').encode()).digest())
+            require(response.startswith(b'HTTP/1.1 101') and expected in response, 'Browser.close handshake 驗證失敗')
+            payload = b'{"id":1,"method":"Browser.close"}'
+            mask = os.urandom(4)
+            s.sendall(bytes((0x81, 0x80 | len(payload))) + mask + bytes(b ^ mask[i % 4] for i, b in enumerate(payload)))
+        self.actions.append({'at': now(), 'action': 'Browser.close', 'port': port, 'owners': owners})
+
+    def cleanup(self, port, temp, deadline):
+        errors = []
+        try:
+            self.close_browser(port, temp, deadline)
+        except Exception as error:
+            errors.append(str(error))
+        def wait_for(seconds):
+            end = min(deadline, time.monotonic() + seconds)
+            while time.monotonic() < end:
+                self.reap()
+                if not self.live():
+                    return
+                time.sleep(min(.1, max(0, end - time.monotonic())))
+        self.signal(signal.SIGINT, only_role='server')
+        wait_for(2)
+        self.signal(signal.SIGTERM)
+        wait_for(3)
+        self.signal(signal.SIGKILL)
+        wait_for(2)
+        self.reap()
+        return {'actions': self.actions, 'errors': errors, 'liveRemaining': list(self.live().values()),
+                'zombiesRemaining': [r for r in self.scan().values() if r['state'] == 'Z'],
+                'processes': list(self.records.values()),
+                'directReturncodes': {str(pid): child.poll() for pid, child in self.children.items()}}
+
+
+def source_hashes():
+    names = ['package.json', '.github/workflows/integration-tests.yml']
+    names += [str(p.relative_to(ROOT)) for p in (ROOT / 'geometry-web').iterdir()
+              if p.is_file() and p.suffix in ('.js', '.css', '.html', '.py', '.json')]
+    return {name: sha((ROOT / name).read_bytes()) for name in sorted(names)}
+
+
+def clean_environment(temp, suite, http, cdp, output):
+    removed = sorted(k for k in os.environ if k.startswith('GEOMETRY_') or
+                     re.match(r'^P(?:52|72|73)_', k) or k in ('NODE_OPTIONS', 'NODE_PATH', 'PYTHONPATH', 'PYTHONHOME'))
+    env = {k: v for k, v in os.environ.items() if k not in removed}
+    env.update(GEOMETRY_TEST_URL=f'http://127.0.0.1:{http}/', GEOMETRY_FEEDBACK_DIR=str(temp / 'feedback'),
+               XDG_CACHE_HOME=str(temp / 'cache'), GEOMETRY_CHROME='/usr/bin/chromium',
+               GEOMETRY_CHROME_FLAGS='--no-sandbox', GEOMETRY_BROWSER_SUITE=suite,
+               GEOMETRY_CDP_PORT=str(cdp), TMPDIR=str(temp), TMP=str(temp), TEMP=str(temp), PYTHONDONTWRITEBYTECODE='1')
+    env['GEOMETRY_CHROME_PROFILE'] = str(temp / 'chrome-profile')
+    env['GEOMETRY_SPACE_TEST_DIR'] = str(temp / 'space-artifacts')
+    for name, folder in {
+        'GEOMETRY_ASSEMBLY_CONTEXT_SCREENSHOTS': 'context', 'GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR': 'grid-system',
+        'GEOMETRY_GRID_RULE_SCREENSHOT_DIR': 'grid-rules', 'GEOMETRY_DOCUMENT_SCREENSHOT_DIR': 'documents',
+        'GEOMETRY_REPAIR_SCREENSHOT_DIR': 'fatal',
+    }.items():
+        env[name] = str(output / 'screenshots' / folder)
+    flag = SPECS[suite][4]
+    if flag:
+        env[flag] = '1'
+    # documents 忽略 profile 覆寫；真 profile 是其專用 TMPDIR 下的 mkdtemp。
+    if suite == 'documents':
+        env.pop('GEOMETRY_CHROME_PROFILE')
+    return env, removed
+
+
+def json_marker(raw, marker):
+    rows = [json.loads(line[len(marker) + 1:]) for line in raw.splitlines() if line.startswith(marker + ' ')]
+    require(len(rows) == 1, marker + ' 必須恰有一筆完整結果')
+    return rows[0]
+
+
+def parse_acceptance(suite, output, temp, env, returncode):
+    require(returncode == 0, '原 browser 程序未以 0 結束')
+    raw = (output / 'run.log').read_text(errors='replace')
+    require('[UNEXPECTED EXCEPTION]' not in raw, '出現未預期 browser 例外')
+    if suite in ('assembly', 'grid'):
+        result = json_marker(raw, 'CDP_RESULT')
+        require(result.get('schema') == 'geometry-cdp-result/1' and result.get('completed') is True, 'CDP 尚未完整完成')
+        require(result['failedAssertions'] == 0 and result['passedAssertions'] > 0 and
+                result['uncaughtBrowserExceptions'] == 0 and not result.get('sectionsFailed'), 'CDP 斷言／例外非綠')
+        scope = result['scope']
+        require(scope['mode'] == 'partial' and scope['filters'] == [SPECS[suite][4]] and scope['modifiers'] == [], 'CDP scope 不符')
+        require(scope['url'] == env['GEOMETRY_TEST_URL'] and scope['feedbackDirectory'] == env['GEOMETRY_FEEDBACK_DIR'] and
+                scope['browserProfile'] == env['GEOMETRY_CHROME_PROFILE'] and scope['cdpPort'] == int(env['GEOMETRY_CDP_PORT']), 'CDP 資源範圍不符')
+        require(result['goldenCompare'] == 'not compared (partial mode)', '部分模式 golden 語義不符')
+        golden = json.loads((ROOT / 'geometry-web/cdp_sections.golden.json').read_text())
+        selected = ('P77', 'P82') if suite == 'assembly' else ('P70', 'P71', 'P78', 'P87', 'P88')
+        expected = {k: golden['sections'][k] for k in selected}
+        require(result['sections'] == expected, '選定段完整性與凍結 golden 不符：' + json.dumps(result['sections']))
+        require(sum(result['sections'].values()) == result['passedAssertions'], 'CDP 分段／總數不符')
+        return {'result': result, 'selectedSectionCheck': {'expected': expected, 'matched': True},
+                'goldenScope': '正式 harness 未比完整 golden；外層另核選定段'}
+    if suite == 'documents':
+        result = json_marker(raw, 'DOCUMENTS_RESULT')
+        passes = [line[5:] for line in raw.splitlines() if line.startswith('PASS ')]
+        source = (ROOT / 'geometry-web/documents_browser_test.js').read_text()
+        expected_names = re.findall(r"\bcheck\('([^'\\\n]*)'\s*,", source)
+        require(len(expected_names) == len(re.findall(r'\bcheck\(', source)), 'documents 具名斷言抽取不完整；需重新唯讀盤點')
+        # 目前來源的 check 全是 main 中依序執行的字面名稱，沒有條件式或迴圈生成。
+        require(passes == expected_names, 'documents 實際 PASS 順序或具名集合不符凍結來源')
+        require(result['failedAssertions'] == 0 and result['passedAssertions'] == len(passes) and len(passes) > 0, 'documents 斷言數／失敗不符')
+        require(not any(line.startswith('FAIL ') for line in raw.splitlines()), 'documents raw 存在失敗')
+        require(passes[-2:] == ['no uncaught browser exceptions', 'no failed asset requests'], 'documents 未達最後 health checks')
+        require(result['screenshots'] == env['GEOMETRY_DOCUMENT_SCREENSHOT_DIR'], 'documents 截圖位置不符')
+        return {'result': result, 'actualPassLines': len(passes), 'sourceDeclaredChecks': expected_names,
+                'goldenScope': '此 harness 無 golden／completed 欄位；另核凍結來源的依序具名斷言'}
+    result = json_marker(raw, 'SPACE_RESULT')
+    stored = json.loads((temp / 'space-artifacts/result.json').read_text())
+    for name in ('scope', 'completed', 'passed', 'failed', 'groups', 'completenessProblems', 'exceptions', 'consoleErrors'):
+        require(result[name] == stored[name], 'SPACE_RESULT 與 result.json 不符：' + name)
+    require(result['schema'] == 'geometry-space-result/1' and result['completed'] is True and result['failed'] == 0 and
+            result['exceptions'] == result['consoleErrors'] == result['completenessProblems'] == [], 'space 群組或健康守門失敗')
+    scope = result['scope']
+    full = ['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow', 'projection-close']
+    included = full if suite == 'space' else ['timber-material', 'timber-source-guards', 'font-layout']
+    require(scope['mode'] == ('full-space-suite' if suite == 'space' else 'partial') and
+            scope['filters'] == ([] if suite == 'space' else ['GEOMETRY_TIMBER_ONLY']) and scope['included'] == included,
+            'space/timber scope 被改變')
+    require(scope['url'] == env['GEOMETRY_TEST_URL'] and scope['feedbackDirectory'] == env['GEOMETRY_FEEDBACK_DIR'], 'space 資源範圍不符')
+    floor = (ROOT / 'geometry-web/space_test_floor.js').read_text()
+    expected = {a or b: int(n) for a, b, n in re.findall(r"^  (?:(\w+)|'([^']+)'): (\d+),$", floor, re.M)}
+    selected = ['setup', *included, 'browser-health']
+    require(set(result['groups']) == set(selected), 'space 群組集合不符')
+    for group in selected:
+        require(result['groups'][group] == {'expected': expected[group], 'passed': expected[group], 'failed': 0, 'completed': True}, 'space 群組未達既有固定 census：' + group)
+    require(result['passed'] == sum(expected[k] for k in selected) == len(stored['results']) and
+            all(r['ok'] is True for r in stored['results']), 'space 總數與實際明細不符')
+    return {'result': result, 'fixedCensus': {k: expected[k] for k in selected}, 'goldenScope': '既有固定逐群 census'}
+
+
+def native_receipts(output):
+    build = json_marker((output / 'build.log').read_text(), 'LOCAL_RUNTIME')
+    server = json_marker((output / 'server.log').read_text(), 'LOCAL_RUNTIME')
+    require(build['root'] == server['root'] == str(ROOT) and
+            build['executables'] == server['executables'] and
+            build['binaryDirectory'] == server['binaryDirectory'] and
+            set(build['executables']) == {'core', 'bridge', 'model-base'}, '建置與服務 native 路徑不一致')
+    target = output / 'native-receipts'
+    target.mkdir()
+    records = {}
+    for name, value in build['executables'].items():
+        binary = Path(value)
+        sidecar = Path(value + '.fingerprint.json')
+        raw = sidecar.read_bytes()
+        fingerprint = json.loads(raw)
+        actual = sha(binary.read_bytes())
+        require(fingerprint['exe_sha256'] == actual and fingerprint['exe_size'] == binary.stat().st_size,
+                'native bytes 與 fresh 收據不符：' + name)
+        (target / (name + '.fingerprint.json')).write_bytes(raw)
+        records[name] = {'path': value, 'bytes': binary.stat().st_size, 'sha256': actual,
+                         'sidecarSha256': sha(raw), 'fingerprint': fingerprint['fingerprint']}
+    result = {'build': build, 'server': server, 'executables': records,
+              'freshnessAuthority': 'start_local.prepare_binaries 在 build 及 server 啟動逐項呼叫 require_fresh'}
+    save(output / 'native-identity.json', result)
+    return result
+
+
+def check_screenshots(suite, output):
+    pngs = sorted(output.rglob('*.png'))
+    require(pngs, '本輪沒有保存任何截圖')
+    for path in pngs:
+        raw = path.read_bytes()
+        require(len(raw) > 24 and raw[:8] == b'\x89PNG\r\n\x1a\n', '截圖不是有效 PNG 檔頭：' + str(path))
+    required = {
+        'assembly': ['assembly-desktop.png', 'assembly-mobile.png', 'context-desktop-form.png', 'context-390-form.png'],
+        'documents': [name + '.png' for name in re.findall(r"await shot\('([^']+)'\)",
+                      (ROOT / 'geometry-web/documents_browser_test.js').read_text()) if name != 'documents-fatal'],
+        'grid': ['infinite-source-desktop.png', 'infinite-binding-hole.png', 'infinite-grid-mobile.png',
+                 'rule-editor-desktop-preview.png', 'rule-editor-desktop-restored.png',
+                 'rule-editor-390-raw.png', 'rule-editor-390-reopened.png'],
+        'space': ['final-state.png', 'rectangle-desktop-1280x720.png', 'lshape-mobile-preview.png'],
+        'timber': ['final-state.png', 'timber-frame-desktop-all.png', 'timber-frame-mobile-settings.png'],
+    }[suite]
+    names = {p.name for p in pngs}
+    require(set(required) <= names, '缺少本輪預期截圖：' + str(sorted(set(required) - names)))
+    return {'count': len(pngs), 'requiredNames': required,
+            'paths': [str(p.relative_to(output)) for p in pngs], 'pngSignatureChecked': True}
+
+
+def run_suite(args, suite, run_root):
+    seconds, http, cdp, script, _ = SPECS[suite]
+    output = run_root / suite
+    output.mkdir()
+    temp = Path('/tmp') / ('geo261-browser-five-' + args.run_id) / suite
+    temp.mkdir(parents=True, exist_ok=False)
+    for name in ('feedback', 'cache'):
+        (temp / name).mkdir()
+    env, removed = clean_environment(temp, suite, http, cdp, output)
+    server_env = {**env, 'TMPDIR': '/tmp', 'TMP': '/tmp', 'TEMP': '/tmp'}
+    owner = Owned()
+    stages = []
+    receipt = {'suite': suite, 'sourceSha': args.sha, 'startedUtc': now(), 'status': '準備',
+               'releaseNote': args.release_note, 'jobTimeoutSeconds': seconds, 'cleanupReserveSeconds': CLEANUP_RESERVE,
+               'output': str(output), 'temp': str(temp), 'ports': {'http': http, 'cdp': cdp}, 'stages': stages}
+    save(output / 'receipt.json', receipt)
+    started = time.monotonic()
+    deadline = started + seconds
+    receipt.update(startedMonotonic=started, deadlineMonotonic=deadline,
+                   kernel=platform.release(), pythonVersion=sys.version, loadBefore=os.getloadavg(),
+                   stackLimitBytes=resource.getrlimit(resource.RLIMIT_STACK))
+    server_log = None
+    before_hashes = {}
+    accepted = False
+    errors = []
+
+    def checkpoint():
+        save(output / 'receipt.json', receipt)
+
+    def remaining():
+        require(CANCELLED is None, '收到中止訊號 ' + str(CANCELLED))
+        value = deadline - CLEANUP_RESERVE - time.monotonic()
+        require(value > 0, '整個 job 已用盡工作預算，保留收尾時間')
+        return value
+
+    def step(name, argv, step_env, limit=None):
+        budget = remaining()
+        if limit is not None:
+            budget = min(budget, limit)
+        entry = {'name': name, 'argv': argv, 'cwd': str(ROOT), 'startedUtc': now(),
+                 'startedMonotonic': time.monotonic(), 'remainingBudgetSeconds': budget, 'log': name + '.log'}
+        stages.append(entry)
+        checkpoint()
+        with (output / (name + '.log')).open('x') as stream:
+            child = owner.spawn(argv, step_env, stream, name)
+            entry['pid'] = child.pid
+            end = min(deadline - CLEANUP_RESERVE, entry['startedMonotonic'] + budget)
+            progress = time.monotonic()
+            while True:
+                require(CANCELLED is None, '收到中止訊號 ' + str(CANCELLED))
+                owner.scan()
+                code = child.poll()
+                if code is not None:
+                    break
+                if time.monotonic() >= end:
+                    entry['timedOut'] = True
+                    entry['returncode'] = None
+                    entry['finishedUtc'] = now()
+                    checkpoint()
+                    raise Rejected(name + ' 逾時（整個 job 剩餘預算或階段上限）')
+                if time.monotonic() - progress >= 30:
+                    checkpoint()
+                    print('BROWSER_SUITE_PROGRESS ' + json.dumps({'suite': suite, 'step': name,
+                          'elapsedSeconds': time.monotonic() - started, 'remainingSeconds': remaining()}, ensure_ascii=False), flush=True)
+                    progress = time.monotonic()
+                time.sleep(min(.25, max(0, end - time.monotonic())))
+        entry.update(returncode=code, finishedUtc=now(), elapsedSeconds=time.monotonic() - entry['startedMonotonic'])
+        checkpoint()
+        return code
+
+    try:
+        require(git('rev-parse', 'HEAD') == args.sha and git('status', '--short') == '', '來源 SHA 或乾淨狀態不符')
+        port_free(http)
+        port_free(cdp)
+        require(os.access('/usr/bin/chromium', os.X_OK), 'Chromium 不存在或不可執行')
+        before_hashes = source_hashes()
+        save(output / 'source-hashes.json', before_hashes)
+        explicit = {k: v for k, v in env.items() if k.startswith('GEOMETRY_') or k in ('TMPDIR', 'TMP', 'TEMP', 'XDG_CACHE_HOME')}
+        save(output / 'command.json', {'sourceSha': args.sha, 'branch': git('branch', '--show-current'),
+             'driverSha256': sha(Path(__file__).read_bytes()), 'driverArgv': sys.argv, 'cwd': str(ROOT),
+             'testArgv': ['node', 'geometry-web/' + script], 'environment': explicit,
+             'serverTempOverride': {'TMPDIR': '/tmp', 'TMP': '/tmp', 'TEMP': '/tmp'}, 'removedEnvironmentNames': removed,
+             'releaseNote': args.release_note, 'browserDifference': '本機 Chromium；workflow 為 google-chrome'})
+        receipt.update(status='執行中')
+        checkpoint()
+        require(step('build', ['npm', 'run', 'build'], server_env) == 0, 'npm run build 失敗')
+        require(step('fonts-package', ['dpkg-query', '-W', '-f=${Status}\n${Version}\n', 'fonts-noto-cjk'], env, 10) == 0,
+                'fonts-noto-cjk 套件查詢失敗')
+        require('install ok installed' in (output / 'fonts-package.log').read_text(), 'CJK 套件未安裝')
+        require(step('fonts-default', ['fc-match', '-f', '%{family}\n%{file}\n', 'sans-serif:lang=zh-tw'], env, 10) == 0, '實際預設字型查詢失敗')
+        require(step('fonts-match', ['fc-match', '-f', '%{family}\n%{file}\n', 'Noto Sans CJK TC:lang=zh-tw'], env, 10) == 0, '中文字型匹配失敗')
+        font_lines = (output / 'fonts-match.log').read_text().splitlines()
+        require(len(font_lines) >= 2 and 'CJK' in font_lines[0] and Path(font_lines[1]).is_file(), '未匹配 CJK 字型檔')
+        save(output / 'font.json', {'family': font_lines[0], 'file': font_lines[1], 'sha256': sha(Path(font_lines[1]).read_bytes()),
+             'defaultSansMatch': (output / 'fonts-default.log').read_text(), 'note': '保存實際預設字型與已裝 CJK fallback，未改系統字型'})
+        require(step('browser-version', ['/usr/bin/chromium', '--version'], env, 10) == 0, 'Chromium 版本查詢失敗')
+        require(step('node-version', ['node', '--version'], env, 10) == 0, 'Node 版本查詢失敗')
+        server_log = (output / 'server.log').open('x')
+        server = owner.spawn(['python3', '-u', 'geometry-web/start_local.py', '--port', str(http)], server_env, server_log, 'server')
+        receipt['serverPid'] = server.pid
+        checkpoint()
+        ready = False
+        for attempt in range(1, 31):
+            require(server.poll() is None, '自有 server 提前結束')
+            code = step('runtime-attempt-' + str(attempt), ['python3', 'geometry-web/runtime_version.py', '--probe', str(http)], server_env, 8)
+            if code == 0:
+                ready = True
+                break
+            time.sleep(min(1, remaining()))
+        require(ready, '服務在 30 次探測內未就緒')
+        require(step('runtime-before', ['python3', 'geometry-web/runtime_version.py', '--probe', str(http)], server_env, 8) == 0, '正式 runtime-before probe 失敗')
+        runtime = json.loads((output / 'runtime-before.log').read_text())
+        require(runtime['schema'] == 'geometry-runtime/1' and runtime['fresh'] is True and
+                runtime['root'] == str(ROOT) and runtime['pid'] == server.pid, 'runtime 不屬於自有 fresh server')
+        save(output / 'runtime-before.json', runtime)
+        receipt['runtimeBefore'] = runtime
+        receipt['nativeIdentity'] = native_receipts(output)
+        code = step('run', ['node', 'geometry-web/' + script], env)
+        receipt['browserReturncode'] = code
+        # 即使 browser 紅仍保存其原結果；接受器錯誤與實際程序碼分列。
+        raw = (output / 'run.log').read_text(errors='replace')
+        marker = 'CDP_RESULT' if suite in ('assembly', 'grid') else 'DOCUMENTS_RESULT' if suite == 'documents' else 'SPACE_RESULT'
+        try:
+            save(output / 'harness-result.json', json_marker(raw, marker))
+        except Exception as error:
+            receipt['resultCaptureError'] = str(error)
+        require(step('runtime-after', ['python3', 'geometry-web/runtime_version.py', '--probe', str(http)], server_env, 8) == 0, 'runtime-after probe 失敗')
+        after = json.loads((output / 'runtime-after.log').read_text())
+        require(after == runtime, 'runtime 前後身分或 freshness 不同')
+        save(output / 'runtime-after.json', after)
+        acceptance = parse_acceptance(suite, output, temp, env, code)
+        save(output / 'acceptance.json', {'validationExitCode': 0, **acceptance})
+        receipt['validationExitCode'] = 0
+        accepted = True
+    except BaseException as error:
+        errors.append({'type': type(error).__name__, 'message': str(error)})
+        receipt['validationExitCode'] = 1
+        save(output / 'acceptance.json', {'validationExitCode': 1, 'error': str(error)})
+        (output / 'wrapper-error.txt').write_text(traceback.format_exc())
+    finally:
+        def record_error(stage, error):
+            errors.append({'type': stage, 'message': str(error)})
+        cleanup = {'liveRemaining': ['清理尚未完成'], 'directReturncodes': {}, 'httpPortFree': False, 'cdpPortFree': False}
+        try:
+            cleanup = owner.cleanup(cdp, temp, deadline - 4)
+        except BaseException as error:
+            record_error('程序清理', error)
+            # 即使前段清理失敗，仍用精確 pidfd 嘗試結束已知自有後代。
+            try:
+                owner.signal(signal.SIGKILL)
+                owner.reap()
+                cleanup.update(liveRemaining=list(owner.live().values()), actions=owner.actions,
+                               directReturncodes={str(pid): p.poll() for pid, p in owner.children.items()})
+            except BaseException as final_error:
+                record_error('最後精確清理', final_error)
+        if server_log:
+            server_log.close()
+        receipt['cleanup'] = cleanup
+        for stage in stages:
+            if stage.get('returncode') is None and str(stage.get('pid')) in cleanup['directReturncodes']:
+                stage['returncode'] = cleanup['directReturncodes'][str(stage['pid'])]
+        for port, label in ((http, 'http'), (cdp, 'cdp')):
+            try:
+                cleanup[label + 'PortFree'] = no_listener(port)
+            except OSError:
+                cleanup[label + 'PortFree'] = False
+        cleanup['portCheck'] = 'connect_ex 必須 ECONNREFUSED，避免 TIME_WAIT 被誤認為存活 listener'
+        try:
+            if (output / 'run.log').exists() and not (output / 'harness-result.json').exists():
+                marker = 'CDP_RESULT' if suite in ('assembly', 'grid') else 'DOCUMENTS_RESULT' if suite == 'documents' else 'SPACE_RESULT'
+                save(output / 'harness-result.json', json_marker((output / 'run.log').read_text(errors='replace'), marker))
+        except Exception as error:
+            receipt['resultCaptureError'] = str(error)
+        try:
+            for folder in ('space-artifacts', 'geometry-tests'):
+                source = temp / folder
+                if source.exists():
+                    shutil.copytree(source, output / 'artifacts' / folder,
+                                    ignore=shutil.ignore_patterns('chrome-profile', '*cache*'), dirs_exist_ok=False)
+            receipt['screenshots'] = check_screenshots(suite, output)
+        except BaseException as error:
+            record_error('產物封存', error)
+        try:
+            require(deadline - time.monotonic() > 0, '已到期限，不能完成結束來源核對')
+            receipt['headAfter'] = git('rev-parse', 'HEAD', timeout=min(2, max(.01, deadline - time.monotonic())))
+            receipt['statusAfter'] = git('status', '--short', timeout=min(2, max(.01, deadline - time.monotonic())))
+            receipt['sourceHashesUnchanged'] = bool(before_hashes) and source_hashes() == before_hashes
+            receipt['headGuard'] = receipt['headAfter'] == args.sha and receipt['statusAfter'] == '' and receipt['sourceHashesUnchanged']
+        except Exception as error:
+            receipt['headGuard'] = False
+            errors.append({'type': '結束來源核對', 'message': str(error)})
+        try:
+            save(output / 'cleanup.json', cleanup)
+            # receipt 自己與 manifest 不自我雜湊；先封存所有穩定原件再判總期限。
+            files = [p for p in output.rglob('*') if p.is_file() and p.name not in ('receipt.json', 'manifest.json')]
+            save(output / 'manifest.json', [{'path': str(p.relative_to(output)), 'bytes': p.stat().st_size, 'sha256': sha(p.read_bytes())} for p in sorted(files)])
+        except BaseException as error:
+            record_error('產物雜湊', error)
+        receipt['elapsedSeconds'] = time.monotonic() - receipt['startedMonotonic']
+        receipt['withinJobDeadline'] = time.monotonic() < deadline
+        receipt['loadAfter'] = os.getloadavg()
+        accepted = (accepted and not errors and CANCELLED is None and receipt['headGuard'] and receipt['withinJobDeadline']
+                    and not cleanup['liveRemaining'] and cleanup['httpPortFree'] and cleanup['cdpPortFree'])
+        receipt.update(status='通過' if accepted else '未通過', accepted=accepted, errors=errors, finishedUtc=now())
+        checkpoint()
+        # 最終收據的 I/O 本身也不能把已超時的 job 留為通過。
+        if time.monotonic() > deadline and accepted:
+            accepted = False
+            receipt.update(status='未通過', accepted=False, withinJobDeadline=False,
+                           elapsedSeconds=time.monotonic() - receipt['startedMonotonic'])
+            checkpoint()
+    print('BROWSER_SUITE_DONE ' + json.dumps({'suite': suite, 'sourceSha': args.sha, 'accepted': accepted,
+          'browserReturncode': receipt.get('browserReturncode'), 'output': str(output), 'errors': errors}, ensure_ascii=False), flush=True)
+    return receipt
+
+
+def main():
+    global CANCELLED
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--sha', required=True)
+    parser.add_argument('--execute', action='store_true')
+    parser.add_argument('--release-note', required=True, help='主代理明確放行與 browser 排程說明')
+    parser.add_argument('--run-id', required=True)
+    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--suite', action='append', choices=ORDER)
+    args = parser.parse_args()
+    require(re.fullmatch(r'[0-9a-f]{40}', args.sha), '須提供完整 40 位 SHA')
+    require(args.execute and args.release_note.strip(), '尚未提供明確執行放行；未啟動任何工作')
+    require(re.fullmatch(r'[a-z0-9][a-z0-9-]{0,70}', args.run_id), 'run-id 只能是短小寫英數與連字號')
+    require(args.output.is_absolute(), '輸出須為絕對路徑')
+    args.output = args.output.resolve()
+    require(args.output.is_relative_to('/workspace/geo261-evidence'), '輸出須在外部證據目錄')
+    require(not args.output.exists(), '輸出目錄已存在，拒絕覆寫')
+    require(git('rev-parse', 'HEAD') == args.sha and git('status', '--short') == '', '輸入 SHA 或工作樹狀態不符')
+    selected = args.suite or list(ORDER)
+    require(len(selected) == len(set(selected)) and selected == [s for s in ORDER if s in selected], 'suite 須唯一且依正式順序')
+    soft, hard = resource.getrlimit(resource.RLIMIT_STACK)
+    require(hard == resource.RLIM_INFINITY or hard >= 16 * 1024 * 1024, 'stack 硬上限不足 16 MiB')
+    resource.setrlimit(resource.RLIMIT_STACK, (max(soft, 16 * 1024 * 1024) if soft != resource.RLIM_INFINITY else soft, hard))
+    def interrupt(number, frame):
+        global CANCELLED
+        CANCELLED = number
+    for number in (signal.SIGINT, signal.SIGTERM):
+        signal.signal(number, interrupt)
+    args.output.mkdir(parents=True)
+    (args.output / 'code.txt').write_bytes(Path(__file__).read_bytes())
+    save(args.output / 'invocation.json', {'argv': sys.argv, 'sourceSha': args.sha, 'releaseNote': args.release_note,
+         'driverSha256': sha(Path(__file__).read_bytes()), 'selectedSuites': selected,
+         'omittedSuites': [s for s in ORDER if s not in selected], 'startedUtc': now()})
+    results = []
+    for suite in selected:
+        require(CANCELLED is None, '收到中止訊號，不再啟動下一項')
+        result = run_suite(args, suite, args.output)
+        results.append({'suite': suite, 'accepted': result['accepted'], 'browserReturncode': result.get('browserReturncode')})
+        save(args.output / 'summary.json', {'sourceSha': args.sha, 'results': results, 'completedSelection': len(results) == len(selected),
+             'allFiveCompleted': len(results) == 5, 'allAccepted': all(r['accepted'] for r in results)})
+        if not result['accepted']:
+            return 1
+    return 0
+
+
+if __name__ == '__main__':
+    try:
+        raise SystemExit(main())
+    except Rejected as error:
+        print('編排拒絕：' + str(error), file=sys.stderr)
+        raise SystemExit(2)

@@ -1,0 +1,172 @@
+{
+  "schema": "geo261-ledger-independent-readonly-review/1",
+  "reviewer": "/root/p189_prepare/contact_static",
+  "scope": {
+    "package": "/workspace/geo261-evidence/final-bundle/ledger-A-cc",
+    "mode": "唯讀核對既有封包、原來源檔案、收據及固定 Git blob；不執行產品、編譯、測試、生成器或效能量測。",
+    "report_exception": "主代理明確授權僅新增此包外報告；原凍結包未修改。",
+    "hashes_not_recomputed_for_report": "本報告使用前述工具已實際回傳的核對結果，寫報告時不重算原包雜湊、不重跑測試。",
+    "timing_or_runtime_inspection": false,
+    "product_changes": false
+  },
+  "result": {
+    "blocking_findings": [],
+    "conclusion": "已檢範圍未發現不一致；README、commands、來源綁定、ledger-validation、run-receipt、validation-attempts 與原 JSON／原件一致。",
+    "execution_source_sha": "7159530c0e494d3211e6ab1764eb691137211707",
+    "ledger_commit_sha": "43f85313c32410ac01406ab585846bbacafea278",
+    "ledger_sha256": "868a80700c9d058e208684631e799a91659e7820b06c31c246b8af96c670a731",
+    "ledger_bytes": 5170287,
+    "record_count": 78,
+    "verdict_counts": {
+      "killed": 70,
+      "crashed": 1,
+      "equivalent": 4,
+      "retired": 3
+    },
+    "execution_count": 75,
+    "execution_heads": {
+      "7159530c0e494d3211e6ab1764eb691137211707": 75
+    },
+    "a_to_l_changed_paths": [
+      "tests/mutants_results.json"
+    ],
+    "l_ledger_blob_equals_packaged_original": true,
+    "files": 304,
+    "bytes": 11976512,
+    "manifest_entries": 303,
+    "manifest_mismatches": [],
+    "manifest_sha256": "25283125019a13b099a32affb07dc0c0f1fd9f180c964b7b0bf6af2ac2354073",
+    "publication_index_source_comparisons": 302,
+    "publication_index_mismatches": [],
+    "raw_source_index_source_comparisons": 243,
+    "raw_source_index_mismatches": [],
+    "bridge_raw_files": 148,
+    "identity_sidecars": 95,
+    "core_sidecars_including_baseline": 58,
+    "bridge_sidecars_including_baseline": 37,
+    "packaged_py_files": 0,
+    "core_execution_compile_commands": {
+      "cc -std=c11 -O2 <source> -o <output> -lm": 57
+    },
+    "bridge_identity_compiler_argv0": {
+      "cc": 37
+    },
+    "shared_core_baseline_receipt_variants": 1,
+    "core_baseline_successful_oracle_total": 165,
+    "equivalent_oracle_totals": {
+      "M09": 165,
+      "M23": 165,
+      "M36": 165,
+      "M56": 165
+    },
+    "m20": {
+      "attempt_receipts": 3,
+      "oracle_process_exit_codes": [
+        2,
+        2,
+        2
+      ],
+      "distinction": "README 的 -11 指場景子程序崩潰；execution.attempts 的 2 是包住它的 run_tests.py 結束碼，兩者不能混稱。"
+    },
+    "phase_receipts_equal_run_receipt_phases": true,
+    "phase_stdout_stderr_hashes_match": {
+      "mutate": true,
+      "check": true,
+      "check-killers": true
+    },
+    "phase_exit_code_files_match_receipts": {
+      "mutate": true,
+      "check": true,
+      "check-killers": true
+    },
+    "validation_helper_snapshots_match_recorded_hashes": {
+      "attempt1": true,
+      "attempt2": true
+    },
+    "validation_exit_code_files_match_recorded_values": {
+      "attempt1": true,
+      "attempt2": true
+    }
+  },
+  "provenance_and_limits": [
+    "本次未執行官方 mutate、--check 或 --check --killers；其 0、0、0 是獨立讀取既有 phase 收據、原始輸出雜湊及 .exit-code 後確認的一致值，並非本審核新執行碼。",
+    "CC／PYTHONOPTIMIZE absent 依既有 environment、prepare、phase 收據及已讀 supervisor 傳遞邏輯交叉核對；57 core compile_command 與 37 bridge sidecar 的 cc 則直接核自原 JSON／原件。本次未讀取執行中 runtime。",
+    "core 官方工具未保存各子程序原始 stdout/stderr，只有結構化 oracle result 與輸出雜湊；頂層 mutate.stdout 不能補足這項缺漏。",
+    "57 core execution 共用一份成功 165/165 baseline 收據。A:tests/mutate.py:1303–1336 允許 blocked 重試且覆蓋 baseline_receipt，故不能由一份收據宣稱實際只啟動一次；README 已準確揭露。",
+    "A:tests/mutation_bridge.py:455–457 在迴圈前執行共用 baseline，:460 進入 mutant 迴圈，:494–495 每案還原後重跑。README 的一次共用 bridge baseline、18 個還原流程與此控制流程相符；未把 core 的收據數當啟動次數。",
+    "M36 why 引用的歷史 7143 案不是本輪額外執行；本輪四個 equivalent 的 oracle receipt total 均為 165。",
+    "sourcecode.txt 為已明確要求保存的 supervisor 原 bytes；兩版外部整理器 .py 留在包外，已核對其記錄路徑與 SHA。包內 .py 數為 0，不能因此將外部工具說成未執行。",
+    "copy-check 與 publication-check 在包外；本次讀到它們保存的 sha256sum -c 結束碼 0，另以本次唯讀 Python 逐檔重算 manifest 與來源 bytes。未新執行 sha256sum -c。",
+    "未驗 Windows、WSL、遠端 CI；此審核不包含最終 L 的整合、Q38、§7、canvas 或 P-189 結果。",
+    "未新增突變自證：此工作是既有證據的唯讀核對。launcher 的故意 exit 7／SIGHUP 控制屬既有證據，不冒稱本次重跑。",
+    "最不確定且無法由本包補回的項目是未保存的 core 子程序原始輸出與 baseline 實際啟動次數。"
+  ],
+  "actual_readonly_commands": [
+    {
+      "id": "檔案清單",
+      "tool": "exec_command",
+      "command": "rg --files /workspace/geo261-evidence/final-bundle/ledger-A-cc",
+      "actual_tool_exit_code": 0,
+      "purpose": "列出待審核封包檔案；未修改檔案。"
+    },
+    {
+      "id": "敘述與主要收據",
+      "tool": "exec_command",
+      "command": "cat /workspace/geo261-evidence/final-bundle/ledger-A-cc/README.md /workspace/geo261-evidence/final-bundle/ledger-A-cc/commands.md /workspace/geo261-evidence/final-bundle/ledger-A-cc/source-binding-final-L.json /workspace/geo261-evidence/final-bundle/ledger-A-cc/ledger-validation.json /workspace/geo261-evidence/final-bundle/ledger-A-cc/validation-attempts.json",
+      "actual_tool_exit_code": 0,
+      "purpose": "核對敘述、A/L 綁定與驗包器兩次執行來源。"
+    },
+    {
+      "id": "初次欄位檢視失敗",
+      "tool": "exec_command",
+      "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport json,hashlib,collections\np=Path('/workspace/geo261-evidence/final-bundle/ledger-A-cc')\nfor name in ('run-receipt.json','publication-index.json','raw-source-index.json'):\n j=json.loads((p/name).read_bytes()); print('SCHEMA',name,type(j).__name__,list(j) if isinstance(j,dict) else len(j))\n if name=='run-receipt.json':print(json.dumps(j,ensure_ascii=False,indent=2))\n else:\n  for k,v in j.items():\n   print(k,('list length '+str(len(v))) if isinstance(v,list) else str(v)[:1000])\nfiles=[f for f in p.rglob('*') if f.is_file()]\nmanifest=(p/'SHA256SUMS').read_text().splitlines();bad=[]\nfor line in manifest:\n h,name=line.split('  ',1)\n f=p/name\n if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest()!=h:bad.append(name)\nprint('MANIFEST_INDEPENDENT',json.dumps({'files':len(files),'bytes':sum(f.stat().st_size for f in files),'manifest_rows':len(manifest),'bad':bad,'manifest_sha256':hashlib.sha256((p/'SHA256SUMS').read_bytes()).hexdigest(),'ledger_sha256':hashlib.sha256((p/'mutants_results.json').read_bytes()).hexdigest(),'bridge_raw':len([f for f in (p/'raw/bridge').rglob('*') if f.is_file()]),'sidecars':len(list((p/'identities').rglob('*.json'))),'python_files':len(list(p.rglob('*.py')))},ensure_ascii=False))\nPY",
+      "actual_tool_exit_code": 1,
+      "purpose": "原樣記錄失敗；publication-index 是 list，呼叫 .items() 引發 AttributeError。該次在 manifest 核對前結束，不能當通過證據。後續修正臨時唯讀解析後重新核對；未修改原件。"
+    },
+    {
+      "id": "封包雜湊及A-L原件核對",
+      "tool": "exec_command",
+      "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport json,hashlib,collections,subprocess\np=Path('/workspace/geo261-evidence/final-bundle/ledger-A-cc');sha=lambda b:hashlib.sha256(b).hexdigest()\nfor name in ('publication-index.json','raw-source-index.json'):\n j=json.loads((p/name).read_bytes());print('INDEX',name,'TYPE',type(j).__name__,'LENGTH',len(j));print('SAMPLE',str(j[0] if isinstance(j,list) else j)[:1500])\nfiles=[f for f in p.rglob('*') if f.is_file()];manifest=(p/'SHA256SUMS').read_text().splitlines();bad=[]\nfor line in manifest:\n h,name=line.split('  ',1);f=p/name\n if not f.is_file() or sha(f.read_bytes())!=h:bad.append(name)\nprint('MANIFEST_INDEPENDENT',json.dumps({'files':len(files),'bytes':sum(f.stat().st_size for f in files),'manifest_rows':len(manifest),'bad':bad,'manifest_sha256':sha((p/'SHA256SUMS').read_bytes()),'ledger_sha256':sha((p/'mutants_results.json').read_bytes()),'bridge_raw':len([f for f in (p/'raw/bridge').rglob('*') if f.is_file()]),'sidecars':len(list((p/'identities').rglob('*.json'))),'python_files':len(list(p.rglob('*.py')))},ensure_ascii=False))\nj=json.loads((p/'mutants_results.json').read_bytes());print('LEDGER_SCHEMA',type(j).__name__,list(j)[:5] if isinstance(j,dict) else len(j));print('LEDGER_RECORD_SAMPLE',str(j.get('M01',j.get('results',[])) if isinstance(j,dict) else j[0])[:2500])\na='7159530c0e494d3211e6ab1764eb691137211707';l='43f85313c32410ac01406ab585846bbacafea278';r='/workspace/geometry-axiom'\nprint('A_L_DIFF',subprocess.check_output(['git','-C',r,'diff','--name-only',a,l],text=True))\nprint('L_LEDGER_EXACT',subprocess.check_output(['git','-C',r,'show',l+':tests/mutants_results.json'])==(p/'mutants_results.json').read_bytes())\nPY",
+      "actual_tool_exit_code": 0,
+      "observed": "304 檔／11,976,512 bytes；303 manifest entries，bad=[]；148 bridge raw、95 sidecar、0 .py；A_L_DIFF 僅 tests/mutants_results.json，L_LEDGER_EXACT=True。",
+      "caution": "此命令以輸出列出不一致集合；結論來自 bad=[] 與布林結果的實際檢視，不僅靠 shell 結束碼。"
+    },
+    {
+      "id": "外層檢包收據",
+      "tool": "exec_command",
+      "command": "cat /workspace/geo261-evidence/final-bundle/ledger-A-cc-copy-check.json /workspace/geo261-evidence/final-bundle/ledger-A-cc-copy-check.exit-code /workspace/geo261-evidence/ledger-cc-7159530c0e49.wzi0t97l-publication-check.json",
+      "actual_tool_exit_code": 0,
+      "observed": "兩份收據的檔案數、bytes、manifest／ledger hash、來源比對數與實際核對一致；既有 copy-check .exit-code 為 0。"
+    },
+    {
+      "id": "來源映射與正式收據逐筆核對",
+      "tool": "exec_command",
+      "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport json,hashlib,collections\np=Path('/workspace/geo261-evidence/final-bundle/ledger-A-cc');sha=lambda b:hashlib.sha256(b).hexdigest();j=json.loads((p/'mutants_results.json').read_bytes());runs=[v['execution'] for v in j.values() if 'execution' in v]\nprint('COUNTS',len(j),dict(collections.Counter(v['verdict'] for v in j.values())),len(runs),dict(collections.Counter(v['head'] for v in runs)))\nprint('CORE_COMMANDS',dict(collections.Counter(tuple(v['compile_command']) for v in runs if 'compile_command' in v)))\nprint('M20_KEYS',j['M20']['execution'].keys())\nprint('CORE_BASELINE_RECEIPT_VARIANTS',len({json.dumps(v['baseline'],sort_keys=True) for v in runs if 'compile_command' in v}))\nfor name in ('publication-index.json','raw-source-index.json'):\n rows=json.loads((p/name).read_bytes());bad=[]\n for row in rows:\n  dest=p/row['path'];src=Path(row['source'])\n  if not dest.is_file() or len(dest.read_bytes())!=row['bytes'] or sha(dest.read_bytes())!=row['sha256'] or not src.is_file() or src.read_bytes()!=dest.read_bytes():bad.append(row['path'])\n print('INDEX_EXACT',name,'rows',len(rows),'bad',bad)\nphase=json.loads((p/'phase-receipts.json').read_bytes());run=json.loads((p/'run-receipt.json').read_bytes())\nprint('PHASE_EQUAL',phase==run['phases'])\nfor row in phase:\n print('PHASE_BYTES',row['phase'],all(sha((p/Path(row[s]).name).read_bytes())==row[s+'_sha256'] for s in ('stdout','stderr')),'code',int((p/(row['phase']+'.exit-code')).read_text())==row['exit_code'])\nfor row in json.loads((p/'validation-attempts.json').read_bytes())['attempts']:\n tool=Path(row.get('tool_snapshot',row.get('tool')));prefix='validation-attempt1' if row['attempt']==1 else 'validation'\n print('VALIDATION_HELPER',row['attempt'],tool.is_file() and sha(tool.read_bytes())==row['tool_sha256'],int((p/(prefix+'.exit-code')).read_text())==row['exit_code'])\nprint('SIDECAR_COMPILERS')\nfor typ in ('core','bridge'):\n rows=[json.loads(q.read_bytes()) for q in (p/'identities'/typ).rglob('*.json')]\n print(typ,'count',len(rows),'keys',rows[0].keys())\n print('commands',dict(collections.Counter(tuple(v.get('command',v.get('compile_command',[])))[:2] for v in rows)))\nPY",
+      "actual_tool_exit_code": 0,
+      "observed": "78 筆／75 execution 全 A；57 core command=cc；302／243 來源逐位元組比對 bad=[]；所有 phase 輸出 hash與碼檔比對 True；兩版 helper hash／碼檔比對 True；58 core＋37 bridge sidecar。",
+      "caution": "末尾 sidecar command 是字串，tuple() 顯示 ('c','c') 不能單獨證明 argv0；下一指令以 shlex 正確解析確認。"
+    },
+    {
+      "id": "bridge編譯器與baseline精度核對",
+      "tool": "exec_command",
+      "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport json,shlex,subprocess\np=Path('/workspace/geo261-evidence/final-bundle/ledger-A-cc');j=json.loads((p/'mutants_results.json').read_bytes())\nbridge=[json.loads(q.read_bytes()) for q in (p/'identities/bridge').rglob('*.json')]\nprint('BRIDGE_ARGV0',sorted({shlex.split(v['command'])[0] if isinstance(v['command'],str) else v['command'][0] for v in bridge}),len(bridge))\nprint('M20_ATTEMPTS',len(j['M20']['execution']['attempts']),[{'exit':x.get('exit_code'),'sample':str(x.get('result'))[:100]} for x in j['M20']['execution']['attempts']])\nfor k,v in j.items():\n if v['verdict']=='equivalent': print('EQUIVALENT',k,[x.get('result',{}).get('total') for x in v['execution']['attempts']])\na='7159530c0e494d3211e6ab1764eb691137211707';repo='/workspace/geometry-axiom'\nfor path,lo,hi in [('tests/mutate.py',1303,1339),('tests/mutation_bridge.py',450,497)]:\n lines=subprocess.check_output(['git','-C',repo,'show',a+':'+path]).decode().splitlines();print('FILE',path)\n for i in range(lo-1,hi):print(f'{i+1}: {lines[i]}')\nPY",
+      "actual_tool_exit_code": 0,
+      "observed": "37 bridge sidecar argv0 均 cc；M20 三個 oracle process receipt 均 exit 2；四個 equivalent oracle total均165；讀取原碼證實 core baseline可重試與 bridge baseline/還原的控制流程。"
+    }
+  ],
+  "code_provenance": {
+    "independently_observed_tool_exit_codes": "actual_readonly_commands 各列由此次 exec_command 工具回傳的 exit_code 填入；失敗亦保留。這些指令僅讀既有檔案與 Git blob。",
+    "existing_official_exit_codes": {
+      "mutate": 0,
+      "check": 0,
+      "check-killers": 0,
+      "supervisor": 0
+    },
+    "existing_external_validation_exit_codes": [
+      1,
+      0
+    ],
+    "existing_copy_check_exit_code": 0,
+    "not_claimed": "沒有將未執行的官方測試、新 sha256sum 命令或產品測試填作本次執行成功。"
+  }
+}

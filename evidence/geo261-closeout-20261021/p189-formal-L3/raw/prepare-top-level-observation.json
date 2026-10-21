@@ -1,0 +1,28 @@
+{
+  "classification": "準備工具實際完成結果的事後觀察轉錄；不是原 transport，未重新執行工具",
+  "recorded_by": "/root/p189_prepare",
+  "recorded_utc": "2026-10-21T05:42:33.777809+00:00",
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/p189-formal-L3-prepare.py",
+    "--source-head",
+    "6589248c9a94bdf0460d8f84dd1610e51048188b",
+    "--expected-parent",
+    "19401ca5448e162ee6140fed37b64b83b31ddec8"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "session_id": 75565,
+  "initial_chunk_id": "e0a16d",
+  "completion_chunk_id": "7de041",
+  "actual_tool_exit_code": 0,
+  "out": "/workspace/geo261-evidence/p189-formal-L3-6589248c9a94-n3zzuu64",
+  "work": "/workspace/geo261-p189-formal-L3-src-kldpkb50",
+  "source_sha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "prepared_config_path": "/workspace/geo261-evidence/p189-formal-L3-6589248c9a94-n3zzuu64/supervisor-prepared-config.json",
+  "prepared_config_sha256": "36d2ff4db9d2dcedd42fff89a00f2e1d8a7792adab6cfe5f9e65e4829c5e9bef",
+  "prepare_receipt_sha256": "8344f1cc2469ba3cda60f3fa868abbe4ffa82efbfe86bd1c0896510a0a1ec23f",
+  "phase_commands_executed": [],
+  "three_bridge_absent": true,
+  "ready_not_released": true
+}

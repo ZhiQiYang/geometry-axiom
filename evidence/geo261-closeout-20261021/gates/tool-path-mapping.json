@@ -1,0 +1,32 @@
+{
+  "schema": "geo261-tool-relocation/1",
+  "note": "三支工具自證據目錄移至正式產品樹的 test-tool 路徑，由 root 複製並完成架構登記；本檔記錄待複製的精確 bytes，不宣稱目標檔已存在或已驗證。",
+  "source_head": "7dae5f21c7ca401e660450d437e60ba566218da8",
+  "handoff_head": "59796b1af9259eb23d30134c2ce5a56317a06091",
+  "tools": [
+    {
+      "original_publish_path": "run_gates.py",
+      "source_workspace_path": "/workspace/geo261-evidence/gates/publish/run_gates.py",
+      "formal_repository_path": "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
+      "expected_formal_sha256": "8dc2e7372da70a22e7f28506270a9709e2f0c3e53419a5043165c2cfe4afcfb3",
+      "bytes": 4455,
+      "formal_copy_status": "待 root 複製及核對"
+    },
+    {
+      "original_publish_path": "run_controls.py",
+      "source_workspace_path": "/workspace/geo261-evidence/gates/publish/run_controls.py",
+      "formal_repository_path": "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
+      "expected_formal_sha256": "b7e7430e53d157f6a82050417be7a9f8d77bd50c1fb5f2f3a34a1ba44de8363f",
+      "bytes": 4605,
+      "formal_copy_status": "待 root 複製及核對"
+    },
+    {
+      "original_publish_path": "q38_controls.py",
+      "source_workspace_path": "/workspace/geo261-evidence/gates/publish/q38_controls.py",
+      "formal_repository_path": "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
+      "expected_formal_sha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2",
+      "bytes": 3446,
+      "formal_copy_status": "待 root 複製及核對"
+    }
+  ]
+}

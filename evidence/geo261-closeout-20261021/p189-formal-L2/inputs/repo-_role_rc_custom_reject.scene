@@ -1,0 +1,8 @@
+# 公理 I19:外輪廓邊那一款看的是**角色**,不是優先級的數值比較。
+# 角材 1 宣告 custom priority 1,數值與 boundary 完全相同,
+# 但它不是 boundary,兩端落在 e0/e2 外輪廓邊上仍然拒絕。
+# (對照 _role_rc_boundary_ok.scene:同樣頂外輪廓邊,boundary 就接受。)
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+grid 1 on 1 u 2000
+timber 1 27 33 role custom priority 1
+place 1 on 1 at-line grid 1 u 0 +v +n

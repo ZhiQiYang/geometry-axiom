@@ -1,0 +1,86 @@
+"""在固定候選 HEAD 執行 K 定向契約；允許另一代理同樹修改已分工的 H 檔。"""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import resource
+import subprocess
+import tempfile
+import time
+
+ROOT = Path('/workspace/geo261-host-copy-candidate')
+BASE = Path('/workspace/geo261-evidence/host-copy-candidate/K')
+OUT = BASE / 'targeted-v1'
+HEAD = '85dc4fff44ce49b27f831b21cbdcb662c863302c'
+OWNED = ['geometry-core/kernel/placement_sources.c', 'tests/test_geo261_placement_definition.py',
+         'tests/geo261_placement_definition_harness.c']
+WATCH = OWNED + ['tests/test_geo261_placement_sources.py', 'tests/geo261_placement_sources_harness.c',
+                 'tests/test_geo261_native_kernel.py', 'tests/_bridge.py', 'tests/test_engineering_json.py']
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def utc():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+def dump(path, value):
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+
+def git(*argv):
+    return subprocess.check_output(['git', '-C', str(ROOT), *argv])
+
+def state():
+    head = git('rev-parse', 'HEAD').decode().strip()
+    if head != HEAD:
+        raise RuntimeError('候選 HEAD 改變')
+    paths = sorted(set(WATCH) | {p.relative_to(ROOT).as_posix() for p in (ROOT / 'geometry-core/kernel').rglob('*') if p.is_file() and p.suffix in {'.c', '.h'}})
+    return dict(head=head, files={p: dict(bytes=len((ROOT / p).read_bytes()), sha256=sha((ROOT / p).read_bytes())) for p in paths})
+
+OUT.mkdir(exist_ok=False)
+before = state()
+dump(OUT / 'before.json', before)
+patch = git('diff', '--binary', '--', *OWNED)
+(OUT / 'candidate.patch').write_bytes(patch)
+dump(OUT / 'git-before.json', dict(branch=git('branch', '--show-current').decode().strip(),
+    status=git('status', '--porcelain=v1', '--untracked-files=no').decode(),
+    scope='前後固定全部 K C/header 與兩套測試依賴；H 分工檔可由另一代理修改，未聲稱全工作樹 clean。'))
+tmp = tempfile.mkdtemp(prefix='geo261-host-copy-K-', dir='/tmp')
+env = {key: os.environ[key] for key in ('PATH', 'HOME', 'LANG', 'LC_ALL', 'LC_CTYPE') if key in os.environ}
+env.update(PYTHONDONTWRITEBYTECODE='1', TMPDIR=tmp, LANG='C.UTF-8', LC_ALL='C.UTF-8')
+soft, hard = resource.getrlimit(resource.RLIMIT_STACK)
+resource.setrlimit(resource.RLIMIT_STACK, (16 * 1024 * 1024, hard))
+argv = ['timeout', '900', 'python3', '-B', str(BASE / 'targeted_tests.py'), str(OUT)]
+command = dict(cwd=str(ROOT), argv=argv, sourceHead=HEAD, environment=env, stackKiB=16384,
+               startedUtc=utc(), patchSha256=sha(patch),
+               runnerSha256=sha(Path(__file__).read_bytes()), testDriverSha256=sha((BASE / 'targeted_tests.py').read_bytes()))
+dump(OUT / 'command.json', command)
+start = time.monotonic()
+with (OUT / 'stdout.log').open('xb') as stdout, (OUT / 'stderr.log').open('xb') as stderr:
+    pid = os.fork()
+    if pid == 0:
+        try:
+            os.chdir(ROOT)
+            os.dup2(stdout.fileno(), 1)
+            os.dup2(stderr.fileno(), 2)
+            os.execvpe(argv[0], argv, env)
+        except BaseException as error:
+            os.write(2, (repr(error) + '\n').encode())
+            os._exit(127)
+    waited, raw_wait = os.waitpid(pid, 0)
+    if waited != pid:
+        raise RuntimeError('wait 回收 PID 不符')
+code = os.waitstatus_to_exitcode(raw_wait)
+elapsed = time.monotonic() - start
+after = state()
+dump(OUT / 'after.json', after)
+summary = json.loads((OUT / 'unit-result.json').read_bytes()) if (OUT / 'unit-result.json').exists() else None
+receipt = dict(**command, finishedUtc=utc(), elapsedSeconds=elapsed, rawWaitStatus=raw_wait,
+               exitCode=code, sourceUnchanged=before == after, unitResult=summary,
+               stdoutSha256=sha((OUT / 'stdout.log').read_bytes()), stderrSha256=sha((OUT / 'stderr.log').read_bytes()))
+dump(OUT / 'receipt.json', receipt)
+(OUT / 'exit-code').write_text(str(code) + '\n')
+print(json.dumps(dict(out=str(OUT), exitCode=code, rawWaitStatus=raw_wait, elapsedSeconds=elapsed,
+                      sourceUnchanged=before == after, testsRun=None if summary is None else summary['testsRun'],
+                      namedAssertionFailures=None if summary is None else len(summary['namedAssertionFailures'])), ensure_ascii=False))
+raise SystemExit(1 if before != after and code == 0 else code if code >= 0 else 128 - code)

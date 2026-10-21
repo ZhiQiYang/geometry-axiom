@@ -1,0 +1,30 @@
+{
+  "type": "本代理實際工具回覆逐欄轉錄，不是 raw transport 或從收據推造退出碼",
+  "source_sha": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "session_id": 44422,
+  "initial_tool_chunk": "078a9a",
+  "actual_tool_response": {
+    "chunk_id": "a95848",
+    "wall_time_seconds": 0.00002665,
+    "exit_code": 0,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "stdout_original": "/workspace/geo261-evidence/ledger-S3-validation.stdout",
+  "stderr_original": "/workspace/geo261-evidence/ledger-S3-validation.stderr",
+  "command": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/ledger-L2-preparation/validate_package.py",
+    "--source",
+    "19401ca5448e162ee6140fed37b64b83b31ddec8",
+    "--config",
+    "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/prepare-receipt.json",
+    "--execute"
+  ]
+}

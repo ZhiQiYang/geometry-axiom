@@ -1,0 +1,150 @@
+#!/usr/bin/env python3
+"""封裝既有正式 L3 P-189 原件；不建置、不載入、不重新量測。"""
+import datetime
+import hashlib
+import json
+import os
+import subprocess
+from pathlib import Path
+
+E = Path('/workspace/geo261-evidence')
+O = E / 'p189-formal-L3-6589248c9a94-n3zzuu64'
+B = E / 'final-bundle/p189-formal-L3'
+R = Path('/workspace/geometry-axiom')
+C = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+assert not B.exists()
+
+def h(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def read(name):
+    return json.loads((O / name).read_bytes())
+
+def save(path, obj):
+    with path.open('x') as f:
+        json.dump(obj, f, ensure_ascii=False, indent=2)
+        f.write('\n')
+
+prep = read('prepare-receipt.json')
+W = Path(prep['work'])
+receipt = read('receipt.json')
+review = read('readonly-source-review.json')
+assert receipt['commits']['final'] == prep['source_sha'] == review['source_sha'] == C
+assert receipt['exit_code'] == review['validation_exit_code'] == 0
+assert review['phase_HEAD_all_L3'] and review['raw_streams'] == 1122
+assert review['valid_samples'] == 36 and review['controls'] == 16 and review['equivalence_rows'] == 175
+top = json.loads((E / 'p189-formal-L3-root-tool-observation.json').read_bytes())
+assert top['sourceSha'] == C and top['actual_final_tool_response']['exit_code'] == 0
+eq = read('dump-equivalence.json')
+tree_run = subprocess.run(['git', 'ls-tree', '-z', prep['commits']['base']], cwd=R, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+assert tree_run.returncode == 0
+base_blobs = {}
+for row in tree_run.stdout.split(b'\0'):
+    if row:
+        header, name = row.split(b'\t', 1)
+        mode, kind, blob = header.decode().split()
+        if kind == 'blob':
+            base_blobs[name.decode()] = blob
+inputs = []
+input_mapping = []
+for scene in eq['scenes']:
+    # 固定 runner equivalence()：生成場景原名；base 根層場景加 repo- 前綴。
+    name = scene['scene'] if scene['generated'] else 'repo-' + scene['scene']
+    p = W / 'scenes' / name
+    data = p.read_bytes()
+    assert h(data) == scene['scene_sha256']
+    if not scene['generated']:
+        assert hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest() == base_blobs[scene['scene']]
+    inputs.append((p, scene['generated']))
+    input_mapping.append({'logical_scene': scene['scene'], 'generated': scene['generated'],
+                          'source_path': str(p), 'published': 'inputs/' + p.name,
+                          'sha256': h(data), 'base_git_blob': None if scene['generated'] else base_blobs[scene['scene']]})
+assert len(inputs) == 175 and sum(flag for _, flag in inputs) == 4
+assert {row['logical_scene'] for row in input_mapping if row['generated']} == {'s16.scene', 's32.scene', 's48.scene', 's64.scene'}
+
+B.mkdir()
+mapping = []
+
+def copy(src, rel, role):
+    raw = src.read_bytes()
+    assert not raw.startswith(b'\x7fELF') and src.suffix not in ('.tar', '.pyc')
+    raw.decode('utf-8')
+    if src.suffix in ('.py', '.c', '.h', '.sh') and not str(rel).endswith('.txt'):
+        rel = Path(str(rel) + '.txt')
+    dst = B / rel
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    with dst.open('xb') as f:
+        f.write(raw)
+    os.chmod(dst, 0o644)
+    assert dst.read_bytes() == raw
+    mapping.append({'source': str(src), 'published': str(rel), 'bytes': len(raw), 'sha256': h(raw),
+                    'original_bytes': True, 'role': role})
+
+for p in sorted(O.rglob('*')):
+    if p.is_file():
+        assert '__pycache__' not in p.parts
+        copy(p, Path('raw') / p.relative_to(O), '本輪正式原件／既有只讀核對；觀察轉錄保留明示分類')
+for p, generated in inputs:
+    copy(p, Path('inputs') / p.name, '生成場景原 bytes' if generated else '固定 base 場景原 bytes，已綁 Git blob')
+copy(W / 'calib/f3-00.scene', Path('inputs/calib/f3-00.scene'), '固定 handoff 校準原 bytes')
+for p in [E / 'p189-formal-L3-prepare.py', E / 'p189-final-L-phase-supervisor.py',
+          E / 'p189-formal-L3-readonly-review.py', Path(__file__), Path(prep['runner']), Path(prep['generator'])]:
+    copy(p, Path('source-snapshots') / (p.name + '.txt'), '實際方法原 bytes 的 0644 純文字來源快照；非新增正式部署入口')
+for name in ['p189-formal-L3-method-preparation.json', 'p189-formal-L3-prepare-vs-L2.patch',
+             'p189-formal-L3-root-method-observation.json', 'p189-formal-L3-readonly-vs-L2.patch',
+             'p189-formal-L3-package-vs-L2.patch']:
+    copy(E / name, Path('method') / name, '方法準備／差異原件；當時未執行狀態與協作觀察轉錄性質保留')
+copy(E / 'p189-formal-L3-root-tool-observation.json', Path('observations/p189-formal-L3-root-tool-observation.json'), 'root 真工具完成結果的觀察轉錄；不是原 transport，不是封裝代理重新 wait')
+for name in ['p189-formal-L2-prepare.py', 'p189-formal-L2-readonly-review.py', 'p189-formal-L2-package-v2.py']:
+    copy(E / name, Path('method/inherited-L2') / (name + '.txt'), 'L3 方法的歷史來源快照，不冒稱本輪執行此 L2 工具')
+for suffix in ['.receipt.json', '.stdout', '.stderr', '.exit-code']:
+    p = E / ('p189-formal-L3-readonly-run01' + suffix)
+    copy(p, Path('readonly-execution') / p.name, '本輪事後只讀核對的真命令／真碼／原流')
+excluded = [{'path': x['archive_path'], 'bytes': x['archive_bytes'], 'sha256': x['archive_sha256'],
+             'reason': '來源 archive 原件留外部；包內保 source-index 與 Git blob 核對'} for x in prep['archives']]
+excluded += [{'path': str(W / x['sha'][:8] / 'bridge'), 'sha256': x['binary_sha256'],
+              'reason': 'ELF 留外部；包內保 build/preflight hash'} for x in read('build-receipt.json')]
+save(B / 'artifact-mapping.json', {'files': mapping, 'excluded_external_artifacts': excluded,
+     'source_sha': C, 'parent_S3': prep['expected_parent'],
+     'runner_source': C + ':geometry-core/domain-decoupling/closeout-tools/p189_verify.py',
+     'runner_sha256': prep['runner_sha256'], 'snapshot_policy': '來源快照是原 bytes 純文字資料，不新增 active 工具。',
+     'input_mapping': input_mapping,
+     'input_path_rule': '依固定 runner equivalence()：生成為 scenes/<scene>；base 根層固定場景為 scenes/repo-<scene>。以 dump-equivalence 的 generated 與 scene 欄位套用，不以 basename 猜測。',
+     'fixed_scene_git_binding': {'argv': ['git', 'ls-tree', '-z', prep['commits']['base']],
+                                'actual_exit_code': tree_run.returncode, 'stdout_sha256': h(tree_run.stdout),
+                                'fixed_scenes_verified': 171}})
+lines = ['# 正式 L3 P-189：通過', '',
+         '本輪固定來源 `6589248c9a94bdf0460d8f84dd1610e51048188b`，唯一 parent S3 `19401ca5448e162ee6140fed37b64b83b31ddec8`；S3→L3 僅 tests/mutants_results.json。這是 L3 新 archive／新建置／新量測的正式結果，不沿用 L2 或候選成績。', '',
+         'generator selftest、16 controls、三方 build、175 equivalence、36 timing、check、supervisor 均真 0。prepare 的頂層工具觀察是 session 75565/chunk 7de041；supervisor 是 session 1850/chunk 900b3a。prepare 觀察由準備代理依工具結果轉錄，supervisor 觀察由 root 轉錄；並非原 transport，也不是封裝階段重新 wait。', '',
+         '| N | main median 秒 | base median 秒 | L3 median 秒 | L3/main |',
+         '|---|---:|---:|---:|---:|']
+for row in receipt['timing']['summary']:
+    m = row['median_seconds']
+    lines.append(f"| {row['n']} | {m['main']} | {m['base']} | {m['final']} | {row['final_main_ratio']} |")
+lines += ['',
+    '原 ≤2x 門檻未改；N16/32/48/64 各三輪正反交錯共 36 有效樣本。t0 仍在 Popen 回傳後、communicate 前；沒有挑樣或重抽。main adbaebf9c73ea6801d7b4d5214e4b846b132923b、base 3e600772076465fc65a26ac09055028301c0fb0b，gcc -std=c11 -O2，16MiB stack、900 秒 timeout、PYTHONOPTIMIZE 移除且無 Python -O。', '',
+    '16 項裁判控制是本輪 selftest 實跑（2 正／14 負）。等價原判準為 4 生成場景三方有效載入且 stdout 同、171 固定場景 base/final 同；本輪額外觀測全部 175 列三方 stdout 同。175 中只有 75 成功 load，另 100 是歷史受控拒絕，不稱全部成功載入。', '',
+    '只讀核對將三方 archive、source-index、實際來源檔及各 commit 的 Git blob 逐 bytes 綁定，495/673/673 檔全部相符；171 固定場景另綁 base Git blob。runner/gen/calibration 原 bytes、三個 binary hash、六階段 argv／原流 hash、全部 phase 的 repository_head=L3、前檢排程與樣本順序均核同。1122 份完整 stdout/stderr 全部保存。', '',
+    'raw/prepare-receipt.json 中「尚未執行」等欄位描述準備當時，實際階段完成以 phase-receipts、receipt 及 readonly-source-review 為準。method 保留當時尚待真 SHA 的準備文件，沒有事後改寫成執行收據。', '',
+    '本包只完成正式 P-189；其他正式關卡由各自 L3 收據驗收，不據此宣稱全部通過或 PR 可合併。此輪沒有另做產品性能撤回；先前 6c/4bd 的精確撤回證據仍以自己的來源與原件保存。最不確定的是單輪量測對不同環境的代表性，而非本輪門檻或來源判定。', '',
+    '場景輸入依固定 runner 的選取規則：生成場景使用原名，171 固定場景使用 repo- 前綴；每份輸入皆先核 scene_sha256 與固定 base Git blob 後才複製。method/inherited-L2 是方法來源歷史，未冒稱本輪執行那些 L2 工具；本輪實際方法及最小差異分別保存。', '',
+    'ELF、archive、來源整樹及 pycache 不進包；其 hash／重建依據保留。source-snapshots/*.py.txt 是原 bytes 的 0644 純文字資料，非新增正式部署工具。artifact-mapping 逐檔綁原件；SHA256SUMS 涵蓋除自身外全部檔案。', '']
+(B / 'README.md').write_text('\n'.join(lines))
+files = sorted(p for p in B.rglob('*') if p.is_file())
+(B / 'SHA256SUMS').write_text(''.join(h(p.read_bytes()) + '  ' + str(p.relative_to(B)) + '\n' for p in files))
+for line in (B / 'SHA256SUMS').read_text().splitlines():
+    digest, rel = line.split('  ', 1)
+    assert h((B / rel).read_bytes()) == digest
+for row in mapping:
+    assert (B / row['published']).read_bytes() == Path(row['source']).read_bytes()
+files = sorted(p for p in B.rglob('*') if p.is_file())
+assert not any(p.suffix == '.py' for p in files)
+result = {'checked_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'bundle': str(B),
+          'source_sha': C, 'file_count': len(files), 'bytes': sum(p.stat().st_size for p in files),
+          'manifest_sha256': h((B / 'SHA256SUMS').read_bytes()), 'copied_original_count': len(mapping),
+          'all_original_bytes_equal': True, 'all_manifest_hashes_match': True,
+          'samples': 36, 'equivalence_rows': 175, 'controls': 16, 'formal_check_exit_code': 0,
+          'new_product_executions': 0, 'validation_exit_code': 0,
+          'packager_sha256': h(Path(__file__).read_bytes())}
+save(E / 'p189-formal-L3-copy-check.json', result)
+print(json.dumps(result, ensure_ascii=False, indent=2))

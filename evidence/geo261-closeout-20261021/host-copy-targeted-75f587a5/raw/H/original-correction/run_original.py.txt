@@ -1,0 +1,126 @@
+"""修正間接 include 後，只重跑原 85 H/K 的四個輸出見證。"""
+from pathlib import Path
+import datetime
+import hashlib
+import json
+import os
+import re
+import resource
+import subprocess
+import sys
+import tempfile
+
+ROOT=Path('/workspace/geo261-host-copy-candidate')
+OUT=Path(__file__).resolve().parent
+BASE='85dc4fff44ce49b27f831b21cbdcb662c863302c'
+os.chdir(ROOT)
+sys.path.insert(0,str(ROOT))
+assert 'CC' not in os.environ and 'PYTHONOPTIMIZE' not in os.environ
+assert resource.getrlimit(resource.RLIMIT_STACK)[0]==16384*1024
+temporary=tempfile.mkdtemp(prefix='geo261-host-original-corrected-')
+os.environ['TMPDIR']=temporary
+tempfile.tempdir=temporary
+original_run=subprocess.run
+records=[]
+
+def run(*args,**kwargs):
+    command=args[0] if args else kwargs['args']
+    entry={'index':len(records),'command':list(map(str,command)),
+           'cwd':str(kwargs.get('cwd',ROOT)),'startUTC':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+    records.append(entry)
+    try:
+        result=original_run(*args,**kwargs)
+        entry['returncode']=result.returncode
+        for stream in ('stdout','stderr'):
+            data=getattr(result,stream)
+            if data is not None:
+                if isinstance(data,str):data=data.encode()
+                path=OUT/f"command-{entry['index']:04d}.{stream}"
+                path.write_bytes(data)
+                entry[stream]={'path':path.name,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+        return result
+    except BaseException as exc:
+        entry['exception']=repr(exc)
+        raise
+    finally:
+        entry['endUTC']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+        (OUT/'commands.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
+
+subprocess.run=run
+def git_bytes(path):
+    return subprocess.run(['git','show',BASE+':'+str(path)],capture_output=True,check=True).stdout
+
+from tests.test_geo261_native_kernel import native
+from tests.test_geo261_host_facts_authority import FLAGS,HARNESS,SOURCE,VALIDATION,REFERENCES
+before_head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,check=True).stdout.decode().strip()
+before_status=subprocess.run(['git','status','--porcelain'],capture_output=True,check=True).stdout
+assert not before_status
+build=native()
+originals=[ROOT/'current_geometry.c',REFERENCES,SOURCE,VALIDATION,HARNESS]
+copies={p.resolve():build.work/('original-'+p.name) for p in originals}
+source_records={}
+for p in originals:
+    data=p.read_bytes() if p==HARNESS else git_bytes(p.relative_to(ROOT))
+    source_records[str(p.relative_to(ROOT))]={'origin':'candidate-test' if p==HARNESS else BASE,'sha256':hashlib.sha256(data).hexdigest()}
+    text=data.replace(b'\r\n',b'\n').decode()
+    if p==SOURCE:
+        # 原版沒有新私有名稱；只以原 atomic 介面轉接同一新見證。
+        text+='\nstatic bool reference_host_scratch(ReferenceEval *c,uint32_t i,PlacementSurface *p,SpaceBoundarySurface *b,const SpaceBoundarySurface **v)\n{return reference_host_read(c,i,p,b,v);}\n'
+    def include(match):
+        path=(p.parent/match.group(1)).resolve()
+        return '#include "'+str(copies.get(path,path))+'"'
+    text=re.sub(r'^#include "([^"]+)"',include,text,flags=re.MULTILINE)
+    copies[p.resolve()].write_text(text)
+    (OUT/('effective-'+p.name+'.txt')).write_text(text)
+    source_records[str(p.relative_to(ROOT))]['effectiveSha256']=hashlib.sha256(text.encode()).hexdigest()
+
+dependency_command=[build.cc,'-std=c11','-MM','-I',str(build.kernel),*['-D'+f for f in FLAGS],str(copies[HARNESS.resolve()])]
+dependency_result=subprocess.run(dependency_command,capture_output=True,check=True)
+dependency_text=dependency_result.stdout.decode().replace('\\\n',' ')
+dependencies={Path(p).resolve() for p in dependency_text.split(':',1)[1].split()}
+for original in (ROOT/'current_geometry.c',REFERENCES,SOURCE,VALIDATION):
+    assert copies[original.resolve()].resolve() in dependencies,original
+    assert original.resolve() not in dependencies,original
+host_dependencies=[]
+for p in sorted(dependencies):
+    if p.is_relative_to(ROOT/'geometry-app/native'):
+        original=git_bytes(p.relative_to(ROOT))
+        assert p.read_bytes()==original,p
+        host_dependencies.append({'path':str(p),'origin':str(p.relative_to(ROOT)),
+                                  'sha256':hashlib.sha256(original).hexdigest(),'equalsBase':True})
+for p in sorted(build.host.glob('*')):
+    if p.suffix in ('.c','.h'):
+        origin='geometry-app/native/'+p.name
+        original=git_bytes(origin)
+        assert p.read_bytes()==original,p
+        host_dependencies.append({'path':str(p),'origin':origin,
+                                  'sha256':hashlib.sha256(original).hexdigest(),'equalsBase':True})
+closure={'compilerDependencyCommand':dependency_command,'dependencies':list(map(str,sorted(dependencies))),
+         'requiredOriginalCopiesIncluded':True,'candidateHostSourcesAbsent':True,
+         'remainingHostDependenciesEqualBase':host_dependencies,'transformedSources':source_records}
+(OUT/'include-closure.json').write_text(json.dumps(closure,ensure_ascii=False,indent=2)+'\n')
+
+old_kernel=build.kernel/'original-placement_sources.c'
+old_kernel.write_bytes(git_bytes('geometry-core/kernel/placement_sources.c'))
+(OUT/'original-placement_sources.c.txt').write_bytes(old_kernel.read_bytes())
+old_object=build.compile(old_kernel,'original-placement-sources')
+objects=[old_object if p==build.placement_sources_object else p for p in build.product_objects()]
+assert old_object in objects and build.placement_sources_object not in objects
+client=build.compile(copies[HARNESS.resolve()],'original-host-output',FLAGS)
+old_exe=build.link('original-host-output',[client,*objects])
+checks=[]
+for case in ('copy-clear','copy-snapshot','scratch-owned','malformed'):
+    result=subprocess.run([str(old_exe),case],capture_output=True,timeout=30)
+    checks.append({'case':case,'returncode':result.returncode,'stdoutEmpty':not result.stdout,'stderrEmpty':not result.stderr})
+after_head=subprocess.run(['git','rev-parse','HEAD'],capture_output=True,check=True).stdout.decode().strip()
+after_status=subprocess.run(['git','status','--porcelain'],capture_output=True,check=True).stdout
+assert before_head==after_head and before_status==after_status
+summary={'base':BASE,'headBefore':before_head,'headAfter':after_head,'sourceUnchanged':True,
+         'TMPDIR':temporary,'stackBytes':resource.getrlimit(resource.RLIMIT_STACK),'CC':None,'PYTHONOPTIMIZE':None,
+         'sources':source_records,'checks':checks,'includeClosureVerified':True,
+         'limitations':['僅補私有名稱轉接並改寫 include 路徑；原 H helper 本體及 K placement object 皆來自指定 85 基底。',
+                        '候選測試仍含新見證；本次不是性能量測，也不重跑候選 ASan/UBSan 或 65 項定向。'],
+         'passed':all(c['returncode']==0 and c['stdoutEmpty'] and c['stderrEmpty'] for c in checks)}
+(OUT/'result.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(summary,ensure_ascii=False))
+sys.exit(0 if summary['passed'] else 1)

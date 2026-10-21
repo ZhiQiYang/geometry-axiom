@@ -1,0 +1,42 @@
+test_CR29_D25_CARD_CLOSURE (tests.test_grid_card_reference.GridCardReference.test_CR29_D25_CARD_CLOSURE) ... FAIL
+
+======================================================================
+FAIL: test_CR29_D25_CARD_CLOSURE (tests.test_grid_card_reference.GridCardReference.test_CR29_D25_CARD_CLOSURE)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates/tests/test_grid_card_reference.py", line 426, in test_CR29_D25_CARD_CLOSURE
+    pkg = build_package(definitions, req)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates/geometry-core/modeling/__init__.py", line 226, in build_package
+    result = evaluate(copy.deepcopy(definitions), copy.deepcopy(request),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates/geometry-core/modeling/engine.py", line 16, in evaluate
+    return runtime.evaluate(definitions, request, capabilities=capabilities,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates/geometry-app/geometry_app/model_runtime.py", line 295, in evaluate
+    compiled = self.compile(definitions, request, max_cells=max_cells, base_executable=base_executable)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates/geometry-app/geometry_app/model_runtime.py", line 128, in compile
+    native = self.native_loader(definitions["base_scene"], executable=base_executable)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates/geometry-core/modeling/base.py", line 17, in load_candidate
+    return _native.load_candidate(scene_text, executable, builder=_build_adapter,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates/geometry-app/geometry_app/model_native.py", line 277, in load_candidate
+    return _load_base_or_candidate(scene_text, executable, builder=builder,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates/geometry-app/geometry_app/model_native.py", line 234, in _load_base_or_candidate
+    raise ModelError(status, snapshot.get("code", "BASE_INVALID"), snapshot.get("clause", "I9"), snapshot.get("message", "Scene rejected."))
+geometry_app.model_common.ModelError: line 6: [10:8 P.b] -> I38 MISSING: parameter 11 field 8
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/geo261-gates/tests/test_grid_card_reference.py", line 429, in test_CR29_D25_CARD_CLOSURE
+    self.fail('D25_CARD_CLOSURE failed to retain/rebuild card sources: ' + str(error))
+AssertionError: D25_CARD_CLOSURE failed to retain/rebuild card sources: line 6: [10:8 P.b] -> I38 MISSING: parameter 11 field 8
+
+----------------------------------------------------------------------
+Ran 1 test in 0.272s
+
+FAILED (failures=1)

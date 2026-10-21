@@ -1,0 +1,16 @@
+test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE (tests.test_grid_card_reference.GridCardReference.test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE) ... FAIL
+
+======================================================================
+FAIL: test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE (tests.test_grid_card_reference.GridCardReference.test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 219, in test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE
+    self.reject([{'op': 'set-grid-card-reference', 'id': 4, 'value': source()}], 'grid-system 4', 'MODE_SCOPE set operation')
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 79, in reject
+    self.assertTrue(matching, (label, reason, errors))
+AssertionError: [] is not true : ('MODE_SCOPE set operation', 'grid-system 4', ['I74 MODE_SCOPE: both axes must use repeat or repeat-panel', 'candidate rejected'])
+
+----------------------------------------------------------------------
+Ran 1 test in 0.196s
+
+FAILED (failures=1)

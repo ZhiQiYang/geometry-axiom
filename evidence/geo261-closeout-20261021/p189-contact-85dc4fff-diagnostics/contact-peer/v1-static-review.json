@@ -1,0 +1,179 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "candidateBase": "7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09",
+  "candidateCollectorSha256": "7854d3f981460b9b02451508e5a377e0fe7c8d0f6ad2d88b863545e0f57b90c0",
+  "validationExitCode": 0,
+  "method": "純 AST 解析控制表及字串唯一性；不 import 測試、不執行或編譯產品。",
+  "originalControlsRetained": 20,
+  "retargetedControl": "equal-order-dedup：存在任一較小 order 改成該 ID 的 minimum < order，仍為嚴格小於，case/label 相同。",
+  "newControls": 3,
+  "controls": [
+    {
+      "name": "positive-area",
+      "anchorCount": 1,
+      "case": "collisions",
+      "namedAssertion": "collision-touch-is-clear",
+      "executed": false
+    },
+    {
+      "name": "collision-identity",
+      "anchorCount": 1,
+      "case": "collisions",
+      "namedAssertion": "collision-other-candidate-same-id-not-excluded",
+      "executed": false
+    },
+    {
+      "name": "collision-placement",
+      "anchorCount": 1,
+      "case": "collisions",
+      "namedAssertion": "collision-same-placement-only",
+      "executed": false
+    },
+    {
+      "name": "placement-order",
+      "anchorCount": 1,
+      "case": "ordering",
+      "namedAssertion": "placement-order-before-declaration",
+      "executed": false
+    },
+    {
+      "name": "stable-ties",
+      "anchorCount": 1,
+      "case": "ordering",
+      "namedAssertion": "placement-stable-equal-order-sides",
+      "executed": false
+    },
+    {
+      "name": "equal-order-dedup",
+      "anchorCount": 1,
+      "case": "ordering",
+      "namedAssertion": "equal-order-not-deduplicated",
+      "executed": false
+    },
+    {
+      "name": "partial-shadow",
+      "anchorCount": 1,
+      "case": "ordering",
+      "namedAssertion": "partial-shadow-retains-exposed-face",
+      "executed": false
+    },
+    {
+      "name": "outline-component-index",
+      "anchorCount": 1,
+      "case": "regions",
+      "namedAssertion": "region-outline-index-encoded",
+      "executed": false
+    },
+    {
+      "name": "hole-component-index",
+      "anchorCount": 1,
+      "case": "regions",
+      "namedAssertion": "region-hole-index-encoded",
+      "executed": false
+    },
+    {
+      "name": "paired-capacity",
+      "anchorCount": 1,
+      "case": "regions",
+      "namedAssertion": "member-capacity-pair-atomic",
+      "executed": false
+    },
+    {
+      "name": "complete-footprint",
+      "anchorCount": 1,
+      "case": "intervals",
+      "namedAssertion": "i5-notched-footprint-deferred",
+      "executed": false
+    },
+    {
+      "name": "owner-identity",
+      "anchorCount": 1,
+      "case": "extensions",
+      "namedAssertion": "owner-pointer-not-id",
+      "executed": false
+    },
+    {
+      "name": "owner-extension",
+      "anchorCount": 1,
+      "case": "extensions",
+      "namedAssertion": "owner-extension-outside-fixed-part",
+      "executed": false
+    },
+    {
+      "name": "fixed-inclusive",
+      "anchorCount": 1,
+      "case": "extensions",
+      "namedAssertion": "owner-fixed-interval-inclusive",
+      "executed": false
+    },
+    {
+      "name": "free-end",
+      "anchorCount": 1,
+      "case": "ends",
+      "namedAssertion": "free-end-faces-ignored",
+      "executed": false
+    },
+    {
+      "name": "full-contact-width",
+      "anchorCount": 1,
+      "case": "ends",
+      "namedAssertion": "narrow-end-face-ignored",
+      "executed": false
+    },
+    {
+      "name": "contact-shadow",
+      "anchorCount": 1,
+      "case": "ends",
+      "namedAssertion": "partial-earlier-face-shadows-only-contact",
+      "executed": false
+    },
+    {
+      "name": "end-order",
+      "anchorCount": 1,
+      "case": "ends",
+      "namedAssertion": "start-end-before-global-placement-order",
+      "executed": false
+    },
+    {
+      "name": "stop-identity",
+      "anchorCount": 1,
+      "case": "ordering",
+      "namedAssertion": "stop-exclusion-keeps-candidate-identity",
+      "executed": false
+    },
+    {
+      "name": "extension-end",
+      "anchorCount": 1,
+      "case": "ends",
+      "namedAssertion": "self-boundary-extension-end-exempt",
+      "executed": false
+    },
+    {
+      "name": "duplicate-last-order",
+      "anchorCount": 1,
+      "case": "order-keys",
+      "namedAssertion": "duplicate-last-order-includes-all-facts",
+      "executed": false
+    },
+    {
+      "name": "duplicate-min-order",
+      "anchorCount": 1,
+      "case": "order-keys",
+      "namedAssertion": "duplicate-min-order-can-shadow-earlier-output",
+      "executed": false
+    },
+    {
+      "name": "dedup-key-move",
+      "anchorCount": 1,
+      "case": "order-keys",
+      "namedAssertion": "dedup-removal-keeps-following-face-order",
+      "executed": false
+    }
+  ],
+  "adoptionBlocker": "key memmove 左結合先形成 orders+i；合法 boundary prefix 可令 i 超過 cache[128]，需改 orders+(i-member_begin)，即使最後差值落回範圍亦不可保證 C 語義。",
+  "notMeasured": [
+    "沒有獨立編譯/執行這23個突變",
+    "沒有讀尚在寫入的targeted raw作完成結論",
+    "沒有效能量測"
+  ]
+}

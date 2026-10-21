@@ -1,0 +1,295 @@
+[
+  {
+    "phase": "generator-selftest",
+    "argv": [
+      "python3",
+      "-B",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2/gen_scene.py",
+      "--selftest"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T03:02:15.428350+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "4bd19f91c434417f1c4431128c55285f4b11d3c3"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/generator-selftest.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/generator-selftest.stderr",
+    "supervisor_pid": 319432,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 319447,
+    "pgid": 319447,
+    "finished_utc": "2026-10-21T03:02:15.496738+00:00",
+    "seconds": 0.06836329099678551,
+    "exit_code": 0,
+    "stdout_sha256": "1cf55b98fb0d213b478c70521a551312d3bb43f15dedc40b98fe6ecdc54a8d53",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "phase": "selftest",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "selftest",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2",
+      "--out",
+      "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4",
+      "--gen",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2/gen_scene.py",
+      "--final",
+      "4bd19f91c434417f1c4431128c55285f4b11d3c3",
+      "--timeout",
+      "900"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T03:02:15.515976+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "4bd19f91c434417f1c4431128c55285f4b11d3c3"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/selftest.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/selftest.stderr",
+    "supervisor_pid": 319432,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 319454,
+    "pgid": 319454,
+    "finished_utc": "2026-10-21T03:02:15.588756+00:00",
+    "seconds": 0.07249970799966832,
+    "exit_code": 0,
+    "stdout_sha256": "8566912e73dd13a253cadf1fe4f89ec0dc494cbf0f4bd7e22f5155f8676e3a9d",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "phase": "build",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "build",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2",
+      "--out",
+      "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4",
+      "--gen",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2/gen_scene.py",
+      "--final",
+      "4bd19f91c434417f1c4431128c55285f4b11d3c3",
+      "--timeout",
+      "900"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T03:02:15.602557+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "4bd19f91c434417f1c4431128c55285f4b11d3c3"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/build.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/build.stderr",
+    "supervisor_pid": 319432,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 319464,
+    "pgid": 319464,
+    "finished_utc": "2026-10-21T03:03:03.331423+00:00",
+    "seconds": 47.7288439460026,
+    "exit_code": 0,
+    "stdout_sha256": "b79566129f2a6821dcb3e779d86ab944c5817ec5ba020daf37f90f1113dea58b",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "phase": "equivalence",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "equivalence",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2",
+      "--out",
+      "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4",
+      "--gen",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2/gen_scene.py",
+      "--final",
+      "4bd19f91c434417f1c4431128c55285f4b11d3c3",
+      "--timeout",
+      "900"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T03:03:03.345853+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "4bd19f91c434417f1c4431128c55285f4b11d3c3"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/equivalence.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/equivalence.stderr",
+    "supervisor_pid": 319432,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 319509,
+    "pgid": 319509,
+    "finished_utc": "2026-10-21T03:04:13.155704+00:00",
+    "seconds": 69.80984543799786,
+    "exit_code": 0,
+    "stdout_sha256": "aec7f86bfc5b29d4ab0a916d00cc24779267c3fbd08d66bb12134dfc56e6dc2c",
+    "stderr_sha256": "11cfa9cdb089e93291cd50e802cb1df9504625e6ecec363084e7013b9620cede"
+  },
+  {
+    "phase": "timing",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "timing",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2",
+      "--out",
+      "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4",
+      "--gen",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2/gen_scene.py",
+      "--final",
+      "4bd19f91c434417f1c4431128c55285f4b11d3c3",
+      "--timeout",
+      "900"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T03:04:14.225124+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "4bd19f91c434417f1c4431128c55285f4b11d3c3"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/timing.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/timing.stderr",
+    "supervisor_pid": 319432,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 320296,
+    "pgid": 320296,
+    "finished_utc": "2026-10-21T03:05:37.816565+00:00",
+    "seconds": 83.5913290669996,
+    "exit_code": 0,
+    "stdout_sha256": "9d2c46643bfcceb29c65029ed971da507c2395144be6777c1bf6c584ef8c0475",
+    "stderr_sha256": "11cfa9cdb089e93291cd50e802cb1df9504625e6ecec363084e7013b9620cede"
+  },
+  {
+    "phase": "check",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+      "check",
+      "--repo",
+      "/workspace/geometry-axiom",
+      "--work",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2",
+      "--out",
+      "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4",
+      "--gen",
+      "/workspace/geo261-p189-footprint-revert-src-hhjrvln2/gen_scene.py",
+      "--final",
+      "4bd19f91c434417f1c4431128c55285f4b11d3c3",
+      "--timeout",
+      "900"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-21T03:05:37.831481+00:00",
+    "commits": {
+      "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "final": "4bd19f91c434417f1c4431128c55285f4b11d3c3"
+    },
+    "runner_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+    "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+    "repository_head": "43f85313c32410ac01406ab585846bbacafea278",
+    "stdout": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/check.stdout",
+    "stderr": "/workspace/geo261-evidence/p189-footprint-revert-4bd19f91c434-xfyb3_y4/check.stderr",
+    "supervisor_pid": 319432,
+    "PYTHONOPTIMIZE_present": false,
+    "stack_limit_bytes": [
+      16777216,
+      16777216
+    ],
+    "core_limit_bytes": [
+      0,
+      0
+    ],
+    "pid": 320612,
+    "pgid": 320612,
+    "finished_utc": "2026-10-21T03:05:37.895438+00:00",
+    "seconds": 0.06392838700048742,
+    "exit_code": 1,
+    "stdout_sha256": "2c8ace2178d9b36e9ea16105eb02ad00472ea08ba3f252abe1277ec6f3953241",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

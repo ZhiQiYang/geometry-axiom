@@ -1,0 +1,33 @@
+{
+  "kind": "事後逐欄保存實際工具回應，非 transport 自動原始日誌",
+  "preflightLaunch": {
+    "chunk_id": "d0e86e",
+    "wall_time_seconds": 1.000831949,
+    "session_id": 88564,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "preflightFinal": {
+    "chunk_id": "de4ab9",
+    "wall_time_seconds": 3.9964158850000002,
+    "exit_code": 0,
+    "original_token_count": 46,
+    "output": "{\"exitCode\": 0, \"elapsedSeconds\": 8.234935159998713, \"receipt\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-launcher/preflight-execution-receipt.json\"}\n"
+  },
+  "nativeLaunch": {
+    "chunk_id": "2bd1ea",
+    "wall_time_seconds": 1.006415031,
+    "session_id": 75129,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "initialBuildCollector": {
+    "chunk_id": "b464ed",
+    "wall_time_seconds": 0.232016079,
+    "exit_code": 0,
+    "original_token_count": 113,
+    "output": "{\n  \"sourceSha\": \"6589248c9a94bdf0460d8f84dd1610e51048188b\",\n  \"accepted\": true,\n  \"acceptance\": \"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/initial-build-acceptance.json\",\n  \"acceptanceSha256\": \"02949c7d7615e968926f07b36d70bb1c5fe86f09a6ab7dfef6a0433caca4f65d\",\n  \"indexSha256\": \"f513116cc50c53e93dabfe817e94502c3157636394fea50fb4bc1b016e4b5430\",\n  \"fileCount\": 12,\n  \"checkedUtc\": \"2026-10-21T05:52:29.897378+00:00\"\n}\n"
+  },
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "nativeSession": 75129
+}

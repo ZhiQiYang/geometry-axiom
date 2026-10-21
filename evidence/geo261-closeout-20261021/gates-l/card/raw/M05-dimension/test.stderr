@@ -1,0 +1,16 @@
+test_CR08_MAPPED_SOURCE_PROTECTION (tests.test_grid_card_reference.GridCardReference.test_CR08_MAPPED_SOURCE_PROTECTION) ... FAIL
+
+======================================================================
+FAIL: test_CR08_MAPPED_SOURCE_PROTECTION (tests.test_grid_card_reference.GridCardReference.test_CR08_MAPPED_SOURCE_PROTECTION)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 183, in test_CR08_MAPPED_SOURCE_PROTECTION
+    self.reject([card(10, 'P', [field(3, '12'), field(8, '30', kind)])], 'not a dimension', 'MAPPED_SOURCE_PROTECTION', identity=(4, 10, 8))
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 79, in reject
+    self.assertTrue(matching, (label, reason, errors))
+AssertionError: [] is not true : ('MAPPED_SOURCE_PROTECTION', 'not a dimension', ['I74 grid-system 4 v parameter 10 field 8: ', 'candidate rejected'])
+
+----------------------------------------------------------------------
+Ran 1 test in 0.198s
+
+FAILED (failures=1)

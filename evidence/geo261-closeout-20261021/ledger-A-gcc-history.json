@@ -1,0 +1,49 @@
+{
+  "recorded_utc": "2026-10-20T22:13:03.736266+00:00",
+  "historical_source_A": "7159530c0e494d3211e6ab1764eb691137211707",
+  "unadopted_L1": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+  "old_bundle_path": "/workspace/geo261-evidence/final-bundle/ledger-A",
+  "renamed_bundle_path": "/workspace/geo261-evidence/final-bundle/ledger-A-gcc",
+  "files_preserved_byte_identically": 287,
+  "original_manifest_exit": 0,
+  "integration_manifest_exit": 0,
+  "gcc_configured_full_and_checks_exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "default_CC_absent_check_reported_by_root": {
+    "exit_code": 1,
+    "core_stale_count": 57,
+    "reason": "compile command changed",
+    "raw_receipt_owner": "主代理保留L1預設檢查原件，此處不另造實跑收據"
+  },
+  "default_cc_static_hash": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
+  "historical_gcc_static_hash": "e87acf5cb27ff17c66fef1d6219c4f31ed95a852b4fc6e3d13840c33db8eeaee",
+  "used_for_final_ledger": false,
+  "replacement_cc_run": "/workspace/geo261-evidence/ledger-cc-7159530c0e49.wzi0t97l",
+  "P189_L1_preparation_only": "/workspace/geo261-evidence/p189-L-cd4ac98f4417.f5u9nd3t",
+  "P189_L1_commands_executed": [],
+  "baseline_clarification": {
+    "recorded_utc": "2026-10-20T22:50:46Z",
+    "kind": "官方工具與既有收據語義的只讀補正，非新實跑",
+    "frozen_readme_sha256": "a84acec86b74254a8cd33ae9f2564e07b952aee3cd11978d62b80aeca41222a0",
+    "frozen_readme_line": 5,
+    "core": {
+      "shared_successful_receipt": "165/165",
+      "per_mutant_baseline_runs": false,
+      "mutant_cases": 57,
+      "actual_launch_count": "原件不足以獨立確認；工具在迴圈前允許 blocked 重試，僅保留最後收據",
+      "source_lines": "tests/mutate.py:1303–1338、1393"
+    },
+    "bridge": {
+      "baseline_runs": 1,
+      "baseline_methods": 27,
+      "mutant_cases": 18,
+      "each_case_references_shared_baseline": true,
+      "each_case_restored_methods": 27,
+      "source_lines": "tests/mutation_bridge.py:455–471、474–478、490–495"
+    },
+    "original_bundle_changed": false
+  }
+}

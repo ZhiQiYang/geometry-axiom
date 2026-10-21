@@ -1,0 +1,14 @@
+"""只啟動本輪唯讀接受器；保存 stdout、stderr 及真 wait 碼。"""
+from pathlib import Path
+import datetime,hashlib,json,subprocess,sys,time
+root=Path('/workspace/geo261-evidence/canvas-L3-independent-review')
+code=root/'peer-code.txt'
+argv=[sys.executable,'-B',str(code)]
+started=datetime.datetime.now(datetime.timezone.utc).isoformat();start=time.monotonic()
+with (root/'peer.stdout').open('xb') as out,(root/'peer.stderr').open('xb') as err:
+    child=subprocess.Popen(argv,cwd='/workspace',stdin=subprocess.DEVNULL,stdout=out,stderr=err)
+    rc=child.wait()
+(root/'peer.exit-code').write_text(str(rc)+'\n')
+record={'schema':'geo261-readonly-peer-execution/1','argv':argv,'cwd':'/workspace','pid':child.pid,'startedUTC':started,'finishedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'seconds':time.monotonic()-start,'observedReturncode':rc,'methodSha256':hashlib.sha256(code.read_bytes()).hexdigest(),'streams':{name:{'bytes':(root/name).stat().st_size,'sha256':hashlib.sha256((root/name).read_bytes()).hexdigest()} for name in ['peer.stdout','peer.stderr']},'scope':'只讀已完成的 L3 canvas 原件與 Git；無產品、編譯或瀏覽器執行'}
+(root/'execution.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(record,ensure_ascii=False));raise SystemExit(rc)

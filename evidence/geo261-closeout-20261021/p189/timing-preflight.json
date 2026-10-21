@@ -1,0 +1,53 @@
+{
+  "utc": "2026-10-20T20:07:14.107239+00:00",
+  "binary_checks": [
+    {
+      "side": "main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "binary": "/workspace/geo261-perf-src/adbaebf9/bridge",
+      "expected_sha256": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045",
+      "actual_sha256": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045",
+      "matches": true
+    },
+    {
+      "side": "base",
+      "sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "binary": "/workspace/geo261-perf-src/3e600772/bridge",
+      "expected_sha256": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f",
+      "actual_sha256": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f",
+      "matches": true
+    },
+    {
+      "side": "final",
+      "sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+      "binary": "/workspace/geo261-perf-src/7dae5f21/bridge",
+      "expected_sha256": "6948e6ad93685c4f72104ecf2a416ec0153617b4bdac9ed81e11aaf6d25e33e7",
+      "actual_sha256": "6948e6ad93685c4f72104ecf2a416ec0153617b4bdac9ed81e11aaf6d25e33e7",
+      "matches": true
+    }
+  ],
+  "processes": "    PID    PPID STAT COMMAND         %CPU\n      1       0 Ss   tail             0.0\n      2       1 S    caas-prefix-tra  0.0\n    205       1 Ssl  dockerd          0.0\n    258     205 Ssl  containerd       0.0\n    477       0 Ssl  codex            0.0\n    595       1 Zs   git              0.0\n    651       1 Zs   git              0.0\n   1262     477 Ss   codex-linux-san  0.0\n   1264    1262 S    bwrap            0.0\n   1265    1264 Ss   codex            0.0\n   1266    1265 S    bash             0.0\n   1269    1266 Sl   python3         16.7\n   1270    1269 S    bridge           1.2\n   1355     477 Ss   codex-linux-san  0.0\n   1357    1355 S    bwrap            0.0\n   1358    1357 Ss   codex            0.0\n   1359    1358 S    bash             0.0\n   1362    1359 Sl   python3         20.1\n   1363    1362 S    bridge           0.5\n   1382       1 Z    chromium         4.1\n   1397       1 Z    chrome_crashpad  0.0\n   1399       1 Z    chromium         0.0\n   1400       1 Z    chromium         0.0\n   1420       1 Z    chromium         6.6\n   1435       1 Z    chromium         1.0\n   1441       1 Z    chromium         0.0\n   1472       1 Z    chromium        17.4\n   3730       1 Zs   git              0.0\n   4554       1 Z    chromium         0.3\n   4569       1 Z    chrome_crashpad  0.0\n   4571       1 Z    chromium         0.0\n   4572       1 Z    chromium         0.0\n   4591       1 Z    chromium         0.1\n   4610       1 Z    chromium         0.1\n   4620       1 Z    chromium         0.0\n   4659       1 Z    chromium         1.8\n   5258       1 Zs   git              0.0\n   7446       1 Z    chromium         0.3\n   7461       1 Z    chrome_crashpad  0.0\n   7463       1 Z    chromium         0.0\n   7464       1 Z    chromium         0.0\n   7486       1 Z    chromium         0.1\n   7504       1 Z    chromium         0.1\n   7516       1 Z    chromium         0.0\n   7556       1 Z    chromium         1.8\n   8940     477 Ss   codex-linux-san  0.0\n   8942    8940 S    bwrap            0.0\n   8943    8942 Ss   codex            0.0\n   8944    8943 S    bash             0.0\n   8947    8944 Sl   python3          7.6\n   8964    8947 S    bridge           0.8\n  13467       1 Z    chrome_crashpad  0.0\n  13469       1 Z    chromium         0.0\n  13470       1 Z    chromium         0.0\n  19004       1 Z    chrome_crashpad  0.0\n  19006       1 Z    chromium         0.0\n  19007       1 Z    chromium         0.0\n  21942       1 Z    chrome_crashpad  0.0\n  21946       1 Z    chromium         0.0\n  21948       1 Z    chromium         0.0\n  21979       1 Z    chromium         0.1\n  24461       1 Z    chrome_crashpad  0.0\n  24463       1 Z    chromium         0.0\n  24464       1 Z    chromium         0.0\n  26913       1 Z    chrome_crashpad  0.0\n  26915       1 Z    chromium         0.0\n  26916       1 Z    chromium         0.0\n  27488       1 Z    chrome_crashpad  0.0\n  27491       1 Z    chromium         0.0\n  27492       1 Z    chromium         0.0\n  27835       1 Z    chrome_crashpad  0.0\n  27837       1 Z    chromium         0.0\n  27838       1 Z    chromium         0.0\n  29372       1 Z    chrome_crashpad  0.0\n  29374       1 Z    chromium         0.0\n  29375       1 Z    chromium         0.0\n  32910       1 Z    chrome_crashpad  0.0\n  32912       1 Z    chromium         0.0\n  32913       1 Z    chromium         0.0\n  32935       1 Z    chromium         0.2\n  36514       1 Z    chrome_crashpad  0.0\n  36516       1 Z    chromium         0.0\n  36518       1 Z    chromium         0.0\n  36538       1 Z    chromium         0.2\n  39087       1 Z    chrome_crashpad  0.0\n  39089       1 Z    chromium         0.0\n  39090       1 Z    chromium         0.0\n  39616       1 Z    chrome_crashpad  0.0\n  39618       1 Z    chromium         0.0\n  39619       1 Z    chromium         0.0\n  39910       1 Z    chrome_crashpad  0.0\n  39912       1 Z    chromium         0.0\n  39913       1 Z    chromium         0.0\n  43036       1 Z    chrome_crashpad  0.0\n  43038       1 Z    chromium         0.0\n  43039       1 Z    chromium         0.0\n  45406       1 Z    chrome_crashpad  0.0\n  45408       1 Z    chromium         0.0\n  45409       1 Z    chromium         0.0\n  47377       1 Z    chrome_crashpad  0.0\n  47379       1 Z    chromium         0.0\n  47380       1 Z    chromium         0.0\n  49394       1 Z    chrome_crashpad  0.0\n  49396       1 Z    chromium         0.0\n  49397       1 Z    chromium         0.0\n  49419       1 Z    chromium         0.9\n  51432       1 Z    chrome_crashpad  0.0\n  51434       1 Z    chromium         0.0\n  51435       1 Z    chromium         0.0\n  53357       1 Z    chrome_crashpad  0.0\n  53359       1 Z    chromium         0.0\n  53360       1 Z    chromium         0.0\n  55616     477 Ss   codex-linux-san  0.0\n  55618   55616 S    bwrap            0.0\n  55619   55618 Ss   codex            0.0\n  55620   55619 S    python3          1.9\n  55623   55620 R    ps               0.0\n",
+  "known_idle_test_bridges": [
+    {
+      "pid": 1270,
+      "state": "S",
+      "cpu_ticks_delta": 0,
+      "observation_seconds": 1
+    },
+    {
+      "pid": 1363,
+      "state": "S",
+      "cpu_ticks_delta": 0,
+      "observation_seconds": 1
+    },
+    {
+      "pid": 8964,
+      "state": "S",
+      "cpu_ticks_delta": 0,
+      "observation_seconds": 1
+    }
+  ],
+  "idle_bridge_note": "主代理確認1270/1363/8964分別是18839/18840/18841測試服務之待命bridge；無browser及requests；一秒CPU tick核對為零後保留",
+  "unexpected_active_processes": [],
+  "pass": true
+}

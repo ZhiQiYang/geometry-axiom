@@ -1,0 +1,37 @@
+{
+  "sourceShaBefore": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "sourceShaAfter": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "statusBefore": "",
+  "statusAfter": "",
+  "sourceHashesBefore": {
+    "tests/test_assembly_mutation_check.py": "e53d1fa41f202657202a7019dbe5ae32ce5fcec085ee09706b2f9c1f63091649",
+    "tests/assembly_mutation_check.py": "230010fa6346d08e12207bd47fcfec9ca53535c70d486e1ff05c98d20abc53b9",
+    "tests/run_all.py": "fb9e5f1a6952ec87b9c472aee4aadf55131a0b270c850177607319b50c183bcf",
+    "tests/run_all.expected.json": "847d2494c1c701b80f83ebc1a48cac84ce06b66eabff11f14f86584d10093cc6"
+  },
+  "sourceHashesAfter": {
+    "tests/test_assembly_mutation_check.py": "e53d1fa41f202657202a7019dbe5ae32ce5fcec085ee09706b2f9c1f63091649",
+    "tests/assembly_mutation_check.py": "230010fa6346d08e12207bd47fcfec9ca53535c70d486e1ff05c98d20abc53b9",
+    "tests/run_all.py": "fb9e5f1a6952ec87b9c472aee4aadf55131a0b270c850177607319b50c183bcf",
+    "tests/run_all.expected.json": "847d2494c1c701b80f83ebc1a48cac84ce06b66eabff11f14f86584d10093cc6"
+  },
+  "sourcesUnchanged": true,
+  "cases": [
+    {
+      "name": "plain",
+      "exitCode": 1,
+      "expectedExit": 1,
+      "expectedMatched": true,
+      "seconds": 7.169169765000333
+    },
+    {
+      "name": "subreaper",
+      "exitCode": 0,
+      "expectedExit": 0,
+      "expectedMatched": true,
+      "seconds": 2.138101968999763
+    }
+  ],
+  "scope": "只驗單一無編譯測試的環境假說，不代表完整 native 通過；原 native fail 保留。",
+  "allExpectedMatched": true
+}

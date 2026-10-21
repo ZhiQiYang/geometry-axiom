@@ -1,0 +1,12 @@
+# 公理:R10 的對照組:同一個拆分,但孔整個落在 v∈[1000,1200],
+# 完全在切線 v=1500 的下方 → 頂點都屬於下片,孔就跟著下片走 → 接受。
+# 跟 _ax_r10_hole_straddles_cut.scene 只差孔的位置,其餘一字不改。
+surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000
+surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
+surface 4 origin 0    3000 0    u +z v +x outline 0,0 2500,0 2500,4000 0,4000
+surface 5 origin 0    0    0    u +z v +y outline 0,0 2500,0 2500,3000 0,3000 hole 800,1000 1200,1000 1200,1200 800,1200
+surface 6 origin 4000 0    0    u +y v +z outline 0,0 3000,0 3000,2500 0,2500
+space 1 boundary 1 2 3 4 5 6
+column 1 in 1 at 0 1500 size 400 400
+apply-proj 5 c1

@@ -1,0 +1,127 @@
+{
+  "schema": "geo261-browser-L2-preparation/1",
+  "observedHead": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+  "formalL2Sha": null,
+  "executedBuildOrBrowser": false,
+  "wrapperChanged": false,
+  "wrappers": [
+    {
+      "path": "/workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py",
+      "bytes": 21346,
+      "sha256": "327e926ae0e88fff4b04e68afdee9fb12e9dd2dff0a839fb340603a9fc20121a",
+      "astParsed": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py",
+      "bytes": 4590,
+      "sha256": "4f7935f1c516d118c06272a5ed96c4c5909cdbe124a4e746870b0001ce490181",
+      "astParsed": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/browser-five-preparation/run_browser_five.py",
+      "bytes": 37261,
+      "sha256": "4ffefe74d503506f2c99d3064fac4359c4aa5324f77ccf5e3ae44bdf6ec994f2",
+      "astParsed": true
+    },
+    {
+      "path": "/workspace/geo261-evidence/browser-five-preparation/launch_browser_five.py",
+      "bytes": 5858,
+      "sha256": "479cdcd9f1c1c03ab203aff6fc5f0f9fddb3c70d779507777c7c1d903762f124",
+      "astParsed": true
+    }
+  ],
+  "observedSourceBindings": [
+    {
+      "path": "package.json",
+      "bytes": 431,
+      "sha256": "0e988df793c4e351d95a46f059ef12ad0e2aa76b98f82cf7b0e684d88f47a344",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": ".github/workflows/integration-tests.yml",
+      "bytes": 6854,
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "geometry-web/start_local.py",
+      "bytes": 7031,
+      "sha256": "31137d9635da7c62d34a72d1f4cadcf60e2240f33aff418ddba28bea55c5ce29",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "geometry-web/cdp_test.js",
+      "bytes": 514850,
+      "sha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "geometry-web/documents_browser_test.js",
+      "bytes": 23966,
+      "sha256": "0ab5cec0dd5f497e9501c68dce6970658f1d39c1f8a2c62183744b47b5826886",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "geometry-web/space_model_test.js",
+      "bytes": 152226,
+      "sha256": "f1a0129baddedfe8aa56f0e5e1d8d960e5d6ee77c117acfd8740390cd832cfad",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "geometry-web/cdp_sections.golden.json",
+      "bytes": 1322,
+      "sha256": "0ba98dde2ee69d342eb7efc76b86b858e17835437d6e63290fecb546ff72f041",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "geometry-web/space_test_floor.js",
+      "bytes": 2511,
+      "sha256": "9fb7c364efe9037a1264b01ca7c4a38c40c9cad173238e05259e80ee4d8a35a2",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "tests/_bridge.py",
+      "bytes": 12285,
+      "sha256": "dddeaec72eaed7e6255bb6c37013180b68364dc65f2f5aa4edd6f9fab6456423",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "tests/test_scenario_verify.py",
+      "bytes": 48001,
+      "sha256": "98ff244713d9d0d1f1d787978360f17435e2001585aa4bb42c06e2c5b64464ad",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "tests/test_local_launcher.py",
+      "bytes": 14265,
+      "sha256": "c97a606cebe9e77a8975166935c69fa6558d04ad79178e623110502919f863e7",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "tests/test_binaries.py",
+      "bytes": 35023,
+      "sha256": "6051352eedbb6e924b166207343290f82ec8d9ea06e46b77a4edb3a86ef9b3fc",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "tests/run_all.py",
+      "bytes": 65687,
+      "sha256": "fb9e5f1a6952ec87b9c472aee4aadf55131a0b270c850177607319b50c183bcf",
+      "matchesObservedGitBlob": true
+    },
+    {
+      "path": "tests/binaries.py",
+      "bytes": 33058,
+      "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651",
+      "matchesObservedGitBlob": true
+    }
+  ],
+  "unchangedFromHistoricalLForListedEntrypoints": true,
+  "browserRoot": "/workspace/geometry-axiom",
+  "browserBinaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3",
+  "nativeRoot": null,
+  "planSha256": "7432b49c24526a6871cc46f190ddc14e2e0bf804334129bda13b9a99e1a22465",
+  "planBytes": 11428,
+  "validationExitCode": 0,
+  "限制": "L2 尚未產生；只有唯讀 AST/hash/Git binding，非產品驗收。root 決定 native 初建與 binary index 完成後，原 canvas wrapper 私有 runtime 正常建置，兩 heavy 並行，不預置binary。"
+}

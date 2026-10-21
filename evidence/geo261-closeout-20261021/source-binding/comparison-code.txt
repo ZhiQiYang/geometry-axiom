@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+"""核對 A→歷史 L1 的精確 Git 差異與既有快照；不執行測試或更動帳本。"""
+import argparse
+from collections import Counter
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+sys.dont_write_bytecode = True
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def require(value, detail):
+    if not value:
+        raise RuntimeError(detail)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", required=True)
+    parser.add_argument("--snapshot-a", required=True)
+    parser.add_argument("--snapshot-l", required=True)
+    parser.add_argument("--executed-ledger", required=True)
+    args = parser.parse_args()
+    root = Path(args.root).resolve()
+    a_path, l_path = Path(args.snapshot_a), Path(args.snapshot_l)
+    a, l = json.loads(a_path.read_bytes()), json.loads(l_path.read_bytes())
+    A = "7159530c0e494d3211e6ab1764eb691137211707"
+    L = "cd4ac98f44174729fb3a2f1c291c6c258c9a239a"
+    ledger_path = "tests/mutants_results.json"
+    expected_hash = "1b8fc87eb83ac5fd5af0589aa48795aa868380d9d5ae35b4c1a8bf7af2175c7d"
+    commands = []
+
+    def git(*argv):
+        command = ["git", "-C", str(root), *argv]
+        result = subprocess.run(command, capture_output=True, check=False)
+        commands.append({"argv": command, "exitCode": result.returncode,
+                         "stdout": result.stdout.decode(), "stderr": result.stderr.decode()})
+        require(result.returncode == 0, "唯讀 Git 指令失敗")
+        return result.stdout
+
+    require(git("rev-parse", "HEAD").decode().strip() == L, "實際 checkout 不是 L")
+    require(not git("status", "--porcelain", "--untracked-files=all"), "工作樹有非忽略的變更")
+    parent = git("show", "-s", "--format=%P", L).decode().strip()
+    require(parent == A, "L 的唯一父節點不是 A")
+    changed = git("diff", "--name-status", A, L).decode().splitlines()
+    require(changed == ["M\t" + ledger_path], "A→L 不是精確只修改帳本")
+    git("diff", "--exit-code", A, L, "--", ".", ":!" + ledger_path)
+    require(a["headBefore"] == a["headAfter"] == A, "A 快照來源錯誤")
+    require(l["headBefore"] == l["headAfter"] == L, "L 快照來源錯誤")
+    require(a["snapshotToolRawSha256"] == l["snapshotToolRawSha256"], "兩次快照工具不同")
+    require(set(a["files"]) == set(l["files"]), "快照檔案集合不同")
+    changed_files = [p for p in a["files"] if a["files"][p] != l["files"][p]]
+    require(changed_files == [ledger_path], "已選來源聯集除帳本外還有更動")
+    require(a["mutation"] == l["mutation"], "mutation 來源或裁判綁定改變")
+    require(a["architecture"] == l["architecture"], "架構綁定改變")
+    blob = subprocess.check_output(["git", "-C", str(root), "show", L + ":" + ledger_path])
+    local = (root / ledger_path).read_bytes()
+    executed = Path(args.executed_ledger).read_bytes()
+    require(blob == local == executed and sha(blob) == expected_hash, "L 帳本不是 A 實跑輸出的原 bytes")
+    records = json.loads(blob)
+    definitions = a["mutation"]["definitions"]
+    require(set(records) == set(definitions), "帳本 ID 與正式定義集合不同")
+    sys.path.insert(0, str(root / "tests"))
+    import mutate as mt
+    require(Path(mt.__file__).resolve() == root / "tests/mutate.py", "正式工具來源錯誤")
+    require(mt.tool_hash() == a["mutation"]["toolSha256"], "工具內容不符快照")
+    executions, retired = [], []
+    for name, row in records.items():
+        spec = definitions[name]
+        require(row["record_sha256"] == mt.record_hash(row), "帳本 checksum 不符：" + name)
+        require(row["mutant_sha256"] == spec["mutantSha256"], "突變定義不符：" + name)
+        require(row["source_file"] == spec["sourceFile"], "目標來源不符：" + name)
+        if spec["retired"]:
+            require(row["verdict"] == "retired" and "execution" not in row, "retired 紀錄不符：" + name)
+            retired.append(name)
+            continue
+        require(row["source_sha256"] == a["files"][row["source_file"]]["lfSha256"], "來源 hash 不符：" + name)
+        require(row["closure_sha256"] == a["mutation"]["coreAndBridgeIncludeClosureSha256"], "closure 不符：" + name)
+        require(row["oracle_sha256"] == spec["oracleSha256"], "oracle 不符：" + name)
+        require(row["execution"]["head"] == A, "實跑 HEAD 不是 A：" + name)
+        require(row["execution"]["tool_sha256"] == a["mutation"]["toolSha256"], "實跑工具不符：" + name)
+        executions.append(name)
+    require(len(executions) == a["mutation"]["expectedExecutionCount"] == 75, "execution 數不符")
+    require(git("rev-parse", "HEAD").decode().strip() == L, "讀取期間 HEAD 改變")
+    require(not git("status", "--porcelain", "--untracked-files=all"), "讀取期間工作樹改變")
+    git("diff", "--check")
+    result = {
+        "schema": "geo261-A-L-binding/1", "sourceA": A, "ledgerL": L, "parentOfL": parent,
+        "state": "歷史 L1，未採用為最終驗收來源；主代理確認未推送。預設 CC 的正式 check 已回 1。",
+        "scope": "已指定的 A/L Git 差異、快照聯集與帳本來源綁定；沒有執行正式 --check 或任何測試。",
+        "snapshotA": {"path": a_path.name, "rawSha256": sha(a_path.read_bytes())},
+        "snapshotL": {"path": l_path.name, "rawSha256": sha(l_path.read_bytes())},
+        "comparisonToolRawSha256": sha(Path(__file__).read_bytes()),
+        "snapshotToolRawSha256": a["snapshotToolRawSha256"],
+        "onlyChangedPath": ledger_path, "allOtherTrackedPathsUnchanged": True,
+        "snapshotPaths": len(a["files"]), "snapshotSameBytesPaths": len(a["files"]) - len(changed_files),
+        "snapshotChangedPaths": changed_files, "mutationBindingUnchanged": True,
+        "architectureInputCount": len(a["architecture"]["inputs"]), "architectureBindingUnchanged": True,
+        "architectureMetadataUnchanged": a["architecture"]["artifactPaths"],
+        "ledger": {"rawSha256": sha(blob), "bytes": len(blob), "exactExecutedOutputBytes": True,
+                   "executedOutputPath": str(Path(args.executed_ledger).resolve()),
+                   "records": len(records), "counts": dict(Counter(r["verdict"] for r in records.values())),
+                   "executionCount": len(executions), "executionHeads": {A: len(executions)},
+                   "retiredWithoutExecution": sorted(retired), "allRecordChecksumsValid": True},
+        "gitCommands": commands,
+        "notClaimed": ["在 L1 重產帳本", "L1 為最終來源", "正式 --check 通過", "編譯指令符合預設 cc",
+                       "L1 整合清單已通過", "E 已驗證", "已向遠端查詢"]}
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

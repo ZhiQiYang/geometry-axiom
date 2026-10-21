@@ -1,0 +1,11 @@
+{
+  "性質": "明示的無損 base64 資料，非 gmon 原 bytes；外部原件保留。",
+  "source": "/workspace/geo261-evidence/p189-diagnostic-L-43f85313c324.iffezuqv/run01/gmon.out",
+  "raw_bytes": 443741,
+  "raw_sha256": "d4eed782006af13b3c554055ebfc45e31498c9928705942c57cf9660a6474e95",
+  "encoded_file": "gmon.out.base64",
+  "encoded_bytes": 591657,
+  "encoded_sha256": "aafea1fa8abc716e39b0ab58b35a4e8c453432733a0148b91e2b4261be1b6559",
+  "decode_matches_original": true,
+  "decode_command": "base64 --decode gmon.out.base64 > /tmp/geo261-L-gmon.out"
+}

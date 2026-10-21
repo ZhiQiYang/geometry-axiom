@@ -1,0 +1,15 @@
+{
+  "recordedUTC": "2026-10-20T21:50:30.289717+00:00",
+  "argv": [
+    "git",
+    "ls-remote",
+    "--heads",
+    "origin",
+    "refs/heads/architecture/geo261-integration-20261016",
+    "refs/heads/codex/geo261-closeout-20261021"
+  ],
+  "exitCode": 0,
+  "stdout": "7dae5f21c7ca401e660450d437e60ba566218da8\trefs/heads/architecture/geo261-integration-20261016\n7159530c0e494d3211e6ab1764eb691137211707\trefs/heads/codex/geo261-closeout-20261021\n",
+  "stderr": "",
+  "限制": "僅以 Git transport 核對兩個公開 ref；不呼叫 GitHub API，不聲稱已讀取新候選的 PR 審查。"
+}

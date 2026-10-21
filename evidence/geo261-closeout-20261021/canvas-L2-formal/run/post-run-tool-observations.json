@@ -1,0 +1,22 @@
+{
+  "recordedUTC": "2026-10-21T04:56:55.864115+00:00",
+  "type": "實際工具回傳逐欄轉錄，非transport自動日誌",
+  "operations": [
+    {
+      "command": "python3 -B /workspace/geo261-evidence/browser-L2-preparation/capture-canvas-native.txt after",
+      "chunk_id": "bf41c7",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -B /workspace/geo261-evidence/browser-L2-preparation/capture-canvas-artifacts.txt",
+      "chunk_id": "7967fc",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -B /workspace/geo261-evidence/canvas-L2-formal-249571fe/final-verification-code.txt",
+      "chunk_id": "7ade19",
+      "exit_code": 0
+    }
+  ],
+  "reportSha256": "cb4f414392d5299b101a0b0b0ace8ac26e84376e56b6c5c7a9132e715e57f8c4"
+}

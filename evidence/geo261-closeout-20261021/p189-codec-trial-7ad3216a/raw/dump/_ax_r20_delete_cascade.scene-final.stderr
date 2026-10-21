@@ -1,0 +1,10 @@
+/workspace/geo261-p189-codec-src-hkfhzrv3/scenes/repo-_ax_r20_delete_cascade.scene:10: 刪除後 World 失效，已回滾
+I8a preview 1: invalid; cannot apply
+ timber 90 center 10 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 91 center 2990 -> 2990 length 4000 -> 4000
+  surface 1 origin [0,2980,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2980,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 1 center 500 -> 0 length 2960 -> 0 (unavailable/deleted)
+  surface 1 origin [514,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> unavailable
+ timber 1 I19/I22 expected: each stop has strictly higher cut priority, subject to boundary exceptions; actual: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC
+/workspace/geo261-p189-codec-src-hkfhzrv3/scenes/repo-_ax_r20_delete_cascade.scene:10: I8a: impact preview required (World unchanged); line 10: 刪除後 World 失效，已回滾

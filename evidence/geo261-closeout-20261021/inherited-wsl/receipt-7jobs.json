@@ -1,0 +1,747 @@
+{
+ "schema": "wsl-ci-receipt/1",
+ "head_sha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+ "label": null,
+ "generated_at": "2026-10-20T22:10:05+08:00",
+ "source_repo": "/mnt/d/geometry-axiom",
+ "runner_dir": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci",
+ "runroot": "/root/ga-ci/runs/7dae5f21-20261020-205206",
+ "workflow_sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+ "workflow_jobs": [
+  "native",
+  "assembly",
+  "documents",
+  "grid",
+  "canvas",
+  "space",
+  "timber"
+ ],
+ "max_parallel": 2,
+ "tools": {
+  "chrome": "Google Chrome 153.0.8010.47",
+  "node": "v24.21.0",
+  "npm": "11.19.0",
+  "python": "Python 3.12.3",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "git": "git version 2.43.0",
+  "os": "Ubuntu 24.04.5 LTS",
+  "kernel": "6.6.114.1-microsoft-standard-WSL2",
+  "cpus": 12,
+  "mem_mb": 7559,
+  "cjk_fonts": "30"
+ },
+ "environment_quiesce": {
+  "waited_seconds": 0.0,
+  "exclusive_at_start": true,
+  "still_busy_system": [],
+  "still_busy_foreign": [],
+  "foreign_activity_seen": [],
+  "loadavg": [
+   "2.57",
+   "1.10",
+   "0.41"
+  ],
+  "vm_uptime_seconds": 108
+ },
+ "warm_up": {
+  "chrome_1": {
+   "rc": 0,
+   "seconds": 51.3
+  },
+  "chrome_2": {
+   "rc": 0,
+   "seconds": 1.0
+  },
+  "gcc": {
+   "rc": 0,
+   "seconds": 1.6
+  },
+  "node": {
+   "rc": 0,
+   "seconds": 6.1
+  }
+ },
+ "exclusivity": {
+  "at_start": {
+   "waited_seconds": 0.0,
+   "exclusive_at_start": true,
+   "still_busy_system": [],
+   "still_busy_foreign": [],
+   "foreign_activity_seen": [],
+   "loadavg": [
+    "2.57",
+    "1.10",
+    "0.41"
+   ],
+   "vm_uptime_seconds": 108
+  },
+  "during_run": {
+   "samples": 297,
+   "foreign_processes_seen_during_run": {},
+   "exclusive_during_run": true,
+   "max_loadavg_1min_sampled": 5.11
+  }
+ },
+ "rules": {
+  "timeout": "hard watchdog = yml timeout-minutes x 3.0; exceeding the CI limit is flagged, not red; hitting the watchdog (exit 124) is red",
+  "flaky": "native only: failing suites re-run alone in the same clone, max 2 attempts; excused only if a re-run passes AND every failed test id also failed in a MAIN baseline receipt",
+  "exclusive": "wait (bounded) for compile/test processes of other sessions before starting; sample every 15 s during the run; both recorded"
+ },
+ "rule2_baseline_sources": [
+  "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/5cc1ffa1-attempt3-red-1-flaky-test",
+  "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/5cc1ffa1"
+ ],
+ "rule2_baseline_notes": [],
+ "verdict": "red: canvas",
+ "jobs": {
+  "native": {
+   "verdict": "green",
+   "why": [],
+   "exit_code": 0,
+   "status": "completed",
+   "seconds": 4530.0,
+   "counts": {
+    "total": 5176,
+    "passed": 5175,
+    "failed": 0,
+    "skipped": 1
+   },
+   "ci_timeout_minutes": 35,
+   "over_ci_timeout": true,
+   "seconds_first_run": 4529.9,
+   "ci_limit_ratio": 2.16,
+   "watchdog_factor": 3.0,
+   "steps": [
+    {
+     "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+     "outcome": "replaced",
+     "exit_code": null,
+     "seconds": null,
+     "note": "clean local clone at the SHA under test"
+    },
+    {
+     "name": "Build and run non-browser suites",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 4529.8,
+     "note": null
+    }
+   ],
+   "notes": [
+    "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+   ],
+   "leftover_processes_killed": [],
+   "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/native/job.log",
+   "result_json": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/native/result.json",
+   "run_all_exit": 0,
+   "run_all_meaning": "完整非瀏覽器登錄測試：全部 suite 都跑了、數量與 expected 相符、沒有 fail、沒有環境問題、沒有可避免的 skip（具名允許清單不算）；必要正式 owner／瀏覽器整合另驗",
+   "failed_suites": [],
+   "failure_details": [],
+   "unittest_fail_lines": [],
+   "expected_comparison": {
+    "available": true,
+    "expected_suites": 224,
+    "expected_items": 5176,
+    "ran_suites": 224,
+    "mismatches": [],
+    "missing_in_log": [],
+    "extra_in_log": [],
+    "equal": true
+   },
+   "skips": [
+    {
+     "suite": "py:test_gdi_contract",
+     "skipped": "1",
+     "note": "skip：requires compiled Windows GDI contract harness ×1（其中 1 個在具名允許清單，平台固有，不計入 exit 3）；日誌 /tmp/geometry-tests/run_all-logs/py_test_gdi_contract.log",
+     "allowed": true,
+     "allowed_entries": [
+      "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources"
+     ]
+    }
+   ],
+   "allowed_skips_in_sha": [
+    {
+     "suite": "py:test_gdi_contract",
+     "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+     "platforms": [
+      "posix"
+     ]
+    },
+    {
+     "suite": "py:test_cli_args",
+     "test": "test_cli_args.CliArgs.test_svg_write_failure_is_reported_without_unlinking_device",
+     "platforms": [
+      "nt"
+     ]
+    },
+    {
+     "suite": "py:test_assembly_mutation_check",
+     "test": "test_assembly_mutation_check.AssemblyMutationCheck.test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left",
+     "platforms": [
+      "nt"
+     ]
+    }
+   ],
+   "counts_note": "from run_all.py table row \"合計\"; browser gates are separate jobs"
+  },
+  "assembly": {
+   "verdict": "green",
+   "why": [],
+   "exit_code": 0,
+   "status": "completed",
+   "seconds": 389.7,
+   "counts": {
+    "total": 150,
+    "passed": 150,
+    "failed": 0,
+    "skipped": null
+   },
+   "ci_timeout_minutes": 15,
+   "over_ci_timeout": false,
+   "seconds_first_run": 387.7,
+   "ci_limit_ratio": 0.43,
+   "watchdog_factor": 3.0,
+   "steps": [
+    {
+     "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+     "outcome": "replaced",
+     "exit_code": null,
+     "seconds": null,
+     "note": "clean local clone at the SHA under test"
+    },
+    {
+     "name": "Build current native executables",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 101.7,
+     "note": null
+    },
+    {
+     "name": "Install Chinese fonts for visual verification",
+     "outcome": "skipped-already-installed",
+     "exit_code": null,
+     "seconds": null,
+     "note": null
+    },
+    {
+     "name": "Run actual browser regression group",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 285.8,
+     "note": null
+    },
+    {
+     "name": "Preserve canvas wait trace",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve assembly authoring screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve grid trial screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve document reader screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    }
+   ],
+   "notes": [
+    "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+   ],
+   "leftover_processes_killed": [
+    "16334 /opt/google/chrome/chrome_crashpad_handler --monitor-self --monitor-self-annotation=ptype=crashpad-handler --database=/r",
+    "16336 /opt/google/chrome/chrome_crashpad_handler --no-periodic-tasks --monitor-self-annotation=ptype=crashpad-handler --databa"
+   ],
+   "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/assembly/job.log",
+   "result_json": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/assembly/result.json",
+   "kind": "cdp",
+   "completed": true,
+   "scope": "partial",
+   "skipped_groups": [],
+   "golden": "not compared (partial mode)",
+   "failed_assertion_lines": [],
+   "counts_note": "assertion counts from the test's own *_RESULT line; skipped is not counted by this harness (see skipped_groups)"
+  },
+  "documents": {
+   "verdict": "green",
+   "why": [],
+   "exit_code": 0,
+   "status": "completed",
+   "seconds": 120.1,
+   "counts": {
+    "total": 47,
+    "passed": 47,
+    "failed": 0,
+    "skipped": null
+   },
+   "ci_timeout_minutes": 10,
+   "over_ci_timeout": false,
+   "seconds_first_run": 120.1,
+   "ci_limit_ratio": 0.2,
+   "watchdog_factor": 3.0,
+   "steps": [
+    {
+     "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+     "outcome": "replaced",
+     "exit_code": null,
+     "seconds": null,
+     "note": "clean local clone at the SHA under test"
+    },
+    {
+     "name": "Build current native executables",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 97.1,
+     "note": null
+    },
+    {
+     "name": "Install Chinese fonts for visual verification",
+     "outcome": "skipped-already-installed",
+     "exit_code": null,
+     "seconds": null,
+     "note": null
+    },
+    {
+     "name": "Run actual browser regression group",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 22.8,
+     "note": null
+    },
+    {
+     "name": "Preserve canvas wait trace",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve assembly authoring screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve grid trial screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve document reader screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    }
+   ],
+   "notes": [
+    "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+   ],
+   "leftover_processes_killed": [],
+   "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/documents/job.log",
+   "result_json": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/documents/result.json",
+   "kind": "documents",
+   "completed": true,
+   "scope": null,
+   "skipped_groups": null,
+   "golden": null,
+   "failed_assertion_lines": [],
+   "counts_note": "assertion counts from the test's own *_RESULT line; skipped is not counted by this harness (see skipped_groups)"
+  },
+  "grid": {
+   "verdict": "green",
+   "why": [],
+   "exit_code": 0,
+   "status": "completed",
+   "seconds": 744.6,
+   "counts": {
+    "total": 350,
+    "passed": 350,
+    "failed": 0,
+    "skipped": null
+   },
+   "ci_timeout_minutes": 15,
+   "over_ci_timeout": false,
+   "seconds_first_run": 742.5,
+   "ci_limit_ratio": 0.82,
+   "watchdog_factor": 3.0,
+   "steps": [
+    {
+     "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+     "outcome": "replaced",
+     "exit_code": null,
+     "seconds": null,
+     "note": "clean local clone at the SHA under test"
+    },
+    {
+     "name": "Build current native executables",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 103.0,
+     "note": null
+    },
+    {
+     "name": "Install Chinese fonts for visual verification",
+     "outcome": "skipped-already-installed",
+     "exit_code": null,
+     "seconds": null,
+     "note": null
+    },
+    {
+     "name": "Run actual browser regression group",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 639.4,
+     "note": null
+    },
+    {
+     "name": "Preserve canvas wait trace",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve assembly authoring screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve grid trial screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve document reader screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    }
+   ],
+   "notes": [
+    "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+   ],
+   "leftover_processes_killed": [
+    "26683 /opt/google/chrome/chrome_crashpad_handler --monitor-self --monitor-self-annotation=ptype=crashpad-handler --database=/r",
+    "26685 /opt/google/chrome/chrome_crashpad_handler --no-periodic-tasks --monitor-self-annotation=ptype=crashpad-handler --databa"
+   ],
+   "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/grid/job.log",
+   "result_json": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/grid/result.json",
+   "kind": "cdp",
+   "completed": true,
+   "scope": "partial",
+   "skipped_groups": [],
+   "golden": "not compared (partial mode)",
+   "failed_assertion_lines": [],
+   "counts_note": "assertion counts from the test's own *_RESULT line; skipped is not counted by this harness (see skipped_groups)"
+  },
+  "canvas": {
+   "verdict": "red",
+   "why": [
+    "exit code 1"
+   ],
+   "exit_code": 1,
+   "status": "completed",
+   "seconds": 1210.6,
+   "counts": {
+    "total": 901,
+    "passed": 900,
+    "failed": 1,
+    "skipped": null
+   },
+   "ci_timeout_minutes": 35,
+   "over_ci_timeout": false,
+   "seconds_first_run": 1210.6,
+   "ci_limit_ratio": 0.58,
+   "watchdog_factor": 3.0,
+   "steps": [
+    {
+     "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+     "outcome": "replaced",
+     "exit_code": null,
+     "seconds": null,
+     "note": "clean local clone at the SHA under test"
+    },
+    {
+     "name": "Build current native executables",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 97.1,
+     "note": null
+    },
+    {
+     "name": "Install Chinese fonts for visual verification",
+     "outcome": "skipped-already-installed",
+     "exit_code": null,
+     "seconds": null,
+     "note": null
+    },
+    {
+     "name": "Run actual browser regression group",
+     "outcome": "failure",
+     "exit_code": 1,
+     "seconds": 1113.3,
+     "note": null
+    },
+    {
+     "name": "Preserve canvas wait trace",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve assembly authoring screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve grid trial screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve document reader screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    }
+   ],
+   "notes": [
+    "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+   ],
+   "leftover_processes_killed": [],
+   "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/canvas/job.log",
+   "result_json": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/canvas/result.json",
+   "kind": "cdp",
+   "completed": false,
+   "scope": "full",
+   "skipped_groups": [],
+   "golden": "not compared (run did not complete)",
+   "failed_assertion_lines": [
+    "P52-5 真實放置的 cross 足跡(核心) = 預示帶範圍 1987..2014 ✗ {}"
+   ],
+   "fatal": "Audit timeout: !oc.busy && !document.querySelector('#datum-manager')?.dataset.busy",
+   "sections_failed": {
+    "P52": 1
+   },
+   "counts_note": "assertion counts from the test's own *_RESULT line; skipped is not counted by this harness (see skipped_groups)"
+  },
+  "space": {
+   "verdict": "green",
+   "why": [],
+   "exit_code": 0,
+   "status": "completed",
+   "seconds": 516.4,
+   "counts": {
+    "total": 242,
+    "passed": 242,
+    "failed": 0,
+    "skipped": null
+   },
+   "ci_timeout_minutes": 15,
+   "over_ci_timeout": false,
+   "seconds_first_run": 516.4,
+   "ci_limit_ratio": 0.57,
+   "watchdog_factor": 3.0,
+   "steps": [
+    {
+     "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+     "outcome": "replaced",
+     "exit_code": null,
+     "seconds": null,
+     "note": "clean local clone at the SHA under test"
+    },
+    {
+     "name": "Build current native executables",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 147.7,
+     "note": null
+    },
+    {
+     "name": "Install Chinese fonts for visual verification",
+     "outcome": "skipped-already-installed",
+     "exit_code": null,
+     "seconds": null,
+     "note": null
+    },
+    {
+     "name": "Run actual browser regression group",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 368.5,
+     "note": null
+    },
+    {
+     "name": "Preserve canvas wait trace",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve assembly authoring screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve grid trial screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve document reader screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    }
+   ],
+   "notes": [
+    "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+   ],
+   "leftover_processes_killed": [],
+   "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/space/job.log",
+   "result_json": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/space/result.json",
+   "kind": "space",
+   "completed": true,
+   "scope": "full-space-suite",
+   "skipped_groups": [
+    "timber-material",
+    "timber-source-guards"
+   ],
+   "golden": null,
+   "failed_assertion_lines": [],
+   "counts_note": "assertion counts from the test's own *_RESULT line; skipped is not counted by this harness (see skipped_groups)"
+  },
+  "timber": {
+   "verdict": "green",
+   "why": [],
+   "exit_code": 0,
+   "status": "completed",
+   "seconds": 293.1,
+   "counts": {
+    "total": 79,
+    "passed": 79,
+    "failed": 0,
+    "skipped": null
+   },
+   "ci_timeout_minutes": 20,
+   "over_ci_timeout": false,
+   "seconds_first_run": 293.1,
+   "ci_limit_ratio": 0.24,
+   "watchdog_factor": 3.0,
+   "steps": [
+    {
+     "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+     "outcome": "replaced",
+     "exit_code": null,
+     "seconds": null,
+     "note": "clean local clone at the SHA under test"
+    },
+    {
+     "name": "Build current native executables",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 107.1,
+     "note": null
+    },
+    {
+     "name": "Install Chinese fonts for visual verification",
+     "outcome": "skipped-already-installed",
+     "exit_code": null,
+     "seconds": null,
+     "note": null
+    },
+    {
+     "name": "Run actual browser regression group",
+     "outcome": "success",
+     "exit_code": 0,
+     "seconds": 185.8,
+     "note": null
+    },
+    {
+     "name": "Preserve canvas wait trace",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve assembly authoring screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve grid trial screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    },
+    {
+     "name": "Preserve document reader screenshots",
+     "outcome": "skipped",
+     "exit_code": null,
+     "seconds": null,
+     "note": "artifact upload not applicable outside GitHub"
+    }
+   ],
+   "notes": [
+    "PATH has a per-job shim dir with python -> /usr/bin/python3 (GitHub's ubuntu image has python-is-python3, this WSL distro does not; tests spawn plain 'python')"
+   ],
+   "leftover_processes_killed": [],
+   "log": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/timber/job.log",
+   "result_json": "/mnt/c/Users/Yang/AppData/Local/Temp/claude/D--geometry-axiom/f46787ac-6918-4891-81a1-b3d8a9aa653c/scratchpad/wsl-ci/7dae5f21/timber/result.json",
+   "kind": "space",
+   "completed": true,
+   "scope": "partial",
+   "skipped_groups": [
+    "space-height-library",
+    "projection-lifecycle",
+    "projection-placement",
+    "space-flow",
+    "projection-close"
+   ],
+   "golden": null,
+   "failed_assertion_lines": [],
+   "counts_note": "assertion counts from the test's own *_RESULT line; skipped is not counted by this harness (see skipped_groups)"
+  }
+ },
+ "note": null,
+ "wall_seconds_this_invocation": 4620.4
+}

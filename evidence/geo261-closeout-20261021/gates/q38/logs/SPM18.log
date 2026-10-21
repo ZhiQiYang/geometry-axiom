@@ -1,0 +1,21 @@
+test_all_cardinal_frames_and_four_host_directions_are_exact (tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact) ... FAIL
+
+======================================================================
+FAIL: test_all_cardinal_frames_and_four_host_directions_are_exact (tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates/tests/test_section_profile_native.py", line 703, in test_all_cardinal_frames_and_four_host_directions_are_exact
+    self.assertEqual(expected,state["frame"]["N"],"R38: N must equal the run direction d ("+where+")")
+AssertionError: Lists differ: [1, 0, 0] != [0, 1, 0]
+
+First differing element 0:
+1
+0
+
+- [1, 0, 0]
++ [0, 1, 0] : R38: N must equal the run direction d (host U=+X V=+Y dir=+u up=+Z)
+
+----------------------------------------------------------------------
+Ran 1 test in 0.157s
+
+FAILED (failures=1)

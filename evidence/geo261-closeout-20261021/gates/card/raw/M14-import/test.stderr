@@ -1,0 +1,14 @@
+test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION (tests.test_grid_card_reference.GridCardReference.test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION) ... FAIL
+
+======================================================================
+FAIL: test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION (tests.test_grid_card_reference.GridCardReference.test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates/tests/test_grid_card_reference.py", line 383, in test_CR22_IMPORT_REUSED_KEY_GUARD_IMPORT_ISOLATION
+    self.assertEqual(11, self.read()['state']['parameters'][-1]['id'], 'IMPORT_ISOLATION same name receives independent id')
+AssertionError: 11 != 9 : IMPORT_ISOLATION same name receives independent id
+
+----------------------------------------------------------------------
+Ran 1 test in 0.159s
+
+FAILED (failures=1)

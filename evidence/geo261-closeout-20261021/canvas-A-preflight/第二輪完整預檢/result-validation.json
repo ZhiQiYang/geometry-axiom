@@ -1,0 +1,22 @@
+{
+  "checks": {
+    "schema": true,
+    "scope": true,
+    "identity": true,
+    "completed": true,
+    "zeroFailures": true,
+    "noSkipped": true,
+    "golden": true,
+    "exactSections": true,
+    "exactTotal": true,
+    "noUnexpectedException": true,
+    "exceptionAccounting": true,
+    "browserExit": true
+  },
+  "passed": true,
+  "expectedExceptionLines": [
+    "[EXPECTED EXCEPTION] Error: fb-auto-probe"
+  ],
+  "uncaughtBrowserExceptions": 1,
+  "goldenSha256": "0ba98dde2ee69d342eb7efc76b86b858e17835437d6e63290fecb546ff72f041"
+}

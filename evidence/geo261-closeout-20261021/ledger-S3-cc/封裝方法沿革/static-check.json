@@ -1,0 +1,16 @@
+{
+  "checkedUTC": "2026-10-21T05:10:08.564266+00:00",
+  "astPassed": true,
+  "scriptSha256": "8af69c4f90ac1ec7317c2fbcf951ba5bb4ecc6e17ff871feac750d873ec84c05",
+  "historicalScriptSha256": "57fc3ecf7ac90d3c70d358d64114296d69eb8fd8ae1d2346ed6e5a32d674f4b4",
+  "negativeCommand": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/ledger-S3-bundle-preparation/bundle_ledger.py"
+  ],
+  "negativeExitCode": 2,
+  "packageExecuted": false,
+  "productExecuted": false,
+  "fakeSourceOrLedgerShaProvided": false,
+  "備註": "尚無L3，僅檢語法與必要參數早拒絕；真正封包前須提供實際SHA/publication與真碼收據。"
+}

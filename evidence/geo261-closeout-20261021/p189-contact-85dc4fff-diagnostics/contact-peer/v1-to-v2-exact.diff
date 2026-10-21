@@ -1,0 +1,54 @@
+--- v1/geometry-templates/woodworking/native/contact_world.c
++++ v2/geometry-templates/woodworking/native/contact_world.c
+@@ -100,7 +100,7 @@
+             }
+         }
+         if(duplicate){memmove(out+i,out+i+1,(count-i-1)*sizeof *out);
+-            if(cached)memmove(orders+i-member_begin,orders+i+1-member_begin,(count-i-1)*sizeof *orders);
++            if(cached)memmove(orders+(i-member_begin),orders+(i+1-member_begin),(count-i-1)*sizeof *orders);
+             --count;
+         }else ++i;
+     }
+--- v1/tests/geo261_contact_world_harness.c
++++ v2/tests/geo261_contact_world_harness.c
+@@ -81,7 +81,10 @@
+     for(size_t c=0;c<8;++c){many[c]=square((uint32_t)(80+c),(GeoCoord)c*1000,0,100);many[c].hole_count=8;for(size_t h=0;h<8;++h){WoodBoundaryRegion cut=square(0,(GeoCoord)c*1000+10+(GeoCoord)h*10,20,4);many[c].holes[h]=cut.outline;}w.regions[c]=&many[c];}
+     for(size_t i=0;i<64;++i){members[i]=member((uint32_t)(100+i),WOOD_MEMBER_ROLE_PRIMARY,2);facts[i]=fact(&members[i],64-i,false,(GeoRect2){10000+(GeoCoord)i*10,200,10002+(GeoCoord)i*10,210});}
+     w.region_count=8;w.members=facts;w.member_count=64;memset(full,0x5a,sizeof full);untouched=full[272];n=wood_contact_collect_stops(&w,false,NULL,full,WOOD_CONTACT_FACE_CAPACITY);
+-    CHECK("all-eight-components-holes-and-sixty-four-members",n==272&&full[126].edge_index==225&&full[142].hole_index==63&&full[142].edge_index==1&&full[142].fixed==7084&&full[144].timber_id==163&&full[270].timber_id==100&&!memcmp(&full[272],&untouched,sizeof untouched));return 0;
++    CHECK("all-eight-components-holes-and-sixty-four-members",n==272&&full[126].edge_index==225&&full[142].hole_index==63&&full[142].edge_index==1&&full[142].fixed==7084&&full[144].timber_id==163&&full[270].timber_id==100&&!memcmp(&full[272],&untouched,sizeof untouched));
++    w.member_count=1;facts[0].footprint=(GeoRect2){0,20,10,30};memset(full,0x5a,sizeof full);untouched=full[146];
++    n=wood_contact_collect_stops(&w,false,NULL,full,WOOD_CONTACT_FACE_CAPACITY);
++    CHECK("large-boundary-prefix-removal-keeps-member-key",n==145&&face(full+144,WOOD_STOP_MEMBER_SIDE,0,100,-1,1,WOOD_STOP_FIXED,10,20,30)&&!memcmp(full+146,&untouched,sizeof untouched));return 0;
+ }
+ static int order_keys(void)
+ {
+@@ -104,6 +107,16 @@
+         face(out,WOOD_STOP_MEMBER_SIDE,0,42,-1,1,WOOD_STOP_FIXED,20,20,30)&&
+         face(out+1,WOOD_STOP_MEMBER_SIDE,0,41,-1,0,WOOD_STOP_FIXED,0,20,30)&&
+         face(out+2,WOOD_STOP_MEMBER_SIDE,0,41,-1,1,WOOD_STOP_FIXED,10,20,30));
++    m[2].placed=true;f[2].footprint=f[0].footprint;
++    for(unsigned mode=0;mode<4;++mode){
++        m[0].placed=mode!=0;f[0].placement_id=mode==1?8:7;f[0].footprint_valid=mode!=2;
++        n=wood_contact_collect_stops(&w,false,mode==3?&m[0]:NULL,out,12);
++        CHECK("duplicate-min-order-includes-ineligible-facts",n==3&&
++            face(out,WOOD_STOP_MEMBER_SIDE,0,42,-1,1,WOOD_STOP_FIXED,20,20,30)&&
++            face(out+1,WOOD_STOP_MEMBER_SIDE,0,41,-1,0,WOOD_STOP_FIXED,0,20,30)&&
++            face(out+2,WOOD_STOP_MEMBER_SIDE,0,41,-1,1,WOOD_STOP_FIXED,10,20,30));
++    }
++    m[0].placed=true;f[0].placement_id=7;f[0].footprint_valid=true;m[2].placed=false;
+     /* 刪除 42 的左面後，43 的左面仍應被 42 的右面覆蓋。 */
+     f[3]=fact(&m[3],7,false,(GeoRect2){20,20,30,30});w.member_count=4;
+     n=wood_contact_collect_stops(&w,false,NULL,out,12);
+--- v1/tests/test_geo261_wood_contact_world.py
++++ v2/tests/test_geo261_wood_contact_world.py
+@@ -90,7 +90,8 @@
+     ("extension-end", "||ext_end[end]", "", "ends", "self-boundary-extension-end-exempt"),
+     ("duplicate-last-order", "key.last=fact->order;", "if(key.last==UINT64_MAX)key.last=fact->order;", "order-keys", "duplicate-last-order-includes-all-facts"),
+     ("duplicate-min-order", "if(fact->order<key.minimum)key.minimum=fact->order;", "key.minimum=fact->order;", "order-keys", "duplicate-min-order-can-shadow-earlier-output"),
+-    ("dedup-key-move", "if(cached)memmove(orders+i-member_begin,orders+i+1-member_begin,(count-i-1)*sizeof *orders);", "", "order-keys", "dedup-removal-keeps-following-face-order"),
++    ("duplicate-min-unplaced", "if(fact->order<key.minimum)key.minimum=fact->order;", "if(fact->member->placed&&fact->order<key.minimum)key.minimum=fact->order;", "order-keys", "duplicate-min-order-includes-ineligible-facts"),
++    ("dedup-key-move", "if(cached)memmove(orders+(i-member_begin),orders+(i+1-member_begin),(count-i-1)*sizeof *orders);", "", "order-keys", "dedup-removal-keeps-following-face-order"),
+ )
+ 
+ 

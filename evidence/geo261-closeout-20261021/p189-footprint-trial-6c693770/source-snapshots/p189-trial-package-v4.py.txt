@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+"""候選既有原件的外部唯讀核對與封裝器；不執行產品／測量工具。"""
+import argparse
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+
+p=argparse.ArgumentParser();p.add_argument('--out',required=True);p.add_argument('--bundle-name',required=True)
+p.add_argument('--prepare-tool',required=True);p.add_argument('--branch',required=True);p.add_argument('--negative-control',action='store_true');a=p.parse_args()
+E=Path('/workspace/geo261-evidence');O=Path(a.out);B=E/'final-bundle'/a.bundle_name
+assert B.parent==E/'final-bundle' and not B.exists()
+def sha(b):return hashlib.sha256(b).hexdigest()
+def read(n):return json.loads((O/n).read_bytes())
+def save(path,value):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    with path.open('x') as f:json.dump(value,f,ensure_ascii=False,indent=2);f.write('\n')
+prep=read('prepare-receipt.json');W=Path(prep['work']);receipt=read('receipt.json')
+samples=read('samples.json');eq=read('dump-equivalence.json');controls=read('validator-selftest.json');phases=read('phase-receipts.json')
+code=receipt['exit_code']
+assert code in (0,1) and receipt['pass']==(code==0)
+assert int((O/'check.exit-code').read_text())==int((O/'supervisor.exit-code').read_text())==code
+wait_receipt=read('top-level-wait-receipt.json')
+wait_code=wait_receipt.get('actual_tool_exit_code',wait_receipt.get('actual_exit_code'))
+assert wait_code==code
+assert len(samples)==36 and len(eq['scenes'])==175 and eq['complete']
+assert len(controls)==16 and sum(c['expected_pass'] is True for c in controls)==2
+rows=samples+[r for s in eq['scenes'] for r in s['sides'].values()]
+for row in rows:
+    data=(O/row['stdout_file']).read_bytes()
+    assert sha(data)==row['stdout_sha256'] and len(data)==row['stdout_bytes']
+    assert (O/row['stderr_file']).exists()
+for row in samples:
+    assert row['status']=='ok' and row['ok'] is True and row['returncode']==0
+    assert row['sha']==receipt['commits'][row['side']]
+for scene in eq['scenes']:
+    payload={side:(O/r['stdout_file']).read_bytes() for side,r in scene['sides'].items()}
+    assert (payload['base']==payload['final'])==scene['identical']
+    assert (len(set(payload.values()))==1)==scene['all_three_identical']
+for phase in phases:
+    for stream in ('stdout','stderr'):
+        assert sha((O/(phase['phase']+'.'+stream)).read_bytes())==phase[stream+'_sha256']
+for build in read('build-receipt.json'):
+    assert sha((W/build['sha'][:8]/'bridge').read_bytes())==build['binary_sha256']
+outputs=[O/r[key] for r in rows for key in ('stdout_file','stderr_file')]
+assert len(set(outputs))==1122
+summary={'checked_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'classification':('精確撤回性能負控制，非候選可合驗收' if a.negative_control else '候選性能預檢，非可合驗收'),
+ 'candidate_sha':receipt['commits']['final'],'branch':a.branch,'samples':36,'equivalence_scenes':175,
+ 'generated_scenes':sum(s['generated'] for s in eq['scenes']),'fixed_base_scenes':sum(not s['generated'] for s in eq['scenes']),
+ 'observed_all_three_identical':sum(s['all_three_identical'] for s in eq['scenes']),
+ 'formal_dump_criterion':'4生成三方有效載入及stdout相同；171固定場景base/final，main差異只記錄。',
+ 'controls':16,'positive_controls':2,'negative_controls':14,'raw_output_count':len(outputs),'raw_output_bytes':sum(x.stat().st_size for x in outputs),
+ 'all_stdout_bytes_and_hashes_match':True,'all_phase_stream_hashes_match':True,'all_binary_hashes_match_build_receipts':True,
+ 'check_exit_code':code,'top_level_wait_exit_code':code,'receipt_sha256':sha((O/'receipt.json').read_bytes()),
+ 'phase_times_and_exits':[{k:r[k] for k in ('phase','seconds','exit_code','started_utc','finished_utc')} for r in phases],
+ 'median_summary':receipt['timing']['summary'],'validation_exit_code':0}
+save(O/'post-run-readonly-validation.json',summary)
+B.mkdir();mapping=[]
+def copy(src,rel,role):
+    dst=B/rel;dst.parent.mkdir(parents=True,exist_ok=True);raw=src.read_bytes()
+    with dst.open('xb') as f:f.write(raw)
+    os.chmod(dst,0o644);assert dst.read_bytes()==raw
+    mapping.append({'source':str(src),'published':str(rel),'bytes':len(raw),'sha256':sha(raw),'role':role,'original_bytes':True})
+for src in sorted(O.rglob('*')):
+    if src.is_file():copy(src,Path('raw')/src.relative_to(O),'原預檢收據與輸出')
+generated={s['scene'] for s in eq['scenes'] if s['generated']}
+for src in sorted((W/'scenes').glob('*.scene')):
+    copy(src,Path('inputs')/src.name,'生成場景原bytes' if src.name in generated else '固定base場景原bytes')
+copy(W/'calib/f3-00.scene',Path('inputs/calib/f3-00.scene'),'固定handoff校準原bytes')
+for src in [Path(a.prepare_tool),E/'p189-final-L-phase-supervisor.py',Path(__file__)]:
+    copy(src,Path('source-snapshots')/(src.name+'.txt'),'外部實跑輔助原bytes純文字來源快照；非產品入口／正式部署工具')
+save(B/'artifact-mapping.json',{'files':mapping,'runner_source':'43f85313c32410ac01406ab585846bbacafea278:geometry-core/domain-decoupling/closeout-tools/p189_verify.py',
+ 'runner_sha256':receipt['runner_sha256'],'snapshot_policy':'0644純文字來源快照，外部.py原件保留；不新增active工具，ELF與來源tar留外部。'})
+title=('精確撤回負控制：killed' if code else '精確撤回負控制：survived') if a.negative_control else ('仍失敗' if code else '四點通過，但尚非完整可合驗收')
+lines=['# 候選性能預檢：'+title,'',f"分支 `{a.branch}`，真 SHA `{prep['candidate_sha']}`，parent `{prep['expected_parent']}`。來源與parent及L的完整patch、變更檔blob及closure索引均在raw；原P177次數／時機、工具與≤2門檻不變。",'',
+ f"generator selftest、16控制（2正／14負）、三方build、equivalence、timing均真0；**check／supervisor／頂層exec session真wait均{code}**。timing0只是收樣完成。175場景與36樣本均完整。",'',
+ '| N | main median 秒 | base median 秒 | 候選 median 秒 | 候選/main | ≤2 |','|---|---:|---:|---:|---:|---|']
+for row in receipt['timing']['summary']:
+    m=row['median_seconds'];lines.append(f"| {row['n']} | {m['main']} | {m['base']} | {m['final']} | {row['final_main_ratio']} | {'通過' if row['threshold_pass'] else '失敗'} |")
+lines+=['',f"原工具正式判準為4生成場景三方有效載入且stdout相同；171固定base場景要求base/final相同，main差異僅記錄。本輪額外觀測{summary['observed_all_three_identical']}/175三方完整stdout相同，逐bytes核對旗標成立，不能把觀測誇為全部正式判準。",'',
+ '固定main adbaebf9c73ea6801d7b4d5214e4b846b132923b、base 3e600772076465fc65a26ac09055028301c0fb0b；三方全新archive與gcc -std=c11 -O2建置，16MiB、900秒timeout、移除PYTHONOPTIMIZE／無Python -O。每N三輪正反交錯共36，不挑樣或重抽；t0仍在Popen返回後。完整精確argv與真耗時在raw/phase-receipts.json。','',
+ '1122個完整stdout/stderr保留；inputs的4生成／171固定場景已分別標示。來源快照是外部實跑輔助原bytes的0644純文字資料，非新增active入口。正式runner仍是已登記原工具，source／binaryhash完整記錄，ELF與來源tar不入包。','',
+ '未驗候選完整突變帳本、架構產物及全部正式關卡；此預檢不能宣稱可合。配對各輪依序執行，環境仍可能波動；不能以跨輪median聲稱精確改善幅度。最不確定的是單輪量測對後續正式環境的代表性及效能餘裕；四點綠仍不替代完整驗收。既有正式L與先前候選原件保持不變。','',
+ '本輪屬正向／精確撤回配對驗收；兩輪各只有一套固定36樣本，負控是否killed依外層配對收據判定，不把歷史紅燈冒充本輪負控。SHA256SUMS涵蓋除自身外全部檔案；copycheck真碼與來源映射另存外部。','']
+(B/'README.md').write_text('\n'.join(lines))
+files=sorted(f for f in B.rglob('*') if f.is_file());manifest=''.join(sha(f.read_bytes())+'  '+str(f.relative_to(B))+'\n' for f in files)
+(B/'SHA256SUMS').write_text(manifest)
+for line in manifest.splitlines():
+    h,r=line.split('  ',1);assert sha((B/r).read_bytes())==h
+allfiles=sorted(f for f in B.rglob('*') if f.is_file());assert not any(f.suffix=='.py' for f in allfiles)
+result={**summary,'bundle':str(B),'file_count':len(allfiles),'bytes':sum(f.stat().st_size for f in allfiles),'copied_original_count':len(mapping),
+ 'manifest_entries':len(files),'manifest_sha256':sha((B/'SHA256SUMS').read_bytes()),'all_copy_bytes_equal':True,'all_manifest_hashes_match':True,
+ 'active_python_files':[],'packager_sha256':sha(Path(__file__).read_bytes())}
+save(E/(a.bundle_name+'-copy-check.json'),result)
+print(json.dumps(result,ensure_ascii=False,indent=2))

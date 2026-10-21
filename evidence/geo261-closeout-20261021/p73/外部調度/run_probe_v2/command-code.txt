@@ -1,0 +1,49 @@
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+directory = Path(__file__).resolve().parent
+mode = sys.argv[1]
+variant = sys.argv[2]
+control = sys.argv[3] if len(sys.argv) > 3 else 'none'
+if mode not in ('minimal', 'full', 'transition') or variant not in ('none', 'candidate', 'withdraw-guard', 'withdraw-metrics', 'withdraw-all') or control not in ('none', 'callback'):
+    raise SystemExit('模式、來源變異或控制值錯誤')
+case = 'v2-' + mode + '-' + variant + '-' + control
+root = Path('/workspace/geometry-axiom')
+probe = directory / 'p73_probe-v2.cjs'
+environment = {
+    'GEOMETRY_TEST_URL': 'http://127.0.0.1:18843/',
+    'GEOMETRY_FEEDBACK_DIR': '/tmp/geo261-feedback-p73',
+    'XDG_CACHE_HOME': '/tmp/geo261-xdg-p73',
+    'GEOMETRY_CHROME': '/usr/bin/chromium',
+    'GEOMETRY_CHROME_FLAGS': '--no-sandbox',
+    'GEOMETRY_CDP_PORT': '9343',
+    'P73_MODE': mode,
+    'P73_APP_VARIANT': variant,
+    'P73_SCREENSHOT_DIR': str(directory / (case + '-screens')),
+    'GEOMETRY_UIUX_SCREENSHOT_DIR': str(directory / (case + '-screens')),
+}
+if control == 'callback':
+    environment['P73_AFTER_EMPTY_SYNC'] = '1'
+command = ['node', str(probe), str(root)]
+receipt = {
+    'command': command, 'cwd': str(root), 'environment': environment,
+    'sourceSha': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(),
+    'probeSha256': hashlib.sha256(probe.read_bytes()).hexdigest(),
+    'startedUtc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+}
+start = time.monotonic()
+with (directory / (case + '.log')).open('x') as output:
+    run = subprocess.run(command, cwd=root, env={**os.environ, **environment}, stdout=output, stderr=subprocess.STDOUT)
+receipt.update(exitCode=run.returncode, elapsedSeconds=time.monotonic()-start,
+               finishedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+               headAfter=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(),
+               statusAfter=subprocess.check_output(['git', 'status', '--short'], cwd=root, text=True).strip())
+(directory / (case + '.receipt.json')).write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n')
+print(json.dumps(receipt, ensure_ascii=False))
+raise SystemExit(run.returncode)

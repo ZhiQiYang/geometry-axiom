@@ -1,0 +1,11 @@
+"""唯讀封包接受器啟動器，真 wait 碼與完整 streams 落盤。"""
+from pathlib import Path
+import datetime,hashlib,json,subprocess,sys,time
+root=Path('/workspace/geo261-evidence');prefix='canvas-L3-bundle-peer'
+code=root/(prefix+'-code.txt');argv=[sys.executable,'-B',str(code)]
+start=time.monotonic();utc=datetime.datetime.now(datetime.timezone.utc).isoformat()
+with (root/(prefix+'.stdout')).open('xb') as out,(root/(prefix+'.stderr')).open('xb') as err:
+    child=subprocess.Popen(argv,cwd='/workspace',stdin=subprocess.DEVNULL,stdout=out,stderr=err);rc=child.wait()
+(root/(prefix+'.exit-code')).write_text(str(rc)+'\n')
+r={'argv':argv,'cwd':'/workspace','startedUTC':utc,'finishedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'seconds':time.monotonic()-start,'pid':child.pid,'observedReturncode':rc,'codeSha256':hashlib.sha256(code.read_bytes()).hexdigest(),'streams':{suffix:{'bytes':(root/(prefix+suffix)).stat().st_size,'sha256':hashlib.sha256((root/(prefix+suffix)).read_bytes()).hexdigest()} for suffix in ['.stdout','.stderr']},'scope':'唯讀凍結封包，沒有執行產品或重測'}
+(root/(prefix+'-execution.json')).write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n');print(json.dumps(r,ensure_ascii=False));raise SystemExit(rc)

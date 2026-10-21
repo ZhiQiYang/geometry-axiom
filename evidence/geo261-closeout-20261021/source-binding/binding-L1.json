@@ -1,0 +1,175 @@
+{
+  "schema": "geo261-A-L-binding/1",
+  "sourceA": "7159530c0e494d3211e6ab1764eb691137211707",
+  "ledgerL": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+  "parentOfL": "7159530c0e494d3211e6ab1764eb691137211707",
+  "state": "歷史 L1，未採用為最終驗收來源；主代理確認未推送。預設 CC 的正式 check 已回 1。",
+  "scope": "已指定的 A/L Git 差異、快照聯集與帳本來源綁定；沒有執行正式 --check 或任何測試。",
+  "snapshotA": {
+    "path": "snapshot-A.json",
+    "rawSha256": "10c9476ee9ffa456929a4b334691d8762dc28a071a8c51c3ba8490931e7de214"
+  },
+  "snapshotL": {
+    "path": "snapshot-L.json",
+    "rawSha256": "5a825be01cbb89d36ff20965ce314f59bd5a175c821788f75a936bf4e41d1b5e"
+  },
+  "comparisonToolRawSha256": "929e575d3daa4abd39cf9ac498a143d4c869b7a89a2dfbddae351b94e8567c9c",
+  "snapshotToolRawSha256": "0640270f504fc0f12398cf15dda289f45dda188b9fa42cf3e32b862ee76a9a48",
+  "onlyChangedPath": "tests/mutants_results.json",
+  "allOtherTrackedPathsUnchanged": true,
+  "snapshotPaths": 1010,
+  "snapshotSameBytesPaths": 1009,
+  "snapshotChangedPaths": [
+    "tests/mutants_results.json"
+  ],
+  "mutationBindingUnchanged": true,
+  "architectureInputCount": 611,
+  "architectureBindingUnchanged": true,
+  "architectureMetadataUnchanged": [
+    "geometry-core/domain-decoupling/product-architecture.json",
+    "geometry-core/domain-decoupling/product-architecture-scan.json",
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json"
+  ],
+  "ledger": {
+    "rawSha256": "1b8fc87eb83ac5fd5af0589aa48795aa868380d9d5ae35b4c1a8bf7af2175c7d",
+    "bytes": 5170404,
+    "exactExecutedOutputBytes": true,
+    "executedOutputPath": "/workspace/geo261-evidence/ledger-7159530c0e49.y0lrsfpu/mutants_results.json",
+    "records": 78,
+    "counts": {
+      "killed": 70,
+      "equivalent": 4,
+      "crashed": 1,
+      "retired": 3
+    },
+    "executionCount": 75,
+    "executionHeads": {
+      "7159530c0e494d3211e6ab1764eb691137211707": 75
+    },
+    "retiredWithoutExecution": [
+      "M35",
+      "M51",
+      "M55"
+    ],
+    "allRecordChecksumsValid": true
+  },
+  "gitCommands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "-s",
+        "--format=%P",
+        "cd4ac98f44174729fb3a2f1c291c6c258c9a239a"
+      ],
+      "exitCode": 0,
+      "stdout": "7159530c0e494d3211e6ab1764eb691137211707\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "diff",
+        "--name-status",
+        "7159530c0e494d3211e6ab1764eb691137211707",
+        "cd4ac98f44174729fb3a2f1c291c6c258c9a239a"
+      ],
+      "exitCode": 0,
+      "stdout": "M\ttests/mutants_results.json\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "diff",
+        "--exit-code",
+        "7159530c0e494d3211e6ab1764eb691137211707",
+        "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+        "--",
+        ".",
+        ":!tests/mutants_results.json"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "notClaimed": [
+    "在 L1 重產帳本",
+    "L1 為最終來源",
+    "正式 --check 通過",
+    "編譯指令符合預設 cc",
+    "L1 整合清單已通過",
+    "E 已驗證",
+    "已向遠端查詢"
+  ]
+}

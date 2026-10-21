@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""封存已授權的 S2 預檢與精確九件外層收據，不改既有子包。"""
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import stat
+
+BASE = Path('/workspace/geo261-evidence')
+SOURCE = BASE / 'bundle-preflight-after-S2'
+DEST = BASE / 'final-bundle/交付預檢-S2'
+COPYCHECK = BASE / 'final-bundle/交付預檢-S2-copy-check.json'
+assert not DEST.exists() and not COPYCHECK.exists()
+observed = json.loads((SOURCE / 'outer-receipt-observations-v2.json').read_bytes())
+missing = [row for row in observed if not row['identicalPayloadInCurrentBundle']]
+assert len(missing) == 5
+assert sum(row['sameStemExitFile'] is not None for row in missing) == 4
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+DEST.mkdir()
+entries = []
+def copy(path, relative, expected_sha=None):
+    info = path.lstat()
+    assert stat.S_ISREG(info.st_mode) and not path.is_symlink()
+    assert path.suffix != '.py' and '.git' not in path.parts and 'ignore-model' not in path.parts
+    raw = path.read_bytes()
+    if expected_sha is not None:
+        assert sha(raw) == expected_sha
+    target = DEST / relative
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with target.open('xb') as stream:
+        stream.write(raw)
+    target.chmod(0o644)
+    assert target.read_bytes() == raw
+    entries.append({'path': relative, 'sourcePath': str(path), 'bytes': len(raw), 'sha256': sha(raw), 'rawBytesPreserved': True})
+for path in sorted(SOURCE.rglob('*')):
+    relative = path.relative_to(SOURCE)
+    if 'ignore-model' in relative.parts or '.git' in relative.parts or path.suffix == '.py':
+        continue
+    if path.is_file():
+        copy(path, '預檢原件/' + relative.as_posix())
+for row in missing:
+    source = Path(row['sourcePath'])
+    copy(source, '外層收據補件/' + source.name, row['sha256'])
+    if row['sameStemExitFile']:
+        source = Path(row['sameStemExitFile'])
+        copy(source, '外層收據補件/' + source.name, row['exitSha256'])
+# 本封裝方法原 bytes 以文字保存；正式工具未新增或改動。
+method_raw = Path(__file__).read_bytes()
+(DEST / '封裝方法-code.txt').write_bytes(method_raw)
+entries.append({'path': '封裝方法-code.txt', 'sourcePath': str(Path(__file__)), 'bytes': len(method_raw),
+                'sha256': sha(method_raw), 'rawBytesPreserved': True, 'renamedToNonExecutableText': True})
+readme = (
+    '# S2 交付預檢與外層收據補件\n\n'
+    '本包只補齊已存在的五份 JSON 與四份具名退出碼，並保留一次有限預檢的原件、更正與限制；'
+    '沒有修改主 repo、舊子包或其 manifest，沒有產最終總索引，也不代表 L2／E2 驗收完成。\n\n'
+    '外層收據補件包含 cc ledger publication-check、P-189 final-L／codec／contact packaging，'
+    '以及本輪 architecture-S2 包裝收據。前四份各有真 0 退出碼原件；architecture 包裝收據沒有獨立同 stem 碼檔，沒有補造。'
+    'GCC 歷史 publication-check 及具名退出碼早已存在於 ledger-A-gcc/integration，未重複當成缺件。\n\n'
+    '預檢讀取時 19,540 檔／208,687,311 bytes。40 份清單、21,333 筆引用的 hash／提供的 bytes 相符，'
+    '沒有禁用類型／magic／symlink／執行權限問題；原定 ignore 三行模型使全部路徑可收錄。'
+    '第一次預檢因將 #300 的原件索引誤套為全包 exact set 回 1；首次外層核對因同名判缺而將已改名收錄 GCC 原件誤列缺件回 1。'
+    '兩次真碼與原稿均保留，後續只讀判讀／hash 分類為 0；沒有重跑整包或改寫舊結果。\n\n'
+    '所有原件 bytes 保持不變；ignore-model/、其 .git 與任何 .py 均排除。方法只以 code.txt 保存，無執行權限。'
+    '本包來源索引排除自身，copy-check 另在總根的交付預檢-S2-copy-check.json，不能誤當最終 artifact-index。\n')
+(DEST / 'README.md').write_text(readme)
+raw = (DEST / 'README.md').read_bytes()
+entries.append({'path': 'README.md', 'sourcePath': '本次封裝說明', 'bytes': len(raw), 'sha256': sha(raw), 'rawBytesPreserved': False})
+index = {'schema': 1, 'scope': '有限預檢及九件外層原件追加；非最終 E2 驗收', 'selfExcluded': '來源索引.json',
+         'entries': sorted(entries, key=lambda row: row['path'])}
+(DEST / '來源索引.json').write_text(json.dumps(index, ensure_ascii=False, indent=2) + '\n')
+files = sorted(path for path in DEST.rglob('*') if path.is_file())
+assert {path.relative_to(DEST).as_posix() for path in files} == {row['path'] for row in entries} | {'來源索引.json'}
+for row in entries:
+    path = DEST / row['path']
+    assert path.stat().st_size == row['bytes'] and sha(path.read_bytes()) == row['sha256']
+    assert stat.S_ISREG(path.lstat().st_mode) and not path.is_symlink() and not path.stat().st_mode & 0o111
+assert not any(path.suffix == '.py' or '.git' in path.relative_to(DEST).parts or 'ignore-model' in path.relative_to(DEST).parts for path in files)
+result = {'createdUtc': datetime.now(timezone.utc).isoformat(), 'destination': str(DEST),
+          'fileCount': len(files), 'totalBytes': sum(path.stat().st_size for path in files),
+          'missingJsonReceiptsCopied': 5, 'actualExitCodeFilesCopied': 4,
+          'allCopiedOriginalBytesMatch': True, 'allIndexRowsMatch': True,
+          'indexSha256': sha((DEST / '來源索引.json').read_bytes()),
+          'excluded': ['ignore-model/', '.git/', '*.py'], 'existingFrozenBundlesModified': False,
+          'notFinalAcceptance': True, 'packagingCommand': ['python3', '-B', str(Path(__file__))]}
+with COPYCHECK.open('x') as stream:
+    json.dump(result, stream, ensure_ascii=False, indent=2)
+    stream.write('\n')
+print(json.dumps(result, ensure_ascii=False, indent=2))

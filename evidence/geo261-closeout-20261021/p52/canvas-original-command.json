@@ -1,0 +1,32 @@
+{
+  "說明": "原版完整 canvas 的命令與已觀測結束碼；不是完整通過收據。原始 CDP_RESULT 保留在 log。",
+  "branch": "codex/geo261-closeout-20261021",
+  "sourceSha": "7dae5f21c7ca401e660450d437e60ba566218da8",
+  "cwd": "/workspace/geometry-axiom",
+  "build": {"command": "npm run build", "exitCode": 0, "log": "build-final.log"},
+  "probe": {"command": "python3 geometry-web/runtime_version.py --probe 18839", "exitCode": 0, "log": "runtime-final.json"},
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18839/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-final",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "XDG_CACHE_HOME": "/tmp/geo261-xdg-final",
+    "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/geo261-grid-screens",
+    "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/geo261-document-screens"
+  },
+  "command": ["timeout", "2100", "node", "geometry-web/cdp_test.js"],
+  "exitCode": 1,
+  "log": "canvas-final-original.log",
+  "completed": false,
+  "passedAssertions": 1638,
+  "failedAssertions": 0,
+  "currentSection": "P72B",
+  "P52Assertions": 43,
+  "P68Assertions": 36,
+  "fatal": "P72B 重新載入後讀取 oc 時發生 ReferenceError: oc is not defined",
+  "限制": [
+    "本次初期與其他關卡並行，不能當成獨占效能量測。",
+    "未完成完整 canvas，沒有比對 golden，不能以零失敗斷言宣告通過。",
+    "此 Linux runner 未依 WSL 條件啟用 wait trace；封存工具結束碼 0，狀態 trace-disabled-for-this-runner。"
+  ]
+}

@@ -1,0 +1,417 @@
+{
+  "kind": "只讀來源核對，不是產品驗收",
+  "utc": "2026-10-20T22:50:13.169246+00:00",
+  "handoff": [
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/DESIGN.md",
+      "gitPath": "handoff/drafts/issue300/DESIGN.md",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 31786,
+      "sha256": "06f09369ece61f7f977a34cbfcaef28953da7e6b91f0e038a0b0f80c6f29dfdd",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/TESTS.md",
+      "gitPath": "handoff/drafts/issue300/TESTS.md",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 19489,
+      "sha256": "c727cb26bbcc596650dc364ef3ea72e594929fd8864de45b940dbbf2fb11196c",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/README.md",
+      "gitPath": "handoff/drafts/issue300/bench/README.md",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 16244,
+      "sha256": "8d83880aab16091e88272437b8985e08e7ec30987b39a30ab47d2646848acd72",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/bench.sh",
+      "gitPath": "handoff/drafts/issue300/bench/bench.sh",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 14460,
+      "sha256": "76f361556fbe6a04a42afaa6114069417509460084e384ce16b3fe83a71dfa1f",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/calib/f3-00.scene",
+      "gitPath": "handoff/drafts/issue300/bench/calib/f3-00.scene",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 16255,
+      "sha256": "35e24fb0a483ffd6fee8dd99f751edeb127418481aa717816af804cd218024b2",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/drive.py",
+      "gitPath": "handoff/drafts/issue300/bench/drive.py",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 36823,
+      "sha256": "34b6ccafaf07d4184f95cebd1fb462dea280f2d977b2e97c42db060e68078ca1",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/fit.py",
+      "gitPath": "handoff/drafts/issue300/bench/fit.py",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 26579,
+      "sha256": "6098027dab002b2fef4587f708c3f2194ee65982caaf340c6900be7342388b9d",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/gen_scene.py",
+      "gitPath": "handoff/drafts/issue300/bench/gen_scene.py",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/results/STATUS",
+      "gitPath": "handoff/drafts/issue300/bench/results/STATUS",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 19,
+      "sha256": "37ab9be176ed57b5c71d528bc836edd6a8257818a802e69677bbd1efe3ddfe12",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/results/bench.tsv",
+      "gitPath": "handoff/drafts/issue300/bench/results/bench.tsv",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 1062,
+      "sha256": "bd2b54264a5bf4841e220e4470be70365785e11eb048c5365a9146963bab8c3a",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/results/build-cap512.log",
+      "gitPath": "handoff/drafts/issue300/bench/results/build-cap512.log",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 35300,
+      "sha256": "b64a261865f43d03609749dd2e7d78e6d66aabe8b63c8dd110ae6055936659b9",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/results/build-cap64.log",
+      "gitPath": "handoff/drafts/issue300/bench/results/build-cap64.log",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 35300,
+      "sha256": "03384be2bd177acc9fa507f3b6e1196493013c83703e94f1310cb252d58658ee",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/bench/results/env.txt",
+      "gitPath": "handoff/drafts/issue300/bench/results/env.txt",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 530,
+      "sha256": "337bd6ecacebcc25ff71ed55857725581cdc47004ad47862bfc76f7fb36d87de",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/drafts/issue300/patch.diff",
+      "gitPath": "handoff/drafts/issue300/patch.diff",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 40803,
+      "sha256": "8cfaa00217914ff77c3341a91f241de9847f89431d0eedca53d2ffe29e9aeb17",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/HANDOFF.md",
+      "gitPath": "handoff/HANDOFF.md",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 11260,
+      "sha256": "6404126064a169e685b8774c447f96b3ebbdf02e3e1278042d7881ebfa5965c0",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/prompts/PROMPT-A-source-index.md",
+      "gitPath": "handoff/prompts/PROMPT-A-source-index.md",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 7850,
+      "sha256": "2f9b5b3550274602344d2ffc54d6161abb96a8c4e6ea443b02d92fb1f05b0216",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/prompts/PROMPT-B-load-residual.md",
+      "gitPath": "handoff/prompts/PROMPT-B-load-residual.md",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 8191,
+      "sha256": "6bba3f1caddf809e6b6563683f464653381c5c6f5572c5f4555211920d0eea3b",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/prompts/PROMPT-C-load-residual-fix.md",
+      "gitPath": "handoff/prompts/PROMPT-C-load-residual-fix.md",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 4401,
+      "sha256": "c6680d72804bd2d26c9c898f575ded40d3f49f558f9aa68b8a7b52b0235de04b",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/notes/provisional-decisions-log.md",
+      "gitPath": "handoff/notes/provisional-decisions-log.md",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 124204,
+      "sha256": "2be807fd1ebb9e3dc93a6d594373e592d19648290374b967ada5b7e0d8d8a3df",
+      "exactGitBlob": true
+    },
+    {
+      "path": "/workspace/geo261-handoff/handoff/notes/wsl-pending-after-game.md",
+      "gitPath": "handoff/notes/wsl-pending-after-game.md",
+      "source": "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "bytes": 21098,
+      "sha256": "beeb987291b8267a74d823971c6daf8604e65f817ca588e22023e6ea0013a120",
+      "exactGitBlob": true
+    }
+  ],
+  "productBlobs": [
+    {
+      "label": "main",
+      "source": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "path": "current_geometry.c",
+      "bytes": 482238,
+      "sha256": "a2d75fde92aaf036f9c2d2d8afc0c4a5224259db46eb38bb0d4a21e6d183f08d"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "current_geometry.c",
+      "bytes": 400284,
+      "sha256": "dc3fbfb14adde5078c36ab179936df88ba977b22bb341301cd30deafeeb97696"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "bytes": 9089,
+      "sha256": "fb961338710375da2c4eeb4b8af56f67bd1cf581067f91a48b356722646c30f8"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-core/kernel/source.c",
+      "bytes": 15939,
+      "sha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-templates/woodworking/native/document.h",
+      "bytes": 1413,
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-templates/woodworking/native/members.h",
+      "bytes": 2131,
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-templates/woodworking/native/contact_world.h",
+      "bytes": 2096,
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-templates/woodworking/native/cut_list.h",
+      "bytes": 682,
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-templates/woodworking/native/member_reference.h",
+      "bytes": 6430,
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-templates/woodworking/native/world_validation.c",
+      "bytes": 7503,
+      "sha256": "3a5d05ffdf45a142326f17b2173bda7c7cd157d9c32d8ea6e71a93b275a3c2fc"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-app/native/reference_sources.inc",
+      "bytes": 56687,
+      "sha256": "3695ab9844a80cf0041d2a6a67e2be96bf6ecbcd59709759d1add4822b70077c"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-app/native/world_validation.inc",
+      "bytes": 6012,
+      "sha256": "673bbab71f1dc6c59960dd3764c7c367223fc57ad2ef2dae0e842637d993eddc"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-core/references.inc",
+      "bytes": 62953,
+      "sha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "geometry-templates/woodworking/native/contact_sources.c",
+      "bytes": 11561,
+      "sha256": "ea0fa63d05f9abac1a11ac4f780a2f3a1e10f8aea502df1fa7e7eb1aa681f659"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "tests/test_geo261_native_kernel.py",
+      "bytes": 27740,
+      "sha256": "81518721f7bc1ed3f4c779ab32cd437dd225b2483b3e6358bc7a55930986d4c7"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "tests/test_geo261_wood_world_validation.py",
+      "bytes": 10490,
+      "sha256": "cce4d4e428e4d354534611c45196043afae6ff9af2c520a336a34212be544096"
+    },
+    {
+      "label": "A",
+      "source": "7159530c0e494d3211e6ab1764eb691137211707",
+      "path": "公理層.md",
+      "bytes": 321170,
+      "sha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "current_geometry.c",
+      "bytes": 400329,
+      "sha256": "bb42ac7b24f18ac1f08038838c0ea1c03bc41fe36530076031d4711104b7a483"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "bytes": 9089,
+      "sha256": "fb961338710375da2c4eeb4b8af56f67bd1cf581067f91a48b356722646c30f8"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-core/kernel/source.c",
+      "bytes": 15939,
+      "sha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-templates/woodworking/native/document.h",
+      "bytes": 1413,
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-templates/woodworking/native/members.h",
+      "bytes": 2131,
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-templates/woodworking/native/contact_world.h",
+      "bytes": 2096,
+      "sha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-templates/woodworking/native/cut_list.h",
+      "bytes": 682,
+      "sha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-templates/woodworking/native/member_reference.h",
+      "bytes": 6430,
+      "sha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-templates/woodworking/native/world_validation.c",
+      "bytes": 7503,
+      "sha256": "3a5d05ffdf45a142326f17b2173bda7c7cd157d9c32d8ea6e71a93b275a3c2fc"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-app/native/reference_sources.inc",
+      "bytes": 59634,
+      "sha256": "c739be7365ecdb576476e0edf571e935a4158b8a3cdb3e83581239f47621d5a4"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-app/native/world_validation.inc",
+      "bytes": 7897,
+      "sha256": "cf82cbe72e5a7dfb96d76cb2f63e1dba9dc6b694d69592391406f26117f8cda6"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-core/references.inc",
+      "bytes": 63717,
+      "sha256": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "geometry-templates/woodworking/native/contact_sources.c",
+      "bytes": 12554,
+      "sha256": "5792a3e8d9a467547f4ebfdcc88f7bab04f5c994382cdb51d5ad0b80a249b933"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "tests/test_geo261_native_kernel.py",
+      "bytes": 27740,
+      "sha256": "81518721f7bc1ed3f4c779ab32cd437dd225b2483b3e6358bc7a55930986d4c7"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "tests/test_geo261_wood_world_validation.py",
+      "bytes": 10490,
+      "sha256": "cce4d4e428e4d354534611c45196043afae6ff9af2c520a336a34212be544096"
+    },
+    {
+      "label": "#323",
+      "source": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+      "path": "公理層.md",
+      "bytes": 321170,
+      "sha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d"
+    }
+  ],
+  "externalDocuments": [
+    {
+      "path": "/workspace/geo261-evidence/issue300-bench-static-notes.md",
+      "bytes": 12946,
+      "sha256": "d565c902f54bdc8ca19e68ca30636ad0d41fbc67fd619669289e43b35e7a2b33"
+    },
+    {
+      "path": "/workspace/geo261-evidence/issue300-readonly-plan.md",
+      "bytes": 18469,
+      "sha256": "8081e0837884e9f3824efc21de6c4348bce1317956ccc63e8fb297cfcfe8d774"
+    }
+  ],
+  "limits": [
+    "未執行產品、生成器、benchmark、自測、測試、突變或編譯",
+    "沒有 #300 10-20 原留言；不補造舊 raw",
+    "固定 SHA 的 blob 核對不宣稱遠端 branch 最新狀態",
+    "交接 20261021 標籤與 runner UTC 原樣並列"
+  ]
+}

@@ -1,0 +1,787 @@
+{
+  "schema": "geo261-evidence-readonly-preflight/1",
+  "startedUTC": "2026-10-21T00:17:07.596828+00:00",
+  "finishedUTC": "2026-10-21T00:17:08.744513+00:00",
+  "scope": "/workspace/geo261-evidence/final-bundle",
+  "verifierSha256": "ffe3d3fe08ba3c51534b51724ae984e9c3a3774b02230e6d0f344f1bc4d897e3",
+  "fileCount": 5646,
+  "directoryCount": 691,
+  "bytes": 122638409,
+  "largestFiles": [
+    {
+      "path": "source-binding/ledger-L1-import/ledger-blob.stdout",
+      "bytes": 5170404
+    },
+    {
+      "path": "ledger-A-gcc/mutants_results.json",
+      "bytes": 5170404
+    },
+    {
+      "path": "ledger-A-cc/mutants_results.json",
+      "bytes": 5170287
+    },
+    {
+      "path": "source-binding-L/ledger-L-cc-import/ledger-blob.stdout",
+      "bytes": 5170287
+    },
+    {
+      "path": "ledger-A-cc/original-ledger.json",
+      "bytes": 5164117
+    },
+    {
+      "path": "source-binding-L/ledger-L-cc-import/A-ledger.stdout",
+      "bytes": 5164117
+    },
+    {
+      "path": "ledger-A-gcc/original-ledger.json",
+      "bytes": 5164117
+    },
+    {
+      "path": "p189/dump-equivalence.json",
+      "bytes": 1276041
+    },
+    {
+      "path": "canvas-L-formal/run/screens/ux_refinement/p74-new-undo-comparison.json",
+      "bytes": 1043113
+    },
+    {
+      "path": "canvas-A-preflight/第二輪完整預檢/screens/ux_refinement/p74-new-undo-comparison.json",
+      "bytes": 1043113
+    },
+    {
+      "path": "canvas-L-formal/run/screens/ux_refinement/p74-clear-undo-comparison.json",
+      "bytes": 1043112
+    },
+    {
+      "path": "canvas-A-preflight/第二輪完整預檢/screens/ux_refinement/p74-clear-undo-comparison.json",
+      "bytes": 1043112
+    }
+  ],
+  "extensionCounts": {
+    ".json": 1626,
+    ".md": 88,
+    ".log": 1318,
+    ".exit-code": 47,
+    ".stdout": 985,
+    ".stderr": 990,
+    "": 17,
+    ".tsv": 1,
+    ".scene": 5,
+    ".txt": 59,
+    ".jsonl": 6,
+    ".png": 460,
+    ".gcanvas": 26,
+    ".csv": 12,
+    ".patch": 5,
+    ".pdf": 1
+  },
+  "findings": {},
+  "nestedChecksumFileCount": 10,
+  "nestedChecksumEntriesChecked": 2718,
+  "nestedChecksumScopes": [
+    {
+      "index": "p189/SHA256SUMS",
+      "entries": 1151,
+      "extraFilesOutsideChecksum": 3,
+      "extraExamples": [
+        "p189/follow-up/後續剖析方向-靜態驗收.json",
+        "p189/follow-up/後續剖析方向.md",
+        "p189/follow-up/證據包唯讀審核.md"
+      ]
+    },
+    {
+      "index": "canvas-L-formal/SHA256SUMS",
+      "entries": 225,
+      "extraFilesOutsideChecksum": 0,
+      "extraExamples": []
+    },
+    {
+      "index": "ledger-A-cc/SHA256SUMS",
+      "entries": 303,
+      "extraFilesOutsideChecksum": 0,
+      "extraExamples": []
+    },
+    {
+      "index": "測試服務清理/P73-18843/SHA256SUMS",
+      "entries": 13,
+      "extraFilesOutsideChecksum": 0,
+      "extraExamples": []
+    },
+    {
+      "index": "p73/SHA256SUMS",
+      "entries": 182,
+      "extraFilesOutsideChecksum": 0,
+      "extraExamples": []
+    },
+    {
+      "index": "ledger-A-gcc/SHA256SUMS",
+      "entries": 276,
+      "extraFilesOutsideChecksum": 10,
+      "extraExamples": [
+        "ledger-A-gcc/integration/SHA256SUMS",
+        "ledger-A-gcc/integration/copy-receipt.json",
+        "ledger-A-gcc/integration/publication-check.exit-code",
+        "ledger-A-gcc/integration/publication-check.json",
+        "ledger-A-gcc/integration/publication-check.stderr",
+        "ledger-A-gcc/integration/publication-check.stdout",
+        "ledger-A-gcc/integration/補充說明.md",
+        "ledger-A-gcc/integration/複製後完整性.exit-code",
+        "ledger-A-gcc/integration/複製後完整性.stderr",
+        "ledger-A-gcc/integration/複製後完整性.stdout"
+      ]
+    },
+    {
+      "index": "ledger-A-gcc/integration/SHA256SUMS",
+      "entries": 9,
+      "extraFilesOutsideChecksum": 0,
+      "extraExamples": []
+    },
+    {
+      "index": "p52/SHA256SUMS",
+      "entries": 82,
+      "extraFilesOutsideChecksum": 0,
+      "extraExamples": []
+    },
+    {
+      "index": "browser-five-L-formal/SHA256SUMS",
+      "entries": 264,
+      "extraFilesOutsideChecksum": 0,
+      "extraExamples": []
+    },
+    {
+      "index": "canvas-A-preflight/SHA256SUMS",
+      "entries": 213,
+      "extraFilesOutsideChecksum": 0,
+      "extraExamples": []
+    }
+  ],
+  "nestedIndexRowsChecked": 3788,
+  "nestedIndexShapes": [
+    {
+      "index": "工具來源索引.json",
+      "type": "dict",
+      "keys": [
+        "說明",
+        "sourceSha",
+        "tools",
+        "verificationExitCode"
+      ]
+    },
+    {
+      "index": "bundle-preflight.json",
+      "type": "dict",
+      "keys": [
+        "schema",
+        "created_at_utc",
+        "scope",
+        "not_yet_copied",
+        "bundle_path",
+        "sources",
+        "inherited_wsl",
+        "formal_tools",
+        "executable_scan",
+        "raw_preservation"
+      ]
+    },
+    {
+      "index": "工具來源索引-R2.json",
+      "type": "dict",
+      "keys": [
+        "說明",
+        "sourceSha",
+        "tools"
+      ]
+    },
+    {
+      "index": "p189/timing-preflight-initial.json",
+      "type": "dict",
+      "keys": [
+        "utc",
+        "binary_checks",
+        "processes",
+        "unexpected_active_processes",
+        "pass"
+      ]
+    },
+    {
+      "index": "p189/timing-preflight.json",
+      "type": "dict",
+      "keys": [
+        "utc",
+        "binary_checks",
+        "processes",
+        "known_idle_test_bridges",
+        "idle_bridge_note",
+        "unexpected_active_processes",
+        "pass"
+      ]
+    },
+    {
+      "index": "native-first/suite-log-source-index.json",
+      "type": "dict",
+      "keys": [
+        "sampledUtc",
+        "sourceSha",
+        "runExitCode",
+        "interrupted",
+        "completeRun",
+        "sourceDirectory",
+        "copiedSuffixes",
+        "fileCount",
+        "totalBytes",
+        "files"
+      ],
+      "rows": 119,
+      "localMatches": 119,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "交付驗證方法/封裝索引.json",
+      "type": "dict",
+      "keys": [
+        "用途",
+        "固定L",
+        "現行驗證器SHA256",
+        "現行控制器SHA256",
+        "範本限制",
+        "歷史",
+        "檔案"
+      ]
+    },
+    {
+      "index": "交付驗證方法/首次審查/原碼與控制索引.json",
+      "type": "dict",
+      "keys": [
+        "狀態",
+        "檔案"
+      ]
+    },
+    {
+      "index": "canvas-L-formal/原件清單.json",
+      "type": "dict",
+      "keys": [
+        "schema",
+        "sourceSha",
+        "capturedUTC",
+        "count",
+        "bytes",
+        "files"
+      ],
+      "rows": 222,
+      "localMatches": 222,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "canvas-L-formal/未收錄清單.json",
+      "type": "dict",
+      "keys": [
+        "note",
+        "files"
+      ]
+    },
+    {
+      "index": "canvas-L-formal/cross-job/native-preflight.json",
+      "type": "dict",
+      "keys": [
+        "sourceSha",
+        "checkedUtc",
+        "head",
+        "status",
+        "parentEnvironment",
+        "CCAbsent",
+        "PYTHONOPTIMIZEAbsent",
+        "stackKiB",
+        "command",
+        "jobLimitSeconds"
+      ]
+    },
+    {
+      "index": "canvas-L-formal/launch/canvas-L-formal-43f85313-preflight.json",
+      "type": "dict",
+      "keys": [
+        "utc",
+        "expectedHead",
+        "root",
+        "output",
+        "parentEnvironment",
+        "head",
+        "status",
+        "tools",
+        "ports",
+        "assemblyScreenshotBaseline"
+      ]
+    },
+    {
+      "index": "native-final/initial-build-binary-index.json",
+      "type": "dict",
+      "keys": [
+        "sourceSha",
+        "sampledUtc",
+        "stage",
+        "files"
+      ]
+    },
+    {
+      "index": "native-final/final-build-binary-index.json",
+      "type": "dict",
+      "keys": [
+        "sourceSha",
+        "sampledUtc",
+        "stage",
+        "files"
+      ]
+    },
+    {
+      "index": "native-final/launcher-copy-index.json",
+      "type": "dict",
+      "keys": [
+        "files",
+        "fileCount",
+        "totalBytes"
+      ]
+    },
+    {
+      "index": "native-final/suite-log-source-index.json",
+      "type": "dict",
+      "keys": [
+        "sourceSha",
+        "sourceDirectory",
+        "fileCount",
+        "totalBytes",
+        "files"
+      ]
+    },
+    {
+      "index": "native-final/artifact-index.json",
+      "type": "dict",
+      "keys": [
+        "sourceSha",
+        "createdUtc",
+        "fileCountExcludingThisIndex",
+        "totalBytesExcludingThisIndex",
+        "files",
+        "excludedFromOwnHash",
+        "noExecutableArtifacts"
+      ],
+      "rows": 656,
+      "localMatches": 656,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "native-final/run-all-markers/source-index.json",
+      "type": "dict",
+      "keys": [
+        "sourcePath",
+        "artifactPath",
+        "bytes",
+        "sha256"
+      ]
+    },
+    {
+      "index": "native-final/launcher/actual-process-preflight.json",
+      "type": "dict",
+      "keys": [
+        "sampledUtc",
+        "firstProbe",
+        "environmentEvidence",
+        "processes"
+      ]
+    },
+    {
+      "index": "native-final/launcher/preflight.json",
+      "type": "dict",
+      "keys": [
+        "sourceSha",
+        "checkedUtc",
+        "head",
+        "status",
+        "parentEnvironment",
+        "CCAbsent",
+        "PYTHONOPTIMIZEAbsent",
+        "stackKiB",
+        "command",
+        "jobLimitSeconds"
+      ]
+    },
+    {
+      "index": "native-final/suite-logs/py_test_geo261_source_index.json",
+      "type": "dict",
+      "keys": [
+        "file",
+        "total",
+        "run",
+        "passed",
+        "failed",
+        "skipped",
+        "explicit_skipped",
+        "unrun_skipped",
+        "blocked_by_error",
+        "expected_failed"
+      ]
+    },
+    {
+      "index": "native-final/packaging-attempt1/suite-log-source-index.json",
+      "type": "dict",
+      "keys": [
+        "sourceSha",
+        "sourceDirectory",
+        "fileCount",
+        "totalBytes",
+        "files"
+      ]
+    },
+    {
+      "index": "後續工作/新增只讀計畫原件索引.json",
+      "type": "dict",
+      "keys": [
+        "封裝時間UTC",
+        "範圍",
+        "原件",
+        "缺件原則"
+      ]
+    },
+    {
+      "index": "後續工作/combined-314-readonly/封裝索引.json",
+      "type": "dict",
+      "keys": [
+        "用途",
+        "固定讀取分支",
+        "固定讀取完整SHA",
+        "歷史狀態",
+        "交接完整SHA",
+        "檢核",
+        "未執行",
+        "未納入",
+        "來源"
+      ]
+    },
+    {
+      "index": "後續工作/issue300-readonly/原件索引.json",
+      "type": "dict",
+      "keys": [
+        "kind",
+        "packagedUtc",
+        "files",
+        "limits"
+      ]
+    },
+    {
+      "index": "後續工作/framing-readonly/manifest.json",
+      "type": "dict",
+      "keys": [
+        "sourceSha",
+        "baseSha",
+        "sourceBranch",
+        "reportCopy",
+        "indexScope",
+        "files"
+      ],
+      "rows": 46,
+      "localMatches": 46,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "ledger-A-cc/publication-index.json",
+      "type": "list",
+      "keys": null,
+      "rows": 302,
+      "localMatches": 302,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "ledger-A-cc/raw-source-index.json",
+      "type": "list",
+      "keys": null,
+      "rows": 243,
+      "localMatches": 243,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "測試服務清理/P73-18843/來源清單.json",
+      "type": "dict",
+      "keys": [
+        "packagedUTC",
+        "originals"
+      ]
+    },
+    {
+      "index": "source-binding-L/封裝索引.json",
+      "type": "dict",
+      "keys": [
+        "用途",
+        "sourceA",
+        "ledgerL",
+        "歷史L1",
+        "歷史保留",
+        "範圍",
+        "收錄檔數不含本索引",
+        "收錄位元組不含本索引",
+        "檔案"
+      ]
+    },
+    {
+      "index": "p73/來源清單.json",
+      "type": "dict",
+      "keys": [
+        "擷取時間",
+        "原件數",
+        "原件位元組",
+        "來源"
+      ]
+    },
+    {
+      "index": "canvas-r2/封存索引.json",
+      "type": "dict",
+      "keys": [
+        "說明",
+        "sourceSha",
+        "sourceDirectory",
+        "originalFiles",
+        "copyVerificationExitCode"
+      ]
+    },
+    {
+      "index": "native-r2/suite-log-source-index.json",
+      "type": "dict",
+      "keys": [
+        "snapshotUtc",
+        "sourceDirectory",
+        "selection",
+        "files",
+        "olderFilesExcluded"
+      ],
+      "rows": 600,
+      "localMatches": 600,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "native-r2/artifact-index.json",
+      "type": "dict",
+      "keys": [
+        "indexedUtc",
+        "excludesSelf",
+        "files"
+      ],
+      "rows": 611,
+      "localMatches": 611,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "native-r2/suite-logs/py_test_geo261_source_index.json",
+      "type": "dict",
+      "keys": [
+        "file",
+        "total",
+        "run",
+        "passed",
+        "failed",
+        "skipped",
+        "explicit_skipped",
+        "unrun_skipped",
+        "blocked_by_error",
+        "expected_failed"
+      ]
+    },
+    {
+      "index": "gates/artifact-index.original-publish.json",
+      "type": "dict",
+      "keys": [
+        "files",
+        "total_bytes"
+      ]
+    },
+    {
+      "index": "gates/artifact-index.json",
+      "type": "dict",
+      "keys": [
+        "schema",
+        "note",
+        "files",
+        "indexed_file_count",
+        "indexed_total_bytes",
+        "tool_mapping"
+      ]
+    },
+    {
+      "index": "source-binding/封裝索引.json",
+      "type": "dict",
+      "keys": [
+        "狀態",
+        "files",
+        "indexedFileCount",
+        "indexedBytes",
+        "excludedSelf",
+        "selfExclusionReason"
+      ]
+    },
+    {
+      "index": "ledger-A-gcc/publication-index.json",
+      "type": "list",
+      "keys": null,
+      "rows": 275,
+      "localMatches": 275,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "ledger-A-gcc/raw-source-index.json",
+      "type": "list",
+      "keys": null,
+      "rows": 243,
+      "localMatches": 243,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "p52/原件清單.json",
+      "type": "dict",
+      "keys": [
+        "來源根目錄",
+        "封裝根目錄",
+        "封裝受測版本",
+        "限制",
+        "複製原件檔數",
+        "複製原件總bytes",
+        "檔案"
+      ]
+    },
+    {
+      "index": "p52/未收錄清單.json",
+      "type": "dict",
+      "keys": [
+        "說明",
+        "檔案"
+      ]
+    },
+    {
+      "index": "驗收方法/建置快取與fresh定義_原件索引.json",
+      "type": "dict",
+      "keys": [
+        "封裝時間UTC",
+        "原件路徑",
+        "封裝路徑",
+        "位元組數",
+        "sha256",
+        "逐位元組相同",
+        "文件性質",
+        "限制"
+      ]
+    },
+    {
+      "index": "browser-five-L-formal/原件清單.json",
+      "type": "dict",
+      "keys": [
+        "schema",
+        "sourceSha",
+        "capturedUTC",
+        "count",
+        "bytes",
+        "files"
+      ],
+      "rows": 261,
+      "localMatches": 261,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "browser-five-L-formal/未收錄清單.json",
+      "type": "dict",
+      "keys": [
+        "files",
+        "note"
+      ]
+    },
+    {
+      "index": "browser-five-L-formal/run/documents/manifest.json",
+      "type": "list",
+      "keys": null,
+      "rows": 32,
+      "localMatches": 32,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "browser-five-L-formal/run/timber/manifest.json",
+      "type": "list",
+      "keys": null,
+      "rows": 37,
+      "localMatches": 37,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "browser-five-L-formal/run/space/manifest.json",
+      "type": "list",
+      "keys": null,
+      "rows": 61,
+      "localMatches": 61,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "browser-five-L-formal/run/assembly/manifest.json",
+      "type": "list",
+      "keys": null,
+      "rows": 37,
+      "localMatches": 37,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "browser-five-L-formal/run/grid/manifest.json",
+      "type": "list",
+      "keys": null,
+      "rows": 43,
+      "localMatches": 43,
+      "missingCount": 0,
+      "missingExamples": []
+    },
+    {
+      "index": "canvas-A-preflight/來源清單.json",
+      "type": "dict",
+      "keys": [
+        "sourceHead",
+        "purpose",
+        "capturedUTC",
+        "files"
+      ]
+    }
+  ],
+  "plannedIgnore": {
+    "gitCommand": [
+      "git",
+      "-c",
+      "core.fsmonitor=false",
+      "--git-dir",
+      "/workspace/geometry-axiom/.git",
+      "--work-tree",
+      "/tmp/geo261-ignore-readonly-l5ka9yop",
+      "check-ignore",
+      "--no-index",
+      "-z",
+      "-v",
+      "--stdin"
+    ],
+    "commandExitCode": 0,
+    "stderr": "",
+    "plannedGitignoreSha256": "61d14f759d963051fd0791a71a5d614fa6437c0199f02d61b3c0438e446abd93",
+    "gitignoreOnlyScratch": "/tmp/geo261-ignore-readonly-l5ka9yop",
+    "ignoredCount": 0,
+    "ignored": [],
+    "negatedRuleCount": 16
+  },
+  "notes": [
+    "未產總artifact-index；完整檔案hash只留記憶體供本次比對",
+    "沒有執行verify_E main、產品test/build/browser或修改主repo/凍結包",
+    "ignore使用主Git的只讀check-ignore與包外只有預期.gitignore的scratch worktree，未新增Git commit/index或搬移repo",
+    "nested歷史索引缺件須判斷原索引scope，不自動當成最後總集合錯誤"
+  ]
+}

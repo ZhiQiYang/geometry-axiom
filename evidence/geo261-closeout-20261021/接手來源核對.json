@@ -1,0 +1,36 @@
+{
+  "branch": "codex/geo261-closeout-20261021",
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "handoffSha": "59796b1af9259eb23d30134c2ce5a56317a06091",
+  "handoffFileSha256": "6404126064a169e685b8774c447f96b3ebbdf02e3e1278042d7881ebfa5965c0",
+  "handoffFileBytes": 11260,
+  "handoffBytesMatch": true,
+  "handoffAncestorCheck": {
+    "command": [
+      "git",
+      "merge-base",
+      "--is-ancestor",
+      "59796b1af9259eb23d30134c2ce5a56317a06091",
+      "366ef501b78105d1f7242dc1f4f4752cac9086b5"
+    ],
+    "exitCode": 1,
+    "meaning": "交接commit不是本分支祖先，未合併交接分支"
+  },
+  "changedFilesFromIntegrationBase": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/closeout-tools/p189_verify.py",
+    "geometry-core/domain-decoupling/closeout-tools/p189_verify_build.py",
+    "geometry-core/domain-decoupling/closeout-tools/p189_verify_equivalence.py",
+    "geometry-core/domain-decoupling/closeout-tools/p52_probe.js",
+    "geometry-core/domain-decoupling/closeout-tools/p72_probe.js",
+    "geometry-core/domain-decoupling/closeout-tools/q38_controls.py",
+    "geometry-core/domain-decoupling/closeout-tools/refresh_receipt.py",
+    "geometry-core/domain-decoupling/closeout-tools/run_controls.py",
+    "geometry-core/domain-decoupling/closeout-tools/run_gates.py",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "geometry-core/domain-decoupling/product-architecture.json",
+    "geometry-web/cdp_test.js",
+    "geometry-web/grid_inspector_rename_test.js"
+  ],
+  "scope": "證據提交前的固定受測來源；沒有以較新SHA冒稱重跑舊量測。"
+}

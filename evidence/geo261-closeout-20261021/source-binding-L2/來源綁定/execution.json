@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "timeout",
+    "120",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-evidence/source-binding-preparation/snapshot_bindings.py",
+    "--root",
+    "/workspace/geometry-axiom",
+    "--expected-head",
+    "249571fe2477845d5330f6190dad965bf327f43b"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceHead": "249571fe2477845d5330f6190dad965bf327f43b",
+  "startedUtc": "2026-10-21T04:14:10.688375+00:00",
+  "finishedUtc": "2026-10-21T04:14:11.679882+00:00",
+  "seconds": 0.9915184029996453,
+  "rawWaitStatus": 0,
+  "exitCode": 0,
+  "stdout": {
+    "path": "snapshot-L2.json",
+    "bytes": 487108,
+    "rawSha256": "6f5840a1c9247617a67af1c03a7a63fb1dc7b61adf01e381f6322361f684e48b",
+    "lfSha256": "6f5840a1c9247617a67af1c03a7a63fb1dc7b61adf01e381f6322361f684e48b"
+  },
+  "stderr": {
+    "path": "snapshot-L2.stderr",
+    "bytes": 0,
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

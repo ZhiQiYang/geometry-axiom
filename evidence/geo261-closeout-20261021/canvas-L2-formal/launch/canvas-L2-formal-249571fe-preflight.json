@@ -1,0 +1,71 @@
+{
+  "utc": "2026-10-21T04:19:29.138663+00:00",
+  "sourceSha": "249571fe2477845d5330f6190dad965bf327f43b",
+  "root": "/workspace/geometry-axiom",
+  "output": "/workspace/geo261-evidence/canvas-L2-formal-249571fe",
+  "argv": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py",
+    "--sha",
+    "249571fe2477845d5330f6190dad965bf327f43b",
+    "--root",
+    "/workspace/geometry-axiom",
+    "--output",
+    "/workspace/geo261-evidence/canvas-L2-formal-249571fe",
+    "--port",
+    "18856",
+    "--cdp-port",
+    "9322",
+    "--release-note",
+    "root 已於 native 初建六 binary fresh、12 原件保存並核對後明確放行 L2 完整 canvas；來源 249571fe2477845d5330f6190dad965bf327f43b 固定，主 repo 私有 runtime 原 npm build/require_fresh，原 35 分鐘及完整 scope/85 golden 不變，最多兩 heavy，無預置 binary。canvas cleanup 後接原五項依序。",
+    "--execute"
+  ],
+  "parentCommand": [
+    "bash",
+    "/workspace/geo261-evidence/canvas-L2-formal-249571fe-parent-command-code.txt"
+  ],
+  "parentCommandCodeSha256": "38a8175a7769ff51abb510aad87db06cf9dc6607e392596b9ea2dbb8fb119d1c",
+  "parentLog": "/workspace/geo261-evidence/canvas-L2-formal-249571fe-parent.log",
+  "parentPidFile": "/workspace/geo261-evidence/canvas-L2-formal-249571fe-parent.pid",
+  "launcherProcessExitCodeFile": "/workspace/geo261-evidence/canvas-L2-formal-249571fe-launcher-process.exit-code",
+  "parentEnvironment": {
+    "CCPresent": false,
+    "PYTHONOPTIMIZEPresent": false
+  },
+  "wrapperHashes": [
+    {
+      "path": "/workspace/geo261-evidence/canvas-L-preparation/run_canvas_job.py",
+      "sha256": "327e926ae0e88fff4b04e68afdee9fb12e9dd2dff0a839fb340603a9fc20121a",
+      "bytes": 21346
+    },
+    {
+      "path": "/workspace/geo261-evidence/canvas-L-preparation/launch_canvas_job.py",
+      "sha256": "4f7935f1c516d118c06272a5ed96c4c5909cdbe124a4e746870b0001ce490181",
+      "bytes": 4590
+    }
+  ],
+  "portsChecked": [
+    18856,
+    9322
+  ],
+  "nativeAcceptanceSha256": "1fd0ffce8a57f3141e535e535c90e13bfe990d4af6a5ed082c08cf319a55f835",
+  "nativeIndexSha256": "e1d2e3b0048779bc98e29e3cc4fea14ff3d9ae556f99597123c5b1e71f32b144",
+  "assemblyScreenshotBaseline": {
+    "/tmp/geometry-tests/assembly-desktop.png": {
+      "exists": false
+    },
+    "/tmp/geometry-tests/assembly-mobile.png": {
+      "exists": false
+    }
+  },
+  "sourceStaticBinding": "/workspace/geo261-evidence/browser-L2-preparation/L2-static-ready.json",
+  "releaseNote": "root 已於 native 初建六 binary fresh、12 原件保存並核對後明確放行 L2 完整 canvas；來源 249571fe2477845d5330f6190dad965bf327f43b 固定，主 repo 私有 runtime 原 npm build/require_fresh，原 35 分鐘及完整 scope/85 golden 不變，最多兩 heavy，無預置 binary。canvas cleanup 後接原五項依序。",
+  "binaryCopyPerformed": false,
+  "validationExitCode": 0
+}

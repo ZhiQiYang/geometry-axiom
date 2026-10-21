@@ -1,0 +1,166 @@
+#!/usr/bin/env python3
+"""有限只讀複核新 A2 ledger 包，不執行帳本、測試、發布或編譯。"""
+import ast
+from collections import Counter
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import stat
+import time
+
+BASE = Path('/workspace/geo261-evidence')
+ROOT = BASE / 'final-bundle/ledger-A2-cc'
+REPORT = BASE / 'ledger-A2-bundle-peer.json'
+A2 = 'cbefb39b47fb0edcfaf003d2c1101929fea244c8'
+L2 = '249571fe2477845d5330f6190dad965bf327f43b'
+assert not REPORT.exists()
+started, tick = datetime.now(timezone.utc).isoformat(), time.monotonic()
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def read(path): return json.loads(path.read_bytes())
+verification = read(BASE / 'ledger-A2-bundle-verification.json')
+assert verification['verification_exit_code'] == 0
+constants = {}
+verifier_raw = (BASE / 'source-binding-E2-preparation/verify_E2.py').read_bytes()
+assert sha(verifier_raw) == '99e6cdbafec586a97c37382216ad14737a173f6e394af3bde2685464d59db9e1'
+for node in ast.parse(verifier_raw).body:
+    if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+        key = node.targets[0].id
+        if key in {'FORBIDDEN_SUFFIXES', 'EXECUTABLE_MAGICS'}:
+            constants[key] = ast.literal_eval(node.value)
+files = {}
+raws = {}
+for directory, dirs, names in os.walk(ROOT, followlinks=False):
+    for name in dirs:
+        assert not (Path(directory) / name).is_symlink()
+    for name in names:
+        path = Path(directory) / name
+        relative = path.relative_to(ROOT).as_posix()
+        info = path.lstat()
+        assert stat.S_ISREG(info.st_mode) and stat.S_IMODE(info.st_mode) == 0o644
+        assert path.suffix.lower() not in constants['FORBIDDEN_SUFFIXES'] and path.name not in {'.gitignore', '.gitattributes'}
+        raw = path.read_bytes()
+        assert not any(raw.startswith(magic) for magic in constants['EXECUTABLE_MAGICS'])
+        raw.decode('utf-8')
+        raws[relative] = raw
+        files[relative] = {'bytes': len(raw), 'sha256': sha(raw), 'mtimeNs': info.st_mtime_ns, 'mode': stat.S_IMODE(info.st_mode)}
+assert len(files) == verification['files'] == 2258
+assert sum(row['bytes'] for row in files.values()) == verification['bytes'] == 32239179
+index_raw, sums_raw = raws['原件清單.json'], raws['SHA256SUMS']
+assert sha(index_raw) == verification['index_sha256'] == 'a3167c0af6490a143f7aee0a61651497868e7ff6db63ae16f26487065b804455'
+assert sha(sums_raw) == verification['sums_sha256'] == '8c3227a2035cc4fc03c399376eac43dc46466153641a3d48709595aab8c2e4a4'
+originals = json.loads(index_raw)
+assert len(originals) == verification['originals_checked'] == 2253
+seen = set()
+for row in originals:
+    path = row['path']
+    assert path not in seen and not PurePosixPath(path).is_absolute() and '..' not in PurePosixPath(path).parts
+    seen.add(path)
+    assert files[path]['bytes'] == row['bytes'] and files[path]['sha256'] == row['sha256']
+    source = Path(row['source'])
+    assert source.is_file() and not source.is_symlink() and source.read_bytes() == raws[path]
+assert set(files) - seen == {'README.md', '來源對照.md', '未收錄清單.json', '原件清單.json', 'SHA256SUMS'}
+checksum_results = []
+for path in sorted(p for p in ROOT.rglob('SHA256SUMS')):
+    wanted = {}
+    for line in path.read_text().splitlines():
+        match = re.fullmatch(r'([0-9a-f]{64})  (.+)', line)
+        assert match and match[2] not in wanted and not PurePosixPath(match[2]).is_absolute() and '..' not in PurePosixPath(match[2]).parts
+        wanted[match[2]] = match[1]
+    actual = {p.relative_to(path.parent).as_posix() for p in path.parent.rglob('*') if p.is_file()}
+    assert set(wanted) == actual - {'SHA256SUMS'}
+    for relative, digest in wanted.items():
+        key = (path.parent / relative).relative_to(ROOT).as_posix()
+        assert files[key]['sha256'] == digest
+    checksum_results.append({'path': path.relative_to(ROOT).as_posix(), 'rows': len(wanted), 'exactSetAndHashesMatch': True})
+assert checksum_results[0]['rows'] == 2257
+preserved_errors = []
+for number in (1, 2):
+    prefix = '後補收據/independent-review-attempt' + str(number)
+    observed = json.loads(raws[prefix + '-observation.json'])
+    assert observed['exit_code'] == 1 and sha(raws[prefix + '-code.txt']) == observed['acceptorSha256']
+    assert observed['productTestExecuted'] is False
+    preserved_errors.append({'attempt': number, 'exitCode': 1, 'sourceSha256': observed['acceptorSha256'],
+                             'toolChunk': observed['toolChunk'], 'cause': observed['cause']})
+final_observation = json.loads(raws['後補收據/independent-review-tool-observation.json'])
+assert final_observation['exit_code'] == 0
+reported = json.loads(final_observation['output'])
+assert reported['sha256'] == sha(raws['後補收據/independent-review.json']) and reported['validationExitCode'] == 0
+peer = json.loads(raws['後補收據/independent-review.json'])
+assert peer['sourceA2'] == A2 and peer['ledgerL2'] == L2 and peer['phaseExitCodes'] == [0, 0, 0]
+assert peer['supervisorExit'] == peer['launcherDirectWaitExit'] == 0
+assert peer['launcherToolObservation']['exit_code'] == peer['validatorToolObservation']['exit_code'] == 0
+phase = json.loads(raws['執行原件/phase-receipts.json'])
+assert [row['phase'] for row in phase] == ['mutate', 'check', 'check-killers']
+for row in phase:
+    assert row['source_sha'] == A2 and row['exit_code'] == 0 and not row['CC_present'] and not row['PYTHONOPTIMIZE_present']
+    for stream in ('stdout', 'stderr'):
+        assert sha(raws['執行原件/' + Path(row[stream]).name]) == row[stream + '_sha256']
+    assert raws['執行原件/' + row['phase'] + '.exit-code'].strip() == b'0'
+launch = json.loads(raws['執行原件/launch-completion.json'])
+assert launch['source_sha'] == A2 and launch['observed_wait_returncode'] == 0
+for name in ('supervisor.exit-code', 'supervisor-observed.exit-code'):
+    assert raws['執行原件/' + name].strip() == b'0'
+initial_transport = json.loads(raws['執行原件/interactive-session-observation.json'])
+assert initial_transport['launch_session_id'] == 12445 and initial_transport['launcher_exit_code'] is None
+final_transport = peer['launcherToolObservation']
+assert final_transport['exit_code'] == 0 and final_transport['session_id'] == 12445 and final_transport['chunk_id'] == '706db3'
+importer = json.loads(raws['L2發布外層工具觀察.json'])
+assert importer['actual_tool_response']['exit_code'] == 0
+assert '轉錄' in importer['分類'] and '不是原始 transport' in importer['分類']
+ledger_raw = raws['執行原件/mutants_results.json']
+assert ledger_raw == raws['L2發布/ledger-blob.stdout']
+assert sha(ledger_raw) == '6bda315331050bd3478ed65211a8263508cb1a1f6f67cee3f35df377506e7f0b'
+ledger = json.loads(ledger_raw)
+assert len(ledger) == 78 and sum('execution' in row for row in ledger.values()) == 75
+assert {row['execution']['head'] for row in ledger.values() if 'execution' in row} == {A2}
+assert Counter(row['verdict'] for row in ledger.values()) == {'killed': 70, 'equivalent': 4, 'crashed': 1, 'retired': 3}
+assert [key for key, row in ledger.items() if row['verdict'] == 'crashed'] == ['M20']
+method = ast.parse(raws['封裝方法原碼.txt'])
+imports = {node.names[0].name for node in method.body if isinstance(node, ast.Import)}
+imports |= {node.module for node in method.body if isinstance(node, ast.ImportFrom)}
+assert imports <= {'argparse', 'datetime', 'hashlib', 'json', 'pathlib', 'stat'}
+readme = raws['README.md'].decode()
+assert all(term in readme for term in ('不是 raw transport', '沒有另外保存', '尾 3000', '沒有重跑', 'M20'))
+supplement_path = BASE / 'final-bundle/ledger-A2-方法與限制.md'
+supplement_raw = supplement_path.read_bytes()
+assert len(supplement_raw) == 3461 and sha(supplement_raw) == 'a1227268d4ea3f7ccdc44a7747226d2c78d9373665d94532f48633bd332474fb'
+assert sorted(key for key, row in ledger.items() if row['verdict'] == 'equivalent') == ['M09', 'M23', 'M36', 'M56']
+supplement = supplement_raw.decode('utf-8')
+assert all(term in supplement for term in ('75 筆 execution.head 保留 A2', '本輪沒有重新執行該 7,143 語料', '165/165', '唯一 crashed', '沒有另外保存每個核心子程序的原 stdout/stderr', '不是再次 wait'))
+own_first = read(BASE / 'ledger-A2-bundle-peer-attempt1-observation.json')
+assert own_first['actualExitCode'] == 1 and own_first['toolChunk'] == '42a589'
+for relative, row in files.items():
+    info = (ROOT / relative).lstat()
+    assert (info.st_size, info.st_mtime_ns, stat.S_IMODE(info.st_mode)) == (row['bytes'], row['mtimeNs'], row['mode'])
+result = {'schema': 'geo261-ledger-A2-frozen-bundle-peer/1', 'checkedUtc': datetime.now(timezone.utc).isoformat(),
+          'startedUtc': started, 'seconds': time.monotonic() - tick, 'bundle': str(ROOT), 'sourceA2': A2, 'ledgerL2': L2,
+          'checkPassed': True, 'files': len(files), 'bytes': sum(row['bytes'] for row in files.values()),
+          'copiedOriginalsComparedByteForByte': len(originals), 'indexSha256': sha(index_raw), 'sumsSha256': sha(sums_raw),
+          'checksumManifests': checksum_results, 'allMode0644AndUtf8': True, 'noForbiddenSuffixMagicOrSymlink': True,
+          'sourceMappingExactAndOnlyFiveGeneratedFiles': True, 'preservedAcceptorMistakes': preserved_errors,
+          'finalIndependentAcceptorRecordedExit': 0, 'phaseOriginalExitCodes': [0, 0, 0],
+          'launcherDirectWaitOriginalExit': launch['observed_wait_returncode'],
+          'interactiveToolObservations': {
+              'initial': {'path': '執行原件/interactive-session-observation.json', 'observation': initial_transport},
+              'final': {'path': '後補收據/independent-review.json', 'field': 'launcherToolObservation', 'observation': final_transport},
+              'scope': '啟動時原件仍為 null，沒有回填；完成碼引用既存後補獨審保存的工具觀察，本次沒有重新 wait。'},
+          'importerToolObservationPreservedAsTranscription': True, 'sourceAndExecutionHeadsNotRewritten': True,
+          'rootSupplement': {'path': str(supplement_path), 'bytes': len(supplement_raw), 'sha256': sha(supplement_raw),
+              'scope': '已完整讀取；A2 execution、M20 crashed、四個 equivalent 當輪 attempt 與 M36 歷史語料、核心 raw 缺口界線清楚；沒有據此重跑或補造歷史證據。'},
+          'thisPeerFirstAttempt': {'observation': own_first, 'codeSha256': sha((BASE / 'ledger-A2-bundle-peer-attempt1-code.txt').read_bytes()),
+              'correction': '首輪誤把啟動時仍 running 的觀察當完成觀察而 KeyError；修正為分別保留初始 null 與後補獨審中的真正完成觀察，不修改任何凍結原件。'},
+          'ledgerCountsObserved': dict(Counter(row['verdict'] for row in ledger.values())),
+          'methodScope': '已完整閱讀包裝方法；僅讀原件、檢核與寫新包，沒有 subprocess 或產品測試入口。此次 peer 沒有執行該方法。',
+          'notRerun': ['ledger', 'mutate --check', '任何測試／編譯／發布', '75 個 cache binary hash'],
+          'limitations': ['核心個別子程序 raw 未由原工具另存，只能保結構化 oracle 與 hash，不能由頂層 stdout 補造。',
+                          '本核對只讀 ledger-A2-cc 與其逐檔來源、指定外層驗證 JSON；未重掃全部 final-bundle。',
+                          '原件的傳輸觀察轉錄不冒稱原始 transport；歷史自測不冒稱本輪執行。',
+                          'E2 尚未建立；這不是完整產品或最後交付驗收。'],
+          'command': ['python3', '-B', str(Path(__file__))], 'peerCodeSha256': sha(Path(__file__).read_bytes())}
+REPORT.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+(BASE / 'ledger-A2-bundle-peer-code.txt').write_bytes(Path(__file__).read_bytes())
+print(json.dumps({'report': str(REPORT), 'reportSha256': sha(REPORT.read_bytes()), 'files': len(files),
+                  'bytes': result['bytes'], 'copiedOriginals': len(originals), 'checkPassed': True}, ensure_ascii=False, indent=2))

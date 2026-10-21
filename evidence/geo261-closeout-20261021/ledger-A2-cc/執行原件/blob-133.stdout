@@ -1,0 +1,26 @@
+# GEO-092 I22 正向覆蓋:延伸段側面以優先級 2 計,被 custom(priority 3)端面頂 → 接受
+#
+# 由公理層推導誰頂得到延伸段的側面:
+#   延伸段沿其所屬 boundary 的長度軸(D16),而 D17 要求 boundary ⊥ 主支軸,
+#   故延伸段 ⊥ 主支軸;端面頂側面需垂直 → 頂得到的料必須平行主支軸。
+#   secondary 由 D17 必 ⊥ 主支軸 → 頂不到(故 I22 括號的「副支可以」推不出來);
+#   primary 頂得到但 cut_priority 同為 2,2 未嚴格小於 2 → I19 拒絕
+#     (見 _role_priority_ext_primary.scene);
+#   custom 的長度軸不受 D17 約束、I21 的拒絕條件也只列 boundary/secondary
+#     (D15:custom 不取得任何角色專屬的義務或權利),故可平行主支軸,
+#     明寫 priority 3 時 2 < 3 → 接受。
+#
+# 幾何:L 形,底帶 u[0,4000]xv[0,2000] + 左柱 u[0,2000]xv[2000,3000],凹角 (2000,2000)。
+#   e0(v=0,沿 u)放 boundary → 主支軸 = v(D17:無 primary 時取 boundary 的垂直向)。
+#   e2(v=2000,沿 u)放 boundary,固定段 u[2000,4000],footprint 越過凹角
+#   延伸到 u<2000 = 延伸段(I22:延伸段 ⊆ 有效範圍,凹角端點才可能延伸)。
+#   custom 沿 v(平行主支軸),下端頂 e0 的 boundary 側面(優先級 1 < 3),
+#   上端頂延伸段側面(以 2 計,2 < 3)。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,2000 2000,2000 2000,3000 0,3000
+grid 1 on 1 u 1000
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role custom priority 3
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 +u +n
+place 3 on 1 at-line grid 1 u 0 through 1000 +v +n

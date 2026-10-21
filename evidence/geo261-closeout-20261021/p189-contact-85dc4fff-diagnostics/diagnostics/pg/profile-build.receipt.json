@@ -1,0 +1,31 @@
+{
+  "name": "profile-build",
+  "argv": [
+    "gcc",
+    "-std=c11",
+    "-O2",
+    "-g",
+    "-pg",
+    "-fno-omit-frame-pointer",
+    "geometry-web/web_bridge.c",
+    "-o",
+    "/workspace/geo261-evidence/p189-diagnostic-contact-85dc4fff44ce-hck_u46w/bridge-profile",
+    "-lm"
+  ],
+  "cwd": "/workspace/geo261-profile-contact-v2-src.v7qt_w57",
+  "started_utc": "2026-10-21T01:43:49.132507+00:00",
+  "source_sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "stdin": null,
+  "pid": 305363,
+  "pgid": 305363,
+  "finished_utc": "2026-10-21T01:44:11.177674+00:00",
+  "seconds": 22.04516730099931,
+  "actual_exit_code": 0,
+  "timed_out": false,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,16 @@
+test_CR09_EXACT_TARGET_LENGTH (tests.test_grid_card_reference.GridCardReference.test_CR09_EXACT_TARGET_LENGTH) ... FAIL
+
+======================================================================
+FAIL: test_CR09_EXACT_TARGET_LENGTH (tests.test_grid_card_reference.GridCardReference.test_CR09_EXACT_TARGET_LENGTH)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 189, in test_CR09_EXACT_TARGET_LENGTH
+    self.reject([parameter(b=b)], why, 'EXACT_TARGET_LENGTH ' + b)
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 79, in reject
+    self.assertTrue(matching, (label, reason, errors))
+AssertionError: [] is not true : ('EXACT_TARGET_LENGTH 100000001', 'D1 range', ['I74 grid-system 4 v parameter 10 field 8: ', 'candidate rejected'])
+
+----------------------------------------------------------------------
+Ran 1 test in 0.143s
+
+FAILED (failures=1)

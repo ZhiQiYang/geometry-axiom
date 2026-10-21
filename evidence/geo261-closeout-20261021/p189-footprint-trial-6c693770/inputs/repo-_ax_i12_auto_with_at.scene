@@ -1,0 +1,6 @@
+# 公理:I12:語法配對——auto 角材(timber id A B,不寫長度)只能用 at-line grid / at-edge。
+# 這裡角材 1 是 auto,卻用了明寫角材專屬的 at u v → 拒絕。
+# 理由:at u v 只給得出起點,給不出跨距,auto 的長度就推不出來。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 1 20 20 role primary
+place 1 on 1 at 500 500 +u +n

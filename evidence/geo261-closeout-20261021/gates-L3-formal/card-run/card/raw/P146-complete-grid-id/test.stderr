@@ -1,0 +1,14 @@
+test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE (tests.test_grid_card_reference.GridCardReference.test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE) ... FAIL
+
+======================================================================
+FAIL: test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE (tests.test_grid_card_reference.GridCardReference.test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 213, in test_CR11_SOURCE_EXCLUSIVITY_COMPLETE_MAPPING_MODE_SCOPE
+    self.assertIn('grid-system 4', error)
+AssertionError: 'grid-system 4' not found in 'I74 COMPLETE_MAPPING: expected both fields'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.146s
+
+FAILED (failures=1)

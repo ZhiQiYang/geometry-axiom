@@ -1,0 +1,122 @@
+from pathlib import Path
+import ast, datetime, hashlib, json, re, subprocess
+
+OUT=Path('/workspace/geo261-evidence/contact-independent-review')
+RAW=Path('/workspace/geo261-evidence/contact-trial-7ad/v2')
+WORK=Path('/workspace/geo261-contact-candidate')
+L='43f85313c32410ac01406ab585846bbacafea278'
+BASE='7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09'
+def h(b):return hashlib.sha256(b).hexdigest()
+def ref(p):
+    p=Path(p);b=p.read_bytes();return dict(path=str(p),bytes=len(b),sha256=h(b))
+def git(p,sha):return subprocess.check_output(['git','show',sha+':'+p],cwd=WORK)
+def controls(text):
+    env={}
+    def v(x):
+        if isinstance(x,ast.Constant):return x.value
+        if isinstance(x,ast.Name):return env[x.id]
+        if isinstance(x,(ast.Tuple,ast.List)):return tuple(v(y) for y in x.elts)
+        if isinstance(x,ast.Call) and isinstance(x.func,ast.Attribute) and x.func.attr=='replace':
+            assert not x.keywords;return v(x.func.value).replace(*(v(y) for y in x.args))
+        raise AssertionError(ast.dump(x))
+    for n in ast.parse(text).body:
+        if isinstance(n,ast.Assign) and len(n.targets)==1 and isinstance(n.targets[0],ast.Name) and n.targets[0].id in ('COLLISION_FILTER','STOP_FILTER','CONTROLS'):
+            env[n.targets[0].id]=v(n.value)
+    return env['CONTROLS']
+
+meta=json.loads((RAW/'source-hashes.json').read_bytes());assert meta['base']==BASE
+source=[]
+for p,sha in meta['sources'].items():
+    data=(WORK/p).read_bytes();assert h(data)==sha
+    assert data==(OUT/('v2-'+Path(p).name+'.txt')).read_bytes()
+    assert git(p,L)==git(p,BASE)
+    source.append(dict(path=p,sha256=sha,originalLAndBaseSame=True,originalSha256=h(git(p,L))))
+src=(OUT/'v2-contact_world.c.txt').read_text()
+old=(OUT/'v1-contact_world.c.txt').read_text()
+assert src==old.replace('orders+i-member_begin,orders+i+1-member_begin','orders+(i-member_begin),orders+(i+1-member_begin)')
+assert 'orders+i-member_begin' not in src
+assert h(git('geometry-templates/woodworking/native/contact_world.c',L))==meta['originalCollectorSha256']
+c=controls((OUT/'v2-test_geo261_wood_contact_world.py.txt').read_text())
+oc=controls(git('tests/test_geo261_wood_contact_world.py',L).decode())
+assert len(c)==24 and len(oc)==20
+for a,b in zip(oc,c):
+    if a[0]=='equal-order-dedup':
+        assert a[0]==b[0] and a[3:]==b[3:] and b[1:3]==('previous_min<order','previous_min<=order')
+    else:assert a==b,a[0]
+
+rows=json.loads((RAW/'targeted-commands.json').read_bytes());rawrefs=[]
+for i,r in enumerate(rows):
+    assert r['index']==i and 'exception' not in r
+    for k in ('stdout','stderr'):
+        if k in r:
+            f=r[k];p=RAW/f['path'];b=p.read_bytes()
+            assert len(b)==f['bytes'] and h(b)==f['sha256']
+            rawrefs.append(ref(p))
+def output(r,k):return (RAW/r[k]['path']).read_bytes()
+checks=[]
+for name,before,after,case,label in c:
+    assert src.count(before)==1 and before!=after,name
+    found=[r for r in rows if isinstance(r['command'],list) and r['command'] and Path(r['command'][0]).name=='contact-world-mutant-'+name]
+    assert len(found)==1,name
+    red=found[0];i=red['index'];green=rows[i-3];compile=rows[i-2];link=rows[i-1];restored=rows[i+1]
+    assert red['command'][1:]==[case] and red['returncode']==1
+    assert output(red,'stderr')==('ASSERT:'+label+'\n').encode() and output(red,'stdout')==b''
+    for g in (green,restored):
+        assert Path(g['command'][0]).name=='contact-world-client' and g['command'][1:]==[case] and g['returncode']==0
+        assert output(g,'stdout')==b'' and output(g,'stderr')==b''
+    assert compile['returncode']==0 and link['returncode']==0
+    cmd=compile['command'];mutant=Path(cmd[cmd.index('-c')+1])
+    assert mutant.name=='contact-world-'+name+'.c'
+    assert link['command'][-1]==red['command'][0]
+    actual=None
+    if mutant.exists():
+        assert mutant.read_bytes()==src.replace(before,after).encode(),name
+        actual=ref(mutant)
+    checks.append(dict(name=name,anchorCount=1,case=case,assertion=label,baselineIndex=green['index'],compileIndex=compile['index'],linkIndex=link['index'],redIndex=i,restoredIndex=restored['index'],exitChain=[0,0,0,1,0],actualMutantSource=actual))
+
+summary=json.loads((RAW/'targeted-result.json').read_bytes())
+assert summary['testsRun']==38 and summary['failures']==0 and summary['errors']==0 and summary['skipped']==[] and summary['passed']
+assert summary['modules']==['tests.test_geo261_wood_contact_world','tests.test_geo261_contact_sources','tests.test_geo261_wood_contacts','tests.test_geo261_wood_contacts_product','tests.test_mutation_anchors']
+log=(RAW/'targeted-unittest.log').read_text();assert len(re.findall(r'^test_.* \.\.\. ok$',log,re.M))==38
+assert re.search(r'Ran 38 tests in [0-9.]+s\n\nOK\n$',log)
+environment=json.loads((RAW/'launch-environment.json').read_bytes())
+assert environment['stackBytes']==[16777216,16777216] and environment['CC'] is None and environment['PYTHONOPTIMIZE'] is None
+
+cases=['collisions','ordering','regions','order-keys','order-fallback','intervals','extensions','ends']
+numeric=json.loads((RAW/'numeric-commands.json').read_bytes())
+assert [r['label'] for r in numeric]==[v+'-'+c for v in ('original','candidate') for c in ['build']+cases]
+assert all(r['returncode']==0 for r in numeric)
+for r in numeric:
+    rawrefs.extend([ref(RAW/(r['label']+'.stdout')),ref(RAW/(r['label']+'.stderr'))])
+    if not r['label'].endswith('build'):
+        assert (RAW/(r['label']+'.stdout')).read_bytes()==b'' and (RAW/(r['label']+'.stderr')).read_bytes()==b''
+originalfile=Path('/tmp/geo261-contact-trial-7ad/contact_world_original.c')
+assert originalfile.read_bytes()==git('geometry-templates/woodworking/native/contact_world.c',L)
+for p in ('geometry-templates/woodworking/native/contacts.c','geometry-templates/woodworking/native/supports.c','geometry-core/kernel/geometry.c','geometry-core/kernel/exact.c'):
+    assert (WORK/p).read_bytes()==git(p,L)==git(p,BASE)
+for r in (numeric[0],numeric[9]):
+    assert r['command'][:3]==['cc','-std=c11','-O2'] and str(WORK/'tests/geo261_contact_world_harness.c') in r['command']
+assert str(originalfile) in numeric[0]['command'] and str(WORK/'geometry-templates/woodworking/native/contact_world.c') in numeric[9]['command']
+
+san=json.loads((RAW/'sanitizer-result.json').read_bytes())
+assert san['sourceHashes']==meta['sources'] and san['passed'] and not san['performanceSample']
+assert [r['label'] for r in san['commands']]==['build']+cases
+assert '-fsanitize=address,undefined' in san['commands'][0]['command']
+for r in san['commands']:
+    assert r['returncode']==0
+    for k in ('stdout','stderr'):
+        p=RAW/('sanitizer-'+r['label']+'.'+k);assert p.stat().st_size==r[k+'Bytes'];rawrefs.append(ref(p))
+    assert (RAW/('sanitizer-'+r['label']+'.stderr')).read_bytes()==b''
+v1=RAW.parent/'v1'
+first=json.loads((v1/'targeted-result.json').read_bytes());assert first['testsRun']==38 and first['failures']==2 and not first['passed']
+firstsan=json.loads((v1/'sanitizer-result.json').read_bytes());assert firstsan['passed']
+stack=json.loads((v1/'stack-observation.json').read_bytes());assert stack['observedAfterRun']
+
+report=dict(reviewedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),reviewer='/root/p52_review',method='只讀 Git／AST／原件 hash 與結果交叉核對；本代理沒有編譯、執行產品或重跑任何測試。',sourceL=L,candidateBase=BASE,candidateCommitted=False,validationExitCode=0,adoptionBlockers=[],sources=source,
+    semantics=['原 contact_order 對同 ID 取整個 facts 最後一筆；新 last 相同，未排除 unplaced、其他 placement、invalid footprint 或 exclude。','原 earlier 是存在任一同 ID order<當前last；新 minimum<last 與其等價，UINT64_MAX 仍保 unsigned 比較。','boundary 先產生且不移動；member_begin 是此前綴長度。只快取已收的完整雙側面，cap 截斷與 pointer identity filter 未變。','排序仍單一穩定 insertion loop；移動 face 同時移動 key。去重仍逐筆順序刪除，key 與 face 同步 memmove；未把刪除改成批次。','修後指標先計 i-member_begin，合法範圍含最後零長度 memmove 的 one-past。原 i 含 boundary 前綴的中間越界指標不再形成。','合法 8 regions 各8 holes/4頂點產生144個boundary側面；新增夾具在刪member左面後要求145面及精確右面數值與未觸碰尾槽。','超過128已收側面的 direct collector 不截斷、不新增拒絕，使用完整 facts 查 last/min；provider 原64成員上限仍在原處。','所有快取都是單次 collect 的2KiB stack；provider query新身分、cap0仍evaluate、失敗保留out/count、sealed與K求值依賴控制流未改。'],
+    mutationControls=checks,originalControlsRetained=20,originalControlRetargeted='equal-order-dedup；原 case/label 不變，嚴格<改在等價minimum上。',newControls=4,numericOriginalAndCandidateCases=8,numericBuildAndCasesExitZero=True,originalNumericCollectorExactlyGitL=ref(originalfile),targeted=summary,targetedCommandCount=len(rows),targetedRawHashesChecked=len([x for r in rows for x in ('stdout','stderr') if x in r]),environment=environment,sanitizer=dict(cases=8,allExitZero=True,allStderrEmpty=True,sourceHashesMatch=True),
+    firstAttempt=dict(targeted=first,stackObservation=stack,asanPassedButDidNotDisprovePointerUB=True,limitation='8MiB為執行後同工具環境觀察，不是當刻子程序收據。v2同時修source與設16MiB；不可把v1兩BridgeClosed的根因宣稱已由單因子實驗證實。'),
+    references=[ref(RAW/n) for n in ('source-hashes.json','candidate.patch','numeric-commands.json','targeted-commands.json','targeted-result.json','targeted-unittest.log','launch-environment.json','sanitizer-result.json')]+[ref(v1/n) for n in ('targeted-result.json','targeted-unittest.log','stack-observation.json','sanitizer-result.json')]+[ref(OUT/n) for n in ('candidate-v1.patch','candidate-v2.patch','v1-to-v2-exact.diff','review-v2-source.txt')],rawFileIndex=rawrefs,
+    limitations=['原件的subprocess returncode由執行代理保存；本代理沒有親自重跑。其外層工具退出以作者通知為準，沒有把JSON passed推成親自觀察transport0。','ASan/UBSan通過僅覆蓋這八組實例，不能證明所有中間指標合法；採用依據包含C靜態推理和實際括號修正。','這不是完整native、browser、Q38／§7或P189新來源驗收，也沒有聲稱效能改善。','候選仍未commit；未測Windows、32bit或其他ABI。'])
+p=OUT/'v2-independent-review.json';assert not p.exists();p.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(report=str(p),bytes=p.stat().st_size,sha256=h(p.read_bytes()),validationExitCode=0,controls=len(checks),actualMutantSourcesChecked=sum(x['actualMutantSource'] is not None for x in checks),targetedTests=38,numericEach=8,sanitizerCases=8,rawFileReferences=len(rawrefs)),ensure_ascii=False))

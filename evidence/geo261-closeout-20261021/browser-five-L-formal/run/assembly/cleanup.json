@@ -1,0 +1,308 @@
+{
+  "actions": [
+    {
+      "at": "2026-10-20T23:39:48Z",
+      "signal": "SIGINT",
+      "pid": 234343,
+      "pgid": 234343,
+      "starttime": 1487468
+    }
+  ],
+  "errors": [],
+  "liveRemaining": [],
+  "zombiesRemaining": [],
+  "processes": [
+    {
+      "pid": 234311,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234311,
+      "starttime": 1487322,
+      "argv": "",
+      "role": "build",
+      "firstSeen": "2026-10-20T23:36:50Z",
+      "lastSeen": "2026-10-20T23:36:50Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:50Z",
+      "pid": 234323,
+      "state": "S",
+      "ppid": 234311,
+      "pgid": 234311,
+      "starttime": 1487345,
+      "argv": "sh -c python3 geometry-web/start_local.py --build-only",
+      "lastSeen": "2026-10-20T23:36:50Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:50Z",
+      "pid": 234324,
+      "state": "R",
+      "ppid": 234323,
+      "pgid": 234311,
+      "starttime": 1487345,
+      "argv": "python3 geometry-web/start_local.py --build-only",
+      "lastSeen": "2026-10-20T23:36:50Z"
+    },
+    {
+      "pid": 234325,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234325,
+      "starttime": 1487376,
+      "argv": "",
+      "role": "fonts-package",
+      "firstSeen": "2026-10-20T23:36:50Z",
+      "lastSeen": "2026-10-20T23:36:50Z"
+    },
+    {
+      "pid": 234326,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234326,
+      "starttime": 1487378,
+      "argv": "",
+      "role": "fonts-default",
+      "firstSeen": "2026-10-20T23:36:50Z",
+      "lastSeen": "2026-10-20T23:36:51Z"
+    },
+    {
+      "pid": 234327,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234327,
+      "starttime": 1487432,
+      "argv": "",
+      "role": "fonts-match",
+      "firstSeen": "2026-10-20T23:36:51Z",
+      "lastSeen": "2026-10-20T23:36:51Z"
+    },
+    {
+      "pid": 234328,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234328,
+      "starttime": 1487437,
+      "argv": "",
+      "role": "browser-version",
+      "firstSeen": "2026-10-20T23:36:51Z",
+      "lastSeen": "2026-10-20T23:36:51Z"
+    },
+    {
+      "pid": 234342,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234342,
+      "starttime": 1487466,
+      "argv": "",
+      "role": "node-version",
+      "firstSeen": "2026-10-20T23:36:51Z",
+      "lastSeen": "2026-10-20T23:36:51Z"
+    },
+    {
+      "pid": 234343,
+      "state": "S",
+      "ppid": 234265,
+      "pgid": 234343,
+      "starttime": 1487468,
+      "argv": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -u /workspace/geometry-axiom/geometry-web/serve.py 18851",
+      "role": "server",
+      "firstSeen": "2026-10-20T23:36:51Z",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "pid": 234344,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234344,
+      "starttime": 1487470,
+      "argv": "",
+      "role": "runtime-attempt-1",
+      "firstSeen": "2026-10-20T23:36:51Z",
+      "lastSeen": "2026-10-20T23:36:51Z"
+    },
+    {
+      "pid": 234355,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234355,
+      "starttime": 1487598,
+      "argv": "",
+      "role": "runtime-attempt-2",
+      "firstSeen": "2026-10-20T23:36:52Z",
+      "lastSeen": "2026-10-20T23:36:53Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:52Z",
+      "pid": 234353,
+      "state": "Z",
+      "ppid": 234343,
+      "pgid": 234343,
+      "starttime": 1487541,
+      "argv": "",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "pid": 234357,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234357,
+      "starttime": 1487653,
+      "argv": "",
+      "role": "runtime-before",
+      "firstSeen": "2026-10-20T23:36:53Z",
+      "lastSeen": "2026-10-20T23:36:53Z"
+    },
+    {
+      "pid": 234359,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234359,
+      "starttime": 1487688,
+      "argv": "",
+      "role": "run",
+      "firstSeen": "2026-10-20T23:36:53Z",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:54Z",
+      "pid": 234381,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234380,
+      "starttime": 1487710,
+      "argv": "",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:54Z",
+      "pid": 234383,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234359,
+      "starttime": 1487710,
+      "argv": "",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:54Z",
+      "pid": 234384,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234359,
+      "starttime": 1487711,
+      "argv": "",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:54Z",
+      "pid": 234366,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234359,
+      "starttime": 1487700,
+      "argv": "",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:54Z",
+      "pid": 234467,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234359,
+      "starttime": 1487742,
+      "argv": "",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:54Z",
+      "pid": 234405,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234359,
+      "starttime": 1487720,
+      "argv": "",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:54Z",
+      "pid": 234407,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234359,
+      "starttime": 1487721,
+      "argv": "",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:54Z",
+      "pid": 234451,
+      "state": "S",
+      "ppid": 234384,
+      "pgid": 234359,
+      "starttime": 1487735,
+      "argv": "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-browser-five-l43f85313-formal/assembly/chrome-profile --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9367 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1792524536884936 --launch-time-ticks=14877355617 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,16457039013965811566,12212985149240357011,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,11445924418153571422,12432013888478909102,4 --trace-process-track-uuid=3190708990997080739",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:54Z",
+      "pid": 234421,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 234359,
+      "starttime": 1487726,
+      "argv": "",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "role": "後代或接回孤兒",
+      "firstSeen": "2026-10-20T23:36:54Z",
+      "pid": 234460,
+      "state": "S",
+      "ppid": 234384,
+      "pgid": 234359,
+      "starttime": 1487739,
+      "argv": "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/tmp/geo261-browser-five-l43f85313-formal/assembly/chrome-profile --disable-print-preview --change-stack-guard-on-fork=enable --no-sandbox --remote-debugging-port=9367 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=7 --time-ticks-at-unix-epoch=-1792524536884936 --launch-time-ticks=14877393490 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,16457039013965811566,12212985149240357011,262144 --disable-features=PaintHolding --variations-seed-version --pseudonymization-salt-handle=7,i,11445924418153571422,12432013888478909102,4 --trace-process-track-uuid=3190708992871164437",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    },
+    {
+      "pid": 236626,
+      "state": "Z",
+      "ppid": 234265,
+      "pgid": 236626,
+      "starttime": 1505141,
+      "argv": "",
+      "role": "runtime-after",
+      "firstSeen": "2026-10-20T23:39:48Z",
+      "lastSeen": "2026-10-20T23:39:48Z"
+    }
+  ],
+  "directReturncodes": {
+    "234311": 0,
+    "234325": 0,
+    "234326": 0,
+    "234327": 0,
+    "234328": 0,
+    "234342": 0,
+    "234343": -2,
+    "234344": 1,
+    "234355": 0,
+    "234357": 0,
+    "234359": 0,
+    "236626": 0
+  },
+  "httpPortFree": true,
+  "cdpPortFree": true,
+  "portCheck": "connect_ex 必須 ECONNREFUSED，避免 TIME_WAIT 被誤認為存活 listener"
+}

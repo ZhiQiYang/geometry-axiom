@@ -1,0 +1,343 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "preparedUtc": "2026-10-21T05:52:50.517635+00:00",
+  "preparedBy": "/root/q38_card_gates/l2_gate_acceptors",
+  "instancePath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/instance.json",
+  "instanceSha256": "ad0e74a3798fedf240d7a02af82ee7849496981276418335c38b9f36715ac1f3",
+  "sourceHeadObserved": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "sourceStatusObserved": "",
+  "templateStatus": "L2 四詳細接受器只曾準備，未實跑；原判準沿用 L 已驗版本。",
+  "files": [
+    {
+      "name": "q38-acceptor.py",
+      "templatePath": "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/gate-review/q38-acceptor.py",
+      "templateBytes": 15064,
+      "templateSha256": "23f0e1d4d537d863a3ebd3bec49954cc320c89054341c5a4772a401f2f7566f4",
+      "outputPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/q38-acceptor.py",
+      "diffPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/q38-acceptor.diff",
+      "reverseWhitelistedBytesExact": true,
+      "ASTValid": true,
+      "verificationKeys": [
+        "accepted",
+        "artifacts",
+        "elapsedSeconds",
+        "officialExitCode",
+        "problems",
+        "summary"
+      ],
+      "allowedEdits": [
+        {
+          "before": "BASE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021')",
+          "after": "BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')",
+          "count": 1
+        },
+        {
+          "before": "ROOT=Path('/workspace/geo261-gates-l2-249571fe2477-20261021')",
+          "after": "ROOT=Path('/workspace/geo261-gates-l3-6589248c9a94-20261021')",
+          "count": 1
+        },
+        {
+          "before": "SHA='249571fe2477845d5330f6190dad965bf327f43b'",
+          "after": "SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'",
+          "count": 1
+        }
+      ],
+      "jobsUnchanged": 1,
+      "executed": false,
+      "outputBytes": 15064,
+      "outputSha256": "3404731486f310f2fe088047c0a6631afbb16b2db573093f26c4935e5a67c161",
+      "diffBytes": 919,
+      "diffSha256": "9ddbe24ac140772ddc083e1bc4608ce9ffe854299db54207e52df62913ea11e4"
+    },
+    {
+      "name": "controls-acceptor.py",
+      "templatePath": "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/gate-review/controls-acceptor.py",
+      "templateBytes": 14286,
+      "templateSha256": "789fe3a643feefdd1012923f54de39aad8434bef3e236f6714eba52ffd41a756",
+      "outputPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/controls-acceptor.py",
+      "diffPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/controls-acceptor.diff",
+      "reverseWhitelistedBytesExact": true,
+      "ASTValid": true,
+      "verificationKeys": [
+        "accepted",
+        "artifacts",
+        "elapsedSeconds",
+        "expectationCheckExitCode",
+        "problems",
+        "rawGateExitCode",
+        "summary"
+      ],
+      "allowedEdits": [
+        {
+          "before": "BASE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021')",
+          "after": "BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')",
+          "count": 1
+        },
+        {
+          "before": "ROOT=Path('/workspace/geo261-gates-l2-249571fe2477-20261021')",
+          "after": "ROOT=Path('/workspace/geo261-gates-l3-6589248c9a94-20261021')",
+          "count": 1
+        },
+        {
+          "before": "SHA='249571fe2477845d5330f6190dad965bf327f43b'",
+          "after": "SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'",
+          "count": 1
+        }
+      ],
+      "jobsUnchanged": 1,
+      "executed": false,
+      "outputBytes": 14286,
+      "outputSha256": "1de2721019f4a4bdc891d34139ba6fb8d364d51de03993c5a2e0e428febfda5c",
+      "diffBytes": 1126,
+      "diffSha256": "b655491c9f4c7dafc43b088c431679bce41e87c03505e6b216903c39c1a97be9"
+    },
+    {
+      "name": "card-acceptor.py",
+      "templatePath": "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/gate-review/card-acceptor.py",
+      "templateBytes": 11660,
+      "templateSha256": "cc8aaea6248b0fb7a552d3d0e718a15e729e1d9a0910e6c272467b7ea0f18b46",
+      "outputPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/card-acceptor.py",
+      "diffPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/card-acceptor.diff",
+      "reverseWhitelistedBytesExact": true,
+      "ASTValid": true,
+      "verificationKeys": [
+        "accepted",
+        "artifacts",
+        "officialExitCode",
+        "problems"
+      ],
+      "allowedEdits": [
+        {
+          "before": "BASE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021')",
+          "after": "BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')",
+          "count": 1
+        },
+        {
+          "before": "ROOT=Path('/workspace/geo261-gates-l2-249571fe2477-20261021')",
+          "after": "ROOT=Path('/workspace/geo261-gates-l3-6589248c9a94-20261021')",
+          "count": 1
+        },
+        {
+          "before": "SHA='249571fe2477845d5330f6190dad965bf327f43b'",
+          "after": "SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'",
+          "count": 1
+        }
+      ],
+      "jobsUnchanged": 1,
+      "executed": false,
+      "outputBytes": 11660,
+      "outputSha256": "c1ece7e8ab0a0bab247709a2f6fb4e12c34e3c44ecbb84b947bf0a4b255b325f",
+      "diffBytes": 990,
+      "diffSha256": "d9732c7af646231d8563d61776a9bc092f47337cd5af8772d0ec5c131308eacc"
+    },
+    {
+      "name": "axiom-acceptor.py",
+      "templatePath": "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/gate-review/axiom-acceptor.py",
+      "templateBytes": 9303,
+      "templateSha256": "0738f91389d766703c610418d4f4f613d6ab12ead9728f7333e37cd15bc42c86",
+      "outputPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/axiom-acceptor.py",
+      "diffPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/axiom-acceptor.diff",
+      "reverseWhitelistedBytesExact": true,
+      "ASTValid": true,
+      "verificationKeys": [
+        "accepted",
+        "artifacts",
+        "officialExitCode",
+        "problems"
+      ],
+      "allowedEdits": [
+        {
+          "before": "BASE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021')",
+          "after": "BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')",
+          "count": 1
+        },
+        {
+          "before": "ROOT=Path('/workspace/geo261-gates-l2-249571fe2477-20261021')",
+          "after": "ROOT=Path('/workspace/geo261-gates-l3-6589248c9a94-20261021')",
+          "count": 1
+        },
+        {
+          "before": "SHA='249571fe2477845d5330f6190dad965bf327f43b'",
+          "after": "SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'",
+          "count": 1
+        }
+      ],
+      "jobsUnchanged": 1,
+      "executed": false,
+      "outputBytes": 9303,
+      "outputSha256": "d22f6e7f5bb987a39c138cd1bb6ae2fdedc1872a077cafd80d19d2071e4e7ebe",
+      "diffBytes": 1079,
+      "diffSha256": "8f0c8014b1034f609a719a25c25168cf4b7ab9bdcb036031363350a3159f6e99"
+    },
+    {
+      "name": "verify-gate.py",
+      "templatePath": "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/verify-gate.py",
+      "templateBytes": 11086,
+      "templateSha256": "1d470e96d925f51f33663b44095dc12df7d6dfc5a4f047ec6df13508f7cf001b",
+      "outputPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.py",
+      "diffPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.diff",
+      "reverseWhitelistedBytesExact": true,
+      "ASTValid": true,
+      "verificationKeys": [],
+      "allowedEdits": [
+        {
+          "before": "BASE=Path('/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021')",
+          "after": "BASE=Path('/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021')",
+          "count": 1
+        },
+        {
+          "before": "SHA='249571fe2477845d5330f6190dad965bf327f43b'",
+          "after": "SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'",
+          "count": 1
+        }
+      ],
+      "jobsUnchanged": 1,
+      "executed": false,
+      "outputBytes": 11086,
+      "outputSha256": "65a51dc606c2eafdba96db31d400ef09bd3f2bab2479886165909cea13302a46",
+      "diffBytes": 770,
+      "diffSha256": "37e1b7a5c3d045916ea786c5d3c1be6586091af3e4207db4078c771b7eb13c9c"
+    },
+    {
+      "name": "static-anchor-review.py",
+      "templatePath": "/workspace/geo261-evidence/revalidation-l2-249571fe2477-20261021/preparation/gate-review/static-anchor-review.py",
+      "templateBytes": 14075,
+      "templateSha256": "1e4076a9c3848fa18fd36677ae53552eeac4c09f4a887357bb1db92a6093dd16",
+      "outputPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/static-anchor-review.py",
+      "diffPath": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/static-anchor-review.diff",
+      "reverseWhitelistedBytesExact": true,
+      "ASTValid": true,
+      "verificationKeys": [
+        0,
+        1
+      ],
+      "allowedEdits": [
+        {
+          "before": "ROOT=Path('/workspace/geo261-gates-l2-249571fe2477-20261021')",
+          "after": "ROOT=Path('/workspace/geo261-gates-l3-6589248c9a94-20261021')",
+          "count": 1
+        },
+        {
+          "before": "SHA='249571fe2477845d5330f6190dad965bf327f43b'",
+          "after": "SHA='6589248c9a94bdf0460d8f84dd1610e51048188b'",
+          "count": 1
+        }
+      ],
+      "jobsUnchanged": 1,
+      "executed": false,
+      "outputBytes": 14075,
+      "outputSha256": "8e67b9273b5c404f513feec1da759cbc02d362c5ee71cbcc4d3aaf472ab4aeeb",
+      "diffBytes": 667,
+      "diffSha256": "f9366233115cc65ca387d158c5a8bff3ca8ecfc345fcda9551c9d1b2569c1c00"
+    }
+  ],
+  "futureVerificationCommands": {
+    "q38": {
+      "primary": [
+        "env",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "python3",
+        "-B",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.py",
+        "q38"
+      ],
+      "detailed": [
+        "env",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "python3",
+        "-B",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/q38-acceptor.py",
+        "q38"
+      ],
+      "primaryReport": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/q38.json",
+      "detailedReport": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/q38.json"
+    },
+    "controls": {
+      "primary": [
+        "env",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "python3",
+        "-B",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.py",
+        "controls"
+      ],
+      "detailed": [
+        "env",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "python3",
+        "-B",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/controls-acceptor.py"
+      ],
+      "primaryReport": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/controls.json",
+      "detailedReport": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/controls.json"
+    },
+    "card": {
+      "primary": [
+        "env",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "python3",
+        "-B",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.py",
+        "card"
+      ],
+      "detailed": [
+        "env",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "python3",
+        "-B",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/card-acceptor.py"
+      ],
+      "primaryReport": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/card.json",
+      "detailedReport": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/card.json"
+    },
+    "axiom": {
+      "primary": [
+        "env",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "python3",
+        "-B",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/verify-gate.py",
+        "axiom"
+      ],
+      "detailed": [
+        "env",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "python3",
+        "-B",
+        "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/gate-review/axiom-acceptor.py"
+      ],
+      "primaryReport": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/verification/axiom.json",
+      "detailedReport": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/gates/acceptance-review/axiom.json"
+    }
+  },
+  "gateJobs": 1,
+  "preparedOnly": true,
+  "readyToLaunch": false,
+  "primaryExecuted": false,
+  "detailedAcceptorsExecuted": false,
+  "formalToolsImportedOrExecuted": false,
+  "productBuildOrTestsExecuted": false,
+  "worktreeChanged": false,
+  "globalCacheReadOrChanged": false,
+  "historicalMetadataUnchanged": true,
+  "requirements": [
+    "等待 root 明確放行 gates；本收據不是放行。",
+    "同 L3 native acceptedNative=true、完整範圍、真退出碼及原 binary/sidecar 終值先成立。",
+    "逐 phase 必須主 accepted/exit0 與詳細 accepted/exit0 均成立後才啟下一 phase；主接受器只檢前一主接受結果。",
+    "Q38 42=39 compiled+3 Python-only；41 killed+SPM24 equivalent。",
+    "controls12 原 raw gate1/expected checker0；9 survived+3 unlabelled。",
+    "card53 含原3個 tests target 暫改並逐byte還原；baseline43，restore依原case。",
+    "axiom5 baseline及每次restore44；不放寬具名紅判準。",
+    "共享 bridge 由同 L3 native final 經四 phase before/after 串接 bytes/hash/mtime 與原件。",
+    "四詳細接受器原歴史 metadata 維持原 L SHA；不是 L3 獨立審查或舊原作者重驗。",
+    "原 final-source 含舊 session/observations，未實例化。"
+  ]
+}

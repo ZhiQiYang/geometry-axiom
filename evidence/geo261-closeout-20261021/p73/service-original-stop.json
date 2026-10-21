@@ -1,0 +1,26 @@
+{
+  "servicePort": 18843,
+  "serverPid": 111233,
+  "verifiedCommand": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-u",
+    "/workspace/geometry-axiom/geometry-web/serve.py",
+    "18843"
+  ],
+  "runtimeRoot": "/workspace/geometry-axiom",
+  "capturedChildPids": [
+    111239
+  ],
+  "signal": "SIGINT",
+  "before": {
+    "111233": "S",
+    "111239": "S"
+  },
+  "after": {
+    "111233": "absent",
+    "111239": "absent"
+  },
+  "portClosed": true,
+  "earlierChecks": "先前只讀/proc/PID/cwd被拒及task/children不存在，兩次均未發訊號；以完整命令、自有runtime及ps父子關係交叉核對",
+  "exitCode": 0
+}

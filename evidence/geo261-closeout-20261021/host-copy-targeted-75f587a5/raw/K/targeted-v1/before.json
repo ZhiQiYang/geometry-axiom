@@ -1,0 +1,269 @@
+{
+  "head": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "files": {
+    "geometry-core/kernel/candidate.c": {
+      "bytes": 12611,
+      "sha256": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77"
+    },
+    "geometry-core/kernel/candidate.h": {
+      "bytes": 4366,
+      "sha256": "5d3c6a1db015e7371ae4b163024c3eae505374bd52da6729df85e897289daf7f"
+    },
+    "geometry-core/kernel/clip.c": {
+      "bytes": 7551,
+      "sha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea"
+    },
+    "geometry-core/kernel/clip.h": {
+      "bytes": 1597,
+      "sha256": "31e2e53370e437073c098296a6f669ef5dd7959f1811c57c77604a34dc71c99c"
+    },
+    "geometry-core/kernel/codec.c": {
+      "bytes": 23308,
+      "sha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a"
+    },
+    "geometry-core/kernel/codec.h": {
+      "bytes": 2393,
+      "sha256": "81de17c90f814c798a271cad6a0b2f6fbcdc5e6c4e46af14a002be818f9feb14"
+    },
+    "geometry-core/kernel/datums.c": {
+      "bytes": 4222,
+      "sha256": "f5d385df8d01b9d4399371ecd0dc02dfbe2ae0c62c988262ef5cd990676e065d"
+    },
+    "geometry-core/kernel/datums.h": {
+      "bytes": 1829,
+      "sha256": "9b23a1c746c2a0f46d55e2bb19309167d76c7be34bed7ecc35a11df633d49607"
+    },
+    "geometry-core/kernel/document.c": {
+      "bytes": 2636,
+      "sha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1"
+    },
+    "geometry-core/kernel/document.h": {
+      "bytes": 2016,
+      "sha256": "603e684ca9c5ab2b8d23205cc3382a9e305c1e57441c0854367a57c441461e56"
+    },
+    "geometry-core/kernel/enclosure.c": {
+      "bytes": 7871,
+      "sha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77"
+    },
+    "geometry-core/kernel/enclosure.h": {
+      "bytes": 3604,
+      "sha256": "8e6162fee153af7ff6a1d8e13d8b3e01db90c51d9d41b846025876dfb3c5c7f5"
+    },
+    "geometry-core/kernel/enclosure_sources.c": {
+      "bytes": 17213,
+      "sha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68"
+    },
+    "geometry-core/kernel/enclosure_sources.h": {
+      "bytes": 3799,
+      "sha256": "c512b34721bcf1e428ffb19f665970c788292b542c1b8c8bf9b1257ab3c5f4b4"
+    },
+    "geometry-core/kernel/exact.c": {
+      "bytes": 3243,
+      "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf"
+    },
+    "geometry-core/kernel/exact.h": {
+      "bytes": 1104,
+      "sha256": "bca06ef8df48636d6a79b50dae0f9337b37d886ca4ff097fc03ce865e5cffb2d"
+    },
+    "geometry-core/kernel/geometry.c": {
+      "bytes": 29994,
+      "sha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00"
+    },
+    "geometry-core/kernel/geometry.h": {
+      "bytes": 5583,
+      "sha256": "72a6268999b3ee636a668e4d5fa6f74203dbb35de52b6b86f24dda48799ad3b1"
+    },
+    "geometry-core/kernel/grid.c": {
+      "bytes": 8062,
+      "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f"
+    },
+    "geometry-core/kernel/grid.h": {
+      "bytes": 2696,
+      "sha256": "2180b532a060a54572f3e352178326c425ad216e67bb6ee567ae6f62666b4454"
+    },
+    "geometry-core/kernel/grid_store.c": {
+      "bytes": 24010,
+      "sha256": "89da92935c8e4765b54a83b06fb3157bdfcde74410a7edd8cf74ed87652dea5d"
+    },
+    "geometry-core/kernel/grid_store.h": {
+      "bytes": 8400,
+      "sha256": "26fdab200c00eaad4bb3357d86f8c1a7334305976c147ec4190a10f39b11acf4"
+    },
+    "geometry-core/kernel/guides.c": {
+      "bytes": 6022,
+      "sha256": "1548a5f72bf3e9904a64c871d2658409aab300786af598e7ca69a4fb82e4897e"
+    },
+    "geometry-core/kernel/guides.h": {
+      "bytes": 3115,
+      "sha256": "14e7f9444057120309666923378240a28ea7f1607a0c780ac5279c60a1099be1"
+    },
+    "geometry-core/kernel/internal/datums.h": {
+      "bytes": 178,
+      "sha256": "244419b5c43ccadf48f8b9b2ac985496cc28453443acd3984dc2ee1e0683a55b"
+    },
+    "geometry-core/kernel/internal/document.h": {
+      "bytes": 897,
+      "sha256": "db38e7ee5a0dde09e69f8290c5ba3ac042eeb979c8d742916da449211a88b489"
+    },
+    "geometry-core/kernel/internal/enclosures.h": {
+      "bytes": 273,
+      "sha256": "d568b1b7ab0df12e65618a2b5a2ce909cddfbae7f0b88eccbfd1bbd693a0c0aa"
+    },
+    "geometry-core/kernel/internal/grid_store.h": {
+      "bytes": 301,
+      "sha256": "499f879f4f9cf6c58cab360dc9273c90095b058880336cf147888072b1602ccd"
+    },
+    "geometry-core/kernel/internal/guides.h": {
+      "bytes": 181,
+      "sha256": "aab50ff4e4ce23a258dbc1207bd44e80e8ce2008e9d9c547454041b4cf0fb114"
+    },
+    "geometry-core/kernel/internal/named_values.h": {
+      "bytes": 219,
+      "sha256": "e1c0d76fed48cb8c6015735aa143b0c4edc90ccfcd3dd85548c6f130b90bd783"
+    },
+    "geometry-core/kernel/internal/parameter_store.h": {
+      "bytes": 453,
+      "sha256": "5d3e31ce6cdee43056ae2ede68e902cb7368fb40108928c9ce9aff63dd4cb88d"
+    },
+    "geometry-core/kernel/internal/placements.h": {
+      "bytes": 301,
+      "sha256": "ff2b4ea612c80b4ab76da4024d768493842b879133ef6598dc4b4f63503201da"
+    },
+    "geometry-core/kernel/internal/regions.h": {
+      "bytes": 410,
+      "sha256": "6dc80e855f3248208fa4cc945141339631673e9d9d2414b11f649f9d48c5df36"
+    },
+    "geometry-core/kernel/internal/versions.h": {
+      "bytes": 704,
+      "sha256": "19d2a7d32dd3c8b4adb0e4dab228f7b0f9aaaeec46bcc15453ca51664bded0ac"
+    },
+    "geometry-core/kernel/linear.c": {
+      "bytes": 4333,
+      "sha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c"
+    },
+    "geometry-core/kernel/linear.h": {
+      "bytes": 1619,
+      "sha256": "7701f7e77f9ae34ee74004606a5c88bbc9158c0bb463ec55fa116d7d2ad245be"
+    },
+    "geometry-core/kernel/linear_definition_sources.c": {
+      "bytes": 11033,
+      "sha256": "acc6312b9d438f0ef1e705e1b977e2ce8ad6ca2853248636eb241f40aab62266"
+    },
+    "geometry-core/kernel/linear_definition_sources.h": {
+      "bytes": 2013,
+      "sha256": "c533ad62f5ddda634591ca42b5680c7e381fb0352c2f9c932eb900f3eb2f579f"
+    },
+    "geometry-core/kernel/named_values.c": {
+      "bytes": 2105,
+      "sha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1"
+    },
+    "geometry-core/kernel/named_values.h": {
+      "bytes": 891,
+      "sha256": "9965267c054be1b5ca758189c91ffb79e52c6ef98e678acef824ec27fd0ca690"
+    },
+    "geometry-core/kernel/parameter_sources.c": {
+      "bytes": 21934,
+      "sha256": "60908674f3b6a6a820ef60279964a9862ea99e64db4c75478cbb0b63def8edd9"
+    },
+    "geometry-core/kernel/parameter_sources.h": {
+      "bytes": 3907,
+      "sha256": "7da1bd225d939fe1e628a971b68102eb5e45ecebae4b5f00bf184e5975d88fac"
+    },
+    "geometry-core/kernel/parameters.c": {
+      "bytes": 18594,
+      "sha256": "d4e0f6402ef38e82e4192250cbe7617668ec7c0d210fc531d0410e2cb93eda94"
+    },
+    "geometry-core/kernel/parameters.h": {
+      "bytes": 6267,
+      "sha256": "1385716e7231c1f1adc461cc29fd8b9e7d2663317f196f5236e6c857cebf0d4e"
+    },
+    "geometry-core/kernel/placement_sources.c": {
+      "bytes": 13975,
+      "sha256": "ebf68c7c67a1a1281b971bfdfba29c9963dee934204db4c3ccfe960b1950c502"
+    },
+    "geometry-core/kernel/placement_sources.h": {
+      "bytes": 3297,
+      "sha256": "ff52eb8121cff380de275aa97d8562e56d58d8e21968369fde2db67c04135a7a"
+    },
+    "geometry-core/kernel/placements.c": {
+      "bytes": 10229,
+      "sha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2"
+    },
+    "geometry-core/kernel/placements.h": {
+      "bytes": 3593,
+      "sha256": "07977950e771da87b908414c8c591b65af5a6166672b7001724b21ef397921f6"
+    },
+    "geometry-core/kernel/region_key_sources.c": {
+      "bytes": 9853,
+      "sha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b"
+    },
+    "geometry-core/kernel/region_key_sources.h": {
+      "bytes": 2876,
+      "sha256": "e147a513df0aae2e7ddcedac9d4df17695c6147fcd73305f18a503322c2d9146"
+    },
+    "geometry-core/kernel/regions.c": {
+      "bytes": 11576,
+      "sha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59"
+    },
+    "geometry-core/kernel/regions.h": {
+      "bytes": 3901,
+      "sha256": "795119199673378f7451411165000800b7a869283dbe87bbccfa0bf372819610"
+    },
+    "geometry-core/kernel/source.c": {
+      "bytes": 15939,
+      "sha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb"
+    },
+    "geometry-core/kernel/source.h": {
+      "bytes": 5373,
+      "sha256": "aa00bd5078495bc3c4165c81a58129a4216c6b40c87da91700f7b0c3bf9820a1"
+    },
+    "geometry-core/kernel/types.h": {
+      "bytes": 394,
+      "sha256": "8e2db361ebbd20b9cb58a57a10ac80897a622b244f421e86a95039428544458f"
+    },
+    "geometry-core/kernel/version_sources.c": {
+      "bytes": 11550,
+      "sha256": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236"
+    },
+    "geometry-core/kernel/version_sources.h": {
+      "bytes": 2496,
+      "sha256": "7c2b12a089b4525ec9e1bfd1742fa31fd40baf686f1461ada82deb3ad2dca671"
+    },
+    "geometry-core/kernel/versions.c": {
+      "bytes": 14772,
+      "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632"
+    },
+    "geometry-core/kernel/versions.h": {
+      "bytes": 5439,
+      "sha256": "09f692bd6d3edd5e9edfff20129dd1adffad8c7e6589ebd8c0af354efba8d3e2"
+    },
+    "tests/_bridge.py": {
+      "bytes": 12285,
+      "sha256": "dddeaec72eaed7e6255bb6c37013180b68364dc65f2f5aa4edd6f9fab6456423"
+    },
+    "tests/geo261_placement_definition_harness.c": {
+      "bytes": 27101,
+      "sha256": "d11d845679470c755dbb49a76366a14bd26b48458df0b830ff7d0091b4eb7131"
+    },
+    "tests/geo261_placement_sources_harness.c": {
+      "bytes": 35857,
+      "sha256": "0db5d0a9d97927a026248c34d70ab643ba62033a15c913b3fc1e3d23081d6b89"
+    },
+    "tests/test_engineering_json.py": {
+      "bytes": 11727,
+      "sha256": "52a49337054336011c4efbaa1ec15c8a2b71e4b05412b4f859cf190d816a9637"
+    },
+    "tests/test_geo261_native_kernel.py": {
+      "bytes": 27740,
+      "sha256": "81518721f7bc1ed3f4c779ab32cd437dd225b2483b3e6358bc7a55930986d4c7"
+    },
+    "tests/test_geo261_placement_definition.py": {
+      "bytes": 11790,
+      "sha256": "a5a2a1813fbd8c41946f47187ac7369b99113ac97489c6e39a53f1992dbc73ff"
+    },
+    "tests/test_geo261_placement_sources.py": {
+      "bytes": 8548,
+      "sha256": "68a675aa415e843d168a49169efd2e556b453897b1c35d96540f5efb0ef7e4cc"
+    }
+  }
+}

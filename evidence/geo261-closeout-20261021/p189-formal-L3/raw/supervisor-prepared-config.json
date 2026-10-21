@@ -1,0 +1,17 @@
+{
+  "prepared_utc": "2026-10-21T05:42:01.489274+00:00",
+  "authorization": "主代理明確放行後才可啟動",
+  "released": false,
+  "prepare_receipt": "/workspace/geo261-evidence/p189-formal-L3-6589248c9a94-n3zzuu64/prepare-receipt.json",
+  "supervisor": "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+  "supervisor_sha256": "e6e2dfdd321658084f33d175af01da22d0643103556de0fc9805d96f18f33413",
+  "out": "/workspace/geo261-evidence/p189-formal-L3-6589248c9a94-n3zzuu64",
+  "scheduled_launch_argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/p189-final-L-phase-supervisor.py",
+    "/workspace/geo261-evidence/p189-formal-L3-6589248c9a94-n3zzuu64/supervisor-released-config.json"
+  ],
+  "launch_transport": "exec_command保有頂層session並真wait；stdout/stderr直檔，不launch-and-exit。",
+  "classification": "正式 L3 P-189 驗收；本來源需新實跑，不沿用 L2 或候選成績"
+}

@@ -1,0 +1,374 @@
+{
+  "schema": "contact-trial-targeted-verification/1",
+  "source": {
+    "base": "7ad3216ac3ea00bec0adac7b38c3a3daf0a39d09",
+    "sources": {
+      "geometry-templates/woodworking/native/contact_world.c": "08f9c5e60a9396ab0791a01a1408605b39f70d0881f69bdf5e94d2dac1c7465e",
+      "tests/geo261_contact_world_harness.c": "a16e54c4fd6d316b32e3642db658bcad1a5d55141ea2690fc2d982ba256d9f0e",
+      "tests/test_geo261_wood_contact_world.py": "31779ea23b357455fd5722d747278afd65ea2c0539189ed7a7db9c39d0370f23"
+    },
+    "originalCollectorSha256": "fb961338710375da2c4eeb4b8af56f67bd1cf581067f91a48b356722646c30f8"
+  },
+  "numeric": {
+    "builds": 2,
+    "casesPerSide": 8,
+    "exitCode": 0,
+    "originalAlsoPasses": true
+  },
+  "targeted": {
+    "modules": [
+      "tests.test_geo261_wood_contact_world",
+      "tests.test_geo261_contact_sources",
+      "tests.test_geo261_wood_contacts",
+      "tests.test_geo261_wood_contacts_product",
+      "tests.test_mutation_anchors"
+    ],
+    "testsRun": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": [],
+    "passed": true
+  },
+  "contactWorldControls": [
+    {
+      "name": "positive-area",
+      "case": "collisions",
+      "marker": "collision-touch-is-clear",
+      "baselineIndex": 60,
+      "mutantIndex": 63,
+      "restoredIndex": 64,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "collision-identity",
+      "case": "collisions",
+      "marker": "collision-other-candidate-same-id-not-excluded",
+      "baselineIndex": 65,
+      "mutantIndex": 68,
+      "restoredIndex": 69,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "collision-placement",
+      "case": "collisions",
+      "marker": "collision-same-placement-only",
+      "baselineIndex": 70,
+      "mutantIndex": 73,
+      "restoredIndex": 74,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "placement-order",
+      "case": "ordering",
+      "marker": "placement-order-before-declaration",
+      "baselineIndex": 75,
+      "mutantIndex": 78,
+      "restoredIndex": 79,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "stable-ties",
+      "case": "ordering",
+      "marker": "placement-stable-equal-order-sides",
+      "baselineIndex": 80,
+      "mutantIndex": 83,
+      "restoredIndex": 84,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "equal-order-dedup",
+      "case": "ordering",
+      "marker": "equal-order-not-deduplicated",
+      "baselineIndex": 85,
+      "mutantIndex": 88,
+      "restoredIndex": 89,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "partial-shadow",
+      "case": "ordering",
+      "marker": "partial-shadow-retains-exposed-face",
+      "baselineIndex": 90,
+      "mutantIndex": 93,
+      "restoredIndex": 94,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "outline-component-index",
+      "case": "regions",
+      "marker": "region-outline-index-encoded",
+      "baselineIndex": 95,
+      "mutantIndex": 98,
+      "restoredIndex": 99,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "hole-component-index",
+      "case": "regions",
+      "marker": "region-hole-index-encoded",
+      "baselineIndex": 100,
+      "mutantIndex": 103,
+      "restoredIndex": 104,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "paired-capacity",
+      "case": "regions",
+      "marker": "member-capacity-pair-atomic",
+      "baselineIndex": 105,
+      "mutantIndex": 108,
+      "restoredIndex": 109,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "complete-footprint",
+      "case": "intervals",
+      "marker": "i5-notched-footprint-deferred",
+      "baselineIndex": 110,
+      "mutantIndex": 113,
+      "restoredIndex": 114,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "owner-identity",
+      "case": "extensions",
+      "marker": "owner-pointer-not-id",
+      "baselineIndex": 115,
+      "mutantIndex": 118,
+      "restoredIndex": 119,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "owner-extension",
+      "case": "extensions",
+      "marker": "owner-extension-outside-fixed-part",
+      "baselineIndex": 120,
+      "mutantIndex": 123,
+      "restoredIndex": 124,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "fixed-inclusive",
+      "case": "extensions",
+      "marker": "owner-fixed-interval-inclusive",
+      "baselineIndex": 125,
+      "mutantIndex": 128,
+      "restoredIndex": 129,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "free-end",
+      "case": "ends",
+      "marker": "free-end-faces-ignored",
+      "baselineIndex": 130,
+      "mutantIndex": 133,
+      "restoredIndex": 134,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "full-contact-width",
+      "case": "ends",
+      "marker": "narrow-end-face-ignored",
+      "baselineIndex": 135,
+      "mutantIndex": 138,
+      "restoredIndex": 139,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "contact-shadow",
+      "case": "ends",
+      "marker": "partial-earlier-face-shadows-only-contact",
+      "baselineIndex": 140,
+      "mutantIndex": 143,
+      "restoredIndex": 144,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "end-order",
+      "case": "ends",
+      "marker": "start-end-before-global-placement-order",
+      "baselineIndex": 145,
+      "mutantIndex": 148,
+      "restoredIndex": 149,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "stop-identity",
+      "case": "ordering",
+      "marker": "stop-exclusion-keeps-candidate-identity",
+      "baselineIndex": 150,
+      "mutantIndex": 153,
+      "restoredIndex": 154,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "extension-end",
+      "case": "ends",
+      "marker": "self-boundary-extension-end-exempt",
+      "baselineIndex": 155,
+      "mutantIndex": 158,
+      "restoredIndex": 159,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "duplicate-last-order",
+      "case": "order-keys",
+      "marker": "duplicate-last-order-includes-all-facts",
+      "baselineIndex": 160,
+      "mutantIndex": 163,
+      "restoredIndex": 164,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "duplicate-min-order",
+      "case": "order-keys",
+      "marker": "duplicate-min-order-can-shadow-earlier-output",
+      "baselineIndex": 165,
+      "mutantIndex": 168,
+      "restoredIndex": 169,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "duplicate-min-unplaced",
+      "case": "order-keys",
+      "marker": "duplicate-min-order-includes-ineligible-facts",
+      "baselineIndex": 170,
+      "mutantIndex": 173,
+      "restoredIndex": 174,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "dedup-key-move",
+      "case": "order-keys",
+      "marker": "dedup-removal-keeps-following-face-order",
+      "baselineIndex": 175,
+      "mutantIndex": 178,
+      "restoredIndex": 179,
+      "returncodes": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "sanitizer": {
+    "cases": 8,
+    "exitCode": 0,
+    "diagnostics": 0
+  },
+  "observedExecutions": [
+    {
+      "command": "env -u CC -u PYTHONOPTIMIZE python3 /workspace/geo261-evidence/contact-trial-7ad/v2/run_numeric.py",
+      "toolChunk": "1439a8",
+      "exitCode": 0
+    },
+    {
+      "command": "ulimit -s 16384 && exec env -u CC -u PYTHONOPTIMIZE python3 /workspace/geo261-evidence/contact-trial-7ad/v2/run_targeted.py",
+      "toolChunk": "7885b8",
+      "exitCode": 0
+    },
+    {
+      "command": "env -u CC -u PYTHONOPTIMIZE python3 /workspace/geo261-evidence/contact-trial-7ad/v2/run_sanitizers.py",
+      "toolChunk": "99a97f",
+      "exitCode": 0
+    }
+  ],
+  "limitations": [
+    "工具chunk與最外層退出碼為事後從真工具回覆轉錄；各子命令原輸出已由執行器即時落盤",
+    "原7ad collector也通過新數值契約；不將語義等價正控冒稱性能撤回紅燈",
+    "未執行性能量測、全七job、帳本重產或架構更新；候選不是可合併成果",
+    "v1完整保留：初版ASan綠不能消除後續靜態發現之指標結合律問題；初版兩BridgeClosed失敗未作killed。v2按16MiB stack重跑全綠"
+  ]
+}

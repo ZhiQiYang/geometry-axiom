@@ -1,0 +1,2523 @@
+[
+  {
+    "index": 0,
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:20.683947+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0000.stdout",
+      "bytes": 41,
+      "sha256": "447343aabd87face185699b3ba93593d9f4b343efec3369014fa3d46f04e0685"
+    },
+    "stderr": {
+      "path": "command-0000.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:20.686480+00:00"
+  },
+  {
+    "index": 1,
+    "command": [
+      "git",
+      "status",
+      "--porcelain"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:20.686599+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0001.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0001.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:20.789632+00:00"
+  },
+  {
+    "index": 2,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/exact.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/exact.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:20.796969+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0002.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0002.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:20.824051+00:00"
+  },
+  {
+    "index": 3,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/codec.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/codec.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:20.824385+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0003.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0003.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:20.899458+00:00"
+  },
+  {
+    "index": 4,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/geometry.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/geometry.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:20.899854+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0004.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0004.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:20.979626+00:00"
+  },
+  {
+    "index": 5,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/clip.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/clip.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:20.981045+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0005.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0005.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.030926+00:00"
+  },
+  {
+    "index": 6,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/grid.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/grid.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.031887+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0006.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0006.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.067428+00:00"
+  },
+  {
+    "index": 7,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/parameters.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/parameters.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.068198+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0007.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0007.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.132445+00:00"
+  },
+  {
+    "index": 8,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/parameter_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/parameter-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.133021+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0008.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0008.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.192037+00:00"
+  },
+  {
+    "index": 9,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/linear.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/linear.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.192499+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0009.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0009.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.222111+00:00"
+  },
+  {
+    "index": 10,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/named_values.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/named-values.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.222612+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0010.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0010.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.252197+00:00"
+  },
+  {
+    "index": 11,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/datums.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/datums.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.252744+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0011.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0011.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.283367+00:00"
+  },
+  {
+    "index": 12,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/source.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/source.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.284199+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0012.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0012.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.341291+00:00"
+  },
+  {
+    "index": 13,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/candidate.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/candidate.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.341953+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0013.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0013.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.384672+00:00"
+  },
+  {
+    "index": 14,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/placements.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/placements.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.386322+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0014.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0014.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.427328+00:00"
+  },
+  {
+    "index": 15,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/placement_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/placement-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.428049+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0015.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0015.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.485463+00:00"
+  },
+  {
+    "index": 16,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/versions.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/versions.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.486318+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0016.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0016.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.537789+00:00"
+  },
+  {
+    "index": 17,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/enclosure.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/enclosure.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.555383+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0017.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0017.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.594425+00:00"
+  },
+  {
+    "index": 18,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/enclosure_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/enclosure-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.595232+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0018.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0018.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.649475+00:00"
+  },
+  {
+    "index": 19,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/region_key_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/region-key-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.650678+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0019.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0019.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.694346+00:00"
+  },
+  {
+    "index": 20,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/document.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/document.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.695241+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0020.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0020.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.723989+00:00"
+  },
+  {
+    "index": 21,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/regions.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/regions.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.725510+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0021.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0021.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.772137+00:00"
+  },
+  {
+    "index": 22,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/grid_store.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/grid-store.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.773757+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0022.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0022.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.845475+00:00"
+  },
+  {
+    "index": 23,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/guides.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/guides.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.846578+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0023.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0023.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.879448+00:00"
+  },
+  {
+    "index": 24,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/linear_definition_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/linear-definition-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.880964+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0024.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0024.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.939682+00:00"
+  },
+  {
+    "index": 25,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/version_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/version-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.940598+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0025.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0025.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:21.988959+00:00"
+  },
+  {
+    "index": 26,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-host/history.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/host-history.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:21.991425+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0026.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0026.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.026145+00:00"
+  },
+  {
+    "index": 27,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-host/app_candidate.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/host-candidate.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.027116+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0027.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0027.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.071260+00:00"
+  },
+  {
+    "index": 28,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/members.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-members.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.072437+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0028.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0028.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.099210+00:00"
+  },
+  {
+    "index": 29,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/supports.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-supports.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.100774+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0029.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0029.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.128740+00:00"
+  },
+  {
+    "index": 30,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/contacts.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-contacts.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.130395+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0030.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0030.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.153164+00:00"
+  },
+  {
+    "index": 31,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/contact_world.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-contact-world.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.154208+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0031.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0031.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.200903+00:00"
+  },
+  {
+    "index": 32,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/contact_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-contact-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.202533+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0032.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0032.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.267249+00:00"
+  },
+  {
+    "index": 33,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/cut_list.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-cut-list.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.268723+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0033.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0033.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.297014+00:00"
+  },
+  {
+    "index": 34,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/member_declaration.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-member-declaration.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.298540+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0034.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0034.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.326792+00:00"
+  },
+  {
+    "index": 35,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/definition_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-definition-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.328178+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0035.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0035.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.399137+00:00"
+  },
+  {
+    "index": 36,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/world_validation.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-world-validation.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.400803+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0036.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0036.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.439241+00:00"
+  },
+  {
+    "index": 37,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/boundary_policy.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-boundary-policy.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.440904+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0037.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0037.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.461609+00:00"
+  },
+  {
+    "index": 38,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/engineering.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-engineering.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.541963+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0038.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0038.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.659350+00:00"
+  },
+  {
+    "index": 39,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/engineering_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-engineering-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.660846+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0039.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0039.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.741935+00:00"
+  },
+  {
+    "index": 40,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/engineering_operations.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-engineering-operations.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.743766+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0040.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0040.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.780602+00:00"
+  },
+  {
+    "index": 41,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/panel_layout.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-panel-layout.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.782322+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0041.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0041.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.812921+00:00"
+  },
+  {
+    "index": 42,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/panel_support.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-panel-support.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.814749+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0042.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0042.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.855307+00:00"
+  },
+  {
+    "index": 43,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/section_profile.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-section-profile.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.857523+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0043.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0043.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:22.940104+00:00"
+  },
+  {
+    "index": 44,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/section_profile_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-section-profile-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:22.941944+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0044.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0044.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.025090+00:00"
+  },
+  {
+    "index": 45,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/assembly.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-assembly.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.026713+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0045.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0045.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.146467+00:00"
+  },
+  {
+    "index": 46,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/assembly_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-assembly-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.148396+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0046.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0046.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.245791+00:00"
+  },
+  {
+    "index": 47,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/finish.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-finish.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.247693+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0047.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0047.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.335242+00:00"
+  },
+  {
+    "index": 48,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/derived_placement.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-derived-placement.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.337182+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0048.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0048.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.415872+00:00"
+  },
+  {
+    "index": 49,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/finish_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-finish-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.418245+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0049.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0049.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.532289+00:00"
+  },
+  {
+    "index": 50,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/grid_application.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-grid-application.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.534541+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0050.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0050.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.643172+00:00"
+  },
+  {
+    "index": 51,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/grid_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-grid-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.645035+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0051.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0051.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.770526+00:00"
+  },
+  {
+    "index": 52,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/grid_definition_codec.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-grid-definition-codec.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.772415+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0052.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0052.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.832878+00:00"
+  },
+  {
+    "index": 53,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/grid_cells.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-grid-cells.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.835145+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0053.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0053.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.892554+00:00"
+  },
+  {
+    "index": 54,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/grid_rules.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-grid-rules.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.894942+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0054.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0054.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:23.945488+00:00"
+  },
+  {
+    "index": 55,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-woodworking/native/member_reference.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-member-reference.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:23.947755+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0055.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0055.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.014897+00:00"
+  },
+  {
+    "index": 56,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/exact-client.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/exact-client.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:24.017251+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0056.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0056.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.043803+00:00"
+  },
+  {
+    "index": 57,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/codec-client.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/codec-client.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:24.046048+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0057.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0057.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.073473+00:00"
+  },
+  {
+    "index": 58,
+    "command": [
+      "/usr/bin/cc",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/exact-client.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/exact.o",
+      "-lm",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/exact-client"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:24.075924+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0058.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0058.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.096982+00:00"
+  },
+  {
+    "index": 59,
+    "command": [
+      "/usr/bin/cc",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/codec-client.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/codec.o",
+      "-lm",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/codec-client"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:24.099159+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0059.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0059.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.118703+00:00"
+  },
+  {
+    "index": 60,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:current_geometry.c"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.121023+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0060.stdout",
+      "bytes": 400284,
+      "sha256": "dc3fbfb14adde5078c36ab179936df88ba977b22bb341301cd30deafeeb97696"
+    },
+    "stderr": {
+      "path": "command-0060.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.126453+00:00"
+  },
+  {
+    "index": 61,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-core/references.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.137813+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0061.stdout",
+      "bytes": 62953,
+      "sha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac"
+    },
+    "stderr": {
+      "path": "command-0061.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.141750+00:00"
+  },
+  {
+    "index": 62,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/reference_sources.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.144596+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0062.stdout",
+      "bytes": 56687,
+      "sha256": "3695ab9844a80cf0041d2a6a67e2be96bf6ecbcd59709759d1add4822b70077c"
+    },
+    "stderr": {
+      "path": "command-0062.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.147738+00:00"
+  },
+  {
+    "index": 63,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/world_validation.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.150147+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0063.stdout",
+      "bytes": 6012,
+      "sha256": "673bbab71f1dc6c59960dd3764c7c367223fc57ad2ef2dae0e842637d993eddc"
+    },
+    "stderr": {
+      "path": "command-0063.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.153015+00:00"
+  },
+  {
+    "index": 64,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-MM",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-DGEOMETRY_KERNEL_EXTERNAL=1",
+      "-DGEOMETRY_WOODWORKING_EXTERNAL=1",
+      "-DGEOMETRY_HOST_HISTORY_EXTERNAL=1",
+      "-DGEOMETRY_HOST_CANDIDATE_EXTERNAL=1",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-geo261_host_facts_authority_harness.c"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.155614+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0064.stdout",
+      "bytes": 16594,
+      "sha256": "39662896cafec49b23249c5ef71954f1b4830f37c12c85c9c7a5013b84261594"
+    },
+    "stderr": {
+      "path": "command-0064.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.181321+00:00"
+  },
+  {
+    "index": 65,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/app_candidate.h"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.188575+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0065.stdout",
+      "bytes": 3141,
+      "sha256": "5f32ec9dadb4c9836ada7cbb89358edd3b5aee28c04bd98fa8bc54bb3d0ab0ce"
+    },
+    "stderr": {
+      "path": "command-0065.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.192171+00:00"
+  },
+  {
+    "index": 66,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/candidate_unity.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.193416+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0066.stdout",
+      "bytes": 273,
+      "sha256": "62856930c43f9c9dca2a34379e791b7e7556c8c4e12d1a7f05dcb874e3390cab"
+    },
+    "stderr": {
+      "path": "command-0066.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.196559+00:00"
+  },
+  {
+    "index": 67,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/definition_texts.h"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.198064+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0067.stdout",
+      "bytes": 567,
+      "sha256": "97f6a813f68828eab628ff630be0b25078727eeb987fd7acb4cc6afba3f9a49b"
+    },
+    "stderr": {
+      "path": "command-0067.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.200915+00:00"
+  },
+  {
+    "index": 68,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/document.h"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.202173+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0068.stdout",
+      "bytes": 1526,
+      "sha256": "142d4cd049a78a71f0c8e8757b97d50349ea087d065c15cca33f0434c7239d62"
+    },
+    "stderr": {
+      "path": "command-0068.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.204550+00:00"
+  },
+  {
+    "index": 69,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/domains.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.206042+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0069.stdout",
+      "bytes": 8008,
+      "sha256": "34f9ac6e18bbb11f9e1d33df0773eae7b8733888ca062b35fa2f3e4fa7d7019d"
+    },
+    "stderr": {
+      "path": "command-0069.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.208298+00:00"
+  },
+  {
+    "index": 70,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/enclosure_sources.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.209485+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0070.stdout",
+      "bytes": 2790,
+      "sha256": "5166462c06b4d5375a5eba8888e8f98dc6ecdfe351a9b4e2437ed2497ad6fce6"
+    },
+    "stderr": {
+      "path": "command-0070.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.212532+00:00"
+  },
+  {
+    "index": 71,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/grid_adapter.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.214156+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0071.stdout",
+      "bytes": 1567,
+      "sha256": "dc2f189dd525513f03133a9d608a4196ca150bce220e740f73e4bd6051a2cd46"
+    },
+    "stderr": {
+      "path": "command-0071.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.217330+00:00"
+  },
+  {
+    "index": 72,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/grid_context.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.218425+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0072.stdout",
+      "bytes": 1949,
+      "sha256": "f8eb9c5cc077cc3f556940f609f37529e831740be182fb02b33c85f8d09bd30d"
+    },
+    "stderr": {
+      "path": "command-0072.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.220750+00:00"
+  },
+  {
+    "index": 73,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/history.h"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.221804+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0073.stdout",
+      "bytes": 1840,
+      "sha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0"
+    },
+    "stderr": {
+      "path": "command-0073.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.225004+00:00"
+  },
+  {
+    "index": 74,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/history_unity.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.226181+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0074.stdout",
+      "bytes": 156,
+      "sha256": "a6afa2138ffc48d2c62e4debb94b55bc3567c841c132b642451613bc7f459a87"
+    },
+    "stderr": {
+      "path": "command-0074.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.229287+00:00"
+  },
+  {
+    "index": 75,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/legacy_json.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.230873+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0075.stdout",
+      "bytes": 664,
+      "sha256": "e11a2ab49c8bbe2fbb227b153b242da9d4e261cc85da1bfe0c7e82069756f397"
+    },
+    "stderr": {
+      "path": "command-0075.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.234153+00:00"
+  },
+  {
+    "index": 76,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/versions_adapter.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.235556+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0076.stdout",
+      "bytes": 274,
+      "sha256": "2bd905cc2f0541ea9b1571b1c434e59a46c46895a87febcd64d3c7b010d01194"
+    },
+    "stderr": {
+      "path": "command-0076.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.238466+00:00"
+  },
+  {
+    "index": 77,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/woodworking_unity.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.239694+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0077.stdout",
+      "bytes": 4344,
+      "sha256": "38afa41ad749ae0f617bd2e1b73f0ed641d33ae85b5c74c8f00ab9f17d3992ed"
+    },
+    "stderr": {
+      "path": "command-0077.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.243154+00:00"
+  },
+  {
+    "index": 78,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/world_candidate.inc"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.244423+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0078.stdout",
+      "bytes": 5640,
+      "sha256": "4efe4989f13a61eb08ffdcaa5907bbf76f647755ab405f5b2f4f558f6370efa5"
+    },
+    "stderr": {
+      "path": "command-0078.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.247399+00:00"
+  },
+  {
+    "index": 79,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/app_candidate.c"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.250382+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0079.stdout",
+      "bytes": 8674,
+      "sha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9"
+    },
+    "stderr": {
+      "path": "command-0079.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.253478+00:00"
+  },
+  {
+    "index": 80,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/app_candidate.h"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.254666+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0080.stdout",
+      "bytes": 3141,
+      "sha256": "5f32ec9dadb4c9836ada7cbb89358edd3b5aee28c04bd98fa8bc54bb3d0ab0ce"
+    },
+    "stderr": {
+      "path": "command-0080.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.257244+00:00"
+  },
+  {
+    "index": 81,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/history.c"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.258460+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0081.stdout",
+      "bytes": 3945,
+      "sha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595"
+    },
+    "stderr": {
+      "path": "command-0081.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.261384+00:00"
+  },
+  {
+    "index": 82,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-app/native/history.h"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.262602+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0082.stdout",
+      "bytes": 1840,
+      "sha256": "b9a0b9b61a592bd857041ee4e984550ab9d7e8456d8c434a3f5002a59689e0e0"
+    },
+    "stderr": {
+      "path": "command-0082.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.265213+00:00"
+  },
+  {
+    "index": 83,
+    "command": [
+      "git",
+      "show",
+      "85dc4fff44ce49b27f831b21cbdcb662c863302c:geometry-core/kernel/placement_sources.c"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:24.267416+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0083.stdout",
+      "bytes": 13667,
+      "sha256": "7b953719f5e75ed2e70f99c9e0a96588d398bd9220025a7b7a191c4dbaeb8e12"
+    },
+    "stderr": {
+      "path": "command-0083.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.270112+00:00"
+  },
+  {
+    "index": 84,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel/original-placement_sources.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-placement-sources.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:24.271540+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0084.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0084.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:24.321176+00:00"
+  },
+  {
+    "index": 85,
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/isolated-kernel",
+      "-DGEOMETRY_KERNEL_EXTERNAL=1",
+      "-DGEOMETRY_WOODWORKING_EXTERNAL=1",
+      "-DGEOMETRY_HOST_HISTORY_EXTERNAL=1",
+      "-DGEOMETRY_HOST_CANDIDATE_EXTERNAL=1",
+      "-c",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-geo261_host_facts_authority_harness.c",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-host-output.o"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:24.324268+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0085.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0085.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:25.558265+00:00"
+  },
+  {
+    "index": 86,
+    "command": [
+      "/usr/bin/cc",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-host-output.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/exact.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/codec.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/geometry.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/clip.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/grid.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/parameters.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/parameter-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/linear.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/named-values.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/datums.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/source.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/candidate.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/placements.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-placement-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/versions.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/enclosure.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/enclosure-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/document.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/regions.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/region-key-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/grid-store.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/guides.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/linear-definition-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/version-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-members.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-supports.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-contacts.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-contact-world.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-contact-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-cut-list.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-member-declaration.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-definition-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-world-validation.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-boundary-policy.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-engineering.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-engineering-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-engineering-operations.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-panel-layout.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-panel-support.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-section-profile.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-section-profile-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-assembly.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-assembly-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-finish.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-derived-placement.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-finish-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-grid-application.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-grid-sources.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-grid-definition-codec.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-grid-cells.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-grid-rules.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/wood-member-reference.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/host-history.o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/host-candidate.o",
+      "-lm",
+      "-o",
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-host-output"
+    ],
+    "cwd": "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek",
+    "startUTC": "2026-10-21T02:34:25.563939+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0086.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0086.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:25.603334+00:00"
+  },
+  {
+    "index": 87,
+    "command": [
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-host-output",
+      "copy-clear"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:25.606001+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0087.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0087.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:25.612544+00:00"
+  },
+  {
+    "index": 88,
+    "command": [
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-host-output",
+      "copy-snapshot"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:25.614087+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0088.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0088.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:25.620527+00:00"
+  },
+  {
+    "index": 89,
+    "command": [
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-host-output",
+      "scratch-owned"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:25.622256+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0089.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0089.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:25.627183+00:00"
+  },
+  {
+    "index": 90,
+    "command": [
+      "/tmp/geo261-host-original-corrected-u70op38p/geometry-tests/geo261-n1a-48cy8pek/original-host-output",
+      "malformed"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:25.628614+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0090.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0090.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:25.642113+00:00"
+  },
+  {
+    "index": 91,
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:25.643493+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0091.stdout",
+      "bytes": 41,
+      "sha256": "447343aabd87face185699b3ba93593d9f4b343efec3369014fa3d46f04e0685"
+    },
+    "stderr": {
+      "path": "command-0091.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:25.646561+00:00"
+  },
+  {
+    "index": 92,
+    "command": [
+      "git",
+      "status",
+      "--porcelain"
+    ],
+    "cwd": "/workspace/geo261-host-copy-candidate",
+    "startUTC": "2026-10-21T02:34:25.648232+00:00",
+    "returncode": 0,
+    "stdout": {
+      "path": "command-0092.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "command-0092.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "endUTC": "2026-10-21T02:34:25.751453+00:00"
+  }
+]

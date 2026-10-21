@@ -1,0 +1,35 @@
+{
+  "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B tests/test_product_architecture.py",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "tests/test_product_architecture.py"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "sourceBaseHead": "7afacf656912edccc7eb84cb9590990bccae1166",
+  "startedUtc": "2026-10-20T20:21:58.414951+00:00",
+  "finishedUtc": "2026-10-20T20:22:09.318481+00:00",
+  "seconds": 10.904,
+  "complete": true,
+  "exitCode": 0,
+  "stdout": {
+    "path": "product-tests/stdout.log",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "stderr": {
+    "path": "product-tests/stderr.log",
+    "rawSha256": "e7e6e4041792311ced9df9a9ae34a020ebd5b935026323db63690687a23a4cdb",
+    "lfSha256": "e7e6e4041792311ced9df9a9ae34a020ebd5b935026323db63690687a23a4cdb",
+    "bytes": 118
+  },
+  "tests": 18,
+  "passed": 18,
+  "failed": 0,
+  "skipped": 0,
+  "unittestSeconds": 10.805,
+  "skipLines": [],
+  "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
+  "executedAtCurrentHead": true
+}

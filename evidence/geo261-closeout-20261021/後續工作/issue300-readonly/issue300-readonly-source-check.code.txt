@@ -1,0 +1,98 @@
+import hashlib
+import json
+import subprocess
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/workspace/geometry-axiom")
+HANDOFF = Path("/workspace/geo261-handoff")
+OUT = Path("/workspace/geo261-evidence")
+HANDOFF_SHA = "59796b1af9259eb23d30134c2ce5a56317a06091"
+REVS = {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "A": "7159530c0e494d3211e6ab1764eb691137211707",
+    "#323": "f3ea9c5232c043b3dca57b953577f5d22e9030e7",
+}
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+def git_blob(rev, path):
+    result = subprocess.run(["git", "show", rev + ":" + path], cwd=ROOT, capture_output=True)
+    if result.returncode:
+        raise RuntimeError("Git blob 讀取失敗：" + rev + ":" + path)
+    return result.stdout
+
+drafts = sorted((HANDOFF / "handoff/drafts/issue300").rglob("*"))
+drafts = [p for p in drafts if p.is_file()]
+if len(drafts) != 14:
+    raise RuntimeError("交接原件數量不是 14")
+documents = drafts + [
+    HANDOFF / "handoff/HANDOFF.md",
+    HANDOFF / "handoff/prompts/PROMPT-A-source-index.md",
+    HANDOFF / "handoff/prompts/PROMPT-B-load-residual.md",
+    HANDOFF / "handoff/prompts/PROMPT-C-load-residual-fix.md",
+    HANDOFF / "handoff/notes/provisional-decisions-log.md",
+    HANDOFF / "handoff/notes/wsl-pending-after-game.md",
+]
+handoff_rows = []
+for p in documents:
+    rel = p.relative_to(HANDOFF).as_posix()
+    data = p.read_bytes()
+    original = git_blob(HANDOFF_SHA, rel)
+    if data != original:
+        raise RuntimeError("交接原件 bytes 不同：" + rel)
+    handoff_rows.append({"path": str(p), "gitPath": rel, "source": HANDOFF_SHA,
+                         "bytes": len(data), "sha256": sha(data), "exactGitBlob": True})
+paths = [
+    "current_geometry.c",
+    "geometry-templates/woodworking/native/contact_world.c",
+    "geometry-core/kernel/source.c",
+    "geometry-templates/woodworking/native/document.h",
+    "geometry-templates/woodworking/native/members.h",
+    "geometry-templates/woodworking/native/contact_world.h",
+    "geometry-templates/woodworking/native/cut_list.h",
+    "geometry-templates/woodworking/native/member_reference.h",
+    "geometry-templates/woodworking/native/world_validation.c",
+    "geometry-app/native/reference_sources.inc",
+    "geometry-app/native/world_validation.inc",
+    "geometry-core/references.inc",
+    "geometry-templates/woodworking/native/contact_sources.c",
+    "tests/test_geo261_native_kernel.py",
+    "tests/test_geo261_wood_world_validation.py",
+    "公理層.md",
+]
+product_rows = []
+for label, rev in REVS.items():
+    selected = ["current_geometry.c"] if label == "main" else paths
+    for path in selected:
+        data = git_blob(rev, path)
+        product_rows.append({"label": label, "source": rev, "path": path,
+                             "bytes": len(data), "sha256": sha(data)})
+for path in ["geometry-templates/woodworking/native/contact_world.c",
+             "geometry-core/kernel/source.c"]:
+    if git_blob(REVS["A"], path) != git_blob(REVS["#323"], path):
+        raise RuntimeError("聲稱相同的來源有差異：" + path)
+notes = OUT / "issue300-bench-static-notes.md"
+if sha(notes.read_bytes()) != "d565c902f54bdc8ca19e68ca30636ad0d41fbc67fd619669289e43b35e7a2b33":
+    raise RuntimeError("bench 只讀 notes 已變更")
+report = OUT / "issue300-readonly-plan.md"
+result = {
+    "kind": "只讀來源核對，不是產品驗收",
+    "utc": datetime.now(timezone.utc).isoformat(),
+    "handoff": handoff_rows, "productBlobs": product_rows,
+    "externalDocuments": [
+        {"path": str(p), "bytes": len(p.read_bytes()), "sha256": sha(p.read_bytes())}
+        for p in [notes, report]
+    ],
+    "limits": ["未執行產品、生成器、benchmark、自測、測試、突變或編譯",
+               "沒有 #300 10-20 原留言；不補造舊 raw",
+               "固定 SHA 的 blob 核對不宣稱遠端 branch 最新狀態",
+               "交接 20261021 標籤與 runner UTC 原樣並列"]
+}
+out = OUT / "issue300-readonly-sources.json"
+out.write_bytes((json.dumps(result, ensure_ascii=False, indent=2) + "\n").encode())
+print(json.dumps({"result": "來源核對完成", "handoffDraftFiles": len(drafts),
+                  "handoffFilesChecked": len(handoff_rows), "gitBlobsChecked": len(product_rows),
+                  "manifest": str(out), "manifestSha256": sha(out.read_bytes()),
+                  "reportSha256": sha(report.read_bytes()),
+                  "benchNotesSha256": sha(notes.read_bytes())}, ensure_ascii=False))
+

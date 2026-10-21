@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+"""單次外部PC診斷：須主代理放行；只新增archive與含診斷header的binary。"""
+import collections,datetime,hashlib,io,json,os,resource,signal,subprocess,sys,tarfile,time,traceback
+from pathlib import Path
+D=Path(__file__).resolve().parent
+def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def sha(b):return hashlib.sha256(b).hexdigest()
+def write(p,b):
+    with p.open('xb') as f:f.write(b);f.flush();os.fsync(f.fileno())
+def save(p,v):write(p,(json.dumps(v,ensure_ascii=False,indent=2)+'\n').encode())
+def timeout_handler(signum,frame):raise TimeoutError('900秒硬期限')
+def run(name,argv,cwd,env,stdin=None):
+    rec={'name':name,'argv':argv,'cwd':str(cwd),'started_utc':now(),'stdin':str(stdin) if stdin else None,'timeout_seconds':900}
+    inp=stdin.open('rb') if stdin else subprocess.DEVNULL;started=time.perf_counter();timed_out=False
+    try:
+        with (D/(name+'.stdout')).open('xb') as out,(D/(name+'.stderr')).open('xb') as err:
+            child=subprocess.Popen(argv,cwd=cwd,env=env,stdin=inp,stdout=out,stderr=err,start_new_session=True)
+            rec.update(pid=child.pid,pgid=os.getpgid(child.pid));save(D/(name+'.started.json'),rec)
+            old=signal.signal(signal.SIGALRM,timeout_handler);signal.alarm(900)
+            try:
+                try:waited,status,usage=os.wait4(child.pid,0)
+                except TimeoutError:
+                    timed_out=True;os.killpg(child.pid,signal.SIGKILL);waited,status,usage=os.wait4(child.pid,0)
+            finally:signal.alarm(0);signal.signal(signal.SIGALRM,old)
+            code=os.waitstatus_to_exitcode(status);child.returncode=code
+            write(D/(name+'.exit-code'),(str(code)+'\n').encode())
+            assert waited==child.pid
+            rec.update(finished_utc=now(),wall_seconds=time.perf_counter()-started,raw_wait_status=status,actual_exit_code=code,timed_out=timed_out,
+              rusage={n:getattr(usage,n) for n in ('ru_utime','ru_stime','ru_maxrss','ru_ixrss','ru_idrss','ru_isrss','ru_minflt','ru_majflt','ru_nswap','ru_inblock','ru_oublock','ru_msgsnd','ru_msgrcv','ru_nsignals','ru_nvcsw','ru_nivcsw')})
+    finally:
+        if stdin:inp.close()
+    rec.update(stdout_sha256=sha((D/(name+'.stdout')).read_bytes()),stderr_sha256=sha((D/(name+'.stderr')).read_bytes()))
+    save(D/(name+'.receipt.json'),rec)
+    if code or timed_out:raise RuntimeError(f'{name}真碼{code}，timeout={timed_out}')
+    return rec
+def exec_maps(path):
+    result=[]
+    for line in path.read_text().splitlines():
+        parts=line.split(maxsplit=5)
+        if 'x' not in parts[1]:continue
+        start,end=[int(x,16) for x in parts[0].split('-')]
+        result.append({'start':start,'end':end,'permissions':parts[1],'offset':int(parts[2],16),'device':parts[3],'inode':int(parts[4]),'path':parts[5] if len(parts)>5 else ''})
+    return result
+def summarize(run_dir,binary):
+    stats=json.loads((run_dir/'stats.json').read_bytes());lines=(run_dir/'pcs.tsv').read_text().splitlines()
+    assert lines[0]=='index\tpc'
+    pcs=[]
+    for i,line in enumerate(lines[1:]):
+        index,pc=line.split('\t');assert int(index)==i;pcs.append(int(pc,16))
+    assert len(pcs)==stats['samples_kept']==min(stats['signals_seen'],stats['capacity']) and pcs
+    assert stats['dropped_capacity']==stats['signals_seen']-len(pcs)
+    modules=[json.loads(line) for line in (run_dir/'modules.jsonl').read_text().splitlines()]
+    before,after=exec_maps(run_dir/'maps.before'),exec_maps(run_dir/'maps.after');stable=before==after
+    symbols=[]
+    for line in (D/'nm.stdout').read_text().splitlines():
+        parts=line.split()
+        if len(parts)==4 and parts[2] in ('T','t') and int(parts[1],16):symbols.append((int(parts[0],16),int(parts[0],16)+int(parts[1],16),parts[3]))
+    identities=[]
+    for module in modules:
+        p=Path(module['path']);item={'path':module['path'],'load_bias':module['load_bias'],'segments':module['segments']}
+        if p.is_file():
+            st=p.stat();item.update(real_path=str(p.resolve()),sha256=sha(p.read_bytes()),bytes=st.st_size,inode=st.st_ino,device=f'{os.major(st.st_dev):02x}:{os.minor(st.st_dev):02x}')
+            item['matches_after_map_identity']=any(m['inode']==st.st_ino and m['device']==item['device'] for m in after)
+        else:item.update(file_identity_available=False,note='vDSO或無可讀檔案；不猜檔案身份')
+        identities.append(item)
+    counts=collections.Counter();locations=[]
+    for pc,count in collections.Counter(pcs).most_common():
+        mapped=[m for m in after if m['start']<=pc<m['end']]
+        found=[m for m in modules if any(s['flags']&1 and m['load_bias']+s['vaddr']<=pc<m['load_bias']+s['vaddr']+s['memsz'] for s in m['segments'])]
+        row={'pc':hex(pc),'samples':count,'executable_maps':mapped,'module_candidates':[m['path'] for m in found]}
+        if stable and len(mapped)==1 and len(found)==1:
+            m=found[0];offset=pc-m['load_bias'];row.update(module=m['path'],elf_vaddr=hex(offset),attribution='唯一 executable map 與 PT_LOAD 範圍；非nearest-symbol')
+            counts[m['path']]+=count
+            if Path(m['path']).resolve()==binary.resolve():row['exact_executable_symbol_ranges']=[name for start,end,name in symbols if start<=offset<end]
+            else:row['function']='未歸屬；保留module+ELF offset，不猜libc最近符號'
+        else:counts['未確認']+=count;row['attribution']='maps變動或區間不唯一／缺失，未確認'
+        locations.append(row)
+    summary={'source_sha':'85dc4fff44ce49b27f831b21cbdcb662c863302c','stats':stats,'executable_maps_stable':stable,
+      'module_counts':[{'module':m,'samples':n,'percent':100*n/len(pcs)} for m,n in counts.most_common()],
+      'module_identities':identities,'locations':locations,'limitations':'ITIMER_PROF按user+system CPU遞減，1ms是請求間隔；不保證每ms交付。PC只在user地址，不能分攤kernel成本；沒有call stack。constructor以後至atexit取樣，退出輸出及其他區段不在timer內。共享庫未猜函式，exe只報非零大小符號真範圍；不是正式性能成績。'}
+    save(D/'pc-summary.json',summary);return summary
+def main(config):
+    assert config['released'] is True,'尚未放行，禁止archive/compile/run'
+    assert not (D/'started.json').exists(),'拒絕重啟既有診斷'
+    assert sha(Path(__file__).read_bytes())==config['driver_sha256'] and sha(Path(config['header']).read_bytes())==config['header_sha256']
+    resource.setrlimit(resource.RLIMIT_STACK,(16777216,16777216));resource.setrlimit(resource.RLIMIT_CORE,(0,0))
+    env=os.environ.copy();env.pop('PYTHONOPTIMIZE',None);env.pop('GMON_OUT_PREFIX',None);env.update(PYTHONDONTWRITEBYTECODE='1',PYTHONIOENCODING='utf-8')
+    O=Path(config['formal_out']);C=config['source_sha'];binary=Path(config['formal_binary'])
+    assert sha(binary.read_bytes())==config['formal_binary_sha256']
+    assert sha((O/'samples.json').read_bytes())==config['formal_samples_sha256'] and sha((O/'receipt.json').read_bytes())==config['formal_receipt_sha256']
+    save(D/'started.json',{'utc':now(),'pid':os.getpid(),'pgid':os.getpgrp(),'config':config,'stack_limit_bytes':list(resource.getrlimit(resource.RLIMIT_STACK)),'PYTHONOPTIMIZE_present':'PYTHONOPTIMIZE' in env})
+    archive=run('archive',config['archive_argv'],config['repo'],env)
+    source=Path(config['source_directory']);source.mkdir()
+    with tarfile.open(fileobj=io.BytesIO((D/'archive.stdout').read_bytes())) as tar:tar.extractall(source,filter='data')
+    index=json.loads((O/'source-files-final.json').read_bytes())
+    for item in index:
+        raw=(source/item['path']).read_bytes();assert len(raw)==item['bytes'] and sha(raw)==item['sha256']
+    assert config['compile_argv']==['gcc','-std=c11','-O2','-g','-D_GNU_SOURCE','-include',config['header'],'geometry-web/web_bridge.c','-o',config['diagnostic_binary'],'-lm','-ldl']
+    build=run('build',config['compile_argv'],source,env)
+    run_dir=D/'run01';run_dir.mkdir();scene=Path(config['scene']);assert sha(scene.read_bytes())==config['scene_sha256']
+    write(run_dir/'load.in',('loadfile '+str(scene)+'\n').encode());env['GEO261_PCDIAG_DIR']=str(run_dir)
+    load=run('load',[config['diagnostic_binary']],run_dir,env,run_dir/'load.in')
+    expected=(O/'timing/n64-r0-final.stdout').read_bytes();assert (D/'load.stdout').read_bytes()==expected
+    diagnostic=Path(config['diagnostic_binary']);run('nm',['nm','-anS',str(diagnostic)],D,env)
+    summary=summarize(run_dir,diagnostic)
+    assert sha(binary.read_bytes())==config['formal_binary_sha256']
+    assert sha((O/'samples.json').read_bytes())==config['formal_samples_sha256'] and sha((O/'receipt.json').read_bytes())==config['formal_receipt_sha256']
+    save(D/'completion.json',{'completed_utc':now(),'source_sha':C,'archive':archive,'build':build,'load':load,'diagnostic_binary_sha256':sha(diagnostic.read_bytes()),'source_file_count':len(index),'formal_binary_receipt_samples_unchanged':True,'stdout_matches_formal':True,'diagnostic_load_count':1,'module_counts':summary['module_counts'],'stats':summary['stats']})
+if __name__=='__main__':
+    try:main(json.loads(Path(sys.argv[1]).read_bytes()));code=0
+    except BaseException:write(D/'driver.exception',traceback.format_exc().encode());code=2
+    write(D/'driver.exit-code',(str(code)+'\n').encode());sys.exit(code)

@@ -1,0 +1,24 @@
+{
+  "name": "formal-objdump",
+  "argv": [
+    "objdump",
+    "-drwC",
+    "/workspace/geo261-p189-contact-v2-src-mrcj_18a/85dc4fff/bridge"
+  ],
+  "cwd": "/workspace/geo261-evidence/p189-diagnostic-contact-85dc4fff44ce-hck_u46w",
+  "started_utc": "2026-10-21T01:43:15.491122+00:00",
+  "source_sha": "85dc4fff44ce49b27f831b21cbdcb662c863302c",
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "stdin": null,
+  "pid": 305322,
+  "pgid": 305322,
+  "finished_utc": "2026-10-21T01:43:15.716615+00:00",
+  "seconds": 0.22550881299684988,
+  "actual_exit_code": 0,
+  "timed_out": false,
+  "stdout_sha256": "38a87c5e2d5be23c8f37f6ad93e16105023fb3c49d0bdf0a170041ccbf46010a",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

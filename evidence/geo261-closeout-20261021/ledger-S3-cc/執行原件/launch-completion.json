@@ -1,0 +1,20 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/ledger-cc-supervisor.py",
+    "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/prepare-receipt.json"
+  ],
+  "source_sha": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "started_utc": "2026-10-21T04:54:14.436043+00:00",
+  "supervisor_pid": 409590,
+  "supervisor_pgid": 409590,
+  "launcher_pid": 409565,
+  "interactive_tool_session": null,
+  "direct_log": "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/orchestrator.log",
+  "sourcecode_sha256": "308e37f71422f96543d68be4b51a42397c9d734750e0388278bb65941b60606e",
+  "CC_present": false,
+  "PYTHONOPTIMIZE_present": false,
+  "finished_utc": "2026-10-21T05:39:15.042348+00:00",
+  "observed_wait_returncode": 0
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "geo261-canvas-independent-review/1",
+  "reviewedUTC": "2026-10-20T23:39:57.646678+00:00",
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "validationExitCode": 0,
+  "conclusion": "完整canvas結果、來源綁定、退出碼及封存內容一致，無採用阻擋；原tmp缺件限制如下",
+  "assertions": {
+    "passed": 2261,
+    "failed": 0,
+    "skipped": 0,
+    "goldenSections": 85,
+    "fullScope": true,
+    "expectedExceptions": [
+      "[EXPECTED EXCEPTION] Error: fb-auto-probe"
+    ],
+    "unexpectedExceptions": 0
+  },
+  "observedExits": {
+    "node": 0,
+    "wrapperWait": 0,
+    "launcherProcessFile": 0
+  },
+  "timing": {
+    "jobSeconds": 1971.433386487999,
+    "nodeSeconds": 1965.4479578890005,
+    "jobLimitSeconds": 2100,
+    "launcherSeconds": 1971.4882074099987
+  },
+  "sourceBeforeAfter": {
+    "head": "43f85313c32410ac01406ab585846bbacafea278",
+    "status": "",
+    "hashes": {
+      "geometry-web/app.js": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "geometry-web/cdp_test.js": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+      "geometry-web/uiux_review_test.js": "0925c130aa7488d54b5e2ed539ef21f5b653fbbdebd0910f71a1992871149604",
+      "geometry-web/cdp_sections.golden.json": "0ba98dde2ee69d342eb7efc76b86b858e17835437d6e63290fecb546ff72f041",
+      ".github/workflows/integration-tests.yml": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+      "geometry-web/start_local.py": "31137d9635da7c62d34a72d1f4cadcf60e2240f33aff418ddba28bea55c5ce29",
+      "geometry-web/runtime_version.py": "f9c88daa1517b160df6b736dfc5977cada4c0e38ed3e170a81372e4472944357"
+    }
+  },
+  "runtimeBeforeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 207665,
+    "session": "f78ba907237b423387ce4d7dc2da2031"
+  },
+  "cleanup": {
+    "survivors": [],
+    "servicePortRefused": true,
+    "cdpPortRefused": true,
+    "serviceReturncode": -2
+  },
+  "artifacts": {
+    "pngCount": 135,
+    "pngHeadersChecked": true,
+    "captureMetadataHashMatches": 16,
+    "originalsStillAvailableCompared": [
+      "/tmp/geometry-grid-rename-eSEyXy/未命名專案.gcanvas",
+      "/tmp/geometry-infinite-grid-download-xa1DyV/未命名專案.gcanvas",
+      "/tmp/geometry-p83-download-BxN0gU/export-8r2ymj/model-snapshot-fba9e258-1a7b-4299-b5aa-4458f97161eb.csv",
+      "/tmp/geometry-p83-download-BxN0gU/export-9LtURV/model-snapshot-fba9e258-1a7b-4299-b5aa-4458f97161eb.csv",
+      "/tmp/geometry-p83-download-BxN0gU/export-Ch6CpO/model-snapshot-fba9e258-1a7b-4299-b5aa-4458f97161eb.csv",
+      "/tmp/geometry-p83-download-BxN0gU/export-CqLEfw/model-snapshot-fba9e258-1a7b-4299-b5aa-4458f97161eb.csv",
+      "/tmp/geometry-p83-download-BxN0gU/export-GM7Hmc/model-snapshot-fba9e258-1a7b-4299-b5aa-4458f97161eb.csv",
+      "/tmp/geometry-p83-download-BxN0gU/export-eLRVEZ/model-snapshot-fba9e258-1a7b-4299-b5aa-4458f97161eb.csv",
+      "/tmp/geometry-rule-editor-7C6iSD/未命名專案.gcanvas",
+      "/tmp/geometry-rule-editor-7Z23OV/未命名專案.gcanvas",
+      "/tmp/geometry-rule-editor-86kvKD/未命名專案.gcanvas",
+      "/tmp/geometry-rule-editor-oFJ3bX/未命名專案.gcanvas",
+      "/tmp/geometry-rule-lines-20bmrB/未命名專案.gcanvas",
+      "/tmp/geometry-rule-lines-2owQAy/未命名專案.gcanvas"
+    ],
+    "originalsUnavailableAtPeerReview": [
+      "/tmp/geometry-tests/assembly-desktop.png",
+      "/tmp/geometry-tests/assembly-mobile.png"
+    ],
+    "twoAssemblyImagesNewMtimeInCapture": true,
+    "twoAssemblyImagesVisuallyInspected": true
+  },
+  "rawSha256": "4aed5ccbe6ac2f322ec86164cc3f50ac2cc203e30626ade669c3bec7c710e146",
+  "firstPeerAttempt": {
+    "exitCode": 1,
+    "reason": "FileNotFoundError: /tmp/geometry-tests/assembly-desktop.png",
+    "meaning": "只讀證據比對碰到暫存原件已消失；不是產品紅，沒有重建圖片或重跑產品"
+  },
+  "limitations": [
+    "兩張硬路徑圖在本peer時原tmp已不存在：只能核封存圖hash/bytes對原capture紀錄與本輪mtime窗，不能稱本peer重新逐bytes讀到這兩原件",
+    "已目視兩張組構圖中文字和內容；未逐圖評定其餘133張UI品質",
+    "P38一筆故意fb-auto-probe例外；P53/P57原故障metadata保留，不稱零網路失敗",
+    "wait trace在此Linux runner明示disabled，不把records0當成功trace",
+    "僅核明列7個Git blob與歷史HEAD/clean/runtime紀錄，不冒稱本peer另建全repo閉包",
+    "本次未重跑產品、未清理；不替代其他六項工作"
+  ]
+}

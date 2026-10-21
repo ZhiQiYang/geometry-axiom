@@ -1,0 +1,44 @@
+{
+  "用途": "combined（#299＋#316）→ #314 的只讀預審；不宣稱實作或驗收",
+  "固定讀取分支": "codex/geo261-closeout-20261021",
+  "固定讀取完整SHA": "cd4ac98f44174729fb3a2f1c291c6c258c9a239a",
+  "歷史狀態": "L1 在本輪固定讀取時未推送且未採用；之後新 L 推送可能使其成公開祖先，仍不回寫本輪原件或宣稱已採用",
+  "交接完整SHA": "59796b1af9259eb23d30134c2ce5a56317a06091",
+  "檢核": "逐份原bytes封裝並逐位元比較；文字複核已精確限定求值順序及整體取代辨識力",
+  "未執行": [
+    "套補丁",
+    "生成器",
+    "測試",
+    "編譯",
+    "瀏覽器",
+    "突變",
+    "架構驗收"
+  ],
+  "未納入": [
+    "交接補丁",
+    "可執行來源副本"
+  ],
+  "來源": [
+    {
+      "原路徑": "/workspace/geo261-evidence/combined-314-readonly-plan.md",
+      "封裝路徑": "combined-314-readonly-plan.md",
+      "位元組": 18602,
+      "原始SHA256": "3f5f80c13d8f2990f4d5130e5835e2a86000dcfc65a9577ac2840ffb3775660b",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/combined-314-readonly-check.json",
+      "封裝路徑": "combined-314-readonly-check.json",
+      "位元組": 4773,
+      "原始SHA256": "37730b1adcb73cd1e91d404238010e262556e17d35b7806bcb9077214660cbb4",
+      "逐位元相同": true
+    },
+    {
+      "原路徑": "/workspace/geo261-evidence/combined-314-readonly-command-code.txt",
+      "封裝路徑": "combined-314-readonly-command-code.txt",
+      "位元組": 1844,
+      "原始SHA256": "754b350db6c1e13f583ca3e2da3165a9922a5e96607e30f6ad0d3b62c2b75811",
+      "逐位元相同": true
+    }
+  ]
+}

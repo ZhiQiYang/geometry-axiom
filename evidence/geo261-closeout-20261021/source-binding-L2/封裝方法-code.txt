@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+"""只封裝 L2 已實跑來源綁定／CLI 與待執行 E2 方法，不改舊包。"""
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import stat
+
+BASE = Path('/workspace/geo261-evidence')
+BUNDLE = BASE / 'final-bundle'
+L2 = '249571fe2477845d5330f6190dad965bf327f43b'
+A2 = 'cbefb39b47fb0edcfaf003d2c1101929fea244c8'
+S2 = 'cabe824128be31d0039dc6c94fa3f04cfb722a6b'
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def read(path): return json.loads(path.read_bytes())
+publication = read(BASE / 'ledger-L2-publication/publication.json')
+assert publication['sourceA2'] == A2 and publication['ledgerL2'] == L2
+assert publication['defaultCheckExitCode'] == publication['pushExitCode'] == 0 and publication['remoteExactMatch']
+assert (BASE / 'ledger-L2-publication/remote-after-push.stdout').read_text().strip() == L2 + '\trefs/heads/codex/geo261-closeout-20261021'
+assert (BASE / 'ledger-L2-publication/L-default-check.exit-code').read_text().strip() == '0'
+assert read(BASE / 'source-A2-publication/publication.json')['A2'] == A2
+assert read(BASE / 'source-S2-adoption/adoption.json')['source_S2'] == S2
+binding = read(BASE / 'source-binding-L2-preparation/binding-A2-L2.json')
+assert binding['ledgerL2'] == L2 and binding['ledger']['executionHead'] == A2
+expected = binding['expectedOutsideSnapshot']
+for name in ('expected-A2.stdout', 'expected-L2.stdout'):
+    raw = (BASE / 'source-binding-L2-preparation' / name).read_bytes()
+    assert len(raw) == expected['bytes'] and sha(raw) == expected['rawSha256']
+plans = {
+    'source-binding-L2': {
+        'directories': {
+            '來源綁定': BASE / 'source-binding-L2-preparation',
+            'source-S2-adoption': BASE / 'source-S2-adoption',
+            'source-A2-publication': BASE / 'source-A2-publication',
+            'ledger-L2-publication': BASE / 'ledger-L2-publication',
+            'S2-A2-binding': BASE / 'architecture-owned-S2-A2-binding',
+        },
+        'files': {'README.md': BASE / 'source-binding-L2-preparation/README.md',
+                  'L2-importer-tool-observation.json': BASE / 'ledger-L2-importer-tool-observation.json'},
+    },
+    'architecture-L2': {
+        'directories': {'': BASE / 'architecture-L2-formal-249571fe'},
+        'files': {},
+    },
+    '交付驗證方法-L2': {
+        'directories': {'': BASE / 'source-binding-E2-preparation'},
+        'files': {},
+    },
+}
+results = []
+for name, plan in plans.items():
+    target = BUNDLE / name
+    target.mkdir(exist_ok=False)
+    entries = []
+    def copy(source, relative):
+        assert source.is_file() and not source.is_symlink()
+        if relative.endswith('.py'):
+            relative += '.txt'
+        raw = source.read_bytes()
+        destination = target / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        with destination.open('xb') as stream:
+            stream.write(raw)
+        destination.chmod(0o644)
+        assert destination.read_bytes() == raw
+        entries.append({'path': relative, 'sourcePath': str(source), 'bytes': len(raw), 'sha256': sha(raw), 'rawBytesPreserved': True})
+    for prefix, directory in plan['directories'].items():
+        for source in sorted(directory.rglob('*')):
+            if source.is_file():
+                relative = source.relative_to(directory).as_posix()
+                copy(source, prefix + '/' + relative if prefix else relative)
+    for relative, source in plan['files'].items():
+        copy(source, relative)
+    method = Path(__file__).read_bytes()
+    (target / '封裝方法-code.txt').write_bytes(method)
+    entries.append({'path': '封裝方法-code.txt', 'sourcePath': str(Path(__file__)), 'bytes': len(method), 'sha256': sha(method), 'rawBytesPreserved': True})
+    index = {'schema': 1, 'sourceL2': L2, 'sourceA2': A2, 'selfExcluded': '來源索引.json',
+             'notFinalEAcceptance': True, 'entries': sorted(entries, key=lambda row: row['path'])}
+    (target / '來源索引.json').write_text(json.dumps(index, ensure_ascii=False, indent=2) + '\n')
+    files = sorted(path for path in target.rglob('*') if path.is_file())
+    assert {path.relative_to(target).as_posix() for path in files} == {row['path'] for row in entries} | {'來源索引.json'}
+    for row in entries:
+        path = target / row['path']
+        assert path.stat().st_size == row['bytes'] and sha(path.read_bytes()) == row['sha256']
+    assert all(stat.S_ISREG(path.lstat().st_mode) and not path.is_symlink() and not path.stat().st_mode & 0o111 and path.suffix != '.py' for path in files)
+    results.append({'path': str(target), 'files': len(files), 'bytes': sum(path.stat().st_size for path in files),
+                    'indexSha256': sha((target / '來源索引.json').read_bytes()), 'allCopiedBytesAndIndexMatch': True})
+receipt = {'createdUtc': datetime.now(timezone.utc).isoformat(), 'sourceL2': L2, 'bundles': results,
+           'expectedJsonRawIncludedFromA2AndL2': expected, 'existingFrozenBundlesModified': False,
+           'noExecutableSourceCopies': True, 'notFinalEAcceptance': True,
+           'command': ['python3', '-B', str(Path(__file__))]}
+with (BUNDLE / 'L2-source-architecture-method-copycheck.json').open('x') as stream:
+    json.dump(receipt, stream, ensure_ascii=False, indent=2)
+    stream.write('\n')
+print(json.dumps(receipt, ensure_ascii=False, indent=2))

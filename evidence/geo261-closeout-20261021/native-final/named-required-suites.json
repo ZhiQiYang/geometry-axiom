@@ -1,0 +1,179 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "suites": {
+    "py:test_architecture_contract": {
+      "row": {
+        "total": 205,
+        "passed": 205,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 0.6,
+        "note": ""
+      },
+      "rawFiles": [
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_architecture_contract.json",
+          "artifactPath": "suite-logs/py_test_architecture_contract.json",
+          "bytes": 359,
+          "sha256": "d6342d37646018b350c503ccd6123b7635b3cfa66869d707c3ef1ac170b45013",
+          "sourceMtimeNs": 1792539763695544278
+        },
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_architecture_contract.log",
+          "artifactPath": "suite-logs/py_test_architecture_contract.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceMtimeNs": 1792539763704110708
+        },
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_architecture_contract.unittest.log",
+          "artifactPath": "suite-logs/py_test_architecture_contract.unittest.log",
+          "bytes": 305,
+          "sha256": "5981d8b3ee203125f616506e514367141ad28a3908d514b96f4d4eaacd704f17",
+          "sourceMtimeNs": 1792539763695279147
+        }
+      ],
+      "expected": {
+        "mode": "count",
+        "count": 205,
+        "unit": "test"
+      }
+    },
+    "py:test_product_architecture": {
+      "row": {
+        "total": 18,
+        "passed": 18,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 11.1,
+        "note": ""
+      },
+      "rawFiles": [
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_product_architecture.json",
+          "artifactPath": "suite-logs/py_test_product_architecture.json",
+          "bytes": 356,
+          "sha256": "b89fad80a116f90aed366b4d3c3e0958b783f53d9870702fdfb17bd12c97f2a2",
+          "sourceMtimeNs": 1792540950776613728
+        },
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_product_architecture.log",
+          "artifactPath": "suite-logs/py_test_product_architecture.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceMtimeNs": 1792540950785801033
+        },
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_product_architecture.unittest.log",
+          "artifactPath": "suite-logs/py_test_product_architecture.unittest.log",
+          "bytes": 118,
+          "sha256": "e89f6e07f427faa81353b0a64af69819f7530a97dc7629933ed317330ac1e16b",
+          "sourceMtimeNs": 1792540950769801168
+        }
+      ],
+      "expected": {
+        "mode": "count",
+        "count": 18,
+        "unit": "test"
+      }
+    },
+    "py:test_geo261_model_base_replay": {
+      "row": {
+        "total": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 17.5,
+        "note": ""
+      },
+      "rawFiles": [
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_geo261_model_base_replay.json",
+          "artifactPath": "suite-logs/py_test_geo261_model_base_replay.json",
+          "bytes": 356,
+          "sha256": "9d962d610eabbcf63f73bd95056f24fcc292311b4399dce260bed63e8ba1d063",
+          "sourceMtimeNs": 1792540309757593376
+        },
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_geo261_model_base_replay.log",
+          "artifactPath": "suite-logs/py_test_geo261_model_base_replay.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceMtimeNs": 1792540309767204957
+        },
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/py_test_geo261_model_base_replay.unittest.log",
+          "artifactPath": "suite-logs/py_test_geo261_model_base_replay.unittest.log",
+          "bytes": 105,
+          "sha256": "251d9eecca19703e6e403c295cffa01f1d8cc4b9068b8b4a58a0c793bdc787a8",
+          "sourceMtimeNs": 1792540309755205057
+        }
+      ],
+      "expected": {
+        "mode": "count",
+        "count": 6,
+        "unit": "test"
+      }
+    },
+    "mutation:check": {
+      "row": {
+        "total": null,
+        "passed": "-",
+        "failed": "-",
+        "skipped": null,
+        "seconds": 1.9,
+        "note": "mutation inventory freshness (not test assertions); exit 0"
+      },
+      "rawFiles": [
+        {
+          "sourcePath": "/tmp/geometry-tests/run_all-logs/mutation_check.log",
+          "artifactPath": "suite-logs/mutation_check.log",
+          "bytes": 533,
+          "sha256": "63eb6e0e900f6373d961b256b9ac50a95df41f6480f89f9727585931829f37c1",
+          "sourceMtimeNs": 1792539672071888500
+        }
+      ],
+      "expected": {
+        "mode": "exit-code-only"
+      }
+    }
+  },
+  "artifactReferences": {
+    "command": {
+      "path": "/workspace/geo261-evidence/native-final/command.json",
+      "bytes": 11723,
+      "sha256": "8db09dd28b443c8289d395ec20d2545e7438a3bd9546b249b103e06a8776e2b6"
+    },
+    "receipt": {
+      "path": "/workspace/geo261-evidence/native-final/receipt.json",
+      "bytes": 14112,
+      "sha256": "f13bc0d736eea9f218a8fa53972ec15f24d1744407b020a2344ad8c114b51ad7"
+    },
+    "runLog": {
+      "path": "/workspace/geo261-evidence/native-final/run.log",
+      "bytes": 36794,
+      "sha256": "d039e207a8ddae35be7e5958afd1ae9584399babb7661d1015a8dd9753ba2fc8"
+    },
+    "packagingTool": {
+      "path": "/workspace/geo261-evidence/native-l-preparation/package-native-l.py",
+      "bytes": 9464,
+      "sha256": "6be5664f840d7a67d008f3c771ca2d8d644b2c7aa3f15550829333c0973f7831"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/native-final-launcher/launcher-receipt.json",
+      "bytes": 13942,
+      "sha256": "f432ad5e5a3b53037e00f6a013a48d3126d68dcdf4254829cbe49186875b8baf"
+    },
+    "sourceIndex": {
+      "path": "/workspace/geo261-evidence/native-final/suite-log-source-index.json",
+      "bytes": 196633,
+      "sha256": "117bfd3fb80e8e12a3b77ea56d5c4622645e50ab7ac1c81c9a848be8c337f026"
+    },
+    "expected": {
+      "path": "/workspace/geo261-evidence/native-final/source-reference/run_all.expected.json",
+      "bytes": 24624,
+      "sha256": "847d2494c1c701b80f83ebc1a48cac84ce06b66eabff11f14f86584d10093cc6"
+    }
+  },
+  "note": "mutation:check 僅為 inventory freshness；此處不宣稱重跑所有突變。"
+}

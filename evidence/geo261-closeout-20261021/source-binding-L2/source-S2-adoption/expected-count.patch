@@ -1,0 +1,22 @@
+diff --git a/tests/run_all.expected.json b/tests/run_all.expected.json
+index 28e3bd85..622bd8b9 100644
+--- a/tests/run_all.expected.json
++++ b/tests/run_all.expected.json
+@@ -454,7 +454,7 @@
+     },
+     "py:test_geo261_host_facts_authority": {
+       "mode": "count",
+-      "count": 17,
++      "count": 27,
+       "unit": "test"
+     },
+     "py:test_geo261_host_history": {
+@@ -684,7 +684,7 @@
+     },
+     "py:test_geo261_wood_contact_world": {
+       "mode": "count",
+-      "count": 10,
++      "count": 12,
+       "unit": "test"
+     },
+     "py:test_geo261_wood_contacts": {

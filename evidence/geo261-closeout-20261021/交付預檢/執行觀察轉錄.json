@@ -1,0 +1,43 @@
+{
+  "schema": "交付預檢執行觀察轉錄/1",
+  "轉錄時間": "2026-10-21T00:26:19.503471+00:00",
+  "界線": "事後從工具對話轉錄，不是原執行前凍結腳本；沒有重新執行任何掃描、Git ignore 或產品測試。原 JSON 結果逐 bytes 保存。",
+  "指令": [
+    {
+      "名稱": "首輪掃描",
+      "起始工具Chunk": "284dc2",
+      "session": 93345,
+      "完成工具Chunk": "e58a7b",
+      "實際外層ExitCode": 0,
+      "原結果": "scan-summary.json",
+      "當時檔案數": 5646,
+      "當時Bytes": 122638409
+    },
+    {
+      "名稱": "不帶-v ignore補核",
+      "完成工具Chunk": "13de55",
+      "實際外層ExitCode": 0,
+      "GitExitCode": 1,
+      "GitStdoutBytes": 0,
+      "GitStderrBytes": 0,
+      "原結果": "plain-check-ignore.json",
+      "當時路徑數": 5647
+    },
+    {
+      "名稱": "不同schema及新增檔補核",
+      "完成工具Chunk": "b26f7b",
+      "實際外層ExitCode": 0,
+      "原結果": "supplemental-index-check.json"
+    },
+    {
+      "名稱": "歷史README改名原bytes",
+      "完成工具Chunk": "83f6da",
+      "實際外層ExitCode": 0,
+      "historicalReadmeOriginalBytesConfirmed": true,
+      "reportBytes": 6274,
+      "reportSha256": "3bf1345807f13abe0ff78e661daef3cac10a241feb03d441c0152c3a810ad500"
+    }
+  ],
+  "歷史sum外補件": 13,
+  "歷史sum外補件處理": "保留原sum不改，由root最後exact-set索引涵蓋；本包不是最終總索引。"
+}

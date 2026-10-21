@@ -1,0 +1,23 @@
+test_three_timber_members_and_actual_concave_reference_envelope (tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope) ... FAIL
+
+======================================================================
+FAIL: test_three_timber_members_and_actual_concave_reference_envelope (tests.test_section_profile_modeling.SectionProfileModeling.test_three_timber_members_and_actual_concave_reference_envelope)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-evidence/gates/q38/tmp/section-profile-mutations-kw5vx1ab/SPM37/tests/test_section_profile_modeling.py", line 124, in test_three_timber_members_and_actual_concave_reference_envelope
+    self.assertEqual((obj["role"], obj["member_path"], details["kind"], details["material_volume_mm3"]),
+AssertionError: Tuples differ: ('reference', [], 'envelope', '84960000') != ('reference', [], 'envelope', '0')
+
+First differing element 3:
+'84960000'
+'0'
+
+- ('reference', [], 'envelope', '84960000')
+?                                -------
+
++ ('reference', [], 'envelope', '0') : R37/R39: the envelope is a reference object and carries no material volume
+
+----------------------------------------------------------------------
+Ran 1 test in 0.131s
+
+FAILED (failures=1)

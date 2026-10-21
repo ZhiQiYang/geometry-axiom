@@ -1,0 +1,12 @@
+# GEO-099:重宣告既有的軸——往後追加一條格線,index 0 仍是 1000,
+# 被錨定的角材 3 不受影響 → I23(a) 放行。
+# 公理:D9:只存定義——格線座標從來沒被存下來,重宣告後 index 0 仍然推得出 1000,所以角材 3 不必重算也還是對的。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+grid 1 on 1 u 1000
+timber 1 20 20 role boundary
+timber 2 20 20 role boundary
+timber 3 27 33 role primary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 -u +n
+place 3 on 1 at-line grid 1 u 0 +v +n
+grid 1 on 1 u 1000 3000

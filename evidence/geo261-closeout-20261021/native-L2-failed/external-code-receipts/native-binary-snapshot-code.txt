@@ -1,0 +1,81 @@
+"""唯讀核對當輪來源並保全 native 全域產物；只在 root 放行後另行呼叫。"""
+import argparse
+import datetime
+import hashlib
+import json
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+
+def main():
+    if sys.flags.optimize:
+        raise RuntimeError('拒絕 -O；本工具的檢查不可停用。')
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--instance',required=True)
+    p.add_argument('--stage',choices=['initial-build','final-build'],required=True)
+    args=p.parse_args()
+    manifest=Path(args.instance).resolve(strict=True)
+    plan=json.loads(manifest.read_text())
+    sha=plan['sourceSha']
+    native=Path(plan['nativeWorktree'])
+    out=Path(plan['nativeOut'])
+    command=json.loads((out/'command.json').read_text())
+    if command['sourceSha'] != sha or command['command'] != plan['formalNativeCommand']:
+        raise ValueError('當輪正式命令或來源不符。')
+    head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=native,text=True).strip()
+    status=subprocess.check_output(['git','status','--porcelain'],cwd=native,text=True).strip()
+    if head != sha or status:
+        raise ValueError('native 來源不是指定且乾淨的工作樹。')
+    if args.stage=='initial-build':
+        text=(out/'run.log').read_text()
+        if not re.search(r'^\[1/224\] ',text,re.M):
+            raise ValueError('尚無第一個 suite 進度原文；不把未完成 build 當成完整初建。')
+    else:
+        receipt=json.loads((out/'receipt.json').read_text())
+        if receipt['sourceSha'] != sha or receipt['headAfter'] != sha or receipt['statusAfter']:
+            raise ValueError('正式結束來源收據不符。')
+    destination=Path(plan['nativeBinaryPreservation'])/args.stage
+    index_path=out/(args.stage+'-binary-index.json')
+    if destination.exists() or index_path.exists():
+        raise ValueError('拒絕覆寫既有產物原件或索引。')
+    global_root=Path(plan['globalDirectory'])
+    names=sorted(b['exe'] for b in plan['registry'] if not b['windowsOnly'])
+    if len(names)!=6:
+        raise ValueError('registry 不是事前核定的六個 POSIX binary。')
+    planned=[]
+    for name in names:
+        for suffix in ['', '.fingerprint.json']:
+            source=global_root/(name+suffix)
+            before=source.stat()
+            data=source.read_bytes()
+            after=source.stat()
+            if (before.st_mtime_ns,before.st_size)!=(after.st_mtime_ns,after.st_size):
+                raise ValueError('取樣期間有寫入：'+str(source))
+            planned.append((source,data,after.st_mtime_ns))
+    destination.mkdir(parents=True)
+    items=[]
+    for source,data,mtime in planned:
+        target=destination/source.name
+        shutil.copy2(source,target)
+        if target.read_bytes()!=data or source.read_bytes()!=data or source.stat().st_mtime_ns!=mtime:
+            raise ValueError('保存期間來源變動，保留失敗原件，不接受本索引。')
+        items.append(dict(sourcePath=str(source),preservedPath=str(target),bytes=len(data),sha256=hashlib.sha256(data).hexdigest(),sourceMtimeNs=mtime))
+    result=dict(sourceSha=sha,sampledUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        stage=args.stage,files=items,head=head,status=status,instancePath=str(manifest),
+        instanceSha256=hashlib.sha256(manifest.read_bytes()).hexdigest(),
+        nativeCommandPath=str(out/'command.json'),nativeCommandSha256=hashlib.sha256((out/'command.json').read_bytes()).hexdigest(),
+        note='此為原件保全，不複製到 browser runtime、不宣稱 freshness inspection 或全程零寫入。')
+    if args.stage=='final-build':
+        prior=json.loads((out/'initial-build-binary-index.json').read_text())
+        if prior['sourceSha']!=sha:
+            raise ValueError('初始索引來源不符。')
+        by_name={Path(x['sourcePath']).name:x for x in prior['files']}
+        result['matchesInitialBytesAndMtimes']=all(all(x[k]==by_name[Path(x['sourcePath']).name][k] for k in ['bytes','sha256','sourceMtimeNs']) for x in items)
+    index_path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+    print(json.dumps(dict(index=str(index_path),sourceSha=sha,fileCount=len(items),matchesInitialBytesAndMtimes=result.get('matchesInitialBytesAndMtimes')),ensure_ascii=False))
+    return 0
+
+if __name__=='__main__':
+    raise SystemExit(main())

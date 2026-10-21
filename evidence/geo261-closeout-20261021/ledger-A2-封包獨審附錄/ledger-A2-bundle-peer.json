@@ -1,0 +1,129 @@
+{
+  "schema": "geo261-ledger-A2-frozen-bundle-peer/1",
+  "checkedUtc": "2026-10-21T04:24:02.890328+00:00",
+  "startedUtc": "2026-10-21T04:24:02.264323+00:00",
+  "seconds": 0.6260197160008829,
+  "bundle": "/workspace/geo261-evidence/final-bundle/ledger-A2-cc",
+  "sourceA2": "cbefb39b47fb0edcfaf003d2c1101929fea244c8",
+  "ledgerL2": "249571fe2477845d5330f6190dad965bf327f43b",
+  "checkPassed": true,
+  "files": 2258,
+  "bytes": 32239179,
+  "copiedOriginalsComparedByteForByte": 2253,
+  "indexSha256": "a3167c0af6490a143f7aee0a61651497868e7ff6db63ae16f26487065b804455",
+  "sumsSha256": "8c3227a2035cc4fc03c399376eac43dc46466153641a3d48709595aab8c2e4a4",
+  "checksumManifests": [
+    {
+      "path": "SHA256SUMS",
+      "rows": 2257,
+      "exactSetAndHashesMatch": true
+    },
+    {
+      "path": "執行原件/SHA256SUMS",
+      "rows": 2119,
+      "exactSetAndHashesMatch": true
+    }
+  ],
+  "allMode0644AndUtf8": true,
+  "noForbiddenSuffixMagicOrSymlink": true,
+  "sourceMappingExactAndOnlyFiveGeneratedFiles": true,
+  "preservedAcceptorMistakes": [
+    {
+      "attempt": 1,
+      "exitCode": 1,
+      "sourceSha256": "8760d0331b604259aacf311c965e23824cb73f67f08e13379a530da6880c0f31",
+      "toolChunk": "fddc57",
+      "cause": "接受器錯要求截尾3000字detail一定包含AssertionError前綴；原oracle只保尾部，完整stdout另可核。"
+    },
+    {
+      "attempt": 2,
+      "exitCode": 1,
+      "sourceSha256": "046cb8ab5050b8db9cc0f47e983d659abb83b19e39fa156020b26d79522580fa",
+      "toolChunk": "98edfc",
+      "cause": "FAIL標頭與分隔線之間有 unittest 原測試docstring；接受器未納入而漏算具名FAIL區塊。"
+    }
+  ],
+  "finalIndependentAcceptorRecordedExit": 0,
+  "phaseOriginalExitCodes": [
+    0,
+    0,
+    0
+  ],
+  "launcherDirectWaitOriginalExit": 0,
+  "interactiveToolObservations": {
+    "initial": {
+      "path": "執行原件/interactive-session-observation.json",
+      "observation": {
+        "launch_session_id": 12445,
+        "launch_initial_chunk": "25b0e6",
+        "prepare_observed_exit_code": 0,
+        "prepare_completion_chunk": "0caea6",
+        "launcher_exit_code": null,
+        "備註": "尚在執行；不以收據推造 shell 結束碼。"
+      }
+    },
+    "final": {
+      "path": "後補收據/independent-review.json",
+      "field": "launcherToolObservation",
+      "observation": {
+        "tool": "write_stdin",
+        "session_id": 12445,
+        "chunk_id": "706db3",
+        "exit_code": 0,
+        "output": "",
+        "observed_utc": "2026-10-21T03:59:23.349581+00:00",
+        "備註": "由工具真正取得 launcher 結束碼，不從 passed 推造。"
+      }
+    },
+    "scope": "啟動時原件仍為 null，沒有回填；完成碼引用既存後補獨審保存的工具觀察，本次沒有重新 wait。"
+  },
+  "importerToolObservationPreservedAsTranscription": true,
+  "sourceAndExecutionHeadsNotRewritten": true,
+  "rootSupplement": {
+    "path": "/workspace/geo261-evidence/final-bundle/ledger-A2-方法與限制.md",
+    "bytes": 3461,
+    "sha256": "a1227268d4ea3f7ccdc44a7747226d2c78d9373665d94532f48633bd332474fb",
+    "scope": "已完整讀取；A2 execution、M20 crashed、四個 equivalent 當輪 attempt 與 M36 歷史語料、核心 raw 缺口界線清楚；沒有據此重跑或補造歷史證據。"
+  },
+  "thisPeerFirstAttempt": {
+    "observation": {
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-evidence/ledger-A2-bundle-peer-check.py"
+      ],
+      "toolChunk": "42a589",
+      "actualExitCode": 1,
+      "error": "KeyError: exit_code at transport[exit_code]",
+      "scope": "只讀接受器把互動工具觀察 schema 誤作扁平欄位；未改包、未重跑產品。",
+      "firstCode": "ledger-A2-bundle-peer-attempt1-code.txt"
+    },
+    "codeSha256": "3676a675798ddb63555cc911180806021686a2855bd585400a2662319acaff23",
+    "correction": "首輪誤把啟動時仍 running 的觀察當完成觀察而 KeyError；修正為分別保留初始 null 與後補獨審中的真正完成觀察，不修改任何凍結原件。"
+  },
+  "ledgerCountsObserved": {
+    "killed": 70,
+    "equivalent": 4,
+    "crashed": 1,
+    "retired": 3
+  },
+  "methodScope": "已完整閱讀包裝方法；僅讀原件、檢核與寫新包，沒有 subprocess 或產品測試入口。此次 peer 沒有執行該方法。",
+  "notRerun": [
+    "ledger",
+    "mutate --check",
+    "任何測試／編譯／發布",
+    "75 個 cache binary hash"
+  ],
+  "limitations": [
+    "核心個別子程序 raw 未由原工具另存，只能保結構化 oracle 與 hash，不能由頂層 stdout 補造。",
+    "本核對只讀 ledger-A2-cc 與其逐檔來源、指定外層驗證 JSON；未重掃全部 final-bundle。",
+    "原件的傳輸觀察轉錄不冒稱原始 transport；歷史自測不冒稱本輪執行。",
+    "E2 尚未建立；這不是完整產品或最後交付驗收。"
+  ],
+  "command": [
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/ledger-A2-bundle-peer-check.py"
+  ],
+  "peerCodeSha256": "6cf5a206a94e2b29f639221e23e96869c7b73b627bdc97b38d84798a2bc1d1cd"
+}

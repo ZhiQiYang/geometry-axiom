@@ -1,0 +1,120 @@
+"""只讀核對已完成的 L3 canvas 原件；不執行產品、不修改原結果。"""
+from pathlib import Path
+import collections, datetime, hashlib, json, re, subprocess
+
+OUT = Path('/workspace/geo261-evidence/canvas-L3-formal-6589248c')
+ROOT = Path('/workspace/geometry-axiom')
+SHA = '6589248c9a94bdf0460d8f84dd1610e51048188b'
+def digest(raw): return hashlib.sha256(raw).hexdigest()
+def read(name): return json.loads((OUT / name).read_bytes())
+def info(path):
+    raw = path.read_bytes()
+    return {'path': str(path), 'bytes': len(raw), 'sha256': digest(raw)}
+def blob(path): return subprocess.check_output(['git', 'show', SHA + ':' + path], cwd=ROOT)
+
+receipt, result = read('receipt.json'), read('result.json')
+raw = (OUT / 'canvas.log').read_text()
+markers = [json.loads(line.removeprefix('CDP_RESULT ')) for line in raw.splitlines() if line.startswith('CDP_RESULT ')]
+assert markers == [result]
+golden_raw = blob('geometry-web/cdp_sections.golden.json')
+golden = json.loads(golden_raw)
+assert result['completed'] is True and result['scope']['mode'] == 'full'
+assert result['scope']['filters'] == [] and result['scope']['modifiers'] == []
+assert result['sections'] == golden['sections'] and len(result['sections']) == 85
+assert result['passedAssertions'] == golden['total'] == 2261
+assert result['failedAssertions'] == 0 and result['skipped'] == [] and result['goldenCompare'] == 'matched'
+assert receipt['status'] == 'passed' and receipt['errors'] == []
+assert receipt['expectedHead'] == SHA and receipt['withinTotalDeadline'] is True
+assert receipt['totalDeadlineSeconds'] == 2100 and receipt['elapsedSeconds'] < 2100
+steps = {step['name']: step for step in receipt['steps']}
+assert steps['canvas']['argv'] == ['node', 'geometry-web/cdp_test.js'] and steps['canvas']['exitCode'] == 0
+assert steps['build']['argv'] == ['npm', 'run', 'build'] and steps['build']['exitCode'] == 0
+assert all(name + ': reused' in (OUT/'build.log').read_text() for name in ['core','bridge','model-base'])
+assert all(steps[name]['exitCode'] == 0 for name in ['runtime-before', 'runtime-after', 'source-after-head', 'source-after-status'])
+before, after = read('source-before.json'), read('source-after.json')
+assert before == after and before['head'] == SHA and before['status'] == ''
+for name, expected in before['hashes'].items(): assert digest(blob(name)) == expected
+assert read('runtime-before.json') == read('runtime-after.json')
+assert read('runtime-before.json')['fresh'] is True and read('runtime-before.json')['root'] == str(ROOT)
+cleanup = read('cleanup.json')
+assert cleanup['survivors'] == [] and cleanup['servicePortFree'] and cleanup['cdpPortFree']
+launcher_path = Path(str(OUT) + '-launcher-exit.json')
+launcher = json.loads(launcher_path.read_bytes())
+assert launcher['observedWrapperReturncode'] == 0 and launcher['wrapperBytesUnchanged']
+assert Path(str(OUT) + '.exit-code').read_text().strip() == '0'
+assert Path(str(OUT) + '-launcher-process.exit-code').read_text().strip() == '0'
+observation_path = Path(str(OUT) + '-exec-observation.json')
+assert json.loads(observation_path.read_bytes())['final']['exit_code'] == 0
+expected = [line for line in raw.splitlines() if line.startswith('[EXPECTED EXCEPTION]')]
+assert expected == ['[EXPECTED EXCEPTION] Error: fb-auto-probe']
+assert result['uncaughtBrowserExceptions'] == len(expected) == 1
+validation = read('result-validation.json')
+assert validation['passed'] and all(validation['checks'].values())
+assert result['firstTransportFailure']['step'].startswith('=== P53.')
+assert result['firstNetworkFailure']['step'].startswith('=== P57')
+assert read('wait-trace/receipt.json')['status'] == 'trace-disabled-for-this-runner'
+start, end = [datetime.datetime.fromisoformat(receipt[name]).timestamp() for name in ['startedUTC', 'finishedUTC']]
+screens = []
+for path in sorted((OUT / 'screens').rglob('*.png')):
+    assert path.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+    assert start <= path.stat().st_mtime <= end
+    screens.append(info(path))
+assert set(receipt['screenshots']).issubset({str(Path(x['path']).relative_to(OUT)) for x in screens})
+capture = read('declared-artifact-capture.json')
+assert capture['missing'] == [] and capture['count'] == len(capture['files']) == 21
+for item in capture['files']:
+    copied = OUT / item['output']
+    assert info(copied)['sha256'] == item['sha256'] and copied.stat().st_size == item['bytes']
+    assert item['withinRunWindow'] is True
+assert sum(item['bytes'] for item in capture['files']) == capture['bytes'] == 262484
+first, last = read('native-identity-during-start.json'), read('native-identity-after.json')
+assert first['executables'] == last['executables']
+assert first['sourceBindings'] == last['sourceBindings'] and len(last['sourceBindings']) == 194
+assert all(x['path'].startswith('/tmp/geometry-runtime/b9bc23103ebb114398f3/') for x in last['executables'].values())
+for entry in last['sourceBindings']:
+    data = blob(entry['path'])
+    assert len(data) == entry['bytes'] and digest(data) == entry['sha256']
+static_path = Path('/workspace/geo261-evidence/browser-L3-preparation/L3-static-ready.json')
+static = json.loads(static_path.read_bytes())
+assert static['sourceSha'] == SHA and len(static['sourceBindings']) == 160
+for entry in static['sourceBindings']:
+    data = blob(entry['path'])
+    assert len(data) == entry['bytes'] and digest(data) == entry['sha256']
+golden_path = OUT / 'golden-snapshot.json'
+assert not golden_path.exists()
+golden_path.write_bytes(golden_raw)
+record = {
+    'sourceSha': SHA, 'branchAtRun': static['branch'],
+    'checkedUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    'validationExitCode': 0, 'acceptedCanvasOnL3': True,
+    'allSevenJobsAcceptedByThisRecord': False,
+    'passed': result['passedAssertions'], 'failed': result['failedAssertions'], 'skipped': result['skipped'],
+    'exactGoldenSections': len(result['sections']),
+    'importantSections': {name: result['sections'][name] for name in ['P52', 'P68', 'P72B', 'P73']},
+    'elapsedSeconds': receipt['elapsedSeconds'], 'remainingSeconds': 2100 - receipt['elapsedSeconds'],
+    'observedExitCodes': {'node': 0, 'wrapperWait': 0, 'launcherProcessWait': 0, 'tool': 0},
+    'sourceBeforeAfterSameClean': True, 'runtimeBeforeAfterSameFresh': True,
+    'sourceBindings': {'browserPreparation': 160, 'nativeBinaryClosure': 194},
+    'binaryIdentityDuringStartAndAfterEqual': True,
+    'runtimeBuildDisposition': {'core':'reused','bridge':'reused','model-base':'reused'},
+    'nativeSamplingBoundary': '第一次 binary/194來源採樣在 Node 已開始後；不是 Node 開始前的獨立採樣。原 runtime-before fresh 收據仍保存。',
+    'screenshots': screens, 'screenshotCount': len(screens),
+    'capturedArtifactCount': capture['count'], 'capturedArtifactBytes': capture['bytes'],
+    'capturedSuffixCounts': dict(collections.Counter(Path(x['output']).suffix for x in capture['files'])),
+    'expectedExceptions': expected, 'unexpectedExceptionCount': 0,
+    'firstTransportFailure': result['firstTransportFailure'], 'firstNetworkFailure': result['firstNetworkFailure'],
+    'cleanup': {'survivors': [], 'servicePortFree': True, 'cdpPortFree': True},
+    'references': [info(OUT / name) for name in ['receipt.json', 'canvas.log', 'result.json', 'result-validation.json', 'source-before.json', 'source-after.json', 'runtime-before.json', 'runtime-after.json', 'cleanup.json', 'declared-artifact-capture.json', 'native-identity-during-start.json', 'native-identity-after.json', 'golden-snapshot.json', 'final-verification-code.txt']] + [info(launcher_path), info(observation_path), info(static_path)],
+    'limitations': [
+        '本收據只驗同L3的完整canvas；其他五browser與native/gates依各自當輪原件核對，不由這份收據推論已完成。',
+        '原releaseNote要求canvas真0及owned cleanup核對後回報，再由root明示放行five；本收據不代表five已完成。',
+        '本輪未新增撤回突變；原 P38/P53/P57 等受控失敗路徑完整保留，不說零例外或零網路失敗。',
+        '本機 Chromium/Noto 字型並行 native；耗時不是 P189 性能證據。',
+        'wait trace 未開啟，0 records 不代表 0 次等待。',
+        '封存為既有產物原 bytes，沒有重新生成圖片、下載或場景。',
+    ],
+}
+target = OUT / 'final-verification.json'
+assert not target.exists()
+target.write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps({'output': str(target), 'sha256': digest(target.read_bytes()), 'validationExitCode': 0, 'assertions': result['passedAssertions'], 'sections': len(result['sections']), 'screenshots': len(screens), 'capturedSuffixCounts': record['capturedSuffixCounts']}, ensure_ascii=False))

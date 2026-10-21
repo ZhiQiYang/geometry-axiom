@@ -1,0 +1,54 @@
+test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) ... 
+  test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='missing name') ... FAIL
+  test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='unknown key') ... FAIL
+  test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong type') ... FAIL
+  test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong value') ... FAIL
+
+======================================================================
+FAIL: test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='missing name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 492, in test_P154_GRID_DEFINITION_DIAGNOSTIC
+    rejected = self.reject([operation], 'GRID_DEFINITION', 'GRID_DEFINITION ' + name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 79, in reject
+    self.assertTrue(matching, (label, reason, errors))
+AssertionError: [] is not true : ('GRID_DEFINITION missing name', 'GRID_DEFINITION', ['I74 COMPLETE_MAPPING: grid-system 4 requires id, name, mainAlong, u and v with their declared types and no unknown keys', 'candidate rejected'])
+
+======================================================================
+FAIL: test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='unknown key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 492, in test_P154_GRID_DEFINITION_DIAGNOSTIC
+    rejected = self.reject([operation], 'GRID_DEFINITION', 'GRID_DEFINITION ' + name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 79, in reject
+    self.assertTrue(matching, (label, reason, errors))
+AssertionError: [] is not true : ('GRID_DEFINITION unknown key', 'GRID_DEFINITION', ['I74 COMPLETE_MAPPING: grid-system 4 requires id, name, mainAlong, u and v with their declared types and no unknown keys', 'candidate rejected'])
+
+======================================================================
+FAIL: test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 492, in test_P154_GRID_DEFINITION_DIAGNOSTIC
+    rejected = self.reject([operation], 'GRID_DEFINITION', 'GRID_DEFINITION ' + name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 79, in reject
+    self.assertTrue(matching, (label, reason, errors))
+AssertionError: [] is not true : ('GRID_DEFINITION mainAlong type', 'GRID_DEFINITION', ['I74 COMPLETE_MAPPING: grid-system 4 requires id, name, mainAlong, u and v with their declared types and no unknown keys', 'candidate rejected'])
+
+======================================================================
+FAIL: test_P154_GRID_DEFINITION_DIAGNOSTIC (tests.test_grid_card_reference.GridCardReference.test_P154_GRID_DEFINITION_DIAGNOSTIC) (case='mainAlong value')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 492, in test_P154_GRID_DEFINITION_DIAGNOSTIC
+    rejected = self.reject([operation], 'GRID_DEFINITION', 'GRID_DEFINITION ' + name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/geo261-gates-l/tests/test_grid_card_reference.py", line 79, in reject
+    self.assertTrue(matching, (label, reason, errors))
+AssertionError: [] is not true : ('GRID_DEFINITION mainAlong value', 'GRID_DEFINITION', ['I74 COMPLETE_MAPPING: grid-system 4 requires id, name, mainAlong, u and v with their declared types and no unknown keys', 'candidate rejected'])
+
+----------------------------------------------------------------------
+Ran 1 test in 0.160s
+
+FAILED (failures=4)

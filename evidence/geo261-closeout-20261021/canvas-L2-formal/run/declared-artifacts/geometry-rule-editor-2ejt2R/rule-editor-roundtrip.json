@@ -1,0 +1,135 @@
+{
+  "scene": "requires grid-subdivision-rules/1\ngrid-system 1 name-hex 33393020617574686f72656420736f75726365 main-along none u repeat 0 600 v repeat 0 400\ngrid-source-rule 1 key 1 name-hex 3339302072656e616d6564 selector cell -3 -1 divide 3 2\ngrid-source-rule-highwater 1 next 2\ncanvas-pos grid-system 1 -399 -218\n",
+  "raw": {
+    "schema": "grid-editor-draft/2",
+    "draftId": "1e3212fe-3ed0-477a-87f5-614cb6ec8c81",
+    "kind": "source",
+    "intent": "edit",
+    "baseRef": {
+      "kind": "grid-system",
+      "id": 1,
+      "fingerprint": "6b0922e8190a67c2632420a78e2669c817d14f8fa7db01e11bdf021e7f3647c8"
+    },
+    "inputRefs": [],
+    "rawForm": {
+      "igName": "390 authored source",
+      "igMainAlong": "none",
+      "igUSource": "repeat",
+      "igUStep": "600",
+      "igUStepSource": "",
+      "igUPhase": "0",
+      "igUPhaseSource": "",
+      "igUPanel": "600",
+      "igUPanelSource": "",
+      "igUGap": "0",
+      "igUGapSource": "",
+      "igUAnchor": "0",
+      "igUAnchorSource": "",
+      "igUStagger": "",
+      "igUStaggerSource": "",
+      "igVSource": "repeat",
+      "igVStep": "400",
+      "igVStepSource": "",
+      "igVPhase": "0",
+      "igVPhaseSource": "",
+      "igVPanel": "600",
+      "igVPanelSource": "",
+      "igVGap": "0",
+      "igVGapSource": "",
+      "igVAnchor": "0",
+      "igVAnchorSource": "",
+      "igVStagger": "",
+      "igVStaggerSource": ""
+    },
+    "ruleDraft": {
+      "intent": "create",
+      "ruleKey": null,
+      "rawForm": {
+        "name": "來源細分",
+        "selector": "all-cells",
+        "cellI": "0",
+        "cellJ": "0",
+        "divisionsU": "1e",
+        "divisionsV": "2"
+      }
+    }
+  },
+  "manifest": {
+    "projectId": "440b6064-5b15-4825-b324-b04f991f6b53",
+    "name": "未命名專案",
+    "sources": [],
+    "faces": [],
+    "featureAttachments": {
+      "schema": "geometry-feature-attachments/1",
+      "records": [
+        {
+          "kind": "grid-draft",
+          "schema": "grid-editor-draft/2",
+          "value": {
+            "schema": "grid-editor-draft/2",
+            "draftId": "1e3212fe-3ed0-477a-87f5-614cb6ec8c81",
+            "kind": "source",
+            "intent": "edit",
+            "baseRef": {
+              "kind": "grid-system",
+              "id": 1,
+              "fingerprint": "6b0922e8190a67c2632420a78e2669c817d14f8fa7db01e11bdf021e7f3647c8"
+            },
+            "inputRefs": [],
+            "rawForm": {
+              "igName": "390 authored source",
+              "igMainAlong": "none",
+              "igUSource": "repeat",
+              "igUStep": "600",
+              "igUStepSource": "",
+              "igUPhase": "0",
+              "igUPhaseSource": "",
+              "igUPanel": "600",
+              "igUPanelSource": "",
+              "igUGap": "0",
+              "igUGapSource": "",
+              "igUAnchor": "0",
+              "igUAnchorSource": "",
+              "igUStagger": "",
+              "igUStaggerSource": "",
+              "igVSource": "repeat",
+              "igVStep": "400",
+              "igVStepSource": "",
+              "igVPhase": "0",
+              "igVPhaseSource": "",
+              "igVPanel": "600",
+              "igVPanelSource": "",
+              "igVGap": "0",
+              "igVGapSource": "",
+              "igVAnchor": "0",
+              "igVAnchorSource": "",
+              "igVStagger": "",
+              "igVStaggerSource": ""
+            },
+            "ruleDraft": {
+              "intent": "create",
+              "ruleKey": null,
+              "rawForm": {
+                "name": "來源細分",
+                "selector": "all-cells",
+                "cellI": "0",
+                "cellJ": "0",
+                "divisionsU": "1e",
+                "divisionsV": "2"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "format": "geometry-canvas/13",
+    "models": [],
+    "faceProjections": [],
+    "sceneHash": "8f4579589b8364e176018d7a4d7e75c68efa085da2674f6f54d092252a191487",
+    "requiredCapabilities": [
+      "grid-editor-draft/2",
+      "grid-subdivision-rules/1"
+    ]
+  },
+  "sourceId": 1
+}

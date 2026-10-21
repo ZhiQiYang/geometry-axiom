@@ -1,0 +1,15 @@
+{
+  "scope": "只更正封包衍生分類標籤；不改raw或已交manifest",
+  "bundle": "/workspace/geo261-evidence/final-bundle/p189-codec-trial-7ad3216a",
+  "finding": "artifact-mapping.json 對 inputs/*.scene 統一標成「生成場景原bytes」過廣；實際為全部175個輸入，其中4生成、171取自固定base。原bytes、來源path、hash、正式equivalence.generated旗標均正確。",
+  "generated_scene_count": 4,
+  "base_root_scene_count": 171,
+  "generated_names": [
+    "s16.scene",
+    "s32.scene",
+    "s48.scene",
+    "s64.scene"
+  ],
+  "classification_authority": "raw/dump-equivalence.json 的各scene.generated；raw/source-files-base.json與固定來源SHA",
+  "bundle_bytes_unchanged": true
+}

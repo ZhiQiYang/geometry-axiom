@@ -1,0 +1,45 @@
+{
+  "checked_utc": "2026-10-21T02:43:14.450133+00:00",
+  "candidate_sha": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+  "scope": "只讀現存36樣本、175stdout、各phase/前檢收據與三方來源索引；不執行產品或重抽樣",
+  "sample_order_exact": true,
+  "valid_finite_positive_samples": 36,
+  "equivalence_rows": 175,
+  "generated_rows": 4,
+  "fixed_base_rows": 171,
+  "observed_all_three_stdout_identical": 175,
+  "observed_base_load_success": 75,
+  "source_file_counts": {
+    "main": 495,
+    "base": 673,
+    "final": 673
+  },
+  "source_archive_current_bytes_match_index": true,
+  "all_phase_argv_match_prepared": true,
+  "sequential_phases_and_preflight_order": true,
+  "all_phase_exit_codes": {
+    "generator-selftest": 0,
+    "selftest": 0,
+    "build": 0,
+    "equivalence": 0,
+    "timing": 0,
+    "check": 0
+  },
+  "phase_seconds": {
+    "generator-selftest": 0.08704432600279688,
+    "selftest": 0.06074840399742243,
+    "build": 48.136345932998665,
+    "equivalence": 72.86820662800164,
+    "timing": 78.95561239200106,
+    "check": 0.07333493499754695
+  },
+  "controls": 16,
+  "positive_controls": 2,
+  "negative_controls": 14,
+  "relevant_non_zombie_preflight_processes": [],
+  "check_exit_code": 0,
+  "margin_below_ratio_2": 0.037429391874348905,
+  "relative_margin_percent": 1.8714695937174453,
+  "limitations": "前檢只代表保存時點，不能保證整段時間沒有外部排程波動；候選未驗full7／全量帳本／架構，未做精確撤回性能負控。",
+  "validation_exit_code": 0
+}

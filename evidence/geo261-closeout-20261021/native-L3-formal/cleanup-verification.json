@@ -1,0 +1,80 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "checkedUtc": "2026-10-21T06:30:21.172365+00:00",
+  "proof": "固定原碼控制流程＋正式完成收據＋父wait＋工具退出觀察",
+  "subreaperEnabled": true,
+  "waitLoopEndsOnlyAfterChildProcessError": true,
+  "waitInterpretation": "原 wrapper 的 done 只在 waitpid(-1,WNOHANG) 拋 ChildProcessError/ECHILD 設為真；正式receipt在該迴圈完成後落盤，且主timeout真碼另存。",
+  "mainChildPid": 427725,
+  "mainChildRawWaitStatus": 0,
+  "mainChildExitCode": 0,
+  "reapedCount": 11,
+  "mainWaitEvents": [
+    {
+      "pid": 427725,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": true,
+      "reapedUtc": "2026-10-21T06:20:25.133569+00:00"
+    }
+  ],
+  "adoptedCleanupSignalCount": 0,
+  "wrapperReturnCode": 0,
+  "launcherExitCode": 0,
+  "toolSession": 75129,
+  "toolChunk": "b139d1",
+  "toolExitCode": 0,
+  "toolObservationKind": "實際工具回應的事後逐欄轉錄，非 transport 自動原始日誌",
+  "currentProcSamplePerformed": false,
+  "pidInvisibilityUsedAsProof": false,
+  "sourceReferences": {
+    "receipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/receipt.json",
+      "bytes": 14437,
+      "sha256": "1e0aab363155d21cccadd3b86f2a710b0eef42112fb74c7e8c932378a64758a0",
+      "mtimeNs": 1792563625242356145
+    },
+    "reaped": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/reaped.json",
+      "bytes": 1911,
+      "sha256": "39eb72255c5cfd3159b5e1bb7920d66c4f3acf5a3fe5f2144b59f546f0706825",
+      "mtimeNs": 1792563625242144933
+    },
+    "wrapperCode": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-launcher/wrapper-code.txt",
+      "bytes": 4951,
+      "sha256": "3b9372aac1ce431385fb5de063587a045fd2741682add31d32883daa1fa0db0a",
+      "mtimeNs": 1792561795337771383
+    },
+    "launcherCode": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-launcher/launcher-code.txt",
+      "bytes": 6477,
+      "sha256": "6c32561bf1e6fbe72f78167918be60e64418655fc201ac924d58d34ef0d10e7c",
+      "mtimeNs": 1792561795336755113
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-launcher/launcher-receipt.json",
+      "bytes": 14311,
+      "sha256": "e516ec91c321960898187a3eadb34bc76c214caf75b3d7cc398fd48f86d72f8e",
+      "mtimeNs": 1792563625254487451
+    },
+    "toolObservation": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native/tool-observation.json",
+      "bytes": 1219,
+      "sha256": "828fc0167550edb3e25fb45b0e2110a3e6e420af1232cccb61456b0b54b57212",
+      "mtimeNs": 1792563656524127497
+    },
+    "preflightProcessSample": {
+      "path": "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/native-launcher/no-live-writer-preflight-revised.json",
+      "bytes": 2071,
+      "sha256": "d4ec511479dbbe418f77e73936424901d178ba4d9e55eb54547d5462426c3df2",
+      "mtimeNs": 1792561763643697508
+    }
+  },
+  "limits": [
+    "此為本subreaper子樹的回收證明，不宣稱主機不存在其他程序；canvas與Q38另有自己的生命週期。",
+    "未用現在/proc PID不可見推斷程序已死，也未新增/proc掃描。",
+    "本輪前置重新核對精確四PID身分；其fd/exe仍未能讀取，採樣是當時狀態，不是未來零writer保證。",
+    "L2的前置拒讀與PID探針失敗不屬本輪；此包不改標歷史診斷。"
+  ]
+}

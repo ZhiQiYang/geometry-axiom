@@ -1,0 +1,15 @@
+# 公理:R19(c):與主支平行的邊上的料是層級 2 邊界主支,被兩端層級 1 佔掉的料寬裁短——
+# 房深 2600,邊界材寬 20 → 邊界主支 L = 2600 − 20 − 20 = 2560。內部主支同樣 2560。
+# R19(d):轉角處層級 1 固定段連續蓋到牆(L=4000),層級 2 停在它下面(I19 直接給出)。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,2600 0,2600
+grid 1 on 1 u 2000
+timber 1 20 20 role boundary
+timber 2 20 20 role boundary
+timber 3 20 20 role primary
+timber 4 20 20 role primary
+timber 5 20 20 role primary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 -u +n
+place 3 on 1 at-face e1 +v +n
+place 4 on 1 at-face e3 +v +n
+place 5 on 1 at-line grid 1 u 0 +v +n

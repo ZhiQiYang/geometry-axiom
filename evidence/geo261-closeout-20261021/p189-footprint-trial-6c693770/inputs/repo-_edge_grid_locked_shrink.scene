@@ -1,0 +1,11 @@
+# GEO-099:重宣告後 index 0 還在,但角材 3 錨的是 index 1——
+# 新定義只剩 1 條線,推不出 index 1 → I23(a) 拒絕。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+grid 1 on 1 u 1000 3000
+timber 1 20 20 role boundary
+timber 2 20 20 role boundary
+timber 3 27 33 role primary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 -u +n
+place 3 on 1 at-line grid 1 u 1 +v +n
+grid 1 on 1 u 1000

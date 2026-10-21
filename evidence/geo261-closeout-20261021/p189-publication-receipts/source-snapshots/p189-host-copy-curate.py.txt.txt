@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+"""封裝 75f 既有 H/K 與外層收據；不執行產品或正式驗收工具。"""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+
+E = Path('/workspace/geo261-evidence')
+ROOT = E / 'final-bundle'
+D = E / 'host-copy-candidate'
+O = E / 'p189-host-copy-75f587a5e96d-9oo11k1i'
+SHA = '75f587a5e96dbd1460cf1d9be781ca6fa06fd993'
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def save(path, value):
+    with path.open('x') as f:
+        json.dump(value, f, ensure_ascii=False, indent=2)
+        f.write('\n')
+
+def regulars(path):
+    for current, dirs, names in os.walk(path):
+        dirs[:] = sorted(x for x in dirs if x not in ('__pycache__', '.git', 'source', 'footprint'))
+        for name in sorted(names):
+            p = Path(current) / name
+            assert not p.is_symlink(), p
+            yield p
+
+def bundle(name, sources, readme, links=()):
+    B = ROOT / name
+    assert not B.exists(), B
+    B.mkdir()
+    mapping, excluded = [], []
+    for src, rel in sources:
+        assert 'footprint' not in src.relative_to(E).parts, src
+        raw = src.read_bytes()
+        if raw.startswith(b'\x7fELF') or src.suffix in ('.pyc', '.tar'):
+            excluded.append({'source': str(src), 'bytes': len(raw), 'sha256': sha(raw), 'reason': '二進位／archive／暫存留外部'})
+            continue
+        raw.decode('utf-8')
+        role = '既有文字原件；歷史狀態依收據，不因封裝改寫'
+        if src.suffix in ('.py', '.c', '.h', '.inc', '.sh'):
+            rel = Path(str(rel) + '.txt')
+            role = '外部原 bytes 純文字來源快照；0644 資料，不是 active 入口'
+        dst = B / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        with dst.open('xb') as f:
+            f.write(raw)
+        os.chmod(dst, 0o644)
+        assert dst.read_bytes() == raw
+        mapping.append({'source': str(src), 'published': str(rel), 'bytes': len(raw), 'sha256': sha(raw), 'role': role, 'original_bytes': True})
+    save(B / 'artifact-mapping.json', {'files': mapping, 'excluded': excluded, 'new_product_executions': 0})
+    if links:
+        linked = []
+        for directory in links:
+            m = ROOT / directory / 'SHA256SUMS'
+            linked.append({'bundle': '../' + directory, 'manifest': '../' + directory + '/SHA256SUMS', 'manifest_sha256': sha(m.read_bytes()) if m.exists() else None})
+        save(B / 'linked-bundles.json', linked)
+    (B / 'README.md').write_text(readme)
+    files = sorted(x for x in B.rglob('*') if x.is_file())
+    (B / 'SHA256SUMS').write_text(''.join(sha(x.read_bytes()) + '  ' + str(x.relative_to(B)) + '\n' for x in files))
+    for row in mapping:
+        assert (B / row['published']).read_bytes() == Path(row['source']).read_bytes()
+    for line in (B / 'SHA256SUMS').read_text().splitlines():
+        h, rel = line.split('  ', 1)
+        assert sha((B / rel).read_bytes()) == h
+    files = sorted(x for x in B.rglob('*') if x.is_file())
+    assert not any(x.suffix in ('.py', '.c', '.h', '.inc', '.sh') for x in files)
+    result = {'checked_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'bundle': str(B),
+              'file_count': len(files), 'bytes': sum(x.stat().st_size for x in files),
+              'manifest_sha256': sha((B / 'SHA256SUMS').read_bytes()), 'all_original_bytes_match': True,
+              'all_manifest_hashes_match': True, 'new_product_executions': 0, 'validation_exit_code': 0,
+              'packager_sha256': sha(Path(__file__).read_bytes())}
+    save(E / (name + '-copy-check.json'), result)
+    return result
+
+commit = json.loads((D / 'local-commit.json').read_bytes())
+assert commit['sha'] == SHA and commit['parent'] == '85dc4fff44ce49b27f831b21cbdcb662c863302c'
+assert json.loads((D / 'independent-original-correction-review.json').read_bytes())['acceptedCorrectedOriginalBaseline']
+assert (E / 'host-copy-package-source-review.json').exists()
+sources = []
+for directory in (D / 'H/v1', D / 'H/original-correction', D / 'K'):
+    sources += [(p, Path('raw') / p.relative_to(D)) for p in regulars(directory)]
+sources += [(D / name, Path('raw') / name) for name in [
+    'independent-original-baseline-finding.json', 'independent-original-correction-review.json',
+    'independent-review-H-code-v2.txt', 'independent-review-H-code.txt', 'independent-review-H.json',
+    'independent-review-K-code.txt', 'independent-review-K.json', 'local-commit.json']]
+sources += [(E / 'host-copy-package-source-review.json', Path('reviews/host-copy-package-source-review.json')),
+            (Path(__file__), Path('source-snapshots') / (Path(__file__).name + '.txt'))]
+hk = bundle('host-copy-targeted-75f587a5', sources, '''# 75f 的 H/K 定向證據
+
+分支 `codex/geo261-p189-host-copy-trial-20261021`，commit `75f587a5e96dbd1460cf1d9be781ca6fa06fd993`，parent `85dc4fff44ce49b27f831b21cbdcb662c863302c`。本包只收 H/v1、H/original-correction、K 與固定 top-level peer／commit 收據；後續 footprint 候選另案，未收進本包。
+
+H 的 65 個定向測試、18 個明列控制與 4 個局部 sanitizer 案原件留在 raw/H/v1；sanitizer 只儀器化 H translation unit，K/W 未儀器化。整套 65 項中的 43 個具名 ASSERT 非零命令不能全部稱為 H 控制。K 的 36 個定向測試、26 個具名控制與真 wait 收據留在 raw/K。完整計數、來源綁定與限制見 reviews/host-copy-package-source-review.json；各組測試有重疊，不能相加當成獨立案例總數。定向收據執行時未 commit 的狀態照原文保存，local-commit.json 將來源 bytes 綁到 75f。
+
+H/v1 的四個「原版」見證曾因 references.inc 轉接遺漏而使用錯誤基準，不可當原版驗證。獨立發現報告與原錯誤紀錄完整保留；H/original-correction 是新 out 的修正，原版四案真 0，93 個已記命令皆 0，peer 接受。沒有獨立保存的最外層 run_original 結束碼檔，不從 passed 推造頂層工具 0。修正未更改候選產品 bytes 或重跑候選；不能用修正覆寫錯誤歷史。
+
+P-189 原件另見 ../p189-host-copy-trial-75f587a5；該輪四點綠也不能替代完整 ledger／架構／七項正式驗收。本包沒有執行產品、沒有重抽效能樣本或撤回負控制。
+
+artifact-mapping 逐檔綁原 bytes/hash；外部 .py/.c 等保存為 0644 純文字來源快照，不新增正式工具入口。SHA256SUMS 涵蓋除自身外所有檔案。最不確定是未完成全套來源驗收與實際環境中的性能餘裕。
+''')
+
+outer = []
+for p in sorted(E.glob('p189*copy-check.json')):
+    outer.append((p, Path('copy-checks') / p.name))
+outer.append((E / 'host-copy-targeted-75f587a5-copy-check.json', Path('copy-checks/host-copy-targeted-75f587a5-copy-check.json')))
+for name in ['p189-codec-candidate-input-classification-note.json', 'p189-codec-trial-readonly-comparison.json', 'p189-trial-package-v3-change-note.json']:
+    outer.append((E / name, Path('notes') / name))
+for prefix in ['p189-contact-diagnostics-curate-run01', 'p189-host-copy-package', 'p189-host-copy-prepare']:
+    for suffix in ['.receipt.json', '.stdout', '.stderr', '.exit-code']:
+        p = E / (prefix + suffix)
+        outer.append((p, Path('packaging-transport') / p.name))
+for name in ['independent-review.json', 'independent-review-code.txt']:
+    outer.append((O / name, Path('host-copy-p189-peer') / name))
+outer.append((Path(__file__), Path('source-snapshots') / (Path(__file__).name + '.txt')))
+appendix = bundle('p189-publication-receipts', outer, '''# P-189 外層封裝核對與追加 peer
+
+本附錄保存各輪封裝 copy-check、實際封裝命令／結束碼、codec 場景分類更正，以及 75f 在原子包凍結後完成的獨立 peer 與接受器純文字來源。子包的原件與 SHA256SUMS 都沒有重寫；linked-bundles.json 綁定其 manifest。
+
+75f 候選 P-189 check 0；正式 L、codec 與 contact 前輪的失敗仍有效保存，不以候選結果改寫。75f 的 175 列包含 75 成功 load 與 100 歷史受控拒絕，不稱 175 全成功載入。36 個正反交錯樣本完整，N64 為 1.962570608125651，距 2x 門檻約 1.87147%；未作性能撤回負控制，亦未完成全量帳本／架構／七項正式驗收。
+
+peer 是只讀事後驗收，不能冒稱重新取得執行時點狀態；頂層 session/chunk 紀錄若標示轉錄即保留該性質。外部包裝腳本的來源快照是資料，不是部署入口。本附錄本身的 copy-check 在其外部另存，避免自我雜湊循環；SHA256SUMS 涵蓋除自身外全部檔案。
+''', ['p189', 'p189-final-L', 'p189-codec-trial-7ad3216a', 'p189-contact-trial-85dc4fff', 'p189-contact-85dc4fff-diagnostics', 'p189-host-copy-trial-75f587a5', 'host-copy-targeted-75f587a5'])
+print(json.dumps({'targeted': hk, 'publication_receipts': appendix}, ensure_ascii=False, indent=2))

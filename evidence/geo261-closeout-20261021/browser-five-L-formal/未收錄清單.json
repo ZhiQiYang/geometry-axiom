@@ -1,0 +1,17 @@
+{
+  "files": [
+    {
+      "source": "/workspace/geo261-evidence/browser-five-preparation/launch_browser_five.py",
+      "bytes": 5858,
+      "sha256": "479cdcd9f1c1c03ab203aff6fc5f0f9fddb3c70d779507777c7c1d903762f124",
+      "reason": "不另收可執行副本；正式執行的原 bytes 已以 code.txt／launcher-code.txt／wrapper-code.txt 保存。"
+    },
+    {
+      "source": "/workspace/geo261-evidence/browser-five-preparation/run_browser_five.py",
+      "bytes": 37261,
+      "sha256": "4ffefe74d503506f2c99d3064fac4359c4aa5324f77ccf5e3ae44bdf6ec994f2",
+      "reason": "不另收可執行副本；正式執行的原 bytes 已以 code.txt／launcher-code.txt／wrapper-code.txt 保存。"
+    }
+  ],
+  "note": "來源集合包含本輪 run、launch、preparation 與執行計畫；binary、Chrome profile、cache 不屬封裝來源。binary 身分由原 native-identity/sidecar 保存，81 PNG 與9份 gcanvas及合成PDF輸入完整收入。"
+}

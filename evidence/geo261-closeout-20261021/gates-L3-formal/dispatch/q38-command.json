@@ -1,0 +1,31 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "phase": "q38",
+  "startedUtc": "2026-10-21T06:22:30.791790+00:00",
+  "dispatcherPid": 484216,
+  "dispatcherArgv": [
+    "python3",
+    "-B",
+    "-c",
+    "import pathlib,json,hashlib,os,sys,datetime\nbase=pathlib.Path(\"/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021\")\nprep=base/\"preparation\";raw=(prep/\"instance.json\").read_bytes()\nassert hashlib.sha256(raw).hexdigest()==\"ad0e74a3798fedf240d7a02af82ee7849496981276418335c38b9f36715ac1f3\"\nplan=json.loads(raw);phase=\"q38\"\nassert plan[\"sourceSha\"]==\"6589248c9a94bdf0460d8f84dd1610e51048188b\" and plan[\"gateJobs\"]==1\nassert \"CC\" not in os.environ and \"PYTHONOPTIMIZE\" not in os.environ and sys.flags.optimize==0\ncompletion=json.loads((base/\"native/completion-verification.json\").read_bytes())\nassert completion[\"acceptedNativeExact\"] and completion[\"sourceSha\"]==plan[\"sourceSha\"]\nverification=base/\"native/verification.json\"\nassert hashlib.sha256(verification.read_bytes()).hexdigest()==\"ee80438dce224cf9d473184c4ffe97a4c690d401d98eecdbcbd5e458449df93b\"\nscript=prep/\"phase-launcher.py\"\nassert hashlib.sha256(script.read_bytes()).hexdigest()==plan[\"files\"][\"phase-launcher.py\"][\"sha256\"]\nargv=plan[\"gateCommands\"][phase]\ndest=base/\"gates/dispatch\";dest.mkdir(parents=True,exist_ok=True)\ncommand=dest/(phase+\"-command.json\");assert not command.exists()\nmeta=dict(sourceSha=plan[\"sourceSha\"],phase=phase,startedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),dispatcherPid=os.getpid(),dispatcherArgv=sys.orig_argv,actualExecArgv=argv,instanceSha256=hashlib.sha256(raw).hexdigest(),phaseLauncherSha256=hashlib.sha256(script.read_bytes()).hexdigest(),nativeVerificationSha256=hashlib.sha256(verification.read_bytes()).hexdigest(),nativeCompletionSha256=hashlib.sha256((base/\"native/completion-verification.json\").read_bytes()).hexdigest(),CCAbsent=True,PYTHONOPTIMIZEAbsent=True,optimizationFlag=sys.flags.optimize,note=\"此 dispatcher exec 原 phase launcher；原程式的實際 child.wait/receipt 與工具退出分別保留。\")\ncommand.write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\")\n(dest/(phase+\"-dispatcher-code.txt\")).write_text(sys.orig_argv[-1])\nos.execvp(argv[0],argv)\n"
+  ],
+  "actualExecArgv": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021/preparation/phase-launcher.py",
+    "q38"
+  ],
+  "instanceSha256": "ad0e74a3798fedf240d7a02af82ee7849496981276418335c38b9f36715ac1f3",
+  "phaseLauncherSha256": "02fe0c9606bab8ae4132c743eaa9c38d47d91cc2a44fd15865eb169c651ddc40",
+  "nativeVerificationSha256": "ee80438dce224cf9d473184c4ffe97a4c690d401d98eecdbcbd5e458449df93b",
+  "nativeCompletionSha256": "ce7d1b77fa9d5658e47a8cad7c83efdf391d7267dd57afef5eb729c7bc38c0dd",
+  "CCAbsent": true,
+  "PYTHONOPTIMIZEAbsent": true,
+  "optimizationFlag": 0,
+  "note": "此 dispatcher exec 原 phase launcher；原程式的實際 child.wait/receipt 與工具退出分別保留。"
+}

@@ -1,0 +1,81 @@
+{
+  "case": "full-normal",
+  "command": [
+    "node",
+    "/workspace/geometry-axiom/geometry-core/domain-decoupling/closeout-tools/p73_probe.js",
+    "/workspace/geometry-axiom"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18843/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-p73",
+    "XDG_CACHE_HOME": "/tmp/geo261-xdg-p73",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CDP_PORT": "9343",
+    "P73_MODE": "full",
+    "P73_APP_VARIANT": "none",
+    "P73_SCREENSHOT_DIR": "/workspace/geo261-evidence/p73/formal/full-normal-screens",
+    "GEOMETRY_UIUX_SCREENSHOT_DIR": "/workspace/geo261-evidence/p73/formal/full-normal-screens"
+  },
+  "sourceSha": "7159530c0e494d3211e6ab1764eb691137211707",
+  "probeSha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+  "runtimeCommand": [
+    "python3",
+    "geometry-web/runtime_version.py",
+    "--probe",
+    "18843"
+  ],
+  "runtimeExitCode": 0,
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "bf568f47a04bbf090abe2b49b49e116d804b5d0cd6bbcb0c8638b983b5f188b3",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 138215,
+    "session": "7d1ecfaadb2440858d9a51c788c27b12"
+  },
+  "expectedExitCode": 0,
+  "startedUtc": "2026-10-20T21:11:59.197179+00:00",
+  "exitCode": 0,
+  "elapsedSeconds": 41.7398806329993,
+  "finishedUtc": "2026-10-20T21:12:40.937083+00:00",
+  "headAfter": "7159530c0e494d3211e6ab1764eb691137211707",
+  "statusAfter": "",
+  "validationExitCode": 0,
+  "result": {
+    "metadata": {
+      "root": "/workspace/geometry-axiom",
+      "mode": "full",
+      "sha": "7159530c0e494d3211e6ab1764eb691137211707",
+      "status": "",
+      "probeSha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+      "sources": {
+        "geometry-web/cdp_test.js": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761",
+        "geometry-web/uiux_review_test.js": "0925c130aa7488d54b5e2ed539ef21f5b653fbbdebd0910f71a1992871149604",
+        "geometry-web/grid_workspace_draft_test.js": "7d7f831cbf1a9a3c6353cdf1028b7701c56628681b24eebe5f0ad1e36b733822",
+        "geometry-web/app.js": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+        "geometry-web/app.css": "028c423c50a766f740144d1c883a16b997be5f00ef9a3d35548a5f59f1ec82fc"
+      },
+      "mutation": "none",
+      "callbackControl": false,
+      "actualFixed": true,
+      "actualAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f",
+      "effectiveAppSha256": "0913168bc7792c20d2bece26e574288ae160c45feed2fd2ea24ed0a2898fbc5f"
+    },
+    "completed": true,
+    "passedAssertions": 69,
+    "failedAssertions": 0,
+    "exceptions": 0,
+    "sections": {
+      "P73": 69
+    }
+  },
+  "browserCleanup": {
+    "pid": 138402,
+    "profile": "/tmp/geometry-cdp-6tEKo0",
+    "exitCode": 0,
+    "signalCode": null,
+    "exited": true
+  }
+}

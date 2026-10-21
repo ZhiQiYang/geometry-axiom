@@ -1,0 +1,125 @@
+"""五項 browser 的外部父啟動器；將原編排 stdout 與 wait 真退出碼直接落盤。"""
+from __future__ import annotations
+
+import argparse
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import signal
+import subprocess
+import sys
+import time
+
+PINNED_WRAPPER_SHA256 = '4ffefe74d503506f2c99d3064fac4359c4aa5324f77ccf5e3ae44bdf6ec994f2'
+ROOT = Path('/workspace/geometry-axiom')
+
+
+def utc():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def digest(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def durable_write(path, raw):
+    temporary = path.with_name(path.name + '.partial')
+    with temporary.open('xb') as stream:
+        stream.write(raw)
+        stream.flush()
+        os.fsync(stream.fileno())
+    temporary.replace(path)
+
+
+def write_receipt(path, value):
+    durable_write(path, (json.dumps(value, ensure_ascii=False, indent=2) + '\n').encode())
+
+
+def observe_child(argv, cwd, launch_dir, metadata):
+    """只依自己建立的直接子程序 wait() 記錄碼；不解析產品 passed 欄位。"""
+    log = launch_dir / 'orchestrator.log'
+    receipt_path = launch_dir / 'launcher-receipt.json'
+    record = {**metadata, 'schema': 'geo261-browser-five-launcher/1', 'argv': argv,
+              'cwd': str(cwd), 'startedUTC': utc(), 'status': '尚未建立子程序',
+              'observedWrapperReturncode': None, 'stdoutFile': str(log), 'signalsForwarded': []}
+    write_receipt(receipt_path, record)
+    child = None
+    started = time.monotonic()
+    previous = {}
+
+    def forward(number, frame):
+        if child is not None and child.poll() is None:
+            # 未 wait/reap 的直接子程序 PID 仍歸本父程序所有。
+            child.send_signal(number)
+            record['signalsForwarded'].append({'signal': number, 'utc': utc()})
+
+    for number in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+        previous[number] = signal.getsignal(number)
+        signal.signal(number, signal.SIG_IGN if number == signal.SIGHUP else forward)
+    try:
+        with log.open('xb') as stream:
+            child = subprocess.Popen(argv, cwd=cwd, stdin=subprocess.DEVNULL,
+                                     stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
+            record.update(status='執行中', wrapperPid=child.pid)
+            write_receipt(receipt_path, record)
+            code = child.wait()
+            # 第一個收尾動作：即使後續雜湊／JSON 寫入失敗，真 wait 碼也已獨立落盤。
+            durable_write(launch_dir / '.exit-code', (str(code) + '\n').encode())
+            stream.flush()
+            os.fsync(stream.fileno())
+        normalized = code if code >= 0 else 128 - code
+        record.update(status='已觀察子程序退出', observedWrapperReturncode=code,
+                      intendedLauncherExitCode=normalized, elapsedSeconds=time.monotonic() - started,
+                      finishedUTC=utc(), exitCodeFile=str(launch_dir / '.exit-code'),
+                      note='退出碼來自直接子程序 wait；沒有讀取或推測 summary/receipt 的 passed 結果。父程序遭 SIGKILL 或環境停機而缺 .exit-code 時仍屬未知。')
+        write_receipt(receipt_path, record)
+        return normalized
+    finally:
+        for number, handler in previous.items():
+            signal.signal(number, handler)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--sha', required=True)
+    parser.add_argument('--execute', action='store_true')
+    parser.add_argument('--release-note', required=True)
+    parser.add_argument('--run-id', required=True)
+    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--suite', action='append', choices=('assembly', 'documents', 'grid', 'space', 'timber'))
+    args = parser.parse_args()
+    if not re.fullmatch('[0-9a-f]{40}', args.sha) or not args.execute or not args.release_note.strip():
+        parser.error('須有完整 L SHA、明示 execute 與 root 排程放行；尚未啟動')
+    if not re.fullmatch('[a-z0-9][a-z0-9-]{0,70}', args.run_id):
+        parser.error('run-id 只能是短小寫英數與連字號')
+    output = args.output.resolve()
+    launch_dir = output.with_name(output.name + '-launch')
+    if not args.output.is_absolute() or not output.is_relative_to('/workspace/geo261-evidence') or output.exists() or launch_dir.exists():
+        parser.error('輸出須為未存在的外部絕對路徑；本輪 launch 目錄亦不可存在')
+    script = Path(__file__).with_name('run_browser_five.py')
+    wrapper = script.read_bytes()
+    if digest(wrapper) != PINNED_WRAPPER_SHA256:
+        parser.error('外部 wrapper bytes 與已審版本不符，拒絕執行')
+    launch_dir.mkdir(parents=True)
+    durable_write(launch_dir / 'launcher-code.txt', Path(__file__).read_bytes())
+    # 直接執行這份同 bytes 的文字快照，避免 parent 等待時原程式被意外覆寫。
+    snapshot = launch_dir / 'wrapper-code.txt'
+    durable_write(snapshot, wrapper)
+    argv = [sys.executable, str(snapshot), '--sha', args.sha, '--execute', '--release-note', args.release_note,
+            '--run-id', args.run_id, '--output', str(output)]
+    for suite in args.suite or []:
+        argv.extend(['--suite', suite])
+    return observe_child(argv, ROOT, launch_dir, {
+        'sourceSha': args.sha, 'releaseNote': args.release_note, 'launcherArgv': sys.argv,
+        'launcherSha256': digest(Path(__file__).read_bytes()), 'wrapperSha256': digest(wrapper),
+        'originalWrapperPath': str(script), 'executedWrapperSnapshot': str(snapshot),
+        'snapshotBytesEqualOriginal': snapshot.read_bytes() == wrapper,
+        'output': str(output), 'launchDirectory': str(launch_dir),
+    })
+
+
+if __name__ == '__main__':
+    sys.exit(main())

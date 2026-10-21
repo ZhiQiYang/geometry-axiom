@@ -1,0 +1,29 @@
+{
+  "command": [
+    "node",
+    "/workspace/geo261-evidence/p73/p73_probe-v2.cjs",
+    "/workspace/geometry-axiom"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18843/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-feedback-p73",
+    "XDG_CACHE_HOME": "/tmp/geo261-xdg-p73",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_CDP_PORT": "9343",
+    "P73_MODE": "full",
+    "P73_APP_VARIANT": "withdraw-guard",
+    "P73_SCREENSHOT_DIR": "/workspace/geo261-evidence/p73/v2-full-withdraw-guard-callback-screens",
+    "GEOMETRY_UIUX_SCREENSHOT_DIR": "/workspace/geo261-evidence/p73/v2-full-withdraw-guard-callback-screens",
+    "P73_AFTER_EMPTY_SYNC": "1"
+  },
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "probeSha256": "f12ab05083a0b2f994b34ee78b3990c8873aa749309ea132267ecfd599f32faf",
+  "startedUtc": "2026-10-20T21:02:09.240899+00:00",
+  "exitCode": 1,
+  "elapsedSeconds": 23.704158403000292,
+  "finishedUtc": "2026-10-20T21:02:32.945075+00:00",
+  "headAfter": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "statusAfter": ""
+}

@@ -1,0 +1,131 @@
+{
+  "sourceSha": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "cwd": "/workspace/geo261-native",
+  "command": [
+    "timeout",
+    "2100",
+    "python3",
+    "tests/run_all.py",
+    "--build"
+  ],
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8"
+  },
+  "stackKiB": 16384,
+  "startedUtc": "2026-10-20T20:44:15.032677+00:00",
+  "jobLimitSeconds": 2100,
+  "headBefore": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "statusBefore": "",
+  "sourceHashesBefore": {
+    "tests/test_assembly_mutation_check.py": "e53d1fa41f202657202a7019dbe5ae32ce5fcec085ee09706b2f9c1f63091649",
+    "tests/assembly_mutation_check.py": "230010fa6346d08e12207bd47fcfec9ca53535c70d486e1ff05c98d20abc53b9",
+    "tests/run_all.py": "fb9e5f1a6952ec87b9c472aee4aadf55131a0b270c850177607319b50c183bcf",
+    "tests/run_all.expected.json": "847d2494c1c701b80f83ebc1a48cac84ce06b66eabff11f14f86584d10093cc6"
+  },
+  "subreaperEnabled": true,
+  "wrapperPid": 91056,
+  "wrapperArgv": [
+    "python3",
+    "-B",
+    "-c",
+    "import os,sys,json,time,signal,ctypes,resource,hashlib,subprocess,datetime\nfrom pathlib import Path\ncwd=Path(\"/workspace/geo261-native\")\nout=Path(\"/workspace/geo261-evidence/native-final\")\nexpected=\"366ef501b78105d1f7242dc1f4f4752cac9086b5\"\ncommand=[\"timeout\",\"2100\",\"python3\",\"tests/run_all.py\",\"--build\"]\nenv={\"PYTHONDONTWRITEBYTECODE\":\"1\",\"LANG\":\"C.UTF-8\",\"LC_ALL\":\"C.UTF-8\"}\nos.chdir(cwd)\nos.environ.update(env)\ndef utc(): return datetime.datetime.now(datetime.timezone.utc).isoformat()\ndef git(*args): return subprocess.check_output([\"git\",*args],text=True).strip()\nhead=git(\"rev-parse\",\"HEAD\")\nstatus=git(\"status\",\"--porcelain\")\nassert head==expected and not status,(head,status)\nassert not out.exists(),str(out)\nout.mkdir()\nsoft,hard=resource.getrlimit(resource.RLIMIT_STACK)\nresource.setrlimit(resource.RLIMIT_STACK,(16*1024*1024,hard))\nlibc=ctypes.CDLL(None,use_errno=True)\nif libc.prctl(36,1,0,0,0)!=0: raise OSError(ctypes.get_errno(),\"PR_SET_CHILD_SUBREAPER\")\nflag=ctypes.c_int()\nif libc.prctl(37,ctypes.byref(flag),0,0,0)!=0 or flag.value!=1: raise RuntimeError(\"subreaper not enabled\")\ntracked=[\"tests/test_assembly_mutation_check.py\",\"tests/assembly_mutation_check.py\",\"tests/run_all.py\",\"tests/run_all.expected.json\"]\nhash_before={p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in tracked}\nstart=utc()\nmono=time.monotonic()\nmeta={\"sourceSha\":head,\"cwd\":str(cwd),\"command\":command,\"environment\":env,\"stackKiB\":16384,\"startedUtc\":start,\"jobLimitSeconds\":2100,\"headBefore\":head,\"statusBefore\":status,\"sourceHashesBefore\":hash_before,\"subreaperEnabled\":True,\"wrapperPid\":os.getpid(),\"wrapperArgv\":sys.orig_argv,\"wrapperSource\":sys.orig_argv[-1],\"note\":\"外層只回收自己的子樹；主 timeout 子程序的結束碼獨立保存並作為外層結束碼。\"}\n(out/\"command.json\").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\")\nlogfd=os.open(out/\"run.log\",os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o644)\nchild=os.fork()\nif child==0:\n    os.dup2(logfd,1)\n    os.dup2(logfd,2)\n    os.close(logfd)\n    os.execvp(command[0],command)\nos.close(logfd)\nmeta[\"mainChildPid\"]=child\n(out/\"command.json\").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\")\nprint(json.dumps({\"startedUtc\":start,\"wrapperPid\":os.getpid(),\"mainChildPid\":child,\"out\":str(out),\"sourceSha\":head},ensure_ascii=False),flush=True)\nevents=[]\ncleanup=[]\nmain_exit=None\nmain_raw=None\ndone=False\nwhile not done:\n    saw=False\n    while True:\n        try: pid,raw=os.waitpid(-1,os.WNOHANG)\n        except ChildProcessError:\n            done=True\n            break\n        if pid==0: break\n        saw=True\n        rc=os.waitstatus_to_exitcode(raw)\n        event={\"pid\":pid,\"rawWaitStatus\":raw,\"exitCode\":rc,\"isMainProcess\":pid==child,\"reapedUtc\":utc()}\n        events.append(event)\n        with (out/\"reaped.jsonl\").open(\"a\") as f: f.write(json.dumps(event,ensure_ascii=False)+\"\\n\")\n        if pid==child:\n            main_exit=rc\n            main_raw=raw\n    if done: break\n    if main_exit is not None:\n        children=Path(\"/proc/self/task/\"+str(os.getpid())+\"/children\").read_text().split()\n        for item in children:\n            pid=int(item)\n            if pid==child: continue\n            try:\n                rawstatus=Path(\"/proc/\"+str(pid)+\"/status\").read_text()\n                os.kill(pid,signal.SIGKILL)\n                event={\"pid\":pid,\"signal\":\"SIGKILL\",\"atUtc\":utc(),\"reason\":\"主 timeout 已結束，只清理仍被此 subreaper 收養的直接子程序。\",\"statusBeforeKill\":rawstatus}\n                cleanup.append(event)\n                with (out/\"cleanup.jsonl\").open(\"a\") as f: f.write(json.dumps(event,ensure_ascii=False)+\"\\n\")\n            except ProcessLookupError: pass\n            except FileNotFoundError: pass\n    if not saw: time.sleep(0.05)\nassert main_exit is not None,\"main child exit missing\"\nreceipt={**meta,\"exitCode\":main_exit,\"mainChildRawWaitStatus\":main_raw,\"elapsedSeconds\":time.monotonic()-mono,\"finishedUtc\":utc(),\"headAfter\":git(\"rev-parse\",\"HEAD\"),\"statusAfter\":git(\"status\",\"--porcelain\"),\"sourceHashesAfter\":{p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in tracked},\"reaped\":events,\"cleanup\":cleanup}\nreceipt[\"sourceHashesUnchanged\"]=receipt[\"sourceHashesBefore\"]==receipt[\"sourceHashesAfter\"]\n(out/\"reaped.json\").write_text(json.dumps({\"mainChildPid\":child,\"mainChildExitCode\":main_exit,\"events\":events,\"cleanup\":cleanup},ensure_ascii=False,indent=2)+\"\\n\")\n(out/\"receipt.json\").write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+\"\\n\")\nprint(json.dumps({\"finishedUtc\":receipt[\"finishedUtc\"],\"exitCode\":main_exit,\"elapsedSeconds\":receipt[\"elapsedSeconds\"],\"headAfter\":receipt[\"headAfter\"],\"statusAfter\":receipt[\"statusAfter\"],\"sourceHashesUnchanged\":receipt[\"sourceHashesUnchanged\"]},ensure_ascii=False),flush=True)\nsys.exit(main_exit if main_exit>=0 else 128-main_exit)\n"
+  ],
+  "wrapperSource": "import os,sys,json,time,signal,ctypes,resource,hashlib,subprocess,datetime\nfrom pathlib import Path\ncwd=Path(\"/workspace/geo261-native\")\nout=Path(\"/workspace/geo261-evidence/native-final\")\nexpected=\"366ef501b78105d1f7242dc1f4f4752cac9086b5\"\ncommand=[\"timeout\",\"2100\",\"python3\",\"tests/run_all.py\",\"--build\"]\nenv={\"PYTHONDONTWRITEBYTECODE\":\"1\",\"LANG\":\"C.UTF-8\",\"LC_ALL\":\"C.UTF-8\"}\nos.chdir(cwd)\nos.environ.update(env)\ndef utc(): return datetime.datetime.now(datetime.timezone.utc).isoformat()\ndef git(*args): return subprocess.check_output([\"git\",*args],text=True).strip()\nhead=git(\"rev-parse\",\"HEAD\")\nstatus=git(\"status\",\"--porcelain\")\nassert head==expected and not status,(head,status)\nassert not out.exists(),str(out)\nout.mkdir()\nsoft,hard=resource.getrlimit(resource.RLIMIT_STACK)\nresource.setrlimit(resource.RLIMIT_STACK,(16*1024*1024,hard))\nlibc=ctypes.CDLL(None,use_errno=True)\nif libc.prctl(36,1,0,0,0)!=0: raise OSError(ctypes.get_errno(),\"PR_SET_CHILD_SUBREAPER\")\nflag=ctypes.c_int()\nif libc.prctl(37,ctypes.byref(flag),0,0,0)!=0 or flag.value!=1: raise RuntimeError(\"subreaper not enabled\")\ntracked=[\"tests/test_assembly_mutation_check.py\",\"tests/assembly_mutation_check.py\",\"tests/run_all.py\",\"tests/run_all.expected.json\"]\nhash_before={p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in tracked}\nstart=utc()\nmono=time.monotonic()\nmeta={\"sourceSha\":head,\"cwd\":str(cwd),\"command\":command,\"environment\":env,\"stackKiB\":16384,\"startedUtc\":start,\"jobLimitSeconds\":2100,\"headBefore\":head,\"statusBefore\":status,\"sourceHashesBefore\":hash_before,\"subreaperEnabled\":True,\"wrapperPid\":os.getpid(),\"wrapperArgv\":sys.orig_argv,\"wrapperSource\":sys.orig_argv[-1],\"note\":\"外層只回收自己的子樹；主 timeout 子程序的結束碼獨立保存並作為外層結束碼。\"}\n(out/\"command.json\").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\")\nlogfd=os.open(out/\"run.log\",os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o644)\nchild=os.fork()\nif child==0:\n    os.dup2(logfd,1)\n    os.dup2(logfd,2)\n    os.close(logfd)\n    os.execvp(command[0],command)\nos.close(logfd)\nmeta[\"mainChildPid\"]=child\n(out/\"command.json\").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+\"\\n\")\nprint(json.dumps({\"startedUtc\":start,\"wrapperPid\":os.getpid(),\"mainChildPid\":child,\"out\":str(out),\"sourceSha\":head},ensure_ascii=False),flush=True)\nevents=[]\ncleanup=[]\nmain_exit=None\nmain_raw=None\ndone=False\nwhile not done:\n    saw=False\n    while True:\n        try: pid,raw=os.waitpid(-1,os.WNOHANG)\n        except ChildProcessError:\n            done=True\n            break\n        if pid==0: break\n        saw=True\n        rc=os.waitstatus_to_exitcode(raw)\n        event={\"pid\":pid,\"rawWaitStatus\":raw,\"exitCode\":rc,\"isMainProcess\":pid==child,\"reapedUtc\":utc()}\n        events.append(event)\n        with (out/\"reaped.jsonl\").open(\"a\") as f: f.write(json.dumps(event,ensure_ascii=False)+\"\\n\")\n        if pid==child:\n            main_exit=rc\n            main_raw=raw\n    if done: break\n    if main_exit is not None:\n        children=Path(\"/proc/self/task/\"+str(os.getpid())+\"/children\").read_text().split()\n        for item in children:\n            pid=int(item)\n            if pid==child: continue\n            try:\n                rawstatus=Path(\"/proc/\"+str(pid)+\"/status\").read_text()\n                os.kill(pid,signal.SIGKILL)\n                event={\"pid\":pid,\"signal\":\"SIGKILL\",\"atUtc\":utc(),\"reason\":\"主 timeout 已結束，只清理仍被此 subreaper 收養的直接子程序。\",\"statusBeforeKill\":rawstatus}\n                cleanup.append(event)\n                with (out/\"cleanup.jsonl\").open(\"a\") as f: f.write(json.dumps(event,ensure_ascii=False)+\"\\n\")\n            except ProcessLookupError: pass\n            except FileNotFoundError: pass\n    if not saw: time.sleep(0.05)\nassert main_exit is not None,\"main child exit missing\"\nreceipt={**meta,\"exitCode\":main_exit,\"mainChildRawWaitStatus\":main_raw,\"elapsedSeconds\":time.monotonic()-mono,\"finishedUtc\":utc(),\"headAfter\":git(\"rev-parse\",\"HEAD\"),\"statusAfter\":git(\"status\",\"--porcelain\"),\"sourceHashesAfter\":{p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in tracked},\"reaped\":events,\"cleanup\":cleanup}\nreceipt[\"sourceHashesUnchanged\"]=receipt[\"sourceHashesBefore\"]==receipt[\"sourceHashesAfter\"]\n(out/\"reaped.json\").write_text(json.dumps({\"mainChildPid\":child,\"mainChildExitCode\":main_exit,\"events\":events,\"cleanup\":cleanup},ensure_ascii=False,indent=2)+\"\\n\")\n(out/\"receipt.json\").write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+\"\\n\")\nprint(json.dumps({\"finishedUtc\":receipt[\"finishedUtc\"],\"exitCode\":main_exit,\"elapsedSeconds\":receipt[\"elapsedSeconds\"],\"headAfter\":receipt[\"headAfter\"],\"statusAfter\":receipt[\"statusAfter\"],\"sourceHashesUnchanged\":receipt[\"sourceHashesUnchanged\"]},ensure_ascii=False),flush=True)\nsys.exit(main_exit if main_exit>=0 else 128-main_exit)\n",
+  "note": "外層只回收自己的子樹；主 timeout 子程序的結束碼獨立保存並作為外層結束碼。",
+  "mainChildPid": 91082,
+  "exitCode": 0,
+  "mainChildRawWaitStatus": 0,
+  "elapsedSeconds": 1808.053997121,
+  "finishedUtc": "2026-10-20T21:14:23.086690+00:00",
+  "headAfter": "366ef501b78105d1f7242dc1f4f4752cac9086b5",
+  "statusAfter": "",
+  "sourceHashesAfter": {
+    "tests/test_assembly_mutation_check.py": "e53d1fa41f202657202a7019dbe5ae32ce5fcec085ee09706b2f9c1f63091649",
+    "tests/assembly_mutation_check.py": "230010fa6346d08e12207bd47fcfec9ca53535c70d486e1ff05c98d20abc53b9",
+    "tests/run_all.py": "fb9e5f1a6952ec87b9c472aee4aadf55131a0b270c850177607319b50c183bcf",
+    "tests/run_all.expected.json": "847d2494c1c701b80f83ebc1a48cac84ce06b66eabff11f14f86584d10093cc6"
+  },
+  "reaped": [
+    {
+      "pid": 92816,
+      "rawWaitStatus": 9,
+      "exitCode": -9,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-20T20:46:32.397545+00:00"
+    },
+    {
+      "pid": 92817,
+      "rawWaitStatus": 9,
+      "exitCode": -9,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-20T20:46:32.397904+00:00"
+    },
+    {
+      "pid": 132342,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-20T21:04:50.863491+00:00"
+    },
+    {
+      "pid": 132951,
+      "rawWaitStatus": 9,
+      "exitCode": -9,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-20T21:06:31.081956+00:00"
+    },
+    {
+      "pid": 134730,
+      "rawWaitStatus": 9,
+      "exitCode": -9,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-20T21:07:43.373086+00:00"
+    },
+    {
+      "pid": 137598,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-20T21:11:42.921392+00:00"
+    },
+    {
+      "pid": 138276,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-20T21:11:55.601044+00:00"
+    },
+    {
+      "pid": 139896,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-20T21:13:05.451111+00:00"
+    },
+    {
+      "pid": 144366,
+      "rawWaitStatus": 15,
+      "exitCode": -15,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-20T21:14:18.311422+00:00"
+    },
+    {
+      "pid": 144367,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": false,
+      "reapedUtc": "2026-10-20T21:14:18.361801+00:00"
+    },
+    {
+      "pid": 91082,
+      "rawWaitStatus": 0,
+      "exitCode": 0,
+      "isMainProcess": true,
+      "reapedUtc": "2026-10-20T21:14:23.086457+00:00"
+    }
+  ],
+  "cleanup": [],
+  "sourceHashesUnchanged": true
+}

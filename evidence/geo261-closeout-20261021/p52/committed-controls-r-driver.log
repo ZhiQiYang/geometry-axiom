@@ -1,0 +1,5 @@
+開始 committed-network6000
+{"name": "committed-network6000", "exitCode": 0, "passed": 43, "failed": [], "memoryPatch": "none", "effectiveSourceSha256": "10172cae0bc052a6e4c630361c211ac9471b9a11da477856b1bcee6994ec5761", "laterGeometry": {"surface": 1, "centerline": 2000, "length": 2946, "u": 2014, "v": 27, "dir": "+v", "side": "+n", "A": 27, "B": 33, "origin": [2014, 27, 2500], "axes": [[0, 1, 0], [-1, 0, 0], [0, 0, 1]]}, "strictAcceptancePassed": true}
+開始 committed-withdraw-network6000
+{"name": "committed-withdraw-network6000", "exitCode": 1, "passed": 42, "failed": ["P52-5 真實放置的 cross 足跡(核心) = 預示帶範圍 1987..2014"], "memoryPatch": "withdraw-wait", "effectiveSourceSha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955", "laterGeometry": {"surface": 1, "centerline": 2000, "length": 2946, "u": 2014, "v": 27, "dir": "+v", "side": "+n", "A": 27, "B": 33, "origin": [2014, 27, 2500], "axes": [[0, 1, 0], [-1, 0, 0], [0, 0, 1]]}, "strictAcceptancePassed": true}
+新凍結 SHA 的後兩組控制與具名撤回自證全部符合預期

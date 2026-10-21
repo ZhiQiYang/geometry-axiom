@@ -1,0 +1,9 @@
+{
+  "toolChunk": "98edfc",
+  "exit_code": 1,
+  "output": "Traceback (most recent call last):\n  File \"/workspace/geo261-evidence/ledger-A2-cc-cbefb39b/independent-review-code.txt\", line 76, in <module>\n    assert len(blocks)==len(r['failures']) and all('AssertionError' in detail for header,detail in blocks)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "evidenceType": "從本代理實際工具回覆逐欄轉錄，非另外自動transport檔",
+  "acceptorSha256": "046cb8ab5050b8db9cc0f47e983d659abb83b19e39fa156020b26d79522580fa",
+  "cause": "FAIL標頭與分隔線之間有 unittest 原測試docstring；接受器未納入而漏算具名FAIL區塊。",
+  "productTestExecuted": false
+}

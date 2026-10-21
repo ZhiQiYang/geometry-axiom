@@ -1,0 +1,262 @@
+{
+  "checked_utc": "2026-10-21T05:58:19.419382+00:00",
+  "source_sha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "parent_S3": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "archive_reviews": [
+    {
+      "label": "main",
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "files": 495,
+      "archive_sha256": "e23b5eb07856ec5729b62e881dba7e009d84ab923c76556bd7b5c83e2584f020",
+      "archive_source_index_git_blobs_equal": true
+    },
+    {
+      "label": "base",
+      "sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "files": 673,
+      "archive_sha256": "eb1a3a14c3cba61c651cbf824e705475f1e7f4ce7d32ad2606bb965d3b540d04",
+      "archive_source_index_git_blobs_equal": true
+    },
+    {
+      "label": "final",
+      "sha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+      "files": 673,
+      "archive_sha256": "c557464ced65e2258775f6db016beb54b8775df7793fbcdf749a076f0eafe587",
+      "archive_source_index_git_blobs_equal": true
+    }
+  ],
+  "git_read_commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "be8d67a3bb88825f321270ba8306f169e56ba66a55bc2ce157015d90da4fd037",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-list",
+        "--parents",
+        "-n",
+        "1",
+        "6589248c9a94bdf0460d8f84dd1610e51048188b"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "0aeeea425c654b1d1c11889a3a9803b29d985f38c154194a5104462b006f8f95",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "19401ca5448e162ee6140fed37b64b83b31ddec8",
+        "6589248c9a94bdf0460d8f84dd1610e51048188b"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "ae08bdf21ee4b3bde1233c3a1a2321e27e54cb3efce3818feb045e46f641d959",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "6589248c9a94bdf0460d8f84dd1610e51048188b:tests/mutants_results.json"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "4ed047aed7657be297d4db471ffdba0e4e3625485c366a2c762a568f16424138",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "6589248c9a94bdf0460d8f84dd1610e51048188b:geometry-core/domain-decoupling/closeout-tools/p189_verify.py"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "fb42a801ce350e64444fcb2db433e59f8c2228546b4b594298581bdb365d0c44",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/gen_scene.py"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "59796b1af9259eb23d30134c2ce5a56317a06091:handoff/drafts/issue300/bench/calib/f3-00.scene"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "35e24fb0a483ffd6fee8dd99f751edeb127418481aa717816af804cd218024b2",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "-rz",
+        "--full-tree",
+        "adbaebf9c73ea6801d7b4d5214e4b846b132923b"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "cec9bda5d86c9860e65260bb4eb43a86f024f730ca1c316858de45b94bb71ed1",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "-rz",
+        "--full-tree",
+        "3e600772076465fc65a26ac09055028301c0fb0b"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "2915fb05e5979fd6f172bee1de2df98989892ba41b1efbf3522037fb0d2cf48c",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "-rz",
+        "--full-tree",
+        "6589248c9a94bdf0460d8f84dd1610e51048188b"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "42ada105669baaa6c740185a90c442347945b1e9389b763afa73ceb9dec88ae1",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "be8d67a3bb88825f321270ba8306f169e56ba66a55bc2ce157015d90da4fd037",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": ""
+    }
+  ],
+  "phase_HEAD_all_L3": true,
+  "phase_exit_codes": {
+    "generator-selftest": 0,
+    "selftest": 0,
+    "build": 0,
+    "equivalence": 0,
+    "timing": 0,
+    "check": 0
+  },
+  "phase_seconds": {
+    "generator-selftest": 0.06835283400141634,
+    "selftest": 0.0647872319968883,
+    "build": 49.08633364599518,
+    "equivalence": 70.84929670600104,
+    "timing": 80.1336319960028,
+    "check": 0.06561648100614548
+  },
+  "runner_generator_calibration_original_bytes_match": true,
+  "phase_argv_and_raw_hashes_match": true,
+  "sample_order_exact": true,
+  "valid_samples": 36,
+  "controls": 16,
+  "positive_controls": 2,
+  "negative_controls": 14,
+  "equivalence_rows": 175,
+  "generated_rows": 4,
+  "fixed_rows": 171,
+  "observed_all_three_identical": 175,
+  "successful_base_loads": 75,
+  "raw_streams": 1122,
+  "all_binary_hashes_match": true,
+  "preflight_non_zombie_related": [],
+  "formal_summary": [
+    {
+      "n": 16,
+      "median_seconds": {
+        "main": 0.1188524570025038,
+        "base": 0.17758666799636558,
+        "final": 0.12788341000123182
+      },
+      "final_main_ratio": 1.0759845713457803,
+      "threshold_pass": true
+    },
+    {
+      "n": 32,
+      "median_seconds": {
+        "main": 0.22071910399972694,
+        "base": 1.1681115940009477,
+        "final": 0.23993698300182587
+      },
+      "final_main_ratio": 1.0870693956882078,
+      "threshold_pass": true
+    },
+    {
+      "n": 48,
+      "median_seconds": {
+        "main": 0.32143088100565365,
+        "base": 4.823500583996065,
+        "final": 0.5177576200003386
+      },
+      "final_main_ratio": 1.6107899103547298,
+      "threshold_pass": true
+    },
+    {
+      "n": 64,
+      "median_seconds": {
+        "main": 0.6566931790002855,
+        "base": 17.318912367001758,
+        "final": 0.9734185269990121
+      },
+      "final_main_ratio": 1.4823033924014444,
+      "threshold_pass": true
+    }
+  ],
+  "check_exit_code": 0,
+  "new_product_executions": 0,
+  "validation_exit_code": 0,
+  "limits": "只讀目前原件及保存的時點；不冒稱重返執行現場。頂層wait來自root明示轉錄。其他正式關卡由其各自收據驗收，不由P-189推論。"
+}

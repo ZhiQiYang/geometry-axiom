@@ -1,0 +1,169 @@
+{
+  "schema": "geo261-S3-package-copychecks/1",
+  "scope": "三個新S3來源子包的外層核對；內嵌既存UTF8原件可按UTF8編碼還原原bytes；不修改子包、不遞迴封裝此檔、不產最終總索引。",
+  "packages": [
+    {
+      "copyCheck": {
+        "bundle": "/workspace/geo261-evidence/final-bundle/source-S3-binding",
+        "copyCheckPassed": true,
+        "files": 130,
+        "bytes": 12755931,
+        "copiedOriginals": 127,
+        "indexSha256": "6f906fa4d4aa87c5d77710891cfe52152fdd04d457bc52da66f1ddd850cb023d",
+        "sumsSha256": "e8c5aedf8793e766281986cf66bd02228d1bd90d976d759772776940893e982b",
+        "scope": "只封裝本次來源綁定與公開原件；不掃描全部 final-bundle、不改舊子包、不產最終總索引。"
+      },
+      "actualParentWait": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/geo261-evidence/package-S3-binding.py"
+        ],
+        "actualWaitReturnCode": 0
+      },
+      "toolObservationTranscribed": {
+        "chunk": "997fd1",
+        "exitCode": 0,
+        "scope": "工具觀察轉錄，非rawtransport或再次wait"
+      }
+    },
+    {
+      "copyCheck": {
+        "bundle": "/workspace/geo261-evidence/final-bundle/source-S3-adoption",
+        "copyCheckPassed": true,
+        "files": 36,
+        "bytes": 19049,
+        "indexSha256": "b38adf9778e1498cc45241ad98bb03c570acbd34178ea8401b95b461e28bf274",
+        "sumsSha256": "56e6dcc1e9cbb8d1ca21626d23238444b363bae3a852a4abf1d6dbbe622a6924"
+      },
+      "actualParentWait": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/geo261-evidence/package-S3-adoption.py"
+        ],
+        "actualWaitReturnCode": 0
+      },
+      "toolObservationTranscribed": {
+        "chunk": "d0de48",
+        "exitCode": 0,
+        "scope": "工具觀察轉錄，非rawtransport或再次wait"
+      }
+    },
+    {
+      "copyCheck": {
+        "bundle": "/workspace/geo261-evidence/final-bundle/source-S3-外層工具補充",
+        "copyCheckPassed": true,
+        "files": 7,
+        "bytes": 10942,
+        "indexSha256": "7b47088e3c646d04b8fa51d27f2be336c0f75f64a11b49e5a6880a4080c8fe79",
+        "sumsSha256": "958d0df1032301fd008baeaee0258f420d31968fc250f0b9c402ae6ca5aab8b5"
+      },
+      "actualParentWait": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/geo261-evidence/package-S3-root-tools.txt"
+        ],
+        "actualWaitReturnCode": 0
+      },
+      "toolObservationTranscribed": {
+        "chunk": "9f1d70",
+        "exitCode": 0,
+        "scope": "工具觀察轉錄，非rawtransport或再次wait"
+      }
+    }
+  ],
+  "embeddedOriginals": [
+    {
+      "source": "/workspace/geo261-evidence/source-S3-binding-package-copycheck.json",
+      "bytes": 468,
+      "sha256": "562933879fbe2cf3cca6027116936f4e5396d7653c362b74e4a2ccd1b5e47af5",
+      "utf8RawContents": "{\n  \"bundle\": \"/workspace/geo261-evidence/final-bundle/source-S3-binding\",\n  \"copyCheckPassed\": true,\n  \"files\": 130,\n  \"bytes\": 12755931,\n  \"copiedOriginals\": 127,\n  \"indexSha256\": \"6f906fa4d4aa87c5d77710891cfe52152fdd04d457bc52da66f1ddd850cb023d\",\n  \"sumsSha256\": \"e8c5aedf8793e766281986cf66bd02228d1bd90d976d759772776940893e982b\",\n  \"scope\": \"只封裝本次來源綁定與公開原件；不掃描全部 final-bundle、不改舊子包、不產最終總索引。\"\n}\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-binding-package-run01.json",
+      "bytes": 195,
+      "sha256": "f2c68821daa47a38e5e436dc9db932cf51aa1d10c16b98b520a3519353c6f1e3",
+      "utf8RawContents": "{\n  \"argv\": [\n    \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3\",\n    \"-B\",\n    \"/workspace/geo261-evidence/package-S3-binding.py\"\n  ],\n  \"actualWaitReturnCode\": 0\n}\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-binding-package-run01.stdout",
+      "bytes": 468,
+      "sha256": "562933879fbe2cf3cca6027116936f4e5396d7653c362b74e4a2ccd1b5e47af5",
+      "utf8RawContents": "{\n  \"bundle\": \"/workspace/geo261-evidence/final-bundle/source-S3-binding\",\n  \"copyCheckPassed\": true,\n  \"files\": 130,\n  \"bytes\": 12755931,\n  \"copiedOriginals\": 127,\n  \"indexSha256\": \"6f906fa4d4aa87c5d77710891cfe52152fdd04d457bc52da66f1ddd850cb023d\",\n  \"sumsSha256\": \"e8c5aedf8793e766281986cf66bd02228d1bd90d976d759772776940893e982b\",\n  \"scope\": \"只封裝本次來源綁定與公開原件；不掃描全部 final-bundle、不改舊子包、不產最終總索引。\"\n}\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-binding-package-run01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8RawContents": ""
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-binding-package-run01.exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "utf8RawContents": "0\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-adoption-package-copycheck.json",
+      "bytes": 306,
+      "sha256": "ad1549b22a630deb5debf02356d36ddc21519bc2ee635ef11f6b4e63abae9b9b",
+      "utf8RawContents": "{\n  \"bundle\": \"/workspace/geo261-evidence/final-bundle/source-S3-adoption\",\n  \"copyCheckPassed\": true,\n  \"files\": 36,\n  \"bytes\": 19049,\n  \"indexSha256\": \"b38adf9778e1498cc45241ad98bb03c570acbd34178ea8401b95b461e28bf274\",\n  \"sumsSha256\": \"56e6dcc1e9cbb8d1ca21626d23238444b363bae3a852a4abf1d6dbbe622a6924\"\n}\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-adoption-package-run01.json",
+      "bytes": 196,
+      "sha256": "f39e6e5ee744ed4ac993fe0941978361926bf3fc85c45eb2eb1a9b07c018784a",
+      "utf8RawContents": "{\n  \"argv\": [\n    \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3\",\n    \"-B\",\n    \"/workspace/geo261-evidence/package-S3-adoption.py\"\n  ],\n  \"actualWaitReturnCode\": 0\n}\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-adoption-package-run01.stdout",
+      "bytes": 306,
+      "sha256": "ad1549b22a630deb5debf02356d36ddc21519bc2ee635ef11f6b4e63abae9b9b",
+      "utf8RawContents": "{\n  \"bundle\": \"/workspace/geo261-evidence/final-bundle/source-S3-adoption\",\n  \"copyCheckPassed\": true,\n  \"files\": 36,\n  \"bytes\": 19049,\n  \"indexSha256\": \"b38adf9778e1498cc45241ad98bb03c570acbd34178ea8401b95b461e28bf274\",\n  \"sumsSha256\": \"56e6dcc1e9cbb8d1ca21626d23238444b363bae3a852a4abf1d6dbbe622a6924\"\n}\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-adoption-package-run01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8RawContents": ""
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-adoption-package-run01.exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "utf8RawContents": "0\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-root-tools-copycheck.json",
+      "bytes": 315,
+      "sha256": "bccef1ec892d572d99bdd9a1ae3c5f8a47cbbb41facf501357aa6fc75aa5e818",
+      "utf8RawContents": "{\n  \"bundle\": \"/workspace/geo261-evidence/final-bundle/source-S3-外層工具補充\",\n  \"copyCheckPassed\": true,\n  \"files\": 7,\n  \"bytes\": 10942,\n  \"indexSha256\": \"7b47088e3c646d04b8fa51d27f2be336c0f75f64a11b49e5a6880a4080c8fe79\",\n  \"sumsSha256\": \"958d0df1032301fd008baeaee0258f420d31968fc250f0b9c402ae6ca5aab8b5\"\n}\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-root-tools-package-run01.json",
+      "bytes": 199,
+      "sha256": "aafb2cf7706433690887463282c801e682d78affaa22b169e5c58fe06e0a9a0b",
+      "utf8RawContents": "{\n  \"argv\": [\n    \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3\",\n    \"-B\",\n    \"/workspace/geo261-evidence/package-S3-root-tools.txt\"\n  ],\n  \"actualWaitReturnCode\": 0\n}\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-root-tools-package-run01.stdout",
+      "bytes": 315,
+      "sha256": "bccef1ec892d572d99bdd9a1ae3c5f8a47cbbb41facf501357aa6fc75aa5e818",
+      "utf8RawContents": "{\n  \"bundle\": \"/workspace/geo261-evidence/final-bundle/source-S3-外層工具補充\",\n  \"copyCheckPassed\": true,\n  \"files\": 7,\n  \"bytes\": 10942,\n  \"indexSha256\": \"7b47088e3c646d04b8fa51d27f2be336c0f75f64a11b49e5a6880a4080c8fe79\",\n  \"sumsSha256\": \"958d0df1032301fd008baeaee0258f420d31968fc250f0b9c402ae6ca5aab8b5\"\n}\n"
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-root-tools-package-run01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8RawContents": ""
+    },
+    {
+      "source": "/workspace/geo261-evidence/source-S3-root-tools-package-run01.exit-code",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "utf8RawContents": "0\n"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "started_utc": "2026-10-21T01:50:02.204985+00:00",
+  "purpose": "O2 main/final各一次kernel rusage診斷，非P189樣本；不重建產品",
+  "formal_out": "/workspace/geo261-evidence/p189-contact-v2-85dc4fff44ce-g3bqypyh",
+  "source_commits": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "final": "85dc4fff44ce49b27f831b21cbdcb662c863302c"
+  },
+  "request_sha256": "27ed31afce5f078d3dc33fc5a9090aab01f233f9a2900b10aa09586bacb73777",
+  "scene_sha256": "ae61c7eb565efc3997402b124592c1201d9e3c6027f4945a735387ef4327416d",
+  "stack_limit_bytes": [
+    16777216,
+    16777216
+  ],
+  "core_limit_bytes": [
+    0,
+    0
+  ],
+  "PYTHONOPTIMIZE_present": false,
+  "perf_readonly": {
+    "executable": null,
+    "perf_event_paranoid": "2",
+    "euid": 1000,
+    "permission_fields": [
+      "CapEff:\t0000000000000000",
+      "NoNewPrivs:\t1",
+      "Seccomp:\t2"
+    ],
+    "executed_perf": false,
+    "permission_test_performed": false
+  },
+  "formal_samples_sha256_before": "03a760ce8056fc2b5a000d468d6b612153f122ac47cf64423f3d85b828ab182a",
+  "formal_receipt_sha256_before": "5a093ed872fb7c6ed9f3ecf2ac077b120cd4d0540d8c606083e6baa2a18fb2ed",
+  "driver_sha256": "0a728e4c7b69ea1a7ad67616e567320c451af14ae314770a681bafbe65b697e4",
+  "pid": 305777,
+  "pgid": 305773,
+  "wall_clock_scope": "perf_counter在Popen前至wait4返回後；與正式t0範圍不同，只作資源診斷。",
+  "ru_maxrss_unit": "Linux KiB",
+  "minor_fault_meaning": "不需磁碟I/O的缺頁；不能等同配置位元組或峰值RSS"
+}

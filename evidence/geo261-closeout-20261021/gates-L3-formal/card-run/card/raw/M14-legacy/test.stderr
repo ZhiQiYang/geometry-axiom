@@ -1,0 +1,15 @@
+test_CR21_LEGACY_UNCHANGED (tests.test_grid_card_reference.GridCardReference.test_CR21_LEGACY_UNCHANGED) ... FAIL
+
+======================================================================
+FAIL: test_CR21_LEGACY_UNCHANGED (tests.test_grid_card_reference.GridCardReference.test_CR21_LEGACY_UNCHANGED)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-gates-l3-6589248c9a94-20261021/tests/test_grid_card_reference.py", line 369, in test_CR21_LEGACY_UNCHANGED
+    self.assertNotIn('cardReference', self.systems()[4]); self.assertNotIn('grid-card-reference', self.dump())
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'cardReference' unexpectedly found in {'kind': 'grid-system', 'id': 4, 'name': 'G', 'mode': 'infinite', 'cardReference': {'parameterId': 10, 'uFieldId': 3, 'vFieldId': 8}, 'mainAlong': None, 'uDefinition': {'source': 'repeat', 'phase': -5, 'effectiveStep': 12, 'stepSource': 'card'}, 'vDefinition': {'source': 'repeat', 'phase': 7, 'effectiveStep': 30, 'stepSource': 'card'}, 'nextRuleKey': 1, 'rules': [], 'applications': [], 'bindings': [], 'cx': 0, 'cy': 0, 'hasPos': False}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.152s
+
+FAILED (failures=1)

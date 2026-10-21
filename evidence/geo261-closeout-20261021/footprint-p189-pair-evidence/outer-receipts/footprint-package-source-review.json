@@ -1,0 +1,201 @@
+{
+  "schema": "geo261-footprint-package-source-review/1",
+  "reviewer": "/root/p189_prepare/contact_static",
+  "root": "/workspace/geo261-evidence/host-copy-candidate/footprint",
+  "scope": "只讀本根定向證據、peer、失敗歷史及指定Git blob；未讀新S2或新性能結果，未build/load/test/import執行器。僅新增此包外報告。",
+  "fixed_candidate": {
+    "sha": "6c6937708fa31790586d6c31c2984070e6bf885a",
+    "parent": "75f587a5e96dbd1460cf1d9be781ca6fa06fd993",
+    "branch": "codex/geo261-p189-host-copy-trial-20261021",
+    "commit_binding": "/workspace/geo261-evidence/host-copy-candidate/footprint/local-commit.json",
+    "git_parent_matches": true,
+    "all_three_commit_blob_hashes_match_local_summary_and_peer": true,
+    "source_before_after_equal": true,
+    "watched_source_count": 326,
+    "source_hashes": {
+      "geometry-app/native/reference_sources.inc": "ee8fa4e258999addd1996704cdffc47ac870acb972f5d63328dc2908e1be8a5c",
+      "tests/geo261_host_facts_authority_harness.c": "a1865b2ab64fe31921cd5305d0b194d95177c3934123d76c0db73aedd79bcb6e",
+      "tests/test_geo261_host_facts_authority.py": "2b0610adea7e944adc5e05487eb78e161f02a39adf46b09521a10f72788a1baa"
+    },
+    "chronology": "實跑/peer時為75f加固定三檔補丁，後提交成6c693770。保留收據原時點，不把基底HEAD改成未來SHA；local-commit的『尚未性能/未推送』也僅是寫入時狀態。"
+  },
+  "accepted_receipts": {
+    "summary": "/workspace/geo261-evidence/host-copy-candidate/footprint/verification-summary.json",
+    "targeted": "/workspace/geo261-evidence/host-copy-candidate/footprint/targeted-result.json",
+    "command_index": "/workspace/geo261-evidence/host-copy-candidate/footprint/targeted-commands.json",
+    "unit_log": "/workspace/geo261-evidence/host-copy-candidate/footprint/targeted-unittest.log",
+    "environment": "/workspace/geo261-evidence/host-copy-candidate/footprint/launch-environment.json",
+    "peer": "/workspace/geo261-evidence/host-copy-candidate/footprint/independent-review.json",
+    "tests_run": 56,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "command_count": 299,
+    "stdout_files": 299,
+    "stderr_files": 299,
+    "raw_streams_checked": 598,
+    "raw_hash_or_length_mismatches": [],
+    "h_control_triples": 20,
+    "control_composition": "既有18個H控制，加missing/index兩個早拒絕控制。",
+    "control_expected_codes": [
+      0,
+      1,
+      0
+    ],
+    "controls_crosschecked_against_actual_command_index_and_named_stderr": 20,
+    "control_crosscheck_mismatches": [],
+    "all_nonzero_command_count": 38,
+    "all_nonzero_commands_are_named_ASSERT_exit_1": true,
+    "count_limit": "20才是peer明列的H控制；跨模組套件的38個非零命令不能全稱新增H控制。",
+    "sanitizer": {
+      "receipt_present_in_this_root": false,
+      "sanitizer_related_command_indices": [],
+      "command_scan": "對299個保存argv掃sanitize/asan/ubsan字串，沒有命中。",
+      "allowed_claim": "本根沒有6c新來源的sanitizer驗收證據；不把前版75f四個H局部ASan/UBSan結果沿用為新來源已驗。",
+      "limit": "未據此判定其他目錄一定沒有sanitizer執行；本次範圍僅此固定根。"
+    },
+    "historical_outer_test_exit": {
+      "value": 0,
+      "chunk": "d69997",
+      "evidence": "完成紀錄.md及peer.outerToolObservation為作者真工具回覆的事後轉錄。",
+      "independently_rerun": false
+    },
+    "patch_hash_matches_summary": true,
+    "peer_artifact_hashes_checked": 10,
+    "peer_artifact_hash_mismatches": []
+  },
+  "keep_failure_history": [
+    {
+      "category": "摘要工具marker誤判；非產品失敗",
+      "record": "/workspace/geo261-evidence/host-copy-candidate/footprint/完成紀錄.md",
+      "original_source": "/workspace/geo261-evidence/host-copy-candidate/footprint/summarize-first-attempt.txt",
+      "corrected_tool": "/workspace/geo261-evidence/host-copy-candidate/footprint/summarize.py",
+      "first_chunk": "ae4781",
+      "first_recorded_exit": 1,
+      "corrected_chunk": "096af5",
+      "corrected_recorded_exit": 0,
+      "cause": "首版取reference_region_geometry前置宣告作函式末端，錯比到候選本身；改為從footprint起點之後找marker。",
+      "retained_original_bytes": true,
+      "raw_stream_limit": "初版原碼有保存且peer artifact hash相符；traceback僅見完成紀錄.md事後轉錄，未見另存該外層工具完整stdout/stderr原流。",
+      "product_rerun_claim": false
+    },
+    {
+      "category": "提交預檢格式誤判；非產品失敗",
+      "record": "/workspace/geo261-evidence/host-copy-candidate/footprint/commit-preflight-first-failure.json",
+      "first_chunk": "accb1f",
+      "first_recorded_exit": 1,
+      "cause": "將git diff --binary --full-index輸出與普通git diff的文字hash相比，格式差造成誤判；收據稱未到git add/commit，未改產品。",
+      "followup_chunk": "f0e91a",
+      "followup_recorded_exit": 128,
+      "followup_cause": "在證據目錄讀摘要腳本後附帶git status；該目錄不是Git工作樹。",
+      "raw_stream_limit": "只有分類、chunk及退出碼JSON；本根沒有這兩次外層工具的獨立完整stdout/stderr或完整初版預檢程式，不得補造或說成已保存。",
+      "later_success": "local-commit.json內嵌後續9個命令的argv/exit_code/stdout/stderr；本次核其9碼全0，並另以Git核parent及三檔bytes。"
+    }
+  ],
+  "not_executed_or_out_of_scope": {
+    "native_expected_planning": "peer.nativeExpectedPlanning為靜態完整native數量推估，不是已執行結果。不得把projectedCountTotal/projectedPass當驗收。",
+    "product_equivalence_limit": "僅承諾合法placement store（count不超過capacity）等價；損毀store的防禦行為差異未驗，不擴大行為聲明。",
+    "no_new_performance_review": true,
+    "no_s2_read": true,
+    "no_additional_native_browser_ledger_architecture_claim": true,
+    "source_only_material": "independent-review-code.txt、summarize-first-attempt.txt與三份source-*.txt是既有原碼快照；保留bytes與歷史角色，不因.txt免除應有工具審查，不當作獨立執行成功。"
+  },
+  "packaging": {
+    "ready_for_scoped_packaging": true,
+    "fixed_include_directory": "/workspace/geo261-evidence/host-copy-candidate/footprint",
+    "exact_top_and_support_files": [
+      "candidate.patch",
+      "commit-preflight-first-failure.json",
+      "independent-review-code.txt",
+      "independent-review.json",
+      "launch-environment.json",
+      "local-commit.json",
+      "run_targeted.py",
+      "source-after.json",
+      "source-before.json",
+      "source-geo261_host_facts_authority_harness.c.txt",
+      "source-reference_sources.inc.txt",
+      "source-test_geo261_host_facts_authority.py.txt",
+      "summarize-first-attempt.txt",
+      "summarize.py",
+      "targeted-commands.json",
+      "targeted-result.json",
+      "targeted-unittest.log",
+      "verification-summary.json",
+      "完成紀錄.md"
+    ],
+    "raw_file_set": "targeted-commands.json列出的299組stdout/stderr，保留完整598檔，含空輸出。",
+    "preserve_py_suffixes": [
+      "run_targeted.py",
+      "summarize.py"
+    ],
+    "inventory": {
+      "files": 617,
+      "bytes": 720330,
+      "stdout_files": 299,
+      "stderr_files": 299,
+      "txt_files": 5,
+      "json_files": 9,
+      "py_files": 2,
+      "patch_files": 1,
+      "log_files": 1,
+      "md_files": 1,
+      "directories": [],
+      "elf_files": [],
+      "pycache_files": [],
+      "symlinks": [],
+      "source_tree_present": false
+    },
+    "existing_binary_cache_or_tree_exclusions": [],
+    "do_not_follow_external_paths": [
+      "/workspace/geo261-host-copy-candidate",
+      "/tmp/geo261-host-footprint-cswdne02"
+    ],
+    "exclude_other_scope": "不混入75f根其他H/K材料、新S2或性能包；那些由主代理另行封裝。",
+    "freeze_limit": "此為讀取當下固定根的內容分類，不新建凍結封條或宣稱已排除所有後續writer。"
+  },
+  "actual_readonly_invocations": [
+    {
+      "launcher_argv": [
+        "python3",
+        "-"
+      ],
+      "scope": "列固定footprint根及JSON/Markdown/Python/patch/receipt metadata，彙整檔數；不訪問其他候選。",
+      "actual_tool_exit_code": 0
+    },
+    {
+      "launcher_argv": [
+        "cat"
+      ],
+      "arguments": [
+        "/workspace/geo261-evidence/host-copy-candidate/footprint/commit-preflight-first-failure.json",
+        "/workspace/geo261-evidence/host-copy-candidate/footprint/targeted-result.json",
+        "/workspace/geo261-evidence/host-copy-candidate/footprint/完成紀錄.md",
+        "/workspace/geo261-evidence/host-copy-candidate/footprint/launch-environment.json"
+      ],
+      "actual_tool_exit_code": 0
+    },
+    {
+      "launcher_argv": [
+        "python3",
+        "-"
+      ],
+      "scope": "唯讀local-commit、verification-summary、independent-review欄位摘要及非raw檔名清單。",
+      "actual_tool_exit_code": 0
+    },
+    {
+      "launcher_argv": [
+        "python3",
+        "-"
+      ],
+      "scope": "Git parent/三檔blob對local-summary-peer；source before/after；20控制原命令/斷言；598流長度/hash；38具名非零；sanitizer argv掃描；9筆commit碼；patch與peer十原件hash；617檔ELF/cache/symlink目錄盤點。",
+      "actual_tool_exit_code": 0
+    }
+  ],
+  "execution_limits": {
+    "inline_python_bodies": "本分類記實際launcher argv、工作範圍與工具真碼；未另保存逐段inline stdin原碼，不冒稱存在獨立執行log。",
+    "test_result_codes": "產品／摘要／提交預檢等歷史碼依既有原件記錄，不冒稱本次重跑或親自取得其外層工具碼。",
+    "report_mutation": "只新增此單一包外JSON，不修改原件。",
+    "most_uncertain": "外層摘要首敗與提交預檢首敗缺少獨立完整raw stream；本根沒有6c新來源的sanitizer證據。"
+  }
+}

@@ -1,0 +1,24 @@
+test_preview_discloses_only_last_deletion_redeclarations (tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations) ... FAIL
+
+======================================================================
+FAIL: test_preview_discloses_only_last_deletion_redeclarations (tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_parameters_core.py", line 426, in test_preview_discloses_only_last_deletion_redeclarations
+    self.assertEqual([], invalid["redeclaredReferences"], "declaration before the final deletion was reported as handled")
+AssertionError: Lists differ: [] != [{'owner': {'kind': 'parameter', 'id': 1, [94 chars]告。'}]
+
+Second list contains 1 additional elements.
+First extra element 0:
+{'owner': {'kind': 'parameter', 'id': 1, 'slot': 0}, 'source': {'parameterId': 0, 'fieldId': 1}, 'message': '刪除參數 0 欄位 1 後，參數卡片 1已明確重新宣告。'}
+
+- []
++ [{'message': '刪除參數 0 欄位 1 後，參數卡片 1已明確重新宣告。',
++   'owner': {'id': 1, 'kind': 'parameter', 'slot': 0},
++   'source': {'fieldId': 1, 'parameterId': 0}}] : declaration before the final deletion was reported as handled
+
+----------------------------------------------------------------------
+Ran 1 test in 5.192s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"], "started": ["tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"], "total": 1, "failures": [{"test": "tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations", "detail": "Traceback (most recent call last):\n  File \"/workspace/geo261-ledger-cc-run.nu12fpy7/cache/_bridge-work/7159530c0e494d3211e6ab1764eb691137211707/repo/tests/test_parameters_core.py\", line 426, in test_preview_discloses_only_last_deletion_redeclarations\n    self.assertEqual([], invalid[\"redeclaredReferences\"], \"declaration before the final deletion was reported as handled\")\nAssertionError: Lists differ: [] != [{'owner': {'kind': 'parameter', 'id': 1, [94 chars]告。'}]\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\n{'owner': {'kind': 'parameter', 'id': 1, 'slot': 0}, 'source': {'parameterId': 0, 'fieldId': 1}, 'message': '刪除參數 0 欄位 1 後，參數卡片 1已明確重新宣告。'}\n\n- []\n+ [{'message': '刪除參數 0 欄位 1 後，參數卡片 1已明確重新宣告。',\n+   'owner': {'id': 1, 'kind': 'parameter', 'slot': 0},\n+   'source': {'fieldId': 1, 'parameterId': 0}}] : declaration before the final deletion was reported as handled\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

@@ -1,0 +1,18 @@
+import pathlib,json,hashlib,subprocess,os,sys,datetime,time
+r=pathlib.Path("/workspace/geo261-evidence/revalidation-l3-6589248c9a94-20261021")
+p=r/"preparation";out=r/"native-launcher"
+assert hashlib.sha256((p/"instance.json").read_bytes()).hexdigest()=="ad0e74a3798fedf240d7a02af82ee7849496981276418335c38b9f36715ac1f3"
+assert hashlib.sha256((p/"prepare-native.py").read_bytes()).hexdigest()=="4cdf85d6c1fa04363d98018d049c0684c584dc3934cb886e13037c61ff218fbd"
+assert "CC" not in os.environ and "PYTHONOPTIMIZE" not in os.environ and not sys.flags.optimize
+argv=["env","-u","CC","-u","PYTHONOPTIMIZE","python3","-B",str(p/"prepare-native.py")]
+started=datetime.datetime.now(datetime.timezone.utc).isoformat();mono=time.monotonic()
+meta=dict(sourceSha="6589248c9a94bdf0460d8f84dd1610e51048188b",startedUtc=started,argv=argv,dispatcherArgv=sys.orig_argv,CCAbsent=True,PYTHONOPTIMIZEAbsent=True,instanceSha256=hashlib.sha256((p/"instance.json").read_bytes()).hexdigest(),preflightSha256=hashlib.sha256((p/"prepare-native.py").read_bytes()).hexdigest())
+(out/"preflight-execution-command.json").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+"\n")
+(out/"preflight-dispatch-code.txt").write_text(sys.orig_argv[-1])
+with (out/"preflight-execution.stdout.log").open("xb") as stdout,(out/"preflight-execution.stderr.log").open("xb") as stderr:
+ child=subprocess.Popen(argv,stdout=stdout,stderr=stderr)
+ rc=child.wait()
+meta.update(finishedUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),elapsedSeconds=time.monotonic()-mono,preflightPid=child.pid,exitCode=rc)
+(out/"preflight-execution-receipt.json").write_text(json.dumps(meta,ensure_ascii=False,indent=2)+"\n")
+print(json.dumps(dict(exitCode=rc,elapsedSeconds=meta["elapsedSeconds"],receipt=str(out/"preflight-execution-receipt.json")),ensure_ascii=False),flush=True)
+sys.exit(rc if rc>=0 else 128-rc)

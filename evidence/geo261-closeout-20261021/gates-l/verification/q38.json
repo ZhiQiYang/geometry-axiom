@@ -1,0 +1,315 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "phase": "q38",
+  "verifiedUtc": "2026-10-21T00:25:31.550291+00:00",
+  "accepted": true,
+  "problems": [],
+  "summary": {
+    "killed": 41,
+    "equivalent": 1
+  },
+  "caseCount": 42,
+  "baselines": {
+    "native": {
+      "exit": 0,
+      "tests_run": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "model": {
+      "exit": 0,
+      "tests_run": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "officialExitCode": 0,
+  "childReturnCode": 0,
+  "launcherExitCode": 0,
+  "elapsedSeconds": 455.8428497660025,
+  "sourceCleanRestored": true,
+  "bridgeAfterMatchesBeforeBytesAndMtimes": true,
+  "cases": [
+    {
+      "id": "SPM01",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM02",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM03",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM04",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM05",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM06",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM07",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM08",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM09",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM10",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM11",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM12",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM13",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM14",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM15",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM16",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM17",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM18",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM19",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM20",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM21",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM22",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM23",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM24",
+      "verdict": "equivalent",
+      "exit": 0,
+      "group": "native"
+    },
+    {
+      "id": "SPM25",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM26",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM27",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM28",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM29",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM30",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM31",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM32",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM33",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM34",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM35",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM41",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM42",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "native"
+    },
+    {
+      "id": "SPM36",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "model"
+    },
+    {
+      "id": "SPM37",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "model"
+    },
+    {
+      "id": "SPM38",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "model"
+    },
+    {
+      "id": "SPM39",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "model"
+    },
+    {
+      "id": "SPM40",
+      "verdict": "killed",
+      "exit": 1,
+      "group": "model"
+    }
+  ],
+  "artifacts": {
+    "officialReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/q38-run/q38/receipt.json",
+      "bytes": 222802,
+      "sha256": "f9ee346f29ffed9ae034f05707647be97b2f2632f80b4a0bf3a47a928d1b4147"
+    },
+    "runReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/q38-run/q38/run-receipt.json",
+      "bytes": 1919,
+      "sha256": "52dc9ba3bd0f7f48c59409cb2d9fad945e7b4d7f223628eb71bfd178e5e55ed7"
+    },
+    "launcherReceipt": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/q38/receipt.json",
+      "bytes": 3841,
+      "sha256": "e2f0ad8ab72b3edadf6cc1484240f84bcde48316f8466ea823b338a8406df306"
+    },
+    "bridgeBefore": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/q38/bridge-before.json",
+      "bytes": 1058,
+      "sha256": "c44460374369682c3ee9efd445be353268db70f0100efd03ff62819ac0cd2fb7"
+    },
+    "bridgeAfter": {
+      "path": "/workspace/geo261-evidence/gates-l/launcher/q38/bridge-after.json",
+      "bytes": 1055,
+      "sha256": "0cd9eeff9903e7be398bf05eb4802cc9b2f3d5c29617dd3c4457eab4ff09f170"
+    }
+  }
+}

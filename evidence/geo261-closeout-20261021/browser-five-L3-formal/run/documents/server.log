@@ -1,0 +1,15 @@
+core: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-21T04:19:52+00:00））
+bridge: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-21T04:20:12+00:00））
+model-base: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-21T04:20:28+00:00））
+LOCAL_RUNTIME {"root": "/workspace/geometry-axiom", "binaryDirectory": "/tmp/geometry-runtime/b9bc23103ebb114398f3", "executables": {"core": "/tmp/geometry-runtime/b9bc23103ebb114398f3/core", "bridge": "/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge", "model-base": "/tmp/geometry-runtime/b9bc23103ebb114398f3/model-base"}, "port": 18852, "managedPreview": false}
+http://localhost:18852  （Ctrl-C 結束；版本=861b13edb9cf；bridge=/tmp/geometry-runtime/b9bc23103ebb114398f3/bridge）
+Traceback (most recent call last):
+  File "/workspace/geometry-axiom/geometry-web/serve.py", line 761, in <module>
+    server.serve_forever()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 235, in serve_forever
+    ready = selector.select(poll_interval)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/selectors.py", line 415, in select
+    fd_event_list = self._selector.poll(timeout)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

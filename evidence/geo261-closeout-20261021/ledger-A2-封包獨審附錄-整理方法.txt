@@ -1,0 +1,42 @@
+from pathlib import Path
+import hashlib,json,stat,datetime
+base=Path('/workspace/geo261-evidence');dest=base/'final-bundle/ledger-A2-封包獨審附錄'
+expected={
+'ledger-A2-bundle-peer.json':(5121,'6668df341eeebb9d6ae520ed51d75d1446263b78f93cd668fc2ce4a3aee07933'),
+'ledger-A2-bundle-peer-code.txt':(12210,'6cf5a206a94e2b29f639221e23e96869c7b73b627bdc97b38d84798a2bc1d1cd'),
+'ledger-A2-bundle-peer-tool-observation.json':(1047,'a6d7877cd1d1e5c0df7465b74062975b8248582b5491931758277bdf3972d9ec'),
+'ledger-A2-bundle-peer-attempt1-code.txt':(10141,'3676a675798ddb63555cc911180806021686a2855bd585400a2662319acaff23'),
+'ledger-A2-bundle-peer-attempt1-observation.json':(383,'b014a247f144ee30a2461eeec369d1468a219e1ca561999ed25f589a481121b8')}
+sha=lambda raw:hashlib.sha256(raw).hexdigest()
+assert not dest.exists();dest.mkdir()
+rows=[]
+for name,(length,digest) in expected.items():
+ source=base/name;raw=source.read_bytes();assert len(raw)==length and sha(raw)==digest
+ target=dest/name;target.write_bytes(raw);target.chmod(0o644);assert target.read_bytes()==raw
+ rows.append({'source':str(source),'path':name,'bytes':length,'sha256':digest})
+(dest/'原件清單.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2)+'\n')
+(dest/'README.md').write_text('''# A2 帳本封包最後有限獨審附錄
+
+本附錄只收 architecture_receipt 最後有限封包審查的實存五份原件；不改 ledger-A2-cc 凍結子包或其 SHA256SUMS。定版接受器真 exit 0，工具 chunk44d811；它核 2253 原件、2258 檔、32,239,179 bytes、根與巢狀 SUMS exact set/hash，以及 UTF8／0644／無可執行檔。亦核方法補充中的 M36 歷史語料、本輪 165 題及核心 raw 缺口界線。
+
+首次接受器把啟動時的 initial null observation 誤當最終工具回覆，並以扁平 exit_code 欄位存取，得到 KeyError。真工具 chunk42a589、exit 1、錯誤摘要與完整首版接受器仍保留；沒有修改帳本或重跑產品。
+
+首次執行沒有另外保存 stdout/stderr，完整工具輸出也未另存。現存 observation 只有真碼、工具 chunk 及錯誤摘要，不能稱為完整 stderr、完整合併輸出或 raw transport；亦不從摘要補造 traceback。定版工具 observation 保完整實際回覆的事後轉錄，仍明示不是 raw transport，也沒有重新 wait。
+
+未複製 .py 可執行副本，兩版方法以原 bytes 的 .txt 保存。根原件清單只列五份原件，SHA256SUMS 精確涵蓋除自己以外的全部檔案；整理方法與最終copy/hash收據另放總根，避免自含循環。
+''',encoding='utf-8')
+for p in dest.iterdir():p.chmod(0o644)
+paths=sorted(p for p in dest.iterdir() if p.is_file())
+(dest/'SHA256SUMS').write_text(''.join(sha(p.read_bytes())+'  '+p.name+'\n' for p in paths),encoding='utf-8');(dest/'SHA256SUMS').chmod(0o644)
+actual={p.name for p in dest.iterdir() if p.is_file()}
+assert actual==set(expected)|{'原件清單.json','README.md','SHA256SUMS'}
+sums=dict(line.split('  ',1)[::-1] for line in (dest/'SHA256SUMS').read_text().splitlines())
+assert set(sums)==actual-{'SHA256SUMS'}
+for name,digest in sums.items():assert sha((dest/name).read_bytes())==digest
+for row in rows:assert (base/row['path']).read_bytes()==(dest/row['path']).read_bytes()
+assert all(stat.S_IMODE(p.stat().st_mode)==0o644 and not p.is_symlink() for p in dest.iterdir())
+result={'completed_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'destination':str(dest),'copy_and_exact_verification_exit_code':0,'originals':5,'files':len(actual),'bytes':sum(p.stat().st_size for p in dest.iterdir()),'checksum_entries':len(sums),'index_sha256':sha((dest/'原件清單.json').read_bytes()),'sums_sha256':sha((dest/'SHA256SUMS').read_bytes()),'raw_stderr_limitation':'首輪未另外保存完整 stdout/stderr 或完整工具輸出；只有真碼/chunk/摘要/首版接受器，沒有補造或重跑。'}
+receipt=base/'ledger-A2-peer-appendix-verification.json';receipt.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+for source,name in [(Path(__file__),'ledger-A2-封包獨審附錄-整理方法.txt'),(receipt,'ledger-A2-封包獨審附錄-核對.json')]:
+ target=base/'final-bundle'/name;assert not target.exists();raw=source.read_bytes();target.write_bytes(raw);target.chmod(0o644);assert target.read_bytes()==raw
+print(json.dumps(result,ensure_ascii=False))

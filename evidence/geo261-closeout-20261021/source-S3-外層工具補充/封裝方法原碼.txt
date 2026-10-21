@@ -1,0 +1,37 @@
+import hashlib
+import json
+from pathlib import Path
+
+base = Path('/workspace/geo261-evidence')
+dest = base / 'final-bundle/source-S3-外層工具補充'
+dest.mkdir(exist_ok=False)
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+mapping = [('source-S3-root-tool-observation.json', 'root工具觀察轉錄.json'),
+           ('publish-S3.py', 'publish-S3.py.txt'), ('adopt-S3.py', 'adopt-S3.py.txt'),
+           ('package-S3-root-tools.txt', '封裝方法原碼.txt')]
+records = []
+for original, target in mapping:
+    source = base / original
+    assert source.is_file() and not source.is_symlink()
+    raw = source.read_bytes()
+    (dest / target).write_bytes(raw)
+    assert (dest / target).read_bytes() == source.read_bytes()
+    records.append({'path': target, 'source': str(source), 'bytes': len(raw), 'sha256': sha(raw)})
+(dest / 'README.md').write_text('''# S3 發布及採入的外層工具補充
+
+本補充在 `source-S3-binding` 與 `source-S3-adoption` 已封裝後新增，保留 root 提供的完整工具觀察轉錄，以及發布／採入方法原碼，不修改兩個子包的索引或 SUMS。
+
+工具觀察檔記 publication session 47163／chunk ca64fb 與 adoption session 54176／chunk e1660d 真 0；它是 root 對實際工具回覆的事後轉錄，不是 raw transport，也不是本封裝重新 wait。兩支 Python 僅按原 bytes 轉存 `.txt` 供閱讀，沒有執行；原命令 stdout／stderr／退出碼見相應來源子包。
+
+此包不宣稱 S3 帳本或 L3 驗收完成。原件清單列四份來源複本；另外三檔是本 README、原件清單與 SHA256SUMS。SUMS 覆蓋除自身外所有檔案。
+''')
+(dest / '原件清單.json').write_text(json.dumps(records, ensure_ascii=False, indent=2) + '\n')
+files = sorted(p for p in dest.iterdir() if p.is_file())
+(dest / 'SHA256SUMS').write_text(''.join(sha(p.read_bytes()) + '  ' + p.name + '\n' for p in files))
+files = sorted(p for p in dest.iterdir() if p.is_file())
+for path in files: path.chmod(0o644)
+assert {p.name for p in files} == {r['path'] for r in records} | {'README.md', '原件清單.json', 'SHA256SUMS'}
+result = {'bundle': str(dest), 'copyCheckPassed': True, 'files': len(files), 'bytes': sum(p.stat().st_size for p in files),
+          'indexSha256': sha((dest / '原件清單.json').read_bytes()), 'sumsSha256': sha((dest / 'SHA256SUMS').read_bytes())}
+(base / 'source-S3-root-tools-copycheck.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps(result, ensure_ascii=False, indent=2))

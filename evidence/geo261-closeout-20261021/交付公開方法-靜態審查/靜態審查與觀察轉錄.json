@@ -1,0 +1,42 @@
+{
+  "schema": "geo261-publish-evidence-static-peer/1",
+  "classification": "有限靜態審查，未執行公開helper；不是E提交、驗證或推送成功收據。",
+  "method": {
+    "sourcePath": "/workspace/geo261-evidence/publish-final-evidence.py",
+    "bytes": 6294,
+    "sha256": "b77431390207669e4c6df2e0712e268555e276f9b867e75703f42fe568dd901b"
+  },
+  "disposition": "完整讀取後未發現與既有stage／verify_E契約不相容的實質阻擋。",
+  "sequenceReviewed": [
+    "明示--execute且非最佳化模式才進入；OUT必須全新且在repo之外。",
+    "固定HEAD、自己的closeout分支、遠端exact ref與空staging，核review/config原bytes及精確tracked/untracked集合。",
+    "git add僅兩config與新證據根；核staged精確集合及空白檢查後提交，要求E唯一父提交是source-head。",
+    "由指定hash的原E驗證器以完整E SHA、新snapshot、review與review hash執行；真碼非0即停止。",
+    "驗證真0且HEAD/clean維持後才一般push自己的closeout，最後要求remote exact E。"
+  ],
+  "compatibility": {
+    "reviewSchema": "geo261-E-review/1",
+    "root": "evidence/geo261-closeout-20261021",
+    "index": "artifact-index.json",
+    "config": [".gitignore", ".gitattributes"],
+    "verifierArguments": ["--root", "--expected-e", "--snapshot-l", "--review-file", "--review-sha256"],
+    "verifierCompared": "/workspace/geo261-evidence/source-binding-E2-preparation/verify_E2.py",
+    "verifierComparedSha256": "99e6cdbafec586a97c37382216ad14737a173f6e394af3bde2685464d59db9e1"
+  },
+  "requiredUseConditions": [
+    "必須等L3全驗收完成、證據定稿並stage成功，再由root使用--execute；此helper本身不重新審核每個產品gate。",
+    "必須提供綁定真L3、新snapshot與新ledger三常數的定版verifier及其hash；目前E2仍綁L2，不可誤作最後驗證器。",
+    "驗證失敗時本機E可能已存在，commit.json如實保存中間狀態且不會推送；不可把本機提交視為交付成功。",
+    "不把E自身SHA或E後收據反塞回其自身；最終回報保存後驗證與公開結果。"
+  ],
+  "observations": [
+    {"source": "本代理實際工具回覆轉錄", "chunk": "b7792d", "exitCode": 0, "action": "完整只讀111行helper"},
+    {"source": "本代理實際工具回覆轉錄", "chunk": "77b282", "exitCode": 0, "action": "只讀核6294bytes與SHA256"},
+    {"source": "root協作訊息轉錄，未由本代理重新執行", "chunk": "b23055", "exitCode": 0, "action": "root回報AST檢查"}
+  ],
+  "notClaimed": [
+    "執行helper、E驗證器、控制或產品測試／編譯",
+    "已建立E、commit、push或更新PR來源／正文／留言／合併",
+    "靜態閱讀等於實際成功；工具觀察轉錄等於raw transport"
+  ]
+}

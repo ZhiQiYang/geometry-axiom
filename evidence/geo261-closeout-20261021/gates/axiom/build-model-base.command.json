@@ -1,0 +1,14 @@
+{
+  "label": "build-model-base",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-c",
+    "import sys; from pathlib import Path; from tests import binaries; binaries.OUT_DIR = Path(sys.argv[1]); raise SystemExit(binaries.main(['build', 'model-base']))",
+    "/workspace/geo261-evidence/gates/bin"
+  ],
+  "started_at": "2026-10-20T19:48:05.030255+00:00",
+  "exit_code": 0,
+  "seconds": 0.07768100799989952,
+  "ended_at": "2026-10-20T19:48:05.108097+00:00"
+}

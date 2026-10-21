@@ -1,0 +1,50 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "branch": "codex/geo261-closeout-20261021",
+  "driverSha256": "4ffefe74d503506f2c99d3064fac4359c4aa5324f77ccf5e3ae44bdf6ec994f2",
+  "driverArgv": [
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c-launch/wrapper-code.txt",
+    "--sha",
+    "6589248c9a94bdf0460d8f84dd1610e51048188b",
+    "--execute",
+    "--release-note",
+    "root已核同L3完整canvas真0、2261/85golden、owned cleanup全退後明示放行原five；固定6589248c9a94bdf0460d8f84dd1610e51048188b，assembly/documents/grid/space/timber原scope及900/600/900/900/1200秒整job上限，五項依序單browser。Q38使用第一heavy槽，本批為第二槽；原private runtime自行freshness，不copy native binary，保存原argv與真退出碼。",
+    "--run-id",
+    "l3-6589248c-formal",
+    "--output",
+    "/workspace/geo261-evidence/browser-five-L3-formal-6589248c"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "testArgv": [
+    "node",
+    "geometry-web/documents_browser_test.js"
+  ],
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18852/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-browser-five-l3-6589248c-formal/documents/feedback",
+    "XDG_CACHE_HOME": "/tmp/geo261-browser-five-l3-6589248c-formal/documents/cache",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_BROWSER_SUITE": "documents",
+    "GEOMETRY_CDP_PORT": "9366",
+    "TMPDIR": "/tmp/geo261-browser-five-l3-6589248c-formal/documents",
+    "TMP": "/tmp/geo261-browser-five-l3-6589248c-formal/documents",
+    "TEMP": "/tmp/geo261-browser-five-l3-6589248c-formal/documents",
+    "GEOMETRY_SPACE_TEST_DIR": "/tmp/geo261-browser-five-l3-6589248c-formal/documents/space-artifacts",
+    "GEOMETRY_ASSEMBLY_CONTEXT_SCREENSHOTS": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/context",
+    "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/grid-system",
+    "GEOMETRY_GRID_RULE_SCREENSHOT_DIR": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/grid-rules",
+    "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/documents",
+    "GEOMETRY_REPAIR_SCREENSHOT_DIR": "/workspace/geo261-evidence/browser-five-L3-formal-6589248c/documents/screenshots/fatal"
+  },
+  "serverTempOverride": {
+    "TMPDIR": "/tmp",
+    "TMP": "/tmp",
+    "TEMP": "/tmp"
+  },
+  "removedEnvironmentNames": [
+    "NODE_PATH"
+  ],
+  "releaseNote": "root已核同L3完整canvas真0、2261/85golden、owned cleanup全退後明示放行原five；固定6589248c9a94bdf0460d8f84dd1610e51048188b，assembly/documents/grid/space/timber原scope及900/600/900/900/1200秒整job上限，五項依序單browser。Q38使用第一heavy槽，本批為第二槽；原private runtime自行freshness，不copy native binary，保存原argv與真退出碼。",
+  "browserDifference": "本機 Chromium；workflow 為 google-chrome"
+}

@@ -1,0 +1,54 @@
+"""只執行已選既有契約測試；保存 unittest 與既有 NativeBuild 原建置紀錄。"""
+import hashlib
+import json
+from pathlib import Path
+import sys
+import unittest
+
+ROOT = Path('/workspace/geo261-wd-read-candidate')
+OUT = Path('/workspace/geo261-evidence/wd-read-candidate/targeted')
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(ROOT))
+NAMES = [
+    'tests.test_geo261_definition_sources',
+    'tests.test_geo261_definition_graph_product',
+    'tests.test_geo261_host_facts_authority.HostFactsAuthority.test_rc_actual_definitions_and_rebound_room_reach_final_validator',
+    'tests.test_geo261_host_facts_authority.HostFactsAuthority.test_malformed_rc_or_room_rejects_atomically_and_fails_closed',
+]
+loader = unittest.TestLoader()
+suite = loader.loadTestsFromNames(NAMES)
+
+def ids(value):
+    if isinstance(value, unittest.TestSuite):
+        return [name for child in value for name in ids(child)]
+    return [value.id()]
+
+selected = ids(suite)
+(OUT / 'selected-tests.json').write_text(json.dumps(dict(names=NAMES, resolvedTests=selected,
+    loaderErrors=loader.errors), ensure_ascii=False, indent=2) + '\n')
+result = unittest.TextTestRunner(verbosity=2).run(suite)
+from tests import test_geo261_native_kernel as native_module
+build = native_module._BUILD
+build_reference = None
+if build is not None:
+    log = build.work / 'build-log.json'
+    (OUT / 'build-log.json').write_bytes(log.read_bytes())
+    copied = build.woodworking / 'definition_sources.c'
+    raw = copied.read_bytes()
+    if raw != (ROOT / 'geometry-templates/woodworking/native/definition_sources.c').read_bytes():
+        raise RuntimeError('實際建置的候選來源不符')
+    build_reference = dict(work=str(build.work), compiler=build.cc, commandCount=len(build.logs),
+        allBuildExitZero=all(item['exit'] == 0 for item in build.logs),
+        actualDefinitionSourcePath=str(copied), actualDefinitionSourceBytes=len(raw),
+        actualDefinitionSourceSha256=hashlib.sha256(raw).hexdigest())
+records = dict(selectedCount=len(selected), testsRun=result.testsRun,
+    failures=[dict(test=test.id(), traceback=trace) for test, trace in result.failures],
+    errors=[dict(test=test.id(), traceback=trace) for test, trace in result.errors],
+    skipped=[dict(test=test.id(), reason=reason) for test, reason in result.skipped],
+    expectedFailures=[dict(test=test.id(), traceback=trace) for test, trace in result.expectedFailures],
+    unexpectedSuccesses=[test.id() for test in result.unexpectedSuccesses],
+    build=build_reference, nativeModule=str(Path(native_module.__file__).resolve()))
+ok = result.wasSuccessful() and not result.skipped and not loader.errors and result.testsRun == len(selected)
+records['exitCode'] = 0 if ok else 1
+(OUT / 'unit-result.json').write_text(json.dumps(records, ensure_ascii=False, indent=2) + '\n')
+raise SystemExit(records['exitCode'])

@@ -1,0 +1,7 @@
+獨立只讀核對代理：`/root/p189_prepare/contact_static`。此核對不執行產品、編譯、測試或第二 writer，也不修改既有檔案。
+
+核對未發現阻擋問題：worktree HEAD=A `7159530c0e494d3211e6ab1764eb691137211707` 且已追蹤檔案乾淨；9個受保護檔案與準備收據及A的Git blob bytes相符。supervisor原碼與sourcecode.txt的SHA256皆為 `308e37f71422f96543d68be4b51a42397c9d734750e0388278bb65941b60606e`。程式明確移除CC/PYTHONOPTIMIZE，以Popen(env=env)傳入所有階段；官方preflight確為cc。新cache/results在準備時分別為空／不存在。
+
+另以AST獨立核對完整表為78個不同ID，與prepare一致；正式CLI無ID限制，後續兩check明確排定且檢查前後帳本hash不變。ps顯示持久supervisor188410及唯一正式mutate子程序188436；兩者自成session、檔案stdout/stderr無互動工具依賴。SIGHUP忽略及子程序實際exit7落盤控制通過；各階段先保存實際wait結束碼與收據，之後才輸出監看訊息。
+
+限制：讀/proc/*/environ遭權限拒絕，環境以原碼、官方preflight、環境收據與launcher控制交叉確認。核對時正式mutate仍在執行，兩條check尚未完成；此文件不是整輪驗收通過收據。

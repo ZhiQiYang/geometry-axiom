@@ -1,0 +1,12 @@
+# 2026-09-18 引用式放置；空間與展示資料保留。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+surface 2 origin 0 0 0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
+space 1 boundary 1 2
+timber 90 20 20 role boundary
+place 90 on 1 at-face e0 +u +n
+timber 91 20 20 role boundary
+place 91 on 1 at-face e2 +u +n
+spec 主支1中線 500
+guide 1 1 v spec:主支1中線
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n

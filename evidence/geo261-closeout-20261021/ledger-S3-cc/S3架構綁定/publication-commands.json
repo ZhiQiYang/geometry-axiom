@@ -1,0 +1,148 @@
+[
+  {
+    "label": "head-before",
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "branch",
+    "argv": [
+      "git",
+      "branch",
+      "--show-current"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "status-before",
+    "argv": [
+      "git",
+      "status",
+      "--porcelain=v1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "diff-check",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "patch",
+    "argv": [
+      "git",
+      "diff",
+      "--binary",
+      "--",
+      "tests/test_geo261_host_authority.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "add",
+    "argv": [
+      "git",
+      "add",
+      "--",
+      "tests/test_geo261_host_authority.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "staged-paths",
+    "argv": [
+      "git",
+      "diff",
+      "--cached",
+      "--name-only"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "commit",
+    "argv": [
+      "git",
+      "commit",
+      "-m",
+      "test: align host authority footprint mutation anchor"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "head-after",
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "parent-after",
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD^"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "changed-paths",
+    "argv": [
+      "git",
+      "diff-tree",
+      "--no-commit-id",
+      "--name-only",
+      "-r",
+      "19401ca5448e162ee6140fed37b64b83b31ddec8"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "committed-test",
+    "argv": [
+      "git",
+      "show",
+      "19401ca5448e162ee6140fed37b64b83b31ddec8:tests/test_geo261_host_authority.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "status-after",
+    "argv": [
+      "git",
+      "status",
+      "--porcelain=v1"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "push",
+    "argv": [
+      "git",
+      "push",
+      "origin",
+      "HEAD:refs/heads/codex/geo261-host-authority-anchor-fix-20261021"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "remote",
+    "argv": [
+      "git",
+      "ls-remote",
+      "--heads",
+      "origin",
+      "refs/heads/codex/geo261-host-authority-anchor-fix-20261021"
+    ],
+    "exitCode": 0
+  }
+]

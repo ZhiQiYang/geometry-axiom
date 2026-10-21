@@ -1,0 +1,7 @@
+# 公理:I6:端面貼在輪廓邊上時該邊必須是 FIXED,貼 FREE 邊 → 拒絕。
+# 自由邊測試：u=4000 那邊標 FREE，端面頂到它應被拒絕
+# 公理:I3:fixity 陣列長度必須等於邊數——四條邊寫四個 token(F X F F);對照 _test_fixed.scene 整個不寫 = 全 FIXED。
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000 fixity F X F F
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+timber 1 20 20 role boundary
+place 1 on 1 at-face e0 +u +n

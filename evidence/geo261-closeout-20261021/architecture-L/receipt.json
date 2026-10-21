@@ -1,0 +1,49 @@
+{
+  "sourceSha": "43f85313c32410ac01406ab585846bbacafea278",
+  "argv": [
+    "env",
+    "-u",
+    "CC",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "tests/architecture_contract.py",
+    "--root",
+    ".",
+    "--manifest",
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "startedUTC": "2026-10-21T00:14:37.303397+00:00",
+  "runnerPath": "/workspace/geo261-evidence/architecture-L-preparation/run_L_architecture_cli.py",
+  "runnerRawSha256": "6f359273e6a38c80ab679c677dd1bd39a235dad2ef2008954a9f9070eb6f6164",
+  "不執行": [
+    "架構 metadata 重產",
+    "generic 205 套件重跑",
+    "product 18 套件重跑",
+    "native 重跑"
+  ],
+  "finishedUTC": "2026-10-21T00:14:42.765625+00:00",
+  "elapsedSeconds": 5.462242823999986,
+  "childPid": 285685,
+  "rawWaitStatus": 0,
+  "cliExitCode": 0,
+  "wrapperExitCode": 0,
+  "headBefore": "43f85313c32410ac01406ab585846bbacafea278",
+  "headAfter": "43f85313c32410ac01406ab585846bbacafea278",
+  "sourceAndMetadataUnchanged": true,
+  "postflightError": null,
+  "stdoutParseError": null,
+  "summary": {
+    "ok": true,
+    "sources": 333,
+    "edges": 796,
+    "diagnostics": 0,
+    "trustedSourcesNotParsed": 6
+  },
+  "stdoutBytes": 132208,
+  "stdoutSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+  "stderrBytes": 0,
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

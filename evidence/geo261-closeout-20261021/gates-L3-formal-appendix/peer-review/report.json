@@ -1,0 +1,77 @@
+{
+  "sourceSha": "6589248c9a94bdf0460d8f84dd1610e51048188b",
+  "checkedUtc": "2026-10-21T07:03:24.473092+00:00",
+  "reviewer": "/root/q38_card_gates/l2_gate_acceptors/native_manifest_peer",
+  "acceptedFrozenPackage": true,
+  "artifactIndexSha256": "e6c77e0a0d56e5451c81e90e92688aec2f7b4921adb6cfe5b1583f8add46c501",
+  "copyVerificationSha256": "1b41fd551dd2b9d58648c435317be3e17e2a9f552ff475875e8c2bd7f8ae748d",
+  "outerReceiptSha256": "64d73f26ff338b0a3e86cdefb6bba32dc75bbcbe48269684b3634f8903c4f8db",
+  "curationCodeSha256": "aabdc95ec54f6f472f7339ad14915058bc8b85e2858a454b739881ef477969e1",
+  "files": 1119,
+  "totalBytes": 3325134,
+  "sourceMappingFiles": 1114,
+  "sourceMappingBytes": 2655673,
+  "indexedFilesExcludingIndex": 1118,
+  "allIndexFilesBytesHashMatch": true,
+  "originalCuratedBundleBytesHashMtimeMatch": true,
+  "acceptedRawFileCount": 993,
+  "acceptedRawByPhase": {
+    "q38": 134,
+    "controls": 40,
+    "card": 780,
+    "axiom": 39
+  },
+  "primaryArtifactReferencesChecked": 32,
+  "phaseResults": {
+    "q38": {
+      "caseCount": 42,
+      "summary": {
+        "killed": 41,
+        "equivalent": 1
+      }
+    },
+    "controls": {
+      "caseCount": 12,
+      "summary": {
+        "survived": 9,
+        "unlabelled": 3
+      }
+    },
+    "card": {
+      "caseCount": 53,
+      "summary": {
+        "killed": 53
+      }
+    },
+    "axiom": {
+      "caseCount": 5,
+      "summary": {
+        "killed": 5
+      }
+    }
+  },
+  "completionPins": 31,
+  "supplementalOriginalCopies": 18,
+  "allSupplementalBytesHashMtimeMatch": true,
+  "fixedStagingAbsent": true,
+  "reviewedAtomicCurationCodeMatches": true,
+  "oneRenameAfterValidation": true,
+  "noBundleWritesAfterPublicationInReviewedCode": true,
+  "noExecutableFilesOrBinaryArtifacts": true,
+  "sixAcceptorPreparationTemplatesAndOutputsUnchanged": true,
+  "reverseWhitelistBytesExact": true,
+  "observedCurationSession": 87139,
+  "observedCurationChunk": "760511",
+  "curationToolExitCode": 0,
+  "curationChildWaitExitCode": 0,
+  "curationLauncherExitCode": 0,
+  "ownCheckCodeSha256": "8030cd95c029f386b7286d4a51dca46238fbf0e24ea3463b6763f35e7d5162c7",
+  "checkExecutedProductOrAcceptor": false,
+  "globalOrBinaryRead": false,
+  "mainBundleOrOriginalEvidenceModified": false,
+  "limits": [
+    "本次只核已凍結的文字原件、封包鏈與保存的真碼收據；未重跑產品、gate、接受器或封包。",
+    "原工具回應是代理逐欄事後轉錄，不冒稱 transport 自動原始日誌。",
+    "mtime/集合與原件相符是封包取樣核對，不能證明歷史期間從未暫寫。"
+  ]
+}

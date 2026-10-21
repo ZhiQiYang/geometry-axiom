@@ -1,0 +1,96 @@
+{
+  "completed_utc": "2026-10-21T05:39:15.019258+00:00",
+  "source_sha": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "phases": [
+    {
+      "phase": "mutate",
+      "command": [
+        "python3",
+        "-B",
+        "-u",
+        "tests/mutate.py"
+      ],
+      "cwd": "/workspace/geo261-ledger-S3-cc-19401ca5/repo",
+      "source_sha": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+      "pid": 409616,
+      "pgid": 409616,
+      "started_utc": "2026-10-21T04:54:14.508445+00:00",
+      "stdout": "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/mutate.stdout",
+      "stderr": "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/mutate.stderr",
+      "supervisor_pid": 409590,
+      "CC_present": false,
+      "PYTHONOPTIMIZE_present": false,
+      "finished_utc": "2026-10-21T05:39:05.961285+00:00",
+      "seconds": 2691.452895839,
+      "exit_code": 0,
+      "stdout_sha256": "151fd1c7b007bc817b608bd032f3fed3222d78bc6db6e950e69ffb08985e9f82",
+      "stderr_sha256": "459d59c817ab0bde9ce1e652d2a9d60468eb231ee0342e4a63ee8142c41d4885"
+    },
+    {
+      "phase": "check",
+      "command": [
+        "python3",
+        "-B",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "cwd": "/workspace/geo261-ledger-S3-cc-19401ca5/repo",
+      "source_sha": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+      "pid": 424785,
+      "pgid": 424785,
+      "started_utc": "2026-10-21T05:39:05.978749+00:00",
+      "stdout": "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/check.stdout",
+      "stderr": "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/check.stderr",
+      "supervisor_pid": 409590,
+      "CC_present": false,
+      "PYTHONOPTIMIZE_present": false,
+      "finished_utc": "2026-10-21T05:39:10.721106+00:00",
+      "seconds": 4.742363724995812,
+      "exit_code": 0,
+      "stdout_sha256": "39668fed6fcd8bfc1b1cca03cb5e9875d5194a37b04feac453d0d2fcfb261c18",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "check-killers",
+      "command": [
+        "python3",
+        "-B",
+        "tests/mutate.py",
+        "--check",
+        "--killers"
+      ],
+      "cwd": "/workspace/geo261-ledger-S3-cc-19401ca5/repo",
+      "source_sha": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+      "pid": 424795,
+      "pgid": 424795,
+      "started_utc": "2026-10-21T05:39:10.733223+00:00",
+      "stdout": "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/check-killers.stdout",
+      "stderr": "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/check-killers.stderr",
+      "supervisor_pid": 409590,
+      "CC_present": false,
+      "PYTHONOPTIMIZE_present": false,
+      "finished_utc": "2026-10-21T05:39:14.951088+00:00",
+      "seconds": 4.21787157899962,
+      "exit_code": 0,
+      "stdout_sha256": "9fb5ecaae87db0841aad751967af2429103de214b14a0941773275621a2547bf",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "head_after": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+  "tracked_status_after": "",
+  "temporary_mutant_sources": [],
+  "results": "/workspace/geo261-evidence/ledger-S3-cc-19401ca5/mutants_results.json",
+  "ledger_sha256": "52aa08ac9e0c88f96b81d35f985b7fadfbb746086ec8b99d7ae10fd3043d3178",
+  "ledger_bytes": 5170289,
+  "record_count": 78,
+  "verdict_counts": {
+    "killed": 70,
+    "equivalent": 4,
+    "crashed": 1,
+    "retired": 3
+  },
+  "checks_preserved_ledger_bytes": true,
+  "single_full_writer": true,
+  "CC_present": false,
+  "compiler_argv0": "cc"
+}

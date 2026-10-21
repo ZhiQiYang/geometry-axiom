@@ -1,0 +1,185 @@
+#!/usr/bin/env python3
+"""放行後才執行 L 架構 CLI；只寫全新外部收據，不重產 metadata 或重跑單元測試。"""
+import argparse
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import shutil
+import subprocess
+import sys
+import time
+
+sys.dont_write_bytecode = True
+HEAD = "43f85313c32410ac01406ab585846bbacafea278"
+MANIFEST = "geometry-core/domain-decoupling/product-architecture.json"
+ARTIFACTS = ["geometry-core/domain-decoupling/" + name for name in (
+    "product-architecture.json", "product-architecture-scan.json",
+    "PRODUCT-ARCHITECTURE.md", "product-architecture-receipt.json")]
+TOOLS = ["tests/architecture_contract.py", "tests/test_architecture_contract.py", "tests/test_product_architecture.py"]
+COMMAND = ["env", "-u", "CC", "-u", "PYTHONOPTIMIZE", "python3", "-B",
+           "tests/architecture_contract.py", "--root", ".", "--manifest", MANIFEST]
+
+
+def require(ok, message):
+    if not ok:
+        raise RuntimeError(message)
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def utc():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", required=True)
+    parser.add_argument("--out", required=True)
+    parser.add_argument("--native-dir", required=True)
+    parser.add_argument("--native-logs")
+    args = parser.parse_args()
+    root, out, native = (Path(value).resolve() for value in (args.root, args.out, args.native_dir))
+    native_logs = Path(args.native_logs).resolve() if args.native_logs else native / "suite-logs"
+    require(out != root and root not in out.parents, "收據目錄必須在 repo 外")
+    require(not out.exists(), "收據目錄已存在，禁止覆寫")
+    out.mkdir(parents=True)
+    git_commands = []
+
+    def write_json(name, obj):
+        (out / name).write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    def git(*argv):
+        command = ["git", "-c", "core.fsmonitor=false", "-C", str(root), *argv]
+        proc = subprocess.run(command, capture_output=True, check=False,
+                              env=dict(os.environ, GIT_OPTIONAL_LOCKS="0"))
+        git_commands.append({"argv": command, "exitCode": proc.returncode,
+                             "stdoutBytes": len(proc.stdout), "stdoutSha256": sha(proc.stdout),
+                             "stdout": proc.stdout.decode() if len(proc.stdout) < 4000 else None,
+                             "stderr": proc.stderr.decode()})
+        require(proc.returncode == 0, "來源讀取 Git 命令失敗")
+        return proc.stdout
+
+    def state():
+        head = git("rev-parse", "HEAD").decode().strip()
+        status = git("status", "--porcelain", "--untracked-files=all").decode()
+        branch = git("branch", "--show-current").decode().strip()
+        result = {"head": head, "status": status, "branch": branch, "files": {}}
+        require(head == HEAD and not status, "來源不是固定 L 或工作樹有非忽略變更")
+        for path in sorted(set(TOOLS + ARTIFACTS)):
+            raw = (root / path).read_bytes()
+            committed = git("show", HEAD + ":" + path)
+            require(raw == committed, "工具或 metadata 工作bytes不符Git L：" + path)
+            result["files"][path] = {"bytes": len(raw), "rawSha256": sha(raw)}
+        return result
+
+    launched = False
+    try:
+        before = state()
+        write_json("before.json", before)
+        native_receipt_raw = (native / "receipt.json").read_bytes()
+        native_receipt = json.loads(native_receipt_raw)
+        require(native_receipt["sourceSha"] == native_receipt["headBefore"] == native_receipt["headAfter"] == HEAD
+                and native_receipt["exitCode"] == 0 and native_receipt["sourceHashesUnchanged"] is True
+                and not native_receipt["statusBefore"] and not native_receipt["statusAfter"],
+                "L native 尚未完整結束、未通過或來源不符；不開 CLI")
+        references = [{"label": "L native 完整收據", "source": str(native / "receipt.json"),
+                       "bytes": len(native_receipt_raw), "rawSha256": sha(native_receipt_raw)}]
+        ref_out = out / "native-references"
+        ref_out.mkdir()
+        (ref_out / "receipt.json").write_bytes(native_receipt_raw)
+        for stem, total in [("py_test_architecture_contract", 205), ("py_test_product_architecture", 18)]:
+            result = json.loads((native_logs / (stem + ".json")).read_bytes())
+            require(result["total"] == result["run"] == result["passed"] == total
+                    and all(result.get(key) == 0 for key in ("failed", "skipped", "explicit_skipped",
+                            "unrun_skipped", "blocked_by_error", "expected_failed", "extra_errors"))
+                    and result.get("import_error") is None, "L native 具名套件不是完整通過：" + stem)
+            for suffix in (".json", ".log", ".unittest.log"):
+                path = native_logs / (stem + suffix)
+                raw = path.read_bytes()
+                (ref_out / path.name).write_bytes(raw)
+                references.append({"label": stem, "source": str(path), "bytes": len(raw), "rawSha256": sha(raw)})
+        write_json("native-references.json", {"說明": "只引用已完成的 L native 具名 raw，不重跑 205／18 套件",
+                                             "sourceSha": HEAD, "references": references})
+        # 完整列出實際交給 CLI 的環境；不繼承無關服務或憑證變數。
+        inherited = ("PATH", "HOME", "LANG", "LC_ALL", "LC_CTYPE", "TMPDIR", "TMP", "TEMP",
+                     "SYSTEMROOT", "VIRTUAL_ENV")
+        child_env = {key: os.environ[key] for key in inherited if key in os.environ}
+        child_env["PYTHONDONTWRITEBYTECODE"] = "1"
+        require("PATH" in child_env and "CC" not in child_env and "PYTHONOPTIMIZE" not in child_env,
+                "CLI 環境不符")
+        python_path = shutil.which("python3", path=child_env["PATH"])
+        require(python_path and Path(python_path).resolve() == Path(sys.executable).resolve(),
+                "runner 與命令內 python3 不是同一解譯器")
+        require(shutil.which("env", path=child_env["PATH"]), "找不到 env 程式")
+        write_json("environment.json", {"完整子程序環境": child_env,
+                   "原環境CC是否存在": "CC" in os.environ,
+                   "原環境PYTHONOPTIMIZE是否存在": "PYTHONOPTIMIZE" in os.environ,
+                   "未繼承環境變數名稱": sorted(set(os.environ) - set(child_env)),
+                   "pythonResolved": str(Path(python_path).resolve()), "pythonVersion": sys.version,
+                   "platform": platform.platform(), "說明": "完整 argv 仍用 env -u CC -u PYTHONOPTIMIZE；不保存無關憑證值"})
+        started, monotonic = utc(), time.monotonic()
+        command_record = {"sourceSha": HEAD, "argv": COMMAND, "cwd": str(root), "startedUTC": started,
+                          "runnerPath": str(Path(__file__).resolve()), "runnerRawSha256": sha(Path(__file__).read_bytes()),
+                          "不執行": ["架構 metadata 重產", "generic 205 套件重跑", "product 18 套件重跑", "native 重跑"]}
+        write_json("command.json", command_record)
+        with (out / "stdout.json").open("xb") as stdout, (out / "stderr.log").open("xb") as stderr:
+            pid = os.fork()
+            if pid == 0:
+                try:
+                    os.chdir(root)
+                    os.dup2(stdout.fileno(), 1)
+                    os.dup2(stderr.fileno(), 2)
+                    os.execvpe(COMMAND[0], COMMAND, child_env)
+                except BaseException as error:
+                    os.write(2, ("CLI 啟動失敗：" + repr(error) + "\n").encode())
+                    os._exit(127)
+            launched = True
+            waited, raw_wait = os.waitpid(pid, 0)
+            require(waited == pid, "回收的子程序PID不符")
+        cli_exit = os.waitstatus_to_exitcode(raw_wait)
+        finished, elapsed = utc(), time.monotonic() - monotonic
+        (out / "cli.exit-code").write_text(str(cli_exit) + "\n", encoding="utf-8")
+        post_error = None
+        after = None
+        try:
+            after = state()
+            require(after == before, "架構 CLI 前後來源／工具／四產物改變")
+        except Exception as error:
+            post_error = repr(error)
+        write_json("after.json", {"state": after, "error": post_error})
+        raw_stdout, raw_stderr = (out / "stdout.json").read_bytes(), (out / "stderr.log").read_bytes()
+        parse_error, summary = None, None
+        try:
+            result = json.loads(raw_stdout)
+            summary = {"ok": result["ok"], "sources": len(result["sources"]), "edges": len(result["edges"]),
+                       "diagnostics": len(result["diagnostics"]), "trustedSourcesNotParsed": len(result["trustedSourcesNotParsed"])}
+            require((cli_exit == 0) == (result["ok"] is True and not result["diagnostics"]), "CLI 退出碼與原 JSON 診斷不符")
+        except Exception as error:
+            parse_error = repr(error)
+        wrapper_exit = cli_exit if cli_exit >= 0 else 128 - cli_exit
+        if post_error or parse_error:
+            wrapper_exit = wrapper_exit or 1
+        write_json("receipt.json", {**command_record, "finishedUTC": finished, "elapsedSeconds": elapsed,
+                   "childPid": pid, "rawWaitStatus": raw_wait, "cliExitCode": cli_exit, "wrapperExitCode": wrapper_exit,
+                   "headBefore": before["head"], "headAfter": after["head"] if after else None,
+                   "sourceAndMetadataUnchanged": after == before and post_error is None,
+                   "postflightError": post_error, "stdoutParseError": parse_error, "summary": summary,
+                   "stdoutBytes": len(raw_stdout), "stdoutSha256": sha(raw_stdout),
+                   "stderrBytes": len(raw_stderr), "stderrSha256": sha(raw_stderr)})
+        write_json("git-commands.json", git_commands)
+        print(json.dumps({"out": str(out), "cliExitCode": cli_exit, "wrapperExitCode": wrapper_exit,
+                          "rawWaitStatus": raw_wait, "summary": summary}, ensure_ascii=False))
+        return wrapper_exit
+    except Exception as error:
+        write_json("failure.json", {"atUTC": utc(), "cliLaunched": launched, "error": repr(error)})
+        write_json("git-commands.json", git_commands)
+        raise
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
