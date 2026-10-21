@@ -23,14 +23,14 @@ REFERENCES = ROOT / 'geometry-core/references.inc'
 FLAGS = ['GEOMETRY_KERNEL_EXTERNAL=1', 'GEOMETRY_WOODWORKING_EXTERNAL=1',
          'GEOMETRY_HOST_HISTORY_EXTERNAL=1', 'GEOMETRY_HOST_CANDIDATE_EXTERNAL=1']
 CONTROLS = (
-    ('region-policy', 'actual.boundary_id=definition.region_id;region.id=definition.region_id;',
-     'actual.boundary_id=world_find_placement(ctx->world,id)->boundary_id;region.id=actual.boundary_id;',
+    ('region-policy', 'actual->boundary_id=definition.region_id;region->id=definition.region_id;',
+     'actual->boundary_id=world_find_placement(ctx->world,id)->boundary_id;region->id=actual->boundary_id;',
      'ref-policy', 'facts-ref-policy-follows-actual-region'),
     ('rect-ref', '}else if(definition.domain==GEO_PLACEMENT_REGION_REF){',
      '}else if(definition.domain==GEO_PLACEMENT_REGION_REF&&world_find_placement(ctx->world,id)->boundary_id){',
      'rect-ref', 'facts-rect-to-ref-preserves-hole'),
-    ('clear-boundary', 'actual.boundary_id=0;actual.derived_fill_id=0;actual.derived_h=0;actual.component_count=0;',
-     'actual.derived_fill_id=0;actual.derived_h=0;actual.component_count=0;',
+    ('clear-boundary', 'actual->boundary_id=0;actual->derived_fill_id=0;actual->derived_h=0;actual->component_count=0;',
+     'actual->derived_fill_id=0;actual->derived_h=0;actual->component_count=0;',
      'ref-rect', 'facts-ref-to-rect-clears-boundary'),
     ('sp-domain', 'if(definition.domain==GEO_PLACEMENT_REGION_SET){*derived=true;return true;}',
      'if(world_find_placement(ctx->world,id)->derived_fill_id){*derived=true;return true;}',
@@ -73,6 +73,18 @@ HOLE_VERTEX_CONTROL = ('hole-index-digits',
     "*v='\\0'; (void)parse_u32(q+1,&hi); if (hi>=POLY_MAX_HOLES) return false;",
     'rect-ref', 'facts-hole-vertex-grammar-rejects-malformed')
 CONTROL_SOURCES = {'probe-projection': VALIDATION, 'hole-index-digits': REFERENCES}
+# 只撤掉一項語義，要求原正常斷言精確轉紅；不把效能退化當作功能突變。
+COPY_CONTROLS = (
+    ('copy-clear', 'if(clear_components)memset(actual->components,0,sizeof actual->components);',
+     '(void)clear_components;', 'copy-clear', 'facts-copy-clears-all-original-components'),
+    ('copy-atomic', 'if(!reference_host_scratch(ctx,id,&actual,&region,&selected))return false;',
+     'if(!reference_host_scratch(ctx,id,&actual,&region,&selected)){*placement=actual;return false;}',
+     'malformed', 'facts-malformed-actual-definition-is-atomic'),
+    ('copy-view', '*view=selected?(actual.derived_fill_id?&placement->components[0]:boundary):NULL;',
+     '*view=selected?boundary:NULL;', 'copy-snapshot', 'facts-copy-snapshot-view-owned-by-caller'),
+    ('scratch-view', '*view=has_boundary?(actual->derived_fill_id?&actual->components[0]:region):NULL;',
+     '*view=has_boundary?region:NULL;', 'scratch-owned', 'facts-scratch-view-owned-by-caller'),
+)
 
 
 class HostFactsAuthorityBoundary(unittest.TestCase):
@@ -87,7 +99,7 @@ class HostFactsAuthorityBoundary(unittest.TestCase):
         self.assertIn('facts-moved-raw-footprint-is-invalid', harness)
         self.assertNotIn('#define geo_eval_source', harness)
         source = SOURCE.read_text(encoding='utf-8')
-        self.assertIn('actual.boundary_id=definition.region_id;region.id=definition.region_id;', source)
+        self.assertIn('actual->boundary_id=definition.region_id;region->id=definition.region_id;', source)
         self.assertIn('wood_finish_sources_read_derived(ctx->finish_sources,id,&derived)', source)
         validation = (ROOT / 'geometry-app/native/world_validation.inc').read_text(encoding='utf-8')
         for function in ('app_reference_host_read', 'app_reference_member_anchor',
@@ -102,6 +114,17 @@ class HostFactsAuthorityBoundary(unittest.TestCase):
         for name, before, after, case, marker in CONTROLS:
             with self.subTest(control=name):
                 source = CONTROL_SOURCES.get(name, SOURCE).read_text(encoding='utf-8')
+                self.assertEqual(1, source.count(before))
+                self.assertNotEqual(before, after)
+                self.assertIn('"' + case + '"', harness)
+                self.assertIn('"' + marker + '"', harness)
+
+    def test_copy_controls_have_unique_source_anchors_and_exact_assertions(self):
+        source = SOURCE.read_text(encoding='utf-8')
+        harness = HARNESS.read_text(encoding='utf-8')
+        self.assertEqual(4, len(COPY_CONTROLS))
+        for name, before, after, case, marker in COPY_CONTROLS:
+            with self.subTest(control=name):
                 self.assertEqual(1, source.count(before))
                 self.assertNotEqual(before, after)
                 self.assertIn('"' + case + '"', harness)
@@ -130,6 +153,9 @@ class HostFactsAuthority(unittest.TestCase):
     def test_actual_derived_sp_host_stays_lazy(self): self.case('sp-derived')
     def test_snapshot_and_no_context_keep_legacy_values(self): self.case('snapshot')
     def test_malformed_actual_definition_preserves_all_outputs_and_world(self): self.case('malformed')
+    def test_actual_rectangle_clears_full_raw_component_storage(self): self.case('copy-clear')
+    def test_snapshot_preserves_components_and_caller_owned_view(self): self.case('copy-snapshot')
+    def test_private_scratch_view_points_into_its_caller_storage(self): self.case('scratch-owned')
     def test_moved_actual_anchor_overcomes_invalid_raw_footprint(self): self.case('moved')
     def test_final_world_validation_and_reference_check_share_actual_facts(self): self.case('final')
     def test_delayed_owner_refresh_and_span_first_error_consume_actual_facts(self): self.case('end-facts')
@@ -171,6 +197,11 @@ class HostFactsAuthority(unittest.TestCase):
 
     def test_eight_contact_and_final_validator_controls_fail_exact_oracles(self):
         for control in CONTROLS[5:]:
+            with self.subTest(control=control[0]):
+                self.control(control)
+
+    def test_four_copy_and_output_lifetime_controls_fail_exact_oracles(self):
+        for control in COPY_CONTROLS:
             with self.subTest(control=control[0]):
                 self.control(control)
 

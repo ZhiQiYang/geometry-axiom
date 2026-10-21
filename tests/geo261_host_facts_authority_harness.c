@@ -10,7 +10,7 @@
 #undef main
 #define CHECK(tag,c) do{if(!(c)){fprintf(stderr,"ASSERT:%s\n",tag);return 1;}}while(0)
 
-enum {HF_REF=1,HF_RECT_REF,HF_REF_RECT,HF_RAW_DERIVED,HF_ACTUAL_DERIVED,HF_MOVED,HF_RC,HF_END};
+enum {HF_REF=1,HF_RECT_REF,HF_REF_RECT,HF_RAW_DERIVED,HF_ACTUAL_DERIVED,HF_MOVED,HF_RC,HF_END,HF_RAW_COMPONENTS};
 typedef bool (*HostFactsEvaluate)(void *,GeoEvalContext *,const GeoSourceRef *,GeoSourceValue *);
 typedef struct {
     World world,before;ReferenceEval ctx;unsigned mode,bad;
@@ -125,11 +125,19 @@ static HostFacts *hf_fixture(unsigned mode)
     PlacementSurface p={.id=7,.frame={{0,0,0},{1,0,0},{0,1,0},{0,0,1}},.rect={0,0,100,100}};
     if(mode==HF_REF||mode==HF_REF_RECT||mode==HF_END)p.boundary_id=7;
     if(mode==HF_RAW_DERIVED)p.derived_fill_id=55;
+    if(mode==HF_RAW_COMPONENTS){
+        p.derived_fill_id=55;p.derived_h=12;p.component_count=2;
+        p.components[0]=(SpaceBoundarySurface){.id=71,.outline={.v={{0,0},{40,0},{40,50},{0,50}},.count=4}};
+        p.components[0].outline.fixity[0]=EDGE_FIXED;
+        p.components[1]=(SpaceBoundarySurface){.id=72,.outline={.v={{60,0},{100,0},{100,50},{60,50}},.count=4}};
+        p.components[1].outline.fixity[1]=EDGE_FIXED;
+    }
     if(!app_placement_stage(&f->world,&p))return NULL;
     f->actual=*geo_placements_find(&f->world.geo.placement_data,7);
     if(mode==HF_REF||mode==HF_RECT_REF){f->actual.domain=GEO_PLACEMENT_REGION_REF;f->actual.region_id=8;}
     if(mode==HF_REF_RECT){f->actual.domain=GEO_PLACEMENT_RECT;f->actual.rect=(GeoRect2){10,20,90,80};}
     if(mode==HF_RAW_DERIVED){f->actual.domain=GEO_PLACEMENT_RECT;f->actual.rect=(GeoRect2){0,0,100,100};}
+    if(mode==HF_RAW_COMPONENTS){f->actual.domain=GEO_PLACEMENT_RECT;f->actual.rect=(GeoRect2){10,20,90,80};f->actual.component_count=0;}
     if(mode==HF_ACTUAL_DERIVED){f->actual.domain=GEO_PLACEMENT_REGION_SET;f->actual.component_count=0;}
     f->placement_size=geo_placement_definition_encode(&f->actual,f->placement,sizeof f->placement);
     if(!f->placement_size)return NULL;
@@ -244,8 +252,66 @@ static int hf_malformed(void)
         if(fault==4)--actual->as.definition.content_size;
         memset(&p,0x5a,sizeof p);memset(&b,0x5a,sizeof b);memcpy(&saved_p,&p,sizeof p);memcpy(&saved_b,&b,sizeof b);view=&saved_b;
         CHECK("facts-malformed-actual-definition-is-atomic",!reference_host_read(&f->ctx,7,&p,&b,&view)&&view==&saved_b&&
-            !memcmp(&p,&saved_p,sizeof p)&&!memcmp(&b,&saved_b,sizeof b)&&!memcmp(&f->world,&f->before,sizeof f->world));hf_free(f);
+            !memcmp(&p,&saved_p,sizeof p)&&!memcmp(&b,&saved_b,sizeof b)&&!memcmp(&f->world,&f->before,sizeof f->world));
+        g_reference_active=&f->ctx;
+        CHECK("facts-malformed-public-wrapper-is-atomic",!app_reference_host_read(&f->world,7,&p,&b,&view)&&view==&saved_b&&
+            !memcmp(&p,&saved_p,sizeof p)&&!memcmp(&b,&saved_b,sizeof b));
+        WoodGridHost grid,saved_grid;memset(&grid,0x5a,sizeof grid);memcpy(&saved_grid,&grid,sizeof grid);
+        CHECK("facts-malformed-local-validation-never-publishes",!app_validation_host(&f->world,7,NULL,&grid)&&!memcmp(&grid,&saved_grid,sizeof grid));
+        CHECK("facts-malformed-local-grid-never-publishes",!reference_grid_host(&f->ctx,7,&grid)&&!memcmp(&grid,&saved_grid,sizeof grid));
+        p.id=7;memcpy(&saved_p,&p,sizeof p);
+        CHECK("facts-malformed-local-member-never-publishes",!reference_member_placement(&f->ctx,&p,&b)&&
+            !memcmp(&p,&saved_p,sizeof p)&&!memcmp(&b,&saved_b,sizeof b));
+        hf_free(f);
     }return 0;
+}
+static bool hf_zero_bytes(const void *data,size_t size)
+{const unsigned char *bytes=data;for(size_t i=0;i<size;++i)if(bytes[i])return false;return true;}
+/* 兩個合法原 components 改為實際矩形後，未使用的整個陣列也不得殘留。
+ * 快照則保留原 components，view 必須綁回呼叫者而非 helper 的區域物件。 */
+static int hf_copy_outputs(bool snapshot)
+{
+    HostFacts *f=hf_fixture(HF_RAW_COMPONENTS);CHECK("facts-copy-fixture",f);f->ctx.use_current_values=snapshot;
+    PlacementSurface p,member;SpaceBoundarySurface b,member_boundary;const SpaceBoundarySurface *view;
+    CHECK("facts-copy-raw-has-two-components",app_placement_read(&f->world,7,&p)&&p.component_count==2&&p.components[1].outline.v[0].u==60);
+    memset(&p,0x5a,sizeof p);memset(&b,0x5a,sizeof b);
+    CHECK("facts-copy-host-read",reference_host_read(&f->ctx,7,&p,&b,&view));
+    if(snapshot){
+        CHECK("facts-copy-snapshot-view-owned-by-caller",p.component_count==2&&p.derived_fill_id==55&&p.derived_h==12&&
+            view==&p.components[0]&&view->id==71&&view->outline.v[1].u==40&&view->outline.fixity[0]==EDGE_FIXED&&
+            p.components[1].id==72&&p.components[1].outline.fixity[1]==EDGE_FIXED);
+        CHECK("facts-copy-snapshot-inactive-components-zero",hf_zero_bytes(&p.components[2],sizeof p.components-2*sizeof p.components[0]));
+    }else{
+        CHECK("facts-copy-clears-all-original-components",p.component_count==0&&p.derived_fill_id==0&&p.derived_h==0&&p.boundary_id==0&&
+            hf_zero_bytes(p.components,sizeof p.components));
+        CHECK("facts-copy-actual-rectangle-and-empty-boundary",!view&&hf_zero_bytes(&b,sizeof b)&&
+            p.rect.min_u==10&&p.rect.min_v==20&&p.rect.max_u==90&&p.rect.max_v==80);
+    }
+    member.id=7;memset(&member_boundary,0x5a,sizeof member_boundary);
+    CHECK("facts-copy-member-has-identical-output",reference_member_placement(&f->ctx,&member,&member_boundary)&&!memcmp(&member,&p,sizeof p));
+    if(snapshot)CHECK("facts-copy-member-boundary-is-first-component",!memcmp(&member_boundary,&p.components[0],sizeof member_boundary));
+    WoodContactSourceFacts *contacts=calloc(1,sizeof *contacts);CHECK("facts-copy-contact-memory",contacts);
+    WoodContactSourceRequest request={.placement_id=7};
+    CHECK("facts-copy-contact-components-and-geometry",reference_contact_facts(&f->ctx,f->ctx.sources,&request,contacts)&&contacts->member_count==0&&
+        contacts->region_count==(snapshot?2:1)&&contacts->regions[0].outline.v[0].u==(snapshot?0:10)&&
+        contacts->regions[0].outline.v[0].v==(snapshot?0:20));
+    if(snapshot)CHECK("facts-copy-contact-second-component",contacts->regions[1].id==72&&contacts->regions[1].outline.v[0].u==60);
+    free(contacts);g_reference_active=&f->ctx;
+    WoodGridHost grid;
+    CHECK("facts-copy-local-validation-host",app_validation_host(&f->world,7,NULL,&grid)&&grid.component_count==(snapshot?2:1)&&
+        grid.bounds.min_u==(snapshot?0:10)&&grid.bounds.max_u==(snapshot?100:90));
+    CHECK("facts-copy-world-unchanged",!memcmp(&f->world,&f->before,sizeof f->world));
+    if(snapshot)CHECK("facts-copy-snapshot-never-evaluates",geo_eval_node_count(f->ctx.sources)==0&&f->placement_hits==0);
+    hf_free(f);return 0;
+}
+static int hf_scratch_owned(void)
+{
+    HostFacts *f=hf_fixture(HF_RAW_COMPONENTS);CHECK("facts-scratch-fixture",f);f->ctx.use_current_values=true;
+    PlacementSurface p;SpaceBoundarySurface b;const SpaceBoundarySurface *view;
+    CHECK("facts-scratch-view-owned-by-caller",reference_host_scratch(&f->ctx,7,&p,&b,&view)&&view==&p.components[0]&&
+        p.component_count==2&&view->id==71&&view->outline.v[1].u==40);
+    CHECK("facts-scratch-snapshot-never-evaluates",geo_eval_node_count(f->ctx.sources)==0&&f->placement_hits==0);
+    hf_free(f);return 0;
 }
 static bool hf_prime_pose(HostFacts *f)
 {
@@ -338,6 +404,9 @@ int main(int argc,char **argv)
     if(!strcmp(argv[1],"sp-derived"))return hf_sp_case(true);
     if(!strcmp(argv[1],"snapshot"))return hf_snapshot();
     if(!strcmp(argv[1],"malformed"))return hf_malformed();
+    if(!strcmp(argv[1],"copy-clear"))return hf_copy_outputs(false);
+    if(!strcmp(argv[1],"copy-snapshot"))return hf_copy_outputs(true);
+    if(!strcmp(argv[1],"scratch-owned"))return hf_scratch_owned();
     if(!strcmp(argv[1],"moved"))return hf_moved(false);
     if(!strcmp(argv[1],"final"))return hf_moved(true);
     if(!strcmp(argv[1],"end-facts"))return hf_end_faces();

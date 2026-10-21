@@ -46,10 +46,11 @@ CONTROLS = (
     ("component-order", "geo_placement_definition_encode", "&definition->components[c]", "&definition->components[definition->component_count-1-c]", "codec", "ordered-components-exact-canonical-wire"),
     ("loop-order", "geo_pd_loop_write", "loop->v[v].u", "loop->v[loop->count-1-v].u", "codec", "ordered-components-exact-canonical-wire"),
     ("encode-capacity", "geo_placement_definition_encode", "if(size>capacity)", "if(false)", "bounds", "short-encode-capacity-is-atomic"),
-    ("decode-full-capacity", "geo_placement_definition_decode", "size>GEO_PLACEMENT_DEFINITION_MAX_BYTES", "size>=GEO_PLACEMENT_DEFINITION_MAX_BYTES", "bounds", "maximal-definition-decodes-exactly"),
-    ("domain-tag", "geo_placement_definition_decode", "||domain>GEO_PLACEMENT_REGION_SET", "||false", "malformed", "unknown-domain-output-is-atomic"),
-    ("trailing", "geo_placement_definition_decode", "if(r.p!=r.end)", "if(false)", "malformed", "trailing-definition-output-is-atomic"),
-    ("atomic-decode", "geo_placement_definition_decode", "GeoPDReader r={content,", "memset(out,0,sizeof *out);GeoPDReader r={content,", "malformed", "truncated-definition-output-is-atomic"),
+    ("decode-full-capacity", "geo_pd_decode_into", "size>GEO_PLACEMENT_DEFINITION_MAX_BYTES", "size>=GEO_PLACEMENT_DEFINITION_MAX_BYTES", "bounds", "maximal-definition-decodes-exactly"),
+    ("domain-tag", "geo_pd_decode_into", "||domain>GEO_PLACEMENT_REGION_SET", "||false", "malformed", "unknown-domain-output-is-atomic"),
+    ("trailing", "geo_pd_decode_into", "if(r.p!=r.end)", "if(false)", "malformed", "trailing-definition-output-is-atomic"),
+    ("atomic-decode", "geo_placement_definition_decode", "GeoPlacementDefinition next;", "memset(out,0,sizeof *out);GeoPlacementDefinition next;", "malformed", "truncated-definition-output-is-atomic"),
+    ("overlap-decode", "geo_placement_definition_decode", "GeoPlacementDefinition next;", "return geo_pd_decode_into(content,size,out);GeoPlacementDefinition next;", "overlap", "overlapping-wire-decodes-before-output-write"),
     ("raw-accessor", "geo_placement_sources_definition", "memcpy(out,&result,sizeof result)", "*out=*geo_placements_find(s->placements,id)", "typed", "returned-definition-overrides-raw-placement"),
     ("identity", "geo_placement_sources_definition", "||result.id!=id", "", "typed-invalid", "replacement-id-mismatch-is-atomic"),
     ("schema", "geo_placement_sources_definition", "strcmp(value.as.definition.schema,GEO_PLACEMENT_DEFINITION_SCHEMA)", "false", "typed-invalid", "replacement-schema-mismatch-is-atomic"),
@@ -76,7 +77,7 @@ class PlacementDefinitionBoundary(unittest.TestCase):
 
     def test_definition_access_does_not_force_geometry_or_apply_geometry_validation(self):
         source = (KERNEL / "placement_sources.c").read_text(encoding="utf-8")
-        for name in ("geo_placement_definition_encode", "geo_placement_definition_decode", "geo_placement_sources_register", "geo_placement_sources_describe"):
+        for name in ("geo_placement_definition_encode", "geo_pd_decode_into", "geo_placement_definition_decode", "geo_placement_sources_register", "geo_placement_sources_describe"):
             self.assertNotRegex(definition(source, name), r"geo_(?:eval_(?:source|depend|describe)|frame_is_valid|placement_is_valid|region_is_valid)\(")
         accessor = definition(source, "geo_placement_sources_definition")
         self.assertIn("GEO_DEPENDENCY_DEFINITION_REQUIRED", accessor)
@@ -94,8 +95,8 @@ class PlacementDefinitionBoundary(unittest.TestCase):
                 self.assertNotEqual(before, after)
                 self.assertEqual(1, harness.count('"' + marker + '"'))
                 self.assertIn('"' + case + '"', harness)
-        self.assertEqual(20, len(CONTROLS))
-        self.assertEqual(20, len({row[0] for row in CONTROLS}))
+        self.assertEqual(21, len(CONTROLS))
+        self.assertEqual(21, len({row[0] for row in CONTROLS}))
 
 
 class NativePlacementDefinition(unittest.TestCase):
@@ -116,7 +117,9 @@ class NativePlacementDefinition(unittest.TestCase):
         self.assertEqual("", run.stdout)
 
     def test_fixed_kind_three_and_legacy_source_keys(self): self.case("keys")
-    def test_independent_vectors_cover_all_active_fields_and_invalid_geometry(self): self.case("codec")
+    def test_independent_vectors_cover_all_active_fields_and_invalid_geometry(self):
+        self.case("codec")
+        self.case("overlap")
     def test_capacity_edges_and_encode_failures_preserve_output(self): self.case("bounds")
     def test_all_truncations_trailing_tags_and_counts_preserve_output(self): self.case("malformed")
     def test_definition_description_reads_and_owned_bytes_do_not_evaluate_geometry(self): self.case("definition")
@@ -137,7 +140,7 @@ class NativePlacementDefinition(unittest.TestCase):
         linked = [Path(arg) for arg in links[0]["arguments"] if Path(arg).suffix in (".o", ".obj")]
         self.assertEqual(self.objects, linked)
 
-    def test_twenty_controls_fail_exact_assertions_between_restored_baselines(self):
+    def test_twenty_one_controls_fail_exact_assertions_between_restored_baselines(self):
         build = kernel_only_native()
         original_path = build.kernel / "placement_sources.c"
         original_bytes = original_path.read_bytes()

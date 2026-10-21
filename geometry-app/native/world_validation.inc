@@ -3,6 +3,7 @@
  * in world_validation.c. No callback chooses acceptance or publication. */
 #include "../../geometry-templates/woodworking/native/world_validation.h"
 static bool app_reference_host_read(const World *,uint32_t,PlacementSurface *,SpaceBoundarySurface *,const SpaceBoundarySurface **);
+static bool app_reference_host_read_local(const World *,uint32_t,PlacementSurface *,SpaceBoundarySurface *,const SpaceBoundarySurface **);
 static bool app_reference_member_anchor(const World *,size_t,WoodMemberPlacement *);
 static bool app_reference_member_footprint(const World *,size_t,uint32_t,GeoRect2 *);
 static bool app_reference_validation_room(const World *,uint32_t,WoodRoomBounds *);
@@ -19,7 +20,7 @@ typedef struct {
 static bool app_validation_domain(void *user,uint32_t id,const GeoRect2 *footprint,AppValidationDomain *out)
 {
     const World *world=user;
-    if(!app_reference_host_read(world,id,&out->placement,&out->boundary,&out->b))return false;
+    if(!app_reference_host_read_local(world,id,&out->placement,&out->boundary,&out->b))return false;
     out->p=&out->placement;
     if(footprint)out->b=placement_boundary_for_rect(out->p,out->b,footprint);
     return true;

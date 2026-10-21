@@ -101,6 +101,21 @@ static int bounds_case(void)
     p.components[0].outline.count=GEO_LOOP_MAX_VERTICES;p.components[0].holes[0].count=GEO_LOOP_MAX_VERTICES+1;CHECK(encode_rejects(&p,sizeof bytes),"oversized-hole-loop-encode-is-atomic");
     return 0;
 }
+static int overlap_case(void)
+{
+    Vector v;GeoPlacementDefinition out,want;
+    for(int domain=0;domain<=2;++domain){fixed_vector(&v,domain);expected(&want,domain);
+        for(size_t offset=0;offset<=1;++offset){
+            unsigned char *wire=(unsigned char *)&out+offset;
+            memset(&out,0xa5,sizeof out);memcpy(wire,v.bytes,v.size);
+            CHECK(geo_placement_definition_decode(wire,v.size,&out)&&!memcmp(&out,&want,sizeof out),"overlapping-wire-decodes-before-output-write");
+            memset(&out,0xa5,sizeof out);memcpy(wire,v.bytes,v.size);
+            GeoPlacementDefinition before;memcpy(&before,&out,sizeof before);
+            CHECK(!geo_placement_definition_decode(wire,v.size-1,&out)&&!memcmp(&out,&before,sizeof out),"overlapping-truncated-wire-preserves-output");
+        }
+    }
+    return 0;
+}
 static int malformed_case(void)
 {
     Vector v;GeoPlacementDefinition p;
@@ -302,6 +317,7 @@ int main(int argc,char **argv)
 {
     if(argc!=2)return 2;
     if(!strcmp(argv[1],"keys"))return keys_case();if(!strcmp(argv[1],"codec"))return codec_case();
+    if(!strcmp(argv[1],"overlap"))return overlap_case();
     if(!strcmp(argv[1],"bounds"))return bounds_case();if(!strcmp(argv[1],"malformed"))return malformed_case();
     if(!strcmp(argv[1],"definition"))return definition_case();if(!strcmp(argv[1],"typed"))return typed_case();
     if(!strcmp(argv[1],"typed-invalid"))return typed_invalid_case();if(!strcmp(argv[1],"lifecycle"))return lifecycle_case();
