@@ -89,33 +89,26 @@ static bool geo_pd_loop_read(GeoPDReader *r,GeoRegionLoop *out)
     for(size_t v=0;v<out->count;++v)if(!geo_pd_coord_read(r,&out->v[v].u)||!geo_pd_coord_read(r,&out->v[v].v))return false;
     return true;
 }
-/* 只寫入呼叫者私有暫存；失敗可留下部分內容，不得直接傳入公開輸出。 */
-static bool geo_pd_decode_into(const void *content,size_t size,GeoPlacementDefinition *next)
+bool geo_placement_definition_decode(const void *content,size_t size,GeoPlacementDefinition *out)
 {
-    if(!content||!next||size>GEO_PLACEMENT_DEFINITION_MAX_BYTES)return false;
-    GeoPDReader r={content,(const unsigned char *)content+size};memset(next,0,sizeof *next);
+    if(!content||!out||size>GEO_PLACEMENT_DEFINITION_MAX_BYTES)return false;
+    GeoPDReader r={content,(const unsigned char *)content+size};GeoPlacementDefinition next;memset(&next,0,sizeof next);
     uint64_t id,domain,count;GeoVector3 origin;
-    if(!geo_pd_read(&r,4,&id)||!geo_pd_vector_read(&r,&origin)||!geo_pd_vector_read(&r,&next->frame.axis_u)||
-       !geo_pd_vector_read(&r,&next->frame.axis_v)||!geo_pd_vector_read(&r,&next->frame.normal)||!geo_pd_read(&r,1,&domain)||domain>GEO_PLACEMENT_REGION_SET)return false;
-    next->id=(uint32_t)id;next->frame.origin=(GeoPoint3){origin.x,origin.y,origin.z};next->domain=(GeoPlacementDomain)domain;
-    if(next->domain==GEO_PLACEMENT_RECT){
-        if(!geo_pd_coord_read(&r,&next->rect.min_u)||!geo_pd_coord_read(&r,&next->rect.min_v)||
-           !geo_pd_coord_read(&r,&next->rect.max_u)||!geo_pd_coord_read(&r,&next->rect.max_v))return false;
-    }else if(next->domain==GEO_PLACEMENT_REGION_REF){if(!geo_pd_read(&r,4,&id))return false;next->region_id=(uint32_t)id;}
-    else{if(!geo_pd_read(&r,4,&count)||count>GEO_PLACEMENT_COMPONENT_CAPACITY)return false;next->component_count=(size_t)count;
-        for(size_t c=0;c<next->component_count;++c){GeoRegionDefinition *component=&next->components[c];
+    if(!geo_pd_read(&r,4,&id)||!geo_pd_vector_read(&r,&origin)||!geo_pd_vector_read(&r,&next.frame.axis_u)||
+       !geo_pd_vector_read(&r,&next.frame.axis_v)||!geo_pd_vector_read(&r,&next.frame.normal)||!geo_pd_read(&r,1,&domain)||domain>GEO_PLACEMENT_REGION_SET)return false;
+    next.id=(uint32_t)id;next.frame.origin=(GeoPoint3){origin.x,origin.y,origin.z};next.domain=(GeoPlacementDomain)domain;
+    if(next.domain==GEO_PLACEMENT_RECT){
+        if(!geo_pd_coord_read(&r,&next.rect.min_u)||!geo_pd_coord_read(&r,&next.rect.min_v)||
+           !geo_pd_coord_read(&r,&next.rect.max_u)||!geo_pd_coord_read(&r,&next.rect.max_v))return false;
+    }else if(next.domain==GEO_PLACEMENT_REGION_REF){if(!geo_pd_read(&r,4,&id))return false;next.region_id=(uint32_t)id;}
+    else{if(!geo_pd_read(&r,4,&count)||count>GEO_PLACEMENT_COMPONENT_CAPACITY)return false;next.component_count=(size_t)count;
+        for(size_t c=0;c<next.component_count;++c){GeoRegionDefinition *component=&next.components[c];
             if(!geo_pd_read(&r,4,&id)||!geo_pd_loop_read(&r,&component->outline)||!geo_pd_read(&r,4,&count)||count>GEO_REGION_MAX_HOLES)return false;
             component->id=(uint32_t)id;component->hole_count=(size_t)count;
             for(size_t h=0;h<component->hole_count;++h)if(!geo_pd_loop_read(&r,&component->holes[h]))return false;
         }
     }
-    if(r.p!=r.end)return false;return true;
-}
-bool geo_placement_definition_decode(const void *content,size_t size,GeoPlacementDefinition *out)
-{
-    if(!out)return false;GeoPlacementDefinition next;
-    if(!geo_pd_decode_into(content,size,&next))return false;
-    memcpy(out,&next,sizeof next);return true;
+    if(r.p!=r.end)return false;memcpy(out,&next,sizeof next);return true;
 }
 GeoSourceRef geo_placement_source_ref(GeoProviderToken token,GeoPlacementSourceKind kind,uint32_t id,GeoPlacementSourceKey *key)
 {key->bytes[0]=(unsigned char)kind;geo_source_u32(key->bytes+1,id);return (GeoSourceRef){token,key->bytes,sizeof key->bytes};}
@@ -201,7 +194,7 @@ bool geo_placement_sources_definition(GeoPlacementSources *s,uint32_t id,GeoPlac
     if(geo_eval_source(s->graph,geo_placement_source_ref(s->placement_token,GEO_PLACEMENT_SOURCE_DEFINITION,id,&key),
         GEO_DEPENDENCY_DEFINITION_REQUIRED,&value)!=GEO_SOURCE_OK||value.kind!=GEO_SOURCE_DEFINITION||
         !value.as.definition.schema||strcmp(value.as.definition.schema,GEO_PLACEMENT_DEFINITION_SCHEMA)||
-        !geo_pd_decode_into(value.as.definition.content,value.as.definition.content_size,&result)||result.id!=id)return false;
+        !geo_placement_definition_decode(value.as.definition.content,value.as.definition.content_size,&result)||result.id!=id)return false;
     memcpy(out,&result,sizeof result);return true;
 }
 void geo_placement_sources_destroy(GeoPlacementSources *sources)
