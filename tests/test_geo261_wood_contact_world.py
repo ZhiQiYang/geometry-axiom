@@ -73,7 +73,7 @@ CONTROLS = (
     ("collision-placement", COLLISION_FILTER, COLLISION_FILTER.replace("fact->placement_id!=world->placement_id||", ""), "collisions", "collision-same-placement-only"),
     ("placement-order", "if(previous<=order)break;", "if(true)break;", "ordering", "placement-order-before-declaration"),
     ("stable-ties", "if(previous<=order)break;", "if(previous<order)break;", "ordering", "placement-stable-equal-order-sides"),
-    ("equal-order-dedup", "world->members[t].order<order", "world->members[t].order<=order", "ordering", "equal-order-not-deduplicated"),
+    ("equal-order-dedup", "previous_min<order", "previous_min<=order", "ordering", "equal-order-not-deduplicated"),
     ("partial-shadow", "if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;", "if(earlier)duplicate=true;", "ordering", "partial-shadow-retains-exposed-face"),
     ("outline-component-index", "(int)(component*GEO_LOOP_MAX_VERTICES+i)", "(int)i", "regions", "region-outline-index-encoded"),
     ("hole-component-index", "(int)(component*GEO_REGION_MAX_HOLES)+hole_of[li]", "hole_of[li]", "regions", "region-hole-index-encoded"),
@@ -88,6 +88,10 @@ CONTROLS = (
     ("end-order", "for(int end=0;end<2;++end)", "for(int end=1;end>=0;--end)", "ends", "start-end-before-global-placement-order"),
     ("stop-identity", STOP_FILTER, STOP_FILTER.replace("member==exclude", "(exclude&&member->id==exclude->id)"), "ordering", "stop-exclusion-keeps-candidate-identity"),
     ("extension-end", "||ext_end[end]", "", "ends", "self-boundary-extension-end-exempt"),
+    ("duplicate-last-order", "key.last=fact->order;", "if(key.last==UINT64_MAX)key.last=fact->order;", "order-keys", "duplicate-last-order-includes-all-facts"),
+    ("duplicate-min-order", "if(fact->order<key.minimum)key.minimum=fact->order;", "key.minimum=fact->order;", "order-keys", "duplicate-min-order-can-shadow-earlier-output"),
+    ("duplicate-min-unplaced", "if(fact->order<key.minimum)key.minimum=fact->order;", "if(fact->member->placed&&fact->order<key.minimum)key.minimum=fact->order;", "order-keys", "duplicate-min-order-includes-ineligible-facts"),
+    ("dedup-key-move", "if(cached)memmove(orders+(i-member_begin),orders+(i+1-member_begin),(count-i-1)*sizeof *orders);", "", "order-keys", "dedup-removal-keeps-following-face-order"),
 )
 
 
@@ -125,6 +129,14 @@ class WoodContactWorld(unittest.TestCase):
         result = self.case("regions")
         self.assertEqual(0, result.returncode, result.stderr)
 
+    def test_duplicate_id_all_facts_last_order_minimum_sequential_removal_and_extremes(self):
+        result = self.case("order-keys")
+        self.assertEqual(0, result.returncode, result.stderr)
+
+    def test_direct_collector_order_cache_fallback_keeps_existing_admitted_pairs(self):
+        result = self.case("order-fallback")
+        self.assertEqual(0, result.returncode, result.stderr)
+
     def test_positioning_interval_real_geometry_notch_hole_and_i5_precedence(self):
         result = self.case("intervals")
         self.assertEqual(0, result.returncode, result.stderr)
@@ -146,7 +158,7 @@ class WoodContactWorld(unittest.TestCase):
         path.write_text(source.replace(before, after), encoding="utf-8")
         return build.compile(path, "contact-world-" + name)
 
-    def test_twenty_actual_guard_controls_fail_the_named_numeric_assertions(self):
+    def test_actual_guard_controls_fail_the_named_numeric_assertions(self):
         build = native()
         for control in CONTROLS:
             with self.subTest(control=control[0]):

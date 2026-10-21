@@ -22,11 +22,17 @@ bool wood_contact_footprint_collides(const WoodContactWorld *world,const GeoRect
     }
     return false;
 }
-static uint64_t contact_order(const WoodContactWorld *world,uint32_t id)
+typedef struct {uint64_t last,minimum;} WoodContactOrder;
+static WoodContactOrder contact_orders(const WoodContactWorld *world,uint32_t id)
 {
-    uint64_t order=UINT64_MAX;
-    for(size_t i=0;i<world->member_count;++i)if(world->members[i].member->id==id)order=world->members[i].order;
-    return order;
+    WoodContactOrder key={UINT64_MAX,UINT64_MAX};
+    /* 同 ID 最後一筆決定排序；任一較早記錄可參與去重。兩者都看完整 facts。 */
+    for(size_t i=0;i<world->member_count;++i){const WoodContactMemberFact *fact=&world->members[i];
+        if(fact->member->id!=id)continue;
+        key.last=fact->order;
+        if(fact->order<key.minimum)key.minimum=fact->order;
+    }
+    return key;
 }
 size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,const WoodMember *exclude,WoodStopFace *out,size_t cap)
 {
@@ -47,6 +53,7 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
             }
         }
     }
+    size_t member_begin=count;
     for(size_t i=0;i<world->member_count&&count+2<=cap;++i){const WoodContactMemberFact *fact=&world->members[i];const WoodMember *member=fact->member;
         if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;
         const GeoRect2 *f=&fact->footprint;
@@ -58,28 +65,44 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
             out[count++]=(WoodStopFace){WOOD_STOP_MEMBER_SIDE,0,member->id,-1,1,WOOD_STOP_FIXED,f->max_u,f->min_v,f->max_v};
         }
     }
+    /* 僅此輪已收進的側面共用 key；不改容量截斷，也不跨 query 保存。
+     * 直接呼叫者若超過暫存大小，仍用原全 facts 查找，不新增容量拒絕。 */
+    WoodContactOrder orders[WOOD_CONTACT_MEMBER_CAPACITY*2];
+    bool cached=count-member_begin<=sizeof orders/sizeof *orders;
+    if(cached)for(size_t i=member_begin;i<count;i+=2){
+        WoodContactOrder key=contact_orders(world,out[i].timber_id);
+        orders[i-member_begin]=key;orders[i+1-member_begin]=key;
+    }
     /* D11 placement order is independent of declaration order. Stable ties
      * retain the two side identities in their original order. */
     for(size_t i=1;i<count;++i){
         if(out[i].kind!=WOOD_STOP_MEMBER_SIDE)continue;
-        uint64_t order=contact_order(world,out[i].timber_id);size_t j=i;WoodStopFace value=out[i];
+        WoodContactOrder value_order=cached?orders[i-member_begin]:contact_orders(world,out[i].timber_id);
+        uint64_t order=value_order.last;size_t j=i;WoodStopFace value=out[i];
         while(j&&out[j-1].kind==WOOD_STOP_MEMBER_SIDE){
-            uint64_t previous=contact_order(world,out[j-1].timber_id);if(previous<=order)break;
-            out[j]=out[j-1];--j;
+            uint64_t previous=cached?orders[j-1-member_begin].last:contact_orders(world,out[j-1].timber_id).last;if(previous<=order)break;
+            out[j]=out[j-1];
+            if(cached)orders[j-member_begin]=orders[j-1-member_begin];
+            --j;
         }
         out[j]=value;
+        if(cached)orders[j-member_begin]=value_order;
     }
     for(size_t i=0;i<count;){bool duplicate=false;
-        if(out[i].kind==WOOD_STOP_MEMBER_SIDE){uint64_t order=contact_order(world,out[i].timber_id);
+        if(out[i].kind==WOOD_STOP_MEMBER_SIDE){uint64_t order=cached?orders[i-member_begin].last:contact_orders(world,out[i].timber_id).last;
             for(size_t j=0;j<count&&!duplicate;++j){
                 if(i==j||out[i].fixed!=out[j].fixed||out[i].lo>=out[j].hi||out[j].lo>=out[i].hi)continue;
                 bool earlier=out[j].kind!=WOOD_STOP_MEMBER_SIDE;
-                if(!earlier)for(size_t t=0;t<world->member_count;++t)
-                    if(world->members[t].member->id==out[j].timber_id&&world->members[t].order<order)earlier=true;
+                if(!earlier){uint64_t previous_min=cached?orders[j-member_begin].minimum:contact_orders(world,out[j].timber_id).minimum;
+                    if(previous_min<order)earlier=true;
+                }
                 if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;
             }
         }
-        if(duplicate){memmove(out+i,out+i+1,(count-i-1)*sizeof *out);--count;}else ++i;
+        if(duplicate){memmove(out+i,out+i+1,(count-i-1)*sizeof *out);
+            if(cached)memmove(orders+(i-member_begin),orders+(i+1-member_begin),(count-i-1)*sizeof *orders);
+            --count;
+        }else ++i;
     }
     return count;
 }
