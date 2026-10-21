@@ -352,9 +352,9 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-本次最新封存來源為 `ab6869b86a4ad82345359b72397fc055280d8308`。實際 CLI 掃描結束碼為 0，含 333 個登記來源、796 條依賴邊及 0 項診斷。
+本次最新封存來源為 `cabe824128be31d0039dc6c94fa3f04cfb722a6b`。實際 CLI 掃描結束碼為 0，含 333 個登記來源、796 條依賴邊及 0 項診斷。
 通用掃描器測試 205 項：通過 205、略過 0；產品架構測試 18 項：通過 18、略過 0。
-獨立枚舉核對全部 611 個來源的 LF 雜湊與指定 Git commit；來源集合、來源／裁判 bytes 及 HEAD 在每條命令後和封存前均保持一致。
+獨立枚舉核對全部 611 個來源的 raw／LF 雜湊與指定 Git commit；來源集合、來源／裁判 bytes 及 HEAD 在每條命令後和封存前均保持一致。
 
 When new provider files are integrated, the root inventory must first fail
 closed, then receive individually reviewed source entries. Re-run the product
@@ -403,3 +403,11 @@ new files or changed sources.
 舊 manifest 以 `EXCLUSION_DIGEST` 轉紅；新版掃描及兩套測試均實際重跑。既有 digest 更新逐項撤回時須以目標檔案的 `EXCLUSION_DIGEST`、結束碼 1 拒絕。新增工具逐項移除登記時須以 `SOURCE_UNREGISTERED`、結束碼 1 拒絕；逐項破壞新工具 digest 時須以 `EXCLUSION_DIGEST`、結束碼 1 拒絕；再以實際 H 來源文字於記憶體加入對每個新工具的靜態依賴，須以 `DEPENDENCY_EXCLUDED`、結束碼 1 拒絕。上述是架構清單的突變自證，不冒充產品修正的行為突變自證。
 
 四份舊產物逐位元組保存在外部證據目錄的 `previous/`；新收據記錄舊產物雜湊、原來源 SHA、本次完整輸入閉包、命令、結束碼、略過項及原始日誌雜湊。此處只驗靜態依賴；未執行原生、瀏覽器、Q38、卡片參照或 P-189 驗收，不能由本收據推定那些關卡通過。
+
+## 2026-10-21 既有產品來源與 W guard 刷新
+
+本輪固定來源 `cabe824128be31d0039dc6c94fa3f04cfb722a6b`。舊 manifest 的真 CLI 結束碼為 0；所有來源原已登記，沒有捏造 exclusion 失配。產品來源變更逐項記於收據 inputsChangedSincePreviousSeal；兩套原測試及實際 CLI 全部重跑。責任分類、來源集合、全部既有 guard／exclusion／vendor／route 政策均保留；只追加以下經完整 W 詞法盤點審閱的新 guard：
+
+- `WoodContactOrder`：W contact_world 新增的單次排序暫存型別；保持 W 所有權，以正式 forbidden identifier 禁止 K 具體依賴。本輪仍須完整 W 詞法盤點與舊接受／新拒絕／撤回接受探針。
+
+每項以同一真 K 文本注入核對：舊 guard 接受、新 guard 精確拒絕、只撤回該 guard 後再接受，中性識別字仍通過；真碼與原輸出保存在外部收據。上述只證明靜態守門，不冒充產品行為、P177、效能、原生或瀏覽器驗收。舊四產物原 bytes 保存在 previous/，本輪不覆寫歷史原件。
