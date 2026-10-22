@@ -143,6 +143,22 @@ static bool edge(GeoEvalContext *graph,GeoSourceRef consumer,GeoSourceRef source
     for(size_t i=0;i<geo_eval_edge_count(graph);++i){GeoSourceEdge e;
         if(geo_eval_edge_at(graph,i,&e)&&e.consumer==a&&e.source==b&&e.kind==GEO_DEPENDENCY_VALUE_REQUIRED)return true;}return false;
 }
+typedef struct {GeoSourceRef consumer,source;GeoDependencyKind kind;} ExpectedContactEdge;
+static bool same_source(GeoSourceRef actual,GeoSourceRef expected)
+{
+    return actual.provider==expected.provider&&actual.key_size==expected.key_size&&
+        (!actual.key_size||!memcmp(actual.key,expected.key,actual.key_size));
+}
+static bool ordered_edges(GeoEvalContext *graph,const ExpectedContactEdge *expected,size_t count)
+{
+    if(geo_eval_edge_count(graph)!=count)return false;
+    for(size_t i=0;i<count;++i){GeoSourceEdge actual;GeoSourceNodeView consumer,source;
+        if(!geo_eval_edge_at(graph,i,&actual)||!geo_eval_node_at(graph,actual.consumer,&consumer)||
+           !geo_eval_node_at(graph,actual.source,&source)||actual.kind!=expected[i].kind||
+           !same_source(consumer.source,expected[i].consumer)||!same_source(source.source,expected[i].source))return false;
+    }
+    return true;
+}
 static bool face(const WoodStopFace *f,int kind,uint32_t bid,uint32_t mid,int hole,int e,int fixity,GeoCoord fixed,GeoCoord lo,GeoCoord hi)
 {return f->kind==kind&&f->boundary_id==bid&&f->timber_id==mid&&f->hole_index==hole&&f->edge_index==e&&f->fixity==fixity&&f->fixed==fixed&&f->lo==lo&&f->hi==hi;}
 static uint64_t u64(const unsigned char *bytes)
@@ -170,6 +186,39 @@ static int graph_case(void)
     CHECK("contact-feature-local-uv-value",geo_eval_source(f.graph,feature,GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK&&value.as.feature.key_size==24&&
         value.as.feature.segment.start.x==100&&value.as.feature.segment.start.y==0&&value.as.feature.segment.end.y==100&&value.as.feature.segment.start.z==0);
     CHECK("contact-exact-query-key",fk.bytes[0]==2&&u64(fk.bytes+1)==1&&u64(fk.bytes+9)==0);
+    dispose(&f,true);return 0;
+}
+static int collection_cache_edges(void)
+{
+    Fixture f;CHECK("setup",setup(&f,1018,0,0,1)==0);f.member_count=1;f.boxes[0]=member_box(20,20,30,30);
+    WoodStopFace out[8];size_t count=99;
+    CHECK("contact-collection-cache-query",collect(&f,false,NULL,out,8,&count)&&count==4);
+    CHECK("contact-collection-cache-output-is-still-canonical",f.facts_calls==1&&f.box_calls[0]==1&&
+        face(out,WOOD_STOP_OUTLINE_EDGE,7,0,-1,1,1,100,0,100)&&
+        face(out+2,WOOD_STOP_MEMBER_SIDE,0,41,-1,0,1,20,20,30));
+    WoodContactSourceKey collection_key,feature_keys[4];GeoPlacementSourceKey frame_key,regions_key,definition_key;uint32_t mid=41;
+    GeoSourceRef collection=contact_ref(WOOD_CONTACT_SOURCE_COLLECTION,1,0,&collection_key);
+    GeoSourceRef placement_frame=geo_placement_source_ref(PLACEMENT_TOKEN,GEO_PLACEMENT_SOURCE_FRAME,7,&frame_key);
+    GeoSourceRef placement_regions=geo_placement_source_ref(PLACEMENT_TOKEN,GEO_PLACEMENT_SOURCE_REGIONS,7,&regions_key);
+    GeoSourceRef definition=geo_placement_source_ref(PLACEMENT_TOKEN,GEO_PLACEMENT_SOURCE_DEFINITION,7,&definition_key);
+    ExpectedContactEdge expected[9]={
+        {collection,placement_frame,GEO_DEPENDENCY_VALUE_REQUIRED},
+        {placement_frame,definition,GEO_DEPENDENCY_DEFINITION_REQUIRED},
+        {collection,placement_regions,GEO_DEPENDENCY_VALUE_REQUIRED},
+        {placement_regions,definition,GEO_DEPENDENCY_DEFINITION_REQUIRED},
+        {collection,{BOX_TOKEN,&mid,sizeof mid},GEO_DEPENDENCY_VALUE_REQUIRED}
+    };
+    for(size_t i=0;i<count;++i)expected[5+i]=(ExpectedContactEdge){
+        contact_ref(WOOD_CONTACT_SOURCE_FEATURE,1,i,&feature_keys[i]),collection,GEO_DEPENDENCY_VALUE_REQUIRED};
+    /* Each FEATURE is a distinct consumer of the same already-valid collection.
+     * Check the entire public edge sequence by exact source keys, not just the
+     * existence of an edge or the first consumer's successful dependency. */
+    CHECK("collection-cache-second-feature-edge-and-order",ordered_edges(f.graph,expected,9));
+    size_t nodes=geo_eval_node_count(f.graph);GeoSourceValue value;
+    for(size_t i=0;i<count;++i)CHECK("contact-cached-feature-readable",
+        geo_eval_source(f.graph,expected[5+i].consumer,GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK&&value.kind==GEO_SOURCE_FEATURE);
+    CHECK("contact-cached-feature-reads-preserve-complete-edge-order",f.facts_calls==1&&f.box_calls[0]==1&&
+        geo_eval_node_count(f.graph)==nodes&&ordered_edges(f.graph,expected,9));
     dispose(&f,true);return 0;
 }
 static int feature_consumption(void)
@@ -302,6 +351,7 @@ int main(int argc,char **argv)
 {
     if(argc!=2)return 2;const char *name=argv[1];int result;
     if(!strcmp(name,"graph"))result=graph_case();else if(!strcmp(name,"feature-values"))result=feature_consumption();
+    else if(!strcmp(name,"collection-cache-edges"))result=collection_cache_edges();
     else if(!strcmp(name,"upstream"))result=upstream_changes();else if(!strcmp(name,"ordering"))result=ordering();
     else if(!strcmp(name,"components"))result=components();else if(!strcmp(name,"evolving"))result=evolving();
     else if(!strcmp(name,"capacity"))result=capacities();else if(!strcmp(name,"failures"))result=failures();

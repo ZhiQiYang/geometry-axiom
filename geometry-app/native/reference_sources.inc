@@ -615,7 +615,7 @@ static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
         }
         if(fact->placement_id!=request->placement_id){fact->footprint_valid=false;continue;}
         if(ctx->use_current_values&&!fact->footprint_valid)continue;
-        if(!ctx->use_current_values&&ctx->member_reads[i].footprint_valid&&ctx->member_reads[i].placement==request->placement_id){
+        if(!ctx->use_current_values&&!geo_eval_is_sealed(ctx->sources)&&ctx->member_reads[i].footprint_valid&&ctx->member_reads[i].placement==request->placement_id){
             if(geo_eval_depend(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK)return false;
             fact->footprint_valid=ctx->member_reads[i].footprint_ok;
             if(fact->footprint_valid)fact->footprint=ctx->member_reads[i].footprint;

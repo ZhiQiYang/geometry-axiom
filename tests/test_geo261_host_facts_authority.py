@@ -6,6 +6,8 @@ Negative controls mutate isolated copies of H only, require an exact normal
 assertion exit, and repeat the baseline before/after without changing sources.
 """
 from pathlib import Path
+import json
+import os
 import re
 import subprocess
 import sys
@@ -72,6 +74,10 @@ HOLE_VERTEX_CONTROL = ('hole-index-digits',
     "*v='\\0'; if (!parse_u32(q+1,&hi) || hi>=POLY_MAX_HOLES) return false;",
     "*v='\\0'; (void)parse_u32(q+1,&hi); if (hi>=POLY_MAX_HOLES) return false;",
     'rect-ref', 'facts-hole-vertex-grammar-rejects-malformed')
+SEALED_FOOTPRINT_CONTROL = ('sealed-footprint',
+    'if(!ctx->use_current_values&&!geo_eval_is_sealed(ctx->sources)&&ctx->member_reads[i].footprint_valid&&ctx->member_reads[i].placement==request->placement_id){',
+    'if(!ctx->use_current_values&&ctx->member_reads[i].footprint_valid&&ctx->member_reads[i].placement==request->placement_id){',
+    'sealed-contact-facts', 'sealed-contact-facts-remain-readable')
 CONTROL_SOURCES = {'probe-projection': VALIDATION, 'hole-index-digits': REFERENCES}
 
 
@@ -116,8 +122,20 @@ class HostFactsAuthority(unittest.TestCase):
         cls.exe = build.link('host-facts-authority', [cls.client, *build.product_objects()])
 
     def case(self, name, exe=None, marker=None):
-        result = subprocess.run([str(exe or self.exe), name], capture_output=True,
+        command = [str(exe or self.exe), name]
+        result = subprocess.run(command, capture_output=True,
                                 text=True, encoding='utf-8', timeout=30)
+        log = os.environ.get('GEO261_HOST_FACTS_EXECUTION_LOG')
+        if log:
+            path = Path(log)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open('a', encoding='utf-8') as stream:
+                stream.write(json.dumps({
+                    'test': self.id(), 'case': name, 'argv': command,
+                    'cwd': str(Path.cwd()), 'actual_process_returncode': result.returncode,
+                    'timeout_expired': False, 'expected_assertion': marker,
+                    'stdout': result.stdout, 'stderr': result.stderr,
+                }, ensure_ascii=False) + '\n')
         self.assertEqual(1 if marker else 0, result.returncode,
                          'Crash/setup is not an authority verdict: ' + result.stdout + result.stderr)
         self.assertEqual('ASSERT:' + marker + '\n' if marker else '', result.stderr)
@@ -135,6 +153,10 @@ class HostFactsAuthority(unittest.TestCase):
     def test_delayed_owner_refresh_and_span_first_error_consume_actual_facts(self): self.case('end-facts')
     def test_rc_actual_definitions_and_rebound_room_reach_final_validator(self): self.case('rc')
     def test_malformed_rc_or_room_rejects_atomically_and_fails_closed(self): self.case('rc-malformed')
+    def test_sealed_valid_contact_facts_remain_readable_without_graph_changes(self):
+        self.case('sealed-contact-facts')
+    def test_sealed_unknown_pose_stays_rejected_without_evaluation_or_graph_changes(self):
+        self.case('sealed-contact-missing-pose')
 
     def control(self, control):
         name, before, after, case, marker = control
@@ -173,6 +195,9 @@ class HostFactsAuthority(unittest.TestCase):
         for control in CONTROLS[5:]:
             with self.subTest(control=control[0]):
                 self.control(control)
+
+    def test_sealed_footprint_guard_control_fails_exact_readability_oracle(self):
+        self.control(SEALED_FOOTPRINT_CONTROL)
 
 
 if __name__ == '__main__':

@@ -2,10 +2,14 @@
 
 NativeBuild supplies isolated public K/W dependencies. One test-local hook can
 change only returned FEATURE segments, proving collect consumes graph values.
-Six negative controls require their exact normal ASSERT; build failures,
-timeouts, native crashes and unavailable compilers never count as detection.
+The original six controls and three cached-collection controls require their
+exact normal ASSERT; build failures, timeouts, native crashes and unavailable
+compilers never count as detection.
 """
 from pathlib import Path
+import hashlib
+import json
+import os
 import re
 import shutil
 import subprocess
@@ -51,6 +55,18 @@ CONTROLS = (
      "*count=0;WoodContactQuery *q=calloc(1,sizeof *q);if(!q)return false;"),
 )
 
+# Target the second FEATURE, after the first consumer has already used the same
+# valid collection. Reversing evaluation preserves the output array indices,
+# but must still change the observable dependency insertion sequence.
+COLLECTION_CACHE_CONTROLS = (
+    ("second-feature-edge", "if(geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK)return false;",
+     "if(index!=1&&geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK)return false;"),
+    ("second-feature-kind", "geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED)",
+     "geo_eval_depend(graph,collection_ref,index==1?GEO_DEPENDENCY_EVALUATE_BEFORE:GEO_DEPENDENCY_VALUE_REQUIRED)"),
+    ("feature-evaluation-order", "for(size_t i=0;i<n;++i){GeoSourceValue value;",
+     "for(size_t i=n;i-- > 0;){GeoSourceValue value;"),
+)
+
 
 class ContactSourcesBoundary(unittest.TestCase):
     def test_source_provider_has_no_host_or_private_store_dependencies(self):
@@ -68,6 +84,9 @@ class ContactSourcesBoundary(unittest.TestCase):
         for name, module, _case, _marker, before, _after in CONTROLS:
             with self.subTest(control=name):
                 self.assertEqual(1, (MODULE / (module + ".c")).read_text(encoding="utf-8").count(before))
+        for name, before, _after in COLLECTION_CACHE_CONTROLS:
+            with self.subTest(collection_cache_control=name):
+                self.assertEqual(1, original.count(before))
 
 
 class NativeContactSources(unittest.TestCase):
@@ -92,19 +111,39 @@ class NativeContactSources(unittest.TestCase):
             build.wood_contacts_object, build.wood_supports_object, build.placement_sources_object,
             build.placements_object, build.regions_object, build.source_object, build.geometry_object])
 
-    def run_case(self, name, executable=None):
-        result = subprocess.run([str(executable or self.exe), name], capture_output=True, text=True, timeout=30)
+    def run_case(self, name, executable=None, *, phase="positive", control=None, expected_assertion=None):
+        command = [str(executable or self.exe), name]
+        result = subprocess.run(command, capture_output=True, text=True, timeout=30)
+        log = os.environ.get("GEO261_CONTACT_SOURCES_EXECUTION_LOG")
+        if log:
+            path = Path(log)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("a", encoding="utf-8", newline="\n") as stream:
+                stream.write(json.dumps({
+                    "command": command, "cwd": os.getcwd(), "case": name,
+                    "phase": phase, "control": control, "expected_assertion": expected_assertion,
+                    "source_sha": os.environ.get("GITHUB_SHA"),
+                    "executable_sha256": hashlib.sha256(Path(command[0]).read_bytes()).hexdigest(),
+                    "environment": {key: os.environ.get(key) for key in (
+                        "PATH", "LANG", "LC_ALL", "TMPDIR", "PYTHONOPTIMIZE", "GITHUB_SHA", "GITHUB_WORKSPACE")},
+                    "actual_exit": result.returncode, "timeout_expired": False,
+                    "stdout": result.stdout, "stderr": result.stderr,
+                    "capture_mode": "subprocess text=True; complete native text output",
+                }, ensure_ascii=False) + "\n")
         self.assertIn(result.returncode, (0, 1), "Native crash/setup failure is not a contact verdict: " + result.stdout + result.stderr)
         return result
 
-    def pass_case(self, name):
-        result = self.run_case(name)
+    def pass_case(self, name, *, phase="positive", control=None):
+        result = self.run_case(name, phase=phase, control=control)
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
         self.assertEqual("PASS " + name + "\n", result.stdout)
         self.assertEqual("", result.stderr)
 
     def test_real_k_frame_region_box_values_feed_w_policy_and_typed_dependency_edges(self):
         self.pass_case("graph")
+
+    def test_cached_collection_records_every_feature_consumer_with_exact_kind_and_edge_order(self):
+        self.pass_case("collection-cache-edges")
 
     def test_returned_feature_segments_control_both_local_uv_axis_outputs(self):
         self.pass_case("feature-values")
@@ -142,17 +181,35 @@ class NativeContactSources(unittest.TestCase):
         build = native()
         for name, module, case, marker, before, after in CONTROLS:
             with self.subTest(control=name):
-                self.pass_case(case)
+                self.pass_case(case, phase="baseline", control=name)
                 source = self.source if module == "contact_sources" else (build.woodworking / "contact_world.c").read_text(encoding="utf-8")
                 self.assertEqual(1, source.count(before), "Negative control must replace exactly one expression")
                 path = build.woodworking / ("contact-source-control-" + name + ".c")
                 path.write_text(source.replace(before, after), encoding="utf-8")
                 changed = build.compile(path, "contact-source-control-" + name)
-                result = self.run_case(case, self.link("contact-source-control-" + name, module, changed))
+                result = self.run_case(case, self.link("contact-source-control-" + name, module, changed),
+                                       phase="mutant", control=name, expected_assertion=marker)
                 self.assertEqual(1, result.returncode, "Control did not fail a normal assertion: " + result.stdout + result.stderr)
                 self.assertEqual("ASSERT:" + marker + "\n", result.stderr)
                 self.assertEqual("", result.stdout)
-                self.pass_case(case)
+                self.pass_case(case, phase="restored", control=name)
+
+    def test_collection_cache_negative_controls_detect_second_consumer_kind_and_order(self):
+        build = native()
+        for name, before, after in COLLECTION_CACHE_CONTROLS:
+            with self.subTest(control=name):
+                self.pass_case("collection-cache-edges", phase="baseline", control=name)
+                self.assertEqual(1, self.source.count(before), "Negative control must replace exactly one expression")
+                path = build.woodworking / ("contact-collection-control-" + name + ".c")
+                path.write_text(self.source.replace(before, after), encoding="utf-8")
+                changed = build.compile(path, "contact-collection-control-" + name)
+                result = self.run_case("collection-cache-edges", self.link("contact-collection-control-" + name, "contact_sources", changed),
+                                       phase="mutant", control=name,
+                                       expected_assertion="collection-cache-second-feature-edge-and-order")
+                self.assertEqual(1, result.returncode, "Control did not fail a normal assertion: " + result.stdout + result.stderr)
+                self.assertEqual("ASSERT:collection-cache-second-feature-edge-and-order\n", result.stderr)
+                self.assertEqual("", result.stdout)
+                self.pass_case("collection-cache-edges", phase="restored", control=name)
 
 
 if __name__ == "__main__":
