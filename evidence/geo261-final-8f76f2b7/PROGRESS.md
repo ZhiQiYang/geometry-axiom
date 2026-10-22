@@ -11,4 +11,7 @@
 - 2026-10-22T20:07:32.801537+00:00 — **controlled-proof-preparation**：同新 SHA 的 P73 controlled callback 與 P52 runtime 撤回／恢復工具已綁定並完成靜態準備；原測試、predicate、量測 protocol 與數值 gate 未改；尚未執行任何本輪額外自證，不預填綠燈
   下一步：等待本輪正式清單收齊，再依同 SHA 正式 baseline 串行執行，保留所有實際退出碼。原始資料：`raw/controlled-proof-preparation.raw.tar.gz`。
 
+- 2026-10-22T20:23:54.895260+00:00 — **cumulative-perf-preparation**：新 F2 的 C 累積性能自證包已完成公開 Git 來源綁定與本次真 P3 純讀覆核，原既有 metadata gate 真 0；六模板、原 N64 三筆及 2× 判準不變；準備稽核首輪 mode 解讀錯誤原 1 保留、修正後完整原 0；尚未量測 F2，不預填產品綠燈
+  下一步：正式同 F2 P-189 四點全綠後，串行執行本包並封存全部原量測與撤回／恢復結果。原始資料：`raw/cumulative-perf-preparation.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
