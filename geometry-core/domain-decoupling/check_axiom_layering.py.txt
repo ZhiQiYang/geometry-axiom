@@ -66,13 +66,70 @@ def main():
     print("核心 %d" % counts["核心"])
     print("木工 %d" % counts["木工"])
     print("混合 %d" % counts["混合"])
+    problems.extend(reverse_cite_problems(raw, draft))
     if problems:
         print("PROBLEMS %d" % len(problems))
         for p in problems:
             print(p)
         return 1
     print("OK each clause id appears once")
+    print("OK reverse cites")
     return 0
+
+
+def reverse_cite_problems(axiom, draft):
+    """Mixed-clause reverse lists must include every other clause that
+    names them, including Chinese-adjacent and slash-joined ids.
+    En-dash ranges are not expanded. This is separate from the once-each check.
+    """
+    lines = axiom.split("\n")
+    starts = []
+    for i, ln in enumerate(lines):
+        m = re.match(r"\*\*(D\d+[a-z]?)\s", ln) or re.match(r"^([IR]\d+[a-z]?)\s", ln)
+        if m:
+            starts.append((i, m.group(1)))
+        elif re.match(r"^## ", ln) and starts and starts[-1][1] is not None:
+            starts.append((i, None))
+    id_re = re.compile(r"(?<![A-Za-z])([DIR]\d+[a-z]?)(?![A-Za-z0-9])")
+    cites = {}
+    for idx, (i, cid) in enumerate(starts):
+        if cid is None:
+            continue
+        end = len(lines)
+        for j, _c2 in starts[idx + 1:]:
+            end = j
+            break
+        for k, ln in enumerate(lines[i:end]):
+            for m in id_re.finditer(ln):
+                if k == 0 and m.start() < 8:
+                    continue
+                tid = m.group(1)
+                if tid == cid:
+                    continue
+                cites.setdefault(tid, set()).add(cid)
+    list_re = re.compile(
+        r"^### ([DIR]\d+[a-z]?)\n(?:.*\n){0,8}?拆開後要跟著改的引用：(.+)$",
+        re.M,
+    )
+    problems = []
+    seen_heads = set()
+    for m in list_re.finditer(draft):
+        cid = m.group(1)
+        if cid in seen_heads:
+            problems.append("duplicate reverse list %s" % cid)
+        seen_heads.add(cid)
+        raw = m.group(2).strip()
+        if "沒有其他條文" in raw:
+            have = set()
+        else:
+            have = set(re.findall(r"[DIR]\d+[a-z]?", raw))
+        gap = cites.get(cid, set()) - have
+        extra = have - cites.get(cid, set())
+        if gap:
+            problems.append("reverse miss %s: %s" % (cid, " ".join(sorted(gap))))
+        if extra:
+            problems.append("reverse extra %s: %s" % (cid, " ".join(sorted(extra))))
+    return problems
 
 if __name__ == "__main__":
     sys.exit(main())
