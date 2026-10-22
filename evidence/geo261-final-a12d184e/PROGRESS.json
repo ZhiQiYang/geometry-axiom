@@ -1,0 +1,13 @@
+{
+  "schema": "geo261-live-progress/1",
+  "tested_sha": "a12d184ec1865ad078700cea2387ac69e82ab62a",
+  "entries": [
+    {
+      "utc": "2026-10-22T16:06:31.942888+00:00",
+      "label": "census-reader-red",
+      "result": "完整census原退出1；224suites，5185=5178pass/6fail/1允許GDI skip，唯一紅suite test_axiom_reader（51=45pass6fail），差異為app_contact_facts與prepare追溯名稱；前後mutation check皆0。生成expected只封存不採用；繼續六browser與全部專項收齊紅燈再集中修",
+      "next": "乾淨A跑六browser及全部專項；查明reader冪等根因，不改測試斷言，集中修後新最終SHA全量重跑",
+      "archive": "raw/census-reader-red.raw.tar.gz"
+    }
+  ]
+}
