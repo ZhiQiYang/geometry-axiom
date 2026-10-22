@@ -17,4 +17,7 @@
 - 2026-10-22T20:25:31.057887+00:00 — **native**：原退出0；收據完整=True；超正式時限=False；衍生通過=True；基礎設施錯誤=0
   下一步：串行完成本輪其餘七項與全部專項；收齊紅燈後集中分類修正。原始資料：`raw/native.raw.tar.gz`。
 
+- 2026-10-22T20:38:03.149306+00:00 — **native-control-raw-index**：本輪正式 native 既有32組控制、96筆原紀錄，全部 baseline0／mutant1／restored0，無逾時；附原具名ASSERT與完整原JSONL，僅索引分析，沒有額外執行或改判準
+  下一步：持續完成本輪完整 canvas 與其餘browser／專項，之後補同F2額外反證。原始資料：`raw/native-control-raw-index.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。

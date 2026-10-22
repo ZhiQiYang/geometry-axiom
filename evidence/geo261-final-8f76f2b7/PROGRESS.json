@@ -36,6 +36,13 @@
       "result": "原退出0；收據完整=True；超正式時限=False；衍生通過=True；基礎設施錯誤=0",
       "next": "串行完成本輪其餘七項與全部專項；收齊紅燈後集中分類修正",
       "archive": "raw/native.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T20:38:03.149306+00:00",
+      "label": "native-control-raw-index",
+      "result": "本輪正式 native 既有32組控制、96筆原紀錄，全部 baseline0／mutant1／restored0，無逾時；附原具名ASSERT與完整原JSONL，僅索引分析，沒有額外執行或改判準",
+      "next": "持續完成本輪完整 canvas 與其餘browser／專項，之後補同F2額外反證",
+      "archive": "raw/native-control-raw-index.raw.tar.gz"
     }
   ]
 }
