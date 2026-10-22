@@ -8,4 +8,7 @@
 - 2026-10-22T15:40:06.604906+00:00 — **architecture-independent-audit**：L架構獨立純讀稽核通過，7群組issues[]；核對filesystem/Git/validation-tree601、8changed、P同closure、新舊manifest唯二Wguard、53原commands及6probes與四檔hash。產物已逐bytes安裝並推送A=a12d184e，A完整census執行中；未重跑或外推F驗收
   下一步：完成A完整census並逐條審計數差分，固定新F正式跑七項、全部專項與撤回恢復自證。原始資料：`raw/architecture-independent-audit.raw.tar.gz`。
 
+- 2026-10-22T15:41:11.669875+00:00 — **architecture-audit-recording**：補齊前項獨立稽核完成後新增的執行命令、真rc0、stdout/stderr與工具原碼；原AUDIT.json a2048dd1未變，前項29檔封存保留。新完整SHA256SUMS涵蓋兩包合計原始檔，非另跑裁判或新F通過
+  下一步：持續完成A完整census，再審三項計數差分與固定F驗收。原始資料：`raw/architecture-audit-recording.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
