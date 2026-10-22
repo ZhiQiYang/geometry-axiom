@@ -80,4 +80,7 @@
 - 2026-10-22T21:40:55.041290+00:00 — **formal-round-summary**：同F2正式17項原退出及17個publisher全0，七項均CI時限內；P52 ratio0.73462226489，P189四點均<=2且175dump逐bytes相同；§7與三架構真綠。此摘要保留原收據與完整streams，不替代尚待完成的同F2額外反證
   下一步：依序完成同F2的P73controlled、runtime反證及其餘撤回／恢復，之後更新唯一目前狀態的PR正文。原始資料：`raw/formal-round-summary.raw.tar.gz`。
 
+- 2026-10-22T21:55:27.581618+00:00 — **F2-P52-runtime**：同 F2 runtime 單檔撤回 gate=1、恢復 gate=0，inner passed=true/errors=[]；原 main/fix 各16筆、各階段四個 Node 全0且無幾何失敗／例外。撤回 ratio=1.0567294486663636，恢復 ratio=0.854784305780079，原<=1.0門檻不變；正式 baseline 原五控制另已封存。本次不主張個別純性能元件都必要，原來源與 clone 最後 F2/clean。
+  下一步：F2-reader。原始資料：`raw/F2-P52-runtime.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
