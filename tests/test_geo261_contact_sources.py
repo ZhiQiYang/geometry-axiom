@@ -2,7 +2,7 @@
 
 NativeBuild supplies isolated public K/W dependencies. One test-local hook can
 change only returned FEATURE segments, proving collect consumes graph values.
-Six negative controls require their exact normal ASSERT; build failures,
+Eight negative controls require their exact normal ASSERT; build failures,
 timeouts, native crashes and unavailable compilers never count as detection.
 """
 from pathlib import Path
@@ -46,6 +46,10 @@ CONTROLS = (
      "    face.hi=wood_contact_source_read_coord(metadata+40);"),
     ("placement-order", "contact_world", "ordering", "contact-placement-order-and-stable-ties",
      "if(previous<=order)break;", "if(true)break;"),
+    ("duplicate-last-order", "contact_world", "order-index", "contact-order-index-retains-last-duplicate-order",
+     "index->last[slot]=i+1;", "if(!index->last[slot])index->last[slot]=i+1;"),
+    ("duplicate-earliest-order", "contact_world", "order-index", "contact-order-index-retains-earliest-duplicate-order",
+     "world->members[i].order<index->minimum[slot]", "world->members[i].order>index->minimum[slot]"),
     ("failure-count", "contact_sources", "failures", "contact-failure-keeps-output-and-count",
      "WoodContactQuery *q=calloc(1,sizeof *q);if(!q)return false;",
      "*count=0;WoodContactQuery *q=calloc(1,sizeof *q);if(!q)return false;"),
@@ -115,6 +119,9 @@ class NativeContactSources(unittest.TestCase):
     def test_actual_ordered_policy_preserves_placement_order_ties_and_cover_dedup(self):
         self.pass_case("ordering")
 
+    def test_order_lookup_preserves_full_ids_duplicates_freshness_capacity_and_fallback(self):
+        self.pass_case("order-index")
+
     def test_components_hole_indices_and_free_or_other_fixity_metadata_are_preserved(self):
         self.pass_case("components")
 
@@ -138,7 +145,7 @@ class NativeContactSources(unittest.TestCase):
         self.assertEqual("PASS pose\n", result.stdout)
         self.assertEqual("", result.stderr)
 
-    def test_six_negative_controls_fail_only_the_named_semantic_assertion(self):
+    def test_eight_negative_controls_fail_only_the_named_semantic_assertion(self):
         build = native()
         for name, module, case, marker, before, after in CONTROLS:
             with self.subTest(control=name):
