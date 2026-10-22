@@ -497,3 +497,16 @@ new files or changed sources.
 - `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
 
 以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
+
+## 雲端 Linux 有限重產：canonical HTML trace 同步後
+
+本輪來源固定於 `8a80abc1402b0c4c394969025c93a6019b4bb91d`，上一份收據產物提交為 `a12d184ec1865ad078700cea2387ac69e82ab62a`。新 Linux 封裝器沿用原 scanner、generic tests 與 product tests，沒有使用或冒充舊 Windows driver。本次恰一個既有 H canonical HTML input 同步；manifest 登記、920個既有 guard、所有政策、排除理由及 route/vendor digests 均保持原 bytes，不把上一輪新增兩個 W guard 重算為本輪新生成。
+
+獨立檔案系統與 Git tree inventory 共 601 個 executable inputs；owned 333、excluded 268、edges 796、diagnostics 0。LF input closure 是 `e9d9b00ba23d939206dc90ba0199defb4c7e543b4339f8a1beba6a9935266fd0`。
+
+相對上一份 sealed receipt 改變的既有輸入：`geometry-guide/公理層-閱讀器.html`。四檔是衍生稽核產物，排除於來源 closure；receipt 不雜湊自身。
+
+- `python -B tests/test_architecture_contract.py`：退出 0；205 tests，205 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+- `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+
+以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
