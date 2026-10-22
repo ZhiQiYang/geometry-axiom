@@ -50,6 +50,13 @@
       "result": "8個額外proof phase的串行命令與原raw封存白名單已準備；checker新副本只換F2常數，字面diff與AST同一性及舊檔保存；尚未執行額外proof，不預填綠",
       "next": "先完成本輪全部17項，再依相依baseline執行P73、P52runtime及其他撤回／恢復",
       "archive": "raw/extra-orchestration-preparation.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T20:50:06.025691+00:00",
+      "label": "legacy-browser-preparation",
+      "result": "Chromium154固定F2原P73子集相容性對照已準備；只換browser設定，不改原UI測試或斷言。舊isolated original probe逾時raw照留，當時154fixed未執行；本補充尚未執行，不冒稱相容通過",
+      "next": "先完成正式17項與既定反證，再串行跑舊版固定F2對照",
+      "archive": "raw/legacy-browser-preparation.raw.tar.gz"
     }
   ]
 }
