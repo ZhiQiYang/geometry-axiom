@@ -113,4 +113,7 @@
 - 2026-10-22T22:16:24.720619+00:00 — **final-acceptance-summary**：同F2正式17項全綠；9個額外phase在原scope與門檻內均符合預期，首輪Cperf ENOSPC原1及中斷JSON保留、僅該項新scratch重跑0。凍結正式/extra矩陣不改，Linux架構已重產/正式3條0；六Chrome156 jobs真跑，WindowsGDI允許1skip。另保最新權威handoff原review、公開後乾淨clone釋放原紀錄；最終Gitblob封存核驗接續。
   下一步：verify-published-evidence-and-push-PR-body。原始資料：`raw/final-acceptance-summary.raw.tar.gz`。
 
+- 2026-10-22T22:17:41.932594+00:00 — **evidence-integrity**：已從固定公開Git快照31e5a90e核驗F2證據：SHA256SUMS、每個archive bytes/hash及每個member bytes/hash/安全相對路徑全部符合；原verifier及outer退出0。此為完整性核對不新增產品測試或改寫原退出；正文依此最終證據更新。
+  下一步：push-updated-PR-body-and-continue-323。原始資料：`raw/evidence-integrity.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
