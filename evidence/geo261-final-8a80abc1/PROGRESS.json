@@ -1,0 +1,13 @@
+{
+  "schema": "geo261-live-progress/1",
+  "tested_sha": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+  "entries": [
+    {
+      "utc": "2026-10-22T17:32:37.248516+00:00",
+      "label": "mutation-freshness-after-reader",
+      "result": "P2 canonical HTML-only修復後原mutation --check真退出0，78=70killed/1crashed/4equivalent/3retired，0stale；C/所有test來源不變。既有全帳本execution P與artifact L仍有效，沒有偽改head或不必要重產",
+      "next": "在同乾淨P2重產HTML-only架構四檔、嚴格審三count並固定F，原完整七項與專項全部重跑",
+      "archive": "raw/mutation-freshness-after-reader.raw.tar.gz"
+    }
+  ]
+}
