@@ -1,3 +1,22 @@
+# Product architecture — Linux 固定來源重產
+
+本輪真受驗來源 `b7ca7843532098c4d3433035cde8dc2c43654978`；上一份receipt產物提交 `ec1238cd62c7155a44ecf3fb071e605aeee8ac48`。本輪只使用指定來源的原scanner、generic與product裁判。
+
+完整五roots加三standalone：601 executable inputs，owned 333、excluded 268、edges 796、diagnostics 0。LF closure `4d093892d729bc7e38d6866777eb088d468d09833565a8c5dae90c0da038edad`。
+
+manifest輸出逐bytes等指定P已登記版本；政策、roots、routes、vendor trust及既有source分類未自動修改。
+
+相對上份sealed manifest：新增owned 0、新增逐檔exclusion 0、既有exclusion digest更新 0。逐項原/新內容見本輪manifest-delta.json；未登錄檔不會被自動排除。
+
+變更既有input：`current_geometry.c`、`geometry-app/native/reference_sources.inc`、`geometry-app/native/world_validation.inc`、`geometry-core/references.inc`、`geometry-templates/woodworking/native/contact_sources.c`。
+
+- `python -B tests/test_architecture_contract.py`：真退出0，205 tests／205 passed／0 failed／0 skipped；原argv/cwd/env/stdout/stderr另完整保存。
+- `python -B tests/test_product_architecture.py`：真退出0，18 tests／18 passed／0 failed／0 skipped；原argv/cwd/env/stdout/stderr另完整保存。
+
+四檔衍生產物不進executable closure，receipt不hash自己。SSOT另按指定P綁定並核前後不變；不冒稱closure自然涵蓋SSOT。未跑native、ledger、browser、專項或歷史額外policy probes；不把先前Windows或#288結果重標成本輪結果。
+
+## 上一份歷史報告（原文保留，非本輪判決）
+
 # GEO-261 actual-product dependency contract
 
 `product-architecture.json` is the executable inventory for the current product.
