@@ -80,4 +80,7 @@
 - 2026-10-22T19:32:56.730435+00:00 — **F-reader-tool-path-failure**：fixed/restored 原具名測試各 0；撤回 phase 因 Git 中文路徑轉義誤判未執行，原 proof 1；僅錄製器改 NUL 路徑解析，不改產品、原測試或斷言
   下一步：以相同 F 與原具名裁判重跑此項，保留本次失敗。原始資料：`raw/F-reader-tool-path-failure.raw.tar.gz`。
 
+- 2026-10-22T19:34:10.409084+00:00 — **F-reader-proof**：同 F 原具名 reader test 固定 0／撤回唯一 trace 修復 1／恢復 0；具名 AssertionError 與原 HTML bytes 差符合，SSOT／原測試／生成器皆未改，clone 已還原乾淨 F
+  下一步：完成其他獨立自證與 P73 callback 定位；P52 原紅保留。原始資料：`raw/F-reader-proof.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
