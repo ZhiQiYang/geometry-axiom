@@ -176,6 +176,13 @@
       "result": "同F2受控真app callback反證成立：fixed0／只撤app guard後原P73具名ASSERT退出1／restored0；三phase各明確呼叫一次原callback，原predicate及測試不改，來源最終clean；scope為受控callback，不改寫舊自然subset撤回0的歷史",
       "next": "F2-P52-runtime",
       "archive": "raw/F2-P73-controlled.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T21:40:55.041290+00:00",
+      "label": "formal-round-summary",
+      "result": "同F2正式17項原退出及17個publisher全0，七項均CI時限內；P52 ratio0.73462226489，P189四點均<=2且175dump逐bytes相同；§7與三架構真綠。此摘要保留原收據與完整streams，不替代尚待完成的同F2額外反證",
+      "next": "依序完成同F2的P73controlled、runtime反證及其餘撤回／恢復，之後更新唯一目前狀態的PR正文",
+      "archive": "raw/formal-round-summary.raw.tar.gz"
     }
   ]
 }
