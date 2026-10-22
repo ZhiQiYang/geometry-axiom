@@ -77,4 +77,7 @@
 - 2026-10-22T19:30:44.616648+00:00 — **F-p73-subset-proof**：原 P73 子集撤回／恢復各退出 0；撤回未觸發預期紅，proof 外層真退出 1；正式 F full canvas baseline 0 保留，此子集不能充作有效突變自證
   下一步：調查標註同步事件觸發並補同原斷言的確定性自證；其他獨立自證繼續。原始資料：`raw/F-p73-subset-proof.raw.tar.gz`。
 
+- 2026-10-22T19:32:56.730435+00:00 — **F-reader-tool-path-failure**：fixed/restored 原具名測試各 0；撤回 phase 因 Git 中文路徑轉義誤判未執行，原 proof 1；僅錄製器改 NUL 路徑解析，不改產品、原測試或斷言
+  下一步：以相同 F 與原具名裁判重跑此項，保留本次失敗。原始資料：`raw/F-reader-tool-path-failure.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
