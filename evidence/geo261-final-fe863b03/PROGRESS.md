@@ -89,4 +89,7 @@
 - 2026-10-22T19:35:37.887443+00:00 — **F-parser-prepare**：同 F 原 parser 等價工具 prepare 原退出 0；只備妥當輪 source 與獨立 oracle，尚不宣稱 runtime 等價通過
   下一步：依原設定執行 O2 及 sanitizer，不取代正式清單。原始資料：`raw/F-parser-prepare.raw.tar.gz`。
 
+- 2026-10-22T19:36:14.041763+00:00 — **F-parser-o2**：同 F 原 O2 parser 差分執行真退出 0，199810 cases 等價；屬額外等價支持，非 mutation 自證、不取代正式清單
+  下一步：執行原 sanitizer phase，再做累積性能修正自證。原始資料：`raw/F-parser-o2.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
