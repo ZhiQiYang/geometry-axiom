@@ -36,3 +36,22 @@ manifest仍為原F2 920個policy identifiers；只列`+wood_contact_boundary_edg
 contacts原10/10 tests綠，23個控制各原0／1／0。contact-world原9方法執行完、唯一失敗是complete-footprint控制：舊oracle要求`ASSERT:i5-notched-footprint-deferred`，新草稿卻把`ASSERT:boundary-edge-failure-leaves-outputs`插到前面，撤contact_contains後先命中新斷言。這是fixture順序缺陷；原native正常退出1，不是compiler／crash／環境問題，不能把本suite原1寫成綠。原subtest中途斷言失敗使該控制的restored呼叫尚未執行，因此本輪59次native；原數量照留。
 
 下一步保留全部新舊斷言，把新增failure-output檢查移到原I5判準之後並重設sentinels，固定新公開來源；須證撤這個fixture修正仍回同具名紅，恢復後兩套全綠。其餘18controls都照原迴圈跑完，不遇紅停等人。新的雙承載面場景／M97／M98仍待完整native與後續真突變裁定，不冒稱已通過。
+
+## 原完整 native 第一輪已收齊（受驗 E2bd45fc9）
+
+原 `tests/run_all.py --build` 完整224/224 suites跑到終態，沒有跳mutation或選縮清單。外部adapter只設定官方binaries.OUT_DIR到私有cache，再runpy原入口，stack16MiB、原subreaper `pr_get_child_subreaper=1`。受驗SHA前後同`2bd45fc9413397637cd0c56c39ac2b6704806d72`、gitstatus clean、patch空；主branch與detached的帳本before/after實際bytes未變（原先「可能寫stale」只是風險預期，本輪沒有留下dirty）。
+
+原inner/native process退出1；exec session registry在環境介面切換後遺失，原tool terminal退出碼未知，不能捏造outer0。原reaper/adapter皆已退出，未重啟或中止當輪。原合計5185：5173pass／11fail／1具名允許GDI skip；suites秒1806.9，原外層elapsed約1897.2秒。此輪有紅，不能稱完整驗收通過。
+
+| 原紅燈 | 原結果／分類 | 修復方向 |
+|---|---|---|
+| mutation:check（非計數row） | 原exit1；75stale、10unrun、3retired，產品／裁判已變的帳本待重產 | 後續最終來源整份原工具；本輪不偷偷重產或假綠 |
+| reader51 | 45pass／6fail；全部canonical rebuild／idempotence／歷史migration保真diff顯示新增雙承載面scene改了生成追溯 | 使用原正典同步器機械更新唯一reader，再原51全驗，不改SSOT或手改HTML |
+| wood contact world9 | 8pass／1fail；complete-footprint控制被新failure-output CHECK先遮蔽舊I5具名marker | 保全部斷言，最小調整新增CHECK順序／sentinels，再撤修正正常紅與恢復綠 |
+| node:tests-js737 | 733pass／4fail，全部ENOENT，sparse排掉三個既有.gcanvas fixture，合計397952bytes | 從同受驗Git SHA逐bytes補必要三檔，只重此環境項，不改測試／降expected |
+
+三個缺檔是`tests/evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas`、`tests/evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas`與`legacy6a-with-scene.gcanvas`。core166/166包含新增雙承載面正例真接受，以及p8／p8b新增完整診斷oracle真綠；不能把這個baseline綠冒稱M97／M98已被殺。其餘suite全綠；product_architecture原suite綠也不能免除依影響機械重產四檔。
+
+原完整stdout／stderr、全部per-suite原logs／JSON、版本／argv／env／SHA／退出碼、帳本beforeafter原bytes、工具及原私有cache archive／inventory均已封存。無額外全檔版本observer，也沒有重複複製cache；小cache原archive約2.52MB。原launcher的Chrome PATH遺漏前置失敗也保留完整toolresult，產品未啟，修環境後才有本輪原執行。
+
+下一步按一次收齊原則集中修fixture順序與唯一canonical同步、補exact fixtures重環境項、準備manifest真guard union與單一API退役；不啟整份ledger或第二輪完整native／browser／perf。正式來源與正式全清單仍由後續最終SHA收據裁定。
