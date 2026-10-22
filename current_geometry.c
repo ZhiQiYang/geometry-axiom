@@ -5767,8 +5767,17 @@ typedef struct {
     SpaceBoundarySurface effective;
     WoodContactMemberFact members[WORLD_MAX_TIMBERS];
 } AppContactFacts;
-static void app_contact_facts(const World *world,const PlacementSurface *placement,
-    const SpaceBoundarySurface *boundary,AppContactFacts *facts)
+/* 只在本次 callback 內保存原時點的純計算輸入；不借用可被來源更新的欄位。 */
+typedef struct {
+    SurfacePoint2 anchor;
+    Coord length,size_a;
+    int length_direction,depth_side;
+    bool placed;
+    /* 0：不待補；1：補矩形及有效性；2：只補矩形，保留後續的 false。 */
+    unsigned char pending;
+} AppContactRawSnapshot;
+static void app_contact_facts_prepare(const World *world,const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,AppContactFacts *facts,AppContactRawSnapshot *raw)
 {
     memset(facts,0,sizeof *facts);facts->world.placement_id=placement->id;
     const SpaceBoundarySurface *effective=placement_effective_boundary(placement,boundary,&facts->effective);
@@ -5779,8 +5788,30 @@ static void app_contact_facts(const World *world,const PlacementSurface *placeme
     for(size_t i=0;i<world->wood.timber_count;++i){WoodContactMemberFact *f=&facts->members[i];const TimberAnchor *a=&world->wood.anchors[i];
         f->member=&world->wood.timbers[i];f->placement_id=a->placement_id;f->order=a->order;
         f->along_v=a->length_direction==SURFACE_DIRECTION_POS_V||a->length_direction==SURFACE_DIRECTION_NEG_V;
-        f->footprint_valid=timber_a0_footprint_uv(placement,f->member,a,&f->footprint);
+        if(raw){
+            AppContactRawSnapshot *s=&raw[i];s->placed=f->member->placed;s->pending=0;
+            if(s->placed){s->anchor=a->uv;s->length_direction=a->length_direction;s->depth_side=a->depth_side;
+                s->length=f->member->length;s->size_a=f->member->size_a;}
+        }else f->footprint_valid=timber_a0_footprint_uv(placement,f->member,a,&f->footprint);
     }
+}
+static void app_contact_facts(const World *world,const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,AppContactFacts *facts)
+{app_contact_facts_prepare(world,placement,boundary,facts,NULL);}
+static void app_contact_raw_restore(const PlacementSurface *placement,AppContactRawSnapshot *raw,
+    WoodContactMemberFact *fact)
+{
+    if(!raw->pending)return;
+    bool valid=raw->placed&&a0_rect_uv(placement,raw->anchor,raw->length_direction,raw->depth_side,
+        raw->length,raw->size_a,&fact->footprint);
+    if(raw->pending==1)fact->footprint_valid=valid;
+    raw->pending=0;
+}
+static void app_contact_raw_complete(const PlacementSurface *placement,AppContactRawSnapshot *raw,
+    WoodContactMemberFact *members,size_t visited)
+{
+    /* 失敗時原函式只曾複製已訪問的 prefix，未訪問的 caller bytes 必須保留。 */
+    for(size_t i=0;i<visited;++i)app_contact_raw_restore(placement,&raw[i],&members[i]);
 }
 typedef struct { const World *world; const WoodContactWorld *facts; } AppContactResolve;
 static bool app_contact_resolve_stops(void *opaque,bool along_v,const WoodMember *exclude,

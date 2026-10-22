@@ -110,6 +110,45 @@ bool geo_placement_definition_decode(const void *content,size_t size,GeoPlacemen
     }
     if(r.p!=r.end)return false;memcpy(out,&next,sizeof next);return true;
 }
+/* Header consumers still validate the complete canonical definition. Every
+ * coordinate is an unrestricted signed 64-bit bit pattern in the full reader,
+ * so bounded skips preserve its accepted set without constructing components. */
+static bool geo_pd_skip(GeoPDReader *r,size_t bytes)
+{
+    if((size_t)(r->end-r->p)<bytes)return false;
+    r->p+=bytes;return true;
+}
+static bool geo_pd_loop_skip(GeoPDReader *r)
+{
+    uint64_t count;
+    if(!geo_pd_read(r,4,&count)||count>GEO_LOOP_MAX_VERTICES)return false;
+    return geo_pd_skip(r,(size_t)count*16);
+}
+static bool geo_pd_definition_header(const void *content,size_t size,uint32_t id,
+    GeoPlacementDefinitionHeader *out)
+{
+    if(!content||!out||size>GEO_PLACEMENT_DEFINITION_MAX_BYTES)return false;
+    GeoPDReader r={content,(const unsigned char *)content+size};
+    GeoPlacementDefinitionHeader next={0};uint64_t actual,domain,count;
+    if(!geo_pd_read(&r,4,&actual)||!geo_pd_skip(&r,12*8)||
+       !geo_pd_read(&r,1,&domain)||domain>GEO_PLACEMENT_REGION_SET)return false;
+    next.domain=(GeoPlacementDomain)domain;
+    if(next.domain==GEO_PLACEMENT_RECT){if(!geo_pd_skip(&r,4*8))return false;}
+    else if(next.domain==GEO_PLACEMENT_REGION_REF){
+        if(!geo_pd_read(&r,4,&count))return false;next.region_id=(uint32_t)count;
+    }else{
+        if(!geo_pd_read(&r,4,&count)||count>GEO_PLACEMENT_COMPONENT_CAPACITY)return false;
+        size_t components=(size_t)count;
+        for(size_t c=0;c<components;++c){
+            uint64_t component_id;
+            if(!geo_pd_read(&r,4,&component_id)||!geo_pd_loop_skip(&r)||
+               !geo_pd_read(&r,4,&count)||count>GEO_REGION_MAX_HOLES)return false;
+            size_t holes=(size_t)count;
+            for(size_t h=0;h<holes;++h)if(!geo_pd_loop_skip(&r))return false;
+        }
+    }
+    if(r.p!=r.end||actual!=id)return false;*out=next;return true;
+}
 GeoSourceRef geo_placement_source_ref(GeoProviderToken token,GeoPlacementSourceKind kind,uint32_t id,GeoPlacementSourceKey *key)
 {key->bytes[0]=(unsigned char)kind;geo_source_u32(key->bytes+1,id);return (GeoSourceRef){token,key->bytes,sizeof key->bytes};}
 GeoSourceRef geo_region_source_ref(GeoProviderToken token,uint32_t id,GeoRegionSourceKey *key)
@@ -196,6 +235,15 @@ bool geo_placement_sources_definition(GeoPlacementSources *s,uint32_t id,GeoPlac
         !value.as.definition.schema||strcmp(value.as.definition.schema,GEO_PLACEMENT_DEFINITION_SCHEMA)||
         !geo_placement_definition_decode(value.as.definition.content,value.as.definition.content_size,&result)||result.id!=id)return false;
     memcpy(out,&result,sizeof result);return true;
+}
+bool geo_placement_sources_definition_header(GeoPlacementSources *s,uint32_t id,GeoPlacementDefinitionHeader *out)
+{
+    if(!s||!out)return false;GeoPlacementSourceKey key;GeoSourceValue value;GeoPlacementDefinitionHeader result;
+    if(geo_eval_source(s->graph,geo_placement_source_ref(s->placement_token,GEO_PLACEMENT_SOURCE_DEFINITION,id,&key),
+        GEO_DEPENDENCY_DEFINITION_REQUIRED,&value)!=GEO_SOURCE_OK||value.kind!=GEO_SOURCE_DEFINITION||
+        !value.as.definition.schema||strcmp(value.as.definition.schema,GEO_PLACEMENT_DEFINITION_SCHEMA)||
+        !geo_pd_definition_header(value.as.definition.content,value.as.definition.content_size,id,&result))return false;
+    *out=result;return true;
 }
 void geo_placement_sources_destroy(GeoPlacementSources *sources)
 {
