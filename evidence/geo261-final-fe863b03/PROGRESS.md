@@ -92,4 +92,7 @@
 - 2026-10-22T19:36:14.041763+00:00 — **F-parser-o2**：同 F 原 O2 parser 差分執行真退出 0，199810 cases 等價；屬額外等價支持，非 mutation 自證、不取代正式清單
   下一步：執行原 sanitizer phase，再做累積性能修正自證。原始資料：`raw/F-parser-o2.raw.tar.gz`。
 
+- 2026-10-22T19:37:33.418165+00:00 — **F-parser-sanitized**：同 F 原 sanitizer parser 差分執行真退出 0，199810 cases 等價且 stderr 空；與 O2 一起作額外等價支持，不取代正式清單或 mutation 自證
+  下一步：對 P52 freshness 成本作隔離 profile，再做累積性能修正撤回自證。原始資料：`raw/F-parser-sanitized.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
