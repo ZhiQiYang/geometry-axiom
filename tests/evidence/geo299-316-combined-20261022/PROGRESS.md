@@ -27,3 +27,12 @@ manifest仍為原F2 920個policy identifiers；只列`+wood_contact_boundary_edg
 最不確定處仍是草稿推導的p8／p8b診斷數值與新雙承載面正例的真動態行為；後續原工具將裁定，尚未聲稱全綠。沒有新增公理語意或數值門檻待代決。
 
 原patch與兩份rejects現置於original-patch-and-rejects.raw.tar.gz，三members逐bytes/hash核同；不改原CRLF或空白。初版直接文字入Git時diffcheck報原輸入空白，純封存格式改為archive後仍保原raw；產品/tests未再改，後繼證據E會另列受驗SHA。
+
+## 私有W診斷原結果
+
+- `diagnostic-contacts-01`，受驗SHA `2bd45fc9413397637cd0c56c39ac2b6704806d72`，原exit0；75次native，原退出碼分布`{0: 52, 1: 23}`，完整原輸出與compiler inputs／ELF／objects／buildlog已封存。
+- `diagnostic-contact-world-01`，受驗SHA `2bd45fc9413397637cd0c56c39ac2b6704806d72`，原exit1；59次native，原退出碼分布`{0: 40, 1: 19}`，完整原輸出與compiler inputs／ELF／objects／buildlog已封存。
+
+contacts原10/10 tests綠，23個控制各原0／1／0。contact-world原9方法執行完、唯一失敗是complete-footprint控制：舊oracle要求`ASSERT:i5-notched-footprint-deferred`，新草稿卻把`ASSERT:boundary-edge-failure-leaves-outputs`插到前面，撤contact_contains後先命中新斷言。這是fixture順序缺陷；原native正常退出1，不是compiler／crash／環境問題，不能把本suite原1寫成綠。原subtest中途斷言失敗使該控制的restored呼叫尚未執行，因此本輪59次native；原數量照留。
+
+下一步保留全部新舊斷言，把新增failure-output檢查移到原I5判準之後並重設sentinels，固定新公開來源；須證撤這個fixture修正仍回同具名紅，恢復後兩套全綠。其餘18controls都照原迴圈跑完，不遇紅停等人。新的雙承載面場景／M97／M98仍待完整native與後續真突變裁定，不冒稱已通過。
