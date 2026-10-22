@@ -155,6 +155,13 @@
       "result": "原退出0；收據完整=True；基礎設施錯誤=0；原始輸出完整封存，判準未變",
       "next": "完成本輪其餘專項，收齊紅燈後集中分類修正；不以歷史綠燈替代",
       "archive": "raw/architecture-product-tests.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T19:27:30.036682+00:00",
+      "label": "p52-red-audit",
+      "result": "正式 P52 與 verifier 原退出均 1；fix/main=1.03825180997 未過既有 ≤1.0；根因尚未證明，完整原樣本與純讀稽核封存，未重測或放寬",
+      "next": "繼續同 F 額外自證並定位實際產品成本，保留本次紅燈",
+      "archive": "raw/p52-red-audit.raw.tar.gz"
     }
   ]
 }
