@@ -104,4 +104,7 @@
 - 2026-10-22T22:07:15.552427+00:00 — **F2-Cperf-environment-attempt1**：Cperf attempt1因ENOSPC環境中斷，outer真rc1；inner JSON截斷與bootstrap空檔原bytes保留。最後完整落盤clone rc0，checkout進度未確定；未有compile/perf原證據，未取得性能結果，非性能紅。完整raw與冷搬移／新reader+checker釋放紀錄已封存，待全新scratch重試。
   下一步：F2-Cperf-retry1。原始資料：`raw/F2-Cperf-environment-attempt1.raw.tar.gz`。
 
+- 2026-10-22T22:09:53.743263+00:00 — **legacy-chromium154-p73-fixed**：固定F2以Chromium154.0.8037.57執行原P73完整子集，真退出0／69pass0fail／completed=true／0exceptions；原filter GEOMETRY_UIUX_FIX_ONLY，partial golden未比較，非full canvas；不要求154撤回紅。outer與reaper完成皆0，來源前後F2 clean。
+  下一步：F2-Cperf-retry1。原始資料：`raw/legacy-chromium154-p73-fixed.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。

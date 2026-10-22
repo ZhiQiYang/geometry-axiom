@@ -239,6 +239,13 @@
       "result": "Cperf attempt1因ENOSPC環境中斷，outer真rc1；inner JSON截斷與bootstrap空檔原bytes保留。最後完整落盤clone rc0，checkout進度未確定；未有compile/perf原證據，未取得性能結果，非性能紅。完整raw與冷搬移／新reader+checker釋放紀錄已封存，待全新scratch重試。",
       "next": "F2-Cperf-retry1",
       "archive": "raw/F2-Cperf-environment-attempt1.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T22:09:53.743263+00:00",
+      "label": "legacy-chromium154-p73-fixed",
+      "result": "固定F2以Chromium154.0.8037.57執行原P73完整子集，真退出0／69pass0fail／completed=true／0exceptions；原filter GEOMETRY_UIUX_FIX_ONLY，partial golden未比較，非full canvas；不要求154撤回紅。outer與reaper完成皆0，來源前後F2 clean。",
+      "next": "F2-Cperf-retry1",
+      "archive": "raw/legacy-chromium154-p73-fixed.raw.tar.gz"
     }
   ]
 }
