@@ -110,4 +110,7 @@
 - 2026-10-22T22:12:53.045824+00:00 — **F2-Cperf-retry1**：同 F2 Cperf 環境復原後原工具重跑，outer0/inner exit_code0/proof_matched=true/errors=[]；N64原main/withdrawn/restored各3樣本，main median0.476s、withdrawn1.2209s、restored0.9381s，撤回/main=2.564915966386555>2、恢復/main=1.9707983193277312<=2。原compile/load/timing子程序正常、dump逐bytes相同，P3 runtime保留、僅六C模板整組撤回；來源與clone最後F2/clean。首次ENOSPC原1及截斷原raw另保，不挑樣本、不放寬門檻，不宣稱個別純效能component必要。
   下一步：final-evidence-integrity-and-PR-body。原始資料：`raw/F2-Cperf-retry1.raw.tar.gz`。
 
+- 2026-10-22T22:16:24.720619+00:00 — **final-acceptance-summary**：同F2正式17項全綠；9個額外phase在原scope與門檻內均符合預期，首輪Cperf ENOSPC原1及中斷JSON保留、僅該項新scratch重跑0。凍結正式/extra矩陣不改，Linux架構已重產/正式3條0；六Chrome156 jobs真跑，WindowsGDI允許1skip。另保最新權威handoff原review、公開後乾淨clone釋放原紀錄；最終Gitblob封存核驗接續。
+  下一步：verify-published-evidence-and-push-PR-body。原始資料：`raw/final-acceptance-summary.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
