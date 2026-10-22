@@ -1,6 +1,6 @@
 {
   "schema": "geometry-product-architecture-receipt/1",
-  "headBinding": "The source closure excludes derived audit artifacts; a later audit-only commit does not recursively change the certified product inputs.",
+  "headBinding": "來源 closure 排除四份衍生稽核產物；後續僅稽核產物提交不會遞迴改變受驗產品來源。所有本輪命令的 sourceBaseHead 均為實際固定來源。",
   "hashMode": "sha256 after CRLF-to-LF normalization",
   "inputClosureHashSerialization": "SHA-256 of UTF-8 JSON for the path-sorted inputs array, with ensure_ascii=false and separators=(comma,colon); each entry has path then sha256, and no trailing newline.",
   "inputClosureExcludes": [
@@ -9,25 +9,26 @@
     "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
     "geometry-core/domain-decoupling/product-architecture-receipt.json"
   ],
-  "inputClosureExclusionReason": "These non-executable audit artifacts are not product source inputs. Manifest/scan are hashed separately; the receipt never hashes itself.",
+  "inputClosureExclusionReason": "四份非執行性衍生稽核產物不屬產品來源；manifest、scan、report 分別雜湊，receipt 不雜湊自己。",
   "notClaimed": [
-    "Native compilation or execution",
-    "Runtime import-blocker validation",
-    "General JavaScript alias/dataflow proof",
-    "Vendor internals verification",
-    "All H functions independently proven free of misplaced policy",
-    "Future changed source trees"
+    "native 編譯或執行",
+    "runtime import blocker",
+    "完整 JavaScript dataflow 證明",
+    "vendor internals",
+    "mutation ledger 執行或新鮮度",
+    "瀏覽器與所有專項驗收",
+    "未來變更的來源"
   ],
-  "createdUtc": "2026-10-22T08:14:38.421725+00:00",
-  "basis": "Committed integration product sources at sourceBaseHead, plus this finite manifest/scan/report/receipt refresh.",
-  "sourceBaseHead": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-  "headObservedBefore": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-  "headObservedAfter": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
+  "createdUtc": "2026-10-22T10:15:50.823497+00:00",
+  "basis": "乾淨固定 Git HEAD 與獨立完整 inventory，原三條架構裁判在同一來源實際執行。",
+  "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+  "headObservedBefore": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+  "headObservedAfter": "08dede0bf7f9206b5df5fefb6a27180128518c35",
   "manifestSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-  "reportSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba",
-  "inputClosureSha256": "64f6f66b7d80a3a36c6ad4f2e2dc15b6921d209a44f216fb37910474c0df29ad",
+  "reportSha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc",
+  "inputClosureSha256": "7a7d301e6e4cf6c7b7557a65bdd2e93d7e433be4d5773f835b567a7cbf6e0429",
   "counts": {
     "executableFiles": 601,
     "ownedSources": 333,
@@ -51,228 +52,99 @@
   },
   "manifestRefresh": {
     "previousManifestSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
-    "previousReceiptSha256": "3ec516166ccce0d7366eba30ee6ca936c460c02190e50942a3cc7bbcb6e01bf9",
+    "previousReceiptSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259",
     "previousScanSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-    "previousReportSha256": "91e285ff357fa6f479dff5ffa38c5866121018cad9aeee03abe359ca09305beb",
-    "previousReceiptCreatedUtc": "2026-10-22T01:38:51.018979+00:00",
-    "previousSourceBaseHead": "01e631453bba840b3839d6cf13635c55eb0470b6",
-    "previousReceiptCommit": "ac39346e74ca2ab6fc5bb0053024bd26f8af06b2",
-    "firstObservedHead": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
+    "previousReportSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba",
+    "previousReceiptCreatedUtc": "2026-10-22T08:14:38.421725+00:00",
+    "previousSourceBaseHead": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
+    "previousReceiptCommit": "60425b629aee9f74f4e62ea88af9882bc8968881",
+    "firstObservedHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
     "previousOutputsPreserved": {
-      "directory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\previous",
+      "directory": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous",
       "hashes": {
         "product-architecture.json": {
-          "rawSha256": "012a28c72cd28b898629c5bf1a3443fdcb7ba7967df79bc28b23485fa4934a9e",
-          "lfSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
-          "bytes": 224756
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous/product-architecture.json",
+          "bytes": 219913,
+          "rawSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
+          "lfSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452"
         },
         "product-architecture-scan.json": {
-          "rawSha256": "cbc0d39154a1a880f6854b2826b71b1e5cef662ed887dbaf0cf4510f6c403ac1",
-          "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-          "bytes": 136537
-        },
-        "product-architecture-receipt.json": {
-          "rawSha256": "8cf62f61b5dbebcb3d2cd0793c8b8f8ef91477578ef49b1cabbca681f7f23d63",
-          "lfSha256": "3ec516166ccce0d7366eba30ee6ca936c460c02190e50942a3cc7bbcb6e01bf9",
-          "bytes": 131554
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous/product-architecture-scan.json",
+          "bytes": 132208,
+          "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+          "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "rawSha256": "99c9c2d167c751bc2f68c478ddee4b9e4867b9fd275baf5641190c62c061634e",
-          "lfSha256": "91e285ff357fa6f479dff5ffa38c5866121018cad9aeee03abe359ca09305beb",
-          "bytes": 28615
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous/PRODUCT-ARCHITECTURE.md",
+          "bytes": 29373,
+          "rawSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba",
+          "lfSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba"
+        },
+        "product-architecture-receipt.json": {
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous/product-architecture-receipt.json",
+          "bytes": 128305,
+          "rawSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259",
+          "lfSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259"
         }
       }
     },
     "lastSealedOutputsReadFromGit": {
-      "directory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\last-sealed",
-      "commit": "ac39346e74ca2ab6fc5bb0053024bd26f8af06b2"
+      "commit": "60425b629aee9f74f4e62ea88af9882bc8968881",
+      "directory": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous-from-git",
+      "hashes": {
+        "product-architecture.json": {
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous-from-git/product-architecture.json",
+          "bytes": 219913,
+          "rawSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
+          "lfSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452"
+        },
+        "product-architecture-scan.json": {
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous-from-git/product-architecture-scan.json",
+          "bytes": 132208,
+          "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+          "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+        },
+        "PRODUCT-ARCHITECTURE.md": {
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous-from-git/PRODUCT-ARCHITECTURE.md",
+          "bytes": 29373,
+          "rawSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba",
+          "lfSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba"
+        },
+        "product-architecture-receipt.json": {
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous-from-git/product-architecture-receipt.json",
+          "bytes": 128305,
+          "rawSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259",
+          "lfSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259"
+        }
+      },
+      "note": "舊四檔逐一從上一份產物 commit 讀回 Git blobs，與 previous/ 的 checkout bytes 比較 LF hash；兩份 raw bytes 分開保全。未把舊驗收改寫為本輪結果。"
     },
     "headManifestSha256Before": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
-    "manifestEditsAlreadyCommitted": {
-      "note": "Between the previous receipt commit and HEAD, commits edited the manifest without refreshing scan, report or receipt. They are verified here against the current bytes, not assumed.",
-      "commits": [],
-      "addedSources": [],
-      "addedExclusions": [],
-      "updatedExclusions": [],
-      "routeDigestUpdates": []
-    },
-    "priorManifestCheck": {
-      "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
-      "argv": [
-        "C:\\Python314\\python.exe",
-        "-B",
-        "tests/architecture_contract.py",
-        "--root",
-        ".",
-        "--manifest",
-        "geometry-core/domain-decoupling/product-architecture.json"
-      ],
-      "cwd": "D:\\ga261-order-0548c05c",
-      "sourceBaseHead": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-      "tempDirectory": "D:\\t2",
-      "startedUtc": "2026-10-22T08:11:05.184994+00:00",
-      "complete": true,
-      "exitCode": 0,
-      "finishedUtc": "2026-10-22T08:11:31.832661+00:00",
-      "seconds": 26.611,
-      "stdout": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\prior-manifest\\stdout",
-        "rawSha256": "cbc0d39154a1a880f6854b2826b71b1e5cef662ed887dbaf0cf4510f6c403ac1",
-        "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-        "bytes": 136537
-      },
-      "stderr": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\prior-manifest\\stderr",
-        "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
-      },
-      "manifest": "tree copy of product-architecture.json",
-      "diagnostics": [],
-      "note": "The scanner stops at the first SOURCE_UNREGISTERED in sorted order; the independent enumeration in newInputs/addedExclusions lists every file."
-    },
     "addedSources": [],
     "addedExclusions": [],
     "updatedExclusions": [],
-    "newFileClassification": [],
-    "classificationNote": "Proposed by the refresh driver from the actual file contents (imports, docstrings, callers); a maintainer reviews the table before the receipt is committed. Entries with uncertain=true carry a real alternative (see the exclusion reason).",
-    "ownedSourceMentionsOfNewExclusions": {
-      "tokens": [],
-      "ownedSourcesSearched": 327,
-      "mentions": []
-    },
-    "exclusionProvenance": [],
-    "routerAndSourceProvenance": [],
-    "policyGuards": {
-      "method": "Lex every actual W-owned native C/header/include file; select concrete Wood*/WOOD_*/wood_* executable identifiers and wood/woodworking-prefixed decoded string literals. Retain every previous guard; do not add neutral Geo*/GEO_* or generic identifiers.",
-      "auditedFiles": [
-        "geometry-templates/rectangular-grid/rectangular_grid.c",
-        "geometry-templates/rectangular-grid/rectangular_grid.h",
-        "geometry-templates/woodworking/native/assembly.c",
-        "geometry-templates/woodworking/native/assembly.h",
-        "geometry-templates/woodworking/native/assembly_sources.c",
-        "geometry-templates/woodworking/native/assembly_sources.h",
-        "geometry-templates/woodworking/native/boundary_policy.c",
-        "geometry-templates/woodworking/native/boundary_policy.h",
-        "geometry-templates/woodworking/native/contact_sources.c",
-        "geometry-templates/woodworking/native/contact_sources.h",
-        "geometry-templates/woodworking/native/contact_world.c",
-        "geometry-templates/woodworking/native/contact_world.h",
-        "geometry-templates/woodworking/native/contacts.c",
-        "geometry-templates/woodworking/native/contacts.h",
-        "geometry-templates/woodworking/native/cut_list.c",
-        "geometry-templates/woodworking/native/cut_list.h",
-        "geometry-templates/woodworking/native/definition_sources.c",
-        "geometry-templates/woodworking/native/definition_sources.h",
-        "geometry-templates/woodworking/native/derived_placement.c",
-        "geometry-templates/woodworking/native/derived_placement.h",
-        "geometry-templates/woodworking/native/document.h",
-        "geometry-templates/woodworking/native/domain_values.h",
-        "geometry-templates/woodworking/native/engineering.c",
-        "geometry-templates/woodworking/native/engineering.h",
-        "geometry-templates/woodworking/native/engineering_operations.c",
-        "geometry-templates/woodworking/native/engineering_operations.h",
-        "geometry-templates/woodworking/native/engineering_sources.c",
-        "geometry-templates/woodworking/native/engineering_sources.h",
-        "geometry-templates/woodworking/native/finish.c",
-        "geometry-templates/woodworking/native/finish.h",
-        "geometry-templates/woodworking/native/finish_sources.c",
-        "geometry-templates/woodworking/native/finish_sources.h",
-        "geometry-templates/woodworking/native/grid_application.c",
-        "geometry-templates/woodworking/native/grid_application.h",
-        "geometry-templates/woodworking/native/grid_cells.c",
-        "geometry-templates/woodworking/native/grid_definition_codec.c",
-        "geometry-templates/woodworking/native/grid_definition_codec.h",
-        "geometry-templates/woodworking/native/grid_rules.c",
-        "geometry-templates/woodworking/native/grid_sources.c",
-        "geometry-templates/woodworking/native/grid_sources.h",
-        "geometry-templates/woodworking/native/member_declaration.c",
-        "geometry-templates/woodworking/native/member_declaration.h",
-        "geometry-templates/woodworking/native/member_placement.h",
-        "geometry-templates/woodworking/native/member_reference.c",
-        "geometry-templates/woodworking/native/member_reference.h",
-        "geometry-templates/woodworking/native/members.c",
-        "geometry-templates/woodworking/native/members.h",
-        "geometry-templates/woodworking/native/obstacles.h",
-        "geometry-templates/woodworking/native/panel_layout.c",
-        "geometry-templates/woodworking/native/panel_layout.h",
-        "geometry-templates/woodworking/native/panel_support.c",
-        "geometry-templates/woodworking/native/panel_support.h",
-        "geometry-templates/woodworking/native/section_profile.c",
-        "geometry-templates/woodworking/native/section_profile.h",
-        "geometry-templates/woodworking/native/section_profile_sources.c",
-        "geometry-templates/woodworking/native/section_profile_sources.h",
-        "geometry-templates/woodworking/native/supports.c",
-        "geometry-templates/woodworking/native/supports.h",
-        "geometry-templates/woodworking/native/world_validation.c",
-        "geometry-templates/woodworking/native/world_validation.h"
-      ],
-      "identifierCountBefore": 918,
-      "identifierCountAfter": 918,
-      "stringCountBefore": 55,
-      "stringCountAfter": 55,
-      "addedIdentifiers": [],
-      "addedStrings": [],
-      "identifierEvidence": {},
-      "stringEvidence": {},
-      "retainedGuardsNoLongerLexedFromW": {
-        "identifiers": [
-          "Scene",
-          "SpaceBoundarySurface",
-          "TIMBER_ROLE_PRIMARY",
-          "Timber",
-          "TimberAnchor",
-          "WOODWORKING_FIXED_WIDTH",
-          "Woodworking",
-          "WoodworkingModelProvider",
-          "World"
-        ],
-        "strings": [
-          "calcium-silicate-6",
-          "woodworking-model",
-          "woodworking/1"
-        ],
-        "note": "Previous guards are retained even when the current W sources no longer contain them."
-      }
-    },
-    "toolChanges": {},
-    "changedPreviouslySealedInputs": [],
     "newInputs": [],
+    "changedPreviouslySealedInputs": [
+      {
+        "path": "geometry-web/app.js",
+        "previousSha256": "d8c14843be3dd50c5ff7198c373cbdf3ef0bb45232aafec36fb2eb074f99550d",
+        "sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+      }
+    ],
+    "allowedChangedInputs": [
+      "geometry-web/app.js"
+    ],
     "staleExcludedVendorOrEmbedDigestsBefore": [],
     "staleExcludedVendorOrEmbedDigestsAfter": [],
-    "sourceFix": "No product source, scanner or test changes are made by this audit. Existing H/W classifications, routes, exclusions and all previous guards are retained. The manifest receives 0 new individually named exclusion(s) and 0 new owned source(s). Manifest edits already committed since the previous sealed audit (0 sources, 0 exclusions, 0 exclusion digests, 0 embed-route digests) are verified against the current bytes and sealed.",
-    "commitsSincePreviousSourceHead": 3,
-    "firstParentMergesSincePreviousSourceHead": [],
-    "previousSourceAncestry": {
-      "ancestor": "01e631453bba840b3839d6cf13635c55eb0470b6",
-      "descendant": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-      "isAncestor": true,
-      "command": "git merge-base --is-ancestor 01e631453bba840b3839d6cf13635c55eb0470b6 0548c05cccbb7b35def6bbc3d6b285004be676e5",
-      "exitCode": 0,
-      "checkedUtc": "2026-10-22T08:11:04.432784+00:00"
-    },
-    "previousReceiptAncestry": {
-      "ancestor": "ac39346e74ca2ab6fc5bb0053024bd26f8af06b2",
-      "descendant": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-      "isAncestor": true,
-      "command": "git merge-base --is-ancestor ac39346e74ca2ab6fc5bb0053024bd26f8af06b2 0548c05cccbb7b35def6bbc3d6b285004be676e5",
-      "exitCode": 0,
-      "checkedUtc": "2026-10-22T08:11:04.523619+00:00"
-    },
-    "pythonSourceAncestry": {
-      "ancestor": "8f36f1a0dd7e1244c92aca926c0a80079451e7f0",
-      "descendant": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-      "isAncestor": true,
-      "command": "git merge-base --is-ancestor 8f36f1a0dd7e1244c92aca926c0a80079451e7f0 0548c05cccbb7b35def6bbc3d6b285004be676e5",
-      "exitCode": 0,
-      "checkedUtc": "2026-10-22T08:11:05.137693+00:00"
-    }
+    "digestEvidence": "沿原 manifest 執行 scanner exit0；不更新 vendor、excluded 或 iframe driver/router digest 來掩蓋失效。",
+    "classificationNote": "本封裝器拒絕新增或移除來源，不更改 manifest；現有分類、排除理由、政策保持原 bytes。",
+    "toolChanges": []
   },
   "scanPassed": true,
   "actualCliScan": {
-    "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
+    "label": "final-scan",
     "argv": [
-      "C:\\Python314\\python.exe",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
       "-B",
       "tests/architecture_contract.py",
       "--root",
@@ -280,162 +152,130 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "D:\\ga261-order-0548c05c",
-    "sourceBaseHead": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-    "tempDirectory": "D:\\t2",
-    "startedUtc": "2026-10-22T08:11:33.841497+00:00",
-    "complete": true,
-    "exitCode": 0,
-    "finishedUtc": "2026-10-22T08:11:58.451145+00:00",
-    "seconds": 24.608,
+    "cwd": "/workspace/geometry-axiom",
+    "startedUtc": "2026-10-22T10:15:32.045184+00:00",
+    "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+    "environment": {
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "PYTHONIOENCODING": "utf-8",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+    },
     "stdout": {
-      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\final-scan\\stdout",
-      "rawSha256": "cbc0d39154a1a880f6854b2826b71b1e5cef662ed887dbaf0cf4510f6c403ac1",
-      "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-      "bytes": 136537
+      "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/013-final-scan/stdout",
+      "bytes": 132208,
+      "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
+      "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
     },
     "stderr": {
-      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\final-scan\\stderr",
+      "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/013-final-scan/stderr",
+      "bytes": 0,
       "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "bytes": 0
-    }
+      "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "complete": true,
+    "exitCode": 0,
+    "interrupted": null,
+    "finishedUtc": "2026-10-22T10:15:37.338452+00:00",
+    "seconds": 5.29328,
+    "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
+    "stdoutRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/013-final-scan/stdout",
+    "stderrRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/013-final-scan/stderr"
   },
   "validation": [
     {
-      "command": "python -B tests/test_architecture_contract.py",
+      "label": "generic-tests",
       "argv": [
-        "C:\\Python314\\python.exe",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
         "-B",
         "tests/test_architecture_contract.py"
       ],
-      "cwd": "D:\\ga261-order-0548c05c",
-      "sourceBaseHead": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-      "tempDirectory": "D:\\t2",
-      "startedUtc": "2026-10-22T08:14:08.862169+00:00",
-      "complete": true,
-      "exitCode": 0,
-      "finishedUtc": "2026-10-22T08:14:34.917394+00:00",
-      "seconds": 26.054,
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-22T10:15:37.587163+00:00",
+      "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+      "environment": {
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+      },
       "stdout": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\generic-tests\\stdout",
+        "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/016-generic-tests/stdout",
+        "bytes": 0,
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\generic-tests\\stderr",
-        "rawSha256": "0a6e4a1bd1bbb2a28a6734c81a56c55a179afa3c42a5762c25be181239c25f53",
-        "lfSha256": "2bba1b96ddfb97eb29e160901a43ddd5777b01acb6f0ae53b05940e625938cdf",
-        "bytes": 30033
+        "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/016-generic-tests/stderr",
+        "bytes": 29577,
+        "rawSha256": "fe222ec0e39899cc4e82e0f607bd8eceaff75f428d8fbf0d47cad13e1bc88a81",
+        "lfSha256": "fe222ec0e39899cc4e82e0f607bd8eceaff75f428d8fbf0d47cad13e1bc88a81"
       },
+      "complete": true,
+      "exitCode": 0,
+      "interrupted": null,
+      "finishedUtc": "2026-10-22T10:15:38.103170+00:00",
+      "seconds": 0.516016,
+      "command": "python -B tests/test_architecture_contract.py",
       "tests": 205,
-      "passed": 204,
+      "passed": 205,
       "failed": 0,
-      "skipped": 1,
-      "unittestSeconds": 24.533,
-      "sha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
-      "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-      "executedAtCurrentHead": true,
-      "symlinkProbe": {
-        "canCreateSymlink": false,
-        "error": "OSError(22, '用戶端沒有這項特殊權限。')",
-        "winerror": 1314
-      },
-      "skipReason": "The suite skips its real-symlink fixture when creation is unavailable (tests/test_architecture_contract.py skipTest); this machine reports: \"OSError(22, '用戶端沒有這項特殊權限。')\". A skip is not counted as a pass.",
-      "scope": "Generic dependency scanner suite against synthetic fixtures; unchanged scanner and suite bytes. Not a product-graph result.",
-      "previousRecord": {
-        "receiptSha256": "3ec516166ccce0d7366eba30ee6ca936c460c02190e50942a3cc7bbcb6e01bf9",
-        "createdUtc": "2026-10-22T01:38:51.018979+00:00",
-        "sourceBaseHead": "01e631453bba840b3839d6cf13635c55eb0470b6",
-        "tests": 205,
-        "passed": 204,
-        "failed": 0,
-        "skipped": 1,
-        "executedAtThatHead": true,
-        "note": "Counts of the previously sealed receipt, for comparison with this run."
-      },
-      "matchesPreviousCounts": true
+      "skipped": 0,
+      "unittestSeconds": 0.408,
+      "stdoutRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/016-generic-tests/stdout",
+      "stderrRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/016-generic-tests/stderr"
     },
     {
-      "command": "python -B tests/test_product_architecture.py",
+      "label": "product-tests",
       "argv": [
-        "C:\\Python314\\python.exe",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
         "-B",
         "tests/test_product_architecture.py"
       ],
-      "cwd": "D:\\ga261-order-0548c05c",
-      "sourceBaseHead": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-      "tempDirectory": "D:\\t2",
-      "startedUtc": "2026-10-22T08:12:03.970419+00:00",
-      "complete": true,
-      "exitCode": 0,
-      "finishedUtc": "2026-10-22T08:14:08.220285+00:00",
-      "seconds": 124.249,
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-22T10:15:38.296925+00:00",
+      "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+      "environment": {
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+      },
       "stdout": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\product-tests\\stdout",
+        "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/019-product-tests/stdout",
+        "bytes": 0,
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "bytes": 0
+        "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit\\product-tests\\stderr",
-        "rawSha256": "ea6dc5710ee573384e022fedae822738af2800bee429709f286acda64d045799",
-        "lfSha256": "42bab8feb71774797c3f54e5c64ccf203bb812e7d13a6eef1a81b6fef2b1ba8d",
-        "bytes": 124
+        "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/019-product-tests/stderr",
+        "bytes": 118,
+        "rawSha256": "0c7592fa2f91802bcdac38da23573504e5ceb290eb73baeb1edcf161843e5577",
+        "lfSha256": "0c7592fa2f91802bcdac38da23573504e5ceb290eb73baeb1edcf161843e5577"
       },
+      "complete": true,
+      "exitCode": 0,
+      "interrupted": null,
+      "finishedUtc": "2026-10-22T10:15:50.403744+00:00",
+      "seconds": 12.106828,
+      "command": "python -B tests/test_product_architecture.py",
       "tests": 18,
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 122.92,
-      "sha256": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e",
-      "scope": "Actual-root inventory, static full product graph, actual-file controls, audited iframe controls and every K source without H/W; no native/product execution."
+      "unittestSeconds": 12.005,
+      "stdoutRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/019-product-tests/stdout",
+      "stderrRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/019-product-tests/stderr"
     }
   ],
   "supplementalStaticGuardProbes": {
-    "kind": "supplemental-static-in-memory-actual-source-guard-probes",
-    "executedAtCurrentHead": true,
-    "startedUtc": "2026-10-22T08:11:59.274195+00:00",
-    "finishedUtc": "2026-10-22T08:12:03.934226+00:00",
-    "seconds": 4.66,
-    "source": "geometry-core/kernel/geometry.c",
-    "sourceSha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00",
-    "newEntryProbes": [],
-    "identifierProbes": 0,
-    "stringProbes": 0,
-    "rejectedAsExpected": 0,
-    "neutralProbeAccepted": true,
-    "identifierResults": [],
-    "externalModuleProbes": [
-      {
-        "layer": "K",
-        "source": "geometry-core/geometry_kernel/__init__.py",
-        "probe": "actual source text plus one appended import ctypes",
-        "expectedCode": "DEPENDENCY_UNRESOLVED",
-        "observedCode": "DEPENDENCY_UNRESOLVED"
-      },
-      {
-        "layer": "W",
-        "source": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
-        "probe": "actual source text plus one appended import ctypes",
-        "expectedCode": "DEPENDENCY_UNRESOLVED",
-        "observedCode": "DEPENDENCY_UNRESOLVED"
-      },
-      {
-        "layer": "H",
-        "source": "geometry-app/geometry_app/source_closure.py",
-        "probe": "actual unmodified source text",
-        "expectedCode": null,
-        "observedCode": null,
-        "accepted": true
-      }
-    ],
-    "method": "Unchanged Scanner.validate_manifest receives the final manifest with one newly registered entry removed (must fail SOURCE_UNREGISTERED at exactly that path) and, for exclusions, with one digest corrupted (must fail EXCLUSION_DIGEST at that path). Unchanged Scanner.scan_c receives the actual K geometry.c text plus one newly added W identifier at a time (none were added when identifierProbes is 0) and a neutral identifier (accepted). Unchanged Scanner.scan_python receives an actual K and an actual W Python source with one appended import ctypes and rejects both, then accepts the actual H source_closure.py. No product/test source is written and no C or product Python executes. These probes are separate from the product suite.",
-    "manifestSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
-    "guardValues": "manifestRefresh.addedExclusions/addedSources, manifestRefresh.policyGuards.addedIdentifiers and policy.externalModules ctypes."
+    "executedAtCurrentHead": false,
+    "reason": "未執行舊 Windows driver 的額外 in-memory probes；原 generic／product suites 已實際執行並各自記錄，不套用舊來源的探針綠燈。"
   },
-  "nativeAcceptance": "Not evaluated by this static audit. C/native/WSL/Node aggregate and product behavior were not executed, and no WSL process was started. Historical receipts retain their original source SHA, timestamps and PASS/FAIL/UNRUN. Python default and native coverage runtime acceptance, mutation ledgers and browser acceptance require separate execution receipts; static closure and ancestry do not certify them.",
+  "nativeAcceptance": "此封裝器沒有執行 native、mutation ledger、瀏覽器或專項；它們必須有另一份實際同最終受驗來源的收據。",
   "inputs": [
     {
       "path": "current_geometry.c",
@@ -1807,7 +1647,7 @@
     },
     {
       "path": "geometry-web/app.js",
-      "sha256": "d8c14843be3dd50c5ff7198c373cbdf3ef0bb45232aafec36fb2eb074f99550d"
+      "sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
     },
     {
       "path": "geometry-web/archive_wait_trace.py",
@@ -2843,7 +2683,7 @@
     }
   ],
   "completeInventoryVerification": {
-    "method": "Independent os.walk of all executable suffixes under five roots plus three exact standalone sources, without importing scanner inventory or deriving paths from manifest, cross-checked against `git ls-tree` at the frozen head and against the frozen Git blobs (LF-normalized). Compare full raw/LF closures, tool bytes, HEAD identity and a size/mtime fingerprint of the audited roots (see treeFingerprintScope) after every child process and at the seal.",
+    "method": "獨立 os.walk 五 roots 加三個 standalone，與 manifest 登記集合及固定 Git tree 比較；逐 Git blob 比 LF hash；每個原裁判後重算完整 raw/LF inputs、工具 bytes、HEAD 與乾淨狀態。",
     "sourceRoots": [
       "geometry-core",
       "geometry-app",
@@ -2877,19 +2717,15 @@
     ],
     "filesBefore": 601,
     "filesAfter": 601,
-    "unregisteredAgainstLastSealedManifest": [],
     "unregisteredBeforeRefresh": [],
     "unregisteredAfter": [],
     "missingAfter": [],
     "changedInputs": [],
-    "inputClosureSha256Before": "64f6f66b7d80a3a36c6ad4f2e2dc15b6921d209a44f216fb37910474c0df29ad",
-    "inputClosureSha256After": "64f6f66b7d80a3a36c6ad4f2e2dc15b6921d209a44f216fb37910474c0df29ad",
-    "rawInputClosureSha256Before": "93882a2e39d0128b780ee286c3834c86ed3ef3de928600287befb3d26b609d4d",
-    "rawInputClosureSha256After": "93882a2e39d0128b780ee286c3834c86ed3ef3de928600287befb3d26b609d4d",
-    "rawHashBasis": "Bytes of the extracted tree. git archive applies the archiving repository text conversion (core.autocrlf=true yields CRLF text), so the raw closure is checkout-dependent; the LF closure and the Git blobs are the portable pins.",
-    "treeFingerprintScope": "size + mtime of every file under the five source roots (recursive) plus the files directly in the repository root and directly in tests/ (scanner, its tests, tests/__init__.py, tests/binaries.py), except the four audit outputs. tests/evidence, evidence/ and tests/release-evidence (about 19000 files that no audited command reads) are not walked: a metadata walk of the whole 23000-file tree took four minutes on the loaded machine.",
-    "treeFileCountBeforeAndAfter": 2987,
-    "treeFingerprintUnchangedExceptFourOutputs": true,
+    "inputClosureSha256Before": "7a7d301e6e4cf6c7b7557a65bdd2e93d7e433be4d5773f835b567a7cbf6e0429",
+    "inputClosureSha256After": "7a7d301e6e4cf6c7b7557a65bdd2e93d7e433be4d5773f835b567a7cbf6e0429",
+    "rawInputClosureSha256Before": "03575cb0fb0019cda019d96e8653ac044d8a6616e1b0b8186c7409c45a250b00",
+    "rawInputClosureSha256After": "03575cb0fb0019cda019d96e8653ac044d8a6616e1b0b8186c7409c45a250b00",
+    "rawHashBasis": "實際 Linux checkout bytes；可攜產品身分以 CRLF-to-LF 與固定 Git blobs 比較。",
     "toolHashesBefore": {
       "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
       "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
@@ -2901,46 +2737,125 @@
       "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
     },
     "rawToolHashesBefore": {
-      "tests/architecture_contract.py": "d969d687eaf25b0a05609b9e9243571ad91e882f1e59bd355892d75c42a3f630",
-      "tests/test_architecture_contract.py": "80ea0bce708658f0639ee7177d91e378d27b13db06e9c09b50fd162d2061ca7e",
-      "tests/test_product_architecture.py": "4dd8f959332d2619685fc2d2d353c6ed27f889954410a140ea7efe4cca16a530"
+      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
+      "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+      "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
     },
     "rawToolHashesAfter": {
-      "tests/architecture_contract.py": "d969d687eaf25b0a05609b9e9243571ad91e882f1e59bd355892d75c42a3f630",
-      "tests/test_architecture_contract.py": "80ea0bce708658f0639ee7177d91e378d27b13db06e9c09b50fd162d2061ca7e",
-      "tests/test_product_architecture.py": "4dd8f959332d2619685fc2d2d353c6ed27f889954410a140ea7efe4cca16a530"
+      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
+      "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+      "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
     },
-    "headObservedAfterIndependentAudit": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-    "checkedUtc": "2026-10-22T08:14:38.434806+00:00"
+    "allRawAndLfInputsUnchanged": true,
+    "headObservedAfterIndependentAudit": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+    "checkedUtc": "2026-10-22T10:15:50.824983+00:00"
   },
   "refreshDriver": {
-    "path": "D:\\geometry-axiom-work\\geo261-research\\refresh_product_architecture_next.py",
-    "rawSha256": "c786be4a0cd7288163c4004aeb06485997594d63a835f4e33a0dee6840b169c5",
-    "lfSha256": "c786be4a0cd7288163c4004aeb06485997594d63a835f4e33a0dee6840b169c5",
-    "bytes": 93635,
-    "runDirectory": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit",
+    "path": "/workspace/geo261-environment/refresh_architecture_linux.py",
+    "bytes": 25463,
+    "rawSha256": "06f3696ca55b7520ab3a219eff56f6d945df648833813f12926d190a2035798f",
+    "lfSha256": "06f3696ca55b7520ab3a219eff56f6d945df648833813f12926d190a2035798f",
+    "runDirectory": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh",
     "argv": [
-      "C:\\Python314\\python.exe",
-      "D:\\geometry-axiom-work\\geo261-research\\refresh_product_architecture_next.py",
-      "--root",
-      "D:\\ga261-order-0548c05c",
-      "--head",
-      "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-      "--out",
-      "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-0548c05c-order-index\\audit",
-      "--temp",
-      "D:/t2",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/workspace/geo261-environment/refresh_architecture_linux.py",
       "--repo",
-      "D:\\geometry-axiom-work\\geo261-integration",
-      "--review",
-      "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-review-registration.json"
+      "/workspace/geometry-axiom",
+      "--out",
+      "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh"
     ],
-    "reviewFile": {
-      "path": "D:\\geometry-axiom-work\\codex-closeout-20261021\\architecture-review-registration.json",
-      "rawSha256": "2345d41434e4c5c6625cde0e8b5be452617c902ad55ed450a015f93a5e0019c6",
-      "lfSha256": "2345d41434e4c5c6625cde0e8b5be452617c902ad55ed450a015f93a5e0019c6",
-      "bytes": 536
+    "note": "新撰 Linux 封裝器；不是舊 Windows driver 的路徑適配副本，未宣稱兩者程式 hash 相同。"
+  },
+  "environment": {
+    "system": "Linux",
+    "release": "6.18.55",
+    "machine": "x86_64",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "safeVariables": {
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "PYTHONIOENCODING": "utf-8",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
     },
-    "note": "External to the repository, like the previous refresh drivers."
-  }
+    "versions": [
+      {
+        "label": "version-python",
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "--version"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "startedUtc": "2026-10-22T10:15:32.041192+00:00",
+        "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+        "environment": {
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+        },
+        "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/011-version-python/stdout",
+        "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/011-version-python/stderr",
+        "complete": true,
+        "exitCode": 0,
+        "interrupted": null,
+        "finishedUtc": "2026-10-22T10:15:32.042849+00:00",
+        "seconds": 0.001647,
+        "stdoutInfo": {
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/011-version-python/stdout",
+          "bytes": 15,
+          "rawSha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+          "lfSha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+        },
+        "stderrInfo": {
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/011-version-python/stderr",
+          "bytes": 0,
+          "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "label": "version-git",
+        "argv": [
+          "git",
+          "--version"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "startedUtc": "2026-10-22T10:15:32.043316+00:00",
+        "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+        "environment": {
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+        },
+        "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/012-version-git/stdout",
+        "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/012-version-git/stderr",
+        "complete": true,
+        "exitCode": 0,
+        "interrupted": null,
+        "finishedUtc": "2026-10-22T10:15:32.044757+00:00",
+        "seconds": 0.001431,
+        "stdoutInfo": {
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/012-version-git/stdout",
+          "bytes": 19,
+          "rawSha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c",
+          "lfSha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c"
+        },
+        "stderrInfo": {
+          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/012-version-git/stderr",
+          "bytes": 0,
+          "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ]
+  },
+  "uncertainties": [
+    "未重現舊 Windows driver 的額外 probes；原三條裁判結果與本封裝器有限完整 inventory 是本輪主張範圍。",
+    "本工具只輸出 out/new 四檔，不修改 repo；尚未提交的產物不能稱作已發布。",
+    "後續最終候選 SHA 仍須執行使用者要求的完整動態清單。"
+  ]
 }

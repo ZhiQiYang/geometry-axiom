@@ -456,7 +456,7 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-At the latest sealed source HEAD `0548c05cccbb7b35def6bbc3d6b285004be676e5`, the
+At the previously sealed source HEAD `0548c05cccbb7b35def6bbc3d6b285004be676e5`, the
 actual CLI scan exits 0 with 333 owned sources, 796 dependency edges and no
 diagnostics. All 18 actual product tests pass with no skips. Independent
 enumeration matches all 601 input hashes, both raw and LF-normalized. The
@@ -469,3 +469,16 @@ closed, then receive individually reviewed source entries. Re-run the product
 scan and product tests and regenerate the receipt; rerun the generic scanner
 suite if its scanner or test sources changed. Old fingerprints do not certify
 new files or changed sources.
+
+## 雲端 Linux 有限重產：P73 來源修正後
+
+本輪來源固定於 `08dede0bf7f9206b5df5fefb6a27180128518c35`，上一份收據產物提交為 `60425b629aee9f74f4e62ea88af9882bc8968881`。新 Linux 封裝器沿用原 scanner、generic tests 與 product tests，沒有使用或冒充舊 Windows driver。manifest 登記、所有政策與排除理由均未修改。
+
+獨立檔案系統與 Git tree inventory 共 601 個 executable inputs；owned 333、excluded 268、edges 796、diagnostics 0。LF input closure 是 `7a7d301e6e4cf6c7b7557a65bdd2e93d7e433be4d5773f835b567a7cbf6e0429`。
+
+相對上一份 sealed receipt 改變的既有輸入：`geometry-web/app.js`。四檔是衍生稽核產物，排除於來源 closure；receipt 不雜湊自身。
+
+- `python -B tests/test_architecture_contract.py`：退出 0；205 tests，205 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+- `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+
+以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
