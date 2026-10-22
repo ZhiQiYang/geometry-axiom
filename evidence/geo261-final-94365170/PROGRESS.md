@@ -8,4 +8,7 @@
 - 2026-10-22T10:07:19.423231+00:00 — **architecture-before-judge-tests**：原架構裁判自測205/205，退出0
   下一步：Linux重產架構四檔；P73撤回／恢復自證及新固定SHA完整驗收。原始資料：`raw/architecture-before-judge-tests.raw.tar.gz`。
 
+- 2026-10-22T10:07:20.916125+00:00 — **architecture-before-product-tests**：原產品架構自測18/18，退出0
+  下一步：Linux重產架構四檔；P73撤回／恢復自證及新固定SHA完整驗收。原始資料：`raw/architecture-before-product-tests.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
