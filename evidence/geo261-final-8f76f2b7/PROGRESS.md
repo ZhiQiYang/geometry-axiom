@@ -26,4 +26,7 @@
 - 2026-10-22T20:50:06.025691+00:00 — **legacy-browser-preparation**：Chromium154固定F2原P73子集相容性對照已準備；只換browser設定，不改原UI測試或斷言。舊isolated original probe逾時raw照留，當時154fixed未執行；本補充尚未執行，不冒稱相容通過
   下一步：先完成正式17項與既定反證，再串行跑舊版固定F2對照。原始資料：`raw/legacy-browser-preparation.raw.tar.gz`。
 
+- 2026-10-22T20:54:14.112027+00:00 — **canvas**：原退出0；收據完整=True；超正式時限=False；衍生通過=True；基礎設施錯誤=0
+  下一步：串行完成本輪其餘七項與全部專項；收齊紅燈後集中分類修正。原始資料：`raw/canvas.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
