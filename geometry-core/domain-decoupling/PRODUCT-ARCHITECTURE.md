@@ -387,7 +387,7 @@ directory and the previous sealed outputs were re-read from Git commit
 `3f00d03d`. The new receipt links their raw/LF digests, the previous receipt
 creation time and source head.
 
-The post-merge GEO-261 integration (`01e63145`) refresh freezes source HEAD
+The preceding post-merge GEO-261 integration (`01e63145`) refresh froze source HEAD
 `01e631453bba840b3839d6cf13635c55eb0470b6`. The previous sealed audit (receipt
 commit `82e0db0b`) froze source head `0369579e`; since then the integration
 branch gained 3 commits (first-parent merges: no first-parent merge).
@@ -407,6 +407,28 @@ this audit.
 The previous four audit outputs are preserved byte-for-byte in the external run
 directory and the previous sealed outputs were re-read from Git commit
 `82e0db0b`. The new receipt links their raw/LF digests, the previous receipt
+creation time and source head.
+
+The post-merge GEO-261 integration (`0548c05c`) refresh freezes source HEAD
+`0548c05cccbb7b35def6bbc3d6b285004be676e5`. The previous sealed audit (receipt
+commit `ac39346e`) froze source head `01e63145`; since then the integration
+branch gained 3 commits (first-parent merges: no first-parent merge).
+Independent enumeration finds 601 executable files, 0 of them unregistered in
+the manifest, all of them new since the previous sealed audit. The committed
+manifest already passes the actual CLI.
+
+A fresh lexical inventory of all 60 W-owned native C files finds no new W
+identifier or string guard. All 918 previous forbidden identifiers and 55
+strings are retained, for totals of 918 and 55.
+
+0 previously sealed executable inputs changed (0 excluded test drivers), and 0
+executable files are new. The scanner and both architecture test files are
+byte-identical to the previously sealed ones; no product source is changed by
+this audit.
+
+The previous four audit outputs are preserved byte-for-byte in the external run
+directory and the previous sealed outputs were re-read from Git commit
+`ac39346e`. The new receipt links their raw/LF digests, the previous receipt
 creation time and source head.
 
 The manifest, scan, report and receipt are excluded from the product
@@ -434,7 +456,7 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-At the latest sealed source HEAD `01e631453bba840b3839d6cf13635c55eb0470b6`, the
+At the latest sealed source HEAD `0548c05cccbb7b35def6bbc3d6b285004be676e5`, the
 actual CLI scan exits 0 with 333 owned sources, 796 dependency edges and no
 diagnostics. All 18 actual product tests pass with no skips. Independent
 enumeration matches all 601 input hashes, both raw and LF-normalized. The
