@@ -25,3 +25,5 @@ manifest仍為原F2 920個policy identifiers；只列`+wood_contact_boundary_edg
 其餘compile／測試／架構scan／ledger／browser／bench均未啟動。待兩套全部收齊後分類紅燈；每個產品／測試修正仍須具名baseline0／mutant1／restored0，不能以編譯失敗／timeout假稱killed。完整帳本、架構四檔、三條原裁判、全native／六browser／受影響專項由後續最終SHA另驗，不能將本段靜態準備當完成驗收。
 
 最不確定處仍是草稿推導的p8／p8b診斷數值與新雙承載面正例的真動態行為；後續原工具將裁定，尚未聲稱全綠。沒有新增公理語意或數值門檻待代決。
+
+原patch與兩份rejects現置於original-patch-and-rejects.raw.tar.gz，三members逐bytes/hash核同；不改原CRLF或空白。初版直接文字入Git時diffcheck報原輸入空白，純封存格式改為archive後仍保原raw；產品/tests未再改，後繼證據E會另列受驗SHA。
