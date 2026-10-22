@@ -162,6 +162,13 @@
       "result": "正式 P52 與 verifier 原退出均 1；fix/main=1.03825180997 未過既有 ≤1.0；根因尚未證明，完整原樣本與純讀稽核封存，未重測或放寬",
       "next": "繼續同 F 額外自證並定位實際產品成本，保留本次紅燈",
       "archive": "raw/p52-red-audit.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T19:29:40.960020+00:00",
+      "label": "formal-round-summary",
+      "result": "正式 17 個項目已收齊：15 項通過，P52／verifier 原退出 1；七個產品 job 各原退出 0；grid 原推送環境失敗另以正常 push 0 修復，原 outer 1 保留",
+      "next": "完成額外撤回／恢復自證並定位 P52 產品成本，紅燈不改判",
+      "archive": "raw/formal-round-summary.raw.tar.gz"
     }
   ]
 }
