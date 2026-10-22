@@ -1,0 +1,357 @@
+{
+  "archive": "grid.raw.tar.gz",
+  "bytes": 784410,
+  "sha256": "dc984849c3d467472336c060f572c69e4c02e2643698e5a407152ccb0fc97292",
+  "members": [
+    {
+      "path": "launch-stdout",
+      "bytes": 383,
+      "sha256": "4efb5d31e72db1a8eae1909c6b4d70653dabd69941c7f03d16c8afe4e840585f"
+    },
+    {
+      "path": "launch-stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reaper",
+      "bytes": 2164,
+      "sha256": "fe5fa80567b050a013fb4d093c996867d5bdcdf3fbda9c4022869a876f172595"
+    },
+    {
+      "path": "job/artifacts/06/grid-trial-desktop.png",
+      "bytes": 100476,
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b"
+    },
+    {
+      "path": "job/artifacts/06/grid-trial-mobile-alignment.png",
+      "bytes": 57264,
+      "sha256": "128ff3af1aeac0ffc6bcf6380447927c7e878130246706f6925dfe984510cb60"
+    },
+    {
+      "path": "job/artifacts/06/grid-trial-mobile-canvas.png",
+      "bytes": 52399,
+      "sha256": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8"
+    },
+    {
+      "path": "job/artifacts/06/grid-trial-mobile-controls.png",
+      "bytes": 47196,
+      "sha256": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543"
+    },
+    {
+      "path": "job/driver.py.txt",
+      "bytes": 20021,
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "path": "job/receipt.json",
+      "bytes": 29331,
+      "sha256": "bb6500ce005e16466e2cd3d484972529b5f67945a4010cd03bfdb004b5c7231a"
+    },
+    {
+      "path": "job/receipt.sha256",
+      "bytes": 79,
+      "sha256": "4606bacc65fddeb45e7db63d39038b02422e1a4f4e95ecc1e88c0b36163cc759"
+    },
+    {
+      "path": "job/steps/01.combined.log",
+      "bytes": 1222,
+      "sha256": "fac457545390f739f0d33179717512b2c4823f7e0e0a655f9d3069bec035ea58"
+    },
+    {
+      "path": "job/steps/01.command.json",
+      "bytes": 616,
+      "sha256": "c589f88e7bbd1d56fa332adb392705caa8d04bb88e75256ad16d3dc2119df23c"
+    },
+    {
+      "path": "job/steps/01.executed.sh",
+      "bytes": 14,
+      "sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef"
+    },
+    {
+      "path": "job/steps/01.original.sh.txt",
+      "bytes": 13,
+      "sha256": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054"
+    },
+    {
+      "path": "job/steps/01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/01.stdout",
+      "bytes": 1222,
+      "sha256": "fac457545390f739f0d33179717512b2c4823f7e0e0a655f9d3069bec035ea58"
+    },
+    {
+      "path": "job/steps/02-package-0.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/steps/02-package-0.command.json",
+      "bytes": 637,
+      "sha256": "436da44ee4e9581e1489306f0b14753ffb6a50ebae271a1ced94f6bcdac67111"
+    },
+    {
+      "path": "job/steps/02-package-0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/02-package-0.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/steps/02.executed.sh",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "job/steps/02.original.sh.txt",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "job/steps/03.combined.log",
+      "bytes": 191735,
+      "sha256": "0a19819e6e7ceec2698605e5bc1abd938bfbc3c2a17dffeed438ec7f64675aa3"
+    },
+    {
+      "path": "job/steps/03.command.json",
+      "bytes": 667,
+      "sha256": "93c8b9421945abb1a49a323de55a5944861450d2cb00fd975f2265f3fbea52d5"
+    },
+    {
+      "path": "job/steps/03.executed.sh",
+      "bytes": 2296,
+      "sha256": "6b8d652a3b0b1e4fff5d466f92a102d27575dde0bd0f742bd9ab924cf671dd03"
+    },
+    {
+      "path": "job/steps/03.original.sh.txt",
+      "bytes": 2184,
+      "sha256": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f"
+    },
+    {
+      "path": "job/steps/03.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/03.stdout",
+      "bytes": 191735,
+      "sha256": "0a19819e6e7ceec2698605e5bc1abd938bfbc3c2a17dffeed438ec7f64675aa3"
+    },
+    {
+      "path": "job/versions/0.combined.log",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "job/versions/0.command.json",
+      "bytes": 568,
+      "sha256": "3652f924604218f92b6fb0332566e3ad774321b0d3a23f48154ee29b812990a9"
+    },
+    {
+      "path": "job/versions/0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/0.stdout",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "job/versions/1.combined.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "job/versions/1.command.json",
+      "bytes": 558,
+      "sha256": "df8e1815a27bce7f5ed7d767e32cf3d88b30c300eb5601bb869dc8cf1c038d51"
+    },
+    {
+      "path": "job/versions/1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/1.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "job/versions/2.combined.log",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "job/versions/2.command.json",
+      "bytes": 562,
+      "sha256": "19e2b05fd2282d6c05d28e55bc0505d3eaf648b26cb1346d9dae56ea9bf05cfb"
+    },
+    {
+      "path": "job/versions/2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/2.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "job/versions/3.combined.log",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "job/versions/3.command.json",
+      "bytes": 558,
+      "sha256": "9da738dbaf51e644272e994436e8d978964c89ed6e8278ed7d79721bc7b0a952"
+    },
+    {
+      "path": "job/versions/3.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/3.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "job/versions/4.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/versions/4.command.json",
+      "bytes": 613,
+      "sha256": "71b88e858409a9a7b50865b099bd8f3221fd9e661ae0870b16d5d9c11638cd6a"
+    },
+    {
+      "path": "job/versions/4.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/4.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/workflow.yml.txt",
+      "bytes": 6854,
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d"
+    },
+    {
+      "path": "job-tmp/geometry-grid-screens/grid-trial-desktop.png",
+      "bytes": 100476,
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b"
+    },
+    {
+      "path": "job-tmp/geometry-grid-screens/grid-trial-mobile-alignment.png",
+      "bytes": 57264,
+      "sha256": "128ff3af1aeac0ffc6bcf6380447927c7e878130246706f6925dfe984510cb60"
+    },
+    {
+      "path": "job-tmp/geometry-grid-screens/grid-trial-mobile-canvas.png",
+      "bytes": 52399,
+      "sha256": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8"
+    },
+    {
+      "path": "job-tmp/geometry-grid-screens/grid-trial-mobile-controls.png",
+      "bytes": 47196,
+      "sha256": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543"
+    },
+    {
+      "path": "job-tmp/geometry-grid-screens/infinite-binding-hole.png",
+      "bytes": 98584,
+      "sha256": "ec21c5a8ac67e163d1259e5dce35120d5d9a202cdfd64e5e46082514af4aeb57"
+    },
+    {
+      "path": "job-tmp/geometry-grid-screens/infinite-grid-mobile.png",
+      "bytes": 41108,
+      "sha256": "b6ef612ba87baf2ecb3696d7c383a43b9c117508099d2763642d7ac218281a05"
+    },
+    {
+      "path": "job-tmp/geometry-grid-screens/infinite-source-desktop.png",
+      "bytes": 88422,
+      "sha256": "d33160d3d3174230e905370fd0232c78cc124432e2dc8064a6132a7d27b00245"
+    },
+    {
+      "path": "job-tmp/geometry-infinite-grid-download-f4Tlym/infinite-grid-roundtrip.json",
+      "bytes": 72053,
+      "sha256": "e38d134efe14fea64408d6c8fbc384eab4725591e6c1d2e7c7bf6dc747187dbc"
+    },
+    {
+      "path": "job-tmp/geometry-infinite-grid-download-f4Tlym/未命名專案.gcanvas",
+      "bytes": 2739,
+      "sha256": "5b357d7aa07039e18d3f7f74dde0f6b2e679265a0c92f981475d6c069817ecf4"
+    },
+    {
+      "path": "job-tmp/geometry-integration-server.log",
+      "bytes": 147319,
+      "sha256": "e4632b57b9bfec8d824faceb31c735b56517d0f6bd9fd53c6fb2637834b614e4"
+    },
+    {
+      "path": "job-tmp/geometry-rule-editor-DrBbsz/rule-editor-roundtrip.json",
+      "bytes": 4283,
+      "sha256": "a36516f79871d4dfa1eba2f4019933eb72582b377497d43eeb5c21aa6cb44f2c"
+    },
+    {
+      "path": "job-tmp/geometry-rule-editor-DrBbsz/未命名專案.gcanvas",
+      "bytes": 2082,
+      "sha256": "f09f133d2ad76bc46b9f24b0d8b6ccc355884d2c8e5acdb139b4df5d7b5cfd85"
+    },
+    {
+      "path": "job-tmp/geometry-rule-editor-FubTZM/未命名專案.gcanvas",
+      "bytes": 1716,
+      "sha256": "b58a719ab3c4dd141334af91c141a7bb52b2c390bbcb46618cf74a055a54f7cf"
+    },
+    {
+      "path": "job-tmp/geometry-rule-editor-JWOITf/未命名專案.gcanvas",
+      "bytes": 1714,
+      "sha256": "8a055e0f709dd910d2ab687823390e7450dae6f353e677edb42d8a25fc41b156"
+    },
+    {
+      "path": "job-tmp/geometry-rule-editor-rpnxWa/rule-editor-roundtrip.json",
+      "bytes": 4109,
+      "sha256": "84c32c85ddc136fa68a9bb946b35f490b50f24c6d4d236202caff4ca452d0aef"
+    },
+    {
+      "path": "job-tmp/geometry-rule-editor-rpnxWa/未命名專案.gcanvas",
+      "bytes": 1923,
+      "sha256": "2431fcd1d86c4d1de867f5f38cee3cc440a2340f00891e90d76223ca29f8a798"
+    },
+    {
+      "path": "job-tmp/geometry-rule-lines-NCDIhe/rule-lines-receipt.json",
+      "bytes": 4208,
+      "sha256": "d670a13d2555ce9e1ed49b19330694ffcf1e183217114e876d8904142d207582"
+    },
+    {
+      "path": "job-tmp/geometry-rule-lines-NCDIhe/未命名專案.gcanvas",
+      "bytes": 3367,
+      "sha256": "a0f9b3f41ea211e9c213e3c1fefc21c049a5c4521fdc069be51d98b334faebe3"
+    },
+    {
+      "path": "job-tmp/geometry-rule-lines-gNAZrf/rule-lines-receipt.json",
+      "bytes": 4183,
+      "sha256": "159d3317221e245ccf0a75bb0cb916d7f45ab4815678bd0c436b34e9b28a5844"
+    },
+    {
+      "path": "job-tmp/geometry-rule-lines-gNAZrf/未命名專案.gcanvas",
+      "bytes": 3343,
+      "sha256": "0b1ef34926eb995cb57919aa63a57378718ecbc4a3f0545aad00ac265fc1db9e"
+    },
+    {
+      "path": "job-tmp/tmp_s554fv5.scene",
+      "bytes": 6,
+      "sha256": "560cfb16a87e0e938208c0a072d5f837ffdf842feed4de3c34fd6069a30d3522"
+    }
+  ]
+}
