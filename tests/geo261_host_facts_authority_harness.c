@@ -291,7 +291,7 @@ static int hf_end_faces(void)
     CHECK("facts-end-order-raw-input",app_placement_read(&f->world,7,&p)&&app_boundary_read(&f->world,7,&b));
     strcpy(error,"untouched");
     CHECK("facts-span-error-precedes-source-failure",!app_reference_end_faces(&f->world,&p,&b,&self,false,0,100,40,50,error,sizeof error)&&
-        !strcmp(error,"V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍")&&geo_eval_node_count(f->ctx.sources)==0&&f->placement_hits==0);
+        !strcmp(error,"V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍——定位邊 e2 [50,100] mm，低端超出 [0,50] mm")&&geo_eval_node_count(f->ctx.sources)==0&&f->placement_hits==0);
     CHECK("facts-source-failure-after-span-check",!app_reference_end_faces(&f->world,&p,&b,&self,true,10,40,20,30,error,sizeof error)&&
         !strcmp(error,"I8: ordered contact source evaluation failed")&&f->placement_hits==1);
     CHECK("facts-end-order-world-unchanged",!memcmp(&f->world,&f->before,sizeof f->world));hf_free(f);return 0;

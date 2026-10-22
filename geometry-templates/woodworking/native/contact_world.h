@@ -23,9 +23,19 @@ typedef struct {
     const WoodContactMemberFact *members;
     size_t member_count;
 } WoodContactWorld;
-bool wood_contact_footprint_collides(const WoodContactWorld *,const GeoRect2 *,const WoodMember *);
 size_t wood_contact_collect_stops(const WoodContactWorld *,bool,const WoodMember *,WoodStopFace *,size_t);
+/* Positioning edge of a footprint (D16/R18): pure geometry. The interval on the length axis comes from the
+ * footprint alone and never from how the member was placed (at-face, at or through give the same fixed
+ * segment for the same footprint); the dump keeps references and placement order (R4) but not the method.
+ * Only the outer loop counts: hole edges are column stop faces without extension semantics (I20/I21). */
+/* The positioning edge of a footprint: its interval on the length axis and its outline edge id ("e<i>",
+ * index into the outer loop of the role boundary). out_edge may be NULL; no output is written when no
+ * positioning edge is found. wood_contact_boundary_interval is the same without the id. */
+bool wood_contact_boundary_edge(const WoodBoundaryRegion *,bool,GeoCoord,GeoCoord,GeoCoord,GeoCoord,GeoCoord *,GeoCoord *,int *);
 bool wood_contact_boundary_interval(const WoodBoundaryRegion *,bool,GeoCoord,GeoCoord,GeoCoord,GeoCoord,GeoCoord *,GeoCoord *);
+/* True when the contact range [lo,hi] (on the owner's length axis) lies on the owner's extension part (I22:
+ * an extension side counts as priority 2 when used as a stop). Only a boundary member located by an outline
+ * edge has a fixed part and an extension part; every other owner returns false. */
 bool wood_contact_owner_extension(const WoodContactWorld *,const WoodMember *,GeoCoord,GeoCoord);
 bool wood_contact_end_faces(const WoodContactWorld *,const WoodMember *,bool,GeoCoord,GeoCoord,GeoCoord,GeoCoord,char *,size_t);
 /* The optional resolver runs at the original collection point, after span

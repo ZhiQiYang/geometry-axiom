@@ -232,7 +232,14 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         added.update({"M85": "geometry-core/grid_systems.inc", "M86": "geometry-core/kernel/geometry.c",
                       "M87": "geometry-templates/woodworking/native/contacts.c",
                       "M88": "geometry-templates/woodworking/native/contacts.c"})
-        self.assertEqual(28, len(added))
+        # #299 (I22 W V_EXTENSION names the edge and the interval): M89-M95 mutate contacts.c's message,
+        # M96 mutates contact_world.c's edge report.
+        added.update({mid: "geometry-templates/woodworking/native/contacts.c" for mid in ("M89", "M90", "M91", "M92", "M93", "M94", "M95")})
+        added["M96"] = "geometry-templates/woodworking/native/contact_world.c"
+        # #316 (the two remaining I11 same-surface filters): M97 in H references.inc, M98 in W world_validation.c.
+        added.update({"M97": "geometry-core/references.inc",
+                      "M98": "geometry-templates/woodworking/native/world_validation.c"})
+        self.assertEqual(38, len(added))
         self.assertEqual({**expected, **added}, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
         # The ten P-135/P-141 preview-only guards and the eight GEO-262 P-142
         # guards (M78-M85) run on the actual bridge.

@@ -12,16 +12,6 @@ static bool contact_contains(const WoodBoundaryRegion *b,const GeoRect2 *rect)
     GeoRegionView region={{b->outline.v,b->outline.count},holes,b->hole_count};
     return geo_region_contains_rect(&region,rect->min_u,rect->min_v,rect->max_u,rect->max_v);
 }
-bool wood_contact_footprint_collides(const WoodContactWorld *world,const GeoRect2 *rect,const WoodMember *exclude)
-{
-    if(!world||!rect)return true;
-    for(size_t i=0;i<world->member_count;++i){const WoodContactMemberFact *fact=&world->members[i];
-        const WoodMember *member=fact->member;
-        if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;
-        if(geo_rect_overlap_positive(rect,&fact->footprint))return true;
-    }
-    return false;
-}
 enum { CONTACT_ORDER_SLOTS=WOOD_CONTACT_MEMBER_CAPACITY*2 };
 typedef struct {
     size_t last[CONTACT_ORDER_SLOTS];
@@ -116,8 +106,8 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
     }
     return count;
 }
-bool wood_contact_boundary_interval(const WoodBoundaryRegion *boundary,bool along_v,
-    GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,GeoCoord *out_lo,GeoCoord *out_hi)
+bool wood_contact_boundary_edge(const WoodBoundaryRegion *boundary,bool along_v,
+    GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,GeoCoord *out_lo,GeoCoord *out_hi,int *out_edge)
 {
     GeoRect2 rect={along_v?cross_lo:span_lo,along_v?span_lo:cross_lo,along_v?cross_hi:span_hi,along_v?span_hi:cross_hi};
     if(!contact_contains(boundary,&rect))return false;
@@ -125,8 +115,11 @@ bool wood_contact_boundary_interval(const WoodBoundaryRegion *boundary,bool alon
     if(!wood_member_boundary_props(&outline,along_v,span_lo,span_hi,cross_lo,cross_hi,&on_boundary,&covers_edge,&edge)||!on_boundary||edge<0||(size_t)edge>=outline.count)return false;
     GeoPoint2 a=outline.v[edge],b=outline.v[((size_t)edge+1)%outline.count];
     *out_lo=along_v?contact_min(a.v,b.v):contact_min(a.u,b.u);
-    *out_hi=along_v?contact_max(a.v,b.v):contact_max(a.u,b.u);return true;
+    *out_hi=along_v?contact_max(a.v,b.v):contact_max(a.u,b.u);if(out_edge)*out_edge=edge;return true;
 }
+bool wood_contact_boundary_interval(const WoodBoundaryRegion *boundary,bool along_v,
+    GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,GeoCoord *out_lo,GeoCoord *out_hi)
+{return wood_contact_boundary_edge(boundary,along_v,span_lo,span_hi,cross_lo,cross_hi,out_lo,out_hi,NULL);}
 bool wood_contact_owner_extension(const WoodContactWorld *world,const WoodMember *owner,GeoCoord lo,GeoCoord hi)
 {
     if(owner->role!=WOOD_MEMBER_ROLE_BOUNDARY)return false;
@@ -147,8 +140,9 @@ bool wood_contact_end_faces_with_sources(const WoodContactWorld *world,const Woo
     GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,
     WoodContactStopResolver resolver,void *user,char *error,size_t cap)
 {
-    GeoCoord edge_lo=0,edge_hi=0;bool has_edge=wood_contact_boundary_interval(world->role_boundary,along_v,span_lo,span_hi,cross_lo,cross_hi,&edge_lo,&edge_hi);
-    if(!wood_member_span_extension_check(self,has_edge,span_lo,span_hi,edge_lo,edge_hi,error,cap))return false;
+    GeoCoord edge_lo=0,edge_hi=0;int edge_index=-1;
+    bool has_edge=wood_contact_boundary_edge(world->role_boundary,along_v,span_lo,span_hi,cross_lo,cross_hi,&edge_lo,&edge_hi,&edge_index);
+    if(!wood_member_span_extension_check(self,has_edge,edge_index,span_lo,span_hi,edge_lo,edge_hi,error,cap))return false;
     bool ext_end[2]={has_edge&&self->role==WOOD_MEMBER_ROLE_BOUNDARY&&span_lo<edge_lo,has_edge&&self->role==WOOD_MEMBER_ROLE_BOUNDARY&&span_hi>edge_hi};
     WoodStopFace faces[WOOD_CONTACT_FACE_CAPACITY];size_t face_count;
     if(resolver){if(!resolver(user,along_v,self,faces,WOOD_CONTACT_FACE_CAPACITY,&face_count)){

@@ -10,8 +10,15 @@ bool frozen_span_extension_check(const WoodMember *, bool,
 bool frozen_end_contact_check(const WoodMember *, const WoodStopFace *,
     const WoodMember *, bool, char *, size_t);
 
-static const char SPAN_ERROR[] =
+#define EDGE 5
+static const char SPAN_LEGACY_PREFIX[] =
     "V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍";
+static const char SPAN_ERROR[] =
+    "V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍——定位邊 e5 [0,100] mm，低端超出 [-1,0] mm";
+static const char SPAN_HIGH_ERROR[] =
+    "V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍——定位邊 e5 [0,100] mm，高端超出 [100,101] mm";
+static const char SPAN_BOTH_ERROR[] =
+    "V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍——定位邊 e5 [0,100] mm，低端超出 [-3,0] mm，高端超出 [100,104] mm";
 static const char OUTLINE_ERROR[] =
     "V_CUT_PRIORITY：角材 17 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC";
 static const char EQUAL_PRIORITY_ERROR[] =
@@ -31,18 +38,23 @@ static int span(void)
 {
     WoodMember self = member(17,WOOD_MEMBER_ROLE_PRIMARY,2);
     char err[512] = "unchanged";
-    CHECK("span-no-edge", wood_member_span_extension_check(&self,false,-1,101,0,100,err,sizeof err));
+    CHECK("span-no-edge", wood_member_span_extension_check(&self,false,EDGE,-1,101,0,100,err,sizeof err));
     CHECK("span-accept-output-unchanged", !strcmp(err,"unchanged"));
     self.role = WOOD_MEMBER_ROLE_BOUNDARY;
-    CHECK("span-boundary-extension", wood_member_span_extension_check(&self,true,-1,101,0,100,err,sizeof err));
+    CHECK("span-boundary-extension", wood_member_span_extension_check(&self,true,EDGE,-1,101,0,100,err,sizeof err));
     self.role = WOOD_MEMBER_ROLE_PRIMARY;
-    CHECK("span-touch-equality", wood_member_span_extension_check(&self,true,0,100,0,100,err,sizeof err));
-    CHECK("span-contained", wood_member_span_extension_check(&self,true,1,99,0,100,err,sizeof err));
-    CHECK("span-low-refusal", !wood_member_span_extension_check(&self,true,-1,100,0,100,err,sizeof err));
+    CHECK("span-touch-equality", wood_member_span_extension_check(&self,true,EDGE,0,100,0,100,err,sizeof err));
+    CHECK("span-contained", wood_member_span_extension_check(&self,true,EDGE,1,99,0,100,err,sizeof err));
+    CHECK("span-low-refusal", !wood_member_span_extension_check(&self,true,EDGE,-1,100,0,100,err,sizeof err));
     CHECK("span-error-exact", !strcmp(err,SPAN_ERROR));
-    CHECK("span-high-refusal", !wood_member_span_extension_check(&self,true,0,101,0,100,NULL,0));
+    CHECK("span-legacy-prefix", !strncmp(err,SPAN_LEGACY_PREFIX,strlen(SPAN_LEGACY_PREFIX)));
+    CHECK("span-high-refusal", !wood_member_span_extension_check(&self,true,EDGE,0,101,0,100,NULL,0));
+    CHECK("span-high-refusal-message", !wood_member_span_extension_check(&self,true,EDGE,0,101,0,100,err,sizeof err));
+    CHECK("span-high-error-exact", !strcmp(err,SPAN_HIGH_ERROR));
+    CHECK("span-both-refusal", !wood_member_span_extension_check(&self,true,EDGE,-3,104,0,100,err,sizeof err));
+    CHECK("span-both-error-exact", !strcmp(err,SPAN_BOTH_ERROR));
     self.role = (WoodMemberRole)-7;
-    CHECK("span-unknown-role-not-boundary", !wood_member_span_extension_check(&self,true,0,101,0,100,NULL,0));
+    CHECK("span-unknown-role-not-boundary", !wood_member_span_extension_check(&self,true,EDGE,0,101,0,100,NULL,0));
     return 0;
 }
 
@@ -151,7 +163,7 @@ static int buffer(void)
             size_t cap = capacities[c];
             bool ok;
             if (kind == 0) {
-                ok = wood_member_span_extension_check(&self,true,-1,100,0,100,err,cap);
+                ok = wood_member_span_extension_check(&self,true,EDGE,-1,100,0,100,err,cap);
             } else {
                 face.kind = kind == 1 ? WOOD_STOP_OUTLINE_EDGE : WOOD_STOP_MEMBER_SIDE;
                 ok = wood_member_end_contact_check(&self,&face,&owner,false,err,cap);
@@ -171,8 +183,8 @@ static int buffer(void)
     }
     self.id = UINT32_MAX;
     char err[512];
-    CHECK("full-id-refusal", !wood_member_span_extension_check(&self,true,-1,100,0,100,err,sizeof err));
-    CHECK("full-id-text", !strcmp(err,"V_EXTENSION：非 boundary 角材（4294967295）的 footprint 超出定位邊範圍"));
+    CHECK("full-id-refusal", !wood_member_span_extension_check(&self,true,EDGE,-1,100,0,100,err,sizeof err));
+    CHECK("full-id-text", !strcmp(err,"V_EXTENSION：非 boundary 角材（4294967295）的 footprint 超出定位邊範圍——定位邊 e5 [0,100] mm，低端超出 [-1,0] mm"));
     return 0;
 }
 
@@ -204,9 +216,16 @@ static int equivalence(void)
         GeoCoord lo = (GeoCoord)(next_random()%20)-5, hi = lo+(GeoCoord)(next_random()%20);
         bool has_edge = (next_random()%2)!=0;
         memset(actual,0x5a,sizeof actual); memset(expected,0x5a,sizeof expected);
-        a = wood_member_span_extension_check(&self,has_edge,lo,hi,0,20,actual,cap);
+        a = wood_member_span_extension_check(&self,has_edge,EDGE,lo,hi,0,20,actual,cap);
         e = frozen_span_extension_check(&self,has_edge,lo,hi,0,20,expected,cap);
-        CHECK("frozen-span-verdict-and-bytes", a == e && !memcmp(actual,expected,sizeof actual));
+        /* #299 appends the locating edge and the exceeded interval(s) to the frozen wording: the verdict
+         * is identical, a truncating capacity cuts both texts at the same byte, and a full-size refusal
+         * keeps the frozen text as an exact, strictly shorter prefix. */
+        if (a == e && !a && cap == sizeof actual) {
+            CHECK("frozen-span-verdict-and-prefix", !strncmp(actual,expected,strlen(expected)) && strlen(actual) > strlen(expected));
+        } else {
+            CHECK("frozen-span-verdict-and-bytes", a == e && !memcmp(actual,expected,sizeof actual));
+        }
     }
     return 0;
 }

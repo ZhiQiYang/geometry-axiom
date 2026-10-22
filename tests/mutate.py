@@ -162,13 +162,22 @@ MUTANTS = [
          file='geometry-core/kernel/geometry.c',
          old='return geo_coord_min(a->max_u,b->max_u)>geo_coord_max(a->min_u,b->min_u)&&\n        geo_coord_min(a->max_v,b->max_v)>geo_coord_max(a->min_v,b->min_v);',
          new='return geo_coord_min(a->max_u,b->max_u)>=geo_coord_max(a->min_u,b->min_u)&&\n        geo_coord_min(a->max_v,b->max_v)>=geo_coord_max(a->min_v,b->min_v);'),
-    # main 的 M13 打在 world_footprint_collides,它唯一的呼叫點是 resolve_auto_span 的逐 cell 碰撞。
-    # GEO-261 51e9045b 把逐 cell 檢查移到 K geo_strip_intervals,同承載面過濾改在 resolve_auto_span
-    # 收 obstacles 的這一行;world_footprint_collides(→ W wood_contact_footprint_collides)從此沒有呼叫點,
-    # 打在那裡的突變不會被執行。
+    # M13 打在 resolve_auto_span 收障礙物的同承載面過濾(放置當下)。GEO-261 51e9045b 把逐 cell 檢查移到
+    # K geo_strip_intervals 之後,原本的 world_footprint_collides(→ W wood_contact_footprint_collides)
+    # 沒有呼叫點,已於 #316 移除。I11 另外兩個「只比同承載面」的過濾是 M97(references.inc 的 reference_check_all)
+    # 與 M98(W world_validation.c 的最終世界重驗):單一承載面的場景全都無感,由
+    # _i11_two_surfaces_same_uv_accept.scene 殺。
     dict(id="M13", desc="I11：auto 跨距的碰撞障礙只收同承載面已放角材 -> 改收不同承載面(!= 改 ==)",
          old='        if(!t->placed||a->placement_id!=placement->id)continue;\n        if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;',
          new='        if(!t->placed||a->placement_id==placement->id)continue;\n        if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;'),
+    dict(id="M97", desc="I11：reference_check_all 的兩兩檢查拿掉「只比同承載面」過濾(references.inc)；兩片承載面各有一支角材的 _i11_two_surfaces_same_uv_accept 必轉紅",
+         file="geometry-core/references.inc",
+         old='if(other_anchor.placement_id!=a->placement_id)continue;',
+         new='if(0&&other_anchor.placement_id!=a->placement_id)continue;'),
+    dict(id="M98", desc="I11：W 最終世界重驗的兩兩檢查拿掉「只比同承載面」過濾(world_validation.c)；同上場景必轉紅",
+         file="geometry-templates/woodworking/native/world_validation.c",
+         old='if(!b.member->placed||a.placement_id!=b.placement_id)continue;',
+         new='if(!b.member->placed)continue;'),
     # ---- collect_stop_faces:擋面枚舉 ----
     dict(id="M14", desc="D11：只收垂直邊 -> 只收平行邊(along_v 分支)",
          file='geometry-templates/woodworking/native/contact_world.c',
@@ -364,6 +373,40 @@ MUTANTS = [
          file="geometry-templates/woodworking/native/contacts.c",
          old="        (span_lo < edge_lo || span_hi > edge_hi)) {",
          new="        (span_lo < edge_lo)) {"),
+    # I22/#299：V_EXTENSION 訊息逐欄位的牙齒。contacts.c 的 snprintf 與兩段 clause 各拿掉一個欄位，
+    # contact_world.c 的定位邊編號回報一個；判定在 run_tests.py 的 p8、p8b(error 清單 + error_not)。
+    dict(id="M89", desc="I22/#299：V_EXTENSION 訊息的料件欄位拿掉(角材編號固定印成 0)；p8、p8b、_role_priority_mutant 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='(unsigned)self->id, edge_index,',
+         new='0u, edge_index,'),
+    dict(id="M90", desc="I22/#299：V_EXTENSION 訊息拿掉定位邊編號 e<i>；p8、p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='"——定位邊 e%d [%lld,%lld] mm%s%s",\n                     (unsigned)self->id, edge_index,',
+         new='"——定位邊 [%lld,%lld] mm%s%s",\n                     (unsigned)self->id,'),
+    dict(id="M91", desc="I22/#299：V_EXTENSION 訊息拿掉定位邊區間 [edge_lo,edge_hi] mm；p8、p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='"——定位邊 e%d [%lld,%lld] mm%s%s",\n                     (unsigned)self->id, edge_index,\n                     (long long)edge_lo, (long long)edge_hi, low_note, high_note);',
+         new='"——定位邊 e%d%s%s",\n                     (unsigned)self->id, edge_index,\n                     low_note, high_note);'),
+    dict(id="M92", desc="I22/#299：V_EXTENSION 訊息拿掉「低端超出」區間；凹角在定位邊低端的 _s1_p8 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_lo > span_lo) {',
+         new='if (0) {'),
+    dict(id="M93", desc="I22/#299：V_EXTENSION 訊息拿掉「高端超出」區間；凹角在定位邊高端的 _s1_p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_hi < span_hi) {',
+         new='if (0) {'),
+    dict(id="M94", desc="I22/#299：V_EXTENSION 訊息的「低端超出」不論有沒有超出都印(多印一段假區間)；_s1_p8b 的 error_not 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_lo > span_lo) {',
+         new='if (1) {'),
+    dict(id="M95", desc="I22/#299：V_EXTENSION 訊息的「高端超出」不論有沒有超出都印(多印一段假區間)；_s1_p8 的 error_not 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_hi < span_hi) {',
+         new='if (1) {'),
+    dict(id="M96", desc="I22/#299：W 的 wood_contact_boundary_edge 不回報定位邊編號(訊息印成 e-1)；p8、p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contact_world.c",
+         old='if(out_edge)*out_edge=edge;',
+         new='(void)edge;'),
 ]
 
 
