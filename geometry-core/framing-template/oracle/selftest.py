@@ -7,6 +7,8 @@
      (左上 ↔ 左下、左上 ↔ 右上),也要等於預期清單的 step_mirror 部分(#251 審查 392d4aa7 阻擋 1)。
 用法另有 --mutants-only:只跑 (1)(2),跳過掃描。(1) 也包括引文逐字檢查(quote_check.py,讀受測這棵樹自己的 決策佇列.md)
     與掃描斷言比對函式 compare_unbuildable 的直接測試。
+    C4 負對照:3600×3000 每種排法拿掉一支記號副支後,共用的 sweep_family 必須記下 8 筆 inconsistent,
+    檢查碼含 C4_SPACING、C9_MARKS_NOT_ALIGNED、C12_JIG_MARK_MISSING;把 inconsistent 分支改成 elif False 時這一筆轉紅。
     P-182(最後一條主支縫的候選):手算對照組 HAND182(座標由規則手算,不從程式讀回;建構端與 C7 若一起算錯候選集合只靠它們抓得到)、
     trace 造假與檢查端盲點的 tamper 測試(C7 自己重建每個候選,不信 trace;check() 與 p182_trace_problems 都要報)。
     第 21 輪(#251 審查 92e64028):H6(退縫後的候選要補併料)與 TR182(15 間 P-182 對照房加 H6 轉置成板長沿 Y,各 4 種排法,縫位、trace 候選、衝突碼寫成常數),
@@ -1246,6 +1248,33 @@ ok = all(not x_ and not m_ for x_, m_ in _cmp) and not _b0 and not _b1 and _k0 a
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] 小型牆階/鏡像掃描 {len(_ministeps)} 間:原房 {_n0} 次、鏡像 {_n1} 次可施工(只有核心限制的 {len(_k0)}、{len(_k1)}),"
       f"檢查失敗 {len(_b0) + len(_b1)};和預期清單(不可施工、核心限制)、鏡像對應的差異 {[(len(x_), len(m_)) for x_, m_ in _cmp]}")
+# C4 負對照(PR #327 審查 6334412484 須改 1):共用的 sweep_family 必須真的走進 inconsistent 分支。
+# 3600×3000 矩形、8 種排法,各拿掉清單裡第一支記號副支(role=mark、kind=secondary);conflicts 仍空。
+# 把上面 elif v_ != "buildable" 改成 elif False 時 bad_ 是空的,這一筆轉紅(沒抓到)。
+_c4_orig = fo.build
+
+
+def _c4_drop_mark(room, layout, params, mut=frozenset(), _p182=None):
+    r_ = _c4_orig(room, layout, params, mut, _p182=_p182)
+    for t_ in r_["timbers"]:
+        if t_.get("kind") == "secondary" and t_.get("role") == "mark":
+            r_["timbers"].remove(t_)
+            break
+    return r_
+
+
+fo.build = _c4_drop_mark
+try:
+    _c4u, _c4k, _, _c4b, _, _ = sweep_family([("C4NEG", RECT(3600, 3000))])
+finally:
+    fo.build = _c4_orig
+_c4want = {"C4_SPACING", "C9_MARKS_NOT_ALIGNED", "C12_JIG_MARK_MISSING"}
+_c4miss = [row for row in _c4b if not _c4want <= set(row[2])]
+ok = len(_c4b) == 8 and not _c4u and not _c4k and not _c4miss
+failed |= not ok
+print(f"[{'紅' if ok else '沒抓到!'}] C4NEG sweep_family inconsistent  "
+      f"3600×3000 拿掉一支記號副支:要 8 筆 inconsistent,檢查含 C4_SPACING、C9_MARKS_NOT_ALIGNED、C12_JIG_MARK_MISSING;"
+      f"實得 bad {len(_c4b)}、不可施工 {len(_c4u)}、只有核心限制 {len(_c4k)}")
 # 引文逐字(#251 審查 178ba084 第 2、3 項):標成使用者原話的引文都要逐字出現在受測這棵樹的 決策佇列.md;缺了某一節的佇列要紅,而且要指出缺了哪一節;反例要抓到、正例要過
 sys.path.insert(0, str(HERE))
 import quote_check  # noqa: E402
