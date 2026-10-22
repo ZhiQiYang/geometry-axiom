@@ -38,3 +38,34 @@ H oracle比較每一consumer完整有序source key／kind序列、原prefix有�
 member獨立probe的01保留輸入綁定缺口：當時untracked新include未在Git patch中；02-bound-inputs將五個原輸入及compiler實讀snapshot逐bytes/hash固定，原12次結果與01一致，工具／判準未改。整合load-residual suite另將新include複製進NativeBuild工作目錄，compiler實際輸入亦完整封存。
 
 下一步在新公開產品／tests提交上實跑完整19案PF3工具、前三已修suite與原必要八suite；之後由整份帳本／Linux架構與固定最終SHA原完整native、175 A/B/C、36交錯量測及profile收尾。本段仍為進度，不宣稱#323完整驗收完成。
+
+## 固定公開 P 的完整 PF3 與原必要 targeted suites
+
+產品／tests SHA 為 `e9fffc1cb036b6e4538a23f4dd12a9e10c5136f9`，兩個原外層收據皆實際退出0，前後 HEAD 同 P、工作樹 clean、patch hash 為空patch SHA256。此段只增加證據；帳本、架構與完整 native／175 A/B/C／36交錯性能／profile 由後續最終 SHA 收據另列。
+
+完整原 `tests/pf3_mutation_check.py --out /tmp/g261-next323-pf3-full-01 --jobs 1` 沒有縮減 CASES：baseline20／19個具名突變各正常退出1且killed／restored20，所有 errors=0、skips=0，原 summary 的 originalSourcesUnchanged=true。原21案完整build/tests/結果/fingerprints、20份實際mutant目標原bytes、外層command/env/SHA/exit/streams及原工具已封存；42份可重建執行檔以bytes/SHA另列。這不是只跑host-identity的替代工具。
+
+原 `tests/run_all.py --build` 選定原必要八套與前三已修四套，真實12套全綠；runner的原始結尾明示部分執行，不能當完整驗收。結果如下（C integrity是check-point數）：
+
+| suite | pass/total | fail | skip |
+|---|---:|---:|---:|
+| c:integrity | 432/432 | 0 | 0 |
+| core:run_tests | 165/165 | 0 | 0 |
+| py:test_bridge_integrity | 24/24 | 0 | 0 |
+| py:test_geo261_assembly_graph_product | 4/4 | 0 | 0 |
+| py:test_geo261_candidate_cache | 18/18 | 0 | 0 |
+| py:test_geo261_contact_sources | 14/14 | 0 | 0 |
+| py:test_geo261_graph_product | 5/5 | 0 | 0 |
+| py:test_geo261_host_facts_authority | 20/20 | 0 | 0 |
+| py:test_geo261_load_residual | 12/12 | 0 | 0 |
+| py:test_geo261_source_index | 14/14 | 0 | 0 |
+| py:test_geo261_wood_world_validation | 14/14 | 0 | 0 |
+| py:test_mutation_anchors | 3/3 | 0 | 0 |
+
+所有12套專屬原logs、10份原unittest JSON、三份execution JSONL、temporary-build inputs、三個實際binary原fingerprint和bytes/SHA、外層命令／環境／SHA／退出碼／完整streams均已凍結。沒有收進其他舊suite日誌；沒有重新解讀紅燈成通過。
+
+**邊界仍保留：** placement guard單刪的合法生命期fixture為0／0／0等價；配對控制只證明在anchor-invalidator fault前置下的第二防線0／1／0，不冒稱單fault必要性。舊 `AppFootprintMemo` never-invalidate檢查保留原斷言，只是手動memo單元檢查，不能當產品member_reads失效保證；新增自然warm的member fixture才對真產品路徑取證。sealed新guard只恢復內部H既有warm facts的相容性，不改公開K/W sealed新query政策。
+
+下一步由固定最終來源重新檢查／必要時整份更新帳本，Linux重產架構四檔，再跑完整原native、175 A/B/C、36交錯量測與profile。不宣稱本段已完成整個#323。
+
+封存工具第一版曾將原 `binaries.py` 的 CRLF→LF 正規化來源指紋誤與 raw bytes hash 比較而退出1；原錯誤與當時script保留於 targeted archive 的 `packager-attempt-01/`。只修封存比較規則，產品、測試及原執行不改；重試封存真退出0。原binary raw bytes/SHA仍獨立逐項核對。
