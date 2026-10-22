@@ -74,4 +74,7 @@
 - 2026-10-22T21:38:12.156097+00:00 — **architecture-product-tests**：原退出0；收據完整=True；基礎設施錯誤=0；原始輸出完整封存，判準未變
   下一步：完成本輪其餘專項，收齊紅燈後集中分類修正；不以歷史綠燈替代。原始資料：`raw/architecture-product-tests.raw.tar.gz`。
 
+- 2026-10-22T21:40:16.290089+00:00 — **F2-P73-controlled**：同F2受控真app callback反證成立：fixed0／只撤app guard後原P73具名ASSERT退出1／restored0；三phase各明確呼叫一次原callback，原predicate及測試不改，來源最終clean；scope為受控callback，不改寫舊自然subset撤回0的歷史
+  下一步：F2-P52-runtime。原始資料：`raw/F2-P73-controlled.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
