@@ -32,4 +32,7 @@
 - 2026-10-22T18:57:38.461036+00:00 — **space**：原退出0；收據完整=True；超正式時限=False；衍生通過=True；基礎設施錯誤=0
   下一步：串行完成本輪其餘七項與全部專項；收齊紅燈後集中分類修正。原始資料：`raw/space.raw.tar.gz`。
 
+- 2026-10-22T18:59:05.727715+00:00 — **grid-publication-repair**：grid 原測試退出0且符合正式時限；自動推送曾因Git無法讀取帳密而退出1／Git128。新雲端命令已一般push退出0，ls-remote確認26826663公開於整合分支。保留原失敗row／全部輸出與成功工具合併串流，不改退出碼、不重跑產品測試。space後續自動推送已恢復0。
+  下一步：繼續timber與全部專項；正式七項outer若因保留的publication1退出1，與各原產品job0及已修復推送分欄判定。原始資料：`raw/grid-publication-repair.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
