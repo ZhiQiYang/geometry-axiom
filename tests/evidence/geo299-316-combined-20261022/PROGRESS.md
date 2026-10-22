@@ -61,3 +61,9 @@ contacts原10/10 tests綠，23個控制各原0／1／0。contact-world原9方法
 已保留全部新舊CHECK，只把新增boundary-edge failure-output一條移至原I5判準之後，保原null-success位置並重設該檢查sentinels；沒有刪／放寬斷言或改expected。原正典`python3 -B geometry-guide/sync_axiom_reader.py`已真退出0，五道assert、independent_ssot、source_sections均pass，patches90；只機械更新唯一reader的場景／registry追溯，SSOT／決策／BACKLOG前後LF hash一致。此generation原基底ef32a482加明列fixture patch，不能冒稱新SHA正式驗收。原stdout／stderr／退出碼／環境／Git patch綁定保留，主要原streams已先公開，完整Git patch raw另存workspace待後續封包。
 
 parent開始#323正式F f43e8d8b876f587c11778fa74a80b205b51396b6的perf/profile，明確要求暫停新增compile/native/控制/reader重建/壓縮。所有本agent既有重型均已自然終態，沒有活PID；因此暫不啟reader51、撤回／恢復控制、Node193環境項或manifest lexer。只先推可審source與此進度，未知結果仍待真正執行；沒有把generation0當51 tests通過。
+
+## 機械manifest guard union準備完成
+
+parent正式perf/profile終態後已解除私有診斷門。以公開P2 `9b15f91dc86d8c51c804919c8b38160e4aaa1d0e` clean來源，原READY工具的collect_w_guard_inventory呼叫原architecture lexer(c=True)，完整目前W-owned C清單盤點、舊guard union真tokens，原命令真退出0。只新增wood_contact_boundary_edge（實際4處origins）並依授權退役wood_contact_footprint_collides；動態920→920，strings舊集合全保，其他roots／policy／routes／trust不變，沒有手選兩改檔代完整lex。原W現在精確retired token為零；完整owned C closure＋舊sealed origins仍須後續正式原architecture driver，不能把preliminary W-only盤點當完整收據。
+
+主manifest僅+1/-1兩行；scan／report／receipt仍未改／未產。原reader generation與本次lex準備全部commands/env/SHA/patch/fullstreams/tools/inventory均在repair-preparation-01原raw包，先前workspace完整patch原資料也已補齊公開。接著固定本批來源後跑授權targeted與反證；未開整份ledger、另一完整native、browser或perf。
