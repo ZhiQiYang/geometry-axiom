@@ -8,4 +8,7 @@
 - 2026-10-22T17:39:31.997952+00:00 — **architecture-html-refresh**：Linux 四檔重產完成；原架構三裁判退出碼皆 0。唯一輸入變更是正典閱讀器 I11 trace，manifest 與 scan 逐位元組不變；601/333/796、零診斷。這是 P2 準備收據，最終 F 尚待固定並完整重跑。
   下一步：安裝已重產四檔，採用嚴格核對的三筆套件數量後固定 F；完整重跑七項與專項。原始資料：`raw/architecture-html-refresh.raw.tar.gz`。
 
+- 2026-10-22T17:40:18.869272+00:00 — **census-count-proposal**：完整 A census 的紅燈原樣保留；三個新增回歸套件實測 9/9、19/19、19/19。兩個純 JSON 核對命令皆 0，只提案既有 count 的 7→9、17→19、15→19；不採舊 unit 正規化、不刪測試、不降低斷言。P2 閱讀器修復後 51 項原裁判已綠；最終 F 仍須嚴格完整 native。
+  下一步：只安裝三筆 count 差分並正常推送固定 F，開始同 F 的完整七項與專項。原始資料：`raw/census-count-proposal.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
