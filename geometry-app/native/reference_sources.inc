@@ -580,8 +580,8 @@ static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
         WoodContactMemberFact *fact=&out->members[i];*fact=facts.members[i];
         if(!fact->member->placed||fact->member==request->exclude)continue;
         uint32_t id=fact->member->id;GeoSourceValue value;
-        if(!ctx->use_current_values){WoodMemberPlacement anchor;
-            if(!wood_definition_sources_placement(ctx->definition_sources,id,&anchor))return false;
+        if(!ctx->use_current_values){WoodMemberPlacementContact anchor;
+            if(!wood_definition_sources_placement_contact(ctx->definition_sources,id,&anchor))return false;
             fact->placement_id=anchor.placement_id;fact->order=anchor.order;
             fact->along_v=anchor.length_direction==GEO_DIRECTION_POS_V||anchor.length_direction==GEO_DIRECTION_NEG_V;
         }

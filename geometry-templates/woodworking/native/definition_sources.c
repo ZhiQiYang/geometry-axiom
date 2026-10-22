@@ -22,6 +22,10 @@ static void wd_text(WoodDefinitionWriter *w,const char *s,size_t capacity)
 {size_t n=0;while(n<capacity&&s[n])++n;if(n==capacity){w->ok=false;return;}wd_write(w,n,4);for(size_t i=0;i<n;++i)wd_write(w,(unsigned char)s[i],1);}
 static void wd_read_text(WoodDefinitionReader *r,char *s,size_t capacity)
 {uint64_t n=wd_read(r,4);if(!r->ok||n>=capacity||n>r->size-r->at){r->ok=false;return;}memcpy(s,r->bytes+r->at,(size_t)n);s[n]=0;r->at+=(size_t)n;}
+static void wd_skip(WoodDefinitionReader *r,size_t bytes)
+{if(!r->ok||bytes>r->size-r->at){r->ok=false;return;}r->at+=bytes;}
+static void wd_skip_text(WoodDefinitionReader *r,size_t capacity)
+{uint64_t n=wd_read(r,4);if(!r->ok||n>=capacity||n>r->size-r->at){r->ok=false;return;}r->at+=(size_t)n;}
 GeoSourceRef wood_definition_source_ref(GeoProviderToken token,WoodDefinitionKind kind,uint32_t id,WoodDefinitionKey *key)
 {if(!key)return (GeoSourceRef){token,NULL,0};WoodDefinitionWriter w={key->bytes,0,sizeof key->bytes,true};wd_write(&w,kind,1);wd_write(&w,id,4);return (GeoSourceRef){token,key->bytes,sizeof key->bytes};}
 bool wood_definition_source_decode(const GeoSourceRef *ref,WoodDefinitionKind *kind,uint32_t *id)
@@ -76,6 +80,18 @@ bool wood_definition_sources_member(WoodDefinitionSources *s,uint32_t id,WoodMem
 {if(!out)return false;WoodDefinitionReader r;WoodMemberDefinition m={0};if(!wd_reader(s,WOOD_DEFINITION_MEMBER,id,&r))return false;wd_member_read(&r,&m);if(!r.ok||r.at!=r.size||m.id!=id)return false;*out=m;return true;}
 bool wood_definition_sources_placement(WoodDefinitionSources *s,uint32_t id,WoodMemberPlacement *out)
 {if(!out)return false;WoodDefinitionReader r;WoodMemberPlacement a={0};if(!wd_reader(s,WOOD_DEFINITION_PLACEMENT,id,&r))return false;uint32_t actual=wd_placement_read(&r,&a);if(!r.ok||r.at!=r.size||actual!=id)return false;*out=a;return true;}
+bool wood_definition_sources_placement_contact(WoodDefinitionSources *s,uint32_t id,WoodMemberPlacementContact *out)
+{
+    if(!out)return false;WoodDefinitionReader r;WoodMemberPlacementContact contact={0};
+    if(!wd_reader(s,WOOD_DEFINITION_PLACEMENT,id,&r))return false;
+    uint32_t actual=(uint32_t)wd_read(&r,4);contact.placement_id=(uint32_t)wd_read(&r,4);
+    wd_skip(&r,8);contact.length_direction=(int32_t)wd_read(&r,4);
+    /* offset 20 起的 107 個固定位元組後，三個字串仍依完整格式逐一驗證。 */
+    wd_skip(&r,107);wd_skip_text(&r,sizeof ((WoodMemberPlacement *)0)->ref_derived_key);
+    contact.order=wd_read(&r,8);wd_skip(&r,1);
+    for(int i=0;i<2;++i){wd_skip(&r,16);wd_skip_text(&r,sizeof ((WoodMemberReferenceFace *)0)->key);}
+    if(!r.ok||r.at!=r.size||actual!=id)return false;*out=contact;return true;
+}
 bool wood_definition_sources_dimension(WoodDefinitionSources *s,uint32_t id,bool b,GeoCoord *out)
 {if(!out)return false;GeoSourceValue v;if(!wd_get(s,b?WOOD_DEFINITION_MEMBER_B:WOOD_DEFINITION_MEMBER_A,id,GEO_DEPENDENCY_VALUE_REQUIRED,&v)||v.kind!=GEO_SOURCE_QUANTITY||v.as.quantity.unit!=GEO_UNIT_LENGTH||v.as.quantity.den!=1)return false;*out=v.as.quantity.num;return true;}
 static void wd_box_write(WoodDefinitionWriter *w,uint32_t id,uint32_t space,int axis,GeoCoord xl,GeoCoord xh,GeoCoord yl,GeoCoord yh,GeoCoord zl,GeoCoord zh,bool beam)
