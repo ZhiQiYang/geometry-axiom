@@ -141,6 +141,13 @@
       "result": "環境 hard limit 修復後原退出0；保留原 q38 紅燈，未改產品與裁判",
       "next": "核對所有專項真實結果與封存 hash，再更新本輪唯一目前狀態及 PR 正文",
       "archive": "raw/q38-envfix.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T12:26:16.989335+00:00",
+      "label": "perf-diagnostics",
+      "result": "完成原方法及 O2 profile、CPU 資源診斷；兩個無足夠收益候選已撤回；正式 P-189 紅燈保留",
+      "next": "完整驗證無快取 canonical 窄讀取候選，量測與撤回自證成功後才重產帳本及新最終整輪",
+      "archive": "raw/perf-diagnostics.raw.tar.gz"
     }
   ]
 }
