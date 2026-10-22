@@ -95,4 +95,7 @@
 - 2026-10-22T21:59:23.051978+00:00 — **F2-parser-o2**：同 F2 parser O2 外部差分真退出0/passResult=true，原compile/run皆0；199810 observations、零issue、run stderr空且原末行PASS。14input/context hashes前後同、來源F2/clean；同actual placement_sources.c原完整decoder與private header比較，不是mutation或正式17項代替。
   下一步：F2-parser-sanitized。原始資料：`raw/F2-parser-o2.raw.tar.gz`。
 
+- 2026-10-22T22:00:16.578922+00:00 — **F2-parser-sanitized**：同 F2 parser ASan/UBSan 差分真退出0/passResult=true，原compile/run皆0；199810 observations、零issue、run stderr空且原末行PASS。原SAN flags/env未改，14input/context hashes前後同、來源F2/clean；為外部差分支援證據，不冒稱mutation或替代正式17項。
+  下一步：F2-Cperf。原始資料：`raw/F2-parser-sanitized.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
