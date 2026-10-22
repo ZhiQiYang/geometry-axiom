@@ -1,10 +1,10 @@
 # #314 設計稿：一軸相位差的原生提交檢查（D10b / I24）
 
-- 對象：`D:/geometry-axiom-work/geo261-integration`，head `09ab5f793e97a6be1a0a9e0c13d6ec7677d382e1`（GEO-261 整合枝，#288 的 head）。
+- 對象：GEO-261 整合基底。草稿最初對照 `09ab5f79`。§2 路徑普查於 2026-10-22 改以 `546e2eb2` 的程式為準，含 `AppDefaultReplay`。
 - 狀態：草稿。只讀了程式、寫了文字檔，**沒有建置、沒有跑任何測試**。`patch.diff` 只驗過 `git apply --check`（見 §9）。
-- 條文來源：`公理層.md` 的 D10b、I24、D29、R22、R60，決策佇列「2026-10-16 #240 S6」與「2026-10-18 #260 最終文字確認…」第 2 題。本稿不改任何條文；`公理層.md` 在 `09ab5f79` 與目前 main 逐位元相同。
-- 對應工單：issue #314；BACKLOG 的 GEO-267。
-- 行號一律是 `09ab5f79` 的行號。`current_geometry.c` 是 CRLF，行號以 CRLF 切行計。
+- 條文來源：`公理層.md` 的 D10b、I24、D29、R22、R60，決策佇列「2026-10-16 #240 S6」與「2026-10-18 #260 最終文字確認…」第 2 題。本稿不改任何條文。
+- 對應工單：issue #314；BACKLOG 的 GEO-267。2026-10-22 的兩題邊界見決策佇列「2026-10-22 #314 一軸相位差的兩題邊界：混合操作放行、刪後重建不延續例外」。
+- §2 的行號是 `546e2eb2` 的行號，已逐一對過該 commit 的對應行。多數呼叫點與 `09ab5f79` 相同；D4 的內建場景路徑已改寫，`grid_adapter.inc` 的路徑改為 `geometry-app/native/grid_adapter.inc:20`，D6 的載入函式起點改為 `model_base.c:447`。§3 以後仍沿用原稿行號，這次沒有逐行重審。`current_geometry.c` 是 CRLF，行號以 CRLF 切行計。
 
 ## 0. 摘要
 
@@ -16,7 +16,7 @@
 3. 提交 vs 整體取代的區分：`g_subgrid_before != NULL`（有基線）且 `!g_parsing_scene_file`（不是場景檔重放）。這是 I23 早就在用的基線機制，不新增旗標，不動候選結構、不動 `AppWorldOperation`。
 4. 改 4 個檔、淨增約 45 行。不新增檔案、不新增 include、不新增 source-graph 節點。
 5. 會讓既有測試轉紅的地方（用雙軸相位差的互動提交當夾具）已列在 `TESTS.md` §6。
-6. 這份稿裡有三件語意不確定的事，列在 §10。
+6. 三點定義推論寫在 §10，不再列為待決。題 3、題 4 依 2026-10-22 拍板寫在同一節。還沒做完的是逐路徑驗證。
 
 ## 1. 規則，逐句對照條文
 
@@ -48,7 +48,7 @@
 | ParameterRef (卡, 欄) | 同一個 (卡, 欄) | **沒變**（不管那張卡的值變不變，S7） |
 | 直接整數 ↔ ParameterRef，或 ParameterRef → 另一個 (卡, 欄) | | 比兩邊各自求出的值（K 的求值快取 `stagger`） |
 
-最後一列是我補的細節，條文沒有明寫，見 §10-1。
+最後一列（換來源時比兩邊求出的值）是定義推論，見 §10-1。同一筆又改卡又換來源，依 §10-1 題 3 的有序判定。
 
 ## 2. 提交路徑普查
 
@@ -69,7 +69,7 @@
 | C2 | DSL `grid-system`，既有 id（重宣告 = 編輯） | 同 C1；`transactions.inc:610` `system_edit` 強制 I8a 預覽；`line confirm <token>`：`transactions.inc:577-596` → `current_geometry.c:6364` | 同 C1 | 預覽：`transactions.inc:563`；確認：`current_geometry.c:6368` |
 | C3 | `engineering archive <base64>` 單行 | `engineering_commands.inc:77` `apply_engineering_line`，`:90-103` archive 分支；`:36` `eng_operation`；`:39` → `card_reference.inc:58` `grid_card_operation`；完成驗證 `:100` `reference_checked`（`references.inc:712`） | `put-grid-system`（`card_reference.inc:33-57`，內含 `u`/`v` 軸字串，走同一個 `grid_system_read_axis`） | `transactions.inc:563` |
 | C4 | 橋接器 `engineering-preview` / `engineering-confirm`（`engineering-transaction/1`） | `web_bridge.c:1094`；`engineering_bridge.inc:220/228`；`:164` `batch_preview`、`:137` `app_batch_candidate_apply`（`:157-159` 設基線並 `world_revalidate`）、`:194` `batch_confirm`（`:200` 確認重驗、`:205` 發佈） | 同 C3 的 op | 預覽：`engineering_bridge.inc:158`；確認：`current_geometry.c:6368` |
-| C5 | **R60 整卡提交**（#253 / #298 / #312） | 不是獨立入口：就是 C3、C4 裡的四個 op：`put-grid-system`（帶 `cardReference`，`card_reference.inc:33`）、`set-grid-card-reference`（`:66`）、`swap-grid-card-reference`（`:71`）、`unbind-grid-card-reference`（`:73-93`），寫回走 `grid_card_store`（`:31`）→ `app_grid_system_put`（`grid_adapter.inc:20`） | `put-grid-system` 可以直接帶雙軸 `stagger`；set／swap／unbind 只改間距與映射，**不動相位差欄位**，只可能讓既有相位差變成 0 或間距整倍數（由 K 的逐軸驗擋下，S8） | 同 C3、C4 |
+| C5 | **R60 整卡提交**（#253 / #298 / #312） | 不是獨立入口：就是 C3、C4 裡的四個 op：`put-grid-system`（帶 `cardReference`，`card_reference.inc:33`）、`set-grid-card-reference`（`:66`）、`swap-grid-card-reference`（`:71`）、`unbind-grid-card-reference`（`:73-93`），寫回走 `grid_card_store`（`:31`）→ `app_grid_system_put`（`geometry-app/native/grid_adapter.inc:20`） | `put-grid-system` 可以直接帶雙軸 `stagger`；set／swap／unbind 只改間距與映射，**不動相位差欄位**，只可能讓既有相位差變成 0 或間距整倍數（由 K 的逐軸驗擋下，S8） | 同 C3、C4 |
 | C6 | 參數改值 | C3、C4 的 `put-parameter`（`engineering_commands.inc:52`，`parameters.inc:405`）、`import-parameters`（`:49`，`parameters.inc:754`）、`delete-parameter`（`:55`，`parameters.inc:725`）、`parameter-package`（`:40`）。系統重新求值在重驗內：`reference_parameters_rebuild`（`current_geometry.c:6255`，`references.inc:681`）、`grid_systems_rebuild`（`:6270`） | 引用 `param:卡:欄` 的軸，快取值跟著卡變 | 同 C3、C4 |
 | C7 | 其他 DSL 指令：`grid-binding`、`grid-source-rule`、`boundary-keyed`、`grid … from-system/from-binding`、`subgrid`、`delete`、`boundary`／`placement`／`surface`／`move`／`guide`／`spec` 等 | 全部經 `apply_scene_line_unchecked`（`current_geometry.c:9939`）；staged 重驗點 `grid_bindings.inc:68/82`、`grid_subdivision.inc:107`、`boundary_vertex_keys.inc:180/270`、`grid_systems.inc:256` | **不改相位差欄位**；只是同一個重驗也跑到新檢查（舊兩軸系統沒動就通過） | `transactions.inc:563` |
 | C8 | 歷史群組內每一行 | `current_geometry.c:3047` → `apply_scene_line`；R56：「歷史群組內的每一行」各是一次提交，群組結束不是 | 同 C1…C7 | 每行各自的 `call->before` |
@@ -88,10 +88,10 @@
 | D3 | 場景匯入 `load-prepare` / `load-confirm` | `scene-import-bridge.inc:23/56`；確認只發佈（`:64`），不重驗 | 準備階段同 D2；確認階段不重驗 |
 | D4 | 開新、恢復內建場景 | `web_bridge.c:396` `cmd_replace_world` → `:213` `app_replace_world` | 開新是 `memset`；內建場景見下方注意 |
 | D5 | GDI 載入、CLI 載入 | `current_geometry.c:3822`（`gdi_load_scene_file`）、`:10235` | 都是 `parse_scene_file` |
-| D6 | 隔離重放（R46 重開、I31 交換包重建）與唯讀驗證 | `model_base.c:434-458`（基線 NULL，`app_scene_replay_file`）；`source-inspector-bridge.inc:209-211`（基線 NULL，`parse_scene_file`）；`engineering_bridge.inc:236-248` `cmd_engineering_validate`（驗證後丟棄） | 同 D2 |
+| D6 | 隔離重放（R46 重開、I31 交換包重建）與唯讀驗證 | `model_base.c:447` `model_load_evaluate`（`:455` 基線 NULL，`:456` `app_scene_replay_file`）；`source-inspector-bridge.inc:209-211`（基線 NULL，`parse_scene_file`）；`engineering_bridge.inc:236-248` `cmd_engineering_validate`（驗證後丟棄） | 同 D2 |
 | D7 | 前端「恢復資料」「載入方案快照」「開 .gcanvas」 | 前端走 `loadfile` / `load-prepare`（`geometry-web/serve.py:130,286`；`app.js:1870`） | 同 D2。這條是讀程式得到的，沒有實際執行驗證 |
 
-**注意（D4 內建場景）**：`reference_default_world`（`transactions.inc:833-856`，逐行迴圈在 `:841-851`）用逐行 `apply_scene_line("default", …)` 重建內建場景，而且**沒有設 `g_parsing_scene_file`**。它在「恢復內建場景」時，每行都是 H 眼中的提交。目前內建場景（room_a）沒有任何 `grid-system`，所以不受影響。這是目前唯一一個「整體取代卻用提交路徑」的例外；`TESTS.md` 的普查測試會固定「內建場景文字不含 `stagger`」，將來有人把雙軸相位差放進內建場景就會紅。
+**注意（D4 內建場景，`546e2eb2`）**：註解在 `transactions.inc:727-728`：這是橋接器內建預設的封閉重放，檔案重放政策分開，`scene_loading` 在這裡維持假，也不設 `g_parsing_scene_file`。`AppDefaultReplay`（`:729-732`）、`g_default_replay`（`:733`）、固定九行 `app_default_replay_lines`（`:734-740`）只有 surface、兩支 boundary、spec、guide、一支 primary，沒有 `grid-system`，也沒有 `stagger`。`reference_default_world`（`:833-853`）在有 frame 時把 `fixed_lines` 與 `next_line` 設好（`:842-843`），迴圈（`:846-850`）有 frame 就呼叫 `app_default_replay_line`（`:781`），沒有 frame 才呼叫 `apply_scene_line`。`app_default_replay_line`：沒有 frame → `apply_scene_line`（`:784`）；不符合 `app_default_replay_line_eligible` → `apply_scene_line`（`:786-787`）；符合資格 → `app_scene_candidate_apply`，基線是 `frame->before`（`:795-796`）。索引 5 與 6（spec、guide）在 `:775` 直接不合格，所以這兩行走 `apply_scene_line`。`reference_default_world_owned`（`:858-870`）組一個 `AppDefaultReplay`，只在評估中的候選且 `before` 配置成功時把 `g_default_replay` 指過去（`:862-868`），然後呼叫 `reference_default_world`（`:869`）。D61 仍把恢復內建場景列為整體取代。目前這九行沒有雙軸相位差，只能證明當前文字碰不到這項比較。`TESTS.md` C-6 是這份文字變了就響的警報，不把「內建場景禁止 `stagger`」升成新規則。
 
 ## 3. 檢查放在哪一層
 
@@ -128,14 +128,16 @@ return wood_grid_stagger_commit_valid(candidate 的 grid_store, g_subgrid_before
 ```
 
 - `g_parsing_scene_file`：`parse_scene_file` 期間為真（`current_geometry.c:9994/10113`）。載入場景檔、場景匯入準備、隔離重放、`source-inspect-file`、CLI／GDI 載入全部走它。檔案重放時每行的基線 `frame->before` 只是「載到這一行為止」的半成品世界（`transactions.inc:675-700`），拿來比較一定誤判，所以一律不比。
-- `g_subgrid_before == NULL`：沒有基線就沒有東西可比。`app_scene_load_evaluate`（`web_bridge.c:409-421`）、`model_base.c:447`、`source-inspector-bridge.inc:209` 都主動設 NULL。
+- `g_subgrid_before == NULL`：宿主在這些入口把基線清掉。`app_scene_load_evaluate`（`web_bridge.c:409-421`）、`model_load_evaluate`（`model_base.c:455`）、`source-inspector-bridge.inc:209` 都主動設 NULL。這是實作訊號，見下面一段。
 - 復原／重做根本不呼叫重驗（D1）。
+
+H 在沒有基線時提早回傳，這時不會呼叫 W。W 裡缺基線就拒絕，只在 W 真的被呼叫時才發生，救不到漏接基線的提交入口。`g_subgrid_before == NULL` 是宿主辨識操作類別的實作訊號。真提交漏傳基線要修接線。
 
 這與 I23 的基線是同一個機制（`subgrid_world_valid`、`grid_rules_world_valid` 都用 `g_subgrid_before`），不引入第二套「提交種類」。
 
 ### 4.1 這個做法的弱點
 
-1. 它依賴兩個全域，不是候選自己帶的屬性。如果將來有人用「逐行 `apply_scene_line`」實作整體取代，而不經 `parse_scene_file`（`reference_default_world` 就是現成例子，§2.3），那條路徑會被當成提交。
+1. 它依賴兩個全域，不是候選自己帶的屬性。內建場景重放見 §2.3 D4：沒有 frame，或該行不符合 `app_default_replay_line_eligible` 時，仍走 `apply_scene_line`，而且 `g_parsing_scene_file` 維持假。符合資格的行走 `app_scene_candidate_apply`，基線是 `frame->before`。兩條都不是 `parse_scene_file` 的檔案重放旗標。D61 仍把恢復內建場景列為整體取代。
 2. 如果將來有新的提交入口沒設基線，檢查會**靜默略過**，而不是失敗。
 
 緩解：W 函式對缺基線 fail closed（這只保護 W 的其他呼叫者；H 端「沒基線就略過」靠下一句的普查測試擋）；`TESTS.md` §5 的普查測試固定「所有 `app_world_candidate_publish` / `world_revalidate` / `app_world_revalidate_staged` 呼叫點」的分類，新增一個就紅；每條路徑各有突變（拿掉該路徑的基線就紅）。
@@ -154,7 +156,7 @@ return wood_grid_stagger_commit_valid(candidate 的 grid_store, g_subgrid_before
 2. 在兩軸舊網格上，兩軸都引用同一個 (卡, 欄)、只改那張卡的值：`stagger_value_changed` 回「沒變」→ 通過（S7）。
 3. 來源本身換了（直接整數 ↔ ParameterRef，或改指別的 (卡, 欄)）：比兩邊的求值。這讓「明示解除參數引用、轉成當下有效整數」（D29，經 I8a 預覽）在兩軸舊網格上可行：值不變就通過，值不同就拒絕。
 
-這個語意的後果（要讓使用者知道）：在兩軸舊網格上，用「改參數卡的值」可以任意改兩軸相位差，I24 不會攔。這是 I24 最後一句的字面結果，不是實作漏洞。
+舊雙軸可以在明定的參數例外下更新，但仍受逐軸與全部下游驗證限制。同一相位差引用只改參數卡的值，不算改相位差值；求值為 0、節距整數倍、溢位或下游不合法仍拒絕。同一筆又改卡又換來源時，依 §10-1 題 3 的有序判定。
 
 ## 6. 錯誤訊息與條號
 
@@ -250,34 +252,54 @@ bool wood_grid_stagger_commit_valid(const GeoGridStore *after,const GeoGridStore
   3. 對 CRLF 工作樹樣式的副本（`core.autocrlf=true`）：三個 LF 檔通過。`current_geometry.c` 在 repo 內是 `-text` 的 CRLF，補丁在該檔用 CRLF 上下文，已由 (1)(2) 覆蓋。
 - **沒有**編譯。新 C 碼靠逐行審視與對照既有程式的型別／慣例（`GeoGridAxisDef.parameters[5]`、`GeoParameterRef.{set,parameter_id,field_id}`、`geo_grid_systems_count/at/find` 的 const 簽名、`wood_grid_error` 的 printf 慣例）。第一次編譯可能還有小錯。
 - 沒有跑 WSL，也沒有跑任何測試。
+- 2026-10-22 這次只改文件：§2 的呼叫點對過 `546e2eb2` 的原始碼。沒有對該 commit 重跑 `git apply --check`，也沒有編譯。
 
-## 10. 我最不確定的三件事
+## 10. 定義推論與 2026-10-22 拍板
 
-### 10-1. 參數間接改到相位差，算不算「編輯」，以及「來源換了」怎麼比
+三點定義推論可以直接寫進實作。題 3、題 4 依決策佇列「2026-10-22 #314 一軸相位差的兩題邊界：混合操作放行、刪後重建不延續例外」。使用者回覆是「題3 放行」「題4 不算」。
 
-條文只明寫一句：「改那張參數卡的值不算改相位差值」。我把它實作成「同一個 (卡, 欄) = 值沒變」。沒寫的有四種情形，我選了「比求值」，但它們都可以有別的合理讀法：
+舊雙軸可以在明定的參數例外下更新，但仍受逐軸與全部下游驗證限制。§5 與本節用這一句。
 
-1. 直接整數 → 引用，求值相同（例如把 400 改成引用一張值為 400 的卡）。我放行（值沒變）。嚴格讀法是「來源 token 變了就算編輯」，會拒絕。
-2. 引用 → 直接整數，求值相同（D29 的「解除參數引用」）。我放行。若拒絕，兩軸舊網格就永遠不能解除相位差的參數引用，除非先移除一軸。
-3. 改指另一個 (卡, 欄)，兩邊求值相同。我放行。
-4. 同一筆同時換引用又改卡值。我拿「前一個世界的快取」對「這次候選的快取」，所以結果取決於哪個值先被算出來。這個情形我沒有找到條文可以裁決。
+### 10-1. 參數間接改相位差，與換來源
 
-另一個後果見 §5：在兩軸舊網格上，改參數卡的值可以任意移動兩軸相位差，I24 攔不到。若使用者的本意是「兩軸舊檔只能凍結或收斂到一軸」，那 S7 那句話就需要收窄。這屬於條文，不是實作；我不改。
+定義推論（I24、D29、D10b）：
 
-### 10-2. 「提交」的邊界，特別是我用兩個全域來判定
+1. 提交前後保留同一相位差引用，只改被引用參數的值，不得因舊網格仍有雙軸相位差而觸發 M2。
+2. 沒有混合改卡時，直接整數轉引用、引用轉相同有效整數、引用 A 改成有效值相同的引用 B，I24 比的是相位差值。來源 token 不同、求出的值相同，這項雙軸前後比較放行。來源變更仍照常驗證引用、預覽及全部依賴。
+3. 上面的放行只跳過這次新增的雙軸前後比較。求值為 0、節距整數倍、溢位或下游不合法，仍拒絕。
 
-我確定的：C1–C9 都會經過 `world_revalidate_candidate`，D1–D7 不會（或被旗標擋下）。不確定的有三處：
+題 3（同一筆既改參數值又換來源）採用有序判定，對應審查的選項 B。同一個候選裡：
 
-1. 判定靠 `g_subgrid_before` 與 `g_parsing_scene_file` 這兩個全域，不是候選的屬性。§2.3 的內建場景重建已經是一個「整體取代卻走提交路徑」的例子（現在無害）。
-2. 沒有基線時我選擇「不檢查」（因為 I23 已經這樣）。我沒有找到今天會在沒基線下改網格系統的提交入口，但這是讀碼結論，不是測過。
-3. 條文 R56 說「加入既有 World 的匯入確認」是提交。我只找到一條對應路徑（參數卡匯入 `import-parameters`，走 C3／C4）。如果還有別的「把外部資料併進現有世界」的入口，我漏看了。另外 D7（前端恢復資料、載入方案快照走 `loadfile`）是看 `serve.py` 與 `app.js` 推的，沒有實際跑過。
+- 因改參數卡而變動的相位差屬於例外。參數 A 由 400 改為 500，這一段歸入改卡例外。
+- 換來源只有在當下有效值不變時才算保值。把 u 解除為整數 500，是 500→500，放行。把 u 解除為 450，值變了，而且這段變動不是參數卡造成的，拒絕。
+- 比較用的舊世界與候選都要完成求值。判定依操作順序，不依求值函式碰巧先跑哪一個。
 
-### 10-3. 「同一筆編輯」與「同一份網格」的單位
+I24 與 D29 還沒寫出這個混合邊界。條文修改稿待使用者看過；條文定案前只照這個判定實作，不另外擴張。正例與反例在 `TESTS.md` §3 的 P6-P5、P6-N3。
 
-1. 「同一筆」我解成「一個 R56 提交」：一行指令，或一個橋接器批次；歷史群組內的兩行是兩筆。後果：舊網格 `u:400, v:300` 可以在**一行**內重宣告成只錯開 u（或只錯開 v），提交後只剩一軸，通過，數值也可以同時改。
-   但「兩軸都保留、而且改任一軸的值」不論拆成幾筆都做不到：只要某一筆的結果仍是兩軸且值有變就是 M2，而先移除一軸、再把它加回來，加回來那筆是 M1。這是條文的設計（舊兩軸網格只能凍結或收斂到一軸），我只是把它列出來，因為使用者可能沒有意識到這一點。
-2. 「同一份網格」我按系統 id 比。同一筆批次裡「刪掉系統 5 再用 id 5 新建」會被當成同一份（與 D60 的「刪除後同鍵重建 = 新存在期」是兩回事）；分成兩次提交做則第二次是「新建」，兩軸會被 M1 擋。這是更嚴格的方向，沒有漏洞，但跟身分帳的語意不一致。
-3. R60 的 `swap-grid-card-reference` 或 `set-grid-card-reference` 作用在兩軸舊網格上：相位差值不動，所以 I24 放行（S5「改間距等照常」）。但兩軸的節距會一起變，物理上等於兩軸都換了一組新錯開位置。我照條文字面放行，沒有另設規則。
+### 10-2. 提交的分類；兩個全域尚待逐路徑驗證
+
+定義推論（D61、R56、I24）：
+
+- 加入既有 World 的匯入，與換掉整個 World 的場景匯入，分開處理。
+- 互動清空仍是提交。
+- 開檔、隔離重放及復原／重做，不因舊資料含雙軸相位差而被這項比較拒絕。
+- `g_subgrid_before == NULL` 是宿主辨識操作類別的實作訊號。H 沒有基線就提早回傳，不會呼叫 W。W 的缺基線拒絕救不到漏接的提交入口。真提交漏傳基線要修接線。
+
+C1–C9 都會經過 `world_revalidate_candidate`。D1–D7 不比較，或被檔案重放旗標擋下。尚待逐路徑驗證的是：兩個全域有沒有接到每一個入口、有沒有漏看的「併進既有 World」入口，以及 D7（前端恢復資料、載入方案快照走 `loadfile`，由 `serve.py` 與 `app.js` 讀得）有沒有實跑。這些是驗證項目。提交的定義是上面四點。
+
+### 10-3. 同一筆的單位、R60，與將來的刪後重建
+
+定義推論（R56、I8、D29、R60）：
+
+- 候選批次比提交前與批次最終結果。歷史群組逐行比較，不延到 `history-end`。
+- 同一候選最後只留一軸時，可以同時調整剩下那軸的相位差。
+- 分兩筆先移除一軸、再加回第二軸，第二筆是不足兩軸變為兩軸，拒絕。
+- 批內暫時兩軸、最終剩一軸，I24 的軸數比較不依中間狀態拒絕。其他條文的有序操作與依賴合法性照常驗證。
+- R60 的長度對調或 `set-grid-card-reference` 不搬動相位差值。相位差值不變就不觸發 M2。變成新節距的整數倍等情況仍由逐軸規則拒絕。
+
+題 4 是目前未支援的邊界。將來開放刪除網格時，刪除後以同一 id 重建，依新建驗證；雙軸重建拒絕。一般的重新宣告仍是修改。現在的工程批次沒有 `delete-grid-system`；兩次 `put-grid-system` 是重宣告，不能當成明示刪除。這條不阻擋既有可達路徑。
+
+舊雙軸可以在明定的參數例外下更新，但仍受逐軸與全部下游驗證限制。
 
 ## 11. 前端與其他附帶事項（不在補丁內）
 

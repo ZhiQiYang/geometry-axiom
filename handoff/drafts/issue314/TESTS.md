@@ -1,7 +1,7 @@
 # #314 測試計畫（草稿，未編譯、未執行）
 
 配套文件：`DESIGN.md`（路徑編號 C1–C9、D1–D7 與訊息 M0／M1／M2 沿用該稿）、`patch.diff`。
-基準：`geo261-integration` head `09ab5f79`。這份計畫裡所有程式碼片段都是草稿，沒有編譯過。
+基準：`grid_inspector_rename_test.js` 的行號與內建場景 `AppDefaultReplay` 改以 `546e2eb2` 為準。這份計畫裡所有程式碼片段都是草稿，沒有編譯過。其餘片段最初對照 `09ab5f79`，這次沒有重編譯。
 
 ## 0. 原則
 
@@ -19,7 +19,7 @@
 | `tests/test_geo261_wood_grid_application.py`（擴充） | `test_stagger_commit_decision_table`、W 突變 | 同上 |
 | `tests/test_geo314_stagger_commit.py`（新增） | §3 每條路徑的正反例、§4 舊檔回歸，真 bridge | bridge、model-base |
 | `tests/test_geo314_commit_paths.py`（新增） | §5 普查：純靜態，不編譯 | 否 |
-| `tests/mutate.py` + `tests/mutation_bridge.py` | §7 突變登錄（下一個編號 M89 起；現在最大是 M88） | bridge |
+| `tests/mutate.py` + `tests/mutation_bridge.py` | §7 突變登錄（下一個編號 M99 起；M89–M96 為 #299，M97–M98 為 #316） | bridge |
 | `tests/run_all.py`（`PY_NEEDS`）與 `tests/run_all.expected.json` | 登錄新 suite；測試數用 `unittest.defaultTestLoader.loadTestsFromName(...).countTestCases()` 數，不要從成功執行回填 | — |
 
 新測試檔必須登錄，否則 `run_all.py` 判 fail 並指名（`tests/README.md`）。
@@ -90,6 +90,8 @@ static int stagger_commit(void)
 
 ### P-C1 DSL `grid-system`，新 id
 
+P1-N1 是獨立的「互動新建雙軸 → 拒絕」反例。§6 的三個既有檔改走舊場景 `loadfile` 之後，這一筆仍留在互動提交上，釘住 I24／M1。
+
 | ID | 指令 | 預期 |
 |---|---|---|
 | P1-N1 | `infinite(0, u="repeat 0 2000 stagger 400", v="repeat 0 1830 stagger 300")` | 拒絕 M1 |
@@ -158,6 +160,8 @@ static int stagger_commit(void)
 | P6-N2 | 同上 | 一批內：`put-grid-system` 把 u 改成直接 `stagger 999` | 無效 M2 |
 | P6-P3 | 同上 | `put-grid-system` 把 u 改直接整數 401（等於目前求值）、v 不動 | 通過（W12） |
 | P6-P4 | 一軸網格引用參數 | 改卡值 | 通過（既有行為，保留） |
+| P6-P5 | 舊兩軸，u 引用參數 A＝400、v 直接 300 | 同一候選內把 A 由 400 改 500，再把 u 解除為整數 500 | 通過（題 3 有序判定：400→500 歸改卡例外，解除是當下值 500→500） |
+| P6-N3 | 同上 | 同一候選內把 A 由 400 改 500，再把 u 解除為 450 | 拒絕（解除後不是當下有效值 500；這段變動不是參數卡造成的） |
 
 ### P-C7／C8／C9 其他指令、歷史群組、拖曳
 
@@ -213,7 +217,7 @@ static int stagger_commit(void)
 | C-3 | 所有 `g_subgrid_before=` 賦值點集合 = 寫死的清單（`DESIGN.md` §2 表中的基線欄位） |
 | C-4 | `world_revalidate_candidate` 函式本體內 `grid_stagger_commit_valid(` 恰出現一次，位置在 `grid_systems_rebuild(` 之後、`grid_bindings_rebuild(` 之前 |
 | C-5 | `subgrid_world.inc` 中 `grid_stagger_commit_valid` 的條件恰為 `!g_subgrid_before` 與 `g_parsing_scene_file` 兩項 |
-| C-6 | 內建場景（`transactions.inc:833` `reference_default_world` 的行表）所有行不含 `stagger`（§2.3 D4 的例外） |
+| C-6 | `546e2eb2` 的 `transactions.inc:734` `app_default_replay_lines` 與 `:835` `reference_default_world` 的 `lines[]` 都不含 `stagger`，也不含 `grid-system`。這是目前內建文字的變更警報，不把「內建場景禁止 stagger」升成新規則；D61 的整體取代例外仍成立。普查同時認得 `AppDefaultReplay`（`:729`）、`app_default_replay_line`（`:781`）、`reference_default_world_owned`（`:858`） |
 | C-7 | `grid_application.c` 去註解後不含 `World`、`Coord`、`scene_error`、`g_subgrid_before`、`g_parsing_scene_file`（重申既有 W 純度測試，確保新碼沒破） |
 | C-8 | 補丁沒有動 `geometry-core/kernel/**`（K 不改的主張變成可檢查的事實） |
 
@@ -225,13 +229,13 @@ static int stagger_commit(void)
 |---|---|---|---|
 | `tests/test_geo261_native_grid_product.py:16` `source()` 預設 `u="repeat 7 120 stagger 13"`、`v="repeat -11 80 stagger -7"`；`setup_binding`（`:41`）在 `:44` 以 `line` 提交 | `test_actual_host_keeps_role_sidecar_order_binding_bytes_and_undo_roundtrip`（`:67`，平移 `[560,731]`）、`test_parity_negative_control_changes_standalone_witness_and_actual_binding`（`:113`，`[560,731]`／變異 `[573,738]`，經 `binding_translation` `:49`） | 先提交 boundary 取指紋，再把 `dump` ＋ `source()` ＋ `grid-binding` 行寫成檔，`loadfile`。oracle 數字不變 |
 | `tests/test_grid_inspector_contract.py:85`、`:88` | `test_six_rename_shapes_preserve_sources_segments_and_cancel_history` 的第 3 組（`repeat 0 600 stagger -400` ＋ `repeat-panel … stagger 200`）與第 6 組（兩軸參數相位差）用 `self.commit(infinite.infinite(identifier, …))` 建 | 這兩組改用 `loadfile` 建系統，其餘流程（boundary、binding、placement、grid、rename、undo／redo、跨進程載回）不動；rename 正是 §4.2 L7 的正例 |
-| `geometry-web/grid_inspector_rename_test.js:36,39`（`雙軸直接值`、`雙軸參數`） | 瀏覽器版同樣的兩組，由 `fixture()` 以 `apiRequest('line '+line)` 建 | 同上；這是 cdp_test 的 P72B 外掛，**會動 golden 與測試數**（`INTEGRATION-GATES.md` 提到 P70 等計數被釘），屬瀏覽器驗收，要在 WSL 排他時段處理 |
+| `geometry-web/grid_inspector_rename_test.js:41`、`:44`（`雙軸直接值`、`雙軸參數`；`546e2eb2`） | 瀏覽器版同樣的兩組。`fixture():23` 以 `apiRequest('line '+line)` 建，呼叫在 `:49–54` | 雙軸前置改走舊場景整體載入；`fixture():23` 與 `:49–54` 的呼叫要改到這條載入，更名、歷史、參數 400→401、完整專案保存與重開保留。P72B 維持 50。屬瀏覽器驗收，要在 WSL 排他時段處理 |
 | 讀碼判斷不受影響，仍要實跑確認 | `tests/test_grid_inspector_command.js:10-24`、`tests/test_grid_inspector_stagger.cjs:80`（只組字串）；`geometry-web/grid_system_test.js:103`（草稿內加／移除 v 相位差，未存檔）；`geometry-web/grid_portable_browser_test.py:106` | 無需改；若實跑變紅再補 |
 | 不受影響 | `tests/geo261_grid_store_harness.c:268` 與 `tests/test_geo261_native_grid_store.py`（K 層兩軸相位差，K 沒改）；`tests/test_geo261_staged_candidate_graph.py`（用未錯開的 `source(5,…)`） | — |
 
 ## 7. 突變（拿掉檢查要紅）
 
-W 類突變照 `test_geo261_wood_grid_application.py::mutant(name, before, after)` 的寫法（改 `grid_application.c` 一個表達式，要求原文恰出現一次，重編物件並重連）；H 類突變登錄在 `tests/mutate.py`（`dict(id="M89", file=…, old=…, new=…)`），裁判是 `tests/test_geo314_stagger_commit.py` 的具名測試，登錄進 `tests/mutation_bridge.py` 的 `RESTORED` 清單。每個突變要證明：基線綠、突變紅（失敗訊息指得出病因）、還原後綠。
+W 類突變照 `test_geo261_wood_grid_application.py::mutant(name, before, after)` 的寫法（改 `grid_application.c` 一個表達式，要求原文恰出現一次，重編物件並重連）；H 類突變登錄在 `tests/mutate.py`（`dict(id="M99", file=…, old=…, new=…)`），裁判是 `tests/test_geo314_stagger_commit.py` 的具名測試，登錄進 `tests/mutation_bridge.py` 的 `RESTORED` 清單。正式編號從 M99 起：MS1=M99、MS2=M100、MS3=M101、MS4=M102、MS5=M103、MS6=M104、MS7=M105、MS8=M106、MS9=M107、MP1=M108、MP2=M109、MP3=M110（`equivalent`）、MP4=M111。M89–M96 為 #299，M97–M98 為 #316。每個突變要證明：基線綠、突變紅（失敗訊息指得出病因）、還原後綠。
 
 | ID | 檔 | before → after | 必紅的測試 | 備註 |
 |---|---|---|---|---|
@@ -262,6 +266,8 @@ W 類突變照 `test_geo261_wood_grid_application.py::mutant(name, before, after
 ## 9. 驗收清單（對照 issue #314）
 
 - [ ] 每條提交路徑（C1–C9）各有正例與反例，失敗訊息含 `I24` 與 M1／M2 子字串（§3）。
+- [ ] 題 3：P6-P5 放行（A 400→500，再把 u 解除為 500）、P6-N3 拒絕（解除為 450）。P1-N1 仍是互動新建雙軸的拒絕反例。
+- [ ] 題 4 只寫在 `DESIGN.md`：將來開放刪除時，刪後重建依新建驗證。目前沒有 `delete-grid-system`，不為這條加既有路徑的測試。
 - [ ] 附突變：MS1–MS9、MP1／MP2（與組合 MP3）、MP4，拿掉都紅，還原後綠（§7）。
 - [ ] 舊兩軸 fixture 仍可開：L1–L5、L10–L12（§4）；建模交換包 L13／L14。
 - [ ] 復原／重做不檢查：L6。
