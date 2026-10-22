@@ -20,4 +20,7 @@
 - 2026-10-22T20:38:03.149306+00:00 — **native-control-raw-index**：本輪正式 native 既有32組控制、96筆原紀錄，全部 baseline0／mutant1／restored0，無逾時；附原具名ASSERT與完整原JSONL，僅索引分析，沒有額外執行或改判準
   下一步：持續完成本輪完整 canvas 與其餘browser／專項，之後補同F2額外反證。原始資料：`raw/native-control-raw-index.raw.tar.gz`。
 
+- 2026-10-22T20:44:18.189435+00:00 — **extra-orchestration-preparation**：8個額外proof phase的串行命令與原raw封存白名單已準備；checker新副本只換F2常數，字面diff與AST同一性及舊檔保存；尚未執行額外proof，不預填綠
+  下一步：先完成本輪全部17項，再依相依baseline執行P73、P52runtime及其他撤回／恢復。原始資料：`raw/extra-orchestration-preparation.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
