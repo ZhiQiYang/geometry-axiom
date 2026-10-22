@@ -3635,7 +3635,10 @@ function renderSpacePlan(sp) {
   svg.onpointercancel = () => { drag = null; preview.setAttribute("visibility", "hidden"); };
 }
 function syncSpacePlanAnnotations(){
-  const svg=$('spacePlanSvg'),matrix=svg?.getScreenCTM();if(!svg||svg.hidden||!matrix)return;
+  const svg=$('spacePlanSvg');
+  // SVG 沒有 HTML 元素的 hidden 反射屬性；與 renderSpacePlan 共用 attribute 狀態。
+  if(!svg||svg.hasAttribute('hidden'))return;
+  const matrix=svg.getScreenCTM();if(!matrix)return;
   const scale=Math.hypot(matrix.a,matrix.b);if(!Number.isFinite(scale)||scale<=0)return;
   for(const label of svg.querySelectorAll('.space-plan-label'))label.style.fontSize=(12/scale)+'px';
   const step=10**Math.floor(Math.log10(80/scale)),box=svg.viewBox.baseVal;
