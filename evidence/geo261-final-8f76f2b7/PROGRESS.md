@@ -101,4 +101,7 @@
 - 2026-10-22T22:00:29.916648+00:00 — **F2-clone-release-first-two**：F2 clone釋放：p73首次origin tracking守門rc1、未刪；fetch rc0後p73與p52(fix)完整盤點／clean守門後成功移除，各24,012 tracked、1,478,874,125 bytes。完整失敗／修復／成功raw保留；原proof raw/tools/output與source-final保留，未重跑產品。
   下一步：F2-checker。原始資料：`raw/F2-clone-release-first-two.raw.tar.gz`。
 
+- 2026-10-22T22:07:15.552427+00:00 — **F2-Cperf-environment-attempt1**：Cperf attempt1因ENOSPC環境中斷，outer真rc1；inner JSON截斷與bootstrap空檔原bytes保留。最後完整落盤clone rc0，checkout進度未確定；未有compile/perf原證據，未取得性能結果，非性能紅。完整raw與冷搬移／新reader+checker釋放紀錄已封存，待全新scratch重試。
+  下一步：F2-Cperf-retry1。原始資料：`raw/F2-Cperf-environment-attempt1.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
