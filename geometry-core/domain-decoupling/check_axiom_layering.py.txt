@@ -1,0 +1,78 @@
+# -*- coding: utf-8 -*-
+"""Confirm every numbered clause of 公理層.md appears exactly once
+in the classification table of AXIOM-LAYERING-DRAFT.md.
+Run from the repo root:
+  python geometry-core/domain-decoupling/check_axiom_layering.py.txt
+"""
+import os
+import re
+import sys
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+AXIOM = os.path.join(ROOT, "公理層.md")
+DRAFT = os.path.join(ROOT, "geometry-core", "domain-decoupling", "AXIOM-LAYERING-DRAFT.md")
+
+def parse_axiom(text):
+    lines = text.split("\n")
+    marks = []
+    for i, ln in enumerate(lines):
+        m = re.match(r"\*\*(D\d+[a-z]?)\s", ln) or re.match(r"^([IR]\d+[a-z]?)\s", ln)
+        if m:
+            marks.append(m.group(1))
+        elif re.match(r"^## ", ln) and marks:
+            marks.append(None)
+    return [cid for cid in marks if cid]
+
+def main():
+    raw = open(AXIOM, "rb").read().replace(b"\r\n", b"\n").decode("utf-8")
+    ids = parse_axiom(raw)
+    draft = open(DRAFT, "rb").read().replace(b"\r\n", b"\n").decode("utf-8")
+    start = draft.find("<!-- CLASSIFICATION-TABLE-START -->")
+    end = draft.find("<!-- CLASSIFICATION-TABLE-END -->")
+    if start < 0 or end < 0 or end < start:
+        print("FAIL table markers missing")
+        return 1
+    table = draft[start:end]
+    row_re = re.compile(r"^\| ([DIR]\d+[a-z]?) \| (核心|木工|混合) \|", re.M)
+    rows = row_re.findall(table)
+    seen = {}
+    problems = []
+    for cid, cls in rows:
+        if cid in seen:
+            problems.append("duplicate %s" % cid)
+        seen[cid] = cls
+    axiom_set = []
+    axiom_seen = set()
+    for cid in ids:
+        if cid in axiom_seen:
+            problems.append("axiom duplicate %s" % cid)
+        axiom_seen.add(cid)
+        axiom_set.append(cid)
+    for cid in axiom_set:
+        if cid not in seen:
+            problems.append("missing %s" % cid)
+    for cid in seen:
+        if cid not in axiom_seen:
+            problems.append("extra %s" % cid)
+    counts = {"核心": 0, "木工": 0, "混合": 0}
+    for cls in seen.values():
+        counts[cls] += 1
+    # Every mixed row needs a split heading.
+    for cid, cls in rows:
+        if cls == "混合" and ("\n### %s\n" % cid) not in draft:
+            problems.append("mixed without split %s" % cid)
+    print("axiom %d" % len(axiom_set))
+    print("table %d" % len(rows))
+    print("核心 %d" % counts["核心"])
+    print("木工 %d" % counts["木工"])
+    print("混合 %d" % counts["混合"])
+    if problems:
+        print("PROBLEMS %d" % len(problems))
+        for p in problems:
+            print(p)
+        return 1
+    print("OK each clause id appears once")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
