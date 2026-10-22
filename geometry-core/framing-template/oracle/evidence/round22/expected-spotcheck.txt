@@ -1,0 +1,28 @@
+== L_ch:13 右下起鋪,板長沿Y: core_limited;C8 [('C8_I19_BOUNDARY_END', 1, 2600)];非 C8 問題 []
+   核心限制 CORE_LIMIT_BOUNDARY_END_FREE:boundary [2600, 3660, 4100, 3687] 端面 2600,懸空 B [3660, 3673](深 13)
+   最近的副支 [27, 3324, 420, 3351](mark),到錯開那段另一面的空檔 322 mm(<= 340)
+== L_cw:16 左下起鋪,板長沿X: core_limited;C8 [('C8_I19_BOUNDARY_END', 1, 2500)];非 C8 問題 []
+   核心限制 CORE_LIMIT_BOUNDARY_END_FREE:boundary [4057, 2500, 4084, 3700] 端面 2500,懸空 B [4057, 4073](深 16)
+   最近的副支 [4017, 2798, 4044, 3673](mark),到錯開那段另一面的空檔 29 mm(<= 340)
+== alcove:1 左下起鋪,板長沿X: core_limited;C8 [('C8_I19_BOUNDARY_END', 1, 1900), ('C8_I19_BOUNDARY_END', 3, 1000)];非 C8 問題 []
+   核心限制 CORE_LIMIT_BOUNDARY_END_FREE:boundary [1, 1900, 28, 3000] 端面 1900,懸空 B [27, 28](深 1)
+   最近的副支 [350, 27, 377, 237](mark),到錯開那段另一面的空檔 323 mm(<= 340)
+   核心限制 CORE_LIMIT_BOUNDARY_END_FREE:boundary [1, 0, 28, 1000] 端面 1000,懸空 B [27, 28](深 1)
+   最近的副支 [350, 27, 377, 237](mark),到錯開那段另一面的空檔 323 mm(<= 340)
+== DS:3685,3642 右上起鋪,板長沿Y: core_limited;C8 [('C8_I19_BOUNDARY_END', 2, 2600)];非 C8 問題 []
+   核心限制 CORE_LIMIT_BOUNDARY_END_FREE:boundary [2600, 3658, 3300, 3685] 端面 2600,懸空 B [3658, 3673](深 15)
+   最近的副支 [27, 3588, 420, 3615](seam),到錯開那段另一面的空檔 58 mm(<= 340)
+== L_ch:23|上下 左上起鋪,板長沿Y: core_limited;C8 [('C8_I19_BOUNDARY_END', 1, 2600)];非 C8 問題 []
+   核心限制 CORE_LIMIT_BOUNDARY_END_FREE:boundary [2600, 23, 4100, 50] 端面 2600,懸空 B [27, 50](深 23)
+   最近的副支 [27, 350, 903, 377](mark),到錯開那段另一面的空檔 323 mm(<= 340)
+== L_cw:15|左右 左下起鋪,板長沿X: core_limited;C8 [('C8_I19_BOUNDARY_END', 0, 2500)];非 C8 問題 []
+   核心限制 CORE_LIMIT_BOUNDARY_END_FREE:boundary [15, 2500, 42, 3700] 端面 2500,懸空 B [27, 42](深 15)
+   最近的副支 [350, 964, 377, 1854](mark),到錯開那段另一面的空檔 323 mm(<= 340)
+== alcove:6|上下 左下起鋪,板長沿X: core_limited;C8 [('C8_I19_BOUNDARY_END', 1, 1100), ('C8_I19_BOUNDARY_END', 3, 2000)];非 C8 問題 []
+   核心限制 CORE_LIMIT_BOUNDARY_END_FREE:boundary [6, 2000, 33, 3000] 端面 2000,懸空 B [27, 33](深 6)
+   最近的副支 [350, 27, 377, 237](mark),到錯開那段另一面的空檔 323 mm(<= 340)
+   核心限制 CORE_LIMIT_BOUNDARY_END_FREE:boundary [6, 0, 33, 1100] 端面 1100,懸空 B [27, 33](深 6)
+   最近的副支 [350, 27, 377, 237](mark),到錯開那段另一面的空檔 323 mm(<= 340)
+== DS:3622,3606|左右 右下起鋪,板長沿Y: core_limited;C8 [('C8_I19_BOUNDARY_END', 2, 800)];非 C8 問題 []
+   核心限制 CORE_LIMIT_BOUNDARY_END_FREE:boundary [0, 3579, 800, 3606] 端面 800,懸空 B [3579, 3595](深 16)
+   最近的副支 [27, 3324, 420, 3351](mark),到錯開那段另一面的空檔 244 mm(<= 340)

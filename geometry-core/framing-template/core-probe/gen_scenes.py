@@ -61,7 +61,10 @@ def as_int(value, what: str) -> int:
 
 
 def layout_kept(layout: dict) -> bool:
-    return bool(layout.get("buildable")) and not layout.get("conflict_codes")
+    """只送核心表示得了的可施工排法：物理上可施工（buildable、沒有衝突碼），而且沒有核心限制。
+    #251 審查 3d858c3 阻擋 1 之後，核心限制與物理衝突分開：golden 的 core_limits 列出物理上可施工、
+    核心條文（I19、I22）表示不了的端面，這種排法送進核心只會被規則拒絕，不是探針要驗的〈核心接受 oracle 的排法〉。"""
+    return bool(layout.get("buildable")) and not layout.get("conflict_codes") and not layout.get("core_limits")
 
 
 def rect_of(raw) -> tuple[int, int, int, int]:
@@ -571,6 +574,7 @@ def build(golden: dict, delta: int | None = None) -> Build:
                     "name": layout.get("name") or "",
                     "buildable": bool(layout.get("buildable")),
                     "conflict_codes": list(layout.get("conflict_codes") or []),
+                    "core_limits": list(layout.get("core_limits") or []),
                 })
                 continue
             members = build_members(layout["timbers"], edges, width)
