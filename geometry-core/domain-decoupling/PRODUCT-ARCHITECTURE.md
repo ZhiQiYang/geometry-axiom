@@ -510,3 +510,16 @@ new files or changed sources.
 - `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
 
 以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
+
+## 雲端 Linux 有限重產：P73 來源修正後
+
+本輪來源固定於 `55b9fb6479485361d9e2283a95e4355f5fca76db`，上一份收據產物提交為 `c9e6b45492e6016a1b5c91934fa3c9a674435431`。新 Linux 封裝器沿用原 scanner、generic tests 與 product tests，沒有使用或冒充舊 Windows driver。manifest 登記、所有政策與排除理由均未修改。
+
+獨立檔案系統與 Git tree inventory 共 601 個 executable inputs；owned 333、excluded 268、edges 796、diagnostics 0。LF input closure 是 `303ee650da50d92a0397a5556bdf5b94c3066c941f1e5f850a79ea83638493dd`。
+
+相對上一份 sealed receipt 改變的既有輸入：`geometry-web/runtime_version.py`。四檔是衍生稽核產物，排除於來源 closure；receipt 不雜湊自身。
+
+- `python -B tests/test_architecture_contract.py`：退出 0；205 tests，205 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+- `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+
+以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。

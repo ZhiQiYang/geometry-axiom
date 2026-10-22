@@ -19,16 +19,16 @@
     "瀏覽器與所有專項驗收",
     "未來變更的來源"
   ],
-  "createdUtc": "2026-10-22T17:33:05.546259+00:00",
+  "createdUtc": "2026-10-22T19:48:44.306176+00:00",
   "basis": "乾淨固定 Git HEAD 與獨立完整 inventory，原三條架構裁判在同一來源實際執行。",
-  "sourceBaseHead": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
-  "headObservedBefore": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
-  "headObservedAfter": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+  "sourceBaseHead": "55b9fb6479485361d9e2283a95e4355f5fca76db",
+  "headObservedBefore": "55b9fb6479485361d9e2283a95e4355f5fca76db",
+  "headObservedAfter": "55b9fb6479485361d9e2283a95e4355f5fca76db",
   "manifestSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
-  "reportSha256": "148105a68b039967e62df5872f175d7eaf6c78474e25c7c26e560da01df72831",
-  "inputClosureSha256": "e9d9b00ba23d939206dc90ba0199defb4c7e543b4339f8a1beba6a9935266fd0",
+  "reportSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878",
+  "inputClosureSha256": "303ee650da50d92a0397a5556bdf5b94c3066c941f1e5f850a79ea83638493dd",
   "counts": {
     "executableFiles": 601,
     "ownedSources": 333,
@@ -52,69 +52,69 @@
   },
   "manifestRefresh": {
     "previousManifestSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
-    "previousReceiptSha256": "f1c8a0bbbeb3d2d1e967628d33738643d6a6c69075a40a607ba5dee42c3328b9",
+    "previousReceiptSha256": "7b67dfb481fc967d566f30ce298d8a8936f79e6404653da006c17329d59ca572",
     "previousScanSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
-    "previousReportSha256": "60ac926e4c4aa5133b6624ea636e78df9cb47451bbf5f25a1120ff66e86364cc",
-    "previousReceiptCreatedUtc": "2026-10-22T15:34:05.285244+00:00",
-    "previousSourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
-    "previousReceiptCommit": "a12d184ec1865ad078700cea2387ac69e82ab62a",
-    "firstObservedHead": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+    "previousReportSha256": "148105a68b039967e62df5872f175d7eaf6c78474e25c7c26e560da01df72831",
+    "previousReceiptCreatedUtc": "2026-10-22T17:33:05.546259+00:00",
+    "previousSourceBaseHead": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+    "previousReceiptCommit": "c9e6b45492e6016a1b5c91934fa3c9a674435431",
+    "firstObservedHead": "55b9fb6479485361d9e2283a95e4355f5fca76db",
     "previousOutputsPreserved": {
-      "directory": "/tmp/g261htmlseal/architecture-html-refresh/previous",
+      "directory": "/tmp/g261P3architecture/previous",
       "hashes": {
         "product-architecture.json": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/previous/product-architecture.json",
+          "path": "/tmp/g261P3architecture/previous/product-architecture.json",
           "bytes": 220000,
           "rawSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
           "lfSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6"
         },
         "product-architecture-scan.json": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/previous/product-architecture-scan.json",
+          "path": "/tmp/g261P3architecture/previous/product-architecture-scan.json",
           "bytes": 132209,
           "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
           "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/previous/PRODUCT-ARCHITECTURE.md",
-          "bytes": 32829,
-          "rawSha256": "60ac926e4c4aa5133b6624ea636e78df9cb47451bbf5f25a1120ff66e86364cc",
-          "lfSha256": "60ac926e4c4aa5133b6624ea636e78df9cb47451bbf5f25a1120ff66e86364cc"
+          "path": "/tmp/g261P3architecture/previous/PRODUCT-ARCHITECTURE.md",
+          "bytes": 34312,
+          "rawSha256": "148105a68b039967e62df5872f175d7eaf6c78474e25c7c26e560da01df72831",
+          "lfSha256": "148105a68b039967e62df5872f175d7eaf6c78474e25c7c26e560da01df72831"
         },
         "product-architecture-receipt.json": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/previous/product-architecture-receipt.json",
-          "bytes": 178131,
-          "rawSha256": "f1c8a0bbbeb3d2d1e967628d33738643d6a6c69075a40a607ba5dee42c3328b9",
-          "lfSha256": "f1c8a0bbbeb3d2d1e967628d33738643d6a6c69075a40a607ba5dee42c3328b9"
+          "path": "/tmp/g261P3architecture/previous/product-architecture-receipt.json",
+          "bytes": 126291,
+          "rawSha256": "7b67dfb481fc967d566f30ce298d8a8936f79e6404653da006c17329d59ca572",
+          "lfSha256": "7b67dfb481fc967d566f30ce298d8a8936f79e6404653da006c17329d59ca572"
         }
       }
     },
     "lastSealedOutputsReadFromGit": {
-      "commit": "a12d184ec1865ad078700cea2387ac69e82ab62a",
-      "directory": "/tmp/g261htmlseal/architecture-html-refresh/previous-from-git",
+      "commit": "c9e6b45492e6016a1b5c91934fa3c9a674435431",
+      "directory": "/tmp/g261P3architecture/previous-from-git",
       "hashes": {
         "product-architecture.json": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/previous-from-git/product-architecture.json",
+          "path": "/tmp/g261P3architecture/previous-from-git/product-architecture.json",
           "bytes": 220000,
           "rawSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
           "lfSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6"
         },
         "product-architecture-scan.json": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/previous-from-git/product-architecture-scan.json",
+          "path": "/tmp/g261P3architecture/previous-from-git/product-architecture-scan.json",
           "bytes": 132209,
           "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
           "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/previous-from-git/PRODUCT-ARCHITECTURE.md",
-          "bytes": 32829,
-          "rawSha256": "60ac926e4c4aa5133b6624ea636e78df9cb47451bbf5f25a1120ff66e86364cc",
-          "lfSha256": "60ac926e4c4aa5133b6624ea636e78df9cb47451bbf5f25a1120ff66e86364cc"
+          "path": "/tmp/g261P3architecture/previous-from-git/PRODUCT-ARCHITECTURE.md",
+          "bytes": 34312,
+          "rawSha256": "148105a68b039967e62df5872f175d7eaf6c78474e25c7c26e560da01df72831",
+          "lfSha256": "148105a68b039967e62df5872f175d7eaf6c78474e25c7c26e560da01df72831"
         },
         "product-architecture-receipt.json": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/previous-from-git/product-architecture-receipt.json",
-          "bytes": 178131,
-          "rawSha256": "f1c8a0bbbeb3d2d1e967628d33738643d6a6c69075a40a607ba5dee42c3328b9",
-          "lfSha256": "f1c8a0bbbeb3d2d1e967628d33738643d6a6c69075a40a607ba5dee42c3328b9"
+          "path": "/tmp/g261P3architecture/previous-from-git/product-architecture-receipt.json",
+          "bytes": 126291,
+          "rawSha256": "7b67dfb481fc967d566f30ce298d8a8936f79e6404653da006c17329d59ca572",
+          "lfSha256": "7b67dfb481fc967d566f30ce298d8a8936f79e6404653da006c17329d59ca572"
         }
       },
       "note": "舊四檔逐一從上一份產物 commit 讀回 Git blobs，與 previous/ 的 checkout bytes 比較 LF hash；兩份 raw bytes 分開保全。未把舊驗收改寫為本輪結果。"
@@ -126,34 +126,17 @@
     "newInputs": [],
     "changedPreviouslySealedInputs": [
       {
-        "path": "geometry-guide/公理層-閱讀器.html",
-        "previousSha256": "3979f9858fa581df1d9c8f2ba0c21b471ebc0553464b1c1f7f2aa8c87952062a",
-        "sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b"
+        "path": "geometry-web/runtime_version.py",
+        "previousSha256": "5b7261519e70e51f952264c56d0a7cf18e7d4fdeeb8bb033fc391f08339468ea",
+        "sha256": "1cafc0868554e9f4028de3c6851d12cb8d9716fec18a6fe379afbbd2e3b14274"
       }
     ],
     "allowedChangedInputs": [
-      "geometry-guide/公理層-閱讀器.html"
+      "geometry-web/runtime_version.py"
     ],
     "staleExcludedVendorOrEmbedDigestsBefore": [],
     "staleExcludedVendorOrEmbedDigestsAfter": [],
-    "digestEvidence": "canonical HTML 是無 immutable digest 的既有 H owned source；manifest raw bytes、vendor/exclusion/iframe driver/router digest 全保持原值。只更新 source closure 與該 HTML input hash，原 scanner exit0。",
-    "canonicalHtmlScope": {
-      "path": "geometry-guide/公理層-閱讀器.html",
-      "layer": "H",
-      "language": "html",
-      "immutableManifestDigest": false,
-      "changedInputCount": 1
-    },
-    "policyDelta": {
-      "addedIdentifiers": [],
-      "removedIdentifiers": [],
-      "addedStrings": [],
-      "removedStrings": [],
-      "identifiersBefore": 920,
-      "identifiersAfter": 920,
-      "allOtherManifestFieldsEqual": true,
-      "manifestByteUnchanged": true
-    },
+    "digestEvidence": "沿原 manifest 執行 scanner exit0；不更新 vendor、excluded 或 iframe driver/router digest 來掩蓋失效。",
     "classificationNote": "本封裝器拒絕新增或移除來源，不更改 manifest；現有分類、排除理由、政策保持原 bytes。",
     "toolChanges": []
   },
@@ -169,29 +152,24 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "/tmp/g261htmlseal/html-source",
-    "startedUtc": "2026-10-22T17:32:46.607145+00:00",
-    "sourceBaseHead": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+    "cwd": "/workspace/geometry-axiom",
+    "startedUtc": "2026-10-22T19:48:26.691922+00:00",
+    "sourceBaseHead": "55b9fb6479485361d9e2283a95e4355f5fca76db",
     "environment": {
-      "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
       "LANG": "C.UTF-8",
       "LC_ALL": "C.UTF-8",
       "PYTHONIOENCODING": "utf-8",
       "PYTHONDONTWRITEBYTECODE": "1",
-      "TMPDIR": "/tmp/g261htmlseal/architecture-html-refresh/tmp",
-      "PYTHONOPTIMIZE": null,
-      "PYTHONPATH": null,
-      "PYTHONHOME": null,
-      "PYTHONSTARTUP": null
+      "TMPDIR": "/tmp/g261P3architecture/tmp"
     },
     "stdout": {
-      "path": "/tmp/g261htmlseal/architecture-html-refresh/commands/013-final-scan/stdout",
+      "path": "/tmp/g261P3architecture/commands/013-final-scan/stdout",
       "bytes": 132209,
       "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
       "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
     },
     "stderr": {
-      "path": "/tmp/g261htmlseal/architecture-html-refresh/commands/013-final-scan/stderr",
+      "path": "/tmp/g261P3architecture/commands/013-final-scan/stderr",
       "bytes": 0,
       "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -199,11 +177,11 @@
     "complete": true,
     "exitCode": 0,
     "interrupted": null,
-    "finishedUtc": "2026-10-22T17:32:51.922131+00:00",
-    "seconds": 5.314995,
+    "finishedUtc": "2026-10-22T19:48:31.742198+00:00",
+    "seconds": 5.050288,
     "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
-    "stdoutRawPath": "/tmp/g261htmlseal/architecture-html-refresh/commands/013-final-scan/stdout",
-    "stderrRawPath": "/tmp/g261htmlseal/architecture-html-refresh/commands/013-final-scan/stderr"
+    "stdoutRawPath": "/tmp/g261P3architecture/commands/013-final-scan/stdout",
+    "stderrRawPath": "/tmp/g261P3architecture/commands/013-final-scan/stderr"
   },
   "validation": [
     {
@@ -213,46 +191,41 @@
         "-B",
         "tests/test_architecture_contract.py"
       ],
-      "cwd": "/tmp/g261htmlseal/html-source",
-      "startedUtc": "2026-10-22T17:32:52.116721+00:00",
-      "sourceBaseHead": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-22T19:48:31.924753+00:00",
+      "sourceBaseHead": "55b9fb6479485361d9e2283a95e4355f5fca76db",
       "environment": {
-        "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
-        "TMPDIR": "/tmp/g261htmlseal/architecture-html-refresh/tmp",
-        "PYTHONOPTIMIZE": null,
-        "PYTHONPATH": null,
-        "PYTHONHOME": null,
-        "PYTHONSTARTUP": null
+        "TMPDIR": "/tmp/g261P3architecture/tmp"
       },
       "stdout": {
-        "path": "/tmp/g261htmlseal/architecture-html-refresh/commands/016-generic-tests/stdout",
+        "path": "/tmp/g261P3architecture/commands/016-generic-tests/stdout",
         "bytes": 0,
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "/tmp/g261htmlseal/architecture-html-refresh/commands/016-generic-tests/stderr",
+        "path": "/tmp/g261P3architecture/commands/016-generic-tests/stderr",
         "bytes": 29577,
-        "rawSha256": "add0ad4e73b5de9823efdc8af6a9124b909c54eef46bb9b054e11ca0ac76360b",
-        "lfSha256": "add0ad4e73b5de9823efdc8af6a9124b909c54eef46bb9b054e11ca0ac76360b"
+        "rawSha256": "7fe06459fede8252ea6af232112e46909cca73ab68cfbbf84c070f1d0eda0f26",
+        "lfSha256": "7fe06459fede8252ea6af232112e46909cca73ab68cfbbf84c070f1d0eda0f26"
       },
       "complete": true,
       "exitCode": 0,
       "interrupted": null,
-      "finishedUtc": "2026-10-22T17:32:52.724479+00:00",
-      "seconds": 0.607763,
+      "finishedUtc": "2026-10-22T19:48:32.366189+00:00",
+      "seconds": 0.441423,
       "command": "python -B tests/test_architecture_contract.py",
       "tests": 205,
       "passed": 205,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 0.469,
-      "stdoutRawPath": "/tmp/g261htmlseal/architecture-html-refresh/commands/016-generic-tests/stdout",
-      "stderrRawPath": "/tmp/g261htmlseal/architecture-html-refresh/commands/016-generic-tests/stderr"
+      "unittestSeconds": 0.345,
+      "stdoutRawPath": "/tmp/g261P3architecture/commands/016-generic-tests/stdout",
+      "stderrRawPath": "/tmp/g261P3architecture/commands/016-generic-tests/stderr"
     },
     {
       "label": "product-tests",
@@ -261,46 +234,41 @@
         "-B",
         "tests/test_product_architecture.py"
       ],
-      "cwd": "/tmp/g261htmlseal/html-source",
-      "startedUtc": "2026-10-22T17:32:52.885883+00:00",
-      "sourceBaseHead": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+      "cwd": "/workspace/geometry-axiom",
+      "startedUtc": "2026-10-22T19:48:32.554776+00:00",
+      "sourceBaseHead": "55b9fb6479485361d9e2283a95e4355f5fca76db",
       "environment": {
-        "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
-        "TMPDIR": "/tmp/g261htmlseal/architecture-html-refresh/tmp",
-        "PYTHONOPTIMIZE": null,
-        "PYTHONPATH": null,
-        "PYTHONHOME": null,
-        "PYTHONSTARTUP": null
+        "TMPDIR": "/tmp/g261P3architecture/tmp"
       },
       "stdout": {
-        "path": "/tmp/g261htmlseal/architecture-html-refresh/commands/019-product-tests/stdout",
+        "path": "/tmp/g261P3architecture/commands/019-product-tests/stdout",
         "bytes": 0,
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "/tmp/g261htmlseal/architecture-html-refresh/commands/019-product-tests/stderr",
+        "path": "/tmp/g261P3architecture/commands/019-product-tests/stderr",
         "bytes": 118,
-        "rawSha256": "22221cb8ce4a1ac8e3d341dfc914299657ccf51e10fe31f37568089f4405cd63",
-        "lfSha256": "22221cb8ce4a1ac8e3d341dfc914299657ccf51e10fe31f37568089f4405cd63"
+        "rawSha256": "5b212a55cfa28c6a399c6eeae7f26a516033a6bc737b3bb139c28ef7c9cee854",
+        "lfSha256": "5b212a55cfa28c6a399c6eeae7f26a516033a6bc737b3bb139c28ef7c9cee854"
       },
       "complete": true,
       "exitCode": 0,
       "interrupted": null,
-      "finishedUtc": "2026-10-22T17:33:05.176719+00:00",
-      "seconds": 12.290845,
+      "finishedUtc": "2026-10-22T19:48:43.917602+00:00",
+      "seconds": 11.362836,
       "command": "python -B tests/test_product_architecture.py",
       "tests": 18,
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 12.196,
-      "stdoutRawPath": "/tmp/g261htmlseal/architecture-html-refresh/commands/019-product-tests/stdout",
-      "stderrRawPath": "/tmp/g261htmlseal/architecture-html-refresh/commands/019-product-tests/stderr"
+      "unittestSeconds": 11.276,
+      "stdoutRawPath": "/tmp/g261P3architecture/commands/019-product-tests/stdout",
+      "stderrRawPath": "/tmp/g261P3architecture/commands/019-product-tests/stderr"
     }
   ],
   "supplementalStaticGuardProbes": {
@@ -2463,7 +2431,7 @@
     },
     {
       "path": "geometry-web/runtime_version.py",
-      "sha256": "5b7261519e70e51f952264c56d0a7cf18e7d4fdeeb8bb033fc391f08339468ea"
+      "sha256": "1cafc0868554e9f4028de3c6851d12cb8d9716fec18a6fe379afbbd2e3b14274"
     },
     {
       "path": "geometry-web/save_reopen_synthetic_test.js",
@@ -2753,10 +2721,10 @@
     "unregisteredAfter": [],
     "missingAfter": [],
     "changedInputs": [],
-    "inputClosureSha256Before": "e9d9b00ba23d939206dc90ba0199defb4c7e543b4339f8a1beba6a9935266fd0",
-    "inputClosureSha256After": "e9d9b00ba23d939206dc90ba0199defb4c7e543b4339f8a1beba6a9935266fd0",
-    "rawInputClosureSha256Before": "d2ea61b091453accbce06fd18aa4d3aed26ed89e637bbcb047367f34db884c23",
-    "rawInputClosureSha256After": "d2ea61b091453accbce06fd18aa4d3aed26ed89e637bbcb047367f34db884c23",
+    "inputClosureSha256Before": "303ee650da50d92a0397a5556bdf5b94c3066c941f1e5f850a79ea83638493dd",
+    "inputClosureSha256After": "303ee650da50d92a0397a5556bdf5b94c3066c941f1e5f850a79ea83638493dd",
+    "rawInputClosureSha256Before": "a83d59361cc5905fbabc3d8b824672419fc6be07055afc99a6e3333cc951f854",
+    "rawInputClosureSha256After": "a83d59361cc5905fbabc3d8b824672419fc6be07055afc99a6e3333cc951f854",
     "rawHashBasis": "實際 Linux checkout bytes；可攜產品身分以 CRLF-to-LF 與固定 Git blobs 比較。",
     "toolHashesBefore": {
       "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
@@ -2779,28 +2747,26 @@
       "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
     },
     "allRawAndLfInputsUnchanged": true,
-    "headObservedAfterIndependentAudit": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
-    "checkedUtc": "2026-10-22T17:33:05.547401+00:00"
+    "headObservedAfterIndependentAudit": "55b9fb6479485361d9e2283a95e4355f5fca76db",
+    "checkedUtc": "2026-10-22T19:48:44.307584+00:00"
   },
   "refreshDriver": {
-    "path": "/workspace/geo261-environment/refresh_architecture_canonical_html_linux.py",
-    "bytes": 29421,
-    "rawSha256": "3747601b4a9cce23528263a9080f34f5dea5b45425161e510fedb5ba3000e595",
-    "lfSha256": "3747601b4a9cce23528263a9080f34f5dea5b45425161e510fedb5ba3000e595",
-    "runDirectory": "/tmp/g261htmlseal/architecture-html-refresh",
+    "path": "/workspace/geo261-environment/refresh_architecture_linux.py",
+    "bytes": 25463,
+    "rawSha256": "06f3696ca55b7520ab3a219eff56f6d945df648833813f12926d190a2035798f",
+    "lfSha256": "06f3696ca55b7520ab3a219eff56f6d945df648833813f12926d190a2035798f",
+    "runDirectory": "/tmp/g261P3architecture",
     "argv": [
       "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-      "/workspace/geo261-environment/refresh_architecture_canonical_html_linux.py",
+      "/workspace/geo261-environment/refresh_architecture_linux.py",
       "--repo",
-      "/tmp/g261htmlseal/html-source",
-      "--sha",
-      "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+      "/workspace/geometry-axiom",
       "--out",
-      "/tmp/g261htmlseal/architecture-html-refresh",
+      "/tmp/g261P3architecture",
       "--allow-changed",
-      "geometry-guide/公理層-閱讀器.html"
+      "geometry-web/runtime_version.py"
     ],
-    "note": "由既有 Linux appjs-only wrapper 衍生的 canonical HTML-only 封裝器；保留原三裁判與完整 inventory，新增固定 SHA／單一 HTML／不改原裁判守衛；不是舊 Windows driver 或 W guard 生成器。"
+    "note": "新撰 Linux 封裝器；不是舊 Windows driver 的路徑適配副本，未宣稱兩者程式 hash 相同。"
   },
   "environment": {
     "system": "Linux",
@@ -2808,16 +2774,11 @@
     "machine": "x86_64",
     "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
     "safeVariables": {
-      "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
       "LANG": "C.UTF-8",
       "LC_ALL": "C.UTF-8",
       "PYTHONIOENCODING": "utf-8",
       "PYTHONDONTWRITEBYTECODE": "1",
-      "TMPDIR": "/tmp/g261htmlseal/architecture-html-refresh/tmp",
-      "PYTHONOPTIMIZE": null,
-      "PYTHONPATH": null,
-      "PYTHONHOME": null,
-      "PYTHONSTARTUP": null
+      "TMPDIR": "/tmp/g261P3architecture/tmp"
     },
     "versions": [
       {
@@ -2826,36 +2787,31 @@
           "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
           "--version"
         ],
-        "cwd": "/tmp/g261htmlseal/html-source",
-        "startedUtc": "2026-10-22T17:32:46.600173+00:00",
-        "sourceBaseHead": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+        "cwd": "/workspace/geometry-axiom",
+        "startedUtc": "2026-10-22T19:48:26.687944+00:00",
+        "sourceBaseHead": "55b9fb6479485361d9e2283a95e4355f5fca76db",
         "environment": {
-          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
           "LC_ALL": "C.UTF-8",
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
-          "TMPDIR": "/tmp/g261htmlseal/architecture-html-refresh/tmp",
-          "PYTHONOPTIMIZE": null,
-          "PYTHONPATH": null,
-          "PYTHONHOME": null,
-          "PYTHONSTARTUP": null
+          "TMPDIR": "/tmp/g261P3architecture/tmp"
         },
-        "stdout": "/tmp/g261htmlseal/architecture-html-refresh/commands/011-version-python/stdout",
-        "stderr": "/tmp/g261htmlseal/architecture-html-refresh/commands/011-version-python/stderr",
+        "stdout": "/tmp/g261P3architecture/commands/011-version-python/stdout",
+        "stderr": "/tmp/g261P3architecture/commands/011-version-python/stderr",
         "complete": true,
         "exitCode": 0,
         "interrupted": null,
-        "finishedUtc": "2026-10-22T17:32:46.603777+00:00",
-        "seconds": 0.003589,
+        "finishedUtc": "2026-10-22T19:48:26.689467+00:00",
+        "seconds": 0.001511,
         "stdoutInfo": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/commands/011-version-python/stdout",
+          "path": "/tmp/g261P3architecture/commands/011-version-python/stdout",
           "bytes": 15,
           "rawSha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
           "lfSha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
         },
         "stderrInfo": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/commands/011-version-python/stderr",
+          "path": "/tmp/g261P3architecture/commands/011-version-python/stderr",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2867,36 +2823,31 @@
           "git",
           "--version"
         ],
-        "cwd": "/tmp/g261htmlseal/html-source",
-        "startedUtc": "2026-10-22T17:32:46.604439+00:00",
-        "sourceBaseHead": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+        "cwd": "/workspace/geometry-axiom",
+        "startedUtc": "2026-10-22T19:48:26.690021+00:00",
+        "sourceBaseHead": "55b9fb6479485361d9e2283a95e4355f5fca76db",
         "environment": {
-          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
           "LC_ALL": "C.UTF-8",
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
-          "TMPDIR": "/tmp/g261htmlseal/architecture-html-refresh/tmp",
-          "PYTHONOPTIMIZE": null,
-          "PYTHONPATH": null,
-          "PYTHONHOME": null,
-          "PYTHONSTARTUP": null
+          "TMPDIR": "/tmp/g261P3architecture/tmp"
         },
-        "stdout": "/tmp/g261htmlseal/architecture-html-refresh/commands/012-version-git/stdout",
-        "stderr": "/tmp/g261htmlseal/architecture-html-refresh/commands/012-version-git/stderr",
+        "stdout": "/tmp/g261P3architecture/commands/012-version-git/stdout",
+        "stderr": "/tmp/g261P3architecture/commands/012-version-git/stderr",
         "complete": true,
         "exitCode": 0,
         "interrupted": null,
-        "finishedUtc": "2026-10-22T17:32:46.606607+00:00",
-        "seconds": 0.002158,
+        "finishedUtc": "2026-10-22T19:48:26.691459+00:00",
+        "seconds": 0.001432,
         "stdoutInfo": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/commands/012-version-git/stdout",
+          "path": "/tmp/g261P3architecture/commands/012-version-git/stdout",
           "bytes": 19,
           "rawSha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c",
           "lfSha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c"
         },
         "stderrInfo": {
-          "path": "/tmp/g261htmlseal/architecture-html-refresh/commands/012-version-git/stderr",
+          "path": "/tmp/g261P3architecture/commands/012-version-git/stderr",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
