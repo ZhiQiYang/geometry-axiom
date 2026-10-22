@@ -1,0 +1,1682 @@
+{
+  "archive": "preseal-full-ledger.raw.tar.gz",
+  "bytes": 3002898,
+  "sha256": "e669063d1200f41e1ecc1f76a752a0d8ee724b99b0955388e5891eb94a96c57e",
+  "members": [
+    {
+      "path": "preseal-full-ledger/COLLECTION.json",
+      "bytes": 3168,
+      "sha256": "af8cf1306d76c9c9b89a943cddb57d8e0b8217aa8c18b6a91d1e838e5ca68c27"
+    },
+    {
+      "path": "preseal-full-ledger/EXCLUDED.json",
+      "bytes": 595,
+      "sha256": "ea2a7bfbd00e6e9194ca4e08407ac2250484a25a5a9e46a9817d49e867c0ec3d"
+    },
+    {
+      "path": "preseal-full-ledger/INCLUDED.json",
+      "bytes": 86677,
+      "sha256": "c724b959eaafad76de092baba436446f3613295bd35233a60fcb8836d97dc728"
+    },
+    {
+      "path": "preseal-full-ledger/PUBLISH_COMMAND.sh.txt",
+      "bytes": 899,
+      "sha256": "95d4c463465a0c4400a2724b34e978dc6f717b8482980d4d1c3d87e2ba1636ec"
+    },
+    {
+      "path": "preseal-full-ledger/README.md",
+      "bytes": 1847,
+      "sha256": "f17b0d3602285449aed033ec7359cad02dabf0371dc43c8ed23de28141e51607"
+    },
+    {
+      "path": "preseal-full-ledger/SHA256SUMS",
+      "bytes": 38053,
+      "sha256": "89763597c7904f040dc1c61ebdeffdf212e22983a81f97f09be2c171dde079d8"
+    },
+    {
+      "path": "preseal-full-ledger/independent-audit/launch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/independent-audit/launch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/independent-audit/ledger-p-independent-audit.json",
+      "bytes": 22898,
+      "sha256": "704e10c56d4291e68bcb21c2a86e5b5eb062364f0bf6099eac9d9b245005e674"
+    },
+    {
+      "path": "preseal-full-ledger/launch/launch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/launch/launch.stdout",
+      "bytes": 158,
+      "sha256": "20095ae8640198229d3c72aa3c353032e65f705ac9ce4d27e7c92cd2c8e2ec6e"
+    },
+    {
+      "path": "preseal-full-ledger/launch/reaper.jsonl",
+      "bytes": 886,
+      "sha256": "64e89a0323c925943d77c1007956b6a49ba48cc4f53d524336ca2c5afe6e77ad"
+    },
+    {
+      "path": "preseal-full-ledger/publish-progress.command.json",
+      "bytes": 1273,
+      "sha256": "3f1b4a22d915af00c84a08e9992e5a70e4c99edb9d5d20d671f1f3003e8b20f9"
+    },
+    {
+      "path": "preseal-full-ledger/stage/after/tests/mutants_results.json",
+      "bytes": 5170315,
+      "sha256": "1b0adc12ed73c28075f56eb8bacf45fddffda6defae72809ee25109c1c5e4e2a"
+    },
+    {
+      "path": "preseal-full-ledger/stage/after/tests/run_all.expected.json",
+      "bytes": 24624,
+      "sha256": "cc856c9a2b75ac0c2d08236732330cd40a8bc17f14deccefcd5bf63a2dc79930"
+    },
+    {
+      "path": "preseal-full-ledger/stage/after-state.json",
+      "bytes": 183,
+      "sha256": "b33c8d483fe002f50bbed9010125b65b65e9cfe14cf0039e12a25f3375e6fa75"
+    },
+    {
+      "path": "preseal-full-ledger/stage/after.diff",
+      "bytes": 2418847,
+      "sha256": "610955f628b31f37217af24c6c9562314d93a2bd3fce918188971836cf04c797"
+    },
+    {
+      "path": "preseal-full-ledger/stage/before/tests/mutants_results.json",
+      "bytes": 5164108,
+      "sha256": "bd9c88f598b8bd1a82cd2f561b1953ba034837cc44e66d49556dd246c8bc4c73"
+    },
+    {
+      "path": "preseal-full-ledger/stage/before/tests/run_all.expected.json",
+      "bytes": 24624,
+      "sha256": "cc856c9a2b75ac0c2d08236732330cd40a8bc17f14deccefcd5bf63a2dc79930"
+    },
+    {
+      "path": "preseal-full-ledger/stage/before-state.json",
+      "bytes": 116,
+      "sha256": "a329376452a728827b4637703e78d01b9ad03c0049e86a08d1aefaac157fdf0b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/before.diff",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/000-before-head/receipt.json",
+      "bytes": 704,
+      "sha256": "3640c0f1a85791d4d0fae26664f29df8cd95aaa084507e6954af035c211e0f77"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/000-before-head/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/000-before-head/stdout",
+      "bytes": 41,
+      "sha256": "c404f92ec7c42a834c9fa9ad9b4c5c31f2447ded8c3850f45d4b73431f83db57"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/001-before-status/receipt.json",
+      "bytes": 742,
+      "sha256": "4336ef98d48878662e68cb7e3ddc5c4824493801ffc47edfc16bbc866e59e6e8"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/001-before-status/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/001-before-status/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/002-before-dirty-paths/receipt.json",
+      "bytes": 737,
+      "sha256": "41299f1a7bdc85ec00ab7b176041d20b59632e5441c5b6d2f7d0f0a54fc7bfb8"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/002-before-dirty-paths/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/002-before-dirty-paths/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/003-before-staged/receipt.json",
+      "bytes": 726,
+      "sha256": "fdef49bcda2690c4a8d7efa0cd4b568d8e0d2f9b551c37efb320741d3fa3ecdc"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/003-before-staged/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/003-before-staged/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/004-before-diff/receipt.json",
+      "bytes": 712,
+      "sha256": "47be296044445cce766f22ea255ea1569f3f64000cd10bbe5400c5efdefa7cdc"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/004-before-diff/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/004-before-diff/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/005-fetch-published-source/receipt.json",
+      "bytes": 850,
+      "sha256": "70fe7b27e8f7364249103d2f9eae2d9ed9dc8b4d85e8bfacb5ae2c1b241aee55"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/005-fetch-published-source/stderr",
+      "bytes": 127,
+      "sha256": "70f653215cfe897b3b2fcaeb0a2e744a10c2ca28025dde2f265a0bef520ab7f0"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/005-fetch-published-source/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/006-published-ref-head/receipt.json",
+      "bytes": 730,
+      "sha256": "0577bba9ed6bc8d5969bb958f1bc1e260a8d2ef61a74ffd929db0ff1a2192156"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/006-published-ref-head/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/006-published-ref-head/stdout",
+      "bytes": 41,
+      "sha256": "c404f92ec7c42a834c9fa9ad9b4c5c31f2447ded8c3850f45d4b73431f83db57"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/007-source-is-published-ancestor/receipt.json",
+      "bytes": 860,
+      "sha256": "92b06fbdc56a4b71980b576de005e9f5799fb9bf682762316d6a5cf00efac94d"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/007-source-is-published-ancestor/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/007-source-is-published-ancestor/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/008-version-python/receipt.json",
+      "bytes": 704,
+      "sha256": "072a846f3543f670c3150190f8bb6ceb4f1b66d1f2611626d24976e9b6d44662"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/008-version-python/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/008-version-python/stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/009-version-node/receipt.json",
+      "bytes": 693,
+      "sha256": "42f32ee474bb373ff636c04094188e37279d4a0196ec40148228313f7537e077"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/009-version-node/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/009-version-node/stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/010-version-chrome/receipt.json",
+      "bytes": 708,
+      "sha256": "1c641114003abbaa373f62b179a3138b2b535dc35c3fc3582fc90d7d0f76c4c5"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/010-version-chrome/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/010-version-chrome/stdout",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/011-version-cc/receipt.json",
+      "bytes": 687,
+      "sha256": "7bb18a5c76db2fc2a4e4235a9b2fc6a3d20fc976470622ef4354fbf8a5a105cb"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/011-version-cc/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/011-version-cc/stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/012-version-system-python/receipt.json",
+      "bytes": 734,
+      "sha256": "6a8c007006a36d65cd14a4a6ed2aa8bd1f2e8550ee13340af4a4e291cee2eb19"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/012-version-system-python/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/012-version-system-python/stdout",
+      "bytes": 14,
+      "sha256": "01870de7caca112afeefd77b3c3b4c5e263cf5539a33af3f3411100727fad7d3"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/013-mutation-check-before/receipt.json",
+      "bytes": 748,
+      "sha256": "bc11b77ddad69775b12f72c50fd4a28169820738d29c20ff6870ce4460985850"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/013-mutation-check-before/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/013-mutation-check-before/stdout",
+      "bytes": 7467,
+      "sha256": "d8d91fb83b1085987fa4a5b609842d5e0dd1ab538590a8597924c7c2c092cf32"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/014-mutation-full/receipt.json",
+      "bytes": 711,
+      "sha256": "01abf18973744e8ab4f5abbb31bda770a95fabb312a882ee9ab82acdbb8f907b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/014-mutation-full/stderr",
+      "bytes": 207,
+      "sha256": "ee9562706dd08970e562900a07fbab06c29f2d44b85fdfd85ae6b9cbaf178586"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/014-mutation-full/stdout",
+      "bytes": 19363,
+      "sha256": "55e9eac045fe71eb581cb20b72aadb2a762ea5d39b186c5b8c4eed4fb09c6cb2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/015-mutation-check-after/receipt.json",
+      "bytes": 743,
+      "sha256": "e1ede535519823a6e2d052c44e65087a6b4092a80f3ad9b7cbe25b94a24782a2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/015-mutation-check-after/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/015-mutation-check-after/stdout",
+      "bytes": 529,
+      "sha256": "291b92ec93f456f09deb98cd8dbc11b86f922e340090e4c8b6fb19bbec5345f9"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/016-after-head/receipt.json",
+      "bytes": 701,
+      "sha256": "6081dd0a5ba3aaa5d8e457361b54c6b49b78af2af4e801a02dc8202198abfe4c"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/016-after-head/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/016-after-head/stdout",
+      "bytes": 41,
+      "sha256": "c404f92ec7c42a834c9fa9ad9b4c5c31f2447ded8c3850f45d4b73431f83db57"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/017-after-status/receipt.json",
+      "bytes": 741,
+      "sha256": "93f3e4b4016a4afbc9733c804b703e32900ccc5f60a0f21d99b5656a87ea847f"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/017-after-status/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/017-after-status/stdout",
+      "bytes": 30,
+      "sha256": "dd9ef7a70dea40bebf147bb7e4feeb07d16e954b85b11cd64be2f8bd2481702b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/018-after-dirty-paths/receipt.json",
+      "bytes": 735,
+      "sha256": "f4c1a60108c7ac16fed68904046da72598f2d413c0bbe9d190dc4d3ee67e4f45"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/018-after-dirty-paths/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/018-after-dirty-paths/stdout",
+      "bytes": 27,
+      "sha256": "ae08bdf21ee4b3bde1233c3a1a2321e27e54cb3efce3818feb045e46f641d959"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/019-after-staged/receipt.json",
+      "bytes": 723,
+      "sha256": "aef1894874eb40197b08b46efdf0654ec737566daf9bde13bf3144df2f2ac38d"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/019-after-staged/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/019-after-staged/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/020-after-diff/receipt.json",
+      "bytes": 715,
+      "sha256": "9df28fa66bd19b9de15a6d74180557a93f6eec875d20cd75cea67c98bef5dc76"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/020-after-diff/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/commands/020-after-diff/stdout",
+      "bytes": 2418847,
+      "sha256": "610955f628b31f37217af24c6c9562314d93a2bd3fce918188971836cf04c797"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M01/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "95c063b8023b0be8a68c1d1d1caa4c82356cb85d962593024e699b3dbda8627a"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M02/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "b62face84cab8916bda8537868544f4ec4e1fb5d84fd2e8d1be615f9ecda68fe"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M03/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "68cf4976635f022b8c65b358680ca7ef2e48c669e6d6ba6a9b09f2b438e50949"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M04/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "62d883224506762ffaab1466f8cb1fcb74ba3cbef77e3b805491ab59ea5b3a10"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M05/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "d7a405a117ca500e828136a653c396aa4cb58666f775ccfe0b520beeb5b30e4d"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M06/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "d3c358ffd36275a340fe75a2c38d1e25751940b814dd3528ba868c1cbd18edc5"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M07/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "f5ba7257a91a385e6f9f6b3d2b4fb12288a48f3158377d78d25151f0165f8eeb"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M08/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "82fa6b07cc5ca77c0c5d02e9c39ae6f9fd5599984dbb8dabc25f6dd7b975c421"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M09/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "7db14bccf50a809bca6e359183f3eb11132d3d901c1e058ff8fd715006359c18"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M10/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "0a53edd9c72c96921800f0b2c8da55b7363e40e8d4d49052323cde460d18ca6c"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M11/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "ce1eab71c9993ab9829cb5b703b75e7ddcb1cf967e525ccd163be737109acc2f"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M12/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "8643fbcd2697612170f9fbe9511118f1411982f2d076f440a6a2b3c4a81b7d32"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M13/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "8cb19c83b8b7204696a594bec1e6d42f395a1b95a1b380e6e6512314d4f411be"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M14/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "a21ca70b6cdb32e51189818546d25c1768d8ee5774c6f324254aaad4ce975a00"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M15/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "8b79dc4c3f2fa07bcd42b47c2595d2321662acef88520a5662cb3d69630861c4"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M16/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "c0d4f8fc204431074381fa407eabb985f6700d76cb7335f23df6a6f6d0b39a8e"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M17/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "cf4e11bc5258ce64709af6aeebf9b5222269d1ddd1488e9fcaf277f39dbef975"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M18/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "99eade239a1f0fff0dd55822e7ed63c3475086e784ff866bc7585dde69cc06e2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M19/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "0f5942dab881d0010bc099749fda73c70033b56dec7f73dcafec20a42b2b5098"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M20/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "4a8788ee605893961c69e14b2cd198ad3dad5b231b577688bf20bfad7b734dc5"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M21/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "efd02e8ea099ed4cb0899aa282c40cce6ca45db9cdffc47385688f3ba15414dd"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M22/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "ca7ca92c811a93d646caacd82c4ddd1e024cbce0e2b01610a6941af2519bbb23"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M23/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "a3cbeb4e108de8f068e0ba4563c21561f89bd5daf069e04d835b79b5e2de0aa1"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M24/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "ceee09bfa52f808645f88dc95e12c56596364ceea7eb8d786d861b1b4a2252da"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M25/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "d117ae10b125be6a5dd9a68bfaa53279735b869479ea9fe45f3d3ab83c31e29d"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M26/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "74442fe084becb406243db58b82020388b6bc5d689aff089be491a32420b65cb"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M27/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "715a175731ae785c960f2b68bfa888d5bfcadef7744de8021df48410f1839541"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M28/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "3e96bfcbc1bce5917a5955b45adfce90d5c253c3fa8b49e80d335ee8ef031a69"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M29/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "3bbd640fd6027d9e0baadb249fa993a8ba942f29edd2a7b81daa78e4d50ba3db"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M30/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "8743b8d692afe8b00c8232b6a56047fbaee71e3944a030304d834df52ce5230b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M31/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "1e432b9367a2bc2d7b70104f6945c28c45b279775c95410f9aabf4ca36375e9a"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M32/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "82bc627c784320ca9010ed957b9dccbc351a2fc0d7609ca08cfc3798058bae03"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M33/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "44bb5787dbfd82dde13b7bd5b0723d6577016745a47c6758d37853a89055d107"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M34/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "758dd97ef488fb708e1de868a55abb35b293e302810ccc3927dfccef8044812a"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M36/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "0e01fb8c70b8f74405858f2b8ce564de580abed1debd1578e9fb075f46889b31"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M37/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "b0126f3aae27fa09bf7509930cfc6fe3ea3ec14ff6cb38eb47178934424f3203"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M38/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "aabac6e1e460c64f015efa191e850805a6d1d2e9e8841cc28d2933b0455e3b57"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M39/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "83213b728a6b04d19e19bd26e47169b603836a08bf84affa4923ec3f4f180ba1"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M40/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "57ac7da58cd473393fe1dfa1241cfd404de2296968c5728abc9ac185c18481de"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M52/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "34a33d879c9252aa8ed53271759b805ea47e7b7dd301d6a8a3c32e34463c0886"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M53/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "03ba0a79585c6055e1362f6c7119b79c4c99182ce79481af93c3fc1348b5b0dd"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M54/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "2759843aa81164943758bd4540ad57d5f0402dfeef89e16a8c43bc5370ebcace"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M56/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "a48a0cd3ec14728ef79f424ba4e0bebfcf6c9637a36920e63a9ef6477d379b7c"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M57/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "2365cb232ac49bd5beb3827faff89554e48bbe35839c2a4d73216c03fae209d1"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M58/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "80ca621b6ac635520821cebeab8795f88878f2b10cfc9a9f8a33804138a2e347"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M59/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "4a4a2f39c9a9e1ac4405de418c9dc9298879cc549e7f2d01060dc4be886b1b13"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M60/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "e93ddd894db673c6b25df1d62ff16692a0403f7a44d8c85c9008505dc862fae6"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M61/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "908c69b9007830a1036a78d80c4a1397daf1d71bcb5203d50966526e5f96a344"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M61/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "2aa2b8370551caca988715c05b21ce8d76da255d63970ea0a24d8b518495efc0"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M61/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M61/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "9991fa2d679c74eb435d942e714dca80eaf2a8d459657369c76017e35d4ab1cc"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M61/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M61/mutant.stdout",
+      "bytes": 7465,
+      "sha256": "a534e5509232de794270e75513dea4bf41344c1099554dfcb15934bd78941dd2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M61/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M61/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "bce95786a9239c1eb4df8adf990f9f90174f0352acfb8aa38c259d983d75e79e"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M61/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M61/restored.stdout",
+      "bytes": 11486,
+      "sha256": "d8c0057920b618199a3eb769622d47187d3e289d16297b07ce48cc901601dd2d"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M62/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "aa926f307e42fa4b66b300867aace3758627b69e5aceac0381c7944ab2b9db83"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M62/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "aab749d26a314a0cf190b307cd7abf025f3ae62f2ca9fa6ff7b71e2948d30128"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M62/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M62/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "8461296864ea0de351c33aa6a2e0c06bceb8310a036d0bd288e87cf295350c60"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M62/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M62/mutant.stdout",
+      "bytes": 15189,
+      "sha256": "7a5149e44a47e886f82b5137eebd8396fdb682bc1a47d013c4646e8b8501e93e"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M62/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M62/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "a3bcebc1138a3e3433daafb140c17121a9ce90160d6eb6e0e4b5fa088de777dd"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M62/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M62/restored.stdout",
+      "bytes": 11486,
+      "sha256": "cc37c17fa625dbe2689f3bb476359c308c2c86156d0fa5ff367e523db7bc0fb2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M63/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "317559853b7939a6164b1b79c45e158073c0459de2701dbd038f8394dca12701"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M63/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "5ebb89a69c05e2385b6131c0547ce121787cc1611f6b3bde0ee64937a700f459"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M63/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M63/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "03024fbc77c89bbf039c01aed520038404739dde88b5ed1b8fd2d8733eedfeff"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M63/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M63/mutant.stdout",
+      "bytes": 8071,
+      "sha256": "4fb141109dee46f3cfd2c33ddbb6163a14ce03573e2ccbf11045e0af30e69cc7"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M63/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M63/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "b72652c32556d0aecc8796f81e6c8e5cb92a4d7b3986d5b77dfcc3007db6ff5a"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M63/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M63/restored.stdout",
+      "bytes": 11486,
+      "sha256": "00b371ed1f9a151acb1f5358b7e0f4fcff777b86823f3a427f4f63ce2fc025d1"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M64/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "c31e003bc99b23ec450f09384aa64bf6de9b3e0e443205eb34fd8604e7766cec"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M64/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "e381d20fbeec1b3c7e40ee64aa6e541894d9db997d868bd73b83a05d1a7497e9"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M64/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M64/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "b39a36a6c5898652a0969c9797018b5a2e78e9859d5771e594b568ecec2b1d57"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M64/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M64/mutant.stdout",
+      "bytes": 7411,
+      "sha256": "4fb04a147ed830966d17b37f43a3160b6ce6cd760b232717bb3830dfa2762f6f"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M64/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M64/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "08cc6bc24c9a9d18bbb024cd04d3642d83f1046a0c9321a064392715ff8124ff"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M64/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M64/restored.stdout",
+      "bytes": 11486,
+      "sha256": "82b925b0b3df3251ee04ae11e5271071796a8f6b1ba5f2825d0ff7cc79fd87d2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M65/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "f0733e1b4f1836b98d38c18513ea30c97362f637a4ccd4579279368ab53727ba"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M65/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "7078586af10e9ef84edb6edab3f282762073a7d6043e56740ca06ecc064ec89a"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M65/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M65/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "b63d8bdeac13c9f351670d3446cd85b05c5e5a4835982cfb34cb98c654104d4b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M65/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M65/mutant.stdout",
+      "bytes": 24593,
+      "sha256": "b739635d25cec6ab818141ed193007f2ac49e732e8a992970d7604a4dbced9af"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M65/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M65/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "19cf0ef979a7a5a0b29cb37f38d81bb6aabee3d25b406f1360292dfb2c4bf0b2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M65/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M65/restored.stdout",
+      "bytes": 11486,
+      "sha256": "0e26392c0c68f667c4d292326f83854e42351abd750b8c20d2cc3f8f06aeac92"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M66/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "10d7cf3407a877893d72767da545af3720fae6ec9f511a0989b9a74e76e00dd3"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M66/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "1df6f352f30477cdd89878d7ce18f49e04468d25bd515ba3a18bc33b2f8b8e74"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M66/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M66/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "04831411c6e4036a5e055c962675453aeb9f3ff05d677ae55cca587e2b2ea04b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M66/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M66/mutant.stdout",
+      "bytes": 2319,
+      "sha256": "3ec047a0ea0254a3c33e11490b88d2dff2f319f55471541c588413875536c216"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M66/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M66/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "987a4dd31aa66900901902d73725dcfe8e3450d4191f6148ed6502b066b88628"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M66/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M66/restored.stdout",
+      "bytes": 11486,
+      "sha256": "0fa4338db2606b9443fd16ee31f0dd0a475a626d114fbb3849b7d7db329ba8b4"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M67/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "95b9f6f8ddf261db7426b531a46dc13b9a0015a6d1eba6d9dadf2f5d7aad8496"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M67/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "7b2b785805b25841d823348bffcaa15510597f615ee2c19cb136873d3e60bc14"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M67/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M67/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "715b70dd5cfc5cd81292c0202ca8172b68a7f4ca4d86fd3d338f912e5a1187b7"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M67/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M67/mutant.stdout",
+      "bytes": 3107,
+      "sha256": "119c4f1419600b14ed9457c086b2c0ef47ce2d9a7a23339edece7f9c5cb51224"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M67/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M67/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "9dbfea4c5ce0cb4c12f594ddc4c80eb25758a0a22d71cfb5c2134183cf61bc4b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M67/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M67/restored.stdout",
+      "bytes": 11486,
+      "sha256": "c3edf573b1118bd483de27ca759552f5bf05fff5a5a658fdf409b36cadc74457"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M68/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "54fad772ef1ea7a80af4ca8ecfefac3b3c61a90a488daf29512fbf50adc344b6"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M68/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "e98ec0545c5062829b8eb39fbc82aaba1e954e8874b56e16a0cb1aa28b1c2801"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M68/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M68/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "678ced63b4916638afa1a59183bc018f08331fd5fe20b2a6ad5fd733f31d56a9"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M68/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M68/mutant.stdout",
+      "bytes": 127457,
+      "sha256": "b922e7c9963769baa5fe8e7866e1f2d7665a5c669f64548d2d4780d1778ee3b9"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M68/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M68/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "f425a7cae7d1bc2e4e487b688d6cf15bdc6d4cf7ab194cd95f3eb4ad4d965b77"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M68/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M68/restored.stdout",
+      "bytes": 11486,
+      "sha256": "52e283c5143e1545b992bac89a6ade6f73a77c86650a9ec878e6205c027969c7"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M69/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "e8e8f85db4b7e89242fd4697445e2fc5aacffa699821cea1f7d8c772dd404e20"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M69/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "7efa20a28feb3c4f8efa55ed6ed33360bfb600af3d1b7936e6794f9b3b1aa59c"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M69/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M69/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "7d619ed071e085b63362a22409cb4c72407ba65095b97244aceb9834929b2e4b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M69/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M69/mutant.stdout",
+      "bytes": 7951,
+      "sha256": "7fb868a09814438e3fdcc766e5165881af50951e60fcd862085ab10021ad8c39"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M69/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M69/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "637b331da576a1cf2dda94017b65fdf608e14e0e543c1ea2375f288c75de4a61"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M69/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M69/restored.stdout",
+      "bytes": 11486,
+      "sha256": "826581e852a46a7ed07a12005e1087839fee8be662466e47bb043658c20bdeff"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M70/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "3f252c8605413f3e8a01b5a322d086b3439a73e7fb31b28c97131f683ef3607f"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M70/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "e912bfd72b885c5483bbb4dd7bac7a762d154af77be761a85b73fb50f8a48d87"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M70/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M70/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "9cdaa883ca2bcb9b94d06fc54517cf6169aaf961850444c3f0a60843bc940ee3"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M70/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M70/mutant.stdout",
+      "bytes": 8533,
+      "sha256": "fb66b8837e39d6d531867494140393b0e718f89ded49d2fb1afac81080721956"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M70/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M70/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "d5b1191d9808c90dea6ed7726f88fd11dde7894fd38cfdab81522a09c208dc11"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M70/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M70/restored.stdout",
+      "bytes": 11486,
+      "sha256": "1111d7558ba7b1445e1572ee0d73c99387415a23d51a322db27af95ae62bb7dd"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M71/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "10ac6f49fe2fd5a311340f153fc40dab2d1ba9ed5acffc56200b72a9beba4c00"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M72/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "cbf1fbd6a7a1b905ccb16abe73590cf111834d4fcab2e9d260e7fcf826c7ae80"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M73/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "fb3488f2d1970d43d84292df551a0d5b19b6d70907265508212f6e3ce56a9ff2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M74/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "e05951c5227544e2adf817f2830904bafd2015891092efae1876a1265e1b9421"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M75/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "6e82afc85aeaaaac13ea850d3fa5ae0bafe4f15a7073ce4d460e1d2b6f462be8"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M76/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "7209a68e52753c90bab62b4950638897d54190efc2a66adab7cd802d3f20bd06"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M77/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "517083b38971ac5c5437f715d725343c39d882a66510204e07b66c4d05c818e3"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M78/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "fa2eb4ff18a317c25a533f75835e1a196f43e09eb05837095d11bae541901d25"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M78/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "6dea16d1c912a226153531dc358b5ca2590aea53b9750c8b43cf86ddd8e1bc3c"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M78/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M78/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "a421b091e8d0db87b6c743f2a89bf268cfc504e84ef265b6e420cd1f648c45a9"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M78/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M78/mutant.stdout",
+      "bytes": 10164,
+      "sha256": "79c909d41eac00f05d166cf90dad41548bbd3ff358508ae50a3f827683c0cdd2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M78/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M78/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "e877f4cf8c9487d69e8fcdf047cc2e7403c5ac53da3d1c375acd411ace5594d7"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M78/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M78/restored.stdout",
+      "bytes": 11486,
+      "sha256": "05bb9bc8701d2ccf4858bf3cf5e6bb30ba35d61f602657daa321b8733af38d64"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M79/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "fb619a16d11b482adc461de60942321f8abb073fcb8f981df636944ceb7a212a"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M79/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "32176d0de5ce565047a01cb6fadac6506bb17c21ea4db1364b43ee6657c34fd3"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M79/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M79/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "5de1bcf26ea545d398987e73555819bc7d83a6440b3a58facacd7476f0612703"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M79/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M79/mutant.stdout",
+      "bytes": 3562,
+      "sha256": "9ba5e36b035e96b211f1260f2039a7758cbfd0b83c5e6155259085b4a694535f"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M79/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M79/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "68d20a6309c1284bff5d29d2081d9bd7bdac16c6ca8edbe6451542bad1d728be"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M79/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M79/restored.stdout",
+      "bytes": 11486,
+      "sha256": "a77e2b21af43b36772464311ad4018cb137cc7d7a228396f8867ba67e5859c03"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M80/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "30089aa3d2808f4aa7d937af053d96b14a549bb9fdea3aceb0525da123d9f751"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M80/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "cc0d4474954985b41c92b681110fc13fd3d0724641eccf62faffe4b855c5df07"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M80/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M80/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "5acc59b9da734ec1736bb842ee838971e819837f5dd142b049b8d8e5c93ed71f"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M80/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M80/mutant.stdout",
+      "bytes": 11309,
+      "sha256": "781a01a045f38909f7893745cbe7043706bafcac3b47d990e008b228c2e92481"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M80/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M80/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "55f52ba00e183bc5e82c33a3855d79f977796e1f357d44609fe1c3989bc57f7d"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M80/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M80/restored.stdout",
+      "bytes": 11486,
+      "sha256": "6345c6c7c2c477ba8695ad5df816793e9e8a3dab7e1983e111f05ceb8c66e516"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M81/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "b8b7207418b2b58f7f9e19352f3793fd0a25e2d1d4a31796f8ba566c3c8bd87f"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M81/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "62051230fd097afb784a926f731c043a73c5e172b9d2ffa4a92d27471a91d230"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M81/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M81/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "868e1be57c4a2b1e0f50cb1c611263ed4dd9606c67f157267e9268970992a49f"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M81/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M81/mutant.stdout",
+      "bytes": 9813,
+      "sha256": "2831f670dfb1eec21ffb61b80deb6c67b1541db877964eed7492908c2b2384ca"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M81/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M81/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "6f49f46fa0f1e44ce2d1fb7497cc92e09bf90c0f14992a8e9ce40640a47a8553"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M81/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M81/restored.stdout",
+      "bytes": 11486,
+      "sha256": "e7ded54b94a546bbe4cd6827e761aae026d1a64da534ea4eaf5fd731443843db"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M82/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "d590094c231d6b77b2185e9d3398bf9768591c450688eb604a7d07356facb6cd"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M82/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "f5d69e2f1268e16e8651e168290b8d562a64f9561ac5eecbaec04fdff4bd3b77"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M82/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M82/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "d22b975bee08081bfd9b0503d0b9327bd3d4250d0e998304bb4eb170ed549844"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M82/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M82/mutant.stdout",
+      "bytes": 4215,
+      "sha256": "f0276bc186b5ba985fff5d00a935c76b87dc628768a810b1582cfb30c9761fb7"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M82/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M82/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "63b5bb9e54bbc4886b01bc383e66110e673d374d5c764eb978fa523b379a5724"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M82/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M82/restored.stdout",
+      "bytes": 11486,
+      "sha256": "f1516d81c86045001581b3087fd4d8ef6345e39bac6c8eaafe3cc2284d90019a"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M83/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "d0a5018e8ab05f798ccfbe027f4a26112f9dbbf1f0df95f86fc1faec61b92db2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M83/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "894c9f83be1a03011f7e7b2cd3c1af55f3e3801599c27e3dfcb8f38cf3255620"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M83/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M83/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "7ac697014bcd510c5ab9d32d5565e82da92fb1b1218bd57b0142e73a1dceebe7"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M83/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M83/mutant.stdout",
+      "bytes": 10237,
+      "sha256": "e6d3bf2c356e2c49245b0613d84caff6a2a73e0213b54662a9a979fee6c17b89"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M83/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M83/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "50942a86836607dafb228899010c70b68c0dfd9316eedb31e90c1287396965c6"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M83/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M83/restored.stdout",
+      "bytes": 11486,
+      "sha256": "7570b4e685584f7c1a83a000e3a8491acb2ff0bbbc90713f2b6213ec40efd1a0"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M84/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "b57d70ac21ceb7c0109562bd309f297cbf8c0b60b5b07e8b3222ce98ba4c0e1b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M84/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "9602ca6f133d383ab6a23de442827a046525297451616f25c03c430577888f39"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M84/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M84/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "77a85febeaa95a3054e49a4b40114595cfd5d2898b4819397166ef3dfed77db5"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M84/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M84/mutant.stdout",
+      "bytes": 2622,
+      "sha256": "ce7bdec20ee75c90450191d61898c368dc2bdb76d88514e06d0fba5053654b56"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M84/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M84/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "600b2f4805d7b60d18ed9ac097ae75662b35535977a16213f13e3558597620a6"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M84/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M84/restored.stdout",
+      "bytes": 11486,
+      "sha256": "e148ffdd01f6c4cea90c4f97a08de282f1400daf55ce5489396c0519b09e571d"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M85/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "1a1ceec7cdc0b3e565ea8a409ba4480ccfc77575a2d955fa6c7674d93249d8cf"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M85/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "1c8944affdfbb38a1238c5a9b14198521f07763f01567c4a14ef44742045ebdf"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M85/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M85/mutant-build.stdout",
+      "bytes": 216,
+      "sha256": "4575699a7578a969481e1ef97e9fe466f12f5c808a690fcc09a63f84e5971656"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M85/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M85/mutant.stdout",
+      "bytes": 2677,
+      "sha256": "b640c00869581000748c493e6d88606fd7fe56fcdb756acb6dd6edb29589243e"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M85/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M85/restored-build.stdout",
+      "bytes": 220,
+      "sha256": "243d357030fa98da019656a9d3f11bc6527c723651fdc3c25bb3ac58c26859ac"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M85/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M85/restored.stdout",
+      "bytes": 11486,
+      "sha256": "c3e8ac9d3272db68d2bdaa8f74602329953dbeda1f533708006dfbdbb87f92df"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M86/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "d54267674ba8943793d37ec0b2f412c757dad678e4e26e806fe73b46888fcbe2"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M87/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "aef3fa40e1806c44e34995fde1e438039e4fb91b19aa642ebee5493928d54e82"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/M88/_mut.exe.fingerprint.json",
+      "bytes": 519,
+      "sha256": "4085857666ad84285290fbfc611db3c60dfd01d7c4af8d5a01e246e394d5a4e4"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/_baseline/baseline.exe.fingerprint.json",
+      "bytes": 357,
+      "sha256": "3d62cd789574692fa5e0eb7f8833f5037d1170818578f58d80af598b1bcdc417"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/_bridge-baseline/b6646d10751a0d85a2f03f5d24fbe1073cb78980/baseline-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/_bridge-baseline/b6646d10751a0d85a2f03f5d24fbe1073cb78980/baseline-build.stdout",
+      "bytes": 296,
+      "sha256": "80d2f471edb5cf8dbab2e8845129033aa9de779b305bf3e751043a1172db8a9b"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/_bridge-baseline/b6646d10751a0d85a2f03f5d24fbe1073cb78980/baseline.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/_bridge-baseline/b6646d10751a0d85a2f03f5d24fbe1073cb78980/baseline.stdout",
+      "bytes": 11486,
+      "sha256": "1b6a8333a8dea668a0d195b3672ac4a9e53732513201fcbb3eccc0f7ac9e5c06"
+    },
+    {
+      "path": "preseal-full-ledger/stage/mutate-cache-raw/_bridge-baseline/b6646d10751a0d85a2f03f5d24fbe1073cb78980/bridge.fingerprint.json",
+      "bytes": 22875,
+      "sha256": "266c803f178efb9eedd82ea2cc7afc0ea210b9f81ab92ded650256374fc2f0c9"
+    },
+    {
+      "path": "preseal-full-ledger/stage/receipt.json",
+      "bytes": 20328,
+      "sha256": "332a93ea4bd9944c9ceabc2d3d749505604732fea5271efde2ff9c224035bccf"
+    },
+    {
+      "path": "preseal-full-ledger/stage/wrapper.py.txt",
+      "bytes": 13468,
+      "sha256": "6df11d7877c95a8898c169170bf914dce70ddadd3cc40bb221022ed806b745ac"
+    },
+    {
+      "path": "preseal-full-ledger/tools/audit_p_ledger_readonly.py.txt",
+      "bytes": 11318,
+      "sha256": "c628644667e8a11e4a1140b5581f07681e6d90900e66fbca345ba5496d88748e"
+    },
+    {
+      "path": "preseal-full-ledger/tools/prepare_full_ledger_publication.py.txt",
+      "bytes": 22223,
+      "sha256": "5f6bc3c6aff831b6e0020958777cd3d36ef1a077ec9d22272c16364bfb70373a"
+    },
+    {
+      "path": "preseal-full-ledger/tools/publish_preseal_target.py.txt",
+      "bytes": 3150,
+      "sha256": "da68538f7b2e68af4cd39ac047c56e2a93bcb32520c91407947c9b840579d96e"
+    },
+    {
+      "path": "preseal-full-ledger/tools/publish_progress.py.txt",
+      "bytes": 4537,
+      "sha256": "23eac7ea7a9e5ad7c376858f7299ecd92a00f797e74a9e9d9f2c79b1524f3476"
+    },
+    {
+      "path": "preseal-full-ledger/tools/reap_children.py.txt",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "preseal-full-ledger/tools/run_preseal_stage_draft.py.txt",
+      "bytes": 13468,
+      "sha256": "6df11d7877c95a8898c169170bf914dce70ddadd3cc40bb221022ed806b745ac"
+    }
+  ]
+}
