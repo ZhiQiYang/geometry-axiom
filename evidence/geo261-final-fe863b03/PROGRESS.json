@@ -225,6 +225,13 @@
       "result": "同 F 累積純性能組撤回／恢復符合：N64 withdrawn/main=2.46757 原 2× gate 紅，restored/main=1.77124 綠；三版本各三筆 load 原退出 0、dump 相同；只證整組，不稱各微優化個別必要",
       "next": "針對 P52 已定位的路徑建構／排序成本作小修與原裁判重驗；本輪原紅保留",
       "archive": "raw/F-cumulative-perf-proof.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T19:45:48.499977+00:00",
+      "label": "p52-runtime-cost-diagnosis",
+      "result": "P52 原紅保留；隔離 profile 找到 Path 建構與排序成本，可選候選保留完整雙盤點／全檔讀取；候選原 runtime suite 31／0，尚未宣稱 P52 通過或完成產品修正",
+      "next": "套用最小非語意省工，驗帳本並重產架構，固定新 SHA 後重跑完整清單與自證",
+      "archive": "raw/p52-runtime-cost-diagnosis.raw.tar.gz"
     }
   ]
 }

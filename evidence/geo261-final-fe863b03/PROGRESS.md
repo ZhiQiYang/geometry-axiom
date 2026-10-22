@@ -98,4 +98,7 @@
 - 2026-10-22T19:44:13.515235+00:00 — **F-cumulative-perf-proof**：同 F 累積純性能組撤回／恢復符合：N64 withdrawn/main=2.46757 原 2× gate 紅，restored/main=1.77124 綠；三版本各三筆 load 原退出 0、dump 相同；只證整組，不稱各微優化個別必要
   下一步：針對 P52 已定位的路徑建構／排序成本作小修與原裁判重驗；本輪原紅保留。原始資料：`raw/F-cumulative-perf-proof.raw.tar.gz`。
 
+- 2026-10-22T19:45:48.499977+00:00 — **p52-runtime-cost-diagnosis**：P52 原紅保留；隔離 profile 找到 Path 建構與排序成本，可選候選保留完整雙盤點／全檔讀取；候選原 runtime suite 31／0，尚未宣稱 P52 通過或完成產品修正
+  下一步：套用最小非語意省工，驗帳本並重產架構，固定新 SHA 後重跑完整清單與自證。原始資料：`raw/p52-runtime-cost-diagnosis.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
