@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "diagnostic_only": true,
+  "base_sha": "82e0db0bc9690daf186dc3e1dd21e3f31b6e5ea3",
+  "candidate_files": {
+    "geometry-templates/woodworking/native/contact_world.c": "b9d8fa9e4dba732b1f7173aa0f39019295120b89ea4c25ef8975bd5acd9c4152",
+    "tests/geo261_contact_sources_harness.c": "4786e00f4ef4ab2a5a64015f72227fe3e23c9945b283a43ff5e08213d59f78c9",
+    "tests/test_geo261_contact_sources.py": "30d42846f1d6e7d13e015fd3cd26a7bc1a59b5a24d93df3ec2910d243e60ec75"
+  },
+  "samples": 60,
+  "ratios": [
+    {
+      "n": 16,
+      "medians": {
+        "main": 0.3829,
+        "old": 0.3421,
+        "new": 0.3395
+      },
+      "new_main": 0.8866544789762341,
+      "new_old": 0.9923998830751243,
+      "old_main": 0.8934447636458606
+    },
+    {
+      "n": 32,
+      "medians": {
+        "main": 0.6282,
+        "old": 0.7165,
+        "new": 0.6802
+      },
+      "new_main": 1.0827761859280485,
+      "new_old": 0.9493370551290998,
+      "old_main": 1.1405603311047439
+    },
+    {
+      "n": 48,
+      "medians": {
+        "main": 0.9747,
+        "old": 1.5408,
+        "new": 1.4192
+      },
+      "new_main": 1.4560377552067303,
+      "new_old": 0.9210799584631361,
+      "old_main": 1.5807940904893814
+    },
+    {
+      "n": 64,
+      "medians": {
+        "main": 1.4935,
+        "old": 3.1348,
+        "new": 2.6261
+      },
+      "new_main": 1.7583528624037497,
+      "new_old": 0.8377248947301265,
+      "old_main": 2.0989621694007363
+    }
+  ],
+  "dump_count": 4,
+  "contact_tests": 13,
+  "negative_controls": 8,
+  "anchor_tests": 3,
+  "supervisor_exit": 0,
+  "driver_sha256": "f68cc71f10b8dd8390d6087c0a38433c116201d06ee857f48ef7429b756072c1",
+  "verifier_sha256": "4e8f4a1e4cd604a44d5f1873b41b9d3d824484460821e606ce04df83859cd6f4"
+}
