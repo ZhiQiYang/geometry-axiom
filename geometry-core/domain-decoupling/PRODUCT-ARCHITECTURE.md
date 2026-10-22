@@ -482,3 +482,18 @@ new files or changed sources.
 - `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
 
 以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
+
+## 雲端 Linux 有限重產：W placement-contact 政策更新
+
+本輪來源固定於 `aa02a65e9d3923cc14c13340f05ed16c8b7d4fce`，上一份收據產物提交為 `f2c8837aeba3c49eacbd77b5161f07c819204263`。新 Linux 封裝器沿用原 scanner、generic tests 與 product tests，沒有使用或冒充舊 Windows driver。來源登記、分類與排除理由保持原值；完整 W C 詞彙盤點保留全部舊 guard，僅新增本輪兩個 W identifier。新 manifest 在 repo 外完整驗證樹受測，原來源 checkout 不變。
+
+本輪新增政策：`WoodMemberPlacementContact`、`wood_definition_sources_placement_contact`；forbiddenIdentifiers 918 → 920。原三條 preflight 結果另存，不用新結果覆寫。逐新增識別字的舊政策接受／新政策拒絕及 neutral 接受是額外靜態 probe，不增加兩個正式 suite 方法數；未執行舊 Windows supplemental。
+
+獨立檔案系統與 Git tree inventory 共 601 個 executable inputs；owned 333、excluded 268、edges 796、diagnostics 0。LF input closure 是 `8ce86d3b98b664ca87ba1edd60d9f5506c61a6744357769f1d4c100aedb7d78f`。
+
+相對上一份 sealed receipt 改變的既有輸入：`current_geometry.c`、`geometry-app/native/reference_sources.inc`、`geometry-core/kernel/placement_sources.c`、`geometry-core/kernel/placement_sources.h`、`geometry-core/kernel/source.c`、`geometry-templates/woodworking/native/contact_sources.c`、`geometry-templates/woodworking/native/definition_sources.c`、`geometry-templates/woodworking/native/definition_sources.h`。四檔是衍生稽核產物，排除於來源 closure；receipt 不雜湊自身。
+
+- `python -B tests/test_architecture_contract.py`：退出 0；205 tests，205 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+- `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+
+以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。

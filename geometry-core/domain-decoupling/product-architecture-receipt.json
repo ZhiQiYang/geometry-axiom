@@ -19,16 +19,16 @@
     "瀏覽器與所有專項驗收",
     "未來變更的來源"
   ],
-  "createdUtc": "2026-10-22T10:15:50.823497+00:00",
-  "basis": "乾淨固定 Git HEAD 與獨立完整 inventory，原三條架構裁判在同一來源實際執行。",
-  "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
-  "headObservedBefore": "08dede0bf7f9206b5df5fefb6a27180128518c35",
-  "headObservedAfter": "08dede0bf7f9206b5df5fefb6a27180128518c35",
-  "manifestSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
+  "createdUtc": "2026-10-22T15:34:05.285244+00:00",
+  "basis": "乾淨固定 Git HEAD 與獨立完整 inventory；舊三條在原來源執行，新政策三條在產品輸入與原裁判逐bytes相同的外部完整驗證樹執行，cwd如實記錄。",
+  "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+  "headObservedBefore": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+  "headObservedAfter": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+  "manifestSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-  "scanSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-  "reportSha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc",
-  "inputClosureSha256": "7a7d301e6e4cf6c7b7557a65bdd2e93d7e433be4d5773f835b567a7cbf6e0429",
+  "scanSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
+  "reportSha256": "60ac926e4c4aa5133b6624ea636e78df9cb47451bbf5f25a1120ff66e86364cc",
+  "inputClosureSha256": "8ce86d3b98b664ca87ba1edd60d9f5506c61a6744357769f1d4c100aedb7d78f",
   "counts": {
     "executableFiles": 601,
     "ownedSources": 333,
@@ -47,74 +47,74 @@
       "javascript": 64,
       "python": 75
     },
-    "forbiddenIdentifiers": 918,
+    "forbiddenIdentifiers": 920,
     "forbiddenStrings": 55
   },
   "manifestRefresh": {
     "previousManifestSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
-    "previousReceiptSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259",
+    "previousReceiptSha256": "23de901dab26e88635e771bef05ad89b7532f62417f0b9e4325235654c4e24f4",
     "previousScanSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-    "previousReportSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba",
-    "previousReceiptCreatedUtc": "2026-10-22T08:14:38.421725+00:00",
-    "previousSourceBaseHead": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
-    "previousReceiptCommit": "60425b629aee9f74f4e62ea88af9882bc8968881",
-    "firstObservedHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+    "previousReportSha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc",
+    "previousReceiptCreatedUtc": "2026-10-22T10:15:50.823497+00:00",
+    "previousSourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+    "previousReceiptCommit": "f2c8837aeba3c49eacbd77b5161f07c819204263",
+    "firstObservedHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
     "previousOutputsPreserved": {
-      "directory": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous",
+      "directory": "/tmp/g261seal/architecture-refresh/previous",
       "hashes": {
         "product-architecture.json": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous/product-architecture.json",
+          "path": "/tmp/g261seal/architecture-refresh/previous/product-architecture.json",
           "bytes": 219913,
           "rawSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
           "lfSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452"
         },
         "product-architecture-scan.json": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous/product-architecture-scan.json",
+          "path": "/tmp/g261seal/architecture-refresh/previous/product-architecture-scan.json",
           "bytes": 132208,
           "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
           "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous/PRODUCT-ARCHITECTURE.md",
-          "bytes": 29373,
-          "rawSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba",
-          "lfSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba"
+          "path": "/tmp/g261seal/architecture-refresh/previous/PRODUCT-ARCHITECTURE.md",
+          "bytes": 30660,
+          "rawSha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc",
+          "lfSha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc"
         },
         "product-architecture-receipt.json": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous/product-architecture-receipt.json",
-          "bytes": 128305,
-          "rawSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259",
-          "lfSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259"
+          "path": "/tmp/g261seal/architecture-refresh/previous/product-architecture-receipt.json",
+          "bytes": 121934,
+          "rawSha256": "23de901dab26e88635e771bef05ad89b7532f62417f0b9e4325235654c4e24f4",
+          "lfSha256": "23de901dab26e88635e771bef05ad89b7532f62417f0b9e4325235654c4e24f4"
         }
       }
     },
     "lastSealedOutputsReadFromGit": {
-      "commit": "60425b629aee9f74f4e62ea88af9882bc8968881",
-      "directory": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous-from-git",
+      "commit": "f2c8837aeba3c49eacbd77b5161f07c819204263",
+      "directory": "/tmp/g261seal/architecture-refresh/previous-from-git",
       "hashes": {
         "product-architecture.json": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous-from-git/product-architecture.json",
+          "path": "/tmp/g261seal/architecture-refresh/previous-from-git/product-architecture.json",
           "bytes": 219913,
           "rawSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
           "lfSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452"
         },
         "product-architecture-scan.json": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous-from-git/product-architecture-scan.json",
+          "path": "/tmp/g261seal/architecture-refresh/previous-from-git/product-architecture-scan.json",
           "bytes": 132208,
           "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
           "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous-from-git/PRODUCT-ARCHITECTURE.md",
-          "bytes": 29373,
-          "rawSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba",
-          "lfSha256": "c591715fd8b590ad0e752b9b2ce1842f1f418e5ebe2869ddeafa9b52e0dff0ba"
+          "path": "/tmp/g261seal/architecture-refresh/previous-from-git/PRODUCT-ARCHITECTURE.md",
+          "bytes": 30660,
+          "rawSha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc",
+          "lfSha256": "a8befb43e2f2ad0af8b37c09bc0a04e3a2a1266ca87f11e856a5e2acd7c74fcc"
         },
         "product-architecture-receipt.json": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/previous-from-git/product-architecture-receipt.json",
-          "bytes": 128305,
-          "rawSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259",
-          "lfSha256": "61f7bf95555624059690eb50a7f3907a797d406ee1cad71c0e6493d7035ff259"
+          "path": "/tmp/g261seal/architecture-refresh/previous-from-git/product-architecture-receipt.json",
+          "bytes": 121934,
+          "rawSha256": "23de901dab26e88635e771bef05ad89b7532f62417f0b9e4325235654c4e24f4",
+          "lfSha256": "23de901dab26e88635e771bef05ad89b7532f62417f0b9e4325235654c4e24f4"
         }
       },
       "note": "舊四檔逐一從上一份產物 commit 讀回 Git blobs，與 previous/ 的 checkout bytes 比較 LF hash；兩份 raw bytes 分開保全。未把舊驗收改寫為本輪結果。"
@@ -126,18 +126,546 @@
     "newInputs": [],
     "changedPreviouslySealedInputs": [
       {
-        "path": "geometry-web/app.js",
-        "previousSha256": "d8c14843be3dd50c5ff7198c373cbdf3ef0bb45232aafec36fb2eb074f99550d",
-        "sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+        "path": "current_geometry.c",
+        "previousSha256": "c58bee9df0fce6b8e881850c0bf28680000bcb690dfca7a5e911aa9b3217df87",
+        "sha256": "9f98b6edf704e3a4985711983d35b0e15acdbb716dca55e1b0556d8a569633a6"
+      },
+      {
+        "path": "geometry-app/native/reference_sources.inc",
+        "previousSha256": "3695ab9844a80cf0041d2a6a67e2be96bf6ecbcd59709759d1add4822b70077c",
+        "sha256": "54b4896573a1f6e6c77878a86a18b84843b3bef5c289c6c12d5c7ddbba406f41"
+      },
+      {
+        "path": "geometry-core/kernel/placement_sources.c",
+        "previousSha256": "7b953719f5e75ed2e70f99c9e0a96588d398bd9220025a7b7a191c4dbaeb8e12",
+        "sha256": "45e754f4260e15679797b8f44c8c6a25132b199d47a7239da1e2045a8a814c31"
+      },
+      {
+        "path": "geometry-core/kernel/placement_sources.h",
+        "previousSha256": "ff52eb8121cff380de275aa97d8562e56d58d8e21968369fde2db67c04135a7a",
+        "sha256": "9c11cb94b20231dabf746c6f23480b5c3d324fc9d268b0140a3e01fab4781aa8"
+      },
+      {
+        "path": "geometry-core/kernel/source.c",
+        "previousSha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb",
+        "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/contact_sources.c",
+        "previousSha256": "ea0fa63d05f9abac1a11ac4f780a2f3a1e10f8aea502df1fa7e7eb1aa681f659",
+        "sha256": "0405a88453278501482381d452b564f74e0f91833c711002007b0ffcdb2498bd"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/definition_sources.c",
+        "previousSha256": "f22fe0aac839b4269a9c06f2ea0b266207cc8ef5a6c4031b35be3e0796505645",
+        "sha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
+      },
+      {
+        "path": "geometry-templates/woodworking/native/definition_sources.h",
+        "previousSha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d",
+        "sha256": "1ec14f17dea4fe98f80099d4699e3e154157e152b5ded9ab6ea0da147648495b"
       }
     ],
     "allowedChangedInputs": [
-      "geometry-web/app.js"
+      "current_geometry.c",
+      "geometry-app/native/reference_sources.inc",
+      "geometry-core/kernel/placement_sources.c",
+      "geometry-core/kernel/placement_sources.h",
+      "geometry-core/kernel/source.c",
+      "geometry-templates/woodworking/native/contact_sources.c",
+      "geometry-templates/woodworking/native/definition_sources.c",
+      "geometry-templates/woodworking/native/definition_sources.h"
     ],
     "staleExcludedVendorOrEmbedDigestsBefore": [],
     "staleExcludedVendorOrEmbedDigestsAfter": [],
-    "digestEvidence": "沿原 manifest 執行 scanner exit0；不更新 vendor、excluded 或 iframe driver/router digest 來掩蓋失效。",
-    "classificationNote": "本封裝器拒絕新增或移除來源，不更改 manifest；現有分類、排除理由、政策保持原 bytes。",
+    "digestEvidence": "沿機械新增 W guard 的新 manifest 執行原 scanner exit0；vendor、excluded、iframe driver/router digest 與其政策均未修改。",
+    "policyDelta": {
+      "identifierRule": "全部 manifest W-owned C 來源的原 lex(c=True) executable Wood*/WOOD_*/wood_* token，與完整舊 guard 做 union。",
+      "stringRule": "保留全部舊 guard；沿原 scan_c 串接相鄰 C string tokens，盤點 wood/woodworking namespaced decoded literal。",
+      "wCInputs": [
+        {
+          "path": "geometry-templates/rectangular-grid/rectangular_grid.c",
+          "rawSha256": "dad3642468eea30bf5370320bb7e4b05dc765469a4df537ffa3f5a8221684864",
+          "lfSha256": "dad3642468eea30bf5370320bb7e4b05dc765469a4df537ffa3f5a8221684864"
+        },
+        {
+          "path": "geometry-templates/rectangular-grid/rectangular_grid.h",
+          "rawSha256": "50cd5762d0b69d415af8747aca5844948f24316861a069f4cee040c328aaf870",
+          "lfSha256": "50cd5762d0b69d415af8747aca5844948f24316861a069f4cee040c328aaf870"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/assembly.c",
+          "rawSha256": "7bfe7537c5c865762d4f7597d92579db381cd4f6d3a91080aa6da9a90197e57f",
+          "lfSha256": "7bfe7537c5c865762d4f7597d92579db381cd4f6d3a91080aa6da9a90197e57f"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/assembly.h",
+          "rawSha256": "acf8d1115699db097b11a74dea882acf90af5f303bfc7c14c9774e9b3477c0ab",
+          "lfSha256": "acf8d1115699db097b11a74dea882acf90af5f303bfc7c14c9774e9b3477c0ab"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/assembly_sources.c",
+          "rawSha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a",
+          "lfSha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/assembly_sources.h",
+          "rawSha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a",
+          "lfSha256": "93fd298f151dec8f78ee9358cf2513d9504f21e5422f9fa6070a36790c0b2e0a"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/boundary_policy.c",
+          "rawSha256": "444b78261b8e52b0476bb065d04aaade5664379a55140c88054b4570701e73b6",
+          "lfSha256": "444b78261b8e52b0476bb065d04aaade5664379a55140c88054b4570701e73b6"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/boundary_policy.h",
+          "rawSha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a",
+          "lfSha256": "00d4b94f4c75c9e5a58742cf1f3e7b0d9e6f7f3c7f7c3c306f9957539ff55f9a"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/contact_sources.c",
+          "rawSha256": "0405a88453278501482381d452b564f74e0f91833c711002007b0ffcdb2498bd",
+          "lfSha256": "0405a88453278501482381d452b564f74e0f91833c711002007b0ffcdb2498bd"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/contact_sources.h",
+          "rawSha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f",
+          "lfSha256": "972d33c4fdab2e34e02f949657b7aabe23d207fecd962c2e2d8d10bc7c6fe70f"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/contact_world.c",
+          "rawSha256": "908cb6f58914a979e67525dad14a1027f5bdd56eae0772392639d42c5588985e",
+          "lfSha256": "908cb6f58914a979e67525dad14a1027f5bdd56eae0772392639d42c5588985e"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/contact_world.h",
+          "rawSha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad",
+          "lfSha256": "a23b3aaa936123163ef3c16a1414c0e3288cf4ef59c86d62c45983855403a0ad"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/contacts.c",
+          "rawSha256": "4dc8dfdc591604c579c4c374306059aca315e5a8a37539f45043c8dafa0dd766",
+          "lfSha256": "4dc8dfdc591604c579c4c374306059aca315e5a8a37539f45043c8dafa0dd766"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/contacts.h",
+          "rawSha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc",
+          "lfSha256": "c2fdc3456d062ac70ce35b9a2af459ae047cb34c8390013315bd7d609187abfc"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/cut_list.c",
+          "rawSha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f",
+          "lfSha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/cut_list.h",
+          "rawSha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+          "lfSha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/definition_sources.c",
+          "rawSha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16",
+          "lfSha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/definition_sources.h",
+          "rawSha256": "1ec14f17dea4fe98f80099d4699e3e154157e152b5ded9ab6ea0da147648495b",
+          "lfSha256": "1ec14f17dea4fe98f80099d4699e3e154157e152b5ded9ab6ea0da147648495b"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/derived_placement.c",
+          "rawSha256": "f593f27b6fd4910175990f8742c37ebc331c27c5dc8ea21dd280ed538eb0055c",
+          "lfSha256": "f593f27b6fd4910175990f8742c37ebc331c27c5dc8ea21dd280ed538eb0055c"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/derived_placement.h",
+          "rawSha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7",
+          "lfSha256": "8aa8e8ba4cb9998c7954d9148afbf308c66cbc893ed4c2cd90d0aec3e4714db7"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/document.h",
+          "rawSha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+          "lfSha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/domain_values.h",
+          "rawSha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b",
+          "lfSha256": "027edcf8bfb0536d03ea4b08c069f5ba0cbfa651c3820fc70b2e02c650f3585b"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/engineering.c",
+          "rawSha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31",
+          "lfSha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/engineering.h",
+          "rawSha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59",
+          "lfSha256": "dcabe10d3f4484ce4a303e7afeeb7be14363bfc6da3d2edd91b3e65475b58b59"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/engineering_operations.c",
+          "rawSha256": "4154e53ba181f2f60a3fb626851e937810ddd9b5ab4766e48ebffc2734fad7b9",
+          "lfSha256": "4154e53ba181f2f60a3fb626851e937810ddd9b5ab4766e48ebffc2734fad7b9"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/engineering_operations.h",
+          "rawSha256": "566d1aa3ab48702febf14a352826a2d276db84b20299b26b0ad063d37aeefe4b",
+          "lfSha256": "566d1aa3ab48702febf14a352826a2d276db84b20299b26b0ad063d37aeefe4b"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/engineering_sources.c",
+          "rawSha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300",
+          "lfSha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/engineering_sources.h",
+          "rawSha256": "8516604f968f0a242ebf99a1efa147c14e5c8c0a7bb69b3a609e78b49f712a8a",
+          "lfSha256": "8516604f968f0a242ebf99a1efa147c14e5c8c0a7bb69b3a609e78b49f712a8a"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/finish.c",
+          "rawSha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c",
+          "lfSha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/finish.h",
+          "rawSha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e",
+          "lfSha256": "8352adbb98e93e291bc2bd694dabeab5835d679ee26c070156709bb3bb8f548e"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/finish_sources.c",
+          "rawSha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d",
+          "lfSha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/finish_sources.h",
+          "rawSha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa",
+          "lfSha256": "822ee077ca5c0d440830fbdbf8ab0fadf18f1b6844d5c5f49603f8a55e5451fa"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/grid_application.c",
+          "rawSha256": "87e2e82ce1906bbf4998dd530fdcdfd6b49a8f53caf2a6ae42318f6e99e48798",
+          "lfSha256": "87e2e82ce1906bbf4998dd530fdcdfd6b49a8f53caf2a6ae42318f6e99e48798"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/grid_application.h",
+          "rawSha256": "9affcdb3642a15b51f790bff80aaa97af04be3a9663b48637d5be021e864852e",
+          "lfSha256": "9affcdb3642a15b51f790bff80aaa97af04be3a9663b48637d5be021e864852e"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/grid_cells.c",
+          "rawSha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434",
+          "lfSha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/grid_definition_codec.c",
+          "rawSha256": "f6a27601450f1452977a9b42628f409c694bcf0397db6bcf80e3fad0d7c38387",
+          "lfSha256": "f6a27601450f1452977a9b42628f409c694bcf0397db6bcf80e3fad0d7c38387"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/grid_definition_codec.h",
+          "rawSha256": "43e9014de28b1efb7418755cbbc42a0523110b8a8d22f9689849b54737e14349",
+          "lfSha256": "43e9014de28b1efb7418755cbbc42a0523110b8a8d22f9689849b54737e14349"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/grid_rules.c",
+          "rawSha256": "c42441ad543775cc34886f629834e428120df7564654cf98fcbfa9da3a50b298",
+          "lfSha256": "c42441ad543775cc34886f629834e428120df7564654cf98fcbfa9da3a50b298"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/grid_sources.c",
+          "rawSha256": "414f39a8629a4fc5ea005bc7c606d460caf8fb89dc82afd5199f79b6bc7083b9",
+          "lfSha256": "414f39a8629a4fc5ea005bc7c606d460caf8fb89dc82afd5199f79b6bc7083b9"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/grid_sources.h",
+          "rawSha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0",
+          "lfSha256": "7abfcdf958e65c940e65d114f57341175d69522e30d0c23e5b4b1f2c374105d0"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/member_declaration.c",
+          "rawSha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b",
+          "lfSha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/member_declaration.h",
+          "rawSha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569",
+          "lfSha256": "bdf6763f9c76f641572e6d18304d934829d2e078daa17ca58fe3bea730726569"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/member_placement.h",
+          "rawSha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b",
+          "lfSha256": "0ca9e9aa62bb28b993db717f6e6a97d026c29737b8c4895f66346287dc9cee1b"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/member_reference.c",
+          "rawSha256": "90f3316777c181f3491ff01b4a06b6f3139f120452e74bbf02d78a323c6c024f",
+          "lfSha256": "90f3316777c181f3491ff01b4a06b6f3139f120452e74bbf02d78a323c6c024f"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/member_reference.h",
+          "rawSha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903",
+          "lfSha256": "5faa82245ec3caec19526c36e693c120e7de787d146b76bdbaf538ff063b2903"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/members.c",
+          "rawSha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d",
+          "lfSha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/members.h",
+          "rawSha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+          "lfSha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/obstacles.h",
+          "rawSha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f",
+          "lfSha256": "bdd908653ba732a6d1a27d88abc94c3f5cc2470b32ffe3ab1fe12221f620809f"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/panel_layout.c",
+          "rawSha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638",
+          "lfSha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/panel_layout.h",
+          "rawSha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833",
+          "lfSha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/panel_support.c",
+          "rawSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff",
+          "lfSha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/panel_support.h",
+          "rawSha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32",
+          "lfSha256": "d9f86e886fe5ebe2831c3cff5bd64b997216288c769d5edffeba62bff4c98b32"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/section_profile.c",
+          "rawSha256": "a0fa9004ea689b0f4964dbe90f1ff80d0c968dde7e166993d675659ecfeec55d",
+          "lfSha256": "a0fa9004ea689b0f4964dbe90f1ff80d0c968dde7e166993d675659ecfeec55d"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/section_profile.h",
+          "rawSha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4",
+          "lfSha256": "0cf13d05dfe3a09b0087b5cc73b680ebe4ee5e0de8eed58fd5fae28139c7d4c4"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/section_profile_sources.c",
+          "rawSha256": "9c2b35639e1686c812285b248343717a431023cd02e4eeb3f2e0763d7425a12a",
+          "lfSha256": "9c2b35639e1686c812285b248343717a431023cd02e4eeb3f2e0763d7425a12a"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/section_profile_sources.h",
+          "rawSha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4",
+          "lfSha256": "859b9e44721340f2d599a3462fdbb1d2e3ce708f2820f3475e31760e45329de4"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/supports.c",
+          "rawSha256": "1f3c8bfb51c86024b67b0af90f8c381fa38c8babb1cd1956b1cc4a7f022d0775",
+          "lfSha256": "1f3c8bfb51c86024b67b0af90f8c381fa38c8babb1cd1956b1cc4a7f022d0775"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/supports.h",
+          "rawSha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be",
+          "lfSha256": "5bf1dab3e850ce023080b87dcd873ca145b3014c1e3bf6667e815d691bdbc1be"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/world_validation.c",
+          "rawSha256": "3a5d05ffdf45a142326f17b2173bda7c7cd157d9c32d8ea6e71a93b275a3c2fc",
+          "lfSha256": "3a5d05ffdf45a142326f17b2173bda7c7cd157d9c32d8ea6e71a93b275a3c2fc"
+        },
+        {
+          "path": "geometry-templates/woodworking/native/world_validation.h",
+          "rawSha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca",
+          "lfSha256": "2bc89f31f355f464d57cfef3424f4c094f3ec1c2d5c4417c91068db8c94f34ca"
+        }
+      ],
+      "addedIdentifiers": [
+        {
+          "identifier": "WoodMemberPlacementContact",
+          "origins": [
+            {
+              "path": "geometry-templates/woodworking/native/definition_sources.c",
+              "line": 83
+            },
+            {
+              "path": "geometry-templates/woodworking/native/definition_sources.c",
+              "line": 85
+            },
+            {
+              "path": "geometry-templates/woodworking/native/definition_sources.h",
+              "line": 24
+            },
+            {
+              "path": "geometry-templates/woodworking/native/definition_sources.h",
+              "line": 41
+            }
+          ]
+        },
+        {
+          "identifier": "wood_definition_sources_placement_contact",
+          "origins": [
+            {
+              "path": "geometry-templates/woodworking/native/definition_sources.c",
+              "line": 83
+            },
+            {
+              "path": "geometry-templates/woodworking/native/definition_sources.h",
+              "line": 41
+            }
+          ]
+        }
+      ],
+      "addedStrings": [],
+      "removedIdentifiers": [],
+      "removedStrings": [],
+      "identifiersBefore": 918,
+      "identifiersAfter": 920,
+      "stringsBefore": 55,
+      "stringsAfter": 55,
+      "genericPrivateHelpersNotNamespacedGuards": [
+        "wd_skip",
+        "wd_skip_text"
+      ],
+      "scopeCheckNotGenerationList": [
+        "WoodMemberPlacementContact",
+        "wood_definition_sources_placement_contact"
+      ],
+      "allOtherManifestFieldsEqual": true,
+      "beforeManifestSha256": "472550e33b541ed302c112a98d7608282f74b5e8c1c285e6664eb45bbc06a452",
+      "afterManifestSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6"
+    },
+    "originalManifestPreflight": [
+      {
+        "label": "original-scan",
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/architecture_contract.py",
+          "--root",
+          ".",
+          "--manifest",
+          "geometry-core/domain-decoupling/product-architecture.json"
+        ],
+        "cwd": "/tmp/g261seal/l-source",
+        "startedUtc": "2026-10-22T15:33:25.446934+00:00",
+        "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+        "environment": {
+          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
+        },
+        "stdout": {
+          "path": "/tmp/g261seal/architecture-refresh/commands/013-original-scan/stdout",
+          "bytes": 132209,
+          "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
+          "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
+        },
+        "stderr": {
+          "path": "/tmp/g261seal/architecture-refresh/commands/013-original-scan/stderr",
+          "bytes": 0,
+          "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "complete": true,
+        "exitCode": 0,
+        "interrupted": null,
+        "finishedUtc": "2026-10-22T15:33:30.634735+00:00",
+        "seconds": 5.187812,
+        "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/013-original-scan/stdout",
+        "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/013-original-scan/stderr"
+      },
+      {
+        "label": "original-generic-tests",
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/test_architecture_contract.py"
+        ],
+        "cwd": "/tmp/g261seal/l-source",
+        "startedUtc": "2026-10-22T15:33:30.793979+00:00",
+        "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+        "environment": {
+          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
+        },
+        "stdout": {
+          "path": "/tmp/g261seal/architecture-refresh/commands/016-original-generic-tests/stdout",
+          "bytes": 0,
+          "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/tmp/g261seal/architecture-refresh/commands/016-original-generic-tests/stderr",
+          "bytes": 29577,
+          "rawSha256": "1cce94fd5a0ba3171a2ec11511f72828ca326cd2d1ee92fcef8b5a23a712e094",
+          "lfSha256": "1cce94fd5a0ba3171a2ec11511f72828ca326cd2d1ee92fcef8b5a23a712e094"
+        },
+        "complete": true,
+        "exitCode": 0,
+        "interrupted": null,
+        "finishedUtc": "2026-10-22T15:33:31.290123+00:00",
+        "seconds": 0.49615,
+        "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/016-original-generic-tests/stdout",
+        "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/016-original-generic-tests/stderr"
+      },
+      {
+        "label": "original-product-tests",
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/test_product_architecture.py"
+        ],
+        "cwd": "/tmp/g261seal/l-source",
+        "startedUtc": "2026-10-22T15:33:31.453196+00:00",
+        "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+        "environment": {
+          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
+        },
+        "stdout": {
+          "path": "/tmp/g261seal/architecture-refresh/commands/019-original-product-tests/stdout",
+          "bytes": 0,
+          "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/tmp/g261seal/architecture-refresh/commands/019-original-product-tests/stderr",
+          "bytes": 118,
+          "rawSha256": "7b0a58958bc1104da4e649ed60638956261ec02a65d66d21319bfbac1b5a12c3",
+          "lfSha256": "7b0a58958bc1104da4e649ed60638956261ec02a65d66d21319bfbac1b5a12c3"
+        },
+        "complete": true,
+        "exitCode": 0,
+        "interrupted": null,
+        "finishedUtc": "2026-10-22T15:33:43.541289+00:00",
+        "seconds": 12.088158,
+        "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/019-original-product-tests/stdout",
+        "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/019-original-product-tests/stderr"
+      }
+    ],
+    "validationTree": {
+      "cwd": "/tmp/g261seal/architecture-refresh/validation-tree",
+      "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+      "independentGitCheckout": false,
+      "allProductInputsByteIdentical": true
+    },
+    "classificationNote": "本封裝器拒絕新增或移除來源；現有分類與排除理由及其他政策保持原值，只機械增加本輪完整 W guard。",
     "toolChanges": []
   },
   "scanPassed": true,
@@ -152,24 +680,25 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "/workspace/geometry-axiom",
-    "startedUtc": "2026-10-22T10:15:32.045184+00:00",
-    "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+    "cwd": "/tmp/g261seal/architecture-refresh/validation-tree",
+    "startedUtc": "2026-10-22T15:33:47.891512+00:00",
+    "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
     "environment": {
+      "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
       "LANG": "C.UTF-8",
       "LC_ALL": "C.UTF-8",
       "PYTHONIOENCODING": "utf-8",
       "PYTHONDONTWRITEBYTECODE": "1",
-      "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+      "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
     },
     "stdout": {
-      "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/013-final-scan/stdout",
-      "bytes": 132208,
-      "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-      "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+      "path": "/tmp/g261seal/architecture-refresh/commands/042-final-scan/stdout",
+      "bytes": 132209,
+      "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
+      "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
     },
     "stderr": {
-      "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/013-final-scan/stderr",
+      "path": "/tmp/g261seal/architecture-refresh/commands/042-final-scan/stderr",
       "bytes": 0,
       "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -177,11 +706,11 @@
     "complete": true,
     "exitCode": 0,
     "interrupted": null,
-    "finishedUtc": "2026-10-22T10:15:37.338452+00:00",
-    "seconds": 5.29328,
+    "finishedUtc": "2026-10-22T15:33:52.655317+00:00",
+    "seconds": 4.763797,
     "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
-    "stdoutRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/013-final-scan/stdout",
-    "stderrRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/013-final-scan/stderr"
+    "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/042-final-scan/stdout",
+    "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/042-final-scan/stderr"
   },
   "validation": [
     {
@@ -191,41 +720,42 @@
         "-B",
         "tests/test_architecture_contract.py"
       ],
-      "cwd": "/workspace/geometry-axiom",
-      "startedUtc": "2026-10-22T10:15:37.587163+00:00",
-      "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+      "cwd": "/tmp/g261seal/architecture-refresh/validation-tree",
+      "startedUtc": "2026-10-22T15:33:52.900142+00:00",
+      "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
       "environment": {
+        "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
-        "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+        "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
       },
       "stdout": {
-        "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/016-generic-tests/stdout",
+        "path": "/tmp/g261seal/architecture-refresh/commands/045-generic-tests/stdout",
         "bytes": 0,
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/016-generic-tests/stderr",
+        "path": "/tmp/g261seal/architecture-refresh/commands/045-generic-tests/stderr",
         "bytes": 29577,
-        "rawSha256": "fe222ec0e39899cc4e82e0f607bd8eceaff75f428d8fbf0d47cad13e1bc88a81",
-        "lfSha256": "fe222ec0e39899cc4e82e0f607bd8eceaff75f428d8fbf0d47cad13e1bc88a81"
+        "rawSha256": "ee459fa7311a1f0d410f1263d2acb3762f80a85669d300807d0eec1b085c59a0",
+        "lfSha256": "ee459fa7311a1f0d410f1263d2acb3762f80a85669d300807d0eec1b085c59a0"
       },
       "complete": true,
       "exitCode": 0,
       "interrupted": null,
-      "finishedUtc": "2026-10-22T10:15:38.103170+00:00",
-      "seconds": 0.516016,
+      "finishedUtc": "2026-10-22T15:33:53.404726+00:00",
+      "seconds": 0.504576,
       "command": "python -B tests/test_architecture_contract.py",
       "tests": 205,
       "passed": 205,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 0.408,
-      "stdoutRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/016-generic-tests/stdout",
-      "stderrRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/016-generic-tests/stderr"
+      "unittestSeconds": 0.402,
+      "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/045-generic-tests/stdout",
+      "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/045-generic-tests/stderr"
     },
     {
       "label": "product-tests",
@@ -234,52 +764,403 @@
         "-B",
         "tests/test_product_architecture.py"
       ],
-      "cwd": "/workspace/geometry-axiom",
-      "startedUtc": "2026-10-22T10:15:38.296925+00:00",
-      "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+      "cwd": "/tmp/g261seal/architecture-refresh/validation-tree",
+      "startedUtc": "2026-10-22T15:33:53.655352+00:00",
+      "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
       "environment": {
+        "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
-        "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+        "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
       },
       "stdout": {
-        "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/019-product-tests/stdout",
+        "path": "/tmp/g261seal/architecture-refresh/commands/048-product-tests/stdout",
         "bytes": 0,
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/019-product-tests/stderr",
+        "path": "/tmp/g261seal/architecture-refresh/commands/048-product-tests/stderr",
         "bytes": 118,
-        "rawSha256": "0c7592fa2f91802bcdac38da23573504e5ceb290eb73baeb1edcf161843e5577",
-        "lfSha256": "0c7592fa2f91802bcdac38da23573504e5ceb290eb73baeb1edcf161843e5577"
+        "rawSha256": "dd0b07e590dbfae1983962ca5ee908184ca94b00492d7b2b1bd4d1820be8194a",
+        "lfSha256": "dd0b07e590dbfae1983962ca5ee908184ca94b00492d7b2b1bd4d1820be8194a"
       },
       "complete": true,
       "exitCode": 0,
       "interrupted": null,
-      "finishedUtc": "2026-10-22T10:15:50.403744+00:00",
-      "seconds": 12.106828,
+      "finishedUtc": "2026-10-22T15:34:04.810708+00:00",
+      "seconds": 11.155319,
       "command": "python -B tests/test_product_architecture.py",
       "tests": 18,
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 12.005,
-      "stdoutRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/019-product-tests/stdout",
-      "stderrRawPath": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/019-product-tests/stderr"
+      "unittestSeconds": 11.063,
+      "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/048-product-tests/stdout",
+      "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/048-product-tests/stderr"
     }
   ],
   "supplementalStaticGuardProbes": {
-    "executedAtCurrentHead": false,
-    "reason": "未執行舊 Windows driver 的額外 in-memory probes；原 generic／product suites 已實際執行並各自記錄，不套用舊來源的探針綠燈。"
+    "executedAtCurrentHead": true,
+    "legacyWindowsSupplementalExecuted": false,
+    "method": "新 Linux 封裝器另以原 Scanner.scan_c 在獨立子程序中對真正 K 原文作 in-memory 注入；舊/new 每新名與 neutral 逐項保留原退出、stdout/stderr及原 diagnostic。",
+    "notIncludedInProductSuiteMethodCount": true,
+    "probes": [
+      {
+        "identifier": "WoodMemberPlacementContact",
+        "manifestRole": "old",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "result": {
+          "ok": true,
+          "method": "original Scanner.scan_c on actual K text plus one declaration, in memory",
+          "identifier": "WoodMemberPlacementContact",
+          "diagnostics": []
+        },
+        "run": {
+          "label": "guard-old-WoodMemberPlacementContact",
+          "argv": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "-B",
+            "-c",
+            "import json,sys\nfrom pathlib import Path\nsys.path.insert(0,str(Path(sys.argv[1])/'tests'))\nfrom architecture_contract import ContractError,Scanner,load_manifest\nroot=Path(sys.argv[1]); manifest=load_manifest(Path(sys.argv[2])); name=sys.argv[3]\npath='geometry-core/kernel/geometry.c'; text=(root/path).read_text(encoding='utf-8')+'\\nint '+name+';\\n'\nscanner=Scanner(root,manifest)\ntry:\n    scanner.validate_manifest(); scanner.scan_c(path,text)\nexcept ContractError as error:\n    print(json.dumps({'ok':False,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[error.diagnostic.__dict__]},ensure_ascii=False))\n    raise SystemExit(1)\nprint(json.dumps({'ok':True,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[]},ensure_ascii=False))\n",
+            "/tmp/g261seal/architecture-refresh/validation-tree",
+            "/tmp/g261seal/architecture-refresh/previous/product-architecture.json",
+            "WoodMemberPlacementContact"
+          ],
+          "cwd": "/tmp/g261seal/architecture-refresh/validation-tree",
+          "startedUtc": "2026-10-22T15:33:44.305312+00:00",
+          "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+          "environment": {
+            "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
+          },
+          "stdout": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/024-guard-old-WoodMemberPlacementContact/stdout",
+            "bytes": 162,
+            "rawSha256": "046b2c0b87db6e5ed36d6921c6584c4f908927e6c46a26db19637f9d4511f6b2",
+            "lfSha256": "046b2c0b87db6e5ed36d6921c6584c4f908927e6c46a26db19637f9d4511f6b2"
+          },
+          "stderr": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/024-guard-old-WoodMemberPlacementContact/stderr",
+            "bytes": 0,
+            "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "complete": true,
+          "exitCode": 0,
+          "interrupted": null,
+          "finishedUtc": "2026-10-22T15:33:44.700856+00:00",
+          "seconds": 0.395538,
+          "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/024-guard-old-WoodMemberPlacementContact/stdout",
+          "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/024-guard-old-WoodMemberPlacementContact/stderr"
+        }
+      },
+      {
+        "identifier": "WoodMemberPlacementContact",
+        "manifestRole": "new",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "result": {
+          "ok": false,
+          "method": "original Scanner.scan_c on actual K text plus one declaration, in memory",
+          "identifier": "WoodMemberPlacementContact",
+          "diagnostics": [
+            {
+              "path": "geometry-core/kernel/geometry.c",
+              "line": 782,
+              "code": "FORBIDDEN_IDENTIFIER",
+              "message": "concrete template identifier 'WoodMemberPlacementContact' in core",
+              "direction": "K -> W",
+              "chain": [
+                "geometry-core/kernel/geometry.c"
+              ]
+            }
+          ]
+        },
+        "run": {
+          "label": "guard-new-WoodMemberPlacementContact",
+          "argv": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "-B",
+            "-c",
+            "import json,sys\nfrom pathlib import Path\nsys.path.insert(0,str(Path(sys.argv[1])/'tests'))\nfrom architecture_contract import ContractError,Scanner,load_manifest\nroot=Path(sys.argv[1]); manifest=load_manifest(Path(sys.argv[2])); name=sys.argv[3]\npath='geometry-core/kernel/geometry.c'; text=(root/path).read_text(encoding='utf-8')+'\\nint '+name+';\\n'\nscanner=Scanner(root,manifest)\ntry:\n    scanner.validate_manifest(); scanner.scan_c(path,text)\nexcept ContractError as error:\n    print(json.dumps({'ok':False,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[error.diagnostic.__dict__]},ensure_ascii=False))\n    raise SystemExit(1)\nprint(json.dumps({'ok':True,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[]},ensure_ascii=False))\n",
+            "/tmp/g261seal/architecture-refresh/validation-tree",
+            "/tmp/g261seal/architecture-refresh/new/product-architecture.json",
+            "WoodMemberPlacementContact"
+          ],
+          "cwd": "/tmp/g261seal/architecture-refresh/validation-tree",
+          "startedUtc": "2026-10-22T15:33:44.937617+00:00",
+          "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+          "environment": {
+            "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
+          },
+          "stdout": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/027-guard-new-WoodMemberPlacementContact/stdout",
+            "bytes": 400,
+            "rawSha256": "bb40ddd066574e7b4014827776b03eb06006427ea7c5e65cea88848454c7e37d",
+            "lfSha256": "bb40ddd066574e7b4014827776b03eb06006427ea7c5e65cea88848454c7e37d"
+          },
+          "stderr": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/027-guard-new-WoodMemberPlacementContact/stderr",
+            "bytes": 0,
+            "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "complete": true,
+          "exitCode": 1,
+          "interrupted": null,
+          "finishedUtc": "2026-10-22T15:33:45.288476+00:00",
+          "seconds": 0.350852,
+          "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/027-guard-new-WoodMemberPlacementContact/stdout",
+          "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/027-guard-new-WoodMemberPlacementContact/stderr"
+        }
+      },
+      {
+        "identifier": "wood_definition_sources_placement_contact",
+        "manifestRole": "old",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "result": {
+          "ok": true,
+          "method": "original Scanner.scan_c on actual K text plus one declaration, in memory",
+          "identifier": "wood_definition_sources_placement_contact",
+          "diagnostics": []
+        },
+        "run": {
+          "label": "guard-old-wood_definition_sources_placement_contact",
+          "argv": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "-B",
+            "-c",
+            "import json,sys\nfrom pathlib import Path\nsys.path.insert(0,str(Path(sys.argv[1])/'tests'))\nfrom architecture_contract import ContractError,Scanner,load_manifest\nroot=Path(sys.argv[1]); manifest=load_manifest(Path(sys.argv[2])); name=sys.argv[3]\npath='geometry-core/kernel/geometry.c'; text=(root/path).read_text(encoding='utf-8')+'\\nint '+name+';\\n'\nscanner=Scanner(root,manifest)\ntry:\n    scanner.validate_manifest(); scanner.scan_c(path,text)\nexcept ContractError as error:\n    print(json.dumps({'ok':False,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[error.diagnostic.__dict__]},ensure_ascii=False))\n    raise SystemExit(1)\nprint(json.dumps({'ok':True,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[]},ensure_ascii=False))\n",
+            "/tmp/g261seal/architecture-refresh/validation-tree",
+            "/tmp/g261seal/architecture-refresh/previous/product-architecture.json",
+            "wood_definition_sources_placement_contact"
+          ],
+          "cwd": "/tmp/g261seal/architecture-refresh/validation-tree",
+          "startedUtc": "2026-10-22T15:33:45.526298+00:00",
+          "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+          "environment": {
+            "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
+          },
+          "stdout": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/030-guard-old-wood_definition_sources_placement_contact/stdout",
+            "bytes": 177,
+            "rawSha256": "ff39214f9cc657e41680f347e61b63cb4d10c8442fd0e36ea171aa6586bc2d8f",
+            "lfSha256": "ff39214f9cc657e41680f347e61b63cb4d10c8442fd0e36ea171aa6586bc2d8f"
+          },
+          "stderr": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/030-guard-old-wood_definition_sources_placement_contact/stderr",
+            "bytes": 0,
+            "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "complete": true,
+          "exitCode": 0,
+          "interrupted": null,
+          "finishedUtc": "2026-10-22T15:33:45.858455+00:00",
+          "seconds": 0.332154,
+          "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/030-guard-old-wood_definition_sources_placement_contact/stdout",
+          "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/030-guard-old-wood_definition_sources_placement_contact/stderr"
+        }
+      },
+      {
+        "identifier": "wood_definition_sources_placement_contact",
+        "manifestRole": "new",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "result": {
+          "ok": false,
+          "method": "original Scanner.scan_c on actual K text plus one declaration, in memory",
+          "identifier": "wood_definition_sources_placement_contact",
+          "diagnostics": [
+            {
+              "path": "geometry-core/kernel/geometry.c",
+              "line": 782,
+              "code": "FORBIDDEN_IDENTIFIER",
+              "message": "concrete template identifier 'wood_definition_sources_placement_contact' in core",
+              "direction": "K -> W",
+              "chain": [
+                "geometry-core/kernel/geometry.c"
+              ]
+            }
+          ]
+        },
+        "run": {
+          "label": "guard-new-wood_definition_sources_placement_contact",
+          "argv": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "-B",
+            "-c",
+            "import json,sys\nfrom pathlib import Path\nsys.path.insert(0,str(Path(sys.argv[1])/'tests'))\nfrom architecture_contract import ContractError,Scanner,load_manifest\nroot=Path(sys.argv[1]); manifest=load_manifest(Path(sys.argv[2])); name=sys.argv[3]\npath='geometry-core/kernel/geometry.c'; text=(root/path).read_text(encoding='utf-8')+'\\nint '+name+';\\n'\nscanner=Scanner(root,manifest)\ntry:\n    scanner.validate_manifest(); scanner.scan_c(path,text)\nexcept ContractError as error:\n    print(json.dumps({'ok':False,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[error.diagnostic.__dict__]},ensure_ascii=False))\n    raise SystemExit(1)\nprint(json.dumps({'ok':True,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[]},ensure_ascii=False))\n",
+            "/tmp/g261seal/architecture-refresh/validation-tree",
+            "/tmp/g261seal/architecture-refresh/new/product-architecture.json",
+            "wood_definition_sources_placement_contact"
+          ],
+          "cwd": "/tmp/g261seal/architecture-refresh/validation-tree",
+          "startedUtc": "2026-10-22T15:33:46.114629+00:00",
+          "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+          "environment": {
+            "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
+          },
+          "stdout": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/033-guard-new-wood_definition_sources_placement_contact/stdout",
+            "bytes": 430,
+            "rawSha256": "c269a5eaa1fa535fb3a61420fed0296e78d51a54d3d453d2157d41a0f8f1b96c",
+            "lfSha256": "c269a5eaa1fa535fb3a61420fed0296e78d51a54d3d453d2157d41a0f8f1b96c"
+          },
+          "stderr": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/033-guard-new-wood_definition_sources_placement_contact/stderr",
+            "bytes": 0,
+            "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "complete": true,
+          "exitCode": 1,
+          "interrupted": null,
+          "finishedUtc": "2026-10-22T15:33:46.470648+00:00",
+          "seconds": 0.35601,
+          "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/033-guard-new-wood_definition_sources_placement_contact/stdout",
+          "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/033-guard-new-wood_definition_sources_placement_contact/stderr"
+        }
+      },
+      {
+        "identifier": "geo261_architecture_neutral_probe",
+        "manifestRole": "old",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "result": {
+          "ok": true,
+          "method": "original Scanner.scan_c on actual K text plus one declaration, in memory",
+          "identifier": "geo261_architecture_neutral_probe",
+          "diagnostics": []
+        },
+        "run": {
+          "label": "guard-old-geo261_architecture_neutral_probe",
+          "argv": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "-B",
+            "-c",
+            "import json,sys\nfrom pathlib import Path\nsys.path.insert(0,str(Path(sys.argv[1])/'tests'))\nfrom architecture_contract import ContractError,Scanner,load_manifest\nroot=Path(sys.argv[1]); manifest=load_manifest(Path(sys.argv[2])); name=sys.argv[3]\npath='geometry-core/kernel/geometry.c'; text=(root/path).read_text(encoding='utf-8')+'\\nint '+name+';\\n'\nscanner=Scanner(root,manifest)\ntry:\n    scanner.validate_manifest(); scanner.scan_c(path,text)\nexcept ContractError as error:\n    print(json.dumps({'ok':False,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[error.diagnostic.__dict__]},ensure_ascii=False))\n    raise SystemExit(1)\nprint(json.dumps({'ok':True,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[]},ensure_ascii=False))\n",
+            "/tmp/g261seal/architecture-refresh/validation-tree",
+            "/tmp/g261seal/architecture-refresh/previous/product-architecture.json",
+            "geo261_architecture_neutral_probe"
+          ],
+          "cwd": "/tmp/g261seal/architecture-refresh/validation-tree",
+          "startedUtc": "2026-10-22T15:33:46.703309+00:00",
+          "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+          "environment": {
+            "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
+          },
+          "stdout": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/036-guard-old-geo261_architecture_neutral_probe/stdout",
+            "bytes": 169,
+            "rawSha256": "e0160905adcd7d6525173cdf2eb102ce6b9bdb492061174a10f58b5022fc95cf",
+            "lfSha256": "e0160905adcd7d6525173cdf2eb102ce6b9bdb492061174a10f58b5022fc95cf"
+          },
+          "stderr": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/036-guard-old-geo261_architecture_neutral_probe/stderr",
+            "bytes": 0,
+            "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "complete": true,
+          "exitCode": 0,
+          "interrupted": null,
+          "finishedUtc": "2026-10-22T15:33:47.046033+00:00",
+          "seconds": 0.34273,
+          "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/036-guard-old-geo261_architecture_neutral_probe/stdout",
+          "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/036-guard-old-geo261_architecture_neutral_probe/stderr"
+        }
+      },
+      {
+        "identifier": "geo261_architecture_neutral_probe",
+        "manifestRole": "new",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "result": {
+          "ok": true,
+          "method": "original Scanner.scan_c on actual K text plus one declaration, in memory",
+          "identifier": "geo261_architecture_neutral_probe",
+          "diagnostics": []
+        },
+        "run": {
+          "label": "guard-new-geo261_architecture_neutral_probe",
+          "argv": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "-B",
+            "-c",
+            "import json,sys\nfrom pathlib import Path\nsys.path.insert(0,str(Path(sys.argv[1])/'tests'))\nfrom architecture_contract import ContractError,Scanner,load_manifest\nroot=Path(sys.argv[1]); manifest=load_manifest(Path(sys.argv[2])); name=sys.argv[3]\npath='geometry-core/kernel/geometry.c'; text=(root/path).read_text(encoding='utf-8')+'\\nint '+name+';\\n'\nscanner=Scanner(root,manifest)\ntry:\n    scanner.validate_manifest(); scanner.scan_c(path,text)\nexcept ContractError as error:\n    print(json.dumps({'ok':False,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[error.diagnostic.__dict__]},ensure_ascii=False))\n    raise SystemExit(1)\nprint(json.dumps({'ok':True,'method':'original Scanner.scan_c on actual K text plus one declaration, in memory','identifier':name,'diagnostics':[]},ensure_ascii=False))\n",
+            "/tmp/g261seal/architecture-refresh/validation-tree",
+            "/tmp/g261seal/architecture-refresh/new/product-architecture.json",
+            "geo261_architecture_neutral_probe"
+          ],
+          "cwd": "/tmp/g261seal/architecture-refresh/validation-tree",
+          "startedUtc": "2026-10-22T15:33:47.279232+00:00",
+          "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+          "environment": {
+            "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
+          },
+          "stdout": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/039-guard-new-geo261_architecture_neutral_probe/stdout",
+            "bytes": 169,
+            "rawSha256": "e0160905adcd7d6525173cdf2eb102ce6b9bdb492061174a10f58b5022fc95cf",
+            "lfSha256": "e0160905adcd7d6525173cdf2eb102ce6b9bdb492061174a10f58b5022fc95cf"
+          },
+          "stderr": {
+            "path": "/tmp/g261seal/architecture-refresh/commands/039-guard-new-geo261_architecture_neutral_probe/stderr",
+            "bytes": 0,
+            "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "complete": true,
+          "exitCode": 0,
+          "interrupted": null,
+          "finishedUtc": "2026-10-22T15:33:47.644556+00:00",
+          "seconds": 0.365303,
+          "stdoutRawPath": "/tmp/g261seal/architecture-refresh/commands/039-guard-new-geo261_architecture_neutral_probe/stdout",
+          "stderrRawPath": "/tmp/g261seal/architecture-refresh/commands/039-guard-new-geo261_architecture_neutral_probe/stderr"
+        }
+      }
+    ]
   },
   "nativeAcceptance": "此封裝器沒有執行 native、mutation ledger、瀏覽器或專項；它們必須有另一份實際同最終受驗來源的收據。",
   "inputs": [
     {
       "path": "current_geometry.c",
-      "sha256": "c58bee9df0fce6b8e881850c0bf28680000bcb690dfca7a5e911aa9b3217df87"
+      "sha256": "9f98b6edf704e3a4985711983d35b0e15acdbb716dca55e1b0556d8a569633a6"
     },
     {
       "path": "geometry-app/application.js",
@@ -395,7 +1276,7 @@
     },
     {
       "path": "geometry-app/native/reference_sources.inc",
-      "sha256": "3695ab9844a80cf0041d2a6a67e2be96bf6ecbcd59709759d1add4822b70077c"
+      "sha256": "54b4896573a1f6e6c77878a86a18b84843b3bef5c289c6c12d5c7ddbba406f41"
     },
     {
       "path": "geometry-app/native/versions_adapter.inc",
@@ -1155,11 +2036,11 @@
     },
     {
       "path": "geometry-core/kernel/placement_sources.c",
-      "sha256": "7b953719f5e75ed2e70f99c9e0a96588d398bd9220025a7b7a191c4dbaeb8e12"
+      "sha256": "45e754f4260e15679797b8f44c8c6a25132b199d47a7239da1e2045a8a814c31"
     },
     {
       "path": "geometry-core/kernel/placement_sources.h",
-      "sha256": "ff52eb8121cff380de275aa97d8562e56d58d8e21968369fde2db67c04135a7a"
+      "sha256": "9c11cb94b20231dabf746c6f23480b5c3d324fc9d268b0140a3e01fab4781aa8"
     },
     {
       "path": "geometry-core/kernel/placements.c",
@@ -1187,7 +2068,7 @@
     },
     {
       "path": "geometry-core/kernel/source.c",
-      "sha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb"
+      "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
     },
     {
       "path": "geometry-core/kernel/source.h",
@@ -1439,7 +2320,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/contact_sources.c",
-      "sha256": "ea0fa63d05f9abac1a11ac4f780a2f3a1e10f8aea502df1fa7e7eb1aa681f659"
+      "sha256": "0405a88453278501482381d452b564f74e0f91833c711002007b0ffcdb2498bd"
     },
     {
       "path": "geometry-templates/woodworking/native/contact_sources.h",
@@ -1471,11 +2352,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/definition_sources.c",
-      "sha256": "f22fe0aac839b4269a9c06f2ea0b266207cc8ef5a6c4031b35be3e0796505645"
+      "sha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
     },
     {
       "path": "geometry-templates/woodworking/native/definition_sources.h",
-      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d"
+      "sha256": "1ec14f17dea4fe98f80099d4699e3e154157e152b5ded9ab6ea0da147648495b"
     },
     {
       "path": "geometry-templates/woodworking/native/derived_placement.c",
@@ -2683,7 +3564,7 @@
     }
   ],
   "completeInventoryVerification": {
-    "method": "獨立 os.walk 五 roots 加三個 standalone，與 manifest 登記集合及固定 Git tree 比較；逐 Git blob 比 LF hash；每個原裁判後重算完整 raw/LF inputs、工具 bytes、HEAD 與乾淨狀態。",
+    "method": "獨立 os.walk 五 roots 加三個 standalone，與 manifest 登記集合及固定 Git tree 比較；逐 Git blob 比 LF hash；原三條 preflight 後完整複製601 inputs與原工具至外部驗證樹，只有衍生 manifest 新政策不同。每個裁判及 probe 後重算原來源及驗證樹 raw/LF inputs、工具 bytes、manifest、來源 HEAD 與乾淨狀態。",
     "sourceRoots": [
       "geometry-core",
       "geometry-app",
@@ -2721,10 +3602,10 @@
     "unregisteredAfter": [],
     "missingAfter": [],
     "changedInputs": [],
-    "inputClosureSha256Before": "7a7d301e6e4cf6c7b7557a65bdd2e93d7e433be4d5773f835b567a7cbf6e0429",
-    "inputClosureSha256After": "7a7d301e6e4cf6c7b7557a65bdd2e93d7e433be4d5773f835b567a7cbf6e0429",
-    "rawInputClosureSha256Before": "03575cb0fb0019cda019d96e8653ac044d8a6616e1b0b8186c7409c45a250b00",
-    "rawInputClosureSha256After": "03575cb0fb0019cda019d96e8653ac044d8a6616e1b0b8186c7409c45a250b00",
+    "inputClosureSha256Before": "8ce86d3b98b664ca87ba1edd60d9f5506c61a6744357769f1d4c100aedb7d78f",
+    "inputClosureSha256After": "8ce86d3b98b664ca87ba1edd60d9f5506c61a6744357769f1d4c100aedb7d78f",
+    "rawInputClosureSha256Before": "5984c2d0a9c85e10bb72d6ebc38b0b08f817bb3e51ced7647a808cefd5983c1a",
+    "rawInputClosureSha256After": "5984c2d0a9c85e10bb72d6ebc38b0b08f817bb3e51ced7647a808cefd5983c1a",
     "rawHashBasis": "實際 Linux checkout bytes；可攜產品身分以 CRLF-to-LF 與固定 Git blobs 比較。",
     "toolHashesBefore": {
       "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
@@ -2747,24 +3628,42 @@
       "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
     },
     "allRawAndLfInputsUnchanged": true,
-    "headObservedAfterIndependentAudit": "08dede0bf7f9206b5df5fefb6a27180128518c35",
-    "checkedUtc": "2026-10-22T10:15:50.824983+00:00"
+    "headObservedAfterIndependentAudit": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
+    "checkedUtc": "2026-10-22T15:34:05.286425+00:00"
   },
   "refreshDriver": {
-    "path": "/workspace/geo261-environment/refresh_architecture_linux.py",
-    "bytes": 25463,
-    "rawSha256": "06f3696ca55b7520ab3a219eff56f6d945df648833813f12926d190a2035798f",
-    "lfSha256": "06f3696ca55b7520ab3a219eff56f6d945df648833813f12926d190a2035798f",
-    "runDirectory": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh",
+    "path": "/workspace/geo261-environment/refresh_architecture_w_linux.py",
+    "bytes": 37891,
+    "rawSha256": "97235e8c0ac0396ad10c1763e82b2b68a63146f226d566e0e40dfd1b83ccfbb0",
+    "lfSha256": "97235e8c0ac0396ad10c1763e82b2b68a63146f226d566e0e40dfd1b83ccfbb0",
+    "runDirectory": "/tmp/g261seal/architecture-refresh",
     "argv": [
       "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-      "/workspace/geo261-environment/refresh_architecture_linux.py",
+      "/workspace/geo261-environment/refresh_architecture_w_linux.py",
       "--repo",
-      "/workspace/geometry-axiom",
+      "/tmp/g261seal/l-source",
+      "--sha",
+      "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
       "--out",
-      "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh"
+      "/tmp/g261seal/architecture-refresh",
+      "--allow-changed",
+      "current_geometry.c",
+      "--allow-changed",
+      "geometry-app/native/reference_sources.inc",
+      "--allow-changed",
+      "geometry-core/kernel/placement_sources.c",
+      "--allow-changed",
+      "geometry-core/kernel/placement_sources.h",
+      "--allow-changed",
+      "geometry-core/kernel/source.c",
+      "--allow-changed",
+      "geometry-templates/woodworking/native/contact_sources.c",
+      "--allow-changed",
+      "geometry-templates/woodworking/native/definition_sources.c",
+      "--allow-changed",
+      "geometry-templates/woodworking/native/definition_sources.h"
     ],
-    "note": "新撰 Linux 封裝器；不是舊 Windows driver 的路徑適配副本，未宣稱兩者程式 hash 相同。"
+    "note": "由前版 Linux wrapper 衍生之新版 W policy 封裝器；與原 appjs-only wrapper 有具名政策／外部驗證樹差異，亦不是舊 Windows driver，未宣稱 hash 相同。"
   },
   "environment": {
     "system": "Linux",
@@ -2772,11 +3671,12 @@
     "machine": "x86_64",
     "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
     "safeVariables": {
+      "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
       "LANG": "C.UTF-8",
       "LC_ALL": "C.UTF-8",
       "PYTHONIOENCODING": "utf-8",
       "PYTHONDONTWRITEBYTECODE": "1",
-      "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+      "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
     },
     "versions": [
       {
@@ -2785,31 +3685,32 @@
           "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
           "--version"
         ],
-        "cwd": "/workspace/geometry-axiom",
-        "startedUtc": "2026-10-22T10:15:32.041192+00:00",
-        "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+        "cwd": "/tmp/g261seal/l-source",
+        "startedUtc": "2026-10-22T15:33:25.443008+00:00",
+        "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
         "environment": {
+          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
           "LC_ALL": "C.UTF-8",
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
-          "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+          "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
         },
-        "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/011-version-python/stdout",
-        "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/011-version-python/stderr",
+        "stdout": "/tmp/g261seal/architecture-refresh/commands/011-version-python/stdout",
+        "stderr": "/tmp/g261seal/architecture-refresh/commands/011-version-python/stderr",
         "complete": true,
         "exitCode": 0,
         "interrupted": null,
-        "finishedUtc": "2026-10-22T10:15:32.042849+00:00",
-        "seconds": 0.001647,
+        "finishedUtc": "2026-10-22T15:33:25.444787+00:00",
+        "seconds": 0.001769,
         "stdoutInfo": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/011-version-python/stdout",
+          "path": "/tmp/g261seal/architecture-refresh/commands/011-version-python/stdout",
           "bytes": 15,
           "rawSha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
           "lfSha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
         },
         "stderrInfo": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/011-version-python/stderr",
+          "path": "/tmp/g261seal/architecture-refresh/commands/011-version-python/stderr",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2821,31 +3722,32 @@
           "git",
           "--version"
         ],
-        "cwd": "/workspace/geometry-axiom",
-        "startedUtc": "2026-10-22T10:15:32.043316+00:00",
-        "sourceBaseHead": "08dede0bf7f9206b5df5fefb6a27180128518c35",
+        "cwd": "/tmp/g261seal/l-source",
+        "startedUtc": "2026-10-22T15:33:25.445264+00:00",
+        "sourceBaseHead": "aa02a65e9d3923cc14c13340f05ed16c8b7d4fce",
         "environment": {
+          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
           "LC_ALL": "C.UTF-8",
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
-          "TMPDIR": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/tmp"
+          "TMPDIR": "/tmp/g261seal/architecture-refresh/tmp"
         },
-        "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/012-version-git/stdout",
-        "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/012-version-git/stderr",
+        "stdout": "/tmp/g261seal/architecture-refresh/commands/012-version-git/stdout",
+        "stderr": "/tmp/g261seal/architecture-refresh/commands/012-version-git/stderr",
         "complete": true,
         "exitCode": 0,
         "interrupted": null,
-        "finishedUtc": "2026-10-22T10:15:32.044757+00:00",
-        "seconds": 0.001431,
+        "finishedUtc": "2026-10-22T15:33:25.446511+00:00",
+        "seconds": 0.001237,
         "stdoutInfo": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/012-version-git/stdout",
+          "path": "/tmp/g261seal/architecture-refresh/commands/012-version-git/stdout",
           "bytes": 19,
           "rawSha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c",
           "lfSha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c"
         },
         "stderrInfo": {
-          "path": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/architecture-refresh/commands/012-version-git/stderr",
+          "path": "/tmp/g261seal/architecture-refresh/commands/012-version-git/stderr",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2854,7 +3756,7 @@
     ]
   },
   "uncertainties": [
-    "未重現舊 Windows driver 的額外 probes；原三條裁判結果與本封裝器有限完整 inventory 是本輪主張範圍。",
+    "未執行舊 Windows driver 的 supplemental；本輪 Linux 新 W guard probes 與原三條裁判各自有真實命令結果，不外推 Windows。",
     "本工具只輸出 out/new 四檔，不修改 repo；尚未提交的產物不能稱作已發布。",
     "後續最終候選 SHA 仍須執行使用者要求的完整動態清單。"
   ]
