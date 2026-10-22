@@ -107,4 +107,7 @@
 - 2026-10-22T22:09:53.743263+00:00 — **legacy-chromium154-p73-fixed**：固定F2以Chromium154.0.8037.57執行原P73完整子集，真退出0／69pass0fail／completed=true／0exceptions；原filter GEOMETRY_UIUX_FIX_ONLY，partial golden未比較，非full canvas；不要求154撤回紅。outer與reaper完成皆0，來源前後F2 clean。
   下一步：F2-Cperf-retry1。原始資料：`raw/legacy-chromium154-p73-fixed.raw.tar.gz`。
 
+- 2026-10-22T22:12:53.045824+00:00 — **F2-Cperf-retry1**：同 F2 Cperf 環境復原後原工具重跑，outer0/inner exit_code0/proof_matched=true/errors=[]；N64原main/withdrawn/restored各3樣本，main median0.476s、withdrawn1.2209s、restored0.9381s，撤回/main=2.564915966386555>2、恢復/main=1.9707983193277312<=2。原compile/load/timing子程序正常、dump逐bytes相同，P3 runtime保留、僅六C模板整組撤回；來源與clone最後F2/clean。首次ENOSPC原1及截斷原raw另保，不挑樣本、不放寬門檻，不宣稱個別純效能component必要。
+  下一步：final-evidence-integrity-and-PR-body。原始資料：`raw/F2-Cperf-retry1.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
