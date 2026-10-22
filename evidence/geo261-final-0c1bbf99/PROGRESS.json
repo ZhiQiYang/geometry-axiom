@@ -8,6 +8,13 @@
       "result": "退出0；78筆，70 killed／1 crashed／4 equivalent／3 retired，stale=0，產品修正未使帳本過期",
       "next": "完成原P73的修正／撤回／恢復自證，並執行架構三條及重產",
       "archive": "raw/mutation-check-initial.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T10:08:59.256681+00:00",
+      "label": "p73-fixed",
+      "result": "原P73完整子集69通過、0失敗，退出0；完整canvas仍待重跑",
+      "next": "只撤回產品修正，確認同名原P73斷言轉紅，再恢復轉綠",
+      "archive": "raw/p73-fixed.raw.tar.gz"
     }
   ]
 }
