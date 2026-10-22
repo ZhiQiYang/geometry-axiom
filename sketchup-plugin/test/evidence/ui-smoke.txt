@@ -1,0 +1,29 @@
+執行日期：2026-10-13
+環境：既有 Playwright + Chrome 155.0.8059.40；SketchUp bridge 與選取摘要皆為 mock。
+命令：
+$env:NODE_PATH='C:/Users/Yang/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules'
+$env:GEOMETRY_FRAMING_BROWSER_CHANNEL='chrome'
+& 'C:/Users/Yang/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node.exe' sketchup-plugin/test/ui_smoke.cjs
+
+Browser plugin not available；使用既有 Playwright。
+此測試的 SketchUp bridge 與選取摘要皆為 mock，不代表已執行原生 SketchUp。
+URL：file:///D:/geometry-axiom/sketchup-plugin/geometry_framing/ui/dialog.html
+瀏覽器：Chromium 155.0.8059.40
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\flat-760.png
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\flat-stale-760.png
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\flat-reviewed-760.png
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\profile-pass-760.png
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\profile-stale-760.png
+PASS 760×780：鍵盤／階層與對比／建議保留／換選取失效／跨模式通知／新增批次／方向圖／起點重選
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\flat-420.png
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\flat-stale-420.png
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\flat-reviewed-420.png
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\profile-pass-420.png
+截圖：C:\Users\Yang\AppData\Local\Temp\geometry-framing-ui-smoke\profile-stale-420.png
+PASS 420×780：鍵盤／階層與對比／建議保留／換選取失效／跨模式通知／新增批次／方向圖／起點重選
+PASS：151 項 UI 斷言；console error/warning/pageerror 0。
+exit_code=0
+
+本輪新增：檢查世界 XY 標題與角名間距、局部 X/Y 箭頭明確標示；151 項包括原有 143 項。
+實際視看 flat-reviewed-760.png：標題、角名與局部箭頭標籤無重疊或裁切。
+此處僅記錄 mock 瀏覽器測試，原生 SketchUp 的選取、幾何與 Undo 結果另記。

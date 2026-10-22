@@ -1,0 +1,19 @@
+Command (1/2): ruby sketchup-plugin/build_rbz.rb
+已打包 D:/geometry-axiom/sketchup-plugin/releases/geometry-framing-0.1.0.rbz
+15 個執行期檔案；41212 bytes
+SHA256 77df4118d775117fc7e7f1d7f10bda24352547b45c7acd40ce521e7eb721d22a
+exit_code=0
+Command (2/2): ruby sketchup-plugin/build_rbz.rb
+已打包 D:/geometry-axiom/sketchup-plugin/releases/geometry-framing-0.1.0.rbz
+15 個執行期檔案；41212 bytes
+SHA256 77df4118d775117fc7e7f1d7f10bda24352547b45c7acd40ce521e7eb721d22a
+exit_code=0
+PASS: repeated build has identical SHA256
+PASS: runtime file set and per-file hashes stayed unchanged during both builds
+PASS: ZIP CRC and duplicate entry check
+PASS: runtime whitelist contains 15 files, no tests or evidence
+PASS: every packaged file byte-matches the workspace and extracted native runtime
+Extracted native runtime: C:/Users/Yang/AppData/Local/Temp/geometry-framing-release-ux-final2-20261013
+Archive SHA256: 77df4118d775117fc7e7f1d7f10bda24352547b45c7acd40ce521e7eb721d22a
+Archive bytes: 41212
+Verification exit_code=0

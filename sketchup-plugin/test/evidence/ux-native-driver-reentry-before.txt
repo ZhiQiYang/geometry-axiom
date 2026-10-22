@@ -1,0 +1,20 @@
+NATIVE DRIVER ERROR NoMethodError: private method `remove_const' called for module GeometryFraming::Acceptance
+C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-driver.rb:171:in `execute_audit'
+C:/Users/Yang/AppData/Local/Temp/geometry-framing-native-driver.rb:90:in `run'
+C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-test.rb:63:in `block (2 levels) in <main>'
+<internal:numeric>:237:in `times'
+C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-test.rb:62:in `block in <main>'
+C:/Ruby33-x64/lib/ruby/3.3.0/tmpdir.rb:99:in `mktmpdir'
+C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-test.rb:28:in `<main>'
+C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-test.rb:68:in `block (2 levels) in <main>': Cycle 2 failed: NoMethodError: private method `remove_const' called for module GeometryFraming::Acceptance (RuntimeError)
+	from <internal:numeric>:237:in `times'
+	from C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-test.rb:62:in `block in <main>'
+	from C:/Ruby33-x64/lib/ruby/3.3.0/tmpdir.rb:99:in `mktmpdir'
+	from C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-test.rb:28:in `<main>'
+NATIVE AUDIT START suite=workflow evidence=C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-20261013-37092-9lcmnu/geometry-framing-native-workflow-20261013-123043-37092-773f7d
+DRIVER_DOUBLE suite finished; no product geometry executed
+NATIVE AUDIT PASS semantic_exit_code=0 first_failure=nil evidence=C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-20261013-37092-9lcmnu/geometry-framing-native-workflow-20261013-123043-37092-773f7d
+PASS cycle=1 semantic_exit=0 source_unchanged=true stdout_stderr_restored=true
+NATIVE AUDIT START suite=workflow evidence=C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-20261013-37092-9lcmnu/geometry-framing-native-workflow-20261013-123043-37092-2654f7
+NATIVE AUDIT FAIL semantic_exit_code=1 first_failure="NoMethodError: private method `remove_const' called for module GeometryFraming::Acceptance" evidence=C:/Users/Yang/AppData/Local/Temp/geometry-framing-driver-reentry-20261013-37092-9lcmnu/geometry-framing-native-workflow-20261013-123043-37092-2654f7
+process_exit_code=1

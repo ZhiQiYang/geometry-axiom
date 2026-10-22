@@ -1,0 +1,65 @@
+P-076 M2 修前：抽取原 Selection 障礙方法，尚未加篩選與完整名稱路徑。
+ruby sketchup-plugin/test/test_obstacles.rb --seed 20261013
+Run options: --seed 20261013
+
+# Running:
+
+.FFFFF
+
+Finished in 0.135536s, 44.2686 runs/s, 95.9153 assertions/s.
+
+  1) Failure:
+ObstaclesTest#test_hierarchy_visibility_and_tag_folder_visibility_are_respected [sketchup-plugin/test/test_obstacles.rb:184]:
+P076 M2 可見性：父群組隱藏／Tag 關閉／祖先 Tag 資料夾關閉必須一路生效.
+Expected: 1
+  Actual: 4
+
+  2) Failure:
+ObstaclesTest#test_hidden_or_generated_descendants_do_not_expand_container_bounds [sketchup-plugin/test/test_obstacles.rb:197]:
+P076 M2 可見性：隱藏／自產後代不能把容器包圍盒擴大到天花高度.
+Expected: [1100, 2100, 2600]
+  Actual: [1000, 2000, 2000]
+
+  3) Failure:
+ObstaclesTest#test_container_envelope_is_conservative_and_reports_full_named_path [sketchup-plugin/test/test_obstacles.rb:214]:
+P076 M2 診斷路徑：必須可從名稱與完整 instance path 找到障礙.
+Expected "四面牆容器 #10/30" to include "A 棟 (#10) / 四面牆容器 (#30)".
+
+  4) Failure:
+ObstaclesTest#test_hidden_or_tag_disabled_entities_are_excluded [sketchup-plugin/test/test_obstacles.rb:169]:
+P076 M2 可見性：隱藏及關閉 Tag 的實體不得算障礙.
+Expected: 1
+  Actual: 3
+
+  5) Failure:
+ObstaclesTest#test_previous_plugin_result_is_not_a_beam_on_rerun [sketchup-plugin/test/test_obstacles.rb:152]:
+P076 M2 自產物排除：前次下角材群組不可在同面重跑時被當成樑.
+Expected: 1
+  Actual: 2
+
+6 runs, 13 assertions, 5 failures, 0 errors, 0 skips
+exit_code=1
+P-076 M2 修後：屬性辨識、hidden/Tag/Tag資料夾階層篩選、可見後代包圍盒、完整名稱路徑。
+ruby sketchup-plugin/test/test_obstacles.rb --seed 20261013
+Run options: --seed 20261013
+
+# Running:
+
+......
+
+Finished in 0.080730s, 74.3215 runs/s, 284.8992 assertions/s.
+
+6 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+exit_code=0
+P-076 M2 最終：ComponentInstance fake 與 Group 分開，強制走 definition.entities 的真實 API 契約。
+ruby sketchup-plugin/test/test_obstacles.rb --seed 20261013
+Run options: --seed 20261013
+
+# Running:
+
+......
+
+Finished in 0.032820s, 182.8131 runs/s, 700.7837 assertions/s.
+
+6 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+exit_code=0

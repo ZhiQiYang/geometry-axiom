@@ -1,0 +1,14 @@
+Run options: --seed 76 --name test_b1_empty_model_reaches_first_fixture_transaction_without_entities_empty
+
+# Running:
+
+F
+
+Finished in 0.741038s, 1.3495 runs/s, 5.3978 assertions/s.
+
+  1) Failure:
+SketchUpEntryContractTest#test_b1_empty_model_reaches_first_fixture_transaction_without_entities_empty [sketchup-plugin/test/test_su_entry.rb:106]:
+B1 Entities API：空白模型必須進入第一個夾具操作，不能因 Entities.empty? 提早失敗；實際{"passed"=>false, "exit_code"=>1, "sketchup"=>"26.0.0", "ruby"=>"3.3.11", "assertions"=>0, "log"=>["FAIL NoMethodError: undefined method `empty?' for an instance of ContractEntities", "C:/Users/Yang/AppData/Local/Temp/geometry-framing-b1-mutant-6w93nadx/test_su/run_all.rb:36:in `run'\nC:/Users/Yang/AppData/Local/Temp/geometry-framing-b1-mutant-6w93nadx/test_su/run_all.rb:372:in `<top (required)>'\n-e:68:in `load'\n-e:68:in `<main>'"]}
+
+1 runs, 4 assertions, 1 failures, 0 errors, 0 skips
+exit_code=1

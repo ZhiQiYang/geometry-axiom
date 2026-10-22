@@ -1,0 +1,18 @@
+Run options: --name /test_d1_integer_mm/ --seed 76
+
+# Running:
+
+FF
+
+Finished in 2.288633s, 0.8739 runs/s, 0.8739 assertions/s.
+
+  1) Failure:
+SelectionMathTest#test_d1_integer_mm_longest_edge_projection_notch_3000_angles [sketchup-plugin/test/test_selection_math.rb:49]:
+D1 整數 mm：12000×8000／30 mm 凹口旋轉3000角度須0誤拒且尺寸完全相同；失敗2853，前例[[0.12, "座標不等於整數 mm 夾具"], [0.24, "外圈或柱孔有非正交邊；此情況 demo 未定義，待使用者決定。"], [0.48, "座標不等於整數 mm 夾具"], [0.6, "座標不等於整數 mm 夾具"]]
+
+  2) Failure:
+SelectionMathTest#test_d1_integer_mm_projection_3664_by_3668_400_angles_keeps_inventory [sketchup-plugin/test/test_selection_math.rb:67]:
+D1 整數 mm：3664×3668含0.2°在400角度的數量／縫／面材須與未旋轉相同；失敗73，前例[[0.2, {"board"=>12, "wall"=>4, "pri"=>3, "sec"=>40}, [[916, 1833, 2750], [1831, 3623]]], [0.3, {"board"=>12, "wall"=>4, "pri"=>3, "sec"=>40}, [[916, 1833, 2750], [1831, 3623]]], [0.6, {"board"=>12, "wall"=>4, "pri"=>3, "sec"=>40}, [[916, 1833, 2750], [1831, 3623]]], [1.4, {"board"=>12, "wall"=>4, "pri"=>3, "sec"=>40}, [[916, 1833, 2750], [1831, 3623]]]]
+
+2 runs, 2 assertions, 2 failures, 0 errors, 0 skips
+exit_code=1

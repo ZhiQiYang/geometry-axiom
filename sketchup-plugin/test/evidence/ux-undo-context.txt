@@ -1,0 +1,148 @@
+UX Undo 修前：Context離開/還原在生成交易外，Selection.read亦切換context。
+ruby sketchup-plugin/test/test_undo_context.rb --seed 20261013
+Run options: --seed 20261013
+
+# Running:
+
+F.FFF
+
+Finished in 0.158102s, 31.6252 runs/s, 107.5255 assertions/s.
+
+  1) Failure:
+UndoContextTest#test_reading_selection_has_no_transaction_or_context_side_effects [sketchup-plugin/test/test_undo_context.rb:212]:
+UX_READ_ONLY：預覽讀選取不得設定 active_path 或開啟／結束 operation.
+Expected [[:path, nil, false], [:path, [#<交易夾具實體 5960 >], false], [:path, nil, false], [:path, [#<交易夾具實體 5960 >], false], [:path, nil, false], [:path, [#<交易夾具實體 5960 >], false]] to be empty.
+
+  2) Failure:
+UndoContextTest#test_generation_failure_rolls_back_only_the_current_batch [sketchup-plugin/test/test_undo_context.rb:233]:
+UX_UNDO：失敗不得遺留只有切換 context 的 Undo 紀錄.
+Expected [{:before=>{:entities=>[#<交易夾具實體 5980 >, #<交易夾具實體 6000 >, #<交易夾具實體 6020 >], :path=>[#<交易夾具實體 5980 >], :selection=>[#<交易夾具實體 6040 >]}, :after=>{:entities=>[#<交易夾具實體 5980 >, #<交易夾具實體 6000 >, #<交易夾具實體 6020 >], :path=>nil, :selection=>[]}}, {:before=>{:entities=>[#<交易夾具實體 5980 >, #<交易夾具實體 6000 >, #<交易夾具實體 6020 >], :path=>nil, :selection=>[]}, :after=>{:entities=>[#<交易夾具實體 5980 >, #<交易夾具實體 6000 >, #<交易夾具實體 6020 >], :path=>[#<交易夾具實體 5980 >], :selection=>[]}}] to be empty.
+
+  3) Failure:
+UndoContextTest#test_context_switches_are_inside_the_generation_operation [sketchup-plugin/test/test_undo_context.rb:204]:
+UX_UNDO：離開及恢復編輯路徑都必須在本批 start/commit 之間
+
+  4) Failure:
+UndoContextTest#test_one_undo_inside_group_removes_only_latest_batch [sketchup-plugin/test/test_undo_context.rb:190]:
+UX_UNDO：群組編輯內生成後一次原生 Undo 必須移除最新一批，不能只退出編輯而保留產物.
+Expected: [#<交易夾具實體 6060 >, #<交易夾具實體 6080 >, #<交易夾具實體 6100 >]
+  Actual: [#<交易夾具實體 6060 >, #<交易夾具實體 6080 >, #<交易夾具實體 6100 >, #<交易夾具實體 6120 下角材 平釘 20261013 121343>]
+
+5 runs, 17 assertions, 4 failures, 0 errors, 0 skips
+exit_code=1
+UX Undo 修後：唯讀不切path；生成的start先於離開path、commit晚於還原path。
+ruby sketchup-plugin/test/test_undo_context.rb --seed 20261013
+Run options: --seed 20261013
+
+# Running:
+
+.....
+
+Finished in 0.067230s, 74.3711 runs/s, 461.1009 assertions/s.
+
+5 runs, 31 assertions, 0 failures, 0 errors, 0 skips
+exit_code=0
+原生探針證據（非 unit double；完整 JSON 留在本機 TEMP/geometry-framing-context-probe）
+{
+  "source": "root 在 SketchUp 原生操作產生的 JSON；此段由檔案逐值比對",
+  "sketchup": "26.0.429",
+  "fixture": "雙層群組、20度旋轉、另一路實例；未確認兩條路徑仍共用同一個定義",
+  "selected_world_matches": true,
+  "full_walk_matches": true,
+  "selected_world_mm": [
+    [
+      1264.634224,
+      2734.825644,
+      2500.0
+    ],
+    [
+      5963.097328,
+      4444.926361,
+      2500.0
+    ],
+    [
+      7604.794016,
+      -65.598219,
+      2500.0
+    ],
+    [
+      2906.330912,
+      -1775.698936,
+      2500.0
+    ]
+  ],
+  "batches_before_undo": [
+    {
+      "tag": "A",
+      "id": 43
+    },
+    {
+      "tag": "B",
+      "id": 54
+    }
+  ],
+  "batches_after_one_native_undo": [
+    {
+      "tag": "A",
+      "id": 43
+    }
+  ],
+  "nested_path_after_undo": [
+    [
+      "探針外層",
+      19
+    ],
+    [
+      "探針內層",
+      21
+    ]
+  ],
+  "plain_read_preserves_outputs": true,
+  "plain_read_preserves_path": true
+}
+{
+  "source": "root 原生 Redo 操作後的 after-redo-B.json",
+  "batches_after_native_redo": [
+    {
+      "tag": "A",
+      "id": 43
+    },
+    {
+      "tag": "B",
+      "id": 54
+    }
+  ],
+  "redo_restores_same_batches": true,
+  "redo_preserves_nested_path": true,
+  "scope": "此段驗獨立原生交易探針；完整插件生成仍由 root 另驗，不以探針冒稱插件全套通過。"
+}
+原生 workflow 首敗保留：TEMP/geometry-framing-native-workflow-20261013-122312-21584-f70426/stdout-stderr.txt；SU_ROLLBACK_CONTEXT 失敗，abort 已回復模型及path但清空選取。依原生行為修正unit double後、Builder修補前：
+ruby sketchup-plugin/test/test_undo_context.rb --seed 20261013
+Run options: --seed 20261013
+
+# Running:
+
+..F..
+
+Finished in 0.169835s, 29.4403 runs/s, 170.7539 assertions/s.
+
+  1) Failure:
+UndoContextTest#test_generation_failure_rolls_back_only_the_current_batch [sketchup-plugin/test/test_undo_context.rb:235]:
+UX_UNDO：中途失敗須恢復前批、輸入、選取與編輯路徑.
+Expected: {:entities=>[#<交易夾具實體 5960 >, #<交易夾具實體 5980 >, #<交易夾具實體 6000 >], :path=>[#<交易夾具實體 5960 >], :selection=>[#<交易夾具實體 6020 >]}
+  Actual: {:entities=>[#<交易夾具實體 5960 >, #<交易夾具實體 5980 >, #<交易夾具實體 6000 >], :path=>[#<交易夾具實體 5960 >], :selection=>[]}
+
+5 runs, 29 assertions, 1 failures, 0 errors, 0 skips
+exit_code=1
+依原生首敗補正後：Builder abort完成後重選仍有效的原輸入，沒有新增operation或修改使用者Undo行為。
+ruby sketchup-plugin/test/test_undo_context.rb --seed 20261013
+Run options: --seed 20261013
+
+# Running:
+
+.....
+
+Finished in 0.056047s, 89.2104 runs/s, 553.1043 assertions/s.
+
+5 runs, 31 assertions, 0 failures, 0 errors, 0 skips
+exit_code=0

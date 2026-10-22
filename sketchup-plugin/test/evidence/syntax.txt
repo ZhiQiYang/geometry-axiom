@@ -1,0 +1,101 @@
+$ ruby -c D:\geometry-axiom\sketchup-plugin\build_rbz.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\core\checks.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\core\flat_ceiling.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\core\geometry.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\core\panel_axis.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\core\profile.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\su\builder.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\su\dialog.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\su\main.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\su\obstacles.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\su\selection.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing\su\selection_watch.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\geometry_framing.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\evidence\native-audit-driver.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\evidence\native-ui\fixture.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\record_evidence.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\run.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\run_mutations.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_builder_material.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_dialog_lifecycle.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_dialog_review.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_flat_ceiling.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_helper.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_obstacles.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_panel_axis.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_profile.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_selection_math.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_selection_watch.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_su_entry.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test\test_undo_context.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test_su\run_all.rb
+Syntax OK
+exit_code=0
+$ ruby -c D:\geometry-axiom\sketchup-plugin\test_su\run_workflow_regressions.rb
+Syntax OK
+exit_code=0
+$ node --check D:\geometry-axiom\sketchup-plugin\geometry_framing\ui\dialog.js
+exit_code=0
+$ node --check D:\geometry-axiom\sketchup-plugin\test\ui_smoke.cjs
+exit_code=0
+PASS: 32 Ruby files and 2 JavaScript syntax checks.
