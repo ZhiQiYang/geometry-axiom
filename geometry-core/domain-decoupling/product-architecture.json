@@ -213,6 +213,12 @@
       "purpose": "Application/runtime/protocol or workspace host reference sources; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-app/native/stagger_facts.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Candidate-owned ordered source/value facts at application operation boundaries; binds preview and confirm evidence to the existing revision and operation seal without persisting facts in World or history"
+    },
+    {
       "path": "geometry-app/native/versions_adapter.inc",
       "layer": "H",
       "language": "c",
@@ -3055,7 +3061,7 @@
     {
       "path": "geometry-web/grid_inspector_rename_test.js",
       "reason": "Dedicated acceptance/test driver grid_inspector_rename_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "1f4fd5f4b85cfbc64da880bc1f4ca80155ef51ea3007c932093801068d48d4fd",
+      "sha256": "17e2c37434e1dcfeb6d8af90e98bb681ba49083fdee016e936052f13cae62803",
       "hashMode": "lf"
     },
     {
@@ -4081,6 +4087,8 @@
       "WoodGridSourceRole",
       "WoodGridSourceTokens",
       "WoodGridSources",
+      "WoodGridStaggerFact",
+      "WoodGridStaggerPoint",
       "WoodGridState",
       "WoodGridWriter",
       "WoodMember",
@@ -4570,6 +4578,12 @@
       "wood_grid_sources_line",
       "wood_grid_sources_rule_line",
       "wood_grid_stage",
+      "wood_grid_stagger_commit_valid",
+      "wood_grid_stagger_order_preserves",
+      "wood_grid_stagger_point",
+      "wood_grid_stagger_same_point",
+      "wood_grid_stagger_same_source",
+      "wood_grid_stagger_value_changed",
       "wood_grid_system_error",
       "wood_grid_system_evaluate_direct",
       "wood_grid_system_hook",
