@@ -98,4 +98,7 @@
 - 2026-10-22T22:00:16.578922+00:00 — **F2-parser-sanitized**：同 F2 parser ASan/UBSan 差分真退出0/passResult=true，原compile/run皆0；199810 observations、零issue、run stderr空且原末行PASS。原SAN flags/env未改，14input/context hashes前後同、來源F2/clean；為外部差分支援證據，不冒稱mutation或替代正式17項。
   下一步：F2-Cperf。原始資料：`raw/F2-parser-sanitized.raw.tar.gz`。
 
+- 2026-10-22T22:00:29.916648+00:00 — **F2-clone-release-first-two**：F2 clone釋放：p73首次origin tracking守門rc1、未刪；fetch rc0後p73與p52(fix)完整盤點／clean守門後成功移除，各24,012 tracked、1,478,874,125 bytes。完整失敗／修復／成功raw保留；原proof raw/tools/output與source-final保留，未重跑產品。
+  下一步：F2-checker。原始資料：`raw/F2-clone-release-first-two.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
