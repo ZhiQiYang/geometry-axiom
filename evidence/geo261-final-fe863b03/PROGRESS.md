@@ -74,4 +74,7 @@
 - 2026-10-22T19:29:40.960020+00:00 — **formal-round-summary**：正式 17 個項目已收齊：15 項通過，P52／verifier 原退出 1；七個產品 job 各原退出 0；grid 原推送環境失敗另以正常 push 0 修復，原 outer 1 保留
   下一步：完成額外撤回／恢復自證並定位 P52 產品成本，紅燈不改判。原始資料：`raw/formal-round-summary.raw.tar.gz`。
 
+- 2026-10-22T19:30:44.616648+00:00 — **F-p73-subset-proof**：原 P73 子集撤回／恢復各退出 0；撤回未觸發預期紅，proof 外層真退出 1；正式 F full canvas baseline 0 保留，此子集不能充作有效突變自證
+  下一步：調查標註同步事件觸發並補同原斷言的確定性自證；其他獨立自證繼續。原始資料：`raw/F-p73-subset-proof.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
