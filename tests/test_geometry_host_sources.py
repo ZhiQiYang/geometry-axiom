@@ -891,6 +891,47 @@ class NativeCandidateTransportTests(unittest.TestCase):
                 self.assertEqual(("UNSUPPORTED", "BASE_SOURCE_BINDING", "I32", message),
                     (error.exception.status, error.exception.code, error.exception.clause, error.exception.message))
 
+    def _public_box_without_snapshot_faces(self, kind):
+        from modeling.engine import evaluate as default_evaluate
+        from tests.test_geometry_kernel_runtime import snapshot, solid, request, ref
+        from tests.test_geometry_source_runtime import envelope
+        base = snapshot(solids=(solid(1, kind=kind),))
+        # H names column and beam faces by local axis and side. Rename before
+        # the envelope is built, then drop only the snapshot catalog, so this
+        # reaches the template binding instead of the adapter name check.
+        for index, face in enumerate(base["solids"][0]["faces"]):
+            face["feature"] = RECTANGULAR_FACES[index]
+        definitions = {"base_scene": base["base_scene"], "extensions": []}
+        req = request(ref(kind, 1))
+        wire = native_wire(envelope(base))
+        self.assertIn("faces", wire["legacySnapshot"]["solids"][0])
+        del wire["legacySnapshot"]["solids"][0]["faces"]
+
+        def process(command, **ignored):
+            self.assertEqual(definitions["base_scene"].encode(), Path(command[-1]).read_bytes())
+            return subprocess.CompletedProcess(command, 0, json.dumps(wire).encode(), b"")
+
+        with mock.patch.object(model_native, "_execution_identity", return_value=EXECUTION), \
+             mock.patch.object(model_native.subprocess, "run", side_effect=process) as process_run:
+            try:
+                default_evaluate(definitions, req, base_executable="fixture-not-executed")
+            except ModelError as error:
+                found = (error.status, error.code, error.clause, error.message)
+            except Exception as error:
+                self.fail(f"{kind} snapshot without faces raised unclassified {type(error).__name__}: {error}")
+            else:
+                self.fail(f"{kind} snapshot without faces was accepted")
+            finally:
+                self.assertEqual(1, process_run.call_count)
+        self.assertEqual(("UNSUPPORTED", "BASE_SOURCE_BINDING", "I32",
+                          "Native box source faces disagree with legacy provenance."), found)
+
+    def test_public_default_rejects_column_snapshot_without_faces(self):
+        self._public_box_without_snapshot_faces("column")
+
+    def test_public_default_rejects_beam_snapshot_without_faces(self):
+        self._public_box_without_snapshot_faces("beam")
+
     def test_public_default_transport_preserves_unchanged_wire_in_one_invocation(self):
         from modeling.engine import evaluate as default_evaluate
         from modeling.common import digest
