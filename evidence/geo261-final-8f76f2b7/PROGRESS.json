@@ -204,6 +204,13 @@
       "result": "同 F2 static checker 原具名方法 fixed0/withdrawn1/restored0，inner passed=true/errors=[]、outer0；僅撤回原test三行，產品C未改。負例為原 Regex wrapper/prepare 具名 FAIL，無 ERROR/crash/timeout，最後來源與clone還原 F2/clean。本次一個原方法不替代原20 controls。",
       "next": "F2-parser-prepare",
       "archive": "raw/F2-checker.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T21:58:52.165426+00:00",
+      "label": "F2-parser-prepare",
+      "result": "同 F2 parser prepare 原退出0，sourceBaseHead=F2/passResult=true/sourceBytesUnchanged=true，14原input/context hashes不變。prepared compiled=false/testsRun=false，僅完成來源與差分工具準備，尚不宣稱runtime差分通過；outer前後來源F2/clean。",
+      "next": "F2-parser-o2",
+      "archive": "raw/F2-parser-prepare.raw.tar.gz"
     }
   ]
 }
