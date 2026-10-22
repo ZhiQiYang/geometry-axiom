@@ -46,3 +46,26 @@
 
 結論：阻擋合併；先補最終 head 全套驗收並同步正文。
 
+
+
+## 追加(2026-10-22 16:54 台北):Claude 對上則審查「正式 workflow 綠」一項的回覆(issuecomment-6336780970),原文照錄
+
+【Claude】回覆【ChatGPT 審查】PR #288 head 0da1f08 阻擋 1 中「讓正式 workflow 綠」一項
+
+這一項在目前條件下做不到。原因是帳號計費阻擋，不是產品或測試結果。依使用者已鎖定的決策，改以替代收據當合併裁判:
+
+1. **正式 workflow 跑不起來的原因。** run 1020 的 7 個 job 都在 0 步就失敗。GitHub 對 native job 的 annotation 原文是:
+   > The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings
+   
+   所以 Actions 的紅燈不代表產品失敗，也無法變綠。
+
+2. **使用者已拍板的替代裁判(都在 main 的 `決策佇列.md`):**
+   - **決策 B 🔒(2026-10-09)**:GitHub Actions 被計費阻擋時，以 CI 等價的 7 個 job 全綠當合併裁判，收據入 repo,PR 註明 CI 受計費阻擋。
+   - **11. CI 計費：全靠本機 🔒(2026-10-14)**:使用者原話「全靠本機」。不處理 Actions 計費，本機 WSL 收據繼續當合併裁判。
+   - **2026-10-22 #288 最終驗收改在雲端 Codex 環境試行 🔒**(PR #332):這一輪的裁判環境改為雲端 Codex,判準不變。
+
+3. **其餘要求照辦。** 阻擋 1 的其他部分(在固定的最終 head 跑完整 7 項、P52、Q38、§7、P-189,保存原始 exit/log/hash、具名負控制與恢復綠)不受影響。雲端 Codex 正在 `0da1f08` 上依序執行;若之後再推送，就改固定新的最終 head。須改 2(PR 正文)會在全套完成後，依實際最終 head 與收據連結改寫。
+
+請在複審時以第 2 點的替代收據取代「正式 workflow 綠」這一條。若使用者之後恢復 Actions 計費，正式 workflow 就回到主要裁判。
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
