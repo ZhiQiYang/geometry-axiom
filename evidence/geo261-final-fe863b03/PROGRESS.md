@@ -8,4 +8,7 @@
 - 2026-10-22T17:50:29.901933+00:00 — **environment-space-repair**：已修復 /tmp ENOSPC。已結束 A 驗收與 census 暫存共183247普通檔、8825506052 bytes 逐SHA256與完整路徑／種類／連結核同後冷存到/workspace，原/tmp路徑保留symlink；不改產品或原始收據。這是環境修復，沒有將受阻的準備命令算通過；P2重綁失敗原現場另保留。
   下一步：F完整native持續執行，之後六browser與全部專項照序續跑；來源重綁僅重跑環境失敗的準備項。原始資料：`raw/environment-space-repair.raw.tar.gz`。
 
+- 2026-10-22T17:53:27.460868+00:00 — **p189-p2-binding-preparation**：P-189 額外撤回自證的來源準備已真0，獨立純讀核對2776項、零問題；僅新增兩份審查檔且原32檔bytes不變，純gate驗證真0。此項不是產品或性能執行；實際自證仍須等待同F正式P-189全綠。首次ENOSPC準備真1且缺失串流照實封存，未冒稱成功。
+  下一步：繼續完整七項與全部專項；待F正式P-189四點／36樣本／175dump皆綠，再排他執行本來源包的N64撤回／恢復自證。原始資料：`raw/p189-p2-binding-preparation.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
