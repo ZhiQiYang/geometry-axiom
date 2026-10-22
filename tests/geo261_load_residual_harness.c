@@ -3,6 +3,10 @@
 #ifdef _WIN32
 #undef _WIN32
 #endif
+#include <stdbool.h>
+/* Private negative controls use this only to target the second real consumer;
+ * the unchanged production body never reads this test flag. */
+static bool residual_second_consumer;
 #define main geometry_program_main
 #include "../current_geometry.c"
 #undef main
@@ -152,6 +156,107 @@ static bool collection_reset_scenario(void)
     REQUIRE("described-insertion-order",geo_eval_node_count(graph)==2&&geo_eval_edge_count(graph)==1);
     REQUIRE("reset-seal",geo_eval_seal(graph));wood_contact_sources_destroy(sources);geo_eval_destroy(graph);return true;
 }
+typedef struct {ReferenceEval *ctx;unsigned mode;} CacheConsumer;
+static bool cache_consumer_evaluate(void *user,GeoEvalContext *graph,const GeoSourceRef *ref,GeoSourceValue *out)
+{
+    CacheConsumer *probe=user;ReferenceEval *ctx=probe->ctx;uint32_t consumer;
+    if(ref->key_size!=sizeof consumer)return false;memcpy(&consumer,ref->key,sizeof consumer);
+    residual_second_consumer=consumer==2;
+    for(unsigned repeat=0;repeat<2;++repeat){
+        if(probe->mode==1){WoodMemberDefinition definition;
+            if(!reference_member_definition_read(ctx,0,41,&definition)||definition.id!=41||definition.dimension[0]!=10)return false;
+        }else if(probe->mode==2){WoodMemberPlacement anchor;
+            if(!reference_member_anchor_read(ctx,0,41,&anchor)||anchor.placement_id!=7||anchor.order!=1)return false;
+        }else if(probe->mode==3){WoodContactSourceFacts facts;WoodContactSourceRequest request={7,false,NULL};
+            if(graph!=ctx->sources||!reference_contact_facts(ctx,graph,&request,&facts)||facts.member_count!=1||
+                !facts.members[0].footprint_valid||!same_rect(facts.members[0].footprint,(GeoRect2){10,20,110,30}))return false;
+        }else if(!reference_eval_timber_relation(ctx,0,consumer==1?GEO_DEPENDENCY_DEFINITION_REQUIRED:GEO_DEPENDENCY_EVALUATE_BEFORE))return false;
+    }
+    residual_second_consumer=false;
+    *out=(GeoSourceValue){.kind=GEO_SOURCE_QUANTITY,.as.quantity={1,1,GEO_UNIT_SCALAR}};return true;
+}
+static bool ordered_cache_edges(GeoEvalContext *graph,size_t prefix_count,const GeoSourceEdge *prefix,
+    const GeoSourceRef *consumers,const GeoSourceRef *sources,const GeoDependencyKind *kinds,size_t source_count)
+{
+    if(geo_eval_edge_count(graph)!=prefix_count+2*source_count)return false;
+    for(size_t i=0;i<prefix_count;++i){GeoSourceEdge actual;
+        if(!geo_eval_edge_at(graph,i,&actual)||actual.consumer!=prefix[i].consumer||actual.source!=prefix[i].source||actual.kind!=prefix[i].kind)return false;
+    }
+    for(size_t c=0;c<2;++c)for(size_t s=0;s<source_count;++s){GeoSourceEdge actual;
+        GeoDependencyKind kind=kinds[c*source_count+s];
+        if(!geo_eval_edge_at(graph,prefix_count+c*source_count+s,&actual)||actual.consumer!=find_node(graph,consumers[c])||
+            actual.source!=find_node(graph,sources[s])||actual.kind!=kind)return false;
+    }
+    return true;
+}
+static bool cache_consumer_scenario(const char *name)
+{
+    World *world=calloc(1,sizeof *world),*before=calloc(1,sizeof *before);ReferenceEval *ctx=calloc(1,sizeof *ctx);
+    REQUIRE("cache-consumer-allocation",world&&before&&ctx);
+    PlacementSurface host={.id=7,.frame={{0,0,0},{1,0,0},{0,1,0},{0,0,1}},.rect={0,0,1000,1000}};
+    REQUIRE("cache-consumer-host",app_placement_stage(world,&host));
+    world->wood.timber_count=1;
+    world->wood.timbers[0]=(WoodMember){.id=41,.length=100,.size_a=10,.size_b=5,.placed=true,.auto_length=true,
+        .role=WOOD_MEMBER_ROLE_BOUNDARY,.cut_priority=1,.origin={10,20,0},.axis_length={1,0,0},.axis_a={0,1,0},.axis_b={0,0,1}};
+    world->wood.anchors[0]=(WoodMemberPlacement){.placement_id=7,.uv={10,20},.order=1,.anchor_kind=WOOD_ANCHOR_AT,
+        .length_direction=GEO_DIRECTION_POS_U,.depth_side=WOOD_DEPTH_POSITIVE_NORMAL};
+    ctx->world=world;ctx->wanted[0]=true;
+    ReferenceEval *previous=g_reference_active;AppWorldCandidate *owner=g_active_app_candidate;
+    g_reference_active=ctx;g_active_app_candidate=NULL;
+    REQUIRE("cache-consumer-register-real-providers",reference_sources_ensure(ctx));
+    unsigned mode=!strcmp(name,"cache-definition")?1:!strcmp(name,"cache-anchor")?2:!strcmp(name,"cache-footprint")?3:4;
+    CacheConsumer probe={ctx,mode};GeoSourceProvider provider={90,"test.cache-consumer","1",&probe,probe_describe,cache_consumer_evaluate};
+    REQUIRE("cache-consumer-register",geo_eval_register(ctx->sources,&provider));
+    /* Prime the registered real pose provider's documented snapshot path.
+     * Every later read uses the returned canonical BOX and normal H memo. */
+    ctx->use_current_values=true;
+    REQUIRE("cache-consumer-prime-real-pose",reference_eval_timber_relation(ctx,0,GEO_DEPENDENCY_VALUE_REQUIRED));
+    ctx->use_current_values=false;
+    WoodMemberDefinition definition;WoodMemberPlacement anchor;WoodContactSourceFacts facts;WoodContactSourceRequest request={7,false,NULL};
+    REQUIRE("cache-consumer-prime-real-definition",reference_member_definition_read(ctx,0,41,&definition));
+    REQUIRE("cache-consumer-prime-real-anchor",reference_member_anchor_read(ctx,0,41,&anchor));
+    REQUIRE("cache-consumer-prime-real-footprint",reference_contact_facts(ctx,ctx->sources,&request,&facts)&&facts.member_count==1&&
+        facts.members[0].footprint_valid&&same_rect(facts.members[0].footprint,(GeoRect2){10,20,110,30}));
+    REQUIRE("cache-consumer-natural-memos",ctx->member_reads[0].definition_valid&&ctx->member_reads[0].anchor_valid&&
+        ctx->member_reads[0].pose_valid&&ctx->member_reads[0].footprint_valid);
+    size_t prefix_count=geo_eval_edge_count(ctx->sources),prefix_nodes=geo_eval_node_count(ctx->sources);
+    GeoSourceEdge *prefix=calloc(prefix_count?prefix_count:1,sizeof *prefix);REQUIRE("cache-consumer-prefix",prefix);
+    for(size_t i=0;i<prefix_count;++i)REQUIRE("cache-consumer-prefix-read",geo_eval_edge_at(ctx->sources,i,&prefix[i]));
+    memcpy(before,world,sizeof *before);
+    uint32_t first=1,second=2,id=41;GeoSourceRef consumers[2]={{90,&first,sizeof first},{90,&second,sizeof second}};GeoSourceValue value;
+    REQUIRE("cache-consumer-first",geo_eval_source(ctx->sources,consumers[0],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+    REQUIRE("cache-consumer-second",geo_eval_source(ctx->sources,consumers[1],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+    GeoSourceRef sources[5];GeoDependencyKind kinds[10];size_t count=1;WoodDefinitionKey wood;GeoPlacementSourceKey frame,region,placement;
+    if(mode==1)sources[0]=wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_MEMBER,id,&wood);
+    else if(mode==2)sources[0]=wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&wood);
+    else if(mode==3){count=5;
+        sources[0]=geo_placement_source_ref(APP_SOURCE_PLACEMENT,GEO_PLACEMENT_SOURCE_FRAME,7,&frame);
+        sources[1]=geo_placement_source_ref(APP_SOURCE_PLACEMENT,GEO_PLACEMENT_SOURCE_REGIONS,7,&region);
+        sources[2]=geo_placement_source_ref(APP_SOURCE_PLACEMENT,GEO_PLACEMENT_SOURCE_DEFINITION,7,&placement);
+        sources[3]=wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&wood);
+        sources[4]=(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id};
+    }else sources[0]=(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id};
+    for(size_t c=0;c<2;++c)for(size_t i=0;i<count;++i)
+        kinds[c*count+i]=mode==3?(i==2||i==3?GEO_DEPENDENCY_DEFINITION_REQUIRED:GEO_DEPENDENCY_VALUE_REQUIRED):
+            mode==4?(c==0?GEO_DEPENDENCY_DEFINITION_REQUIRED:GEO_DEPENDENCY_EVALUATE_BEFORE):GEO_DEPENDENCY_DEFINITION_REQUIRED;
+    const char *marker=mode==1?"definition-cache-second-consumer-edge-and-order":mode==2?"anchor-cache-second-consumer-edge-and-order":
+        mode==3?"footprint-cache-second-consumer-edge-and-order":!strcmp(name,"cache-pose-kind")?
+        "pose-cache-preserves-requested-dependency-kind":"pose-cache-second-consumer-edge-and-order";
+    REQUIRE(marker,ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count));
+    REQUIRE("cache-consumer-source-node-order",geo_eval_node_count(ctx->sources)==prefix_nodes+2&&
+        find_node(ctx->sources,consumers[0])==prefix_nodes&&find_node(ctx->sources,consumers[1])==prefix_nodes+1);
+    size_t nodes=geo_eval_node_count(ctx->sources),edges=geo_eval_edge_count(ctx->sources);
+    REQUIRE("cache-consumer-repeated-reads",geo_eval_source(ctx->sources,consumers[1],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK&&
+        geo_eval_node_count(ctx->sources)==nodes&&geo_eval_edge_count(ctx->sources)==edges&&
+        ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count));
+    REQUIRE("cache-consumer-world-unchanged",!memcmp(before,world,sizeof *before));
+    REQUIRE("cache-consumer-seal",geo_eval_seal(ctx->sources));
+    REQUIRE("cache-consumer-sealed-read",geo_eval_source(ctx->sources,consumers[1],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK&&
+        geo_eval_node_count(ctx->sources)==nodes&&geo_eval_edge_count(ctx->sources)==edges);
+    free(prefix);reference_sources_dispose(ctx);g_reference_active=previous;g_active_app_candidate=owner;
+    free(ctx);free(before);free(world);return true;
+}
+#include "geo261_member_reads_cases.inc"
 static bool scenario(void *after,GeoEvalContext *graph,void *opaque)
 {
     (void)graph;(void)opaque;World *world=after;
@@ -162,6 +267,15 @@ static bool scenario(void *after,GeoEvalContext *graph,void *opaque)
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;test_case=argv[1];
+    if(!strncmp(test_case,"member-",7)){
+        bool ok=!strcmp(test_case,"member-anchor-id")?member_reads_anchor_id_case():
+            !strcmp(test_case,"member-anchor-miss")?member_reads_anchor_miss_case():
+            !strcmp(test_case,"member-placement-key")?member_reads_placement_key_case():false;
+        if(ok)printf("PASS %s\n",test_case);return ok?0:1;
+    }
+    if(!strncmp(test_case,"cache-",6)){
+        bool ok=cache_consumer_scenario(test_case);if(ok)printf("PASS %s\n",test_case);return ok?0:1;
+    }
     if(!strcmp(test_case,"collection-reset")){
         bool ok=collection_reset_scenario();if(ok)printf("PASS %s\n",test_case);return ok?0:1;
     }

@@ -1,5 +1,8 @@
 """同候選變更、回滾與跨 consumer 依賴；兩個負控制須由具名斷言偵測。"""
 from pathlib import Path
+import hashlib
+import json
+import os
 import re
 import subprocess
 import sys
@@ -9,6 +12,37 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tests.test_geo261_native_kernel import NativeBuild
+
+DEFINITION_DEPEND = ('geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_MEMBER,id,&key),\n'
+                     '            GEO_DEPENDENCY_DEFINITION_REQUIRED)')
+ANCHOR_DEPEND = ('geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),\n'
+                 '            GEO_DEPENDENCY_DEFINITION_REQUIRED)')
+FOOTPRINT_DEPEND = 'geo_eval_depend(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED)'
+POSE_DEPEND = 'geo_eval_depend(ctx->sources,ref,relation)'
+EARLY_DEFINITION = '        if(!reference_sources_ensure(ctx)||!reference_placement_frame(ctx,id,&actual.frame)||'
+H_CACHE_CONTROLS = (
+    ('definition-edge', 'cache-definition', 'definition-cache-second-consumer-edge-and-order', DEFINITION_DEPEND,
+     '(residual_second_consumer?GEO_SOURCE_OK:' + DEFINITION_DEPEND + ')'),
+    ('definition-kind', 'cache-definition', 'definition-cache-second-consumer-edge-and-order', DEFINITION_DEPEND,
+     DEFINITION_DEPEND.replace('GEO_DEPENDENCY_DEFINITION_REQUIRED', '(residual_second_consumer?GEO_DEPENDENCY_EVALUATE_BEFORE:GEO_DEPENDENCY_DEFINITION_REQUIRED)')),
+    ('anchor-edge', 'cache-anchor', 'anchor-cache-second-consumer-edge-and-order', ANCHOR_DEPEND,
+     '(residual_second_consumer?GEO_SOURCE_OK:' + ANCHOR_DEPEND + ')'),
+    ('anchor-kind', 'cache-anchor', 'anchor-cache-second-consumer-edge-and-order', ANCHOR_DEPEND,
+     ANCHOR_DEPEND.replace('GEO_DEPENDENCY_DEFINITION_REQUIRED', '(residual_second_consumer?GEO_DEPENDENCY_EVALUATE_BEFORE:GEO_DEPENDENCY_DEFINITION_REQUIRED)')),
+    ('footprint-edge', 'cache-footprint', 'footprint-cache-second-consumer-edge-and-order', FOOTPRINT_DEPEND,
+     '(residual_second_consumer?GEO_SOURCE_OK:' + FOOTPRINT_DEPEND + ')'),
+    ('footprint-kind', 'cache-footprint', 'footprint-cache-second-consumer-edge-and-order', FOOTPRINT_DEPEND,
+     FOOTPRINT_DEPEND.replace('GEO_DEPENDENCY_VALUE_REQUIRED', '(residual_second_consumer?GEO_DEPENDENCY_EVALUATE_BEFORE:GEO_DEPENDENCY_VALUE_REQUIRED)')),
+    ('footprint-order', 'cache-footprint', 'footprint-cache-second-consumer-edge-and-order', EARLY_DEFINITION,
+     '        if(residual_second_consumer&&!geo_placement_sources_definition(ctx->placement_sources,id,&definition))return false;\n' + EARLY_DEFINITION),
+    ('pose-edge', 'cache-pose', 'pose-cache-second-consumer-edge-and-order', POSE_DEPEND,
+     '(residual_second_consumer?GEO_SOURCE_OK:' + POSE_DEPEND + ')'),
+    ('pose-kind', 'cache-pose-kind', 'pose-cache-preserves-requested-dependency-kind', POSE_DEPEND,
+     POSE_DEPEND.replace(',relation)', ',(residual_second_consumer?GEO_DEPENDENCY_VALUE_REQUIRED:relation))')),
+)
+ANCHOR_ID_KEY = "&&ctx->member_reads[i].id==id"
+ANCHOR_INVALIDATOR = "ctx->member_reads[i].footprint_valid=false;"
+PLACEMENT_KEY = "&&ctx->member_reads[i].placement==request->placement_id"
 
 
 def includes(source, origin):
@@ -23,7 +57,7 @@ class LoadResidual(unittest.TestCase):
         cls.exe = cls.compile("baseline")
 
     @classmethod
-    def compile(cls, name, invalidate=True, dependencies=True, collection_state=True):
+    def compile(cls, name, invalidate=True, dependencies=True, collection_state=True, source_change=None):
         build = cls.build
         world_path = ROOT / "geometry-app/native/world_validation.inc"
         world = includes(world_path.read_text(encoding="utf-8"), world_path)
@@ -39,6 +73,11 @@ class LoadResidual(unittest.TestCase):
             anchor = "if(geo_eval_depend(ctx->sources,"
             assert sources.count(anchor) == 3
             sources = sources.replace(anchor, "if(false&&geo_eval_depend(ctx->sources,")
+        if source_change:
+            changes = (source_change,) if isinstance(source_change[0], str) else source_change
+            for before, after in changes:
+                assert sources.count(before) == 1, "Control must hit exactly once: " + name
+                sources = sources.replace(before, after)
         sources_copy = build.work / (name + "-sources.inc")
         sources_copy.write_text(sources, encoding="utf-8")
         references_path = ROOT / "geometry-core/references.inc"
@@ -70,20 +109,95 @@ class LoadResidual(unittest.TestCase):
         geometry_copy.write_text(geometry, encoding="utf-8")
         harness = (ROOT / "tests/geo261_load_residual_harness.c").read_text(encoding="utf-8")
         harness = harness.replace('../current_geometry.c', geometry_copy.as_posix())
+        member_cases = build.work / (name + "-member-reads.inc")
+        member_cases.write_bytes((ROOT / "tests/geo261_member_reads_cases.inc").read_bytes())
+        harness = harness.replace('"geo261_member_reads_cases.inc"', '"' + member_cases.as_posix() + '"')
         client = build.work / (name + "-client.c")
         client.write_text(harness, encoding="utf-8")
         return build.link("residual-" + name, [build.compile(client, "residual-" + name)])
 
-    def case(self, name, exe=None):
-        result = subprocess.run([str(exe or self.exe), name], capture_output=True, text=True,
+    def case(self, name, exe=None, *, phase="positive", control=None, expected_assertion=None):
+        command = [str(exe or self.exe), name]
+        result = subprocess.run(command, capture_output=True, text=True,
                                 encoding="utf-8", errors="replace", timeout=90)
+        log = os.environ.get("GEO261_LOAD_RESIDUAL_EXECUTION_LOG")
+        if log:
+            path = Path(log)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("a", encoding="utf-8", newline="\n") as stream:
+                stream.write(json.dumps({
+                    "command": command, "cwd": os.getcwd(), "case": name, "phase": phase,
+                    "control": control, "expected_assertion": expected_assertion,
+                    "source_sha": os.environ.get("GITHUB_SHA"),
+                    "executable_sha256": hashlib.sha256(Path(command[0]).read_bytes()).hexdigest(),
+                    "environment": {k: os.environ.get(k) for k in ("PATH", "LANG", "LC_ALL", "TMPDIR", "PYTHONOPTIMIZE", "GITHUB_SHA", "GITHUB_WORKSPACE")},
+                    "actual_exit": result.returncode, "timeout_expired": False,
+                    "stdout": result.stdout, "stderr": result.stderr,
+                    "capture_mode": "complete native text output; original subprocess text=True",
+                }, ensure_ascii=False) + "\n")
         self.assertIn(result.returncode, (0, 1), "編譯錯誤、崩潰或受阻不算偵測：" + result.stderr)
         return result
 
-    def passes(self, name):
-        result = self.case(name)
+    def passes(self, name, exe=None, *, phase="positive", control=None):
+        result = self.case(name, exe, phase=phase, control=control)
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
         self.assertEqual("PASS " + name + "\n", result.stdout)
+
+    def test_cached_reads_preserve_each_consumer_exact_source_kind_and_order(self):
+        for case in ("cache-definition", "cache-anchor", "cache-footprint", "cache-pose", "cache-pose-kind"):
+            with self.subTest(case=case):
+                self.passes(case)
+
+    def test_each_cached_read_second_consumer_edge_kind_and_order_mutant_is_detected(self):
+        for name, case, marker, before, after in H_CACHE_CONTROLS:
+            with self.subTest(control=name):
+                self.passes(case, phase="baseline", control=name)
+                exe = self.compile(name, source_change=(before, after))
+                result = self.case(case, exe, phase="mutant", control=name, expected_assertion=marker)
+                self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+                self.assertIn("ASSERT:" + marker + " ", result.stderr)
+                self.assertEqual(1, result.stderr.count("ASSERT:"), result.stderr)
+                print("H cache control " + name + ": exit=1; " + result.stderr.strip(), flush=True)
+                self.passes(case, phase="restored", control=name)
+
+    def test_member_anchor_id_key_rejects_same_slot_different_canonical_member(self):
+        case, control, marker = "member-anchor-id", "anchor-id-key", "member-anchor-cache-id-must-match"
+        self.passes(case, phase="baseline", control=control)
+        exe = self.compile(control, source_change=(ANCHOR_ID_KEY, ""))
+        result = self.case(case, exe, phase="mutant", control=control, expected_assertion=marker)
+        self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+        self.assertIn("ASSERT:" + marker + " ", result.stderr)
+        print("Member cache control " + control + ": exit=1; " + result.stderr.strip(), flush=True)
+        self.passes(case, phase="restored", control=control)
+
+    def test_member_anchor_miss_invalidates_naturally_warmed_footprint(self):
+        case, control, marker = "member-anchor-miss", "anchor-miss-invalidation", "member-anchor-miss-invalidates-footprint"
+        self.passes(case, phase="baseline", control=control)
+        exe = self.compile(control, source_change=(ANCHOR_INVALIDATOR, "/* isolated invalidator control */"))
+        result = self.case(case, exe, phase="mutant", control=control, expected_assertion=marker)
+        self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+        self.assertIn("ASSERT:" + marker + " ", result.stderr)
+        print("Member cache control " + control + ": exit=1; " + result.stderr.strip(), flush=True)
+        self.passes(case, phase="restored", control=control)
+
+    def test_placement_key_single_fault_equivalence_and_paired_defence_are_distinct(self):
+        case, marker = "member-placement-key", "contact-footprint-cache-placement-must-match"
+        self.passes(case, phase="baseline", control="placement-key-single")
+        single = self.compile("placement-key-only", source_change=(PLACEMENT_KEY, ""))
+        # The real immutable graph and intact anchor invalidator already prevent
+        # this single fault: preserve its actual green result as equivalent.
+        self.passes(case, single, phase="single-mutant-equivalent", control="placement-key-single")
+        self.passes(case, phase="restored", control="placement-key-single")
+        print("Member cache placement-key single removal: equivalent in this canonical candidate; exit=0", flush=True)
+        invalidator = (ANCHOR_INVALIDATOR, "/* paired precondition: anchor invalidator disabled */")
+        paired_baseline = self.compile("placement-key-paired-baseline", source_change=invalidator)
+        self.passes(case, paired_baseline, phase="baseline-anchor-invalidator-disabled", control="placement-key-paired")
+        paired_mutant = self.compile("placement-key-paired-withdrawn", source_change=(invalidator, (PLACEMENT_KEY, "")))
+        result = self.case(case, paired_mutant, phase="mutant-anchor-invalidator-disabled", control="placement-key-paired", expected_assertion=marker)
+        self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+        self.assertIn("ASSERT:" + marker + " ", result.stderr)
+        print("Member cache placement-key paired defence only: exit=1; " + result.stderr.strip(), flush=True)
+        self.passes(case, paired_baseline, phase="restored-anchor-invalidator-disabled", control="placement-key-paired")
 
     def test_same_candidate_move_delete_failed_read_and_rollback(self):
         self.passes("move-delete")
