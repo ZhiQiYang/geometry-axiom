@@ -575,7 +575,13 @@ for nm_, room_ in (("STEP45 加孔 x 2500–2700 y 500–800", dict(STEP45, hole
     for x_ in bad_:
         print("     ", x_)
 # (d) 缺陷 2 的小型掃描:L 形缺角寬 = 房寬一半(原本的 L 形掃描每 457 mm 取一次缺角寬,永遠跳過 W/2),W、H 取原掃描的值、缺角高取 3 個,共 27 間 × 8 種排法。
-#     性質檢查(不釘縫位):不當掉;可施工的檢查全過;不可施工的 trace 沒問題。不可施工的數量只印出來(原 L 形掃描是 0 個)。
+#     性質檢查(不釘縫位):不當掉;可施工的檢查全過;不可施工的 trace 沒問題。不可施工筆數必須是 0。
+#     只印出來、不放進成功條件時,多一個 conflict 而 trace 乾淨仍是綠燈(審查 6332818768)。
+def _w2_accepts(bad, unb):
+    """216 個排法要維持全數可施工:檢查問題與不可施工筆數都必須是 0。"""
+    return (not bad) and unb == 0
+
+
 _w2_bad, _w2_n, _w2_unb = [], 0, 0
 for W_ in (3000, 4100, 5000):
     for H_ in (2600, 3700, 4800):
@@ -594,11 +600,31 @@ for W_ in (3000, 4100, 5000):
                     got_ = ["CRASHED: " + (str(e_) or "AssertionError")]
                 if got_:
                     _w2_bad.append((W_, H_, ch_, fo.layout_name(l_), got_))
-ok = not _w2_bad
+ok = _w2_accepts(_w2_bad, _w2_unb)
 failed |= not ok
 print(f"[{'綠' if ok else '錯!'}] #318 缺陷 2 缺角寬 = 房寬一半的 L 形 {_w2_n} 個排法:不當掉、可施工的檢查全過;不一致 {len(_w2_bad)}(不可施工 {_w2_unb} 個,預期 0)")
 for x_ in _w2_bad[:6]:
     print("     ", x_)
+# 對照:審查指定的那間 L 形,八種排法各多回傳一個 conflict。同一條 _w2_accepts 必須失敗。
+# 拿掉 unb == 0 之後 trace 仍乾淨、bad 仍空,這行轉紅,訊息帶 W2_UNB_NOT_ASSERTED。
+_W2_REVIEW = LROOM(3000, 2600, 1500, 913)
+_w2_outer_ok = _W2_REVIEW["outer"] == [[0, 0], [3000, 0], [3000, 1687], [1500, 1687], [1500, 2600], [0, 2600]]
+_c_bad, _c_unb = [], 0
+for l_ in fo.LAYOUTS:
+    res = fo.build(_W2_REVIEW, l_, p)
+    res["conflicts"] = list(res["conflicts"]) + [dict(code="REVIEW_W2_REGRESSION")]
+    if res["conflicts"]:
+        _c_unb += 1
+        got_ = ["P182_TRACE"] if fo.p182_trace_problems(res, p) else []
+    else:
+        got_ = sorted({f["check"] for f in fo.check(res, p)})
+    if got_:
+        _c_bad.append((fo.layout_name(l_), got_))
+_c_pass = _w2_accepts(_c_bad, _c_unb)
+ctrl_ok = _w2_outer_ok and (not _c_pass) and _c_unb == 8 and not _c_bad
+failed |= not ctrl_ok
+print(f"[{'綠' if ctrl_ok else '錯!'}] W/2 對照 REVIEW_W2_REGRESSION:3000×2600 缺 1500×913 的八種排法各多一個 conflict 必須失敗"
+      f"(W2_UNB_NOT_ASSERTED);外框對得上={_w2_outer_ok},不可施工 {_c_unb}(要 8),檢查問題 {len(_c_bad)}(要 0),掃描仍通過={_c_pass}")
 # (e) 缺陷 1:柱右面(x=3000)與牆階垂直牆在同一條牆線上。草稿(第 22 輪補丁的路線 A)把它判成不可施工(核心限制),
 #     和阻擋 1(核心限制不准列為不可施工)衝突;改成照物理排出來(推論,協調者,第 22 輪),手算:
 #     外框 [[0,0],[4100,0],[4100,3661],[3000,3661],[3000,3700],[0,3700]],柱 x 2600–3000、y 3444–3644,左上起鋪板長沿 X(A 軸 = y)。
@@ -1285,6 +1311,56 @@ failed |= bool(diff)
 print(f"[{'綠' if not diff else '錯!'}] 標準答案逐支比對:{len(golden['rooms'])} 個房間 × 8 種排法,不一致 {len(diff)}")
 for d in diff[:20]:
     print("   ", d)
+
+
+def _golden_core_bound(layout):
+    """每筆 core_limits 必須是 [碼, 建構端 id, 端面, 矩形],而且矩形是這個排法的一支料。
+    舊的三元組沒有矩形,回 GOLDEN_CORE_LIMIT_UNBOUND。"""
+    rects = [row[1] for row in layout.get("timbers") or []]
+    for rec in layout.get("core_limits") or []:
+        if not isinstance(rec, list) or len(rec) != 4 or rec[3] not in rects:
+            return "GOLDEN_CORE_LIMIT_UNBOUND"
+    return None
+
+
+_w_now = now.get("core_limit_witness")
+_w_file = golden.get("core_limit_witness")
+_wprobs = []
+if _w_now != _w_file:
+    _wprobs.append("GOLDEN_CORE_LIMIT_UNBOUND")
+_wlay = ((_w_now or {}).get("layouts") or [{}])[0]
+_wbound = _golden_core_bound(_wlay)
+if _wbound:
+    _wprobs.append(_wbound)
+_wrecs = _wlay.get("core_limits") or []
+_wrects = [row[1] for row in _wlay.get("timbers") or []]
+_wwant = ["CORE_LIMIT_BOUNDARY_END_FREE", 1, 2600, [2600, 3653, 4100, 3680]]
+if _wrecs != [_wwant] or _wlay.get("name") != "左上起鋪,板長沿Y":
+    _wprobs.append("GOLDEN_CORE_LIMIT_WITNESS")
+elif _wrects[_wwant[1]] == _wwant[3]:
+    _wprobs.append("GOLDEN_CORE_LIMIT_ID_IS_INDEX")
+_old_shape = {"timbers": [["boundary", [2600, 3653, 4100, 3680]]],
+              "core_limits": [["CORE_LIMIT_BOUNDARY_END_FREE", 1, 2600]]}
+if _golden_core_bound(_old_shape) != "GOLDEN_CORE_LIMIT_UNBOUND":
+    _wprobs.append("GOLDEN_CORE_LIMIT_OLD_SHAPE_NOT_RED")
+ok = not _wprobs
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] golden core_limits 對回料件:{_wprobs or '見證排法的矩形對得上;舊三元組報 GOLDEN_CORE_LIMIT_UNBOUND'}")
+_readme = (HERE / "README.md").read_text(encoding="utf-8")
+_rprobs = []
+if "其餘 328" in _readme:
+    _rprobs.append("README_REMAINDER_328")
+if "其餘 64 個排法" not in _readme:
+    _rprobs.append("README_REMAINDER_64_MISSING")
+if "每個排法的 C8 失敗只有那一支邊界材那一個端面" in _readme:
+    _rprobs.append("README_ENDFACE_ONE_EACH")
+if "668 筆" not in _readme:
+    _rprobs.append("README_ENDFACE_668")
+if "方向誤植" not in _readme:
+    _rprobs.append("README_DIRECTION")
+ok = not _rprobs
+failed |= not ok
+print(f"[{'綠' if ok else '錯!'}] README 審查 6332818768 的計數、方向、端面敘述:{_rprobs or '對'}")
 if MUTANTS_ONLY:
     print("(--mutants-only:跳過掃描)")
     sys.exit(1 if failed else 0)
