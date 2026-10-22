@@ -95,4 +95,7 @@
 - 2026-10-22T19:37:33.418165+00:00 — **F-parser-sanitized**：同 F 原 sanitizer parser 差分執行真退出 0，199810 cases 等價且 stderr 空；與 O2 一起作額外等價支持，不取代正式清單或 mutation 自證
   下一步：對 P52 freshness 成本作隔離 profile，再做累積性能修正撤回自證。原始資料：`raw/F-parser-sanitized.raw.tar.gz`。
 
+- 2026-10-22T19:44:13.515235+00:00 — **F-cumulative-perf-proof**：同 F 累積純性能組撤回／恢復符合：N64 withdrawn/main=2.46757 原 2× gate 紅，restored/main=1.77124 綠；三版本各三筆 load 原退出 0、dump 相同；只證整組，不稱各微優化個別必要
+  下一步：針對 P52 已定位的路徑建構／排序成本作小修與原裁判重驗；本輪原紅保留。原始資料：`raw/F-cumulative-perf-proof.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
