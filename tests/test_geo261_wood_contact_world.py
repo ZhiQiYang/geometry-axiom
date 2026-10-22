@@ -73,7 +73,7 @@ CONTROLS = (
     ("collision-placement", COLLISION_FILTER, COLLISION_FILTER.replace("fact->placement_id!=world->placement_id||", ""), "collisions", "collision-same-placement-only"),
     ("placement-order", "if(previous<=order)break;", "if(true)break;", "ordering", "placement-order-before-declaration"),
     ("stable-ties", "if(previous<=order)break;", "if(previous<order)break;", "ordering", "placement-stable-equal-order-sides"),
-    ("equal-order-dedup", "world->members[t].order<order", "world->members[t].order<=order", "ordering", "equal-order-not-deduplicated"),
+    ("equal-order-dedup", "index->minimum[slot]<order", "index->minimum[slot]<=order", "ordering", "equal-order-not-deduplicated"),
     ("partial-shadow", "if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;", "if(earlier)duplicate=true;", "ordering", "partial-shadow-retains-exposed-face"),
     ("outline-component-index", "(int)(component*GEO_LOOP_MAX_VERTICES+i)", "(int)i", "regions", "region-outline-index-encoded"),
     ("hole-component-index", "(int)(component*GEO_REGION_MAX_HOLES)+hole_of[li]", "hole_of[li]", "regions", "region-hole-index-encoded"),
