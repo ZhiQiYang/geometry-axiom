@@ -29,6 +29,13 @@
       "result": "原退出0；收據完整=True；超正式時限=False；衍生通過=True；基礎設施錯誤=0",
       "next": "串行完成本輪其餘七項與全部專項；收齊紅燈後集中分類修正",
       "archive": "raw/native.raw.tar.gz"
+    },
+    {
+      "utc": "2026-10-22T18:26:02.488385+00:00",
+      "label": "final-extra-proof-tools",
+      "result": "核對F native三組控制的96筆完整原始流：32組為27新增加5既有，皆baseline0／mutant1／restored0。舊控制日誌邊界照實保留。另封存單一W測試checker撤回自證與parser差分原工具；這兩項尚未執行，不算通過。",
+      "next": "完整七項與專項照序續跑；正式輪結束後排他執行同F的P73、閱讀器、單方法checker、parser及P-189額外自證",
+      "archive": "raw/final-extra-proof-tools.raw.tar.gz"
     }
   ]
 }
