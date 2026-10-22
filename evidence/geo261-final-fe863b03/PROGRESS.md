@@ -83,4 +83,7 @@
 - 2026-10-22T19:34:10.409084+00:00 — **F-reader-proof**：同 F 原具名 reader test 固定 0／撤回唯一 trace 修復 1／恢復 0；具名 AssertionError 與原 HTML bytes 差符合，SSOT／原測試／生成器皆未改，clone 已還原乾淨 F
   下一步：完成其他獨立自證與 P73 callback 定位；P52 原紅保留。原始資料：`raw/F-reader-proof.raw.tar.gz`。
 
+- 2026-10-22T19:35:15.628603+00:00 — **F-checker-proof**：同 F 單一原具名 checker 測試固定 0／撤回測試接線 1／恢復 0；原 Regex AssertionError 命中，產品三輸入不變，隔離 clone 與 F source 均乾淨
+  下一步：完成 parser 三 phase、累積效能修正自證與 P73 callback；P52 原紅保留。原始資料：`raw/F-checker-proof.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
