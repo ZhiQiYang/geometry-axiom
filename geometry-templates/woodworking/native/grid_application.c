@@ -239,6 +239,72 @@ bool wood_grid_systems_rebuild(WoodGridContext *c,char *error,size_t cap)
     }
     return true;
 }
+/* A retained reference is authored once: changing its card is the I24
+ * exception. Different sources without ordered evidence compare their values. */
+static bool wood_grid_stagger_value_changed(const GeoGridAxisDef *old,const GeoGridAxisDef *now)
+{
+    const GeoParameterRef *prior=&old->parameters[5],*current=&now->parameters[5];
+    if(prior->set&&current->set&&prior->parameter_id==current->parameter_id&&prior->field_id==current->field_id)return false;
+    return old->stagger!=now->stagger;
+}
+static bool wood_grid_stagger_same_source(GeoParameterRef a,GeoParameterRef b)
+{return a.set==b.set&&(!a.set||(a.parameter_id==b.parameter_id&&a.field_id==b.field_id));}
+static WoodGridStaggerPoint wood_grid_stagger_point(const GeoGridAxisDef *axis)
+{
+    WoodGridStaggerPoint p={0};p.set=axis->stagger_set;p.resolved=true;
+    if(p.set){p.source=axis->parameters[5];p.value=axis->stagger;}return p;
+}
+static bool wood_grid_stagger_same_point(const WoodGridStaggerPoint *a,const WoodGridStaggerPoint *b)
+{
+    return a->set==b->set&&(!a->set||(a->resolved&&b->resolved&&a->value==b->value&&
+        wood_grid_stagger_same_source(a->source,b->source)));
+}
+/* Prove a changed final value came only from the reference's own card edits.
+ * Each source switch must preserve the value at its original ordered step.
+ * Removing a field does not mint a new legacy allowance when it is re-added. */
+static bool wood_grid_stagger_order_preserves(uint32_t id,unsigned axis,
+    const GeoGridAxisDef *old,const GeoGridAxisDef *now,const WoodGridStaggerFact *facts,size_t count)
+{
+    WoodGridStaggerPoint state=wood_grid_stagger_point(old),last_set=state;
+    uint32_t order=0;bool found=false;
+    for(size_t i=0;facts&&i<count;++i){const WoodGridStaggerFact *f=&facts[i];
+        if(f->system_id!=id||f->axis!=axis)continue;
+        if(f->order<=order||!wood_grid_stagger_same_point(&state,&f->before))return false;
+        order=f->order;found=true;
+        if(f->after.set){
+            if(!f->after.resolved)return false;
+            const WoodGridStaggerPoint *prior=f->before.set?&f->before:&last_set;
+            if(!prior->resolved)return false;
+            bool card_edit=f->before.set&&prior->source.set&&f->after.source.set&&
+                wood_grid_stagger_same_source(prior->source,f->after.source);
+            if(!card_edit&&prior->value!=f->after.value)return false;
+            last_set=f->after;
+        }else if(f->before.set)last_set=f->before;
+        state=f->after;
+    }
+    WoodGridStaggerPoint final=wood_grid_stagger_point(now);
+    return found&&wood_grid_stagger_same_point(&state,&final);
+}
+bool wood_grid_stagger_commit_valid(const GeoGridStore *after,const GeoGridStore *before,
+    const WoodGridStaggerFact *facts,size_t count,char *error,size_t cap)
+{
+    if(!after||!before||(!facts&&count))return wood_grid_error(error,cap,"I24: 相位差提交缺少前後來源，不能比較，一律拒絕");
+    /* Keep invalid inputs safe even if the fail-closed guard is removed by a
+     * negative control: a missing store must fail an assertion, never crash. */
+    for(size_t i=0;after&&i<geo_grid_systems_count(after);++i){
+        const GeoGridSystem *now=geo_grid_systems_at(after,i),*old=before?geo_grid_systems_find(before,now->id):NULL;
+        if(!(now->axis[0].stagger_set&&now->axis[1].stagger_set))continue;
+        if(!old||!(old->axis[0].stagger_set&&old->axis[1].stagger_set))
+            return wood_grid_error(error,cap,"I24: 網格系統 %u 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger",now->id);
+        if(!old)continue; /* safe when the M1 rejection is removed for a control */
+        for(int axis=0;axis<2;++axis)if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis])){
+            if(wood_grid_stagger_order_preserves(now->id,(unsigned)axis,&old->axis[axis],&now->axis[axis],facts,count))continue;
+            return wood_grid_error(error,cap,"I24: 網格系統 %u 提交前後都是兩軸錯開，但 %c 軸相位差由 %lld 改成 %lld。要改請先在同一筆編輯裡移除一軸，再改剩下那軸（D10b）",
+                now->id,axis?'v':'u',(long long)old->axis[axis].stagger,(long long)now->axis[axis].stagger);
+        }
+    }
+    return true;
+}
 bool wood_grid_system_evaluate_direct(WoodGridContext *c,uint32_t id,char *error,size_t cap)
 {
     size_t index=0;while(index<geo_grid_systems_count(c->sources)&&geo_grid_systems_at(c->sources,index)->id!=id)++index;

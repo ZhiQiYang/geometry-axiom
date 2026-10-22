@@ -66,19 +66,36 @@ RESTORED = [
     ]],
 ]
 
+# #314: baseline/restoration must run these exact judges before a verdict.
+RESTORED += [
+    "tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_fact_bytes_order_count_revision_and_provider_tampering_are_rejected",
+    "tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_failed_preview_clears_evidence_and_keeps_definition_and_revision",
+    "tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route",
+    "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources",
+    *["tests.test_geo314_stagger_commit.StaggerCommit." + name for name in [
+        "test_C1_new_direct_and_repeat_panel_dual_axes_reject_M1",
+        "test_C3_archive_new_and_existing_second_axes_reject_M1",
+        "test_C4_batch_new_and_added_second_axes_reject_M1",
+        "test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically",
+        "test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation",
+    ]],
+]
+
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()
 
 
 def oracle_hash(m, root):
-    """Conservative judge closure: all flat Python tests and root scene fixtures.
+    """Conservative bridge judge closure: tests/*.py, tests/*.c,
+    tests/fixtures/**/*.scene and root *.scene files, with LF-normalized bytes.
 
-    This intentionally invalidates these bridge records when any shared Python
-    harness changes. The result ledger itself is excluded to avoid self-hashing.
+    This intentionally invalidates bridge records when any included judge or
+    fixture changes. The result ledger is excluded to avoid self-hashing.
     """
     root = Path(root)
-    files = sorted([*root.glob("tests/*.py"), *root.glob("*.scene")])
+    files = sorted([*root.glob("tests/*.py"), *root.glob("tests/*.c"),
+                    *root.glob("tests/fixtures/**/*.scene"), *root.glob("*.scene")])
     rows = [(p.relative_to(root).as_posix(), sha(p.read_bytes().replace(b"\r\n", b"\n"))) for p in files]
     return sha(json.dumps([m["tests"], RESTORED, rows], ensure_ascii=False, separators=(",", ":")).encode())
 

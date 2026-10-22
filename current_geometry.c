@@ -6301,6 +6301,9 @@ static bool world_revalidate_candidate(World *world,World *candidate)
     if (!grid_systems_rebuild(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
+    if (!grid_stagger_submission_valid(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+    }
     if (!grid_bindings_rebuild(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
@@ -7549,6 +7552,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 { return apply_reference_move(p, n, t, c, w); }
 
 #include "geometry-core/parameters.inc"
+#include "geometry-app/native/stagger_facts.inc"
 #include "geometry-core/references.inc"
 #include "geometry-app/native/enclosure_sources.inc"
 #include "geometry-core/engineering.inc"

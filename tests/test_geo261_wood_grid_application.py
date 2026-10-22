@@ -1,4 +1,5 @@
 """W grid admission and mutation guards, including the real bridge path."""
+import json
 import re
 import shutil
 import subprocess
@@ -38,6 +39,7 @@ class WoodGridApplication(unittest.TestCase):
         self.assertEqual(1 if marker else 0, result.returncode, name + ": " + result.stderr)
         if marker:
             self.assertEqual("ASSERT:" + marker + "\n", result.stderr, "Wrong assertion cannot count as a killed guard: " + result.stderr)
+        self._last_case = result
         return result.returncode
 
     def test_roles_follow_source_identity_across_kernel_remove_and_reinsert(self):
@@ -94,6 +96,76 @@ class WoodGridApplication(unittest.TestCase):
         exe = self.mutant("guide-delete", "if(used)return wood_grid_error", "if(false)return wood_grid_error")
         self.assertEqual(1, self.case("deletion", exe, "grid-guide-delete-before-timber"))
         self.assertEqual(0, self.case("deletion"))
+
+    def test_stagger_commit_decision_table_and_ordered_sources(self):
+        self.assertEqual(0, self.case("stagger-commit"))
+
+    def stagger_control(self, name, case, marker, before, after):
+        """A real removed product guard must fail the named normal assertion."""
+        self.assertEqual(0, self.case(case))
+        baseline = self._last_case
+        exe = self.mutant("stagger-" + name, before, after)
+        self.assertEqual(1, self.case(case, exe, marker))
+        withdrawn = self._last_case
+        self.assertEqual(0, self.case(case))
+        restored = self._last_case
+        def row(result):
+            return {"command": result.args, "exit_code": result.returncode,
+                    "stdout": result.stdout, "stderr": result.stderr}
+        print("GEO314_W_CONTROL_JSON " + json.dumps({"control": name,
+            "baseline": row(baseline), "withdrawn": row(withdrawn), "restored": row(restored)},
+            ensure_ascii=False), flush=True)
+
+    def test_stagger_removed_new_two_axis_guard_fails_new_system_assertion(self):
+        self.stagger_control("new-two-axis", "stagger-w01", "stagger-new-two-axis",
+            "if(!old||!(old->axis[0].stagger_set&&old->axis[1].stagger_set))", "if(0)")
+
+    def test_stagger_removed_legacy_value_guard_fails_changed_axis_assertion(self):
+        self.stagger_control("legacy-value", "stagger-w06", "stagger-legacy-u-changed",
+            "if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis]))", "if(0)")
+
+    def test_stagger_removed_same_reference_exception_fails_card_edit_assertion(self):
+        self.stagger_control("same-reference", "stagger-w11", "stagger-ref-card-edit-is-not-an-edit",
+            "if(prior->set&&current->set&&prior->parameter_id==current->parameter_id&&prior->field_id==current->field_id)return false;",
+            "if(0)return false;")
+
+    def test_stagger_treating_one_axis_as_two_fails_switch_direction_assertion(self):
+        self.stagger_control("single-is-dual", "stagger-w04", "stagger-switch-axis",
+            "if(!(now->axis[0].stagger_set&&now->axis[1].stagger_set))continue;",
+            "if(!(now->axis[0].stagger_set||now->axis[1].stagger_set))continue;")
+
+    def test_stagger_ignoring_v_axis_fails_v_change_assertion(self):
+        self.stagger_control("ignores-v", "stagger-w07", "stagger-legacy-v-changed",
+            "for(int axis=0;axis<2;++axis)if(wood_grid_stagger_value_changed",
+            "for(int axis=0;axis<1;++axis)if(wood_grid_stagger_value_changed")
+
+    def test_stagger_ignoring_source_value_fails_unbind_assertion(self):
+        self.stagger_control("ignores-source-value", "stagger-w13", "stagger-unbind-different-value",
+            "return old->stagger!=now->stagger;", "return 0;")
+
+    def test_stagger_removed_missing_store_guard_fails_assertion_without_crash(self):
+        self.stagger_control("missing-store", "stagger-w17", "stagger-missing-store-fails-closed",
+            "if(!after||!before||(!facts&&count))return wood_grid_error",
+            "if(0)return wood_grid_error")
+
+    def test_stagger_source_switch_blanket_exemption_fails_present_value_assertion(self):
+        self.stagger_control("blanket-source-exemption", "stagger-o02",
+            "stagger-ordered-unbind-must-preserve-present-value",
+            "if(!card_edit&&prior->value!=f->after.value)return false;", "if(0)return false;")
+
+    def test_stagger_missing_contiguity_fails_ordered_chain_assertion(self):
+        self.stagger_control("missing-chain", "stagger-o11", "stagger-ordered-chain-is-contiguous",
+            "if(f->order<=order||!wood_grid_stagger_same_point(&state,&f->before))return false;",
+            "if(f->order<=order)return false;")
+
+    def test_stagger_missing_order_fails_sequence_assertion(self):
+        self.stagger_control("missing-order", "stagger-o08", "stagger-ordered-sequence-is-increasing",
+            "if(f->order<=order||!wood_grid_stagger_same_point(&state,&f->before))return false;",
+            "if(!wood_grid_stagger_same_point(&state,&f->before))return false;")
+
+    def test_stagger_missing_final_source_binding_fails_endpoint_assertion(self):
+        self.stagger_control("missing-endpoint", "stagger-o05", "stagger-ordered-final-source-is-bound",
+            "return found&&wood_grid_stagger_same_point(&state,&final);", "return found;")
 
     def commit(self, session, command):
         result = session.command("line " + command)
