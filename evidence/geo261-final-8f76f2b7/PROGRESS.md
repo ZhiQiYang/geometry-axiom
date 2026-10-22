@@ -83,4 +83,7 @@
 - 2026-10-22T21:55:27.581618+00:00 — **F2-P52-runtime**：同 F2 runtime 單檔撤回 gate=1、恢復 gate=0，inner passed=true/errors=[]；原 main/fix 各16筆、各階段四個 Node 全0且無幾何失敗／例外。撤回 ratio=1.0567294486663636，恢復 ratio=0.854784305780079，原<=1.0門檻不變；正式 baseline 原五控制另已封存。本次不主張個別純性能元件都必要，原來源與 clone 最後 F2/clean。
   下一步：F2-reader。原始資料：`raw/F2-P52-runtime.raw.tar.gz`。
 
+- 2026-10-22T21:57:25.132122+00:00 — **F2-reader**：同 F2 canonical reader 原具名方法 fixed0/withdrawn1/restored0；舊 A HTML I11 trace 撤回觸發原 FAIL，三階段 expected_verdict_matched=true、無 timeout，inner passed=true/errors=[]。固定來源與 clone 最後 clean，protected SSOT/裁判未改；本次只跑原一個方法，不冒稱完整51項。
+  下一步：F2-checker。原始資料：`raw/F2-reader.raw.tar.gz`。
+
 產品與測試紅燈先記錄分類，完成整輪後集中修正；需拍板項目另記 QUESTIONS.md。不 force push、不合併。
