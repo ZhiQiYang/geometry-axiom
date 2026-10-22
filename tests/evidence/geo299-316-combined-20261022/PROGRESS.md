@@ -55,3 +55,9 @@ contacts原10/10 tests綠，23個控制各原0／1／0。contact-world原9方法
 原完整stdout／stderr、全部per-suite原logs／JSON、版本／argv／env／SHA／退出碼、帳本beforeafter原bytes、工具及原私有cache archive／inventory均已封存。無額外全檔版本observer，也沒有重複複製cache；小cache原archive約2.52MB。原launcher的Chrome PATH遺漏前置失敗也保留完整toolresult，產品未啟，修環境後才有本輪原執行。
 
 下一步按一次收齊原則集中修fixture順序與唯一canonical同步、補exact fixtures重環境項、準備manifest真guard union與單一API退役；不啟整份ledger或第二輪完整native／browser／perf。正式來源與正式全清單仍由後續最終SHA收據裁定。
+
+## 集中修復已準備，正式性能期間暫停新增重型
+
+已保留全部新舊CHECK，只把新增boundary-edge failure-output一條移至原I5判準之後，保原null-success位置並重設該檢查sentinels；沒有刪／放寬斷言或改expected。原正典`python3 -B geometry-guide/sync_axiom_reader.py`已真退出0，五道assert、independent_ssot、source_sections均pass，patches90；只機械更新唯一reader的場景／registry追溯，SSOT／決策／BACKLOG前後LF hash一致。此generation原基底ef32a482加明列fixture patch，不能冒稱新SHA正式驗收。原stdout／stderr／退出碼／環境／Git patch綁定保留，主要原streams已先公開，完整Git patch raw另存workspace待後續封包。
+
+parent開始#323正式F f43e8d8b876f587c11778fa74a80b205b51396b6的perf/profile，明確要求暫停新增compile/native/控制/reader重建/壓縮。所有本agent既有重型均已自然終態，沒有活PID；因此暫不啟reader51、撤回／恢復控制、Node193環境項或manifest lexer。只先推可審source與此進度，未知結果仍待真正執行；沒有把generation0當51 tests通過。

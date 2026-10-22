@@ -69,9 +69,9 @@ static int intervals(void)
     {int edge=-7;
         CHECK("boundary-edge-index-horizontal",wood_contact_boundary_edge(&b,false,0,100,40,50,&lo,&hi,&edge)&&edge==2&&lo==50&&hi==100);
         edge=-7;CHECK("boundary-edge-index-vertical",wood_contact_boundary_edge(&b,true,0,100,40,50,&lo,&hi,&edge)&&edge==3&&lo==50&&hi==100);
-        edge=-7;lo=-999;hi=-888;CHECK("boundary-edge-failure-leaves-outputs",!wood_contact_boundary_edge(&b,false,0,100,50,60,&lo,&hi,&edge)&&edge==-7&&lo==-999&&hi==-888);
         CHECK("boundary-edge-null-index-accepted",wood_contact_boundary_edge(&b,false,0,100,40,50,&lo,&hi,NULL)&&lo==50&&hi==100);}
     lo=-999;hi=-888;CHECK("i5-notched-footprint-deferred",!wood_contact_boundary_interval(&b,false,0,100,50,60,&lo,&hi)&&lo==-999&&hi==-888);
+    {int edge=-7;lo=-999;hi=-888;CHECK("boundary-edge-failure-leaves-outputs",!wood_contact_boundary_edge(&b,false,0,100,50,60,&lo,&hi,&edge)&&edge==-7&&lo==-999&&hi==-888);}
     CHECK("interior-has-no-positioning-edge",!wood_contact_boundary_interval(&b,false,10,40,10,20,&lo,&hi));
     CHECK("null-boundary-output-preserved",!wood_contact_boundary_interval(NULL,false,0,100,40,50,&lo,&hi)&&lo==-999&&hi==-888);
     b=square(7,0,0,100);WoodBoundaryRegion hole=square(0,5,20,30);b.holes[0]=hole.outline;b.hole_count=1;
