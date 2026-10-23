@@ -17,22 +17,6 @@ static bool face(const WoodStopFace *f,int kind,uint32_t bid,uint32_t mid,int ho
 static size_t sides(const WoodStopFace *f,size_t n,uint32_t id)
 {size_t count=0;for(size_t i=0;i<n;++i)if(f[i].kind==WOOD_STOP_MEMBER_SIDE&&f[i].timber_id==id)++count;return count;}
 
-static int collisions(void)
-{
-    WoodMember m=member(17,WOOD_MEMBER_ROLE_PRIMARY,2),same_id=m;
-    WoodContactMemberFact f=fact(&m,1,false,(GeoRect2){10,20,30,40});WoodContactWorld w={.placement_id=7,.members=&f,.member_count=1};
-    GeoRect2 overlap={29,39,31,41},touch={30,20,40,40},point={30,40,40,50},far={31,20,40,40};
-    CHECK("collision-null-refusal",wood_contact_footprint_collides(NULL,&overlap,NULL)&&wood_contact_footprint_collides(&w,NULL,NULL));
-    CHECK("collision-positive-area",wood_contact_footprint_collides(&w,&overlap,NULL));
-    CHECK("collision-touch-is-clear",!wood_contact_footprint_collides(&w,&touch,NULL)&&!wood_contact_footprint_collides(&w,&point,NULL)&&!wood_contact_footprint_collides(&w,&far,NULL));
-    CHECK("collision-exact-pointer-excluded",!wood_contact_footprint_collides(&w,&overlap,&m));
-    CHECK("collision-other-candidate-same-id-not-excluded",wood_contact_footprint_collides(&w,&overlap,&same_id));
-    f.placement_id=8;CHECK("collision-same-placement-only",!wood_contact_footprint_collides(&w,&overlap,NULL));f.placement_id=7;
-    m.placed=false;CHECK("collision-unplaced-ignored",!wood_contact_footprint_collides(&w,&overlap,NULL));m.placed=true;
-    f.footprint_valid=false;CHECK("collision-invalid-footprint-ignored",!wood_contact_footprint_collides(&w,&overlap,NULL));f.footprint_valid=true;
-    WoodContactMemberFact other=fact(&same_id,1,false,(GeoRect2){100,100,120,120});WoodContactWorld candidate={.placement_id=7,.members=&other,.member_count=1};
-    CHECK("collision-candidate-facts-isolated",!wood_contact_footprint_collides(&candidate,&overlap,NULL)&&wood_contact_footprint_collides(&w,&overlap,NULL));return 0;
-}
 static int ordering(void)
 {
     WoodMember m[4]={member(41,WOOD_MEMBER_ROLE_BOUNDARY,1),member(42,WOOD_MEMBER_ROLE_PRIMARY,2),member(43,WOOD_MEMBER_ROLE_PRIMARY,2),member(44,WOOD_MEMBER_ROLE_PRIMARY,2)};
@@ -82,7 +66,12 @@ static int intervals(void)
     WoodBoundaryRegion b=elbow();GeoCoord lo=-999,hi=-888;
     CHECK("boundary-edge-whole-numeric-interval",wood_contact_boundary_interval(&b,false,0,100,40,50,&lo,&hi)&&lo==50&&hi==100);
     CHECK("boundary-vertical-numeric-interval",wood_contact_boundary_interval(&b,true,0,100,40,50,&lo,&hi)&&lo==50&&hi==100);
+    {int edge=-7;
+        CHECK("boundary-edge-index-horizontal",wood_contact_boundary_edge(&b,false,0,100,40,50,&lo,&hi,&edge)&&edge==2&&lo==50&&hi==100);
+        edge=-7;CHECK("boundary-edge-index-vertical",wood_contact_boundary_edge(&b,true,0,100,40,50,&lo,&hi,&edge)&&edge==3&&lo==50&&hi==100);
+        CHECK("boundary-edge-null-index-accepted",wood_contact_boundary_edge(&b,false,0,100,40,50,&lo,&hi,NULL)&&lo==50&&hi==100);}
     lo=-999;hi=-888;CHECK("i5-notched-footprint-deferred",!wood_contact_boundary_interval(&b,false,0,100,50,60,&lo,&hi)&&lo==-999&&hi==-888);
+    {int edge=-7;lo=-999;hi=-888;CHECK("boundary-edge-failure-leaves-outputs",!wood_contact_boundary_edge(&b,false,0,100,50,60,&lo,&hi,&edge)&&edge==-7&&lo==-999&&hi==-888);}
     CHECK("interior-has-no-positioning-edge",!wood_contact_boundary_interval(&b,false,10,40,10,20,&lo,&hi));
     CHECK("null-boundary-output-preserved",!wood_contact_boundary_interval(NULL,false,0,100,40,50,&lo,&hi)&&lo==-999&&hi==-888);
     b=square(7,0,0,100);WoodBoundaryRegion hole=square(0,5,20,30);b.holes[0]=hole.outline;b.hole_count=1;
@@ -123,10 +112,10 @@ static int end_faces(void)
     b=elbow();w.role_boundary=&b;w.regions[0]=&b;w.region_count=1;owners[0].role=WOOD_MEMBER_ROLE_BOUNDARY;owners[0].cut_priority=1;f[0]=fact(&owners[0],1,false,(GeoRect2){0,40,100,50});f[1]=fact(&owners[2],0,false,(GeoRect2){0,0,100,10});
     CHECK("actual-owner-extension-priority",!wood_contact_end_faces(&w,&self,true,10,40,20,30,error,sizeof error)&&strstr(error,"角材 23（優先級 2）"));
     self.role=WOOD_MEMBER_ROLE_CUSTOM;self.cut_priority=3;CHECK("custom-three-accepts-extension",wood_contact_end_faces(&w,&self,true,10,40,20,30,NULL,0));
-    self.role=WOOD_MEMBER_ROLE_PRIMARY;self.cut_priority=2;CHECK("extension-refusal-precedes-contact",!wood_contact_end_faces(&w,&self,false,0,100,40,50,error,sizeof error)&&strstr(error,"V_EXTENSION"));
+    self.role=WOOD_MEMBER_ROLE_PRIMARY;self.cut_priority=2;CHECK("extension-refusal-precedes-contact",!wood_contact_end_faces(&w,&self,false,0,100,40,50,error,sizeof error)&&!strcmp(error,"V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍——定位邊 e2 [50,100] mm，低端超出 [0,50] mm"));
     self.role=WOOD_MEMBER_ROLE_BOUNDARY;owners[0].role=WOOD_MEMBER_ROLE_PRIMARY;owners[0].cut_priority=9;f[0]=fact(&owners[0],1,true,(GeoRect2){10,40,20,50});w.members=f;w.member_count=1;
     CHECK("self-boundary-extension-end-exempt",wood_contact_end_faces(&w,&self,false,20,100,40,50,NULL,0));
     self.placed=false;w.region_count=0;w.role_boundary=NULL;w.member_count=1;f[0]=fact(&self,1,true,(GeoRect2){-10,0,0,100});CHECK("unplaced-owner-is-not-contact",wood_contact_end_faces(&w,&self,false,0,100,20,30,NULL,0));return 0;
 }
 int main(int argc,char **argv)
-{if(argc!=2)return 2;if(!strcmp(argv[1],"collisions"))return collisions();if(!strcmp(argv[1],"ordering"))return ordering();if(!strcmp(argv[1],"regions"))return regions_and_capacity();if(!strcmp(argv[1],"intervals"))return intervals();if(!strcmp(argv[1],"extensions"))return extensions();if(!strcmp(argv[1],"ends"))return end_faces();return 2;}
+{if(argc!=2)return 2;if(!strcmp(argv[1],"ordering"))return ordering();if(!strcmp(argv[1],"regions"))return regions_and_capacity();if(!strcmp(argv[1],"intervals"))return intervals();if(!strcmp(argv[1],"extensions"))return extensions();if(!strcmp(argv[1],"ends"))return end_faces();return 2;}

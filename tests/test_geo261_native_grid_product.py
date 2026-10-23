@@ -41,10 +41,17 @@ class GridStoreProduct(unittest.TestCase):
     def setup_binding(self,session):
         self.assertTrue(session.command('reset')['ok'])
         self.commit(session,'boundary 71 outline 400,500 1600,500 1600,1300 400,1300')
-        self.commit(session,source())
         fingerprint=session.command('boundary 71')['geometryFingerprint']
-        self.commit(session,'grid-binding 1 on-boundary 71 from-system 5 vertex outer 0 geometry-hash '+fingerprint+
-            ' cell -2 -3 anchor 2 4 2 8')
+        # This witnesses the existing two-axis geometry, rather than creating a
+        # new two-axis submission.  Reopen the legacy declaration as one scene;
+        # keep the independent binding/parity oracles below unchanged.
+        scene=session.command('dump')['text']
+        path=native().work/'grid-store-product-legacy-binding.scene'
+        path.write_text(scene+source()+'\n'+
+            'grid-binding 1 on-boundary 71 from-system 5 vertex outer 0 geometry-hash '+fingerprint+
+            ' cell -2 -3 anchor 2 4 2 8\n',encoding='utf-8')
+        loaded=session.command('loadfile '+str(path))
+        self.assertTrue(loaded['ok'],loaded)
 
     def binding_translation(self,exe):
         with _bridge.BridgeSession(exe) as session:

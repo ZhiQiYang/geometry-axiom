@@ -1,0 +1,363 @@
+{
+  "schema": "geo314-affected-private-diagnostics/1",
+  "head": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+  "scope": [
+    "test_geo314_stagger_commit.py",
+    "test_geo314_commit_paths.py",
+    "test_geo314_ordered_facts.py",
+    "test_geo261_wood_grid_application.py",
+    "test_mutation_freshness.py"
+  ],
+  "bridge": "/workspace/geo314-work/p2-private-build-001/cache/bridge",
+  "bridge_sha256": "6722205e66617681f8c93cf6856012d69fcf99022af5ecbd51a26fdf0579678d",
+  "bridge_sidecar_sha256": "57e63c4974b331a66293cc807550e82085e3058c0cf224fc7da70de335e23c04",
+  "wrapper_sha256": "405b77c3daad6ddb8dd3abf7fa02dd23bc5f41cf5b0084605f2fd4b2070a1b65",
+  "started_at": "2026-10-22T23:03:33.231553+00:00",
+  "suites": [
+    {
+      "suite": "test_geo314_stagger_commit.py",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo314-work/affected-p2-001/capture_suite.py",
+        "/workspace/geo314-work/affected-p2-001/test_geo314_stagger_commit",
+        "/tmp/g261-next314",
+        "test_geo314_stagger_commit.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 8.464006264999625,
+      "head": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+      "cwd": "/tmp/g261-next314",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "TMPDIR": "/workspace/geo314-work/affected-p2-001/test_geo314_stagger_commit/native-tmp",
+        "GEOMETRY_TEST_BRIDGE": "/workspace/geo314-work/p2-private-build-001/cache/bridge",
+        "CC": null,
+        "GEO314_DIAGNOSTIC_SCOPE": "five-affected-suites-only"
+      },
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "output_files": {
+        "native-build-files.json": {
+          "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "size": 3
+        },
+        "native-build-inputs-and-binaries.tar.gz": {
+          "sha256": "a8797516bde4ed5b2fe650ba770fcac4e93da945879545dbe5f2d488a0dd3270",
+          "size": 82
+        },
+        "result.json": {
+          "sha256": "e397b37de4131b6c6cfd77c471a92ed30e46d6453d2323ac30f10441b11867db",
+          "size": 356
+        },
+        "stderr.raw": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout.raw": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "unittest.log": {
+          "sha256": "1ae7319ded378ef2dcee4d0dfe53238fc284f92d6db294b25acd0e4c09c948ff",
+          "size": 144
+        }
+      },
+      "result": {
+        "file": "tests/test_geo314_stagger_commit.py",
+        "total": 45,
+        "run": 45,
+        "passed": 45,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 8.38
+      }
+    },
+    {
+      "suite": "test_geo314_commit_paths.py",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo314-work/affected-p2-001/capture_suite.py",
+        "/workspace/geo314-work/affected-p2-001/test_geo314_commit_paths",
+        "/tmp/g261-next314",
+        "test_geo314_commit_paths.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.3065023649978684,
+      "head": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+      "cwd": "/tmp/g261-next314",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "TMPDIR": "/workspace/geo314-work/affected-p2-001/test_geo314_commit_paths/native-tmp",
+        "GEOMETRY_TEST_BRIDGE": "/workspace/geo314-work/p2-private-build-001/cache/bridge",
+        "CC": null,
+        "GEO314_DIAGNOSTIC_SCOPE": "five-affected-suites-only"
+      },
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "output_files": {
+        "native-build-files.json": {
+          "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "size": 3
+        },
+        "native-build-inputs-and-binaries.tar.gz": {
+          "sha256": "a8797516bde4ed5b2fe650ba770fcac4e93da945879545dbe5f2d488a0dd3270",
+          "size": 82
+        },
+        "result.json": {
+          "sha256": "dba1a2fe223a50d9a5e1b60857f53e998e40d115ad23ff8df84f74ac138737fe",
+          "size": 354
+        },
+        "stderr.raw": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout.raw": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "unittest.log": {
+          "sha256": "bc155477ebb7a4e419ba76eb9051fbe6884da317fb7cc210ff960c3e2965b586",
+          "size": 110
+        }
+      },
+      "result": {
+        "file": "tests/test_geo314_commit_paths.py",
+        "total": 11,
+        "run": 11,
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 0.22
+      }
+    },
+    {
+      "suite": "test_geo314_ordered_facts.py",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo314-work/affected-p2-001/capture_suite.py",
+        "/workspace/geo314-work/affected-p2-001/test_geo314_ordered_facts",
+        "/tmp/g261-next314",
+        "test_geo314_ordered_facts.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 24.083164370000304,
+      "head": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+      "cwd": "/tmp/g261-next314",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "TMPDIR": "/workspace/geo314-work/affected-p2-001/test_geo314_ordered_facts/native-tmp",
+        "GEOMETRY_TEST_BRIDGE": "/workspace/geo314-work/p2-private-build-001/cache/bridge",
+        "CC": null,
+        "GEO314_DIAGNOSTIC_SCOPE": "five-affected-suites-only"
+      },
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "output_files": {
+        "native-build-0.json": {
+          "sha256": "212da79241807c4166a0a05fd9f7f845a2c1736c0f55e9663523430d5b38ced0",
+          "size": 210472
+        },
+        "native-build-files.json": {
+          "sha256": "54f9e4a1f976c60c99583809e62be4a70cac97273cb7f3e5f6d0e96893d5dd60",
+          "size": 55672
+        },
+        "native-build-inputs-and-binaries.tar.gz": {
+          "sha256": "6d381da9934a36307da200acc509bea0735c11897f3ad86b4377f776e9c81fe7",
+          "size": 7605635
+        },
+        "result.json": {
+          "sha256": "d50bd7ac523a1cef027fcf2f7f4aa8d13927b30348d9906169fe6c717a9b15b6",
+          "size": 355
+        },
+        "stderr.raw": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout.raw": {
+          "sha256": "50f25ce82f6adbad0c9f6a0cd2a58fb9445b15d45d354333a8e520f5f3b27c32",
+          "size": 69639
+        },
+        "unittest.log": {
+          "sha256": "e21dee981cafd87f76d95a1e3f231f404812a12df376e9aa6130a0f7f9d03140",
+          "size": 114
+        }
+      },
+      "result": {
+        "file": "tests/test_geo314_ordered_facts.py",
+        "total": 14,
+        "run": 14,
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 19.4
+      }
+    },
+    {
+      "suite": "test_geo261_wood_grid_application.py",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo314-work/affected-p2-001/capture_suite.py",
+        "/workspace/geo314-work/affected-p2-001/test_geo261_wood_grid_application",
+        "/tmp/g261-next314",
+        "test_geo261_wood_grid_application.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 10.180550092998601,
+      "head": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+      "cwd": "/tmp/g261-next314",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "TMPDIR": "/workspace/geo314-work/affected-p2-001/test_geo261_wood_grid_application/native-tmp",
+        "GEOMETRY_TEST_BRIDGE": "/workspace/geo314-work/p2-private-build-001/cache/bridge",
+        "CC": null,
+        "GEO314_DIAGNOSTIC_SCOPE": "five-affected-suites-only"
+      },
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "output_files": {
+        "native-build-0.json": {
+          "sha256": "175555ec9a6b24ba042f22ec68113024c74dec9f93157ce07f1d746e3720a2f5",
+          "size": 396533
+        },
+        "native-build-files.json": {
+          "sha256": "2da5a3f8dc75571946a8c0b58359ba6569620479e1856150e42fc690b40205a6",
+          "size": 50711
+        },
+        "native-build-inputs-and-binaries.tar.gz": {
+          "sha256": "96acf411801c4fab5b7d520317734bbed1efc12166f27b1e6a6cbefd75a8f0e6",
+          "size": 5981932
+        },
+        "result.json": {
+          "sha256": "7ba59e29deea013eb8ca3243b2f4a3cbc9a71c15c751cfe4100a2d0868ca78ff",
+          "size": 363
+        },
+        "stderr.raw": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout.raw": {
+          "sha256": "c63e2bb394483b626d4bb99f130389beecd09a50ea139823c78d2dc7994269b0",
+          "size": 8873
+        },
+        "unittest.log": {
+          "sha256": "3fb0aef443418b8e631956ff6682be5af988b673fdcc8d340919356c87d331be",
+          "size": 122
+        }
+      },
+      "result": {
+        "file": "tests/test_geo261_wood_grid_application.py",
+        "total": 23,
+        "run": 23,
+        "passed": 23,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 6.55
+      }
+    },
+    {
+      "suite": "test_mutation_freshness.py",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo314-work/affected-p2-001/capture_suite.py",
+        "/workspace/geo314-work/affected-p2-001/test_mutation_freshness",
+        "/tmp/g261-next314",
+        "test_mutation_freshness.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.19688050300465,
+      "head": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+      "cwd": "/tmp/g261-next314",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "TMPDIR": "/workspace/geo314-work/affected-p2-001/test_mutation_freshness/native-tmp",
+        "GEOMETRY_TEST_BRIDGE": "/workspace/geo314-work/p2-private-build-001/cache/bridge",
+        "CC": null,
+        "GEO314_DIAGNOSTIC_SCOPE": "five-affected-suites-only"
+      },
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "output_files": {
+        "native-build-files.json": {
+          "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "size": 3
+        },
+        "native-build-inputs-and-binaries.tar.gz": {
+          "sha256": "773a55243692cc6ea56931ff1f55cce067b39c8971f6b7fd627b2f472dc579f1",
+          "size": 82
+        },
+        "result.json": {
+          "sha256": "a2a23a5e25ee26778de36e8faf12f70081d127e35d1958b56f9f4dfb8f0deeec",
+          "size": 352
+        },
+        "stderr.raw": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout.raw": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "unittest.log": {
+          "sha256": "c0b7322cbd2b70c659d473c6ff5af99b6642b3d91316e92950a45e043bd2e0ac",
+          "size": 173
+        }
+      },
+      "result": {
+        "file": "tests/test_mutation_freshness.py",
+        "total": 74,
+        "run": 74,
+        "passed": 74,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 4.1
+      }
+    }
+  ],
+  "finished_at": "2026-10-22T23:04:20.568642+00:00",
+  "exit_code": 0
+}

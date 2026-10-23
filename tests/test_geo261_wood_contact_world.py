@@ -5,6 +5,7 @@ Each control must pass baseline, fail one named assertion, then pass baseline;
 compiler errors and crashes are never counted as detected semantic changes.
 """
 from pathlib import Path
+import json
 import re
 import shutil
 import subprocess
@@ -16,8 +17,67 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tests import _bridge
 from tests.test_geo261_native_kernel import native
+from tests.test_geo261_wood_contacts import record_native_execution
 
 MODULE = ROOT / "geometry-templates/woodworking/native"
+
+
+def product_sources():
+    """Manifest C sources and their conservative quoted-include closure (LF-normalised)."""
+    manifest = json.loads((ROOT / "geometry-core/domain-decoupling/product-architecture.json").read_text(encoding="utf-8"))
+    pending = [ROOT / item["path"] for item in manifest["sources"] if item["language"] == "c"]
+    pending += [ROOT / "current_geometry.c", ROOT / "geometry-web/web_bridge.c"]
+    seen, texts = set(), {}
+    while pending:
+        path = pending.pop().resolve()
+        if path in seen:
+            continue
+        seen.add(path)
+        try:
+            relative = path.relative_to(ROOT).as_posix()
+        except ValueError as error:
+            raise AssertionError("Product include escapes repository: " + str(path)) from error
+        if not path.is_file():
+            raise AssertionError("Missing manifest/include source: " + relative)
+        text = path.read_bytes().decode("utf-8").replace("\r\n", "\n")
+        texts[relative] = text
+        # Keep string/character literals intact while masking comments, including
+        # newlines. All conditional branches are explored; this is not a C preprocessor.
+        includes = re.sub(r'/\*.*?\*/|//[^\n]*|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'',
+                          lambda match: re.sub(r'[^\n]', ' ', match[0]) if match[0].startswith('/') else match[0],
+                          text, flags=re.S)
+        for name in re.findall(r'^[ \t]*#[ \t]*include[ \t]+"([^"]+)"', includes, flags=re.M):
+            candidates = (path.parent / name, ROOT / name, ROOT / "geometry-core/kernel" / name)
+            resolved = next((candidate.resolve() for candidate in candidates if candidate.is_file()), None)
+            if resolved is None:
+                raise AssertionError("Unresolved product include: " + relative + " -> " + name)
+            pending.append(resolved)
+    return texts
+
+
+def without_comments_and_strings(text):
+    return re.sub(r'/\*.*?\*/|//[^\n]*|"(?:\\.|[^"\\\n])*"', "", text, flags=re.S)
+
+
+def call_sites(texts, name):
+    """Calls of `name`, i.e. matches that are not preceded by a type word (definition or declaration)."""
+    count = 0
+    for text in texts.values():
+        code = without_comments_and_strings(text)
+        for match in re.finditer(r"\b" + re.escape(name) + r"\s*\(", code):
+            word = re.search(r"([A-Za-z_]\w*)\s*\**$", code[:match.start()].rstrip())
+            if not word or word.group(1) in ("return", "else", "case"):
+                count += 1
+    return count
+
+
+def mentions(texts, name):
+    return sum(len(re.findall(r"\b" + re.escape(name) + r"\b", without_comments_and_strings(text))) for text in texts.values())
+
+
+# Host functions that once claimed to be W consumers but have had no caller since GEO-261 51e9045b/#316.
+RETIRED_DEAD_HOSTS = ("world_footprint_collides", "boundary_edge_interval", "stop_in_owner_extension")
+RETIRED_DEAD_W_APIS = ("wood_contact_footprint_collides",)
 
 
 def function(source, name):
@@ -45,17 +105,21 @@ class ContactWorldBoundary(unittest.TestCase):
         self.assertIn("const WoodMember *member;", header)
         self.assertIn("const WoodBoundaryRegion *role_boundary;", header)
 
-    def test_five_real_main_consumers_delegate_and_keep_original_member_identity(self):
+    def test_main_consumers_have_callers_delegate_and_keep_original_member_identity(self):
         source = (ROOT / "current_geometry.c").read_bytes().decode("utf-8").replace("\r\n", "\n")
-        pairs = (("world_footprint_collides", "wood_contact_footprint_collides"),
-                 ("collect_stop_faces", "app_contact_resolve_stops"),
-                 ("boundary_edge_interval", "wood_contact_boundary_interval"),
-                 ("stop_in_owner_extension", "wood_contact_owner_extension"),
+        texts = product_sources()
+        pairs = (("collect_stop_faces", "app_contact_resolve_stops"),
                  ("timber_end_face_check", "wood_contact_end_faces_with_sources"))
         for host, evaluator in pairs:
-            body = function(source, host)
-            self.assertIn(evaluator + "(", body)
-            self.assertNotRegex(body, r"\b(?:for|while)\s*\(")
+            with self.subTest(host=host):
+                body = function(source, host)
+                self.assertIn(evaluator + "(", body)
+                self.assertNotRegex(body, r"\b(?:for|while)\s*\(")
+                self.assertGreaterEqual(call_sites(texts, host), 1,
+                                        host + " is claimed as a real main consumer but nothing calls it")
+        for name in RETIRED_DEAD_HOSTS + RETIRED_DEAD_W_APIS:
+            with self.subTest(retired=name):
+                self.assertEqual(0, mentions(texts, name), name + " was removed as dead code; a revival needs a caller and an entry in the pairs above")
         wrapper = function(source, "app_contact_facts")
         self.assertEqual("app_contact_facts_prepare(world,placement,boundary,facts,NULL);", wrapper.strip())
         adapter = function(source, "app_contact_facts_prepare")
@@ -67,12 +131,8 @@ class ContactWorldBoundary(unittest.TestCase):
         self.assertIn("wood_contact_collect_stops(", resolver)
 
 
-COLLISION_FILTER = "if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;\n        if(geo_rect_overlap_positive"
 STOP_FILTER = "if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;\n        const GeoRect2 *f=&fact->footprint;"
 CONTROLS = (
-    ("positive-area", "if(geo_rect_overlap_positive(rect,&fact->footprint))return true;", "if(true)return true;", "collisions", "collision-touch-is-clear"),
-    ("collision-identity", COLLISION_FILTER, COLLISION_FILTER.replace("member==exclude", "(exclude&&member->id==exclude->id)"), "collisions", "collision-other-candidate-same-id-not-excluded"),
-    ("collision-placement", COLLISION_FILTER, COLLISION_FILTER.replace("fact->placement_id!=world->placement_id||", ""), "collisions", "collision-same-placement-only"),
     ("placement-order", "if(previous<=order)break;", "if(true)break;", "ordering", "placement-order-before-declaration"),
     ("stable-ties", "if(previous<=order)break;", "if(previous<order)break;", "ordering", "placement-stable-equal-order-sides"),
     ("equal-order-dedup", "index->minimum[slot]<order", "index->minimum[slot]<=order", "ordering", "equal-order-not-deduplicated"),
@@ -90,6 +150,7 @@ CONTROLS = (
     ("end-order", "for(int end=0;end<2;++end)", "for(int end=1;end>=0;--end)", "ends", "start-end-before-global-placement-order"),
     ("stop-identity", STOP_FILTER, STOP_FILTER.replace("member==exclude", "(exclude&&member->id==exclude->id)"), "ordering", "stop-exclusion-keeps-candidate-identity"),
     ("extension-end", "||ext_end[end]", "", "ends", "self-boundary-extension-end-exempt"),
+    ("edge-index-output", "if(out_edge)*out_edge=edge;", "(void)edge;", "intervals", "boundary-edge-index-horizontal"),
 )
 
 
@@ -107,17 +168,15 @@ class WoodContactWorld(unittest.TestCase):
         return [cls.client, changed or build.wood_contact_world_object, build.wood_contacts_object,
                 build.wood_supports_object, *build.kernel_objects()]
 
-    def case(self, name, executable=None):
-        result = subprocess.run([str(executable or self.exe), name], capture_output=True,
+    def case(self, name, executable=None, *, phase="positive", control=None, assertion=None):
+        command = [str(executable or self.exe), name]
+        result = subprocess.run(command, capture_output=True,
                                 text=True, encoding="utf-8", timeout=20)
+        record_native_execution(self.id(), command, result, case=name, phase=phase, control=control, assertion=assertion)
         self.assertIn(result.returncode, (0, 1), "Native crash/setup failure is not a contact verdict: " + result.stderr)
         if result.returncode:
             self.assertRegex(result.stderr, r"ASSERT:[a-z0-9-]+")
         return result
-
-    def test_collision_positive_area_pointer_identity_candidate_placement_and_eligibility(self):
-        result = self.case("collisions")
-        self.assertEqual(0, result.returncode, result.stderr)
 
     def test_d11_placement_order_stable_ties_dedup_and_partial_contact_shadow(self):
         result = self.case("ordering")
@@ -148,18 +207,18 @@ class WoodContactWorld(unittest.TestCase):
         path.write_text(source.replace(before, after), encoding="utf-8")
         return build.compile(path, "contact-world-" + name)
 
-    def test_twenty_actual_guard_controls_fail_the_named_numeric_assertions(self):
+    def test_actual_guard_controls_fail_the_named_numeric_assertions(self):
         build = native()
         for control in CONTROLS:
             with self.subTest(control=control[0]):
-                baseline = self.case(control[3])
+                baseline = self.case(control[3], phase="baseline", control=control[0], assertion=control[4])
                 self.assertEqual(0, baseline.returncode, baseline.stderr)
                 changed = self.mutant(control)
                 executable = build.link("contact-world-mutant-" + control[0], self.objects(build, changed))
-                result = self.case(control[3], executable)
+                result = self.case(control[3], executable, phase="mutant", control=control[0], assertion=control[4])
                 self.assertEqual(1, result.returncode, "Guard survived: " + control[0])
                 self.assertIn("ASSERT:" + control[4], result.stderr)
-                restored = self.case(control[3])
+                restored = self.case(control[3], phase="restored", control=control[0], assertion=control[4])
                 self.assertEqual(0, restored.returncode, restored.stderr)
 
     def extension_transaction(self, executable):
@@ -195,7 +254,7 @@ class WoodContactWorld(unittest.TestCase):
         control = next(item for item in CONTROLS if item[0] == "owner-extension")
         changed = self.mutant(control)
         client = build.link("contact-world-product-mutant-client", self.objects(build, changed))
-        result = self.case("extensions", client)
+        result = self.case("extensions", client, phase="product-mutant-client", control=control[0], assertion=control[4])
         self.assertEqual(1, result.returncode)
         self.assertIn("ASSERT:owner-extension-outside-fixed-part", result.stderr)
         objects = build.product_objects()

@@ -4,7 +4,9 @@
 每個測試 = 一份 .scene + 預期:
   expect: "accept" | "reject"
   lengths: accept 時,依序比對輸出中所有「尺寸:L=…」的值
-  error:   reject 時,本夾具的「路徑:[行號:]診斷」必須包含此子字串
+  error:   reject 時,本夾具的「路徑:[行號:]診斷」必須包含此子字串;
+           也可寫成清單——同一行診斷必須逐項全含(#299:逐欄位釘訊息)
+  error_not: reject 時(選填),上述那一行診斷不得含清單中的任何子字串
   contains: accept 時,stdout 必須包含此子字串(可多條)
   not_contains: accept 時,stdout 不得包含此子字串(可多條)——
                 用來驗「什麼都沒發生」這種主張,光靠 accept 驗不到
@@ -244,14 +246,29 @@ TESTS = [
   'lengths': [4000, 4000, 2946, 1287, 1287]},
  {'scene': '_s1_p4_alcove_wall_primary_cut_priority.scene', 'expect': 'reject',
   'error': 'V_CUT_PRIORITY：角材 6（優先級 2）端面頂到角材 4（優先級 2）側面'},
- # 只釘前綴:I22 要求訊息另指名定位邊與超出區間,核心日後補上時不該誤紅。
+ # I22 W(#299):訊息指名料件、定位邊與超出的區間。error 清單 = 同一行診斷必須逐項全含;error_not = 該行不得出現。
+ # p8 = 低端:凹角在定位邊 e3(v 3000..4800)的起點,足跡 v∈[27,4773] → 低端超出 [27,3000],沒有高端超出。
+ # M92 殺手 = p8(拿掉低端區間)、M95 殺手 = p8(error_not 擋住無條件多印的高端區間)。
  {'scene': '_s1_p8_l_room_primary_through_reflex_extension.scene', 'expect': 'reject',
-  'error': 'V_EXTENSION：非 boundary 角材（3）'},
- # p8 的高端鏡像:M88 殺手(V_EXTENSION 只驗起點那一半)。
+  'error': ['V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍',
+            '定位邊 e3 [3000,4800] mm',
+            '低端超出 [27,3000] mm'],
+  'error_not': ['高端超出']},
+ # p8 的高端鏡像:定位邊 e1(v 0..1800),足跡同 → 高端超出 [1800,4773],沒有低端超出。
+ # M88 殺手(V_EXTENSION 只驗起點那一半)、M93 殺手(拿掉高端區間)、M94 殺手(error_not 擋住無條件多印的低端區間)。
+ # M89–M91、M96(料件、定位邊編號、定位邊區間、W 回報編號)由 p8 與 p8b 各自殺。
  {'scene': '_s1_p8b_l_room_primary_through_reflex_extension_hi.scene', 'expect': 'reject',
-  'error': 'V_EXTENSION：非 boundary 角材（3）'},
+  'error': ['V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍',
+            '定位邊 e1 [0,1800] mm',
+            '高端超出 [1800,4773] mm'],
+  'error_not': ['低端超出']},
  {'scene': '_s1_p9_l_room_custom_inner_wall_accept.scene', 'expect': 'accept',
   'lengths': [5000, 3200, 4746, 2236, 1773]},
+ # #316:I11 的「只比同承載面」過濾。天花板與牆各一支 boundary,局部座標下足跡正面積重疊(u∈[0,3000]、v∈[0,20])
+ # 但不在同一面 → 接受。單一承載面的場景分不出這道過濾在不在;M97(references.inc 的 reference_check_all 兩兩檢查)與
+ # M98(world_validation.c 的最終世界兩兩檢查)拿掉過濾後,跨面配對被拿去比,整個世界被拒,由本場景殺。
+ # 放在最後的理由同上:不擠掉舊突變 killed_by 裡的舊夾具。
+ {'scene': '_i11_two_surfaces_same_uv_accept.scene', 'expect': 'accept', 'lengths': [4000, 3000]},
 ]
 
 
@@ -264,6 +281,8 @@ def run_one(exe: str, spec: dict) -> str:
         return "INFRA invalid test expectation"
     if spec["expect"] == "reject" and not spec.get("error"):
         return "INFRA rejection requires an explicit expected diagnostic"
+    if spec.get("error_not") and spec["expect"] != "reject":
+        return "INFRA error_not only applies to a rejection"
     if not scene.is_file():
         return f"INFRA missing fixture: {scene}"
     proc = subprocess.run(
@@ -301,8 +320,13 @@ def run_one(exe: str, spec: dict) -> str:
         return f"FAIL 應拒絕但接受 (L={lengths})"
     first = err.strip().splitlines()[0] if err.strip() else "(無錯誤訊息)"
     diagnostics = re.findall(r"^" + re.escape(str(scene)) + r":(?:\d+:)?\s*(.*)$", err, re.MULTILINE)
-    if not any(spec["error"] in diagnostic for diagnostic in diagnostics):
-        return f"FAIL 錯誤不符: 期望含「{spec['error']}」實得「{first}」"
+    needles = spec["error"] if isinstance(spec["error"], list) else [spec["error"]]
+    forbidden = spec.get("error_not", [])
+    if not any(all(n in diagnostic for n in needles) and not any(n in diagnostic for n in forbidden)
+               for diagnostic in diagnostics):
+        shown = "」且含「".join(needles)
+        absent = ("且不含「" + "」「".join(forbidden) + "」") if forbidden else ""
+        return f"FAIL 錯誤不符: 期望含「{shown}」{absent}實得「{first}」"
     return "ok"
 
 

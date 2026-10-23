@@ -486,6 +486,55 @@ static bool reference_placement_frame(ReferenceEval *ctx,uint32_t id,GeoFrame *o
     if(geo_eval_source(ctx->sources,geo_placement_source_ref(APP_SOURCE_PLACEMENT,GEO_PLACEMENT_SOURCE_FRAME,id,&key),GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK)return false;
     *out=value.as.frame;return true;
 }
+static bool reference_member_definition_read(ReferenceEval *ctx,size_t i,uint32_t id,WoodMemberDefinition *out)
+{
+    if(i>=WORLD_MAX_TIMBERS||geo_eval_is_sealed(ctx->sources))
+        return wood_definition_sources_member(ctx->definition_sources,id,out);
+    if(ctx->member_reads[i].definition_valid&&ctx->member_reads[i].definition.id==id){
+        WoodDefinitionKey key;
+        if(geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_MEMBER,id,&key),
+            GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
+        *out=ctx->member_reads[i].definition;return true;
+    }
+    if(!wood_definition_sources_member(ctx->definition_sources,id,out))return false;
+    ctx->member_reads[i].definition=*out;ctx->member_reads[i].definition_valid=true;return true;
+}
+static bool reference_member_placement_depend(ReferenceEval *ctx,uint32_t id)
+{
+    WoodDefinitionKey key;
+    if(geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),
+            GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
+    return true;
+}
+static bool reference_member_contact_read(ReferenceEval *ctx,size_t i,uint32_t id,WoodMemberPlacementContact *out)
+{
+    if(i>=WORLD_MAX_TIMBERS||geo_eval_is_sealed(ctx->sources))
+        return wood_definition_sources_placement_contact(ctx->definition_sources,id,out);
+    if(ctx->member_reads[i].contact_valid&&ctx->member_reads[i].contact_id==id){
+        /* Use the original shared edge site for every current consumer. */
+        if(!reference_member_placement_depend(ctx,id))return false;
+        *out=ctx->member_reads[i].contact;return true;
+    }
+    if(!wood_definition_sources_placement_contact(ctx->definition_sources,id,out))return false;
+    ctx->member_reads[i].contact=*out;ctx->member_reads[i].contact_id=id;
+    ctx->member_reads[i].contact_valid=true;return true;
+}
+static void reference_member_footprint_invalidate(ReferenceEval *ctx,size_t i)
+{
+    ctx->member_reads[i].footprint_valid=false;
+}
+static bool reference_member_anchor_read(ReferenceEval *ctx,size_t i,uint32_t id,WoodMemberPlacement *out)
+{
+    if(i>=WORLD_MAX_TIMBERS||geo_eval_is_sealed(ctx->sources))
+        return wood_definition_sources_placement(ctx->definition_sources,id,out);
+    if(ctx->member_reads[i].anchor_valid&&ctx->member_reads[i].id==id){
+        if(!reference_member_placement_depend(ctx,id))return false;
+        *out=ctx->member_reads[i].anchor;return true;
+    }
+    if(!wood_definition_sources_placement(ctx->definition_sources,id,out))return false;
+    ctx->member_reads[i].anchor=*out;ctx->member_reads[i].id=id;
+    ctx->member_reads[i].anchor_valid=true;reference_member_footprint_invalidate(ctx,i);return true;
+}
 static bool reference_member_footprint(ReferenceEval *ctx,size_t index,uint32_t placement_id,GeoRect2 *out)
 {
     World *world=ctx->world;PlacementSurface placement;
@@ -493,7 +542,7 @@ static bool reference_member_footprint(ReferenceEval *ctx,size_t index,uint32_t 
     if(ctx->use_current_values)return timber_a0_footprint_uv(&placement,&world->wood.timbers[index],&world->wood.anchors[index],out);
     uint32_t id=world->wood.timbers[index].id;GeoSourceValue value;GeoFrame frame;GeoQuad3 face;unsigned axis,side;
     WoodMemberPlacement anchor;
-    if(!reference_sources_ensure(ctx)||!wood_definition_sources_placement(ctx->definition_sources,id,&anchor)||anchor.placement_id!=placement_id||
+    if(!reference_sources_ensure(ctx)||!reference_member_anchor_read(ctx,index,id,&anchor)||anchor.placement_id!=placement_id||
        geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK||
        value.kind!=GEO_SOURCE_BOX||!reference_placement_frame(ctx,placement_id,&frame)||
        !wood_member_face_spec(WOOD_MEMBER_FACE_A0,&axis,&side)||!geo_box_face(&value.as.box,axis,side,&face))return false;
@@ -583,8 +632,14 @@ static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
         if(!fact->member->placed||fact->member==request->exclude)continue;
         uint32_t id=fact->member->id;GeoSourceValue value;
         if(!ctx->use_current_values){WoodMemberPlacementContact anchor;
-            if(!wood_definition_sources_placement_contact(ctx->definition_sources,id,&anchor)){
+            if(!reference_member_contact_read(ctx,i,id,&anchor)){
                 if(deferred)app_contact_raw_complete(&placement,raw,out->members,visited);return false;
+            }
+            /* 接觸只解碼原有三欄；slot 換成另一 canonical member 時，
+             * 仍須捨棄由前一 member 自然 warm 的 full anchor／footprint。 */
+            if(ctx->member_reads[i].id!=id){
+                ctx->member_reads[i].anchor_valid=false;ctx->member_reads[i].id=id;
+                reference_member_footprint_invalidate(ctx,i);
             }
             fact->placement_id=anchor.placement_id;fact->order=anchor.order;
             fact->along_v=anchor.length_direction==GEO_DIRECTION_POS_V||anchor.length_direction==GEO_DIRECTION_NEG_V;
@@ -593,6 +648,15 @@ static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
         /* 若既有 callback 暫切 snapshot 模式，原 raw 有效性仍須在守門前可用。 */
         if(deferred&&ctx->use_current_values)app_contact_raw_restore(&placement,&raw[i],fact);
         if(ctx->use_current_values&&!fact->footprint_valid)continue;
+        if(!ctx->use_current_values&&!geo_eval_is_sealed(ctx->sources)&&ctx->member_reads[i].footprint_valid&&ctx->member_reads[i].placement==request->placement_id){
+            if(geo_eval_depend(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK){
+                if(deferred)app_contact_raw_complete(&placement,raw,out->members,visited);return false;
+            }
+            fact->footprint_valid=ctx->member_reads[i].footprint_ok;
+            if(fact->footprint_valid)fact->footprint=ctx->member_reads[i].footprint;
+            if(deferred)raw[i].pending=fact->footprint_valid?0:2;
+            continue;
+        }
         if(geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK){
             if(deferred)app_contact_raw_complete(&placement,raw,out->members,visited);return false;
         }
@@ -608,6 +672,11 @@ static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
                 fact->footprint.min_u=coord_min(fact->footprint.min_u,point.u);fact->footprint.max_u=coord_max(fact->footprint.max_u,point.u);
                 fact->footprint.min_v=coord_min(fact->footprint.min_v,point.v);fact->footprint.max_v=coord_max(fact->footprint.max_v,point.v);
             }
+        }
+        if(!ctx->use_current_values){
+            ctx->member_reads[i].placement=request->placement_id;ctx->member_reads[i].footprint_ok=fact->footprint_valid;
+            if(fact->footprint_valid)ctx->member_reads[i].footprint=fact->footprint;
+            ctx->member_reads[i].footprint_valid=true;
         }
     }
     if(deferred)app_contact_raw_complete(&placement,raw,out->members,visited);
@@ -632,7 +701,7 @@ static bool app_reference_member_anchor(const World *world,size_t i,WoodMemberPl
     if(i>=world->wood.timber_count)return false;ReferenceEval *ctx=app_reference_sources_for_world(world);
     if(!ctx||ctx->use_current_values){*out=world->wood.anchors[i];return true;}
     WoodMemberPlacement actual;
-    if(!reference_sources_ensure(ctx)||!wood_definition_sources_placement(ctx->definition_sources,world->wood.timbers[i].id,&actual))return false;
+    if(!reference_sources_ensure(ctx)||!reference_member_anchor_read(ctx,i,world->wood.timbers[i].id,&actual))return false;
     actual.uv=world->wood.anchors[i].uv;*out=actual;return true;
 }
 static bool app_reference_member_footprint(const World *world,size_t i,uint32_t id,GeoRect2 *out)
@@ -683,6 +752,24 @@ static bool app_reference_end_faces(const World *world,const PlacementSurface *p
      * facts there so source failures do not replace an earlier policy error. */
     return wood_contact_end_faces_with_sources(&facts.world,member,along_v,span_lo,span_hi,cross_lo,cross_hi,
         app_reference_end_stops,&source,error,capacity);
+}
+static bool app_reference_boundary_end_policy(const World *world,const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,const WoodMember *member,bool along_v,
+    Coord span_lo,Coord span_hi,Coord cross_lo,Coord cross_hi,int end,
+    const WoodStopFace *faces,size_t count,const WoodStopFace *required,WoodBoundaryEndAdmission *admission)
+{
+    *admission=WOOD_BOUNDARY_END_ORDINARY;
+    if(!wood_contact_boundary_end_uses_member_facts(member))return true;
+    AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);
+    ReferenceEval *ctx=app_reference_sources_for_world(world);WoodContactSourceFacts actual;
+    if(ctx&&!ctx->use_current_values){
+        WoodContactSourceRequest request={placement->id,along_v,member};
+        if(!reference_sources_ensure(ctx)||!reference_contact_facts(ctx,ctx->sources,&request,&actual))return false;
+        facts.world.members=actual.members;facts.world.member_count=actual.member_count;
+    }
+    *admission=wood_contact_boundary_end_admission(&facts.world,member,along_v,
+        span_lo,span_hi,cross_lo,cross_hi,end,faces,count,required);
+    return true;
 }
 static bool app_reference_validation_room(const World *world,uint32_t id,WoodRoomBounds *out)
 {
@@ -803,7 +890,15 @@ static bool reference_eval_timber_relation(ReferenceEval *ctx,size_t i,GeoDepend
 {
     if(i>=ctx->world->wood.timber_count||!reference_sources_ensure(ctx))return false;
     Timber *t=&ctx->world->wood.timbers[i];uint32_t id=t->id;GeoSourceValue value;
-    GeoSourceStatus status=geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},relation,&value);
+    GeoSourceRef ref={APP_SOURCE_MEMBER_POSE,&id,sizeof id};GeoSourceStatus status;
+    if(ctx->member_reads[i].pose_valid&&ctx->member_reads[i].pose_id==id&&!geo_eval_is_sealed(ctx->sources)){
+        status=geo_eval_depend(ctx->sources,ref,relation);
+        value=(GeoSourceValue){.kind=GEO_SOURCE_BOX,.as.box=ctx->member_reads[i].pose};
+    }else{
+        status=geo_eval_source(ctx->sources,ref,relation,&value);
+        if(status==GEO_SOURCE_OK){ctx->member_reads[i].pose=value.as.box;
+            ctx->member_reads[i].pose_id=id;ctx->member_reads[i].pose_valid=true;}
+    }
     if(status!=GEO_SOURCE_OK){
         if(!ctx->wanted[i]||status==GEO_SOURCE_CYCLE)
             return reference_issue(t->id,"I9/I7","acyclic placed dependencies","missing placement or cyclic reference");

@@ -32,6 +32,21 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
   const cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await settle();};
   const select=async(kind,id)=>{if(await read(`$('filterDisclosure').open`))await ctl('#filterDisclosure > summary');await ctl(`.object-row[data-kind="${kind}"][data-id="${id}"]`);await wait(`oc.sel?.kind===${JSON.stringify(kind)}&&oc.sel.id===${id}`);};
   const fixture=lines=>read(`(async()=>{for(const line of ${JSON.stringify(lines)}){let r=await apiRequest('line '+line);if(r.preview){if(!r.preview.valid)throw Error(JSON.stringify(r));r=await apiRequest('line confirm '+r.preview.token);}if(!r.ok)throw Error(JSON.stringify(r));}await renderObjects();})()`);
+  const legacyDual=async(id,name,u,v)=>{
+    // Reuse a declaration frozen by the unpatched bridge.  Whole-scene replay
+    // preserves legacy two-axis inputs; map only this case's source id/name.
+    const kind=u.includes('param:')||v.includes('param:')?'parameter':'direct',
+      file=path.resolve(__dirname,'../tests/fixtures',`legacy-two-axis-stagger-inspector-${kind}.scene`),
+      rows=fs.readFileSync(file,'utf8').split(/\r?\n/).filter(line=>line.startsWith('grid-system ')),
+      prefix=`grid-system 0 name-hex ${Buffer.from('Before').toString('hex')} `,
+      expected=prefix+`main-along none u ${u} v ${v}`;
+    if(rows.length!==1||rows[0]!==expected)throw Error('Legacy fixture must retain the exact independent declaration: '+file);
+    const mapped=`grid-system ${id} name-hex ${Buffer.from(name).toString('hex')} `+rows[0].slice(prefix.length),
+      scene=await dump(),directory=fs.mkdtempSync(path.join(os.tmpdir(),'geometry-grid-rename-legacy-')),
+      sceneFile=path.join(directory,'legacy.scene');
+    try{fs.writeFileSync(sceneFile,scene+(scene&&!scene.endsWith('\n')?'\n':'')+mapped+'\n');await query('loadfile '+sceneFile);await read('renderObjects()');}
+    finally{fs.rmSync(directory,{recursive:true,force:true});}
+  };
   // replaceWithEmpty() always asks window.confirm; only the unsaved sentence
   // depends on the current context. Expect that exact dialog, never a global spy.
   const newProject=async()=>{const old=await read(`ReferenceWorkspace.getProjectState().id`),dirty=await read('ReferenceWorkspace.context().dirty');await ctl('#fileMenuBtn');
@@ -57,7 +72,10 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
   ];
   for(const [index,[label,u,v]] of cases.entries()){
     const id=700+index,boundary=800+index;
-    await fixture([`grid-system ${id} name-hex ${Buffer.from('Before '+index).toString('hex')} main-along none u ${u} v ${v}`,
+    const declaration=`grid-system ${id} name-hex ${Buffer.from('Before '+index).toString('hex')} main-along none u ${u} v ${v}`;
+    if(u.includes('stagger')&&v.includes('stagger'))await legacyDual(id,'Before '+index,u,v);
+    else await fixture([declaration]);
+    await fixture([
       `boundary ${boundary} outline 100,200 1300,200 1300,1000 100,1000`,
       `boundary-vertex-keys ${boundary} outer 1 2 3 4 next-key 5`,
       `grid-binding ${id} on-boundary ${boundary} from-system ${id} vertex-key 1 cell 0 1 anchor 0 1 0 1`,
