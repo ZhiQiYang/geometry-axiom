@@ -25,3 +25,6 @@
 
 - 2026-10-23T12:44:11.476330+00:00 — **p88-final-canvas-reviewed**：新F完整canvas三輪原exit 0/0/0，皆2267/0、85段golden相符且在原35min內；第三輪與三輪總結公開封包逐檔核驗通過，預期exception1保留。真正文已獨立審查並正常推送6dbac30c；反證及其他受影響gates仍未結案。
   下一步：完成原P88撤回與恢復；之後重跑grid、四native partial、P52、P73、Chromium154與oracle。冷工作副本工具僅完成準備與靜審，尚未執行。。原始資料：`raw/p88-final-canvas-reviewed-01.tar.gz`。
+
+- 2026-10-23T13:03:33.572715+00:00 — **p88-native-raf-controlled-completed**：P88原生rAF受控反證原exit為0/1/0，driver/outer/launcher各0；撤回是原refGuideMode焦點25秒等待fatal，實際錯點來源比例，非工具前提或transport假紅。完整349原件封包與三phase獨立審查保留；診斷只選完整P88，不冒正式grid/canvas。未確立按壓中位移的新產品缺陷，也未證像素可見性或歷史自然紅唯一因果。
+  下一步：完成同F grid與四組native partial，再獨占跑P52及剩餘P73/Chromium154/oracle；舊無效query實驗保歷史。。原始資料：`raw/p88-native-raf-controlled-completed-01.tar.gz`。
