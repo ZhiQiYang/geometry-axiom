@@ -92,6 +92,15 @@
       "archives": [
         "raw/assembly-workflow-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T04:46:08.179948+00:00",
+      "label": "formal-completion",
+      "result": "七個原測試均0且CI內，完整ASM及三架構0；原wrapper1因assembly封包撞名，僅補發布真0，原非零保留",
+      "next": "普通推送可讀摘要與最終正文；受驗F不移動、不合併",
+      "archives": [
+        "raw/formal-completion-01.tar.gz"
+      ]
     }
   ]
 }

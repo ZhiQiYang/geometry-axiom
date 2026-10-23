@@ -31,3 +31,6 @@
 
 - 2026-10-23T04:43:09.409321+00:00 — **assembly-workflow**：原assembly測試0、CI內；原發布1因assembly-final封包撞名。只以獨立label補發布原輸出，不重跑或改判原測試
   下一步：封存整輪原終態與本次發布結果；保留原wrapper及publisher非零退出碼。原始資料：`raw/assembly-workflow-01.tar.gz`。
+
+- 2026-10-23T04:46:08.179948+00:00 — **formal-completion**：七個原測試均0且CI內，完整ASM及三架構0；原wrapper1因assembly封包撞名，僅補發布真0，原非零保留
+  下一步：普通推送可讀摘要與最終正文；受驗F不移動、不合併。原始資料：`raw/formal-completion-01.tar.gz`。
