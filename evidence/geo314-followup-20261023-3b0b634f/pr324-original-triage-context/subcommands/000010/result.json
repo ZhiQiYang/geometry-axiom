@@ -1,0 +1,41 @@
+{
+  "command": [
+    "git",
+    "show",
+    "4e176e830b691269cc72d021ce7e1bc0b167d621:tests/test_geometry_host_sources.py"
+  ],
+  "cwd": "/tmp/g261-next314",
+  "acceptance_sha": "feb502d7b3bade2334733a4349c87ff91b88621e",
+  "source_sha": "feb502d7b3bade2334733a4349c87ff91b88621e",
+  "source_variant": "PR324-metadata-triage-only-no-checkout",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": null,
+    "PYTHONDONTWRITEBYTECODE": null,
+    "PYTHONOPTIMIZE": null,
+    "TMPDIR": null,
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "C_INCLUDE_PATH": null,
+    "CPATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null
+  },
+  "started_epoch": 1792766840.8317735,
+  "stdin_provided": false,
+  "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_process_returncode": 0,
+  "timeout_expired": false,
+  "directory": "/workspace/geo314-owner-20261023/pr324-triage-20261023/subcommands/000010",
+  "ended_epoch": 1792766840.8355532,
+  "stdout_sha256": "9ffa891ccc50bd4a5cc30bca840de56340a74c57c40f46cfcd2e4f557208aba1",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 61609,
+  "stderr_bytes": 0
+}

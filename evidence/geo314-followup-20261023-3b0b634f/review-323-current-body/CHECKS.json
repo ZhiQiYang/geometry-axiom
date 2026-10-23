@@ -1,0 +1,62 @@
+{
+  "schema": "geo314-independent-current-body-323-peer/1",
+  "utc": "2026-10-23T14:46:17.733869+00:00",
+  "sourceSHA": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+  "bodyHead": "b63add264735613b42b065e98ee5e6b1b4afc677",
+  "bodySHA256": "5a07964b11477630a434c0d050f977021841ae1a5df9104ef11859a4e1495293",
+  "originalReceiptPath": "/tmp/geo323-baseline-b2445b5a-v3-r1/receipt.json",
+  "originalReceiptSHA256AtRead": "01ec1c76b3fffa5b112541675c84c5871fa6a8d3783d245db77549e01e1adbde",
+  "checks": [
+    {
+      "check": "public-body-bytes-hash",
+      "ok": true
+    },
+    {
+      "check": "one-current-state-matrix",
+      "ok": true
+    },
+    {
+      "check": "same-source-S",
+      "ok": true
+    },
+    {
+      "check": "N64-real-green-not-old-red",
+      "ok": true
+    },
+    {
+      "check": "N32-real-red-no-tolerance",
+      "ok": true
+    },
+    {
+      "check": "calls-real-red",
+      "ok": true
+    },
+    {
+      "check": "required-eight-original-red-and-two-unchanged-controls",
+      "ok": true
+    },
+    {
+      "check": "PF3-original0-wrapper-accumulated1-distinct",
+      "ok": true
+    },
+    {
+      "check": "PF3-20-19-normal-mutants-20-raw",
+      "ok": true
+    },
+    {
+      "check": "native-not-claimed-complete",
+      "ok": true
+    },
+    {
+      "check": "final-product-and-evidence-not-claimed",
+      "ok": true
+    },
+    {
+      "check": "publication-normal-push0-clean",
+      "ok": true
+    }
+  ],
+  "findings": [],
+  "scope": "Small metadata/body review at publication state; no product tests, profiling, builds or archive hash rerun.",
+  "exitCode": 0
+}

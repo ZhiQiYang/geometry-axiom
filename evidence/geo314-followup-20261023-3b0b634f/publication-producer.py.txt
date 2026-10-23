@@ -1,0 +1,150 @@
+"""Publish #314 evidence and a truthful body only; do not run or alter product gates."""
+from pathlib import Path
+import datetime,hashlib,importlib.util,json,os,shutil,traceback
+
+BASE=Path('/workspace/geo314-owner-20261023')
+OUT=BASE/'design-plan-publication-20261023-resume1'
+REPO=Path('/tmp/g261-next314');BODY=Path('/workspace/geo314-prbody')
+S='3b0b634feb54266700cc61f26c34d7aeac4c0314'
+OLD_E='ed1ab195aa5cd6a7d03de708ff63724404fcbbf6'
+OLD_D='41a06aeccc75ede4c09e0d1d4a4bcb1a4844669b'
+BRANCH='codex/geo314-one-axis-stagger-20261022'
+PREFIX='evidence/geo314-followup-20261023-3b0b634f'
+CAP=Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py')
+assert not OUT.exists();OUT.mkdir()
+spec=importlib.util.spec_from_file_location('c314pub',CAP)
+cap=importlib.util.module_from_spec(spec);spec.loader.exec_module(cap)
+env=dict(os.environ,LANG='C.UTF-8',LC_ALL='C.UTF-8',PYTHONDONTWRITEBYTECODE='1')
+r=cap.Recorder(OUT,env,S)
+report=dict(schema='geo314-design-plan-evidence-publication/1',sourceSHA=S,
+ startedUTC=datetime.datetime.now(datetime.timezone.utc).isoformat(),commands=r.rows,
+ productOrTestsChanged=False,SSOTOrDecisionQueueChanged=False,actualAcceptanceExecuted=False,errors=[])
+def git(repo,*args):return r.run(['git','-c','gc.auto=0',*args],cwd=repo,timeout=120,source_variant='own314-small-evidence-and-body-publication')[1]
+def read_clean(repo):
+ assert not git(repo,'status','--porcelain=v1','--untracked-files=all').strip()
+ return git(repo,'rev-parse','HEAD').decode().strip()
+def remote(repo,branch):return git(repo,'ls-remote','--heads','origin','refs/heads/'+branch).decode().split()[0]
+code=1
+try:
+ assert read_clean(REPO)==remote(REPO,BRANCH)==OLD_E
+ assert read_clean(BODY)==remote(BODY,BRANCH+'-prbody')==OLD_D
+ target=REPO/PREFIX;target.mkdir(parents=True,exist_ok=True)
+ assert not git(REPO,'ls-files','--',PREFIX).strip()
+ shutil.copytree(BASE/'design-plan-publication-20261023',target/'publication-attempt-1')
+ for name,origin in [('authority',BASE/'authority-20261023-refresh'),
+                     ('latest-design-review',BASE/'review-314-design-followup-20261023-retry1'),
+                     ('fixed-source-execution-plan',BASE/'fixed-source-tools-v2')]:
+  shutil.copytree(origin,target/name,ignore=shutil.ignore_patterns('__pycache__'),dirs_exist_ok=True)
+ peer=Path('/workspace/geo299316-refresh-20261023/geo314-fixed-source-prep-review')
+ (target/'independent-static-peer').mkdir(exist_ok=True)
+ for filename in ('FINAL_V2_REVIEW.md','FINAL_V2_CHECKS.json'):
+  shutil.copyfile(peer/filename,target/'independent-static-peer'/filename)
+ for name,origin in [('pr324-correct-local-triage',BASE/'pr324-triage-20261023/correct-pr-local'),
+                     ('review-323-current-body',BASE/'review-323-body-b63add26'),
+                     ('review-323-fixed-three-preparation',BASE/'review-323-fixed-three-preparation')]:
+  shutil.copytree(origin,target/name,ignore=shutil.ignore_patterns('__pycache__'))
+ shutil.copyfile(BASE/'pr324-triage-20261023/LATEST_REVIEW.md',target/'pr324-correct-local-triage/LATEST_REVIEW.md')
+ shutil.copyfile(__file__,target/'publication-producer.py.txt')
+ broad=BASE/'pr324-triage-20261023'
+ pack=BASE/'pr324-broad-lossless-package'
+ manifest=json.loads((pack/'MANIFEST.json').read_text())
+ assert manifest['verification_complete'] is True and manifest['original_stream_bytes']==89526252
+ assert manifest['restored_sha256']=='b9cb7b4df2a509878c3483b54fadba14263c39192ae29c8bae2a69463a54872f'
+ shutil.copytree(pack,target/'pr324-broad-lossless-package')
+ shutil.copytree(BASE/'pr324-broad-lossless-record',target/'pr324-broad-lossless-record')
+ context=target/'pr324-original-triage-context';context.mkdir()
+ for name in ('receipt.json','BROAD_COMPARISON_CAVEAT.json','LATEST_REVIEW.md'):
+  shutil.copyfile(broad/name,context/name)
+ shutil.copytree(broad/'source-snapshot',context/'source-snapshot')
+ def omit_big_stdout(directory,names):
+  return ['stdout.bin'] if Path(directory)==broad/'subcommands/000007' else []
+ shutil.copytree(broad/'subcommands',context/'subcommands',ignore=omit_big_stdout)
+ reference=dict(schema='geo314-preserved-broad-diff-reference/2',
+   bytes=89526252,sha256='b9cb7b4df2a509878c3483b54fadba14263c39192ae29c8bae2a69463a54872f',
+   originalCommandReceipt=str(broad/'receipt.json'),
+   originalCommandStdout=str(broad/'subcommands/000007/stdout.bin'),
+   identicalHardlink=str(broad/'PATCH.diff'),
+   caveat=str(broad/'BROAD_COMPARISON_CAVEAT.json'),
+   wrongScopeMainMergeBase='adbaebf9c73ea6801d7b4d5214e4b846b132923b',
+   PRHead='4e176e830b691269cc72d021ce7e1bc0b167d621',
+   correctPRLocalBase='7dae5f21c7ca401e660450d437e60ba566218da8',
+   containsIntegrationHistoryNotPRLocalScope=True,rawPreserved=True,
+   fullRawIncludedLosslesslyInThisEvidencePayload=True,packed=True,
+   packageRelativePath='pr324-broad-lossless-package',
+   rawRepresentation='ordered 64MiB-bounded gzip parts, verified whole restored SHA256',
+   remaining='Product acceptance remains UNRUN. Packing only preserves this earlier overly broad comparison; it does not make it the effective PR-local diff.')
+ assert os.path.samefile(reference['originalCommandStdout'],reference['identicalHardlink'])
+ assert Path(reference['originalCommandStdout']).stat().st_size==reference['bytes']
+ (target/'BROAD_DIFF_PRESERVATION.json').write_text(json.dumps(reference,ensure_ascii=False,indent=2)+'\n')
+ (context/'subcommands/000007/stdout.bin.PROXY.json').write_text(json.dumps(reference,ensure_ascii=False,indent=2)+'\n')
+ (target/'NEXT_HANDOFF.md').write_text('''# 階段停止交接
+
+使用者最新指示為階段性完成後停止，由別人接續。本次只普通推小證據／正文，不啟314動態、不改324、不合併PR、不force push。source固定S3b不變；新E/D與remote核對在外部design-plan-publication-20261023/receipt.json。
+
+接手者先讀root更新的NEXT，再讀本包fixed-source-execution-plan/README.md及其獨立靜審。原六native suites expected47/11/14/23/5/3、原Node inspector與M99–M121 subgroup均UNRUN；P72B原COMPOSITION_ONLY→52+50需真正兩原服務/Chrome另排。完整native/六browser/reader/架構/ledger仍按真finalclosure處理，沒有新S綠燈。不要重做已審v2，先核當時磁碟、鎖、source角色，再依root給的槽實跑。
+
+新314設計審查只作文字澄清及反序設計例；精確SSOT差異未冒核可，沒有改公理／queue／handoff。shared檔forward由root排，不反向merge下游。324目前只清點三實際檔和最新review，不是本owner已開始實作或驗收；latest review要求的同final aggregate/七項/ledger及正文45數字都待後續。
+
+89,526,252B誤用main merge-base取得的寬diff原件完整保留，PATCH與原stdout是同inode硬連結，不重複占磁碟。root明確開封存窗口後，以其既審64MiB lossless packer封為兩gzip塊、整體解壓bytes/hash核同；原result、完整argv/env與其它原streams一併封存。見BROAD_DIFF_PRESERVATION.json與pr324-broad-lossless-package/MANIFEST.json。這是錯誤寬scope的歷史原件，不外推為有效PR-local差異；有效變更仍是正確9442B三檔diff。沒有刪原bytes，也沒有重跑原命令或任何測試。
+
+另有#323正文12checks及fixed-three binding14checks小peer已封；都只屬metadata/靜審，不代替source b244 的正式動態。此前runtime/oracle/grid/native公開peer已交root，不重跑綠項。
+''')
+ inventory=[]
+ for path in sorted(target.rglob('*')):
+  if path.is_file():
+   raw=path.read_bytes();inventory.append(dict(path=path.relative_to(target).as_posix(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))
+ (target/'INVENTORY.json').write_text(json.dumps(inventory,ensure_ascii=False,indent=2)+'\n')
+ progress='''固定產品／測試 S=`3b0b634feb54266700cc61f26c34d7aeac4c0314`，本輪只封存權威、澄清稿與執行準備；沒有產品、tests、SSOT、queue 或 handoff branch 變更。
+
+fresh main feb502d7、handoff b7e23a25 的 #314 最新設計跟進已讀。三處 review-only draft 修改說清保留原操作順序、K 的通用候選／提交責任、反序解除400再改卡仍保400的設計對照；沒有把精確條文稿寫成已核可，也沒有把設計例冒成已跑。
+
+原 v2 固定 S 驗收工具與獨立靜審均封存。六原 native suites 的 expected 為47/11/14/23/5/3、原 Node inspector、M99–M121 全 subgroup 尚未執行；M110 等價與正常 assertion 0/1/0 分清，P72B 真 HTTP/Chrome 另列 UNRUN。AST/anchor/metadata 成功不是產品綠燈。
+
+root 的當前收尾順序為318→314→combined→323→noWood→324；共享檔 forward仍由root排，沒有反向merge下游。使用者最新指示階段性完成後停止，本輪只封存，不啟clone/build/Chrome/bench/全ledger；下一位接手者依root NEXT及資源安排續做。
+
+一次exec-server CreateProcess拒絕未啟動命令的事件保留；恢復後只重試該唯讀authority命令，exit0；沒有重開任何實際測試。原三原架構與ledger最後由root統一依最終closure處理。
+'''
+ (target/'PROGRESS.md').write_text(progress)
+ git(REPO,'add','--force','--sparse','--',PREFIX)
+ staged=git(REPO,'diff','--cached','--name-only').decode().splitlines()
+ assert staged and all(p.startswith(PREFIX+'/') for p in staged)
+ whitespace_row,_,_=r.run(['git','-c','gc.auto=0','diff','--cached','--check'],cwd=REPO,timeout=120,check=False,source_variant='verbatim-evidence-whitespace-observation-not-product-gate')
+ report['verbatimEvidenceWhitespaceCheck']=dict(actualExit=whitespace_row['actual_process_returncode'],
+  reason='Verbatim authority quotations and captured raw outputs retain their original trailing spaces/line endings; no evidence bytes or product assertions are changed to silence this formatting observation.')
+ git(REPO,'commit','-m','docs: record GEO-314 review clarifications and acceptance plan')
+ E=git(REPO,'rev-parse','HEAD').decode().strip()
+ changed=git(REPO,'diff','--name-only',S,E,'--').decode().splitlines()
+ assert changed and all(p.startswith('evidence/') for p in changed)
+ git(REPO,'push','origin','HEAD:refs/heads/'+BRANCH)
+ assert remote(REPO,BRANCH)==E and read_clean(REPO)==E
+ report['evidenceHead']=E
+ body_path=BODY/'PR_BODY.md';old=body_path.read_text();new=old
+ anchor='證據 head **E=`'+OLD_E+'`**'
+ assert new.count(anchor)==1
+ new=new.replace(anchor,'證據 head **E=`'+E+'`**')
+ before='S 已交棒 combined，後續共用檔順序是 #314→combined→#318→無木工。原三裁判、編譯、Chrome、benchmark與scan目前受root重工作時槽安排，沒有把等待排程寫成通過或允許skip。'
+ after='S 曾交棒 combined；root 本輪收尾驗收順序已改為 #318→#314→combined→#323→無木工→#324，共用檔 forward 仍由 root 排程，不反向合入下游。使用者最新指示階段性完成後停止，本輪只封存；已審 #314 v2 工具保留給下一位接手，不啟動新測試，也沒有把等待／停止排程寫成通過或允許 skip。'
+ assert new.count(before)==1;new=new.replace(before,after)
+ before='- 權威審查讀自 handoff `ea2748248d47563f8559638ccb70ec0ed21910d9` 的 `handoff/pr-reviews/314.md`；本輪不把舊審查錯寫成針對 S 的新審查。'
+ after='- 最新已讀設計追蹤取自 fresh handoff `b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6` 的 `handoff/pr-reviews/314.md`（2026-10-23T14:48:41Z）；它對草稿 `7bd61a43` 作純文字跟進，沒有宣告 S 有已重現產品缺陷或已驗收。原文／完整指令、原 CRLF 草稿、三處澄清 patch、執行計畫與獨立靜審封於本輪 E 的 `'+PREFIX+'/`。'
+ assert new.count(before)==1;new=new.replace(before,after)
+ marker='| 新 M121 修正撤回／恢復 |'
+ addition='| 固定 S v2 執行方案／最新設計文字 | S；fresh handoff b7e23a25；review-only draft candidate | 準備及獨立靜審完成；所有動態 exit=null | 六原 suite expected47/11/14/23/5/3＋原 Node inspector＋M99–M121待跑；P72B 真 Chrome另列UNRUN；M110不當killed；不改產品／tests／SSOT／queue |\n'
+ assert new.count(marker)==1;new=new.replace(marker,addition+marker)
+ assert new.count('## 唯一 current-state 矩陣')==1 and S in new
+ body_path.write_text(new)
+ git(BODY,'add','--','PR_BODY.md');git(BODY,'diff','--cached','--check')
+ assert git(BODY,'diff','--cached','--name-only').decode().splitlines()==['PR_BODY.md']
+ git(BODY,'commit','-m','docs: clarify current GEO-314 authority and pending gates')
+ D=git(BODY,'rev-parse','HEAD').decode().strip()
+ git(BODY,'push','origin','HEAD:refs/heads/'+BRANCH+'-prbody')
+ assert remote(BODY,BRANCH+'-prbody')==D and read_clean(BODY)==D
+ report.update(bodyHead=D,prefix=PREFIX,payloadFiles=len(inventory)+2,
+   bodySHA256=hashlib.sha256(body_path.read_bytes()).hexdigest())
+ code=0
+except Exception:report['errors'].append(traceback.format_exc())
+finally:
+ report['exitCode']=code;report['endedUTC']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+ (OUT/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({k:report.get(k) for k in ('sourceSHA','evidenceHead','bodyHead','exitCode','errors')},ensure_ascii=False))
+raise SystemExit(code)

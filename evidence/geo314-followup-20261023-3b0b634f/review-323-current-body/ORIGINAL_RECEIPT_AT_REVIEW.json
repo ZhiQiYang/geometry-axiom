@@ -1,0 +1,367 @@
+{
+  "schema": "geo323-linux-acceptance/1",
+  "source_sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+  "source_repo": "/tmp/g261-next323",
+  "base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "started_utc": "2026-10-23T14:02:33.280866+00:00",
+  "stages": {
+    "prepare": {
+      "started_utc": "2026-10-23T14:02:33.302575+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:02:35.197541+00:00"
+    },
+    "build": {
+      "started_utc": "2026-10-23T14:02:35.361979+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:04:06.971157+00:00"
+    },
+    "compare": {
+      "started_utc": "2026-10-23T14:04:07.124071+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:06:06.062906+00:00"
+    },
+    "perf": {
+      "started_utc": "2026-10-23T14:09:59.157310+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:10:14.360461+00:00"
+    },
+    "profile": {
+      "started_utc": "2026-10-23T14:10:14.513839+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:10:37.725957+00:00"
+    },
+    "required-eight": {
+      "started_utc": "2026-10-23T14:15:37.355642+00:00",
+      "execution_exit": 1,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [
+        "Traceback (most recent call last):\n  File \"/tmp/geo323-merge-20261023/acceptance-tools-v3/run.py\", line 336, in stage\n    function()\n  File \"/tmp/geo323-merge-20261023/acceptance-tools-v3/run.py\", line 335, in <lambda>\n    function = getattr(self, name) if name in STAGES[:5] else lambda: self.suite(name)\n                                                                      ^^^^^^^^^^^^^^^^\n  File \"/tmp/geo323-merge-20261023/acceptance-tools-v3/run.py\", line 323, in suite\n    raise RuntimeError(f'{kind}原命令退出{result.returncode}；不豁免、不改斷言')\nRuntimeError: required-eight原命令退出1；不豁免、不改斷言\n"
+      ],
+      "ended_utc": "2026-10-23T14:17:47.684878+00:00"
+    },
+    "pf3": {
+      "started_utc": "2026-10-23T14:17:47.840702+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:30:38.572496+00:00"
+    },
+    "native": {
+      "started_utc": "2026-10-23T14:30:38.748071+00:00",
+      "execution_exit": null,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": null,
+      "errors": []
+    }
+  },
+  "errors": [],
+  "quantitative_targets": {
+    "N64_fix_main": {
+      "actual": 1.160861952340483,
+      "target": "<=1.3",
+      "target_met": true,
+      "method": "原36樣本，N16/32/48/64，每輪base→fix→main，共3輪；中位數"
+    },
+    "small_N_no_regression": {
+      "reference": "原固定base的變更前載入時間；不得變慢",
+      "points": {
+        "16": {
+          "fix_base": 0.7020541681432466,
+          "target_met": true
+        },
+        "32": {
+          "fix_base": 1.0008656473515014,
+          "target_met": false
+        },
+        "48": {
+          "fix_base": 0.7354720650542408,
+          "target_met": true
+        }
+      }
+    },
+    "geo_eval_source_64_32": {
+      "N32_calls": 169688,
+      "N64_calls": 1044429,
+      "actual": 6.154996228372071,
+      "target": "<=4.5",
+      "target_met": false,
+      "method": "原-O1 -fno-inline -pg；base/fix各N32/N64一次；無main profile；原profile無timeout"
+    }
+  },
+  "status": "完成；原命令與量化目標分欄，未執行項不代表通過",
+  "ABC_method": {
+    "A": "base/fix loadfile+dump完整stdout逐bytes及stderr",
+    "B": "每次seal完整ordered node/edge/descriptor/value序列",
+    "C": "每scene/process五guard總呼叫數；不是每seal五計數"
+  },
+  "original_judges_modified": false,
+  "policy": "沒有挑綠重跑；每個stage僅執行一次，任何原紅保留；未完成一律null。",
+  "tool_hashes": {
+    "ADAPTATION.json": "ae35ae00913221c38f4bf5b1f25960422d0ac22c351fe209ed45be36e1ea3634",
+    "ORIGINAL_SOURCE_BINDING.json": "67642adb6ae946900b00e3c5eacd4a88d4f27738be4937a38421cd02bf7495c0",
+    "PREPARATION.json": "52a3d852f3e6c1c91aab049b1efc7e0b1cf6d3ffa9930d38bcb99162ceafa95a",
+    "PUBLICATION_WHITELIST.json": "7465222c0be2b7f70a69004e34d6d25ab0b9b8e4a693ccb3879dd0a40902477f",
+    "README.md": "ac54f62bf2302d6eb9cb1337f9ceb394779dca0edff61f7d8d9cfdd6d9e4375b",
+    "SYNTAX_CHECK.json": "2780896f50220dc5de728410ffdb76bd0739910c636ab4ab8755ffd83e6f59bb",
+    "V1_BASELINE.json": "556caa1fae547b4885ad28a285c025321f23ab750159cd5363a054d2e2f37fc8",
+    "V1_TO_V2.diff": "85a8638f30bd827c19471e8173dfcea99d59273fd62e0345862ed6236b8d07a3",
+    "V1_TO_V2.json": "d6e3b484d9a712fe6f419790d7e76c1dbb5b20f0bceede1e3a6f4e0b329f4aba",
+    "V3-ADAPTATION.md": "fe2ba8bd1119076a909ba9722faeb978e7c2666d5933b0ea06c82de97ae53f83",
+    "V3-STATIC-CHECK.json": "8607ec91b740475ccdc5db1f04e2027b83aec4ea2d67bcc6db7433a79622fc54",
+    "geo323_record.py": "8aa05afded8738078cb319606422270345abc0317257d63e8879009acaaabb9b",
+    "geo323_record.py.v2-to-v3.diff": "fdf57e43b3170b395d3fedfa73aa31141862b2a213f86c25c8a9ab0ba93e3d48",
+    "mini_gen.py": "5613eb2bce4bdb26ec4852ee0d70e00ebd2b9b249aa9086e32e63d5259e17749",
+    "original/PROMPT-B-load-residual.md": "6bba3f1caddf809e6b6563683f464653381c5c6f5572c5f4555211920d0eea3b",
+    "original/PROMPT-C-load-residual-fix.md": "c6680d72804bd2d26c9c898f575ded40d3f49f558f9aa68b8a7b52b0235de04b",
+    "original/audit.py.txt": "f9f01f345e6c8108596a2b2f1bbad8948ec9831d9addf8a8e68d1b4dd45ca52f",
+    "original/finalize.py.txt": "1f345b53c1976d747d1494e86083c9ef63c03cc5940f899952a1d0f7a7488799",
+    "original/mini_gen.py.txt": "5613eb2bce4bdb26ec4852ee0d70e00ebd2b9b249aa9086e32e63d5259e17749",
+    "original/profile.py.txt": "98a7e12fb03370dfa7f4b12fa07597b296794409fbfc95b7ae06e6d7d19b7540",
+    "original/reap_children.py.txt": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+    "original/record.py.txt": "29f52032e91b5e6d8a84a8e2ee9369ca3e65a7d6b8cb904eeb3b3f3294d6f044",
+    "original/verify.py.txt": "40dcba62568a90d38187472ba8157bc06b3c35f6411a63fd9687d32a6d47be7d",
+    "profile_linux.py": "0dda20c3d4de8c4472ed7f936fcf7bbc48c4adacfdc779bc2bda6e300a0c853c",
+    "profile_linux.py.diff": "2695532ae82567d657018816146da0853c0044d3de39e5681b85ab858768c9eb",
+    "reap_children.py": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+    "run.py": "e8d3d42a743f841e981493155a1b00d601b09090057e6fe8e512847aac5074a4",
+    "run.py.v2-to-v3.diff": "f40ee1bf64d79a9a3d6f3c332426e1be1dcd381f3ac250744ecb7d344121e57f",
+    "select_outputs.py": "1282c635fd7a76d5caeafdadcf4cafe8f36e825a4406e86bdc7877fa169ea53f",
+    "verify_linux.py": "ccbce3a5d32bee81f22be31a31c1f771ca05c54f53f21e4d94b11b4a08b4534d",
+    "verify_linux.py.diff": "2dd4cfc0cc1e03138ff6c4dcd0726e5a1640df4bf7a68c268a13105c220642b8"
+  },
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/tmp/geo323-baseline-b2445b5a-v3-r1/tmp",
+    "GITHUB_SHA": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+    "GITHUB_WORKSPACE": "/tmp/g261-next323",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONOPTIMIZE": null,
+    "PYTHONPATH": null,
+    "PYTHONSTARTUP": null,
+    "NODE_OPTIONS": null,
+    "CC": null,
+    "CXX": null,
+    "CFLAGS": null,
+    "CXXFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "CPATH": null,
+    "C_INCLUDE_PATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null,
+    "GEO261_GRAPH": null,
+    "GEO261_GUARDS": null,
+    "GEO261_REAPER_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/control/2026-10-23T143038.6637150000/reaper.jsonl",
+    "GEO261_HOST_FACTS_EXECUTION_LOG": null,
+    "GEO261_CONTACT_SOURCES_EXECUTION_LOG": null,
+    "GEO261_LOAD_RESIDUAL_EXECUTION_LOG": null,
+    "GEO323_ROOT": null,
+    "GEO323_WORK": null,
+    "GEO323_EVIDENCE": null,
+    "GEO323_BASE_SHA": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+    "GEO323_MAIN_SHA": "adbaebf9c73ea6801d7b4d5214e4b846b132923b"
+  },
+  "cleared_environment_names": [],
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python_optimize": 0,
+  "stack_before": [
+    8388608,
+    -1
+  ],
+  "stack_during": [
+    16777216,
+    -1
+  ],
+  "updated_utc": "2026-10-23T14:30:38.811261+00:00",
+  "versions": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Python 3.12.14\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gcc",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gprof",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "GNU gprof (GNU Binutils for Debian) 2.44\nBased on BSD gprof, copyright 1983 Regents of the University of California.\nThis program is free software.  This program has absolutely no warranty.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "git version 2.52.0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.19.0\n",
+      "stderr": ""
+    }
+  ],
+  "source_archives": {
+    "base": "/tmp/geo323-baseline-b2445b5a-v3-r1/work/source-base",
+    "main": "/tmp/geo323-baseline-b2445b5a-v3-r1/work/source-main",
+    "fix": "/tmp/g261-next323",
+    "scopes": [
+      "current_geometry.c",
+      "geometry-core",
+      "geometry-app",
+      "geometry-templates",
+      "geometry-web"
+    ],
+    "exclude": [
+      "geometry-core/domain-decoupling",
+      "geometry-web/docs",
+      "geometry-web/prototypes",
+      "geometry-web/vendor",
+      "geometry-web/node_modules"
+    ]
+  },
+  "scene_count": 175,
+  "all_executed_stage_commands_passed": false,
+  "all_measured_original_targets_met": false,
+  "all_required_stages_completed": false,
+  "wrapper_exit": 1,
+  "full_acceptance_passed": null,
+  "builds": [
+    {
+      "label": "base",
+      "source": "/tmp/geo323-baseline-b2445b5a-v3-r1/work/source-base",
+      "execution_exit": 0,
+      "binary_sha256": "6b91b7e9a08e78232bd4ba8db7ff8e9d7002ca2e265c362c3591c48b4d0cbb82"
+    },
+    {
+      "label": "fix",
+      "source": "/tmp/g261-next323",
+      "execution_exit": 0,
+      "binary_sha256": "6d7560e565d086488b234c165d3cf2f9d23db65d7d8db6acb520391e5bf35d7d"
+    },
+    {
+      "label": "main",
+      "source": "/tmp/geo323-baseline-b2445b5a-v3-r1/work/source-main",
+      "execution_exit": 0,
+      "binary_sha256": "233aa22e884e051ed86c2bac8c37cf600761eef3ab7a400a92a0387fc612e247"
+    },
+    {
+      "label": "base-trace",
+      "source": "/tmp/geo323-baseline-b2445b5a-v3-r1/work/source-base",
+      "execution_exit": 0,
+      "binary_sha256": "5b2cf4d9c58b5354544ae429a352b7858fab2886f7284283b49d08ee9e68c0f9"
+    },
+    {
+      "label": "fix-trace",
+      "source": "/tmp/g261-next323",
+      "execution_exit": 0,
+      "binary_sha256": "3145d10a1ebeb4a4d13ee1ac8bee529049c07af6af710356461ab538a8345964"
+    }
+  ],
+  "ABC_result": {
+    "scenes": 175,
+    "runs": 350,
+    "failures": [],
+    "original_exit": 0,
+    "original_audit_tuple_equal": true
+  },
+  "suite_execution_log_paths": {
+    "required-eight": {
+      "GEO261_HOST_FACTS_EXECUTION_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/evidence/required-eight-executions/host-facts.jsonl",
+      "GEO261_CONTACT_SOURCES_EXECUTION_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/evidence/required-eight-executions/contact-sources.jsonl",
+      "GEO261_LOAD_RESIDUAL_EXECUTION_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/evidence/required-eight-executions/load-residual.jsonl"
+    },
+    "native": {
+      "GEO261_HOST_FACTS_EXECUTION_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/evidence/native-executions/host-facts.jsonl",
+      "GEO261_CONTACT_SOURCES_EXECUTION_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/evidence/native-executions/contact-sources.jsonl",
+      "GEO261_LOAD_RESIDUAL_EXECUTION_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/evidence/native-executions/load-residual.jsonl"
+    }
+  }
+}

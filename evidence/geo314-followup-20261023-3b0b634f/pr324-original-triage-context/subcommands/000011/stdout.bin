@@ -1,0 +1,92 @@
+# #324 的全部留言(本機 Claude 以 gh 讀取,原文照錄)
+
+- 同步時間:2026-10-23 14:42(台北)
+- 標題:fix(GEO-261): reject column and beam snapshots that omit faces
+- 狀態:open
+
+
+---
+### 2026-10-22T04:39:42Z ZhiQiYang
+
+【ChatGPT 審查】PR #324 head 718f513
+
+阻擋
+1. tests/test_geometry_host_sources.py:894-933 只測「整個 faces 欄位缺失」；但產品在 geometry-templates/woodworking/geometry_woodworking/model_sources.py:80-84 同時新增了非 list、非 dict、feature 非 str 三個守門。反例：移除第 82-83 行的元素／feature 型別判斷，現有兩個新測試仍會全綠。最小修法：從公開 evaluate 路徑參數化至少 faces=null／{}、faces=[[]]、faces=[{"feature":1}]，逐一斷言同一四元組，並對各 predicate 做定向突變。
+2. 目前 head 的 Geometry integration run 39721803849 七個 job 全部 failure 且 steps 皆為空；PR 正文也明載未跑 run_all、其他 importer suite、WSL 與 mutation ledger。tests/run_all.expected.json:779-783 已改 aggregate 契約，單跑 41 項不足以證明 aggregate 仍能收斂。最小修法：在同一 head 補 native＋6 browser、run_all expected gate、受影響 importer 與上述定向突變的可核對收據；環境零步驟失敗須與產品結果分開記錄。
+
+須改
+- 無。
+
+記錄
+- geometry-templates/woodworking/geometry_woodworking/model_sources.py:80-87 的缺欄位路徑確實會走既有 _fail，得到 UNSUPPORTED / BASE_SOURCE_BINDING / I32；對 issue #322 的直接修正方向正確。
+- 變更限 3 檔、1 commit，未改公理、閱讀器或鎖定規格；base/head 與正文一致。
+- #323 也改 tests/run_all.expected.json，但在另一個 hunk；後續堆疊時須保留雙方新增／更新項目。
+
+結論：改完 2 項可合併
+
+---
+### 2026-10-23T05:47:44Z ZhiQiYang
+
+【回覆審查】對象 head `718f513` 的【ChatGPT 審查】（issuecomment-6332854005）。新 head `4e176e83`。
+
+## 阻擋 1：已補公開路徑與定向突變
+
+`tests/test_geometry_host_sources.py` 從 `modeling.engine.evaluate` 走柱、樑兩種：
+
+- 缺 `faces`（原有兩支測試，改走同一個 helper）
+- `faces` 為 null、`{}`
+- `faces` 為 `[[]]`
+- `faces` 為 `[{"feature": 1}]` 與 `[{"feature": ["START"]}]`
+
+每一筆都斷言同一組 `UNSUPPORTED / BASE_SOURCE_BINDING / I32 / Native box source faces disagree with legacy provenance.`
+
+定向突變沿用這個檔裡既有的複製樹作法，各刪一個 predicate，再跑對應測試，要求結束碼 1：
+
+- 刪 `type(legacy_faces) is not list` → `test_public_default_rejects_non_list_snapshot_faces`
+- 刪 `type(face) is not dict` → `test_public_default_rejects_non_dict_snapshot_faces`
+- 刪 `type(face.get("feature")) is not str` → `test_public_default_rejects_non_string_feature_snapshot_faces`
+
+`{"feature": 1}` 在真碼上會被拒，但拿掉 feature 型別判斷之後，後面「六個面名對不上」仍用同一句話拒絕，所以它殺不死那個 predicate。能讓該 predicate 被拿掉就轉成未分類例外的，是 `{"feature": ["START"]}`。這個控制與整數那筆放在同一個測試方法裡。
+
+本機 Windows、Python 3.14，工作目錄是 PR 工作樹：
+
+- 上面五支行為測試：結束碼 0，`Ran 5 tests in 0.370s`
+- `SnapshotFacePredicateControls`：結束碼 0，`Ran 1 test in 29.339s`
+- 整個 `tests.test_geometry_host_sources`：結束碼 0，`Ran 45 tests in 76.487s`
+
+`tests/run_all.expected.json` 裡 `py:test_geometry_host_sources` 的 count 從 41 改成 45，只對這次模組實跑。沒有跑 `run_all.py --update-expected`。#323 在這個檔的其他 hunk 沒有動。
+
+## 阻擋 2：這輪沒有做完整整合收據
+
+沒有跑 native、六個 browser、`run_all` 的 expected gate、其他 importer、WSL，也沒有重跑 mutation ledger。這輪工作規定不准用 WSL。
+
+[Actions run 39721803849](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/39721803849) 的零步驟 failure 仍是環境問題，不當成產品測試結果，也沒有重跑。
+
+所以這一項沒有關掉。不把這個 PR 說成已經可合併。
+
+產品碼 `model_sources.py` 沒有改。公理層沒有改。
+
+
+---
+### 2026-10-23T06:41:43Z ZhiQiYang
+
+【ChatGPT 審查】PR #324 head 4e176e8
+
+### 阻擋
+1. **同 head 的 aggregate／整合驗收仍未完成。**
+   - 作者回覆明載未跑 native、六個 browser、`run_all` expected gate、其他 importer、WSL 與 mutation ledger；本輪只有該模組 45 tests 與局部 controls。
+   - `tests/run_all.expected.json:780` 已把 aggregate 契約更新為 45；局部 `unittest` 無法證明 registry/discovery、其他 importer 與整合樹仍收斂。
+   - 最小修正：在 `4e176e8` 或同步後 final SHA 跑 expected gate、受影響 importer、native＋六 browser及帳本 check；保存原命令、exit、完整輸出與 SHA。零步驟 Actions failure 繼續只記環境，不當產品結果。
+
+### 須改
+2. **正文的 head 與驗收數字已過時。**
+   - PR 正文仍寫 head `718f513`、41 tests、兩條缺 faces 測試；current head 是 `4e176e8`，實際為 45 tests，新增三組型別案例及逐 predicate controls。
+   - 最小修正：更新 base/head、45-test 結果、三個定向突變與仍未跑的整合矩陣；不要宣稱已可合併。
+
+### 記錄
+- 前輪 predicate 覆蓋缺口可關閉：`tests/test_geometry_host_sources.py:930-953` 從公開 evaluate 路徑涵蓋 missing、null/object、非 dict、int/list feature，柱／樑都斷言同一 I32 四元組。
+- `tests/test_geometry_host_sources.py:990-1029` 分別移除 list／dict／feature predicate；每案先 baseline 0、mutant 必須正常 exit 1 且含 FAILED、拒絕 import/syntax 假紅，最後 restored 0。
+- feature=int 單獨會被後段集合判官擋住，但同方法的不可 hash list 確實殺掉 feature 型別 predicate；這個控制可接受。產品碼、公理與閱讀器未再變。
+
+**結論：改完 2 項可合併。**
+

@@ -1,0 +1,36 @@
+{
+  "schema": "geometry-lossless-command-stream/1",
+  "started_utc": "2026-10-23T15:08:53.989535+00:00",
+  "original_result_path": "/workspace/geo314-owner-20261023/pr324-triage-20261023/subcommands/000007/result.json",
+  "original_result_sha256": "978b75defee32beef885e7abb0ccb71be0889833b66cb33a83fb7b36c2e159c4",
+  "original_stream_path": "/workspace/geo314-owner-20261023/pr324-triage-20261023/subcommands/000007/stdout.bin",
+  "original_stream_sha256": "b9cb7b4df2a509878c3483b54fadba14263c39192ae29c8bae2a69463a54872f",
+  "original_stream_bytes": 89526252,
+  "source_sha": "feb502d7b3bade2334733a4349c87ff91b88621e",
+  "original_process_exit": 0,
+  "representation": "ordered independently gzipped raw byte ranges",
+  "chunk_limit_bytes": 67108864,
+  "parts": [
+    {
+      "file": "stdout.part-0000.gz",
+      "offset": 0,
+      "raw_bytes": 67108864,
+      "raw_sha256": "0985f9ad5a448c4fcb8eafed302d5969bd6e3c6d21a1f03dd7031669ed19d1e1",
+      "compressed_bytes": 11119856,
+      "compressed_sha256": "bf1454ebf7aaf9343abcb628b26d03dc565eb6676d7ac323a35cc97b7d1e264c"
+    },
+    {
+      "file": "stdout.part-0001.gz",
+      "offset": 67108864,
+      "raw_bytes": 22417388,
+      "raw_sha256": "05cb629b5c28c5373092a404b14e5f61cb66d3b46b056a62ae52ff6bd1e2b6d2",
+      "compressed_bytes": 4727611,
+      "compressed_sha256": "a3aa65fd6fa9fae15aab49a2e74b9f5ea65fec0d5b18b308a17a39dba0ba228a"
+    }
+  ],
+  "original_deleted": false,
+  "verification_complete": true,
+  "restored_bytes": 89526252,
+  "restored_sha256": "b9cb7b4df2a509878c3483b54fadba14263c39192ae29c8bae2a69463a54872f",
+  "ended_utc": "2026-10-23T15:08:54.946398+00:00"
+}

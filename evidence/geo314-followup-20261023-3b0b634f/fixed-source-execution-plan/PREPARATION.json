@@ -1,0 +1,257 @@
+{
+  "schema": "geo314-fixed-source-static-preparation/2",
+  "sourceSHA": "3b0b634feb54266700cc61f26c34d7aeac4c0314",
+  "utc": "2026-10-23T14:28:03.642316+00:00",
+  "executionState": "UNRUN_WAIT_ROOT_DISK_AND_HEAVY_SLOT",
+  "astParsedOnly": true,
+  "acceptanceExecuted": false,
+  "sourceChanged": false,
+  "globalLedgerRegenerated": false,
+  "materializedTreeFiles": 3746,
+  "materializedTreeBytes": 138511198,
+  "twoCheckoutsMinimumSourceBytes": 277022396,
+  "omittedEvidenceFiles": 22073,
+  "omittedEvidenceBytes": 1934772291,
+  "mutationRows": [
+    {
+      "id": "M99",
+      "file": "current_geometry.c",
+      "old": "if (!grid_stagger_submission_valid(candidate,grid_error,sizeof grid_error)) {",
+      "new": "if (false && !grid_stagger_submission_valid(candidate,grid_error,sizeof grid_error)) {",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M100",
+      "file": "geometry-core/subgrid_world.inc",
+      "old": "if(g_parsing_scene_file||!g_subgrid_before)return true;",
+      "new": "if(!g_subgrid_before)return true;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M101",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "if(!old||!(old->axis[0].stagger_set&&old->axis[1].stagger_set))",
+      "new": "if(0)",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M102",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis],now->id,(unsigned)axis,facts,count))",
+      "new": "if(0)",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M103",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "if(prior->set&&current->set&&prior->parameter_id==current->parameter_id&&prior->field_id==current->field_id)return false;",
+      "new": "if(0)return false;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M104",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "if(!(now->axis[0].stagger_set&&now->axis[1].stagger_set))continue;",
+      "new": "if(!(now->axis[0].stagger_set||now->axis[1].stagger_set))continue;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M105",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "for(int axis=0;axis<2;++axis)if(wood_grid_stagger_value_changed",
+      "new": "for(int axis=0;axis<1;++axis)if(wood_grid_stagger_value_changed",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M106",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "return old->stagger!=now->stagger;",
+      "new": "return 0;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M107",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "if(!after||!before||(!facts&&count))return wood_grid_error",
+      "new": "if(0)return wood_grid_error",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M108",
+      "file": "geometry-core/transactions.inc",
+      "old": "const World *previous_baseline=g_subgrid_before;g_subgrid_before=call->before;",
+      "new": "const World *previous_baseline=g_subgrid_before;g_subgrid_before=NULL;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M109",
+      "file": "geometry-web/engineering_bridge.inc",
+      "old": "g_subgrid_before=call->before;ok=world_revalidate(candidate);",
+      "new": "g_subgrid_before=NULL;ok=world_revalidate(candidate);",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M110",
+      "file": "current_geometry.c",
+      "old": "const World *previous=g_subgrid_before;g_subgrid_before=&candidate->before;",
+      "new": "const World *previous=g_subgrid_before;g_subgrid_before=NULL;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": true
+    },
+    {
+      "id": "M111",
+      "file": "geometry-core/transactions.inc",
+      "old": "static const char *const app_default_replay_lines[]={",
+      "new": "static const char *const app_default_replay_lines[]={\n    \"grid-system 314 name-hex 47 main-along none u repeat 0 100 stagger 40 v repeat 0 100 stagger 30\",",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M112",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "if(!card_edit&&prior->value!=f->after.value)return false;",
+      "new": "if(0)return false;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M113",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "if(f->order<=order||!wood_grid_stagger_same_point(&state,&f->before))return false;",
+      "new": "if(f->order<=order)return false;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M114",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "if(f->order<=order||!wood_grid_stagger_same_point(&state,&f->before))return false;",
+      "new": "if(!wood_grid_stagger_same_point(&state,&f->before))return false;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M115",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "return found&&wood_grid_stagger_same_point(&state,&final);",
+      "new": "return found;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M116",
+      "file": "geometry-web/engineering_bridge.inc",
+      "old": "if(ok&&!app_stagger_record_step(candidate,&stagger_before))ok=eng_fail(\"UNSUPPORTED/CAPACITY: ordered stagger evidence memory\");",
+      "new": "if(false)ok=eng_fail(\"UNSUPPORTED/CAPACITY: ordered stagger evidence memory\");",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M117",
+      "file": "current_geometry.c",
+      "old": "g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;",
+      "new": "g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;app_world_candidate_clear_stagger(candidate);",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M118",
+      "file": "geometry-app/native/stagger_facts.inc",
+      "old": "geo_parameter_evaluation_field(evaluation,point->source,&value)",
+      "new": "(value=(GeoQuantity){definition->stagger,1,1},true)",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M119",
+      "file": "geometry-app/native/world_candidate.inc",
+      "old": "return !strcmp(hash,candidate->operation.stagger_seal);",
+      "new": "return true;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M120",
+      "file": "geometry-web/engineering_bridge.inc",
+      "old": "if(!ok)app_world_candidate_clear_stagger(transaction);",
+      "new": "if(0)app_world_candidate_clear_stagger(transaction);",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    },
+    {
+      "id": "M121",
+      "file": "geometry-templates/woodworking/native/grid_application.c",
+      "old": "if(facts[i].system_id==system_id&&facts[i].axis==axis)return true;",
+      "new": "if(0)return true;",
+      "anchorMatchesAtS": 1,
+      "declaredEquivalent": false
+    }
+  ],
+  "expectedAtS": {
+    "py:test_geo314_stagger_commit": {
+      "mode": "count",
+      "count": 47,
+      "unit": "test"
+    },
+    "py:test_geo314_commit_paths": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo314_ordered_facts": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_grid_application": {
+      "mode": "count",
+      "count": 23,
+      "unit": "test"
+    },
+    "py:test_geo261_native_grid_product": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_grid_inspector_contract": {
+      "mode": "count",
+      "count": 3,
+      "unit": "test"
+    }
+  },
+  "files": {
+    "run_fixed_source_acceptance.py": {
+      "bytes": 12300,
+      "sha256": "cd519f112a74ad1c603a5e8ff677d106cf827a5cef777adc67ae2de437958ff2"
+    },
+    "README.md": {
+      "bytes": 8397,
+      "sha256": "ecd153d680cf2bf7ae44a2b9e7f5b678e60292772378de1f7b748855f189e879"
+    },
+    "V1_TO_V2.diff": {
+      "bytes": 5122,
+      "sha256": "0360ca85fc3000e8133a9096488917b96a875a28964bf8c53c2b1940137f3f9c"
+    }
+  },
+  "nativeSelectors": [
+    "py:test_geo314_stagger_commit",
+    "py:test_geo314_commit_paths",
+    "py:test_geo314_ordered_facts",
+    "py:test_geo261_wood_grid_application",
+    "py:test_geo261_native_grid_product",
+    "py:test_grid_inspector_contract"
+  ],
+  "browserP72B": "UNRUN; real HTTP/Chrome gate required separately; golden50 unchanged",
+  "v1Caveat": "v1 omitted two migrated native suites and only checked raw partial-mutation CLI exit; v2 covers the two suites and separately verifies the already required normal assertion 0/1/0 evidence. No acceptance was executed with v1."
+}

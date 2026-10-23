@@ -1,0 +1,68 @@
+--- v1/run_fixed_source_acceptance.py
++++ v2/run_fixed_source_acceptance.py
+@@ -13,7 +13,8 @@
+ CAP=Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py')
+ CAPSHA='c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+ SELECTORS=['py:test_geo314_stagger_commit','py:test_geo314_commit_paths',
+-           'py:test_geo314_ordered_facts','py:test_geo261_wood_grid_application']
++           'py:test_geo314_ordered_facts','py:test_geo261_wood_grid_application',
++           'py:test_geo261_native_grid_product','py:test_grid_inspector_contract']
+ NATIVE_ARGS=['--build',*[word for selector in SELECTORS for word in ('--only',selector)]]
+ IDS=['M'+str(i) for i in range(99,122)]
+ PATTERNS=['/*','!/evidence/','!/tests/evidence/','!/tests/release-evidence/']
+@@ -117,6 +118,7 @@
+         clone(source,scratch)
+         phase('original-partial-mutation-M99-through-M121',
+           [sys.executable,'-B','tests/mutate.py',*IDS],21600)
++        proof_problems=[]
+         if ledger.exists():
+             table=json.loads(ledger.read_text())
+             def row_index(i):
+@@ -132,13 +134,41 @@
+             report['partialMutationResultsSHA256']=h(ledger.read_bytes())
+             report['partialMutationSelectedIDs']=IDS
+             report['partialMutationRecordedSelectedIDs']=[i for i in IDS if i in table]
++            if set(table)!=set(IDS):proof_problems.append('External subgroup record IDs do not exactly match M99-M121')
++            for identifier in IDS:
++                if identifier not in table:continue
++                row=table[identifier];execution=row.get('execution') or {}
++                expected_verdict='equivalent' if identifier=='M110' else 'killed'
++                if row.get('verdict')!=expected_verdict:proof_problems.append(identifier+': original verdict is not '+expected_verdict)
++                if execution.get('head')!=S or execution.get('byte_restored') is not True:
++                    proof_problems.append(identifier+': original source SHA or exact restoration is incomplete')
++                names=('baseline','mutant','restored')
++                actual=[execution.get(name,{}).get('exit_code') for name in names]
++                if actual!=([0,0,0] if identifier=='M110' else [0,1,0]):
++                    proof_problems.append(identifier+': original exits do not satisfy the declared single-withdrawal proof')
++                if any(execution.get(name,{}).get('exit_code')!=0 for name in ('baseline_build','mutant_build','restored_build')):
++                    proof_problems.append(identifier+': an original build did not finish successfully')
++                failures=(execution.get('mutant',{}).get('result') or {}).get('failures')
++                if identifier=='M110':
++                    if failures!=[]:proof_problems.append(identifier+': the single masked equivalent must not claim a failure')
++                elif not failures or any(f.get('kind')!='assertion' for f in failures):
++                    proof_problems.append(identifier+': mutation requires normal named assertion failures, not a crash or unproven failure')
++                if identifier=='M121':
++                    prefix='tests.test_geo314_stagger_commit.StaggerCommit.'
++                    methods=[prefix+'test_Q3_same_final_reference_preserves_card_then_unbind_and_rebind_order',
++                             prefix+'test_Q3_same_final_reference_cannot_exempt_value_changing_rebind']
++                    if execution.get('methods')!=methods or not failures or len(failures)!=1 or failures[0].get('test')!=methods[1]:
++                        proof_problems.append('M121: exact positive/negative methods and sole named negative failure must agree')
++        else:proof_problems.append('Original partial mutation result file is missing')
++        report['mutationProofAccepted']=not proof_problems
++        report['mutationProofProblems']=proof_problems
+         report['sourceAfter']=identity(source)
+         report['scratchAfter']=identity(scratch)
+         report['sourceLedgerSHA256After']=h((source/'tests/mutants_results.json').read_bytes())
+         assert report['sourceLedgerSHA256Before']==report['sourceLedgerSHA256After']
+         # Keep original phase return codes. Do not convert an original failure
+         # into success because metadata collection completed.
+-        code=0 if all(p['commandResult']['actual_process_returncode']==0 and not p['commandResult']['timeout_expired'] and p['collectionException'] is None for p in report['originalPhases']) else 1
++        code=0 if not proof_problems and all(p['commandResult']['actual_process_returncode']==0 and not p['commandResult']['timeout_expired'] and p['collectionException'] is None for p in report['originalPhases']) else 1
+     except Exception:
+         report['errors'].append(traceback.format_exc())
+     finally:
+@@ -150,3 +180,4 @@
+       originalExits={p['label']:p['commandResult']['actual_process_returncode'] for p in report['originalPhases']},errors=report['errors']),ensure_ascii=False))
+     return code
+ if __name__=='__main__':raise SystemExit(main())
++

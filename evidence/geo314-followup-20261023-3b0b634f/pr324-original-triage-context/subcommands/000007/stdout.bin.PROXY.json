@@ -1,0 +1,19 @@
+{
+  "schema": "geo314-preserved-broad-diff-reference/2",
+  "bytes": 89526252,
+  "sha256": "b9cb7b4df2a509878c3483b54fadba14263c39192ae29c8bae2a69463a54872f",
+  "originalCommandReceipt": "/workspace/geo314-owner-20261023/pr324-triage-20261023/receipt.json",
+  "originalCommandStdout": "/workspace/geo314-owner-20261023/pr324-triage-20261023/subcommands/000007/stdout.bin",
+  "identicalHardlink": "/workspace/geo314-owner-20261023/pr324-triage-20261023/PATCH.diff",
+  "caveat": "/workspace/geo314-owner-20261023/pr324-triage-20261023/BROAD_COMPARISON_CAVEAT.json",
+  "wrongScopeMainMergeBase": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "PRHead": "4e176e830b691269cc72d021ce7e1bc0b167d621",
+  "correctPRLocalBase": "7dae5f21c7ca401e660450d437e60ba566218da8",
+  "containsIntegrationHistoryNotPRLocalScope": true,
+  "rawPreserved": true,
+  "fullRawIncludedLosslesslyInThisEvidencePayload": true,
+  "packed": true,
+  "packageRelativePath": "pr324-broad-lossless-package",
+  "rawRepresentation": "ordered 64MiB-bounded gzip parts, verified whole restored SHA256",
+  "remaining": "Product acceptance remains UNRUN. Packing only preserves this earlier overly broad comparison; it does not make it the effective PR-local diff."
+}

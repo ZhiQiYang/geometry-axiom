@@ -1,0 +1,109 @@
+{
+  "schema": "geo314-independent-323-fixed-three-binding-static-peer/1",
+  "utc": "2026-10-23T14:53:52.534965+00:00",
+  "sourceDriverSHA256": "104c54ee268fff8a0c0debc5f9966908aac723131a9c08e853f11810d8930a77",
+  "newDriverSHA256": "fa3abc2561259e9d8cc930b9ee2101f3282bf32f2f744455ea22f4f8855bc12e",
+  "checks": [
+    {
+      "check": "exact-seven-declared-mechanical-edits",
+      "ok": true
+    },
+    {
+      "check": "source-frozen-hash",
+      "ok": true
+    },
+    {
+      "check": "new-frozen-hash",
+      "ok": true
+    },
+    {
+      "check": "diff-exact-bytes-hash",
+      "ok": true
+    },
+    {
+      "check": "both-AST-only-valid",
+      "ok": true
+    },
+    {
+      "check": "all-helper-functions-unmodified-except-guard-label",
+      "ok": true
+    },
+    {
+      "check": "guard-only-truthful-error-label",
+      "ok": true
+    },
+    {
+      "check": "counts13-22-15-unchanged",
+      "ok": true
+    },
+    {
+      "check": "same-entire-original-three-CLI",
+      "ok": true
+    },
+    {
+      "check": "same-original-1200-and-inner-limits-no-outer-cap",
+      "ok": true
+    },
+    {
+      "check": "original-tool-hashes-stack-clean-input-and-env-retained",
+      "ok": true
+    },
+    {
+      "check": "original-echo-exit-and-reaper-mapping-retained",
+      "ok": true
+    },
+    {
+      "check": "same-root-resource-policy-no-R3-added-or-removed",
+      "ok": true
+    },
+    {
+      "check": "partial-and-future-metadata-not-actual-green",
+      "ok": true
+    }
+  ],
+  "findings": [],
+  "mechanicalEdits": [
+    {
+      "before": "Run the unchanged three original diagnostic suites on clean public S; no R3/perf stage.",
+      "after": "Run the same three diagnostic suites on a future clean committed fixed SHA; no R3/perf stage.",
+      "uniqueMatch": 1
+    },
+    {
+      "before": "import datetime,hashlib,importlib.util,json,os,resource,shutil,sys,traceback",
+      "after": "import argparse,datetime,hashlib,importlib.util,json,os,resource,shutil,sys,traceback",
+      "uniqueMatch": 1
+    },
+    {
+      "before": "S='b2445b5a270d60fdf48b07f6edddbe91266d8aa2';REPO=Path('/tmp/g261-next323');OUT=Path('/tmp/geo323-baseline-b2445b5a-three')",
+      "after": "parser=argparse.ArgumentParser();parser.add_argument('--repo',required=True,type=Path);parser.add_argument('--sha',required=True);parser.add_argument('--out',required=True,type=Path);args=parser.parse_args()\nS=args.sha;REPO=args.repo.resolve();OUT=args.out.resolve()",
+      "uniqueMatch": 1
+    },
+    {
+      "before": "geo323-original-three-suite-baseline-diagnostic/1",
+      "after": "geo323-original-three-suite-fixed-diagnostic/1",
+      "uniqueMatch": 1
+    },
+    {
+      "before": "candidate not applied",
+      "after": "candidate committed at specified source SHA; full v3 acceptance remains separate",
+      "uniqueMatch": 1
+    },
+    {
+      "before": "'candidate_applied':False",
+      "after": "'candidate_applied':True",
+      "uniqueMatch": 1
+    },
+    {
+      "before": "Baseline must remain clean exact public S",
+      "after": "Fixed source must remain clean exact specified SHA",
+      "uniqueMatch": 1
+    }
+  ],
+  "executionPerformed": false,
+  "sourceOrOwnerFilesModified": false,
+  "exitCode": 0,
+  "limitations": [
+    "Only static binding review against the already executed baseline driver; no future fixed SHA or dynamic acceptance is claimed.",
+    "The original launcher uses /tmp/geometry-tests and its logs; root must serialize against other jobs using that registry/cache. No new lock is inserted."
+  ]
+}
