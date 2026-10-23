@@ -21,6 +21,44 @@
 
 ## 1. 目前狀態
 
+### 1.0 2026-10-23 現況
+
+1.1 到 1.3 是 2026-10-21 的快照，留著。這一節是台北 2026-10-23 14:11 用 `gh` 讀到的。沒有重跑測試，沒有讀 evidence 目錄裡的 PROGRESS。本分支不要合併。
+
+GitHub `main` 是 `feb502d7`，也就是 [#334](https://github.com/ZhiQiYang/geometry-axiom/pull/334) 的 merge commit（mergedAt `2026-10-23T05:57:01Z`，台北 13:57:01）。
+
+已合併進 main：
+
+- [#326](https://github.com/ZhiQiYang/geometry-axiom/pull/326) `ed459c1b`，台北 2026-10-22 13:41:49。三種柱跨牆階接法都接受。該 PR 正文當時把第 3 種的懸空量留成待決。
+- [#328](https://github.com/ZhiQiYang/geometry-axiom/pull/328) `797575db`，13:48:44。兩案都合格時，原縫併料優先。#314 題 3 混合操作放行。題 4 刪後重建不延續例外。
+- [#329](https://github.com/ZhiQiYang/geometry-axiom/pull/329) `a7783f6c`，14:47:17。角材端面只能固定在角材上，不設懸空上限。正文寫這取代 #326 留下的懸空量。
+- [#330](https://github.com/ZhiQiYang/geometry-axiom/pull/330) `f6a15891`，14:54:09。柱貼牆與 13 mm 薄牆階的重畫圖，使用者確認可以。
+- [#332](https://github.com/ZhiQiYang/geometry-axiom/pull/332) `20329738`，16:37:53。#288 最終驗收改在雲端 Codex 試行。判準不變：同一個可解析最終 SHA、7 項加專項、逐項封存。雲端裝不起 Chrome 時，網頁 job 不得標為通過。
+- [#327](https://github.com/ZhiQiYang/geometry-axiom/pull/327) `4ccced59`，16:51:52。oracle 修正。正文寫沒有關閉 #318、#319。#308 仍是已知限制。
+- #334 `feb502d7`，台北 2026-10-23 13:57:01。同意 #318 照閱讀 A。實作等 #288 進 main，再走公理層、閱讀器、oracle／核心與正式驗收。
+
+[#288](https://github.com/ZhiQiYang/geometry-axiom/pull/288) 仍是 OPEN draft。head `2fe87ac4209d2847c5032d9535c963404bc39a42`（`2026-10-23T05:53:18Z`，`Publish GEO-261 native acceptance evidence`）。14:04 前的 `gh pr view`：mergeable 為 MERGEABLE，mergeStateStatus 為 UNSTABLE。最新審查是 [6352799614](https://github.com/ZhiQiYang/geometry-axiom/pull/288#issuecomment-6352799614)，對象 head `4b665fa`，結論阻擋合併。它不涵蓋 `2fe87ac`。審查記錄段的 F2 數字不記成目前 head 已通過。
+
+雲端交接 `0da1f08c`（`2026-10-22T08:17:48Z`）之前，整合分支上四次整份帳本重產是 `7dae5f21`、`a9cd1d9d`、`01e63145`、`0548c05c`。收據沒有打開。1.1 對 `7dae5f21` 的 canvas 紅燈不是這四次的總結論。文件沒有把它們編成「第 1 輪」到「第 4 輪」；這裡的四輪就是這四次提交。
+
+雲端審查序：`0da1f08`、`6d715fb`、`deda466`、`9535fcf`、`1682f35` 阻擋合併；`cea8873` 改完 2 項可合併；`408b52e` 改完 3 項可合併；`4b665fa` 又因為與當時的 main 衝突而阻擋。其後還有合入 main 的 `c1320a7a` 與目前 head，沒有新的審查留言。
+
+14:10 的 open PR 清單：
+
+| PR | 狀態 |
+|---|---|
+| #323 | OPEN draft。head `239040fd`。base 是整合分支。mergeable 為 CONFLICTING。這個 head 的留言沒讀。 |
+| #324 | OPEN draft。head `4e176e83`。base 是整合分支。審查的阻擋 1 已補。阻擋 2 沒做。不宣稱可合。 |
+| #325 | OPEN draft。head `c16f9255`。base 是 main。舊審查對 `8abc370` 說可合併，不沿用到這個 head。 |
+| #331 | OPEN draft。head `16801ae6`。base 是 main。審查還沒對這個 head 說可合。不改公理層。 |
+| #333 | OPEN draft。head `3d9bd947`。base 是 main。木工現場規則單頁。 |
+| #213 | OPEN draft。使用者自己處理。不碰。 |
+| #194 | OPEN draft。base 不是 main。 |
+
+寫入這一節之前，本分支 tip 是 `34108d89`。那兩顆提交的主旨是 issue #314 的草稿對齊，不是 #314 已經實作。
+
+仍待使用者決定的：雲端沒有 Chrome 時網頁 job 在哪跑；只剩一種壁柱排法合格時怎麼排；是否推翻 P-186／P-189；搜尋索引、`D:\t`、本機舊分支、WSL 磁碟、Actions 計費；#239 的發布方式；#213 要不要關。第 7 節是 10-21 的問法，和本節衝突時以本節為準。
+
 ### 1.1 GEO-261(PR #288)— 最優先
 
 - 整合分支 `architecture/geo261-integration-20261016`。**最終 SHA `7dae5f21c7ca401e660450d437e60ba566218da8`**,已包含:
