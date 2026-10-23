@@ -1,6 +1,6 @@
 {
   "schema": "geometry-product-architecture-receipt/1",
-  "headBinding": "三原裁判實際在P17乾淨Git source執行；本工具只讀來源，四產物寫repo外；HEAD/index/604raw-LF inputs前後不變。",
+  "headBinding": "三原裁判實際在ec8乾淨Git source執行；封存checkout是純evidence後續E，與ec8的604raw-LF/Git inputs逐項相同。本工具只讀來源，四產物寫repo外；真HEAD/index/inputs前後不變。",
   "hashMode": "sha256 after CRLF-to-LF normalization",
   "inputClosureHashSerialization": "SHA-256 of UTF-8 JSON for the path-sorted inputs array, with ensure_ascii=false and separators=(comma,colon); each entry has path then sha256, and no trailing newline.",
   "inputClosureExcludes": [
@@ -18,15 +18,15 @@
     "Windows supplemental probes",
     "new W lexicon completeness audit"
   ],
-  "createdUtc": "2026-10-23T18:58:10.618322+00:00",
-  "basis": "同P17真三裁判raw、原manifest、完整物理/Git/blob inventory，具名manifest0/1/0。",
-  "sourceBaseHead": "17b3576434ffd0833056668898e1fd1a8cc2d560",
-  "headObservedBefore": "17b3576434ffd0833056668898e1fd1a8cc2d560",
-  "headObservedAfter": "17b3576434ffd0833056668898e1fd1a8cc2d560",
+  "createdUtc": "2026-10-23T20:14:43.189613+00:00",
+  "basis": "同ec8真三裁判raw、原manifest、完整物理/Git/blob inventory；604closure等P17，manifest反證只沿P17原身份。",
+  "sourceBaseHead": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
+  "headObservedBefore": "a6072dde8eac809e93ccd9373946dea98fa5c362",
+  "headObservedAfter": "a6072dde8eac809e93ccd9373946dea98fa5c362",
   "manifestSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
-  "reportSha256": "032df92c593226e2777c3f079a1710424e67f79fce108e483acc06059b65a32e",
+  "reportSha256": "c1de6a1ac6a4a3f5fc14f885e18a6807941fb9e7e085c477bca2cc01fecf52e2",
   "inputClosureSha256": "6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338",
   "counts": {
     "executableFiles": 604,
@@ -52,7 +52,7 @@
   "scanPassed": true,
   "actualCliScan": {
     "command": [
-      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "python3",
       "-B",
       "tests/architecture_contract.py",
       "--root",
@@ -60,18 +60,18 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "/tmp/train337-323-f64d638f-source",
-    "acceptance_sha": "17b3576434ffd0833056668898e1fd1a8cc2d560",
-    "source_sha": "17b3576434ffd0833056668898e1fd1a8cc2d560",
-    "source_variant": "fixed-clean-P17-original-architecture",
+    "cwd": "/workspace/geometry-axiom",
+    "acceptance_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
+    "source_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
+    "source_variant": null,
     "environment": {
-      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+      "PATH": "/workspace/geo261-environment/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
       "LANG": "C.UTF-8",
       "LC_ALL": "C.UTF-8",
-      "PYTHONIOENCODING": "utf-8",
+      "PYTHONIOENCODING": null,
       "PYTHONDONTWRITEBYTECODE": "1",
       "PYTHONOPTIMIZE": null,
-      "TMPDIR": "/workspace/train337-architecture-original-17b35764/tmp",
+      "TMPDIR": null,
       "CC": null,
       "CFLAGS": null,
       "CPPFLAGS": null,
@@ -83,13 +83,13 @@
       "GCC_EXEC_PREFIX": null,
       "COMPILER_PATH": null
     },
-    "started_epoch": 1792781494.8241699,
+    "started_epoch": 1792786098.0269606,
     "stdin_provided": false,
     "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "actual_process_returncode": 0,
     "timeout_expired": false,
-    "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000007",
-    "ended_epoch": 1792781500.1272697,
+    "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000004",
+    "ended_epoch": 1792786103.4337716,
     "stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "stdout_bytes": 132559,
@@ -99,18 +99,18 @@
   "validation": [
     {
       "command": "python -B tests/test_architecture_contract.py",
-      "cwd": "/tmp/train337-323-f64d638f-source",
-      "acceptance_sha": "17b3576434ffd0833056668898e1fd1a8cc2d560",
-      "source_sha": "17b3576434ffd0833056668898e1fd1a8cc2d560",
-      "source_variant": "fixed-clean-P17-original-architecture",
+      "cwd": "/workspace/geometry-axiom",
+      "acceptance_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
+      "source_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
+      "source_variant": null,
       "environment": {
-        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "PATH": "/workspace/geo261-environment/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
-        "PYTHONIOENCODING": "utf-8",
+        "PYTHONIOENCODING": null,
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/workspace/train337-architecture-original-17b35764/tmp",
+        "TMPDIR": null,
         "CC": null,
         "CFLAGS": null,
         "CPPFLAGS": null,
@@ -122,15 +122,15 @@
         "GCC_EXEC_PREFIX": null,
         "COMPILER_PATH": null
       },
-      "started_epoch": 1792781500.1283245,
+      "started_epoch": 1792786103.4346282,
       "stdin_provided": false,
       "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "actual_process_returncode": 0,
       "timeout_expired": false,
-      "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000008",
-      "ended_epoch": 1792781500.7276633,
+      "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000005",
+      "ended_epoch": 1792786104.0101807,
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "51a7e2828cf390380bab3b31dd03d830da6c9b10eae28cb59e2ea98a8c1472a2",
+      "stderr_sha256": "ce143b901efef3e9505d46c78a09259ebb6f541e7c404dc9ae0d400d17b043a3",
       "stdout_bytes": 0,
       "stderr_bytes": 29577,
       "exitCode": 0,
@@ -138,22 +138,22 @@
       "passed": 205,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 0.479
+      "unittestSeconds": 0.451
     },
     {
       "command": "python -B tests/test_product_architecture.py",
-      "cwd": "/tmp/train337-323-f64d638f-source",
-      "acceptance_sha": "17b3576434ffd0833056668898e1fd1a8cc2d560",
-      "source_sha": "17b3576434ffd0833056668898e1fd1a8cc2d560",
-      "source_variant": "fixed-clean-P17-original-architecture",
+      "cwd": "/workspace/geometry-axiom",
+      "acceptance_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
+      "source_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
+      "source_variant": null,
       "environment": {
-        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "PATH": "/workspace/geo261-environment/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
-        "PYTHONIOENCODING": "utf-8",
+        "PYTHONIOENCODING": null,
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/workspace/train337-architecture-original-17b35764/tmp",
+        "TMPDIR": null,
         "CC": null,
         "CFLAGS": null,
         "CPPFLAGS": null,
@@ -165,15 +165,15 @@
         "GCC_EXEC_PREFIX": null,
         "COMPILER_PATH": null
       },
-      "started_epoch": 1792781500.7284143,
+      "started_epoch": 1792786104.010679,
       "stdin_provided": false,
       "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "actual_process_returncode": 0,
       "timeout_expired": false,
-      "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000009",
-      "ended_epoch": 1792781512.5170002,
+      "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000006",
+      "ended_epoch": 1792786114.8876753,
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "af0f5f5cf187f685d8b24b038a5df5fe8cacdd07230ef50b9055594677026a1f",
+      "stderr_sha256": "72b08366ed77da6f8b06300503b2b95c0423b0fe4b7aca29b5dd23332f6f7618",
       "stdout_bytes": 0,
       "stderr_bytes": 118,
       "exitCode": 0,
@@ -181,7 +181,7 @@
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 11.69
+      "unittestSeconds": 10.764
     }
   ],
   "inputs": [
@@ -2613,50 +2613,61 @@
         "lfSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
       },
       "product-architecture-scan.json": {
-        "bytes": 132208,
-        "rawSha256": "9e924203fb212059d4d52aa69cbac8bb30171fb566e6c2c657990beeff601663",
-        "lfSha256": "9e924203fb212059d4d52aa69cbac8bb30171fb566e6c2c657990beeff601663"
+        "bytes": 132559,
+        "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+        "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
       },
       "PRODUCT-ARCHITECTURE.md": {
-        "bytes": 39483,
-        "rawSha256": "eb0b00e2eded9451831ac1ba2c34460cc29d77b3ae468fd76d1b5043e3e75994",
-        "lfSha256": "eb0b00e2eded9451831ac1ba2c34460cc29d77b3ae468fd76d1b5043e3e75994"
+        "bytes": 40338,
+        "rawSha256": "032df92c593226e2777c3f079a1710424e67f79fce108e483acc06059b65a32e",
+        "lfSha256": "032df92c593226e2777c3f079a1710424e67f79fce108e483acc06059b65a32e"
       },
       "product-architecture-receipt.json": {
-        "bytes": 2627780,
-        "rawSha256": "cb8deba6e128eb7e2a85f9aa5d7cbae13fd1df654e02783cb026361e1ab23f40",
-        "lfSha256": "cb8deba6e128eb7e2a85f9aa5d7cbae13fd1df654e02783cb026361e1ab23f40"
+        "bytes": 117271,
+        "rawSha256": "753b7af3948ec29c878d8291f1527bdc0fd7281522cec7a2d6b976a50577fbb8",
+        "lfSha256": "753b7af3948ec29c878d8291f1527bdc0fd7281522cec7a2d6b976a50577fbb8"
       }
     },
-    "sourceReceiptEvidenceDirectory": "/workspace/train337-architecture-original-17b35764",
+    "sourceReceiptEvidenceDirectory": "/tmp/train337-ec8e0d7e-impact-gates",
     "originalThreeGateExits": [
       0,
       0,
       0
     ],
-    "manifestProof": [
-      {
-        "phase": "baseline",
-        "exit": 0,
-        "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000007"
-      },
-      {
-        "phase": "withdrawn",
-        "exit": 1,
-        "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000010"
-      },
-      {
-        "phase": "restored",
-        "exit": 0,
-        "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000011"
-      }
-    ],
+    "manifestProof": [],
+    "inheritedManifestProof": {
+      "executionSha": "17b3576434ffd0833056668898e1fd1a8cc2d560",
+      "proof": [
+        {
+          "phase": "baseline",
+          "exit": 0,
+          "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000007"
+        },
+        {
+          "phase": "withdrawn",
+          "exit": 1,
+          "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000010"
+        },
+        {
+          "phase": "restored",
+          "exit": 0,
+          "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000011"
+        }
+      ],
+      "originalExits": [
+        0,
+        1,
+        0
+      ],
+      "executedAtCurrentHead": false,
+      "basis": "完整604 LF closure、manifest、三judge bytes、原scanstdout均與P17相同；P17原streams已核hash。"
+    },
     "originalReceiptRawRows": [
       {
-        "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000007",
-        "resultSha256": "f2808cc6c0d32bfc9d82a581194ed5bed0f676d68127a04191dec27060442c80",
+        "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000004",
+        "resultSha256": "98437b59d8e6df506f5a1091980029fc4c4facda6fb220bbed9d53b1ad16da93",
         "command": [
-          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "python3",
           "-B",
           "tests/architecture_contract.py",
           "--root",
@@ -2667,69 +2678,27 @@
         "actualExit": 0
       },
       {
-        "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000008",
-        "resultSha256": "af9f40e449983c28fb7c91bb1bc992e814b5f5f617346ec5105e2fa15d4505b6",
+        "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000005",
+        "resultSha256": "2ed091f538f3d5de38897dc2e11bcd6f45d73696df6ea44c7ce9a772a5092d74",
         "command": [
-          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "python3",
           "-B",
           "tests/test_architecture_contract.py"
         ],
         "actualExit": 0
       },
       {
-        "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000009",
-        "resultSha256": "dbc091be1c661f2a4be1e34f3c45227786c53c99ef6d0c357ffc5ec22a3f22f5",
+        "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000006",
+        "resultSha256": "ec5d00b962bdd5c6f0a6afdc7d551b7c57f8525a12249a58a87b534fdb085ac7",
         "command": [
-          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "python3",
           "-B",
           "tests/test_product_architecture.py"
         ],
         "actualExit": 0
-      },
-      {
-        "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000007",
-        "resultSha256": "f2808cc6c0d32bfc9d82a581194ed5bed0f676d68127a04191dec27060442c80",
-        "command": [
-          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-          "-B",
-          "tests/architecture_contract.py",
-          "--root",
-          ".",
-          "--manifest",
-          "geometry-core/domain-decoupling/product-architecture.json"
-        ],
-        "actualExit": 0
-      },
-      {
-        "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000010",
-        "resultSha256": "763df798a50da570aa86cebee6e30bb39dc2429634baee1c4f0fc747bb97f071",
-        "command": [
-          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-          "-B",
-          "tests/architecture_contract.py",
-          "--root",
-          ".",
-          "--manifest",
-          "/workspace/train337-architecture-original-17b35764/withdrawn-product-architecture.json"
-        ],
-        "actualExit": 1
-      },
-      {
-        "directory": "/workspace/train337-architecture-original-17b35764/subcommands/000011",
-        "resultSha256": "c2ff401ca8a5ce8d19dae8ec09087492a69fff86d5a3334b9d5db46950eb6435",
-        "command": [
-          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-          "-B",
-          "tests/architecture_contract.py",
-          "--root",
-          ".",
-          "--manifest",
-          "geometry-core/domain-decoupling/product-architecture.json"
-        ],
-        "actualExit": 0
       }
     ],
-    "note": "current P17 manifest已由root採納；舊F64stale1/0/5不是本P前置判決。"
+    "note": "ec8原三條0/0/0；manifest不改，P17反證保原SHA；兩變動test不在604架構inventory。"
   },
   "completeInventoryVerification": {
     "sourceRoots": [
@@ -2766,23 +2735,25 @@
   },
   "nativeAcceptance": "另取原收據，本四檔不代稱產品native綠。",
   "refreshDriver": {
-    "bytes": 16488,
-    "rawSha256": "0b0aed4ad4a7316606730fa455ac96196f2a22ad67a3e09d3c053e4b1fb659be",
-    "lfSha256": "0b0aed4ad4a7316606730fa455ac96196f2a22ad67a3e09d3c053e4b1fb659be",
-    "path": "/tmp/geo337-linux-generation-prep/seal_four_linux_p17.py",
+    "bytes": 21071,
+    "rawSha256": "50ac2685e66f9d153947125c32899e52a126e88db9f69271a390ced733b392ce",
+    "lfSha256": "50ac2685e66f9d153947125c32899e52a126e88db9f69271a390ced733b392ce",
+    "path": "/tmp/geo337-linux-generation-ec8/seal_four_linux_ec8.py",
     "argv": [
-      "/tmp/geo337-linux-generation-prep/seal_four_linux_p17.py",
+      "/tmp/geo337-linux-generation-ec8/seal_four_linux_ec8.py",
       "--repo",
-      "/tmp/train337-323-f64d638f-source",
+      "/workspace/geometry-axiom",
       "--sha",
-      "17b3576434ffd0833056668898e1fd1a8cc2d560",
+      "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
+      "--checkout-head",
+      "a6072dde8eac809e93ccd9373946dea98fa5c362",
       "--evidence",
-      "/workspace/train337-architecture-original-17b35764",
+      "/tmp/train337-ec8e0d7e-impact-gates",
       "--out",
-      "/workspace/train337-architecture-four-17b35764"
+      "/tmp/train337-architecture-four-ec8e0d7e"
     ],
     "recorderSha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
-    "runDirectory": "/workspace/train337-architecture-four-17b35764"
+    "runDirectory": "/tmp/train337-architecture-four-ec8e0d7e"
   },
   "environment": {
     "safeVariables": {
