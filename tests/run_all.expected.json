@@ -8,7 +8,7 @@
     },
     "core:run_tests": {
       "mode": "count",
-      "count": 165,
+      "count": 166,
       "unit": "場景"
     },
     "mutation:check": {
@@ -329,7 +329,7 @@
     },
     "py:test_geo261_contact_sources": {
       "mode": "count",
-      "count": 13,
+      "count": 15,
       "unit": "test"
     },
     "py:test_geo261_default_native": {
@@ -454,7 +454,7 @@
     },
     "py:test_geo261_host_facts_authority": {
       "mode": "count",
-      "count": 19,
+      "count": 22,
       "unit": "test"
     },
     "py:test_geo261_host_history": {
@@ -662,6 +662,11 @@
       "count": 14,
       "unit": "test"
     },
+    "py:test_geo261_load_residual": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
     "py:test_geo261_staged_candidate_graph": {
       "mode": "count",
       "count": 7,
@@ -684,7 +689,7 @@
     },
     "py:test_geo261_wood_contact_world": {
       "mode": "count",
-      "count": 10,
+      "count": 9,
       "unit": "test"
     },
     "py:test_geo261_wood_contacts": {
@@ -719,7 +724,7 @@
     },
     "py:test_geo261_wood_grid_application": {
       "mode": "count",
-      "count": 11,
+      "count": 23,
       "unit": "test"
     },
     "py:test_geo261_wood_grid_cells": {
@@ -894,8 +899,8 @@
     },
     "py:test_mutation_freshness": {
       "mode": "count",
-      "unit": "test",
-      "count": 73
+      "count": 74,
+      "unit": "test"
     },
     "py:test_panel_fill_finish_surface": {
       "mode": "count",
@@ -1106,6 +1111,31 @@
       "mode": "count",
       "count": 6,
       "unit": "test"
+    },
+    "py:test_geo314_stagger_commit": {
+      "mode": "count",
+      "count": 47,
+      "unit": "test"
+    },
+    "py:test_geo314_commit_paths": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo314_ordered_facts": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo318_reading_a_oracle": {
+      "mode": "count",
+      "count": 13,
+      "unit": "unittest"
+    },
+    "py:test_geo318_reading_a_native": {
+      "mode": "count",
+      "count": 7,
+      "unit": "unittest"
     }
   }
 }

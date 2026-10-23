@@ -1,0 +1,682 @@
+{
+  "archive": "canvas-01.tar.gz",
+  "bytes": 2918446,
+  "sha256": "6569bfc994221a1b8c3ab8bef93235f432c1604261c3249b3fa97251c3582002",
+  "members": [
+    {
+      "path": "context/run-context.json",
+      "bytes": 1141,
+      "sha256": "32ba8d014f72229bb3704ab51c834e7d482425961498d059b3163ec3b19b8fae"
+    },
+    {
+      "path": "frozen-tools/publish_followup_progress.py",
+      "bytes": 6124,
+      "sha256": "c2fdeb5eb9174549c5a80726bdd37266b22f0f75ff94d744fdc82c0f384a14d2"
+    },
+    {
+      "path": "frozen-tools/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "frozen-tools/run_acceptance_seven_configured.py",
+      "bytes": 9438,
+      "sha256": "03e4c182cad40b6abd7dae52a8c8af43c5ffe90f2d38ae62e21be2f518b54d83"
+    },
+    {
+      "path": "frozen-tools/run_followup_browser_jobs.py",
+      "bytes": 6872,
+      "sha256": "6053a7291c90c67b8f3706d3733f634e93e549e8312bb9187209be78eb2360a1"
+    },
+    {
+      "path": "frozen-tools/run_workflow_round.py",
+      "bytes": 20021,
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "path": "job/artifacts/04/geometry-wait-trace-artifact/receipt.json",
+      "bytes": 404,
+      "sha256": "79d5ff1c27165dbc1d6bbaf6e05a293edcfcbf345fe4770463e1c9148c69ba23"
+    },
+    {
+      "path": "job/artifacts/06/grid-trial-desktop.png",
+      "bytes": 100476,
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b"
+    },
+    {
+      "path": "job/artifacts/06/grid-trial-mobile-alignment.png",
+      "bytes": 57241,
+      "sha256": "0615c4d12203ad9eb07e96d318e2170c78b9f4605b6144c2d9f111d4f39bc6da"
+    },
+    {
+      "path": "job/artifacts/06/grid-trial-mobile-canvas.png",
+      "bytes": 52399,
+      "sha256": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8"
+    },
+    {
+      "path": "job/artifacts/06/grid-trial-mobile-controls.png",
+      "bytes": 47196,
+      "sha256": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543"
+    },
+    {
+      "path": "job/driver.py.txt",
+      "bytes": 20021,
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "path": "job/receipt.json",
+      "bytes": 29671,
+      "sha256": "d48325a4d0cf04ed221a65dbfd5a71c7b5d733305bac51c1fa78855629bb8c9b"
+    },
+    {
+      "path": "job/receipt.sha256",
+      "bytes": 79,
+      "sha256": "bf330173ff3a48fd7218ddb520ef37c9ff5bb1e29447e2f0eca9d6f1f2ecac82"
+    },
+    {
+      "path": "job/steps/01.combined.log",
+      "bytes": 1221,
+      "sha256": "df552fb395f72b555c3b2eb2e12466078dc8aa19b95fafae0bc27a4118757d96"
+    },
+    {
+      "path": "job/steps/01.command.json",
+      "bytes": 621,
+      "sha256": "171cb8045a491e57fa15b24f932a9c50d0156235039eae438b52365dac686f42"
+    },
+    {
+      "path": "job/steps/01.executed.sh",
+      "bytes": 14,
+      "sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef"
+    },
+    {
+      "path": "job/steps/01.original.sh.txt",
+      "bytes": 13,
+      "sha256": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054"
+    },
+    {
+      "path": "job/steps/01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/01.stdout",
+      "bytes": 1221,
+      "sha256": "df552fb395f72b555c3b2eb2e12466078dc8aa19b95fafae0bc27a4118757d96"
+    },
+    {
+      "path": "job/steps/02-package-0.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/steps/02-package-0.command.json",
+      "bytes": 643,
+      "sha256": "22014215ce064840a8acf9a07b8a5c4b1fce5b709a7a01e335fd0b6edc615642"
+    },
+    {
+      "path": "job/steps/02-package-0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/02-package-0.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/steps/02.executed.sh",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "job/steps/02.original.sh.txt",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "job/steps/03.combined.log",
+      "bytes": 485078,
+      "sha256": "80d7860c647b5dd910958d6c83b9a2e66bf1ab62ca1c7b2de9906562ef4382b8"
+    },
+    {
+      "path": "job/steps/03.command.json",
+      "bytes": 670,
+      "sha256": "8898fb3756b1f537f55456be9d87fd389bb955ed6904a9197886bdf639fdbe8a"
+    },
+    {
+      "path": "job/steps/03.executed.sh",
+      "bytes": 2292,
+      "sha256": "3cde79c4a28f8fe4f203a15cae5355005641f87ca743970573ec7ab97073b9a3"
+    },
+    {
+      "path": "job/steps/03.original.sh.txt",
+      "bytes": 2184,
+      "sha256": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f"
+    },
+    {
+      "path": "job/steps/03.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/03.stdout",
+      "bytes": 485078,
+      "sha256": "80d7860c647b5dd910958d6c83b9a2e66bf1ab62ca1c7b2de9906562ef4382b8"
+    },
+    {
+      "path": "job/versions/0.combined.log",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "job/versions/0.command.json",
+      "bytes": 572,
+      "sha256": "d47975f5ca23a4639532b1e2b6252411e1b1d400eebd7b2b97d1ce8b56f55eec"
+    },
+    {
+      "path": "job/versions/0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/0.stdout",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "job/versions/1.combined.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "job/versions/1.command.json",
+      "bytes": 565,
+      "sha256": "8b2e73a6dc719ad2761b2c2095b21f83f46c3335b99c6d32500cd9f29497083b"
+    },
+    {
+      "path": "job/versions/1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/1.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "job/versions/2.combined.log",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "job/versions/2.command.json",
+      "bytes": 569,
+      "sha256": "9921bda8a6cfe140256c88092761e746dde1c2a03a46a2cf7842b90bdecae333"
+    },
+    {
+      "path": "job/versions/2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/2.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "job/versions/3.combined.log",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "job/versions/3.command.json",
+      "bytes": 563,
+      "sha256": "691633e7c004fe421e1b4cd90cd8a04fd58209baddf46f1da327bf10cd35d027"
+    },
+    {
+      "path": "job/versions/3.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/3.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "job/versions/4.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/versions/4.command.json",
+      "bytes": 619,
+      "sha256": "482b77f73498721c36a14ae5865d300bc096b68e00ddb679861e54789d15ed3f"
+    },
+    {
+      "path": "job/versions/4.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/4.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/workflow.yml.txt",
+      "bytes": 6854,
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d"
+    },
+    {
+      "path": "job-temp/engineering-run-pwDJ20/grid-entry-roundtrip.json",
+      "bytes": 67662,
+      "sha256": "cfdbf7ebde72ffd68bc14d6d6d18f7ecfa03cffffe9b16ca60dd7abc65475926"
+    },
+    {
+      "path": "job-temp/engineering-run-pwDJ20/grid-entry-tBEw7c/未命名專案.gcanvas",
+      "bytes": 4637,
+      "sha256": "d6fa9a43b123fa87540d9628de42eb79ac6a02541e5072daf4b50152272117df"
+    },
+    {
+      "path": "job-temp/engineering-run-pwDJ20/roundtrip-after.json",
+      "bytes": 43475,
+      "sha256": "d42fe0a6c98557714b46c249494f0a4bc3e2980f944d010054dd9bf2abb46405"
+    },
+    {
+      "path": "job-temp/engineering-run-pwDJ20/roundtrip-before.json",
+      "bytes": 43475,
+      "sha256": "ae3d2f8f5a9fe0a03d1780af0ea9347bde2465dd6beda8c17bf1a1e2710259b1"
+    },
+    {
+      "path": "job-temp/engineering-run-pwDJ20/roundtrip-comparison.json",
+      "bytes": 11599,
+      "sha256": "54c0cd384afe8b1c205d027085e97c5b9121c5e8650739a3e1ba6f8a79eab8dc"
+    },
+    {
+      "path": "job-temp/engineering-run-pwDJ20/工程規格-做法包.json",
+      "bytes": 2740,
+      "sha256": "103371cd5bdb5f3220b4fb4c5f37cd11eee612e8e4924406c91d170cae72e216"
+    },
+    {
+      "path": "job-temp/engineering-run-pwDJ20/未命名專案.gcanvas",
+      "bytes": 9074,
+      "sha256": "87ea53e26a8b26a2e5faa13e928c22b672ac24eafb104221ef1f6e206982bb54"
+    },
+    {
+      "path": "job-temp/geometry-composition-save-AVmL10/未命名專案.gcanvas",
+      "bytes": 971,
+      "sha256": "da289c9f84b568e5df1ba052f1003dbeb1c0eb04369cd111a5f116b0afe32658"
+    },
+    {
+      "path": "job-temp/geometry-grid-rename-UjoZvE/未命名專案.gcanvas",
+      "bytes": 4856,
+      "sha256": "090e8ab048bfab4da55edf131125150a20cc66ed9f3b7d9d7952ce5435954f9b"
+    },
+    {
+      "path": "job-temp/geometry-grid-screens/grid-trial-desktop.png",
+      "bytes": 100476,
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b"
+    },
+    {
+      "path": "job-temp/geometry-grid-screens/grid-trial-mobile-alignment.png",
+      "bytes": 57241,
+      "sha256": "0615c4d12203ad9eb07e96d318e2170c78b9f4605b6144c2d9f111d4f39bc6da"
+    },
+    {
+      "path": "job-temp/geometry-grid-screens/grid-trial-mobile-canvas.png",
+      "bytes": 52399,
+      "sha256": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8"
+    },
+    {
+      "path": "job-temp/geometry-grid-screens/grid-trial-mobile-controls.png",
+      "bytes": 47196,
+      "sha256": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543"
+    },
+    {
+      "path": "job-temp/geometry-grid-screens/infinite-binding-hole.png",
+      "bytes": 98584,
+      "sha256": "ec21c5a8ac67e163d1259e5dce35120d5d9a202cdfd64e5e46082514af4aeb57"
+    },
+    {
+      "path": "job-temp/geometry-grid-screens/infinite-grid-mobile.png",
+      "bytes": 41108,
+      "sha256": "b6ef612ba87baf2ecb3696d7c383a43b9c117508099d2763642d7ac218281a05"
+    },
+    {
+      "path": "job-temp/geometry-grid-screens/infinite-source-desktop.png",
+      "bytes": 88422,
+      "sha256": "d33160d3d3174230e905370fd0232c78cc124432e2dc8064a6132a7d27b00245"
+    },
+    {
+      "path": "job-temp/geometry-infinite-grid-download-KPHj7m/infinite-grid-roundtrip.json",
+      "bytes": 72053,
+      "sha256": "e38d134efe14fea64408d6c8fbc384eab4725591e6c1d2e7c7bf6dc747187dbc"
+    },
+    {
+      "path": "job-temp/geometry-infinite-grid-download-KPHj7m/未命名專案.gcanvas",
+      "bytes": 2739,
+      "sha256": "6f3cb0bd93f9ff45864617b6f9fab88f3de8f5517dea9417b4f30bc1c245caa2"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-001/events.jsonl",
+      "bytes": 89493,
+      "sha256": "e709387a97643e234d5ac18bf0a35efa9b0710aa32253259f89d39340afdd45a"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-001/meta.json",
+      "bytes": 1274,
+      "sha256": "8680633be746ddebada2008781ccbe685341c314ee73816319f6fb35d2b2421e"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-001/page.html",
+      "bytes": 373191,
+      "sha256": "e4833d37a7d984dc41f41fd7b5d2ea6cbad9575d8115cffae7463ee261dde1ae"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-001/report.md",
+      "bytes": 2925,
+      "sha256": "f20f714b9fe666a17f0e6da8934d53011b86e5410761b578fcd888f096cd98c1"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-001/world.scene",
+      "bytes": 552,
+      "sha256": "4414ddc1858259f09fedebd7644beff3031b85b89c297be1bfb384cda0aefcb1"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-002/events.jsonl",
+      "bytes": 89738,
+      "sha256": "68806af22a2940fecbde146d93eb6cd18e32bf744f46c82b6e810327b8cbbc2f"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-002/meta.json",
+      "bytes": 1135,
+      "sha256": "89e180ce61a6f009da1c0dfb66e95854913143cf0f357cf45899e5c805eef4ff"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-002/page.html",
+      "bytes": 372794,
+      "sha256": "035af30f2b15d679007218b348edcc5e3f0c2a6fae7b6e1e59c974f637260a70"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-002/report.md",
+      "bytes": 3156,
+      "sha256": "240fb45bfdaebe244ba4d536da625d1462287f9ffa0101503daca174ae865a8b"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-002/world.scene",
+      "bytes": 552,
+      "sha256": "4414ddc1858259f09fedebd7644beff3031b85b89c297be1bfb384cda0aefcb1"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-003/events.jsonl",
+      "bytes": 1838,
+      "sha256": "b7d15af1c5e971d2c25acc4b25cfc4dfe4389eda11a1aea48921b38707bef4db"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-003/meta.json",
+      "bytes": 1133,
+      "sha256": "0d9c5d06235043a0836f2fef31a8db679483d19897ef45e1d846c314a40bc1f9"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-003/page.html",
+      "bytes": 312448,
+      "sha256": "9d22937f0a4814b08607fa0ae85290580c6a43f49a08f6ab575b9b61f34073b8"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/F-20261023-003/report.md",
+      "bytes": 1848,
+      "sha256": "95fc1cb83c7139fb67a9883721d8dab1d34dd22b8fef8d99ad709e03c565b88e"
+    },
+    {
+      "path": "job-temp/geometry-integration-feedback/INBOX.md",
+      "bytes": 707,
+      "sha256": "0965cf31ee954a64d4ca75c3896c9da00054692d41cf8bd72d803298f9dfee7f"
+    },
+    {
+      "path": "job-temp/geometry-integration-server.log",
+      "bytes": 243209,
+      "sha256": "595edd19d388574a6800178615f19c3547bd9418f233f2fa681e9ebbf3e9d05f"
+    },
+    {
+      "path": "job-temp/geometry-p83-download-d3p6HT/export-2UbEkj/model-snapshot-b47a4fd5-2de2-4233-8a03-d16bf9885ba6.csv",
+      "bytes": 3366,
+      "sha256": "f61374c8f070eccbc4d17cea7d2c9badced68d0464f38e52a7f131d381660051"
+    },
+    {
+      "path": "job-temp/geometry-p83-download-d3p6HT/export-2ojVLD/model-snapshot-b47a4fd5-2de2-4233-8a03-d16bf9885ba6.csv",
+      "bytes": 3366,
+      "sha256": "0ba81496d120426d26343e7dac108c2a3ee05f7d30051ce8a8c8142be0b2116c"
+    },
+    {
+      "path": "job-temp/geometry-p83-download-d3p6HT/export-FFXszJ/model-snapshot-b47a4fd5-2de2-4233-8a03-d16bf9885ba6.csv",
+      "bytes": 3372,
+      "sha256": "3ba10862d46fe14e38e4270d3556952c3386d9cd510615dd4c707db595153780"
+    },
+    {
+      "path": "job-temp/geometry-p83-download-d3p6HT/export-kbcbOn/model-snapshot-b47a4fd5-2de2-4233-8a03-d16bf9885ba6.csv",
+      "bytes": 3372,
+      "sha256": "8ec165a81906345ddd041f9abbc9f9b7c396c0c92dc7a1cf4bb9410e411ed970"
+    },
+    {
+      "path": "job-temp/geometry-p83-download-d3p6HT/export-lfJGg8/model-snapshot-b47a4fd5-2de2-4233-8a03-d16bf9885ba6.csv",
+      "bytes": 3372,
+      "sha256": "3ba10862d46fe14e38e4270d3556952c3386d9cd510615dd4c707db595153780"
+    },
+    {
+      "path": "job-temp/geometry-p83-download-d3p6HT/export-ueNLBn/model-snapshot-b47a4fd5-2de2-4233-8a03-d16bf9885ba6.csv",
+      "bytes": 3372,
+      "sha256": "3ba10862d46fe14e38e4270d3556952c3386d9cd510615dd4c707db595153780"
+    },
+    {
+      "path": "job-temp/geometry-p86-download-0AqjU8/model-snapshot-b47a4fd5-2de2-4233-8a03-d16bf9885ba6.csv",
+      "bytes": 3372,
+      "sha256": "3ba10862d46fe14e38e4270d3556952c3386d9cd510615dd4c707db595153780"
+    },
+    {
+      "path": "job-temp/geometry-rule-editor-8OaMT1/rule-editor-roundtrip.json",
+      "bytes": 4283,
+      "sha256": "f4f7929f003ecbf4d591152da8accd8321daadfabe8f9ba0fdba18fae4ca6114"
+    },
+    {
+      "path": "job-temp/geometry-rule-editor-8OaMT1/未命名專案.gcanvas",
+      "bytes": 2082,
+      "sha256": "2f17a2627e8e05559af99ee055a348f13a61b31d460bbd2cecb1fed66832dad4"
+    },
+    {
+      "path": "job-temp/geometry-rule-editor-QeIPto/rule-editor-roundtrip.json",
+      "bytes": 4109,
+      "sha256": "fbdbbec40b9753b6ce8b1b28ed06653cb7f30b2a0412c4c873a0e6dbe0cb6466"
+    },
+    {
+      "path": "job-temp/geometry-rule-editor-QeIPto/未命名專案.gcanvas",
+      "bytes": 1923,
+      "sha256": "98bece2e6d4a9afc0022a745dce1f3a1c4acb727f2cf7a5897158788d2ded849"
+    },
+    {
+      "path": "job-temp/geometry-rule-editor-ct7TJK/未命名專案.gcanvas",
+      "bytes": 1716,
+      "sha256": "cb84740c35f5f6903767bf4a7298788be0b49b78388cfee1f8798964cac8dbbd"
+    },
+    {
+      "path": "job-temp/geometry-rule-editor-mNEilD/未命名專案.gcanvas",
+      "bytes": 1714,
+      "sha256": "bb61ec03f5e373a5974c452c573e10c37d53ad8e15ea82470c20273c2004e5dc"
+    },
+    {
+      "path": "job-temp/geometry-rule-lines-PRMBgB/rule-lines-receipt.json",
+      "bytes": 4183,
+      "sha256": "a2ea1459b3ff4a60d283c69ac355aa6766c2974b48e7db20631636e4d72e11b8"
+    },
+    {
+      "path": "job-temp/geometry-rule-lines-PRMBgB/未命名專案.gcanvas",
+      "bytes": 3343,
+      "sha256": "59ef4879f9ace2668e10ab07ea37993a3ba932af23b4b44e472a470be717665c"
+    },
+    {
+      "path": "job-temp/geometry-rule-lines-Wrt11s/rule-lines-receipt.json",
+      "bytes": 4208,
+      "sha256": "7ac7980a827e9bf0638381b9aa9e5a386041d6145a7cbc91e186ba26a26b7d7e"
+    },
+    {
+      "path": "job-temp/geometry-rule-lines-Wrt11s/未命名專案.gcanvas",
+      "bytes": 3367,
+      "sha256": "866bd2cea7bb37633cad52d94ce89dc2898073df90086f991f8be2ae79b66fa5"
+    },
+    {
+      "path": "job-temp/geometry-source-navigation-829823/canvas.png",
+      "bytes": 150345,
+      "sha256": "d66a6aeed6c58ec4d2523a734b3472d5dacfb2a3aa06ebc98f892e5f795fd2d8"
+    },
+    {
+      "path": "job-temp/geometry-source-navigation-829823/mobile.png",
+      "bytes": 89751,
+      "sha256": "e03c95bb7af7909299720c04870728d0dfdeecea5365a44aadfa893be75671f7"
+    },
+    {
+      "path": "job-temp/geometry-source-navigation-829823/open10.png",
+      "bytes": 158576,
+      "sha256": "c81a415a32f26741bce31bdb0f87cf78c95153d126839b9a6dc79ac9c69f9b46"
+    },
+    {
+      "path": "job-temp/geometry-source-navigation-829823/zero.png",
+      "bytes": 169191,
+      "sha256": "cc0afd0486c35485d54d6c1575406cd7e1d9cc6818463662957bc079f9334ca5"
+    },
+    {
+      "path": "job-temp/geometry-support-screens-829823/support-desktop.png",
+      "bytes": 180407,
+      "sha256": "6651bd2e43fff65e8fe2f5e7b39bb186296b8c3d3f494ec7a584143770e55b62"
+    },
+    {
+      "path": "job-temp/geometry-support-screens-829823/support-mobile.png",
+      "bytes": 77619,
+      "sha256": "62ff77b0b1658fdff007f1001703c28141cf9b77ed6bd7f600f6b158e669eb8d"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-blank-390.png",
+      "bytes": 51123,
+      "sha256": "588a864b263f142354c19f4d64389c8c1e141003e2b51db7aaf94a28c96c2df4"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-desktop.png",
+      "bytes": 92421,
+      "sha256": "5adab1037173336534961da80b364abcbbc4df13bda2fa309af4d0914cb1e780"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-generation-g07-before.gcanvas",
+      "bytes": 5203,
+      "sha256": "a902f504079043fee4751e01a626bb4e38158414f2145fde6a762f2cab807bfa"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-generation-g07-before.json",
+      "bytes": 1874,
+      "sha256": "fe3dab5ac452fb38f102ed5e4c1e5cd26e7550745ef66d6452779c5b2a457ab0"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-generation-mobile.png",
+      "bytes": 41061,
+      "sha256": "e5a70a710eb6cff2a7bf7eba209e266471f41e19b87f8812d2b8bf3df828d40b"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-mobile.png",
+      "bytes": 39267,
+      "sha256": "b30979a02006993b3c6c336425cfc9433b2e4568d9d8f451914419f5d4c6336d"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-review-glyphs-390.png",
+      "bytes": 32646,
+      "sha256": "fbc4b67012ee4e9c1f98b76f342ee172967055671f0557f57c2403d4068b1bea"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-review-glyphs-desktop.png",
+      "bytes": 88393,
+      "sha256": "7c8c0f5f6c3abd328f6cbfa7476d350119072562504c22d6cf94fad7ca3bc953"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-review-glyphs-max-zoom-390.png",
+      "bytes": 48064,
+      "sha256": "00a03e22f6c26aa179dfcfbb4c3057f84e175282c3b146e6457cf3752b9b81cd"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-review-sources-390.png",
+      "bytes": 51734,
+      "sha256": "69ae07d52ecd36b93e5a018ccedb91f2f976d966c79a75739c1b86516760594b"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-review-sources-desktop.png",
+      "bytes": 90191,
+      "sha256": "2ae9c57c47eee29f5329347578429a2260e671229b6647d301a2d80891a2d8b8"
+    },
+    {
+      "path": "job-temp/geometry-tests/cdp-829823/phase1-shell.png",
+      "bytes": 93161,
+      "sha256": "257a68d86b6ac4a4eaa0aa1190bc213a1a6f0f345e63596d70f8467b7b801b5a"
+    },
+    {
+      "path": "job-temp/geometry-tests/parameter-desktop.png",
+      "bytes": 168104,
+      "sha256": "32229f4aca93a339033017ff083b428b53681bc1f46ea286b8e53bd73347cef6"
+    },
+    {
+      "path": "job-temp/geometry-tests/parameter-mobile.png",
+      "bytes": 55815,
+      "sha256": "836f0adff9627dcd668da423f9548604424ab398b1779a051a3486eb8cb93ed7"
+    },
+    {
+      "path": "job-temp/geometry-ux-refinement-download-JFpUwe/工程規格試用・平面與7支角材.gcanvas",
+      "bytes": 119271,
+      "sha256": "31d062692c43aa21ac755113775dea21e821cab9f4e69f39c021262bf01cfa31"
+    },
+    {
+      "path": "job-temp/geometry-wait-trace-artifact/receipt.json",
+      "bytes": 404,
+      "sha256": "79d5ff1c27165dbc1d6bbaf6e05a293edcfcbf345fe4770463e1c9148c69ba23"
+    },
+    {
+      "path": "job-temp/p74-clear-undo-comparison.json",
+      "bytes": 1043112,
+      "sha256": "075ae6d1cb7bbe6f75182735cc74324c35fbd206dd022ade1724ea5ac54a6bc1"
+    },
+    {
+      "path": "job-temp/p74-new-undo-comparison.json",
+      "bytes": 1043113,
+      "sha256": "b632338135c9711a2146aa74201249647ba4c5b40705b49217d7ed6e25b13e87"
+    },
+    {
+      "path": "job-temp/parameter-export-Kptqn4/timbers-surface-1.csv",
+      "bytes": 7745,
+      "sha256": "b8c1aedf5759ff77d39cbfc13d1a3118fa9fdcf22184fe0eb4dbf913e25a9e95"
+    },
+    {
+      "path": "job-temp/parameter-export-Kptqn4/參數包.json",
+      "bytes": 1181,
+      "sha256": "324562396e8dbf645d240aeb1e77f24d473a25b20944dd62c9004aadfebb7ac3"
+    },
+    {
+      "path": "job-temp/tmp1il1t7d8.scene",
+      "bytes": 560,
+      "sha256": "9be8e893a42a534ac7800c4766bf6ba172192dea6932c1a873efbc176d7457b5"
+    },
+    {
+      "path": "job-temp/verify-upload-bf.scene",
+      "bytes": 43,
+      "sha256": "2c79d14dd4e657f3c6dc53db6395aa5a49a91554ac198da32f9f5f35c4a13f8a"
+    },
+    {
+      "path": "launch-stdout/canvas.stdout",
+      "bytes": 395,
+      "sha256": "25b8f5fa16bde65d23da5a63657739a178947fc9ff92cadb8416e17685e18cf4"
+    },
+    {
+      "path": "launch-stderr/canvas.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reaper/canvas-reaper.jsonl",
+      "bytes": 2167,
+      "sha256": "c5f9b7b47f9c2dd2192519edbcfe0f628fc5b150185991f403e96cfd8015dcd8"
+    }
+  ]
+}

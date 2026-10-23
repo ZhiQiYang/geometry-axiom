@@ -1,0 +1,15 @@
+{
+  "command": [
+    "gcc",
+    "-std=c11",
+    "-O2",
+    "/tmp/geo261-residual/base-trace/source/geometry-web/web_bridge.c",
+    "-o",
+    "/tmp/geo261-residual/base-trace/bridge",
+    "-lm"
+  ],
+  "cwd": "/tmp/geo261-residual-base",
+  "exit": 0,
+  "stdout": "",
+  "stderr": ""
+}

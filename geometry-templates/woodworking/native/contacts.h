@@ -6,10 +6,15 @@
 #include "supports.h"
 
 /* self is the same non-null member supplied to the original placement check.
- * Acceptance leaves err unchanged; refusal preserves the existing wording,
- * truncation and optional err==NULL behavior. */
+ * Acceptance leaves err unchanged. Refusal keeps the original wording as an
+ * exact prefix and then names the locating edge ("e<edge_index>" plus its
+ * interval [edge_lo,edge_hi] on the length axis) and each exceeded interval,
+ * the low end [span_lo,edge_lo] and/or the high end [edge_hi,span_hi], in mm
+ * (I22 W). edge_index is the outline edge id that located the member and is
+ * only read when has_edge. Truncation and optional err==NULL behavior are
+ * unchanged. */
 bool wood_member_span_extension_check(
-    const WoodMember *self, bool has_edge,
+    const WoodMember *self, bool has_edge, int edge_index,
     GeoCoord span_lo, GeoCoord span_hi, GeoCoord edge_lo, GeoCoord edge_hi,
     char *err, size_t err_cap
 );

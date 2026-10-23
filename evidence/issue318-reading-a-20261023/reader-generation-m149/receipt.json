@@ -1,0 +1,26 @@
+{
+  "scope": "Mechanical canonical source regeneration because new actual-H M149 trace was registered; no reader --check/tests/geometry/architecture gate run",
+  "argv": [
+    "python3",
+    "-B",
+    "geometry-guide/sync_axiom_reader.py"
+  ],
+  "cwd": "/workspace/geo318-reading-a-work",
+  "source_sha": "bba68351f89bd3448dcb1462c53c23288b46e3ca",
+  "utc": "2026-10-23T10:41:58.080463+00:00",
+  "elapsed_seconds": 3.4710844500077656,
+  "exit_code": 0,
+  "stdout": "{\"clauses\": 207, \"blocks\": 1261, \"comments\": 5, \"witness\": 31, \"examples\": 63, \"textRevision\": 45, \"five_asserts\": \"pass\", \"independent_ssot\": \"pass\", \"source_sections\": \"pass\", \"patches\": 90, \"counts_single_source\": \"pass\", \"geo120\": \"pass\", \"search\": \"pass\", \"color_tokens\": \"pass\", \"documentHash\": \"9e2f3667657c2f570b9ca26f75825b89aa2b416c40e50a6b10382056fbfb6b65\"}\n",
+  "stderr": "",
+  "environment": {
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "node": "v24.19.0",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "canonical_sha256_before": "aa39536d43090fc77b4f36c0a115db0d3d5da276e7dc0dcb2da4154764e2e6df",
+  "canonical_sha256_after": "ee3756da0d16e487cd6de6e1916ac0775d1997ddac2c6f067360fc9cc917ba33",
+  "changed_files": [
+    "geometry-guide/公理層-閱讀器.html"
+  ]
+}

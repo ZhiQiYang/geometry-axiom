@@ -1,0 +1,37 @@
+{
+  "base": "546e2eb2142ebf19859489c5391b57cbb8413d10",
+  "fix_product_commit": "221156c280404f75bf3fb5a42fd4c9cf119f7064",
+  "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "fix_branch": "codex/geo261-load-residual-20261020",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "gcc": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           46 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  5\nOn-line CPU(s) list:                     0-4\nVendor ID:                               GenuineIntel\nModel name:                              INTEL(R) XEON(R) PLATINUM 8573C\nCPU family:                              6\nModel:                                   207\nThread(s) per core:                      1\nCore(s) per socket:                      5\nSocket(s):                               1\nStepping:                                2\nBogoMIPS:                                4599.99\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx_vnni avx512_bf16 arat avx512vbmi umip waitpkg avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid cldemote movdiri movdir64b fsrm serialize tsxldtrk avx512_fp16 arch_capabilities\nHypervisor vendor:                       KVM\nVirtualization type:                     full\nL1d cache:                               144 KiB (3 instances)\nL1i cache:                               96 KiB (3 instances)\nL2 cache:                                6 MiB (3 instances)\nL3 cache:                                260 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-4\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Vulnerable\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Vulnerable\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Vulnerable\nVulnerability Spectre v1:                Vulnerable: __user pointer sanitization and usercopy barriers only; no swapgs barriers\nVulnerability Spectre v2:                Vulnerable; STIBP: disabled; PBRSB-eIBRS: Not affected; BHI: Vulnerable\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected",
+  "allowed_cpu_count": 5,
+  "stack_bytes": 16777216,
+  "changed_source_hashes": {
+    "current_geometry.c": "bb42ac7b24f18ac1f08038838c0ea1c03bc41fe36530076031d4711104b7a483",
+    "geometry-app/native/reference_sources.inc": "c739be7365ecdb576476e0edf571e935a4158b8a3cdb3e83581239f47621d5a4",
+    "geometry-app/native/world_validation.inc": "cf82cbe72e5a7dfb96d76cb2f63e1dba9dc6b694d69592391406f26117f8cda6",
+    "geometry-core/references.inc": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4",
+    "geometry-templates/woodworking/native/contact_sources.c": "5792a3e8d9a467547f4ebfdcc88f7bab04f5c994382cdb51d5ad0b80a249b933",
+    "tests/geo261_host_facts_authority_harness.c": "d5d1217540a4925a9312d8ee0d37e1dab124f51736f031c36db5128275655ee2",
+    "tests/geo261_load_residual_harness.c": "82da5b066d95a5376122117f0da6a6d956fb52752682c243182013cea617398a",
+    "tests/geo261_world_validation_product_harness.c": "82abbf5cd9a2fb3be4624ce96aad8d6f7357a2a49ac08e2b0b974cab4c58bbe9",
+    "tests/pf3_mutation_check.py": "73b622fb59033b0ebe8672fe024c3c46645c9a3e863a60545c486223e44b5692",
+    "tests/run_all.expected.json": "979fead1b1017250a3ed835c87cb12a7d33c8df93ed744e0e1186e362f51bdf0",
+    "tests/run_all.py": "4a7593bb1e62f2ef9fd432f2ca49548c797ec993edee4b4cf31869581568aa5d",
+    "tests/test_geo261_contact_sources.py": "3a2ec556cf62bcc05e7592c15f8768f697be9a83afda04341efc221e55ab62aa",
+    "tests/test_geo261_load_residual.py": "e67b30386fab494be935866f9fa0324320f3626e38ec14dabb2889aa6c2307e1"
+  },
+  "binary_sha256": {
+    "base": "5dcf5043d791b860c12dc401ca66bd68e5dc1932f84fecaaf30d903c840b6269",
+    "fix": "be6aef2f20598fcee6cf9fe70ad6fb096e5872b70cb714dd9e2af85497649489",
+    "main": "ce7b5ac8f76ed8f4822da8f0c3576e3bbbe1d80bb7d90ae66e3ccab44536b57b",
+    "base-trace": "659c323482118a239c2de0039f7378716cb99a29d8719c61c27a28cb8c1ff38c",
+    "fix-trace": "e06d8a513fa0989d6a1c49e60ffb82c19a452ee0539c296cefe092f2b264a36c",
+    "base-pg": "4f39f55b22107d0a1d988a661a40d54d56f4b892cfdf3dcee9e066dba2f9997b",
+    "fix-pg": "170c0f109b7da14f20b9980b4820bc7e21486ed33b7ec400efbc2ebe211f7fb4"
+  },
+  "source_note": "產品碼及新增測試受驗於 fix_product_commit；其後提交僅補驗收證據。完整測試的獨立 browser／owner 整合不在 run_all.py 範圍。"
+}

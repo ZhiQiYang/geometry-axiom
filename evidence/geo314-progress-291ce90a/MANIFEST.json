@@ -1,0 +1,222 @@
+{
+  "schema": "geo314-affected-diagnostic-evidence/1",
+  "tested_sha": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+  "files": {
+    "PROGRESS.md": {
+      "sha256": "f868bd9fe4c8ae2dc80af0ed45da8298af5244859fe38d6b9c1660ddae70a28d",
+      "size": 2366
+    },
+    "after-head.txt": {
+      "sha256": "accfe1f0e6aceb8ed5998271b6213074adf32cf400c4747e561c8add018861fb",
+      "size": 41
+    },
+    "after-status.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "after.patch": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "before-head.txt": {
+      "sha256": "accfe1f0e6aceb8ed5998271b6213074adf32cf400c4747e561c8add018861fb",
+      "size": 41
+    },
+    "before-status.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "before.patch": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "cache_adapter.py": {
+      "sha256": "f98ce70ae5c07efc6e8a84c095e44e82dabb416bcc1aa99a9ffa103e0fdb1e0b",
+      "size": 2342
+    },
+    "capture_suite.py": {
+      "sha256": "405b77c3daad6ddb8dd3abf7fa02dd23bc5f41cf5b0084605f2fd4b2070a1b65",
+      "size": 1049
+    },
+    "official-private-bridge.tar.gz": {
+      "sha256": "cedcdb45354a99546f4dea9add8d9b8b3fb12941b8a78705e22e39e6ae2d98d3",
+      "size": 558559
+    },
+    "private-build-adapter.json": {
+      "sha256": "57ce88c61ce135869156d2ee800f6dc0983db37d8fec4d572d1b8dd3fdde7806",
+      "size": 26040
+    },
+    "private-build.stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "private-build.stdout.raw": {
+      "sha256": "3273039df8fb3c2f4fe69bbe84c86777eaa78442e25dd4f4f3fcb1784b5451bc",
+      "size": 214
+    },
+    "run_affected_diagnostics.py": {
+      "sha256": "8897b94e9df9b4a270c18789e336731a1c74a668a0c30178c3a386ed3c9129e2",
+      "size": 4702
+    },
+    "source-inputs.json": {
+      "sha256": "7581e6b274e9744a35abb00d0f8117a283e5d97f5bed3220326808ec7660381a",
+      "size": 106484
+    },
+    "source-inputs.tar.gz": {
+      "sha256": "b5a59bb049adb4606706c63f8d1ea5192e606ebb201221cc77a74a869dc87255",
+      "size": 2453955
+    },
+    "summary.json": {
+      "sha256": "2cf8d0e75461a61f857c4ce10120822b488b2f32f710404ec9013e071663356b",
+      "size": 15196
+    },
+    "test_geo261_wood_grid_application/native-build-0.json": {
+      "sha256": "175555ec9a6b24ba042f22ec68113024c74dec9f93157ce07f1d746e3720a2f5",
+      "size": 396533
+    },
+    "test_geo261_wood_grid_application/native-build-files.json": {
+      "sha256": "2da5a3f8dc75571946a8c0b58359ba6569620479e1856150e42fc690b40205a6",
+      "size": 50711
+    },
+    "test_geo261_wood_grid_application/native-build-inputs-and-binaries.tar.gz": {
+      "sha256": "96acf411801c4fab5b7d520317734bbed1efc12166f27b1e6a6cbefd75a8f0e6",
+      "size": 5981932
+    },
+    "test_geo261_wood_grid_application/receipt.json": {
+      "sha256": "13be20f3bf58ac108047f547aaefbfb2ca84fd377241862772546cdc06a950ba",
+      "size": 2731
+    },
+    "test_geo261_wood_grid_application/result.json": {
+      "sha256": "7ba59e29deea013eb8ca3243b2f4a3cbc9a71c15c751cfe4100a2d0868ca78ff",
+      "size": 363
+    },
+    "test_geo261_wood_grid_application/stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "test_geo261_wood_grid_application/stdout.raw": {
+      "sha256": "c63e2bb394483b626d4bb99f130389beecd09a50ea139823c78d2dc7994269b0",
+      "size": 8873
+    },
+    "test_geo261_wood_grid_application/unittest.log": {
+      "sha256": "3fb0aef443418b8e631956ff6682be5af988b673fdcc8d340919356c87d331be",
+      "size": 122
+    },
+    "test_geo314_commit_paths/native-build-files.json": {
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "size": 3
+    },
+    "test_geo314_commit_paths/native-build-inputs-and-binaries.tar.gz": {
+      "sha256": "a8797516bde4ed5b2fe650ba770fcac4e93da945879545dbe5f2d488a0dd3270",
+      "size": 82
+    },
+    "test_geo314_commit_paths/receipt.json": {
+      "sha256": "0ebd2b322fb3618d913fa90e4c00a7ea9a599763c7cac5983496867dca62408d",
+      "size": 2533
+    },
+    "test_geo314_commit_paths/result.json": {
+      "sha256": "dba1a2fe223a50d9a5e1b60857f53e998e40d115ad23ff8df84f74ac138737fe",
+      "size": 354
+    },
+    "test_geo314_commit_paths/stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "test_geo314_commit_paths/stdout.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "test_geo314_commit_paths/unittest.log": {
+      "sha256": "bc155477ebb7a4e419ba76eb9051fbe6884da317fb7cc210ff960c3e2965b586",
+      "size": 110
+    },
+    "test_geo314_ordered_facts/native-build-0.json": {
+      "sha256": "212da79241807c4166a0a05fd9f7f845a2c1736c0f55e9663523430d5b38ced0",
+      "size": 210472
+    },
+    "test_geo314_ordered_facts/native-build-files.json": {
+      "sha256": "54f9e4a1f976c60c99583809e62be4a70cac97273cb7f3e5f6d0e96893d5dd60",
+      "size": 55672
+    },
+    "test_geo314_ordered_facts/native-build-inputs-and-binaries.tar.gz": {
+      "sha256": "6d381da9934a36307da200acc509bea0735c11897f3ad86b4377f776e9c81fe7",
+      "size": 7605635
+    },
+    "test_geo314_ordered_facts/receipt.json": {
+      "sha256": "5eae2979a7a97e01398b7af00e928dcdc5bd1595cd45f08564711494028e89e6",
+      "size": 2692
+    },
+    "test_geo314_ordered_facts/result.json": {
+      "sha256": "d50bd7ac523a1cef027fcf2f7f4aa8d13927b30348d9906169fe6c717a9b15b6",
+      "size": 355
+    },
+    "test_geo314_ordered_facts/stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "test_geo314_ordered_facts/stdout.raw": {
+      "sha256": "50f25ce82f6adbad0c9f6a0cd2a58fb9445b15d45d354333a8e520f5f3b27c32",
+      "size": 69639
+    },
+    "test_geo314_ordered_facts/unittest.log": {
+      "sha256": "e21dee981cafd87f76d95a1e3f231f404812a12df376e9aa6130a0f7f9d03140",
+      "size": 114
+    },
+    "test_geo314_stagger_commit/native-build-files.json": {
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "size": 3
+    },
+    "test_geo314_stagger_commit/native-build-inputs-and-binaries.tar.gz": {
+      "sha256": "a8797516bde4ed5b2fe650ba770fcac4e93da945879545dbe5f2d488a0dd3270",
+      "size": 82
+    },
+    "test_geo314_stagger_commit/receipt.json": {
+      "sha256": "13710c20ecbb11dfceec8e94442ba68ac113a77479d77051ff3bbf5261b98591",
+      "size": 2542
+    },
+    "test_geo314_stagger_commit/result.json": {
+      "sha256": "e397b37de4131b6c6cfd77c471a92ed30e46d6453d2323ac30f10441b11867db",
+      "size": 356
+    },
+    "test_geo314_stagger_commit/stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "test_geo314_stagger_commit/stdout.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "test_geo314_stagger_commit/unittest.log": {
+      "sha256": "1ae7319ded378ef2dcee4d0dfe53238fc284f92d6db294b25acd0e4c09c948ff",
+      "size": 144
+    },
+    "test_mutation_freshness/native-build-files.json": {
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "size": 3
+    },
+    "test_mutation_freshness/native-build-inputs-and-binaries.tar.gz": {
+      "sha256": "773a55243692cc6ea56931ff1f55cce067b39c8971f6b7fd627b2f472dc579f1",
+      "size": 82
+    },
+    "test_mutation_freshness/receipt.json": {
+      "sha256": "5ccc4e2c108db7e98b4ade546514b8451d2df6bdcf10cef4503bb8e3c0c187f2",
+      "size": 2525
+    },
+    "test_mutation_freshness/result.json": {
+      "sha256": "a2a23a5e25ee26778de36e8faf12f70081d127e35d1958b56f9f4dfb8f0deeec",
+      "size": 352
+    },
+    "test_mutation_freshness/stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "test_mutation_freshness/stdout.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "test_mutation_freshness/unittest.log": {
+      "sha256": "c0b7322cbd2b70c659d473c6ff5af99b6642b3d91316e92950a45e043bd2e0ac",
+      "size": 173
+    }
+  }
+}
