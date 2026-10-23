@@ -40,3 +40,6 @@
 
 - 2026-10-23T09:42:06.764073+00:00 — **postmerge-runtime-complete-raw**：runtime 原0/1/0不變。補正c3fec08f：首次staging遇Chrome socket退出1但下一行publisher仍推了不完整raw；本次全新staging成功0、1633原檔逐hash封存，原streams完整補齊；舊失敗與第一包保留。
   下一步：P88三次固定F獨占重跑與精確原因；P73/Chromium154/oracle仍待正式執行。。原始資料：`raw/postmerge-runtime-complete-raw-01.tar.gz`。
+
+- 2026-10-23T09:56:45.474274+00:00 — **p88-original-canvas-run-1**：固定F原canvas第1/3次；workflow原exit=1、outer=1、over_ci_timeout=False、1071.906s。前後乾淨、獨立埠/TEMP、全部結果保留；三次未收齊前不判穩定或間歇。
+  下一步：完成固定F三次原樣重跑，依自然失敗與受控定位證據修復，保原斷言/golden/時限，再於新F跑受影響項與四組反證。原始資料：`raw/p88-original-canvas-run-1-01.tar.gz`。
