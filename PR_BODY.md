@@ -7,7 +7,7 @@
 | 已普通merge main | `eda91c8593f0795278f7f16ff8b93d147a4fdaa7` |
 | 已普通merge train | `504933473d7b9bdfc5964f73402a710f1222fc96` |
 | 目前公開產品 S | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
-| 目前 evidence E | `495e625a86e54c47a0445a22056ded55b4ebab3e` |
+| 目前 evidence E | `47affde689e48d1ee89e4247740f694c5a069c6b` |
 | 前批公開 evidence | `07615668c110684826390990cd2d6134eb6025fd` |
 | Fresh審查handoff | `4aeabc8ec05b358e22fe2375f97dce64324fbc22` |
 | 替代head／正文分支 | `codex/geo324-faces-20261024`／`codex/geo324-faces-20261024-prbody` |
@@ -49,3 +49,5 @@ p88_priority只對先前S f1217b0f／當時普通merge原件／v2完成純靜審
 本次另普通merge root已公開50493347完整列車，原架構四檔保 incoming train 的 sourceBaseHead；#324 owned W leaf／excluded test 的原裁判與四檔刷新仍未跑。mutation bridge oracle hash 包含 tests/*.py，因此不能把列車既有帳本或架構收據直接當作本S有效。
 
 E792原root manifest的self-entry過期已另附保真修正：原manifest bytes與原254peer範圍保留，新root inventory排除自身並逐檔驗bytes/hash。沒有修改raw或任何gate結果；完整前一18條出版原件封於revision-3-peer-and-manifest。
+
+原package獨審1019項的1個metadata finding完整保留：E495 的 generated PROGRESS 合法追加6行；舊JSON的「其它列冊檔未變」只指寫新metadata前對E792 snapshot驗證時點。revision-4另封精確前後／append hash與bytes、原peer1及原E495 manifest；不把該true讀成E495或此後PROGRESS不變。原raw、來源、16正式UNRUN都不改，時點限定待獨立窄複核。
