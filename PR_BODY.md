@@ -1,6 +1,6 @@
 本 PR 接手並取代 #337，整合 #299+#316、#314 題3鎖定比較器、#318 已核可閱讀 A 及 #323 memo 修正。唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送；目前仍是 draft，**B1 同 L 完整驗收未完成，B2 原跨版本 exact 比較及新 B3 required CI 失敗仍阻擋合併**。
 
-L 的 C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，正式測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；相對帳本生成來源 b6，L 只採用原 `tests/mutants_results.json` 及 evidence，沒有修改產品、測試、裁判或判決欄位。架構 manifest 修正與 Linux 四檔已先按原 schema 採用。目前 evidence head E 為 **`30d80ddab38ec14bd6cf2033da93c3e6f1256908`**；往後純 evidence 提交另記 E，不移動 L，不把 E 當受測 SHA。
+L 的 C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，正式測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；相對帳本生成來源 b6，L 只採用原 `tests/mutants_results.json` 及 evidence，沒有修改產品、測試、裁判或判決欄位。架構 manifest 修正與 Linux 四檔已先按原 schema 採用。目前 evidence head E 為 **`6c2165ae13aa204b9c37671fd59732504d799a2e`**；往後純 evidence 提交另記 E，不移動 L，不把 E 當受測 SHA。
 
 ### 唯一 current-state 矩陣
 
@@ -13,8 +13,8 @@ L 的 C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，正式測
 | canvas | L | **UNRUN** | 原 workflow 完整 job；獨占，獨立埠／暫存 |
 | assembly | L | **0；原件已公開** | 原150 assert／0skip／191.692s<原15分鐘；原job既定partial模式不比golden，非完整canvas |
 | documents | L | **0；原件已公開** | 原47 assert／64.316s<原10分鐘；原exit0／outer0／前後sourceguard0，8截圖 |
-| grid | L | **RUNNING，無終態exit** | 原 workflow 完整 job；獨立埠／暫存 |
-| space | L | **UNRUN** | 原 workflow 完整 job；獨立埠／暫存 |
+| grid | L | **0；原件已公開** | 原356 assert／0skip／482.279s<原15分鐘，含P88 143；原grid-only partial不比golden |
+| space | L | **RUNNING，無終態exit** | 原 workflow 完整 job；獨立埠／暫存 |
 | timber | L | **UNRUN** | 原 workflow 完整 job；獨立埠／暫存 |
 | P52 放置後 timber 出現耗時 | L | **UNRUN** | 原放置／呈現判準及耗時收據 |
 | Q38 | L | **UNRUN** | 原 `tests/section_profile_mutation_check.py` |
@@ -62,8 +62,8 @@ M1 已更正為現行 D10b 提交相容例外、I24 參數卡改值例外、D29 
 
 後續 #339／#340、GEO260、#300新索引與#320各自分支的定向驗收保原SHA，不轉標成L、也不充本PR gate。無 force push、無合併 PR；儲存維護不列產品驗收。B1 全部正式項、B2 與新 B3 未解除前，不標 READY-TO-MERGE。
 
-最新已讀審查：handoff `48e82e72` 的 `handoff/pr-reviews/338.md`，最後評論2026-10-23 22:39:41 UTC、head c6c0b0d。舊B3原件入庫與M1已處理；新B3是七required CI未啟動的環境阻擋。本文只保一個current-state矩陣，依真執行SHA／原exit列示；peer核對數不當產品gate結果。
+最新已讀審查：handoff `ac275a67` 的 `handoff/pr-reviews/338.md`，最後評論2026-10-23 22:39:41 UTC、head c6c0b0d。舊B3原件入庫與M1已處理；新B3是七required CI未啟動的環境阻擋。本文只保一個current-state矩陣，依真執行SHA／原exit列示；peer核對數不當產品gate結果。
 
-documents及assembly皆真完成並獨立核對，670／672-member完整原包已分別公開於E的`final-L-browser-documents/`與`final-L-browser-assembly/`，保完整原指令、退出碼、環境、SHA、streams、runtime fingerprints與8／9截圖。peer3420／3431核對不算產品assert；原cache/ELF排除清單明列且未刪。完整native session80260續跑、grid session85457占第二槽；canvas、space、timber尚未執行，canvas仍須獨占。原native230列／35分鐘與各browser原CI時限不變，未終態者不標綠。
+documents及assembly皆真完成並獨立核對，670／672-member完整原包已分別公開於E的`final-L-browser-documents/`與`final-L-browser-assembly/`，保完整原指令、退出碼、環境、SHA、streams、runtime fingerprints與8／9截圖。peer3420／3431核對不算產品assert；原cache/ELF排除清單明列且未刪。grid亦真0，675-member原包、4截圖、完整原CDP結果及後續339行server trace在`final-L-browser-grid/`；獨立3438核對0，不計作產品斷言。完整native session80260續跑、space session66090占第二槽；canvas、timber尚未執行，canvas仍須獨占。原native230列／35分鐘與各browser原CI時限不變，未終態者不標綠。
 
 browser外部執行工具只新增允許輸出於/workspace且repository外的路徑，解決/tmp容量限制；native仍只用/tmp，原workflow／golden／斷言／時限不變。舊storage工具實際也限制/tmp，先前交接的可直接使用workspace描述已更正。七批已終態儲存維護的完整原件及collector最外原流已封`terminal-maintenance-seven-originals/`，保所有收據、fixtures、Gitobjects、受控source；快取退休／相同archive hardlink去重與原raw保真搬移不是產品驗收。
