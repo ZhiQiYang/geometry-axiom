@@ -1,0 +1,51 @@
+{
+  "schema": "geo288-p88-native-raf-proof-preparation/1",
+  "sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "executed": false,
+  "scope": "External diagnostic preparation only. No source or formal runner changed; no Chrome/build launched. Prior failed experiment remains preserved.",
+  "syntax_checks": [
+    {
+      "command": [
+        "env",
+        "-u",
+        "NODE_OPTIONS",
+        "node",
+        "--check",
+        "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools/trace-tools/preload.cjs"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "env",
+        "-u",
+        "NODE_OPTIONS",
+        "node",
+        "--check",
+        "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools/trace-tools/patch-loader.cjs"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "files": {
+    "DESIGN.md": "95208ff4bc2baeede9456e6aef598612b8894eb9215e4e6ebde12b1489a0fda1",
+    "P88.fixed.js": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "P88.withdrawn.js": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+    "P88.withdrawn.patch": "c3a045aade62e5f56d08403f52f2652d80bcbc1cf00639165d56a2e2a3053e48",
+    "SOURCE_VARIANTS.json": "45ccee7a49fa938bb7d59e24912f0508fe7982e59127c426eea3a17cadfcc72b",
+    "capture.py": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
+    "native-raf-browser-fragment.js": "1d9f3e7c135d90508180d9733fe2c7f96a494a836ad442b478cb367346227ef0",
+    "only-p88.cjs": "2d27545876240df34368c81e4f232ed604d5a3afe0b03d6f909f5d2859249ced",
+    "patch-loader.cjs.diff": "f96b088efb38294798baa80927d5cbb50d0705631c69f6a6c944e2e5bfb34020",
+    "preload.cjs.diff": "742fb2eaae906b3bac283392bc9e0682849cb07fad7f952b89f2d85de85c7fd7",
+    "prepare_native_raf_tools.py": "c9bf5b11a26c37f3c89d0b3f04158eecede11407a0d05d69d60d2af1bf6ef676",
+    "run_proof.py": "e4f55d263924fd4024a2045fc77d53cce99e919f37018559f963b4b6cbd45855",
+    "run_proof.py.diff": "b6898d1537096af3f8e5dbfd148dc641d785ba6c424f38bf1a83c4f61f922107",
+    "trace-tools/patch-loader.cjs": "50cad6541d3fb0b618f5c2a1d330776cd79d44484792619aa71e9acb55802395",
+    "trace-tools/preload.cjs": "3b5940ab7d5199530c40067f7864297276ba38664750af71c19ff72c86cd6c15"
+  }
+}

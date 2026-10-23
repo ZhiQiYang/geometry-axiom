@@ -1,0 +1,16 @@
+--- /workspace/geo288-main-merge-20261023/p88-priority/p88-only-query-tools-render-trace/trace-tools/patch-loader.cjs
++++ /workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/trace-tools/patch-loader.cjs
+@@ -14,10 +14,10 @@
+   if(!row)return original(module,filename);
+   const raw=fs.readFileSync(filename);
+   if(h(raw)!==row.original_sha256)throw Error('P88 original source bytes changed: '+filename);
+-  const fixed=variant!=='withdrawn',body=fixed?fs.readFileSync(row.candidate):raw;
+-  if(h(body)!==(fixed?row.candidate_sha256:row.original_sha256))throw Error('P88 candidate bytes changed');
++  const fixed=variant!=='withdrawn',body=fixed?raw:fs.readFileSync(row.withdrawn);
++  if(h(body)!==(fixed?row.original_sha256:row.withdrawn_sha256))throw Error('P88 candidate bytes changed');
+   loaded.push({source:filename,original_sha256:h(raw),executed_sha256:h(body),variant,
+-    memory_only:true,source_file_modified:false,candidate:fixed?row.candidate:null});
++    memory_only:true,source_file_modified:false,candidate:fixed?null:row.withdrawn});
+   module._compile(body.toString('utf8'),filename);
+ };
+ process.on('exit',()=>{

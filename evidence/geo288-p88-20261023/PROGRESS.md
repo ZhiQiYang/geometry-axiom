@@ -22,10 +22,12 @@ UI condition timed out at === P88. 原生來源子線顯示、完整引用、兩
 
 候選只改 P88 的定位準備，使用原 helper 的 probe hook 等待版面與確認 hit target；沒有改產品、其他測試模組、原 check 行、golden、12 次嘗試上限或 CI 時限。準備與 exact-focus check 共用原 25 秒，新增的矩形觀測並非新增嘗試次數；沒有 DOM focus／click 或寫值。主代理已合入 immutable source commit，帳本與架構影響由主代理依規則統一處理。
 
-真查詢診斷的守門沒有成立：查詢回傳後確實觀察到 `paintQuery`／`renderFaceInspector` 換節點、scroll `25 → 0 → 25`，但釋放後兩 frame 的舊點仍命中 `refGuideMode`，沒有後續目標 mouseDown。工具自己拋錯，不能稱為「拿掉修正，原斷言轉紅」；fixed／restored 也尚未走到該位置的穩定 probe。未再改工具、人工移位或重抽湊 0／1／0。原自然紅的精確觸發仍未證，最終判定依使用者對間歇案例要求的連續完整驗收。
+真查詢診斷的守門沒有成立：查詢回傳後確實觀察到 `paintQuery`／`renderFaceInspector` 換節點、scroll `25 → 0 → 25`，但釋放後兩 frame 的舊點仍命中 `refGuideMode`，沒有後續目標 mouseDown。工具自己拋錯，不能稱為「拿掉修正，原斷言轉紅」；fixed／restored 也尚未走到該位置的穩定 probe。未再改該工具、人工移位或重抽湊 0／1／0。原自然紅的精確觸發仍未證。
 
 原三輪完整 stdout／stderr／commands／environment／SHA 已由主代理推至整合分支 `evidence/geo261-final-13d02c1d/`。本子分支另附三階段診斷的完整原命令、收據、streams、trace、來源變體與工具快照之壓縮封存，`MANIFEST.json` 列每檔 bytes／SHA256，`ROUNDTRIP.json` 證實解壓後逐檔一致；僅排除 phase/tmp 的編譯執行檔、Chrome profile/cache 與 runtime scratch，沒有刪原機器檔案。
 
 獨立對抗審查已核 source `8bce9239` 與候選 v5 全等，未見放寬斷言、golden、嘗試上限或時限；三個真查詢診斷階段未證成因果的限制也各有審查。主代理已在 F 上跑原帳本檢查及架構三條，全部 exit 0。三輪 canvas 使用已審 `98025b20…` 錄製器，獨立埠、暫存目錄與 profile，所有結果保留；不重跑未受影響項目。
 
 摘要欄名更正：v1 摘錄使用不存在的 `response_json_unchanged` 而輸出 null；原三個 trace 的正確欄名為 `parsed_json_unchanged`，其值均 true。`ACTUAL_QUERY_OBSERVATIONS_v2.json` 使用正確欄名；v1 與原壓縮包保留，沒有改原 trace 或測試判定。此處只核對 parsed JSON，沒有宣稱 HTTP wire bytes 完全相同。
+
+最新同步的 head `1999cbc` 審查仍要求撤回／恢復反證。依剛觀察到的 renderer return 與原 rAF 恢復之間短窗，另準備一組不同的明列交錯：在真正 native dispatch 的原 scroll-restore callback 入口前，單次求值原 measure expression，立即讓原 callback 依原 this／args／guard 執行，完成後才把原 p 回給 CDP。不捏造幾何或捲動、不另排／手動執行 callback，fixed／withdrawn／restored 同一排程，withdrawn 僅原 P88 bytes。此工具尚未執行；準備 v2 manifest `a6f6dc0e5f02b1090b01216de008be2864a48aa26f5ee09d48f086196b7e127b` 與獨立 peer 靜審附在 `native-raf-preparation-v2/`。須等正式三輪收齊及主代理重活排程。不能拿準備接受或前一組失敗作成功反證。

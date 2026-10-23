@@ -1,0 +1,292 @@
+--- /workspace/geo288-main-merge-20261023/p88-priority/p88-only-query-tools-render-trace/trace-tools/preload.cjs
++++ /workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/trace-tools/preload.cjs
+@@ -22,16 +22,30 @@
+ const queryAfterLines=queryBytes.toString('utf8').split(/\r?\n/).map((line,i)=>line.includes("const after=await apiRequest('source-inspect')")?i+1:null).filter(Boolean);
+ if(queryAfterLines.length!==1)throw Error('Expected unique original query after-inspect callsite');
+ const queryAfterLine=queryAfterLines[0];
++const querySuccessLines=queryBytes.toString('utf8').split(/\r?\n/).map((line,i)=>line.trim()==='paintQuery();'?i+1:null).filter(Boolean);
++if(querySuccessLines.length!==1)throw Error('Expected unique original query success paint callsite');
++const querySuccessLine=querySuccessLines[0];
++const appSource=path.join(repo,'geometry-web','app.js'),appBytes=fs.readFileSync(appSource),appText=appBytes.toString('utf8');
++const restoreAnchor='requestAnimationFrame(() => {\n      if (fe.gridPreviewSeq !== seq || pane.dataset.bid !== String(bid) ||';
++if(appText.split(restoreAnchor).length!==2)throw Error('Expected unique F original scroll-restore rAF');
++const restoreStart=appText.indexOf(restoreAnchor),restoreRafLine=appText.slice(0,restoreStart).split('\n').length;
++const restoreCallbackStart=restoreStart+'requestAnimationFrame('.length;
++const restoreCallbackEnd=appText.indexOf('\n    });',restoreCallbackStart)+'\n    }'.length;
++if(restoreCallbackEnd<restoreCallbackStart)throw Error('Original restore callback boundary missing');
++const restoreCallbackSource=appText.slice(restoreCallbackStart,restoreCallbackEnd);
++
+ if (process.env.P88_SOURCE_SHA256 && process.env.P88_SOURCE_SHA256 !== sourceHash)
+   throw Error('P88 original module SHA256 mismatch');
+ // NODE_OPTIONS 也會載入 npm 等非 CDP Node；只有真 P88 invocation 可占用 trace 檔。
+ let traceFd = null;
+ const report = {
+-  schema: 'geo288-p88-readonly-trace-and-controlled-query/1', mode,
++  schema: 'geo288-p88-original-native-raf-interleaving/1', mode,
+   started_utc: new Date().toISOString(), pid: process.pid,
+   argv: process.argv.slice(), exec_argv: process.execArgv.slice(),
+   source_repo: repo, source_path: source, source_sha256: sourceHash,
+-  query_source:querySource,query_source_sha256:hash(queryBytes),query_after_callsite_line:queryAfterLine,
++  query_source:querySource,query_source_sha256:hash(queryBytes),query_after_callsite_line:queryAfterLine,query_success_callsite_line:querySuccessLine,
++  app_source:appSource,app_source_sha256:hash(appBytes),restore_raf_line:restoreRafLine,restore_callback_source:restoreCallbackSource,restore_callback_sha256:hash(Buffer.from(restoreCallbackSource)),
++  controlled_api_wrapper_replaces_promise_while_preserving_resolved_object:true,
+   expected_source_sha256: process.env.P88_SOURCE_SHA256 || null,
+   preload_path: __filename, preload_sha256: hash(fs.readFileSync(__filename)),
+   instrumentation_scope: 'P88 exports dependency wrapper; original source bytes and assertions unchanged; no helper patch',
+@@ -39,7 +53,7 @@
+   requested_budgets_changed: false, original_return_values_preserved: true,
+   target_loaded: false, target_invocations: 0, completed: false,
+   source_bytes_unchanged: null, events: [],
+-  injection:{attempted:false,applied:false,count:0,name:'P88-original-query-release-after-mode-measure',before:null,after:null},
++  injection:{attempted:false,applied:false,count:0,name:'P88-measure-before-original-native-restore',before:null,after:null},
+   finalSnapshot:null, node_events: [], browser_trace: null, errors: [],
+ };
+ let written = false;
+@@ -115,7 +129,7 @@
+ });
+ 
+ /* 此函數只作字串送進既有 eval_；preload 本身不啟瀏覽器。 */
+-function installBrowserTrace(proofMode, queryAfterLine) {
++function installBrowserTrace(proofMode, queryAfterLine, restoreRafLine, restoreCallbackSource, querySuccessLine) {
+   const KEY = '__geo288P88PassiveTrace_v1';
+   if (window[KEY] || window.__p88Trace) throw Error('P88 trace already installed');
+   const rows = [], errors = [], tokens = new WeakMap();
+@@ -187,6 +201,118 @@
+   observer.observe(pane() || document.documentElement,
+     {childList:true, subtree:true, attributes:true, attributeFilter:['hidden','class','style','open']});
+ 
++  // Diagnostic scheduling: place the one original readonly measurement just
++  // before a real native-dispatched restore callback. Never move its callback
++  // to another task, invoke it by hand, or write a DOM coordinate/scroll/value.
++  let pendingMeasure=null, targetedRaf=null, activeRender=null;
++  const originalRaf=window.requestAnimationFrame, originalCancelRaf=window.cancelAnimationFrame;
++  const originalRafSource=Function.prototype.toString.call(originalRaf),originalCancelRafSource=Function.prototype.toString.call(originalCancelRaf);
++  const integrity=message=>errors.push(message);
++  const safeObserve=(kind,extra)=>{try{append(kind,{...extra,state:state()});}catch(error){integrity('Native rAF observation failed: '+String(error?.stack||error));}};
++  function rejectPending(error){
++    const pending=pendingMeasure;
++    if(!pending)return;
++    pendingMeasure=null;clearTimeout(pending.timer);pending.reject(error);
++  }
++  function completeNativeControl(p,before,callbackThis,callbackArgs){
++    const ratio=document.getElementById('refGuideRatio'),label=ratio?.closest('label'),hit=document.elementFromPoint(p.x,p.y);
++    controlled.original_measure=p;controlled.old_center={x:p.x,y:p.y};
++    controlled.before=before;controlled.after={...compact('#refGuideMode',p),hitAtOldPoint:desc(hit)};
++    controlled.after_state=state();controlled.target_label=desc(label);controlled.after_hit=desc(hit);
++    controlled.returned_response_json=JSON.stringify(heldQuery.result);
++    controlled.parsed_json_unchanged=controlled.returned_response_json===controlled.original_response_json;
++    controlled.response_scope='Same apiRequest return object and serialized parsed JSON; not HTTP wire bytes.';
++    controlled.native_callback={native_id:targetedRaf.id,registration_stack:targetedRaf.stack,callback_source:targetedRaf.source,
++      original_request_animation_frame_source:originalRafSource,original_cancel_animation_frame_source:originalCancelRafSource,
++      original_request_animation_frame_native:originalRafSource.includes('[native code]'),original_cancel_animation_frame_native:originalCancelRafSource.includes('[native code]'),
++      callback_source_matches:true,renderer:targetedRaf.renderer,native_dispatch_count:targetedRaf.dispatches,
++      this_is_window:callbackThis===window,native_args:Array.from(callbackArgs),cancelled:targetedRaf.cancelled,
++      original_measure_evaluations:targetedRaf.measureEvaluations,callback_completed:true};
++    controlled.valid=!!p.hit&&before.hit?.id==='refGuideMode'&&
++      before.nodeToken===controlled.after.nodeToken&&!!label&&(hit===label||hit===ratio)&&
++      controlled.parsed_json_unchanged&&targetedRaf.dispatches===1&&targetedRaf.measureEvaluations===1&&
++      !targetedRaf.cancelled&&ReferenceWorkspace.context()===heldQuery.context&&heldQuery.arm_token===armedToken;
++    controlled.count=1;controlled.applied=controlled.valid;
++    if(!controlled.valid)controlled.error='Original native scroll restore did not produce the declared mode-to-ratio displacement';
++    trace.gate=publicControl();
++    append('controlled-native-raf-measurement',{control:publicControl(),state:state()});
++    return controlled.valid;
++  }
++  const rafWrapper=function(callback,...otherArgs){
++    if(!pendingMeasure||!activeRender?.matching)
++      return Reflect.apply(originalRaf,this,[callback,...otherArgs]);
++    let stack='';
++    try{stack=String(new Error('P88 native rAF registration').stack||'');}catch(error){integrity(String(error));}
++    const atRestore=stack.includes('/app.js:'+restoreRafLine+':');
++    if(!atRestore)
++      return Reflect.apply(originalRaf,this,[callback,...otherArgs]);
++    let sourceText='';
++    try{sourceText=Function.prototype.toString.call(callback);}catch(error){integrity(String(error));}
++    if(targetedRaf||sourceText!==restoreCallbackSource){
++      integrity(targetedRaf?'More than one eligible original restore callback':'Original restore callback bytes do not match pinned F');
++      rejectPending(Error('P88 native rAF schedule precondition: callback identity is not unique'));
++      return Reflect.apply(originalRaf,this,[callback,...otherArgs]);
++    }
++    const target=targetedRaf={id:null,source:sourceText,stack,renderer:activeRender.invocation,dispatches:0,measureEvaluations:0,cancelled:false};
++    const nativeWrapper=function(...nativeArgs){
++      target.dispatches++;
++      const pending=pendingMeasure;
++      // If an earlier timeout/cancel invalidated the proof, the real callback
++      // still keeps its native dispatch and original exception semantics.
++      if(!pending)return Reflect.apply(callback,this,nativeArgs);
++      let measured,measureError,measureThrew=false,callbackResult,callbackError,callbackThrew=false,before=null;
++      safeObserve('native-restore-entry',{native_id:target.id,renderer:target.renderer,native_args:nativeArgs,this_is_window:this===window});
++      try{
++        if(target.dispatches!==1||ReferenceWorkspace.context()!==heldQuery.context||heldQuery.arm_token!==armedToken)
++          throw Error('P88 native rAF schedule precondition: dispatch/context changed');
++        target.measureEvaluations++;measured=Reflect.apply(pending.evaluate,undefined,[]);
++        before=compact('#refGuideMode',measured);
++        append('measure',{selector:'#refGuideMode',original_measure:measured,hit_at_return:desc(document.elementFromPoint(measured.x,measured.y)),state:state(),inside_native_restore_before_original:true});
++      }catch(error){measureError=error;measureThrew=true;}
++      // The original callback always executes exactly here, even if the
++      // diagnostic's read/observer failed. Original throw has priority.
++      try{callbackResult=Reflect.apply(callback,this,nativeArgs);}
++      catch(error){callbackError=error;callbackThrew=true;}
++      safeObserve('native-restore-return',{native_id:target.id,renderer:target.renderer,original_threw:callbackThrew});
++      try{
++        if(callbackThrew)throw Error('P88 native rAF schedule invalid: original callback threw');
++        if(measureThrew)throw measureError;
++        if(!completeNativeControl(measured,before,this,nativeArgs))
++          throw Error('P88 original native restore did not reproduce the declared wrong-target displacement; not valid counterevidence');
++        pendingMeasure=null;clearTimeout(pending.timer);pending.resolve(measured);
++      }catch(error){rejectPending(error);}
++      if(callbackThrew)throw callbackError;
++      return callbackResult;
++    };
++    target.id=Reflect.apply(originalRaf,this,[nativeWrapper,...otherArgs]);
++    safeObserve('native-restore-registered',{native_id:target.id,renderer:target.renderer,registration_stack:stack,callback_source_matches:true});
++    return target.id;
++  };
++  const cancelRafWrapper=function(id,...args){
++    if(targetedRaf&&targetedRaf.id===id&&pendingMeasure){
++      targetedRaf.cancelled=true;safeObserve('native-restore-cancelled',{native_id:id});
++      rejectPending(Error('P88 native rAF schedule precondition: original restore was cancelled'));
++    }
++    return Reflect.apply(originalCancelRaf,this,[id,...args]);
++  };
++  window.requestAnimationFrame=rafWrapper;window.cancelAnimationFrame=cancelRafWrapper;
++  function measureWithRestore(selector,evaluate,measurementId){
++    const guides=typeof fe==='undefined'?[]:fe.guides||[];
++    const eligible=proofMode==='controlled'&&!controlled&&selector==='#refGuideMode'&&innerWidth===390&&
++      guides.some(g=>typeof g.expression==='string'&&g.expression.startsWith('gridrule:'));
++    if(!eligible){const p=Reflect.apply(evaluate,undefined,[]);trace.afterMeasure(selector,p);return p;}
++    controlled={name:'P88-measure-before-original-native-restore',attempted:true,applied:false,valid:false,count:0,
++      measurement_id:measurementId,before_query:state(),before:null,after:null,original_measure:null};
++    if(!heldQuery||heldQuery.released||heldQuery.context!==ReferenceWorkspace.context()||heldQuery.arm_token!==armedToken)
++      throw Error('P88 native rAF schedule precondition: no original held query for the first eligible measurement');
++    controlled.original_response_json=heldQuery.result_json;controlled.query_callsite_stack=heldQuery.callsite_stack;
++    return new Promise((resolve,reject)=>{
++      const pending=pendingMeasure={evaluate,resolve,reject,timer:null};
++      pending.timer=setTimeout(()=>rejectPending(Error('P88 native rAF schedule precondition exhausted the original 25-second budget')),25000);
++      heldQuery.released=true;append('query-response-release-before-original-measure',{state:state()});heldQuery.release();
++    });
++  }
++
+   // Synchronous observation only: preserve original this, arguments, return
+   // identity, thrown value, and scheduling. Observer failures are separate.
+   const observeRender=(kind,extra)=>{
+@@ -202,8 +328,11 @@
+     catch(error){errors.push('Renderer stack observation failed: '+String(error?.stack||error));}
+     observeRender('renderFaceInspector-enter',{invocation,stack});
+     let result;
++    const previousRender=activeRender;
++    activeRender={invocation,matching:!!pendingMeasure&&!!heldQuery?.released&&!!heldQuery?.returned&&heldQuery.arm_token===armedToken&&ReferenceWorkspace.context()===heldQuery.context&&stack.includes('at paintQuery (')&&stack.includes('at query (')&&stack.includes('/grid-rule-lines.js:'+querySuccessLine+':')};
+     try{result=Reflect.apply(originalRender,this,args);}
+     catch(error){observeRender('renderFaceInspector-throw',{invocation,stack});throw error;}
++    finally{activeRender=previousRender;}
+     observeRender('renderFaceInspector-return',{invocation,stack});
+     return result;
+   };
+@@ -225,51 +354,20 @@
+         append('query-response-held',{command:cmd,callsite_stack:stack,result_json:heldQuery.result_json,state:state()});
+         await pending;
+         if(JSON.stringify(result)!==heldQuery.result_json)throw Error('Held query response bytes changed');
++        heldQuery.returned=true;
+         append('query-response-returned',{command:cmd,result_json:JSON.stringify(result),state:state()});
+       }
+       return result;
+     };
+     apiRequest=queryWrapper;
+   }
+-  async function injectQueryRelease(selector,p){
+-    if(proofMode!=='controlled'||controlled||selector!=='#refGuideMode'||!p?.hit||innerWidth!==390)return;
+-    const guides=typeof fe==='undefined'?[]:fe.guides||[];
+-    if(!guides.some(g=>typeof g.expression==='string'&&g.expression.startsWith('gridrule:')))return;
+-    controlled={name:'P88-original-query-release-after-mode-measure',attempted:true,applied:false,valid:false,count:0,
+-      before:compact(selector,p),before_state:state(),after:null,original_measure:p,old_center:{x:p.x,y:p.y},
+-      restored:false,restoration:null};
+-    if(!heldQuery||heldQuery.released||heldQuery.context!==ReferenceWorkspace.context()||heldQuery.arm_token!==armedToken){
+-      controlled.error='No held original after-inspect query response at the first eligible measurement';
+-      trace.gate=publicControl();throw Error('P88 query schedule precondition: '+controlled.error);
+-    }
+-    controlled.original_response_json=heldQuery.result_json;
+-    controlled.query_callsite_stack=heldQuery.callsite_stack;
+-    controlled.held_state=heldQuery.held_state;
+-    heldQuery.released=true;controlled.count=1;
+-    append('query-response-release',{state:state(),original_measure:p});
+-    heldQuery.release();
+-    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+-    const ratio=document.getElementById('refGuideRatio'),label=ratio?.closest('label'),hit=document.elementFromPoint(p.x,p.y);
+-    controlled.target_label=desc(label);
+-    controlled.after_hit=desc(hit);controlled.after_state=state();
+-    controlled.after={...compact(selector,p),hitAtOldPoint:desc(hit)};
+-    controlled.returned_response_json=JSON.stringify(heldQuery.result);
+-    controlled.parsed_json_unchanged=controlled.returned_response_json===controlled.original_response_json;
+-    controlled.response_scope='Same original apiRequest return object and its serialized parsed JSON; original HTTP wire bytes are not captured here.';
+-    controlled.valid=!!label&&(hit===label||hit===ratio)&&controlled.parsed_json_unchanged;
+-    controlled.applied=controlled.valid;
+-    if(!controlled.valid)controlled.error='The actual original query repaint did not move the old point onto the real ratio label/select';
+-    trace.gate=publicControl();
+-    append('controlled-query-release',{control:publicControl(),state:state()});
+-    if(!controlled.valid)throw Error('P88 original query schedule did not reproduce the original wrong-target displacement; this is not valid counterevidence');
+-  }
+   function publicControl() {
+     if (!controlled) return null;
+     const {restore, ...value} = controlled;
+     return value;
+   }
+   const trace = {
+-    gate:{attempted:false,applied:false,count:0,name:'P88-original-query-release-after-mode-measure',before:null,after:null},
++    gate:{attempted:false,applied:false,count:0,name:'P88-measure-before-original-native-restore',before:null,after:null},
+     afterMeasure(selector, p) {
+       append('measure', {selector, original_measure:p,
+         hit_at_return:desc(document.elementFromPoint(p.x,p.y)), state:state()});
+@@ -278,13 +376,19 @@
+         armedToken={context:armedContext,serial:++armSerial};
+         append('query-schedule-armed',{selector,original_measure:p,context_id:armedContext.id,arm_serial:armSerial,state:state()});
+       }
+-      return injectQueryRelease(selector,p);
++      return undefined;
+     },
++    measureWithRestore,
+     stop() {
+       const finalSnapshot = state();
+       for (const name of eventNames) document.removeEventListener(name,onEvent,{capture:true});
+       for (const name of ['mousedown','mouseup']) document.removeEventListener(name,onBubbleEvent);
+       observer.disconnect();
++      if(pendingMeasure){errors.push('Native rAF measurement unresolved at cleanup');rejectPending(Error('P88 native rAF cleanup before completion'));}
++      if(window.requestAnimationFrame===rafWrapper)window.requestAnimationFrame=originalRaf;
++      else errors.push('Native rAF wrapper lost ownership; not forcibly restored');
++      if(window.cancelAnimationFrame===cancelRafWrapper)window.cancelAnimationFrame=originalCancelRaf;
++      else errors.push('Native cancelAnimationFrame wrapper lost ownership; not forcibly restored');
+       if(heldQuery&&!heldQuery.released){heldQuery.released=true;heldQuery.release();errors.push('Held query was released only during diagnostic cleanup; no valid causal proof');}
+       if(queryWrapper&&apiRequest===queryWrapper)apiRequest=originalApi;
+       if(renderFaceInspector===renderWrapper){renderFaceInspector=originalRender;append('renderer-observer-restored',{restored:true});}
+@@ -303,6 +407,7 @@
+   return {installed:true, mode:proofMode};
+ }
+ 
++let measurementSerial=0;
+ const measurement = /^\(\(\)=>\{const e=document\.querySelector\(("(?:[^"\\]|\\.)*")\);if\(!e\)throw Error\(/;
+ const originalExtension = Module._extensions['.js'];
+ Module._extensions['.js'] = function(module, filename) {
+@@ -324,11 +429,12 @@
+       if (!match || !expression.includes('const r=e.getBoundingClientRect(),x=') || !expression.includes('hit:e.contains(h)'))
+         return deps.eval_(expression, ...args);
+       const selector = JSON.parse(match[1]);
+-      nodeEvent('measure-request', {selector});
++      const measurementId=++measurementSerial;
++      nodeEvent('measure-request', {selector,measurement_id:measurementId});
+       // 原 measure 僅求值一次；natural 只追加觀測，controlled 在同次求值後回傳原舊 p。
+-      const wrapped = mode==='controlled' ? `(async()=>{const p=(${expression});const t=window.__geo288P88PassiveTrace_v1;if(!t)throw Error('P88 trace missing');await t.afterMeasure(${JSON.stringify(selector)},p);return p;})()` : `(()=>{const p=(${expression});const t=window.__geo288P88PassiveTrace_v1;if(!t)throw Error('P88 trace missing');t.afterMeasure(${JSON.stringify(selector)},p);return p;})()`;
++      const wrapped = mode==='controlled' ? `(async()=>{const t=window.__geo288P88PassiveTrace_v1;if(!t)throw Error('P88 trace missing');return await t.measureWithRestore(${JSON.stringify(selector)},()=>(${expression}),${measurementId});})()` : `(()=>{const p=(${expression});const t=window.__geo288P88PassiveTrace_v1;if(!t)throw Error('P88 trace missing');t.afterMeasure(${JSON.stringify(selector)},p);return p;})()`;
+       const value = await deps.eval_(wrapped, ...args);
+-      nodeEvent('measure-return', {selector, original_measure:value});
++      nodeEvent('measure-return', {selector, measurement_id:measurementId, original_measure:value});
+       return value;
+     };
+     const send = async function(method, params, ...args) {
+@@ -337,7 +443,7 @@
+     };
+     try {
+       browserWrapperActive = true;
+-      await deps.eval_(`(${installBrowserTrace.toString()})(${JSON.stringify(mode)},${JSON.stringify(queryAfterLine)})`);
++      await deps.eval_(`(${installBrowserTrace.toString()})(${JSON.stringify(mode)},${JSON.stringify(queryAfterLine)},${JSON.stringify(restoreRafLine)},${JSON.stringify(restoreCallbackSource)},${JSON.stringify(querySuccessLine)})`);
+       nodeEvent('browser-trace-installed');
+       const result = await original.call(this,{...deps,eval_,send});
+       report.completed = true;
