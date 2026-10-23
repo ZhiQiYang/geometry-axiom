@@ -34,3 +34,6 @@ UI condition timed out at === P88. 原生來源子線顯示、完整引用、兩
 
 - 11:40 UTC：新 F 完整 canvas 第 1 輪 exit 0；1741.884308179011 秒，原 35 分鐘內，full 2267／0、golden matched、P88=143、P73=69、沒有 skip。第 2 輪自動接續。原 receipt SHA256：594f637f2386d09702c9021d6828bc2ee4e032097713429cea5c5bbfa32b548f。
 - 原生 rAF 接續等待器已通過獨立靜審並啟動等待（session 91028）；等待正式三輪 process 終態與 source_after，之後只跑一次固定／撤回／恢復，不重抽；尚未開始反證。完整 argv／環境／雜湊與前版 metadata 修正在 native-raf-waiter-preparation/。
+
+- 12:38:51 UTC：公開 F `3d681636902371ecc528b20f51eea33e272581c9` 的三次完整 canvas 全部完成，exit 0／0／0；每輪 full 2267／0、P88=143、P73=69、golden matched、skip=[]；1741.884308179011／1748.520241596998／1765.1202577359945 秒，全部在原 35 分鐘內。sequence driver exit 0，來源前後同 SHA、空 status、同 index。完整 step 指令／stdout／stderr、收據與 outer 已收在 final-canvas-three/；root 另封存 workflow optional artifacts。
+- 12:38:58 UTC：原等待器自動啟動固定 F 的 native-rAF 三階段反證，PID 1238147，輸出 /tmp/g288p88r；目前 fixed 階段執行中，尚無反證結論。原真 query 未復現診斷仍完整保留，不因正式三輪綠而改寫。封存器與 peer 已備妥於 native-raf-archiver-preparation/。

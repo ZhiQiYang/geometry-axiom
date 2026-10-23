@@ -1,0 +1,19 @@
+{"event": "啟用子程序回收", "pid": 1207339, "pr_get_child_subreaper": 1, "command": ["flock", "-n", "/tmp/g261r3/heavy.lock", "python3", "-B", "/workspace/geo288-main-merge-20261023/p88-priority/final-3d681636/run_canvas_workflow.py", "--repo", "/tmp/g288p88final-3d681636", "--sha", "3d681636902371ecc528b20f51eea33e272581c9", "--job", "canvas", "--out-root", "/tmp/g288p88f3/workflow", "--port", "19893", "--cdp-port", "9693"], "utc_epoch": 1792757366.3804855}
+{"event": "回收", "pid": 1207394, "primary": false, "returncode": 0, "utc_epoch": 1792757366.5176349}
+{"event": "回收", "pid": 1207395, "primary": false, "returncode": 0, "utc_epoch": 1792757366.5177372}
+{"event": "回收", "pid": 1207750, "primary": false, "returncode": 1, "utc_epoch": 1792757422.3530252}
+{"event": "回收", "pid": 1208003, "primary": false, "returncode": 0, "utc_epoch": 1792757425.5189826}
+{"event": "回收", "pid": 1208004, "primary": false, "returncode": 0, "utc_epoch": 1792757425.5190904}
+{"event": "回收", "pid": 1207743, "primary": false, "returncode": 0, "utc_epoch": 1792759131.4949899}
+{"event": "回收", "pid": 1207752, "primary": false, "returncode": 0, "utc_epoch": 1792759131.496764}
+{"event": "回收", "pid": 1207753, "primary": false, "returncode": 0, "utc_epoch": 1792759131.4980109}
+{"event": "回收", "pid": 1207799, "primary": false, "returncode": 0, "utc_epoch": 1792759131.498048}
+{"event": "回收", "pid": 1207779, "primary": false, "returncode": 0, "utc_epoch": 1792759131.4988647}
+{"event": "回收", "pid": 1207827, "primary": false, "returncode": 0, "utc_epoch": 1792759131.5004296}
+{"event": "回收", "pid": 1207781, "primary": false, "returncode": 0, "utc_epoch": 1792759131.503762}
+{"event": "回收", "pid": 1207729, "primary": false, "returncode": 0, "utc_epoch": 1792759131.5262198}
+{"event": "回收", "pid": 1207747, "primary": false, "returncode": 0, "utc_epoch": 1792759131.5392423}
+{"event": "回收", "pid": 1207748, "primary": false, "returncode": 0, "utc_epoch": 1792759131.5393217}
+{"event": "回收", "pid": 1207839, "primary": false, "returncode": 0, "utc_epoch": 1792759131.5420465}
+{"event": "回收", "pid": 1207340, "primary": true, "returncode": 0, "utc_epoch": 1792759131.5878274}
+{"event": "完成", "primary_returncode": 0, "utc_epoch": 1792759131.5880203}

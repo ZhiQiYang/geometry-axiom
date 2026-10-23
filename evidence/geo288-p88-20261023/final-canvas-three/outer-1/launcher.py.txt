@@ -1,0 +1,61 @@
+"""以既有 c387 錄製器與 reaper 執行原 F proof argv；不持鎖或改驗收判準。"""
+import argparse, hashlib, importlib.util, json, os, re, resource, sys
+from pathlib import Path
+
+p = argparse.ArgumentParser(description=__doc__)
+p.add_argument('--label', required=True)
+p.add_argument('--sha', default='fe863b0374eafd9f1e57ec5107e28a1101804b56')
+p.add_argument('--repo', type=Path, default=Path('/tmp/g261r2/source-final'))
+p.add_argument('--outer-root', type=Path, default=Path('/workspace/geo261-environment/final-f-extra-outer'))
+p.add_argument('proof', nargs=argparse.REMAINDER)
+a = p.parse_args()
+proof = a.proof[1:] if a.proof[:1] == ['--'] else a.proof
+assert proof and a.label.replace('-', '').isalnum()
+F = a.sha
+assert re.fullmatch('[0-9a-f]{40}', F)
+repo = a.repo.resolve()
+outer = a.outer_root / a.label
+outer.mkdir(parents=True, exist_ok=False)
+helper = Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py')
+reaper = Path('/workspace/geo261-environment/reap_children.py')
+h = lambda q: hashlib.sha256(q.read_bytes()).hexdigest()
+assert h(helper) == 'c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+assert not sys.flags.optimize and os.environ.get('PYTHONOPTIMIZE') in (None, '', '0')
+soft, hard = resource.getrlimit(resource.RLIMIT_STACK)
+resource.setrlimit(resource.RLIMIT_STACK, (16384 * 1024, hard))
+env = dict(os.environ, LANG='C.UTF-8', LC_ALL='C.UTF-8', PYTHONDONTWRITEBYTECODE='1',
+           PYTHONIOENCODING='utf-8', GITHUB_SHA=F, GITHUB_WORKSPACE=str(repo),
+           GEOMETRY_CHROME='/workspace/geo261-environment/bin/google-chrome',
+           GEO261_REAPER_LOG=str(outer / 'reaper.jsonl'))
+argv = [sys.executable, '-B', str(reaper), *proof]
+tool_paths = [helper, reaper, Path(__file__).resolve()]
+tool_paths += [Path(q) for q in proof if q.endswith('.py') and Path(q).is_file()]
+metadata = {'sha': F, 'argv': argv, 'cwd': str(repo), 'python': sys.version,
+            'python_executable': sys.executable, 'tool_hashes': {str(q): h(q) for q in tool_paths},
+            'stack_before': [soft, hard], 'stack_during': resource.getrlimit(resource.RLIMIT_STACK),
+            'environment': {k: env.get(k) for k in ('PATH', 'LANG', 'LC_ALL', 'PYTHONOPTIMIZE',
+                'PYTHONDONTWRITEBYTECODE', 'PYTHONIOENCODING', 'GITHUB_SHA', 'GITHUB_WORKSPACE', 'GEOMETRY_CHROME', 'GEO261_REAPER_LOG')}}
+(outer / 'launcher.py.txt').write_bytes(Path(__file__).read_bytes())
+(outer / 'request.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n')
+spec = importlib.util.spec_from_file_location('geo261_outer_capture', helper)
+cap = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(cap)
+r = cap.Recorder(outer, env, F)
+def guard(label):
+    head = r.run(['git', 'rev-parse', 'HEAD'], cwd=repo, timeout=30)[1].decode().strip()
+    status = r.run(['git', 'status', '--porcelain=v1', '--untracked-files=all'], cwd=repo, timeout=30)[1]
+    assert head == F and not status, (label, head, status)
+row = None
+try:
+    guard('before')
+    row, _, _ = r.run(argv, cwd=repo, timeout=None, check=False,
+                      source_sha=F, source_variant='extra-proof-outer')
+finally:
+    try:
+        guard('after')
+    finally:
+        metadata['outer_process'] = row
+        metadata['subcommands'] = r.rows
+        (outer / 'receipt.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps({'outer': str(outer), 'actual_process_returncode': row['actual_process_returncode']}))
+raise SystemExit(row['actual_process_returncode'])

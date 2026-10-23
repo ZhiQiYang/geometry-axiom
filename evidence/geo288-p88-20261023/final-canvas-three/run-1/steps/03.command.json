@@ -1,0 +1,22 @@
+{
+  "command": [
+    "bash",
+    "--noprofile",
+    "--norc",
+    "-eo",
+    "pipefail",
+    "/tmp/g288p88f1/workflow/canvas/steps/03.executed.sh"
+  ],
+  "cwd": "/tmp/g288p88final-3d681636",
+  "started": "2026-10-23T11:12:11.155475+00:00",
+  "stdout": "/tmp/g288p88f1/workflow/canvas/steps/03.stdout",
+  "stderr": "/tmp/g288p88f1/workflow/canvas/steps/03.stderr",
+  "combined": "/tmp/g288p88f1/workflow/canvas/steps/03.combined.log",
+  "timeout_seconds": 6244.44437969799,
+  "ended": "2026-10-23T11:40:17.448249+00:00",
+  "seconds": 1686.2927856530005,
+  "actual_process_returncode": 0,
+  "exit_code": 0,
+  "watchdog_expired": false,
+  "owned_process_group_cleanup": false
+}

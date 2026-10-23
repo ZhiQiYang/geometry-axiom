@@ -1,0 +1,44 @@
+--- archive_native_raf_diagnostic.v1.py
++++ archive_native_raf_diagnostic.py
+@@ -8,6 +8,8 @@
+ HERE = Path(__file__).resolve().parent
+ F = '3d681636902371ecc528b20f51eea33e272581c9'
+ OUT = HERE / 'native-raf-diagnostic-archive'
++TOOLS = HERE / 'p88-native-raf-tools-v2'
++PREP = 'a6f6dc0e5f02b1090b01216de008be2864a48aa26f5ee09d48f086196b7e127b'
+ 
+ 
+ def need(ok, message):
+@@ -35,12 +37,22 @@
+     receipt = json.loads((ROOT / 'receipt.json').read_text())
+     need(receipt['sha'] == F and receipt.get('actual_driver_exit_code') is not None,
+          'Diagnostic driver terminal identity required')
++    need(h((TOOLS / 'PREPARATION.json').read_bytes()) == PREP, 'Peer-reviewed preparation bytes differ')
++    preparation = json.loads((TOOLS / 'PREPARATION.json').read_text())
++    need(preparation['sha'] == F, 'Preparation source identity differs')
++    for relative, expected in preparation['files'].items():
++        need(h((TOOLS / relative).read_bytes()) == expected, 'Frozen preparation file differs: ' + relative)
+     need(not OUT.exists(), 'Archive output must be fresh')
+     OUT.mkdir()
+     manifest = {'schema': 'geo288-p88-native-raf-raw-archive/1', 'source': str(ROOT), 'sha': F,
+         'original_driver_exit': receipt['actual_driver_exit_code'], 'original_proof_passed': receipt['passed'],
+         'launcher_exit': launch['launcher_exit_code'], 'actual_outer_process_exit': launch['actual_process_returncode'],
+-        'exclusions': 'Only each phase/tmp tree (compiled executables, Chrome profile/cache and runtime scratch) is excluded. Every remaining original receipt, command, complete stdout/stderr, trace, source variant and frozen tool snapshot is retained. Existing failed prior experiment is preserved separately.',
++        'original_source_before': receipt.get('source_before'), 'original_source_after': receipt.get('source_after'),
++        'original_phase_summary': [{key: row[key] for key in ('variant', 'expected_original_test_exit', 'outer_actual_exit',
++            'original_workflow_exit', 'original_test_exit', 'passed', 'error', 'source_before', 'source_after') if key in row}
++            for row in receipt['phases']],
++        'preparation_sha256': PREP,
++        'exclusions': 'Each fixed/withdrawn/restored phase/tmp tree is excluded in its entirety, including any feedback, compiled executables, Chrome profile/cache and runtime scratch within it; this archive does not claim those bytes are retained. Every remaining original receipt, command, complete stdout/stderr, trace, source variant and frozen tool snapshot is retained. All 16 declared preparation files including PREPARATION.json are included separately. Existing failed prior experiment is preserved separately.',
+         'files': {}}
+     files = []
+     for path in sorted(ROOT.rglob('*')):
+@@ -58,6 +70,8 @@
+         files.append((path, Path('context') / path.name))
+     for path in (HERE / 'continue_native_raf_after_final_canvas.py', Path(__file__)):
+         files.append((path, Path('context') / path.name))
++    for relative in ['PREPARATION.json', *sorted(preparation['files'])]:
++        files.append((TOOLS / relative, Path('tools-preparation') / relative))
+     archive = OUT / 'NATIVE_RAF_RAW.tar.gz'
+     with tarfile.open(archive, 'w:gz', compresslevel=1) as tar:
+         for path, relative in files:

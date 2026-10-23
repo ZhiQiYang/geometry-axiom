@@ -1,0 +1,21 @@
+{
+  "schema": "p88-native-raf-archive-static-review/1",
+  "archiver_sha256": "ae138971c626ceae6ff2417831ac817874888004d6f00b379ba96cd97fd4d78f",
+  "previous_sha256": "8c8281a6c04f1eafd77340ecb1116968add5b0e90586ad3ad24b0d6e644073fe",
+  "status": "limited_static_preparation_accepted",
+  "closed_gap": "v1未封存PREPARATION.json與全準備檔；v2先核a6f6和全部15filehash，再把含PREP共16原件獨立tools-preparation/入包。",
+  "checks": [
+    "需要launcher/driver同固定F的真終態與真子程序，不依賴proof綠才能保紅原件。",
+    "launcher原stdout/stderr hash必符原terminal metadata。",
+    "原driver verdict/真exit、launcher metadata exit/實子程序exit分欄保留，不正規化紅燈。",
+    "原source before/after及每phase expected/真退出/passed/error不改判決地摘錄。",
+    "raw/outer/launcher/實際凍結工具與sourcevariant/path元資料入tar；regular-file與唯一arcname守門。",
+    "全檔bytes/hash manifest及tar reopen逐member bytes/hash roundtrip；封存驗證不冒產品gate。",
+    "各phase/tmp整樹排除（含其中feedback）明列，無全bytes完整保留的誇稱；其他新舊無效實驗各自保留。"
+  ],
+  "limits": [
+    "只PythonAST/小diff/metadata靜審，未執行archiver/大hash/解tar或測試。",
+    "必須等實際三phase全terminal後才封存，現在沒有raw/roundtrip結果。",
+    "此封包scope不是整個環境或Chrome profile；缺期望的檔或完整性紅時需保真錯誤，不自動改判決。"
+  ]
+}

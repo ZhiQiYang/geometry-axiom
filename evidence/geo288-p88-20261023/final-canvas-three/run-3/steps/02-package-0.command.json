@@ -1,0 +1,20 @@
+{
+  "command": [
+    "dpkg-query",
+    "-W",
+    "-f=${Status} ${Version}\n",
+    "fonts-noto-cjk"
+  ],
+  "cwd": "/tmp/g288p88final-3d681636",
+  "started": "2026-10-23T12:10:20.798417+00:00",
+  "stdout": "/tmp/g288p88f3/workflow/canvas/steps/02-package-0.stdout",
+  "stderr": "/tmp/g288p88f3/workflow/canvas/steps/02-package-0.stderr",
+  "combined": "/tmp/g288p88f3/workflow/canvas/steps/02-package-0.combined.log",
+  "timeout_seconds": 30,
+  "ended": "2026-10-23T12:10:20.811651+00:00",
+  "seconds": 0.013239242995041423,
+  "actual_process_returncode": 0,
+  "exit_code": 0,
+  "watchdog_expired": false,
+  "owned_process_group_cleanup": false
+}
