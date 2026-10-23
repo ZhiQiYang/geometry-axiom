@@ -23,6 +23,19 @@ typedef struct {
     const WoodContactMemberFact *members;
     size_t member_count;
 } WoodContactWorld;
+typedef enum {
+    WOOD_BOUNDARY_END_ORDINARY,
+    WOOD_BOUNDARY_END_PARTIAL,
+    WOOD_BOUNDARY_END_BARE_RC
+} WoodBoundaryEndAdmission;
+/* I19 exception three is W policy. A PARTIAL endpoint still requires all
+ * caller footprint, boundary-role and collision validation. BARE_RC is an
+ * explicit refusal and must never fall back to complete-face admission.
+ * An optional required_contact points into faces: a between selector may
+ * claim partial support only if that named returned face itself contacts. */
+WoodBoundaryEndAdmission wood_contact_boundary_end_admission(
+    const WoodContactWorld *,const WoodMember *,bool,
+    GeoCoord,GeoCoord,GeoCoord,GeoCoord,int,const WoodStopFace *,size_t,const WoodStopFace *);
 size_t wood_contact_collect_stops(const WoodContactWorld *,bool,const WoodMember *,WoodStopFace *,size_t);
 /* Positioning edge of a footprint (D16/R18): pure geometry. The interval on the length axis comes from the
  * footprint alone and never from how the member was placed (at-face, at or through give the same fixed

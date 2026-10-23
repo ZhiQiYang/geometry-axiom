@@ -736,6 +736,22 @@ static bool app_reference_end_faces(const World *world,const PlacementSurface *p
     return wood_contact_end_faces_with_sources(&facts.world,member,along_v,span_lo,span_hi,cross_lo,cross_hi,
         app_reference_end_stops,&source,error,capacity);
 }
+static bool app_reference_boundary_end_policy(const World *world,const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,const WoodMember *member,bool along_v,
+    Coord span_lo,Coord span_hi,Coord cross_lo,Coord cross_hi,int end,
+    const WoodStopFace *faces,size_t count,const WoodStopFace *required,WoodBoundaryEndAdmission *admission)
+{
+    AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);
+    ReferenceEval *ctx=app_reference_sources_for_world(world);WoodContactSourceFacts actual;
+    if(ctx&&!ctx->use_current_values){
+        WoodContactSourceRequest request={placement->id,along_v,member};
+        if(!reference_sources_ensure(ctx)||!reference_contact_facts(ctx,ctx->sources,&request,&actual))return false;
+        facts.world.members=actual.members;facts.world.member_count=actual.member_count;
+    }
+    *admission=wood_contact_boundary_end_admission(&facts.world,member,along_v,
+        span_lo,span_hi,cross_lo,cross_hi,end,faces,count,required);
+    return true;
+}
 static bool app_reference_validation_room(const World *world,uint32_t id,WoodRoomBounds *out)
 {
     ReferenceEval *ctx=app_reference_sources_for_world(world);GeoEnclosure actual;

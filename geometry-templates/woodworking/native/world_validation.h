@@ -26,6 +26,8 @@ typedef struct {
     size_t (*stops)(void *,uint32_t,const GeoRect2 *,bool,const WoodMember *,WoodStopFace *,size_t);
     bool (*end_faces)(void *,uint32_t,const GeoRect2 *,const WoodMember *,bool,char *,size_t);
     bool (*boundary_role)(void *,uint32_t,const GeoRect2 *,const WoodMember *,bool,char *,size_t);
+    bool (*boundary_end)(void *,uint32_t,const GeoRect2 *,const WoodMember *,bool,int,
+        const WoodStopFace *,size_t,WoodBoundaryEndAdmission *);
 } WoodWorldValidationContext;
 bool wood_world_validate_members(const WoodWorldValidationContext *,char *,size_t);
 typedef struct {uint32_t id,space_id;GeoCoord min[3],max[3];} WoodSolidObstacle;

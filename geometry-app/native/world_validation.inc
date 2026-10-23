@@ -97,6 +97,14 @@ static bool app_validation_end_faces(void *user,uint32_t id,const GeoRect2 *foot
         along_v?footprint->min_v:footprint->min_u,along_v?footprint->max_v:footprint->max_u,
         along_v?footprint->min_u:footprint->min_v,along_v?footprint->max_u:footprint->max_v,error,capacity);
 }
+static bool app_validation_boundary_end(void *user,uint32_t id,const GeoRect2 *footprint,const WoodMember *member,
+    bool along_v,int end,const WoodStopFace *faces,size_t count,WoodBoundaryEndAdmission *admission)
+{
+    AppValidationDomain domain;if(!app_validation_domain(user,id,footprint,&domain))return false;
+    return app_reference_boundary_end_policy(((AppValidationInputs *)user)->world,domain.p,domain.b,member,along_v,
+        along_v?footprint->min_v:footprint->min_u,along_v?footprint->max_v:footprint->max_u,
+        along_v?footprint->min_u:footprint->min_v,along_v?footprint->max_u:footprint->max_v,end,faces,count,NULL,admission);
+}
 static bool app_validation_boundary_role(void *user,uint32_t id,const GeoRect2 *footprint,const WoodMember *member,bool along_v,char *error,size_t capacity)
 {
     AppValidationDomain domain;if(!app_validation_domain(user,id,footprint,&domain))return false;
@@ -111,7 +119,8 @@ static WoodWorldValidationContext app_world_validation_context(const World *worl
     context.member_count=world->wood.timber_count;context.placement_count=world_placement_count(world);
     context.member_at=app_validation_member;context.placement_id=app_validation_placement_id;
     context.host=app_validation_host;context.footprint=app_validation_footprint;context.place=app_validation_place;
-    context.stops=app_validation_stops;context.end_faces=app_validation_end_faces;context.boundary_role=app_validation_boundary_role;return context;
+    context.stops=app_validation_stops;context.end_faces=app_validation_end_faces;context.boundary_role=app_validation_boundary_role;
+    context.boundary_end=app_validation_boundary_end;return context;
 }
 static bool app_validation_room(void *user,uint32_t id,WoodRoomBounds *out)
 {

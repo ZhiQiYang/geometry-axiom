@@ -6049,7 +6049,22 @@ typedef char app_span_scratch_bound_check[SPAN_CUT_MAX==WOOD_MEMBER_SPAN_CUT_CAP
  *   out_start/out_end  解析結果（長度軸座標）
  *   err/err_cap        失敗時的人話訊息
  */
-static SpanStatus resolve_auto_span(
+typedef struct {
+    const World *world;const PlacementSurface *placement;const SpaceBoundarySurface *boundary;
+} AppMemberSpanEndContext;
+static bool app_reference_boundary_end_policy(const World *,const PlacementSurface *,const SpaceBoundarySurface *,
+    const WoodMember *,bool,Coord,Coord,Coord,Coord,int,const WoodStopFace *,size_t,const WoodStopFace *,WoodBoundaryEndAdmission *);
+static bool app_member_span_end_admission(void *user,const WoodMember *self,bool along_v,
+    Coord start,Coord end,Coord cross_lo,Coord cross_hi,int which,const WoodStopFace *faces,size_t count,
+    const WoodStopFace *required,WoodBoundaryEndAdmission *admission)
+{
+    const AppMemberSpanEndContext *context=user;
+    GeoRect2 rect={along_v?cross_lo:start,along_v?start:cross_lo,along_v?cross_hi:end,along_v?end:cross_hi};
+    const SpaceBoundarySurface *selected=placement_boundary_for_rect(context->placement,context->boundary,&rect);
+    return app_reference_boundary_end_policy(context->world,context->placement,selected,self,along_v,
+        start,end,cross_lo,cross_hi,which,faces,count,required,admission);
+}
+static SpanStatus resolve_auto_span_for_member(
     const World *world,
     const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,
@@ -6066,9 +6081,11 @@ static SpanStatus resolve_auto_span(
     Coord *out_start,
     Coord *out_end,
     char *err,
-    size_t err_cap
+    size_t err_cap,
+    const Timber *self
 )
 {
+    const SpaceBoundarySurface *span_boundary=boundary;
     GeoLoop2View region_holes[DP_COMPONENT_MAX][POLY_MAX_HOLES];
     GeoRegionView regions[DP_COMPONENT_MAX];GeoPoint2 rectangle[4];
     size_t region_count=placement->derived_fill_id?placement->component_count:1;
@@ -6094,12 +6111,39 @@ static SpanStatus resolve_auto_span(
         if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;
     }
     StopFace faces[STOP_FACE_MAX];size_t face_count=collect_stop_faces(world,placement,boundary,along_v,NULL,faces,STOP_FACE_MAX);
-    WoodMemberSpanFacts facts={{regions,region_count},obstacles,obstacle_count,faces,face_count};
+    AppMemberSpanEndContext end_context={world,placement,span_boundary};
+    WoodMemberSpanFacts facts={{regions,region_count},obstacles,obstacle_count,faces,face_count,
+        app_member_span_end_admission,&end_context};
     WoodMemberSpanRequest request={along_v,cross_lo,cross_hi,has_contact,contact_lo,contact_hi,has_through,through,
         between!=NULL,{{0},{0}},scope!=NULL,{0}};
     if(between){request.stops[0]=between[0];request.stops[1]=between[1];}
     if(scope)request.scope=*scope;
+    request.self=self;
     return (SpanStatus)wood_member_resolve_span(&facts,&request,out_start,out_end,err,err_cap);
+}
+
+static SpanStatus resolve_auto_span(
+    const World *world,
+    const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,
+    bool along_v,
+    Coord cross_lo,
+    Coord cross_hi,
+    bool has_contact,
+    Coord contact_lo,
+    Coord contact_hi,
+    bool has_through,
+    Coord through,
+    const StopFaceRef *between,
+    const SurfaceRegion2 *scope,
+    Coord *out_start,
+    Coord *out_end,
+    char *err,
+    size_t err_cap
+)
+{
+    return resolve_auto_span_for_member(world,placement,boundary,along_v,cross_lo,cross_hi,
+        has_contact,contact_lo,contact_hi,has_through,through,between,scope,out_start,out_end,err,err_cap,NULL);
 }
 
 /*

@@ -133,6 +133,98 @@ bool wood_contact_owner_extension(const WoodContactWorld *world,const WoodMember
     }
     return false;
 }
+static const WoodContactMemberFact *contact_partial_owner(
+    const WoodContactWorld *world,const WoodMember *self,const WoodStopFace *face,int end)
+{
+    if(face->kind!=WOOD_STOP_MEMBER_SIDE||face->fixity==WOOD_STOP_FREE||face->edge_index!=(end==0?1:0))return NULL;
+    for(size_t i=0;i<world->member_count;++i){const WoodContactMemberFact *fact=&world->members[i];
+        if(fact->member&&fact->member!=self&&fact->member->placed&&
+           fact->member->id==face->timber_id&&fact->placement_id==world->placement_id&&fact->footprint_valid)
+            return fact;
+    }
+    return NULL;
+}
+
+/* No temporary interval capacity and no raw-H fallback. Each advancement
+ * consumes a positive interval from an admitted, returned FEATURE face. */
+static bool contact_partial_covers(const WoodContactWorld *world,const WoodMember *self,
+    const WoodStopFace *faces,size_t count,GeoCoord at,GeoCoord lo,GeoCoord hi,int end)
+{
+    GeoCoord cursor=lo;
+    while(cursor<hi){GeoCoord next=cursor;
+        for(size_t i=0;i<count;++i){const WoodStopFace *face=&faces[i];
+            if(face->fixed==at&&face->lo<=cursor&&face->hi>next&&contact_partial_owner(world,self,face,end))next=face->hi;
+        }
+        if(next==cursor)return false;
+        cursor=next;
+    }
+    return true;
+}
+
+static bool contact_same_rc_plane(const WoodStopFace *a,const WoodStopFace *b)
+{
+    if(a->kind==WOOD_STOP_MEMBER_SIDE||a->kind!=b->kind||a->boundary_id!=b->boundary_id||
+       a->fixed!=b->fixed||a->fixity!=b->fixity||a->hole_index!=b->hole_index)return false;
+    /* Outline indices encode the component; hole indices already do so.
+     * Never join merely coincident planes belonging to different components. */
+    return a->kind!=WOOD_STOP_OUTLINE_EDGE||
+        a->edge_index/GEO_LOOP_MAX_VERTICES==b->edge_index/GEO_LOOP_MAX_VERTICES;
+}
+
+WoodBoundaryEndAdmission wood_contact_boundary_end_admission(
+    const WoodContactWorld *world,const WoodMember *self,bool along_v,
+    GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,int end,
+    const WoodStopFace *faces,size_t count,const WoodStopFace *required_contact)
+{
+    if(!world||!self||self->role!=WOOD_MEMBER_ROLE_BOUNDARY||cross_hi<=cross_lo||
+       span_hi<=span_lo||(end!=0&&end!=1)||(count&&!faces))return WOOD_BOUNDARY_END_ORDINARY;
+    const WoodBoundaryRegion *boundary=world->role_boundary;
+    GeoRect2 rect={along_v?cross_lo:span_lo,along_v?span_lo:cross_lo,
+        along_v?cross_hi:span_hi,along_v?span_hi:cross_hi};
+    if(!contact_contains(boundary,&rect))return WOOD_BOUNDARY_END_ORDINARY;
+    bool on=false,covers=false;int edge=-1;
+    GeoLoop2View outline={boundary->outline.v,boundary->outline.count};
+    if(!wood_member_boundary_props(&outline,along_v,span_lo,span_hi,cross_lo,cross_hi,&on,&covers,&edge)||
+       !on||!covers||edge<0||(size_t)edge>=outline.count||boundary->outline.fixity[edge]!=WOOD_STOP_FIXED)
+        return WOOD_BOUNDARY_END_ORDINARY;
+    GeoPoint2 p=outline.v[edge],q=outline.v[((size_t)edge+1)%outline.count];
+    GeoCoord edge_lo=along_v?contact_min(p.v,q.v):contact_min(p.u,q.u);
+    GeoCoord edge_hi=along_v?contact_max(p.v,q.v):contact_max(p.u,q.u);
+    GeoCoord at=end==0?span_lo:span_hi;
+    if((end==0&&at!=edge_lo)||(end==1&&at!=edge_hi))return WOOD_BOUNDARY_END_ORDINARY;
+    if(required_contact){bool found=false;
+        for(size_t i=0;i<count;++i)if(required_contact==&faces[i]){found=true;break;}
+        if(!found||required_contact->fixed!=at||
+           contact_max(cross_lo,required_contact->lo)>=contact_min(cross_hi,required_contact->hi)||
+           !contact_partial_owner(world,self,required_contact,end))return WOOD_BOUNDARY_END_ORDINARY;
+    }
+    bool contact=false;
+    for(size_t i=0;i<count;++i){const WoodStopFace *face=&faces[i];
+        if(face->fixed==at&&contact_max(cross_lo,face->lo)<contact_min(cross_hi,face->hi)&&
+           contact_partial_owner(world,self,face,end)){contact=true;break;}
+    }
+    if(!contact)return WOOD_BOUNDARY_END_ORDINARY;
+    /* A normal full-face path can still admit its original complete RC
+     * corner. Once partial timber contact claims this exception, a long
+     * uncovered RC face is an explicit refusal, never ordinary fallback. */
+    GeoCoord width=cross_hi-cross_lo;
+    for(size_t i=0;i<count;++i){const WoodStopFace *face=&faces[i];
+        if(face->kind==WOOD_STOP_MEMBER_SIDE||face->fixity==WOOD_STOP_FREE||face->fixed!=at||face->hi<=face->lo)continue;
+        GeoCoord lo=face->lo,hi=face->hi;bool changed=true;
+        while(changed){changed=false;
+            for(size_t j=0;j<count;++j){const WoodStopFace *other=&faces[j];
+                if(!contact_same_rc_plane(face,other)||other->hi<lo||other->lo>hi||other->hi<=other->lo)continue;
+                GeoCoord next_lo=contact_min(lo,other->lo),next_hi=contact_max(hi,other->hi);
+                if(next_lo!=lo||next_hi!=hi){lo=next_lo;hi=next_hi;changed=true;}
+            }
+        }
+        GeoCoord visible_lo=contact_max(lo,cross_lo),visible_hi=contact_min(hi,cross_hi);
+        if(hi-lo>=width&&visible_lo<visible_hi&&
+           !contact_partial_covers(world,self,faces,count,at,visible_lo,visible_hi,end))return WOOD_BOUNDARY_END_BARE_RC;
+    }
+    return WOOD_BOUNDARY_END_PARTIAL;
+}
+
 bool wood_contact_end_faces(const WoodContactWorld *world,const WoodMember *self,bool along_v,
     GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,char *error,size_t cap)
 {return wood_contact_end_faces_with_sources(world,self,along_v,span_lo,span_hi,cross_lo,cross_hi,NULL,NULL,error,cap);}
@@ -150,6 +242,13 @@ bool wood_contact_end_faces_with_sources(const WoodContactWorld *world,const Woo
     }}
     else face_count=wood_contact_collect_stops(world,along_v,self,faces,WOOD_CONTACT_FACE_CAPACITY);
     for(int end=0;end<2;++end){GeoCoord at=end==0?span_lo:span_hi;
+        WoodBoundaryEndAdmission admission=wood_contact_boundary_end_admission(world,self,along_v,
+            span_lo,span_hi,cross_lo,cross_hi,end,faces,face_count,NULL);
+        if(admission==WOOD_BOUNDARY_END_PARTIAL)continue;
+        if(admission==WOOD_BOUNDARY_END_BARE_RC){
+            if(error&&cap)snprintf(error,cap,"V_BOUNDARY_END_RC：角材 %u 的固定段端點有裸露的可放料 RC 面，必須先貼角材",(unsigned)self->id);
+            return false;
+        }
         for(size_t i=0;i<face_count;++i){const WoodStopFace *face=&faces[i];
             if(face->fixed!=at||face->lo>cross_lo||face->hi<cross_hi||face->fixity==WOOD_STOP_FREE||ext_end[end]||wood_stop_shadowed(faces,i,cross_lo,cross_hi))continue;
             const WoodMember *owner=NULL;bool extension=false;

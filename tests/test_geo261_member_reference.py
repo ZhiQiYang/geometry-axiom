@@ -58,7 +58,7 @@ class MemberReferenceBoundary(unittest.TestCase):
                              ("timber_boundary_role_check", "wood_member_boundary_role_check"),
                              ("surface_primary_axis_check", "wood_member_primary_axis_check"),
                              ("anchor_corner_from_rect", "wood_member_anchor_corner"),
-                             ("resolve_auto_span", "wood_member_resolve_span")):
+                             ("resolve_auto_span_for_member", "wood_member_resolve_span")):
             actual = body(main, name)
             self.assertIn(target + "(", actual)
             self.assertNotIn("V_PRIMARY_AXIS", actual)
