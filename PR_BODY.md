@@ -1,57 +1,54 @@
-# #323：同步目前 GEO-261 整合樹，保留來源讀取快取與原守門
+# #323：同步 #288 最終產品來源，修復載入殘餘成本
 
-同一次候選驗證可重用成功解碼的 member／pose／footprint，每個 consumer 仍登記原 dependency kind 與順序。本輪用普通 merge 同步目前 #288 整合分支，人工保留 #288 的輕量 contact decoder 與 raw snapshot 契約，並補 footprint memo 命中後不能被過期 H raw 值覆寫的控制。
+本 PR 保留成功的 member／pose／footprint 讀取快取，每個 consumer 仍登記原 dependency kind 與順序。已普通 merge #288 最終產品來源，保留輕量 contact decoder、失敗 prefix completion 與 deferred raw snapshot 契約；沒有 rebase、force push、合併 PR，沒有改公理／決策原文、斷言或數值門檻。
 
-**目前是可審查的來源同步，完整新來源驗收尚未執行，不能合併。** #288 最終來源確定後仍須再一般同步並固定 #323 final SHA。沒有 rebase、force push、合併 PR、改公理／決策原文、放寬斷言或數值門檻。
+**目前仍阻擋合併。** 新基線 N64 已達原 ≤1.3 門檻；N32 原不得變慢條件與來源呼叫成長條件仍紅，兩個測試負控制也已查明失準。完整 native 正在原程序執行，先收齊這輪全部紅燈，再一次修正。以下不把草稿或未終態項寫成通過。
 
 ## 唯一 current-state 矩陣
 
-| 角色／關卡 | 目前來源與原退出 | 狀態 |
+| 角色／關卡 | 綁定來源／原退出 | 目前結果與 scope |
 |---|---|---|
-| 本輪產品／測試 P | `5c29eba30a40f20ea5c7eb8dc139e5788235d3b6` | 已一般 push；這是普通 merge commit |
-| 本輪 evidence head E | `307a18ec5972619161a59df82dcb7e765d137c90` | 只增加進度與操作觀察，不替換 P 的產品內容 |
-| merge 的兩親 | 舊 #323 `239040fdc8f0b73b75640378669a1ede6a975890`；整合 `22ad28f30c5b7c43cb004b95037583bc7b902f3c` | merge 原 1 停在七個 content conflicts，解完 commit／push 原 0 |
-| #288 收尾後 final base／#323 final F | 未固定；exit `null` | #288 尚在雲端驗收，不能宣稱目前已是最終基底 |
-| 靜態完整性 | 原 0 | AST 方法數 contact 15／host-facts 22／load-residual 13；expected JSON 可解析；修改檔 diff check 0；C 為全 CRLF |
-| 新 raw-snapshot／memo 相容修正的撤回反證 | exit `null` | 新具名控制已提交，尚未編譯或執行；不得預填 0／1／0 |
-| 完整 `ulimit -s 16384; python3 tests/run_all.py --build` | exit `null` | 新 P 尚未跑；#288 的 native 或舊 #323 收據不替代此項 |
-| 必要八套／修復受影響 suites | exit `null` | 新 P 尚未跑 |
-| 完整原 PF3（baseline20／19 mutants／restore20） | exit `null` | 新 P 尚未跑；不縮減 CASES |
-| 175 場景 A/B/C | exit `null` | 新 final base／fix 的完整 stdout、每次 seal 有序圖、五 guard 計數待重驗 |
-| 36 筆三方交錯載入性能 | exit `null` | 新 P 尚未量測；保留原順序與原門檻，不重抽樣 |
-| 四次原 gprof | exit `null` | 新 P 尚未跑 |
-| `tests/mutate.py --check`／完整帳本 | exit `null` | 目前採 incoming integration 的原帳本；由統一排程在最後來源 check、必要時整份重產，不改寫來源 SHA |
-| 架構三條原裁判／四檔收據 | exit `null` | 目前採 incoming integration 的原四檔，尚未宣稱對新 P 有效；依最後來源統一刷新與重驗 |
-| 對抗審查 | 尚未結案 | 由 #318 owner 審新來源；不能以本段靜態檢查當複審通過 |
-| 允許 skip | 本輪尚無實跑 skip | 唯一預期可接受的是原具名 Windows GDI allowlist；其餘不得以環境理由改成通過 |
+| 受驗產品／測試基線 S | `b2445b5a270d60fdf48b07f6edddbe91266d8aa2` | 已一般 push、遠端同 SHA；受驗前後 clean |
+| 普通 merge 兩親 | own `307a18ec5972619161a59df82dcb7e765d137c90`；integration `b74f9a2ae7ade1555b9be45283adecc097fb76e3` | merge／commit／push 原 0，無衝突；沒有 rebase |
+| 同步的 #288 產品／證據 | F `3d681636902371ecc528b20f51eea33e272581c9`；合入 E `b74f9a2a…` | F 到 E 只含 evidence；#288 後續 evidence 不改這個產品 closure |
+| 比較基底／main | base `b74f9a2ae7ade1555b9be45283adecc097fb76e3`；main `adbaebf9c73ea6801d7b4d5214e4b846b132923b` | 原 v3 各 stage 固定同一組，不換 main 分母 |
+| 本輪 evidence head | 尚未產生 | 新 raw 保存於雲端外部目錄，整輪結束後封存；舊 E `307a18ec…` 只屬 S5c 同步準備，不能替代新證據 |
+| 最終修正產品 F | 尚未固定 | memo／測試控制草稿未套、未編譯、未量測，不宣稱收益 |
+| 原三套診斷 | primary／reaper／outer `1/1/1` | PARTIAL：load 11/13、host-facts 22/22、contact 15/15；共 48 pass／2 fail／0 skip |
+| v3 prepare／build／compare | 各 stage execution `0/0/0` | 175 scenes 的完整 stdout、有序 graph、guard counters 三方等價 |
+| 原 36 筆交錯性能 | stage execution `0`；quantitative 有紅 | N64 fix/main `1.160861952340483 ≤1.3` 綠；N16/base `0.7020541681432466`、N48/base `0.7354720650542408` 綠；N32/base `1.0008656473515014 >1.0` 紅。無重抽／容差 |
+| 原四次 gprof | stage execution `0`；calls gate 紅 | fix N32／N64 source calls `169688/1044429`；64/32 `6.154996228372071 >4.5` 紅 |
+| 原必要八套 | stage execution `1` | PARTIAL：675 項，673 pass／2 fail／0 skip；只有下述相同兩個控制失準 |
+| 原完整 PF3 | stage execution `0` | baseline20、19 mutants 各正常 killed/exit1、restored20；0 error／skip，originalSourcesUnchanged=true |
+| 原完整 native | 尚未終態／exit `null` | 14:30:38 UTC 開始原 225 suites；`ulimit -s 16384; python3 tests/run_all.py --build`，不縮範圍、不重開；本段 build 如實 reused 同 S／fingerprint fresh binaries |
+| v3 完整驗收 | 尚未終態 | 已完成 stage 的 wrapper 原 `1`；stage 成功不等於量化 acceptance 全綠 |
+| mutate check／帳本 | final source 尚未固定 | 最後由 root 統一 check、必要時整份重產；incoming／歷史帳本不冒 fresh |
+| 架構三條／四檔收據 | final source 尚未固定 | incoming 四檔保原 provenance；最後 closure 統一刷新與重驗 |
+| 對抗審查 | 本輪動態／公開包尚未結案 | S5c 靜審完成；memo v2、testfix v1、合併草稿分別靜審 52／48／54 checks，皆 0 findings，沒有動態綠燈聲明 |
+| 允許 skip | 已終態項 0 skip；native 待原結果 | 只接受原具名 Windows GDI allowlist，不新增環境豁免 |
 
-本輪證據：[PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/307a18ec5972619161a59df82dcb7e765d137c90/tests/evidence/geo261-load-residual-20261023/postmerge-5c29eba3/PROGRESS.md)、[QUESTIONS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/307a18ec5972619161a59df82dcb7e765d137c90/tests/evidence/geo261-load-residual-20261023/postmerge-5c29eba3/QUESTIONS.md)。本輪尚未產生正式測試 streams；操作觀察紀錄不冒稱驗收收據。
+原 v3 driver 為 `/tmp/geo323-merge-20261023/acceptance-tools-v3/run.py`；各 stage 各一次，精確 argv 的共同部分：
 
-## 最新審查回覆與修正範圍
+```sh
+python3 -B /tmp/geo323-merge-20261023/acceptance-tools-v3/run.py --repo /tmp/g261-next323 --sha b2445b5a270d60fdf48b07f6edddbe91266d8aa2 --base b74f9a2ae7ade1555b9be45283adecc097fb76e3 --main adbaebf9c73ea6801d7b4d5214e4b846b132923b --out /tmp/geo323-baseline-b2445b5a-v3-r1 --heavy-lock /tmp/g261r3/heavy.lock --stage <prepare|build|compare|perf|profile|required-eight|pf3|native>
+```
 
-最新審查以 handoff 分支 `handoff/pr-reviews/323.md` 收錄的 head `239040f`、2026-10-23 02:35:55 為準。
+三套診斷使用原 `tests/run_all.py --build --only py:test_geo261_load_residual --only py:test_geo261_host_facts_authority --only py:test_geo261_contact_sources`。原 c387 capture、reaper、16 MiB stack、完整 argv／環境／stdout／stderr／exit／hash／clean SHA 守門保留。perf／profile 原 36＋4 程序已在獨占窗口完成，未重抽；PF3／native 保原 R3 與 timeout。兩個 PARTIAL 不冒完整 native。
 
-1. **final base 同步。** 已普通 merge 目前整合 head，人工處理 source conflict，沒有直接沿用舊 A/B/C。#288 收尾後還要再同步最終整合來源；PR retarget 到 main 仍等 #288 入 main，由使用者操作。
-2. **current-state 與門檻 scope。** 上表只列本輪狀態。原 N64 fix/main ≤1.3 仍保留為要求；歷史 F 的 `1.7457212386 > 1.3` 與總 wrapper 1 沒有抹掉，尚未用新 P 關閉。沒有自行把門檻移往 #300，也沒有借用 #288 的 2×。若新量測仍未達，照實列紅並由使用者決定具名後續 owner／PR 或維持本 gate。
+## 最新審查與本輪紅燈
 
-本輪 `5c29eba3` 的 source conflict 解法：
+最新已讀 #323 審查是 handoff `handoff/pr-reviews/323.md` 的 2026-10-23 08:37:05 UTC、head `307a18e`，取自 handoff `acd1289228d490c68a139cf17e02fdc1f3cb247c`。已同步 #288 final 產品並重驗新 S；仍保留原 ≤1.3 gate，沒有移交或縮限到 #300。歷史 f43 的 `1.7457212386` 紅保原 provenance，不能當新 S 的 N64 結果。
 
-- contact 路徑保留 #288 的 `WoodMemberPlacementContact` 輕量 parser、完整格式驗證、每次原 source 讀取及失敗 prefix flush，未改回 full anchor decoder。
-- 不新增第二份 contact anchor memo。成功讀 contact 欄位後若 storage slot 的 canonical member id 改變，清既有 full-anchor validity 與 footprint；full-anchor miss 共用同一具名 invalidator。其他 definition／pose key 與逐 consumer kind／order 不變。
-- footprint memo 命中時維持 raw pending 0／2；dependency 失敗仍完成原已訪問 prefix。這防止最後 raw materialization 把正確 source footprint 蓋成過期 H 值。
-- 新控制先用真產品 provider 自然 warm canonical definition／BOX／footprint，再只改 H UV 成過期值，未偽填 memo。撤回 pending 修正預期必須以 `ASSERT:footprint-cache-hit-preserves-source-out` 正常退出 1；真實 0／1／0 尚待執行。
-- `tests/run_all.expected.json` 合併兩邊新增方法：contact 15、host-facts 22、load-residual 13，沒有降低原計數。`tests/mutate.py` 未改，未新增 M 編號。
+- cross-consumer 舊負控只撤 H 三個 depend site；輕量 contact 經 W reader 仍登記 placement edge，實際先出 footprint marker，與原 placement marker 不符。候選精準撤 second consumer 的 placement 語意邊界，保留原 `ASSERT:cross-consumer-placement-edge-missing`。
+- footprint-order 舊注入以 header 物件呼叫 full definition API，導致編譯錯誤。候選只換成相同 source／kind 的 `geo_placement_sources_definition_header`，保原 early-read 故障與有序 edge oracle；編譯失敗不算 kill。
+- 新 profile 的三欄 contact reader 每次仍呼叫一次 `geo_eval_source`，提供 calls 成長紅燈的具體熱路徑。外部四檔草稿只快取成功三欄解碼，使用獨立 id key 與原 owner/reset 生命週期；每個 hit 仍登記當前 consumer 的原 placement dependency。原 decoder、格式驗證、失敗與 sealed 路徑保留，並加 contact-hit edge／kind／order 與 contact-id 各具名反證。合併草稿 patch `a44018ad1e3455af89dc9fbc19ea4ec3d9b0e4dfec56f9ddab5d2893d91871b0` 未套／未測，收益未知。
 
-先前 prompt 第1–5項的 harness、PF3 anchor、W collection kind/order、member id／失效、sealed guard 修復已由最新審查記錄接受；本輪保留這些測試與斷言，會在新 final closure 重驗，不能用舊綠燈替代。placement guard 單刪仍明列合法 immutable graph 內的 equivalent 0／0／0；先撤 anchor invalidator 的配對 0／1／0只證第二防線，沒有冒稱單 fault killed。
+## 原件、環境與限制
 
-## 雲端環境與未跑項
+新原件位於 `/tmp/geo323-baseline-b2445b5a-three/`、`/tmp/geo323-baseline-b2445b5a-v3-r1/` 及兩個 outer launch 目錄。native 尚在執行，受驗 HEAD 維持 S clean；凍結整輪後才提交 own evidence，不提前移動受驗 HEAD。後續正常 push，不使用使用者電腦。
 
-本輪只讀與編輯時，root 正在獨占執行 #288 的 P52 runtime proof；沒有同時編譯、Chrome、benchmark 或重產帳本。後續正式驗收等雲端排程，不使用使用者電腦。
+磁碟維護保留本輪 source／raw／性能樣本。普通 merge 的 `205298659` bytes 完整 diff stdout 也保留，後續用 lossless 分塊與重建 hash 封存，不當 cache 排除。
 
-磁碟緊縮時，此 repo 只以 sparse checkout 省略 tracked 根 `evidence/` 的工作樹副本；5153 筆仍在 index、Git 歷史及遠端。產品、tests、tests/evidence、fixtures 完整，原外部 streams 未刪。模式與前後 HEAD／status／磁碟觀察均封存；這不構成任何測試 skip。
+歷史 S5c 準備證據見 [E307a18ec 的 PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/307a18ec5972619161a59df82dcb7e765d137c90/tests/evidence/geo261-load-residual-20261023/postmerge-5c29eba3/PROGRESS.md)；歷史 f43 完整收據在 `tests/evidence/geo261-load-residual-20261022/final-f43e8d8b/`。兩者均不外推新 S 綠燈。
 
-歷史完整證據仍在 `tests/evidence/geo261-load-residual-20261022/final-f43e8d8b/`，綁定舊 F=`f43e8d8b876f587c11778fa74a80b205b51396b6`；此處只保留其 provenance，不把數字套到本輪 P。
-
-## 最不確定的地方
-
-新整合 source conflict 的完整有序圖與 raw snapshot 等價尚待實跑；N64 原1.3目標的新實數未知；#288 最終產品來源尚未固定。以上皆保留未完成，收到審查缺陷會直接修正並做真撤回反證，不放寬原斷言。
+最不確定的是草稿對 N32／source-call gate 的實際收益，以及 native 尚未收齊的其他紅燈。先跑完這輪，再集中修正、做真具名撤回反證並在新可解析 SHA 重驗；不改原門檻。
