@@ -1,0 +1,45 @@
+{
+  "schema": "geo288-p73-two-items-owner-handoff/1",
+  "tested_product_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "branch": "codex/geo288-p73-final-20261023",
+  "items": [
+    {
+      "label": "p73-controlled-final-3d681636",
+      "source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+      "published_evidence_commit": "2e1764132e0b5448fa3e013887a26f77ec343e2a",
+      "normal_push_exit": 0,
+      "remote_verified_at_publication": "2e1764132e0b5448fa3e013887a26f77ec343e2a",
+      "original_receipt_sha256": "9fee99803279168c071257133f68d20fef11befe3a8d057d194bbabb367c670f"
+    },
+    {
+      "label": "chromium154-p73-final-3d681636",
+      "source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+      "published_evidence_commit": "3f590c0882507965d953fdcc38e829f3ee52fa55",
+      "normal_push_exit": 0,
+      "remote_verified_at_publication": "3f590c0882507965d953fdcc38e829f3ee52fa55",
+      "original_receipt_sha256": "17114e471ddfd48187f08bb6aca1737f83e0f3f30ed28a5a7823f1f2fa04f8d4"
+    }
+  ],
+  "p73_original_node_exits": [
+    0,
+    1,
+    0
+  ],
+  "legacy_original_exit": 0,
+  "legacy_proof_expectation_matches": true,
+  "formal_p73_workflow_claimed": false,
+  "legacy_full_canvas_claimed": false,
+  "ledger_regenerated": false,
+  "source_or_judge_changes": false,
+  "resource_lock_handoff": "Kernel owner notified immediately after two command terminals, before peer/publication",
+  "public_roundtrip_peer": {
+    "accepted": true,
+    "manifest_sha256": "d9781bca3e2f73ba1429914ce3f7e80cab827b5fa80333b989d4df645a4ceea1",
+    "public_review_sha256": "51f888887a790eb5168d051ff52c0ddc64ed01fd93bca180cf61499420a10c2b",
+    "checks_sha256": "9cb4e5fd0de31e67651f32cc33e5f88a35e68f72e85edb33979f1f2cb54e53ac",
+    "original_members_verified": 972,
+    "original_files_coverage_verified": 770,
+    "reviewer_first_attempt_error_preserved": true,
+    "reviewer_second_attempt_exit": 0
+  }
+}
