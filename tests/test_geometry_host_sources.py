@@ -891,21 +891,22 @@ class NativeCandidateTransportTests(unittest.TestCase):
                 self.assertEqual(("UNSUPPORTED", "BASE_SOURCE_BINDING", "I32", message),
                     (error.exception.status, error.exception.code, error.exception.clause, error.exception.message))
 
-    def _public_box_without_snapshot_faces(self, kind):
+    def _public_box_snapshot_faces(self, kind, mutate, label):
         from modeling.engine import evaluate as default_evaluate
         from tests.test_geometry_kernel_runtime import snapshot, solid, request, ref
         from tests.test_geometry_source_runtime import envelope
         base = snapshot(solids=(solid(1, kind=kind),))
         # H names column and beam faces by local axis and side. Rename before
-        # the envelope is built, then drop only the snapshot catalog, so this
+        # the envelope is built, then alter only the snapshot catalog, so this
         # reaches the template binding instead of the adapter name check.
         for index, face in enumerate(base["solids"][0]["faces"]):
             face["feature"] = RECTANGULAR_FACES[index]
         definitions = {"base_scene": base["base_scene"], "extensions": []}
         req = request(ref(kind, 1))
         wire = native_wire(envelope(base))
-        self.assertIn("faces", wire["legacySnapshot"]["solids"][0])
-        del wire["legacySnapshot"]["solids"][0]["faces"]
+        catalog = wire["legacySnapshot"]["solids"][0]
+        self.assertIn("faces", catalog)
+        mutate(catalog)
 
         def process(command, **ignored):
             self.assertEqual(definitions["base_scene"].encode(), Path(command[-1]).read_bytes())
@@ -918,19 +919,38 @@ class NativeCandidateTransportTests(unittest.TestCase):
             except ModelError as error:
                 found = (error.status, error.code, error.clause, error.message)
             except Exception as error:
-                self.fail(f"{kind} snapshot without faces raised unclassified {type(error).__name__}: {error}")
+                self.fail(f"{kind} snapshot faces {label} raised unclassified {type(error).__name__}: {error}")
             else:
-                self.fail(f"{kind} snapshot without faces was accepted")
+                self.fail(f"{kind} snapshot faces {label} was accepted")
             finally:
                 self.assertEqual(1, process_run.call_count)
         self.assertEqual(("UNSUPPORTED", "BASE_SOURCE_BINDING", "I32",
                           "Native box source faces disagree with legacy provenance."), found)
 
     def test_public_default_rejects_column_snapshot_without_faces(self):
-        self._public_box_without_snapshot_faces("column")
+        self._public_box_snapshot_faces("column", lambda solid: solid.pop("faces"), "missing")
 
     def test_public_default_rejects_beam_snapshot_without_faces(self):
-        self._public_box_without_snapshot_faces("beam")
+        self._public_box_snapshot_faces("beam", lambda solid: solid.pop("faces"), "missing")
+
+    def _reject_both_kinds(self, mutate, label):
+        for kind in ("column", "beam"):
+            with self.subTest(kind=kind, faces=label):
+                self._public_box_snapshot_faces(kind, mutate, label)
+
+    def test_public_default_rejects_non_list_snapshot_faces(self):
+        self._reject_both_kinds(lambda solid: solid.__setitem__("faces", None), "null")
+        self._reject_both_kinds(lambda solid: solid.__setitem__("faces", {}), "object")
+
+    def test_public_default_rejects_non_dict_snapshot_faces(self):
+        self._reject_both_kinds(lambda solid: solid.__setitem__("faces", [[]]), "nested-list")
+
+    def test_public_default_rejects_non_string_feature_snapshot_faces(self):
+        # An int still misses the later six-name catalog check, which uses the
+        # same sentence. The unhashable value is what dies when only the
+        # feature-type predicate is removed.
+        self._reject_both_kinds(lambda solid: solid.__setitem__("faces", [{"feature": 1}]), "feature-int")
+        self._reject_both_kinds(lambda solid: solid.__setitem__("faces", [{"feature": ["START"]}]), "feature-list")
 
     def test_public_default_transport_preserves_unchanged_wire_in_one_invocation(self):
         from modeling.engine import evaluate as default_evaluate
@@ -964,6 +984,55 @@ class NativeCandidateTransportTests(unittest.TestCase):
         self.assertEqual(FROZEN_DIGESTS["keep"], digest({"result": restore(output)}))
         self.assertEqual(1, run.call_count)
         self.assertEqual(2, pin.call_count)
+
+
+class SnapshotFacePredicateControls(unittest.TestCase):
+    def test_each_snapshot_face_predicate_is_killed_by_its_case(self):
+        with tempfile.TemporaryDirectory(prefix="geo261-face-predicates-") as directory:
+            copied = Path(directory)
+            for package in ("geometry-core/geometry_kernel", "geometry-core/modeling",
+                            "geometry-app/geometry_app",
+                            "geometry-templates/woodworking/geometry_woodworking"):
+                shutil.copytree(ROOT / package, copied / package,
+                                ignore=shutil.ignore_patterns("__pycache__"))
+            (copied / "tests").mkdir()
+            (copied / "tests/__init__.py").write_text("", encoding="utf-8")
+            for name in ("test_geometry_host_sources.py", "test_geometry_kernel_runtime.py",
+                         "test_geometry_source_runtime.py"):
+                shutil.copyfile(ROOT / "tests" / name, copied / "tests" / name)
+            source = copied / "geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+            original = source.read_text(encoding="utf-8")
+            runner = "import sys,unittest;sys.path.insert(0,sys.argv.pop(1));unittest.main(module=None)"
+
+            def execute(name):
+                return subprocess.run([sys.executable, "-I", "-B", "-c", runner,
+                    str(copied), "tests.test_geometry_host_sources." + name], cwd=copied,
+                    capture_output=True, text=True, timeout=60)
+
+            mutants = (
+                ("type(legacy_faces) is not list\n                or ", "",
+                 "NativeCandidateTransportTests.test_public_default_rejects_non_list_snapshot_faces"),
+                ("type(face) is not dict or ", "",
+                 "NativeCandidateTransportTests.test_public_default_rejects_non_dict_snapshot_faces"),
+                (' or type(face.get("feature")) is not str', "",
+                 "NativeCandidateTransportTests.test_public_default_rejects_non_string_feature_snapshot_faces"),
+            )
+            for _before, _after, case in mutants:
+                baseline = execute(case)
+                self.assertEqual(0, baseline.returncode, baseline.stdout + baseline.stderr)
+            for before, after, case in mutants:
+                with self.subTest(case=case):
+                    self.assertEqual(1, original.count(before), before)
+                    source.write_text(original.replace(before, after, 1), encoding="utf-8")
+                    result = execute(case)
+                    details = result.stdout + result.stderr
+                    self.assertEqual(1, result.returncode, details)
+                    self.assertIn("FAILED", details)
+                    self.assertNotIn("ImportError", details)
+                    self.assertNotIn("SyntaxError", details)
+            source.write_text(original, encoding="utf-8")
+            restored = execute(mutants[0][2])
+            self.assertEqual(0, restored.returncode, restored.stdout + restored.stderr)
 
 
 if __name__ == "__main__":
