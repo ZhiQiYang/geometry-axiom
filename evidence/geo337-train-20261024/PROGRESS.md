@@ -1,9 +1,9 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 20:07 UTC）
+## 唯一 current-state（2026-10-23 20:16 UTC）
 
-- 分支：`codex/train-337-continue-20261024`；產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判來源 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；四檔採用與上游合流 head=`4f4a24d76e816274bfae06868b4dbf31f0860299` 已推。最新 evidence head 以本檔所在提交為準，正式全清單的最終 SHA 尚未固定。
-- 已普通 merge Claude `f7026c110b4800ee87f9ecc1eff0cc14d535841a` 與 main `425c092eaf16f90256d76433243baebde45163ac`。Claude 是同一 exclusion hash 更新；main 新增 #333 FIELD-RULES 與證據。相對 F，產品 C／JS 與測試內容不變。
+- 分支：`codex/train-337-continue-20261024`；產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判來源 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；四檔採用與上游合流 head=`4f4a24d76e816274bfae06868b4dbf31f0860299` 已推。新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 已推；C/JS產品仍同F，最新 evidence head 以本檔所在提交為準，正式全清單的最終 SHA 尚未固定。
+- 已普通 merge Claude 最後交接 `8f9301fc1b78712d930ffc68074437e44d068aab`（merge `586e6e8f`）與 main `425c092eaf16f90256d76433243baebde45163ac`。main 新增 #333 FIELD-RULES 與證據。相對F產品C/JS不變；兩個tests葉改為M151登記與free-end唯一錨點，保留所有斷言。
 - #314 指定 `3b0b634f` 的17個產品／裁判 blobs及M99–M121定義已存在列車；沒有假移植。F 的六 suite **103項 exit0**、Node inspector **13項 exit0**、M121 原CLI0與build0/0/0、斷言0/1/0。獨立541checks／0。Node不是browser；六suite不是完整native。完整原件收於 `geo314-f64-originals-and-peer.tar.gz`。
 - #323 來源已全包含列車，只在此線修。F 的原13/22/15三suite **50/0/0**、19組control獨立346checks／0；四新增與兩漂移修復為具名ASSERT 0/1/0。placement-key-single原等價0/0/0仍照實記錄。
 - #323 正式一次36timings及4profiles已執行，原execution各0：N16/32/48-base=.70152535/.81183549/.70936489；N64/main=1.26480058≤1.3；source calls64/32=364369/82668=4.40761843≤4.5。分母與原門檻未改；獨立原件358checks／0已完成，原wrapper1因下列ABC紅燈，不能標整組全綠。
@@ -44,3 +44,9 @@ Reading A 的3條reader、7 native、14 oracle完整指令/環境/streams及629c
 只回收已終止任務的2000個可重建副本（1931份原Git source、49份完整新封ELF、20份既有封ELF）。執行前逐份bytes/hash/inode/hardlink與7包full-bytes核實；原命令exit0，獨立scope78checks／0、實際結果15checks／0。原961份舊Git checkout、所有receipts、fixtures、Gitobjects、gmon、mutant/trace/withdrawn source與正在執行的ledger全部保留。磁碟可用/tmp由132059136升202870784B，workspace由138784768升169799680B；全命令、原完整streams、前置相對路徑失敗、manifest與peer封存於`terminal-cache-retirement/`。7份原bytes封包仍僅雲端，沒有宣稱已推送。
 
 已fetch handoff d65d464f，讀到337的19:44 UTC Claude最後交接：新head8f9301fc含M151 owner-map修正及原收據，將普通merge；不改寫歷史。#314指定程式已符合題3，條文暫緩寫入決定保留；#335 CLI已知缺口另列，不自行改公理。free-end錨點的原9方法四輪已實跑1/0/1/0，18原控制及斷言保持，獨立actual peer中；只會採用這一葉測試定位修正，不摻#300優化。完整123筆ledger仍固定4f4執行，未出最終exit，不冒稱完成。
+
+## 2026-10-23 20:16 UTC：兩個測試缺陷修正與原反證已封存
+
+S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 已普通推送。來源一是Claude f1f2e8d0的M151 owner-map，完整15方法0/1/0，撤回只讓原完整registry字典相等斷言紅，獨立241checks／0；來源二是free-end單葉patch（SHA256 `10e30443932f047fc5bdcd9c4926c00df26f2a5d4935fb64090b16366ed91afe`），原9方法1/0/1/0，原紅唯一`AssertionError: 1 != 3`。新錨點保留跨寬判定，只撤原free-end guard；fixed/restored各18控制0/1/0，獨立1328checks／0。全原件與工具封於`test-anchor-recovery-ec8e0d7e/`，不把受控variant冒成新SHA全native。
+
+S的原`mutate.py --check` exit1；三條原架構裁判exit0/0/0。Chrome/Node版本、全指令/原streams/環境與前後clean SHA已封。架構manifest/scan/report/receipt正按原Linux schema重產。當前4f4帳本仍執行，70個core已完成且原裁判無阻擋，53個bridge繼續；沒有最終exit。新tests會使bridge oracle hash過期，本輪舊SHA原件保為歷史，後續由root於新穩定來源完整重產，不改帳本定義或只補選定ID。
