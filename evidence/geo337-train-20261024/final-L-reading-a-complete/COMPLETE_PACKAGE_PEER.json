@@ -1,0 +1,1417 @@
+{
+  "schema": "reading-a-L-r2-complete-package-peer/1",
+  "createdUTC": "2026-10-23T22:56:42.776752+00:00",
+  "scope": "Independent completed-only archive roundtrip and original terminal metadata. No repetition of original46/119actual or any subject execution.",
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "archiveSHA256": "f9999fe3fc1742e167835b9e7aee2c1a31118d9ecafccd853d6f84093d13f088",
+  "memberCount": 170,
+  "originalFileCount": 169,
+  "originalBytes": 8955138,
+  "checkCount": 349,
+  "checks": [
+    {
+      "label": "1751713B archive original pin",
+      "passed": true
+    },
+    {
+      "label": "inventory original pin",
+      "passed": true
+    },
+    {
+      "label": "170 unique regular safe members",
+      "passed": true
+    },
+    {
+      "label": "169 originals plus selfinventory",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/RESULT.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/RESULT.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/commands.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/commands.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-mutants-outer-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-mutants-outer-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/oracle-quick-outer-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/oracle-quick-outer-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archivehash formal/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes formal/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash peer/mutants/REVIEW.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes peer/mutants/REVIEW.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash peer/mutants/review.py",
+      "passed": true
+    },
+    {
+      "label": "originalbytes peer/mutants/review.py",
+      "passed": true
+    },
+    {
+      "label": "archivehash peer/quick-and-outer/RAW_INDEX.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes peer/quick-and-outer/RAW_INDEX.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash peer/quick-and-outer/REVIEW.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes peer/quick-and-outer/REVIEW.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash peer/quick-and-outer/review.py",
+      "passed": true
+    },
+    {
+      "label": "originalbytes peer/quick-and-outer/review.py",
+      "passed": true
+    },
+    {
+      "label": "archivehash peer/preparation-and-repair/REPAIR_R2_REVIEW.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes peer/preparation-and-repair/REPAIR_R2_REVIEW.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash peer/preparation-and-repair/REVIEW.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes peer/preparation-and-repair/REVIEW.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash peer/preparation-and-repair/review.py",
+      "passed": true
+    },
+    {
+      "label": "originalbytes peer/preparation-and-repair/review.py",
+      "passed": true
+    },
+    {
+      "label": "archivehash peer/preparation-and-repair/review_repair_r2.py",
+      "passed": true
+    },
+    {
+      "label": "originalbytes peer/preparation-and-repair/review_repair_r2.py",
+      "passed": true
+    },
+    {
+      "label": "archivehash preparation/SOURCE_BINDING.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes preparation/SOURCE_BINDING.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash preparation/REQUEST.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes preparation/REQUEST.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash preparation/IMPORT_AND_READ_CENSUS_R2.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes preparation/IMPORT_AND_READ_CENSUS_R2.json",
+      "passed": true
+    },
+    {
+      "label": "archivehash preparation/launch_two_original_stages.py",
+      "passed": true
+    },
+    {
+      "label": "originalbytes preparation/launch_two_original_stages.py",
+      "passed": true
+    },
+    {
+      "label": "archivehash original-tools/run_stage.py",
+      "passed": true
+    },
+    {
+      "label": "originalbytes original-tools/run_stage.py",
+      "passed": true
+    },
+    {
+      "label": "archivehash original-tools/capture.py",
+      "passed": true
+    },
+    {
+      "label": "originalbytes original-tools/capture.py",
+      "passed": true
+    },
+    {
+      "label": "archivehash original-tools/reap_children.py",
+      "passed": true
+    },
+    {
+      "label": "originalbytes original-tools/reap_children.py",
+      "passed": true
+    },
+    {
+      "label": "archivehash original-tools/native_with_compile_log_retention.not_executed.py.txt",
+      "passed": true
+    },
+    {
+      "label": "originalbytes original-tools/native_with_compile_log_retention.not_executed.py.txt",
+      "passed": true
+    },
+    {
+      "label": "archivehash SCOPE.json",
+      "passed": true
+    },
+    {
+      "label": "originalbytes SCOPE.json",
+      "passed": true
+    },
+    {
+      "label": "inventory exact archived bytes",
+      "passed": true
+    },
+    {
+      "label": "8955138 original bytes",
+      "passed": true
+    },
+    {
+      "label": "no naked checkout Git or ELF",
+      "passed": true
+    },
+    {
+      "label": "archived outer true terminal same L",
+      "passed": true
+    },
+    {
+      "label": "archived original two stage0",
+      "passed": true
+    },
+    {
+      "label": "archived guards22 unchanged",
+      "passed": true
+    },
+    {
+      "label": "original scope limits retained",
+      "passed": true
+    }
+  ],
+  "findings": [],
+  "limits": [
+    "Filesystem archive roundtrip only; future Git-publication bytes not yet independently verified.",
+    "Original printed39850 is not total internal builds, extra mirrors or separately counted odd1872; original C11 six remain separately tracked.",
+    "r1 environment-red history remains in separate immutable archive; not rehashed here.",
+    "Original outer host API-only limitation retained; no new outer OS capture invented."
+  ],
+  "exitCode": 0
+}

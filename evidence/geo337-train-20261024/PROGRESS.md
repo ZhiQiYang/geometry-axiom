@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 22:47 UTC）
+## 唯一 current-state（2026-10-23 22:59 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -13,12 +13,13 @@
 | canvas／assembly／documents／grid／space／timber | L | 全部UNRUN | 原workflow，獨立checkout／埠／暫存；canvas獨占 |
 | P52／Q38／§7兩項／P-189 | L | 全部UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | 全部UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
-| reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader/RC仍UNRUN；mutants-only 0；quick RUNNING | r1兩項缺make_golden環境1保留；補同L oracle閉包後r2 mutants真0，完整quick尚無exit；不以mutants-only跳掃描代替quick |
+| reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader/RC仍UNRUN；mutants-only 0／完整quick 0／outer 0 | r2原22:45:53 UTC終態，22inputs/HEAD/index同；原quick列39850 builds、failures0，保既有C11六案限制；r1環境1原件不覆寫 |
 | #323跨版本175／350 exact | F對原b74 | 1，仍阻擋B2 | 三個I22所需診斷差異，L尚未重跑；未改裁判或刪診斷 |
+| 本次B3：Actions 40034196788 required jobs | head c6c0b0d | 七項failure，環境分類調查中 | 最新審查指native＋六browser無runner/steps；尚無足夠證據判根因，雲端補跑仍須完成 |
 
 允許skip沒有新增；Chrome156.0.8078.47／Node24.19.0／NotoCJK在雲端可用。RUNNING不等於通過，peer計數不計產品測試。最終L原trackedJSON保自然b6 heads；L新external帳本完成後只封E，不反覆修改trackedJSON。
 
-b6 原全123已22:08:38 UTC真完成，生成前check1／完整CLI0／coremap0／externalcheck0，114killed／5equivalent／M20原允許crashed／3retired；1239原件與原JSON已封L的ledger-b6-complete。原4f4 ENOSPC、108筆／15未跑與CLI2原失敗保歷史。B3五原包47,120,357B及13865member公開於bea6f309，已獨立逐byte核對；M1現有D10b/I24/D29已採納，僅後續精確順序補文尚未literal寫入，QUESTIONS已改正。B2保守待裁決方案仍在QUESTIONS，不能自行放寬exact。
+b6 原全123已22:08:38 UTC真完成，生成前check1／完整CLI0／coremap0／externalcheck0，114killed／5equivalent／M20原允許crashed／3retired；1239原件與原JSON已封L的ledger-b6-complete。原4f4 ENOSPC、108筆／15未跑與CLI2原失敗保歷史。前次B3五原包47,120,357B及13865member公開於bea6f309，已獨立逐byte核對；M1現有D10b/I24/D29已採納，僅後續精確順序補文尚未literal寫入，QUESTIONS已改正。B2保守待裁決方案仍在QUESTIONS，不能自行放寬exact。
 
 目前 ROOT `/tmp/train337-323-f64d638f-source` 與 SEED `/workspace/train337-ledger-cache-L-7af8c5d8/_bridge-work/7af8c5d80d34cb4f49d01ba67deb78a3a6d725db/repo` 是live L帳本專用，禁止別線改HEAD/source/cache。175對ELF及sidecar同FS搬移，175舊metadata與舊raw保留；builder自行判fingerprint，沒有跳過oracles。起始899checks及架構646checks獨立核對原件已附，仍不是全帳本終態。
 
@@ -27,10 +28,10 @@ b6 原全123已22:08:38 UTC真完成，生成前check1／完整CLI0／coremap0�
 - #339 F38da31bc／E47fd6a79／De2f4bc20 已一般推送：真M1f0架構3綠、mutate check1（107stale／13unrun）；11正式項3PASS／1RED／7UNRUN，舊S57的142與3反證不移標新F。
 - #340 noWood：13項／7phase原實跑0/1/0/1/0/1/0；source4d3a、Ed45d、D77a已推，列車完整正式項仍待。
 - #341前置與#342 GEO260：各原定向驗收已封自己的SHA；#342全44為43killed／SPM24equivalent、539inputs相同，不能替代aggregate/native/browser。
-- #343 contact index＋穩定排序：新Scc2ea1b3／E17e74d32／D6edbf62d已推，34methods／64controls未跑，等第二槽；保原斷言與duplicate/overflow後備。舊S1ee4e830的33／56／302build全0只作歷史，容量512／性能仍未跑。
+- #343 contact index＋穩定排序：Scc2ea1b3原三套已收齊0／1／0（318build全0）；唯一紅是placement-order負控制仍改舊後備路徑，新快路未受損而正常PASS ordering。新Sccfaf057只修原tuple錨點，正常push；34methods／64controls重跑及測試修正撤回／恢復尚未開始。舊S1ee4e830的33／56／302build全0只作歷史，容量512／性能仍未跑。
 - #344連線復原：Sc1113f6f／Ed2c58317／D8233916d，9VM→撤回3具名ASSERT紅→恢復9綠已封；真CDP與完整canvas仍未跑，正在準備。
 
-最新fetch handoff3e4905ad，#338最後審查仍2026-10-23 20:44:17 UTC/headb6；#343與#344服務已開draft。沒有新可合併結論，不等待審查或使用者；重測最多2，canvas／性能獨占。L帳本執行時持續其他獨立工作。
+最新fetch handoff9bb3ada4，#338最新審查2026-10-23 22:39:41 UTC/headc6c0b0d：B1完整同L驗收、B2原exact、這次B3 Actions紅均未解除；前次B3原件入庫與M1改善獲確認。正文C1須與同L真終態一致。沒有可合併結論，不等待審查或使用者；重測最多2，canvas／性能獨占。L帳本執行時持續其他獨立工作。
 
 ## 本次封存
 
@@ -137,3 +138,11 @@ b6原完整CLI與外層真exit0，123 ID完整／120個execution head自然b6；
 r1兩原CLI都在selftest.py:1386匯入make_golden時ModuleNotFoundError，原exit1／outer1，沒有AssertionError；薄checkout漏檔是環境準備缺陷。兩完整streams/環境/初末HEAD/11inputs/索引、原準備與同L修復全收 `final-L-reading-a-environment/`（419members、20,469,890原bytes），獨立1164checks/0只證收據保真，不把環境紅當產品反證。修復只物化同L oracle全20檔＋PROPOSAL與決策共22檔，沒有改產品／golden／測試／時限；原r1閉包與失敗原件保留。
 
 r2原 `selftest.py --mutants-only` 已22:39:25 UTC真終態0，9條原stage命令與前後clean/L/fullstreams、22input binding封 `final-L-reading-a-mutants/`；actual46checks/0。這個模式原本不做完整掃描，不能替代quick。其後原 `--quick` 仍session19147背景執行，最外兩stage總exit尚無；封包排除livequick、外層RESULT及aggregatecommands，不能宣稱兩項已綠。root全123仍session56927，沒有最終exit。
+
+## 2026-10-23 22:59 UTC：閱讀A兩原命令完成與進度更正
+
+r2兩stage已於22:45:53.451047 UTC真正結束，原`--mutants-only` 0、完整`--quick` 0、outer0；原22檔、HEAD、fullstage與index初末一致。原quick列39850 builds／failures0，包含矩形逐毫米9402、二維14208、579凹角×8、step410×8／mirror820×8、odd1872及額外t10mirror392；正例528／1056 missing與nonbuildable皆0。39850是原工具印出的counter，不冒所有內部build總和。原工具另列的t4六個C11_MAIN_NOT_BUTTED既有限制保持，不宣稱這六案已修復或新增豁免。
+
+更正上一提交9083bca1於22:47仍寫quick RUNNING：該次出版依較早的狀態通知，實際命令已在22:45:53結束；此次依完整terminal receipt及exec session19147實際exit0改正。上一快照保歷史，不能將當時資訊錯置成已知結果。兩stage與outer完整流、原工具／環境／22輸入與守門共169原件、8,955,138B封入`final-L-reading-a-complete/`（含inventory170members、archive1,751,713B）。actual46／119及package349獨立核對不是額外產品gate；reviewer第一次誤讀SCOPE.md的metadata失敗亦保留。r1缺make_golden原1／1仍完整保在環境包。
+
+最新審查新增的Actions B3另列；無runner/steps尚不足直接認定原因，已交獨立調查並繼續雲端完整驗收。root L全123尚無最終exit，reader三條／RC兩刀與其他UNRUN不借閱讀A通過補綠。
