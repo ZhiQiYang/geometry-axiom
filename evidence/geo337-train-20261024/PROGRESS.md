@@ -1,13 +1,13 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 22:59 UTC）
+## 唯一 current-state（2026-10-23 23:07 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
 | 正式項 | 真來源 | 原 exit／狀態 | 範圍 |
 |---|---|---|---|
 | tracked `mutate.py --check` | L | 0 | 22:25:16–22 UTC 原命令，完整流在 final-L-start |
-| 原完整123帳本 | L | RUNNING，無最終exit | 22:25:15 UTC 啟動，session56927；全新external RESULTS，未搬舊判決 |
+| 原完整123帳本 | L | tracked／fullCLI／core-map／external-check 全0；outer0 | 23:00:25 UTC真終態；123筆／120自然execution heads皆L，114killed／5equivalent／1原允許crashed／3retired；完整原流封final-L-ledger-complete |
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
 | 完整 native | L | UNRUN | 原 --build，16MiB stack；包含#314六module103／Node13、ReadingA7／14、#323三module50 |
 | canvas／assembly／documents／grid／space／timber | L | 全部UNRUN | 原workflow，獨立checkout／埠／暫存；canvas獨占 |
@@ -21,7 +21,7 @@
 
 b6 原全123已22:08:38 UTC真完成，生成前check1／完整CLI0／coremap0／externalcheck0，114killed／5equivalent／M20原允許crashed／3retired；1239原件與原JSON已封L的ledger-b6-complete。原4f4 ENOSPC、108筆／15未跑與CLI2原失敗保歷史。前次B3五原包47,120,357B及13865member公開於bea6f309，已獨立逐byte核對；M1現有D10b/I24/D29已採納，僅後續精確順序補文尚未literal寫入，QUESTIONS已改正。B2保守待裁決方案仍在QUESTIONS，不能自行放寬exact。
 
-目前 ROOT `/tmp/train337-323-f64d638f-source` 與 SEED `/workspace/train337-ledger-cache-L-7af8c5d8/_bridge-work/7af8c5d80d34cb4f49d01ba67deb78a3a6d725db/repo` 是live L帳本專用，禁止別線改HEAD/source/cache。175對ELF及sidecar同FS搬移，175舊metadata與舊raw保留；builder自行判fingerprint，沒有跳過oracles。起始899checks及架構646checks獨立核對原件已附，仍不是全帳本終態。
+L帳本已真終態並核對ROOT/SEED初末HEAD、tree、stage、refs、clean與1362歷史raw、175保全sidecars；ROOT `/tmp/train337-323-f64d638f-source` 已交原reader三條／RC兩刀獨占，結束後交完整native。SEED `/workspace/train337-ledger-cache-L-7af8c5d8/_bridge-work/7af8c5d80d34cb4f49d01ba67deb78a3a6d725db/repo` 留給root準備browser pool。175對ELF及sidecar搬移歷史完整保留，builder自行判fingerprint，沒有搬判決。終態actual35760、身份/raw8220與package6776獨立核對只驗來源與原件，不是額外產品gate。
 
 ## 並行工作
 
@@ -31,7 +31,7 @@ b6 原全123已22:08:38 UTC真完成，生成前check1／完整CLI0／coremap0�
 - #343 contact index＋穩定排序：Scc2ea1b3原三套已收齊0／1／0（318build全0）；唯一紅是placement-order負控制仍改舊後備路徑，新快路未受損而正常PASS ordering。新Sccfaf057只修原tuple錨點，正常push；34methods／64controls重跑及測試修正撤回／恢復尚未開始。舊S1ee4e830的33／56／302build全0只作歷史，容量512／性能仍未跑。
 - #344連線復原：Sc1113f6f／Ed2c58317／D8233916d，9VM→撤回3具名ASSERT紅→恢復9綠已封；真CDP與完整canvas仍未跑，正在準備。
 
-最新fetch handoff9bb3ada4，#338最新審查2026-10-23 22:39:41 UTC/headc6c0b0d：B1完整同L驗收、B2原exact、這次B3 Actions紅均未解除；前次B3原件入庫與M1改善獲確認。正文C1須與同L真終態一致。沒有可合併結論，不等待審查或使用者；重測最多2，canvas／性能獨占。L帳本執行時持續其他獨立工作。
+最新fetch handoff9bb3ada4，#338最新審查2026-10-23 22:39:41 UTC/headc6c0b0d：B1完整同L驗收、B2原exact、這次B3 Actions紅均未解除；前次B3原件入庫與M1改善獲確認。正文C1須與同L真終態一致。沒有可合併結論，不等待審查或使用者；重測最多2，canvas／性能獨占。L帳本完成後續跑其他原正式項與獨立工作。
 
 ## 本次封存
 
@@ -146,3 +146,11 @@ r2兩stage已於22:45:53.451047 UTC真正結束，原`--mutants-only` 0、完整
 更正上一提交9083bca1於22:47仍寫quick RUNNING：該次出版依較早的狀態通知，實際命令已在22:45:53結束；此次依完整terminal receipt及exec session19147實際exit0改正。上一快照保歷史，不能將當時資訊錯置成已知結果。兩stage與outer完整流、原工具／環境／22輸入與守門共169原件、8,955,138B封入`final-L-reading-a-complete/`（含inventory170members、archive1,751,713B）。actual46／119及package349獨立核對不是額外產品gate；reviewer第一次誤讀SCOPE.md的metadata失敗亦保留。r1缺make_golden原1／1仍完整保在環境包。
 
 最新審查新增的Actions B3另列；無runner/steps尚不足直接認定原因，已交獨立調查並繼續雲端完整驗收。root L全123尚無最終exit，reader三條／RC兩刀與其他UNRUN不借閱讀A通過補綠。
+
+## 2026-10-23 23:07 UTC：最終L原完整123帳本完成並公開
+
+原程序22:25:15.110046～23:00:25.504176 UTC，session56927真outer0；tracked check／原完整CLI／原core mapping／external新帳本check四phase全部0。123定義與原AST IDs精確一致，120個execution head自然為L；114killed、5equivalent、M20原允許crashed、3retired，沒有新增skip或缺項。M118原restore build與43方法皆0；舊4f磁碟紅仍保原SHA。新external JSON SHA256 `66895ec4be133bdfca13cd38733dd024d5005a39ec9fa3bd157122610a5916a6`；沒有再次覆寫L tracked JSON或移動驗收來源。
+
+原完整指令、環境、全部原streams、636bridge rows、67core映射、ROOT/SEED身份與歷史raw守門、工具及175 sidecar搬移沿革共1354members／48,375,681原bytes封於 `final-L-ledger-complete/`；archive8,111,145B、SHA256 `351d84a2a3eb9724ffc1216c5cc5cc2a664006238f63109bd2446ac3fef18af5`。原core文字仍照原裁判UTF-8表示保存，不冒不存在的predecode OS pipes；ELF/源Git/fixtures不在原流包中。actual35760／identity8220／package6776均獨立核對0，沒有拿核對數充產品測試。
+
+ROOT與SEED已在完整原件核對後正式釋放到下個用途，原source仍固定L。reader三條與RC兩刀正在按原工具準備／執行；尚無其終態者維持UNRUN。完整native、六browser與其他專項仍未通過，B1未解除。Actions40034196788的七個原annotation已查得GitHub帳戶付款或支出上限造成派runner前阻擋；CI仍failure，完整環境分類原件另封，不能把這件事當雲端補跑已綠。B2原exact紅仍保留。
