@@ -1,3 +1,13 @@
+# 最新正式進度：#318 原三reader已全0
+
+受驗公開source S=`ae74e51bba1efef48949c077635966273a9e8990`，14:29:08–14:32:17 UTC在雲端Linux/Python3.12.14/Node24.19.0真跑生成、--check、原readerunit，原exit均0。生成patches90；--check本來patches0；unit51方法全OK無skip。前後source同S且clean，沒有改產品或測試。原完整收據與streams在formal-ae74e51b-round1/reader-three-original-ae74e51b.tar.gz及逐檔inventory。
+
+root只授slot2做三reader，現已全終態並釋slot2交314。這不是#318全綠：native7、oracle13、golden反證、矩形逐mm/579凹角/528+1056、真CLI初放次序及architecture原裁判仍未跑，等root分配資源。未反向merge noWood、未重產帳本、未額外改SSOT/決策。工具最新root scheduler版完整獨立peer仍待，不冒已審。
+
+---
+
+以下為此前準備歷史，未跑狀態以本節及後續正式收據為準。
+
 ## 當前進度：共享來源已合流並正式交末棒
 
 已在#323不可變審查combined6cad（無靜態blocker）後普通merge，固定source `ae74e51bba1efef48949c077635966273a9e8990`；與merge前20559個非evidence blob＋mode完全相同，SSOT／oracle／native／golden／tests／expected聯集保留。普通push/lsremote0、source clean，完整收據見 `source-baton-ae74e51b/`。已正式交noWood先靜審merge後normalmerge此source與完成expected13；此後本owner只寫own evidence／正文，不並改shared。這是source交棒，不是正式動態全綠。
