@@ -1,0 +1,160 @@
+{
+  "schema": "geo324.current-state.v1",
+  "productSourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "evidenceHead": null,
+  "formalFinalSHA": null,
+  "trainMerge": {
+    "incomingTrain": "504933473d7b9bdfc5964f73402a710f1222fc96",
+    "performed": true,
+    "ordinaryMerge": true
+  },
+  "rows": [
+    {
+      "gate": "registry-list",
+      "originalCommand": "python3 tests/run_all.py --list",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "native-and-full-expected",
+      "originalCommand": "ulimit -s 16384; python3 tests/run_all.py --build",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "canvas",
+      "originalCommand": "original integration-tests.yml browser job: canvas",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "assembly",
+      "originalCommand": "original integration-tests.yml browser job: assembly",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "documents",
+      "originalCommand": "original integration-tests.yml browser job: documents",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "grid",
+      "originalCommand": "original integration-tests.yml browser job: grid",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "space",
+      "originalCommand": "original integration-tests.yml browser job: space",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "timber",
+      "originalCommand": "original integration-tests.yml browser job: timber",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "affected-importers",
+      "originalCommand": "original run_all --build --only named suites; PARTIAL diagnostic",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "predicate-list",
+      "originalCommand": "run_face_predicate_proofs_v2.py: original list method baseline/withdraw/restored",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "predicate-dict",
+      "originalCommand": "run_face_predicate_proofs_v2.py: original dict method baseline/withdraw/restored",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "predicate-feature",
+      "originalCommand": "run_face_predicate_proofs_v2.py: original feature method baseline/withdraw/restored",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "mutation-check",
+      "originalCommand": "python3 tests/mutate.py --check",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "architecture-contract",
+      "originalCommand": "python3 -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "architecture-tests",
+      "originalCommand": "python3 -B tests/test_architecture_contract.py",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    },
+    {
+      "gate": "product-architecture-tests",
+      "originalCommand": "python3 -B tests/test_product_architecture.py",
+      "executionSHA": null,
+      "originalExitCode": null,
+      "status": "UNRUN",
+      "allowedSkip": null,
+      "receipt": null
+    }
+  ],
+  "bindingRole": "current prepared metadata only; no execution result; old frozen inventories retained",
+  "predicateDriverSHA256": "4b5c05f1a2d7a5cf24c1e2b4d21641c560a7fe7a25db1109a6127d315ddd406d",
+  "publicationRole": "evidenceHead is the containing Git commit; all execution facts remain unknown"
+}
