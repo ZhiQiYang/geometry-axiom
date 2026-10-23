@@ -11,6 +11,15 @@
       "archives": [
         "raw/ignore-scope-reviewed-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T15:07:06.196908+00:00",
+      "label": "ready-handoff",
+      "result": "READY-TO-MERGE #333：最新ChatGPT審查對3d9bd947判可合併；其後02cb僅收窄ignore，176項獨立審查與原政策0/1/0通過。新正文c31已獨立核對並普通推a6a2aed6專用prbody分支。審查對象與後續SHA分列，不冒稱ChatGPT已審02cb；未合併PR。",
+      "next": "按使用者指示本階段停止並交接；合併者讀最新留言、套用已推PR_BODY後自行處理，雲端不合併",
+      "archives": [
+        "raw/ready-handoff-01.tar.gz"
+      ]
     }
   ]
 }
