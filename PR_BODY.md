@@ -1,73 +1,57 @@
-# GEO-261：最終雲端驗收紀錄（仍阻擋合併）
+# GEO-261：main 整合後的雲端驗收，P88 待修
 
-本輪在雲端固定 `0da1f08c75a411442a2e4a431e72459563b8b9a2` 驗收：完整 native 通過；canvas 在 P73 斷言失敗後停止。依「產品或測試紅燈即停下回報」規則，後續五個瀏覽器 job 與專項未執行，**仍不可合併**。產品、裁判、公理、容量與 P-177 守門流量均未改。
+一般 merge main 後的產品 F 已完成 native、其餘五 browser、P52、帳本及架構重驗；**canvas 的 P88 焦點逾時仍阻擋合併**。runtime 同 F 反證已取得 0／1／0；P73、Chromium154 與 oracle 反證仍待執行。下表是唯一 current-state 矩陣；沒有把歷史綠燈冒稱新執行。
 
-## SHA 與證據
+- 受驗產品 F：`13d02c1db7022145a52ee063286a558e595eb212`。
+- 本文證據快照 E：`fbdde3de95f82b3c5d3b5bbe8754187512473899`；F→E 只新增 `evidence/geo261-final-13d02c1d/`。
+- 繼承結果原執行 F2：`8f76f2b7d6f669670e5834310bfc26495b4a4aa6`；原證據 E2：`4b665fae21ab63aaffb7d84f6a32d5a469ba1675`。
+- 帳本：F 上 `mutate.py --check` 原0；原件 SHA-256 `1b0adc12ed73c28075f56eb8bacf45fddffda6defae72809ee25109c1c5e4e2a`，fresh，未重產。
+- 架構重產來源 S：`f79aa057521929597a9af4b204b709110414ac03`；保留真 `sourceBaseHead`，Linux 四檔安裝形成 F，三裁判另在 F 實跑0/0/0。
+- 合入 main：`4ccced59315d0bcf01084ad89c760bb43d8b363b`；一般 merge `c1320a7ad41530252a6f335aaab372154a0e2bf2`。決策佇列只合入原文；公理層未改。
 
-| 角色 | 完整 SHA |
-|---|---|
-| 產品與裁判凍結來源；完整帳本實際執行來源 | `52b951940f570011b257cd207741ba0a7f6d7ce9` |
-| 帳本產物提交；架構重產實際執行來源 | `0548c05cccbb7b35def6bbc3d6b285004be676e5` |
-| 架構產物提交 | `60425b629aee9f74f4e62ea88af9882bc8968881` |
-| 本輪唯一受驗來源 | `0da1f08c75a411442a2e4a431e72459563b8b9a2` |
-| 本輪雲端收據提交 | `4ff5f11934c045fed946f99cb3990481ff320079` |
+已讀最新 [handoff 審查全文](https://github.com/ZhiQiYang/geometry-axiom/blob/f6a174df42d5ff1ce670b6f8277da60c667b8965/handoff/pr-reviews/288.md)，同步 SHA `f6a174df42d5ff1ce670b6f8277da60c667b8965`；最新【ChatGPT 審查】為 2026-10-23T06:41:42Z、head `22ad28f`。該審查關閉 main 衝突、P52、帳本與架構阻擋，仍要求 P88、四組反證及本文更新。本檔推至 prbody 分支供套用；不宣稱 live PR 正文已更新。
 
-既有四個 SHA 都可解析且位於整合分支祖先鏈。75 筆 active 帳本保留真實 `execution.head=52b95194…`；`52→0da` 只有帳本、架構與交接資料變更。獨立靜態身分稽核 26 項成立，涵蓋來源、184 檔 include closure、core／bridge oracle、工具與架構 inputs；本輪 native 的 `mutation:check` 也實際退出 0。完整 hash、可重現腳本及原輸出在證據內，靜態核對不取代動態驗收。
+| Gate | 實際執行 SHA | 原 exit／判決 | 允許 skip／範圍與限制 | 證據 |
+| --- | --- | --- | --- | --- |
+| 01 native | F | 0 | 224 suites；5184 pass／0 fail／1 原允許 Windows GDI skip；mutation check 0、replay 6/6；1684.13s ≤35min | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/native.json) |
+| 02 canvas | F | **1，P88 焦點逾時** | 1502 assertions 後中止；completed=false；golden 未比較、尚未到 P73；1051.68s，未超35min。固定 F 三次獨占重跑進行中，尚無新結論 | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/canvas.json) |
+| 03 assembly | F | 0 | partial 150/0；完整 golden 未比較；184.69s ≤15min | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/assembly.json) |
+| 04 documents | F | 0 | 47/0；原 RESULT 沒有 completed/schema/scope 欄，不補造；63.94s ≤10min | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/documents.json) |
+| 05 grid | F | 0 | partial 356/0；完整 golden 未比較；442.97s ≤15min | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/grid.json) |
+| 06 space | F | 0 | full-space-suite 242/0、6 groups；原省略 timber-material、timber-source-guards；207.73s ≤15min | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/space.json) |
+| 07 timber | F | 0 | partial 79/0；含 timber-material/source-guards/font-layout，原省略 space-height-library/projection-lifecycle/projection-placement/space-flow/projection-close；128.00s ≤20min | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/timber.json) |
+| 08 mutation-check-final | F | 0 | 帳本 fresh；只 check，未重產、未將歷史 M20 crashed 改稱 killed | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/post-main-prerequisites.json) |
+| 09 P52 main 準備 | adbaebf9（main build）；驗收綁定F | 準備0、原 main build 0 | 原比較源 466 runtime inputs；不是 timing gate | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/postmerge-p52-formal.json) |
+| 10 P52 | F | gate0／driver0 | main 252.7797935ms、fix 189.6910945ms，ratio 0.7504203238；4 blocks×8、每側16筆；五 controls 0/0/1/1/1 | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/postmerge-p52-formal.json) |
+| 11 P52 verifier | F | 原 verifier0／adapter0 | 原9 assertions未改；DERIVED launch projection明列，逐一核9個Node原exit/streams/hash/timeout | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/postmerge-p52-verifier.json) |
+| 12 Q38 | F2，closure相同繼承 | 原0 | 42＝41 killed＋SPM24 equivalent；native/model baseline 0/0；非新 F 重跑 | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/4b665fae21ab63aaffb7d84f6a32d5a469ba1675/evidence/geo261-final-8f76f2b7/receipts/q38.json) |
+| 13 §7 card-reference（兩 runner） | F2，closure相同繼承 | 原0 | 53 killed／53 restore0；axiom V01–V05 red1／restore0；不拆成新增正式項 | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/4b665fae21ab63aaffb7d84f6a32d5a469ba1675/evidence/geo261-final-8f76f2b7/receipts/card-reference.json) |
+| 14 P-189 | F2，closure相同繼承 | 原0 | N16/32/48/64 ratios 0.967938/1.177801/1.699450/1.823251 ≤2；36 timing原0；175 dumps逐bytes相同（75接受＋100拒絕） | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/4b665fae21ab63aaffb7d84f6a32d5a469ba1675/evidence/geo261-final-8f76f2b7/receipts/p189.json) |
+| 15 architecture_contract.py | F | 0 | 三條原裁判各自執行；601 inputs／333 owned／796 edges／0 diagnostics | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/post-main-prerequisites.json) |
+| 16 test_architecture_contract.py | F | 0 | 三條原裁判各自執行；601 inputs／333 owned／796 edges／0 diagnostics | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/post-main-prerequisites.json) |
+| 17 test_product_architecture.py | F | 0 | 三條原裁判各自執行；601 inputs／333 owned／796 edges／0 diagnostics | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/post-main-prerequisites.json) |
+| 額外 P73 controlled | F 尚未執行 | **未跑** | 待原 fixed/withdrawn/restored 0/1/0；受控callback不代替自然canvas | 尚無本輪終態收據 |
+| 額外 P52 runtime | F | baseline0／withdrawn1／restored0；driver0 | 同原P52 protocol；ratio 0.750420/1.202992/0.815971；無 crash/timeout假紅；完整補包取 postmerge-runtime-complete-raw | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/receipts/postmerge-runtime-complete-raw.json) |
+| 額外 reader | F2，closure相同繼承 | 原0/1/0 | 具名方法，不冒全51 reader tests | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/4b665fae21ab63aaffb7d84f6a32d5a469ba1675/evidence/geo261-final-8f76f2b7/receipts/F2-reader.json) |
+| 額外 W checker | F2，closure相同繼承 | 原0/1/0 | 原三行撤回，具名 Regex AssertionError；不是重跑舊20 controls | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/4b665fae21ab63aaffb7d84f6a32d5a469ba1675/evidence/geo261-final-8f76f2b7/receipts/F2-checker.json) |
+| 額外 parser-prepare | F2，closure相同繼承 | 原outer0／inner0 | compiled=false、testsRun=false；只準備14 inputs，不冒動態測試 | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/4b665fae21ab63aaffb7d84f6a32d5a469ba1675/evidence/geo261-final-8f76f2b7/receipts/F2-parser-prepare.json) |
+| 額外 parser-O2 | F2，closure相同繼承 | compile0／run0 | 199810 comparisons、stderr空 | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/4b665fae21ab63aaffb7d84f6a32d5a469ba1675/evidence/geo261-final-8f76f2b7/receipts/F2-parser-o2.json) |
+| 額外 parser-sanitized | F2，closure相同繼承 | compile0／run0 | ASan/UBSan 199810 comparisons、stderr空 | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/4b665fae21ab63aaffb7d84f6a32d5a469ba1675/evidence/geo261-final-8f76f2b7/receipts/F2-parser-sanitized.json) |
+| 額外 Cperf | F2，closure相同繼承 | 首次1（ENOSPC）；retry0 | 原各組3筆；withdrawn/main2.564916＞2、restored/main1.970798≤2；保留原失敗，不重抽 | [原收據](https://github.com/ZhiQiYang/geometry-axiom/blob/4b665fae21ab63aaffb7d84f6a32d5a469ba1675/evidence/geo261-final-8f76f2b7/receipts/F2-Cperf-retry1.json) |
+| 額外 Chromium154 P73 | F 尚未執行 | **未跑** | 固定版P73子集；不取代Chrome156正式job，不冒舊產品曾綠 | 尚無本輪終態收據 |
+| oracle/probe 1 selftest --quick | F 尚未執行 | **未跑** | 保原golden，不write-expected | 尚無本輪終態收據 |
+| oracle/probe 2 test_gen_scenes | F 尚未執行 | **未跑** | 原完整unittest；實際Ran/OK待原輸出 | 尚無本輪終態收據 |
+| oracle/probe 3 C4 | F 尚未執行 | **未跑** | 待原0/1/0與具名C4NEG bad8/0/8；非歷史159 mutants重跑 | 尚無本輪終態收據 |
+| oracle/probe 4 core_limits | F 尚未執行 | **未跑** | 待原具名方法0/1/0；撤回必須正常AssertionError，非setup/crash | 尚無本輪終態收據 |
 
-收據提交只封存資料，不當成已驗產品。正文位於 `codex/geo261-final-prbody-20261022` 的 `PR_BODY.md`；自身 commit 請讀該分支 HEAD。
+P88 的精確 fatal predicate 是 `document.activeElement===document.querySelector("#refGuideMode")`。原 active 為 `refGuideRatio`；最後 click 命中 `label < div#refGuideSourceFields` 的「來源比例」，座標(293.75,627.5)。分類是 **UI 焦點／點擊定位紅燈，產品版面時序或測試定位根因待確證**；原輸出沒有 pointer-down target／rect／scroll，不補造這些資訊。固定 F、原 workflow、原35分鐘時限與golden的三次canvas獨占重跑已交專責代理，尚無三次終態判定。舊F2 canvas綠只作歷史。
 
-## 環境與方法
+closure 繼承依據是 F2→F 的 5108 repository inputs mode/blob 相同、110 原公開證據相同，另補 18461 fixture/evidence 的三方同一性；只支持表中明列九個繼承項，不產生新效能樣本。§7兩runner沿原正式清單合計一項。原17正式項與9額外phase的歷史紀錄留在[舊證據](https://github.com/ZhiQiYang/geometry-axiom/blob/4b665fae21ab63aaffb7d84f6a32d5a469ba1675/evidence/geo261-final-8f76f2b7/PROGRESS.md)，不是第二個current-state矩陣。
 
-全部在雲端 Linux 執行。`google-chrome --version`＝`Google Chrome 156.0.8078.47`；`node --version`＝`v24.19.0`。官方 stable 套件經簽章、索引與套件 SHA256 驗證，安裝至 workspace 前綴，未登記 system dpkg。`fonts-noto-cjk` 已安裝；Python 3.12.14、GCC 14.2、PyYAML 6.0.3，版本原輸出與安裝收據已封存。
+雲端環境：Linux 6.18.55、Google Chrome 156.0.8078.47、Node v24.19.0、fonts-noto-cjk；各job原版本命令、退出碼、環境及完整stdout/stderr在raw包內。使用者電腦未執行本輪；六browser實際都能跑，沒有標為通過的環境略過。原七項按序、同一乾淨F執行；新三次canvas每次獨立埠與TEMP，canvas獨占重工作資源。原native唯一Windows GDI skip保留，其餘partial/omitted按各job原scope明列。
 
-按固定 SHA 的 workflow 原指令串行執行，僅替換埠、暫存／feedback／截圖路徑與 Chrome 位置，保留 probe、case、golden、清理與退出碼。原 WSL runner 需要 mount 權限且先排 canvas，故用 repo 外監督器依指定順序執行；差異與工具 hash 入收據，沒有 flaky 豁免。
+保存的失敗：main原文空白檢查exit2、最初architecture1/0/5後重產修復、原canvas1、歷史Cperf ENOSPC1均未刪改。runtime封存首次staging遇Chrome socket失敗，`c3fec08f`第一包不完整；`postmerge-runtime-complete-raw`補包逐hash列冊1633檔，其中713檔bytes入tar、920可重建cache明列排除。272份原收據引用的命令輸出／logs全數入包，沒有被cache規則排除。原0/1/0結果與第一包均保留。
 
-## 本輪結果
+目前未結案：P88，以及P73、Chromium154、oracle三組未跑反證。最大不確定處是P88自然時序能否穩定重現；P52/Cperf對負載敏感，繼承Cperf restored/main1.970798接近2×門檻且僅原三筆，沒有重抽或改門檻。
 
-| 關卡 | 實際結果／退出碼 | 正式 CI 時限 | 實際耗時 |
-|---|---|---:|---:|
-| native：`ulimit -s 16384; python3 tests/run_all.py --build` | **退出 0**；224 suites，5,177＝5,176 通過＋1 個允許的 Windows GDI skip，0 失敗 | 35 分鐘 | 1,726.2514 秒，時限內 |
-| canvas：完整 `node geometry-web/cdp_test.js` | **退出 1**；1,695 通過／1 失敗，`completed:false`；P73 紅，golden 未比較 | 35 分鐘 | 1,264.1338 秒，時限內 |
-| assembly | 未執行：依 P73 紅燈停止 | 15 分鐘 | — |
-| documents | 未執行：依 P73 紅燈停止 | 10 分鐘 | — |
-| grid | 未執行：依 P73 紅燈停止 | 15 分鐘 | — |
-| space | 未執行：依 P73 紅燈停止 | 15 分鐘 | — |
-| timber | 未執行：依 P73 紅燈停止 | 20 分鐘 | — |
-| 帳本 `mutation:check` | native 內實際退出 0；70 killed／1 crashed／4 equivalent／3 retired | 納入 native | 見 suite 收據 |
-| 舊包 replay | native 的 `py:test_geo261_model_base_replay`，6／6 通過 | 納入 native | 見 suite 收據 |
-| P52 正式交錯量測與等待負控制 | 未執行：依 P73 紅燈停止 | 專項 | — |
-| Q38：`tests/section_profile_mutation_check.py` 完整 gate | 未執行：依 P73 紅燈停止 | 專項 | — |
-| §7：`geometry-core/card-reference/run_mutations.py` | 未執行：依 P73 紅燈停止 | 專項 | — |
-| §7：`geometry-core/card-reference/run_axiom_mutations.py` | 未執行：依 P73 紅燈停止 | 專項 | — |
-| P-189 三方交錯量測與 dump 等價 | 未執行：依 P73 紅燈停止 | 專項 | — |
-| 架構 manifest 獨立命令 | 未執行：依 P73 紅燈停止 | 專項 | — |
-| 架構裁判自測獨立命令 | 未執行：依 P73 紅燈停止 | 專項 | — |
-| 產品架構獨立命令 | 未執行：依 P73 紅燈停止 | 專項 | — |
-
-native 另確認 `contact_sources` 13／13、`wood_contact_world` 10／10、`mutation_anchors` 3／3。GDI 保留 skip、M20 保留 crashed。架構三條待執行命令是 `tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json`、`tests/test_architecture_contract.py`、`tests/test_product_architecture.py`，皆帶 `python -B`；native 套件結果不冒充這三次獨立執行。
-
-Chrome 已可執行；後續未跑原因是遵守紅燈停止規則，不能標為「Chrome 無法安裝／本環境無法執行」。P-189 尚無本輪數字：main `adbaebf9…`／base `3e600772…`／final `0da1f08c…` 的 N＝16／32／48／64 各點 final／main≤2 及 base／final 的 `loadfile`＋`dump` 逐 byte 相同，都尚未驗證。
-
-## P73 阻擋與診斷界線
-
-原失敗為：`P73 assertion failed: 空空間不畫假邊界，提供加入成員入口 false`。canvas 在此停止，沒有完成後續區段，也沒有執行完整 golden 比較。P52 區段已完成 43 個斷言，`SYNC_WAIT P52-5=345ms` 只是本次單一觀察，不是正式 P52 專項。P88＝143、P72B＝50 也已跑完，但這些區段結果不補整個 canvas 的失敗。
-
-隔離診斷保存原 `syncSpacePlanAnnotations` 函式及相同四個 predicate：隱藏 SVG 的 `hidden` attribute 為 true、`svg.hidden` 為 undefined、computed display 為 none，但 `getScreenCTM()` 非 null。直接執行原函式後，SVG 插入 0×0 網格 rect／path；四個 predicate 只有 `hasNoShape` 由 true 變 false，其他維持 true。這支持隱藏 SVG 的屬性判斷與網格註記互動是待查方向。
-
-**證據限制：**原失敗的 `FATAL_UI` 沒有逐一保存四個 predicate 值，也沒有落盤 fatal screenshot；不假造原現場值或截圖，不把隔離診斷寫成原場景逐欄重現。靜態比較證明固定 main `adbaebf9…` 的函式 hash 與 predicate 相同，但未跑 main 完整對照，**尚不能證明此紅燈不是本 PR 的新退化**。本輪停在此產品／測試問題，沒有修正或放寬斷言。
-
-## 環境修正與保留的失敗
-
-初輪 native 的清理測試留下兩個 PPID 1、狀態 Z 的 `sleep`：容器 PID 1 是不回收孤兒的 `tail`。保留紅燈後中止，退出 130，未冒稱原輪通過。repo 外標準 `PR_SET_CHILD_SUBREAPER` 監督器補足回收能力，未更改測試；單項診斷 1／1，完整 native 重跑時原套件 12／12 通過。另一次啟動因 TMP 碰撞於 preflight 退出 78，未開始 native，不計作產品失敗或通過。各輪收據、`/proc`、監督器原碼與回收事件均保留。
-
-## 原始證據與最後審查回覆
-
-證據位於 [evidence/geo261-final-0da1f08c/](https://github.com/ZhiQiYang/geometry-axiom/tree/4ff5f11934c045fed946f99cb3990481ff320079/evidence/geo261-final-0da1f08c)：先讀 `README.md`、`SUMMARY.json`，再依 `*.raw.tar.gz` 清單讀完整命令、退出碼、stdout／stderr、環境、SHA、suite 記錄與 SHA256。原始失敗及環境修正後的執行分開封存，靜態稽核附重現方法。歷史附件不補本輪未跑項目。
-
-最後審查原文：交接分支 `888a999f` 的 `handoff/pr288-latest-review-20261022.md`。
-
-1. **帳本來源不可解析：**已由可解析祖先 `52b95194…` 的完整重產帳本取代，保留原 execution head；本輪來源／closure／oracle／tool 靜態核對與 native 的 `mutation:check=0` 均有 repo 內收據。
-2. **最終整合驗收未完成，仍阻擋。**native 已完成，canvas P73 失敗，其餘依規則未跑。未以歷史綠燈或 Actions 零步驟 failure 外推完成。
-3. **正文過時：**本正文分列來源、帳本、架構與收據 SHA，矩陣只列固定 `0da…` 的本輪結果；由使用者貼回 #288。
-
-最不確定的是 P73 原現場觸發條件、相對 main 的退化歸屬及未跑清單。實體手機／iOS、Windows 正式服務與 P72B optional 真雙服務往返未另驗。釐清 P73 並完成必要重驗後再請複審；本次不 force push、不合併，未展開其他列車。
+完整原命令、exit、環境、SHA、streams/hash以[PROGRESS與raw inventory](https://github.com/ZhiQiYang/geometry-axiom/blob/fbdde3de95f82b3c5d3b5bbe8754187512473899/evidence/geo261-final-13d02c1d/PROGRESS.md)為準。一般push；未force push、未合併PR。
