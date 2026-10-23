@@ -1,3 +1,7 @@
+## 追加：前棒 #314 來源錨點維護
+
+經 #314 owner 只讀確認後，由本 owner 單一寫入 `test_geo261_wood_grid_application.py` 的 legacy-value 控制錨點，將已遷移的 W helper 呼叫由舊2args對齊新6args；method、marker、replacement `if(0)` 與所有 assert 原字不動、不新增測試。單檔11個literal anchors 靜核各恰1，輸出見 `PREDECESSOR_314_ANCHOR_MAINTENANCE.json`；不是動態0/1/0，也沒有產帳本。
+
 ## 追加：M149 追溯已機械同步／Git 一般推送已恢復
 
 真 H collector 見證來源 `bba68351f89bd3448dcb1462c53c23288b46e3ca` 已一般 push。新增 M149 之後，因追溯資料確有改動，再按原同步器重建唯一 canonical，真 exit0、約3.47秒；原 argv/full streams/env/SHA/hash 於 `reader-generation-m149/`。M140–M149 均出現在追溯，但全部 mutation 仍 unrun。兩次同步都是來源生成，不把它當三條閱讀器裁判全綠。

@@ -1,0 +1,78 @@
+{
+  "scope": "Single test source-control anchor maintenance only; no native test or mutation executed",
+  "source_before": "b5afd62b0ab17155c1aa6f9d915af08082d7ad72",
+  "owner_authorization": "#314 owner /root/prepare_288_merge_architecture confirmed exact change and read-only role",
+  "path": "tests/test_geo261_wood_grid_application.py",
+  "old_count_in_product": 0,
+  "new_count_in_product": 1,
+  "change_count": 1,
+  "method_marker_replacement_assertions_unchanged": true,
+  "all_11_literal_anchors": [
+    {
+      "control": "new-two-axis",
+      "case": "stagger-w01",
+      "marker": "stagger-new-two-axis",
+      "anchor_count": 1
+    },
+    {
+      "control": "legacy-value",
+      "case": "stagger-w06",
+      "marker": "stagger-legacy-u-changed",
+      "anchor_count": 1
+    },
+    {
+      "control": "same-reference",
+      "case": "stagger-w11",
+      "marker": "stagger-ref-card-edit-is-not-an-edit",
+      "anchor_count": 1
+    },
+    {
+      "control": "single-is-dual",
+      "case": "stagger-w04",
+      "marker": "stagger-switch-axis",
+      "anchor_count": 1
+    },
+    {
+      "control": "ignores-v",
+      "case": "stagger-w07",
+      "marker": "stagger-legacy-v-changed",
+      "anchor_count": 1
+    },
+    {
+      "control": "ignores-source-value",
+      "case": "stagger-w13",
+      "marker": "stagger-unbind-different-value",
+      "anchor_count": 1
+    },
+    {
+      "control": "missing-store",
+      "case": "stagger-w17",
+      "marker": "stagger-missing-store-fails-closed",
+      "anchor_count": 1
+    },
+    {
+      "control": "blanket-source-exemption",
+      "case": "stagger-o02",
+      "marker": "stagger-ordered-unbind-must-preserve-present-value",
+      "anchor_count": 1
+    },
+    {
+      "control": "missing-chain",
+      "case": "stagger-o11",
+      "marker": "stagger-ordered-chain-is-contiguous",
+      "anchor_count": 1
+    },
+    {
+      "control": "missing-order",
+      "case": "stagger-o08",
+      "marker": "stagger-ordered-sequence-is-increasing",
+      "anchor_count": 1
+    },
+    {
+      "control": "missing-endpoint",
+      "case": "stagger-o05",
+      "marker": "stagger-ordered-final-source-is-bound",
+      "anchor_count": 1
+    }
+  ]
+}
