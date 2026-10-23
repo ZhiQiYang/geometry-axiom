@@ -93,16 +93,31 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
         }
         out[j]=value;
     }
+    /* Keep the original live-set deletion order, including duplicate IDs
+     * whose minimum/last orders can make two faces shadow one another.
+     * The usual bounded buffer needs only one final stable compaction;
+     * larger public caller buffers retain the original in-place fallback. */
+    bool active[WOOD_CONTACT_FACE_CAPACITY];
+    bool compact=count<=WOOD_CONTACT_FACE_CAPACITY;size_t remaining=count;
+    if(compact)for(size_t i=0;i<count;++i)active[i]=true;
     for(size_t i=0;i<count;){bool duplicate=false;
         if(out[i].kind==WOOD_STOP_MEMBER_SIDE){uint64_t order=contact_order(world,&orders,out[i].timber_id);
             for(size_t j=0;j<count&&!duplicate;++j){
+                if(compact&&!active[j])continue;
                 if(i==j||out[i].fixed!=out[j].fixed||out[i].lo>=out[j].hi||out[j].lo>=out[i].hi)continue;
                 bool earlier=out[j].kind!=WOOD_STOP_MEMBER_SIDE;
                 if(!earlier)earlier=contact_earlier(world,&orders,out[j].timber_id,order);
                 if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;
             }
         }
-        if(duplicate){memmove(out+i,out+i+1,(count-i-1)*sizeof *out);--count;}else ++i;
+        if(duplicate){
+            if(compact){active[i]=false;--remaining;++i;}
+            else{memmove(out+i,out+i+1,(count-i-1)*sizeof *out);--count;}
+        }else ++i;
+    }
+    if(compact){size_t write=0;
+        for(size_t i=0;i<count;++i)if(active[i]){if(write!=i)out[write]=out[i];++write;}
+        return remaining;
     }
     return count;
 }

@@ -1,0 +1,2220 @@
+{
+  "schema": "geo324-three-predicate-originals-independent-peer/1",
+  "reviewed_utc": "2026-10-23T19:43:13.704232+00:00",
+  "source_sha": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "receipt_sha256": "58bf107cbe1207cf695c81b11001881e233075c4782dd6673ed08e4d878b85fb",
+  "checks": [
+    {
+      "name": "immutable subject receipt",
+      "pass": true
+    },
+    {
+      "name": "driver pinned original v2",
+      "pass": true
+    },
+    {
+      "name": "actual subject outcome",
+      "pass": true
+    },
+    {
+      "name": "true outer outcome",
+      "pass": true
+    },
+    {
+      "name": "request prelaunch exact",
+      "pass": true
+    },
+    {
+      "name": "explicit environment clear",
+      "pass": true
+    },
+    {
+      "name": "source clean before after",
+      "pass": true
+    },
+    {
+      "name": "outer source same",
+      "pass": true
+    },
+    {
+      "name": "proof exact command count",
+      "pass": true
+    },
+    {
+      "name": "proof/1 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/1 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/1/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/1/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/1/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/2 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/2 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/2/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/2/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/2/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/3 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/3 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/3/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/3/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/3/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/4 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/4 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/4/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/4/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/4/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/5 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/5 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/5/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/5/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/5/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/6 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/6 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/6/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/6/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/6/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/7 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/7 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/7/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/7/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/7/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/8 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/8 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/8/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/8/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/8/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/9 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/9 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/9/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/9/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/9/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/10 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/10 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/10/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/10/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/10/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/11 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/11 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/11/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/11/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/11/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/12 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/12 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/12/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/12/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/12/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/13 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/13 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/13/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/13/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/13/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/14 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/14 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/14/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/14/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/14/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/15 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/15 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/15/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/15/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/15/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/16 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/16 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/16/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/16/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/16/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/17 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/17 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/17/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/17/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/17/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/18 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/18 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/18/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/18/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/18/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/19 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/19 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/19/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/19/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/19/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/20 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/20 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/20/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/20/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/20/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/21 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/21 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/21/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/21/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/21/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/22 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/22 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/22/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/22/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/22/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/23 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/23 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/23/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/23/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/23/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/24 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/24 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/24/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/24/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/24/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/25 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/25 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/25/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/25/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/25/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/26 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/26 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/26/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/26/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/26/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/27 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/27 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/27/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/27/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/27/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/28 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/28 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/28/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/28/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/28/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/29 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/29 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/29/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/29/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/29/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/30 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/30 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/30/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/30/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/30/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/31 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/31 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/31/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/31/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/31/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/32 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/32 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/32/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/32/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/32/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/33 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/33 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/33/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/33/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/33/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/34 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/34 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/34/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/34/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/34/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/35 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/35 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/35/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/35/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/35/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/36 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/36 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/36/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/36/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/36/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/37 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/37 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/37/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/37/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/37/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/38 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/38 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/38/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/38/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/38/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/39 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/39 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/39/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/39/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/39/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/40 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/40 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/40/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/40/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/40/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/41 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/41 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/41/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/41/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/41/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/42 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/42 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/42/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/42/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/42/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/43 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/43 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/43/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/43/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/43/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/44 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/44 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/44/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/44/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/44/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/45 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/45 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/45/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/45/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/45/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/46 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/46 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/46/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/46/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/46/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/47 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/47 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/47/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/47/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/47/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/48 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/48 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/48/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/48/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/48/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/49 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/49 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/49/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/49/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/49/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/50 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/50 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/50/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/50/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/50/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/51 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/51 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/51/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/51/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/51/stderr",
+      "pass": true
+    },
+    {
+      "name": "proof/52 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "proof/52 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "proof/52/stdin",
+      "pass": true
+    },
+    {
+      "name": "proof/52/stdout",
+      "pass": true
+    },
+    {
+      "name": "proof/52/stderr",
+      "pass": true
+    },
+    {
+      "name": "launch exact command count",
+      "pass": true
+    },
+    {
+      "name": "launch/1 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "launch/1 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "launch/1/stdin",
+      "pass": true
+    },
+    {
+      "name": "launch/1/stdout",
+      "pass": true
+    },
+    {
+      "name": "launch/1/stderr",
+      "pass": true
+    },
+    {
+      "name": "launch/2 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "launch/2 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "launch/2/stdin",
+      "pass": true
+    },
+    {
+      "name": "launch/2/stdout",
+      "pass": true
+    },
+    {
+      "name": "launch/2/stderr",
+      "pass": true
+    },
+    {
+      "name": "launch/3 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "launch/3 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "launch/3/stdin",
+      "pass": true
+    },
+    {
+      "name": "launch/3/stdout",
+      "pass": true
+    },
+    {
+      "name": "launch/3/stderr",
+      "pass": true
+    },
+    {
+      "name": "launch/4 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "launch/4 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "launch/4/stdin",
+      "pass": true
+    },
+    {
+      "name": "launch/4/stdout",
+      "pass": true
+    },
+    {
+      "name": "launch/4/stderr",
+      "pass": true
+    },
+    {
+      "name": "launch/5 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "launch/5 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "launch/5/stdin",
+      "pass": true
+    },
+    {
+      "name": "launch/5/stdout",
+      "pass": true
+    },
+    {
+      "name": "launch/5/stderr",
+      "pass": true
+    },
+    {
+      "name": "launch/6 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "launch/6 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "launch/6/stdin",
+      "pass": true
+    },
+    {
+      "name": "launch/6/stdout",
+      "pass": true
+    },
+    {
+      "name": "launch/6/stderr",
+      "pass": true
+    },
+    {
+      "name": "launch/7 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "launch/7 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "launch/7/stdin",
+      "pass": true
+    },
+    {
+      "name": "launch/7/stdout",
+      "pass": true
+    },
+    {
+      "name": "launch/7/stderr",
+      "pass": true
+    },
+    {
+      "name": "launch/8 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "launch/8 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "launch/8/stdin",
+      "pass": true
+    },
+    {
+      "name": "launch/8/stdout",
+      "pass": true
+    },
+    {
+      "name": "launch/8/stderr",
+      "pass": true
+    },
+    {
+      "name": "launch/9 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "launch/9 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "launch/9/stdin",
+      "pass": true
+    },
+    {
+      "name": "launch/9/stdout",
+      "pass": true
+    },
+    {
+      "name": "launch/9/stderr",
+      "pass": true
+    },
+    {
+      "name": "launch/10 exact actual stored row",
+      "pass": true
+    },
+    {
+      "name": "launch/10 exact acceptance/source",
+      "pass": true
+    },
+    {
+      "name": "launch/10/stdin",
+      "pass": true
+    },
+    {
+      "name": "launch/10/stdout",
+      "pass": true
+    },
+    {
+      "name": "launch/10/stderr",
+      "pass": true
+    },
+    {
+      "name": "37 inventory pin",
+      "pass": true
+    },
+    {
+      "name": "exact complete original input paths",
+      "pass": true
+    },
+    {
+      "name": "actual original source pin",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/bootstrap.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/bootstrap.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/bootstrap.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/bootstrap.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/bootstrap.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/model_codec.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/model_codec.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/model_codec.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/model_codec.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/model_codec.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/model_common.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/model_common.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/model_common.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/model_common.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/model_common.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/model_geometry.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/model_geometry.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/model_geometry.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/model_geometry.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/model_geometry.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/model_native.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/model_native.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/model_native.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/model_native.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/model_native.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/model_profile_compat.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/model_profile_compat.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/model_profile_compat.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/model_profile_compat.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/model_profile_compat.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/model_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/model_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/model_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/model_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/model_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/model_world.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/model_world.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/model_world.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/model_world.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/model_world.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-app/geometry_app/source_closure.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-app/geometry_app/source_closure.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-app/geometry_app/source_closure.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-app/geometry_app/source_closure.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-app/geometry_app/source_closure.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/geometry_kernel/README.md",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/geometry_kernel/README.md",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/geometry_kernel/README.md",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/geometry_kernel/README.md",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/geometry_kernel/README.md",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/geometry_kernel/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/geometry_kernel/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/geometry_kernel/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/geometry_kernel/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/geometry_kernel/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/geometry_kernel/canonical.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/geometry_kernel/canonical.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/geometry_kernel/canonical.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/geometry_kernel/canonical.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/geometry_kernel/canonical.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/geometry_kernel/errors.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/geometry_kernel/errors.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/geometry_kernel/errors.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/geometry_kernel/errors.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/geometry_kernel/errors.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/geometry_kernel/evaluate.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/geometry_kernel/evaluate.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/geometry_kernel/evaluate.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/geometry_kernel/evaluate.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/geometry_kernel/evaluate.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/geometry_kernel/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/geometry_kernel/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/geometry_kernel/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/geometry_kernel/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/geometry_kernel/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/geometry_kernel/graph.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/geometry_kernel/graph.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/geometry_kernel/graph.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/geometry_kernel/graph.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/geometry_kernel/graph.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/geometry_kernel/session.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/geometry_kernel/session.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/geometry_kernel/session.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/geometry_kernel/session.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/geometry_kernel/session.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/geometry_kernel/transactions.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/geometry_kernel/transactions.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/geometry_kernel/transactions.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/geometry_kernel/transactions.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/geometry_kernel/transactions.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/geometry_kernel/types.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/geometry_kernel/types.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/geometry_kernel/types.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/geometry_kernel/types.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/geometry_kernel/types.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/modeling/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/modeling/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/modeling/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/modeling/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/modeling/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/modeling/_host.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/modeling/_host.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/modeling/_host.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/modeling/_host.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/modeling/_host.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/modeling/base.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/modeling/base.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/modeling/base.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/modeling/base.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/modeling/base.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/modeling/common.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/modeling/common.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/modeling/common.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/modeling/common.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/modeling/common.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/modeling/engine.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/modeling/engine.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/modeling/engine.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/modeling/engine.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/modeling/engine.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/modeling/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/modeling/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/modeling/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/modeling/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/modeling/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/modeling/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/modeling/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/modeling/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/modeling/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/modeling/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-core/modeling/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-core/modeling/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-core/modeling/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-core/modeling/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-core/modeling/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes tests/test_geometry_host_sources.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream tests/test_geometry_host_sources.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/tests/test_geometry_host_sources.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/tests/test_geometry_host_sources.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/tests/test_geometry_host_sources.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes tests/test_geometry_kernel_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream tests/test_geometry_kernel_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/tests/test_geometry_kernel_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/tests/test_geometry_kernel_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/tests/test_geometry_kernel_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "tracked Git bytes tests/test_geometry_source_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "original git-show stream tests/test_geometry_source_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input list/tests/test_geometry_source_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input dict/tests/test_geometry_source_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "isolated restored input feature/tests/test_geometry_source_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "exact three predicates",
+      "pass": true
+    },
+    {
+      "name": "list original unique mutation",
+      "pass": true
+    },
+    {
+      "name": "list exact test and result",
+      "pass": true
+    },
+    {
+      "name": "list restored product",
+      "pass": true
+    },
+    {
+      "name": "list original empty test package",
+      "pass": true
+    },
+    {
+      "name": "list/baseline one real original method",
+      "pass": true
+    },
+    {
+      "name": "list/baseline source exact",
+      "pass": true
+    },
+    {
+      "name": "list/baseline real OK",
+      "pass": true
+    },
+    {
+      "name": "list/withdraw one real original method",
+      "pass": true
+    },
+    {
+      "name": "list/withdraw source exact",
+      "pass": true
+    },
+    {
+      "name": "list normal negative assertions",
+      "pass": true
+    },
+    {
+      "name": "list both public kinds meaningful",
+      "pass": true
+    },
+    {
+      "name": "list/restored one real original method",
+      "pass": true
+    },
+    {
+      "name": "list/restored source exact",
+      "pass": true
+    },
+    {
+      "name": "list/restored real OK",
+      "pass": true
+    },
+    {
+      "name": "dict original unique mutation",
+      "pass": true
+    },
+    {
+      "name": "dict exact test and result",
+      "pass": true
+    },
+    {
+      "name": "dict restored product",
+      "pass": true
+    },
+    {
+      "name": "dict original empty test package",
+      "pass": true
+    },
+    {
+      "name": "dict/baseline one real original method",
+      "pass": true
+    },
+    {
+      "name": "dict/baseline source exact",
+      "pass": true
+    },
+    {
+      "name": "dict/baseline real OK",
+      "pass": true
+    },
+    {
+      "name": "dict/withdraw one real original method",
+      "pass": true
+    },
+    {
+      "name": "dict/withdraw source exact",
+      "pass": true
+    },
+    {
+      "name": "dict normal negative assertions",
+      "pass": true
+    },
+    {
+      "name": "dict both public kinds meaningful",
+      "pass": true
+    },
+    {
+      "name": "dict/restored one real original method",
+      "pass": true
+    },
+    {
+      "name": "dict/restored source exact",
+      "pass": true
+    },
+    {
+      "name": "dict/restored real OK",
+      "pass": true
+    },
+    {
+      "name": "feature original unique mutation",
+      "pass": true
+    },
+    {
+      "name": "feature exact test and result",
+      "pass": true
+    },
+    {
+      "name": "feature restored product",
+      "pass": true
+    },
+    {
+      "name": "feature original empty test package",
+      "pass": true
+    },
+    {
+      "name": "feature/baseline one real original method",
+      "pass": true
+    },
+    {
+      "name": "feature/baseline source exact",
+      "pass": true
+    },
+    {
+      "name": "feature/baseline real OK",
+      "pass": true
+    },
+    {
+      "name": "feature/withdraw one real original method",
+      "pass": true
+    },
+    {
+      "name": "feature/withdraw source exact",
+      "pass": true
+    },
+    {
+      "name": "feature normal negative assertions",
+      "pass": true
+    },
+    {
+      "name": "feature both public kinds meaningful",
+      "pass": true
+    },
+    {
+      "name": "feature/restored one real original method",
+      "pass": true
+    },
+    {
+      "name": "feature/restored source exact",
+      "pass": true
+    },
+    {
+      "name": "feature/restored real OK",
+      "pass": true
+    }
+  ],
+  "findings": [],
+  "exit_code": 0,
+  "scope": "三個原公開行為方法各 baseline/withdraw/restored 真0/1/0；每個負控制有column與beam兩個正常assertion，非import/syntax/setup/crash。完整62原命令、37Git輸入與三份恢復後bytes獨立核；不重測。",
+  "limitations": [
+    "只三predicate專項；不是45完整module、full native、六browser或全ledger結果。",
+    "原native transport由既有原測試mock如實使用fixture-not-executed；沒有宣稱本專項啟動真正C編譯器／nativeexe。",
+    "mutant bytes由唯一原anchor重建對其原phase hash；工作樹現已恢復，不以事後恢復樹冒負控制當時完整snapshot。"
+  ]
+}
