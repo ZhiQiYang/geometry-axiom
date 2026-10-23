@@ -95,6 +95,8 @@ class WoodWorldValidation(unittest.TestCase):
             ("validation-unique","(!fact.has_between&&hits!=1)","false","support","validation-unique-stops"),
             ("validation-presence","!hits||","","support","validation-between-needs-stop"),
             ("validation-collision","if(geo_rect_overlap_positive(&left,&right))return false;\n        }\n    }\n    WoodMemberAxisFact", "if(false)return false;\n        }\n    }\n    WoodMemberAxisFact","collision","validation-positive-collision"),
+            ("validation-same-host","||a.placement_id!=b.placement_id","","collision","validation-separate-hosts"),
+            ("validation-pair-placed","if(!b.member->placed||","if(","collision","validation-unplaced-no-collision"),
             ("validation-axis","if(!wood_member_primary_axis_check(","if(false&&!wood_member_primary_axis_check(","axis","validation-primary-axis"),
             ("validation-volume","obstacle->max[axis]<=obstacle->min[axis]","obstacle->max[axis]<obstacle->min[axis]","obstacles","validation-positive-volume"),
             ("validation-rule-scope","!context->footprint(context->user,i,fact.placement_id,&footprint)||!validation_inside(&footprint,&cell)",

@@ -232,14 +232,36 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         added.update({"M85": "geometry-core/grid_systems.inc", "M86": "geometry-core/kernel/geometry.c",
                       "M87": "geometry-templates/woodworking/native/contacts.c",
                       "M88": "geometry-templates/woodworking/native/contacts.c"})
-        self.assertEqual(28, len(added))
+        # #299 (I22 W V_EXTENSION names the edge and the interval): M89-M95 mutate contacts.c's message,
+        # M96 mutates contact_world.c's edge report.
+        added.update({mid: "geometry-templates/woodworking/native/contacts.c" for mid in ("M89", "M90", "M91", "M92", "M93", "M94", "M95")})
+        added["M96"] = "geometry-templates/woodworking/native/contact_world.c"
+        # #316 (the two remaining I11 same-surface filters): M97 in H references.inc, M98 in W world_validation.c.
+        added.update({"M97": "geometry-core/references.inc",
+                      "M98": "geometry-templates/woodworking/native/world_validation.c"})
+        self.assertEqual(38, len(added))
+        # #314 follows the combined M89-M98 and registers the reviewed W/H
+        # submission rules and ordered-evidence guards at their actual owners.
+        stagger = {"M%03d" % n: "geometry-templates/woodworking/native/grid_application.c"
+                   for n in [*range(101, 108), *range(112, 116)]}
+        stagger.update({"M99": "current_geometry.c", "M100": "geometry-core/subgrid_world.inc",
+                        "M108": "geometry-core/transactions.inc", "M109": "geometry-web/engineering_bridge.inc",
+                        "M110": "current_geometry.c", "M111": "geometry-core/transactions.inc",
+                        "M116": "geometry-web/engineering_bridge.inc", "M117": "current_geometry.c",
+                        "M118": "geometry-app/native/stagger_facts.inc",
+                        "M119": "geometry-app/native/world_candidate.inc",
+                        "M120": "geometry-web/engineering_bridge.inc",
+                        "M121": "geometry-templates/woodworking/native/grid_application.c"})
+        self.assertEqual(23, len(stagger))
+        added.update(stagger)
+        self.assertEqual(61, len(added))
         self.assertEqual({**expected, **added}, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
         # The ten P-135/P-141 preview-only guards and the eight GEO-262 P-142
         # guards (M78-M85) run on the actual bridge.
-        self.assertEqual({"M%02d" % n for n in [*range(61, 71), *range(78, 86)]},
+        self.assertEqual({"M%02d" % n for n in [*range(61, 71), *range(78, 86)]} | set(stagger),
                          {m["id"] for m in mutate.MUTANTS if m.get("binary") == "bridge"})
         self.assertEqual({"M35", "M51", "M55"}, {m["id"] for m in mutate.MUTANTS if m.get("retired")})
-        self.assertEqual({"M09", "M23", "M36", "M56"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})
+        self.assertEqual({"M09", "M23", "M36", "M56", "M110"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})
         src = mutate.Sources(mutate.ROOT)
         snapshot = (dict(src.texts), dict(src.hashes), src.closure)
         with mock.patch.object(mutate, "run_cmd", side_effect=AssertionError("native commands forbidden")):

@@ -11,6 +11,7 @@ typedef struct WoodContactQuery {
     size_t cap;
     unsigned char *collection;
     size_t collection_size;
+    size_t collection_node_hint;
     struct WoodContactQuery *next;
 } WoodContactQuery;
 struct WoodContactSources {
@@ -123,8 +124,16 @@ static bool wood_contact_source_evaluate(void *user,GeoEvalContext *graph,const 
     WoodContactQuery *q=wood_contact_source_query(s,id);if(!q)return false;
     if(kind==WOOD_CONTACT_SOURCE_COLLECTION)return wood_contact_source_collection(s,q,out);
     WoodContactSourceKey key;GeoSourceValue collection;
-    if(geo_eval_source(graph,wood_contact_source_ref(s->token,WOOD_CONTACT_SOURCE_COLLECTION,id,0,&key),
-        GEO_DEPENDENCY_VALUE_REQUIRED,&collection)!=GEO_SOURCE_OK)return false;
+    GeoSourceRef collection_ref=wood_contact_source_ref(s->token,WOOD_CONTACT_SOURCE_COLLECTION,id,0,&key);
+    GeoSourceNodeView node;
+    if(q->collection&&geo_eval_node_at(graph,q->collection_node_hint,&node)&&
+        node.source.provider==collection_ref.provider&&node.source.key_size==collection_ref.key_size&&
+        !memcmp(node.source.key,collection_ref.key,collection_ref.key_size)&&node.state==GEO_NODE_VALID&&node.value){
+        /* 成功的集合由本查詢持有且不再變動。每個 feature 使用其位元組前，
+         * 仍依原順序記錄自己的依賴；失敗或尚未求值的集合走原路徑。 */
+        if(geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK)return false;
+        collection=*node.value;
+    }else if(geo_eval_source(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED,&collection)!=GEO_SOURCE_OK)return false;
     const unsigned char *bytes;size_t count;
     if(!wood_contact_source_collection_view(&collection,q->cap,&bytes,&count)||index>=count)return false;
     const unsigned char *record=bytes+8+(size_t)index*WOOD_CONTACT_SOURCE_RECORD_SIZE;
@@ -160,6 +169,9 @@ bool wood_contact_sources_collect(WoodContactSources *s,const WoodContactSourceR
 {
     if(!s||!request||!count||(cap&&!out)||geo_eval_is_sealed(s->graph)||s->sequence==UINT64_MAX)return false;
     WoodContactQuery *q=calloc(1,sizeof *q);if(!q)return false;
+    /* 提示僅供常見的新節點路徑；預先 describe、reset 或重註冊後須核對
+     * 完整來源鍵與 VALID 狀態，失配時保留原本的求值及插入順序。 */
+    q->collection_node_hint=geo_eval_node_count(s->graph);
     q->id=++s->sequence;q->request=*request;q->cap=cap<WOOD_CONTACT_FACE_CAPACITY?cap:WOOD_CONTACT_FACE_CAPACITY;
     q->next=s->queries;s->queries=q;
     WoodContactSourceKey key;GeoSourceValue collection;

@@ -194,10 +194,144 @@ static int candidate(void)
     CHECK(!memcmp(&new_state,&before_rejection,sizeof new_state));CHECK(!memcmp(&old_state,&snapshot,sizeof snapshot));
     geo_grid_store_destroy(copy);geo_grid_store_destroy(original);return 0;
 }
+static GeoGridSystem staggered(uint32_t id,bool u,GeoCoord su,bool v,GeoCoord sv)
+{
+    GeoGridSystem s=system_value(id,true);
+    s.axis[0].step=s.axis[1].step=2000;
+    s.axis[0].stagger_set=u;s.axis[0].stagger=su;
+    s.axis[1].stagger_set=v;s.axis[1].stagger=sv;return s;
+}
+static GeoGridStore *stagger_store(const GeoGridSystem *a,const GeoGridSystem *b)
+{
+    GeoGridStore *s=geo_grid_store_create();
+    if(s&&a&&!geo_grid_systems_put(s,a)){geo_grid_store_destroy(s);return NULL;}
+    if(s&&b&&!geo_grid_systems_put(s,b)){geo_grid_store_destroy(s);return NULL;}
+    return s;
+}
+static int stagger_decision(unsigned which)
+{
+    static const char *markers[]={"",
+        "stagger-new-two-axis","stagger-add-second-axis-v","stagger-add-second-axis-u",
+        "stagger-switch-axis","stagger-legacy-unchanged","stagger-legacy-u-changed",
+        "stagger-legacy-v-changed","stagger-legacy-both-changed",
+        "stagger-remove-one-and-edit-other","stagger-remove-both",
+        "stagger-ref-card-edit-is-not-an-edit","stagger-unbind-same-value",
+        "stagger-unbind-different-value","stagger-repoint-same-value",
+        "stagger-repoint-different-value","stagger-names-the-offending-system",
+        "stagger-missing-store-fails-closed","stagger-repeat-panel-same-rule"};
+    if(which<1||which>18)return 2;const char *marker=markers[which];
+    GeoGridSystem old=staggered(7,true,40,true,30),now=old;
+    GeoGridSystem a=staggered(3,true,40,false,0);bool want=false,missing_old=false,two_systems=false;
+    switch(which){
+    case 1:missing_old=true;now.axis[0].stagger=400;break;
+    case 2:old.axis[1].stagger_set=false;break;
+    case 3:old.axis[0].stagger_set=false;break;
+    case 4:old.axis[1].stagger_set=false;now.axis[0].stagger_set=false;want=true;break;
+    case 5:want=true;break;
+    case 6:now.axis[0].stagger=45;break;
+    case 7:now.axis[1].stagger=35;break;
+    case 8:now.axis[0].stagger=45;now.axis[1].stagger=35;break;
+    case 9:now.axis[0].stagger_set=false;now.axis[1].stagger=35;want=true;break;
+    case 10:now.axis[0].stagger_set=now.axis[1].stagger_set=false;want=true;break;
+    case 11:
+        old.axis[0].parameters[5]=now.axis[0].parameters[5]=(GeoParameterRef){true,901,1};
+        old.axis[1].parameters[5]=now.axis[1].parameters[5]=(GeoParameterRef){true,901,2};
+        old.axis[0].stagger=400;old.axis[1].stagger=300;
+        now.axis[0].stagger=401;now.axis[1].stagger=301;want=true;break;
+    case 12:case 13:case 14:case 15:
+        old.axis[0].parameters[5]=(GeoParameterRef){true,901,1};old.axis[0].stagger=400;
+        now.axis[0].stagger=which==12||which==14?400:401;
+        if(which>=14)now.axis[0].parameters[5]=(GeoParameterRef){true,901,3};
+        want=which==12||which==14;break;
+    case 16:missing_old=true;two_systems=true;break;
+    case 17:want=false;break;
+    case 18:
+        old.axis[0].source=now.axis[0].source=GEO_GRID_SOURCE_REPEAT_BODY_GAP;
+        old.axis[0].body=now.axis[0].body=400;old.axis[0].gap=now.axis[0].gap=5;
+        old.axis[0].anchor=now.axis[0].anchor=-100;now.axis[0].stagger=45;break;
+    }
+    GeoGridStore *before=stagger_store(two_systems?&a:(missing_old?NULL:&old),NULL);
+    GeoGridStore *after=stagger_store(two_systems?&a:&now,two_systems?&now:NULL);
+    CHECK_NAMED(before&&after,marker);char error[256]="";
+    if(which==17){
+        CHECK_NAMED(!wood_grid_stagger_commit_valid(NULL,before,NULL,0,error,sizeof error),marker);
+        CHECK_NAMED(strstr(error,"I24")!=NULL,marker);
+        CHECK_NAMED(!wood_grid_stagger_commit_valid(after,NULL,NULL,0,error,sizeof error),marker);
+        CHECK_NAMED(strstr(error,"I24")!=NULL,marker);
+    }else{
+        bool accepted=wood_grid_stagger_commit_valid(after,before,NULL,0,error,sizeof error);
+        CHECK_NAMED(accepted==want,marker);
+        if(!want){
+            CHECK_NAMED(strstr(error,"I24")&&strstr(error,"7"),marker);
+            CHECK_NAMED(strstr(error,(which<=3||which==16)?"同一份網格只能有一軸錯開":"先在同一筆編輯裡移除一軸")!=NULL,marker);
+            if(which==6||which==8||which==18)CHECK_NAMED(strstr(error,"u 軸")&&strstr(error,"40")&&strstr(error,"45"),marker);
+            if(which==7)CHECK_NAMED(strstr(error,"v 軸")&&strstr(error,"30")&&strstr(error,"35"),marker);
+            if(which==13||which==15)CHECK_NAMED(strstr(error,"u 軸")&&strstr(error,"400")&&strstr(error,"401"),marker);
+        }
+        if(which==18){
+            geo_grid_store_destroy(before);before=stagger_store(NULL,NULL);CHECK_NAMED(before,marker);
+            CHECK_NAMED(!wood_grid_stagger_commit_valid(after,before,NULL,0,error,sizeof error),marker);
+            CHECK_NAMED(strstr(error,"同一份網格只能有一軸錯開")!=NULL,marker);
+        }
+    }
+    geo_grid_store_destroy(before);geo_grid_store_destroy(after);return 0;
+}
+static WoodGridStaggerPoint stagger_point(bool set,GeoCoord value,GeoParameterRef source)
+{
+    WoodGridStaggerPoint p={0};p.set=set;p.resolved=true;p.source=source;p.value=value;return p;
+}
+static int stagger_ordered(unsigned which)
+{
+    static const char *markers[]={"","stagger-ordered-card-then-unbind",
+        "stagger-ordered-unbind-must-preserve-present-value","stagger-ordered-reverse-is-not-card-edit",
+        "stagger-ordered-unrelated-card-is-no-exemption","stagger-ordered-final-source-is-bound",
+        "stagger-ordered-repoint-after-card-edit","stagger-ordered-unresolved-is-not-evidence",
+        "stagger-ordered-sequence-is-increasing","stagger-ordered-remove-readd-is-not-an-exemption",
+        "stagger-ordered-final-single-axis","stagger-ordered-chain-is-contiguous"};
+    if(which<1||which>11)return 2;const char *marker=markers[which];
+    GeoParameterRef ref={true,901,1},direct={0},other={true,901,3};
+    GeoGridSystem old=staggered(7,true,400,true,300),now=old;
+    old.axis[0].parameters[5]=ref;now.axis[0].stagger=500;
+    WoodGridStaggerPoint first=stagger_point(true,400,ref),changed=stagger_point(true,500,ref);
+    WoodGridStaggerPoint final=stagger_point(true,500,direct);
+    WoodGridStaggerFact facts[3]={{.system_id=7,.order=1,.axis=0,.before=first,.after=changed},
+        {.system_id=7,.order=2,.axis=0,.before=changed,.after=final}};
+    size_t count=2;bool want=which==1||which==6||which==10;
+    switch(which){
+    case 1:break;
+    case 2:now.axis[0].stagger=450;facts[1].after.value=450;break;
+    case 3:count=1;facts[0].after=final;break;
+    case 4:count=1;facts[0].after=final;facts[0].order=2;break;
+    case 5:count=1;break;
+    case 6:now.axis[0].parameters[5]=other;facts[1].after.source=other;break;
+    case 7:facts[1].after.resolved=false;break;
+    case 8:facts[0].order=2;facts[1].order=1;break;
+    case 9:
+        old.axis[0].parameters[5]=direct;facts[0].before.source=direct;
+        facts[0].after=stagger_point(false,0,direct);facts[1].before=facts[0].after;break;
+    case 10:now.axis[1].stagger_set=false;facts[1].after.value=450;break;
+    case 11:facts[0].before.value=450;break;
+    }
+    GeoGridStore *before=stagger_store(&old,NULL),*after=stagger_store(&now,NULL);
+    CHECK_NAMED(before&&after,marker);char error[256]="";
+    CHECK_NAMED(wood_grid_stagger_commit_valid(after,before,facts,count,error,sizeof error)==want,marker);
+    if(!want)CHECK_NAMED(strstr(error,"I24")&&strstr(error,"先在同一筆編輯裡移除一軸")&&strstr(error,"u 軸"),marker);
+    geo_grid_store_destroy(before);geo_grid_store_destroy(after);return 0;
+}
+static int stagger_commit(void)
+{
+    for(unsigned i=1;i<=18;++i){int result=stagger_decision(i);if(result)return result;}
+    for(unsigned i=1;i<=11;++i){int result=stagger_ordered(i);if(result)return result;}
+    return 0;
+}
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;
     if(!strcmp(argv[1],"roles"))return roles();if(!strcmp(argv[1],"direct"))return direct();
     if(!strcmp(argv[1],"admission"))return admission();if(!strcmp(argv[1],"child"))return child();
-    if(!strcmp(argv[1],"deletion"))return deletion();if(!strcmp(argv[1],"candidate"))return candidate();return 2;
+    if(!strcmp(argv[1],"deletion"))return deletion();if(!strcmp(argv[1],"candidate"))return candidate();
+    if(!strcmp(argv[1],"stagger-commit"))return stagger_commit();
+    for(unsigned i=1;i<=18;++i){char name[32];snprintf(name,sizeof name,"stagger-w%02u",i);if(!strcmp(argv[1],name))return stagger_decision(i);}
+    for(unsigned i=1;i<=11;++i){char name[32];snprintf(name,sizeof name,"stagger-o%02u",i);if(!strcmp(argv[1],name))return stagger_ordered(i);}
+    return 2;
 }

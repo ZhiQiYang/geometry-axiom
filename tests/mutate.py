@@ -35,7 +35,8 @@
     內容;全部 CRLF->LF)。它取代舊的 runner_sha256:裁判 = 判定邏輯 + 夾具,
     兩者任一改了,killed / survived 就不再是「這個裁判」下的判決。
     (equivalent 不是靠跑裁判得來的,不受 oracle 約束;retired 不帶來源類雜湊。)
-    bridge 裁判另外涵蓋指定方法、共用還原方法、tests/*.py 與根目錄場景；任何共用
+    bridge 裁判另外涵蓋指定方法、共用還原方法、tests/*.py、tests/*.c、
+    tests/fixtures/**/*.scene 與根目錄場景；任何共用
     harness 變更都使其過期，不能借核心場景裁判替預覽序列化背書。
   - 載入與彙總時,source_sha256、closure_sha256、mutant_sha256 任一與現況不符,
     killed / survived 的 oracle_sha256 與現行裁判不符,或根本沒帶雜湊 -> stale;
@@ -162,13 +163,22 @@ MUTANTS = [
          file='geometry-core/kernel/geometry.c',
          old='return geo_coord_min(a->max_u,b->max_u)>geo_coord_max(a->min_u,b->min_u)&&\n        geo_coord_min(a->max_v,b->max_v)>geo_coord_max(a->min_v,b->min_v);',
          new='return geo_coord_min(a->max_u,b->max_u)>=geo_coord_max(a->min_u,b->min_u)&&\n        geo_coord_min(a->max_v,b->max_v)>=geo_coord_max(a->min_v,b->min_v);'),
-    # main 的 M13 打在 world_footprint_collides,它唯一的呼叫點是 resolve_auto_span 的逐 cell 碰撞。
-    # GEO-261 51e9045b 把逐 cell 檢查移到 K geo_strip_intervals,同承載面過濾改在 resolve_auto_span
-    # 收 obstacles 的這一行;world_footprint_collides(→ W wood_contact_footprint_collides)從此沒有呼叫點,
-    # 打在那裡的突變不會被執行。
+    # M13 打在 resolve_auto_span 收障礙物的同承載面過濾(放置當下)。GEO-261 51e9045b 把逐 cell 檢查移到
+    # K geo_strip_intervals 之後,原本的 world_footprint_collides(→ W wood_contact_footprint_collides)
+    # 沒有呼叫點,已於 #316 移除。I11 另外兩個「只比同承載面」的過濾是 M97(references.inc 的 reference_check_all)
+    # 與 M98(W world_validation.c 的最終世界重驗):單一承載面的場景全都無感,由
+    # _i11_two_surfaces_same_uv_accept.scene 殺。
     dict(id="M13", desc="I11：auto 跨距的碰撞障礙只收同承載面已放角材 -> 改收不同承載面(!= 改 ==)",
          old='        if(!t->placed||a->placement_id!=placement->id)continue;\n        if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;',
          new='        if(!t->placed||a->placement_id==placement->id)continue;\n        if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;'),
+    dict(id="M97", desc="I11：reference_check_all 的兩兩檢查拿掉「只比同承載面」過濾(references.inc)；兩片承載面各有一支角材的 _i11_two_surfaces_same_uv_accept 必轉紅",
+         file="geometry-core/references.inc",
+         old='if(other_anchor.placement_id!=a->placement_id)continue;',
+         new='if(0&&other_anchor.placement_id!=a->placement_id)continue;'),
+    dict(id="M98", desc="I11：W 最終世界重驗的兩兩檢查拿掉「只比同承載面」過濾(world_validation.c)；同上場景必轉紅",
+         file="geometry-templates/woodworking/native/world_validation.c",
+         old='if(!b.member->placed||a.placement_id!=b.placement_id)continue;',
+         new='if(!b.member->placed)continue;'),
     # ---- collect_stop_faces:擋面枚舉 ----
     dict(id="M14", desc="D11：只收垂直邊 -> 只收平行邊(along_v 分支)",
          file='geometry-templates/woodworking/native/contact_world.c',
@@ -364,6 +374,40 @@ MUTANTS = [
          file="geometry-templates/woodworking/native/contacts.c",
          old="        (span_lo < edge_lo || span_hi > edge_hi)) {",
          new="        (span_lo < edge_lo)) {"),
+    # I22/#299：V_EXTENSION 訊息逐欄位的牙齒。contacts.c 的 snprintf 與兩段 clause 各拿掉一個欄位，
+    # contact_world.c 的定位邊編號回報一個；判定在 run_tests.py 的 p8、p8b(error 清單 + error_not)。
+    dict(id="M89", desc="I22/#299：V_EXTENSION 訊息的料件欄位拿掉(角材編號固定印成 0)；p8、p8b、_role_priority_mutant 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='(unsigned)self->id, edge_index,',
+         new='0u, edge_index,'),
+    dict(id="M90", desc="I22/#299：V_EXTENSION 訊息拿掉定位邊編號 e<i>；p8、p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='"——定位邊 e%d [%lld,%lld] mm%s%s",\n                     (unsigned)self->id, edge_index,',
+         new='"——定位邊 [%lld,%lld] mm%s%s",\n                     (unsigned)self->id,'),
+    dict(id="M91", desc="I22/#299：V_EXTENSION 訊息拿掉定位邊區間 [edge_lo,edge_hi] mm；p8、p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='"——定位邊 e%d [%lld,%lld] mm%s%s",\n                     (unsigned)self->id, edge_index,\n                     (long long)edge_lo, (long long)edge_hi, low_note, high_note);',
+         new='"——定位邊 e%d%s%s",\n                     (unsigned)self->id, edge_index,\n                     low_note, high_note);'),
+    dict(id="M92", desc="I22/#299：V_EXTENSION 訊息拿掉「低端超出」區間；凹角在定位邊低端的 _s1_p8 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_lo > span_lo) {',
+         new='if (0) {'),
+    dict(id="M93", desc="I22/#299：V_EXTENSION 訊息拿掉「高端超出」區間；凹角在定位邊高端的 _s1_p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_hi < span_hi) {',
+         new='if (0) {'),
+    dict(id="M94", desc="I22/#299：V_EXTENSION 訊息的「低端超出」不論有沒有超出都印(多印一段假區間)；_s1_p8b 的 error_not 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_lo > span_lo) {',
+         new='if (1) {'),
+    dict(id="M95", desc="I22/#299：V_EXTENSION 訊息的「高端超出」不論有沒有超出都印(多印一段假區間)；_s1_p8 的 error_not 必轉紅",
+         file="geometry-templates/woodworking/native/contacts.c",
+         old='if (edge_hi < span_hi) {',
+         new='if (1) {'),
+    dict(id="M96", desc="I22/#299：W 的 wood_contact_boundary_edge 不回報定位邊編號(訊息印成 e-1)；p8、p8b 必轉紅",
+         file="geometry-templates/woodworking/native/contact_world.c",
+         old='if(out_edge)*out_edge=edge;',
+         new='(void)edge;'),
 ]
 
 
@@ -487,6 +531,107 @@ MUTANTS += [
          old="                char error[512];",
          new='                char error[512];for(int a=0;a<2;++a)if(parameter_field_generation(w,s->card_reference.parameter_id,s->card_reference.fields[a]))return grid_card_fail("R60 capture grid-system %u parameter %u: deleted earlier in this candidate",id,s->card_reference.parameter_id);',
          tests=[S2_TEST]),
+]
+
+
+# #314: M89-M98 remain reserved for the #299/#316 combined patch. These
+# submission guards run real bridge/native judges; M110 is preview-masked and
+# is deliberately equivalent alone (the paired MP1+MP3 witness is separate).
+STAGGER_TEST = "tests.test_geo314_stagger_commit.StaggerCommit."
+STAGGER_TABLE = "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+MUTANTS += [
+    dict(id="M99", desc="I24/#314 MS1：移除整份提交比較，互動新雙軸應由具名拒絕斷言抓住", binary="bridge",
+         file="current_geometry.c", old="if (!grid_stagger_submission_valid(candidate,grid_error,sizeof grid_error)) {",
+         new="if (false && !grid_stagger_submission_valid(candidate,grid_error,sizeof grid_error)) {",
+         tests=[STAGGER_TEST + "test_C1_new_direct_and_repeat_panel_dual_axes_reject_M1"]),
+    dict(id="M100", desc="I24/#314 MS2：移除隔離重放豁免，舊雙軸場景必須仍能讀回", binary="bridge",
+         file="geometry-core/subgrid_world.inc", old="if(g_parsing_scene_file||!g_subgrid_before)return true;",
+         new="if(!g_subgrid_before)return true;",
+         tests=[STAGGER_TEST + "test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically"]),
+    dict(id="M101", desc="I24/#314 MS3：移除新建／新增第二軸M1拒絕", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(!old||!(old->axis[0].stagger_set&&old->axis[1].stagger_set))", new="if(0)", tests=[STAGGER_TABLE]),
+    dict(id="M102", desc="I24/#314 MS4：移除舊雙軸改值M2拒絕", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis],now->id,(unsigned)axis,facts,count))", new="if(0)", tests=[STAGGER_TABLE]),
+    dict(id="M103", desc="I24/#314 MS5：移除同ParameterRef改卡例外", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(prior->set&&current->set&&prior->parameter_id==current->parameter_id&&prior->field_id==current->field_id)return false;",
+         new="if(0)return false;", tests=[STAGGER_TABLE]),
+    dict(id="M104", desc="I24/#314 MS6：把一軸誤判為雙軸，合法換方向必轉紅", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(!(now->axis[0].stagger_set&&now->axis[1].stagger_set))continue;",
+         new="if(!(now->axis[0].stagger_set||now->axis[1].stagger_set))continue;", tests=[STAGGER_TABLE]),
+    dict(id="M105", desc="I24/#314 MS7：只比較u而漏驗v改值", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="for(int axis=0;axis<2;++axis)if(wood_grid_stagger_value_changed",
+         new="for(int axis=0;axis<1;++axis)if(wood_grid_stagger_value_changed", tests=[STAGGER_TABLE]),
+    dict(id="M106", desc="I24/#314 MS8：來源變更不再比較有效值", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="return old->stagger!=now->stagger;", new="return 0;", tests=[STAGGER_TABLE]),
+    dict(id="M107", desc="I24/#314 MS9：移除缺store的fail-closed拒絕；正常ASSERT而非NULL crash", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(!after||!before||(!facts&&count))return wood_grid_error", new="if(0)return wood_grid_error", tests=[STAGGER_TABLE]),
+    dict(id="M108", desc="I24/#314 MP1：漏接互動archive提交前基線，預覽必須先擋新雙軸", binary="bridge",
+         file="geometry-core/transactions.inc", old="const World *previous_baseline=g_subgrid_before;g_subgrid_before=call->before;",
+         new="const World *previous_baseline=g_subgrid_before;g_subgrid_before=NULL;",
+         tests=[STAGGER_TEST + "test_C3_archive_new_and_existing_second_axes_reject_M1"]),
+    dict(id="M109", desc="I24/#314 MP2：漏接batch提交前基線，整批新增第二軸必拒絕", binary="bridge",
+         file="geometry-web/engineering_bridge.inc", old="g_subgrid_before=call->before;ok=world_revalidate(candidate);",
+         new="g_subgrid_before=NULL;ok=world_revalidate(candidate);",
+         tests=[STAGGER_TEST + "test_C4_batch_new_and_added_second_axes_reject_M1"]),
+    dict(id="M110", desc="I24/#314 MP3：漏接confirm基線，單獨被preview遮蔽", binary="bridge",
+         file="current_geometry.c", old="const World *previous=g_subgrid_before;g_subgrid_before=&candidate->before;",
+         new="const World *previous=g_subgrid_before;g_subgrid_before=NULL;",
+         equivalent="單獨移除confirm基線不能越過原preview的新雙軸拒絕；MP1+MP3配對見證另以真候選證明confirm縱深，不冒稱此單突變killed。",
+         tests=[STAGGER_TEST + "test_C3_archive_new_and_existing_second_axes_reject_M1"]),
+    dict(id="M111", desc="I24/#314 MP4：固定default程式加入雙軸定義，原靜態變更警報必轉紅", binary="bridge",
+         file="geometry-core/transactions.inc", old="static const char *const app_default_replay_lines[]={",
+         new='static const char *const app_default_replay_lines[]={\n    "grid-system 314 name-hex 47 main-along none u repeat 0 100 stagger 40 v repeat 0 100 stagger 30",',
+         tests=["tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route"]),
+    dict(id="M112", desc="I24/#314 ordered：換來源整批豁免會錯放450反例", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(!card_edit&&prior->value!=f->after.value)return false;", new="if(0)return false;", tests=[STAGGER_TABLE]),
+    dict(id="M113", desc="I24/#314 ordered：丟掉相鄰事實的來源和值連續性", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(f->order<=order||!wood_grid_stagger_same_point(&state,&f->before))return false;",
+         new="if(f->order<=order)return false;", tests=[STAGGER_TABLE]),
+    dict(id="M114", desc="I24/#314 ordered：丟掉操作順序不能從final store猜例外", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(f->order<=order||!wood_grid_stagger_same_point(&state,&f->before))return false;",
+         new="if(!wood_grid_stagger_same_point(&state,&f->before))return false;", tests=[STAGGER_TABLE]),
+    dict(id="M115", desc="I24/#314 ordered：有序事實必須綁定最終來源和值", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="return found&&wood_grid_stagger_same_point(&state,&final);", new="return found;", tests=[STAGGER_TABLE]),
+    dict(id="M116", desc="I24/#314 ordered：只留最終store丟失原操作事實，500正例應轉紅", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="if(ok&&!app_stagger_record_step(candidate,&stagger_before))ok=eng_fail(\"UNSUPPORTED/CAPACITY: ordered stagger evidence memory\");",
+         new="if(false)ok=eng_fail(\"UNSUPPORTED/CAPACITY: ordered stagger evidence memory\");",
+         tests=[STAGGER_TEST + "test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"]),
+    dict(id="M117", desc="I24/#314 ordered：confirm重驗丟掉retainedfacts，500正例應轉紅", binary="bridge",
+         file="current_geometry.c",
+         old="g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;",
+         new="g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;app_world_candidate_clear_stagger(candidate);",
+         tests=[STAGGER_TEST + "test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"]),
+    dict(id="M118", desc="I24/#314 ordered：當下來源值誤讀axis快取，先改卡再保值解除的正例應轉紅", binary="bridge",
+         file="geometry-app/native/stagger_facts.inc",
+         old="geo_parameter_evaluation_field(evaluation,point->source,&value)",
+         new="(value=(GeoQuantity){definition->stagger,1,1},true)",
+         tests=[STAGGER_TEST + "test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"]),
+    dict(id="M119", desc="I24/#314 ordered：移除facts內容封存檢查，正常tamper ASSERT必轉紅", binary="bridge",
+         file="geometry-app/native/world_candidate.inc",
+         old="return !strcmp(hash,candidate->operation.stagger_seal);", new="return true;",
+         tests=["tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_fact_bytes_order_count_revision_and_provider_tampering_are_rejected"]),
+    dict(id="M120", desc="I24/#314 ordered：失敗preview未清除候選有序證據，正常ownership ASSERT必轉紅", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="if(!ok)app_world_candidate_clear_stagger(transaction);", new="if(0)app_world_candidate_clear_stagger(transaction);",
+         tests=["tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_failed_preview_clears_evidence_and_keeps_definition_and_revision"]),
+    dict(id="M121", desc="I24/#314 ordered：final同參數引用不能遮掉非保值換來源", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(facts[i].system_id==system_id&&facts[i].axis==axis)return true;",
+         new="if(0)return true;",
+         tests=[STAGGER_TEST + "test_Q3_same_final_reference_preserves_card_then_unbind_and_rebind_order",
+                STAGGER_TEST + "test_Q3_same_final_reference_cannot_exempt_value_changing_rebind"]),
 ]
 
 
