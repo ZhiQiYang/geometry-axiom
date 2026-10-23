@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 21:30 UTC）
+## 唯一 current-state（2026-10-23 21:55 UTC）
 
 - 分支：`codex/train-337-continue-20261024`；產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判來源 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；四檔採用與上游合流 head=`4f4a24d76e816274bfae06868b4dbf31f0860299` 已推。新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 已推；C/JS產品仍同F，最新 evidence head 以本檔所在提交為準，正式全清單的最終 SHA 尚未固定。
 - 已普通 merge Claude 最後交接 `8f9301fc1b78712d930ffc68074437e44d068aab`（merge `586e6e8f`）與 main `425c092eaf16f90256d76433243baebde45163ac`。main 新增 #333 FIELD-RULES 與證據。相對F產品C/JS不變；兩個tests葉改為M151登記與free-end唯一錨點，保留所有斷言。
@@ -102,3 +102,9 @@ B2根因84項獨立核對已封 `b2-diagnostic-originals-and-peer.tar.gz`：三�
 最新B1原碼契約已獨審14/0：check@L可驗closure但不等於fullCLI@L，因此採上一段明列的嚴格同L實跑方案。現b6仍先收齊，不中斷、不重抽；沒有任何gates被靜態peer或metadata出版取代。
 
 B3公開核對完成：Git五blob直接stream核、13865個member逐bytes/hash全符；五包47,120,357B、172,515,281原bytes、5272原stdout/stderr，33個出版Git原命令皆0且remote=bea6。獨立27834checks／0封 `review-b6-response/geo323-public-raw-peer.json`，沒有另extract副本或改原測試退出碼。
+
+## 2026-10-23 21:55 UTC：已終態快取回收與後續請求
+
+精確移除四個已終態checkout的1229份普通code副本，保留Git原blob/index/HEAD、fixtures與全部收據；原exit0、actual1500checks/0。另精確移除13個原瀏覽器profile中全零BrowserMetrics-spare.pma，原exit0、actual45checks/0，profile與19份原終態receipt保留。兩批原指令/完整streams/環境/工具/scope/peer共259原件（archive另加inventory共260members）已封 `terminal-maintenance-2151/`，package777checks/0。配置回收58,408,960B與54,525,952B不等於workspace實增；第一批workspace實際少7,606,272B（新raw與並行寫入），第二批/tmp實增54,525,952B，數據照原收據。這不是產品驗收。
+
+主帳本仍固定b6原完整123執行，未出最終exit。#300新prefix-index S1ee4e830/E2a0772da/Dc89d516b已一般推送，原33methods/56controls開始排入/tmp獨立環境，不改100MiB資源預算或產品門檻；以真正outer終態判定結果。#320 Sc1113f6f/Ed2c58317/D8233916d已推，Node原9→撤回3assert紅→恢復9綠，實際browser/native/ledger/architecture仍未跑。兩新draft請求已推handoff54d76d41，服務已開GEO260 #342；沒有合併PR。
