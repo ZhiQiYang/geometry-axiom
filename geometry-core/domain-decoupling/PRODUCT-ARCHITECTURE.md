@@ -523,3 +523,16 @@ new files or changed sources.
 - `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
 
 以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
+
+## 雲端 Linux 有限重產：合入 main 的六個 oracle／probe exclusion digest
+
+固定實際來源為 `f79aa057521929597a9af4b204b709110414ac03`，上份架構產物提交為 `8f76f2b7d6f669670e5834310bfc26495b4a4aa6`。原manifest的三裁判依原值記錄1／0／5；最後的5是setUpClass因digest拒絕且Ran 0 tests，不能算已跑產品18方法。只在repo外完整驗證樹更新下列六個既有exclusion的LF digest，原來源checkout與三裁判bytes保持不變。
+
+`geometry-core/framing-template/core-probe/gen_scenes.py`、`geometry-core/framing-template/core-probe/test_gen_scenes.py`、`geometry-core/framing-template/oracle/framing_oracle.py`、`geometry-core/framing-template/oracle/make_golden.py`、`geometry-core/framing-template/oracle/render.py`、`geometry-core/framing-template/oracle/selftest.py`。所有source登記、root、layer、排除理由、router/vendor digest、W guard與其他政策都保持原值；未新增exclusion或目錄豁免。
+
+獨立物理與Git tree inventory為601 executable、333 owned、268 excluded；原scanner記796 edges、0 diagnostics。LF input closure：`f2a91b9b3962b2302600a5d21313f5655cc94ad081770d2a208c05d6cb4337e4`。
+
+- `python -B tests/test_architecture_contract.py`：原退出0，205 tests／205 passed／0 failed／0 skipped；完整原命令、cwd、stdout／stderr另存。
+- `python -B tests/test_product_architecture.py`：原退出0，18 tests／18 passed／0 failed／0 skipped；完整原命令、cwd、stdout／stderr另存。
+
+本輪只證靜態架構契約；不代表native、帳本、瀏覽器、P52、Q38、§7或P-189已重跑。舊Windows supplemental未執行；既有歷史來源與結果保持原角色。四檔為衍生產物，receipt不雜湊自身。
