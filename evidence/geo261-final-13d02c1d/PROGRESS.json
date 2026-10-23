@@ -93,6 +93,15 @@
       "archives": [
         "raw/postmerge-p52-verifier-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T09:39:42.275361+00:00",
+      "label": "p88-precise-failure-classification",
+      "result": "P88 原canvas退出1；精確predicate要求refGuideMode焦點，原active卻refGuideRatio且click命中來源比例label。分類為UI焦點/定位紅燈，產品或測試時序根因待三次固定F獨占重跑；golden未比較。",
+      "next": "專責子代理獨占canvas連跑3次，每次結束即封存；其餘分支繼續實作及靜態審，四組反證依序補齊。",
+      "archives": [
+        "raw/p88-precise-failure-classification-01.tar.gz"
+      ]
     }
   ]
 }

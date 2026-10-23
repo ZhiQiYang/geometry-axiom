@@ -31,3 +31,6 @@
 
 - 2026-10-23T06:36:07.372958+00:00 — **postmerge-p52-verifier**：原獨立verifier真0、adapter0；原1627bytes與9assert不改，九Node原exit/streams/hash/timeout逐一守門，DERIVED launch投影明列非原stdout。
   下一步：依序跑runtime撤回恢復、P73、Chromium154及oracle；保留canvas P88紅。原始資料：`raw/postmerge-p52-verifier-01.tar.gz`。
+
+- 2026-10-23T09:39:42.275361+00:00 — **p88-precise-failure-classification**：P88 原canvas退出1；精確predicate要求refGuideMode焦點，原active卻refGuideRatio且click命中來源比例label。分類為UI焦點/定位紅燈，產品或測試時序根因待三次固定F獨占重跑；golden未比較。
+  下一步：專責子代理獨占canvas連跑3次，每次結束即封存；其餘分支繼續實作及靜態審，四組反證依序補齊。。原始資料：`raw/p88-precise-failure-classification-01.tar.gz`。
