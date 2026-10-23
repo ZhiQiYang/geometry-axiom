@@ -7,13 +7,13 @@
 | 目前身分 | 不可變 SHA／狀態 |
 |---|---|
 | 來源分支 | `codex/geo299-316-combined-20261022` |
-| 目前 evidence HEAD | `a004e29a34b5fb880690e544057e90386e47e75a`；只比前一 E 追加準備證據 |
+| 目前 evidence HEAD | `c940a6543029a94d443709ebdcbd63828fdfef1d`；只追加準備證據與 metadata 同儕審查 |
 | 尚未合流的目前產品 | 歷史 F `5bfadf187e615ba0fb8466753b63ce3044ef7d1c` |
 | 歷史正式證據 E | `139ab64ca5f88e89bb4e95921675b998457026aa` |
 | 歷史原 base | `4b665fae21ab63aaffb7d84f6a32d5a469ba1675` |
 | 這次已讀權威 handoff | `ea2748248d47563f8559638ccb70ec0ed21910d9` |
 | 新基底／新 final SHA | 待 #314 普通 merge 前棒、交接後固定；目前未產生 |
-| 新對抗審查 | #323 owner 進行中，未稱審過 |
+| 新對抗審查 | #323 owner 已審準備 metadata，未見確立阻擋；新產品／新 closure 仍未驗 |
 
 本次只使用 `handoff/drafts/combined/rebased-546e2eb2/patch.diff` 與 `_gen` 追溯原設計，不重疊套用兩份 individual patch，也不以舊生成物覆蓋既有修復。fresh handoff 中沒有 `handoff/pr-reviews/299.md` 或 `316.md`，因此沒有聲稱讀到這兩份不存在的留言檔；最終前會再次 fetch。
 
@@ -39,6 +39,6 @@
 
 本次作為 #314 對抗審查者，已提出「同一 final ParameterRef、不同 ordered facts」正反例，owner 接手；目前未見新 SHA 動態 0／1／0，因此仍列待驗，不以靜態推演宣稱已修。這次 shared source 尚未改動，也尚未跑 compiler／Chrome／benchmark，以免與 #288 的 R3 正式工作互相干擾。
 
-準備收據、逐 member hash 與進度見 [PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/a004e29a34b5fb880690e544057e90386e47e75a/evidence/geo299-316-stack-20261023/PROGRESS.md)。下一步是普通 merge #314 已推送分支、保留 #323／#314／combined 共用檔聯集，再固定新產品 SHA、執行受影響正式項與精確反證，最後由主代理統一帳本與合流。
+準備收據、逐 member hash 與進度見 [PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/c940a6543029a94d443709ebdcbd63828fdfef1d/evidence/geo299-316-stack-20261023/PROGRESS.md)，[對抗審查報告](https://github.com/ZhiQiYang/geometry-axiom/blob/c940a6543029a94d443709ebdcbd63828fdfef1d/evidence/geo299-316-stack-20261023/peer-review/REVIEW_COMBINED_PREP_a004e29a.md) 僅接受 metadata 標示，不代表新產品審過。下一步是普通 merge #314 已推送分支、保留 #323／#314／combined 共用檔聯集，再固定新產品 SHA、執行受影響正式項與精確反證，最後由主代理統一帳本與合流。
 
 最不確定處是新基底上三份補丁的共同 closure 尚未動態驗證；此外目前沒有 Windows／MSVC 測試，GDI 只保留原 Linux 允許 skip。尚無新的全綠聲明。GitHub API 存取受限，此處只提供已推送的來源與正文分支檔，不聲稱已更新 GitHub PR 正文或已建立新 PR；不 force push、不合併 PR。
