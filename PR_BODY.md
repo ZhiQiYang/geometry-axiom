@@ -2,18 +2,15 @@
 
 非 boundary 角材超出定位邊時，保留 `V_EXTENSION` 的原裁決，補足料件、定位邊與實際超出區間；退休沒有產品 caller 的 H wrappers 及死 W footprint API，保留活 I11 放置與 H／W 重驗，並以相同局部 UV 的雙承載面正例保護「只比同承載面」。本棒不改公理層或決策佇列。
 
-已依使用者順序，將含 #323 的 #314 來源一般 merge 到 combined 分支；source 已推並交給 #318。**新堆疊還沒有動態驗收結果**。下面只有一份 current-state 矩陣；原獨立補丁的綠燈留原 SHA，不能轉作新產品綠燈。
+已依使用者順序合入 #323／#314，這次再一般 merge #314 的單leaf anchor維護；新source已正常push，並交回凍結後接棒的 #318。**新堆疊還沒有動態驗收結果**。下面只有一份 current-state 矩陣；原獨立補丁的綠燈留原 SHA，不能轉作新產品綠燈。
 
-| 目前身分 | 不可變 SHA／狀態 |
-|---|---|
-| 來源分支 | `codex/geo299-316-combined-20261022` |
-| 產品／tests source S | `15a735951a36b6fe52e0291152f335139e6921ad` |
-| evidence HEAD E | `1722b55445b53ac37b6eac1be7b379e79c73eaa8`；S後只追加本棒 evidence |
-| 一般 merge parents | combined `c940a6543029a94d443709ebdcbd63828fdfef1d` ＋ #314 `8033aa756c62f654333c24d1276d4b61beb31a45` |
-| 前棒 #323 | `5c29eba30a40f20ea5c7eb8dc139e5788235d3b6`，已包含在 #314 parent |
-| 最新 handoff refresh | `f6a174df42d5ff1ce670b6f8277da60c667b8965`；combined patch／八份 `_gen` 與先前 ea274 原件相同 |
-| 歷史獨立產品／證據 | F `5bfadf187e615ba0fb8466753b63ce3044ef7d1c`／E `139ab64ca5f88e89bb4e95921675b998457026aa` |
-| 對抗審查 | #323 reviewer已完成這次S聯集靜審，未見確立遺失／假綠；產品動態未審過 |
+- 來源分支：`codex/geo299-316-combined-20261022`。
+- 目前產品／tests source S：`6cad1a3cb76d7bd910125a1d70ecfffdc9183813`；本次一般merge parents為舊E `1722b55445b53ac37b6eac1be7b379e79c73eaa8` ＋ #314精確source `3b0b634feb54266700cc61f26c34d7aeac4c0314`。
+- 目前 evidence HEAD E：`ebbd6d19ddf64ac64fd3c902eec6e40f4484582d`；S後只追加 `evidence/geo299-316-anchor-6cad1a3c/`。
+- 原來源聯集 S15：`15a735951a36b6fe52e0291152f335139e6921ad`，含 #314 `8033aa756c62f654333c24d1276d4b61beb31a45` 與前棒 #323 `5c29eba30a40f20ea5c7eb8dc139e5788235d3b6`；本次不重寫其產品內容。
+- 最新 handoff refresh：`7bd61a43210bbad0abf95709e1a0205cd8760cac`；combined draft整個tree OID與先前f6a相同。
+- 歷史獨立產品／證據：F `5bfadf187e615ba0fb8466753b63ce3044ef7d1c`／E `139ab64ca5f88e89bb4e95921675b998457026aa`。
+- #323 reviewer已完成新S的不可變單anchor靜審；沒有動態測試，不代表新產品驗收通過。
 
 fresh handoff 仍沒有 `handoff/pr-reviews/299.md` 或 `316.md`，不聲稱讀到不存在的留言。補丁來源保留指定 combined rebased patch 與 `_gen`；未分別疊兩份 individual patch，也未以舊產物覆蓋前棒修復。
 
@@ -30,9 +27,15 @@ fresh handoff 仍沒有 `handoff/pr-reviews/299.md` 或 `316.md`，不聲稱讀�
 | #314 M121精確反證 | **未跑** | 沒有捏造新record；靜態檢視不是0／1／0 | 待baseline／withdraw／restore正常斷言原輸出 |
 | mutation freshness／完整帳本 | **未跑** | 舊帳本record union110筆，各自execution字段保原；M121 unrun | 主代理最後一次全份重產；不宣稱S上fresh |
 | 架構三條原裁判／四檔刷新 | **未跑** | 舊scan／report／receipt真來源保留3a165ef5；不改標S | 新manifest／closure待主代理重產 |
-| 原canonical sync機械生成 | 未commit的merge tree → S；原exit0 | 非三reader裁判；沒有手改嵌入JSON或另造閱讀器 | 僅生成完成 |
+| 原canonical sync機械生成 | 歷史未commit的merge tree → S15；原exit0，本S未重跑 | 非三reader裁判；沒有手改嵌入JSON或另造閱讀器 | 僅生成完成 |
 | reader三條原裁判 | **未跑** | F5bf原結果保持歷史 | 待測試槽 |
-| 有界靜態檢視 | 原exit0 | 111個ID唯一／14個選定anchors各1／8個suite靜態方法數相符 | 僅靜態，不是動態驗收 |
+| 有界靜態檢視 | S15原exit0；本S的Git／bytes／AST檢查0 | 原111個ID／14anchors／8suite數不改；本次唯一anchor機械替換，23方法與其他斷言保原 | 僅靜態，不是動態驗收 |
+
+本次續棒只把 `test_stagger_removed_legacy_value_guard_fails_changed_axis_assertion` 的過期2參數搜尋字串更新成當前6參數真callsite，`if(0)`撤回replacement與其餘全部斷言保留。新檔與#318原`1cd2fc216299041a557654a874509a33884af819`逐bytes相同；source只增加這一字串差分及祖先原有12份#314-refresh evidence，沒有帶#318產品或#314其後純evidence提交。新source的commit／push／ls-remote與精確test whitespace check原0；full cached check原2只來自合入原LATEST_REVIEW.md末尾空白行，保原bytes。36條原Git命令及streams在新raw包；兩段頂層heredoc未另錄caller streams的限制明列inventory。
+
+新S的[收據與進度](https://github.com/ZhiQiYang/geometry-axiom/blob/ebbd6d19ddf64ac64fd3c902eec6e40f4484582d/evidence/geo299-316-anchor-6cad1a3c/PROGRESS.md)及[獨立靜審](https://github.com/ZhiQiYang/geometry-axiom/blob/ebbd6d19ddf64ac64fd3c902eec6e40f4484582d/evidence/geo299-316-anchor-6cad1a3c/peer-review/COMBINED_IMMUTABLE_SINGLE_ANCHOR_6cad1a3c_REVIEW.json)只支持機械維護與原斷言保留，沒有新0／1／0或fresh帳本／架構結果。共享source棒已交回#318，本代理只再寫own evidence與prbody。
+
+以下是S15原聯集歷史，不能當成新S已執行：
 
 一般 merge 原退出1，六個衝突都保原輸出並解完：allowlist、architecture三個衍生檔、舊帳本、migration owner map。產品C、manifest、registry、expected與canonical自動合併；原sync再機械產生0。M89–M98不動，M99–M120全保、M121已由主代理保留；owner map保精確聯集與23／61斷言，未放寬測試。新suite登錄與靜態方法數為contact15、host-facts22、load13、stagger47、contacts10、contact-world9、world-validation14、wood-grid23。
 
@@ -44,8 +47,8 @@ wood-contact-world從前棒10變9，是早先combined已退休dead `wood_contact
 
 本次 #314 對抗靜審接受 f614 guard的有限範圍：相同final ParameterRef不能略過同軸ordered facts；兩具名正反例隔離同最終ref／value但不同當下歸因。final值相同仍照I24保留，不新增中途限制。這不代表M121已動態證成；巢狀參數包、realloc/OOM與其他歷史未驗邊界不外推。程序授權引用本次使用者實作指示與鎖定題3B／4B，不冒稱SSOT文字已另行核可或已改。
 
-完整本輪命令、退出碼、環境、SHA與原stdout／stderr保在 [PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/1722b55445b53ac37b6eac1be7b379e79c73eaa8/evidence/geo299-316-stack-20261023/PROGRESS.md) 與 [SOURCE_MERGE_INVENTORY.json](https://github.com/ZhiQiYang/geometry-axiom/blob/1722b55445b53ac37b6eac1be7b379e79c73eaa8/evidence/geo299-316-stack-20261023/SOURCE_MERGE_INVENTORY.json)。本次封包120 members逐檔reopen核bytes／hash；這是封存驗證，不是產品gate。新增 [同儕靜審報告](https://github.com/ZhiQiYang/geometry-axiom/blob/1722b55445b53ac37b6eac1be7b379e79c73eaa8/evidence/geo299-316-stack-20261023/peer-review/COMBINED_SOURCE_UNION_15a73595_REVIEW.md) 僅接受source聯集與待驗標示，不冒新產品全綠。
+S15原聯集命令、退出碼、環境、SHA與原stdout／stderr保在 [PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/1722b55445b53ac37b6eac1be7b379e79c73eaa8/evidence/geo299-316-stack-20261023/PROGRESS.md) 與 [SOURCE_MERGE_INVENTORY.json](https://github.com/ZhiQiYang/geometry-axiom/blob/1722b55445b53ac37b6eac1be7b379e79c73eaa8/evidence/geo299-316-stack-20261023/SOURCE_MERGE_INVENTORY.json)。本次封包120 members逐檔reopen核bytes／hash；這是封存驗證，不是產品gate。新增 [同儕靜審報告](https://github.com/ZhiQiYang/geometry-axiom/blob/1722b55445b53ac37b6eac1be7b379e79c73eaa8/evidence/geo299-316-stack-20261023/peer-review/COMBINED_SOURCE_UNION_15a73595_REVIEW.md) 僅接受source聯集與待驗標示，不冒新產品全綠。
 
 原F5bf全綠收據只見 [歷史摘要](https://github.com/ZhiQiYang/geometry-axiom/blob/139ab64ca5f88e89bb4e95921675b998457026aa/evidence/geo299-316-final-5bfadf18/FORMAL_SUMMARY.md)。原整份帳本曾ENOSPC後同S補bridge subset，不宣稱單次full命令退出0；未捕獲舊core inner streams與reconstructed-not-captured C限制維持。Windows／MSVC未在雲端驗證，GDI只保原允許skip。
 
-最不確定處是含#323／#314的新閉包尚未動態驗證。現在#288 P88專責獨占heavy lock，本代理沒有啟動compiler、scan、Chrome、benchmark或測試；source已交#318，接續共用棒由其唯一owner處理。GitHub API存取受限，只提供已推來源與prbody檔，不聲稱live PR正文已套用。未force push、未合併PR。
+最不確定處是含#323／#314的新閉包與本次負控anchor尚未動態驗證。現在#288新F的三輪canvas獨占heavy lock，本代理僅做Git與靜審，沒有啟動compiler、scan、Chrome、benchmark或測試；source已交#318，接續共用棒由其唯一owner處理。來源與正文檔正常推送，不聲稱live PR正文已套用。未force push、未合併PR。
