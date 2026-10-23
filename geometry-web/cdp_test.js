@@ -6365,8 +6365,8 @@ async function main() {
     await eval_(`__g197Mode='';__g197Commands=[]`);
     await ctl('#connectionRetry');
     await until(`connection.phase === 'ready'`);
-    const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden})`);
-    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
+    const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden,error:connection.error})`);
+    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden && recovered.error === '', recovered);
     check('P53-4 重試前後世界逐字相同', typeof beforeConnection === 'string' && await eval_(`api('dump').then(r=>r.text)`) === beforeConnection);
     const cached = await eval_(`JSON.stringify([oc.faces,oc.surfs,oc.bmap])`);
     await eval_(`__g197Mode='partial';renderObjects()`);
@@ -6613,13 +6613,13 @@ async function main() {
       const oldFetch=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
       window.fetch=async(input,init)=>{if(input==='/upload/confirm')throw new TypeError('test upload disconnected');return oldFetch(input,init);};
       let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
-      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===before&&ReferenceWorkspace.active(1).id===ref;
+      await recoverConnection();return blocked&&connection.phase==='ready'&&connection.error===''&&(await api('dump')).text===before&&ReferenceWorkspace.active(1).id===ref;
     })()`));
     check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',await eval_(`(async()=>{
       const oldFetch=window.fetch.bind(window);
       window.fetch=async(input,init)=>{if(input==='/upload/confirm'){await oldFetch(input,init);throw new TypeError('test response lost');}return oldFetch(input,init);};
       let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
-      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&typeof curScene.path==='string'&&curScene.path.endsWith('.scene');
+      await recoverConnection();return blocked&&connection.phase==='ready'&&connection.error===''&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&typeof curScene.path==='string'&&curScene.path.endsWith('.scene');
     })()`));
     await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);
     await field('refTarget','new');
