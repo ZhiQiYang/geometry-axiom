@@ -140,6 +140,15 @@
       "archives": [
         "raw/p88-final-p52-runtime-complete-raw-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T14:03:44.248911+00:00",
+      "label": "p88-final-p73-reviewed",
+      "result": "新F P73 controlled原fixed/withdrawn/restored退出0/1/0，driver/outer/top皆0；callback前predicate都true，撤回僅app唯一guard回到舊.hidden，恰一次真產品callback後原具名P73 assertion紅、exception0，放回綠。731完整runtime輸入同F；獨立原件與公開封包審查通過；範圍僅受控callback反證，不冒完整P73 workflow。",
+      "next": "完成同F oracle8phase與公開封包審查，更新唯一current-state正文；#323在自己分支繼續。",
+      "archives": [
+        "raw/p88-final-p73-reviewed-01.tar.gz"
+      ]
     }
   ]
 }

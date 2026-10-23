@@ -46,3 +46,6 @@
 
 - 2026-10-23T13:49:58.587513+00:00 — **p88-final-p52-runtime-complete-raw**：新F正式baseline／撤回runtime修正／放回修正原gate為0/1/0，ratio依序0.889796209710257／1.0337406540912426／0.8462365083581334；每phase保原main/fix/fix/main四區塊、每側16筆、原≤1門檻，無重抽樣。runtime driver／outer／launcher／parentcapture皆0，原source/runtime before-after與restore核同；獨立原件審查1267項無finding。原完整stage1633檔、81,821,566 bytes；實際封包與排除逐項列inventory，正式baseline完整streams在另formal包。封存原錯路徑與metadata checker v1錯誤照留、更正分開記錄。
   下一步：完成新F P73／Chromium154及oracle8phase，逐項peer與更新唯一正文矩陣；所有歷史未受影響gate保留實際SHA。。原始資料：`raw/p88-final-p52-runtime-complete-raw-01.tar.gz`。
+
+- 2026-10-23T14:03:44.248911+00:00 — **p88-final-p73-reviewed**：新F P73 controlled原fixed/withdrawn/restored退出0/1/0，driver/outer/top皆0；callback前predicate都true，撤回僅app唯一guard回到舊.hidden，恰一次真產品callback後原具名P73 assertion紅、exception0，放回綠。731完整runtime輸入同F；獨立原件與公開封包審查通過；範圍僅受控callback反證，不冒完整P73 workflow。
+  下一步：完成同F oracle8phase與公開封包審查，更新唯一current-state正文；#323在自己分支繼續。。原始資料：`raw/p88-final-p73-reviewed-01.tar.gz`。
