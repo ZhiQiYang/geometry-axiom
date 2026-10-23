@@ -52,8 +52,9 @@ static bool contact_earlier(const WoodContactWorld *world,const ContactOrderInde
     for(size_t i=0;i<world->member_count;++i)if(world->members[i].member->id==id&&world->members[i].order<order)return true;
     return false;
 }
-/* Query only already admitted earlier-order faces. Metadata never reorders
- * the public output; a prefix value is one real face, never an interval union. */
+/* Coverage-query metadata never reorders the placement-ordered public output.
+ * Query only already admitted earlier-order faces; a prefix value is one real
+ * face, never an interval union. */
 static size_t contact_min_size(size_t a,size_t b){return a<b?a:b;}
 static bool contact_prefix_lo(GeoCoord a,const WoodStopFace *face)
 {return a<=face->lo&&a<face->hi;}
@@ -65,6 +66,41 @@ typedef struct {
     size_t sorted[WOOD_CONTACT_FACE_CAPACITY],scratch[WOOD_CONTACT_FACE_CAPACITY];
     size_t rank[WOOD_CONTACT_FACE_CAPACITY],maximum[WOOD_CONTACT_FACE_CAPACITY];
 } ContactFaceIndex;
+/* Reuse these buffers before the plane index rebuilds all of them. Only the
+ * member suffix moves; stable ties retain both the member and side order. */
+static bool contact_member_index_before(const WoodContactWorld *world,const ContactOrderIndex *orders,
+    const WoodStopFace *out,size_t a,size_t b)
+{
+    uint64_t left=contact_order(world,orders,out[a].timber_id),right=contact_order(world,orders,out[b].timber_id);
+    return left<=right;
+}
+static void contact_member_index_sort(const WoodContactWorld *world,const ContactOrderIndex *orders,
+    WoodStopFace *out,size_t count,size_t first,ContactFaceIndex *index)
+{
+    size_t members=count-first;
+    for(size_t i=first;i<count;++i)index->sorted[i]=i;
+    for(size_t width=1;width<members;){
+        for(size_t start=first;start<count;){
+            size_t middle=start+contact_min_size(width,count-start);
+            size_t end=middle+contact_min_size(width,count-middle),a=start,b=middle,at=start;
+            while(a<middle&&b<end)index->scratch[at++]=contact_member_index_before(world,orders,out,index->sorted[a],index->sorted[b])?index->sorted[a++]:index->sorted[b++];
+            while(a<middle)index->scratch[at++]=index->sorted[a++];
+            while(b<end)index->scratch[at++]=index->sorted[b++];
+            start=end;
+        }
+        memcpy(index->sorted+first,index->scratch+first,members*sizeof *index->sorted);
+        if(width>=members-width)break;width*=2;
+    }
+    for(size_t start=first;start<count;++start){
+        if(index->sorted[start]==start)continue;
+        WoodStopFace value=out[start];size_t at=start;
+        while(index->sorted[at]!=start){
+            size_t from=index->sorted[at];
+            out[at]=out[from];index->sorted[at]=at;at=from;
+        }
+        out[at]=value;index->sorted[at]=at;
+    }
+}
 static bool contact_face_index_before(const WoodStopFace *out,size_t a,size_t b)
 {
     int plane=contact_face_plane_compare(out[a].fixed,out[b].fixed);
@@ -127,7 +163,8 @@ static bool contact_face_index_covered(const ContactFaceIndex *index,const WoodS
 static void contact_indexed_dedup(const WoodContactWorld *world,const ContactOrderIndex *orders,
     WoodStopFace *out,size_t count,size_t first,bool *active,size_t *remaining)
 {
-    ContactFaceIndex index;contact_face_index_build(&index,out,count);
+    ContactFaceIndex index;contact_member_index_sort(world,orders,out,count,first,&index);
+    contact_face_index_build(&index,out,count);
     for(size_t i=0;i<first;++i)contact_face_index_insert(&index,out,count,i);
     size_t pending=first;
     for(size_t i=first;i<count;++i){
@@ -172,6 +209,7 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
     /* D11 placement order is independent of declaration order. Stable ties
      * retain the two side identities in their original order. */
     ContactOrderIndex orders;contact_order_index(world,&orders);
+    if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed&&orders.unique)){
     for(size_t i=1;i<count;++i){
         if(out[i].kind!=WOOD_STOP_MEMBER_SIDE)continue;
         uint64_t order=contact_order(world,&orders,out[i].timber_id);size_t j=i;WoodStopFace value=out[i];
@@ -180,6 +218,7 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
             out[j]=out[j-1];--j;
         }
         out[j]=value;
+    }
     }
     /* Keep the original live-set deletion order, including duplicate IDs
      * whose minimum/last orders can make two faces shadow one another.
