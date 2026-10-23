@@ -414,7 +414,9 @@ def execution_problems(mt, m, rec, verdict, src):
         if len({t.get("stdout_sha256") for t in trials}) != len(trials):
             raise ValueError("bridge mutant runs repeat one recorded output")
         actual, _, killers, crashed_on = judge_trials(mt, trials, m["tests"])
-        if actual != verdict or verdict not in ("killed", "crashed", "survived"):
+        equivalent_survived = (verdict == "equivalent" and actual == "survived"
+                              and mt.definition_kind(m, src)[0] == "equivalent")
+        if (actual != verdict and not equivalent_survived) or verdict not in ("killed", "crashed", "survived", "equivalent"):
             raise ValueError("bridge verdict contradicts actual unittest results")
         if verdict == "killed" and rec.get("killed_by") != killers[:mt.KILLED_BY_MAX]:
             raise ValueError("bridge killed_by contradicts raw assertion results")
@@ -477,7 +479,7 @@ def run_pass(mt, mutants, root, results_path, today=None):
     for m in mutants:
         judge = oracle_hash(m, root); folder = cache / m["id"]; folder.mkdir(parents=True, exist_ok=True)
         kind, why = mt.definition_kind(m, src)
-        if kind != "run":
+        if kind not in ("run", "equivalent"):
             records[m["id"]] = mt.make_record(m, src, "invalid", why or "bridge mutants must be executable", today, judge)
             mt.save_records(results_path, records); continue
         path = work / m["file"]; fixed = path.read_bytes(); old, new = m["old"].encode(), m["new"].encode()
@@ -517,10 +519,14 @@ def run_pass(mt, mutants, root, results_path, today=None):
                 raise RuntimeError("restored bridge/judge did not match baseline")
         except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
             verdict, reason = "blocked", str(exc)
+        if kind == "equivalent" and verdict == "survived":
+            verdict, reason = "equivalent", why
+        elif kind == "equivalent" and verdict != "blocked":
+            verdict, reason = "invalid", "current execution contradicts equivalence proof: " + reason
         killers = judged_killers[:mt.KILLED_BY_MAX] if verdict == "killed" else None
         crashed_on = judged_crashed_on if verdict == "crashed" else None
         rec = mt.make_record(m, src, verdict, reason, today, judge, killed_by=killers, crashed_on=crashed_on, execution=evidence)
-        if verdict in ("killed", "crashed", "survived") and execution_problems(mt, m, rec, verdict, src):
+        if verdict in ("killed", "crashed", "survived", "equivalent") and execution_problems(mt, m, rec, verdict, src):
             rec = mt.make_record(m, src, "blocked", ";".join(execution_problems(mt, m, rec, verdict, src)), today, judge, execution=evidence)
         records[m["id"]] = rec; mt.save_records(results_path, records)
         print(m["id"], rec["verdict"].upper(), m["desc"], flush=True)
