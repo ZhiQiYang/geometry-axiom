@@ -1,0 +1,17 @@
+{
+  "subjectSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "scope": "Terminal r1 environment failures and completed sparse repair only, not live r2 results; no source checkout or .git",
+  "r1OuterSession": 14832,
+  "outerExitObservedFromToolAPI": 1,
+  "outerOSCaptureIndependent": false,
+  "outerCaptureLimitation": "Launcher progress lines and exit were returned by exec/write_stdin API, without a separate predecode OS stdout/stderr capture; each original reaper/driver/CLI complete c387 raw streams are included.",
+  "r1CLIExits": [
+    1,
+    1
+  ],
+  "classification": "Both stop at selftest.py1386 import make_golden, omitted by original11-path thin preparation, not assertion kills.",
+  "repair": "SameL whole oracle20files plus exact external PROPOSAL/decision queue; all22 physical bytes verified against immutable GitL. No product/tests/expected/assertions/timeouts/ledger modified.",
+  "r1BindingsPreserved": true,
+  "noLiveR2FileReadForPackage": true,
+  "createdUTC": "2026-10-23T22:42:03.499912+00:00"
+}

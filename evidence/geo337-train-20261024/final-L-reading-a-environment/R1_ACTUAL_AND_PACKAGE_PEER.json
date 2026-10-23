@@ -1,0 +1,4678 @@
+{
+  "schema": "reading-a-L-r1-environment-package-peer/1",
+  "createdUTC": "2026-10-23T22:44:25.987663+00:00",
+  "scope": "Independent completed-r1 original command/source/error classification plus 419-member archive roundtrip; no subject rerun and no live r2 receipt read.",
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "archiveSHA256": "c4f5610173079d9b86a8f099901e47b19419691de1b20995efcfd8a2f3bed43b",
+  "memberCount": 419,
+  "originalFileCount": 418,
+  "originalBytes": 20469890,
+  "c387CommandResultsVerified": 78,
+  "checkCount": 1164,
+  "checks": [
+    {
+      "label": "archive size/hash",
+      "passed": true
+    },
+    {
+      "label": "inventory original hash",
+      "passed": true
+    },
+    {
+      "label": "419 regular unique safe members",
+      "passed": true
+    },
+    {
+      "label": "exact inventory plus self manifest",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/RESULT.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/RESULT.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/commands.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/commands.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-mutants-outer-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-mutants-outer-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/oracle-quick-outer-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/oracle-quick-outer-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash r1/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes r1/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/commands.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/commands.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000016/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000016/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000016/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000016/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000016/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000016/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000016/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000016/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000017/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000017/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000017/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000017/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000017/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000017/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000017/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000017/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000017/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000017/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000018/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000018/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000018/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000018/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000018/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000018/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000018/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000018/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000018/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000018/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000019/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000019/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000019/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000019/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000019/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000019/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000019/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000019/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000019/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000019/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000020/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000020/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000020/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000020/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000020/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000020/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000020/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000020/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000020/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000020/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000021/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000021/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000021/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000021/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000021/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000021/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000021/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000021/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands/000021/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands/000021/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-preparation/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-preparation/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/commands.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/commands.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000016/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000016/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000016/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000016/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000016/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000016/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000016/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000016/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000017/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000017/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000017/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000017/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000017/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000017/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000017/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000017/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000017/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000017/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000018/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000018/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000018/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000018/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000018/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000018/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000018/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000018/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000018/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000018/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000019/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000019/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000019/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000019/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000019/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000019/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000019/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000019/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000019/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000019/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000020/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000020/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000020/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000020/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000020/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000020/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000020/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000020/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000020/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000020/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000021/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000021/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000021/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000021/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000021/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000021/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000021/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000021/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000021/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000021/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000022/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000022/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000022/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000022/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000022/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000022/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000022/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000022/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000022/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000022/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000023/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000023/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000023/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000023/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000023/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000023/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000023/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000023/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000023/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000023/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000024/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000024/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000024/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000024/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000024/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000024/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000024/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000024/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000024/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000024/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000025/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000025/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000025/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000025/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000025/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000025/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000025/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000025/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000025/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000025/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000026/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000026/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000026/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000026/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000026/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000026/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000026/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000026/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000026/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000026/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000027/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000027/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000027/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000027/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000027/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000027/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000027/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000027/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000027/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000027/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000028/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000028/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000028/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000028/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000028/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000028/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000028/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000028/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000028/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000028/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000029/request.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000029/request.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000029/result.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000029/result.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000029/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000029/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000029/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000029/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands/000029/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands/000029/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archived hash source-repair-r2/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes source-repair-r2/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/prepare_source.py",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/prepare_source.py",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/launch_two_original_stages.py",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/launch_two_original_stages.py",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/repair_source_r2.py",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/repair_source_r2.py",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/SOURCE_BINDING.r1.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/SOURCE_BINDING.r1.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/SOURCE_BINDING.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/SOURCE_BINDING.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/REQUEST.r1.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/REQUEST.r1.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/REQUEST.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/REQUEST.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/R1_ENVIRONMENT_CLASSIFICATION.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/R1_ENVIRONMENT_CLASSIFICATION.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/FULL_ORACLE_GIT_FILE_LIST.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/FULL_ORACLE_GIT_FILE_LIST.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/IMPORT_AND_READ_CENSUS_R2.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/IMPORT_AND_READ_CENSUS_R2.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation/package_r1_environment_and_repair.py",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation/package_r1_environment_and_repair.py",
+      "passed": true
+    },
+    {
+      "label": "archived hash preparation-peer/REVIEW.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes preparation-peer/REVIEW.json",
+      "passed": true
+    },
+    {
+      "label": "archived hash PROVENANCE.json",
+      "passed": true
+    },
+    {
+      "label": "original bytes PROVENANCE.json",
+      "passed": true
+    },
+    {
+      "label": "archived inventory exact bytes",
+      "passed": true
+    },
+    {
+      "label": "original total bytes",
+      "passed": true
+    },
+    {
+      "label": "no live r2 files",
+      "passed": true
+    },
+    {
+      "label": "no checkout or Git members",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-mutants/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-mutants/subcommands/000001/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-mutants/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-mutants/subcommands/000002/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-mutants/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-mutants/subcommands/000003/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-mutants/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-mutants/subcommands/000004/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-mutants/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-mutants/subcommands/000005/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-mutants/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-mutants/subcommands/000006/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-mutants/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-mutants/subcommands/000007/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-mutants/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-mutants/subcommands/000008/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-mutants/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-mutants/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-mutants/subcommands/000009/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-quick/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-quick/subcommands/000001/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-quick/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-quick/subcommands/000002/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-quick/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-quick/subcommands/000003/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-quick/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-quick/subcommands/000004/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-quick/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-quick/subcommands/000005/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-quick/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-quick/subcommands/000006/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-quick/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-quick/subcommands/000007/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-quick/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-quick/subcommands/000008/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/oracle-quick/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/oracle-quick/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/oracle-quick/subcommands/000009/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/subcommands/000001/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/subcommands/000002/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/subcommands/000003/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/subcommands/000004/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/subcommands/000005/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/subcommands/000006/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/subcommands/000007/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/subcommands/000008/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/subcommands/000009/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command r1/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000010/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream r1/subcommands/000010/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin r1/subcommands/000010/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000001/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000002/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000003/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000004/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000005/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000006/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000007/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000008/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000009/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000010/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000010/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000010/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000011/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000011/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000011/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000012/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000012/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000012/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000013/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000013/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000013/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000014/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000014/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000014/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000015/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000015/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000015/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000016/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000016/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000016/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000017/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000017/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000017/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000017/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000018/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000018/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000018/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000018/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000019/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000019/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000019/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000019/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000020/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000020/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000020/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000020/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-preparation/subcommands/000021/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000021/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-preparation/subcommands/000021/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-preparation/subcommands/000021/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000001/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000002/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000003/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000004/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000005/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000006/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000007/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000008/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000009/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000010/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000010/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000010/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000011/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000011/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000011/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000012/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000012/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000012/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000013/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000013/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000013/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000014/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000014/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000014/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000015/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000015/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000015/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000016/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000016/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000016/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000017/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000017/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000017/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000017/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000018/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000018/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000018/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000018/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000019/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000019/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000019/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000019/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000020/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000020/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000020/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000020/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000021/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000021/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000021/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000021/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000022/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000022/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000022/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000022/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000023/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000023/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000023/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000023/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000024/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000024/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000024/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000024/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000025/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000025/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000025/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000025/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000026/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000026/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000026/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000026/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000027/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000027/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000027/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000027/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000028/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000028/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000028/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000028/",
+      "passed": true
+    },
+    {
+      "label": "original request/result command source-repair-r2/subcommands/000029/result.json",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000029/stdout",
+      "passed": true
+    },
+    {
+      "label": "captured stream source-repair-r2/subcommands/000029/stderr",
+      "passed": true
+    },
+    {
+      "label": "captured stdin source-repair-r2/subcommands/000029/",
+      "passed": true
+    },
+    {
+      "label": "r1 terminal not passed",
+      "passed": true
+    },
+    {
+      "label": "r1 complete source/stage/index/input guards",
+      "passed": true
+    },
+    {
+      "label": "original CLI and true red oracle-mutants",
+      "passed": true
+    },
+    {
+      "label": "normal missing-module environment classification oracle-mutants",
+      "passed": true
+    },
+    {
+      "label": "stage original environment/source guards oracle-mutants",
+      "passed": true
+    },
+    {
+      "label": "original CLI and true red oracle-quick",
+      "passed": true
+    },
+    {
+      "label": "normal missing-module environment classification oracle-quick",
+      "passed": true
+    },
+    {
+      "label": "stage original environment/source guards oracle-quick",
+      "passed": true
+    }
+  ],
+  "findings": [],
+  "conclusion": "The two original CLI1 failures are preserved same-L sparse-environment missing-module failures, not assertion kills or passing gates. Completed same-L repair evidence is included; r2 results are not included or inferred.",
+  "limits": [
+    "Top host session14832 exit1 is observed through tool API only; no independent outer OS stdout/stderr capture existed. Original child CLI and subreaper c387 streams are fully verified.",
+    "The initial 15-check launcher prep peer did not establish the original11-input import closure completeness.",
+    "No source/branch/Git mutation, extraction into filesystem, build or oracle execution performed by reviewer."
+  ],
+  "exitCode": 0
+}
