@@ -6,4 +6,6 @@
 
 `original-raw.tar.gz` 收錄四個原始目錄的所有檔案（driver／outer／top-launch／checkout-setup），逐檔對照 `ORIGINAL_RAW_INDEX.json`；原 argv、完整 stdout/stderr、環境、退出碼、source SHA 與原撤回／還原 bytes 均保留。`SUMMARY.json` 是索引，不替代原始輸出。
 
-下一步：#314 owner 對真終態 raw 與公開 Git package 作獨立對抗審，目前 pending。本子項不外推 native／六 browser、歷史159 source mutants 或真正 native run_probe.sh 全場；原 unittest 在記憶體捕捉而未持久化的內層 streams 未補造。
+#314 owner 已對本輪真終態 raw 與不可變公開 Git package／正文完成獨立對抗審，未見確立新阻擋；原報告及逐命令 streams 封於 peer/。審查對象 E9dfdac7／body0ec402a5；本次只附審查與公開紀錄，不重跑原八階段。本子項不外推 native／六 browser、歷史159 source mutants 或真正 native run_probe.sh 全場；原 unittest 在記憶體捕捉而未持久化的內層 streams 未補造。
+
+覆核報告 SHA256 `4bf7a9a125a3614843bf54103ad8d247db25dccac21059007783b363772f130b`；CHECKS.json SHA256 `8707c6c4484d839ac4f680c0d291cf07bee1a8355a6e54303eccffb680f0f59e`。下一步由 root 在整合分支收齊跨 owner 唯一 current-state 矩陣。F3d 原 step_core528／mirror1056 仍核心限制，原 P-182 t4 的 C11 已知6次未宣稱解決。

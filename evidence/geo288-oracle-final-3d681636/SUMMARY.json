@@ -234,7 +234,7 @@
   "ledger_regenerated": false,
   "allowed_skips": [],
   "original_errors": [],
-  "dynamic_peer": "PENDING_ACTUAL_AND_PUBLIC_REVIEW",
+  "dynamic_peer": "INDEPENDENT_ACTUAL_AND_IMMUTABLE_PUBLIC_REVIEW_COMPLETED",
   "limitations": [
     "The original unittest may capture internal child output without persisting it; no missing inner streams are reconstructed.",
     "The complete probe unittest includes fake-core shell controls, not a new native run_probe.sh acceptance run.",
@@ -242,5 +242,7 @@
   ],
   "compiled_product_binary": null,
   "original_internal_child_streams_reconstructed": false,
-  "all_original_eight_phase_requirements_met": true
+  "all_original_eight_phase_requirements_met": true,
+  "peer_report_sha256": "4bf7a9a125a3614843bf54103ad8d247db25dccac21059007783b363772f130b",
+  "peer_review_json_sha256": "8707c6c4484d839ac4f680c0d291cf07bee1a8355a6e54303eccffb680f0f59e"
 }
