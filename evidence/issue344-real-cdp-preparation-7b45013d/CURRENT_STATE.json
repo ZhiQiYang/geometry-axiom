@@ -1,0 +1,50 @@
+{
+  "productSHA": "7b45013da647b791acda8f5977475e4123d5f8c4",
+  "controlledVariantSHA": "082feb0662fea32131f3f7fb8ca451679ab6421d",
+  "variantSoleParent": "7b45013da647b791acda8f5977475e4123d5f8c4",
+  "variantOnlyEdit": "remove unique app success-ready error clear; all other blobs/modes identical",
+  "variantBranch": "codex/issue320-connection-recovery-withdrawal-20261024",
+  "variantOrdinaryPushAndRemoteEqual": true,
+  "fullCanvasThreePhases": [
+    "UNRUN",
+    "UNRUN",
+    "UNRUN"
+  ],
+  "phaseCleanHeads": [
+    "7b45013da647b791acda8f5977475e4123d5f8c4",
+    "082feb0662fea32131f3f7fb8ca451679ab6421d",
+    "7b45013da647b791acda8f5977475e4123d5f8c4"
+  ],
+  "phasePorts": {
+    "HTTP": [
+      19681,
+      19682,
+      19683
+    ],
+    "CDP": [
+      9731,
+      9732,
+      9733
+    ]
+  },
+  "original35minGoldenDefaultAndCleanValidatorUnchanged": true,
+  "sourceRuntimeAndDiskMaterializationReady": false,
+  "phasePreparationStaticPeer": {
+    "checks": 226,
+    "exit": 0,
+    "path": "/tmp/issue344-clean-v-phase-kernel-peer/REVIEW.json",
+    "sha256": "437571db71f813fde9318ced568e79ee1274f914309bb6a77a551d5610ac39c6"
+  },
+  "priorNewSNodeExecution": [
+    0,
+    1,
+    0
+  ],
+  "priorNodeVMOnly": true,
+  "priorPublicPeer1585": {
+    "path": "/tmp/issue344-7b45013d-public-body-peer/CHECKS.json",
+    "sha256": "e56c04c816a86a0a32e0993b632b871d9020d4fd71d1d3e2627a51719d8d9883"
+  },
+  "globalLedgerOrArchitectureDone": false,
+  "newSubjectExecutions": 0
+}
