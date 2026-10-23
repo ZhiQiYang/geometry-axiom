@@ -1,0 +1,65 @@
+{
+  "schema": "geo299-316-314-single-anchor-source-baton-static/1",
+  "previous_evidence_head": "1722b55445b53ac37b6eac1be7b379e79c73eaa8",
+  "incoming_source": "3b0b634feb54266700cc61f26c34d7aeac4c0314",
+  "only_product_change": "tests/test_geo261_wood_grid_application.py",
+  "incoming_evidence_paths": [
+    "evidence/geo314-refresh-8033aa75/INVENTORY.json",
+    "evidence/geo314-refresh-8033aa75/LATEST_REVIEW.md",
+    "evidence/geo314-refresh-8033aa75/PR288_ASSEMBLY_DOCUMENTS_AUDIT.md",
+    "evidence/geo314-refresh-8033aa75/PROGRESS.md",
+    "evidence/geo314-refresh-8033aa75/REVIEW_NO_WOOD_PREP.md",
+    "evidence/geo314-refresh-8033aa75/SHARED_UNION.json",
+    "evidence/geo314-refresh-8033aa75/SOURCE_STATIC.json",
+    "evidence/geo314-refresh-8033aa75/collect_source_static.py",
+    "evidence/geo314-refresh-8033aa75/reader-sync-source/receipt.json",
+    "evidence/geo314-refresh-8033aa75/reader-sync-source/stderr.txt",
+    "evidence/geo314-refresh-8033aa75/reader-sync-source/stdout.txt",
+    "evidence/geo314-refresh-8033aa75/run_reader_sync.py"
+  ],
+  "exact_original_2_to_6_arg_anchor_only": true,
+  "test_methods_before": 23,
+  "test_methods_after": 23,
+  "test_new_sha256": "c387f9cbc6cdbc7bc8c09296c8057f84eb4ef92c26360ad043bb0613d21ec58f",
+  "protected": [
+    {
+      "path": "公理層.md",
+      "before_blob": "c34e8d6acf862455db2d47978feb04cd43324284",
+      "index_blob": "c34e8d6acf862455db2d47978feb04cd43324284",
+      "unchanged": true
+    },
+    {
+      "path": "決策佇列.md",
+      "before_blob": "12d718fd62d3337c65eed7e3b13361475b948e9e",
+      "index_blob": "12d718fd62d3337c65eed7e3b13361475b948e9e",
+      "unchanged": true
+    },
+    {
+      "path": "tests/mutate.py",
+      "before_blob": "109fc14614963c66c34e59b38b3e6a1cfadb974b",
+      "index_blob": "109fc14614963c66c34e59b38b3e6a1cfadb974b",
+      "unchanged": true
+    },
+    {
+      "path": "tests/run_all.expected.json",
+      "before_blob": "31f778608cbfdcaefdf24c2a2445e8eda55343f6",
+      "index_blob": "31f778608cbfdcaefdf24c2a2445e8eda55343f6",
+      "unchanged": true
+    },
+    {
+      "path": "tests/mutants_results.json",
+      "before_blob": "80e09c5e018e865e6d3624e23c24be0ece0dbca7",
+      "index_blob": "80e09c5e018e865e6d3624e23c24be0ece0dbca7",
+      "unchanged": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture.json",
+      "before_blob": "e5a741ad6f1b4355a860a8e6f50ce8989c73fc6e",
+      "index_blob": "e5a741ad6f1b4355a860a8e6f50ce8989c73fc6e",
+      "unchanged": true
+    }
+  ],
+  "full_cached_diffcheck_exit": 2,
+  "authored_test_cached_diffcheck_exit": 0,
+  "test_or_scan_or_compiler_or_ledger_executed": false
+}
