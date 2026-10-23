@@ -1,0 +1,594 @@
+{
+  "schema": "geo288-p88-native-raf-final-summary/1",
+  "sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "proof_receipt_sha256": "d80653fc15a3726a9a8bc115d556fbf8dd6c532e506dc49c09727323958fb5fa",
+  "command": [
+    "env",
+    "-u",
+    "NODE_OPTIONS",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "python3",
+    "-B",
+    "/workspace/geo261-environment/execute_f_extra.py",
+    "--label",
+    "p88-native-raf-controlled-v2",
+    "--sha",
+    "3d681636902371ecc528b20f51eea33e272581c9",
+    "--repo",
+    "/tmp/g288p88final-3d681636",
+    "--outer-root",
+    "/workspace/geo288-main-merge-20261023/p88-priority/outers",
+    "--",
+    "python3",
+    "-B",
+    "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/run_proof.py",
+    "--repo",
+    "/tmp/g288p88final-3d681636",
+    "--sha",
+    "3d681636902371ecc528b20f51eea33e272581c9",
+    "--out",
+    "/tmp/g288p88r",
+    "--heavy-lock",
+    "/tmp/g261r3/heavy.lock",
+    "--mode",
+    "controlled",
+    "--job",
+    "grid",
+    "--candidate",
+    "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/SOURCE_VARIANTS.json"
+  ],
+  "cwd": "/tmp/g288p88final-3d681636",
+  "started_utc": "2026-10-23T12:38:58.238140+00:00",
+  "ended_utc": "2026-10-23T12:53:28.151281+00:00",
+  "scope": "Controlled native-rAF diagnostic only: original grid bootstrap and full P88; two other grid modules explicitly omitted. This is not a formal canvas/grid gate.",
+  "original_driver_exit": 0,
+  "outer_process_exit": 0,
+  "launcher_exit": 0,
+  "proof_passed": true,
+  "source_before": {
+    "label": "before",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "source_after": {
+    "label": "after",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "phases": [
+    {
+      "variant": "fixed",
+      "original_outer_exit": 0,
+      "original_workflow_exit": 0,
+      "original_node_exit": 0,
+      "expected_original_exit": 0,
+      "phase_proof_passed": true,
+      "seconds": 315.84353559999727,
+      "ci_timeout_minutes": 15,
+      "over_ci_timeout": false,
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_GRID_SYSTEM_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19801/",
+        "feedbackDirectory": "/tmp/g288p88r/fixed/tmp/workflow/grid/geometry-integration-feedback",
+        "browserProfile": "/tmp/g288p88r/fixed/tmp/workflow/grid/geometry-cdp-xNjZAd",
+        "cdpPort": 9720,
+        "browserPid": 1238850
+      },
+      "original_completed": true,
+      "original_p88_count": 143,
+      "original_failed_assertions": 0,
+      "original_fatal": null,
+      "workflow_receipt_sha256": "e52ea128e99e04cf017de4533c18426e017c69d63a46335a6a8673451b85bdb0",
+      "stdout_sha256": "d138ae8b7ff75ab1a3fb556d349962c9d398c58c3704f9f3d932d356e69f056e",
+      "trace_sha256": "7804288498ee8556082f59849ba989656c1eebdfe4e900b9e38938b8c3fd42bf",
+      "original_measure": {
+        "x": 293.75,
+        "y": 627.5,
+        "w": 134.5,
+        "h": 44,
+        "hit": true,
+        "hitElement": "SELECT#refGuideMode",
+        "disabled": false
+      },
+      "before_restore": {
+        "selector": "#refGuideMode",
+        "nodeToken": 5737,
+        "rect": {
+          "x": 226.5,
+          "y": 605.5,
+          "width": 134.5,
+          "height": 44,
+          "top": 605.5,
+          "right": 361,
+          "bottom": 649.5,
+          "left": 226.5
+        },
+        "paneScroll": 0,
+        "parentScroll": 0,
+        "gridPreviewSeq": 126,
+        "active": {
+          "token": 5736,
+          "tag": "BUTTON",
+          "id": "refGuideCreate",
+          "classes": "btn",
+          "parent_id": "",
+          "text": "建立引用線"
+        },
+        "hit": {
+          "token": 5737,
+          "tag": "SELECT",
+          "id": "refGuideMode",
+          "classes": "",
+          "parent_id": "",
+          "text": "選擇位置來源進階：完整引用式"
+        }
+      },
+      "after_restore": {
+        "selector": "#refGuideMode",
+        "nodeToken": 5737,
+        "rect": {
+          "x": 226.5,
+          "y": 580.5,
+          "width": 134.5,
+          "height": 44,
+          "top": 580.5,
+          "right": 361,
+          "bottom": 624.5,
+          "left": 226.5
+        },
+        "paneScroll": 0,
+        "parentScroll": 25,
+        "gridPreviewSeq": 126,
+        "active": {
+          "token": 5736,
+          "tag": "BUTTON",
+          "id": "refGuideCreate",
+          "classes": "btn",
+          "parent_id": "",
+          "text": "建立引用線"
+        },
+        "hit": {
+          "token": 5739,
+          "tag": "LABEL",
+          "id": "",
+          "classes": "",
+          "parent_id": "refGuideSourceFields",
+          "text": "來源比例原值一半兩倍"
+        },
+        "hitAtOldPoint": {
+          "token": 5739,
+          "tag": "LABEL",
+          "id": "",
+          "classes": "",
+          "parent_id": "refGuideSourceFields",
+          "text": "來源比例原值一半兩倍"
+        }
+      },
+      "parsed_json_unchanged": true,
+      "native_callback": {
+        "native_id": 1648,
+        "registration_stack": "Error: P88 native rAF registration\n    at rafWrapper (eval at <anonymous> (:1:144), <anonymous>:114:22)\n    at renderFaceInspector (http://127.0.0.1:19801/app.js:8758:5)\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:202:24)\n    at paintQuery (http://127.0.0.1:19801/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19801/grid-rule-lines.js:106:7)",
+        "callback_source": "() => {\n      if (fe.gridPreviewSeq !== seq || pane.dataset.bid !== String(bid) ||\n          parent.scrollTop !== scroll || pane.scrollTop !== ownScroll) return;\n      parent.scrollTop = saved.scroll; pane.scrollTop = saved.ownScroll;\n    }",
+        "original_request_animation_frame_source": "function requestAnimationFrame() { [native code] }",
+        "original_cancel_animation_frame_source": "function cancelAnimationFrame() { [native code] }",
+        "original_request_animation_frame_native": true,
+        "original_cancel_animation_frame_native": true,
+        "callback_source_matches": true,
+        "renderer": 95,
+        "native_dispatch_count": 1,
+        "this_is_window": true,
+        "native_args": [
+          163545.184
+        ],
+        "cancelled": false,
+        "original_measure_evaluations": 1,
+        "callback_completed": true
+      },
+      "actual_mouse_request": {
+        "type": "mousePressed",
+        "x": 293.75,
+        "y": 602.5,
+        "button": "left",
+        "clickCount": 1
+      },
+      "first_trusted_target": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "final_active": {
+        "token": 3,
+        "tag": "BODY",
+        "id": "",
+        "classes": "canvas-composition canvas-has-inspector",
+        "parent_id": "",
+        "text": "正在讀取場景連線完成後即可編輯。\n  重新連線\n\n\n  \n    \n      \n        \n      \n      構形 Canvas\n    \n\n    建立\n\n    \n      \n "
+      },
+      "memory_source_variants": {
+        "schema": "geo288-p88-executed-memory-candidate/1",
+        "variant": "fixed",
+        "source_repo": "/tmp/g288p88final-3d681636",
+        "source_files_modified": false,
+        "files": [
+          {
+            "source": "/tmp/g288p88final-3d681636/geometry-web/grid_rule_lines_test.js",
+            "original_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+            "executed_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+            "variant": "fixed",
+            "memory_only": true,
+            "source_file_modified": false,
+            "candidate": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "withdrawn",
+      "original_outer_exit": 1,
+      "original_workflow_exit": 1,
+      "original_node_exit": 1,
+      "expected_original_exit": 1,
+      "phase_proof_passed": true,
+      "seconds": 236.97940701100742,
+      "ci_timeout_minutes": 15,
+      "over_ci_timeout": false,
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_GRID_SYSTEM_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19802/",
+        "feedbackDirectory": "/tmp/g288p88r/withdrawn/tmp/workflow/grid/geometry-integration-feedback",
+        "browserProfile": "/tmp/g288p88r/withdrawn/tmp/workflow/grid/geometry-cdp-HEfAHk",
+        "cdpPort": 9721,
+        "browserPid": 1243662
+      },
+      "original_completed": false,
+      "original_p88_count": 99,
+      "original_failed_assertions": 0,
+      "original_fatal": "UI condition timed out at === P88. 原生來源子線顯示、完整引用、兩面及正式重開 ===: document.activeElement===document.querySelector(\"#refGuideMode\")",
+      "workflow_receipt_sha256": "ec4b93795d57813c725b5791f13fc1f892880490d89a5c346f73204e8c29d7bc",
+      "stdout_sha256": "7bb4441a83551933d7292014d01292f466b74a73034da769000482b458bb2cbb",
+      "trace_sha256": "4a921056d3f3e7383054e20b942bb6b1175d0f6fa29f31001aba46d3c9d6e6f0",
+      "original_measure": {
+        "x": 293.75,
+        "y": 627.5,
+        "w": 134.5,
+        "h": 44,
+        "hit": true,
+        "hitElement": "SELECT#refGuideMode",
+        "disabled": false
+      },
+      "before_restore": {
+        "selector": "#refGuideMode",
+        "nodeToken": 5737,
+        "rect": {
+          "x": 226.5,
+          "y": 605.5,
+          "width": 134.5,
+          "height": 44,
+          "top": 605.5,
+          "right": 361,
+          "bottom": 649.5,
+          "left": 226.5
+        },
+        "paneScroll": 0,
+        "parentScroll": 0,
+        "gridPreviewSeq": 126,
+        "active": {
+          "token": 5736,
+          "tag": "BUTTON",
+          "id": "refGuideCreate",
+          "classes": "btn",
+          "parent_id": "",
+          "text": "建立引用線"
+        },
+        "hit": {
+          "token": 5737,
+          "tag": "SELECT",
+          "id": "refGuideMode",
+          "classes": "",
+          "parent_id": "",
+          "text": "選擇位置來源進階：完整引用式"
+        }
+      },
+      "after_restore": {
+        "selector": "#refGuideMode",
+        "nodeToken": 5737,
+        "rect": {
+          "x": 226.5,
+          "y": 580.5,
+          "width": 134.5,
+          "height": 44,
+          "top": 580.5,
+          "right": 361,
+          "bottom": 624.5,
+          "left": 226.5
+        },
+        "paneScroll": 0,
+        "parentScroll": 25,
+        "gridPreviewSeq": 126,
+        "active": {
+          "token": 5736,
+          "tag": "BUTTON",
+          "id": "refGuideCreate",
+          "classes": "btn",
+          "parent_id": "",
+          "text": "建立引用線"
+        },
+        "hit": {
+          "token": 5739,
+          "tag": "LABEL",
+          "id": "",
+          "classes": "",
+          "parent_id": "refGuideSourceFields",
+          "text": "來源比例原值一半兩倍"
+        },
+        "hitAtOldPoint": {
+          "token": 5739,
+          "tag": "LABEL",
+          "id": "",
+          "classes": "",
+          "parent_id": "refGuideSourceFields",
+          "text": "來源比例原值一半兩倍"
+        }
+      },
+      "parsed_json_unchanged": true,
+      "native_callback": {
+        "native_id": 1209,
+        "registration_stack": "Error: P88 native rAF registration\n    at rafWrapper (eval at <anonymous> (:1:144), <anonymous>:114:22)\n    at renderFaceInspector (http://127.0.0.1:19802/app.js:8758:5)\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:202:24)\n    at paintQuery (http://127.0.0.1:19802/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19802/grid-rule-lines.js:106:7)",
+        "callback_source": "() => {\n      if (fe.gridPreviewSeq !== seq || pane.dataset.bid !== String(bid) ||\n          parent.scrollTop !== scroll || pane.scrollTop !== ownScroll) return;\n      parent.scrollTop = saved.scroll; pane.scrollTop = saved.ownScroll;\n    }",
+        "original_request_animation_frame_source": "function requestAnimationFrame() { [native code] }",
+        "original_cancel_animation_frame_source": "function cancelAnimationFrame() { [native code] }",
+        "original_request_animation_frame_native": true,
+        "original_cancel_animation_frame_native": true,
+        "callback_source_matches": true,
+        "renderer": 95,
+        "native_dispatch_count": 1,
+        "this_is_window": true,
+        "native_args": [
+          150877.332
+        ],
+        "cancelled": false,
+        "original_measure_evaluations": 1,
+        "callback_completed": true
+      },
+      "actual_mouse_request": {
+        "type": "mousePressed",
+        "x": 293.75,
+        "y": 627.5,
+        "button": "left",
+        "clickCount": 1
+      },
+      "first_trusted_target": {
+        "token": 5739,
+        "tag": "LABEL",
+        "id": "",
+        "classes": "",
+        "parent_id": "refGuideSourceFields",
+        "text": "來源比例原值一半兩倍"
+      },
+      "final_active": {
+        "token": 5738,
+        "tag": "SELECT",
+        "id": "refGuideRatio",
+        "classes": "",
+        "parent_id": "",
+        "text": "原值一半兩倍"
+      },
+      "memory_source_variants": {
+        "schema": "geo288-p88-executed-memory-candidate/1",
+        "variant": "withdrawn",
+        "source_repo": "/tmp/g288p88final-3d681636",
+        "source_files_modified": false,
+        "files": [
+          {
+            "source": "/tmp/g288p88final-3d681636/geometry-web/grid_rule_lines_test.js",
+            "original_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+            "executed_sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+            "variant": "withdrawn",
+            "memory_only": true,
+            "source_file_modified": false,
+            "candidate": "/tmp/g288p88r/tools/withdrawn-P88.withdrawn.js"
+          }
+        ]
+      }
+    },
+    {
+      "variant": "restored",
+      "original_outer_exit": 0,
+      "original_workflow_exit": 0,
+      "original_node_exit": 0,
+      "expected_original_exit": 0,
+      "phase_proof_passed": true,
+      "seconds": 312.2434390709968,
+      "ci_timeout_minutes": 15,
+      "over_ci_timeout": false,
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_GRID_SYSTEM_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19803/",
+        "feedbackDirectory": "/tmp/g288p88r/restored/tmp/workflow/grid/geometry-integration-feedback",
+        "browserProfile": "/tmp/g288p88r/restored/tmp/workflow/grid/geometry-cdp-ui2Z0h",
+        "cdpPort": 9722,
+        "browserPid": 1246299
+      },
+      "original_completed": true,
+      "original_p88_count": 143,
+      "original_failed_assertions": 0,
+      "original_fatal": null,
+      "workflow_receipt_sha256": "acf6a0b502103826a7ce798b61987dce7d7676deb7427ba8709ab80762bba880",
+      "stdout_sha256": "15e3cf4ac943b3bad2724fb3bcc6afd8a574c7dc97c5af9c599a5f84e29cc505",
+      "trace_sha256": "f668e565543b57e7dddf69b03b3e57f7b830a94ccd4b2d24e4b1b02629e1a500",
+      "original_measure": {
+        "x": 293.75,
+        "y": 627.5,
+        "w": 134.5,
+        "h": 44,
+        "hit": true,
+        "hitElement": "SELECT#refGuideMode",
+        "disabled": false
+      },
+      "before_restore": {
+        "selector": "#refGuideMode",
+        "nodeToken": 5737,
+        "rect": {
+          "x": 226.5,
+          "y": 605.5,
+          "width": 134.5,
+          "height": 44,
+          "top": 605.5,
+          "right": 361,
+          "bottom": 649.5,
+          "left": 226.5
+        },
+        "paneScroll": 0,
+        "parentScroll": 0,
+        "gridPreviewSeq": 126,
+        "active": {
+          "token": 5736,
+          "tag": "BUTTON",
+          "id": "refGuideCreate",
+          "classes": "btn",
+          "parent_id": "",
+          "text": "建立引用線"
+        },
+        "hit": {
+          "token": 5737,
+          "tag": "SELECT",
+          "id": "refGuideMode",
+          "classes": "",
+          "parent_id": "",
+          "text": "選擇位置來源進階：完整引用式"
+        }
+      },
+      "after_restore": {
+        "selector": "#refGuideMode",
+        "nodeToken": 5737,
+        "rect": {
+          "x": 226.5,
+          "y": 580.5,
+          "width": 134.5,
+          "height": 44,
+          "top": 580.5,
+          "right": 361,
+          "bottom": 624.5,
+          "left": 226.5
+        },
+        "paneScroll": 0,
+        "parentScroll": 25,
+        "gridPreviewSeq": 126,
+        "active": {
+          "token": 5736,
+          "tag": "BUTTON",
+          "id": "refGuideCreate",
+          "classes": "btn",
+          "parent_id": "",
+          "text": "建立引用線"
+        },
+        "hit": {
+          "token": 5739,
+          "tag": "LABEL",
+          "id": "",
+          "classes": "",
+          "parent_id": "refGuideSourceFields",
+          "text": "來源比例原值一半兩倍"
+        },
+        "hitAtOldPoint": {
+          "token": 5739,
+          "tag": "LABEL",
+          "id": "",
+          "classes": "",
+          "parent_id": "refGuideSourceFields",
+          "text": "來源比例原值一半兩倍"
+        }
+      },
+      "parsed_json_unchanged": true,
+      "native_callback": {
+        "native_id": 1663,
+        "registration_stack": "Error: P88 native rAF registration\n    at rafWrapper (eval at <anonymous> (:1:144), <anonymous>:114:22)\n    at renderFaceInspector (http://127.0.0.1:19803/app.js:8758:5)\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:202:24)\n    at paintQuery (http://127.0.0.1:19803/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19803/grid-rule-lines.js:106:7)",
+        "callback_source": "() => {\n      if (fe.gridPreviewSeq !== seq || pane.dataset.bid !== String(bid) ||\n          parent.scrollTop !== scroll || pane.scrollTop !== ownScroll) return;\n      parent.scrollTop = saved.scroll; pane.scrollTop = saved.ownScroll;\n    }",
+        "original_request_animation_frame_source": "function requestAnimationFrame() { [native code] }",
+        "original_cancel_animation_frame_source": "function cancelAnimationFrame() { [native code] }",
+        "original_request_animation_frame_native": true,
+        "original_cancel_animation_frame_native": true,
+        "callback_source_matches": true,
+        "renderer": 95,
+        "native_dispatch_count": 1,
+        "this_is_window": true,
+        "native_args": [
+          164500.45
+        ],
+        "cancelled": false,
+        "original_measure_evaluations": 1,
+        "callback_completed": true
+      },
+      "actual_mouse_request": {
+        "type": "mousePressed",
+        "x": 293.75,
+        "y": 602.5,
+        "button": "left",
+        "clickCount": 1
+      },
+      "first_trusted_target": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "final_active": {
+        "token": 3,
+        "tag": "BODY",
+        "id": "",
+        "classes": "canvas-composition canvas-has-inspector",
+        "parent_id": "",
+        "text": "正在讀取場景連線完成後即可編輯。\n  重新連線\n\n\n  \n    \n      \n        \n      \n      構形 Canvas\n    \n\n    建立\n\n    \n      \n "
+      },
+      "memory_source_variants": {
+        "schema": "geo288-p88-executed-memory-candidate/1",
+        "variant": "restored",
+        "source_repo": "/tmp/g288p88final-3d681636",
+        "source_files_modified": false,
+        "files": [
+          {
+            "source": "/tmp/g288p88final-3d681636/geometry-web/grid_rule_lines_test.js",
+            "original_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+            "executed_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+            "variant": "restored",
+            "memory_only": true,
+            "source_file_modified": false,
+            "candidate": null
+          }
+        ]
+      }
+    }
+  ],
+  "limits": [
+    "Controlled ordering with real original renderer and native rAF callback; not an uninstrumented natural reproduction.",
+    "No Paint/compositor frame capture; user-visible movement or pointer-held interleavings were not independently ruled out.",
+    "Historical F13 failure has no pointerdown trace; this experiment does not identify its unique original query.",
+    "The old failed query-release experiment remains preserved as 1/1/1 with proof=false."
+  ]
+}

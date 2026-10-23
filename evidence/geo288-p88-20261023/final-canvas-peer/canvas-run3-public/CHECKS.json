@@ -1,0 +1,420 @@
+{
+  "schema": "geo288-canvas-public-round-peer-audit/1",
+  "index": 3,
+  "reviewed_utc": "2026-10-23T12:39:50.506806+00:00",
+  "source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "evidence_sha": "0a27637d646362ab20de49aa6621ae4fc0d01032",
+  "remote_head_at_review": "fdf731e28257c50873cb38e030eed273eeee97fc",
+  "four_original_exits": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "seconds": 1765.1202577359945,
+  "ci_limit_seconds": 2100,
+  "archive_bytes": 3730212,
+  "archive_sha256": "81cbfa0e4c7f4123852d4ad0a61c56551ae4636e943c29eaa9f9394fda496930",
+  "archive_member_count": 177,
+  "all_archive_members_bytes_and_hashes_verified": true,
+  "receipt_sha256": "6d2e5ac56d5976a7ccdb14936ecbe5559f651606344a440288afb70016ffcaa0",
+  "workflow_receipt_files": [
+    {
+      "receipt_path": "artifacts/04/geometry-wait-trace-artifact/receipt.json",
+      "archive_member": "run/workflow/canvas/artifacts/04/geometry-wait-trace-artifact/receipt.json",
+      "sha256": "ce881b2ddba6bd58d822755b4818b76433d0aa85c5187330a54d3eb070a6be83"
+    },
+    {
+      "receipt_path": "artifacts/06/grid-trial-desktop.png",
+      "archive_member": "run/workflow/canvas/artifacts/06/grid-trial-desktop.png",
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b"
+    },
+    {
+      "receipt_path": "artifacts/06/grid-trial-mobile-alignment.png",
+      "archive_member": "run/workflow/canvas/artifacts/06/grid-trial-mobile-alignment.png",
+      "sha256": "0615c4d12203ad9eb07e96d318e2170c78b9f4605b6144c2d9f111d4f39bc6da"
+    },
+    {
+      "receipt_path": "artifacts/06/grid-trial-mobile-canvas.png",
+      "archive_member": "run/workflow/canvas/artifacts/06/grid-trial-mobile-canvas.png",
+      "sha256": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8"
+    },
+    {
+      "receipt_path": "artifacts/06/grid-trial-mobile-controls.png",
+      "archive_member": "run/workflow/canvas/artifacts/06/grid-trial-mobile-controls.png",
+      "sha256": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543"
+    },
+    {
+      "receipt_path": "driver.py.txt",
+      "archive_member": "run/workflow/canvas/driver.py.txt",
+      "sha256": "8a4e69c915ae770afc59829f3658639af0febbd2b16c20495f7ecee7f62685fb"
+    },
+    {
+      "receipt_path": "steps/01.combined.log",
+      "archive_member": "run/workflow/canvas/steps/01.combined.log",
+      "sha256": "2e24a37c0e3ddd87364cb32596aa9e1829fe0e97f9294c0a80d4b52138270a09"
+    },
+    {
+      "receipt_path": "steps/01.command.json",
+      "archive_member": "run/workflow/canvas/steps/01.command.json",
+      "sha256": "41c2a59c381c0eb6883749730c6afb57a34b2811b5e543499f9878a4488611f2"
+    },
+    {
+      "receipt_path": "steps/01.executed.sh",
+      "archive_member": "run/workflow/canvas/steps/01.executed.sh",
+      "sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef"
+    },
+    {
+      "receipt_path": "steps/01.original.sh.txt",
+      "archive_member": "run/workflow/canvas/steps/01.original.sh.txt",
+      "sha256": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054"
+    },
+    {
+      "receipt_path": "steps/01.stderr",
+      "archive_member": "run/workflow/canvas/steps/01.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "receipt_path": "steps/01.stdout",
+      "archive_member": "run/workflow/canvas/steps/01.stdout",
+      "sha256": "2e24a37c0e3ddd87364cb32596aa9e1829fe0e97f9294c0a80d4b52138270a09"
+    },
+    {
+      "receipt_path": "steps/02-package-0.combined.log",
+      "archive_member": "run/workflow/canvas/steps/02-package-0.combined.log",
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "receipt_path": "steps/02-package-0.command.json",
+      "archive_member": "run/workflow/canvas/steps/02-package-0.command.json",
+      "sha256": "0b91f501873f7e941f6efa5d170166c461aad16295a25b7015e6756d97982b0b"
+    },
+    {
+      "receipt_path": "steps/02-package-0.stderr",
+      "archive_member": "run/workflow/canvas/steps/02-package-0.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "receipt_path": "steps/02-package-0.stdout",
+      "archive_member": "run/workflow/canvas/steps/02-package-0.stdout",
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "receipt_path": "steps/02.executed.sh",
+      "archive_member": "run/workflow/canvas/steps/02.executed.sh",
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "receipt_path": "steps/02.original.sh.txt",
+      "archive_member": "run/workflow/canvas/steps/02.original.sh.txt",
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "receipt_path": "steps/03.combined.log",
+      "archive_member": "run/workflow/canvas/steps/03.combined.log",
+      "sha256": "828f3cc7998f7531be52a7267ab01b601207b6fceb9968f5a4ceb4902903c6d3"
+    },
+    {
+      "receipt_path": "steps/03.command.json",
+      "archive_member": "run/workflow/canvas/steps/03.command.json",
+      "sha256": "d09c6ae32e51f685bc6f1f20776b1ee3244db655b191f4886a8123308188f09e"
+    },
+    {
+      "receipt_path": "steps/03.executed.sh",
+      "archive_member": "run/workflow/canvas/steps/03.executed.sh",
+      "sha256": "cb0749785817dca5ae0f8096dccb5b49fdf58c23a44a3fe35edaaadb9e76f409"
+    },
+    {
+      "receipt_path": "steps/03.original.sh.txt",
+      "archive_member": "run/workflow/canvas/steps/03.original.sh.txt",
+      "sha256": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f"
+    },
+    {
+      "receipt_path": "steps/03.stderr",
+      "archive_member": "run/workflow/canvas/steps/03.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "receipt_path": "steps/03.stdout",
+      "archive_member": "run/workflow/canvas/steps/03.stdout",
+      "sha256": "828f3cc7998f7531be52a7267ab01b601207b6fceb9968f5a4ceb4902903c6d3"
+    },
+    {
+      "receipt_path": "versions/0.combined.log",
+      "archive_member": "run/workflow/canvas/versions/0.combined.log",
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "receipt_path": "versions/0.command.json",
+      "archive_member": "run/workflow/canvas/versions/0.command.json",
+      "sha256": "f8f3a5027e872f752f7c29af7ab9d173b64ebbb1ff1ef7f68c168e0a320e3c78"
+    },
+    {
+      "receipt_path": "versions/0.stderr",
+      "archive_member": "run/workflow/canvas/versions/0.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "receipt_path": "versions/0.stdout",
+      "archive_member": "run/workflow/canvas/versions/0.stdout",
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "receipt_path": "versions/1.combined.log",
+      "archive_member": "run/workflow/canvas/versions/1.combined.log",
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "receipt_path": "versions/1.command.json",
+      "archive_member": "run/workflow/canvas/versions/1.command.json",
+      "sha256": "96570e52163b293d0300865916412a63e975c2f8857562cf31b2a1f0d74353a6"
+    },
+    {
+      "receipt_path": "versions/1.stderr",
+      "archive_member": "run/workflow/canvas/versions/1.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "receipt_path": "versions/1.stdout",
+      "archive_member": "run/workflow/canvas/versions/1.stdout",
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "receipt_path": "versions/2.combined.log",
+      "archive_member": "run/workflow/canvas/versions/2.combined.log",
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "receipt_path": "versions/2.command.json",
+      "archive_member": "run/workflow/canvas/versions/2.command.json",
+      "sha256": "bf52663d4062f60d9a3a1392cb553ff61422a5e8b84c68ce00bd67feed339a32"
+    },
+    {
+      "receipt_path": "versions/2.stderr",
+      "archive_member": "run/workflow/canvas/versions/2.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "receipt_path": "versions/2.stdout",
+      "archive_member": "run/workflow/canvas/versions/2.stdout",
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "receipt_path": "versions/3.combined.log",
+      "archive_member": "run/workflow/canvas/versions/3.combined.log",
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "receipt_path": "versions/3.command.json",
+      "archive_member": "run/workflow/canvas/versions/3.command.json",
+      "sha256": "7c8623d3d30c470cae7839b41d46dbf067a6819dfaf0267780df6d733ee90f1c"
+    },
+    {
+      "receipt_path": "versions/3.stderr",
+      "archive_member": "run/workflow/canvas/versions/3.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "receipt_path": "versions/3.stdout",
+      "archive_member": "run/workflow/canvas/versions/3.stdout",
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "receipt_path": "versions/4.combined.log",
+      "archive_member": "run/workflow/canvas/versions/4.combined.log",
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "receipt_path": "versions/4.command.json",
+      "archive_member": "run/workflow/canvas/versions/4.command.json",
+      "sha256": "d0eeebac903610de27d36e489c7a5c236f527d090bfa3eed2398f0403ab073f5"
+    },
+    {
+      "receipt_path": "versions/4.stderr",
+      "archive_member": "run/workflow/canvas/versions/4.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "receipt_path": "versions/4.stdout",
+      "archive_member": "run/workflow/canvas/versions/4.stdout",
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "receipt_path": "workflow.yml.txt",
+      "archive_member": "run/workflow/canvas/workflow.yml.txt",
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d"
+    }
+  ],
+  "all_workflow_absolute_stream_references": [
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/steps/01.combined.log",
+      "archive_member": "run/workflow/canvas/steps/01.combined.log",
+      "sha256": "2e24a37c0e3ddd87364cb32596aa9e1829fe0e97f9294c0a80d4b52138270a09"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/steps/01.stderr",
+      "archive_member": "run/workflow/canvas/steps/01.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/steps/01.stdout",
+      "archive_member": "run/workflow/canvas/steps/01.stdout",
+      "sha256": "2e24a37c0e3ddd87364cb32596aa9e1829fe0e97f9294c0a80d4b52138270a09"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/steps/02-package-0.combined.log",
+      "archive_member": "run/workflow/canvas/steps/02-package-0.combined.log",
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/steps/02-package-0.stderr",
+      "archive_member": "run/workflow/canvas/steps/02-package-0.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/steps/02-package-0.stdout",
+      "archive_member": "run/workflow/canvas/steps/02-package-0.stdout",
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/steps/03.combined.log",
+      "archive_member": "run/workflow/canvas/steps/03.combined.log",
+      "sha256": "828f3cc7998f7531be52a7267ab01b601207b6fceb9968f5a4ceb4902903c6d3"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/steps/03.stderr",
+      "archive_member": "run/workflow/canvas/steps/03.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/steps/03.stdout",
+      "archive_member": "run/workflow/canvas/steps/03.stdout",
+      "sha256": "828f3cc7998f7531be52a7267ab01b601207b6fceb9968f5a4ceb4902903c6d3"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/0.combined.log",
+      "archive_member": "run/workflow/canvas/versions/0.combined.log",
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/0.stderr",
+      "archive_member": "run/workflow/canvas/versions/0.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/0.stdout",
+      "archive_member": "run/workflow/canvas/versions/0.stdout",
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/1.combined.log",
+      "archive_member": "run/workflow/canvas/versions/1.combined.log",
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/1.stderr",
+      "archive_member": "run/workflow/canvas/versions/1.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/1.stdout",
+      "archive_member": "run/workflow/canvas/versions/1.stdout",
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/2.combined.log",
+      "archive_member": "run/workflow/canvas/versions/2.combined.log",
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/2.stderr",
+      "archive_member": "run/workflow/canvas/versions/2.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/2.stdout",
+      "archive_member": "run/workflow/canvas/versions/2.stdout",
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/3.combined.log",
+      "archive_member": "run/workflow/canvas/versions/3.combined.log",
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/3.stderr",
+      "archive_member": "run/workflow/canvas/versions/3.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/3.stdout",
+      "archive_member": "run/workflow/canvas/versions/3.stdout",
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/4.combined.log",
+      "archive_member": "run/workflow/canvas/versions/4.combined.log",
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/4.stderr",
+      "archive_member": "run/workflow/canvas/versions/4.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "reference": "/tmp/g288p88f3/workflow/canvas/versions/4.stdout",
+      "archive_member": "run/workflow/canvas/versions/4.stdout",
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    }
+  ],
+  "all_outer_original_streams": [
+    "outer/subcommands/000001/stdin.bin",
+    "outer/subcommands/000001/stdout.bin",
+    "outer/subcommands/000001/stderr.bin",
+    "outer/subcommands/000002/stdin.bin",
+    "outer/subcommands/000002/stdout.bin",
+    "outer/subcommands/000002/stderr.bin",
+    "outer/subcommands/000003/stdin.bin",
+    "outer/subcommands/000003/stdout.bin",
+    "outer/subcommands/000003/stderr.bin",
+    "outer/subcommands/000004/stdin.bin",
+    "outer/subcommands/000004/stdout.bin",
+    "outer/subcommands/000004/stderr.bin",
+    "outer/subcommands/000005/stdin.bin",
+    "outer/subcommands/000005/stdout.bin",
+    "outer/subcommands/000005/stderr.bin"
+  ],
+  "required_snapshot_members": [
+    "before-index.stdout",
+    "before-index.command.json",
+    "before-index.stderr",
+    "before-head.stdout",
+    "before-head.command.json",
+    "before-head.stderr",
+    "before-status.stdout",
+    "before-status.command.json",
+    "before-status.stderr",
+    "sequence-driver.py",
+    "run_canvas_workflow.py",
+    "BINDING.json",
+    "driver-binding.diff",
+    "original_run_workflow_round.py.txt",
+    "sequence-launch.request.json",
+    "publisher.py.txt"
+  ],
+  "passedAssertions": 2267,
+  "failedAssertions": 0,
+  "full_scope": true,
+  "completed": true,
+  "goldenCompare": "matched",
+  "original_golden_sections": 85,
+  "uncaughtBrowserExceptions": 1,
+  "expected_exception": "One original P38 fb-auto-probe; no UNEXPECTED EXCEPTION marker",
+  "expected_exception_stdout_line": 557,
+  "sequence_run_count_at_review": 3,
+  "all_three_accepted_at_review": true,
+  "sequence_driver_exit_at_review": 0,
+  "publication_exit": 0,
+  "reviewer_subject_or_compiler_or_browser_execution": false,
+  "established_blockers": []
+}

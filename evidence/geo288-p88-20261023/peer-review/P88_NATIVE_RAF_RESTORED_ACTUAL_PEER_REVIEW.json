@@ -1,0 +1,960 @@
+{
+  "schema": "p88-native-raf-restored-actual-peer-review/1",
+  "source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "actual_memory_P88_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+  "original_exits": [
+    0,
+    0,
+    0
+  ],
+  "phase_judgment": "valid_restored_control_original_P88_completed0",
+  "footer": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_GRID_SYSTEM_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19803/",
+      "feedbackDirectory": "/tmp/g288p88r/restored/tmp/workflow/grid/geometry-integration-feedback",
+      "browserProfile": "/tmp/g288p88r/restored/tmp/workflow/grid/geometry-cdp-ui2Z0h",
+      "cdpPort": 9722,
+      "browserPid": 1246299
+    },
+    "firstTransportFailure": null,
+    "firstNetworkFailure": null,
+    "completed": true,
+    "passedAssertions": 143,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "P88": 143
+    },
+    "goldenCompare": "not compared (partial mode)",
+    "uncaughtBrowserExceptions": 0,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  },
+  "source_before": {
+    "label": "restored-before",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "source_after": {
+    "label": "restored-after",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "native_callback": {
+    "native_id": 1663,
+    "registration_stack": "Error: P88 native rAF registration\n    at rafWrapper (eval at <anonymous> (:1:144), <anonymous>:114:22)\n    at renderFaceInspector (http://127.0.0.1:19803/app.js:8758:5)\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:202:24)\n    at paintQuery (http://127.0.0.1:19803/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19803/grid-rule-lines.js:106:7)",
+    "callback_source": "() => {\n      if (fe.gridPreviewSeq !== seq || pane.dataset.bid !== String(bid) ||\n          parent.scrollTop !== scroll || pane.scrollTop !== ownScroll) return;\n      parent.scrollTop = saved.scroll; pane.scrollTop = saved.ownScroll;\n    }",
+    "original_request_animation_frame_source": "function requestAnimationFrame() { [native code] }",
+    "original_cancel_animation_frame_source": "function cancelAnimationFrame() { [native code] }",
+    "original_request_animation_frame_native": true,
+    "original_cancel_animation_frame_native": true,
+    "callback_source_matches": true,
+    "renderer": 95,
+    "native_dispatch_count": 1,
+    "this_is_window": true,
+    "native_args": [
+      164500.45
+    ],
+    "cancelled": false,
+    "original_measure_evaluations": 1,
+    "callback_completed": true
+  },
+  "original_measure": {
+    "x": 293.75,
+    "y": 627.5,
+    "w": 134.5,
+    "h": 44,
+    "hit": true,
+    "hitElement": "SELECT#refGuideMode",
+    "disabled": false
+  },
+  "first_actual_mouse_requests": [
+    {
+      "kind": "cdp-mouse-request",
+      "utc": "2026-10-23T12:51:51.933Z",
+      "monotonic_ns": "103486962572193",
+      "socket_id": 1,
+      "id": 12176,
+      "method": "Input.dispatchMouseEvent",
+      "params": {
+        "type": "mousePressed",
+        "x": 293.75,
+        "y": 602.5,
+        "button": "left",
+        "clickCount": 1
+      },
+      "session_id": null,
+      "browser_snapshot": null,
+      "browser_snapshot_note": "Real browser processing before/after is recorded by DOM capture/bubble events; no added CDP evaluation."
+    },
+    {
+      "kind": "cdp-mouse-request",
+      "utc": "2026-10-23T12:51:51.944Z",
+      "monotonic_ns": "103486973489567",
+      "socket_id": 1,
+      "id": 12177,
+      "method": "Input.dispatchMouseEvent",
+      "params": {
+        "type": "mouseReleased",
+        "x": 293.75,
+        "y": 602.5,
+        "button": "left",
+        "clickCount": 1
+      },
+      "session_id": null,
+      "browser_snapshot": null,
+      "browser_snapshot_note": "Real browser processing before/after is recorded by DOM capture/bubble events; no added CDP evaluation."
+    }
+  ],
+  "observed_pointer_and_mouse_events": [
+    {
+      "serial": 7538,
+      "kind": "dom-pointerdown",
+      "epoch_ms": 1792759911935,
+      "monotonic_ms": 164670.39999999106,
+      "phase": "capture",
+      "trusted": true,
+      "target": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "related_target": null,
+      "x": 293.75,
+      "y": 602.5,
+      "button": 0,
+      "buttons": 1,
+      "hit": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "state": {
+        "inner_width": 390,
+        "pane": {
+          "token": 1,
+          "tag": "DIV",
+          "id": "faceInspectorContent",
+          "classes": "",
+          "parent_id": "",
+          "text": "✓建面→✓放置→3收進空間面 1已放置用途用途未指定外框尺寸1200 × 800 mm以下尺寸與面積為原面；草稿完成後更新。面積(扣孔)0.96 m²位置天花 z=0 · 放置標高 0 mm所屬空間尚"
+        },
+        "parent": {
+          "token": 2,
+          "tag": "ASIDE",
+          "id": "",
+          "classes": "inner-panel face-inspector-panel",
+          "parent_id": "faceWorkspaceLayout",
+          "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+        },
+        "pane_scroll_top": 0,
+        "parent_scroll_top": 25,
+        "pane_scroll_height": 686,
+        "parent_scroll_height": 797,
+        "grid_preview_seq": 126,
+        "active": {
+          "token": 5736,
+          "tag": "BUTTON",
+          "id": "refGuideCreate",
+          "classes": "btn",
+          "parent_id": "",
+          "text": "建立引用線"
+        },
+        "mode_node": {
+          "node": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          }
+        },
+        "ratio_node": {
+          "node": {
+            "token": 5738,
+            "tag": "SELECT",
+            "id": "refGuideRatio",
+            "classes": "",
+            "parent_id": "",
+            "text": "原值一半兩倍"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 643.4375,
+            "width": 134.5,
+            "height": 44,
+            "top": 643.4375,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          },
+          "label": {
+            "token": 5739,
+            "tag": "LABEL",
+            "id": "",
+            "classes": "",
+            "parent_id": "refGuideSourceFields",
+            "text": "來源比例原值一半兩倍"
+          },
+          "label_rect": {
+            "x": 226.5,
+            "y": 624.5,
+            "width": 134.5,
+            "height": 62.9375,
+            "top": 624.5,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          }
+        }
+      }
+    },
+    {
+      "serial": 7539,
+      "kind": "dom-mousedown",
+      "epoch_ms": 1792759911936,
+      "monotonic_ms": 164671.5,
+      "phase": "capture",
+      "trusted": true,
+      "target": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "related_target": null,
+      "x": 293,
+      "y": 602,
+      "button": 0,
+      "buttons": 1,
+      "hit": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "state": {
+        "inner_width": 390,
+        "pane": {
+          "token": 1,
+          "tag": "DIV",
+          "id": "faceInspectorContent",
+          "classes": "",
+          "parent_id": "",
+          "text": "✓建面→✓放置→3收進空間面 1已放置用途用途未指定外框尺寸1200 × 800 mm以下尺寸與面積為原面；草稿完成後更新。面積(扣孔)0.96 m²位置天花 z=0 · 放置標高 0 mm所屬空間尚"
+        },
+        "parent": {
+          "token": 2,
+          "tag": "ASIDE",
+          "id": "",
+          "classes": "inner-panel face-inspector-panel",
+          "parent_id": "faceWorkspaceLayout",
+          "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+        },
+        "pane_scroll_top": 0,
+        "parent_scroll_top": 25,
+        "pane_scroll_height": 686,
+        "parent_scroll_height": 797,
+        "grid_preview_seq": 126,
+        "active": {
+          "token": 5736,
+          "tag": "BUTTON",
+          "id": "refGuideCreate",
+          "classes": "btn",
+          "parent_id": "",
+          "text": "建立引用線"
+        },
+        "mode_node": {
+          "node": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          }
+        },
+        "ratio_node": {
+          "node": {
+            "token": 5738,
+            "tag": "SELECT",
+            "id": "refGuideRatio",
+            "classes": "",
+            "parent_id": "",
+            "text": "原值一半兩倍"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 643.4375,
+            "width": 134.5,
+            "height": 44,
+            "top": 643.4375,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          },
+          "label": {
+            "token": 5739,
+            "tag": "LABEL",
+            "id": "",
+            "classes": "",
+            "parent_id": "refGuideSourceFields",
+            "text": "來源比例原值一半兩倍"
+          },
+          "label_rect": {
+            "x": 226.5,
+            "y": 624.5,
+            "width": 134.5,
+            "height": 62.9375,
+            "top": 624.5,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          }
+        }
+      }
+    },
+    {
+      "serial": 7540,
+      "kind": "dom-mousedown",
+      "epoch_ms": 1792759911936,
+      "monotonic_ms": 164671.5,
+      "phase": "bubble",
+      "trusted": true,
+      "target": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "x": 293,
+      "y": 602,
+      "state": {
+        "inner_width": 390,
+        "pane": {
+          "token": 1,
+          "tag": "DIV",
+          "id": "faceInspectorContent",
+          "classes": "",
+          "parent_id": "",
+          "text": "✓建面→✓放置→3收進空間面 1已放置用途用途未指定外框尺寸1200 × 800 mm以下尺寸與面積為原面；草稿完成後更新。面積(扣孔)0.96 m²位置天花 z=0 · 放置標高 0 mm所屬空間尚"
+        },
+        "parent": {
+          "token": 2,
+          "tag": "ASIDE",
+          "id": "",
+          "classes": "inner-panel face-inspector-panel",
+          "parent_id": "faceWorkspaceLayout",
+          "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+        },
+        "pane_scroll_top": 0,
+        "parent_scroll_top": 25,
+        "pane_scroll_height": 686,
+        "parent_scroll_height": 797,
+        "grid_preview_seq": 126,
+        "active": {
+          "token": 5736,
+          "tag": "BUTTON",
+          "id": "refGuideCreate",
+          "classes": "btn",
+          "parent_id": "",
+          "text": "建立引用線"
+        },
+        "mode_node": {
+          "node": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          }
+        },
+        "ratio_node": {
+          "node": {
+            "token": 5738,
+            "tag": "SELECT",
+            "id": "refGuideRatio",
+            "classes": "",
+            "parent_id": "",
+            "text": "原值一半兩倍"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 643.4375,
+            "width": 134.5,
+            "height": 44,
+            "top": 643.4375,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          },
+          "label": {
+            "token": 5739,
+            "tag": "LABEL",
+            "id": "",
+            "classes": "",
+            "parent_id": "refGuideSourceFields",
+            "text": "來源比例原值一半兩倍"
+          },
+          "label_rect": {
+            "x": 226.5,
+            "y": 624.5,
+            "width": 134.5,
+            "height": 62.9375,
+            "top": 624.5,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          }
+        }
+      }
+    },
+    {
+      "serial": 7543,
+      "kind": "dom-pointerup",
+      "epoch_ms": 1792759911945,
+      "monotonic_ms": 164680.89999999106,
+      "phase": "capture",
+      "trusted": true,
+      "target": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "related_target": null,
+      "x": 293.75,
+      "y": 602.5,
+      "button": 0,
+      "buttons": 0,
+      "hit": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "state": {
+        "inner_width": 390,
+        "pane": {
+          "token": 1,
+          "tag": "DIV",
+          "id": "faceInspectorContent",
+          "classes": "",
+          "parent_id": "",
+          "text": "✓建面→✓放置→3收進空間面 1已放置用途用途未指定外框尺寸1200 × 800 mm以下尺寸與面積為原面；草稿完成後更新。面積(扣孔)0.96 m²位置天花 z=0 · 放置標高 0 mm所屬空間尚"
+        },
+        "parent": {
+          "token": 2,
+          "tag": "ASIDE",
+          "id": "",
+          "classes": "inner-panel face-inspector-panel",
+          "parent_id": "faceWorkspaceLayout",
+          "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+        },
+        "pane_scroll_top": 0,
+        "parent_scroll_top": 25,
+        "pane_scroll_height": 686,
+        "parent_scroll_height": 797,
+        "grid_preview_seq": 126,
+        "active": {
+          "token": 5737,
+          "tag": "SELECT",
+          "id": "refGuideMode",
+          "classes": "",
+          "parent_id": "",
+          "text": "選擇位置來源進階：完整引用式"
+        },
+        "mode_node": {
+          "node": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          }
+        },
+        "ratio_node": {
+          "node": {
+            "token": 5738,
+            "tag": "SELECT",
+            "id": "refGuideRatio",
+            "classes": "",
+            "parent_id": "",
+            "text": "原值一半兩倍"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 643.4375,
+            "width": 134.5,
+            "height": 44,
+            "top": 643.4375,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          },
+          "label": {
+            "token": 5739,
+            "tag": "LABEL",
+            "id": "",
+            "classes": "",
+            "parent_id": "refGuideSourceFields",
+            "text": "來源比例原值一半兩倍"
+          },
+          "label_rect": {
+            "x": 226.5,
+            "y": 624.5,
+            "width": 134.5,
+            "height": 62.9375,
+            "top": 624.5,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          }
+        }
+      }
+    },
+    {
+      "serial": 7544,
+      "kind": "dom-mouseup",
+      "epoch_ms": 1792759911945,
+      "monotonic_ms": 164681,
+      "phase": "capture",
+      "trusted": true,
+      "target": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "related_target": null,
+      "x": 293,
+      "y": 602,
+      "button": 0,
+      "buttons": 0,
+      "hit": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "state": {
+        "inner_width": 390,
+        "pane": {
+          "token": 1,
+          "tag": "DIV",
+          "id": "faceInspectorContent",
+          "classes": "",
+          "parent_id": "",
+          "text": "✓建面→✓放置→3收進空間面 1已放置用途用途未指定外框尺寸1200 × 800 mm以下尺寸與面積為原面；草稿完成後更新。面積(扣孔)0.96 m²位置天花 z=0 · 放置標高 0 mm所屬空間尚"
+        },
+        "parent": {
+          "token": 2,
+          "tag": "ASIDE",
+          "id": "",
+          "classes": "inner-panel face-inspector-panel",
+          "parent_id": "faceWorkspaceLayout",
+          "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+        },
+        "pane_scroll_top": 0,
+        "parent_scroll_top": 25,
+        "pane_scroll_height": 686,
+        "parent_scroll_height": 797,
+        "grid_preview_seq": 126,
+        "active": {
+          "token": 5737,
+          "tag": "SELECT",
+          "id": "refGuideMode",
+          "classes": "",
+          "parent_id": "",
+          "text": "選擇位置來源進階：完整引用式"
+        },
+        "mode_node": {
+          "node": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          }
+        },
+        "ratio_node": {
+          "node": {
+            "token": 5738,
+            "tag": "SELECT",
+            "id": "refGuideRatio",
+            "classes": "",
+            "parent_id": "",
+            "text": "原值一半兩倍"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 643.4375,
+            "width": 134.5,
+            "height": 44,
+            "top": 643.4375,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          },
+          "label": {
+            "token": 5739,
+            "tag": "LABEL",
+            "id": "",
+            "classes": "",
+            "parent_id": "refGuideSourceFields",
+            "text": "來源比例原值一半兩倍"
+          },
+          "label_rect": {
+            "x": 226.5,
+            "y": 624.5,
+            "width": 134.5,
+            "height": 62.9375,
+            "top": 624.5,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          }
+        }
+      }
+    },
+    {
+      "serial": 7545,
+      "kind": "dom-mouseup",
+      "epoch_ms": 1792759911945,
+      "monotonic_ms": 164681,
+      "phase": "bubble",
+      "trusted": true,
+      "target": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "x": 293,
+      "y": 602,
+      "state": {
+        "inner_width": 390,
+        "pane": {
+          "token": 1,
+          "tag": "DIV",
+          "id": "faceInspectorContent",
+          "classes": "",
+          "parent_id": "",
+          "text": "✓建面→✓放置→3收進空間面 1已放置用途用途未指定外框尺寸1200 × 800 mm以下尺寸與面積為原面；草稿完成後更新。面積(扣孔)0.96 m²位置天花 z=0 · 放置標高 0 mm所屬空間尚"
+        },
+        "parent": {
+          "token": 2,
+          "tag": "ASIDE",
+          "id": "",
+          "classes": "inner-panel face-inspector-panel",
+          "parent_id": "faceWorkspaceLayout",
+          "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+        },
+        "pane_scroll_top": 0,
+        "parent_scroll_top": 25,
+        "pane_scroll_height": 686,
+        "parent_scroll_height": 797,
+        "grid_preview_seq": 126,
+        "active": {
+          "token": 5737,
+          "tag": "SELECT",
+          "id": "refGuideMode",
+          "classes": "",
+          "parent_id": "",
+          "text": "選擇位置來源進階：完整引用式"
+        },
+        "mode_node": {
+          "node": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          }
+        },
+        "ratio_node": {
+          "node": {
+            "token": 5738,
+            "tag": "SELECT",
+            "id": "refGuideRatio",
+            "classes": "",
+            "parent_id": "",
+            "text": "原值一半兩倍"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 643.4375,
+            "width": 134.5,
+            "height": 44,
+            "top": 643.4375,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          },
+          "label": {
+            "token": 5739,
+            "tag": "LABEL",
+            "id": "",
+            "classes": "",
+            "parent_id": "refGuideSourceFields",
+            "text": "來源比例原值一半兩倍"
+          },
+          "label_rect": {
+            "x": 226.5,
+            "y": 624.5,
+            "width": 134.5,
+            "height": 62.9375,
+            "top": 624.5,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          }
+        }
+      }
+    },
+    {
+      "serial": 7546,
+      "kind": "dom-click",
+      "epoch_ms": 1792759911945,
+      "monotonic_ms": 164681,
+      "phase": "capture",
+      "trusted": true,
+      "target": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "related_target": null,
+      "x": 293,
+      "y": 602,
+      "button": 0,
+      "buttons": 0,
+      "hit": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      },
+      "state": {
+        "inner_width": 390,
+        "pane": {
+          "token": 1,
+          "tag": "DIV",
+          "id": "faceInspectorContent",
+          "classes": "",
+          "parent_id": "",
+          "text": "✓建面→✓放置→3收進空間面 1已放置用途用途未指定外框尺寸1200 × 800 mm以下尺寸與面積為原面；草稿完成後更新。面積(扣孔)0.96 m²位置天花 z=0 · 放置標高 0 mm所屬空間尚"
+        },
+        "parent": {
+          "token": 2,
+          "tag": "ASIDE",
+          "id": "",
+          "classes": "inner-panel face-inspector-panel",
+          "parent_id": "faceWorkspaceLayout",
+          "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+        },
+        "pane_scroll_top": 0,
+        "parent_scroll_top": 25,
+        "pane_scroll_height": 686,
+        "parent_scroll_height": 797,
+        "grid_preview_seq": 126,
+        "active": {
+          "token": 5737,
+          "tag": "SELECT",
+          "id": "refGuideMode",
+          "classes": "",
+          "parent_id": "",
+          "text": "選擇位置來源進階：完整引用式"
+        },
+        "mode_node": {
+          "node": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          }
+        },
+        "ratio_node": {
+          "node": {
+            "token": 5738,
+            "tag": "SELECT",
+            "id": "refGuideRatio",
+            "classes": "",
+            "parent_id": "",
+            "text": "原值一半兩倍"
+          },
+          "rect": {
+            "x": 226.5,
+            "y": 643.4375,
+            "width": 134.5,
+            "height": 44,
+            "top": 643.4375,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          },
+          "label": {
+            "token": 5739,
+            "tag": "LABEL",
+            "id": "",
+            "classes": "",
+            "parent_id": "refGuideSourceFields",
+            "text": "來源比例原值一半兩倍"
+          },
+          "label_rect": {
+            "x": 226.5,
+            "y": 624.5,
+            "width": 134.5,
+            "height": 62.9375,
+            "top": 624.5,
+            "right": 361,
+            "bottom": 687.4375,
+            "left": 226.5
+          }
+        }
+      }
+    }
+  ],
+  "workflow_seconds": 312.2434390709968,
+  "original_ci_minutes": 15,
+  "verified_streams": [
+    {
+      "path": "steps/03.stdout",
+      "bytes": 253018,
+      "sha256": "15e3cf4ac943b3bad2724fb3bcc6afd8a574c7dc97c5af9c599a5f84e29cc505"
+    },
+    {
+      "path": "steps/03.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "steps/03.command.json",
+      "bytes": 701,
+      "sha256": "8cca7e8e9312f352d318c580da534dfdae700dab79237a6c6f31185332cb7eae"
+    }
+  ],
+  "original_workflow_receipt_sha256": "acf6a0b502103826a7ce798b61987dce7d7676deb7427ba8709ab80762bba880",
+  "original_trace_driver_sha256": "f668e565543b57e7dddf69b03b3e57f7b830a94ccd4b2d24e4b1b02629e1a500",
+  "large_trace_rehashed_by_peer": false,
+  "extract_sha256": "b487aeaaf5970fd7bb05b61ca6be2b1c1b3238d7c738c99e5e7b978276a79f31",
+  "scope_limit": "P88-only controlled partial；不代正式canvas/grid，不證自然紅唯一因果或使用者可見安全。",
+  "no_test_or_source_mutation_by_reviewer": true
+}

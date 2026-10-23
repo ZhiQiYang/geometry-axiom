@@ -1,0 +1,117 @@
+{
+  "schema": "p88-native-raf-fixed-raw-bindings/1",
+  "source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "original_exits": [
+    0,
+    0,
+    0
+  ],
+  "original_workflow_receipt_sha256": "e52ea128e99e04cf017de4533c18426e017c69d63a46335a6a8673451b85bdb0",
+  "verified_streams": [
+    {
+      "path": "steps/03.stdout",
+      "bytes": 252760,
+      "sha256": "d138ae8b7ff75ab1a3fb556d349962c9d398c58c3704f9f3d932d356e69f056e"
+    },
+    {
+      "path": "steps/03.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "steps/03.command.json",
+      "bytes": 687,
+      "sha256": "711ee80be312aa083e3afb50f965e7bf8a94395751d710853001a19e22497e4e"
+    }
+  ],
+  "footer": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_GRID_SYSTEM_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19801/",
+      "feedbackDirectory": "/tmp/g288p88r/fixed/tmp/workflow/grid/geometry-integration-feedback",
+      "browserProfile": "/tmp/g288p88r/fixed/tmp/workflow/grid/geometry-cdp-xNjZAd",
+      "cdpPort": 9720,
+      "browserPid": 1238850
+    },
+    "firstTransportFailure": null,
+    "firstNetworkFailure": null,
+    "completed": true,
+    "passedAssertions": 143,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "P88": 143
+    },
+    "goldenCompare": "not compared (partial mode)",
+    "uncaughtBrowserExceptions": 0,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  },
+  "memory_variants": {
+    "schema": "geo288-p88-executed-memory-candidate/1",
+    "variant": "fixed",
+    "source_repo": "/tmp/g288p88final-3d681636",
+    "source_files_modified": false,
+    "files": [
+      {
+        "source": "/tmp/g288p88final-3d681636/geometry-web/grid_rule_lines_test.js",
+        "original_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+        "executed_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+        "variant": "fixed",
+        "memory_only": true,
+        "source_file_modified": false,
+        "candidate": null
+      }
+    ]
+  },
+  "source_before": {
+    "label": "fixed-before",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "source_after": {
+    "label": "fixed-after",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "tools": [
+    {
+      "path": "preload.cjs",
+      "sha256": "22ee43ec0aa87f360bb4979d2432e7614216167a447b5b968f78da235ae4d599"
+    },
+    {
+      "path": "run_proof.py",
+      "sha256": "5f65f34561afda6411522c94c129a782afe406368a8a189691a6b334d9a4b2ef"
+    },
+    {
+      "path": "patch-loader.cjs",
+      "sha256": "50cad6541d3fb0b618f5c2a1d330776cd79d44484792619aa71e9acb55802395"
+    },
+    {
+      "path": "only-p88.cjs",
+      "sha256": "2d27545876240df34368c81e4f232ed604d5a3afe0b03d6f909f5d2859249ced"
+    },
+    {
+      "path": "capture.py",
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    }
+  ],
+  "native_callback_source_equals_F_original": true,
+  "workflow_seconds": 315.84353559999727,
+  "original_ci_minutes": 15,
+  "trace_original_driver_sha256": "7804288498ee8556082f59849ba989656c1eebdfe4e900b9e38938b8c3fd42bf",
+  "large_trace_rehashed_by_peer": false,
+  "original_trace_bytes": 89601264
+}

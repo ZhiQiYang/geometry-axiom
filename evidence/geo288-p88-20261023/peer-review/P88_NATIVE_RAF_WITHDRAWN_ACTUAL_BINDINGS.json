@@ -1,0 +1,100 @@
+{
+  "schema": "p88-native-raf-withdrawn-actual-bindings/1",
+  "source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "original_exits": [
+    1,
+    1,
+    1
+  ],
+  "phase_passed": true,
+  "original_workflow_receipt_sha256": "ec4b93795d57813c725b5791f13fc1f892880490d89a5c346f73204e8c29d7bc",
+  "verified_streams": [
+    {
+      "path": "steps/03.stdout",
+      "bytes": 126424,
+      "sha256": "7bb4441a83551933d7292014d01292f466b74a73034da769000482b458bb2cbb"
+    },
+    {
+      "path": "steps/03.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "steps/03.command.json",
+      "bytes": 704,
+      "sha256": "99e16613fb56f54c447012233c21b9f727f604a6d4ea951796e413a923f24625"
+    }
+  ],
+  "footer": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_GRID_SYSTEM_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19802/",
+      "feedbackDirectory": "/tmp/g288p88r/withdrawn/tmp/workflow/grid/geometry-integration-feedback",
+      "browserProfile": "/tmp/g288p88r/withdrawn/tmp/workflow/grid/geometry-cdp-HEfAHk",
+      "cdpPort": 9721,
+      "browserPid": 1243662
+    },
+    "firstTransportFailure": null,
+    "firstNetworkFailure": null,
+    "completed": false,
+    "passedAssertions": 99,
+    "failedAssertions": 0,
+    "fatal": "UI condition timed out at === P88. 原生來源子線顯示、完整引用、兩面及正式重開 ===: document.activeElement===document.querySelector(\"#refGuideMode\")",
+    "skipped": [],
+    "sections": {
+      "P88": 99
+    },
+    "currentSection": "P88",
+    "goldenCompare": "not compared (run did not complete)"
+  },
+  "memory_variants": {
+    "schema": "geo288-p88-executed-memory-candidate/1",
+    "variant": "withdrawn",
+    "source_repo": "/tmp/g288p88final-3d681636",
+    "source_files_modified": false,
+    "files": [
+      {
+        "source": "/tmp/g288p88final-3d681636/geometry-web/grid_rule_lines_test.js",
+        "original_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+        "executed_sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+        "variant": "withdrawn",
+        "memory_only": true,
+        "source_file_modified": false,
+        "candidate": "/tmp/g288p88r/tools/withdrawn-P88.withdrawn.js"
+      }
+    ]
+  },
+  "source_before": {
+    "label": "withdrawn-before",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "source_after": {
+    "label": "withdrawn-after",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "workflow_seconds": 236.97940701100742,
+  "over_ci_timeout": false,
+  "watchdog_expired": false,
+  "outer_timeout_expired": false,
+  "native_return_to_pointerdown_ms": 8.5,
+  "pointerdown_to_pointerup_ms": 2.7999999970197678,
+  "observed_pointer_event_snapshots_geometry_equal": true,
+  "input_geometry_limit": "這是捕捉事件的DOM幾何快照一致，並無paint/逐frame連續證據；不能斷言產品所有真用戶時序皆穩定。",
+  "original_trace_driver_sha256": "4a921056d3f3e7383054e20b942bb6b1175d0f6fa29f31001aba46d3c9d6e6f0",
+  "large_trace_rehashed_by_peer": false
+}

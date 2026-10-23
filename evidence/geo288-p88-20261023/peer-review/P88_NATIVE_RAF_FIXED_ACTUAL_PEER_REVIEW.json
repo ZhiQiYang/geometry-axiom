@@ -1,0 +1,303 @@
+{
+  "schema": "p88-native-raf-fixed-actual-peer-review/1",
+  "source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "reviewed_phase": "fixed",
+  "phase_verdict": "valid_fixed_control_original_P88_completed0_only_no_0_1_0_claim_yet",
+  "original_exits": [
+    0,
+    0,
+    0
+  ],
+  "scope": {
+    "mode": "partial",
+    "filters": [
+      "GEOMETRY_GRID_SYSTEM_ONLY"
+    ],
+    "modifiers": [],
+    "url": "http://127.0.0.1:19801/",
+    "feedbackDirectory": "/tmp/g288p88r/fixed/tmp/workflow/grid/geometry-integration-feedback",
+    "browserProfile": "/tmp/g288p88r/fixed/tmp/workflow/grid/geometry-cdp-xNjZAd",
+    "cdpPort": 9720,
+    "browserPid": 1238850
+  },
+  "original_assertions": {
+    "passed": 143,
+    "failed": 0,
+    "P88": 143,
+    "golden_compare": "not compared (partial mode)"
+  },
+  "source_before": {
+    "label": "fixed-before",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "source_after": {
+    "label": "fixed-after",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "actual_memory_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+  "native_callback": {
+    "native_id": 1648,
+    "registration_stack": "Error: P88 native rAF registration\n    at rafWrapper (eval at <anonymous> (:1:144), <anonymous>:114:22)\n    at renderFaceInspector (http://127.0.0.1:19801/app.js:8758:5)\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:202:24)\n    at paintQuery (http://127.0.0.1:19801/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19801/grid-rule-lines.js:106:7)",
+    "callback_source": "() => {\n      if (fe.gridPreviewSeq !== seq || pane.dataset.bid !== String(bid) ||\n          parent.scrollTop !== scroll || pane.scrollTop !== ownScroll) return;\n      parent.scrollTop = saved.scroll; pane.scrollTop = saved.ownScroll;\n    }",
+    "original_request_animation_frame_source": "function requestAnimationFrame() { [native code] }",
+    "original_cancel_animation_frame_source": "function cancelAnimationFrame() { [native code] }",
+    "original_request_animation_frame_native": true,
+    "original_cancel_animation_frame_native": true,
+    "callback_source_matches": true,
+    "renderer": 95,
+    "native_dispatch_count": 1,
+    "this_is_window": true,
+    "native_args": [
+      163545.184
+    ],
+    "cancelled": false,
+    "original_measure_evaluations": 1,
+    "callback_completed": true
+  },
+  "original_measure": {
+    "x": 293.75,
+    "y": 627.5,
+    "w": 134.5,
+    "h": 44,
+    "hit": true,
+    "hitElement": "SELECT#refGuideMode",
+    "disabled": false
+  },
+  "selected_measurement_id": 621,
+  "original_cdp_return_value_preserved": true,
+  "old_point_after_original_callback": {
+    "token": 5739,
+    "tag": "LABEL",
+    "id": "",
+    "classes": "",
+    "parent_id": "refGuideSourceFields",
+    "text": "來源比例原值一半兩倍"
+  },
+  "first_actual_mouse_request": {
+    "kind": "cdp-mouse-request",
+    "utc": "2026-10-23T12:42:39.223Z",
+    "monotonic_ns": "102934252382445",
+    "socket_id": 1,
+    "id": 12178,
+    "method": "Input.dispatchMouseEvent",
+    "params": {
+      "type": "mousePressed",
+      "x": 293.75,
+      "y": 602.5,
+      "button": "left",
+      "clickCount": 1
+    },
+    "session_id": null,
+    "browser_snapshot": null,
+    "browser_snapshot_note": "Real browser processing before/after is recorded by DOM capture/bubble events; no added CDP evaluation."
+  },
+  "first_trusted_mouse": {
+    "serial": 7539,
+    "kind": "dom-mousedown",
+    "epoch_ms": 1792759359226,
+    "monotonic_ms": 163734.70000000298,
+    "phase": "capture",
+    "trusted": true,
+    "target": {
+      "token": 5737,
+      "tag": "SELECT",
+      "id": "refGuideMode",
+      "classes": "",
+      "parent_id": "",
+      "text": "選擇位置來源進階：完整引用式"
+    },
+    "related_target": null,
+    "x": 293,
+    "y": 602,
+    "button": 0,
+    "buttons": 1,
+    "hit": {
+      "token": 5737,
+      "tag": "SELECT",
+      "id": "refGuideMode",
+      "classes": "",
+      "parent_id": "",
+      "text": "選擇位置來源進階：完整引用式"
+    },
+    "state": {
+      "inner_width": 390,
+      "pane": {
+        "token": 1,
+        "tag": "DIV",
+        "id": "faceInspectorContent",
+        "classes": "",
+        "parent_id": "",
+        "text": "✓建面→✓放置→3收進空間面 1已放置用途用途未指定外框尺寸1200 × 800 mm以下尺寸與面積為原面；草稿完成後更新。面積(扣孔)0.96 m²位置天花 z=0 · 放置標高 0 mm所屬空間尚"
+      },
+      "parent": {
+        "token": 2,
+        "tag": "ASIDE",
+        "id": "",
+        "classes": "inner-panel face-inspector-panel",
+        "parent_id": "faceWorkspaceLayout",
+        "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+      },
+      "pane_scroll_top": 0,
+      "parent_scroll_top": 25,
+      "pane_scroll_height": 686,
+      "parent_scroll_height": 797,
+      "grid_preview_seq": 126,
+      "active": {
+        "token": 5736,
+        "tag": "BUTTON",
+        "id": "refGuideCreate",
+        "classes": "btn",
+        "parent_id": "",
+        "text": "建立引用線"
+      },
+      "mode_node": {
+        "node": {
+          "token": 5737,
+          "tag": "SELECT",
+          "id": "refGuideMode",
+          "classes": "",
+          "parent_id": "",
+          "text": "選擇位置來源進階：完整引用式"
+        },
+        "rect": {
+          "x": 226.5,
+          "y": 580.5,
+          "width": 134.5,
+          "height": 44,
+          "top": 580.5,
+          "right": 361,
+          "bottom": 624.5,
+          "left": 226.5
+        }
+      },
+      "ratio_node": {
+        "node": {
+          "token": 5738,
+          "tag": "SELECT",
+          "id": "refGuideRatio",
+          "classes": "",
+          "parent_id": "",
+          "text": "原值一半兩倍"
+        },
+        "rect": {
+          "x": 226.5,
+          "y": 643.4375,
+          "width": 134.5,
+          "height": 44,
+          "top": 643.4375,
+          "right": 361,
+          "bottom": 687.4375,
+          "left": 226.5
+        },
+        "label": {
+          "token": 5739,
+          "tag": "LABEL",
+          "id": "",
+          "classes": "",
+          "parent_id": "refGuideSourceFields",
+          "text": "來源比例原值一半兩倍"
+        },
+        "label_rect": {
+          "x": 226.5,
+          "y": 624.5,
+          "width": 134.5,
+          "height": 62.9375,
+          "top": 624.5,
+          "right": 361,
+          "bottom": 687.4375,
+          "left": 226.5
+        }
+      }
+    }
+  },
+  "parsed_json_returned_unchanged": true,
+  "tool_review": "Actual22ee43 preload/5f65driver/50cadloader equals accepted a6f6 v2; original callback text equals fixedF app.js, source/helper hashes clean. Code review finds no artificial scroll/rect/value/focus write; original callback performs original guarded restoration.",
+  "chain_serials": [
+    {
+      "serial": 7522,
+      "kind": "query-response-held"
+    },
+    {
+      "serial": 7523,
+      "kind": "query-response-release-before-original-measure"
+    },
+    {
+      "serial": 7524,
+      "kind": "query-response-returned"
+    },
+    {
+      "serial": 7525,
+      "kind": "renderFaceInspector-enter",
+      "invocation": 95
+    },
+    {
+      "serial": 7528,
+      "kind": "native-restore-registered",
+      "native_id": 1648
+    },
+    {
+      "serial": 7529,
+      "kind": "renderFaceInspector-return",
+      "invocation": 95
+    },
+    {
+      "serial": 7533,
+      "kind": "native-restore-entry",
+      "native_id": 1648
+    },
+    {
+      "serial": 7534,
+      "kind": "measure"
+    },
+    {
+      "serial": 7535,
+      "kind": "native-restore-return",
+      "native_id": 1648
+    },
+    {
+      "serial": 7536,
+      "kind": "controlled-native-raf-measurement"
+    },
+    {
+      "serial": 7539,
+      "kind": "dom-mousedown"
+    }
+  ],
+  "paint_and_user_input_limits": {
+    "can_show": [
+      "原真query成功106 renderer產生同節點待原nativeRAF恢復的layout；該callback內前置唯讀量測真命中mode，callback後同舊點真命中ratio。",
+      "v5在任何本次pointer之前重新穩定/量測，再只發實際新座標602.5的pointer；本phase不是錯點後重點擊。",
+      "原143check未改，所有原native/workflow退出0，未靠工具前提缺失或跳過P88而綠。"
+    ],
+    "cannot_show": [
+      "沒有Paint/Compositor/螢幕frame證據，不能證中間DOM幾何從未可見。",
+      "不能排除真使用者點擊／按壓期間的產品layout不穩或宣稱真使用者無影響。",
+      "不能證原自然間歇紅的唯一query/callback因果；本case是明列的受控排程。",
+      "撤回/恢復未由此fixed單phase證成，需待其各自終態獨立核原predicate與輸入事件。"
+    ]
+  },
+  "latest_review_reference": {
+    "handoff_sha": "acd1289228d490c68a139cf17e02fdc1f3cb247c",
+    "review_head": "ee28481",
+    "review_utc": "2026-10-23T12:35:32Z"
+  },
+  "raw_integrity_scope": {
+    "bindings_report_sha256": "568506d950ead9faf2490fcf78dbf53441323c3e52b10bef9e828681b38dfa4a",
+    "extract_sha256": "28af8c65828ba2938eef0b38e96099bdf9829837c497c7921242a027ba35de01",
+    "trace_driver_sha256": "7804288498ee8556082f59849ba989656c1eebdfe4e900b9e38938b8c3fd42bf",
+    "trace_bytes": 89601264,
+    "large_trace_rehashed_by_peer": false,
+    "streams_hashes_independently_verified": true
+  },
+  "no_tests_or_source_mutations_by_reviewer": true
+}

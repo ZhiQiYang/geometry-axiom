@@ -37,3 +37,9 @@ UI condition timed out at === P88. 原生來源子線顯示、完整引用、兩
 
 - 12:38:51 UTC：公開 F `3d681636902371ecc528b20f51eea33e272581c9` 的三次完整 canvas 全部完成，exit 0／0／0；每輪 full 2267／0、P88=143、P73=69、golden matched、skip=[]；1741.884308179011／1748.520241596998／1765.1202577359945 秒，全部在原 35 分鐘內。sequence driver exit 0，來源前後同 SHA、空 status、同 index。完整 step 指令／stdout／stderr、收據與 outer 已收在 final-canvas-three/；root 另封存 workflow optional artifacts。
 - 12:38:58 UTC：原等待器自動啟動固定 F 的 native-rAF 三階段反證，PID 1238147，輸出 /tmp/g288p88r；目前 fixed 階段執行中，尚無反證結論。原真 query 未復現診斷仍完整保留，不因正式三輪綠而改寫。封存器與 peer 已備妥於 native-raf-archiver-preparation/。
+
+- 12:53:28 UTC：公開 F `3d681636902371ecc528b20f51eea33e272581c9` 的新 native-rAF 受控反證全部終態。fixed／withdrawn／restored 原 outer、workflow、Node 各為 0／1／0；總 driver、outer、launcher 都為 0。固定與恢復各完成原 P88 143 斷言；撤回僅 P88 修正後，以原 `document.activeElement===document.querySelector("#refGuideMode")` 精確焦點 predicate 失敗，並非工具預條件或 CI 超時。三階段前提皆有效，source／index 前後相同乾淨。此為只跑 P88 的受控診斷，不冒正式 grid。
+- 原量測真命中 mode 的 y=627.5，原 query renderer 登錄的真 native scroll-restore callback 一次完成後，舊點已命中 ratio label。撤回版原樣送出 y=627.5，焦點停在 ratio；修正版在該次唯一真實點擊前重新量測，使用 y=602.5 命中 mode。相同既有 query／原 callback，沒有手寫 scroll、rect、focus 或值，也沒有錯點後再次點擊補救。原 25 秒、12 次嘗試、斷言及 golden 不變。
+- 12:55 UTC：完整原件封存完成，`native-raf-result/NATIVE_RAF_RAW.tar.gz` 22,446,502 bytes，SHA256 `3f107c0424c62844eaeac3ab6086ea75b7ebc6cc3c9e829dd61c34eedcb52e4a`；349 檔逐一 roundtrip bytes/hash 全相同。封包含各 phase 指令／環境／stdout／stderr／退出碼／SHA／trace 與全部凍結工具。各 phase/tmp 整樹（編譯產物、profile、cache、feedback）明列排除，原磁碟未刪。封存器 exit 0。
+- 獨立對抗審已核 fixed／withdrawn／restored 的原 predicate、原座標、真 pointer、143 斷言、來源與時限；另附產品／測試歸因審查。新 F 正式 canvas 連續三輪 0／0／0 與兩位代理封包審查完整收錄。舊真 query 控制 1／1／1、總 driver 2 的無效反證仍原樣保留。
+- 限制：本控制直接驗 measure→原 restore→click，沒有 Paint/compositor 畫面證據，也未窮盡 pointerdown→query/restore→pointerup。既有資料未建立新的產品交互紅燈；不能宣稱真人不受影響，亦不能把本次 query 回填成歷史自然紅唯一原因。最新 head ee28481 審查的同 F 其餘項目由主代理接續，這份子代理證據不宣稱 #288 全綠。未另開瀏覽器，heavy 槽已交回主代理。

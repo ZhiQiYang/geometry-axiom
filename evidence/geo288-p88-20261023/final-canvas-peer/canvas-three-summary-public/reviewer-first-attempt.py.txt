@@ -1,0 +1,99 @@
+"""Read-only audit of the already-published three-canvas terminal summary."""
+import datetime
+import hashlib
+import io
+import json
+from pathlib import Path
+import subprocess
+import tarfile
+
+B = Path('/workspace/geo288-main-merge-20261023')
+PREP = Path('/workspace/geo299316-refresh-20261023/p88-input-closure-review')
+GIT = '/tmp/g261-next299316'
+F = '3d681636902371ecc528b20f51eea33e272581c9'
+E = 'fdf731e28257c50873cb38e030eed273eeee97fc'
+PREFIX = 'evidence/geo261-final-3d681636/'
+OUT = PREP / 'canvas-three-summary-public'
+OUT.mkdir(exist_ok=False)
+digest = lambda raw: hashlib.sha256(raw).hexdigest()
+
+
+def need(ok, message):
+    if not ok:
+        raise RuntimeError(message)
+
+
+def git(*args):
+    return subprocess.check_output(['git', '-C', GIT, *args])
+
+
+label = 'p88-final-canvas-three-summary'
+archive_name = label + '-01.tar.gz'
+inv = json.loads(git('show', E + ':' + PREFIX + 'raw/' + archive_name + '.inventory.json'))
+blob = git('show', E + ':' + PREFIX + 'raw/' + archive_name)
+need(len(blob) == inv['bytes'] and digest(blob) == inv['sha256'], 'Summary Git archive hash mismatch')
+local = Path('/workspace/geometry-axiom') / PREFIX
+need((local / 'raw' / archive_name).read_bytes() == blob, 'Local/public archive mismatch')
+declared = {row['path']: row for row in inv['members']}
+need(len(declared) == len(inv['members']), 'Duplicate declared members')
+members = {}
+with tarfile.open(fileobj=io.BytesIO(blob), mode='r|gz') as archive:
+    for member in archive:
+        need(member.isfile() and member.name in declared and member.name not in members, 'Unexpected summary member')
+        raw = archive.extractfile(member).read()
+        pin = declared[member.name]
+        need(len(raw) == pin['bytes'] and digest(raw) == pin['sha256'], 'Summary member hash mismatch')
+        need(raw == (B / 'p88-final-sequence-publication/final-summary' / member.name.removeprefix('summary/')).read_bytes(), 'Summary member differs from original snapshot')
+        members[member.name] = raw
+need(set(members) == set(declared), 'Missing summary member')
+need(json.loads(git('show', E + ':' + PREFIX + 'raw/' + label + '-excluded.json')) == [], 'Summary exclusions are not empty')
+public = git('show', E + ':' + PREFIX + 'receipts/' + label + '.json')
+need(public == members['summary/sequence-receipt.json'] == (B / 'p88-priority/final-3d681636/sequence-receipt.json').read_bytes(), 'Summary public/snapshot/original differs')
+s = json.loads(public)
+need(s['sha'] == F and s['source_before'] == s['source_after'] and s['source_before']['head'] == F and s['source_before']['status'] == '', 'Summary execution/source identity differs')
+need(s['all_three_completed'] is True and s['all_receipts_verified'] is True and s['all_three_accepted'] is True and s['driver_exit_code'] == 0 and s['errors'] == [], 'Sequence not truly accepted')
+need(s['python_optimize_flag'] == 0 and s['launcher_environment']['NODE_OPTIONS'] is None and s['launcher_environment']['PYTHONOPTIMIZE'] is None, 'Original no-opt environment differs')
+need(len(s['runs']) == 3 and [r['index'] for r in s['runs']] == [1, 2, 3], 'Not exactly original three rounds')
+for relative, expected in s['unchanged_workflow_and_golden'].items():
+    need(digest(git('show', F + ':' + relative)) == expected, 'Original workflow/golden changed')
+need(digest(git('show', F + ':geometry-web/grid_rule_lines_test.js')) == s['p88_source_sha256'], 'P88 source hash mismatch')
+need(s['source_after']['index'] == digest(members['summary/after-index.stdout']), 'Summary after index hash mismatch')
+need(members['summary/after-head.stdout'].decode().strip() == F and members['summary/after-status.stdout'] == b'', 'Summary after head/status mismatch')
+for name in ['head', 'index', 'status']:
+    cmd = json.loads(members['summary/after-' + name + '.command.json'])
+    need(cmd['exit'] == 0, 'Summary original after command nonzero')
+rounds = []
+for index, row in enumerate(s['runs'], 1):
+    pub = json.loads((B / 'p88-final-sequence-publication' / ('run-' + str(index) + '-publication.json')).read_bytes())
+    prior = json.loads((PREP / ('canvas-run' + str(index) + '-public') / 'CHECKS.json').read_bytes())
+    need(row == pub['original_run'] and pub['publication_exit'] == 0, 'Summary row differs from published terminal round')
+    raw = git('show', E + ':' + PREFIX + 'receipts/p88-final-canvas-run-' + str(index) + '.json')
+    need(digest(raw) == row['receipt_sha256'] == prior['receipt_sha256'] and raw == Path(row['receipt']).read_bytes(), 'Summary original round receipt hash mismatch')
+    need(row['sha'] == prior['source_sha'] == F and pub['head_after'] == prior['evidence_sha'], 'Prior round evidence identity mismatch')
+    need(all(row[key] is True for key in ['process_completed', 'completed', 'accepted']), 'Summary round not accepted')
+    exits = [row[key] for key in ['launcher_exit', 'outer_exit', 'original_workflow_exit', 'original_node_exit']]
+    need(exits == prior['four_original_exits'] == [0, 0, 0, 0], 'Summary four exits mismatch')
+    c = row['cdp_result']
+    need(c['completed'] is True and c['passedAssertions'] == 2267 and c['failedAssertions'] == 0 and c['scope']['mode'] == 'full' and c['scope']['filters'] == c['scope']['modifiers'] == c['skipped'] == [] and c['goldenCompare'] == 'matched' and c['uncaughtBrowserExceptions'] == 1, 'Summary original full footer mismatch')
+    need(0 < row['seconds'] < 2100 and not row['over_ci_timeout'] and row['seconds'] == prior['seconds'], 'Summary timing mismatch')
+    need(row['started_utc'] < row['ended_utc'] <= s['ended_utc'], 'Summary terminal chronology mismatch')
+    if index > 1:
+        need(s['runs'][index - 2]['ended_utc'] < row['started_utc'], 'Rounds not serial')
+    rounds.append({'index': index, 'original_receipt_sha256': digest(raw), 'public_evidence_sha': pub['head_after'], 'four_exits': exits, 'seconds': row['seconds'], 'expected_exceptions': 1, 'prior_full_packet_peer_checks_sha256': digest((PREP / ('canvas-run' + str(index) + '-public') / 'CHECKS.json').read_bytes())})
+need(len({r['scratch'] for r in s['runs']}) == len({r['http_port'] for r in s['runs']}) == len({r['cdp_port'] for r in s['runs']}) == 3, 'Isolation names/ports overlap')
+pub = json.loads((B / 'p88-final-sequence-publication/summary-publication.json').read_bytes())
+need(pub == {'publication_exit': 0, 'head_after': E}, 'Summary publication exit/head mismatch')
+record = json.loads((B / 'p88-final-sequence-publication/summary-publisher/receipt.json').read_bytes())
+need(record['exit_code'] == 0 and record['sha'] == F, 'Original summary publisher exit/SHA mismatch')
+cmd = record['original_command_result']
+for stream in ['stdout', 'stderr']:
+    raw = (Path(cmd['directory']) / (stream + '.bin')).read_bytes()
+    need(len(raw) == cmd[stream + '_bytes'] and digest(raw) == cmd[stream + '_sha256'], 'Summary publisher original stream mismatch')
+need(git('rev-parse', E + '^').decode().strip() == rounds[2]['public_evidence_sha'], 'Summary parent is not run3 evidence')
+need(all(p.startswith(PREFIX) for p in git('diff', '--name-only', F, E).decode().splitlines()), 'Summary evidence changes product')
+remote = git('ls-remote', '--exit-code', 'origin', 'refs/heads/architecture/geo261-integration-20261016').decode().split()[0]
+if remote != E:
+    git('merge-base', '--is-ancestor', E, remote)
+result = {'schema': 'geo288-canvas-three-summary-public-peer-review/1', 'reviewed_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'source_sha': F, 'evidence_sha': E, 'remote_head_at_review': remote, 'summary_receipt_sha256': digest(public), 'archive_bytes': len(blob), 'archive_sha256': digest(blob), 'all_archive_members_verified': len(members), 'source_before_equals_after': True, 'all_three_completed': True, 'all_three_receipts_verified': True, 'all_three_accepted': True, 'sequence_driver_exit': 0, 'publication_exit': 0, 'rounds': rounds, 'ends_utc': s['ended_utc'], 'established_blockers': [], 'subject_execution': False, 'scope_limits': ['Independent evidence audit only; no new subject invocation.', 'Three original full canvas passes do not establish all remaining gates or prove the natural intermittent failure cause.']}
+(OUT / 'CHECKS.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps({'checks_sha256': digest((OUT / 'CHECKS.json').read_bytes()), 'members': len(members), 'evidence': E, 'remote': remote, 'all_three_accepted': True}, ensure_ascii=False))

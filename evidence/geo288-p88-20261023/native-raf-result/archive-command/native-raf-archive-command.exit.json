@@ -1,0 +1,30 @@
+{
+  "command": [
+    "env",
+    "-u",
+    "NODE_OPTIONS",
+    "-u",
+    "PYTHONOPTIMIZE",
+    "nice",
+    "-n",
+    "10",
+    "python3",
+    "-B",
+    "/workspace/geo288-main-merge-20261023/p88-priority/archive_native_raf_diagnostic.py"
+  ],
+  "cwd": "/workspace/geo288-main-merge-20261023/p88-priority",
+  "sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "archiver_sha256": "ae138971c626ceae6ff2417831ac817874888004d6f00b379ba96cd97fd4d78f",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "NODE_OPTIONS": null,
+    "PYTHONOPTIMIZE": null
+  },
+  "started_utc": "2026-10-23T12:55:20.554502+00:00",
+  "exit": 0,
+  "ended_utc": "2026-10-23T12:55:23.041194+00:00",
+  "stdout_sha256": "ba47918df693f7668251187eaaf31b8b40408359fa9bc01343248b7a0a59d9d7",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "geo288-canvas-three-summary-public-peer-review/1",
+  "reviewed_utc": "2026-10-23T12:41:29.812197+00:00",
+  "source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "evidence_sha": "fdf731e28257c50873cb38e030eed273eeee97fc",
+  "remote_head_at_review": "a385ccb10adcfbc1aeac146cba05fd59ae7cc60a",
+  "summary_receipt_sha256": "c8b61489ee2bdb6e7ff2ceb921163af02b90e346da5d273bb13b9cb8861f60d4",
+  "archive_bytes": 789363,
+  "archive_sha256": "4ba23d6e6cada73cbace936b9fb2db6db468fb7c6a892b21e7ff40aa0e031188",
+  "all_archive_members_verified": 10,
+  "source_before_equals_after": true,
+  "all_three_completed": true,
+  "all_three_receipts_verified": true,
+  "all_three_accepted": true,
+  "sequence_driver_exit": 0,
+  "publication_exit": 0,
+  "rounds": [
+    {
+      "index": 1,
+      "original_receipt_sha256": "594f637f2386d09702c9021d6828bc2ee4e032097713429cea5c5bbfa32b548f",
+      "public_evidence_sha": "21e62a2860516e5c284095197fd23b9cb5828387",
+      "four_exits": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "seconds": 1741.884308179011,
+      "expected_exceptions": 1,
+      "prior_full_packet_peer_checks_sha256": "453c146b88dc20104590c0dda51d5d3a191d8d54134f55df6732a25e3fa562a8"
+    },
+    {
+      "index": 2,
+      "original_receipt_sha256": "c850d8ad803ee3d16378beb8d9c3a95d79bbf8108b8d69bd32706f469e4a88c9",
+      "public_evidence_sha": "ee28481b1ba62885cc38e305ebf5c4e420c8b3dd",
+      "four_exits": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "seconds": 1748.520241596998,
+      "expected_exceptions": 1,
+      "prior_full_packet_peer_checks_sha256": "729b273a080312ad0873b74372e47f22989b259e9b7e0f71c0cce3644f9eabb4"
+    },
+    {
+      "index": 3,
+      "original_receipt_sha256": "6d2e5ac56d5976a7ccdb14936ecbe5559f651606344a440288afb70016ffcaa0",
+      "public_evidence_sha": "0a27637d646362ab20de49aa6621ae4fc0d01032",
+      "four_exits": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "seconds": 1765.1202577359945,
+      "expected_exceptions": 1,
+      "prior_full_packet_peer_checks_sha256": "74a8d5f01c0591aa0880b1f8d8d45d7f3598a9a1efe948428a06384e079e92c4"
+    }
+  ],
+  "ends_utc": "2026-10-23T12:38:51.680728+00:00",
+  "established_blockers": [],
+  "subject_execution": false,
+  "scope_limits": [
+    "Independent evidence audit only; no new subject invocation.",
+    "Three original full canvas passes do not establish all remaining gates or prove the natural intermittent failure cause."
+  ]
+}

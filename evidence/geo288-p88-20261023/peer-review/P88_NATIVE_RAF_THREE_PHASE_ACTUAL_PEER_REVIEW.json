@@ -1,0 +1,187 @@
+{
+  "schema": "p88-native-raf-three-phase-actual-peer-review/1",
+  "source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "terminal_receipt_sha256": "d80653fc15a3726a9a8bc115d556fbf8dd6c532e506dc49c09727323958fb5fa",
+  "ended_utc": "2026-10-23T12:53:27.980965+00:00",
+  "overall_original_driver_exit": 0,
+  "overall_original_outer_exit": 0,
+  "overall_launcher_exit": 0,
+  "original_control_sequence_result": [
+    0,
+    1,
+    0
+  ],
+  "judgment": "同一固定F下的預列原native-rAF controlled stale-coordinate反證0/1/0成立；僅接受這個具名受控機制，不外推產品對真人無layout問題或自然紅唯一因果。",
+  "phases": [
+    {
+      "phase": "fixed",
+      "original_exits": [
+        0,
+        0,
+        0
+      ],
+      "phase_control_valid": true,
+      "P88_checks": 143,
+      "completed": true,
+      "original_P88_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+      "first_post_measure_mouse": {
+        "type": "mousePressed",
+        "x": 293.75,
+        "y": 602.5,
+        "button": "left",
+        "clickCount": 1
+      },
+      "original_focus_fatal": null
+    },
+    {
+      "phase": "withdrawn",
+      "original_exits": [
+        1,
+        1,
+        1
+      ],
+      "phase_control_valid": true,
+      "P88_checks": 99,
+      "completed": false,
+      "original_P88_sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+      "first_post_measure_mouse": {
+        "type": "mousePressed",
+        "x": 293.75,
+        "y": 627.5,
+        "button": "left",
+        "clickCount": 1
+      },
+      "original_focus_fatal": "UI condition timed out at === P88. 原生來源子線顯示、完整引用、兩面及正式重開 ===: document.activeElement===document.querySelector(\"#refGuideMode\")"
+    },
+    {
+      "phase": "restored",
+      "original_exits": [
+        0,
+        0,
+        0
+      ],
+      "phase_control_valid": true,
+      "P88_checks": 143,
+      "completed": true,
+      "original_P88_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+      "first_post_measure_mouse": {
+        "type": "mousePressed",
+        "x": 293.75,
+        "y": 602.5,
+        "button": "left",
+        "clickCount": 1
+      },
+      "original_focus_fatal": null
+    }
+  ],
+  "source_before": {
+    "label": "before",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "source_after": {
+    "label": "after",
+    "head": "3d681636902371ecc528b20f51eea33e272581c9",
+    "status": "",
+    "index_sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d",
+    "p88_source_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "tools_and_snapshots_independently_verified": [
+    {
+      "source": "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/run_proof.py",
+      "snapshot": "/tmp/g288p88r/tools/run_proof.py",
+      "sha256": "5f65f34561afda6411522c94c129a782afe406368a8a189691a6b334d9a4b2ef"
+    },
+    {
+      "source": "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/capture.py",
+      "snapshot": "/tmp/g288p88r/tools/capture.py",
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "source": "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/trace-tools/preload.cjs",
+      "snapshot": "/tmp/g288p88r/tools/preload.cjs",
+      "sha256": "22ee43ec0aa87f360bb4979d2432e7614216167a447b5b968f78da235ae4d599"
+    },
+    {
+      "source": "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/trace-tools/patch-loader.cjs",
+      "snapshot": "/tmp/g288p88r/tools/patch-loader.cjs",
+      "sha256": "50cad6541d3fb0b618f5c2a1d330776cd79d44484792619aa71e9acb55802395"
+    },
+    {
+      "source": "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/only-p88.cjs",
+      "snapshot": "/tmp/g288p88r/tools/only-p88.cjs",
+      "sha256": "2d27545876240df34368c81e4f232ed604d5a3afe0b03d6f909f5d2859249ced"
+    },
+    {
+      "source": "/workspace/geo261-environment/run_workflow_round.py",
+      "snapshot": "/tmp/g288p88r/tools/run_workflow_round.py",
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "source": "/workspace/geo261-environment/reap_children.py",
+      "snapshot": "/tmp/g288p88r/tools/reap_children.py",
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "source": "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/P88.fixed.js",
+      "snapshot": "/tmp/g288p88r/tools/candidate-P88.fixed.js",
+      "sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52"
+    },
+    {
+      "source": "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/P88.withdrawn.patch",
+      "snapshot": "/tmp/g288p88r/tools/P88.withdrawn.patch",
+      "sha256": "c3a045aade62e5f56d08403f52f2652d80bcbc1cf00639165d56a2e2a3053e48"
+    },
+    {
+      "source": "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/P88.withdrawn.js",
+      "snapshot": "/tmp/g288p88r/tools/withdrawn-P88.withdrawn.js",
+      "sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c"
+    },
+    {
+      "source": "/workspace/geo288-main-merge-20261023/p88-priority/p88-native-raf-tools-v2/SOURCE_VARIANTS.json",
+      "snapshot": "/tmp/g288p88r/tools/CANDIDATE.original.json",
+      "sha256": "3a5f688d288646e67c868c63a43d747eaecf2de2afcc7dcd96e17bbf7338200f"
+    }
+  ],
+  "generated_tool_hash_count_verified": 7,
+  "all_same_preload_app_callback_measure": true,
+  "controlled_sequence": "原query成功106→原renderer95登錄app8758 native callback→callback入口前單次原measure627.5真hit mode→原callback恢復舊點真hit ratio→原p原樣回CDP；撤回直接用627.5錯點，固定/恢復原v5在首次target pointer前重測後用602.5命中mode。",
+  "input_timing_and_paint_limits": {
+    "observed": "withdrawn原callback完成8.5ms後才pointerdown；down/up約2.8ms內各DOM事件快照幾何相同，fixed/restored所記第一個target pointer/mouse快照也同mode穩定幾何。這證受控錯點是stale coordinate，不是本次已觀測的按壓中移位。",
+    "not_proven": [
+      "無Paint/Compositor/連續screenframe，不能證中間態未曾可見或所有使用者輸入交錯皆安全。",
+      "原F13自然1/0/0沒有pointertrace，不證本query為原自然紅唯一來源。",
+      "完整正式canvas/grid與其餘gate需各自原結果，此P88-only partial不取代。"
+    ],
+    "source_code_no_artificial_dom_write": "已核實際工具bytes與已peer v2相同，原callback文本同F；未發現工具人工scroll/rect/value/focus寫入，僅原callback執行原guarded scroll restore。"
+  },
+  "previous_invalid_experiment": "先前query-release三phase1/1/1、driver2與未成立位移原件保留，不被本輪改標綠。",
+  "source_scope": "source/index/head全程仍固定F；withdrawn只有記憶體P88 8106→c472，fixed/restored使用原8106，helper/app不改。",
+  "per_phase_peer_files": [
+    {
+      "path": "/tmp/geo323-merge-20261023/P88_NATIVE_RAF_FIXED_ACTUAL_PEER_REVIEW.json",
+      "sha256": "3ba14394658689f1dcf24b3225697973ee261ddfcc14360bedaf059617499ef8"
+    },
+    {
+      "path": "/tmp/geo323-merge-20261023/P88_NATIVE_RAF_WITHDRAWN_ACTUAL_PEER_REVIEW.json",
+      "sha256": "6d11f98f839ca07f68024aaafa96a4f2cca3ab12d1867cee17875c1c6b40ad47"
+    },
+    {
+      "path": "/tmp/geo323-merge-20261023/P88_NATIVE_RAF_RESTORED_ACTUAL_PEER_REVIEW.json",
+      "sha256": "fcf835c9e0e760dad11d10da23533f0de7a6fb18ae0fe4c691afa84451cd999e"
+    }
+  ],
+  "large_traces_not_rehashed_by_peer": true,
+  "original_driver_trace_hashes_preserved": {
+    "fixed": "7804288498ee8556082f59849ba989656c1eebdfe4e900b9e38938b8c3fd42bf",
+    "withdrawn": "4a921056d3f3e7383054e20b942bb6b1175d0f6fa29f31001aba46d3c9d6e6f0",
+    "restored": "f668e565543b57e7dddf69b03b3e57f7b830a94ccd4b2d24e4b1b02629e1a500"
+  },
+  "no_new_tests_or_source_mutation_by_reviewer": true
+}

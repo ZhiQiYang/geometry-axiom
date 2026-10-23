@@ -1,0 +1,267 @@
+{
+  "sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "latest_review_handoff_commit": "acd1289228d490c68a139cf17e02fdc1f3cb247c",
+  "latest_review_head": "ee28481",
+  "latest_review_time": "2026-10-23T12:35:32Z",
+  "source_hashes": {
+    "geometry-web/app.js": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1",
+    "geometry-web/grid-rule-lines.js": "0f554fc0f764e5092cb2681048bd74cb50d1c6870d706c4d68867a9b06d6bfda",
+    "geometry-web/grid_rule_lines_test.js": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52"
+  },
+  "fixed": {
+    "original_exit": 0,
+    "original_p88": 143,
+    "receipt_sha256": "e52ea128e99e04cf017de4533c18426e017c69d63a46335a6a8673451b85bdb0",
+    "before_query": {
+      "inner_width": 390,
+      "pane": {
+        "token": 1,
+        "tag": "DIV",
+        "id": "faceInspectorContent",
+        "classes": "",
+        "parent_id": "",
+        "text": "✓建面→✓放置→3收進空間面 1已放置用途用途未指定外框尺寸1200 × 800 mm以下尺寸與面積為原面；草稿完成後更新。面積(扣孔)0.96 m²位置天花 z=0 · 放置標高 0 mm所屬空間尚"
+      },
+      "parent": {
+        "token": 2,
+        "tag": "ASIDE",
+        "id": "",
+        "classes": "inner-panel face-inspector-panel",
+        "parent_id": "faceWorkspaceLayout",
+        "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+      },
+      "pane_scroll_top": 0,
+      "parent_scroll_top": 25,
+      "pane_scroll_height": 686,
+      "parent_scroll_height": 797,
+      "grid_preview_seq": 125,
+      "active": {
+        "token": 5695,
+        "tag": "BUTTON",
+        "id": "refGuideCreate",
+        "classes": "btn",
+        "parent_id": "",
+        "text": "建立引用線"
+      },
+      "mode_node": {
+        "node": {
+          "token": 5696,
+          "tag": "SELECT",
+          "id": "refGuideMode",
+          "classes": "",
+          "parent_id": "",
+          "text": "選擇位置來源進階：完整引用式"
+        },
+        "rect": {
+          "x": 226.5,
+          "y": 580.5,
+          "width": 134.5,
+          "height": 44,
+          "top": 580.5,
+          "right": 361,
+          "bottom": 624.5,
+          "left": 226.5
+        }
+      },
+      "ratio_node": {
+        "node": {
+          "token": 5697,
+          "tag": "SELECT",
+          "id": "refGuideRatio",
+          "classes": "",
+          "parent_id": "",
+          "text": "原值一半兩倍"
+        },
+        "rect": {
+          "x": 226.5,
+          "y": 643.4375,
+          "width": 134.5,
+          "height": 44,
+          "top": 643.4375,
+          "right": 361,
+          "bottom": 687.4375,
+          "left": 226.5
+        },
+        "label": {
+          "token": 5698,
+          "tag": "LABEL",
+          "id": "",
+          "classes": "",
+          "parent_id": "refGuideSourceFields",
+          "text": "來源比例原值一半兩倍"
+        },
+        "label_rect": {
+          "x": 226.5,
+          "y": 624.5,
+          "width": 134.5,
+          "height": 62.9375,
+          "top": 624.5,
+          "right": 361,
+          "bottom": 687.4375,
+          "left": 226.5
+        }
+      }
+    },
+    "original_measure": {
+      "x": 293.75,
+      "y": 627.5,
+      "w": 134.5,
+      "h": 44,
+      "hit": true,
+      "hitElement": "SELECT#refGuideMode",
+      "disabled": false
+    },
+    "before_restore": {
+      "selector": "#refGuideMode",
+      "nodeToken": 5737,
+      "rect": {
+        "x": 226.5,
+        "y": 605.5,
+        "width": 134.5,
+        "height": 44,
+        "top": 605.5,
+        "right": 361,
+        "bottom": 649.5,
+        "left": 226.5
+      },
+      "paneScroll": 0,
+      "parentScroll": 0,
+      "gridPreviewSeq": 126,
+      "active": {
+        "token": 5736,
+        "tag": "BUTTON",
+        "id": "refGuideCreate",
+        "classes": "btn",
+        "parent_id": "",
+        "text": "建立引用線"
+      },
+      "hit": {
+        "token": 5737,
+        "tag": "SELECT",
+        "id": "refGuideMode",
+        "classes": "",
+        "parent_id": "",
+        "text": "選擇位置來源進階：完整引用式"
+      }
+    },
+    "after_restore": {
+      "selector": "#refGuideMode",
+      "nodeToken": 5737,
+      "rect": {
+        "x": 226.5,
+        "y": 580.5,
+        "width": 134.5,
+        "height": 44,
+        "top": 580.5,
+        "right": 361,
+        "bottom": 624.5,
+        "left": 226.5
+      },
+      "paneScroll": 0,
+      "parentScroll": 25,
+      "gridPreviewSeq": 126,
+      "active": {
+        "token": 5736,
+        "tag": "BUTTON",
+        "id": "refGuideCreate",
+        "classes": "btn",
+        "parent_id": "",
+        "text": "建立引用線"
+      },
+      "hit": {
+        "token": 5739,
+        "tag": "LABEL",
+        "id": "",
+        "classes": "",
+        "parent_id": "refGuideSourceFields",
+        "text": "來源比例原值一半兩倍"
+      },
+      "hitAtOldPoint": {
+        "token": 5739,
+        "tag": "LABEL",
+        "id": "",
+        "classes": "",
+        "parent_id": "refGuideSourceFields",
+        "text": "來源比例原值一半兩倍"
+      }
+    },
+    "first_mouse": {
+      "kind": "cdp-mouse-request",
+      "utc": "2026-10-23T12:42:39.223Z",
+      "monotonic_ns": "102934252382445",
+      "socket_id": 1,
+      "id": 12178,
+      "method": "Input.dispatchMouseEvent",
+      "params": {
+        "type": "mousePressed",
+        "x": 293.75,
+        "y": 602.5,
+        "button": "left",
+        "clickCount": 1
+      },
+      "session_id": null,
+      "browser_snapshot": null,
+      "browser_snapshot_note": "Real browser processing before/after is recorded by DOM capture/bubble events; no added CDP evaluation."
+    },
+    "trusted_target": {
+      "token": 5737,
+      "tag": "SELECT",
+      "id": "refGuideMode",
+      "classes": "",
+      "parent_id": "",
+      "text": "選擇位置來源進階：完整引用式"
+    }
+  },
+  "withdrawn": {
+    "original_exit": 1,
+    "original_p88": 99,
+    "receipt_sha256": "ec4b93795d57813c725b5791f13fc1f892880490d89a5c346f73204e8c29d7bc",
+    "fatal": "UI condition timed out at === P88. 原生來源子線顯示、完整引用、兩面及正式重開 ===: document.activeElement===document.querySelector(\"#refGuideMode\")",
+    "original_measure": {
+      "x": 293.75,
+      "y": 627.5,
+      "w": 134.5,
+      "h": 44,
+      "hit": true,
+      "hitElement": "SELECT#refGuideMode",
+      "disabled": false
+    },
+    "first_mouse": {
+      "kind": "cdp-mouse-request",
+      "utc": "2026-10-23T12:47:46.449Z",
+      "monotonic_ns": "103241478006719",
+      "socket_id": 1,
+      "id": 11728,
+      "method": "Input.dispatchMouseEvent",
+      "params": {
+        "type": "mousePressed",
+        "x": 293.75,
+        "y": 627.5,
+        "button": "left",
+        "clickCount": 1
+      },
+      "session_id": null,
+      "browser_snapshot": null,
+      "browser_snapshot_note": "Real browser processing before/after is recorded by DOM capture/bubble events; no added CDP evaluation."
+    },
+    "trusted_target": {
+      "token": 5739,
+      "tag": "LABEL",
+      "id": "",
+      "classes": "",
+      "parent_id": "refGuideSourceFields",
+      "text": "來源比例原值一半兩倍"
+    },
+    "final_active": {
+      "token": 5738,
+      "tag": "SELECT",
+      "id": "refGuideRatio",
+      "classes": "",
+      "parent_id": "",
+      "text": "原值一半兩倍"
+    }
+  },
+  "restored_status": "Running at creation; no result inferred.",
+  "paint_or_compositor_frame_capture": false,
+  "historical_natural_failure_pointerdown_capture": false
+}
