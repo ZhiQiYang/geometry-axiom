@@ -1,17 +1,22 @@
-# GEO-300 排序與跨 suite 反證錨點進度
+# GEO-300 遮蓋索引、穩定排序與反證維護進度
 
-目前 S `ccfaf057088a80c7aad4049f1c67e5eedfc2fdec`，產品 bytes／expected 與 `cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041` 完全相同，只有 contact-sources placement-order tuple 從舊 insertion break 移到正常 comparator。原 case／具名 ASSERT／15 methods／11 controls／timeout不變；單leaf靜審15／0。
+Product SHA `ccfaf057088a80c7aad4049f1c67e5eedfc2fdec`。正常bounded/unique排序＋單一遮蓋面索引維持原幾何、順序、容量與duplicate/overflow後備；本批只有evidence，不再改來源。
 
-| 目前 S 的項目 | 結果 |
+| 目前原件／範圍 | 真結果 |
 | --- | --- |
-| 原三套34 methods／64 controls | UNRUN，等待root原100MiB／secondary槽授權 |
-| tuple回撤／恢復 | UNRUN；另用原受影響一方法／8控制 fixed0→舊tuple紅1→restore0，不能冒完整15方法或全部11控制 |
-| 16MiB／效能／512／完整native/browser/ledger/arch | 新S未跑／UNMEASURED／NOT READY |
+| 原wood-contact | 12 methods／41具名正常0/1/0；exit0、0skip；147build全0 |
+| 原contact-sources | 15 methods／11具名正常0/1/0；exit0、0skip；85build全0 |
+| 原ReadingA native | 7 methods／12具名正常0/1/0；exit0、0skip；86build全0 |
+| 三套合計 | 34 methods／64 controls／318builds全0；23:03:46.221263～23:04:07.906571Z；primary/reaper/launcher/host tool0，sourceclean；actual peer1222／0 |
+| tuple明確回撤恢復 | 原一method／8controls每phase，fixed0→舊tuplewithdraw1→restored0；23:04:13.900627～23:04:25.287954Z；77×3＝231build全0，outer0、HEAD/tree/index還原clean；actual peer693／0 |
+| 既定16MiB | 上述真測試全部維持原limit；未另量compiler frame或完整場景上限 |
+| whole-opt撤回／效能／P-189／512 | 8正例語意等價0/0/0仍UNRUN、不計killed；性能UNMEASURED、512未完成 |
+| 全native/browser/ledger/architecture | 本S UNRUN；NOT READY |
 
-前輪 Scc2 三套已22:47:26.381006～22:47:48.756991 UTC真終態：wood12/41 exit0，contact-sources15 exit1，ReadingA7/12 exit0；147＋85＋86＝318 builds全0，三套0skip，outer／primary／reaper／launcher全1，source HEAD/tree clean。唯一紅為舊placement-order反證還撤已被快路旁路的fallback，原native輸出 PASS ordering／exit0，故原meta-test正常失敗1；不是compile／crash／環境紅。原正常排序行為測項通過。
+舊 Scc2 三套 wood0／contact1／ReadingA0、318build0 的真紅與完整原件全保：contact-sources舊placement-order控制仍撤已旁路fallback，原native PASS ordering0導致原meta唯一failure1，不是compile/crash。只重錨tuple到正常comparator，保原ordering ASSERT／案例／全部function AST與時限；修前紅有限peer95／0。明確tuple撤回再次重現同一meta紅，恢復綠；此不是whole優化語意反證，也不冒完整15方法／11控制的三phase重跑。
 
-本批公開完整紅stderr、原inner/top receipts與單leaf patch／manifest／peer／正常push證據。其餘完整原streams／compiled C／logs仍原路徑保全，完整壓縮封包與actual/public peer待後續真正測試批次一併收，不宣稱已公開全raw。沒有覆寫本輪1。
+MEMBER_SORT_ACCEPTANCE_ORIGINALS_AND_PEER.tar.gz 保存1498原件／56,913,484B，加index共1499regular成員逐byte回讀。包含r1真紅、r2全三套、tuple三phase的完整指令／exit／streams／env／SHA／compiled C與build logs、before/after單leaf、靜審與actual peers及原metadata錯誤；舊raw不刪不覆。初sparse物化失敗、原stderr尾空白diffcheck2、reviewer初checker與出版hash參數錯誤均分類保留，沒有subject重跑洗白。
 
-歷史S1ee的33/56/302全0仍只屬原SHA；舊靜態172成員包與原實際366成員包全保。新S不繼承整體綠燈。正常unique bounded排序只改善該排序，duplicate/overflow平方後備、cut-list及call-growth仍在；無新容量／性能門檻。下一步修復後原三套一次重跑，另外留明確tuple撤回原meta紅／恢復綠證據，仍不改產品、公理、決策或全帳本。
+三套與tuple按rootgrant序列執行，每次fresh workspace>原100MiB，16MiB／child限／secondary／完整streams全原；沒有新checkout、無性能或全帳本。23:04:25終態已釋slot2。最外host tool exit依原API metadata，沒有獨立host OS capture；NativeBuild logs/events是完整解碼文字，不宣稱解碼前OS bytes，原c387 raw stdout/stderr完整保留。
 
-出版的 git diff --check 原exit2：只有完整原stderr第8行既有尾空白，原bytes照存。其餘精確排除此一raw路徑的staged檢查0；不是產品或測試斷言放寬。完整失敗stdout/exit原件保留。
+S1ee的33/56/302及Sc493的32/46/282維持歷史SHA；沒有移標。下一步公開包與正文獨立審查、再依root安排未跑的whole-opt語意等價、性能與其餘gates。正常排序與遮蓋查詢改善不等於整個collector/load已O(FlogF)；duplicate/overflow平方後備、cut-list與call-growth仍在，不改SSOT、決策或數值門檻。
