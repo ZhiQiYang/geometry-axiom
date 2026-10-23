@@ -15,4 +15,6 @@ grid/timber 原測試 SHA 為 `13d02c1db7022145a52ee063286a558e595eb212`，原 j
 
 本次尚未普通 merge #314，尚無新的產品／測試 SHA；native、六個 browser、專項、三條架構與突變 freshness／重產都沒有在新堆疊執行。未啟動重工作，避免與主代理 R3 工作互相干擾。待 #314 共用檔交棒後一般 merge，解真衝突，排定必要原測試及精確 0／1／0；完整帳本由主代理最後一次重產。
 
-對抗審查者為 #323 owner；這份準備收據的同儕審查仍待回覆。來源與正文分支僅一般 push，不 force push、不合併 PR、不改公理層或決策佇列。
+對抗審查者 #323 owner 已完成指定 metadata 審查，未發現確立阻擋；報告與兩份核對明細保存於 `peer-review/`。核對範圍包括 F5bf 到 Eprep 的非根 evidence 差異為空、十一份 handoff 原件、數字 ID 與十錨、F13 grid/timber 的三十六個小檔和 footer；未跑產品、未解大 raw tar，也沒有因此宣稱 #314 新修或新堆疊產品已審過。
+
+準備證據已一般推送 Eprep `a004e29a34b5fb880690e544057e90386e47e75a`；待合流正文已推 Dprep `f9ee52d12cb94055c330b37b3d77eb2768d12a96`。原 stage 因 sparse 的 exit1 保留，只以精確 `--sparse` staging 修正，後續 commit／push／ls-remote 均0。來源與正文分支不 force push、不合併 PR、不改公理層或決策佇列。`TEST_PLAN.md` 僅列合流後原命令，不是已執行證據。
