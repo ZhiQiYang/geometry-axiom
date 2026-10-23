@@ -197,6 +197,17 @@
         "raw/stage-stop-support-02.tar.gz",
         "raw/stage-stop-support-03.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T15:31:06.396376+00:00",
+      "label": "stage-stopped-handoff",
+      "result": "依使用者最新指示階段收尾並停止；各線來源、證據與正文已普通推送，NEXT列完整SHA。#288產品及驗收審查已接受，只剩live正文套用，仍非READY；#318三項oracle紅與#323負控制／性能／帳本紅如實保留。READY-TO-MERGE #331、READY-TO-MERGE #333，審查適用head及後續差異明列；未合併任何PR。",
+      "next": "交下一位先讀NEXT及各PROGRESS再fresh-fetch審查；本代理與子代理停止新工作、測試和監看。專案尚未全部完成。",
+      "archives": [],
+      "documents": [
+        "NEXT.md",
+        "HANDOFF_INDEX.json"
+      ]
     }
   ]
 }

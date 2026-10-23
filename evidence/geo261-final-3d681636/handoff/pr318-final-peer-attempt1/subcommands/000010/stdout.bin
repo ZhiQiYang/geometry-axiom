@@ -1,0 +1,451 @@
+{
+  "schema": "geo318-stage-handoff-current-state/1",
+  "utc": "2026-10-23T15:08:16.436095+00:00",
+  "product_sha": "ae74e51bba1efef48949c077635966273a9e8990",
+  "evidence_before_handoff": "c3c823bf773efca2079a8b4e27b28a9ddcbaf360",
+  "branch": "codex/issue318-reading-a-20261023",
+  "stop_reason": "User asked root to stop after this phase and hand over; only already-started quick-r2 was drained to terminal. No next stage/source fix authorized for this closeout.",
+  "commands": [
+    {
+      "label": "reader-generate",
+      "stage": "reader-generate",
+      "sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "original_exit": 0,
+      "passed": true,
+      "ended_utc": "2026-10-23T14:29:12.411216+00:00",
+      "receipt_sha256": "0d514a5bbdbc42d147e788aad94bdf07397640a2b9b6be1de8f075377c99be3f",
+      "original_stdout_sha256": "53d6d003d3f75754f0cc248f2af9b7daff71b5e6e8422fc17d1892f68f56af25",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_guards": [
+        {
+          "label": "before",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        },
+        {
+          "label": "after",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        }
+      ],
+      "reaper_terminal": {
+        "event": "完成",
+        "primary_returncode": 0,
+        "utc_epoch": 1792765752.347695
+      },
+      "true_error_lines": [],
+      "classification": "completed exit0"
+    },
+    {
+      "label": "reader-check",
+      "stage": "reader-check",
+      "sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "original_exit": 0,
+      "passed": true,
+      "ended_utc": "2026-10-23T14:29:13.906028+00:00",
+      "receipt_sha256": "65d7d9877ac6d754cace90e4b76c5db26430b3ec67dedc9e2792166926c4e763",
+      "original_stdout_sha256": "8242399cd57a459a15716cb6394bc1223b0ab8afa2b00683f78a852fa1ccbbcd",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_guards": [
+        {
+          "label": "before",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        },
+        {
+          "label": "after",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        }
+      ],
+      "reaper_terminal": {
+        "event": "完成",
+        "primary_returncode": 0,
+        "utc_epoch": 1792765753.8230283
+      },
+      "true_error_lines": [],
+      "classification": "completed exit0"
+    },
+    {
+      "label": "reader-unit",
+      "stage": "reader-unit",
+      "sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "original_exit": 0,
+      "passed": true,
+      "ended_utc": "2026-10-23T14:32:17.951350+00:00",
+      "receipt_sha256": "294f2a879c873190a98526eddcb9e76e5b82a1c6c645e3763001e06ea4752802",
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "13cb31bc1844885aacfa3514007c5c64c88f76336cad09973fbf8a84d30b22d7",
+      "source_guards": [
+        {
+          "label": "before",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        },
+        {
+          "label": "after",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        }
+      ],
+      "reaper_terminal": {
+        "event": "完成",
+        "primary_returncode": 0,
+        "utc_epoch": 1792765937.910551
+      },
+      "true_error_lines": [],
+      "classification": "completed exit0"
+    },
+    {
+      "label": "native-7",
+      "stage": "native-7",
+      "sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "original_exit": 0,
+      "passed": true,
+      "ended_utc": "2026-10-23T14:49:31.875109+00:00",
+      "receipt_sha256": "56cbd6907a60b95e50e80bfc9e518f76af84f991935d00397729761d6b9b7ab3",
+      "original_stdout_sha256": "110eefc57d969b8c513565188bdf846080da59e5710d80edad0af1b8a7da5500",
+      "original_stderr_sha256": "bd26ad022d388ea3c52ed381ba2a69897614be919a07cac9e5bde1f7c287809a",
+      "source_guards": [
+        {
+          "label": "before",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        },
+        {
+          "label": "after",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        }
+      ],
+      "reaper_terminal": {
+        "event": "完成",
+        "primary_returncode": 0,
+        "utc_epoch": 1792766971.8374171
+      },
+      "true_error_lines": [],
+      "classification": "completed exit0"
+    },
+    {
+      "label": "oracle-13",
+      "stage": "oracle-13",
+      "sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "original_exit": 0,
+      "passed": true,
+      "ended_utc": "2026-10-23T14:52:53.812862+00:00",
+      "receipt_sha256": "4e7c617a4dbea4d421461e45ce7efe8a434db005fae55fd800c121c93f56bf09",
+      "original_stdout_sha256": "65c3108cac0f2e5e1219ccde7c37e1fe2cb4324db879b55767dd1657df41ad9c",
+      "original_stderr_sha256": "147c0eb4a7ceca3a290bfe8695200c2e02d3677a532855bf3aa1e8ac89561de5",
+      "source_guards": [
+        {
+          "label": "before",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        },
+        {
+          "label": "after",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        }
+      ],
+      "reaper_terminal": {
+        "event": "完成",
+        "primary_returncode": 0,
+        "utc_epoch": 1792767173.777207
+      },
+      "true_error_lines": [],
+      "classification": "completed exit0"
+    },
+    {
+      "label": "oracle-mutants",
+      "stage": "oracle-mutants",
+      "sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "original_exit": 1,
+      "passed": false,
+      "ended_utc": "2026-10-23T14:53:27.753080+00:00",
+      "receipt_sha256": "7d2ca26d04e0733a33924e52e7ecee314a8d23cdbe7248865d1ee82e466c581b",
+      "original_stdout_sha256": "1e4a8e52f206a339c21cdc4c1f0d5a516498c45e7dfc08e7346f4b3f9c6b6e80",
+      "original_stderr_sha256": "b8097fac520c448204da0d59d6fda6bab76fa7948ca17e145b368b09bdacd76b",
+      "source_guards": [
+        {
+          "label": "before",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        },
+        {
+          "label": "after",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        }
+      ],
+      "reaper_terminal": {
+        "event": "完成",
+        "primary_returncode": 1,
+        "utc_epoch": 1792767207.7185516
+      },
+      "true_error_lines": [
+        "[沒抓到!] rc_through_reflex  預期 C8_I19_BOUNDARY_END      實得 ['C8_I22_NON_BOUNDARY_EXTENDS']  同上:凹角另一面的邊界材端面頂到沿牆料,核心 I19 不接受",
+        "[錯!] #318 缺陷 1 COLSTEP(3000) 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 12",
+        "[錯!] #318 缺陷 1 FZ9 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 12"
+      ],
+      "classification": "environment sparse missing PROPOSAL plus three real selftest regressions; original receipt preserved",
+      "environment_failure": "missing geometry-core/framing-template/PROPOSAL.md (sparse materialization only)"
+    },
+    {
+      "label": "oracle-mutants-materialized-r2",
+      "stage": "oracle-mutants",
+      "sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "original_exit": 1,
+      "passed": false,
+      "ended_utc": "2026-10-23T14:57:10.084875+00:00",
+      "receipt_sha256": "d3816950984805c23fad0b5646117098824adbe113974aca6740567b4046af74",
+      "original_stdout_sha256": "10742457c9a622ade715e9194feaa4498eb8f834fe1e2a90d1e7d9277efa5222",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_guards": [
+        {
+          "label": "before",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        },
+        {
+          "label": "after",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        }
+      ],
+      "reaper_terminal": {
+        "event": "完成",
+        "primary_returncode": 1,
+        "utc_epoch": 1792767430.0196962
+      },
+      "true_error_lines": [
+        "[沒抓到!] rc_through_reflex  預期 C8_I19_BOUNDARY_END      實得 ['C8_I22_NON_BOUNDARY_EXTENDS']  同上:凹角另一面的邊界材端面頂到沿牆料,核心 I19 不接受",
+        "[錯!] #318 缺陷 1 COLSTEP(3000) 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 12",
+        "[錯!] #318 缺陷 1 FZ9 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 12"
+      ],
+      "classification": "product/test semantic regressions remain after environment fix; no source fix attempted"
+    },
+    {
+      "label": "oracle-quick",
+      "stage": "oracle-quick",
+      "sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "original_exit": 1,
+      "passed": false,
+      "ended_utc": "2026-10-23T14:55:05.692678+00:00",
+      "receipt_sha256": "1bdcb1ed59eb1674aac103f5c40615f1b0f9a1af79e6add6d81550e634331eb2",
+      "original_stdout_sha256": "1e4a8e52f206a339c21cdc4c1f0d5a516498c45e7dfc08e7346f4b3f9c6b6e80",
+      "original_stderr_sha256": "b8097fac520c448204da0d59d6fda6bab76fa7948ca17e145b368b09bdacd76b",
+      "source_guards": [
+        {
+          "label": "before",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        },
+        {
+          "label": "after",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        }
+      ],
+      "reaper_terminal": {
+        "event": "完成",
+        "primary_returncode": 1,
+        "utc_epoch": 1792767305.6463609
+      },
+      "true_error_lines": [
+        "[沒抓到!] rc_through_reflex  預期 C8_I19_BOUNDARY_END      實得 ['C8_I22_NON_BOUNDARY_EXTENDS']  同上:凹角另一面的邊界材端面頂到沿牆料,核心 I19 不接受",
+        "[錯!] #318 缺陷 1 COLSTEP(3000) 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 12",
+        "[錯!] #318 缺陷 1 FZ9 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 12"
+      ],
+      "classification": "environment sparse missing PROPOSAL plus three real selftest regressions; original receipt preserved",
+      "environment_failure": "missing geometry-core/framing-template/PROPOSAL.md (sparse materialization only)"
+    },
+    {
+      "label": "oracle-quick-materialized-r2",
+      "stage": "oracle-quick",
+      "sha": "ae74e51bba1efef48949c077635966273a9e8990",
+      "original_exit": 1,
+      "passed": false,
+      "ended_utc": "2026-10-23T15:04:37.190628+00:00",
+      "receipt_sha256": "3edcf1815c707ef0936beada69f769deeb69b8e3a8b80a784893cc39f92c1f08",
+      "original_stdout_sha256": "0f54c2ae6604c0f6cbeca14296ae788135a07d5a7c27fec57b58633b78685a42",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_guards": [
+        {
+          "label": "before",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        },
+        {
+          "label": "after",
+          "head": "ae74e51bba1efef48949c077635966273a9e8990\n",
+          "head_exit": 0,
+          "status": "",
+          "status_exit": 0,
+          "cached": "",
+          "cached_exit": 0
+        }
+      ],
+      "reaper_terminal": {
+        "event": "完成",
+        "primary_returncode": 1,
+        "utc_epoch": 1792767877.1389737
+      },
+      "true_error_lines": [
+        "[沒抓到!] rc_through_reflex  預期 C8_I19_BOUNDARY_END      實得 ['C8_I22_NON_BOUNDARY_EXTENDS']  同上:凹角另一面的邊界材端面頂到沿牆料,核心 I19 不接受",
+        "[錯!] #318 缺陷 1 COLSTEP(3000) 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 12",
+        "[錯!] #318 缺陷 1 FZ9 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 12"
+      ],
+      "classification": "product/test semantic regressions remain after environment fix; no source fix attempted"
+    }
+  ],
+  "native_control_groups": 11,
+  "native_all_control_exits": [
+    0,
+    1,
+    0
+  ],
+  "native_actual_peer_report_sha256": "7a5c14b8c39be10aa38dde7846df618e7c9e0544e2c69ddd381816955dced2c9",
+  "reader_actual_public_peer_report_sha256": "f14236c0f1ea84c58ddda43a5b24793ccd7bbd9d98d2ea1f2032165f37e9516d",
+  "quick_scan_scope": {
+    "builds": 39850,
+    "scan_seconds_reported": 390,
+    "full_stage_wall_seconds": 414.3173597300047,
+    "rectangular_mm": "original quick LT_Y one dimensional per millimetre plus original two-dimensional critical bands",
+    "reflex_rooms": 579,
+    "reflex_layouts_each": 8,
+    "reflex_buildable": 4632,
+    "step_frozen_required": 528,
+    "step_frozen_missing": 0,
+    "step_frozen_nonbuildable": 0,
+    "step_mirror_frozen_required": 1056,
+    "step_mirror_frozen_missing": 0,
+    "step_mirror_frozen_nonbuildable": 0,
+    "full_1d_all8_layouts": false,
+    "overall_selftest_exit": 1
+  },
+  "true_red_items": [
+    {
+      "name": "rc_through_reflex",
+      "expected": "C8_I19_BOUNDARY_END",
+      "actual": [
+        "C8_I22_NON_BOUNDARY_EXTENDS"
+      ],
+      "classification": "existing original negative witness loses its expected I19 diagnostic; semantic cause not fixed or reclassified as pass"
+    },
+    {
+      "name": "COLSTEP(3000)",
+      "expected": "all original and vertical/horizontal mirrored eight layouts buildable",
+      "actual": "12 Y-axis layouts core_limited",
+      "classification": "product/test regression; no threshold/expected/golden changed"
+    },
+    {
+      "name": "FZ9",
+      "expected": "all original and vertical/horizontal mirrored eight layouts buildable",
+      "actual": "12 Y-axis layouts core_limited",
+      "classification": "product/test regression; no threshold/expected/golden changed"
+    }
+  ],
+  "environment_fixed": {
+    "missing_source_file": "geometry-core/framing-template/PROPOSAL.md",
+    "total_small_tracked_materialization_bytes": 321715,
+    "same_head_and_full_index_stage_bytes": true,
+    "clean_after": true
+  },
+  "transport_incident": "EXEC_TRANSPORT_INCIDENT.json, actual test survived and completed; no duplicate stage launched",
+  "not_run": [
+    "golden-source-proof original self-R3",
+    "standalone make_golden and byte-compare stage",
+    "CLI build",
+    "CLI placement-order diagnostic / loadfile/rebuild reachability",
+    "architecture_contract.py",
+    "test_architecture_contract.py",
+    "test_product_architecture.py",
+    "full project native/run_all",
+    "global mutation ledger regeneration",
+    "Linux architecture receipt regeneration",
+    "--full one-dimensional all-eight-layout sweep"
+  ],
+  "not_changed": [
+    "product/test source after ae74",
+    "SSOT/decision queue after fixed approved source",
+    "any assertion or golden expected",
+    "noWood reverse merge"
+  ],
+  "latest_review": {
+    "handoff_sha": "b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6",
+    "captured_utc": "2026-10-23T14:56:46Z",
+    "issue318_latest": "2026-10-23T14:47:42Z",
+    "README_custom_scope_pending": true
+  },
+  "active_test_pids": [],
+  "former_launcher_1350359": "zombie observed at15:06, no CPU/test child; old exec handle was lost, no active workload"
+}

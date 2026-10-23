@@ -1,0 +1,309 @@
+{
+  "schema": "geo318-phase-stop-delivery/1",
+  "utc": "2026-10-23T15:15:27.616381+00:00",
+  "S_product": "ae74e51bba1efef48949c077635966273a9e8990",
+  "E_evidence": "9c534879b05058d2d62d8082be76038605ef0268",
+  "D_prbody": "4e4e4f59cea41dbec018dd8779f2db190d320bd9",
+  "source_worktree": "/workspace/geo318-reading-a-work",
+  "bare_repository": "/workspace/geo318-reading-a-prep/meta.git",
+  "source_clean": true,
+  "unpushed_commits": false,
+  "source_uncommitted_changes": false,
+  "remote_refs": {
+    "refs/heads/codex/issue318-reading-a-20261023": "9c534879b05058d2d62d8082be76038605ef0268",
+    "refs/heads/codex/issue318-reading-a-20261023-prbody": "4e4e4f59cea41dbec018dd8779f2db190d320bd9"
+  },
+  "stage_receipts": {
+    "reader-generate": {
+      "exit": 0,
+      "passed": true,
+      "path": "/workspace/geo318-formal-ae74e51b-round1/reader-generate/receipt.json",
+      "sha256": "0d514a5bbdbc42d147e788aad94bdf07397640a2b9b6be1de8f075377c99be3f",
+      "ended_utc": "2026-10-23T14:29:12.411216+00:00"
+    },
+    "reader-check": {
+      "exit": 0,
+      "passed": true,
+      "path": "/workspace/geo318-formal-ae74e51b-round1/reader-check/receipt.json",
+      "sha256": "65d7d9877ac6d754cace90e4b76c5db26430b3ec67dedc9e2792166926c4e763",
+      "ended_utc": "2026-10-23T14:29:13.906028+00:00"
+    },
+    "reader-unit": {
+      "exit": 0,
+      "passed": true,
+      "path": "/workspace/geo318-formal-ae74e51b-round1/reader-unit/receipt.json",
+      "sha256": "294f2a879c873190a98526eddcb9e76e5b82a1c6c645e3763001e06ea4752802",
+      "ended_utc": "2026-10-23T14:32:17.951350+00:00"
+    },
+    "native-7": {
+      "exit": 0,
+      "passed": true,
+      "path": "/workspace/geo318-formal-ae74e51b-round1/native-7/receipt.json",
+      "sha256": "56cbd6907a60b95e50e80bfc9e518f76af84f991935d00397729761d6b9b7ab3",
+      "ended_utc": "2026-10-23T14:49:31.875109+00:00"
+    },
+    "oracle-13": {
+      "exit": 0,
+      "passed": true,
+      "path": "/workspace/geo318-formal-ae74e51b-round1/oracle-13/receipt.json",
+      "sha256": "4e7c617a4dbea4d421461e45ce7efe8a434db005fae55fd800c121c93f56bf09",
+      "ended_utc": "2026-10-23T14:52:53.812862+00:00"
+    },
+    "oracle-mutants": {
+      "exit": 1,
+      "passed": false,
+      "path": "/workspace/geo318-formal-ae74e51b-round1/oracle-mutants/receipt.json",
+      "sha256": "7d2ca26d04e0733a33924e52e7ecee314a8d23cdbe7248865d1ee82e466c581b",
+      "ended_utc": "2026-10-23T14:53:27.753080+00:00"
+    },
+    "oracle-mutants-materialized-r2": {
+      "exit": 1,
+      "passed": false,
+      "path": "/workspace/geo318-formal-ae74e51b-round1/oracle-mutants-materialized-r2/receipt.json",
+      "sha256": "d3816950984805c23fad0b5646117098824adbe113974aca6740567b4046af74",
+      "ended_utc": "2026-10-23T14:57:10.084875+00:00"
+    },
+    "oracle-quick": {
+      "exit": 1,
+      "passed": false,
+      "path": "/workspace/geo318-formal-ae74e51b-round1/oracle-quick/receipt.json",
+      "sha256": "1bdcb1ed59eb1674aac103f5c40615f1b0f9a1af79e6add6d81550e634331eb2",
+      "ended_utc": "2026-10-23T14:55:05.692678+00:00"
+    },
+    "oracle-quick-materialized-r2": {
+      "exit": 1,
+      "passed": false,
+      "path": "/workspace/geo318-formal-ae74e51b-round1/oracle-quick-materialized-r2/receipt.json",
+      "sha256": "3edcf1815c707ef0936beada69f769deeb69b8e3a8b80a784893cc39f92c1f08",
+      "ended_utc": "2026-10-23T15:04:37.190628+00:00"
+    }
+  },
+  "process_observation": {
+    "1350359": {
+      "exists": true,
+      "state": "Z",
+      "cmdline": ""
+    },
+    "1350362": {
+      "exists": false
+    },
+    "1350391": {
+      "exists": false
+    },
+    "1350392": {
+      "exists": false
+    }
+  },
+  "active_test_pids": [],
+  "slot2_released": true,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "environment": {
+        "GIT_OPTIONAL_LOCKS": null,
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback"
+      },
+      "stdout": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/1.stdout.bin",
+        "bytes": 41,
+        "sha256": "4889fdc8d1ef057ba9f941cc17dddbd9923ea69f265bb72c70e87e3fdf939277"
+      },
+      "stderr": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/1.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exit": 0,
+      "environment": {
+        "GIT_OPTIONAL_LOCKS": null,
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback"
+      },
+      "stdout": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/2.stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/2.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geo318-reading-a-work",
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "exit": 0,
+      "environment": {
+        "GIT_OPTIONAL_LOCKS": null,
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback"
+      },
+      "stdout": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/3.stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/3.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "--git-dir=/workspace/geo318-reading-a-prep/meta.git",
+        "rev-parse",
+        "refs/heads/codex/issue318-reading-a-20261023"
+      ],
+      "exit": 0,
+      "environment": {
+        "GIT_OPTIONAL_LOCKS": null,
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback"
+      },
+      "stdout": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/4.stdout.bin",
+        "bytes": 41,
+        "sha256": "989b99bfc8f2b44c772ac7680c8c2ac85b956c3b09e1606b6e7e8e63f3f5be5d"
+      },
+      "stderr": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/4.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "--git-dir=/workspace/geo318-reading-a-prep/meta.git",
+        "rev-parse",
+        "refs/heads/codex/issue318-reading-a-20261023-prbody"
+      ],
+      "exit": 0,
+      "environment": {
+        "GIT_OPTIONAL_LOCKS": null,
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback"
+      },
+      "stdout": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/5.stdout.bin",
+        "bytes": 41,
+        "sha256": "43c954402dfb4b810ab0e6e331528ba206c6d50e55fe9eb6caf276cd5947fbe5"
+      },
+      "stderr": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/5.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "--git-dir=/workspace/geo318-reading-a-prep/meta.git",
+        "ls-remote",
+        "--exit-code",
+        "origin",
+        "refs/heads/codex/issue318-reading-a-20261023",
+        "refs/heads/codex/issue318-reading-a-20261023-prbody"
+      ],
+      "exit": 0,
+      "environment": {
+        "GIT_OPTIONAL_LOCKS": null,
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback"
+      },
+      "stdout": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/6.stdout.bin",
+        "bytes": 179,
+        "sha256": "6dc96f10211cb094df7b66d54cdf1e3247091a56bb47bc212837c63fbe9e650d"
+      },
+      "stderr": {
+        "path": "/workspace/geo318-formal-ae74e51b-round1/delivery/6.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "files": {
+    "/workspace/geo318-formal-ae74e51b-round1/CURRENT_STATE.json": {
+      "bytes": 17249,
+      "sha256": "9d4bca8075e12b1cc4622531789dedfb479cfb0c1a2524dae792a74c0c968375"
+    },
+    "/workspace/geo318-formal-ae74e51b-round1/NEXT.md": {
+      "bytes": 2520,
+      "sha256": "93174998a3207ea4742ffb8e97313224bcd9db1191f232900f76b6a553b0822d"
+    },
+    "/workspace/geo318-formal-ae74e51b-round1/QUESTIONS_HANDOFF.md": {
+      "bytes": 1835,
+      "sha256": "146459b3dde05de0c6209cbfa95661bed3d14df550fb1e56dd6b5bfb1e17bc9a"
+    },
+    "/workspace/geo318-formal-ae74e51b-round1/PR_BODY.md": {
+      "bytes": 4797,
+      "sha256": "620f3fa648f8726ef819954902e3838a091298018e7400d5f5216827b7472169"
+    },
+    "/workspace/geo318-formal-ae74e51b-round1/EXEC_TRANSPORT_INCIDENT.json": {
+      "bytes": 1274,
+      "sha256": "eac039c3a48659d14e0a7d8408665bbd081ea1aac29863d227ef31e0ec9490c7"
+    },
+    "/workspace/geo318-formal-ae74e51b-round1/publication-stage-handoff/receipt.json": {
+      "bytes": 150267,
+      "sha256": "7f1dd858a1f519d5e0b042078caa58187bae2f7abeb8d3d1301074abbabbbb14"
+    },
+    "/workspace/geo318-formal-ae74e51b-round1/body-publication-handoff/receipt.json": {
+      "bytes": 14936,
+      "sha256": "89794c936d8280c5603fed15f0fdc7f725ba9c64c49fa9b1ffc168c387b70235"
+    },
+    "/workspace/geo318-formal-ae74e51b-round1/publication-native-oracle13/receipt.json": {
+      "bytes": 78781,
+      "sha256": "a25516ff35870f71778f977a7d74327b89990938360a36173d57641a398988d8"
+    },
+    "/workspace/geo318-reading-a-prep/formal-tools/publish_handoff_metadata.py": {
+      "bytes": 8302,
+      "sha256": "8cd0f199e9e2d4ff46931b895fdbf29c2cd04ee93791aad5f495f945c35f5649"
+    },
+    "/workspace/geo318-reading-a-prep/formal-tools/publish_handoff_body.py": {
+      "bytes": 3197,
+      "sha256": "c936d39d14fe83843cae97dc6798499e1796d8bf6c2baa4360a0575ee498c8e9"
+    }
+  },
+  "peer": {
+    "reader_actual_public": "accepted875checks0 f14236c0",
+    "native_actual": "accepted325checks0 7a5c14b8",
+    "native_oracle13_public": "pending separate reviewer report, no claim accepted",
+    "quick_result_peer": "pending separate reviewer metadata only, no re-execution"
+  },
+  "unrun": [
+    "CLI build/order/load/rebuild",
+    "golden-source-proof",
+    "standalone golden generator/bytecompare",
+    "architecture three originals",
+    "full project native/run_all",
+    "global mutation ledger",
+    "architecture derived receipt regeneration",
+    "--full all-eight 1D sweep"
+  ],
+  "prepared_only_unexecuted_tools": [
+    "run_stage_cli_v2.py SHA4d8bf50f48c3cd949b9e6785160f3427318839fcc02dda9cf2f463d17018b0e6"
+  ],
+  "stop": "No next stage/source change or test rerun after user phase-stop instruction."
+}

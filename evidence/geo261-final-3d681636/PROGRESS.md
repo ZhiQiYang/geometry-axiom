@@ -64,3 +64,5 @@
 
 - 2026-10-23T15:13:38.820480+00:00 — **stage-stop-support**：依使用者指示階段收尾；封存已完成環境維護原件、獨立對抗核對、API真Forbidden、僅保存的網路草稿與交接出版原件。產品F未變，沒有新測試或新修正；已停止各工作線後續stage。
   下一步：更新NEXT列每條線最終來源／證據／正文SHA、原紅與未跑項後停止，交下一位接手；#288唯一live正文動作仍未完成。原始資料：`raw/stage-stop-support-01.tar.gz`、`raw/stage-stop-support-02.tar.gz`、`raw/stage-stop-support-03.tar.gz`。
+
+- 2026-10-23T15:31:06.396376+00:00 — **stage-stopped-handoff**：已依使用者指示階段收尾並停止。接手入口：[NEXT.md](NEXT.md)，各線最終原件索引：[HANDOFF_INDEX.json](HANDOFF_INDEX.json)。#288只剩live正文，未標READY；#318／#323原紅及其餘未跑項如實保留。**READY-TO-MERGE #331**、**READY-TO-MERGE #333** 的審查適用head及限制詳見NEXT。未合併PR、未force push；專案未全部完成，不留背景測試或監看。
