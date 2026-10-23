@@ -5,7 +5,7 @@
 | 請求檔 | head | PR | 狀態 |
 |---|---|---|---|
 | geo260-ac23-proof-20261024.json | `codex/geo260-ac23-proof-20261024` | #342 | up to date (body be1f69dc) |
-| geo300-contact-index-20261024.json | `codex/geo300-contact-index-20261024` | #343 | body -> 6edbf62d |
+| geo300-contact-index-20261024.json | `codex/geo300-contact-index-20261024` | #343 | body -> 56ed8d00 |
 | geo300-prerequisites-20261024.json | `codex/geo300-prerequisites-20261024` | #341 | up to date (body ea1a153b) |
 | geo324-faces-20261024.json | `codex/geo324-faces-20261024` | #339 | up to date (body e2f4bc20) |
 | issue320-connection-recovery.json | `codex/issue320-connection-recovery-20261024` | #344 | up to date (body 8233916d) |
