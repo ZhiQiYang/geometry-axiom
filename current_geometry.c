@@ -6064,7 +6064,7 @@ static bool app_member_span_end_admission(void *user,const WoodMember *self,bool
     return app_reference_boundary_end_policy(context->world,context->placement,selected,self,along_v,
         start,end,cross_lo,cross_hi,which,faces,count,required,admission);
 }
-static SpanStatus resolve_auto_span_for_member(
+static SpanStatus resolve_auto_span(
     const World *world,
     const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,
@@ -6120,30 +6120,6 @@ static SpanStatus resolve_auto_span_for_member(
     if(scope)request.scope=*scope;
     request.self=self;
     return (SpanStatus)wood_member_resolve_span(&facts,&request,out_start,out_end,err,err_cap);
-}
-
-static SpanStatus resolve_auto_span(
-    const World *world,
-    const PlacementSurface *placement,
-    const SpaceBoundarySurface *boundary,
-    bool along_v,
-    Coord cross_lo,
-    Coord cross_hi,
-    bool has_contact,
-    Coord contact_lo,
-    Coord contact_hi,
-    bool has_through,
-    Coord through,
-    const StopFaceRef *between,
-    const SurfaceRegion2 *scope,
-    Coord *out_start,
-    Coord *out_end,
-    char *err,
-    size_t err_cap
-)
-{
-    return resolve_auto_span_for_member(world,placement,boundary,along_v,cross_lo,cross_hi,
-        has_contact,contact_lo,contact_hi,has_through,through,between,scope,out_start,out_end,err,err_cap,NULL);
 }
 
 /*

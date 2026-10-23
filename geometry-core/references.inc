@@ -560,7 +560,7 @@ static bool app_member_reference_evaluate_guide(void *user,size_t i)
 {AppMemberReferenceContext *c=user;return reference_eval_guide(c->evaluation,i);}
 static bool app_member_reference_span(void *user,uint32_t pid,const WoodMemberSpanRequest *r,Coord *start,Coord *end,char *err,size_t cap)
 {
-    AppMemberReferenceContext *c=user;(void)pid;return resolve_auto_span_for_member(c->world,&c->geometry->placement,c->geometry->boundary_view,r->along_v,r->cross_lo,r->cross_hi,
+    AppMemberReferenceContext *c=user;(void)pid;return resolve_auto_span(c->world,&c->geometry->placement,c->geometry->boundary_view,r->along_v,r->cross_lo,r->cross_hi,
         r->contact,r->contact_lo,r->contact_hi,r->through,r->through_at,r->between?r->stops:NULL,r->scoped?&r->scope:NULL,start,end,err,cap,r->self)==SPAN_OK;
 }
 static bool app_member_reference_primary(void *user,uint32_t pid,const WoodMember *member,bool along,char *err,size_t cap)
