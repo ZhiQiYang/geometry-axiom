@@ -49,3 +49,6 @@
 
 - 2026-10-23T14:03:44.248911+00:00 — **p88-final-p73-reviewed**：新F P73 controlled原fixed/withdrawn/restored退出0/1/0，driver/outer/top皆0；callback前predicate都true，撤回僅app唯一guard回到舊.hidden，恰一次真產品callback後原具名P73 assertion紅、exception0，放回綠。731完整runtime輸入同F；獨立原件與公開封包審查通過；範圍僅受控callback反證，不冒完整P73 workflow。
   下一步：完成同F oracle8phase與公開封包審查，更新唯一current-state正文；#323在自己分支繼續。。原始資料：`raw/p88-final-p73-reviewed-01.tar.gz`。
+
+- 2026-10-23T14:04:15.696891+00:00 — **p88-final-chromium154-reviewed**：新F Chromium154原fixed P73 69項partial真0，proof_expectation_matches=true，driver/outer/top皆0；84.124749832秒在原35分鐘內，exception/network/transport0，only GEOMETRY_UIUX_FIX_ONLY，原golden未比較。僅此fixed相容性子集，不冒154撤回反證/fullcanvas/舊產品曾綠。完整原命令streams在同F之前p88-final-p73-reviewed封包的immutable child E3f590c08內，這項另提供原receipt可直接連結。
+  下一步：完成同F oracle8phase與公開封包審查，更新唯一current-state正文；#323在自己分支繼續。。原始資料：`raw/p88-final-chromium154-reviewed-01.tar.gz`。
