@@ -24,6 +24,27 @@
       "path": "manifest-registration.tar.gz",
       "bytes": 117319,
       "sha256": "6f6a93c29839475119e55112f58a5de457b928815842cfdf9476fd01f86bccec"
+    },
+    {
+      "path": "assembly-repair.tar.gz",
+      "bytes": 45458279,
+      "sha256": "930ce579b4ec840dadeec35568e354cce883b703407348c550205ce471668d84"
+    },
+    {
+      "path": "environment-repair.tar.gz",
+      "bytes": 8180775,
+      "sha256": "969957faae6483b5180c75920ea72c751ec373f6f45d07bd0cb351e1f82bee40"
+    },
+    {
+      "path": "architecture-diagnostic.tar.gz",
+      "bytes": 103872,
+      "sha256": "05855d07d2e7c2f07e1f192a0b4f75f842cd8535277020f41c46b215de63deb0"
     }
-  ]
+  ],
+  "scopes": {
+    "candidate_reader": "P3=4f669733282613a6f1e4a627c448374716496daa, actualE=c0a2007898f544e658efa72b9b51528a03f7ce51",
+    "environment_node_graph": "detachedP2=291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+    "architecture": "P3 same manifest/source, actualE=9f634cd061eecb595e42d8362e88697cb6c6378e",
+    "assembly_wrapper": "original judges0/0/0; outer1 retained, separate exact2187-source classification0; not an overall formal pass"
+  }
 }

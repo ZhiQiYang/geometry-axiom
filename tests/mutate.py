@@ -35,7 +35,8 @@
     內容;全部 CRLF->LF)。它取代舊的 runner_sha256:裁判 = 判定邏輯 + 夾具,
     兩者任一改了,killed / survived 就不再是「這個裁判」下的判決。
     (equivalent 不是靠跑裁判得來的,不受 oracle 約束;retired 不帶來源類雜湊。)
-    bridge 裁判另外涵蓋指定方法、共用還原方法、tests/*.py 與根目錄場景；任何共用
+    bridge 裁判另外涵蓋指定方法、共用還原方法、tests/*.py、tests/*.c、
+    tests/fixtures/**/*.scene 與根目錄場景；任何共用
     harness 變更都使其過期，不能借核心場景裁判替預覽序列化背書。
   - 載入與彙總時,source_sha256、closure_sha256、mutant_sha256 任一與現況不符,
     killed / survived 的 oracle_sha256 與現行裁判不符,或根本沒帶雜湊 -> stale;

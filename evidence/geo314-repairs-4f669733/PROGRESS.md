@@ -11,9 +11,9 @@
 | reader 原51 | baseline51/51、恢復後51/51，全exit0無skip；原同步器check前後0。 |
 | reader撤回／恢復 | 唯一canonical換回舊bytes，原 `test_rebuild_is_byte_idempotent_and_keeps_reviews` 正常AssertionError：0→1→0；恢復後完整原51再綠。 |
 | Node環境retry（P2） | 三份既有ZIP由P2 exactblob補齊；原兩檔94/94、exit0無skip，原reaper完整回收。 |
-| ASM原完整tool、unit12、anchors3 | 三項原裁判全exit0；原3cases真exact-assertion killed、6controls正確not-killed、restored與baseline binary相同。外部錄製driver因同時更新tracked evidence/PROGRESS觸發寬clean guard真exit1；原1保留，來源閉包唯讀覆核另附，不把外層改綠。 |
-| graph5環境retry（P2） | 原完整5正在獨立P2副本執行；尚不宣稱通過。 |
-| 架構三條 | 真新manifest已機械登錄，原三裁判診斷待前項完成；四檔receipt重產屬後續。 |
+| ASM原完整tool、unit12、anchors3 | 三項原裁判全exit0；原3cases真exact-assertion killed、6controls正確not-killed、restored與baseline binary相同。外部錄製driver因同時更新tracked evidence/PROGRESS觸發寬clean guard真exit1，原1保留不改綠。另readonly classification真0：2187個archive原bytes／manifest／P3 blob／當下source完全相同，原raw hash核同；這不是外封裝整體通過。 |
+| graph5環境retry（P2） | 原完整5/5、exit0、fail/error/skip皆0；原contact負控真baseline→mutant拒→restore綠，64compile/link全0、191個實際build檔保存，contract與ledger都不變。 |
+| 架構三條 | 原scanner exit0、原test_architecture_contract 205/205 exit0、原test_product_architecture18/18 exit0；完整五roots／三standalone不縮，真P3 manifest使用於實際checkout E9f634cd0。四檔receipt重產仍屬ledger後續。 |
 
 ## 修正範圍與原raw
 
@@ -23,4 +23,6 @@ candidate witness仍先把operation全填A5，保真正padding、boundary id91�
 
 所有有子程序／負控制都包原 `/workspace/geo261-environment/reap_children.py`；本輪root明確允許與323非量測native並行，使用外部私鎖 `/workspace/geo314-work/private-diagnostic.lock`，不是R3正式量測鎖。canonical只經原同步器機械更新唯一檔，公理層／guide白話／決策佇列／BACKLOG bytes都逐P3 blob核驗不變。原指令、完整raw、環境、rc、真checkout／product SHA、來源／objects／binary／buildlog都在對應tar；PUBLICATION.json列逐包hash。
 
-下一步收齊ASM／graph／架構診斷；全部必要修正完成後固定乾淨source S、普通push，再整份原mutation ledger。完整native／browser／專項／效能仍屬root最終SHA驗收，不以本輪診斷取代。不force push、不合併。
+本輪所有原裁判診斷已終態；ASM外封裝1明確保留，最終F另有正式驗證。最後只補mutate.py總說明精確列出已實作的tests/*.c與巢狀scene oracle閉包，沒有改函式、判準或測試數；與本輪全證據一次固定乾淨source S並普通push，再以此完整40碼SHA整份原mutation ledger。S在ledger全終態前包含evidence都完全凍結。完整native／browser／專項／效能仍屬root最終SHA驗收，不以本輪診斷取代。不force push、不合併。
+
+主worktree四既有fixture已於E9f634cd0逐exactblob驗同（本來就存在），skipflags與trackedstatus完全未變；最終F仍需對最終blob重核，不借P2環境retry當正式F結果。新docstring只準確描述既有實際oracle，不放寬C／nestedfixture freshness。
