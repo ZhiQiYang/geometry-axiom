@@ -133,10 +133,10 @@ class ContactWorldBoundary(unittest.TestCase):
 
 STOP_FILTER = "if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;\n        const GeoRect2 *f=&fact->footprint;"
 CONTROLS = (
-    ("placement-order", "if(previous<=order)break;", "if(true)break;", "ordering", "placement-order-before-declaration"),
-    ("stable-ties", "if(previous<=order)break;", "if(previous<order)break;", "ordering", "placement-stable-equal-order-sides"),
+    ("placement-order", "return left<=right;", "return true;", "ordering", "placement-order-before-declaration"),
+    ("stable-ties", "return left<=right;", "return left<right;", "ordering", "placement-stable-equal-order-sides"),
     ("equal-order-dedup", "index->minimum[slot]<order", "index->minimum[slot]<=order", "ordering", "equal-order-not-deduplicated"),
-    ("partial-shadow", "if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;", "if(earlier)duplicate=true;", "ordering", "partial-shadow-retains-exposed-face"),
+    ('partial-shadow', 'static bool contact_prefix_lo(GeoCoord a,const WoodStopFace *face)\n{return a<=face->lo&&a<face->hi;}\nstatic bool contact_prefix_hi(GeoCoord a,const WoodStopFace *face)\n{return a>=face->hi&&a>face->lo;}', 'static bool contact_prefix_lo(GeoCoord a,const WoodStopFace *face)\n{return a<face->hi;}\nstatic bool contact_prefix_hi(GeoCoord a,const WoodStopFace *face)\n{return a>face->lo;}', 'ordering', 'partial-shadow-retains-exposed-face'),
     ("outline-component-index", "(int)(component*GEO_LOOP_MAX_VERTICES+i)", "(int)i", "regions", "region-outline-index-encoded"),
     ("hole-component-index", "(int)(component*GEO_REGION_MAX_HOLES)+hole_of[li]", "hole_of[li]", "regions", "region-hole-index-encoded"),
     ("paired-capacity", "count+2<=cap", "count<cap", "regions", "member-capacity-pair-atomic"),
@@ -156,6 +156,24 @@ CONTROLS = (
     ("compact-survivor-count", "active[i]=false;--remaining;++i;", "active[i]=false;++i;", "active-dedup", "dedup-mutual-duplicate-id-leaves-final-pair"),
     ("dedup-strict-overlap", "out[i].lo>=out[j].hi||out[j].lo>=out[i].hi", "false", "active-dedup", "dedup-zero-span-strict-overlap-preserved"),
     ("dedup-full-coordinate", "out[i].fixed!=out[j].fixed", "(uint32_t)out[i].fixed!=(uint32_t)out[j].fixed", "active-dedup", "dedup-full-width-planes-preserved"),
+    ('indexed-unique-facts', 'if(index->last[slot])index->unique=false;', 'if(false)index->unique=false;', 'indexed-dedup', 'indexed-filtered-duplicate-order'),
+    ('indexed-rc-free-prefix', 'for(size_t i=0;i<first;++i)contact_face_index_insert(&index,out,count,i);', 'for(size_t i=0;i<first;++i)if(out[i].fixity!=WOOD_STOP_FREE)contact_face_index_insert(&index,out,count,i);', 'ordering', 'boundary-even-free-owns-coincident-face'),
+    ('indexed-strict-lo', 'return a<=face->lo&&a<face->hi;', 'return a<=face->lo;', 'indexed-dedup', 'indexed-zero-lower-strict'),
+    ('indexed-strict-hi', 'return a>=face->hi&&a>face->lo;', 'return a>=face->hi;', 'indexed-dedup', 'indexed-zero-upper-strict'),
+    ('indexed-plane-coordinate', 'return (a>b)-(a<b);', 'return ((int32_t)a>(int32_t)b)-((int32_t)a<(int32_t)b);', 'indexed-dedup', 'indexed-full-coordinate-plane'),
+    ('indexed-plane-offset', 'size_t value=index->maximum[begin+at-1];', 'size_t value=index->maximum[at-1];', 'indexed-dedup', 'indexed-full-coordinate-plane'),
+    ('indexed-single-witness', 'return witness&&contact_prefix_hi(out[witness-1].hi,face);', 'return witness!=0;', 'indexed-dedup', 'indexed-two-halves-not-one-cover'),
+    ('indexed-survivor-count', 'active[i]=false;--*remaining;', 'active[i]=false;', 'ordering', 'earlier-full-cover-deduplicates'),
+    ('indexed-reversed-skip', 'size_t begin,end;contact_face_plane_range(index,out,count,face->fixed,&begin,&end);', 'if(face->hi<face->lo)return false;size_t begin,end;contact_face_plane_range(index,out,count,face->fixed,&begin,&end);', 'indexed-dedup', 'indexed-enclosed-reversed-span'),
+    ('legacy-partial-shadow', 'if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;', 'if(earlier)duplicate=true;', 'indexed-dedup', 'indexed-duplicate-fallback-keeps-partial-shadow'),
+    ('legacy-placement-order', 'if(previous<=order)break;', 'if(true)break;', 'indexed-sort', 'sort-legacy-last-order'),
+    ('legacy-stable-ties', 'if(previous<=order)break;', 'if(previous<order)break;', 'indexed-sort', 'sort-legacy-stable-fields'),
+    ('sort-rc-prefix', 'size_t members=count-first;', 'first=0;size_t members=count-first;', 'indexed-sort', 'sort-rc-prefix-preserved'),
+    ('sort-cycle-close', 'out[at]=value;index->sorted[at]=at;', '(void)value;index->sorted[at]=at;', 'indexed-sort', 'sort-cycle-every-field'),
+    ('sort-cycle-step', 'out[at]=out[from];index->sorted[at]=at;at=from;', 'out[at]=out[at];index->sorted[at]=at;at=from;', 'indexed-sort', 'sort-cycle-every-field'),
+    ('sort-full-order', 'return left<=right;', 'return (uint32_t)left<=(uint32_t)right;', 'indexed-sort', 'sort-full-uint64-order'),
+    ('sort-duplicate-sort-guard', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed&&orders.unique)){', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed)){', 'indexed-sort', 'sort-legacy-last-order'),
+    ('sort-overflow-sort-guard', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed&&orders.unique)){', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.unique)){', 'indexed-sort', 'sort-overflow-linear-last-order'),
 )
 
 
@@ -229,6 +247,12 @@ class WoodContactWorld(unittest.TestCase):
                 self.assertIn("ASSERT:" + control[4], result.stderr)
                 restored = self.case(control[3], phase="restored", control=control[0], assertion=control[4])
                 self.assertEqual(0, restored.returncode, restored.stderr)
+
+    def test_unique_id_prefix_query_keeps_public_degenerate_and_filtered_facts(self):
+        self.assertEqual(0, self.case("indexed-dedup").returncode)
+
+    def test_stable_index_merge_preserves_complete_sequence_and_fallback(self):
+        self.assertEqual(0, self.case("indexed-sort").returncode)
 
     def extension_transaction(self, executable):
         with _bridge.BridgeSession(executable) as bridge:

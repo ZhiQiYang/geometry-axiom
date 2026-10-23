@@ -1,0 +1,178 @@
+{
+  "schema": "geo300-ccfaf-three-original-suites-actual-peer/1",
+  "source_sha": "ccfaf057088a80c7aad4049f1c67e5eedfc2fdec",
+  "summary": [
+    {
+      "suite": "wood-contact",
+      "methods": 12,
+      "controls": 41,
+      "events": 132,
+      "compile_commands": 147,
+      "exit": 0
+    },
+    {
+      "suite": "contact-sources",
+      "methods": 15,
+      "controls": 11,
+      "events": 44,
+      "compile_commands": 85,
+      "exit": 0
+    },
+    {
+      "suite": "reading-a-native",
+      "methods": 7,
+      "controls": 12,
+      "events": 41,
+      "compile_commands": 86,
+      "exit": 0
+    }
+  ],
+  "check_count": 1222,
+  "findings": [],
+  "exit_code": 0,
+  "git_reads": [
+    {
+      "path": "tests/test_geo261_wood_contact_world.py",
+      "sha256": "f175a4c485f4b2b6e8329ef99718c28cc913a2fb5c33f9035206b182faf5216e",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exit": 0
+    },
+    {
+      "path": "tests/test_geo261_contact_sources.py",
+      "sha256": "8fe6a68c93770ba6cf0521f829ed1f9faf9f3b3d5891b96a76575fd9e31b4694",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_sources.c",
+      "sha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exit": 0
+    },
+    {
+      "path": "tests/test_geo318_reading_a_native.py",
+      "sha256": "67c8aaf8475416a230b06fdc7e4252a43844d7b94d90a6a6354c80a94b40316a",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_reference.c",
+      "sha256": "003675f6ddb3f679ec5444f49af3103321ed235d0c5106bc5448bf40778db28e",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_reference.c",
+      "sha256": "003675f6ddb3f679ec5444f49af3103321ed235d0c5106bc5448bf40778db28e",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/world_validation.c",
+      "sha256": "ea62a9fcc8f6ef5ccf9faa1f419617118b8904f25a4f743440c2f6132ccf4096",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/world_validation.c",
+      "sha256": "ea62a9fcc8f6ef5ccf9faa1f419617118b8904f25a4f743440c2f6132ccf4096",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exit": 0
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_reference.c",
+      "sha256": "003675f6ddb3f679ec5444f49af3103321ed235d0c5106bc5448bf40778db28e",
+      "exit": 0
+    },
+    {
+      "path": "current_geometry.c",
+      "sha256": "05c05a8028efe7723a552154e2db2e52223c2e4c00d5875540e1e58f9076fbca",
+      "exit": 0
+    },
+    {
+      "path": "geometry-core/references.inc",
+      "sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751",
+      "exit": 0
+    },
+    {
+      "path": "geometry-web/web_bridge.c",
+      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c",
+      "exit": 0
+    },
+    {
+      "path": "tests/geo318_host_boundary_ends_harness.c",
+      "sha256": "7be44712ef7283b559d5f18070dc439f07f9493816e37d1cfaae0588d17f5160",
+      "exit": 0
+    },
+    {
+      "path": "current_geometry.c",
+      "sha256": "05c05a8028efe7723a552154e2db2e52223c2e4c00d5875540e1e58f9076fbca",
+      "exit": 0
+    },
+    {
+      "path": "geometry-core/references.inc",
+      "sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751",
+      "exit": 0
+    },
+    {
+      "path": "geometry-web/web_bridge.c",
+      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c",
+      "exit": 0
+    },
+    {
+      "path": "tests/geo318_host_boundary_ends_harness.c",
+      "sha256": "7be44712ef7283b559d5f18070dc439f07f9493816e37d1cfaae0588d17f5160",
+      "exit": 0
+    }
+  ],
+  "scope": "365原件逐bytes/hash；三原suite34methods、64control精確ASSERT0/1/0、318原編譯/連結exit0；source/observer/每mutation與host4files核對。",
+  "limitations": [
+    "固定ccfaf原三suite，不是L或其他SHA/fullnative/browser/完整ledger/performance/容量512。",
+    "NativeBuild原text stdout/stderr非predecode OS pipes；原temporary ELF正常cleanup，exe hashes保。",
+    "原cc2三suite0/1/0與placement-order control失敗永久保留，不回填。",
+    "新tuple撤回反證另外核，不能由三suite綠冒已證。",
+    "無新增產品執行；只是讀immutable Git與已終態原件。"
+  ]
+}
