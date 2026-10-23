@@ -2,7 +2,7 @@
 
 ## 唯一 current-state 矩陣
 
-本表取代先前正文狀態；舊結果僅留於 Git/evidence 歷史。產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；架構採用/上游合流=`4f4a24d76e816274bfae06868b4dbf31f0860299`；evidence head=`5b0ce47d25393fad675bf506a9d296cbab43c35d`，均已一般推送。最終全清單 SHA 尚待全帳本重產後固定。
+本表取代先前正文狀態；舊結果僅留於 Git/evidence 歷史。產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；架構採用/上游合流=`4f4a24d76e816274bfae06868b4dbf31f0860299`；新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；evidence head=`a6072dde8eac809e93ccd9373946dea98fa5c362`，均已一般推送。最終全清單 SHA 尚待全帳本重產後固定。
 
 | Gate | 實測來源 | 原 exit／結果 | 狀態、允許 skip 與限制 |
 |---|---|---|---|
@@ -17,14 +17,17 @@
 | reader三條 | F | 0/0/0；51項 | 原件與獨立629checks peer已推；無skip |
 | 閱讀A native／oracle | F | 0／0；7項、12組0/1/0／14項 | 原件與獨立629checks已推。native41子row SHA原為null；父c387/前後Git及70C/H實際輸入獨立間接綁定，未回填原件；原ELF已由測試清理，只保原hash |
 | RC-run精準builder／checker撤回 | F | 各0/1/0；原單一方法（6個assert） | actual377checks／0、包382checks／0；原件已推，非逐毫米quick |
-| 架構三原裁判 | P | 0/0/0；generic205、product18 | 綠；manifest撤回0/1/0、四檔Linux重產，獨立686checks；無skip |
-| 全突變帳本 | 4f4a24d7 | 執行中，尚無最終exit | 19:33 UTC原123筆CLI開始；19:27環境preflight1保留、當時尚未啟動任何mutation。未改子時限或裁判，不冒綠 |
+| M151 owner-map 修正 | Claude 8f9301fc固定Git bytes | 0/1/0；每輪原15項 | 唯一撤回紅為完整registry相等斷言；獨立241checks，已普通merge到S |
+| free-end唯一錨點修正 | 4f4原test／只修一葉variant | 1/0/1/0；每輪原9項 | 原紅AssertionError 1 != 3；fixed/restored各18 controls 0/1/0，獨立1328checks；已採用到S，不冒S fullnative |
+| S原帳本檢查 | S | 1，過期 | 原check輸出完整封存；新兩tests葉改變bridge oracle hash，完整重產待下列4f4收齊 |
+| 架構三原裁判 | S | 0/0/0；generic205、product18 | 綠；P四檔Linux重產已採用，S同schema重產中；舊686checks保原P角色，無skip |
+| 全突變帳本 | 4f4a24d7 | 執行中，尚無最終exit | 19:33 UTC原123筆CLI開始；70core已收齊（62killed/4equivalent/1crashed/3retired），53bridge續跑。M20依原政策記crashed，非斷言殺死。這是4f4歷史來源；S需整份重產，不把舊SHA轉標新SHA |
 | 完整native | 待最終來源 | 未跑 | 不用partial代替；原ulimit16MiB |
 | canvas／assembly／documents／grid／space／timber | 待最終來源 | 六項均未跑 | Chrome156/Node24可用；不允許以環境skip冒綠 |
 | P52／Q38／§7／P-189 | 待最終來源 | 未完成 | 原門檻／assertions／goldens保持 |
 | 閱讀A矩形逐毫米／579與oracle專項 | 待最終來源 | 未完成 | 原quick全量未跑；RC-run兩精準反證已另列，不用14個oracle單元取代逐毫米專項 |
 
-目前沒有新增允許skip。正式完整清單及全帳本未完成，本PR不可合併。
+目前沒有新增允許skip。Linux僅保留原Windows GDI允許skip，完整native未跑前不預報實際skip數。正式完整清單及全帳本未完成，本PR不可合併。
 
 ## 產品與診斷差異
 
@@ -38,6 +41,8 @@
 
 `evidence/geo337-train-20261024/PROGRESS.md`、各逐檔index與壓縮包保存原命令、exit、完整輸出、環境與實際SHA。已封source/fixed-three、#314、架構、ReadingA完整原件與RC精準反證。#323正式perf/ABC/memo五包47,120,357B尚僅雲端，已推小交接與actual peer，完整原件接續推送；不把摘要當作完整輸出。子代理peer數量是證據審查，不冒充產品測試數。
 
-最新上游Claude f702與main425已普通merge；本輪只架構digest/derived、#333文件與證據，產品C/JS/測試相對F未變。18:25Git認證失效原件保留，18:55重試恢復並補推；無forcepush。Chrome156.0.8078.47、Nodev24.19.0、NotoCJK均在雲端。
+最新上游Claude8f9301fc與main425已普通merge；相對F產品C/JS未變，tests兩葉分別補M151登記與free-end唯一錨點。每個修正均保原完整斷言，撤回／恢復原件已推。18:25Git認證失效原件保留，18:55重試恢復並補推；無forcepush。Chrome156.0.8078.47、Nodev24.19.0、NotoCJK均在雲端。
 
-#324與noWood各自疊在列車，已開draft #339／#340；新來源各254／116項靜審完成，16／13項正式驗收仍未跑，不把靜審當動態綠。#325/#331/#333不寫他人分支。本PR取代#337，但不自行關閉或合併任何PR。
+#324與noWood各自疊在列車，已開draft #339／#340；各自有254／116項靜審；#339的7個Python suites共99項與3組predicate反證已實跑全綠，C importers及完整native/browser仍未跑；#340的13項/7phase待排，不把部分驗收當全綠。#325/#331/#333不寫他人分支。本PR取代#337，但不自行關閉或合併任何PR。
+
+`QUESTIONS.md`另保Q-314-SSOT與Q-335-CLI：Claude最後交接轉述使用者暫緩把I24/D29/D10b稿寫入SSOT，本輪維持已指定比較行為，不擅改公理、決策或相容版本；此轉述不冒逐字核可。13mm薄牆階正例B的CLI兩種初放路徑缺口仍另列#335，不以oracle通過宣稱CLI已支援。先準備反例與可逆方案，其餘驗收持續。
