@@ -129,6 +129,15 @@
       "archives": [
         "raw/p88-original-canvas-run-1-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T10:25:58.214713+00:00",
+      "label": "p88-original-canvas-run-2",
+      "result": "固定F原canvas第2/3次；workflow原exit=0、outer=0、over_ci_timeout=False、1754.826s。前後乾淨、獨立埠/TEMP、全部結果保留；三次未收齊前不判穩定或間歇。",
+      "next": "完成固定F三次原樣重跑，依自然失敗與受控定位證據修復，保原斷言/golden/時限，再於新F跑受影響項與四組反證",
+      "archives": [
+        "raw/p88-original-canvas-run-2-01.tar.gz"
+      ]
     }
   ]
 }
