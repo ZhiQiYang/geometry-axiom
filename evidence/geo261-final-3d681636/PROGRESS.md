@@ -34,3 +34,6 @@
 
 - 2026-10-23T13:27:25.073294+00:00 — **p88-final-grid-reviewed**：新F正式grid原outer/workflow/Node皆0，473.79222212699824秒在原15min內；partial356/0、P88=143、skip=[]、原golden未比較、exception0。獨立原件及Git封包審查保真；原出版1是新證據路徑被ignore，精確add-f後一般push0，未改產品或gitignore。 子分支證據E=b12172860c59fe091c0e490630b548281b2eb53a。
   下一步：繼續同F P52、P73、Chromium154與oracle反證，完成項依真退出更新唯一正文矩陣。。原始資料：`raw/p88-final-grid-reviewed-01.tar.gz`。
+
+- 2026-10-23T13:28:49.886917+00:00 — **p88-final-p52-formal**：新F原P52正式driver/outer/launcher皆0，main243.1667135ms、fix216.36882ms、ratio0.889796209710257≤1；原main/fix/fix/main四區塊，每側16筆，五controls0/0/1/1/1均符合原預期。原protocol/時限/斷言保留，沒有重抽樣；完整原指令、stdout/stderr、環境、SHA與runtime inventory封存。
+  下一步：封存原獨立驗證器0，接著同F原runtime撤回／恢復反證。。原始資料：`raw/p88-final-p52-formal-01.tar.gz`。

@@ -104,6 +104,15 @@
       "archives": [
         "raw/p88-final-grid-reviewed-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T13:28:49.886917+00:00",
+      "label": "p88-final-p52-formal",
+      "result": "新F原P52正式driver/outer/launcher皆0，main243.1667135ms、fix216.36882ms、ratio0.889796209710257≤1；原main/fix/fix/main四區塊，每側16筆，五controls0/0/1/1/1均符合原預期。原protocol/時限/斷言保留，沒有重抽樣；完整原指令、stdout/stderr、環境、SHA與runtime inventory封存。",
+      "next": "封存原獨立驗證器0，接著同F原runtime撤回／恢復反證。",
+      "archives": [
+        "raw/p88-final-p52-formal-01.tar.gz"
+      ]
     }
   ]
 }
