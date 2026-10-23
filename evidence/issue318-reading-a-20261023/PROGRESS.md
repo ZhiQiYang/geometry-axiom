@@ -1,4 +1,10 @@
-# #318 閱讀 A：準備進度
+# #318 閱讀 A：目前進度
+
+目前已實作第一批專有來源：核可 SSOT 四處差異、oracle 建構／C8 獨立三態政策、固定 528／1056 正向 coverage 資料與 12 個專有測試方法。只做 AST／JSON 與 hash 靜態檢查 exit0；沒有執行測試或正式掃描。詳細範圍與未完成項見 `SOURCE_PHASE_ONE.md`。
+
+尚未到完整 source baton：原生 common/caller、canonical、正式 sweep 接線與舊 selftest/golden 預期仍待完成。root 已授權本代理 17MB sparse worktree；heavy 仍由 #288 獨占，不能宣稱任何 native/oracle 新綠燈。以下保留先前準備歷史，不作目前未改產品的聲明。
+
+## 先前準備歷史
 
 狀態：權威與逐條 diff 已備，**產品尚未實作，正式驗收未跑**。這是子代理自己的準備分支，沒有寫整合分支，也沒有合併 PR。
 

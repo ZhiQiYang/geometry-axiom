@@ -1,0 +1,120 @@
+"""Approved Reading A geometry and independent positive coverage controls.
+
+These tests use the oracle's all-FIXED single-placement model. Native FREE,
+placement identity, returned FEATURE and atomic edit controls are separate.
+"""
+from pathlib import Path
+import sys
+import unittest
+from unittest.mock import patch
+
+ORACLE = Path(__file__).resolve().parents[1] / "geometry-core/framing-template/oracle"
+sys.path.insert(0, str(ORACLE))
+import framing_oracle as fo
+import reading_a_cases as cases
+
+
+def step(amount=13):
+    # Own lower fixed edge is x=0..500 at y=0. At x=500, amount mm
+    # faces short RC and 27-amount mm contacts the next same-axis timber.
+    region = fo.Region([(0, 0), (500, 0), (500, amount), (1000, amount),
+                        (1000, 1000), (0, 1000)], [])
+    own = dict(id=1, kind="boundary", outer=True, edge=[0, 500], rect=(0, 0, 500, 27))
+    other = dict(id=2, kind="boundary", outer=True, edge=[500, 1000],
+                 rect=(500, amount, 1000, amount + 27))
+    return region, own, other
+
+
+class ReadingAOracle(unittest.TestCase):
+    def test_same_axis_thirteen_mm_step_accepts_fourteen_mm_timber_contact(self):
+        reg, own, other = step()
+        self.assertEqual(fo.READING_A_PARTIAL, fo.reading_a_end_admission(reg, own, [own, other], 0, 500))
+        self.assertEqual(fo.READING_A_PARTIAL, fo._reading_a_build_end(reg, own, [own, other], 0, 500))
+
+    def test_one_mm_contact_is_positive_without_a_new_minimum(self):
+        for amount in (1, 13, 26):
+            with self.subTest(step=amount):
+                reg, own, other = step(amount)
+                self.assertEqual(fo.READING_A_PARTIAL, fo.reading_a_end_admission(reg, own, [own, other], 0, 500))
+
+    def test_target_role_does_not_restore_a_priority_restriction(self):
+        reg, own, other = step()
+        for kind in ("boundary", "main", "secondary", "rc_parallel"):
+            with self.subTest(kind=kind):
+                other.update(kind=kind, core_role="custom", priority=99)
+                self.assertEqual(fo.READING_A_PARTIAL, fo.reading_a_end_admission(reg, own, [own, other], 0, 500))
+
+    def test_no_timber_point_contact_and_wrong_side_do_not_claim_exception(self):
+        reg, own, other = step()
+        self.assertEqual(fo.READING_A_ORDINARY, fo.reading_a_end_admission(reg, own, [own], 0, 500))
+        other["rect"] = (500, 27, 1000, 54)
+        self.assertEqual(fo.READING_A_ORDINARY, fo.reading_a_end_admission(reg, own, [own, other], 0, 500))
+        other["rect"] = (400, 13, 500, 40)  # crosses into self; its far face cannot supply contact
+        self.assertEqual(fo.READING_A_ORDINARY, fo.reading_a_end_admission(reg, own, [own, other], 0, 500))
+
+    def test_other_self_roles_cannot_borrow_boundary_policy(self):
+        reg, own, other = step()
+        for kind in ("main", "secondary", "rc_parallel"):
+            own["kind"] = kind
+            self.assertEqual(fo.READING_A_ORDINARY, fo.reading_a_end_admission(reg, own, [own, other], 0, 500))
+        own.update(kind="boundary", core_role="custom")
+        self.assertEqual(fo.READING_A_ORDINARY, fo.reading_a_end_admission(reg, own, [own, other], 0, 500))
+
+    def test_short_fixed_segment_and_extension_end_do_not_claim_exception(self):
+        reg, own, other = step()
+        own["rect"] = (0, 0, 499, 27)
+        other["rect"] = (499, 13, 1000, 40)
+        self.assertEqual(fo.READING_A_ORDINARY, fo.reading_a_end_admission(reg, own, [own, other], 0, 499))
+        # Upper boundary can extend left of its own edge in this valid region;
+        # that far end is still I22, even though the whole rectangle is inside.
+        own["rect"] = (0, 13, 1000, 40)
+        self.assertEqual(fo.READING_A_ORDINARY, fo.reading_a_end_admission(reg, own, [own, other], 0, 0))
+
+    def test_bare_rc_uses_original_face_length_including_exact_width(self):
+        # Arithmetic controls feed explicit contact intervals to the RC helper;
+        # they do not claim a whole physically valid placed scene.
+        for length in (27, 28, 100):
+            reg = fo.Region([(0, 0), (500, 0), (500, length), (0, length)], [])
+            self.assertTrue(fo.reading_a_has_bare_rc(reg, 0, 500, (0, 27), [(13, 27)]))
+        short = fo.Region([(0, 0), (500, 0), (500, 26), (0, 26)], [])
+        self.assertFalse(fo.reading_a_has_bare_rc(short, 0, 500, (0, 27), [(26, 27)]))
+
+    def test_collinear_subdivision_cannot_shrink_the_actual_rc_face(self):
+        reg = fo.Region([(0, 0), (500, 0), (500, 15), (500, 30), (0, 30)], [])
+        self.assertTrue(fo.reading_a_has_bare_rc(reg, 0, 500, (0, 27), [(13, 27)]))
+        self.assertFalse(fo.reading_a_has_bare_rc(reg, 0, 500, (0, 27), [(0, 27)]))
+
+    def test_constructor_and_checker_have_independent_policy_derivations(self):
+        reg, own, other = step()
+        with patch.object(fo, "reading_a_end_admission", side_effect=AssertionError("checker called by builder")):
+            self.assertEqual(fo.READING_A_PARTIAL, fo._reading_a_build_end(reg, own, [own, other], 0, 500))
+        with patch.object(fo, "_reading_a_build_end", side_effect=AssertionError("builder called by checker")):
+            self.assertEqual(fo.READING_A_PARTIAL, fo.reading_a_end_admission(reg, own, [own, other], 0, 500))
+
+    def test_only_approved_boundary_limit_is_removed_and_others_stay_bound(self):
+        reg, own, other = step()
+        record = dict(code="CORE_LIMIT_BOUNDARY_END_FREE", _t=own, end=500)
+        untouched = dict(code="CORE_LIMIT_EXTENSION_END_FREE", _t=own, end=0)
+        self.assertEqual([untouched], fo.reading_a_boundary_limits(reg, [own, other], [record, untouched], 0))
+
+    def test_frozen_positive_identities_keep_all_528_and_1056_cases(self):
+        required = cases.load_required()
+        self.assertEqual(528, len(required["step"]))
+        self.assertEqual(1056, len(required["step_mirror"]))
+        for keys in required.values():
+            observed = {key: "buildable" for key in keys}
+            self.assertEqual({"missing": [], "not_buildable": []}, cases.coverage_problems(observed, keys))
+            first = min(keys)
+            del observed[first]
+            self.assertEqual([first], cases.coverage_problems(observed, keys)["missing"])
+            observed[first] = "core_limited"
+            self.assertEqual([(first, "core_limited")], cases.coverage_problems(observed, keys)["not_buildable"])
+
+    def test_full_scan_cannot_filter_out_a_missing_room(self):
+        required = {("A", "layout"), ("B|上下", "layout")}
+        self.assertEqual(required, cases.expected_for_run(required, {"A"}, False))
+        self.assertEqual({("A", "layout")}, cases.expected_for_run(required, {"A"}, True))
+
+
+if __name__ == "__main__":
+    unittest.main()
