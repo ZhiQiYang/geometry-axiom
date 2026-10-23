@@ -78,6 +78,8 @@ RESTORED += [
         "test_C4_batch_new_and_added_second_axes_reject_M1",
         "test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically",
         "test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation",
+        "test_Q3_same_final_reference_preserves_card_then_unbind_and_rebind_order",
+        "test_Q3_same_final_reference_cannot_exempt_value_changing_rebind",
     ]],
 ]
 

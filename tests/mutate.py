@@ -510,7 +510,7 @@ MUTANTS += [
          old="if(!old||!(old->axis[0].stagger_set&&old->axis[1].stagger_set))", new="if(0)", tests=[STAGGER_TABLE]),
     dict(id="M102", desc="I24/#314 MS4：移除舊雙軸改值M2拒絕", binary="bridge",
          file="geometry-templates/woodworking/native/grid_application.c",
-         old="if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis]))", new="if(0)", tests=[STAGGER_TABLE]),
+         old="if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis],now->id,(unsigned)axis,facts,count))", new="if(0)", tests=[STAGGER_TABLE]),
     dict(id="M103", desc="I24/#314 MS5：移除同ParameterRef改卡例外", binary="bridge",
          file="geometry-templates/woodworking/native/grid_application.c",
          old="if(prior->set&&current->set&&prior->parameter_id==current->parameter_id&&prior->field_id==current->field_id)return false;",
@@ -583,6 +583,12 @@ MUTANTS += [
          file="geometry-web/engineering_bridge.inc",
          old="if(!ok)app_world_candidate_clear_stagger(transaction);", new="if(0)app_world_candidate_clear_stagger(transaction);",
          tests=["tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_failed_preview_clears_evidence_and_keeps_definition_and_revision"]),
+    dict(id="M121", desc="I24/#314 ordered：final同參數引用不能遮掉非保值換來源", binary="bridge",
+         file="geometry-templates/woodworking/native/grid_application.c",
+         old="if(facts[i].system_id==system_id&&facts[i].axis==axis)return true;",
+         new="if(0)return true;",
+         tests=[STAGGER_TEST + "test_Q3_same_final_reference_preserves_card_then_unbind_and_rebind_order",
+                STAGGER_TEST + "test_Q3_same_final_reference_cannot_exempt_value_changing_rebind"]),
 ]
 
 

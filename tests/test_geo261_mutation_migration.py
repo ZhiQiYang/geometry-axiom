@@ -243,7 +243,8 @@ class LiveMutationAnchorMigration(unittest.TestCase):
                         "M116": "geometry-web/engineering_bridge.inc", "M117": "current_geometry.c",
                         "M118": "geometry-app/native/stagger_facts.inc",
                         "M119": "geometry-app/native/world_candidate.inc",
-                        "M120": "geometry-web/engineering_bridge.inc"})
+                        "M120": "geometry-web/engineering_bridge.inc",
+                        "M121": "geometry-templates/woodworking/native/grid_application.c"})
         added.update(stagger)
         self.assertEqual({**expected, **added}, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
         # The ten P-135/P-141 preview-only guards and the eight GEO-262 P-142
