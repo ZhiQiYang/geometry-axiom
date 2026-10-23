@@ -10,13 +10,13 @@
 - #323 原175場景／350組 exact比較 **exit1**：僅3場景因既有#299 V_EXTENSION新增邊與區間診斷不同；dump、有序來源圖、5guards及允許／拒絕相同。原紅不改，詳 `QUESTIONS.md`；同列車僅撤回memo的175／350嚴格全輸出ABC與完整memo性能反證已完成：0/1/0、4.407618→6.053833→4.407618；獨立6655checks／0。五原件壓縮包47,120,357B目前僅雲端，尚未推送，保存在原路徑。I11補充單場景exact綠、原scene runner **166/0/0**，不冒充完整native。
 - 閱讀A F：reader三條 **0/0/0（51項）**，native **7項／12組0/1/0**、oracle **14項 exit0**；獨立629checks／0已完成，完整原件收於`reading-a-f64-originals/`（895members、5597339bytes壓縮包）。native41筆子SHA欄原為null，父c387、前後Git身份與70C/H實際輸入逐份比對另附間接綁定，原件不改；原ELF已由測試清除，只保原hash，不冒fresh rehash。原三組沒有額外outer/reaper，不虛構。RC-run builder/checker兩精準撤回已各0/1/0，actual377checks／0、封包382checks／0，原件已封`reading-a-rc-f64-originals/`；正式quick仍待跑，未冒稱最終全專項通過。
 - 架構 P 原三條 **0/0/0**（generic205、product18）、過期manifest反證 **0/1/0**；Linux manifest/scan/report/receipt四檔已重產採用，獨立686checks／0，604輸入closure=`6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。原F架構1/0/5與Ran0失敗完整保留。封存 `architecture-p17-and-recovery.tar.gz`。
-- 4f4原完整CLI於20:44:44環境失敗終止：CLI2／root1／原new--check2，108/123（98killed／5equivalent／1crashed／3retired／1blocked），15未跑。M118還原build建立smoke時Errno28，M119建立目錄再Errno28而原程式早退；不是完整帳本綠。2031checks獨立審查原失敗保真，49.6MB原流封於`ledger-4f4-terminal/`；M118缺restore仍缺，不補假row。下一來源b6e1e454（C/tests同ec8）由root原完整123重新執行，尚未啟動。完整native、六browser、P52、Q38、§7、P-189與閱讀A矩形／579專項仍未完成。**沒有允許的新skip，不標READY-TO-MERGE。**
+- 4f4原完整CLI於20:44:44環境失敗終止：CLI2／root1／原new--check2，108/123（98killed／5equivalent／1crashed／3retired／1blocked），15未跑。M118還原build建立smoke時Errno28，M119建立目錄再Errno28而原程式早退；不是完整帳本綠。2031checks獨立審查原失敗保真，49.6MB原流封於`ledger-4f4-terminal/`；M118缺restore仍缺，不補假row。新來源b6e1e454（C/tests同ec8）由root原完整123於21:00:13 UTC啟動，尚無最終exit；session72136。完整native、六browser、P52、Q38、§7、P-189與閱讀A矩形／579專項仍未完成。**沒有允許的新skip，不標READY-TO-MERGE。**
 - 雲端Chrome156.0.8078.47／Nodev24.19.0／NotoCJK可用。只清已核可重建cache，保留收據、fixtures與Gitobjects；5批實際allocation回收998256640bytes，觀察free差996368384bytes，差值受共享磁碟並行活動影響。
 - 18:25認證故障原件保留；18:55普通Git重試恢復，原未推提交ae25／17b已補推。交接分支在自動同步造成一次非快轉拒絕後，用普通merge補入，`8c60c977e772126f120fd6f2d3ca95208ba8fd44` 已推，含NEXT與#324 PR請求。沒有force push。
 
 ## 並行工作與下一步
 
-1. #323 memo完整反證已完成。root正在封舊4f4環境失敗並準備新來源完整帳本；新ledger完成採用後固定final SHA跑完整native、6browser與專項。canvas與性能獨占，其餘最多兩重測。
+1. #323 memo完整反證已完成。舊4f4環境失敗原件已封；root的新b6來源完整帳本已啟動；新ledger完成採用後固定final SHA跑完整native、6browser與專項。canvas與性能獨占，其餘最多兩重測。
 2. #339接替324：原S57的指定9個importer模組142/142與3組predicate反證真綠；普通merge #340後source1f0，原registry-list0只表示清點，11正式列仍未跑。最新E dcdf2265／D2aac已推，base=#340；不把S57實跑轉標新source。
 3. noWood draft #340：原Sbfb的13項及7phase真0/1/0/1/0/1/0，actual530/publication949/新merge343 checks獨審0。新source4d3、body77a已推；11輸入同但不冒4d3重測。列車未入main也繼續疊線。
 4. #300原c493的三套32方法／46controls真0/1/0、282compile/link全0，actual1020checks／0；普通merge #339後只expected9→10，已推sourceaa0，效能與512尚未完成。GEO260接aa0後sourceeb846，保noWood13/faces45/woodcontact10並只native28→30，原全44準備執行；af4 focused兩控制仍保原SHA。#325/#331/#333不寫其分支，#333已進main。
@@ -78,3 +78,9 @@ root PR338正文已一般推D e51c7abc984a9a09c2ff27cad5e6d44c42254fbf（其20:3
 原108/123結果、CLI2/root1/check2、143observer commands、67core mapping與452bridge＋M118孤立兩流完整封存1272members（49,634,273B原件／8,876,183B壓縮）；original ELF與source/Git仍雲端保留，未冒封在包中。獨立2031checks只證明失敗收據完整，不把產品gate判綠。
 
 更正上一筆interim的「其餘繼續／尚無最終exit」：當時root只讀遞增JSON、未讀已結束的outer session，原CLI實已20:44:44因下一M119的Errno28提前終止。原interim檔保留且本段明確更正；沒有自行終止工具、沒有略過15項後報通過。接著在公開b6來源重新跑全123；舊非零仍保原SHA，不能補入新帳本。
+
+## 2026-10-23 21:04 UTC：新公開來源原完整123帳本已啟動
+
+source=`b6e1e45425f055cd825b259f46ef2c454f3ff13a`，21:00:13 UTC，exec session72136；原完整CLI不傳ID，70core（含3retired）＋53bridge全部重新判。只同filesystem移68個core編譯cache與seed以免重複占147MB；原CLI自行判fingerprint，沒有跳測或強迫cached。68個舊sidecar另保原bytes，全部舊bridge raw與Gitobjects留原位，source/refs/index原守門已0。原16MiB／子時限／verdict與三個原裁判未改，v5獨立30checks0；準備與實際起始證據封於`ledger-b6e1e454-start/`，不把啟動當通過。
+
+JOB `/workspace/train337-ledger-b6e1e454-v5`、CACHE `/workspace/train337-ledger-cache-b6e1e454`、TMP同job加`-tmp`、SEED在CACHE的`_bridge-work/b6e1e45425f055cd825b259f46ef2c454f3ff13a/repo`；ROOT仍`/tmp/train337-323-f64d638f-source`。其他agent禁止動這兩個HEAD/cache。另一重槽由GEO260原全44使用，固定eb846、原起始20:53:16 UTC；不以其af4舊focused結果冒全44。沒有canvas或perf同跑。
