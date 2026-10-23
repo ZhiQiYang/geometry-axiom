@@ -67,3 +67,18 @@ parent開始#323正式F f43e8d8b876f587c11778fa74a80b205b51396b6的perf/profile�
 parent正式perf/profile終態後已解除私有診斷門。以公開P2 `9b15f91dc86d8c51c804919c8b38160e4aaa1d0e` clean來源，原READY工具的collect_w_guard_inventory呼叫原architecture lexer(c=True)，完整目前W-owned C清單盤點、舊guard union真tokens，原命令真退出0。只新增wood_contact_boundary_edge（實際4處origins）並依授權退役wood_contact_footprint_collides；動態920→920，strings舊集合全保，其他roots／policy／routes／trust不變，沒有手選兩改檔代完整lex。原W現在精確retired token為零；完整owned C closure＋舊sealed origins仍須後續正式原architecture driver，不能把preliminary W-only盤點當完整收據。
 
 主manifest僅+1/-1兩行；scan／report／receipt仍未改／未產。原reader generation與本次lex準備全部commands/env/SHA/patch/fullstreams/tools/inventory均在repair-preparation-01原raw包，先前workspace完整patch原資料也已補齊公開。接著固定本批來源後跑授權targeted與反證；未開整份ledger、另一完整native、browser或perf。
+
+
+## 集中修復驗證已完成（固定受驗 P3 e4557b3f）
+
+本批產品／測試／manifest受驗 SHA `e4557b3f5fab70d70ebb44cd5489cd8841bb3670` 在整段診斷與反證期間固定且先公開；未在測試中讓 HEAD 前進。完整 W contacts 原10方法退出0（75次原native，退出0／1分布52／23）；contact-world 原9方法 baseline退出0、只撤fixture順序修正正常退出1、精確恢復後原9方法退出0（原child分別60／59／60）。撤回唯一失敗仍是原 `ASSERT:i5-notched-footprint-deferred` 被新增failure-output檢查先遮蔽，不是compiler失敗或ERROR。所有新舊斷言／expected均保留。
+
+唯一canonical機械同步的反證：原完整51 baseline退出0（170.551秒），只換回原E2bd舊canonical，原具名 `CanonicalReader.test_rebuild_is_byte_idempotent_and_keeps_reviews` 正常退出1（2.487秒），原diff指出新雙承載面scene追溯差異；finally精確恢復P3後原完整51再退出0（171.407秒）。原 `python3 -B geometry-guide/sync_axiom_reader.py --check` 退出0、patches0。SSOT／決策／BACKLOG未改，不手改閱讀器、不造第二份。
+
+原 `python3 -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json` 真退出0，ok=true，333個來源／796條edges／0 diagnostics。這是本批原scanner結果，不能代替ledger後正式manifest／scan／report／receipt四檔重產；scan／report／receipt仍待後續L後更新。
+
+Node缺檔屬環境，重跑嚴格綁原 `2bd45fc9413397637cd0c56c39ac2b6704806d72` detached來源，三個既有tracked fixture逐Git blob核同後materialize；同三檔也已於主worktree逐bytes補齊，清skip flag且前後clean，未commit資料版本。原 `tests/run_all.py --build --only node:tests-js` 只用官方OUT_DIR私有cache適配、原freshness檢查仍執行（bridge／model-base原fresh），原737全部pass、0fail／0skip，原process與觀測terminal皆0。這份部分環境retry不能冒稱P3或完整native驗收。原E2bd帳本前後bytes完全相同。
+
+本批command／退出碼／完整stdoutstderr／env／SHA／patch／原child輸出與compilerinputs、ELF、buildlogs／工具、三fixtures原blobs均已封存。W包143members、reader／scanner／fixtures包252members逐bytes/hash核同；Node另用白名單包保存完整logs／工具／指紋，重建得出的ELF只記hash以控制雲端容量。使用私有鎖／OUT／TMP與原subreaper，未碰共享cache。
+
+下一步將本批證據正常commit/push成新公開S，再以同S固定執行整份原 `tests/mutate.py`（含precheck／full／checkafter）；原舊帳本stale不改成假綠。ledger後canonical再機械同步、架構四檔與正式F完整驗收由parent統籌。尚未聲稱combined全專案最終驗收完成，未開browser／perf或第二輪完整native。最不確定處是新增M89–M98的真帳本結果；雙承載面baseline綠不能冒稱M97／M98已被殺。
