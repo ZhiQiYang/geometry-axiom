@@ -2,7 +2,7 @@
 
 ## 唯一 current-state 矩陣
 
-本表取代先前正文狀態；舊結果僅留於 Git/evidence 歷史。產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；架構採用/上游合流=`4f4a24d76e816274bfae06868b4dbf31f0860299`；新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；evidence head=`2d1570691e4a29aafebdc0a4e739787d3fcdddaa`，均已一般推送。最終全清單 SHA 尚待全帳本重產後固定。
+本表取代先前正文狀態；舊結果僅留於 Git/evidence 歷史。產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；架構採用/上游合流=`4f4a24d76e816274bfae06868b4dbf31f0860299`；新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；evidence head=`50a4533be0e80b8042a18f54d7b0c9f872db01f2`，均已一般推送。最終全清單 SHA 尚待全帳本重產後固定。
 
 | Gate | 實測來源 | 原 exit／結果 | 狀態、允許 skip 與限制 |
 |---|---|---|---|
@@ -36,7 +36,7 @@
 
 #323採成功接觸memo，完整保留每consumer相依kind/order；四個新contact負控制與兩個漂移負控制有單一具名ASSERT的0/1/0。原效能分母與門檻未改。
 
-`QUESTIONS.md` Q-323-ABC列3場景：`_role_priority_mutant.scene`、`_s1_p8_l_room_primary_through_reflex_extension.scene`、`_s1_p8b_l_room_primary_through_reflex_extension_hi.scene`。#299提交6366304新增錯誤定位邊與區間，因此歷史base完整stdout/stderr不同。dump、完整有序來源圖、五guards與允許／拒絕相同；原compare先assert失敗，後續四元組另以獨立審查核，不冒稱原compare走完。同列車僅撤回memo的175場景／350組嚴格全stdout/stderr/有序graph/guards對照與性能反證已完成（獨立6655checks／0）；它是新增因果證據，歷史ABC紅燈仍保留。兩支撤回ABC ELF只有事後補hash；逐場景五guards由原equivalence紀錄，沒有350份獨立guard raw，不虛構。不忽略文字、不撤銷#299功能、不換性能分母。等待的是審查界線，其他工作照常執行。
+`QUESTIONS.md` Q-323-ABC列3場景：`_role_priority_mutant.scene`、`_s1_p8_l_room_primary_through_reflex_extension.scene`、`_s1_p8b_l_room_primary_through_reflex_extension_hi.scene`。#299提交6366304新增錯誤定位邊與區間，因此歷史base完整stdout/stderr不同。dump、完整有序來源圖、五guards與允許／拒絕相同；原compare先assert失敗，後續四元組另以獨立審查核，不冒稱原compare走完。同列車僅撤回memo的175場景／350組嚴格全stdout/stderr/有序graph/guards對照與性能反證已完成（獨立6655checks／0）；它是新增因果證據，歷史ABC紅燈仍保留。兩支撤回ABC ELF只有事後補hash；逐場景五guards由原equivalence紀錄，沒有350份獨立guard raw，不虛構。不忽略文字、不撤銷#299功能、不換性能分母。最新 #338 head b6 審查 B2 明確不接受用同列車 memo-only 取代原跨版本硬門檻；須恢復 exact，或取得並登記診斷版本界線及 comparator 的明確裁決。現行 I22 要求定位邊與超出區間，直接退回舊短訊息會違反現行條文與既有測試。本輪保留原比較器、功能與紅燈，不自行裁決或正規化輸出；其餘驗收照跑。
 
 ## 證據及並行工作
 
@@ -44,10 +44,12 @@
 
 最新上游Claude8f9301fc與main425已普通merge；相對F產品C/JS未變，tests兩葉分別補M151登記與free-end唯一錨點。每個修正均保原完整斷言，撤回／恢復原件已推。18:25Git認證失效原件保留，18:55重試恢復並補推；無forcepush。Chrome156.0.8078.47、Nodev24.19.0、NotoCJK均在雲端。
 
-#340原13項與7phase反證已真0/1/0/1/0/1/0，530actual／949publication checks獨審0；普通merge本列車後source4d3，原受測bfb SHA保留。#339的9個指定importer模組142／142與3組predicate反證全綠，source1f0已普通merge #340，原受測S57與當前source分列；整體native/browser/帳本仍未完成。#300候選c493的原三套驗收已取得10+15+7=32項原exit0，獨立actual審查與封存中，效能未跑；GEO260 af4的兩個focused控制各0/1/0已真完成，原c926 schema紅保留。各線不把部分驗收當全綠。#325/#331/#333不寫他人分支。本PR取代#337，但不自行關閉或合併任何PR。
+#340 原13項／7phase與 #339 指定9模組142項／3組反證已完整封存並獨審；兩線分別保原實測bfb／S57，不把merge後source當重測。#341（#300）原c493三套32方法、46controls、282compile/link已封E823729be；merge#339後只更新expected的新sourceaa0，最壞配對O(F²)、效能與512仍未完。GEO260新sourceeb846完整44原gate0：43killed＋SPM24equivalent，native29/model20基線0，SPM38/40保原declared ModelError；actual1682/public678 checks0，Edf230da5/Dbe1f69dc已推。其aggregate30/fullnative/browser/帳本仍待，af4 focused與c926 schema失敗保歷史。新#320從2d157069另開分支處理成功連線後殘留error，不改本輪live來源。#325/#331/#333不推他人分支；不自行合併任何PR。
 
-`QUESTIONS.md`另保Q-314-SSOT與Q-335-CLI：Claude最後交接轉述使用者暫緩把I24/D29/D10b稿寫入SSOT，本輪維持已指定比較行為，不擅改公理、決策或相容版本；此轉述不冒逐字核可。13mm薄牆階正例B的CLI兩種初放路徑缺口仍另列#335，不以oracle通過宣稱CLI已支援。先準備反例與可逆方案，其餘驗收持續。
+`QUESTIONS.md` 的 M1 現況已更正：現行 D10b 提交相容例外、I24 參數卡改值例外、D29 按當下有效值解除引用，已有10/18核可並已寫入，不再列為待決。10/23另核可的精確有序補句尚未逐字寫入；只列這份補句的寫入／閱讀器採納差額，不把既有條文統稱暫緩，也不重問題3／4。本輪未改公理或決策原文，獨立9項引用核對與原來源已封。Q-335-CLI 仍獨立追蹤13mm薄牆階放置缺口；oracle通過不代表CLI支援。
 
 已封存10個root自有退休checkout的9510個immutable原碼副本（966個不同payload），完整可還原原件／映射／工具／指令與原exit0已推E b6e1e454；回收216,199,168配置bytes。Git objects、fixtures、收據與所有mutable/mutant/trace來源保留。這是儲存維護，不是產品gate。完整最終清單繼續執行，不因draft或待審而停工。
 
 舊全帳本終態更正：前一版正文的「仍執行中」來自當時中間JSON；outer原收據確認20:44:44已因兩次磁碟不足退出2。原interim與錯誤輸出保留，當前矩陣已更正；67個core原stream映射未失配，但mapping工具因全CLI失敗原exit1，不能因此冒全123已驗。新來源的原全123已於21:00:13 UTC啟動；正式開始原件與30checks工具獨審已封存，尚未宣稱通過。
+
+最新已讀審查：handoff `a47d625cb3d5aabbf7586debe9ff74e28a4e628b` 的 #338 2026-10-23 20:44 UTC、head b6。M1已作上述精確現況更正；B1同源完整驗收、B2原跨版本exact、B3五包原件入庫尚未全部解除，維持 draft，不標可合併。
