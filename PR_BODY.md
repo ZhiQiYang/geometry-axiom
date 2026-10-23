@@ -6,7 +6,7 @@
 
 ## 唯一 current-state 矩陣
 
-產品／測試來源 **S=`3b0b634feb54266700cc61f26c34d7aeac4c0314`**；證據 head **E=`ed1ab195aa5cd6a7d03de708ff63724404fcbbf6`**。E 相對 S 只新增本輪 evidence。來源分支 `codex/geo314-one-axis-stagger-20261022`，正文分支 `codex/geo314-one-axis-stagger-20261022-prbody`。
+產品／測試來源 **S=`3b0b634feb54266700cc61f26c34d7aeac4c0314`**；證據 head **E=`f426be38fdf297d66296fb527309a7b8912ab034`**。E 相對 S 只新增本輪 evidence。來源分支 `codex/geo314-one-axis-stagger-20261022`，正文分支 `codex/geo314-one-axis-stagger-20261022-prbody`。
 
 | 項目 | 原 execution／適用來源 | 原 exit／當前狀態 | scope、skip 與限制 |
 |---|---|---|---|
@@ -15,6 +15,7 @@
 | #323 普通合併 | `c939d4f35ec6083e7c661f50a0e90fe3ded9f440`，前棒 `5c29eba30a40f20ea5c7eb8dc139e5788235d3b6` | merge完成、一般push | 保留load residual與AppValidationInputs；不是驗收裁判 |
 | 小型 AST／anchor／shared metadata | S 前工作樹、對應內容已提交 S | 靜態收集exit0；diff-check0 | 101唯一ID；M102/M103/M105/M121各1 anchor；count15/22/13/47；不代替產品驗收 |
 | 原 canonical reader 機械生成 | c939的未提交source工作樹；原input hashes與實況完整記錄，內容已納入 S | 原 `python3 -B geometry-guide/sync_axiom_reader.py` exit0 | 僅機械生成；不是在乾淨S執行reader裁判 |
+| 固定 S v2 執行方案／最新設計文字 | S；fresh handoff b7e23a25；review-only draft candidate | 準備及獨立靜審完成；所有動態 exit=null | 六原 suite expected47/11/14/23/5/3＋原 Node inspector＋M99–M121待跑；P72B 真 Chrome另列UNRUN；M110不當killed；不改產品／tests／SSOT／queue |
 | 新 M121 修正撤回／恢復 | S 的專項待執行 | 未跑；exit=null | 需真0／1／0原streams；未宣稱killed |
 | #314 stagger47／ordered facts／route／migration | S | 未跑；exit=null | 等root資源時槽，skip=null |
 | reader原裁判 | S或最終合流來源 | 未跑；exit=null | 原sync `--check`、reader測試與相關原追溯檢查待跑 |
@@ -23,7 +24,7 @@
 | 原 `mutate.py --check`／整份帳本 | 新source與tests使舊帳本stale | 未跑；exit=null | root最後統一重產一次，不沿用舊execution冒新source |
 | 原架構三裁判／四檔重產 | S或最終合流來源 | 未跑；exit=null | 暫保#314原四檔全套舊bundle；明確stale，非新來源收據；root最後Linux統一重產 |
 
-S 已交棒 combined，後續共用檔順序是 #314→combined→#318→無木工。原三裁判、編譯、Chrome、benchmark與scan目前受root重工作時槽安排，沒有把等待排程寫成通過或允許skip。
+S 曾交棒 combined；root 本輪收尾驗收順序已改為 #318→#314→combined→#323→無木工→#324，共用檔 forward 仍由 root 排程，不反向合入下游。使用者最新指示階段性完成後停止，本輪只封存；已審 #314 v2 工具保留給下一位接手，不啟動新測試，也沒有把等待／停止排程寫成通過或允許 skip。
 
 ## 本次單檔維護與來源界線
 
@@ -39,7 +40,7 @@ S 已交棒 combined，後續共用檔順序是 #314→combined→#318→無木�
 
 ## 來源與實際原件
 
-- 權威審查讀自 handoff `ea2748248d47563f8559638ccb70ec0ed21910d9` 的 `handoff/pr-reviews/314.md`；本輪不把舊審查錯寫成針對 S 的新審查。
+- 最新已讀設計追蹤取自 fresh handoff `b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6` 的 `handoff/pr-reviews/314.md`（2026-10-23T14:48:41Z）；它對草稿 `7bd61a43` 作純文字跟進，沒有宣告 S 有已重現產品缺陷或已驗收。原文／完整指令、原 CRLF 草稿、三處澄清 patch、執行計畫與獨立靜審封於本輪 E 的 `evidence/geo314-followup-20261023-3b0b634f/`。
 - [本輪進度與完整待跑項](https://github.com/ZhiQiYang/geometry-axiom/blob/25c15f7b81de07d3c9c66a5553bf9bb43aa8f3fb/evidence/geo314-refresh-8033aa75/PROGRESS.md)
 - [靜態原件與保護文字blob](https://github.com/ZhiQiYang/geometry-axiom/blob/25c15f7b81de07d3c9c66a5553bf9bb43aa8f3fb/evidence/geo314-refresh-8033aa75/SOURCE_STATIC.json)、[shared count原值](https://github.com/ZhiQiYang/geometry-axiom/blob/25c15f7b81de07d3c9c66a5553bf9bb43aa8f3fb/evidence/geo314-refresh-8033aa75/SHARED_UNION.json)
 - [原reader生成收據](https://github.com/ZhiQiYang/geometry-axiom/blob/25c15f7b81de07d3c9c66a5553bf9bb43aa8f3fb/evidence/geo314-refresh-8033aa75/reader-sync-source/receipt.json)、[完整stdout](https://github.com/ZhiQiYang/geometry-axiom/blob/25c15f7b81de07d3c9c66a5553bf9bb43aa8f3fb/evidence/geo314-refresh-8033aa75/reader-sync-source/stdout.txt)、[完整stderr](https://github.com/ZhiQiYang/geometry-axiom/blob/25c15f7b81de07d3c9c66a5553bf9bb43aa8f3fb/evidence/geo314-refresh-8033aa75/reader-sync-source/stderr.txt)
