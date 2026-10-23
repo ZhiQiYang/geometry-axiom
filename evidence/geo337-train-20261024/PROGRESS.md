@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 23:31 UTC）
+## 唯一 current-state（2026-10-23 23:32 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -10,7 +10,7 @@
 | 原完整123帳本 | L | tracked／fullCLI／core-map／external-check 全0；outer0 | 23:00:25 UTC真終態；123筆／120自然execution heads皆L，114killed／5equivalent／1原允許crashed／3retired；完整原流封final-L-ledger-complete |
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
 | 完整 native | L | RUNNING，尚無終態exit | session80260，原 --build全部230列、16MiB stack／35min CI；含#314六module103／Node13、ReadingA7／14、#323三module50 |
-| canvas／assembly／documents／grid／space／timber | L | documents0；assembly0待封；grid RUNNING；其餘UNRUN | documents47原assert全0／64.316s；assembly150原assert全0／191.692s；獨立checkout／埠／暫存，canvas獨占、原CI時限保留 |
+| canvas／assembly／documents／grid／space／timber | L | documents0；assembly0；grid RUNNING；其餘UNRUN | documents47原assert全0／64.316s；assembly150原assert全0／191.692s；獨立checkout／埠／暫存，canvas獨占、原CI時限保留 |
 | P52／Q38／§7兩項／P-189 | L | 全部UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | 全部UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
@@ -173,3 +173,7 @@ documents 在同L原workflow真exit0、wrapper0、47個原斷言全通過，64.3
 七批維護的原工具／範圍／指令／完整stdout與stderr／環境／退出碼／peer，1,677members與獨立8446核對0，封 `terminal-maintenance-seven-originals/`，collector最外原流另外逐檔入庫。包括三組相同原封包的hardlink去重、四及八個已終態獨立index快取、L完整帳本終態後175個可重建ELF快取退休，以及一組82,776,064配置bytes的歷史原流跨filesystem保全搬移。前六類合計439,607,296配置bytes，不能冒實際free差；搬移只是將/tmp原流完整移到/workspace，原路徑改symlink，並非整體空間釋放。所有原收據、fixtures、Gitobjects、原source/controlled variants、sidecars都保留；ELF僅保重建依據，沒有捏造binary完整封存。
 
 三個cold checkout `p-source/a-source/l-source` 的三組既有原tar現共用inode；在三組都解除hardlink之前禁止寫入、checkout或跑測試。原bytes與路徑不變，原inode/mtime差異及限制列於原PLAN；不是crash-durability承諾。第二組raw `/tmp/g288-final-native-3d681636/subcommands` 未動。另23:30完成95個歷史seal ELF快取退休、exit0，原件正交獨審，尚未冒已封入本七批包。
+
+## 2026-10-23 23:32 UTC：assembly 完整原job原件公開
+
+assembly同L原workflow、outer與reaper皆0；原150斷言（P77 134＋P82 16）全通過、0skip、uncaught0，191.692秒低於原CI15分鐘。9截圖、全部原commands/streams/environment/SHA與兩個已關閉Git守門封於 `final-L-browser-assembly/`，672members／5,226,869B壓縮，producer695與獨立3431核對0。原workflow指定GEOMETRY_ASSEMBLY_ONLY，既定partial模式不比golden，不能冒完整canvas；原Injected lost success response是P77預期故障注入，不另當產品紅。80個可重建Chrome cache與3個ELF按清單排除且未刪；runtime sidecars與原compile完整保存。
