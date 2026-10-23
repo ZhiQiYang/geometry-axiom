@@ -1,6 +1,9 @@
 {
+  "schema": "geo324.evidence-inventory.v2",
   "sourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
   "incomingTrainSHA": "504933473d7b9bdfc5964f73402a710f1222fc96",
+  "excludedSelf": "PACKAGE_MANIFEST.json",
+  "priorImmutableManifest": "revision-3-peer-and-manifest/PREVIOUS_PACKAGE_MANIFEST.json",
   "files": {
     "CURRENT_STATE.json": {
       "bytes": 4864,
@@ -10,13 +13,9 @@
       "bytes": 499,
       "sha256": "6cb13d199f210502cf2458e140a73bd7cc3023dcb8b9e3142d8584e6a4f890fc"
     },
-    "PACKAGE_MANIFEST.json": {
-      "bytes": 34688,
-      "sha256": "734d2ab95c6e9a4f7da8e92a7016fed3e58a35bd459baa3782b1b64e40c8b4f4"
-    },
     "PROGRESS.md": {
-      "bytes": 1304,
-      "sha256": "42b2336d77ae05199e342bb706fb4912915867ee6a2bde282fbd4db644af2452"
+      "bytes": 1977,
+      "sha256": "c764de77626b0799987c828755030d57f1826193c7485d2eb14177e20aab4930"
     },
     "merge-originals/receipt.json": {
       "bytes": 1205,
@@ -985,7 +984,396 @@
     "publish_merge_50493347_resume.py": {
       "bytes": 11849,
       "sha256": "a09a1dad4904b89147f552b22feb44a1a2cfd4660bc94a2ef1c69743c822ac70"
+    },
+    "revision-3-peer-and-manifest/GEO324_MERGE_57B_STATIC_PEER.json": {
+      "bytes": 29891,
+      "sha256": "8c1b1af8b8775b3b1fef645046d0535f956782fdd9127c013dfc6a43aca03761"
+    },
+    "revision-3-peer-and-manifest/MANIFEST_CORRECTION.json": {
+      "bytes": 1179,
+      "sha256": "46e6c642893ad7441add5f9c0f81ba19bd9a96db60c064f93eeec8b0f2ca3c17"
+    },
+    "revision-3-peer-and-manifest/PREVIOUS_PACKAGE_MANIFEST.json": {
+      "bytes": 41421,
+      "sha256": "c707b52c898350673d6ebbe4dfd8be8026fe1c0b614b10c431ea8920bc1e0223"
+    },
+    "revision-3-peer-and-manifest/PR_BODY_BEFORE_PEER.md": {
+      "bytes": 5046,
+      "sha256": "1af00b4d5fa15c750c903aa37900af9e9a4389d632fb61465759469a6d919c06"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/receipt.json": {
+      "bytes": 1046,
+      "sha256": "46a69e0d2e458df2b777b9d7ebfa7d75364cecc3089fbdf4ef4c463681623c19"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/request.json": {
+      "bytes": 1487,
+      "sha256": "c3e097e7a91a0682781beb16e49d728c36a453590ef1f95137f1baf89e9c9fe7"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/result.json": {
+      "bytes": 1738,
+      "sha256": "b10ef335feb857968e3a51745a460a925ad5cfb2f2499fe7258be9acc1370789"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/stdout.bin": {
+      "bytes": 41,
+      "sha256": "b5aa10399de82cd96d482ea3501f58cd7663356a1e0a4fba8e1ab4f2ee208605"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/request.json": {
+      "bytes": 1522,
+      "sha256": "a1c4b62a15b9fb65a771837706401142b6356759da2b8ae83d9e40a455262aa8"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/result.json": {
+      "bytes": 1776,
+      "sha256": "1495329d7484c91ac762c0ebbfbd81760849434a9507ea5cebb68253f00bf93b"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/stdout.bin": {
+      "bytes": 17144,
+      "sha256": "f3474f09fbfda9ddfdae8f6ae1b8ef2e9b4f704617a0418a616d7c236535432c"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/request.json": {
+      "bytes": 1494,
+      "sha256": "6ad32b9fc1c12eaa2923da8b8f808e033336221477d4c47e91187430717c4902"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/result.json": {
+      "bytes": 1745,
+      "sha256": "142764b00086b10543ef52c8ce8079f65dfd34c192932a17861d4f821480d234"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/stdout.bin": {
+      "bytes": 41,
+      "sha256": "caf2f106b489c29a042916a1337bf022249037c9d32ee2018873f3c1aba5b890"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/request.json": {
+      "bytes": 1530,
+      "sha256": "f0f63cb471b58ee486717b011ba477dca7028e1b41b81886e0433e1260d13ab1"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/result.json": {
+      "bytes": 1780,
+      "sha256": "82007338b433761b09eb826a4cabab6b5b3e4184e5db782a6f718a09da2f98fd"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/request.json": {
+      "bytes": 1548,
+      "sha256": "77f1d07445c3373473598d9b07a5945cff9e278f8883d030141212e5a0b55fb3"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/result.json": {
+      "bytes": 1797,
+      "sha256": "3d451a491aea858aa17f459c1316c144c57946005115b017a509b3bb53806d2b"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/request.json": {
+      "bytes": 1515,
+      "sha256": "e8041e32c2a5930d15226183cac59842691ace549158497d6d651ef312d8167f"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/result.json": {
+      "bytes": 1769,
+      "sha256": "08017b9ebe6a28c625a08564cca2e93bf69550b49836694225708252fdc6727f"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/stdout.bin": {
+      "bytes": 19697,
+      "sha256": "11ff569f4415f332d2fd3e2f83d3c87e9b8085f320a10b60ff3451cda8221bf9"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/request.json": {
+      "bytes": 1937,
+      "sha256": "7cbc5976d92a17936313d6e23699531b19947d3abf0f036b043c984158316d18"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/result.json": {
+      "bytes": 2187,
+      "sha256": "14369b9fe1df4b0895f9fbce3c270ba5fd3706109e6351708bc8465e20ca8c6d"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/request.json": {
+      "bytes": 1543,
+      "sha256": "002ccdfbece7830b361d1c41dbbfb7a4a06683a3b3a294f6e1b182ad94f7575b"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/result.json": {
+      "bytes": 1797,
+      "sha256": "978e3861006e31280dbad9db9696206dd2801aabc31ae31490911fe3fe1728be"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/stdout.bin": {
+      "bytes": 24750,
+      "sha256": "3876df1acb4f0e61815a84d0d3db6de83c6e74a65b3339c0960180ef725b37f4"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/request.json": {
+      "bytes": 1487,
+      "sha256": "e46ec5bab3c8e16937c797b1a20260da4bd408baa16568d44187b457be435839"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/result.json": {
+      "bytes": 1737,
+      "sha256": "fc035a2aaf096099495b5dde85d408934199859881b43e76fa9a09916f07bd5c"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/stdout.bin": {
+      "bytes": 41,
+      "sha256": "6f01ebdc7a44d2ad84f6c29f0df47035882e7a3bcee3b8dd2c1cdb04f24e75b1"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/request.json": {
+      "bytes": 1569,
+      "sha256": "c403a74dd282399dd2768e65e4999203d3955e79b27ad13714f938c5238b17a8"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/result.json": {
+      "bytes": 1821,
+      "sha256": "a2033e61ce3f27c376f93d9bdbebaccabb6fcebf787458dbfc187fcb25e85638"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/stderr.bin": {
+      "bytes": 133,
+      "sha256": "df95d4985bbaeba00a24db71968f0210ff90f5c36acfea3146a4eded5e452df3"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/request.json": {
+      "bytes": 1554,
+      "sha256": "4c29d58052c67a5d7a7dede380d24f52d93b0eee35bc7253ab4b3ffe1a178830"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/result.json": {
+      "bytes": 1805,
+      "sha256": "d87dd551268dbc8a407e3fe70ce97961b0a02fbc7a37915bf7c25a750224ba3f"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/stdout.bin": {
+      "bytes": 80,
+      "sha256": "537ccfbd5584a7c6133b77537f8ae74fd0aafa4202dd753cbf8bc615d1988a50"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/request.json": {
+      "bytes": 1535,
+      "sha256": "ab0419828fc5be14c44bdaefc004c309ba1c5a92d1888c60014936201b277e94"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/result.json": {
+      "bytes": 1785,
+      "sha256": "888092bc8b3138bcc1a16b65d39fada1a46eb622a9ae902ee3e238d1b6b053b8"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/request.json": {
+      "bytes": 1521,
+      "sha256": "eb635ce1465e0bceeb87869329bff58406ffa1f4c80e6ce5518a3d0f8cf2f553"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/result.json": {
+      "bytes": 1772,
+      "sha256": "a4344ea908be897169c08bcdfc5a7dd1141d283fb18798861c94603108ae1d08"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/stdout.bin": {
+      "bytes": 11,
+      "sha256": "fd0f6bcb0fbba840143abd8e05217af71b51bb02f9d5c16df9752c4adfb60ae5"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/request.json": {
+      "bytes": 1508,
+      "sha256": "add6c30ceb870c4b5a5850e1e4c3f2b072943822133ea49b78bba7250754a1c3"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/result.json": {
+      "bytes": 1758,
+      "sha256": "5d5e18dbc854fb86f144df785cf36306512deaa66f7d50ac46c2d037ad4dc352"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/request.json": {
+      "bytes": 1558,
+      "sha256": "b4d416d34f9baed3bb7e3194370ed9e39bab79964b2ab935c3c08d0a249f6e49"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/result.json": {
+      "bytes": 1810,
+      "sha256": "0031627ec1eb1fbfd7ae0396d19f22fcd0508b7bf4c59b89c2c7775333cb8523"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/stdout.bin": {
+      "bytes": 157,
+      "sha256": "de4ba139027ce18f1c13830833cd1bc81589e3377d8ba897142eb74fd737adb4"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/request.json": {
+      "bytes": 1493,
+      "sha256": "da91f757f71a0fab9ab4a6c28095ad822aaf9af394cf94f49acb44d79e7b5543"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/result.json": {
+      "bytes": 1744,
+      "sha256": "711c2ae5887a3606276091b9ba5a125540ad1fc25df79261fec42807e9cc6f56"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/stdout.bin": {
+      "bytes": 41,
+      "sha256": "85977113423a43de141604a999275b9d2e9c3e29eb5a4c88a0fe70031108ec31"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/request.json": {
+      "bytes": 1589,
+      "sha256": "24da2d3ae3e1d440a54424604ac8c4e1874125c3c2da9ed3c62841ff28d27180"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/result.json": {
+      "bytes": 1841,
+      "sha256": "3146e9c2aa551d53bab9792b8f9b75da792cd30c9f9e5099665f8b5b1d0833e6"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/stderr.bin": {
+      "bytes": 147,
+      "sha256": "0de89ff1014df7f41856c38bc071a727f038f31f51a3c9948a55247e674af138"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/request.json": {
+      "bytes": 1568,
+      "sha256": "a6ae2232e24d8cac2ff4f9ffd0d1671aca85dd203df8a7c52debb0910033ee21"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/result.json": {
+      "bytes": 1819,
+      "sha256": "1f29d77c73a10af7f8f78ba418b8d4411cb3fc5f1a9e4a4ed22ffbdff6e8a9f6"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/stdout.bin": {
+      "bytes": 87,
+      "sha256": "38d85427f059186ee6c0d95208d975eb03d5d7938d1df1284a15215ec22c158c"
+    },
+    "revision-3-peer-and-manifest/prior-completed-publication/subcommands.json": {
+      "bytes": 34038,
+      "sha256": "202c11d62f8da96fcea83afa0542229caaa8316c9aeac151a35efab60d011067"
+    },
+    "revision-3-peer-and-manifest/publish_merge_peer_and_manifest_correction.py": {
+      "bytes": 9827,
+      "sha256": "5701913f3924cd6c87acff6ed2bd70cc99edc0481ee60832d4cc56b272555653"
     }
   },
-  "productTestsExecuted": false
+  "productTestsExecuted": false,
+  "formalRowsRemainUNRUN": 16
 }
