@@ -83,6 +83,15 @@
       "archives": [
         "raw/timber-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T04:43:09.409321+00:00",
+      "label": "assembly-workflow",
+      "result": "原assembly測試0、CI內；原發布1因assembly-final封包撞名。只以獨立label補發布原輸出，不重跑或改判原測試",
+      "next": "封存整輪原終態與本次發布結果；保留原wrapper及publisher非零退出碼",
+      "archives": [
+        "raw/assembly-workflow-01.tar.gz"
+      ]
     }
   ]
 }

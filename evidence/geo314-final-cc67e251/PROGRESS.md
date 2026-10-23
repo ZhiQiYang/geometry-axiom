@@ -28,3 +28,6 @@
 
 - 2026-10-23T04:42:44.062469+00:00 — **timber**：原退出0；原收據有效=True；超CI時限=False；衍生通過=True
   下一步：繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽。原始資料：`raw/timber-01.tar.gz`。
+
+- 2026-10-23T04:43:09.409321+00:00 — **assembly-workflow**：原assembly測試0、CI內；原發布1因assembly-final封包撞名。只以獨立label補發布原輸出，不重跑或改判原測試
+  下一步：封存整輪原終態與本次發布結果；保留原wrapper及publisher非零退出碼。原始資料：`raw/assembly-workflow-01.tar.gz`。
