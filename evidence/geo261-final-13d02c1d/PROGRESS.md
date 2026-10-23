@@ -49,3 +49,6 @@
 
 - 2026-10-23T10:55:00.797141+00:00 — **p88-original-canvas-run-3**：固定F原canvas第3/3次；workflow原exit=0、outer=0、over_ci_timeout=False、1739.477s。前後乾淨、獨立埠/TEMP、全部結果保留；三次未收齊前不判穩定或間歇。
   下一步：完成固定F三次原樣重跑，依自然失敗與受控定位證據修復，保原斷言/golden/時限，再於新F跑受影響項與四組反證。原始資料：`raw/p88-original-canvas-run-3-01.tar.gz`。
+
+- 2026-10-23T10:55:11.458458+00:00 — **p88-original-three-summary**：原三次canvas退出=1/0/0；間歇紅：相同F上同一焦點斷言有紅，另有原P88全段143 checks完成；產品／測試時序根因仍待真trace。
+  下一步：以真query/paint/mousePressed trace定位，修復後固定新F，原斷言/golden/時限不變。。原始資料：`raw/p88-original-three-summary-01.tar.gz`。

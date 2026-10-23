@@ -147,6 +147,15 @@
       "archives": [
         "raw/p88-original-canvas-run-3-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T10:55:11.458458+00:00",
+      "label": "p88-original-three-summary",
+      "result": "原三次canvas退出=1/0/0；間歇紅：相同F上同一焦點斷言有紅，另有原P88全段143 checks完成；產品／測試時序根因仍待真trace。",
+      "next": "以真query/paint/mousePressed trace定位，修復後固定新F，原斷言/golden/時限不變。",
+      "archives": [
+        "raw/p88-original-three-summary-01.tar.gz"
+      ]
     }
   ]
 }
