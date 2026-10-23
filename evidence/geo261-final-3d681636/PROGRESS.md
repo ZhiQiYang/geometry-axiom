@@ -37,3 +37,6 @@
 
 - 2026-10-23T13:28:49.886917+00:00 — **p88-final-p52-formal**：新F原P52正式driver/outer/launcher皆0，main243.1667135ms、fix216.36882ms、ratio0.889796209710257≤1；原main/fix/fix/main四區塊，每側16筆，五controls0/0/1/1/1均符合原預期。原protocol/時限/斷言保留，沒有重抽樣；完整原指令、stdout/stderr、環境、SHA與runtime inventory封存。
   下一步：封存原獨立驗證器0，接著同F原runtime撤回／恢復反證。。原始資料：`raw/p88-final-p52-formal-01.tar.gz`。
+
+- 2026-10-23T13:29:27.058610+00:00 — **p88-final-p52-verifier**：新F獨立P52原驗證器0，adapter/outer/launcher皆0；原9assertions與原判官AST保留。四個timing區塊及五控制從真c387原streams投影，投影明記DERIVED，不冒原launch stdout；核對同F正式16+16與ratio0.889796209710257。完整verifier原stdout/stderr、每層命令與環境一併封存。
+  下一步：同F原runtime撤回／恢復反證，然後P73/Chromium154/oracle。。原始資料：`raw/p88-final-p52-verifier-01.tar.gz`。
