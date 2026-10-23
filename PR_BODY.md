@@ -8,12 +8,12 @@
 |---|---|
 | 來源分支 | `codex/geo299-316-combined-20261022` |
 | 產品／tests source S | `15a735951a36b6fe52e0291152f335139e6921ad` |
-| evidence HEAD E | `f19e8baf10080233db05781c5bb38a39532956ec`；S後只追加本棒 evidence |
+| evidence HEAD E | `1722b55445b53ac37b6eac1be7b379e79c73eaa8`；S後只追加本棒 evidence |
 | 一般 merge parents | combined `c940a6543029a94d443709ebdcbd63828fdfef1d` ＋ #314 `8033aa756c62f654333c24d1276d4b61beb31a45` |
 | 前棒 #323 | `5c29eba30a40f20ea5c7eb8dc139e5788235d3b6`，已包含在 #314 parent |
 | 最新 handoff refresh | `f6a174df42d5ff1ce670b6f8277da60c667b8965`；combined patch／八份 `_gen` 與先前 ea274 原件相同 |
 | 歷史獨立產品／證據 | F `5bfadf187e615ba0fb8466753b63ce3044ef7d1c`／E `139ab64ca5f88e89bb4e95921675b998457026aa` |
-| 對抗審查 | 原準備 metadata 已審；這次 S resolution 已交 #323 reviewer，尚待回覆；產品動態未審過 |
+| 對抗審查 | #323 reviewer已完成這次S聯集靜審，未見確立遺失／假綠；產品動態未審過 |
 
 fresh handoff 仍沒有 `handoff/pr-reviews/299.md` 或 `316.md`，不聲稱讀到不存在的留言。補丁來源保留指定 combined rebased patch 與 `_gen`；未分別疊兩份 individual patch，也未以舊產物覆蓋前棒修復。
 
@@ -36,13 +36,15 @@ fresh handoff 仍沒有 `handoff/pr-reviews/299.md` 或 `316.md`，不聲稱讀�
 
 一般 merge 原退出1，六個衝突都保原輸出並解完：allowlist、architecture三個衍生檔、舊帳本、migration owner map。產品C、manifest、registry、expected與canonical自動合併；原sync再機械產生0。M89–M98不動，M99–M120全保、M121已由主代理保留；owner map保精確聯集與23／61斷言，未放寬測試。新suite登錄與靜態方法數為contact15、host-facts22、load13、stagger47、contacts10、contact-world9、world-validation14、wood-grid23。
 
+wood-contact-world從前棒10變9，是早先combined已退休dead `wood_contact_footprint_collides` API／collision-only單元測項；其Python與C harness逐Git blob等早先c940，本次merge沒有另外刪測。活I11 M13／M97／M98與同UV跨host正例仍保留且待新stack實跑，不能把此基數當動態通過。
+
 舊帳本只是原record聯集，不是重產：保combined原88筆與前棒獨有22筆，沒有重標execution SHA／verdict。原manifest保#314的新H leaf／W guards與combined具名dead API退休聯集；舊scan／report／receipt保一側完整歷史，無法證明新manifest的完整closure，明列待重產。兩側四檔與原JSON保於原Git parents及本次raw，沒有把混合來源說成帳本有效或架構已綠。
 
 `公理層.md`／`決策佇列.md` 正規化bytes等前棒8033；本棒沒有改字。`current_geometry.c` 保完整CRLF。原cached whitespace check退出2來自前棒原streams、main README與決策原空白，刻意保bytes；精確自撰相關paths check0。封存collector首版因sparse未物化evidence目錄，在archive寫入前退出1，只加mkdir後原命令0；原工具與限制保留，未改產品或測試。
 
 本次 #314 對抗靜審接受 f614 guard的有限範圍：相同final ParameterRef不能略過同軸ordered facts；兩具名正反例隔離同最終ref／value但不同當下歸因。final值相同仍照I24保留，不新增中途限制。這不代表M121已動態證成；巢狀參數包、realloc/OOM與其他歷史未驗邊界不外推。程序授權引用本次使用者實作指示與鎖定題3B／4B，不冒稱SSOT文字已另行核可或已改。
 
-完整本輪命令、退出碼、環境、SHA與原stdout／stderr保在 [PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/f19e8baf10080233db05781c5bb38a39532956ec/evidence/geo299-316-stack-20261023/PROGRESS.md) 與 [SOURCE_MERGE_INVENTORY.json](https://github.com/ZhiQiYang/geometry-axiom/blob/f19e8baf10080233db05781c5bb38a39532956ec/evidence/geo299-316-stack-20261023/SOURCE_MERGE_INVENTORY.json)。本次封包120 members逐檔reopen核bytes／hash；這是封存驗證，不是產品gate。
+完整本輪命令、退出碼、環境、SHA與原stdout／stderr保在 [PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/1722b55445b53ac37b6eac1be7b379e79c73eaa8/evidence/geo299-316-stack-20261023/PROGRESS.md) 與 [SOURCE_MERGE_INVENTORY.json](https://github.com/ZhiQiYang/geometry-axiom/blob/1722b55445b53ac37b6eac1be7b379e79c73eaa8/evidence/geo299-316-stack-20261023/SOURCE_MERGE_INVENTORY.json)。本次封包120 members逐檔reopen核bytes／hash；這是封存驗證，不是產品gate。新增 [同儕靜審報告](https://github.com/ZhiQiYang/geometry-axiom/blob/1722b55445b53ac37b6eac1be7b379e79c73eaa8/evidence/geo299-316-stack-20261023/peer-review/COMBINED_SOURCE_UNION_15a73595_REVIEW.md) 僅接受source聯集與待驗標示，不冒新產品全綠。
 
 原F5bf全綠收據只見 [歷史摘要](https://github.com/ZhiQiYang/geometry-axiom/blob/139ab64ca5f88e89bb4e95921675b998457026aa/evidence/geo299-316-final-5bfadf18/FORMAL_SUMMARY.md)。原整份帳本曾ENOSPC後同S補bridge subset，不宣稱單次full命令退出0；未捕獲舊core inner streams與reconstructed-not-captured C限制維持。Windows／MSVC未在雲端驗證，GDI只保原允許skip。
 
