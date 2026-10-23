@@ -18,7 +18,7 @@
 
 ## 原始證據與覆蓋界線
 
-本提交先保留完整 aggregate stdout/stderr、原收據與 observer 環境紀錄；完整逐 suite 原 raw、ledger 前後 bytes、2187 source-input archives 及官方 private cache archive 全保留在雲端 `/workspace/geo314-work/native-p2-001/`，待量測靜止期結束後封入後續證據提交。原 OUT_DIR-only 外部環境適配，沒有改 compiler flags、smoke、fingerprint、suite或裁判；原前後 contract 比較完全相同。原生診斷本輪未外包既有 reaper，環境 zombie 紅如實保留；往後含子程序／負控制一律包原 reaper。
+本目錄保留完整 aggregate stdout/stderr、原收據、全部610逐 suite原raw、ledger前後bytes、2187來源輸入的前後archive及官方privatecache原archive。詳細raw與metadata在 `native-forensics.tar.gz`；前後來源分別在 `source-inputs-before.tar.gz`、`source-inputs-after.tar.gz`，全部檔案SHA見PUBLICATION.json。`observed-source-buildlog-payloads.tar.gz`另保10173個真實file-version events或manifest所引用的來源／buildlog payload，共413488254原bytes；沒有補造原觀測缺口。完整原位置 `/workspace/geo314-work/native-p2-001/` 亦保留；optional ELF/object/assembly額外payload完整冷存在下列archive。原 OUT_DIR-only 外部環境適配，沒有改 compiler flags、smoke、fingerprint、suite或裁判；原前後 contract 比較完全相同。原生診斷本輪未外包既有 reaper，環境 zombie 紅如實保留；往後含子程序／負控制一律包原 reaper。
 
 額外唯讀 inotify 只屬 observed-only。容量保護於23:34:10.820863Z把唯一 objects 目錄設0555，之後可選 payload PermissionError 與 race missing 全有紀錄；不能稱完整 transient capture。原 native、source、build log、stdio未改。終態後恢復原0700。root 將既有13438 blobs／1490402516 bytes串流冷存 `/tmp/geo314-native-p2-observed-objects.tar.gz`（344955200 bytes；SHA256 `bfa7cdf071b652425bedecf758b53679a29e1183eb7e73ade09edbd25de93b12`），逐成員 bytes/hash 驗同後才釋原可重建payload，元資料與COLD_STORAGE.md保留；不是刪除失敗證據。
 

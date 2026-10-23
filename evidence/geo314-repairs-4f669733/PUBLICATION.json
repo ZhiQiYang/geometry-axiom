@@ -1,0 +1,29 @@
+{
+  "schema": "geo314-repair-publication/1",
+  "classification": "affected diagnostics and environment retry; not formal final-SHA acceptance",
+  "product_sha": "4f669733282613a6f1e4a627c448374716496daa",
+  "checkout_sha": "c0a2007898f544e658efa72b9b51528a03f7ce51",
+  "environment_retry_product_sha": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+  "files": [
+    {
+      "path": "candidate-repair.tar.gz",
+      "bytes": 11577001,
+      "sha256": "518fb4ac69503fa7ab2a927fb54f645e2a32b1388f4c805b381624ad087dd3c6"
+    },
+    {
+      "path": "reader-repair.tar.gz",
+      "bytes": 7832755,
+      "sha256": "920502a97f2c7b0c76f5ebe4f63767bbe23e0a94fb35f33725d0d07d600f248e"
+    },
+    {
+      "path": "environment-node-repair.tar.gz",
+      "bytes": 2176707,
+      "sha256": "f22ee246c6d7d0e6058ff0a1e43bf672472098659f1b83afe7dbff5593ed5d8e"
+    },
+    {
+      "path": "manifest-registration.tar.gz",
+      "bytes": 117319,
+      "sha256": "6f6a93c29839475119e55112f58a5de457b928815842cfdf9476fd01f86bccec"
+    }
+  ]
+}
