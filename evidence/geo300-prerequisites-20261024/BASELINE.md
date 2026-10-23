@@ -1,6 +1,6 @@
-# 現版基線與權威
+# 首版基線與權威（固定歷史快照）
 
-基底為公開 train `a048530c18f5df43a921e6b06bb3e4aa2192684e`，fresh main `425c092eaf16f90256d76433243baebde45163ac`，fresh handoff `e91e8e0c82afd9ae784e25fe63566f3e42f4b2d4`。原權威讀取指令、Git 退出碼、完整輸出與環境存於 `AUTHORITY_ORIGINALS.tar.gz`，逐檔 inventory 及封包往返檢查另列 JSON。原始 clone 只有先前記錄的 exit 0 與完整指令文字，沒有事前 c387 收據；不補造事前記錄。
+本檔保存的首版基底為公開 train `a048530c18f5df43a921e6b06bb3e4aa2192684e`，fresh main `425c092eaf16f90256d76433243baebde45163ac`，fresh handoff `e91e8e0c82afd9ae784e25fe63566f3e42f4b2d4`。原權威讀取指令、Git 退出碼、完整輸出與環境存於 `AUTHORITY_ORIGINALS.tar.gz`，逐檔 inventory 及封包往返檢查另列 JSON。原始 clone 只有先前記錄的 exit 0 與完整指令文字，沒有事前 c387 收據；不補造事前記錄。
 
 | 權威或參考 | 原始 bytes SHA-256 |
 |---|---|
