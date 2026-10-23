@@ -1,3 +1,11 @@
+## 追加：正典機械來源同步已執行，閱讀器三裁判尚未全跑
+
+來源 `3c68c59b6e08ddf7387d8661a5d6f9c45a643691`（普通承接 ed6aa2f60）上執行 `python3 -B geometry-guide/sync_axiom_reader.py`，真 exit **0**、完整 stdout/stderr/argv/env/SHA/hash 於 `reader-generation/`。耗時約 4.21 秒，只改唯一 canonical HTML；原始報告 patches90，207 clauses／1261 blocks／5 comments／31 witnesses／63 examples。這只代表同步器原機械生成結果；**`--check` 與 `tests/test_axiom_reader.py` 未跑，不能稱閱讀器三裁判全綠**。root 明示放行此來源生成，未占用原生編譯／Chrome／掃描槽。
+
+白話 D11/I19/R6 已依核可 v3 衍生同步，K 全寬原語與 I22 端點不放寬；mutation registry 的 id/desc 改用既有追溯 renderer 能識別的雙引號，M140–M148 均實際出現在新 HTML，沒有宣稱已殺死。讀取根目錄 scene 完整 trace 輸入後才生成，避免 sparse checkout 漏夾具。
+
+新增同儕不可變 `c264f4ee` 靜審全文 `PEER_REVIEW_NATIVE_c264f4ee.md`。已確認 H 漏線來源補上、expected只動兩I19-only族、當前與歷史負控隔離；仍明列 W 控制不等於真 H caller 撤回，golden 與真 CLI 次序待驗。所有幾何／原生／正式掃描仍未跑，小型 oracle 觀察仍等 root 指定非canvas槽。
+
 ## 追加：來源登記與最新權威同步
 
 已再 fetch handoff `f6a174df42d5ff1ce670b6f8277da60c667b8965`，`handoff/pr-reviews/318.md` 最後仍為 2026-10-23 05:57:07Z 第 3 版閱讀 A 核可，沒有改用舊審查取代最新來源。當前來源 `c264f4eea40493133e3d3409dd834d68c861e8d5`；prbody `0990e4efd1841f4877559d75a2badd2b6c715f62`，正文一表列每項未跑。
