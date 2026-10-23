@@ -65,6 +65,43 @@ class WoodReportPolicy(unittest.TestCase):
             with self.subTest(control=name):
                 self.case(case);exe,_=self.mutant(module,name,before,after);self.case(case,exe,marker);self.case(case)
 
+    def test_owned_id_pool_preserves_interleaved_groups_full_capacity_and_value_copy(self):
+        self.case("pool")
+
+    def test_pool_offsets_values_declaration_order_and_exact_capacity_controls_fail_named_assertions(self):
+        controls=[
+            ("report-pool-offset", "group->first=first;first+=group->count;group->count=0;",
+                "group->first=0;first+=group->count;group->count=0;", "pool", "report-pool-offsets"),
+            ("report-pool-value", "out->ids[group->first+group->count++]=member->id;",
+                "out->ids[group->first+group->count++]=0;", "pool", "report-pool-id-order"),
+            ("report-pool-reverse", "for(size_t i=0;i<count;++i){const WoodMember *member=&members[i];\n        if(member->placed){",
+                "for(size_t remaining=count;remaining;--remaining){const WoodMember *member=&members[remaining-1];\n        if(member->placed){", "pool", "report-pool-id-order"),
+            ("report-exact-capacity", "count>WOOD_CUT_LIST_MEMBER_CAPACITY)return false;",
+                "count>=WOOD_CUT_LIST_MEMBER_CAPACITY)return false;", "limits", "report-capacity"),
+        ]
+        for name,before,after,case,marker in controls:
+            with self.subTest(control=name):
+                self.case(case);exe,_=self.mutant("cut_list",name,before,after)
+                self.case(case,exe,marker);self.case(case)
+
+    def test_group_quadratic_id_storage_control_fails_without_changing_report_values(self):
+        build=native();header=build.woodworking/"cut_list.h";original=header.read_bytes()
+        before=b"    size_t first,count;";after=before+b"\n    uint32_t legacy_ids[WOOD_CUT_LIST_MEMBER_CAPACITY];"
+        self.assertEqual(1,original.count(before),"Control must replace exactly one production expression")
+        self.case("pool")
+        try:
+            header.write_bytes(original.replace(before,after))
+            source=build.woodworking/"report-storage-client.c"
+            shutil.copy2(ROOT/"tests/geo261_report_policy_harness.c",source)
+            client=build.compile(source,"report-storage-client")
+            cut=build.compile(build.woodworking/"cut_list.c","report-storage-cut")
+            exe=build.link("report-storage-control",[client,cut,build.wood_boundary_policy_object])
+            self.case("pool",exe,"report-group-linear-storage")
+        finally:
+            header.write_bytes(original)
+        self.assertEqual(original,header.read_bytes())
+        self.case("pool")
+
     def cli_report(self,exe):
         with tempfile.TemporaryDirectory(prefix="geometry-report-") as directory:
             result=subprocess.run([str(exe),"--no-window","--scene",str(ROOT/"room_a.scene"),"--out",str(Path(directory)/"scene.svg")],capture_output=True,text=True,encoding="utf-8",timeout=30)
