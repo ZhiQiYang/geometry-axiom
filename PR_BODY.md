@@ -1,44 +1,49 @@
-# #299＋#316：定位邊診斷與死碰撞轉接器退休，重新整合待驗
+# #299＋#316：定位邊診斷與死碰撞轉接器退休，已接 #323／#314，動態待驗
 
-非 boundary 角材超出定位邊時，保留 `V_EXTENSION` 的原裁決，補足料件、定位邊與實際超出區間；移除沒有產品 caller 的 H wrappers 及死 W footprint API，保留活 I11 放置與 H／W 重驗，並以相同局部 UV 的雙承載面正例保護「只比同承載面」。本補丁不改公理層或決策佇列，尚未合併 PR。
+非 boundary 角材超出定位邊時，保留 `V_EXTENSION` 的原裁決，補足料件、定位邊與實際超出區間；退休沒有產品 caller 的 H wrappers 及死 W footprint API，保留活 I11 放置與 H／W 重驗，並以相同局部 UV 的雙承載面正例保護「只比同承載面」。本棒不改公理層或決策佇列。
 
-使用者最新指示改為在目前整合分支之上準備 #323 → #314 → 本 combined → #318。此分支目前只新增準備收據，**還沒有合入前兩棒，也沒有新堆疊的正式驗收結果**。原獨立補丁的全綠結果保留其原產品 SHA；不能轉作新基底綠燈。
+已依使用者順序，將含 #323 的 #314 來源一般 merge 到 combined 分支；source 已推並交給 #318。**新堆疊還沒有動態驗收結果**。下面只有一份 current-state 矩陣；原獨立補丁的綠燈留原 SHA，不能轉作新產品綠燈。
 
 | 目前身分 | 不可變 SHA／狀態 |
 |---|---|
 | 來源分支 | `codex/geo299-316-combined-20261022` |
-| 目前 evidence HEAD | `c940a6543029a94d443709ebdcbd63828fdfef1d`；只追加準備證據與 metadata 同儕審查 |
-| 尚未合流的目前產品 | 歷史 F `5bfadf187e615ba0fb8466753b63ce3044ef7d1c` |
-| 歷史正式證據 E | `139ab64ca5f88e89bb4e95921675b998457026aa` |
-| 歷史原 base | `4b665fae21ab63aaffb7d84f6a32d5a469ba1675` |
-| 這次已讀權威 handoff | `ea2748248d47563f8559638ccb70ec0ed21910d9` |
-| 新基底／新 final SHA | 待 #314 普通 merge 前棒、交接後固定；目前未產生 |
-| 新對抗審查 | #323 owner 已審準備 metadata，未見確立阻擋；新產品／新 closure 仍未驗 |
+| 產品／tests source S | `15a735951a36b6fe52e0291152f335139e6921ad` |
+| evidence HEAD E | `f19e8baf10080233db05781c5bb38a39532956ec`；S後只追加本棒 evidence |
+| 一般 merge parents | combined `c940a6543029a94d443709ebdcbd63828fdfef1d` ＋ #314 `8033aa756c62f654333c24d1276d4b61beb31a45` |
+| 前棒 #323 | `5c29eba30a40f20ea5c7eb8dc139e5788235d3b6`，已包含在 #314 parent |
+| 最新 handoff refresh | `f6a174df42d5ff1ce670b6f8277da60c667b8965`；combined patch／八份 `_gen` 與先前 ea274 原件相同 |
+| 歷史獨立產品／證據 | F `5bfadf187e615ba0fb8466753b63ce3044ef7d1c`／E `139ab64ca5f88e89bb4e95921675b998457026aa` |
+| 對抗審查 | 原準備 metadata 已審；這次 S resolution 已交 #323 reviewer，尚待回覆；產品動態未審過 |
 
-本次只使用 `handoff/drafts/combined/rebased-546e2eb2/patch.diff` 與 `_gen` 追溯原設計，不重疊套用兩份 individual patch，也不以舊生成物覆蓋既有修復。fresh handoff 中沒有 `handoff/pr-reviews/299.md` 或 `316.md`，因此沒有聲稱讀到這兩份不存在的留言檔；最終前會再次 fetch。
+fresh handoff 仍沒有 `handoff/pr-reviews/299.md` 或 `316.md`，不聲稱讀到不存在的留言。補丁來源保留指定 combined rebased patch 與 `_gen`；未分別疊兩份 individual patch，也未以舊產物覆蓋前棒修復。
 
-以下是唯一 current-state 矩陣；歷史欄不能取代新堆疊實跑。
-
-| Gate／項目 | 新堆疊 execution SHA／exit | 已保存歷史結果／允許 skip | 目前狀態 |
+| Gate／項目 | 目前 S 的 execution／exit | 原歷史結果與允許 skip | 目前判定 |
 |---|---|---|---|
-| native `ulimit -s 16384; python3 tests/run_all.py --build` | 尚無／未跑 | F5bf：0；224 suites、5184 pass、0 fail、1 個原允許 Windows GDI skip | 合流後按閉包驗證 |
-| canvas | 尚無／未跑 | F5bf：0；2267 assertions、full、golden matched | 合流後待跑 |
-| assembly | 尚無／未跑 | F5bf：0；150 assertions、原 partial scope | 合流後待跑 |
-| documents | 尚無／未跑 | F5bf：0；47 assertions、原 documents harness | 合流後待跑 |
-| grid | 尚無／未跑 | F5bf：0；356 assertions、原 partial scope | 合流後待跑 |
-| space | 尚無／未跑 | F5bf：0；242 pass、full-space-suite，原 omitted timber groups | 合流後待跑 |
-| timber | 尚無／未跑 | F5bf：0；79 pass、原 partial scope | 合流後待跑 |
-| mutation freshness／完整帳本 | 尚無／未跑 | F5bf check 0；原 88 筆帳本的 execution S 保留原 SHA | 最後完整重產由主代理統一執行 |
-| 三條原架構裁判 | 尚無／未跑 | F5bf：0／0／0 | 新合流來源待重驗／重產 |
-| combined 專項與突變自證 | 尚無／未跑 | 原 M89–M98 正常斷言 killed；fixture／reader 精確 0／1／0 見原 E | 待 shared baton 及主代理測試槽 |
-| 本次只讀準備工具 | E139 開始／各 0 | fetch、原件快照、十個 anchors 靜態唯一、grid/timber 原收據對抗審查 | 僅準備完成，非正式 gate |
+| native `ulimit -s 16384; python3 tests/run_all.py --build` | **未跑** | F5bf原0；224 suites／5184 pass／0 fail／1原允許 Windows GDI skip | 待最終閉包排程 |
+| canvas | **未跑** | F5bf原0；2267 assertions、full、golden matched | 待跑 |
+| assembly | **未跑** | F5bf原0；150 assertions、原partial | 待跑 |
+| documents | **未跑** | F5bf原0；47 assertions、原documents harness | 待跑 |
+| grid | **未跑** | F5bf原0；356 assertions、原partial | 待跑 |
+| space | **未跑** | F5bf原0；242 pass、full-space-suite，原省略timber groups | 待跑 |
+| timber | **未跑** | F5bf原0；79 pass、原partial | 待跑 |
+| combined W／H／core專項與反證 | **未跑** | 原M89–M98正常斷言killed；fixture／reader精確0／1／0保原E | 待同最終來源原裁判 |
+| #314 M121精確反證 | **未跑** | 沒有捏造新record；靜態檢視不是0／1／0 | 待baseline／withdraw／restore正常斷言原輸出 |
+| mutation freshness／完整帳本 | **未跑** | 舊帳本record union110筆，各自execution字段保原；M121 unrun | 主代理最後一次全份重產；不宣稱S上fresh |
+| 架構三條原裁判／四檔刷新 | **未跑** | 舊scan／report／receipt真來源保留3a165ef5；不改標S | 新manifest／closure待主代理重產 |
+| 原canonical sync機械生成 | 未commit的merge tree → S；原exit0 | 非三reader裁判；沒有手改嵌入JSON或另造閱讀器 | 僅生成完成 |
+| reader三條原裁判 | **未跑** | F5bf原結果保持歷史 | 待測試槽 |
+| 有界靜態檢視 | 原exit0 | 111個ID唯一／14個選定anchors各1／8個suite靜態方法數相符 | 僅靜態，不是動態驗收 |
 
-原 F5bf 的 Chrome156／Node24／Noto CJK 與原 workflow 收據、完整已捕獲 streams、環境及 SHA 保存在 [歷史正式摘要](https://github.com/ZhiQiYang/geometry-axiom/blob/139ab64ca5f88e89bb4e95921675b998457026aa/evidence/geo299-316-final-5bfadf18/FORMAL_SUMMARY.md) 與 [原 metrics](https://github.com/ZhiQiYang/geometry-axiom/blob/139ab64ca5f88e89bb4e95921675b998457026aa/evidence/geo299-316-final-5bfadf18/FORMAL_METRICS.json)。原完整帳本曾因 ENOSPC 中斷後在相同 S 只補受阻 bridge subset，不宣稱單次 full 命令退出 0；85 份 mutant C 明列 reconstructed-not-captured，未落盤的舊 core 內層 streams 不補造。這些歷史限制維持。
+一般 merge 原退出1，六個衝突都保原輸出並解完：allowlist、architecture三個衍生檔、舊帳本、migration owner map。產品C、manifest、registry、expected與canonical自動合併；原sync再機械產生0。M89–M98不動，M99–M120全保、M121已由主代理保留；owner map保精確聯集與23／61斷言，未放寬測試。新suite登錄與靜態方法數為contact15、host-facts22、load13、stagger47、contacts10、contact-world9、world-validation14、wood-grid23。
 
-本次保留 combined ID M89–M98。靜態 AST 只證明十個 old anchors 在目前產品各恰一次，不代表 mutants 已重跑或帳本 freshness；#314 的 M99 起 ID 與 #318 預留區由主代理統籌。canonical reader 依 314 → combined → 318 交棒順序，僅走既有同步器。
+舊帳本只是原record聯集，不是重產：保combined原88筆與前棒獨有22筆，沒有重標execution SHA／verdict。原manifest保#314的新H leaf／W guards與combined具名dead API退休聯集；舊scan／report／receipt保一側完整歷史，無法證明新manifest的完整closure，明列待重產。兩側四檔與原JSON保於原Git parents及本次raw，沒有把混合來源說成帳本有效或架構已綠。
 
-本次作為 #314 對抗審查者，已提出「同一 final ParameterRef、不同 ordered facts」正反例，owner 接手；目前未見新 SHA 動態 0／1／0，因此仍列待驗，不以靜態推演宣稱已修。這次 shared source 尚未改動，也尚未跑 compiler／Chrome／benchmark，以免與 #288 的 R3 正式工作互相干擾。
+`公理層.md`／`決策佇列.md` 正規化bytes等前棒8033；本棒沒有改字。`current_geometry.c` 保完整CRLF。原cached whitespace check退出2來自前棒原streams、main README與決策原空白，刻意保bytes；精確自撰相關paths check0。封存collector首版因sparse未物化evidence目錄，在archive寫入前退出1，只加mkdir後原命令0；原工具與限制保留，未改產品或測試。
 
-準備收據、逐 member hash 與進度見 [PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/c940a6543029a94d443709ebdcbd63828fdfef1d/evidence/geo299-316-stack-20261023/PROGRESS.md)，[對抗審查報告](https://github.com/ZhiQiYang/geometry-axiom/blob/c940a6543029a94d443709ebdcbd63828fdfef1d/evidence/geo299-316-stack-20261023/peer-review/REVIEW_COMBINED_PREP_a004e29a.md) 僅接受 metadata 標示，不代表新產品審過。下一步是普通 merge #314 已推送分支、保留 #323／#314／combined 共用檔聯集，再固定新產品 SHA、執行受影響正式項與精確反證，最後由主代理統一帳本與合流。
+本次 #314 對抗靜審接受 f614 guard的有限範圍：相同final ParameterRef不能略過同軸ordered facts；兩具名正反例隔離同最終ref／value但不同當下歸因。final值相同仍照I24保留，不新增中途限制。這不代表M121已動態證成；巢狀參數包、realloc/OOM與其他歷史未驗邊界不外推。程序授權引用本次使用者實作指示與鎖定題3B／4B，不冒稱SSOT文字已另行核可或已改。
 
-最不確定處是新基底上三份補丁的共同 closure 尚未動態驗證；此外目前沒有 Windows／MSVC 測試，GDI 只保留原 Linux 允許 skip。尚無新的全綠聲明。GitHub API 存取受限，此處只提供已推送的來源與正文分支檔，不聲稱已更新 GitHub PR 正文或已建立新 PR；不 force push、不合併 PR。
+完整本輪命令、退出碼、環境、SHA與原stdout／stderr保在 [PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/f19e8baf10080233db05781c5bb38a39532956ec/evidence/geo299-316-stack-20261023/PROGRESS.md) 與 [SOURCE_MERGE_INVENTORY.json](https://github.com/ZhiQiYang/geometry-axiom/blob/f19e8baf10080233db05781c5bb38a39532956ec/evidence/geo299-316-stack-20261023/SOURCE_MERGE_INVENTORY.json)。本次封包120 members逐檔reopen核bytes／hash；這是封存驗證，不是產品gate。
+
+原F5bf全綠收據只見 [歷史摘要](https://github.com/ZhiQiYang/geometry-axiom/blob/139ab64ca5f88e89bb4e95921675b998457026aa/evidence/geo299-316-final-5bfadf18/FORMAL_SUMMARY.md)。原整份帳本曾ENOSPC後同S補bridge subset，不宣稱單次full命令退出0；未捕獲舊core inner streams與reconstructed-not-captured C限制維持。Windows／MSVC未在雲端驗證，GDI只保原允許skip。
+
+最不確定處是含#323／#314的新閉包尚未動態驗證。現在#288 P88專責獨占heavy lock，本代理沒有啟動compiler、scan、Chrome、benchmark或測試；source已交#318，接續共用棒由其唯一owner處理。GitHub API存取受限，只提供已推來源與prbody檔，不聲稱live PR正文已套用。未force push、未合併PR。
