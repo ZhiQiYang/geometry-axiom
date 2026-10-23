@@ -1,30 +1,32 @@
-連線成功恢復後，`connection.error` 仍留著先前 upload/confirm 的失敗字串，會污染 ready 狀態診斷及下一次 loading 的修改拒絕訊息。這份修正只在完整恢復成功、轉為 ready 時清除舊錯誤；恢復失敗仍保留新錯誤與編輯停用。
+成功恢復連線時清除 `connection.error` 的過時錯誤，保留所有恢復失敗、編輯停用及協定守門。這是 #320 的唯一替代實作線 #344；不更改公理、決策、保存格式、golden 或時限。
 
-本 draft 疊在 `codex/train-337-continue-20261024`，不改 #339／其他 owner 分支、公理、決策、保存格式、時限或 golden。P53／P61 的三條既有 browser 斷言保留原幾何／來源／只讀守門並加驗 error 為空，未增減 check 呼叫或調整 golden 計數。新增獨立 pure-Node suite `node:connection_recovery` 9 方法；只新增對應 expected=9，其餘 entries 不變。
+本次新來源 S=`7b45013da647b791acda8f5977475e4123d5f8c4` 只在既有 P53／P61 三個完整 CDP checks 補強非空錯誤 seed 與故障／恢復診斷；三個 check 的名稱、呼叫數和所有原幾何／來源 predicates 均保留。相對舊證據 Ed2c 只改 `geometry-web/cdp_test.js`，app、九案 unit、registry、expected 與 golden 的原 bytes 全同。新來源已一般 push 且 remote 同 SHA。
 
 唯一 current-state 矩陣：
 
 | 項目 | 來源／原退出碼 | 結果及範圍 |
 |---|---|---|
-| 產品 SHA | c1113f6fd6c52a55d7df1a30ecd1684fe87b661c | base 2d1570691e4a29aafebdc0a4e739787d3fcdddaa；恰五檔，普通 push／ls-remote 同 |
-| Evidence head | d2c583179219dafe2f575ef158c45f3cf17bd186 | evidence/issue320-final-c1113f6f/；只封原件與狀態，不重標為新產品實跑 |
-| 單元 baseline | 原 clean 產品 SHA；Node exit 0 | 9 pass／0 fail／0 skip |
-| 精確撤回唯一產品 clear | 同 SHA 的具名 working-tree variant；Node exit 1 | 6 pass／3 正常具名 ERR_ASSERTION／0 skip；測試不改 |
-| 還原 | 原 clean 產品 SHA；Node exit 0 | 9 pass／0 fail／0 skip，app bytes／HEAD／五檔 stage listing 還原 |
-| 獨立 source／actual peer | 281 checks／exit 0／findings=[] | 核五 Git blobs、17 原命令與 streams、正常 0/1/0、P53/P61 與 expected 增量；只到 unit 範圍 |
-| 真 P53／P61 UI 與完整 canvas | UNRUN | 等 root 獨占時槽；原正式入口／golden／時限均保留，本次 VM 不能替代 |
-| 其餘五 browser job | UNRUN | 最終列車依實際影響與正式清單排程，不沿用舊 SHA 冒本件已跑 |
-| 完整 native | UNRUN | 9 unit 不是全 native；正式 registry 已登記新 suite |
-| mutate.py --check／完整帳本 | UNRUN | root 唯一統籌最終來源判定及必要整份重產；本 owner 未產全帳本 |
-| 架構三原裁判／四檔收據 | UNRUN | app.js 為 H 層來源，交 root 按新來源閉包檢查／Linux 重產，不冒舊收據已更新 |
-| 允許 skip | 已跑 9 unit 每 phase 0 | 沒有額外 skip；setup、crash、timeout 或語法錯不計反證偵測 |
+| 產品／本次受測 SHA | S=`7b45013da647b791acda8f5977475e4123d5f8c4` | parent Ed2c；本輪只增加三個既有 CDP checks 的 seed／診斷，未換協定或 golden |
+| Evidence head | E=`dfdf88e33e21d9ac06c58af80929a8b7a9b9301f` | `evidence/issue320-final-7b45013d/`；純證據，不冒 E 重新實跑 |
+| 原九案 baseline | S；Node exit 0 | 9 tests／9 pass／0 fail／0 skip |
+| 撤回唯一 ready error clear | 同 S 明示 working-tree app variant；Node exit 1 | 9 tests／6 pass／3 正常具名 ERR_ASSERTION／0 skip；不改測試 |
+| 原 app 還原 | S；Node exit 0 | 9 tests／9 pass／0 fail／0 skip；app bytes／HEAD／選定 stage listing／clean 全還原 |
+| 新 S 獨立 source／actual peer | 365 checks／process 0／findings=[] | 17 inner＋14 source publication＋1 outer 原 streams、五 Git inputs、正常 0/1/0；只到 VM 定向範圍 |
+| 真 CDP 提案靜審 | 49 checks／0 | 三 checks 以外 bytes 同、原四 predicates／兩真 fetch 順序／1600／dump／source 全保；靜審不算 browser pass 或 kill |
+| 真 P53／P61 與完整 canvas | **UNRUN** | 原 default 整 canvas／35min／完整 golden／獨占；不得以 VM 取代 |
+| 其餘五 browser job | **UNRUN** | 不沿用 root L 或舊 source 結果冒本件同源綠 |
+| 完整 native | **UNRUN** | 新 Node suite 的九案不代完整 registry／native |
+| mutation check／完整帳本 | **UNRUN** | root 統籌最終閉包與必要全量重產，本 owner 未產帳本 |
+| 架構三原裁判／四檔 | **UNRUN** | app 為 H 層來源，待本件最終來源的原三裁判與 schema 影響判定 |
+| 舊來源歷史 | Sc111；原 Node 0/1/0、actual peer281/0 | 原 E=`d2c583179219dafe2f575ef158c45f3cf17bd186` 的原件保持不動；不把舊執行轉標新 S |
+| 允許 skip | 已跑九案三階段均 0 | 無新增；setup／crash／timeout 不能代正常反證 |
 
-真原命令為 `node --test --test-reporter=spec tests/test_connection_recovery.js`，baseline／撤回／恢復均在原 300 秒子時限內完整跑九案。測試直接擷取並執行 app.js 的原 `connectionFailed`、`recoverConnection`、`apiRequest` 函式；DOM、傳輸與 ReferenceWorkspace 合作者是明示替身，沒有真瀏覽器、HTTP 或原生核心。本輪也未把原 owner guard 替身宣稱為真 owner 整合驗收。
+原命令 `node --test --test-reporter=spec tests/test_connection_recovery.js`，每階段仍原 300 秒子時限。三個撤回斷言原文為 `successful recovery kept stale error`、`completed retry kept stale error`、`loading echoed stale error`。測試執行 app.js 精確原函式 spans，但 DOM、transport 與 ReferenceWorkspace 是明示替身；這不是實際瀏覽器、HTTP 或原生恢復驗收，也不代表真 owner guard 的 loading 入口已驗。
 
-反證分別指出成功恢復殘留、併發重試完成殘留、下一次 loading 回聲已恢復舊錯誤；另保留初次握手及 recoverLoad／握手／物件讀取／surface／restore 失敗控制，證明仍失敗時不會清錯並放行。撤回只移除唯一 `connection.error = ""`，原測試 bytes 全保，失敗為三個正常斷言而非 timeout 或工具錯誤。
+新 S 的真 proof 有事前 outer REQUEST、原 driver 的獨立 c387 stdout/stderr／exit、17 inner commands 及五 inputs；舊 Sc111 的最外 host-only 觀察限制仍只屬原歷史，沒有補造。最初新 launcher 缺 output mkdir，在 request／subject 啟動前 FileNotFoundError；原 helper 與分類保留，只補 mkdir 後才首次執行 Node。peer 首版把 request 的 null 結束碼 placeholder 與 final exit 比較造成32個假 finding，原 checker／report 保留；r2修 schema 後365／0，未重測 subject。peer 的 `originalVMTestCounts=[9,6,9]` 欄實際是 pass counts，總 tests 每階段均9，細項五欄已核；不把它誤稱 tests 總數。
 
-完整原件包 `raw/originals-and-peer-c1113f6f.tar.gz` SHA-256 `7406d5cd2b6e94b9ab2889130b5f1392c36049700aac8fd5a3e3d856ca4d0f5b`，逐成員 bytes／hash 與原檔還原核對。原17筆 proof 命令、各自退出碼／stdout／stderr／環境／來源、五 Git inputs、withdrawn app 與還原證據、source publication、工具與獨立 peer 全保。MANIFEST 明確排除自身，沒有 self-index 迴圈。
+完整包 `raw/cdp-proposal-and-original-nine-vm-7b45013d.tar.gz` 為331成員、2,319,362 bytes，SHA-256 `9985cb1dbaba3220c5f83af506ec41f89acdba0913384678930ad0b41a9d59f6`；逐成員 bytes/hash 對原檔 roundtrip。包含新 CDP 準備、source push／ls-remote、VM／outer完整原流、初始環境錯誤、兩份獨立 peer 與工具。MANIFEST 排自身；舊 Sc111 歷史原包仍在舊 prefix。
 
-原 setup 失敗亦保留：首 sparse payload 使用 literal backslash-n 未物化、feedback CLI 缺少薄工作樹 import、首次 git add 拒絕 sparse 外新 leaf；限定補正後完成，沒有將它們冒作產品紅或挑掉。peer 首版自身 P61 替換比對過廣的 false finding 亦保原，修 checker 後 281／0，沒有重測 subject。
+下一步先機械綁定三次原 full canvas 的獨立 port／TMP／profile、完整35min與 golden，交獨立 peer 後等 root 獨占時槽。P53 真403／reload／Retry，P61 未送達及已送達回應遺失的兩原注入、dump／source／PDF／1600／scene assertions 全保。fixed／restored 須原完整 matched；mutant 須命中三個具名 stale-error 正常斷言並保其餘協定診斷，預期 golden mismatch不能冒新產品缺陷，也不能以 crash／driver clean-check失敗代 kill。原正式 driver 要求 clean SHA；dirty variant 在前置即被擋的結果不能當真 CDP 證明，精確受控變體 binding 尚待準備／審查。
 
-最外 proof driver 的 process 0 由原 host exec 返回；未另捕捉 top-wrapper stdout/stderr，不補造事前外層收據。三條 Node 原 CLI 的完整 streams 與退出碼均有獨立 c387 原件。最大未定是正式瀏覽器／真傳輸／原生恢復路徑；本 draft 不標 READY、不自行合併。
+真 CDP、完整 native／browser、帳本／架構仍未完成；本 draft 不標 READY，不 force push，不合併 PR，不改其他 owner 分支。
