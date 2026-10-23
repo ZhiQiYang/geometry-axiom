@@ -28,3 +28,6 @@
 
 - 2026-10-23T13:03:33.572715+00:00 — **p88-native-raf-controlled-completed**：P88原生rAF受控反證原exit為0/1/0，driver/outer/launcher各0；撤回是原refGuideMode焦點25秒等待fatal，實際錯點來源比例，非工具前提或transport假紅。完整349原件封包與三phase獨立審查保留；診斷只選完整P88，不冒正式grid/canvas。未確立按壓中位移的新產品缺陷，也未證像素可見性或歷史自然紅唯一因果。
   下一步：完成同F grid與四組native partial，再獨占跑P52及剩餘P73/Chromium154/oracle；舊無效query實驗保歷史。。原始資料：`raw/p88-native-raf-controlled-completed-01.tar.gz`。
+
+- 2026-10-23T13:15:28.746191+00:00 — **p88-followup-reviewed-environment**：P88公開封包外23/內349原件經獨立771核全一致，最新正文47401186已一般push。P52獨立乾淨F checkout準備0，未開始量測。冷checkout v2兩次exit0卻有保留檔案警告且容量未增加，原件照留；v3顯式刷新Git搬移後stat cache再sparse reapply，兩次原exit0、五parent raw與HEAD/tree/stage不變，實際釋出1244446720及1350230016 bytes。這是環境維護，不冒產品gate。
+  下一步：完成同F grid與native4證據出版，之後P52正式與runtime獨占量測。。原始資料：`raw/p88-followup-reviewed-environment-01.tar.gz`、`raw/p88-followup-reviewed-environment-02.tar.gz`、`raw/p88-followup-reviewed-environment-03.tar.gz`。
