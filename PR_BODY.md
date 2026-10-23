@@ -1,21 +1,22 @@
-K＋矩形格網模板的隔離建置已有真功能測試；本分支補上 `geometry_woodworking` 的明確匯入拒絕，以及 K 以引號或角括號引用已安裝 W 標頭時的分層守門。原 11 項功能／反證與斷言保留，新增兩項後共 13 項。實作已推，**動態驗收尚未跑**。
+K＋矩形格網模板的隔離建置補上 `geometry_woodworking`／`geometry_app` 真匯入拒絕，以及 K 引用可取得 W 標頭的 quoted／angle 守門。原11項功能／反證與斷言保留，新增兩項後共13項。已一般 merge #318 正式來源交棒，精準更新共用 expected 11→13；**編譯與動態驗收尚未執行**。
 
-獨立安裝只取 K 的 exact／geometry／grid、矩形格網模板與測試共 11 檔。匯入控制建立真可取得的 sentinel 套件，要求由 blocker 拒絕 `geometry_woodworking`、`geometry_app` 等名稱，不能拿缺套件當成功。K→W 控制各加唯一一行 quoted／angle include，要求先成功編譯、連結、執行 exact-cells，再由同一 source gate 取得 0／1／0；目前是待執行的測試程式，尚未有原始三態結果。
+獨立安裝只取 K exact／geometry／grid、矩形格網模板與測試共11檔。sentinel 套件實際可取得，不能以缺套件冒匯入拒絕；K→W 控制各加一行真標頭 include，要求先成功編譯／連結／exact-cells，再由原 source gate 取得0／1／0。尚未有原始動態結果。
 
-| Current state | SHA／原 exit | 範圍與限制 |
+| 唯一 current state | SHA／原 exit | 範圍與限制 |
 |---|---|---|
-| 測試來源 SHA | `21957a45142dadc0787e8970da976ab249b4b6d1` | 已普通 push，遠端 exact SHA 相同；沒有改產品 C／公理／決策佇列 |
-| 目前 evidence head | `f1ac4e5211a3a3368145ac1485a1dd4cf78ebbd1` | 自有 evidence prefix 的 PROGRESS 與 revision-2 獨立靜審；尚無動態收據 |
-| Tiny sparse worktree／來源發布 | 原 Git exit 0 | 乾淨 worktree；只取 11 檔及規則／自有 evidence，沒有編譯 |
-| AST 與固定撤回 anchor | 0（只做靜態） | 13 test methods，blocker／K guard／literal parser 各一處 |
-| 完整隔離測試 13 項 | 未跑 | 等 #288 獨占 heavy 時段結束後由 root 安排 |
-| import blocker 反證 | 未跑 | 固定／撤回／還原預期 0／1／0，斷言不動 |
-| K→W guard、angle parser 反證 | 未跑 | 新 driver 嚴核七 phase 0／1／0／1／0／1／0；兩種真 include 各有內層 0／1／0 |
-| 對抗審查 | R2 靜審無確立新阻擋 | #314 發現 angle include 漏抓，修正後已核新來源與 collector hashes；仍待同 SHA 原始動態收據再審 |
-| 共用 expected count | 尚待交棒更新 | `py:test_rectangular_template` 仍登記 11，來源已 13；不宣稱目前完整 native 綠 |
-| 全域突變帳本 | 未重產 | 只由 root 在共同最終 SHA 整份產一次 |
-| Native 全清單／browser／架構 | 未以本子項重跑 | 不把本子項或歷史 F13 綠項冒稱新來源驗收 |
+| 產品／測試來源 | `9b201164ed31069843a2b9f3787ea8ae8e22e231` | 已普通push，遠端exact SHA同；含前棒來源聯集 |
+| 證據 head | `6f2e5e27d2f949ef63d198ceac0630a352f6b397` | revision-3封原Git完整streams與source交棒／count更新收據，動態仍未跑 |
+| #318正式 source棒 | `ae74e51bba1efef48949c077635966273a9e8990` | 相對fdac首父的非evidence blobs/modes零差；這是source交棒，沒有宣告動態綠 |
+| 一般 merge／來源發布 | 原collector 0 | merge `9129cb954412dcd23575185fa7e5e7b2c96e8959`，無rebase／force；乾淨worktree與remote同 |
+| 測試方法／expected | 靜態13／登記13 | 只改此suite 11→13，其餘expected資料不變；不是實跑Ran13 |
+| 原11檔閉包／葉檔 | hash維持 | 葉檔SHA256 `e948fb78e81a075875a45041009fb379e58d783c8d6b579cd9fa2f81cd40910e`；沒有帶入木工W或H編譯來源 |
+| 完整隔離13項 | 未跑 | 等root安排重工作槽，沒有新增允許skip |
+| import blocker反證 | 未跑 | fixed／withdrawn／restored預期0／1／0，斷言不動 |
+| K→W guard／angle parser反證 | 未跑 | frozen collector七phase預期0／1／0／1／0／1／0，兩種真include各有內層0／1／0 |
+| 對抗審查 | R2靜審無確立新阻擋 | #314已核葉檔與collector；本source合流／count及真same-SHA動態結果待再審 |
+| 全域突變帳本 | 本子項未重產 | 只由root在共同最終SHA整份重產一次 |
+| 完整native／browser／架構 | 未以此source重跑 | 不把前棒或歷史F13結果外推成新source全綠 |
 
-共用順序 #323→#314→combined→#318→本子項；#318 正式 source 交棒後普通 merge 前棒，再更新共用 count、固定最終 SHA 並重跑受影響驗證。既有 K 架構原裁判仍負責完整來源契約；此小型隔離測試只宣稱 literal include 的專案閉包，不冒稱完整 C 前處理器分析。
+本子項直接只改隔離測試葉檔與其expected count；一般merge保留#323→#314→combined→#318的來源聯集。K架構原裁判仍負責完整來源契約，此小型source守門只宣稱literal include檢查，不冒完整C前處理器分析。待root資源槽後，以此已公開source跑原collector，封完整原streams，再交#314做對抗審。
 
-最不確定的是尚未實跑的編譯／兩種 include 反證，以及 #318 合流後 11 檔 closure 是否仍充分。沒有允許新的 skip，沒有把編譯失敗、crash 或 watchdog 算成有效突變自證。不 force push、不合併 PR。
+最不確定的是尚未實跑的編譯與三類撤回反證，以及整個前棒聯集尚未收齊的正式驗收。編譯失敗、crash、watchdog、unittest error或未允許skip都不能算成功突變反證。不force push、不合併PR。
