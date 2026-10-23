@@ -1,0 +1,298 @@
+{
+  "schema": "geo323-F64-owner-delivery/1",
+  "created_utc": "2026-10-23T19:31:26.144415+00:00",
+  "owner": "/root/audit_oracle_main_merge",
+  "source_sha": "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+  "base_sha": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "main_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "root_train_at_source_release": "4f4a24d76e816274bfae06868b4dbf31f0860299",
+  "source_released_to_root": {
+    "repo": "/tmp/train337-323-f64d638f-source",
+    "released": true,
+    "proof_ended_utc": "2026-10-23T19:15:17.664238+00:00",
+    "owner_will_not_write_source_or_index": true
+  },
+  "new_owner_product_commits": [],
+  "old_323_branch_writes": false,
+  "current_evidence_publication": {
+    "cloud_only": true,
+    "published_evidence_head": null,
+    "reason": "根代理先跑最終帳本；磁碟不足時不複製47MB原包進root Git。原包已完整封存，待根代理一般push。",
+    "manifest_path": "/workspace/geo323-f64-publication-20261024/MANIFEST.json",
+    "manifest_sha256": "02ce3b9ef2ed2ebafd9dc5403edf0c3fa0d7df81e10aa17ee2fa8b8f7fc4e1e5",
+    "archive_parts": 5,
+    "files": 13865,
+    "raw_bytes": 172515281,
+    "archive_bytes": 47120357,
+    "stdout_stderr_files": 5272,
+    "excluded_files": [],
+    "all_existing_phase_source_binaries_gmon_archived": true,
+    "temporary_test_executables": "原測試TemporaryDirectory已自行刪除者只保原execution hashes，不冒原bytes仍在包內。",
+    "execution_receipt": "/workspace/geo323-f64-publication-20261024/execution/receipt.json",
+    "execution_exit": 0
+  },
+  "gates": {
+    "fixed_three": {
+      "source_sha": "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+      "original_exit": 0,
+      "partial_native_counts": [
+        50,
+        0,
+        0
+      ],
+      "suite_counts": [
+        13,
+        22,
+        15
+      ],
+      "labelled_control_groups": 19,
+      "new_contact_and_refreshed_controls": "原具名0/1/0；歷史等價0/0/0控制分欄保留，不能冒所有19組都0/1/0。",
+      "raw": "/tmp/train337-323-f64d638f-three"
+    },
+    "v3_initial_scene_guard": {
+      "exits": [
+        1,
+        1,
+        1
+      ],
+      "scope": "原171-root精確守門拒新增I11，未編譯／未量測。",
+      "raw": "/workspace/train337-323-f64d638f-v3-r1"
+    },
+    "v4_prepare_build_compare": {
+      "prepare_exit": 0,
+      "build_exits": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "compare_exit": 1,
+      "scenes": 175,
+      "process_runs": 350,
+      "known_diagnostic_differences": [
+        "_role_priority_mutant.scene",
+        "_s1_p8_l_room_primary_through_reflex_extension.scene",
+        "_s1_p8b_l_room_primary_through_reflex_extension_hi.scene"
+      ],
+      "classification": "#299已採V_EXTENSION定位邊／端頭區間新增診斷；stdout和stderr皆有差異；完整graphs與五guard值相同。歷史跨功能baseline原exact比較仍紅，不以isolated同列車ABC取代。",
+      "raw": "/workspace/train337-323-f64d638f-v4-r1"
+    },
+    "I11_first_attempt": {
+      "exit": 1,
+      "classification": "共享snapshot由另一受授權owner切到P17，原F64 source guard正確拒絕；未執行engine。",
+      "raw": "/workspace/train337-323-f64d638f-I11"
+    },
+    "I11_retry": {
+      "compare_exit": 0,
+      "native_compile_exit": 0,
+      "original_scene_runner_exit": 0,
+      "original_scene_counts": [
+        166,
+        0,
+        0
+      ],
+      "scope": "原完整run_tests.py場景runner加精確一個I11四元組比較，非完整run_all/native。",
+      "raw": "/workspace/train337-323-f64d638f-I11-retry1"
+    },
+    "formal_perf": {
+      "execution_exit": 0,
+      "original_sample_count": 36,
+      "resampling": false,
+      "N64_fix_over_main": 1.264800578233044,
+      "N64_limit": 1.3,
+      "small_N_fix_over_base": {
+        "16": 0.7015253499388237,
+        "32": 0.811835487745114,
+        "48": 0.7093648882655204
+      },
+      "small_N_limit": 1,
+      "wrapper_accumulated_exit": 1,
+      "wrapper_reason": "保留同out原ABC三診斷紅，不能當perf execution紅。"
+    },
+    "formal_profile": {
+      "execution_exit": 0,
+      "original_profile_count": 4,
+      "fix_source_calls": {
+        "32": 82668,
+        "64": 364369
+      },
+      "fix_N64_over_N32": 4.407618425509266,
+      "limit": 4.5,
+      "wrapper_accumulated_exit": 1
+    },
+    "memo_withdraw_restore": {
+      "master_exit": 0,
+      "reaper_exit": 0,
+      "outer_exit": 0,
+      "criterion_exits": [
+        0,
+        1,
+        0
+      ],
+      "ratios": [
+        4.407618425509266,
+        6.053833206336931,
+        4.407618425509266
+      ],
+      "limit": 4.5,
+      "withdrawal_scope": "只撤兩C contact memo到同列車H原bytes；fixtures/tests/gates不改。",
+      "isolated_ABC_exit": 0,
+      "isolated_ABC_scenes": 175,
+      "isolated_ABC_runs": 350,
+      "isolated_ABC_tuple": "完整stdout/stderr、ordered graph與每scene五guard值逐項等價。",
+      "receipt": "/workspace/train337-323-f64d638f-memo-proof/receipt.json",
+      "receipt_sha256": "8dad1e3d26b13b2937e1696389b8fa1c8be88aad947f39e63f9f2a20034d4702",
+      "raw": "/workspace/train337-323-f64d638f-memo-proof",
+      "peer_checks": 6655,
+      "limitations": [
+        "ABC撤回兩支ELF的SHA由peer事後補記；原receipt未事前存這兩支SHA，不冒事前封存。",
+        "五guard逐scene值取原equivalence.json；原工具未保存350份獨立guard raw。",
+        "原175跨功能比較三診斷紅未解除。"
+      ]
+    }
+  },
+  "independent_peers": {
+    "fixed_three": {
+      "path": "/tmp/train337-adversarial/THREE_F64_ACTUAL_PEER.json",
+      "sha256": "394a44ef802e5855513dc98f1efa3a67165291ec28691b9353d1a708bde1a76b",
+      "actual_hash_verified": true
+    },
+    "scene_binding": {
+      "path": "/tmp/train337-adversarial/SCENE_BINDING_V4_PEER.json",
+      "sha256": "e3bc5915c8b65e2e68fd9167b5caf566659c6cb63c74e7539fa803b11bf28d02",
+      "actual_hash_verified": true
+    },
+    "I11": {
+      "path": "/tmp/train337-adversarial/I11_ACTUAL_LIGHT_PEER.json",
+      "sha256": "744c254e89acb6916d4c09a1c4a53120c79c7b9e54ba4b4f63b7d2003933257b",
+      "actual_hash_verified": true
+    },
+    "formal_perf_profile": {
+      "path": "/tmp/train337-adversarial/FORMAL_F64_PERF_PROFILE_PEER.json",
+      "sha256": "fe98a0ddec273814bd7cc1288728f6d363d9ac117d36ae448fd23abd8e78515d",
+      "actual_hash_verified": true
+    },
+    "formal_ABC_stderr_correction": {
+      "path": "/tmp/train337-adversarial/FORMAL_ABC_THREE_DIAGNOSTIC_CLASSIFICATION_CORRECTED.json",
+      "sha256": "5c083af1641fb6d9b471e8ad90ed37b155059f77ed20c2e634ad129018fcc237",
+      "actual_hash_verified": true
+    },
+    "memo_actual": {
+      "path": "/tmp/train337-adversarial/MEMO_PROOF_ACTUAL_PEER.json",
+      "sha256": "900ea733c97e90f93cc0e0eb6529fc234b378a222804519c9626d23d70edc73b",
+      "actual_hash_verified": true
+    }
+  },
+  "remaining_original_stages": [
+    {
+      "stage": "required-eight",
+      "executed_by_this_owner_on_F64": false,
+      "argv_template": [
+        "env",
+        "-u",
+        "NODE_OPTIONS",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "-u",
+        "LD_PRELOAD",
+        "python3",
+        "-B",
+        "/tmp/geo323-train337-lineage-20261024/acceptance-tools-v4-scene-binding/run.py",
+        "--repo",
+        "<FINAL_CLEAN_CHECKOUT>",
+        "--sha",
+        "<FINAL_FULL40>",
+        "--base",
+        "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+        "--main",
+        "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+        "--out",
+        "<FRESH_FINAL_REMAINING_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--stage",
+        "required-eight"
+      ]
+    },
+    {
+      "stage": "pf3",
+      "executed_by_this_owner_on_F64": false,
+      "argv_template": [
+        "env",
+        "-u",
+        "NODE_OPTIONS",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "-u",
+        "LD_PRELOAD",
+        "python3",
+        "-B",
+        "/tmp/geo323-train337-lineage-20261024/acceptance-tools-v4-scene-binding/run.py",
+        "--repo",
+        "<FINAL_CLEAN_CHECKOUT>",
+        "--sha",
+        "<FINAL_FULL40>",
+        "--base",
+        "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+        "--main",
+        "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+        "--out",
+        "<FRESH_FINAL_REMAINING_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--stage",
+        "pf3"
+      ]
+    },
+    {
+      "stage": "native",
+      "executed_by_this_owner_on_F64": false,
+      "argv_template": [
+        "env",
+        "-u",
+        "NODE_OPTIONS",
+        "-u",
+        "PYTHONOPTIMIZE",
+        "-u",
+        "LD_PRELOAD",
+        "python3",
+        "-B",
+        "/tmp/geo323-train337-lineage-20261024/acceptance-tools-v4-scene-binding/run.py",
+        "--repo",
+        "<FINAL_CLEAN_CHECKOUT>",
+        "--sha",
+        "<FINAL_FULL40>",
+        "--base",
+        "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+        "--main",
+        "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+        "--out",
+        "<FRESH_FINAL_REMAINING_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--stage",
+        "native"
+      ]
+    }
+  ],
+  "remaining_scope_rules": [
+    "FINAL_FULL40必須用根代理最後穩定可解析SHA，新out不得混入F64舊receipt；以上命令是未執行template。",
+    "原driver自己以reaper和R3 flock -n守整個stage，外層不要再取同一把R3；16MiB stack由原driver設定。",
+    "原required-eight逐--only包含py:test_geo261_source_index、py:test_geo261_candidate_cache、py:test_geo261_graph_product、py:test_geo261_assembly_graph_product、py:test_bridge_integrity、c:integrity、core:run_tests、py:test_geo261_load_residual；用當前expected registry原counts。",
+    "PF3原CLI：python3 -B tests/pf3_mutation_check.py --out <OUT>/evidence/pf3 --jobs 1；原19controls及20cases不縮。fullnative沒有註冊這個standalonePF3，需自己的原receipt。",
+    "root最後統一fullnative若保存同finalSHA、ulimit -s 16384與python3 tests/run_all.py --build原argv/exit/full logs，可滿足fullnative，不需為323重複整跑；不能以50partial、166scenes或175ABC代替。",
+    "native/required-eight原wrapper另外設定GEO261_HOST_FACTS_EXECUTION_LOG、GEO261_CONTACT_SOURCES_EXECUTION_LOG、GEO261_LOAD_RESIDUAL_EXECUTION_LOG三原JSONL。root統一native可沿用這些原支持env並封原件。",
+    "Root唯一在最終source全份重產帳本；mutate --check需另真綠；architecture三條與衍生receipt由root統一收。",
+    "原ABC跨功能三診斷紅需放QUESTIONS及唯一current-state矩陣；不撤已採299功能、不normalize或放寬assert。",
+    "Windows GDI只准原runner實際允許的具名skip；不自行新增skip。"
+  ],
+  "terminal_ELF_candidates": {
+    "path": "/workspace/geo323-f64-publication-20261024/ELF_TERMINAL_CACHE_CANDIDATES.json",
+    "sha256": "3795ae0aff1aa520f72c773875fb09e7b5e855ff9bc3355fafcf0948207a5d77",
+    "deletion_performed": false,
+    "max_estimated_reclaim_bytes": 12537856,
+    "scope": "只列本輪已完整bytes封archive的終態ELF；9項proc exe不可讀限制保留；未知舊Chrome profile不列。"
+  },
+  "next_step": "根代理先完成最終帳本／剩餘正式stages；取得容量後一般push完整五part原包與小metadata，獨立peer再核Git公開roundtrip。此owner不開新產品修正或重抽性能。"
+}

@@ -1,0 +1,103 @@
+{
+  "schema": "geo299316-original-browser-scope-extract/1",
+  "tested_sha": "5bfadf187e615ba0fb8466753b63ce3044ef7d1c",
+  "method": "小索引由本agent先前已讀的原stdout抽取結果整理；沒有再次讀取大輸出、跑測試或改原raw。parsed_footer_selected_fields不是重新序列化的原始整行bytes；null行號表示本索引未錄得，不推測。",
+  "canvas": {
+    "stream": "/tmp/g261c6/workflow/canvas/steps/03.stdout",
+    "footer_line": 2466,
+    "footer_prefix": "CDP_RESULT",
+    "parsed_footer_selected_fields": {
+      "scope": {"mode": "full", "filters": [], "modifiers": []},
+      "completed": true,
+      "passedAssertions": 2267,
+      "failedAssertions": 0,
+      "goldenCompare": "matched",
+      "uncaughtBrowserExceptions": 1
+    },
+    "original_text_entries": [
+      {"line": 560, "text": "[EXPECTED EXCEPTION] Error: fb-auto-probe"},
+      {"line": 562, "text": "P38 未捕捉的 JS 例外自動存一筆 kind=auto ✓ [\"F-20261023-002\"]"},
+      {"line": 563, "text": "P38 預期的單次例外確實抵達 ✓ \"\""},
+      {"line": 772, "text": "SYNC_WAIT {\"tag\":\"P52-5\",\"what\":\"角材 3 放置交易已收尾且核心 references 已回傳幾何\",\"ms\":197}"},
+      {"line": 1829, "text": "P73 空空間不畫假邊界，提供加入成員入口 ✓ "},
+      {"line": 1854, "text": "P73 整輪沒有未處理瀏覽器例外 ✓ "}
+    ],
+    "interpretation_scope": "P73的具名零例外檢查屬P73模組；canvas原footer例外計數1保留，原P38預期單次fb-auto-probe注入有具名成功斷言。P52-5的197ms是本job正常同步等待，不是獨立main/fix性能比較。"
+  },
+  "assembly": {
+    "stream": "/tmp/g261c6/workflow/assembly/steps/03.stdout",
+    "footer_line": null,
+    "footer_prefix": "CDP_RESULT",
+    "parsed_footer_selected_fields": {
+      "scope": {"mode": "partial", "filters": ["GEOMETRY_ASSEMBLY_ONLY"], "modifiers": []},
+      "completed": true,
+      "passedAssertions": 150,
+      "failedAssertions": 0,
+      "goldenCompare": "not compared (partial mode)",
+      "uncaughtBrowserExceptions": 0
+    }
+  },
+  "documents": {
+    "stream": "/tmp/g261c6/workflow/documents/steps/03.stdout",
+    "footer_line": null,
+    "footer_prefix": "DOCUMENTS_RESULT",
+    "parsed_footer_selected_fields": {
+      "passedAssertions": 47,
+      "failedAssertions": 0,
+      "coverage": "Trusted pointer/keyboard navigation plus synthetic file fixtures; PDF page rendering and safe Markdown checks."
+    },
+    "scope_note": "原documents footer沒有本索引可引用的completed/scope欄，不補造；job完整終態另由原workflow/外層receipt證明。"
+  },
+  "grid": {
+    "stream": "/tmp/g261c6/workflow/grid/steps/03.stdout",
+    "footer_line": null,
+    "footer_prefix": "CDP_RESULT",
+    "parsed_footer_selected_fields": {
+      "scope": {"mode": "partial", "filters": ["GEOMETRY_GRID_SYSTEM_ONLY"], "modifiers": []},
+      "completed": true,
+      "passedAssertions": 356,
+      "failedAssertions": 0,
+      "goldenCompare": "not compared (partial mode)",
+      "uncaughtBrowserExceptions": 0
+    }
+  },
+  "space": {
+    "stream": "/tmp/g261c6/workflow/space/steps/03.stdout",
+    "footer_line": null,
+    "footer_prefix": "SPACE_RESULT",
+    "parsed_footer_selected_fields": {
+      "scope": {
+        "mode": "full-space-suite",
+        "filters": [],
+        "included": ["space-height-library", "projection-lifecycle", "projection-placement", "font-layout", "space-flow", "projection-close"],
+        "omitted": ["timber-material", "timber-source-guards"]
+      },
+      "completed": true,
+      "passed": 242,
+      "failed": 0,
+      "exceptions": [],
+      "completenessProblems": []
+    }
+  },
+  "timber": {
+    "stream": "/tmp/g261c6/workflow/timber/steps/03.stdout",
+    "scope_line": 2,
+    "footer_line": 89,
+    "summary_line": 90,
+    "footer_prefix": "SPACE_RESULT",
+    "parsed_footer_selected_fields": {
+      "scope": {
+        "mode": "partial",
+        "filters": ["GEOMETRY_TIMBER_ONLY"],
+        "included": ["timber-material", "timber-source-guards", "font-layout"],
+        "omitted": ["space-height-library", "projection-lifecycle", "projection-placement", "space-flow", "projection-close"]
+      },
+      "completed": true,
+      "passed": 79,
+      "failed": 0,
+      "exceptions": [],
+      "completenessProblems": []
+    },
+    "original_summary_text": "RESULT 79 passed / 0 failed; completed: true; scope: partial; omitted groups: space-height-library,projection-lifecycle,projection-placement,space-flow,projection-close; artifacts: /tmp/g261c6/tmp/workflow/timber/geometry-tests/space-model-863946"
+  }
+}

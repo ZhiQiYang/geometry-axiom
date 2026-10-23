@@ -1,0 +1,72 @@
+{
+  "schema": "geo339.original-light-checks-package.v1",
+  "sourceF": "38da31bcac91db631e6325e40b228f8604810e82",
+  "executionM": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+  "files": {
+    "CURRENT_STATE.json": {
+      "bytes": 15460,
+      "sha256": "1ffe0b3e5fc1b6f8dfa367088ce42c2e8a904ff9a07d353d1842227ce11da8a1"
+    },
+    "ORIGINAL_RAW_INDEX.json": {
+      "bytes": 84559,
+      "sha256": "88e82ff782a09615c538ced03d407790ecc447e4ade10b65e41495337a8e8616"
+    },
+    "PROGRESS.md": {
+      "bytes": 867,
+      "sha256": "176dd3d9d07d2f0380ea2a4ad91802a3e9ef19c51f0314da708a60726f0d3630"
+    },
+    "peer/ACTUAL_PEER.json": {
+      "bytes": 1561,
+      "sha256": "691357bdd3d2b18fa7e7250f6bb301d52d11b3622b9390e713a2d61c3bb1032c"
+    },
+    "peer/review_geo339_four_checks_architecture.py": {
+      "bytes": 9666,
+      "sha256": "52d233ee396a1d2c7b1dfddaf944cb865760f234af713515acf36d7f491ea8ad"
+    },
+    "raw/RAW_INVENTORY.json": {
+      "bytes": 87855,
+      "sha256": "4f78fdb42cc8b2f632b188c718b3c478d40b334d48367db1a2e3ef2471be157f"
+    },
+    "raw/original-light-checks-and-architecture-M1f0ebd3e.tar.gz": {
+      "bytes": 1495801,
+      "sha256": "5af74042a602a66ed275d6388415148744373439bbb3dbd32f6aefec2bbcab60"
+    },
+    "receipts/FINDINGS.json": {
+      "bytes": 1890,
+      "sha256": "2a33ad82f2c88293af15becfcf741aa6e693a84bb9c9327b7d349a93f208208d"
+    },
+    "receipts/FOUR_ORIGINAL_CHECKS.json": {
+      "bytes": 7918,
+      "sha256": "45725f3d1b22079e82faa6bb0ec0100699817cbbb3030d5576421c87e7ce969e"
+    },
+    "receipts/GENERIC_ACTUAL.json": {
+      "bytes": 3298,
+      "sha256": "328f423c8a867b8abd21f039860090e1dd5eabb200b912517d7257ffb5852db7"
+    },
+    "receipts/architecture-four-result.json": {
+      "bytes": 2244,
+      "sha256": "3174ae85d82b2c952f8bd92b00b82185aaddfdf0ff4c0f38b0157e872465979d"
+    },
+    "tools/PR_BODY.template.md": {
+      "bytes": 6930,
+      "sha256": "8717ead101748f48d2647fb069ca8162e76fc679d74a7a4c7f95ba1fe57d001f"
+    },
+    "tools/publish_original_checks.py": {
+      "bytes": 11902,
+      "sha256": "48e0da5a1273f52da92f6d116560141adb4ef13b4ccf12de2d627d4dbe295bb5"
+    }
+  },
+  "manifestExcludesSelf": true,
+  "formalIntegrationSummary": {
+    "PASS": 3,
+    "RED": 1,
+    "UNRUN": 7
+  },
+  "actualPeer": {
+    "path": "evidence/geo339-final-1f0ebd3e/peer/ACTUAL_PEER.json",
+    "sha256": "691357bdd3d2b18fa7e7250f6bb301d52d11b3622b9390e713a2d61c3bb1032c"
+  },
+  "archiveSha256": "5af74042a602a66ed275d6388415148744373439bbb3dbd32f6aefec2bbcab60",
+  "archiveBytes": 1495801,
+  "archiveRegularMembers": 316
+}

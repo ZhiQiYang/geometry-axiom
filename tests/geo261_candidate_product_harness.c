@@ -180,6 +180,8 @@ static bool replay_frame(void *after,GeoEvalContext *sources,void *opaque)
         unsigned char before[sizeof frame.owner->operation];
         memset(&frame.owner->operation,0xa5,sizeof frame.owner->operation);
         frame.owner->operation.boundary_keyed=false;frame.owner->operation.boundary_id=91;
+        frame.owner->operation.stagger_count=0;frame.owner->operation.stagger_steps=0;
+        memset(frame.owner->operation.stagger_seal,0,sizeof frame.owner->operation.stagger_seal);
         memcpy(before,&frame.owner->operation,sizeof before);
         FRAME_CHECK(feed_line("file-replay-witness",2,"boundary 1 outline 0,0 1000,0 1000,1000 0,1000",world),"replay-keyed-boundary");
         FRAME_CHECK(feed_line("file-replay-witness",3,"boundary-vertex-keys 1 outer 1 2 3 4 next-key 5",world),"replay-keyed-keys");
@@ -276,6 +278,8 @@ static int default_owned_candidate(const char *path,bool scratch_oom)
     World *before=malloc(sizeof *before);CHECK(before,"default-before-memory");memcpy(before,&g_world,sizeof *before);
     AppWorldCandidate *owner=app_world_candidate_create(&g_world);CHECK(owner,"default-owner");
     memset(&owner->operation,0xa5,sizeof owner->operation);owner->operation.boundary_keyed=false;owner->operation.boundary_id=91;
+    owner->operation.stagger_count=0;owner->operation.stagger_steps=0;
+    memset(owner->operation.stagger_seal,0,sizeof owner->operation.stagger_seal);
     unsigned char operation_bytes[sizeof owner->operation];memcpy(operation_bytes,&owner->operation,sizeof operation_bytes);
     AppReplacement operation={true,g_definition_revision};uint64_t revision=g_definition_revision,serial=g_app_candidate_serial;
     default_candidate_count=0;default_observe_candidates=true;

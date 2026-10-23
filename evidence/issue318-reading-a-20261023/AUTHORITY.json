@@ -1,0 +1,50 @@
+{
+  "schema": "geo318-approved-reading-a-clause-candidate/1",
+  "activity": "prepared only; no repository, reader, oracle or core modified",
+  "authority_handoff_sha": "ea2748248d47563f8559638ccb70ec0ed21910d9",
+  "authority_main_sha": "feb502d7b3bade2334733a4349c87ff91b88621e",
+  "authority_comment": "https://github.com/ZhiQiYang/geometry-axiom/issues/318#issuecomment-6357744513",
+  "approval": "決策佇列.md 2026-10-23 #318 核可閱讀A",
+  "source_git_blob": "c34e8d6acf862455db2d47978feb04cd43324284",
+  "source_lf_sha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d",
+  "candidate_lf_sha256": "27b12f3838422f6c37c9c21d04f241112ddf7e6e8a8827132bd633fcf0ab5345",
+  "patch_sha256": "2a0f8ab49874974e409136664152d965062de01aae539974d6fc0dc6b0047145",
+  "changes": [
+    {
+      "role": "D11(K): copied exactly from approved v3 proposed addition; D11(W) unchanged",
+      "anchor_occurrences": 1,
+      "old": "相等比較精確，不以單點接觸、部分覆蓋或兩個不同平面拼湊成同一完整端面。候選是否可用、",
+      "new": "相等比較精確，不以單點接觸、部分覆蓋或兩個不同平面拼湊成同一完整端面。這句只管被策略當成一個完整端面的候選。部分接觸、其餘不接觸，不是一個完整端面；要不要接受由模板策略另列。核心仍不從角色字串自行放行。候選是否可用、"
+    },
+    {
+      "role": "I19(W): approved v3 exception three; original two exceptions and rationale unchanged",
+      "anchor_occurrences": 1,
+      "old": "    例外一：兩支都是 `boundary` 時可在轉角互頂。例外二：延伸段見 I22。\n",
+      "new": "    例外一：兩支都是 `boundary` 時可在轉角互頂。例外二：延伸段見 I22。\n    例外三：只給 `boundary` 的固定段、在它所覆蓋那條外輪廓邊的端點：\n    端面可以頂一支或多支已放角材的側面。不要求這幾支併成一個平面，也不要求涵蓋全寬。\n    這個端點不使用「優先級必須嚴格小於自己」。至少要有一段頂到角材。完全沒頂到角材仍拒絕。\n    放得下料寬的 RC 面必須先貼角材，端面頂的是那支角材。短於料寬、放不了自己的角材的 RC 面，\n    端面沒被角材蓋到的那一段可以對著它。那段不計入角材接觸，也不另設長度上限。\n    `primary`、`secondary`、`custom` 不適用。延伸段端面不適用，仍走 I22。\n"
+    },
+    {
+      "role": "R6(d)(W): approved v3 exception criteria; original default sentence retained",
+      "anchor_occurrences": 1,
+      "old": "       多個 = 歧義拒絕，擋面是 FREE 邊 = 拒絕；\n",
+      "new": "       多個 = 歧義拒絕，擋面是 FREE 邊 = 拒絕；\n       I19 例外三那個端面改依以下條件判定：\n       擋面必須是已放角材的側面，可以是一支或多支。不要求恰好一個，不要求這幾支共面，\n       不要求涵蓋全寬，也不要求對方優先級嚴格小於自己。完全沒有角材接觸仍是懸空拒絕。\n       不設懸空長度上限。短於料寬、放不下自己的角材的 RC 面，可以留在端面沒被角材蓋到的那一段，\n       那段不計入接觸。放得下料寬的 RC 面必須先貼角材，不得把端面直接留在裸 RC 上。\n       `primary`、`secondary`、`custom` 的端面，以及延伸段端面，仍用恰好一個全寬擋面。\n"
+    },
+    {
+      "role": "R6(e)(W): approved v3 explicit revalidation exception",
+      "anchor_occurrences": 1,
+      "old": "       world_revalidate 仍重驗 footprint 合法 + 兩端各有恰好一個涵蓋全寬的擋面。\n",
+      "new": "       world_revalidate 仍重驗 footprint 合法 + 兩端各有恰好一個涵蓋全寬的擋面。\n       I19 例外三那個端面改驗「至少接觸一支已放角材」，其餘端面仍驗恰好一個全寬擋面。\n"
+    }
+  ],
+  "unchanged": [
+    "D11(W)",
+    "R6(K)",
+    "I19 existing rationale and exceptions one/two",
+    "I20",
+    "I22",
+    "R18",
+    "R19(d)",
+    "no R19(g)",
+    "決策佇列.md"
+  ],
+  "wording_note": "Quoted v3 paragraphs are line-wrapped only; the I19 exception label and R6(d)/(e) scope pointers are direct adoption framing. No new numeric threshold."
+}

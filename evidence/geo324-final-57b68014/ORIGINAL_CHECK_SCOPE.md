@@ -1,0 +1,1 @@
+原 publication collector1 完整保留於 publication-attempt-1。原 git diff --cached --check 的 exit2 僅指原 Git patch stdout.bin 三個空白 context 行及原 BINDING.diff 一行；四個原位元組範圍不修改。復原不刪斷言、不改產品裁判；原產品三檔 git diff --check 已在 source merge 命令23 exit0。此次 metadata whitespace 檢查只限本工具生成的 JSON／說明／Python 檔，raw 命令輸出及差分一律按原 manifest SHA/bytes 守門封存。

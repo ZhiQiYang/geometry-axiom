@@ -1,3 +1,56 @@
+# Product architecture — #339 Linux 固定來源收據
+
+三原裁判真在乾淨 Git HEAD `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` 執行，原 exit0/0/0；generic205／product18，無skip。manifest分類、根範圍、exclusion、policy、928/55原字不變；604inputs、334owned／270excluded、798edges／0diagnostics。
+
+相對原ec8收據，只有 owned W `geometry-templates/woodworking/geometry_woodworking/model_sources.py` 的LF hash改變；其餘603輸入與三judge相同。新 LF closure `de2a5856529c18ec7e49decaf0f03cfb50b4299562f893eea085f70c40aa53cf`。原scan stdout逐bytes不變不等於LF closure不變，收據以本次M／604原Git blob重綁。
+
+原manifest digest反證已在本次M重跑0/1/0，唯一正常紅是run_axiom_mutations.py的EXCLUSION_DIGEST；只改外部manifest參數，不改source/test/斷言。舊P17反證保持歷史身份，不改標M。
+
+同M原帳本check仍exit1：table123／records110／stale107／retired3／unrun13；本次不重產帳本。完整native／expected及六browser仍UNRUN。604架構範圍不涵蓋全部tests/*.py，三條綠不代語意／runtime驗收。
+
+四檔只在repo外重產；manifest及scan bytes均不變，實際衍生diff只report／receipt。receipt不hash自身。以下原報告只保留歷史角色。
+
+# Product architecture — Linux 固定來源重產
+
+本輪真原三裁判在乾淨 Git HEAD `ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 執行，退出0/0/0；generic205與product18方法，無skip。manifest分類與全部政策逐bytes不變，928/55原政策保留。完整604inputs、334owned／270excluded；原scanner記798edges、0diagnostics，完整stdout與P17相同。LF closure `6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338` 與P17完全相同。
+
+本次兩個test葉 tests/test_geo261_mutation_migration.py 與 tests/test_geo261_wood_contact_world.py 均在架構inventory之外；架構三條綠不代表這兩個語意測試已驗。604範圍是五sourceRoots加current_geometry.c、tests/__init__.py、tests/binaries.py，不是全部tests。帳本--check在ec8原exit1另留，不以本架構收據沖銷。
+
+具名manifest digest反證沿用P17原執行身份：0/1/0，唯一紅是run_axiom_mutations.py的EXCLUSION_DIGEST。現ec8完整604 LF closure、三judge bytes、manifest及scanstdout與P17逐項相同；本輪沒有重跑該反證，也不把它重標為ec8執行。原反證raw已重新核hash。
+
+四檔是非執行性衍生產物，receipt不hash自己。本輪只讀來源／四產物寫repo外，不冒native、帳本、browser、readingA或Windows supplemental已驗。封存checkout真HEAD為`a6072dde8eac809e93ccd9373946dea98fa5c362`，相對ec8僅evidence；604物理raw/LF逐項比對ec8 Git blobs，初末HEAD/index/sourceclean不變。以下P17及更早報告保留歷史角色。
+
+# Product architecture — Linux 固定來源重產
+
+真原三裁判均在乾淨 Git HEAD `17b3576434ffd0833056668898e1fd1a8cc2d560` 執行，退出0/0/0；generic205與product18方法，無skip。原manifest逐bytes不變，928/55政策保留。完整604inputs、334owned／270excluded，原scanner記798edges、0diagnostics。LF closure `6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。
+
+具名digest反證：同一P產品及原scanner，正常manifest0、repo外F64舊manifest1、現P manifest恢復0；唯一紅是run_axiom_mutations.py的EXCLUSION_DIGEST。未暫改原source或judge，不冒為產品語意突變。
+
+四檔是非執行性衍生產物，receipt不hash自己。F64舊1/0/5另留歷史原件；本輪不冒native、ledger、browser、readingA或Windows supplemental已驗。先前報告保留如下歷史角色。
+
+# Product architecture — Linux 固定來源重產
+
+本輪真受驗來源 `3a165ef581976914cbf1acc27561a35452e21a44`；上一份receipt產物提交 `8f76f2b7d6f669670e5834310bfc26495b4a4aa6`。本輪只使用指定來源的原scanner、generic與product裁判。
+
+完整五roots加三standalone：601 executable inputs，owned 333、excluded 268、edges 796、diagnostics 0。LF closure `10cea7ddc15d9d704156898da4909dff512d3d49bbd37c72b9f9f806e6aa3f8d`。
+
+manifest輸出逐bytes等指定P已登記版本；driver未自動修改任何來源／manifest。guard增量由全部真W-native原lexer集合與舊集合的union實證，其餘政策、roots、routes、vendor trust及既有責任保留。
+
+完整W native詞彙盤點：60檔；新增1 identifiers／0 strings，全部path/line見policy-guard-inventory.json。僅wood_contact_footprint_collides具名退役；其餘舊guard保留，不是手選新增清單或新數值門檻。
+
+具名dead API `wood_contact_footprint_collides`：全owned C seeds／include closure 190檔，原lexer精確identifier引用0；舊owned C origins 3筆（其中W 2筆），原Git blobs及path/line見retired-api-inventory.json與完整commands。這是include/identifier普查，不是callgraph，未代稱native產品test已執行。
+
+相對上份sealed manifest：新增owned 0、新增逐檔exclusion 0、既有exclusion digest更新 0。逐項原/新內容見本輪manifest-delta.json；未登錄檔不會被自動排除。
+
+變更既有input：`current_geometry.c`、`geometry-guide/公理層-閱讀器.html`、`geometry-templates/woodworking/native/contact_world.c`、`geometry-templates/woodworking/native/contact_world.h`、`geometry-templates/woodworking/native/contacts.c`、`geometry-templates/woodworking/native/contacts.h`。
+
+- `python -B tests/test_architecture_contract.py`：真退出0，205 tests／205 passed／0 failed／0 skipped；原argv/cwd/env/stdout/stderr另完整保存。
+- `python -B tests/test_product_architecture.py`：真退出0，18 tests／18 passed／0 failed／0 skipped；原argv/cwd/env/stdout/stderr另完整保存。
+
+四檔衍生產物不進executable closure，receipt不hash自己。SSOT另按指定P綁定並核前後不變；不冒稱closure自然涵蓋SSOT。未跑native、ledger、browser、專項或歷史額外policy probes；不把先前Windows或#288結果重標成本輪結果。
+
+## 上一份歷史報告（原文保留，非本輪判決）
+
 # GEO-261 actual-product dependency contract
 
 `product-architecture.json` is the executable inventory for the current product.
@@ -523,19 +576,6 @@ new files or changed sources.
 - `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
 
 以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
-
-## 雲端 Linux 有限重產：合入 main 的六個 oracle／probe exclusion digest
-
-固定實際來源為 `f79aa057521929597a9af4b204b709110414ac03`，上份架構產物提交為 `8f76f2b7d6f669670e5834310bfc26495b4a4aa6`。原manifest的三裁判依原值記錄1／0／5；最後的5是setUpClass因digest拒絕且Ran 0 tests，不能算已跑產品18方法。只在repo外完整驗證樹更新下列六個既有exclusion的LF digest，原來源checkout與三裁判bytes保持不變。
-
-`geometry-core/framing-template/core-probe/gen_scenes.py`、`geometry-core/framing-template/core-probe/test_gen_scenes.py`、`geometry-core/framing-template/oracle/framing_oracle.py`、`geometry-core/framing-template/oracle/make_golden.py`、`geometry-core/framing-template/oracle/render.py`、`geometry-core/framing-template/oracle/selftest.py`。所有source登記、root、layer、排除理由、router/vendor digest、W guard與其他政策都保持原值；未新增exclusion或目錄豁免。
-
-獨立物理與Git tree inventory為601 executable、333 owned、268 excluded；原scanner記796 edges、0 diagnostics。LF input closure：`f2a91b9b3962b2302600a5d21313f5655cc94ad081770d2a208c05d6cb4337e4`。
-
-- `python -B tests/test_architecture_contract.py`：原退出0，205 tests／205 passed／0 failed／0 skipped；完整原命令、cwd、stdout／stderr另存。
-- `python -B tests/test_product_architecture.py`：原退出0，18 tests／18 passed／0 failed／0 skipped；完整原命令、cwd、stdout／stderr另存。
-
-本輪只證靜態架構契約；不代表native、帳本、瀏覽器、P52、Q38、§7或P-189已重跑。舊Windows supplemental未執行；既有歷史來源與結果保持原角色。四檔為衍生產物，receipt不雜湊自身。
 
 ## 雲端 Linux 有限重產：P88 一個 test-driver exclusion digest
 
