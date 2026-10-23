@@ -6,6 +6,9 @@ The FEATURE cases consume supplied faces, not repaired member rectangles.
 from pathlib import Path
 import shutil
 import re
+import hashlib
+import json
+import os
 import subprocess
 import sys
 import unittest
@@ -68,28 +71,52 @@ class ReadingANative(unittest.TestCase):
         b=native()
         if not hasattr(cls,"host_cache"):
             cls.host_cache={}
+            cls.host_manifests={}
         if withdrawn in cls.host_cache:
             return cls.host_cache[withdrawn]
         paths=("current_geometry.c","geometry-core/references.inc","geometry-web/web_bridge.c",
                "tests/geo318_host_boundary_ends_harness.c")
         directory=b.work/("geo318-host-withdrawn" if withdrawn else "geo318-host-baseline")
         destinations={(ROOT/name).resolve():directory/name for name in paths}
+        manifest={"scope":"Derived H source variant, not a byte-identical F build", "withdrawn":withdrawn,
+                  "normalization":"read_text/write_text normalizes CRLF to LF before C compilation", "files":[]}
         for name in paths:
             original=ROOT/name
-            source=original.read_text(encoding="utf-8")
+            original_raw=original.read_bytes()
+            source=original_raw.decode("utf-8").replace("\r\n","\n")
+            original_lf=source
             if withdrawn and name=="geometry-core/references.inc":
                 before="if(!wood_contact_end_support_check(admission,hits,a->has_between,detail,sizeof detail))"
                 after="if(!hits || (!a->has_between && hits!=1))"
                 if source.count(before)!=1:
                     raise AssertionError("Actual H collector withdrawal must change exactly one delegate")
                 source=source.replace(before,after)
+            semantic_source=source
             def relocate(match):
                 include=(original.parent/match.group(1)).resolve()
                 target=destinations.get(include,include)
                 return '#include "'+target.as_posix()+'"' if target.is_file() or include in destinations else match.group(0)
             target=destinations[original.resolve()]
             target.parent.mkdir(parents=True,exist_ok=True)
-            target.write_text(re.sub(r'^#include "([^"\n]+)"',relocate,source,flags=re.M),encoding="utf-8")
+            relocated=re.sub(r'^#include "([^"\n]+)"',relocate,source,flags=re.M)
+            target.write_bytes(relocated.encode("utf-8"))
+            digest=lambda data:hashlib.sha256(data).hexdigest()
+            manifest["files"].append({"path":name,"source_raw_sha256":digest(original_raw),
+                "source_lf_sha256":digest(original_lf.encode()),"semantic_variant_sha256":digest(semantic_source.encode()),
+                "relocated_raw_sha256":digest(target.read_bytes()),
+                "relocated_directory_normalized_sha256":digest(relocated.replace(directory.as_posix(),"@VARIANT_ROOT@").encode()),
+                "semantic_guard_changes":1 if withdrawn and name=="geometry-core/references.inc" else 0,
+                "original_crlf":original_raw.count(b"\r\n"),"relocated_path":str(target)})
+            if os.environ.get("GEO318_ARTIFACT_DIR"):
+                artifact=Path(os.environ["GEO318_ARTIFACT_DIR"])/("host-withdrawn" if withdrawn else "host-baseline")
+                raw_target=artifact/"original"/name;raw_target.parent.mkdir(parents=True,exist_ok=True);raw_target.write_bytes(original_raw)
+                derived=artifact/"relocated"/name;derived.parent.mkdir(parents=True,exist_ok=True);derived.write_bytes(target.read_bytes())
+        manifest["source_git_sha"]=subprocess.check_output(["git","-C",str(ROOT),"rev-parse","HEAD"],text=True).strip()
+        (directory/"source-manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+        if os.environ.get("GEO318_ARTIFACT_DIR"):
+            (artifact/"source-manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+        cls.host_manifests[withdrawn]=manifest
+        print("READING_A_HOST_SOURCE_VARIANT "+json.dumps(manifest,ensure_ascii=False),flush=True)
         defines=["GEOMETRY_KERNEL_EXTERNAL=1","GEOMETRY_WOODWORKING_EXTERNAL=1",
                  "GEOMETRY_HOST_HISTORY_EXTERNAL=1","GEOMETRY_HOST_CANDIDATE_EXTERNAL=1"]
         client=b.compile(destinations[(ROOT/paths[-1]).resolve()],"geo318-host-"+str(withdrawn),defines)
@@ -106,6 +133,12 @@ class ReadingANative(unittest.TestCase):
                          assertion="actual-host-collector-accepts-partial")
         self.assertEqual(1,result.returncode)
         self.assertIn("ASSERT:actual-host-collector-accepts-partial",result.stderr)
+        before={row["path"]:row for row in self.host_manifests[False]["files"]}
+        after={row["path"]:row for row in self.host_manifests[True]["files"]}
+        self.assertEqual({path:row["source_raw_sha256"] for path,row in before.items()},
+                         {path:row["source_raw_sha256"] for path,row in after.items()})
+        self.assertEqual({"geometry-core/references.inc"},
+                         {path for path in before if before[path]["semantic_variant_sha256"]!=after[path]["semantic_variant_sha256"]})
         self.assertEqual(0,self.case("host-collector",self.host_executable(),phase="restored",control="host-collector").returncode)
 
     def test_nine_actual_source_controls_fail_named_assertions_then_restore(self):
