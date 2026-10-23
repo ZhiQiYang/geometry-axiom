@@ -6,8 +6,9 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
   console.log('=== P88. 原生來源子線顯示、完整引用、兩面及正式重開 ===');
   const fs=require('fs'),os=require('os'),path=require('path'),P=require('./project-store.js'),zip=require('./vendor/fflate/umd/index.js');
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,25000),settle=cdp.makeSettle({waitForUI,eval_},{tag:'P88',timeoutMs:25000}),check=cdp.makeCheck({prefix:'P88 ',throwOnFail:true}),exceptions=exceptionCount();
-  const baseCtl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:70,settleMs:100,hitElement:true,missing:'Missing ',unreachable:(s,p)=>'Rule line control unreachable '+s+' '+JSON.stringify(p)});
-  const ctl=async selector=>{if(await read('innerWidth<=900')){
+  const ctlOptions={scroll:'center',attempts:12,pollMs:70,settleMs:100,hitElement:true,missing:'Missing ',unreachable:(s,p)=>'Rule line control unreachable '+s+' '+JSON.stringify(p)};
+  const baseCtl=cdp.makeCtl({eval_,sleep,click},ctlOptions);
+  const ctl=async(selector,inputCtl=baseCtl)=>{if(await read('innerWidth<=900')){
     const root=await read(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});return n?.closest('#objectList')?'left':n?.closest('#inspectorContent')?'right':n?.closest('.face-inspector-panel')?'face':n?.closest('.face-layer-panel')?'face-left':null;})()`);
     if(root==='left'&&!await read(`document.body.classList.contains('drawer-left-open')`))await baseCtl('#toggleLeft');
     if(root==='right'){if(await read(`document.body.classList.contains('canvas-composition')`)){if(await read(`document.body.classList.contains('drawer-left-open')`))await baseCtl('#toggleLeft');}else if(!await read(`document.body.classList.contains('drawer-right-open')`))await baseCtl('#toggleRight');}
@@ -21,10 +22,49 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     await baseCtl('#faceInspectorTabs [data-fi-tab="components"]');
     await baseCtl('[data-component-tab="'+section+'"]');
   }
-  return baseCtl(selector);};
+  return inputCtl(selector);};
   // A default-valued select must not pass after a click reached another
   // element. Check the actual keyboard target before sending input.
-  const focusedCtl=async selector=>{await ctl(selector);await wait(`document.activeElement===document.querySelector(${JSON.stringify(selector)})`);};
+  let focusDeadline=null;
+  const withinFocus=async action=>{
+    const remaining=focusDeadline-Date.now();
+    if(remaining<=0)throw Error('P88 input preparation exhausted the original focus deadline');
+    let timer;
+    try{
+      const value=await Promise.race([Promise.resolve().then(action),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('P88 input preparation exhausted the original focus deadline')),remaining);})]);
+      if(Date.now()>=focusDeadline)throw Error('P88 input preparation exhausted the original focus deadline');
+      return value;
+    }finally{clearTimeout(timer);}
+  };
+  // A successful hit measurement can precede a readonly inspector repaint.
+  // Settle, scroll the current node, and require an unchanged box across the
+  // existing two paint frames before returning the coordinate to the real mouse.
+  const focusedProbe=selector=>withinFocus(async()=>{
+    const initial=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return {x,y,w:r.width,h:r.height,hit:e.contains(h),hitElement:h?.tagName+'#'+h?.id,disabled:!!e.disabled};})()`);
+    if(!initial.hit||initial.disabled||!initial.w||!initial.h)return initial;
+    const result=await read(`(async()=>{
+      await window.__cdpSettleUI(0);
+      const selector=${JSON.stringify(selector)},e=document.querySelector(selector);
+      if(!e)throw Error('Missing '+selector);
+      e.scrollIntoView({block:'center',inline:'nearest'});
+      const sample=()=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,sameNode:e.isConnected&&document.querySelector(selector)===e};};
+      const frames=[sample()];
+      await new Promise(resolve=>requestAnimationFrame(resolve));frames.push(sample());
+      await new Promise(resolve=>requestAnimationFrame(resolve));frames.push(sample());
+      const r=frames[2],stable=frames.every(p=>p.sameNode&&p.x===r.x&&p.y===r.y&&p.w===r.w&&p.h===r.h),x=r.x+r.w/2,y=r.y+r.h/2,h=document.elementFromPoint(x,y);
+      return {x,y,w:r.w,h:r.h,hit:stable&&e.contains(h),hitElement:h?.tagName+'#'+h?.id,disabled:!!e.disabled,stable,frames};
+    })()`);
+    console.log('P88_LAYOUT_PROBE '+JSON.stringify({selector,...result}));
+    return result;
+  });
+  const focusedInputCtl=cdp.makeCtl({eval_,sleep,click:(x,y)=>withinFocus(()=>{if(Date.now()>=focusDeadline)throw Error('P88 input preparation exhausted the original focus deadline');return click(x,y);})},{...ctlOptions,probe:focusedProbe});
+  const focusedCtl=async selector=>{
+    const previous=focusDeadline;focusDeadline=Date.now()+25000;
+    try{
+      await withinFocus(()=>ctl(selector,focusedInputCtl));
+      await withinFocus(()=>waitForUI(`document.activeElement===document.querySelector(${JSON.stringify(selector)})`,Math.max(0,focusDeadline-Date.now())));
+    }finally{focusDeadline=previous;}
+  };
   const key=cdp.makeKey({send,sleep}),fill=cdp.makeFill({ctl:focusedCtl,key,send,sleep},{afterMs:35});
   // Native button activation also needs Enter's character event in Chromium.
   const activateKey=cdp.makeKey({send,sleep},{enterText:true});
