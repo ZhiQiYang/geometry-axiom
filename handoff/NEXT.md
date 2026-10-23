@@ -1,4 +1,4 @@
-# 持續工作恢復點（2026-10-23 21:53 UTC）
+# 持續工作恢復點（2026-10-23 21:52 UTC）
 
 這是恢復點，不是完成或停工報告。使用者不在，不提問、不等待；繁體中文，英文commit；禁止force push、合併PR、推claude/grok。root唯一寫train，全帳本只root。舊恢復點完整保留於 Git b537a4e705abe8d4ebd8d2da14f547b51ee6ef01:handoff/NEXT.md，不以舊狀態覆蓋本頁。
 
@@ -19,8 +19,8 @@
 | #340 noWood | codex/kernel-without-woodworking-20261023 | 4d3a17c306cad42057589c5cfd964f1c32b755c4 | d45dbbc3e96c85e6d1caa629f6abafdfd62c5974 | 77a007711f48b47daa10fbe1cb594d25937e295a | 實測Sbfb 13項/7phase；新source只closure，不冒重跑 |
 | #339 faces | codex/geo324-faces-20261024 | 1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599 | dcdf22655e0cf8ed47cd0b7f66d89f3a7beca694 | 2aacfaf1ca49694446599158978ad47b776be83d | 實測S57 142/142＋3反證；完整11正式項未跑 |
 | #341 前置 | codex/geo300-prerequisites-20261024 | aa0e3938f17dc996ef5e7410db4844b31856d2a6 | 823729be5f4f025aebbf02c2dc85e09907c28812 | ea1a153b2da2203c3c0aac7a1f631d9caa1bf67b | 實測c493 32methods/46controls/282build；性能未跑 |
-| GEO260 | codex/geo260-ac23-proof-20261024 | eb846c345881cc6fc73a53c457a291175365b88c | df230da57619e437c30527dbede8c67fd0ec6b50 | be1f69dc5ca7f9cdc2f00d22a1940d877f6002bb | 原全44 exit0，43killed/SPM24 equivalent；539inputs同，非aggregate30 |
-| #300 prefix index | codex/geo300-contact-index-20261024 | 1ee4e830399b124ebd63c5ff51064d87e53f38d9 | 2a0772da1af26c4da9c7e104fed2a37c760668d4 | owner正在推 | 167/0靜態；33methods/56controls未跑，保100MiB環境預算 |
+| #342 GEO260 | codex/geo260-ac23-proof-20261024 | eb846c345881cc6fc73a53c457a291175365b88c | df230da57619e437c30527dbede8c67fd0ec6b50 | be1f69dc5ca7f9cdc2f00d22a1940d877f6002bb | 原全44 exit0，43killed/SPM24 equivalent；539inputs同，非aggregate30 |
+| #300 prefix index | codex/geo300-contact-index-20261024 | 1ee4e830399b124ebd63c5ff51064d87e53f38d9 | 2a0772da1af26c4da9c7e104fed2a37c760668d4 | c89d516b9419fa49dc9050ecb27bdf43a762bd29 | 167/0靜態；33methods/56controls未跑，保100MiB環境預算 |
 | #320 | codex/issue320-connection-recovery-20261024 | c1113f6fd6c52a55d7df1a30ecd1684fe87b661c | d2c583179219dafe2f575ef158c45f3cf17bd186 | 8233916d152191fc48bf6f80a80a83dfc87f534b | Node9綠/撤回3具名assert紅/恢復9綠；真canvas/native/ledger/architecture未跑 |
 
 共享expected合入順序 #340→#339→#341→GEO260→新contact-index，均一般merge。#320目前獨立疊train，本次新增draft request，不能混稱已納入主列車。舊314/318/299316不再獨立推進。#325/#331/#333屬Grok，#333已進main。
@@ -29,7 +29,9 @@
 
 1. 收齊b6真正終態和全原流，獨立審後採L，再跑L全帳本及正式清單。重測最多2，canvas/perf/P52/P189獨占；目前slot1=b6、slot2空但容量未許可#300。
 2. 已備最小執行工具：native/browser索引 `/tmp/BROWSER_NATIVE_READY_PREPARATION_INDEX.json`；六browser requests `/tmp/browser-six-minimal-requests-finalL-v2/INDEX.json`；P52/P189 `/tmp/train337-final-p52-p189-prep/PREPARATION.json`；Q38/§7/323八套676/PF3 `/tmp/train337-final-nonperf-specials-prep/`；ReadingA `/tmp/train337-reading-a-final-L-requests/REQUESTS.json`。全部仍要真跑L。§7改source，required-eight與native共/tmp/geometry-tests，禁止並行寫；browser共readonlyseed，不能與source mutation共用。
-3. 磁碟極緊：21:50 workspace約67MiB/tmp84MiB。僅清自身可重建快取；收據/fixtures/Gitobjects/gmon/受控source保留。21:47精確刪1229普通Git可還原code，配置58,408,960B；因新原指令raw佔空間，free不等同配置回收。結果 `/workspace/ordinary-code-retirement-20261023/RESULT.json` exit0，四舊checkout禁直接復用，index/HEAD不變。13個終態全零PMA精確清理工具準備中，尚未刪。
+3. 磁碟極緊：21:50 workspace約67MiB/tmp84MiB。僅清自身可重建快取；收據/fixtures/Gitobjects/gmon/受控source保留。21:47精確刪1229普通Git可還原code，配置58,408,960B；因新原指令raw佔空間，free不等同配置回收。結果 `/workspace/ordinary-code-retirement-20261023/RESULT.json` exit0，四舊checkout禁直接復用，index/HEAD不變。13個終態全零PMA於21:51精確unlink真exit0，/tmp實增54,525,952B；原profile及19原receipt保留，結果 /workspace/cache-terminal-metrics-execution-20261023/RESULT.json。
 4. Chrome156.0.8078.47、Node24.19.0、NotoCJK、16MiBstack；Chrome在 `/workspace/geo261-environment/chrome/root/opt/google/chrome/google-chrome`。原c387 capture與7d848 reaper保持。
 5. 每步fetch handoff讀新審查。現main425c092e，handoff同步仍a47來源/服務狀態未刷新，不能空等；PR請求都一般push，號碼/正文服務之後看pr-status。未READY不冒可合併。
 6. 38個未owner issue只讀盤點 `/tmp/open-issue-source-triage-20261024/`，journey條件 `/tmp/open-issue-formal-journey-conditions-20261024/`；不是所有open issue已完成。#142/#123/#62 rendered journeys、#300容量512仍有實作／驗收工作。
+
+本次新增contact-index draft請求，GEO260服務已開#342；#338正文服務已更新到b0f8，最新6f013仍待同步。上一版頁首21:53是人工時刻筆誤，本版改用UTC即時值，不影響原工具收據時刻。
