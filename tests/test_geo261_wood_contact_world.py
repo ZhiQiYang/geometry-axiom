@@ -144,7 +144,7 @@ CONTROLS = (
     ("owner-identity", "if(fact->member!=owner)continue;", "if(fact->member->id!=owner->id)continue;", "extensions", "owner-pointer-not-id"),
     ("owner-extension", "return !(lo>=fix_lo&&hi<=fix_hi);", "return false;", "extensions", "owner-extension-outside-fixed-part"),
     ("fixed-inclusive", "return !(lo>=fix_lo&&hi<=fix_hi);", "return !(lo>fix_lo&&hi<fix_hi);", "extensions", "owner-fixed-interval-inclusive"),
-    ("free-end", "||face->fixity==WOOD_STOP_FREE", "", "ends", "free-end-faces-ignored"),
+    ("free-end", "||face->lo>cross_lo||face->hi<cross_hi||face->fixity==WOOD_STOP_FREE", "||face->lo>cross_lo||face->hi<cross_hi", "ends", "free-end-faces-ignored"),
     ("full-contact-width", "||face->lo>cross_lo||face->hi<cross_hi", "", "ends", "narrow-end-face-ignored"),
     ("contact-shadow", "||wood_stop_shadowed(faces,i,cross_lo,cross_hi)", "", "ends", "partial-earlier-face-shadows-only-contact"),
     ("end-order", "for(int end=0;end<2;++end)", "for(int end=1;end>=0;--end)", "ends", "start-end-before-global-placement-order"),
