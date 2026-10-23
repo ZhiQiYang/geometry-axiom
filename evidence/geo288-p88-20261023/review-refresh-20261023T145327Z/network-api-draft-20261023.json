@@ -1,0 +1,27 @@
+{
+  "task": "補齊 GitHub API 所需網域；只保存設定草稿",
+  "custom_allowed_domains_before": [],
+  "custom_allowed_domains_after": [
+    "api.github.com"
+  ],
+  "presets_preserved": [
+    "package_managers"
+  ],
+  "active_environment_applied": false,
+  "environment_restarted": false,
+  "requires_user_publish": true,
+  "tool_response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"draft_id\": \"dae8a94c-d3f4-44a5-917f-f1f6fdaf5977~cecfgdraft_6ad9c53c619c8192899e4cec6fdf0a13\",\n  \"requires_publish\": true,\n  \"status\": \"saved\"\n}"
+      }
+    ],
+    "structuredContent": {
+      "draft_id": "dae8a94c-d3f4-44a5-917f-f1f6fdaf5977~cecfgdraft_6ad9c53c619c8192899e4cec6fdf0a13",
+      "status": "saved",
+      "requires_publish": true
+    },
+    "isError": false
+  }
+}

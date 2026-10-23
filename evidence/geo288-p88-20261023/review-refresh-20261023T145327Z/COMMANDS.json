@@ -1,0 +1,78 @@
+[
+  {
+    "argv": [
+      "git",
+      "ls-remote",
+      "--heads",
+      "origin",
+      "refs/heads/main",
+      "refs/heads/handoff/codex-takeover-20261021",
+      "refs/heads/architecture/geo261-integration-20261016",
+      "refs/heads/codex/geo261-final-prbody-20261023"
+    ],
+    "cwd": "/tmp/g288p88fix",
+    "started_utc": "2026-10-23T14:53:27.386458+00:00",
+    "ended_utc": "2026-10-23T14:53:27.886188+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "672a7c574325e477e0ee45cb6c1fb4c952eee67b4642dad6bf1a5ddb7a28d1b2",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 321,
+    "stderr_bytes": 0,
+    "environment": {
+      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "GIT_OPTIONAL_LOCKS": null,
+      "PYTHONOPTIMIZE": null
+    }
+  },
+  {
+    "argv": [
+      "git",
+      "fetch",
+      "--no-write-fetch-head",
+      "--no-tags",
+      "--refmap=",
+      "origin",
+      "b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6",
+      "feb502d7b3bade2334733a4349c87ff91b88621e"
+    ],
+    "cwd": "/tmp/g288p88fix",
+    "started_utc": "2026-10-23T14:53:27.886491+00:00",
+    "ended_utc": "2026-10-23T14:53:27.906209+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 0,
+    "stderr_bytes": 0,
+    "environment": {
+      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "GIT_OPTIONAL_LOCKS": null,
+      "PYTHONOPTIMIZE": null
+    }
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6:handoff/pr-reviews/288.md"
+    ],
+    "cwd": "/tmp/g288p88fix",
+    "started_utc": "2026-10-23T14:53:27.906460+00:00",
+    "ended_utc": "2026-10-23T14:53:27.910638+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "359f393d1b60ada8206f9991267bcc9267a682ded2f9b78baf0d8e416476b202",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 237726,
+    "stderr_bytes": 0,
+    "environment": {
+      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "GIT_OPTIONAL_LOCKS": null,
+      "PYTHONOPTIMIZE": null
+    }
+  }
+]

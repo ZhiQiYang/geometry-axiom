@@ -1,0 +1,25 @@
+{
+  "scope": "Authoritative latest review classification only; no product/test execution or merge",
+  "handoff_sha": "b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6",
+  "review_head": "a05a21a",
+  "review_header": "2026-10-23T14:37:58Z ZhiQiYang",
+  "review_full_sha256": "359f393d1b60ada8206f9991267bcc9267a682ded2f9b78baf0d8e416476b202",
+  "latest_excerpt_sha256": "710a9f86ea21601b10627b9419969f3f8ca967f704c5a2655d6724af007f0954",
+  "verdict": "改完 1 項可合併",
+  "completed_gates_accepted_by_review": true,
+  "remaining_required_change": "Apply the already reviewed current-state body to live PR #288, preserve inherited F13/F2, Windows GDI skip, P88 causality and Cperf limits.",
+  "live_body_verified": false,
+  "ready_to_merge": false,
+  "parent_notified": true,
+  "test_reruns_required_by_latest_review": [],
+  "root_body_source_sha": "e008dc52510d8cdb34fe07c796835f2667e0ebaa",
+  "root_body_expected_sha256": "77fad4a11a92827d4b5d2b95423215c98dc13ecccce5c33e8c70e156c688e1f8",
+  "checks": {
+    "fetched_b7": true,
+    "one_required_change": true,
+    "conditional_verdict_exact": true,
+    "body_scope_preserved_by_review": true,
+    "p88_proof_accepted": true,
+    "live_change_not_assumed": true
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "scope": "唯一外部交接，未執行 API 更新、PR 合併、額外測試或使用使用者電腦跑測試",
+  "review_handoff_sha": "b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6",
+  "review_head": "a05a21a",
+  "review_time": "2026-10-23T14:37:58Z",
+  "review_verdict": "改完 1 項可合併",
+  "condition": "Apply reviewed current-state body to live PR #288 and verify its content",
+  "body_branch": "codex/geo261-final-prbody-20261023",
+  "body_commit": "e008dc52510d8cdb34fe07c796835f2667e0ebaa",
+  "body_path": "PR_BODY.md",
+  "body_sha256": "77fad4a11a92827d4b5d2b95423215c98dc13ecccce5c33e8c70e156c688e1f8",
+  "original_api_receipt_sha256": "d609cb028fb8b83ade254826bb1e550024edbba0dcb5bb339baa3067d51e43b1",
+  "observed_command": [
+    "gh",
+    "api",
+    "repos/ZhiQiYang/geometry-axiom/pulls/288",
+    "--jq",
+    "{number,body,head:.head.sha}"
+  ],
+  "original_process_exit": 1,
+  "stdout_bytes": 0,
+  "stderr_sha256": "6ecf73b559bfa2fb5bddd48863c7d99b794148ad1aa677caa61185fd3bb4e6fd",
+  "captured_stderr": "Get \"https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls/288\": Forbidden\n",
+  "actual_update_attempted": false,
+  "live_body_updated": false,
+  "live_body_verified": false,
+  "ready_to_merge": false,
+  "environment_classification": "Git remote normal push/read succeeds; captured GitHub API GET fails Forbidden. No alternate credentials or blind retries requested.",
+  "next_cloud_action": "Continue authoritative handoff refresh; independent live body verification after an authorized environment applies exact reviewed body.",
+  "completion_guard": "Do not mark READY solely from green tests or conditional review; require evidence that live-body condition is fulfilled."
+}

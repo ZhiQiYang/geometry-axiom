@@ -1,0 +1,65 @@
+{
+  "root_next_public_head": "a3018515644451367ef94f667082c9bd4881538f",
+  "observed_remote_head": "a3018515644451367ef94f667082c9bd4881538f",
+  "path": "evidence/geo261-final-3d681636/NEXT.md",
+  "next_sha256": "6c50f27dc9310900bb6b230b5e8df5df59708fa4c55ce7c5afc3c4726d2ad901",
+  "remote_ancestor_confirmed": true,
+  "formal_product_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "formal_evidence_head": "5a76d815c843d7ffb06bd1be769d4c5255c72b66",
+  "handoff_rule_source": "https://github.com/ZhiQiYang/geometry-axiom/blob/b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6/handoff/HANDOFF.md",
+  "handoff_rule_quote": "- 你的環境連不到 GitHub API。所以開 PR、改 PR 正文、留言、合併,都由**使用者**做。你把要貼的內容寫成檔案,推到你的分支,並在回報裡寫清楚「請使用者在 PR #N 做什麼」。",
+  "handoff_full_sha256": "992b47471d868551bdadcbea7ec68e1d6f7df8ba61f0d335c9db02286bca01df",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "refs/heads/architecture/geo261-integration-20261016"
+      ],
+      "cwd": "/tmp/g288p88fix",
+      "exit_code": 0,
+      "stdout_sha256": "cb746f232da76f468594f34ad804227335aa23858db5b0527f4130713c84183b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "a3018515644451367ef94f667082c9bd4881538f",
+        "a3018515644451367ef94f667082c9bd4881538f"
+      ],
+      "cwd": "/tmp/g288p88fix",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "a3018515644451367ef94f667082c9bd4881538f:evidence/geo261-final-3d681636/NEXT.md"
+      ],
+      "cwd": "/tmp/g288p88fix",
+      "exit_code": 0,
+      "stdout_sha256": "6c50f27dc9310900bb6b230b5e8df5df59708fa4c55ce7c5afc3c4726d2ad901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6:handoff/HANDOFF.md"
+      ],
+      "cwd": "/tmp/g288p88fix",
+      "exit_code": 0,
+      "stdout_sha256": "992b47471d868551bdadcbea7ec68e1d6f7df8ba61f0d335c9db02286bca01df",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "actual_live_pr_update_performed": false,
+  "ready_to_merge": false,
+  "execution_transport_note": "Earlier read attempt failed during CreateProcess with exec-server transport disconnected; no command started. Following pwd probe actual exit0 confirmed command transport recovery; original tests not restarted."
+}

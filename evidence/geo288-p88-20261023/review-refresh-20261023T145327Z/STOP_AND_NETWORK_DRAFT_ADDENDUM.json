@@ -1,0 +1,25 @@
+{
+  "recorded_at_utc": "2026-10-23T15:07:05.889274+00:00",
+  "network_draft_original": {
+    "path": "network-api-draft-20261023.json",
+    "sha256": "9e4c8c6e37115660cb60c12a7f34ed03a4fc7951728a41d51fb0aac5febcacd2"
+  },
+  "draft_status": "saved",
+  "requires_publish": true,
+  "active_environment_applied": false,
+  "environment_restarted": false,
+  "allowed_domains_draft": [
+    "api.github.com"
+  ],
+  "api_recovery_observed": false,
+  "actual_live_pr_update_performed": false,
+  "ready_to_merge": false,
+  "latest_user_instruction": "本階段收尾後停止，交別人接手；不再開新監看循環或測試。",
+  "original_handoff_statement_scope": "LIVE_BODY_HANDOFF.md 的持續監看文字保留為當時狀態；由本附錄記錄後續停止指示。",
+  "next_action": "設定發布且 API 狀態實際改變後，由接手者原樣套用主代理 D e008 的 PR_BODY.md 並回讀 SHA256；或依 a301 的 NEXT.md 在可用的本機 GitHub 環境套用。沒有盲重試 API。",
+  "public_root_next": "a3018515644451367ef94f667082c9bd4881538f:evidence/geo261-final-3d681636/NEXT.md",
+  "formal_product_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "formal_evidence_head": "5a76d815c843d7ffb06bd1be769d4c5255c72b66",
+  "prepared_main_prbody_head": "e008dc52510d8cdb34fe07c796835f2667e0ebaa",
+  "prepared_main_prbody_sha256": "77fad4a11a92827d4b5d2b95423215c98dc13ecccce5c33e8c70e156c688e1f8"
+}
