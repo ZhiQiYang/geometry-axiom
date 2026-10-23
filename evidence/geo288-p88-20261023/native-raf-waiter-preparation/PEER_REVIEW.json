@@ -1,0 +1,19 @@
+{
+  "schema": "p88-native-raf-continuation-static-review/1",
+  "waiter": "/workspace/geo288-main-merge-20261023/p88-priority/continue_native_raf_after_final_canvas.py",
+  "waiter_sha256": "36ba166ceef06528524d2cb9d4428d0aab8f6944fa28192cac2583dc0071b681",
+  "previous_waiter_sha256": "8b43429ede9f02c8e5f97e85c5fa53dd5735c1dad815831bcc9582f700796b58",
+  "diagnostic_preparation_sha256": "a6f6dc0e5f02b1090b01216de008be2864a48aa26f5ee09d48f086196b7e127b",
+  "status": "limited_static_preparation_accepted",
+  "checks": [
+    "等待三formal真程序全終態，不以accepted判斷；driver與launch真退出一致。",
+    "固定F/fullsource前後clean/index相等；三份原receipt/launch全streams hash綁定。",
+    "固定98025原formaldriver/68256outer/a6f6準備與全15具名工具bytes hash；freshout /tmp/g288p88r。",
+    "完整最外層argv env-u NODE_OPTIONS/PYTHONOPTIMIZE、F/cwd/前後source與scope明列。",
+    "只接一次fixed/withdrawn/restored，proof driver內獨持共用R3；不外層雙鎖、不重抽。",
+    "原child exit與launcher metadata exit分列；wait之後先存真child exit，metadata例外一律launcher2並保真child exit，修掉可能誤回0。"
+  ],
+  "scope_limit": "等待器不是測試裁判；尚未執行。新native-rAF三phase有效前提與原0/1/0仍須實際完成，不能以接續啟動/靜審接受稱通過。",
+  "python_ast_only": true,
+  "executed_by_reviewer": false
+}

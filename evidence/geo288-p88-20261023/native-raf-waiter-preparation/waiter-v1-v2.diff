@@ -1,0 +1,28 @@
+--- waiter-v1.py
++++ waiter-v2.py
+@@ -60,6 +60,7 @@
+     write('.wait.json', metadata)
+     print('Waiting for all three formal canvas terminal processes; no heavy process started.', flush=True)
+     code = 2
++    child_actual_exit = None
+     try:
+         while True:
+             try:
+@@ -100,11 +101,14 @@
+             process = subprocess.Popen(command, cwd=REPO, stdout=stdout, stderr=stderr)
+             metadata.update(heavy_process_started=True, pid=process.pid)
+             write('.request.json', metadata)
+-            code = process.wait()
+-        metadata.update(actual_process_returncode=code,
++            child_actual_exit = process.wait()
++            metadata['actual_process_returncode'] = child_actual_exit
++            code = child_actual_exit
++        metadata.update(actual_process_returncode=child_actual_exit,
+             stdout_sha256=h(PREFIX.with_suffix('.stdout')), stderr_sha256=h(PREFIX.with_suffix('.stderr')))
+     except BaseException:
+-        metadata.update(launcher_error=traceback.format_exc(), actual_process_returncode=None)
++        code = 2
++        metadata.update(launcher_error=traceback.format_exc(), actual_process_returncode=child_actual_exit)
+     metadata.update(ended_utc=utc(), launcher_exit_code=code)
+     write('.exit.json', metadata)
+     print(json.dumps({'launcher_exit_code': code, 'actual_process_returncode': metadata.get('actual_process_returncode'),

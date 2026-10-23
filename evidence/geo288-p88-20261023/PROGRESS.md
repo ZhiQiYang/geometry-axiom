@@ -31,3 +31,6 @@ UI condition timed out at === P88. 原生來源子線顯示、完整引用、兩
 摘要欄名更正：v1 摘錄使用不存在的 `response_json_unchanged` 而輸出 null；原三個 trace 的正確欄名為 `parsed_json_unchanged`，其值均 true。`ACTUAL_QUERY_OBSERVATIONS_v2.json` 使用正確欄名；v1 與原壓縮包保留，沒有改原 trace 或測試判定。此處只核對 parsed JSON，沒有宣稱 HTTP wire bytes 完全相同。
 
 最新同步的 head `1999cbc` 審查仍要求撤回／恢復反證。依剛觀察到的 renderer return 與原 rAF 恢復之間短窗，另準備一組不同的明列交錯：在真正 native dispatch 的原 scroll-restore callback 入口前，單次求值原 measure expression，立即讓原 callback 依原 this／args／guard 執行，完成後才把原 p 回給 CDP。不捏造幾何或捲動、不另排／手動執行 callback，fixed／withdrawn／restored 同一排程，withdrawn 僅原 P88 bytes。此工具尚未執行；準備 v2 manifest `a6f6dc0e5f02b1090b01216de008be2864a48aa26f5ee09d48f086196b7e127b` 與獨立 peer 靜審附在 `native-raf-preparation-v2/`。須等正式三輪收齊及主代理重活排程。不能拿準備接受或前一組失敗作成功反證。
+
+- 11:40 UTC：新 F 完整 canvas 第 1 輪 exit 0；1741.884308179011 秒，原 35 分鐘內，full 2267／0、golden matched、P88=143、P73=69、沒有 skip。第 2 輪自動接續。原 receipt SHA256：594f637f2386d09702c9021d6828bc2ee4e032097713429cea5c5bbfa32b548f。
+- 原生 rAF 接續等待器已通過獨立靜審並啟動等待（session 91028）；等待正式三輪 process 終態與 source_after，之後只跑一次固定／撤回／恢復，不重抽；尚未開始反證。完整 argv／環境／雜湊與前版 metadata 修正在 native-raf-waiter-preparation/。
