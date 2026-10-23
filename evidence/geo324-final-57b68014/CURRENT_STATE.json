@@ -83,17 +83,33 @@
     },
     {
       "gate": "affected-importers",
-      "originalCommand": "original run_all --build --only named suites; PARTIAL diagnostic",
       "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
       "originalExitCode": null,
-      "status": "PARTIAL",
+      "status": "PASS",
       "allowedSkip": null,
       "receipt": {
-        "path": "evidence/geo324-final-57b68014/receipts/pure-python99.json",
-        "sha256": "7b41b62ed700ae10225e72436ffe50370f2ee670b2fabbea6cd9b0b3dc5629c8",
+        "path": "evidence/geo324-final-57b68014/receipts/importers-nine-modules.json",
+        "sha256": "24d38591826d981f08560be338f4c512ca5410c1a9a041eeba704ccc4db9014f",
         "jsonPointer": "/rows"
       },
-      "partialOriginalExits": [
+      "completedModules": [
+        "test_geometry_host_sources",
+        "test_geometry_source_runtime",
+        "test_geometry_kernel_runtime",
+        "test_rectangular_python",
+        "test_geometry_host_world",
+        "test_geometry_kernel_compatibility",
+        "test_domain_source_pins",
+        "test_geometry_host_native",
+        "test_geo261_default_native"
+      ],
+      "missingModules": [],
+      "proofScope": "Specified9of9 importer modules;142original methods; not full project native/expected aggregate or browser",
+      "preparedCommandNotExecuted": "original run_all --build --only named suites; PARTIAL diagnostic",
+      "originalCommand": null,
+      "originalModuleExits": [
+        0,
+        0,
         0,
         0,
         0,
@@ -102,20 +118,89 @@
         0,
         0
       ],
-      "completedModules": [
-        "test_geometry_host_sources",
-        "test_geometry_source_runtime",
-        "test_geometry_kernel_runtime",
-        "test_rectangular_python",
-        "test_geometry_host_world",
-        "test_geometry_kernel_compatibility",
-        "test_domain_source_pins"
-      ],
-      "missingModules": [
-        "test_geometry_host_native",
-        "test_geo261_default_native"
-      ],
-      "proofScope": "7of9 importer modules;99original Python tests;not full importer gate/native/browser"
+      "actualCommands": [
+        [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+          "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_host_sources.py",
+          "--json-out",
+          "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_host_sources/result.json",
+          "--log",
+          "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_host_sources/unittest.log"
+        ],
+        [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+          "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_source_runtime.py",
+          "--json-out",
+          "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_source_runtime/result.json",
+          "--log",
+          "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_source_runtime/unittest.log"
+        ],
+        [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+          "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_kernel_runtime.py",
+          "--json-out",
+          "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_kernel_runtime/result.json",
+          "--log",
+          "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_kernel_runtime/unittest.log"
+        ],
+        [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+          "/tmp/geo324-predicate-source-57b68014/tests/test_rectangular_python.py",
+          "--json-out",
+          "/tmp/geo324-more-pure-57b68014-r1/test_rectangular_python/result.json",
+          "--log",
+          "/tmp/geo324-more-pure-57b68014-r1/test_rectangular_python/unittest.log"
+        ],
+        [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+          "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_host_world.py",
+          "--json-out",
+          "/tmp/geo324-more-pure-57b68014-r1/test_geometry_host_world/result.json",
+          "--log",
+          "/tmp/geo324-more-pure-57b68014-r1/test_geometry_host_world/unittest.log"
+        ],
+        [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+          "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_kernel_compatibility.py",
+          "--json-out",
+          "/tmp/geo324-more-pure-57b68014-r1/test_geometry_kernel_compatibility/result.json",
+          "--log",
+          "/tmp/geo324-more-pure-57b68014-r1/test_geometry_kernel_compatibility/unittest.log"
+        ],
+        [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+          "/tmp/geo324-predicate-source-57b68014/tests/test_domain_source_pins.py",
+          "--json-out",
+          "/tmp/geo324-domain-pins-57b68014-r2/test_domain_source_pins/result.json",
+          "--log",
+          "/tmp/geo324-domain-pins-57b68014-r2/test_domain_source_pins/unittest.log"
+        ],
+        [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+          "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_host_native.py",
+          "--json-out",
+          "/tmp/geo324-native43-57b68014-r1/test_geometry_host_native/result.json",
+          "--log",
+          "/tmp/geo324-native43-57b68014-r1/test_geometry_host_native/unittest.log"
+        ],
+        [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+          "/tmp/geo324-predicate-source-57b68014/tests/test_geo261_default_native.py",
+          "--json-out",
+          "/tmp/geo324-native43-57b68014-r1/test_geo261_default_native/result.json",
+          "--log",
+          "/tmp/geo324-native43-57b68014-r1/test_geo261_default_native/unittest.log"
+        ]
+      ]
     },
     {
       "gate": "predicate-list",
@@ -208,7 +293,7 @@
       "receipt": null
     }
   ],
-  "bindingRole": "Current original execution facts are scoped per row:three predicatePASS;affected-importersPARTIAL;remaining12UNRUN.",
+  "bindingRole": "Current original execution facts scoped per row:three predicatePASS;specified nine importer modulesPASS;remaining12UNRUN. No synthetic aggregate exit is assigned.",
   "predicateDriverSHA256": "4b5c05f1a2d7a5cf24c1e2b4d21641c560a7fe7a25db1109a6127d315ddd406d",
   "publicationRole": "Containing Git commit is evidence head. Original executionSHA and exits remain explicit;null means unknown,never a skip."
 }

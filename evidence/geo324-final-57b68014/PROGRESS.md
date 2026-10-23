@@ -29,3 +29,9 @@
 固定同S57，原_unittest_runner完整host_sources45、source_runtime10、kernel_runtime10、rectangular_python9、host_world8、kernel_compatibility1、domain_source_pins16，全部原exit0、0fail／0skip、來源初末clean。無C、browser、R3或全域binary cache。原65／18／16獨立actual peers322／356／604 checks均0。affected-importers列只部分7/9，host_native30與default_native13真C依賴待槽；fullnative／expected aggregate與六browser未跑。
 
 原setup sparse add不支援flag129／collector2（0tests），與domain_pins少原tracked5431B fixture所致15pass1error／原exit1全部原件封存；只修物化配置後重跑受影響項，未改test／assert。原wrapper未在事前request pin hash、c387沒有timeout_seconds欄的證據限制照保。CURRENT_STATE兩句舊allunknown角色文字只在此actual批同步為逐列真狀態，不回寫原E。
+
+## 兩原native importer module：43/43；指定九module總142/142
+
+固定S57薄source，原host_native30完整30/30（含真fresh fallback編譯），原private binaries.main build bridge/model-base exit0，原default_native13完整13/13、0fail／0skip；原outer／collector0，493Git inputs原始/LF初末同、HEAD/status clean與ls-files --stage輸出同，不冒.index檔bytes。全程secondary.lock序列，20:23:54終態正常釋鎖。
+
+前七99加此43＝指定九module142/142；actualCommands是各原_unittest_runner.py，準備版run_all --build --only診斷未執行，沒有冒aggregate結果。原compile900s／host fallback60s／default捕捉30s與各module1200s保留。完整公開stdout/stderr、raw Gitbatch493inputs、兩ELF與sidecars全部封包；原程式內部未公開pipes不另冒逐條流。fullnative＋expected、registry-list、六browser、mutation check及架構等12列仍UNRUN。
