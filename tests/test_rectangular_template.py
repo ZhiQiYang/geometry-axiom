@@ -48,10 +48,14 @@ class RectangularTemplateSourceIsolation(unittest.TestCase):
                 if path.suffix not in (".c", ".h"):
                     continue
                 self.assertEqual((ROOT / relative).read_bytes(), path.read_bytes())
-                for include in re.findall(r'^\s*#\s*include\s*"([^"]+)"', path.read_text(encoding="utf-8"), re.M):
-                    targets = [directory / include for directory in (path.parent, *include_dirs)]
-                    self.assertTrue(any(target.is_file() and target.resolve().is_relative_to(root) for target in targets),
-                                    f"non-isolated include: {relative}: {include}")
+                for quoted, angled in re.findall(r'^\s*#\s*include\s*(?:"([^"]+)"|<([^>]+)>)',
+                                                  path.read_text(encoding="utf-8"), re.M):
+                    include = quoted or angled
+                    directories = (path.parent, *include_dirs) if quoted else include_dirs
+                    targets = [directory / include for directory in directories]
+                    if quoted or any(target.is_file() for target in targets):
+                        self.assertTrue(any(target.is_file() and target.resolve().is_relative_to(root) for target in targets),
+                                        f"non-isolated include: {relative}: {include}")
                     if relative.startswith("geometry-core/kernel/"):
                         self.assertTrue(all(target.resolve().is_relative_to(root / "geometry-core/kernel")
                                             for target in targets if target.is_file()),
@@ -198,8 +202,10 @@ class RectangularTemplateNative(unittest.TestCase):
     def test_kernel_cannot_include_the_available_template_header(self):
         source = self.build.kernel / "grid.c"
         original = source.read_bytes()
-        include = b'#include "../../geometry-templates/rectangular-grid/rectangular_grid.h"\n'
-        self.assertNotIn(include, original)
+        includes = (
+            ("quoted", b'#include "../../geometry-templates/rectangular-grid/rectangular_grid.h"\n'),
+            ("angled", b'#include <rectangular_grid.h>\n'),
+        )
         test = self.build.source_root / "tests/test_rectangular_template.py"
 
         def isolation_gate(variant):
@@ -211,27 +217,30 @@ class RectangularTemplateNative(unittest.TestCase):
                                     "exit": result.returncode, "stdout": result.stdout, "stderr": result.stderr})
             return result
 
-        baseline = isolation_gate("baseline-k-to-template-include")
-        self.assertEqual(0, baseline.returncode, baseline.stdout + baseline.stderr)
-        try:
-            source.write_bytes(include + original)
-            # The dependency really exists and is buildable. A missing include,
-            # compile failure or crash must not impersonate the layer rejection.
-            mutant = self.build.compile(source, "grid-template-include-control")
-            objects = [mutant if key == "grid" else obj for key, obj in self.build.objects.items()]
-            executable = self.build.link("rectangular-template-include-control", objects)
-            self.assertEqual(0, self.case("exact-cells", executable).returncode)
-            rejected = isolation_gate("one-k-to-template-include")
-            self.assertEqual(1, rejected.returncode, rejected.stdout + rejected.stderr)
-            self.assertIn("K source includes template dependency", rejected.stderr)
-            self.assertIn("Ran 1 test", rejected.stderr)
-            self.assertNotIn("ImportError", rejected.stderr)
-            self.assertNotIn("SyntaxError", rejected.stderr)
-        finally:
-            source.write_bytes(original)
-        restored = isolation_gate("restored-k-to-template-include")
-        self.assertEqual(0, restored.returncode, restored.stdout + restored.stderr)
-        self.check("exact-cells")
+        for label, include in includes:
+            with self.subTest(include=label):
+                self.assertNotIn(include, original)
+                baseline = isolation_gate(label + "-baseline-k-to-template-include")
+                self.assertEqual(0, baseline.returncode, baseline.stdout + baseline.stderr)
+                try:
+                    source.write_bytes(include + original)
+                    # The dependency really exists and is buildable. A missing include,
+                    # compile failure or crash must not impersonate the layer rejection.
+                    mutant = self.build.compile(source, "grid-template-include-control-" + label)
+                    objects = [mutant if key == "grid" else obj for key, obj in self.build.objects.items()]
+                    executable = self.build.link("rectangular-template-include-control-" + label, objects)
+                    self.assertEqual(0, self.case("exact-cells", executable).returncode)
+                    rejected = isolation_gate(label + "-one-k-to-template-include")
+                    self.assertEqual(1, rejected.returncode, rejected.stdout + rejected.stderr)
+                    self.assertIn("K source includes template dependency", rejected.stderr)
+                    self.assertIn("Ran 1 test", rejected.stderr)
+                    self.assertNotIn("ImportError", rejected.stderr)
+                    self.assertNotIn("SyntaxError", rejected.stderr)
+                finally:
+                    source.write_bytes(original)
+                restored = isolation_gate(label + "-restored-k-to-template-include")
+                self.assertEqual(0, restored.returncode, restored.stdout + restored.stderr)
+                self.check("exact-cells")
 
     def test_exact_1000_by_600_has_15_200_by_200_cells(self): self.check("exact-cells")
     def test_source_edit_recomputes_same_references_after_reordering(self): self.check("source-update")

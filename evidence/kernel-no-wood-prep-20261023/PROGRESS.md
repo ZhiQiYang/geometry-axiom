@@ -19,3 +19,14 @@
 本階段只做 AST／Git diff 檢查；沒有編譯、執行測試或 0/1/0。`tests/run_all.expected.json` 仍是前棒的 11 項，依 #323→#314→combined→#318→本子項順序後再改為 13，不能以此 source commit 宣稱完整 native 綠。沒有修改共用 registry、產品 C、SSOT 或帳本。
 
 下一步：取得 #314 owner 的正式葉檔靜審，持續對抗審 #318；等 root 放行重工作槽後，以此已推送 source SHA 跑原始完整 13 項及兩種 guard 的 0/1/0，再在 #318 正式合流後重綁最終 SHA。
+
+
+## 對抗審查的 angle include 繞路已修，動態未跑
+
+第一版測試來源 `af76f9d7c393c441b8244e1ddd40bf72d796cc07` 已推，但 #314 owner 的靜態對抗審指出只抓 quoted include 會漏掉 `#include <rectangular_grid.h>`。尚未動態確證，不將靜態推論冒作原始紅燈。
+
+本修正同時辨識 literal quoted／angle include；angle 無專案標頭候選才視為系統標頭，能解析到隔離 source closure 的標頭同樣檢查 K 邊界。原 quoted 控制、全部斷言與原 11 項保留，仍總共 13 項。兩種 include 各有真編譯／連結／exact-cells 成功後的原 source gate 0/1/0；正式執行仍待 root 排程。
+
+`revision-2/` 凍結新候選、全 patch、driver、AST-only 0 與指出繞路的原靜審。driver 嚴核七 phase 原始 `0/1/0/1/0/1/0`：新增只撤 angle parser 回原 quoted parser的單獨反證；撤 K guard 要求兩個正常 subTest failures，撤 parser 要求一個正常 failure。不是接受 compile error／crash／watchdog。
+
+原 prefix 的 MANIFEST 是準備 commit `07b7df9b` 的歷史 snapshot，PROGRESS 持續追加；新 revision 的 MANIFEST 只綁其凍結檔案。共用 expected count 仍等 #318 正式交棒，不因本修正先動；全帳本未重產。尚未有任何動態通過宣告。
