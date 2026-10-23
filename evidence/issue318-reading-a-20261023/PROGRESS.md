@@ -1,3 +1,9 @@
+## 同儕／最新來源補記
+
+#314 owner 對不可變 `1cd2fc216299041a557654a874509a33884af819` 純Git/blob/AST複審：unit檔精確只換指定一字串，23個方法原樣，11個錨點唯一，expected JSON blob不改，未見新靜態阻擋；全文 `PEER_REVIEW_314_ANCHOR_1cd2fc21.json`。這不替代動態 legacy-value 0/1/0。
+
+再先fetch handoff `7bd61a43210bbad0abf95709e1a0205cd8760cac` 才讀318最新留言，最後仍05:57核可v3，來源hash於LATEST_REVIEW_SOURCE.json。golden／CLI／全部native與oracle正式動態仍待排程；不修改已鎖定已placed條件、不盲填golden。source/progress持續普通push。
+
 ## 當前來源／待驗矩陣（本段取代下方各歷史追加的 current-state）
 
 來源已落核可 SSOT 四處、白話與唯一正典、oracle 獨立建構／C8、W判官／span／between／兩條重驗。現有reader-generation-m150固定來源 `1cd2fc216299041a557654a874509a33884af819`，真同步exit0、3.70秒，完整原輸出與hash已封存；這是新M150與live adapter行號變動後的機械來源生成。`--check`與reader unittest仍未執行，不能稱三裁判全綠。
