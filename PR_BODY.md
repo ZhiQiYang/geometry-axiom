@@ -4,7 +4,7 @@
 |---|---|
 | 來源 S | `2199cda8896b47c7ad2b6c10479e5e0cbdb67c83`，已一般 push 且遠端同 SHA |
 | 基底 E | `3c6633575ec0f9dccf35898380202aad8d0ffddf`；只改 `tests/test_rule_case_workbench_http.py` 一行 |
-| 原件 evidence head | `3bbbcf0063bb7ef34d908d370270dfc5d83f297c`；`evidence/issue214-fixture-2199cda8/`，完成準備原件完整封包與逐 member roundtrip |
+| 原件 evidence head | `9896410a84b31fb742b5e92bc5601715bf242267`；`evidence/issue214-fixture-2199cda8/`，完成準備與runtime物化原件完整封包、逐 member roundtrip |
 | 單檔獨立靜審 | 14 checks／0 findings；只代表準備接受，非執行通過 |
 | helper 獨立靜審 | 20 checks／0 findings；AST/身份/原期限與完整方法核對，非執行通過 |
 | 原整套 workbench HTTP 正式驗收 | **UNRUN**；原 19 方法、原 Python suite 時限 1200 秒，零新增 skip |
@@ -18,7 +18,7 @@
 
 原／候選／等價撤回／恢復的 correctness 都應通過。收益可以為 0 或負；沒有把 8.55 秒估算當實績、沒有改 timer、刪案例、改 expected/golden 或新增性能門檻。更密集的空閒喚醒可能增加 CPU，需由原樣本如實判讀。
 
-Linux bridge/build/log cache 仍是原 `/tmp/geometry-tests`；TMPDIR 不能把它隔離。動態驗收須等 root 配置獨立 runtime 與共享 cache 租約，不能與完整 native／required-eight 的 cache 寫者並跑。目前只物化單檔薄來源，未編譯、未跑 native／HTTP／Chrome／bench，也沒有把較早列車的綠燈移到此 S。
+Linux bridge/build/log cache 仍是原 `/tmp/geometry-tests`；TMPDIR 不能把它隔離。動態驗收須等 root 配置獨立 runtime 與共享 cache 租約，不能與完整 native／required-eight 的 cache 寫者並跑。隔離來源已物化 834 個固定 Git 檔（約 16.5MB allocated），S 與完整 index tree 不變；未編譯、未跑 native／HTTP／Chrome／bench，也沒有把較早列車的綠燈移到此 S。
 
 這是 #214 的 A4 工程切片，不代表整件 #214 或全專案完成；不更動主列車、公理與決策，不合併 PR。
 
