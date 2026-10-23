@@ -134,11 +134,18 @@ def main():
     result['passed']=(records[0]['exit_code']==0 and PASS in records[0]['stdout']
                       and records[1]['exit_code']==1 and MARKER in records[1]['stdout']
                       and records[2]['exit_code']==0 and PASS in records[2]['stdout'])
+    original_hashes={k:digest(v) for k,v in raws.items()}
+    withdrawn_hashes=dict(original_hashes,**{'make_golden.py':digest(withdrawn)})
+    result['variant_bytes_match_exact_withdrawal']=(
+        records[0]['variant_sha256']==original_hashes
+        and records[1]['variant_sha256']==withdrawn_hashes
+        and records[2]['variant_sha256']==original_hashes)
     result['source_bytes_unchanged']=all((oracle/k).read_bytes()==v for k,v in raws.items())
     result['source_sha256_after']={k:digest((oracle/k).read_bytes()) for k in raws}
     result['source_sha_after']=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip()
     result['source_dirty_after']=subprocess.check_output(['git','-C',str(root),'status','--porcelain'],text=True)
-    result['passed'] &= (result['source_bytes_unchanged'] and result['source_sha_after']==source
+    result['passed'] &= (result['variant_bytes_match_exact_withdrawal']
+                         and result['source_bytes_unchanged'] and result['source_sha_after']==source
                          and result['source_dirty_after']==dirty)
     fcntl.flock(lock,fcntl.LOCK_UN)
     lock.close()
