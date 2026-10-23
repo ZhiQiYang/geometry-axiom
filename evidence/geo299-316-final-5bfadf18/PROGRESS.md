@@ -7,3 +7,6 @@
 
 - 2026-10-23T01:33:29.884650+00:00 — **unused-preflight-release**：已安全釋放未執行產品測試的首輪乾淨準備worktree，回收319311872bytes；原Git命令收據保留，正式受驗r2來源與出版分支均未變。
   下一步：讓原native持續完成；六browser待314重型工作結束。原始資料：`raw/unused-preflight-release-01.tar.gz`。
+
+- 2026-10-23T01:58:12.937036+00:00 — **native**：原退出0；原收據有效=True；超CI時限=False；衍生通過=True
+  下一步：繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽。原始資料：`raw/native-01.tar.gz`。
