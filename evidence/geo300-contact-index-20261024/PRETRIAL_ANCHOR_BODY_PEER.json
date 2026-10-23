@@ -1,0 +1,76 @@
+{
+  "schema": "geo300-anchor-current-body-static-peer/1",
+  "createdUTC": "2026-10-23T23:04:32.306938+00:00",
+  "scope": "Only pinned prepared body/request/binding precision, preserving actual old red and new-source UNRUN. No source/algorithm/actual/package/remote checks repeated.",
+  "bodySHA256": "ab16ac3c7ccc1acaca443e746782a6bc5bfb604b4540681124a185168c6531d7",
+  "requestSHA256": "98248b1774f566a7df30d38c6a01b48765deb218d2a2fea8a47c3a279e183b6d",
+  "checkCount": 15,
+  "checks": [
+    {
+      "label": "final frozen body hash",
+      "passed": true
+    },
+    {
+      "label": "same fivefieldrequest hash",
+      "passed": true
+    },
+    {
+      "label": "exact branch/base/body fields",
+      "passed": true
+    },
+    {
+      "label": "new source and evidence identified",
+      "passed": true
+    },
+    {
+      "label": "unique currentmatrix",
+      "passed": true
+    },
+    {
+      "label": "new34and64UNRUN",
+      "passed": true
+    },
+    {
+      "label": "priorcc2redpreserved",
+      "passed": true
+    },
+    {
+      "label": "newtupleproofunrun",
+      "passed": true
+    },
+    {
+      "label": "fivescopeleaveswithoutproductrewrite",
+      "passed": true
+    },
+    {
+      "label": "priorhistoricalidentity",
+      "passed": true
+    },
+    {
+      "label": "currentnotready",
+      "passed": true
+    },
+    {
+      "label": "rawstillpendingpublicationhonest",
+      "passed": true
+    },
+    {
+      "label": "stderrwhitespaceoriginalretained",
+      "passed": true
+    },
+    {
+      "label": "conservativefirstdynamicsentencecorrected",
+      "passed": true
+    },
+    {
+      "label": "wholeoptandperformanceunrun",
+      "passed": true
+    }
+  ],
+  "findings": [],
+  "limits": [
+    "Owner-provided source/evidence push identity and prior actual counts are context, not independently re-proven in this prose-only peer.",
+    "The earlier producer-saved collaboration acceptance is distinct from this later formal report."
+  ],
+  "exitCode": 0
+}
