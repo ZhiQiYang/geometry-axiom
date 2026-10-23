@@ -1,29 +1,40 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 21:55 UTC）
+## 唯一 current-state（2026-10-23 22:31 UTC）
 
-- 分支：`codex/train-337-continue-20261024`；產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判來源 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；四檔採用與上游合流 head=`4f4a24d76e816274bfae06868b4dbf31f0860299` 已推。新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 已推；C/JS產品仍同F，最新 evidence head 以本檔所在提交為準，正式全清單的最終 SHA 尚未固定。
-- 已普通 merge Claude 最後交接 `8f9301fc1b78712d930ffc68074437e44d068aab`（merge `586e6e8f`）與 main `425c092eaf16f90256d76433243baebde45163ac`。main 新增 #333 FIELD-RULES 與證據。相對F產品C/JS不變；兩個tests葉改為M151登記與free-end唯一錨點，保留所有斷言。
-- #314 指定 `3b0b634f` 的17個產品／裁判 blobs及M99–M121定義已存在列車；沒有假移植。F 的六 suite **103項 exit0**、Node inspector **13項 exit0**、M121 原CLI0與build0/0/0、斷言0/1/0。獨立541checks／0。Node不是browser；六suite不是完整native。完整原件收於 `geo314-f64-originals-and-peer.tar.gz`。
-- #323 來源已全包含列車，只在此線修。F 的原13/22/15三suite **50/0/0**、19組control獨立346checks／0；四新增與兩漂移修復為具名ASSERT 0/1/0。placement-key-single原等價0/0/0仍照實記錄。
-- #323 正式一次36timings及4profiles已執行，原execution各0：N16/32/48-base=.70152535/.81183549/.70936489；N64/main=1.26480058≤1.3；source calls64/32=364369/82668=4.40761843≤4.5。分母與原門檻未改；獨立原件358checks／0已完成，原wrapper1因下列ABC紅燈，不能標整組全綠。
-- #323 原175場景／350組 exact比較 **exit1**：僅3場景因既有#299 V_EXTENSION新增邊與區間診斷不同；dump、有序來源圖、5guards及允許／拒絕相同。原紅不改，詳 `QUESTIONS.md`；同列車僅撤回memo的175／350嚴格全輸出ABC與完整memo性能反證已完成：0/1/0、4.407618→6.053833→4.407618；獨立6655checks／0。五原件壓縮包47,120,357B及完整MANIFEST已普通推送 E bea6f30995da1425ebe375a37d871e4f19c54a2d，13865members／172515281原bytes；雲端原件亦保留。公開Git blob／13865member逐byte獨立審查27834checks／0已完成，不把出版當原ABC轉綠。I11補充單場景exact綠、原scene runner **166/0/0**，不冒充完整native。
-- 閱讀A F：reader三條 **0/0/0（51項）**，native **7項／12組0/1/0**、oracle **14項 exit0**；獨立629checks／0已完成，完整原件收於`reading-a-f64-originals/`（895members、5597339bytes壓縮包）。native41筆子SHA欄原為null，父c387、前後Git身份與70C/H實際輸入逐份比對另附間接綁定，原件不改；原ELF已由測試清除，只保原hash，不冒fresh rehash。原三組沒有額外outer/reaper，不虛構。RC-run builder/checker兩精準撤回已各0/1/0，actual377checks／0、封包382checks／0，原件已封`reading-a-rc-f64-originals/`；正式quick仍待跑，未冒稱最終全專項通過。
-- 架構 P 原三條 **0/0/0**（generic205、product18）、過期manifest反證 **0/1/0**；Linux manifest/scan/report/receipt四檔已重產採用，獨立686checks／0，604輸入closure=`6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。原F架構1/0/5與Ran0失敗完整保留。封存 `architecture-p17-and-recovery.tar.gz`。
-- 4f4原完整CLI於20:44:44環境失敗終止：CLI2／root1／原new--check2，108/123（98killed／5equivalent／1crashed／3retired／1blocked），15未跑。M118還原build建立smoke時Errno28，M119建立目錄再Errno28而原程式早退；不是完整帳本綠。2031checks獨立審查原失敗保真，49.6MB原流封於`ledger-4f4-terminal/`；M118缺restore仍缺，不補假row。新來源b6e1e454（C/tests同ec8）原完整123已於22:08:38 UTC真終態，CLI0/root0/new-check0，114killed/5equivalent/1crashed/3retired；生成前tracked舊check1保留。原JSON已逐byte採用；接著在固定L真跑完整123與其它正式清單。完整native、六browser、P52、Q38、§7、P-189與閱讀A矩形／579專項仍未完成。**沒有允許的新skip，不標READY-TO-MERGE。**
-- 雲端Chrome156.0.8078.47／Nodev24.19.0／NotoCJK可用。只清已核可重建cache，保留收據、fixtures與Gitobjects；5批實際allocation回收998256640bytes，觀察free差996368384bytes，差值受共享磁碟並行活動影響。
-- 18:25認證故障原件保留；18:55普通Git重試恢復，原未推提交ae25／17b已補推。交接分支在自動同步造成一次非快轉拒絕後，用普通merge補入，`8c60c977e772126f120fd6f2d3ca95208ba8fd44` 已推，含NEXT與#324 PR請求。沒有force push。
+唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
-## 並行工作與下一步
+| 正式項 | 真來源 | 原 exit／狀態 | 範圍 |
+|---|---|---|---|
+| tracked `mutate.py --check` | L | 0 | 22:25:16–22 UTC 原命令，完整流在 final-L-start |
+| 原完整123帳本 | L | RUNNING，無最終exit | 22:25:15 UTC 啟動，session56927；全新external RESULTS，未搬舊判決 |
+| 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
+| 完整 native | L | UNRUN | 原 --build，16MiB stack；包含#314六module103／Node13、ReadingA7／14、#323三module50 |
+| canvas／assembly／documents／grid／space／timber | L | 全部UNRUN | 原workflow，獨立checkout／埠／暫存；canvas獨占 |
+| P52／Q38／§7兩項／P-189 | L | 全部UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
+| #323 required-eight／PF3／timing／profile／memo反證 | L | 全部UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
+| reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | 全部UNRUN | 原CLI/0-1-0，逐毫米與凹角579等完整範圍，不用CI抽樣替代 |
+| #323跨版本175／350 exact | F對原b74 | 1，仍阻擋B2 | 三個I22所需診斷差異，L尚未重跑；未改裁判或刪診斷 |
 
-1. #323 memo完整反證已完成。舊4f4環境失敗原件已封；root的新b6來源完整帳本已啟動；本輪b6 ledger完成後原JSON採用成可解析L；為滿足最新B1字面要求，在L以全新外部RESULTS再真跑完整原123CLI（合法沿用原指紋cache，不搬舊判決），其它完整native、6browser及專項也固定L。L實跑的新JSON只封evidence E，不再改L tracked ledger，不偽改execution.head或用--check代fullCLI。canvas與性能獨占，其餘最多兩重測。
-2. #339接替324：原S57的指定9個importer模組142/142與3組predicate反證真綠；普通merge #340後source1f0，原registry-list0只表示清點，11正式列仍未跑。最新E dcdf2265／D2aac已推，base=#340；不把S57實跑轉標新source。
-3. noWood draft #340：原Sbfb的13項及7phase真0/1/0/1/0/1/0，actual530/publication949/新merge343 checks獨審0。新source4d3、body77a已推；11輸入同但不冒4d3重測。列車未入main也繼續疊線。
-4. #300原c493的三套32方法／46controls真0/1/0、282compile/link全0，actual1020checks／0；普通merge #339後只expected9→10，已推sourceaa0，效能與512尚未完成。GEO260接aa0後sourceeb846，保noWood13/faces45/woodcontact10並只native28→30，原全44已於eb846真完成：43killed＋SPM24equivalent，原gate0／outer0，native29/model20基線0；actual1682/public678 checks獨審0，E df230da5／D be1f69dc已推。af4 focused兩控制仍保原SHA。#325/#331/#333不寫其分支，#333已進main。
+允許skip沒有新增；Chrome156.0.8078.47／Node24.19.0／NotoCJK在雲端可用。RUNNING不等於通過，peer計數不計產品測試。最終L原trackedJSON保自然b6 heads；L新external帳本完成後只封E，不反覆修改trackedJSON。
 
-每個歷史結果保留原SHA，不把證據提交冒充受測SHA；失敗原件不覆寫。最新已讀審查是 handoff a47d625c 的 #338 2026-10-23 20:44 UTC（head b6）。B1完整同源驗收與B2原跨版本exact仍是阻擋；B3五原包已於bea6f309入庫且公開獨審27834checks／0，B3已處理；B1／B2尚未解除，沒有可合併結論。M1現況已更正：10/18提交相容例外已採納；10/23精確有序補句另有核可但尚未逐字寫入，不能把兩者統稱暫緩，也不重問題3／4。小引用審查9/0封於review-b6-response/。工作持續中。
+b6 原全123已22:08:38 UTC真完成，生成前check1／完整CLI0／coremap0／externalcheck0，114killed／5equivalent／M20原允許crashed／3retired；1239原件與原JSON已封L的ledger-b6-complete。原4f4 ENOSPC、108筆／15未跑與CLI2原失敗保歷史。B3五原包47,120,357B及13865member公開於bea6f309，已獨立逐byte核對；M1現有D10b/I24/D29已採納，僅後續精確順序補文尚未literal寫入，QUESTIONS已改正。B2保守待裁決方案仍在QUESTIONS，不能自行放寬exact。
 
-S ec8的Linux架構四檔已於9a05採用，三原裁判0/0/0、205/18及781checks獨審0，604-input closure不變。冷checkout原碼副本全封後精確回收216,199,168B已推；free-end與舊323收據只搬儲存位置並保原path symlink、原bytes/mode/mtime，沒有刪收據。下一輪重測先守資源預算，保留所有原失敗。
+目前 ROOT `/tmp/train337-323-f64d638f-source` 與 SEED `/workspace/train337-ledger-cache-L-7af8c5d8/_bridge-work/7af8c5d80d34cb4f49d01ba67deb78a3a6d725db/repo` 是live L帳本專用，禁止別線改HEAD/source/cache。175對ELF及sidecar同FS搬移，175舊metadata與舊raw保留；builder自行判fingerprint，沒有跳過oracles。起始899checks及架構646checks獨立核對原件已附，仍不是全帳本終態。
+
+## 並行工作
+
+- #339 F38da31bc／E47fd6a79／De2f4bc20 已一般推送：真M1f0架構3綠、mutate check1（107stale／13unrun）；11正式項3PASS／1RED／7UNRUN，舊S57的142與3反證不移標新F。
+- #340 noWood：13項／7phase原實跑0/1/0/1/0/1/0；source4d3a、Ed45d、D77a已推，列車完整正式項仍待。
+- #341前置與#342 GEO260：各原定向驗收已封自己的SHA；#342全44為43killed／SPM24equivalent、539inputs相同，不能替代aggregate/native/browser。
+- #343 contact index：S1ee4e830／E4f456eff／Dd2de865d，原三套33methods／56controls與302build全0；新增穩定排序候選正獨立對抗審查，尚未C實跑，容量512／性能未跑。
+- #344連線復原：Sc1113f6f／Ed2c58317／D8233916d，9VM→撤回3具名ASSERT紅→恢復9綠已封；真CDP與完整canvas仍未跑，正在準備。
+
+最新fetch handoff3e4905ad，#338最後審查仍2026-10-23 20:44:17 UTC/headb6；#343與#344服務已開draft。沒有新可合併結論，不等待審查或使用者；重測最多2，canvas／性能獨占。L帳本執行時持續其他獨立工作。
+
+## 本次封存
+
+原39條已終態preflight指令、完整streams、來源/環境/175搬移/launch request封於final-L-start，排除未完成command40及live observer/RESULTS；不把初始預設exit1誤稱終態。架構原3條CLI及前後Git／604inputs完整收據封於final-L-architecture。完整舊進度在各Git歷史提交保留，以下為歷史事件，不能當現行矩陣。
 
 ## 歷史紀錄：2026-10-23 19:17 UTC
 
