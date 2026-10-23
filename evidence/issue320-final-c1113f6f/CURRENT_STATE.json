@@ -1,0 +1,36 @@
+{
+  "productSHA": "c1113f6fd6c52a55d7df1a30ecd1684fe87b661c",
+  "executionSHA": "c1113f6fd6c52a55d7df1a30ecd1684fe87b661c",
+  "originalNodeCommand": [
+    "node",
+    "--test",
+    "--test-reporter=spec",
+    "tests/test_connection_recovery.js"
+  ],
+  "originalNodeExits": [
+    0,
+    1,
+    0
+  ],
+  "originalMethodCountEachPhase": 9,
+  "originalSkippedEachPhase": 0,
+  "withdrawnNormalAssertionFailures": 3,
+  "proofReceiptSHA256": "30e4da54ecfcfab2161bd42b45ab0f2116d530305fc8c9a8d1e288a8d33bca7d",
+  "unitProof": "PASS; exact original function spans with explicit substitutes, not browser",
+  "P53P61RealBrowser": "UNRUN",
+  "fullCanvas": "UNRUN",
+  "otherFiveBrowserJobs": "UNRUN",
+  "fullNative": "UNRUN",
+  "mutationCheck": "UNRUN; root owns final complete ledger",
+  "architectureOriginalThreeAndDerivedFour": "UNRUN; root owns final source impact/refresh",
+  "goldenEdited": false,
+  "fullLedgerWrittenByThisOwner": false,
+  "peer": {
+    "path": "/tmp/issue320-independent-peer-c1113f6f/CHECKS.json",
+    "sha256": "09f32c26be5048f941a81c4c748fa9f4528f9fbdcc4f7914b1ac0c294bad1beb",
+    "checks": 281,
+    "findings": [],
+    "scope": "independent source+partial VM actual only; not browser/native"
+  },
+  "outerCaptureLimit": "Proof driver process0 came from original host exec result; no separate prelaunched outer c387 stream. All three Node CLI streams and original exits are separately captured."
+}
