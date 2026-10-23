@@ -56,3 +56,11 @@ S的原`mutate.py --check` exit1；三條原架構裁判exit0/0/0。Chrome/Node�
 S ec8的三原裁判0/0/0與205/18原計數已按同schema封存；604個physical/Git/raw/LF輸入及原scanner/generic/product裁判均與P17相同，closure仍`6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。新manifest/scan bytes不變，新report/receipt已採用；獨立781checks／0，完整原件封`architecture-ec8-originals/`。真受測S與封存a607分列；兩個tests葉不在604架構scope，不能以此代替測試/ledger。P17 manifest反證只保原SHA，不轉標本輪。上一段出版時間標籤修正為原20:10，受測指令收據原時間未改。
 
 noWood原13項/7phase已真完成0/1/0/1/0/1/0，owner交獨立peer與自己分支封存；#324接第2槽跑30+13 C importers。root原4f4 fullledger仍執行中，不標最終完成。PR338新正文`c6a66707db7fac932d3b8ceb91572b7552091730`已一般推送，唯一矩陣區分F/P/S/E與所有紅/未跑項；handoff NEXT已推5461a7bb，後續持續更新。
+
+## 2026-10-23 20:39 UTC：退休checkout副本封存、回收與後續線結果
+
+已完整封存10個root自有退休checkout的9510個immutable原碼副本；966個不同payload共20,235,083B，6,204,042B原封包逐byte roundtrip。固定scope9533、封包10504、actual9554個獨立checks均0。精確unlink exit0，回收216,199,168配置bytes；Git/objects/index/refs、收據、fixtures、gmon、所有mutant/trace/withdrawn來源不動。完整原指令/環境/streams/退出碼/原來源SHA及可逐檔還原封包在`cold-checkout-retirement/`。這不是產品驗收。
+
+#340原13項與7phase反證真0/1/0/1/0/1/0已推；普通merge本列車後source4d3a17c3，原實測bfbab207不轉標。#339原9模組142/142均原exit0且3組predicate0/1/0已推，普通merge#340後source1f0ebd3e、原實測57b68014分列。GEO260新focused SPM43/44於af4fd36c真baseline29 pass、各具名assert1、restore0，1252checks獨審0；原c926 KeyError仍保留。這些不冒整體native/browser。
+
+root4f4完整帳本仍跑，20:40已100/123（92killed/4equivalent/1crashed/3retired），無最終exit；S ec8仍需完整重產。第2重槽已交#300三原suite，所有大暫存改用獨立workspace目錄；/tmp仍緊，繼續只盤點已終態可重建cache，保留全部收據。新架構四檔已在9a05採用，原0/0/0與781checks peer全封。完整native/6browser/專項尚未完成，不標READY。
