@@ -64,3 +64,9 @@ noWood原13項/7phase已真完成0/1/0/1/0/1/0，owner交獨立peer與自己分�
 #340原13項與7phase反證真0/1/0/1/0/1/0已推；普通merge本列車後source4d3a17c3，原實測bfbab207不轉標。#339原9模組142/142均原exit0且3組predicate0/1/0已推，普通merge#340後source1f0ebd3e、原實測57b68014分列。GEO260新focused SPM43/44於af4fd36c真baseline29 pass、各具名assert1、restore0，1252checks獨審0；原c926 KeyError仍保留。這些不冒整體native/browser。
 
 root4f4完整帳本仍跑，20:40已100/123（92killed/4equivalent/1crashed/3retired），無最終exit；S ec8仍需完整重產。第2重槽已交#300三原suite，所有大暫存改用獨立workspace目錄；/tmp仍緊，繼續只盤點已終態可重建cache，保留全部收據。新架構四檔已在9a05採用，原0/0/0與781checks peer全封。完整native/6browser/專項尚未完成，不標READY。
+
+## 2026-10-23 20:48 UTC：全帳本M118環境紅燈，原件保留且其餘繼續
+
+舊4f4原full CLI尚在執行，M118於20:44:37的restored-build原exit1：`編得出來但無法啟動：[Errno 28] No space left on device: .../M118/bridge-restored/smoke`。這是儲存環境阻擋，原verdict=`blocked`，restored phase未完成；不能列killed或產品assertion反證。原row及M118全部既有streams、full-launch環境／SHA封於`ledger-4f4-m118-interim/`，沒有覆寫live ledger。其他ID繼續收齊；修好空間後新S的完整123重產自然重驗M118，原失敗不改標。
+
+root PR338正文已一般推D e51c7abc984a9a09c2ff27cad5e6d44c42254fbf（其20:38進度早於此紅），下版將納此環境紅與真正終exit。handoff NEXT／#300 draft請求與#339 base=#340已一般推2d409187；沒有合併任何PR。#300原32項/46controls已取得原0，獨立actual審查中；其後正常merge#339並只把expected9→10，S aa0e3938已交GEO260下一棒。
