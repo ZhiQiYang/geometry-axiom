@@ -741,6 +741,8 @@ static bool app_reference_boundary_end_policy(const World *world,const Placement
     Coord span_lo,Coord span_hi,Coord cross_lo,Coord cross_hi,int end,
     const WoodStopFace *faces,size_t count,const WoodStopFace *required,WoodBoundaryEndAdmission *admission)
 {
+    *admission=WOOD_BOUNDARY_END_ORDINARY;
+    if(!wood_contact_boundary_end_uses_member_facts(member))return true;
     AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);
     ReferenceEval *ctx=app_reference_sources_for_world(world);WoodContactSourceFacts actual;
     if(ctx&&!ctx->use_current_values){

@@ -5,6 +5,10 @@ placement identity, returned FEATURE and atomic edit controls are separate.
 """
 from pathlib import Path
 import sys
+import hashlib
+import json
+import subprocess
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -109,6 +113,31 @@ class ReadingAOracle(unittest.TestCase):
             self.assertEqual([first], cases.coverage_problems(observed, keys)["missing"])
             observed[first] = "core_limited"
             self.assertEqual([(first, "core_limited")], cases.coverage_problems(observed, keys)["not_buildable"])
+
+    def test_builder_and_checker_withdrawal_fail_exact_assertions_then_restore(self):
+        source = ORACLE / "framing_oracle.py"
+        original = source.read_bytes()
+        digest = hashlib.sha256(original).hexdigest()
+        client = ORACLE / "reading_a_source_control.py"
+        for control, name in (("builder", "_reading_a_build_end"), ("checker", "reading_a_end_admission")):
+            with self.subTest(control=control), tempfile.TemporaryDirectory(prefix="reading-a-source-") as directory:
+                anchor = f"def {name}(reg, timber, timbers, k, at):\n"
+                text = original.decode("utf-8")
+                self.assertEqual(1, text.count(anchor))
+                mutant = Path(directory) / "framing_oracle.py"
+                mutant.write_text(text.replace(anchor, anchor + "    return READING_A_ORDINARY\n"), encoding="utf-8")
+                phases = []
+                for phase, path, code in (("baseline", source, 0), ("withdrawn", mutant, 1), ("restored", source, 0)):
+                    command = [sys.executable, "-B", str(client), "--source", str(path), "--control", control]
+                    result = subprocess.run(command, capture_output=True, text=True, timeout=10)
+                    phases.append(dict(phase=phase, command=command, exit_code=result.returncode,
+                                       stdout=result.stdout, stderr=result.stderr))
+                    self.assertEqual(code, result.returncode, result.stdout + result.stderr)
+                    if code:
+                        self.assertIn("AssertionError: READING_A_" + control.upper() + "_PARTIAL", result.stderr)
+                    self.assertEqual(digest, hashlib.sha256(source.read_bytes()).hexdigest())
+                print("READING_A_SOURCE_PROOF " + json.dumps(dict(control=control, source_sha256=digest,
+                      phases=phases), ensure_ascii=False), flush=True)
 
     def test_full_scan_cannot_filter_out_a_missing_room(self):
         required = {("A", "layout"), ("B|上下", "layout")}

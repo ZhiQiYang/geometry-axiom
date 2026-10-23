@@ -653,9 +653,14 @@ static bool reference_check_all(const World *w)
         StopFace faces[STOP_FACE_MAX]; size_t nf=collect_stop_faces(w,p,b,along,t,faces,STOP_FACE_MAX);
         for (int k=0;k<2;++k) {
             size_t hits=count_legal_stops(faces,nf,ends[k],lo,hi);
-            if (!hits || (!a->has_between && hits!=1)) {
-                char actual[180]; snprintf(actual,sizeof actual,"end %d at %lld mm, cross [%lld,%lld], legal stops=%u",k,(long long)ends[k],(long long)lo,(long long)hi,(unsigned)hits);
-                reference_issue(t->id,"R6(d)/I6","one full-width FIXED stop at each end (or explicit between)",actual); ok=false;
+            WoodBoundaryEndAdmission admission=WOOD_BOUNDARY_END_ORDINARY;
+            if(!app_reference_boundary_end_policy(w,p,b,t,along,ends[0],ends[1],lo,hi,k,faces,nf,NULL,&admission)){
+                reference_issue(t->id,"I8","ordered endpoint source facts","boundary endpoint facts unavailable");ok=false;continue;
+            }
+            char detail[256]="";
+            if(!wood_contact_end_support_check(admission,hits,a->has_between,detail,sizeof detail)){
+                char actual[512];snprintf(actual,sizeof actual,"end %d at %lld mm, cross [%lld,%lld], legal stops=%u; %s",k,(long long)ends[k],(long long)lo,(long long)hi,(unsigned)hits,detail);
+                reference_issue(t->id,"R6(d)/I6","full-width FIXED stop or approved boundary fixed-end exception",actual);ok=false;
             }
         }
         char err[256];

@@ -255,10 +255,18 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         self.assertEqual(23, len(stagger))
         added.update(stagger)
         self.assertEqual(61, len(added))
+        reading_a = {"M"+str(n): "geometry-templates/woodworking/native/contact_world.c" for n in range(140, 145)}
+        reading_a.update({"M145": "geometry-templates/woodworking/native/member_reference.c",
+                          "M146": "geometry-templates/woodworking/native/member_reference.c",
+                          "M147": "geometry-templates/woodworking/native/world_validation.c",
+                          "M148": "geometry-templates/woodworking/native/world_validation.c"})
+        self.assertEqual(9, len(reading_a))
+        added.update(reading_a)
+        self.assertEqual(70, len(added))
         self.assertEqual({**expected, **added}, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
         # The ten P-135/P-141 preview-only guards and the eight GEO-262 P-142
         # guards (M78-M85) run on the actual bridge.
-        self.assertEqual({"M%02d" % n for n in [*range(61, 71), *range(78, 86)]} | set(stagger),
+        self.assertEqual({"M%02d" % n for n in [*range(61, 71), *range(78, 86)]} | set(stagger) | set(reading_a),
                          {m["id"] for m in mutate.MUTANTS if m.get("binary") == "bridge"})
         self.assertEqual({"M35", "M51", "M55"}, {m["id"] for m in mutate.MUTANTS if m.get("retired")})
         self.assertEqual({"M09", "M23", "M36", "M56", "M110"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})

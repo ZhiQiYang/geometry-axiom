@@ -86,6 +86,9 @@ static WoodMemberSpanStatus resolve(Fixture *f,bool between,uint32_t named,char 
 static int spans(void)
 {
     Fixture f;char error[512];init(&f,13);
+    CHECK("collector-partial-without-fullwidth",wood_contact_end_support_check(policy(&f,NULL),0,false,error,sizeof error));
+    CHECK("collector-ordinary-still-fullwidth",!wood_contact_end_support_check(WOOD_BOUNDARY_END_ORDINARY,0,false,error,sizeof error));
+    CHECK("collector-bare-rc-never-falls-back",!wood_contact_end_support_check(WOOD_BOUNDARY_END_BARE_RC,1,false,error,sizeof error));
     CHECK("span-accepts-partial-end",resolve(&f,false,0,error,sizeof error)==WOOD_SPAN_OK);
     CHECK("between-accepts-exact-contact-source",resolve(&f,true,2,error,sizeof error)==WOOD_SPAN_OK);
     CHECK("between-does-not-borrow-other-source",resolve(&f,true,999,error,sizeof error)==WOOD_SPAN_BETWEEN_BLOCKED);

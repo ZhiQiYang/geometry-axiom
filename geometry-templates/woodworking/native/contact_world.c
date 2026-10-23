@@ -171,6 +171,9 @@ static bool contact_same_rc_plane(const WoodStopFace *a,const WoodStopFace *b)
         a->edge_index/GEO_LOOP_MAX_VERTICES==b->edge_index/GEO_LOOP_MAX_VERTICES;
 }
 
+bool wood_contact_boundary_end_uses_member_facts(const WoodMember *self)
+{return self&&self->role==WOOD_MEMBER_ROLE_BOUNDARY;}
+
 WoodBoundaryEndAdmission wood_contact_boundary_end_admission(
     const WoodContactWorld *world,const WoodMember *self,bool along_v,
     GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,int end,
@@ -223,6 +226,18 @@ WoodBoundaryEndAdmission wood_contact_boundary_end_admission(
            !contact_partial_covers(world,self,faces,count,at,visible_lo,visible_hi,end))return WOOD_BOUNDARY_END_BARE_RC;
     }
     return WOOD_BOUNDARY_END_PARTIAL;
+}
+
+bool wood_contact_end_support_check(WoodBoundaryEndAdmission admission,size_t hits,bool between,char *error,size_t cap)
+{
+    if(admission==WOOD_BOUNDARY_END_BARE_RC){
+        if(error&&cap)snprintf(error,cap,"V_BOUNDARY_END_RC：固定段端點有裸露的可放料 RC 面，必須先貼角材");return false;
+    }
+    if(admission==WOOD_BOUNDARY_END_PARTIAL)return true;
+    if(!hits||(!between&&hits!=1)){
+        if(error&&cap)snprintf(error,cap,"R6(d): 端面需要恰好一個涵蓋全寬的合法擋面");return false;
+    }
+    return true;
 }
 
 bool wood_contact_end_faces(const WoodContactWorld *world,const WoodMember *self,bool along_v,

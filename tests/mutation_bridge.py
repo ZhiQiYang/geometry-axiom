@@ -83,6 +83,15 @@ RESTORED += [
     ]],
 ]
 
+# #318: exact typed-fact witnesses are baseline/restored judges. They do not
+# claim a CLI construction path; that separate acceptance remains explicit.
+RESTORED += [
+    'tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles',
+    'tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces',
+    'tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure',
+    'tests.test_geo318_reading_a_native.ReadingANative.test_r6e_partial_single_full_rc_source_failure_and_collision',
+]
+
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()

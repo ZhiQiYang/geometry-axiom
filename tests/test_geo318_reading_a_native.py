@@ -19,6 +19,7 @@ CONTROLS = (
     ("real-rc-width", "contact_world", "if(hi-lo>=width&&visible_lo<visible_hi&&", "if(hi-lo>width&&visible_lo<visible_hi&&", "features", "exact-width-rc-feature-refused"),
     ("real-rc-plane", "contact_world", "if(!contact_same_rc_plane(face,other)||", "if(true||", "features", "collinear-rc-subdivision-joined"),
     ("contact-side", "contact_world", "face->edge_index!=(end==0?1:0)", "false", "features", "wrong-side-feature-not-contact"),
+    ("collector-partial", "contact_world", "if(admission==WOOD_BOUNDARY_END_PARTIAL)return true;", "if(false)return true;", "spans", "collector-partial-without-fullwidth"),
     ("span-partial", "member_reference", "if(admission==WOOD_BOUNDARY_END_PARTIAL)goto supported_end;", "if(false)goto supported_end;", "spans", "span-accepts-partial-end"),
     ("between-required-source", "member_reference", "s,e,face->fixed==s?0:1,face,&admission)", "s,e,face->fixed==s?0:1,NULL,&admission)", "spans", "between-required-face-must-itself-contact"),
     ("revalidate-partial", "world_validation", "if(admission==WOOD_BOUNDARY_END_PARTIAL)continue;", "if(false)continue;", "revalidation", "r6e-accepts-partial-without-fullwidth-recheck"),
@@ -60,7 +61,7 @@ class ReadingANative(unittest.TestCase):
     def test_r6e_partial_single_full_rc_source_failure_and_collision(self):
         self.assertEqual(0,self.case("revalidation").returncode)
 
-    def test_eight_actual_source_controls_fail_named_assertions_then_restore(self):
+    def test_nine_actual_source_controls_fail_named_assertions_then_restore(self):
         b=native()
         for name,module,before,after,case,assertion in CONTROLS:
             with self.subTest(control=name):

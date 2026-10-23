@@ -1,3 +1,15 @@
+# 當前進度（來源實作中，尚未動態驗收）
+
+- 真來源第二階段已一般推送 `0df78e9f12fad311279c2a458a1cfecf1583b1c2`；前棒 combined `15a735951a36b6fe52e0291152f335139e6921ad` 已於 `ce4a8ad89e8ae3ce69043e9bd91ce4dad519710d` 普通 merge。
+- 本階段補對抗審找到的 `reference_check_all` 舊全寬入口，將 H 報錯的端點合法性委派 W，共同判官保 PARTIAL／BARE_RC／原完整端面規則。
+- selftest 已分開當前閱讀 A 正例與歷史 matcher/fallback 負控；原 STEP20 10 支副支與兩條縫常數不改；I22 的 FZ120 延伸段與 no_ext_end_flag 斷言保留。
+- 528／1056 舊 I19-only rejection 移除，同時用原基底凍結身份檔逐筆要求「真的掃到且 buildable」；quick/full 禁止依本輪房間過濾。其餘 expected 類別值完全相同，靜態核 0。
+- 新 M140–M148 只登記來源與具名正常斷言，全部 `unrun`，未產完整帳本；native 9 個撤回控制與 oracle builder/checker 0/1/0 driver 已備，未執行。
+- AST／JSON／單一錨點／diff 檢查原 0；這些不代表任何幾何或測試通過。golden 當前非空見證待小型觀察；canonical 尚未同步；所有動態仍受 #288 P88 獨占槽排程限制。
+- `QUESTIONS.md` 明列 CLI 已放次序風險，沒有把型別測例冒稱真正建構成功。下一步完成 golden／reader／正式槽與第二階段對抗審，還不是給末棒的 complete source baton。
+
+---
+
 # #318 閱讀 A：目前進度
 
 目前已實作第一批專有來源：核可 SSOT 四處差異、oracle 建構／C8 獨立三態政策、固定 528／1056 正向 coverage 資料與 12 個專有測試方法。只做 AST／JSON 與 hash 靜態檢查 exit0；沒有執行測試或正式掃描。詳細範圍與未完成項見 `SOURCE_PHASE_ONE.md`。

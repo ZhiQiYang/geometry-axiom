@@ -33,9 +33,13 @@ typedef enum {
  * explicit refusal and must never fall back to complete-face admission.
  * An optional required_contact points into faces: a between selector may
  * claim partial support only if that named returned face itself contacts. */
+bool wood_contact_boundary_end_uses_member_facts(const WoodMember *);
 WoodBoundaryEndAdmission wood_contact_boundary_end_admission(
     const WoodContactWorld *,const WoodMember *,bool,
     GeoCoord,GeoCoord,GeoCoord,GeoCoord,int,const WoodStopFace *,size_t,const WoodStopFace *);
+/* Common R6(d/e) decision for a collector that must retain independent
+ * failures. H can report the result without duplicating W admission policy. */
+bool wood_contact_end_support_check(WoodBoundaryEndAdmission,size_t,bool,char *,size_t);
 size_t wood_contact_collect_stops(const WoodContactWorld *,bool,const WoodMember *,WoodStopFace *,size_t);
 /* Positioning edge of a footprint (D16/R18): pure geometry. The interval on the length axis comes from the
  * footprint alone and never from how the member was placed (at-face, at or through give the same fixed
