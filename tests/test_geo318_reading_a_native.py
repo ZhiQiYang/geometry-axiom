@@ -79,7 +79,7 @@ class ReadingANative(unittest.TestCase):
         directory=b.work/("geo318-host-withdrawn" if withdrawn else "geo318-host-baseline")
         destinations={(ROOT/name).resolve():directory/name for name in paths}
         manifest={"scope":"Derived H source variant, not a byte-identical F build", "withdrawn":withdrawn,
-                  "normalization":"read_text/write_text normalizes CRLF to LF before C compilation", "files":[]}
+                  "normalization":"decode UTF-8, normalize CRLF to LF, then write_bytes before C compilation", "files":[]}
         for name in paths:
             original=ROOT/name
             original_raw=original.read_bytes()
@@ -139,6 +139,8 @@ class ReadingANative(unittest.TestCase):
                          {path:row["source_raw_sha256"] for path,row in after.items()})
         self.assertEqual({"geometry-core/references.inc"},
                          {path for path in before if before[path]["semantic_variant_sha256"]!=after[path]["semantic_variant_sha256"]})
+        self.assertEqual({"geometry-core/references.inc"},
+                         {path for path in before if before[path]["relocated_directory_normalized_sha256"]!=after[path]["relocated_directory_normalized_sha256"]})
         self.assertEqual(0,self.case("host-collector",self.host_executable(),phase="restored",control="host-collector").returncode)
 
     def test_nine_actual_source_controls_fail_named_assertions_then_restore(self):
