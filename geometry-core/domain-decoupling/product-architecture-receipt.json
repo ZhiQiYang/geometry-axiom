@@ -20,16 +20,16 @@
     "Windows supplemental probes",
     "未來來源"
   ],
-  "createdUtc": "2026-10-23T05:18:52.600017+00:00",
-  "basis": "乾淨固定HEAD、獨立完整inventory、原三preflight與只更新六digest的外部完整驗證樹三原裁判。",
-  "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
-  "headObservedBefore": "f79aa057521929597a9af4b204b709110414ac03",
-  "headObservedAfter": "f79aa057521929597a9af4b204b709110414ac03",
-  "manifestSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b",
+  "createdUtc": "2026-10-23T11:07:07.595175+00:00",
+  "basis": "乾淨固定HEAD、獨立完整inventory、原三preflight與只更新一digest的外部完整驗證樹三原裁判。",
+  "sourceBaseHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+  "headObservedBefore": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+  "headObservedAfter": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+  "manifestSha256": "fdad64939d46710ec8fde2def91970446b7f8fb7a1753845bb054cd6afdec595",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
-  "reportSha256": "a18fa286ec77d58a226c444629a5c47a9bdb42f8bdad51f8c57c301c220e0843",
-  "inputClosureSha256": "f2a91b9b3962b2302600a5d21313f5655cc94ad081770d2a208c05d6cb4337e4",
+  "reportSha256": "1952056c8d15ee3a3399f042433aa9c2e11e5d333a22401ce4119ac226834996",
+  "inputClosureSha256": "856c3b984182066af9feefca934a066dec4d1c127fee7f1a662fd9f3c154f853",
   "counts": {
     "executableFiles": 601,
     "ownedSources": 333,
@@ -52,271 +52,126 @@
     "forbiddenStrings": 55
   },
   "manifestRefresh": {
-    "previousManifestSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
-    "previousReceiptSha256": "a56b91051dcea0744fc32577ba54b20d7bb12f813fc99de1bc22a7c6779125cb",
+    "previousManifestSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b",
+    "previousReceiptSha256": "eb2d59ed72af421471162565b18847aef8d37863ccd7c93798ac58da76a13f04",
     "previousScanSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
-    "previousReportSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878",
-    "previousReceiptCreatedUtc": "2026-10-22T19:48:44.306176+00:00",
-    "previousSourceBaseHead": "55b9fb6479485361d9e2283a95e4355f5fca76db",
-    "previousReceiptCommit": "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
-    "firstObservedHead": "f79aa057521929597a9af4b204b709110414ac03",
+    "previousReportSha256": "a18fa286ec77d58a226c444629a5c47a9bdb42f8bdad51f8c57c301c220e0843",
+    "previousReceiptCreatedUtc": "2026-10-23T05:18:52.600017+00:00",
+    "previousSourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+    "previousReceiptCommit": "13d02c1db7022145a52ee063286a558e595eb212",
+    "firstObservedHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
     "previousOutputsPreserved": {
-      "directory": "/tmp/g288ax/refresh/previous",
+      "directory": "/tmp/g288p88arch-one-4b588fb6/refresh/previous",
       "hashes": {
         "product-architecture.json": {
-          "path": "/tmp/g288ax/refresh/previous/product-architecture.json",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/previous/product-architecture.json",
           "bytes": 220000,
-          "rawSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
-          "lfSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6"
+          "rawSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b",
+          "lfSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b"
         },
         "product-architecture-scan.json": {
-          "path": "/tmp/g288ax/refresh/previous/product-architecture-scan.json",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/previous/product-architecture-scan.json",
           "bytes": 132209,
           "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
           "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "path": "/tmp/g288ax/refresh/previous/PRODUCT-ARCHITECTURE.md",
-          "bytes": 35607,
-          "rawSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878",
-          "lfSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878"
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/previous/PRODUCT-ARCHITECTURE.md",
+          "bytes": 37368,
+          "rawSha256": "a18fa286ec77d58a226c444629a5c47a9bdb42f8bdad51f8c57c301c220e0843",
+          "lfSha256": "a18fa286ec77d58a226c444629a5c47a9bdb42f8bdad51f8c57c301c220e0843"
         },
         "product-architecture-receipt.json": {
-          "path": "/tmp/g288ax/refresh/previous/product-architecture-receipt.json",
-          "bytes": 120581,
-          "rawSha256": "a56b91051dcea0744fc32577ba54b20d7bb12f813fc99de1bc22a7c6779125cb",
-          "lfSha256": "a56b91051dcea0744fc32577ba54b20d7bb12f813fc99de1bc22a7c6779125cb"
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/previous/product-architecture-receipt.json",
+          "bytes": 171059,
+          "rawSha256": "eb2d59ed72af421471162565b18847aef8d37863ccd7c93798ac58da76a13f04",
+          "lfSha256": "eb2d59ed72af421471162565b18847aef8d37863ccd7c93798ac58da76a13f04"
         }
       }
     },
     "lastSealedOutputsReadFromGit": {
-      "commit": "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
-      "directory": "/tmp/g288ax/refresh/previous-from-git",
+      "commit": "13d02c1db7022145a52ee063286a558e595eb212",
+      "directory": "/tmp/g288p88arch-one-4b588fb6/refresh/previous-from-git",
       "hashes": {
         "product-architecture.json": {
-          "path": "/tmp/g288ax/refresh/previous-from-git/product-architecture.json",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/previous-from-git/product-architecture.json",
           "bytes": 220000,
-          "rawSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
-          "lfSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6"
+          "rawSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b",
+          "lfSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b"
         },
         "product-architecture-scan.json": {
-          "path": "/tmp/g288ax/refresh/previous-from-git/product-architecture-scan.json",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/previous-from-git/product-architecture-scan.json",
           "bytes": 132209,
           "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
           "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "path": "/tmp/g288ax/refresh/previous-from-git/PRODUCT-ARCHITECTURE.md",
-          "bytes": 35607,
-          "rawSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878",
-          "lfSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878"
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/previous-from-git/PRODUCT-ARCHITECTURE.md",
+          "bytes": 37368,
+          "rawSha256": "a18fa286ec77d58a226c444629a5c47a9bdb42f8bdad51f8c57c301c220e0843",
+          "lfSha256": "a18fa286ec77d58a226c444629a5c47a9bdb42f8bdad51f8c57c301c220e0843"
         },
         "product-architecture-receipt.json": {
-          "path": "/tmp/g288ax/refresh/previous-from-git/product-architecture-receipt.json",
-          "bytes": 120581,
-          "rawSha256": "a56b91051dcea0744fc32577ba54b20d7bb12f813fc99de1bc22a7c6779125cb",
-          "lfSha256": "a56b91051dcea0744fc32577ba54b20d7bb12f813fc99de1bc22a7c6779125cb"
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/previous-from-git/product-architecture-receipt.json",
+          "bytes": 171059,
+          "rawSha256": "eb2d59ed72af421471162565b18847aef8d37863ccd7c93798ac58da76a13f04",
+          "lfSha256": "eb2d59ed72af421471162565b18847aef8d37863ccd7c93798ac58da76a13f04"
         }
       },
       "note": "先驗目前舊四檔等原sealed receipt，再逐一從上份產物Git commit取blob比LF hash；本次HEAD四檔blob也比同，不以新manifest偷換舊guard。"
     },
-    "headManifestSha256Before": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
+    "headManifestSha256Before": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b",
     "addedSources": [],
     "addedExclusions": [],
     "updatedExclusions": [
       {
-        "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-        "previousSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
-        "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
+        "path": "geometry-web/grid_rule_lines_test.js",
+        "previousSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+        "sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
         "hashMode": "lf",
-        "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point.",
-        "rawSha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
-        "gitBlobOid": "551e138e9810c7e6c63adfcf10724c1d914fccf6"
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-        "previousSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
-        "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
-        "hashMode": "lf",
-        "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
-        "rawSha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
-        "gitBlobOid": "bf62e7245c3987553d934a21e9f59857c0aadcfe"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-        "previousSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
-        "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
-        "hashMode": "lf",
-        "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point.",
-        "rawSha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
-        "gitBlobOid": "47b33182e9ed5a80ddd559dde94a7d8f976aebe9"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/make_golden.py",
-        "previousSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
-        "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
-        "hashMode": "lf",
-        "reason": "Framing-template oracle golden generator make_golden.py: regenerates oracle-golden.json from framing_oracle (frozen reference output, regenerated by hand only after review); imports framing_oracle and the standard library; reference tooling, not a product-loaded module or current product entry point.",
-        "rawSha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
-        "gitBlobOid": "6a4364ce72f68abf779f6ef1d0a57ec4200e76f0"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/render.py",
-        "previousSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
-        "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
-        "hashMode": "lf",
-        "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point.",
-        "rawSha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
-        "gitBlobOid": "bb4a11573a21b7ae09f5e5de88fbd2696cc222fb"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/selftest.py",
-        "previousSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
-        "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
-        "hashMode": "lf",
-        "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
-        "rawSha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
-        "gitBlobOid": "1a77e8837afc736372ad5e539d2a6e2134303325"
+        "reason": "Dedicated acceptance/test driver grid_rule_lines_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+        "rawSha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+        "gitBlobOid": "e92f5b57f0ef50710136a05e6225f9331a5d97a8"
       }
     ],
     "newInputs": [],
     "changedPreviouslySealedInputs": [
       {
-        "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-        "previousSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
-        "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930"
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-        "previousSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
-        "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-        "previousSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
-        "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/make_golden.py",
-        "previousSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
-        "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/render.py",
-        "previousSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
-        "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/selftest.py",
-        "previousSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
-        "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f"
+        "path": "geometry-web/grid_rule_lines_test.js",
+        "previousSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+        "sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52"
       }
     ],
     "allowedChangedInputs": [
-      "geometry-core/framing-template/core-probe/gen_scenes.py",
-      "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-      "geometry-core/framing-template/oracle/framing_oracle.py",
-      "geometry-core/framing-template/oracle/make_golden.py",
-      "geometry-core/framing-template/oracle/render.py",
-      "geometry-core/framing-template/oracle/selftest.py"
+      "geometry-web/grid_rule_lines_test.js"
     ],
     "staleExcludedVendorOrEmbedDigestsBefore": [
       {
-        "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-        "previousSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
-        "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930"
-      },
-      {
-        "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-        "previousSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
-        "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-        "previousSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
-        "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/make_golden.py",
-        "previousSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
-        "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/render.py",
-        "previousSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
-        "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe"
-      },
-      {
-        "path": "geometry-core/framing-template/oracle/selftest.py",
-        "previousSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
-        "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f"
+        "path": "geometry-web/grid_rule_lines_test.js",
+        "previousSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+        "sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52"
       }
     ],
     "staleExcludedVendorOrEmbedDigestsAfter": [],
     "digestEvidence": {
       "updatedExclusions": [
         {
-          "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-          "previousSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
-          "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
+          "path": "geometry-web/grid_rule_lines_test.js",
+          "previousSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+          "sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
           "hashMode": "lf",
-          "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point.",
-          "rawSha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
-          "gitBlobOid": "551e138e9810c7e6c63adfcf10724c1d914fccf6"
-        },
-        {
-          "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-          "previousSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
-          "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
-          "hashMode": "lf",
-          "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
-          "rawSha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
-          "gitBlobOid": "bf62e7245c3987553d934a21e9f59857c0aadcfe"
-        },
-        {
-          "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-          "previousSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
-          "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
-          "hashMode": "lf",
-          "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point.",
-          "rawSha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
-          "gitBlobOid": "47b33182e9ed5a80ddd559dde94a7d8f976aebe9"
-        },
-        {
-          "path": "geometry-core/framing-template/oracle/make_golden.py",
-          "previousSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
-          "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
-          "hashMode": "lf",
-          "reason": "Framing-template oracle golden generator make_golden.py: regenerates oracle-golden.json from framing_oracle (frozen reference output, regenerated by hand only after review); imports framing_oracle and the standard library; reference tooling, not a product-loaded module or current product entry point.",
-          "rawSha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
-          "gitBlobOid": "6a4364ce72f68abf779f6ef1d0a57ec4200e76f0"
-        },
-        {
-          "path": "geometry-core/framing-template/oracle/render.py",
-          "previousSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
-          "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
-          "hashMode": "lf",
-          "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point.",
-          "rawSha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
-          "gitBlobOid": "bb4a11573a21b7ae09f5e5de88fbd2696cc222fb"
-        },
-        {
-          "path": "geometry-core/framing-template/oracle/selftest.py",
-          "previousSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
-          "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
-          "hashMode": "lf",
-          "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
-          "rawSha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
-          "gitBlobOid": "1a77e8837afc736372ad5e539d2a6e2134303325"
+          "reason": "Dedicated acceptance/test driver grid_rule_lines_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+          "rawSha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+          "gitBlobOid": "e92f5b57f0ef50710136a05e6225f9331a5d97a8"
         }
       ],
       "addedSources": [],
       "addedExclusions": [],
       "allOtherManifestFieldsEqual": true,
       "allPolicyFieldsEqual": true,
-      "byteChangeMethod": "replace exactly six unique existing digest strings; preserve all other manifest bytes",
-      "beforeManifestSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
-      "afterManifestSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b"
+      "byteChangeMethod": "replace exactly one unique existing digest strings; preserve all other manifest bytes",
+      "beforeManifestSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b",
+      "afterManifestSha256": "fdad64939d46710ec8fde2def91970446b7f8fb7a1753845bb054cd6afdec595"
     },
     "policyDelta": {
       "addedIdentifiers": [],
@@ -330,7 +185,7 @@
       "allOtherManifestFieldsEqual": true,
       "allPolicyFieldsEqual": true,
       "manifestByteUnchanged": false,
-      "onlySixExistingExclusionSha256Changed": true
+      "onlyOneExistingExclusionSha256Changed": true
     },
     "originalManifestPreflight": [
       {
@@ -354,12 +209,12 @@
           "geometry-core/domain-decoupling/product-architecture.json"
         ],
         "cwd": "/workspace/geometry-axiom",
-        "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+        "sourceBaseHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
         "exitCode": 1,
         "complete": true,
-        "startedEpoch": 1792732713.482925,
-        "endedEpoch": 1792732713.7192173,
-        "seconds": 0.23629236221313477,
+        "startedEpoch": 1792753605.8928015,
+        "endedEpoch": 1792753606.098413,
+        "seconds": 0.2056114673614502,
         "environment": {
           "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
@@ -367,7 +222,7 @@
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
           "PYTHONOPTIMIZE": null,
-          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
           "CC": null,
           "CFLAGS": null,
           "CPPFLAGS": null,
@@ -380,19 +235,19 @@
           "COMPILER_PATH": null
         },
         "stdout": {
-          "path": "/tmp/g288ax/refresh/subcommands/000018/stdout.bin",
-          "bytes": 348,
-          "rawSha256": "58f39aaf326588d85d87bfeb4fa824a68505bc8771d49e607616f0129de9a955",
-          "lfSha256": "58f39aaf326588d85d87bfeb4fa824a68505bc8771d49e607616f0129de9a955"
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000018/stdout.bin",
+          "bytes": 329,
+          "rawSha256": "a4f6f5a06017d4d59fb7b0d2b2ef0943e3ffe041ceef9e4957ee17e86c5c716f",
+          "lfSha256": "a4f6f5a06017d4d59fb7b0d2b2ef0943e3ffe041ceef9e4957ee17e86c5c716f"
         },
         "stderr": {
-          "path": "/tmp/g288ax/refresh/subcommands/000018/stderr.bin",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000018/stderr.bin",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         },
-        "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000018/stdout.bin",
-        "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000018/stderr.bin",
+        "stdoutRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000018/stdout.bin",
+        "stderrRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000018/stderr.bin",
         "originalCommandResult": {
           "command": [
             "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
@@ -404,8 +259,8 @@
             "geometry-core/domain-decoupling/product-architecture.json"
           ],
           "cwd": "/workspace/geometry-axiom",
-          "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
-          "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "acceptance_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+          "source_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
           "source_variant": "fixed-source-original-architecture-command",
           "environment": {
             "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -414,7 +269,7 @@
             "PYTHONIOENCODING": "utf-8",
             "PYTHONDONTWRITEBYTECODE": "1",
             "PYTHONOPTIMIZE": null,
-            "TMPDIR": "/tmp/g288ax/refresh/tmp",
+            "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
             "CC": null,
             "CFLAGS": null,
             "CPPFLAGS": null,
@@ -426,16 +281,16 @@
             "GCC_EXEC_PREFIX": null,
             "COMPILER_PATH": null
           },
-          "started_epoch": 1792732713.482925,
+          "started_epoch": 1792753605.8928015,
           "stdin_provided": false,
           "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "actual_process_returncode": 1,
           "timeout_expired": false,
-          "directory": "/tmp/g288ax/refresh/subcommands/000018",
-          "ended_epoch": 1792732713.7192173,
-          "stdout_sha256": "58f39aaf326588d85d87bfeb4fa824a68505bc8771d49e607616f0129de9a955",
+          "directory": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000018",
+          "ended_epoch": 1792753606.098413,
+          "stdout_sha256": "a4f6f5a06017d4d59fb7b0d2b2ef0943e3ffe041ceef9e4957ee17e86c5c716f",
           "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "stdout_bytes": 348,
+          "stdout_bytes": 329,
           "stderr_bytes": 0,
           "label": "original-scan"
         }
@@ -453,12 +308,12 @@
           "tests/test_architecture_contract.py"
         ],
         "cwd": "/workspace/geometry-axiom",
-        "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+        "sourceBaseHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
         "exitCode": 0,
         "complete": true,
-        "startedEpoch": 1792732713.9021468,
-        "endedEpoch": 1792732714.3963902,
-        "seconds": 0.4942433834075928,
+        "startedEpoch": 1792753606.285365,
+        "endedEpoch": 1792753606.8479867,
+        "seconds": 0.5626215934753418,
         "environment": {
           "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
@@ -466,7 +321,7 @@
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
           "PYTHONOPTIMIZE": null,
-          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
           "CC": null,
           "CFLAGS": null,
           "CPPFLAGS": null,
@@ -479,19 +334,19 @@
           "COMPILER_PATH": null
         },
         "stdout": {
-          "path": "/tmp/g288ax/refresh/subcommands/000021/stdout.bin",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000021/stdout.bin",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         },
         "stderr": {
-          "path": "/tmp/g288ax/refresh/subcommands/000021/stderr.bin",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000021/stderr.bin",
           "bytes": 29577,
-          "rawSha256": "6721fcf9b1421c04f51dbc7e5b37d1c88badcee137ba44496d2b8d7f78d610cc",
-          "lfSha256": "6721fcf9b1421c04f51dbc7e5b37d1c88badcee137ba44496d2b8d7f78d610cc"
+          "rawSha256": "725ad1035ae0dff49dfb3290b34ebad5b8c1e552eab529536fb0b5ea1c276be7",
+          "lfSha256": "725ad1035ae0dff49dfb3290b34ebad5b8c1e552eab529536fb0b5ea1c276be7"
         },
-        "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000021/stdout.bin",
-        "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000021/stderr.bin",
+        "stdoutRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000021/stdout.bin",
+        "stderrRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000021/stderr.bin",
         "originalCommandResult": {
           "command": [
             "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
@@ -499,8 +354,8 @@
             "tests/test_architecture_contract.py"
           ],
           "cwd": "/workspace/geometry-axiom",
-          "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
-          "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "acceptance_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+          "source_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
           "source_variant": "fixed-source-original-architecture-command",
           "environment": {
             "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -509,7 +364,7 @@
             "PYTHONIOENCODING": "utf-8",
             "PYTHONDONTWRITEBYTECODE": "1",
             "PYTHONOPTIMIZE": null,
-            "TMPDIR": "/tmp/g288ax/refresh/tmp",
+            "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
             "CC": null,
             "CFLAGS": null,
             "CPPFLAGS": null,
@@ -521,15 +376,15 @@
             "GCC_EXEC_PREFIX": null,
             "COMPILER_PATH": null
           },
-          "started_epoch": 1792732713.9021468,
+          "started_epoch": 1792753606.285365,
           "stdin_provided": false,
           "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "actual_process_returncode": 0,
           "timeout_expired": false,
-          "directory": "/tmp/g288ax/refresh/subcommands/000021",
-          "ended_epoch": 1792732714.3963902,
+          "directory": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000021",
+          "ended_epoch": 1792753606.8479867,
           "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "stderr_sha256": "6721fcf9b1421c04f51dbc7e5b37d1c88badcee137ba44496d2b8d7f78d610cc",
+          "stderr_sha256": "725ad1035ae0dff49dfb3290b34ebad5b8c1e552eab529536fb0b5ea1c276be7",
           "stdout_bytes": 0,
           "stderr_bytes": 29577,
           "label": "original-generic-tests"
@@ -548,12 +403,12 @@
           "tests/test_product_architecture.py"
         ],
         "cwd": "/workspace/geometry-axiom",
-        "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+        "sourceBaseHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
         "exitCode": 5,
         "complete": true,
-        "startedEpoch": 1792732714.5839262,
-        "endedEpoch": 1792732714.8238122,
-        "seconds": 0.23988604545593262,
+        "startedEpoch": 1792753607.0647776,
+        "endedEpoch": 1792753607.3286061,
+        "seconds": 0.2638285160064697,
         "environment": {
           "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
@@ -561,7 +416,7 @@
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
           "PYTHONOPTIMIZE": null,
-          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
           "CC": null,
           "CFLAGS": null,
           "CPPFLAGS": null,
@@ -574,19 +429,19 @@
           "COMPILER_PATH": null
         },
         "stdout": {
-          "path": "/tmp/g288ax/refresh/subcommands/000024/stdout.bin",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000024/stdout.bin",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         },
         "stderr": {
-          "path": "/tmp/g288ax/refresh/subcommands/000024/stderr.bin",
-          "bytes": 1344,
-          "rawSha256": "df68012c7aeed0f3b3c578744e48f7e3f4850de9aa961943748e6fdad2c4ae93",
-          "lfSha256": "df68012c7aeed0f3b3c578744e48f7e3f4850de9aa961943748e6fdad2c4ae93"
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000024/stderr.bin",
+          "bytes": 1325,
+          "rawSha256": "8b70d1477f059d2f9b296bcf51c0e0a0bf6da96ff3cca55c0ae81d5941c2fd18",
+          "lfSha256": "8b70d1477f059d2f9b296bcf51c0e0a0bf6da96ff3cca55c0ae81d5941c2fd18"
         },
-        "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000024/stdout.bin",
-        "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000024/stderr.bin",
+        "stdoutRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000024/stdout.bin",
+        "stderrRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000024/stderr.bin",
         "originalCommandResult": {
           "command": [
             "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
@@ -594,8 +449,8 @@
             "tests/test_product_architecture.py"
           ],
           "cwd": "/workspace/geometry-axiom",
-          "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
-          "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "acceptance_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+          "source_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
           "source_variant": "fixed-source-original-architecture-command",
           "environment": {
             "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -604,7 +459,7 @@
             "PYTHONIOENCODING": "utf-8",
             "PYTHONDONTWRITEBYTECODE": "1",
             "PYTHONOPTIMIZE": null,
-            "TMPDIR": "/tmp/g288ax/refresh/tmp",
+            "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
             "CC": null,
             "CFLAGS": null,
             "CPPFLAGS": null,
@@ -616,25 +471,25 @@
             "GCC_EXEC_PREFIX": null,
             "COMPILER_PATH": null
           },
-          "started_epoch": 1792732714.5839262,
+          "started_epoch": 1792753607.0647776,
           "stdin_provided": false,
           "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "actual_process_returncode": 5,
           "timeout_expired": false,
-          "directory": "/tmp/g288ax/refresh/subcommands/000024",
-          "ended_epoch": 1792732714.8238122,
+          "directory": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000024",
+          "ended_epoch": 1792753607.3286061,
           "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "stderr_sha256": "df68012c7aeed0f3b3c578744e48f7e3f4850de9aa961943748e6fdad2c4ae93",
+          "stderr_sha256": "8b70d1477f059d2f9b296bcf51c0e0a0bf6da96ff3cca55c0ae81d5941c2fd18",
           "stdout_bytes": 0,
-          "stderr_bytes": 1344,
+          "stderr_bytes": 1325,
           "label": "original-product-tests"
         }
       }
     ],
     "validationTree": {
-      "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+      "sourceBaseHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
       "sourceRepository": "/workspace/geometry-axiom",
-      "validationCwd": "/tmp/g288ax/refresh/validation-tree",
+      "validationCwd": "/tmp/g288p88arch-one-4b588fb6/refresh/validation-tree",
       "hasIndependentGitCheckout": false,
       "productInputCount": 601,
       "productInputsByteIdenticalToFrozenCheckout": true,
@@ -643,71 +498,26 @@
       "derivedManifestOnlyDelta": {
         "updatedExclusions": [
           {
-            "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-            "previousSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
-            "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
+            "path": "geometry-web/grid_rule_lines_test.js",
+            "previousSha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+            "sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
             "hashMode": "lf",
-            "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point.",
-            "rawSha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
-            "gitBlobOid": "551e138e9810c7e6c63adfcf10724c1d914fccf6"
-          },
-          {
-            "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-            "previousSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
-            "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
-            "hashMode": "lf",
-            "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
-            "rawSha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
-            "gitBlobOid": "bf62e7245c3987553d934a21e9f59857c0aadcfe"
-          },
-          {
-            "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-            "previousSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
-            "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
-            "hashMode": "lf",
-            "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point.",
-            "rawSha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
-            "gitBlobOid": "47b33182e9ed5a80ddd559dde94a7d8f976aebe9"
-          },
-          {
-            "path": "geometry-core/framing-template/oracle/make_golden.py",
-            "previousSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
-            "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
-            "hashMode": "lf",
-            "reason": "Framing-template oracle golden generator make_golden.py: regenerates oracle-golden.json from framing_oracle (frozen reference output, regenerated by hand only after review); imports framing_oracle and the standard library; reference tooling, not a product-loaded module or current product entry point.",
-            "rawSha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
-            "gitBlobOid": "6a4364ce72f68abf779f6ef1d0a57ec4200e76f0"
-          },
-          {
-            "path": "geometry-core/framing-template/oracle/render.py",
-            "previousSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
-            "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
-            "hashMode": "lf",
-            "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point.",
-            "rawSha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
-            "gitBlobOid": "bb4a11573a21b7ae09f5e5de88fbd2696cc222fb"
-          },
-          {
-            "path": "geometry-core/framing-template/oracle/selftest.py",
-            "previousSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
-            "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
-            "hashMode": "lf",
-            "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
-            "rawSha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
-            "gitBlobOid": "1a77e8837afc736372ad5e539d2a6e2134303325"
+            "reason": "Dedicated acceptance/test driver grid_rule_lines_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+            "rawSha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+            "gitBlobOid": "e92f5b57f0ef50710136a05e6225f9331a5d97a8"
           }
         ],
         "addedSources": [],
         "addedExclusions": [],
         "allOtherManifestFieldsEqual": true,
         "allPolicyFieldsEqual": true,
-        "byteChangeMethod": "replace exactly six unique existing digest strings; preserve all other manifest bytes",
-        "beforeManifestSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
-        "afterManifestSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b"
+        "byteChangeMethod": "replace exactly one unique existing digest strings; preserve all other manifest bytes",
+        "beforeManifestSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b",
+        "afterManifestSha256": "fdad64939d46710ec8fde2def91970446b7f8fb7a1753845bb054cd6afdec595"
       },
-      "note": "新三裁判cwd是外部完整驗證樹；不冒稱該樹有獨立Git SHA。固定來源checkout前後不變，只有衍生manifest六hash不同。"
+      "note": "新三裁判cwd是外部完整驗證樹；不冒稱該樹有獨立Git SHA。固定來源checkout前後不變，只有衍生manifest一hash不同。"
     },
-    "classificationNote": "只更新六個既有LF exclusion digest；source/layer/reason/policy/root/route/vendor/W guard皆不改。",
+    "classificationNote": "只更新一個既有LF exclusion digest；source/layer/reason/policy/root/route/vendor/W guard皆不改。",
     "toolChanges": []
   },
   "scanPassed": true,
@@ -723,13 +533,13 @@
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
     "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
-    "cwd": "/tmp/g288ax/refresh/validation-tree",
-    "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+    "cwd": "/tmp/g288p88arch-one-4b588fb6/refresh/validation-tree",
+    "sourceBaseHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
     "exitCode": 0,
     "complete": true,
-    "startedEpoch": 1792732715.3061802,
-    "endedEpoch": 1792732720.1365583,
-    "seconds": 4.83037805557251,
+    "startedEpoch": 1792753607.915641,
+    "endedEpoch": 1792753613.0888536,
+    "seconds": 5.17321252822876,
     "environment": {
       "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
       "LANG": "C.UTF-8",
@@ -737,7 +547,7 @@
       "PYTHONIOENCODING": "utf-8",
       "PYTHONDONTWRITEBYTECODE": "1",
       "PYTHONOPTIMIZE": null,
-      "TMPDIR": "/tmp/g288ax/refresh/tmp",
+      "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
       "CC": null,
       "CFLAGS": null,
       "CPPFLAGS": null,
@@ -750,19 +560,19 @@
       "COMPILER_PATH": null
     },
     "stdout": {
-      "path": "/tmp/g288ax/refresh/subcommands/000029/stdout.bin",
+      "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000029/stdout.bin",
       "bytes": 132209,
       "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
       "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
     },
     "stderr": {
-      "path": "/tmp/g288ax/refresh/subcommands/000029/stderr.bin",
+      "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000029/stderr.bin",
       "bytes": 0,
       "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
-    "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000029/stdout.bin",
-    "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000029/stderr.bin",
+    "stdoutRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000029/stdout.bin",
+    "stderrRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000029/stderr.bin",
     "originalCommandResult": {
       "command": [
         "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
@@ -773,9 +583,9 @@
         "--manifest",
         "geometry-core/domain-decoupling/product-architecture.json"
       ],
-      "cwd": "/tmp/g288ax/refresh/validation-tree",
-      "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
-      "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+      "cwd": "/tmp/g288p88arch-one-4b588fb6/refresh/validation-tree",
+      "acceptance_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+      "source_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
       "source_variant": "fixed-source-original-architecture-command",
       "environment": {
         "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -784,7 +594,7 @@
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/tmp/g288ax/refresh/tmp",
+        "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
         "CC": null,
         "CFLAGS": null,
         "CPPFLAGS": null,
@@ -796,13 +606,13 @@
         "GCC_EXEC_PREFIX": null,
         "COMPILER_PATH": null
       },
-      "started_epoch": 1792732715.3061802,
+      "started_epoch": 1792753607.915641,
       "stdin_provided": false,
       "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "actual_process_returncode": 0,
       "timeout_expired": false,
-      "directory": "/tmp/g288ax/refresh/subcommands/000029",
-      "ended_epoch": 1792732720.1365583,
+      "directory": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000029",
+      "ended_epoch": 1792753613.0888536,
       "stdout_sha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
       "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "stdout_bytes": 132209,
@@ -819,13 +629,13 @@
         "tests/test_architecture_contract.py"
       ],
       "command": "python -B tests/test_architecture_contract.py",
-      "cwd": "/tmp/g288ax/refresh/validation-tree",
-      "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+      "cwd": "/tmp/g288p88arch-one-4b588fb6/refresh/validation-tree",
+      "sourceBaseHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
       "exitCode": 0,
       "complete": true,
-      "startedEpoch": 1792732720.413098,
-      "endedEpoch": 1792732720.9171166,
-      "seconds": 0.5040185451507568,
+      "startedEpoch": 1792753613.3584197,
+      "endedEpoch": 1792753613.876807,
+      "seconds": 0.5183873176574707,
       "environment": {
         "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
@@ -833,7 +643,7 @@
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/tmp/g288ax/refresh/tmp",
+        "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
         "CC": null,
         "CFLAGS": null,
         "CPPFLAGS": null,
@@ -846,28 +656,28 @@
         "COMPILER_PATH": null
       },
       "stdout": {
-        "path": "/tmp/g288ax/refresh/subcommands/000032/stdout.bin",
+        "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000032/stdout.bin",
         "bytes": 0,
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "/tmp/g288ax/refresh/subcommands/000032/stderr.bin",
+        "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000032/stderr.bin",
         "bytes": 29577,
-        "rawSha256": "a44a7df63599466a3b31e53e4747970253936aac31d141f973084c68736d97cf",
-        "lfSha256": "a44a7df63599466a3b31e53e4747970253936aac31d141f973084c68736d97cf"
+        "rawSha256": "9dd5cfa7fae2878c4e9c38ee982e5d8316e19b6b4f49803ee4ce3e45fc245a8b",
+        "lfSha256": "9dd5cfa7fae2878c4e9c38ee982e5d8316e19b6b4f49803ee4ce3e45fc245a8b"
       },
-      "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000032/stdout.bin",
-      "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000032/stderr.bin",
+      "stdoutRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000032/stdout.bin",
+      "stderrRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000032/stderr.bin",
       "originalCommandResult": {
         "command": [
           "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
           "-B",
           "tests/test_architecture_contract.py"
         ],
-        "cwd": "/tmp/g288ax/refresh/validation-tree",
-        "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
-        "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+        "cwd": "/tmp/g288p88arch-one-4b588fb6/refresh/validation-tree",
+        "acceptance_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+        "source_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
         "source_variant": "fixed-source-original-architecture-command",
         "environment": {
           "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -876,7 +686,7 @@
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
           "PYTHONOPTIMIZE": null,
-          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
           "CC": null,
           "CFLAGS": null,
           "CPPFLAGS": null,
@@ -888,15 +698,15 @@
           "GCC_EXEC_PREFIX": null,
           "COMPILER_PATH": null
         },
-        "started_epoch": 1792732720.413098,
+        "started_epoch": 1792753613.3584197,
         "stdin_provided": false,
         "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "actual_process_returncode": 0,
         "timeout_expired": false,
-        "directory": "/tmp/g288ax/refresh/subcommands/000032",
-        "ended_epoch": 1792732720.9171166,
+        "directory": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000032",
+        "ended_epoch": 1792753613.876807,
         "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stderr_sha256": "a44a7df63599466a3b31e53e4747970253936aac31d141f973084c68736d97cf",
+        "stderr_sha256": "9dd5cfa7fae2878c4e9c38ee982e5d8316e19b6b4f49803ee4ce3e45fc245a8b",
         "stdout_bytes": 0,
         "stderr_bytes": 29577,
         "label": "final-generic-tests"
@@ -905,7 +715,7 @@
       "passed": 205,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 0.384
+      "unittestSeconds": 0.407
     },
     {
       "label": "final-product-tests",
@@ -915,13 +725,13 @@
         "tests/test_product_architecture.py"
       ],
       "command": "python -B tests/test_product_architecture.py",
-      "cwd": "/tmp/g288ax/refresh/validation-tree",
-      "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+      "cwd": "/tmp/g288p88arch-one-4b588fb6/refresh/validation-tree",
+      "sourceBaseHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
       "exitCode": 0,
       "complete": true,
-      "startedEpoch": 1792732721.2129886,
-      "endedEpoch": 1792732732.0672088,
-      "seconds": 10.854220151901245,
+      "startedEpoch": 1792753614.1392255,
+      "endedEpoch": 1792753627.0097172,
+      "seconds": 12.870491743087769,
       "environment": {
         "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
@@ -929,7 +739,7 @@
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/tmp/g288ax/refresh/tmp",
+        "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
         "CC": null,
         "CFLAGS": null,
         "CPPFLAGS": null,
@@ -942,28 +752,28 @@
         "COMPILER_PATH": null
       },
       "stdout": {
-        "path": "/tmp/g288ax/refresh/subcommands/000035/stdout.bin",
+        "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000035/stdout.bin",
         "bytes": 0,
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "/tmp/g288ax/refresh/subcommands/000035/stderr.bin",
+        "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000035/stderr.bin",
         "bytes": 118,
-        "rawSha256": "72b08366ed77da6f8b06300503b2b95c0423b0fe4b7aca29b5dd23332f6f7618",
-        "lfSha256": "72b08366ed77da6f8b06300503b2b95c0423b0fe4b7aca29b5dd23332f6f7618"
+        "rawSha256": "763f01b1b6ecec264a732388f0923ddfe27071ef900b3eb35483643c61fe5b8a",
+        "lfSha256": "763f01b1b6ecec264a732388f0923ddfe27071ef900b3eb35483643c61fe5b8a"
       },
-      "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000035/stdout.bin",
-      "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000035/stderr.bin",
+      "stdoutRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000035/stdout.bin",
+      "stderrRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000035/stderr.bin",
       "originalCommandResult": {
         "command": [
           "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
           "-B",
           "tests/test_product_architecture.py"
         ],
-        "cwd": "/tmp/g288ax/refresh/validation-tree",
-        "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
-        "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+        "cwd": "/tmp/g288p88arch-one-4b588fb6/refresh/validation-tree",
+        "acceptance_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+        "source_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
         "source_variant": "fixed-source-original-architecture-command",
         "environment": {
           "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -972,7 +782,7 @@
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
           "PYTHONOPTIMIZE": null,
-          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
           "CC": null,
           "CFLAGS": null,
           "CPPFLAGS": null,
@@ -984,15 +794,15 @@
           "GCC_EXEC_PREFIX": null,
           "COMPILER_PATH": null
         },
-        "started_epoch": 1792732721.2129886,
+        "started_epoch": 1792753614.1392255,
         "stdin_provided": false,
         "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "actual_process_returncode": 0,
         "timeout_expired": false,
-        "directory": "/tmp/g288ax/refresh/subcommands/000035",
-        "ended_epoch": 1792732732.0672088,
+        "directory": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000035",
+        "ended_epoch": 1792753627.0097172,
         "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stderr_sha256": "72b08366ed77da6f8b06300503b2b95c0423b0fe4b7aca29b5dd23332f6f7618",
+        "stderr_sha256": "763f01b1b6ecec264a732388f0923ddfe27071ef900b3eb35483643c61fe5b8a",
         "stdout_bytes": 0,
         "stderr_bytes": 118,
         "label": "final-product-tests"
@@ -1001,7 +811,7 @@
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 10.764
+      "unittestSeconds": 12.77
     }
   ],
   "supplementalStaticGuardProbes": {
@@ -2861,7 +2671,7 @@
     },
     {
       "path": "geometry-web/grid_rule_lines_test.js",
-      "sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c"
+      "sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52"
     },
     {
       "path": "geometry-web/grid_subdivision_bridge.inc",
@@ -3455,10 +3265,10 @@
     "unregisteredAfter": [],
     "missingAfter": [],
     "changedInputs": [],
-    "inputClosureSha256Before": "f2a91b9b3962b2302600a5d21313f5655cc94ad081770d2a208c05d6cb4337e4",
-    "inputClosureSha256After": "f2a91b9b3962b2302600a5d21313f5655cc94ad081770d2a208c05d6cb4337e4",
-    "rawInputClosureSha256Before": "c56e1bcf27713920f52ddf49a14cf245be6fe9ad3c17bfdc2b96058f7a5a7729",
-    "rawInputClosureSha256After": "c56e1bcf27713920f52ddf49a14cf245be6fe9ad3c17bfdc2b96058f7a5a7729",
+    "inputClosureSha256Before": "856c3b984182066af9feefca934a066dec4d1c127fee7f1a662fd9f3c154f853",
+    "inputClosureSha256After": "856c3b984182066af9feefca934a066dec4d1c127fee7f1a662fd9f3c154f853",
+    "rawInputClosureSha256Before": "3f70527ebd09718858d66bcb4c158e89d7cccb3f192a8f25eb53aa03d8ce101d",
+    "rawInputClosureSha256After": "3f70527ebd09718858d66bcb4c158e89d7cccb3f192a8f25eb53aa03d8ce101d",
     "rawHashBasis": "Linux checkout raw bytes；portable身份另以LF與固定Git blob比較。",
     "toolHashesBefore": {
       "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
@@ -3481,30 +3291,30 @@
       "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
     },
     "allRawAndLfInputsUnchanged": true,
-    "headObservedAfterIndependentAudit": "f79aa057521929597a9af4b204b709110414ac03",
-    "checkedUtc": "2026-10-23T05:18:52.601511+00:00"
+    "headObservedAfterIndependentAudit": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+    "checkedUtc": "2026-10-23T11:07:07.596908+00:00"
   },
   "refreshDriver": {
-    "path": "/tmp/g288ax/tools/refresh_exclusions.py",
-    "bytes": 33045,
-    "rawSha256": "9bb00dcc94eff757dc5ae283f4e90c238fe53b8a79dcf7f0c2f049d4205a308f",
-    "lfSha256": "9bb00dcc94eff757dc5ae283f4e90c238fe53b8a79dcf7f0c2f049d4205a308f",
-    "runDirectory": "/tmp/g288ax/refresh",
+    "path": "/tmp/g288p88arch-one-4b588fb6/tools/refresh_exclusions.py",
+    "bytes": 32719,
+    "rawSha256": "04c4fac6310b1adf96c80bfa6e34331601cd863d891845d238f4d75c519875d1",
+    "lfSha256": "04c4fac6310b1adf96c80bfa6e34331601cd863d891845d238f4d75c519875d1",
+    "runDirectory": "/tmp/g288p88arch-one-4b588fb6/refresh",
     "argv": [
       "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-      "/tmp/g288ax/tools/refresh_exclusions.py",
+      "/tmp/g288p88arch-one-4b588fb6/tools/refresh_exclusions.py",
       "--repo",
       "/workspace/geometry-axiom",
       "--sha",
-      "f79aa057521929597a9af4b204b709110414ac03",
+      "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
       "--out",
-      "/tmp/g288ax/refresh"
+      "/tmp/g288p88arch-one-4b588fb6/refresh"
     ],
     "recorder": {
       "path": "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
       "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
     },
-    "note": "沿既有Linux external-validation-tree／完整inventory／old-blob guards；將W政策生成窄化成六個exclusion digest-only；不移植其W guard新增或supplemental claims。"
+    "note": "沿既有Linux external-validation-tree／完整inventory／old-blob guards；將W政策生成窄化成一個exclusion digest-only；不移植其W guard新增或supplemental claims。"
   },
   "environment": {
     "system": "Linux",
@@ -3521,8 +3331,8 @@
       "PYTHONPATH": null,
       "PYTHONHOME": null,
       "PYTHONSTARTUP": null,
-      "TMPDIR": "/tmp/g288ax/refresh/tmp",
-      "GITHUB_SHA": "f79aa057521929597a9af4b204b709110414ac03",
+      "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
+      "GITHUB_SHA": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
       "GITHUB_WORKSPACE": "/workspace/geometry-axiom",
       "GIT_OPTIONAL_LOCKS": "0"
     },
@@ -3539,12 +3349,12 @@
           "--version"
         ],
         "cwd": "/workspace/geometry-axiom",
-        "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+        "sourceBaseHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
         "exitCode": 0,
         "complete": true,
-        "startedEpoch": 1792732713.4785707,
-        "endedEpoch": 1792732713.4801176,
-        "seconds": 0.0015468597412109375,
+        "startedEpoch": 1792753605.8875988,
+        "endedEpoch": 1792753605.8891983,
+        "seconds": 0.0015995502471923828,
         "environment": {
           "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
@@ -3552,7 +3362,7 @@
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
           "PYTHONOPTIMIZE": null,
-          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
           "CC": null,
           "CFLAGS": null,
           "CPPFLAGS": null,
@@ -3565,27 +3375,27 @@
           "COMPILER_PATH": null
         },
         "stdout": {
-          "path": "/tmp/g288ax/refresh/subcommands/000016/stdout.bin",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000016/stdout.bin",
           "bytes": 15,
           "rawSha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
           "lfSha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
         },
         "stderr": {
-          "path": "/tmp/g288ax/refresh/subcommands/000016/stderr.bin",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000016/stderr.bin",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         },
-        "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000016/stdout.bin",
-        "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000016/stderr.bin",
+        "stdoutRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000016/stdout.bin",
+        "stderrRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000016/stderr.bin",
         "originalCommandResult": {
           "command": [
             "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
             "--version"
           ],
           "cwd": "/workspace/geometry-axiom",
-          "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
-          "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "acceptance_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+          "source_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
           "source_variant": "fixed-source-original-architecture-command",
           "environment": {
             "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -3594,7 +3404,7 @@
             "PYTHONIOENCODING": "utf-8",
             "PYTHONDONTWRITEBYTECODE": "1",
             "PYTHONOPTIMIZE": null,
-            "TMPDIR": "/tmp/g288ax/refresh/tmp",
+            "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
             "CC": null,
             "CFLAGS": null,
             "CPPFLAGS": null,
@@ -3606,13 +3416,13 @@
             "GCC_EXEC_PREFIX": null,
             "COMPILER_PATH": null
           },
-          "started_epoch": 1792732713.4785707,
+          "started_epoch": 1792753605.8875988,
           "stdin_provided": false,
           "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "actual_process_returncode": 0,
           "timeout_expired": false,
-          "directory": "/tmp/g288ax/refresh/subcommands/000016",
-          "ended_epoch": 1792732713.4801176,
+          "directory": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000016",
+          "ended_epoch": 1792753605.8891983,
           "stdout_sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
           "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "stdout_bytes": 15,
@@ -3631,12 +3441,12 @@
           "--version"
         ],
         "cwd": "/workspace/geometry-axiom",
-        "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+        "sourceBaseHead": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
         "exitCode": 0,
         "complete": true,
-        "startedEpoch": 1792732713.4808898,
-        "endedEpoch": 1792732713.4821215,
-        "seconds": 0.0012316703796386719,
+        "startedEpoch": 1792753605.890138,
+        "endedEpoch": 1792753605.8919258,
+        "seconds": 0.0017879009246826172,
         "environment": {
           "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
@@ -3644,7 +3454,7 @@
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
           "PYTHONOPTIMIZE": null,
-          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
           "CC": null,
           "CFLAGS": null,
           "CPPFLAGS": null,
@@ -3657,27 +3467,27 @@
           "COMPILER_PATH": null
         },
         "stdout": {
-          "path": "/tmp/g288ax/refresh/subcommands/000017/stdout.bin",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000017/stdout.bin",
           "bytes": 19,
           "rawSha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c",
           "lfSha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c"
         },
         "stderr": {
-          "path": "/tmp/g288ax/refresh/subcommands/000017/stderr.bin",
+          "path": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000017/stderr.bin",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         },
-        "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000017/stdout.bin",
-        "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000017/stderr.bin",
+        "stdoutRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000017/stdout.bin",
+        "stderrRawPath": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000017/stderr.bin",
         "originalCommandResult": {
           "command": [
             "git",
             "--version"
           ],
           "cwd": "/workspace/geometry-axiom",
-          "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
-          "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "acceptance_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
+          "source_sha": "4b588fb63c9cc8fe5ba7570618f353c0d00d3816",
           "source_variant": "fixed-source-original-architecture-command",
           "environment": {
             "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -3686,7 +3496,7 @@
             "PYTHONIOENCODING": "utf-8",
             "PYTHONDONTWRITEBYTECODE": "1",
             "PYTHONOPTIMIZE": null,
-            "TMPDIR": "/tmp/g288ax/refresh/tmp",
+            "TMPDIR": "/tmp/g288p88arch-one-4b588fb6/refresh/tmp",
             "CC": null,
             "CFLAGS": null,
             "CPPFLAGS": null,
@@ -3698,13 +3508,13 @@
             "GCC_EXEC_PREFIX": null,
             "COMPILER_PATH": null
           },
-          "started_epoch": 1792732713.4808898,
+          "started_epoch": 1792753605.890138,
           "stdin_provided": false,
           "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "actual_process_returncode": 0,
           "timeout_expired": false,
-          "directory": "/tmp/g288ax/refresh/subcommands/000017",
-          "ended_epoch": 1792732713.4821215,
+          "directory": "/tmp/g288p88arch-one-4b588fb6/refresh/subcommands/000017",
+          "ended_epoch": 1792753605.8919258,
           "stdout_sha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c",
           "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "stdout_bytes": 19,
