@@ -7,3 +7,6 @@
 
 - 2026-10-23T02:42:01.339779+00:00 — **assembly-final**：同F原完整ASM工具及外層退出0；baseline/restored通過、3 mutants具名斷言killed、6 controls全正確not-killed，原sources不變/restored binary逐bytes同baseline
   下一步：同F原三架構執行中；之後先combined六browser再314原七項串行，保留各job原時限。原始資料：`raw/assembly-final-01.tar.gz`。
+
+- 2026-10-23T02:42:25.785311+00:00 — **architecture-final**：同F三條原架構裁判退出0/0/0，inner及outer退出0，來源前後相同且乾淨
+  下一步：先執行combined六browser，再執行314原完整七項；重型工作串行，每項獨立收據與普通推送。原始資料：`raw/architecture-final-01.tar.gz`。
