@@ -10,3 +10,6 @@
 
 - 2026-10-23T11:40:18.714680+00:00 — **p88-final-canvas-run-1**：新F完整canvas第1/3：process_completed=True，receipt_verified=True，accepted=True；launcher/outer/workflow/node原exit=0/0/0/0，seconds=1741.884308179011，over_ci_timeout=False。原35min與golden未改，全部結果保留。
   下一步：依固定新F收齊三次canvas，再跑grid、四native partial與列定反證；所有紅燈保留，未完成項不算通過。。原始資料：`raw/p88-final-canvas-run-1-01.tar.gz`。
+
+- 2026-10-23T12:09:31.643973+00:00 — **p88-final-canvas-run-2**：新F完整canvas第2/3：process_completed=True，receipt_verified=True，accepted=True；launcher/outer/workflow/node原exit=0/0/0/0，seconds=1748.520241596998，over_ci_timeout=False。原35min與golden未改，全部結果保留。
+  下一步：依固定新F收齊三次canvas，再跑grid、四native partial與列定反證；所有紅燈保留，未完成項不算通過。。原始資料：`raw/p88-final-canvas-run-2-01.tar.gz`。
