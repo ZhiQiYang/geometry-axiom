@@ -1,3 +1,20 @@
+# 最新恢復點（2026-10-23 20:41 UTC）
+
+這是持續工作中的恢復點，不是階段停工或完成報告。下方20:15段落保留作執行路徑歷史；狀態以本段為準。
+
+- root #338 train最新已推 E=`b6e1e45425f055cd825b259f46ef2c454f3ff13a`；產品F=f64d638f；測試S=ec8e0d7e；原帳本仍固定4f4，禁止在live ROOT/SEED改source。原session27106，20:38共101/123（92killed/5equivalent/1crashed/3retired），尚無最終exit；不可說完整綠。driver/cache等路徑見下方。下一輪完整123計畫 `/tmp/train337-next-ledger-static-20261024/PLAN.md`，只可在原輪真結束後接合法cache，新S bridge oracle已變，不得轉標舊execution.head。
+- S ec8架構四檔已於E9a05採用：604-input closure未變，原三裁判0/0/0、205/18、獨立781checks/0，完整原件已推。M151 owner-map與free-end兩修正原撤回／恢復全封Ea607。
+- #340 noWood：原實測Sbfbab207的13項及7phase全0/1/0/1/0/1/0，530actual/949publication peer0；E d45dbbc3，完整384members原包已推。普通merge train後新S4d3a17c306cad42057589c5cfd964f1c32b755c4，D77a007711f48b47daa10fbe1cb594d25937e295a已推；11個原輸入同，未冒新S重測。owner own_kernel_no_wood續準備六隔離browser／完整native原driver，不自行啟重測。
+- #339 faces：指定9原importer模組142/142＋3predicate0/1/0全已真實跑；原C43實測S57b68014保留，actual29746（主要indexrows，非test數）及publication359checks0。普通merge #340後sourceM1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599，E8db79c254365b43104e596b0680df47b67f52232，Dbbd963046a9ed0c4f805a784195c23a93875fd60。9模組source closure未變，原142不冒M實跑。原registry --list已於M exit0，peer/合批出版中；正式fullnative/browser/ledger仍待。本次request base改成#340，未合併任何PR。
+- #300：sourcec493b7315d0cd3b16014add96af969c49ebf4660，E383c13c4eb9a2f99ed62f7222463831c95cdd00e，D34fccbd620a91d1d5c13a5e45a48270a0546987e。15checks0 peer；本次新增五欄開draft請求。第2重槽保留給原10/15/7三套32methods，owner將OUT/TMP全放workspace，original entry/threshold/timeout不變；以owner真正launch/result判狀態，未因授slot預報通過。它仍只解反覆memmove，最壞配對O(F²)／512尚未完成。真終態後才merge #339來源，不可改live checkout。
+- GEO260：新測試修正S af4fd36c17d05b5da2411b70266ed040e22a6561，focused SPM43/44真baseline29pass／各唯一具名assert1／同baseline恢復0；1252checks peer0。原c926兩KeyError紅與末clean缺件限制保留。E023339af1d4f2388570d39b39ea5136db6852a6b已推1148members原包4,014,694B；三ELF原件保雲端有排除hash。owner正在body/request，sharedexpected native28→30尚未寫；先等#300來源普通merge再補。#335僅準備，不改未核可公理；order21第一支e2已接受、第二支e0失敗，不能說兩種順序第一支都拒絕。
+- shared expected順序仍 #340→#339→#300→GEO260；前二已普通merge完成。root獨占train寫入，全ledger只root完整重產。#323已全含train，舊線不再修；#325/#331/#333不碰他人branch。
+- 磁碟維護已完成：10個退休root checkout共9510 immutable code副本，966不同payload全封且逐byte還原核；scope9533/archive10504/actual9554 checks0。精確unlink原exit0，回收216,199,168配置bytes，E b6e1e454已推完整payload包/map/工具/raw。Git/objects/index/refs、fixtures、receipts、gmon、全部mutable/mutant/trace/withdrawn sources不動。
+- /tmp仍緊。已完成free-end proof原424files/15,120,401B完整搬到 `/workspace/geo337-preserved-originals/train337-free-end-f4f-proof`；原 `/tmp/train337-free-end-f4f-proof` 是可讀symlink，所有bytes/mode/mtime不變。移動收據 `/workspace/geo337-preserved-originals/free-end-relocation`，不是刪收據。audit代理另負責把已終態舊323 invocations約50MiB同樣移往workspace保原path；root不碰其作業。新大暫存用workspace，保100MiB給#300。
+- browser實際pool/job尚未建立，preparer `/tmp/browser_readonly_pool_preparer.py`正在補窄錯誤保全，6個獨立Git/index/config/HEAD/port/tmp＋immutable source pool，golden/output私有，原斷言/時限保持。fullcanvas與perf/P52/P189必獨占，其他heavy最多2。
+- 最終specials原計畫 `/tmp/train337-final-specials-original-plan/EXECUTION_CHECKLIST.md`；P189用mainadbaebf9/base3e600772，≤2×，不可混323base b74／≤1.3。#323八原suite正確676方法＋PF3原20/19/20。ReadingA原quick逐mm/579仍未跑。原#323 full47,120,357B五包仍cloud-only未推，不冒已公開；完整native/六browser與最終全ledger未完，無READY。
+- 已fetch handoff1f715497、main425；338/339/340尚無新ChatGPT審查。PR338現D c6a66707（E a607正文）待更新到本E與架構完成/分支新狀態；舊矩陣只有歷史，唯一current-state不可混execution/evidence SHA。下一次每完成實項繼續普通push，不停等服務/審查/合併。
+
 # 持續工作恢復點（2026-10-23 20:15 UTC）
 
 這不是完成報告。使用者要求全專案完成前持續工作、不提問、不等待；繁體中文、英文commit。不force push、不合併PR、不推claude/grok、不修改決策佇列；公理只限已有核可並走SSOT流程。root唯一寫train，分支各一owner。#325/#331/#333由Grok，#333已進main。
