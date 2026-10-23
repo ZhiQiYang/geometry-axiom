@@ -1,0 +1,145 @@
+{
+  "schema": "geometry-followup-live-progress/1",
+  "issue": "261",
+  "tested_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "entries": [
+    {
+      "utc": "2026-10-23T11:14:42.294307+00:00",
+      "label": "p88-final-prerequisites",
+      "result": "新F可解析；帳本原check0仍fresh、架構原0/0/0；P88單檔修正與Linux四檔已提交。舊原三輪1/0/0確認間歇；真query診斷三phase1/1/1、driver2為位移前提不成立，不冒有效反證。新F三次完整canvas已啟，其餘受影響項待跑。",
+      "next": "收齊新F三次完整canvas後執行grid、四native partial與四組反證；每輪保留原exit/streams/hash，更新唯一current-state正文。",
+      "archives": [
+        "raw/p88-final-prerequisites-01.tar.gz",
+        "raw/p88-final-prerequisites-02.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T11:27:41.190877+00:00",
+      "label": "p88-final-independent-reviews",
+      "result": "新F架構實跑0/0/0與205/18個原測試經獨立核對；scan重產bytes相同，修正metadata假設後identity0。最新審查head1999cbc已讀；P88舊三輪1/0/0、query診斷1/1/1無效反證均保留。新F三輪原canvas仍執行中，未宣告通過。",
+      "next": "逐輪自動封存canvas所有終態；補完同F受影響gates與原rAF撤回反證，改寫唯一current-state正文。",
+      "archives": [
+        "raw/p88-final-independent-reviews-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T11:40:18.714680+00:00",
+      "label": "p88-final-canvas-run-1",
+      "result": "新F完整canvas第1/3：process_completed=True，receipt_verified=True，accepted=True；launcher/outer/workflow/node原exit=0/0/0/0，seconds=1741.884308179011，over_ci_timeout=False。原35min與golden未改，全部結果保留。",
+      "next": "依固定新F收齊三次canvas，再跑grid、四native partial與列定反證；所有紅燈保留，未完成項不算通過。",
+      "archives": [
+        "raw/p88-final-canvas-run-1-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T12:09:31.643973+00:00",
+      "label": "p88-final-canvas-run-2",
+      "result": "新F完整canvas第2/3：process_completed=True，receipt_verified=True，accepted=True；launcher/outer/workflow/node原exit=0/0/0/0，seconds=1748.520241596998，over_ci_timeout=False。原35min與golden未改，全部結果保留。",
+      "next": "依固定新F收齊三次canvas，再跑grid、四native partial與列定反證；所有紅燈保留，未完成項不算通過。",
+      "archives": [
+        "raw/p88-final-canvas-run-2-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T12:38:55.278750+00:00",
+      "label": "p88-final-canvas-run-3",
+      "result": "新F完整canvas第3/3：process_completed=True，receipt_verified=True，accepted=True；launcher/outer/workflow/node原exit=0/0/0/0，seconds=1765.1202577359945，over_ci_timeout=False。原35min與golden未改，全部結果保留。",
+      "next": "依固定新F收齊三次canvas，再跑grid、四native partial與列定反證；所有紅燈保留，未完成項不算通過。",
+      "archives": [
+        "raw/p88-final-canvas-run-3-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T12:38:58.972552+00:00",
+      "label": "p88-final-canvas-three-summary",
+      "result": "新F三輪canvas全收齊；原workflow exits=0/0/0；all_three_accepted=True；driver_exit=0。逐輪原收據已封存；其他受影響項與反證仍須各自結案。",
+      "next": "依固定新F收齊三次canvas，再跑grid、四native partial與列定反證；所有紅燈保留，未完成項不算通過。",
+      "archives": [
+        "raw/p88-final-canvas-three-summary-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T12:39:59.230009+00:00",
+      "label": "p88-final-supporting-reviews",
+      "result": "新F前兩輪canvas原件與公開封包經獨立逐檔核對，四層exit0、2267/0、85段golden與預期exception1均保真；另封存已完成的PR正文、工具準備及維護審查。這些靜審不是新動態測試結果。",
+      "next": "持續完成P88撤回／恢復及其餘受影響gates；每項另記原命令、退出碼與完整raw。",
+      "archives": [
+        "raw/p88-final-supporting-reviews-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T12:44:11.476330+00:00",
+      "label": "p88-final-canvas-reviewed",
+      "result": "新F完整canvas三輪原exit 0/0/0，皆2267/0、85段golden相符且在原35min內；第三輪與三輪總結公開封包逐檔核驗通過，預期exception1保留。真正文已獨立審查並正常推送6dbac30c；反證及其他受影響gates仍未結案。",
+      "next": "完成原P88撤回與恢復；之後重跑grid、四native partial、P52、P73、Chromium154與oracle。冷工作副本工具僅完成準備與靜審，尚未執行。",
+      "archives": [
+        "raw/p88-final-canvas-reviewed-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T13:03:33.572715+00:00",
+      "label": "p88-native-raf-controlled-completed",
+      "result": "P88原生rAF受控反證原exit為0/1/0，driver/outer/launcher各0；撤回是原refGuideMode焦點25秒等待fatal，實際錯點來源比例，非工具前提或transport假紅。完整349原件封包與三phase獨立審查保留；診斷只選完整P88，不冒正式grid/canvas。未確立按壓中位移的新產品缺陷，也未證像素可見性或歷史自然紅唯一因果。",
+      "next": "完成同F grid與四組native partial，再獨占跑P52及剩餘P73/Chromium154/oracle；舊無效query實驗保歷史。",
+      "archives": [
+        "raw/p88-native-raf-controlled-completed-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T13:15:28.746191+00:00",
+      "label": "p88-followup-reviewed-environment",
+      "result": "P88公開封包外23/內349原件經獨立771核全一致，最新正文47401186已一般push。P52獨立乾淨F checkout準備0，未開始量測。冷checkout v2兩次exit0卻有保留檔案警告且容量未增加，原件照留；v3顯式刷新Git搬移後stat cache再sparse reapply，兩次原exit0、五parent raw與HEAD/tree/stage不變，實際釋出1244446720及1350230016 bytes。這是環境維護，不冒產品gate。",
+      "next": "完成同F grid與native4證據出版，之後P52正式與runtime獨占量測。",
+      "archives": [
+        "raw/p88-followup-reviewed-environment-01.tar.gz",
+        "raw/p88-followup-reviewed-environment-02.tar.gz",
+        "raw/p88-followup-reviewed-environment-03.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T13:27:25.073294+00:00",
+      "label": "p88-final-grid-reviewed",
+      "result": "新F正式grid原outer/workflow/Node皆0，473.79222212699824秒在原15min內；partial356/0、P88=143、skip=[]、原golden未比較、exception0。獨立原件及Git封包審查保真；原出版1是新證據路徑被ignore，精確add-f後一般push0，未改產品或gitignore。 子分支證據E=b12172860c59fe091c0e490630b548281b2eb53a。",
+      "next": "繼續同F P52、P73、Chromium154與oracle反證，完成項依真退出更新唯一正文矩陣。",
+      "archives": [
+        "raw/p88-final-grid-reviewed-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T13:28:49.886917+00:00",
+      "label": "p88-final-p52-formal",
+      "result": "新F原P52正式driver/outer/launcher皆0，main243.1667135ms、fix216.36882ms、ratio0.889796209710257≤1；原main/fix/fix/main四區塊，每側16筆，五controls0/0/1/1/1均符合原預期。原protocol/時限/斷言保留，沒有重抽樣；完整原指令、stdout/stderr、環境、SHA與runtime inventory封存。",
+      "next": "封存原獨立驗證器0，接著同F原runtime撤回／恢復反證。",
+      "archives": [
+        "raw/p88-final-p52-formal-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T13:29:27.058610+00:00",
+      "label": "p88-final-p52-verifier",
+      "result": "新F獨立P52原驗證器0，adapter/outer/launcher皆0；原9assertions與原判官AST保留。四個timing區塊及五控制從真c387原streams投影，投影明記DERIVED，不冒原launch stdout；核對同F正式16+16與ratio0.889796209710257。完整verifier原stdout/stderr、每層命令與環境一併封存。",
+      "next": "同F原runtime撤回／恢復反證，然後P73/Chromium154/oracle。",
+      "archives": [
+        "raw/p88-final-p52-verifier-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T13:30:02.573691+00:00",
+      "label": "p88-final-native-reviewed",
+      "result": "新F原run_all四組partial原primary/reaper/outer/launch皆0，17/3/51/737合計808pass、0fail、0skip；不冒完整native重跑。原runner確認三binary fresh/reused；完整Git index與14輸入前後同F，三個真gcanvas fixtures按原blob物化，其他稀疏限制保留。獨立原件及Git封包審查、原publication ignore失敗1及精確prefix正常續推0都保留。 子分支證據E=c7214307d5ffc6a867089c8d832fef4bc94ae27c。",
+      "next": "繼續同F P52、P73、Chromium154與oracle反證，完成項依真退出更新唯一正文矩陣。",
+      "archives": [
+        "raw/p88-final-native-reviewed-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T13:49:58.587513+00:00",
+      "label": "p88-final-p52-runtime-complete-raw",
+      "result": "新F正式baseline／撤回runtime修正／放回修正原gate為0/1/0，ratio依序0.889796209710257／1.0337406540912426／0.8462365083581334；每phase保原main/fix/fix/main四區塊、每側16筆、原≤1門檻，無重抽樣。runtime driver／outer／launcher／parentcapture皆0，原source/runtime before-after與restore核同；獨立原件審查1267項無finding。原完整stage1633檔、81,821,566 bytes；實際封包與排除逐項列inventory，正式baseline完整streams在另formal包。封存原錯路徑與metadata checker v1錯誤照留、更正分開記錄。",
+      "next": "完成新F P73／Chromium154及oracle8phase，逐項peer與更新唯一正文矩陣；所有歷史未受影響gate保留實際SHA。",
+      "archives": [
+        "raw/p88-final-p52-runtime-complete-raw-01.tar.gz"
+      ]
+    }
+  ]
+}
