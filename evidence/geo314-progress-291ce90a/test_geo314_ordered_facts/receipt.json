@@ -1,0 +1,71 @@
+{
+  "suite": "test_geo314_ordered_facts.py",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/geo314-work/affected-p2-001/capture_suite.py",
+    "/workspace/geo314-work/affected-p2-001/test_geo314_ordered_facts",
+    "/tmp/g261-next314",
+    "test_geo314_ordered_facts.py"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 24.083164370000304,
+  "head": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+  "cwd": "/tmp/g261-next314",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "TMPDIR": "/workspace/geo314-work/affected-p2-001/test_geo314_ordered_facts/native-tmp",
+    "GEOMETRY_TEST_BRIDGE": "/workspace/geo314-work/p2-private-build-001/cache/bridge",
+    "CC": null,
+    "GEO314_DIAGNOSTIC_SCOPE": "five-affected-suites-only"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "output_files": {
+    "native-build-0.json": {
+      "sha256": "212da79241807c4166a0a05fd9f7f845a2c1736c0f55e9663523430d5b38ced0",
+      "size": 210472
+    },
+    "native-build-files.json": {
+      "sha256": "54f9e4a1f976c60c99583809e62be4a70cac97273cb7f3e5f6d0e96893d5dd60",
+      "size": 55672
+    },
+    "native-build-inputs-and-binaries.tar.gz": {
+      "sha256": "6d381da9934a36307da200acc509bea0735c11897f3ad86b4377f776e9c81fe7",
+      "size": 7605635
+    },
+    "result.json": {
+      "sha256": "d50bd7ac523a1cef027fcf2f7f4aa8d13927b30348d9906169fe6c717a9b15b6",
+      "size": 355
+    },
+    "stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "stdout.raw": {
+      "sha256": "50f25ce82f6adbad0c9f6a0cd2a58fb9445b15d45d354333a8e520f5f3b27c32",
+      "size": 69639
+    },
+    "unittest.log": {
+      "sha256": "e21dee981cafd87f76d95a1e3f231f404812a12df376e9aa6130a0f7f9d03140",
+      "size": 114
+    }
+  },
+  "result": {
+    "file": "tests/test_geo314_ordered_facts.py",
+    "total": 14,
+    "run": 14,
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "explicit_skipped": 0,
+    "unrun_skipped": 0,
+    "blocked_by_error": 0,
+    "expected_failed": 0,
+    "expected_failures": [],
+    "failures": [],
+    "skip_reasons": {},
+    "skip_items": [],
+    "import_error": null,
+    "extra_errors": 0,
+    "seconds": 19.4
+  }
+}

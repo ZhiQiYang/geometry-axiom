@@ -385,13 +385,21 @@ class GenScenesTest(unittest.TestCase):
                             "name": "旗標仍可施工但有衝突碼",
                             "timbers": [["boundary", [0, 0, 200, 27]]],
                         },
+                        {
+                            "buildable": True,
+                            "conflict_codes": [],
+                            "core_limits": [["CORE_LIMIT_BOUNDARY_END_FREE", 0, 200]],
+                            "name": "物理可施工但核心限制",
+                            "timbers": [["boundary", [0, 0, 200, 27]]],
+                        },
                     ],
                 }
             },
         }
         built = gen_scenes.build(golden)
         self.assertEqual(len(built.scenes), 1)
-        self.assertEqual([row["name"] for row in built.skipped], ["有衝突", "旗標仍可施工但有衝突碼"])
+        self.assertEqual([row["name"] for row in built.skipped], ["有衝突", "旗標仍可施工但有衝突碼", "物理可施工但核心限制"])
+        self.assertEqual(built.skipped[-1]["core_limits"], [["CORE_LIMIT_BOUNDARY_END_FREE", 0, 200]])
         gen_scenes.assert_member_rects(golden, built)
         gen_scenes.audit_scene(built.scenes[0].text)
 

@@ -1,0 +1,602 @@
+{
+  "archive": "assembly-final-01.tar.gz",
+  "bytes": 31671,
+  "sha256": "d1195c6f87e3ff161226bdbb282f553c9d308a1b4b36ae5ec895a57225f8d4a7",
+  "members": [
+    {
+      "path": "assembly/baseline/build/execution.json",
+      "bytes": 345,
+      "sha256": "b42bce807008ed7676345767ffbd9ab3f98336b3cad037da82159fa6b95536aa"
+    },
+    {
+      "path": "assembly/baseline/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/baseline/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/baseline/record.json",
+      "bytes": 1155,
+      "sha256": "6bd01566f6d763f3d2ecbf4c2db12c8155c3489a325e54d81e8874bce4cdd43a"
+    },
+    {
+      "path": "assembly/baseline/tests/execution.json",
+      "bytes": 722,
+      "sha256": "9f4326d0f1708281efd79e3ceeb6bf1c06af5a9fcc827ddc9f986173c534f7aa"
+    },
+    {
+      "path": "assembly/baseline/tests/result.json",
+      "bytes": 723,
+      "sha256": "77f1ef21fb72e688796bfc6ece2cd6c0f073284b2309e866e2a2bb966d6a26b8"
+    },
+    {
+      "path": "assembly/baseline/tests/stderr",
+      "bytes": 525,
+      "sha256": "98e7ffdfa14efd7a6013192a41b0dc9cb213c3382fcd5e5bccd9b23d03941111"
+    },
+    {
+      "path": "assembly/baseline/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/cases/cancelled-preview/build/execution.json",
+      "bytes": 351,
+      "sha256": "838c459ebeb71524133f2af896db1fee675479baa4f0ac3586d9506782e0c6e3"
+    },
+    {
+      "path": "assembly/cases/cancelled-preview/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/cases/cancelled-preview/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/cases/cancelled-preview/record.json",
+      "bytes": 2674,
+      "sha256": "722d708bc4f858c480ef1fd6a5f30f2bbe7a1df2abce45708fe9b1e1ad570740"
+    },
+    {
+      "path": "assembly/cases/cancelled-preview/tests/execution.json",
+      "bytes": 555,
+      "sha256": "9204d0b75482557cadc6e72b85a828777111edf308f7593bffd09bb148f3a31f"
+    },
+    {
+      "path": "assembly/cases/cancelled-preview/tests/result.json",
+      "bytes": 1481,
+      "sha256": "1f73a9e042038dcc267d09f0e89ffd49658950461216e55294938c9b741c2a46"
+    },
+    {
+      "path": "assembly/cases/cancelled-preview/tests/stderr",
+      "bytes": 898,
+      "sha256": "88fa23cf1812954779b2da89dbbeae9dc0dbb84a0091d75febac47e9df95fa2c"
+    },
+    {
+      "path": "assembly/cases/cancelled-preview/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/cases/conflict/build/execution.json",
+      "bytes": 342,
+      "sha256": "602df8dbf5be36f5aec51fe9d4512b6acd50c9e23e34c774789e32e817a04e91"
+    },
+    {
+      "path": "assembly/cases/conflict/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/cases/conflict/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/cases/conflict/record.json",
+      "bytes": 2551,
+      "sha256": "753da4061c08f0d67e84a8e3aa582a2554393f4a8e14324db0473bc4a0397ddb"
+    },
+    {
+      "path": "assembly/cases/conflict/tests/execution.json",
+      "bytes": 534,
+      "sha256": "c947759f8d155130c611e1785bfc2dbe3e65104d4340f3a76199515a11838753"
+    },
+    {
+      "path": "assembly/cases/conflict/tests/result.json",
+      "bytes": 2664,
+      "sha256": "1a02703e3a1f7de1d3e1dda7f1ce2114ec265c74e773f79e68ea2655cf3ff783"
+    },
+    {
+      "path": "assembly/cases/conflict/tests/stderr",
+      "bytes": 2063,
+      "sha256": "689b9f33999e6301044213d576ad4351b2036007498208c097b2f23888db1335"
+    },
+    {
+      "path": "assembly/cases/conflict/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/cases/missing-source/build/execution.json",
+      "bytes": 348,
+      "sha256": "96fa4b0df651006c46edb2d817a1646510806937f5e998fe1641ea6c982d5716"
+    },
+    {
+      "path": "assembly/cases/missing-source/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/cases/missing-source/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/cases/missing-source/record.json",
+      "bytes": 2836,
+      "sha256": "67aa44ff474603448b968ab9709681cf3e652dabd9c3e8b8a631e1072b46b0ae"
+    },
+    {
+      "path": "assembly/cases/missing-source/tests/execution.json",
+      "bytes": 554,
+      "sha256": "c6cf9b55222a144f3dc4f615cbfb3f6496ffecc60ab3a831cdf38e3601c69b03"
+    },
+    {
+      "path": "assembly/cases/missing-source/tests/result.json",
+      "bytes": 3967,
+      "sha256": "9f2869a37dcfe4e7012ddfd9cdb1d5afb2cfdda4a71c9c7be4b781bbe3e409c3"
+    },
+    {
+      "path": "assembly/cases/missing-source/tests/stderr",
+      "bytes": 3356,
+      "sha256": "b13b20a08481402885b15e37eb3bff5b13ba332b359557812370aa7b15da607f"
+    },
+    {
+      "path": "assembly/cases/missing-source/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-bridge-crash/build/execution.json",
+      "bytes": 357,
+      "sha256": "6f1d678ac7ad34d0a40926b1d85c71de0a0e29c4f1345fb0979f5111dbe2368b"
+    },
+    {
+      "path": "assembly/controls/control-bridge-crash/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-bridge-crash/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-bridge-crash/record.json",
+      "bytes": 2812,
+      "sha256": "d66154edf7aa5ab8502084d568e9f5ebcfb9d848dbed6ee9777f5a7724b5c625"
+    },
+    {
+      "path": "assembly/controls/control-bridge-crash/tests/execution.json",
+      "bytes": 567,
+      "sha256": "f9067011234c156008ba29fe3d065cd1c9e3579926c352dc426293bf0c3cd976"
+    },
+    {
+      "path": "assembly/controls/control-bridge-crash/tests/result.json",
+      "bytes": 1649,
+      "sha256": "5ef801c9ec4a18fe6bce334135d62b351acb9e80a3cfb8ee77f973ea8be37bf3"
+    },
+    {
+      "path": "assembly/controls/control-bridge-crash/tests/stderr",
+      "bytes": 1176,
+      "sha256": "2525786a17a3f50a60ef0f8d488a3b92cc6ebcd19cb6afb0579e1d0661e65bab"
+    },
+    {
+      "path": "assembly/controls/control-bridge-crash/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-comment-only/build/execution.json",
+      "bytes": 357,
+      "sha256": "0d798a47c3072aeb1c8aa274aaadf0f081a49ec06efd4930259eea6c2a26368c"
+    },
+    {
+      "path": "assembly/controls/control-comment-only/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-comment-only/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-comment-only/record.json",
+      "bytes": 1398,
+      "sha256": "125f838219c6441e73eb750fe2fd045363b8ca298e120ca809eb7e603c7a16d1"
+    },
+    {
+      "path": "assembly/controls/control-comment-only/tests/execution.json",
+      "bytes": 564,
+      "sha256": "62312c0cd9e65791345a7d852714677f75b2c2d725ea874cabc32b0b9927afc2"
+    },
+    {
+      "path": "assembly/controls/control-comment-only/tests/result.json",
+      "bytes": 315,
+      "sha256": "6753282ff7a5a0e57c1c4fe16066b90a6dc6af9c314ca11f56ed894d5042823a"
+    },
+    {
+      "path": "assembly/controls/control-comment-only/tests/stderr",
+      "bytes": 232,
+      "sha256": "0aac77e6fae7076404f3da8e4e56c597e36774761ca7d48079d4c971a8e2d1ca"
+    },
+    {
+      "path": "assembly/controls/control-comment-only/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-error/build/execution.json",
+      "bytes": 350,
+      "sha256": "be802d58049efe6d3751386694881caddedbe5c862521ea5353b9be1929c8465"
+    },
+    {
+      "path": "assembly/controls/control-error/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-error/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-error/record.json",
+      "bytes": 1327,
+      "sha256": "1795d823f4570f2f6274f0747ef655fb32d583a5a1b5efd58739ff7ae64fe4ce"
+    },
+    {
+      "path": "assembly/controls/control-error/tests/execution.json",
+      "bytes": 553,
+      "sha256": "58f049d1e4a77007c97c490b8186a47bb88a344261553f7e2f4e98584a284349"
+    },
+    {
+      "path": "assembly/controls/control-error/tests/result.json",
+      "bytes": 1729,
+      "sha256": "da70795321dcb9bb27ba993c1aa24759802aed5420be4d9bdb182cc418f774bb"
+    },
+    {
+      "path": "assembly/controls/control-error/tests/stderr",
+      "bytes": 1866,
+      "sha256": "3f20059e85ac0814b23d32c58630671f837c152dcd62b2101d4a4aa3d4b63ca7"
+    },
+    {
+      "path": "assembly/controls/control-error/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-hang/build/execution.json",
+      "bytes": 349,
+      "sha256": "a385cc2b3e5060e1cbff4da77982f7b55fd613998cf1da5d3fb935b92d1489cd"
+    },
+    {
+      "path": "assembly/controls/control-hang/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-hang/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-hang/record.json",
+      "bytes": 1978,
+      "sha256": "2d1c859ae8481b8694fda63fd76b6a2315bb940aa1f99b6252188e44b81e68ae"
+    },
+    {
+      "path": "assembly/controls/control-hang/tests/execution.json",
+      "bytes": 1225,
+      "sha256": "c4320f4fcfc1cd0a77b5bb4e2a3381dd2b8fa6a6dd280955d0912c4a4d14a841"
+    },
+    {
+      "path": "assembly/controls/control-hang/tests/stderr",
+      "bytes": 138,
+      "sha256": "3681f609aa01612930a49c0863ee7f5f3f8e35e90f6308a45ebd59d9c6786b93"
+    },
+    {
+      "path": "assembly/controls/control-hang/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-single-layer/build/execution.json",
+      "bytes": 357,
+      "sha256": "a33b8d9def62d24089cdde669aa6a22320bcc765072dd0335ac4b5939e66f26e"
+    },
+    {
+      "path": "assembly/controls/control-single-layer/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-single-layer/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-single-layer/record.json",
+      "bytes": 1386,
+      "sha256": "972a1419aa999331965eafa40d84bfe75f6b468bed4e95e43cae98702b94e03e"
+    },
+    {
+      "path": "assembly/controls/control-single-layer/tests/execution.json",
+      "bytes": 567,
+      "sha256": "11fca2d4971636008c8c444985332466423b6c319188fda7a2984234a9db083a"
+    },
+    {
+      "path": "assembly/controls/control-single-layer/tests/result.json",
+      "bytes": 322,
+      "sha256": "4086ab8395047dde5b8f0a1b95dcdf915501c612581d07b6df802913cdd13c8a"
+    },
+    {
+      "path": "assembly/controls/control-single-layer/tests/stderr",
+      "bytes": 238,
+      "sha256": "38c09216cb40a984755c949bfe14cbfbe50dbcbb17d45bd6078cebd1b2328871"
+    },
+    {
+      "path": "assembly/controls/control-single-layer/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-wrong-assertion/build/execution.json",
+      "bytes": 360,
+      "sha256": "abdccda7de275c072afd69a98f9972205fa80fb210f1af678af95d1f77121424"
+    },
+    {
+      "path": "assembly/controls/control-wrong-assertion/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-wrong-assertion/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/controls/control-wrong-assertion/record.json",
+      "bytes": 2362,
+      "sha256": "b3efad6841a5b948ed31f1675da34edf4e0f566f82a1776a6b88237cbcad5294"
+    },
+    {
+      "path": "assembly/controls/control-wrong-assertion/tests/execution.json",
+      "bytes": 573,
+      "sha256": "7ea7590275079e67b6bd42303221bd14d57a5226be80188033de4a7be3d56689"
+    },
+    {
+      "path": "assembly/controls/control-wrong-assertion/tests/result.json",
+      "bytes": 1282,
+      "sha256": "2b4436facb5f7d31f7a0e49020b955394736db95308e8fa04ece6b8a57c04883"
+    },
+    {
+      "path": "assembly/controls/control-wrong-assertion/tests/stderr",
+      "bytes": 805,
+      "sha256": "f1e52b87ecdcb0f1f2519aaa2520bd3fe58962f5df8d99df4dffec9cd4f33fec"
+    },
+    {
+      "path": "assembly/controls/control-wrong-assertion/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/restored/build/execution.json",
+      "bytes": 345,
+      "sha256": "718b7965b433d9270647f761695aa6fb8ceac84edee70dacc2fa6695f94df39f"
+    },
+    {
+      "path": "assembly/restored/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/restored/build/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/restored/record.json",
+      "bytes": 1155,
+      "sha256": "9c5583578c8ebf289aaa3cd2b6ff3ddd04ae3b374ad24abdd4082f133744ae75"
+    },
+    {
+      "path": "assembly/restored/tests/execution.json",
+      "bytes": 722,
+      "sha256": "6fcdf571e524e39860dcd4d59e27120f1a3c968bcd00c3e407e2c2258f68c392"
+    },
+    {
+      "path": "assembly/restored/tests/result.json",
+      "bytes": 723,
+      "sha256": "77f1ef21fb72e688796bfc6ece2cd6c0f073284b2309e866e2a2bb966d6a26b8"
+    },
+    {
+      "path": "assembly/restored/tests/stderr",
+      "bytes": 525,
+      "sha256": "c0781410800fbe60f56c1c0d432669a0e28d6ae22a4e2adf892f23ceda07dc0d"
+    },
+    {
+      "path": "assembly/restored/tests/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/sources.json",
+      "bytes": 22571,
+      "sha256": "9afc695256328c566afa07fba6698621888828e0ccbf9665c210d2f99c17b7d7"
+    },
+    {
+      "path": "assembly/summary.json",
+      "bytes": 25441,
+      "sha256": "f218a014955ae18a706d7087354496eddf9beecabcb0176f2813182dbf6a8db5"
+    },
+    {
+      "path": "assembly-outer/launcher.py.txt",
+      "bytes": 3566,
+      "sha256": "68256d90e597fe52807637e3603b7392dd09e9a5342909adc54d21fa4cba2928"
+    },
+    {
+      "path": "assembly-outer/reaper.jsonl",
+      "bytes": 588,
+      "sha256": "9183ba1a91e97ba0e572b519aede5eea7f02e79676148f4cd664146f71e5ca8c"
+    },
+    {
+      "path": "assembly-outer/receipt.json",
+      "bytes": 14127,
+      "sha256": "5d9dd255e06750195080ca49b17678ba168b49e344741e8917b89dc7ca7c5396"
+    },
+    {
+      "path": "assembly-outer/request.json",
+      "bytes": 2193,
+      "sha256": "07c8da34b41bf4d4517cd00fe3ae049a3f80fb748fe07f673165c39d5461a904"
+    },
+    {
+      "path": "assembly-outer/subcommands/000001/request.json",
+      "bytes": 1449,
+      "sha256": "b6f587ab6a88fb26ec3ebf29d0852a4586c77a224d50c1658e9492d25fc8d963"
+    },
+    {
+      "path": "assembly-outer/subcommands/000001/result.json",
+      "bytes": 1700,
+      "sha256": "4226bf5f00c677e2a7c90764367f5feaf0cbdb9f9fa03f6da8e2360996db78b7"
+    },
+    {
+      "path": "assembly-outer/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "35f51b8f2249c32deb5edbf1b93b2a62269fb3418c3b42efc16d9c79c143129f"
+    },
+    {
+      "path": "assembly-outer/subcommands/000002/request.json",
+      "bytes": 1484,
+      "sha256": "66a73e8752619bbd7c37c6bd582e753886edb66a6dfc4c2aa6aa36c9735195fa"
+    },
+    {
+      "path": "assembly-outer/subcommands/000002/result.json",
+      "bytes": 1734,
+      "sha256": "27445623e0540ba97f000737c944e21ce4f47cdff5c5f1a4308bbd62d72bdb9a"
+    },
+    {
+      "path": "assembly-outer/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000003/request.json",
+      "bytes": 1779,
+      "sha256": "917de84d00624a0afb1748f1fd3b1aed44b0b34d411a14dbfbcb28545b52845d"
+    },
+    {
+      "path": "assembly-outer/subcommands/000003/result.json",
+      "bytes": 2031,
+      "sha256": "b44167f7cd08895d1dce239e4f8893d65435df014f454dff99e79b086782bf9a"
+    },
+    {
+      "path": "assembly-outer/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000003/stdout.bin",
+      "bytes": 2104,
+      "sha256": "f9cec4c63e5e61377e3b9e06ac9886a03e5acc9a3ce69acdfd4d74812eedca4d"
+    },
+    {
+      "path": "assembly-outer/subcommands/000004/request.json",
+      "bytes": 1449,
+      "sha256": "c8ad2a17e37789ea5fd7d817d74cc356a2ca53c22f01a5587f7874c148269a0d"
+    },
+    {
+      "path": "assembly-outer/subcommands/000004/result.json",
+      "bytes": 1700,
+      "sha256": "ca34f8852577351de6c28b3e3c1b0fd522ecae470905cdb0fb2951c096e912dc"
+    },
+    {
+      "path": "assembly-outer/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000004/stdout.bin",
+      "bytes": 41,
+      "sha256": "35f51b8f2249c32deb5edbf1b93b2a62269fb3418c3b42efc16d9c79c143129f"
+    },
+    {
+      "path": "assembly-outer/subcommands/000005/request.json",
+      "bytes": 1485,
+      "sha256": "5ccd29ffedf2f9d14477afc117e131559300c34ac6c1ce11532088aee098bea4"
+    },
+    {
+      "path": "assembly-outer/subcommands/000005/result.json",
+      "bytes": 1734,
+      "sha256": "a69370de9e10bcbfb031db069da62f38926e1028c1f1e066c1e67a0b6e490a89"
+    },
+    {
+      "path": "assembly-outer/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly-outer/subcommands.json",
+      "bytes": 9337,
+      "sha256": "82946f26ea5ddde86945eb658b0138c6bf7c473b24deb2cc82a3aee411c9cc65"
+    }
+  ]
+}

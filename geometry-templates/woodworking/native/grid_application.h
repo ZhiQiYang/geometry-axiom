@@ -98,6 +98,24 @@ bool wood_grid_apply_binding(WoodGridContext *,const WoodGridApplication *,char 
 bool wood_grid_prepare_child(const WoodGridContext *,WoodGridApplication *,bool,unsigned,unsigned,char *,size_t);
 bool wood_grid_child_check(const WoodGridContext *,const WoodGridApplication *,char *,size_t);
 bool wood_grid_systems_rebuild(WoodGridContext *,char *,size_t);
+/* H supplies immutable ordered observations from one candidate. These facts are
+ * not grid definitions or independently editable evaluated values. `resolved`
+ * means the value was evaluated at that original operation boundary. */
+typedef struct {
+    bool set, resolved;
+    GeoParameterRef source;
+    GeoCoord value;
+} WoodGridStaggerPoint;
+typedef struct {
+    uint32_t system_id, order;
+    unsigned axis;
+    WoodGridStaggerPoint before, after;
+} WoodGridStaggerFact;
+/* D10b/I24: compare a complete R56 submission. H supplies the evaluated stores
+ * and any ordered source facts, and excludes replacements and isolated replay.
+ * Missing stores fail closed. W owns the rule and reads no ambient state. */
+bool wood_grid_stagger_commit_valid(const GeoGridStore *after,const GeoGridStore *before,
+    const WoodGridStaggerFact *facts,size_t count,char *error,size_t cap);
 /* D64/I74 card-reference diagnostics for a K grid store status. Returns false
  * without writing when the status is not a card-reference status. The system
  * supplies the card's parameter and field ids; parameter_error the source cause. */

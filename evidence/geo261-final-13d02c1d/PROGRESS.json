@@ -1,0 +1,98 @@
+{
+  "schema": "geometry-followup-live-progress/1",
+  "issue": "261",
+  "tested_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "entries": [
+    {
+      "utc": "2026-10-23T05:24:50.054744+00:00",
+      "label": "post-main-prerequisites",
+      "result": "新F可解析；帳本check0、三架構原0/0/0；Linux六exclusion更新與完整closure守門通過；正式七項和受影響反證尚待執行",
+      "next": "在獨立乾淨F串行執行原七項並逐項推送，再收受影響runtime及oracle反證",
+      "archives": [
+        "raw/post-main-prerequisites-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T05:53:18.305675+00:00",
+      "label": "native",
+      "result": "原退出0；原收據有效=True；超CI時限=False；衍生通過=True",
+      "next": "繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽",
+      "archives": [
+        "raw/native-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T06:10:52.182821+00:00",
+      "label": "canvas",
+      "result": "原退出1；原收據有效=True；超CI時限=False；衍生通過=False",
+      "next": "繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽",
+      "archives": [
+        "raw/canvas-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T06:13:59.581793+00:00",
+      "label": "assembly",
+      "result": "原退出0；原收據有效=True；超CI時限=False；衍生通過=True",
+      "next": "繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽",
+      "archives": [
+        "raw/assembly-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T06:15:05.849990+00:00",
+      "label": "documents",
+      "result": "原退出0；原收據有效=True；超CI時限=False；衍生通過=True",
+      "next": "繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽",
+      "archives": [
+        "raw/documents-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T06:22:31.017719+00:00",
+      "label": "grid",
+      "result": "原退出0；原收據有效=True；超CI時限=False；衍生通過=True",
+      "next": "繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽",
+      "archives": [
+        "raw/grid-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T06:26:00.795880+00:00",
+      "label": "space",
+      "result": "原退出0；原收據有效=True；超CI時限=False；衍生通過=True",
+      "next": "繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽",
+      "archives": [
+        "raw/space-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T06:28:11.472698+00:00",
+      "label": "timber",
+      "result": "原退出0；原收據有效=True；超CI時限=False；衍生通過=True",
+      "next": "繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽",
+      "archives": [
+        "raw/timber-01.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T06:35:46.024643+00:00",
+      "label": "postmerge-p52-formal",
+      "result": "P52原gate與driver均0；main252.7797935ms/fix189.6910945ms，ratio0.7504203238；四blocks各8筆與五controls原0/0/1/1/1全符。七項原0/1/0/0/0/0/0保留canvas P88紅；closure18461fixtures三方同。",
+      "next": "繼續獨立verifier封存與runtime/P73/154/oracle；收齊後集中修P88，不放寬斷言",
+      "archives": [
+        "raw/postmerge-p52-formal-01.tar.gz",
+        "raw/postmerge-p52-formal-02.tar.gz"
+      ]
+    },
+    {
+      "utc": "2026-10-23T06:36:07.372958+00:00",
+      "label": "postmerge-p52-verifier",
+      "result": "原獨立verifier真0、adapter0；原1627bytes與9assert不改，九Node原exit/streams/hash/timeout逐一守門，DERIVED launch投影明列非原stdout。",
+      "next": "依序跑runtime撤回恢復、P73、Chromium154及oracle；保留canvas P88紅",
+      "archives": [
+        "raw/postmerge-p52-verifier-01.tar.gz"
+      ]
+    }
+  ]
+}

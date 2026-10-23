@@ -1,0 +1,26 @@
+{
+  "schema": "geo323-file-archival-execution/1",
+  "source_sha": "b823903e44aea091b70fd2f45b74dff6229776dc",
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/geo323-publication-tools/archive_ledger_e.py"
+  ],
+  "cwd": "/workspace",
+  "actual_process_returncode": 0,
+  "stdout_path": "archive-execution.stdout",
+  "stderr_path": "archive-execution.stderr",
+  "tool_sha256": "8f352f4338ca48a57aed6bfee49556e001cf81ab3a5b2321d64f5536f6c3d03d",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": null,
+    "PYTHONDONTWRITEBYTECODE": null,
+    "PYTHONOPTIMIZE": null
+  },
+  "scope": "pure-file archival/hash/reconstruction only; no product, tests, compiler, Git write, deletion of originals",
+  "first_attempt": "collector-attempt1-infra-failure/EXECUTION.json"
+}
