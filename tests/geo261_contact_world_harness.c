@@ -97,6 +97,51 @@ static int active_dedup(void)
     CHECK("dedup-large-fallback-keeps-uncollected-tail",!memcmp(&full[MANY*2],&untouched,sizeof untouched));
     return 0;
 }
+static int indexed_dedup(void)
+{
+    WoodMember m[3]={member(51,WOOD_MEMBER_ROLE_PRIMARY,2),member(52,WOOD_MEMBER_ROLE_PRIMARY,2),member(53,WOOD_MEMBER_ROLE_PRIMARY,2)};
+    WoodContactMemberFact f[3]={fact(&m[0],1,false,(GeoRect2){0,0,100,27}),fact(&m[1],2,false,(GeoRect2){INT64_C(4294967296),0,INT64_C(4294967396),27}),fact(&m[2],3,false,(GeoRect2){0,0,100,27})};
+    WoodContactWorld w={.placement_id=7,.members=f,.member_count=2};WoodStopFace out[8];size_t n;
+    n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-full-coordinate-plane",n==4&&sides(out,n,51)==2&&sides(out,n,52)==2&&out[2].fixed==INT64_C(4294967296));
+    f[0]=fact(&m[0],1,false,(GeoRect2){0,0,100,5});f[1]=fact(&m[1],1,false,(GeoRect2){0,5,100,10});f[2]=fact(&m[2],2,false,(GeoRect2){0,0,100,10});w.member_count=3;
+    n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-two-halves-not-one-cover",n==6&&sides(out,n,51)==2&&sides(out,n,52)==2&&sides(out,n,53)==2);
+    w.member_count=2;f[0]=fact(&m[0],1,false,(GeoRect2){0,5,100,6});f[1]=fact(&m[1],2,false,(GeoRect2){0,5,100,5});
+    n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-zero-lower-strict",n==4&&sides(out,n,52)==2);
+    f[0].footprint=(GeoRect2){0,4,100,5};n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-zero-upper-strict",n==4&&sides(out,n,52)==2);
+    f[0].footprint=(GeoRect2){0,2,100,9};f[1].footprint=(GeoRect2){0,8,100,3};
+    n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-enclosed-reversed-span",n==2&&sides(out,n,51)==2&&sides(out,n,52)==0);
+    f[0].footprint=(GeoRect2){0,3,100,9};n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-reversed-touch-is-not-overlap",n==4&&sides(out,n,52)==2);
+    f[0].footprint=(GeoRect2){0,4,100,6};f[1].footprint=(GeoRect2){0,5,100,5};
+    n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-enclosed-zero-span",n==2&&sides(out,n,51)==2&&sides(out,n,52)==0);
+    f[0].footprint=(GeoRect2){0,INT64_MIN,100,INT64_MAX};f[1].footprint=(GeoRect2){0,INT64_MIN+1,100,INT64_MAX-1};
+    n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-coordinate-extremes-without-subtraction",n==2&&face(&out[0],WOOD_STOP_MEMBER_SIDE,0,51,-1,0,WOOD_STOP_FIXED,0,INT64_MIN,INT64_MAX));
+    /* The last fact is filtered from faces, but still supplies the last
+     * order for ID51. Its minimum1 can shadow ID52 before ID51's sorted turn. */
+    m[2].id=m[0].id;f[0]=fact(&m[0],1,false,(GeoRect2){0,0,100,27});f[1]=fact(&m[1],2,false,(GeoRect2){0,0,100,27});f[2]=fact(&m[2],3,false,(GeoRect2){0,0,100,27});w.member_count=3;
+    m[2].placed=false;n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-filtered-duplicate-order",n==2&&face(&out[0],WOOD_STOP_MEMBER_SIDE,0,51,-1,0,WOOD_STOP_FIXED,0,0,27)&&face(&out[1],WOOD_STOP_MEMBER_SIDE,0,51,-1,1,WOOD_STOP_FIXED,100,0,27));
+    m[2].placed=true;f[2].placement_id=8;n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-other-placement-duplicate-fallback",n==2&&sides(out,n,51)==2&&sides(out,n,52)==0);f[2].placement_id=7;
+    f[2].footprint_valid=false;n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-invalid-footprint-duplicate-fallback",n==2&&sides(out,n,51)==2&&sides(out,n,52)==0);f[2].footprint_valid=true;
+    n=wood_contact_collect_stops(&w,false,&m[2],out,8);
+    CHECK("indexed-excluded-duplicate-keeps-pointer-identity",n==2&&sides(out,n,51)==2&&sides(out,n,52)==0);
+    memset(out,0x5a,sizeof out);WoodStopFace tail=out[4];n=wood_contact_collect_stops(&w,false,NULL,out,4);
+    CHECK("indexed-truncated-fact-still-requires-fallback",n==2&&sides(out,n,51)==2&&sides(out,n,52)==0&&!memcmp(&out[4],&tail,sizeof tail));
+    m[2].placed=false;f[0]=fact(&m[0],1,false,(GeoRect2){0,20,100,30});f[1]=fact(&m[1],2,false,(GeoRect2){0,20,100,40});f[2].order=1;
+    n=wood_contact_collect_stops(&w,false,NULL,out,8);
+    CHECK("indexed-duplicate-fallback-keeps-partial-shadow",n==4&&sides(out,n,51)==2&&sides(out,n,52)==2);
+    return 0;
+}
+
 static int intervals(void)
 {
     WoodBoundaryRegion b=elbow();GeoCoord lo=-999,hi=-888;
@@ -154,4 +199,4 @@ static int end_faces(void)
     self.placed=false;w.region_count=0;w.role_boundary=NULL;w.member_count=1;f[0]=fact(&self,1,true,(GeoRect2){-10,0,0,100});CHECK("unplaced-owner-is-not-contact",wood_contact_end_faces(&w,&self,false,0,100,20,30,NULL,0));return 0;
 }
 int main(int argc,char **argv)
-{if(argc!=2)return 2;if(!strcmp(argv[1],"ordering"))return ordering();if(!strcmp(argv[1],"regions"))return regions_and_capacity();if(!strcmp(argv[1],"active-dedup"))return active_dedup();if(!strcmp(argv[1],"intervals"))return intervals();if(!strcmp(argv[1],"extensions"))return extensions();if(!strcmp(argv[1],"ends"))return end_faces();return 2;}
+{if(argc!=2)return 2;if(!strcmp(argv[1],"ordering"))return ordering();if(!strcmp(argv[1],"regions"))return regions_and_capacity();if(!strcmp(argv[1],"active-dedup"))return active_dedup();if(!strcmp(argv[1],"indexed-dedup"))return indexed_dedup();if(!strcmp(argv[1],"intervals"))return intervals();if(!strcmp(argv[1],"extensions"))return extensions();if(!strcmp(argv[1],"ends"))return end_faces();return 2;}
