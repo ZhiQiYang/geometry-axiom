@@ -22,8 +22,8 @@ static void init(Fixture *f,GeoCoord step)
     GeoPoint2 p[6]={{0,0},{500,0},{500,step},{1000,step},{1000,1000},{0,1000}};
     memcpy(f->boundary.outline.v,p,sizeof p);
     for(size_t i=0;i<6;++i)f->boundary.outline.fixity[i]=WOOD_STOP_FIXED;
-    f->self=(WoodMember){.id=1,.size_a=27,.size_b=20,.length=500,.role=WOOD_MEMBER_ROLE_BOUNDARY,.cut_priority=1,.placed=true};
-    f->other=(WoodMember){.id=2,.size_a=27,.size_b=20,.length=500,.role=WOOD_MEMBER_ROLE_BOUNDARY,.cut_priority=99,.placed=true};
+    f->self=(WoodMember){.id=1,.size_a=27,.size_b=20,.length=500,.role=WOOD_MEMBER_ROLE_BOUNDARY,.cut_priority=1,.auto_length=true,.placed=true};
+    f->other=(WoodMember){.id=2,.size_a=27,.size_b=20,.length=500,.role=WOOD_MEMBER_ROLE_BOUNDARY,.cut_priority=99,.auto_length=true,.placed=true};
     f->members[0]=(WoodContactMemberFact){&f->self,7,2,false,true,{0,0,500,27}};
     f->members[1]=(WoodContactMemberFact){&f->other,7,1,false,true,{500,step,1000,step+27}};
     f->world=(WoodContactWorld){.placement_id=7,.regions={&f->boundary},.region_count=1,.role_boundary=&f->boundary,.members=f->members,.member_count=2};

@@ -18,7 +18,7 @@ static int host_collector(void)
     g_world.wood.timber_count=2;
     for(size_t i=0;i<2;++i){
         g_world.wood.timbers[i]=(Timber){.id=(uint32_t)i+1,.size_a=27,.size_b=20,.length=500,
-            .role=TIMBER_ROLE_BOUNDARY,.cut_priority=1,.placed=true,.origin={(Coord)i*500,(Coord)i*13,0},
+            .role=TIMBER_ROLE_BOUNDARY,.cut_priority=1,.auto_length=true,.placed=true,.origin={(Coord)i*500,(Coord)i*13,0},
             .axis_length={1,0,0},.axis_a={0,1,0},.axis_b={0,0,1}};
         g_world.wood.anchors[i]=(TimberAnchor){.placement_id=7,.uv={(Coord)i*500,(Coord)i*13},
             .anchor_kind=WOOD_ANCHOR_AT_EDGE,.span_mode=WOOD_SPAN_AUTO,.length_direction=SURFACE_DIRECTION_POS_U,
