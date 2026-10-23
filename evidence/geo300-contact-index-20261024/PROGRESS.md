@@ -1,19 +1,17 @@
-# GEO-300 唯一 ID 遮蓋查詢與穩定 member 排序進度
+# GEO-300 排序與跨 suite 反證錨點進度
 
-目前 product SHA `cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041`，父 E `4f456effd0a53ec45e575c2ce3596825b8dc937a`。只改 contact_world.c、原 harness、原 Python suite 與 expected 的 wood-contact 11→12；其餘 registry、SSOT、決策與容量未改。正常 bounded/unique 路徑共用既有四陣列做穩定 index merge 與單 face permutation；duplicate／overflow 保原 insertion loop。
+目前 S `ccfaf057088a80c7aad4049f1c67e5eedfc2fdec`，產品 bytes／expected 與 `cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041` 完全相同，只有 contact-sources placement-order tuple 從舊 insertion break 移到正常 comparator。原 case／具名 ASSERT／15 methods／11 controls／timeout不變；單leaf靜審15／0。
 
-| 目前 SHA 的項目 | 結果 |
+| 目前 S 的項目 | 結果 |
 | --- | --- |
-| 排序草案獨立靜審 | 283 checks／0 findings；只有靜態，不是 C 實證 |
-| 原三套 | UNRUN；預期 12＋15＋7＝34 方法、41＋11＋12＝64 controls |
-| 既定 16MiB／compiler frame | 新來源 UNRUN／未另量，未新增或加大索引陣列 |
-| 整條快路撤回 | UNRUN；另規劃 8 原正例語意等價 0/0/0，不計 killed |
-| 性能、P-189、容量512、全 native/browser/ledger/architecture | UNMEASURED／UNRUN／NOT READY |
+| 原三套34 methods／64 controls | UNRUN，等待root原100MiB／secondary槽授權 |
+| tuple回撤／恢復 | UNRUN；另用原受影響一方法／8控制 fixed0→舊tuple紅1→restore0，不能冒完整15方法或全部11控制 |
+| 16MiB／效能／512／完整native/browser/ledger/arch | 新S未跑／UNMEASURED／NOT READY |
 
-歷史 S `1ee4e830399b124ebd63c5ff51064d87e53f38d9` 已實跑 33 方法／56 正常0/1/0／302 builds，全0、0skip；這些結果只屬原 SHA。原 1140/0 actual peer 與 1571/0 public peer、366 成員原件包完整保留，不能標為新排序實跑。#341／Sc493 的32／46／282也保原SHA。
+前輪 Scc2 三套已22:47:26.381006～22:47:48.756991 UTC真終態：wood12/41 exit0，contact-sources15 exit1，ReadingA7/12 exit0；147＋85＋86＝318 builds全0，三套0skip，outer／primary／reaper／launcher全1，source HEAD/tree clean。唯一紅為舊placement-order反證還撤已被快路旁路的fallback，原native輸出 PASS ordering／exit0，故原meta-test正常失敗1；不是compile／crash／環境紅。原正常排序行為測項通過。
 
-本次 Git-only 出版第一輪 apply-check exit1：薄 checkout 未物化原 tracked tests/run_all.expected.json，原 stderr／退出碼全保。沒有產品 patch 或 C 執行；r2 只從同 HEAD 精確 restore 該原檔，再套完全相同的凍結 patch，一般 commit/push0且遠端同 SHA。未重寫失敗原件。reviewer 的初始 expected-schema checker 錯誤也與修正版一起保存，不是 subject 紅燈。
+本批公開完整紅stderr、原inner/top receipts與單leaf patch／manifest／peer／正常push證據。其餘完整原streams／compiled C／logs仍原路徑保全，完整壓縮封包與actual/public peer待後續真正測試批次一併收，不宣稱已公開全raw。沒有覆寫本輪1。
 
-MEMBER_SORT_STATIC_ORIGINALS_AND_PEER.tar.gz 保存四leaf前後、patch／設計／純AST、原機械 roundtrip、兩輪 Git-only 指令與完整 streams／exit、runner綁定及靜審；全部成員逐byte回讀。此封包尚無34／64動態結果。
+歷史S1ee的33/56/302全0仍只屬原SHA；舊靜態172成員包與原實際366成員包全保。新S不繼承整體綠燈。正常unique bounded排序只改善該排序，duplicate/overflow平方後備、cut-list及call-growth仍在；無新容量／性能門檻。下一步修復後原三套一次重跑，另外留明確tuple撤回原meta紅／恢復綠證據，仍不改產品、公理、決策或全帳本。
 
-下一步：root ReadingA 專項真終態後取得 secondary 槽，在新固定 SHA 跑原三套與全部具名正常 ASSERT0/1/0；OUT／TMPDIR 用新的 workspace 私有路徑，仍守原100MiB、16MiB與子時限。成本性能不與 root 全帳本並跑。duplicate／overflow平方後備、cut-list平方儲存與呼叫量問題仍在，不宣稱整體collector/load已O(FlogF)。
+出版的 git diff --check 原exit2：只有完整原stderr第8行既有尾空白，原bytes照存。其餘精確排除此一raw路徑的staged檢查0；不是產品或測試斷言放寬。完整失敗stdout/exit原件保留。
