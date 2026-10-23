@@ -1,0 +1,596 @@
+{
+  "schema": "geo337-final-L-original-browser-terminal-collection/1",
+  "sourceSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "job": "grid",
+  "createdUTC": "2026-10-23T23:38:44.928766+00:00",
+  "originalExit": 0,
+  "wrapperExit": 0,
+  "passed": true,
+  "overOriginalCITimeout": false,
+  "originalCITimeoutMinutes": 15,
+  "elapsedSeconds": 482.2789733009995,
+  "sourceBefore": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "root": "/workspace/train337-browser-pool-L-7af8c5d8/layout/jobs/grid/source",
+    "status": ""
+  },
+  "sourceAfter": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "root": "/workspace/train337-browser-pool-L-7af8c5d8/layout/jobs/grid/source",
+    "status": ""
+  },
+  "versions": [
+    {
+      "argv": [
+        "google-chrome",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Google Chrome 156.0.8078.47 \n"
+    },
+    {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.19.0\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Python 3.12.14\n"
+    },
+    {
+      "argv": [
+        "cc",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+    },
+    {
+      "argv": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status} ${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "exit": 0,
+      "stdout": "install ok installed 1:20240730+repack1-1\n"
+    }
+  ],
+  "originalPoolGuardLogs": [
+    {
+      "phase": "before_guard",
+      "directory": "/workspace/train337-browser-pool-L-7af8c5d8/layout/guard-logs/guard-1ben6fed",
+      "selection": "unique completed directory mtime within original guard command interval; no later guard/later GUARD_LATEST relabeled"
+    },
+    {
+      "phase": "after_guard",
+      "directory": "/workspace/train337-browser-pool-L-7af8c5d8/layout/guard-logs/guard-safoyffx",
+      "selection": "unique completed directory mtime within original guard command interval; no later guard/later GUARD_LATEST relabeled"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Cache/Cache_Data/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Cache/Cache_Data/index-dir/the-real-index",
+      "bytes": 48,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Cache/No_Vary_Search/journal.baj",
+      "bytes": 4,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Cache/No_Vary_Search/snapshot.baf",
+      "bytes": 20,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/05f1841fd514553c_0",
+      "bytes": 215,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/117ed60d46393c05_0",
+      "bytes": 203,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/11fa099182ab0e8d_0",
+      "bytes": 268,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/129cf6a2250219c3_0",
+      "bytes": 218,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/12ef40eabdd6091a_0",
+      "bytes": 331,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/14053b34c1b29f8a_0",
+      "bytes": 219,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/15aca0db50317c31_0",
+      "bytes": 209,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/1b06f5b0dce782e7_0",
+      "bytes": 260,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/2462daeb15da9834_0",
+      "bytes": 892,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/2c17f98bab486d36_0",
+      "bytes": 219,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/318b35616ce363eb_0",
+      "bytes": 668,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/3356a848a48390ec_0",
+      "bytes": 212,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/33f4098fbf615b20_0",
+      "bytes": 208,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/3713f9c2dc786f39_0",
+      "bytes": 218,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/39237a9381689e73_0",
+      "bytes": 269,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/3a8f44d0f01600a7_0",
+      "bytes": 262,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/3b7752093a2d0cf2_0",
+      "bytes": 227,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/3c28f0483ac0e534_0",
+      "bytes": 202,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/3fa91874e2719a8e_0",
+      "bytes": 204,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/4514d79ad6bf6b0a_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/4c55a8ba961abb7c_0",
+      "bytes": 440,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/53898aef2c72bdb4_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/58948717143174ef_0",
+      "bytes": 210,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/5a258adb20dd061f_0",
+      "bytes": 209,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/6a711b9b46336864_0",
+      "bytes": 208,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/6cbca54032f78bf3_0",
+      "bytes": 219,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/6e531b3d341e8a76_0",
+      "bytes": 265,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/7484372827bd5217_0",
+      "bytes": 207,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/8570d2e09d304b85_0",
+      "bytes": 210,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/858d242673f21482_0",
+      "bytes": 218,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/8b52487f6475e9fb_0",
+      "bytes": 208,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/8cd7aeb0146f14d4_0",
+      "bytes": 396,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/99f526d08839066d_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/9e451d10a2c20662_0",
+      "bytes": 250,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/9fb52939d87de679_0",
+      "bytes": 236,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/a0e447f923afe52a_0",
+      "bytes": 210,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/a1dd0c7f73a1185f_0",
+      "bytes": 227,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/a5696a0f7e623e09_0",
+      "bytes": 215,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/ab78a337ea48938c_0",
+      "bytes": 255,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/ac007c53a188d8d3_0",
+      "bytes": 221,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/ac7e4928378537e3_0",
+      "bytes": 906,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/ba678a2fbd8c358c_0",
+      "bytes": 298,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/ba7270b4af90760c_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/c04ffefb9ae9b386_0",
+      "bytes": 247,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/cd2da20319060588_0",
+      "bytes": 202,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/d20ad1a2e4c89f4a_0",
+      "bytes": 249,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/d629789d36cbc234_0",
+      "bytes": 209,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/dd058270494f927e_0",
+      "bytes": 211,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/e319941e7f47b694_0",
+      "bytes": 203,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/e5e5fa4271375006_0",
+      "bytes": 251,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/ebd0a98d755805f3_0",
+      "bytes": 211,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/f3dd7feff574f96c_0",
+      "bytes": 206,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/fa074435abac3fa1_0",
+      "bytes": 422,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/fa89392a6117cd89_0",
+      "bytes": 212,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/js/index-dir/the-real-index",
+      "bytes": 1344,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/wasm/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/Code Cache/wasm/index-dir/the-real-index",
+      "bytes": 48,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/DawnGraphiteCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/DawnGraphiteCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/DawnGraphiteCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/DawnGraphiteCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/DawnGraphiteCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/DawnWebGPUCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/DawnWebGPUCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/DawnWebGPUCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/DawnWebGPUCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/DawnWebGPUCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/GPUCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/GPUCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/GPUCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/GPUCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/Default/GPUCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.db",
+      "bytes": 4096,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.db-wal",
+      "bytes": 12392,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-cdp-BLcFyj/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.journal",
+      "bytes": 0,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-runtime/6c690005a1621ec3a130/bridge",
+      "bytes": 1122224,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "cbccd0f20039f0e37216e31f0063cfb88b7a9c74df54e777cf034af395322966"
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-runtime/6c690005a1621ec3a130/core",
+      "bytes": 904000,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "1c896e19214d23ba6d55015a1fd40b500408e6c4cc8715b8a1a258c9ae015713"
+    },
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/geometry-runtime/6c690005a1621ec3a130/model-base",
+      "bytes": 968896,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "0c2b0541a20816ee25e8709d23eba96cb7151ba784875229002e01f42b1e928e"
+    }
+  ],
+  "nonRegularNodes": [
+    {
+      "path": "/workspace/train337-browser-L-grid/tmp/original/grid/com.google.Chrome.PY0uty/SingletonSocket",
+      "mode": "0o140700",
+      "bytes": 0,
+      "reason": "non-regular IPC node; no serializable file payload, retained in place"
+    }
+  ],
+  "noExistingFileDeleted": true,
+  "noSubjectRerun": true,
+  "limits": [
+    "Original exposed command stdout/stderr only; no hidden compiler/test pipe interception or files already removed by original cleanup are reconstructed.",
+    "No ROOT/SEED/pool/Git/source payload copied; pool immutable plan/tree/raw preparation and original completed guard command streams are included.",
+    "GUARD_LATEST.json is shared mutable state and may already have been replaced by later jobs; it is not relabeled as the documents original. Original per-guard closed Git logs and actual guard argv/exit/fullstreams are retained.",
+    "Terminal profile non-cache files/symlinks retained; Chrome cache payloads excluded with inventory, no removal. ELF payloads excluded with actual hashes; original fingerprint sidecars retained.",
+    "GitHub artifact upload actions are preserved as original local artifact saves, not claimed uploaded to GitHub.",
+    "No independently predecoded host API launcher pipe is invented."
+  ]
+}

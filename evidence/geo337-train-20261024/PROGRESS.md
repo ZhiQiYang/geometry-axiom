@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 23:32 UTC）
+## 唯一 current-state（2026-10-23 23:40 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -10,7 +10,7 @@
 | 原完整123帳本 | L | tracked／fullCLI／core-map／external-check 全0；outer0 | 23:00:25 UTC真終態；123筆／120自然execution heads皆L，114killed／5equivalent／1原允許crashed／3retired；完整原流封final-L-ledger-complete |
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
 | 完整 native | L | RUNNING，尚無終態exit | session80260，原 --build全部230列、16MiB stack／35min CI；含#314六module103／Node13、ReadingA7／14、#323三module50 |
-| canvas／assembly／documents／grid／space／timber | L | documents0；assembly0；grid RUNNING；其餘UNRUN | documents47原assert全0／64.316s；assembly150原assert全0／191.692s；獨立checkout／埠／暫存，canvas獨占、原CI時限保留 |
+| canvas／assembly／documents／grid／space／timber | L | documents0；assembly0；grid0；space RUNNING；canvas/timber UNRUN | documents47原assert全0／64.316s；assembly150原assert全0／191.692s；獨立checkout／埠／暫存，canvas獨占、原CI時限保留 |
 | P52／Q38／§7兩項／P-189 | L | 全部UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | 全部UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
@@ -177,3 +177,7 @@ documents 在同L原workflow真exit0、wrapper0、47個原斷言全通過，64.3
 ## 2026-10-23 23:32 UTC：assembly 完整原job原件公開
 
 assembly同L原workflow、outer與reaper皆0；原150斷言（P77 134＋P82 16）全通過、0skip、uncaught0，191.692秒低於原CI15分鐘。9截圖、全部原commands/streams/environment/SHA與兩個已關閉Git守門封於 `final-L-browser-assembly/`，672members／5,226,869B壓縮，producer695與獨立3431核對0。原workflow指定GEOMETRY_ASSEMBLY_ONLY，既定partial模式不比golden，不能冒完整canvas；原Injected lost success response是P77預期故障注入，不另當產品紅。80個可重建Chrome cache與3個ELF按清單排除且未刪；runtime sidecars與原compile完整保存。
+
+## 2026-10-23 23:40 UTC：grid 原正式項通過
+
+grid同L原workflow／outer／reaper皆0，356個原斷言全通過、0skip／uncaught0；P70=121、P71=9、P78=23、P87=60、P88=143，482.279秒低於原CI15分鐘。原4截圖、source初末L/clean、全部commands/streams/environment與runtime sidecars收於 `final-L-browser-grid/`，675members／8,569,103B壓縮；producer690、獨立3438核對均0。原grid-only partial模式不比golden，不能冒完整canvas。CDP_RESULT後339行server trace全部保留，沒有裁成錯誤或截去；80個可重建cache及3個ELF排除清單明列且未刪。space已啟session66090占第二槽，native session80260仍執行原230項，兩項尚無最終退出碼。
