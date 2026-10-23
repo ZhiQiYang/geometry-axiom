@@ -262,9 +262,11 @@ class LiveMutationAnchorMigration(unittest.TestCase):
                           "M148": "geometry-templates/woodworking/native/world_validation.c"})
         reading_a["M149"] = "geometry-core/references.inc"
         reading_a["M150"] = "geometry-templates/woodworking/native/member_reference.c"
-        self.assertEqual(11, len(reading_a))
+        # RC run rule (2026-10-24): placed members lining the RC plane bound the run.
+        reading_a["M151"] = "geometry-templates/woodworking/native/contact_world.c"
+        self.assertEqual(12, len(reading_a))
         added.update(reading_a)
-        self.assertEqual(72, len(added))
+        self.assertEqual(73, len(added))
         self.assertEqual({**expected, **added}, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
         # The ten P-135/P-141 preview-only guards and the eight GEO-262 P-142
         # guards (M78-M85) run on the actual bridge.
