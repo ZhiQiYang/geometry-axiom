@@ -1,5 +1,31 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-10-23 帳本續補（接 2026-10-22 12:45 之後）
+
+- 本節只新增。上一節「2026-10-22 帳本續補」、各工單舊文，以及既有鎖定行，都沒改。沒有重跑測試。工單條目裡既有的 2026-10-22 註記也沒改。
+- 查詢在台北 2026-10-23 13:56 這一輪。合併狀態用 `gh pr view`；main 用 `gh api repos/ZhiQiYang/geometry-axiom/commits/main`；#288 留言用 issue comments API，共 72 則。祖先檢查用本機 `git merge-base --is-ancestor <merge commit> origin/main`，當時 `origin/main` 是 `4ccced59315d0bcf01084ad89c760bb43d8b363b`，六筆結束碼都是 0（2026-10-23 13:56:43 +08）。各筆時間以該筆 GitHub 時間戳為準，下面另換算成 Asia/Taipei。
+- 上一節的查詢時點是台北 2026-10-22 12:45，當時 main 是 `adbaebf9`。那節留著。本輪 GitHub `main` 的 commit 是 `4ccced59`，committer date `2026-10-22T08:51:51Z`（台北 2026-10-22 16:51:51），訊息是 Merge pull request #327。
+
+### 已合併進 main
+
+- **[#326](https://github.com/ZhiQiYang/geometry-axiom/pull/326)** state=MERGED、isDraft=false、base=`main`、mergedAt `2026-10-22T05:41:49Z`（台北 2026-10-22 13:41:49）、merge commit `ed459c1b`、headRefOid `2228b63d`。標題是 `docs(decisions): 2026-10-22 step-column boundary-end joints accepted (locked)`。祖先檢查結束碼 0。本輪沒有重讀決策正文。
+- **[#328](https://github.com/ZhiQiYang/geometry-axiom/pull/328)** state=MERGED、isDraft=false、base=`main`、mergedAt `2026-10-22T05:48:44Z`（台北 2026-10-22 13:48:44）、merge commit `797575db`、headRefOid `3c7c53ea`。標題是 `docs(decisions): 2026-10-22 pilaster B1 and #314 boundary answers (locked)`。祖先檢查結束碼 0。本輪沒有重讀決策正文。
+- **[#329](https://github.com/ZhiQiYang/geometry-axiom/pull/329)** state=MERGED、isDraft=false、base=`main`、mergedAt `2026-10-22T06:47:17Z`（台北 2026-10-22 14:47:17）、merge commit `a7783f6c`、headRefOid `2472300a`。標題是 `docs(decisions): timber end faces fix only to timber; no hanging cap (locked)`。祖先檢查結束碼 0。本輪沒有重讀決策正文。
+- **[#330](https://github.com/ZhiQiYang/geometry-axiom/pull/330)** state=MERGED、isDraft=false、base=`main`、mergedAt `2026-10-22T06:54:09Z`（台北 2026-10-22 14:54:09）、merge commit `f6a15891`、headRefOid `144d7cf1`。標題是 `docs(decisions): user confirms column-on-wall and thin-step layouts (locked)`。祖先檢查結束碼 0。本輪沒有重讀決策正文。
+- **[#332](https://github.com/ZhiQiYang/geometry-axiom/pull/332)** state=MERGED、isDraft=false、base=`main`、mergedAt `2026-10-22T08:37:53Z`（台北 2026-10-22 16:37:53）、merge commit `20329738`、headRefOid `f77d4893`。標題是 `docs(decisions): #288 final validation on cloud Codex (trial, locked)`。祖先檢查結束碼 0。正文寫：#288 最終驗收改在雲端 Codex 環境試行；判準仍是同一可解析最終 SHA、7 項加專項、逐項封存；雲端裝不起 Chrome 時，網頁 job 不得標為通過；只新增決策佇列一節。這是決策紀錄的合併。驗收進度見下一節。
+- **[#327](https://github.com/ZhiQiYang/geometry-axiom/pull/327)** state=MERGED、isDraft=false、base=`main`、mergedAt `2026-10-22T08:51:52Z`（台北 2026-10-22 16:51:52）、merge commit `4ccced59`、headRefOid `ab027702`。標題是 `fix(framing-oracle): #251 審查 6332818768、#318、#319`。這顆 merge commit 與本輪 GitHub `main` 相同。祖先檢查結束碼 0。同輪 `gh issue view`：[#318](https://github.com/ZhiQiYang/geometry-axiom/issues/318) state=OPEN、updatedAt `2026-10-23T05:22:51Z`（台北 2026-10-23 13:22:51）；[#319](https://github.com/ZhiQiYang/geometry-axiom/issues/319) state=OPEN、updatedAt `2026-10-19T16:24:56Z`（台北 2026-10-20 00:24:56）。標題點到這兩張，它們自己仍是 OPEN。本輪沒有重跑 #327 的測試。
+
+### 同號段尚未合併
+
+- **[#331](https://github.com/ZhiQiYang/geometry-axiom/pull/331)** state=OPEN、isDraft=true、mergedAt=null、mergeCommit=null、base=`main`、head=`grok/axiom-layering-draft-20261022`、headRefOid `16801ae6983589bc1fac95db732e6b719619c6d1`、updatedAt `2026-10-23T04:53:56Z`（台北 2026-10-23 12:53:56）。標題是 `草稿：公理層逐條分核心、木工、混合`。它在 #326 到 #332 的編號之間，本輪沒有合併紀錄。
+
+### 雲端驗收（#288）仍開著
+
+- **[#288](https://github.com/ZhiQiYang/geometry-axiom/pull/288)** `gh pr view 288`：state=OPEN、isDraft=true、mergedAt=null、mergeCommit=null、base=`main`、head=`architecture/geo261-integration-20261016`、headRefOid `2fe87ac4209d2847c5032d9535c963404bc39a42`、mergeable=`MERGEABLE`、mergeStateStatus=`UNSTABLE`。updatedAt `2026-10-23T05:53:21Z`（台北 2026-10-23 13:53:21）。`MERGEABLE` 不是已合併。
+- 該 head 的 commit API：committer date `2026-10-23T05:53:18Z`（台北 2026-10-23 13:53:18），訊息 `Publish GEO-261 native acceptance evidence`，parent `f65fa58954e1730ea4624e6f41a03a942b3647a8`。本輪沒有重讀 parent 的訊息，也沒有讀 evidence 目錄。
+- issue comments 共 72 則。最新一則仍是 [2026-10-22T22:34:48Z 的 ChatGPT 審查](https://github.com/ZhiQiYang/geometry-axiom/pull/288#issuecomment-6352799614)，對象 head `4b665fa`。結論是阻擋合併。該則寫當時 base `adbaebf9`、mergeable false，F2 綠燈不能外推到解衝突後的樹，正文過期。它不涵蓋其後的 parent `f65fa589` 與目前 head `2fe87ac`。該則記錄段寫某套 F2 的 17 項與額外 phase 符合門檻；那是審查留言，本輪沒有讀那些 PROGRESS、沒有重跑，不記成目前 head 的驗收通過。
+- 上一節記的 head 是 `7dae5f21`。那是 12:45 的快照，留在上一節。
+
 ## 2026-10-22 帳本續補（接 #315 之後）
 
 - 本節只新增。上一節「2026-10-19 帳本續補」、各工單舊文，以及既有鎖定行，都沒改。沒有重跑測試，也沒有把未合併的 PR 記成完成。
