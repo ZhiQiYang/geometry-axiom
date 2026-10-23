@@ -6357,8 +6357,8 @@ async function main() {
     console.log('P53 wait for injected connection error');
     await waitForExpectedNavigation({evaluate:eval_, marker:navigationMarker, label:'P53 injected connection error',
       condition:`typeof connection !== 'undefined' && connection.phase === 'error'`});
-    const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert})`);
-    check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert, failedStart);
+    const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert,phase:connection.phase,error:connection.error})`);
+    check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert && failedStart.phase === 'error' && typeof failedStart.error === 'string' && failedStart.error.length > 0 && failedStart.error.includes('403'), failedStart);
     const offlineRequests = await eval_(`__g197Commands.length`);
     await key('p','KeyP',80);
     check('P53-2 失敗時快捷鍵不送建立指令', await eval_(`__g197Commands.length`) === offlineRequests);
@@ -6609,18 +6609,34 @@ async function main() {
     check('P61-8b 未就緒預覽的點按不觸發例外',excN===failedPdfExceptions);
     await ctl('#refClose');
     check('P61-9 PDF 讀取失敗保留原場景',await eval_(`api('dump').then(r=>r.text===${JSON.stringify(lastDump)})`));
-    check('P61-10 載入未送達時，重試連線保留原幾何與來源',await eval_(`(async()=>{
+    const uploadNotSentRecovery = await eval_(`(async()=>{
       const oldFetch=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
-      window.fetch=async(input,init)=>{if(input==='/upload/confirm')throw new TypeError('test upload disconnected');return oldFetch(input,init);};
-      let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
-      await recoverConnection();return blocked&&connection.phase==='ready'&&connection.error===''&&(await api('dump')).text===before&&ReferenceWorkspace.active(1).id===ref;
-    })()`));
-    check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',await eval_(`(async()=>{
+      let confirmIntercepted=false;
+      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){confirmIntercepted=true;throw new TypeError('test upload disconnected');}return oldFetch(input,init);};
+      let blocked=false,importFailure=null;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';importFailure={name:e.name,message:e.message};}finally{window.fetch=oldFetch;}
+      const seed={phase:connection.phase,error:connection.error};
+      await recoverConnection();
+      const after=(await api('dump')).text,source=ReferenceWorkspace.active(1).id;
+      const proof={confirmIntercepted,blocked,importFailure,seed,phase:connection.phase,error:connection.error,beforeDump:before,afterDump:after,dumpMatches:after===before,sourceId:source,expectedSourceId:ref,sourceMatches:source===ref};
+      proof.passed=confirmIntercepted&&seed.phase==='error'&&typeof seed.error==='string'&&seed.error.length>0&&blocked&&connection.phase==='ready'&&connection.error===''&&proof.dumpMatches&&proof.sourceMatches;
+      return proof;
+    })()`);
+    console.log('GEO320_RECOVERY_PROOF '+JSON.stringify({case:'P61-10',...uploadNotSentRecovery}));
+    check('P61-10 載入未送達時，重試連線保留原幾何與來源',uploadNotSentRecovery.passed,uploadNotSentRecovery);
+    const uploadResponseLostRecovery = await eval_(`(async()=>{
       const oldFetch=window.fetch.bind(window);
-      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){await oldFetch(input,init);throw new TypeError('test response lost');}return oldFetch(input,init);};
-      let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
-      await recoverConnection();return blocked&&connection.phase==='ready'&&connection.error===''&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&typeof curScene.path==='string'&&curScene.path.endsWith('.scene');
-    })()`));
+      let confirmIntercepted=false,confirmationResponseReceived=false,confirmationResponseOK=false,confirmationStatus=null;
+      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){confirmIntercepted=true;const response=await oldFetch(input,init);confirmationResponseReceived=true;confirmationResponseOK=response.ok;confirmationStatus=response.status;throw new TypeError('test response lost');}return oldFetch(input,init);};
+      let blocked=false,importFailure=null;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';importFailure={name:e.name,message:e.message};}finally{window.fetch=oldFetch;}
+      const seed={phase:connection.phase,error:connection.error};
+      await recoverConnection();
+      const after=(await api('dump')).text,distanceMm=ReferenceWorkspace.active(1).calibration.distanceMm,scenePath=curScene.path;
+      const proof={confirmIntercepted,confirmationResponseReceived,confirmationResponseOK,confirmationStatus,blocked,importFailure,seed,phase:connection.phase,error:connection.error,expectedDump:g198Dump,afterDump:after,dumpMatches:after===g198Dump,distanceMm,scenePath};
+      proof.passed=confirmIntercepted&&confirmationResponseReceived&&confirmationResponseOK&&seed.phase==='error'&&typeof seed.error==='string'&&seed.error.length>0&&blocked&&connection.phase==='ready'&&connection.error===''&&proof.dumpMatches&&distanceMm===1600&&typeof scenePath==='string'&&scenePath.endsWith('.scene');
+      return proof;
+    })()`);
+    console.log('GEO320_RECOVERY_PROOF '+JSON.stringify({case:'P61-11',...uploadResponseLostRecovery}));
+    check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',uploadResponseLostRecovery.passed,uploadResponseLostRecovery);
     await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);
     await field('refTarget','new');
     await eval_(`(async()=>{
