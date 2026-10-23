@@ -46,3 +46,6 @@
 
 - 2026-10-23T10:25:58.214713+00:00 — **p88-original-canvas-run-2**：固定F原canvas第2/3次；workflow原exit=0、outer=0、over_ci_timeout=False、1754.826s。前後乾淨、獨立埠/TEMP、全部結果保留；三次未收齊前不判穩定或間歇。
   下一步：完成固定F三次原樣重跑，依自然失敗與受控定位證據修復，保原斷言/golden/時限，再於新F跑受影響項與四組反證。原始資料：`raw/p88-original-canvas-run-2-01.tar.gz`。
+
+- 2026-10-23T10:55:00.797141+00:00 — **p88-original-canvas-run-3**：固定F原canvas第3/3次；workflow原exit=0、outer=0、over_ci_timeout=False、1739.477s。前後乾淨、獨立埠/TEMP、全部結果保留；三次未收齊前不判穩定或間歇。
+  下一步：完成固定F三次原樣重跑，依自然失敗與受控定位證據修復，保原斷言/golden/時限，再於新F跑受影響項與四組反證。原始資料：`raw/p88-original-canvas-run-3-01.tar.gz`。
