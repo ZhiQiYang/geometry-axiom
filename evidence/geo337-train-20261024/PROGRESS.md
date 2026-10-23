@@ -10,7 +10,7 @@
 - #323 原175場景／350組 exact比較 **exit1**：僅3場景因既有#299 V_EXTENSION新增邊與區間診斷不同；dump、有序來源圖、5guards及允許／拒絕相同。原紅不改，詳 `QUESTIONS.md`；同列車僅撤回memo的175／350嚴格全輸出ABC與完整memo性能反證已完成：0/1/0、4.407618→6.053833→4.407618；獨立6655checks／0。五原件壓縮包47,120,357B及完整MANIFEST已普通推送 E bea6f30995da1425ebe375a37d871e4f19c54a2d，13865members／172515281原bytes；雲端原件亦保留。公開Git blob／13865member逐byte獨立審查27834checks／0已完成，不把出版當原ABC轉綠。I11補充單場景exact綠、原scene runner **166/0/0**，不冒充完整native。
 - 閱讀A F：reader三條 **0/0/0（51項）**，native **7項／12組0/1/0**、oracle **14項 exit0**；獨立629checks／0已完成，完整原件收於`reading-a-f64-originals/`（895members、5597339bytes壓縮包）。native41筆子SHA欄原為null，父c387、前後Git身份與70C/H實際輸入逐份比對另附間接綁定，原件不改；原ELF已由測試清除，只保原hash，不冒fresh rehash。原三組沒有額外outer/reaper，不虛構。RC-run builder/checker兩精準撤回已各0/1/0，actual377checks／0、封包382checks／0，原件已封`reading-a-rc-f64-originals/`；正式quick仍待跑，未冒稱最終全專項通過。
 - 架構 P 原三條 **0/0/0**（generic205、product18）、過期manifest反證 **0/1/0**；Linux manifest/scan/report/receipt四檔已重產採用，獨立686checks／0，604輸入closure=`6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。原F架構1/0/5與Ran0失敗完整保留。封存 `architecture-p17-and-recovery.tar.gz`。
-- 4f4原完整CLI於20:44:44環境失敗終止：CLI2／root1／原new--check2，108/123（98killed／5equivalent／1crashed／3retired／1blocked），15未跑。M118還原build建立smoke時Errno28，M119建立目錄再Errno28而原程式早退；不是完整帳本綠。2031checks獨立審查原失敗保真，49.6MB原流封於`ledger-4f4-terminal/`；M118缺restore仍缺，不補假row。新來源b6e1e454（C/tests同ec8）由root原完整123於21:00:13 UTC啟動，尚無最終exit；session72136。完整native、六browser、P52、Q38、§7、P-189與閱讀A矩形／579專項仍未完成。**沒有允許的新skip，不標READY-TO-MERGE。**
+- 4f4原完整CLI於20:44:44環境失敗終止：CLI2／root1／原new--check2，108/123（98killed／5equivalent／1crashed／3retired／1blocked），15未跑。M118還原build建立smoke時Errno28，M119建立目錄再Errno28而原程式早退；不是完整帳本綠。2031checks獨立審查原失敗保真，49.6MB原流封於`ledger-4f4-terminal/`；M118缺restore仍缺，不補假row。新來源b6e1e454（C/tests同ec8）原完整123已於22:08:38 UTC真終態，CLI0/root0/new-check0，114killed/5equivalent/1crashed/3retired；生成前tracked舊check1保留。原JSON已逐byte採用；接著在固定L真跑完整123與其它正式清單。完整native、六browser、P52、Q38、§7、P-189與閱讀A矩形／579專項仍未完成。**沒有允許的新skip，不標READY-TO-MERGE。**
 - 雲端Chrome156.0.8078.47／Nodev24.19.0／NotoCJK可用。只清已核可重建cache，保留收據、fixtures與Gitobjects；5批實際allocation回收998256640bytes，觀察free差996368384bytes，差值受共享磁碟並行活動影響。
 - 18:25認證故障原件保留；18:55普通Git重試恢復，原未推提交ae25／17b已補推。交接分支在自動同步造成一次非快轉拒絕後，用普通merge補入，`8c60c977e772126f120fd6f2d3ca95208ba8fd44` 已推，含NEXT與#324 PR請求。沒有force push。
 
@@ -114,3 +114,9 @@ B3公開核對完成：Git五blob直接stream核、13865個member逐bytes/hash�
 已精確退休舊4f終態的76個可重建bridge ELF cache（85,291,008配置bytes、actual318checks/0），及18個歷史browser job的54個baseline runtime ELF（53,035,008配置bytes、actual143checks/0）。兩原命令exit0；所有sidecar、source、compile原流、fixture、Gitobjects、目錄及原測試收據保留。舊4f的原CLI2/root1/108筆/15未跑仍是歷史紅，不改判；這76個binary的舊「雲端保留」描述僅代表當時狀態，此次是有重建依據的快取退休，沒有宣稱ELF bytes已封包。新47原件656,653B與完整工具／範圍／原streams封於 `terminal-elf-maintenance-2200/`（archive含inventory共48members，獨立200checks/0）。與live b6原件守門1395精確路徑無交集，活source/cache未動。
 
 #300 新S1ee4e830三原套件已真完成33methods/56controls（皆原具名ASSERT 0/1/0、零skip）與302build exit0，獨立actual1140checks/0；完整快路撤回七正例、性能及512仍未跑。#339真M1f0ebd3e原三架構裁判0/0/0（205/18）、mutate --check1（過期），完整native與六browser仍未跑；原帳本紅交root最後整份重產，不局部填帳本。主b6全123仍執行，最終退出碼尚待真終態。
+
+## 2026-10-23 22:18 UTC：完整123原帳本採用，固定下一輪L
+
+b6原完整CLI與外層真exit0，123 ID完整／120個execution head自然b6；114killed、5equivalent、M20原允許crashed、3retired。M118原restore build0與43方法0，舊ENOSPC失敗仍保歷史。原四階段是生成前trackedcheck1／fullCLI0／core-map0／external-new-check0，沒有隱去1。獨立actual35,756checks/0與完整封包4,529checks/0；1239members/45,345,757B原件封於 `ledger-b6-complete/`，原core文字與bridge bytes依原schema保存，不冒不存在的OS predecode pipes。
+
+`tests/mutants_results.json` 與b6原外部JSON逐byte相同，未改head/date/verdict或補造row。本次採用提交用作唯一下一輪驗收L；精確公開SHA由後續啟動收據與正文記錄。L的原trackedcheck、完整123CLI、完整native、六browser及專項尚待真正執行；新L外部帳本只封evidence，不反覆改L tracked ledger。產品／測試與b6相同，沒有新增skip或降低門檻。B1尚未完成、B2跨版本診斷exact仍紅，維持draft。
