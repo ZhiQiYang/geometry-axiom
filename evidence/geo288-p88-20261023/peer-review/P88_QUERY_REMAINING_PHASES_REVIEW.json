@@ -1,0 +1,467 @@
+{
+  "schema": "p88-actual-query-remaining-phases-review/1",
+  "review_scope": "原執行結束後唯讀核對既有小收據、記憶體來源 manifest、已封存 stdout 與 compact trace extract；未跑 driver/瀏覽器/測試、未重新 hash 全 trace、未改原件。",
+  "source_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "source_before": {
+    "label": "before",
+    "head": "13d02c1db7022145a52ee063286a558e595eb212",
+    "status": "",
+    "index_sha256": "28853e9a503d7b9d52ecc744dd6caf5eda79b9fa3afe145843108444c9bcdf28",
+    "p88_source_sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "source_after": {
+    "label": "after",
+    "head": "13d02c1db7022145a52ee063286a558e595eb212",
+    "status": "",
+    "index_sha256": "28853e9a503d7b9d52ecc744dd6caf5eda79b9fa3afe145843108444c9bcdf28",
+    "p88_source_sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+    "helper_source_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+    "app_source_sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+  },
+  "source_identity_equal": true,
+  "aggregate_ended": "2026-10-23T11:06:13.901219+00:00",
+  "aggregate_driver_exit": 2,
+  "aggregate_passed": false,
+  "phases": [
+    {
+      "phase": "withdrawn",
+      "original_exits": [
+        1,
+        1,
+        1
+      ],
+      "seconds": 216.2478289080027,
+      "over_ci": false,
+      "footer": {
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_GRID_SYSTEM_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:19701/",
+          "feedbackDirectory": "/tmp/g288p88q/withdrawn/tmp/workflow/grid/geometry-integration-feedback",
+          "browserProfile": "/tmp/g288p88q/withdrawn/tmp/workflow/grid/geometry-cdp-aPCet6",
+          "cdpPort": 9711,
+          "browserPid": 1142798
+        },
+        "completed": false,
+        "passedAssertions": 99,
+        "failedAssertions": 0,
+        "fatal": "Browser evaluation failed: Error: P88 original query schedule did not reproduce the original wrong-target displacement; this is not valid counterevidence\n    at injectQueryRelease (eval at <anonymous> (:1:144), <anonymous>:147:32)\n    at async eval (eval at <anonymous> (:1:144), <anonymous>:1:414); expression=(async()=>{const p=((()=>{const e=document.querySelector(\"#refGuideMode\");if(!e)throw Error(\"Missing \"+\"#refGuideMode\");const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.he",
+        "goldenCompare": "not compared (run did not complete)"
+      },
+      "memory_files": [
+        {
+          "source": "/tmp/g288f-13d02c1d/geometry-web/cdp_helpers.js",
+          "original_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+          "executed_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+          "variant": "withdrawn",
+          "memory_only": true,
+          "source_file_modified": false,
+          "candidate": null
+        },
+        {
+          "source": "/tmp/g288f-13d02c1d/geometry-web/grid_rule_lines_test.js",
+          "original_sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+          "executed_sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+          "variant": "withdrawn",
+          "memory_only": true,
+          "source_file_modified": false,
+          "candidate": null
+        }
+      ],
+      "raw_stdout_bytes": 126842,
+      "raw_stdout_sha256": "396d1061742ab987efb1404fc83662e41f9b1128de4273f63dbbda599296b429",
+      "sealed_stdout_matches": true,
+      "original_trace_sha256": "07d4113654700345ce5b2eacfb4216b4626511d032d9099327e1b137c9c058ed",
+      "trace_rehashed_by_reviewer": false,
+      "trace_stopped": true,
+      "trace_errors": [],
+      "nested_errors": [],
+      "source_bytes_unchanged": true,
+      "parsed_json_unchanged": true,
+      "query_control": {
+        "attempted": true,
+        "applied": false,
+        "valid": false,
+        "count": 1,
+        "original_measure": {
+          "x": 293.75,
+          "y": 602.5,
+          "w": 134.5,
+          "h": 44,
+          "hit": true,
+          "hitElement": "SELECT#refGuideMode",
+          "disabled": false
+        },
+        "error": "The actual original query repaint did not move the old point onto the real ratio label/select"
+      },
+      "node_before": 5696,
+      "node_after": 5737,
+      "old_point_final_hit": "refGuideMode",
+      "query_render_window": [
+        {
+          "serial": 7523,
+          "kind": "measure",
+          "time_ms": 154181.70000000298,
+          "node": 5696,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7524,
+          "kind": "query-response-release",
+          "time_ms": 154181.89999999106,
+          "node": 5696,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7525,
+          "kind": "query-response-returned",
+          "time_ms": 154182.09999999404,
+          "node": 5696,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7526,
+          "kind": "renderFaceInspector-enter",
+          "time_ms": 154193.5,
+          "node": 5696,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": "Error: P88 renderer callsite observation\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:84:22)\n    at paintQuery (http://127.0.0.1:19701/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19701/grid-rule-lines.js:106:7)"
+        },
+        {
+          "serial": 7527,
+          "kind": "dom-focusout",
+          "time_ms": 154197.5,
+          "node": 5696,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7528,
+          "kind": "dom-focusin",
+          "time_ms": 154202.79999999702,
+          "node": 5737,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7529,
+          "kind": "renderFaceInspector-return",
+          "time_ms": 154207.09999999404,
+          "node": 5737,
+          "mode_x": 234,
+          "mode_y": 605.5,
+          "parent_scroll": 0,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7530,
+          "kind": "renderObserver",
+          "time_ms": 154207.5,
+          "node": 5737,
+          "mode_x": 234,
+          "mode_y": 605.5,
+          "parent_scroll": 0,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7531,
+          "kind": "renderObserver",
+          "time_ms": 154209.20000000298,
+          "node": 5737,
+          "mode_x": 226.5,
+          "mode_y": 605.5,
+          "parent_scroll": 0,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7532,
+          "kind": "dom-scroll",
+          "time_ms": 154210.29999999702,
+          "node": 5737,
+          "mode_x": 226.5,
+          "mode_y": 605.5,
+          "parent_scroll": 0,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7533,
+          "kind": "dom-scroll",
+          "time_ms": 154214.5,
+          "node": 5737,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7534,
+          "kind": "controlled-query-release",
+          "time_ms": 154214.89999999106,
+          "node": 5737,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        }
+      ],
+      "no_later_browser_mousedown": true
+    },
+    {
+      "phase": "restored",
+      "original_exits": [
+        1,
+        1,
+        1
+      ],
+      "seconds": 223.69861280200712,
+      "over_ci": false,
+      "footer": {
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_GRID_SYSTEM_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:19702/",
+          "feedbackDirectory": "/tmp/g288p88q/restored/tmp/workflow/grid/geometry-integration-feedback",
+          "browserProfile": "/tmp/g288p88q/restored/tmp/workflow/grid/geometry-cdp-6ZAM4b",
+          "cdpPort": 9712,
+          "browserPid": 1145572
+        },
+        "completed": false,
+        "passedAssertions": 99,
+        "failedAssertions": 0,
+        "fatal": "Browser evaluation failed: Error: P88 original query schedule did not reproduce the original wrong-target displacement; this is not valid counterevidence\n    at injectQueryRelease (eval at <anonymous> (:1:144), <anonymous>:147:32)\n    at async eval (eval at <anonymous> (:1:144), <anonymous>:1:414); expression=(async()=>{const p=((()=>{const e=document.querySelector(\"#refGuideMode\");if(!e)throw Error('Missing '+\"#refGuideMode\");const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.he",
+        "goldenCompare": "not compared (run did not complete)"
+      },
+      "memory_files": [
+        {
+          "source": "/tmp/g288f-13d02c1d/geometry-web/cdp_helpers.js",
+          "original_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+          "executed_sha256": "5562af6231cc1ab958c6d4008603c5153e3981d0334a5cccf3ed7c4455020f02",
+          "variant": "restored",
+          "memory_only": true,
+          "source_file_modified": false,
+          "candidate": "/tmp/g288p88q/tools/candidate-cdp_helpers.js.unchanged"
+        },
+        {
+          "source": "/tmp/g288f-13d02c1d/geometry-web/grid_rule_lines_test.js",
+          "original_sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+          "executed_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+          "variant": "restored",
+          "memory_only": true,
+          "source_file_modified": false,
+          "candidate": "/tmp/g288p88q/tools/candidate-grid_rule_lines_test.js"
+        }
+      ],
+      "raw_stdout_bytes": 203686,
+      "raw_stdout_sha256": "3840d6cfccb34817e472d958f48ccf9f64a924dbb89916bd01a5234d75efe184",
+      "sealed_stdout_matches": true,
+      "original_trace_sha256": "fe9ced46b8297a9cb6ff508eb29a06c15eee1811794cb2a0986b60be91a26195",
+      "trace_rehashed_by_reviewer": false,
+      "trace_stopped": true,
+      "trace_errors": [],
+      "nested_errors": [],
+      "source_bytes_unchanged": true,
+      "parsed_json_unchanged": true,
+      "query_control": {
+        "attempted": true,
+        "applied": false,
+        "valid": false,
+        "count": 1,
+        "original_measure": {
+          "x": 293.75,
+          "y": 602.5,
+          "w": 134.5,
+          "h": 44,
+          "hit": true,
+          "hitElement": "SELECT#refGuideMode",
+          "disabled": false
+        },
+        "error": "The actual original query repaint did not move the old point onto the real ratio label/select"
+      },
+      "node_before": 5696,
+      "node_after": 5737,
+      "old_point_final_hit": "refGuideMode",
+      "query_render_window": [
+        {
+          "serial": 7525,
+          "kind": "measure",
+          "time_ms": 165120.79999999702,
+          "node": 5696,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7526,
+          "kind": "query-response-release",
+          "time_ms": 165121,
+          "node": 5696,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7527,
+          "kind": "query-response-returned",
+          "time_ms": 165121.19999998808,
+          "node": 5696,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7528,
+          "kind": "renderFaceInspector-enter",
+          "time_ms": 165139.69999998808,
+          "node": 5696,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": "Error: P88 renderer callsite observation\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:84:22)\n    at paintQuery (http://127.0.0.1:19702/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19702/grid-rule-lines.js:106:7)"
+        },
+        {
+          "serial": 7529,
+          "kind": "dom-focusout",
+          "time_ms": 165147,
+          "node": 5696,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7530,
+          "kind": "dom-focusin",
+          "time_ms": 165162.79999999702,
+          "node": 5737,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7531,
+          "kind": "renderFaceInspector-return",
+          "time_ms": 165169.39999999106,
+          "node": 5737,
+          "mode_x": 234,
+          "mode_y": 605.5,
+          "parent_scroll": 0,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7532,
+          "kind": "renderObserver",
+          "time_ms": 165170,
+          "node": 5737,
+          "mode_x": 234,
+          "mode_y": 605.5,
+          "parent_scroll": 0,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7533,
+          "kind": "renderObserver",
+          "time_ms": 165172.69999998808,
+          "node": 5737,
+          "mode_x": 226.5,
+          "mode_y": 605.5,
+          "parent_scroll": 0,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7534,
+          "kind": "dom-scroll",
+          "time_ms": 165173.59999999404,
+          "node": 5737,
+          "mode_x": 226.5,
+          "mode_y": 605.5,
+          "parent_scroll": 0,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7535,
+          "kind": "dom-scroll",
+          "time_ms": 165179.69999998808,
+          "node": 5737,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        },
+        {
+          "serial": 7536,
+          "kind": "controlled-query-release",
+          "time_ms": 165180.19999998808,
+          "node": 5737,
+          "mode_x": 226.5,
+          "mode_y": 580.5,
+          "parent_scroll": 25,
+          "active": "refGuideCreate",
+          "renderer_stack": null
+        }
+      ],
+      "no_later_browser_mousedown": true
+    }
+  ],
+  "classification": "三 phase 位移工具前提均未成立；是診斷工具的具名失敗，非原精確 focus assertion 的反證，不能標 0/1/0 通過、產品紅或根因已證。",
+  "observed": "真 query-return 透過 paintQuery/query 呼叫 renderer、替換 node，短暫 parentScroll 25→0→25；原量測舊點最後仍命中 #refGuideMode，未見後續真 mousedown。",
+  "not_proven": [
+    "自然 full canvas 首輪錯焦點的單一因果",
+    "候選 focused barrier 在這個注入點的能力",
+    "撤回候選使原 focus assertion 紅、恢復使其綠的 0/1/0",
+    "新最終 F 的正式 canvas/grid 結果"
+  ],
+  "scope_limit": "P88-only 診斷使用 GEOMETRY_GRID_SYSTEM_ONLY 並明列省略其他 module；不是完整 grid 或 canvas，golden 未比對。",
+  "metadata_note": "owner OBSERVATIONS 的 response_json_unchanged=null 是舊欄名；原 injection parsed_json_unchanged=true，僅指 parsed JSON 未改、不聲稱 HTTP wirebytes。",
+  "fixed_review_sha256": "42d4a637d49fa9793166198079089157c33179982729cadb632e7ed2764769d3",
+  "extract_sha256": "0e0712af94a6962632b47a5ea176eb53d6cd633e2d40abda6e98d5db4ce58c64"
+}

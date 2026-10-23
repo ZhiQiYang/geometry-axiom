@@ -1,31 +1,71 @@
 {
-  "PROGRESS.md": {
-    "bytes": 3606,
-    "sha256": "f84cccdc9300157982de5c7770b4a0dbe033eb602add22d896c1662c24faa816"
-  },
   "ACTUAL_QUERY_OBSERVATIONS.json": {
     "bytes": 117039,
     "sha256": "44c98749f676be5bfbba1f6a96ce05edd42c30bda540f7f81ae436da94e4bbf3"
   },
-  "original-three-sequence.json": {
-    "bytes": 1774,
-    "sha256": "7ae8e0f4fb80ca8476198bc81d4fc226502789d69efc3178593e3cad40560a23"
-  },
-  "ASSERTION_AND_CLASSIFICATION.md": {
-    "bytes": 2510,
-    "sha256": "0f5c0f74bcfe298df3a6a4af9e97a5c4dbd7360d68dfb209574fa735302cdbda"
+  "ACTUAL_QUERY_OBSERVATIONS_v2.json": {
+    "bytes": 117302,
+    "sha256": "5d7e3a15e2492a917c35d36f462130799bcadf37cace1afd10d7453a09da1fb5"
   },
   "ACTUAL_QUERY_RAW.tar.gz": {
     "bytes": 15312389,
     "sha256": "df3466bc519c3812bd4cea391fc4fefa2c5953efa873b4c1ef31dc3437249188"
   },
+  "ASSERTION_AND_CLASSIFICATION.md": {
+    "bytes": 2510,
+    "sha256": "0f5c0f74bcfe298df3a6a4af9e97a5c4dbd7360d68dfb209574fa735302cdbda"
+  },
   "MANIFEST.json": {
     "bytes": 77493,
     "sha256": "4ff3001a59d475e0e66ad3ff796a9730135311e508dc0f1b73ba2526829a3631"
   },
+  "PROGRESS.md": {
+    "bytes": 4185,
+    "sha256": "6d7a3c294d622c265ce211ca9aa18e767a2a54386b8b0e227beb360be1d77668"
+  },
   "ROUNDTRIP.json": {
     "bytes": 175,
     "sha256": "7e165fc71e166c849bc6f3619aa8e9b0c2ede4d9aa5eb65e6356fdb5d3125bd7"
+  },
+  "original-three-sequence.json": {
+    "bytes": 1774,
+    "sha256": "7ae8e0f4fb80ca8476198bc81d4fc226502789d69efc3178593e3cad40560a23"
+  },
+  "peer-review/P88_FINAL_THREE_CANVAS_STATIC_REVIEW.json": {
+    "bytes": 2325,
+    "sha256": "78497679ffb3d3dea0843ebf33df460edc4b62618b03c334b4358f029681b588"
+  },
+  "peer-review/P88_QUERY_FIXED_TRACE_REVIEW.json": {
+    "bytes": 5745,
+    "sha256": "493ef46ed67808bad98d76ae03d0829fb61f610891c924502211d43e536f5652"
+  },
+  "peer-review/P88_QUERY_FIXED_TRACE_REVIEW.md": {
+    "bytes": 1740,
+    "sha256": "42d4a637d49fa9793166198079089157c33179982729cadb632e7ed2764769d3"
+  },
+  "peer-review/P88_QUERY_REMAINING_PHASES_REVIEW.json": {
+    "bytes": 17128,
+    "sha256": "73d5e5b411205315bb9ee6580a1c70edf98335de95acf5c04d220318e5c802f0"
+  },
+  "peer-review/P88_QUERY_REMAINING_PHASES_REVIEW.md": {
+    "bytes": 2236,
+    "sha256": "22449f5a070d489eac40cb58498e471787988b6336c395f3193c2372be7beba5"
+  },
+  "peer-review/P88_REAL_QUERY_RENDER_TRACE_STATIC_REVIEW.json": {
+    "bytes": 2254,
+    "sha256": "cbab4b7fa37e5bc82c1434d8194a421132d63d2f0e181fc4c26c60fee4c1c48b"
+  },
+  "peer-review/P88_RUNNER_AND_V5_STATIC_REVIEW.md": {
+    "bytes": 5749,
+    "sha256": "91789bf1fe789ad23c9e9bb5f5617c8f53a97cd0576d718c07521cb8f7b44847"
+  },
+  "peer-review/P88_V5_IMMUTABLE_8bce9239_REVIEW.json": {
+    "bytes": 1145,
+    "sha256": "0228535a44beb515b508539b845e42ac764a7c548edfd9727f278808f955a968"
+  },
+  "peer-review/P88_V5_STATIC_REVIEW.json": {
+    "bytes": 1786,
+    "sha256": "01a8cf16d79cd731c1eb78a610a4866ef3800b47bc2f6a038ac152fd543935b3"
   },
   "source-publication/01.stderr": {
     "bytes": 0,
@@ -159,32 +199,8 @@
     "bytes": 10396,
     "sha256": "e7590cc372f5433de9253d607ed20e1bc96a4f4f8f04dfa1527a0309bfafdc52"
   },
-  "peer-review/P88_RUNNER_AND_V5_STATIC_REVIEW.md": {
-    "bytes": 5749,
-    "sha256": "91789bf1fe789ad23c9e9bb5f5617c8f53a97cd0576d718c07521cb8f7b44847"
-  },
-  "peer-review/P88_V5_STATIC_REVIEW.json": {
-    "bytes": 1786,
-    "sha256": "01a8cf16d79cd731c1eb78a610a4866ef3800b47bc2f6a038ac152fd543935b3"
-  },
-  "peer-review/P88_V5_IMMUTABLE_8bce9239_REVIEW.json": {
-    "bytes": 1145,
-    "sha256": "0228535a44beb515b508539b845e42ac764a7c548edfd9727f278808f955a968"
-  },
-  "peer-review/P88_REAL_QUERY_RENDER_TRACE_STATIC_REVIEW.json": {
-    "bytes": 2254,
-    "sha256": "cbab4b7fa37e5bc82c1434d8194a421132d63d2f0e181fc4c26c60fee4c1c48b"
-  },
-  "peer-review/P88_QUERY_FIXED_TRACE_REVIEW.json": {
-    "bytes": 5745,
-    "sha256": "493ef46ed67808bad98d76ae03d0829fb61f610891c924502211d43e536f5652"
-  },
-  "peer-review/P88_QUERY_FIXED_TRACE_REVIEW.md": {
-    "bytes": 1740,
-    "sha256": "42d4a637d49fa9793166198079089157c33179982729cadb632e7ed2764769d3"
-  },
-  "peer-review/P88_FINAL_THREE_CANVAS_STATIC_REVIEW.json": {
-    "bytes": 2325,
-    "sha256": "78497679ffb3d3dea0843ebf33df460edc4b62618b03c334b4358f029681b588"
+  "summarize_actual_query_v2.py": {
+    "bytes": 4224,
+    "sha256": "d5a2e1216ef2768dd93313c23ae1ca54ea05b5a41d07041ca49d26f4c3798cc1"
   }
 }
