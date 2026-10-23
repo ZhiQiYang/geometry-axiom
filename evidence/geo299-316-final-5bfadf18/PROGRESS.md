@@ -10,3 +10,6 @@
 
 - 2026-10-23T01:58:12.937036+00:00 — **native**：原退出0；原收據有效=True；超CI時限=False；衍生通過=True
   下一步：繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽。原始資料：`raw/native-01.tar.gz`。
+
+- 2026-10-23T02:03:44.137663+00:00 — **architecture-final**：同一最終SHA三條原架構裁判退出0/0/0；inner與outer退出0；source前後乾淨一致
+  下一步：等待314完整帳本重型作業終態後，繼續同SHA六個原瀏覽器job。原始資料：`raw/architecture-final-01.tar.gz`。
