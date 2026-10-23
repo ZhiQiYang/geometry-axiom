@@ -7,7 +7,7 @@
 - #314 指定 `3b0b634f` 的17個產品／裁判 blobs及M99–M121定義已存在列車；沒有假移植。F 的六 suite **103項 exit0**、Node inspector **13項 exit0**、M121 原CLI0與build0/0/0、斷言0/1/0。獨立541checks／0。Node不是browser；六suite不是完整native。完整原件收於 `geo314-f64-originals-and-peer.tar.gz`。
 - #323 來源已全包含列車，只在此線修。F 的原13/22/15三suite **50/0/0**、19組control獨立346checks／0；四新增與兩漂移修復為具名ASSERT 0/1/0。placement-key-single原等價0/0/0仍照實記錄。
 - #323 正式一次36timings及4profiles已執行，原execution各0：N16/32/48-base=.70152535/.81183549/.70936489；N64/main=1.26480058≤1.3；source calls64/32=364369/82668=4.40761843≤4.5。分母與原門檻未改；獨立原件358checks／0已完成，原wrapper1因下列ABC紅燈，不能標整組全綠。
-- #323 原175場景／350組 exact比較 **exit1**：僅3場景因既有#299 V_EXTENSION新增邊與區間診斷不同；dump、有序來源圖、5guards及允許／拒絕相同。原紅不改，詳 `QUESTIONS.md`；同列車僅撤回memo的175／350嚴格全輸出ABC與完整memo性能反證已完成：0/1/0、4.407618→6.053833→4.407618；獨立6655checks／0。五原件壓縮包47,120,357B及完整MANIFEST已普通推送 E bea6f30995da1425ebe375a37d871e4f19c54a2d，13865members／172515281原bytes；雲端原件亦保留。公開逐byte獨立審查進行中，不把出版當原ABC轉綠。I11補充單場景exact綠、原scene runner **166/0/0**，不冒充完整native。
+- #323 原175場景／350組 exact比較 **exit1**：僅3場景因既有#299 V_EXTENSION新增邊與區間診斷不同；dump、有序來源圖、5guards及允許／拒絕相同。原紅不改，詳 `QUESTIONS.md`；同列車僅撤回memo的175／350嚴格全輸出ABC與完整memo性能反證已完成：0/1/0、4.407618→6.053833→4.407618；獨立6655checks／0。五原件壓縮包47,120,357B及完整MANIFEST已普通推送 E bea6f30995da1425ebe375a37d871e4f19c54a2d，13865members／172515281原bytes；雲端原件亦保留。公開Git blob／13865member逐byte獨立審查27834checks／0已完成，不把出版當原ABC轉綠。I11補充單場景exact綠、原scene runner **166/0/0**，不冒充完整native。
 - 閱讀A F：reader三條 **0/0/0（51項）**，native **7項／12組0/1/0**、oracle **14項 exit0**；獨立629checks／0已完成，完整原件收於`reading-a-f64-originals/`（895members、5597339bytes壓縮包）。native41筆子SHA欄原為null，父c387、前後Git身份與70C/H實際輸入逐份比對另附間接綁定，原件不改；原ELF已由測試清除，只保原hash，不冒fresh rehash。原三組沒有額外outer/reaper，不虛構。RC-run builder/checker兩精準撤回已各0/1/0，actual377checks／0、封包382checks／0，原件已封`reading-a-rc-f64-originals/`；正式quick仍待跑，未冒稱最終全專項通過。
 - 架構 P 原三條 **0/0/0**（generic205、product18）、過期manifest反證 **0/1/0**；Linux manifest/scan/report/receipt四檔已重產採用，獨立686checks／0，604輸入closure=`6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。原F架構1/0/5與Ran0失敗完整保留。封存 `architecture-p17-and-recovery.tar.gz`。
 - 4f4原完整CLI於20:44:44環境失敗終止：CLI2／root1／原new--check2，108/123（98killed／5equivalent／1crashed／3retired／1blocked），15未跑。M118還原build建立smoke時Errno28，M119建立目錄再Errno28而原程式早退；不是完整帳本綠。2031checks獨立審查原失敗保真，49.6MB原流封於`ledger-4f4-terminal/`；M118缺restore仍缺，不補假row。新來源b6e1e454（C/tests同ec8）由root原完整123於21:00:13 UTC啟動，尚無最終exit；session72136。完整native、六browser、P52、Q38、§7、P-189與閱讀A矩形／579專項仍未完成。**沒有允許的新skip，不標READY-TO-MERGE。**
@@ -21,7 +21,7 @@
 3. noWood draft #340：原Sbfb的13項及7phase真0/1/0/1/0/1/0，actual530/publication949/新merge343 checks獨審0。新source4d3、body77a已推；11輸入同但不冒4d3重測。列車未入main也繼續疊線。
 4. #300原c493的三套32方法／46controls真0/1/0、282compile/link全0，actual1020checks／0；普通merge #339後只expected9→10，已推sourceaa0，效能與512尚未完成。GEO260接aa0後sourceeb846，保noWood13/faces45/woodcontact10並只native28→30，原全44已於eb846真完成：43killed＋SPM24equivalent，原gate0／outer0，native29/model20基線0；actual1682/public678 checks獨審0，E df230da5／D be1f69dc已推。af4 focused兩控制仍保原SHA。#325/#331/#333不寫其分支，#333已進main。
 
-每個歷史結果保留原SHA，不把證據提交冒充受測SHA；失敗原件不覆寫。最新已讀審查是 handoff a47d625c 的 #338 2026-10-23 20:44 UTC（head b6）。B1完整同源驗收與B2原跨版本exact仍是阻擋；B3五原包已於bea6f309入庫，公開獨審進行中，沒有可合併結論。M1現況已更正：10/18提交相容例外已採納；10/23精確有序補句另有核可但尚未逐字寫入，不能把兩者統稱暫緩，也不重問題3／4。小引用審查9/0封於review-b6-response/。工作持續中。
+每個歷史結果保留原SHA，不把證據提交冒充受測SHA；失敗原件不覆寫。最新已讀審查是 handoff a47d625c 的 #338 2026-10-23 20:44 UTC（head b6）。B1完整同源驗收與B2原跨版本exact仍是阻擋；B3五原包已於bea6f309入庫且公開獨審27834checks／0，B3已處理；B1／B2尚未解除，沒有可合併結論。M1現況已更正：10/18提交相容例外已採納；10/23精確有序補句另有核可但尚未逐字寫入，不能把兩者統稱暫緩，也不重問題3／4。小引用審查9/0封於review-b6-response/。工作持續中。
 
 S ec8的Linux架構四檔已於9a05採用，三原裁判0/0/0、205/18及781checks獨審0，604-input closure不變。冷checkout原碼副本全封後精確回收216,199,168B已推；free-end與舊323收據只搬儲存位置並保原path symlink、原bytes/mode/mtime，沒有刪收據。下一輪重測先守資源預算，保留所有原失敗。
 
@@ -100,3 +100,5 @@ B2根因84項獨立核對已封 `b2-diagnostic-originals-and-peer.tar.gz`：三�
 為保帳本與出版空間，root只清19份已終態job的426個精確Chrome可重建cache葉：5678 regular/singlelink files、106860544配置bytes；71個profile父、storage/cookies、原收據/outputs/fixtures/Git/ELF/源均不在刪除範圍。原scope7449checks／0，實際39checks／0；root原exit0，21:25:03–09 UTC，workspace204382208→263221248B、tmp16064512→64204800B。觀察free差受並行寫入影響，不冒等於allocation；38個不可讀proc欄位限制保留，不冒完全掃遍所有OS程序。plan、fresh identity/hash/membership/proc、完整原命令/streams、結果與工具封 `terminal-chrome-cache-originals.tar.gz`，actual peer另列。
 
 最新B1原碼契約已獨審14/0：check@L可驗closure但不等於fullCLI@L，因此採上一段明列的嚴格同L實跑方案。現b6仍先收齊，不中斷、不重抽；沒有任何gates被靜態peer或metadata出版取代。
+
+B3公開核對完成：Git五blob直接stream核、13865個member逐bytes/hash全符；五包47,120,357B、172,515,281原bytes、5272原stdout/stderr，33個出版Git原命令皆0且remote=bea6。獨立27834checks／0封 `review-b6-response/geo323-public-raw-peer.json`，沒有另extract副本或改原測試退出碼。

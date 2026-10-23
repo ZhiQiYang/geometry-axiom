@@ -1,0 +1,172 @@
+{
+  "schema": "GEO323-B3-public-five-package-peer/1",
+  "evidence_head": "bea6f30995da1425ebe375a37d871e4f19c54a2d",
+  "source_sha": "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+  "manifest_sha256": "02ce3b9ef2ed2ebafd9dc5403edf0c3fa0d7df81e10aa17ee2fa8b8f7fc4e1e5",
+  "checks": 27834,
+  "findings": [],
+  "parts": [
+    {
+      "path": "geo323-F64-completed-raw.part-001.tar.gz",
+      "git_blob": "362dc87aa8458350743626cfcbbbae3e5a9428d2",
+      "compressed_bytes": 11489504,
+      "sha256": "32585561cd7bc639f083aa85b648ac9e66d7d67f55399f28a7e48fe911906585",
+      "members_verified": 2802,
+      "raw_bytes_verified": 40407564,
+      "git_exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "geo323-F64-completed-raw.part-002.tar.gz",
+      "git_blob": "c2ec8f56d2d1d0b07788add891a452d999480296",
+      "compressed_bytes": 8498500,
+      "sha256": "33355b9db9172aeff07cd9fd497b868d4db392f250d3342217cb770c756b47b4",
+      "members_verified": 4000,
+      "raw_bytes_verified": 32679036,
+      "git_exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "geo323-F64-completed-raw.part-003.tar.gz",
+      "git_blob": "a56e12af2214c2f54762d3f422b2879824b004ac",
+      "compressed_bytes": 18527393,
+      "sha256": "bd2599ce17d1b4311f815bcf191cb089539896222cc6b63df3a35ea6d5c9ad31",
+      "members_verified": 1904,
+      "raw_bytes_verified": 50329784,
+      "git_exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "geo323-F64-completed-raw.part-004.tar.gz",
+      "git_blob": "431fa5aebc8589215bd7d56f3c92dd844fc3b218",
+      "compressed_bytes": 747460,
+      "sha256": "cf7c7b2d369f8584dc5c0f2345d55721e72239d6282409bad4cf46af40d8231f",
+      "members_verified": 4000,
+      "raw_bytes_verified": 5981818,
+      "git_exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "geo323-F64-completed-raw.part-005.tar.gz",
+      "git_blob": "b4fa7c8ec7e445e0fe60e3c6299d87e18b86d75f",
+      "compressed_bytes": 7857500,
+      "sha256": "f62d9ced40d1e66915d062530234a4c5e52b31674fd96d972879df684e8383c2",
+      "members_verified": 1159,
+      "raw_bytes_verified": 43117079,
+      "git_exit": 0,
+      "stderr": ""
+    }
+  ],
+  "git_reads": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "bea6f30995da1425ebe375a37d871e4f19c54a2d:evidence/geo337-train-20261024/geo323-full-originals/MANIFEST.json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "02ce3b9ef2ed2ebafd9dc5403edf0c3fa0d7df81e10aa17ee2fa8b8f7fc4e1e5",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "diff",
+        "--name-only",
+        "50a4533be0e80b8042a18f54d7b0c9f872db01f2",
+        "bea6f30995da1425ebe375a37d871e4f19c54a2d"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "7e601c8e3bd79b74cc235107b28ac80cdde6dd84fab599715a4c2c93970f4464",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "bea6f30995da1425ebe375a37d871e4f19c54a2d^"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "803bd93983a1884ed852525f62df71d412cda9f8196ce0baf5c960510d288d19",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "bea6f30995da1425ebe375a37d871e4f19c54a2d:evidence/geo337-train-20261024/geo323-full-originals/geo323-F64-completed-raw.part-001.tar.gz"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "1a112ce4b323f5109d4bc7211f7ab30c5aa63da46056e4a7077185c26ceebcf1",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "bea6f30995da1425ebe375a37d871e4f19c54a2d:evidence/geo337-train-20261024/geo323-full-originals/geo323-F64-completed-raw.part-002.tar.gz"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "44808ef529dc4fd6a083dd8646c65bf4c402862613c99322483a3f8d4a47cbfd",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "bea6f30995da1425ebe375a37d871e4f19c54a2d:evidence/geo337-train-20261024/geo323-full-originals/geo323-F64-completed-raw.part-003.tar.gz"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "12b8201398a5b7d9b17fc2301a31802e8e2db257148c200d1817162c6842b690",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "bea6f30995da1425ebe375a37d871e4f19c54a2d:evidence/geo337-train-20261024/geo323-full-originals/geo323-F64-completed-raw.part-004.tar.gz"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "bd105ab679b5655393e0d677e59fb6abd5608e0769604b0a64cf0025a1a22ae6",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "rev-parse",
+        "bea6f30995da1425ebe375a37d871e4f19c54a2d:evidence/geo337-train-20261024/geo323-full-originals/geo323-F64-completed-raw.part-005.tar.gz"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "5a8f33018bd4d5926abf8abf6205fd3a579831df1e678ebf657051e5081e8e94",
+      "stderr": ""
+    }
+  ],
+  "publication_receipt_sha256": "d128543631afaa7c3fc4dea43e93fc356d5879f026a00057aed2d3f3adf2a094",
+  "exact_member_count": 13865,
+  "exact_original_bytes": 172515281,
+  "original_stream_count": 5272,
+  "original_compare_exit": 1,
+  "scope": "Streamed fixed Git blobs directly through gzip/tar, verified every complete regular member against original manifest size/hash; no extraction or second archive copy, no subject/test runs. Rechecked three key original receipt/equivalence bytes; other original files rely on immutable manifest and prior actual peer, not a new original-tree scan.",
+  "limits": [
+    "B3 publication does not clear B1 same-final-SHA execution or B2 historical exact1.",
+    "Original native TemporaryDirectory executables already removed by unchanged tests are not invented; existing phase source/binaries/gmon listed in manifest are fully byte-packaged.",
+    "This verifies package/remote originals, not a new native/browser/performance run."
+  ],
+  "exit_code": 0
+}
