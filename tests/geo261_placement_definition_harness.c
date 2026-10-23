@@ -119,7 +119,7 @@ static int malformed_case(void)
 }
 typedef struct {
     Vector wire;GeoSourceValueKind kind;const char *schema;int calls,frame_calls,region_calls;unsigned char key;
-    bool bind_geometry,fail_geometry;GeoPoint2 bound_points[2];GeoRegionView bound_region;
+    bool bind_geometry,fail_geometry,null_content;GeoPoint2 bound_points[2];GeoRegionView bound_region;
 } Replacement;
 static bool replacement_describe(void *opaque,const GeoSourceRef *ref,GeoSourceDescriptor *out)
 {
@@ -130,7 +130,7 @@ static bool replacement_evaluate(void *opaque,GeoEvalContext *graph,const GeoSou
 {
     Replacement *s=opaque;(void)graph;(void)ref;++s->calls;memset(out,0,sizeof *out);out->kind=s->kind;
     if(s->fail_geometry)return false;
-    if(s->kind==GEO_SOURCE_DEFINITION)out->as.definition=(GeoDefinitionValue){s->schema,s->wire.bytes,s->wire.size};
+    if(s->kind==GEO_SOURCE_DEFINITION)out->as.definition=(GeoDefinitionValue){s->schema,s->null_content?NULL:s->wire.bytes,s->wire.size};
     else if(s->kind==GEO_SOURCE_FRAME)out->as.frame=(GeoFrame){{91,92,93},{1,0,0},{0,1,0},{0,0,1}};
     else if(s->kind==GEO_SOURCE_REGION_SET){s->bound_points[0]=(GeoPoint2){81,82};s->bound_points[1]=(GeoPoint2){83,84};
         s->bound_region=(GeoRegionView){{s->bound_points,2},NULL,0};out->as.regions=(GeoRegionSetView){&s->bound_region,1};}
@@ -298,9 +298,226 @@ static int bound_geometry_case(void)
         geo_eval_node_count(f.graph)==2,"bound-failure-does-not-fall-back-to-definition");
     destroy(&f,true);return 0;
 }
+/* Differential oracle: the unchanged public full accessor decodes independent
+ * BE vectors above; no copy of the new header parser is used by this client. */
+enum { HEADER_CONSUMER_TOKEN=44 };
+typedef struct {
+    Fixture fixture;Replacement replacement;bool header,ok;unsigned calls;GeoPlacementDomain raw_domain;
+    GeoPlacementDefinition full;GeoPlacementDefinitionHeader small;
+    GeoSourceProvider original[4];size_t original_count;
+    char events[4096];size_t event_size;bool trace_ok;
+} HeaderRun;
+static HeaderRun *header_active;
+static bool header_event(unsigned phase,const GeoSourceRef *ref,bool result)
+{
+    HeaderRun *s=header_active;if(!s||ref->key_size>8||(ref->key_size&&!ref->key))return false;
+    char line[128];int n=snprintf(line,sizeof line,"%u/%u/%zu/",phase,ref->provider,ref->key_size);
+    if(n<0||(size_t)n>=sizeof line)return false;size_t at=(size_t)n;
+    for(size_t i=0;i<ref->key_size;++i){n=snprintf(line+at,sizeof line-at,"%02x",((const unsigned char *)ref->key)[i]);if(n!=2)return false;at+=2;}
+    n=snprintf(line+at,sizeof line-at,"/%u\n",result?1u:0u);if(n<0||(size_t)n>=sizeof line-at)return false;at+=(size_t)n;
+    if(at>=sizeof s->events-s->event_size)return false;
+    memcpy(s->events+s->event_size,line,at+1);s->event_size+=at;return true;
+}
+static const GeoSourceProvider *header_original(GeoProviderToken token)
+{for(size_t i=0;i<header_active->original_count;++i)if(header_active->original[i].token==token)return &header_active->original[i];return NULL;}
+static bool header_describe(void *opaque,const GeoSourceRef *ref,GeoSourceDescriptor *out)
+{
+    const GeoSourceProvider *p=header_original(ref->provider);if(!p)return false;
+    header_active->trace_ok=header_event(1,ref,false)&&header_active->trace_ok;
+    bool ok=p->describe(opaque,ref,out);header_active->trace_ok=header_event(2,ref,ok)&&header_active->trace_ok;return ok;
+}
+static bool header_evaluate(void *opaque,GeoEvalContext *graph,const GeoSourceRef *ref,GeoSourceValue *out)
+{
+    const GeoSourceProvider *p=header_original(ref->provider);if(!p)return false;
+    header_active->trace_ok=header_event(3,ref,false)&&header_active->trace_ok;
+    bool ok=p->evaluate(opaque,graph,ref,out);header_active->trace_ok=header_event(4,ref,ok)&&header_active->trace_ok;return ok;
+}
+static bool header_consumer_describe(void *opaque,const GeoSourceRef *ref,GeoSourceDescriptor *out)
+{
+    (void)opaque;if(ref->provider!=HEADER_CONSUMER_TOKEN||ref->key_size!=1||!ref->key||*(const unsigned char *)ref->key!=7)return false;
+    memset(out,0,sizeof *out);out->kind=GEO_SOURCE_QUANTITY;out->unit=GEO_UNIT_SCALAR;out->context.axis=-1;return true;
+}
+static bool header_consumer_evaluate(void *opaque,GeoEvalContext *graph,const GeoSourceRef *ref,GeoSourceValue *out)
+{
+    HeaderRun *s=opaque;(void)ref;if(graph!=s->fixture.graph)return false;++s->calls;
+    s->ok=s->header?geo_placement_sources_definition_header(s->fixture.sources,TEST_ID,&s->small):
+        geo_placement_sources_definition(s->fixture.sources,TEST_ID,&s->full);
+    if(!s->ok)return false;
+    GeoPlacementDomain domain=s->header?s->small.domain:s->full.domain;
+    uint32_t region=s->header?s->small.region_id:s->full.region_id;
+    out->kind=GEO_SOURCE_QUANTITY;out->as.quantity=(GeoQuantity){(int64_t)domain,(int64_t)region+1,GEO_UNIT_SCALAR};return true;
+}
+static bool header_start(HeaderRun *s,const Replacement *replacement,bool small,GeoPlacementDomain raw_domain)
+{
+    memset(s,0,sizeof *s);s->replacement=*replacement;s->replacement.calls=0;s->replacement.frame_calls=0;s->replacement.region_calls=0;
+    s->header=small;s->raw_domain=raw_domain;s->trace_ok=true;memset(&s->full,0xa5,sizeof s->full);memset(&s->small,0x6b,sizeof s->small);
+    if(!fixture(&s->fixture,&s->replacement))return false;
+    GeoPlacementDefinition raw;expected(&raw,raw_domain);if(!geo_placements_stage(s->fixture.placements,&raw))return false;
+    GeoSourceProvider consumer={HEADER_CONSUMER_TOKEN,"test.header-consumer","header-differential/1",s,header_consumer_describe,header_consumer_evaluate};
+    if(!geo_eval_register(s->fixture.graph,&consumer))return false;
+    s->original_count=geo_eval_provider_count(s->fixture.graph);if(s->original_count!=4)return false;
+    for(size_t i=0;i<s->original_count;++i){GeoSourceProvider *p=(GeoSourceProvider *)geo_eval_provider_at(s->fixture.graph,i);
+        s->original[i]=*p;p->describe=header_describe;p->evaluate=header_evaluate;}
+    return true;
+}
+static bool header_text_equal(const char *a,const char *b)
+{return a&&b?!strcmp(a,b):a==b;}
+static bool header_value_equal(const GeoSourceValue *a,const GeoSourceValue *b)
+{
+    if(!a||!b)return a==b;if(a->kind!=b->kind)return false;
+    if(a->kind==GEO_SOURCE_DEFINITION)return header_text_equal(a->as.definition.schema,b->as.definition.schema)&&
+        a->as.definition.content_size==b->as.definition.content_size&&
+        (a->as.definition.content&&b->as.definition.content?
+         !memcmp(a->as.definition.content,b->as.definition.content,a->as.definition.content_size):a->as.definition.content==b->as.definition.content);
+    if(a->kind==GEO_SOURCE_QUANTITY)return a->as.quantity.num==b->as.quantity.num&&a->as.quantity.den==b->as.quantity.den&&a->as.quantity.unit==b->as.quantity.unit;
+    if(a->kind==GEO_SOURCE_FRAME)return !memcmp(&a->as.frame,&b->as.frame,sizeof a->as.frame);
+    return false;
+}
+static bool header_graph_equal(const GeoEvalContext *a,const GeoEvalContext *b)
+{
+    if(geo_eval_node_count(a)!=geo_eval_node_count(b)||geo_eval_edge_count(a)!=geo_eval_edge_count(b))return false;
+    for(size_t i=0;i<geo_eval_node_count(a);++i){GeoSourceNodeView x,y;
+        if(!geo_eval_node_at(a,i,&x)||!geo_eval_node_at(b,i,&y)||x.source.provider!=y.source.provider||x.source.key_size!=y.source.key_size||
+           memcmp(x.source.key,y.source.key,x.source.key_size)||x.described!=y.described||x.state!=y.state||x.status!=y.status||
+           x.descriptor.kind!=y.descriptor.kind||x.descriptor.unit!=y.descriptor.unit||
+           x.descriptor.context.has_placement!=y.descriptor.context.has_placement||x.descriptor.context.placement!=y.descriptor.context.placement||x.descriptor.context.axis!=y.descriptor.context.axis||
+           x.descriptor.retry_failure!=y.descriptor.retry_failure||x.descriptor.context_from_value!=y.descriptor.context_from_value||!header_value_equal(x.value,y.value))return false;
+    }
+    for(size_t i=0;i<geo_eval_edge_count(a);++i){GeoSourceEdge x,y;
+        if(!geo_eval_edge_at(a,i,&x)||!geo_eval_edge_at(b,i,&y)||x.consumer!=y.consumer||x.source!=y.source||x.kind!=y.kind)return false;}
+    return true;
+}
+static bool header_definition_edges(const GeoEvalContext *graph)
+{
+    if(geo_eval_edge_count(graph)!=2)return false;
+    const GeoProviderToken from[]={HEADER_CONSUMER_TOKEN,11},to[]={11,33};
+    for(size_t i=0;i<2;++i){GeoSourceEdge e;GeoSourceNodeView a,b;
+        if(!geo_eval_edge_at(graph,i,&e)||e.kind!=GEO_DEPENDENCY_DEFINITION_REQUIRED||!geo_eval_node_at(graph,e.consumer,&a)||!geo_eval_node_at(graph,e.source,&b)||
+           a.source.provider!=from[i]||b.source.provider!=to[i])return false;}
+    return true;
+}
+static int header_pair_raw(const Replacement *replacement,GeoPlacementDomain raw_domain,bool accepted,const char *mismatch)
+{
+    HeaderRun a,b;CHECK(header_start(&a,replacement,false,raw_domain)&&header_start(&b,replacement,true,raw_domain),"header-pair-fresh-fixtures");
+    unsigned char key=7;GeoSourceValue av,bv;header_active=&a;
+    GeoSourceStatus ar=geo_eval_source(a.fixture.graph,(GeoSourceRef){HEADER_CONSUMER_TOKEN,&key,1},GEO_DEPENDENCY_VALUE_REQUIRED,&av);
+    header_active=&b;GeoSourceStatus br=geo_eval_source(b.fixture.graph,(GeoSourceRef){HEADER_CONSUMER_TOKEN,&key,1},GEO_DEPENDENCY_VALUE_REQUIRED,&bv);header_active=NULL;
+    CHECK(a.calls==1&&b.calls==1&&a.trace_ok&&b.trace_ok,"header-pair-exercises-both-real-accessors");
+    CHECK(a.ok==accepted,"header-full-oracle-has-independent-expected-outcome");
+    CHECK(a.ok==b.ok&&ar==br,mismatch);
+    if(a.ok){
+        CHECK(a.full.domain==b.small.domain,"header-domain-matches-full-projection");
+        CHECK(a.full.region_id==b.small.region_id,"header-region-matches-full-projection");
+    }else{
+        unsigned char full[sizeof a.full],small[sizeof b.small];memset(full,0xa5,sizeof full);memset(small,0x6b,sizeof small);
+        CHECK(!memcmp(&a.full,full,sizeof full)&&!memcmp(&b.small,small,sizeof small),"header-failure-preserves-all-output-bytes");
+    }
+    CHECK(header_definition_edges(a.fixture.graph)&&header_definition_edges(b.fixture.graph),"header-consumer-edge-requires-definition");
+    CHECK(!strcmp(a.events,b.events)&&header_graph_equal(a.fixture.graph,b.fixture.graph),"header-ordered-calls-and-typed-graph-match-full");
+    CHECK(a.replacement.calls==1&&b.replacement.calls==1&&!a.replacement.frame_calls&&!a.replacement.region_calls&&!b.replacement.frame_calls&&!b.replacement.region_calls,
+        "header-reads-only-the-bound-definition-once");
+    CHECK(geo_placements_find(a.fixture.placements,TEST_ID)->domain==raw_domain&&geo_placements_find(b.fixture.placements,TEST_ID)->domain==raw_domain,
+        "header-binding-does-not-mutate-authored-store");
+    if(a.ok){GeoPlacementDefinition again;GeoPlacementDefinitionHeader small;
+        size_t an=geo_eval_node_count(a.fixture.graph),bn=geo_eval_node_count(b.fixture.graph),ae=geo_eval_edge_count(a.fixture.graph),be=geo_eval_edge_count(b.fixture.graph);
+        header_active=&a;bool x=geo_placement_sources_definition_header(a.fixture.sources,TEST_ID,&small);
+        header_active=&b;bool y=geo_placement_sources_definition(b.fixture.sources,TEST_ID,&again);header_active=NULL;
+        CHECK(x&&y&&small.domain==a.full.domain&&small.region_id==a.full.region_id&&again.domain==b.small.domain&&again.region_id==b.small.region_id&&
+            a.replacement.calls==1&&b.replacement.calls==1&&geo_eval_node_count(a.fixture.graph)==an&&geo_eval_node_count(b.fixture.graph)==bn&&
+            geo_eval_edge_count(a.fixture.graph)==ae&&geo_eval_edge_count(b.fixture.graph)==be,"header-full-both-read-orders-share-one-cached-source");
+    }
+    destroy(&a.fixture,true);destroy(&b.fixture,false);return 0;
+}
+static int header_pair(const Replacement *replacement,bool accepted,const char *mismatch)
+{return header_pair_raw(replacement,GEO_PLACEMENT_RECT,accepted,mismatch);}
+static void header_replacement(Replacement *s,int domain)
+{memset(s,0,sizeof *s);s->kind=GEO_SOURCE_DEFINITION;s->schema=GEO_PLACEMENT_DEFINITION_SCHEMA;fixed_vector(&s->wire,domain);}
+static int header_values_case(void)
+{
+    Replacement s;GeoPlacementDefinition maximum;
+    for(int domain=0;domain<=2;++domain){header_replacement(&s,domain);if(header_pair(&s,true,"header-valid-wire-acceptance-matches-full"))return 1;}
+    header_replacement(&s,GEO_PLACEMENT_REGION_SET);s.wire.size=101;u32(&s.wire,0);
+    if(header_pair(&s,true,"header-empty-set-acceptance-matches-full"))return 1;
+    header_replacement(&s,GEO_PLACEMENT_REGION_REF);memset(s.wire.bytes+101,0,4);
+    if(header_pair(&s,true,"header-zero-reference-acceptance-matches-full"))return 1;
+    maximal(&s.wire,&maximum);if(header_pair(&s,true,"header-maximal-wire-acceptance-matches-full"))return 1;
+    return 0;
+}
+static void header_count_wire(Vector *v,size_t components,size_t outline,size_t holes,size_t vertices)
+{
+    fixed_vector(v,GEO_PLACEMENT_REGION_SET);v->size=101;u32(v,(uint32_t)components);
+    for(size_t c=0;c<components;++c){u32(v,(uint32_t)c);u32(v,(uint32_t)outline);
+        for(size_t n=0;n<outline;++n){i64(v,(int64_t)n);i64(v,-(int64_t)n);}
+        u32(v,(uint32_t)holes);for(size_t h=0;h<holes;++h){u32(v,(uint32_t)vertices);
+            for(size_t n=0;n<vertices;++n){i64(v,INT64_MIN);i64(v,INT64_MAX);}}}
+}
+static int header_malformed_case(void)
+{
+    Replacement s;Vector original;GeoPlacementDefinition maximum;
+    for(int domain=0;domain<=2;++domain){header_replacement(&s,domain);original=s.wire;
+        for(size_t n=0;n<original.size;++n){s.wire.size=n;if(header_pair(&s,false,"header-truncation-matches-full"))return 1;}
+        s.wire=original;s.wire.bytes[s.wire.size++]=0xa5;if(header_pair(&s,false,"header-tail-matches-full"))return 1;}
+    header_replacement(&s,GEO_PLACEMENT_REGION_SET);
+    for(unsigned domain=3;domain<256;++domain){s.wire.bytes[100]=(unsigned char)domain;if(header_pair(&s,false,"header-domain-bound-matches-full"))return 1;}
+    header_replacement(&s,GEO_PLACEMENT_REGION_SET);header_count_wire(&s.wire,GEO_PLACEMENT_COMPONENT_CAPACITY+1,0,0,0);
+    if(header_pair(&s,false,"header-component-bound-matches-full"))return 1;
+    header_count_wire(&s.wire,1,0,GEO_REGION_MAX_HOLES+1,0);if(header_pair(&s,false,"header-hole-bound-matches-full"))return 1;
+    header_count_wire(&s.wire,1,GEO_LOOP_MAX_VERTICES+1,0,0);if(header_pair(&s,false,"header-vertex-bound-matches-full"))return 1;
+    header_count_wire(&s.wire,1,0,1,GEO_LOOP_MAX_VERTICES+1);if(header_pair(&s,false,"header-hole-vertex-bound-matches-full"))return 1;
+    header_replacement(&s,GEO_PLACEMENT_REGION_SET);maximal(&s.wire,&maximum);original=s.wire;
+    const size_t coordinates=16u*GEO_LOOP_MAX_VERTICES,component_bytes=12u+coordinates+GEO_REGION_MAX_HOLES*(4u+coordinates);
+    for(size_t c=0;c<GEO_PLACEMENT_COMPONENT_CAPACITY;++c){size_t at=105u+c*component_bytes;
+        const size_t cuts[]={at-1,at+3,at+4,at+7,at+8,at+8+coordinates-1,at+8+coordinates+3};
+        for(size_t n=0;n<sizeof cuts/sizeof *cuts;++n){s.wire=original;s.wire.size=cuts[n];if(header_pair(&s,false,"header-maximal-boundary-truncation-matches-full"))return 1;}
+        for(size_t h=0;h<GEO_REGION_MAX_HOLES;++h){size_t start=at+12u+coordinates+h*(4u+coordinates);
+            const size_t hole_cuts[]={start,start+3,start+4,start+4+coordinates-1};
+            for(size_t n=0;n<sizeof hole_cuts/sizeof *hole_cuts;++n){s.wire=original;s.wire.size=hole_cuts[n];if(header_pair(&s,false,"header-maximal-hole-truncation-matches-full"))return 1;}}
+    }
+    header_replacement(&s,GEO_PLACEMENT_REGION_SET);memset(s.wire.bytes+101,0xff,4);
+    if(header_pair(&s,false,"header-u32-component-count-matches-full"))return 1;
+    header_replacement(&s,GEO_PLACEMENT_REGION_SET);s.wire.size=GEO_PLACEMENT_DEFINITION_MAX_BYTES+1;
+    if(header_pair(&s,false,"header-oversize-matches-full"))return 1;
+    return 0;
+}
+static int header_authority_case(void)
+{
+    Replacement s;header_replacement(&s,GEO_PLACEMENT_REGION_SET);
+    if(header_pair(&s,true,"header-binding-acceptance-matches-full"))return 1;
+    for(int domain=0;domain<=1;++domain){header_replacement(&s,domain);
+        if(header_pair_raw(&s,GEO_PLACEMENT_REGION_SET,true,"header-reverse-binding-acceptance-matches-full"))return 1;}
+    const char *schemas[]={NULL,"","other.schema/1","geometry.placement-definition/2"};
+    for(size_t i=0;i<sizeof schemas/sizeof *schemas;++i){header_replacement(&s,GEO_PLACEMENT_REGION_SET);s.schema=schemas[i];
+        if(header_pair(&s,false,"header-schema-rejection-matches-full"))return 1;}
+    header_replacement(&s,GEO_PLACEMENT_REGION_SET);s.wire.bytes[3]^=1;
+    if(header_pair(&s,false,"header-id-rejection-matches-full"))return 1;
+    header_replacement(&s,GEO_PLACEMENT_REGION_SET);s.kind=GEO_SOURCE_FRAME;
+    if(header_pair(&s,false,"header-value-kind-rejection-matches-full"))return 1;
+    header_replacement(&s,GEO_PLACEMENT_REGION_SET);s.fail_geometry=true;
+    if(header_pair(&s,false,"header-upstream-failure-matches-full"))return 1;
+    header_replacement(&s,GEO_PLACEMENT_REGION_SET);s.null_content=true;
+    if(header_pair(&s,false,"header-null-content-rejection-matches-full"))return 1;
+    GeoPlacementDefinitionHeader untouched,before;memset(&untouched,0x93,sizeof untouched);memcpy(&before,&untouched,sizeof before);
+    CHECK(!geo_placement_sources_definition_header(NULL,TEST_ID,&untouched)&&!memcmp(&untouched,&before,sizeof untouched),"header-null-handle-preserves-output");
+    Fixture f;header_replacement(&s,GEO_PLACEMENT_REGION_SET);CHECK(fixture(&f,&s),"header-null-output-fixture");
+    CHECK(!geo_placement_sources_definition_header(f.sources,TEST_ID,NULL)&&geo_eval_node_count(f.graph)==0,"header-null-output-does-not-evaluate");
+    GeoPlacementDefinitionHeader first,changed;GeoPlacementDefinition full;
+    CHECK(geo_placement_sources_definition_header(f.sources,TEST_ID,&first)&&first.domain==GEO_PLACEMENT_REGION_SET,"header-lifecycle-primes-binding");
+    header_replacement(&s,GEO_PLACEMENT_REGION_REF);CHECK(reset(&f,&s),"header-lifecycle-reset");
+    CHECK(geo_placement_sources_definition_header(f.sources,TEST_ID,&changed)&&geo_placement_sources_definition(f.sources,TEST_ID,&full)&&
+        changed.domain==full.domain&&changed.region_id==full.region_id&&changed.domain==GEO_PLACEMENT_REGION_REF&&changed.region_id==UINT32_MAX&&first.domain==GEO_PLACEMENT_REGION_SET,"header-reset-sees-new-binding-and-owned-old-fields");
+    Replacement other;header_replacement(&other,GEO_PLACEMENT_RECT);Fixture sibling;CHECK(fixture(&sibling,&other),"header-isolation-fixture");
+    CHECK(geo_placement_sources_definition_header(sibling.sources,TEST_ID,&changed)&&changed.domain==GEO_PLACEMENT_RECT&&
+        geo_placement_sources_definition_header(f.sources,TEST_ID,&first)&&first.domain==GEO_PLACEMENT_REGION_REF,"header-same-key-candidates-never-share-values");
+    destroy(&sibling,false);
+    destroy(&f,true);return 0;
+}
+
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;
+    if(!strcmp(argv[1],"header-values"))return header_values_case();
+    if(!strcmp(argv[1],"header-malformed"))return header_malformed_case();
+    if(!strcmp(argv[1],"header-authority"))return header_authority_case();
     if(!strcmp(argv[1],"keys"))return keys_case();if(!strcmp(argv[1],"codec"))return codec_case();
     if(!strcmp(argv[1],"bounds"))return bounds_case();if(!strcmp(argv[1],"malformed"))return malformed_case();
     if(!strcmp(argv[1],"definition"))return definition_case();if(!strcmp(argv[1],"typed"))return typed_case();

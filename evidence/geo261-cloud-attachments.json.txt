@@ -1,0 +1,286 @@
+{
+  "schema": "geo261-cloud-attachments/1",
+  "product_source_sha": "52b951940f570011b257cd207741ba0a7f6d7ce9",
+  "files": {
+    "geo261-cloud-p52_measure.py.txt": {
+      "kind": "script",
+      "restore_name": "p52_measure.py",
+      "bytes": 5878,
+      "sha256": "eb47d63926e484e286a509febd342f2707470f5d251f798ccd518c6fa540b6c2"
+    },
+    "geo261-cloud-postfix_validate.py.txt": {
+      "kind": "script",
+      "restore_name": "postfix_validate.py",
+      "bytes": 6180,
+      "sha256": "bf7607b546559e2b395fdf902574e9b07131534610cde0944d7c277f06097e74"
+    },
+    "geo261-cloud-p52_probe.cjs.txt": {
+      "kind": "script",
+      "restore_name": "p52_probe.cjs",
+      "bytes": 5565,
+      "sha256": "8c3b4b14ad35082679e4faf229bd66d65a500bd53669c13d8f41e0603e066970"
+    },
+    "geo261-cloud-p52_cases.cjs.txt": {
+      "kind": "script",
+      "restore_name": "p52_cases.cjs",
+      "bytes": 6448,
+      "sha256": "6ca75996223e94be0a503e646d58ed928b046854eb0102af309482dc4ac60f66"
+    },
+    "geo261-cloud-verify_postfix_receipt.py.txt": {
+      "kind": "script",
+      "restore_name": "verify_postfix_receipt.py",
+      "bytes": 1627,
+      "sha256": "5a109def7794ebc1e34048afe500fd97758f98781ff90597fedec0dc214f1e04"
+    },
+    "geo261-cloud-p189_verify.py.txt": {
+      "kind": "script",
+      "restore_name": "p189_verify.py",
+      "bytes": 7127,
+      "sha256": "f8aa78a9ca13a2131ec78c5a1eeea8ef8b23f0fab9baeb6a4c38c1f25aaecbe7"
+    },
+    "geo261-cloud-cancel_supervisor.py.txt": {
+      "kind": "script",
+      "restore_name": "cancel_supervisor.py",
+      "bytes": 4342,
+      "sha256": "03edabfd7d6f6652528db9cdc1c1187720dfa742fb7cc8c7701383bba8559845"
+    },
+    "geo261-cloud-ci_run.py.txt": {
+      "kind": "script",
+      "restore_name": "ci_run.py",
+      "bytes": 32393,
+      "sha256": "d9c87034faf4ea442884448a1f1f145bf71f1121ba81f0fb32a3f0c03d8c09ee"
+    },
+    "geo261-cloud-ci_job.py.txt": {
+      "kind": "script",
+      "restore_name": "ci_job.py",
+      "bytes": 30164,
+      "sha256": "03a3dfef3b14ad35c2893d8c18f4fa429da11edae63a21105d957282cd7e96d1"
+    },
+    "geo261-cloud-scale_compare2.py.txt": {
+      "kind": "script",
+      "restore_name": "scale_compare2.py",
+      "bytes": 3536,
+      "sha256": "a52ba9a3ae35eaf97de64ec66a0814525ecbf4e297fe3925f4de105e1e8ad113"
+    },
+    "geo261-cloud-card_ref_mutations.sh.txt": {
+      "kind": "script",
+      "restore_name": "card_ref_mutations.sh",
+      "bytes": 1916,
+      "sha256": "13d8e4e1d53f4d18b8d5cdd7adf3bb2cb825283934a28bd6a84bfe8d4833fc11"
+    },
+    "geo261-cloud-q38_gate.sh.txt": {
+      "kind": "script",
+      "restore_name": "q38_gate.sh",
+      "bytes": 2585,
+      "sha256": "d0754c50bc36a27de8f041cd0e251591421999e5cbf833a96eabb2decf750ef7"
+    },
+    "geo261-cloud-q38_controls.py.txt": {
+      "kind": "script",
+      "restore_name": "q38_controls.py",
+      "bytes": 3446,
+      "sha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2"
+    },
+    "geo261-cloud-gen_scene.py.txt": {
+      "kind": "script",
+      "restore_name": "gen_scene.py",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    "geo261-cloud-final_special_gates.py.txt": {
+      "kind": "reference",
+      "restore_name": "final_special_gates.py",
+      "bytes": 2344,
+      "sha256": "86952ad5f1acda767d1173ee6702340b9425e3bc0b792ab9cefdc6fff0066818"
+    },
+    "geo261-cloud-verify_final.py.txt": {
+      "kind": "reference",
+      "restore_name": "verify_final.py",
+      "bytes": 23076,
+      "sha256": "ce08aa92f7b11394c4bf0360cbb9e85bd43f287ce4c22c596b2636dc7d9d65cb"
+    },
+    "geo261-cloud-performance_revert_control.py.txt": {
+      "kind": "reference",
+      "restore_name": "performance_revert_control.py",
+      "bytes": 2816,
+      "sha256": "914e642f6de7ac5f4955f35f58db2bc5915b2d5215978df5651dd2b66e199f52"
+    },
+    "geo261-cloud-verify_order_ledger_completion.py.txt": {
+      "kind": "reference",
+      "restore_name": "verify_order_ledger_completion.py",
+      "bytes": 2909,
+      "sha256": "2cb3b94f52b72447fb686fba8b2e26b456960a1df08b6dd7b6ea0b77dd75e205"
+    },
+    "geo261-cloud-verify_architecture_registration.py.txt": {
+      "kind": "reference",
+      "restore_name": "verify_architecture_registration.py",
+      "bytes": 4430,
+      "sha256": "4849b9af629f17d32590cbfde530ac3cf80603770fc80410954837ef6ea3308d"
+    },
+    "geo261-cloud-fix_verify.sh.txt": {
+      "kind": "reference",
+      "restore_name": "fix_verify.sh",
+      "bytes": 3425,
+      "sha256": "9139ca3c0d27158287a16ddfcf7cbca6352bfae2dfb04e6d360feba4f8b2a15f"
+    },
+    "geo261-cloud-prepare.py.txt": {
+      "kind": "bootstrap",
+      "restore_name": "cloud_prepare.py",
+      "bytes": 4666,
+      "sha256": "b78d65677b0f9f0f0b8c346d731f90e00d4a14c918d6dfa00a4263cd47986d57"
+    },
+    "geo261-cloud-native-guard-registration-r1-receipt.json.txt": {
+      "kind": "receipt",
+      "bytes": 2044,
+      "sha256": "f834a4deabcc6de9d9d070643efeffb24570acd00e22359ecc26a7e005e07ea9"
+    },
+    "geo261-cloud-native-guard-registration-r1-verified.json.txt": {
+      "kind": "receipt",
+      "bytes": 705,
+      "sha256": "d035379c1a1b8c13880fe9c6124ff8bdee9933b39b31c52de0ad95aab2251b1a"
+    },
+    "geo261-cloud-native-guard-registration-r1-commit.json.txt": {
+      "kind": "receipt",
+      "bytes": 606,
+      "sha256": "0fc2a62d608e4e5faecdee13e80086f251d4e5922aad84b573f7e61aabaf3da9"
+    },
+    "geo261-cloud-native-guard-registration-r1-native-units.log.txt": {
+      "kind": "receipt",
+      "bytes": 5397,
+      "sha256": "9af7b69b1424fcae21eab27fcedf2bad8127d7645c4e04846038828046ab7de2"
+    },
+    "geo261-cloud-ci-ac39346e-codex-final-r4-20261022-failed-readback.json.txt": {
+      "kind": "receipt",
+      "bytes": 62619,
+      "sha256": "1880957d215525a5cdd3add143d42e91432b403af45e34946696154b567a9c95"
+    },
+    "geo261-cloud-ci-ac39346e-codex-final-r4-20261022-native-failure-readback.json.txt": {
+      "kind": "receipt",
+      "bytes": 957,
+      "sha256": "2c58a1e6b2d65d75897e5eb6835884c4c236df553d5c2f3f32cd5a7020c873d6"
+    },
+    "geo261-cloud-p52-measurements-receipt.json.txt": {
+      "kind": "receipt",
+      "bytes": 102473,
+      "sha256": "bb748b91dade59179afc9dfe396e8fdb36eba2dfba75d5fda2e7c9401d83debb"
+    },
+    "geo261-cloud-postfix-45fc3092-timing.json.txt": {
+      "kind": "receipt",
+      "bytes": 434,
+      "sha256": "7590e95639d465ab13abb5a14c7e671cd9e607df915e638ca1a7911ad1680d10"
+    },
+    "geo261-cloud-p88-fix-validation-r2-receipt.json.txt": {
+      "kind": "receipt",
+      "bytes": 16527,
+      "sha256": "cb5a7bd68d0439797e68f07123b88bb0ad855bc5e27f6daf9668c40a662dfd78"
+    },
+    "geo261-cloud-p72b-navigation-validation-receipt.json.txt": {
+      "kind": "receipt",
+      "bytes": 3739,
+      "sha256": "cebd62443fa036e98a90b0b9ec519c19533e80a9b5c9b0c63841850e0458e071"
+    },
+    "geo261-cloud-order-index-82e0db0b-r2-receipt.json.txt": {
+      "kind": "receipt",
+      "bytes": 6705,
+      "sha256": "d3c7a483a19602d36ca2403a40db9a70f615bfd0a21de80ea699fa2e0d876f4c"
+    },
+    "geo261-cloud-order-index-82e0db0b-r2-verified.json.txt": {
+      "kind": "receipt",
+      "bytes": 1824,
+      "sha256": "c6b25bc5dc824fed9a6ec45a7d8be8ad40b341bb6cf5553d94fbc6b0bd76e5bf"
+    },
+    "geo261-cloud-ledger-receipt.json.txt": {
+      "kind": "receipt",
+      "bytes": 1351,
+      "sha256": "f4cd4832ee50cb14a356463d8208a9d31d8c492a2653e11bb4856596eeccfccb"
+    },
+    "geo261-cloud-ledger-verified.json.txt": {
+      "kind": "receipt",
+      "bytes": 1668,
+      "sha256": "a7a5a1d66113b65915fc525dce0435e970e5e1e57ddf59f86e7b0a9bc6dbbf87"
+    },
+    "geo261-cloud-ledger-mutate.log.txt": {
+      "kind": "receipt",
+      "bytes": 19593,
+      "sha256": "5d416108d5e7b27e3fe674429f07d5a59e60a96fe4979a093dac122f609680b7"
+    },
+    "geo261-cloud-ledger-check.log.txt": {
+      "kind": "receipt",
+      "bytes": 542,
+      "sha256": "f6cc05c3fb15f3f8c0ff6f7186886a1808ad9501a2bd5e97ea0ddd49c7c373aa"
+    },
+    "geo261-cloud-ledger-host.json.txt": {
+      "kind": "receipt",
+      "bytes": 860,
+      "sha256": "4d5e642578954986af3b88cdd70829a5a4da0efcb90e202c57b7f94693fd5a01"
+    },
+    "geo261-cloud-ledger-supervisor.json.txt": {
+      "kind": "receipt",
+      "bytes": 1094,
+      "sha256": "cb16a1248ba73f71042f07806d64d4f2059df0f32cff666968e05884bdd48263"
+    },
+    "geo261-cloud-architecture-receipt.json.txt": {
+      "kind": "receipt",
+      "bytes": 1765,
+      "sha256": "26dec4fab9618a0f9f12487f1f552d72e60cb9c51b4b47c801acf0d791e91574"
+    },
+    "geo261-cloud-architecture-verified.json.txt": {
+      "kind": "receipt",
+      "bytes": 1845,
+      "sha256": "fb097a492f6c03af62d1bb2bba596b303fb8201bf23957ed26b64fb31e4bb43e"
+    },
+    "geo261-cloud-architecture-audit-RESULT.json.txt": {
+      "kind": "receipt",
+      "bytes": 1999,
+      "sha256": "1c9e33b8ca3e4bdd814d4cdbc7c023ebdbb0cf548c7f6bef1120a899c2553eef"
+    },
+    "geo261-cloud-architecture-final-scan-run.json.txt": {
+      "kind": "receipt",
+      "bytes": 1297,
+      "sha256": "213a3decaae29c0fe4193890c1d033e930de3961b601b04cca34d86666dede7c"
+    },
+    "geo261-cloud-architecture-final-scan-stdout.txt": {
+      "kind": "receipt",
+      "bytes": 136537,
+      "sha256": "cbc0d39154a1a880f6854b2826b71b1e5cef662ed887dbaf0cf4510f6c403ac1"
+    },
+    "geo261-cloud-architecture-final-scan-stderr.txt": {
+      "kind": "receipt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "geo261-cloud-architecture-generic-tests-run.json.txt": {
+      "kind": "receipt",
+      "bytes": 1128,
+      "sha256": "851d9df3121313b0f5b8b38685dd356f8d5cd33a04b00ce674f22d3ccd079c55"
+    },
+    "geo261-cloud-architecture-generic-tests-stdout.txt": {
+      "kind": "receipt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "geo261-cloud-architecture-generic-tests-stderr.txt": {
+      "kind": "receipt",
+      "bytes": 30033,
+      "sha256": "0a6e4a1bd1bbb2a28a6734c81a56c55a179afa3c42a5762c25be181239c25f53"
+    },
+    "geo261-cloud-architecture-product-tests-run.json.txt": {
+      "kind": "receipt",
+      "bytes": 1125,
+      "sha256": "476c106b985cc7eca344aa0953c903ce35b0e9acf4a2333e3021fc08d088c874"
+    },
+    "geo261-cloud-architecture-product-tests-stdout.txt": {
+      "kind": "receipt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "geo261-cloud-architecture-product-tests-stderr.txt": {
+      "kind": "receipt",
+      "bytes": 124,
+      "sha256": "ea6dc5710ee573384e022fedae822738af2800bee429709f286acda64d045799"
+    }
+  },
+  "note": "原腳本逐byte附檔；prepare只在外部暫存副本替換路徑並記原/執行版hash。新雲端路徑尚未執行七項或專項。",
+  "ledger_commit": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
+  "architecture_source_sha": "0548c05cccbb7b35def6bbc3d6b285004be676e5",
+  "sealed_candidate_sha": "60425b629aee9f74f4e62ea88af9882bc8968881"
+}

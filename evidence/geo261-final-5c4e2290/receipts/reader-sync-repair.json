@@ -1,0 +1,106 @@
+{
+  "schema": "geo261-canonical-reader-sync-repair/1",
+  "source_head": "5c4e229019a1003bdde5141a3ac52ca0ba2cf676",
+  "started_utc": "2026-10-22T17:26:52.058701+00:00",
+  "purpose": "原同步器更新唯一正典的衍生trace；不是正式F驗收，不改公理或裁判",
+  "before_reader_sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b",
+  "expected_after_reader_sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b",
+  "protected_lf_hashes": {
+    "公理層.md": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d",
+    "geometry-guide/公理層-白話.md": "dea36a03c08a39799a472f8f1e6459194e3c8da096143f26e35d8e2fbb2e23af",
+    "決策佇列.md": "c3387507597afafbdf1962b5374d5cfd8187165e6638b7b33c92bb3f794d9f72"
+  },
+  "wrapper_sha256": "47c73507b672b025af0a7e6dd78e4af278300c75a441665ea5d6db1f0b5ad249",
+  "commands": [
+    {
+      "label": "reader-check",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo261-environment/reap_children.py",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-environment/run_recorded.py",
+        "--scratch",
+        "/tmp/g261readerfix-resume",
+        "--label",
+        "reader-check",
+        "--timeout",
+        "1200",
+        "--",
+        "python3",
+        "-B",
+        "geometry-guide/sync_axiom_reader.py",
+        "--check"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T17:26:52.070483+00:00",
+      "reader_before_sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b",
+      "actual_exit": 0,
+      "ended_utc": "2026-10-22T17:26:53.852845+00:00",
+      "reader_after_sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b"
+    },
+    {
+      "label": "reader-tests",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo261-environment/reap_children.py",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-environment/run_recorded.py",
+        "--scratch",
+        "/tmp/g261readerfix-resume",
+        "--label",
+        "reader-tests",
+        "--timeout",
+        "1200",
+        "--",
+        "python3",
+        "-B",
+        "tests/test_axiom_reader.py"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T17:26:53.894392+00:00",
+      "reader_before_sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b",
+      "actual_exit": 0,
+      "ended_utc": "2026-10-22T17:29:31.899532+00:00",
+      "reader_after_sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b"
+    },
+    {
+      "label": "reader-resync",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/geo261-environment/reap_children.py",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-environment/run_recorded.py",
+        "--scratch",
+        "/tmp/g261readerfix-resume",
+        "--label",
+        "reader-resync",
+        "--timeout",
+        "1200",
+        "--",
+        "python3",
+        "-B",
+        "geometry-guide/sync_axiom_reader.py"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T17:29:31.950004+00:00",
+      "reader_before_sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b",
+      "actual_exit": 0,
+      "ended_utc": "2026-10-22T17:29:35.900285+00:00",
+      "reader_after_sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b"
+    }
+  ],
+  "passed": true,
+  "prior_sync_record": {
+    "path": "/tmp/g261readerfix/receipt.json",
+    "sha256": "b471a9f8df7ea4a2972c88daf8b01c2b1b26ba8def1a2ac5a141f530703da398",
+    "original_product_sync_exit": 0,
+    "original_recording_guard_passed": false,
+    "reason": "Git 預設 quotePath 對中文 name-only 輸出加引號；以 NUL 分隔原始路徑修復錄製器，原始失敗不改寫。"
+  },
+  "ended_utc": "2026-10-22T17:29:35.937555+00:00",
+  "after_reader_sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b",
+  "resync_byte_idempotent": true
+}

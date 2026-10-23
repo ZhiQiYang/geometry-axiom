@@ -6,6 +6,7 @@ Negative controls mutate isolated copies of H only, require an exact normal
 assertion exit, and repeat the baseline before/after without changing sources.
 """
 from pathlib import Path
+import json
 import re
 import subprocess
 import sys
@@ -74,6 +75,83 @@ HOLE_VERTEX_CONTROL = ('hole-index-digits',
     'rect-ref', 'facts-hole-vertex-grammar-rejects-malformed')
 CONTROL_SOURCES = {'probe-projection': VALIDATION, 'hole-index-digits': REFERENCES}
 
+
+
+RAW_SNAPSHOT_CASES = ('baseline',
+ 'unplaced',
+ 'excluded',
+ 'foreign',
+ 'moved',
+ 'length-zero',
+ 'length-negative',
+ 'direction-unknown',
+ 'direction-min',
+ 'depth-unknown',
+ 'depth-min',
+ 'future-uv',
+ 'future-length',
+ 'future-placed',
+ 'anchor-fail',
+ 'pose-fail',
+ 'pose-unplaces',
+ 'phase-false-to-true',
+ 'phase-roundtrip',
+ 'phase-entry-true-to-false',
+ 'prefix-excluded-anchorfail',
+ 'prefix-foreign-posefail')
+RAW_SNAPSHOT_CONTROLS = (('snapshot-uv',
+  'current_geometry.c',
+  (('s->anchor=a->uv;', 's->anchor=(SurfacePoint2){0,0};'),),
+  'future-uv',
+  'rawsnapshot-future-uv-out'),
+ ('live-length',
+  'current_geometry.c',
+  (('raw->length,raw->size_a,&fact->footprint);',
+    'fact->member->length,fact->member->size_a,&fact->footprint);'),),
+  'future-length',
+  'rawsnapshot-future-length-out'),
+ ('failure-current-only',
+  'current_geometry.c',
+  (('for(size_t i=0;i<visited;++i)app_contact_raw_restore(placement,&raw[i],&members[i]);',
+    'if(visited)app_contact_raw_restore(placement,&raw[visited-1],&members[visited-1]);'),),
+  'prefix-excluded-anchorfail',
+  'rawsnapshot-prefix-excluded-anchorfail-out'),
+ ('pose-flush',
+  'geometry-app/native/reference_sources.inc',
+  (('if(geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof '
+    'id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK){\n'
+    '            '
+    'if(deferred)app_contact_raw_complete(&placement,raw,out->members,visited);return false;',
+    'if(geo_eval_source(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof '
+    'id},GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK){\n'
+    '            return false;'),),
+  'prefix-foreign-posefail',
+  'rawsnapshot-prefix-foreign-posefail-out'),
+ ('foreign-valid',
+  'current_geometry.c',
+  (('if(raw->pending==1)fact->footprint_valid=valid;', 'fact->footprint_valid=valid;'),),
+  'foreign',
+  'rawsnapshot-foreign-out'),
+ ('face-false-lost',
+  'geometry-app/native/reference_sources.inc',
+  (('if(deferred&&raw[i].pending)raw[i].pending=fact->footprint_valid?0:2;',
+    'if(deferred&&raw[i].pending)raw[i].pending=0;'),),
+  'pose-unplaces',
+  'rawsnapshot-pose-unplaces-out'),
+ ('phase-materialize',
+  'geometry-app/native/reference_sources.inc',
+  (('if(deferred&&ctx->use_current_values)app_contact_raw_restore(&placement,&raw[i],fact);',
+    '/* isolated control omits current guard materialization */'),),
+  'phase-false-to-true',
+  'rawsnapshot-phase-false-to-true-new-exercised'),
+ ('tail-precopy',
+  'geometry-app/native/reference_sources.inc',
+  (('out->member_count=facts.world.member_count;\n    for(size_t i=0;i<out->member_count;++i){',
+    'out->member_count=facts.world.member_count;\n'
+    '    memcpy(out->members,facts.members,out->member_count*sizeof *out->members);\n'
+    '    for(size_t i=0;i<out->member_count;++i){'),),
+  'anchor-fail',
+  'rawsnapshot-anchor-fail-out'))
 
 class HostFactsAuthorityBoundary(unittest.TestCase):
     def test_real_provider_interception_and_shared_h_adapters_are_present(self):
@@ -173,6 +251,58 @@ class HostFactsAuthority(unittest.TestCase):
         for control in CONTROLS[5:]:
             with self.subTest(control=control[0]):
                 self.control(control)
+
+
+    def test_raw_snapshot_callback_matches_eager_bytes_calls_graph_and_failure_prefix(self):
+        for name in RAW_SNAPSHOT_CASES:
+            with self.subTest(case=name):
+                self.case('rawsnapshot-' + name)
+
+    def raw_snapshot_case(self, name, exe, control, phase, marker=None):
+        command = [str(exe), 'rawsnapshot-' + name]
+        try:
+            result = subprocess.run(command, capture_output=True, text=True, encoding='utf-8', timeout=30)
+        except subprocess.TimeoutExpired as error:
+            def captured(value):
+                return value.decode('utf-8', errors='replace') if isinstance(value, bytes) else value or ''
+            print(json.dumps({'schema': 'geometry-rawsnapshot-control-execution/1',
+                'control': control, 'phase': phase, 'command': command, 'exitCode': None,
+                'timedOut': True, 'timeoutSeconds': 30, 'stdout': captured(error.stdout),
+                'stderr': captured(error.stderr)}, ensure_ascii=False), flush=True)
+            raise
+        print(json.dumps({'schema': 'geometry-rawsnapshot-control-execution/1',
+            'control': control, 'phase': phase, 'command': command, 'exitCode': result.returncode,
+            'timedOut': False, 'stdout': result.stdout, 'stderr': result.stderr}, ensure_ascii=False), flush=True)
+        self.assertEqual(1 if marker else 0, result.returncode,
+                         'Crash/setup/timeout is not a raw snapshot verdict: ' + result.stdout + result.stderr)
+        self.assertEqual('ASSERT:' + marker + '\n' if marker else '', result.stderr)
+        self.assertEqual('', result.stdout)
+
+    def test_raw_snapshot_eight_controls_fail_exact_oracles_and_restore(self):
+        build = native()
+        originals = [ROOT / 'current_geometry.c', REFERENCES, SOURCE, VALIDATION, HARNESS]
+        saved = {path: path.read_bytes() for path in originals}
+        for name, relative, edits, case, marker in RAW_SNAPSHOT_CONTROLS:
+            with self.subTest(control=name):
+                self.raw_snapshot_case(case, self.exe, name, 'baseline')
+                texts = {path: data.replace(b'\r\n', b'\n').decode('utf-8') for path, data in saved.items()}
+                target = ROOT / relative
+                for before, after in edits:
+                    self.assertEqual(1, texts[target].count(before), 'Control must hit exactly once: ' + name)
+                    texts[target] = texts[target].replace(before, after, 1)
+                copies = {path.resolve(): build.work / ('rawsnapshot-' + name + '-' + path.name) for path in originals}
+                for original in originals:
+                    def include(match):
+                        path = (original.parent / match.group(1)).resolve()
+                        return '#include "' + str(copies.get(path, path)).replace('\\', '/') + '"'
+                    copies[original.resolve()].write_text(
+                        re.sub(r'^#include "([^"]+)"', include, texts[original], flags=re.MULTILINE), encoding='utf-8')
+                client = build.compile(copies[HARNESS.resolve()], 'rawsnapshot-control-' + name, FLAGS)
+                exe = build.link('rawsnapshot-control-' + name, [client, *build.product_objects()])
+                self.raw_snapshot_case(case, exe, name, 'mutant', marker)
+                self.raw_snapshot_case(case, self.exe, name, 'restored')
+                for original, data in saved.items():
+                    self.assertEqual(data, original.read_bytes(), 'Control changed repository bytes: ' + str(original))
 
 
 if __name__ == '__main__':

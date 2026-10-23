@@ -92,5 +92,128 @@ static int failure(void)
     CHECK(!wood_definition_sources_dimension(f.sources,13,true,&n)&&n==191,"owned-is-not-literal");
     CHECK(!memcmp(before,f.document,sizeof *before),"queries-never-mutate-authored-store");free(before);drop(&f,false);return 0;
 }
+/* Intercept the registered production provider after it returns. The bytes
+ * below are the real graph's cached definition, not a replacement evaluator
+ * or a macro around geo_eval_source. Authored placement storage stays intact. */
+typedef struct {
+    Fixture fixture;
+    bool (*evaluate)(void *,GeoEvalContext *,const GeoSourceRef *,GeoSourceValue *);
+    unsigned calls;
+    unsigned char bytes[4096],original[4096];
+    size_t size,lengths[3];
+    GeoSourceValue canonical,*cached;
+} ContactViewProbe;
+static ContactViewProbe *contact_view_active;
+static void contact_view_be(unsigned char *bytes,uint64_t value,size_t count)
+{for(size_t i=0;i<count;++i)bytes[i]=(unsigned char)(value>>(8*(count-i-1)));}
+static bool contact_view_evaluate(void *state,GeoEvalContext *graph,const GeoSourceRef *source,GeoSourceValue *out)
+{
+    ContactViewProbe *p=contact_view_active;
+    if(!p||!p->evaluate(state,graph,source,out))return false;
+    WoodDefinitionKind kind;uint32_t id;
+    if(wood_definition_source_decode(source,&kind,&id)&&kind==WOOD_DEFINITION_PLACEMENT&&id==11){
+        if(out->kind!=GEO_SOURCE_DEFINITION||out->as.definition.content_size>sizeof p->bytes)return false;
+        p->size=out->as.definition.content_size;
+        memcpy(p->bytes,out->as.definition.content,p->size);
+        /* Distinct values prove both readers consume the returned definition,
+         * rather than copying the original document's placement fields. */
+        contact_view_be(p->bytes+4,UINT32_MAX,4);contact_view_be(p->bytes+16,99,4);
+        contact_view_be(p->bytes+131+p->lengths[0],UINT64_MAX,8);
+        out->as.definition.content=p->bytes;++p->calls;
+    }
+    return true;
+}
+static int contact_view_init(ContactViewProbe *p,const size_t lengths[3])
+{
+    memset(p,0,sizeof *p);CHECK(init(&p->fixture,76),"contact-view-fixture");
+    WoodMemberPlacement *a=&p->fixture.document->anchors[0];char *texts[]={a->ref_derived_key,a->between[0].key,a->between[1].key};
+    for(size_t t=0;t<3;++t){p->lengths[t]=lengths[t];CHECK(lengths[t]<512,"contact-view-test-length");
+        for(size_t i=0;i<lengths[t];++i)texts[t][i]=(char)('a'+(i+t)%26);texts[t][lengths[t]]=0;}
+    a->has_between=false; /* Inactive between fields must still be decoded. */
+    for(size_t i=0;i<geo_eval_provider_count(p->fixture.graph);++i){
+        GeoSourceProvider *provider=(GeoSourceProvider *)geo_eval_provider_at(p->fixture.graph,i);
+        if(provider->token==TOKEN){p->evaluate=provider->evaluate;provider->evaluate=contact_view_evaluate;}
+    }
+    CHECK(p->evaluate,"contact-view-production-provider");contact_view_active=p;
+    GeoSourceValue value;CHECK(definition(&p->fixture,WOOD_DEFINITION_PLACEMENT,11,&value),"contact-view-prime-real-definition");
+    WoodDefinitionKey key;GeoSourceNodeView cached;size_t index=node(&p->fixture,ref(WOOD_DEFINITION_PLACEMENT,11,&key));
+    CHECK(index!=SIZE_MAX&&geo_eval_node_at(p->fixture.graph,index,&cached)&&cached.value&&
+        cached.state==GEO_NODE_VALID&&cached.value->kind==GEO_SOURCE_DEFINITION&&
+        cached.value->as.definition.content==p->bytes&&p->calls==1,"contact-view-real-cached-bytes");
+    CHECK(p->size==180+lengths[0]+lengths[1]+lengths[2],"contact-view-canonical-wire-size");
+    p->cached=(GeoSourceValue *)cached.value;p->canonical=*cached.value;
+    memcpy(p->original,p->bytes,p->size);return 0;
+}
+static void contact_view_restore(ContactViewProbe *p)
+{*p->cached=p->canonical;memcpy(p->bytes,p->original,p->size);}
+static int contact_view_values(ContactViewProbe *p)
+{
+    WoodMemberPlacement full;WoodMemberPlacementContact contact;
+    CHECK(wood_definition_sources_placement(p->fixture.sources,11,&full),"contact-view-valid-full");
+    CHECK(wood_definition_sources_placement_contact(p->fixture.sources,11,&contact),"contact-view-valid-narrow");
+    CHECK(full.placement_id==UINT32_MAX&&contact.placement_id==full.placement_id,"contact-view-placement-id-value");
+    CHECK(full.length_direction==99&&contact.length_direction==full.length_direction,"contact-view-direction-value");
+    CHECK(full.order==UINT64_MAX&&contact.order==full.order,"contact-view-order-value");
+    CHECK(p->calls==1&&geo_eval_node_count(p->fixture.graph)==1&&geo_eval_edge_count(p->fixture.graph)==0,
+        "contact-view-shared-cached-source-identity");return 0;
+}
+static int contact_view_reject(ContactViewProbe *p,const char *label)
+{
+    WoodMemberPlacement full;WoodMemberPlacementContact contact;
+    unsigned char full_before[sizeof full],contact_before[sizeof contact];
+    memset(&full,0x56,sizeof full);memset(&contact,0x6b,sizeof contact);
+    memcpy(full_before,&full,sizeof full);memcpy(contact_before,&contact,sizeof contact);
+    CHECK(!wood_definition_sources_placement(p->fixture.sources,11,&full)&&!memcmp(&full,full_before,sizeof full),label);
+    CHECK(!wood_definition_sources_placement_contact(p->fixture.sources,11,&contact)&&!memcmp(&contact,contact_before,sizeof contact),label);
+    CHECK(p->calls==1&&geo_eval_node_count(p->fixture.graph)==1,"contact-view-errors-keep-cached-source");return 0;
+}
+static int contact_view(void)
+{
+    const size_t lengths[][3]={{0,0,0},{1,511,0},{511,0,1},{511,511,511}};
+    for(size_t family=0;family<sizeof lengths/sizeof *lengths;++family){
+        ContactViewProbe p;if(contact_view_init(&p,lengths[family]))return 1;
+        WoodMemberPlacement authored;memcpy(&authored,&p.fixture.document->anchors[0],sizeof authored);
+        if(contact_view_values(&p))return 1;
+        CHECK(!wood_definition_sources_placement(p.fixture.sources,11,NULL)&&
+            !wood_definition_sources_placement_contact(p.fixture.sources,11,NULL)&&p.calls==1,"contact-view-null-output");
+        /* Exact trailing size is independent of every other format guard. */
+        p.bytes[p.size]=0x5a;p.cached->as.definition.content_size=p.size+1;
+        if(contact_view_reject(&p,"contact-view-trailing-rejected"))return 1;
+        for(size_t size=0;size<p.size;++size){contact_view_restore(&p);p.cached->as.definition.content_size=size;
+            if(contact_view_reject(&p,"contact-view-every-truncation-rejected"))return 1;}
+        if(family==3){
+            const size_t prefix[]={127,156+511,176+511+511};
+            const char *capacity_labels[]={"contact-view-text0-capacity","contact-view-text1-capacity","contact-view-text2-capacity"};
+            for(size_t text=0;text<3;++text){
+                /* Materialize the 512th byte and shift the remaining complete
+                 * wire so only the text-capacity guard can reject this case. */
+                contact_view_restore(&p);size_t end=prefix[text]+4+511;
+                memmove(p.bytes+end+1,p.bytes+end,p.size-end);p.bytes[end]='z';
+                contact_view_be(p.bytes+prefix[text],512,4);p.cached->as.definition.content_size=p.size+1;
+                if(contact_view_reject(&p,capacity_labels[text]))return 1;
+                contact_view_restore(&p);contact_view_be(p.bytes+prefix[text],UINT32_MAX,4);
+                if(contact_view_reject(&p,"contact-view-u32-text-length-rejected"))return 1;
+            }
+            /* Reader acceptance includes embedded NUL/high bytes; it consumes
+             * the declared length, including the inactive between strings. */
+            const size_t content[]={131,160+511,180+511+511};
+            for(size_t text=0;text<3;++text){contact_view_restore(&p);p.bytes[content[text]]=0;p.bytes[content[text]+1]=0xff;
+                if(contact_view_values(&p))return 1;}
+        }
+        contact_view_restore(&p);contact_view_be(p.bytes,12,4);
+        if(contact_view_reject(&p,"contact-view-id-rejected"))return 1;
+        const char *schemas[]={NULL,"","wood.rc-column/1","wood.member.placement/2"};
+        for(size_t s=0;s<sizeof schemas/sizeof *schemas;++s){contact_view_restore(&p);p.cached->as.definition.schema=schemas[s];
+            if(contact_view_reject(&p,"contact-view-schema-rejected"))return 1;}
+        contact_view_restore(&p);p.cached->kind=GEO_SOURCE_BOX;
+        if(contact_view_reject(&p,"contact-view-value-kind-rejected"))return 1;
+        contact_view_restore(&p);p.cached->as.definition.content=NULL;
+        if(contact_view_reject(&p,"contact-view-null-content-rejected"))return 1;
+        CHECK(!memcmp(&authored,&p.fixture.document->anchors[0],sizeof authored),"contact-view-authored-store-unchanged");
+        contact_view_restore(&p);if(contact_view_values(&p))return 1;
+        drop(&p.fixture,family&1);contact_view_active=NULL;
+    }
+    return 0;
+}
 int main(int argc,char **argv)
-{if(argc!=2)return 2;if(!strcmp(argv[1],"codec"))return codec();if(!strcmp(argv[1],"graph"))return graph();if(!strcmp(argv[1],"canonical"))return canonical();if(!strcmp(argv[1],"failure"))return failure();return 2;}
+{if(argc!=2)return 2;if(!strcmp(argv[1],"codec"))return codec();if(!strcmp(argv[1],"graph"))return graph();if(!strcmp(argv[1],"canonical"))return canonical();if(!strcmp(argv[1],"failure"))return failure();if(!strcmp(argv[1],"contact-view"))return contact_view();return 2;}

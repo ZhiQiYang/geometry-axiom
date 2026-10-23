@@ -1,0 +1,109 @@
+##[wsl-ci] job=documents key=browser sha=5afa469056af90a0ad3f82ea6bc4b229ba8de226 repo=/root/ga-ci/runs/5afa4690-20261010-215931/documents/repo
+##[wsl-ci] ci timeout 10 min (hard watchdog 30 min); jobtmp=/tmp/ga-ci/5afa4690-20261010-215931/documents port=18839->18842
+##[wsl-ci] step 0 actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 -> replaced (clean local clone at the SHA under test)
+##[group]Run Build current native executables
+npm run build
+##[endgroup]
+
+> geometry-axiom-dev@0.0.0 build
+> python3 geometry-web/start_local.py --build-only
+
+  core：建置（找不到 /tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/core）…
+  bridge：建置（找不到 /tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/bridge）…
+  model-base：建置（找不到 /tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/model-base）…
+core: built — 建好 /tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/core
+bridge: built — 建好 /tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/bridge
+model-base: built — 建好 /tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/model-base
+LOCAL_RUNTIME {"root": "/root/ga-ci/runs/5afa4690-20261010-215931/documents/repo", "binaryDirectory": "/tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905", "executables": {"core": "/tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/core", "bridge": "/tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/bridge", "model-base": "/tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/model-base"}, "port": null, "managedPreview": false}
+##[wsl-ci] step 1 Build current native executables -> exit 0 in 45.8s
+##[wsl-ci] step 2 Install Chinese fonts for visual verification -> skipped, packages already installed: {"fonts-noto-cjk": "install ok installed 1:20230817+repack1-3"}
+##[group]Run Run actual browser regression group
+ulimit -s 16384
+test -x "$GEOMETRY_CHROME"
+python3 -u geometry-web/start_local.py --port 18842 > /tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-integration-server.log 2>&1 &
+server=$!
+trap 'kill "$server" 2>/dev/null || true' EXIT
+for attempt in $(seq 1 30); do
+  if ! kill -0 "$server" 2>/dev/null; then
+    cat /tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-integration-server.log
+    exit 1
+  fi
+  if python3 geometry-web/runtime_version.py --probe 18842 > /dev/null 2>&1; then break; fi
+  sleep 1
+done
+python3 geometry-web/runtime_version.py --probe 18842
+# Independent matrix jobs expose each result promptly. They use
+# separate runners/servers and do not cancel siblings on failure.
+# The full canvas run retains its strict golden comparison.
+set +e
+case "$GEOMETRY_BROWSER_SUITE" in
+  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;
+  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;
+  canvas) node geometry-web/cdp_test.js ;;
+  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;
+  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;
+  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;
+  *) echo "Unknown browser suite"; exit 2 ;;
+esac
+status=$?
+cat /tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-integration-server.log
+exit "$status"
+##[endgroup]
+{"schema": "geometry-runtime/1", "version": "5cb39e35f2ae584a030883d078af68fe638b3f517b5ead2f58b013b127455d36", "fresh": true, "root": "/root/ga-ci/runs/5afa4690-20261010-215931/documents/repo", "pid": 34577, "session": "1051150fb7aa49fba533cf7e750190b5"}
+PASS application identity
+PASS single canonical destination and five categorized documents
+PASS catalog search filters
+PASS draft boundaries visible
+PASS chapter navigation generated
+PASS chapter scroll and focus
+PASS find paints real matches
+PASS next match changes position
+PASS previous match wraps correctly
+PASS Escape first closes find only
+PASS built-in bookmark persistence only
+PASS theme applied only to reader
+PASS untrusted Markdown cannot execute or load remote images
+PASS local contents absent from persisted reader state
+PASS late local read cannot overwrite newer document
+PASS closing cancels late document completion
+PASS encoding failure is explained
+PASS unsupported file is explained
+PASS large file rejected before rendering
+PASS render complexity rejected before constructing document nodes
+PASS local PDF page and extracted text
+PASS desktop PDF fit width excludes preview padding
+PASS PDF next page actually renders
+PASS active PDF refits on mobile viewport resize
+PASS PDF refits after reading width preference change
+PASS manual PDF zoom deliberately remains scrollable
+PASS 390px reader has no horizontal overflow
+PASS mobile chapter drawer visible
+PASS mobile chapter navigation dismisses drawer
+PASS local case import renders two matched assets
+PASS secondary roles add only recognized unique filter options
+PASS plan filter includes a mixed drawing once
+PASS section filter matches primary or secondary role without duplication
+PASS mixed sheet keeps its primary drawing label
+PASS secondary-only elevation finds the one original sheet
+PASS case zoom control changes real scale
+PASS original PDF remains accessible behind preview
+PASS return from PDF preserves case notes
+PASS notes JSON roundtrip succeeds
+PASS populated 390px case reader has no horizontal overflow
+PASS case session and notes survive close/reopen
+PASS Escape returns focus to visible app entry
+PASS all reading actions preserve scene
+PASS unsaved drafts and undo history preserved
+PASS local documents and case metadata make no remote requests
+PASS no uncaught browser exceptions
+PASS no failed asset requests
+DOCUMENTS_RESULT {"passedAssertions":47,"failedAssertions":0,"screenshots":"/tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-document-screens","viewport":[1400,900,390,844],"coverage":"Trusted pointer/keyboard navigation plus synthetic file fixtures; PDF page rendering and safe Markdown checks."}
+core: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-10T23:07:44+08:00））
+bridge: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-10T23:08:04+08:00））
+model-base: reused — 沿用（來源與 binary SHA-256 相符（建於 2026-10-10T23:08:17+08:00））
+LOCAL_RUNTIME {"root": "/root/ga-ci/runs/5afa4690-20261010-215931/documents/repo", "binaryDirectory": "/tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905", "executables": {"core": "/tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/core", "bridge": "/tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/bridge", "model-base": "/tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/model-base"}, "port": 18842, "managedPreview": false}
+http://localhost:18842  （Ctrl-C 結束；版本=5cb39e35f2ae；bridge=/tmp/ga-ci/5afa4690-20261010-215931/documents/geometry-runtime/6cb858a7486b12491905/bridge）
+##[wsl-ci] step 3 Run actual browser regression group -> exit 0 in 20.6s
+##[wsl-ci] step 4 Preserve assembly authoring screenshots -> skipped (artifact upload not applicable outside GitHub)
+##[wsl-ci] step 5 Preserve grid trial screenshots -> skipped (artifact upload not applicable outside GitHub)
+##[wsl-ci] step 6 Preserve document reader screenshots -> skipped (artifact upload not applicable outside GitHub)

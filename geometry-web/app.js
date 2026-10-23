@@ -3635,7 +3635,10 @@ function renderSpacePlan(sp) {
   svg.onpointercancel = () => { drag = null; preview.setAttribute("visibility", "hidden"); };
 }
 function syncSpacePlanAnnotations(){
-  const svg=$('spacePlanSvg'),matrix=svg?.getScreenCTM();if(!svg||svg.hidden||!matrix)return;
+  const svg=$('spacePlanSvg');
+  // SVG 沒有 HTML 元素的 hidden 反射屬性；與 renderSpacePlan 共用 attribute 狀態。
+  if(!svg||svg.hasAttribute('hidden'))return;
+  const matrix=svg.getScreenCTM();if(!matrix)return;
   const scale=Math.hypot(matrix.a,matrix.b);if(!Number.isFinite(scale)||scale<=0)return;
   for(const label of svg.querySelectorAll('.space-plan-label'))label.style.fontSize=(12/scale)+'px';
   const step=10**Math.floor(Math.log10(80/scale)),box=svg.viewBox.baseVal;
@@ -8747,6 +8750,17 @@ function renderFaceInspector() {
   const pri = pane.querySelector("#tbPriLabel"); if (pri) pri.hidden = pane.querySelector("#tbRole").value !== "custom";
   reapplyInspectorFocus(pane, saved);
   restoreDirtyInputs(pane, dirtyInputs);
+  /* details 的 toggle 處理到下一影格前才完成；同步恢復會被中途較短的
+     表單截短。僅恢復同次重繪，而且不蓋過使用者後續的捲動。 */
+  if (saved) {
+    const parent = pane.parentElement, seq = fe.gridPreviewSeq;
+    const scroll = parent.scrollTop, ownScroll = pane.scrollTop;
+    requestAnimationFrame(() => {
+      if (fe.gridPreviewSeq !== seq || pane.dataset.bid !== String(bid) ||
+          parent.scrollTop !== scroll || pane.scrollTop !== ownScroll) return;
+      parent.scrollTop = saved.scroll; pane.scrollTop = saved.ownScroll;
+    });
+  }
 }
 
 /* 放置表單（主畫布右欄與面內檢視器共用，§5.5.3a） */

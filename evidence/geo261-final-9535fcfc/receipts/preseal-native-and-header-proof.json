@@ -1,0 +1,259 @@
+{
+  "schema": "geo261-recorded-command/1",
+  "sha": "9535fcfcec9d1fc8ddd4b149f499bd4e2312f255",
+  "label": "targeted-native-preseal",
+  "command": [
+    "bash",
+    "-c",
+    "ulimit -S -s 16384; exec python3 -B -m unittest -v tests.test_geo261_source_index tests.test_geo261_definition_sources tests.test_geo261_host_facts_authority tests.test_geo261_contact_sources tests.test_geo261_wood_contact_world tests.test_geo261_wood_world_validation tests.test_mutation_anchors tests.test_geo261_placement_definition tests.test_geo261_placement_sources tests.test_geo261_host_placement_definition"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "started": "2026-10-22T14:38:03.451678+00:00",
+  "checkout_before": {
+    "head": "9535fcfcec9d1fc8ddd4b149f499bd4e2312f255",
+    "root": "/workspace/geometry-axiom",
+    "status": " M current_geometry.c\n M geometry-app/native/reference_sources.inc\n M geometry-core/kernel/placement_sources.c\n M geometry-core/kernel/placement_sources.h\n M geometry-core/kernel/source.c\n M geometry-templates/woodworking/native/contact_sources.c\n M tests/geo261_definition_sources_harness.c\n M tests/geo261_host_facts_authority_harness.c\n M tests/geo261_placement_definition_harness.c\n M tests/test_geo261_definition_sources.py\n M tests/test_geo261_host_facts_authority.py\n M tests/test_geo261_placement_definition.py\n M tests/test_geo261_wood_contact_world.py\n",
+    "source_hashes": {
+      "geometry-web/app.js": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1",
+      "geometry-web/uiux_review_test.js": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "geometry-web/cdp_test.js": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "tests/mutate.py": "8fc573fba9596ca8c6570a99c7de284584643a3560cee6cf5f0ac27416d26451",
+      "tests/mutants_results.json": "bd9c88f598b8bd1a82cd2f561b1953ba034837cc44e66d49556dd246c8bc4c73",
+      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
+    }
+  },
+  "environment": {
+    "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "XDG_DATA_HOME": "/workspace/geo261-environment/xdg-data",
+    "XDG_CACHE_HOME": "/workspace/geo261-environment/xdg-cache",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "GITHUB_SHA": "9535fcfcec9d1fc8ddd4b149f499bd4e2312f255",
+    "TMPDIR": "/tmp/g261r1/recorded/targeted-native-preseal/tmp"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "wrapper_sha256": "83b62e59def29b938ca01e4882fd7267110ab2a94a2eb38931283f31fc536701",
+  "exit_code": 0,
+  "versions": [
+    {
+      "command": [
+        "google-chrome",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T14:38:03.485614+00:00",
+      "stdout": "/tmp/g261r1/recorded/targeted-native-preseal/versions/0.stdout",
+      "stderr": "/tmp/g261r1/recorded/targeted-native-preseal/versions/0.stderr",
+      "combined": "/tmp/g261r1/recorded/targeted-native-preseal/versions/0.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T14:38:03.527971+00:00",
+      "seconds": 0.042363579999801004,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T14:38:03.528348+00:00",
+      "stdout": "/tmp/g261r1/recorded/targeted-native-preseal/versions/1.stdout",
+      "stderr": "/tmp/g261r1/recorded/targeted-native-preseal/versions/1.stderr",
+      "combined": "/tmp/g261r1/recorded/targeted-native-preseal/versions/1.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T14:38:03.535131+00:00",
+      "seconds": 0.006786814999941271,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T14:38:03.535723+00:00",
+      "stdout": "/tmp/g261r1/recorded/targeted-native-preseal/versions/2.stdout",
+      "stderr": "/tmp/g261r1/recorded/targeted-native-preseal/versions/2.stderr",
+      "combined": "/tmp/g261r1/recorded/targeted-native-preseal/versions/2.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T14:38:03.537651+00:00",
+      "seconds": 0.0019793419996858574,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T14:38:03.537820+00:00",
+      "stdout": "/tmp/g261r1/recorded/targeted-native-preseal/versions/3.stdout",
+      "stderr": "/tmp/g261r1/recorded/targeted-native-preseal/versions/3.stderr",
+      "combined": "/tmp/g261r1/recorded/targeted-native-preseal/versions/3.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T14:38:03.539792+00:00",
+      "seconds": 0.0019741639989661053,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    }
+  ],
+  "result": {
+    "command": [
+      "bash",
+      "-c",
+      "ulimit -S -s 16384; exec python3 -B -m unittest -v tests.test_geo261_source_index tests.test_geo261_definition_sources tests.test_geo261_host_facts_authority tests.test_geo261_contact_sources tests.test_geo261_wood_contact_world tests.test_geo261_wood_world_validation tests.test_mutation_anchors tests.test_geo261_placement_definition tests.test_geo261_placement_sources tests.test_geo261_host_placement_definition"
+    ],
+    "cwd": "/workspace/geometry-axiom",
+    "started": "2026-10-22T14:38:03.540161+00:00",
+    "stdout": "/tmp/g261r1/recorded/targeted-native-preseal/command.stdout",
+    "stderr": "/tmp/g261r1/recorded/targeted-native-preseal/command.stderr",
+    "combined": "/tmp/g261r1/recorded/targeted-native-preseal/command.combined.log",
+    "timeout_seconds": 2400,
+    "ended": "2026-10-22T14:39:05.341212+00:00",
+    "seconds": 61.80108455300069,
+    "actual_process_returncode": 0,
+    "exit_code": 0,
+    "watchdog_expired": false,
+    "owned_process_group_cleanup": false
+  },
+  "seconds": 61.80410035599925,
+  "ended": "2026-10-22T14:39:05.344242+00:00",
+  "checkout_after": {
+    "head": "9535fcfcec9d1fc8ddd4b149f499bd4e2312f255",
+    "root": "/workspace/geometry-axiom",
+    "status": " M current_geometry.c\n M geometry-app/native/reference_sources.inc\n M geometry-core/kernel/placement_sources.c\n M geometry-core/kernel/placement_sources.h\n M geometry-core/kernel/source.c\n M geometry-templates/woodworking/native/contact_sources.c\n M tests/geo261_definition_sources_harness.c\n M tests/geo261_host_facts_authority_harness.c\n M tests/geo261_placement_definition_harness.c\n M tests/test_geo261_definition_sources.py\n M tests/test_geo261_host_facts_authority.py\n M tests/test_geo261_placement_definition.py\n M tests/test_geo261_wood_contact_world.py\n",
+    "source_hashes": {
+      "geometry-web/app.js": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1",
+      "geometry-web/uiux_review_test.js": "735122184318cd1ca6f0c4af87d7bea068741ef638240b65f93962f3e9a3cd47",
+      "geometry-web/cdp_test.js": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "tests/mutate.py": "8fc573fba9596ca8c6570a99c7de284584643a3560cee6cf5f0ac27416d26451",
+      "tests/mutants_results.json": "bd9c88f598b8bd1a82cd2f561b1953ba034837cc44e66d49556dd246c8bc4c73",
+      "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e"
+    }
+  },
+  "files": {
+    "before.diff": {
+      "bytes": 96304,
+      "sha256": "ef1ba87ffb811f82c701e263dd20a7ac536cdf8667796d70c2dd309fe100062e",
+      "mtime_ns": 1792679883485538169
+    },
+    "command.combined.log": {
+      "bytes": 58608,
+      "sha256": "1a3177ed824f46956918478d3e4cf473cf84cb5a19f961c9812793a9b4f7634a",
+      "mtime_ns": 1792679945287337487
+    },
+    "command.command.json": {
+      "bytes": 1014,
+      "sha256": "f595bbcbd27a5cf5a50e8611b6c1960182189105f12b1c7652ceb98712a2a3bd",
+      "mtime_ns": 1792679945344007873
+    },
+    "command.stderr": {
+      "bytes": 25768,
+      "sha256": "12a9c65fff90bfde5ac07cfd672e59e30ed5168b73459bf5b58a8acb6ac26f8f",
+      "mtime_ns": 1792679945287337487
+    },
+    "command.stdout": {
+      "bytes": 32840,
+      "sha256": "9475c12170763d51b51b917614c92f4be91885af8e48558de391038d5183afcd",
+      "mtime_ns": 1792679939743207389
+    },
+    "versions/0.combined.log": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792679883521887733
+    },
+    "versions/0.command.json": {
+      "bytes": 617,
+      "sha256": "f20bd8ee05ac9dd7d12893f6f7511ccf07a3f225710c0bf33861990e31317d3d",
+      "mtime_ns": 1792679883528221671
+    },
+    "versions/0.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792679883485538169
+    },
+    "versions/0.stdout": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792679883521887733
+    },
+    "versions/1.combined.log": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792679883529887920
+    },
+    "versions/1.command.json": {
+      "bytes": 608,
+      "sha256": "d0bbc883c61fa74736006ccdd5f2cb6c1047fa09e22d1dd210da9a020351607b",
+      "mtime_ns": 1792679883533888014
+    },
+    "versions/1.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792679883528362052
+    },
+    "versions/1.stdout": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792679883529887920
+    },
+    "versions/2.combined.log": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792679883537575844
+    },
+    "versions/2.command.json": {
+      "bytes": 612,
+      "sha256": "ba8019c81a85ffe96b7e4688f97826706537ca7ef79687a13fcf77ce88168bbc",
+      "mtime_ns": 1792679883537772701
+    },
+    "versions/2.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792679883535742181
+    },
+    "versions/2.stdout": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792679883535742181
+    },
+    "versions/3.combined.log": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792679883537888108
+    },
+    "versions/3.command.json": {
+      "bytes": 607,
+      "sha256": "e9a44b06996ba189638145fc6d4db57942b87aa247c0b0ab680ca3b0299c128f",
+      "mtime_ns": 1792679883539866425
+    },
+    "versions/3.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792679883537830688
+    },
+    "versions/3.stdout": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792679883537888108
+    },
+    "wrapper.py.txt": {
+      "bytes": 3902,
+      "sha256": "83b62e59def29b938ca01e4882fd7267110ab2a94a2eb38931283f31fc536701",
+      "mtime_ns": 1792679883453489575
+    }
+  }
+}

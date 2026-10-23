@@ -5,6 +5,7 @@ serialized validation lane. Every mutation must exit 1 with its exact named
 ASSERT; compile failure, timeout, crash or unavailable compiler is not a kill.
 """
 from pathlib import Path
+import json
 import re
 import shutil
 import subprocess
@@ -62,6 +63,81 @@ CONTROLS = (
 )
 
 
+HEADER_CONTROLS = (('header-domain',
+  'geo_placement_sources_definition_header',
+  '*out=result;return true;',
+  'result.domain=(GeoPlacementDomain)(result.domain+1);*out=result;return true;',
+  'header-values',
+  'header-domain-matches-full-projection'),
+ ('header-region',
+  'geo_pd_definition_header',
+  'next.region_id=(uint32_t)count;',
+  'next.region_id=(uint32_t)(count+1);',
+  'header-values',
+  'header-region-matches-full-projection'),
+ ('header-tail',
+  'geo_pd_definition_header',
+  'r.p!=r.end||actual!=id',
+  'actual!=id',
+  'header-malformed',
+  'header-tail-matches-full'),
+ ('header-id',
+  'geo_pd_definition_header',
+  'r.p!=r.end||actual!=id',
+  'r.p!=r.end',
+  'header-authority',
+  'header-id-rejection-matches-full'),
+ ('header-domain-bound',
+  'geo_pd_definition_header',
+  '||domain>GEO_PLACEMENT_REGION_SET',
+  '||false',
+  'header-malformed',
+  'header-domain-bound-matches-full'),
+ ('header-component-bound',
+  'geo_pd_definition_header',
+  '||count>GEO_PLACEMENT_COMPONENT_CAPACITY',
+  '||false',
+  'header-malformed',
+  'header-component-bound-matches-full'),
+ ('header-hole-bound',
+  'geo_pd_definition_header',
+  '||count>GEO_REGION_MAX_HOLES',
+  '||false',
+  'header-malformed',
+  'header-hole-bound-matches-full'),
+ ('header-vertex-bound',
+  'geo_pd_loop_skip',
+  '||count>GEO_LOOP_MAX_VERTICES',
+  '||false',
+  'header-malformed',
+  'header-vertex-bound-matches-full'),
+ ('header-schema',
+  'geo_placement_sources_definition_header',
+  'strcmp(value.as.definition.schema,GEO_PLACEMENT_DEFINITION_SCHEMA)',
+  'false',
+  'header-authority',
+  'header-schema-rejection-matches-full'),
+ ('header-atomic',
+  'geo_placement_sources_definition_header',
+  'if(!s||!out)return false;',
+  'if(!s||!out)return false;memset(out,0,sizeof *out);',
+  'header-authority',
+  'header-failure-preserves-all-output-bytes'),
+ ('header-edge-kind',
+  'geo_placement_sources_definition_header',
+  'GEO_DEPENDENCY_DEFINITION_REQUIRED',
+  'GEO_DEPENDENCY_VALUE_REQUIRED',
+  'header-values',
+  'header-consumer-edge-requires-definition'),
+ ('header-binding',
+  'geo_placement_sources_definition_header',
+  '*out=result;return true;',
+  'const GeoPlacementDefinition *raw=geo_placements_find(s->placements,id);if(!raw)return '
+  'false;*out=(GeoPlacementDefinitionHeader){raw->domain,raw->region_id};return true;',
+  'header-values',
+  'header-domain-matches-full-projection'))
+
+
 class PlacementDefinitionBoundary(unittest.TestCase):
     def test_provider_and_client_depend_only_on_public_kernel(self):
         header = (KERNEL / "placement_sources.h").read_text(encoding="utf-8")
@@ -78,9 +154,10 @@ class PlacementDefinitionBoundary(unittest.TestCase):
         source = (KERNEL / "placement_sources.c").read_text(encoding="utf-8")
         for name in ("geo_placement_definition_encode", "geo_placement_definition_decode", "geo_placement_sources_register", "geo_placement_sources_describe"):
             self.assertNotRegex(definition(source, name), r"geo_(?:eval_(?:source|depend|describe)|frame_is_valid|placement_is_valid|region_is_valid)\(")
-        accessor = definition(source, "geo_placement_sources_definition")
-        self.assertIn("GEO_DEPENDENCY_DEFINITION_REQUIRED", accessor)
-        self.assertNotRegex(accessor, r"GEO_PLACEMENT_SOURCE_(?:FRAME|REGIONS)|geo_placements_find\(")
+        for name in ("geo_placement_sources_definition", "geo_placement_sources_definition_header"):
+            accessor = definition(source, name)
+            self.assertIn("GEO_DEPENDENCY_DEFINITION_REQUIRED", accessor)
+            self.assertNotRegex(accessor, r"GEO_PLACEMENT_SOURCE_(?:FRAME|REGIONS)|geo_placements_find\(")
         self.assertNotIn("geo_eval_", definition(source, "geo_placement_sources_destroy"))
 
     def test_controls_have_exactly_one_live_anchor_and_named_assertion(self):
@@ -109,8 +186,23 @@ class NativePlacementDefinition(unittest.TestCase):
                        build.regions_object, build.source_object, build.geometry_object]
         cls.exe = build.link("placement-definition-client", cls.objects)
 
-    def case(self, name, exe=None, marker=None):
-        run = subprocess.run([str(exe or self.exe), name], capture_output=True, text=True, encoding="utf-8", timeout=15)
+    def case(self, name, exe=None, marker=None, *, control=None, phase=None):
+        command = [str(exe or self.exe), name]
+        try:
+            run = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", timeout=15)
+        except subprocess.TimeoutExpired as error:
+            if control is not None:
+                def captured(value):
+                    return value.decode("utf-8", errors="replace") if isinstance(value, bytes) else value or ""
+                print(json.dumps({"schema": "geometry-placement-header-control-execution/1",
+                    "control": control, "phase": phase, "command": command, "exitCode": None,
+                    "timedOut": True, "timeoutSeconds": 15, "stdout": captured(error.stdout),
+                    "stderr": captured(error.stderr)}, ensure_ascii=False), flush=True)
+            raise
+        if control is not None:
+            print(json.dumps({"schema": "geometry-placement-header-control-execution/1",
+                "control": control, "phase": phase, "command": command, "exitCode": run.returncode,
+                "timedOut": False, "stdout": run.stdout, "stderr": run.stderr}, ensure_ascii=False), flush=True)
         self.assertEqual(1 if marker else 0, run.returncode, run.stderr)
         self.assertEqual("ASSERT:" + marker + "\n" if marker else "", run.stderr)
         self.assertEqual("", run.stdout)
@@ -159,6 +251,39 @@ class NativePlacementDefinition(unittest.TestCase):
                 finally:
                     self.assertEqual(original_bytes, original_path.read_bytes())
                     self.case(case)
+
+
+    def test_header_projection_matches_full_public_api_for_all_canonical_domains_and_maximum(self):
+        self.case("header-values")
+
+    def test_header_full_wire_bounds_truncations_and_tail_match_original_decoder(self):
+        self.case("header-malformed")
+
+    def test_header_binding_values_active_dependencies_failures_reset_and_isolation(self):
+        self.case("header-authority")
+
+    def test_twelve_header_controls_fail_named_oracles_between_restored_baselines(self):
+        build = kernel_only_native()
+        original_path = build.kernel / "placement_sources.c"
+        original_bytes = original_path.read_bytes()
+        original = original_bytes.decode("utf-8")
+        source = code(original)
+        for name, function, before, after, case, marker in HEADER_CONTROLS:
+            with self.subTest(control=name):
+                self.case(case, control=name, phase="baseline")
+                body = definition(original, function)
+                self.assertEqual(1, body.count(before))
+                self.assertEqual(1, source.count(body))
+                path = build.kernel / ("placement-header-control-" + name + ".c")
+                path.write_bytes(source.replace(body, body.replace(before, after, 1), 1).encode("utf-8"))
+                try:
+                    changed = build.compile(path, "placement-header-control-" + name)
+                    objects = [changed if obj == build.placement_sources_object else obj for obj in self.objects]
+                    exe = build.link("placement-header-control-" + name, objects)
+                    self.case(case, exe, marker, control=name, phase="mutant")
+                finally:
+                    self.assertEqual(original_bytes, original_path.read_bytes())
+                    self.case(case, control=name, phase="restored")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,107 @@
+{
+  "archive": "legacy-browser-preparation.raw.tar.gz",
+  "bytes": 28468,
+  "sha256": "3c60944546d854156e40200d5b38dba559f34698d63db2928d1bb17c39f1e990",
+  "members": [
+    {
+      "path": "preparation/COMMAND.json",
+      "bytes": 713,
+      "sha256": "b898954c6ef605b54df22087a8a6117f9681946ad0da3c9f033ae00231aee11b"
+    },
+    {
+      "path": "preparation/ORIGINAL_RUNNER.py.txt",
+      "bytes": 15619,
+      "sha256": "b31eb82a30333f86d96a44a726610c8424aeb107b6b995933692ff0d64a29282"
+    },
+    {
+      "path": "preparation/PREPARATION.json",
+      "bytes": 4579,
+      "sha256": "ca43f6a7cc93e61011bab0b7b5fc2069ae2266148ff6073082f10576d07f15ad"
+    },
+    {
+      "path": "preparation/README.md",
+      "bytes": 3988,
+      "sha256": "490bdc7c61b6821ac68e64859c60436e918a93707d7f0f58b84dfbb2b52c7360"
+    },
+    {
+      "path": "preparation/SHA256SUMS",
+      "bytes": 1923,
+      "sha256": "4336b1c6477854669933a07537b127996236006a09e3ab8c8878e04e444f921f"
+    },
+    {
+      "path": "preparation/browser-only-adaptation.patch",
+      "bytes": 2779,
+      "sha256": "28c44db5b3358cd5b477d368901eac4b59bad83a748c22b143cfb0b6cdce5de5"
+    },
+    {
+      "path": "preparation/chromium-launcher.sh.txt",
+      "bytes": 5064,
+      "sha256": "2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779"
+    },
+    {
+      "path": "preparation/existing-failed-raw/chrome156-fixed.command.json",
+      "bytes": 1052,
+      "sha256": "b124fbd0c9bf491809f1ff2bdebb1e6748d01c3a25be08bdab0cbb7c65329671"
+    },
+    {
+      "path": "preparation/existing-failed-raw/chrome156-original.command.json",
+      "bytes": 1063,
+      "sha256": "4b986b6fda789049868dc5d29313b0f2a3ddde9c0c31b9f0ecc417329f41c08a"
+    },
+    {
+      "path": "preparation/existing-failed-raw/chromium154-original.command.json",
+      "bytes": 1043,
+      "sha256": "7e5bc78f103526dfed0b85007c1d388a57f1fef752261a3c7e317a9832e42dd7"
+    },
+    {
+      "path": "preparation/existing-failed-raw/chromium154-original.html",
+      "bytes": 2569,
+      "sha256": "4bd73f98f854bec270918135a250414ad02dcfc3ff3e90804dfa0ec74abafa90"
+    },
+    {
+      "path": "preparation/existing-failed-raw/chromium154-original.stderr",
+      "bytes": 6089,
+      "sha256": "c48aa70681dc3b5f27fec1aa21f5bc2c8fcc909beb1032ca46621d762e45b72a"
+    },
+    {
+      "path": "preparation/existing-failed-raw/chromium154-original.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preparation/existing-failed-raw/chromium154-version.command.json",
+      "bytes": 699,
+      "sha256": "49ea0f60f5794809e3f999dc2f3178994dd4885040ae2760f126f3711a22c5dc"
+    },
+    {
+      "path": "preparation/existing-failed-raw/chromium154-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preparation/existing-failed-raw/chromium154-version.stdout",
+      "bytes": 61,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9"
+    },
+    {
+      "path": "preparation/existing-failed-raw/svg_compat_probe.py.txt",
+      "bytes": 4277,
+      "sha256": "e044ed8bb56d99fd1ce3c42d067616f9a94ba39b9c43e39d73910d03011ed191"
+    },
+    {
+      "path": "preparation/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "preparation/run_p73_subset_chromium154.py",
+      "bytes": 15671,
+      "sha256": "4bca064400be61c1e6bf8984dfff43db000bdfc73503d2ff4788061ec88edace"
+    },
+    {
+      "path": "preparation/run_workflow.py",
+      "bytes": 20249,
+      "sha256": "d8468e82703765b0ae2f5a1fc4c437dffb39d7ea8ccbb1e4da3ba61289dcb34a"
+    }
+  ]
+}

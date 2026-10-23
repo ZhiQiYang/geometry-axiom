@@ -38,15 +38,23 @@ def static_catalog(root):
     }
 
 
+def _tracked_suffix(name):
+    # 保留 Path(name).suffix 的已追蹤型別判定，包含 ..py 這類名稱。
+    # 每次新鮮度檢查會完整列舉兩次；不必為了排除副檔名另建 Path。
+    dot = name.rfind('.')
+    return name[dot:] if 0 < dot < len(name) - 1 else ''
+
+
 def static_files(root):
     """One route allowlist for capture, identity and HTTP serving."""
     web = root / 'geometry-web'
     routes = {'/': web / 'index.html', '/index.html': web / 'index.html'}
-    for path in web.iterdir():
-        if path.suffix in {'.js', '.css'} and path.is_file():
-            routes['/' + path.name] = path
+    with os.scandir(web) as entries:
+        for entry in entries:
+            if _tracked_suffix(entry.name) in {'.js', '.css'} and entry.is_file():
+                routes['/' + entry.name] = Path(entry.path)
 
-    def vendor(directory):
+    def vendor(directory, prefix=''):
         try:
             entries = os.scandir(directory)
         except FileNotFoundError:
@@ -54,10 +62,9 @@ def static_files(root):
         with entries:
             for entry in entries:
                 if entry.is_dir(follow_symlinks=False):
-                    vendor(entry.path)
+                    vendor(entry.path, prefix + entry.name + '/')
                 elif entry.is_file():
-                    path = Path(entry.path)
-                    routes['/vendor/' + path.relative_to(web / 'vendor').as_posix()] = path
+                    routes['/vendor/' + prefix + entry.name] = Path(entry.path)
 
     # Match the existing vendor routes, including file symlinks, every suffix
     # and LICENSE files. Directory symlinks were not traversed by rglob either.
@@ -67,8 +74,14 @@ def static_files(root):
     return routes
 
 
-def source_files(root, routes=None):
+def source_files(root, routes=None, known_files=None):
+    """Enumerate current sources; known_files is the immutable sorted snapshot.
+
+    Reuse its paths and order only after verifying the complete current set.
+    File types, contents and the directory listing are never cached here.
+    """
     files = [p for p in (root / 'current_geometry.c', root / '公理層.md') if p.is_file()]
+    known_paths = {} if known_files is None else {str(path): path for path in known_files}
 
     def collect(directory):
         # DirEntry retains the file type from enumeration. Avoid a separate stat
@@ -82,12 +95,16 @@ def source_files(root, routes=None):
                 if entry.is_dir(follow_symlinks=False):
                     if entry.name not in SOURCE_EXCLUDES:
                         collect(entry.path)
-                elif Path(entry.name).suffix in SOURCE_SUFFIXES and entry.is_file():
-                    files.append(Path(entry.path))
+                elif _tracked_suffix(entry.name) in SOURCE_SUFFIXES and entry.is_file():
+                    path = known_paths.get(entry.path)
+                    files.append(Path(entry.path) if path is None else path)
 
     for directory in ('geometry-web', 'geometry-core', 'geometry-kernel', 'geometry-app', 'geometry-templates'):
         collect(root / directory)
-    return sorted(set(files) | set((static_files(root) if routes is None else routes).values()))
+    found = set(files) | set((static_files(root) if routes is None else routes).values())
+    if known_files is not None and found == known_files.keys():
+        return list(known_files)
+    return sorted(found)
 
 
 def _identity_content(root, path, content):
@@ -159,7 +176,7 @@ class RuntimeSnapshot:
                 routes = static_files(self.root)
                 if routes != self._routes:
                     return False
-                paths = source_files(self.root, routes)
+                paths = source_files(self.root, routes, self._source_contents)
                 if paths != list(self._source_contents):
                     return False
                 for path in paths:
@@ -170,7 +187,7 @@ class RuntimeSnapshot:
                         return False
                 # Also reject a source added/deleted while the files were read.
                 final_routes = static_files(self.root)
-                return final_routes == routes and source_files(self.root, final_routes) == paths
+                return final_routes == routes and source_files(self.root, final_routes, self._source_contents) == paths
             except OSError:
                 return False
 

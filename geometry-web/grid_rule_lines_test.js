@@ -6,8 +6,9 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
   console.log('=== P88. 原生來源子線顯示、完整引用、兩面及正式重開 ===');
   const fs=require('fs'),os=require('os'),path=require('path'),P=require('./project-store.js'),zip=require('./vendor/fflate/umd/index.js');
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,25000),settle=cdp.makeSettle({waitForUI,eval_},{tag:'P88',timeoutMs:25000}),check=cdp.makeCheck({prefix:'P88 ',throwOnFail:true}),exceptions=exceptionCount();
-  const baseCtl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:70,settleMs:100,hitElement:true,missing:'Missing ',unreachable:(s,p)=>'Rule line control unreachable '+s+' '+JSON.stringify(p)});
-  const ctl=async selector=>{if(await read('innerWidth<=900')){
+  const ctlOptions={scroll:'center',attempts:12,pollMs:70,settleMs:100,hitElement:true,missing:'Missing ',unreachable:(s,p)=>'Rule line control unreachable '+s+' '+JSON.stringify(p)};
+  const baseCtl=cdp.makeCtl({eval_,sleep,click},ctlOptions);
+  const ctl=async(selector,inputCtl=baseCtl)=>{if(await read('innerWidth<=900')){
     const root=await read(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});return n?.closest('#objectList')?'left':n?.closest('#inspectorContent')?'right':n?.closest('.face-inspector-panel')?'face':n?.closest('.face-layer-panel')?'face-left':null;})()`);
     if(root==='left'&&!await read(`document.body.classList.contains('drawer-left-open')`))await baseCtl('#toggleLeft');
     if(root==='right'){if(await read(`document.body.classList.contains('canvas-composition')`)){if(await read(`document.body.classList.contains('drawer-left-open')`))await baseCtl('#toggleLeft');}else if(!await read(`document.body.classList.contains('drawer-right-open')`))await baseCtl('#toggleRight');}
@@ -21,10 +22,49 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     await baseCtl('#faceInspectorTabs [data-fi-tab="components"]');
     await baseCtl('[data-component-tab="'+section+'"]');
   }
-  return baseCtl(selector);};
+  return inputCtl(selector);};
   // A default-valued select must not pass after a click reached another
   // element. Check the actual keyboard target before sending input.
-  const focusedCtl=async selector=>{await ctl(selector);await wait(`document.activeElement===document.querySelector(${JSON.stringify(selector)})`);};
+  let focusDeadline=null;
+  const withinFocus=async action=>{
+    const remaining=focusDeadline-Date.now();
+    if(remaining<=0)throw Error('P88 input preparation exhausted the original focus deadline');
+    let timer;
+    try{
+      const value=await Promise.race([Promise.resolve().then(action),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('P88 input preparation exhausted the original focus deadline')),remaining);})]);
+      if(Date.now()>=focusDeadline)throw Error('P88 input preparation exhausted the original focus deadline');
+      return value;
+    }finally{clearTimeout(timer);}
+  };
+  // A successful hit measurement can precede a readonly inspector repaint.
+  // Settle, scroll the current node, and require an unchanged box across the
+  // existing two paint frames before returning the coordinate to the real mouse.
+  const focusedProbe=selector=>withinFocus(async()=>{
+    const initial=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return {x,y,w:r.width,h:r.height,hit:e.contains(h),hitElement:h?.tagName+'#'+h?.id,disabled:!!e.disabled};})()`);
+    if(!initial.hit||initial.disabled||!initial.w||!initial.h)return initial;
+    const result=await read(`(async()=>{
+      await window.__cdpSettleUI(0);
+      const selector=${JSON.stringify(selector)},e=document.querySelector(selector);
+      if(!e)throw Error('Missing '+selector);
+      e.scrollIntoView({block:'center',inline:'nearest'});
+      const sample=()=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,sameNode:e.isConnected&&document.querySelector(selector)===e};};
+      const frames=[sample()];
+      await new Promise(resolve=>requestAnimationFrame(resolve));frames.push(sample());
+      await new Promise(resolve=>requestAnimationFrame(resolve));frames.push(sample());
+      const r=frames[2],stable=frames.every(p=>p.sameNode&&p.x===r.x&&p.y===r.y&&p.w===r.w&&p.h===r.h),x=r.x+r.w/2,y=r.y+r.h/2,h=document.elementFromPoint(x,y);
+      return {x,y,w:r.w,h:r.h,hit:stable&&e.contains(h),hitElement:h?.tagName+'#'+h?.id,disabled:!!e.disabled,stable,frames};
+    })()`);
+    console.log('P88_LAYOUT_PROBE '+JSON.stringify({selector,...result}));
+    return result;
+  });
+  const focusedInputCtl=cdp.makeCtl({eval_,sleep,click:(x,y)=>withinFocus(()=>{if(Date.now()>=focusDeadline)throw Error('P88 input preparation exhausted the original focus deadline');return click(x,y);})},{...ctlOptions,probe:focusedProbe});
+  const focusedCtl=async selector=>{
+    const previous=focusDeadline;focusDeadline=Date.now()+25000;
+    try{
+      await withinFocus(()=>ctl(selector,focusedInputCtl));
+      await withinFocus(()=>waitForUI(`document.activeElement===document.querySelector(${JSON.stringify(selector)})`,Math.max(0,focusDeadline-Date.now())));
+    }finally{focusDeadline=previous;}
+  };
   const key=cdp.makeKey({send,sleep}),fill=cdp.makeFill({ctl:focusedCtl,key,send,sleep},{afterMs:35});
   // Native button activation also needs Enter's character event in Chromium.
   const activateKey=cdp.makeKey({send,sleep},{enterText:true});
@@ -230,6 +270,24 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     const cellGrid=(await query('references')).grids[0].id;await face(1);await focusCell(cells[1]);const exact=await query(`grid-rule-query grid ${cellGrid} rule 1 cell ${cells[1].join(' ')}`);
     check(`${width} 指定 signed cell 規則原生裁切及完整 source/grid/cell 引用`,await read(`GridRuleLines.entries().length===3&&GridRuleLines.entries().every(l=>l.ref.systemId===${cellSid}&&l.ref.appliedGridId===${cellGrid}&&l.ref.cellI===${JSON.stringify(cells[1][0])}&&l.ref.cellJ===${JSON.stringify(cells[1][1])})`)&&JSON.stringify(await read(`GridRuleLines.entries().map(l=>l.segments)`))===JSON.stringify(exact.lines.map(l=>l.segments)));
     const cellWorld=await dump();await fill('#gridRuleCellI',String(BigInt(cells[1][0])+1n));await ctl('[data-rule-exact]');await wait(`document.querySelector('[data-rule-focus-status]').textContent.includes('SELECTOR_MISS')`);check(`${width} 指定規則 selector 外保留 native 拒絕且零寫入`,await read(`GridRuleLines.entries().length===0`)&&(await dump())===cellWorld);
+    // 同表單重繪須保留命中位置。16 條原生導線讓面板超高，能抓出
+    // 進階欄位尚未展開時恢復 scrollTop、被瀏覽器截短的產品缺陷。
+    await fresh();await fixture('surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000');
+    await fixture('spec middle 2000');
+    for(let id=2;id<18;id++)await fixture(`guide ${id} 1 v spec:middle`);
+    await ctl('#objectList .object-row[data-kind="boundary"][data-id="1"]');await ctl('#inspEnter');await wait('oc.edit?.bid===1');
+    await ctl('#faceInspectorTabs [data-fi-tab="components"]');await ctl('[data-component-tab="guide"]');
+    await choose('#refGuideMode','advanced');
+    await read(`$('refGuideExpr').scrollIntoView({block:'center',inline:'nearest'});new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))`);
+    const guidePosition=()=>read(`(()=>{const e=$('refGuideExpr'),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,scroll:$('faceInspectorContent').parentElement.scrollTop,hit:document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.id};})()`);
+    const guideBefore=await guidePosition(),scrollWorld=await dump();
+    check(`${width} 超高進階導線表單確已捲動且公式欄可命中`,guideBefore.scroll>0&&guideBefore.hit==='refGuideExpr');
+    await read('renderFaceInspector();new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))');
+    const guideAfter=await guidePosition();await click(guideBefore.x,guideBefore.y);
+    check(`${width} 同表單重繪保留原點擊位置、公式焦點及 World`,Math.abs(guideBefore.y-guideAfter.y)<.5&&guideBefore.scroll===guideAfter.scroll&&await read(`document.activeElement===$('refGuideExpr')`)&&(await dump())===scrollWorld);
+    const movedScroll=await read(`(()=>{renderFaceInspector();const p=$('faceInspectorContent').parentElement;p.scrollTop=Math.max(0,p.scrollTop-20);return p.scrollTop;})()`);
+    await read('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))');
+    check(`${width} 延後恢復不蓋過重繪後的新捲動`,await read(`$('faceInspectorContent').parentElement.scrollTop===${movedScroll}`)&&(await dump())===scrollWorld);
   }
   check('本切片無新增未捕捉瀏覽器例外',exceptionCount()===exceptions);await leave();
 };

@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+"""經鎖只在自己的 ext4 checkout 撤回列舉優化；同裁判必須重新量到退化。"""
+import hashlib
+import json
+from pathlib import Path
+import statistics
+import subprocess
+import sys
+import postfix_validate as runner
+
+repo=runner.WORK/'repo';target=repo/'geometry-web/runtime_version.py'
+sha=sys.argv[1]
+path=runner.OUT/'performance-revert.json'
+if path.exists():raise RuntimeError('拒絕覆蓋反證收據')
+verified=json.loads((runner.OUT/'verified.json').read_text());assert verified['pass'] and verified['sha']==sha
+expected=subprocess.check_output(['git','show',sha+':geometry-web/runtime_version.py'],cwd=repo)
+mutated=subprocess.check_output(['git','show','7dae5f21c7ca401e660450d437e60ba566218da8:geometry-web/runtime_version.py'],cwd=repo)
+assert target.read_bytes()==expected and expected!=mutated
+assert subprocess.check_output(['git','status','--porcelain'],cwd=repo)==b''
+timing=json.loads((runner.OUT/'timing.json').read_text())
+record={'sha':sha,'mutation':'僅把 runtime_version.py 還原為 7dae5f21 內容；保留新等待與同一量測裁判',
+        'baseline_green':True,'baseline_main_ms':timing['medians_ms']['main'],'baseline_fix_ms':timing['medians_ms']['fix'],
+        'original_sha256':hashlib.sha256(expected).hexdigest(),'mutant_sha256':hashlib.sha256(mutated).hexdigest(),'status':'running'}
+try:
+    target.write_bytes(mutated)
+    dirty=subprocess.check_output(['git','status','--porcelain'],cwd=repo,text=True).splitlines()
+    assert dirty==[' M geometry-web/runtime_version.py'],dirty
+    row=runner.one(repo,'runtime-revert',sha,'measure',10,'p52_cases.cjs')
+    result=row['result']
+    assert row['exit']==0 and result['passed']==51 and result['failed']==0 and result['exceptions']==0
+    samples=[r['appearedMs'] for r in result['samples']];assert len(samples)==8
+    median=statistics.median(samples)
+    passed=median<=timing['medians_ms']['main']
+    record.update(status='unexpected-pass' if passed else 'expected-regression',node_exit=0,geometry_passed=51,
+                  mutant_median_ms=median,mutant_main_ratio=median/timing['medians_ms']['main'],
+                  performance_gate='timber 首次出現中位數不得慢於同輪未修改 main',performance_gate_exit=0 if passed else 1,samples_ms=samples,
+                  log=row['log'])
+except BaseException as error:
+    record.update(status='blocked',error=repr(error));raise
+finally:
+    target.write_bytes(expected)
+    record['restored_byte_exactly']=target.read_bytes()==expected
+    record['restored_git_clean']=subprocess.check_output(['git','status','--porcelain'],cwd=repo)==b''
+    path.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(record,ensure_ascii=False),flush=True)
+raise SystemExit(record['performance_gate_exit'])

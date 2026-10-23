@@ -13,6 +13,8 @@ typedef enum {
 typedef struct { unsigned char bytes[5]; } GeoPlacementSourceKey;
 typedef struct { unsigned char bytes[4]; } GeoRegionSourceKey;
 typedef struct GeoPlacementSources GeoPlacementSources;
+/* 即時讀取 canonical definition 的分流欄位；完整驗證所有活動 payload。 */
+typedef struct {GeoPlacementDomain domain;uint32_t region_id;} GeoPlacementDefinitionHeader;
 /* An optional same-candidate binding supplies an upstream typed source. Its
  * key must remain readable after the callback returns, until the immediately
  * following synchronous geo_eval_source call has returned. Candidate-owned
@@ -42,6 +44,9 @@ GeoPlacementSources *geo_placement_sources_register(GeoEvalContext *,const GeoPl
  * or REGIONS, and leaves out unchanged on failure. The returned POD owns all
  * decoded fields; provider wire bytes remain owned by the same candidate. */
 bool geo_placement_sources_definition(GeoPlacementSources *,uint32_t,GeoPlacementDefinition *);
+/* 與完整 accessor 讀同一個 DEFINITION_REQUIRED value；不保留 consumer cache。
+ * 同樣驗 schema/id/完整格式，失敗保留 out；不要求 FRAME 或 REGIONS。 */
+bool geo_placement_sources_definition_header(GeoPlacementSources *,uint32_t,GeoPlacementDefinitionHeader *);
 /* Does not access graph or stores: either destruction order is safe. No
  * evaluation or borrowed-view reads may follow destruction of this handle. */
 void geo_placement_sources_destroy(GeoPlacementSources *);
