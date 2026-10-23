@@ -1,207 +1,182 @@
-GEO-261 在每行候選驗證中反覆解析同一支角材的 footprint、放置定義與姿態。本修正保留所有候選、驗證、收據與 seal，重用同次驗證的成功讀取，並為不同 consumer 補記原本的依賴。
+# #323：修復驗證 harness 與失效控制，保存完整固定 SHA 驗收
 
-**效能目標部分達成**：`geo_eval_source` N64／N32 為 **4.470× ≤ 4.5×**；N16／32／48 均快於基底。此雲端 N64 fix／main 為 **1.78×，未達 ≤1.3×**。未更改守門流量來降低成本。
+同一次候選驗證可重用已解析的角材 footprint，仍依每個 consumer 登記正確 dependency kind 與順序。本輪修復新介面下失效的既有 harness／錨點，新增真 `ReferenceEval.member_reads` 身分、失效及跨 consumer 控制，並補上 sealed footprint 命中路徑的守衛。
 
-基底分支必須設為 **`architecture/geo261-integration-20261016`**，基底 `546e2eb2142ebf19859489c5391b57cbb8413d10`；修正分支 `codex/geo261-load-residual-20261020`。產品碼與測試提交 `221156c280404f75bf3fb5a42fd4c9cf119f7064`，之後只附證據。此正文獨立放在 `codex/geo261-load-residual-20261020-prbody`，該分支整棵 tree 只有 `PR_BODY.md`，未放入修正分支。請維護者在本機建立 **draft PR**；本環境不呼叫 GitHub API、不合併。
+完整 native、必要八套、完整 PF3、175 場景 A/B/C 與三條架構裁判均在同一受驗 F 完成。**N64 fix/main 為 1.7457212386，未達原 1.3 目標；placement guard 單刪仍為等價 0/0/0。這兩項保留給審查，不宣稱完整驗收全綠。** 沒有改門檻、減守門流量、放寬斷言或刪測試。
 
-修正分支最終 head：`f3ea9c5232c043b3dca57b953577f5d22e9030e7`；其產品碼與測試內容和受驗提交相同，後續提交只含證據。
+## 來源與產物分欄
 
-## 改動與不變量
+| 角色 | 完整 SHA |
+|---|---|
+| 原變更前 base | `546e2eb2142ebf19859489c5391b57cbb8413d10` |
+| 固定 main 比較組 | `adbaebf9c73ea6801d7b4d5214e4b846b132923b` |
+| 產品／測試 P | `e9fffc1cb036b6e4538a23f4dd12a9e10c5136f9` |
+| 帳本實跑來源 S | `b823903e44aea091b70fd2f45b74dff6229776dc` |
+| 帳本產物提交 L | `b7ca7843532098c4d3433035cde8dc2c43654978` |
+| Linux 架構收據實跑來源 | `b7ca7843532098c4d3433035cde8dc2c43654978` |
+| 架構四檔提交 A＝唯一正式受驗 F | `f43e8d8b876f587c11778fa74a80b205b51396b6` |
+| 正式證據提交 E（只增證據，不替換 F） | `239040fdc8f0b73b75640378669a1ede6a975890` |
+| 修正分支 | `codex/geo261-load-residual-20261020` |
+| 正文分支 | `codex/geo261-load-residual-20261020-prbody`，僅 `PR_BODY.md` |
 
-1. `reference_check_all` 與 `app_validation_footprint` 使用各自單次驗證的固定容量快取；鍵包含材索引與 placement。只在第一次真正需要時求值，失敗不快取。W 驗證的 host 讀取也僅在同次呼叫重用，仍依各 footprint 選擇邊界。
-2. `ReferenceEval` 保存成功解碼的材定義、放置定義、姿態與擋面所用的投影。命中仍依原呼叫順序執行 `geo_eval_depend`，使用同一 source key 與 dependency kind；不將某個 consumer 的已讀紀錄當成其他 consumer 的已讀紀錄。失敗仍走原本求值與診斷分支；sealed 的定義／姿態讀取走原入口。
-3. W contact feature 重用自己 query 已成功持有、不可變的 collection bytes；使用節點索引提示前先核對完整來源鍵、VALID 狀態與值，reset／重新註冊或提示失配時仍走原求值。仍記錄 feature → collection 的依賴，再執行原本的格式與範圍檢查。尚未成功的 collection 保留原求值路徑。
-4. 沒有改 `contact_order`、擋面排序／去重、參與者或 D11 先放者順序。
+原 PROMPT-B／C 將帳本與架構收據留給維護者。本輪依使用者後續明確授權，由雲端維護者先跑原 `--check`、確認過期後整份重產，再由 Linux 重產 manifest／scan／report／receipt。未改公理層、閱讀器、BACKLOG 或決策佇列，也未放寬架構 policy／exclusion。每項保留真 execution SHA，不把帳本 S、產物 L 或證據 E 手改成 F。
 
-逐條對應硬性不變量：
+證據入口：[PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/tree/239040fdc8f0b73b75640378669a1ede6a975890/tests/evidence/geo261-load-residual-20261022/final-f43e8d8b/PROGRESS.md)、[QUESTIONS.md](https://github.com/ZhiQiYang/geometry-axiom/tree/239040fdc8f0b73b75640378669a1ede6a975890/tests/evidence/geo261-load-residual-20261022/final-f43e8d8b/QUESTIONS.md)、[FORMAL_RECEIPT.json](https://github.com/ZhiQiYang/geometry-axiom/tree/239040fdc8f0b73b75640378669a1ede6a975890/tests/evidence/geo261-load-residual-20261022/final-f43e8d8b/FORMAL_RECEIPT.json)、[FORMAL_METRICS.json](https://github.com/ZhiQiYang/geometry-axiom/tree/239040fdc8f0b73b75640378669a1ede6a975890/tests/evidence/geo261-load-residual-20261022/final-f43e8d8b/FORMAL_METRICS.json)、[PUBLICATION.json](https://github.com/ZhiQiYang/geometry-axiom/tree/239040fdc8f0b73b75640378669a1ede6a975890/tests/evidence/geo261-load-residual-20261022/final-f43e8d8b/PUBLICATION.json)。
 
-- **A，輸出**：基底與修正以指定 C11／O2 指令建置，175 份輸入逐位元組相同，包含拒絕場景的 stdout；檢測建置也必須與各自未檢測的 bridge stdout／stderr 相同。原始輸出完整保存。
-- **B，來源圖**：暫時在每次 `geo_eval_seal` 入口，透過 `geo_eval_node_at`／`geo_eval_edge_at` 序列化全部欄位、key bytes、descriptor、狀態、值內容與邊。175 份輸入的完整二進位序列與順序皆相同，未只比最終 dump 或雜湊。首次讀取保留原求值順序；同 consumer 的重讀不增加新邊；不同 consumer 命中快取仍登記依賴。
-- **C，守門流量**：五個函式入口的計數逐份完全一致。未跳過任何驗證、候選、發布或 seal。`wood_contact_collect_stops` 的呼叫數也與基底一致，詳見下表。
-- **D，失效**：兩個迴圈快取在每次驗證開始 `begin` 清空，生命期止於該函式返回。來源解碼快取隨 `ReferenceEval` 生命期；候選每次重驗先銷毀原求值狀態並 reset 來源圖，再建立新的零初始化 `ReferenceEval`。dispose 亦清空快取。query 的 collection 只屬於該 query 與該求值圖，不跨重建。測試在同一 `AppWorldCandidate.after` 放材後移動／刪除、修改真正的參數欄位、拒絕改動後核對整份 World 回滾，並重用快取儲存驗證 begin 的失效規則。
-- **E，API 與分層**：未修改任何公開 header，使用 C11 與固定容量資料，沒有平台加速或新增 `_Static_assert`；新增型別及函式皆私有。K kernel 沒有改動；W 只修改自身 contact provider，沒有 include H。`geometry-core/references.inc` 是原有 H 相容轉接，沿用既有分層。此環境只有 GCC，未實跑 MSVC。
+## 逐項回覆 PROMPT-C 第 1–5 項
 
-未修改禁止項目：突變帳本、domain-decoupling 架構清單／收據、公理與閱讀器、BACKLOG／決策佇列。Actions 的計費失敗不列為驗收，也未為此改配置。
+| 要求 | 處理與實跑結果 |
+|---|---|
+| 1. 兩個既有 harness 編不過 | 既有修正 `221156c280404f75bf3fb5a42fd4c9cf119f7064` 以正確的 `AppValidationInputs` 與雙參數 context 適配，保留原斷言及驗證目的。本輪 F 完整 native：world-validation **14/14**、host-facts **20/20**，原退出均 0；不將繼承修復重報成本輪新產品變更。 |
+| 2. PF3 host-identity 錨點 | 同一 `221156c2…` 依 PF3 規則重新對準 `reference_member_anchor_read` 所在的 host-identity 守門。F 上完整跑原工具，非只選 host-identity：baseline **20/20**、19 mutants **全 killed**、restored **20/20**，工具退出 0，errors／skip 0，原來源恢復相同。`test_mutation_anchors` **3/3**。 |
+| 3. W feature→collection 與 kind | `221156c2…` 重錨既有 feature-edge；`0af3b7dd1db0a12011ae52c92b442c58e9180218` 補第二 feature 省略依賴、錯 kind 與求值順序控制，逐筆比較完整有序邊。F 上 contact-sources **14/14**；每項真 0/1/0 與原失敗訊息列於下表。 |
+| 4. 真 member_reads 失效／跨 consumer | `e9fffc1c…` 補 id 比對、anchor miss 清 footprint、H definition／anchor／footprint／pose 各命中依賴與 kind／order 控制；保留原 7 個方法並新增 5 個，F 上 load-residual **12/12**。placement 單刪在合法生命期內為 **equivalent 0/0/0**；配對控制僅證第二防線，不能稱本要求的每個單刪皆紅，詳 QUESTIONS。 |
+| 5. sealed footprint 守衛 | `0af3b7dd…` 加入 `!geo_eval_is_sealed(ctx->sources)`，使已封存且已 VALID 的內部 H 來源讀取走原只讀入口；撤回修正後真 `ASSERT:sealed-contact-facts-remain-readable`，原 0/1/0。未改 K/W sealed 新 query 拒絕政策。 |
 
-## 驗收 A／B／C
-
-先設 `ulimit -s 16384`。基底及修正分別：
-
-```sh
-gcc -std=c11 -O2 geometry-web/web_bridge.c -o bridge -lm
-printf 'loadfile %s\ndump\n' X.scene | ./bridge
-```
-
-批次重現（`verify.py.txt` 複製成 `/tmp/geo261-residual-tools.py`；所有 subprocess 設 stack 16 MiB）：
-
-```sh
-git worktree add --detach /tmp/geo261-residual-base 546e2eb2142ebf19859489c5391b57cbb8413d10
-git worktree add --detach /tmp/geo261-source-main adbaebf9c73ea6801d7b4d5214e4b846b132923b
-python3 /tmp/geo261-residual-tools.py build /tmp/geo261-residual-base /tmp/geo261-residual/base
-python3 /tmp/geo261-residual-tools.py build "$PWD" /tmp/geo261-residual/fix
-python3 /tmp/geo261-residual-tools.py build /tmp/geo261-source-main /tmp/geo261-residual/main
-python3 /tmp/geo261-residual-tools.py build /tmp/geo261-residual-base /tmp/geo261-residual/base-trace --trace
-python3 /tmp/geo261-residual-tools.py build "$PWD" /tmp/geo261-residual/fix-trace --trace
-python3 /tmp/geo261-residual-tools.py compare "$PWD" /tmp/geo261-residual --evidence "$PWD/tests/evidence/geo261-load-residual-20261020"
-```
-
-全部建置及比對結束碼 **0**。最後輸出：
+PF3 host-identity 正常編譯退出 0，具名測試退出 1、failure 1／error 0／skip 0；原失敗末行為：
 
 ```text
-PASS A/B/C: 175 scenes; byte-identical stdout, full ordered graphs at every seal, all five guard counts
++ [[0, 27, 100, 900, True], [27, 273, 10, 20, True], [273, 300, 100, 900, True]] : PF3_HOST_FILTER: a different derived host must remain empty
 ```
 
-175 = 根目錄 171 份 `.scene` + 產生器四份。每份的指令、結束碼、stdout bytes／SHA-256、完整圖 bytes／SHA-256 及五個計數都在 `equivalence.json`；對應原始資料在 `stdout/` 與 `graphs/`。
+完整 traceback 與前後對照保存在封包成員 `acceptance-r1/evidence/pf3/host-identity/tests/stderr`；完整 19 個結果、build/test 輸出與來源指紋在 `acceptance-r1/evidence/pf3/`。沒有將編譯失敗、crash 或 timeout 算成 killed。
 
-四份量測場景的 base／fix 五個計數如下（相同）：
+## 固定 F 的正式驗收
 
-| N | create | seal | publish | revalidate | reference_check_all |
-|---|---:|---:|---:|---:|---:|
-| 16 | 4 | 4 | 4 | 0 | 26 |
-| 32 | 4 | 4 | 4 | 0 | 42 |
-| 48 | 4 | 4 | 4 | 0 | 58 |
-| 64 | 4 | 4 | 4 | 0 | 74 |
+全部原 stage 的 source before／after 都是同一 F 且 clean；正式執行時未移動 HEAD。環境為 Linux x86_64、Python **3.12.14**、GCC **14.2.0**、Node **24.19.0**，stack limit **16 MiB**。完整環境與工具指紋逐命令保留；原 native 225/225 suites 全部執行。
 
+| 關卡 | 原退出與結果 |
+|---|---|
+| `ulimit -s 16384; python3 tests/run_all.py --build` | **0**；225 suites；5193 計數＝5192 pass／0 fail／1 允許 skip |
+| 原必要八套 `run_all.py --build --only …` | **0**；674/674，0 fail／skip；suite 明細見下 |
+| `python3 tests/pf3_mutation_check.py` 完整工具 | **0**；baseline20／restored20，19 killed |
+| A/B/C 原裁判 | **0**；175 場景、350 base/fix 版本組，全部相同 |
+| 三方交錯性能原子程序 | 36 筆均 **0**；原 N64 ≤1.3 量化目標未達 |
+| base／fix 的 N32／64 四次原 profile | 均 **0**；fix source64/source32＝4.4704196928 ≤4.5 |
+| `python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json` | **0**，0 diagnostics |
+| `python -B tests/test_architecture_contract.py` | **0**；205/205 |
+| `python -B tests/test_product_architecture.py` | **0**；18/18 |
+| all 封裝總退出 | **1**，`full_acceptance_passed=false`，原因是 N64 量化目標未達；不是 native 失敗 |
 
-## 效能與 gprof
-
-同一雲端 Linux／GCC 14.2、16 MiB stack，以 `time.perf_counter()` 計整個 bridge 行程的 `loadfile`，不含 dump。每個 N 依 base → fix → main 交錯三輪，全部載入 exit 0 且 `ok:true`；原始 36 筆數值與 stdout／stderr 完整保留。此環境資料供參考，WSL 結果由維護者重測。
-
-```sh
-python3 /tmp/geo261-residual-tools.py perf "$PWD" /tmp/geo261-residual --evidence "$PWD/tests/evidence/geo261-load-residual-20261020"
-```
-
-結束碼 **0**，中位數：
-
-| N | base（秒） | fix（秒） | main（秒） | fix／main | fix／base |
-|---|---:|---:|---:|---:|---:|
-| 16 | 0.2026 | 0.1854 | 0.1752 | 1.06× | 0.91× |
-| 32 | 0.4513 | 0.3537 | 0.2846 | 1.24× | 0.78× |
-| 48 | 0.9770 | 0.7407 | 0.4433 | 1.67× | 0.76× |
-| 64 | 1.9530 | 1.2944 | 0.7292 | 1.78× | 0.66× |
-
-
-N64 未達 1.3×。以下 gprof 呼叫數亦說明依賴登記仍有成本：成功值命中改用 `geo_eval_depend`，所以來源求值減少不等於所有圖操作都變成二次成長，不能據此宣稱已解決 512 支容量問題。
-
-```sh
-gcc -std=c11 -O1 -fno-inline -pg geometry-web/web_bridge.c -o /tmp/geo261-residual/fix-pg/bridge -lm
-ulimit -s 16384
-cd /tmp
-printf 'loadfile /tmp/s32.scene\n' | /tmp/geo261-residual/fix-pg/bridge
-gprof /tmp/geo261-residual/fix-pg/bridge gmon.out
-printf 'loadfile /tmp/s64.scene\n' | /tmp/geo261-residual/fix-pg/bridge
-gprof /tmp/geo261-residual/fix-pg/bridge gmon.out
-```
-
-基底同樣以 `base-pg/bridge` 執行。編譯、載入、gprof 結束碼均 **0**，載入 `ok:true`。
-
-| 函式 | base N32 | base N64 | base 倍數 | fix N32 | fix N64 | fix 倍數 |
-|---|---:|---:|---:|---:|---:|---:|
-| `geo_eval_source` | 450,098 | 2,980,967 | 6.62× | 80,273 | 358,854 | 4.47× |
-| `geo_eval_depend` | 0 | 0 | — | 276,844 | 1,968,612 | 7.11× |
-| `wd_read` | 5,922,136 | 43,503,376 | 7.35× | 99,024 | 370,680 | 3.74× |
-| `contact_order` | 354,308 | 2,729,508 | 7.70× | 354,308 | 2,729,508 | 7.70× |
-| `wood_contact_collect_stops` | 3,438 | 12,942 | 3.76× | 3,438 | 12,942 | 3.76× |
-| `app_reference_member_footprint` | 19,029 | 141,429 | 7.43× | 1,146 | 4,314 | 3.76× |
-
-
-修正 N64 flat profile 原始前段如下；0.01 秒取樣比例只作線索，四份完整 gprof stdout 與逐項結束碼另存於證據目錄。base 的 `geo_eval_depend` 無呼叫紀錄，以 0 呈現。
+完整 native 原合計列：
 
 ```text
-Flat profile:
-
-Each sample counts as 0.01 seconds.
-  %   cumulative   self              self     total           
- time   seconds   seconds    calls  ms/call  ms/call  name    
- 14.29      0.05     0.05    12942     0.00     0.01  wood_contact_collect_stops
- 11.43      0.09     0.04  2729508     0.00     0.00  contact_order
-  7.14      0.12     0.03  5253317     0.00     0.00  geo_source_edge_hash
-  5.71      0.14     0.02  2327466     0.00     0.00  geo_source_edge
-  5.71      0.16     0.02  1638811     0.00     0.00  geo_source_find_edge
-  5.71      0.18     0.02   118130     0.00     0.00  app_member_reference_at
-  5.71      0.20     0.02    19413     0.00     0.00  reference_contact_facts
-  2.86      0.21     0.01 21540561     0.00     0.00  geo_source_hash_size
-  2.86      0.22     0.01  2327466     0.00     0.00  geo_source_find_node
-  2.86      0.23     0.01  1769857     0.00     0.00  geo_source_index_append
-  2.86      0.24     0.01  1281504     0.00     0.00  wood_contact_source_read_u32
+合計(已執行、有計數者)                            5193  5192     0     1  1938.1
+exit 0：完整非瀏覽器登錄測試：全部 suite 都跑了、數量與 expected 相符、沒有 fail、沒有環境問題、沒有可避免的 skip（具名允許清單不算）；必要正式 owner／瀏覽器整合另驗
 ```
 
-## 測試、突變與架構
+唯一 skip 是允許清單中的 `test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources`，原理由 `requires compiled Windows GDI contract harness`。本環境未做 Windows GDI／MSVC 動態驗證。這份 #323 的 C 驗收範圍是完整 native、PF3、A/B/C 與效能；沒有在此來源跑六個瀏覽器 job，亦不以 #288 的另一來源收據替代。
 
-```sh
-ulimit -s 16384
-python3 tests/run_all.py --build --only py:test_geo261_source_index --only py:test_geo261_candidate_cache --only py:test_geo261_graph_product --only py:test_geo261_assembly_graph_product --only py:test_bridge_integrity --only c:integrity --only core:run_tests --only py:test_geo261_load_residual
-```
+必要八套原計數：
 
-結束碼 **0**；8 suites，669 個登錄測試／檢查點全部通過（含 C integrity 432、core 165、bridge integrity 24、assembly graph 4、candidate cache 18、graph product 5、source index 14、新增 7）。名稱由 `run_all.py --list` 核對，與要求相同。新 suite 已登記，expected 計數為 7。部分執行不冒充完整驗收。
+| suite | pass/total |
+|---|---:|
+| `c:integrity` | 432/432 |
+| `core:run_tests` | 165/165 |
+| `py:test_bridge_integrity` | 24/24 |
+| `py:test_geo261_assembly_graph_product` | 4/4 |
+| `py:test_geo261_candidate_cache` | 18/18 |
+| `py:test_geo261_graph_product` | 5/5 |
+| `py:test_geo261_load_residual` | 12/12 |
+| `py:test_geo261_source_index` | 14/14 |
 
-```sh
-python3 tests/test_geo261_load_residual.py
-```
+C 的完整 native 原 stdout 是封包成員 `acceptance-r1/invocations/2026-10-22T234941.1559690000/commands/000971/stdout.bin`，完整 stderr、argv、退出及環境為同目錄原件；逐 suite JSON／unittest log 在 `acceptance-r1/evidence/native-suite-logs/`。`FORMAL_METRICS.json` 是只讀索引，不是替代裁判。
 
-結束碼 **0**，7 tests 通過。兩種要求的突變與集合節點有效性的第三種突變分開編譯；必須先有未突變成功對照，突變以正常結束碼 1 及具名斷言失敗，再確認原版通過；崩潰、編譯錯誤或逾時均不算偵測。實際 stderr 摘要：
+## 新突變與原失敗全文
 
-```text
-ASSERT:stale-footprint-after-move ...
-ASSERT:stale-footprint-after-parameter ...
-ASSERT:cross-consumer-placement-edge-missing ...
-ASSERT:reset-collection-must-be-evaluated ...
-```
+下列載入控制與 W collection 控制均在 F 的原完整 suite 內重跑。除明列等價的 placement 單刪外，表列控制皆為原 baseline **0** → 突變 **1** → 恢復 **0**；失敗來自正常具名 ASSERT，未以 crash／編譯失敗／timeout 充數。`ordered_cache_edges` 比對原 prefix 與新增依賴的 consumer、來源、kind 及順序，並非只查邊存在。
 
-永不失效突變移除 `app_footprint_memo_begin` 的 valid 清除，測試重用同一儲存使過期值可確定性重現；跨 consumer 突變保留快取值但省略命中的依賴登記，第二個 consumer 的邊檢查轉紅。另以真實 W API 測 query 物件跨 reset／重新註冊：節點位置改變與已 describe 但尚未求值均保持原順序；第三種突變省略節點有效性驗證，該測試轉紅。完整斷言與行號見 `checks/native.stdout`，未改突變帳本。
+| 控制 | 原退出 | 原失敗訊息全文 |
+|---|---|---|
+| H definition 省第二 consumer 依賴（`definition-edge`） | 0/1/0 | `ASSERT:definition-cache-second-consumer-edge-and-order line=245 expr=ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count)` |
+| H definition 錯 kind（`definition-kind`） | 0/1/0 | `ASSERT:definition-cache-second-consumer-edge-and-order line=245 expr=ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count)` |
+| H anchor 省第二 consumer 依賴（`anchor-edge`） | 0/1/0 | `ASSERT:anchor-cache-second-consumer-edge-and-order line=245 expr=ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count)` |
+| H anchor 錯 kind（`anchor-kind`） | 0/1/0 | `ASSERT:anchor-cache-second-consumer-edge-and-order line=245 expr=ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count)` |
+| H footprint 省第二 consumer 依賴（`footprint-edge`） | 0/1/0 | `ASSERT:footprint-cache-second-consumer-edge-and-order line=245 expr=ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count)` |
+| H footprint 錯 kind（`footprint-kind`） | 0/1/0 | `ASSERT:footprint-cache-second-consumer-edge-and-order line=245 expr=ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count)` |
+| H footprint 錯求值順序（`footprint-order`） | 0/1/0 | `ASSERT:footprint-cache-second-consumer-edge-and-order line=245 expr=ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count)` |
+| H pose 省第二 consumer 依賴（`pose-edge`） | 0/1/0 | `ASSERT:pose-cache-second-consumer-edge-and-order line=245 expr=ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count)` |
+| H pose kind 寫死（`pose-kind`） | 0/1/0 | `ASSERT:pose-cache-preserves-requested-dependency-kind line=245 expr=ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count)` |
+| 同 slot 不同 id，刪 id 比對（`anchor-id-key`） | 0/1/0 | `ASSERT:member-anchor-cache-id-must-match line=75 expr=reference_member_anchor_read(&f->ctx,0,42,&second)&& second.placement_id==8&&second.order==2&&second.uv.v==40&&f->ctx.member_reads[0].id==42` |
+| 刪 anchor miss footprint 失效（`anchor-miss-invalidation`） | 0/1/0 | `ASSERT:member-anchor-miss-invalidates-footprint line=94 expr=reference_contact_facts(&f->ctx,f->ctx.sources,&request,after)&& after->member_count==2&&after->members[0].member->id==42&&after->members[0].order==2&&after->members[0].footprint_valid&& after->members[0].footprint.min_v==40&&after->members[0].footprint.max_v==50&& after->members[1].member->id==41&&after->members[1].order==1&&after->members[1].footprint_valid&& after->members[1].footprint.min_v==0&&after->members[1].footprint.max_v==10` |
+| placement 單刪（`placement-key-single`） | 0/0/0 | 無失敗；equivalent，不能算 killed |
+| placement 配對：先撤 anchor invalidator（`placement-key-paired`） | 0/1/0 | `ASSERT:contact-footprint-cache-placement-must-match line=122 expr=reference_contact_facts(&f->ctx,f->ctx.sources,&request8,after)&& after->member_count==2&&after->members[0].member->id==42&&after->members[0].placement_id==8&&after->members[0].footprint_valid&& after->members[0].footprint.min_v==40&&after->members[0].footprint.max_v==50&&!after->members[1].footprint_valid` |
+| W feature→collection 原語意重錨（`feature-edge`） | 0/1/0 | `ASSERT:contact-feature-requires-collection-value` |
+| W 第二 feature 省依賴（`second-feature-edge`） | 0/1/0 | `ASSERT:collection-cache-second-feature-edge-and-order` |
+| W 第二 feature 錯 dependency kind（`second-feature-kind`） | 0/1/0 | `ASSERT:collection-cache-second-feature-edge-and-order` |
+| W feature 求值順序改變（`feature-evaluation-order`） | 0/1/0 | `ASSERT:collection-cache-second-feature-edge-and-order` |
+| 撤回 sealed footprint 守衛 | 0/1/0 | `ASSERT:sealed-contact-facts-remain-readable` |
 
-```sh
-gcc -std=c11 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer tests/geo261_load_residual_harness.c -o /tmp/geo261-residual-sanitizer -lm
-ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/geo261-residual-sanitizer move-delete
-ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/geo261-residual-sanitizer parameter
-ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/geo261-residual-sanitizer consumers
-ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/geo261-residual-sanitizer collection-reset
-```
+三份原 execution JSONL 分別為封包成員 `acceptance-r1/evidence/native-executions/load-residual.jsonl`、`contact-sources.jsonl`、`host-facts.jsonl`；保存各原 argv、退出與完整 stdout／stderr。host-facts 原記錄 schema 沒有逐行環境／SHA，來源綁定由外層原命令收據及 clean F 保證，沒有事後補造欄位。另有 required-eight 內的 load-residual JSONL；該選集本來沒有執行 host-facts／contact-sources，這兩個檔案不存在不代表 skip 或通過，正式完整 native 的三份原件均存在。
 
-編譯及四個案例結束碼均 **0**，各有 `PASS ...`，沒有 sanitizer 診斷。拒絕案例的原有 DSL 錯誤訊息另保留在 stderr。
+placement 的單故障在合法 immutable canonical graph 生命期內，被 anchor miss 失效覆蓋；不偽填 memo、不擴大生命期製造紅燈。配對 0/1/0 的三個程序都以先撤 anchor invalidator 為前置，只證 placement 的第二防線，**不能證單刪在原產品中非等價**。C 第4項要求「每個單刪皆紅」尚不能如此宣告，已列 QUESTIONS。
 
-```sh
-python3 -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json
-```
+既有 `AppFootprintMemo` 的手動失效負控制仍保留，不能冒充真產品 `member_reads` 失效證據。sealed 的 0/1/0 僅證內部 H 對已 VALID 幾何的只讀相容性，不能外推某個公開端面操作曾經失敗；未知 pose 在 sealed 圖中仍拒絕且不新增求值或邊。
 
-基底／修正結束碼均 **0**，JSON `diagnostics: []`。這份新基底已沒有上一輪未登記 `gen_scenes.py` 的診斷；本次未改 manifest。兩份完整 JSON 在 `checks/architecture-*.stdout`。
+## A–F 不變量與快取生命期
 
-完整 `python3 -u tests/run_all.py --build` 結束碼 **1**。原始 stdout／stderr 與起訖時間均在 `checks/full.*`。摘要：
+- **A：輸出。** 原171個根目錄 scene＋N16/32/48/64＝175；base／fix 各175，**每版75接受、100拒絕**。完整 `loadfile`＋`dump` stdout 逐 bytes 相同，包含錯誤訊息及拒絕場景，不只成功 dump。
+- **B：來源圖。** 同批每次 seal 的完整有序 nodes／edges／key bytes／descriptor／state／value 逐筆相同。跨 consumer 命中仍依原 relation 登記依賴及插入位置；同 consumer 重讀不新增重複邊。
+- **C：P-177。** 每個 scene／process 的 create、seal、publish、revalidate、`reference_check_all` 五個總呼叫數與 base 相同，**不是每 seal 五計數**。沒有減候選、驗證或 seal。
+- **D：失效。** world-validation memo 僅屬同次驗證；ReferenceEval canonical 讀取屬同一求值圖，候選重驗／reset／dispose 重新建立狀態。anchor 命中比對真 id，miss 清 footprint 有效位；footprint 鍵比對 placement；依原 consumer 與 kind 登記邊。保留同候選放置後移動／刪除、參數變更、拒絕回滾與跨 consumer 測試；真 id／miss 失效正常負控及 placement 等價範圍如上。
+- **E：API／分層。** 保持公開 API、C11 與固定容量私有資料；K 不 include W/H，W 不 include H。Linux 原架構裁判通過；MSVC 未在此環境動態驗證，不能稱已實跑。
+- **F：禁止項。** 本輪不改公理層、閱讀器、BACKLOG、決策佇列。帳本與架構四檔依使用者後續維護者授權重產，policy／roots／route／信任界線未放寬。
 
-```text
-[3/225] mutation:check …
-[164/225] py:test_product_architecture …
-mutation:check                                       -     -  FAIL     -     0.7  mutation inventory freshness (not test assertions); exit 1；日誌 /tmp/geometry-tests/run_all-logs/mutation_check.log
-py:test_product_architecture                        18    18     0     0    12.2
-合計(已執行、有計數者)                            5183  5181     1     1  2187.7
-  mutation:check
-exit 1：有 fail／逾時／預期數不符／未登記檔
-```
+A/B/C 的逐場景結果、原 normal／trace stdout／stderr、完整 ordered graphs 與 guards 保存在 `acceptance-r1/evidence/`；原 `equivalence.json` 退出 0，原 audit tuple 相同，trace 未改原輸出。沒有 main A/B/C 比較，不把性能 main 比較混入175組結果。
 
-225 個 suite 全部執行完畢，只有兩個 suite 未過：`mutation:check` 是既有突變帳本因 include 閉包變更而過期，依要求留給維護者重產；`py:test_assembly_mutation_check` 是下述可在基底重現的 zombie 清理問題。其餘 suite 沒有失敗，包含已補正的四組測試與 18 個 product architecture tests。Windows GDI 的 1 項 skip 在既有具名允許清單內；獨立 browser／owner 整合仍未執行。
+## 三方交錯性能與原目標
 
+同一 F，N16／32／48／64，每輪原順序 **base→fix→main**，共3輪、36筆；只量 loadfile，不 dump，保留原600秒 timeout，未挑樣本或重抽。量測期間沒有其他編譯、重型封存或測試爭用；每筆原程序退出0。
 
-另外，`py:test_assembly_mutation_check` 的程序群清理案例在此容器失敗：被 SIGKILL 的 `sleep` 留在 `/proc`，狀態為 Z（zombie）。在基底與修正版各直接執行 `python3 tests/test_assembly_mutation_check.py`，均 exit 1、12 tests 中同一項失敗；兩支相關測試／工具檔與基底無差異。原始輸出與結束碼保存於 `checks/assembly-process-base.*`、`checks/assembly-process-fix.*`。這項環境清理失敗保持紅燈，未修改測試或程序管理規則來排除它。
+| N | base median 秒 | fix median 秒 | main median 秒 | fix/main | fix/base |
+|---:|---:|---:|---:|---:|---:|
+| 16 | 0.200029317 | 0.197496643 | 0.150066502 | 1.316060815 | 0.987338486 |
+| 32 | 0.361281229 | 0.301003989 | 0.251693104 | 1.195916711 | 0.833157011 |
+| 48 | 0.757308848 | 0.555059024 | 0.399997606 | 1.387655865 | 0.732936140 |
+| 64 | 1.555082622 | 1.062526359 | 0.608646063 | 1.745721239 | 0.683260390 |
+| 原目標 | 實測 |
+|---|---|
+| N64 fix/main ≤1.3 | **1.7457212386，未達** |
+| fix `geo_eval_source` N64/N32 ≤4.5 | **4.4704196928，達到** |
+| N16/32/48 相對 base 不變慢 | 三點 fix/base＝0.987338486／0.833157011／0.732936140，均達到 |
+| 封裝總判決 | 退出 **1**，未全達標；各原執行 stage 退出均0 |
 
-完整跑曾找出四組測試適配：兩支 harness 需接收新的私有 `AppValidationInputs`，contact feature 與 PF3 host-identity 的負控制需重設到實際執行的錨點。保留原斷言與錯誤類別後，四個 suite 複跑 **46 tests 全過**；指令／exit 0 見 `checks/test-adapters.*`。重設後的 PF3 host-identity 另以原工具執行完整基準 20 tests、單一突變指定 `PF3_HOST_FILTER` 失敗（exit 1、1 failure、無 error／skip）、完整恢復 20 tests 通過；整體工具 exit 0，來源未變。這份收據是在此 Linux 執行，未冒充 WSL 收據，保存於 `pf3-host-identity/`。
+PROMPT-B 明列「量化目標(以維護者的 WSL 重測為準，你那邊的機器只作參考)」，並要求「沒做到的目標要照實寫」。本輪 C 要求同法重跑，已完整交付雲端實數；不把未達寫成通過、不將 #288 的2×移作本題門檻，也不請使用者電腦替跑。handoff 將剩餘效能熱點留給後續 #300，這裡保留原目標及未達項供複審。
 
-```sh
-python3 tests/run_all.py --only py:test_geo261_host_facts_authority --only py:test_geo261_wood_world_validation --only py:test_geo261_contact_sources --only py:test_mutation_anchors
-python3 tests/evidence/geo261-load-residual-20261020/pf3_control.py.txt
-```
+## 原 gprof 呼叫數
 
-適配前那次完整結果（5183、5160 pass／22 fail／1 skip，exit 1）完整保留在 `checks/full-before-test-adapters.*`；最終完整重跑另列於上方，不混用通過數。
+原 `-O1 -fno-inline -pg`，base／fix 各跑 N32／N64 一次，四次程序退出0；不是 O2 性能樣本，也沒有 main profile。
 
-第一次完整測試因複查補上 reset 邊界回歸而主動中止（exit -15），保留於 `checks/full-interrupted.*`，不列作最終驗收；後續完整測試重新由頭執行。
+| 函式 | base32 | base64 | fix32 | fix64 |
+|---|---:|---:|---:|---:|
+| `geo_eval_source` | 450,098 | 2,980,967 | 80,273 | 358,854 |
+| `geo_eval_depend` | 無 flat 呼叫記錄 | 無 flat 呼叫記錄 | 276,844 | 1,968,612 |
+| `wd_read` | 5,922,136 | 43,503,376 | 99,024 | 370,680 |
+| `contact_order` | 354,308 | 2,729,508 | 354,308 | 2,729,508 |
+| `wood_contact_collect_stops` | 3,438 | 12,942 | 3,438 | 12,942 |
+| `app_reference_member_footprint` | 19,029 | 141,429 | 1,146 | 4,314 |
 
-## 證據與未驗項目
+base 的 `geo_eval_depend` 原 flat profile 沒有對應呼叫行；工具按原規則記0，這裡明標無記錄，不能據此宣稱實際沒有呼叫。六個符號、原 gprof matched lines、缺行清單、gmon 與完整 profile 輸出均封存。fix64 尚有 `contact_order` 2,729,508、`geo_eval_depend` 1,968,612 次；這些是保留的殘餘熱點，未藉省守門流量處理。
 
-全部證據位於 [tests/evidence/geo261-load-residual-20261020/](https://github.com/ZhiQiYang/geometry-axiom/tree/codex/geo261-load-residual-20261020/tests/evidence/geo261-load-residual-20261020)，包含 README、可重跑的 `.py.txt` 腳本、受驗 SHA、環境、原始輸出、指令與結束碼。新增測試本身依既有 registry 使用 `.py`，證據腳本均以 `.py.txt` 存放。
+## 完整帳本及 Linux 架構四檔
 
-未實跑 Windows／MSVC、維護者 WSL 及 run_all.py 明列獨立執行的 browser／owner 整合。沒有以 Actions 計費失敗作紅燈或綠燈。
+原 S 上 `python3 tests/mutate.py --check` 退出 **1**（75 stale＋3 retired），故整份執行 `python3 tests/mutate.py`，退出 **0**，隨後原 `--check` 退出 **0**，外層收據退出0；S 前後 clean。78 records＝**70 killed＋M20 crashed＋4 equivalent＋3 retired**，75筆新 execution.head 全為 S，stale／survived／invalid／blocked 皆0。歷史 M20 的三次 SIGSEGV 如實為 crashed，不改稱 killed。安裝 ledger 之後，正式 F native 的 `mutation:check` 原綠。
+
+Linux 在 L 實跑三條原架構裁判並重產 manifest／scan／report／receipt，產物提交 A＝F；manifest bytes 不變。原結果：601 executable、333 owned、268 excluded、796 edges、0 diagnostics，918 forbidden identifiers／55 strings；F 又獨立重跑原三條 0/0/0。未以新 exclusion 躲過來源。
+
+先前完整帳本 primary 收據與架構重產 raw 分別在同證據根目錄的 `ledger-b823903e/`、`architecture-b7ca7843/`；本次完整帳本補充稽核位於正式目錄 `ledger-audit/`。帳本原工具未落盤 core 內層各 attempt／compiler 的完整 streams；完整 top-level 原命令 stdout／stderr、structured cases 與原 stream hashes 均保存。75份 mutant C 為**重建後逐一吻合原編譯指紋**，不是原捕獲，不能說每個內層原 stdout 都已封存。
+
+## 證據封存及未執行範圍
+
+正式兩個封包共 **11,089 members／106,672,856 raw bytes**，每個 member 均解包核對 path／bytes／SHA-256；另有帳本補充稽核743 members。`PUBLICATION.json`、各 `inventories/*.members.json` 與 `SHA256SUMS` 可定位原件。Git archive stdout tar 原樣保留；可重建 checkout、ELF 等排除項另存 metadata／hash，未將其冒充原輸出。封存只整理已有結果，沒有重跑或改寫裁判。
+
+本輪未執行 Windows GDI、MSVC，亦未把 #288 在 F2 的六個 browser job 算成本 #323 的證據。既有 GitHub Actions 計費失敗不算測試；GitHub API不可用，因此沒有宣稱已更新線上 PR 正文。
 
 ## 最不確定的地方
 
-- N64 fix／main 仍為 1.78×；此修正只降低同次驗證的重複讀取，依賴邊登記與既有擋面成本仍在，不能承諾 512 支的成長率。
-- 同 consumer 的重用依賴目前驗證函式期間不修改 World 的契約；若將來在驗證中加入修改或將快取延長生命期，必須重設失效邊界並重跑完整圖比對。
-- 本機只驗 GCC／ASan／UBSan；MSVC 與 WSL 效能仍待維護者確認。
+1. **性能尚未達原 N64 1.3×目標。** 雲端固定 F 原量測為1.7457212386；三方樣本完整保留。它可證本環境結果，不能冒作維護者 WSL 數字或保證容量512可接受。
+2. **placement 單刪為等價。** 配對控制只證第二防線，尚不能滿足 C 原文「每個單刪皆紅」的字面要求；請審查是否接受此等價分類。若要改產品生命期或公理語意製造可達故障，須另決定，本輪不代決。
+3. **sealed 保證範圍。** 只涵蓋內部 H 對已 VALID 來源的只讀行為；不外推公開操作或改動 sealed 新 query 政策。
+4. **跨平台與原工具捕獲限制。** Linux 原裁判已跑，MSVC／Windows GDI 未動態驗證；core ledger 內層未落盤的 streams 不能由事後重建補稱原捕獲。
+
+請使用者將此檔貼至 **PR #323 正文**並請複審，連同 QUESTIONS 的兩個未滿足項一併判讀。修正及 prbody 分支都以一般 push 保存；不 force push、不合併，也不把本分支合入 #288。#288 進 main 後再依既定流程處理 base。
