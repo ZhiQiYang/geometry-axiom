@@ -131,6 +131,15 @@
       "archives": [
         "raw/p88-final-native-reviewed-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T13:49:58.587513+00:00",
+      "label": "p88-final-p52-runtime-complete-raw",
+      "result": "新F正式baseline／撤回runtime修正／放回修正原gate為0/1/0，ratio依序0.889796209710257／1.0337406540912426／0.8462365083581334；每phase保原main/fix/fix/main四區塊、每側16筆、原≤1門檻，無重抽樣。runtime driver／outer／launcher／parentcapture皆0，原source/runtime before-after與restore核同；獨立原件審查1267項無finding。原完整stage1633檔、81,821,566 bytes；實際封包與排除逐項列inventory，正式baseline完整streams在另formal包。封存原錯路徑與metadata checker v1錯誤照留、更正分開記錄。",
+      "next": "完成新F P73／Chromium154及oracle8phase，逐項peer與更新唯一正文矩陣；所有歷史未受影響gate保留實際SHA。",
+      "archives": [
+        "raw/p88-final-p52-runtime-complete-raw-01.tar.gz"
+      ]
     }
   ]
 }

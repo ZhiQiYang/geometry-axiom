@@ -43,3 +43,6 @@
 
 - 2026-10-23T13:30:02.573691+00:00 — **p88-final-native-reviewed**：新F原run_all四組partial原primary/reaper/outer/launch皆0，17/3/51/737合計808pass、0fail、0skip；不冒完整native重跑。原runner確認三binary fresh/reused；完整Git index與14輸入前後同F，三個真gcanvas fixtures按原blob物化，其他稀疏限制保留。獨立原件及Git封包審查、原publication ignore失敗1及精確prefix正常續推0都保留。 子分支證據E=c7214307d5ffc6a867089c8d832fef4bc94ae27c。
   下一步：繼續同F P52、P73、Chromium154與oracle反證，完成項依真退出更新唯一正文矩陣。。原始資料：`raw/p88-final-native-reviewed-01.tar.gz`。
+
+- 2026-10-23T13:49:58.587513+00:00 — **p88-final-p52-runtime-complete-raw**：新F正式baseline／撤回runtime修正／放回修正原gate為0/1/0，ratio依序0.889796209710257／1.0337406540912426／0.8462365083581334；每phase保原main/fix/fix/main四區塊、每側16筆、原≤1門檻，無重抽樣。runtime driver／outer／launcher／parentcapture皆0，原source/runtime before-after與restore核同；獨立原件審查1267項無finding。原完整stage1633檔、81,821,566 bytes；實際封包與排除逐項列inventory，正式baseline完整streams在另formal包。封存原錯路徑與metadata checker v1錯誤照留、更正分開記錄。
+  下一步：完成新F P73／Chromium154及oracle8phase，逐項peer與更新唯一正文矩陣；所有歷史未受影響gate保留實際SHA。。原始資料：`raw/p88-final-p52-runtime-complete-raw-01.tar.gz`。
