@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """Confirm every numbered clause of 公理層.md appears exactly once
-in the classification table of AXIOM-LAYERING-DRAFT.md.
+in the classification table of AXIOM-LAYERING-DRAFT.md, and that every
+mixed row has the reverse-cite line the checker actually reads.
 Run from the repo root:
   python geometry-core/domain-decoupling/check_axiom_layering.py.txt
+  python geometry-core/domain-decoupling/check_axiom_layering.py.txt --selftest
 """
 import os
 import re
@@ -66,7 +68,8 @@ def main():
     print("核心 %d" % counts["核心"])
     print("木工 %d" % counts["木工"])
     print("混合 %d" % counts["混合"])
-    problems.extend(reverse_cite_problems(raw, draft))
+    expected_mixed = set(cid for cid, cls in rows if cls == "混合")
+    problems.extend(reverse_cite_problems(raw, draft, expected_mixed))
     if problems:
         print("PROBLEMS %d" % len(problems))
         for p in problems:
@@ -77,10 +80,14 @@ def main():
     return 0
 
 
-def reverse_cite_problems(axiom, draft):
+def reverse_cite_problems(axiom, draft, expected_mixed):
     """Mixed-clause reverse lists must include every other clause that
     names them, including Chinese-adjacent and slash-joined ids.
     En-dash ranges are not expanded. This is separate from the once-each check.
+
+    expected_mixed is the mixed-id set from the classification table.
+    A heading with its cite line deleted is invisible to list_re, so the
+    ids that list_re finds must equal that set. Missing and extra both fail.
     """
     lines = axiom.split("\n")
     starts = []
@@ -129,7 +136,94 @@ def reverse_cite_problems(axiom, draft):
             problems.append("reverse miss %s: %s" % (cid, " ".join(sorted(gap))))
         if extra:
             problems.append("reverse extra %s: %s" % (cid, " ".join(sorted(extra))))
+    # list_re only sees a heading when its cite line is still nearby.
+    # Deleting that whole line used to leave the heading, pass the
+    # mixed-section check, and still print OK reverse cites.
+    missing = sorted(set(expected_mixed) - seen_heads)
+    unexpected = sorted(seen_heads - set(expected_mixed))
+    for cid in missing:
+        problems.append("reverse list missing %s" % cid)
+    for cid in unexpected:
+        problems.append("reverse list unexpected %s" % cid)
     return problems
 
+
+def delete_reverse_line(draft, cid):
+    """Drop one whole cite line under ### cid. Leave the heading."""
+    lines = draft.split("\n")
+    head = "### %s" % cid
+    for i, ln in enumerate(lines):
+        if ln != head:
+            continue
+        window = lines[i + 1:i + 10]
+        for offset, row in enumerate(window):
+            if row.startswith("拆開後要跟著改的引用："):
+                if any(later.startswith("### ") for later in window[:offset]):
+                    return None
+                del lines[i + 1 + offset]
+                return "\n".join(lines)
+        return None
+    return None
+
+
+def selftest():
+    """Positive check, then delete one cite line that list_re would skip."""
+    if main() != 0:
+        print("SELFTEST baseline failed")
+        return 1
+    raw = open(AXIOM, "rb").read().replace(b"\r\n", b"\n").decode("utf-8")
+    draft = open(DRAFT, "rb").read().replace(b"\r\n", b"\n").decode("utf-8")
+    start = draft.find("<!-- CLASSIFICATION-TABLE-START -->")
+    end = draft.find("<!-- CLASSIFICATION-TABLE-END -->")
+    table = draft[start:end]
+    row_re = re.compile(r"^\| ([DIR]\d+[a-z]?) \| (核心|木工|混合) \|", re.M)
+    mixed = [cid for cid, cls in row_re.findall(table) if cls == "混合"]
+    target = None
+    mutated = None
+    lines = draft.split("\n")
+    for cid in mixed:
+        head = "### %s" % cid
+        try:
+            i = lines.index(head)
+        except ValueError:
+            continue
+        cite_at = None
+        for j in range(i + 1, min(i + 10, len(lines))):
+            if lines[j].startswith("拆開後要跟著改的引用："):
+                cite_at = j
+                break
+            if lines[j].startswith("### "):
+                break
+        if cite_at is None:
+            continue
+        next_head = None
+        for j in range(i + 1, len(lines)):
+            if lines[j].startswith("### "):
+                next_head = j
+                break
+        # More than 8 lines to the next heading: list_re cannot borrow it.
+        if next_head is None or next_head - i > 8:
+            target = cid
+            mutated = delete_reverse_line(draft, cid)
+            break
+    if target is None or mutated is None:
+        print("SELFTEST found no cite line that list_re would skip")
+        return 1
+    if ("\n### %s\n" % target) not in mutated:
+        print("SELFTEST removed the heading")
+        return 1
+    problems = reverse_cite_problems(raw, mutated, set(mixed))
+    wanted = "reverse list missing %s" % target
+    if wanted not in problems:
+        print("SELFTEST negative control missed %s" % target)
+        for p in problems:
+            print(p)
+        return 1
+    print("SELFTEST deleted the cite line under %s" % target)
+    print("SELFTEST caught: %s" % wanted)
+    return 0
+
 if __name__ == "__main__":
+    if "--selftest" in sys.argv[1:]:
+        sys.exit(selftest())
     sys.exit(main())
