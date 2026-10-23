@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 20:16 UTC）
+## 唯一 current-state（2026-10-23 20:19 UTC）
 
 - 分支：`codex/train-337-continue-20261024`；產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判來源 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；四檔採用與上游合流 head=`4f4a24d76e816274bfae06868b4dbf31f0860299` 已推。新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 已推；C/JS產品仍同F，最新 evidence head 以本檔所在提交為準，正式全清單的最終 SHA 尚未固定。
 - 已普通 merge Claude 最後交接 `8f9301fc1b78712d930ffc68074437e44d068aab`（merge `586e6e8f`）與 main `425c092eaf16f90256d76433243baebde45163ac`。main 新增 #333 FIELD-RULES 與證據。相對F產品C/JS不變；兩個tests葉改為M151登記與free-end唯一錨點，保留所有斷言。
@@ -45,8 +45,14 @@ Reading A 的3條reader、7 native、14 oracle完整指令/環境/streams及629c
 
 已fetch handoff d65d464f，讀到337的19:44 UTC Claude最後交接：新head8f9301fc含M151 owner-map修正及原收據，將普通merge；不改寫歷史。#314指定程式已符合題3，條文暫緩寫入決定保留；#335 CLI已知缺口另列，不自行改公理。free-end錨點的原9方法四輪已實跑1/0/1/0，18原控制及斷言保持，獨立actual peer中；只會採用這一葉測試定位修正，不摻#300優化。完整123筆ledger仍固定4f4執行，未出最終exit，不冒稱完成。
 
-## 2026-10-23 20:16 UTC：兩個測試缺陷修正與原反證已封存
+## 2026-10-23 20:10 UTC：兩個測試缺陷修正與原反證已封存
 
 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 已普通推送。來源一是Claude f1f2e8d0的M151 owner-map，完整15方法0/1/0，撤回只讓原完整registry字典相等斷言紅，獨立241checks／0；來源二是free-end單葉patch（SHA256 `10e30443932f047fc5bdcd9c4926c00df26f2a5d4935fb64090b16366ed91afe`），原9方法1/0/1/0，原紅唯一`AssertionError: 1 != 3`。新錨點保留跨寬判定，只撤原free-end guard；fixed/restored各18控制0/1/0，獨立1328checks／0。全原件與工具封於`test-anchor-recovery-ec8e0d7e/`，不把受控variant冒成新SHA全native。
 
 S的原`mutate.py --check` exit1；三條原架構裁判exit0/0/0。Chrome/Node版本、全指令/原streams/環境與前後clean SHA已封。架構manifest/scan/report/receipt正按原Linux schema重產。當前4f4帳本仍執行，70個core已完成且原裁判無阻擋，53個bridge繼續；沒有最終exit。新tests會使bridge oracle hash過期，本輪舊SHA原件保為歷史，後續由root於新穩定來源完整重產，不改帳本定義或只補選定ID。
+
+## 2026-10-23 20:19 UTC：新測試來源的Linux架構收據採用
+
+S ec8的三原裁判0/0/0與205/18原計數已按同schema封存；604個physical/Git/raw/LF輸入及原scanner/generic/product裁判均與P17相同，closure仍`6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。新manifest/scan bytes不變，新report/receipt已採用；獨立781checks／0，完整原件封`architecture-ec8-originals/`。真受測S與封存a607分列；兩個tests葉不在604架構scope，不能以此代替測試/ledger。P17 manifest反證只保原SHA，不轉標本輪。上一段出版時間標籤修正為原20:10，受測指令收據原時間未改。
+
+noWood原13項/7phase已真完成0/1/0/1/0/1/0，owner交獨立peer與自己分支封存；#324接第2槽跑30+13 C importers。root原4f4 fullledger仍執行中，不標最終完成。PR338新正文`c6a66707db7fac932d3b8ceb91572b7552091730`已一般推送，唯一矩陣區分F/P/S/E與所有紅/未跑項；handoff NEXT已推5461a7bb，後續持續更新。
