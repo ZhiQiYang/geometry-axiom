@@ -25,3 +25,6 @@
 
 - 2026-10-23T06:28:11.472698+00:00 — **timber**：原退出0；原收據有效=True；超CI時限=False；衍生通過=True
   下一步：繼續剩餘原工作項；收齊全部紅燈後集中分類，沒有自動重抽。原始資料：`raw/timber-01.tar.gz`。
+
+- 2026-10-23T06:35:46.024643+00:00 — **postmerge-p52-formal**：P52原gate與driver均0；main252.7797935ms/fix189.6910945ms，ratio0.7504203238；四blocks各8筆與五controls原0/0/1/1/1全符。七項原0/1/0/0/0/0/0保留canvas P88紅；closure18461fixtures三方同。
+  下一步：繼續獨立verifier封存與runtime/P73/154/oracle；收齊後集中修P88，不放寬斷言。原始資料：`raw/postmerge-p52-formal-01.tar.gz`、`raw/postmerge-p52-formal-02.tar.gz`。
