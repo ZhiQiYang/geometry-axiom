@@ -1,0 +1,314 @@
+{
+  "scope": "pure static review of combined candidate on immutable b244; no dynamic acceptance or performance claim",
+  "base_sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+  "patch_sha256": "a44018ad1e3455af89dc9fbc19ea4ec3d9b0e4dfec56f9ddab5d2893d91871b0",
+  "checks": [
+    {
+      "name": "git_blob_geometry-core/references.inc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "base_hash_geometry-core/references.inc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "candidate_hash_geometry-core/references.inc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "git_blob_geometry-app/native/reference_sources.inc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "base_hash_geometry-app/native/reference_sources.inc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "candidate_hash_geometry-app/native/reference_sources.inc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "git_blob_tests/test_geo261_load_residual.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "base_hash_tests/test_geo261_load_residual.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "candidate_hash_tests/test_geo261_load_residual.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "git_blob_tests/geo261_load_residual_harness.c",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "base_hash_tests/geo261_load_residual_harness.c",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "candidate_hash_tests/geo261_load_residual_harness.c",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact_patch_bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "patch_sha256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "product_identical_reviewed_v2_geometry-core/references.inc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "product_identical_reviewed_v2_geometry-app/native/reference_sources.inc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "python_ast_parse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "same_13_methods",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "only_three_test_methods_extended",
+      "passed": true,
+      "detail": [
+        "test_cached_reads_preserve_each_consumer_exact_source_kind_and_order",
+        "test_cross_consumer_mutant_reports_missing_dependency",
+        "test_member_anchor_id_key_rejects_same_slot_different_canonical_member"
+      ]
+    },
+    {
+      "name": "unchanged_case",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged_passes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged_setUpClass",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged_test_each_cached_read_second_consumer_edge_kind_and_order_mutant_is_detected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "12_named_H_controls",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_contact-edge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_contact-kind",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_contact-order",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_definition-edge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_definition-kind",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_anchor-edge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_anchor-kind",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_footprint-edge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_footprint-kind",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_footprint-order",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_pose-edge",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique_source_anchor_pose-kind",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "contact_edge_real_shared_H_boundary",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "contact_kind_wrong_kind_only_second",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "contact_order_poses_before_real_placement_hit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "contact_id_unique",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "joint_H_second_id3_and_unique",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "joint_W_kind3_and_valid_original",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original_exact_cross_marker_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original_legacy_3_guard",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "cache_contact_uses_original_mode3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "cache_contact_natural_warm_check",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_original_ordered_predicate_bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "five_sources_and_kinds_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "repeated_and_sealed_guards_unmodified",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "probe_restores_original_flag",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "contact_id_separate_control_logs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "contact_id_original_assert_and_one_failure",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "no_threshold_or_goldens_files",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "not_applied_tested_benchmarked",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "count": 54,
+  "findings": [],
+  "review_exit": 0,
+  "original_inputs": [
+    {
+      "path": "geometry-core/references.inc",
+      "sha256": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4"
+    },
+    {
+      "path": "geometry-app/native/reference_sources.inc",
+      "sha256": "4cb8d3d59d39776570880c17cddaacc4169900802df1b4f6b7547e7f96123713"
+    },
+    {
+      "path": "tests/test_geo261_load_residual.py",
+      "sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c"
+    },
+    {
+      "path": "tests/geo261_load_residual_harness.c",
+      "sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045"
+    }
+  ],
+  "semantic_notes": [
+    "Product bytes exactly match already-reviewed memo v2; no new semantic product delta in this combined candidate.",
+    "cache-contact uses real reference_contact_facts and natural contact warm guard; five ordered dependency facts and both consumers remain original. Contact edge/kind mutate the unique shared H site while the case takes the contact caller.",
+    "contact-order prepends the real pose dependency before the placement dependency in the second contact hit; the unchanged ordered oracle should distinguish it.",
+    "contact-id removes only the unique contact_id guard and uses existing natural member/anchor storage permutation; wrong original order is checked by existing exact marker, without memo writes.",
+    "Cross-consumer joint withdrawal targets the same id3 placement edge via W getter or H hit; this is not evidence each alternative is individually necessary."
+  ],
+  "dynamic_pending": [
+    "New contact-edge/kind/order/id and corrected original two controls require actual compile success plus original named 0/1/0 with full streams.",
+    "Original lifecycle, failed-read, sealed lookup, contact, host and load suites still must run on adopted immutable source. The static audit does not prove dynamic new contact-path coverage.",
+    "Original timing and source-call thresholds remain unchanged; speed and source-count gains are unknown until original full protocol."
+  ]
+}

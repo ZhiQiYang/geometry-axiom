@@ -1,0 +1,576 @@
+{
+  "schema": "geo323-completed-baseline-handoff/1",
+  "created_utc": "2026-10-23T15:08:19.866659+00:00",
+  "source_sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+  "base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "kind": "原收據的逐項索引；不取代原判官，也不改判原紅燈",
+  "product_or_tests_changed_after_baseline": false,
+  "candidate_applied": false,
+  "new_test_or_benchmark_started": false,
+  "user_stage_stop_obeyed": true,
+  "stage_matrix": {
+    "prepare": {
+      "started_utc": "2026-10-23T14:02:33.302575+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:02:35.197541+00:00"
+    },
+    "build": {
+      "started_utc": "2026-10-23T14:02:35.361979+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:04:06.971157+00:00"
+    },
+    "compare": {
+      "started_utc": "2026-10-23T14:04:07.124071+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:06:06.062906+00:00"
+    },
+    "perf": {
+      "started_utc": "2026-10-23T14:09:59.157310+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:10:14.360461+00:00"
+    },
+    "profile": {
+      "started_utc": "2026-10-23T14:10:14.513839+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:10:37.725957+00:00"
+    },
+    "required-eight": {
+      "started_utc": "2026-10-23T14:15:37.355642+00:00",
+      "execution_exit": 1,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [
+        "Traceback (most recent call last):\n  File \"/tmp/geo323-merge-20261023/acceptance-tools-v3/run.py\", line 336, in stage\n    function()\n  File \"/tmp/geo323-merge-20261023/acceptance-tools-v3/run.py\", line 335, in <lambda>\n    function = getattr(self, name) if name in STAGES[:5] else lambda: self.suite(name)\n                                                                      ^^^^^^^^^^^^^^^^\n  File \"/tmp/geo323-merge-20261023/acceptance-tools-v3/run.py\", line 323, in suite\n    raise RuntimeError(f'{kind}原命令退出{result.returncode}；不豁免、不改斷言')\nRuntimeError: required-eight原命令退出1；不豁免、不改斷言\n"
+      ],
+      "ended_utc": "2026-10-23T14:17:47.684878+00:00"
+    },
+    "pf3": {
+      "started_utc": "2026-10-23T14:17:47.840702+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-23T14:30:38.572496+00:00"
+    },
+    "native": {
+      "started_utc": "2026-10-23T14:30:38.748071+00:00",
+      "execution_exit": 1,
+      "source_before": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "source_after": {
+        "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+        "status": ""
+      },
+      "errors": [
+        "Traceback (most recent call last):\n  File \"/tmp/geo323-merge-20261023/acceptance-tools-v3/run.py\", line 336, in stage\n    function()\n  File \"/tmp/geo323-merge-20261023/acceptance-tools-v3/run.py\", line 335, in <lambda>\n    function = getattr(self, name) if name in STAGES[:5] else lambda: self.suite(name)\n                                                                      ^^^^^^^^^^^^^^^^\n  File \"/tmp/geo323-merge-20261023/acceptance-tools-v3/run.py\", line 323, in suite\n    raise RuntimeError(f'{kind}原命令退出{result.returncode}；不豁免、不改斷言')\nRuntimeError: native原命令退出1；不豁免、不改斷言\n"
+      ],
+      "ended_utc": "2026-10-23T15:01:42.146457+00:00"
+    }
+  },
+  "original_quantitative_targets": {
+    "N64_fix_main": {
+      "actual": 1.160861952340483,
+      "target": "<=1.3",
+      "target_met": true,
+      "method": "原36樣本，N16/32/48/64，每輪base→fix→main，共3輪；中位數"
+    },
+    "small_N_no_regression": {
+      "reference": "原固定base的變更前載入時間；不得變慢",
+      "points": {
+        "16": {
+          "fix_base": 0.7020541681432466,
+          "target_met": true
+        },
+        "32": {
+          "fix_base": 1.0008656473515014,
+          "target_met": false
+        },
+        "48": {
+          "fix_base": 0.7354720650542408,
+          "target_met": true
+        }
+      }
+    },
+    "geo_eval_source_64_32": {
+      "N32_calls": 169688,
+      "N64_calls": 1044429,
+      "actual": 6.154996228372071,
+      "target": "<=4.5",
+      "target_met": false,
+      "method": "原-O1 -fno-inline -pg；base/fix各N32/N64一次；無main profile；原profile無timeout"
+    }
+  },
+  "all_required_stages_completed": true,
+  "original_wrapper_exit": 1,
+  "original_full_acceptance_passed": false,
+  "native_original_command": {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "tests/run_all.py",
+      "--build"
+    ],
+    "cwd": "/tmp/g261-next323",
+    "acceptance_sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+    "source_sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+    "source_role": {
+      "label": "fix-or-orchestration",
+      "sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2"
+    },
+    "environment": {
+      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "TMPDIR": "/tmp/geo323-baseline-b2445b5a-v3-r1/tmp",
+      "GITHUB_SHA": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+      "GITHUB_WORKSPACE": "/tmp/g261-next323",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONIOENCODING": "utf-8",
+      "PYTHONOPTIMIZE": null,
+      "PYTHONPATH": null,
+      "PYTHONSTARTUP": null,
+      "NODE_OPTIONS": null,
+      "CC": null,
+      "CXX": null,
+      "CFLAGS": null,
+      "CXXFLAGS": null,
+      "CPPFLAGS": null,
+      "LDFLAGS": null,
+      "CPATH": null,
+      "C_INCLUDE_PATH": null,
+      "LIBRARY_PATH": null,
+      "LD_LIBRARY_PATH": null,
+      "GCC_EXEC_PREFIX": null,
+      "COMPILER_PATH": null,
+      "GEO261_GRAPH": null,
+      "GEO261_GUARDS": null,
+      "GEO261_REAPER_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/control/2026-10-23T143038.6637150000/reaper.jsonl",
+      "GEO261_HOST_FACTS_EXECUTION_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/evidence/native-executions/host-facts.jsonl",
+      "GEO261_CONTACT_SOURCES_EXECUTION_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/evidence/native-executions/contact-sources.jsonl",
+      "GEO261_LOAD_RESIDUAL_EXECUTION_LOG": "/tmp/geo323-baseline-b2445b5a-v3-r1/evidence/native-executions/load-residual.jsonl",
+      "GEO323_ROOT": null,
+      "GEO323_WORK": null,
+      "GEO323_EVIDENCE": null,
+      "GEO323_BASE_SHA": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+      "GEO323_MAIN_SHA": "adbaebf9c73ea6801d7b4d5214e4b846b132923b"
+    },
+    "started_utc": "2026-10-23T14:30:38.811648+00:00",
+    "started_epoch": 1792765838.8116527,
+    "stdin_provided": false,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "timeout_seconds": null,
+    "directory": "/tmp/geo323-baseline-b2445b5a-v3-r1/invocations/2026-10-23T143038.6637150000/commands/000003",
+    "actual_process_returncode": 1,
+    "timeout_expired": false,
+    "ended_utc": "2026-10-23T15:01:42.050500+00:00",
+    "ended_epoch": 1792767702.0505345,
+    "seconds": 1863.2388818264008,
+    "stdout_bytes": 37879,
+    "stdout_sha256": "243cccc8db83bd98b2e0cc4c85477f7accabe79365b61ae6ccf2fa7f3b28c184",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "native_total_line": "合計(已執行、有計數者)                            5203  5200     2     1  1862.7",
+  "native_failed_rows": [
+    "mutation:check                                       -     -  FAIL     -     0.6  mutation inventory freshness (not test assertions); exit 1；日誌 /tmp/geometry-tests/run_all-logs/mutation_check.log",
+    "py:test_geo261_load_residual                        13    11     2     0    52.1  日誌 /tmp/geometry-tests/run_all-logs/py_test_geo261_load_residual.log"
+  ],
+  "native_allowed_skip_rows": [
+    "py:test_gdi_contract                                 1     0     0     1     0.2  skip：requires compiled Windows GDI contract harness ×1（其中 1 個在具名允許清單，平台固有，不計入 exit 3）；日誌 /tmp/geometry-tests/run_all-logs/py_test_gdi_contract.log"
+  ],
+  "pf3": {
+    "baseline": {
+      "id": "baseline",
+      "verdict": "pass",
+      "exit": 0,
+      "counts": {
+        "run": 20,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "",
+      "artifacts": {
+        "tests.json": "ec2feaa6ef4a332045a2db28aa75f27962f05ea500353a56112832641c362f45",
+        "pf3-algorithm.fingerprint.json": "1885897939acea4698975b6f509804202af3cb84e6cad3de860684f04c662c2b",
+        "pf3-algorithm": "ec82c1564b8126028d6adca86f69a380f4d814d9cbb40aeb5743d70aa28b5e91",
+        "bridge.fingerprint.json": "8f87abf0647989ae8e37e24f0aa58c0d94990a63e026a9acf158ce033cdfbd7a",
+        "bridge": "977c7017aeeeabf315646fa00a5d5757f08967d2afd8327c76e515a0a30e2766",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "mutations": [
+      {
+        "id": "effective-merge",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "D43_T_POINT"
+      },
+      {
+        "id": "unplaced",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF3_UNPLACED"
+      },
+      {
+        "id": "two-sides",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "D43_TWO_SIDES"
+      },
+      {
+        "id": "board-vertices",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF23_ORIGINAL"
+      },
+      {
+        "id": "footprint-vertices",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF23_LEGAL"
+      },
+      {
+        "id": "maximal-merge",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF24"
+      },
+      {
+        "id": "merge-colours",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF23_LEGAL"
+      },
+      {
+        "id": "open-sample",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF23_LEGAL"
+      },
+      {
+        "id": "footprint-union",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "R43_UNION"
+      },
+      {
+        "id": "continuous-width",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "R43_GAP"
+      },
+      {
+        "id": "host-identity",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF3_HOST_FILTER"
+      },
+      {
+        "id": "finish-reflection",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "R43_FRAME"
+      },
+      {
+        "id": "hidden-threshold",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF06_RATIONAL"
+      },
+      {
+        "id": "rounded-threshold",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF06_RATIONAL"
+      },
+      {
+        "id": "overflow-comparison",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF06_OVERFLOW"
+      },
+      {
+        "id": "odd-gap-edges",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "D43_ODD_GAP"
+      },
+      {
+        "id": "band-range",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "D43_NEGATIVE_BAND"
+      },
+      {
+        "id": "capacity-early",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF3_CAPACITY_N"
+      },
+      {
+        "id": "capacity-truncate",
+        "verdict": "killed",
+        "exit": 1,
+        "counts": {
+          "run": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "requiredMarker": "PF3_CAPACITY_N1"
+      }
+    ],
+    "restored": {
+      "id": "restored",
+      "verdict": "pass",
+      "exit": 0,
+      "counts": {
+        "run": 20,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "requiredMarker": "",
+      "artifacts": {
+        "tests.json": "ec2feaa6ef4a332045a2db28aa75f27962f05ea500353a56112832641c362f45",
+        "pf3-algorithm.fingerprint.json": "4c0a9cebe643f402c42d7b211374441830f7a36bf57e00b19981a93d5c3bff1a",
+        "pf3-algorithm": "62cf7982272f1d4b881205eed78628087cf22430509b9b153b9fa30fa3388370",
+        "bridge.fingerprint.json": "b0c5eddc8288e0e0cb795267bf0968177d2b0b7fcf49f4c503575f7169d837e4",
+        "bridge": "2759f2b5c90f974e8e08dce499be51426eb0676c47cb78e39dc45635d52a0266",
+        "build.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "originalSourcesUnchanged": true
+  },
+  "three_suite_diagnostic": {
+    "source_sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+    "original_run_exit": 1,
+    "reaper_process_exit": 1,
+    "outer_exit": 1,
+    "scope": "原三個 --only，48pass/2fail/0skip；不是完整 native／v3 正式 stage"
+  },
+  "remaining_recorded_wrapper_exits": [
+    {
+      "stage": "required-eight",
+      "actual_wrapper_exit": 1,
+      "directory": "/tmp/geo323-baseline-b2445b5a-v3-remaining-launch/subcommands/000001"
+    },
+    {
+      "stage": "pf3",
+      "actual_wrapper_exit": 1,
+      "directory": "/tmp/geo323-baseline-b2445b5a-v3-remaining-launch/subcommands/000002"
+    },
+    {
+      "stage": "native",
+      "actual_wrapper_exit": 1,
+      "directory": "/tmp/geo323-baseline-b2445b5a-v3-remaining-launch/subcommands/000003"
+    }
+  ],
+  "unique_red_classification": [
+    {
+      "item": "N32/base 1.0008656473515014 >1.0",
+      "class": "原量化 gate 真紅；保留，不重抽、不加容差"
+    },
+    {
+      "item": "source64/source32 6.154996228372071 >4.5",
+      "class": "原量化 gate 真紅；保留，熱路徑候選未套未測"
+    },
+    {
+      "item": "cross-consumer expected placement vs actual footprint ASSERT",
+      "class": "既有負控制未涵蓋新版 W reader 邊界；保原 exact assertion 的校準候選未套"
+    },
+    {
+      "item": "footprint-order generated native type error",
+      "class": "既有負控注入 API／型別失準；不是正常 mutation kill；校準候選未套"
+    },
+    {
+      "item": "mutation:check closure stale",
+      "class": "原帳本過期；本輪不重產，依 root 最終 stack 統一重產規則交接"
+    }
+  ],
+  "original_sources": [
+    "/tmp/geo323-baseline-b2445b5a-three",
+    "/tmp/geo323-baseline-b2445b5a-v3-r1",
+    "/tmp/geo323-baseline-b2445b5a-v3-first-five-launch",
+    "/tmp/geo323-baseline-b2445b5a-v3-remaining-launch"
+  ],
+  "unapplied_candidate": "/tmp/geo323-merge-20261023/combined-memo-controls-candidate-v1",
+  "unapplied_patch_sha256": "a44018ad1e3455af89dc9fbc19ea4ec3d9b0e4dfec56f9ddab5d2893d91871b0",
+  "unexecuted_fixed_three_launcher": "/tmp/geo323-merge-20261023/fixed-three-driver-preparation",
+  "original_receipt_sha256": "6422b3cc0a13043620b8326a347fb6527d409092dd958a001b11969d602db216",
+  "scope_limitations": [
+    "新 memo／四個具名反證、修後三套及新 final v3 都未執行",
+    "最終帳本、架構三條與四檔收據未刷新；本輪不宣稱它們 fresh",
+    "本輪未啟動 #323 六個 browser jobs；不是本環境無 Chrome",
+    "UI transport 失效後 scheduler 缺 TOP RESULT，另見 RECOVERY；原八 stage 判決及 streams 已完整保留"
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schema": "geo323-external-unapplied-combined-memo-controls/1",
+  "base_sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+  "applied": false,
+  "compiled": false,
+  "tested": false,
+  "benchmarked": false,
+  "product_candidate_v2_bytes_unchanged": true,
+  "performance_gain_claimed": false,
+  "reason": "Current original profile source64/source32 = 6.154996228372071 > 4.5; each lightweight contact read takes one geo_eval_source. Cold miss/hit savings and N32 time are not yet measured.",
+  "thresholds_expected_ledger_architecture_or_axiom_changed": false,
+  "original_test_method_list_preserved": true,
+  "original_test_methods": [
+    "test_cached_reads_preserve_each_consumer_exact_source_kind_and_order",
+    "test_cached_source_footprint_is_not_overwritten_by_deferred_raw_snapshot",
+    "test_each_cached_read_second_consumer_edge_kind_and_order_mutant_is_detected",
+    "test_member_anchor_id_key_rejects_same_slot_different_canonical_member",
+    "test_member_anchor_miss_invalidates_naturally_warmed_footprint",
+    "test_placement_key_single_fault_equivalence_and_paired_defence_are_distinct",
+    "test_same_candidate_move_delete_failed_read_and_rollback",
+    "test_same_candidate_parameter_value_change_and_rollback",
+    "test_second_consumer_retains_placement_and_pose_edges_and_sealed_lookup",
+    "test_contact_query_reset_and_re_registration_evaluates_collection_in_order",
+    "test_collection_cache_without_node_validation_reports_reset_state",
+    "test_never_invalidate_mutant_reports_stale_footprint",
+    "test_cross_consumer_mutant_reports_missing_dependency"
+  ],
+  "new_independent_controls": [
+    "contact-edge",
+    "contact-kind",
+    "contact-order",
+    "contact-id-key"
+  ],
+  "calibrated_existing_controls": {
+    "footprint-order": "Use typed definition_header injection, same original early-read fault and exact ordered-edge oracle.",
+    "cross-consumer": "Same exact placement ASSERT; withdraw placement id3/second-consumer edge at both W miss and H hit alternative routes. This joint semantic-boundary test does not prove each site individually necessary."
+  },
+  "original_reds_retained": [
+    "/tmp/geo323-baseline-b2445b5a-three",
+    "/tmp/geo323-baseline-b2445b5a-v3-r1"
+  ],
+  "patch_sha256": "a44018ad1e3455af89dc9fbc19ea4ec3d9b0e4dfec56f9ddab5d2893d91871b0",
+  "files": [
+    {
+      "path": "geometry-core/references.inc",
+      "original_sha256": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4",
+      "candidate_sha256": "f82763c401cc892f0bf78844ed67d080b7a62991d53bd29046bf07fd982928fa"
+    },
+    {
+      "path": "geometry-app/native/reference_sources.inc",
+      "original_sha256": "4cb8d3d59d39776570880c17cddaacc4169900802df1b4f6b7547e7f96123713",
+      "candidate_sha256": "d582024fdbb7f3bec786a91db55cb3139ec13c464ce2142edb6acb48c069e1d0"
+    },
+    {
+      "path": "tests/test_geo261_load_residual.py",
+      "original_sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c",
+      "candidate_sha256": "5eaefc367c609bfaff10fb6b6f2fbb47c4d92aaddb2eaff529fce2fe7c0ce894"
+    },
+    {
+      "path": "tests/geo261_load_residual_harness.c",
+      "original_sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045",
+      "candidate_sha256": "d24508bf0dccb47ffe6baaca13942b175888afbf6e30eed66c169a4836b23cbc"
+    }
+  ],
+  "dynamic_pending": [
+    "All four new named controls require native normal assertion 0/1/0",
+    "Original load13/host22/contact15 including lifecycle/failed/sealed cases",
+    "Original v3 full protocol on adopted final source; no resampling or threshold changes"
+  ]
+}
