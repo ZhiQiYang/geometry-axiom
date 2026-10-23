@@ -37,9 +37,9 @@
   "wood_methods": 11,
   "wood_controls": 33,
   "all_three_controls": 56,
-  "subject": "UNRUN",
-  "compile": "UNRUN",
-  "stack": "UNRUN",
+  "subject": "PARTIAL: original three suites33methods56controls exit0",
+  "compile": "302 original compile/link commands exit0",
+  "stack": "Original16MiB limit passed for these33methods; actual compiler frame not separately measured",
   "performance": "UNMEASURED",
   "global_ledger_written": false,
   "source_expected_peer": {
@@ -47,5 +47,62 @@
     "findings": 0,
     "scope": "immutable Git bytes, exact count, original source publication only"
   },
-  "reviewer_initial_error": "quotePath decoding metadata failure preserved; the first overwritten stderr was not independently retained; no subject was executed"
+  "reviewer_initial_error": "quotePath decoding metadata failure preserved; the first overwritten stderr was not independently retained; no subject was executed",
+  "formal": {
+    "source": "1ee4e830399b124ebd63c5ff51064d87e53f38d9",
+    "started_utc": "2026-10-23T21:55:09.059797+00:00",
+    "ended_utc": "2026-10-23T21:55:31.974441+00:00",
+    "suite_methods": [
+      11,
+      15,
+      7
+    ],
+    "suite_controls": [
+      33,
+      11,
+      12
+    ],
+    "suite_builds": [
+      131,
+      85,
+      86
+    ],
+    "suite_exits": [
+      0,
+      0,
+      0
+    ],
+    "driver_exit": 0,
+    "reaper_exit": 0,
+    "launcher_exit": 0,
+    "host_tool_reported_exit": 0,
+    "source_after_clean": true,
+    "actual_peer_checks": 1140,
+    "actual_peer_findings": 0,
+    "package": {
+      "source": "1ee4e830399b124ebd63c5ff51064d87e53f38d9",
+      "archive": "/tmp/geo300-contact-index-1ee4-three-suites-delivery/ORIGINALS_AND_PEER.tar.gz",
+      "bytes": 3953457,
+      "sha256": "09b50ede5a8e932ef8bb6b69348a810ebbf1db7433908b02e83b751d8172f24d",
+      "index_sha256": "618a7c24a21f98ec39c33b473f8be85f40d4727fb50fc8b4af303a875f504e11",
+      "raw_files": 356,
+      "raw_bytes": 20889604,
+      "package_files": 365,
+      "tar_members": 366,
+      "roundtrip_all_members": true,
+      "actual_peer_checks": 1140,
+      "actual_peer_findings": 0,
+      "methods": 33,
+      "controls": 56,
+      "build_commands": 302,
+      "source_after_clean": true,
+      "wholefastwithdraw": "UNRUN",
+      "performance": "UNMEASURED",
+      "capacity512": "UNIMPLEMENTED/UNRUN"
+    }
+  },
+  "whole_fast_path_withdrawal": "UNRUN; planned seven-positive semantic0/0/0, not killed",
+  "capacity512": "UNIMPLEMENTED/UNRUN",
+  "full_native_browser_ledger_architecture": "UNRUN",
+  "READY": false
 }
