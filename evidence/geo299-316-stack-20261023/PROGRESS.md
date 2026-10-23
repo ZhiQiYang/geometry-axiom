@@ -1,20 +1,32 @@
-# #299＋#316：新整合基底進度
+# #299＋#316：合流來源已推，動態驗收待跑
 
-本頁記錄準備工作，不是新整合 SHA 的正式驗收。原正式產品為 `5bfadf187e615ba0fb8466753b63ce3044ef7d1c`，其公開證據 HEAD 為 `139ab64ca5f88e89bb4e95921675b998457026aa`；全部歷史收據保原 SHA，不改標新基底。
+目前產品／測試來源 S 為 `15a735951a36b6fe52e0291152f335139e6921ad`，來源分支 `codex/geo299-316-combined-20261022`。一般 merge 的兩個 parent 為前版 combined Eprep `c940a6543029a94d443709ebdcbd63828fdfef1d` 與 #314 source `8033aa756c62f654333c24d1276d4b61beb31a45`；後者已包含 #323 `5c29eba30a40f20ea5c7eb8dc139e5788235d3b6`。commit／push／ls-remote 均退出0，工作樹乾淨。主代理整合分支未由本代理寫入。
 
-| 已完成項目 | 指令／結果 | 下一步 |
+| 目前項目 | 原命令／結果 | 限制與下一步 |
 |---|---|---|
-| 目前回報收件匣 | `python3 geometry-web/feedback_cli.py list`，退出 0，無未處理回報 | 合流後維持原回歸 |
-| 權威 handoff refresh | `git fetch origin handoff/codex-takeover-20261021`，退出 0；固定 `ea2748248d47563f8559638ccb70ec0ed21910d9` | 最終交付前再 fetch |
-| combined 原件完整保存 | `python3 -B collect_preparation.py`，退出 0；README、指定 patch、八個 `_gen` 檔均保原 bytes；299/316 review 檔不存在 | 對照前棒 union，不覆寫舊修復 |
-| M89–M98 靜態錨點 | `python3 -B check_combined_anchors.py`，退出 0；十個 ID 唯一，old anchors 各恰一次 | 新合流 SHA 再查；動態反證另跑 |
-| #288 grid/timber 對抗審查 | `python3 -B review_grid_timber.py`，退出 0；核原 F13 收據、workflow blob、完整小 streams/hash、scope/埠/暫存與版本，未重跑 job | 原結果交主代理；不代替 canvas |
-| #314 對抗審查 | 靜態提出相同最終 ref 但不同 ordered facts 的正反例，owner 接手 | 等新 leaf 修正與同 SHA 0／1／0 |
+| 一般 merge 前棒 | `git merge --no-ff --no-commit 8033aa756c62f654333c24d1276d4b61beb31a45`，原退出1 | 六個 conflict 已精確解完，原1與輸出保留 |
+| 衝突解決 | `python3 -B resolve_source_union.py`，退出0 | 僅解析／保留原件與聯集，沒有執行產品、測試或 scanner |
+| 原正典機械生成 | `python3 -B geometry-guide/sync_axiom_reader.py`，退出0 | source 是尚未 commit 的 merge tree（HEAD c940＋記錄的 merge variant），其後固定為 S；不是三條 reader 裁判 |
+| 小型 source 靜態覆核 | `python3 -B inspect_merged_sources.py`，退出0 | 111個數字 ID 唯一；14個選定 anchors 各1；8個 suite 方法數與登錄相符；不是動態測試／freshness |
+| 完整 cached whitespace check | `git diff --cached --check`，原退出2 | 全是前棒原 streams、main README 與決策原空白；保留原 bytes。精確自撰相關 paths check0 |
+| source publication | 原 commit／push／ls-remote 各0 | 已把完整 S 交 #318；本代理此後只改 own evidence／另 prbody，不再改 shared source |
+| 新來源正式 native／六 browser／專項 | **未跑** | P88 專責獨占重工作，未啟動 compiler、Chrome、benchmark 或 scanner |
+| 新來源三架構／三 reader 裁判 | **未跑** | 不能以 sync 生成0或舊 receipts 冒新來源通過 |
+| 新來源帳本 freshness／完整重產 | **未跑** | 全帳本只由主代理在最終來源一次重產 |
+| #314 M121 精確0／1／0 | **未跑** | 靜態接受新guard的範圍，正常斷言反證仍待同來源實跑 |
 
-grid/timber 原測試 SHA 為 `13d02c1db7022145a52ee063286a558e595eb212`，原 job 退出皆 0；356／0 與 79／0 分屬原 partial scope。這兩份原 job 是串行使用同一乾淨來源 checkout，本次沒有補造獨立平行 checkout，也沒有解包重核所有 tar members／screenshots。
+六個 conflict 為 `.gitignore`、architecture report／scan／receipt 三檔、`tests/mutants_results.json`、mutation migration owner map。allowlist 保兩側；owner map 保 M89–M98 及 M99–M121 的精確聯集，另保23個 stagger IDs／61個 added IDs 的斷言。M89–M98 沒有更名或撞號；M102 隨前棒新參數改 anchor，M103／M105／M121 選定 anchors 均在新來源恰一次。
 
-本次尚未普通 merge #314，尚無新的產品／測試 SHA；native、六個 browser、專項、三條架構與突變 freshness／重產都沒有在新堆疊執行。未啟動重工作，避免與主代理 R3 工作互相干擾。待 #314 共用檔交棒後一般 merge，解真衝突，排定必要原測試及精確 0／1／0；完整帳本由主代理最後一次重產。
+舊帳本只做 record 聯集：保 combined 的88個原 records，再保前棒獨有的22個原 records，共110。每一項 execution／verdict／來源欄位保原；M121 沒有捏造 record、仍為 unrun。這不是執行或重產，不宣稱它們在 S 上 fresh。雙方原 JSON 與兩側完整四檔 architecture 原件由 Git parents 與本次 raw stdout 保留。
 
-對抗審查者 #323 owner 已完成指定 metadata 審查，未發現確立阻擋；報告與兩份核對明細保存於 `peer-review/`。核對範圍包括 F5bf 到 Eprep 的非根 evidence 差異為空、十一份 handoff 原件、數字 ID 與十錨、F13 grid/timber 的三十六個小檔和 footer；未跑產品、未解大 raw tar，也沒有因此宣稱 #314 新修或新堆疊產品已審過。
+有效來源 manifest 自動合併兩棒：保 #314 `stagger_facts.inc` 的 H 登記／八個 W identifiers，以及 combined 的 `wood_contact_boundary_edge` guard 與具名死 API `wood_contact_footprint_collides` 退休。scan／report／receipt 保前版 combined c940 的完整舊來源產物，其真 `sourceBaseHead=3a165ef5...` 不改標 S；它們無法證明新 manifest／closure，明列待 root 最後重產。未放寬 architecture policy 或以舊 receipt 假稱新來源綠。
 
-準備證據已一般推送 Eprep `a004e29a34b5fb880690e544057e90386e47e75a`；待合流正文已推 Dprep `f9ee52d12cb94055c330b37b3d77eb2768d12a96`。原 stage 因 sparse 的 exit1 保留，只以精確 `--sparse` staging 修正，後續 commit／push／ls-remote 均0。來源與正文分支不 force push、不合併 PR、不改公理層或決策佇列。`TEST_PLAN.md` 僅列合流後原命令，不是已執行證據。
+`公理層.md` 與 `決策佇列.md` 正規化 bytes 逐一等前棒8033，沒有改字；`current_geometry.c` 保完整 CRLF／零 NUL。canonical 仍只有原正典一份，沒有手改嵌入 JSON、另造閱讀器或放寬斷言。八個靜態方法數為 contact15、host-facts22、load13、stagger47、contacts10、contact-world9、world-validation14、wood-grid23。
+
+#314 新 leaf 的對抗靜審見 `REVIEW_314_f614_STATIC.md`。上一版 Eprep／Dprep 的 metadata 對抗審已由 #323 owner 完成；本次 S 的合流 resolution 亦已由同 reviewer 獨立靜審，未發現可確立的 shared resolution 遺失或假綠。兩份新報告保存在 `peer-review/COMBINED_SOURCE_UNION_15a73595_REVIEW.{md,json}`；只接受 source 聯集與 pending 標示，不代表新 stack 動態驗收。
+
+reviewer 額外獨立確認 wood-contact-world 的10→9屬早先 #316 退休 dead `wood_contact_footprint_collides` API／collision-only單元測項，該Python與C harness逐Git blob等早先combined c940；本次merge沒有另外刪測。其餘活I11 M13／M97／M98與同UV跨host正例仍須在新stack原裁判執行，不能把靜態方法數當通過。
+
+歷史獨立產品 F `5bfadf187e615ba0fb8466753b63ce3044ef7d1c`／證據 E `139ab64ca5f88e89bb4e95921675b998457026aa` 的原七項全0、原三架構0／0／0仍只是歷史結果。#288 F13 grid／timber 的原 partial 收據對抗審亦只屬原 F13。Windows GDI 原具名允許 skip、ENOSPC 原失敗與未捕獲舊 core inner streams 等限制保留，不轉成 S 的全綠聲明。
+
+下一步由 #318 接 common/canonical 棒；本代理封存本次指令、退出碼、完整原輸出、環境與 SHA，更新 prbody 的唯一 current-state 矩陣。所有正式動態結果待主代理排程，完整帳本／architecture 最終重產由主代理統一處理。不 force push、不合併 PR。
