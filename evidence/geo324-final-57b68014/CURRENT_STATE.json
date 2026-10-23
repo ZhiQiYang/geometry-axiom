@@ -84,11 +84,38 @@
     {
       "gate": "affected-importers",
       "originalCommand": "original run_all --build --only named suites; PARTIAL diagnostic",
-      "executionSHA": null,
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
       "originalExitCode": null,
-      "status": "UNRUN",
+      "status": "PARTIAL",
       "allowedSkip": null,
-      "receipt": null
+      "receipt": {
+        "path": "evidence/geo324-final-57b68014/receipts/pure-python99.json",
+        "sha256": "7b41b62ed700ae10225e72436ffe50370f2ee670b2fabbea6cd9b0b3dc5629c8",
+        "jsonPointer": "/rows"
+      },
+      "partialOriginalExits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "completedModules": [
+        "test_geometry_host_sources",
+        "test_geometry_source_runtime",
+        "test_geometry_kernel_runtime",
+        "test_rectangular_python",
+        "test_geometry_host_world",
+        "test_geometry_kernel_compatibility",
+        "test_domain_source_pins"
+      ],
+      "missingModules": [
+        "test_geometry_host_native",
+        "test_geo261_default_native"
+      ],
+      "proofScope": "7of9 importer modules;99original Python tests;not full importer gate/native/browser"
     },
     {
       "gate": "predicate-list",
@@ -181,7 +208,7 @@
       "receipt": null
     }
   ],
-  "bindingRole": "current prepared metadata only; no execution result; old frozen inventories retained",
+  "bindingRole": "Current original execution facts are scoped per row:three predicatePASS;affected-importersPARTIAL;remaining12UNRUN.",
   "predicateDriverSHA256": "4b5c05f1a2d7a5cf24c1e2b4d21641c560a7fe7a25db1109a6127d315ddd406d",
-  "publicationRole": "evidenceHead is the containing Git commit; all execution facts remain unknown"
+  "publicationRole": "Containing Git commit is evidence head. Original executionSHA and exits remain explicit;null means unknown,never a skip."
 }

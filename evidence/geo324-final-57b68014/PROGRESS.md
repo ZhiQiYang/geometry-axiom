@@ -23,3 +23,9 @@
 固定公開產品 S57b680140da2c6b77ab0d362a72029d8d7c9334b 的獨立薄checkout，原v2工具未改，list／dict／feature三原method各真0／1／0、正常具名unclassified診斷、還原bytes與來源前後clean。setup＋actual約2.714秒；無R3、編譯、Chrome或效能量測。完整52內命令＋10外命令streams／37inputs／三還原樹／凍結工具已逐byte封包，producer roundtrip全同。獨立actual peer551 checks／0 findings；這三列PASS，另13列仍UNRUN，沒有把mock native運輸方法當完整45／native／browser。
 
 原package peer1019報告exit_code1與其helper實際process0分欄澄清，原JSON／舊E不覆寫，澄清原件同封；該metadatafinding沒有改動原test或source。
+
+## 七個原pure Python module：99/99
+
+固定同S57，原_unittest_runner完整host_sources45、source_runtime10、kernel_runtime10、rectangular_python9、host_world8、kernel_compatibility1、domain_source_pins16，全部原exit0、0fail／0skip、來源初末clean。無C、browser、R3或全域binary cache。原65／18／16獨立actual peers322／356／604 checks均0。affected-importers列只部分7/9，host_native30與default_native13真C依賴待槽；fullnative／expected aggregate與六browser未跑。
+
+原setup sparse add不支援flag129／collector2（0tests），與domain_pins少原tracked5431B fixture所致15pass1error／原exit1全部原件封存；只修物化配置後重跑受影響項，未改test／assert。原wrapper未在事前request pin hash、c387沒有timeout_seconds欄的證據限制照保。CURRENT_STATE兩句舊allunknown角色文字只在此actual批同步為逐列真狀態，不回寫原E。
