@@ -69,3 +69,8 @@ member獨立probe的01保留輸入綁定缺口：當時untracked新include未在
 下一步由固定最終來源重新檢查／必要時整份更新帳本，Linux重產架構四檔，再跑完整原native、175 A/B/C、36交錯量測與profile。不宣稱本段已完成整個#323。
 
 封存工具第一版曾將原 `binaries.py` 的 CRLF→LF 正規化來源指紋誤與 raw bytes hash 比較而退出1；原錯誤與當時script保留於 targeted archive 的 `packager-attempt-01/`。只修封存比較規則，產品、測試及原執行不改；重試封存真退出0。原binary raw bytes/SHA仍獨立逐項核對。
+
+
+## 固定F完整原驗收終態
+
+F=`f43e8d8b876f587c11778fa74a80b205b51396b6`：225 suites原退出0，5193=5192 pass/0 fail/1允許GDI skip；原required-eight674/674、PF3十九killed、175場景A/B/C、同F三架構裁判皆原0。36筆性能N64 fix/main1.7457212386未達1.3；source64/32=4.4704196928達4.5。總wrapper原1保留，不宣稱全驗收綠。placement單刪eq/配對第二防線界線保留。完整原資料、環境、命令、退出與SHA見`final-f43e8d8b/`；問題見其中`QUESTIONS.md`。下一步發布prbody，續#314/combined。
