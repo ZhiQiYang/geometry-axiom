@@ -151,6 +151,11 @@ CONTROLS = (
     ("stop-identity", STOP_FILTER, STOP_FILTER.replace("member==exclude", "(exclude&&member->id==exclude->id)"), "ordering", "stop-exclusion-keeps-candidate-identity"),
     ("extension-end", "||ext_end[end]", "", "ends", "self-boundary-extension-end-exempt"),
     ("edge-index-output", "if(out_edge)*out_edge=edge;", "(void)edge;", "intervals", "boundary-edge-index-horizontal"),
+    ("inactive-shadow", "if(compact&&!active[j])continue;", "if(false)continue;", "active-dedup", "dedup-mutual-duplicate-id-leaves-final-pair"),
+    ("compact-active-only", "if(active[i]){if(write!=i)out[write]=out[i];++write;}", "if(!active[i]){if(write!=i)out[write]=out[i];++write;}", "ordering", "earlier-full-cover-deduplicates"),
+    ("compact-survivor-count", "active[i]=false;--remaining;++i;", "active[i]=false;++i;", "active-dedup", "dedup-mutual-duplicate-id-leaves-final-pair"),
+    ("dedup-strict-overlap", "out[i].lo>=out[j].hi||out[j].lo>=out[i].hi", "false", "active-dedup", "dedup-zero-span-strict-overlap-preserved"),
+    ("dedup-full-coordinate", "out[i].fixed!=out[j].fixed", "(uint32_t)out[i].fixed!=(uint32_t)out[j].fixed", "active-dedup", "dedup-full-width-planes-preserved"),
 )
 
 
@@ -184,6 +189,10 @@ class WoodContactWorld(unittest.TestCase):
 
     def test_multiple_regions_outline_hole_ids_fixities_and_atomic_capacity_pairs(self):
         result = self.case("regions")
+        self.assertEqual(0, result.returncode, result.stderr)
+
+    def test_live_set_duplicate_ids_strict_overlap_and_large_buffer_fallback(self):
+        result = self.case("active-dedup")
         self.assertEqual(0, result.returncode, result.stderr)
 
     def test_positioning_interval_real_geometry_notch_hole_and_i5_precedence(self):

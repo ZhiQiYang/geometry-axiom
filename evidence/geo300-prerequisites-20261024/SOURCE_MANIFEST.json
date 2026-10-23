@@ -1,0 +1,94 @@
+{
+  "schema": "geo300-current-source-and-partial-original-evidence/3",
+  "source": "aa0e3938f17dc996ef5e7410db4844b31856d2a6",
+  "base": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+  "base_branch": "codex/geo324-faces-20261024",
+  "pr_scope": "draft prerequisites, not READY",
+  "source_merge": "8615b0208030273b27d51042f0941df35b91507f",
+  "merge_parents": [
+    "383c13c4eb9a2f99ed62f7222463831c95cdd00e",
+    "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599"
+  ],
+  "expected_registration_commit": "aa0e3938f17dc996ef5e7410db4844b31856d2a6",
+  "non_evidence_diff_paths": [
+    "geometry-templates/woodworking/native/contact_world.c",
+    "tests/geo261_contact_world_harness.c",
+    "tests/run_all.expected.json",
+    "tests/test_geo261_wood_contact_world.py"
+  ],
+  "formal_actual_source": "c493b7315d0cd3b16014add96af969c49ebf4660",
+  "current_source_subject_rerun": false,
+  "actual_suites": [
+    {
+      "target": "tests/test_geo261_wood_contact_world.py",
+      "methods": 10,
+      "ordinary_controls": 23,
+      "build_commands": 111,
+      "exit": 0
+    },
+    {
+      "target": "tests/test_geo261_contact_sources.py",
+      "methods": 15,
+      "ordinary_controls": 11,
+      "build_commands": 85,
+      "exit": 0
+    },
+    {
+      "target": "tests/test_geo318_reading_a_native.py",
+      "methods": 7,
+      "ordinary_controls": 12,
+      "build_commands": 86,
+      "exit": 0
+    }
+  ],
+  "actual_total_methods": 32,
+  "actual_ordinary_controls": 46,
+  "actual_total_build_commands": 282,
+  "zero_skips": true,
+  "all_ordinary_proofs": "normal assertion 0/1/0",
+  "all_build_command_exits": 0,
+  "new_five_controls": [
+    "inactive-shadow",
+    "compact-active-only",
+    "compact-survivor-count",
+    "dedup-strict-overlap",
+    "dedup-full-coordinate"
+  ],
+  "actual_peer": {
+    "checks": 1020,
+    "findings": 0,
+    "sha256": "fb2784a569881f3b5b5b38641138ff23ba7b228faf2432ffc742e596e49ffb57"
+  },
+  "expected_registration_peer": {
+    "checks": 36,
+    "findings": 0,
+    "sha256": "627013a04fc1023ab4916f1bf832169997cd5a0b79b5c7321ada33418e18cfa1"
+  },
+  "archive": "C493_THREE_SUITE_ORIGINALS_AND_PEER.tar.gz",
+  "archive_sha256": "145048fb4827ec6180e9798dd0beeec0facc2e4e45215c581d1b78e88df1bc0f",
+  "archive_bytes": 4409654,
+  "archive_members": 456,
+  "full_archive_roundtrip": true,
+  "actual_to_current_C_H_inc_three_judges_and_native_support_identity": true,
+  "source_closure_evidence": "SOURCE_CLOSURE_AFTER_MERGE.json",
+  "manual_prose_correction": "302 was an owner addition error; original111+85+86=282 throughout. Both initial finding and correction retained.",
+  "expected_count": {
+    "before": 9,
+    "after": 10,
+    "authorization": "root explicitly delegated this single entry after shared339 merge",
+    "only_entry_changed": "py:test_geo261_wood_contact_world",
+    "noWood13_unchanged": true,
+    "faces45_unchanged": true
+  },
+  "global_ledger_regenerated_by_child": false,
+  "full_native": "UNRUN on this candidate",
+  "browsers": "UNRUN on this candidate",
+  "architecture": "not regenerated for this candidate",
+  "whole_optimization_withdrawal": "UNRUN; semantic equivalence expected, not a mutation kill",
+  "performance": "UNMEASURED",
+  "limitations": [
+    "Original NativeBuild/native logs are decoded text, not pre-decoding OS bytes.",
+    "Original NativeBuild removed temporary executables; original commands/full text logs/compiled C are retained; executable hashes were recorded.",
+    "Top launcher completion0 comes from host exec session; original reaper/driver and suite streams have independent c387 captures."
+  ]
+}

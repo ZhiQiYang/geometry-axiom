@@ -61,6 +61,42 @@ static int regions_and_capacity(void)
     w.region_count=8;w.members=facts;w.member_count=64;memset(full,0x5a,sizeof full);untouched=full[272];n=wood_contact_collect_stops(&w,false,NULL,full,WOOD_CONTACT_FACE_CAPACITY);
     CHECK("all-eight-components-holes-and-sixty-four-members",n==272&&full[126].edge_index==225&&full[142].hole_index==63&&full[142].edge_index==1&&full[142].fixed==7084&&full[144].timber_id==163&&full[270].timber_id==100&&!memcmp(&full[272],&untouched,sizeof untouched));return 0;
 }
+static int active_dedup(void)
+{
+    /* Repeated public IDs use the last order for sorting and the minimum
+     * order for shadowing. Removed faces must stop shadowing later faces. */
+    WoodMember m=member(42,WOOD_MEMBER_ROLE_PRIMARY,2),late=member(99,WOOD_MEMBER_ROLE_PRIMARY,2);
+    WoodContactMemberFact facts[3]={fact(&m,1,false,(GeoRect2){0,0,100,27}),fact(&m,2,false,(GeoRect2){0,0,100,27}),fact(&late,3,false,(GeoRect2){200,0,300,27})};
+    WoodContactWorld w={.placement_id=7,.members=facts,.member_count=2};WoodStopFace out[5];
+    memset(out,0x5a,sizeof out);WoodStopFace untouched=out[4];
+    size_t n=wood_contact_collect_stops(&w,false,NULL,out,4);
+    CHECK("dedup-mutual-duplicate-id-leaves-final-pair",n==2&&face(&out[0],WOOD_STOP_MEMBER_SIDE,0,42,-1,0,WOOD_STOP_FIXED,0,0,27)&&face(&out[1],WOOD_STOP_MEMBER_SIDE,0,42,-1,1,WOOD_STOP_FIXED,100,0,27));
+    CHECK("dedup-compaction-keeps-uncollected-tail",!memcmp(&out[4],&untouched,sizeof untouched));
+    w.member_count=3;n=wood_contact_collect_stops(&w,false,NULL,out,4);
+    CHECK("dedup-never-refills-capacity-from-later-members",n==2&&out[0].timber_id==42&&out[1].timber_id==42);w.member_count=2;
+    /* Zero/reversed intervals cannot shadow, even when containment alone
+     * would hold. Distinct full-width coordinates must remain distinct. */
+    facts[0].footprint=(GeoRect2){INT64_C(4294967296),0,INT64_C(4294967396),27};
+    facts[1].footprint=(GeoRect2){0,0,100,27};
+    n=wood_contact_collect_stops(&w,false,NULL,out,4);
+    CHECK("dedup-full-width-planes-preserved",n==4&&out[0].fixed==INT64_C(4294967296)&&out[2].fixed==0);
+    facts[0].footprint=(GeoRect2){0,5,100,5};facts[1].footprint=facts[0].footprint;
+    n=wood_contact_collect_stops(&w,false,NULL,out,4);
+    CHECK("dedup-zero-span-strict-overlap-preserved",n==4&&out[0].lo==5&&out[0].hi==5&&out[2].lo==5&&out[2].hi==5);
+    facts[0].footprint=(GeoRect2){0,8,100,3};facts[1].footprint=facts[0].footprint;
+    n=wood_contact_collect_stops(&w,false,NULL,out,4);
+    CHECK("dedup-reversed-span-strict-overlap-preserved",n==4&&out[0].lo==8&&out[0].hi==3&&out[2].lo==8&&out[2].hi==3);
+    /* Public views may exceed the host capacity. No new rejection, heap
+     * allocation or truncated bitmap is allowed in that legacy fallback. */
+    enum { MANY=WOOD_CONTACT_FACE_CAPACITY/2+1 };
+    static WoodContactMemberFact many[MANY];static WoodStopFace full[MANY*2+1];
+    for(size_t i=0;i<MANY;++i)many[i]=fact(&m,(uint64_t)i,false,(GeoRect2){0,0,100,27});
+    w.members=many;w.member_count=MANY;memset(full,0x5a,sizeof full);untouched=full[MANY*2];
+    n=wood_contact_collect_stops(&w,false,NULL,full,MANY*2);
+    CHECK("dedup-large-public-buffer-keeps-original-fallback",n==2&&face(&full[0],WOOD_STOP_MEMBER_SIDE,0,42,-1,0,WOOD_STOP_FIXED,0,0,27)&&face(&full[1],WOOD_STOP_MEMBER_SIDE,0,42,-1,1,WOOD_STOP_FIXED,100,0,27));
+    CHECK("dedup-large-fallback-keeps-uncollected-tail",!memcmp(&full[MANY*2],&untouched,sizeof untouched));
+    return 0;
+}
 static int intervals(void)
 {
     WoodBoundaryRegion b=elbow();GeoCoord lo=-999,hi=-888;
@@ -118,4 +154,4 @@ static int end_faces(void)
     self.placed=false;w.region_count=0;w.role_boundary=NULL;w.member_count=1;f[0]=fact(&self,1,true,(GeoRect2){-10,0,0,100});CHECK("unplaced-owner-is-not-contact",wood_contact_end_faces(&w,&self,false,0,100,20,30,NULL,0));return 0;
 }
 int main(int argc,char **argv)
-{if(argc!=2)return 2;if(!strcmp(argv[1],"ordering"))return ordering();if(!strcmp(argv[1],"regions"))return regions_and_capacity();if(!strcmp(argv[1],"intervals"))return intervals();if(!strcmp(argv[1],"extensions"))return extensions();if(!strcmp(argv[1],"ends"))return end_faces();return 2;}
+{if(argc!=2)return 2;if(!strcmp(argv[1],"ordering"))return ordering();if(!strcmp(argv[1],"regions"))return regions_and_capacity();if(!strcmp(argv[1],"active-dedup"))return active_dedup();if(!strcmp(argv[1],"intervals"))return intervals();if(!strcmp(argv[1],"extensions"))return extensions();if(!strcmp(argv[1],"ends"))return end_faces();return 2;}
