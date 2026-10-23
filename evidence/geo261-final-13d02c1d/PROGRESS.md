@@ -52,3 +52,6 @@
 
 - 2026-10-23T10:55:11.458458+00:00 — **p88-original-three-summary**：原三次canvas退出=1/0/0；間歇紅：相同F上同一焦點斷言有紅，另有原P88全段143 checks完成；產品／測試時序根因仍待真trace。
   下一步：以真query/paint/mousePressed trace定位，修復後固定新F，原斷言/golden/時限不變。。原始資料：`raw/p88-original-three-summary-01.tar.gz`。
+
+- 2026-10-23T10:56:07.570690+00:00 — **p88-preparation-peer-reviews**：原三次 canvas 1/0/0 已逐次公開；補封 runtime 272 原 streams 完整性對抗審查、P88 單檔影響分析與預備工具修正史。這次只有封存，未新增產品測試綠燈。
+  下一步：完成真 query 診斷、提交 P88 修正、Linux 四檔重產並固定新 F；在 F 跑 canvas 三次、grid、四個原 native suites、帳本／架構與四組反證。原始資料：`raw/p88-preparation-peer-reviews-01.tar.gz`。
