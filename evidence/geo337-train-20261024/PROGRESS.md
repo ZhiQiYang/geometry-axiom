@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 23:40 UTC）
+## 唯一 current-state（2026-10-23 23:50 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -9,9 +9,9 @@
 | tracked `mutate.py --check` | L | 0 | 22:25:16–22 UTC 原命令，完整流在 final-L-start |
 | 原完整123帳本 | L | tracked／fullCLI／core-map／external-check 全0；outer0 | 23:00:25 UTC真終態；123筆／120自然execution heads皆L，114killed／5equivalent／1原允許crashed／3retired；完整原流封final-L-ledger-complete |
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
-| 完整 native | L | RUNNING，尚無終態exit | session80260，原 --build全部230列、16MiB stack／35min CI；含#314六module103／Node13、ReadingA7／14、#323三module50 |
-| canvas／assembly／documents／grid／space／timber | L | documents0；assembly0；grid0；space RUNNING；canvas/timber UNRUN | documents47原assert全0／64.316s；assembly150原assert全0／191.692s；獨立checkout／埠／暫存，canvas獨占、原CI時限保留 |
-| P52／Q38／§7兩項／P-189 | L | 全部UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
+| 完整 native | L | r1原exit1：4個ENOENT環境紅；待同L補fixture後重跑 | 原全230列／5309=5304pass+4fail+1原允許WindowsGDI skip，1873.241s<35min；原完整流封final-L-native-r1-environment-failure |
+| canvas／assembly／documents／grid／space／timber | L | documents0；assembly0；grid0；space0／timber0待封；canvas UNRUN | documents47原assert全0／64.316s；assembly150原assert全0／191.692s；獨立checkout／埠／暫存，canvas獨占、原CI時限保留 |
+| P52／Q38／§7兩項／P-189 | L | §7 compiled RUNNING；其餘UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | 全部UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
 | #323跨版本175／350 exact | F對原b74 | 1，仍阻擋B2 | 三個I22所需診斷差異，L尚未重跑；未改裁判或刪診斷 |
@@ -181,3 +181,13 @@ assembly同L原workflow、outer與reaper皆0；原150斷言（P77 134＋P82 16�
 ## 2026-10-23 23:40 UTC：grid 原正式項通過
 
 grid同L原workflow／outer／reaper皆0，356個原斷言全通過、0skip／uncaught0；P70=121、P71=9、P78=23、P87=60、P88=143，482.279秒低於原CI15分鐘。原4截圖、source初末L/clean、全部commands/streams/environment與runtime sidecars收於 `final-L-browser-grid/`，675members／8,569,103B壓縮；producer690、獨立3438核對均0。原grid-only partial模式不比golden，不能冒完整canvas。CDP_RESULT後339行server trace全部保留，沒有裁成錯誤或截去；80個可重建cache及3個ELF排除清單明列且未刪。space已啟session66090占第二槽，native session80260仍執行原230項，兩項尚無最終退出碼。
+
+## 2026-10-23 23:50 UTC：完整native的環境紅燈與原件公開
+
+原完整native已於23:42:38 UTC結束，workflow／driver／reaper／outer皆1，原CI35分鐘gate為0（1873.241秒，沒有逾時）。完整230列符合原expected names/count；5309=5304pass＋4fail＋1skip。唯一失敗suite是node:tests-js（737／733／4／0），四個原測例都在readFileSync發生ENOENT，雲端精簡checkout漏物化同L的三個既有fixture：`tests/evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas`、同目錄`legacy6a-with-scene.gcanvas`及`tests/evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas`（最後一件被兩案引用）。沒有產品assertion紅的證據；唯一skip是原Windows GDI具名允許項，沒有新增skip。
+
+四個精確失敗名稱為「B1 previous collection writer ZIP retains a full-size orphan draft on cold read and re-save」、「B1 legacy near-limit ZIP reads and re-saves without reserving new admission bytes」、「K2a B1 previous collection ZIP original import and save preserves raw refs orphan and full draft size」、「K2a B1 legacy missing-source scan preserves raw and unchanged flush; one byte edits still need admission」。完整原命令／環境／SHA／原stdout-stderr／原230逐列logs及runtime sidecars，1366members／11,241,774B原件／2,229,053B壓縮，已封 `final-L-native-r1-environment-failure/`，獨立4005核對0。原big old-cache只精確排payload且保before/preserved manifest；普通ELF僅按registry/sidecar排payload，未刪，未知與受控變體保。原工具內部未公開的pipes不捏造。collector初prune修正與peer自身兩個row-name假設錯誤原件皆保，與產品紅分開。
+
+原r1失敗保持不變，已在修復前保三fixture真不存在、同L Git mode/blob/size與完整讀取流。接著只補同L原檔，原產品／測試／golden／斷言／時限不改，再用原完整native正式項取得新的退出碼，不把單獨四案補跑或靜態審核回填成本次native0。space及timber亦真exit0、完整原件正收及獨審；目前root原§7 compiled占ROOT，待其原finally還原後才物化fixture，避免改到活躍來源。
+
+本次出版首次diff --check exit2只指出原`tests/binaries.py` Git stdout逐bytes副本的既有EOF空白行；完整首次8命令原流保在publication-initial-originals。原raw已再次與L真Gitblob核等，不裁空白；其它新增metadata照原diff檢查，沒有修改產品／測試斷言。

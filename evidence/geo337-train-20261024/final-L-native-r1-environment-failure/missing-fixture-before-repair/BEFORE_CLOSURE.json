@@ -1,0 +1,75 @@
+{
+  "sourceSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "createdUTC": "2026-10-23T23:44:53.692527+00:00",
+  "rows": [
+    {
+      "path": "tests/evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas",
+      "existsBeforeRepair": false,
+      "isSymlinkBeforeRepair": false,
+      "expectedOriginalLInputRead": {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/train337-323-f64d638f-source",
+          "ls-tree",
+          "-l",
+          "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+          "--",
+          "tests/evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas"
+        ],
+        "exit": 0,
+        "stdout": "100644 blob c537fede64bbdb324d824d8b050070af00069f92  133167\ttests/evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas\n",
+        "stdoutSHA256": "97ac9a4caec43c0b88171253a56012005e8c33b4b12dc5687fc55ed6dcefb70f",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "missing same-L original fixture; metadata only, no subject rerun or materialization"
+    },
+    {
+      "path": "tests/evidence/k2a-collection-capacity-20261012/legacy6a-with-scene.gcanvas",
+      "existsBeforeRepair": false,
+      "isSymlinkBeforeRepair": false,
+      "expectedOriginalLInputRead": {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/train337-323-f64d638f-source",
+          "ls-tree",
+          "-l",
+          "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+          "--",
+          "tests/evidence/k2a-collection-capacity-20261012/legacy6a-with-scene.gcanvas"
+        ],
+        "exit": 0,
+        "stdout": "100644 blob c597dbc0d0b1ae8f8c089e9ae326e3b4e8c9cafe  133210\ttests/evidence/k2a-collection-capacity-20261012/legacy6a-with-scene.gcanvas\n",
+        "stdoutSHA256": "20322ab2525902ef8f6d5803907aedd05ccd3b8e88762e7f8fe4144375d4dfb5",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "missing same-L original fixture; metadata only, no subject rerun or materialization"
+    },
+    {
+      "path": "tests/evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas",
+      "existsBeforeRepair": false,
+      "isSymlinkBeforeRepair": false,
+      "expectedOriginalLInputRead": {
+        "argv": [
+          "git",
+          "-C",
+          "/tmp/train337-323-f64d638f-source",
+          "ls-tree",
+          "-l",
+          "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+          "--",
+          "tests/evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas"
+        ],
+        "exit": 0,
+        "stdout": "100644 blob 61f070ed4a9db6f3bfe5abc41cc9203ba0696fca  131575\ttests/evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas\n",
+        "stdoutSHA256": "568263234f0a6edae5e98a937c808d5ce051d825340b9d460b6b795976f79f19",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "missing same-L original fixture; metadata only, no subject rerun or materialization"
+    }
+  ],
+  "sourceChanged": false,
+  "fixtureMaterialized": false,
+  "doesNotClaimMissingInputWasPresentDuringOriginalRun": true
+}
