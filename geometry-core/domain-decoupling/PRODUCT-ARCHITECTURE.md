@@ -1,5 +1,13 @@
 # Product architecture — Linux 固定來源重產
 
+真原三裁判均在乾淨 Git HEAD `17b3576434ffd0833056668898e1fd1a8cc2d560` 執行，退出0/0/0；generic205與product18方法，無skip。原manifest逐bytes不變，928/55政策保留。完整604inputs、334owned／270excluded，原scanner記798edges、0diagnostics。LF closure `6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。
+
+具名digest反證：同一P產品及原scanner，正常manifest0、repo外F64舊manifest1、現P manifest恢復0；唯一紅是run_axiom_mutations.py的EXCLUSION_DIGEST。未暫改原source或judge，不冒為產品語意突變。
+
+四檔是非執行性衍生產物，receipt不hash自己。F64舊1/0/5另留歷史原件；本輪不冒native、ledger、browser、readingA或Windows supplemental已驗。先前報告保留如下歷史角色。
+
+# Product architecture — Linux 固定來源重產
+
 本輪真受驗來源 `3a165ef581976914cbf1acc27561a35452e21a44`；上一份receipt產物提交 `8f76f2b7d6f669670e5834310bfc26495b4a4aa6`。本輪只使用指定來源的原scanner、generic與product裁判。
 
 完整五roots加三standalone：601 executable inputs，owned 333、excluded 268、edges 796、diagnostics 0。LF closure `10cea7ddc15d9d704156898da4909dff512d3d49bbd37c72b9f9f806e6aa3f8d`。
