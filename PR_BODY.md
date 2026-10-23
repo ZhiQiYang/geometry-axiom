@@ -8,7 +8,7 @@
 | 目前公開產品source M | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
 | 原142／predicate實測execution S | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
 | 已普通merge #340 source | `4d3a17c306cad42057589c5cfd964f1c32b755c4` |
-| 目前evidence E | `8db79c254365b43104e596b0680df47b67f52232` |
+| 目前evidence E | `dcdf22655e0cf8ed47cd0b7f66d89f3a7beca694` |
 | 替代head／正文分支 | `codex/geo324-faces-20261024`／`codex/geo324-faces-20261024-prbody` |
 | PR建議base | `codex/kernel-without-woodworking-20261023`（draft #340；root統一送變更請求） |
 
@@ -18,7 +18,7 @@
 
 | Gate | 目前結果 | 原 exit | execution SHA |
 |---|---|---|---|
-| registry-list | 未執行 | `null` | `null` |
+| registry-list | 原清點通過（非expected） | `0` | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
 | native-and-full-expected | 未執行 | `null` | `null` |
 | canvas | 未執行 | `null` | `null` |
 | assembly | 未執行 | `null` | `null` |
@@ -41,10 +41,12 @@
 
 先前metadata修正／原件完整保留：原出版collector1是對原patch whitespace跑check所得2，raw未改；manifest自索引排除自身；E495 generated PROGRESS合法追加6行，舊true只指寫新metadata前對E792 snapshot的驗證時點。原package peer1019有1finding（report exit_code1，helper實際process0），精確澄清另封，不把原報告回寫成綠。這些不是產品裁判結果。
 
-架構原四檔屬incoming train的sourceBaseHead，#324 owned W leaf／excluded test需原三裁判與四檔刷新，尚未跑；mutation bridge oracle hash讀tests/*.py，不能把列車帳本直接當本S有效，完整帳本由root統排。尚有12列UNRUN：registry-list、fullnative＋expected、六browser、mutation check及架構三條。指定九module已完整，但沒有執行準備版run_all --build --only診斷，也不以各module成功冒aggregate全專案收斂。沒有新增skip或放寬斷言，不宣稱可合併。
+架構原四檔屬incoming train的sourceBaseHead，#324 owned W leaf／excluded test需原三裁判與四檔刷新，尚未跑；mutation bridge oracle hash讀tests/*.py，不能把列車帳本直接當本S有效，完整帳本由root統排。尚有11列UNRUN：fullnative＋expected、六browser、mutation check及架構三條。指定九module已完整，但沒有執行準備版run_all --build --only診斷，也不以各module成功冒aggregate全專案收斂。沒有新增skip或放寬斷言，不宣稱可合併。
 
 七個完整原Python module：host_sources45、source_runtime10、kernel_runtime10、rectangular_python9、host_world8、kernel_compatibility1、domain_source_pins16，共99/99、0fail／0skip，原runner各exit0、execution同S57，source每批前後clean；這七個module批本身不是單一fullsuite或native；指定九module的目前完整狀態以唯一矩陣與native43原件為準。65／18／16原件獨審322／356／604 checks各0；原request與保留wrapper支持1200秒，c387沒有timeout_seconds欄，wrapper hash是事後獨審所計而非事前pin，這些限制不抹除。完整raw、原環境失敗與7個module原JSON/log、固定Git inputs、凍結tools封於raw/seven-pure-modules-57b68014.tar.gz；沒有改測試或斷言。
 
-兩個原C importer module另已實跑host_native30／default_native13，共43/43、0fail／0skip；先原fresh fallback編譯，再原binaries.main建bridge與model-base，皆原exit0，原私有ELF／sidecar／Git493inputs前後同。原各module1200s、compile900s、fallback60s、native捕捉30s未改。加前七99，指定九個module142/142；真命令是逐module原_unittest_runner.py，無合成aggregate exit。全數原公開stdout/stderr／環境／SHA與兩ELFbytes封raw/two-native-importer-modules-57b68014.tar.gz；內部既有capture_output未公開的pipes不另冒逐筆原流，stage守門是ls-files --stage輸出相同，非.index檔bytes。此批原件獨審見revision-7-native43；公開Git/archive對抗審仍待本批推送後進行。
+兩個原C importer module另已實跑host_native30／default_native13，共43/43、0fail／0skip；先原fresh fallback編譯，再原binaries.main建bridge與model-base，皆原exit0，原私有ELF／sidecar／Git493inputs前後同。原各module1200s、compile900s、fallback60s、native捕捉30s未改。加前七99，指定九個module142/142；真命令是逐module原_unittest_runner.py，無合成aggregate exit。全數原公開stdout/stderr／環境／SHA與兩ELFbytes封raw/two-native-importer-modules-57b68014.tar.gz；內部既有capture_output未公開的pipes不另冒逐筆原流，stage守門是ls-files --stage輸出相同，非.index檔bytes。此批原件獨審見revision-7-native43；固定Ecfdfa公開Git/archive獨審359 checks／0，原report及首版metadata錯誤另封revision-9。
 
-本線已普通merge #340精確source4d3a17c3至M1f0ebd3e，保faces45、noWood13與上游其餘registry。142／predicate實測仍只綁原S57；沒有在M重跑。完整產品四根／currentC與原S相同，九selected contracts同；原493廣集合變更僅expected與mutation_migration／wood_contact_world／rectangular_template三個非target測試葉，閉包原件見receipts/forward-340-closure.json，獨立forward-merge peer待核。原三個metadata回合失敗與原raw均保；12UNRUN狀態不變。
+本線已普通merge #340精確source4d3a17c3至M1f0ebd3e，保faces45、noWood13與上游其餘registry。142／predicate實測仍只綁原S57；沒有在M重跑。完整產品四根／currentC與原S相同，九selected contracts同；原493廣集合變更僅expected與mutation_migration／wood_contact_world／rectangular_template三個非target測試葉，閉包原件見receipts/forward-340-closure.json，獨立forward-merge peer待核。原三個metadata回合失敗與原raw均保；該合流快照曾有12UNRUN；本次只補registry-list0，其餘11UNRUN。
+
+M1f0原python3 -B tests/run_all.py --list已真exit0，只驗registry/discovery與已登錄入口存在性，不執行方法、expected比較、Cbuild或browser；347原Git inputs／12capture原命令與初末clean完整封raw/original-registry-list-1f0ebd3e.tar.gz。獨立actual子報告802 checks／0；包裹該報告的peer整體在後續另一項schema檢查退出1、無獨立stderrcapture，精確限制與原provenance同封。C43公開peer359／0、forwardmerge/package358／0也已封；後者不包含九module transitive讀取路徑審查，該項仍另待323。11UNRUN維持，沒有可合併宣稱。
