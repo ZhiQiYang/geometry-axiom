@@ -198,5 +198,71 @@ static int end_faces(void)
     CHECK("self-boundary-extension-end-exempt",wood_contact_end_faces(&w,&self,false,20,100,40,50,NULL,0));
     self.placed=false;w.region_count=0;w.role_boundary=NULL;w.member_count=1;f[0]=fact(&self,1,true,(GeoRect2){-10,0,0,100});CHECK("unplaced-owner-is-not-contact",wood_contact_end_faces(&w,&self,false,0,100,20,30,NULL,0));return 0;
 }
+/* Expected public fields are constructed from explicit fixture order, not
+ * from an implementation comparator or sorted copy of the actual output. */
+static bool sorted_member_fields(const WoodStopFace *out,const WoodContactMemberFact *facts,
+    const size_t *expected,size_t count)
+{
+    for(size_t i=0;i<count;++i){const WoodContactMemberFact *f=&facts[expected[i]];
+        for(int side=0;side<2;++side)
+            if(!face(&out[i*2+(size_t)side],WOOD_STOP_MEMBER_SIDE,0,f->member->id,-1,side,WOOD_STOP_FIXED,
+                side?f->footprint.max_u:f->footprint.min_u,f->footprint.min_v,f->footprint.max_v))return false;
+    }
+    return true;
+}
+static bool sorted_same_fields(const WoodStopFace *a,const WoodStopFace *b)
+{return face(a,b->kind,b->boundary_id,b->timber_id,b->hole_index,b->edge_index,b->fixity,b->fixed,b->lo,b->hi);}
+static int indexed_sort(void)
+{
+    WoodMember m[5];WoodContactMemberFact f[5];
+    for(size_t i=0;i<5;++i){
+        m[i]=member((uint32_t)(501+i),WOOD_MEMBER_ROLE_PRIMARY,2);
+        f[i]=fact(&m[i],(uint64_t)(10+i*10),false,
+            (GeoRect2){1000+(GeoCoord)i*100,200+(GeoCoord)i*40,1010+(GeoCoord)i*100,227+(GeoCoord)i*40});
+    }
+    WoodBoundaryRegion b=square(77,0,0,100);b.outline.fixity[1]=WOOD_STOP_FREE;
+    WoodContactWorld w={.placement_id=7,.regions={&b},.region_count=1,.members=f,.member_count=2};
+    WoodStopFace out[16];size_t n=wood_contact_collect_stops(&w,false,NULL,out,16);
+    CHECK("sort-rc-prefix-preserved",n==6&&
+        face(&out[0],WOOD_STOP_OUTLINE_EDGE,77,0,-1,1,WOOD_STOP_FREE,100,0,100)&&
+        face(&out[1],WOOD_STOP_OUTLINE_EDGE,77,0,-1,3,WOOD_STOP_FIXED,0,0,100));
+    const size_t identity2[2]={0,1};CHECK("sort-prefix-member-fields",sorted_member_fields(out+2,f,identity2,2));
+    w.region_count=0;w.member_count=3;f[0].order=30;f[1].order=10;f[2].order=20;
+    const size_t cycle3[3]={1,2,0};n=wood_contact_collect_stops(&w,false,NULL,out,16);
+    CHECK("sort-cycle-every-field",n==6&&sorted_member_fields(out,f,cycle3,3));
+    w.member_count=5;f[0].order=20;f[1].order=40;f[2].order=50;f[3].order=30;f[4].order=10;
+    const size_t nonpower5[5]={4,0,3,1,2};n=wood_contact_collect_stops(&w,false,NULL,out,16);
+    CHECK("sort-nonpower-every-field",n==10&&sorted_member_fields(out,f,nonpower5,5));
+    w.member_count=3;for(size_t i=0;i<3;++i)f[i].order=7;
+    const size_t identity3[3]={0,1,2};n=wood_contact_collect_stops(&w,false,NULL,out,16);
+    CHECK("sort-equal-order-all-fields",n==6&&sorted_member_fields(out,f,identity3,3));
+    w.member_count=4;f[0].order=UINT64_MAX;f[1].order=UINT64_C(9223372036854775808);f[2].order=UINT64_C(4294967296);f[3].order=1;
+    const size_t full64[4]={3,2,1,0};n=wood_contact_collect_stops(&w,false,NULL,out,16);
+    CHECK("sort-full-uint64-order",n==8&&sorted_member_fields(out,f,full64,4));
+    WoodStopFace sentinel={WOOD_STOP_HOLE_EDGE,1234,9876,-7,77,WOOD_STOP_FREE,INT64_MIN,INT64_MAX,INT64_MIN};
+    out[2]=sentinel;n=wood_contact_collect_stops(&w,false,NULL,out,3);
+    const size_t first_only[1]={0};CHECK("sort-capacity-before-order-and-tail",n==2&&sorted_member_fields(out,f,first_only,1)&&sorted_same_fields(&out[2],&sentinel));
+    CHECK("sort-zero-capacity",wood_contact_collect_stops(&w,false,NULL,NULL,0)==0);
+    WoodMember duplicate[4]={member(801,WOOD_MEMBER_ROLE_PRIMARY,2),member(802,WOOD_MEMBER_ROLE_PRIMARY,2),member(801,WOOD_MEMBER_ROLE_PRIMARY,2),member(803,WOOD_MEMBER_ROLE_PRIMARY,2)};
+    const uint64_t declared[4]={30,5,15,20};WoodContactMemberFact df[4];
+    for(size_t i=0;i<4;++i)df[i]=fact(&duplicate[i],declared[i],false,
+        (GeoRect2){3000+(GeoCoord)i*100,600+(GeoCoord)i*40,3010+(GeoCoord)i*100,627+(GeoCoord)i*40});
+    w.members=df;w.member_count=4;n=wood_contact_collect_stops(&w,false,NULL,out,16);
+    CHECK("sort-legacy-last-order",n==8&&out[0].timber_id==802&&out[2].timber_id==801&&out[4].timber_id==801&&out[6].timber_id==803);
+    const size_t duplicate_order[4]={1,0,2,3};CHECK("sort-legacy-stable-fields",sorted_member_fields(out,df,duplicate_order,4));
+    enum { OVERFLOW=WOOD_CONTACT_MEMBER_CAPACITY+1 };
+    static WoodMember many[OVERFLOW];static WoodContactMemberFact mf[OVERFLOW];
+    for(size_t i=0;i<OVERFLOW;++i){
+        many[i]=member((uint32_t)(1000+i),WOOD_MEMBER_ROLE_PRIMARY,2);
+        mf[i]=fact(&many[i],(uint64_t)(OVERFLOW-i),false,
+            (GeoRect2){5000+(GeoCoord)i*100,900+(GeoCoord)i*40,5010+(GeoCoord)i*100,927+(GeoCoord)i*40});
+    }
+    w.members=mf;w.member_count=OVERFLOW;out[6]=sentinel;n=wood_contact_collect_stops(&w,false,NULL,out,6);
+    const size_t overflow_order[3]={2,1,0};
+    CHECK("sort-overflow-linear-last-order",n==6&&sorted_member_fields(out,mf,overflow_order,3));
+    CHECK("sort-overflow-keeps-tail",sorted_same_fields(&out[6],&sentinel));
+    return 0;
+}
+
 int main(int argc,char **argv)
-{if(argc!=2)return 2;if(!strcmp(argv[1],"ordering"))return ordering();if(!strcmp(argv[1],"regions"))return regions_and_capacity();if(!strcmp(argv[1],"active-dedup"))return active_dedup();if(!strcmp(argv[1],"indexed-dedup"))return indexed_dedup();if(!strcmp(argv[1],"intervals"))return intervals();if(!strcmp(argv[1],"extensions"))return extensions();if(!strcmp(argv[1],"ends"))return end_faces();return 2;}
+{if(argc!=2)return 2;if(!strcmp(argv[1],"ordering"))return ordering();if(!strcmp(argv[1],"regions"))return regions_and_capacity();if(!strcmp(argv[1],"active-dedup"))return active_dedup();if(!strcmp(argv[1],"indexed-dedup"))return indexed_dedup();if(!strcmp(argv[1],"indexed-sort"))return indexed_sort();if(!strcmp(argv[1],"intervals"))return intervals();if(!strcmp(argv[1],"extensions"))return extensions();if(!strcmp(argv[1],"ends"))return end_faces();return 2;}

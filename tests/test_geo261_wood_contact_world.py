@@ -133,8 +133,8 @@ class ContactWorldBoundary(unittest.TestCase):
 
 STOP_FILTER = "if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;\n        const GeoRect2 *f=&fact->footprint;"
 CONTROLS = (
-    ("placement-order", "if(previous<=order)break;", "if(true)break;", "ordering", "placement-order-before-declaration"),
-    ("stable-ties", "if(previous<=order)break;", "if(previous<order)break;", "ordering", "placement-stable-equal-order-sides"),
+    ("placement-order", "return left<=right;", "return true;", "ordering", "placement-order-before-declaration"),
+    ("stable-ties", "return left<=right;", "return left<right;", "ordering", "placement-stable-equal-order-sides"),
     ("equal-order-dedup", "index->minimum[slot]<order", "index->minimum[slot]<=order", "ordering", "equal-order-not-deduplicated"),
     ('partial-shadow', 'static bool contact_prefix_lo(GeoCoord a,const WoodStopFace *face)\n{return a<=face->lo&&a<face->hi;}\nstatic bool contact_prefix_hi(GeoCoord a,const WoodStopFace *face)\n{return a>=face->hi&&a>face->lo;}', 'static bool contact_prefix_lo(GeoCoord a,const WoodStopFace *face)\n{return a<face->hi;}\nstatic bool contact_prefix_hi(GeoCoord a,const WoodStopFace *face)\n{return a>face->lo;}', 'ordering', 'partial-shadow-retains-exposed-face'),
     ("outline-component-index", "(int)(component*GEO_LOOP_MAX_VERTICES+i)", "(int)i", "regions", "region-outline-index-encoded"),
@@ -166,6 +166,14 @@ CONTROLS = (
     ('indexed-survivor-count', 'active[i]=false;--*remaining;', 'active[i]=false;', 'ordering', 'earlier-full-cover-deduplicates'),
     ('indexed-reversed-skip', 'size_t begin,end;contact_face_plane_range(index,out,count,face->fixed,&begin,&end);', 'if(face->hi<face->lo)return false;size_t begin,end;contact_face_plane_range(index,out,count,face->fixed,&begin,&end);', 'indexed-dedup', 'indexed-enclosed-reversed-span'),
     ('legacy-partial-shadow', 'if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;', 'if(earlier)duplicate=true;', 'indexed-dedup', 'indexed-duplicate-fallback-keeps-partial-shadow'),
+    ('legacy-placement-order', 'if(previous<=order)break;', 'if(true)break;', 'indexed-sort', 'sort-legacy-last-order'),
+    ('legacy-stable-ties', 'if(previous<=order)break;', 'if(previous<order)break;', 'indexed-sort', 'sort-legacy-stable-fields'),
+    ('sort-rc-prefix', 'size_t members=count-first;', 'first=0;size_t members=count-first;', 'indexed-sort', 'sort-rc-prefix-preserved'),
+    ('sort-cycle-close', 'out[at]=value;index->sorted[at]=at;', '(void)value;index->sorted[at]=at;', 'indexed-sort', 'sort-cycle-every-field'),
+    ('sort-cycle-step', 'out[at]=out[from];index->sorted[at]=at;at=from;', 'out[at]=out[at];index->sorted[at]=at;at=from;', 'indexed-sort', 'sort-cycle-every-field'),
+    ('sort-full-order', 'return left<=right;', 'return (uint32_t)left<=(uint32_t)right;', 'indexed-sort', 'sort-full-uint64-order'),
+    ('sort-duplicate-sort-guard', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed&&orders.unique)){', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed)){', 'indexed-sort', 'sort-legacy-last-order'),
+    ('sort-overflow-sort-guard', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed&&orders.unique)){', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.unique)){', 'indexed-sort', 'sort-overflow-linear-last-order'),
 )
 
 
@@ -242,6 +250,9 @@ class WoodContactWorld(unittest.TestCase):
 
     def test_unique_id_prefix_query_keeps_public_degenerate_and_filtered_facts(self):
         self.assertEqual(0, self.case("indexed-dedup").returncode)
+
+    def test_stable_index_merge_preserves_complete_sequence_and_fallback(self):
+        self.assertEqual(0, self.case("indexed-sort").returncode)
 
     def extension_transaction(self, executable):
         with _bridge.BridgeSession(executable) as bridge:
