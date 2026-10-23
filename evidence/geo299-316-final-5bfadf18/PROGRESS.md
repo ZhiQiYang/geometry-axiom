@@ -5,4 +5,5 @@
 - 2026-10-23T01:26:04.483402+00:00 — **environment**：固定F隔離worktree準備完成；四夾具逐bytes同F Gitblob；出版分支前後未變。首輪僅Git自動清除物化夾具skip旗標的收集器假設失敗，未執行產品測試；r2精確記錄三夾具旗標變更，其餘index旗標與產品bytes保留。
   下一步：執行原workflow完整native，六browser待314重型完成後同F串行。原始資料：`raw/environment-01.tar.gz`。
 
-出版工具首輪因進度檔末尾多餘空白行被原 `git diff --cached --check` 拒絕；只修收據格式，原產品與裁判未改，工具原bytes與觀察說明見 `publication-repair/`。
+- 2026-10-23T01:33:29.884650+00:00 — **unused-preflight-release**：已安全釋放未執行產品測試的首輪乾淨準備worktree，回收319311872bytes；原Git命令收據保留，正式受驗r2來源與出版分支均未變。
+  下一步：讓原native持續完成；六browser待314重型工作結束。原始資料：`raw/unused-preflight-release-01.tar.gz`。
