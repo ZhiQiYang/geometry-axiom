@@ -9,7 +9,7 @@
 | 產品差異 | 對整合 SHA 僅 `tests/test_rectangular_template.py` 與 expected 方法數 11→13；無公理、決策或產品實作更改 |
 | 來源檢查 | clean，原 leaf SHA256 `e948fb78e81a075875a45041009fb379e58d783c8d6b579cd9fa2f81cd40910e` 未變；兩產品檔 diff-check exit 0 |
 | 歷史原件空白檢查 | 全 diff-check exit 2，僅舊 evidence/CANDIDATE.patch 六行 patch-context 空白；原輸出與原檔保留，不作產品或正式測試結果 |
-| 新合流對抗審查 | 待獨立 peer；舊 9b201164 純靜審只涵蓋原 leaf，不冒稱新身份已審 |
+| 新合流對抗審查 | 獨立純 Git／AST peer 116 checks、exit 0；已核新合流、11 input 與 AST 13，無動態驗收外推。原報告 SHA256 `41f920668abc1078bc2c556c51f719306efe3c854243f96fa90a3ebf69e639cf` |
 | 正式 13 方法 | **UNRUN**，尚未獲 heavy 時槽 |
 | 原 7 階段反證 | **UNRUN**；預期原退出為 `0/1/0/1/0/1/0`，尚無真實結果 |
 | 本輪收據 evidence head | source publication 收據目前仍 local，由 root 統一推交接證據；既有舊 evidence／正文不充作本輪正式驗收 |
