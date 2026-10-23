@@ -53,6 +53,6 @@ N32微小紅與source-call成長紅都保留，不加容差。新profile指向�
 
 未套候選的[patch與manifest](https://github.com/ZhiQiYang/geometry-axiom/tree/4ea6c50796711ed1e79bae89c93d07037d317837/evidence/geo323-final-b2445b5a/unapplied-candidate)已公開：patch SHA256 `a44018ad1e3455af89dc9fbc19ea4ec3d9b0e4dfec56f9ddab5d2893d91871b0`。它只cache成功的contact三欄，每hit仍發當前consumer原placement depend，獨立id／owner-reset守門；新增contact-hit edge/kind/order/id各具名反證。真0/1/0、failed/sealed/lifecycle動態與性能收益全未驗。prepared-only修後三套launcher與14項獨立靜審也在包內，沒有執行。
 
-最後已讀#323審查：handoff `acd1289228d490c68a139cf17e02fdc1f3cb247c` 的`handoff/pr-reviews/323.md`，2026-10-23 08:37:05 UTC／head307a18e。仍保≤1.3本PR gate，不移交#300縮限；後續需root安排318→314→combined後的forward merge／final closure。木工推理前讀最新main決策佇列與pr333 FIELD-RULES；本輪讀取的原Git bytes/hash已封。
+最後已讀#323審查：handoff `b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6` 的`handoff/pr-reviews/323.md`，2026-10-23 14:37:59 UTC／headb2445b5。仍保≤1.3本PR gate，不移交#300縮限；後續需root安排318→314→combined後的forward merge／final closure。木工推理前讀最新main決策佇列與pr333 FIELD-RULES；本輪讀取的原Git bytes/hash已封。
 
 最不確定的是未套memo對N32／calls的實際收益、forward-merge後closure，以及尚未做的獨立公開包peer。接手者從HANDOFF讀原紅，再在新可解析SHA做真反證與完整原驗收。**本階段已停止，不自動續跑。**
