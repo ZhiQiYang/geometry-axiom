@@ -78,8 +78,12 @@ static bool probe_describe(void *user,const GeoSourceRef *ref,GeoSourceDescripto
 {(void)user;(void)ref;*out=(GeoSourceDescriptor){.kind=GEO_SOURCE_QUANTITY,.unit=GEO_UNIT_SCALAR,.context={false,0,-1}};return true;}
 static bool probe_evaluate(void *user,GeoEvalContext *graph,const GeoSourceRef *ref,GeoSourceValue *out)
 {
-    (void)ref;Probe *probe=user;WoodContactSourceFacts facts;WoodContactSourceRequest request={1,false,NULL};
-    if(!reference_contact_facts(probe->evaluation,graph,&request,&facts))return false;
+    Probe *probe=user;uint32_t consumer;WoodContactSourceFacts facts;WoodContactSourceRequest request={1,false,NULL};
+    if(ref->key_size!=sizeof consumer)return false;memcpy(&consumer,ref->key,sizeof consumer);
+    bool previous=residual_second_consumer;residual_second_consumer=consumer==2;
+    bool ok=reference_contact_facts(probe->evaluation,graph,&request,&facts);
+    residual_second_consumer=previous;
+    if(!ok)return false;
     *out=(GeoSourceValue){.kind=GEO_SOURCE_QUANTITY,.as.quantity={1,1,GEO_UNIT_SCALAR}};return true;
 }
 static size_t find_node(GeoEvalContext *graph,GeoSourceRef ref)
@@ -205,7 +209,7 @@ static bool cache_consumer_scenario(const char *name)
     g_reference_active=ctx;g_active_app_candidate=NULL;
     REQUIRE("cache-consumer-register-real-providers",reference_sources_ensure(ctx));
     unsigned mode=!strcmp(name,"cache-definition")?1:!strcmp(name,"cache-anchor")?2:
-        (!strcmp(name,"cache-footprint")||!strcmp(name,"cache-footprint-source"))?3:4;
+        (!strcmp(name,"cache-contact")||!strcmp(name,"cache-footprint")||!strcmp(name,"cache-footprint-source"))?3:4;
     CacheConsumer probe={ctx,mode};GeoSourceProvider provider={90,"test.cache-consumer","1",&probe,probe_describe,cache_consumer_evaluate};
     REQUIRE("cache-consumer-register",geo_eval_register(ctx->sources,&provider));
     /* Prime the registered real pose provider's documented snapshot path.
@@ -220,6 +224,8 @@ static bool cache_consumer_scenario(const char *name)
         facts.members[0].footprint_valid&&same_rect(facts.members[0].footprint,(GeoRect2){10,20,110,30}));
     REQUIRE("cache-consumer-natural-memos",ctx->member_reads[0].definition_valid&&ctx->member_reads[0].anchor_valid&&
         ctx->member_reads[0].pose_valid&&ctx->member_reads[0].footprint_valid);
+    if(!strcmp(name,"cache-contact"))
+        REQUIRE("contact-cache-naturally-warmed",ctx->member_reads[0].contact_valid&&ctx->member_reads[0].contact_id==41);
     /* The graph already owns the canonical definition and BOX. A stale H UV
      * must not overwrite a successful source footprint when raw snapshots are
      * completed after a memo hit; do not inject or edit the memo itself. */
@@ -246,7 +252,7 @@ static bool cache_consumer_scenario(const char *name)
         kinds[c*count+i]=mode==3?(i==2||i==3?GEO_DEPENDENCY_DEFINITION_REQUIRED:GEO_DEPENDENCY_VALUE_REQUIRED):
             mode==4?(c==0?GEO_DEPENDENCY_DEFINITION_REQUIRED:GEO_DEPENDENCY_EVALUATE_BEFORE):GEO_DEPENDENCY_DEFINITION_REQUIRED;
     const char *marker=mode==1?"definition-cache-second-consumer-edge-and-order":mode==2?"anchor-cache-second-consumer-edge-and-order":
-        mode==3?"footprint-cache-second-consumer-edge-and-order":!strcmp(name,"cache-pose-kind")?
+        mode==3?(!strcmp(name,"cache-contact")?"contact-cache-second-consumer-edge-and-order":"footprint-cache-second-consumer-edge-and-order"):!strcmp(name,"cache-pose-kind")?
         "pose-cache-preserves-requested-dependency-kind":"pose-cache-second-consumer-edge-and-order";
     REQUIRE(marker,ordered_cache_edges(ctx->sources,prefix_count,prefix,consumers,sources,kinds,count));
     REQUIRE("cache-consumer-source-node-order",geo_eval_node_count(ctx->sources)==prefix_nodes+2&&

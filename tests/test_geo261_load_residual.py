@@ -20,7 +20,15 @@ ANCHOR_DEPEND = ('geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SO
 FOOTPRINT_DEPEND = 'geo_eval_depend(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED)'
 POSE_DEPEND = 'geo_eval_depend(ctx->sources,ref,relation)'
 EARLY_DEFINITION = '        if(!reference_sources_ensure(ctx)||!reference_placement_frame(ctx,id,&actual.frame)||'
+CONTACT_HIT = '    if(ctx->member_reads[i].contact_valid&&ctx->member_reads[i].contact_id==id){'
 H_CACHE_CONTROLS = (
+    ('contact-edge', 'cache-contact', 'contact-cache-second-consumer-edge-and-order', ANCHOR_DEPEND,
+     '(residual_second_consumer?GEO_SOURCE_OK:' + ANCHOR_DEPEND + ')'),
+    ('contact-kind', 'cache-contact', 'contact-cache-second-consumer-edge-and-order', ANCHOR_DEPEND,
+     ANCHOR_DEPEND.replace('GEO_DEPENDENCY_DEFINITION_REQUIRED', '(residual_second_consumer?GEO_DEPENDENCY_EVALUATE_BEFORE:GEO_DEPENDENCY_DEFINITION_REQUIRED)')),
+    ('contact-order', 'cache-contact', 'contact-cache-second-consumer-edge-and-order', CONTACT_HIT,
+     CONTACT_HIT + '\n        if(residual_second_consumer){GeoSourceRef pose={APP_SOURCE_MEMBER_POSE,&id,sizeof id};'
+     'if(geo_eval_depend(ctx->sources,pose,GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK)return false;}'),
     ('definition-edge', 'cache-definition', 'definition-cache-second-consumer-edge-and-order', DEFINITION_DEPEND,
      '(residual_second_consumer?GEO_SOURCE_OK:' + DEFINITION_DEPEND + ')'),
     ('definition-kind', 'cache-definition', 'definition-cache-second-consumer-edge-and-order', DEFINITION_DEPEND,
@@ -34,13 +42,14 @@ H_CACHE_CONTROLS = (
     ('footprint-kind', 'cache-footprint', 'footprint-cache-second-consumer-edge-and-order', FOOTPRINT_DEPEND,
      FOOTPRINT_DEPEND.replace('GEO_DEPENDENCY_VALUE_REQUIRED', '(residual_second_consumer?GEO_DEPENDENCY_EVALUATE_BEFORE:GEO_DEPENDENCY_VALUE_REQUIRED)')),
     ('footprint-order', 'cache-footprint', 'footprint-cache-second-consumer-edge-and-order', EARLY_DEFINITION,
-     '        if(residual_second_consumer&&!geo_placement_sources_definition(ctx->placement_sources,id,&definition))return false;\n' + EARLY_DEFINITION),
+     '        if(residual_second_consumer&&!geo_placement_sources_definition_header(ctx->placement_sources,id,&definition))return false;\n' + EARLY_DEFINITION),
     ('pose-edge', 'cache-pose', 'pose-cache-second-consumer-edge-and-order', POSE_DEPEND,
      '(residual_second_consumer?GEO_SOURCE_OK:' + POSE_DEPEND + ')'),
     ('pose-kind', 'cache-pose-kind', 'pose-cache-preserves-requested-dependency-kind', POSE_DEPEND,
      POSE_DEPEND.replace(',relation)', ',(residual_second_consumer?GEO_DEPENDENCY_VALUE_REQUIRED:relation))')),
 )
 ANCHOR_ID_KEY = "&&ctx->member_reads[i].id==id"
+CONTACT_ID_KEY = "&&ctx->member_reads[i].contact_id==id"
 ANCHOR_INVALIDATOR = "ctx->member_reads[i].footprint_valid=false;"
 PLACEMENT_KEY = "&&ctx->member_reads[i].placement==request->placement_id"
 
@@ -57,7 +66,7 @@ class LoadResidual(unittest.TestCase):
         cls.exe = cls.compile("baseline")
 
     @classmethod
-    def compile(cls, name, invalidate=True, dependencies=True, collection_state=True, source_change=None):
+    def compile(cls, name, invalidate=True, dependencies=True, collection_state=True, source_change=None, placement_dependency=True):
         build = cls.build
         world_path = ROOT / "geometry-app/native/world_validation.inc"
         world = includes(world_path.read_text(encoding="utf-8"), world_path)
@@ -73,6 +82,10 @@ class LoadResidual(unittest.TestCase):
             anchor = "if(geo_eval_depend(ctx->sources,"
             assert sources.count(anchor) == 3
             sources = sources.replace(anchor, "if(false&&geo_eval_depend(ctx->sources,")
+        if not placement_dependency:
+            assert sources.count(ANCHOR_DEPEND) == 1, "Placement hit boundary must hit exactly once"
+            sources = sources.replace(ANCHOR_DEPEND,
+                "(residual_second_consumer&&id==3?GEO_SOURCE_OK:" + ANCHOR_DEPEND + ")")
         if source_change:
             changes = (source_change,) if isinstance(source_change[0], str) else source_change
             for before, after in changes:
@@ -85,6 +98,35 @@ class LoadResidual(unittest.TestCase):
         references = references.replace(sources_path.as_posix(), sources_copy.as_posix())
         references_copy = build.work / (name + "-references.inc")
         references_copy.write_text(references, encoding="utf-8")
+        definition_copy = None
+        if not placement_dependency:
+            definition_path = ROOT / "geometry-templates/woodworking/native/definition_sources.c"
+            definition = includes(definition_path.read_text(encoding="utf-8"), definition_path)
+            call = "geo_eval_source(s->graph,wood_definition_source_ref(s->token,kind,id,&key),relation,out)"
+            assert definition.count(call) == 1, "Placement source control must hit exactly once"
+            replacement = ("(kind==WOOD_DEFINITION_PLACEMENT&&id==3?"
+                           "residual_placement_source_without_edge(s->graph,wood_definition_source_ref(s->token,kind,id,&key),relation,out):"
+                           + call + ")")
+            definition = definition.replace(call, replacement)
+            helper = """static GeoSourceStatus residual_placement_source_without_edge(GeoEvalContext *graph,GeoSourceRef source,
+    GeoDependencyKind relation,GeoSourceValue *out)
+{
+    /* A deliberately broken typed getter reuses a real VALID source but omits only the current consumer edge. */
+    if(residual_second_consumer){
+        for(size_t i=0;i<geo_eval_node_count(graph);++i){GeoSourceNodeView node;
+            if(geo_eval_node_at(graph,i,&node)&&node.source.provider==source.provider&&
+               node.source.key_size==source.key_size&&(!source.key_size||!memcmp(node.source.key,source.key,source.key_size))&&
+               node.state==GEO_NODE_VALID&&node.value){*out=*node.value;return GEO_SOURCE_OK;}
+        }
+    }
+    return geo_eval_source(graph,source,relation,out);
+}
+"""
+            insertion = "static bool wd_get(WoodDefinitionSources *s,WoodDefinitionKind kind,uint32_t id,GeoDependencyKind relation,GeoSourceValue *out)"
+            assert definition.count(insertion) == 1
+            definition = definition.replace(insertion, helper + insertion)
+            definition_copy = build.work / (name + "-definition.c")
+            definition_copy.write_text(definition, encoding="utf-8")
         contact_path = ROOT / "geometry-templates/woodworking/native/contact_sources.c"
         contact = includes(contact_path.read_text(encoding="utf-8"), contact_path)
         if not collection_state:
@@ -98,6 +140,9 @@ class LoadResidual(unittest.TestCase):
         unity = includes(unity_path.read_text(encoding="utf-8"), unity_path)
         assert unity.count(contact_path.as_posix()) == 1
         unity = unity.replace(contact_path.as_posix(), contact_copy.as_posix())
+        if definition_copy is not None:
+            assert unity.count(definition_path.as_posix()) == 1
+            unity = unity.replace(definition_path.as_posix(), definition_copy.as_posix())
         unity_copy = build.work / (name + "-woodworking.inc")
         unity_copy.write_text(unity, encoding="utf-8")
         geometry_path = ROOT / "current_geometry.c"
@@ -144,7 +189,7 @@ class LoadResidual(unittest.TestCase):
         self.assertEqual("PASS " + name + "\n", result.stdout)
 
     def test_cached_reads_preserve_each_consumer_exact_source_kind_and_order(self):
-        for case in ("cache-definition", "cache-anchor", "cache-footprint", "cache-pose", "cache-pose-kind"):
+        for case in ("cache-definition", "cache-anchor", "cache-contact", "cache-footprint", "cache-pose", "cache-pose-kind"):
             with self.subTest(case=case):
                 self.passes(case)
 
@@ -181,6 +226,18 @@ class LoadResidual(unittest.TestCase):
         result = self.case(case, exe, phase="mutant", control=control, expected_assertion=marker)
         self.assertEqual(1, result.returncode, result.stdout + result.stderr)
         self.assertIn("ASSERT:" + marker + " ", result.stderr)
+        print("Member cache control " + control + ": exit=1; " + result.stderr.strip(), flush=True)
+        self.passes(case, phase="restored", control=control)
+
+        # A separate contact cache key must protect the same natural slot
+        # permutation.  This is not inferred from the full-anchor guard above.
+        case, control, marker = "member-anchor-miss", "contact-id-key", "member-anchor-miss-invalidates-footprint"
+        self.passes(case, phase="baseline", control=control)
+        exe = self.compile(control, source_change=(CONTACT_ID_KEY, ""))
+        result = self.case(case, exe, phase="mutant", control=control, expected_assertion=marker)
+        self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+        self.assertIn("ASSERT:" + marker + " ", result.stderr)
+        self.assertEqual(1, result.stderr.count("ASSERT:"), result.stderr)
         print("Member cache control " + control + ": exit=1; " + result.stderr.strip(), flush=True)
         self.passes(case, phase="restored", control=control)
 
@@ -248,13 +305,15 @@ class LoadResidual(unittest.TestCase):
         self.passes("move-delete")
 
     def test_cross_consumer_mutant_reports_missing_dependency(self):
-        self.passes("consumers")
-        exe = self.compile("cross-consumer", dependencies=False)
-        result = self.case("consumers", exe)
+        control, marker = "placement-second-consumer-reader-and-hit-edge", "cross-consumer-placement-edge-missing"
+        self.passes("consumers", phase="baseline", control=control)
+        exe = self.compile("cross-consumer", placement_dependency=False)
+        result = self.case("consumers", exe, phase="mutant", control=control, expected_assertion=marker)
         self.assertEqual(1, result.returncode, result.stdout + result.stderr)
         self.assertIn("ASSERT:cross-consumer-placement-edge-missing ", result.stderr)
+        self.assertEqual(1, result.stderr.count("ASSERT:"), result.stderr)
         print("跨 consumer 共用突變：exit=1；" + next(s for s in result.stderr.splitlines() if "ASSERT:cross-" in s), flush=True)
-        self.passes("consumers")
+        self.passes("consumers", phase="restored", control=control)
 
 
 if __name__ == "__main__":

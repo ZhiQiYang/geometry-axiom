@@ -123,6 +123,9 @@ typedef struct {
     struct {
         bool anchor_valid,definition_valid,pose_valid,footprint_valid,footprint_ok;
         uint32_t id,pose_id,placement;
+        /* Contact keeps only its successful three-field decode; its key is independent of the full anchor. */
+        bool contact_valid;uint32_t contact_id;
+        WoodMemberPlacementContact contact;
         WoodMemberPlacement anchor;
         WoodMemberDefinition definition;
         GeoBox3 pose;
