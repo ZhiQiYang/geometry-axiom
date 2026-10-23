@@ -12,6 +12,11 @@
 !/tests/
 !/geometry-web/
 !/geometry-guide/
+# 平釘下角材現場規則只放行 FIELD-RULES.md。同樹其他路徑由 /geometry-templates/** 擋住。
+!/geometry-templates/
+/geometry-templates/**
+!/geometry-templates/woodworking/
+!/geometry-templates/woodworking/FIELD-RULES.md
 !/公理層.md
 !/geometry-model-v2.md
 !/BACKLOG.md
