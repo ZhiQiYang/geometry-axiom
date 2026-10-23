@@ -1,0 +1,2752 @@
+{
+  "schema": "geo300-c493-originals-and-independent-peer/1",
+  "actual_execution_source": "c493b7315d0cd3b16014add96af969c49ebf4660",
+  "current_candidate_source": "aa0e3938f17dc996ef5e7410db4844b31856d2a6",
+  "original_raw_files": 350,
+  "original_raw_bytes": 19527338,
+  "files": [
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/codec-client.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/codec-client.c",
+      "bytes": 2857,
+      "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/exact-client.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/exact-client.c",
+      "bytes": 919,
+      "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-host/app_candidate.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-host/app_candidate.c",
+      "bytes": 8674,
+      "sha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-host/history.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-host/history.c",
+      "bytes": 3945,
+      "sha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/candidate.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/candidate.c",
+      "bytes": 12611,
+      "sha256": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/clip.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/clip.c",
+      "bytes": 7551,
+      "sha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/codec.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/codec.c",
+      "bytes": 23308,
+      "sha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/datums.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/datums.c",
+      "bytes": 4222,
+      "sha256": "f5d385df8d01b9d4399371ecd0dc02dfbe2ae0c62c988262ef5cd990676e065d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/document.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/document.c",
+      "bytes": 2636,
+      "sha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/enclosure.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/enclosure.c",
+      "bytes": 7871,
+      "sha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/enclosure_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/enclosure_sources.c",
+      "bytes": 17213,
+      "sha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/exact.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/exact.c",
+      "bytes": 3243,
+      "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/geometry.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/geometry.c",
+      "bytes": 29994,
+      "sha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/grid.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/grid.c",
+      "bytes": 8062,
+      "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/grid_store.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/grid_store.c",
+      "bytes": 24010,
+      "sha256": "89da92935c8e4765b54a83b06fb3157bdfcde74410a7edd8cf74ed87652dea5d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/guides.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/guides.c",
+      "bytes": 6022,
+      "sha256": "1548a5f72bf3e9904a64c871d2658409aab300786af598e7ca69a4fb82e4897e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/linear.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/linear.c",
+      "bytes": 4333,
+      "sha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/linear_definition_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/linear_definition_sources.c",
+      "bytes": 11033,
+      "sha256": "acc6312b9d438f0ef1e705e1b977e2ce8ad6ca2853248636eb241f40aab62266"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/named_values.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/named_values.c",
+      "bytes": 2105,
+      "sha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/parameter_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/parameter_sources.c",
+      "bytes": 21934,
+      "sha256": "60908674f3b6a6a820ef60279964a9862ea99e64db4c75478cbb0b63def8edd9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/parameters.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/parameters.c",
+      "bytes": 18594,
+      "sha256": "d4e0f6402ef38e82e4192250cbe7617668ec7c0d210fc531d0410e2cb93eda94"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/placement_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/placement_sources.c",
+      "bytes": 16248,
+      "sha256": "45e754f4260e15679797b8f44c8c6a25132b199d47a7239da1e2045a8a814c31"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/placements.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/placements.c",
+      "bytes": 10229,
+      "sha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/region_key_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/region_key_sources.c",
+      "bytes": 9853,
+      "sha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/regions.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/regions.c",
+      "bytes": 11576,
+      "sha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/source.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/source.c",
+      "bytes": 16890,
+      "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/version_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/version_sources.c",
+      "bytes": 11550,
+      "sha256": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/versions.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-kernel/versions.c",
+      "bytes": 14772,
+      "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/assembly.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/assembly.c",
+      "bytes": 42150,
+      "sha256": "7bfe7537c5c865762d4f7597d92579db381cd4f6d3a91080aa6da9a90197e57f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/assembly_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/assembly_sources.c",
+      "bytes": 35784,
+      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/boundary_policy.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/boundary_policy.c",
+      "bytes": 162,
+      "sha256": "444b78261b8e52b0476bb065d04aaade5664379a55140c88054b4570701e73b6"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-collection-control-feature-evaluation-order.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-collection-control-feature-evaluation-order.c",
+      "bytes": 12677,
+      "sha256": "23880bc11b96f3cfedef7c8f99b644481dbdbb7533adddedfd84e8009ab9b686"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-collection-control-second-feature-edge.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-collection-control-second-feature-edge.c",
+      "bytes": 12686,
+      "sha256": "a24ea7b0db52593ca7ef3ff17b1a9d8b1ec75413016a48281d3ec14b74b62aba"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-collection-control-second-feature-kind.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-collection-control-second-feature-kind.c",
+      "bytes": 12716,
+      "sha256": "9befdceef8dff2c52fc04b78c9769cb9bfd878c9076104977db482d39c7515a1"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-duplicate-earliest-order.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-duplicate-earliest-order.c",
+      "bytes": 19570,
+      "sha256": "a4dd8c3525c3b6e5312d0ccc95c29ac6e8abf6be9cc36ee837f9278ae85a8b1a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-duplicate-last-order.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-duplicate-last-order.c",
+      "bytes": 19592,
+      "sha256": "d885fc2b44afc628f7807e30c1d338a7246f743013c1ca2fc0771a3cb005d62d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-failure-count.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-failure-count.c",
+      "bytes": 12685,
+      "sha256": "cd26ee33a4a4412dfa9af499436801deab0cc8d731d7c377ac650679c02111dc"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-feature-edge.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-feature-edge.c",
+      "bytes": 12677,
+      "sha256": "bce5fb996f11b9ab108a75cbd1fe4d9d29ceed3b4e49417781150a45cfcdb28c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-hidden-coordinates.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-hidden-coordinates.c",
+      "bytes": 12686,
+      "sha256": "627a2b165138ebe107452d89fc1efa71e4df8fdd92fec0e84f867a01a927adb4"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-placement-order.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-placement-order.c",
+      "bytes": 19559,
+      "sha256": "fd21ed18a3386037c56a706f02f708897209af522157fd08b0c544157ca3bf00"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-policy-bypass.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-policy-bypass.c",
+      "bytes": 12592,
+      "sha256": "d96cbd0aee8795f501005369f8c1d928b1066b8e9b12b743d6877fff2b1e63c8"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-query-reuse.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-source-control-query-reuse.c",
+      "bytes": 12678,
+      "sha256": "e07efdc564992dcde07a9344b6b324fab3d548b57cc269762b658b990cf21d08"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-sources-client.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-sources-client.c",
+      "bytes": 30015,
+      "sha256": "8b80563061ee0c68c6e421953d3d4881574e4a6a2acb5c24413477171878150f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-sources-instrumented.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact-sources-instrumented.c",
+      "bytes": 12676,
+      "sha256": "9a4bf61bc61976ebf2f22f70a2a2dd16e7e8db541d7ea7715c9e12a3abb3ef8c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact_sources.c",
+      "bytes": 12554,
+      "sha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact_world.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contact_world.c",
+      "bytes": 19570,
+      "sha256": "f29c84d01792428abd1c81e5cb1eefc5870c3d013a4698dd2cf64471c6dce8b5"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contacts.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/contacts.c",
+      "bytes": 3301,
+      "sha256": "a2167cee8144056c8868401d1ea422d11de2cd8fd210ba643f06d6a4b6394c80"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/cut_list.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/cut_list.c",
+      "bytes": 1562,
+      "sha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/definition_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/definition_sources.c",
+      "bytes": 17633,
+      "sha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/derived_placement.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/derived_placement.c",
+      "bytes": 18770,
+      "sha256": "f593f27b6fd4910175990f8742c37ebc331c27c5dc8ea21dd280ed538eb0055c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/engineering.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/engineering.c",
+      "bytes": 44177,
+      "sha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/engineering_operations.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/engineering_operations.c",
+      "bytes": 7119,
+      "sha256": "4154e53ba181f2f60a3fb626851e937810ddd9b5ab4766e48ebffc2734fad7b9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/engineering_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/engineering_sources.c",
+      "bytes": 34395,
+      "sha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/finish.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/finish.c",
+      "bytes": 28866,
+      "sha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/finish_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/finish_sources.c",
+      "bytes": 41066,
+      "sha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/grid_application.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/grid_application.c",
+      "bytes": 34339,
+      "sha256": "5491ab487d1af58d3ad007450bb09c098f1b1a87f2bff1872329fa91813b511e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/grid_cells.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/grid_cells.c",
+      "bytes": 19552,
+      "sha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/grid_definition_codec.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/grid_definition_codec.c",
+      "bytes": 17281,
+      "sha256": "f6a27601450f1452977a9b42628f409c694bcf0397db6bcf80e3fad0d7c38387"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/grid_rules.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/grid_rules.c",
+      "bytes": 13805,
+      "sha256": "c42441ad543775cc34886f629834e428120df7564654cf98fcbfa9da3a50b298"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/grid_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/grid_sources.c",
+      "bytes": 44570,
+      "sha256": "414f39a8629a4fc5ea005bc7c606d460caf8fb89dc82afd5199f79b6bc7083b9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/member_declaration.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/member_declaration.c",
+      "bytes": 2335,
+      "sha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/member_reference.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/member_reference.c",
+      "bytes": 34169,
+      "sha256": "003675f6ddb3f679ec5444f49af3103321ed235d0c5106bc5448bf40778db28e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/members.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/members.c",
+      "bytes": 3533,
+      "sha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/panel_layout.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/panel_layout.c",
+      "bytes": 5350,
+      "sha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/panel_support.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/panel_support.c",
+      "bytes": 7069,
+      "sha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/section_profile.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/section_profile.c",
+      "bytes": 24441,
+      "sha256": "a0fa9004ea689b0f4964dbe90f1ff80d0c968dde7e166993d675659ecfeec55d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/section_profile_sources.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/section_profile_sources.c",
+      "bytes": 29307,
+      "sha256": "9c2b35639e1686c812285b248343717a431023cd02e4eeb3f2e0763d7425a12a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/supports.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/supports.c",
+      "bytes": 4658,
+      "sha256": "1f3c8bfb51c86024b67b0af90f8c381fa38c8babb1cd1956b1cc4a7f022d0775"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/world_validation.c",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg/compiled-source/isolated-woodworking/native/world_validation.c",
+      "bytes": 8084,
+      "sha256": "ea62a9fcc8f6ef5ccf9faa1f419617118b8904f25a4f743440c2f6132ccf4096"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/geo261-n1a-g4ftw3mg-build-log.json",
+      "archive_path": "suite-raw/contact-sources/compile-retention/geo261-n1a-g4ftw3mg-build-log.json",
+      "bytes": 116425,
+      "sha256": "2243dccbbbc5a40d6fb67673d907dae4efe589a9aafe053da872c54c2867de21"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/compile-retention/retention.json",
+      "archive_path": "suite-raw/contact-sources/compile-retention/retention.json",
+      "bytes": 30749,
+      "sha256": "60a581a8d84ebd5eb04843f75d7df55aaf4b751dbfcb170207c8d00cb74632bf"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/native-executions.jsonl",
+      "archive_path": "suite-raw/contact-sources/native-executions.jsonl",
+      "bytes": 57745,
+      "sha256": "15589e9d7062039f949fd789dccf606f0091c55e8721d241eb1c49f236e7c954"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/contact-sources/receipt.json",
+      "archive_path": "suite-raw/contact-sources/receipt.json",
+      "bytes": 2984,
+      "sha256": "61742ce974da7a0f7b1b0a3c8200b97429f010541e3e31531ad9da740a5a5042"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/launch-request.json",
+      "archive_path": "suite-raw/launch-request.json",
+      "bytes": 966,
+      "sha256": "3272cf4423e86cabfeeaef2162db300af87f06472d9644cbe933336733babfdd"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/codec-client.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/codec-client.c",
+      "bytes": 2857,
+      "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/exact-client.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/exact-client.c",
+      "bytes": 919,
+      "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/geo318-host-baseline/tests/geo318_host_boundary_ends_harness.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/geo318-host-baseline/tests/geo318_host_boundary_ends_harness.c",
+      "bytes": 2550,
+      "sha256": "9be7d93e8c796f04e2b324cdb55b4cf2eeed12f28d1ddeb99f60c0a5691dee6e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/geo318-host-withdrawn/tests/geo318_host_boundary_ends_harness.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/geo318-host-withdrawn/tests/geo318_host_boundary_ends_harness.c",
+      "bytes": 2551,
+      "sha256": "4dc62de942597c4fb3c9e40381769c43f44a32f79e7b3632a9127f2c555f8912"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-host/app_candidate.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-host/app_candidate.c",
+      "bytes": 8674,
+      "sha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-host/history.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-host/history.c",
+      "bytes": 3945,
+      "sha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/candidate.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/candidate.c",
+      "bytes": 12611,
+      "sha256": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/clip.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/clip.c",
+      "bytes": 7551,
+      "sha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/codec.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/codec.c",
+      "bytes": 23308,
+      "sha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/datums.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/datums.c",
+      "bytes": 4222,
+      "sha256": "f5d385df8d01b9d4399371ecd0dc02dfbe2ae0c62c988262ef5cd990676e065d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/document.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/document.c",
+      "bytes": 2636,
+      "sha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/enclosure.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/enclosure.c",
+      "bytes": 7871,
+      "sha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/enclosure_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/enclosure_sources.c",
+      "bytes": 17213,
+      "sha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/exact.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/exact.c",
+      "bytes": 3243,
+      "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/geometry.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/geometry.c",
+      "bytes": 29994,
+      "sha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/grid.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/grid.c",
+      "bytes": 8062,
+      "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/grid_store.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/grid_store.c",
+      "bytes": 24010,
+      "sha256": "89da92935c8e4765b54a83b06fb3157bdfcde74410a7edd8cf74ed87652dea5d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/guides.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/guides.c",
+      "bytes": 6022,
+      "sha256": "1548a5f72bf3e9904a64c871d2658409aab300786af598e7ca69a4fb82e4897e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/linear.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/linear.c",
+      "bytes": 4333,
+      "sha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/linear_definition_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/linear_definition_sources.c",
+      "bytes": 11033,
+      "sha256": "acc6312b9d438f0ef1e705e1b977e2ce8ad6ca2853248636eb241f40aab62266"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/named_values.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/named_values.c",
+      "bytes": 2105,
+      "sha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/parameter_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/parameter_sources.c",
+      "bytes": 21934,
+      "sha256": "60908674f3b6a6a820ef60279964a9862ea99e64db4c75478cbb0b63def8edd9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/parameters.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/parameters.c",
+      "bytes": 18594,
+      "sha256": "d4e0f6402ef38e82e4192250cbe7617668ec7c0d210fc531d0410e2cb93eda94"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/placement_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/placement_sources.c",
+      "bytes": 16248,
+      "sha256": "45e754f4260e15679797b8f44c8c6a25132b199d47a7239da1e2045a8a814c31"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/placements.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/placements.c",
+      "bytes": 10229,
+      "sha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/region_key_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/region_key_sources.c",
+      "bytes": 9853,
+      "sha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/regions.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/regions.c",
+      "bytes": 11576,
+      "sha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/source.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/source.c",
+      "bytes": 16890,
+      "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/version_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/version_sources.c",
+      "bytes": 11550,
+      "sha256": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/versions.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-kernel/versions.c",
+      "bytes": 14772,
+      "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/assembly.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/assembly.c",
+      "bytes": 42150,
+      "sha256": "7bfe7537c5c865762d4f7597d92579db381cd4f6d3a91080aa6da9a90197e57f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/assembly_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/assembly_sources.c",
+      "bytes": 35784,
+      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/boundary_policy.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/boundary_policy.c",
+      "bytes": 162,
+      "sha256": "444b78261b8e52b0476bb065d04aaade5664379a55140c88054b4570701e73b6"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/contact_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/contact_sources.c",
+      "bytes": 12554,
+      "sha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/contact_world.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/contact_world.c",
+      "bytes": 19570,
+      "sha256": "f29c84d01792428abd1c81e5cb1eefc5870c3d013a4698dd2cf64471c6dce8b5"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/contacts.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/contacts.c",
+      "bytes": 3301,
+      "sha256": "a2167cee8144056c8868401d1ea422d11de2cd8fd210ba643f06d6a4b6394c80"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/cut_list.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/cut_list.c",
+      "bytes": 1562,
+      "sha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/definition_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/definition_sources.c",
+      "bytes": 17633,
+      "sha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/derived_placement.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/derived_placement.c",
+      "bytes": 18770,
+      "sha256": "f593f27b6fd4910175990f8742c37ebc331c27c5dc8ea21dd280ed538eb0055c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/engineering.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/engineering.c",
+      "bytes": 44177,
+      "sha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/engineering_operations.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/engineering_operations.c",
+      "bytes": 7119,
+      "sha256": "4154e53ba181f2f60a3fb626851e937810ddd9b5ab4766e48ebffc2734fad7b9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/engineering_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/engineering_sources.c",
+      "bytes": 34395,
+      "sha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/finish.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/finish.c",
+      "bytes": 28866,
+      "sha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/finish_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/finish_sources.c",
+      "bytes": 41066,
+      "sha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-between-required-source.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-between-required-source.c",
+      "bytes": 34169,
+      "sha256": "a1b84b97ede17ab362e2e9a3ce0367b64c372e5b2e08394a6780bc2d5d46662e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-boundary-ends-client.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-boundary-ends-client.c",
+      "bytes": 13643,
+      "sha256": "ea4e2cd6a4aea53d8005768dd6a96ba02d931730b6fd19e76a28f7f792c03aab"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-collector-partial.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-collector-partial.c",
+      "bytes": 19539,
+      "sha256": "60b73c770d490146f08af6ea2bd23b70984d32c6621f1ce08bd38797771ddd8f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-contact-side.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-contact-side.c",
+      "bytes": 19545,
+      "sha256": "ca780d9a1b6f2482c0aa38224ded3921d06b1849da15bb913c3fa2c27c5794d5"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-i19-refusal-code.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-i19-refusal-code.c",
+      "bytes": 34172,
+      "sha256": "839e908644ac4a0eb858641666b934539883015a34a8b9bb1833ef8620727ab9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-partial-admission.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-partial-admission.c",
+      "bytes": 19571,
+      "sha256": "c12742fd667bc0fed530d0892615771f9ae8560a9b4305288d61eed35c116f9b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-rc-lining.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-rc-lining.c",
+      "bytes": 19558,
+      "sha256": "1c4d99339d53fe12445c229f18e77243e69f0cb75de89a08ce1657c7c46d15a7"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-real-rc-plane.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-real-rc-plane.c",
+      "bytes": 19540,
+      "sha256": "6fc45cf38d8a067fc7076e003501439c9bb2e11c9411e27a52ab62a206727d1e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-real-rc-width.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-real-rc-width.c",
+      "bytes": 19569,
+      "sha256": "3bcd4278a4c685f3ac237f97303f34214bd48bec5ecef1d5b5ce6bcb02454b61"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-revalidate-partial.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-revalidate-partial.c",
+      "bytes": 8053,
+      "sha256": "ff6a76c82708ae650a48ef04b8bf3560bd44a8bb2face2357c5f4be8ba260257"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-revalidate-still-collides.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-revalidate-still-collides.c",
+      "bytes": 8087,
+      "sha256": "9d657aa9b494ddff8daa3bff8fb22346083beda7b091918b06e91c39f28c1393"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-span-partial.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/geo318-span-partial.c",
+      "bytes": 34138,
+      "sha256": "f328d52217b3938ba7b0449341104701e4734b6505a4b91856a602d92d34c747"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/grid_application.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/grid_application.c",
+      "bytes": 34339,
+      "sha256": "5491ab487d1af58d3ad007450bb09c098f1b1a87f2bff1872329fa91813b511e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/grid_cells.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/grid_cells.c",
+      "bytes": 19552,
+      "sha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/grid_definition_codec.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/grid_definition_codec.c",
+      "bytes": 17281,
+      "sha256": "f6a27601450f1452977a9b42628f409c694bcf0397db6bcf80e3fad0d7c38387"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/grid_rules.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/grid_rules.c",
+      "bytes": 13805,
+      "sha256": "c42441ad543775cc34886f629834e428120df7564654cf98fcbfa9da3a50b298"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/grid_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/grid_sources.c",
+      "bytes": 44570,
+      "sha256": "414f39a8629a4fc5ea005bc7c606d460caf8fb89dc82afd5199f79b6bc7083b9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/member_declaration.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/member_declaration.c",
+      "bytes": 2335,
+      "sha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/member_reference.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/member_reference.c",
+      "bytes": 34169,
+      "sha256": "003675f6ddb3f679ec5444f49af3103321ed235d0c5106bc5448bf40778db28e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/members.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/members.c",
+      "bytes": 3533,
+      "sha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/panel_layout.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/panel_layout.c",
+      "bytes": 5350,
+      "sha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/panel_support.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/panel_support.c",
+      "bytes": 7069,
+      "sha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/section_profile.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/section_profile.c",
+      "bytes": 24441,
+      "sha256": "a0fa9004ea689b0f4964dbe90f1ff80d0c968dde7e166993d675659ecfeec55d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/section_profile_sources.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/section_profile_sources.c",
+      "bytes": 29307,
+      "sha256": "9c2b35639e1686c812285b248343717a431023cd02e4eeb3f2e0763d7425a12a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/supports.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/supports.c",
+      "bytes": 4658,
+      "sha256": "1f3c8bfb51c86024b67b0af90f8c381fa38c8babb1cd1956b1cc4a7f022d0775"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/world_validation.c",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby/compiled-source/isolated-woodworking/native/world_validation.c",
+      "bytes": 8084,
+      "sha256": "ea62a9fcc8f6ef5ccf9faa1f419617118b8904f25a4f743440c2f6132ccf4096"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/geo261-n1a-xqx6rkby-build-log.json",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/geo261-n1a-xqx6rkby-build-log.json",
+      "bytes": 237434,
+      "sha256": "ee77e3c2e18294e2e015ed81375ba6d54f1a33e170dcd3dd03599b2fb716dddf"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/compile-retention/retention.json",
+      "archive_path": "suite-raw/reading-a-native/compile-retention/retention.json",
+      "bytes": 30913,
+      "sha256": "421ba15dc659bbe2da6369da1be12e0baa014c4bcb8218134a6b98c049480543"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-baseline/original/current_geometry.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-baseline/original/current_geometry.c",
+      "bytes": 401655,
+      "sha256": "05c05a8028efe7723a552154e2db2e52223c2e4c00d5875540e1e58f9076fbca"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-baseline/original/geometry-core/references.inc",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-baseline/original/geometry-core/references.inc",
+      "bytes": 64355,
+      "sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-baseline/original/geometry-web/web_bridge.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-baseline/original/geometry-web/web_bridge.c",
+      "bytes": 52474,
+      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-baseline/original/tests/geo318_host_boundary_ends_harness.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-baseline/original/tests/geo318_host_boundary_ends_harness.c",
+      "bytes": 2457,
+      "sha256": "7be44712ef7283b559d5f18070dc439f07f9493816e37d1cfaae0588d17f5160"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-baseline/relocated/current_geometry.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-baseline/relocated/current_geometry.c",
+      "bytes": 392797,
+      "sha256": "4fe2798480e086be24370805475c453376e8064a321d3505b3b31d358c46c3e5"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-baseline/relocated/geometry-core/references.inc",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-baseline/relocated/geometry-core/references.inc",
+      "bytes": 64417,
+      "sha256": "2cfc76b11f3c8550698dce116d8eef6da6a8a3042fe00e85d62189573bedb95e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-baseline/relocated/geometry-web/web_bridge.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-baseline/relocated/geometry-web/web_bridge.c",
+      "bytes": 53084,
+      "sha256": "b7e2485a3ee7ccbf6794983d343114cdd8a916225107e151be1a2fb64278406c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-baseline/relocated/tests/geo318_host_boundary_ends_harness.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-baseline/relocated/tests/geo318_host_boundary_ends_harness.c",
+      "bytes": 2550,
+      "sha256": "9be7d93e8c796f04e2b324cdb55b4cf2eeed12f28d1ddeb99f60c0a5691dee6e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-baseline/source-manifest.json",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-baseline/source-manifest.json",
+      "bytes": 3371,
+      "sha256": "86d08112e561ebc644a47ee4c58a2d8030300d4c3fd5f827ffea13f8e2e32018"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-withdrawn/original/current_geometry.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-withdrawn/original/current_geometry.c",
+      "bytes": 401655,
+      "sha256": "05c05a8028efe7723a552154e2db2e52223c2e4c00d5875540e1e58f9076fbca"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-withdrawn/original/geometry-core/references.inc",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-withdrawn/original/geometry-core/references.inc",
+      "bytes": 64355,
+      "sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-withdrawn/original/geometry-web/web_bridge.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-withdrawn/original/geometry-web/web_bridge.c",
+      "bytes": 52474,
+      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-withdrawn/original/tests/geo318_host_boundary_ends_harness.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-withdrawn/original/tests/geo318_host_boundary_ends_harness.c",
+      "bytes": 2457,
+      "sha256": "7be44712ef7283b559d5f18070dc439f07f9493816e37d1cfaae0588d17f5160"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-withdrawn/relocated/current_geometry.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-withdrawn/relocated/current_geometry.c",
+      "bytes": 392798,
+      "sha256": "5bdf3318347194ebd0619caed81e29e9d6f1ed60a8b3e4d2709570491a6a8fac"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-withdrawn/relocated/geometry-core/references.inc",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-withdrawn/relocated/geometry-core/references.inc",
+      "bytes": 64371,
+      "sha256": "2ed5e34b91192fc056226ac56bf435dab38d32d0e76db80a9bd4d64d32391264"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-withdrawn/relocated/geometry-web/web_bridge.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-withdrawn/relocated/geometry-web/web_bridge.c",
+      "bytes": 53085,
+      "sha256": "0426ca63bf2a85a94e00238d2f5912ce0d9da503d579d22675fc5506e16f5c1a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-withdrawn/relocated/tests/geo318_host_boundary_ends_harness.c",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-withdrawn/relocated/tests/geo318_host_boundary_ends_harness.c",
+      "bytes": 2551,
+      "sha256": "4dc62de942597c4fb3c9e40381769c43f44a32f79e7b3632a9127f2c555f8912"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/host-source-artifacts/host-withdrawn/source-manifest.json",
+      "archive_path": "suite-raw/reading-a-native/host-source-artifacts/host-withdrawn/source-manifest.json",
+      "bytes": 3374,
+      "sha256": "3efef9de2f889b6d94a3512c54fe26f9fe4347834c806ca5315ab3fbab1b1447"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/native-executions.jsonl",
+      "archive_path": "suite-raw/reading-a-native/native-executions.jsonl",
+      "bytes": 58626,
+      "sha256": "c0f41e42a60b758eb11914cc310f41156d6bf9109bc2119520db3f098e693147"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/reading-a-native/receipt.json",
+      "archive_path": "suite-raw/reading-a-native/receipt.json",
+      "bytes": 2998,
+      "sha256": "0e7281f72e27805f20efb9d23a3be2757766667134edc2cb30794c2e5145da54"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/receipt.json",
+      "archive_path": "suite-raw/receipt.json",
+      "bytes": 40834,
+      "sha256": "4d1662ff4d252d47092f1350899fdee5d858c4c70ebc6a616bd3b25da33e727d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000001/request.json",
+      "archive_path": "suite-raw/subcommands/000001/request.json",
+      "bytes": 1483,
+      "sha256": "957d49b6fa7e7c9f62433019e74713e8e2553d799d846f3da99cbff742d2d2d7"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000001/result.json",
+      "archive_path": "suite-raw/subcommands/000001/result.json",
+      "bytes": 1735,
+      "sha256": "951c76c1b136ccd7103d87b7e57136645ac69831400254eb3df42a9a2bb5a244"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000001/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000001/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000001/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000001/stdout.bin",
+      "bytes": 189,
+      "sha256": "08b1eb76f07189b584999f342d50013dda970688603c55e697265c8c07736887"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000002/request.json",
+      "archive_path": "suite-raw/subcommands/000002/request.json",
+      "bytes": 1491,
+      "sha256": "02ebde67342d12c411c7140bd16353fc2cf30135f110e93ee7aeef6509f105f0"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000002/result.json",
+      "archive_path": "suite-raw/subcommands/000002/result.json",
+      "bytes": 1742,
+      "sha256": "1eead3e6ffc2ce7ecc9307cbc15acdfe4180d4171943a3776cc608a099bd37ee"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000002/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000002/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000002/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000002/stdout.bin",
+      "bytes": 82,
+      "sha256": "d7e5da71e194af17ca9d525a8777cb57632e3f49cded85af4282400793f0956d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000003/request.json",
+      "archive_path": "suite-raw/subcommands/000003/request.json",
+      "bytes": 1508,
+      "sha256": "7ebf2ed29bf0278a070e28b147e26456ef9addffde738a3d2d9eb4cef13aedb7"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000003/result.json",
+      "archive_path": "suite-raw/subcommands/000003/result.json",
+      "bytes": 1758,
+      "sha256": "8f7b2a37b7cc95bc3e7ea6554df93844e0dfa863f1480b90563d14dd76b682aa"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000003/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000003/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000003/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000004/request.json",
+      "archive_path": "suite-raw/subcommands/000004/request.json",
+      "bytes": 1474,
+      "sha256": "867792dd483dc2895bd27851b8eb8af780755069a749d62e5898776e5c18cdb8"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000004/result.json",
+      "archive_path": "suite-raw/subcommands/000004/result.json",
+      "bytes": 1730,
+      "sha256": "7ee4c31b6e4b9685f6d6efd826d8a6b52762e8761a406f21fa33fad6f37d0d88"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000004/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000004/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000004/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000004/stdout.bin",
+      "bytes": 4250759,
+      "sha256": "69858e0641927c12ba555f00a7aff370e9394885a4d3997d37418e35f7e62554"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000005/request.json",
+      "archive_path": "suite-raw/subcommands/000005/request.json",
+      "bytes": 1619,
+      "sha256": "240ce5985731a725c0abf145c18f2ac61b3e8fb160308e81e0a60cefd516c501"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000005/result.json",
+      "archive_path": "suite-raw/subcommands/000005/result.json",
+      "bytes": 1871,
+      "sha256": "f669ae292e5735df526c52127fec673978b09e539acdeaa86b247f4c55315a72"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000005/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000005/stderr.bin",
+      "bytes": 233,
+      "sha256": "8e09f0b8ea8279a197d5a3ec00c15d6c3979c58899a8c391ee43dca9d158a598"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000005/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000005/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000006/request.json",
+      "archive_path": "suite-raw/subcommands/000006/request.json",
+      "bytes": 1491,
+      "sha256": "40cb0fc9a690703199951fc7e86a9a396204cee4f6340fd0a999cca51bd044d7"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000006/result.json",
+      "archive_path": "suite-raw/subcommands/000006/result.json",
+      "bytes": 1741,
+      "sha256": "203006801cdb39b85d7091e2f3bd3149f7b1f2edfae3aa4f320bc499de24b249"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000006/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000006/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000006/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000006/stdout.bin",
+      "bytes": 82,
+      "sha256": "3d1c95ea2ad02d6ef726cc6ac9ed0ab7c7f5d9829922d818099ab630b9d9259e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000007/request.json",
+      "archive_path": "suite-raw/subcommands/000007/request.json",
+      "bytes": 1508,
+      "sha256": "c272dcbb4f7453468716b0064889a08f3af68a602f805b37e51d77825056a537"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000007/result.json",
+      "archive_path": "suite-raw/subcommands/000007/result.json",
+      "bytes": 1758,
+      "sha256": "1b683a495342245d61f7b138ff23db2139eb85d755b21243d78079a310c34ed6"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000007/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000007/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000007/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000008/request.json",
+      "archive_path": "suite-raw/subcommands/000008/request.json",
+      "bytes": 1473,
+      "sha256": "7e906b032d20ee5b45b5fc5f6136da69292ded348cffc91c9d2c6a60cb9ec4cb"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000008/result.json",
+      "archive_path": "suite-raw/subcommands/000008/result.json",
+      "bytes": 1729,
+      "sha256": "8ad9a9a1a4c298c2e3c397145808c8ed4577484015eff5e2f71a0521a05887b4"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000008/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000008/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000008/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000008/stdout.bin",
+      "bytes": 4267460,
+      "sha256": "3077bcccf90ddb875e786956e41f8e0f97e17bf24d5543d4f81130325e88db55"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000009/request.json",
+      "archive_path": "suite-raw/subcommands/000009/request.json",
+      "bytes": 1742,
+      "sha256": "c5fbd03588f45e4a93ecbd7e38579d530151f1c6f30110a6edd0277498962570"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000009/result.json",
+      "archive_path": "suite-raw/subcommands/000009/result.json",
+      "bytes": 1995,
+      "sha256": "ad00c459a0a9765946bb29f15f027d5743909f9ace1a29f9210564be6a423ace"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000009/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000009/stderr.bin",
+      "bytes": 1897,
+      "sha256": "8ae78aa7cb8af0d61b2e535f40e1508c588cb5575fed51bb6a31e7ca6c922f78"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000009/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000009/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000010/request.json",
+      "archive_path": "suite-raw/subcommands/000010/request.json",
+      "bytes": 1748,
+      "sha256": "3e50626ad40902dd968c1b3edba7e0c4f84d39d1e79c645198ac686e88bb58c9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000010/result.json",
+      "archive_path": "suite-raw/subcommands/000010/result.json",
+      "bytes": 2001,
+      "sha256": "4d5fc8a4df7f78e7f2262ff4e0467e542d045b5217aa5067736e7668b7b6aa2b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000010/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000010/stderr.bin",
+      "bytes": 2922,
+      "sha256": "ec0bfa66f934fada7115d81583ae1cebd37deca4973284e8901c3fa9da658e3e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000010/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000010/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000010/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000011/request.json",
+      "archive_path": "suite-raw/subcommands/000011/request.json",
+      "bytes": 1751,
+      "sha256": "f9d493b5b3a48905498706c634eba6ed8afc58b13c2c71cb30d4206e3e02236c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000011/result.json",
+      "archive_path": "suite-raw/subcommands/000011/result.json",
+      "bytes": 2007,
+      "sha256": "8beb997e15e970e5f2bb999a1cbd6afd71114efeb04c8124bb13db8d6e45191a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000011/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000011/stderr.bin",
+      "bytes": 1277,
+      "sha256": "abbfa763117d2306b8354074c1b8da0f71f61d16a92e67041ce01533867526f6"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000011/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000011/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000011/stdout.bin",
+      "bytes": 6261,
+      "sha256": "9337820ac7865630bc0fc85226b0a4563d691ad5429debcfac72cfb10bdb542b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000012/request.json",
+      "archive_path": "suite-raw/subcommands/000012/request.json",
+      "bytes": 1491,
+      "sha256": "beef92e7546316ee26d21cbd2c52f03350fc962287ede2b4cb1c23cfb45f7c13"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000012/result.json",
+      "archive_path": "suite-raw/subcommands/000012/result.json",
+      "bytes": 1742,
+      "sha256": "1c079eefa3233761c094776b2ab128c98e7c691ff3972315c47aa23f57d8d7b5"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000012/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000012/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000012/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000012/stdout.bin",
+      "bytes": 82,
+      "sha256": "3d1c95ea2ad02d6ef726cc6ac9ed0ab7c7f5d9829922d818099ab630b9d9259e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000013/request.json",
+      "archive_path": "suite-raw/subcommands/000013/request.json",
+      "bytes": 1507,
+      "sha256": "69f597d98808fe40334ca238b398a198a87d2f3b12cabc4dde122bc9be237b7c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000013/result.json",
+      "archive_path": "suite-raw/subcommands/000013/result.json",
+      "bytes": 1757,
+      "sha256": "4a27b99290b6d5a11c71e678268f997ad186880e4484ba85de9dc831a39daba3"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000013/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000013/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000013/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000013/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000014/request.json",
+      "archive_path": "suite-raw/subcommands/000014/request.json",
+      "bytes": 1474,
+      "sha256": "66e8fcf6173c2b12c86d648a239eaab1209cbfb8769a7087e9cb95d71b779cee"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000014/result.json",
+      "archive_path": "suite-raw/subcommands/000014/result.json",
+      "bytes": 1730,
+      "sha256": "0dd3330021bc2d3176232f38a3478fc2882d05b5e08e0f65415b6affb457ff80"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000014/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000014/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000014/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000014/stdout.bin",
+      "bytes": 4267460,
+      "sha256": "3077bcccf90ddb875e786956e41f8e0f97e17bf24d5543d4f81130325e88db55"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000015/request.json",
+      "archive_path": "suite-raw/subcommands/000015/request.json",
+      "bytes": 1483,
+      "sha256": "a38d277b9501b0eb269ca9dabf53741ecadfad16aab069f4c0b004f2dcb1656c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000015/result.json",
+      "archive_path": "suite-raw/subcommands/000015/result.json",
+      "bytes": 1734,
+      "sha256": "acace4feec222ac6226f04d43f5ec48e9286511b882f26c48e9b76ca4b8834d1"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000015/stderr.bin",
+      "archive_path": "suite-raw/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000015/stdin.bin",
+      "archive_path": "suite-raw/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands/000015/stdout.bin",
+      "archive_path": "suite-raw/subcommands/000015/stdout.bin",
+      "bytes": 189,
+      "sha256": "835d5ba2b4e17292fa5227541a881b9d8e5d4ba4617e6519018d39b2321d459b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/subcommands.json",
+      "archive_path": "suite-raw/subcommands.json",
+      "bytes": 28320,
+      "sha256": "78a18c4a9b64c651a7b6d87de36de032eedde0db511e3db75d42e254e022fb4d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/codec-client.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/codec-client.c",
+      "bytes": 2857,
+      "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/exact-client.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/exact-client.c",
+      "bytes": 919,
+      "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-host/app_candidate.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-host/app_candidate.c",
+      "bytes": 8674,
+      "sha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-host/history.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-host/history.c",
+      "bytes": 3945,
+      "sha256": "58e8ca05ba41959c9d5144149354a9d06940cf9c3c2ffba83d15a9229d3e3595"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/candidate.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/candidate.c",
+      "bytes": 12611,
+      "sha256": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/clip.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/clip.c",
+      "bytes": 7551,
+      "sha256": "c40ca01c4cbde0d88647c28a588aaa80ac922689fc8e152bac162a39db5c12ea"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/codec.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/codec.c",
+      "bytes": 23308,
+      "sha256": "bde1ca8c6e9c1973f6a4e30afe77b4922c1803581bd2ec9ef39ee6bd340e448a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/datums.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/datums.c",
+      "bytes": 4222,
+      "sha256": "f5d385df8d01b9d4399371ecd0dc02dfbe2ae0c62c988262ef5cd990676e065d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/document.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/document.c",
+      "bytes": 2636,
+      "sha256": "eadfa918e209ac8949909911cc7648250b5c1f27e4310008f06f46b62315c0c1"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/enclosure.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/enclosure.c",
+      "bytes": 7871,
+      "sha256": "78f0409c342f0af3dcd9703055b63deaf5ae9606ab88d949191fb67df655ff77"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/enclosure_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/enclosure_sources.c",
+      "bytes": 17213,
+      "sha256": "dbe7a9f01d77215895baec6e3d463953b4cab1d4c0a3cd591c2aa55f757abf68"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/exact.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/exact.c",
+      "bytes": 3243,
+      "sha256": "4091d2100fc953f08bc2ea66de18503e6ed87e725a952ec14318779af9fd3cbf"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/geometry.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/geometry.c",
+      "bytes": 29994,
+      "sha256": "67025ac086dd48a5f9564d0122198de34589db4701109388d378586fd337dc00"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/grid.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/grid.c",
+      "bytes": 8062,
+      "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/grid_store.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/grid_store.c",
+      "bytes": 24010,
+      "sha256": "89da92935c8e4765b54a83b06fb3157bdfcde74410a7edd8cf74ed87652dea5d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/guides.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/guides.c",
+      "bytes": 6022,
+      "sha256": "1548a5f72bf3e9904a64c871d2658409aab300786af598e7ca69a4fb82e4897e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/linear.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/linear.c",
+      "bytes": 4333,
+      "sha256": "cecc726b5a69fe060abcee4e708cb804c696dbab69994c2967dd1fc02023e86c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/linear_definition_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/linear_definition_sources.c",
+      "bytes": 11033,
+      "sha256": "acc6312b9d438f0ef1e705e1b977e2ce8ad6ca2853248636eb241f40aab62266"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/named_values.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/named_values.c",
+      "bytes": 2105,
+      "sha256": "651a932efedc94e2729e402ba3ee0cf50a731b1d741a546c5dec87815fd357d1"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/parameter_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/parameter_sources.c",
+      "bytes": 21934,
+      "sha256": "60908674f3b6a6a820ef60279964a9862ea99e64db4c75478cbb0b63def8edd9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/parameters.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/parameters.c",
+      "bytes": 18594,
+      "sha256": "d4e0f6402ef38e82e4192250cbe7617668ec7c0d210fc531d0410e2cb93eda94"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/placement_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/placement_sources.c",
+      "bytes": 16248,
+      "sha256": "45e754f4260e15679797b8f44c8c6a25132b199d47a7239da1e2045a8a814c31"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/placements.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/placements.c",
+      "bytes": 10229,
+      "sha256": "20524e1526e9d0bf82c75f07c74cd75d579e9625c868043b0028b1b1d83bc0b2"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/region_key_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/region_key_sources.c",
+      "bytes": 9853,
+      "sha256": "9a911b8d440e38298c1795c44677a3df0904f76dbc672aa112ced754fb47d77b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/regions.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/regions.c",
+      "bytes": 11576,
+      "sha256": "e2301dfd2f046da75c15764e045375b022713b3aadbbd37b8e8d0373ea6b8d59"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/source.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/source.c",
+      "bytes": 16890,
+      "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/version_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/version_sources.c",
+      "bytes": 11550,
+      "sha256": "0fc25f0def85da7d29f7e2a8547e769de3917f01f7c16280048c1ec869c41236"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/versions.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-kernel/versions.c",
+      "bytes": 14772,
+      "sha256": "f499860f308efb046b575497cff613b3a59b18b74eba8acc040c90a0f46ab632"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/assembly.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/assembly.c",
+      "bytes": 42150,
+      "sha256": "7bfe7537c5c865762d4f7597d92579db381cd4f6d3a91080aa6da9a90197e57f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/assembly_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/assembly_sources.c",
+      "bytes": 35784,
+      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/boundary_policy.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/boundary_policy.c",
+      "bytes": 162,
+      "sha256": "444b78261b8e52b0476bb065d04aaade5664379a55140c88054b4570701e73b6"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-client.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-client.c",
+      "bytes": 17709,
+      "sha256": "b7ed0204947ba40ab0a4b334865650a8d12a5d29998193c64b60769e00961b45"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-compact-active-only.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-compact-active-only.c",
+      "bytes": 19571,
+      "sha256": "ebc298e54b237fc02b532cb03300c748ebfc9b43358b3f83cd0f22ffb9c8dc41"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-compact-survivor-count.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-compact-survivor-count.c",
+      "bytes": 19558,
+      "sha256": "bbc177d58d906cd80414a126ea250b3859a5ebed1a83e2c3bd465e87f73b231a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-complete-footprint.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-complete-footprint.c",
+      "bytes": 19542,
+      "sha256": "14bc6b5b9b95c781a5e155cb2935bc2389e2e9ba8e385e28651a4f64683ac0b5"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-contact-shadow.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-contact-shadow.c",
+      "bytes": 19523,
+      "sha256": "181ba6594c276489a51fa814a9d434d6e17e6394117d1e737f874d00d2033525"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-dedup-full-coordinate.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-dedup-full-coordinate.c",
+      "bytes": 19590,
+      "sha256": "685cc7697285e4665e4abeeb43d4fbaa98aa6f6699567c404e0c1069eaa1bc7e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-dedup-strict-overlap.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-dedup-strict-overlap.c",
+      "bytes": 19533,
+      "sha256": "c085697644601aa89e19cc28ffa51adc44fdd7592c1a6b8d6c6c60f12b053b7f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-edge-index-output.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-edge-index-output.c",
+      "bytes": 19554,
+      "sha256": "9ed8dff48efb318bc86051807df998a1406c30536bacb225f3654e73ea163cff"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-end-order.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-end-order.c",
+      "bytes": 19571,
+      "sha256": "c4e3bd3d47726fb56f755d800ccf1b075de6ee59ade68d039b2e5b609e20bacf"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-equal-order-dedup.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-equal-order-dedup.c",
+      "bytes": 19571,
+      "sha256": "ad6e1f4e19fb95ea2623f7446ecff8820064f61c296a931e9250c0e417333dc5"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-extension-end.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-extension-end.c",
+      "bytes": 19556,
+      "sha256": "34e33304c884ec1f00b14fbf148d43f95ed5d92aa0989aff1bf1659533c524e6"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-fixed-inclusive.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-fixed-inclusive.c",
+      "bytes": 19568,
+      "sha256": "3cad0f6705acc6298b6e7da6fd8b99653caf889bc0564adf18d68de681b07c88"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-free-end.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-free-end.c",
+      "bytes": 19540,
+      "sha256": "15116ea342162b013d1e9ce90fdb98068be448667f1f588b3ef0852b291c12da"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-full-contact-width.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-full-contact-width.c",
+      "bytes": 19532,
+      "sha256": "0e31419cf7de53f6d4b4be23610250bcf04821a717af15a068c9a3e60da835ea"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-hole-component-index.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-hole-component-index.c",
+      "bytes": 19532,
+      "sha256": "76574d3aaa711bd91b0808df005dd082b5d617ca9e20d42c5be3f6d1756ce80d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-inactive-shadow.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-inactive-shadow.c",
+      "bytes": 19556,
+      "sha256": "ed9ccd3a9c4fd9891d3e638038b24f25eb04267869ab502445c4619a11bb59c6"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-outline-component-index.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-outline-component-index.c",
+      "bytes": 19536,
+      "sha256": "6806b47d3afb966fffcaaea21e9f19df28a27037c04aa51dffa5cdca2f04f44b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-owner-extension.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-owner-extension.c",
+      "bytes": 19550,
+      "sha256": "f23adada2b2f85af16c4c4b6421f8fb62f82f693610f5fe6953e88b2843377b8"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-owner-identity.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-owner-identity.c",
+      "bytes": 19578,
+      "sha256": "84aa6ed7cc1091e58f814573287cf6ba98a27b96074bbc0322138055a4b35b99"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-paired-capacity.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-paired-capacity.c",
+      "bytes": 19567,
+      "sha256": "8d113039cd5a18eafe389947b1c7e41c54735536c756b0e6113c6a72d6f4838d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-partial-shadow.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-partial-shadow.c",
+      "bytes": 19526,
+      "sha256": "75f7b764c2d48e41c7e38bee05507a5c13aafa79a694edd979bb55b795603ad2"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-placement-order.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-placement-order.c",
+      "bytes": 19559,
+      "sha256": "fd21ed18a3386037c56a706f02f708897209af522157fd08b0c544157ca3bf00"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-stable-ties.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-stable-ties.c",
+      "bytes": 19569,
+      "sha256": "9a76de93b4e6809d6a1b15e0c138403001e81714bc532ff19e619731ce3ecdc9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-stop-identity.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact-world-stop-identity.c",
+      "bytes": 19589,
+      "sha256": "fcec4f39510ba693b0754adb59d087fedde1bf258548d611db56838cda054db2"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact_sources.c",
+      "bytes": 12554,
+      "sha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact_world.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contact_world.c",
+      "bytes": 19570,
+      "sha256": "f29c84d01792428abd1c81e5cb1eefc5870c3d013a4698dd2cf64471c6dce8b5"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contacts.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/contacts.c",
+      "bytes": 3301,
+      "sha256": "a2167cee8144056c8868401d1ea422d11de2cd8fd210ba643f06d6a4b6394c80"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/cut_list.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/cut_list.c",
+      "bytes": 1562,
+      "sha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/definition_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/definition_sources.c",
+      "bytes": 17633,
+      "sha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/derived_placement.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/derived_placement.c",
+      "bytes": 18770,
+      "sha256": "f593f27b6fd4910175990f8742c37ebc331c27c5dc8ea21dd280ed538eb0055c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/engineering.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/engineering.c",
+      "bytes": 44177,
+      "sha256": "12ef9dbc7ebea84e4167a0792424842a86cccba37fc53e482ce3519b775d2c31"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/engineering_operations.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/engineering_operations.c",
+      "bytes": 7119,
+      "sha256": "4154e53ba181f2f60a3fb626851e937810ddd9b5ab4766e48ebffc2734fad7b9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/engineering_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/engineering_sources.c",
+      "bytes": 34395,
+      "sha256": "92a2a809fdbd4b4e6c39794b03fbf7355eeb5fe55cc28a7b26101fac532a1300"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/finish.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/finish.c",
+      "bytes": 28866,
+      "sha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/finish_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/finish_sources.c",
+      "bytes": 41066,
+      "sha256": "a69debfd1540fc7743f323b22d7eaecf017f8c59c3ca9368b2e4a89b8874568d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/grid_application.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/grid_application.c",
+      "bytes": 34339,
+      "sha256": "5491ab487d1af58d3ad007450bb09c098f1b1a87f2bff1872329fa91813b511e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/grid_cells.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/grid_cells.c",
+      "bytes": 19552,
+      "sha256": "578c8a1b64de7fbc9460e626811c0ecd11d8739efc87f2fadd923c956aaba434"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/grid_definition_codec.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/grid_definition_codec.c",
+      "bytes": 17281,
+      "sha256": "f6a27601450f1452977a9b42628f409c694bcf0397db6bcf80e3fad0d7c38387"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/grid_rules.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/grid_rules.c",
+      "bytes": 13805,
+      "sha256": "c42441ad543775cc34886f629834e428120df7564654cf98fcbfa9da3a50b298"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/grid_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/grid_sources.c",
+      "bytes": 44570,
+      "sha256": "414f39a8629a4fc5ea005bc7c606d460caf8fb89dc82afd5199f79b6bc7083b9"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/member_declaration.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/member_declaration.c",
+      "bytes": 2335,
+      "sha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/member_reference.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/member_reference.c",
+      "bytes": 34169,
+      "sha256": "003675f6ddb3f679ec5444f49af3103321ed235d0c5106bc5448bf40778db28e"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/members.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/members.c",
+      "bytes": 3533,
+      "sha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/panel_layout.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/panel_layout.c",
+      "bytes": 5350,
+      "sha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/panel_support.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/panel_support.c",
+      "bytes": 7069,
+      "sha256": "4a8476be0dea36677388fdf1128eb03f26f1314718cefaa48139585bfa4f8cff"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/section_profile.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/section_profile.c",
+      "bytes": 24441,
+      "sha256": "a0fa9004ea689b0f4964dbe90f1ff80d0c968dde7e166993d675659ecfeec55d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/section_profile_sources.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/section_profile_sources.c",
+      "bytes": 29307,
+      "sha256": "9c2b35639e1686c812285b248343717a431023cd02e4eeb3f2e0763d7425a12a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/supports.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/supports.c",
+      "bytes": 4658,
+      "sha256": "1f3c8bfb51c86024b67b0af90f8c381fa38c8babb1cd1956b1cc4a7f022d0775"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/world_validation.c",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h/compiled-source/isolated-woodworking/native/world_validation.c",
+      "bytes": 8084,
+      "sha256": "ea62a9fcc8f6ef5ccf9faa1f419617118b8904f25a4f743440c2f6132ccf4096"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/geo261-n1a-3hmgep8h-build-log.json",
+      "archive_path": "suite-raw/wood-contact/compile-retention/geo261-n1a-3hmgep8h-build-log.json",
+      "bytes": 259397,
+      "sha256": "c03524e537f6ab016de3fcff2741d47055190b85cfc69491edbfe9137037e3f7"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/compile-retention/retention.json",
+      "archive_path": "suite-raw/wood-contact/compile-retention/retention.json",
+      "bytes": 35481,
+      "sha256": "1248a5d529bf4451e087fbbc15d4d5ef0f900afc1e041e8ffc4e84ce6689901a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/native-executions.jsonl",
+      "archive_path": "suite-raw/wood-contact/native-executions.jsonl",
+      "bytes": 109586,
+      "sha256": "ec2ef5e21859bdd261c1178f0cced06903ae303b6611da6a85ecb5ec59227b51"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites/wood-contact/receipt.json",
+      "archive_path": "suite-raw/wood-contact/receipt.json",
+      "bytes": 2973,
+      "sha256": "1b7621e57aface60a2550c13f166861deb63d6d242cdb29de160399261982d58"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-launch/reaper.jsonl",
+      "archive_path": "launch-raw/reaper.jsonl",
+      "bytes": 424,
+      "sha256": "b30204ca5f19572ab22a79067784af7a594c55fb13b74e2410164754b3ca1857"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-launch/receipt.json",
+      "archive_path": "launch-raw/receipt.json",
+      "bytes": 4092,
+      "sha256": "9330ab1b6a0e46f89b16ec7cbdbc7612fde16f6eb702dd3cea58c8be2a0a0f4b"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-launch/request.json",
+      "archive_path": "launch-raw/request.json",
+      "bytes": 1830,
+      "sha256": "0a7409bc766d64c18b05fdbdd380d5ed0d0e65c67d89a54baf6cead6b0414fa7"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-launch/subcommands/000001/request.json",
+      "archive_path": "launch-raw/subcommands/000001/request.json",
+      "bytes": 1678,
+      "sha256": "b97aa18dd105043839655fc379f06b709d7cee055306bfae7913e24a6c9b999a"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-launch/subcommands/000001/result.json",
+      "archive_path": "launch-raw/subcommands/000001/result.json",
+      "bytes": 1930,
+      "sha256": "d08ae91fb4feb4c388e980ada6e10a64c03bf5141bf4d566245f683dc385ebd8"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-launch/subcommands/000001/stderr.bin",
+      "archive_path": "launch-raw/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-launch/subcommands/000001/stdin.bin",
+      "archive_path": "launch-raw/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-launch/subcommands/000001/stdout.bin",
+      "archive_path": "launch-raw/subcommands/000001/stdout.bin",
+      "bytes": 210,
+      "sha256": "f9d01541e00be0ba8fdf3770ec587d468772eac77cd1c230c90abf31c9191612"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-launch/subcommands.json",
+      "archive_path": "launch-raw/subcommands.json",
+      "bytes": 2022,
+      "sha256": "d18a8643eec909a709196b4847bac59c172f16aca4cea66486968d5276bc8fcc"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-tools/BINDINGS.json",
+      "archive_path": "bound-tools/BINDINGS.json",
+      "bytes": 1197,
+      "sha256": "f06bbd8e96bf0cd61307e6f7fe0b1d39104fae5f02c893d96b999ec99701b418"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-tools/contact-sources-retain.py",
+      "archive_path": "bound-tools/contact-sources-retain.py",
+      "bytes": 2563,
+      "sha256": "b2100ffa25e92b9d941a4e4b7559ef58c41a411fcb06089c0acf7c434a579870"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-tools/reading-a-native-retain.py",
+      "archive_path": "bound-tools/reading-a-native-retain.py",
+      "bytes": 2564,
+      "sha256": "aa384836cbe7fe4c7c4824d74d90a027dc1be0f3a961dcc57fef68828828f220"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-tools/wood-contact-retain.py",
+      "archive_path": "bound-tools/wood-contact-retain.py",
+      "bytes": 2566,
+      "sha256": "875213bbe26941626cadb844ad3ac4ff35f5540a317045435d7782d3c4ed9762"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/tools/GEO300_THREE_SUITE_FINAL_PREPARATION.json",
+      "archive_path": "frozen-tools/GEO300_THREE_SUITE_FINAL_PREPARATION.json",
+      "bytes": 475,
+      "sha256": "d3d2a15b3ef30e547f6ac9faad662123a175e6a32b739eb90711acc4e3c43a19"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/tools/capture.py",
+      "archive_path": "frozen-tools/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/tools/free-end-retain-original-suite.py",
+      "archive_path": "frozen-tools/free-end-retain-original-suite.py",
+      "bytes": 2566,
+      "sha256": "875213bbe26941626cadb844ad3ac4ff35f5540a317045435d7782d3c4ed9762"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/tools/geo300-launch-three-suites.PLACEMENT_AND_AUDIT.diff",
+      "archive_path": "frozen-tools/geo300-launch-three-suites.PLACEMENT_AND_AUDIT.diff",
+      "bytes": 3401,
+      "sha256": "c14b3aad8ee54493da0c8e1ce821c06ec40d3178d5c041e76493254d1235ecb1"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/tools/geo300-launch-three-suites.pre-placement-and-audit.py.txt",
+      "archive_path": "frozen-tools/geo300-launch-three-suites.pre-placement-and-audit.py.txt",
+      "bytes": 3368,
+      "sha256": "3173e9cc6459a33c15f63250dce21388188844090aba9790766e8177cc508806"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/tools/geo300-launch-three-suites.py",
+      "archive_path": "frozen-tools/geo300-launch-three-suites.py",
+      "bytes": 3945,
+      "sha256": "4eb3644c7ecd77f20ac60e94e1fdf7382484bddc8519b31406e2c5709562dddd"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/tools/geo300-run-three-suites.PLACEMENT_AND_AUDIT.diff",
+      "archive_path": "frozen-tools/geo300-run-three-suites.PLACEMENT_AND_AUDIT.diff",
+      "bytes": 3225,
+      "sha256": "5f8b75b67f18451df43bcb661cb616c9fa5eaa9f01145ed4b4e4e9aeacca8dbb"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/tools/geo300-run-three-suites.pre-placement-and-audit.py.txt",
+      "archive_path": "frozen-tools/geo300-run-three-suites.pre-placement-and-audit.py.txt",
+      "bytes": 8281,
+      "sha256": "a33d4877a28f0deb1935028e65cacafb7b6e12def8243c9f668ebfb44676e8ff"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/tools/geo300-run-three-suites.py",
+      "archive_path": "frozen-tools/geo300-run-three-suites.py",
+      "bytes": 8664,
+      "sha256": "c81e3f79ebee49a37ef255837f675837e31c3f8a7360f591d4e2ee2f35c023f5"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/tools/reap_children.py",
+      "archive_path": "frozen-tools/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/RAW_INDEX.json",
+      "archive_path": "analysis/RAW_INDEX.json",
+      "bytes": 131434,
+      "sha256": "d49ce9ab370258f138c3e53804c12db747f8f124b38ef86be1df5332e8040030"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/CONTROL_SUMMARY.json",
+      "archive_path": "analysis/CONTROL_SUMMARY.json",
+      "bytes": 29092,
+      "sha256": "68cfd32cc2cc4916900df8f609888cd8efc7c115d4a95241ed78e07171c2575d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/BUILD_COUNT_CORRECTION.json",
+      "archive_path": "analysis/BUILD_COUNT_CORRECTION.json",
+      "bytes": 1612,
+      "sha256": "ea3fc3765016b399e901faf9a2ee0189832dd06713578eb81a2725b724513952"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/PEER_PATH_ALIAS.json",
+      "archive_path": "analysis/PEER_PATH_ALIAS.json",
+      "bytes": 846,
+      "sha256": "3ee89d5090377b3783e8aadaf0eff8b6f5fe0d27ceb524942e9fe2471256d8d2"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/SOURCE_CLOSURE_AFTER_MERGE.json",
+      "archive_path": "analysis/SOURCE_CLOSURE_AFTER_MERGE.json",
+      "bytes": 2559,
+      "sha256": "af05360362afa67ea4fe701089cec8b82af275e4593c8641043c671192d17eaa"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/source-closure/01.stderr.bin",
+      "archive_path": "analysis/source-closure/01.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/source-closure/01.stdout.bin",
+      "archive_path": "analysis/source-closure/01.stdout.bin",
+      "bytes": 290,
+      "sha256": "a985b7727f45e8bf5c944975a031feb0d5dc38563c2b6273bc02b0d317160e95"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/source-closure/02.stderr.bin",
+      "archive_path": "analysis/source-closure/02.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/source-closure/02.stdout.bin",
+      "archive_path": "analysis/source-closure/02.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/01.stderr.bin",
+      "archive_path": "ordinary-merge-339/01.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/01.stdout.bin",
+      "archive_path": "ordinary-merge-339/01.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/02.stderr.bin",
+      "archive_path": "ordinary-merge-339/02.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/02.stdout.bin",
+      "archive_path": "ordinary-merge-339/02.stdout.bin",
+      "bytes": 41,
+      "sha256": "aad5447bbf651a395f1911ff014cfdcebf20ccfc8380a69e5d6244de89213af7"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/03.stderr.bin",
+      "archive_path": "ordinary-merge-339/03.stderr.bin",
+      "bytes": 203,
+      "sha256": "43e70811a62e309eeda7c29b899246853ee8e964177f2ae38c7ab8edb8b4b5dd"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/03.stdout.bin",
+      "archive_path": "ordinary-merge-339/03.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/04.stderr.bin",
+      "archive_path": "ordinary-merge-339/04.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/04.stdout.bin",
+      "archive_path": "ordinary-merge-339/04.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/05.stderr.bin",
+      "archive_path": "ordinary-merge-339/05.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/05.stdout.bin",
+      "archive_path": "ordinary-merge-339/05.stdout.bin",
+      "bytes": 287115,
+      "sha256": "902e1b2174bf8b654ff030ca767c15233fafe42a18cb27ff2c298be219d9a331"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/06.stderr.bin",
+      "archive_path": "ordinary-merge-339/06.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/06.stdout.bin",
+      "archive_path": "ordinary-merge-339/06.stdout.bin",
+      "bytes": 41,
+      "sha256": "2288d81f0e6bbc9230e086f90cd8d18f5ec979d23205226460bd6b55eb43970f"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/07.stderr.bin",
+      "archive_path": "ordinary-merge-339/07.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/07.stdout.bin",
+      "archive_path": "ordinary-merge-339/07.stdout.bin",
+      "bytes": 939,
+      "sha256": "1126f8f8e13883fc1db44c5f464c3c5c9a48cd35e1884f703285c5f82e6fcbb8"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/08.stderr.bin",
+      "archive_path": "ordinary-merge-339/08.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/08.stdout.bin",
+      "archive_path": "ordinary-merge-339/08.stdout.bin",
+      "bytes": 41,
+      "sha256": "087ffd8e2add10cf178cbba6cc4d799fe3f6f636289e4ef153a61d88c9646dc2"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/09.stderr.bin",
+      "archive_path": "ordinary-merge-339/09.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/09.stdout.bin",
+      "archive_path": "ordinary-merge-339/09.stdout.bin",
+      "bytes": 41,
+      "sha256": "087ffd8e2add10cf178cbba6cc4d799fe3f6f636289e4ef153a61d88c9646dc2"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/10.stderr.bin",
+      "archive_path": "ordinary-merge-339/10.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/10.stdout.bin",
+      "archive_path": "ordinary-merge-339/10.stdout.bin",
+      "bytes": 41,
+      "sha256": "46aca93446068b80520e956d129f3d0abfc45f244e3f51bdb91af9e94ff83442"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/11.stderr.bin",
+      "archive_path": "ordinary-merge-339/11.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/11.stdout.bin",
+      "archive_path": "ordinary-merge-339/11.stdout.bin",
+      "bytes": 41,
+      "sha256": "46aca93446068b80520e956d129f3d0abfc45f244e3f51bdb91af9e94ff83442"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/12.stderr.bin",
+      "archive_path": "ordinary-merge-339/12.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/12.stdout.bin",
+      "archive_path": "ordinary-merge-339/12.stdout.bin",
+      "bytes": 41,
+      "sha256": "aea4e71c8e3f62daddd32a235d55a13a8c135b966f3156ba5770e73c485451e1"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/13.stderr.bin",
+      "archive_path": "ordinary-merge-339/13.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/13.stdout.bin",
+      "archive_path": "ordinary-merge-339/13.stdout.bin",
+      "bytes": 41,
+      "sha256": "aea4e71c8e3f62daddd32a235d55a13a8c135b966f3156ba5770e73c485451e1"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/14.stderr.bin",
+      "archive_path": "ordinary-merge-339/14.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/14.stdout.bin",
+      "archive_path": "ordinary-merge-339/14.stdout.bin",
+      "bytes": 41,
+      "sha256": "1f64f859e531a0a130fbe88d49a7a6d7880871118645386f005b53b39e3616c7"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/15.stderr.bin",
+      "archive_path": "ordinary-merge-339/15.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/15.stdout.bin",
+      "archive_path": "ordinary-merge-339/15.stdout.bin",
+      "bytes": 41,
+      "sha256": "1f64f859e531a0a130fbe88d49a7a6d7880871118645386f005b53b39e3616c7"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/16.stderr.bin",
+      "archive_path": "ordinary-merge-339/16.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/16.stdout.bin",
+      "archive_path": "ordinary-merge-339/16.stdout.bin",
+      "bytes": 41,
+      "sha256": "6936009167ce4e5f5cebdb2ad96a530ee5f6f9df34225695a2ca122deea5f09e"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/17.stderr.bin",
+      "archive_path": "ordinary-merge-339/17.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/17.stdout.bin",
+      "archive_path": "ordinary-merge-339/17.stdout.bin",
+      "bytes": 41,
+      "sha256": "6936009167ce4e5f5cebdb2ad96a530ee5f6f9df34225695a2ca122deea5f09e"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/18.stderr.bin",
+      "archive_path": "ordinary-merge-339/18.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/18.stdout.bin",
+      "archive_path": "ordinary-merge-339/18.stdout.bin",
+      "bytes": 41,
+      "sha256": "575cf00221b16787cddb3dcbe04aaae9b9ef5880d69ffc12ed9a94188a5a5d43"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/19.stderr.bin",
+      "archive_path": "ordinary-merge-339/19.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/19.stdout.bin",
+      "archive_path": "ordinary-merge-339/19.stdout.bin",
+      "bytes": 41,
+      "sha256": "575cf00221b16787cddb3dcbe04aaae9b9ef5880d69ffc12ed9a94188a5a5d43"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/20.stderr.bin",
+      "archive_path": "ordinary-merge-339/20.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/20.stdout.bin",
+      "archive_path": "ordinary-merge-339/20.stdout.bin",
+      "bytes": 41,
+      "sha256": "0df330eec01954bbf7de86674093eede087b0b907abc2508c8f41f23e93d9583"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/21.stderr.bin",
+      "archive_path": "ordinary-merge-339/21.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/21.stdout.bin",
+      "archive_path": "ordinary-merge-339/21.stdout.bin",
+      "bytes": 41,
+      "sha256": "0df330eec01954bbf7de86674093eede087b0b907abc2508c8f41f23e93d9583"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/22.stderr.bin",
+      "archive_path": "ordinary-merge-339/22.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/22.stdout.bin",
+      "archive_path": "ordinary-merge-339/22.stdout.bin",
+      "bytes": 82,
+      "sha256": "78d8f24e5f6dcb22e99024f30fa2d20274ae2307e799a9ffa33f5363fb1f5f17"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/COMMANDS.json",
+      "archive_path": "ordinary-merge-339/COMMANDS.json",
+      "bytes": 8426,
+      "sha256": "ebaa607dc86ef717c7e034dbe85f5ffb0f86d9b3c7b7346300f58e0ddbf87540"
+    },
+    {
+      "path": "/workspace/geo300-merge-339-20261024/MERGE.json",
+      "archive_path": "ordinary-merge-339/MERGE.json",
+      "bytes": 2307,
+      "sha256": "7bca3782bf9f76b79065c868f95904d462820ca6061f826c430eac26317e049c"
+    },
+    {
+      "path": "/workspace/geo300-source-publication-8615b020/01.stderr.bin",
+      "archive_path": "source-8615-publication/01.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-source-publication-8615b020/01.stdout.bin",
+      "archive_path": "source-8615-publication/01.stdout.bin",
+      "bytes": 41,
+      "sha256": "2288d81f0e6bbc9230e086f90cd8d18f5ec979d23205226460bd6b55eb43970f"
+    },
+    {
+      "path": "/workspace/geo300-source-publication-8615b020/02.stderr.bin",
+      "archive_path": "source-8615-publication/02.stderr.bin",
+      "bytes": 118,
+      "sha256": "ded599c01aeca4dddcbf7f2a19ee9c7eaa1168fae0ed59c9241f8ef64a19e1d3"
+    },
+    {
+      "path": "/workspace/geo300-source-publication-8615b020/02.stdout.bin",
+      "archive_path": "source-8615-publication/02.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-source-publication-8615b020/03.stderr.bin",
+      "archive_path": "source-8615-publication/03.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-source-publication-8615b020/03.stdout.bin",
+      "archive_path": "source-8615-publication/03.stdout.bin",
+      "bytes": 88,
+      "sha256": "87e9b14fd0316b3b6f2204685526fd270eecfc717e0fbf00af739fbd5d839afe"
+    },
+    {
+      "path": "/workspace/geo300-source-publication-8615b020/COMMANDS.json",
+      "archive_path": "source-8615-publication/COMMANDS.json",
+      "bytes": 1159,
+      "sha256": "d3785e19473c2ea56a1f3303f32948ad454f88ebd4765a09234a0170c616062f"
+    },
+    {
+      "path": "/workspace/geo300-source-publication-8615b020/PUBLICATION.json",
+      "archive_path": "source-8615-publication/PUBLICATION.json",
+      "bytes": 1429,
+      "sha256": "02771b6ab5bbe23a05db2abae6c27744a244e6449467137ba7ad1f2bd3304215"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/01.stderr.bin",
+      "archive_path": "expected-registration/01.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/01.stdout.bin",
+      "archive_path": "expected-registration/01.stdout.bin",
+      "bytes": 41,
+      "sha256": "2288d81f0e6bbc9230e086f90cd8d18f5ec979d23205226460bd6b55eb43970f"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/02.stderr.bin",
+      "archive_path": "expected-registration/02.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/02.stdout.bin",
+      "archive_path": "expected-registration/02.stdout.bin",
+      "bytes": 25284,
+      "sha256": "e6ea0c3020a88deec44b3abaca3b7a96a1608e7ae8c336d594e6f8bcec76fb80"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/03.stderr.bin",
+      "archive_path": "expected-registration/03.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/03.stdout.bin",
+      "archive_path": "expected-registration/03.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/04.stderr.bin",
+      "archive_path": "expected-registration/04.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/04.stdout.bin",
+      "archive_path": "expected-registration/04.stdout.bin",
+      "bytes": 65923,
+      "sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/05.stderr.bin",
+      "archive_path": "expected-registration/05.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/05.stdout.bin",
+      "archive_path": "expected-registration/05.stdout.bin",
+      "bytes": 15619,
+      "sha256": "8c34f87a4b6228efe5722abee9881fdf72a647dfa632802e62ebf16c41f815c1"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/06.stderr.bin",
+      "archive_path": "expected-registration/06.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/06.stdout.bin",
+      "archive_path": "expected-registration/06.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/07.stderr.bin",
+      "archive_path": "expected-registration/07.stderr.bin",
+      "bytes": 399,
+      "sha256": "e584874cb008f58d9370c27d726a0494e0ebf8df6c6ec0aef4407d642c380650"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/07.stdout.bin",
+      "archive_path": "expected-registration/07.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/08.stderr.bin",
+      "archive_path": "expected-registration/08.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/08.stdout.bin",
+      "archive_path": "expected-registration/08.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/09.stderr.bin",
+      "archive_path": "expected-registration/09.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/09.stdout.bin",
+      "archive_path": "expected-registration/09.stdout.bin",
+      "bytes": 28,
+      "sha256": "682d6dcc4f8e3d875b2df3cc19ae463d0b935b6baa8241ff7f25e0588b6140cf"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/10.stderr.bin",
+      "archive_path": "expected-registration/10.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/10.stdout.bin",
+      "archive_path": "expected-registration/10.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/11.stderr.bin",
+      "archive_path": "expected-registration/11.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/11.stdout.bin",
+      "archive_path": "expected-registration/11.stdout.bin",
+      "bytes": 148,
+      "sha256": "b6b1f52449a2858e1782874b40ae2de5ea780464f03734db161edaab10d29657"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/12.stderr.bin",
+      "archive_path": "expected-registration/12.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/12.stdout.bin",
+      "archive_path": "expected-registration/12.stdout.bin",
+      "bytes": 41,
+      "sha256": "1b0e0512402a870879deff99ee7b45cb2c9f12c9f5b623f9337d85b739a3a57a"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/13.stderr.bin",
+      "archive_path": "expected-registration/13.stderr.bin",
+      "bytes": 118,
+      "sha256": "6ba75964868d565c967454fe84a0c1e9871f19aba21463331f1127ce6739eac4"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/13.stdout.bin",
+      "archive_path": "expected-registration/13.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/14.stderr.bin",
+      "archive_path": "expected-registration/14.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/14.stdout.bin",
+      "archive_path": "expected-registration/14.stdout.bin",
+      "bytes": 88,
+      "sha256": "039cfdecb27d021392a0334f84c1c53f7dd7c0569f93bcdff4efbd169fbb4b74"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/CHECKS.final.json",
+      "archive_path": "expected-registration/CHECKS.final.json",
+      "bytes": 2973,
+      "sha256": "b11dd4f7822bd995f95dfee3a12e81f4ba2ef00df8aa4c6165c3f5b028ccedad"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/CHECKS.json",
+      "archive_path": "expected-registration/CHECKS.json",
+      "bytes": 2716,
+      "sha256": "bccb91babd919b85899aa82d6349c42c1ad5cd3434a67d7446f387f8edc3a028"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/COMMANDS.json",
+      "archive_path": "expected-registration/COMMANDS.json",
+      "bytes": 5014,
+      "sha256": "a65bcd11eca73b3265788f75080ddf414ce65d2f6ea19d57516fbaee2327edb7"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/EXPECTED_ONLY.patch",
+      "archive_path": "expected-registration/EXPECTED_ONLY.patch",
+      "bytes": 272,
+      "sha256": "7d59d329e7c2e2074d402a084d23a5f138a3dd58f7b47b9822e555b2f73f808e"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/PUBLICATION.json",
+      "archive_path": "expected-registration/PUBLICATION.json",
+      "bytes": 277,
+      "sha256": "b9ea791dbe9bd9e484c1bbacd593a70f535609605da17346683162a98464cebf"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/expected-after.json",
+      "archive_path": "expected-registration/expected-after.json",
+      "bytes": 25285,
+      "sha256": "339e27d578bb7741e7a537c745f6c838057d8f00336ebe9de1e00806a1d64183"
+    },
+    {
+      "path": "/workspace/geo300-expected-registration-20261024/expected-before.json",
+      "archive_path": "expected-registration/expected-before.json",
+      "bytes": 25284,
+      "sha256": "e6ea0c3020a88deec44b3abaca3b7a96a1608e7ae8c336d594e6f8bcec76fb80"
+    },
+    {
+      "path": "/tmp/train337-adversarial/GEO300_C493_THREE_SUITES_ACTUAL_PEER.json",
+      "archive_path": "peer/GEO300_C493_THREE_SUITES_ACTUAL_PEER.json",
+      "bytes": 140510,
+      "sha256": "fb2784a569881f3b5b5b38641138ff23ba7b228faf2432ffc742e596e49ffb57"
+    },
+    {
+      "path": "/tmp/train337-adversarial/GEO300_C493_INITIAL_WRONG_BUILD_TOTAL_302.json",
+      "archive_path": "peer/GEO300_C493_INITIAL_WRONG_BUILD_TOTAL_302.json",
+      "bytes": 140384,
+      "sha256": "5ca735c1a9a7513dfcdb468420e13a45f61c72b9927af27f39320c3ea29d68c0"
+    },
+    {
+      "path": "/tmp/train337-adversarial/GEO300_AA0_EXPECTED_STATIC_PEER.json",
+      "archive_path": "peer/GEO300_AA0_EXPECTED_STATIC_PEER.json",
+      "bytes": 2655,
+      "sha256": "627013a04fc1023ab4916f1bf832169997cd5a0b79b5c7321ada33418e18cfa1"
+    },
+    {
+      "path": "/tmp/train337-adversarial/review_geo300_c493_original_claim302.py.txt",
+      "archive_path": "peer/review_geo300_c493_original_claim302.py.txt",
+      "bytes": 11709,
+      "sha256": "10da8a94f03d1604c3bd8cac48cda8f8fb324fb938818dc3d28f88257b7adb5b"
+    },
+    {
+      "path": "/tmp/train337-adversarial/review_geo300_c493_initial_timeout_schema_error.py.txt",
+      "archive_path": "peer/review_geo300_c493_initial_timeout_schema_error.py.txt",
+      "bytes": 11547,
+      "sha256": "033e1d451893400bf94dd1da952b4fd362ebbe0bf3856b72610bc37e7507c7a1"
+    },
+    {
+      "path": "/tmp/train337-adversarial/review_geo300_c493_actual.py",
+      "archive_path": "peer/review_geo300_c493_actual.py",
+      "bytes": 11912,
+      "sha256": "3dbd3e0b3923e002f17d2dd2905eba144298bb296829468960c88292d530d83d"
+    },
+    {
+      "path": "/workspace/geo300-c493-three-suites-delivery/HOST_SESSION_COMPLETION.json",
+      "archive_path": "analysis/HOST_SESSION_COMPLETION.json",
+      "bytes": 638,
+      "sha256": "46dc312d956f2fc12cc51dded72bb6321c416e3222bb0b44a1fb8d3db63430dc"
+    }
+  ],
+  "scope": "Three unchanged whole suite entries10/15/7 methods;46 ordinary normal assertion control proofs;282 original compile/link command exits0. Partial native correctness, no performance/fullledger/browser. Actual c493 never relabeled current source.",
+  "peer": {
+    "actual_checks": 1020,
+    "actual_findings": 0,
+    "expected_checks": 36,
+    "expected_findings": 0
+  },
+  "manual_count_correction": {
+    "incorrect_prose": 302,
+    "actual": 282,
+    "original_subject_data_unchanged": true
+  },
+  "global_ledger_written": false
+}
