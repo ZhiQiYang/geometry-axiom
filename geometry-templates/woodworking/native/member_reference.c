@@ -568,7 +568,7 @@ WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *facts,c
 
         if (hit_count == 0) {
             if(bare_rc){
-                snprintf(err,err_cap,"V_BOUNDARY_END_RC：between 固定段端點有裸露的可放料 RC 面，必須先貼角材");
+                snprintf(err,err_cap,"V_CUT_PRIORITY：between 固定段端點有裸露的可放料 RC 面，必須先貼角材");
                 return WOOD_SPAN_BETWEEN_BLOCKED;
             }
             snprintf(err, err_cap,
@@ -641,7 +641,7 @@ WoodMemberSpanStatus wood_member_resolve_span(const WoodMemberSpanFacts *facts,c
             snprintf(err,err_cap,"I8: ordered boundary-end facts unavailable");return WOOD_SPAN_START_UNSUPPORTED;
         }
         if(admission==WOOD_BOUNDARY_END_BARE_RC){
-            snprintf(err,err_cap,"V_BOUNDARY_END_RC：固定段起點有裸露的可放料 RC 面，必須先貼角材");return WOOD_SPAN_START_UNSUPPORTED;
+            snprintf(err,err_cap,"V_CUT_PRIORITY：固定段起點有裸露的可放料 RC 面，必須先貼角材");return WOOD_SPAN_START_UNSUPPORTED;
         }
         if(admission==WOOD_BOUNDARY_END_PARTIAL)goto supported_start;
     }
@@ -666,7 +666,7 @@ supported_start:
             snprintf(err,err_cap,"I8: ordered boundary-end facts unavailable");return WOOD_SPAN_END_UNSUPPORTED;
         }
         if(admission==WOOD_BOUNDARY_END_BARE_RC){
-            snprintf(err,err_cap,"V_BOUNDARY_END_RC：固定段終點有裸露的可放料 RC 面，必須先貼角材");return WOOD_SPAN_END_UNSUPPORTED;
+            snprintf(err,err_cap,"V_CUT_PRIORITY：固定段終點有裸露的可放料 RC 面，必須先貼角材");return WOOD_SPAN_END_UNSUPPORTED;
         }
         if(admission==WOOD_BOUNDARY_END_PARTIAL)goto supported_end;
     }

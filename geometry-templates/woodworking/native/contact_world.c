@@ -231,7 +231,7 @@ WoodBoundaryEndAdmission wood_contact_boundary_end_admission(
 bool wood_contact_end_support_check(WoodBoundaryEndAdmission admission,size_t hits,bool between,char *error,size_t cap)
 {
     if(admission==WOOD_BOUNDARY_END_BARE_RC){
-        if(error&&cap)snprintf(error,cap,"V_BOUNDARY_END_RC：固定段端點有裸露的可放料 RC 面，必須先貼角材");return false;
+        if(error&&cap)snprintf(error,cap,"V_CUT_PRIORITY：固定段端點有裸露的可放料 RC 面，必須先貼角材");return false;
     }
     if(admission==WOOD_BOUNDARY_END_PARTIAL)return true;
     if(!hits||(!between&&hits!=1)){
@@ -261,7 +261,7 @@ bool wood_contact_end_faces_with_sources(const WoodContactWorld *world,const Woo
             span_lo,span_hi,cross_lo,cross_hi,end,faces,face_count,NULL);
         if(admission==WOOD_BOUNDARY_END_PARTIAL)continue;
         if(admission==WOOD_BOUNDARY_END_BARE_RC){
-            if(error&&cap)snprintf(error,cap,"V_BOUNDARY_END_RC：角材 %u 的固定段端點有裸露的可放料 RC 面，必須先貼角材",(unsigned)self->id);
+            if(error&&cap)snprintf(error,cap,"V_CUT_PRIORITY：角材 %u 的固定段端點有裸露的可放料 RC 面，必須先貼角材",(unsigned)self->id);
             return false;
         }
         for(size_t i=0;i<face_count;++i){const WoodStopFace *face=&faces[i];

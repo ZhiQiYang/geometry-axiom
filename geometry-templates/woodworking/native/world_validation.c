@@ -54,7 +54,7 @@ bool wood_world_validate_members(const WoodWorldValidationContext *context,char 
             if(member->role==WOOD_MEMBER_ROLE_BOUNDARY&&context->boundary_end){
                 if(!context->boundary_end(context->user,fact.placement_id,&footprint,member,along_v,(int)end,faces,count,&admission))return false;
                 if(admission==WOOD_BOUNDARY_END_PARTIAL)continue;
-                if(admission==WOOD_BOUNDARY_END_BARE_RC)return validation_refuse(error,capacity,"V_BOUNDARY_END_RC：固定段端點有裸露的可放料 RC 面，必須先貼角材");
+                if(admission==WOOD_BOUNDARY_END_BARE_RC)return validation_refuse(error,capacity,"V_CUT_PRIORITY：固定段端點有裸露的可放料 RC 面，必須先貼角材");
             }
             if(!hits||(!fact.has_between&&hits!=1))
                 return validation_refuse(error,capacity,"R6(d): 端面需要恰好一個涵蓋全寬的合法擋面");

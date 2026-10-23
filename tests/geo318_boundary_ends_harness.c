@@ -100,8 +100,8 @@ static int spans(void)
     CHECK("between-required-face-must-itself-contact",resolve(&f,true,3,error,sizeof error)==WOOD_SPAN_BETWEEN_BLOCKED);
     f.source_fail=true;CHECK("ordered-source-failure-closed",resolve(&f,false,0,error,sizeof error)==WOOD_SPAN_START_UNSUPPORTED);f.source_fail=false;
     rc_face(&f)->hi=27;
-    CHECK("single-full-rc-span-refused",resolve(&f,false,0,error,sizeof error)==WOOD_SPAN_END_UNSUPPORTED&&strstr(error,"V_BOUNDARY_END_RC"));
-    CHECK("between-bare-rc-refused",resolve(&f,true,2,error,sizeof error)==WOOD_SPAN_BETWEEN_BLOCKED&&strstr(error,"V_BOUNDARY_END_RC"));
+    CHECK("single-full-rc-span-refused",resolve(&f,false,0,error,sizeof error)==WOOD_SPAN_END_UNSUPPORTED&&strstr(error,"V_CUT_PRIORITY")&&strstr(error,"裸露"));
+    CHECK("between-bare-rc-refused",resolve(&f,true,2,error,sizeof error)==WOOD_SPAN_BETWEEN_BLOCKED&&strstr(error,"V_CUT_PRIORITY")&&strstr(error,"裸露"));
     init(&f,13);f.world.member_count=1;f.count=wood_contact_collect_stops(&f.world,false,&f.self,f.faces,32);
     CHECK("partial-rc-alone-remains-unsupported",resolve(&f,false,0,error,sizeof error)==WOOD_SPAN_END_UNSUPPORTED);
     return 0;
@@ -128,7 +128,7 @@ static int revalidation(void)
     Fixture f;init(&f,13);char error[512];f.other.role=WOOD_MEMBER_ROLE_CUSTOM;
     WoodWorldValidationContext ctx={.grids={.state=&f.grids},.user=&f,.member_count=1,.placement_count=1,.member_at=validation_member,.placement_id=validation_placement,.host=validation_host,.footprint=validation_footprint,.place=validation_place,.stops=validation_stops,.end_faces=validation_end,.boundary_role=validation_end,.boundary_end=validation_policy};
     CHECK("r6e-accepts-partial-without-fullwidth-recheck",wood_world_validate_members(&ctx,error,sizeof error));
-    rc_face(&f)->hi=27;CHECK("r6e-single-full-rc-feature-refused",!wood_world_validate_members(&ctx,error,sizeof error)&&strstr(error,"V_BOUNDARY_END_RC"));rc_face(&f)->hi=13;
+    rc_face(&f)->hi=27;CHECK("r6e-single-full-rc-feature-refused",!wood_world_validate_members(&ctx,error,sizeof error)&&strstr(error,"V_CUT_PRIORITY")&&strstr(error,"裸露"));rc_face(&f)->hi=13;
     f.source_fail=true;CHECK("r6e-source-failure-closed",!wood_world_validate_members(&ctx,error,sizeof error));f.source_fail=false;
     ctx.member_count=2;f.overlap=true;
     CHECK("partial-does-not-skip-world-collision",!wood_world_validate_members(&ctx,error,sizeof error));
