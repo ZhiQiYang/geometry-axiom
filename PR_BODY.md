@@ -1,32 +1,34 @@
-此變更在全部 fact ID 唯一且仍在既有容量內時，將擋面的兩兩遮蓋查詢改成每個完整座標平面的 Fenwick prefix-max 查詢。索引保存單一實際覆蓋面；兩個半面不能合成一個見證。任何 fact ID 重複（包括後來被過濾的 fact）或超容量輸入，仍走原有後備。
+此變更在全部 fact ID 唯一且仍在既有容量內時，以索引處理兩個原平方成本：每個完整座標平面的單一覆蓋面查詢，以及 member face 的穩定放置排序。排序共用既有 sorted／scratch 陣列，僅用一個 face 暫存做 permutation；RC 前綴、完整 uint64 order 與同 order 的宣告／側面順序保持。重複 ID（包括被過濾的 fact）與超容量輸入保留原後備。
 
-基底是 `codex/geo260-ac23-proof-20261024`。本 PR 接續 #341 已做的活集合與一次壓緊前置；原 member insertion sort、重複 ID 後備配對、超容量 memmove 與 cut-list 平方儲存仍在，整個 collector 的平方成本尚未解除。
+基底是 `codex/geo260-ac23-proof-20261024`，接續 #341 的活集合與一次壓緊前置。正常 bounded/unique member 排序改為 O(F log F) 比較＋O(F) 重排；重複 ID／overflow 的平方排序與配對、超容量 memmove、cut-list 平方儲存及呼叫量問題仍在，沒有宣稱整個 collector 或 load 已解除平方成本。
 
 | 唯一 current-state 矩陣 | SHA／結果與範圍 |
 | --- | --- |
-| Product SHA | `1ee4e830399b124ebd63c5ff51064d87e53f38d9`；包含產品 `9ee7f98144f81f11385f392e13cc067f1b9d063c` 與真新增方法對應的 expected 10→11 |
-| Evidence head | `4f456effd0a53ec45e575c2ce3596825b8dc937a`；僅新增本 PR 的 evidence prefix，產品內容與上述 S 相同 |
-| Base | 公開 GEO260 evidence `df230da57619e437c30527dbede8c67fd0ec6b50`；產品 `eb846c345881cc6fc73a53c457a291175365b88c` |
-| 靜態驗證 | 凍結草案 157 checks／0 findings；核心 15 機械檢查＋8 語意觀察／0 findings；不可變 Git 來源、expected 與原 push 167／0。各自 scope 限於靜態／Git 證據 |
-| 原 wood-contact-world | **exit 0**；11 方法／33 具名反證正常 0/1/0；0 skip；131 builds 全 0 |
-| 原 contact-sources | **exit 0**；15 方法／11 具名反證正常 0/1/0；0 skip；85 builds 全 0 |
-| 原 Reading A native | **exit 0**；7 方法／12 具名反證（11 W＋1 H）正常 0/1/0；0 skip；86 builds 全 0 |
-| 原件獨立審查 | 1140 checks／0 findings；共 33 方法／56 反證／302 builds；原 driver／reaper／launcher／host tool 皆 0，HEAD／tree／clean 全保 |
-| 整條快路撤回 | **UNRUN**；另規劃原 7 正例的 fixed／withdrawn／restored 等價 0/0/0，不計 killed、不計完整 11 方法 suite |
-| 既定 16MiB stack | 上述原三套在 16MiB limit 下全 0；四個 size_t[2432] 固定長度區域陣列資料約 77,824 bytes，實際 compiler frame 與完整場景上限仍未另量 |
-| 效能、正式 P-189 | **UNMEASURED／UNRUN**；不新增數值門檻 |
-| 容量512、容量收斂、cut-list 平方儲存 | **未完成／未驗** |
-| 完整 native、browser、全帳本、架構 | **UNRUN**；新最終來源的全帳本與架構由主代理統一處理 |
-| 允許 skip／仍紅 | 原三套皆 0 skip、沒有本輪三套紅燈；其餘未跑項維持未跑，不計通過；尚未 READY |
+| Product SHA | `cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041`；父 E `4f456effd0a53ec45e575c2ce3596825b8dc937a`，新增穩定 member 排序、原 fixture／controls，expected 只 wood-contact 11→12 |
+| Evidence head | `17e74d3233a76b1967cd132ccb69769e7f9a41a3`；只改本 PR evidence prefix，產品與上述 S 相同 |
+| Base | GEO260 E `df230da57619e437c30527dbede8c67fd0ec6b50`／產品 `eb846c345881cc6fc73a53c457a291175365b88c` |
+| 排序靜審／runner 綁定 | 283 checks／0 findings；原 workspace runner 機械綁定 12／0。這兩項未執行 C |
+| 原 wood-contact-world | **UNRUN**；本 S 預期 12 方法／41 具名控制；原 11 方法 AST、CHECK、ASSERT 與時限保留 |
+| 原 contact-sources | **UNRUN**；本 S 預期 15 方法／11 控制 |
+| 原 Reading A native | **UNRUN**；本 S 預期 7 方法／12 控制（11 W＋1 H） |
+| 本 S 部分 native 合計 | **UNRUN：34 方法／64 控制**；不繼承下列歷史綠燈 |
+| 歷史 S1ee 實跑 | 僅 `1ee4e830399b124ebd63c5ff51064d87e53f38d9`：33 方法／56 原具名正常 0/1/0、302 builds、三套 exit0／0skip；actual peer1140／0、public peer1571／0 |
+| 整條快路撤回 | **UNRUN**；本 S 另規劃 8 原正例 fixed／withdrawn／restored 語意等價 0/0/0，不計 killed、不冒完整 12 方法 suite |
+| 既定 16MiB stack | 新 S **UNRUN**；共用同四個 size_t[2432] 固定長度區域陣列，未新增／加大陣列；額外一個 face 暫存，compiler frame／完整場景上限未另量 |
+| 性能／正式 P-189／容量512 | **UNMEASURED／UNRUN／未完成未驗**；沒有新數值門檻 |
+| 完整 native、browser、全帳本、架構 | 新 S **UNRUN**；最終全帳本／架構由主代理統一處理 |
+| skip／仍紅／READY | 新 S 尚未執行，沒有可計為通過的 skip；既有 sparse 物化失敗按環境分類保留；**NOT READY** |
 
-本批僅四個檔案：W `contact_world.c`、原 C harness、原 Python contact-world suite，以及 `run_all.expected.json` 的單一 count。原 10 方法 AST、原 CHECK 與全部既有斷言／timeout 保留；舊 partial-shadow 的產品錨點移到正常快路的完整 lo/hi cover helper，另補 legacy 後備專刀。新增一方法與十刀，核實真方法數後才依共享棒登記 10→11，其餘 expected 字典逐值相同（包括 native30、faces45、noWood13）。
+新排序仍只有 W `contact_world.c`、原 C harness、原 Python suite，以及 expected 單一 count 的四檔變更。只在 bounded／indexed／全部 facts ID 唯一時略過原 insertion loop；duplicate／overflow 原迴圈逐字保留。相等 order 合併時取左，完整 uint64 直接比較，不截32位、不相減。排序僅處理 member suffix；原同一個 ContactFaceIndex 隨後重建 plane metadata，不把四陣列移到 fallback frame。
 
-索引只排序面序號，不改公開輸出序。RC 前綴包含 free fixity，先進索引；member 依原 `contact_earlier()` 的嚴格先後批次插入，同 order 不互遮。lo／hi 都保原 strict-overlap 與 full-cover，直接比較完整 GeoCoord，沒有截成 32 位、座標相減或合併區間。新增正反例涵蓋過濾後的重複 ID、零長／反向跨度、完整 64 位平面與邊界值、局部平面 offset、單一見證及 survivor count。
+原 placement-order／stable-ties 兩控制移錨到正常路徑的真 comparator，保原 case、同名 ASSERT 與 timeout；另補兩個 legacy 專刀保持原後備的「不排序／不穩定」失效原因。新增一方法與八控制，合12／41，逐一釘唯一原碼位置。正例逐欄檢查全部公開 face fields，涵蓋 FREE RC 前綴、三元 cycle、非2冪 merge、等 order、完整64位、零／奇數cap與tail、重複ID last-order／stable side、member capacity+1。每控制仍要求 baseline0／具名正常 ASSERT1／restored0，compile、crash、timeout、skip 都不能算 kill；首次動態尚未跑。
 
-靜態原件在 [evidence/geo300-contact-index-20261024](https://github.com/ZhiQiYang/geometry-axiom/tree/4f456effd0a53ec45e575c2ce3596825b8dc937a/evidence/geo300-contact-index-20261024)。`STATIC_ORIGINALS.tar.gz` SHA-256 為 `52e0c5329fc3a29483517995f3aad444dfb97b6553016ffb6e61eb257cdb6e26`：203 原檔＋index，共 204 成員均已回讀核 hash。內容包含完整 Git 指令／退出碼／streams、凍結草案與靜審。草案原文記錄當時 external-only 狀態，後續來源提交由 BINDING 與矩陣綁定。初次允許清單 git add 退出 1 後，只對精確的原 tracked leaf 強制加入；正常 push 均為 0，沒有 force push。reviewer 初次 quotePath checker 錯誤亦保留，首次 stderr 未獨立保全的限制已明列；沒有因此執行或重跑產品。
+遮蓋查詢保單一實際覆蓋面：兩個半面不能聯集合成一個見證。RC 包含 free fixity，member 仍按 contact_earlier 的嚴格先後批次入索引，同 order 不互遮；lo／hi 保 strict-overlap 與 full-cover、完整 GeoCoord。既有零／反向跨度、過濾重複 facts、完整座標與容量後備的原斷言仍保留。
 
-原三套在 2026-10-23 21:55:09.059797～21:55:31.974441 UTC 於固定 S 實際完成，共 33 方法／56 個原具名反證；每刀原正常 ASSERT 的 0/1/0、0 skip、原子時限與 16MiB 皆保持。原 logs 的 builds 為 131＋85＋86＝302，全部 0。secondary 槽位已在真終態釋放，source 沒有再修改。因可用空間，僅 out／TMPDIR／bound observer／reaper log 移到 /tmp，原 100MiB preflight 改查真正 /tmp 容量且門檻不變；另經 18／0 機械差分 peer。這段時間是執行紀錄，沒有作為效能比較。#341 在 Sc493 的 32 方法／46 反證／282 builds 屬原 SHA，沒有移標。
+新靜態原件在 [evidence/geo300-contact-index-20261024](https://github.com/ZhiQiYang/geometry-axiom/tree/17e74d3233a76b1967cd132ccb69769e7f9a41a3/evidence/geo300-contact-index-20261024)。`MEMBER_SORT_STATIC_ORIGINALS_AND_PEER.tar.gz` SHA-256 `f0d6d8b6776013e7e74fe669a13e0b854f47b591aabb1458a90c4ee90e8bc297`，171 原檔＋index 共172成員逐byte回讀，含前後四leaf、完整 Git 指令／exit／streams、patch roundtrip、靜審與當時未跑的 runner 綁定。
 
-本輪完整實際原件為同目錄 `THREE_SUITES_ORIGINALS_AND_PEER.tar.gz`，SHA-256 `09b50ede5a8e932ef8bb6b69348a810ebbf1db7433908b02e83b751d8172f24d`：356 raw／20,889,604 bytes，加工具與 peer 共 366 成員逐件回讀；Git blob `ed411e2ea637a43cd5efae1923541395edac671c` 直接入庫而未再物化 archive。NativeBuild logs／native events 保完整解碼文字；最外 host tool exit 0 依原 API 回覆，沒有獨立 host OS capture，reaper／driver／三套原 streams 有 c387 收據。reviewer 初始 schema probe／expected_assertion 取值修正原件保留，沒有 subject 重跑。
+Git-only 出版第一輪 apply-check exit1，唯一原因是薄 checkout 未物化原 tracked `tests/run_all.expected.json`。沒有套產品 patch 或啟 C；r2 只從同 HEAD 精確 restore 該原檔，再套相同凍結 patch，一般 commit／push0且遠端同 SHA。原失敗完整保留，沒有刪測試或放寬來源守門。reviewer 初版 expected-schema checker 的2個 metadata findings／exit1與修正版283／0也一起保留，未當作產品紅或重跑 subject。
 
-目前最不確定的是完整場景下的 stack 上限，以及正常路徑查詢改善能抵消多少仍存的排序與呼叫成本；這三套通過不代替完整 native、browser、架構、全帳本或性能。整條快路撤回的七正例等價實證仍未跑，不能為取得紅燈而把控制 meta-test 旁路誤記為產品缺陷。N128/256/512 的提議數值未採為新門檻，容量512、容量收斂與 cut-list representation 仍未完成；不改公理或決策佇列，尚未 READY 或建議合併。
+歷史 S1ee 的實跑為2026-10-23 21:55:09.059797～21:55:31.974441 UTC，11／15／7方法、33／11／12反證、131＋85＋86＝302 builds全0，原driver／reaper／launcher／host tool0、HEAD／tree／clean保持。原 `THREE_SUITES_ORIGINALS_AND_PEER.tar.gz` SHA-256 `09b50ede5a8e932ef8bb6b69348a810ebbf1db7433908b02e83b751d8172f24d` 保356 raw／20,889,604 bytes及工具／peer，共366成員，沒有改標新排序來源。NativeBuild logs／events 是完整解碼文字，非解碼前OS bytes；最外 host tool exit依原API回覆，沒有獨立host OS capture，reaper／driver／三套原streams有c387收據。#341／Sc493的32／46／282也維持原SHA。
+
+下一步是在固定新 S 用新的 workspace OUT／TMPDIR 跑原三套34／64，沿原100MiB preflight、16MiB、secondary鎖、子時限與完整streams，不與root全帳本並跑性能。最不確定的是完整場景的stack與實際成本收益；八正例快路撤回、正式效能與容量512均未完成。N128/256/512的提議數值沒有採為門檻，不改公理或決策佇列，尚未建議合併。
