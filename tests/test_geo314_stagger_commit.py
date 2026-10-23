@@ -349,6 +349,18 @@ class StaggerCommit(unittest.TestCase):
         self.assert_staggers(0, 400, 300)
         self.reject([offsets("450", identifier=901), grid(u=PARAM_U)], M2)
 
+    def test_Q3_same_final_reference_preserves_card_then_unbind_and_rebind_order(self):
+        self.ordered_legacy()
+        self.apply([offsets("500"), grid(u="repeat 0 2000 stagger 500"), grid(u=PARAM_U)])
+        self.assert_staggers(0, 500, 300)
+        self.assertIn("stagger param:901:1", self.dump())
+
+    def test_Q3_same_final_reference_cannot_exempt_value_changing_rebind(self):
+        self.ordered_legacy()
+        # The card changes while the axis is detached at 400. Rebinding to its
+        # new value 500 is a source edit, unlike a retained reference's edit.
+        self.reject([grid(u="repeat 0 2000 stagger 400"), offsets("500"), grid(u=PARAM_U)], M2)
+
     def test_Q3_cancelled_and_stale_facts_do_not_leak_to_later_candidates(self):
         self.ordered_legacy()
         original = self.state()

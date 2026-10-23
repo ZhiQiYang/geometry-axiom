@@ -241,8 +241,14 @@ bool wood_grid_systems_rebuild(WoodGridContext *c,char *error,size_t cap)
 }
 /* A retained reference is authored once: changing its card is the I24
  * exception. Different sources without ordered evidence compare their values. */
-static bool wood_grid_stagger_value_changed(const GeoGridAxisDef *old,const GeoGridAxisDef *now)
+static bool wood_grid_stagger_value_changed(const GeoGridAxisDef *old,const GeoGridAxisDef *now,
+    uint32_t system_id,unsigned axis,const WoodGridStaggerFact *facts,size_t count)
 {
+    /* A final matching reference does not prove it stayed attached while its
+     * card changed. When this axis has ordered evidence, attribute the changed
+     * value to those original steps before applying the reference exception. */
+    if(old->stagger!=now->stagger)for(size_t i=0;facts&&i<count;++i)
+        if(facts[i].system_id==system_id&&facts[i].axis==axis)return true;
     const GeoParameterRef *prior=&old->parameters[5],*current=&now->parameters[5];
     if(prior->set&&current->set&&prior->parameter_id==current->parameter_id&&prior->field_id==current->field_id)return false;
     return old->stagger!=now->stagger;
@@ -297,7 +303,7 @@ bool wood_grid_stagger_commit_valid(const GeoGridStore *after,const GeoGridStore
         if(!old||!(old->axis[0].stagger_set&&old->axis[1].stagger_set))
             return wood_grid_error(error,cap,"I24: 網格系統 %u 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger",now->id);
         if(!old)continue; /* safe when the M1 rejection is removed for a control */
-        for(int axis=0;axis<2;++axis)if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis])){
+        for(int axis=0;axis<2;++axis)if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis],now->id,(unsigned)axis,facts,count)){
             if(wood_grid_stagger_order_preserves(now->id,(unsigned)axis,&old->axis[axis],&now->axis[axis],facts,count))continue;
             return wood_grid_error(error,cap,"I24: 網格系統 %u 提交前後都是兩軸錯開，但 %c 軸相位差由 %lld 改成 %lld。要改請先在同一筆編輯裡移除一軸，再改剩下那軸（D10b）",
                 now->id,axis?'v':'u',(long long)old->axis[axis].stagger,(long long)now->axis[axis].stagger);
