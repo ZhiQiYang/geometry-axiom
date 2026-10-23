@@ -10,7 +10,7 @@
 | native／model baseline | 0／0；29／20方法，零skip | native排除原source-index方法，仍非aggregate30 |
 | 故障判讀 | 41個AssertionError killed、SPM38/40為原宣告ModelError killed | causes／named-killer／exception判官原樣；ModelError未改稱AssertionError |
 | source及外層 | 原worker0／flock外層0 | 初末HEAD固定、clean；539原tracked inputs逐bytes不變；secondary已正常釋放 |
-| 新全44獨立actual／public peer | 待審 | 原件已交對抗審；producer roundtrip不冒peer |
+| 新全44獨立actual／public peer | 1682／0、678／0 | actual固定C，public核原包Eef840逐320 members；全文及原出版raw已封，不重測 |
 | native30 aggregate／fullnative／6browser／帳本／架構 | 未跑 | 本原全44不能外推整合全綠；本分支未自行重產全帳本 |
 
 原完整命令 `python3 -B tests/section_profile_mutation_check.py --jobs 1 --receipt <out>/gate-receipt.json --logs <out>/gate-logs`，原native＋model兩組都跑；原compiler600秒、child900秒與model adapter900秒保持。2026-10-23T20:53:16Z開始，21:08:13Z終態。42份原gate compile JSON加1次原private model-base setup，共43 builds；不把先前af4 3build或c926 1build洗成這輪。
@@ -19,4 +19,4 @@
 
 額外版本觀察保Python3.12.14、cc14.2、Node24.19.0。原PATH找不到google-chrome的Popen失敗（沒有child退出碼）分開保留；按root既有絕對路徑補Chrome156.0.8078.47 version0與readonly HOME stderr，沒有修改native/model env、沒有執行browser或冒環境skip。
 
-目前允許skip：無。下一步收actual/public peer並更新正文；最終整合正式清單仍由root在最終SHA執行。沒有自啟ReadingA quick或其他重工作。
+目前允許skip：無。下一步更新正文並交root最終合流；最終整合正式清單仍由root在最終SHA執行。沒有自啟ReadingA quick或其他重工作。
