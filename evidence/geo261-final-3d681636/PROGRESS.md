@@ -55,3 +55,6 @@
 
 - 2026-10-23T14:08:52.538509+00:00 — **p88-final-oracle-reviewed**：新F oracle八階段原退出0/0/0/1/0/0/1/0、driver/outer/top皆0；原quick0、probe完整Ran60/OK、C4具名bad8/0/8及core_limits正常AssertionError2!=1反證0/1/0。85source/68fixture前後同，原判官/時限/expected未改；獨立actual+公開包peer2214項無finding。另完成P52原件845/1267及formal/verifier公開5840、runtime公開7923項審查，原streams/cache排除與歷史metadata錯誤都保留。本輪所有列定受影響正式項/反證已通過，沒有把歷史沿用項冒稱F重跑。F3d仍按原政策處理step_core528/step_mirror_core1056，閱讀A變更只在#318另分支；oracle原P182-t4已知C11_MAIN_NOT_BUTTED6次文字保留，非新assert紅。
   下一步：完成唯一current-state正文與SHA連結核對後推prbody分支；#323已接續原基線驗收，維持不merge PR、不force push。。原始資料：`raw/p88-final-oracle-reviewed-01.tar.gz`。
+
+- 2026-10-23T14:27:41.574834+00:00 — **p88-final-delivery**：本輪列定受影響正式項與反證全完成；完整驗收證據快照E=5a76d815c843d7ffb06bd1be769d4c5255c72b66，唯一32列current-state正文35項獨審0，已一般推送prbody D=e008dc52510d8cdb34fe07c796835f2667e0ebaa。正文逐列保留F13/F2真實沿用SHA、允許Windows GDI skip、P88因果及原Cperf樣本限制；新F沒有仍紅或未跑的列定受影響gate。此項僅交付metadata，未API編輯live PR、未合併PR、未force push。首次正文publisher metadata guard失敗1及原輸出保留，原已審正文不變正常續推0。
+  下一步：接續#323收齊原基線全部紅再集中修；依323→314→299/316→318→noWood順序合流來源與完成各自驗收/正文，不合併PR。。原始資料：`raw/p88-final-delivery-01.tar.gz`。
