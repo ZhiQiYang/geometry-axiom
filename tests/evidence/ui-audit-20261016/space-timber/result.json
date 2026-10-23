@@ -1,0 +1,459 @@
+{
+  "url": "http://localhost:8800/",
+  "scope": {
+    "mode": "partial",
+    "filters": [
+      "GEOMETRY_TIMBER_ONLY"
+    ],
+    "included": [
+      "timber-material",
+      "timber-source-guards",
+      "font-layout"
+    ],
+    "omitted": [
+      "space-height-library",
+      "projection-lifecycle",
+      "projection-placement",
+      "space-flow",
+      "projection-close"
+    ],
+    "url": "http://localhost:8800/",
+    "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8800"
+  },
+  "completed": true,
+  "groups": {
+    "setup": {
+      "expected": 2,
+      "passed": 2,
+      "failed": 0,
+      "completed": true
+    },
+    "timber-material": {
+      "expected": 48,
+      "passed": 48,
+      "failed": 0,
+      "completed": true
+    },
+    "timber-source-guards": {
+      "expected": 8,
+      "passed": 8,
+      "failed": 0,
+      "completed": true
+    },
+    "font-layout": {
+      "expected": 19,
+      "passed": 19,
+      "failed": 0,
+      "completed": true
+    },
+    "browser-health": {
+      "expected": 2,
+      "passed": 2,
+      "failed": 0,
+      "completed": true
+    }
+  },
+  "completenessProblems": [],
+  "passed": 79,
+  "failed": 0,
+  "exceptions": [],
+  "consoleErrors": [],
+  "coverage": "Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.",
+  "results": [
+    {
+      "name": "server serves the intended space-model release",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "current release explicitly supports timber preview and engineering sources",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "GEO208 own source preserves legal placement zero and defaults to its one timber",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 candidate identifies timber zero with real dimensions and world z range",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 another placement of the same boundary has only its own timber",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 explicit exclusion leaves timber quantity absent and clearly reports not included",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 excluded source keeps legacy preview shape without a hidden empty timber request",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 including timber does not alter space, clearance or material-wall quantity",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 selected timber has separate count and exact 4000x27x33 material volume",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 isolated timber is a real closed cuboid at z2500..2533",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 hiding enclosure roof retains all timber caps",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 all three layers can be independently hidden",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 bottom camera sees the same real timber bounds and complete mesh",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 saved input has exact typed timber zero and source placement zero",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 saved timber geometry independently verifies dimensions, bounds and material volume",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 own no-PDF creation preserves the complete original world",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 deleting live timber does not rewrite included or excluded saved snapshots",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 saved timber model can preview 3200 height after its live timber was deleted",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 cancelling height edit leaves the entire original timber model immutable",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 height update retains id, source, typed timber roots and byte-equivalent timber geometry",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 undo restores the former height and exact original timber snapshot",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 redo restores updated height with the same timber snapshot",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 deleted current timber produces explicit zero-candidate guidance without affecting sibling placement",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 zero-timber source still previews a closed space normally",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 ready-to-use timber example advertises 7 selected members and independent wall height 3000",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 ready frame has exact separate room, wall and seven-member quantities",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 isolated frame includes 7 actual meshes and one visibly drawn grouped timber legend",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 enclosure roof visibility never removes subdivided timber top triangles",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 mobile timber preview has no horizontal overflow and touch-sized layer controls",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 mobile selection is reachable with >=44px target and all visible text >=11px",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 mobile user can reach a touch-sized enabled final create action",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 final create actually commits while the viewport is still mobile",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 example saved geometry has independent exact mesh-derived volume and all seven explicit roots",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 each saved timber has the independently specified identity, position and dimensions",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 timber-only viewer renders the complete package triangle set without box simplification",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 exported timber package alone verifies and reconstructs all seven solids",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 no-PDF project exports schema4 containing included and excluded snapshots",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 schema4 roundtrip replays and restores all exact records including deleted live timber snapshot",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 reopened frame retains seven members and exact z range",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 forged requested id rejects atomically before project replacement",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 other-placement requested id rejects atomically before project replacement",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 duplicate typed references rejects atomically before project replacement",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 forged summary rejects atomically before project replacement",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 forged requested role rejects atomically before project replacement",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 tampered mesh rejects atomically before project replacement",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 changing timber inclusion during preview makes its late response uncommittable",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 replacement preview after exclusion has no timber count or material volume",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 closing during timber preview cannot reopen or commit its late result",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 existing-face mode excludes timber integration and preserves the open single-face result",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 originally excluded legacy snapshot never acquires newly available timbers",
+      "ok": true,
+      "group": "timber-material"
+    },
+    {
+      "name": "GEO208 a direct projection edit without source changes preserves wall fields and allows a fresh timber preview",
+      "ok": true,
+      "group": "timber-source-guards"
+    },
+    {
+      "name": "GEO208 history guard fixture returns to byte-identical source after undo and redo",
+      "ok": true,
+      "group": "timber-source-guards"
+    },
+    {
+      "name": "GEO208 a same-dump history roundtrip invalidates the previously loaded current-face source",
+      "ok": true,
+      "group": "timber-source-guards"
+    },
+    {
+      "name": "GEO208 rechecking old face confirmation cannot re-enable create after history invalidation",
+      "ok": true,
+      "group": "timber-source-guards"
+    },
+    {
+      "name": "GEO208 changing projection after a same-dump history roundtrip cannot bless the old timber source",
+      "ok": true,
+      "group": "timber-source-guards"
+    },
+    {
+      "name": "GEO208 deleting and reusing timber id during candidate load rejects the mixed source snapshot",
+      "ok": true,
+      "group": "timber-source-guards"
+    },
+    {
+      "name": "GEO208 freshly reloading the reused id obtains its new verified section",
+      "ok": true,
+      "group": "timber-source-guards"
+    },
+    {
+      "name": "GEO208 switching project while timber preview is in flight cannot create in the new project",
+      "ok": true,
+      "group": "timber-source-guards"
+    },
+    {
+      "name": "main canvas preserves the P20 11px minimum font contract",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "existing face workspace preserves the P20 11px minimum font contract",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "documented face header rows fit at 1382px",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "documented face header rows fit at 1160px",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "documented face header rows fit at 900px",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "documented face header rows fit at 680px",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "documented face header rows fit at 600px",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "existing six-face space workspace preserves the P20 11px minimum font contract",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "new space-model desktop workspace preserves the P20 11px minimum font contract",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "11px fonts preserve 1280x720 canvas height and actual model visibility",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "desktop primary actions retain 44px hit targets",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "new space-model mobile preview preserves the P20 11px minimum font contract",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "mobile fit retains a real visible model within the compact preview area",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "hiding and restoring the mobile preview retains the same visible model size",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "11px mobile preview has no horizontal overflow and a 44px next action",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "new space-model mobile setup preserves the P20 11px minimum font contract",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "mobile setup primary actions retain 44px hit targets",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "11px mobile confirmation leaves the create action reachable",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "return-to-canvas button closes the workspace with a real pointer click",
+      "ok": true,
+      "group": "font-layout"
+    },
+    {
+      "name": "no uncaught browser exceptions",
+      "ok": true,
+      "group": "browser-health"
+    },
+    {
+      "name": "no browser console errors",
+      "ok": true,
+      "group": "browser-health"
+    }
+  ]
+}
