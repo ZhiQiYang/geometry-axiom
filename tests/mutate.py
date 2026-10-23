@@ -676,6 +676,16 @@ MUTANTS += [
          tests=['tests.test_geo318_reading_a_native.ReadingANative.test_r6e_partial_single_full_rc_source_failure_and_collision']),
 ]
 
+# H collector wiring is distinct from the W typed-fact controls above. This
+# witness evaluates an explicit already-placed World, not CLI reachability.
+MUTANTS += [
+    dict(id="M149", desc="R6(e)/#318：真H collector重套舊全寬規則，部分接觸見證須正常拒絕斷言轉紅", binary="bridge",
+         file="geometry-core/references.inc",
+         old="if(!wood_contact_end_support_check(admission,hits,a->has_between,detail,sizeof detail))",
+         new="if(!hits || (!a->has_between && hits!=1))",
+         tests=["tests.test_geo318_reading_a_native.ReadingANative.test_actual_host_collector_partial_and_i11_wiring_on_explicit_world"]),
+]
+
 
 def run_cmd(cmd, cwd, timeout=120):
     return subprocess.run(cmd, cwd=cwd, capture_output=True,

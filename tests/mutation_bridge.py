@@ -92,6 +92,8 @@ RESTORED += [
     'tests.test_geo318_reading_a_native.ReadingANative.test_r6e_partial_single_full_rc_source_failure_and_collision',
 ]
 
+RESTORED += ['tests.test_geo318_reading_a_native.ReadingANative.test_actual_host_collector_partial_and_i11_wiring_on_explicit_world']
+
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()

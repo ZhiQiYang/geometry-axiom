@@ -260,9 +260,10 @@ class LiveMutationAnchorMigration(unittest.TestCase):
                           "M146": "geometry-templates/woodworking/native/member_reference.c",
                           "M147": "geometry-templates/woodworking/native/world_validation.c",
                           "M148": "geometry-templates/woodworking/native/world_validation.c"})
-        self.assertEqual(9, len(reading_a))
+        reading_a["M149"] = "geometry-core/references.inc"
+        self.assertEqual(10, len(reading_a))
         added.update(reading_a)
-        self.assertEqual(70, len(added))
+        self.assertEqual(71, len(added))
         self.assertEqual({**expected, **added}, {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS})
         # The ten P-135/P-141 preview-only guards and the eight GEO-262 P-142
         # guards (M78-M85) run on the actual bridge.

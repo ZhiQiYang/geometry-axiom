@@ -5,6 +5,7 @@ The FEATURE cases consume supplied faces, not repaired member rectangles.
 """
 from pathlib import Path
 import shutil
+import re
 import subprocess
 import sys
 import unittest
@@ -60,6 +61,52 @@ class ReadingANative(unittest.TestCase):
 
     def test_r6e_partial_single_full_rc_source_failure_and_collision(self):
         self.assertEqual(0,self.case("revalidation").returncode)
+
+    @classmethod
+    def host_executable(cls, withdrawn=False):
+        """Relocate only four include-chain files, never mutate this checkout."""
+        b=native()
+        if not hasattr(cls,"host_cache"):
+            cls.host_cache={}
+        if withdrawn in cls.host_cache:
+            return cls.host_cache[withdrawn]
+        paths=("current_geometry.c","geometry-core/references.inc","geometry-web/web_bridge.c",
+               "tests/geo318_host_boundary_ends_harness.c")
+        directory=b.work/("geo318-host-withdrawn" if withdrawn else "geo318-host-baseline")
+        destinations={(ROOT/name).resolve():directory/name for name in paths}
+        for name in paths:
+            original=ROOT/name
+            source=original.read_text(encoding="utf-8")
+            if withdrawn and name=="geometry-core/references.inc":
+                before="if(!wood_contact_end_support_check(admission,hits,a->has_between,detail,sizeof detail))"
+                after="if(!hits || (!a->has_between && hits!=1))"
+                if source.count(before)!=1:
+                    raise AssertionError("Actual H collector withdrawal must change exactly one delegate")
+                source=source.replace(before,after)
+            def relocate(match):
+                include=(original.parent/match.group(1)).resolve()
+                target=destinations.get(include,include)
+                return '#include "'+target.as_posix()+'"' if target.is_file() or include in destinations else match.group(0)
+            target=destinations[original.resolve()]
+            target.parent.mkdir(parents=True,exist_ok=True)
+            target.write_text(re.sub(r'^#include "([^"\n]+)"',relocate,source,flags=re.M),encoding="utf-8")
+        defines=["GEOMETRY_KERNEL_EXTERNAL=1","GEOMETRY_WOODWORKING_EXTERNAL=1",
+                 "GEOMETRY_HOST_HISTORY_EXTERNAL=1","GEOMETRY_HOST_CANDIDATE_EXTERNAL=1"]
+        client=b.compile(destinations[(ROOT/paths[-1]).resolve()],"geo318-host-"+str(withdrawn),defines)
+        cls.host_cache[withdrawn]=b.link("geo318-host-"+str(withdrawn),[client,*b.product_objects()])
+        return cls.host_cache[withdrawn]
+
+    def test_actual_host_collector_partial_and_i11_wiring_on_explicit_world(self):
+        # This deliberately does not assert parse/load/rebuild reachability.
+        self.assertEqual(0,self.case("host-collector",self.host_executable()).returncode)
+
+    def test_actual_host_collector_withdrawal_fails_named_assertion_then_restores(self):
+        self.assertEqual(0,self.case("host-collector",self.host_executable(),phase="baseline",control="host-collector").returncode)
+        result=self.case("host-collector",self.host_executable(True),phase="mutant",control="host-collector",
+                         assertion="actual-host-collector-accepts-partial")
+        self.assertEqual(1,result.returncode)
+        self.assertIn("ASSERT:actual-host-collector-accepts-partial",result.stderr)
+        self.assertEqual(0,self.case("host-collector",self.host_executable(),phase="restored",control="host-collector").returncode)
 
     def test_nine_actual_source_controls_fail_named_assertions_then_restore(self):
         b=native()

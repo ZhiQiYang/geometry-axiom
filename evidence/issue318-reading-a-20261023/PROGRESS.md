@@ -1,3 +1,9 @@
+## 追加：真 H caller 反證來源已備（尚未編譯）
+
+同儕指出原九個 W 控制不直接證明 H 漏線不復發，因此另加 `geo318_host_boundary_ends_harness.c`：編譯實際 web_bridge/current_geometry/references include 鏈，交給真正 `reference_check_all()` 一個明示已放的兩角材 World，要求 partial 接觸可過且後續 I11 重疊仍拒。此為 H wiring 見證，**不是 CLI 初放／load/rebuild 可達性見證**。精準撤回 H 的 W delegate、改回舊 full-count，必須以 `ASSERT:actual-host-collector-accepts-partial` 正常失敗；未執行，不冒 0/1/0。新增 M149，原 M140–M148 不動；native suite 登記 7 方法（含 9 W 控制與 1 H 控制），全部動態仍待。
+
+一般 Git 推送曾連續失敗（128）且既有注入token認證亦128；完整原錯誤與不含憑證值的診斷保於 `git-auth-incident/`。平台路徑稍後自行恢復：不帶 askpass 的普通 push 真0、ls-remote 真0，遠端精確 `a43186d261562c72cbea9b97ceb84a46b912178e`。不宣稱故障沒發生，也不猜 token 是否刷新；沒有改root/global config、沒有force。
+
 ## 追加：正典機械來源同步已執行，閱讀器三裁判尚未全跑
 
 來源 `3c68c59b6e08ddf7387d8661a5d6f9c45a643691`（普通承接 ed6aa2f60）上執行 `python3 -B geometry-guide/sync_axiom_reader.py`，真 exit **0**、完整 stdout/stderr/argv/env/SHA/hash 於 `reader-generation/`。耗時約 4.21 秒，只改唯一 canonical HTML；原始報告 patches90，207 clauses／1261 blocks／5 comments／31 witnesses／63 examples。這只代表同步器原機械生成結果；**`--check` 與 `tests/test_axiom_reader.py` 未跑，不能稱閱讀器三裁判全綠**。root 明示放行此來源生成，未占用原生編譯／Chrome／掃描槽。
