@@ -1,16 +1,19 @@
 # GEO-300 前置進度
 
-基底：`a048530c18f5df43a921e6b06bb3e4aa2192684e`。獨立分支：`codex/geo300-prerequisites-20261024`。
+目前候選產品 SHA：`c493b7315d0cd3b16014add96af969c49ebf4660`。目前基底：`codex/train-337-continue-20261024` 的 `a6072dde8eac809e93ccd9373946dea98fa5c362`。本分支只有 `codex/geo300-prerequisites-20261024` owner 寫入，沒有寫正式 train。
 
-- 已 fresh fetch main／train／handoff，保存原 Git 指令、退出碼、完整 stdout/stderr 與權威文件 hash。handoff 沒有 `pr-reviews/300.md`，原 Git exit 128 保留，不聲稱已讀到不存在的審查。
-- 已讀決策佇列指定日期、公理、FIELD-RULES 與舊 issue300 草稿。現行 train 權威與先前已讀的整份文件逐位元組相同；舊草稿不是新規格。
-- 已把現有 order/source 索引、五個各自為 64 的容量常數、cut-list 平方儲存與剩餘 sort/dedup 成本分開。
-- 已備小範圍 active-set／單次 stable compact 設計及正反例，保留超標準 caller buffer 的原算法後備。
-- 已備三個產品／測試 leaf 候選及五個新具名 control；所有原方法和原 ASSERT 靜態保留。候選 v1 的 108 個靜態項目有一項基底既存失敗：原 `free-end` anchor 在 Reading A 合流後命中三次；原失敗與候選全部凍結保留，沒有宣稱靜核全過。
-- 該 anchor 的單行維護補丁另交主代理，不混入本次候選掩蓋基底；目前仍未執行原套件。`UNIQUE_ID_FOLLOWUP.md` 另列更大區間索引方向與證明邊界，未實作。
+| 項目 | 結果 |
+|---|---|
+| 一般 merge 新 train | exit 0，零衝突；沒有 rebase／force push |
+| 相對新基底的非 evidence 差異 | 恰三個原產品／測試 leaf |
+| 靜核 | 108 項／0；23 個 control 錨點全部唯一 |
+| 合流獨立對抗靜審 | 58 項／0 findings，範圍限來源與控制設計 |
+| 原九方法＋新一方法／五新反證 | 本候選全部 UNRUN |
+| 操作及效能 | UNMEASURED，沒有新數值門檻或加速倍率聲稱 |
+| shared expected count 9→10、架構及全帳本 | 待主代理合流處理，子代理未改或重產 |
 
-產品候選、原套件、新反證、差分量測、架構與帳本目前均未取得本分支動態驗收。主代理正在 R3 執行原完整帳本，本代理沒有啟動編譯、測試、效能量測或另一份帳本。
+原產品算法保持已審的 active bitmap／最後一次穩定壓緊；超過既有 face capacity 保原 memmove 後備。最壞配對 O(F²)、insertion sort、call-growth、cut-list 平方儲存都未解決，不冒稱容量 512 前置已完成。
 
-下一步：只在本分支備候選碼與新具名反證，交另一代理做對抗靜審；主代理給時槽後才跑正式原裁判。未取得全綠前不稱完成 GEO-300。
+首版 S576d3e1b／Eea3187ac 的 108 靜查含一個既存 free-end 三命中失敗，原 raw 完整保留在歷史封包。新基底已採 root 的精確單行維護，故本輪全部錨點唯一；F4f 的原九方法 1/0/1/0 證據只證該單行 leaf，不挪作本候選通過。
 
-候選產品 SHA：`576d3e1b3589bdea303aae481e66a4b8b25d818b`。獨立對抗靜審 57 項、0 新發現；其接受限於等價性與控制設計。v1 自查 108 項中的原 free-end 錨點失敗完整保留，另由主代理處理。所有本候選動態、操作計數與效能仍 UNRUN／UNMEASURED，架構與全帳本尚未為本候選重產。
+下一步依主代理排程，在 noWood、faces43、GEO260 retry 之後取得 C 時槽，固定本候選新 SHA 跑完整十方法、所有原十八與五新控制，以及受影響 source／Reading A 原裁判。整個優化撤回預期仍語意等價，不冒作被殺；成本觀測另排。所有正式收據需要原命令／退出碼／完整輸出／環境／SHA 並經另一代理核對。
