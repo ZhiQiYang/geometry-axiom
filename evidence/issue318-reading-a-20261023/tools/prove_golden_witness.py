@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import ast
 import datetime
+import fcntl
 import hashlib
 import json
 import os
@@ -26,8 +27,11 @@ WITHDRAWN = ('FZ120_WITNESS = {"outer": [[0, 0], [4100, 0], [4100, 3680], '
              '[2600, 3680], [2600, 3700], [0, 3700]]}')
 NONEMPTY = 'assert len(witness_rows) == 1 and witness_rows[0]["core_limits"], witness_rows'
 MARKER = 'ASSERT:golden-current-witness-nonempty'
+PASS = 'PASS:current-nonempty-I22-golden-witness; targeted only, not full64'
 CHILD = r'''
 import importlib.util,json,pathlib,sys,traceback
+if sys.flags.optimize:
+    raise RuntimeError("assertions must remain enabled")
 root=pathlib.Path(sys.argv[1]); spec_path=pathlib.Path(sys.argv[2]);golden_path=pathlib.Path(sys.argv[3])
 sys.path.insert(0,str(root))
 spec=importlib.util.spec_from_file_location("make_golden",root/"make_golden.py")
@@ -65,6 +69,7 @@ def main():
     ap.add_argument('--root',required=True,type=Path)
     ap.add_argument('--sha',required=True)
     ap.add_argument('--output',required=True,type=Path)
+    ap.add_argument('--heavy-lock',type=Path,default=Path('/tmp/g261r3/heavy.lock'))
     args=ap.parse_args()
     root=args.root.resolve(); out=args.output.resolve()
     if out==root or root in out.parents:
@@ -77,7 +82,7 @@ def main():
         ap.error('source checkout must be clean')
     out.mkdir(parents=True,exist_ok=False)
     oracle=root/'geometry-core/framing-template/oracle'
-    raws={name:(oracle/name).read_bytes() for name in ('framing_oracle.py','make_golden.py')}
+    raws={name:(oracle/name).read_bytes() for name in ('framing_oracle.py','make_golden.py','rooms.json','oracle-golden.json')}
     text=raws['make_golden.py'].decode('utf-8')
     if text.count(SOURCE)!=1 or text.count(NONEMPTY)!=1:
         ap.error('source-control anchors must each occur exactly once')
@@ -88,15 +93,28 @@ def main():
             'source_sha':source,'source_dirty':dirty,'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
             'driver_sha256':digest(Path(__file__).read_bytes()),
             'environment':{'platform':platform.platform(),'python':sys.version,
-                           **{k:os.environ.get(k) for k in ('LANG','LC_ALL','PYTHONDONTWRITEBYTECODE','GITHUB_SHA')}},
+                           'driver_optimize':sys.flags.optimize,
+                           **{k:os.environ.get(k) for k in ('PATH','PYTHONPATH','PYTHONOPTIMIZE','LANG','LC_ALL','PYTHONDONTWRITEBYTECODE','GITHUB_SHA')}},
             'source_sha256':{k:digest(v) for k,v in raws.items()},
             'commands':records}
+    lock=args.heavy_lock.resolve().open('a')
+    try:
+        fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    except BlockingIOError:
+        result['heavy_lock']={'path':str(args.heavy_lock.resolve()),'acquired':False}
+        result['passed']=False
+        (out/'receipt.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+        print('Resource slot busy; no oracle child executed',file=sys.stderr)
+        return 75
+    result['heavy_lock']={'path':str(args.heavy_lock.resolve()),'acquired':True,
+                          'mode':'exclusive nonblocking, held for all three children',
+                          'utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}
     for label, generator in [('baseline',raws['make_golden.py']),('withdrawn',withdrawn),('restored',raws['make_golden.py'])]:
         variant=out/label; variant.mkdir()
         for name,raw in raws.items():
             (variant/name).write_bytes(generator if name=='make_golden.py' else raw)
-        argv=[sys.executable,'-B','-c',CHILD,str(variant),str(oracle/'rooms.json'),str(oracle/'oracle-golden.json'),NONEMPTY]
-        env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1',PYTHONIOENCODING='utf-8')
+        argv=[sys.executable,'-B','-c',CHILD,str(variant),str(variant/'rooms.json'),str(variant/'oracle-golden.json'),NONEMPTY]
+        env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1',PYTHONIOENCODING='utf-8',PYTHONOPTIMIZE='0')
         try:
             p=subprocess.run(argv,cwd=variant,env=env,text=True,capture_output=True,timeout=45)
             rc,stdout,stderr=p.returncode,p.stdout,p.stderr
@@ -109,12 +127,22 @@ def main():
         records.append({'variant':label,'argv':argv,'cwd':str(variant),'exit_code':rc,
                         'stdout':stdout,'stderr':stderr,
                         'compiled_source':False,'generator_sha256':digest(generator),
+                        'variant_sha256':{k:digest((variant/k).read_bytes()) for k in raws},
+                        'environment':{k:env.get(k) for k in ('PATH','PYTHONPATH','PYTHONOPTIMIZE','PYTHONDONTWRITEBYTECODE','PYTHONIOENCODING','LANG','LC_ALL')},
                         'oracle_sha256':digest(raws['framing_oracle.py'])})
         (out/'receipt.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
-    result['passed']=(records[0]['exit_code']==0 and records[1]['exit_code']==1
-                      and MARKER in records[1]['stdout'] and records[2]['exit_code']==0)
+    result['passed']=(records[0]['exit_code']==0 and PASS in records[0]['stdout']
+                      and records[1]['exit_code']==1 and MARKER in records[1]['stdout']
+                      and records[2]['exit_code']==0 and PASS in records[2]['stdout'])
     result['source_bytes_unchanged']=all((oracle/k).read_bytes()==v for k,v in raws.items())
-    result['passed'] &= result['source_bytes_unchanged']
+    result['source_sha256_after']={k:digest((oracle/k).read_bytes()) for k in raws}
+    result['source_sha_after']=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip()
+    result['source_dirty_after']=subprocess.check_output(['git','-C',str(root),'status','--porcelain'],text=True)
+    result['passed'] &= (result['source_bytes_unchanged'] and result['source_sha_after']==source
+                         and result['source_dirty_after']==dirty)
+    fcntl.flock(lock,fcntl.LOCK_UN)
+    lock.close()
+    result['heavy_lock']['released_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
     (out/'receipt.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'source_sha':source,'exits':[r['exit_code'] for r in records],
                       'passed':result['passed'],'output':str(out)},ensure_ascii=False))

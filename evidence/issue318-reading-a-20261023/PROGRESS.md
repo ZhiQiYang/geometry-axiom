@@ -4,6 +4,8 @@
 
 原機械 canonical 同步各次0（最新來源1cd2fc21）仍只是 source generation。正式 native7／W10+H1控制、oracle13與0/1/0、generator/selftest、矩形逐毫米／凹角579／528+1056全掃、reader餘兩裁判、架構三裁判皆未跑，沒有 skip 或綠燈聲明；完整帳本只root共同final一次。CLI次序風險仍保 QUESTIONS.md。主代理新F canvas獨占heavy期間，只續來源與同儕審，不啟其他重活。
 
+同儕已對不可變e8aaf84c作獨立Git/JSON/bytes核對exit0，完整文檔及收據見PEER_REVIEW_GOLDEN_e8aaf84c；未見靜態blocker，不冒動態。其指出targeted proof收據範圍後已補四輸入隔離/hash、末HEAD/clean、正向PASS marker、asserts enabled及R3非阻塞獨占鎖，仍只AST核、未執行。
+
 以下為保留的歷史進度原文；與本段有差異時以本段 current state 為準。
 
 ---
